@@ -2,51 +2,65 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import Template from "./template";
+import Tasks from "./tasks";
 import "./style.scss";
 
 const queryData = `
+id
+instructions
+verified
+dismissed
+values
+definition
 `;
 
 const QUERY = gql`
-  query Template($simulatorId: ID!) {
-    template(simulatorId: $simulatorId) {
+query Tasks($simulatorId:ID!, $station:String) {
+  tasks(simulatorId:$simulatorId, station:$station) {
 ${queryData}
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription TemplateUpdate($simulatorId: ID!) {
-    templateUpdate(simulatorId: $simulatorId) {
+subscription TasksUpdate($simulatorId:ID!, $station:String) {
+  tasksUpdate(simulatorId:$simulatorId, station:$station) {
 ${queryData}
     }
   }
 `;
 
-class TemplateData extends Component {
+class TasksData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
+      <Query
+        query={QUERY}
+        variables={{
+          simulatorId: this.props.simulator.id,
+          station: this.props.station.name
+        }}
+      >
         {({ loading, data, subscribeToMore }) => {
-          const { template } = data;
-          if (loading || !template) return null;
-          if (!template[0]) return <div>No Template</div>;
+          const { tasks } = data;
+          if (loading || !tasks) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
                   document: SUBSCRIPTION,
-                  variables: { simulatorId: this.props.simulator.id },
+                  variables: {
+                    simulatorId: this.props.simulator.id,
+                    station: this.props.station.name
+                  },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      template: subscriptionData.data.templateUpdate
+                      tasks: subscriptionData.data.tasksUpdate
                     });
                   }
                 })
               }
             >
-              <Template {...this.props} {...template[0]} />
+              <Tasks {...this.props} tasks={tasks} />
             </SubscriptionHelper>
           );
         }}
@@ -54,4 +68,4 @@ class TemplateData extends Component {
     );
   }
 }
-export default TemplateData;
+export default TasksData;

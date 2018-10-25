@@ -71,8 +71,10 @@ const taskDefinitions = Object.values(Classes)
   .filter(Boolean);
 
 export const TasksQueries = {
-  tasks() {
-    return App.tasks;
+  tasks(_, { simulatorId, station }) {
+    let tasks = App.tasks.filter(s => s.simulatorId === simulatorId);
+    if (station) tasks = tasks.filter(s => s.station === station);
+    return tasks;
   },
   taskTemplates() {
     return App.taskTemplates;
@@ -107,10 +109,12 @@ export const TasksSubscriptions = {
     subscribe: withFilter(
       () => pubsub.asyncIterator("tasksUpdate"),
       (rootValue, { simulatorId, station }) => {
-        const simTasks = App.tasks.filter(s => s.simulatorId === simulatorId);
+        let simTasks = App.tasks.filter(s => s.simulatorId === simulatorId);
+        if (station) simTasks = simTasks.filter(s => s.station === station);
         if (rootValue.length === 0 && simTasks.length === 0) return true;
-        if (rootValue.filter(s => s.simulatorId === simulatorId).length > 0)
-          return true;
+        let rootTasks = rootValue.filter(s => s.simulatorId === simulatorId);
+        if (station) rootTasks = rootTasks.filter(s => s.station === station);
+        if (rootTasks.length > 0) return true;
         return false;
       }
     )

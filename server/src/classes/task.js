@@ -37,6 +37,7 @@ export default class Task {
     // before this task was instantiated
 
     this.id = params.id || uuid.v4();
+    this.class = "Task";
     this.simulatorId = params.simulatorId || "";
     this.station = params.station || "";
     this.taskTemplate = params.taskTemplate || "";
