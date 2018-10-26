@@ -45,6 +45,93 @@ export default class Engine extends HeatMixin(System) {
   }
   static tasks = [
     {
+      name: "Activate Engines",
+      active({ simulator }) {
+        if (!simulator) return false;
+        // Check cards
+        return (
+          simulator.stations.find(s =>
+            s.cards.find(c => c.component === "EngineControl")
+          ) &&
+          App.systems.find(
+            s => s.simulatorId === simulator.id && s.type === "Engine"
+          )
+        );
+      },
+      stations({ simulator }) {
+        return (
+          simulator &&
+          simulator.stations.filter(s =>
+            s.cards.find(c => c.component === "EngineControl")
+          )
+        );
+      },
+      values: {
+        preamble: {
+          input: () => "textarea",
+          value: () => "The engines need to be activated."
+        },
+        speed: {
+          input: ({ simulator }) =>
+            simulator
+              ? App.systems
+                  .filter(
+                    s => s.simulatorId === simulator.id && s.class === "Engine"
+                  )
+                  .reduce((prev, next) => prev.concat(next.speeds), [])
+                  .map(s => ({ value: s.text, label: s.text }))
+              : "text",
+          value: ({ simulator }) =>
+            simulator
+              ? randomFromList(
+                  App.systems
+                    .filter(
+                      s =>
+                        s.simulatorId === simulator.id && s.class === "Engine"
+                    )
+                    .reduce((prev, next) => prev.concat(next.speeds), [])
+                    .map(s => s.text)
+                )
+              : "Warp 1"
+        }
+      },
+
+      instructions({
+        simulator,
+        requiredValues: { preamble, speed },
+        task = {}
+      }) {
+        const station = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "EngineControl")
+        );
+        if (station && task.station === station.name)
+          return reportReplace(
+            `${preamble} Activate the engines to ${speed}.`,
+            {
+              simulator
+            }
+          );
+        return reportReplace(
+          `${preamble} Ask the ${
+            station
+              ? `${station.name} Officer`
+              : "person in charge of the engines"
+          } to activate the engines to ${speed}.`,
+          { simulator }
+        );
+      },
+      verify({ simulator, requiredValues }) {
+        return App.systems.find(
+          s =>
+            s.simulatorId === simulator.id &&
+            s.type === "Engine" &&
+            s.on === true &&
+            s.speeds.findIndex(speed => speed.text === requiredValues.speed) ===
+              s.speed - 1
+        );
+      }
+    },
+    {
       name: "Deactivate Engines",
       active({ simulator }) {
         if (!simulator) return false;

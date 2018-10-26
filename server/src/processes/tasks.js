@@ -18,7 +18,10 @@ function verifyTasks() {
         tasks.forEach(t => {
           if (t.verified) return;
           const taskDef = taskDefinitions.find(d => d.name === t.definition);
-          if (taskDef.verify && taskDef.verify({ simulator: sim })) {
+          if (
+            taskDef.verify &&
+            taskDef.verify({ simulator: sim, requiredValues: t.values })
+          ) {
             t.verify();
             publish = true;
           }
