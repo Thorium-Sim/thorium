@@ -1,10 +1,5 @@
-import App from "../app";
 import uuid from "uuid";
-import * as classes from "./";
-
-const taskDefinitions = Object.values(classes)
-  .reduce((prev, c) => prev.concat(c.tasks), [])
-  .filter(Boolean);
+import taskDefinitions from "../tasks";
 
 export default class TaskTemplate {
   constructor(params = {}) {

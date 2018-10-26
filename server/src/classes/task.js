@@ -1,39 +1,6 @@
 import uuid from "uuid";
 import App from "../app";
-import * as classes from "./";
-import reportReplace from "../helpers/reportReplacer";
-
-const tasks = [
-  // Simple, generic task definition.
-  // Always available, must be manually verified
-  {
-    name: "Generic",
-    active() {
-      return true;
-    },
-    values: {
-      name: {
-        input: () => "text",
-        value: () => "Task"
-      },
-      message: {
-        input: () => "textarea",
-        value: () => "This is a generic task."
-      }
-    },
-    instructions({ simulator, requiredValues: { message } }) {
-      return reportReplace(message, { simulator });
-    },
-    verify() {
-      return false;
-    }
-  }
-];
-
-const taskDefinitions = Object.values(classes)
-  .reduce((prev, c) => prev.concat(c.tasks), [])
-  .filter(Boolean)
-  .concat(tasks);
+import taskDefinitions from "../tasks";
 
 export default class Task {
   constructor(params = {}) {
@@ -88,12 +55,16 @@ export default class Task {
     this.verified = params.verified || false;
     this.dismissed = params.dismissed || false;
     this.verifyRequested = params.verifyRequested || false;
+
+    // Timing
+    this.startTime = new Date();
+    this.endTime = null;
   }
-  static tasks = tasks;
   verify(dismiss) {
     this.verified = true;
     if (dismiss) this.dismissed = true;
     this.verifyRequested = false;
+    this.endTime = new Date();
   }
   dismiss() {
     this.dismissed = true;

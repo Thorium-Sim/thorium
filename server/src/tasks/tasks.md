@@ -1,9 +1,8 @@
 # Tasks
 
 Tasks are actions that should be performed at certain times during the
-simulation. Task templates are defined on the classes themselves. Task templates
-are static properties that are arrays of objects with the following properties
-and methods:
+simulation. Task definitions are defined in this folder. Task are static arrays
+of objects with the following properties and methods:
 
 - `name`: The name of the task. Should be unique.
 - `active`: A method to check and see if the task can be performed by the crew.

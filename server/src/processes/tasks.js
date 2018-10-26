@@ -1,10 +1,6 @@
-import * as classes from "../classes";
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
-
-const taskDefinitions = Object.values(classes)
-  .reduce((prev, c) => prev.concat(c.tasks), [])
-  .filter(Boolean);
+import taskDefinitions from "../tasks";
 
 function verifyTasks() {
   App.flights.filter(f => f.running === true).forEach(f => {
