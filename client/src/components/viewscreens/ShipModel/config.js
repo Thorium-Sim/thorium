@@ -70,7 +70,6 @@ export default ({ data, updateData, simple }) => (
       }
       checked={JSON.parse(data).texture}
     /> */}
-    {/* Just making a change... */}
     <label>Color</label>
     <ColorPicker
       color={JSON.parse(data).color}
