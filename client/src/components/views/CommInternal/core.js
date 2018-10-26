@@ -115,6 +115,9 @@ class InternalCommCore extends Component {
                 >
                   {internalComm.outgoing}
                   {internalComm.state === "connected" ? ` - Connected` : ""}
+                  {internalComm.incoming &&
+                    !internalComm.outgoing &&
+                    `Calling - ${internalComm.incoming}`}
                 </p>
               </Col>
               <Col sm={4}>
