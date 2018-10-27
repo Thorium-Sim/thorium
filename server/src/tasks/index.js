@@ -8,6 +8,7 @@ import message from "./message";
 import shield from "./shield";
 import sickbay from "./sickbay";
 import generic from "./generic";
+import computerCore from "./computerCore";
 
 export default [
   ...docking,
@@ -19,5 +20,6 @@ export default [
   ...message,
   ...shield,
   ...sickbay,
-  ...generic
+  ...generic,
+  ...computerCore
 ];
