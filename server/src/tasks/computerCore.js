@@ -97,7 +97,7 @@ Password: ${password}`,
     },
     verify({ simulator, requiredValues }) {
       const system = App.systems.find(
-        s => s.id === simulator.id && s.class === "ComputerCore"
+        s => s.simulatorId === simulator.id && s.class === "ComputerCore"
       );
       return system.users.find(
         s =>
@@ -201,7 +201,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
     },
     verify({ simulator, requiredValues }) {
       const system = App.systems.find(
-        s => s.id === simulator.id && s.class === "ComputerCore"
+        s => s.simulatorId === simulator.id && s.class === "ComputerCore"
       );
       if (!system) return;
       return !system.users.find(

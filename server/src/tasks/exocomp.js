@@ -81,7 +81,7 @@ export default [
       );
     },
     verify({ simulator, requiredValues }) {
-      const exocomps = App.exocomps.filter(s => s.id === simulator.id);
+      const exocomps = App.exocomps.filter(s => s.simulatorId === simulator.id);
       return exocomps.find(e => {
         if (e.destination !== requiredValues.destination) return false;
         // Figuring out parts is hard, especially when a system needs to have multiple parts

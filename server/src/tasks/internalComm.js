@@ -97,7 +97,7 @@ Message: ${message}
     },
     verify({ requiredValues, simulator }) {
       const system = App.systems.find(
-        s => s.id === simulator.id && s.type === "InternalComm"
+        s => s.simulatorId === simulator.id && s.type === "InternalComm"
       );
       const room = App.rooms.find(r => r.id === requiredValues.room);
       const deck = App.decks.find(
