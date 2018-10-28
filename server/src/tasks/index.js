@@ -9,6 +9,8 @@ import shield from "./shield";
 import sickbay from "./sickbay";
 import generic from "./generic";
 import computerCore from "./computerCore";
+import coolant from "./coolant";
+import power from "./power";
 
 export default [
   ...docking,
@@ -21,5 +23,7 @@ export default [
   ...shield,
   ...sickbay,
   ...generic,
-  ...computerCore
+  ...computerCore,
+  ...coolant,
+  ...power
 ];
