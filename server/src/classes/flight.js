@@ -1,7 +1,7 @@
 import uuid from "uuid";
 import randomWords from "random-words";
 export default class Flight {
-  constructor(params) {
+  constructor(params = {}) {
     this.class = "Flight";
     this.id = params.id || uuid.v4();
     this.name = params.name || randomWords(3).join("-");

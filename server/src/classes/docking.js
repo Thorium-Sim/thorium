@@ -1,7 +1,7 @@
 import { System } from "./generic";
 
 export default class DockingPort extends System {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     this.class = "DockingPort";
     this.type = params.type || "shuttlebay";

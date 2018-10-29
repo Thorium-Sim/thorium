@@ -89,7 +89,7 @@ class Assets {
 }
 
 export default class Simulator {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutDefault";

@@ -4,17 +4,22 @@ import App from "../app";
 class Keypad {
   constructor(params = {}, clientId) {
     this.id = clientId;
-    this.code =
-      params.code ||
-      Array(4)
-        .fill(0)
-        .map(() => Math.floor(Math.random() * 10));
     this.enteredCode = params.enteredCode || [];
-    this.codeLength = params.codeLength || 4;
     this.giveHints = params.giveHints || true;
     this.allowedAttempts = params.allowedAttempts || 0; // Default - infinte
     this.attempts = params.attempts || 0;
     this.locked = params.locked || false;
+    
+    if(params.codeLength) {
+      this.setCodeLength(params.codeLength);
+    }
+    else {
+      this.codeLength = 4;
+    }
+
+    this.setCode(params.code);
+    // code.length will override codeLength if both are present
+    this.codeLength = this.code.length;
   }
   setCode(code) {
     if (code && code.length > 0) {
@@ -25,6 +30,7 @@ class Keypad {
         .fill(0)
         .map(() => Math.floor(Math.random() * 10));
     }
+    this.codeLength = this.code.length;
   }
   setEnteredCode(code) {
     this.attempts += 1;
@@ -85,7 +91,7 @@ export default class Client {
     this.ping = null;
     this.connected = params.connected || false;
     this.offlineState = params.offlineState || null;
-    this.movie = params.move || null;
+    this.movie = params.movie || null;
     this.hypercard = params.hypercard || null;
     this.training = params.training || false;
     this.overlay = params.overlay || false;
