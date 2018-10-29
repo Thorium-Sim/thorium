@@ -20,7 +20,6 @@ export default class DockingPort extends System {
     }
   }
   updateDockingPort({ name, type, clamps, compress, doors, image, docked }) {
-    // Suggestion: change to if(arguments[0].hasOwnProperty('name'))
     if (name || name === "") {
       this.name = name;
     }

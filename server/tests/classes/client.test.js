@@ -299,8 +299,6 @@ describe('Keypad', () => {
       const c = new Client();
       c.keypad.setCodeLength(5);
       expect(c.keypad.codeLength).toBe(5);
-
-      // TODO: What if codeLength doesn't match code.length?
     });
   });
   

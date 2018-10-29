@@ -66,7 +66,6 @@ export default class Crew {
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.class = "Crew";
-    // TODO: Are these really the default params we want?
     this.simulatorId = params.simulatorId || "test";
     this.firstName = params.firstName || "John";
     this.lastName = params.lastName || "Doe";

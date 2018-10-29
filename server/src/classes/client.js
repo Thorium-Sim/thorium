@@ -70,7 +70,6 @@ class Scanner {
     this.scanning = true;
   }
   cancelScan() {
-    // TODO: Should we set this.scanRequest to '' ?
     this.scanning = false;
   }
   scanResponse(response) {

@@ -25,12 +25,6 @@ describe('Coolant', () => {
     });
   });
 
-  describe('power', () => {
-    test.skip('should get/set', () => {
-      // TODO: The getter and setter don't seem to do very much yet
-    });
-  });
-
   describe('setCoolant', () => {
     test('should limit coolant to 0..1', () => {
       const cool = new Coolant();
