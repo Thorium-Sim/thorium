@@ -73,7 +73,7 @@ class TasksCore extends Component {
               <optgroup key={key} label={key}>
                 {value.map(v => (
                   <option key={v.name} value={v.name}>
-                    {v.active ? "✅" : "❌"} {v.name}
+                    {v.name} {v.active ? "✅" : "❌"}
                   </option>
                 ))}
               </optgroup>
@@ -114,7 +114,7 @@ class TasksCore extends Component {
                       key={v}
                       label={v}
                       type={definition.valuesInput[v]}
-                      value={definition.valuesValue[v]}
+                      value={requiredValues[v] || definition.valuesValue[v]}
                       simulatorId={simulator.id}
                       onBlur={value =>
                         this.setState(state => ({

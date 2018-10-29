@@ -73,7 +73,7 @@ export default [
             : ""
       },
       officers: {
-        input: () => "officerPicker",
+        input: () => "damageTeamPicker",
         value: ({ simulator }) =>
           simulator
             ? randomOfficers(

@@ -1,7 +1,9 @@
 import React from "react";
 import { Input } from "reactstrap";
 import { titleCase } from "change-case";
-import DeckSelect from "./DeckSelect";
+import DeckSelect from "./inputs/DeckSelect";
+import PartsPicker from "./inputs/PartsPicker";
+import DamageTeamPicker from "./inputs/DamageTeamPicker";
 
 const ValueInput = ({ label, type, value, onBlur, simulatorId }) => {
   return (
@@ -42,7 +44,27 @@ const ValueInput = ({ label, type, value, onBlur, simulatorId }) => {
             </label>
           );
         }
-        if (typeof type === "object" && type.length > 0)
+        if (type === "partsPicker") {
+          return (
+            <label>
+              {titleCase(label)}
+              <PartsPicker value={value} onChange={onBlur} />
+            </label>
+          );
+        }
+        if (type === "damageTeamPicker") {
+          return (
+            <label>
+              {titleCase(label)}
+              <DamageTeamPicker
+                simulatorId={simulatorId}
+                value={value}
+                onChange={onBlur}
+              />
+            </label>
+          );
+        }
+        if (typeof type === "object" && type.length > 0) {
           return (
             <label>
               {titleCase(label)}
@@ -59,6 +81,7 @@ const ValueInput = ({ label, type, value, onBlur, simulatorId }) => {
               </Input>
             </label>
           );
+        }
         if (typeof type === "object")
           return (
             <label>
