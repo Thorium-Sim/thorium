@@ -11,6 +11,7 @@ import generic from "./generic";
 import computerCore from "./computerCore";
 import coolant from "./coolant";
 import power from "./power";
+import teams from "./teams";
 
 export default [
   ...docking,
@@ -25,5 +26,6 @@ export default [
   ...generic,
   ...computerCore,
   ...coolant,
-  ...power
+  ...power,
+  ...teams
 ];
