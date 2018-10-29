@@ -2,7 +2,7 @@ import uuid from "uuid";
 import App from "../app";
 
 export default class Exocomp {
-  constructor(params) {
+  constructor(params={}) {
     this.id = params.id || uuid.v4();
     this.class = "Exocomp";
     this.simulatorId = params.simulatorId;
