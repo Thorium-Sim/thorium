@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import {
   Container,
   Row,
@@ -56,31 +56,40 @@ class TaskTemplates extends Component {
           return (
             <Container fluid className="task-templates">
               <Row>
+                <Col sm={3}>
+                  <h3>Definitions</h3>
+                  <ListGroup style={{ maxHeight: "80vh", overflowY: "auto" }}>
+                    {Object.entries(definitionGroups).map(([key, value]) => (
+                      <Fragment key={key}>
+                        <ListGroupItem>
+                          <strong>{key}</strong>
+                        </ListGroupItem>
+                        {value.map(v => (
+                          <ListGroupItem
+                            key={v.name}
+                            active={v.name === selectedDef}
+                            onClick={() =>
+                              this.setState({ selectedDef: v.name })
+                            }
+                          >
+                            {" "}
+                            {v.name} (
+                            {
+                              taskTemplates.filter(t => t.definition === v.name)
+                                .length
+                            }{" "}
+                            Templates)
+                          </ListGroupItem>
+                        ))}
+                      </Fragment>
+                    ))}
+                  </ListGroup>
+                </Col>
                 <Col
                   sm={4}
                   style={{ display: "flex", flexDirection: "column" }}
                 >
-                  <h3>Definitions</h3>
-                  <Input
-                    type="select"
-                    value={selectedDef}
-                    onChange={e =>
-                      this.setState({ selectedDef: e.target.value })
-                    }
-                  >
-                    <option value="nothing" disabled>
-                      Select a task definition
-                    </option>
-                    {Object.entries(definitionGroups).map(([key, value]) => (
-                      <optgroup key={key} label={key}>
-                        {value.map(v => (
-                          <option key={v.name} value={v.name}>
-                            {v.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </Input>
+                  <h3>Templates</h3>
                   <ListGroup style={{ flex: 1 }}>
                     {taskTemplates
                       .filter(t => t.definition === selectedDef)
@@ -146,8 +155,8 @@ class TaskTemplates extends Component {
                   )}
                 </Col>
                 {taskTemplate && (
-                  <Col sm={8}>
-                    <h3>Task Templates</h3>
+                  <Col sm={5}>
+                    <h3>Template Config</h3>
                     <Card>
                       <CardBody>
                         <TaskConfig
