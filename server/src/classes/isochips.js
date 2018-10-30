@@ -30,7 +30,7 @@ const labels = {
 const diagnosticChip = 31; // 11111
 
 export default class Isochip {
-  constructor(params) {
+  constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.class = "Isochip";
     this.system = params.system || null;
