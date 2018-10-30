@@ -77,3 +77,25 @@ App.on("denyTaskVerify", ({ id }) => {
     color: "warning"
   });
 });
+
+App.on("addTaskTemplate", ({ id, definition }) => {
+  App.taskTemplates.push(new Classes.TaskTemplate({ id, definition }));
+  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+});
+
+App.on("removeTaskTemplate", ({ id }) => {
+  App.taskTemplates = App.taskTemplates.filter(t => t.id !== id);
+  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+});
+
+App.on("renameTaskTemplate", ({ id, name }) => {
+  const task = App.taskTemplates.find(t => t.id === id);
+  task && task.rename(name);
+  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+});
+
+App.on("setTaskTemplateValues", ({ id, values }) => {
+  const task = App.taskTemplates.find(t => t.id === id);
+  task && task.setValues(values);
+  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+});

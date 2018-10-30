@@ -4,8 +4,12 @@ import taskDefinitions from "../tasks";
 export default class TaskTemplate {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
+    this.name = params.name || "Task Template";
     this.values = params.values || {};
     this.definition = params.definition || "Generic";
+  }
+  rename(name) {
+    this.name = name;
   }
   possibleValues({ simulator }) {
     const definition = taskDefinitions.find(t => t.name === this.definition);
@@ -19,5 +23,8 @@ export default class TaskTemplate {
   }
   setValue(key, value) {
     this.values[key] = value;
+  }
+  setValues(values) {
+    this.values = values;
   }
 }

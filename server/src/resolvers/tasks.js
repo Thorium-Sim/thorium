@@ -2,6 +2,7 @@ import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 import taskDefinitions from "../tasks";
+import uuid from "uuid";
 
 export const TasksTypes = {
   Task: {
@@ -89,6 +90,20 @@ export const TasksMutations = {
   },
   denyTaskVerify(root, args, context) {
     App.handleEvent(args, "denyTaskVerify", context);
+  },
+  addTaskTemplate(root, args, context) {
+    const id = uuid.v4();
+    App.handleEvent({ ...args, id }, "addTaskTemplate", context);
+    return id;
+  },
+  removeTaskTemplate(root, args, context) {
+    App.handleEvent(args, "removeTaskTemplate", context);
+  },
+  renameTaskTemplate(root, args, context) {
+    App.handleEvent(args, "renameTaskTemplate", context);
+  },
+  setTaskTemplateValues(root, args, context) {
+    App.handleEvent(args, "setTaskTemplateValues", context);
   }
 };
 
@@ -110,6 +125,15 @@ export const TasksSubscriptions = {
         if (rootTasks.length > 0) return true;
         return false;
       }
+    )
+  },
+  taskTemplatesUpdate: {
+    resolve(rootValue) {
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("taskTemplatesUpdate"),
+      () => true
     )
   }
 };

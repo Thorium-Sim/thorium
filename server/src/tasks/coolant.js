@@ -5,7 +5,7 @@ import { randomFromList } from "../classes/generic/damageReports/constants";
 export default [
   {
     name: "Refill Coolant",
-    class: "ComputerCore",
+    class: "Coolant",
     active({ simulator }) {
       // Check cards
       return (

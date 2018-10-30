@@ -20,7 +20,7 @@ const usernameList = [
 export default [
   {
     name: "Create User",
-    class: "ComputerCore",
+    class: "Computer Core",
     active({ simulator }) {
       // Check cards
       return (
@@ -108,7 +108,7 @@ Password: ${password}`,
   },
   {
     name: "Remove User",
-    class: "ComputerCore",
+    class: "Computer Core",
     active({ simulator }) {
       // Check cards
       return (
@@ -213,7 +213,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
   },
   {
     name: "Restart Terminal",
-    class: "ComputerCore",
+    class: "Computer Core",
     active({ simulator }) {
       // Check cards
       return (
@@ -306,7 +306,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
   },
   {
     name: "Find Hacker",
-    class: "ComputerCore",
+    class: "Computer Core",
     active({ simulator }) {
       // Check cards
       if (!simulator) return false;
@@ -402,7 +402,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
   },
   {
     name: "Restore File",
-    class: "ComputerCore",
+    class: "Computer Core",
     active({ simulator }) {
       // Check cards
       if (!simulator) return false;
@@ -507,7 +507,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
   },
   {
     name: "Restore All Files",
-    class: "ComputerCore",
+    class: "Computer Core",
     active({ simulator }) {
       // Check cards
       if (!simulator) return false;
@@ -579,7 +579,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
   },
   {
     name: "Remove Virus",
-    class: "ComputerCore",
+    class: "Computer Core",
     active({ simulator }) {
       // Check cards
       if (!simulator) return false;

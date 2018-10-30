@@ -23,6 +23,7 @@ input TaskInput {
 
 type TaskTemplate {
   id: ID
+  name: String
   values: JSON
   definition: String
 }
