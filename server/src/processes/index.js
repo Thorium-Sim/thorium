@@ -13,3 +13,4 @@ import "./computerCore";
 import "./jumpDrive";
 import "./thorium";
 import "./crew";
+import "./tasks";

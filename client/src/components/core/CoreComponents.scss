@@ -92,6 +92,23 @@
   input:not([type="checkbox"]) {
     width: 100%;
   }
+  .form-control {
+    padding: 1px;
+    font-size: 12px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    line-height: 1.2;
+  }
+  .form-control:focus {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+  select.form-control {
+    height: 18px;
+  }
   .btn-sm {
     padding: 0rem 0.5rem;
   }
@@ -131,6 +148,10 @@
     &:active,
     &.active {
       background-color: rgba(255, 255, 255, 0.25);
+    }
+    &.disabled {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #aaa;
     }
   }
 }

@@ -1,0 +1,12 @@
+/* See also app.scss */
+
+.printable {
+  visibility: hidden;
+  color: black;
+}
+
+@media print {
+  .printable * {
+    visibility: visible;
+  }
+}

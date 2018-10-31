@@ -2,13 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-
-function randomFromList(list) {
-  if (!list) return;
-  const length = list.length;
-  const index = Math.floor(Math.random() * length);
-  return list[index];
-}
+import { randomFromList } from "../../../helpers/randomFromList";
 
 class VirusScanner extends Component {
   state = {};

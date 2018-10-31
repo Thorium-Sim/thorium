@@ -1,7 +1,7 @@
 import { System } from "./generic";
 
 class Sector {
-  constructor(params, powerLevel = 0) {
+  constructor(params = {}, powerLevel = 0) {
     this.level = params.level || Math.floor(powerLevel / 4);
     this.offset = params.offset || 0;
   }
@@ -17,7 +17,7 @@ class Sector {
 If a sector has more power than it needs
 */
 export default class JumpDrive extends System {
-  constructor(params) {
+  constructor(params = {}) {
     super(params);
     this.class = "JumpDrive";
     this.type = "JumpDrive";

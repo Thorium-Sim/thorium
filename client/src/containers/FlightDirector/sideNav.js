@@ -47,6 +47,11 @@ const makeLinks = () => {
       link: "/config/mission"
     },
     {
+      name: "Task Templates",
+      icon: "list",
+      link: "/config/taskTemplates"
+    },
+    {
       name: "Tactical Map Config",
       icon: "map-o",
       link: "/config/tacticals"

@@ -60,6 +60,16 @@ App.on("restoreComputerCoreFile", ({ id, fileId, level, all }) => {
           }, 4000);
         }, 500 * i)
       );
+      // Verify any relevant tasks
+      App.tasks
+        .filter(
+          t =>
+            t.simulatorId === sys.simulatorId &&
+            t.definition === "Restore All Files"
+        )
+        .forEach(t => {
+          App.handleEvent({ taskId: t.id }, "verifyTask");
+        });
     }
   }
   pubsub.publish(
@@ -69,7 +79,19 @@ App.on("restoreComputerCoreFile", ({ id, fileId, level, all }) => {
 });
 
 App.on("deleteComputerCoreVirus", ({ id, virusId }) => {
-  performAction(id, sys => sys.removeVirus(virusId));
+  performAction(id, sys => {
+    sys.removeVirus(virusId);
+
+    // Verify any tasks this might apply to
+    App.tasks
+      .filter(
+        t =>
+          t.simulatorId === sys.simulatorId && t.definition === "Remove Virus"
+      )
+      .forEach(t => {
+        App.handleEvent({ taskId: t.id }, "verifyTask");
+      });
+  });
 });
 
 App.on("restartComputerCoreTerminal", ({ id, terminalId }) => {
