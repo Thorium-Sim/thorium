@@ -20,7 +20,7 @@
     "clean": "rm -rf node_modules",
     "clean-build": "rm -rf build",
     "copy-files": "cp -r src/crew build/crew",
-    "test": "jest"
+    "test": "jest --setupFiles ./tests/setup.js"
   },
   "dependencies": {
     "appdirectory": "^0.1.0",
