@@ -73,6 +73,7 @@ class BridgeMap extends Component {
                 {(station || (name && description)) && (
                   <div className="flex-column">
                     <h3>{station ? station.name : name}</h3>
+                    <h4>{client && client.loginName}</h4>
                     <p className="flex-max auto-scroll">
                       {station ? station.description : description}
                     </p>
