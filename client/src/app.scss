@@ -85,8 +85,4 @@ pre {
   #root {
     display: none;    /* Speeds up printing as most of the DOM is not displayed */
   }
-
-  .printable * {
-    visibility: visible;
-  }
 }
