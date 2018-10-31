@@ -4,6 +4,7 @@ import taskDefinitions from "../tasks";
 export default class TaskTemplate {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
+    this.class = "TaskTemplate";
     this.name = params.name || "Task Template";
     this.values = params.values || {};
     this.definition = params.definition || "Generic";

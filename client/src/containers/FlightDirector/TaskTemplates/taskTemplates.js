@@ -5,10 +5,10 @@ import {
   Col,
   ListGroup,
   ListGroupItem,
-  Input,
   Card,
   CardBody,
-  Button
+  Button,
+  Badge
 } from "reactstrap";
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
@@ -72,13 +72,14 @@ class TaskTemplates extends Component {
                               this.setState({ selectedDef: v.name })
                             }
                           >
-                            {" "}
-                            {v.name} (
-                            {
-                              taskTemplates.filter(t => t.definition === v.name)
-                                .length
-                            }{" "}
-                            Templates)
+                            {v.name}{" "}
+                            <Badge>
+                              {
+                                taskTemplates.filter(
+                                  t => t.definition === v.name
+                                ).length
+                              }
+                            </Badge>
                           </ListGroupItem>
                         ))}
                       </Fragment>

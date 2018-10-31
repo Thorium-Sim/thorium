@@ -5,7 +5,14 @@ import DeckSelect from "./inputs/DeckSelect";
 import PartsPicker from "./inputs/PartsPicker";
 import DamageTeamPicker from "./inputs/DamageTeamPicker";
 
-const ValueInput = ({ label, type, value, onBlur, simulatorId }) => {
+const ValueInput = ({
+  label,
+  type,
+  placeholder,
+  value,
+  onBlur,
+  simulatorId
+}) => {
   return (
     <div>
       {(() => {
@@ -15,7 +22,8 @@ const ValueInput = ({ label, type, value, onBlur, simulatorId }) => {
               {titleCase(label)}
               <Input
                 type="text"
-                placeholder={value}
+                placeholder={value || placeholder}
+                defaultValue={value}
                 onBlur={e => onBlur(e.target.value)}
               />
             </label>
@@ -27,7 +35,8 @@ const ValueInput = ({ label, type, value, onBlur, simulatorId }) => {
               <Input
                 type="textarea"
                 rows={3}
-                placeholder={value}
+                placeholder={value || placeholder}
+                defaultValue={value}
                 onBlur={e => onBlur(e.target.value)}
               />
             </label>
@@ -86,9 +95,11 @@ const ValueInput = ({ label, type, value, onBlur, simulatorId }) => {
           return (
             <label>
               {titleCase(label)}
+              <small>{type.placeholder}</small>
               <Input
                 {...type}
-                placeholder={value}
+                defaultValue={value}
+                placeholder={value || placeholder}
                 onBlur={e => onBlur(e.target.value)}
               />
             </label>

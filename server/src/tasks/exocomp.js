@@ -29,7 +29,7 @@ export default [
     values: {
       preamble: {
         input: () => "textarea",
-        value: () => "An expocomp must be sent to operate on a system."
+        value: () => "An exocomp must be sent to operate on a system."
       },
       destination: {
         input: ({ simulator }) =>

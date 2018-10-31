@@ -4,7 +4,6 @@ import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import TaskCreator from "./TaskCreator";
 import TasksManager from "./TasksManager";
-//import Template from "./template";
 import "./style.scss";
 
 const queryData = `
@@ -17,11 +16,20 @@ definition
 verifyRequested
 `;
 
+const templateQueryData = `
+id
+name
+definition
+values`;
+
 const QUERY = gql`
   query Tasks($simulatorId: ID!) {
     tasks(simulatorId: $simulatorId) {
 ${queryData}
     }
+    taskTemplates {
+   ${templateQueryData}
+  }
   }
 `;
 const SUBSCRIPTION = gql`
@@ -32,6 +40,12 @@ ${queryData}
   }
 `;
 
+const TEMPLATE_SUB = gql`
+subscription TaskTemplatesUpdate {
+  taskTemplatesUpdate {
+    ${templateQueryData}
+  }
+}`;
 class TasksCore extends Component {
   state = {};
   render() {
@@ -39,7 +53,7 @@ class TasksCore extends Component {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { tasks } = data;
+          const { tasks, taskTemplates } = data;
           if (loading || !tasks) return null;
           return (
             <SubscriptionHelper
@@ -48,7 +62,6 @@ class TasksCore extends Component {
                   document: SUBSCRIPTION,
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
-                    console.log({ subscriptionData });
                     return Object.assign({}, previousResult, {
                       tasks: subscriptionData.data.tasksUpdate
                     });
@@ -56,9 +69,23 @@ class TasksCore extends Component {
                 })
               }
             >
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: TEMPLATE_SUB,
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      console.log({ subscriptionData });
+                      return Object.assign({}, previousResult, {
+                        taskTemplates: subscriptionData.data.taskTemplatesUpdate
+                      });
+                    }
+                  })
+                }
+              />
               {newTask ? (
                 <TaskCreator
                   {...this.props}
+                  taskTemplates={taskTemplates}
                   cancel={() => this.setState({ newTask: false })}
                 />
               ) : (
