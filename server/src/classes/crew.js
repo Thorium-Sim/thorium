@@ -39,12 +39,16 @@ class Chart {
     if (symptoms || symptoms === []) {
       this.symptoms = symptoms;
       // Add diagnoses symptoms
-      if (symptoms.length === 0) this.diagnosis = ["No Diagnosis."];
-      const results = Object.keys(diagnoses).filter(d => {
-        const dSympt = diagnoses[d];
-        return symptoms.filter(s => dSympt.indexOf(s) === -1).length === 0;
-      });
-      this.diagnosis = results.length > 0 ? results : ["No Diagnosis."];
+      if (symptoms.length === 0) {
+        this.diagnosis = ["No Diagnosis."];
+      }
+      else {
+        const results = Object.keys(diagnoses).filter(d => {
+          const dSympt = diagnoses[d];
+          return symptoms.filter(s => dSympt.indexOf(s) === -1).length === 0;
+        });
+        this.diagnosis = results.length > 0 ? results : ["No Diagnosis."];
+      }
     }
     if (diagnosis || diagnosis === "") this.diagnosis = diagnosis;
     if (treatment || treatment === "") {
@@ -77,8 +81,7 @@ export default class Crew {
     this.workRoom = params.workRoom || null;
     this.restRoom = params.restRoom || null;
     // Used for Medical
-    this.charts = [];
-    (params.charts || []).forEach(c => this.charts.push(new Chart(c)));
+    this.charts = (params.charts || []).map(c => new Chart(c));
   }
   get fullName() {
     return `${this.firstName} ${this.lastName}`;

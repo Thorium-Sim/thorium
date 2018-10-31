@@ -2,8 +2,10 @@ import React, { Component, Fragment } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { Asset } from "helpers/assets";
 import { withApollo, Mutation } from "react-apollo";
-
+import Tour from "helpers/tourHelper";
+import { FormattedMessage } from "react-intl";
 import gql from "graphql-tag";
+
 const ShipImage = ({
   simulatorId,
   view,
@@ -132,6 +134,62 @@ class ThxRender extends Component {
     this.frame = null;
     this.update();
   }
+  trainingSteps({ name }, executive) {
+    const normalTraining = [
+      {
+        selector: ".charge-button",
+        content: (
+          <FormattedMessage
+            id="thx-training-2"
+            defaultMessage="Click and hold this button to charge your sector of the {name}."
+            values={{ name }}
+          />
+        )
+      },
+      {
+        selector: ".thx-bar-container",
+        content: (
+          <FormattedMessage
+            id="thx-training-3"
+            defaultMessage="You can see how much your sector is charged with this bar."
+          />
+        )
+      },
+      {
+        selector: ".lock-sector",
+        content: (
+          <FormattedMessage
+            id="thx-training-4"
+            defaultMessage="Once you are finished charging your sector, click the 'Lock Sector' button."
+          />
+        )
+      }
+    ];
+    const execTraining = [
+      {
+        selector: ".thx-activate-button",
+        content: (
+          <FormattedMessage
+            id="thx-training-5"
+            defaultMessage="Once you see that all of the sectors have been charged, press this button to activate the {name}."
+            values={{ name }}
+          />
+        )
+      }
+    ];
+    return [
+      {
+        selector: ".nothing",
+        content: (
+          <FormattedMessage
+            id="thx-training-1"
+            defaultMessage="The {name} is a very powerful device which must be charged in every sector of the ship to be used. Once all sectors have been charged, it can be activated."
+            values={{ name }}
+          />
+        )
+      }
+    ].concat(executive ? execTraining : normalTraining);
+  }
   render() {
     const {
       id,
@@ -184,6 +242,7 @@ class ThxRender extends Component {
                 size="lg"
                 disabled={charge === 1}
                 onMouseDown={this.mouseDown}
+                className="charge-button"
               >
                 Charge
               </Button>
@@ -215,6 +274,7 @@ class ThxRender extends Component {
                         block
                         size="lg"
                         color="danger"
+                        className="thx-activate-button"
                         disabled={clientList.filter(c => c.lock).length === 0}
                         onClick={activated ? deactivate : activate}
                       >
@@ -238,6 +298,7 @@ class ThxRender extends Component {
                     block
                     size="lg"
                     color="danger"
+                    className="lock-sector"
                     disabled={charge !== 1}
                     onClick={action}
                   >
@@ -248,6 +309,10 @@ class ThxRender extends Component {
             )}
           </Col>
         </Row>
+        <Tour
+          steps={this.trainingSteps({ name }, executive)}
+          client={this.props.clientObj}
+        />
       </Container>
     );
   }

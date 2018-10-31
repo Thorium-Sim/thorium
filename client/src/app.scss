@@ -75,3 +75,14 @@ pre {
     max-width: 50%;
   }
 }
+
+/* See also printable.scss */
+@media print {
+  * {
+    visibility: hidden;
+  }
+
+  #root {
+    display: none;    /* Speeds up printing as most of the DOM is not displayed */
+  }
+}

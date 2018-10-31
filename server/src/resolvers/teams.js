@@ -1,6 +1,10 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
+import {
+  partsList,
+  damagePositions
+} from "../classes/generic/damageReports/constants.js";
 
 export const TeamsQueries = {
   teams(root, { simulatorId, type }) {
@@ -13,6 +17,12 @@ export const TeamsQueries = {
       returnVal = returnVal.filter(t => t.simulatorId === simulatorId);
     }
     return returnVal;
+  },
+  exocompParts() {
+    return partsList;
+  },
+  damagePositions() {
+    return damagePositions;
   }
 };
 

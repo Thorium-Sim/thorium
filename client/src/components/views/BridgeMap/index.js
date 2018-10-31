@@ -7,6 +7,7 @@ import "./style.scss";
 
 const queryData = `
 id
+loginName
 station {
   name
   description

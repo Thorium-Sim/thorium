@@ -52,6 +52,9 @@ const creditList = [
         <li>
           <code>J-F1</code>
         </li>
+        <li>
+          <code>ericman314</code>
+        </li>
       </ul>
     )
   },

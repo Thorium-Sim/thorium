@@ -47,3 +47,5 @@ export { default as Sickbay } from "./sickbay";
 export { default as Thx } from "./thx";
 export { default as Railgun } from "./railgun";
 export { default as JumpDrive } from "./jumpDrive";
+export { default as Task } from "./task";
+export { default as TaskTemplate } from "./taskTemplate";

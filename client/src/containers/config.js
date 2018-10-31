@@ -15,7 +15,8 @@ import {
   SurveyForms,
   Keyboards,
   ClientsLobby,
-  Settings
+  Settings,
+  TaskTemplates
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -156,6 +157,10 @@ class Config extends Component {
           <Route
             path="/config/settings"
             render={props => <Settings {...props} history={history} />}
+          />
+          <Route
+            path="/config/taskTemplates"
+            render={props => <TaskTemplates {...props} history={history} />}
           />
           <Route path="/config/debug" component={DebugList} />
         </div>
