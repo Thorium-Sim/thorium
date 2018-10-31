@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { Container, Row, Col, Card, Input, Button } from "reactstrap";
 import uuid from "uuid";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import Printable from "helpers/printable";
 
 import "./style.scss";
 
@@ -55,6 +56,9 @@ class OfficerLog extends Component {
       });
     });
   };
+  printLog = () => {
+    window.print();
+  };
   render() {
     const { loading, officerLogs } = this.props.data;
     if (loading || !officerLogs) return null;
@@ -105,6 +109,9 @@ class OfficerLog extends Component {
             <Button block color="primary" onClick={this.startLog}>
               Start Log
             </Button>
+            <Button block color="info" onClick={this.printLog}>
+              Print
+            </Button>
           </Col>
           {logText !== null && (
             <Col sm={8} style={{ display: "flex", flexDirection: "column" }}>
@@ -144,6 +151,22 @@ class OfficerLog extends Component {
             </Col>
           )}
         </Row>
+        <Printable>
+          <div>
+            <h1>Officer Log</h1>
+            {officerLogs.map(l => (
+              <div
+                key={l.id}
+                className={`log-entry`}
+              >
+                <p className="stardate"><b>Stardate {stardate(l.timestamp)}</b></p>
+                <p>
+                  {l.log}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Printable>
       </Container>
     );
   }
