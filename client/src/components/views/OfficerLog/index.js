@@ -153,7 +153,7 @@ class OfficerLog extends Component {
         </Row>
         <Printable>
           <div>
-            <h1>Officer Log</h1>
+            <h1>Officer Log &mdash; {this.props.clientObj.loginName}</h1>
             {officerLogs.map(l => (
               <div
                 key={l.id}
