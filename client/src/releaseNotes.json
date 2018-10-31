@@ -6,7 +6,10 @@
       "Added the task management widget and card. This can be assigned to stations so crew members can see and complete tasks assigned to them. They can also request to verify tasks that can't be automatically verified.",
       "Added the task template creation system. This can be found in the sidebar menu. Task templates allow flight directors to create preset tasks that can quickly and easily be used during a mission.",
       "Tasks open up a lot of interesting possibilities, including tracking the time it takes crew members to complete tasks and creating badges and awards for completing certain tasks. Get in touch if you have interesting ideas for how tasks can be used.",
-      "More features are planned surrounding tasks in the future. This includes a damage report overhaul, security incident reporting, automatic damage pings, and a command/XO screen allowing them to prioritize tasks."
+      "More features are planned surrounding tasks in the future. This includes a damage report overhaul, security incident reporting, automatic damage pings, and a command/XO screen allowing them to prioritize tasks.",
+      "We now return to your normally scheduled feature lists.",
+      "Add the crew login name to the bridge map screen.",
+      "Add lines to the sensors core movement circle to indicate the straight directions."
     ],
     "fixes": [
       "Fixes an issue where you can't see where you are calling from on the internal comm core."
