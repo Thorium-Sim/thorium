@@ -51,6 +51,8 @@ class Events extends EventEmitter {
     this.objectives = [];
     this.keyboards = [];
     this.sounds = [];
+    this.taskTemplates = [];
+    this.tasks = [];
     this.autoUpdate = true;
     this.migrations = { assets: true };
     this.events = [];

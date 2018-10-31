@@ -198,6 +198,13 @@ export function randomCode() {
   )}-${randomFromList(codeWords2)}`;
 }
 
+export const longRangeDestinations = [
+  "Starbase 4",
+  "Starbase 74",
+  "Rigel 4",
+  "Starbase 101"
+];
+
 export function randomFromList(list) {
   if (!list) return;
   const length = list.length;

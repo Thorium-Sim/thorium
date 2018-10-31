@@ -45,3 +45,4 @@ export { default as Thx } from "./thx.js";
 export { default as Thorium } from "./thorium.js";
 export { default as Railgun } from "./railgun.js";
 export { default as JumpDrive } from "./jumpDrive.js";
+export { default as Tasks } from "./tasks";

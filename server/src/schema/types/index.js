@@ -68,3 +68,4 @@ export { default as Thorium } from "./thorium.js";
 export { default as Externals } from "./externals";
 export { default as Railgun } from "./railgun.js";
 export { default as JumpDrive } from "./jumpDrive.js";
+export { default as Task } from "./tasks";

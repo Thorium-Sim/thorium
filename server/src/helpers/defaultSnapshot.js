@@ -13615,6 +13615,8 @@ export default {
   objectives: [],
   keyboards: [],
   sounds: [],
+  tasks: [],
+  taskTemplates: [],
   autoUpdate: true,
   migrations: {
     assets: true

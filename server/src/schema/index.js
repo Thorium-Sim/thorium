@@ -4,6 +4,10 @@ import * as subscriptions from "./subscriptions";
 import * as types from "./types";
 
 export default `
+
+#Scalars
+scalar JSON
+
 #Types definition
 ${Object.keys(types)
   .map(type => {

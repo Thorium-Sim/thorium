@@ -46,7 +46,7 @@ import { ThxSubscriptions } from "./thx.js";
 import { ThoriumSubscriptions } from "./thorium.js";
 import { RailgunSubscriptions } from "./railgun.js";
 import { JumpDriveSubscriptions } from "./jumpDrive.js";
-
+import { TasksSubscriptions } from "./tasks";
 const subscriptionMap = Object.assign(
   {},
   FlightStructureSubscriptions,
@@ -96,7 +96,8 @@ const subscriptionMap = Object.assign(
   ThxSubscriptions,
   ThoriumSubscriptions,
   RailgunSubscriptions,
-  JumpDriveSubscriptions
+  JumpDriveSubscriptions,
+  TasksSubscriptions
 );
 
 export default subscriptionMap;

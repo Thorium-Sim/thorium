@@ -109,7 +109,7 @@ class TransporterCore extends Component {
                   type="select"
                   style={{ height: "20px" }}
                   bsSize="sm"
-                  value={console.log(transporter) || transporter.chargeSpeed}
+                  value={transporter.chargeSpeed}
                   onChange={e =>
                     action({
                       variables: {
