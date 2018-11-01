@@ -74,6 +74,9 @@ class Ship {
     this.extraSystems = [];
     const codes = params.remoteAccessCodes || [];
     codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
+
+    // Inventory Logs
+    this.inventoryLogs = params.inventoryLogs || [];
   }
 }
 

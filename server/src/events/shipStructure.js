@@ -1,7 +1,7 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
-
+import uuid from "uuid";
 // Decks
 App.on("addDeck", ({ simulatorId, number, svgPath, doors, evac }) => {
   const deck = new Classes.Deck({ simulatorId, number, svgPath, doors, evac });
@@ -226,4 +226,57 @@ App.on("removeCrewInventory", ({ crewId, inventory, roomId }) => {
   });
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
+});
+
+App.on("transferCargo", ({ inventory, fromRoom, toRoom }) => {
+  let simId = null;
+  inventory.forEach(({ id, count }) => {
+    const inv = App.inventory.find(i => i.id === id);
+    simId = inv.simulatorId;
+    inv.move(fromRoom, toRoom, count, null);
+  });
+
+  // Add some logs for the cargo transfer
+  const fromRoomObj = App.rooms.find(r => r.id === fromRoom);
+  const toRoomObj = App.rooms.find(r => r.id === toRoom);
+  const fromDeckObj = App.decks.find(d => d.id === fromRoomObj.deckId);
+  const toDeckObj = App.decks.find(d => d.id === toRoomObj.deckId);
+  const location = `From ${fromRoomObj.name}, Deck ${fromDeckObj.number} to ${
+    toRoomObj.name
+  }, Deck ${toDeckObj.number}`;
+  const log = `Transfer ${location}
+${inventory
+    .map(
+      ({ id, count }) =>
+        `${App.inventory.find(i => i.id === id).name}: ${count}`
+    )
+    .join("\n")}`;
+  const simulator = App.simulators.find(s => s.id === simId);
+  simulator.ship.inventoryLogs.push({
+    timestamp: new Date(),
+    log
+  });
+
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: simulator.id,
+    type: "Cargo",
+    station: "Core",
+    title: `Inventory Transferred`,
+    body: location,
+    color: "info"
+  });
+  App.handleEvent(
+    {
+      simulatorId: simulator.id,
+      title: `Inventory Transferred`,
+      body: location,
+      component: "CargoCore",
+      color: "info"
+    },
+    "addCoreFeed"
+  );
+  pubsub.publish("simulatorsUpdate", App.simulators);
+
+  pubsub.publish("inventoryUpdate", App.inventory);
 });

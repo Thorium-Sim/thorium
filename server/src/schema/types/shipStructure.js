@@ -76,6 +76,11 @@ input InventoryCount {
   count: Int
 }
 
+input InventoryCountInput {
+  id: ID
+  count: Int
+}
+
 input InventoryMetadataInput {
   type: String
   size: Int

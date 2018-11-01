@@ -10,6 +10,12 @@ type Ship {
   selfDestructTime: Float
   selfDestructCode: String
   selfDestructAuto: Boolean
+  inventoryLogs:[InventoryLog]
+}
+
+type InventoryLog {
+  timestamp: String
+  log:String
 }
 
 type RemoteAccessCode {
