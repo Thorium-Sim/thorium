@@ -58,6 +58,7 @@ export default class SensorContact {
     this.hitpoints = params.hitpoints || 5;
     this.hostile = params.hostile || false;
     this.autoFire = params.autoFire || false;
+    this.miss = params.miss || false;
   }
   move(coordinates, speed, stop) {
     this.speed = stop ? 0 : speed;

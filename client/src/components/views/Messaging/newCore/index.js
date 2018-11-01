@@ -3,7 +3,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Conversations from "./conversations";
-
+import playSound from "../../../generic/SoundPlayer";
 const queryData = `
 id
 sender
@@ -67,6 +67,15 @@ const MessagingData = props => (
                         subscriptionData.data.sendMessage
                       )
                 });
+                // Play a sound!
+                const stationNames = props.simulator.stations.map(s => s.name);
+                if (
+                  stationNames.indexOf(
+                    subscriptionData.data.sendMessage.sender
+                  ) > -1
+                ) {
+                  props.playSound({ url: require("./Mouse.ogg") });
+                }
                 return data;
               }
             })
@@ -97,4 +106,4 @@ const MessagingData = props => (
     }}
   </Query>
 );
-export default MessagingData;
+export default playSound(MessagingData);

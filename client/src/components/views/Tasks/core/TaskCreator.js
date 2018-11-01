@@ -26,6 +26,16 @@ class TasksCore extends Component {
     station: "nothing",
     requiredValues: {}
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.selectedDefinition !== this.state.selectedDefinition) {
+      const { taskDefinitions } = this.props;
+      const { selectedDefinition } = this.state;
+      const definition = taskDefinitions.find(t => t.id === selectedDefinition);
+      if (definition.stations.length === 1) {
+        this.setState({ station: definition.stations[0].name });
+      }
+    }
+  }
   render() {
     const { taskDefinitions, taskTemplates, simulator, cancel } = this.props;
     const {

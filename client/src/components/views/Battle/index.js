@@ -10,6 +10,7 @@ name
 icon
 hostile
 autoFire
+
 `;
 
 const QUERY = gql`
@@ -21,6 +22,7 @@ ${queryData}
     id
     defaultSpeed
     defaultHitpoints
+    missPercent
   }
   }
 `;
@@ -38,6 +40,7 @@ const SENSORS_SUB = gql`
       id
       defaultSpeed
       defaultHitpoints
+      missPercent
     }
   }
 `;

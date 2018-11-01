@@ -26,8 +26,16 @@ App.on(
 
     if (crew === false) {
       // Find the station(s) which has long range message sending
+
+      // If the simulator has a comm review card, send it there first
+      const cardName = simulator.stations.find(s =>
+        s.cards.find(c => c.component === "CommReview")
+      )
+        ? "CommReview"
+        : "LongRangeComm";
+
       const stations = simulator.stations.filter(s =>
-        s.cards.find(c => c.component === "LongRangeComm")
+        s.cards.find(c => c.component === cardName)
       );
       stations.forEach(s => {
         if (s.name !== sender) {
@@ -102,11 +110,32 @@ App.on("deleteLongRangeMessage", ({ id, message }) => {
   );
 });
 App.on("approveLongRangeMessage", ({ id, message }) => {
-  App.systems.find(s => s.id === id).approveMessage(message);
+  const sys = App.systems.find(s => s.id === id);
+  sys && sys.approveMessage(message);
   pubsub.publish(
     "longRangeCommunicationsUpdate",
     App.systems.filter(s => s.type === "LongRangeComm")
   );
+  const simulator = App.simulators.find(s => s.id === sys.simulatorId);
+  const messageObj = sys.messages.find(m => m.id === message);
+  // Send the notification
+
+  const stations = simulator.stations.filter(
+    s =>
+      s.cards.find(c => c.component === "LongRangeComm") &&
+      !s.cards.find(c => c.component === "CommReview")
+  );
+  stations.forEach(s => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: simulator.id,
+      type: "Long Range Comm",
+      station: s.name,
+      title: `New Long Range Message Queued`,
+      body: `Message composed by ${messageObj.sender}`,
+      color: "info"
+    });
+  });
 });
 App.on("encryptLongRangeMessage", ({ id, message }) => {
   App.systems.find(s => s.id === id).encryptMessage(message);

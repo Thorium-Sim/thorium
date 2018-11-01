@@ -154,6 +154,9 @@ export const SensorsMutations = {
   },
   setSensorsDefaultSpeed(root, args, context) {
     App.handleEvent(args, "setSensorsDefaultSpeed", context);
+  },
+  setSensorsMissPercent(root, args, context) {
+    App.handleEvent(args, "setSensorsMissPercent", context);
   }
 };
 

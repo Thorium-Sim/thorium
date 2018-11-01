@@ -446,9 +446,14 @@ App.on("updateSensorContacts", ({ id, contacts }) => {
   pubsub.publish("sensorContactUpdate", system);
 });
 
+const findNewPoint = (angle, r) => ({
+  x: Math.cos(angle) * r,
+  y: Math.sin(angle) * r
+});
+
 App.on(
   "sensorsFireProjectile",
-  ({ simulatorId, contactId, speed, hitpoints }) => {
+  ({ simulatorId, contactId, speed, hitpoints, miss }) => {
     const system = App.systems.find(
       sys =>
         sys.simulatorId === simulatorId &&
@@ -465,9 +470,19 @@ App.on(
       hitpoints,
       autoFire: false,
       hostile: false,
-      type: "projectile"
+      type: "projectile",
+      miss
     });
-    projectile.move({ x: -0.02, y: -0.02, z: 0 }, speed);
+    // Move it to the exact oposite side of the grid
+    // at a radius of 1.2
+    const currentAngle = Math.atan2(
+      projectile.position.y,
+      projectile.position.x
+    );
+    projectile.move(
+      { ...findNewPoint(currentAngle + Math.PI, 1.5), z: 0 },
+      speed
+    );
     system.contacts.push(projectile);
     pubsub.publish("sensorContactUpdate", system);
   }
@@ -497,6 +512,21 @@ App.on("setSensorsDefaultSpeed", ({ id, simulatorId, speed }) => {
         sys.class === "Sensors")
   );
   system.setDefaultSpeed(speed);
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors")
+  );
+});
+
+App.on("setSensorsMissPercent", ({ id, simulatorId, miss }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId &&
+        sys.domain === "external" &&
+        sys.class === "Sensors")
+  );
+  system.setMissPercent(miss);
   pubsub.publish(
     "sensorsUpdate",
     App.systems.filter(s => s.type === "Sensors")

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import { TypingField, InputField } from "../../generic/core";
-import { Button } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -17,6 +17,20 @@ const INVENTORY_SUB = gql`
           id
         }
         count
+      }
+    }
+  }
+`;
+
+const LOG_SUB = gql`
+  subscription SimulatorSub($simulatorId: ID) {
+    simulatorsUpdate(simulatorId: $simulatorId) {
+      id
+      ship {
+        inventoryLogs {
+          timestamp
+          log
+        }
       }
     }
   }
@@ -146,11 +160,12 @@ class CargoControlCore extends Component {
   };
   render() {
     if (this.props.data.loading) return null;
-    const { decks, inventory } = this.props.data;
-    if (!decks || !inventory) return null;
+    const { decks, inventory, simulators } = this.props.data;
+    if (!decks || !inventory || !simulators) return null;
     let { deck, room } = this.state;
+    const simulator = simulators[0];
     return (
-      <div className="cargo-core">
+      <Container className="cargo-core">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -166,105 +181,157 @@ class CargoControlCore extends Component {
             })
           }
         />
-        <TypingField
-          placeholder="Search for Inventory"
-          input
-          onChange={this.findInv}
-        />
-        {this.state.findInventory && (
-          <div className="find-overlay">
-            {this.state.findInventory.map(i => (
-              <div key={`find-${i.id}`}>
-                <strong>{i.name}</strong>
-                <ul>
-                  {i.locations.map((l, index) => (
-                    <li
-                      key={`loc-${index}`}
-                      onClick={() =>
-                        this.setState({
-                          deck: l.deck,
-                          room: l.room,
-                          findInventory: null
-                        })
-                      }
-                    >
-                      {l.label}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
-        <select
-          style={{ height: "24px" }}
-          value={this.state.deck || "select"}
-          onChange={e => this.setSelected("deck", e)}
-        >
-          <option disabled value="select">
-            Select Deck
-          </option>
-          {decks.map(d => (
-            <option key={d.id} value={d.id}>
-              Deck {d.number}
-            </option>
-          ))}
-        </select>
-        <select
-          style={{ height: "24px" }}
-          value={this.state.room || "select"}
-          disabled={!deck}
-          onChange={e => this.setSelected("room", e)}
-        >
-          <option disabled value="select">
-            Select Room
-          </option>
-          {deck &&
-            decks.find(d => d.id === deck).rooms.map(r => (
-              <option key={r.id} value={r.id}>
-                {r.name}
-              </option>
-            ))}
-        </select>
-        <Button
-          size="sm"
-          color="primary"
-          disabled={!room}
-          onClick={this.addInventory}
-        >
-          Add Inventory
-        </Button>
-        {room &&
-          inventory
-            .map(i => {
-              const roomCount = i.roomCount.find(r => r.room.id === room);
-              if (!roomCount) return null;
-              if (roomCount.count === 0) return null;
-              return { id: i.id, name: i.name, count: roomCount.count, room };
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: LOG_SUB,
+              variables: {
+                simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
             })
-            .filter(i => i)
-            .map(i => (
-              <div key={`to-${i.id}`}>
-                {i.name}{" "}
-                <InputField
-                  style={{
-                    display: "inline-block",
-                    minWidth: "20px"
-                  }}
-                  prompt={`What is the new quantity of ${i.name}?`}
-                  onClick={val => this.updateInventoryQuantity(i, val)}
-                >
-                  {i.count}
-                </InputField>
+          }
+        />
+        <Row style={{ height: "100%" }}>
+          <Col sm={8}>
+            <TypingField
+              placeholder="Search for Inventory"
+              input
+              onChange={this.findInv}
+            />
+            {this.state.findInventory && (
+              <div className="find-overlay">
+                {this.state.findInventory.map(i => (
+                  <div key={`find-${i.id}`}>
+                    <strong>{i.name}</strong>
+                    <ul>
+                      {i.locations.map((l, index) => (
+                        <li
+                          key={`loc-${index}`}
+                          onClick={() =>
+                            this.setState({
+                              deck: l.deck,
+                              room: l.room,
+                              findInventory: null
+                            })
+                          }
+                        >
+                          {l.label}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
-            ))}
-      </div>
+            )}
+            <select
+              style={{ height: "24px" }}
+              value={this.state.deck || "select"}
+              onChange={e => this.setSelected("deck", e)}
+            >
+              <option disabled value="select">
+                Select Deck
+              </option>
+              {decks.map(d => (
+                <option key={d.id} value={d.id}>
+                  Deck {d.number}
+                </option>
+              ))}
+            </select>
+            <select
+              style={{ height: "24px" }}
+              value={this.state.room || "select"}
+              disabled={!deck}
+              onChange={e => this.setSelected("room", e)}
+            >
+              <option disabled value="select">
+                Select Room
+              </option>
+              {deck &&
+                decks.find(d => d.id === deck).rooms.map(r => (
+                  <option key={r.id} value={r.id}>
+                    {r.name}
+                  </option>
+                ))}
+            </select>
+            <Button
+              size="sm"
+              color="primary"
+              disabled={!room}
+              onClick={this.addInventory}
+            >
+              Add Inventory
+            </Button>
+            {room &&
+              inventory
+                .map(i => {
+                  const roomCount = i.roomCount.find(r => r.room.id === room);
+                  if (!roomCount) return null;
+                  if (roomCount.count === 0) return null;
+                  return {
+                    id: i.id,
+                    name: i.name,
+                    count: roomCount.count,
+                    room
+                  };
+                })
+                .filter(i => i)
+                .map(i => (
+                  <div key={`to-${i.id}`}>
+                    {i.name}{" "}
+                    <InputField
+                      style={{
+                        display: "inline-block",
+                        minWidth: "20px"
+                      }}
+                      prompt={`What is the new quantity of ${i.name}?`}
+                      onClick={val => this.updateInventoryQuantity(i, val)}
+                    >
+                      {i.count}
+                    </InputField>
+                  </div>
+                ))}
+          </Col>
+          <Col sm={4} style={{ height: "100%", overflowY: "auto" }}>
+            <div>
+              <strong>Logs</strong>
+              <div style={{ whiteSpace: "pre-wrap" }}>
+                {simulator.ship.inventoryLogs
+                  .concat()
+                  .sort((a, b) => {
+                    if (a.timestamp > b.timestamp) return -1;
+                    if (a.timestamp < b.timestamp) return 1;
+                    return 0;
+                  })
+                  .map(
+                    ({ timestamp, log }) =>
+                      `${new Date(timestamp).toLocaleTimeString()}: ${log}`
+                  )
+                  .join("\n\n")}
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }
 
 const INVENTORY_QUERY = gql`
-  query InventoryQ($simulatorId: ID!) {
+  query InventoryQ($simulatorId: ID!, $simId: String) {
+    simulators(id: $simId) {
+      id
+      ship {
+        inventoryLogs {
+          timestamp
+          log
+        }
+      }
+    }
     decks(simulatorId: $simulatorId) {
       id
       number
@@ -291,7 +358,8 @@ export default graphql(INVENTORY_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {
-      simulatorId: ownProps.simulator.id
+      simulatorId: ownProps.simulator.id,
+      simId: ownProps.simulator.id
     }
   })
 })(withApollo(CargoControlCore));

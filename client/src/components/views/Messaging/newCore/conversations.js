@@ -13,31 +13,54 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import GroupManager from "./groupManager";
 
+function reduceMessages(messages, stationNames, correctSenders) {
+  return messages.reduce((prev, next) => {
+    if (stationNames.indexOf(next.sender) === -1) {
+      prev[`${next.sender}-${next.destination}`] = {
+        sender: next.sender,
+        destination: next.destination,
+        id: next.id,
+        date: new Date(next.timestamp)
+      };
+    } else if (stationNames.indexOf(next.destination) === -1) {
+      prev[`${next.destination}-${next.sender}`] = {
+        sender: correctSenders ? next.sender : next.destination,
+        destination: correctSenders ? next.destination : next.sender,
+        id: next.id,
+        date: new Date(next.timestamp)
+      };
+    }
+    return prev;
+  }, {});
+}
 class Conversations extends Component {
-  state = {};
-  render() {
+  state = { alert: {} };
+  componentDidUpdate(prevProps, prevState) {
     const { messages, simulator } = this.props;
-    const { selectedConvo, messageInput, newMessage } = this.state;
     const stationNames = simulator.stations.map(s => s.name);
     const messageList = Object.values(
-      messages.reduce((prev, next) => {
-        if (stationNames.indexOf(next.sender) === -1) {
-          prev[`${next.sender}-${next.destination}`] = {
-            sender: next.sender,
-            destination: next.destination,
-            id: next.id,
-            date: new Date(next.timestamp)
-          };
-        } else if (stationNames.indexOf(next.destination) === -1) {
-          prev[`${next.destination}-${next.sender}`] = {
-            sender: next.destination,
-            destination: next.sender,
-            id: next.id,
-            date: new Date(next.timestamp)
-          };
-        }
-        return prev;
-      }, {})
+      reduceMessages(messages, stationNames, true)
+    );
+    const oldMessageList = Object.values(
+      reduceMessages(prevProps.messages, stationNames, true)
+    );
+    const list = messageList.filter(
+      m =>
+        stationNames.indexOf(m.sender) > -1 &&
+        !oldMessageList.find(o => o.id === m.id)
+    );
+    if (list.length === 0) return;
+    const alertMessages = list
+      .map(m => m.id)
+      .reduce((prev, next) => ({ ...prev, [next]: true }), {});
+    this.setState(state => ({ alert: { ...state.alert, ...alertMessages } }));
+  }
+  render() {
+    const { messages, simulator } = this.props;
+    const { selectedConvo, messageInput, newMessage, alert } = this.state;
+    const stationNames = simulator.stations.map(s => s.name);
+    const messageList = Object.values(
+      reduceMessages(messages, stationNames)
     ).sort((a, b) => {
       if (a.date > b.date) return -1;
       if (b.date > a.date) return 1;
@@ -45,7 +68,10 @@ class Conversations extends Component {
     });
     return (
       <Fragment>
-        <Container style={{ flex: 1, maxHeight: "100%" }}>
+        <Container
+          style={{ flex: 1, maxHeight: "100%" }}
+          className="new-messaging-core"
+        >
           <Row style={{ height: "100%" }}>
             <Col sm={4} style={{ display: "flex", flexDirection: "column" }}>
               <ListGroup style={{ flex: 1, overflowY: "scroll" }}>
@@ -57,7 +83,13 @@ class Conversations extends Component {
                       m.sender === selectedConvo.sender &&
                       m.destination === selectedConvo.destination
                     }
-                    onClick={() => this.setState({ selectedConvo: m })}
+                    className={`${alert[m.id] ? "alerted" : ""}`}
+                    onClick={() =>
+                      this.setState(state => ({
+                        selectedConvo: m,
+                        alert: { ...alert, [m.id]: false }
+                      }))
+                    }
                   >
                     <p>
                       <strong>{m.sender}</strong>
@@ -130,7 +162,13 @@ class Conversations extends Component {
                     <Input
                       size="sm"
                       type="text"
-                      value={messageInput}
+                      value={messageInput || ""}
+                      onFocus={() =>
+                        selectedConvo &&
+                        this.setState(state => ({
+                          alert: { ...state.alert, [selectedConvo.id]: false }
+                        }))
+                      }
                       onChange={evt =>
                         this.setState({ messageInput: evt.target.value })
                       }

@@ -51,6 +51,7 @@ export default class Sensors extends System {
     this.scans = [];
     this.defaultSpeed = params.defaultSpeed || 0.4;
     this.defaultHitpoints = params.defaultHitpoints || 5;
+    this.missPercent = params.missPercent || 0.25;
 
     if (params.scans) {
       params.scans.forEach(scan => {
@@ -269,5 +270,8 @@ export default class Sensors extends System {
   }
   setDefaultHitpoints(hp) {
     this.defaultHitpoints = hp;
+  }
+  setMissPercent(miss) {
+    this.missPercent = miss;
   }
 }

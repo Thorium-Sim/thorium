@@ -76,25 +76,32 @@ const moveSensorContactTimed = () => {
           c.destination = destination;
           c.location = destination;
           c.position = destination;
-
-          // Projectile destruction
-          if (c.type === "projectile" && !c.destroyed) {
-            sensors.destroyContact({ id: c.id });
-            pubsub.publish("notify", {
-              id: uuid.v4(),
-              simulatorId: sensors.simulatorId,
-              type: "Railgun",
-              station: "Core",
-              title: `Projectile Hit`,
-              body: "",
-              color: "danger"
-            });
-            sendUpdate = true;
-          }
         } else {
           c.destination = destination;
           c.position = newLoc;
           c.location = location;
+        }
+        if (distance3d(c.position, { x: 0, y: 0, z: 0 }) > 1.4) {
+          sensors.removeContact(c);
+        }
+        if (
+          c.type === "projectile" &&
+          !c.miss &&
+          !c.destroyed &&
+          distance3d(c.position, { x: 0, y: 0, z: 0 }) < 0.005
+        ) {
+          // Projectile destruction
+          sensors.destroyContact({ id: c.id });
+          pubsub.publish("notify", {
+            id: uuid.v4(),
+            simulatorId: sensors.simulatorId,
+            type: "Railgun",
+            station: "Core",
+            title: `Projectile Hit`,
+            body: "",
+            color: "danger"
+          });
+          sendUpdate = true;
         }
 
         return c;
@@ -114,7 +121,8 @@ const moveSensorContactTimed = () => {
               simulatorId: sensors.simulatorId,
               contactId: c.id,
               speed: sensors.defaultSpeed,
-              hitpoints: sensors.defaultHitpoints
+              hitpoints: sensors.defaultHitpoints,
+              miss: Math.random() < sensors.missPercent
             },
             "sensorsFireProjectile"
           );

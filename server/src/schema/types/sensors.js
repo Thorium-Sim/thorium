@@ -32,6 +32,7 @@ type Sensors implements SystemInterface{
 
   defaultHitpoints: Int
   defaultSpeed: Float
+  missPercent: Float
 }
 type SensorScan {
   id: ID
