@@ -1,6 +1,9 @@
 {
   "1.0.23": {
-    "features": ["Improve tasks so they have notifications."]
+    "features": [
+      "Improve tasks so they have notifications.",
+      "Add notifications for comm review."
+    ]
   },
   "1.0.22": {
     "features": [
