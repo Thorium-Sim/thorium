@@ -3,7 +3,8 @@
     "features": [
       "Improve tasks so they have notifications.",
       "Add notifications for comm review.",
-      "Add a log to the cargo core for tracking where and when cargo transfers happen. Also add notifications."
+      "Add a log to the cargo core for tracking where and when cargo transfers happen. Also add notifications.",
+      "Improve the notifications around the new messaging core, including a sound effect and visual changes."
     ]
   },
   "1.0.22": {
