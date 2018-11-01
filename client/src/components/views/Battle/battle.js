@@ -35,6 +35,15 @@ class BattleCore extends Component {
       }
     });
   };
+  updateMissPercent = action => e => {
+    const { sensors } = this.props;
+    action({
+      variables: {
+        id: sensors.id,
+        miss: parseFloat(e.target.value)
+      }
+    });
+  };
   render() {
     const { contacts, simulator, sensors } = this.props;
     if (!sensors) return <p>No Sensors</p>;
@@ -87,6 +96,32 @@ class BattleCore extends Component {
             )}
           </Mutation>
         </div>
+        <div className="flex-row">
+          <span>Miss</span>
+          <span>Percent</span>
+          <span>
+            ({Math.round(sensors.missPercent * 100)}
+            %)
+          </span>
+          <Mutation
+            mutation={gql`
+              mutation UpdateMissPercent($id: ID!, $miss: Float!) {
+                setSensorsMissPercent(id: $id, miss: $miss)
+              }
+            `}
+          >
+            {action => (
+              <Input
+                type="range"
+                min="0"
+                max="1"
+                step={0.01}
+                defaultValue={sensors.missPercent}
+                onChange={this.updateMissPercent(action)}
+              />
+            )}
+          </Mutation>
+        </div>
         <div className="flex-max">
           {contacts.map(c => (
             <div key={c.id} className="flex-row">
@@ -109,33 +144,55 @@ class BattleCore extends Component {
                     $contactId: ID!
                     $speed: Float!
                     $hitpoints: Int!
+                    $miss: Boolean
                   ) {
                     sensorsFireProjectile(
                       simulatorId: $simulatorId
                       contactId: $contactId
                       speed: $speed
                       hitpoints: $hitpoints
+                      miss: $miss
                     )
                   }
                 `}
               >
                 {action => (
-                  <Button
-                    size="sm"
-                    color="warning"
-                    onClick={() => {
-                      action({
-                        variables: {
-                          simulatorId: simulator.id,
-                          contactId: c.id,
-                          speed: sensors.defaultSpeed,
-                          hitpoints: sensors.defaultHitpoints
-                        }
-                      });
-                    }}
-                  >
-                    Fire
-                  </Button>
+                  <>
+                    <Button
+                      size="sm"
+                      color="warning"
+                      onClick={() => {
+                        action({
+                          variables: {
+                            simulatorId: simulator.id,
+                            contactId: c.id,
+                            speed: sensors.defaultSpeed,
+                            hitpoints: sensors.defaultHitpoints,
+                            miss: false
+                          }
+                        });
+                      }}
+                    >
+                      Fire
+                    </Button>
+                    <Button
+                      size="sm"
+                      color="info"
+                      onClick={() => {
+                        action({
+                          variables: {
+                            simulatorId: simulator.id,
+                            contactId: c.id,
+                            speed: sensors.defaultSpeed,
+                            hitpoints: sensors.defaultHitpoints,
+                            miss: true
+                          }
+                        });
+                      }}
+                    >
+                      Miss
+                    </Button>
+                  </>
                 )}
               </Mutation>
               <Label check>
