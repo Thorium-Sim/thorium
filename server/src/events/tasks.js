@@ -5,6 +5,25 @@ import uuid from "uuid";
 
 App.on("addTask", ({ taskInput }) => {
   App.tasks.push(new Classes.Task(taskInput));
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: taskInput.simulatorId,
+    type: "Tasks",
+    station: taskInput.station,
+    title: `New Task`,
+    body: `${taskInput.values.name || taskInput.definition}`,
+    color: "info"
+  });
+  console.log({
+    widget: "tasks",
+    simulatorId: taskInput.simulatorId,
+    station: taskInput.station
+  });
+  pubsub.publish("widgetNotify", {
+    widget: "tasks",
+    simulatorId: taskInput.simulatorId,
+    station: taskInput.station
+  });
   pubsub.publish(
     "tasksUpdate",
     App.tasks.filter(s => s.simulatorId === taskInput.simulatorId)

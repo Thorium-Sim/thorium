@@ -1,4 +1,7 @@
 {
+  "1.0.23": {
+    "features": ["Improve tasks so they have notifications."]
+  },
   "1.0.22": {
     "features": [
       "Added the first iteration of crew task management! This is a huge release, so there will be several bullets below describing it.",
