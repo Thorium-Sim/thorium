@@ -103,3 +103,18 @@
     }
   }
 }
+
+.new-messaging-core {
+  .alerted {
+    animation: alerted 15s linear;
+  }
+}
+
+@keyframes alerted {
+  from {
+    background-color: rgba(255, 255, 0, 0.5);
+  }
+  to {
+    background-color: rgba(255, 0, 0, 0.5);
+  }
+}

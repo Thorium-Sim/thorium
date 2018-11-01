@@ -15,6 +15,7 @@ import {
 
 const components = [
   "Alert Condition",
+  "Cargo",
   "Damage Reports",
   "Damage Teams",
   "Decontamination",

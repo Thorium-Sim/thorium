@@ -13,6 +13,7 @@ import {
 import { titleCase } from "change-case";
 const components = [
   "AlertConditionCore",
+  "CargoCore",
   "CommShortRangeCore",
   "DamageReportsCore",
   "DamageTeamsCore",

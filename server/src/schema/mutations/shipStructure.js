@@ -36,4 +36,5 @@ updateInventoryCount(id: ID!, room: ID!, count: Int!): String
 updateInventoryMetadata(id: ID, metadata: InventoryMetadataInput): String
 updateCrewInventory(crewId:ID!, inventory:[InventoryCount]!, roomId:ID):String
 removeCrewInventory(crewId:ID!, inventory:[InventoryCount]!, roomId:ID!):String
+transferCargo(inventory:[InventoryCountInput], fromRoom:ID!, toRoom:ID!):String
 `;

@@ -312,7 +312,7 @@ export const Widgets = {
     icon: "tasks",
     name: "Tasks",
     size: "lg",
-    color: "#3C4881"
+    color: "#6F84EE"
   }
 };
 

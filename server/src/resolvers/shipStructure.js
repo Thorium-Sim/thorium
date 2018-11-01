@@ -134,6 +134,9 @@ export const ShipStructureMutations = {
   },
   removeCrewInventory(root, args, context) {
     App.handleEvent(args, "removeCrewInventory", context);
+  },
+  transferCargo(root, args, context) {
+    App.handleEvent(args, "transferCargo", context);
   }
 };
 
