@@ -14,6 +14,7 @@ function performAction(id, action) {
 
 App.on("setJumpdriveActivated", ({ id, activated }) => {
   performAction(id, sys => {
+    if (!sys.enabled) return;
     sys.setActivated(activated);
     App.handleEvent(
       {
@@ -61,4 +62,7 @@ App.on("fluxJumpdriveSector", ({ id, sector }) => {
       fluxSectorOffset(sector);
     }
   });
+});
+App.on("setJumpDriveEnabled", ({ id, enabled }) => {
+  performAction(id, sys => sys.setEnabled(enabled));
 });

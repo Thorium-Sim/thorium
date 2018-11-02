@@ -96,8 +96,9 @@ class JumpDrive extends Component {
     return power - powerUsed;
   };
   canActivate = () => {
-    const { sectors } = this.props;
+    const { sectors, enabled } = this.props;
     return (
+      enabled &&
       sectors.fore.level > 0 &&
       sectors.aft.level > 0 &&
       sectors.starboard.level > 0 &&

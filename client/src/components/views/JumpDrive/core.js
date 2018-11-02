@@ -34,6 +34,7 @@ sectors {
   }
 }
 env
+enabled
 activated
 `;
 
@@ -58,7 +59,8 @@ const JumpDriveCore = ({
   sectors,
   env,
   activated,
-  stress
+  stress,
+  enabled
 }) => (
   <div className="jumpDrive-core">
     <Mutation
@@ -77,31 +79,48 @@ const JumpDriveCore = ({
         </OutputField>
       )}
     </Mutation>
-    <p>Total Power: {power}</p>
-    <span>
-      Current Envelope:{" "}
-      <Mutation
-        mutation={gql`
-          mutation SetJumpDriveEnv($id: ID!, $env: Float!) {
-            setJumpdriveEnvs(id: $id, envs: $env)
-          }
-        `}
-      >
-        {action => (
-          <InputField
-            prompt={`What would you like to set the envelope level to (1 - 6)?`}
-            onClick={val => {
-              const env = parseFloat(val);
-              if (!env || env < 1 || env > 6) return;
-              action({ variables: { id, env } });
-            }}
-            style={{ display: "inline-block", width: "20px" }}
-          >
-            {Math.round(env * 100) / 100}
-          </InputField>
-        )}
-      </Mutation>
-    </span>
+    <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <p>Total Power: {power}</p>
+      <label>
+        <Mutation
+          mutation={gql`
+            mutation SetJumpDriveEnabled($id: ID!, $enabled: Boolean!) {
+              setJumpDriveEnabled(id: $id, enabled: $enabled)
+            }
+          `}
+          variables={{ id, enabled: !enabled }}
+        >
+          {action => (
+            <input type="checkbox" checked={enabled} onChange={action} />
+          )}
+        </Mutation>
+        Enabled
+      </label>
+      <span>
+        Current Envelope:{" "}
+        <Mutation
+          mutation={gql`
+            mutation SetJumpDriveEnv($id: ID!, $env: Float!) {
+              setJumpdriveEnvs(id: $id, envs: $env)
+            }
+          `}
+        >
+          {action => (
+            <InputField
+              prompt={`What would you like to set the envelope level to (1 - 6)?`}
+              onClick={val => {
+                const env = parseFloat(val);
+                if (!env || env < 1 || env > 6) return;
+                action({ variables: { id, env } });
+              }}
+              style={{ display: "inline-block", width: "20px" }}
+            >
+              {Math.round(env * 100) / 100}
+            </InputField>
+          )}
+        </Mutation>
+      </span>
+    </div>
     <Table size="sm">
       <thead>
         <tr>
