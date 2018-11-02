@@ -1,3 +1,5 @@
+import randomWords from "random-words";
+
 export default {
   _eventsCount: 403,
   simulators: [
@@ -13618,6 +13620,8 @@ export default {
   tasks: [],
   taskTemplates: [],
   autoUpdate: true,
+  thoriumId: randomWords(5).join("-"),
+  doTrack: true,
   migrations: {
     assets: true
   },

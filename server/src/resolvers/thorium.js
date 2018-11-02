@@ -16,6 +16,9 @@ export const ThoriumMutations = {
   },
   triggerAutoUpdate(root, args, context) {
     App.handleEvent(args, "triggerAutoUpdate", context);
+  },
+  setTrackingPreference(root, args, context) {
+    App.handleEvent(args, "setTrackingPreference", context);
   }
 };
 
