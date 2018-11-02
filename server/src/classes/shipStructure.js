@@ -62,6 +62,9 @@ export class Room {
   updateRoles(roles) {
     this.roles = roles;
   }
+  setDeck(deckId) {
+    this.deckId = deckId;
+  }
 }
 
 export class InventoryItem {

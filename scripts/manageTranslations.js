@@ -46,32 +46,38 @@ const bar = new ProgressBar(
 files
   .reduce(
     (prev, file) =>
-      prev.then(
-        messages =>
-          new Promise((resolve, reject) =>
-            transformFile(
-              file,
-              {
-                presets: ["env", "react", "stage-0"],
-                plugins: ["react-intl"]
-              },
-              function(err, result) {
-                bar.tick(1);
-                if (err) reject(err);
-                const { metadata } = result;
-                const { messages } = metadata["react-intl"];
-                if (messages.length === 0) return resolve();
-                const filename = file
-                  .replace("./client/src", "./client/src/translations/src")
-                  .replace(".js", ".json");
-                ensureDirectoryExistence(filename);
-                fs.writeFile(filename, JSON.stringify(messages), err => {
-                  if (err) return reject(err);
-                  return resolve();
-                });
+      prev.then(messages =>
+        new Promise((resolve, reject) =>
+          transformFile(
+            file,
+            {
+              presets: ["env", "react", "stage-0"],
+              plugins: ["react-intl"]
+            },
+            function(err, result) {
+              bar.tick(1);
+              if (err) reject(err);
+              if (!result) {
+                console.log("Failed to process file:", file);
+                return resolve();
               }
-            )
+              const { metadata } = result;
+              const { messages } = metadata["react-intl"];
+              if (messages.length === 0) return resolve();
+              const filename = file
+                .replace("./client/src", "./client/src/translations/src")
+                .replace(".js", ".json");
+              ensureDirectoryExistence(filename);
+              fs.writeFile(filename, JSON.stringify(messages), err => {
+                if (err) return reject(err);
+                return resolve();
+              });
+            }
           )
+        ).catch(err => {
+          console.error("Error processing file:", file);
+          console.error(err);
+        })
       ),
     Promise.resolve([])
   )

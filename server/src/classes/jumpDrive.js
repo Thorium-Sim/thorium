@@ -49,6 +49,7 @@ export default class JumpDrive extends System {
     };
     this.env = params.env || 0;
     this.activated = params.activated || false;
+    this.enabled = params.enabled || true;
   }
   get stealthFactor() {
     return this.activated ? Math.min(1, this.stress) : 0;
@@ -62,6 +63,10 @@ export default class JumpDrive extends System {
   }
   setEnv(env) {
     this.env = env;
+  }
+  setEnabled(enabled) {
+    this.enabled = enabled;
+    if (!enabled) this.activated = false;
   }
   setActivated(activated) {
     this.activated = activated;

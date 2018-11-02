@@ -14,6 +14,7 @@ type JumpDrive implements SystemInterface{
   env: Float
   activated: Boolean
   stress: Float
+  enabled: Boolean
 }
 
 type JumpDriveSectors {

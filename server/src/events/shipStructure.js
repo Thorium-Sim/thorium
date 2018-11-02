@@ -154,6 +154,13 @@ App.on("importRooms", ({ simulatorId, rooms }) => {
   pubsub.publish("decksUpdate", App.decks);
   pubsub.publish("roomsUpdate", App.rooms);
 });
+App.on("changeRoomDeck", ({ deckId, roomId }) => {
+  const room = App.rooms.find(r => r.id === roomId);
+  room.setDeck(deckId);
+
+  pubsub.publish("decksUpdate", App.decks);
+  pubsub.publish("roomsUpdate", App.rooms);
+});
 
 // Inventory
 App.on("addInventory", ({ inventory }) => {

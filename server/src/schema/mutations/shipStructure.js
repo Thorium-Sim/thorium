@@ -27,6 +27,7 @@ updateRoomRoles(roomId: ID!, roles: [RoomRoles]): String
 updateRoomSvg(roomId: ID!, svg: String!): String
 roomGas(roomId: ID!, gas: Boolean): String
 importRooms(simulatorId: ID!, rooms:[RoomInput]!): String
+changeRoomDeck(roomId:ID!, deckId:ID!):String
 
 ### Inventory
 addInventory(inventory: InventoryItemInput): String

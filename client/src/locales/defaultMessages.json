@@ -53,6 +53,62 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Transfer Cargo",
+        "description": "The location where cargo will be sent from.",
+        "id": "transfer-cargo-location"
+      },
+      {
+        "defaultMessage": "Receive Cargo",
+        "description": "The location where cargo will be sent to, or which will receive the cargo.",
+        "id": "receive-cargo-location"
+      },
+      {
+        "defaultMessage": "Find Cargo",
+        "id": "find-cargo"
+      },
+      {
+        "defaultMessage": "Ready Cargo",
+        "description": "A holding area for cargo which is being transferred.",
+        "id": "ready-cargo"
+      },
+      {
+        "defaultMessage": "Transfer Cargo",
+        "id": "transfer-cargo"
+      },
+      {
+        "defaultMessage": "This screen allows you to move cargo between the rooms on the ship.",
+        "id": "cargo-training-1"
+      },
+      {
+        "defaultMessage": "Use this search box to locate an item of cargo that you need from anywhere on the ship.",
+        "id": "cargo-training-2"
+      },
+      {
+        "defaultMessage": "Use these dropdowns to select choose a deck and room that you want to transfer cargo from.",
+        "id": "cargo-training-3"
+      },
+      {
+        "defaultMessage": "The items that are available in that part of the ship will show up here. Click on the inventory that you would like to move. The inventory will move into the ready cargo area. Click multiple times to move multiple items of the same type of cargo.",
+        "id": "cargo-training-4"
+      },
+      {
+        "defaultMessage": "Use these dropdowns to select the part of the ship you want to move the inventory to.",
+        "id": "cargo-training-5"
+      },
+      {
+        "defaultMessage": "Ready cargo is cargo which is being prepared to move to another place. Before transferring cargo, make sure you have put all of the cargo you want to move into the ready cargo area. You can click on items here to remove them from ready cargo.",
+        "id": "cargo-training-6"
+      },
+      {
+        "defaultMessage": "Click this button to transfer the items in the ready cargo to the room which you have selected to move the cargo into.",
+        "id": "cargo-training-7"
+      }
+    ],
+    "path": "src/components/views/CargoControl/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Cyphers are used to decode messages on paper. You can see the cypher characters on your screen and match them with the characters on your printed encoded message.",
         "id": "cypher-training-1"
       },
@@ -444,6 +500,56 @@
       }
     ],
     "path": "src/components/views/Status/components/alertCondition.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Tasks List",
+        "id": "tasks-list"
+      },
+      {
+        "defaultMessage": "Task Instructions",
+        "id": "tasks-instructions"
+      },
+      {
+        "defaultMessage": "Verification In Progress...",
+        "id": "tasks-verify-in-progress"
+      },
+      {
+        "defaultMessage": "Task Completed",
+        "id": "tasks-completed"
+      },
+      {
+        "defaultMessage": "Verify Task Completion",
+        "id": "tasks-verify-button"
+      }
+    ],
+    "path": "src/components/views/Tasks/tasks.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Click and hold this button to charge your sector of the {name}.",
+        "id": "thx-training-2"
+      },
+      {
+        "defaultMessage": "You can see how much your sector is charged with this bar.",
+        "id": "thx-training-3"
+      },
+      {
+        "defaultMessage": "Once you are finished charging your sector, click the 'Lock Sector' button.",
+        "id": "thx-training-4"
+      },
+      {
+        "defaultMessage": "Once you see that all of the sectors have been charged, press this button to activate the {name}.",
+        "id": "thx-training-5"
+      },
+      {
+        "defaultMessage": "The {name} is a very powerful device which must be charged in every sector of the ship to be used. Once all sectors have been charged, it can be activated.",
+        "id": "thx-training-1"
+      }
+    ],
+    "path": "src/components/views/Thx/thx.json"
   },
   {
     "descriptors": [

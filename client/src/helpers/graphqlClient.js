@@ -59,7 +59,17 @@ const link = split(
   httpLink
 );
 
-const cache = new Hermes();
+const cache = new Hermes({
+  entityIdForNode(node) {
+    if (node.id && node.__typename && node.count) {
+      return node.__typename + node.id + node.count;
+    }
+    if (node.id && node.__typename) {
+      return node.__typename + node.id;
+    }
+    return null;
+  }
+});
 
 const client = new ApolloClient({
   link,

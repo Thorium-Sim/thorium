@@ -184,26 +184,38 @@ class Armory extends Component {
         count: this.state.readyInventory[k]
       }))
     };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-    this.setState({
-      readyInventory: {}
-    });
+    this.props.client
+      .mutate({
+        mutation,
+        variables
+      })
+      .then(() => {
+        this.setState({
+          readyInventory: {}
+        });
+      });
   };
   removeFromOfficer = () => {
     const {
       data: { crew }
     } = this.props;
+    const { readyInventory } = this.state;
     const crewPerson = crew.find(c => c.id === this.state.selectedCrew);
-    const readyInventory = crewPerson.inventory.reduce(
-      (prev, next) => ({ ...prev, [next.id]: next.count }),
+    const newReadyInventory = crewPerson.inventory.reduce(
+      (prev, next) => ({
+        ...prev,
+        [next.id]: (prev[next.id] || 0) + next.count
+      }),
+      readyInventory
+    );
+    const removeInventory = crewPerson.inventory.reduce(
+      (prev, next) => ({
+        ...prev,
+        [next.id]: (prev[next.id] || 0) + next.count
+      }),
       {}
     );
-    this.setState({
-      readyInventory
-    });
+
     const mutation = gql`
       mutation RemoveCrewInventory(
         $crewId: ID!
@@ -220,15 +232,21 @@ class Armory extends Component {
     const variables = {
       crewId: this.state.selectedCrew,
       roomId: this.state.room,
-      inventory: Object.keys(readyInventory).map(k => ({
+      inventory: Object.keys(removeInventory).map(k => ({
         inventory: k,
-        count: readyInventory[k]
+        count: removeInventory[k]
       }))
     };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
+    this.props.client
+      .mutate({
+        mutation,
+        variables
+      })
+      .then(() => {
+        this.setState({
+          readyInventory: newReadyInventory
+        });
+      });
   };
   render() {
     const {
