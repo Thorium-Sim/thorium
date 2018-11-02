@@ -38,7 +38,9 @@ pre {
 .dropdown .btn {
   overflow: hidden;
 }
-
+.selectable {
+  user-select: text !important;
+}
 @media screen and (max-width: 1024px) {
   .btn {
     overflow: hidden;

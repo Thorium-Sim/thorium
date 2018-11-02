@@ -1,9 +1,11 @@
 import fs from "fs";
 import { EventEmitter } from "events";
 import util from "util";
+import randomWords from "random-words";
 import * as Classes from "./classes";
 import paths from "./helpers/paths";
 import Store from "./helpers/data-store";
+import heap from "./helpers/heap";
 
 let snapshotDir = "./snapshots/";
 
@@ -55,6 +57,8 @@ class Events extends EventEmitter {
     this.tasks = [];
     this.autoUpdate = true;
     this.migrations = { assets: true };
+    this.thoriumId = randomWords(5).join("-");
+    this.doTrack = true;
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -64,6 +68,8 @@ class Events extends EventEmitter {
 
   init() {
     this.merge(store.data);
+    if (!this.doTrack) heap.stubbed = true;
+    heap.track("thorium-started", this.thoriumId);
   }
   merge(snapshot) {
     // Initialize the snapshot with the object constructors
@@ -79,7 +85,12 @@ class Events extends EventEmitter {
       }
       if (key.indexOf("asset") > -1) return;
       if (key === "sounds") return;
-      if (key === "autoUpdate" || key === "migrations") {
+      if (
+        key === "autoUpdate" ||
+        key === "migrations" ||
+        key === "thoriumId" ||
+        key === "doTrack"
+      ) {
         this[key] = snapshot[key];
       }
       if (snapshot[key] instanceof Array) {
