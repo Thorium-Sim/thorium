@@ -5,7 +5,6 @@ export default ({ open }) => (
     viewBox="0 0 144 101"
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-    xmlnsSerif="http://www.serif.com/"
     fillRule="evenodd"
     clipRule="evenodd"
     strokeLinecap="round"
@@ -20,11 +19,7 @@ export default ({ open }) => (
       height="80.883"
       transform="scale(.9943 .99855)"
     />
-    <g
-      id="Left-Door"
-      serifId="Left Door"
-      style={{ transform: open ? "translateX(-50px)" : "" }}
-    >
+    <g id="Left-Door" style={{ transform: open ? "translateX(-50px)" : "" }}>
       <path
         d="M69.84,8.267l0,5.28l-2.4,2.4l0,6l10.8,10.8l0,18.96l-10.8,9.12l0,5.52l2.64,2.64l0,5.76l-56.64,-0.24l0,-66.48l56.4,0.24Z"
         fill="url(#_Linear2)"
@@ -36,11 +31,7 @@ export default ({ open }) => (
         fillOpacity="0.357"
       />
     </g>
-    <g
-      id="Right-Door"
-      serifId="Right Door"
-      style={{ transform: open ? "translateX(50px)" : "" }}
-    >
+    <g id="Right-Door" style={{ transform: open ? "translateX(50px)" : "" }}>
       <path
         d="M132.27,74.747l-62.64,0l0,-5.76l-2.64,-2.64l0,-5.52l10.8,-9.12l0,-18.96l-10.8,-10.8l0,-6l2.4,-2.4l0,-5.28l62.88,-0.24l0,66.72Z"
         fill="url(#_Linear3)"
