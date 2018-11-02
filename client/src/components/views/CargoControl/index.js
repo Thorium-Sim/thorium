@@ -3,6 +3,8 @@ import gql from "graphql-tag";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Input, Card, CardBody, Button } from "reactstrap";
 import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
+import { FormattedMessage } from "react-intl";
+
 import Tour from "helpers/tourHelper";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -133,7 +135,13 @@ class CargoControl extends Component {
         />
         <Row>
           <Col sm={4}>
-            <h3>Transfer Inventory</h3>
+            <h3>
+              <FormattedMessage
+                id="transfer-cargo-location"
+                description="The location where cargo will be sent from."
+                defaultMessage="Transfer Cargo"
+              />
+            </h3>
             <Row>
               {decks.length > 1 && (
                 <Col sm="6">
@@ -156,7 +164,13 @@ class CargoControl extends Component {
             </Row>
           </Col>
           <Col sm={4}>
-            <h3>Receive Inventory</h3>
+            <h3>
+              <FormattedMessage
+                id="receive-cargo-location"
+                description="The location where cargo will be sent to, or which will receive the cargo."
+                defaultMessage="Receive Cargo"
+              />
+            </h3>
             <Row>
               {decks.length > 1 && (
                 <Col sm={{ size: 6 }}>
@@ -228,7 +242,9 @@ class CargoControl extends Component {
             </Card>
           </Col>
           <Col sm={{ size: 4 }}>
-            <h3>Find Inventory: </h3>
+            <h3>
+              <FormattedMessage id="find-cargo" defaultMessage="Find Cargo" />:{" "}
+            </h3>
             <Input
               className="find-inventory"
               size="sm"
@@ -272,8 +288,14 @@ class CargoControl extends Component {
                 height: "100%"
               }}
             >
-              <h2>Ready Cargo</h2>
-              <Card style={{ flex: 1 }}>
+              <h2>
+                <FormattedMessage
+                  id="ready-cargo"
+                  description="A holding area for cargo which is being transferred."
+                  defaultMessage="Ready Cargo"
+                />
+              </h2>
+              <Card style={{ flex: 1 }} className="ready-cargo">
                 <CardBody>
                   {Object.entries(ready)
                     .map(([id, count]) => {
@@ -318,6 +340,7 @@ class CargoControl extends Component {
                   <Button
                     block
                     color="success"
+                    className="transfer-cargo"
                     disabled={
                       !toRoom ||
                       Object.entries(ready).filter(([id, count]) => count > 0)
@@ -329,7 +352,10 @@ class CargoControl extends Component {
                       });
                     }}
                   >
-                    Transfer Cargo
+                    <FormattedMessage
+                      id="transfer-cargo"
+                      defaultMessage="Transfer Cargo"
+                    />
                   </Button>
                 )}
               </Mutation>
@@ -344,24 +370,67 @@ class CargoControl extends Component {
 
 const trainingSteps = [
   {
+    selector: ".nothing",
+    content: (
+      <FormattedMessage
+        id="cargo-training-1"
+        defaultMessage="This screen allows you to move cargo between the rooms on the ship."
+      />
+    )
+  },
+  {
     selector: ".find-inventory",
-    content:
-      "Use this search box to locate an object that you need from anywhere on the ship."
-  },
-  {
-    selector: ".to-room",
-    content:
-      "Use these dropdowns to select the part of the ship you want to search in."
-  },
-  {
-    selector: ".to-cargo",
-    content:
-      "The items that are available in that part of the ship will show up here. Select the inventory that you would like to move."
+    content: (
+      <FormattedMessage
+        id="cargo-training-2"
+        defaultMessage="Use this search box to locate an item of cargo that you need from anywhere on the ship."
+      />
+    )
   },
   {
     selector: ".from-room",
-    content:
-      "Use these dropdowns to select the part of the ship you want to move the inventory to."
+    content: (
+      <FormattedMessage
+        id="cargo-training-3"
+        defaultMessage="Use these dropdowns to select choose a deck and room that you want to transfer cargo from."
+      />
+    )
+  },
+  {
+    selector: ".from-cargo",
+    content: (
+      <FormattedMessage
+        id="cargo-training-4"
+        defaultMessage="The items that are available in that part of the ship will show up here. Click on the inventory that you would like to move. The inventory will move into the ready cargo area. Click multiple times to move multiple items of the same type of cargo."
+      />
+    )
+  },
+  {
+    selector: ".to-room",
+    content: (
+      <FormattedMessage
+        id="cargo-training-5"
+        defaultMessage="Use these dropdowns to select the part of the ship you want to move the inventory to."
+      />
+    )
+  },
+  {
+    selector: ".ready-cargo",
+    content: (
+      <FormattedMessage
+        id="cargo-training-6"
+        defaultMessage="Ready cargo is cargo which is being prepared to move to another place. Before transferring cargo, make sure you have put all of the cargo you want to move into the ready cargo area. You can click on items here to remove them from ready cargo."
+      />
+    )
+  },
+  {
+    selector: ".transfer-cargo",
+    content: (
+      <FormattedMessage
+        id="cargo-training-7"
+        defaultMessage="Click this button to transfer the items in the ready cargo to the room which you have selected to move the cargo into."
+      />
+    )
   }
 ];
 

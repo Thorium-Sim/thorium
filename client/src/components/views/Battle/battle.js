@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import { Button, Input, Label } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
@@ -157,7 +157,7 @@ class BattleCore extends Component {
                 `}
               >
                 {action => (
-                  <>
+                  <Fragment>
                     <Button
                       size="sm"
                       color="warning"
@@ -192,7 +192,7 @@ class BattleCore extends Component {
                     >
                       Miss
                     </Button>
-                  </>
+                  </Fragment>
                 )}
               </Mutation>
               <Label check>
