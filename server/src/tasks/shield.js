@@ -325,8 +325,6 @@ export default [
         } to set the frequency of the #SYSTEMNAME to ${frequency} MHz.`,
         { system, simulator }
       );
-      // TODO: Make it so it knows if the task is assigned to the station
-      // performing the task, or if it needs to be delegated to another station
     },
     verify({ requiredValues }) {
       const id = requiredValues.shield;

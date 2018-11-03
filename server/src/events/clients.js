@@ -60,13 +60,6 @@ App.on("clientDisconnect", ({ client }) => {
   clientObj && clientObj.disconnect();
   pubsub.publish("clientChanged", App.clients);
 });
-App.on("clientPing", ({ client, ping }) => {
-  // Check to see if the client is still connected
-  // This is the return ping. We'll reconnect/disconnect it
-  // in the next interval
-  const clientObj = App.clients.find(c => c.id === client);
-  clientObj.ping = ping;
-});
 
 App.on("clientSetFlight", ({ client, flightId }) => {
   const clientObj = App.clients.find(c => c.id === client);

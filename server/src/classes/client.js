@@ -9,11 +9,10 @@ class Keypad {
     this.allowedAttempts = params.allowedAttempts || 0; // Default - infinte
     this.attempts = params.attempts || 0;
     this.locked = params.locked || false;
-    
-    if(params.codeLength) {
+
+    if (params.codeLength) {
       this.setCodeLength(params.codeLength);
-    }
-    else {
+    } else {
       this.codeLength = 4;
     }
 
@@ -87,8 +86,6 @@ export default class Client {
     this.station = params.station || null;
     this.loginName = params.loginName || null;
     this.loginState = params.loginState || "logout";
-    this.sentPing = null;
-    this.ping = null;
     this.connected = params.connected || false;
     this.offlineState = params.offlineState || null;
     this.movie = params.movie || null;
@@ -113,9 +110,7 @@ export default class Client {
   disconnect() {
     this.connected = false;
   }
-  setPing(ping) {
-    this.sentPing = ping;
-  }
+
   setFlight(flightId) {
     this.flightId = flightId;
     const flight = App.flights.find(f => f.id === flightId);
@@ -162,19 +157,9 @@ export default class Client {
     this.offlineState = state;
   }
   addCache(cacheItem) {
-    const container = App.assetContainers.find(a => a.fullPath === cacheItem);
-    if (!container) return;
-    const object =
-      App.assetObjects.find(
-        obj =>
-          obj.containerId === container.id &&
-          obj.simulatorId === this.simulatorId
-      ) ||
-      App.assetObjects.find(
-        obj => obj.containerId === container.id && obj.simulatorId === "default"
-      );
-    if (this.caches.indexOf(object.url) === -1) {
-      this.caches.unshift(object.url);
+    const url = `/assets${cacheItem}`;
+    if (this.caches.indexOf(url) === -1) {
+      this.caches.unshift(url);
       this.caches.splice(5);
     }
   }

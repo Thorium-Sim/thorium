@@ -82,7 +82,6 @@ class ParticleDetector extends Component {
           ...state.circles,
           {
             id,
-            // TODO: Find the location of the click and place the ping there.
             location: location,
             position: location,
             destination: location,
