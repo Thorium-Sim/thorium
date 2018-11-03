@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import CardFrame from "./cardFrame";
 import Views from "components/views";
 import "./style.scss";
-//import "./buttons.scss";
 
 
 class LayoutEpsilonViewscreen extends Component {

@@ -4,10 +4,8 @@ class CardSwitcher extends Component {
   state = {};
   render() {
     const { cards, cardName, changeCard, hyperCard } = this.props;
-    //const iconName ="";
-    const currentCard = cards.find(c => c.name === cardName);
-   // const iconName = currentCard.component;
-   const iconName = currentCard.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi) ? "SoftwarePanels" : currentCard.component;
+    const currentCard = cards.find(c => c.name === cardName) || cards[0];
+    const iconName = currentCard.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi) ? "SoftwarePanels" : currentCard.component;
     const { shown } = this.state;
     return (
       <div
@@ -15,7 +13,8 @@ class CardSwitcher extends Component {
         onClick={() => this.setState({ shown: !shown })}
       >
         <h1 className="card-name">
-              <img 
+              <img alt="card icon"
+			  className="card-icon"
               src={`/cardIcons/${iconName}.svg`}
               />
         {cardName}</h1>
@@ -34,7 +33,8 @@ class CardSwitcher extends Component {
                 }}
               >
               
-              <img 
+              <img alt="card icon"
+              className="card-icon"
               src={`/cardIcons/${( c.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi) ? "SoftwarePanels" : c.component)}.svg`}
               />
                 {c.name}
@@ -48,9 +48,3 @@ class CardSwitcher extends Component {
 }
               
 export default CardSwitcher;
-/*
-              tried to insert this at line 29:
-              <img 
-              src={`/cardIcons/${c.name}.svg`}
-              />
-*/

@@ -30,6 +30,10 @@ const creditList = [
     header: "Glass Frame Design",
     content: "Nathan King 👑"
   },
+    {
+    header: "Epsilon Design",
+    content: "Inspired by the Empty Epsilon Bridge Simulator"
+  },
   {
     header: "Code Contributors",
     content: (

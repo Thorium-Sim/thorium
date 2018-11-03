@@ -1,3 +1,7 @@
+//This Layout is heavily inspired by EmptyEpsilon, and therefore by the artwork of InterestingJohn, and the main work of daid, nallath and other developers.
+//However the gui elements were made from scratch.
+
+
 import React, { Component } from "react";
 import CardFrame from "./cardFrame";
 import Widgets from "../LayoutOdyssey/widgets";
@@ -5,7 +9,8 @@ import TransitionGroup from "react-addons-transition-group";
 import renderCards from "../cardRenderer";
 import CardSwitcher from "./cardSwitcher";
 import "./style.scss";
-//import "./buttons.scss";
+
+
 
 class LayoutEpsilon extends Component {
   state = {};
