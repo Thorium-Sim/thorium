@@ -22,6 +22,9 @@ export default class Phasers extends HeatMixin(System) {
     }
     //The phaser which is being cooled
     this.cooling = params.cooling || null;
+
+    this.holdToCharge = params.holdToCharge || false;
+    this.chargeSpeed = params.chargeSpeed || 1;
   }
   get stealthFactor() {
     const length = this.beams.length;
@@ -50,6 +53,13 @@ export default class Phasers extends HeatMixin(System) {
   fireBeam(beamId) {
     this.beams.find(b => b.id === beamId).fire();
   }
+  chargeBeam(beamId) {
+    if (this.holdToCharge) {
+      this.beams.find(b => b.id === beamId).charge();
+    } else {
+      this.updateBeamCharge(beamId, 1);
+    }
+  }
   coolBeam(beamId) {
     this.cooling = beamId;
   }
@@ -73,6 +83,12 @@ export default class Phasers extends HeatMixin(System) {
       this.beams.forEach(b => b.updateCharge(0));
     }
     super.setPower(powerLevel);
+  }
+  setHoldToCharge(htc) {
+    this.holdToCharge = htc;
+  }
+  setChargeSpeed(chargeSpeed) {
+    this.chargeSpeed = chargeSpeed;
   }
 }
 
@@ -104,6 +120,9 @@ class Beam extends System {
   }
   updateHeatRate(heatRate) {
     this.heatRate = heatRate;
+  }
+  charge() {
+    this.state = "charging";
   }
   fire() {
     // Handle the rest of the functionality in the process
