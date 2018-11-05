@@ -143,9 +143,10 @@ class Conversations extends Component {
                   <form
                     // eslint-disable-next-line
                     action={"javascript:void(0);"}
+                    style={{ display: "flex" }}
                     onSubmit={e => {
                       e.preventDefault();
-                      if (!selectedConvo) return;
+                      if (!selectedConvo || !messageInput) return;
                       action({
                         variables: {
                           message: {
@@ -160,7 +161,7 @@ class Conversations extends Component {
                     }}
                   >
                     <Input
-                      size="sm"
+                      bsSize="sm"
                       type="text"
                       value={messageInput || ""}
                       onFocus={() =>
@@ -173,6 +174,13 @@ class Conversations extends Component {
                         this.setState({ messageInput: evt.target.value })
                       }
                     />
+                    <Button
+                      size="sm"
+                      type="submit"
+                      disabled={!selectedConvo || !messageInput}
+                    >
+                      Send
+                    </Button>
                   </form>
                 )}
               </Mutation>
