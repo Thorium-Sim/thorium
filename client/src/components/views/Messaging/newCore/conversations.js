@@ -174,7 +174,11 @@ class Conversations extends Component {
                         this.setState({ messageInput: evt.target.value })
                       }
                     />
-                    <Button size="sm" type="submit">
+                    <Button
+                      size="sm"
+                      type="submit"
+                      disabled={!selectedConvo || !messageInput}
+                    >
                       Send
                     </Button>
                   </form>
