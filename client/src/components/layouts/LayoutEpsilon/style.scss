@@ -1,0 +1,486 @@
+$alertColor: #0f0;
+
+$buttonBG: #0f1216;
+$boxBG: #151820;
+
+$alert5: #1F252D;
+$alert4: #3a6dda;
+$alert3: #acac34;
+$alert2: #cc7926;
+$alert1: #ca2a2a;
+$alertp: #4d1980;
+
+.epsilon-frame {
+  font-family: Bebas Neue;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: #1F252D;
+  background-image: url("./background-crosses.png");
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: white;
+
+  small {
+	font-size:1rem;
+  }
+  
+  strong {font-weight:normal;}
+  
+  .card-sickbay .bunk.card {
+  color:#ccc;
+  font-style: italic;
+  strong {
+	padding-left: 10px; 
+	//padding-right: 2px; 
+	font-weight:normal;
+	font-style: normal;
+	color:white;
+	}
+  }
+  
+  // make sure text doesn't shift other columns
+  .targeting-control p{ 
+	  min-width:11ch;
+	
+	strong {
+	  font-weight:normal;
+	  padding-left:3ch;
+	  color:#ccc;
+	}
+	.text-danger{
+	min-width:9ch;
+	}
+  }
+
+  .frame-holder {
+    width: 100%;
+    height: 100%;
+  }
+  
+
+  .left-frame {
+    width: 1%;
+    height: 100%;
+    position: absolute;
+    background-image: linear-gradient(
+      to right,
+      rgba(31, 37, 45, 0) 0%,
+      rgba(31, 37, 45, 0.85) 100%
+    );
+    }
+  .right-frame {
+    width: 1%;
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    background-image: linear-gradient(
+      to left,
+      rgba(31, 37, 45, 0) 0%,
+      rgba(31, 37, 45, 0.85) 100%
+    );
+  }
+  
+  // *** card navigation ***
+  .navigation {
+    position: absolute;
+    z-index: 1000000;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    h1 {
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      font-weight: 400;
+      font-size: 40px;
+      color: white;
+      font-family: "Commador";
+      font-style: italic;
+      text-transform: uppercase;
+      line-height: 1.5;
+    }
+    .card-name {
+      top: 10px;
+      font-style:normal;
+      font-family: "Bebas Neue";
+      //left: 2%;
+      right: 2%;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      pointer-events: all;
+      border: 2px solid #777;
+      border-radius: 1em;
+      background-color: $buttonBG;
+      min-width:25ch;
+      img {
+		background:#fff;
+		height:1em;
+		margin-right:10px;
+		border-radius:2em;
+		}   
+    }
+    .cards {
+      position: absolute;
+      top: 10px;
+      //left: 2%;
+      right: 2%;
+      pointer-events: none;
+      overflow: hidden;
+      .cards-holder {
+        pointer-events: all;
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ccc;
+        border-radius: 1.2rem;
+      }
+      
+      .navigation-card {
+        min-width: 25ch;
+        font-family: "Bebas Neue";
+        text-transform: uppercase;
+        font-size: 24px;
+        pointer-events: all;
+        padding-left: 20px;
+        padding-right: 20px;
+        cursor: pointer;
+        border: 2px solid #777;
+        border-radius: 1.2rem;
+        background-color: $buttonBG;
+        margin-bottom: 5px;
+        &:last-child { margin-bottom: 0px; }
+        &:hover {
+          //background-color: rgba(255, 255, 255, 0.5);
+        border: 2px solid #ccc;
+        }
+        &.active {
+		  background-color:white;
+		  color: $buttonBG;
+		  border:3px double black;
+        }
+        
+		img {
+		background:#fff;
+		  height:1em;
+		  margin-right:10px;
+		  border-radius:2em;
+		}
+      }
+      
+      
+    }
+
+    &.hypercard {
+      pointer-events: none;
+      * {
+        pointer-events: none;
+      }
+    }
+  }
+
+  .frame-text {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    color: white;
+    font-family: "Bebas Neue";
+    font-style: italic;
+    text-transform: uppercase;
+    line-height: 1;
+    h1 {
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      font-weight: 400;
+      font-size: 40px;
+    }
+    .simulator-name {
+      bottom: 5px;
+      right: 2%;
+    }
+    .station-name {
+      top: 5px;
+      //right: 2%;
+      left: 2%;
+    }
+    .card-name {
+      top: 15px;
+      left: 10px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+  }
+  .card-area {
+    position: absolute;
+    width: 90vw;
+    height: calc(100vh - 180px);
+    left: 5vw;
+    top: 90px;
+  }
+  &.viewscreen {
+    .card-area {
+      width: 100vw;
+      height: 100vh;
+      left: 0;
+      top: 0;
+    }
+  }
+  .widgets {
+    left: 2%;
+    bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  .widget-icon {
+  color:#fff !important;
+  }
+ 
+  @mixin colors($color, $alertColor) {
+    .left-frame,
+    .right-frame,
+    .navigator {
+      background-color: $color;
+    }
+
+  }
+  &.alertColor5 {
+    @include colors($alert5, #0f0);
+  }
+  &.alertColor4 {
+    @include colors($alert4, #480);
+  }
+  &.alertColor3 {
+    @include colors($alert3, #ff0);
+  }
+  &.alertColor2 {
+    @include colors($alert2, #f80);
+  }
+  &.alertColor1 {
+    @include colors($alert1, #f00);
+  }
+  &.alertColorp {
+    @include colors($alertp, rebeccapurple);
+  }
+  
+  .dropdown-menu {
+    background-color: $buttonBG;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+    border-width: 2px;
+  }
+  .dropdown-item {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+    border-width: 2px;
+    &:hover {
+      background-color: gray;
+      color: white;
+    }
+  }
+  
+  // *** Buttons ***
+  .btn,
+  .btn.disabled,
+  .btn:disabled, .dropdown-toggle.btn.btn-secondary {
+    filter: grayscale(100%);
+    border-radius: 1.2em;
+    border-width: 1px;
+    color: white !important;
+    background-color:$buttonBG;
+    border: 2px solid #777;
+    font-family: Bebas Neue;
+    font-size: 1.2rem; 
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    margin:2px;
+    margin-left:1px;
+    &.active {
+	  background-color:white !important;
+      color: $buttonBG !important;
+      border:3px double black !important;
+      margin:0px;
+    }
+    &:focus {
+      box-shadow: none;
+      border: 2px solid #ccc;
+    }
+  
+  }
+  .btn.btn-block
+  {
+    min-width:15ch;
+  }
+  .torpedo-loader .btn-block {
+	width: 95%; //prevent horizontal scroll-bar
+  }
+  
+  .scantype .btn
+  {
+    margin-top:8px;
+    margin-bottom:8px;
+  }
+  .btn:hover {
+      background-color: $buttonBG;
+      border-color: #ccc;
+      border: 2px solid #ccc;
+      //border-left-color: white;
+      //border-right-color: white;
+      //border-width: 2px;
+    }
+  .btn.disabled{
+	border: 1px solid #ccc;
+	opacity:0.3;
+  }
+  
+ 
+// *** Lists and Infoboxes ***  
+  .list-group-item {
+  color: #white;
+  background-color: $boxBG;
+  border-color:#ccc;
+  &.active {
+	background-color:#555;
+	border-color:#ccc;
+	}
+  }
+  
+  .form-control,
+  .form-control:active,
+  .form-control:focus,
+  .form-control:disabled,
+  .form-control.disabled,
+  .form-control:read-only {
+    border-radius: 0;
+    border-width: 1px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size:1.2rem;
+  }
+  .form-control:disabled,
+  .form-control.disabled {
+    color: #aaa;
+    border-color: gray;
+  }
+  .card-computerCore .list-group-item, {
+    border-radius: 2em;
+    background-color: $buttonBG;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    margin:1px;
+    &:first-child, &:last-child
+    {
+      border-radius:2em
+	  //border-bottom-right-radius: 2em;
+      //border-bottom-left-radius: 2em;
+    }
+    &.selected
+    {
+	  background-color:white !important;
+      color: black ;
+      border:3px double black;
+      font-wight:normal;
+    }
+  }
+
+  .card, .form-control-lg.form-control, .course-numbers .numBox {
+    border-radius: 0;
+    background-color: $buttonBG;
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+  }
+   .status-card .status-field
+  {
+    background-color: $buttonBG;
+    border-bottom: 1px solid #777;
+    border-top:1px solid #777;
+    box-shadow:none;
+    min-height:3rem;
+  }
+  .roster-card .ReactTable .rt-table
+  {
+  background-color: $boxBG;
+  }
+  
+  
+  // *** handles and sliders ***
+  
+  .dragger {
+    background-color: white;
+    background: radial-gradient(#ccc, white);
+    box-shadow:none;
+    border: black solid 1px;
+  }
+  .rangeslider{
+	background-color: $buttonBG;
+	box-shadow:none;
+  }
+  .rangeslider-horizontal {
+	height: 30px;
+	border-radius: 2rem;	
+	}
+  .rangeslider-vertical {
+	width: 30px;
+	max-width: 30px;
+	border-radius: 2rem;	
+	.rangeslider__fill{
+	  border-top-left-radius: 0;
+	  border-top-right-radius: 0;
+	}
+  }
+  .rangeslider__fill {
+    border-radius: 2rem;
+  }
+  .rangeslider__handle{
+  background-color: white;
+  background: radial-gradient(#ccc, white);
+  left:0;
+  height: 30px;
+  border-radius: 2rem;
+  &::after {
+    display:none;
+	}
+  }
+  .rangeslider-vertical .rangeslider__handle {
+    -webkit-box-shadow: 10px 05px 10px 0px rgba(50,50,50,0.75);
+    -moz-box-shadow: 10px 5px 10px 0px rgba(50,50,50,0.75);
+    box-shadow: 0px 10px 5px 0px rgba(50,50,50,0.75);
+  }
+  .keypadButtons, .course-numbers .card {
+	background-color: $boxBG;
+  }
+  
+  .keypadButtons .keypad, .keypadButtons .enter {
+	background-color: $buttonBG;
+	border-color: 777;
+	&:hover{
+		border-color: #ccc;  
+	}
+	&:active{
+		background-color:grey;
+	}
+  }
+  
+  .shortRangeComm .btn {
+	opacity:0.9; //make the button selectable;
+	&:focus:hover{
+		border: 2px solid white;
+	}
+  }
+  
+  .probe-construction .probeEquipment p {
+  font-size:1.2rem;
+  }
+  
+  
+// *** ***
+  pre {
+    color: white;
+  }
+}

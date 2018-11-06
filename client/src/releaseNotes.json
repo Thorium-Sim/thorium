@@ -1,6 +1,9 @@
 {
   "1.0.24": {
-    "features": ["Make it possible to change the phasers to hold to charge."]
+    "features": [
+      "Make it possible to change the phasers to hold to charge.",
+      "Add a send button to the new messaging core."
+    ]
   },
   "1.0.23": {
     "features": [
