@@ -4,5 +4,6 @@ type Thorium{
   thoriumId: String
   autoUpdate: Boolean
   doTrack: Boolean
+  askedToTrack: Boolean
 }
 `;

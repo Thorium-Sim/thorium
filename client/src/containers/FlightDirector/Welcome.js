@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import { Col, Row, Container, Button, Card, CardBody, Alert } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, Mutation } from "react-apollo";
@@ -44,7 +44,8 @@ class Welcome extends Component {
   subscription = null;
   state = {
     issuesOpen: false,
-    quote: quotes[Math.floor(Math.random() * quotes.length)]
+    quote: quotes[Math.floor(Math.random() * quotes.length)],
+    askedToTrack: false
   };
   componentDidMount() {
     if (!process.env.CI) {
@@ -98,7 +99,8 @@ class Welcome extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.flights) return null;
     const flights = this.props.data.flights;
-    const { autoUpdate } = this.props.data.thorium;
+    const { autoUpdate, askedToTrack } = this.props.data.thorium;
+    const { askedToTrack: stateAskedToTrack } = this.state;
     return (
       <Container className="WelcomeView">
         <SubscriptionHelper
@@ -130,6 +132,62 @@ class Welcome extends Component {
             <h3 className="text-center">
               <small>{this.state.quote}</small>
             </h3>
+            {!askedToTrack &&
+              !stateAskedToTrack && (
+                <Alert color={"info"}>
+                  <FormattedMessage
+                    id="ask-to-track"
+                    defaultMessage="Would you like opt-in to share some analytics data about Thorium with the developer? You can opt-out at any time from the Settings sidebar menu."
+                  />
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    {!this.state.upgrading && (
+                      <Mutation
+                        mutation={gql`
+                          mutation SetTrackingPreference($pref: Boolean!) {
+                            setTrackingPreference(pref: $pref)
+                          }
+                        `}
+                      >
+                        {action => (
+                          <Fragment>
+                            <Button
+                              outline
+                              color="secondary"
+                              onClick={() => {
+                                action({ variables: { pref: false } });
+                                this.setState({
+                                  askedToTrack: true
+                                });
+                              }}
+                              style={{ marginRight: "20px" }}
+                            >
+                              <FormattedMessage
+                                id="no-track"
+                                defaultMessage="No Thanks"
+                              />
+                            </Button>
+                            <Button
+                              outline
+                              color="secondary"
+                              onClick={() => {
+                                action({ variables: { pref: true } });
+                                this.setState({
+                                  askedToTrack: true
+                                });
+                              }}
+                            >
+                              <FormattedMessage
+                                id="track-me"
+                                defaultMessage="Track Me"
+                              />
+                            </Button>
+                          </Fragment>
+                        )}
+                      </Mutation>
+                    )}
+                  </div>
+                </Alert>
+              )}
             {autoUpdate &&
               (this.state.outdated || this.state.upgrading) && (
                 <Alert color={this.state.major ? "danger" : "warning"}>
@@ -236,6 +294,7 @@ export const FLIGHTS_QUERY = gql`
   query Flights {
     thorium {
       autoUpdate
+      askedToTrack
     }
     flights {
       id

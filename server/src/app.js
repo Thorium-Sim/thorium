@@ -58,7 +58,8 @@ class Events extends EventEmitter {
     this.autoUpdate = true;
     this.migrations = { assets: true };
     this.thoriumId = randomWords(5).join("-");
-    this.doTrack = true;
+    this.doTrack = false;
+    this.askedToTrack = false;
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -89,7 +90,8 @@ class Events extends EventEmitter {
         key === "autoUpdate" ||
         key === "migrations" ||
         key === "thoriumId" ||
-        key === "doTrack"
+        key === "doTrack" ||
+        key === "askedToTrack"
       ) {
         this[key] = snapshot[key];
       }

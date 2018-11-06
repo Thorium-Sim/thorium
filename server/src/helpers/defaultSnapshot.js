@@ -13621,7 +13621,8 @@ export default {
   taskTemplates: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),
-  doTrack: true,
+  doTrack: false,
+  askedToTrack: false,
   migrations: {
     assets: true
   },

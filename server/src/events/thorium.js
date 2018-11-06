@@ -14,5 +14,6 @@ App.on("triggerAutoUpdate", () => {
 
 App.on("setTrackingPreference", ({ pref }) => {
   App.doTrack = pref;
+  App.askedToTrack = true;
   heap.stubbed = !pref;
 });
