@@ -29,6 +29,8 @@ const updatePhasers = () => {
           })
       );
     }
+
+    // Charge up the phaser
     sys.beams.filter(b => b.state !== "idle").forEach(beam => {
       let rate = phaserChargeRate;
       if (beam.state === "discharging") rate = phaserDischargeRate;
@@ -47,7 +49,7 @@ const updatePhasers = () => {
           beam.state = "idle";
         }
       }
-      const charge = beam.charge + rate * 0.1;
+      const charge = beam.charge + rate * 0.1 * sys.chargeSpeed;
       App.handleEvent(
         { id: sys.id, beamId: beam.id, charge, noUpdate: true },
         "setPhaserBeamCharge"

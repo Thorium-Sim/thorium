@@ -74,7 +74,6 @@ class TasksCore extends Component {
                   subscribeToMore({
                     document: TEMPLATE_SUB,
                     updateQuery: (previousResult, { subscriptionData }) => {
-                      console.log({ subscriptionData });
                       return Object.assign({}, previousResult, {
                         taskTemplates: subscriptionData.data.taskTemplatesUpdate
                       });

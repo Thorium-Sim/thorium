@@ -359,7 +359,6 @@ class ParticleDetectorCore extends Component {
       id: this.props.sensors.id,
       contacts
     };
-    console.log(variables);
     this.props.client.mutate({
       mutation,
       variables

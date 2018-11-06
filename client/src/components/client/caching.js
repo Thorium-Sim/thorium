@@ -1,10 +1,10 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 // Component for caching all of the videos on the viewscreen for loading later.
 // Cache is loaded from the client and updated dynamically
 const Caching = ({ client }) => {
   return (
-    <div>
+    <Fragment>
       {client.caches &&
         client.caches.map(c => (
           <link
@@ -14,7 +14,7 @@ const Caching = ({ client }) => {
             as="video"
           />
         ))}
-    </div>
+    </Fragment>
   );
 };
 

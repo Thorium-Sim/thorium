@@ -14,11 +14,6 @@ App.on("addTask", ({ taskInput }) => {
     body: `${taskInput.values.name || taskInput.definition}`,
     color: "info"
   });
-  console.log({
-    widget: "tasks",
-    simulatorId: taskInput.simulatorId,
-    station: taskInput.station
-  });
   pubsub.publish("widgetNotify", {
     widget: "tasks",
     simulatorId: taskInput.simulatorId,

@@ -6,6 +6,7 @@ import ipaddress from "../helpers/ipaddress";
 
 // Load some other stuff
 import "../events";
+import "../analytics";
 import "../processes";
 
 export default (server, GRAPHQL_PORT, CLIENT_PORT) => {

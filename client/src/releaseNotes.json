@@ -1,4 +1,16 @@
 {
+  "1.0.24": {
+    "features": [
+      "Make it possible to change the phasers to hold to charge.",
+      "Add a send button to the new messaging core.",
+      "Set up the cargo screen so it uses a ready cargo area.",
+      "Provide a running log of cargo transfers in the cargo core.",
+      "Add the ability to easily change which deck a room is on from the deck simulator config.",
+      "Add a toggle to disable the jump drive without damaging it.",
+      "Add analytics to Thorium. It sends data about your use of Thorium to me (Alex). It's opt-in, but much appreciated if you choose to share your data.",
+      "Add a new layout that matches the popular Empty Epsilon bridge simulator. Thanks BlueShadow!"
+    ]
+  },
   "1.0.23": {
     "features": [
       "Improve tasks so they have notifications.",

@@ -37,6 +37,7 @@ sectors {
 }
 env
 activated
+enabled
 `;
 
 const QUERY = gql`

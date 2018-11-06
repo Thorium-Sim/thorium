@@ -7,5 +7,6 @@ export default [
   "LayoutGlassLite",
   "LayoutLine",
   "LayoutPhoenix",
-  "LayoutShipStation"
+  "LayoutShipStation",
+  "LayoutEpsilon"
 ];

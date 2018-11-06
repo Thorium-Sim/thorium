@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button, Input, Label } from "reactstrap";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { parse, unparse } from "papaparse";
@@ -389,6 +389,38 @@ class DecksCore extends Component {
                         />
                       </p>
                     ))}
+                  <Label>
+                    Change Deck
+                    <Mutation
+                      mutation={gql`
+                        mutation ChangeDeck($deckId: ID!, $roomId: ID!) {
+                          changeRoomDeck(roomId: $roomId, deckId: $deckId)
+                        }
+                      `}
+                    >
+                      {action => (
+                        <Input
+                          type="select"
+                          value={selectedDeck}
+                          onChange={e => {
+                            action({
+                              variables: {
+                                deckId: e.target.value,
+                                roomId: selectedRoom
+                              }
+                            });
+                            this.setState({ selectedRoom: null });
+                          }}
+                        >
+                          {decks.map(d => (
+                            <option key={d.id} value={d.id}>
+                              Deck {d.number}
+                            </option>
+                          ))}
+                        </Input>
+                      )}
+                    </Mutation>
+                  </Label>
                 </div>
               )}
           </Col>
