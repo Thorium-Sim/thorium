@@ -29,9 +29,6 @@ describe("Client", () => {
       expect(c.caches).toEqual([]);
       expect(c.mobile).toBe(false);
       expect(c.cards).toEqual([]);
-
-      expect(c.sentPing).toBeNull();
-      expect(c.ping).toBeNull();
     });
 
     test("should create a Scanner", () => {
