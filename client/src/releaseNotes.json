@@ -1,4 +1,7 @@
 {
+  "1.0.24": {
+    "features": ["Make it possible to change the phasers to hold to charge."]
+  },
   "1.0.23": {
     "features": [
       "Improve tasks so they have notifications.",
