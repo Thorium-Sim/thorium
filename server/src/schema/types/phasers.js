@@ -12,6 +12,8 @@ type Phaser implements SystemInterface {
   coolant: Float
   beams: [PhaserBeam]
   locations: [Room]
+  holdToCharge: Boolean
+  chargeSpeed: Float
 }
 
 type PhaserBeam {

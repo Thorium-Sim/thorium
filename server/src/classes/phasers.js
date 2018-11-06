@@ -90,6 +90,13 @@ export default class Phasers extends HeatMixin(System) {
   setChargeSpeed(chargeSpeed) {
     this.chargeSpeed = chargeSpeed;
   }
+  stopCharging() {
+    this.beams.forEach(b => {
+      if (b.state === "charging") {
+        b.updateState("idle");
+      }
+    });
+  }
 }
 
 //Extend system so we have access to damage and power management
