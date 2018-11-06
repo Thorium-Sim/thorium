@@ -8,4 +8,7 @@ export default `
   setPhaserBeamCharge(id: ID!, beamId: ID!, charge: Float!):String
   setPhaserBeamHeat(id: ID!, beamId: ID!, heat: Float!):String
   setPhaserBeamCount(id: ID!, beamCount: Int!): String
+setPhaserHoldToCharge(id:ID!, holdToCharge:Boolean!):String
+setPhaserChargeSpeed(id:ID!, speed:Float!):String
+stopChargingPhasers(id:ID!):String
 `;

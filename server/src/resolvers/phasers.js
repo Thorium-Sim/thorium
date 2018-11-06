@@ -42,6 +42,15 @@ export const PhaserMutations = {
   },
   setPhaserBeamCount(root, args, context) {
     App.handleEvent(args, "setPhaserBeamCount", context);
+  },
+  setPhaserHoldToCharge(root, args, context) {
+    App.handleEvent(args, "setPhaserHoldToCharge", context);
+  },
+  setPhaserChargeSpeed(root, args, context) {
+    App.handleEvent(args, "setPhaserChargeSpeed", context);
+  },
+  stopChargingPhasers(root, args, context) {
+    App.handleEvent(args, "stopChargingPhasers", context);
   }
 };
 

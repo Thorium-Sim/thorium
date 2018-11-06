@@ -8,12 +8,11 @@ const sendUpdate = throttle(() => {
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")
   );
-}, 300);
+}, 60);
 
 App.on("chargePhaserBeam", ({ id, beamId }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.updateBeamState(beamId, "charging");
-  //sys.updateBeamCharge(beamId, 1);
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")
@@ -22,7 +21,6 @@ App.on("chargePhaserBeam", ({ id, beamId }) => {
 App.on("dischargePhaserBeam", ({ id, beamId }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.updateBeamState(beamId, "discharging");
-  //sys.updateBeamCharge(beamId, 0);
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")
@@ -92,6 +90,31 @@ App.on("applyPhaserCoolant", ({ id, beamId }) => {
 });
 App.on("setPhaserBeamCount", ({ id, beamCount }) => {
   App.systems.find(s => s.id === id).setBeams(beamCount);
+  pubsub.publish(
+    "phasersUpdate",
+    App.systems.filter(s => s.type === "Phasers")
+  );
+});
+
+App.on("setPhaserHoldToCharge", ({ id, holdToCharge }) => {
+  App.systems.find(s => s.id === id).setHoldToCharge(holdToCharge);
+  pubsub.publish(
+    "phasersUpdate",
+    App.systems.filter(s => s.type === "Phasers")
+  );
+});
+
+App.on("setPhaserChargeSpeed", ({ id, speed }) => {
+  App.systems.find(s => s.id === id).setChargeSpeed(speed);
+  pubsub.publish(
+    "phasersUpdate",
+    App.systems.filter(s => s.type === "Phasers")
+  );
+});
+
+App.on("stopChargingPhasers", ({ id }) => {
+  App.systems.find(s => s.id === id).stopCharging();
+  console.log("done");
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")

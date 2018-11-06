@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import { Row, Col, Container, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
@@ -30,6 +30,7 @@ const PHASERS_SUB = gql`
         heat
       }
       arc
+      holdToCharge
     }
   }
 `;
@@ -62,7 +63,26 @@ class PhaserCharging extends Component {
       mutation,
       variables
     });
+    if (phasers.holdToCharge) {
+      document.addEventListener("mouseup", this.stopCharging);
+    }
   }
+  stopCharging = () => {
+    document.removeEventListener("mouseup", this.stopCharging);
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+      mutation ChargePhaserBeam($id: ID!) {
+        stopChargingPhasers(id: $id)
+      }
+    `;
+    const variables = {
+      id: phasers.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   dischargePhasers(beamId) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
@@ -78,6 +98,9 @@ class PhaserCharging extends Component {
       mutation,
       variables
     });
+    if (phasers.holdToCharge) {
+      document.addEventListener("mouseup", this.stopCharging);
+    }
   }
   chargeAll() {
     let i = 0;
@@ -170,7 +193,7 @@ class PhaserCharging extends Component {
                   color="primary"
                   disabled={!selectedBank}
                   block
-                  onClick={this.dischargePhasers.bind(this, selectedBank)}
+                  onMouseDown={this.dischargePhasers.bind(this, selectedBank)}
                 >
                   Discharge Bank
                 </Button>
@@ -180,29 +203,34 @@ class PhaserCharging extends Component {
                   color="primary"
                   disabled={!selectedBank}
                   block
-                  onClick={this.chargePhasers.bind(this, selectedBank)}
+                  onMouseDown={this.chargePhasers.bind(this, selectedBank)}
                 >
                   Charge Bank
                 </Button>
               </Col>
-              <Col sm={6}>
-                <Button
-                  color="primary"
-                  onClick={this.dischargeAll.bind(this)}
-                  block
-                >
-                  Discharge All Banks
-                </Button>
-              </Col>
-              <Col sm={6}>
-                <Button
-                  color="primary"
-                  onClick={this.chargeAll.bind(this)}
-                  block
-                >
-                  Charge All Banks
-                </Button>
-              </Col>
+              {!phasers.holdToCharge && (
+                <Fragment>
+                  {" "}
+                  <Col sm={6}>
+                    <Button
+                      color="primary"
+                      onClick={this.dischargeAll.bind(this)}
+                      block
+                    >
+                      Discharge All Banks
+                    </Button>
+                  </Col>
+                  <Col sm={6}>
+                    <Button
+                      color="primary"
+                      onClick={this.chargeAll.bind(this)}
+                      block
+                    >
+                      Charge All Banks
+                    </Button>
+                  </Col>
+                </Fragment>
+              )}
             </Row>
           </Col>
         </Row>
@@ -435,6 +463,7 @@ const PHASERS_QUERY = gql`
         heat
       }
       arc
+      holdToCharge
     }
   }
 `;

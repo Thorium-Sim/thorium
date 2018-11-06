@@ -33,7 +33,6 @@ export const SensorsQueries = {
     if (hostile || hostile === false)
       contacts = contacts.filter(c => c.hostile === hostile);
     if (type) {
-      console.log(contacts);
       contacts = contacts.filter(c => c.type === type);
     }
     return contacts;
