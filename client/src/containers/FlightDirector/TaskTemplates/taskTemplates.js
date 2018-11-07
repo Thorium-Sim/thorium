@@ -91,7 +91,9 @@ class TaskTemplates extends Component {
                   style={{ display: "flex", flexDirection: "column" }}
                 >
                   <h3>Templates</h3>
-                  <ListGroup style={{ flex: 1 }}>
+                  <ListGroup
+                    style={{ flex: 1, overflowY: "auto", maxHeight: "80vh" }}
+                  >
                     {taskTemplates
                       .filter(t => t.definition === selectedDef)
                       .map(t => (

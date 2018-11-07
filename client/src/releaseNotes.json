@@ -6,7 +6,10 @@
       "Add an Add Task timeline macro",
       "Make it possible to edit timeline steps in the timeline core."
     ],
-    "fixes": ["Fix an issue with crashes creating ambiance tracks."]
+    "fixes": [
+      "Fix an issue with crashes creating ambiance tracks.",
+      "Fixes an issue where too many task templates can't scroll."
+    ]
   },
   "1.0.24": {
     "features": [
