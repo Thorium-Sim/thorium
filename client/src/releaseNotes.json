@@ -8,7 +8,8 @@
     ],
     "fixes": [
       "Fix an issue with crashes creating ambiance tracks.",
-      "Fixes an issue where too many task templates can't scroll."
+      "Fixes an issue where too many task templates can't scroll.",
+      "Made it so the 'Begin Training' button on the login screen starts the training player if there is an audio or video training."
     ]
   },
   "1.0.24": {
