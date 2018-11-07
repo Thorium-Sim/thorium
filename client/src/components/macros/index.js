@@ -33,3 +33,4 @@ export {
 } from "./changeSimulatorAlertLevel";
 export { default as setTargetingClasses } from "./setTargetingClasses";
 export { default as setAlertConditionLock } from "./setAlertConditionLock";
+export { default as addTask } from "./addTask";

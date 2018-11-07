@@ -19,6 +19,7 @@ export default [
       );
     },
     stations({ simulator }) {
+      console.log(simulator);
       return (
         simulator &&
         simulator.stations.filter(s =>
