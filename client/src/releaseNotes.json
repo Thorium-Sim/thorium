@@ -1,4 +1,12 @@
 {
+  "1.0.25": {
+    "features": [
+      "Add a sensors widget so it can be shown over other screens.",
+      "Add ability to change heat rate in the systems config.",
+      "Add an Add Task timeline macro",
+      "Make it possible to edit timeline steps in the timeline core."
+    ]
+  },
   "1.0.24": {
     "features": [
       "Make it possible to change the phasers to hold to charge.",

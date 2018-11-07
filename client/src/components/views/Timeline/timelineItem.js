@@ -1,8 +1,65 @@
 import React, { Fragment, Component } from "react";
-import * as Macros from "../../macrosPrint";
+import * as MacrosPrint from "../../macrosPrint";
+import * as Macros from "../../macros";
+import { Button, Input, Label } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import allowedMacros from "./allowedMacros";
 import EventName from "../../../containers/FlightDirector/MissionConfig/EventName";
+
+class ActionPreview extends Component {
+  state = {};
+  setArg = (key, value) => {
+    const { values, updateValues } = this.props;
+    updateValues({ ...values, [key]: value });
+  };
+  render() {
+    const { edit } = this.state;
+    let { event, args, simulatorId, values, delay, updateDelay } = this.props;
+    return (
+      <div className="timeline-item">
+        {!edit && (
+          <Button
+            size="sm"
+            style={{ height: "16px", lineHeight: 1 }}
+            color="info"
+            onClick={() => this.setState({ edit: true })}
+          >
+            Edit
+          </Button>
+        )}
+        <div>
+          <Label>
+            Delay
+            <Input
+              bsSize="sm"
+              defaultValue={delay}
+              type="number"
+              min="0"
+              onChange={e => updateDelay(e.target.value)}
+            />
+          </Label>
+        </div>
+        {Macros[event] &&
+          (() => {
+            const MacroPreview = edit
+              ? Macros[event]
+              : MacrosPrint[event] || Macros[event];
+            if (typeof args === "string") {
+              args = JSON.parse(args);
+            }
+            return (
+              <MacroPreview
+                simulatorId={simulatorId}
+                args={edit ? { ...args, ...values } : args}
+                updateArgs={edit ? this.setArg : () => {}}
+                lite
+              />
+            );
+          })()}
+      </div>
+    );
+  }
+}
 class TimelineItem extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +76,12 @@ class TimelineItem extends Component {
       args,
       executedTimelineSteps,
       actions,
-      checkAction
+      checkAction,
+      simulatorId,
+      values,
+      updateValues,
+      delay,
+      updateDelay
     } = this.props;
     const { expanded } = this.state;
 
@@ -48,16 +110,15 @@ class TimelineItem extends Component {
               Details
             </p>
             {expanded && (
-              <div className="timeline-item">
-                {Macros[event] &&
-                  (() => {
-                    const MacroPreview = Macros[event];
-                    if (typeof args === "string") {
-                      args = JSON.parse(args);
-                    }
-                    return <MacroPreview args={args} updateArgs={() => {}} />;
-                  })()}
-              </div>
+              <ActionPreview
+                simulatorId={simulatorId}
+                event={event}
+                args={args}
+                values={values}
+                updateValues={updateValues}
+                delay={delay}
+                updateDelay={updateDelay}
+              />
             )}
           </Fragment>
         )}

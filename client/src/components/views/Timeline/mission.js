@@ -10,6 +10,7 @@ class Mission extends Component {
     const { executedTimelineSteps, timeline, currentTimelineStep } = props;
     const currentStep = timeline[currentTimelineStep];
     this.state = {
+      values: {},
       showDescriptions:
         window.localStorage.getItem("thorium_coreShowDetails") === "true",
       actions: currentStep
@@ -49,7 +50,7 @@ class Mission extends Component {
       currentTimelineStep,
       timeline
     } = this.props;
-    const { actions, showDescriptions } = this.state;
+    const { actions, showDescriptions, values, delay } = this.state;
     return (
       <Fragment>
         <h4>{name}</h4>
@@ -58,6 +59,8 @@ class Mission extends Component {
           timeline={timeline}
           currentTimelineStep={currentTimelineStep}
           actions={actions}
+          values={values}
+          delay={delay}
         />
         <Label check>
           Expand Details
@@ -85,6 +88,15 @@ class Mission extends Component {
           executedTimelineSteps={executedTimelineSteps}
           currentTimelineStep={currentTimelineStep}
           showDescription={showDescriptions}
+          simulatorId={simulatorId}
+          values={values}
+          updateValues={updatedValues => {
+            this.setState({ values: updatedValues });
+          }}
+          delay={delay}
+          updateDelay={newDelay => {
+            this.setState({ delay: newDelay });
+          }}
         />
       </Fragment>
     );

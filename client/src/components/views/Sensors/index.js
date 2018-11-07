@@ -211,9 +211,9 @@ class Sensors extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.sensors)
       return <p>Loading...</p>;
-    const needScans = !this.props.station.cards.find(
-      c => c.component === "SensorScans"
-    );
+    const needScans =
+      this.widget &&
+      !this.props.station.cards.find(c => c.component === "SensorScans");
     const sensors = this.props.data.sensors[0];
     const { pingMode } = sensors;
     const pings = false;
