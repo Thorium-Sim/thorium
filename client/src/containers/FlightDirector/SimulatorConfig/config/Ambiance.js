@@ -288,7 +288,7 @@ const Ambiance = ({ selectedSimulator }) => {
   return (
     <Query query={QUERY} variables={{ id: selectedSimulator.id }}>
       {({ loading, data, subscribeToMore }) =>
-        loading ? null : (
+        loading || !data.simulators ? null : (
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({

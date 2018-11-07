@@ -5,7 +5,8 @@
       "Add ability to change heat rate in the systems config.",
       "Add an Add Task timeline macro",
       "Make it possible to edit timeline steps in the timeline core."
-    ]
+    ],
+    "fixes": ["Fix an issue with crashes creating ambiance tracks."]
   },
   "1.0.24": {
     "features": [
