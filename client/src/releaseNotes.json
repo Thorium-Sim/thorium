@@ -1,4 +1,7 @@
 {
+  "1.0.25": {
+    "features": ["Add a sensors widget so it can be shown over other screens."]
+  },
   "1.0.24": {
     "features": [
       "Make it possible to change the phasers to hold to charge.",
