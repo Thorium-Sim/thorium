@@ -14,7 +14,6 @@ import {
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import SubscriptionHelper from "helpers/subscriptionHelper";
 import playSound from "components/generic/SoundPlayer";
 import SoundPicker from "helpers/soundPicker";
 
@@ -35,14 +34,6 @@ query Ambiance($id:String!) {
     ${queryData}
   }
 }`;
-
-const SUB = gql`
-subscription AmbianceUpdate($id:ID!) {
-  simulatorsUpdate(simulatorId:$id) {
-    ${queryData}
-  }
-}
-`;
 
 const AmbianceConfig = ({
   simulatorId,
@@ -330,6 +321,7 @@ class Ambiance extends PureComponent {
         {({ loading, data }) =>
           loading || !data.simulators ? null : (
             <AmbianceComp
+              ambiance={ambiance}
               {...data.simulators[0]}
               selectedAmbiance={selectedAmbiance}
               selectAmbiance={a => this.setState({ selectedAmbiance: a })}
