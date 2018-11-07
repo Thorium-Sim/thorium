@@ -8,17 +8,31 @@ import StepModal from "./stepModal";
 class TimelineControl extends Component {
   state = {};
   runMacro = (triggerMacro, updateTimelineStep) => () => {
-    const { actions, simulatorId, timeline, currentTimelineStep } = this.props;
+    const {
+      actions,
+      simulatorId,
+      timeline,
+      currentTimelineStep,
+      values,
+      delay
+    } = this.props;
     const currentStep = timeline[currentTimelineStep];
     if (!currentStep) return;
     const variables = {
       simulatorId,
-      macros: currentStep.timelineItems.filter(t => actions[t.id]).map(t => ({
-        stepId: t.id,
-        event: t.event,
-        args: t.args,
-        delay: t.delay
-      }))
+      macros: currentStep.timelineItems.filter(t => actions[t.id]).map(t => {
+        const args =
+          typeof t.args === "string"
+            ? JSON.stringify({ ...JSON.parse(t.args), ...values })
+            : JSON.stringify({ ...t.args, ...values });
+
+        return {
+          stepId: t.id,
+          event: t.event,
+          args,
+          delay: delay || delay === 0 ? delay : t.delay
+        };
+      })
     };
     triggerMacro({ variables });
     updateTimelineStep &&

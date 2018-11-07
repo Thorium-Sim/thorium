@@ -2,12 +2,17 @@ import React, { Fragment } from "react";
 import TimelineItem from "./timelineItem";
 
 const TimelineStep = ({
+  simulatorId,
   actions,
   timeline,
   executedTimelineSteps,
   currentTimelineStep,
   checkAction,
-  showDescription
+  showDescription,
+  values,
+  updateValues,
+  delay,
+  updateDelay
 }) => {
   const currentStep = timeline[currentTimelineStep];
 
@@ -20,11 +25,15 @@ const TimelineStep = ({
           {currentStep.timelineItems.map(i => (
             <TimelineItem
               {...i}
+              simulatorId={simulatorId}
               showDescription={showDescription}
               actions={actions}
               checkAction={checkAction}
               executedTimelineSteps={executedTimelineSteps}
               key={i.id}
+              values={values}
+              updateValues={updateValues}
+              updateDelay={updateDelay}
             />
           ))}
         </ul>

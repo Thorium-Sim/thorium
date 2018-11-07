@@ -1,14 +1,6 @@
 import React, { Fragment, Component } from "react";
-import { Query, Mutation } from "react-apollo";
-import {
-  FormGroup,
-  Label,
-  Input,
-  Badge,
-  Button,
-  ListGroup,
-  ListGroupItem
-} from "reactstrap";
+import { Query } from "react-apollo";
+import { Badge, ListGroup, ListGroupItem } from "reactstrap";
 import gql from "graphql-tag";
 import ValueInput from "../views/Tasks/core/ValueInput";
 
@@ -28,8 +20,8 @@ definition
 values`;
 
 const QUERY = gql`
-  query TaskDefinitions {
-    taskDefinitions {
+  query TaskDefinitions($simulatorId: ID) {
+    taskDefinitions(simulatorId: $simulatorId) {
       id
       class
       name
@@ -48,8 +40,7 @@ const QUERY = gql`
 
 class TasksCore extends Component {
   state = {
-    selectedDefinition: "nothing",
-    requiredValues: {}
+    selectedDefinition: "nothing"
   };
   updateTask = (key, value) => {
     const { updateArgs, args = {} } = this.props;
@@ -57,7 +48,13 @@ class TasksCore extends Component {
     updateArgs("taskInput", { ...taskInput, [key]: value });
   };
   render() {
-    const { taskDefinitions, taskTemplates = [], args = {} } = this.props;
+    const {
+      taskDefinitions,
+      taskTemplates = [],
+      args = {},
+      lite,
+      simulatorId
+    } = this.props;
     const { selectedTemplate } = this.state;
     const { taskInput = {} } = args;
     const {
@@ -82,54 +79,58 @@ class TasksCore extends Component {
         style={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
         <div style={{ display: "flex", flex: 1, height: "100%" }}>
-          <div style={{ flex: 3, height: "100%", overflowY: "auto" }}>
-            Definitions
-            <ListGroup>
-              {Object.entries(definitionGroups).map(([key, value]) => (
-                <Fragment key={key}>
-                  <ListGroupItem>
-                    <strong>{key}</strong>
-                  </ListGroupItem>
-                  {value.map(v => (
-                    <ListGroupItem
-                      key={v.name}
-                      active={v.name === selectedDefinition}
-                      onClick={() => this.updateTask("definition", v.name)}
-                    >
-                      {v.name}{" "}
-                      <Badge>
-                        {
-                          taskTemplates.filter(t => t.definition === v.name)
-                            .length
-                        }
-                      </Badge>
-                    </ListGroupItem>
+          {!lite && (
+            <Fragment>
+              <div style={{ flex: 3, height: "100%", overflowY: "auto" }}>
+                Definitions
+                <ListGroup>
+                  {Object.entries(definitionGroups).map(([key, value]) => (
+                    <Fragment key={key}>
+                      <ListGroupItem>
+                        <strong>{key}</strong>
+                      </ListGroupItem>
+                      {value.map(v => (
+                        <ListGroupItem
+                          key={v.name}
+                          active={v.name === selectedDefinition}
+                          onClick={() => this.updateTask("definition", v.name)}
+                        >
+                          {v.name}{" "}
+                          <Badge>
+                            {
+                              taskTemplates.filter(t => t.definition === v.name)
+                                .length
+                            }
+                          </Badge>
+                        </ListGroupItem>
+                      ))}
+                    </Fragment>
                   ))}
-                </Fragment>
-              ))}
-            </ListGroup>
-          </div>
-          <div style={{ flex: 3 }}>
-            Templates (optional)
-            <ListGroup style={{ flex: 1 }}>
-              {taskTemplates
-                .filter(t => t.definition === selectedDefinition)
-                .map(t => (
-                  <ListGroupItem
-                    key={t.id}
-                    onClick={() => {
-                      this.setState({
-                        selectedTemplate: t.id
-                      });
-                      this.updateTask("values", t.values);
-                    }}
-                    active={t.id === selectedTemplate}
-                  >
-                    {t.name}
-                  </ListGroupItem>
-                ))}
-            </ListGroup>
-          </div>
+                </ListGroup>
+              </div>
+              <div style={{ flex: 3 }}>
+                Templates (optional)
+                <ListGroup style={{ flex: 1 }}>
+                  {taskTemplates
+                    .filter(t => t.definition === selectedDefinition)
+                    .map(t => (
+                      <ListGroupItem
+                        key={t.id}
+                        onClick={() => {
+                          this.setState({
+                            selectedTemplate: t.id
+                          });
+                          this.updateTask("values", t.values);
+                        }}
+                        active={t.id === selectedTemplate}
+                      >
+                        {t.name}
+                      </ListGroupItem>
+                    ))}
+                </ListGroup>
+              </div>
+            </Fragment>
+          )}
           <div style={{ flex: 7 }}>
             {definition && (
               <Fragment>
@@ -141,7 +142,6 @@ class TasksCore extends Component {
                     display: "flex",
                     flexDirection: "column",
                     overflowY: "auto",
-                    height: "100%",
                     overflowX: "hidden"
                   }}
                 >
@@ -163,6 +163,53 @@ class TasksCore extends Component {
                     ))}
                   </div>
                 </div>
+                {simulatorId && (
+                  <div>
+                    <p>Task Instructions:</p>
+
+                    <Query
+                      query={gql`
+                        query Instructions(
+                          $simulatorId: ID
+                          $definition: String!
+                          $values: JSON!
+                          $task: TaskInput
+                        ) {
+                          taskInstructions(
+                            simulatorId: $simulatorId
+                            definition: $definition
+                            requiredValues: $values
+                            task: $task
+                          )
+                        }
+                      `}
+                      variables={{
+                        simulatorId,
+                        definition: definition.id,
+                        values: {
+                          ...definition.valuesValue,
+                          ...requiredValues
+                        },
+                        task: {}
+                      }}
+                    >
+                      {({ loading, data, error }) =>
+                        loading ? (
+                          <p>Loading instructions...</p>
+                        ) : error ? (
+                          <p>
+                            Error:
+                            {error.message}
+                          </p>
+                        ) : (
+                          <p style={{ whiteSpace: "pre-wrap" }}>
+                            {data.taskInstructions}
+                          </p>
+                        )
+                      }
+                    </Query>
+                  </div>
+                )}
               </Fragment>
             )}
           </div>
@@ -173,7 +220,7 @@ class TasksCore extends Component {
 }
 
 const TaskCreator = props => (
-  <Query query={QUERY}>
+  <Query query={QUERY} variables={{ simulatorId: props.simulatorId }}>
     {({ loading, data, subscribeToMore }) => {
       const { taskDefinitions } = data;
       if (loading || !taskDefinitions) return null;
