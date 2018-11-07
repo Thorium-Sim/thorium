@@ -1,7 +1,6 @@
 import React from "react";
-import { FormGroup, Input, Label, Button } from "reactstrap";
+import { FormGroup, Input, Label } from "reactstrap";
 import { Mutation } from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import { GENERIC_QUERY } from "./index";
 import gql from "graphql-tag";
 
