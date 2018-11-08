@@ -117,6 +117,7 @@ stationSets {
     name
     description
     training
+    ambiance
     login
     executive
     messageGroups
@@ -147,6 +148,7 @@ const STATIONSET_SUB = gql`
         name
         description
         training
+        ambiance
         login
         messageGroups
         executive

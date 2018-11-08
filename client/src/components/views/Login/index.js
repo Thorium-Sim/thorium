@@ -5,7 +5,7 @@ import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { Asset } from "helpers/assets";
 import Tour from "helpers/tourHelper";
-
+import { publish } from "helpers/pubsub";
 import "./login.scss";
 
 class Login extends Component {
@@ -74,14 +74,19 @@ class Login extends Component {
     return training;
   };
   training = () => {
-    this.setState({
-      training: true
-    });
+    if (this.props.simulator.training) {
+      publish("toggleTraining");
+    } else {
+      this.setState({
+        training: true
+      });
+    }
   };
   render() {
     let simulatorName;
     if (this.props.simulator) simulatorName = this.props.simulator.name;
     const { assets } = this.props.simulator;
+    console.log(this.props);
     return (
       <Row className="loginCard">
         <Col sm={{ size: 3, offset: 1 }}>

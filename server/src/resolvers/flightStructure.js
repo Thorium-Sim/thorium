@@ -282,6 +282,9 @@ export const FlightStructureMutations = {
   setStationTraining(root, args, context) {
     App.handleEvent(args, "setStationTraining", context);
   },
+  setStationAmbiance(root, args, context) {
+    App.handleEvent(args, "setStationAmbiance", context);
+  },
 
   trainingMode(root, args, context) {
     App.handleEvent(args, "trainingMode", context);

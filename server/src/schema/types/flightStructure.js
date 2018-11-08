@@ -140,6 +140,7 @@ type Station {
   name: String
   description: String
   training: String
+  ambiance: String
   login: Boolean
   executive: Boolean
   messageGroups: [String]

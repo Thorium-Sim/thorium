@@ -4,6 +4,7 @@ import { Media, Player, controls, withMediaProps } from "react-media-player";
 import "./trainingPlayer.scss";
 import Measure from "react-measure";
 import FontAwesome from "react-fontawesome";
+import { subscribe } from "helpers/pubsub";
 
 const { CurrentTime, SeekBar, Duration, Volume } = controls;
 
@@ -100,6 +101,40 @@ class PlayPauseComp extends Component {
 const PlayPause = withMediaProps(PlayPauseComp);
 
 const invalidTags = ["INPUT", "circle", "svg"];
+
+class MediaPlayerObject extends Component {
+  componentDidMount() {
+    this.sub = subscribe("toggleTraining", () => {
+      this.props.playPause();
+    });
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
+  }
+  render() {
+    const { isMovie, src, playPause, close } = this.props;
+    return (
+      <div className="media">
+        <div
+          className="media-player"
+          style={{ display: isMovie ? "block" : "none" }}
+        >
+          <Player src={src} onClick={() => playPause()} />
+        </div>
+        <div className="media-controls">
+          <PlayPause className="media-control media-control--play-pause" />
+          <CurrentTime className="media-control media-control--current-time" />
+          <SeekBar className="media-control media-control--volume-range" />
+          <Duration className="media-control media-control--duration" />
+          <MuteUnmute className="media-control media-control--mute-unmute" />
+          <Volume className="media-control media-control--volume" />
+
+          {close && <FontAwesome name="times-circle-o" onClick={close} />}
+        </div>
+      </div>
+    );
+  }
+}
 export default class MediaPlayer extends Component {
   state = {
     position: { x: 0, y: 0 }
@@ -188,26 +223,13 @@ export default class MediaPlayer extends Component {
           >
             <Media>
               {({ isFullscreen, playPause }) => (
-                <div className="media">
-                  <div
-                    className="media-player"
-                    style={{ display: isMovie ? "block" : "none" }}
-                  >
-                    <Player src={src} onClick={() => playPause()} />
-                  </div>
-                  <div className="media-controls">
-                    <PlayPause className="media-control media-control--play-pause" />
-                    <CurrentTime className="media-control media-control--current-time" />
-                    <SeekBar className="media-control media-control--volume-range" />
-                    <Duration className="media-control media-control--duration" />
-                    <MuteUnmute className="media-control media-control--mute-unmute" />
-                    <Volume className="media-control media-control--volume" />
-
-                    {close && (
-                      <FontAwesome name="times-circle-o" onClick={close} />
-                    )}
-                  </div>
-                </div>
+                <MediaPlayerObject
+                  playPause={playPause}
+                  isFullscreen={isFullscreen}
+                  close={close}
+                  isMovie={isMovie}
+                  src={src}
+                />
               )}
             </Media>
           </div>
