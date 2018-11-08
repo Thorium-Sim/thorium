@@ -18,6 +18,31 @@ class Client extends Component {
     )
       return;
     this.props.playSound({ url: "/sciences.ogg" });
+
+    // Start up any ambiance
+    if (this.props.station.ambiance) {
+      this.props.playSound({
+        url: `/assets${this.props.station.ambiance}`,
+        looping: true,
+        ambiance: true
+      });
+    }
+  }
+  componentDidUpdate(prevProps) {
+    if (this.props.station.name !== prevProps.station.name) {
+      this.props.removeAllSounds(true);
+      // Start up any ambiance
+      if (this.props.station.ambiance) {
+        this.props.playSound({
+          url: `/assets${this.props.station.ambiance}`,
+          looping: true,
+          ambiance: true
+        });
+      }
+    }
+  }
+  componentWillUnmount() {
+    this.props.removeAllSounds(true);
   }
   render() {
     const {

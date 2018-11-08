@@ -120,3 +120,10 @@ App.on("setStationTraining", ({ stationSetID, stationName, training }) => {
     .setTraining(stationName, training);
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
+
+App.on("setStationAmbiance", ({ stationSetID, stationName, ambiance }) => {
+  App.stationSets
+    .find(s => s.id === stationSetID)
+    .setAmbiance(stationName, ambiance);
+  pubsub.publish("stationSetUpdate", App.stationSets);
+});

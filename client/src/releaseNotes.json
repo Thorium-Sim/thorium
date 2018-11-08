@@ -4,7 +4,8 @@
       "Add a sensors widget so it can be shown over other screens.",
       "Add ability to change heat rate in the systems config.",
       "Add an Add Task timeline macro",
-      "Make it possible to edit timeline steps in the timeline core."
+      "Make it possible to edit timeline steps in the timeline core.",
+      "Add the ability to provide station ambiance."
     ],
     "fixes": [
       "Fix an issue with crashes creating ambiance tracks.",
