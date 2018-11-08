@@ -3,25 +3,27 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
 
-App.on("addTask", ({ taskInput }) => {
-  App.tasks.push(new Classes.Task(taskInput));
+App.on("addTask", ({ taskInput, simulatorId }) => {
+  const input = { simulatorId, ...taskInput };
+  const task = new Classes.Task(input);
+  App.tasks.push(task);
   pubsub.publish("notify", {
     id: uuid.v4(),
-    simulatorId: taskInput.simulatorId,
+    simulatorId: task.simulatorId,
     type: "Tasks",
-    station: taskInput.station,
+    station: task.station,
     title: `New Task`,
-    body: `${taskInput.values.name || taskInput.definition}`,
+    body: `${task.values.name || task.definition}`,
     color: "info"
   });
   pubsub.publish("widgetNotify", {
     widget: "tasks",
-    simulatorId: taskInput.simulatorId,
-    station: taskInput.station
+    simulatorId: task.simulatorId,
+    station: task.station
   });
   pubsub.publish(
     "tasksUpdate",
-    App.tasks.filter(s => s.simulatorId === taskInput.simulatorId)
+    App.tasks.filter(s => s.simulatorId === task.simulatorId)
   );
 });
 

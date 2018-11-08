@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React, { Fragment, Component, PureComponent } from "react";
 import {
   Container,
   Row,
@@ -14,7 +14,6 @@ import {
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import SubscriptionHelper from "helpers/subscriptionHelper";
 import playSound from "components/generic/SoundPlayer";
 import SoundPicker from "helpers/soundPicker";
 
@@ -36,14 +35,6 @@ query Ambiance($id:String!) {
   }
 }`;
 
-const SUB = gql`
-subscription AmbianceUpdate($id:ID!) {
-  simulatorsUpdate(simulatorId:$id) {
-    ${queryData}
-  }
-}
-`;
-
 const AmbianceConfig = ({
   simulatorId,
   playSound,
@@ -61,6 +52,14 @@ const AmbianceConfig = ({
           updateSimulatorAmbiance(id: $id, ambiance: $ambiance)
         }
       `}
+      refetchQueries={[
+        {
+          query: QUERY,
+          variables: {
+            id: simulatorId
+          }
+        }
+      ]}
     >
       {action => (
         <Card>
@@ -104,11 +103,11 @@ const AmbianceConfig = ({
               step={0.01}
               max={1}
               defaultValue={volume}
-              onChange={e =>
+              onMouseUp={e =>
                 action({
                   variables: {
                     id: simulatorId,
-                    ambiance: { id, volume: parseInt(e.target.value, 10) }
+                    ambiance: { id, volume: parseFloat(e.target.value) }
                   }
                 })
               }
@@ -120,7 +119,7 @@ const AmbianceConfig = ({
               step={0.01}
               max={4}
               defaultValue={playbackRate}
-              onChange={e =>
+              onMouseUp={e =>
                 action({
                   variables: {
                     id: simulatorId,
@@ -136,7 +135,7 @@ const AmbianceConfig = ({
               type="text"
               placeholder="0,1"
               defaultValue={channel}
-              onChange={e =>
+              onBlur={e =>
                 action({
                   variables: {
                     id: simulatorId,
@@ -155,10 +154,14 @@ const AmbianceConfig = ({
 const AmbianceConfigWrapped = playSound(AmbianceConfig);
 
 class AmbianceComp extends Component {
-  state = {};
   render() {
-    const { selectedAmbiance } = this.state;
-    const { id, ambiance } = this.props;
+    const {
+      selectAmbiance,
+      selectedAmbiance,
+      ambiance,
+      simulatorId: id
+    } = this.props;
+
     return (
       <Container>
         <Row>
@@ -171,7 +174,7 @@ class AmbianceComp extends Component {
                 <ListGroupItem
                   key={a.id}
                   active={selectedAmbiance === a.id}
-                  onClick={() => this.setState({ selectedAmbiance: a.id })}
+                  onClick={() => selectAmbiance(a.id)}
                 >
                   {a.name}
                 </ListGroupItem>
@@ -183,6 +186,14 @@ class AmbianceComp extends Component {
                   addSimulatorAmbiance(id: $id, name: $name)
                 }
               `}
+              refetchQueries={[
+                {
+                  query: QUERY,
+                  variables: {
+                    id
+                  }
+                }
+              ]}
             >
               {action => (
                 <Button
@@ -211,6 +222,14 @@ class AmbianceComp extends Component {
                       updateSimulatorAmbiance(id: $id, ambiance: $ambiance)
                     }
                   `}
+                  refetchQueries={[
+                    {
+                      query: QUERY,
+                      variables: {
+                        id
+                      }
+                    }
+                  ]}
                 >
                   {action => (
                     <Button
@@ -240,6 +259,14 @@ class AmbianceComp extends Component {
                       removeSimulatorAmbiance(id: $id, ambianceId: $ambianceId)
                     }
                   `}
+                  refetchQueries={[
+                    {
+                      query: QUERY,
+                      variables: {
+                        id
+                      }
+                    }
+                  ]}
                 >
                   {action => (
                     <Button
@@ -284,29 +311,26 @@ class AmbianceComp extends Component {
     );
   }
 }
-const Ambiance = ({ selectedSimulator }) => {
-  return (
-    <Query query={QUERY} variables={{ id: selectedSimulator.id }}>
-      {({ loading, data, subscribeToMore }) =>
-        loading ? null : (
-          <SubscriptionHelper
-            subscribe={() =>
-              subscribeToMore({
-                document: SUB,
-                variables: { id: selectedSimulator.id },
-                updateQuery: (previousResult, { subscriptionData }) => {
-                  return Object.assign({}, previousResult, {
-                    simulators: subscriptionData.data.simulatorsUpdate
-                  });
-                }
-              })
-            }
-          >
-            <AmbianceComp {...data.simulators[0]} />
-          </SubscriptionHelper>
-        )
-      }
-    </Query>
-  );
-};
+class Ambiance extends PureComponent {
+  state = {};
+  render() {
+    const { selectedAmbiance } = this.state;
+    const { ambiance, selectedSimulator } = this.props;
+    return (
+      <Query query={QUERY} variables={{ id: selectedSimulator.id }}>
+        {({ loading, data }) =>
+          loading || !data.simulators ? null : (
+            <AmbianceComp
+              ambiance={ambiance}
+              {...data.simulators[0]}
+              selectedAmbiance={selectedAmbiance}
+              selectAmbiance={a => this.setState({ selectedAmbiance: a })}
+              simulatorId={selectedSimulator.id}
+            />
+          )
+        }
+      </Query>
+    );
+  }
+}
 export default Ambiance;

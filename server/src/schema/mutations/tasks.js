@@ -1,5 +1,6 @@
 export default `
 
+#Macro: Tasks: Add Task
 addTask(taskInput:TaskInput!):String
 verifyTask(taskId:ID!, dismiss:Boolean):String
 requestTaskVerify(id:ID!):String

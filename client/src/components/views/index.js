@@ -156,6 +156,7 @@ import ComposerWidget from "./LongRangeComm/Composer";
 import CalculatorWidget from "./Widgets/calculator";
 import RemoteWidget from "./RemoteAccess/widget";
 import Keyboard from "./Widgets/keyboard";
+import SensorsWidget from "./Sensors/widget";
 
 const Views = {
   Login,
@@ -313,6 +314,13 @@ export const Widgets = {
     name: "Tasks",
     size: "lg",
     color: "#6F84EE"
+  },
+  sensors: {
+    widget: SensorsWidget,
+    icon: "circle-o-notch",
+    name: "Sensors",
+    size: "lg",
+    color: "#6FEDC5"
   }
 };
 

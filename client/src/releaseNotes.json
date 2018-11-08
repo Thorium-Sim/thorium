@@ -1,4 +1,18 @@
 {
+  "1.0.25": {
+    "features": [
+      "Add a sensors widget so it can be shown over other screens.",
+      "Add ability to change heat rate in the systems config.",
+      "Add an Add Task timeline macro",
+      "Make it possible to edit timeline steps in the timeline core.",
+      "Add the ability to provide station ambiance."
+    ],
+    "fixes": [
+      "Fix an issue with crashes creating ambiance tracks.",
+      "Fixes an issue where too many task templates can't scroll.",
+      "Made it so the 'Begin Training' button on the login screen starts the training player if there is an audio or video training."
+    ]
+  },
   "1.0.24": {
     "features": [
       "Make it possible to change the phasers to hold to charge.",

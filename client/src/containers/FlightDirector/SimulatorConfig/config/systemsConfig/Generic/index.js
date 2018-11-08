@@ -6,6 +6,7 @@ import { titleCase } from "change-case";
 import Basic from "./basic";
 import Power from "./power";
 import Locations from "./location";
+import Heat from "./heat";
 
 export const GENERIC_QUERY = gql`
   query System($simulatorId: ID!, $id: ID!) {
@@ -14,6 +15,7 @@ export const GENERIC_QUERY = gql`
       name
       displayName
       type
+      heatRate
       power {
         powerLevels
         defaultLevel
@@ -69,6 +71,13 @@ class GenericConfig extends Component {
                 </Button>
                 <Button
                   size="sm"
+                  active={selected === "Heat"}
+                  onClick={() => this.setState({ selected: "Heat" })}
+                >
+                  Heat
+                </Button>
+                <Button
+                  size="sm"
                   active={selected === "Locations"}
                   onClick={() => this.setState({ selected: "Locations" })}
                 >
@@ -102,6 +111,9 @@ class GenericConfig extends Component {
                     {...data.system}
                     decks={data.decks}
                   />
+                )}
+                {selected === "Heat" && (
+                  <Heat {...this.props} {...data.system} />
                 )}
                 {selected === "System Specific" && (
                   <Fragment>
