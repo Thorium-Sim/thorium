@@ -59,6 +59,7 @@ class Conversations extends Component {
     const { messages, simulator } = this.props;
     const { selectedConvo, messageInput, newMessage, alert } = this.state;
     const stationNames = simulator.stations.map(s => s.name);
+    console.log(alert);
     const messageList = Object.values(
       reduceMessages(messages, stationNames)
     ).sort((a, b) => {

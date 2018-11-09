@@ -7,7 +7,8 @@
     ],
     "fixes": [
       "Security decks now properly gets updates.",
-      "Fixes an issue with the damage teams tasks core component."
+      "Fixes an issue with the damage teams tasks core component.",
+      "Conversations in the new messaging core now stay red when done transitioning."
     ]
   },
   "1.0.25": {
