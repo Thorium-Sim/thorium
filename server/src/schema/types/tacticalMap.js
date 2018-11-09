@@ -57,6 +57,26 @@ input TacticalLayerInput {
   playbackSpeed:Float
 }
 
+type ThrusterControls {
+  rotation:String
+  reversed:Boolean
+  matchRotation:Boolean
+  up:String
+  down:String
+  left:String
+  right:String
+}
+
+input ThrusterControlsInput {
+  rotation:String
+  reversed:Boolean
+  matchRotation:Boolean
+  up:String
+  down:String
+  left:String
+  right:String
+}
+
 type TacticalItem {
   id: ID
   layerId: ID
@@ -85,6 +105,7 @@ type TacticalItem {
   ijkl: Boolean
   thrusters: Boolean
   rotationMatch: Boolean
+  thrusterControls:ThrusterControls
 }
 
 input TacticalItemInput {
@@ -113,6 +134,7 @@ input TacticalItemInput {
     ijkl: Boolean
     thrusters: Boolean
     rotationMatch: Boolean
+    thrusterControls: ThrusterControlsInput
 }
 
 type TacticalPath {
