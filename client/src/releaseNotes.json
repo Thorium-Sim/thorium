@@ -1,5 +1,6 @@
 {
   "1.0.26": {
+    "features": ["Added an internal comm notification on the crew station."],
     "fixes": ["Security decks now properly gets updates. "]
   },
   "1.0.25": {
