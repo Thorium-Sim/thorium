@@ -105,8 +105,9 @@
 }
 
 .new-messaging-core {
-  .alerted {
+  .list-group-item.alerted {
     animation: alerted 15s linear;
+    background-color: rgba(255, 0, 0, 0.5);
   }
 }
 
