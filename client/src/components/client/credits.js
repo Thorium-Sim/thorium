@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Button } from "reactstrap";
-import './credits.scss';
+import "./credits.scss";
 
 const creditList = [
   {
@@ -31,7 +31,7 @@ const creditList = [
     header: "Glass Frame Design",
     content: "Nathan King 👑"
   },
-    {
+  {
     header: "Epsilon Design",
     content: "Inspired by the Empty Epsilon Bridge Simulator"
   },
@@ -78,9 +78,9 @@ const creditList = [
         <li>Natalie Anderson</li>
         <li>Tabitha Long</li>
         <li>Bracken Funk</li>
-        <li>
-          <code>kimballfrank</code>
-        </li>
+        <li>Kimball Frank</li>
+        <li>Nathan Young</li>
+        <li>Jensen Caldwell</li>
       </ul>
     )
   },
@@ -119,7 +119,7 @@ const creditList = [
           </span>
         </li>
         <li>
-          The Christa McAuliffe Space Education Center{" "}
+          The Christa McAuliffe Space Center{" "}
           <span role="img" aria-label="donor-tag">
             🛰
           </span>
@@ -134,6 +134,12 @@ const creditList = [
           Ryan Anderson
           <span role="img" aria-label="donor-tag">
             🔭
+          </span>
+        </li>
+        <li>
+          Nathan Young
+          <span role="img" aria-label="donor-tag">
+            🇺🇸
           </span>
         </li>
       </ul>
