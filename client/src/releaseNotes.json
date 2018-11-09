@@ -2,7 +2,8 @@
   "1.0.26": {
     "features": [
       "Added an internal comm notification on the crew station.",
-      "Add the ability to have icons on a tactical map controllable with the ship's thrusters."
+      "Add the ability to have icons on a tactical map controllable with the ship's thrusters.",
+      "Add an additional scan preset for recommending the opposite (internal or external) sensors."
     ],
     "fixes": [
       "Security decks now properly gets updates.",
