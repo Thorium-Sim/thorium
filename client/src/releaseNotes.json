@@ -1,4 +1,7 @@
 {
+  "1.0.26": {
+    "fixes": ["Security decks now properly gets updates. "]
+  },
   "1.0.25": {
     "features": [
       "Add a sensors widget so it can be shown over other screens.",
