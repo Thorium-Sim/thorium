@@ -1,4 +1,14 @@
 {
+  "1.0.26": {
+    "features": [
+      "Added an internal comm notification on the crew station.",
+      "Add the ability to have icons on a tactical map controllable with the ship's thrusters."
+    ],
+    "fixes": [
+      "Security decks now properly gets updates.",
+      "Fixes an issue with the damage teams tasks core component."
+    ]
+  },
   "1.0.25": {
     "features": [
       "Add a sensors widget so it can be shown over other screens.",

@@ -1,8 +1,17 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Row, Col, Input, Label, FormGroup, Button } from "reactstrap";
+import {
+  Row,
+  Col,
+  Input,
+  Label,
+  FormGroup,
+  Button,
+  ButtonGroup
+} from "reactstrap";
 import { ChromePicker } from "react-color";
 import FileExplorer from "./fileExplorer";
+import FontAwesome from "react-fontawesome";
 
 export default class ObjectConfig extends Component {
   state = { draggingObject: null };
@@ -71,66 +80,75 @@ export default class ObjectConfig extends Component {
   };
   render() {
     const { objectId, selectedLayer, updateObject } = this.props;
-    const { draggingObject } = this.state;
+    const { draggingObject, thrusters } = this.state;
     const selectedObject = selectedLayer.items.find(i => i.id === objectId);
     return (
       <div className="tactical-object">
         {objectId ? (
-          <ObjectSettings
-            {...selectedObject}
-            updateObject={updateObject}
-            duplicate={() => {
-              const {
-                id,
-                layerId,
-                __typename,
-                location,
-                destination,
-                velocity: { x, y, z },
-                ...object
-              } = selectedObject;
-              const item = {
-                ...object,
-                velocity: {
-                  x,
-                  y,
-                  z
-                },
-                location: {
-                  x: location.x + 0.05,
-                  y: location.y + 0.05,
-                  z: location.z + 0.05
-                },
-                destination: {
-                  x: destination.x + 0.05,
-                  y: destination.y + 0.05,
-                  z: destination.z + 0.05
-                }
-              };
-              const mutation = gql`
-                mutation AddTacticalItem(
-                  $mapId: ID!
-                  $layerId: ID!
-                  $item: TacticalItemInput!
-                ) {
-                  addTacticalMapItem(
-                    mapId: $mapId
-                    layerId: $layerId
-                    item: $item
-                  )
-                }
-              `;
-              const variables = {
-                mapId: this.props.tacticalMapId,
-                layerId: this.props.layerId,
-                item
-              };
-              this.props.client.mutate({
-                mutation,
-                variables
-              });
-            }}
-          />
+          thrusters ? (
+            <Thrusters
+              {...selectedObject}
+              updateObject={updateObject}
+              cancel={() => this.setState({ thrusters: false })}
+            />
+          ) : (
+            <ObjectSettings
+              {...selectedObject}
+              updateObject={updateObject}
+              duplicate={() => {
+                const {
+                  id,
+                  layerId,
+                  __typename,
+                  location,
+                  destination,
+                  velocity: { x, y, z },
+                  ...object
+                } = selectedObject;
+                const item = {
+                  ...object,
+                  velocity: {
+                    x,
+                    y,
+                    z
+                  },
+                  location: {
+                    x: location.x + 0.05,
+                    y: location.y + 0.05,
+                    z: location.z + 0.05
+                  },
+                  destination: {
+                    x: destination.x + 0.05,
+                    y: destination.y + 0.05,
+                    z: destination.z + 0.05
+                  }
+                };
+                const mutation = gql`
+                  mutation AddTacticalItem(
+                    $mapId: ID!
+                    $layerId: ID!
+                    $item: TacticalItemInput!
+                  ) {
+                    addTacticalMapItem(
+                      mapId: $mapId
+                      layerId: $layerId
+                      item: $item
+                    )
+                  }
+                `;
+                const variables = {
+                  mapId: this.props.tacticalMapId,
+                  layerId: this.props.layerId,
+                  item
+                };
+                this.props.client.mutate({
+                  mutation,
+                  variables
+                });
+              }}
+              configThrusters={() => this.setState({ thrusters: true })}
+            />
+          )
         ) : (
           <FileExplorer
             onMouseDown={this.mouseDown}
@@ -170,6 +188,135 @@ function logslider(position, reverse) {
   return Math.exp(minv + scale * (position - minp));
 }
 
+const Thrusters = ({ cancel, updateObject, thrusterControls }) => {
+  const {
+    rotation,
+    reversed,
+    matchRotation,
+    up,
+    down,
+    left,
+    right
+  } = thrusterControls;
+  function updateThrusters(which, value) {
+    updateObject("thrusterControls", { ...thrusterControls, [which]: value });
+  }
+  return (
+    <Row>
+      <Col>
+        <p>Thrusters</p>
+        <Button size="sm" color="warning" onClick={cancel}>
+          Standard Config
+        </Button>
+        <p>
+          <small>Rotation speed is controlled in the thrusters core</small>
+        </p>
+        <p>
+          <small>Movement speed is controlled by the speed of the object</small>
+        </p>
+      </Col>
+      <Col>
+        <label>Match Thruster Rotation</label>
+        <Input
+          type="select"
+          value={rotation}
+          onChange={evt => updateThrusters("rotation", evt.target.value)}
+        >
+          <option value="">Choose a rotation</option>
+          <option value="yaw">Yaw</option>
+          <option value="pitch">Pitch</option>
+          <option value="roll">Roll</option>
+        </Input>
+        <Label check>
+          <Input
+            type="checkbox"
+            checked={reversed}
+            onChange={evt => updateThrusters("reversed", evt.target.checked)}
+          />
+          Reverse{" "}
+          <small>Makes object rotate opposite the thruster setting.</small>
+        </Label>
+        <Label check>
+          <Input
+            type="checkbox"
+            checked={matchRotation}
+            onChange={evt =>
+              updateThrusters("matchRotation", evt.target.checked)
+            }
+          />
+          Match Key/Thruster Direction to Rotation
+        </Label>
+      </Col>
+      <Col>
+        <p>Thruster Direction</p>
+        <div style={{ display: "flex" }}>
+          <FontAwesome name="arrow-up" />{" "}
+          <Input
+            type="select"
+            value={up}
+            onChange={evt => updateThrusters("up", evt.target.value)}
+          >
+            <option value="">Choose a Direction</option>
+            <option value="up">Up</option>
+            <option value="down">Down</option>
+            <option value="port">Port</option>
+            <option value="starboard">Starboard</option>
+            <option value="fore">Fore</option>
+            <option value="reverse">Reverse</option>
+          </Input>
+        </div>
+        <div style={{ display: "flex" }}>
+          <FontAwesome name="arrow-down" />{" "}
+          <Input
+            type="select"
+            value={down}
+            onChange={evt => updateThrusters("down", evt.target.value)}
+          >
+            <option value="">Choose a Direction</option>
+            <option value="up">Up</option>
+            <option value="down">Down</option>
+            <option value="port">Port</option>
+            <option value="starboard">Starboard</option>
+            <option value="fore">Fore</option>
+            <option value="reverse">Reverse</option>
+          </Input>
+        </div>
+        <div style={{ display: "flex" }}>
+          <FontAwesome name="arrow-left" />{" "}
+          <Input
+            type="select"
+            value={left}
+            onChange={evt => updateThrusters("left", evt.target.value)}
+          >
+            <option value="">Choose a Direction</option>
+            <option value="up">Up</option>
+            <option value="down">Down</option>
+            <option value="port">Port</option>
+            <option value="starboard">Starboard</option>
+            <option value="fore">Fore</option>
+            <option value="reverse">Reverse</option>
+          </Input>
+        </div>
+        <div style={{ display: "flex" }}>
+          <FontAwesome name="arrow-right" />{" "}
+          <Input
+            type="select"
+            value={right}
+            onChange={evt => updateThrusters("right", evt.target.value)}
+          >
+            <option value="">Choose a Direction</option>
+            <option value="up">Up</option>
+            <option value="down">Down</option>
+            <option value="port">Port</option>
+            <option value="starboard">Starboard</option>
+            <option value="fore">Fore</option>
+            <option value="reverse">Reverse</option>
+          </Input>
+        </div>
+      </Col>
+    </Row>
+  );
+};
 const ObjectSettings = ({
   speed,
   size,
@@ -185,7 +332,8 @@ const ObjectSettings = ({
   //thrusters,
   rotation,
   //rotationMatch
-  duplicate
+  duplicate,
+  configThrusters
 }) => {
   return (
     <Row className="tactical-object-config">
@@ -292,29 +440,6 @@ const ObjectSettings = ({
             IJKL Keys
           </Label>
         </FormGroup>
-
-        {/* <FormGroup check>
-          <Label check>
-            <Input
-              type="checkbox"
-              checked={thrusters}
-              onChange={evt => updateObject("thrusters", evt.target.checked)}
-            />
-            Simulator Thruster Control
-          </Label>
-        </FormGroup> */}
-        {/* <FormGroup check>
-          <Label check>
-            <Input
-              type="checkbox"
-              checked={rotationMatch}
-              onChange={evt =>
-                updateObject("rotationMatch", evt.target.checked)
-              }
-            />
-            Match Key/Thruster Direction to Rotation
-          </Label>
-        </FormGroup> */}
       </Col>
       <Col>
         <FormGroup>
@@ -341,9 +466,14 @@ const ObjectSettings = ({
           </Label>
         </FormGroup>
         <FormGroup>
-          <Button color="success" onClick={duplicate}>
-            Duplicate
-          </Button>
+          <ButtonGroup>
+            <Button size="sm" color="success" onClick={duplicate}>
+              Duplicate
+            </Button>
+            <Button size="sm" color="info" onClick={configThrusters}>
+              Config Thrusters
+            </Button>
+          </ButtonGroup>
         </FormGroup>
       </Col>
       <Col>

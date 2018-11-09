@@ -45,18 +45,22 @@ const trainingSteps = [
   }
 ];
 
+const queryData = `
+id
+number
+evac
+doors
+crewCount
+rooms {
+  id
+  name
+  gas
+}`;
+
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
     decksUpdate(simulatorId: $simulatorId) {
-      id
-      evac
-      doors
-      crewCount
-      rooms {
-        name
-        id
-        gas
-      }
+      ${queryData}
     }
   }
 `;
@@ -149,6 +153,11 @@ class SecurityDecks extends Component {
               document: DECK_SUB,
               variables: {
                 simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  decks: subscriptionData.data.decksUpdate
+                });
               }
             })
           }
@@ -269,16 +278,7 @@ class SecurityDecks extends Component {
 const DECK_QUERY = gql`
   query SimulatorDecks($simulatorId: ID!) {
     decks(simulatorId: $simulatorId) {
-      id
-      number
-      evac
-      doors
-      crewCount
-      rooms {
-        id
-        name
-        gas
-      }
+      ${queryData}
     }
   }
 `;
