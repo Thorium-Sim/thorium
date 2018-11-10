@@ -41,9 +41,6 @@ class HotkeysConfig extends Component {
   }
   updateAllowed = value => {
     const i = this.state.setConfig;
-    const data = this.state.allowed[i].data
-      ? JSON.parse(this.state.allowed[i].data)
-      : {};
     this.setState(
       state => ({
         allowed: {
