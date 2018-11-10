@@ -9,7 +9,8 @@
       "Security decks now properly gets updates.",
       "Fixes an issue with the damage teams tasks core component.",
       "Conversations in the new messaging core now stay red when done transitioning.",
-      "Contacts are now properly removed from the targeting core when a sensor contact is destroyed or cleared."
+      "Contacts are now properly removed from the targeting core when a sensor contact is destroyed or cleared.",
+      "Fix an issue with cargo logs being persisted between flights. "
     ]
   },
   "1.0.25": {
