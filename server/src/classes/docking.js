@@ -18,8 +18,9 @@ export default class DockingPort extends System {
       this.image = params.image || "/Docking Images/Default.png";
       this.docked = params.docked || false;
     }
+    this.direction = params.direction || 'unspecified';    // or 'arriving' or 'departing'
   }
-  updateDockingPort({ name, type, clamps, compress, doors, image, docked }) {
+  updateDockingPort({ name, type, clamps, compress, doors, image, docked, direction }) {
     if (name || name === "") {
       this.name = name;
     }
@@ -40,6 +41,9 @@ export default class DockingPort extends System {
     }
     if (docked || docked === false) {
       this.docked = docked;
+    }
+    if (direction) {
+      this.direction = direction;
     }
   }
 }

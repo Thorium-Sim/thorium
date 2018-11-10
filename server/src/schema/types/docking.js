@@ -9,7 +9,8 @@ type DockingPort {
   doors: Boolean
   image: String
   docked: Boolean
-  damage: Damage  
+  damage: Damage
+  direction: DOCKING_DIRECTION
 }
 
 input DockingPortInput {
@@ -22,10 +23,17 @@ input DockingPortInput {
   doors: Boolean
   image: String
   docked: Boolean
+  direction: DOCKING_DIRECTION
 }
 
 enum DOCKING_TYPES {
   shuttlebay
   dockingport
+}
+
+enum DOCKING_DIRECTION {
+  unspecified
+  arriving
+  departing
 }
 `;
