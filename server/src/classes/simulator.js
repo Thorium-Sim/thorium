@@ -76,7 +76,9 @@ class Ship {
     codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
 
     // Inventory Logs
-    this.inventoryLogs = params.inventoryLogs.concat() || [];
+    this.inventoryLogs = params.inventoryLogs
+      ? params.inventoryLogs.concat()
+      : [];
   }
 }
 
