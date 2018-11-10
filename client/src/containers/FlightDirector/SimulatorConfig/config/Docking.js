@@ -4,7 +4,7 @@ import { graphql, withApollo } from "react-apollo";
 import { Table, Button, Input } from "reactstrap";
 
 const DockingConfig = ({ data, selectedSimulator, client }) => {
-  function addShuttle() {
+  function addDocking(type = "shuttlebay") {
     const mutation = gql`
       mutation CreateShuttlebay($port: DockingPortInput!) {
         createDockingPort(port: $port)
@@ -13,7 +13,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
     const variables = {
       port: {
         simulatorId: selectedSimulator.id,
-        type: "shuttlebay"
+        type
       }
     };
     client.mutate({
@@ -23,7 +23,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
     });
   }
 
-  function removeShuttle(id) {
+  function removeDocking(id) {
     const mutation = gql`
       mutation RemoveShuttlebay($id: ID!) {
         removeDockingPort(port: $id)
@@ -39,7 +39,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
     });
   }
 
-  function updateShuttle(id, which, value) {
+  function updateDocking(id, which, value) {
     const mutation = gql`
       mutation UpdateShuttleBay($port: DockingPortInput!) {
         updateDockingPort(port: $port)
@@ -72,13 +72,13 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
             </tr>
           </thead>
           <tbody>
-            {docking.map(d => (
+            {docking.filter(d => d.type === "shuttlebay").map(d => (
               <tr key={d.id}>
                 <td>
                   <Input
                     defaultValue={d.name || ""}
                     onChange={evt =>
-                      updateShuttle(d.id, "name", evt.target.value)
+                      updateDocking(d.id, "name", evt.target.value)
                     }
                   />
                 </td>
@@ -87,7 +87,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                     type="select"
                     value={d.image || ""}
                     onChange={evt =>
-                      updateShuttle(d.id, "image", evt.target.value)
+                      updateDocking(d.id, "image", evt.target.value)
                     }
                   >
                     <option value="" disabled>
@@ -107,7 +107,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                   <Button
                     color="danger"
                     size="xs"
-                    onClick={() => removeShuttle(d.id)}
+                    onClick={() => removeDocking(d.id)}
                   >
                     Delete
                   </Button>
@@ -116,12 +116,47 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
             ))}
           </tbody>
         </Table>
-        <Button color="success" onClick={addShuttle}>
+        <Button color="success" onClick={addDocking}>
           Add Shuttlebay
         </Button>
       </fieldset>
       <fieldset className="form-group">
         <label>Docking Ports</label>
+        <Table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {docking.filter(d => d.type === "dockingport").map(d => (
+              <tr key={d.id}>
+                <td>
+                  <Input
+                    defaultValue={d.name || ""}
+                    onChange={evt =>
+                      updateDocking(d.id, "name", evt.target.value)
+                    }
+                  />
+                </td>
+
+                <td>
+                  <Button
+                    color="danger"
+                    size="xs"
+                    onClick={() => removeDocking(d.id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <Button color="success" onClick={() => addDocking("dockingport")}>
+          Add Docking Port
+        </Button>
       </fieldset>
     </div>
   );
@@ -129,9 +164,10 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
 
 const DOCKING_QUERY = gql`
   query DockingConfig($id: ID) {
-    docking(simulatorId: $id, type: shuttlebay) {
+    docking(simulatorId: $id) {
       id
       name
+      type
       image
     }
     assetFolders(names: ["Docking Images"]) {

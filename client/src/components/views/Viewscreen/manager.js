@@ -370,6 +370,7 @@ class ViewscreenManager extends Component {
           </div>
         </div>
         <ViewscreenHotkeysConfig
+          {...this.props}
           modal={config}
           toggle={() => this.setState({ config: false })}
         />
