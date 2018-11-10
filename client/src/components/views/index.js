@@ -241,8 +241,8 @@ const Views = {
   BridgeMap,
   ThrustersLite,
   ParticleDetector,
-  Tasks,
-  DockingPorts
+  Tasks
+  // DockingPorts
 };
 
 export const Widgets = {
