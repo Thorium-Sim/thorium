@@ -30,16 +30,16 @@ class Hotkey extends Component {
     const allowed = storedAllowed
       ? JSON.parse(storedAllowed)
       : {
-          1: "auto",
-          2: "ShipLogo",
-          3: "RedAlert",
-          4: "CollisionAlert",
-          5: "Communications",
-          6: "DamageMonitoring",
-          7: "Overheating",
-          8: "ViewscreenOffline",
-          9: "RadiationMonitoring",
-          0: "Blackout"
+          1: { component: "auto", data: "{}" },
+          2: { component: "ShipLogo", data: "{}" },
+          3: { component: "RedAlert", data: "{}" },
+          4: { component: "CollisionAlert", data: "{}" },
+          5: { component: "Communications", data: "{}" },
+          6: { component: "DamageMonitoring", data: "{}" },
+          7: { component: "Overheating", data: "{}" },
+          8: { component: "ViewscreenOffline", data: "{}" },
+          9: { component: "RadiationMonitoring", data: "{}" },
+          0: { component: "Blackout", data: "{}" }
         };
     this.state = {
       showing: false,
@@ -66,7 +66,9 @@ class Hotkey extends Component {
     }
     this.setState({ viewscreen: true });
     const code = e.code.replace("Digit", "").replace("Key", "");
-    const viewscreen = viewscreens[code];
+    if (!viewscreens[code]) return;
+    const viewscreen = viewscreens[code].component || viewscreens[code];
+    const data = viewscreens[code].data;
 
     if (viewscreen) {
       if (viewscreen.auto) {
@@ -80,7 +82,7 @@ class Hotkey extends Component {
         mutation,
         variables: {
           id: this.props.simulator.id,
-          data: "{}",
+          data: data,
           component: viewscreen
         }
       });
@@ -110,9 +112,12 @@ class Hotkey extends Component {
           }`}
         >
           {Object.entries(viewscreens).map(([key, v], i) => (
-            <h3 key={`viewscreen-${i}`}>
-              {key}: {titleCase(v)}
-            </h3>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <h3 key={`viewscreen-${i}`}>
+                {key}: {titleCase(v.component || v)}
+              </h3>
+              {v.component === "Video" && JSON.parse(v.data).asset}
+            </div>
           ))}
         </div>
         <div className={`hotkey-core core ${showing ? "showing" : ""}`}>

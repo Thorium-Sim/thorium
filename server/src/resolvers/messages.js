@@ -10,7 +10,7 @@ const teamMap = {
 
 export const MessagesQueries = {
   messages(_, { simulatorId, station }) {
-    let returnValue = App.messages;
+    let returnValue = App.messages.concat();
     if (simulatorId) {
       returnValue = returnValue.filter(m => m.simulatorId === simulatorId);
     }
@@ -56,7 +56,7 @@ export const MessagesMutations = {
 export const MessagesSubscriptions = {
   messageUpdates: {
     resolve(rootValue, { simulatorId, station }) {
-      let returnValue = rootValue;
+      let returnValue = rootValue.concat();
       if (simulatorId) {
         returnValue = returnValue.filter(m => m.simulatorId === simulatorId);
       }

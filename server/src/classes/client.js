@@ -117,6 +117,7 @@ export default class Client {
     this.simulatorId = null;
     this.station = null;
     this.hypercard = null;
+    this.logout();
     if (flight && flight.simulators.length === 1) {
       this.simulatorId = flight.simulators[0];
     }
@@ -124,6 +125,7 @@ export default class Client {
   setSimulator(simulatorId) {
     this.simulatorId = simulatorId;
     this.station = null;
+    this.logout();
   }
   setStation(station) {
     this.station = station;

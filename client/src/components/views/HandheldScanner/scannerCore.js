@@ -153,7 +153,7 @@ class ScannerCore extends Component {
                     <option value={"answers"} disabled>
                       Answers
                     </option>
-                    {ScanPresets.map(p => (
+                    {ScanPresets().map(p => (
                       <option key={p.label} value={p.value}>
                         {p.label}
                       </option>
