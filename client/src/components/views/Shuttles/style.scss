@@ -45,6 +45,19 @@
     margin-right: 15px;
     flex-shrink: 0 
   }
+  .docking-hint {
+    width: 12px;
+    height: 12px;
+    border-bottom:solid white 3px;
+    border-left:solid white 3px;
+    flex: 0 0 auto;
+    animation-name: docking-hint-animation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  }
+  .docking-hint.hidden {
+    visibility: hidden;
+  }
   .door {
     background-color: #222;
     border: solid 2px white;
@@ -67,5 +80,16 @@
       padding: 4px;
       border: solid 2px white;
     }
+  }
+}
+
+@keyframes docking-hint-animation {
+  from {
+    transform: translate(5px, 0) scale(1, 0.8) rotate(45deg);
+    opacity: 1;    
+  }
+  to {
+    transform: translate(-5px, 0) scale(1, 0.8) rotate(45deg);
+    opacity: 0;    
   }
 }

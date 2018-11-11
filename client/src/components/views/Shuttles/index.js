@@ -24,6 +24,7 @@ const SHUTTLE_SUB = gql`
       damage {
         damaged
       }
+      direction
     }
   }
 `;
@@ -119,6 +120,21 @@ class ShuttleBay extends Component {
       4000
     );
   };
+  updateShuttle = (id, which, value) => {
+    const mutation = gql`
+      mutation UpdateShuttleBay($port: DockingPortInput!) {
+        updateDockingPort(port: $port)
+      }
+    `;
+    const port = {
+      id
+    };
+    port[which] = value;
+    this.props.client.mutate({
+      mutation,
+      variables: { port }
+    });
+  };
   render() {
     const {
       docked,
@@ -130,16 +146,59 @@ class ShuttleBay extends Component {
       clamps,
       compress,
       doors,
-      damage
+      damage,
+      direction
     } = this.props;
     const { animating } = this.state;
+
+    let hint = '';
+    if(!animating) {
+      if(direction === 'departing') {
+        if(clamps) hint = 'clamps';
+        else if(compress) hint = 'compress';
+        else if(doors) hint = 'doors';
+      }
+      else if (direction === 'arriving' && !docked) {
+        if(clamps) hint = 'clamps';
+        else if(compress) hint = 'compress';
+        else if(doors) hint = 'doors';
+      }
+      else if (direction === 'arriving' && docked) {
+        if(!doors) hint = 'doors';
+        else if(!compress) hint = 'compress';
+        else if(!clamps) hint = 'clamps';
+      }
+    }
+    // Also add close out procedure after a shuttle has departed?
+
     return (
       <Card>
         <DamageOverlay system={{ damage }} message={`${name} Offline`} />
         <CardBody>
           <h3 className="text-center">{name}</h3>
+          
           <Row>
-            <Col sm={6}>
+            <Col sm={7}>
+              {direction === "unspecified" && docked &&
+              <Button
+                block
+                className="departure-button"
+                color="success"
+                onClick={() => this.updateShuttle(id, "direction", "departing")}
+                >
+                Prepare for departure
+              </Button>
+              }
+              {direction === "departing" && docked &&
+              <Button
+                block
+                className="departure-button"
+                color="danger"
+                onClick={() => this.updateShuttle(id, "direction", "unspecified")}
+                >
+                Abort departure sequence
+              </Button>
+              }
               <div className='docking-icon-wrapper'>
                 <div className='docking-icon'>
                   <Clamps transform={clamps}/>
@@ -153,6 +212,7 @@ class ShuttleBay extends Component {
                   >
                   {clamps ? "Detach" : "Attach"} Clamps
                 </Button>
+                <div className={`docking-hint ${hint !== 'clamps' ? 'hidden' : ''}`}/>
               </div>
               <div className='docking-icon-wrapper'>
                 <div className='docking-icon'>
@@ -167,6 +227,7 @@ class ShuttleBay extends Component {
                 >
                   {compress ? "Decompress" : "Compress"}
                 </Button>
+                <div className={`docking-hint ${hint !== 'compress' ? 'hidden' : ''}`}/>
               </div>
               <div className='docking-icon-wrapper'>
                 <div className='docking-icon'>
@@ -181,9 +242,10 @@ class ShuttleBay extends Component {
                 >
                   {doors ? "Open" : "Close"} Doors
                 </Button>
+                <div className={`docking-hint ${hint !== 'doors' ? 'hidden' : ''}`}/>
               </div>
             </Col>
-            <Col sm={6}>
+            <Col sm={5}>
               {animating === "clamps" && <Clamps transform={clamps} />}
               {animating === "compress" && <Decompress on={compress} />}
               {animating === "doors" && (
@@ -233,6 +295,7 @@ const SHUTTLE_QUERY = gql`
       damage {
         damaged
       }
+      direction
     }
   }
 `;
