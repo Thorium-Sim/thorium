@@ -140,33 +140,48 @@ class ShuttleBay extends Component {
           <h3 className="text-center">{name}</h3>
           <Row>
             <Col sm={6}>
-              <Button
-                block
-                className="clamps-button"
-                disabled={!!animating}
-                color="primary"
-                onClick={() => this.toggleShuttle(id, "clamps")}
-              >
-                {clamps ? "Detach" : "Attach"} Clamps
-              </Button>
-              <Button
-                block
-                disabled={!!animating || !doors}
-                color="primary"
-                className="compress-button"
-                onClick={() => this.toggleShuttle(id, "compress")}
-              >
-                {compress ? "Decompress" : "Compress"} Bay
-              </Button>
-              <Button
-                block
-                disabled={!!animating || compress}
-                color="primary"
-                className="doors-button"
-                onClick={() => this.toggleShuttle(id, "doors")}
-              >
-                {doors ? "Open" : "Close"} Doors
-              </Button>
+              <div className='docking-icon-wrapper'>
+                <div className='docking-icon'>
+                  <Clamps transform={clamps}/>
+                </div>
+                <Button
+                  block
+                  className="clamps-button"
+                  disabled={!!animating}
+                  color="primary"
+                  onClick={() => this.toggleShuttle(id, "clamps")}
+                  >
+                  {clamps ? "Detach" : "Attach"} Clamps
+                </Button>
+              </div>
+              <div className='docking-icon-wrapper'>
+                <div className='docking-icon'>
+                  <Decompress on={compress} />
+                </div>              
+                <Button
+                  block
+                  disabled={!!animating || !doors}
+                  color="primary"
+                  className="compress-button"
+                  onClick={() => this.toggleShuttle(id, "compress")}
+                >
+                  {compress ? "Decompress" : "Compress"}
+                </Button>
+              </div>
+              <div className='docking-icon-wrapper'>
+                <div className='docking-icon'>
+                  <Door open={!doors} number={"0" + (i + 1)} />
+                </div>
+                <Button
+                  block
+                  disabled={!!animating || compress}
+                  color="primary"
+                  className="doors-button"
+                  onClick={() => this.toggleShuttle(id, "doors")}
+                >
+                  {doors ? "Open" : "Close"} Doors
+                </Button>
+              </div>
             </Col>
             <Col sm={6}>
               {animating === "clamps" && <Clamps transform={clamps} />}
@@ -193,7 +208,7 @@ class ShuttleBay extends Component {
                   style={{ display: !animating ? "flex" : "none" }}
                   className="shuttle"
                 >
-                  <h2>No Shuttle</h2>
+                  <h2>Shuttlebay Empty</h2>
                   <div className="spacer" />
                 </div>
               )}
