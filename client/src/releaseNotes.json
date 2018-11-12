@@ -15,7 +15,8 @@
       "Contacts are now properly removed from the targeting core when a sensor contact is destroyed or cleared.",
       "Fix an issue with cargo logs being persisted between flights. ",
       "Switch out the LRM cores on MainCore and AuxCore to be the comm convo core.",
-      "Adjusted the delay of the widget tooltip so tooltips don't overlap."
+      "Adjusted the delay of the widget tooltip so tooltips don't overlap.",
+      "Fixes errors and crashes in the sickbay."
     ]
   },
   "1.0.25": {
