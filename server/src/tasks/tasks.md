@@ -68,3 +68,6 @@ creates a chain of steps which must be completed one at a time.
 The data structure for this is an array of arrays of tasks, like so:
 
 [[First Task], [Second Task 1, Second Task 2], [Third Task]]
+
+Possible task definitions are here:
+https://docs.google.com/spreadsheets/d/1MUX5ovJ3oJ1enwAM91-EBSuIXFHUC3uiHyVrAeysaWI/edit?usp=sharing

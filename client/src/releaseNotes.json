@@ -4,14 +4,18 @@
       "Added an internal comm notification on the crew station.",
       "Add the ability to have icons on a tactical map controllable with the ship's thrusters.",
       "Add an additional scan preset for recommending the opposite (internal or external) sensors.",
-      "Makes it possible to configure viewscreen hotkeys with data, such as assigning a video. "
+      "Makes it possible to configure viewscreen hotkeys with data, such as assigning a video.",
+      "Add tasks for security and medical teams.",
+      "Security incidents (basically only security team tasks right now) appear on the Security Decks screen."
     ],
     "fixes": [
       "Security decks now properly gets updates.",
       "Fixes an issue with the damage teams tasks core component.",
       "Conversations in the new messaging core now stay red when done transitioning.",
       "Contacts are now properly removed from the targeting core when a sensor contact is destroyed or cleared.",
-      "Fix an issue with cargo logs being persisted between flights. "
+      "Fix an issue with cargo logs being persisted between flights. ",
+      "Switch out the LRM cores on MainCore and AuxCore to be the comm convo core.",
+      "Adjusted the delay of the widget tooltip so tooltips don't overlap."
     ]
   },
   "1.0.25": {

@@ -8,8 +8,7 @@ import "../sideCore.scss";
 
 const allowed = [
   "SensorsCore",
-  "DecodingCore",
-  "LRCommCore",
+  "CommConvoCore",
   "InternalCommCore",
   "SystemsCore",
   "CommShortRangeCore",
