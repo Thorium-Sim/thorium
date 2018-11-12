@@ -52,7 +52,7 @@ export default [
         input: () => "textarea",
         value: () => "A damage team needs to be sent to perform some repairs."
       },
-      name: {
+      teamName: {
         input: () => "text",
         value: () => "Repair Team"
       },
@@ -90,7 +90,7 @@ export default [
 
     instructions({
       simulator,
-      requiredValues: { preamble, name, orders, room: roomId, officers },
+      requiredValues: { preamble, teamName, orders, room: roomId, officers },
       task = {}
     }) {
       // Make sure it supports systems as well
@@ -108,7 +108,7 @@ export default [
           : room
             ? `${room.name}, Deck ${deck.number}`
             : `Deck ${deck.number}`;
-      const text = `Team Name: ${name}
+      const text = `Team Name: ${teamName}
 Location: ${location}
 Officers:
 ${officerText}
@@ -166,7 +166,7 @@ ${text}`,
         value: () =>
           "A security team should be dispatched to ensure the safety of the crew."
       },
-      name: {
+      teamName: {
         input: () => "text",
         value: () => "Security Detail"
       },
@@ -189,7 +189,7 @@ ${text}`,
 
     instructions({
       simulator,
-      requiredValues: { preamble, name, orders, room: roomId, officers },
+      requiredValues: { preamble, teamName, orders, room: roomId, officers },
       task = {}
     }) {
       // Make sure it supports systems as well
@@ -204,7 +204,7 @@ ${text}`,
           : room
             ? `${room.name}, Deck ${deck.number}`
             : `Deck ${deck.number}`;
-      const text = `Team Name: ${name}
+      const text = `Team Name: ${teamName}
 Location: ${location}
 Orders: ${orders}`;
       if (station && task.station === station.name)
@@ -261,7 +261,7 @@ ${text}`,
         input: () => "textarea",
         value: () => "An incident requires the attention of a medical team."
       },
-      name: {
+      teamName: {
         input: () => "text",
         value: () => "Medical Detail"
       },
@@ -284,7 +284,7 @@ ${text}`,
 
     instructions({
       simulator,
-      requiredValues: { preamble, name, orders, room: roomId },
+      requiredValues: { preamble, teamName, orders, room: roomId },
       task = {}
     }) {
       // Make sure it supports systems as well
@@ -299,7 +299,7 @@ ${text}`,
           : room
             ? `${room.name}, Deck ${deck.number}`
             : `Deck ${deck.number}`;
-      const text = `Team Name: ${name}
+      const text = `Team Name: ${teamName}
 Location: ${location}
 Orders: ${orders}`;
       if (station && task.station === station.name)
