@@ -5,7 +5,8 @@
       "Add the ability to have icons on a tactical map controllable with the ship's thrusters.",
       "Add an additional scan preset for recommending the opposite (internal or external) sensors.",
       "Makes it possible to configure viewscreen hotkeys with data, such as assigning a video.",
-      "Add tasks for security and medical teams."
+      "Add tasks for security and medical teams.",
+      "Security incidents (basically only security team tasks right now) appear on the Security Decks screen."
     ],
     "fixes": [
       "Security decks now properly gets updates.",
