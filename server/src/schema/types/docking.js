@@ -10,6 +10,7 @@ type DockingPort {
   image: String
   docked: Boolean
   damage: Damage  
+  position: Coordinates
 }
 
 input DockingPortInput {
@@ -22,6 +23,7 @@ input DockingPortInput {
   doors: Boolean
   image: String
   docked: Boolean
+  position: CoordinatesInput
 }
 
 enum DOCKING_TYPES {

@@ -3,6 +3,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import { Button } from "reactstrap";
 import { randomFromList } from "helpers/randomFromList";
+import FontAwesome from "react-fontawesome";
 
 const crewQuery = gql`
   query CrewPositions($simulatorId: ID!) {
@@ -12,9 +13,9 @@ const crewQuery = gql`
     }
   }
 `;
-const DamageTeamPicker = ({ simulatorId, onChange, value }) => (
+const DamageTeamPicker = ({ simulatorId, onChange, value = {} }) => (
   <Query query={crewQuery} variables={{ simulatorId }}>
-    {({ loading, data: { crew } }) => {
+    {({ loading, data: { crew = [] } }) => {
       if (loading) return null;
       const positions = crew.reduce(
         (prev, next) =>
@@ -57,6 +58,15 @@ const DamageTeamPicker = ({ simulatorId, onChange, value }) => (
                 max={5}
                 style={{ width: "unset" }}
                 onChange={e => onChange({ ...value, [key]: e.target.value })}
+              />
+              <FontAwesome
+                name="ban"
+                className="text-danger"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  const { [key]: myKey, ...rest } = value;
+                  onChange(rest);
+                }}
               />
             </div>
           ))}

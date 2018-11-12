@@ -47,7 +47,7 @@ const ValueInput = ({
               {titleCase(label)}
               <DeckSelect
                 simulatorId={simulatorId}
-                value={value}
+                value={value || placeholder}
                 onChange={onBlur}
               />
             </label>
@@ -67,7 +67,7 @@ const ValueInput = ({
               {titleCase(label)}
               <DamageTeamPicker
                 simulatorId={simulatorId}
-                value={value}
+                value={value || placeholder}
                 onChange={onBlur}
               />
             </label>

@@ -1,6 +1,7 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
+import uuid from "uuid";
 
 App.on("createInternalComm", ({ simulatorId }) => {
   const system = new Classes.InternalComm({ simulatorId });
@@ -74,6 +75,23 @@ App.on("internalCommCallIncoming", ({ id, incoming }) => {
     "internalCommUpdate",
     App.systems.filter(s => s.type === "InternalComm")
   );
+
+  // Send a notification to the stations
+  const simulator = App.simulators.find(s => s.id === sys.simulatorId);
+  const stations = simulator.stations.filter(s =>
+    s.cards.find(c => c.component === "CommInternal")
+  );
+  stations.forEach(s => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      type: "Internal Comm",
+      station: s.name,
+      title: `New Internal Call`,
+      body: incoming,
+      color: "info"
+    });
+  });
 });
 App.on("internalCommCallOutgoing", ({ id, outgoing }) => {
   const sys = App.systems.find(s => s.id === id);

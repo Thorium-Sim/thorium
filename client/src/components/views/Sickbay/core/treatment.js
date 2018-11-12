@@ -117,21 +117,6 @@ class Treatment extends Component {
             value={[]}
             onChange={this.loadReport}
           />
-
-          {/* <select
-        value={"answers"}
-        onChange={this.scanPreset}
-        style={{ flexGrow: 4, maxWidth: 100 }}
-      >
-        <option value={"answers"} disabled>
-          Answers
-        </option>
-        {ScanPresets.map(p => (
-          <option key={p.label} value={p.value}>
-            {p.label}
-          </option>
-        ))}
-      </select> */}
         </div>
       </Fragment>
     );

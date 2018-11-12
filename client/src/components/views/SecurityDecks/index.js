@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import { graphql, withApollo } from "react-apollo";
 import {
   Row,
@@ -17,6 +17,8 @@ import { RoomDropdown } from "helpers/shipStructure";
 
 import "./style.scss";
 import BulkheadDoors from "./bulkheadDoors";
+
+const incidentDefinitions = ["Send Security Team"];
 
 const trainingSteps = [
   {
@@ -45,18 +47,39 @@ const trainingSteps = [
   }
 ];
 
+const queryData = `
+id
+number
+evac
+doors
+crewCount
+rooms {
+  id
+  name
+  gas
+}`;
+
+const tasksData = `
+id
+verified
+instructions
+definition
+values
+verifyRequested
+`;
+
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
     decksUpdate(simulatorId: $simulatorId) {
-      id
-      evac
-      doors
-      crewCount
-      rooms {
-        name
-        id
-        gas
-      }
+      ${queryData}
+    }
+  }
+`;
+
+const SUBSCRIPTION = gql`
+  subscription TasksUpdate($simulatorId: ID!, $definitions: [String!]) {
+    tasksUpdate(simulatorId: $simulatorId, definitions:$definitions) {
+${tasksData}
     }
   }
 `;
@@ -132,7 +155,7 @@ class SecurityDecks extends Component {
   }
   render() {
     if (this.props.data.loading || !this.props.data.decks) return null;
-    const decks = this.props.data.decks;
+    const { decks, tasks } = this.props.data;
     let deck;
     let room = {};
     if (this.state.selectedDeck) {
@@ -141,6 +164,33 @@ class SecurityDecks extends Component {
     if (this.state.selectedRoom) {
       room = deck.rooms.find(r => r.id === this.state.selectedRoom);
     }
+    const taskDecks = tasks
+      ? tasks
+          .map(t =>
+            decks.reduce((prev, next) => {
+              if (!t.values || !t.values.room) return prev;
+              if (
+                next.id === t.values.room ||
+                next.rooms.find(r => r.id === t.values.room)
+              )
+                return next;
+              return prev;
+            }, null)
+          )
+          .filter(Boolean)
+          .map(d => d.number)
+      : [];
+
+    const deckTasks = deck
+      ? tasks.filter(
+          t =>
+            !t.verified &&
+            t.values &&
+            t.values.room &&
+            (t.values.room === deck.id ||
+              deck.rooms.find(r => r.id === t.values.room))
+        )
+      : [];
     return (
       <Row className="security-decks">
         <SubscriptionHelper
@@ -149,6 +199,27 @@ class SecurityDecks extends Component {
               document: DECK_SUB,
               variables: {
                 simulatorId: this.props.simulator.id
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  decks: subscriptionData.data.decksUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: SUBSCRIPTION,
+              variables: {
+                simulatorId: this.props.simulator.id,
+                definitions: incidentDefinitions
+              },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  tasks: subscriptionData.data.tasksUpdate
+                });
               }
             })
           }
@@ -172,7 +243,7 @@ class SecurityDecks extends Component {
                       this.state.selectedDeck === d.id ? "selected" : ""
                     } ${d.doors ? "doors" : ""} ${d.evac ? "evac" : ""} ${
                       d.rooms.find(r => r.gas) ? "tranzine" : ""
-                    }`}
+                    } ${taskDecks.indexOf(d.number) > -1 ? "incident" : ""}`}
                   >
                     Deck {d.number}
                   </ListGroupItem>
@@ -230,7 +301,7 @@ class SecurityDecks extends Component {
             </Col>
           </Row>
           <Row>
-            <Col sm={12} className="tranzine-gas">
+            <Col sm={6} className="tranzine-gas">
               <Card>
                 <CardBody>
                   <h4>Tranzine Gas</h4>
@@ -258,6 +329,25 @@ class SecurityDecks extends Component {
                 </CardBody>
               </Card>
             </Col>
+            {deckTasks.length > 0 && (
+              <Col sm={6}>
+                <Card style={{ maxHeight: "300px", overflowY: "auto" }}>
+                  <CardBody>
+                    <h4>Security Incidents</h4>
+                    <div>
+                      {deckTasks.map((d, i, arr) => (
+                        <Fragment key={d.id}>
+                          <p style={{ whiteSpace: "pre-line" }}>
+                            {d.instructions}
+                          </p>
+                          {arr.length > i + 1 && <hr />}
+                        </Fragment>
+                      ))}
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            )}
           </Row>
         </Col>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
@@ -267,18 +357,12 @@ class SecurityDecks extends Component {
 }
 
 const DECK_QUERY = gql`
-  query SimulatorDecks($simulatorId: ID!) {
+  query SimulatorDecks($simulatorId: ID!, $definitions: [String!]) {
     decks(simulatorId: $simulatorId) {
-      id
-      number
-      evac
-      doors
-      crewCount
-      rooms {
-        id
-        name
-        gas
-      }
+      ${queryData}
+    }
+    tasks(simulatorId:$simulatorId, definitions:$definitions) {
+      ${tasksData}
     }
   }
 `;
@@ -286,6 +370,9 @@ const DECK_QUERY = gql`
 export default graphql(DECK_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
-    variables: { simulatorId: ownProps.simulator.id }
+    variables: {
+      simulatorId: ownProps.simulator.id,
+      definitions: incidentDefinitions
+    }
   })
 })(withApollo(SecurityDecks));

@@ -70,7 +70,7 @@ class SensorsCore extends Component {
       evt.preventDefault();
       const index = parseInt(evt.code.substr(-1, 1), 10);
       if (!isNaN(index)) {
-        const data = index === 0 ? ScanPresets[10] : ScanPresets[index - 1];
+        const data = index === 0 ? ScanPresets()[10] : ScanPresets()[index - 1];
         this.scanPreset({ target: { value: data.value } });
       }
     }
@@ -344,7 +344,7 @@ class SensorsCore extends Component {
               <option value={"answers"} disabled>
                 Answers
               </option>
-              {ScanPresets.map(p => (
+              {ScanPresets(this.state.domain).map(p => (
                 <option key={p.label} value={p.value}>
                   {p.label}
                 </option>

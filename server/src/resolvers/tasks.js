@@ -57,9 +57,11 @@ export const TasksTypes = {
 };
 
 export const TasksQueries = {
-  tasks(_, { simulatorId, station }) {
+  tasks(_, { simulatorId, station, definitions }) {
     let tasks = App.tasks.filter(s => s.simulatorId === simulatorId);
     if (station) tasks = tasks.filter(s => s.station === station);
+    if (definitions)
+      tasks = tasks.filter(s => definitions.indexOf(s.definition) > -1);
     return tasks;
   },
   taskTemplates() {
@@ -109,9 +111,11 @@ export const TasksMutations = {
 
 export const TasksSubscriptions = {
   tasksUpdate: {
-    resolve(rootValue, { simulatorId, station }) {
+    resolve(rootValue, { simulatorId, station, definitions }) {
       let tasks = rootValue.filter(s => s.simulatorId === simulatorId);
       if (station) tasks = tasks.filter(s => s.station === station);
+      if (definitions)
+        tasks = tasks.filter(s => definitions.indexOf(s.definition) > -1);
       return tasks;
     },
     subscribe: withFilter(

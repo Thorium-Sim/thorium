@@ -9,88 +9,97 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const TACTICAL_MAP_DATA = `
 id
-      name
-      flight {
-        id
-      }
-      layers {
-        id
-        name
-        type
-        items {
-          id
-          layerId
-          font
-          label
-          fontSize
-          fontColor
-          icon
-          size
-          speed
-          velocity {
-            x
-            y
-            z
-          }
-          location {
-            x
-            y
-            z
-          }
-          destination {
-            x
-            y
-            z
-          }
-          rotation
-          opacity
-          flash
-          ijkl
-          wasd
-          thrusters
-          rotationMatch
-        }
-        paths {
-          id
-          layerId
-          start {
-            x
-            y
-            z
-          }
-          end {
-            x
-            y
-            z
-          }
-          c1 {
-            x
-            y
-            z
-          }
-          c2 {
-            x
-            y
-            z
-          }
-          color
-          width
-          arrow
-        }
-        image
-        color
-        labels
-        gridCols
-        gridRows
-        advance
-        asset
-        autoplay
-        loop
-        playbackSpeed
-        opacity
-      }
-      frozen
-      template`;
+name
+flight {
+  id
+}
+layers {
+  id
+  name
+  type
+  items {
+    id
+    layerId
+    font
+    label
+    fontSize
+    fontColor
+    icon
+    size
+    speed
+    velocity {
+      x
+      y
+      z
+    }
+    location {
+      x
+      y
+      z
+    }
+    destination {
+      x
+      y
+      z
+    }
+    rotation
+    opacity
+    flash
+    ijkl
+    wasd
+    thrusters
+    rotationMatch
+    thrusterControls {
+      rotation
+      reversed
+      matchRotation
+      up
+      down
+      left
+      right
+    }
+  }
+  paths {
+    id
+    layerId
+    start {
+      x
+      y
+      z
+    }
+    end {
+      x
+      y
+      z
+    }
+    c1 {
+      x
+      y
+      z
+    }
+    c2 {
+      x
+      y
+      z
+    }
+    color
+    width
+    arrow
+  }
+  image
+  color
+  labels
+  gridCols
+  gridRows
+  advance
+  asset
+  autoplay
+  loop
+  playbackSpeed
+  opacity
+}
+frozen
+template`;
 const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate {
     tacticalMapsUpdate {
@@ -131,6 +140,7 @@ class TacticalMapCore extends Component {
     if (speed) {
       variables.item.speed = speed;
     }
+    console.log(variables);
     const mutation = gql`
       mutation UpdateTacticalItem(
         $mapId: ID!
