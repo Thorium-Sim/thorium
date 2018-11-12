@@ -151,35 +151,71 @@ class ShuttleBay extends Component {
     } = this.props;
     const { animating } = this.state;
 
-    let hint = '';
+    let hint = { clamps: '', compress: '', doors: '' };
+
     let shuttleStatusMsg = '';
     if(direction === 'departing' && docked) {
       shuttleStatusMsg = 'Preparing shuttle for departure.';
-      if(clamps) hint = 'clamps';
-      else if(compress) hint = 'compress';
-      else if(doors) hint = 'doors';
+      
+      if(!clamps) hint.clamps = 'ok';
+      if(!compress) hint.compress = 'ok';
+      if(!doors) hint.doors = 'ok';
+
+      if(clamps) hint.clamps = 'attention';
+      else if(compress) hint.compress = 'attention';
+      else if(doors) hint.doors = 'attention';
       else shuttleStatusMsg = 'Shuttle is departing.';
     }
     else if (direction === 'departing' && !docked) {
-      // No hints in this case, we don't particularly care what the
-      // crew does with the shuttle bay once the shuttle has left.
-      shuttleStatusMsg = 'Shuttle has departed.';
+      shuttleStatusMsg = 'Shuttle has departed. Secure shuttle bay.';
+
+      if(!clamps) hint.clamps = 'ok';
+      if(compress) hint.compress = 'ok';
+      if(doors) hint.doors = 'ok';
+      
+      if(!doors) hint.doors = 'attention';
+      else if(!compress) hint.compress = 'attention';
+      else shuttleStatusMsg = 'Shuttle bay secured.';
     }
     else if (direction === 'arriving' && !docked) {
       shuttleStatusMsg = 'Shuttle approaching. Prepare for arrival.';
-      if(clamps) hint = 'clamps';
-      else if(compress) hint = 'compress';
-      else if(doors) hint = 'doors';
-      else shuttleStatusMsg = 'The shuttle is entering the bay.';
+
+      if(!clamps) hint.clamps = 'ok';
+      if(!compress) hint.compress = 'ok';
+      if(!doors) hint.doors = 'ok';
+
+      if(clamps) hint.clamps = 'attention';
+      else if(compress) hint.compress = 'attention';
+      else if(doors) hint.doors = 'attention';
+      else shuttleStatusMsg = 'The shuttle is entering the bay. Please wait.';
     }
     else if (direction === 'arriving' && docked) {
       shuttleStatusMsg = 'Shuttle has arrived. Please secure shuttle.';
-      if(!doors) hint = 'doors';
-      else if(!compress) hint = 'compress';
-      else if(!clamps) hint = 'clamps';
+
+      if(clamps) hint.clamps = 'ok';
+      if(compress) hint.compress = 'ok';
+      if(doors) hint.doors = 'ok';
+
+      if(!doors) hint.doors = 'attention';
+      else if(!compress) hint.compress = 'attention';
+      else if(!clamps) hint.clamps = 'attention';
       else shuttleStatusMsg = 'Shuttle secured.';
     }
-    if(animating) hint = '';
+    else if (!docked) {
+      if(!clamps) hint.clamps = 'ok';
+      if(compress) hint.compress = 'ok';
+      if(doors) hint.doors = 'ok';
+    }
+    else if (docked) {
+      if(clamps) hint.clamps = 'ok';
+      if(compress) hint.compress = 'ok';
+      if(doors) hint.doors = 'ok';
+    }
+
+    var hintStrings = {
+      'ok': '\u2713',
+      'attention': '\u2794'
+    };
 
     return (
       <Card>
@@ -210,23 +246,23 @@ class ShuttleBay extends Component {
               </Button>
               }
               <div className='docking-icon-wrapper'>
-                <div className='docking-icon'>
-                  <Clamps transform={clamps}/>
+                <div className={`docking-icon ${hint.clamps}`}>
+                  { hintStrings[hint.clamps] }
                 </div>
                 <Button
                   block
                   className="clamps-button"
-                  disabled={!!animating}
+                  disabled={!!animating || !docked}
                   color="primary"
                   onClick={() => this.toggleShuttle(id, "clamps")}
                   >
                   {clamps ? "Detach" : "Attach"} Clamps
                 </Button>
-                <div className={`docking-hint ${hint !== 'clamps' ? 'hidden' : ''}`}/>
               </div>
               <div className='docking-icon-wrapper'>
-                <div className='docking-icon'>
-                  <Decompress on={compress} />
+                <div className={`docking-icon ${hint.compress}`}>
+                  { hintStrings[hint.compress] }
+             
                 </div>              
                 <Button
                   block
@@ -237,11 +273,10 @@ class ShuttleBay extends Component {
                 >
                   {compress ? "Decompress" : "Compress"}
                 </Button>
-                <div className={`docking-hint ${hint !== 'compress' ? 'hidden' : ''}`}/>
               </div>
               <div className='docking-icon-wrapper'>
-                <div className='docking-icon'>
-                  <Door open={!doors} number={"0" + (i + 1)} />
+              <div className={`docking-icon ${hint.doors}`}>
+                  { hintStrings[hint.doors] }             
                 </div>
                 <Button
                   block
@@ -252,7 +287,6 @@ class ShuttleBay extends Component {
                 >
                   {doors ? "Open" : "Close"} Doors
                 </Button>
-                <div className={`docking-hint ${hint !== 'doors' ? 'hidden' : ''}`}/>
               </div>
               <div className='docking-status-message'>
                 { shuttleStatusMsg }
