@@ -119,7 +119,7 @@ const SickbayData = props => (
               variables: { simulatorId: props.simulator.id },
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {
-                  computerCore: subscriptionData.data.sickbayUpdate
+                  sickbay: subscriptionData.data.sickbayUpdate
                 });
               }
             })

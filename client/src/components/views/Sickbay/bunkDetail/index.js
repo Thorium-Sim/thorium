@@ -74,6 +74,7 @@ class BunkDetail extends Component {
       backToMain,
       clientObj
     } = this.props;
+    if (!patient) return null;
     const { id: crewId, charts } = patient;
     const chart = charts.concat().sort((a, b) => {
       if (new Date(a.admitTime) > new Date(b.admitTime)) return -1;
