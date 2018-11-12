@@ -98,7 +98,7 @@ class SickbayData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      computerCore: subscriptionData.data.sickbayUpdate
+                      sickbay: subscriptionData.data.sickbayUpdate
                     });
                   }
                 })
