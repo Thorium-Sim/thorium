@@ -102,11 +102,6 @@ input PresetAnswerInput {
   label: String
   value: String
 }
-input CoordinatesInput {
-  x: Float
-  y: Float
-  z: Float
-}
 input SensorContactInput {
   id: ID
   name: String

@@ -19,6 +19,11 @@ type Coordinates {
   y: Float
   z: Float
 }
+input CoordinatesInput {
+  x: Float
+  y: Float
+  z: Float
+}
 type Rotation {
   yaw: Float
   pitch: Float

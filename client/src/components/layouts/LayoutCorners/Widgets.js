@@ -200,6 +200,7 @@ export class Widget extends Component {
             isOpen={this.state.tooltipOpen}
             target={`widget-${wkey}`}
             toggle={this.toggle}
+            delay={{ show: 0, hide: 20 }}
           >
             {widget.name}
           </Tooltip>

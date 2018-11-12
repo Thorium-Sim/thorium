@@ -81,6 +81,7 @@ import BridgeMap from "./BridgeMap";
 import ThrustersLite from "./Thrusters/lite";
 import ParticleDetector from "./ParticleDetector";
 import Tasks from "./Tasks";
+// import DockingPorts from "./DockingPorts";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -241,6 +242,7 @@ const Views = {
   ThrustersLite,
   ParticleDetector,
   Tasks
+  // DockingPorts
 };
 
 export const Widgets = {
