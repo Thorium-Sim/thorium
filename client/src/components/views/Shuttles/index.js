@@ -36,9 +36,14 @@ const trainingSteps = [
       "Shuttles are small ships which can be stored inside of your ship. Most shuttles are piloted and can transport large amounts of supplies or personnel great distances."
   },
   {
+    selector: ".departure-button",
+    content:
+      "To use a shuttle, first click \"Prepare for departure\" to begin the departure sequence."
+  },
+  {
     selector: ".clamps-button",
     content:
-      "To undock a shuttle, you must first release the docking clamps which hold the shuttle in place with this button."
+      "You must then release the docking clamps which hold the shuttle in place. This button shows whether the clamps are attached or detached."
   },
   {
     selector: ".compress-button",
@@ -256,7 +261,7 @@ class ShuttleBay extends Component {
                   color="primary"
                   onClick={() => this.toggleShuttle(id, "clamps")}
                   >
-                  {clamps ? "Detach" : "Attach"} Clamps
+                  Clamps {clamps ? "attached" : "detached"}
                 </Button>
               </div>
               <div className='docking-icon-wrapper'>
@@ -271,7 +276,7 @@ class ShuttleBay extends Component {
                   className="compress-button"
                   onClick={() => this.toggleShuttle(id, "compress")}
                 >
-                  {compress ? "Decompress" : "Compress"}
+                  {compress ? "Compressed" : "Decompressed"}
                 </Button>
               </div>
               <div className='docking-icon-wrapper'>
@@ -285,7 +290,7 @@ class ShuttleBay extends Component {
                   className="doors-button"
                   onClick={() => this.toggleShuttle(id, "doors")}
                 >
-                  {doors ? "Open" : "Close"} Doors
+                  Doors {doors ? "closed" : "open"}
                 </Button>
               </div>
               <div className='docking-status-message'>
