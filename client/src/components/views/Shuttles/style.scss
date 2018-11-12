@@ -54,9 +54,13 @@
     animation-name: docking-hint-animation;
     animation-duration: 1s;
     animation-iteration-count: infinite;
+    animation-timing-function: linear;
   }
   .docking-hint.hidden {
     visibility: hidden;
+  }
+  .docking-status-message {
+    margin-top: 4px;
   }
   .door {
     background-color: #222;
@@ -85,6 +89,10 @@
 
 @keyframes docking-hint-animation {
   from {
+    transform: translate(15px, 0) scale(1, 0.8) rotate(45deg);
+    opacity: 1;    
+  }
+  50% {
     transform: translate(5px, 0) scale(1, 0.8) rotate(45deg);
     opacity: 1;    
   }

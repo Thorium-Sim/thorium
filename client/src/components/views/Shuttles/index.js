@@ -152,24 +152,34 @@ class ShuttleBay extends Component {
     const { animating } = this.state;
 
     let hint = '';
-    if(!animating) {
-      if(direction === 'departing') {
-        if(clamps) hint = 'clamps';
-        else if(compress) hint = 'compress';
-        else if(doors) hint = 'doors';
-      }
-      else if (direction === 'arriving' && !docked) {
-        if(clamps) hint = 'clamps';
-        else if(compress) hint = 'compress';
-        else if(doors) hint = 'doors';
-      }
-      else if (direction === 'arriving' && docked) {
-        if(!doors) hint = 'doors';
-        else if(!compress) hint = 'compress';
-        else if(!clamps) hint = 'clamps';
-      }
+    let shuttleStatusMsg = '';
+    if(direction === 'departing' && docked) {
+      shuttleStatusMsg = 'Preparing shuttle for departure.';
+      if(clamps) hint = 'clamps';
+      else if(compress) hint = 'compress';
+      else if(doors) hint = 'doors';
+      else shuttleStatusMsg = 'Shuttle is departing.';
     }
-    // Also add close out procedure after a shuttle has departed?
+    else if (direction === 'departing' && !docked) {
+      // No hints in this case, we don't particularly care what the
+      // crew does with the shuttle bay once the shuttle has left.
+      shuttleStatusMsg = 'Shuttle has departed.';
+    }
+    else if (direction === 'arriving' && !docked) {
+      shuttleStatusMsg = 'Shuttle approaching. Prepare for arrival.';
+      if(clamps) hint = 'clamps';
+      else if(compress) hint = 'compress';
+      else if(doors) hint = 'doors';
+      else shuttleStatusMsg = 'The shuttle is entering the bay.';
+    }
+    else if (direction === 'arriving' && docked) {
+      shuttleStatusMsg = 'Shuttle has arrived. Please secure shuttle.';
+      if(!doors) hint = 'doors';
+      else if(!compress) hint = 'compress';
+      else if(!clamps) hint = 'clamps';
+      else shuttleStatusMsg = 'Shuttle secured.';
+    }
+    if(animating) hint = '';
 
     return (
       <Card>
@@ -243,6 +253,9 @@ class ShuttleBay extends Component {
                   {doors ? "Open" : "Close"} Doors
                 </Button>
                 <div className={`docking-hint ${hint !== 'doors' ? 'hidden' : ''}`}/>
+              </div>
+              <div className='docking-status-message'>
+                { shuttleStatusMsg }
               </div>
             </Col>
             <Col sm={5}>
