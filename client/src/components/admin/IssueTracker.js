@@ -68,7 +68,7 @@ class IssueTracker extends Component {
               <textarea
                 onChange={this._handleEvent.bind(this, "body")}
                 rows="5"
-                placeholder="Please be specific. Include as much detail as possible. The more specific you are, the more likely the bug will be fixed or feature will be implemented. This field supports Markdown"
+                placeholder="Please be specific. Include as much detail as possible. If you are filing a bug report, explain detailed steps to reproduce the bug. Include how you would want the bug to be fixed or the feature to be implemented. The more specific you are, the more likely the bug will be fixed or feature will be implemented. This field supports Markdown"
                 required
                 className="form-control form-control-sm"
               />

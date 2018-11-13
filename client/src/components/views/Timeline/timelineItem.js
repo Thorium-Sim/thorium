@@ -14,10 +14,31 @@ class ActionPreview extends Component {
   };
   render() {
     const { edit } = this.state;
-    let { event, args, simulatorId, values, delay, updateDelay } = this.props;
+    let {
+      event,
+      args,
+      simulatorId,
+      values,
+      delay,
+      updateDelay,
+      updateValues
+    } = this.props;
     return (
       <div className="timeline-item">
-        {!edit && (
+        {edit ? (
+          <Button
+            size="sm"
+            style={{ height: "16px", lineHeight: 1 }}
+            color="warning"
+            onClick={() => {
+              const restore =
+                typeof args === "string" ? JSON.parse(args) : args;
+              updateValues(restore || {});
+            }}
+          >
+            Restore Values
+          </Button>
+        ) : (
           <Button
             size="sm"
             style={{ height: "16px", lineHeight: 1 }}
