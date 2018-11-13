@@ -9,7 +9,7 @@ const TimelineStep = ({
   currentTimelineStep,
   checkAction,
   showDescription,
-  values,
+  values = {},
   updateValues,
   delay,
   updateDelay

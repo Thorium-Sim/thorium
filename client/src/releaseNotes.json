@@ -2,6 +2,7 @@
   "1.0.27": {
     "fixes": [
       "Improves how editing timeline steps during a mission works. Adds a 'Restore' button to bring back the timeline item's configuration.",
+      "Timeline step editing now does not override steps that were not edited.",
       "Improved logic for when the sensors scans should be added to or removed from the sensors card."
     ]
   },
