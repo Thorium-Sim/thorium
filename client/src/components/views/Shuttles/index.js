@@ -10,6 +10,7 @@ import { Clamps } from "../Docking/graphics";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
+import FontAwesome from "react-fontawesome";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
@@ -24,6 +25,7 @@ const SHUTTLE_SUB = gql`
       damage {
         damaged
       }
+      direction
     }
   }
 `;
@@ -35,9 +37,14 @@ const trainingSteps = [
       "Shuttles are small ships which can be stored inside of your ship. Most shuttles are piloted and can transport large amounts of supplies or personnel great distances."
   },
   {
+    selector: ".departure-button",
+    content:
+      "To use a shuttle, first click \"Prepare for departure\" to begin the departure sequence."
+  },
+  {
     selector: ".clamps-button",
     content:
-      "To undock a shuttle, you must first release the docking clamps which hold the shuttle in place with this button."
+      "You must then release the docking clamps which hold the shuttle in place. This button shows whether the clamps are attached or detached."
   },
   {
     selector: ".compress-button",
@@ -119,6 +126,21 @@ class ShuttleBay extends Component {
       4000
     );
   };
+  updateShuttle = (id, which, value) => {
+    const mutation = gql`
+      mutation UpdateShuttleBay($port: DockingPortInput!) {
+        updateDockingPort(port: $port)
+      }
+    `;
+    const port = {
+      id
+    };
+    port[which] = value;
+    this.props.client.mutate({
+      mutation,
+      variables: { port }
+    });
+  };
   render() {
     const {
       docked,
@@ -130,45 +152,154 @@ class ShuttleBay extends Component {
       clamps,
       compress,
       doors,
-      damage
+      damage,
+      direction
     } = this.props;
     const { animating } = this.state;
+
+    let hint = { clamps: '', compress: '', doors: '' };
+
+    let shuttleStatusMsg = '';
+    if(direction === 'departing' && docked) {
+      shuttleStatusMsg = 'Preparing shuttle for departure.';
+      
+      if(!clamps) hint.clamps = 'ok';
+      if(!compress) hint.compress = 'ok';
+      if(!doors) hint.doors = 'ok';
+
+      if(clamps) hint.clamps = 'attention';
+      else if(compress) hint.compress = 'attention';
+      else if(doors) hint.doors = 'attention';
+      else shuttleStatusMsg = 'Shuttle is departing.';
+    }
+    else if (direction === 'departing' && !docked) {
+      shuttleStatusMsg = 'Shuttle has departed. Secure shuttle bay.';
+
+      if(!clamps) hint.clamps = 'ok';
+      if(compress) hint.compress = 'ok';
+      if(doors) hint.doors = 'ok';
+      
+      if(!doors) hint.doors = 'attention';
+      else if(!compress) hint.compress = 'attention';
+      else shuttleStatusMsg = 'Shuttle bay secured.';
+    }
+    else if (direction === 'arriving' && !docked) {
+      shuttleStatusMsg = 'Shuttle approaching. Prepare for arrival.';
+
+      if(!clamps) hint.clamps = 'ok';
+      if(!compress) hint.compress = 'ok';
+      if(!doors) hint.doors = 'ok';
+
+      if(clamps) hint.clamps = 'attention';
+      else if(compress) hint.compress = 'attention';
+      else if(doors) hint.doors = 'attention';
+      else shuttleStatusMsg = 'The shuttle is entering the bay. Please wait.';
+    }
+    else if (direction === 'arriving' && docked) {
+      shuttleStatusMsg = 'Shuttle has arrived. Please secure shuttle.';
+
+      if(clamps) hint.clamps = 'ok';
+      if(compress) hint.compress = 'ok';
+      if(doors) hint.doors = 'ok';
+
+      if(!doors) hint.doors = 'attention';
+      else if(!compress) hint.compress = 'attention';
+      else if(!clamps) hint.clamps = 'attention';
+      else shuttleStatusMsg = 'Shuttle secured.';
+    }
+    else if (!docked) {
+      if(!clamps) hint.clamps = 'ok';
+      if(compress) hint.compress = 'ok';
+      if(doors) hint.doors = 'ok';
+    }
+    else if (docked) {
+      if(clamps) hint.clamps = 'ok';
+      if(compress) hint.compress = 'ok';
+      if(doors) hint.doors = 'ok';
+    }
+
+
+    var hintStrings = {
+      'ok': <FontAwesome name="check"/>,
+      'attention': <FontAwesome name="arrow-right"/>
+    };
+
     return (
       <Card>
         <DamageOverlay system={{ damage }} message={`${name} Offline`} />
         <CardBody>
           <h3 className="text-center">{name}</h3>
+          
           <Row>
-            <Col sm={6}>
+            <Col sm={7}>
+              {direction === "unspecified" && docked &&
               <Button
                 block
-                className="clamps-button"
-                disabled={!!animating}
-                color="primary"
-                onClick={() => this.toggleShuttle(id, "clamps")}
-              >
-                {clamps ? "Detach" : "Attach"} Clamps
+                className="departure-button"
+                color="success"
+                onClick={() => this.updateShuttle(id, "direction", "departing")}
+                >
+                Prepare for departure
               </Button>
+              }
+              {direction === "departing" && docked &&
               <Button
                 block
-                disabled={!!animating || !doors}
-                color="primary"
-                className="compress-button"
-                onClick={() => this.toggleShuttle(id, "compress")}
-              >
-                {compress ? "Decompress" : "Compress"} Bay
+                className="departure-button"
+                color="danger"
+                onClick={() => this.updateShuttle(id, "direction", "unspecified")}
+                >
+                Abort departure sequence
               </Button>
-              <Button
-                block
-                disabled={!!animating || compress}
-                color="primary"
-                className="doors-button"
-                onClick={() => this.toggleShuttle(id, "doors")}
-              >
-                {doors ? "Open" : "Close"} Doors
-              </Button>
+              }
+              <div className='docking-icon-wrapper'>
+                <div className={`docking-icon ${hint.clamps}`}>
+                  { hintStrings[hint.clamps] }
+                </div>
+                <Button
+                  block
+                  className="clamps-button"
+                  disabled={!!animating || !docked}
+                  color="primary"
+                  onClick={() => this.toggleShuttle(id, "clamps")}
+                  >
+                  Clamps {clamps ? "attached" : "detached"}
+                </Button>
+              </div>
+              <div className='docking-icon-wrapper'>
+                <div className={`docking-icon ${hint.compress}`}>
+                  { hintStrings[hint.compress] }
+             
+                </div>              
+                <Button
+                  block
+                  disabled={!!animating || !doors}
+                  color="primary"
+                  className="compress-button"
+                  onClick={() => this.toggleShuttle(id, "compress")}
+                >
+                  {compress ? "Compressed" : "Decompressed"}
+                </Button>
+              </div>
+              <div className='docking-icon-wrapper'>
+              <div className={`docking-icon ${hint.doors}`}>
+                  { hintStrings[hint.doors] }             
+                </div>
+                <Button
+                  block
+                  disabled={!!animating || compress}
+                  color="primary"
+                  className="doors-button"
+                  onClick={() => this.toggleShuttle(id, "doors")}
+                >
+                  Doors {doors ? "closed" : "open"}
+                </Button>
+              </div>
+              <div className='docking-status-message'>
+                { shuttleStatusMsg }
+              </div>
             </Col>
-            <Col sm={6}>
+            <Col sm={5}>
               {animating === "clamps" && <Clamps transform={clamps} />}
               {animating === "compress" && <Decompress on={compress} />}
               {animating === "doors" && (
@@ -193,7 +324,7 @@ class ShuttleBay extends Component {
                   style={{ display: !animating ? "flex" : "none" }}
                   className="shuttle"
                 >
-                  <h2>No Shuttle</h2>
+                  <h2>Shuttlebay Empty</h2>
                   <div className="spacer" />
                 </div>
               )}
@@ -218,6 +349,7 @@ const SHUTTLE_QUERY = gql`
       damage {
         damaged
       }
+      direction
     }
   }
 `;
