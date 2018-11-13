@@ -9,6 +9,7 @@ type Deck {
   rooms: [Room]
   hallway: String
   crewCount: Int
+  environment: Environment
 }
 
 type Room {
