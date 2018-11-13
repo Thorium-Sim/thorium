@@ -49,3 +49,4 @@ export { default as Railgun } from "./railgun";
 export { default as JumpDrive } from "./jumpDrive";
 export { default as Task } from "./task";
 export { default as TaskTemplate } from "./taskTemplate";
+export { default as Environment } from "./environment";

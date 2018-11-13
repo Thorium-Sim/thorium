@@ -34,10 +34,13 @@ function moveCrew() {
 
       // Start with moving team members
       const teamCrewNeedingMoving = teams.reduce((prev, next) => {
-        const location = App.rooms.find(d => d.id === next.location);
+        const location =
+          App.rooms.find(d => d.id === next.location) ||
+          App.decks.find(d => d.id === next.location);
         const deck = App.decks.find(
           d => d.id === (location ? location.deckId : next.location)
         );
+        if (!deck) return prev;
         if (allowedDecks.indexOf(deck.id) === -1) return prev;
         next.officers.forEach(o => {
           const c = crew.find(cc => cc.id === o);
