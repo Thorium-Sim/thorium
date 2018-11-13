@@ -10,6 +10,7 @@ import { Clamps } from "../Docking/graphics";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
+import FontAwesome from "react-fontawesome";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
@@ -217,9 +218,10 @@ class ShuttleBay extends Component {
       if(doors) hint.doors = 'ok';
     }
 
+
     var hintStrings = {
-      'ok': '\u2713',
-      'attention': '\u2794'
+      'ok': <FontAwesome name="check"/>,
+      'attention': <FontAwesome name="arrow-right"/>
     };
 
     return (
