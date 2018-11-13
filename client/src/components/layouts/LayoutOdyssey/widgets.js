@@ -177,6 +177,7 @@ class StaticWidget extends Component {
             isOpen={this.state.tooltipOpen}
             target={`widget-${icon}`}
             toggle={this.toggle}
+            delay={{ show: 0, hide: 20 }}
           >
             {name}
           </Tooltip>

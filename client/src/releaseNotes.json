@@ -1,4 +1,14 @@
 {
+  "1.0.27": {
+    "features":[
+       "Adds the ability to define the direction the shuttles need to go along with more straightforward directions on the shuttlebay crew screen."
+      ],
+    "fixes": [
+      "Improves how editing timeline steps during a mission works. Adds a 'Restore' button to bring back the timeline item's configuration.",
+      "Timeline step editing now does not override steps that were not edited.",
+      "Improved logic for when the sensors scans should be added to or removed from the sensors card."
+    ]
+  },
   "1.0.26": {
     "features": [
       "Added an internal comm notification on the crew station.",

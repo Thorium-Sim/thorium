@@ -22,6 +22,7 @@ describe('DockingPort', () => {
       expect(dock.doors).toBe(true);
       expect(dock.image).toBe('/Docking Images/Default.png');
       expect(dock.docked).toBe(true);
+      expect(dock.direction).toBe('unspecified');
 
       const dock2 = new DockingPort({ type: 'not_a_shuttlebay' });
       expect(dock2.type).toBe('not_a_shuttlebay');
@@ -30,13 +31,14 @@ describe('DockingPort', () => {
       expect(dock2.doors).toBe(false);
       expect(dock2.image).toBe('/Docking Images/Default.png');
       expect(dock2.docked).toBe(false);
+      expect(dock2.direction).toBe('unspecified');
     });
   });
 
   describe('updateDockingPort', () => {
     test('should update a docking port', () => {
       const dock = new DockingPort();
-      dock.updateDockingPort({ name: 'Emergency Exit', type: 'screen_door', clamps: false, compress: false, doors: false, docked: false, image: '404_NOT_FOUND' });
+      dock.updateDockingPort({ name: 'Emergency Exit', type: 'screen_door', clamps: false, compress: false, doors: false, docked: false, image: '404_NOT_FOUND', direction: 'arriving' });
       expect(dock.name).toBe('Emergency Exit');
       expect(dock.type).toBe('screen_door');
       expect(dock.clamps).toBe(false);
@@ -44,6 +46,7 @@ describe('DockingPort', () => {
       expect(dock.doors).toBe(false);
       expect(dock.image).toBe('404_NOT_FOUND');
       expect(dock.docked).toBe(false);
+      expect(dock.direction).toBe('arriving');
     })
   })
 });

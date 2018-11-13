@@ -18,6 +18,7 @@ const SHUTTLE_SUB = gql`
       damage {
         damaged
       }
+      direction
     }
   }
 `;
@@ -65,6 +66,7 @@ class Shuttles extends Component {
               <th title="Compress">Co</th>
               <th title="Doors">Do</th>
               <th title="Present">Pr</th>
+              <th title="Direction">Dir</th>
               <th>Image</th>
             </tr>
           </thead>
@@ -140,6 +142,19 @@ class Shuttles extends Component {
                 <td>
                   <select
                     style={{ height: "18px" }}
+                    value={d.direction}
+                    onChange={evt =>
+                      this.updateShuttle(d.id, "direction", evt.target.value)
+                    }
+                  >
+                    <option value='unspecified'>Unspecified</option>
+                    <option value='arriving'>Arriving</option>
+                    <option value='departing'>Departing</option>
+                  </select>
+                </td>
+                <td>
+                  <select
+                    style={{ height: "18px" }}
                     value={d.image}
                     onChange={evt =>
                       this.updateShuttle(d.id, "image", evt.target.value)
@@ -176,6 +191,7 @@ const SHUTTLE_QUERY = gql`
       damage {
         damaged
       }
+      direction
     }
     assetFolders(names: $names) {
       id

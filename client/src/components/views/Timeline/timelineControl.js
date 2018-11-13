@@ -21,11 +21,11 @@ class TimelineControl extends Component {
     const variables = {
       simulatorId,
       macros: currentStep.timelineItems.filter(t => actions[t.id]).map(t => {
+        const itemValues = values[t.id] || {};
         const args =
           typeof t.args === "string"
-            ? JSON.stringify({ ...JSON.parse(t.args), ...values })
-            : JSON.stringify({ ...t.args, ...values });
-
+            ? JSON.stringify({ ...JSON.parse(t.args), ...itemValues })
+            : JSON.stringify({ ...t.args, ...itemValues });
         return {
           stepId: t.id,
           event: t.event,

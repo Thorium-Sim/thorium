@@ -122,6 +122,7 @@ class PlanetaryScanConfig extends Component {
           <label>Text</label>
           <Input
             type="textarea"
+            value={data.text}
             onChange={evt =>
               updateData(
                 JSON.stringify(

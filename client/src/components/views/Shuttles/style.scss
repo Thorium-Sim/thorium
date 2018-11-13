@@ -24,12 +24,40 @@
     background-repeat: no-repeat;
     h2 {
       align-self: center;
+      text-align: center;
     }
   }
   .docking-graphic {
     width: 100%;
     height: 100%;
     margin-bottom: 100%;
+  }
+  .docking-icon-wrapper {
+    display: flex;
+    align-items: center;
+    .btn {
+      flex-grow: 1;
+    }
+  }
+  .docking-icon {
+    width: 12px;
+    margin-right: 15px;
+    flex-shrink: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .docking-icon.ok {
+    color: #0f0;
+  }
+  .docking-icon.attention {
+    color: #ff0;
+    animation-name: docking-icon-attention-animation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  .docking-status-message {
+    margin-top: 4px;
   }
   .door {
     background-color: #222;
@@ -53,5 +81,13 @@
       padding: 4px;
       border: solid 2px white;
     }
+  }
+}
+@keyframes docking-icon-attention-animation {
+  from {
+    transform: translate(-15px, 0);
+  }
+  to {
+    transform: translate(0px, 0);
   }
 }

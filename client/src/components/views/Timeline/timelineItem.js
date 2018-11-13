@@ -9,15 +9,37 @@ import EventName from "../../../containers/FlightDirector/MissionConfig/EventNam
 class ActionPreview extends Component {
   state = {};
   setArg = (key, value) => {
-    const { values, updateValues } = this.props;
-    updateValues({ ...values, [key]: value });
+    const { values, updateValues, id } = this.props;
+    const stepValues = values[id];
+    updateValues({ ...values, [id]: { ...stepValues, [key]: value } });
   };
   render() {
     const { edit } = this.state;
-    let { event, args, simulatorId, values, delay, updateDelay } = this.props;
+    let {
+      id,
+      event,
+      args,
+      simulatorId,
+      values,
+      delay,
+      updateDelay,
+      updateValues
+    } = this.props;
     return (
       <div className="timeline-item">
-        {!edit && (
+        {edit ? (
+          <Button
+            size="sm"
+            style={{ height: "16px", lineHeight: 1 }}
+            color="warning"
+            onClick={() => {
+              updateValues({ ...values, [id]: null });
+              this.setState({ previewKey: Math.random() });
+            }}
+          >
+            Restore Values
+          </Button>
+        ) : (
           <Button
             size="sm"
             style={{ height: "16px", lineHeight: 1 }}
@@ -27,6 +49,7 @@ class ActionPreview extends Component {
             Edit
           </Button>
         )}
+        {values[id] && <p className={"text-danger"}>Edited</p>}
         <div>
           <Label>
             Delay
@@ -35,7 +58,7 @@ class ActionPreview extends Component {
               defaultValue={delay}
               type="number"
               min="0"
-              onChange={e => updateDelay(e.target.value)}
+              onChange={e => updateDelay({ ...delay, [id]: e.target.value })}
             />
           </Label>
         </div>
@@ -49,8 +72,9 @@ class ActionPreview extends Component {
             }
             return (
               <MacroPreview
+                key={this.state.previewKey}
                 simulatorId={simulatorId}
-                args={edit ? { ...args, ...values } : args}
+                args={{ ...args, ...values[id] }}
                 updateArgs={edit ? this.setArg : () => {}}
                 lite
               />
@@ -112,6 +136,7 @@ class TimelineItem extends Component {
             {expanded && (
               <ActionPreview
                 simulatorId={simulatorId}
+                id={id}
                 event={event}
                 args={args}
                 values={values}
