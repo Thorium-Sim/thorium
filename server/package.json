@@ -23,6 +23,7 @@
     "test": "jest --setupFiles ./tests/setup.js"
   },
   "dependencies": {
+    "@sentry/node": "^4.3.0",
     "appdirectory": "^0.1.0",
     "body-parser": "^1.18.3",
     "bonjour": "^3.5.0",

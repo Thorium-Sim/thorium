@@ -50,6 +50,8 @@ class TasksCore extends Component {
   state = {};
   render() {
     const { newTask } = this.state;
+    throw new Error("Test error!");
+
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
