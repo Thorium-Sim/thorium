@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -55,6 +55,7 @@
     "plop": "plop"
   },
   "dependencies": {
+    "@sentry/node": "^4.3.0",
     "apollo-cache-hermes": "^0.6.3",
     "appdirectory": "^0.1.0",
     "bonjour": "^3.5.0",

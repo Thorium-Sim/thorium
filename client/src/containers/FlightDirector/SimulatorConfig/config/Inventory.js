@@ -182,7 +182,7 @@ class Inventory extends Component {
     if (this.state.inventoryItem.roomCount) {
       if (
         this.state.inventoryItem.roomCount.find(
-          c => (c.room.id || c.room) === r.id
+          c => c.room && (c.room.id || c.room) === r.id
         )
       ) {
         return (

@@ -8,27 +8,29 @@ import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
+const updateData = `
+id
+name
+power {
+  power
+  powerLevels
+}
+damage {
+  damaged
+  report
+}
+speeds {
+  text
+  number
+}
+heat
+speed
+coolant
+on`;
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
-      id
-      name
-      power {
-        power
-        powerLevels
-      }
-      damage {
-        damaged
-        report
-      }
-      speeds {
-        text
-        number
-      }
-      heat
-      speed
-      coolant
-      on
+${updateData}
     }
   }
 `;
@@ -82,10 +84,11 @@ class EngineControl extends Component {
               updateQuery: (previousResult, { subscriptionData }) => {
                 const engines = previousResult.engines.map(engine => {
                   if (engine.id === subscriptionData.data.engineUpdate.id) {
-                    return Object.assign({}, engine, {
-                      speed: subscriptionData.data.engineUpdate.speed,
-                      on: subscriptionData.data.engineUpdate.on
-                    });
+                    return Object.assign(
+                      {},
+                      engine,
+                      subscriptionData.data.engineUpdate
+                    );
                   }
                   return engine;
                 });
@@ -226,24 +229,7 @@ const trainingSteps = [
 const ENGINE_QUERY = gql`
   query getEngines($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
-      id
-      name
-      power {
-        power
-        powerLevels
-      }
-      damage {
-        damaged
-        report
-      }
-      speeds {
-        text
-        number
-      }
-      heat
-      speed
-      coolant
-      on
+      ${updateData}
     }
   }
 `;

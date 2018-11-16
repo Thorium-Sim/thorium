@@ -1,6 +1,6 @@
 {
   "name": "thorium-client",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "Starship Simulator Controls built with React",
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "clean-build": "rm -rf build"
   },
   "dependencies": {
+    "@sentry/browser": "^4.3.0",
     "@tweenjs/tween.js": "^17.2.0",
     "apollo-cache-inmemory": "^1.2.10",
     "apollo-client": "^2.4.2",

@@ -9,6 +9,9 @@ if (
   process.argv0.split("\\").indexOf("node.exe") === -1
 ) {
   process.env.NODE_ENV = "production";
+} else {
+  // Load the Sentry error tracking
+  require("../helpers/sentry");
 }
 
 let logDir = "./logs";
