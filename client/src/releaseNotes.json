@@ -4,7 +4,8 @@
       "Add the error tracking framework Sentry to have a better idea of when and how errors happen."
     ],
     "fixes": [
-      "Fixes an issue where sensors information and scan answers don't show up because of an out-of-bounds ping incrementer."
+      "Fixes an issue where sensors information and scan answers don't show up because of an out-of-bounds ping incrementer.",
+      "Changes tactical map thrusters to reset the speed to a more reasonable speed if it is set to instant."
     ]
   },
   "1.0.27": {
