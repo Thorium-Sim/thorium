@@ -92,6 +92,10 @@ class TacticalItem {
       this.rotationMatch = rotationMatch;
     if (thrusterControls) {
       this.thrusterControls = thrusterControls;
+      // if the speed is set to instant, change it to a reasonable speed
+      if (this.speed >= 1000) {
+        this.speed = 0.05;
+      }
     }
   }
 }

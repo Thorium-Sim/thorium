@@ -69,11 +69,21 @@ App.on("removeTarget", ({ id, targetId }) => {
   const sensors = App.systems.find(
     s => s.simulatorId === system.simulatorId && s.class === "Sensors"
   );
-  // Remove the contact from Sensors
-  sensors.destroyContact({ id: classId });
-  pubsub.publish("sensorContactUpdate", sensors);
 
   system.destroyTarget(targetId);
+
+  // Remove the contact from Sensors
+  if (sensors.contacts.find(c => c.id === classId)) {
+    sensors.destroyContact({ id: classId });
+    pubsub.publish("sensorContactUpdate", sensors);
+
+    // We should also remove the class, if there are none left
+    if (!system.contacts.find(c => c.class === classId && c.id !== targetId)) {
+      setTimeout(() => {
+        App.handleEvent({ id, classId }, "removeTargetClass");
+      }, 500);
+    }
+  }
 
   pubsub.publish(
     "targetingUpdate",

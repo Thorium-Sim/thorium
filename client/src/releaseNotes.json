@@ -1,7 +1,14 @@
 {
   "1.0.29": {
     "features": [
-      "Add the error tracking framework Sentry to have a better idea of when and how errors happen."
+      "Add the error tracking framework Sentry to have a better idea of when and how errors happen.",
+      "Improvements to how the sensors grid and targeting core component operate together.",
+      "Improve the usability of the engine control screen."
+    ],
+    "fixes": [
+      "Fixes an issue where sensors information and scan answers don't show up because of an out-of-bounds ping incrementer.",
+      "Changes tactical map thrusters to reset the speed to a more reasonable speed if it is set to instant.",
+      "Provide a fix for editing inventory that is assigned to a room that doesn't exist anymore."
     ]
   },
   "1.0.27": {

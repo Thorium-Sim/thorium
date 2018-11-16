@@ -49,7 +49,14 @@ export default withApollo(props => {
           }
           return (
             <Button
-              disabled={engines[0].damage.damaged}
+              disabled={
+                engines[0].damage.damaged ||
+                engines[0].power.powerLevels.findIndex(
+                  p => p > engines[0].power.power
+                ) -
+                  1 <
+                  speedIndex
+              }
               key={`speed-${speedIndex}`}
               color="primary"
               block
@@ -137,7 +144,14 @@ export default withApollo(props => {
           }
           return (
             <Button
-              disabled={engines[1].damage.damaged}
+              disabled={
+                engines[1].damage.damaged ||
+                engines[1].power.powerLevels.findIndex(
+                  p => p > engines[1].power.power
+                ) -
+                  1 <
+                  speedIndex
+              }
               key={`speed-${speedIndex}`}
               color="primary"
               block
