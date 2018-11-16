@@ -55,6 +55,11 @@ export default withApollo(props => {
               block
               color="primary"
               className="speedBtn"
+              disabled={
+                engines[0].power.powerLevels.findIndex(
+                  p => p > engines[0].power.power
+                ) > speedIndex
+              }
               onClick={() => {
                 setSpeed(engines[0], speedIndex, engines, 0);
               }}
