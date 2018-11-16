@@ -201,6 +201,9 @@ const pingSensors = () => {
       ) {
         App.handleEvent({ id: sensors.id }, "pingSensors", {});
       }
+      if (sensors.timeSincePing > passivePingInterval * 2) {
+        sensors.timeSincePing = passivePingInterval;
+      }
     }
   });
   setTimeout(pingSensors, pingInterval);
