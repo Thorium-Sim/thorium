@@ -1,4 +1,11 @@
 {
+  "1.0.30": {
+    "features": [],
+    "fixes": [
+      "Fixes possible issues with exporting missions.",
+      "Improves how printing mission scripts works."
+    ]
+  },
   "1.0.29": {
     "features": [
       "Add the error tracking framework Sentry to have a better idea of when and how errors happen.",
