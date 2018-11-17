@@ -24,11 +24,16 @@ export default class Task {
 
     this.simulatorId = params.simulatorId || "";
     const simulator = App.simulators.find(s => s.id === this.simulatorId);
-    const stations = definitionObject.stations({ simulator });
+    const stations = definitionObject.stations
+      ? definitionObject.stations({ simulator })
+      : simulator.stations;
     this.station =
-      params.station || stations.length > 0
-        ? randomFromList(stations).name
-        : "None";
+      params.station === "nothing" || !params.station
+        ? stations.length > 0
+          ? randomFromList(stations).name
+          : "None"
+        : params.station;
+
     this.taskTemplate = params.taskTemplate || "";
 
     // For damage reports

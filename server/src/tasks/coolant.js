@@ -44,7 +44,7 @@ export default [
           return App.systems
             .filter(
               s =>
-                s.simulator === simulator.id && (s.coolant || s.coolant === 0)
+                s.simulatorId === simulator.id && (s.coolant || s.coolant === 0)
             )
             .map(s => ({ label: s.displayName || s.name, value: s.id }));
         },
@@ -54,7 +54,7 @@ export default [
                 App.systems
                   .filter(
                     s =>
-                      s.simulator === simulator.id &&
+                      s.simulatorId === simulator.id &&
                       (s.coolant || s.coolant === 0)
                   )
                   .map(s => s.id)
@@ -69,7 +69,7 @@ export default [
     }) {
       const system = App.systems.find(
         s =>
-          s.id === sys ||
+          (sys && s.id === sys) ||
           s.name.toLowerCase() === sys.toLowerCase() ||
           s.displayName.toLowerCase() === sys.toLowerCase()
       ) || { name: sys };

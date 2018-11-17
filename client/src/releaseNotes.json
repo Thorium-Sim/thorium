@@ -4,7 +4,8 @@
     "fixes": [
       "Fixes possible issues with exporting missions.",
       "Improves how printing mission scripts works.",
-      "Fix an issue where batteries deplete a little bit faster because of extra power hanging out in systems."
+      "Fix an issue where batteries deplete a little bit faster because of extra power hanging out in systems.",
+      "Improvements and fixes to the task system."
     ]
   },
   "1.0.29": {
