@@ -3,7 +3,8 @@
     "features": [],
     "fixes": [
       "Fixes possible issues with exporting missions.",
-      "Improves how printing mission scripts works."
+      "Improves how printing mission scripts works.",
+      "Fix an issue where batteries deplete a little bit faster because of extra power hanging out in systems."
     ]
   },
   "1.0.29": {
