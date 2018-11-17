@@ -246,8 +246,19 @@ $alertp: #4d1980;
     .navigator {
       background-color: $color;
     }
-
   }
+  
+  // *** Flip the button colors of Alert 4 and 5, to match the bars and also Empty Epsilon (green: safest condition) ***
+  #alert5{
+  background-color: #004d00;
+  box-shadow: 0px 0px 8px #004d00, inset 0px 0px 8px #004d00;
+  }
+  #alert4{
+  background-color: #004d99;
+  box-shadow: 0px 0px 8px #004d99, inset 0px 0px 8px #004d99;
+  }
+// *** ***
+  
   &.alertColor5 {
     @include colors($alert5, #0f0);
   }
@@ -385,7 +396,7 @@ $alertp: #4d1980;
 	  background-color:white !important;
       color: black ;
       border:3px double black;
-      font-wight:normal;
+      font-weight:normal;
     }
   }
 
