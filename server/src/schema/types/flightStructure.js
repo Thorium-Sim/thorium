@@ -161,5 +161,6 @@ type Notification {
   type: String
   trigger: String
   duration: Int
+  relevantCards: [String]
 }
 `;
