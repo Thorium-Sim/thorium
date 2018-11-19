@@ -11,6 +11,7 @@ type Probes {
   probes(network: Boolean): [Probe]
   equipment: [ProbeEquipment]
   types: [ProbeType]
+  scienceTypes: [ScienceType]
 }
 
 type Probe {
@@ -72,5 +73,18 @@ input ProbeTypeInput {
   name: String
   size: Float
   count: Int
+}
+
+type ScienceType {
+  id: ID
+  name: String
+  type: SCIENCE_BURST_DETECTOR
+  description: String
+  equipment: [String]
+}
+
+enum SCIENCE_BURST_DETECTOR {
+  burst
+  detector
 }
 `;
