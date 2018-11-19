@@ -69,7 +69,8 @@ App.on("sensorScanResult", ({ id, result }) => {
       station: s.name,
       title: `Sensor Scan Answered`,
       body: result,
-      color: "info"
+      color: "info",
+      relevantCards: system.domain === "external" ? [ "SensorScans", "Sensors" ] : [ "SecurityScans" ]
     });
   });
   pubsub.publish(
@@ -133,7 +134,8 @@ App.on(
         station: s.name,
         title: `New Processed Data`,
         body: data,
-        color: "info"
+        color: "info",
+        relevantCards: [ "Sensors", "JrSensors" ] 
       });
     });
   }
