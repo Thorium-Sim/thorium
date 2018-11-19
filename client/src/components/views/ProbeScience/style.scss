@@ -1,0 +1,30 @@
+.card-scienceProbes,
+.scienceProbes-core {
+  height: 100%;
+  .row,
+  .col {
+    height: 100%;
+  }
+  .charge-box {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 5px;
+    padding: 1px;
+    border: solid 1px white;
+    background-color: black;
+    position: relative;
+  }
+  .charge-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.5) 100%
+      ),
+      yellow;
+  }
+}

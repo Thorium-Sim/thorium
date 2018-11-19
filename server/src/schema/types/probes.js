@@ -27,6 +27,8 @@ type Probe {
   query: String
   querying: Boolean
   response: String
+  charge: Float
+  history: [String]
 }
 
 input ProbeInput {

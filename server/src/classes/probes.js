@@ -114,6 +114,9 @@ export default class Probes extends System {
   setTorpedo(tf) {
     this.torpedo = tf;
   }
+  setProbeCharge(probeId, charge) {
+    this.probes.find(p => p.id === probeId).setCharge(charge);
+  }
 }
 
 class Probe {
@@ -127,6 +130,9 @@ class Probe {
     this.query = params.query || "";
     this.querying = params.querying || false;
     this.response = params.query || "";
+
+    // For Science Probes
+    this.charge = params.charge || 0;
   }
   launch() {
     this.launched = true;
@@ -138,6 +144,9 @@ class Probe {
   setResponse(response) {
     this.response = response;
     this.querying = false;
+  }
+  setCharge(charge) {
+    this.charge = charge;
   }
 }
 
