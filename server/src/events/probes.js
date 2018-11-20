@@ -103,12 +103,47 @@ App.on("probeQueryResponse", ({ id, probeId, response }) => {
   sys.probeQueryResponse(probeId, response);
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });
-App.on("probeProcessedData", ({ id, simulatorId, data = "" }) => {
+App.on("probeProcessedData", ({ id, simulatorId, data = "", flash }) => {
   const sys = App.systems.find(
     s => s.id === id || (s.simulatorId === simulatorId && s.type === "Probes")
   );
   const simulator = App.simulators.find(s => s.id === sys.simulatorId);
   sys && sys.addProcessedData(data.replace(/#SIM/gi, simulator.name));
+
+  // Send Notifications
+  const stations = simulator.stations.filter(s =>
+    s.cards.find(c => c.component === "ProbeNetwork")
+  );
+  stations.forEach(s => {
+    if (flash) {
+      const cardName = s.cards.find(c => c.component === "ProbeNetwork").name;
+      App.handleEvent(
+        {
+          action: "changeCard",
+          message: cardName,
+          simulatorId: sys.simulatorId,
+          stationId: s.name
+        },
+        "triggerAction"
+      );
+      App.handleEvent(
+        {
+          action: "flash",
+          simulatorId: sys.simulatorId,
+          stationId: s.name
+        },
+        "triggerAction"
+      );
+    }
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: s.name,
+      title: `New Processed Data`,
+      body: data,
+      color: "info"
+    });
+  });
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });
 

@@ -14,6 +14,14 @@ export default ({ updateArgs, args }) => {
         defaultValue={args.data}
         onBlur={evt => updateArgs("data", evt.target.value)}
       />
+      <Label>
+        <Input
+          type="checkbox"
+          defaultChecked={args.flash}
+          onChange={evt => updateArgs("flash", evt.target.checked)}
+        />
+        Flash
+      </Label>
     </FormGroup>
   );
 };
