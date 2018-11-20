@@ -13,13 +13,13 @@ function splice(str, start, delCount, newSubStr) {
 export default function reportReplace(report = "", { system, simulator }) {
   let returnReport = report;
   // #PART
-  if (system) system.damage.exocompParts = [];
+  if (system && system.damage) system.damage.exocompParts = [];
   const partMatches = report.match(/#PART/gi) || [];
   partMatches.forEach(m => {
     const index = returnReport.indexOf(m);
     returnReport = returnReport.replace(m, "");
     const part = randomFromList(partsList);
-    if (system) system.damage.exocompParts.push(part);
+    if (system && system.damage) system.damage.exocompParts.push(part);
     returnReport = splice(returnReport, index, 0, part);
   });
 

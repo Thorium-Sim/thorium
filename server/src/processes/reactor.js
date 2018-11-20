@@ -81,7 +81,9 @@ const updateReactor = () => {
           .filter(s => s.simulatorId === simId)
           .filter(s => s.power.power)
           .reduce((prev, sys) => {
-            return prev + sys.power.power;
+            return sys.power.powerLevels.length > 0
+              ? prev + sys.power.power
+              : prev;
           }, 0);
         const systems = App.systems.filter(
           s => s.type === "Reactor" && s.simulatorId === simId
@@ -89,10 +91,13 @@ const updateReactor = () => {
         const reactors = systems.filter(s => s.model === "reactor");
         const batteries = systems.filter(s => s.model === "battery");
         //Reduce the level by the amount supplied by the reactors
-        const level = reactors.reduce((prev, next) => {
+
+        const reactorLevel = reactors.reduce((prev, next) => {
           const actualOutput = next.powerOutput * next.efficiency;
-          return Math.round(prev - actualOutput);
-        }, oldLevel);
+          return Math.round(prev + actualOutput);
+        }, 0);
+
+        const level = oldLevel - reactorLevel;
 
         //Adjust the reactors heat
         reactors.forEach(reactor => {
@@ -119,12 +124,14 @@ const updateReactor = () => {
         //If level is a negative number, charge the batteries
         batteries.forEach(batt => {
           const charge = level * (batt.batteryChargeRate / 40);
-
           const newLevel = Math.min(
             1,
             Math.max(0, batt.batteryChargeLevel - charge)
           );
-          batt.setDepletion(batt.batteryChargeLevel / charge);
+          batt.setDepletion(
+            // If it is zero, set it to a really long time
+            charge === 0 ? 1000000000 : batt.batteryChargeLevel / charge
+          );
           //Trigger the event
           if (newLevel !== batt.batteryChargeLevel) {
             App.handleEvent(
@@ -177,6 +184,18 @@ const updateReactor = () => {
   setTimeout(updateReactor, 1000);
 };
 let count = 0;
+
+const throttlesHeat = {};
+
+const sendUpdate = sys => {
+  if (!throttlesHeat[sys.id]) {
+    throttlesHeat[sys.id] = throttle(sys => {
+      pubsub.publish("heatChange", sys);
+    }, 300);
+  }
+  return throttlesHeat[sys.id];
+};
+
 // This one is for cooling - not affected by flight paused status
 function reactorHeat() {
   const reactors = App.systems.filter(
@@ -188,6 +207,7 @@ function reactorHeat() {
       r.setCoolant(Math.min(1, Math.max(0, r.coolant - 0.005)));
       r.setHeat(Math.min(1, Math.max(0, r.heat - 0.01)));
     }
+    sendUpdate(r)(r);
     pubsub.publish(
       "coolantSystemUpdate",
       App.systems
@@ -208,6 +228,7 @@ function reactorHeat() {
       "reactorUpdate",
       App.systems.filter(s => s.type === "Reactor")
     );
+    pubsub.publish("systemsUpdate", App.systems);
   }
   count++;
   setTimeout(reactorHeat, 1000 / 30);

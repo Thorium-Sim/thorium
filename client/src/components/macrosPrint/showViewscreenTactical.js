@@ -15,7 +15,7 @@ class TacticalMapConfig extends Component {
     const map = tacticalMaps.find(t => t.id === args.mapId);
     return (
       <div className="tacticalmap-config">
-        <string>Secondary Screen? </string>
+        <strong>Secondary Screen? </strong>
         <span>{args.secondary ? "Yes" : "No"}</span>
         <div>
           <strong>Map Name</strong>
