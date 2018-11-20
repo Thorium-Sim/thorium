@@ -10,6 +10,7 @@ import { titleCase } from "change-case";
 import "./style.scss";
 
 function parseDepletion(time) {
+  if (Math.round(time) > 10000) return "Infinite";
   return Object.entries(
     Duration.fromObject({
       months: 0,
@@ -255,6 +256,8 @@ class ReactorControl extends Component {
                     Force - {reactor.efficiency * 100}%
                   </option>
                 </Input>
+                <p>Effective Output:</p>
+                <p>{Math.round(reactor.powerOutput * reactor.efficiency)}</p>
                 <p>Heat Rate:</p>
                 <Input
                   size="sm"
