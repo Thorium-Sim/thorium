@@ -27,6 +27,10 @@ messages {
   approved
   sender
   timestamp
+  a
+  f
+  ra
+  rf
 }
 satellites
 `;
@@ -67,7 +71,11 @@ class ConvoCore extends Component {
                     approved,
                     encrypted,
                     sent,
-                    timestamp
+                    timestamp,
+                    a,
+                    f,
+                    ra,
+                    rf
                   }) => (
                     <ListGroupItem
                       key={id}
@@ -75,10 +83,12 @@ class ConvoCore extends Component {
                         approved === true && !sent && !deleted
                           ? "text-warning"
                           : ""
-                      } ${!approved && !sent && !deleted ? "text-info" : ""}`}
+                      } ${!approved && !sent && !deleted ? "text-info" : ""} ${
+                        a === ra && f === rf ? "text-success" : ""
+                      }`}
                       title={`${sent === true ? "Sent" : ""} ${
-                        deleted === true ? "Deleted" : ""
-                      } ${
+                        a === ra && f === rf ? "Decoded" : ""
+                      } ${deleted === true ? "Deleted" : ""} ${
                         !approved && !sent && !deleted ? "Not approved" : ""
                       } ${
                         approved === true && !sent && !deleted
