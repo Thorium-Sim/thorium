@@ -78,7 +78,7 @@ export default class ProbeEquipment extends Transitioner {
       <Fragment>
         <Row className="probeEquipment">
           {selectedProbeType === "science" && (
-            <Col sm={3}>
+            <Col sm={3} className="science-probe">
               <h3>Configuration Options</h3>
               <ListGroup style={{ height: "20vh", overflowY: "auto" }}>
                 {probes.scienceTypes

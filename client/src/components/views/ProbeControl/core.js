@@ -30,7 +30,10 @@ probes {
   response
   launched
   charge
-  history
+  history {
+    date
+    text
+  }
   equipment {
     id
     name
@@ -111,13 +114,21 @@ class ProbeControl extends Component {
     return (
       <div>
         <p>
-          <strong>Emitter:</strong> {titleCase(`${config.name} ${config.type}`)}
+          <strong>Emitter:</strong>{" "}
+          {config ? titleCase(`${config.name} ${config.type}`) : "Invalid"}
         </p>
         <p>
           <strong>Charge:</strong> {probe.charge}
         </p>
         <p>
-          <strong>History:</strong> {probe.history}
+          <strong>Emitter Description:</strong>
+        </p>
+        <p>{config && config.description}</p>
+        <p>
+          <strong>History:</strong>{" "}
+          {probe.history.map(({ date, text }) => (
+            <p>{`${new Date(date).toLocaleTimeString()}: ${text}`}</p>
+          ))}
         </p>
       </div>
     );

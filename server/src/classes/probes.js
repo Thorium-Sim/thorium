@@ -133,6 +133,7 @@ class Probe {
 
     // For Science Probes
     this.charge = params.charge || 0;
+    this.history = params.history || [];
   }
   launch() {
     this.launched = true;
@@ -147,6 +148,12 @@ class Probe {
   }
   setCharge(charge) {
     this.charge = charge;
+  }
+  addHistory(history) {
+    this.history.push({
+      date: new Date(),
+      text: history
+    });
   }
 }
 

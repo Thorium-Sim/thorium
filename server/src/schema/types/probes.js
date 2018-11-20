@@ -28,7 +28,20 @@ type Probe {
   querying: Boolean
   response: String
   charge: Float
-  history: [String]
+  history: [History]
+}
+
+
+type History {
+  date: String
+  text: String
+}
+
+type ScienceProbeEvent {
+  simulatorId: ID!
+  name: String!
+  type: String!
+  charge: Float!
 }
 
 input ProbeInput {

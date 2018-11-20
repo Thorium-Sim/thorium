@@ -64,6 +64,16 @@ export const ProbesSubscriptions = {
       () => pubsub.asyncIterator("probesUpdate"),
       rootValue => !!(rootValue && rootValue.length)
     )
+  },
+  scienceProbeEmitter: {
+    resolve(rootValue) {
+      console.log({ rootValue });
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("scienceProbeEmitter"),
+      (rootValue, { simulatorId }) => rootValue.simulatorId === simulatorId
+    )
   }
 };
 

@@ -1,6 +1,8 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
+import { titleCase } from "change-case";
+
 App.on("destroyProbe", ({ id, probeId }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.destroyProbe(probeId);
@@ -148,9 +150,9 @@ export function getProbeConfig(probes, probe) {
     const probeEquipment = Object.entries(probeEquip);
     for (let i = 0; i < probeEquipment.length; i++) {
       const [eqId, count] = probeEquipment[i];
-      if (equipment[eqId] >= count) return true;
+      if (!equipment[eqId] || equipment[eqId] < count) return false;
     }
-    return false;
+    return true;
   });
   if (type) {
     return probes.scienceTypes.find(t => t.id === type[0]);
@@ -165,21 +167,46 @@ App.on("activateProbeEmitter", ({ id, probeId }) => {
 
   if (scienceProbeType) {
     // Update the history of the probe
-    probe.history.push(
-      `Activated ${scienceProbeType.name} ${scienceProbeType.type}.`
+    probe.addHistory(
+      `Activated ${scienceProbeType.name} ${
+        scienceProbeType.type
+      } at ${Math.round(probe.charge * 100)}%.`
     );
 
     // Send a special publish
     pubsub.publish("scienceProbeEmitter", {
       simulatorId: sys.simulatorId,
       name: scienceProbeType.name,
-      type: scienceProbeType.type
+      type: scienceProbeType.type,
+      charge: probe.charge
     });
+    probe.setCharge(0);
 
     // Send the regular publish.
     pubsub.publish(
       "probesUpdate",
       App.systems.filter(s => s.type === "Probes")
+    );
+
+    // Notifications
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      type: "Probes",
+      station: "Core",
+      title: `Science Probe ${titleCase(scienceProbeType.type)}`,
+      body: `${scienceProbeType.name} at ${Math.round(probe.charge * 100)}%`,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `Science Probe ${titleCase(scienceProbeType.type)}`,
+        component: "ProbeControlCore",
+        body: `${scienceProbeType.name} at ${Math.round(probe.charge * 100)}%`,
+        color: "info"
+      },
+      "addCoreFeed"
     );
   }
 });

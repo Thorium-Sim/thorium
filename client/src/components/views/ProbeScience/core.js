@@ -367,7 +367,6 @@ class ProbeScienceCore extends Component {
         };
       });
 
-    console.log(contacts);
     const mutation = gql`
       mutation CreateContacts($id: ID!, $contacts: [SensorContactInput!]!) {
         createSensorContacts(id: $id, contacts: $contacts)
@@ -389,7 +388,7 @@ class ProbeScienceCore extends Component {
     return (
       <Container className="scienceProbes-core">
         <Row>
-          <Col sm={4} style={{ overflowY: "auto" }}>
+          <Col sm={4}>
             <div>
               <Button block color="secondary" size="sm" onClick={this.clear}>
                 Clear
@@ -406,10 +405,6 @@ class ProbeScienceCore extends Component {
                 />
               ))}
             </div>
-            <hr />
-            <p>
-              <strong>History</strong>
-            </p>
           </Col>
           <Col sm={8}>
             <div id="threeSensors" className="array">

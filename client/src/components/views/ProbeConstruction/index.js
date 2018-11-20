@@ -133,12 +133,17 @@ class ProbeConstruction extends Component {
       {
         selector: ".probe-container",
         content:
-          "These are the probes which are available. If you move your mouse over the probe you can see a brief description. Click on any probe type before continuing."
+          "These are the probes which are available. If you move your mouse over the probe you can see a brief description. Click on the science probe before continuing."
+      },
+      {
+        selector: ".science-probe",
+        content:
+          "If you chose a science probe, you should see the different configuration options here. This shows you what specific configurations are available for science probes and what equipment is needed to configure the science probe properly. Make sure you review these options. As you construct a probe as part of training, configure it based on one of these configurations."
       },
       {
         selector: ".equipmentList",
         content:
-          "This is a list of the equipment available to your probe. You can see its name, its size, and how many you have on your ship in this table. Move your mouse over an equipment item to see a description of the equipment item. Click on the item to add it to your probe."
+          "This is a list of the equipment available to your probe. You can see its name, its size, and how many you have on your ship in this table. Click an equipment item to see a description of the equipment item. Click on the Add Equipment button to add it to your probe."
       },
       {
         selector: ".probe-control-buttons",
