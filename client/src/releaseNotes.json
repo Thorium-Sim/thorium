@@ -2,7 +2,8 @@
   "1.0.30": {
     "features": [
       "Added the probe science screen. This screen allows for probes to be configured with bursts or detectors and can be used as part of certain strategies. This screen uses the Alternative Sensors Core and the Probe Control Core.",
-      "Add a color change to a message in the comm convo core when it has been decoded."
+      "Added a color change to a message in the comm convo core when it has been decoded.",
+      "Added the ability to flash and send probe processed data. "
     ],
     "fixes": [
       "Fixes possible issues with exporting missions.",

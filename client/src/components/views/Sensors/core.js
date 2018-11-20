@@ -151,15 +151,16 @@ class SensorsCore extends Component {
       dataField
     });
   };
-  probeData = probe => {
+  probeData = (probe, flash) => {
     const mutation = gql`
-      mutation ProbeData($id: ID!, $data: String!) {
-        probeProcessedData(id: $id, data: $data)
+      mutation ProbeData($id: ID!, $data: String!, $flash: Boolean) {
+        probeProcessedData(id: $id, data: $data, flash: $flash)
       }
     `;
     const variables = {
       id: probe.id,
-      data: this.state.dataField
+      data: this.state.dataField,
+      flash
     };
     this.props.client.mutate({
       mutation,
@@ -388,6 +389,14 @@ class SensorsCore extends Component {
               size={"sm"}
             >
               Probe Data
+            </Button>
+            <Button
+              onClick={() => this.probeData(probes, true)}
+              style={{ flexGrow: 2 }}
+              color="warning"
+              size={"sm"}
+            >
+              Flash & Send Probe Data
             </Button>
           </div>
         </div>
