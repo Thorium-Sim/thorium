@@ -62,29 +62,6 @@ const DOCKING_SUB = gql`
   }
 `;
 
-const trainingSteps = [
-  {
-    selector: ".powerlevel-containers",
-    content:
-      "Your main reactor provides power to your ship. In certain circumstances, you will need to change the output of the main reactor, which you can do from this screen."
-  },
-  {
-    selector: ".reactor-info",
-    content:
-      "This shows you the current efficiency of the reactor, the reactor output, and the current power being used. Make sure your reactor output matches the current power."
-  },
-  {
-    selector: ".reactor-buttons",
-    content:
-      "Use these buttons to change the power output of the main reactor. Silent running mode is useful for masking the energy signature put off by your reactor. External power is used when your ship is connected to an external power source, like a starbase. Just make sure you have enough power to run the systems on your ship."
-  },
-  {
-    selector: ".battery-container",
-    content:
-      "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
-  }
-];
-
 class ReactorControl extends Component {
   state = {};
   setEfficiency(e) {
@@ -104,6 +81,29 @@ class ReactorControl extends Component {
       variables
     });
   }
+  trainingSteps = hasBattery =>
+    [
+      {
+        selector: ".powerlevel-containers",
+        content:
+          "Your main reactor provides power to your ship. In certain circumstances, you will need to change the output of the main reactor, which you can do from this screen."
+      },
+      {
+        selector: ".reactor-info",
+        content:
+          "This shows you the current efficiency of the reactor, the reactor output, and the current power being used. Make sure your reactor output matches the current power."
+      },
+      {
+        selector: ".reactor-buttons",
+        content:
+          "Use these buttons to change the power output of the main reactor. Silent running mode is useful for masking the energy signature put off by your reactor. External power is used when your ship is connected to an external power source, like a starbase. Just make sure you have enough power to run the systems on your ship."
+      },
+      hasBattery && {
+        selector: ".battery-container",
+        content:
+          "These are the ship’s batteries. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
+      }
+    ].filter(Boolean);
   applyCoolant = () => {
     const { reactors } = this.props.data;
     const reactor = reactors.find(r => r.model === "reactor");
@@ -332,7 +332,10 @@ class ReactorControl extends Component {
             </Row>
           </Col>
         </Row>
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
+        <Tour
+          steps={this.trainingSteps(battery)}
+          client={this.props.clientObj}
+        />
       </Container>
     );
   }

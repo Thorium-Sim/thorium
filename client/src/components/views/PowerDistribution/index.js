@@ -15,23 +15,6 @@ Some improvements:
 - Change the types of the systems to make it easier to sort the systems by name.
 */
 
-const trainingSteps = [
-  {
-    selector: ".powerlevel-containers",
-    content:
-      "This list shows all of the systems on the ship that take power. Drag the green bars next to each system to add or remove power. You must ensure that there is enough power for the system to run. The yellow bars represent the amount of power necessary for the system to function at a certain level."
-  },
-  {
-    selector: ".totalPowerText",
-    content: "This is the total amount of power being used by the ship."
-  },
-  {
-    selector: ".battery-holder",
-    content:
-      "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
-  }
-];
-
 const mutation = gql`
   mutation ChangePower($id: ID!, $level: Int!) {
     changePower(systemId: $id, power: $level)
@@ -138,6 +121,29 @@ class PowerDistribution extends Component {
       }
     );
   };
+  trainingSteps = hasBattery =>
+    [
+      {
+        selector: ".nothing",
+        content:
+          "You are responsible for distributing power to the various systems on the ship. Without enough power, systems will not run. You only have a limited amount of power to distribute, so make sure you put power in the places that need it the most."
+      },
+      {
+        selector: ".powerlevel-containers",
+        content:
+          "This list shows all of the systems on the ship that take power. Drag the green bars next to each system to add or remove power. You must ensure that there is enough power for the system to run. The yellow bars represent the amount of power necessary for the system to function at a certain level."
+      },
+      {
+        selector: ".totalPowerText",
+        content: "This is the total amount of power being used by the ship."
+      },
+      hasBattery && {
+        selector: ".battery-holder",
+        content:
+          "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
+      }
+    ].filter(Boolean);
+
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     // Get the batteries, get just the first one.
@@ -248,7 +254,10 @@ class PowerDistribution extends Component {
             </Col>
           )}
         </Row>
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
+        <Tour
+          steps={this.trainingSteps(battery)}
+          client={this.props.clientObj}
+        />
       </Container>
     );
   }
