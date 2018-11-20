@@ -1,6 +1,8 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
+import { titleCase } from "change-case";
+
 App.on("destroyProbe", ({ id, probeId }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.destroyProbe(probeId);
@@ -114,4 +116,97 @@ App.on("setProbeTorpedo", ({ id, torpedo }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.setTorpedo(torpedo);
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+});
+
+App.on("setProbeCharge", ({ id, probeId, charge }) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setProbeCharge(probeId, charge);
+  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+});
+
+export function getProbeConfig(probes, probe) {
+  // Check to see if the probe equipment matches a
+  // science probe configuration
+
+  // First, map out the probe's equipment
+  const probeEquip = probe.equipment.reduce(
+    (prev, p) => ({ ...prev, [p.id]: p.count }),
+    {}
+  );
+  // Get the requirements
+  const reqEquip = probes.scienceTypes.reduce(
+    (prev, t) => ({
+      ...prev,
+      [t.id]: t.equipment.reduce(
+        (prev2, e) => ({ ...prev2, [e]: prev2[e] ? prev2[e] + 1 : 1 }),
+        {}
+      )
+    }),
+    {}
+  );
+
+  // Get the type based on the equipment
+  const type = Object.entries(reqEquip).find(([id, equipment]) => {
+    const probeEquipment = Object.entries(probeEquip);
+    for (let i = 0; i < probeEquipment.length; i++) {
+      const [eqId, count] = probeEquipment[i];
+      if (!equipment[eqId] || equipment[eqId] < count) return false;
+    }
+    return true;
+  });
+  if (type) {
+    return probes.scienceTypes.find(t => t.id === type[0]);
+  }
+  return null;
+}
+
+App.on("activateProbeEmitter", ({ id, probeId }) => {
+  const sys = App.systems.find(s => s.id === id);
+  const probe = sys.probes.find(p => p.id === probeId);
+  const scienceProbeType = getProbeConfig(sys, probe);
+
+  if (scienceProbeType) {
+    // Update the history of the probe
+    probe.addHistory(
+      `Activated ${scienceProbeType.name} ${
+        scienceProbeType.type
+      } at ${Math.round(probe.charge * 100)}%.`
+    );
+
+    // Send a special publish
+    pubsub.publish("scienceProbeEmitter", {
+      simulatorId: sys.simulatorId,
+      name: scienceProbeType.name,
+      type: scienceProbeType.type,
+      charge: probe.charge
+    });
+    probe.setCharge(0);
+
+    // Send the regular publish.
+    pubsub.publish(
+      "probesUpdate",
+      App.systems.filter(s => s.type === "Probes")
+    );
+
+    // Notifications
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      type: "Probes",
+      station: "Core",
+      title: `Science Probe ${titleCase(scienceProbeType.type)}`,
+      body: `${scienceProbeType.name} at ${Math.round(probe.charge * 100)}%`,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `Science Probe ${titleCase(scienceProbeType.type)}`,
+        component: "ProbeControlCore",
+        body: `${scienceProbeType.name} at ${Math.round(probe.charge * 100)}%`,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
 });

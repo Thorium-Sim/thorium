@@ -11,6 +11,7 @@ type Probes {
   probes(network: Boolean): [Probe]
   equipment: [ProbeEquipment]
   types: [ProbeType]
+  scienceTypes: [ScienceType]
 }
 
 type Probe {
@@ -26,6 +27,21 @@ type Probe {
   query: String
   querying: Boolean
   response: String
+  charge: Float
+  history: [History]
+}
+
+
+type History {
+  date: String
+  text: String
+}
+
+type ScienceProbeEvent {
+  simulatorId: ID!
+  name: String!
+  type: String!
+  charge: Float!
 }
 
 input ProbeInput {
@@ -72,5 +88,18 @@ input ProbeTypeInput {
   name: String
   size: Float
   count: Int
+}
+
+type ScienceType {
+  id: ID
+  name: String
+  type: SCIENCE_BURST_DETECTOR
+  description: String
+  equipment: [String]
+}
+
+enum SCIENCE_BURST_DETECTOR {
+  burst
+  detector
 }
 `;

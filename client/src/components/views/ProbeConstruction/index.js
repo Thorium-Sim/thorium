@@ -1,333 +1,71 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Container, Button, Input, Row, Col } from "reactstrap";
+import { Container } from "reactstrap";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
-import Transitioner from "../helpers/transitioner";
 import ProbeEquipment from "./probeEquipment";
-import Measure from "react-measure";
 import DamageOverlay from "../helpers/DamageOverlay";
+import ProbeDescription from "./probeDescription";
+import ProbeAction from "./probeAction";
+import ProbeSelector from "./probeSelector";
 import "./style.scss";
 
-function d2r(deg) {
-  return (deg * Math.PI) / 180;
+const queryData = `      id
+simulatorId
+type
+torpedo
+types {
+  id
+  name
+  size
+  count
+  description
+  availableEquipment {
+    id
+    name
+    size
+    count
+    description
+  }
 }
-
-const probeTypes = ["class-i", "class-ii", "class-iii", "defense", "science"];
-const probeImages = probeTypes.reduce((prev, next) => {
-  prev[next] = require(`./probes/${next}.svg`);
-  return prev;
-}, {});
+probes {
+  id
+  name
+  equipment {
+    id
+  }
+}
+name
+power {
+  power
+  powerLevels
+}
+damage {
+  damaged
+  report
+}
+torpedo
+scienceTypes {
+  id
+  name
+  type
+  description
+  equipment
+}
+`;
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
-      id
-      simulatorId
-      type
-      torpedo
-      types {
-        id
-        name
-        size
-        count
-        description
-        availableEquipment {
-          id
-          name
-          size
-          count
-          description
-        }
-      }
-      probes {
-        id
-        name
-        equipment {
-          id
-        }
-      }
-      name
-      power {
-        power
-        powerLevels
-      }
-      damage {
-        damaged
-        report
-      }
-      torpedo
+${queryData}
     }
   }
 `;
 
-const ProbeSelector = ({
-  types,
-  selectedProbeType,
-  selectProbe,
-  setDescription,
-  launching
-}) => {
-  return (
-    <Row
-      style={{
-        position: "absolute",
-        width: "100%"
-      }}
-    >
-      <Col
-        sm={12}
-        className={`probe-container  ${
-          selectedProbeType ? "probeSelected" : ""
-        }`}
-      >
-        {types.map((t, i, arr) => {
-          const selected = selectedProbeType === t.id ? "selected" : "";
-          return (
-            <div
-              key={t.id}
-              className={`probe-holder`}
-              style={{
-                transform: launching
-                  ? `translate(20%,30%)`
-                  : selected
-                    ? `translate(30%, 60%)`
-                    : `translateX(${(i * 80) / arr.length - 35}%)`
-              }}
-            >
-              <div className={`probe-type ${selected}`}>
-                <div
-                  onMouseOut={setDescription.bind(this, null)}
-                  onMouseOver={setDescription.bind(this, t.description)}
-                  onClick={selectProbe.bind(this, t.id)}
-                >
-                  <p>
-                    {t.name}: {t.count}
-                  </p>
-                  <img
-                    alt="probe"
-                    draggable="false"
-                    src={probeImages[t.id]}
-                    role="presentation"
-                  />
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </Col>
-    </Row>
-  );
-};
-
-class ProbeDescription extends Transitioner {
-  render() {
-    return (
-      <Row className="probeDescription">
-        <Col sm={{ size: 6, offset: 3 }}>
-          <p>{this.props.description}</p>
-        </Col>
-      </Row>
-    );
-  }
-}
-
-class ProbeAction extends Transitioner {
-  render() {
-    const {
-      selectedProbeType,
-      selectProbe,
-      cancelProbe,
-      probes,
-      equipment,
-      launchProbe
-    } = this.props;
-    return (
-      <Col sm={{ size: 4 }} className="flex-column probeAction">
-        <ProbeName
-          probes={probes}
-          network={probes.probes
-            .filter(p =>
-              p.equipment.find(e => e.id === "probe-network-package")
-            )
-            .map(p => parseInt(p.name, 10))}
-          equipment={equipment}
-          launchProbe={launchProbe}
-        />
-        <div>
-          <Button
-            block
-            color="warning"
-            onClick={selectProbe.bind(this, selectedProbeType)}
-          >
-            Reconfigure Probe
-          </Button>
-          <Button block color="danger" onClick={cancelProbe}>
-            Cancel Probe
-          </Button>
-        </div>
-      </Col>
-    );
-  }
-}
-
-class ProbeName extends Component {
-  state = {
-    name: ""
-  };
-  render() {
-    const { probes, launchProbe, equipment, network } = this.props;
-    const { name } = this.state;
-    return (
-      <div className="probe-name">
-        {equipment.find(e => e.id === "probe-network-package") ? (
-          <div>
-            <h2>Please select a destination for the probe</h2>
-            <div>
-              <Measure
-                bounds
-                onResize={contentRect => {
-                  this.setState({ dimensions: contentRect.bounds });
-                }}
-              >
-                {({ measureRef }) => (
-                  <div
-                    ref={measureRef}
-                    style={{
-                      height:
-                        this.state.dimensions && this.state.dimensions.width
-                    }}
-                  >
-                    {this.state.dimensions && (
-                      <div
-                        className={`grid`}
-                        style={{
-                          width: this.state.dimensions.width,
-                          height: this.state.dimensions.width
-                        }}
-                      >
-                        {Array(8)
-                          .fill(0)
-                          .map((_, i, array) => (
-                            <div
-                              key={`line-${i}`}
-                              className="line"
-                              style={{
-                                transform: `rotate(${((i + 0.5) /
-                                  array.length) *
-                                  360}deg)`
-                              }}
-                            />
-                          ))}
-                        {Array(3)
-                          .fill(0)
-                          .map((_, i, array) => (
-                            <div
-                              key={`ring-${i}`}
-                              className="ring"
-                              style={{
-                                width: `${((i + 1) / array.length) * 100}%`,
-                                height: `${((i + 1) / array.length) * 100}%`,
-                                backgroundColor: i < 2 ? "black" : "transparent"
-                              }}
-                            />
-                          ))}
-                        {Array(8)
-                          .fill(0)
-                          .map(
-                            (_, i, array) =>
-                              network.indexOf(i + 1) === -1 && (
-                                <p
-                                  key={`label-${i}`}
-                                  className="label"
-                                  onClick={() => {
-                                    launchProbe(i + 1);
-                                  }}
-                                  style={{
-                                    transform: `translate(${(Math.cos(
-                                      d2r(((i - 2) / array.length) * 360)
-                                    ) *
-                                      this.state.dimensions.height) /
-                                      2.5}px, ${(Math.sin(
-                                      d2r(((i - 2) / array.length) * 360)
-                                    ) *
-                                      this.state.dimensions.height) /
-                                      2.5}px)`
-                                  }}
-                                >
-                                  {i + 1}
-                                </p>
-                              )
-                          )}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </Measure>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <h2>Please enter a name for the probe</h2>
-            <div>
-              <Input
-                type="text"
-                value={name}
-                onChange={e => this.setState({ name: e.target.value })}
-              />
-            </div>
-            <Button
-              block
-              disabled={!name}
-              color="primary"
-              onClick={() => launchProbe(this.state.name)}
-            >
-              {probes.torpedo ? "Load" : "Launch"} Probe
-            </Button>
-          </div>
-        )}
-      </div>
-    );
-  }
-}
 const PROBES_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
-      id
-      simulatorId
-      type
-      torpedo
-      types {
-        id
-        name
-        size
-        count
-        description
-        availableEquipment {
-          id
-          name
-          size
-          count
-          description
-        }
-      }
-      probes {
-        id
-        equipment {
-          id
-        }
-        name
-      }
-      name
-      power {
-        power
-        powerLevels
-      }
-      damage {
-        damaged
-        report
-      }
-      torpedo
+      ${queryData}
     }
   }
 `;
@@ -395,12 +133,17 @@ class ProbeConstruction extends Component {
       {
         selector: ".probe-container",
         content:
-          "These are the probes which are available. If you move your mouse over the probe you can see a brief description. Click on any probe type before continuing."
+          "These are the probes which are available. If you move your mouse over the probe you can see a brief description. Click on the science probe before continuing."
+      },
+      {
+        selector: ".science-probe",
+        content:
+          "If you chose a science probe, you should see the different configuration options here. This shows you what specific configurations are available for science probes and what equipment is needed to configure the science probe properly. Make sure you review these options. As you construct a probe as part of training, configure it based on one of these configurations."
       },
       {
         selector: ".equipmentList",
         content:
-          "This is a list of the equipment available to your probe. You can see its name, its size, and how many you have on your ship in this table. Move your mouse over an equipment item to see a description of the equipment item. Click on the item to add it to your probe."
+          "This is a list of the equipment available to your probe. You can see its name, its size, and how many you have on your ship in this table. Click an equipment item to see a description of the equipment item. Click on the Add Equipment button to add it to your probe."
       },
       {
         selector: ".probe-control-buttons",

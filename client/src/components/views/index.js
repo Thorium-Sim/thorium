@@ -81,6 +81,7 @@ import BridgeMap from "./BridgeMap";
 import ThrustersLite from "./Thrusters/lite";
 import ParticleDetector from "./ParticleDetector";
 import Tasks from "./Tasks";
+import ProbeScience from "./ProbeScience";
 // import DockingPorts from "./DockingPorts";
 
 // Cores
@@ -241,7 +242,8 @@ const Views = {
   BridgeMap,
   ThrustersLite,
   ParticleDetector,
-  Tasks
+  Tasks,
+  ProbeScience
   // DockingPorts
 };
 

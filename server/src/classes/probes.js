@@ -23,6 +23,10 @@ export default class Probes extends System {
       ? probesEquipment
       : params.equipment || probesEquipment;
 
+    this.scienceTypes = init
+      ? scienceProbeTypes.concat()
+      : params.scienceTypes || scienceProbeTypes.concat();
+
     params.probes.forEach(p => this.probes.push(new Probe(p, this.id)));
     params.types.forEach(p => this.types.push(new ProbeType(p, this.id)));
     params.equipment.forEach(e => this.equipment.push(new ProbeEquipment(e)));
@@ -110,6 +114,9 @@ export default class Probes extends System {
   setTorpedo(tf) {
     this.torpedo = tf;
   }
+  setProbeCharge(probeId, charge) {
+    this.probes.find(p => p.id === probeId).setCharge(charge);
+  }
 }
 
 class Probe {
@@ -123,6 +130,10 @@ class Probe {
     this.query = params.query || "";
     this.querying = params.querying || false;
     this.response = params.query || "";
+
+    // For Science Probes
+    this.charge = params.charge || 0;
+    this.history = params.history || [];
   }
   launch() {
     this.launched = true;
@@ -134,6 +145,15 @@ class Probe {
   setResponse(response) {
     this.response = response;
     this.querying = false;
+  }
+  setCharge(charge) {
+    this.charge = charge;
+  }
+  addHistory(history) {
+    this.history.push({
+      date: new Date(),
+      text: history
+    });
   }
 }
 
@@ -547,6 +567,254 @@ const probesEquipment = [
     size: 3,
     count: 8,
     availableProbes: ["science"]
+  }
+];
+
+const scienceProbeTypes = [
+  {
+    id: "resonance-burst",
+    name: "Resonance",
+    type: "burst",
+    description:
+      "Stimulate anti-matter explosions. Discharges unwanted and dangerous particles from the deflector dish. Disrupts certain anomalies of an energetic nature. Nullifies the effects of plasma storms.",
+    equipment: [
+      "resonance-emitter",
+      "extra-fuel-cell",
+      "extra-fuel-cell",
+      "radio-transceiver"
+    ]
+  },
+  {
+    id: "resonance-detector",
+    name: "Resonance",
+    type: "detector",
+    description:
+      "Detects vibrations and curves in space/time. Can be used to detect spatial anomalies' location and size.",
+    equipment: [
+      "resonance-emitter",
+      "sensor-array",
+      "extra-fuel-cell",
+      "communications-signal-booster"
+    ]
+  },
+  {
+    id: "tachyon-burst",
+    name: "Tachyon",
+    type: "burst",
+    description:
+      "Used to neutralize certain phased matter. Can disrupt phaser fire and stealth systems.",
+    equipment: [
+      "tachyon-emitter",
+      "radio-transceiver",
+      "chemical-analysis-package"
+    ]
+  },
+  {
+    id: "tachyon-detector",
+    name: "Tachyon",
+    type: "detector",
+    description: "Can locate certain star emissions, as well as cloaked ships.",
+    equipment: [
+      "tachyon-emitter",
+      "sensor-array",
+      "communications-signal-booster"
+    ]
+  },
+  {
+    id: "graviton-detector",
+    name: "Graviton",
+    type: "detector",
+    description:
+      "Detects ship movements, warp trails, impulse trails, and thruster movement.",
+    equipment: [
+      "graviton-emitter",
+      "sensor-array",
+      "subspace-encounter-package",
+      "radio-transceiver"
+    ]
+  },
+  {
+    id: "graviton-burst",
+    name: "Graviton",
+    type: "burst",
+    description:
+      "Disrupts space/time anomalies. Seals ruptures. Dissipates subspace fields. Can disrupt certain shield systems.",
+    equipment: [
+      "graviton-emitter",
+      "ecm-package",
+      "extra-fuel-cell",
+      "communications-signal-booster"
+    ]
+  },
+  {
+    id: "lithium-detector",
+    name: "Lithium",
+    type: "detector",
+    description:
+      "Locates lithium based life forms, lithium based space anomalies, and lithium based matter. Known as a common way to locate dilithium crystals and other such energy sources.",
+    equipment: [
+      "lithium-emitter",
+      "extra-fuel-cell",
+      "extra-fuel-cell",
+      "radio-transceiver"
+    ]
+  },
+  {
+    id: "lithium-burst",
+    name: "Lithium",
+    type: "burst",
+    description:
+      "Masks trace amounts of lithium. Kills space-borne microorganisms.",
+    equipment: [
+      "lithium-emitter",
+      "sensor-array",
+      "sample-retrieval-package",
+      "chemical-analysis-package"
+    ]
+  },
+  {
+    id: "magnetic-detector",
+    name: "Magnetic",
+    type: "detector",
+    description:
+      "Detects magnetic fields emanating from stars, planets, nebulae, and starships.",
+    equipment: [
+      "magnetic-emitter",
+      "sensor-array",
+      "metaphasic-shield-generator",
+      "radio-transceiver"
+    ]
+  },
+  {
+    id: "magnetic-burst",
+    name: "Magnetic",
+    type: "burst",
+    description:
+      "Masks transporters signals. Can disrupt anti-matter, destabilize warp fields, and stop matter in a state of flux.",
+    equipment: [
+      "magnetic-emitter",
+      "ecm-package",
+      "extra-fuel-cell",
+      "communications-signal-booster"
+    ]
+  },
+  {
+    id: "helium-burst",
+    name: "Helium",
+    type: "burst",
+    description:
+      "Masks trace amounts of helium. Used to help in terraforming operations. \n --NOT ADVISED TO BE USED NEAR NEBULAE AND OTHER SOURCES OF RADIATION--",
+    equipment: [
+      "helium-emitter",
+      "ecm-package",
+      "radio-transceiver",
+      "extra-fuel-cell"
+    ]
+  },
+  {
+    id: "helium-detector",
+    name: "Helium",
+    type: "detector",
+    description:
+      "Locates helium based life forms, helium based space anomalies, and helium based matter.",
+    equipment: [
+      "helium-emitter",
+      "sensor-array",
+      "chemical-analysis-package",
+      "communications-signal-booster"
+    ]
+  },
+  {
+    id: "hydrogen-burst",
+    name: "Hydrogen",
+    type: "burst",
+    description:
+      "Masks trace amounts of hydrogen. Can be used to stimulate fusion reactions and stall the collapse or red dwarf stars.",
+    equipment: ["hydrogen-emitter", "extra-fuel-cell", "extra-fuel-cell"]
+  },
+  {
+    id: "hydrogen-detector",
+    name: "Hydrogen",
+    type: "detector",
+    description:
+      "Locates hydrogen based life forms, hydrogen based space anomalies, and hydrogen based matter. Detects the current life cycle and age of a star.",
+    equipment: [
+      "hydrogen-emitter",
+      "sensor-array",
+      "sample-retrieval-package",
+      "extra-fuel-cell"
+    ]
+  },
+  {
+    id: "oxygen-burst",
+    name: "Oxygen",
+    type: "burst",
+    description:
+      "Masks trace amounts of oxygen. Can also stimulate exothermic reactions.\n--WARNING: FLAMMABLE SUBSTANCE--",
+    equipment: [
+      "oxygen-emitter",
+      "communications-signal-booster",
+      "extra-fuel-cell",
+      "extra-fuel-cell"
+    ]
+  },
+  {
+    id: "oxygen-detector",
+    name: "Oxygen",
+    type: "detector",
+    description:
+      "Locates oxygen based life forms, oxygen based space anomalies, and oxygen based matter.",
+    equipment: [
+      "oxygen-emitter",
+      "sample-retrieval-package",
+      "chemical-analysis-package",
+      "extra-fuel-cell"
+    ]
+  },
+  {
+    id: "carbon-burst",
+    name: "Carbon",
+    type: "burst",
+    description:
+      "Masks trace amounts of carbon. Also known to regenerate planetary ozone layers. Helps to dissipate the fallout of matter/antimatter reactions.",
+    equipment: [
+      "carbon-emitter",
+      "extra-fuel-cell",
+      "extra-fuel-cell",
+      "extra-fuel-cell"
+    ]
+  },
+  {
+    id: "carbon-detector",
+    name: "Carbon",
+    type: "detector",
+    description:
+      "Locates carbon based life forms, carbon based space anomalies, and carbon based matter.",
+    equipment: ["carbon-emitter", "sensor-array", "sample-retrieval-package"]
+  },
+  {
+    id: "radiation-burst",
+    name: "Radiation",
+    type: "burst",
+    description:
+      "Masks general radiation. Locates unique radiation signatures, either artificial or naturally occurring.",
+    equipment: [
+      "radiation-emitter",
+      "metaphasic-shield-generator",
+      "extra-fuel-cell"
+    ]
+  },
+  {
+    id: "radiation-detector",
+    name: "Radiation",
+    type: "detector",
+    description:
+      "Detects the type and intensity of radiation in the surrounding area. Useful for setting shield frequencies.",
+    equipment: [
+      "radiation-emitter",
+      "metaphasic-shield-generator",
+      "sensor-array"
+    ]
   }
 ];
 
