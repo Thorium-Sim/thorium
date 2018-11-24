@@ -107,6 +107,22 @@ const CardRenderer = props => {
   );
 };
 
+function isMedia(src) {
+  const extensions = [
+    ".wav",
+    ".mp4",
+    ".mp3",
+    ".mov",
+    ".ogg",
+    ".ogv",
+    ".aac",
+    ".m4a",
+    ".webm",
+    ".mpg",
+    ".mpeg"
+  ];
+  return extensions.find(e => src.indexOf(e) > -1);
+}
 export default class CardFrame extends Component {
   constructor(props) {
     super(props);
@@ -149,7 +165,10 @@ export default class CardFrame extends Component {
             changeCard={this.changeCard}
             client={{
               ...client,
-              training: simTraining && stationTraining ? false : client.training
+              training:
+                simTraining && stationTraining && isMedia(stationTraining)
+                  ? false
+                  : client.training
             }}
           />
           {this.props.client && (
@@ -162,7 +181,8 @@ export default class CardFrame extends Component {
             />
           )}
           {simTraining &&
-            stationTraining && (
+            stationTraining &&
+            isMedia(stationTraining) && (
               <TrainingPlayer src={`/assets${stationTraining}`} />
             )}
           <Alerts

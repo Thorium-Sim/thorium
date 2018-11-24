@@ -78,5 +78,96 @@ Message: ${message}`,
       // to manually verify.
       return false;
     }
+  },
+  {
+    name: "Decode Long Range Message",
+    class: "Long Range Comm",
+    active({ simulator }) {
+      const system = App.systems.find(
+        s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+      );
+      const notDecoded = system.messages.filter(
+        m => m.f === m.rf && m.a === m.ra
+      );
+      return (
+        simulator.stations.find(
+          s =>
+            s.widgets.indexOf("composer") > -1 ||
+            s.cards.find(c => c.component === "CommDecoding")
+        ) &&
+        system &&
+        notDecoded.length > 0
+      );
+    },
+    stations({ simulator }) {
+      return (
+        simulator &&
+        simulator.stations.filter(
+          s =>
+            s.widgets.indexOf("composer") > -1 ||
+            s.cards.find(c => c.component === "CommDecoding")
+        )
+      );
+    },
+    values: {
+      preamble: {
+        input: () => "textarea",
+        value: () =>
+          "A long range message has been recieved and needs to be decoded."
+      },
+      message: {
+        input: ({ simulator }) => {
+          const system = App.systems.find(
+            s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+          );
+          const notDecoded = system.messages.filter(
+            m => m.f === m.rf && m.a === m.ra
+          );
+          return notDecoded.map(m => ({ value: m.id, label: m.destination }));
+        },
+        value: ({ simulator }) => {
+          const system = App.systems.find(
+            s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+          );
+          const notDecoded = system.messages
+            .filter(m => m.f === m.rf && m.a === m.ra)
+            .map(m => m.id);
+          return randomFromList(notDecoded);
+        }
+      }
+    },
+    instructions({
+      simulator,
+      requiredValues: { preamble, message },
+      task = {}
+    }) {
+      const station = simulator.stations.find(s =>
+        s.cards.find(c => c.component === "CommDecoding")
+      );
+      const system = App.systems.find(
+        s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+      );
+      const m = system.messages.find(m => m.id === message);
+      if (station && station.name === task.station)
+        return reportReplace(
+          `${preamble} Decode the message sent by "${m.destination}".`,
+          { simulator }
+        );
+      return reportReplace(
+        `${preamble} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : "person in charge of decoding long range messages"
+        } to decode the message sent by "${m.destination}".`,
+        { simulator }
+      );
+    },
+    verify({ simulator, requiredValues }) {
+      const system = App.systems.find(
+        s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+      );
+      const m = system.messages.find(m => m.id === requiredValues.message);
+      return m.f === m.rf && m.a === m.ra;
+    }
   }
 ];

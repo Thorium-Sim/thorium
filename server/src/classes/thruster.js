@@ -25,12 +25,21 @@ export default class Thrusters extends System {
   trainingMode() {
     this.rotationRequired = { yaw: 125, pitch: 320, roll: 200 };
   }
+  reset() {
+    this.thrusting = false;
+    this.rotationDelta = { yaw: 0, pitch: 0, roll: 0 };
+    this.direction = { x: 0, y: 0, z: 0 };
+  }
   updateRotation(rotation, thrusting = false) {
     this.thrusting = thrusting;
     this.rotationDelta = rotation;
+    clearTimeout(this.resetTimeout);
+    this.resetTimeout = setTimeout(this.reset, 3000);
   }
   updateDirection(direction) {
     this.direction = direction;
+    clearTimeout(this.resetTimeout);
+    this.resetTimeout = setTimeout(this.reset, 3000);
   }
   setRotation(rotation) {
     this.rotation = rotation;
