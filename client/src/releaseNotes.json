@@ -1,5 +1,6 @@
 {
   "1.0.31": {
+    "features": ["Add exocomp history to the exocomp core."],
     "fixes": [
       "Automatically release the thrusters if the thrusters haven't been pressed for a while, in case thrusters disconnects while thrusting.",
       "Fix an error where setting an station training to not a video or audio file causes the player to appear.",
