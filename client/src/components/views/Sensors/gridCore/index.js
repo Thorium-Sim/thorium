@@ -541,7 +541,13 @@ class GridCore extends Component {
                 dimensions={this.state.dimensions}
                 offset={SENSORS_OFFSET}
                 sensor={sensors.id}
-                includeTypes={["contact", "planet", "border", "ping"]}
+                includeTypes={[
+                  "contact",
+                  "planet",
+                  "border",
+                  "ping",
+                  "projectile"
+                ]}
                 movement={sensors.movement}
                 speeds={speeds}
                 askForSpeed={askForSpeed}

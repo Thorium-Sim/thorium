@@ -303,7 +303,13 @@ class Sensors extends Component {
                       segments={sensors.segments}
                       interference={sensors.interference}
                       mouseDown={this.clickContact(action)}
-                      includeTypes={["contact", "planet", "border", "ping"]}
+                      includeTypes={[
+                        "contact",
+                        "planet",
+                        "border",
+                        "ping",
+                        "projectile"
+                      ]}
                       range={
                         weaponsRange && {
                           size: weaponsRange,
