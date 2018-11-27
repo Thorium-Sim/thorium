@@ -105,31 +105,33 @@ function addAspects(template, sim) {
     });
   });
   // Add the panels
-  const panels =
-    App.simulators.find(s => s.id === template.simulatorId).panels || [];
-  panels.forEach(p => {
-    const panelData = App.softwarePanels.find(s => s.id === p);
-    if (!panelData) return;
-    const panel = { ...panelData };
-    const id = uuid.v4();
-    sim.stations = sim.stations.map(s => ({
-      ...s,
-      cards: s.cards.map(c => ({
-        ...c,
-        component: c.component === p ? id : c.component
-      }))
-    }));
-    App.softwarePanels.push(
-      new Classes.SoftwarePanel({
-        id,
-        name: panel.name,
-        simulatorId: sim.id,
-        cables: panel.cables,
-        components: panel.components,
-        connections: panel.connections
-      })
-    );
-  });
+  sim.panels = sim.panels
+    .map(p => {
+      const panelData = App.softwarePanels.find(s => s.id === p);
+      if (!panelData) return null;
+      const panel = { ...panelData };
+      const id = uuid.v4();
+      console.log(sim.stations[0].cards);
+      sim.stations = sim.stations.map(s => ({
+        ...s,
+        cards: s.cards.map(c => ({
+          ...c,
+          component: c.component === p ? id : c.component
+        }))
+      }));
+      App.softwarePanels.push(
+        new Classes.SoftwarePanel({
+          id,
+          name: panel.name,
+          simulatorId: sim.id,
+          cables: panel.cables,
+          components: panel.components,
+          connections: panel.connections
+        })
+      );
+      return id;
+    })
+    .filter(Boolean);
 }
 // Flight
 App.on("startFlight", ({ id, name, simulators, context }) => {
