@@ -144,6 +144,7 @@ export default [
     name: "Cool Engine",
     class: "Engines",
     active({ simulator }) {
+      if (!simulator) return;
       const systems = App.systems.filter(
         s => s.simulatorId === simulator.id && s.type === "Engine"
       );
@@ -221,6 +222,7 @@ export default [
     },
     verify({ simulator, requiredValues }) {
       const engine = App.systems.find(s => s.id === requiredValues.engine);
+      if (!engine) return;
       return engine.heat <= 0.1;
     }
   }

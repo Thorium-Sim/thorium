@@ -101,6 +101,7 @@ Password: ${password}`,
       );
       return system.users.find(
         s =>
+          requiredValues.username &&
           s.name.toLowerCase() === requiredValues.username.toLowerCase() &&
           s.level === requiredValues.level
       );
@@ -206,8 +207,9 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       if (!system) return;
       return !system.users.find(
         u =>
-          u.id === requiredValues.user ||
-          u.name.toLowerCase() === requiredValues.user.toLowerCase()
+          requiredValues.user &&
+          (u.id === requiredValues.user ||
+            u.name.toLowerCase() === requiredValues.user.toLowerCase())
       );
     }
   },
@@ -395,8 +397,9 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       if (!system) return;
       return !system.users.find(
         u =>
-          u.id === requiredValues.user ||
-          u.name.toLowerCase() === requiredValues.user.toLowerCase()
+          requiredValues.user &&
+          (u.id === requiredValues.user ||
+            u.name.toLowerCase() === requiredValues.user.toLowerCase())
       );
     }
   },
@@ -499,6 +502,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       if (!system) return;
       return !system.files.find(
         f =>
+          requiredValues.file &&
           (f.id === requiredValues.file ||
             f.name.toLowerCase() === requiredValues.file.toLowerCase()) &&
           (f.restoring === true || f.corrupted === false)

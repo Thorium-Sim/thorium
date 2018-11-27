@@ -78,10 +78,11 @@ export default [
         { simulator }
       );
     },
-    verify({ simulator, requiredValues }) {
+    verify({ simulator, requiredValues = {} }) {
       const sickbay = App.systems.find(
         s => s.simulatorId === simulator.id && s.type === "Sickbay"
       );
+      if (!sickbay) return;
       return sickbay.bunk.find(b => b.patient === requiredValues.crew);
     }
   }
