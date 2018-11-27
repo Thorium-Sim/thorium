@@ -144,6 +144,7 @@ type Station {
   login: Boolean
   executive: Boolean
   messageGroups: [String]
+  layout: String
   widgets: [String]
   cards: [Card]
 }
