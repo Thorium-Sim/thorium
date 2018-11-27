@@ -48,6 +48,9 @@ export class StationSet {
   setStationWidget(station, widget, state) {
     this.stations.find(s => s.name === station).setWidgets(widget, state);
   }
+  setStationLayout(station, layout) {
+    this.stations.find(s => s.name === station).setLayout(layout);
+  }
   setDescription(station, description) {
     this.stations.find(s => s.name === station).setDescription(description);
   }
@@ -69,7 +72,8 @@ export class Station {
     widgets = [],
     description,
     training,
-    ambiance
+    ambiance,
+    layout
   }) {
     this.class = "Station";
     this.name = name || "Station";
@@ -80,6 +84,7 @@ export class Station {
     this.executive = executive;
     this.messageGroups = messageGroups;
     this.widgets = widgets;
+    this.layout = layout || null;
     this.cards = [];
     cards.forEach(card => {
       this.addCard(card);
@@ -127,6 +132,9 @@ export class Station {
   }
   setLogin(login) {
     this.login = login;
+  }
+  setLayout(layout) {
+    this.layout = layout;
   }
   setExec(exec) {
     this.executive = exec;

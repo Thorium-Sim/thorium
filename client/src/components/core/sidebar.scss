@@ -1,0 +1,34 @@
+.core-sidebar {
+  position: fixed;
+  top: 24px;
+  left: 100%;
+  z-index: 1000;
+  .labels {
+    display: flex;
+    justify-content: space-around;
+    transform: rotate(90deg);
+    width: calc(100vh - 24px);
+    transform-origin: top left;
+  }
+  .sidebar-label {
+    cursor: pointer;
+    height: 24px;
+    padding: 0 10px;
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 1);
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    border-bottom: 0px;
+    transition: transform 0.3s ease;
+  }
+  .sidebar-component {
+    position: fixed;
+    width: 350px;
+    min-height: 100px;
+    max-height: 300px;
+    background-color: rgba(0, 0, 0, 1);
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

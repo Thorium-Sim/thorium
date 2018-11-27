@@ -2,12 +2,13 @@ import React, { Component, Fragment } from "react";
 import { Button, ButtonGroup } from "reactstrap";
 import { publish } from "helpers/pubsub";
 import NotificationConfig from "./notificationConfig";
+import SidebarConfig from "./sidebarConfig";
 
 class NotifyConfig extends Component {
   state = {};
   render() {
     const { notifications, speech, setNotifications, setSpeech } = this.props;
-    const { config } = this.state;
+    const { config, sidebarConfig } = this.state;
     return (
       <Fragment>
         <label>
@@ -21,13 +22,13 @@ class NotifyConfig extends Component {
         <label>
           Speech <input type="checkbox" checked={speech} onChange={setSpeech} />
         </label>
-        <ButtonGroup style={{ float: "right", marginRight: "50px" }}>
+        <ButtonGroup style={{ float: "right", marginRight: "25px" }}>
           <Button
             onClick={() => publish("clearNotifications")}
             size="sm"
             color="info"
           >
-            Clear all notifications
+            Clear All Notifications
           </Button>
           <Button
             onClick={() => this.setState({ config: true })}
@@ -36,10 +37,21 @@ class NotifyConfig extends Component {
           >
             Configure
           </Button>
+          <Button
+            onClick={() => this.setState({ sidebarConfig: true })}
+            size="sm"
+            color="success"
+          >
+            Sidebar
+          </Button>
         </ButtonGroup>
         <NotificationConfig
           modal={config}
           toggle={() => this.setState({ config: false })}
+        />
+        <SidebarConfig
+          modal={sidebarConfig}
+          toggle={() => this.setState({ sidebarConfig: false })}
         />
       </Fragment>
     );

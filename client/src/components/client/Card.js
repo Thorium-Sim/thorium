@@ -73,7 +73,8 @@ const CardRenderer = props => {
         card: "Test"
       }
     : props;
-  const layoutName = station.layout || simulator.layout || "LayoutCorners";
+  const layoutName =
+    client.layout || station.layout || simulator.layout || "LayoutCorners";
 
   let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
   if (station.name === "Viewscreen") {

@@ -135,6 +135,11 @@ const ops = {
         state: $state
       )
     }
+  `,
+  setStationLayout: gql`
+    mutation SetLayout($id: ID!, $name: String!, $layout: String!) {
+      setStationLayout(stationSetID: $id, stationName: $name, layout: $layout)
+    }
   `
 };
 

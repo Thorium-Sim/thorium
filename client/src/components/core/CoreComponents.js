@@ -7,7 +7,8 @@ import Alerts from "../generic/Alerts";
 
 import "./CoreComponents.scss";
 import Menubar from "./menubar";
-
+import Sidebar from "./sidebar";
+import { subscribe } from "helpers/pubsub";
 class CoreComponents extends Component {
   state = {
     simulator: null,
@@ -15,11 +16,20 @@ class CoreComponents extends Component {
     mosaic: JSON.parse(localStorage.getItem("thorium_coreMosaic")) || null,
     notifications: localStorage.getItem("thorium_coreNotifications") === "true",
     speech: localStorage.getItem("thorium_coreSpeech") === "true",
+    sidebar: localStorage.getItem("thorium_coreSidebar") === "true",
     editable: false,
     issuesOpen: false
   };
   componentDidMount() {
     this.calculateSimulator();
+    this.sub = subscribe("core_sidebar_update", () => {
+      this.setState({
+        sidebar: localStorage.getItem("thorium_coreSidebar") === "true"
+      });
+    });
+  }
+  componentWillUnmount() {
+    this.sub && this.sub();
   }
   componentDidUpdate() {
     this.calculateSimulator();
@@ -85,7 +95,8 @@ class CoreComponents extends Component {
       speech,
       mosaic,
       layout,
-      editable
+      editable,
+      sidebar
     } = this.state;
     const LayoutComponent = Layouts[layout];
     return (
@@ -115,6 +126,7 @@ class CoreComponents extends Component {
           style={{
             display: simulator ? "block" : "none",
             height: "calc(100vh - 26px)",
+            width: `calc(100% - ${sidebar ? 24 : 0}px)`,
             backgroundColor: "#333"
           }}
         >
@@ -134,6 +146,17 @@ class CoreComponents extends Component {
               />
             )}
         </div>
+        {simulator &&
+          sidebar && (
+            <Sidebar
+              {...this.props}
+              simulator={
+                simulators.find(s => s.id === simulator) || {
+                  id: simulator
+                }
+              }
+            />
+          )}
         {!simulator && (
           <ListGroup style={{ maxWidth: "500px" }}>
             {simulators.map(s => (

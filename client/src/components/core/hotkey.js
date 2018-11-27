@@ -112,8 +112,11 @@ class Hotkey extends Component {
           }`}
         >
           {Object.entries(viewscreens).map(([key, v], i) => (
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <h3 key={`viewscreen-${i}`}>
+            <div
+              style={{ display: "flex", flexDirection: "column" }}
+              key={`viewscreen-${i}`}
+            >
+              <h3>
                 {key}: {titleCase(v.component || v)}
               </h3>
               {v.component === "Video" && JSON.parse(v.data).asset}
