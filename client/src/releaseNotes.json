@@ -1,6 +1,8 @@
 {
   "1.0.32": {
-    "fixes": []
+    "fixes": [
+      "Fixes a crucial error which causes Thorium Server to crash when serializing circular references."
+    ]
   },
   "1.0.31": {
     "features": ["Add exocomp history to the exocomp core."],
