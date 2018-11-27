@@ -1,4 +1,7 @@
 {
+  "1.0.32": {
+    "fixes": []
+  },
   "1.0.31": {
     "features": ["Add exocomp history to the exocomp core."],
     "fixes": [
