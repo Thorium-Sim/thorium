@@ -86,7 +86,6 @@ class Login extends Component {
     let simulatorName;
     if (this.props.simulator) simulatorName = this.props.simulator.name;
     const { assets } = this.props.simulator;
-    console.log(this.props);
     return (
       <Row className="loginCard">
         <Col sm={{ size: 3, offset: 1 }}>

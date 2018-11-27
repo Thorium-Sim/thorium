@@ -114,7 +114,6 @@ App.on("setPhaserChargeSpeed", ({ id, speed }) => {
 
 App.on("stopChargingPhasers", ({ id }) => {
   App.systems.find(s => s.id === id).stopCharging();
-  console.log("done");
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")

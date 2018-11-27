@@ -140,7 +140,6 @@ class TacticalMapCore extends Component {
     if (speed) {
       variables.item.speed = speed;
     }
-    console.log(variables);
     const mutation = gql`
       mutation UpdateTacticalItem(
         $mapId: ID!

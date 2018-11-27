@@ -127,6 +127,7 @@ class GridCore extends Component {
     const self = this;
     this.setState({
       movingContact: Object.assign({}, movingContact, {
+        type: "contact",
         location: null
       })
     });
