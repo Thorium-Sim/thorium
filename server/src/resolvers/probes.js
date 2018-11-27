@@ -67,7 +67,6 @@ export const ProbesSubscriptions = {
   },
   scienceProbeEmitter: {
     resolve(rootValue) {
-      console.log({ rootValue });
       return rootValue;
     },
     subscribe: withFilter(

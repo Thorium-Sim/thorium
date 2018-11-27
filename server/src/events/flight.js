@@ -111,7 +111,6 @@ function addAspects(template, sim) {
       if (!panelData) return null;
       const panel = { ...panelData };
       const id = uuid.v4();
-      console.log(sim.stations[0].cards);
       sim.stations = sim.stations.map(s => ({
         ...s,
         cards: s.cards.map(c => ({
