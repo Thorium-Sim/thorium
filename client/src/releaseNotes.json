@@ -3,7 +3,8 @@
     "fixes": [
       "Fixes a crucial error which causes Thorium Server to crash when serializing circular references.",
       "Fixes an issue where software panels aren't properly appearing on stations.",
-      "Provides some fixes for tasks that crash the server."
+      "Provides some fixes for tasks that crash the server.",
+      "Properly handle destroying sensor contacts tied to targeting contacts."
     ]
   },
   "1.0.31": {

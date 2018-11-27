@@ -67,7 +67,10 @@ App.on("removeTarget", ({ id, targetId }) => {
   const classId = contact.class;
   // Send a sensors update too
   const sensors = App.systems.find(
-    s => s.simulatorId === system.simulatorId && s.class === "Sensors"
+    s =>
+      s.simulatorId === system.simulatorId &&
+      s.class === "Sensors" &&
+      s.domain === "external"
   );
 
   system.destroyTarget(targetId);
