@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Cores } from "components/views";
-import CoreFeed from "components/views/CoreFeed";
 import { Container, Row, Col, Button } from "reactstrap";
 import {
   Mosaic,
@@ -15,8 +14,6 @@ import CoreError from "../coreError";
 import "react-mosaic-component/react-mosaic-component.css";
 import "./dynamic.scss";
 import { titleCase } from "change-case";
-
-Cores.CoreFeed = CoreFeed;
 
 class UpdateSelect extends React.PureComponent {
   static contextTypes = MosaicWindowContext;
