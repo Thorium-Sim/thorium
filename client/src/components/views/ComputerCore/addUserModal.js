@@ -42,15 +42,20 @@ class AddUserModal extends Component {
             <Input
               type="select"
               value={level || ""}
+              style={{ padding: 0 }}
               onChange={e => this.setState({ level: e.target.value })}
             >
-              <option value="" disabled>
+              <option value="" disabled style={{ color: "black" }}>
                 Select a Level
               </option>
               {Array(10)
                 .fill(0)
                 .map((_, i) => (
-                  <option key={`level-pick-${i}`} value={i + 1}>
+                  <option
+                    key={`level-pick-${i}`}
+                    value={i + 1}
+                    style={{ color: "black" }}
+                  >
                     Level {i + 1}
                   </option>
                 ))}

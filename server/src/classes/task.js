@@ -26,7 +26,7 @@ export default class Task {
     const simulator = App.simulators.find(s => s.id === this.simulatorId);
     const stations = definitionObject.stations
       ? definitionObject.stations({ simulator })
-      : simulator.stations;
+      : simulator && simulator.stations;
     this.station =
       params.station === "nothing" || !params.station
         ? stations.length > 0
