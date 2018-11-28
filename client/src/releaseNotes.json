@@ -1,10 +1,11 @@
 {
-  "1.0.33":{
-    "features":[
+  "1.0.33": {
+    "features": [
       "Add the ability to control the sidebars on any core.",
       "Add a simple black layout.",
       "Make it possible to selectively choose what layout each station has."
-    ]
+    ],
+    "fixes": ["Fixes planets, borders, and pings."]
   },
   "1.0.32": {
     "fixes": [
