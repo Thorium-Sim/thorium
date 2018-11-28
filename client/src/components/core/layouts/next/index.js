@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Dynamic from "../dynamic";
 import { Cores } from "components/views";
-import CoreFeed from "components/views/CoreFeed";
 import Lighting from "components/views/Lighting";
 import CoreError from "../coreError";
 import "./next.scss";
@@ -32,7 +31,7 @@ class Next extends Component {
         </CoreError>
         <div className="next-coreFeed">
           <CoreError>
-            <CoreFeed {...props} />
+            <Cores.CoreFeed {...props} />
           </CoreError>
         </div>
         <div className="next-main">

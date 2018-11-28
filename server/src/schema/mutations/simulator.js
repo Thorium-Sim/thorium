@@ -51,6 +51,7 @@ removeSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!
 editSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!, newCardName: String, cardComponent: String):String
 setSimulatorStationMessageGroup(simulatorId: ID!, station: String!,group: String!, state: Boolean!):String
 setSimulatorStationLogin(simulatorId: ID!, station: String!, login: Boolean!):String
+setSimulatorStationLayout(simulatorId: ID!, station: String!, layout: String!):String
 setSimulatorStationExecutive(simulatorId: ID!, station: String!, exec: Boolean!):String
 setSimulatorStationWidget(simulatorId: ID!, station: String!, widget: String!, state: Boolean!):String
 `;

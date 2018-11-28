@@ -9,6 +9,11 @@ import ExtraMessageGroups from "./messageGroups";
 import { titleCase } from "change-case";
 import TrainingConfig from "./trainingConfig";
 import AmbianceConfig from "./ambianceConfig";
+import LayoutList from "components/layouts";
+
+const Layouts = Object.keys(LayoutList).filter(
+  s => s.indexOf("Viewscreen") === -1
+);
 
 const viewList = Object.keys(Views)
   .filter(v => {
@@ -117,6 +122,17 @@ const ConfigStation = props => {
     };
     client.mutate({
       mutation: ops.toggleStationExec,
+      variables
+    });
+  };
+  const setStationLayout = evt => {
+    const variables = {
+      id: selectedStationSet,
+      name: station.name,
+      layout: evt.target.value
+    };
+    client.mutate({
+      mutation: ops.setStationLayout,
       variables
     });
   };
@@ -321,6 +337,24 @@ const ConfigStation = props => {
             selectedStationSet={selectedStationSet}
             station={station}
           />
+          <div>
+            <label>Layout:</label>
+            <select
+              onChange={setStationLayout}
+              value={station.layout || ""}
+              name="layout"
+              className="c-select form-control"
+            >
+              <option value="">Simulator Layout</option>
+              {Layouts.map(e => {
+                return (
+                  <option key={e} value={e}>
+                    {e}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         </div>
       </div>
     </Container>

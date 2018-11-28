@@ -262,6 +262,12 @@ App.on("setSimulatorStationLogin", ({ simulatorId, station, login }) => {
   stat.setLogin(login);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setSimulatorStationLayout", ({ simulatorId, station, layout }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  const stat = sim.stations.find(s => s.name === station);
+  stat.setLayout(layout);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setSimulatorStationExecutive", ({ simulatorId, station, exec }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   const stat = sim.stations.find(s => s.name === station);

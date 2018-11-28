@@ -126,10 +126,7 @@ class GridCore extends Component {
   dragStart = movingContact => {
     const self = this;
     this.setState({
-      movingContact: Object.assign({}, movingContact, {
-        type: "contact",
-        location: null
-      })
+      movingContact: { type: "contact", ...movingContact, location: null }
     });
     document.addEventListener("mousemove", this.moveMouse);
     document.addEventListener("mouseup", _mouseUp);

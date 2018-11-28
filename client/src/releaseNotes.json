@@ -1,4 +1,15 @@
 {
+  "1.0.33": {
+    "features": [
+      "Add the ability to control the sidebars on any core.",
+      "Add a simple black layout.",
+      "Make it possible to selectively choose what layout each station has."
+    ],
+    "fixes": [
+      "Fixes planets, borders, and pings.",
+      "Fixes the text color of the dropdown on the 'Add Users' dropdown"
+    ]
+  },
   "1.0.32": {
     "fixes": [
       "Fixes a crucial error which causes Thorium Server to crash when serializing circular references.",
