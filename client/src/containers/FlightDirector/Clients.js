@@ -71,7 +71,7 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
         />{" "}
         {`${p.id}`}
       </td>
-      <td>
+      <td data-testid="flight-picker-cell">
         <select
           value={(p.flight && p.flight.id) || ""}
           onChange={e => select(p, "flight", e)}
@@ -105,7 +105,7 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
           </optgroup>
         </select>
       </td>
-      <td>
+      <td data-testid="simulator-picker-cell">
         <select
           value={(p.simulator && p.simulator.id) || ""}
           onChange={e => select(p, "simulator", e)}
@@ -123,7 +123,7 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
           )}
         </select>
       </td>
-      <td>
+      <td data-testid="station-picker-cell">
         {p.mobile ? (
           <select
             value={p.station && p.station.name}

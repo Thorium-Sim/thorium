@@ -124,6 +124,7 @@ class Login extends Component {
           <Col className="loginBlock" sm={{ size: 8, offset: 2 }}>
             <h2>Officer Login</h2>
             <Input
+              data-testid="login-field"
               onKeyDown={e => {
                 if (e.which === 13) {
                   this._login.call(this);

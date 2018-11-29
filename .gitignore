@@ -40,3 +40,7 @@ client/src/**/*.css
 snapshot-*
 *.provisionprofile
 entitlements.*
+
+# Cypress
+cypress/videos
+cypress/screenshots
