@@ -3,7 +3,8 @@
     "features": [
       "Make it possible to collapse core feed items that have been opened.",
       "Add the ability to use #SYSTEMNAME for the name of the system in damage reports.",
-      "Change the color of the names of systems when power is removed from them."
+      "Change the color of the names of systems when power is removed from them.",
+      "Add the ability to toggle the on-screen audio/video training  on and off."
     ],
     "fixes": [
       "Improve the remote access core.",
