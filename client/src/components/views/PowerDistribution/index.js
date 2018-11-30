@@ -279,7 +279,9 @@ class SystemPower extends Component {
       <Row>
         <Col sm="4">
           <h5
-            className={damaged ? "text-danger" : ""}
+            className={`${damaged ? "text-danger" : ""} ${
+              !powerLevels.find(p => p <= power) ? "text-dark" : ""
+            }`}
             style={{ padding: 0, margin: 0, marginTop: height / count - 20 }}
           >
             {displayName}: {power}

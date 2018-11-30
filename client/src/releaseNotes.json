@@ -2,7 +2,8 @@
   "1.0.34": {
     "features": [
       "Make it possible to collapse core feed items that have been opened.",
-      "Add the ability to use #SYSTEMNAME for the name of the system in damage reports."
+      "Add the ability to use #SYSTEMNAME for the name of the system in damage reports.",
+      "Change the color of the names of systems when power is removed from them."
     ],
     "fixes": [
       "Improve the remote access core.",
