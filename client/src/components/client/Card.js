@@ -145,10 +145,14 @@ export default class CardFrame extends Component {
     }
   }
   changeCard = name => {
+    const card = this.props.station.cards.find(c => c.name === name)
+      ? name
+      : this.props.station.cards && this.props.station.cards[0].name;
+    if (this.cardChanged || this.state.card === card) return;
+    this.cardChanged = true;
+    setTimeout(() => (this.cardChanged = false), 500);
     this.setState({
-      card: this.props.station.cards.find(c => c.name === name)
-        ? name
-        : this.props.station.cards && this.props.station.cards[0].name
+      card
     });
   };
   render() {

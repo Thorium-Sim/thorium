@@ -1,4 +1,10 @@
 {
+  "1.0.34": {
+    "fixes": [
+      "Improve the remote access core.",
+      "Add a short delay to switching between cards so they don't get caught mid-transition."
+    ]
+  },
   "1.0.33": {
     "features": [
       "Add the ability to control the sidebars on any core.",
