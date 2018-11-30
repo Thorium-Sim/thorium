@@ -129,7 +129,14 @@ class MediaPlayerObject extends Component {
           <MuteUnmute className="media-control media-control--mute-unmute" />
           <Volume className="media-control media-control--volume" />
 
-          {close && <FontAwesome name="times-circle-o" onClick={close} />}
+          {close && (
+            <FontAwesome
+              name="times-circle-o"
+              size="2x"
+              style={{ cursor: "pointer" }}
+              onClick={close}
+            />
+          )}
         </div>
       </div>
     );

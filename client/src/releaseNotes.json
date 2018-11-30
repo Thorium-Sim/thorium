@@ -1,4 +1,16 @@
 {
+  "1.0.34": {
+    "features": [
+      "Make it possible to collapse core feed items that have been opened.",
+      "Add the ability to use #SYSTEMNAME for the name of the system in damage reports.",
+      "Change the color of the names of systems when power is removed from them.",
+      "Add the ability to toggle the on-screen audio/video training  on and off."
+    ],
+    "fixes": [
+      "Improve the remote access core.",
+      "Add a short delay to switching between cards so they don't get caught mid-transition."
+    ]
+  },
   "1.0.33": {
     "features": [
       "Add the ability to control the sidebars on any core.",

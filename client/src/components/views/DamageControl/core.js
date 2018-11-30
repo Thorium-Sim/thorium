@@ -44,6 +44,14 @@ class DamageControlCore extends Component {
       listStyle: "none",
       cursor: "pointer"
     };
+    if (
+      sys.power &&
+      sys.power.powerLevels &&
+      sys.power.powerLevels.length > 0 &&
+      !sys.power.powerLevels.find(p => p <= sys.power.power)
+    ) {
+      obj.color = "#888";
+    }
     if (sys.damage.damaged) {
       obj.color = "red";
     }
