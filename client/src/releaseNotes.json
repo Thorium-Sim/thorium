@@ -1,5 +1,8 @@
 {
   "1.0.34": {
+    "features": [
+      "Make it possible to collapse core feed items that have been opened."
+    ],
     "fixes": [
       "Improve the remote access core.",
       "Add a short delay to switching between cards so they don't get caught mid-transition."
