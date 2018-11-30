@@ -1,7 +1,8 @@
 {
   "1.0.34": {
     "features": [
-      "Make it possible to collapse core feed items that have been opened."
+      "Make it possible to collapse core feed items that have been opened.",
+      "Add the ability to use #SYSTEMNAME for the name of the system in damage reports."
     ],
     "fixes": [
       "Improve the remote access core.",

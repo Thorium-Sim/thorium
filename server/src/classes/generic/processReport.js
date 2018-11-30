@@ -85,6 +85,14 @@ export default function processReport(report, system) {
     );
   }
 
+  // #SYSTEMNAME
+  if (system && report.indexOf("#SYSTEMNAME")) {
+    returnReport = returnReport.replace(
+      /#SYSTEMNAME/gi,
+      system.displayName || system.name || "system"
+    );
+  }
+
   return returnReport;
 }
 
