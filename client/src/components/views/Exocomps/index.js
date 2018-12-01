@@ -7,7 +7,8 @@ import Exocomp from "./exocomp";
 import ExocompConfig from "./exocompConfig";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
-
+import parts from "./parts";
+console.log(parts);
 const EXOCOMP_SUB = gql`
   subscription Exocomps($simulatorId: ID!) {
     exocompsUpdate(simulatorId: $simulatorId) {

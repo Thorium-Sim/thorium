@@ -135,7 +135,6 @@
       "static/**/*",
       "cardIcons/**/*",
       "systems/**/*",
-      "parts/**/*",
       "viewscreen/**/*",
       "sciences.ogg",
       "favicon.ico"
