@@ -1,4 +1,5 @@
-const { login } = require("../../helpers/login");
 describe("Log into the Security Station", () => {
-  login("Security");
+  it("should load the station", () => {
+    cy.setClient("Security");
+  });
 });

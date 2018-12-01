@@ -16,6 +16,7 @@
 // Import commands.js using ES2015 syntax:
 import "cypress-testing-library/add-commands";
 import "./commands";
-
+import "./flightStart";
+import "./setClient";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

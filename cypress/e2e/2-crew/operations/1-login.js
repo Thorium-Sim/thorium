@@ -1,4 +1,5 @@
-const { login } = require("../../helpers/login");
 describe("Log into the Operations Station", () => {
-  login("Operations");
+  it("should load the station", () => {
+    cy.setClient("Operations");
+  });
 });

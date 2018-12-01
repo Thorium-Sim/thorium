@@ -1,4 +1,5 @@
-const { login } = require("../../helpers/login");
 describe("Log into the Flight Control Station", () => {
-  login("Flight Control");
+  it("should load the station", () => {
+    cy.setClient("Flight Control");
+  });
 });

@@ -13,10 +13,13 @@ if (process.env.NODE_ENV === "production") {
   snapshotDir = paths.userData + "/";
 }
 const snapshotName =
-  !process.env.NODE_ENV && fs.existsSync(snapshotDir + "snapshot-dev.json")
-    ? "snapshot-dev.json"
-    : "snapshot.json";
+  process.env.NODE_ENV === "production"
+    ? "snapshot.json"
+    : process.env.NODE_ENV === "test"
+      ? "snapshot-test.json"
+      : "snapshot-dev.json";
 
+console.log(snapshotName);
 const store = new Store({
   name: "Thorium",
   path: `${snapshotDir}${snapshotName}`,
