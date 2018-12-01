@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Label, Input, FormGroup } from "reactstrap";
 import gql from "graphql-tag";
+import HashtagDefinition from "../../../../../../helpers/hashtagDefinition";
 
 export default class GenericConfig extends Component {
   constructor(props) {
@@ -45,26 +46,7 @@ export default class GenericConfig extends Component {
     return (
       <div>
         <div>Inventory Config</div>
-        <small>
-          You can use some hashtags to make your report dynamic:
-          <ul>
-            <li>
-              <strong>#COLOR</strong> - a random color of red, green, blue,
-              yellow
-            </li>
-            <li>
-              <strong>#PART</strong> - a random exocomp part
-            </li>
-            <li>
-              <strong>#[1 - 2]</strong> - a random whole number between the two
-              listed numbers
-            </li>
-            <li>
-              <strong>#["string1", "string2", "string3", etc.]</strong> - a
-              random string from the list provided
-            </li>
-          </ul>
-        </small>
+        <HashtagDefinition system />
         <FormGroup check>
           <Label check>
             Put at end of report?{" "}

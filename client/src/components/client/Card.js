@@ -6,6 +6,8 @@ import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
 const Blackout = () => {
   return (
@@ -108,7 +110,8 @@ const CardRenderer = props => {
   );
 };
 
-function isMedia(src) {
+function isMedia(src = "") {
+  console.log(src);
   const extensions = [
     ".wav",
     ".mp4",
@@ -118,11 +121,12 @@ function isMedia(src) {
     ".ogv",
     ".aac",
     ".m4a",
+    ".m4v",
     ".webm",
     ".mpg",
     ".mpeg"
   ];
-  return extensions.find(e => src.indexOf(e) > -1);
+  return extensions.find(e => src.toLowerCase().indexOf(e) > -1);
 }
 export default class CardFrame extends Component {
   constructor(props) {
@@ -145,10 +149,14 @@ export default class CardFrame extends Component {
     }
   }
   changeCard = name => {
+    const card = this.props.station.cards.find(c => c.name === name)
+      ? name
+      : this.props.station.cards && this.props.station.cards[0].name;
+    if (this.cardChanged || this.state.card === card) return;
+    this.cardChanged = true;
+    setTimeout(() => (this.cardChanged = false), 500);
     this.setState({
-      card: this.props.station.cards.find(c => c.name === name)
-        ? name
-        : this.props.station.cards && this.props.station.cards[0].name
+      card
     });
   };
   render() {
@@ -183,8 +191,26 @@ export default class CardFrame extends Component {
           )}
           {simTraining &&
             stationTraining &&
+            client.training &&
             isMedia(stationTraining) && (
-              <TrainingPlayer src={`/assets${stationTraining}`} />
+              <Mutation
+                mutation={gql`
+                  mutation ClientSetTraining($id: ID!, $training: Boolean!) {
+                    clientSetTraining(client: $id, training: $training)
+                  }
+                `}
+                variables={{
+                  id: client.id,
+                  training: false
+                }}
+              >
+                {action => (
+                  <TrainingPlayer
+                    src={`/assets${stationTraining}`}
+                    close={action}
+                  />
+                )}
+              </Mutation>
             )}
           <Alerts
             key={`alerts-${

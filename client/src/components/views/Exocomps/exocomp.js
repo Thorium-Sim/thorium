@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardBody, Button } from "reactstrap";
 import { titleCase } from "change-case";
+import partsImages from "./parts";
 
 const Exocomp = ({
   id,
@@ -27,7 +28,10 @@ const Exocomp = ({
               <div
                 key={`part-${id}-${i}`}
                 className="exocomp-part"
-                style={{ backgroundImage: `url('/parts/${parts[i]}.svg')` }}
+                style={{
+                  backgroundImage:
+                    console.log(id, i) || `url('${partsImages[parts[i]]}')`
+                }}
               />
             ))}
         </div>

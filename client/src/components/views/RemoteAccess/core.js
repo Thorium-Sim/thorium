@@ -63,13 +63,19 @@ class RemoteAccessCore extends Component {
             })
           }
         />
-        <div style={{ overflowY: "scroll", height: "calc(100% - 16px)" }}>
+        <div
+          style={{
+            overflowY: "auto",
+            height: "calc(100% - 16px)",
+            maxHeight: "300px"
+          }}
+        >
           {ship.remoteAccessCodes
             .slice()
             .reverse()
             .map(c => (
               <div
-                key={`${c.state}-${c.code}`}
+                key={c.id}
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
                 <p

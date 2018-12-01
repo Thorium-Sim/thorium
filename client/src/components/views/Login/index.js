@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, Row, Col, Input } from "reactstrap";
-import { withApollo } from "react-apollo";
+import { withApollo, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { Asset } from "helpers/assets";
@@ -73,9 +73,11 @@ class Login extends Component {
     ];
     return training;
   };
-  training = () => {
+  training = action => {
     if (this.props.simulator.training) {
-      publish("toggleTraining");
+      action().then(() => {
+        publish("toggleTraining");
+      });
     } else {
       this.setState({
         training: true
@@ -102,9 +104,27 @@ class Login extends Component {
             )}
           </Asset>
           <h1>{simulatorName}</h1>
-          <Button color="success" onClick={this.training} block>
-            Begin Training
-          </Button>
+          <Mutation
+            mutation={gql`
+              mutation ClientSetTraining($id: ID!, $training: Boolean!) {
+                clientSetTraining(client: $id, training: $training)
+              }
+            `}
+            variables={{
+              id: this.props.clientObj.id,
+              training: true
+            }}
+          >
+            {action => (
+              <Button
+                color="success"
+                onClick={() => this.training(action)}
+                block
+              >
+                Begin Training
+              </Button>
+            )}
+          </Mutation>
         </Col>
         <Col sm={{ size: 7, offset: 1 }}>
           <Asset asset={assets.side}>
@@ -124,6 +144,7 @@ class Login extends Component {
           <Col className="loginBlock" sm={{ size: 8, offset: 2 }}>
             <h2>Officer Login</h2>
             <Input
+              data-testid="login-field"
               onKeyDown={e => {
                 if (e.which === 13) {
                   this._login.call(this);
