@@ -35,7 +35,7 @@ const partsList = [
 class ExocompConfig extends Component {
   state = {};
   render() {
-    const { number, systems, id, cancel, deploy } = this.props || {};
+    const { number, id, cancel, deploy, simulatorId } = this.props || {};
     const { destination, parts = [] } = this.state;
     return (
       <Card>
@@ -46,7 +46,7 @@ class ExocompConfig extends Component {
               <Label>Destination</Label>
             </div>
             <DestinationSelect
-              systems={systems}
+              simulatorId={simulatorId}
               destination={destination}
               select={dest => this.setState({ destination: dest })}
             />
