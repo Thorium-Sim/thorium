@@ -1,4 +1,5 @@
-const { login } = require("../../helpers/login");
 describe("Log into the Sensors Station", () => {
-  login("Sensors");
+  it("should load the station", () => {
+    cy.setClient("Sensors");
+  });
 });

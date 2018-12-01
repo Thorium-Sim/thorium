@@ -8,7 +8,9 @@
     ],
     "fixes": [
       "Improve the remote access core.",
-      "Add a short delay to switching between cards so they don't get caught mid-transition."
+      "Add a short delay to switching between cards so they don't get caught mid-transition.",
+      "Fix a crash when a flight doesn't have any crew.",
+      "Exocomps can now be properly assigned to minor systems."
     ]
   },
   "1.0.33": {

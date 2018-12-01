@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Card, CardBody, FormGroup, Label, Button } from "reactstrap";
 import DestinationSelect from "./destinationSelect";
+import partsImages from "./parts";
 
 const partsList = [
   "CASM Generator",
@@ -34,7 +35,7 @@ const partsList = [
 class ExocompConfig extends Component {
   state = {};
   render() {
-    const { number, systems, id, cancel, deploy } = this.props || {};
+    const { number, id, cancel, deploy, simulatorId } = this.props || {};
     const { destination, parts = [] } = this.state;
     return (
       <Card>
@@ -45,7 +46,7 @@ class ExocompConfig extends Component {
               <Label>Destination</Label>
             </div>
             <DestinationSelect
-              systems={systems}
+              simulatorId={simulatorId}
               destination={destination}
               select={dest => this.setState({ destination: dest })}
             />
@@ -60,7 +61,7 @@ class ExocompConfig extends Component {
                     key={`part-config-${id}-${i}`}
                     className="exocomp-part"
                     style={{
-                      backgroundImage: `url('/parts/${parts[i]}.svg')`
+                      backgroundImage: `url('${partsImages[parts[i]]}')`
                     }}
                     onClick={() =>
                       this.setState({
@@ -76,7 +77,7 @@ class ExocompConfig extends Component {
               <div key={`part-list-${p}`} className="part-label">
                 <div
                   className="exocomp-part"
-                  style={{ backgroundImage: `url('/parts/${p}.svg')` }}
+                  style={{ backgroundImage: `url('${partsImages[p]}')` }}
                   onClick={() => {
                     if (parts.length < 2) {
                       this.setState({
