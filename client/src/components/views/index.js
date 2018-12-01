@@ -82,6 +82,7 @@ import ThrustersLite from "./Thrusters/lite";
 import ParticleDetector from "./ParticleDetector";
 import Tasks from "./Tasks";
 import ProbeScience from "./ProbeScience";
+import CommandLine from "./CommandLine";
 // import DockingPorts from "./DockingPorts";
 
 // Cores
@@ -244,7 +245,8 @@ const Views = {
   ThrustersLite,
   ParticleDetector,
   Tasks,
-  ProbeScience
+  ProbeScience,
+  CommandLine
   // DockingPorts
 };
 
