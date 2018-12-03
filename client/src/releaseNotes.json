@@ -1,6 +1,8 @@
 {
   "1.0.35": {
-    "features": [],
+    "features": [
+      "Allow for tactical map rotations to be specified as a number."
+    ],
     "fixes": [
       "Fixes the direction of the Junior Thrusters.",
       "Remove the battery charging screen on Jr Engineering to hopefully improve performance.",
