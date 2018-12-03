@@ -1,7 +1,10 @@
 {
   "1.0.35": {
     "features": [],
-    "fixes": ["Fixes the direction of the Junior Thrusters."]
+    "fixes": [
+      "Fixes the direction of the Junior Thrusters.",
+      "Remove the battery charging screen on Jr Engineering to hopefully improve performance."
+    ]
   },
   "1.0.34": {
     "features": [

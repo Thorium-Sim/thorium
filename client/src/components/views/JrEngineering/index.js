@@ -3,11 +3,11 @@ import gql from "graphql-tag";
 import { Row, Col, Container } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Isochips from "./isochips";
-import Battery from "./batteryCharging";
+// import Battery from "./batteryCharging";
 import Routing from "./powerRouting";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-const Components = [Isochips, Battery, Routing];
+const Components = [Isochips, Routing];
 
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
