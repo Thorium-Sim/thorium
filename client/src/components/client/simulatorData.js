@@ -27,6 +27,7 @@ stations {
   training
   ambiance
   executive
+  layout
   messageGroups
   widgets
   cards {

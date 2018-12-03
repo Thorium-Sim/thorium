@@ -15,6 +15,11 @@ import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "components/views/index";
 import { titleCase } from "change-case";
 import ExtraMessageGroups from "./messageGroups";
+import LayoutList from "components/layouts";
+
+const Layouts = Object.keys(LayoutList).filter(
+  s => s.indexOf("Viewscreen") === -1
+);
 
 const viewList = Object.keys(Views)
   .filter(v => {
@@ -515,6 +520,50 @@ const Station = ({ stations, simulatorId, station: stationName }) => {
                   </label>
                 </Col>
               ))}
+            </Row>
+            <label>Layout:</label>
+            <Row>
+              <Mutation
+                mutation={gql`
+                  mutation SetLayout(
+                    $id: ID!
+                    $name: String!
+                    $layout: String!
+                  ) {
+                    setSimulatorStationLayout(
+                      simulatorId: $id
+                      station: $name
+                      layout: $layout
+                    )
+                  }
+                `}
+              >
+                {action => (
+                  <select
+                    onChange={e =>
+                      action({
+                        variables: {
+                          id: simulatorId,
+                          name: stationName,
+                          layout: e.target.value
+                        }
+                      })
+                    }
+                    value={station.layout || ""}
+                    name="layout"
+                    className="c-select form-control"
+                  >
+                    <option value="">Simulator Layout</option>
+                    {Layouts.map(e => {
+                      return (
+                        <option key={e} value={e}>
+                          {e}
+                        </option>
+                      );
+                    })}
+                  </select>
+                )}
+              </Mutation>
             </Row>
           </div>
         );

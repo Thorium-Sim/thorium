@@ -115,9 +115,10 @@ class Exocomps extends Component {
   };
   render() {
     const {
-      data: { systems, exocomps, loading }
+      simulator,
+      data: { exocomps, loading }
     } = this.props;
-    if (loading || !systems || !exocomps) return null;
+    if (loading || !exocomps) return null;
     const { selectedExocomp } = this.state;
     const exocomp = exocomps.find(e => e.id === selectedExocomp);
     const exocompNum = exocomps.findIndex(e => e.id === selectedExocomp) + 1;
@@ -159,7 +160,7 @@ class Exocomps extends Component {
             {selectedExocomp ? (
               <ExocompConfig
                 {...exocomp}
-                systems={systems}
+                simulatorId={simulator.id}
                 cancel={() => this.setState({ selectedExocomp: null })}
                 number={exocompNum}
                 deploy={this.deploy}
@@ -202,15 +203,6 @@ class Exocomps extends Component {
 
 const QUERY = gql`
   query Exocomps($simulatorId: ID) {
-    systems(simulatorId: $simulatorId, extra: true) {
-      id
-      name
-      type
-      displayName
-      damage {
-        damaged
-      }
-    }
     exocomps(simulatorId: $simulatorId) {
       id
       state

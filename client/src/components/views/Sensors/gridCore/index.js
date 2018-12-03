@@ -126,9 +126,7 @@ class GridCore extends Component {
   dragStart = movingContact => {
     const self = this;
     this.setState({
-      movingContact: Object.assign({}, movingContact, {
-        location: null
-      })
+      movingContact: { type: "contact", ...movingContact, location: null }
     });
     document.addEventListener("mousemove", this.moveMouse);
     document.addEventListener("mouseup", _mouseUp);
@@ -541,6 +539,13 @@ class GridCore extends Component {
                 dimensions={this.state.dimensions}
                 offset={SENSORS_OFFSET}
                 sensor={sensors.id}
+                includeTypes={[
+                  "contact",
+                  "planet",
+                  "border",
+                  "ping",
+                  "projectile"
+                ]}
                 movement={sensors.movement}
                 speeds={speeds}
                 askForSpeed={askForSpeed}

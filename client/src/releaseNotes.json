@@ -1,11 +1,61 @@
 {
+  "1.0.34": {
+    "features": [
+      "Make it possible to collapse core feed items that have been opened.",
+      "Add the ability to use #SYSTEMNAME for the name of the system in damage reports.",
+      "Change the color of the names of systems when power is removed from them.",
+      "Add the ability to toggle the on-screen audio/video training  on and off."
+    ],
+    "fixes": [
+      "Improve the remote access core.",
+      "Add a short delay to switching between cards so they don't get caught mid-transition.",
+      "Fix a crash when a flight doesn't have any crew.",
+      "Exocomps can now be properly assigned to minor systems."
+    ]
+  },
+  "1.0.33": {
+    "features": [
+      "Add the ability to control the sidebars on any core.",
+      "Add a simple black layout.",
+      "Make it possible to selectively choose what layout each station has."
+    ],
+    "fixes": [
+      "Fixes planets, borders, and pings.",
+      "Fixes the text color of the dropdown on the 'Add Users' dropdown."
+    ]
+  },
+  "1.0.32": {
+    "fixes": [
+      "Fixes a crucial error which causes Thorium Server to crash when serializing circular references.",
+      "Fixes an issue where software panels aren't properly appearing on stations.",
+      "Provides some fixes for tasks that crash the server.",
+      "Properly handle destroying sensor contacts tied to targeting contacts.",
+      "Properly handle dragging contacts onto the grid again."
+    ]
+  },
+  "1.0.31": {
+    "features": ["Add exocomp history to the exocomp core."],
+    "fixes": [
+      "Automatically release the thrusters if the thrusters haven't been pressed for a while, in case thrusters disconnects while thrusting.",
+      "Fix an error where setting an station training to not a video or audio file causes the player to appear.",
+      "Makes #[1-10] entries in damage reports actually use the correct numbers.",
+      "Railgun projectiles now appear correctly on regular sensors.",
+      "Railgun projectiles now properly remove when they miss."
+    ]
+  },
   "1.0.30": {
-    "features": [],
+    "features": [
+      "Added the probe science screen. This screen allows for probes to be configured with bursts or detectors and can be used as part of certain strategies. This screen uses the Alternative Sensors Core and the Probe Control Core.",
+      "Added a color change to a message in the comm convo core when it has been decoded.",
+      "Added the ability to flash and send probe processed data. "
+    ],
     "fixes": [
       "Fixes possible issues with exporting missions.",
       "Improves how printing mission scripts works.",
       "Fix an issue where batteries deplete a little bit faster because of extra power hanging out in systems.",
-      "Improvements and fixes to the task system."
+      "Improvements and fixes to the task system.",
+      "The battery training steps will not appear on the power distribution and reactor control screens if the ship has no batteries.",
+      "Fix an issue where reactor heat was not properly updating on Core."
     ]
   },
   "1.0.29": {

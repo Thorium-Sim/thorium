@@ -43,6 +43,11 @@ class CoreFeed extends Component {
       variables
     });
   };
+  collapseCoreFeed = id => {
+    this.setState({
+      components: Object.assign({}, this.state.components, { [id]: false })
+    });
+  };
   ignoreAll = () => {
     const mutation = gql`
       mutation IgnoreCoreFeed($id: ID) {
@@ -110,14 +115,24 @@ class CoreFeed extends Component {
                   >
                     {c.component.replace("Core", "")}
                     <CoreComponent {...this.props} />
-                    <Button
-                      color="info"
-                      block
-                      size="sm"
-                      onClick={() => this.ignoreCoreFeed(c.id)}
-                    >
-                      Ignore
-                    </Button>
+                    <div style={{ display: "flex" }}>
+                      <Button
+                        color="warning"
+                        style={{ flex: 1 }}
+                        size="sm"
+                        onClick={() => this.collapseCoreFeed(c.id)}
+                      >
+                        Collapse
+                      </Button>{" "}
+                      <Button
+                        color="info"
+                        style={{ flex: 1 }}
+                        size="sm"
+                        onClick={() => this.ignoreCoreFeed(c.id)}
+                      >
+                        Ignore
+                      </Button>
+                    </div>
                   </div>
                 );
               }

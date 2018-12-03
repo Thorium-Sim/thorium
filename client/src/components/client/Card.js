@@ -7,6 +7,8 @@ import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
 import { subscribe } from "../../helpers/pubsub";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
 
 const Blackout = () => {
   return (
@@ -74,7 +76,8 @@ const CardRenderer = props => {
         card: "Test"
       }
     : props;
-  const layoutName = station.layout || simulator.layout || "LayoutCorners";
+  const layoutName =
+    client.layout || station.layout || simulator.layout || "LayoutCorners";
 
   let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
   if (station.name === "Viewscreen") {
@@ -108,6 +111,24 @@ const CardRenderer = props => {
   );
 };
 
+function isMedia(src = "") {
+  console.log(src);
+  const extensions = [
+    ".wav",
+    ".mp4",
+    ".mp3",
+    ".mov",
+    ".ogg",
+    ".ogv",
+    ".aac",
+    ".m4a",
+    ".m4v",
+    ".webm",
+    ".mpg",
+    ".mpeg"
+  ];
+  return extensions.find(e => src.toLowerCase().indexOf(e) > -1);
+}
 export default class CardFrame extends Component {
   constructor(props) {
     super(props);
@@ -152,10 +173,14 @@ export default class CardFrame extends Component {
     }
   }
   changeCard = name => {
+    const card = this.props.station.cards.find(c => c.name === name)
+      ? name
+      : this.props.station.cards && this.props.station.cards[0].name;
+    if (this.cardChanged || this.state.card === card) return;
+    this.cardChanged = true;
+    setTimeout(() => (this.cardChanged = false), 500);
     this.setState({
-      card: this.props.station.cards.find(c => c.name === name)
-        ? name
-        : this.props.station.cards && this.props.station.cards[0].name
+      card
     });
   };
   render() {
@@ -173,7 +198,10 @@ export default class CardFrame extends Component {
             changeCard={this.changeCard}
             client={{
               ...client,
-              training: simTraining && stationTraining ? false : client.training
+              training:
+                simTraining && stationTraining && isMedia(stationTraining)
+                  ? false
+                  : client.training
             }}
           />
           {this.props.client && (
@@ -186,8 +214,27 @@ export default class CardFrame extends Component {
             />
           )}
           {simTraining &&
-            stationTraining && (
-              <TrainingPlayer src={`/assets${stationTraining}`} />
+            stationTraining &&
+            client.training &&
+            isMedia(stationTraining) && (
+              <Mutation
+                mutation={gql`
+                  mutation ClientSetTraining($id: ID!, $training: Boolean!) {
+                    clientSetTraining(client: $id, training: $training)
+                  }
+                `}
+                variables={{
+                  id: client.id,
+                  training: false
+                }}
+              >
+                {action => (
+                  <TrainingPlayer
+                    src={`/assets${stationTraining}`}
+                    close={action}
+                  />
+                )}
+              </Mutation>
             )}
           <Alerts
             key={`alerts-${

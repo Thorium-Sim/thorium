@@ -1,6 +1,15 @@
 import React, { Fragment } from "react";
-import { Button, Row, Col, Card, CardBody } from "reactstrap";
+import {
+  Button,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  ListGroup,
+  ListGroupItem
+} from "reactstrap";
 import Transitioner from "../helpers/transitioner";
+import { titleCase } from "change-case";
 
 export default class ProbeEquipment extends Transitioner {
   constructor(props) {
@@ -53,8 +62,14 @@ export default class ProbeEquipment extends Transitioner {
     });
   };
   render() {
-    const { selectedProbeType, probes, cancelProbe, prepareProbe } = this.props;
-    const { shownDescription, equipment } = this.state;
+    const {
+      selectedProbeType,
+
+      probes,
+      cancelProbe,
+      prepareProbe
+    } = this.props;
+    const { shownDescription, selectedScienceType, equipment } = this.state;
     const type = probes.types.find(p => p.id === selectedProbeType);
     const used = equipment.reduce((prev, next) => {
       return prev + next.count * next.size;
@@ -62,7 +77,59 @@ export default class ProbeEquipment extends Transitioner {
     return (
       <Fragment>
         <Row className="probeEquipment">
-          <Col sm={8}>
+          {selectedProbeType === "science" && (
+            <Col sm={3} className="science-probe">
+              <h3>Configuration Options</h3>
+              <ListGroup style={{ height: "20vh", overflowY: "auto" }}>
+                {probes.scienceTypes
+                  .concat()
+                  .sort((a, b) => {
+                    if (a.id > b.id) return 1;
+                    if (b.id > a.id) return -1;
+                    return 0;
+                  })
+                  .map(s => (
+                    <ListGroupItem
+                      key={s.id}
+                      active={selectedScienceType === s.id}
+                      onClick={() =>
+                        this.setState({ selectedScienceType: s.id })
+                      }
+                    >
+                      {titleCase(`${s.name} ${s.type}`)}
+                    </ListGroupItem>
+                  ))}
+              </ListGroup>
+              <h3>Description</h3>
+              <Card
+                style={{ height: "15vh", marginTop: "5px", overflowY: "auto" }}
+              >
+                <CardBody>
+                  {selectedScienceType &&
+                    probes.scienceTypes.find(c => c.id === selectedScienceType)
+                      .description}
+                </CardBody>
+              </Card>
+              <h3>Required Equipment</h3>
+              <Card
+                style={{ height: "16vh", marginTop: "5px", overflowY: "auto" }}
+              >
+                <CardBody style={{ whiteSpace: "pre-line" }}>
+                  {selectedScienceType &&
+                    probes.scienceTypes
+                      .find(c => c.id === selectedScienceType)
+                      .equipment.map(
+                        e =>
+                          probes.types
+                            .find(t => t.id === "science")
+                            .availableEquipment.find(q => q.id === e).name
+                      )
+                      .join("\n")}
+                </CardBody>
+              </Card>
+            </Col>
+          )}
+          <Col sm={selectedProbeType === "science" ? 5 : 8}>
             <Row>
               <Col sm="12">
                 <h2>Available Equipment:</h2>

@@ -18,6 +18,9 @@ const TourHelper = ({
   const speak = stepNum => {
     synth.cancel();
     const step = steps[stepNum - 1];
+    if (typeof step.content === "string") {
+      return synth.speak(new SpeechSynthesisUtterance(step.content));
+    }
     const div = document.createElement("div");
     // Process the training, in case it's a react element.
     ReactDOM.render(<IntlProvider>{step.content}</IntlProvider>, div);

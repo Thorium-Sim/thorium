@@ -81,6 +81,7 @@ import BridgeMap from "./BridgeMap";
 import ThrustersLite from "./Thrusters/lite";
 import ParticleDetector from "./ParticleDetector";
 import Tasks from "./Tasks";
+import ProbeScience from "./ProbeScience";
 // import DockingPorts from "./DockingPorts";
 
 // Cores
@@ -151,6 +152,7 @@ import HandheldScannerCore from "./HandheldScanner/core";
 import NewMessagingCore from "./Messaging/newCore";
 import TasksCore from "./Tasks/core";
 import AlternateSensorsCore from "./ParticleDetector/core";
+import CoreFeed from "./CoreFeed";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -241,7 +243,8 @@ const Views = {
   BridgeMap,
   ThrustersLite,
   ParticleDetector,
-  Tasks
+  Tasks,
+  ProbeScience
   // DockingPorts
 };
 
@@ -393,7 +396,8 @@ export const Cores = {
   HandheldScannerCore,
   NewMessagingCore,
   TasksCore,
-  AlternateSensorsCore
+  AlternateSensorsCore,
+  CoreFeed
 };
 
 export default Views;

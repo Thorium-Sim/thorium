@@ -88,6 +88,17 @@ enum ParticleTypes {
   Neutrino
   AntiMatter
   Anomaly
+
+  #Also use this for Science Probe bursts
+  Resonance
+  Graviton
+  Lithium
+  Magnetic
+  Helium
+  Hydrogen
+  Oxygen
+  Carbon
+  Radiation
 }
 type SensorsSegment {
   ring: Int

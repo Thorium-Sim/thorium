@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import ParticleDetectorCore from "./particleDetectorCore";
+import ProbeScienceCore from "../ProbeScience/core";
+
 import "./style.scss";
 
 const Components = {
-  particle: ParticleDetectorCore
+  particle: ParticleDetectorCore,
+  science: ProbeScienceCore
 };
 class AlternateSensorsCore extends Component {
   state = { which: "particle" };
@@ -12,8 +15,8 @@ class AlternateSensorsCore extends Component {
     const { which } = this.state;
     const Comp = Components[which];
     return (
-      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-        <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", height: "20px" }}>
           <Button
             color="info"
             size="sm"
@@ -29,7 +32,6 @@ class AlternateSensorsCore extends Component {
             style={{ flex: 1 }}
             onClick={() => this.setState({ which: "science" })}
             active={which === "science"}
-            disabled
           >
             Science
           </Button>

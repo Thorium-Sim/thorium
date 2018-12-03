@@ -121,6 +121,7 @@ stationSets {
     login
     executive
     messageGroups
+    layout
     widgets
     cards {
       name
@@ -153,6 +154,7 @@ const STATIONSET_SUB = gql`
         messageGroups
         executive
         widgets
+        layout
         cards {
           name
           component

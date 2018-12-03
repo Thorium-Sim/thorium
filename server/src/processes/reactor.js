@@ -184,6 +184,18 @@ const updateReactor = () => {
   setTimeout(updateReactor, 1000);
 };
 let count = 0;
+
+const throttlesHeat = {};
+
+const sendUpdate = sys => {
+  if (!throttlesHeat[sys.id]) {
+    throttlesHeat[sys.id] = throttle(sys => {
+      pubsub.publish("heatChange", sys);
+    }, 300);
+  }
+  return throttlesHeat[sys.id];
+};
+
 // This one is for cooling - not affected by flight paused status
 function reactorHeat() {
   const reactors = App.systems.filter(
@@ -195,6 +207,7 @@ function reactorHeat() {
       r.setCoolant(Math.min(1, Math.max(0, r.coolant - 0.005)));
       r.setHeat(Math.min(1, Math.max(0, r.heat - 0.01)));
     }
+    sendUpdate(r)(r);
     pubsub.publish(
       "coolantSystemUpdate",
       App.systems
@@ -215,6 +228,7 @@ function reactorHeat() {
       "reactorUpdate",
       App.systems.filter(s => s.type === "Reactor")
     );
+    pubsub.publish("systemsUpdate", App.systems);
   }
   count++;
   setTimeout(reactorHeat, 1000 / 30);

@@ -16,97 +16,100 @@ const moveSensorContactTimed = () => {
   let targetingUpdate = false;
   App.systems.filter(sys => sys.type === "Sensors").forEach(sensors => {
     const { movement, thrusterMovement } = sensors;
-    sensors.contacts = sensors.contacts.map(c => {
-      // To start out, update the position, location, and destination based
-      // on the sensors movement. Include thrusters, if applicable
-      const x = c.locked ? 0 : (movement.x + thrusterMovement.x) / 100;
-      const y = c.locked ? 0 : (movement.y + thrusterMovement.y) / 100;
-      const z = c.locked ? 0 : (movement.z + thrusterMovement.z) / 100;
-      const destination = {
-        ...c.destination,
-        x: c.destination.x + x,
-        y: c.destination.y + y,
-        z: c.destination.z + z
-      };
-      const location = {
-        ...c.location,
-        x: c.location.x + x,
-        y: c.location.y + y,
-        z: c.location.z + z
-      };
-      const position = {
-        ...c.position,
-        x: c.position.x + x,
-        y: c.position.y + y,
-        z: c.position.z + z
-      };
-
-      if (c.speed === 0) {
-        c.destination = destination;
-        c.location = location;
-        c.position = position;
-        return c;
-      }
-      const time = Date.now();
-      if (c.speed > 100) {
-        c.destination = destination;
-        c.location = destination;
-        c.position = destination;
-        return c;
-      } else if (c.speed > 0) {
-        // Total movement time is the difference between the distance and location
-        // Divided by the speed times one second (1000 ms)
-        const currentTime = time - c.startTime;
-        const endTime = c.endTime || c.startTime + 1000;
-        // Location is a function of the current time and the end time.
-        const newLoc = {
-          ...location,
-          x:
-            location.x +
-            ((destination.x - location.x) / (endTime - c.startTime)) *
-              currentTime,
-          y:
-            location.y +
-            ((destination.y - location.y) / (endTime - c.startTime)) *
-              currentTime,
-          z: 0
+    sensors.contacts = sensors.contacts
+      .map(c => {
+        // To start out, update the position, location, and destination based
+        // on the sensors movement. Include thrusters, if applicable
+        const x = c.locked ? 0 : (movement.x + thrusterMovement.x) / 100;
+        const y = c.locked ? 0 : (movement.y + thrusterMovement.y) / 100;
+        const z = c.locked ? 0 : (movement.z + thrusterMovement.z) / 100;
+        const destination = {
+          ...c.destination,
+          x: c.destination.x + x,
+          y: c.destination.y + y,
+          z: c.destination.z + z
+        };
+        const location = {
+          ...c.location,
+          x: c.location.x + x,
+          y: c.location.y + y,
+          z: c.location.z + z
+        };
+        const position = {
+          ...c.position,
+          x: c.position.x + x,
+          y: c.position.y + y,
+          z: c.position.z + z
         };
 
-        if (endTime < Date.now()) {
+        if (c.speed === 0) {
+          c.destination = destination;
+          c.location = location;
+          c.position = position;
+          return c;
+        }
+        const time = Date.now();
+        if (c.speed > 100) {
           c.destination = destination;
           c.location = destination;
           c.position = destination;
-        } else {
-          c.destination = destination;
-          c.position = newLoc;
-          c.location = location;
-        }
-        if (distance3d(c.position, { x: 0, y: 0, z: 0 }) > 1.4) {
-          sensors.removeContact(c);
-        }
-        if (
-          c.type === "projectile" &&
-          !c.miss &&
-          !c.destroyed &&
-          distance3d(c.position, { x: 0, y: 0, z: 0 }) < 0.005
-        ) {
-          // Projectile destruction
-          sensors.destroyContact({ id: c.id });
-          pubsub.publish("notify", {
-            id: uuid.v4(),
-            simulatorId: sensors.simulatorId,
-            type: "Railgun",
-            station: "Core",
-            title: `Projectile Hit`,
-            body: "",
-            color: "danger"
-          });
-          sendUpdate = true;
-        }
+          return c;
+        } else if (c.speed > 0) {
+          // Total movement time is the difference between the distance and location
+          // Divided by the speed times one second (1000 ms)
+          const currentTime = time - c.startTime;
+          const endTime = c.endTime || c.startTime + 1000;
+          // Location is a function of the current time and the end time.
+          const newLoc = {
+            ...location,
+            x:
+              location.x +
+              ((destination.x - location.x) / (endTime - c.startTime)) *
+                currentTime,
+            y:
+              location.y +
+              ((destination.y - location.y) / (endTime - c.startTime)) *
+                currentTime,
+            z: 0
+          };
 
-        return c;
-      }
-    });
+          if (endTime < Date.now()) {
+            c.destination = destination;
+            c.location = destination;
+            c.position = destination;
+          } else {
+            c.destination = destination;
+            c.position = newLoc;
+            c.location = location;
+          }
+          if (distance3d(c.position, { x: 0, y: 0, z: 0 }) > 1.4) {
+            sendUpdate = true;
+            return null;
+          }
+          if (
+            c.type === "projectile" &&
+            !c.miss &&
+            !c.destroyed &&
+            distance3d(c.position, { x: 0, y: 0, z: 0 }) < 0.005
+          ) {
+            // Projectile destruction
+            sensors.destroyContact({ id: c.id });
+            pubsub.publish("notify", {
+              id: uuid.v4(),
+              simulatorId: sensors.simulatorId,
+              type: "Railgun",
+              station: "Core",
+              title: `Projectile Hit`,
+              body: "",
+              color: "danger"
+            });
+            sendUpdate = true;
+          }
+
+          return c;
+        }
+      })
+      .filter(Boolean);
     sensors.contacts.forEach(c => {
       // Auto fire
       if (c.hostile && c.autoFire) {

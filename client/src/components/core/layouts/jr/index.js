@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Cores } from "components/views";
-//import CoreFeed from "components/views/CoreFeed";
 import "./jr.scss";
 const coreList = [
   "JrNavigationCore",

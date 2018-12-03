@@ -6,6 +6,7 @@ import Explosion from "helpers/explosions";
 import gql from "graphql-tag";
 import { subscribe } from "helpers/pubsub";
 import { particleTypes } from "../../ParticleDetector/particleConstants";
+const burstIcon = require(`../../ProbeScience/burst.svg`);
 
 class Ping extends Component {
   constructor(props) {
@@ -349,7 +350,7 @@ export default class SensorContact extends Component {
                 onMouseOver={() => mouseover(this.props)}
                 onMouseOut={selected ? null : () => mouseover({})}
                 onMouseDown={e => mousedown(e, this.props)}
-                src={`/assets${icon}`}
+                src={type === "burst" ? burstIcon : `/assets${icon}`}
                 className={disabled ? "contact-disabled" : ""}
                 style={{
                   opacity: core ? 0.5 : opacity,
@@ -359,6 +360,7 @@ export default class SensorContact extends Component {
               />
             )}
           </Measure>
+
           {!core &&
             this.state.dimensions &&
             selected && (
@@ -373,12 +375,22 @@ export default class SensorContact extends Component {
         </Fragment>
         {core && (
           <Fragment>
+            <p
+              style={{
+                opacity: core ? 0.5 : opacity,
+                position: "absolute",
+                transform: `translate(${(width / 2) * x}px, ${(width / 2) *
+                  (y + 0.1)}px) scale(${size})`
+              }}
+            >
+              {particle}
+            </p>
             <img
               id={`contact-${id}`}
               alt="icon"
               draggable="false"
               onMouseDown={e => mousedown(e, this.props)}
-              src={`/assets${icon}`}
+              src={type === "burst" ? burstIcon : `/assets${icon}`}
               className={disabled ? "contact-disabled" : ""}
               style={{
                 boxShadow: hostile ? "2px 2px 2px rgba(255,0,0,0.5)" : null,

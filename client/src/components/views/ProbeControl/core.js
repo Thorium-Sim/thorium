@@ -4,31 +4,46 @@ import { Container, Row, Col, Button } from "reactstrap";
 import { OutputField, TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import { titleCase } from "change-case";
+import { getProbeConfig } from "../ProbeScience/probeScience";
 import "./style.scss";
 
+const queryData = `id
+types {
+  id
+  name
+}
+torpedo
+scienceTypes {
+  id
+  name
+  type
+  description
+  equipment
+}
+probes {
+  id
+  type
+  name
+  query
+  querying
+  response
+  launched
+  charge
+  history {
+    date
+    text
+  }
+  equipment {
+    id
+    name
+    count
+  }
+}`;
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
-      id
-      types {
-        id
-        name
-      }
-      torpedo
-      probes {
-        id
-        type
-        name
-        query
-        querying
-        response
-        launched
-        equipment {
-          id
-          name
-          count
-        }
-      }
+${queryData}
     }
   }
 `;
@@ -93,11 +108,37 @@ class ProbeControl extends Component {
       </p>
     ));
   };
+  renderScience = probe => {
+    const probes = this.props.data.probes[0];
+    const config = getProbeConfig(probes, probe);
+    return (
+      <div>
+        <p>
+          <strong>Emitter:</strong>{" "}
+          {config ? titleCase(`${config.name} ${config.type}`) : "Invalid"}
+        </p>
+        <p>
+          <strong>Charge:</strong> {probe.charge}
+        </p>
+        <p>
+          <strong>Emitter Description:</strong>
+        </p>
+        <p>{config && config.description}</p>
+        <p>
+          <strong>History:</strong>{" "}
+          {probe.history.map(({ date, text }) => (
+            <p>{`${new Date(date).toLocaleTimeString()}: ${text}`}</p>
+          ))}
+        </p>
+      </div>
+    );
+  };
   render() {
     if (this.props.data.loading || !this.props.data.probes) return null;
     const probes = this.props.data.probes[0];
     const { selectedProbe } = this.state;
     if (!probes) return <p>No Probe Launcher</p>;
+    const probe = probes.probes.find(p => p.id === selectedProbe);
     return (
       <Container fluid className="probe-control-core">
         <SubscriptionHelper
@@ -131,7 +172,15 @@ class ProbeControl extends Component {
               ))}
             </div>
           </Col>
-          {selectedProbe && <Col sm={3}>{this.renderEquipment()}</Col>}
+          {probe && (
+            <Col sm={3}>
+              <p>
+                <strong>{titleCase(probe.type)}</strong>
+              </p>
+              {this.renderEquipment()}
+              {probe && probe.type === "science" && this.renderScience(probe)}
+            </Col>
+          )}
           {selectedProbe && (
             <Col sm={6}>
               <div
@@ -177,26 +226,7 @@ class ProbeControl extends Component {
 const PROBES_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
-      id
-      types {
-        id
-        name
-      }
-      torpedo
-      probes {
-        id
-        type
-        name
-        query
-        querying
-        response
-        launched
-        equipment {
-          id
-          name
-          count
-        }
-      }
+${queryData}
     }
   }
 `;

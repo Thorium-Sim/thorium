@@ -208,6 +208,7 @@ class InnerGrid extends Component {
   renderContacts = () => {
     const {
       contacts,
+      includeTypes = [],
       sensor,
       dimensions,
       core,
@@ -226,7 +227,11 @@ class InnerGrid extends Component {
     const contactOutput = []
       .concat(contacts)
       .concat(extraContacts.filter(c => !contacts.find(e => e.id === c.id)))
-      .filter(Boolean);
+      .filter(Boolean)
+      .filter(
+        c =>
+          includeTypes.length > 0 ? includeTypes.indexOf(c.type) > -1 : true
+      );
     return contactOutput.map(contact => {
       const extraContact = extraContacts.find(e => e.id === contact.id);
       const { position, location, destination } =
