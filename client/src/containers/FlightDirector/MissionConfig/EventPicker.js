@@ -22,10 +22,19 @@ const EventPicker = ({
         .filter(mutation => {
           return mutation.description.substr(0, 5) === "Macro";
         })
+        .map(type => ({
+          ...type,
+          description: type.description.replace("Macro: ", "")
+        }))
+        .sort((a, b) => {
+          if (a.description > b.description) return 1;
+          if (a.description < b.description) return -1;
+          return 0;
+        })
         .map(type => {
           return (
             <option key={type.name} value={type.name}>
-              {type.description.replace("Macro: ", "")}
+              {type.description}
             </option>
           );
         })}
