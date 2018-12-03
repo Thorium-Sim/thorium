@@ -1,4 +1,8 @@
 {
+  "1.0.35": {
+    "features": [],
+    "fixes": ["Fixes the direction of the Junior Thrusters."]
+  },
   "1.0.34": {
     "features": [
       "Make it possible to collapse core feed items that have been opened.",
