@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { Button, Label, Input } from "reactstrap";
+import React, { Component } from "react";
+import { Button } from "reactstrap";
 import gql from "graphql-tag";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import TacticalMapList from "./tacticalMapList";
@@ -12,27 +12,6 @@ const SortableItem = SortableElement(({ item, selectedLayer, selectLayer }) => (
     {item.name}
   </li>
 ));
-
-const importTacticalMap = evt => {
-  if (evt.target.files[0]) {
-    const data = new FormData();
-    Array.from(evt.target.files).forEach((f, index) =>
-      data.append(`files[${index}]`, f)
-    );
-    fetch(
-      `${window.location.protocol}//${window.location.hostname}:${parseInt(
-        window.location.port,
-        10
-      ) + 1}/importTacticalMap`,
-      {
-        method: "POST",
-        body: data
-      }
-    ).then(() => {
-      window.location.reload();
-    });
-  }
-};
 
 const SortableList = SortableContainer(
   ({ items, selectedLayer, selectLayer }) => {

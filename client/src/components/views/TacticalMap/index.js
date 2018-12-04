@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Query, withApollo } from "react-apollo";
 import Sidebar from "./sidebar";
