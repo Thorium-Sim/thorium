@@ -141,14 +141,13 @@ export default class Bottom extends Component {
       tacticalMapId,
       layerId,
       objectId,
-      tacticalMaps,
+      tacticalMap,
       updateObject,
       updateSpeed,
       speed
     } = this.props;
     if (!tacticalMapId || !layerId) return null;
-    const selectedMap = tacticalMaps.find(t => t.id === tacticalMapId);
-    const selectedLayer = selectedMap.layers.find(l => l.id === layerId);
+    const selectedLayer = tacticalMap.layers.find(l => l.id === layerId);
     return (
       <div style={{ height: "100%" }}>
         <Row style={{ height: "100%" }}>

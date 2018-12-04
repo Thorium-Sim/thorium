@@ -10,6 +10,9 @@ export const TacticalMapQueries = {
       returnVal = returnVal.filter(m => m.template === template);
     }
     return returnVal;
+  },
+  tacticalMap(rootValue, { id }) {
+    return App.tacticalMaps.find(t => t.id === id);
   }
 };
 
@@ -29,13 +32,13 @@ export const TacticalMapMutations = {
     App.handleEvent(args, "duplicateTacticalMap", context);
   },
   loadTacticalMap(rootValue, args, context) {
-    const newid = uuid.v4();
+    const newId = uuid.v4();
     App.handleEvent(
-      Object.assign({}, args, { newid }),
+      Object.assign({}, args, { newId }),
       "loadTacticalMap",
       context
     );
-    return newid;
+    return newId;
   },
   removeTacticalMap(rootValue, args, context) {
     App.handleEvent(args, "removeTacticalMap", context);
@@ -91,6 +94,17 @@ export const TacticalMapSubscriptions = {
           return rootValue.filter(s => s.flightId === flightId).length > 0;
         }
         return !!(rootValue && rootValue.length);
+      }
+    )
+  },
+  tacticalMapUpdate: {
+    resolve(rootValue, { id }) {
+      return rootValue;
+    },
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("tacticalMapUpdate"),
+      (rootValue, { id }) => {
+        return id === rootValue.id;
       }
     )
   }

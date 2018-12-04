@@ -6,7 +6,8 @@
     "fixes": [
       "Fixes the direction of the Junior Thrusters.",
       "Remove the battery charging screen on Jr Engineering to hopefully improve performance.",
-      "Sort the event picker options so it's easier to see what options there are."
+      "Sort the event picker options so it's easier to see what options there are.",
+      "Updates and changes to improve the reliability and speed of the tactical maps."
     ]
   },
   "1.0.34": {
