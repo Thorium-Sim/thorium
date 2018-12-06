@@ -83,7 +83,7 @@ export default [
         s => s.simulatorId === simulator.id && s.type === "Sickbay"
       );
       if (!sickbay) return;
-      return sickbay.bunk.find(b => b.patient === requiredValues.crew);
+      return sickbay.bunks.find(b => b.patient === requiredValues.crew);
     }
   }
 ];
