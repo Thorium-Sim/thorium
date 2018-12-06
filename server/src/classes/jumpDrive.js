@@ -96,4 +96,14 @@ export default class JumpDrive extends System {
     if (envLevel < this.env) this.env = envLevel;
     super.setPower(powerLevel);
   }
+  hitSectorOffset(sector) {
+    if (sector === "all") {
+      return Object.keys(this.sectors).forEach(s => {
+        this.hitSectorOffset(s);
+      });
+    }
+    this.sectors[sector].setOffset(
+      this.sectors[sector].offset + Math.random() * 0.2
+    );
+  }
 }

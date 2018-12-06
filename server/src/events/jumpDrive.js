@@ -66,3 +66,7 @@ App.on("fluxJumpdriveSector", ({ id, sector }) => {
 App.on("setJumpDriveEnabled", ({ id, enabled }) => {
   performAction(id, sys => sys.setEnabled(enabled));
 });
+
+App.on("hitJumpDriveStress", ({ id, sector }) => {
+  performAction(id, sys => sys.hitSectorOffset(sector));
+});

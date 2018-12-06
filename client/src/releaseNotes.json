@@ -1,7 +1,8 @@
 {
   "1.0.35": {
     "features": [
-      "Allow for tactical map rotations to be specified as a number."
+      "Allow for tactical map rotations to be specified as a number.",
+      "Make it possible to 'hit' jump drive stress."
     ],
     "fixes": [
       "Fixes the direction of the Junior Thrusters.",
