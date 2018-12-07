@@ -82,7 +82,6 @@ function moveCrew() {
       // Occasionally move crew members to a random deck
       if (Math.random() > 0.95) {
         const c = randomFromList(crew);
-        console.log(c);
         if (noEscapeDecks.indexOf(c.location) === -1) {
           moved = true;
           c.location = randomFromList(allowedDecks);

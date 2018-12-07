@@ -14,4 +14,7 @@ addInterceptionSignal(id:ID!):String
 
 #Macro: Remove Interception Signal
 removeInterceptionSignal(id:ID!):String
+
+#Macro: Long Range: Set preset messages
+setLongRangePresetMessages(id:ID, simulatorId:ID, messages:[PresetAnswerInput]):String
 `;

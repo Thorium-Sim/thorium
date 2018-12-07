@@ -1,7 +1,7 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { Table } from "reactstrap";
+import { Table, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { OutputField, InputField } from "../../generic/core";
 import { titleCase } from "change-case";
@@ -139,13 +139,48 @@ const JumpDriveCore = ({
                 sectors[s].offset > 0.7 ? "text-danger" : ""
               }`}
             >
-              {Math.round(sectors[s].offset * 100) / 100}
+              {Math.round(sectors[s].offset * 100) / 100}{" "}
+              <Mutation
+                mutation={gql`
+                  mutation HitStress($id: ID!, $sector: String!) {
+                    hitJumpDriveStress(id: $id, sector: $sector)
+                  }
+                `}
+                variables={{ id, sector: s }}
+              >
+                {action => (
+                  <Button
+                    style={{ float: "right" }}
+                    size="sm"
+                    color="warning"
+                    onClick={action}
+                  >
+                    Hit
+                  </Button>
+                )}
+              </Mutation>
             </td>
           </tr>
         ))}
       </tbody>
     </Table>
-    <p>Total Stress: {Math.round(stress * 100) / 100}</p>
+    <p>
+      Total Stress: {Math.round(stress * 100) / 100}{" "}
+      <Mutation
+        mutation={gql`
+          mutation HitStress($id: ID!, $sector: String!) {
+            hitJumpDriveStress(id: $id, sector: $sector)
+          }
+        `}
+        variables={{ id, sector: "all" }}
+      >
+        {action => (
+          <Button size="sm" color="warning" onClick={action}>
+            Hit All
+          </Button>
+        )}
+      </Mutation>
+    </p>
   </div>
 );
 

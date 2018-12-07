@@ -30,6 +30,9 @@ export const JumpDriveMutations = {
   },
   setJumpDriveEnabled(root, args, context) {
     App.handleEvent(args, "setJumpDriveEnabled", context);
+  },
+  hitJumpDriveStress(root, args, context) {
+    App.handleEvent(args, "hitJumpDriveStress", context);
   }
 };
 

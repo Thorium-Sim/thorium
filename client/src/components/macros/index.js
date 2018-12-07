@@ -34,3 +34,6 @@ export {
 export { default as setTargetingClasses } from "./setTargetingClasses";
 export { default as setAlertConditionLock } from "./setAlertConditionLock";
 export { default as addTask } from "./addTask";
+export {
+  default as setLongRangePresetMessages
+} from "./setLongRangePresetMessages";
