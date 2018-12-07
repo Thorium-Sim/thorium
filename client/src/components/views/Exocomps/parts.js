@@ -1,55 +1,29 @@
-if (typeof require.context === "undefined") {
-  const fs = require("fs");
-  const path = require("path");
-
-  require.context = (
-    base = ".",
-    scanSubDirectories = false,
-    regularExpression = /\.js$/
-  ) => {
-    const files = {};
-
-    function readDirectory(directory) {
-      fs.readdirSync(directory).forEach(file => {
-        const fullPath = path.resolve(directory, file);
-
-        if (fs.statSync(fullPath).isDirectory()) {
-          if (scanSubDirectories) readDirectory(fullPath);
-
-          return;
-        }
-
-        if (!regularExpression.test(fullPath)) return;
-
-        files[fullPath] = true;
-      });
-    }
-
-    readDirectory(path.resolve(__dirname, base));
-
-    function Module(file) {
-      return require(file);
-    }
-
-    Module.keys = () => Object.keys(files);
-
-    return Module;
-  };
-}
-
-function importAll(r) {
-  return r
-    .keys()
-    .map(k => ({ path: k, image: r(k) }))
-    .reduce((prev, next) => {
-      const key = next.path.replace("./", "").replace(".svg", "");
-      prev[key] = next.image;
-      return prev;
-    }, {});
-}
-
-const images = importAll(
-  require.context("./parts", false, /\.(png|jpe?g|svg|JPE?G|PNG|SVG)$/)
-);
-
-export default images;
+export default {
+  "CASM Generator": require("./parts/CASM Generator.svg"),
+  "Field Emitter": require("./parts/Field Emitter.svg"),
+  "Integrated Fluid Sensor": require("./parts/Integrated Fluid Sensor.svg"),
+  "Power Coupling": require("./parts/Power Coupling.svg"),
+  "Coaxial Servo": require("./parts/Coaxial Servo.svg"),
+  "Field Generator": require("./parts/Field Generator.svg"),
+  "Isolinear Circuit": require("./parts/Isolinear Circuit.svg"),
+  "Power Splitter": require("./parts/Power Splitter.svg"),
+  "Computer Interface": require("./parts/Computer Interface.svg"),
+  "Fusion Generator": require("./parts/Fusion Generator.svg"),
+  "Isolinear Programs": require("./parts/Isolinear Programs.svg"),
+  "Prefire Chamber": require("./parts/Prefire Chamber.svg"),
+  "Digital Sequencer": require("./parts/Digital Sequencer.svg"),
+  "Fusion Welder": require("./parts/Fusion Welder.svg"),
+  "Isolinear Rod": require("./parts/Isolinear Rod.svg"),
+  "Residual Power Store": require("./parts/Residual Power Store.svg"),
+  "EPS Power Node": require("./parts/EPS Power Node.svg"),
+  "Gravity Generator": require("./parts/Gravity Generator.svg"),
+  "Magnetic Bolt Fastener": require("./parts/Magnetic Bolt Fastener.svg"),
+  "Sensor Grid": require("./parts/Sensor Grid.svg"),
+  "EPS Step-Down Conduit": require("./parts/EPS Step-Down Conduit.svg"),
+  "Holographic Servo Display": require("./parts/Holographic Servo Display.svg"),
+  "Magnetic Coil": require("./parts/Magnetic Coil.svg"),
+  "Subspace Transceiver": require("./parts/Subspace Transceiver.svg"),
+  "Fiberoptic Wire Linkage": require("./parts/Fiberoptic Wire Linkage.svg"),
+  "IDC Power Cable": require("./parts/IDC Power Cable.svg"),
+  "Network Adapter": require("./parts/Network Adapter.svg")
+};

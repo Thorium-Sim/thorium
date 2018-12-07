@@ -125,7 +125,7 @@ function viewscreenMachine() {
   });
 
   pubsub.publish("viewscreensUpdate", App.viewscreens);
-  setTimeout(viewscreenMachine, 500);
+  setTimeout(viewscreenMachine, 1000);
 }
 
 function viewscreenTimer() {

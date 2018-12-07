@@ -5,6 +5,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import TaskCreator from "./TaskCreator";
 import TasksManager from "./TasksManager";
 import "./style.scss";
+import Statistics from "./Statistics";
 
 const queryData = `
 id
@@ -14,6 +15,8 @@ instructions
 station
 definition
 verifyRequested
+startTime
+endTime
 `;
 
 const templateQueryData = `
@@ -46,10 +49,41 @@ subscription TaskTemplatesUpdate {
     ${templateQueryData}
   }
 }`;
+
+class RenderPage extends Component {
+  state = {};
+  render() {
+    const { taskTemplates, tasks } = this.props;
+    const { newTask, stats } = this.state;
+
+    if (newTask)
+      return (
+        <TaskCreator
+          {...this.props}
+          taskTemplates={taskTemplates}
+          cancel={() => this.setState({ newTask: false })}
+        />
+      );
+    if (stats)
+      return (
+        <Statistics
+          tasks={tasks}
+          cancel={() => this.setState({ newTask: false, stats: false })}
+        />
+      );
+    return (
+      <TasksManager
+        {...this.props}
+        tasks={tasks}
+        newTask={() => this.setState({ newTask: true })}
+        stats={() => this.setState({ stats: true })}
+      />
+    );
+  }
+}
 class TasksCore extends Component {
   state = {};
   render() {
-    const { newTask } = this.state;
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
@@ -81,19 +115,11 @@ class TasksCore extends Component {
                   })
                 }
               />
-              {newTask ? (
-                <TaskCreator
-                  {...this.props}
-                  taskTemplates={taskTemplates}
-                  cancel={() => this.setState({ newTask: false })}
-                />
-              ) : (
-                <TasksManager
-                  {...this.props}
-                  tasks={tasks}
-                  newTask={() => this.setState({ newTask: true })}
-                />
-              )}
+              <RenderPage
+                {...this.props}
+                taskTemplates={taskTemplates}
+                tasks={tasks}
+              />
             </SubscriptionHelper>
           );
         }}

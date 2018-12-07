@@ -146,7 +146,7 @@ is the `/src/containers/FilghtDirector/Welcome.js` file.
 
 When Thorium is started for the first time, in either development or production
 mode, it will automatically download assets from a remote server. These assets
-are regularly updated with content from the compunity.
+are regularly updated with content from the community.
 
 You can download open-source licensed assets to be used with Thorium
 [here](https://drive.google.com/open?id=0B-UK2-Zf7K9ycUJScHJlWW92MjQ).

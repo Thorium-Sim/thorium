@@ -76,10 +76,14 @@ export default class LongRangeComm extends System {
     this.locked = params.locked || false;
     this.decoded = params.decoded || false;
     this.satellites = params.satellites || 3;
+    this.presetMessages = params.presetMessages || [];
   }
   get stealthFactor() {
     if (this.messageSent) return 0.4;
     return 0.1;
+  }
+  setPresetMessages(presetMessages) {
+    this.presetMessages = presetMessages;
   }
   trainingMode() {
     this.createMessage(

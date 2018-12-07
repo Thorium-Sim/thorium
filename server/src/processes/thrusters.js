@@ -90,25 +90,34 @@ const updateThrusters = () => {
             layer.items.forEach(item => {
               // Rotation
               if (item.thrusterControls.rotation === "yaw") {
-                updateNeeded = true;
-                item.rotation +=
+                const rotation =
                   sys.rotationDelta.yaw *
                   sys.rotationSpeed *
                   (item.thrusterControls.reversed ? -1 : 1);
+                if (rotation !== 0) {
+                  item.rotation += rotation;
+                  updateNeeded = true;
+                }
               }
               if (item.thrusterControls.rotation === "pitch") {
-                updateNeeded = true;
-                item.rotation +=
+                const rotation =
                   sys.rotationDelta.pitch *
                   sys.rotationSpeed *
                   (item.thrusterControls.reversed ? -1 : 1);
+                if (rotation !== 0) {
+                  item.rotation += rotation;
+                  updateNeeded = true;
+                }
               }
               if (item.thrusterControls.rotation === "roll") {
-                updateNeeded = true;
-                item.rotation +=
+                const rotation =
                   sys.rotationDelta.roll *
                   sys.rotationSpeed *
                   (item.thrusterControls.reversed ? -1 : 1);
+                if (rotation !== 0) {
+                  item.rotation += rotation;
+                  updateNeeded = true;
+                }
               }
               // Movement
               const distance = 0.01;
@@ -138,7 +147,9 @@ const updateThrusters = () => {
                   item.speed *
                   -1
               };
-              if (movement.x || movement.y) updateNeeded = true;
+              if (movement.x || movement.y) {
+                updateNeeded = true;
+              }
               // If we are honoring the rotation, rotate the movement around
               // the rotation axis
               if (item.thrusterControls.matchRotation) {

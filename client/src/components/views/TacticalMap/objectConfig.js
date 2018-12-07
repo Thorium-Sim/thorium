@@ -420,8 +420,8 @@ const ObjectSettings = ({
             Label
             <Input
               type="textarea"
-              value={label}
-              onChange={evt => updateObject("label", evt.target.value)}
+              defaultValue={label}
+              onBlur={evt => updateObject("label", evt.target.value)}
             />
           </Label>
         </FormGroup>
@@ -462,8 +462,8 @@ const ObjectSettings = ({
             Font
             <Input
               type="text"
-              value={font}
-              onChange={evt => updateObject("font", evt.target.value)}
+              defaultValue={font}
+              onBlur={evt => updateObject("font", evt.target.value)}
             />
           </Label>
         </FormGroup>
