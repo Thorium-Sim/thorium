@@ -55,6 +55,37 @@ video, and take input and provide output to a wide variety of devices.
 Created with ❤ by [Alex Anderson](http://ralexanderson.com) and
 [Fyreworks](https://fyreworks.us).
 
+## Guiding Principles
+
+Thorium is based on years of experience building starship simulator controls for
+Space Edventures centers in Utah. This experience drives a number of guiding
+principles which should underscore all feature development in the project:
+
+- The Flight Director is the master of the simulation. Therefore, everything in
+  Thorium should support the flight director. New features should not remove
+  control or power from the flight director. Features should also strive to not
+  distract the flight director from giving the crew the best experience
+  possible. The best features both give the flight director more ability to help
+  the crew while not detracting from the flight director's focus.
+- Crew enjoyment is the primary reason for Thorium's use. Education, research,
+  and training are all secondary objectives to the crew having a good time. Why?
+  Because if the crew is not having a good time, they likely aren't learning or
+  aren't providing good data for research. Features in Thorium should certainly
+  foster good environments for education, but not understanding how a card works
+  or a task being too difficult or too boring can quickly take away from
+  students learning.
+- While Thorium works hard to be the end-all-be-all of starship simulator
+  controls, there is no reason every single feature has to be bundled with
+  Thorium itself. The core of Thorium is a way to distribute and configure data
+  between multiple clients. Using the same mechanisms which crew clients
+  connect, external clients, like lighting controllers and hardware panels, can
+  also connect.
+- Thorium is a powerful platform. Regrettably, while its design allows for
+  powerful interactions and screens, it isn't friendly for beginning developers
+  like many previous simulator controls sets have been. This is one of the
+  biggest downsides to Thorium. Something that could improve Thorium's
+  experience for beginning developers would be ideal.
+
 ## Getting Started
 
 ```sh
@@ -115,7 +146,7 @@ is the `/src/containers/FilghtDirector/Welcome.js` file.
 
 When Thorium is started for the first time, in either development or production
 mode, it will automatically download assets from a remote server. These assets
-are regularly updated with content from the compunity.
+are regularly updated with content from the community.
 
 You can download open-source licensed assets to be used with Thorium
 [here](https://drive.google.com/open?id=0B-UK2-Zf7K9ycUJScHJlWW92MjQ).
@@ -135,6 +166,7 @@ Thanks goes to these wonderful people
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [<img src="https://avatars2.githubusercontent.com/u/25517624?v=4" width="100px;"/><br /><sub><b>Jed Fox</b></sub>](https://j-f1.github.io)<br />[💻](https://github.com/thorium-sim/Thorium/commits?author=j-f1 "Code") | [<img src="https://avatars2.githubusercontent.com/u/2187124?v=4" width="100px;"/><br /><sub><b>Lilah</b></sub>](https://github.com/G33kX)<br />[💻](https://github.com/thorium-sim/Thorium/commits?author=G33kX "Code") | [<img src="https://avatars3.githubusercontent.com/u/1413863?v=4" width="100px;"/><br /><sub><b>kimballfrank</b></sub>](https://github.com/kimballfrank)<br />[🎨](#design-kimballfrank "Design") [🤔](#ideas-kimballfrank "Ideas, Planning, & Feedback") | [<img src="https://avatars0.githubusercontent.com/u/25465934?v=4" width="100px;"/><br /><sub><b>aBlueShadow</b></sub>](https://github.com/aBlueShadow)<br />[🤔](#ideas-aBlueShadow "Ideas, Planning, & Feedback") [🌍](#translation-aBlueShadow "Translation") | [<img src="https://avatars1.githubusercontent.com/u/1224343?v=4" width="100px;"/><br /><sub><b>John Robe</b></sub>](http://jrobe.me)<br />[🐛](https://github.com/thorium-sim/Thorium/issues?q=author%3Ajrobe "Bug reports") [💻](https://github.com/thorium-sim/Thorium/commits?author=jrobe "Code") | [<img src="https://avatars0.githubusercontent.com/u/1906967?v=4" width="100px;"/><br /><sub><b>Keith Smith</b></sub>](https://github.com/ksmithut)<br />[🐛](https://github.com/thorium-sim/Thorium/issues?q=author%3Aksmithut "Bug reports") [💻](https://github.com/thorium-sim/Thorium/commits?author=ksmithut "Code") | [<img src="https://avatars3.githubusercontent.com/u/40648791?v=4" width="100px;"/><br /><sub><b>MaesonBusk</b></sub>](https://github.com/MaesonBusk)<br />[📖](https://github.com/thorium-sim/Thorium/commits?author=MaesonBusk "Documentation") |
 | [<img src="https://avatars0.githubusercontent.com/u/6345617?v=4" width="100px;"/><br /><sub><b>Eric Mansfield</b></sub>](https://github.com/ericman314)<br />[💻](https://github.com/thorium-sim/Thorium/commits?author=ericman314 "Code") [⚠️](https://github.com/thorium-sim/Thorium/commits?author=ericman314 "Tests") |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the

@@ -1,12 +1,50 @@
 import React, { Component, Fragment } from "react";
 import { Card, Button, ListGroup, ListGroupItem } from "reactstrap";
+import { Duration } from "luxon";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import { titleCase } from "change-case";
 
+export function parseDuration(time) {
+  return Object.entries(
+    Duration.fromObject({
+      months: 0,
+      weeks: 0,
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: Math.round(time / 1000)
+    })
+      .normalize()
+      .toObject()
+  )
+    .filter(t => t[1] !== 0)
+    .map(t => `${t[1]} ${titleCase(t[0])}`)
+    .join(", ");
+}
+
+class Timer extends Component {
+  state = {};
+  componentDidMount() {
+    this.timeout = setInterval(() => {
+      this.forceUpdate();
+    }, 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timeout);
+  }
+  render() {
+    const { endTime, startTime } = this.props;
+    if (!startTime) return parseDuration(endTime);
+    return parseDuration(
+      (endTime ? new Date(endTime) : new Date()) - new Date(startTime)
+    );
+  }
+}
 class TasksManager extends Component {
   state = {};
   render() {
-    const { tasks, newTask } = this.props;
+    const { tasks, newTask, stats } = this.props;
     const { selectedTask, showDismissed } = this.state;
     const taskGroup = tasks.reduce((prev, next) => {
       if (!showDismissed && next.dismissed) return prev;
@@ -82,6 +120,9 @@ class TasksManager extends Component {
                   <strong>Verified:</strong> {task.verified ? "Yes" : "No"}
                 </p>
                 <p>
+                  <strong>Time Elapsed:</strong> <Timer {...task} />{" "}
+                </p>
+                <p>
                   <strong>Instructions:</strong>
                 </p>
                 <Card style={{ whiteSpace: "pre-wrap" }}>
@@ -140,6 +181,9 @@ class TasksManager extends Component {
         <div style={{ display: "flex" }}>
           <Button block color="success" size="sm" onClick={newTask}>
             New Task
+          </Button>
+          <Button block color="info" size="sm" onClick={stats}>
+            Stats
           </Button>
         </div>
       </div>

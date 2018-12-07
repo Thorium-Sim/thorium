@@ -356,14 +356,29 @@ const ObjectSettings = ({
         <FormGroup style={{ marginBottom: 0 }}>
           <Label>
             Rotation
-            <Input
-              type="range"
-              min="0"
-              max="360"
-              step={0.1}
-              value={rotation}
-              onChange={evt => updateObject("rotation", evt.target.value)}
-            />
+            <div style={{ display: "flex" }}>
+              <Input
+                style={{ flex: 1 }}
+                type="range"
+                min="0"
+                max="360"
+                step={0.1}
+                value={rotation}
+                onChange={evt => updateObject("rotation", evt.target.value)}
+              />
+              <Input
+                style={{
+                  width: "6ch",
+                  padding: "3px"
+                }}
+                type="number"
+                value={rotation}
+                onChange={evt =>
+                  (evt.target.value || evt.target.value === 0) &&
+                  updateObject("rotation", evt.target.value)
+                }
+              />
+            </div>
           </Label>
         </FormGroup>
         <FormGroup style={{ marginBottom: 0 }}>
@@ -405,8 +420,8 @@ const ObjectSettings = ({
             Label
             <Input
               type="textarea"
-              value={label}
-              onChange={evt => updateObject("label", evt.target.value)}
+              defaultValue={label}
+              onBlur={evt => updateObject("label", evt.target.value)}
             />
           </Label>
         </FormGroup>
@@ -447,8 +462,8 @@ const ObjectSettings = ({
             Font
             <Input
               type="text"
-              value={font}
-              onChange={evt => updateObject("font", evt.target.value)}
+              defaultValue={font}
+              onBlur={evt => updateObject("font", evt.target.value)}
             />
           </Label>
         </FormGroup>

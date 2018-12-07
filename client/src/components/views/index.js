@@ -154,6 +154,7 @@ import NewMessagingCore from "./Messaging/newCore";
 import TasksCore from "./Tasks/core";
 import AlternateSensorsCore from "./ParticleDetector/core";
 import CoreFeed from "./CoreFeed";
+import RoomSearchCore from "./RoomSearch";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -399,7 +400,8 @@ export const Cores = {
   NewMessagingCore,
   TasksCore,
   AlternateSensorsCore,
-  CoreFeed
+  CoreFeed,
+  RoomSearchCore
 };
 
 export default Views;

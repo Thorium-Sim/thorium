@@ -13,7 +13,9 @@ type LRCommunications {
   interception: Boolean
   locked: Boolean
   decoded: Boolean
+  presetMessages:[PresetAnswer]
 }
+
 type LRMessage {
   id: ID
   message: String

@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.0.33",
+  "version": "1.0.35",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -34,7 +34,7 @@
     "test-client": "npm t --prefix client",
     "test-e2e": "is-ci \"test-e2e-run\" \"test-e2e-dev\"",
     "test-e2e-run": "start-server-and-test start http://localhost:3001 cy-run",
-    "test-e2e-dev": "start-server-and-test start http://localhost:3001 cy-open",
+    "test-e2e-dev": "NODE_ENV=test npm-run-all --parallel start cy-open",
     "cy-run": "cypress run",
     "cy-open": "cypress open",
     "build": "NODE_ENV=production npm-run-all build-code build-server mk-build copy-files pkg",
@@ -135,7 +135,6 @@
       "static/**/*",
       "cardIcons/**/*",
       "systems/**/*",
-      "parts/**/*",
       "viewscreen/**/*",
       "sciences.ogg",
       "favicon.ico"

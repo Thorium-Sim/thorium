@@ -23,7 +23,7 @@ describe("create flight", () => {
       .get(".form-control")
       .click()
       .clear()
-      .type("My New Test Flight")
+      .type("Testing Test Flight")
       .getByText("Voyager")
       .click()
       .getByText("8-Standard")
@@ -34,5 +34,16 @@ describe("create flight", () => {
       .click()
       .getByText("Flight Lobby")
       .should("be.visible");
+  });
+  it("should be able to delete the flight", () => {
+    cy.visit("/", {
+      onBeforeLoad(win) {
+        cy.stub(win, "confirm").returns(true);
+      }
+    })
+      .getByText("Testing Test Flight")
+      .click()
+      .getByText("Delete Flight")
+      .click();
   });
 });

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { Query, withApollo } from "react-apollo";
 import Sidebar from "./sidebar";
 import Bottom from "./bottom";
 import Preview from "./preview";
@@ -101,9 +101,17 @@ layers {
 frozen
 template`;
 const TACTICALMAP_SUB = gql`
-  subscription TacticalMapUpdate {
-    tacticalMapsUpdate {
+  subscription TacticalMapUpdate($id:ID!) {
+    tacticalMapUpdate(id:$id) {
      ${TACTICAL_MAP_DATA}
+    }
+  }
+`;
+
+const TACTICALMAP_QUERY = gql`
+  query TacticalMap($id:ID!) {
+    tacticalMap(id:$id) {
+      ${TACTICAL_MAP_DATA}
     }
   }
 `;
@@ -213,91 +221,88 @@ class TacticalMapCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading || !this.props.data.tacticalMaps) return null;
     const { flightId } = this.props;
-    const { tacticalMaps } = this.props.data;
-    const selectedTactical = tacticalMaps.find(
-      t => t.id === this.state.tacticalMapId
-    );
-    const filteredMaps = tacticalMaps.filter(
-      t => (flightId ? !t.flight || t.flight.id === flightId : !t.flight)
-    );
+
+    const { tacticalMapId } = this.state;
     return (
       <div className="tacticalmap-core">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: TACTICALMAP_SUB,
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  tacticalMaps: subscriptionData.data.tacticalMapsUpdate
-                });
-              }
-            })
-          }
-        />
-        <div className="preview">
-          {selectedTactical && (
-            <Preview
-              simulatorId={
-                this.props.simulator ? this.props.simulator.id : null
-              }
-              tacticalMapId={this.state.tacticalMapId}
-              layers={selectedTactical.layers}
-              layerId={this.state.layerId}
-              selectObject={this.selectObject}
-              objectId={this.state.objectId}
-              updateObject={this.updateObject}
-              removeObject={this.removeObject}
-              updatePath={this.updatePath}
-              removePath={this.removePath}
-              speed={this.state.speed}
-              core={true}
-            />
-          )}
-        </div>
-        <div className="right-sidebar">
-          <Sidebar
-            tacticalMapId={this.state.tacticalMapId}
-            layerId={this.state.layerId}
-            tacticalMaps={filteredMaps}
-            selectTactical={this.selectTactical}
-            selectLayer={this.selectLayer}
-            deselectTactical={() =>
-              this.setState({
-                tacticalMapId: null
-              })
-            }
-            {...this.props}
-          />
-        </div>
-        <div className="bottom-bar">
-          <Bottom
-            speed={this.state.speed}
-            updateSpeed={s => this.setState({ speed: s })}
-            tacticalMapId={this.state.tacticalMapId}
-            layerId={this.state.layerId}
-            objectId={this.state.objectId}
-            tacticalMaps={filteredMaps}
-            updateObject={this.updateObject}
-            {...this.props}
-          />
-        </div>
+        <Query
+          query={TACTICALMAP_QUERY}
+          variables={{ id: tacticalMapId }}
+          skip={!tacticalMapId}
+        >
+          {({ loading, data = {}, subscribeToMore }) => {
+            if (loading) return null;
+            const { tacticalMap } = data;
+            return (
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: TACTICALMAP_SUB,
+                    variables: { id: tacticalMapId },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      return Object.assign({}, previousResult, {
+                        tacticalMap: subscriptionData.data.tacticalMapUpdate
+                      });
+                    }
+                  })
+                }
+              >
+                <div className="preview">
+                  {tacticalMap && (
+                    <Preview
+                      simulatorId={
+                        this.props.simulator ? this.props.simulator.id : null
+                      }
+                      tacticalMapId={this.state.tacticalMapId}
+                      layers={tacticalMap.layers}
+                      layerId={this.state.layerId}
+                      selectObject={this.selectObject}
+                      objectId={this.state.objectId}
+                      updateObject={this.updateObject}
+                      removeObject={this.removeObject}
+                      updatePath={this.updatePath}
+                      removePath={this.removePath}
+                      speed={this.state.speed}
+                      core={true}
+                    />
+                  )}
+                </div>
+                <div className="right-sidebar">
+                  <Sidebar
+                    flightId={flightId}
+                    tacticalMapId={this.state.tacticalMapId}
+                    tacticalMap={tacticalMap}
+                    layerId={this.state.layerId}
+                    selectTactical={this.selectTactical}
+                    selectLayer={this.selectLayer}
+                    deselectTactical={() =>
+                      this.setState({
+                        tacticalMapId: null
+                      })
+                    }
+                    {...this.props}
+                  />
+                </div>
+                <div className="bottom-bar">
+                  <Bottom
+                    speed={this.state.speed}
+                    updateSpeed={s => this.setState({ speed: s })}
+                    tacticalMapId={this.state.tacticalMapId}
+                    tacticalMap={tacticalMap}
+                    layerId={this.state.layerId}
+                    objectId={this.state.objectId}
+                    updateObject={this.updateObject}
+                    {...this.props}
+                  />
+                </div>
+              </SubscriptionHelper>
+            );
+          }}
+        </Query>
       </div>
     );
   }
 }
 
-const TACTICALMAP_QUERY = gql`
-  query TacticalMap {
-    tacticalMaps {
-      ${TACTICAL_MAP_DATA}
-    }
-  }
-`;
-
-export default graphql(TACTICALMAP_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network"
-  })
-})(withApollo(TacticalMapCore));
+export default withApollo(TacticalMapCore);

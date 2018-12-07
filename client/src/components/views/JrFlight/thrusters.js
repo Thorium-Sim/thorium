@@ -35,7 +35,7 @@ const Thrusters = props => {
             <FontAwesome
               name="arrow-up"
               size="3x"
-              onMouseDown={() => thrust({ x: 0, y: -1 })}
+              onMouseDown={() => thrust({ x: 0, y: 1 })}
               onMouseUp={() => thrust({ x: 0, y: 0 })}
             />
           </Col>
@@ -81,7 +81,7 @@ const Thrusters = props => {
             <FontAwesome
               name="arrow-down"
               size="3x"
-              onMouseDown={() => thrust({ x: 0, y: 1 })}
+              onMouseDown={() => thrust({ x: 0, y: -1 })}
               onMouseUp={() => thrust({ x: 0, y: 0 })}
             />
           </Col>

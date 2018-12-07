@@ -62,6 +62,7 @@ App.on("clientDisconnect", ({ client }) => {
 });
 
 App.on("clientSetFlight", ({ client, flightId }) => {
+  console.log("Setting flight", client, flightId);
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setFlight(flightId);
   pubsub.publish("clientChanged", App.clients);

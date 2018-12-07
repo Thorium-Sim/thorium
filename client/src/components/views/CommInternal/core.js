@@ -3,6 +3,10 @@ import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Button } from "reactstrap";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import RoomSearch from "./roomSearch";
+
+import "./style.scss";
+
 const INTERNAL_SUB = gql`
   subscription InternalCommUpdate($simulatorId: ID!) {
     internalCommUpdate(simulatorId: $simulatorId) {
@@ -20,7 +24,8 @@ class InternalCommCore extends Component {
     super(props);
     this.state = {
       deck: null,
-      room: null
+      room: null,
+      searchQuery: ""
     };
   }
   call(e) {
@@ -76,6 +81,18 @@ class InternalCommCore extends Component {
       variables
     });
   }
+
+  selectRoom = id => {
+    const deck = this.props.data.decks.find(d =>
+      d.rooms.find(r => r.id === id)
+    );
+    this.setState({
+      searchQuery: "",
+      searchRooms: null,
+      deck: deck.id,
+      room: id
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.internalComm) return null;
     const internalComm = this.props.data.internalComm[0];
@@ -146,6 +163,14 @@ class InternalCommCore extends Component {
                     Connect
                   </Button>
                 )}
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12}>
+                <RoomSearch
+                  decks={this.props.data.decks}
+                  selectRoom={this.selectRoom}
+                />
               </Col>
             </Row>
             {internalComm.incoming ? (

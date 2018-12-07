@@ -12,6 +12,8 @@ type Task {
   dismissed: Boolean
   values: JSON
   instructions: String
+  startTime: String
+  endTime: String
 }
 
 input TaskInput {
