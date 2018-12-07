@@ -2,7 +2,8 @@
   "1.0.35": {
     "features": [
       "Allow for tactical map rotations to be specified as a number.",
-      "Make it possible to 'hit' jump drive stress."
+      "Make it possible to 'hit' jump drive stress.",
+      "Add some stats to the tasks core so the flight director can know who completes tasks on time."
     ],
     "fixes": [
       "Fixes the direction of the Junior Thrusters.",
