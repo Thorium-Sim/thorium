@@ -4,7 +4,8 @@
       "Allow for tactical map rotations to be specified as a number.",
       "Make it possible to 'hit' jump drive stress.",
       "Add some stats to the tasks core so the flight director can know who completes tasks on time.",
-      "Add a room search core and added room search/select to the internal comm core."
+      "Add a room search core and added room search/select to the internal comm core.",
+      "Add the ability to set preset long range messages though a timeline action."
     ],
     "fixes": [
       "Fixes the direction of the Junior Thrusters.",

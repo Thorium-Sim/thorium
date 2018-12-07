@@ -63,6 +63,9 @@ export const LRCommMutations = {
   },
   removeInterceptionSignal(root, args, context) {
     App.handleEvent(args, "removeInterceptionSignal", context);
+  },
+  setLongRangePresetMessages(root, args, context) {
+    App.handleEvent(args, "setLongRangePresetMessages", context);
   }
 };
 

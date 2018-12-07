@@ -222,3 +222,28 @@ App.on("removeInterceptionSignal", ({ id, simulatorId }) => {
     App.systems.filter(s => s.type === "LongRangeComm")
   );
 });
+
+App.on("setLongRangePresetMessages", ({ id, simulatorId, messages }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId && sys.class === "LongRangeComm")
+  );
+  if (!system) {
+    console.error("Invalid system. Cannot set long range preset messages.");
+    return;
+  }
+  const simulator = App.simulators.find(s => s.id === system.simulatorId);
+  system.setPresetMessages(
+    messages.map(p => {
+      return {
+        label: p.label ? p.label.replace(/#SIM/gi, simulator.name) : "",
+        value: p.value ? p.value.replace(/#SIM/gi, simulator.name) : ""
+      };
+    })
+  );
+  pubsub.publish(
+    "longRangeCommunicationsUpdate",
+    App.systems.filter(s => s.type === "LongRangeComm")
+  );
+});

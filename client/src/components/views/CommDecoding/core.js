@@ -9,7 +9,7 @@ const MessagePresets = [
   {
     label: "Send Updates",
     messageSender: "Starbase 74",
-    message: `To: #SIM
+    value: `To: #SIM
 From: Starbase 74
 
 We want to be informed about any developments during your mission. Make sure you send us a message every 10 minutes.
@@ -19,7 +19,7 @@ Starbase 74 out`
   {
     label: "What is your status?",
     messageSender: "Starbase 74",
-    message: `To: #SIM
+    value: `To: #SIM
 From: Starbase 74
 
 #SIM, we haven't heard from you in a while. What is your status?
@@ -118,7 +118,10 @@ class LRCommCore extends Component {
         </div>
       );
     }
-    return this.props.data.longRangeCommunications.length > 0 ? (
+    if (this.props.data.longRangeCommunications.length === 0)
+      return "No Long Range Comm";
+    const comm = this.props.data.longRangeCommunications[0];
+    return (
       <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         <ButtonGroup>
           <Button
@@ -194,20 +197,25 @@ class LRCommCore extends Component {
             style={{ height: "18px" }}
             value={"nothing"}
             onChange={e => {
-              const { message, messageSender } = MessagePresets.find(
-                m => m.label === e.target.value
-              );
+              const { value, messageSender } = MessagePresets.concat(
+                comm.presetMessages
+              ).find(m => m.label === e.target.value);
+
+              const regex = /.*(?= out| out\.)/gi;
+              const match = value.match(regex);
 
               this.setState({
-                message: message.replace(/#SIM/gi, this.props.simulator.name),
-                messageSender
+                message: value.replace(/#SIM/gi, this.props.simulator.name),
+                messageSender: messageSender
+                  ? messageSender
+                  : match && match[match.length - 2]
               });
             }}
           >
             <option value="nothing" disabled>
               Select a Message
             </option>
-            {MessagePresets.map(p => (
+            {MessagePresets.concat(comm.presetMessages).map(p => (
               <option key={p.label} value={p.label}>
                 {p.label}
               </option>
@@ -215,8 +223,6 @@ class LRCommCore extends Component {
           </select>
         </span>
       </div>
-    ) : (
-      "No Long Range Comm"
     );
   }
 }
@@ -225,6 +231,10 @@ const DECODING_QUERY = gql`
   query LRDecoding($simulatorId: ID) {
     longRangeCommunications(simulatorId: $simulatorId) {
       id
+      presetMessages {
+        label
+        value
+      }
     }
   }
 `;
