@@ -3,7 +3,6 @@ import {
   Col,
   Row,
   Container,
-  Label,
   Input,
   Button,
   ListGroup,
@@ -14,7 +13,7 @@ import FontAwesome from "react-fontawesome";
 export default class LongRange extends Component {
   state = {};
   render() {
-    const { updateArgs, args, client } = this.props;
+    const { updateArgs, args } = this.props;
     const { currentMessage } = this.state;
     const { messages = [] } = args;
     const message = messages.find((m, i) => i === currentMessage);

@@ -1,4 +1,9 @@
 {
+  "1.0.36": {
+    "fixes": [
+      "Sensor contacts that are a bit out of bounds will no longer disappear."
+    ]
+  },
   "1.0.35": {
     "features": [
       "Allow for tactical map rotations to be specified as a number.",
