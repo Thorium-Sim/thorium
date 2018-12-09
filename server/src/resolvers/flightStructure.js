@@ -322,7 +322,7 @@ export const FlightStructureSubscriptions = {
     )
   },
   simulatorsUpdate: {
-    resolve(rootValue, { simulatorId, template }) {
+    resolve(rootValue = [], { simulatorId, template }) {
       let returnVal = rootValue;
       if (template) returnVal = returnVal.filter(s => s.template);
       if (simulatorId) returnVal = returnVal.filter(s => s.id === simulatorId);

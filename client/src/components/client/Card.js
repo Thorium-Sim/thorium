@@ -144,7 +144,10 @@ export default class CardFrame extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.station.name !== this.props.station.name) {
       this.setState({
-        card: this.props.station.cards && this.props.station.cards[0].name
+        card:
+          this.props.station.cards &&
+          this.props.station.cards[0] &&
+          this.props.station.cards[0].name
       });
     }
   }
