@@ -209,8 +209,15 @@ class AdvancedNavigation extends Component {
             })
           }
         />
-        <Row>
-          <Col sm={8}>
+        <Row style={{ height: "100%" }}>
+          <Col
+            sm={8}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "column"
+            }}
+          >
             <Row>
               <Col sm={4}>
                 <Card className={`${this.engineSpeedClass()} crystal-display`}>
@@ -223,8 +230,6 @@ class AdvancedNavigation extends Component {
               <Col sm={3}>
                 <label>Velocity</label>
               </Col>
-            </Row>
-            <Row>
               <Col sm={4}>
                 {Math.round(yawr) === Math.round(yaw) &&
                 Math.round(pitchr) === Math.round(pitch) &&
@@ -249,7 +254,7 @@ class AdvancedNavigation extends Component {
                 <label>Course Bearing</label>
               </Col>
             </Row>
-            <Row>
+            <Row style={{ flex: "1" }}>
               <Col sm={{ size: 8, offset: 2 }} className="ship-image">
                 <Asset asset={assets.side}>
                   {({ src }) => (
@@ -257,7 +262,7 @@ class AdvancedNavigation extends Component {
                       alt="ship"
                       style={{
                         width: "100%",
-                        height: "30vh",
+                        height: "100%",
                         backgroundImage: `url("${src}")`,
                         backgroundSize: "contain",
                         backgroundPosition: "center",
@@ -363,7 +368,13 @@ class VelocityDisplay extends Component {
           stepPrecision={0}
           value={this.props.velocity}
           duration={500}
-          formatValue={n => `${n.toLocaleString()} km/s`}
+          formatValue={n =>
+            `${
+              n
+                ? n.toLocaleString()
+                : console.error("Must add velocity to ship config") || n
+            } km/s`
+          }
         />
       </Card>
     );
