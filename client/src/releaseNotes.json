@@ -2,7 +2,9 @@
   "1.0.36": {
     "fixes": [
       "Sensor contacts that are a bit out of bounds will no longer disappear.",
-      "Improve how the 'Begin Training' button on the login screen works."
+      "Improve how the 'Begin Training' button on the login screen works.",
+      "Fixes issues with the tactical maps.",
+      "Fix issues with navigation advanced screen."
     ]
   },
   "1.0.35": {

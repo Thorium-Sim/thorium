@@ -34,62 +34,6 @@ const SortableList = SortableContainer(
 );
 
 export default class Sidebar extends Component {
-  addTactical = () => {
-    const { selectTactical } = this.props;
-    const name = prompt("What is the name of the new tactical map?");
-    if (name) {
-      const mutation = gql`
-        mutation NewTactical($name: String!) {
-          newTacticalMap(name: $name)
-        }
-      `;
-      const variables = { name };
-      this.props.client
-        .mutate({
-          mutation,
-          variables
-        })
-        .then(res =>
-          setTimeout(() => selectTactical(res.data.newTacticalMap), 300)
-        );
-    }
-  };
-  duplicateTactical = () => {
-    const name = prompt("What is the name for the duplicated tactical map?");
-    if (name) {
-      const mutation = gql`
-        mutation DuplicateTactical($id: ID!, $name: String!) {
-          duplicateTacticalMap(id: $id, name: $name)
-        }
-      `;
-      const variables = {
-        name,
-        id: this.props.tacticalMapId
-      };
-      this.props.client.mutate({
-        mutation,
-        variables
-      });
-    }
-  };
-  removeTactical = () => {
-    if (window.confirm("Are you sure you want to delete this tactical?")) {
-      const mutation = gql`
-        mutation RemoveMap($id: ID!) {
-          removeTacticalMap(id: $id)
-        }
-      `;
-      const variables = {
-        id: this.props.tacticalMapId
-      };
-      this.props.deselectTactical();
-      this.props.client.mutate({
-        mutation,
-        variables,
-        refetchQueries: ["TacticalMap"]
-      });
-    }
-  };
   addLayer = () => {
     const name = prompt("What is the name of the new layer?");
     if (name) {
@@ -173,6 +117,7 @@ export default class Sidebar extends Component {
       layerId,
       tacticalMap,
       selectTactical,
+      deselectTactical,
       selectLayer,
       flightId,
       dedicated
@@ -183,7 +128,9 @@ export default class Sidebar extends Component {
           flightId={flightId}
           tacticalMapId={tacticalMapId}
           selectTactical={selectTactical}
+          deselectTactical={deselectTactical}
           dedicated={dedicated}
+          client={this.props.client}
         />
 
         {tacticalMapId &&
