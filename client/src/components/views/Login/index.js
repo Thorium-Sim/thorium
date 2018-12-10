@@ -74,15 +74,9 @@ class Login extends Component {
     return training;
   };
   training = action => {
-    if (this.props.simulator.training) {
-      action().then(() => {
-        publish("toggleTraining");
-      });
-    } else {
-      this.setState({
-        training: true
-      });
-    }
+    action().then(() => {
+      publish("toggleTraining");
+    });
   };
   render() {
     let simulatorName;
@@ -164,10 +158,9 @@ class Login extends Component {
           </Col>
         </Col>
         <Tour
-          client={{}}
+          client={this.props.clientObj}
           steps={this.generateTraining()}
-          training={this.state.training}
-          onRequestClose={() => this.setState({ training: false })}
+          training={this.props.clientObj.training}
         />
       </Row>
     );
