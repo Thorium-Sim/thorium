@@ -53,11 +53,65 @@ const TacticalMapList = ({
   flightId,
   tacticalMapId,
   selectTactical,
+  deselectTactical,
   dedicated,
-  addTactical,
-  duplicateTactical,
-  removeTactical
+  client
 }) => {
+  const addTactical = () => {
+    const name = prompt("What is the name of the new tactical map?");
+    if (name) {
+      const mutation = gql`
+        mutation NewTactical($name: String!) {
+          newTacticalMap(name: $name)
+        }
+      `;
+      const variables = { name };
+      client
+        .mutate({
+          mutation,
+          variables
+        })
+        .then(res =>
+          setTimeout(() => selectTactical(res.data.newTacticalMap), 300)
+        );
+    }
+  };
+  const duplicateTactical = () => {
+    const name = prompt("What is the name for the duplicated tactical map?");
+    if (name) {
+      const mutation = gql`
+        mutation DuplicateTactical($id: ID!, $name: String!) {
+          duplicateTacticalMap(id: $id, name: $name)
+        }
+      `;
+      const variables = {
+        name,
+        id: tacticalMapId
+      };
+      client.mutate({
+        mutation,
+        variables
+      });
+    }
+  };
+  const removeTactical = () => {
+    if (window.confirm("Are you sure you want to delete this tactical?")) {
+      const mutation = gql`
+        mutation RemoveMap($id: ID!) {
+          removeTacticalMap(id: $id)
+        }
+      `;
+      const variables = {
+        id: tacticalMapId
+      };
+      deselectTactical();
+      client.mutate({
+        mutation,
+        variables,
+        refetchQueries: ["TacticalMap"]
+      });
+    }
+  };
   return (
     <Query query={TACTICALMAP_QUERY}>
       {({ loading, data: { tacticalMaps }, subscribeToMore }) => {

@@ -1,4 +1,5 @@
 .card-advanced-navigation {
+  height: 100%;
   .crystal-display {
     font-family: "LiquidCrystal", monospace;
     letter-spacing: 2px;
@@ -10,10 +11,6 @@
   }
   label {
     font-size: 24px;
-  }
-  .ship-image {
-    margin-top: 40px;
-    margin-bottom: 40px;
   }
   .col {
     position: relative;

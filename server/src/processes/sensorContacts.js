@@ -82,10 +82,23 @@ const moveSensorContactTimed = () => {
             c.position = newLoc;
             c.location = location;
           }
-          if (distance3d(c.position, { x: 0, y: 0, z: 0 }) > 1.4) {
+
+          // Remove contacts that are out of bounds
+          if (distance3d(c.position, { x: 0, y: 0, z: 0 }) > 3) {
             sendUpdate = true;
             return null;
           }
+
+          // Remove projectiles that are out of bounds
+          if (
+            c.type === "projectile" &&
+            distance3d(c.position, { x: 0, y: 0, z: 0 }) > 1.4
+          ) {
+            sendUpdate = true;
+            return null;
+          }
+
+          // Destroy projectiles that have hit
           if (
             c.type === "projectile" &&
             !c.miss &&
