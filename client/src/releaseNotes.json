@@ -1,4 +1,7 @@
 {
+  "1.0.38": {
+    "fixes": ["Improvements to the code cyphers core and screen."]
+  },
   "1.0.36": {
     "fixes": [
       "Sensor contacts that are a bit out of bounds will no longer disappear.",

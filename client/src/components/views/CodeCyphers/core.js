@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { TypingField } from "../../generic/core";
 import { cypherMap } from "./index";
+import Printable from "helpers/printable";
+
 //var greekUtils = require("greek-utils");
 const greekUtils = {
   toGreek: a => a
@@ -54,14 +56,16 @@ class CypherCore extends Component {
             </Button>
           </Col>
         </Row>
-        <div className="printable">
-          <h1>=== Intercepted Message ===</h1>
-          <pre className={cypherMap[this.state.cypher]}>
-            {cypherMap[this.state.cypher] === "Symbol"
-              ? greekUtils.toGreek(this.state.message.toLowerCase())
-              : this.state.message}
-          </pre>
-        </div>
+        <Printable>
+          <div className="cypher-printing">
+            <h1>=== Intercepted Message ===</h1>
+            <pre className={`${cypherMap[this.state.cypher]}`}>
+              {cypherMap[this.state.cypher] === "Symbol"
+                ? greekUtils.toGreek(this.state.message.toLowerCase())
+                : this.state.message}
+            </pre>
+          </div>
+        </Printable>
       </Container>
     );
   }
