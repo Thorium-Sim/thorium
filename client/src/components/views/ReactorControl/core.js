@@ -27,40 +27,57 @@ function parseDepletion(time) {
     .map(t => `${t[1]} ${titleCase(t[0])}`)
     .join(", ");
 }
+
+const queryData = `
+id
+type
+name
+heat
+heatRate
+model
+coolant
+damage {
+  damaged
+}
+ejected
+externalPower
+efficiency
+efficiencies {
+  label
+  color
+  efficiency
+}
+displayName
+powerOutput
+batteryChargeRate
+batteryChargeLevel
+depletion
+# For Dilithium Stress
+alphaLevel
+betaLevel
+alphaTarget
+betaTarget
+dilithiumRate
+      `;
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
-      id
-      type
-      name
-      heat
-      heatRate
-      model
-      coolant
-      damage {
-        damaged
-      }
-      ejected
-      externalPower
-      efficiency
-      efficiencies {
-        label
-        color
-        efficiency
-      }
-      displayName
-      powerOutput
-      batteryChargeRate
-      batteryChargeLevel
-      depletion
-      # For Dilithium Stress
-      alphaLevel
-      betaLevel
-      alphaTarget
-      betaTarget
+${queryData}
     }
   }
 `;
+
+const rateSpeeds = (
+  <Fragment>
+    <option value={1.5}>Fast</option>
+    <option value={1}>Normal</option>
+    <option value={0.5}>Slow</option>
+    <option value={0.25}>Very Slow</option>
+    <option value={0.1}>Super Slow</option>
+    <option value={0}>Stop</option>
+    <option value={-1}>Reverse</option>
+  </Fragment>
+);
 
 class ReactorControl extends Component {
   setEfficiency = e => {
@@ -178,6 +195,23 @@ class ReactorControl extends Component {
       variables
     });
   };
+  setDilithiumRate = value => {
+    const { reactors } = this.props.data;
+    const reactor = reactors[0] || {};
+    const mutation = gql`
+      mutation SetDilithiumRate($id: ID!, $rate: Float!) {
+        setDilithiumStressRate(id: $id, rate: $rate)
+      }
+    `;
+    const variables = {
+      id: reactor.id,
+      rate: value
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   calcStressLevel = () => {
     const { reactors } = this.props.data;
     if (!reactors[0]) return;
@@ -265,11 +299,7 @@ class ReactorControl extends Component {
                   onChange={evt => this.setHeatRate(evt.target.value)}
                   value={reactor.heatRate}
                 >
-                  <option value={1.5}>Fast</option>
-                  <option value={1}>Normal</option>
-                  <option value={0.5}>Slow</option>
-                  <option value={0}>Stop</option>
-                  <option value={-1}>Reverse</option>
+                  {rateSpeeds}
                 </Input>
                 <p>Reactor Heat:</p>
                 <InputField
@@ -327,6 +357,15 @@ class ReactorControl extends Component {
                     )}
                   </Mutation>
                 </div>
+                <p>Dilithium Stress Rate:</p>
+                <Input
+                  size="sm"
+                  type="select"
+                  onChange={evt => this.setDilithiumRate(evt.target.value)}
+                  value={reactor.dilithiumRate}
+                >
+                  {rateSpeeds}
+                </Input>
               </Fragment>
             ) : null}
           </Col>
@@ -339,34 +378,7 @@ class ReactorControl extends Component {
 const REACTOR_QUERY = gql`
   query Reactors($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
-      id
-      type
-      name
-      heat
-      heatRate
-      model
-      coolant
-      damage {
-        damaged
-      }
-      externalPower
-      ejected
-      efficiency
-      efficiencies {
-        label
-        color
-        efficiency
-      }
-      displayName
-      powerOutput
-      batteryChargeRate
-      batteryChargeLevel
-      depletion
-      # For Dilithium Stress
-      alphaLevel
-      betaLevel
-      alphaTarget
-      betaTarget
+      ${queryData}
     }
   }
 `;

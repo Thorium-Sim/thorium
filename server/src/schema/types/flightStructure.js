@@ -78,6 +78,7 @@ type Simulator {
   assets: SimulatorAssets
   lighting:Lighting
   ambiance:[Ambiance]
+  hasPrinter:Boolean
 }
 
 type Lighting {

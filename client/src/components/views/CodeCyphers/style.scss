@@ -26,6 +26,67 @@
       background-color: rgba(255, 255, 255, 0.5);
     }
   }
+  .printable {
+    display: none;
+  }
+}
+
+.cypher-printing {
+  .code-list {
+    font-size: 63px;
+    max-height: 90vh;
+    display: flex;
+    height: 100%;
+    max-height: 90vh;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100% !important;
+    div {
+      line-height: 1.5;
+      margin: 0 30px;
+      text-align: center;
+    }
+  }
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: black;
+  pre {
+    color: black;
+    background-color: transparent;
+    border: none;
+    font-size: 60px;
+    line-height: 2.5;
+    text-transform: lowercase;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-align: center;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span {
+    font-family: "Gill Sans", "Helvetica", sans-serif;
+    color: black;
+  }
+}
+
+.card-codeCyphers,
+.core-codeCyphers,
+.cypher-printing {
   .Andorian {
     font-family: "Andorian";
   }
@@ -85,11 +146,14 @@
   .Symbol {
     font-family: "Symbol";
   }
-  .printable {
-    display: none;
+}
+.cypher-printing {
+  .Borg {
+    font-family: "Borg";
+    font-size: 120px;
+    line-height: 0;
   }
 }
-
 @media print {
   .core-container {
     *:not(.printable) {

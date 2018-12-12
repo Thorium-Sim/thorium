@@ -129,6 +129,8 @@ export default class Simulator {
       params.teams.forEach(t => this.teams.push(new Team(t)));
     }
 
+    this.hasPrinter = params.hasPrinter || true;
+
     // Damage reports
     this.stepDamage = params.stepDamage || true;
     this.verifyStep = params.verifyStep || false;
@@ -259,5 +261,8 @@ export default class Simulator {
   }
   setAssets(assets) {
     this.assets = new Assets(assets);
+  }
+  setHasPrinter(hasPrinter) {
+    this.hasPrinter = hasPrinter;
   }
 }
