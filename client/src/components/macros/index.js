@@ -37,3 +37,4 @@ export { default as addTask } from "./addTask";
 export {
   default as setLongRangePresetMessages
 } from "./setLongRangePresetMessages";
+export { default as commUpdateSignals } from "./commUpdateSignals";

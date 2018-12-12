@@ -54,15 +54,14 @@ const SHORTRANGE_SUB = gql`
   }
 `;
 
-class SignalsCore extends Component {
+export class SignalPicker extends Component {
   state = {
-    signals: []
+    signals: this.props.shortRangeComm ? this.props.shortRangeComm.signals : []
   };
   componentDidUpdate(prevProps) {
-    if (!this.props.data.loading && this.props.data.shortRangeComm) {
-      const comm = this.props.data.shortRangeComm[0];
-      const prevComm =
-        prevProps.data.shortRangeComm && prevProps.data.shortRangeComm[0];
+    if (this.props.shortRangeComm) {
+      const comm = this.props.shortRangeComm;
+      const prevComm = prevProps.shortRangeComm;
       if (!comm) return;
       if (
         !prevComm ||
@@ -153,27 +152,7 @@ class SignalsCore extends Component {
     );
   };
   saveSignals = () => {
-    const mutation = gql`
-      mutation UpdateSignals($id: ID!, $signals: [CommSignalInput]!) {
-        commUpdateSignals(id: $id, signals: $signals)
-      }
-    `;
-    const variables = {
-      id: this.props.data.shortRangeComm[0].id,
-      signals: this.state.signals.map(
-        ({ id, name, range: { upper, lower }, color, image }) => ({
-          id,
-          name,
-          range: { upper, lower },
-          color,
-          image
-        })
-      )
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
+    this.props.saveSignals(this.state.signals);
   };
   updateColor = (id, color) => {
     this.setState(
@@ -205,21 +184,6 @@ class SignalsCore extends Component {
     const { signals, selectedSignal } = this.state;
     return (
       <div className="core-shortRangeSignals">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: SHORTRANGE_SUB,
-              variables: {
-                simulatorId: this.props.simulator.id
-              },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  shortRangeComm: subscriptionData.data.shortRangeCommUpdate
-                });
-              }
-            })
-          }
-        />
         {selectedSignal && (
           <div className="color-picker">
             <Button
@@ -305,6 +269,59 @@ class SignalsCore extends Component {
           Add Signal
         </Button>
       </div>
+    );
+  }
+}
+class SignalsCore extends Component {
+  saveSignals = signals => {
+    const mutation = gql`
+      mutation UpdateSignals($id: ID!, $signals: [CommSignalInput]!) {
+        commUpdateSignals(id: $id, signals: $signals)
+      }
+    `;
+    const variables = {
+      id: this.props.data.shortRangeComm[0].id,
+      signals: signals.map(
+        ({ id, name, range: { upper, lower }, color, image }) => ({
+          id,
+          name,
+          range: { upper, lower },
+          color,
+          image
+        })
+      )
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
+  render() {
+    return (
+      <SubscriptionHelper
+        subscribe={() =>
+          this.props.data.subscribeToMore({
+            document: SHORTRANGE_SUB,
+            variables: {
+              simulatorId: this.props.simulator.id
+            },
+            updateQuery: (previousResult, { subscriptionData }) => {
+              return Object.assign({}, previousResult, {
+                shortRangeComm: subscriptionData.data.shortRangeCommUpdate
+              });
+            }
+          })
+        }
+      >
+        {!this.props.data.loading &&
+          this.props.data.shortRangeComm &&
+          this.props.data.shortRangeComm[0] && (
+            <SignalPicker
+              shortRangeComm={this.props.data.shortRangeComm[0]}
+              saveSignals={this.saveSignals}
+            />
+          )}
+      </SubscriptionHelper>
     );
   }
 }
