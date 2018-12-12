@@ -1,6 +1,7 @@
 {
   "1.0.38": {
     "features": [
+      "Add the remote assets downloading - access with the Thorium Emporium button on the Assets Config screen.",
       "Makes it possible to remove the print button on sets/simulators that don't have printers configured.",
       "Add a room list search to the internal communications card.",
       "Add a timeline action for setting the signals for short range comm.",
