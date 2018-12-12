@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import ObjPreview from "../TacticalMap/3dObjPreview";
 import Measure from "react-measure";
-import "./fileExplorer.css";
+import "./fileExplorer.scss";
 
 const widthFactor = 0.25;
 
