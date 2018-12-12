@@ -118,7 +118,6 @@ class InternalComm extends Component {
     });
   }
   selectRoom = id => {
-    const internalComm = this.props.data.internalComm[0];
     const deck = this.props.data.decks.find(d =>
       d.rooms.find(r => r.id === id)
     );
