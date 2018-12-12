@@ -3,7 +3,8 @@
     "features": [
       "Makes it possible to remove the print button on sets/simulators that don't have printers configured.",
       "Add a room list search to the internal communications card.",
-      "Add a timeline action for setting the signals for short range comm."
+      "Add a timeline action for setting the signals for short range comm.",
+      "Make it possible to update the probe count from the probe control core."
     ],
     "fixes": ["Improvements to the code cyphers core and screen."]
   },
