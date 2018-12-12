@@ -1,7 +1,8 @@
 {
   "1.0.38": {
     "features": [
-      "Makes it possible to remove the print button on sets/simulators that don't have printers configured."
+      "Makes it possible to remove the print button on sets/simulators that don't have printers configured.",
+      "Add a room list search to the internal communications card."
     ],
     "fixes": ["Improvements to the code cyphers core and screen."]
   },
