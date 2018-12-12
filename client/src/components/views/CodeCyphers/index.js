@@ -95,9 +95,11 @@ class Codes extends Component {
                 ))}
               </CardBody>
             </Card>
-            <Button disabled={!selectedCypher} block onClick={this.print}>
-              Print
-            </Button>
+            {this.props.simulator.hasPrinter && (
+              <Button disabled={!selectedCypher} block onClick={this.print}>
+                Print
+              </Button>
+            )}
           </Col>
         </Row>
         <Printable>

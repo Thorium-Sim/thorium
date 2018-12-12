@@ -1,5 +1,8 @@
 {
   "1.0.38": {
+    "features": [
+      "Makes it possible to remove the print button on sets/simulators that don't have printers configured."
+    ],
     "fixes": ["Improvements to the code cyphers core and screen."]
   },
   "1.0.36": {

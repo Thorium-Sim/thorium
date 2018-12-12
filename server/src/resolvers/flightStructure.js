@@ -191,6 +191,9 @@ export const FlightStructureMutations = {
   setAlertConditionLock(rootValue, params, context) {
     App.handleEvent(params, "setAlertConditionLock", context);
   },
+  setSimulatorHasPrinter(rootValue, params, context) {
+    App.handleEvent(params, "setSimulatorHasPrinter", context);
+  },
   // Timeline
   addTimelineStep(root, args, context) {
     const id = uuid.v4();

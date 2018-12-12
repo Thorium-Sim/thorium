@@ -109,9 +109,11 @@ class OfficerLog extends Component {
             <Button block color="primary" onClick={this.startLog}>
               Start Log
             </Button>
-            <Button block color="info" onClick={this.printLog}>
-              Print
-            </Button>
+            {this.props.simulator.hasPrinter && (
+              <Button block color="info" onClick={this.printLog}>
+                Print
+              </Button>
+            )}
           </Col>
           {logText !== null && (
             <Col sm={8} style={{ display: "flex", flexDirection: "column" }}>
@@ -155,14 +157,11 @@ class OfficerLog extends Component {
           <div>
             <h1>Officer Log &mdash; {this.props.clientObj.loginName}</h1>
             {officerLogs.map(l => (
-              <div
-                key={l.id}
-                className={`log-entry`}
-              >
-                <p className="stardate"><b>Stardate {stardate(l.timestamp)}</b></p>
-                <p>
-                  {l.log}
+              <div key={l.id} className={`log-entry`}>
+                <p className="stardate">
+                  <b>Stardate {stardate(l.timestamp)}</b>
                 </p>
+                <p>{l.log}</p>
               </div>
             ))}
           </div>
