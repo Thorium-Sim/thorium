@@ -76,6 +76,7 @@ export default class Reactor extends HeatMixin(System) {
     this.alphaTarget = params.alphaTarget || alpha;
     this.betaTarget = params.betaTarget || beta;
     this.alerted = params.alerted || false;
+    this.dilithiumRate = params.dilithiumRate || 1;
   }
   get stealthFactor() {
     if (this.ejected) return 0;
@@ -117,5 +118,8 @@ export default class Reactor extends HeatMixin(System) {
     if (betaLevel || betaLevel === 0) this.betaLevel = betaLevel;
     if (alphaTarget || alphaTarget === 0) this.alphaTarget = alphaTarget;
     if (betaTarget || betaTarget === 0) this.betaTarget = betaTarget;
+  }
+  setDilithiumRate(rate) {
+    this.dilithiumRate = rate;
   }
 }

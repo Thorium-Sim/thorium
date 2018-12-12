@@ -4,7 +4,8 @@
       "Makes it possible to remove the print button on sets/simulators that don't have printers configured.",
       "Add a room list search to the internal communications card.",
       "Add a timeline action for setting the signals for short range comm.",
-      "Make it possible to update the probe count from the probe control core."
+      "Make it possible to update the probe count from the probe control core.",
+      "Make it possible to change the speed at which dilithium stress levels change."
     ],
     "fixes": ["Improvements to the code cyphers core and screen."]
   },

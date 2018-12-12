@@ -151,13 +151,19 @@ const updateReactor = () => {
         ) {
           const dilithiumSys = systems[0];
           if (!dilithiumSys) return;
-          let { alphaLevel, betaLevel, alphaTarget, betaTarget } = dilithiumSys;
+          let {
+            alphaLevel,
+            betaLevel,
+            alphaTarget,
+            betaTarget,
+            dilithiumRate = 1
+          } = dilithiumSys;
           const alphaDif = alphaTarget - alphaLevel;
           const betaDif = betaTarget - betaLevel;
-          if (alphaDif <= 0) alphaTarget -= 0.1;
-          else alphaTarget += 0.1;
-          if (betaDif <= 0) betaTarget -= 0.1;
-          else betaTarget += 0.1;
+          if (alphaDif <= 0) alphaTarget -= 0.1 * dilithiumRate;
+          else alphaTarget += 0.1 * dilithiumRate;
+          if (betaDif <= 0) betaTarget -= 0.1 * dilithiumRate;
+          else betaTarget += 0.1 * dilithiumRate;
           if (alphaTarget > 100 || alphaTarget < 0)
             alphaTarget = Math.round(Math.random() * 100);
           if (betaTarget > 100 || betaTarget < 0)
