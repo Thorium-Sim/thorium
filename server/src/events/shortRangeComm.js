@@ -16,8 +16,12 @@ App.on("commUpdateSignal", ({ id, commSignalInput }) => {
     App.systems.filter(s => s.type === "ShortRangeComm")
   );
 });
-App.on("commUpdateSignals", ({ id, signals }) => {
-  const sys = App.systems.find(s => s.id === id);
+App.on("commUpdateSignals", ({ id, simulatorId, signals }) => {
+  const sys = App.systems.find(
+    s =>
+      s.id === id ||
+      (s.simulatorId === simulatorId && s.class === "ShortRangeComm")
+  );
   signals.forEach(s => sys.updateCommSignal(s));
   // Remove any signals
   sys.signals

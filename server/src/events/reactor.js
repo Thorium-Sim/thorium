@@ -118,3 +118,12 @@ App.on("setReactorEffciciencies", ({ id, efficiencies }) => {
     App.systems.filter(s => s.type === "Reactor")
   );
 });
+
+App.on("setDilithiumStressRate", ({ id, rate }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setDilithiumRate(rate);
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor")
+  );
+});

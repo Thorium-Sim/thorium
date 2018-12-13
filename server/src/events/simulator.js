@@ -288,3 +288,9 @@ App.on("setAlertConditionLock", ({ simulatorId, lock }) => {
   sim.setAlertLevelLock(lock);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+
+App.on("setSimulatorHasPrinter", ({ simulatorId, hasPrinter }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.setHasPrinter(hasPrinter);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

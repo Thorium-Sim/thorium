@@ -13,6 +13,7 @@ alertlevel
 layout
 bridgeOfficerMessaging
 training
+hasPrinter
 assets {
   mesh
   texture

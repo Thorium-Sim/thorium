@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container, Button, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
+import Printable from "helpers/printable";
 
 import "./style.scss";
 
@@ -94,15 +95,19 @@ class Codes extends Component {
                 ))}
               </CardBody>
             </Card>
-            <Button disabled={!selectedCypher} block onClick={this.print}>
-              Print
-            </Button>
+            {this.props.simulator.hasPrinter && (
+              <Button disabled={!selectedCypher} block onClick={this.print}>
+                Print
+              </Button>
+            )}
           </Col>
         </Row>
-        <div className="printable">
-          <h1>=== Code Cypher ===</h1>
-          {selectedCypher && <CodeList font={cypherMap[selectedCypher]} />}
-        </div>
+        <Printable>
+          <div className="cypher-printing">
+            <h1>=== Code Cypher ===</h1>
+            {selectedCypher && <CodeList font={cypherMap[selectedCypher]} />}
+          </div>
+        </Printable>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );

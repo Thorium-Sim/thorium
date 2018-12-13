@@ -44,6 +44,8 @@ updateSimulatorLighting(id:ID!, lighting: LightingInput!):String
 addSimulatorAmbiance(id: ID!, name: String!):String
 updateSimulatorAmbiance(id: ID!, ambiance: AmbianceInput!):String
 removeSimulatorAmbiance(id: ID!, ambianceId: ID!):String
+setSimulatorHasPrinter(simulatorId: ID!, hasPrinter:Boolean!):String
+
 
 ## Stations
 addSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!, cardComponent: String!):String

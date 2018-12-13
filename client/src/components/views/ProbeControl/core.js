@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
-import { OutputField, TypingField } from "../../generic/core";
-import { graphql, withApollo } from "react-apollo";
+import { OutputField, InputField, TypingField } from "../../generic/core";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { titleCase } from "change-case";
 import { getProbeConfig } from "../ProbeScience/probeScience";
@@ -12,6 +12,7 @@ const queryData = `id
 types {
   id
   name
+  count
 }
 torpedo
 scienceTypes {
@@ -217,6 +218,51 @@ class ProbeControl extends Component {
               </div>
             </Col>
           )}
+        </Row>
+        <Row>
+          <Col sm={12}>
+            <p>
+              <strong>Types</strong>
+            </p>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between"
+              }}
+            >
+              <Mutation
+                mutation={gql`
+                  mutation SetProbeCount($id: ID!, $type: ID!, $count: Int!) {
+                    updateProbeType(
+                      id: $id
+                      probeType: { id: $type, count: $count }
+                    )
+                  }
+                `}
+              >
+                {action =>
+                  probes.types.map(t => (
+                    <div key={t.id}>
+                      {t.name}{" "}
+                      <InputField
+                        prompt={`What do you want to set the ${
+                          t.name
+                        } probe count to?`}
+                        onClick={count =>
+                          action({
+                            variables: { id: probes.id, type: t.id, count }
+                          })
+                        }
+                      >
+                        {t.count}
+                      </InputField>
+                    </div>
+                  ))
+                }
+              </Mutation>
+            </div>
+          </Col>
         </Row>
       </Container>
     );

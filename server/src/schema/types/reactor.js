@@ -26,6 +26,7 @@ type Reactor implements SystemInterface{
   betaLevel: Float
   alphaTarget: Float
   betaTarget: Float
+  dilithiumRate: Float
 
   locations: [Room]
 }

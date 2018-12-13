@@ -19,4 +19,9 @@ type AssetFolder {
   fullPath: String
   objects: [AssetObject]
 }
+
+input RemoteAsset {
+  url: String
+  name: String
+}
 `;

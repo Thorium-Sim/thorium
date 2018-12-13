@@ -47,6 +47,11 @@ const ops = {
     mutation SetCaps($id: ID!, $value: Boolean!) {
       changeSimulatorCaps(simulatorId: $id, caps: $value)
     }
+  `,
+  hasPrinter: gql`
+    mutation SetHasPrinter($id: ID!, $value: Boolean!) {
+      setSimulatorHasPrinter(simulatorId: $id, hasPrinter: $value)
+    }
   `
 };
 class SimulatorConfigView extends Component {
@@ -102,6 +107,18 @@ class SimulatorConfigView extends Component {
               type="checkbox"
               defaultChecked={this.props.selectedSimulator.caps}
               name="changeCaps"
+              onChange={this._handleChange.bind(this)}
+            />
+          </fieldset>
+          <fieldset className="form-group">
+            <label>
+              Simulator has printer (enables print button for code cyphers and
+              officers log)
+            </label>
+            <input
+              type="checkbox"
+              defaultChecked={this.props.selectedSimulator.hasPrinter}
+              name="hasPrinter"
               onChange={this._handleChange.bind(this)}
             />
           </fieldset>
