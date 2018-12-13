@@ -72,15 +72,14 @@ export const EngineSubscriptions = {
     )
   },
   engineUpdate: {
-    resolve(rootValue, { simulatorId }) {
-      if (simulatorId) {
-        return rootValue.simulatorId === simulatorId && rootValue;
-      }
+    resolve(rootValue) {
       return rootValue;
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("engineUpdate"),
-      rootValue => !!rootValue
+      (rootValue, { simulatorId }) => {
+        return rootValue.simulatorId === simulatorId;
+      }
     )
   }
 };

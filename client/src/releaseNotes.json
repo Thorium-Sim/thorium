@@ -8,7 +8,10 @@
       "Make it possible to update the probe count from the probe control core.",
       "Make it possible to change the speed at which dilithium stress levels change."
     ],
-    "fixes": ["Improvements to the code cyphers core and screen."]
+    "fixes": [
+      "Improvements to the code cyphers core and screen.",
+      "Hopefully fixes issues with the engine control core. File an issue if it is still busted."
+    ]
   },
   "1.0.36": {
     "fixes": [
