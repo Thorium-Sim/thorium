@@ -16,6 +16,7 @@ exocomps
 panels
 stepDamage
 verifyStep
+hasPrinter
 bridgeOfficerMessaging
 requiredDamageSteps {
   id
@@ -246,7 +247,7 @@ class SimulatorConfig extends Component {
               Remove Simulator
             </Button>
           </Col>
-          <Col sm={10}>
+          <Col sm={10} style={{ height: "100%", overflowY: "auto" }}>
             <ConfigComponentData
               selectedProperty={selectedProperty}
               simulatorId={simulatorId}

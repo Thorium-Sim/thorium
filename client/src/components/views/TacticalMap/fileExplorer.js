@@ -61,12 +61,14 @@ class FileExplorer extends Component {
     this.state = {
       currentDirectory
     };
+    this.props.folderChange && this.props.folderChange(currentDirectory);
   }
   static defaultProps = {
     directory: "/"
   };
   setDirectory = directory => {
     this.setState({ currentDirectory: directory });
+    this.props.folderChange && this.props.folderChange(directory);
   };
   _createFolder = () => {
     let name = prompt("What is the name of the folder?");
@@ -115,17 +117,17 @@ class FileExplorer extends Component {
   _massUpload = e => {
     const files = e.target.files;
     if (e.target.files.length === 0) return;
-    if (e.target.files.length > 1) return this.doMassUplaod(files);
+    if (e.target.files.length > 1) return this.doMassUpload(files);
     const fileName = files[0].name.slice(0, files[0].name.lastIndexOf("."));
     const name = prompt(
       "What would you like to name the uploaded file?",
       fileName
     );
     if (name) {
-      this.doMassUplaod(files, name);
+      this.doMassUpload(files, name);
     }
   };
-  doMassUplaod = (files, name) => {
+  doMassUpload = (files, name) => {
     const data = new FormData();
     data.append("folderPath", this.state.currentDirectory);
     if (name) data.append("name", name);
@@ -215,6 +217,8 @@ class FileExplorer extends Component {
                           this.setState({
                             currentDirectory: dir ? dir.folderPath : "/"
                           });
+                          this.props.folderChange &&
+                            this.props.folderChange(dir ? dir.folderPath : "/");
                         }}
                       >
                         <div className="file-container">

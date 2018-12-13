@@ -1,9 +1,12 @@
 import fs from "fs";
 import path from "path";
 import App from "../app";
+import os from "os";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import paths from "../helpers/paths";
 import { ncp } from "ncp";
+import { download } from "../bootstrap/init";
+import uuid from "uuid";
 
 let assetDir = path.resolve("./assets/");
 
@@ -61,6 +64,30 @@ export const AssetsMutations = {
     //fs.unlink(path.resolve(`${assetDir}/${(obj.fullPath.substr(1) + extension)}`), () => {});
 
     return "";
+  },
+
+  downloadRemoteAssets(root, { folderPath, files }, context) {
+    Promise.all(
+      files.map(file => {
+        const filePath = `${assetDir}${folderPath}/${file.name}`;
+        const dest = path.resolve(`${os.tmpdir()}/${file.name}-${uuid.v4()}`);
+        return new Promise(resolve =>
+          download(file.url, dest, err => {
+            if (err) {
+              console.log("There was an error", err);
+            }
+            ncp(dest, filePath, err => {
+              if (err) {
+                console.error("Error!", err);
+              }
+              resolve();
+            });
+          })
+        );
+      })
+    ).then(() => {
+      pubsub.publish("assetFolderChange", getFolders(assetDir));
+    });
   }
 };
 

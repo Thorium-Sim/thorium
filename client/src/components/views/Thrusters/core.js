@@ -98,18 +98,24 @@ class ThrusterCore extends Component {
           <Col sm={4}>Pitch</Col>
           <Col sm={4}>Roll</Col>
           <Col sm={4}>
-            <OutputField>{Math.floor(thrusters.rotation.yaw)}</OutputField>
+            <OutputField>
+              {Math.floor(thrusters.rotation && thrusters.rotation.yaw)}
+            </OutputField>
           </Col>
           <Col sm={4}>
-            <OutputField>{Math.floor(thrusters.rotation.pitch)}</OutputField>
+            <OutputField>
+              {Math.floor(thrusters.rotation && thrusters.rotation.pitch)}
+            </OutputField>
           </Col>
           <Col sm={4}>
-            <OutputField>{Math.floor(thrusters.rotation.roll)}</OutputField>
+            <OutputField>
+              {Math.floor(thrusters.rotation && thrusters.rotation.roll)}
+            </OutputField>
           </Col>
           <Col sm={4}>
             <InputField
               alert={
-                Math.round(thrusters.rotation.yaw) !==
+                Math.round(thrusters.rotation && thrusters.rotation.yaw) !==
                 Math.round(thrusters.rotationRequired.yaw)
               }
               prompt="What is the required yaw?"

@@ -6,7 +6,7 @@ import https from "https";
 import ProgressBar from "progress";
 import importAssets from "../imports/asset/import";
 
-const download = function(url, dest, callback) {
+export const download = function(url, dest, callback) {
   const file = fs.createWriteStream(dest);
   https.get(url, function(res) {
     const bar = new ProgressBar(
