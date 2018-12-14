@@ -141,6 +141,7 @@ function addAspects(template, sim) {
       const id = uuid.v4();
       const commandLine = {
         ...commandLineData,
+        templateId: commandLineData.id,
         id,
         simulatorId: sim.id
       };

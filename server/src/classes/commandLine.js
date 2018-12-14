@@ -4,7 +4,9 @@ function generateOptions(component, simulator) {
   const options = component.connectedComponents.find(
     c => c.component && c.component.name === "Options"
   );
-  if (options && options.value) return options.value.split("\n");
+  if (!options) return [];
+  if (options.value && options.value !== "Stations")
+    return options.value.split("\n");
   if (simulator) return simulator.stations.map(s => s.name).sort();
   return [];
 }
@@ -23,7 +25,8 @@ function generateHelpText(component, length = "short", simulator) {
         .map(v => `\t${v}`)
         .join("\n");
     // The default is the stations on the simulator
-    if (simulator) optionsText += simulator.stations.map(s => `\t${s.name}\n`);
+    if (simulator)
+      optionsText += simulator.stations.map(s => `\t${s.name}`).join("\n");
   }
   return optionsText;
 }
@@ -52,6 +55,7 @@ export default class CommandLine {
     this.class = "CommandLine";
 
     this.simulatorId = params.simulatorId || null;
+    this.templateId = params.templateId || null;
 
     this.name = params.name || "Command Line";
 
@@ -73,8 +77,9 @@ export default class CommandLine {
   get commands() {
     return this.getRawCommands()
       .map(c => ({
-        name: this.values[c.id],
-        help: generateHelpText(c, "short")
+        name: c.name,
+        help: generateHelpText(c, "short"),
+        hidden: c.config.hidden
       }))
       .filter((a, i, arr) => arr.indexOf(a) === i && Boolean);
   }

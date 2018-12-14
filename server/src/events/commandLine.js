@@ -1,6 +1,7 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
+import uuid from "uuid";
 
 function performAction(id, action) {
   const sys = App.commandLine.find(s => s.id === id);
@@ -46,8 +47,33 @@ App.on("executeCommandLine", ({ simulatorId, command, arg = "", callback }) => {
   if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
     return callback(com.help);
   }
-  if (com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1)
+  if (
+    com.options.length > 0 &&
+    com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
+  )
     return callback(com.error);
   App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
   return callback(com.output);
+});
+
+App.on("addCommandLineToSimulator", ({ simulatorId, commandLine }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  const commandLineData = App.commandLine.find(s => s.id === commandLine);
+  if (!simulator || !commandLineData) return;
+  const id = uuid.v4();
+  const commandLineObj = {
+    ...commandLineData,
+    templateId: commandLineData.id,
+    id,
+    simulatorId
+  };
+  App.commandLine.push(new Classes.CommandLine(commandLineObj));
+});
+
+App.on("removeCommandLineFromSimulator", ({ simulatorId, commandLine }) => {
+  App.commandLine = App.commandLine.filter(c => {
+    if (!c.templateId) return true;
+    if (c.templateId === commandLine || c.id === commandLine) return false;
+    return true;
+  });
 });

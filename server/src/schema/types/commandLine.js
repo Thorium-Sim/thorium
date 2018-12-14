@@ -12,5 +12,6 @@ type CommandLine{
 type CommandLineCommand {
   name: String
   help: String
+  hidden: Boolean
 }
 `;

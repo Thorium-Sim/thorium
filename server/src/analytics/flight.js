@@ -27,8 +27,10 @@ App.on("resetFlight", ({ flightId, simulatorId }) => {
 });
 App.on("deleteFlight", ({ flightId }) => {
   const flight = App.flights.find(f => f.id === flightId);
-  heap.track("deleteFlight", App.thoriumId, {
-    id: flight.id,
-    name: flight.name
-  });
+  if (flight) {
+    heap.track("deleteFlight", App.thoriumId, {
+      id: flight.id,
+      name: flight.name
+    });
+  }
 });

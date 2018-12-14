@@ -38,3 +38,7 @@ export {
   default as setLongRangePresetMessages
 } from "./setLongRangePresetMessages";
 export { default as commUpdateSignals } from "./commUpdateSignals";
+export {
+  default as addCommandLineToSimulator,
+  default as removeCommandLineFromSimulator
+} from "./addCommandLineToSimulator";

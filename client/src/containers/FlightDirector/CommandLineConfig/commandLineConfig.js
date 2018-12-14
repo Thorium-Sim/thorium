@@ -131,6 +131,7 @@ export default class CommandLineConfig extends Component {
           </Col>
           {commandLine && (
             <Mutation
+              key={commandLine.id}
               mutation={gql`
                 mutation UpdateCommandLine(
                   $id: ID!

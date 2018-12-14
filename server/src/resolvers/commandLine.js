@@ -40,6 +40,12 @@ export const CommandLineMutations = {
         context
       );
     });
+  },
+  addCommandLineToSimulator(root, args, context) {
+    App.handleEvent(args, "addCommandLineToSimulator", context);
+  },
+  removeCommandLineFromSimulator(root, args, context) {
+    App.handleEvent(args, "removeCommandLineFromSimulator", context);
   }
 };
 

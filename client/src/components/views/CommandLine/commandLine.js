@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import Terminal from "terminal-in-react";
-import Commands from "./commands";
+import gql from "graphql-tag";
+
+// It might be possible to make this more complex by having
+// the ability to perform multiple actions as part of the
+// node diagram API which link into the command line
+// API. Things like locking the command line, sending
+// additional messages after a delay, overwriting the
+// current terminal line, etc.
+
+// The goal would be to replicate the commands in the ./commands file.
 
 class CommandLine extends Component {
   showMsg = () => "Hello World";
@@ -16,7 +25,59 @@ class CommandLine extends Component {
         }}
       >
         <Terminal
-          plugins={[Commands(this.props)]}
+          //  plugins={[Commands(this.props)]}
+          commands={{
+            programmer: () => "Alex Anderson 🚀",
+            help: (cmd, print) => {
+              const { simulator, client } = this.props;
+              const query = gql`
+                query CommandLineCommands($simulatorId: ID!) {
+                  commandLineCommands(simulatorId: $simulatorId) {
+                    name
+                    help
+                    hidden
+                  }
+                }
+              `;
+              client
+                .query({ query, variables: { simulatorId: simulator.id } })
+                .then(({ data: { commandLineCommands } }) => {
+                  print(
+                    commandLineCommands
+                      .filter(c => !c.hidden)
+                      .map(c => `${c.name}${c.help ? ": " : ""}${c.help}`)
+                      .join("\n")
+                  );
+                });
+            }
+          }}
+          commandPassThrough={(cmd, print) => {
+            // do something async
+            const { simulator, client } = this.props;
+            const mutation = gql`
+              mutation Mutation(
+                $simulatorId: ID!
+                $command: String!
+                $arg: String
+              ) {
+                executeCommandLine(
+                  simulatorId: $simulatorId
+                  command: $command
+                  arg: $arg
+                )
+              }
+            `;
+            const command = cmd[0];
+            const arg = cmd.slice(1, Infinity).join(" ");
+            client
+              .mutate({
+                mutation,
+                variables: { simulatorId: simulator.id, command, arg }
+              })
+              .then(({ data: { executeCommandLine } }) => {
+                print(executeCommandLine);
+              });
+          }}
           hideTopBar={true}
           allowTabs={false}
           prompt="green"
