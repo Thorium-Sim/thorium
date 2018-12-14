@@ -1,5 +1,5 @@
 export default `
-#Macro: Long Range Message
+#Macro: Long Range: Send Long Range Message
 sendLongRangeMessage(id: ID, simulatorId: ID, message: String!, crew: Boolean, sender: String, decoded: Boolean): String
 longRangeMessageSend(id: ID, message: ID!): String
 deleteLongRangeMessage(id: ID!, message: ID!): String
@@ -9,10 +9,10 @@ approveLongRangeMessage(id: ID!, message: ID!): String
 encryptLongRangeMessage(id: ID!, message: ID!): String
 setLongRangeSatellites(id:ID!, num:Int!):String
 
-#Macro: Add Interception Signal
+#Macro: Interception: Add Interception Signal
 addInterceptionSignal(id:ID!):String
 
-#Macro: Remove Interception Signal
+#Macro: Interception: Remove Interception Signal
 removeInterceptionSignal(id:ID!):String
 
 #Macro: Long Range: Set preset messages

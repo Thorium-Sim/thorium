@@ -14,10 +14,10 @@ commHail(id: ID!):String
 cancelHail(id: ID!, core: Boolean):String
 connectHail(id: ID!):String
 
-#Macro: Short Range: Add
+#Macro: Short Range: Add Signal
 addShortRangeComm(simulatorId: ID!, frequency: Float, signalName: String): String
 
-#Macro: Short Range: Remove
+#Macro: Short Range: Remove Signal
 removeShortRangeComm(simulatorId: ID!, frequency: Float, signalName: String): String
 
 muteShortRangeComm(id:ID!, arrowId:ID!, mute:Boolean!):String

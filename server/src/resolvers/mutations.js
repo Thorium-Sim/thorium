@@ -51,6 +51,7 @@ import { RailgunMutations } from "./railgun.js";
 import { JumpDriveMutations } from "./jumpDrive.js";
 import { TasksMutations } from "./tasks";
 import { EnvironmentMutations } from "./environment";
+import { CommandLineMutations } from "./commandLine.js";
 
 const mutationMap = Object.assign(
   FlightStructureMutations,
@@ -104,7 +105,8 @@ const mutationMap = Object.assign(
   RailgunMutations,
   JumpDriveMutations,
   TasksMutations,
-  EnvironmentMutations
+  EnvironmentMutations,
+  CommandLineMutations
 );
 
 export default mutationMap;

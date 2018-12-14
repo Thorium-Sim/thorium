@@ -117,6 +117,8 @@ export default class Simulator {
     this.training = params.training || false;
     this.ship = new Ship({ ...params.ship });
     this.panels = params.panels || [];
+    this.commandLines = params.commandLines || [];
+
     params.stations &&
       params.stations.forEach(s => this.stations.push(new Station(s)));
     // Effects Control
@@ -239,6 +241,9 @@ export default class Simulator {
   }
   updatePanels(panels) {
     this.panels = panels || [];
+  }
+  updateCommandLines(commandLines) {
+    this.commandLines = commandLines || [];
   }
   // Damage Steps
   addDamageStep({ name, args, type }) {

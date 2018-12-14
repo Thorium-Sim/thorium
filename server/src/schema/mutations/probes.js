@@ -7,7 +7,7 @@ updateProbeEquipment(id: ID!, probeEquipment: ProbeEquipmentInput!): String
 probeQuery(id: ID!, probeId: ID!, query: String): String
 probeQueryResponse(id: ID!, probeId: ID!, response: String): String
 
-#Macro: Probe Processed Data
+#Macro: Probes: Probe Processed Data
 probeProcessedData(id: ID!, data: String, flash: Boolean): String
 setProbeTorpedo(id:ID!, torpedo:Boolean!):String
 setProbeCharge(id: ID!, probeId:ID!, charge:Float!):String

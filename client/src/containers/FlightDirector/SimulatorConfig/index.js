@@ -14,6 +14,7 @@ layout
 caps
 exocomps
 panels
+commandLines
 stepDamage
 verifyStep
 hasPrinter

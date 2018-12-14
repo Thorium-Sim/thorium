@@ -139,6 +139,9 @@ export const FlightStructureMutations = {
   updateSimulatorPanels(rootValue, params, context) {
     App.handleEvent(params, "updateSimulatorPanels", context);
   },
+  updateSimulatorCommandLines(rootValue, params, context) {
+    App.handleEvent(params, "updateSimulatorCommandLines", context);
+  },
   setStepDamage(rootValue, params, context) {
     App.handleEvent(params, "setStepDamage", context);
   },
@@ -229,18 +232,8 @@ export const FlightStructureMutations = {
   updateTimelineStepItem(root, args, context) {
     App.handleEvent(args, "updateTimelineStepItem", context);
   },
-  triggerMacros(root, { simulatorId, macros }) {
-    const simulator = App.simulators.find(s => s.id === simulatorId);
-    macros.forEach(({ stepId, event, args, delay = 0 }) => {
-      simulator.executeTimelineStep(stepId);
-      setTimeout(() => {
-        App.handleEvent(
-          Object.assign({ simulatorId }, JSON.parse(args)),
-          event
-        );
-      }, delay);
-    });
-    pubsub.publish("simulatorsUpdate", App.simulators);
+  triggerMacros(root, args, context) {
+    App.handleEvent(args, "triggerMacros", context);
   },
   autoAdvance(root, args, context) {
     App.handleEvent(args, "autoAdvance", context);

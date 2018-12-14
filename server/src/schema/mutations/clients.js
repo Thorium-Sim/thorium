@@ -18,10 +18,10 @@ export default `
   clientRemoveCache(client: ID!, cacheItem: String!):String
   setClientHypercard(clientId:ID, simulatorId: ID, component:String):String
   
-  #Macro: Play a sound
+  #Macro: Sounds: Play a sound
   playSound(sound: SoundInput!, station: String, simulatorId: ID, clientId: String):String
   
-  #Macro: Cancel All Sounds
+  #Macro: Sounds: Cancel All Sounds
   stopAllSounds(simulatorId:ID!):String
   applyClientSet(id:ID!, flightId:ID!, simulatorId:ID!, templateId:ID!, stationSetId:ID!):String
   setClientOverlay(id:ID!, overlay:Boolean!):String

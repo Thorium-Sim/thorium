@@ -77,6 +77,11 @@ const makeLinks = () => {
       link: "/config/keyboard"
     },
     {
+      name: "Command Line Config",
+      icon: "terminal",
+      link: "/config/commandLine"
+    },
+    {
       name: "Settings",
       icon: "cog",
       link: "/config/settings"

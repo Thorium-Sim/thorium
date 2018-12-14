@@ -29,8 +29,7 @@ const Exocomp = ({
                 key={`part-${id}-${i}`}
                 className="exocomp-part"
                 style={{
-                  backgroundImage:
-                    console.log(id, i) || `url('${partsImages[parts[i]]}')`
+                  backgroundImage: `url('${partsImages[parts[i]]}')`
                 }}
               />
             ))}

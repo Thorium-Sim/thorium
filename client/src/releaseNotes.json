@@ -1,4 +1,9 @@
 {
+  "1.0.39": {
+    "features": [
+      "Adds the command line card. The command line card is configured in a similar way to software panels, where generic command line configurations are created, and then assigned to a simulator."
+    ]
+  },
   "1.0.38": {
     "features": [
       "Add the remote assets downloading - access with the Thorium Emporium button on the Assets Config screen.",

@@ -48,6 +48,7 @@ import { ExternalsQueries } from "./externals";
 import { RailgunQueries } from "./railgun.js";
 import { JumpDriveQueries } from "./jumpDrive.js";
 import { TasksQueries } from "./tasks";
+import { CommandLineQueries } from "./commandLine.js";
 
 const queryMap = Object.assign(
   {},
@@ -100,7 +101,8 @@ const queryMap = Object.assign(
   ExternalsQueries,
   RailgunQueries,
   JumpDriveQueries,
-  TasksQueries
+  TasksQueries,
+  CommandLineQueries
 );
 
 export default queryMap;

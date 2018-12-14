@@ -8,7 +8,7 @@ importMission(jsonString: String!):String
 
 startFlight(name: String, simulators: [SimulatorInput!]!):String
 createSimulator(name: String!,template: Boolean):String
-#Macro: Reset Flight
+#Macro: Flight: Reset Flight
 resetFlight(flightId: ID!, full: Boolean): String
 deleteFlight(flightId: ID!): String
 pauseFlight(flightId:ID!): String
@@ -26,7 +26,7 @@ updateTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, time
 triggerMacros(simulatorId: ID!, macros: [MacroInput]!): String
 duplicateTimelineStep(missionId: ID!, timelineStepId: ID!):String
 
-#Macro: Auto-Advance Timeline Step (Use with Delay)
+#Macro: Timeline: Auto-Advance Timeline Step (Use with Delay)
 autoAdvance(simulatorId: ID!, prev: Boolean): String
 
 createStationSet(name: String!, simulatorId: ID!):String
@@ -46,9 +46,9 @@ setStationDescription(stationSetID: ID!, stationName: String!, description: Stri
 setStationTraining(stationSetID: ID!, stationName: String!, training: String!):String
 setStationAmbiance(stationSetID: ID!, stationName: String!, ambiance: String!):String
 
-#Macro: Start Training Mode
+#Macro: Flight: Start Training Mode
 trainingMode(simulatorId:ID!):String
 
-#Macro: Set Alert Condition Lock
+#Macro: Simulator: Set Alert Condition Lock
 setAlertConditionLock(simulatorId: ID!, lock:Boolean!):String
 `;

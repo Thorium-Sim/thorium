@@ -111,7 +111,6 @@ const CardRenderer = props => {
 };
 
 function isMedia(src = "") {
-  console.log(src);
   const extensions = [
     ".wav",
     ".mp4",
