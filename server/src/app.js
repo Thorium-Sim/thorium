@@ -19,7 +19,6 @@ const snapshotName =
       ? "snapshot-test.json"
       : "snapshot-dev.json";
 
-console.log(snapshotName);
 const store = new Store({
   name: "Thorium",
   path: `${snapshotDir}${snapshotName}`,

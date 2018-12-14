@@ -188,7 +188,6 @@ class TacticalMapViewscreen extends Component {
   };
   render() {
     const { core, tacticalMap } = this.props;
-    console.log(tacticalMap);
     return (
       <div
         className="viewscreen-tacticalMap"
