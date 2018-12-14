@@ -2,12 +2,12 @@ export default `
 sensorScanRequest(id: ID!, request: String!): String
 sensorScanResult(id: ID!, result: String!): String
 
-#Macro: Processed Data
+#Macro: Sensors: Processed Data
 processedData(id: ID, simulatorId: ID, domain: String, data: String!, flash: Boolean): String
 
 sensorScanCancel(id: ID!): String
 
-#Macro: Scan Answers
+#Macro: Sensors: Scan Answers
 setPresetAnswers(simulatorId: ID!, domain: String!, presetAnswers: [PresetAnswerInput]!): String
 
 # Sensor Contacts
@@ -19,7 +19,7 @@ removeAllSensorContacts(id: ID!, type: [String]): String
 stopAllSensorContacts(id: ID!): String
 updateSensorContact(id: ID, simulatorId: ID, contact: SensorContactInput!): String
 
-#Macro: Sensor Contacts
+#Macro: Sensors: Set Army Sensor Contacts
 setArmyContacts(simulatorId: ID!, domain: String!, armyContacts: [SensorContactInput]!):String
 
 createSensorArmyContact(id: ID!, contact: SensorContactInput!): String
