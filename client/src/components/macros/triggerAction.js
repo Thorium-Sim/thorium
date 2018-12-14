@@ -98,7 +98,7 @@ const renderButtons = ({
   return null;
 };
 
-export default ({ updateArgs, args, client }) => {
+export default ({ updateArgs, args, noStations }) => {
   return (
     <div>
       <p>Performs the action on all stations in the simulator.</p>
@@ -133,16 +133,18 @@ export default ({ updateArgs, args, client }) => {
             <option value="soviet">Soviet</option>
           </optgroup>
         </Input>
-        <Input
-          type="select"
-          onChange={e => updateArgs("stationId", e.target.value)}
-          value={args.stationId}
-        >
-          <option value="all">All Stations</option>
-          <option value="random">Random Station</option>
-          <option value="bridge">Bridge stations</option>
-          <option value="viewscreen">Viewscreens</option>
-        </Input>
+        {noStations || (
+          <Input
+            type="select"
+            onChange={e => updateArgs("stationId", e.target.value)}
+            value={args.stationId}
+          >
+            <option value="all">All Stations</option>
+            <option value="random">Random Station</option>
+            <option value="bridge">Bridge stations</option>
+            <option value="viewscreen">Viewscreens</option>
+          </Input>
+        )}
         {renderButtons({ args, updateArgs })}
       </FormGroup>
     </div>

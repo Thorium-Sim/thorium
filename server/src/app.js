@@ -58,6 +58,7 @@ class Events extends EventEmitter {
     this.sounds = [];
     this.taskTemplates = [];
     this.tasks = [];
+    this.commandLine = [];
     this.autoUpdate = true;
     this.migrations = { assets: true };
     this.thoriumId = randomWords(5).join("-");
