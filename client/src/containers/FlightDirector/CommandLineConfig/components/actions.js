@@ -6,7 +6,6 @@ import ActionsMacro from "components/macros/triggerAction";
 class Actions extends React.Component {
   render() {
     const { value = {}, updateValue = () => {} } = this.props;
-    console.log(value);
     return (
       <div
         style={{ display: "flex", flexDirection: "column" }}
@@ -31,7 +30,7 @@ Actions.propTypes = {
 };
 
 registerComponent({
-  name: "Actions",
+  name: "triggerAction",
   category: "Outputs",
   component: Actions,
   outputs: [],
@@ -43,7 +42,7 @@ registerComponent({
       type: "Trigger"
     },
     {
-      id: "station",
+      id: "stationId",
       title: "Station the action will be performed on",
       type: "Any"
     }

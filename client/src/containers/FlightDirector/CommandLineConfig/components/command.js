@@ -37,16 +37,22 @@ registerComponent({
       type: "Trigger"
     },
     {
-      id: "argument1",
-      title: "The first additional option typed after the command",
+      id: "argument",
+      title: "The first additional option typed after the command.",
       color: "rebeccapurple",
       type: "Argument"
     },
     {
-      id: "argument2",
-      title: "The second additional option typed after the command",
-      color: "purple",
-      type: "Argument"
+      id: "output",
+      title: "Output from the command.",
+      color: "skyblue",
+      type: "Output"
+    },
+    {
+      id: "error",
+      title: "Error output when the command does not work correctly.",
+      color: "skyblue",
+      type: "Output"
     }
   ],
   inputs: [

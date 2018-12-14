@@ -74,6 +74,7 @@ type Simulator {
   exocomps: Int
   training: Boolean
   panels:[ID]
+  commandLines:[ID]
   bridgeOfficerMessaging: Boolean
   assets: SimulatorAssets
   lighting:Lighting

@@ -3,6 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 import { randomFromList } from "../classes/generic/damageReports/constants";
 App.on("triggerAction", args => {
+  console.log(args);
   args.stationId = args.stationId || "all";
   let clients = [];
   let stations = [];
@@ -61,7 +62,7 @@ App.on("triggerAction", args => {
         .filter(
           c =>
             (c.simulatorId === args.simulatorId &&
-              c.station === args.stationId) ||
+              c.station.toLowerCase() === args.stationId.toLowerCase()) ||
             c.id === args.clientId ||
             c.id === args.stationId
         )
@@ -70,11 +71,13 @@ App.on("triggerAction", args => {
         .find(s => s.id === args.simulatorId)
         .stations.filter(
           s =>
-            s.name === args.stationId || (client && client.station === s.name)
+            s.name.toLowerCase() === args.stationId.toLowerCase() ||
+            (client && client.station === s.name)
         )
         .map(s => s.name);
       break;
   }
+  console.log(stations, clients);
   // In some cases, we need to change the client
   switch (args.action) {
     case "online":

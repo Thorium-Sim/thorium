@@ -4,7 +4,18 @@ import { withFilter } from "graphql-subscriptions";
 
 export const CommandLineQueries = {
   commandLine(root, { simulatorId }) {
-    return App.commandLine;
+    let returnVal = App.commandLine;
+    if (simulatorId) {
+      returnVal.filter(c => c.simulatorId === simulatorId);
+    } else {
+      returnVal = returnVal.filter(c => !c.simulatorId);
+    }
+    return returnVal;
+  },
+  commandLineCommands(root, { simulatorId }) {
+    return App.commandLine
+      .filter(c => c.simulatorId === simulatorId)
+      .reduce((prev, next) => prev.concat(next.commands), []);
   }
 };
 
@@ -20,17 +31,33 @@ export const CommandLineMutations = {
   },
   updateCommandLine(root, args, context) {
     App.handleEvent(args, "updateCommandLine", context);
+  },
+  executeCommandLine(root, args, context) {
+    return new Promise(resolve => {
+      App.handleEvent(
+        { ...args, callback: resolve },
+        "executeCommandLine",
+        context
+      );
+    });
   }
 };
 
 export const CommandLineSubscriptions = {
   commandLineUpdate: {
-    resolve(rootValue) {
-      return rootValue;
+    resolve(rootValue, { simulatorId }) {
+      if (simulatorId) {
+        return rootValue.filter(c => c.simulatorId === simulatorId);
+      }
+      return rootValue.filter(c => !c.simulatorId);
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("commandLineUpdate"),
-      rootValue => true
+      (rootValue, { simulatorId }) => {
+        if (simulatorId)
+          return rootValue.find(c => c.simulatorId === simulatorId);
+        return true;
+      }
     )
   }
 };
