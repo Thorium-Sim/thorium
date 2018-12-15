@@ -8,7 +8,8 @@
       "Add the docking ports card. Must be configured on the simulator before use."
     ],
     "fixes": [
-      "Scrunch up the power distribution bars so they fit better on smaller screens."
+      "Scrunch up the power distribution bars so they fit better on smaller screens.",
+      "Makes it so the sensors speed selector properly overlays on top  of the controls."
     ]
   },
   "1.0.38": {
