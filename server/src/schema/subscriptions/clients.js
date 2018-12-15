@@ -8,4 +8,5 @@ export default `
   soundSub(clientId: ID): Sound
   cancelSound(clientId: ID): ID
   cancelAllSounds(clientId: ID): Boolean
+  cancelLoopingSounds(clientId: ID):Boolean
 `;

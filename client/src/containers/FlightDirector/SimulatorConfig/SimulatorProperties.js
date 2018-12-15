@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "reactstrap";
-
+import { titleCase } from "change-case";
 const properties = [
   "Simulator",
   "Stations",
@@ -13,7 +13,8 @@ const properties = [
   "DamageReports",
   "Library",
   "Panels",
-  "Ambiance"
+  "Ambiance",
+  "CommandLines"
 ];
 export default ({ selectProperty, selectedProperty }) => {
   return (
@@ -28,7 +29,7 @@ export default ({ selectProperty, selectedProperty }) => {
             selectedProperty === p ? "selected" : ""
           }`}
         >
-          {p}
+          {titleCase(p)}
         </li>
       ))}
     </Card>

@@ -126,6 +126,11 @@ App.on("updateSimulatorPanels", ({ simulatorId, panels }) => {
   simulator.updatePanels(panels);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("updateSimulatorCommandLines", ({ simulatorId, commandLines }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.updateCommandLines(commandLines);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setStepDamage", ({ simulatorId, stepDamage }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.stepDamage = stepDamage;
@@ -142,6 +147,19 @@ const allowedMacros = [
   "setViewscreenToAuto",
   "showViewscreenTactical"
 ];
+App.on("triggerMacros", ({ simulatorId, macros }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  macros.forEach(({ stepId, event, args, delay = 0 }) => {
+    if (stepId) {
+      simulator.executeTimelineStep(stepId);
+    }
+    setTimeout(() => {
+      const parsedArgs = typeof args === "string" ? JSON.parse(args) : args;
+      App.handleEvent(Object.assign({ simulatorId }, parsedArgs), event);
+    }, delay);
+  });
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 
 App.on("autoAdvance", ({ simulatorId, prev }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
@@ -222,6 +240,7 @@ App.on(
   ({ simulatorId, station, cardName, cardComponent }) => {
     const sim = App.simulators.find(s => s.id === simulatorId);
     const stat = sim.stations.find(s => s.name === station);
+    console.log(stat);
     stat.addCard({
       name: cardName,
       component: cardComponent

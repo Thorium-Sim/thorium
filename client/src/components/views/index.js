@@ -82,7 +82,8 @@ import ThrustersLite from "./Thrusters/lite";
 import ParticleDetector from "./ParticleDetector";
 import Tasks from "./Tasks";
 import ProbeScience from "./ProbeScience";
-// import DockingPorts from "./DockingPorts";
+import CommandLine from "./CommandLine";
+import DockingPorts from "./DockingPorts";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -154,6 +155,8 @@ import TasksCore from "./Tasks/core";
 import AlternateSensorsCore from "./ParticleDetector/core";
 import CoreFeed from "./CoreFeed";
 import RoomSearchCore from "./RoomSearch";
+import MacrosCore from "./Macros";
+import DockingPortCore from "./DockingPorts/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -245,8 +248,9 @@ const Views = {
   ThrustersLite,
   ParticleDetector,
   Tasks,
-  ProbeScience
-  // DockingPorts
+  ProbeScience,
+  CommandLine,
+  DockingPorts
 };
 
 export const Widgets = {
@@ -399,7 +403,9 @@ export const Cores = {
   TasksCore,
   AlternateSensorsCore,
   CoreFeed,
-  RoomSearchCore
+  RoomSearchCore,
+  MacrosCore,
+  DockingPortCore
 };
 
 export default Views;

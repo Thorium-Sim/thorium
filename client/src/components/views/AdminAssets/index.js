@@ -16,7 +16,6 @@ class Assets extends Component {
       folderPath: currentDirectory,
       files: files.map(({ name, url }) => ({ name, url }))
     };
-    console.log(files);
     const mutation = gql`
       mutation RemoteAssetLoad($folderPath: String!, $files: [RemoteAsset!]!) {
         downloadRemoteAssets(folderPath: $folderPath, files: $files)

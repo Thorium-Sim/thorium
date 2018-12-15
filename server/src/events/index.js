@@ -51,3 +51,4 @@ import "./railgun.js";
 import "./jumpDrive.js";
 import "./tasks";
 import "./environment";
+import "./commandLine.js";

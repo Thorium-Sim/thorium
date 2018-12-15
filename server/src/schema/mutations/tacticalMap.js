@@ -19,6 +19,6 @@ export default `
   updateTacticalMapPath(mapId: ID!, layerId: ID!, path: TacticalPathInput!):String
   removeTacticalMapPath(mapId: ID!, layerId: ID!, pathId: ID!): String
 
-  #Macro: Viewscreen Tactical Map
+  #Macro: Viewscreen: Show Tactical Map
   showViewscreenTactical(mapId: ID!, secondary: Boolean): String
 `;

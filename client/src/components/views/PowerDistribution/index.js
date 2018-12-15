@@ -63,7 +63,7 @@ class PowerDistribution extends Component {
       const mouseX = e.pageX || e.touches[0].pageX;
       const level = Math.max(
         0,
-        Math.min(40, Math.round((mouseX - this.state.offset - 10) / 14))
+        Math.min(40, Math.round((mouseX - this.state.offset - 10) / 11))
       );
       const { systems, sysId } = this.state;
       const newSystems = systems.map(s => {
@@ -305,7 +305,7 @@ class SystemPower extends Component {
                     <div
                       className="powerLevel"
                       key={`${id}-powerLine-${n}`}
-                      style={{ left: `${(n + 1) * 14 - 7}px` }}
+                      style={{ left: `${(n + 1) * 11 - 4}px` }}
                     />
                   );
                 })}

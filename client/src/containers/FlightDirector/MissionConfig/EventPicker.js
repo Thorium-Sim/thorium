@@ -12,6 +12,7 @@ const EventPicker = ({
   const events = __schema.mutationType.fields;
   return (
     <select
+      style={{ width: "100%" }}
       value={event || ""}
       onChange={handleChange}
       name="mutations"

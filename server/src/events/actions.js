@@ -61,7 +61,7 @@ App.on("triggerAction", args => {
         .filter(
           c =>
             (c.simulatorId === args.simulatorId &&
-              c.station === args.stationId) ||
+              c.station.toLowerCase() === args.stationId.toLowerCase()) ||
             c.id === args.clientId ||
             c.id === args.stationId
         )
@@ -70,7 +70,8 @@ App.on("triggerAction", args => {
         .find(s => s.id === args.simulatorId)
         .stations.filter(
           s =>
-            s.name === args.stationId || (client && client.station === s.name)
+            s.name.toLowerCase() === args.stationId.toLowerCase() ||
+            (client && client.station === s.name)
         )
         .map(s => s.name);
       break;

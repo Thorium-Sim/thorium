@@ -1,17 +1,17 @@
 export default `
-#Macro: Rename Simulator
+#Macro: Simulator: Rename Simulator
 renameSimulator(
 simulatorId: ID!, 
 name: String!): String
 
-#Macro: Simulator Layout
+#Macro: Simulator: Change Simulator Layout
 changeSimulatorLayout(
 simulatorId: ID!, 
 layout: String!): String
 
 changeSimulatorCaps(simulatorId: ID!, caps: Boolean!):String
 
-#Macro: Alert Level
+#Macro: Simulator: Change Alert Level
 changeSimulatorAlertLevel(
 simulatorId: ID!, 
 alertLevel: String!): String
@@ -36,6 +36,8 @@ removeSimulatorDamageStep(simulatorId: ID!, step: ID!):String
 
 setSimulatorMission(simulatorId: ID!, missionId: ID!): String
 updateSimulatorPanels(simulatorId: ID!, panels: [ID]!):String
+updateSimulatorCommandLines(simulatorId: ID!, commandLines: [ID]!):String
+
 setStepDamage(simulatorId:ID!, stepDamage:Boolean!):String
 setVerifyDamage(simulatorId:ID!, verifyStep:Boolean!):String
 setBridgeMessaging(id:ID!, messaging:Boolean!):String

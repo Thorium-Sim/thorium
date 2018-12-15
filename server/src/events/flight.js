@@ -20,13 +20,14 @@ export const aspectList = [
   "libraryDatabase",
   "softwarePanels",
   "surveyForms",
-  "objectives"
+  "objectives",
+  "commandLine"
 ];
 
 function addAspects(template, sim) {
   // Duplicate all of the other stuff attached to the simulator too.
   aspectList.forEach(aspect => {
-    if (aspect === "softwarePanels") return;
+    if (aspect === "softwarePanels" || aspect === "commandLines") return;
     const filterAspect = App[aspect].filter(
       a => a.simulatorId === template.simulatorId
     );
@@ -131,6 +132,23 @@ function addAspects(template, sim) {
       return id;
     })
     .filter(Boolean);
+
+  // And the command lines
+  sim.commandLines = sim.commandLines
+    .map(c => {
+      const commandLineData = App.commandLine.find(s => s.id === c);
+      if (!commandLineData) return null;
+      const id = uuid.v4();
+      const commandLine = {
+        ...commandLineData,
+        templateId: commandLineData.id,
+        id,
+        simulatorId: sim.id
+      };
+      App.commandLine.push(new Classes.CommandLine(commandLine));
+      return id;
+    })
+    .filter(Boolean);
 }
 // Flight
 App.on("startFlight", ({ id, name, simulators, context }) => {
@@ -147,7 +165,8 @@ App.on("startFlight", ({ id, name, simulators, context }) => {
     sim.mission = s.missionId;
     sim.executedTimelineSteps = [];
     const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
-    sim.stations = [...stationSet.stations];
+    sim.stations = stationSet.stations.map(s => new Classes.Station(s));
+
     sim.stationSet = stationSet.id;
     App.simulators.push(sim);
     addAspects(s, sim);

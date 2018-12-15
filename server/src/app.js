@@ -19,7 +19,6 @@ const snapshotName =
       ? "snapshot-test.json"
       : "snapshot-dev.json";
 
-console.log(snapshotName);
 const store = new Store({
   name: "Thorium",
   path: `${snapshotDir}${snapshotName}`,
@@ -58,6 +57,7 @@ class Events extends EventEmitter {
     this.sounds = [];
     this.taskTemplates = [];
     this.tasks = [];
+    this.commandLine = [];
     this.autoUpdate = true;
     this.migrations = { assets: true };
     this.thoriumId = randomWords(5).join("-");

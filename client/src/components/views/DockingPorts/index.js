@@ -8,6 +8,7 @@ import "./style.scss";
 const queryData = `
 id
 name
+shipName
 clamps
 compress
 doors
