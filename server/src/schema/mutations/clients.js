@@ -23,6 +23,8 @@ export default `
   
   #Macro: Sounds: Cancel All Sounds
   stopAllSounds(simulatorId:ID!):String
+  #Macro: Sounds: Stop Looping All Sounds
+  cancelLoopingSounds(simulatorId: ID!):String
   applyClientSet(id:ID!, flightId:ID!, simulatorId:ID!, templateId:ID!, stationSetId:ID!):String
   setClientOverlay(id:ID!, overlay:Boolean!):String
 
