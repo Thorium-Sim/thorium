@@ -134,6 +134,11 @@ function removeAllSounds(ambiance) {
   });
 }
 
+function stopLooping(ambiance) {
+  Object.keys(sounds).forEach(key => {
+    removeSound(key, false, ambiance);
+  });
+}
 const withSound = Comp => {
   return props => (
     <Comp
@@ -141,6 +146,7 @@ const withSound = Comp => {
       playSound={playSound}
       removeSound={removeSound}
       removeAllSounds={removeAllSounds}
+      stopLooping={stopLooping}
       sounds={sounds}
     />
   );

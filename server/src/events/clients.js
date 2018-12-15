@@ -230,6 +230,16 @@ App.on("stopAllSounds", ({ simulatorId }) => {
   });
   pubsub.publish("cancelAllSounds", clients);
 });
+App.on("cancelLoopingSounds", ({ simulatorId }) => {
+  const clients = App.clients.filter(s => s.simulatorId === simulatorId);
+  // Remove all of the sounds that have one of the clients
+  App.sounds = App.sounds.filter(s => {
+    const client = clients.find(c => s.clients.indexOf(c) > -1);
+    if (client) return true;
+    return false;
+  });
+  pubsub.publish("cancelLoopingSounds", clients);
+});
 App.on(
   "applyClientSet",
   ({ id, flightId, simulatorId, templateId, stationSetId }) => {

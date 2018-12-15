@@ -110,6 +110,9 @@ export const ClientMutations = {
   stopAllSounds(root, args, context) {
     App.handleEvent(args, "stopAllSounds", context);
   },
+  cancelLoopingSounds(root, args, context) {
+    App.handleEvent(args, "cancelLoopingSounds", context);
+  },
   applyClientSet(root, args, context) {
     App.handleEvent(args, "applyClientSet", context);
   },
@@ -263,6 +266,15 @@ export const ClientSubscriptions = {
     resolve: payload => payload,
     subscribe: withFilter(
       () => pubsub.asyncIterator("cancelAllSounds"),
+      (rootValue, { clientId }) => {
+        return !!rootValue.find(c => c.id === clientId);
+      }
+    )
+  },
+  cancelLoopingSounds: {
+    resolve: payload => payload,
+    subscribe: withFilter(
+      () => pubsub.asyncIterator("cancelLoopingSounds"),
       (rootValue, { clientId }) => {
         return !!rootValue.find(c => c.id === clientId);
       }

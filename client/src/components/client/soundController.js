@@ -29,6 +29,12 @@ const CANCEL_ALL_SOUNDS = gql`
   }
 `;
 
+const STOP_LOOPING = gql`
+  subscription CancelLooping($clientId: ID!) {
+    cancelLoopingSounds(clientId: $clientId)
+  }
+`;
+
 class SoundController extends Component {
   shouldComponentUpdate(prevProps) {
     if (prevProps.clientId !== this.props.clientId) return true;
@@ -42,6 +48,14 @@ class SoundController extends Component {
           {({ data = {} }) => {
             const { soundSub } = data;
             if (soundSub) this.props.playSound(soundSub);
+            return null;
+          }}
+        </Subscription>
+        <Subscription subscription={STOP_LOOPING} variables={{ clientId }}>
+          {({ data = {} }) => {
+            const { cancelLoopingSounds } = data;
+            if (cancelLoopingSounds)
+              this.props.stopLooping(cancelLoopingSounds);
             return null;
           }}
         </Subscription>

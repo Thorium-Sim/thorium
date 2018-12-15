@@ -65,6 +65,29 @@ class SensorsCore extends Component {
     document.removeEventListener("keydown", this.keypress);
     this.sensorDataBox && this.sensorDataBox();
   }
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.data.loading ||
+      this.props.data.loading ||
+      !this.props.data.sensors
+    )
+      return;
+    const external = this.props.data.sensors.find(s => s.domain === "external");
+    const internal = this.props.data.sensors.find(s => s.domain === "internal");
+    const sensor = this.state.domain === "external" ? external : internal;
+    const oldExternal = prevProps.data.sensors.find(
+      s => s.domain === "external"
+    );
+    const oldInternal = prevProps.data.sensors.find(
+      s => s.domain === "internal"
+    );
+    const oldSensor =
+      this.state.domain === "external" ? oldExternal : oldInternal;
+    if (sensor.scanResults !== oldSensor.scanResults)
+      this.setState({
+        dataField: sensor.scanResults
+      });
+  }
   keypress = evt => {
     if (evt.altKey) {
       evt.preventDefault();
