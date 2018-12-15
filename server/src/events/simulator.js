@@ -240,6 +240,7 @@ App.on(
   ({ simulatorId, station, cardName, cardComponent }) => {
     const sim = App.simulators.find(s => s.id === simulatorId);
     const stat = sim.stations.find(s => s.name === station);
+    console.log(stat);
     stat.addCard({
       name: cardName,
       component: cardComponent

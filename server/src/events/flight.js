@@ -165,7 +165,8 @@ App.on("startFlight", ({ id, name, simulators, context }) => {
     sim.mission = s.missionId;
     sim.executedTimelineSteps = [];
     const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
-    sim.stations = [...stationSet.stations];
+    sim.stations = stationSet.stations.map(s => new Classes.Station(s));
+
     sim.stationSet = stationSet.id;
     App.simulators.push(sim);
     addAspects(s, sim);
