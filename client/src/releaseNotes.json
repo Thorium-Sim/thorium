@@ -1,7 +1,8 @@
 {
   "1.0.39": {
     "features": [
-      "Adds the command line card. The command line card is configured in a similar way to software panels, where generic command line configurations are created, and then assigned to a simulator."
+      "Adds the command line card. The command line card is configured in a similar way to software panels, where generic command line configurations are created, and then assigned to a simulator.",
+      "Scan responses are now synced between cores when the scan response is sent."
     ]
   },
   "1.0.38": {
