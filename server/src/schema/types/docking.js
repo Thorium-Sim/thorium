@@ -3,6 +3,7 @@ type DockingPort {
   id: ID
   simulatorId: ID
   name: String
+  shipName: String
   type: DOCKING_TYPES
   clamps: Boolean
   compress: Boolean
@@ -18,6 +19,7 @@ input DockingPortInput {
   id: ID
   simulatorId: ID
   name: String
+  shipName: String
   type: String
   clamps: Boolean
   compress: Boolean
