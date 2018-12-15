@@ -155,6 +155,7 @@ import TasksCore from "./Tasks/core";
 import AlternateSensorsCore from "./ParticleDetector/core";
 import CoreFeed from "./CoreFeed";
 import RoomSearchCore from "./RoomSearch";
+import MacrosCore from "./Macros";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -401,7 +402,8 @@ export const Cores = {
   TasksCore,
   AlternateSensorsCore,
   CoreFeed,
-  RoomSearchCore
+  RoomSearchCore,
+  MacrosCore
 };
 
 export default Views;
