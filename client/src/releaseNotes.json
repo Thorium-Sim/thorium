@@ -1,6 +1,7 @@
 {
   "1.0.39": {
     "features": [
+      "Note: This will hopefully be the last release of 2018. I'm going on vacation from December 22nd through January 5th. For part of that time, I won't be available over email or Discord. If you have any major issues, get in touch as soon as possible so those issues can be addressed. Thanks! Merry Christmas and Happy Holidays! ~Alex",
       "Adds the command line card. The command line card is configured in a similar way to software panels, where generic command line configurations are created, and then assigned to a simulator.",
       "Scan responses are now synced between cores when the scan response is sent.",
       "Add a macro for cancelling looping sounds.",
