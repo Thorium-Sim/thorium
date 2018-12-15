@@ -5,6 +5,9 @@
       "Scan responses are now synced between cores when the scan response is sent.",
       "Add a macro for cancelling looping sounds.",
       "Add a macros core, which allows flight directors to queue up multiple timeline actions (macros) to run at the same time."
+    ],
+    "fixes": [
+      "Scrunch up the power distribution bars so they fit better on smaller screens."
     ]
   },
   "1.0.38": {
