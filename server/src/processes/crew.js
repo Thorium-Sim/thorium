@@ -26,7 +26,7 @@ function moveCrew() {
       if (crew.length === 0) return;
       const decks = App.decks.filter(c => c.simulatorId === s);
       const teams = App.teams.filter(c => c.simulatorId === s);
-      if (!crew || !decks) return;
+      if (!crew || !decks || crew.length === 0 || decks.length === 0) return;
       const allowedDecks = decks
         .filter(c => c.doors === false && c.evac === false)
         .map(c => c.id);
