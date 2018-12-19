@@ -16,7 +16,7 @@ import {
 } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import "./components";
+import * as components from "./components";
 
 const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 export default class CommandLineConfig extends Component {
@@ -152,6 +152,7 @@ export default class CommandLineConfig extends Component {
             >
               {action => (
                 <DiagramProvider
+                  registeredComponents={{ ...components }}
                   {...commandLine}
                   onUpdate={({ components, connections, config, values }) => {
                     const variables = { id: commandLine.id };
@@ -168,8 +169,13 @@ export default class CommandLineConfig extends Component {
                 >
                   <Col sm={3} style={{ height: "100%" }}>
                     <DiagramContext.Consumer>
-                      {({ selectedComponent }) =>
-                        selectedComponent ? <Config /> : <Library />
+                      {({ selectedComponent, registeredComponents }) =>
+                        console.log(registeredComponents) ||
+                        selectedComponent ? (
+                          <Config />
+                        ) : (
+                          <Library />
+                        )
                       }
                     </DiagramContext.Consumer>
                   </Col>

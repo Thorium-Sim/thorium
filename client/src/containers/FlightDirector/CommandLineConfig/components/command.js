@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "react-node-diagrams";
 
 const Command = props => {
   const { value = "", updateValue = () => {} } = props;
@@ -25,7 +24,7 @@ Command.propTypes = {
   updateValue: PropTypes.func
 };
 
-registerComponent({
+export default {
   name: "Command",
   component: Command,
   outputs: [
@@ -78,4 +77,4 @@ registerComponent({
       }
     }
   ]
-});
+};

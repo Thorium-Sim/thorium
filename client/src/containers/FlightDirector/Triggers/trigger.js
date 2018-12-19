@@ -51,7 +51,7 @@ export default class Trigger extends Component {
             <Mutation
               mutation={gql`
                 mutation AddTriggerGroup($name: String!) {
-                  addTriggerGroup(name: $name)
+                  addTrigger(name: $name)
                 }
               `}
             >
@@ -77,7 +77,7 @@ export default class Trigger extends Component {
                 <Mutation
                   mutation={gql`
                     mutation RemoveTriggerGroup($id: ID!) {
-                      removeTriggerGroup(id: $id)
+                      removeTrigger(id: $id)
                     }
                   `}
                 >
@@ -104,7 +104,7 @@ export default class Trigger extends Component {
                 <Mutation
                   mutation={gql`
                     mutation RenameTriggerGroup($id: ID!, $name: String!) {
-                      renameTriggerGroup(id: $id, name: $name)
+                      renameTrigger(id: $id, name: $name)
                     }
                   `}
                 >

@@ -52,7 +52,7 @@ import { JumpDriveMutations } from "./jumpDrive.js";
 import { TasksMutations } from "./tasks";
 import { EnvironmentMutations } from "./environment";
 import { CommandLineMutations } from "./commandLine.js";
-import { TriggerMutations } from "./commandLine.js";
+import { TriggerMutations } from "./trigger.js";
 
 const mutationMap = Object.assign(
   FlightStructureMutations,
