@@ -49,6 +49,7 @@ import { RailgunQueries } from "./railgun.js";
 import { JumpDriveQueries } from "./jumpDrive.js";
 import { TasksQueries } from "./tasks";
 import { CommandLineQueries } from "./commandLine.js";
+import { TriggerQueries } from "./commandLine.js";
 
 const queryMap = Object.assign(
   {},
@@ -102,7 +103,8 @@ const queryMap = Object.assign(
   RailgunQueries,
   JumpDriveQueries,
   TasksQueries,
-  CommandLineQueries
+  CommandLineQueries,
+  TriggerQueries
 );
 
 export default queryMap;

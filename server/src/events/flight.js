@@ -21,7 +21,8 @@ export const aspectList = [
   "softwarePanels",
   "surveyForms",
   "objectives",
-  "commandLine"
+  "commandLine",
+  "triggerGroups"
 ];
 
 function addAspects(template, sim) {
@@ -146,6 +147,23 @@ function addAspects(template, sim) {
         simulatorId: sim.id
       };
       App.commandLine.push(new Classes.CommandLine(commandLine));
+      return id;
+    })
+    .filter(Boolean);
+
+  // And the triggers
+  sim.triggers = sim.triggers
+    .map(c => {
+      const triggerData = App.triggerGroups.find(s => s.id === c);
+      if (!triggerData) return null;
+      const id = uuid.v4();
+      const trigger = {
+        ...triggerData,
+        templateId: triggerData.id,
+        id,
+        simulatorId: sim.id
+      };
+      App.triggerGroups.push(new Classes.Trigger(trigger));
       return id;
     })
     .filter(Boolean);

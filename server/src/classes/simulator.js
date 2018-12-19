@@ -118,6 +118,7 @@ export default class Simulator {
     this.ship = new Ship({ ...params.ship });
     this.panels = params.panels || [];
     this.commandLines = params.commandLines || [];
+    this.triggers = params.triggers || [];
 
     params.stations &&
       params.stations.forEach(s => this.stations.push(new Station(s)));

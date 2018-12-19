@@ -48,6 +48,7 @@ import { RailgunSubscriptions } from "./railgun.js";
 import { JumpDriveSubscriptions } from "./jumpDrive.js";
 import { TasksSubscriptions } from "./tasks";
 import { CommandLineSubscriptions } from "./commandLine.js";
+import { TriggerSubscriptions } from "./commandLine.js";
 
 const subscriptionMap = Object.assign(
   {},
@@ -100,7 +101,8 @@ const subscriptionMap = Object.assign(
   RailgunSubscriptions,
   JumpDriveSubscriptions,
   TasksSubscriptions,
-  CommandLineSubscriptions
+  CommandLineSubscriptions,
+  TriggerSubscriptions
 );
 
 export default subscriptionMap;
