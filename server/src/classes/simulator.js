@@ -246,6 +246,9 @@ export default class Simulator {
   updateCommandLines(commandLines) {
     this.commandLines = commandLines || [];
   }
+  updateTriggers(triggers) {
+    this.triggers = triggers || [];
+  }
   // Damage Steps
   addDamageStep({ name, args, type }) {
     this[`${type}DamageSteps`].push(new DamageStep({ name, args }));

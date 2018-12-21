@@ -131,6 +131,11 @@ App.on("updateSimulatorCommandLines", ({ simulatorId, commandLines }) => {
   simulator.updateCommandLines(commandLines);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("updateSimulatorTriggers", ({ simulatorId, triggers }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.updateTriggers(triggers);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setStepDamage", ({ simulatorId, stepDamage }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.stepDamage = stepDamage;
@@ -240,7 +245,6 @@ App.on(
   ({ simulatorId, station, cardName, cardComponent }) => {
     const sim = App.simulators.find(s => s.id === simulatorId);
     const stat = sim.stations.find(s => s.name === station);
-    console.log(stat);
     stat.addCard({
       name: cardName,
       component: cardComponent

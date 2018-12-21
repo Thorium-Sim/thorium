@@ -16,7 +16,7 @@ import {
 } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import "./components";
+import * as components from "./components";
 
 // I'm lazy
 const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -36,7 +36,7 @@ export default class Trigger extends Component {
       >
         <Row style={{ height: "100%" }}>
           <Col sm={3} style={{ height: "100%" }}>
-            <h3>Event Connector Groups</h3>
+            <h3>Trigger Groups</h3>
             <ListGroup>
               {triggers.map(c => (
                 <ListGroupItem
@@ -68,7 +68,7 @@ export default class Trigger extends Component {
                     action({ variables: { name } });
                   }}
                 >
-                  Add Event Connector Group
+                  Add Trigger Group
                 </Button>
               )}
             </Mutation>
@@ -97,7 +97,7 @@ export default class Trigger extends Component {
                         }
                       }}
                     >
-                      Remove Event Connector Group
+                      Remove Trigger Group
                     </Button>
                   )}
                 </Mutation>
@@ -124,7 +124,7 @@ export default class Trigger extends Component {
                         });
                       }}
                     >
-                      Rename Event Connector Group
+                      Rename Trigger Group
                     </Button>
                   )}
                 </Mutation>
@@ -135,14 +135,14 @@ export default class Trigger extends Component {
             <Mutation
               key={trigger.id}
               mutation={gql`
-                mutation UpdateCommandLine(
+                mutation UpdateTrigger(
                   $id: ID!
                   $components: JSON
                   $connections: JSON
                   $config: JSON
                   $values: JSON
                 ) {
-                  updateCommandLine(
+                  updateTrigger(
                     id: $id
                     components: $components
                     connections: $connections
@@ -155,6 +155,7 @@ export default class Trigger extends Component {
               {action => (
                 <DiagramProvider
                   {...trigger}
+                  registeredComponents={components}
                   onUpdate={({ components, connections, config, values }) => {
                     const variables = { id: trigger.id };
                     if (!compare(components, trigger.components))

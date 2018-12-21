@@ -142,6 +142,9 @@ export const FlightStructureMutations = {
   updateSimulatorCommandLines(rootValue, params, context) {
     App.handleEvent(params, "updateSimulatorCommandLines", context);
   },
+  updateSimulatorTriggers(rootValue, params, context) {
+    App.handleEvent(params, "updateSimulatorTriggers", context);
+  },
   setStepDamage(rootValue, params, context) {
     App.handleEvent(params, "setStepDamage", context);
   },

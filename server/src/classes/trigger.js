@@ -25,4 +25,39 @@ export default class Trigger {
     if (values) this.values = values;
     if (config) this.config = config;
   }
+  getTrigger(eventName) {
+    return this.components
+      .filter(c => c.component.name === eventName)
+      .map(c => ({
+        ...c,
+        config: this.config[c.id] || {}
+      }))
+      .map(c => {
+        console.log(this.connections);
+        const connections = this.connections
+          .map(o => {
+            if (o.from.id === c.id) {
+              const comp = this.components.find(m => m.id === o.to.id);
+              const inputNode = o.to.nodeId;
+              const outputNode = o.from.nodeId;
+              if (comp) return { ...comp, inputNode, outputNode };
+            }
+            if (o.to.id === c.id) {
+              const comp = this.components.find(m => m.id === o.from.id);
+              const inputNode = o.from.nodeId;
+              const outputNode = o.to.nodeId;
+              if (comp) return { ...comp, inputNode, outputNode };
+            }
+            return null;
+          })
+          .filter(Boolean)
+          .map(c => ({
+            ...c,
+            config: this.config[c.id] || {},
+            value: this.values[c.id]
+          }));
+
+        return { ...c, connectedComponents: connections };
+      });
+  }
 }

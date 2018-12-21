@@ -170,12 +170,7 @@ export default class CommandLineConfig extends Component {
                   <Col sm={3} style={{ height: "100%" }}>
                     <DiagramContext.Consumer>
                       {({ selectedComponent, registeredComponents }) =>
-                        console.log(registeredComponents) ||
-                        selectedComponent ? (
-                          <Config />
-                        ) : (
-                          <Library />
-                        )
+                        selectedComponent ? <Config /> : <Library />
                       }
                     </DiagramContext.Consumer>
                   </Col>

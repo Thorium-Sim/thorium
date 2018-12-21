@@ -15,6 +15,7 @@ caps
 exocomps
 panels
 commandLines
+triggers
 stepDamage
 verifyStep
 hasPrinter
