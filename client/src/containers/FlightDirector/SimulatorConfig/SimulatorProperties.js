@@ -14,7 +14,8 @@ const properties = [
   "Library",
   "Panels",
   "Ambiance",
-  "CommandLines"
+  "CommandLines",
+  "Triggers"
 ];
 export default ({ selectProperty, selectedProperty }) => {
   return (

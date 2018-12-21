@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "react-node-diagrams";
 
 class Options extends React.Component {
   render() {
@@ -40,7 +39,7 @@ Options.propTypes = {
   updateValue: PropTypes.func
 };
 
-registerComponent({
+export default {
   name: "Options",
   component: Options,
   outputs: [
@@ -53,4 +52,4 @@ registerComponent({
   ],
   inputs: [],
   config: []
-});
+};

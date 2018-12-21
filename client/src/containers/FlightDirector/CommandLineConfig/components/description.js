@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "react-node-diagrams";
 
 class Description extends React.Component {
   render() {
@@ -27,7 +26,7 @@ Description.propTypes = {
   updateValue: PropTypes.func
 };
 
-registerComponent({
+export default {
   name: "Description",
   component: Description,
   outputs: [
@@ -40,4 +39,4 @@ registerComponent({
   ],
   inputs: [],
   config: []
-});
+};

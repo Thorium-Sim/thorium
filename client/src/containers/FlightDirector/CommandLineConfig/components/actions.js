@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "react-node-diagrams";
 import ActionsMacro from "components/macros/triggerAction";
 
 class Actions extends React.Component {
@@ -29,7 +28,7 @@ Actions.propTypes = {
   updateValue: PropTypes.func
 };
 
-registerComponent({
+export default {
   name: "triggerAction",
   category: "Outputs",
   component: Actions,
@@ -48,4 +47,4 @@ registerComponent({
     }
   ],
   config: []
-});
+};

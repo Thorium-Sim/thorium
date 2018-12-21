@@ -1,4 +1,9 @@
 {
+  "1.1.0": {
+    "fixes": [
+      "Fixes an issue where the server can crash if you have crew on a simulator but not decks."
+    ]
+  },
   "1.0.39": {
     "features": [
       "Note: This will hopefully be the last release of 2018. I'm going on vacation from December 22nd through January 5th. For part of that time, I won't be available over email or Discord. If you have any major issues, get in touch as soon as possible so those issues can be addressed. Thanks! Merry Christmas and Happy Holidays! ~Alex",

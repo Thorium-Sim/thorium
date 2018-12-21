@@ -17,7 +17,8 @@ import {
   ClientsLobby,
   Settings,
   TaskTemplates,
-  CommandLineConfig
+  CommandLineConfig,
+  Triggers
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -166,6 +167,10 @@ class Config extends Component {
           <Route
             path="/config/commandLine"
             render={props => <CommandLineConfig {...props} history={history} />}
+          />
+          <Route
+            path="/config/triggers"
+            render={props => <Triggers {...props} history={history} />}
           />
           <Route path="/config/debug" component={DebugList} />
         </div>
