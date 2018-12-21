@@ -20,11 +20,15 @@ import * as triggers from "../triggers";
 export default function handleTrigger(eventName, args) {
   const processedArgs = triggers[eventName] ? triggers[eventName](args) : args;
   if (!processedArgs.simulatorId) return;
-  const usedTriggers = App.triggerGroups
+  const triggerActions = App.triggerGroups
     .filter(t => t.simulatorId === processedArgs.simulatorId)
-    .map(t => t.getTrigger(eventName))
+    .map(t => t.getTriggerActions(eventName, processedArgs))
     .filter(Boolean)
-    .reduce((prev, next) => prev.concat(next), []);
-  console.log(usedTriggers);
-  // console.log(eventName, args);
+    .reduce((prev, next) => prev.concat(next), [])
+    .reduce((prev, next) => prev.concat(next.macros), []);
+  if (triggerActions.length === 0) return;
+  App.handleEvent(
+    { simulatorId: processedArgs.simulatorId, macros: triggerActions },
+    "triggerMacros"
+  );
 }

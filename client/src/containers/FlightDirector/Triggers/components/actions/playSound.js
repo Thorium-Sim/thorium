@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import ActionsMacro from "components/macros/triggerAction";
+import PlaySoundComp from "components/macros/playSound";
 
-class Actions extends React.Component {
+class PlaySound extends React.Component {
   render() {
     const { value = {}, updateValue = () => {} } = this.props;
     return (
@@ -10,28 +10,25 @@ class Actions extends React.Component {
         style={{ display: "flex", flexDirection: "column" }}
         onMouseDown={e => e.stopPropagation()}
       >
-        <ActionsMacro
+        <PlaySoundComp
           updateArgs={(key, val) => updateValue({ ...value, [key]: val })}
           args={value}
           noStations
         />
-        <small>
-          Unless station is specified, it will trigger on all bridge stations.
-        </small>
       </div>
     );
   }
 }
 
-Actions.propTypes = {
+PlaySound.propTypes = {
   value: PropTypes.any,
   updateValue: PropTypes.func
 };
 
 export default {
-  name: "triggerAction",
+  name: "playSound",
   category: "Actions",
-  component: Actions,
+  component: PlaySound,
   outputs: [],
   inputs: [
     {
@@ -39,11 +36,6 @@ export default {
       color: "orange",
       title: "Triggers the action",
       type: "Trigger"
-    },
-    {
-      id: "stationId",
-      title: "Station the action will be performed on",
-      type: "Any"
     }
   ],
   config: [
