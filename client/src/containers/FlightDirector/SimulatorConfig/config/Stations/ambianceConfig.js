@@ -18,7 +18,7 @@ class AmbianceConfig extends Component {
               mutation SetAmbiance(
                 $stationSetID: ID!
                 $stationName: String!
-                $ambiance: String!
+                $ambiance: String
               ) {
                 setStationAmbiance(
                   stationSetID: $stationSetID
@@ -45,7 +45,7 @@ class AmbianceConfig extends Component {
                       variables: {
                         stationSetID: selectedStationSet,
                         stationName: station.name,
-                        training: ""
+                        ambiance: ""
                       }
                     });
                     this.setState({ edit: false });
