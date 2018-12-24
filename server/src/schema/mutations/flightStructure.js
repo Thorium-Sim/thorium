@@ -43,8 +43,8 @@ setStationLayout(stationSetID: ID!, stationName: String!, layout: String!):Strin
 setStationExecutive(stationSetID: ID!, stationName: String!, exec: Boolean!):String
 toggleStationWidgets(stationSetID: ID!, stationName: String!, widget: String!, state: Boolean!): String
 setStationDescription(stationSetID: ID!, stationName: String!, description: String!):String
-setStationTraining(stationSetID: ID!, stationName: String!, training: String!):String
-setStationAmbiance(stationSetID: ID!, stationName: String!, ambiance: String!):String
+setStationTraining(stationSetID: ID!, stationName: String!, training: String):String
+setStationAmbiance(stationSetID: ID!, stationName: String!, ambiance: String):String
 
 #Macro: Flight: Start Training Mode
 trainingMode(simulatorId:ID!):String
