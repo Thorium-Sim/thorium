@@ -5,6 +5,22 @@ import { Table, Button } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
+const queryData = `
+id
+type
+model
+efficiency
+displayName
+powerOutput
+      `;
+const REACTOR_SUB = gql`
+  subscription ReactorsUpdate($simulatorId: ID!) {
+    reactorUpdate(simulatorId: $simulatorId) {
+${queryData}
+    }
+  }
+`;
+
 const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId) {
@@ -151,7 +167,13 @@ class DamageControlCore extends Component {
     this.setState({ context: null });
   };
   render() {
-    if (this.props.data.loading || !this.props.data.systems) return null;
+    if (
+      this.props.data.loading ||
+      !this.props.data.systems ||
+      !this.props.data.reactors
+    )
+      return null;
+    const reactor = this.props.data.reactors.find(r => r.model === "reactor");
     return (
       <Mutation
         mutation={gql`
@@ -270,19 +292,19 @@ class DamageControlCore extends Component {
                   </td>
                   <td>/</td>
                   <td>
-                    <OutputField>
-                      {this.props.data.systems.reduce(
-                        (prev, next) =>
-                          next.power &&
-                          next.power.powerLevels &&
-                          next.power.powerLevels[0]
-                            ? prev + next.power.powerLevels[0]
-                            : prev,
-                        0
-                      )}
+                    <OutputField title="Reactor Output">
+                      {Math.round(reactor.powerOutput * reactor.efficiency)}
                     </OutputField>
                   </td>
-                  <td />
+                  <td>
+                    <InputField
+                      title="Reactor Power Level"
+                      prompt="What is the new power output?"
+                      onClick={this.setPowerLevel}
+                    >
+                      {reactor.powerOutput}
+                    </InputField>
+                  </td>
                 </tr>
                 <tr>
                   <td colSpan={5}>Right-Click for options</td>
@@ -337,6 +359,9 @@ class DamageControlCore extends Component {
 }
 const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
+    reactors(simulatorId: $simulatorId) {
+      ${queryData}
+    }
     systems(simulatorId: $simulatorId) {
       id
       name
