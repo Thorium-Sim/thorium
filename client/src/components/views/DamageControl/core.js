@@ -201,6 +201,21 @@ class DamageControlCore extends Component {
                   })
                 }
               />
+              <SubscriptionHelper
+                subscribe={() =>
+                  this.props.data.subscribeToMore({
+                    document: REACTOR_SUB,
+                    variables: {
+                      simulatorId: this.props.simulator.id
+                    },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      return Object.assign({}, previousResult, {
+                        reactors: subscriptionData.data.reactorUpdate
+                      });
+                    }
+                  })
+                }
+              />
               <thead>
                 <tr>
                   <th>System</th>

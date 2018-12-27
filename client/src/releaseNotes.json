@@ -5,7 +5,8 @@
       "Changed the systems core so it shows the reactor power output. It shows both the actual output, and the effective output, which is the output multiplied by the efficiency."
     ],
     "fixes": [
-      "Fixes an issue where the server can crash if you have crew on a simulator but not decks."
+      "Fixes an issue where the server can crash if you have crew on a simulator but not decks.",
+      "Fixes the subscription for the comm review screen. "
     ]
   },
   "1.0.39": {
