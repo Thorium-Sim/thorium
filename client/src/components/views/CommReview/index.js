@@ -42,6 +42,7 @@ class LongRangeCommunicationsData extends Component {
           if (loading || !longRangeCommunications) return null;
           if (!longRangeCommunications[0])
             return <div>No LongRangeCommunications</div>;
+          console.log(longRangeCommunications[0]);
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -50,7 +51,7 @@ class LongRangeCommunicationsData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      computerCore:
+                      longRangeCommunications:
                         subscriptionData.data.longRangeCommunicationsUpdate
                     });
                   }
