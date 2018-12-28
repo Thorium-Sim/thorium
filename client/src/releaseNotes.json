@@ -2,7 +2,9 @@
   "1.1.0": {
     "features": [
       "Added the Triggers system. This allows for certain events that happen during the simulation to trigger certain timeline events. This can be used to set up automatic sound effects, or potentially perform any other action. File an issue if you have another event or action you want added.",
-      "Changed the systems core so it shows the reactor power output. It shows both the actual output, and the effective output, which is the output multiplied by the efficiency."
+      "Changed the systems core so it shows the reactor power output. It shows both the actual output, and the effective output, which is the output multiplied by the efficiency.",
+      "Add the ability to reorder core layouts.",
+      "Make it possible to specify the order of widgets on the station."
     ],
     "fixes": [
       "Fixes an issue where the server can crash if you have crew on a simulator but not decks.",

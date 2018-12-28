@@ -77,10 +77,6 @@ class WidgetsContainer extends Component {
           station.widgets
             .concat()
             .filter(w => (touch ? w !== "keyboard" : true))
-            .sort(w => {
-              if (w === "keyboard") return 1;
-              return -1;
-            })
             .map(key => {
               const widget = Widgets[key];
               return (

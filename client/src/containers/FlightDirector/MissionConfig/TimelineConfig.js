@@ -516,9 +516,9 @@ export default class TimelineConfig extends Component {
           </Button>
         </Col>
         {this.state.selectedTimelineStep === "mission" && (
-          <div>
+          <Col sm={6}>
             <MissionConfig mission={object} updateMission={updateMission} />
-          </div>
+          </Col>
         )}
         {this.state.selectedTimelineStep &&
           this.state.selectedTimelineStep !== "mission" &&

@@ -45,6 +45,7 @@ toggleStationWidgets(stationSetID: ID!, stationName: String!, widget: String!, s
 setStationDescription(stationSetID: ID!, stationName: String!, description: String!):String
 setStationTraining(stationSetID: ID!, stationName: String!, training: String):String
 setStationAmbiance(stationSetID: ID!, stationName: String!, ambiance: String):String
+reorderStationWidgets(stationSetId:ID!, stationName:String!, widget:String!, order:Int!):String
 
 #Macro: Flight: Start Training Mode
 trainingMode(simulatorId:ID!):String
