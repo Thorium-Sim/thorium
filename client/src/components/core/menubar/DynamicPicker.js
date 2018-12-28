@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import MosaicConfig from "./mosaicConfig";
 
 const SUB = gql`
   subscription CoreLayoutsUpdate {
@@ -12,7 +13,6 @@ const SUB = gql`
     }
   }
 `;
-
 class DynamicPicker extends Component {
   state = { layout: "nothing" };
   add = () => {
@@ -65,12 +65,16 @@ class DynamicPicker extends Component {
     if (value === "delete") {
       return this.delete();
     }
+    if (value === "change") {
+      return this.setState({ modal: true });
+    }
     this.setState({ layout: value });
     this.props.onChange(
       JSON.parse(coreLayouts.find(l => l.id === value).config)
     );
   };
   render() {
+    const { modal } = this.state;
     const {
       data: { loading, coreLayouts }
     } = this.props;
@@ -106,7 +110,14 @@ class DynamicPicker extends Component {
           <option disabled={this.state.layout === "nothing"} value="delete">
             Delete Core Layout
           </option>
+          <option value="change">Reorder Core Layouts</option>
         </select>
+        {modal && (
+          <MosaicConfig
+            modal={modal}
+            toggle={() => this.setState({ modal: false })}
+          />
+        )}
       </Fragment>
     );
   }

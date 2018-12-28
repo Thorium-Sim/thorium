@@ -211,3 +211,7 @@
     grid-area: unset !important;
   }
 }
+
+body > .list-group-item {
+  z-index: 10000;
+}
