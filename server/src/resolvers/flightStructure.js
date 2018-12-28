@@ -290,6 +290,9 @@ export const FlightStructureMutations = {
   setStationAmbiance(root, args, context) {
     App.handleEvent(args, "setStationAmbiance", context);
   },
+  reorderStationWidgets(_, args, context) {
+    App.handleEvent(args, "reorderStationWidgets", context);
+  },
 
   trainingMode(root, args, context) {
     App.handleEvent(args, "trainingMode", context);
