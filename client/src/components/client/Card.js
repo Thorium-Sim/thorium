@@ -6,6 +6,7 @@ import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
+import { subscribe } from "../../helpers/pubsub";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { subscribe } from "../../helpers/pubsub";
