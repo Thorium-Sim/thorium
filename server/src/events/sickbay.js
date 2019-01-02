@@ -223,7 +223,8 @@ App.on("completeDeconProgram", ({ id }) => {
           station: s,
           title: `Decon Program Complete`,
           body: `${sys.deconProgram}: ${sys.deconLocation}`,
-          color: "success"
+          color: "success",
+          relevantCards: [ "Decontamination" ]
         });
       });
     sys.endDeconProgram();

@@ -339,7 +339,8 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
         station: s,
         title: `Damage report step validation rejected`,
         body: sys.name,
-        color: "danger"
+        color: "danger",
+        relevantCards: [ "DamageControl" ]
       })
     );
   } else {
@@ -388,7 +389,8 @@ App.on("validateDamageStep", ({ id }) => {
       station: s,
       title: `Damage report step validation accepted`,
       body: sys.name,
-      color: "success"
+      color: "success",
+      relevantCards: [ "DamageControl" ]
     })
   );
   sendUpdate(sys);
