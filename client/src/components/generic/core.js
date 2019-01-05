@@ -25,7 +25,7 @@ export const InputField = props => {
     props.onClick(value);
   };
   return (
-    <div className="input-field" onClick={onClick} style={style} {...props}>
+    <div className="input-field" {...props} onClick={onClick} style={style}>
       {props.children}
     </div>
   );
