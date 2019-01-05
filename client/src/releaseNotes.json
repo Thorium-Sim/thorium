@@ -3,7 +3,9 @@
     "fixes": [
       "Ask for speed popover now appears on the correct layer when used with the hotkey cores.",
       "Adjustment to make the status screen properly update.",
-      "Fixes an issue with the core input field."
+      "Fixes an issue with the core input field.",
+      "Once again makes it so #[1-10] entries in damage reports provide the correct number",
+      "Damaging systems through a timeline action now makes it show up in the damage report screen properly."
     ]
   },
   "1.1.0": {
