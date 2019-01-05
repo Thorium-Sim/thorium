@@ -1,4 +1,3 @@
-import fs from "fs";
 import { EventEmitter } from "events";
 import util from "util";
 import randomWords from "random-words";
@@ -6,6 +5,7 @@ import * as Classes from "./classes";
 import paths from "./helpers/paths";
 import Store from "./helpers/data-store";
 import heap from "./helpers/heap";
+import handleTrigger from "./helpers/handleTrigger";
 
 let snapshotDir = "./snapshots/";
 
@@ -58,6 +58,7 @@ class Events extends EventEmitter {
     this.taskTemplates = [];
     this.tasks = [];
     this.commandLine = [];
+    this.triggerGroups = [];
     this.autoUpdate = true;
     this.migrations = { assets: true };
     this.thoriumId = randomWords(5).join("-");
@@ -152,6 +153,9 @@ class Events extends EventEmitter {
       };
       this.events.push(event);
     }
+    // Handle any triggers before the event so we can capture data that
+    // the event might remove
+    handleTrigger(eventName, param, context);
     this.emit(eventName, { ...param, context });
     process.env.NODE_ENV === "production" && this.snapshot();
   }

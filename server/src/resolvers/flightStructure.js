@@ -142,6 +142,9 @@ export const FlightStructureMutations = {
   updateSimulatorCommandLines(rootValue, params, context) {
     App.handleEvent(params, "updateSimulatorCommandLines", context);
   },
+  updateSimulatorTriggers(rootValue, params, context) {
+    App.handleEvent(params, "updateSimulatorTriggers", context);
+  },
   setStepDamage(rootValue, params, context) {
     App.handleEvent(params, "setStepDamage", context);
   },
@@ -286,6 +289,9 @@ export const FlightStructureMutations = {
   },
   setStationAmbiance(root, args, context) {
     App.handleEvent(args, "setStationAmbiance", context);
+  },
+  reorderStationWidgets(_, args, context) {
+    App.handleEvent(args, "reorderStationWidgets", context);
   },
 
   trainingMode(root, args, context) {

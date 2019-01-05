@@ -75,6 +75,7 @@ type Simulator {
   training: Boolean
   panels:[ID]
   commandLines:[ID]
+  triggers:[ID]
   bridgeOfficerMessaging: Boolean
   assets: SimulatorAssets
   lighting:Lighting

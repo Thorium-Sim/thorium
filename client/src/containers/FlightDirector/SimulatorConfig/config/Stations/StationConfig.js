@@ -10,6 +10,7 @@ import { titleCase } from "change-case";
 import TrainingConfig from "./trainingConfig";
 import AmbianceConfig from "./ambianceConfig";
 import LayoutList from "components/layouts";
+import SortableList from "helpers/sortableList";
 
 const Layouts = Object.keys(LayoutList).filter(
   s => s.indexOf("Viewscreen") === -1
@@ -133,6 +134,34 @@ const ConfigStation = props => {
     };
     client.mutate({
       mutation: ops.setStationLayout,
+      variables
+    });
+  };
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    const variables = {
+      id: selectedStationSet,
+      name: station.name,
+      widget: station.widgets[oldIndex],
+      order: newIndex
+    };
+    const mutation = gql`
+      mutation ReorderStationWidgets(
+        $id: ID!
+        $name: String!
+        $widget: String!
+        $order: Int!
+      ) {
+        reorderStationWidgets(
+          stationSetId: $id
+          stationName: $name
+          widget: $widget
+          order: $order
+        )
+      }
+    `;
+
+    client.mutate({
+      mutation,
       variables
     });
   };
@@ -316,9 +345,9 @@ const ConfigStation = props => {
           />
           <label>Widgets:</label>
           <Row>
-            {Object.keys(Widgets).map(widget => (
-              <Col sm={4} key={`widgets-${widget}`}>
-                <label style={{ display: "inline-block" }}>
+            <Col sm={6}>
+              {Object.keys(Widgets).map(widget => (
+                <label key={`widgets-${widget}`} style={{ display: "block" }}>
                   <input
                     type="checkbox"
                     checked={station.widgets.indexOf(widget) > -1}
@@ -326,8 +355,17 @@ const ConfigStation = props => {
                   />{" "}
                   {titleCase(widget)}
                 </label>
-              </Col>
-            ))}
+              ))}
+            </Col>
+            <Col sm={6}>
+              Widget Order
+              <SortableList
+                items={station.widgets.map(w => ({ id: w, name: w }))}
+                onSortEnd={onSortEnd}
+                selected={false}
+                select={() => {}}
+              />
+            </Col>
           </Row>
           <TrainingConfig
             selectedStationSet={selectedStationSet}

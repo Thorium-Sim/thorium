@@ -82,6 +82,11 @@ const makeLinks = () => {
       link: "/config/commandLine"
     },
     {
+      name: "Triggers Config",
+      icon: "code-fork",
+      link: "/config/triggers"
+    },
+    {
       name: "Settings",
       icon: "cog",
       link: "/config/settings"

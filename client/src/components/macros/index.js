@@ -42,3 +42,8 @@ export {
   default as addCommandLineToSimulator,
   default as removeCommandLineFromSimulator
 } from "./addCommandLineToSimulator";
+
+export {
+  default as addTriggerToSimulator,
+  default as removeTriggerFromSimulator
+} from "./addTriggerToSimulator";

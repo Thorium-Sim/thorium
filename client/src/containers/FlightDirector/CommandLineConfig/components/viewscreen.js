@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { registerComponent } from "react-node-diagrams";
 import ViewscreenMacro from "components/macros/updateViewscreenComponent";
 
 class Viewscreen extends React.Component {
@@ -31,7 +30,7 @@ Viewscreen.propTypes = {
   updateValue: PropTypes.func
 };
 
-registerComponent({
+export default {
   name: "updateViewscreenComponent",
   category: "Outputs",
   component: Viewscreen,
@@ -45,4 +44,4 @@ registerComponent({
     }
   ],
   config: []
-});
+};

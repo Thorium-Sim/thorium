@@ -13619,6 +13619,7 @@ export default {
   sounds: [],
   tasks: [],
   commandLine: [],
+  triggerGroups: [],
   taskTemplates: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),

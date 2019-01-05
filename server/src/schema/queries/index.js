@@ -48,3 +48,4 @@ export { default as Railgun } from "./railgun.js";
 export { default as JumpDrive } from "./jumpDrive.js";
 export { default as Tasks } from "./tasks";
 export { default as CommandLine } from "./commandLine.js";
+export { default as Trigger } from "./trigger.js";

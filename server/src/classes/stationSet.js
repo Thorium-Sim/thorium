@@ -60,6 +60,9 @@ export class StationSet {
   setAmbiance(station, ambiance) {
     this.stations.find(s => s.name === station).setAmbiance(ambiance);
   }
+  reorderWidgets(station, widget, order) {
+    this.stations.find(s => s.name === station).reorderWidgets(widget, order);
+  }
 }
 
 export class Station {
@@ -138,6 +141,19 @@ export class Station {
   }
   setExec(exec) {
     this.executive = exec;
+  }
+  reorderWidgets(widget, order) {
+    function move(array, old_index, new_index) {
+      if (new_index >= array.length) {
+        var k = new_index - array.length;
+        while (k-- + 1) {
+          array.push(undefined);
+        }
+      }
+      array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+      return array; // for testing purposes
+    }
+    this.widgets = move(this.widgets, this.widgets.indexOf(widget), order);
   }
 }
 

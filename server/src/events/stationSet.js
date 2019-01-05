@@ -133,3 +133,13 @@ App.on("setStationAmbiance", ({ stationSetID, stationName, ambiance }) => {
     .setAmbiance(stationName, ambiance);
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
+
+App.on(
+  "reorderStationWidgets",
+  ({ stationSetId, stationName, widget, order }) => {
+    App.stationSets
+      .find(s => s.id === stationSetId)
+      .reorderWidgets(stationName, widget, order);
+    pubsub.publish("stationSetUpdate", App.stationSets);
+  }
+);
