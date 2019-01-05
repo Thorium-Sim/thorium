@@ -8,7 +8,8 @@
       "Once again makes it so #[1-10] entries in damage reports provide the correct number",
       "Damaging systems through a timeline action now makes it show up in the damage report screen properly.",
       "The reactor output at the bottom of the systems core can now properly update the reactor output.",
-      "Make the current alert condition more apparent on core."
+      "Make the current alert condition more apparent on core.",
+      "Changes the labeling of the software panels damage reports to be more friendly towards hardware panels."
     ]
   },
   "1.1.0": {
