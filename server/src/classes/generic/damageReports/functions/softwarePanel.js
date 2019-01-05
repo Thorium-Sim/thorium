@@ -2,9 +2,9 @@ import App from "../../../../app";
 import { randomFromList } from "../constants";
 const allowedComponents = {
   CableInput: ["Connect a #COLOR cable from #LABEL to #CABLE2."],
-  ToggleSwitch: ["Set switch #LABEL to the #UPDOWN position."],
-  ThreeWaySwitch: ["Set switch #LABEL to the #UPCENTER position."],
-  Checkbox: ["Set checkbox #LABEL to #CHECKED."],
+  ToggleSwitch: ["Set #LABEL to the #UPDOWN position."],
+  ThreeWaySwitch: ["Set #LABEL to the #UPCENTER position."],
+  Checkbox: ["Set #LABEL to #CHECKED."],
   //Rotor: ["Set rotor #LABEL to the #ROTOR position."],
   PushButton: [
     "Press button #LABEL #INT times.",
@@ -72,7 +72,7 @@ export default ({ preamble }, { name, displayName = name, simulatorId }) => {
   return `${preamble ||
     `Panel maintenance must be performed on the ${displayName} system.`} Go to the ${
     panel.name
-  } software panel and perform the following operations:
+  } panel and perform the following operations:
   
 ${messages}
 `;
