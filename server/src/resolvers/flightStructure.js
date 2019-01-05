@@ -251,6 +251,9 @@ export const FlightStructureMutations = {
   renameStationSet(root, args, context) {
     App.handleEvent(args, "renameStationSet", context);
   },
+  setStationSetCrewCount(root, args, context) {
+    App.handleEvent(args, "setStationSetCrewCount", context);
+  },
   addStationToStationSet(root, args, context) {
     App.handleEvent(args, "addStationToStationSet", context);
   },
