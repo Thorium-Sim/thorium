@@ -3,7 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const ClientQueries = {
-  clients: (root, { clientId, simulatorId, stationName, flightId }) => {
+  clients: (root, { all, clientId, simulatorId, stationName, flightId }) => {
     let returnVal = App.clients;
     if (clientId) {
       returnVal = returnVal.filter(c => c.id === clientId);
@@ -17,7 +17,7 @@ export const ClientQueries = {
     if (flightId) {
       returnVal = returnVal.filter(c => c.flightId === flightId);
     }
-    return returnVal.filter(c => c.connected);
+    return returnVal.filter(c => (all ? true : c.connected));
   },
   keypad: (root, { client }) => {
     const c = App.clients.find(c => c.id === client);

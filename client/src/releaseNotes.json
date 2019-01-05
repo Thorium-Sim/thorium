@@ -3,7 +3,8 @@
     "features": [
       "Add a crew notification for probe query responses.",
       "Made it possible to set the default bridge crew count on the station set (since the crew count would vary from station set to station set).",
-      "Added Stealth Field alignment to the core."
+      "Added Stealth Field alignment to the core.",
+      "Made it possible to specify which client a sound will play on in the macro config."
     ],
     "fixes": [
       "Ask for speed popover now appears on the correct layer when used with the hotkey cores.",
