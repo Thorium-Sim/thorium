@@ -79,7 +79,7 @@ export class System {
   setDefaultPowerLevel(level) {
     this.power.defaultLevel = level;
   }
-  break(report, destroyed, which) {
+  break(report, destroyed, which = "default") {
     this.damage.damaged = true;
     if (destroyed) this.damage.destroyed = true;
     this.damage.report = processReport(report, this);

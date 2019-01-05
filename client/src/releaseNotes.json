@@ -1,4 +1,15 @@
 {
+  "1.1.1": {
+    "features": ["Add a crew notification for probe query responses."],
+    "fixes": [
+      "Ask for speed popover now appears on the correct layer when used with the hotkey cores.",
+      "Adjustment to make the status screen properly update.",
+      "Fixes an issue with the core input field.",
+      "Once again makes it so #[1-10] entries in damage reports provide the correct number",
+      "Damaging systems through a timeline action now makes it show up in the damage report screen properly.",
+      "The reactor output at the bottom of the systems core can now properly update the reactor output."
+    ]
+  },
   "1.1.0": {
     "features": [
       "Added the Triggers system. This allows for certain events that happen during the simulation to trigger certain timeline events. This can be used to set up automatic sound effects, or potentially perform any other action. File an issue if you have another event or action you want added.",

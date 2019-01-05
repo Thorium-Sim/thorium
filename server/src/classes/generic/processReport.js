@@ -35,7 +35,8 @@ export default function processReport(report, system) {
     returnReport = returnReport.replace(m, "");
     const numbers = m.replace(/[ [\]#]/gi, "").split("-");
     const num = Math.round(
-      Math.random() * parseInt(numbers[1], 10) + parseInt(numbers[0], 10)
+      Math.random() * (parseInt(numbers[1], 10) - parseInt(numbers[0], 10)) +
+        parseInt(numbers[0], 10)
     );
     returnReport = splice(returnReport, index, 0, num);
   });

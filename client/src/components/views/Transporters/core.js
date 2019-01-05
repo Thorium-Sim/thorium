@@ -41,7 +41,10 @@ class TransporterCore extends Component {
       }
     }
   }
-  targets(transporter, result) {
+  targets = result => {
+    const transporter = this.props.data.loading
+      ? { targets: [] }
+      : this.props.data.transporters[0];
     this.props.client.mutate({
       mutation: gql`
         mutation SetTransporterTargets($transporter: ID!, $targets: Int!) {
@@ -53,7 +56,7 @@ class TransporterCore extends Component {
         targets: result
       }
     });
-  }
+  };
   render() {
     const transporter = this.props.data.loading
       ? { targets: [] }
@@ -131,7 +134,7 @@ class TransporterCore extends Component {
             <OutputField>{transporter.destination}</OutputField>
             <InputField
               prompt="How many transporter targets?"
-              onClick={this.targets.bind(this, transporter)}
+              onClick={this.targets}
             >
               {transporter.targets.length}
             </InputField>
