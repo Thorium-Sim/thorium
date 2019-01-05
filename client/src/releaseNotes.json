@@ -1,4 +1,9 @@
 {
+  "1.1.1": {
+    "fixes": [
+      "Ask for speed popover now appears on the correct layer when used with the hotkey cores."
+    ]
+  },
   "1.1.0": {
     "features": [
       "Added the Triggers system. This allows for certain events that happen during the simulation to trigger certain timeline events. This can be used to set up automatic sound effects, or potentially perform any other action. File an issue if you have another event or action you want added.",
