@@ -43,7 +43,7 @@
     "ncp": "^2.0.0",
     "node-fetch": "^2.2.0",
     "random-words": "^1.1.0",
-    "react-dev-utils": "^5.0.1",
+    "react-dev-utils": "^5.0.3",
     "semver": "^5.5.0",
     "subscriptions-transport-ws": "^0.9.14",
     "three": "^0.95.0",

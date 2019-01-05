@@ -16,9 +16,9 @@ export default function(port = 3000) {
     server.get("*", function(request, response) {
       response.sendFile(`${assetPath}/index.html`, function(err) {
         if (err) {
-          console.log("THIS IS AN ERROR!");
-          console.log(err);
-          response.status(500).end();
+          response
+            .status(500)
+            .end("Error loading client. Please refresh your browser.");
           return;
         }
         response.end();
