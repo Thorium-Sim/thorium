@@ -29,7 +29,7 @@ class AlertConditionCore extends Component {
     if (loading || !simulators) return null;
     const simulator = simulators[0];
     return (
-      <div className="pull-right">
+      <div className="alert-condition pull-right">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
