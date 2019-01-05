@@ -42,7 +42,10 @@ export default function reportReplace(report = "", { system, simulator }) {
     const index = returnReport.indexOf(m);
     returnReport = returnReport.replace(m, "");
     const numbers = m.replace(/[ [\]#]/gi, "").split("-");
-    const num = Math.round(Math.random() * numbers[1] + numbers[0]);
+    const num = Math.round(
+      Math.random() * (parseInt(numbers[1], 10) - parseInt(numbers[0], 10)) +
+        parseInt(numbers[0], 10)
+    );
     returnReport = splice(returnReport, index, 0, num);
   });
 
