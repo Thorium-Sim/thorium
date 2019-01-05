@@ -190,7 +190,8 @@ App.on(
         c =>
           (c.simulatorId === simulatorId &&
             (c.station === stationObj || stationObj === "all")) ||
-          c.id === clientId
+          c.id === clientId ||
+          c.id === station
       );
       clients = clients.map(c => c.id);
     }

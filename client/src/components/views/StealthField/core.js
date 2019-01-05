@@ -24,6 +24,10 @@ const STEALTH_SUB = gql`
   }
 `;
 
+function isAligned({ fore, aft, port, starboard }) {
+  return fore === 0.5 && aft === 0.5 && port === 0.5 && starboard === 0.5;
+}
+
 class StealthFieldCore extends Component {
   constructor(props) {
     super(props);
@@ -101,7 +105,6 @@ class StealthFieldCore extends Component {
     if (this.props.data.loading || !this.props.data.stealthField) return null;
     const stealthField = this.props.data.stealthField[0];
     if (!stealthField) return <p>No Stealth Field Systems</p>;
-
     // Calculate the systems that are highest
     let alertHigh = false;
     const highSystems = this.props.data.systems
@@ -154,6 +157,12 @@ class StealthFieldCore extends Component {
                       highSystems[0] ? highSystems[0].stealthFactor * 100 : 0
                     )})`}
             </OutputField>
+            {stealthField &&
+              stealthField.charge && (
+                <OutputField alert={!isAligned(stealthField.quadrants)}>
+                  {isAligned(stealthField.quadrants) ? "Aligned" : "Misaligned"}
+                </OutputField>
+              )}
           </Col>
         </Row>
       </Container>
