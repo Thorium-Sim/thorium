@@ -101,6 +101,21 @@ App.on("probeQuery", ({ id, probeId, query }) => {
 App.on("probeQueryResponse", ({ id, probeId, response }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.probeQueryResponse(probeId, response);
+  // Send Notifications
+  const simulator = App.simulators.find(s => s.id === sys.simulatorId);
+  const stations = simulator.stations.filter(s =>
+    s.cards.find(c => c.component === "ProbeControl")
+  );
+  stations.forEach(s => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      station: s.name,
+      title: `New Probe Query Response`,
+      body: response,
+      color: "info"
+    });
+  });
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });
 App.on("probeProcessedData", ({ id, simulatorId, data = "", flash }) => {

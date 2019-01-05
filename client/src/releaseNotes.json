@@ -1,5 +1,6 @@
 {
   "1.1.1": {
+    "features": ["Add a crew notification for probe query responses."],
     "fixes": [
       "Ask for speed popover now appears on the correct layer when used with the hotkey cores.",
       "Adjustment to make the status screen properly update.",
