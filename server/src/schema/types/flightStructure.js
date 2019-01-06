@@ -136,6 +136,7 @@ type Stationset {
   id: ID
   name: String
   simulator: Simulator
+  crewCount: Int
   stations: [Station]
 }
 

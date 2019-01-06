@@ -17,6 +17,11 @@ App.on("renameStationSet", ({ stationSetID, name }) => {
   stationSet.rename(name);
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
+App.on("setStationSetCrewCount", ({ stationSetID, crewCount }) => {
+  const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
+  stationSet.setCrewCount(crewCount);
+  pubsub.publish("stationSetUpdate", App.stationSets);
+});
 App.on("addStationToStationSet", ({ stationSetID, stationName }) => {
   const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
   stationSet.addStation({ name: stationName });

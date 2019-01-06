@@ -1,11 +1,12 @@
 import uuid from "uuid";
 
 export class StationSet {
-  constructor({ id, name, simulatorId, stations = [] }) {
+  constructor({ id, name, simulatorId, crewCount, stations = [] }) {
     this.class = "StationSet";
     this.id = id || uuid.v4();
     this.simulatorId = simulatorId || null;
     this.name = name || "StationSet";
+    this.crewCount = crewCount || 14;
     this.stations = [];
     stations.forEach(station => {
       this.addStation(station);
@@ -23,6 +24,10 @@ export class StationSet {
   renameStation(station, newName) {
     const renameStation = this.stations.find(s => s.name === station);
     renameStation.rename(newName);
+  }
+  setCrewCount(crewCount) {
+    const count = parseInt(crewCount, 10) || 14;
+    this.crewCount = count;
   }
   addStationCard(station, card) {
     const cardStation = this.stations.find(s => s.name === station);

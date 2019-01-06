@@ -32,6 +32,7 @@ autoAdvance(simulatorId: ID!, prev: Boolean): String
 createStationSet(name: String!, simulatorId: ID!):String
 removeStationSet(stationSetID: ID!):String
 renameStationSet(stationSetID: ID!, name: String!):String
+setStationSetCrewCount(stationSetID: ID!, crewCount: Int!):String
 addStationToStationSet(stationSetID: ID!, stationName: String!):String
 removeStationFromStationSet(stationSetID: ID!, stationName: String!):String
 editStationInStationSet(stationSetID: ID!, stationName: String!, newStationName: String!):String

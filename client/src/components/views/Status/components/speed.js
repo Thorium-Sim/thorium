@@ -3,12 +3,22 @@ import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Label } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+
 const SPEEDCHANGE_SUB = gql`
-  subscription SpeedChanged {
-    engineUpdate {
+  subscription SpeedChanged($simulatorId: ID) {
+    engineUpdate(simulatorId: $simulatorId) {
       id
+      name
+      speeds {
+        text
+        number
+        velocity
+      }
+      velocity
+      heat
       speed
       on
+      stealthFactor
     }
   }
 `;
@@ -29,15 +39,20 @@ class EngineCoreView extends Component {
           subscribe={() =>
             this.props.data.subscribeToMore({
               document: SPEEDCHANGE_SUB,
+              variables: { simulatorId: this.props.simulator.id },
               updateQuery: (previousResult, { subscriptionData }) => {
-                previousResult.engines = previousResult.engines.map(engine => {
-                  if (engine.id === subscriptionData.data.engineUpdate.id) {
-                    engine.speed = subscriptionData.data.engineUpdate.speed;
-                    engine.on = subscriptionData.data.engineUpdate.on;
-                  }
-                  return engine;
+                return Object.assign({}, previousResult, {
+                  engines: previousResult.engines.map(engine => {
+                    if (engine.id === subscriptionData.data.engineUpdate.id) {
+                      return Object.assign(
+                        {},
+                        engine,
+                        subscriptionData.data.engineUpdate
+                      );
+                    }
+                    return engine;
+                  })
                 });
-                return previousResult;
               }
             })
           }
@@ -54,14 +69,16 @@ const ENGINE_QUERY = gql`
     engines(simulatorId: $simulatorId) {
       id
       name
-      displayName
       speeds {
         text
         number
+        velocity
       }
+      velocity
       heat
       speed
       on
+      stealthFactor
     }
   }
 `;

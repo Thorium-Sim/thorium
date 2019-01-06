@@ -21,25 +21,27 @@ App.on("setStealthCharge", ({ id, state }) => {
 App.on("activateStealth", ({ id }) => {
   const system = App.systems.find(s => s.id === id);
   system.activate();
-  pubsub.publish("notify", {
-    id: uuid.v4(),
-    simulatorId: system.simulatorId,
-    type: "Stealth Field",
-    station: "Core",
-    title: `Stealth Activated`,
-    body: "",
-    color: "info"
-  });
-  App.handleEvent(
-    {
+  if (system.state) {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
       simulatorId: system.simulatorId,
+      type: "Stealth Field",
+      station: "Core",
       title: `Stealth Activated`,
-      component: "StealthFieldCore",
-      body: null,
+      body: "",
       color: "info"
-    },
-    "addCoreFeed"
-  );
+    });
+    App.handleEvent(
+      {
+        simulatorId: system.simulatorId,
+        title: `Stealth Activated`,
+        component: "StealthFieldCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
   pubsub.publish(
     "stealthFieldUpdate",
     App.systems.filter(s => s.type === "StealthField")

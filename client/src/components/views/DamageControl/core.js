@@ -110,6 +110,23 @@ class DamageControlCore extends Component {
       variables
     });
   }
+  setPowerOutput = output => {
+    if ((!output || !parseFloat(output)) && output !== "0") return;
+    const reactor = this.props.data.reactors.find(r => r.model === "reactor");
+    const mutation = gql`
+      mutation ReactorPowerLevel($id: ID!, $output: Int!) {
+        reactorChangeOutput(id: $id, output: $output)
+      }
+    `;
+    const variables = {
+      id: reactor.id,
+      output: parseInt(output, 10)
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   toggleDamage = (e, system, destroyed = false, which) => {
     e.preventDefault();
     const variables = {
@@ -315,7 +332,7 @@ class DamageControlCore extends Component {
                     <InputField
                       title="Reactor Power Level"
                       prompt="What is the new power output?"
-                      onClick={this.setPowerLevel}
+                      onClick={this.setPowerOutput}
                     >
                       {reactor.powerOutput}
                     </InputField>

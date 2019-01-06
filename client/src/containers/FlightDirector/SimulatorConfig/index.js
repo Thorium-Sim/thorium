@@ -116,6 +116,7 @@ systems {
 stationSets {
   id
   name
+  crewCount
   stations {
     name
     description
@@ -145,6 +146,7 @@ const STATIONSET_SUB = gql`
     stationSetUpdate {
       id
       name
+      crewCount
       simulator {
         id
       }

@@ -186,6 +186,8 @@ App.on("startFlight", ({ id, name, simulators, context }) => {
     sim.stations = stationSet.stations.map(s => new Classes.Station(s));
 
     sim.stationSet = stationSet.id;
+    sim.ship.bridgeCrew = stationSet.crewCount || 14;
+
     App.simulators.push(sim);
     addAspects(s, sim);
 
