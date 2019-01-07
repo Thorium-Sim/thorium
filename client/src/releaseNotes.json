@@ -1,6 +1,9 @@
 {
   "1.1.2": {
-    "fixes": ["Fixes an issue with not having a reactor on the systems core. "]
+    "fixes": [
+      "Fixes an issue with not having a reactor on the systems core.",
+      "Add an internal change that will make it easier for me to proactively fix errors."
+    ]
   },
   "1.1.1": {
     "features": [

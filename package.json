@@ -50,10 +50,11 @@
     "pkg": "NODE_ENV=production  pkg build/package.json",
     "zip": "mkdir -p zips && zip -r zips/thorium-macos.zip thorium-macos && zip -r zips/thorium-win.exe.zip thorium-win.exe && zip -r zips/thorium-linux.zip thorium-linux",
     "bump": "node ./scripts/bumpVersion.js",
+    "sentry-upload": "node ./scripts/sentryFiles.js",
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "translate": "babel-node scripts/manageTranslations.js",
     "upload": "node scripts/uploadTos3.js",
-    "deploy": "npm-run-all build zip upload clean-build",
+    "deploy": "npm-run-all build zip upload sentry-upload clean-build",
     "precommit": "lint-staged",
     "add-contributor": "all-contributors add",
     "generate-contributor": "all-contributors generate",
@@ -95,6 +96,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "cypress": "^3.1.2",
     "cypress-testing-library": "^2.3.3",
+    "dotenv": "^6.2.0",
     "eslint": "^5.4.0",
     "eslint-config-react-app": "^2.1.0",
     "eslint-plugin-cypress": "^2.1.2",
@@ -115,6 +117,7 @@
     "progress": "^2.0.0",
     "react-intl-translations-manager": "^5.0.3",
     "s3": "^4.4.0",
+    "sentry-files": "^1.0.1",
     "start-server-and-test": "^1.7.11"
   },
   "lint-staged": {
