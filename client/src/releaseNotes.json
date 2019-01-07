@@ -1,4 +1,7 @@
 {
+  "1.1.2": {
+    "fixes": ["Fixes an issue with not having a reactor on the systems core. "]
+  },
   "1.1.1": {
     "features": [
       "Add a crew notification for probe query responses.",

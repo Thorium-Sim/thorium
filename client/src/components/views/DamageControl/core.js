@@ -322,20 +322,24 @@ class DamageControlCore extends Component {
                       )}
                     </OutputField>
                   </td>
-                  <td>/</td>
+                  <td>{reactor && "/"}</td>
                   <td>
-                    <OutputField title="Reactor Output">
-                      {Math.round(reactor.powerOutput * reactor.efficiency)}
-                    </OutputField>
+                    {reactor && (
+                      <OutputField title="Reactor Output">
+                        {Math.round(reactor.powerOutput * reactor.efficiency)}
+                      </OutputField>
+                    )}
                   </td>
                   <td>
-                    <InputField
-                      title="Reactor Power Level"
-                      prompt="What is the new power output?"
-                      onClick={this.setPowerOutput}
-                    >
-                      {reactor.powerOutput}
-                    </InputField>
+                    {reactor && (
+                      <InputField
+                        title="Reactor Power Level"
+                        prompt="What is the new power output?"
+                        onClick={this.setPowerOutput}
+                      >
+                        {reactor.powerOutput}
+                      </InputField>
+                    )}
                   </td>
                 </tr>
                 <tr>
