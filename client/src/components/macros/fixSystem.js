@@ -3,22 +3,28 @@ import { FormGroup, Label, Input } from "reactstrap";
 
 const systems = [
   "LongRangeComm",
-  "Shield",
-  "Thrusters",
-  "Engine",
-  "Transporters",
-  "Sensors",
   "InternalComm",
-  "ShortRangeComm",
+  "Engine",
+  "Thrusters",
+  "Navigation",
+  "Sensors",
+  "Probes",
+  "TractorBeam",
+  "Transporters",
   "Reactor",
+  "StealthField",
+  "Shield",
   "Targeting",
   "Phasers",
-  "Torpedo",
-  "Probes",
-  "StealthField",
-  "TractorBeam",
   "Coolant",
-  "Navigation"
+  "Torpedo",
+  "ShortRangeComm",
+  "SignalJammer",
+  "ComputerCore",
+  "Thx",
+  "Sickbay",
+  "JumpDrive",
+  "Railgun"
 ];
 
 export default ({ updateArgs, args, client }) => {

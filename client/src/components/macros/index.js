@@ -47,3 +47,4 @@ export {
   default as addTriggerToSimulator,
   default as removeTriggerFromSimulator
 } from "./addTriggerToSimulator";
+export { default as fluxSystemPower } from "./fluxSystemPower";
