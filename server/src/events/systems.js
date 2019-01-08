@@ -398,7 +398,7 @@ App.on("changeSystemDefaultPowerLevel", ({ id, level }) => {
   sys.setDefaultPowerLevel(level);
   sendUpdate(sys);
 });
-App.on("fluxSystemPower", ({ id, simulatorId, all }) => {
+App.on("fluxSystemPower", ({ id, simulatorId, all, type, name }) => {
   function randomFromList(list) {
     if (!list) return;
     const length = list.length;
@@ -417,10 +417,15 @@ App.on("fluxSystemPower", ({ id, simulatorId, all }) => {
       sendUpdate(sys);
     }
   }
-  if (id) {
+  const system = App.systems.find(
+    s =>
+      s.id === id ||
+      (s.simulatorId === simulatorId &&
+        (s.type === type || s.name === name || s.displayName === name))
+  );
+  if (system) {
     // Get a number between -2 and 2
-    let sys = App.systems.find(s => s.id === id);
-    fluxPower(sys);
+    fluxPower(system);
   } else if (simulatorId) {
     const systems = App.systems.filter(
       s =>

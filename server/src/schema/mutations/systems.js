@@ -27,5 +27,7 @@ fixSystem(simulatorId: ID!, type: String!, name: String): String
 setDamageStepValidation(id:ID!, validation:Boolean!):String
 validateDamageStep(id:ID!):String
 changeSystemDefaultPowerLevel(id:ID!, level:Int!):String
-fluxSystemPower(id:ID, all:Boolean, simulatorId: ID):String
+
+#Macro: Systems: Flux Power
+fluxSystemPower(id:ID, all:Boolean, simulatorId: ID, type: String, name: String):String
 `;

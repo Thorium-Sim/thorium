@@ -8,13 +8,9 @@ export * from "./shortRangeComm";
 export * from "./thrusters";
 export * from "./tractorBeam";
 export * from "./transporters";
-
-// thruster movement - rotation & direction - be sure to add a throttle
-// probes - launched
-// comm - hailing
-// comm - incoming call
-// lrm - new incoming message
-// navigation - changing course
-// tractor beam - activate
-// shields - raise
-// shields - lower
+export * from "./computerCore";
+export * from "./docking";
+export * from "./reactor";
+export * from "./sensors";
+export * from "./systems";
+export * from "./teams";
