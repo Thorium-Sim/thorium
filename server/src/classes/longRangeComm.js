@@ -85,7 +85,7 @@ export default class LongRangeComm extends System {
   setPresetMessages(presetMessages) {
     this.presetMessages = presetMessages;
   }
-  trainingMode() {
+  trainingMode({ hasCommReview }) {
     this.createMessage(
       `This is a test long range message for you to decode. Congratulations on decoding it!`,
       true,
@@ -98,6 +98,17 @@ export default class LongRangeComm extends System {
       true,
       `Training`
     );
+    if (hasCommReview) {
+      // Get the last message and make it approved.
+      this.messages[this.messages.length].approveMessage();
+      // Create a new message to train the comm review.
+      this.createMessage(
+        `This is a training message for you to review. It has secret, sensitive information in it, so you should encrypt it before approving it.`,
+        false,
+        true,
+        `Review Training`
+      );
+    }
   }
   update({ interception, locked, decoded }) {
     if (interception || interception === false) {
