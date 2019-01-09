@@ -133,7 +133,8 @@ class Teams extends Component {
   assignOfficer = officer => {
     const { selectedTeam } = this.state;
 
-    selectedTeam.id &&
+    selectedTeam &&
+      selectedTeam.id &&
       this.setState({
         selectedTeam: Object.assign({}, selectedTeam, {
           officers: selectedTeam.officers.concat(officer)

@@ -577,7 +577,7 @@ export default class TimelineConfig extends Component {
                   <Label>Step Name</Label>
                   <Input
                     type="text"
-                    defaultValue={step.name}
+                    defaultValue={step && step.name}
                     onChange={this._updateStep.bind(this, "name")}
                   />
                 </FormGroup>

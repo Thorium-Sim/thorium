@@ -60,6 +60,15 @@ export const DeckDropdown = ({
   );
 };
 
+function selectRoomLabel(selectedRoom, selectedDeck, decks) {
+  if (!selectedRoom) return "Select Room";
+  const deck = decks.find(d => d.id === selectedDeck);
+  if (!deck) return "Select Room";
+
+  const room = deck.rooms.find(r => r.id === selectedRoom);
+  if (!room) return "Select Room";
+  return room.name;
+}
 export const RoomDropdown = ({
   selectedDeck,
   otherSelected,
@@ -72,11 +81,7 @@ export const RoomDropdown = ({
   return (
     <UncontrolledDropdown>
       <DropdownToggle block caret disabled={disabled} size={size}>
-        {selectedRoom
-          ? decks
-              .find(d => d.id === selectedDeck)
-              .rooms.find(r => r.id === selectedRoom).name
-          : "Select Room"}
+        {selectRoomLabel(selectedRoom, selectedDeck, decks)}
       </DropdownToggle>
       {selectedDeck && (
         <DropdownMenu style={{ maxHeight: "200px", overflowY: "auto" }}>
