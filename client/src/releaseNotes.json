@@ -1,6 +1,9 @@
 {
   "1.1.3": {
-    "features": ["Make it so comm review cards have proper training messages. "]
+    "features": [
+      "Make it so comm review cards have proper training messages. "
+    ],
+    "fixes": ["Fix a minor issue with the long range comm task."]
   },
   "1.1.2": {
     "features": ["Add additional triggers and actions for the trigger system."],
