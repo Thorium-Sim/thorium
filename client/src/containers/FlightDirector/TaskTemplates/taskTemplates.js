@@ -158,15 +158,18 @@ class TaskTemplates extends Component {
                   )}
                 </Col>
                 {taskTemplate && (
-                  <Col sm={5}>
+                  <Col sm={5} key={taskTemplate.id}>
                     <h3>Template Config</h3>
-                    <Card>
+                    <Card style={{ maxHeight: "70vh", overflowY: "auto" }}>
                       <CardBody>
                         <TaskConfig
                           {...taskTemplate}
-                          definition={taskDefinitions.find(
-                            d => d.name === taskTemplate.definition
-                          )}
+                          definition={
+                            console.log(taskTemplate) ||
+                            taskDefinitions.find(
+                              d => d.name === taskTemplate.definition
+                            )
+                          }
                         />
                       </CardBody>
                     </Card>

@@ -8,6 +8,7 @@ export default class TaskTemplate {
     this.name = params.name || "Task Template";
     this.values = params.values || {};
     this.definition = params.definition || "Generic";
+    this.reportTypes = params.reportTypes || ["default", "rnd", "engineering"];
   }
   rename(name) {
     this.name = name;
@@ -27,5 +28,8 @@ export default class TaskTemplate {
   }
   setValues(values) {
     this.values = values;
+  }
+  setReportTypes(reportTypes) {
+    this.reportTypes = reportTypes || [];
   }
 }

@@ -106,6 +106,9 @@ export const TasksMutations = {
   },
   setTaskTemplateValues(root, args, context) {
     App.handleEvent(args, "setTaskTemplateValues", context);
+  },
+  setTaskTemplateReportTypes(root, args, context) {
+    App.handleEvent(args, "setTaskTemplateReportTypes", context);
   }
 };
 

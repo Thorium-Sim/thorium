@@ -10,4 +10,5 @@ addTaskTemplate(definition: String!):String
 removeTaskTemplate(id:ID!):String
 renameTaskTemplate(id:ID!, name:String!):String
 setTaskTemplateValues(id:ID!, values:JSON!):String
+setTaskTemplateReportTypes(id:ID!, reportTypes:[String]!):String
 `;

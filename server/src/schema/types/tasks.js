@@ -28,6 +28,7 @@ type TaskTemplate {
   name: String
   values: JSON
   definition: String
+  reportTypes: [String]
 }
 
 type TaskDefinition {
