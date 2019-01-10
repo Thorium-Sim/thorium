@@ -594,11 +594,13 @@ export default class TimelineConfig extends Component {
               </Col>
             );
           } else if (this.state.selectedTimelineItem) {
-            const item = object.timeline
-              .find(e => e.id === this.state.selectedTimelineStep)
-              .timelineItems.find(
-                t => t.id === this.state.selectedTimelineItem
-              );
+            const step = object.timeline.find(
+              e => e.id === this.state.selectedTimelineStep
+            );
+            if (!step) return null;
+            const item = step.timelineItems.find(
+              t => t.id === this.state.selectedTimelineItem
+            );
             if (!item) return null;
             return (
               <Col sm="6" key={item.id}>

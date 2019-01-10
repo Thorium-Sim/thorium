@@ -193,6 +193,7 @@ class LongRangeComm extends Component {
       const message = this.props.data.longRangeCommunications[0].messages.find(
         s => s.id === this.state.selectedMessage
       );
+      if (!message) return;
       this.setState({
         messageText: message.message
       });

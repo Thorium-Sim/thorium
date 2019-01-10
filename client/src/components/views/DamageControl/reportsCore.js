@@ -459,7 +459,7 @@ class DamageReportCore extends Component {
                     </Col>
                   </Row>
                   <Row style={{ margin: 0 }}>
-                    {selectedSystemObj.damage.validate ? (
+                    {selectedSystemObj && selectedSystemObj.damage.validate ? (
                       <Fragment>
                         <Col sm={4}>
                           <p>
