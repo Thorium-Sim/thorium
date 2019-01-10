@@ -97,25 +97,28 @@ class VideoViewscreenCore extends Component {
                 }
               `}
             >
-              {action => (
-                <input
-                  type="checkbox"
-                  checked={
-                    viewscreen &&
-                    viewscreens.find(v => v.id === viewscreen).overlay
-                  }
-                  onChange={e =>
-                    action({
-                      variables: {
-                        id:
-                          viewscreen &&
-                          viewscreens.find(v => v.id === viewscreen).id,
-                        overlay: e.target.checked
-                      }
-                    })
-                  }
-                />
-              )}
+              {action => {
+                const viewscreenObj = viewscreens.find(
+                  v => v.id === viewscreen
+                );
+                const overlay = viewscreenObj ? viewscreenObj.overlay : false;
+                return (
+                  <input
+                    type="checkbox"
+                    checked={overlay}
+                    onChange={e =>
+                      action({
+                        variables: {
+                          id:
+                            viewscreen &&
+                            viewscreens.find(v => v.id === viewscreen).id,
+                          overlay: e.target.checked
+                        }
+                      })
+                    }
+                  />
+                );
+              }}
             </Mutation>{" "}
             Show card overlay
           </label>

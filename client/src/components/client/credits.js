@@ -178,6 +178,7 @@ class Credits extends Component {
       .then(res => res.json())
       .then(res => {
         const release = res[0];
+        if (!release) return;
         const mac = release.assets.find(a => a.name.indexOf("mac.zip") > -1)
           .browser_download_url;
         const win = release.assets.find(a => a.name.indexOf(".exe") > -1)
