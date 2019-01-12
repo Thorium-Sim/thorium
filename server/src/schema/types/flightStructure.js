@@ -71,6 +71,7 @@ type Simulator {
   verifyStep: Boolean
   requiredDamageSteps: [DamageStep]
   optionalDamageSteps: [DamageStep]
+  damageTasks: [DamageTask]
   exocomps: Int
   training: Boolean
   panels:[ID]

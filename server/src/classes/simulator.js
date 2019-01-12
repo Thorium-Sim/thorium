@@ -2,6 +2,7 @@ import uuid from "uuid";
 import App from "../app";
 import Team from "./teams";
 import DamageStep from "./generic/damageStep";
+import DamageTask from "./generic/damageTask";
 import { Station } from "./stationSet";
 class Ambiance {
   constructor(params = {}) {
@@ -147,6 +148,11 @@ export default class Simulator {
       params.optionalDamageSteps.forEach(s =>
         this.optionalDamageSteps.push(new DamageStep(s))
       );
+
+    // Task-based damage reports
+    this.damageTasks = [];
+    params.damageTasks &&
+      params.damageTasks.forEach(s => this.damageTasks.push(new DamageTask(s)));
   }
   get alertlevel() {
     const stealthField = App.systems.find(
@@ -249,6 +255,14 @@ export default class Simulator {
   updateTriggers(triggers) {
     this.triggers = triggers || [];
   }
+
+  setAssets(assets) {
+    this.assets = new Assets(assets);
+  }
+  setHasPrinter(hasPrinter) {
+    this.hasPrinter = hasPrinter;
+  }
+
   // Damage Steps
   addDamageStep({ name, args, type }) {
     this[`${type}DamageSteps`].push(new DamageStep({ name, args }));
@@ -268,10 +282,21 @@ export default class Simulator {
       s => s.id !== stepId
     );
   }
-  setAssets(assets) {
-    this.assets = new Assets(assets);
+
+  // Damage Tasks
+  // As a side note, can I just say how much more elegant
+  // the damage tasks system is already? Look at this!
+  // It's much simpler. Why didn't I do it this
+  // way in the first place? ~A
+  addDamageTask(task) {
+    if (!task || !task.id || this.damageTasks.find(t => t.id === task.id))
+      return;
+    this.damageTasks.push(new DamageTask(task));
   }
-  setHasPrinter(hasPrinter) {
-    this.hasPrinter = hasPrinter;
+  updateDamageTask(task) {
+    this.damageTasks.find(t => t.id === task.id).update(task);
+  }
+  removeDamageTask(id) {
+    this.damageTasks = this.damageTasks.filter(t => t.id !== id);
   }
 }

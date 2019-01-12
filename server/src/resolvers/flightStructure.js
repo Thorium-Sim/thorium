@@ -133,6 +133,15 @@ export const FlightStructureMutations = {
   removeSimulatorDamageStep(rootValue, params, context) {
     App.handleEvent(params, "removeSimulatorDamageStep", context);
   },
+  addSimulatorDamageTask(rootValue, params, context) {
+    App.handleEvent(params, "addSimulatorDamageTask", context);
+  },
+  updateSimulatorDamageTask(rootValue, params, context) {
+    App.handleEvent(params, "updateSimulatorDamageTask", context);
+  },
+  removeSimulatorDamageTask(rootValue, params, context) {
+    App.handleEvent(params, "removeSimulatorDamageTask", context);
+  },
   setSimulatorMission(rootValue, params, context) {
     App.handleEvent(params, "setSimulatorMission", context);
   },
@@ -414,6 +423,16 @@ export const FlightStructureTypes = {
     simulators(rootValue) {
       return rootValue.simulators.map(s =>
         App.simulators.find(sim => sim.id === s)
+      );
+    }
+  },
+  DamageTask: {
+    taskTemplate(rootValue) {
+      return App.taskTemplates.find(t => t.id === rootValue.id);
+    },
+    nextSteps(rootValue) {
+      return App.taskTemplates.filter(
+        t => rootValue.nextSteps.indexOf(t.id) > -1
       );
     }
   },

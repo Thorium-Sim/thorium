@@ -115,6 +115,21 @@ App.on("removeSimulatorDamageStep", ({ simulatorId, step }) => {
   sim.removeDamageStep(step);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("addSimulatorDamageTask", ({ simulatorId, task }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.addDamageTask(task);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("updateSimulatorDamageTask", ({ simulatorId, task }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.updateDamageTask(task);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("removeSimulatorDamageTask", ({ simulatorId, taskId }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.removeDamageTask(taskId);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setSimulatorMission", ({ simulatorId, missionId }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.mission = missionId;
