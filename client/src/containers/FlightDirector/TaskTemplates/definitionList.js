@@ -45,13 +45,17 @@ const DefinitionList = ({
                 <Badge title="Templates Available">
                   {taskTemplates.filter(t => t.definition === v.name).length}
                 </Badge>
-                <Badge color="warning" title="Templates Assigned">
-                  {
-                    taskTemplates.filter(
-                      t => t.definition === v.name && t.assigned
-                    ).length
-                  }
-                </Badge>
+                {taskTemplates.filter(
+                  t => t.definition === v.name && t.assigned
+                ).length > 0 && (
+                  <Badge color="warning" title="Templates Assigned">
+                    {
+                      taskTemplates.filter(
+                        t => t.definition === v.name && t.assigned
+                      ).length
+                    }
+                  </Badge>
+                )}
               </ListGroupItem>
             ))}
           </Fragment>

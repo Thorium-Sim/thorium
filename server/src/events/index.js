@@ -53,3 +53,4 @@ import "./tasks";
 import "./environment";
 import "./commandLine.js";
 import "./trigger";
+import "./taskReport.js";

@@ -13621,6 +13621,7 @@ export default {
   commandLine: [],
   triggerGroups: [],
   taskTemplates: [],
+  taskReports: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),
   doTrack: false,
