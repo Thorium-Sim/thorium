@@ -66,22 +66,23 @@ class Config extends Component {
           </FormGroup>
         </Col>
         <Col sm={4}>
-          {["Light", "PlasmaChannel"].indexOf(component.component) > -1 && (
-            <FormGroup>
-              <Label>Color</Label>
-              <ChromePicker
-                color={this.state.color}
-                onChangeComplete={color =>
-                  update(
-                    `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${
-                      color.rgb.a
-                    })`,
-                    "color"
-                  )
-                }
-              />
-            </FormGroup>
-          )}
+          {component.component &&
+            ["Light", "PlasmaChannel"].indexOf(component.component) > -1 && (
+              <FormGroup>
+                <Label>Color</Label>
+                <ChromePicker
+                  color={this.state.color}
+                  onChangeComplete={color =>
+                    update(
+                      `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${
+                        color.rgb.a
+                      })`,
+                      "color"
+                    )
+                  }
+                />
+              </FormGroup>
+            )}
         </Col>
       </Row>
     );

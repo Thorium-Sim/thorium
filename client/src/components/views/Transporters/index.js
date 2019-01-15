@@ -171,6 +171,7 @@ class Transporters extends Component {
     });
   }
   completeTransport(transporter, target) {
+    if (!target) return;
     this.props.client.mutate({
       mutation: gql`
         mutation CompleteTransport($transporter: ID!, $target: ID!) {

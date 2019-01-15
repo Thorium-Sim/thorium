@@ -23,7 +23,9 @@ const Settings = () => (
           <h1>Settings</h1>
           <h3>
             Thorium ID:{" "}
-            <span className="selectable">{data.thorium.thoriumId}</span>
+            <span className="selectable">
+              {data.thorium && data.thorium.thoriumId}
+            </span>
           </h3>
           <div>
             <label>

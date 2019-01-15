@@ -16,3 +16,4 @@ export * from "./reactor";
 export * from "./sensors";
 export * from "./systems";
 export * from "./teams";
+export * from "./battle";

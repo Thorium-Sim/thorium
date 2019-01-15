@@ -162,8 +162,11 @@ class ParticleLine extends Component {
 }
 class ParticleDetectorCore extends Component {
   state = {};
+  mounted = false;
   componentDidMount() {
+    this.mounted = true;
     setTimeout(() => {
+      if (this.mounted === false) return;
       let dimensions = false;
       while (!dimensions) {
         const el = ReactDOM.findDOMNode(this);
@@ -176,6 +179,9 @@ class ParticleDetectorCore extends Component {
       }
       this.setState({ dimensions });
     }, 500);
+  }
+  componentWillUnmount() {
+    this.mounted = false;
   }
   mouseDown = (e, contact) => {
     this.downMouseTime = Date.now();
