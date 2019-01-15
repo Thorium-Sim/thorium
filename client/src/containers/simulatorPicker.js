@@ -58,7 +58,7 @@ const SimulatorPicker = ({ triggerAlert }) => {
   return (
     <Query query={QUERY} fetchPolicy="cache-and-network">
       {({ data, loading }) =>
-        loading ? (
+        loading || !data ? (
           <Rings color="#08f" width={100} height={100} />
         ) : (
           <Container>

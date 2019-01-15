@@ -114,8 +114,9 @@ const TacticalMapList = ({
   };
   return (
     <Query query={TACTICALMAP_QUERY}>
-      {({ loading, data: { tacticalMaps }, subscribeToMore }) => {
-        if (loading) return null;
+      {({ loading, data, subscribeToMore }) => {
+        if (loading || !data) return null;
+        const { tacticalMaps } = data;
         const maps = tacticalMaps.filter(
           t => (flightId ? !t.flight || t.flight.id === flightId : !t.flight)
         );

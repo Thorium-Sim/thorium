@@ -10,8 +10,8 @@ export default () => {
   return (
     <Konami
       easterEgg={() => {
-        synth.cancel();
-        synth.speak(new SpeechSynthesisUtterance(song));
+        synth && synth.cancel();
+        synth && synth.speak(new SpeechSynthesisUtterance(song));
       }}
     />
   );

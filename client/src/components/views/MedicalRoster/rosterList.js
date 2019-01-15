@@ -9,6 +9,8 @@ import {
   ListGroupItemHeading,
   ListGroupItemText
 } from "reactstrap";
+import escapeRegex from "escape-string-regexp";
+
 class RosterList extends Component {
   state = { roster: "bridge" };
   render() {
@@ -56,8 +58,8 @@ class RosterList extends Component {
             .filter(f => {
               if (search) {
                 return (
-                  f.firstName.match(new RegExp(search, "gi")) ||
-                  f.lastName.match(new RegExp(search, "gi"))
+                  f.firstName.match(new RegExp(escapeRegex(search), "gi")) ||
+                  f.lastName.match(new RegExp(escapeRegex(search), "gi"))
                 );
               }
               return true;

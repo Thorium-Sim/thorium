@@ -61,7 +61,8 @@ class NavigationCore extends Component {
           calculatedCourse: navigation.calculatedCourse
         });
       }
-      const oldNavigation = prevProps.data.navigation[0];
+      const oldNavigation =
+        prevProps.data.navigation && prevProps.data.navigation[0];
       if (navigation && oldNavigation) {
         if (
           navigation.calculatedCourse.x !== oldNavigation.calculatedCourse.x ||
