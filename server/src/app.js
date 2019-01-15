@@ -155,7 +155,6 @@ class Events extends EventEmitter {
     }
     // Handle any triggers before the event so we can capture data that
     // the event might remove
-    console.log(eventName, param);
     handleTrigger(eventName, param, context);
     this.emit(eventName, { ...param, context });
     process.env.NODE_ENV === "production" && this.snapshot();
