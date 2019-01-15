@@ -1,5 +1,6 @@
 {
   "1.1.3": {
+    "features": ["Add triggers for battle core projectiles."],
     "fixes": [
       "Resetting the flight will yield the correct bridge crew number for the station set.",
       "Fixes various errors which have been detected through error reporting.",
