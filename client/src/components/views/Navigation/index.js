@@ -171,10 +171,12 @@ class Navigation extends Component {
       });
       return;
     }
-    enteredCourse[selectedField] = enteredCourse[selectedField].slice(
-      0,
-      enteredCourse[selectedField].length - 1
-    );
+    enteredCourse[selectedField] = enteredCourse[selectedField]
+      ? enteredCourse[selectedField].slice(
+          0,
+          enteredCourse[selectedField].length - 1
+        )
+      : "";
     this.setState({
       enteredCourse
     });
