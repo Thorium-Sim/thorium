@@ -1,6 +1,11 @@
 {
   "1.1.3": {
-    "features": ["Make it so comm review cards have proper training messages. "]
+    "features": ["Add triggers for battle core projectiles.", "Make it so comm review cards have proper training messages. "],
+    "fixes": [
+      "Resetting the flight will yield the correct bridge crew number for the station set.",
+      "Fixes various errors which have been detected through error reporting.",
+      "Fixes an issue where widgets can be overlapped by other elements."
+    ]
   },
   "1.1.2": {
     "features": ["Add additional triggers and actions for the trigger system."],

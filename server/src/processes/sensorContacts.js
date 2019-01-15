@@ -106,6 +106,14 @@ const moveSensorContactTimed = () => {
             distance3d(c.position, { x: 0, y: 0, z: 0 }) < 0.005
           ) {
             // Projectile destruction
+            // Trigger an event so we can capture it for
+            // triggers.
+            App.handleEvent(
+              {
+                simulatorId: sensors.simulatorId
+              },
+              "sensorsProjectileHit"
+            );
             sensors.destroyContact({ id: c.id });
             pubsub.publish("notify", {
               id: uuid.v4(),

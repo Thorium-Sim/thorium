@@ -66,8 +66,9 @@ class Alerts extends Component {
             }
             if (speech[notify.type] !== false) {
               if (self.props.station.name === "Core" && self.props.speech) {
-                synth.cancel();
-                synth.speak(new SpeechSynthesisUtterance(notify.title));
+                synth && synth.cancel();
+                synth &&
+                  synth.speak(new SpeechSynthesisUtterance(notify.title));
               }
             }
           }

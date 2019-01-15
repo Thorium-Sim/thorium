@@ -125,9 +125,9 @@ It will permenantly erase all simulators running in this flight.`
     >
       {({ loading, data }) => {
         if (loading) return null;
-        const flight = data.flights.find(
-          f => f.id === props.match.params.flightId
-        );
+        const flight =
+          data.flights &&
+          data.flights.find(f => f.id === props.match.params.flightId);
         if (!flight) return <div>Error loading flight...</div>;
         return (
           <Container className="flight-lobby">

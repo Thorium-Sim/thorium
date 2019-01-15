@@ -273,6 +273,8 @@ App.on("resetFlight", ({ flightId, simulatorId, full }) => {
     newSim.executedTimelineSteps = [];
 
     newSim.stationSet = sim.stationSet;
+    const stationSet = App.stationSets.find(s => s.id === newSim.stationSet);
+    newSim.ship.bridgeCrew = stationSet.crewCount || 14;
 
     // If this isn't a full reset, transfer over the mission information too
     if (!full) {
