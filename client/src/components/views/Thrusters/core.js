@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import gql from "graphql-tag";
 import { Mutation, graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input } from "reactstrap";
@@ -112,57 +112,63 @@ class ThrusterCore extends Component {
               {Math.floor(thrusters.rotation && thrusters.rotation.roll)}
             </OutputField>
           </Col>
-          <Col sm={4}>
-            <InputField
-              alert={
-                Math.round(thrusters.rotation && thrusters.rotation.yaw) !==
-                Math.round(thrusters.rotationRequired.yaw)
-              }
-              prompt="What is the required yaw?"
-              onClick={value => {
-                this.setRequiredRotation(
-                  "yaw",
-                  Math.min(359, Math.max(0, value))
-                );
-              }}
-            >
-              {Math.round(thrusters.rotationRequired.yaw)}
-            </InputField>
-          </Col>
-          <Col sm={4}>
-            <InputField
-              alert={
-                Math.round(thrusters.rotation.pitch) !==
-                Math.round(thrusters.rotationRequired.pitch)
-              }
-              prompt="What is the required pitch?"
-              onClick={value => {
-                this.setRequiredRotation(
-                  "pitch",
-                  Math.min(359, Math.max(0, value))
-                );
-              }}
-            >
-              {Math.round(thrusters.rotationRequired.pitch)}
-            </InputField>
-          </Col>
-          <Col sm={4}>
-            <InputField
-              alert={
-                Math.round(thrusters.rotation.roll) !==
-                Math.round(thrusters.rotationRequired.roll)
-              }
-              prompt="What is the required roll?"
-              onClick={value => {
-                this.setRequiredRotation(
-                  "roll",
-                  Math.min(359, Math.max(0, value))
-                );
-              }}
-            >
-              {Math.round(thrusters.rotationRequired.roll)}
-            </InputField>
-          </Col>
+          {thrusters &&
+            thrusters.rotationRequired && (
+              <Fragment>
+                <Col sm={4}>
+                  <InputField
+                    alert={
+                      Math.round(
+                        thrusters.rotation && thrusters.rotation.yaw
+                      ) !== Math.round(thrusters.rotationRequired.yaw)
+                    }
+                    prompt="What is the required yaw?"
+                    onClick={value => {
+                      this.setRequiredRotation(
+                        "yaw",
+                        Math.min(359, Math.max(0, value))
+                      );
+                    }}
+                  >
+                    {Math.round(thrusters.rotationRequired.yaw)}
+                  </InputField>
+                </Col>
+                <Col sm={4}>
+                  <InputField
+                    alert={
+                      Math.round(thrusters.rotation.pitch) !==
+                      Math.round(thrusters.rotationRequired.pitch)
+                    }
+                    prompt="What is the required pitch?"
+                    onClick={value => {
+                      this.setRequiredRotation(
+                        "pitch",
+                        Math.min(359, Math.max(0, value))
+                      );
+                    }}
+                  >
+                    {Math.round(thrusters.rotationRequired.pitch)}
+                  </InputField>
+                </Col>
+                <Col sm={4}>
+                  <InputField
+                    alert={
+                      Math.round(thrusters.rotation.roll) !==
+                      Math.round(thrusters.rotationRequired.roll)
+                    }
+                    prompt="What is the required roll?"
+                    onClick={value => {
+                      this.setRequiredRotation(
+                        "roll",
+                        Math.min(359, Math.max(0, value))
+                      );
+                    }}
+                  >
+                    {Math.round(thrusters.rotationRequired.roll)}
+                  </InputField>
+                </Col>
+              </Fragment>
+            )}
           <ThrusterArrow
             name="arrow-circle-down"
             value={

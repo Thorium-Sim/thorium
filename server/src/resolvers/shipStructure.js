@@ -1,6 +1,7 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
+import escapeRegex from "escape-string-regexp";
 
 export const ShipStructureQueries = {
   decks(root, { simulatorId, number }) {
@@ -50,7 +51,7 @@ export const ShipStructureQueries = {
       });
     }
     if (name) {
-      const regex = new RegExp(name, "gui");
+      const regex = new RegExp(escapeRegex(name), "gui");
       inventory = inventory.filter(i => i.name.match(regex));
     }
     // Remove any rooms that have no inventory of that inventory item.

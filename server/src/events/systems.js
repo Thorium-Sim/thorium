@@ -284,9 +284,14 @@ App.on("fixSystem", ({ simulatorId, type, name }) => {
 App.on("trainingMode", ({ simulatorId }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   sim.trainingMode(true);
+  const hasCommReview = !!sim.stations.find(s =>
+    s.cards.find(c => c.component === "CommReview")
+  );
   const systems = App.systems.filter(s => s.simulatorId === simulatorId);
   systems.forEach(s => {
-    s.trainingMode();
+    // The arguments are named and provide extra data to some of the training
+    // mode methods.
+    s.trainingMode({ hasCommReview });
     sendUpdate(s);
   });
   // Create a training system to damage

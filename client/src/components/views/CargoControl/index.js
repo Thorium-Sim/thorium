@@ -4,6 +4,7 @@ import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Input, Card, CardBody, Button } from "reactstrap";
 import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
 import { FormattedMessage } from "react-intl";
+import escapeRegex from "escape-string-regexp";
 
 import Tour from "helpers/tourHelper";
 import "./style.scss";
@@ -256,7 +257,9 @@ class CargoControl extends Component {
                 <CardBody>
                   {inventory
                     .filter(i =>
-                      i.name.match(new RegExp(this.state.findInventory, "gi"))
+                      i.name.match(
+                        new RegExp(escapeRegex(this.state.findInventory), "gi")
+                      )
                     )
                     .map(i => (
                       <div key={`find-${i.id}`}>
