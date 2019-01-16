@@ -258,7 +258,10 @@ class CargoControl extends Component {
                   {inventory
                     .filter(i =>
                       i.name.match(
-                        new RegExp(escapeRegex(this.state.findInventory), "gi")
+                        new RegExp(
+                          escapeRegex(this.state.findInventory || ""),
+                          "gi"
+                        )
                       )
                     )
                     .map(i => (

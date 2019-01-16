@@ -111,7 +111,9 @@ class Library extends Component {
                       )
                   )
                   .filter(l =>
-                    l.title.match(new RegExp(escapeRegex(searchFilter), "gi"))
+                    l.title.match(
+                      new RegExp(escapeRegex(searchFilter || ""), "gi")
+                    )
                   )
                   .sort((a, b) => {
                     if (a.title > b.title) return 1;

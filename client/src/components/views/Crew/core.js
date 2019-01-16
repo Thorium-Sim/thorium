@@ -185,7 +185,7 @@ class CrewCore extends Component {
       data: { crew }
     } = this.props;
     const { search } = this.state;
-    const regex = new RegExp(escapeRegex(search), "gi");
+    const regex = new RegExp(escapeRegex(search || ""), "gi");
     return crew.filter(
       c =>
         regex.test(c.firstName) ||

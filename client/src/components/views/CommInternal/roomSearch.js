@@ -58,7 +58,7 @@ class RoomSearch extends Component {
       []
     );
 
-    const regex = new RegExp(escapeRegex(evt.target.value), "gui");
+    const regex = new RegExp(escapeRegex(evt.target.value || ""), "gui");
     this.setState({
       searchRooms: rooms.filter(i => i.name.match(regex)).sort((a, b) => {
         if (a.number > b.number) return 1;

@@ -58,8 +58,10 @@ class RosterList extends Component {
             .filter(f => {
               if (search) {
                 return (
-                  f.firstName.match(new RegExp(escapeRegex(search), "gi")) ||
-                  f.lastName.match(new RegExp(escapeRegex(search), "gi"))
+                  f.firstName.match(
+                    new RegExp(escapeRegex(search || ""), "gi")
+                  ) ||
+                  f.lastName.match(new RegExp(escapeRegex(search || ""), "gi"))
                 );
               }
               return true;
