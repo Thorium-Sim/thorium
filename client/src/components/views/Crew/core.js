@@ -13,6 +13,7 @@ import { TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { parse } from "papaparse";
+import escapeRegex from "escape-string-regexp";
 
 import "./style.scss";
 const damagePositions = [
@@ -184,7 +185,7 @@ class CrewCore extends Component {
       data: { crew }
     } = this.props;
     const { search } = this.state;
-    const regex = new RegExp(search, "gi");
+    const regex = new RegExp(escapeRegex(search || ""), "gi");
     return crew.filter(
       c =>
         regex.test(c.firstName) ||

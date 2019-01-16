@@ -24,9 +24,10 @@ class ResetCache extends Component {
           if (!loading) {
             if (
               excludedStations.indexOf(this.props.station.name) > -1 ||
-              this.props.station.cards.find(
-                c => excludedStations.indexOf(c.component) > -1
-              )
+              (this.props.station.cards &&
+                this.props.station.cards.find(
+                  c => excludedStations.indexOf(c.component) > -1
+                ))
             )
               return;
             this.props.playSound({ url: "/sciences.ogg" });

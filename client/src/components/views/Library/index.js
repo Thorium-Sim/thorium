@@ -5,6 +5,7 @@ import { Container, Row, Col, Card, CardBody, Input, Button } from "reactstrap";
 import { Asset } from "helpers/assets";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import escapeRegex from "escape-string-regexp";
 
 import "./style.scss";
 
@@ -109,7 +110,11 @@ class Library extends Component {
                         false
                       )
                   )
-                  .filter(l => l.title.match(new RegExp(searchFilter, "gi")))
+                  .filter(l =>
+                    l.title.match(
+                      new RegExp(escapeRegex(searchFilter || ""), "gi")
+                    )
+                  )
                   .sort((a, b) => {
                     if (a.title > b.title) return 1;
                     if (a.title < b.title) return -1;

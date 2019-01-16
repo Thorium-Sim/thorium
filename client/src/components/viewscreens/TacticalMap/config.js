@@ -106,6 +106,7 @@ class TacticalMapConfig extends Component {
               <input
                 type="checkbox"
                 checked={
+                  tacticalMaps.find(t => t.id === flightTacticalId) &&
                   tacticalMaps.find(t => t.id === flightTacticalId).frozen
                 }
                 onChange={this.freezeTactical}

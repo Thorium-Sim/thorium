@@ -16,7 +16,7 @@ const TourHelper = ({
   onRequestClose
 }) => {
   const speak = stepNum => {
-    synth.cancel();
+    synth && synth.cancel();
     const step = steps[stepNum - 1];
     if (typeof step.content === "string") {
       return synth.speak(new SpeechSynthesisUtterance(step.content));
@@ -49,7 +49,7 @@ const TourHelper = ({
           steps={steps}
           isOpen={training}
           onRequestClose={() => {
-            synth.cancel();
+            synth && synth.cancel();
             onRequestClose ? onRequestClose() : action();
           }}
           badgeContent={(current, total) => {

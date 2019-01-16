@@ -10,7 +10,9 @@ class VideoConfig extends Component {
     if (this.player.current) {
       this.player.current.playbackRate = parseFloat(data.speed) || 1;
       setTimeout(() => {
-        this.player.current.playbackRate = parseFloat(data.speed) || 1;
+        if (this.player.current) {
+          this.player.current.playbackRate = parseFloat(data.speed) || 1;
+        }
       }, 50);
     }
   }

@@ -36,7 +36,10 @@ export default class InternalCallConfig extends Component {
       step: {
         id,
         args: {
-          [which]: evt.target.value
+          [which]:
+            evt.target.checked || evt.target.checked === false
+              ? evt.target.checked
+              : evt.target.value
         }
       }
     };
