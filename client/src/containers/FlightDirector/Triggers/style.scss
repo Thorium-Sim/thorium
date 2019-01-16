@@ -1,0 +1,10 @@
+.content-container > div > div:first-of-type {
+  pointer-events: none;
+  textarea,
+  button,
+  input,
+  select,
+  .rc-menu {
+    pointer-events: all;
+  }
+}

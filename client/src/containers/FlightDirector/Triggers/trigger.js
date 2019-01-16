@@ -17,6 +17,7 @@ import {
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import * as components from "./components";
+import "./style.scss";
 
 // I'm lazy
 const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);

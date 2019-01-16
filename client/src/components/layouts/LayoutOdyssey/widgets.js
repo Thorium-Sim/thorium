@@ -86,7 +86,7 @@ class WidgetsContainer extends Component {
     // return null;
     return (
       <div
-        style={{ zIndex: 10000 }}
+        style={{ zIndex: 10000000 }}
         className={`widgets ${clientObj.loginState} ${
           clientObj.offlineState ? "offline" : ""
         }`}

@@ -1,7 +1,7 @@
 import React from "react";
 
 export default {
-  name: "sendLongRangeMessage",
+  name: "sendLongRangeMessageEvent",
   category: "Triggers",
   component: () => (
     <div>
@@ -25,9 +25,7 @@ export default {
       color: "orange",
       title: "Triggers the action",
       type: "Trigger"
-    }
-  ],
-  inputs: [
+    },
     {
       id: "crew",
       color: "yellow",
@@ -35,5 +33,6 @@ export default {
       type: "String"
     }
   ],
+  inputs: [],
   config: []
 };
