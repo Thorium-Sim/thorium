@@ -5,7 +5,7 @@ export { default as directionUpdate } from "./directionUpdate";
 export { default as launchProbe } from "./launchProbe";
 export { default as navCourseEntry } from "./navCourseEntry";
 export { default as rotationUpdate } from "./rotationUpdate";
-export { default as sendLongRangeMessage } from "./sendLongRangeMessage";
+export { default as sendLongRangeMessageEvent } from "./sendLongRangeMessage";
 export { default as setTractorBeamState } from "./setTractorBeamState";
 export { default as shieldLowered } from "./shieldLowered";
 export { default as shieldRaised } from "./shieldRaised";

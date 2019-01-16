@@ -1,6 +1,9 @@
 {
   "1.1.4": {
-    "fixes": ["Fixes some regressions."]
+    "fixes": [
+      "Fixes some regressions.",
+      "Makes dragging components on the node configs work better."
+    ]
   },
   "1.1.3": {
     "features": [
