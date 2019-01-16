@@ -111,6 +111,7 @@ const template = {
 const report = Object.entries(damageTexts).map(([key, value]) => ({
   id: uuid.v4(),
   name: `${key} Team`,
+  class: "TaskTemplate",
   values: {
     preamble: value.preamble,
     orders: value.orders,

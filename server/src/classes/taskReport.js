@@ -10,6 +10,7 @@ function fullType(type) {
   if (type === "engineering") return "Engineering";
   return titleCase(type);
 }
+
 export default class TaskReport {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -71,7 +72,8 @@ export default class TaskReport {
     // so I can more or less replicate it using tasks.
 
     // Report steps should be unique. That is, it shouldn't have more than one task of
-    // a single definition, except in certain circumstances.
+    // a single definition, except in certain circumstances such as if there are
+    // multiple required damage tasks.
 
     // Remove power if the system has power
     // Add in any required damage steps at the start

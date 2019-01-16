@@ -1,6 +1,6 @@
 import uuid from "uuid";
 
-export default class DamageStep {
+export default class DamageTask {
   constructor(params = {}) {
     // Since each object (simulator and station) can
     // only have one of a given task template assigned
