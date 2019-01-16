@@ -1,5 +1,8 @@
 {
   "1.1.4": {
+    "features": [
+      "Add a superficial damage report length for roughly 3 step reports."
+    ],
     "fixes": [
       "Fixes some regressions.",
       "Makes dragging components on the node configs work better."
