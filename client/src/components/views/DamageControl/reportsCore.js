@@ -452,6 +452,7 @@ class DamageReportCore extends Component {
                         value={"select"}
                       >
                         <option value="select">Generate</option>
+                        <option value="3">Superficial</option>
                         <option value="5">Short</option>
                         <option value="8">Medium</option>
                         <option value="12">Long</option>
