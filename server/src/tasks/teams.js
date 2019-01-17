@@ -138,6 +138,64 @@ ${text}`,
     }
   },
   {
+    name: "Wait For Team To Clear",
+    class: "Teams",
+    active() {
+      return true;
+    },
+    stations({ simulator }) {
+      return (
+        simulator &&
+        simulator.stations.filter(s =>
+          s.cards.find(c => c.component === "DamageTeams")
+        )
+      );
+    },
+    values: {
+      preamble: {
+        input: () => "textarea",
+        value: () => "A damage team needs to be sent to perform some repairs."
+      },
+      teamName: {
+        input: () => "text",
+        value: () => "Repair Team"
+      }
+    },
+
+    instructions({
+      simulator,
+      requiredValues: { preamble, teamName },
+      task = {}
+    }) {
+      // Make sure it supports systems as well
+      const station = simulator.stations.find(s =>
+        s.cards.find(c => c.component === "DamageTeams")
+      );
+
+      if (station && task.station === station.name)
+        return reportReplace(
+          `${preamble} Wait for the team named "${teamName}" to disappear from your list of teams.`,
+
+          {
+            simulator
+          }
+        );
+      return reportReplace(
+        `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of teams"
+        } to wait for the team named "${teamName}" to disappear from their list of teams.`,
+        { simulator }
+      );
+    },
+    verify({ simulator, requiredValues: { teamName } }) {
+      const team = App.teams.find(
+        t => t.name === teamName && t.simulatorId === simulator.id
+      );
+      // If the team doesn't exist, no need to wait for them to disappear, yeah?
+      return !team;
+    }
+  },
+  {
     name: "Send Security Team",
     class: "Teams",
     active({ simulator }) {
