@@ -8,6 +8,7 @@ export default class TaskTemplate {
     this.name = params.name || "Task Template";
     this.values = params.values || {};
     this.definition = params.definition || "Generic";
+    this.macros = params.macros || [];
   }
   rename(name) {
     this.name = name;
@@ -27,5 +28,12 @@ export default class TaskTemplate {
   }
   setValues(values) {
     this.values = values;
+  }
+  addMacro(macro) {
+    // event, args, delay
+    this.macros.push({ ...macro, id: uuid.v4() });
+  }
+  removeMacro(id) {
+    this.macros = this.macros.filter(m => m.id !== id);
   }
 }

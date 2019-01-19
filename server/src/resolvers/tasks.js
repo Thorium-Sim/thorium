@@ -106,6 +106,12 @@ export const TasksMutations = {
   },
   setTaskTemplateValues(root, args, context) {
     App.handleEvent(args, "setTaskTemplateValues", context);
+  },
+  addTaskMacro(root, args, context) {
+    App.handleEvent(args, "addTaskMacro", context);
+  },
+  removeTaskMacro(root, args, context) {
+    App.handleEvent(args, "removeTaskMacro", context);
   }
 };
 

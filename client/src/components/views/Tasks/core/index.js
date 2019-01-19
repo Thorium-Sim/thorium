@@ -23,7 +23,13 @@ const templateQueryData = `
 id
 name
 definition
-values`;
+values
+macros {
+  id
+  args
+  event
+  delay
+}`;
 
 const QUERY = gql`
   query Tasks($simulatorId: ID!) {
