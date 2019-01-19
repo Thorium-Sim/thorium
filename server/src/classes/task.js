@@ -72,12 +72,22 @@ export default class Task {
     // Timing
     this.startTime = new Date();
     this.endTime = null;
+
+    // Macros
+    this.macros = params.macros || [];
   }
   verify(dismiss) {
     this.verified = true;
     if (dismiss) this.dismissed = true;
     this.verifyRequested = false;
     this.endTime = new Date();
+
+    // Trigger all the macros
+    this.macros.length > 0 &&
+      App.handleEvent(
+        { simulatorId: this.simulatorId, macros: this.macros },
+        "triggerMacros"
+      );
   }
   dismiss() {
     this.dismissed = true;
