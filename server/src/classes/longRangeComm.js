@@ -100,7 +100,7 @@ export default class LongRangeComm extends System {
     );
     if (hasCommReview) {
       // Get the last message and make it approved.
-      this.messages[this.messages.length].approveMessage();
+      this.messages[this.messages.length - 1].approveMessage();
       // Create a new message to train the comm review.
       this.createMessage(
         `This is a training message for you to review. It has secret, sensitive information in it, so you should encrypt it before approving it.`,
