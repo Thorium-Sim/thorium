@@ -1,4 +1,8 @@
 {
+  "1.1.6": {
+    "features": "Adds task macros, which allows you to execute macros (timeline actions) when a task is complete.",
+    "fixes": "Fixes a minor bug with starting training."
+  },
   "1.1.4": {
     "features": [
       "Add a superficial damage report length for roughly 3 step reports."

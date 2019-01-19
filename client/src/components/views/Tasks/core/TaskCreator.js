@@ -1,8 +1,9 @@
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
-import { Badge, Input, Button, ListGroup, ListGroupItem } from "reactstrap";
+import { Button } from "reactstrap";
 import gql from "graphql-tag";
-import ValueInput from "./ValueInput";
+import ConfigureTask from "./ConfigureTask";
+import ConfigureMacro from "./ConfigureMacro";
 import "./style.scss";
 
 const QUERY = gql`
@@ -24,7 +25,8 @@ class TasksCore extends Component {
   state = {
     selectedDefinition: "nothing",
     station: "nothing",
-    requiredValues: {}
+    requiredValues: {},
+    macros: []
   };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.selectedDefinition !== this.state.selectedDefinition) {
@@ -40,9 +42,11 @@ class TasksCore extends Component {
     const { taskDefinitions, taskTemplates, simulator, cancel } = this.props;
     const {
       selectedDefinition,
-      selectedTemplate,
       requiredValues,
-      station
+      station,
+      macros,
+      configureMacroId,
+      client
     } = this.state;
     const definitionGroups = taskDefinitions
       .concat()
@@ -56,181 +60,44 @@ class TasksCore extends Component {
         return prev;
       }, {});
     const definition = taskDefinitions.find(t => t.id === selectedDefinition);
+    const configureMacro = macros.find(c => c.id === configureMacroId);
     return (
       <div
         className="core-tasks"
         style={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
-        <div style={{ display: "flex", flex: 1, height: "100%" }}>
-          <div style={{ flex: 3, height: "100%", overflowY: "auto" }}>
-            Definitions
-            <ListGroup>
-              {Object.entries(definitionGroups).map(([key, value]) => (
-                <Fragment key={key}>
-                  <ListGroupItem>
-                    <strong>{key}</strong>
-                  </ListGroupItem>
-                  {value.map(v => (
-                    <ListGroupItem
-                      key={v.name}
-                      active={v.name === selectedDefinition}
-                      onClick={() =>
-                        this.setState({ selectedDefinition: v.name })
-                      }
-                    >
-                      {v.name}{" "}
-                      <Badge>
-                        {
-                          taskTemplates.filter(t => t.definition === v.name)
-                            .length
-                        }
-                      </Badge>
-                    </ListGroupItem>
-                  ))}
-                </Fragment>
-              ))}
-            </ListGroup>
-          </div>
-          <div style={{ flex: 3 }}>
-            Templates (optional)
-            <ListGroup style={{ flex: 1 }}>
-              {taskTemplates
-                .filter(t => t.definition === selectedDefinition)
-                .map(t => (
-                  <ListGroupItem
-                    key={t.id}
-                    onClick={() =>
-                      this.setState({
-                        selectedTemplate: t.id,
-                        requiredValues: t.values
-                      })
-                    }
-                    active={t.id === selectedTemplate}
-                  >
-                    {t.name}
-                  </ListGroupItem>
-                ))}
-            </ListGroup>
-          </div>
-          <div style={{ flex: 7 }}>
-            {definition && (
-              <Fragment>
-                {!definition.active && (
-                  <div>
-                    <strong>
-                      This task might be redundant or unnecessary. Double check
-                      it before assigning it.
-                    </strong>
-                  </div>
-                )}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    overflowY: "auto",
-                    height: "100%",
-                    overflowX: "hidden"
-                  }}
-                >
-                  <div>
-                    <Input
-                      type="select"
-                      value={station}
-                      onChange={e => this.setState({ station: e.target.value })}
-                    >
-                      <option value="nothing" disabled>
-                        Select a station
-                      </option>{" "}
-                      <optgroup label="Task Stations">
-                        {definition.stations.map(s => (
-                          <option key={s.name} value={s.name}>
-                            {s.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                      <optgroup label="Other Stations">
-                        {simulator.stations
-                          .filter(
-                            s =>
-                              !definition.stations.find(d => d.name === s.name)
-                          )
-                          .map(s => (
-                            <option key={`other-${s.name}`} value={s.name}>
-                              {s.name}
-                            </option>
-                          ))}
-                      </optgroup>
-                    </Input>
-                    {Object.keys(definition.valuesInput).map(v => (
-                      <ValueInput
-                        key={v}
-                        label={v}
-                        type={definition.valuesInput[v]}
-                        value={requiredValues[v]}
-                        placeholder={definition.valuesValue[v]}
-                        simulatorId={simulator.id}
-                        onBlur={value =>
-                          this.setState(state => ({
-                            requiredValues: {
-                              ...state.requiredValues,
-                              [v]: value
-                            }
-                          }))
-                        }
-                      />
-                    ))}
-                  </div>
-                  <div>
-                    <p>Task Instructions:</p>
-
-                    <Query
-                      query={gql`
-                        query Instructions(
-                          $simulatorId: ID
-                          $definition: String!
-                          $values: JSON!
-                          $task: TaskInput
-                        ) {
-                          taskInstructions(
-                            simulatorId: $simulatorId
-                            definition: $definition
-                            requiredValues: $values
-                            task: $task
-                          )
-                        }
-                      `}
-                      variables={{
-                        simulatorId: simulator.id,
-                        definition: definition.id,
-                        values: {
-                          ...definition.valuesValue,
-                          ...requiredValues
-                        },
-                        task: { station }
-                      }}
-                    >
-                      {({ loading, data, error }) =>
-                        loading ? (
-                          <p>Loading instructions...</p>
-                        ) : error ? (
-                          <p>
-                            Error:
-                            {error.message}
-                          </p>
-                        ) : (
-                          <p style={{ whiteSpace: "pre-wrap" }}>
-                            {data.taskInstructions}
-                          </p>
-                        )
-                      }
-                    </Query>
-                  </div>
-                </div>
-              </Fragment>
-            )}
-          </div>
-        </div>
-
+        {configureMacro ? (
+          <ConfigureMacro
+            cancel={() => this.setState({ configureMacroId: null })}
+            macro={configureMacro}
+            update={action =>
+              this.setState(state => ({
+                macros: state.macros.map(
+                  m => (m.id === configureMacroId ? { ...m, ...action } : m)
+                )
+              }))
+            }
+            client={client}
+          />
+        ) : (
+          <ConfigureTask
+            definitionGroups={definitionGroups}
+            selectedDefinition={selectedDefinition}
+            taskTemplates={taskTemplates}
+            definition={definition}
+            station={station}
+            requiredValues={requiredValues}
+            simulator={simulator}
+            macros={macros}
+            updateSelectedDefinition={d =>
+              this.setState({ selectedDefinition: d })
+            }
+            updateRequiredValues={val => this.setState({ requiredValues: val })}
+            updateStation={stat => this.setState({ station: stat })}
+            updateMacros={mac => this.setState({ macros: mac })}
+            configureMacro={id => this.setState({ configureMacroId: id })}
+          />
+        )}
         <div style={{ display: "flex" }}>
           <Button size="sm" color="danger" onClick={cancel} style={{ flex: 1 }}>
             Cancel
@@ -249,7 +116,8 @@ class TasksCore extends Component {
                   ...(definition ? definition.valuesValue : {}),
                   ...requiredValues
                 },
-                station
+                station,
+                macros: macros.map(({ id, ...m }) => m)
               }
             }}
           >
