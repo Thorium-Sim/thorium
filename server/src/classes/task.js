@@ -3,6 +3,14 @@ import App from "../app";
 import taskDefinitions from "../tasks";
 import { randomFromList } from "./generic/damageReports/constants";
 
+class Macro {
+  constructor(params) {
+    this.id = params.id || uuid.v4();
+    this.event = params.event || "";
+    this.args = params.args || "{}";
+    this.delay = params.delay || 0;
+  }
+}
 export default class Task {
   constructor(params = {}) {
     // The check to see if the task is relevant was already handled
@@ -72,12 +80,23 @@ export default class Task {
     // Timing
     this.startTime = new Date();
     this.endTime = null;
+
+    // Macros
+    this.macros = [];
+    params.macros && params.macros.map(m => this.macros.push(new Macro(m)));
   }
   verify(dismiss) {
     this.verified = true;
     if (dismiss) this.dismissed = true;
     this.verifyRequested = false;
     this.endTime = new Date();
+
+    // Trigger all the macros
+    this.macros.length > 0 &&
+      App.handleEvent(
+        { simulatorId: this.simulatorId, macros: this.macros },
+        "triggerMacros"
+      );
   }
   dismiss() {
     this.dismissed = true;

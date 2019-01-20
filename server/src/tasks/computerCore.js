@@ -52,7 +52,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Create a new user. Use the following values:
           Level: ${level}
@@ -139,7 +139,7 @@ Password: ${password}`,
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Remove the following user:
 ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
@@ -279,7 +279,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(`${preamble} Reset terminal ${t.name}.`, {
           system,
           simulator
@@ -372,7 +372,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Remove the suspicious user "${name}".`,
           {
@@ -473,7 +473,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Restore the following file: \nFile Name:${name}\n${
             level ? `Level: ${level}` : ""
@@ -558,7 +558,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Restore all files in Level ${level}.`,
           {
@@ -624,7 +624,7 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Perform a virus scan and remove any viruses you discover.`,
           {

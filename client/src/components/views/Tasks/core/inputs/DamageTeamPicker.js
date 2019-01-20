@@ -6,7 +6,7 @@ import { randomFromList } from "helpers/randomFromList";
 import FontAwesome from "react-fontawesome";
 
 const crewQuery = gql`
-  query CrewPositions($simulatorId: ID!) {
+  query CrewPositions($simulatorId: ID) {
     crew(simulatorId: $simulatorId, position: "damage") {
       id
       position

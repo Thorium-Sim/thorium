@@ -1,8 +1,13 @@
 import React, { Fragment, Component } from "react";
 import { Query } from "react-apollo";
-import { Badge, ListGroup, ListGroupItem } from "reactstrap";
+import { Badge, ListGroup, ListGroupItem, Input, Button } from "reactstrap";
 import gql from "graphql-tag";
+import uuid from "uuid";
 import ValueInput from "../views/Tasks/core/ValueInput";
+import FontAwesome from "react-fontawesome";
+import EventName from "containers/FlightDirector/MissionConfig/EventName";
+import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
+import ConfigureMacro from "../views/Tasks/core/ConfigureMacro";
 
 /*
 input TaskInput {
@@ -17,7 +22,13 @@ const templateQueryData = `
 id
 name
 definition
-values`;
+values
+macros {
+  id
+  args
+  event
+  delay
+}`;
 
 const QUERY = gql`
   query TaskDefinitions($simulatorId: ID) {
@@ -53,14 +64,16 @@ class TasksCore extends Component {
       taskTemplates = [],
       args = {},
       lite,
-      simulatorId
+      simulatorId,
+      client
     } = this.props;
-    const { selectedTemplate } = this.state;
     const { taskInput = {} } = args;
     const {
       definition: selectedDefinition,
-      values: requiredValues = {}
+      values: requiredValues = {},
+      macros = []
     } = taskInput;
+    const { configureMacroId } = this.state;
     const definitionGroups = taskDefinitions
       .concat()
       .sort((a, b) => {
@@ -73,147 +86,222 @@ class TasksCore extends Component {
         return prev;
       }, {});
     const definition = taskDefinitions.find(t => t.id === selectedDefinition);
+    const configureMacro = macros.find(c => c.id === configureMacroId);
     return (
       <div
         className="core-tasks"
         style={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
-        <div style={{ display: "flex", flex: 1, height: "100%" }}>
-          {!lite && (
-            <Fragment>
-              <div style={{ flex: 3, height: "100%", overflowY: "auto" }}>
-                Definitions
-                <ListGroup>
-                  {Object.entries(definitionGroups).map(([key, value]) => (
-                    <Fragment key={key}>
-                      <ListGroupItem>
-                        <strong>{key}</strong>
-                      </ListGroupItem>
-                      {value.map(v => (
-                        <ListGroupItem
-                          key={v.name}
-                          active={v.name === selectedDefinition}
-                          onClick={() => this.updateTask("definition", v.name)}
-                        >
-                          {v.name}{" "}
-                          <Badge>
-                            {
-                              taskTemplates.filter(t => t.definition === v.name)
-                                .length
-                            }
-                          </Badge>
-                        </ListGroupItem>
-                      ))}
-                    </Fragment>
-                  ))}
-                </ListGroup>
-              </div>
-              <div style={{ flex: 3 }}>
-                Templates (optional)
-                <ListGroup style={{ flex: 1 }}>
-                  {taskTemplates
-                    .filter(t => t.definition === selectedDefinition)
-                    .map(t => (
-                      <ListGroupItem
-                        key={t.id}
-                        onClick={() => {
-                          this.setState({
-                            selectedTemplate: t.id
-                          });
-                          this.updateTask("values", t.values);
-                        }}
-                        active={t.id === selectedTemplate}
-                      >
-                        {t.name}
-                      </ListGroupItem>
-                    ))}
-                </ListGroup>
-              </div>
-            </Fragment>
-          )}
-          <div style={{ flex: 7 }}>
-            {definition && (
+        {configureMacro ? (
+          <ConfigureMacro
+            cancel={() => this.setState({ configureMacroId: null })}
+            macro={configureMacro}
+            update={action =>
+              this.updateTask(
+                "macros",
+                macros.map(
+                  m => (m.id === configureMacroId ? { ...m, ...action } : m)
+                )
+              )
+            }
+            client={client}
+          />
+        ) : (
+          <div style={{ display: "flex", flex: 1, height: "100%" }}>
+            {!lite && (
               <Fragment>
-                <p>
-                  If the values are left blank, a default value will be used.
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    overflowY: "auto",
-                    overflowX: "hidden"
-                  }}
-                >
-                  <div>
-                    {Object.keys(definition.valuesInput).map(v => (
-                      <ValueInput
-                        key={v}
-                        label={v}
-                        type={definition.valuesInput[v]}
-                        value={requiredValues[v]}
-                        placeholder={definition.valuesValue[v]}
-                        onBlur={value =>
-                          this.updateTask("values", {
-                            ...requiredValues,
-                            [v]: value
-                          })
-                        }
-                      />
+                <div style={{ flex: 5, height: "100%", overflowY: "auto" }}>
+                  Definitions
+                  <ListGroup>
+                    {Object.entries(definitionGroups).map(([key, value]) => (
+                      <Fragment key={key}>
+                        <ListGroupItem>
+                          <strong>{key}</strong>
+                        </ListGroupItem>
+                        {value.map(v => (
+                          <ListGroupItem
+                            key={v.name}
+                            active={v.name === selectedDefinition}
+                            onClick={() =>
+                              this.updateTask("definition", v.name)
+                            }
+                          >
+                            {v.name}{" "}
+                            <Badge>
+                              {
+                                taskTemplates.filter(
+                                  t => t.definition === v.name
+                                ).length
+                              }
+                            </Badge>
+                          </ListGroupItem>
+                        ))}
+                      </Fragment>
                     ))}
-                  </div>
+                  </ListGroup>
                 </div>
-                {simulatorId && (
-                  <div>
-                    <p>Task Instructions:</p>
-
-                    <Query
-                      query={gql`
-                        query Instructions(
-                          $simulatorId: ID
-                          $definition: String!
-                          $values: JSON!
-                          $task: TaskInput
-                        ) {
-                          taskInstructions(
-                            simulatorId: $simulatorId
-                            definition: $definition
-                            requiredValues: $values
-                            task: $task
-                          )
-                        }
-                      `}
-                      variables={{
-                        simulatorId,
-                        definition: definition.id,
-                        values: {
-                          ...definition.valuesValue,
-                          ...requiredValues
-                        },
-                        task: {}
-                      }}
-                    >
-                      {({ loading, data, error }) =>
-                        loading ? (
-                          <p>Loading instructions...</p>
-                        ) : error ? (
-                          <p>
-                            Error:
-                            {error.message}
-                          </p>
-                        ) : (
-                          <p style={{ whiteSpace: "pre-wrap" }}>
-                            {data.taskInstructions}
-                          </p>
-                        )
-                      }
-                    </Query>
-                  </div>
-                )}
               </Fragment>
             )}
+            <div style={{ flex: 7 }}>
+              {definition && (
+                <Fragment>
+                  <div>
+                    <label>Templates (optional)</label>
+                    <Input
+                      type="select"
+                      value="none"
+                      onChange={e => {
+                        const template = taskTemplates.find(
+                          t => t.id === e.target.value
+                        );
+                        this.updateTask("values", template.values);
+                      }}
+                    >
+                      <option value="none">Choose a Template</option>
+                      {taskTemplates
+                        .filter(t => t.definition === selectedDefinition)
+                        .map(t => (
+                          <option key={t.id} value={t.id}>
+                            {t.name}
+                          </option>
+                        ))}
+                    </Input>
+                  </div>
+                  <p>
+                    If the values are left blank, a default value will be used.
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      overflowY: "auto",
+                      overflowX: "hidden"
+                    }}
+                  >
+                    <div>
+                      {Object.keys(definition.valuesInput).map(v => (
+                        <ValueInput
+                          key={v}
+                          label={v}
+                          type={definition.valuesInput[v]}
+                          value={requiredValues[v]}
+                          placeholder={definition.valuesValue[v]}
+                          onBlur={value =>
+                            this.updateTask("values", {
+                              ...requiredValues,
+                              [v]: value
+                            })
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  {simulatorId && (
+                    <div>
+                      <p>Task Instructions:</p>
+
+                      <Query
+                        query={gql`
+                          query Instructions(
+                            $simulatorId: ID
+                            $definition: String!
+                            $values: JSON!
+                            $task: TaskInput
+                          ) {
+                            taskInstructions(
+                              simulatorId: $simulatorId
+                              definition: $definition
+                              requiredValues: $values
+                              task: $task
+                            )
+                          }
+                        `}
+                        variables={{
+                          simulatorId,
+                          definition: definition.id,
+                          values: {
+                            ...definition.valuesValue,
+                            ...requiredValues
+                          },
+                          task: {}
+                        }}
+                      >
+                        {({ loading, data, error }) =>
+                          loading ? (
+                            <p>Loading instructions...</p>
+                          ) : error ? (
+                            <p>
+                              Error:
+                              {error.message}
+                            </p>
+                          ) : (
+                            <p style={{ whiteSpace: "pre-wrap" }}>
+                              {data.taskInstructions}
+                            </p>
+                          )
+                        }
+                      </Query>
+                    </div>
+                  )}
+                  <hr />
+                  <div>
+                    <label>
+                      Macros{" "}
+                      <small>Will be triggered when task is complete</small>
+                    </label>
+                    <EventPicker
+                      className={"btn btn-sm btn-success"}
+                      handleChange={e => {
+                        const { value: event } = e.target;
+                        this.updateTask(
+                          "macros",
+                          macros.map(({ __typename, ...rest }) => rest).concat({
+                            event,
+                            args: "{}",
+                            delay: 0,
+                            id: uuid.v4()
+                          })
+                        );
+                      }}
+                    />
+                    {macros.map(m => (
+                      <div
+                        key={m.id}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between"
+                        }}
+                      >
+                        <span>
+                          <EventName id={m.event} label={m.event} />
+                        </span>{" "}
+                        <Button
+                          size="sm"
+                          color="warning"
+                          onClick={() =>
+                            this.setState({ configureMacroId: m.id })
+                          }
+                        >
+                          Configure Macro
+                        </Button>{" "}
+                        <FontAwesome
+                          name="ban"
+                          className="text-danger"
+                          onClick={() =>
+                            this.updateTask(
+                              "macros",
+                              macros.filter(mm => mm.id !== m.id)
+                            )
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </Fragment>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -222,9 +310,15 @@ class TasksCore extends Component {
 const TaskCreator = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulatorId }}>
     {({ loading, data, subscribeToMore }) => {
-      const { taskDefinitions } = data;
+      const { taskDefinitions, taskTemplates } = data;
       if (loading || !taskDefinitions) return null;
-      return <TasksCore {...props} taskDefinitions={taskDefinitions} />;
+      return (
+        <TasksCore
+          {...props}
+          taskDefinitions={taskDefinitions}
+          taskTemplates={taskTemplates}
+        />
+      );
     }}
   </Query>
 );
