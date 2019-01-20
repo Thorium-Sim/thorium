@@ -13,12 +13,12 @@ export default ({ updateArgs, args }) => {
     <FormGroup className="macro-template">
       <div>
         <Label>
-          <Input
+          Secondary Screen?{" "}
+          <input
             type="checkbox"
             checked={args.secondary}
             onChange={evt => updateArgs("secondary", evt.target.checked)}
           />
-          Secondary Screen?
         </Label>
       </div>
       <Label>Cards</Label>
