@@ -19,7 +19,7 @@ import * as triggers from "../triggers";
 
 export default function handleTrigger(eventName, args) {
   const processedArgs = triggers[eventName] ? triggers[eventName](args) : args;
-  if (!processedArgs.simulatorId) return;
+  if (!processedArgs || !processedArgs.simulatorId) return;
   const triggerActions = App.triggerGroups
     .filter(t => t.simulatorId === processedArgs.simulatorId)
     .map(t => t.getTriggerActions(eventName, processedArgs))

@@ -7,7 +7,8 @@
       "Fixes a minor bug with starting training.",
       "Improves the new messaging core so it handles conversations with multiple people better",
       "Make it possible to check the secondary screen button when configuring with nodes.",
-      "Fixes components reordering improperly in node config screens."
+      "Fixes components reordering improperly in node config screens.",
+      "Fixes an issue where triggers were keeping shields from functioning properly."
     ]
   },
   "1.1.4": {
