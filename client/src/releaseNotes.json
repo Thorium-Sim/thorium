@@ -6,7 +6,8 @@
     "fixes": [
       "Fixes a minor bug with starting training.",
       "Improves the new messaging core so it handles conversations with multiple people better",
-      "Make it possible to check the secondary screen button when configuring with nodes."
+      "Make it possible to check the secondary screen button when configuring with nodes.",
+      "Fixes components reordering improperly in node config screens."
     ]
   },
   "1.1.4": {
