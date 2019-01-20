@@ -1,7 +1,12 @@
 {
   "1.1.6": {
-    "features": "Adds task macros, which allows you to execute macros (timeline actions) when a task is complete.",
-    "fixes": "Fixes a minor bug with starting training."
+    "features": [
+      "Adds task macros, which allows you to execute macros (timeline actions) when a task is complete."
+    ],
+    "fixes": [
+      "Fixes a minor bug with starting training.",
+      "Improves the new messaging core so it handles conversations with multiple people better"
+    ]
   },
   "1.1.4": {
     "features": [
