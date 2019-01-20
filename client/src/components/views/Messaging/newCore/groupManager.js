@@ -4,7 +4,7 @@ class GroupManager extends Component {
   state = { sender: "", destination: "nothing" };
   render() {
     const { cancel, simulator, teams, startConvo } = this.props;
-    const { sender, destination } = this.state;
+    const { sender, destination, isStation } = this.state;
     const stationNames = simulator.stations.map(s => s.name);
     const messageGroups = simulator.stations
       .reduce((prev, s) => prev.concat(s.messageGroups), [])
@@ -17,7 +17,12 @@ class GroupManager extends Component {
             <select
               style={{ height: "18px" }}
               value={destination}
-              onChange={e => this.setState({ destination: e.target.value })}
+              onChange={e =>
+                this.setState({
+                  destination: e.target.value,
+                  isStation: stationNames.indexOf(e.target.value) > -1
+                })
+              }
             >
               <option value="nothing" disabled>
                 Select a destination
@@ -35,7 +40,7 @@ class GroupManager extends Component {
               ))}
               {teams.length && <option disabled>------------</option>}
               {teams.map(s => (
-                <option key={`messageGroup-${s}`} value={s.name}>
+                <option key={`messageGroup-${s.id}`} value={s.name}>
                   {s.name} - {s.type}
                 </option>
               ))}
@@ -48,6 +53,7 @@ class GroupManager extends Component {
               bsSize="sm"
               style={{ height: "18px" }}
               value={sender}
+              disabled={!isStation}
               onChange={e => this.setState({ sender: e.target.value })}
             />
           </Col>
@@ -63,8 +69,10 @@ class GroupManager extends Component {
               block
               color="success"
               size="sm"
-              disabled={!sender || !destination}
-              onClick={() => startConvo(sender, destination)}
+              disabled={isStation ? !sender || !destination : !destination}
+              onClick={() =>
+                startConvo(isStation ? sender : destination, destination)
+              }
             >
               Start
             </Button>

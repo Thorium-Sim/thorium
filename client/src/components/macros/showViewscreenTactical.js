@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { graphql, withApollo } from "react-apollo";
-import { Label, Input } from "reactstrap";
+import { Label } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const TACTICALMAP_SUB = gql`
@@ -42,12 +42,12 @@ class TacticalMapConfig extends Component {
           }
         />
         <Label>
-          <Input
+          Secondary Screen?{" "}
+          <input
             type="checkbox"
             checked={args.secondary}
             onChange={evt => updateArgs("secondary", evt.target.checked)}
-          />{" "}
-          Secondary Screen?
+          />
         </Label>
 
         <p>Saved Maps</p>
