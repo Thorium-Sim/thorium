@@ -8,7 +8,8 @@
       "Improves the new messaging core so it handles conversations with multiple people better",
       "Make it possible to check the secondary screen button when configuring with nodes.",
       "Fixes components reordering improperly in node config screens.",
-      "Fixes an issue where triggers were keeping shields from functioning properly."
+      "Fixes an issue where triggers were keeping shields from functioning properly.",
+      "Fixes some minor issues with assigning stations in tasks."
     ]
   },
   "1.1.4": {

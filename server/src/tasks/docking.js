@@ -44,7 +44,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "Shuttles")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Undock the shuttle in shuttlebay ${shuttleBay.name}.`,
           { system: shuttleBay, simulator }
@@ -131,7 +131,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "Shuttles")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Dock the shuttle in shuttlebay ${shuttleBay.name}.`,
           { system: shuttleBay, simulator }
@@ -202,7 +202,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "Shuttles")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Undock all of the shuttles in the shuttlebay.`,
           { simulator }
@@ -249,7 +249,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "Shuttles")
       );
-      if (task.station === station.name) {
+      if (station && task.station === station.name) {
         return reportReplace(
           `${preamble} Dock all of the shuttles in the shuttlebay.`,
           { simulator }
