@@ -4,7 +4,7 @@ import App from "../app.js";
 
 export default class Probes extends System {
   constructor(params, init) {
-    super(params);
+    super((params = {}));
     this.class = "Probes";
     this.type = "Probes";
     this.name = params.name || "Probe Launcher";

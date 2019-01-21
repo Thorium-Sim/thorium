@@ -61,8 +61,6 @@ export default [
         value: () => "Repair any damage that you find."
       },
       room: {
-        // TODO: Extend so it allows a system input and pulls the system's
-        // locations for the room default
         input: ({ simulator }) => (simulator ? "roomPicker" : "text"),
         value: ({ simulator }) =>
           simulator
