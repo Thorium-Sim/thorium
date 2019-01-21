@@ -113,8 +113,8 @@ const report = Object.entries(damageTexts).map(([key, value]) => ({
   name: `${key} Team`,
   class: "TaskTemplate",
   values: {
-    preamble: value.preamble,
-    orders: value.orders,
+    preamble: value[0].preamble,
+    orders: value[0].orders,
     teamName: "#SYSTEMNAME Repairs",
     officers: {
       [key]: 1

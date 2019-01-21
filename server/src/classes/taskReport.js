@@ -44,10 +44,6 @@ export default class TaskReport {
 
     const system = App.systems.find(s => s.id === systemId);
 
-    const rooms = system
-      ? App.rooms.filter(r => system.locations.indexOf(r.id) > -1)
-      : [];
-
     const taskTemplates = simulator.damageTasks
       .concat(system ? system.damageTasks : [])
       .map(t => ({
@@ -78,6 +74,10 @@ export default class TaskReport {
       return prev;
     }, {});
 
+    const rooms = system
+      ? App.rooms.filter(r => system.locations.indexOf(r.id) > -1)
+      : [];
+
     function createTask(template) {
       const { values, definition } = template;
       console.log(values);
@@ -86,19 +86,15 @@ export default class TaskReport {
         simulatorId: simulator.id,
         // station,
         systemId: system && system.id,
-        values
+        values: {
+          ...values,
+          system: system && system.id,
+          room: randomFromList(rooms)
+        }
       });
     }
 
     let tasks = [];
-
-    console.log(simulator);
-    console.log();
-    console.log(system);
-    console.log();
-    console.log(definitionTemplates);
-    console.log();
-    console.log();
 
     // Here, I'm writing out the current damage report generation process
     // so I can more or less replicate it using tasks.
@@ -146,9 +142,9 @@ export default class TaskReport {
 
     // Loop until we have the correct number of steps or run out of optional steps.
     const taskCount =
-      stepCount > Object.keys(definitionTemplates).length
+      (stepCount > Object.keys(definitionTemplates).length
         ? Object.keys(definitionTemplates).length
-        : stepCount;
+        : stepCount) - existingSteps;
 
     tasks = tasks.concat(
       Array(taskCount)
