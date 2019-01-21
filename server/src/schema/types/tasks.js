@@ -14,6 +14,7 @@ type Task {
   instructions: String
   startTime: String
   endTime: String
+  macros: [TimelineItem]
 }
 
 input TaskInput {
@@ -21,6 +22,7 @@ input TaskInput {
   definition: String
   values: JSON
   station: String
+  macros: [TimelineitemInput]
 }
 
 type TaskTemplate {
@@ -29,6 +31,7 @@ type TaskTemplate {
   values: JSON
   definition: String
   reportTypes: [String]
+  macros: [TimelineItem]
 }
 
 type TaskDefinition {

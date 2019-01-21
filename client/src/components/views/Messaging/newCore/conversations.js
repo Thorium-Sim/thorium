@@ -9,23 +9,32 @@ import {
   Input,
   Button
 } from "reactstrap";
+import FontAwesome from "react-fontawesome";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import GroupManager from "./groupManager";
 
 function reduceMessages(messages, stationNames, correctSenders) {
+  const talkers = Object.keys(
+    messages.reduce((prev, next) => {
+      prev[next.sender] = true;
+      prev[next.destination] = true;
+      return prev;
+    }, {})
+  ).filter(t => stationNames.indexOf(t) === -1);
+
   return messages.reduce((prev, next) => {
-    if (stationNames.indexOf(next.sender) === -1) {
-      prev[`${next.sender}-${next.destination}`] = {
+    if (talkers.indexOf(next.sender) > -1) {
+      prev[next.sender] = {
         sender: next.sender,
         destination: next.destination,
         id: next.id,
         date: new Date(next.timestamp)
       };
-    } else if (stationNames.indexOf(next.destination) === -1) {
-      prev[`${next.destination}-${next.sender}`] = {
-        sender: correctSenders ? next.sender : next.destination,
-        destination: correctSenders ? next.destination : next.sender,
+    } else if (talkers.indexOf(next.destination) > -1) {
+      prev[next.destination] = {
+        sender: next.destination,
+        destination: next.sender,
         id: next.id,
         date: new Date(next.timestamp)
       };
@@ -78,11 +87,7 @@ class Conversations extends Component {
                 {messageList.map(m => (
                   <ListGroupItem
                     key={m.id}
-                    active={
-                      selectedConvo &&
-                      m.sender === selectedConvo.sender &&
-                      m.destination === selectedConvo.destination
-                    }
+                    active={selectedConvo && m.sender === selectedConvo.sender}
                     className={`${alert[m.id] ? "alerted" : ""}`}
                     onClick={() =>
                       this.setState(state => ({
@@ -92,9 +97,9 @@ class Conversations extends Component {
                     }
                   >
                     <p>
-                      <strong>{m.sender}</strong>
+                      <strong>{m.sender}</strong>{" "}
+                      <FontAwesome name="arrow-right" /> {m.destination}
                     </p>
-                    <p>{m.destination}</p>
                   </ListGroupItem>
                 ))}
               </ListGroup>
@@ -104,20 +109,21 @@ class Conversations extends Component {
                   color="success"
                   onClick={() => this.setState({ newMessage: true })}
                 >
-                  New Conversation
+                  New Convo
                 </Button>
               )}
             </Col>
             <Col sm={8} style={{ display: "flex", flexDirection: "column" }}>
-              <Card className="full flex-max auto-scroll">
+              <Card
+                className="full flex-max auto-scroll"
+                style={{ flexDirection: "column-reverse" }}
+              >
                 {messages
                   .filter(
                     m =>
                       selectedConvo &&
-                      ((m.sender === selectedConvo.sender &&
-                        m.destination === selectedConvo.destination) ||
-                        (m.sender === selectedConvo.destination &&
-                          m.destination === selectedConvo.sender))
+                      (m.sender === selectedConvo.sender ||
+                        m.destination === selectedConvo.sender)
                   )
                   .concat()
                   .sort((a, b) => {

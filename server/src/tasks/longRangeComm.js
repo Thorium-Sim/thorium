@@ -117,10 +117,11 @@ Message: ${message}`,
       },
       messageOrDestination: {
         input: ({ simulator }) => {
-          if (!simulator) return "text";
-          const system = App.systems.find(
-            s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
-          );
+          const system =
+            simulator &&
+            App.systems.find(
+              s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+            );
           if (!system) return "text";
           const notDecoded = system.messages.filter(
             m => m.f !== m.rf || m.a !== m.ra
@@ -129,10 +130,11 @@ Message: ${message}`,
           return notDecoded.map(m => ({ value: m.id, label: m.sender }));
         },
         value: ({ simulator }) => {
-          if (!simulator) return "Starbase 74";
-          const system = App.systems.find(
-            s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
-          );
+          const system =
+            simulator &&
+            App.systems.find(
+              s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+            );
           if (!system) return "";
           const notDecoded = system.messages
             .filter(m => m.f !== m.rf || m.a !== m.ra)

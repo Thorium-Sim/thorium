@@ -4,25 +4,36 @@ import App from "../app";
 // or multiple times when all the shields are raised at once
 let raisedIds = [];
 let loweredIds = [];
-function checkId(simulatorId, cachedIds) {
-  if (cachedIds.indexOf(simulatorId) > -1) return false;
-  cachedIds.push(simulatorId);
+function checkRaisedId(simulatorId) {
+  if (raisedIds.indexOf(simulatorId) > -1) return false;
+  raisedIds.push(simulatorId);
   setTimeout(() => {
-    cachedIds = cachedIds.filter(c => c !== simulatorId);
+    raisedIds = raisedIds.filter(c => c !== simulatorId);
+  }, 2000);
+  return true;
+}
+function checkLoweredId(simulatorId) {
+  if (loweredIds.indexOf(simulatorId) > -1) return false;
+  loweredIds.push(simulatorId);
+  setTimeout(() => {
+    loweredIds = loweredIds.filter(c => c !== simulatorId);
   }, 2000);
   return true;
 }
 export function shieldRaised({ id }) {
+  console.log(raisedIds);
   const system = App.systems.find(s => s.id === id);
   if (!system) return {};
-  if (checkId(system.simulatorId, raisedIds)) {
+  if (checkRaisedId(system.simulatorId, raisedIds)) {
     return { simulatorId: system.simulatorId };
   }
+  return {};
 }
 export function shieldLowered({ id }) {
   const system = App.systems.find(s => s.id === id);
   if (!system) return {};
-  if (checkId(system.simulatorId, loweredIds)) {
+  if (checkLoweredId(system.simulatorId, loweredIds)) {
     return { simulatorId: system.simulatorId };
   }
+  return {};
 }

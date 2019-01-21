@@ -11,4 +11,6 @@ removeTaskTemplate(id:ID!):String
 renameTaskTemplate(id:ID!, name:String!):String
 setTaskTemplateValues(id:ID!, values:JSON!):String
 setTaskTemplateReportTypes(id:ID!, reportTypes:[String]!):String
+addTaskMacro(id:ID!, macro:TimelineitemInput!):String
+removeTaskMacro(id:ID!, macroId:ID!):String
 `;

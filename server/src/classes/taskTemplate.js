@@ -9,6 +9,7 @@ export default class TaskTemplate {
     this.values = params.values || {};
     this.definition = params.definition || "Generic";
     this.reportTypes = params.reportTypes || ["default", "rnd", "engineering"];
+    this.macros = params.macros || [];
   }
   rename(name) {
     this.name = name;
@@ -31,5 +32,12 @@ export default class TaskTemplate {
   }
   setReportTypes(reportTypes) {
     this.reportTypes = reportTypes || [];
+  }
+  addMacro(macro) {
+    // event, args, delay
+    this.macros.push({ ...macro, id: uuid.v4() });
+  }
+  removeMacro(id) {
+    this.macros = this.macros.filter(m => m.id !== id);
   }
 }
