@@ -17,6 +17,7 @@ import decks from "./decks";
 import inventory from "./inventory";
 import probes from "./probes";
 import softwarePanels from "./softwarePanels";
+import reactivationCode from "./reactivationCode";
 
 export default [
   ...docking,
@@ -37,5 +38,6 @@ export default [
   ...decks,
   ...inventory,
   ...probes,
-  ...softwarePanels
+  ...softwarePanels,
+  ...reactivationCode
 ];

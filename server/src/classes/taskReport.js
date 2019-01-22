@@ -31,7 +31,8 @@ export default class TaskReport {
     this.name = params.name || `${fullType} Report`;
     // Generate the report from the task templates when the task report is created
     // Tasks is a list of task IDs for tasks that are stored in App.tasks
-    this.tasks = params.tasks || TaskReport.generateReport(params);
+    this.tasks =
+      params.tasks.map(t => new Task(t)) || TaskReport.generateReport(params);
   }
   static generateReport({
     simulatorId,
@@ -80,7 +81,6 @@ export default class TaskReport {
 
     function createTask(template) {
       const { values, definition } = template;
-      console.log(values);
       return new Task({
         definition: definition.name,
         simulatorId: simulator.id,
@@ -160,7 +160,7 @@ export default class TaskReport {
           if (!otherTeam) return template;
           return [
             {
-              definition: "Wait For Team To Clear",
+              definition: { name: "Wait For Team To Clear" },
               values: {
                 preamble:
                   "The team that was sent needs time to complete their work.",
@@ -197,7 +197,7 @@ export default class TaskReport {
           return true;
         })
         .map(t => ({
-          definition: "Wait For Team To Clear",
+          definition: { name: "Wait For Team To Clear" },
           values: {
             preamble:
               "The team that was sent needs time to complete their work.",
@@ -256,6 +256,6 @@ export default class TaskReport {
       );
     }
 
-    console.log(tasks);
+    return tasks;
   }
 }
