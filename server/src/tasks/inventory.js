@@ -53,22 +53,28 @@ export default [
           if (!simulator) return {};
           // Add up the count of the inventory, but only room count to keep it simple.
           const inventory = shuffleArray(
-            App.inventory.filter(s => s.simulatorId === simulator.id).map(i =>
-              ({
+            App.inventory
+              .filter(s => s.simulatorId === simulator.id)
+              .map(i => ({
                 id: i.id,
                 count: Object.values(i.roomCount).reduce(
                   (prev, next) => prev + next,
                   0
                 )
-              }.filter(c => c.count > 0))
-            )
+              }))
+              .filter(c => c.count > 0)
           );
 
           const inventoryCount = Math.ceil(Math.random() * 3) + 1;
 
-          return Array(inventoryCount)
+          return Array(
+            inventory.length < inventoryCount
+              ? inventory.length
+              : inventoryCount
+          )
             .fill(0)
-            .map((_, i) => inventory[i]);
+            .map((_, i) => inventory[i])
+            .reduce((prev, next) => ({ ...prev, [next.id]: [next.count] }), {});
         }
       }
     },
@@ -87,10 +93,10 @@ export default [
       const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
       const location = `${room.name}, Deck ${deck.number}`;
 
-      const cargoList = inventory
-        .map(i => ({
-          count: i.count,
-          ...App.inventory.find(s => s.id === i.id)
+      const cargoList = Object.entries(inventory)
+        .map(([id, count]) => ({
+          count: count,
+          ...App.inventory.find(s => s.id === id)
         }))
         .map(({ name, count }) => `${name}: ${count}`)
         .join("\n");

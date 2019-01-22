@@ -4,8 +4,8 @@ import { titleCase } from "change-case";
 import DeckSelect from "./inputs/DeckSelect";
 import PartsPicker from "./inputs/PartsPicker";
 import DamageTeamPicker from "./inputs/DamageTeamPicker";
-// import ProbeEquipment from "./inputs/ProbeEquipment";
-// import InventoryInput from "./inputs/InventoryInput";
+import ProbeEquipment from "./inputs/ProbeEquipment";
+import InventoryInput from "./inputs/InventoryInput";
 
 const ValueInput = ({
   label,

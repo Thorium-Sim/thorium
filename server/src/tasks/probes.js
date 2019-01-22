@@ -2,6 +2,15 @@ import reportReplace from "../helpers/reportReplacer";
 import App from "../app";
 import { randomFromList } from "../classes/generic/damageReports/constants";
 import { Probes } from "../classes";
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 export default [
   {
     name: "Launch a Probe",
@@ -49,9 +58,7 @@ export default [
               )
             : // Use the default if a system doesn't exist
               new Probes();
-          return randomFromList(
-            sys.types.map(t => ({ value: t.id, label: t.name }))
-          );
+          return randomFromList(sys.types.map(t => t.id));
         }
       },
       equipment: {
@@ -63,7 +70,20 @@ export default [
               )
             : // Use the default if a system doesn't exist
               new Probes();
-          return sys.equipment.map(t => ({ value: t.id, label: t.name }));
+          // Only equipment that can be used on regular probes
+          const equipment = sys.equipment
+            .filter(e => e.availableProbes.length === 0)
+            .concat();
+          return Array(Math.ceil(Math.random() * 3) + 1)
+            .fill(0)
+            .map((_, i) => {
+              const count = Math.ceil(Math.random() * 1 + 1);
+              return {
+                id: equipment[i].id,
+                count: count > equipment.count ? equipment.count : count
+              };
+            })
+            .reduce((prev, next) => ({ [next.id]: next.count }));
         }
       }
     },
@@ -75,7 +95,7 @@ export default [
       const station =
         simulator &&
         simulator.stations.find(s =>
-          s.cards.find(c => c.component === "SecurityDecks")
+          s.cards.find(c => c.component === "ProbeConstruction")
         );
 
       const sys = simulator
@@ -84,22 +104,25 @@ export default [
           )
         : // Use the default if a system doesn't exist
           new Probes();
+      const equipmentText =
+        Object.entries(equipment).length === 0
+          ? ""
+          : Object.entries(equipment)
+              .map(([id, count]) => {
+                const equipment = sys.equipment.find(e => e.id === id);
+                return `${count} ${equipment.name}\n`;
+              })
+              .join("\n");
+
       const probeTypeObj = sys.types.find(t => t.id === probeType);
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Launch a ${probeTypeObj.name} probe${
-            equipment.length > 0
-              ? ` with the following equipment:\n\n${Object.entries(
-                  equipment
-                ).map(([id, count]) => {
-                  const equipment = sys.equipment.find(e => e.id === id);
-                  return `${count} ${equipment.name}\n`;
-                })}`
+            equipmentText.length > 0
+              ? ` with the following equipment:\n\n${equipmentText}`
               : ""
-          }.`,
-          {
-            simulator
-          }
+          }`,
+          { simulator }
         );
       return reportReplace(
         `${preamble} Ask the ${
@@ -107,15 +130,10 @@ export default [
             ? `${station.name} Officer`
             : "person in charge of security decks"
         } to launch a ${probeTypeObj.name} probe${
-          equipment.length > 0
-            ? ` with the following equipment:\n\n${Object.entries(
-                equipment
-              ).map(([id, count]) => {
-                const equipment = sys.equipment.find(e => e.id === id);
-                return `${count} ${equipment.name}\n`;
-              })}`
+          equipmentText.length > 0
+            ? ` with the following equipment:\n\n${equipmentText})}`
             : ""
-        }.`,
+        }`,
         { simulator }
       );
     },
