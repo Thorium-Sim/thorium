@@ -15,25 +15,35 @@ const INV_QUERY = gql`
 `;
 const InventoryInput = ({ simulatorId, onChange, value }) => {
   return (
-    <Query query={INV_QUERY} variables={{ simulatorId }}>
-      {({ loading, data: { inventory } }) =>
+    <Query query={INV_QUERY} variables={{ simulatorId }} skip={!simulatorId}>
+      {({ loading, data }) =>
         loading ? null : (
           <div>
             {Object.entries(value).map(([id, count]) => (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <select
-                  value={id}
-                  onChange={e => {
-                    const { [id]: _, ...rest } = value;
-                    onChange({ ...rest, [e.target.value]: count });
-                  }}
-                >
-                  {inventory.map(i => (
-                    <option key={i.id} value={i.id}>
-                      {i.name}
-                    </option>
-                  ))}
-                </select>
+                {data ? (
+                  <select
+                    value={id}
+                    onChange={e => {
+                      const { [id]: _, ...rest } = value;
+                      onChange({ ...rest, [e.target.value]: count });
+                    }}
+                  >
+                    {data.inventory.map(i => (
+                      <option key={i.id} value={i.id}>
+                        {i.name}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    defaultValue={id}
+                    onBlur={e => {
+                      const { [id]: _, ...rest } = value;
+                      onChange({ ...rest, [e.target.value]: count });
+                    }}
+                  />
+                )}
                 <input
                   defaultValue={count}
                   type="number"
@@ -59,9 +69,9 @@ const InventoryInput = ({ simulatorId, onChange, value }) => {
               onClick={() =>
                 onChange({
                   ...value,
-                  [randomFromList(inventory.map(e => e.id))]: Math.ceil(
-                    Math.random() + 1
-                  )
+                  [data
+                    ? randomFromList(data.inventory.map(e => e.id))
+                    : "Romulan Ale Glass"]: Math.ceil(Math.random() + 1)
                 })
               }
             >

@@ -94,10 +94,19 @@ export default [
       const location = `${room.name}, Deck ${deck.number}`;
 
       const cargoList = Object.entries(inventory)
-        .map(([id, count]) => ({
-          count: count,
-          ...App.inventory.find(s => s.id === id)
-        }))
+        .map(([id, count]) => {
+          // Support for ID being both an ID and the name of the inventory
+          const inv = App.inventory.find(
+            s =>
+              s.id === id ||
+              (s.simulatorId === simulator.id &&
+                s.name.toLowerCase() === id.toLowerCase())
+          );
+          return {
+            count: count,
+            ...(inv || { name: id })
+          };
+        })
         .map(({ name, count }) => `${name}: ${count}`)
         .join("\n");
       if (station && task.station === station.name)

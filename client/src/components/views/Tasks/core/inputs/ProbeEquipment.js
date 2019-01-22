@@ -18,25 +18,35 @@ const PROBES_QUERY = gql`
 `;
 const ProbeEquipment = ({ simulatorId, onChange, value }) => {
   return (
-    <Query query={PROBES_QUERY} variables={{ simulatorId }}>
-      {({ loading, data: { probes } }) =>
+    <Query query={PROBES_QUERY} variables={{ simulatorId }} skip={!simulatorId}>
+      {({ loading, data }) =>
         loading ? null : (
           <div>
             {Object.entries(value).map(([id, count]) => (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <select
-                  value={id}
-                  onChange={e => {
-                    const { [id]: _, ...rest } = value;
-                    onChange({ ...rest, [e.target.value]: count });
-                  }}
-                >
-                  {probes[0].equipment.map(i => (
-                    <option key={i.id} value={i.id}>
-                      {i.name}
-                    </option>
-                  ))}
-                </select>
+                {data ? (
+                  <select
+                    value={id}
+                    onChange={e => {
+                      const { [id]: _, ...rest } = value;
+                      onChange({ ...rest, [e.target.value]: count });
+                    }}
+                  >
+                    {data.probes[0].equipment.map(i => (
+                      <option key={i.id} value={i.id}>
+                        {i.name}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    defaultValue={id}
+                    onBlur={e => {
+                      const { [id]: _, ...rest } = value;
+                      onChange({ ...rest, [e.target.value]: count });
+                    }}
+                  />
+                )}
                 <input
                   defaultValue={count}
                   type="number"
@@ -62,9 +72,9 @@ const ProbeEquipment = ({ simulatorId, onChange, value }) => {
               onClick={() =>
                 onChange({
                   ...value,
-                  [randomFromList(
-                    probes[0].equipment.map(e => e.id)
-                  )]: Math.ceil(Math.random() + 1)
+                  [data
+                    ? randomFromList(data.probes[0].equipment.map(e => e.id))
+                    : "Sensors Array"]: Math.ceil(Math.random() + 1)
                 })
               }
             >

@@ -109,8 +109,10 @@ export default [
           ? ""
           : Object.entries(equipment)
               .map(([id, count]) => {
-                const equipment = sys.equipment.find(e => e.id === id);
-                return `${count} ${equipment.name}\n`;
+                const equipment = sys.equipment.find(
+                  e => e.id === id || e.name.toLowerCase() === id.toLowerCase()
+                );
+                return `${count} ${equipment ? equipment.name : id}\n`;
               })
               .join("\n");
 
