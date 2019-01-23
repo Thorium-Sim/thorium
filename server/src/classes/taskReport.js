@@ -77,7 +77,9 @@ export default class TaskReport {
     }, {});
 
     const rooms = system
-      ? App.rooms.filter(r => system.locations.indexOf(r.id) > -1)
+      ? App.rooms
+          .filter(r => system.locations.indexOf(r.id) > -1)
+          .map(r => r.id)
       : [];
 
     function createTask(template) {

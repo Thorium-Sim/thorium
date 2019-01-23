@@ -80,7 +80,7 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, inventory, room: roomId },
+      requiredValues: { preamble, inventory, room: roomId, system },
       task = {}
     }) {
       const station =
@@ -115,7 +115,8 @@ export default [
           
 ${cargoList}`,
           {
-            simulator
+            simulator,
+            system
           }
         );
       return reportReplace(
@@ -126,7 +127,7 @@ ${cargoList}`,
         } to send the following cargo to ${location}:
           
 ${cargoList}`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues: { inventory, room } }) {

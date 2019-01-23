@@ -59,7 +59,7 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, room: roomId, message },
+      requiredValues: { preamble, room: roomId, message, system },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
@@ -80,7 +80,7 @@ export default [
 Location: ${location}
 Message: ${message}
         `,
-          { simulator }
+          { simulator, system }
         );
       return reportReplace(
         `${preamble} Ask the ${
@@ -92,7 +92,7 @@ Message: ${message}
 Location: ${location}
 Message: ${message}
       `,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ requiredValues, simulator }) {

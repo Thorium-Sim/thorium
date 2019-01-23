@@ -88,7 +88,14 @@ export default [
 
     instructions({
       simulator,
-      requiredValues: { preamble, teamName, orders, room: roomId, officers },
+      requiredValues: {
+        preamble,
+        teamName,
+        orders,
+        room: roomId,
+        officers,
+        system
+      },
       task = {}
     }) {
       // Make sure it supports systems as well
@@ -117,7 +124,8 @@ Orders: ${orders}`;
 
 ${text}`,
           {
-            simulator
+            simulator,
+            system
           }
         );
       return reportReplace(
@@ -127,7 +135,7 @@ ${text}`,
             : "person in charge of damage teams"
         } to create the following damage team work order:
 ${text}`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {
@@ -162,7 +170,7 @@ ${text}`,
 
     instructions({
       simulator,
-      requiredValues: { preamble, teamName },
+      requiredValues: { preamble, teamName, system },
       task = {}
     }) {
       // Make sure it supports systems as well
@@ -175,14 +183,15 @@ ${text}`,
           `${preamble} Wait for the team named "${teamName}" to disappear from your list of teams.`,
 
           {
-            simulator
+            simulator,
+            system
           }
         );
       return reportReplace(
         `${preamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of teams"
         } to wait for the team named "${teamName}" to disappear from their list of teams.`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues: { teamName } }) {
@@ -245,7 +254,14 @@ ${text}`,
 
     instructions({
       simulator,
-      requiredValues: { preamble, teamName, orders, room: roomId, officers },
+      requiredValues: {
+        preamble,
+        teamName,
+        orders,
+        room: roomId,
+        officers,
+        system
+      },
       task = {}
     }) {
       // Make sure it supports systems as well
@@ -269,7 +285,8 @@ Orders: ${orders}`;
 
 ${text}`,
           {
-            simulator
+            simulator,
+            system
           }
         );
       return reportReplace(
@@ -279,7 +296,7 @@ ${text}`,
             : "person in charge of security teams"
         } to create the following security team:
 ${text}`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {
@@ -340,7 +357,7 @@ ${text}`,
 
     instructions({
       simulator,
-      requiredValues: { preamble, teamName, orders, room: roomId },
+      requiredValues: { preamble, teamName, orders, room: roomId, system },
       task = {}
     }) {
       // Make sure it supports systems as well
@@ -364,7 +381,8 @@ Orders: ${orders}`;
 
 ${text}`,
           {
-            simulator
+            simulator,
+            system
           }
         );
       return reportReplace(
@@ -374,7 +392,7 @@ ${text}`,
             : "person in charge of medical teams"
         } to create the following medical team:
 ${text}`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {

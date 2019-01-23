@@ -31,3 +31,11 @@ export const TaskReportSubscriptions = {
     )
   }
 };
+
+export const TaskReportTypes = {
+  TaskReport: {
+    system: taskReport => {
+      return App.systems.find(s => s.id === taskReport.systemId);
+    }
+  }
+};

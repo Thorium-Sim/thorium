@@ -57,9 +57,15 @@ export default [
 
     instructions({
       simulator,
-      requiredValues: { preamble, speed },
+      requiredValues: { preamble, speed, system: sys },
       task = {}
     }) {
+      const system = App.systems.find(
+        s =>
+          (sys && s.id === sys) ||
+          s.name.toLowerCase() === sys.toLowerCase() ||
+          s.displayName.toLowerCase() === sys.toLowerCase()
+      ) || { name: sys };
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "EngineControl")
       );
@@ -73,7 +79,7 @@ export default [
             ? `${station.name} Officer`
             : "person in charge of the engines"
         } to activate the engines to ${speed}.`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {
@@ -116,13 +122,18 @@ export default [
         value: () => "The engines need to be deactivated."
       }
     },
-    instructions({ simulator, requiredValues: { preamble }, task = {} }) {
+    instructions({
+      simulator,
+      requiredValues: { preamble, system },
+      task = {}
+    }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "EngineControl")
       );
       if (station && task.station === station.name)
         return reportReplace(`${preamble} Deactivate the engines.`, {
-          simulator
+          simulator,
+          system
         });
       return reportReplace(
         `${preamble} Ask the ${
@@ -130,7 +141,7 @@ export default [
             ? `${station.name} Officer`
             : "person in charge of the engines"
         } to deactivate the engines.`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator }) {
@@ -195,7 +206,7 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, engine: id },
+      requiredValues: { preamble, engine: id, system },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
@@ -207,7 +218,7 @@ export default [
           `${preamble} Cool the ${
             engine ? engine.displayName || engine.name : "engines"
           }.`,
-          { simulator, system: engine }
+          { simulator, system }
         );
       return reportReplace(
         `${preamble} Ask the ${
@@ -217,7 +228,7 @@ export default [
         } to cool the ${
           engine ? engine.displayName || engine.name : "engines"
         }.`,
-        { simulator, system: engine }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {

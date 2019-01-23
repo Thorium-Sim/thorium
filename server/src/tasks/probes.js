@@ -89,7 +89,7 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, equipment, probeType },
+      requiredValues: { preamble, equipment, probeType, system },
       task = {}
     }) {
       const station =
@@ -124,7 +124,7 @@ export default [
               ? ` with the following equipment:\n\n${equipmentText}`
               : ""
           }`,
-          { simulator }
+          { simulator, system }
         );
       return reportReplace(
         `${preamble} Ask the ${
@@ -136,7 +136,7 @@ export default [
             ? ` with the following equipment:\n\n${equipmentText})}`
             : ""
         }`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues: { equipment, probeType } }) {

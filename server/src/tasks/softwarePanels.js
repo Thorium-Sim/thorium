@@ -49,7 +49,7 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, panel },
+      requiredValues: { preamble, panel, system },
       task = {}
     }) {
       const panelObj = App.softwarePanels.find(p => p.id === panel);
@@ -94,7 +94,7 @@ export default [
         } panel and perform the following operations:
         
 ${messages}`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {

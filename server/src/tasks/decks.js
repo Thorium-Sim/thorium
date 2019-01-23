@@ -40,18 +40,39 @@ export default [
             : Math.ceil(Math.random() * 15)
       }
     },
-    instructions({ simulator, requiredValues: { preamble, deck }, task = {} }) {
+    instructions({
+      simulator,
+      requiredValues: { preamble, deck, room: roomId, system: sys },
+      task = {}
+    }) {
+      const system = App.systems.find(
+        s =>
+          (sys && s.id === sys) ||
+          s.name.toLowerCase() === sys.toLowerCase() ||
+          s.displayName.toLowerCase() === sys.toLowerCase()
+      ) || { name: sys };
       const station =
         simulator &&
         simulator.stations.find(s =>
           s.cards.find(c => c.component === "SecurityDecks")
         );
-      const deckNum = isNaN(deck)
-        ? App.decks.find(d => d.id === deck).number
-        : deck;
+      const deckNum = roomId
+        ? App.decks.find(
+            d => d.id === App.rooms.find(r => r.id === roomId).deckId
+          ).number
+        : isNaN(deck)
+          ? App.decks.find(d => d.id === deck).number
+          : deck ||
+            randomFromList(
+              App.decks
+                .filter(d => d.simulatorId === simulator.id)
+                .map(d => d.number)
+            );
+      console.log("blach", deck, deckNum, isNaN(deck));
       if (station && task.station === station.name)
         return reportReplace(`${preamble} Evacuate and seal Deck ${deckNum}.`, {
-          simulator
+          simulator,
+          system
         });
       return reportReplace(
         `${preamble} Ask the ${
@@ -59,7 +80,7 @@ export default [
             ? `${station.name} Officer`
             : "person in charge of security decks"
         } to evacuate and seal Deck ${deckNum}.`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues: { deck } }) {

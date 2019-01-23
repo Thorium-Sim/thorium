@@ -34,7 +34,7 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, code, backup },
+      requiredValues: { preamble, code, backup, system },
       task = {}
     }) {
       const station =
@@ -46,7 +46,7 @@ export default [
             `
 
 If the code is rejected, send a backup remote access code: ${backup}`}`,
-          { simulator }
+          { simulator, system }
         );
       return reportReplace(
         `${preamble} Ask the ${
@@ -57,7 +57,7 @@ If the code is rejected, send a backup remote access code: ${backup}`}`,
           `
 
 If the code is rejected, have them send a backup remote access code: ${backup}`}`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {
