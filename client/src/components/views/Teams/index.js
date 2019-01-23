@@ -85,10 +85,9 @@ class Teams extends Component {
       },
       this.state.selectedTeam
     );
-    team.officers = team.officers.reduce(
-      (prev, next) => prev.concat(next.id),
-      []
-    );
+    team.officers = team.officers
+      .filter(Boolean)
+      .reduce((prev, next) => prev.concat(next.id), []);
     team.location = team.location && team.location.id;
     delete team.id;
     delete team.creating;
@@ -116,10 +115,9 @@ class Teams extends Component {
       },
       this.state.selectedTeam
     );
-    team.officers = team.officers.reduce(
-      (prev, next) => prev.concat(next.id),
-      []
-    );
+    team.officers = team.officers
+      .filter(Boolean)
+      .reduce((prev, next) => prev.concat(next.id), []);
     team.location = team.location && team.location.id;
     delete team.__typename;
     const variables = {
@@ -183,7 +181,7 @@ class Teams extends Component {
       .concat(selectedTeam)
       .reduce((prev, next) => {
         if (!next) return prev;
-        return prev.concat(next.officers || {});
+        return prev.concat(next.officers.filter(Boolean) || {});
       }, [])
       .map(o => o.id);
     if (crew.length === 0) return <p>Need crew for teams</p>;

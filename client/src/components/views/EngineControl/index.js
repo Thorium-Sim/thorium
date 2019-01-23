@@ -69,7 +69,8 @@ class EngineControl extends Component {
     }
   }
   fullStop() {
-    const engine = this.props.data.engines.find(e => e.on);
+    const engine =
+      this.props.data.engines && this.props.data.engines.find(e => e.on);
     engine && this.props.setSpeed({ id: engine.id, speed: -1, on: false });
   }
   render() {

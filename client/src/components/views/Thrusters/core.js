@@ -169,42 +169,58 @@ class ThrusterCore extends Component {
                 </Col>
               </Fragment>
             )}
-          <ThrusterArrow
-            name="arrow-circle-down"
-            value={
-              thrusters.direction.z < 0 ? Math.abs(thrusters.direction.z) : 0
-            }
-          />
-          <ThrusterArrow
-            name="arrow-up"
-            value={
-              thrusters.direction.y > 0 ? Math.abs(thrusters.direction.y) : 0
-            }
-          />
-          <ThrusterArrow
-            name="arrow-circle-up"
-            value={
-              thrusters.direction.z > 0 ? Math.abs(thrusters.direction.z) : 0
-            }
-          />
-          <ThrusterArrow
-            name="arrow-left"
-            value={
-              thrusters.direction.x < 0 ? Math.abs(thrusters.direction.x) : 0
-            }
-          />
-          <ThrusterArrow
-            name="arrow-down"
-            value={
-              thrusters.direction.y < 0 ? Math.abs(thrusters.direction.y) : 0
-            }
-          />
-          <ThrusterArrow
-            name="arrow-right"
-            value={
-              thrusters.direction.x > 0 ? Math.abs(thrusters.direction.x) : 0
-            }
-          />
+          {thrusters.direction && (
+            <Fragment>
+              <ThrusterArrow
+                name="arrow-circle-down"
+                value={
+                  thrusters.direction.z < 0
+                    ? Math.abs(thrusters.direction.z)
+                    : 0
+                }
+              />
+              <ThrusterArrow
+                name="arrow-up"
+                value={
+                  thrusters.direction.y > 0
+                    ? Math.abs(thrusters.direction.y)
+                    : 0
+                }
+              />
+              <ThrusterArrow
+                name="arrow-circle-up"
+                value={
+                  thrusters.direction.z > 0
+                    ? Math.abs(thrusters.direction.z)
+                    : 0
+                }
+              />
+              <ThrusterArrow
+                name="arrow-left"
+                value={
+                  thrusters.direction.x < 0
+                    ? Math.abs(thrusters.direction.x)
+                    : 0
+                }
+              />
+              <ThrusterArrow
+                name="arrow-down"
+                value={
+                  thrusters.direction.y < 0
+                    ? Math.abs(thrusters.direction.y)
+                    : 0
+                }
+              />
+              <ThrusterArrow
+                name="arrow-right"
+                value={
+                  thrusters.direction.x > 0
+                    ? Math.abs(thrusters.direction.x)
+                    : 0
+                }
+              />
+            </Fragment>
+          )}
         </Row>
         <Row>
           <Col sm={6}>

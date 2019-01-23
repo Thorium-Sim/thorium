@@ -152,12 +152,14 @@ class Teams extends Component {
                     <p>
                       {room.name
                         ? `${room.name}, Deck ${deck.number}`
-                        : `Deck ${deck.number}`}
+                        : deck
+                          ? `Deck ${deck.number}`
+                          : "Unknown"}
                     </p>
                   </div>
                   <div className="label-section">
                     <Label for="teamName">Assigned Officers</Label>
-                    {team.officers.map(c => (
+                    {team.officers.filter(Boolean).map(c => (
                       <p key={c.id}>
                         {c.name} - <em>{c.position}</em>
                         <ul className="inventory">

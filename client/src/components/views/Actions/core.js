@@ -431,6 +431,7 @@ class ActionsCore extends Component {
               </optgroup>
               <optgroup>
                 {!this.props.data.loading &&
+                  this.props.data.simulators &&
                   this.props.data.simulators[0] &&
                   this.props.data.simulators[0].stations &&
                   this.props.data.simulators[0].stations.map(s => (
