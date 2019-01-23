@@ -189,6 +189,7 @@ const TeamConfig = ({
               team.officers &&
               team.officers
                 .concat()
+                .filter(Boolean)
                 .sort((a, b) => {
                   if (a.position > b.position) return 1;
                   if (a.position < b.position) return -1;

@@ -478,7 +478,7 @@ const TeamList = ({ team, teams, crew, selectedCrew, selectCrew }) => {
   }
 
   const officers = teams.reduce((prev, next) => {
-    return prev.concat(next.officers.map(o => o.id));
+    return prev.concat(next.officers.filter(Boolean).map(o => o.id));
   }, []);
   return crew.filter(c => officers.indexOf(c.id) === -1).map(o => (
     <p

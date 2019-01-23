@@ -214,6 +214,7 @@ class ViewscreenManager extends Component {
                     checked={
                       selectedViewscreen &&
                       viewscreens.length &&
+                      viewscreens.find(v => v.id === selectedViewscreen) &&
                       viewscreens.find(v => v.id === selectedViewscreen).auto
                     }
                     onChange={this.toggleAuto}

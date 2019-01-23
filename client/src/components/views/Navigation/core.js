@@ -55,7 +55,9 @@ class NavigationCore extends Component {
   }
   componentDidUpdate(prevProps) {
     if (!this.props.data.loading) {
-      const navigation = this.props.data.navigation[0];
+      const navigation =
+        this.props.data.navigation && this.props.data.navigation[0];
+      if (!navigation) return;
       if (!this.state.calculatedCourse && navigation) {
         return this.setState({
           calculatedCourse: navigation.calculatedCourse

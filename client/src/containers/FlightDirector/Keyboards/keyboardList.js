@@ -9,17 +9,19 @@ class KeyboardList extends Component {
   }
   render() {
     const { keyboard, selectedKeyboard, selectKeyboard } = this.props;
-    return keyboard.map(k => (
-      <ListGroupItem
-        key={k.id}
-        active={selectedKeyboard === k.id}
-        tag="button"
-        action
-        onClick={() => selectKeyboard(k.id)}
-      >
-        {k.name}
-      </ListGroupItem>
-    ));
+    return keyboard
+      ? keyboard.map(k => (
+          <ListGroupItem
+            key={k.id}
+            active={selectedKeyboard === k.id}
+            tag="button"
+            action
+            onClick={() => selectKeyboard(k.id)}
+          >
+            {k.name}
+          </ListGroupItem>
+        ))
+      : null;
   }
 }
 

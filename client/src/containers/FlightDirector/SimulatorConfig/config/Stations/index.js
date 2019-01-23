@@ -48,9 +48,12 @@ class StationConfig extends Component {
                 client={client}
                 simulator={selectedSimulator}
                 selectedStationSet={selectedStationSet}
-                station={stationSets
-                  .find(s => s.id === selectedStationSet)
-                  .stations.find(s => s.name === selectedStation)}
+                station={
+                  stationSets.find(s => s.id === selectedStationSet) &&
+                  stationSets
+                    .find(s => s.id === selectedStationSet)
+                    .stations.find(s => s.name === selectedStation)
+                }
               />
             )}
           </Col>

@@ -388,7 +388,8 @@ class GridCore extends Component {
   }
   render() {
     if (this.props.data.loading) return <p>Loading...</p>;
-    if (!this.props.data.sensors[0]) return <p>No Sensor Grid</p>;
+    if (!this.props.data.sensors || !this.props.data.sensors[0])
+      return <p>No Sensor Grid</p>;
     const sensors = this.props.data.sensors[0];
     const {
       speed,
