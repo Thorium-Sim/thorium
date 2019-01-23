@@ -50,7 +50,11 @@ export default [
       }
     },
 
-    instructions({ simulator, requiredValues: { preamble, crew }, task = {} }) {
+    instructions({
+      simulator,
+      requiredValues: { preamble, crew, system },
+      task = {}
+    }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "Sickbay")
       );
@@ -64,7 +68,8 @@ export default [
             crewmember.fullName
           } to the sickbay and perform a full treatment diagnostic.`,
           {
-            simulator
+            simulator,
+            system
           }
         );
       return reportReplace(
@@ -75,7 +80,7 @@ export default [
         } to admit ${crewmember.rank} ${
           crewmember.fullName
         } to the sickbay and perform a full treatment diagnostic.`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues = {} }) {

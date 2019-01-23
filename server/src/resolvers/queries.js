@@ -50,6 +50,7 @@ import { JumpDriveQueries } from "./jumpDrive.js";
 import { TasksQueries } from "./tasks";
 import { CommandLineQueries } from "./commandLine.js";
 import { TriggerQueries } from "./trigger.js";
+import { TaskReportQueries } from "./taskReport.js";
 
 const queryMap = Object.assign(
   {},
@@ -104,7 +105,8 @@ const queryMap = Object.assign(
   JumpDriveQueries,
   TasksQueries,
   CommandLineQueries,
-  TriggerQueries
+  TriggerQueries,
+  TaskReportQueries
 );
 
 export default queryMap;

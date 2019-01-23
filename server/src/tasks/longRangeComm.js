@@ -48,7 +48,7 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, destination, message },
+      requiredValues: { preamble, destination, message, system },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
@@ -59,7 +59,7 @@ export default [
           `${preamble} Send the following message:
 Destination: ${destination}
 Message: ${message}`,
-          { simulator }
+          { simulator, system }
         );
       return reportReplace(
         `${preamble} Ask the ${
@@ -69,7 +69,7 @@ Message: ${message}`,
         } to send the following message:
 Destination: ${destination}
 Message: ${message}`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {
@@ -145,22 +145,22 @@ Message: ${message}`,
     },
     instructions({
       simulator,
-      requiredValues: { preamble, messageOrDestination },
+      requiredValues: { preamble, messageOrDestination, system },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "CommDecoding")
       );
-      const system = App.systems.find(
+      const lrComm = App.systems.find(
         s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
       );
-      const m = system.messages.find(m => m.id === messageOrDestination) || {
+      const m = lrComm.messages.find(m => m.id === messageOrDestination) || {
         sender: messageOrDestination
       };
       if (station && station.name === task.station)
         return reportReplace(
           `${preamble} Decode the message sent by "${m.sender}".`,
-          { simulator }
+          { simulator, system }
         );
       return reportReplace(
         `${preamble} Ask the ${
@@ -168,7 +168,7 @@ Message: ${message}`,
             ? `${station.name} Officer`
             : "person in charge of decoding long range messages"
         } to decode the message sent by "${m.sender}".`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {

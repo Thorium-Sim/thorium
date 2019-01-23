@@ -4,7 +4,18 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import ValueInput from "../../../components/views/Tasks/core/ValueInput";
 
-const TaskConfig = ({ id, name, values, definition }) => {
+const TaskConfig = ({ id, name, values, definition, reportTypes = [] }) => {
+  const updateReportTypes = (which, checked, action) => {
+    const newReportTypes = checked
+      ? reportTypes.concat(which)
+      : reportTypes.filter(c => c !== which);
+    action({
+      variables: {
+        id,
+        reportTypes: newReportTypes.filter((a, i, arr) => arr.indexOf(a) === i)
+      }
+    });
+  };
   return (
     <div>
       <label>Definition</label>
@@ -23,6 +34,52 @@ const TaskConfig = ({ id, name, values, definition }) => {
             defaultValue={name}
             onBlur={e => action({ variables: { id, name: e.target.value } })}
           />
+        )}
+      </Mutation>
+      <label>Report Type</label>
+      <Mutation
+        mutation={gql`
+          mutation SetTaskTemplateReportTypes(
+            $id: ID!
+            $reportTypes: [String]!
+          ) {
+            setTaskTemplateReportTypes(id: $id, reportTypes: $reportTypes)
+          }
+        `}
+      >
+        {action => (
+          <div style={{ display: "flex" }}>
+            <label>
+              Damage{" "}
+              <input
+                type="checkbox"
+                checked={reportTypes.indexOf("default") > -1}
+                onChange={e =>
+                  updateReportTypes("default", e.target.checked, action)
+                }
+              />
+            </label>
+            <label>
+              R&D{" "}
+              <input
+                type="checkbox"
+                checked={reportTypes.indexOf("rnd") > -1}
+                onChange={e =>
+                  updateReportTypes("rnd", e.target.checked, action)
+                }
+              />
+            </label>
+            <label>
+              Engineering{" "}
+              <input
+                type="checkbox"
+                checked={reportTypes.indexOf("engineering") > -1}
+                onChange={e =>
+                  updateReportTypes("engineering", e.target.checked, action)
+                }
+              />
+            </label>
+          </div>
         )}
       </Mutation>
       <label>Values</label>

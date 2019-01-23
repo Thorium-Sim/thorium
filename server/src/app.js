@@ -56,6 +56,7 @@ class Events extends EventEmitter {
     this.keyboards = [];
     this.sounds = [];
     this.taskTemplates = [];
+    this.taskReports = [];
     this.tasks = [];
     this.commandLine = [];
     this.triggerGroups = [];

@@ -17,6 +17,9 @@
       "Fixes some minor issues with assigning stations in tasks."
     ]
   },
+  "1.1.5": {
+    "fixes": ["Fix a minor issue with the long range comm task."]
+  },
   "1.1.4": {
     "features": [
       "Add a superficial damage report length for roughly 3 step reports."

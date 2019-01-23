@@ -33,6 +33,7 @@ type System implements SystemInterface {
   locations: [Room]
   requiredDamageSteps: [DamageStep]
   optionalDamageSteps: [DamageStep]
+  damageTasks: [DamageTask]
 }
 
 # Generic system type. Query any system by type.

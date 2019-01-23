@@ -84,6 +84,9 @@ export default class Task {
     // Macros
     this.macros = [];
     params.macros && params.macros.map(m => this.macros.push(new Macro(m)));
+
+    // Task Report Assignment
+    this.assigned = params.assigned || false;
   }
   verify(dismiss) {
     this.verified = true;
@@ -91,8 +94,11 @@ export default class Task {
     this.verifyRequested = false;
     this.endTime = new Date();
 
-    // Trigger all the macros
+    // Trigger all the macros, unless it is assigned
+    // If it is assigned, then there is another task
+    // that will execute the macros when it is verified.
     this.macros.length > 0 &&
+      !this.assigned &&
       App.handleEvent(
         { simulatorId: this.simulatorId, macros: this.macros },
         "triggerMacros"
@@ -106,5 +112,8 @@ export default class Task {
   }
   denyVerify() {
     this.verifyRequested = false;
+  }
+  assign() {
+    this.assigned = true;
   }
 }

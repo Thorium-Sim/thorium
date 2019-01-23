@@ -22,7 +22,8 @@ export const aspectList = [
   "surveyForms",
   "objectives",
   "commandLine",
-  "triggerGroups"
+  "triggerGroups",
+  "tasks"
 ];
 
 function addAspects(template, sim) {

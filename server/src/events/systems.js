@@ -246,6 +246,21 @@ App.on("removeSystemDamageStep", ({ systemId, step }) => {
   sys.removeDamageStep(step);
   sendUpdate(sys);
 });
+App.on("addSystemDamageTask", ({ systemId, task }) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.addDamageTask(task);
+  sendUpdate(sys);
+});
+App.on("updateSystemDamageTask", ({ systemId, task }) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.updateDamageTask(task);
+  sendUpdate(sys);
+});
+App.on("removeSystemDamageTask", ({ systemId, taskId }) => {
+  const sys = App.systems.find(s => s.id === systemId);
+  sys.removeDamageTask(taskId);
+  sendUpdate(sys);
+});
 App.on("breakSystem", ({ simulatorId, type, name }) => {
   const systems = App.systems.filter(
     s =>

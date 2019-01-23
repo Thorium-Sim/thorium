@@ -17,13 +17,28 @@ const DamageTeamPicker = ({ simulatorId, onChange, value = {} }) => (
   <Query query={crewQuery} variables={{ simulatorId }}>
     {({ loading, data: { crew = [] } }) => {
       if (loading) return null;
-      const positions = crew.reduce(
-        (prev, next) =>
-          prev.indexOf(next.position) === -1
-            ? prev.concat(next.position)
-            : prev,
-        []
-      );
+      const positions =
+        crew.length > 0
+          ? crew.reduce(
+              (prev, next) =>
+                prev.indexOf(next.position) === -1
+                  ? prev.concat(next.position)
+                  : prev,
+              []
+            )
+          : [
+              "Computer Specialist",
+              "Custodian",
+              "Electrician",
+              "Explosive Expert",
+              "Hazardous Waste Expert",
+              "Maintenance Officer",
+              "Mechanic",
+              "Plumber",
+              "Quality Assurance",
+              "Structural Engineer",
+              "Welder"
+            ];
       const availablePositions = positions.filter(
         p => Object.keys(value).indexOf(p) === -1
       );
