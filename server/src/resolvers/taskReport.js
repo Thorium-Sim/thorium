@@ -4,7 +4,7 @@ import { withFilter } from "graphql-subscriptions";
 
 export const TaskReportQueries = {
   taskReport(root, { simulatorId }) {
-    let returnVal = [];
+    let returnVal = App.taskReports;
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
     return returnVal;

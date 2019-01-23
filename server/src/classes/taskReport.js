@@ -31,8 +31,9 @@ export default class TaskReport {
     this.name = params.name || `${fullType} Report`;
     // Generate the report from the task templates when the task report is created
     // Tasks is a list of task IDs for tasks that are stored in App.tasks
-    this.tasks =
-      params.tasks.map(t => new Task(t)) || TaskReport.generateReport(params);
+    this.tasks = params.tasks
+      ? params.tasks.map(t => new Task(t))
+      : TaskReport.generateReport(params);
   }
   static generateReport({
     simulatorId,
