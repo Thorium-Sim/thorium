@@ -80,7 +80,7 @@ export default class TaskReport {
       ? App.rooms
           .filter(r => system.locations.indexOf(r.id) > -1)
           .map(r => r.id)
-      : [];
+      : App.rooms.filter(r => r.simulatorId === simulator.id);
 
     function createTask(template) {
       const { values, definition } = template;
