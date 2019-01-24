@@ -57,19 +57,18 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, destination, parts },
+      requiredValues: { preamble, destination, parts, system },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "Exocomps")
       );
-      const system = App.systems.find(s => s.id === destination);
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Send an exocomp to the #SYSTEMNAME with the following parts: ${parts.join(
             ", "
           )}.`,
-          { system, simulator }
+          { system: system || destination, simulator }
         );
       return reportReplace(
         `${preamble} Ask the ${
@@ -77,7 +76,7 @@ export default [
         } to send an exocomp to the #SYSTEMNAME with the following parts: ${parts.join(
           ", "
         )}.`,
-        { system, simulator }
+        { system: system || destination, simulator }
       );
     },
     verify({ simulator, requiredValues }) {

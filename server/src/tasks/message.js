@@ -36,13 +36,13 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, destination, message }
+      requiredValues: { preamble, destination, message, system }
     }) {
       return reportReplace(
         `${preamble} Send the following message:
 Destination: ${destination}
 Message: ${message}`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator, requiredValues }) {

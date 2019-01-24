@@ -19,8 +19,8 @@ export default [
         value: () => "This is a generic task."
       }
     },
-    instructions({ simulator, requiredValues: { message } }) {
-      return reportReplace(message, { simulator });
+    instructions({ simulator, requiredValues: { message, system } }) {
+      return reportReplace(message, { simulator, system });
     },
     verify() {
       return false;

@@ -53,6 +53,10 @@ Possible inputs for the `values` function:
 - The string "textarea" -> Textarea input
 - An object, which maps to input props: { type: "number", min: 100, max: 350 }
 - The string "roomPicker" -> A deck and room picker for the simulator
+- The string "deckPicker" -> A deck picker for the simulator
+- The string "probeEquipment" -> A probe equipment picker
+- The string "damageTeamPicker" -> A damage team crew picker
+- The string "inventoryInput" -> A cargo/inventory picker
 
 A background process will continuously check to see if a task has been verified
 by performing the verify check on any task instances that are currently

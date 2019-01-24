@@ -28,6 +28,7 @@ import { ThxTypes } from "./thx";
 import { ExternalsTypes } from "./externals";
 import { ViewscreenTypes } from "./viewscreen";
 import { TasksTypes } from "./tasks";
+import { TaskReportTypes } from "./taskReport";
 
 export default Object.assign(
   AssetsTypes,
@@ -59,5 +60,6 @@ export default Object.assign(
   ThxTypes,
   ExternalsTypes,
   ViewscreenTypes,
-  TasksTypes
+  TasksTypes,
+  TaskReportTypes
 );

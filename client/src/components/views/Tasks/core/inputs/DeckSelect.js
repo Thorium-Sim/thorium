@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
 
 const DeckSelect = props => {
-  const { simulatorId, onChange, value } = props;
+  const { simulatorId, onChange, value, deckOnly } = props;
   return (
     <Query
       query={gql`
@@ -54,14 +54,16 @@ const DeckSelect = props => {
               size="sm"
               setSelected={a => onChange(a.deck)}
             />
-            <RoomDropdown
-              selectedDeck={deck}
-              selectedRoom={room}
-              size="sm"
-              decks={data.decks}
-              disabled={!deck}
-              setSelected={a => onChange(a.room)}
-            />
+            {!deckOnly && (
+              <RoomDropdown
+                selectedDeck={deck}
+                selectedRoom={room}
+                size="sm"
+                decks={data.decks}
+                disabled={!deck}
+                setSelected={a => onChange(a.room)}
+              />
+            )}
           </div>
         );
       }}

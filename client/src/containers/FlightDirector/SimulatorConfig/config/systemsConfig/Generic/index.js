@@ -7,6 +7,7 @@ import Basic from "./basic";
 import Power from "./power";
 import Locations from "./location";
 import Heat from "./heat";
+import DamageTasks from "../../Simulator/damageTasks";
 
 export const GENERIC_QUERY = gql`
   query System($simulatorId: ID!, $id: ID!) {
@@ -25,6 +26,21 @@ export const GENERIC_QUERY = gql`
         name
         deck {
           number
+        }
+      }
+      damageTasks {
+        id
+        taskTemplate {
+          id
+          name
+          definition
+          reportTypes
+        }
+        required
+        nextSteps {
+          id
+          name
+          definition
         }
       }
     }
@@ -83,6 +99,13 @@ class GenericConfig extends Component {
                 >
                   Locations
                 </Button>
+                <Button
+                  size="sm"
+                  active={selected === "Damage Report"}
+                  onClick={() => this.setState({ selected: "Damage Report" })}
+                >
+                  Damage Report
+                </Button>
                 {(this.props.children || this.props.render) && (
                   <Button
                     size="sm"
@@ -120,6 +143,9 @@ class GenericConfig extends Component {
                     {this.props.children}
                     {this.props.render && this.props.render(this.props)}
                   </Fragment>
+                )}
+                {selected === "Damage Report" && (
+                  <DamageTasks {...data.system} type="system" />
                 )}
               </div>
             </div>

@@ -52,3 +52,4 @@ export { default as TaskTemplate } from "./taskTemplate";
 export { default as Environment } from "./environment";
 export { default as CommandLine } from "./commandLine";
 export { default as Trigger } from "./trigger";
+export { default as TaskReport } from "./taskReport";

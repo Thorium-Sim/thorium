@@ -189,7 +189,12 @@ export default class CardFrame extends Component {
               station={this.props.station}
               clientId={this.props.client.id}
               reset={() =>
-                this.setState({ card: this.props.station.cards[0].name })
+                this.setState({
+                  card:
+                    this.props.station.cards &&
+                    this.props.station.cards[0] &&
+                    this.props.station.cards[0].name
+                })
               }
             />
           )}

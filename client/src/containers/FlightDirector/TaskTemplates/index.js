@@ -8,9 +8,10 @@ const queryData = `
 id
 name
 definition
-values`;
+values
+reportTypes`;
 
-const TASKQUERY = gql`query TaskTemplates{
+const TASK_QUERY = gql`query TaskTemplates{
   taskTemplates {
    ${queryData}
   }
@@ -23,7 +24,7 @@ subscription TaskTemplatesUpdate {
 }`;
 const TaskTemplatesData = props => {
   return (
-    <Query query={TASKQUERY}>
+    <Query query={TASK_QUERY}>
       {({ loading, data: { taskTemplates }, subscribeToMore }) =>
         loading || !taskTemplates ? null : (
           <SubscriptionHelper

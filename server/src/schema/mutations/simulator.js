@@ -34,6 +34,10 @@ addSimulatorDamageStep(simulatorId: ID!, step: DamageStepInput!): String
 updateSimulatorDamageStep(simulatorId: ID!, step: DamageStepInput!): String
 removeSimulatorDamageStep(simulatorId: ID!, step: ID!):String
 
+addSimulatorDamageTask(simulatorId: ID!, task: DamageTaskInput!): String
+removeSimulatorDamageTask(simulatorId: ID!, taskId: ID!): String
+updateSimulatorDamageTask(simulatorId: ID!, task: DamageTaskInput!): String
+
 setSimulatorMission(simulatorId: ID!, missionId: ID!): String
 updateSimulatorPanels(simulatorId: ID!, panels: [ID]!):String
 updateSimulatorCommandLines(simulatorId: ID!, commandLines: [ID]!):String

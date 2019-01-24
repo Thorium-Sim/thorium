@@ -164,6 +164,7 @@ class CargoControlCore extends Component {
     if (!decks || !inventory || !simulators) return null;
     let { deck, room } = this.state;
     const simulator = simulators[0];
+    const deckObj = decks.find(d => d.id === deck);
     return (
       <Container className="cargo-core">
         <SubscriptionHelper
@@ -251,8 +252,8 @@ class CargoControlCore extends Component {
               <option disabled value="select">
                 Select Room
               </option>
-              {deck &&
-                decks.find(d => d.id === deck).rooms.map(r => (
+              {deckObj &&
+                deckObj.rooms.map(r => (
                   <option key={r.id} value={r.id}>
                     {r.name}
                   </option>

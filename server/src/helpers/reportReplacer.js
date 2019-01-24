@@ -11,6 +11,14 @@ function splice(str, start, delCount, newSubStr) {
 }
 
 export default function reportReplace(report = "", { system, simulator }) {
+  if (typeof system === "string") {
+    system = App.systems.find(
+      s =>
+        (system && s.id === system) ||
+        s.name.toLowerCase() === system.toLowerCase() ||
+        s.displayName.toLowerCase() === system.toLowerCase()
+    ) || { name: system };
+  }
   let returnReport = report;
   // #PART
   if (system && system.damage) system.damage.exocompParts = [];

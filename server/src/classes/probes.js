@@ -3,7 +3,7 @@ import uuid from "uuid";
 import App from "../app.js";
 
 export default class Probes extends System {
-  constructor(params, init) {
+  constructor(params = {}, init) {
     super(params);
     this.class = "Probes";
     this.type = "Probes";

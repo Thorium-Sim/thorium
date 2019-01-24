@@ -49,6 +49,7 @@ import { JumpDriveSubscriptions } from "./jumpDrive.js";
 import { TasksSubscriptions } from "./tasks";
 import { CommandLineSubscriptions } from "./commandLine.js";
 import { TriggerSubscriptions } from "./trigger.js";
+import { TaskReportSubscriptions } from "./taskReport.js";
 
 const subscriptionMap = Object.assign(
   {},
@@ -102,7 +103,8 @@ const subscriptionMap = Object.assign(
   JumpDriveSubscriptions,
   TasksSubscriptions,
   CommandLineSubscriptions,
-  TriggerSubscriptions
+  TriggerSubscriptions,
+  TaskReportSubscriptions
 );
 
 export default subscriptionMap;

@@ -58,13 +58,14 @@ class EngineCoreView extends Component {
     let speedList = [];
     let onEngine = "Full Stop";
     if (!this.props.data.loading) {
-      this.props.data.engines.forEach(engine => {
-        if (engine.on) onEngine = `${engine.id}$${engine.speed - 1}`;
-        speedList.push({ disabled: true, text: engine.name });
-        engine.speeds.forEach((speed, index) => {
-          speedList.push({ text: speed.text, engineId: engine.id, index });
+      this.props.data.engines &&
+        this.props.data.engines.forEach(engine => {
+          if (engine.on) onEngine = `${engine.id}$${engine.speed - 1}`;
+          speedList.push({ disabled: true, text: engine.name });
+          engine.speeds.forEach((speed, index) => {
+            speedList.push({ text: speed.text, engineId: engine.id, index });
+          });
         });
-      });
     }
     return this.props.data.loading || !this.props.data.engines ? (
       <span>"Loading..."</span>

@@ -1,4 +1,10 @@
 {
+  "1.1.7": {
+    "fixes": [
+      "Fixes an issue where alerting stealth systems don't appear on the core.",
+      "Fixes a few more errors that were discovered."
+    ]
+  },
   "1.1.6": {
     "features": [
       "Adds task macros, which allows you to execute macros (timeline actions) when a task is complete."
@@ -11,6 +17,9 @@
       "Fixes an issue where triggers were keeping shields from functioning properly.",
       "Fixes some minor issues with assigning stations in tasks."
     ]
+  },
+  "1.1.5": {
+    "fixes": ["Fix a minor issue with the long range comm task."]
   },
   "1.1.4": {
     "features": [

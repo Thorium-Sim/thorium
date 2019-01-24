@@ -60,6 +60,21 @@ optionalDamageSteps {
     reactivate
   }
 }
+damageTasks {
+  id
+  taskTemplate {
+    id
+    name,
+    definition,
+    reportTypes
+  }
+  required
+  nextSteps {
+    id
+    name
+    definition
+  }
+}
 assets {
   mesh
   texture
@@ -110,6 +125,21 @@ systems {
       equipment
       query
       reactivate
+    }
+  }
+  damageTasks {
+    id
+    taskTemplate {
+      id
+      name,
+      definition,
+      reportTypes
+    }
+    required
+    nextSteps {
+      id
+      name
+      definition
     }
   }
 }
@@ -308,6 +338,7 @@ class ConfigComponent extends React.PureComponent {
   }
   componentWillUnmount() {
     this.simsub && this.simsub();
+    this.stationsub && this.stationsub();
   }
   render() {
     const { Comp, selectedSimulator } = this.props;

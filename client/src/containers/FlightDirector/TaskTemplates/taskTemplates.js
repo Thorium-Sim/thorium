@@ -1,20 +1,11 @@
-import React, { Fragment, Component } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Card,
-  CardBody,
-  Button,
-  Badge
-} from "reactstrap";
+import React, { Component } from "react";
+import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
 import gql from "graphql-tag";
 import { Query, Mutation } from "react-apollo";
 import "./style.scss";
 import TaskConfig from "./taskConfig";
-
+import DefinitionList from "./definitionList";
+import TemplateList from "./templateList";
 const QUERY = gql`
   query TaskDefinitions {
     taskDefinitions {
@@ -37,19 +28,8 @@ class TaskTemplates extends Component {
     const { taskTemplates } = this.props;
     return (
       <Query query={QUERY}>
-        {({ loading, data: { taskDefinitions }, subscribeToMore }) => {
+        {({ loading, data: { taskDefinitions } }) => {
           if (loading) return null;
-          const definitionGroups = taskDefinitions
-            .concat()
-            .sort((a, b) => {
-              if (a.class > b.class) return 1;
-              if (a.class < b.class) return -1;
-              return 0;
-            })
-            .reduce((prev, n) => {
-              prev[n.class] = prev[n.class] ? prev[n.class].concat(n) : [n];
-              return prev;
-            }, {});
           const taskTemplate = taskTemplates.find(
             t => t.id === selectedTemplate
           );
@@ -57,57 +37,25 @@ class TaskTemplates extends Component {
             <Container fluid className="task-templates">
               <Row>
                 <Col sm={3}>
-                  <h3>Definitions</h3>
-                  <ListGroup style={{ maxHeight: "80vh", overflowY: "auto" }}>
-                    {Object.entries(definitionGroups).map(([key, value]) => (
-                      <Fragment key={key}>
-                        <ListGroupItem>
-                          <strong>{key}</strong>
-                        </ListGroupItem>
-                        {value.map(v => (
-                          <ListGroupItem
-                            key={v.name}
-                            active={v.name === selectedDef}
-                            onClick={() =>
-                              this.setState({ selectedDef: v.name })
-                            }
-                          >
-                            {v.name}{" "}
-                            <Badge>
-                              {
-                                taskTemplates.filter(
-                                  t => t.definition === v.name
-                                ).length
-                              }
-                            </Badge>
-                          </ListGroupItem>
-                        ))}
-                      </Fragment>
-                    ))}
-                  </ListGroup>
+                  <DefinitionList
+                    taskDefinitions={taskDefinitions}
+                    taskTemplates={taskTemplates}
+                    selectedDef={selectedDef}
+                    setSelectedDef={v => this.setState({ selectedDef: v })}
+                  />
                 </Col>
                 <Col
                   sm={4}
                   style={{ display: "flex", flexDirection: "column" }}
                 >
-                  <h3>Templates</h3>
-                  <ListGroup
-                    style={{ flex: 1, overflowY: "auto", maxHeight: "80vh" }}
-                  >
-                    {taskTemplates
-                      .filter(t => t.definition === selectedDef)
-                      .map(t => (
-                        <ListGroupItem
-                          key={t.id}
-                          onClick={() =>
-                            this.setState({ selectedTemplate: t.id })
-                          }
-                          active={t.id === selectedTemplate}
-                        >
-                          {t.name}
-                        </ListGroupItem>
-                      ))}
-                  </ListGroup>
+                  <TemplateList
+                    taskTemplates={taskTemplates}
+                    selectedDef={selectedDef}
+                    selectedTemplate={selectedTemplate}
+                    setSelectedTemplate={v =>
+                      this.setState({ selectedTemplate: v })
+                    }
+                  />
                   {selectedDef !== "nothing" && (
                     <Mutation
                       mutation={gql`
@@ -158,15 +106,18 @@ class TaskTemplates extends Component {
                   )}
                 </Col>
                 {taskTemplate && (
-                  <Col sm={5}>
+                  <Col sm={5} key={taskTemplate.id}>
                     <h3>Template Config</h3>
-                    <Card>
+                    <Card style={{ maxHeight: "70vh", overflowY: "auto" }}>
                       <CardBody>
                         <TaskConfig
                           {...taskTemplate}
-                          definition={taskDefinitions.find(
-                            d => d.name === taskTemplate.definition
-                          )}
+                          definition={
+                            console.log(taskTemplate) ||
+                            taskDefinitions.find(
+                              d => d.name === taskTemplate.definition
+                            )
+                          }
                         />
                       </CardBody>
                     </Card>

@@ -30,6 +30,7 @@ type TaskTemplate {
   name: String
   values: JSON
   definition: String
+  reportTypes: [String]
   macros: [TimelineItem]
 }
 

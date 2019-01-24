@@ -60,7 +60,7 @@ class PowerDistribution extends Component {
       sysId: null
     };
     this.mouseMove = e => {
-      const mouseX = e.pageX || e.touches[0].pageX;
+      const mouseX = e.pageX || (e.touches && e.touches[0].pageX);
       const level = Math.max(
         0,
         Math.min(40, Math.round((mouseX - this.state.offset - 10) / 11))

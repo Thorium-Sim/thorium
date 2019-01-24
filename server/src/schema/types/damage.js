@@ -58,6 +58,19 @@ type DamageStepArgs {
   reactivate: Boolean
 }
 
+type DamageTask {
+  id: ID
+  taskTemplate: TaskTemplate
+  required: Boolean
+  nextSteps: [TaskTemplate]
+}
+
+input DamageTaskInput {
+  id: ID
+  required: Boolean
+  nextSteps: [ID]
+}
+
 input DamageStepInput {
   id: ID
   name: String

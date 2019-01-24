@@ -31,24 +31,30 @@ export default [
         value: () => "The #SYSTEMNAME should be activated."
       }
     },
-    instructions({ simulator, requiredValues: { preamble }, task = {} }) {
+    instructions({
+      simulator,
+      requiredValues: { preamble, system },
+      task = {}
+    }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "JumpDrive")
       );
-      const system = App.systems.find(
+      const jumpDrive = App.systems.find(
         s => s.simulatorId === simulator.id && s.type === "JumpDrive"
       );
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Activate the ${system.displayName || system.name}.`,
+          `${preamble} Activate the ${jumpDrive.displayName ||
+            jumpDrive.name}.`,
           { simulator, system }
         );
       return reportReplace(
         `${preamble} Ask the ${
           station
             ? `${station.name} Officer`
-            : `person in charge of the ${system.displayName || system.name}`
-        } to activate the ${system.displayName || system.name}.`,
+            : `person in charge of the ${jumpDrive.displayName ||
+                jumpDrive.name}`
+        } to activate the ${jumpDrive.displayName || jumpDrive.name}.`,
         { simulator, system }
       );
     },
@@ -92,24 +98,33 @@ export default [
         value: () => "The #SYSTEMNAME is dangerously unstable."
       }
     },
-    instructions({ simulator, requiredValues: { preamble }, task = {} }) {
+    instructions({
+      simulator,
+      requiredValues: { preamble, system },
+      task = {}
+    }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "JumpDrive")
       );
-      const system = App.systems.find(
+      const jumpDrive = App.systems.find(
         s => s.simulatorId === simulator.id && s.type === "JumpDrive"
       );
       if (station && task.station === station.name)
-        return reportReplace(`${preamble} Stabilize the #SYSTEMNAME.`, {
-          system,
-          simulator
-        });
+        return reportReplace(
+          `${preamble} Stabilize the ${jumpDrive.displayName ||
+            jumpDrive.name}.`,
+          {
+            system,
+            simulator
+          }
+        );
       return reportReplace(
         `${preamble} Ask the ${
           station
             ? `${station.name} Officer`
-            : `person in charge of the #SYSTEMNAME`
-        } to stabilize the #SYSTEMNAME.`,
+            : `person in charge of the ${jumpDrive.displayName ||
+                jumpDrive.name}`
+        } to stabilize the ${jumpDrive.displayName || jumpDrive.name}.`,
         { system, simulator }
       );
     },

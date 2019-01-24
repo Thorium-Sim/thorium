@@ -26,17 +26,24 @@ export default [
         value: () => "The shields need to be raised."
       }
     },
-    instructions({ simulator, requiredValues: { preamble }, task = {} }) {
+    instructions({
+      simulator,
+      requiredValues: { preamble, system },
+      task = {}
+    }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ShieldControl")
       );
       if (station && task.station === station.name)
-        return reportReplace(`${preamble} Raise all shields`, { simulator });
+        return reportReplace(`${preamble} Raise all shields`, {
+          simulator,
+          system
+        });
       return reportReplace(
         `${preamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of shields"
         } to raise all shields`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator }) {
@@ -69,17 +76,24 @@ export default [
         value: () => "The shields need to be lowered."
       }
     },
-    instructions({ simulator, requiredValues: { preamble }, task = {} }) {
+    instructions({
+      simulator,
+      requiredValues: { preamble, system },
+      task = {}
+    }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ShieldControl")
       );
       if (station && task.station === station.name)
-        return reportReplace(`${preamble} Lower all shields`, { simulator });
+        return reportReplace(`${preamble} Lower all shields`, {
+          simulator,
+          system
+        });
       return reportReplace(
         `${preamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of shields"
         } to lower all shields`,
-        { simulator }
+        { simulator, system }
       );
     },
     verify({ simulator }) {
@@ -139,27 +153,30 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, shield },
+      requiredValues: { preamble, shield: shieldId, system },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ShieldControl")
       );
-      const system = App.systems.find(
+      const shield = App.systems.find(
         s =>
-          s.id === shield ||
-          (s.name === shield && s.simulatorId === simulator.id) ||
-          (s.displayName === shield && s.simulatorId === simulator.id)
+          s.id === shieldId ||
+          (s.name === shieldId && s.simulatorId === simulator.id) ||
+          (s.displayName === shieldId && s.simulatorId === simulator.id)
       );
       if (station && task.station === station.name)
-        return reportReplace(`${preamble} Raise the #SYSTEMNAME.`, {
-          system,
-          simulator
-        });
+        return reportReplace(
+          `${preamble} Raise the ${shield.displayName || shield.name}.`,
+          {
+            system,
+            simulator
+          }
+        );
       return reportReplace(
         `${preamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of shields"
-        } to raise the #SYSTEMNAME.`,
+        } to raise the ${shield.displayName || shield.name}.`,
         { system, simulator }
       );
     },
@@ -222,27 +239,30 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, shield },
+      requiredValues: { preamble, shield: shieldId, system },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ShieldControl")
       );
-      const system = App.systems.find(
+      const shield = App.systems.find(
         s =>
-          s.id === shield ||
-          (s.name === shield && s.simulatorId === simulator.id) ||
-          (s.displayName === shield && s.simulatorId === simulator.id)
+          s.id === shieldId ||
+          (s.name === shieldId && s.simulatorId === simulator.id) ||
+          (s.displayName === shieldId && s.simulatorId === simulator.id)
       );
       if (station && task.station === station.name)
-        return reportReplace(`${preamble} Lower the #SYSTEMNAME.`, {
-          system,
-          simulator
-        });
+        return reportReplace(
+          `${preamble} Lower the ${shield.displayName || shield.name}.`,
+          {
+            system,
+            simulator
+          }
+        );
       return reportReplace(
         `${preamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of shields"
-        } to lower the #SYSTEMNAME.`,
+        } to lower the ${shield.displayName || shield.name}.`,
         { system, simulator }
       );
     },
@@ -302,13 +322,13 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, shield, frequency },
+      requiredValues: { preamble, shield: shieldId, frequency, system },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ShieldControl")
       );
-      const system = App.systems.find(
+      const shield = App.systems.find(
         s =>
           s.id === shield ||
           (s.name === shield && s.simulatorId === simulator.id) ||
@@ -316,13 +336,15 @@ export default [
       );
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Set the frequency of the #SYSTEMNAME to ${frequency} MHz.`,
+          `${preamble} Set the frequency of the ${shield.displayName ||
+            shield.name} to ${frequency} MHz.`,
           { system, simulator }
         );
       return reportReplace(
         `${preamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of shields"
-        } to set the frequency of the #SYSTEMNAME to ${frequency} MHz.`,
+        } to set the frequency of the ${shield.displayName ||
+          shield.name} to ${frequency} MHz.`,
         { system, simulator }
       );
     },

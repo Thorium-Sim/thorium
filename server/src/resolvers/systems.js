@@ -91,6 +91,15 @@ export const SystemsMutations = {
   removeSystemDamageStep(rootValue, params, context) {
     App.handleEvent(params, "removeSystemDamageStep", context);
   },
+  addSystemDamageTask(rootValue, params, context) {
+    App.handleEvent(params, "addSystemDamageTask", context);
+  },
+  updateSystemDamageTask(rootValue, params, context) {
+    App.handleEvent(params, "updateSystemDamageTask", context);
+  },
+  removeSystemDamageTask(rootValue, params, context) {
+    App.handleEvent(params, "removeSystemDamageTask", context);
+  },
   breakSystem(rootValue, params, context) {
     App.handleEvent(params, "breakSystem", context);
   },

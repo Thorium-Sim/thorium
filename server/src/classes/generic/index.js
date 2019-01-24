@@ -8,6 +8,7 @@ import {
 import * as damageStepFunctions from "./damageReports/functions";
 import processReport from "./processReport";
 import DamageStep from "./damageStep";
+import DamageTask from "./damageTask";
 
 class Damage {
   constructor(params = {}) {
@@ -53,6 +54,10 @@ export class System {
       params.optionalDamageSteps.forEach(s =>
         this.optionalDamageSteps.push(new DamageStep(s))
       );
+    // Task-based damage reports
+    this.damageTasks = [];
+    params.damageTasks &&
+      params.damageTasks.forEach(s => this.damageTasks.push(new DamageTask(s)));
   }
   get stealthFactor() {
     return null;
@@ -359,5 +364,21 @@ ${report}
     this.damage.reactivationRequester = null;
     // For now, lets repair the station when it is accepted
     if (response) this.repair();
+  }
+  // Damage Tasks
+  // As a side note, can I just say how much more elegant
+  // the damage tasks system is already? Look at this!
+  // It's much simpler. Why didn't I do it this
+  // way in the first place? ~A
+  addDamageTask(task) {
+    if (!task || !task.id || this.damageTasks.find(t => t.id === task.id))
+      return;
+    this.damageTasks.push(new DamageTask(task));
+  }
+  updateDamageTask(task) {
+    this.damageTasks.find(t => t.id === task.id).update(task);
+  }
+  removeDamageTask(id) {
+    this.damageTasks = this.damageTasks.filter(t => t.id !== id);
   }
 }

@@ -118,6 +118,7 @@ class ConvoCore extends Component {
                 if (selectedMessage === "new")
                   return <DecodingCore {...this.props} />;
                 const message = messages.find(m => m.id === selectedMessage);
+                if (!message) return null;
                 return `${processTime(message.timestamp)}${
                   message.encrypted ? ` - Encrypted` : ""
                 }${message.approved ? ` - Approved` : ""}

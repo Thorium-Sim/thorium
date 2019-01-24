@@ -18,6 +18,10 @@ updateSystemDamageStep(systemId: ID!, step: DamageStepInput!): String
 removeSystemDamageStep(systemId: ID!, step: ID!):String
 generateDamageReport(systemId: ID!, steps: Int): String
 
+addSystemDamageTask(systemId: ID!, task: DamageTaskInput!): String
+removeSystemDamageTask(systemId: ID!, taskId: ID!): String
+updateSystemDamageTask(systemId: ID!, task: DamageTaskInput!): String
+
 #Macro: Damage Control: Break system
 breakSystem(simulatorId: ID!, type: String!, name: String): String
 

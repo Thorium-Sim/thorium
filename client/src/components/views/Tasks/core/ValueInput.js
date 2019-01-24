@@ -4,6 +4,8 @@ import { titleCase } from "change-case";
 import DeckSelect from "./inputs/DeckSelect";
 import PartsPicker from "./inputs/PartsPicker";
 import DamageTeamPicker from "./inputs/DamageTeamPicker";
+import ProbeEquipment from "./inputs/ProbeEquipment";
+import InventoryInput from "./inputs/InventoryInput";
 
 const ValueInput = ({
   label,
@@ -53,6 +55,19 @@ const ValueInput = ({
             </label>
           );
         }
+        if (type === "deckPicker") {
+          return (
+            <label>
+              {titleCase(label)}
+              <DeckSelect
+                simulatorId={simulatorId}
+                value={value || placeholder}
+                onChange={onBlur}
+                deckOnly
+              />
+            </label>
+          );
+        }
         if (type === "partsPicker") {
           return (
             <label>
@@ -66,6 +81,30 @@ const ValueInput = ({
             <label>
               {titleCase(label)}
               <DamageTeamPicker
+                simulatorId={simulatorId}
+                value={value || placeholder}
+                onChange={onBlur}
+              />
+            </label>
+          );
+        }
+        if (type === "probeEquipment") {
+          return (
+            <label>
+              {titleCase(label)}
+              <ProbeEquipment
+                simulatorId={simulatorId}
+                value={value || placeholder}
+                onChange={onBlur}
+              />
+            </label>
+          );
+        }
+        if (type === "inventoryInput") {
+          return (
+            <label>
+              {titleCase(label)}
+              <InventoryInput
                 simulatorId={simulatorId}
                 value={value || placeholder}
                 onChange={onBlur}

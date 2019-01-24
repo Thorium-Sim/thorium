@@ -12,6 +12,12 @@ import computerCore from "./computerCore";
 import coolant from "./coolant";
 import power from "./power";
 import teams from "./teams";
+import remoteAccess from "./remoteAccess";
+import decks from "./decks";
+import inventory from "./inventory";
+import probes from "./probes";
+import softwarePanels from "./softwarePanels";
+import reactivationCode from "./reactivationCode";
 
 export default [
   ...docking,
@@ -27,5 +33,11 @@ export default [
   ...computerCore,
   ...coolant,
   ...power,
-  ...teams
+  ...teams,
+  ...remoteAccess,
+  ...decks,
+  ...inventory,
+  ...probes,
+  ...softwarePanels,
+  ...reactivationCode
 ];
