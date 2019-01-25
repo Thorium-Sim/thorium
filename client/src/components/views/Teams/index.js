@@ -181,7 +181,7 @@ class Teams extends Component {
       .concat(selectedTeam)
       .reduce((prev, next) => {
         if (!next) return prev;
-        return prev.concat(next.officers.filter(Boolean) || {});
+        return prev.concat(next.officers ? next.officers.filter(Boolean) : {});
       }, [])
       .map(o => o.id);
     if (crew.length === 0) return <p>Need crew for teams</p>;
