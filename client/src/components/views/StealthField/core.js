@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
 import { Container, Row, Col, Button } from "reactstrap";
-import { graphql, withApollo } from "react-apollo";
+import { Query, withApollo } from "react-apollo";
 import { OutputField } from "../../generic/core";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
@@ -29,32 +30,16 @@ function isAligned({ fore, aft, port, starboard }) {
 }
 
 class StealthFieldCore extends Component {
-  constructor(props) {
-    super(props);
-    this.subscription = null;
-    this.systemsSubscription = null;
+  componentDidMount() {
+    this.refetchSystems();
   }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: STEALTH_SUB,
-        variables: {
-          simulatorId: nextProps.simulator.id
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          return Object.assign({}, previousResult, {
-            stealthField: subscriptionData.data.stealthFieldUpdate
-          });
-        }
-      });
-    }
-    if (!this.systemsSubscription && !nextProps.data.loading) {
-      this.props.data.startPolling(1000);
-    }
-  }
+  refetchSystems = () => {
+    const { refetch } = this.props;
+    refetch();
+    this.timeout = setTimeout(this.refetchSystems, 1000);
+  };
   componentWillUnmount() {
-    this.props.data.stopPolling(1000);
-    this.subscription && this.subscription();
+    clearTimeout(this.timeout);
   }
   systemName(sys) {
     if (sys.type === "Shield") {
@@ -66,7 +51,8 @@ class StealthFieldCore extends Component {
     return sys.name;
   }
   toggleStealth = () => {
-    const { id, state } = this.props.data.stealthField[0];
+    const { stealthField } = this.props;
+    const { id, state } = stealthField;
     let mutation;
     if (!state) {
       mutation = gql`
@@ -94,7 +80,7 @@ class StealthFieldCore extends Component {
       }
     `;
     const variables = {
-      id: this.props.data.stealthField[0].id
+      id: this.props.stealthField.id
     };
     this.props.client.mutate({
       mutation,
@@ -102,19 +88,15 @@ class StealthFieldCore extends Component {
     });
   };
   render() {
-    if (this.props.data.loading || !this.props.data.stealthField) return null;
-    const stealthField = this.props.data.stealthField[0];
-    if (!stealthField) return <p>No Stealth Field Systems</p>;
+    const { systems, stealthField } = this.props;
     // Calculate the systems that are highest
     let alertHigh = false;
-    const highSystems = this.props.data.systems
-      .filter(s => s.stealthFactor > 0.5)
-      .map(s => {
-        if (s.stealthFactor > 0.8) {
-          alertHigh = true;
-        }
-        return s;
-      });
+    const highSystems = systems.filter(s => s.stealthFactor > 0.5).map(s => {
+      if (s.stealthFactor > 0.8) {
+        alertHigh = true;
+      }
+      return s;
+    });
 
     const sysStyle = {};
     if (highSystems.length > 0) {
@@ -185,6 +167,11 @@ const STEALTH_QUERY = gql`
         starboard
       }
     }
+  }
+`;
+
+const SYSTEMS_QUERY = gql`
+  query Systems($simulatorId: ID!) {
     systems(simulatorId: $simulatorId) {
       id
       name
@@ -194,11 +181,59 @@ const STEALTH_QUERY = gql`
   }
 `;
 
-export default graphql(STEALTH_QUERY, {
-  options: ownProps => ({
-    variables: {
-      simulatorId: ownProps.simulator.id,
-      names: ["Icons", "Pictures"]
-    }
-  })
-})(withApollo(StealthFieldCore));
+const StealthFieldData = props => {
+  return (
+    <Query
+      query={STEALTH_QUERY}
+      variables={{
+        simulatorId: props.simulator.id
+      }}
+    >
+      {({ loading, data, subscribeToMore }) => {
+        if (loading || !data.stealthField) return null;
+        const stealthField = data.stealthField[0];
+        if (!stealthField) return <p>No Stealth Field Systems</p>;
+        return (
+          <SubscriptionHelper
+            subscribe={() =>
+              subscribeToMore({
+                document: STEALTH_SUB,
+                variables: {
+                  simulatorId: props.simulator.id
+                },
+                updateQuery: (previousResult, { subscriptionData }) => {
+                  return Object.assign({}, previousResult, {
+                    stealthField: subscriptionData.data.stealthFieldUpdate
+                  });
+                }
+              })
+            }
+          >
+            <Query
+              query={SYSTEMS_QUERY}
+              variables={{
+                simulatorId: props.simulator.id
+              }}
+              pollInterval={500}
+            >
+              {({ data: systemsData, startPolling, refetch }) => (
+                <StealthFieldCore
+                  {...props}
+                  stealthField={stealthField}
+                  systems={
+                    systemsData && systemsData.systems
+                      ? systemsData.systems
+                      : []
+                  }
+                  startPolling={startPolling}
+                  refetch={refetch}
+                />
+              )}
+            </Query>
+          </SubscriptionHelper>
+        );
+      }}
+    </Query>
+  );
+};
+export default withApollo(StealthFieldData);

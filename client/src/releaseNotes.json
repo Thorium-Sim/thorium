@@ -1,4 +1,13 @@
 {
+  "1.1.8": {
+    "fixes": ["Fixes a critical error with teams."]
+  },
+  "1.1.7": {
+    "fixes": [
+      "Fixes an issue where alerting stealth systems don't appear on the core.",
+      "Fixes a few more errors that were discovered."
+    ]
+  },
   "1.1.6": {
     "features": [
       "Adds task macros, which allows you to execute macros (timeline actions) when a task is complete."

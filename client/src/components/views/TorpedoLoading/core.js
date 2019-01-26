@@ -45,9 +45,11 @@ class TorpedoLoadingCore extends Component {
     }
     if (!nextProps.data.loading) {
       const torpedos =
-        nextProps.data.torpedos.find(
-          t => t.id === this.state.selectedTorpedo
-        ) || nextProps.data.torpedos[0];
+        (nextProps.data.torpedos &&
+          nextProps.data.torpedos.find(
+            t => t.id === this.state.selectedTorpedo
+          )) ||
+        nextProps.data.torpedos[0];
       if (!torpedos) return;
       let { type } = this.state;
       const loadedTorp = torpedos.inventory.find(t => t.id === torpedos.loaded);

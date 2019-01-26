@@ -26,7 +26,9 @@ const nameSort = (a, b) => {
   return 0;
 };
 const getFolders = (assetFolders, fullPath) => {
-  const folders = assetFolders.filter(s => s.folderPath === fullPath);
+  const folders = assetFolders
+    ? assetFolders.filter(s => s.folderPath === fullPath)
+    : [];
   const extras = folders.reduce(
     (prev, next) => prev.concat(getFolders(assetFolders, next.fullPath)),
     []
