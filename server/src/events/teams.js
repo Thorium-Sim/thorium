@@ -54,6 +54,7 @@ App.on("removeCrewFromTeam", ({ teamId, crewId }) => {
   pubsub.publish("teamsUpdate", App.teams);
 });
 App.on("removeTeam", ({ teamId }) => {
-  App.teams = App.teams.filter(t => t.id !== teamId);
+  const team = App.teams.find(t => t.id === teamId);
+  team && team.clear();
   pubsub.publish("teamsUpdate", App.teams);
 });

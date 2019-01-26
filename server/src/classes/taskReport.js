@@ -29,12 +29,38 @@ export default class TaskReport {
     this.type = params.type || "default";
     this.stepCount = params.stepCount || 8;
     this.name = params.name || `${fullType} Report`;
+    this.cleared = params.cleared || false;
     // Generate the report from the task templates when the task report is created
     // Tasks is a list of task IDs for tasks that are stored in App.tasks
     this.tasks = params.tasks
       ? params.tasks.map(t => new Task(t))
       : TaskReport.generateReport(params);
   }
+  clear() {
+    this.cleared = true;
+  }
+  complete() {
+    // Verify all of the tasks in the report
+    this.tasks.filter(t => !t.verified).forEach(t => t.verify());
+    this.clear();
+  }
+  verifyTask(stepId) {
+    this.tasks.find(t => t.id === stepId).verify();
+  }
+  assignTask(stepId, station) {
+    const task = this.tasks.find(t => t.id === stepId);
+    const simulator = App.simulators.find(s => s.id === this.simulatorId);
+    const definition = taskDefinitions.find(t => t.name === task.definition);
+
+    let assignStation =
+      station || randomFromList(definition.stations({ simulator }) || []);
+    if (!assignStation) return;
+    const { id, ...taskObj } = task;
+    const newTask = new Task(taskObj);
+    task.assigned = newTask.id;
+    App.tasks.push(newTask);
+  }
+
   static generateReport({
     simulatorId,
     systemId,

@@ -3,17 +3,30 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const TaskReportQueries = {
-  taskReport(root, { simulatorId }) {
+  taskReport(root, { simulatorId, cleared }) {
     let returnVal = App.taskReports;
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
-    return returnVal;
+    if (cleared) return returnVal;
+    else return returnVal.filter(i => i.cleared === false);
   }
 };
 
 export const TaskReportMutations = {
   generateTaskReport(root, args, context) {
     App.handleEvent(args, "generateTaskReport", context);
+  },
+  clearTaskReport(root, args, context) {
+    App.handleEvent(args, "clearTaskReport", context);
+  },
+  completeTaskReport(root, args, context) {
+    App.handleEvent(args, "completeTaskReport", context);
+  },
+  verifyTaskReportStep(root, args, context) {
+    App.handleEvent(args, "verifyTaskReportStep", context);
+  },
+  assignTaskReportStep(root, args, context) {
+    App.handleEvent(args, "assignTaskReportStep", context);
   }
 };
 

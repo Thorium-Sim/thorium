@@ -1,3 +1,3 @@
 export default `
-taskReport(simulatorId: ID):[TaskReport]
+taskReport(simulatorId: ID, cleared: Boolean):[TaskReport]
 `;

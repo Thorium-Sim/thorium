@@ -89,7 +89,7 @@ export default [
             ? d.id === deck
             : d.simulatorId === simulator.id && d.number === parseInt(deck, 10)
       );
-      return deckObj.doors === true && deckObj.evac === true;
+      return deckObj && deckObj.doors === true && deckObj.evac === true;
     }
   }
 ];

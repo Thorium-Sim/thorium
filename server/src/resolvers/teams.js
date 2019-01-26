@@ -7,7 +7,7 @@ import {
 } from "../classes/generic/damageReports/constants.js";
 
 export const TeamsQueries = {
-  teams(root, { simulatorId, type }) {
+  teams(root, { simulatorId, type, cleared }) {
     // Get the simulator
     let returnVal = App.teams;
     if (type) {
@@ -16,7 +16,8 @@ export const TeamsQueries = {
     if (simulatorId) {
       returnVal = returnVal.filter(t => t.simulatorId === simulatorId);
     }
-    return returnVal;
+    if (cleared) return returnVal;
+    return returnVal.filter(t => t.cleared === false);
   },
   exocompParts() {
     return partsList;
