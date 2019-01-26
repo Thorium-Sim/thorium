@@ -214,6 +214,14 @@ class TaskReportCore extends Component {
                 {report && (
                   <Fragment>
                     <strong>{report.name}</strong>
+                    <div className="button-area">
+                      <Button size="sm" color="danger">
+                        Clear Report
+                      </Button>
+                      <Button size="sm" color="success">
+                        Complete Report
+                      </Button>
+                    </div>
                     {report.tasks.map((t, i) => (
                       <div
                         key={t.id}
