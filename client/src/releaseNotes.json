@@ -1,4 +1,7 @@
 {
+  "1.1.9": {
+    "fixes": ["Fixes an issue with adding shuttlebays to a simulator."]
+  },
   "1.1.8": {
     "fixes": ["Fixes a critical error with teams."]
   },
