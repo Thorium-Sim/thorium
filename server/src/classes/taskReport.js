@@ -248,6 +248,13 @@ export default class TaskReport {
     // a generic task which says it's completed.
     // that task has a macro associated with it which is performed when
     // the task is completed.
+    const endMacros = [];
+    if (type === "default") {
+      endMacros.push({
+        event: "repairSystem",
+        args: { systemId: system.id }
+      });
+    }
     if (system) {
       tasks = tasks.concat(
         createTask({
@@ -258,12 +265,7 @@ export default class TaskReport {
             )} report, a reactivation code must be accepted.`,
             system: system.id
           },
-          macros: [
-            {
-              event: "repairSystem",
-              args: { systemId: system.id }
-            }
-          ]
+          macros: endMacros
         })
       );
     } else {
@@ -274,12 +276,7 @@ export default class TaskReport {
             name: "Report Complete",
             message: `This ${colloquialType(type)} report is complete.`
           },
-          macros: [
-            {
-              event: "repairSystem",
-              args: { systemId: system.id }
-            }
-          ]
+          macros: endMacros
         })
       );
     }

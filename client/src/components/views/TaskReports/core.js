@@ -215,12 +215,48 @@ class TaskReportCore extends Component {
                   <Fragment>
                     <strong>{report.name}</strong>
                     <div className="button-area">
-                      <Button size="sm" color="danger">
-                        Clear Report
-                      </Button>
-                      <Button size="sm" color="success">
-                        Complete Report
-                      </Button>
+                      <Mutation
+                        mutation={gql`
+                          mutation ClearReport($id: ID!) {
+                            clearTaskReport(id: $id)
+                          }
+                        `}
+                        variables={{ id: report.id }}
+                      >
+                        {action => (
+                          <Button
+                            size="sm"
+                            color="danger"
+                            onClick={() => {
+                              action();
+                              this.setState({ selectedReport: null });
+                            }}
+                          >
+                            Clear Report
+                          </Button>
+                        )}
+                      </Mutation>
+                      <Mutation
+                        mutation={gql`
+                          mutation CompleteReport($id: ID!) {
+                            completeTaskReport(id: $id)
+                          }
+                        `}
+                        variables={{ id: report.id }}
+                      >
+                        {action => (
+                          <Button
+                            size="sm"
+                            color="success"
+                            onClick={() => {
+                              action();
+                              this.setState({ selectedReport: null });
+                            }}
+                          >
+                            Complete Report
+                          </Button>
+                        )}
+                      </Mutation>
                     </div>
                     {report.tasks.map((t, i) => (
                       <div
@@ -237,9 +273,24 @@ class TaskReportCore extends Component {
                         </p>
                         <p className="instructions">{t.instructions}</p>
                         {!t.verified && (
-                          <Button size="sm" color="success">
-                            Verify
-                          </Button>
+                          <Mutation
+                            mutation={gql`
+                              mutation VerifyTask($id: ID!, $stepId: ID!) {
+                                verifyTaskReportStep(id: $id, stepId: $stepId)
+                              }
+                            `}
+                            variables={{ id: report.id, stepId: t.id }}
+                          >
+                            {action => (
+                              <Button
+                                size="sm"
+                                color="success"
+                                onClick={action}
+                              >
+                                Verify
+                              </Button>
+                            )}
+                          </Mutation>
                         )}
                       </div>
                     ))}

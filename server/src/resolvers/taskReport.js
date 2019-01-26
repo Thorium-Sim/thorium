@@ -32,12 +32,15 @@ export const TaskReportMutations = {
 
 export const TaskReportSubscriptions = {
   taskReportUpdate: {
-    resolve(rootValue, { simulatorId }) {
+    resolve(rootValue, { simulatorId, cleared }) {
+      let returnVal = rootValue;
       if (simulatorId) {
-        return rootValue.filter(s => s.simulatorId === simulatorId);
+        returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
       }
-      return rootValue;
+      if (cleared) return returnVal;
+      return returnVal.filter(s => !s.cleared);
     },
+
     subscribe: withFilter(
       () => pubsub.asyncIterator("taskReportUpdate"),
       rootValue => !!(rootValue && rootValue.length)
