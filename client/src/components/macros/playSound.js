@@ -55,14 +55,11 @@ export default ({ updateArgs, args }) => {
             {({ loading, data: { clients } }) =>
               loading ? null : (
                 <optgroup label="Clients">
-                  {clients.map(
-                    c =>
-                      console.log(c) || (
-                        <option value={c.id} key={c.id}>
-                          {c.id}
-                        </option>
-                      )
-                  )}
+                  {clients.map(c => (
+                    <option value={c.id} key={c.id}>
+                      {c.id}
+                    </option>
+                  ))}
                 </optgroup>
               )
             }

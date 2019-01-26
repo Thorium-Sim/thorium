@@ -112,12 +112,9 @@ class TaskTemplates extends Component {
                       <CardBody>
                         <TaskConfig
                           {...taskTemplate}
-                          definition={
-                            console.log(taskTemplate) ||
-                            taskDefinitions.find(
-                              d => d.name === taskTemplate.definition
-                            )
-                          }
+                          definition={taskDefinitions.find(
+                            d => d.name === taskTemplate.definition
+                          )}
                         />
                       </CardBody>
                     </Card>

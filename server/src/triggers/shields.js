@@ -21,7 +21,6 @@ function checkLoweredId(simulatorId) {
   return true;
 }
 export function shieldRaised({ id }) {
-  console.log(raisedIds);
   const system = App.systems.find(s => s.id === id);
   if (!system) return {};
   if (checkRaisedId(system.simulatorId, raisedIds)) {

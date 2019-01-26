@@ -68,7 +68,6 @@ export default [
                 .filter(d => d.simulatorId === simulator.id)
                 .map(d => d.number)
             );
-      console.log("blach", deck, deckNum, isNaN(deck));
       if (station && task.station === station.name)
         return reportReplace(`${preamble} Evacuate and seal Deck ${deckNum}.`, {
           simulator,

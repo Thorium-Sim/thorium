@@ -256,29 +256,26 @@ class DamageTasks extends Component {
                                 </option>
                               ))}
                           </Input>
-                          {task.nextSteps.map(
-                            s =>
-                              console.log(s) || (
-                                <p key={`next-${s.id}`}>
-                                  {s.name} ({s.definition}){" "}
-                                  <FontAwesome
-                                    name="ban"
-                                    className="text-danger"
-                                    onClick={() => {
-                                      action({
-                                        variables: {
-                                          id,
-                                          taskId: selectedTemplate,
-                                          nextSteps: task.nextSteps
-                                            .map(ns => ns.id)
-                                            .filter(ns => ns !== s.id)
-                                        }
-                                      });
-                                    }}
-                                  />
-                                </p>
-                              )
-                          )}
+                          {task.nextSteps.map(s => (
+                            <p key={`next-${s.id}`}>
+                              {s.name} ({s.definition}){" "}
+                              <FontAwesome
+                                name="ban"
+                                className="text-danger"
+                                onClick={() => {
+                                  action({
+                                    variables: {
+                                      id,
+                                      taskId: selectedTemplate,
+                                      nextSteps: task.nextSteps
+                                        .map(ns => ns.id)
+                                        .filter(ns => ns !== s.id)
+                                    }
+                                  });
+                                }}
+                              />
+                            </p>
+                          ))}
                         </div>
                       );
                     }}

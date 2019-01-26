@@ -4,7 +4,6 @@ import Team from "../classes/teams";
 import uuid from "uuid";
 
 App.on("createTeam", ({ team = {} }) => {
-  console.log(team);
   App.teams.push(new Team(team));
   const type =
     team.type === "damage"
