@@ -3,10 +3,13 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import { withFilter } from "graphql-subscriptions";
 
 export const TaskReportQueries = {
-  taskReport(root, { simulatorId, cleared }) {
+  taskReport(root, { simulatorId, type, cleared }) {
     let returnVal = App.taskReports;
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
+    if (type) {
+      returnVal = returnVal.filter(s => s.type === type);
+    }
     if (cleared) return returnVal;
     else return returnVal.filter(i => i.cleared === false);
   }
@@ -27,15 +30,21 @@ export const TaskReportMutations = {
   },
   assignTaskReportStep(root, args, context) {
     App.handleEvent(args, "assignTaskReportStep", context);
+  },
+  requestVerifyTaskReportStep(root, args, context) {
+    App.handleEvent(args, "requestVerifyTaskReportStep", context);
   }
 };
 
 export const TaskReportSubscriptions = {
   taskReportUpdate: {
-    resolve(rootValue, { simulatorId, cleared }) {
+    resolve(rootValue, { simulatorId, type, cleared }) {
       let returnVal = rootValue;
       if (simulatorId) {
         returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+      }
+      if (type) {
+        returnVal = returnVal.filter(s => s.type === type);
       }
       if (cleared) return returnVal;
       return returnVal.filter(s => !s.cleared);

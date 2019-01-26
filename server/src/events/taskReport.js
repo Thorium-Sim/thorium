@@ -50,3 +50,13 @@ App.on("assignTaskReportStep", ({ id, stepId, station }) => {
     App.tasks.filter(s => s.simulatorId === taskReport.simulatorId)
   );
 });
+
+App.on("requestVerifyTaskReportStep", ({ id, stepId }) => {
+  const taskReport = App.taskReports.find(t => t.id === id);
+  taskReport.requestVerify(stepId);
+  pubsub.publish("taskReportUpdate", App.taskReports);
+  pubsub.publish(
+    "tasksUpdate",
+    App.tasks.filter(s => s.simulatorId === taskReport.simulatorId)
+  );
+});

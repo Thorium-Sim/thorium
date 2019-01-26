@@ -47,6 +47,9 @@ export default class TaskReport {
   verifyTask(stepId) {
     this.tasks.find(t => t.id === stepId).verify();
   }
+  requestVerify(stepId) {
+    this.tasks.find(t => t.id === stepId).requestVerify();
+  }
   assignTask(stepId, station) {
     const task = this.tasks.find(t => t.id === stepId);
     const simulator = App.simulators.find(s => s.id === this.simulatorId);

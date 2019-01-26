@@ -1,3 +1,3 @@
 export default `
-taskReportUpdate(simulatorId: ID, cleared: Boolean):[TaskReport]
+taskReportUpdate(simulatorId: ID, type: String, cleared: Boolean):[TaskReport]
 `;

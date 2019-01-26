@@ -4,4 +4,5 @@ clearTaskReport(id:ID!):String
 completeTaskReport(id:ID!):String
 verifyTaskReportStep(id:ID!, stepId:ID!):String
 assignTaskReportStep(id:ID!, stepId:ID!, station:String):String
+requestVerifyTaskReportStep(id:ID!, stepId:ID!):String
 `;

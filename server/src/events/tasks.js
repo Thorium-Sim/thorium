@@ -31,6 +31,20 @@ App.on("verifyTask", ({ taskId, dismiss }) => {
   const task = App.tasks.find(t => t.id === taskId);
   if (task) {
     task.verify(dismiss);
+
+    let publish = false;
+    // Find any task reports that have assigned this task
+    App.taskReports.forEach(t =>
+      t.tasks.forEach(reportTask => {
+        if (reportTask.assigned === taskId) {
+          reportTask.verify();
+          publish = true;
+        }
+      })
+    );
+    if (publish) {
+      pubsub.publish("taskReportUpdate", App.taskReports);
+    }
     pubsub.publish(
       "tasksUpdate",
       App.tasks.filter(s => s.simulatorId === task.simulatorId)

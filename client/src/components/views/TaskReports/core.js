@@ -19,6 +19,7 @@ tasks {
   instructions
   verified
   definition
+  verifyRequested
 }
 `;
 
@@ -41,6 +42,12 @@ ${queryData}
     }
   }
 `;
+
+function reportClasses(s) {
+  const task = s.tasks.find(t => !t.verified) || {};
+  if (task.verifyRequested) return "validate";
+  return "";
+}
 
 class TaskReportCreator extends Component {
   state = { type: "default", name: "", stepCount: 8 };
@@ -192,8 +199,14 @@ class TaskReportCore extends Component {
                           onClick={() =>
                             this.setState({ selectedReport: t.id })
                           }
-                          className={`${t.verifyRequested ? "text-info" : ""} ${
-                            t.verified ? "text-success" : ""
+                          className={`${
+                            t.tasks.find(tt => tt.verifyRequested)
+                              ? "text-info"
+                              : ""
+                          } ${
+                            !t.tasks.find(tt => !tt.verified)
+                              ? "text-success"
+                              : ""
                           }`}
                         >
                           <p>
