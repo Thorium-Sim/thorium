@@ -89,6 +89,7 @@ export default class Task {
     this.assigned = params.assigned || false;
   }
   verify(dismiss) {
+    if (this.verified) return;
     this.verified = true;
     if (dismiss) this.dismissed = true;
     this.verifyRequested = false;
@@ -103,6 +104,11 @@ export default class Task {
         { simulatorId: this.simulatorId, macros: this.macros },
         "triggerMacros"
       );
+
+    if (this.assigned) {
+      const task = App.tasks.find(t => t.id === this.assigned);
+      if (task) task.verify(dismiss);
+    }
   }
   dismiss() {
     this.dismissed = true;

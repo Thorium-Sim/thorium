@@ -4,7 +4,6 @@ import Team from "../classes/teams";
 import uuid from "uuid";
 
 App.on("createTeam", ({ team = {} }) => {
-  console.log(team);
   App.teams.push(new Team(team));
   const type =
     team.type === "damage"
@@ -55,6 +54,7 @@ App.on("removeCrewFromTeam", ({ teamId, crewId }) => {
   pubsub.publish("teamsUpdate", App.teams);
 });
 App.on("removeTeam", ({ teamId }) => {
-  App.teams = App.teams.filter(t => t.id !== teamId);
+  const team = App.teams.find(t => t.id === teamId);
+  team && team.clear();
   pubsub.publish("teamsUpdate", App.teams);
 });

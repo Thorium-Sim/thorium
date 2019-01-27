@@ -15,6 +15,7 @@ type Task {
   startTime: String
   endTime: String
   macros: [TimelineItem]
+  assigned: Boolean
 }
 
 input TaskInput {

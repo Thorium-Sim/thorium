@@ -5,5 +5,6 @@ type Thorium{
   autoUpdate: Boolean
   doTrack: Boolean
   askedToTrack: Boolean
+  addedTaskTemplates: Boolean
 }
 `;

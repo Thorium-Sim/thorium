@@ -8,8 +8,14 @@ function verifyTasks() {
       .map(s => App.simulators.find(sim => sim.id === s))
       .forEach(sim => {
         let publish = false;
-        const tasks = App.tasks.filter(s => s.simulatorId === sim.id);
-
+        let tasks = App.tasks.filter(s => s.simulatorId === sim.id);
+        // Add on all of the report tasks.
+        tasks = tasks.concat(
+          App.taskReports
+            .filter(s => s.simulatorId === sim.id && !s.cleared)
+            .map(r => r.tasks.filter(t => !t.verified))
+            .reduce((prev, next) => prev.concat(next), [])
+        );
         // Go through each task and run the verify function.
         tasks.forEach(t => {
           if (t.verified) return;
@@ -30,6 +36,7 @@ function verifyTasks() {
         }
       });
   });
+  pubsub.publish("taskReportUpdate", App.taskReports);
   setTimeout(verifyTasks, 1000);
 }
 

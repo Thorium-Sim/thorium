@@ -21,6 +21,13 @@ const QUERY = gql`
   }
 `;
 
+const THORIUM_QUERY = gql`
+  query Thorium {
+    thorium {
+      addedTaskTemplates
+    }
+  }
+`;
 class TaskTemplates extends Component {
   state = { selectedDef: "nothing" };
   render() {
@@ -43,6 +50,31 @@ class TaskTemplates extends Component {
                     selectedDef={selectedDef}
                     setSelectedDef={v => this.setState({ selectedDef: v })}
                   />
+                  <Query query={THORIUM_QUERY}>
+                    {({ data }) =>
+                      data &&
+                      data.thorium &&
+                      !data.thorium.addedTaskTemplates ? (
+                        <Mutation
+                          mutation={gql`
+                            mutation ImportTemplates {
+                              importTaskTemplates
+                            }
+                          `}
+                          refetchQueries={[
+                            { query: QUERY },
+                            { query: THORIUM_QUERY }
+                          ]}
+                        >
+                          {action => (
+                            <Button block onClick={action}>
+                              Import Repair Templates
+                            </Button>
+                          )}
+                        </Mutation>
+                      ) : null
+                    }
+                  </Query>
                 </Col>
                 <Col
                   sm={4}
@@ -112,12 +144,9 @@ class TaskTemplates extends Component {
                       <CardBody>
                         <TaskConfig
                           {...taskTemplate}
-                          definition={
-                            console.log(taskTemplate) ||
-                            taskDefinitions.find(
-                              d => d.name === taskTemplate.definition
-                            )
-                          }
+                          definition={taskDefinitions.find(
+                            d => d.name === taskTemplate.definition
+                          )}
                         />
                       </CardBody>
                     </Card>

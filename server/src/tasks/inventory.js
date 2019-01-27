@@ -91,7 +91,11 @@ export default [
 
       const room = App.rooms.find(r => r.id === roomId);
       const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
-      const location = `${room.name}, Deck ${deck.number}`;
+      const location = room
+        ? `${room.name}, Deck ${deck.number}`
+        : deck
+          ? `Deck ${deck.number}`
+          : "Unknown";
 
       const cargoList = Object.entries(inventory)
         .map(([id, count]) => {
