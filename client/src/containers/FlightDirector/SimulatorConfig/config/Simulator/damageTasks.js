@@ -4,15 +4,15 @@ import {
   Row,
   Col,
   ListGroup,
-  ListGroupItem,
-  Input
+  ListGroupItem
+  //Input
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import DefinitionList from "../../../TaskTemplates/definitionList";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Query, Mutation } from "react-apollo";
-import FontAwesome from "react-fontawesome";
+//import FontAwesome from "react-fontawesome";
 const queryData = `
 id
 name
@@ -223,6 +223,7 @@ class DamageTasks extends Component {
                             />{" "}
                             Required
                           </label>
+                          {/* <Fragment>
                           <p>
                             <strong>
                               Steps that <em>must</em> follow this step (must
@@ -276,6 +277,7 @@ class DamageTasks extends Component {
                               />
                             </p>
                           ))}
+                          </Fragment> */}
                         </div>
                       );
                     }}

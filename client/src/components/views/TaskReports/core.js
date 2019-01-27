@@ -43,12 +43,6 @@ ${queryData}
   }
 `;
 
-function reportClasses(s) {
-  const task = s.tasks.find(t => !t.verified) || {};
-  if (task.verifyRequested) return "validate";
-  return "";
-}
-
 class TaskReportCreator extends Component {
   state = { type: "default", name: "", stepCount: 8 };
   render() {
@@ -184,7 +178,7 @@ class TaskReportCore extends Component {
         ) : (
           <Fragment>
             <div className="report-area">
-              <ListGroup style={{ flex: 1, overflowY: "auto" }}>
+              <ListGroup style={{ flex: 2, overflowY: "auto" }}>
                 {taskReport
                   .map(t => t.type)
                   .filter((a, i, arr) => arr.indexOf(a) === i)
@@ -274,7 +268,9 @@ class TaskReportCore extends Component {
                     {report.tasks.map((t, i) => (
                       <div
                         key={t.id}
-                        className={`task ${t.verified ? "text-success" : ""}`}
+                        className={`task ${t.verified ? "text-success" : ""} ${
+                          t.verifyRequested ? "text-info" : ""
+                        }`}
                       >
                         <p>
                           <strong>

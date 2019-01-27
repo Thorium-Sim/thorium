@@ -65,6 +65,7 @@ class Events extends EventEmitter {
     this.thoriumId = randomWords(5).join("-");
     this.doTrack = false;
     this.askedToTrack = false;
+    this.addedTaskTemplates = false;
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;

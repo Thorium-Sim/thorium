@@ -1,6 +1,9 @@
 {
   "1.1.8": {
-    "fixes": ["Fixes a critical error with teams."]
+    "fixes": ["Fixes a critical error with teams."],
+    "features": [
+      "Adds the highly anticipated damage report refactor. Check out this doc page for more information: https://thoriumsim.com/docs/task-reports/"
+    ]
   },
   "1.1.7": {
     "fixes": [

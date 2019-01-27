@@ -17,3 +17,11 @@ App.on("setTrackingPreference", ({ pref }) => {
   App.askedToTrack = true;
   heap.stubbed = !pref;
 });
+
+App.on("importTaskTemplates", () => {
+  if (App.addedTaskTemplates) return;
+  App.addedTaskTemplates = true;
+  const templates = require("../helpers/baseTaskTemplates.json");
+  App.taskTemplates = App.taskTemplates.concat(templates);
+  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+});
