@@ -1,12 +1,15 @@
 {
   "1.1.9": {
-    "fixes": ["Fixes an issue with adding shuttlebays to a simulator."]
-  },
-  "1.1.8": {
-    "fixes": ["Fixes a critical error with teams."],
+    "fixes": [
+      "Fixes an issue with adding shuttlebays to a simulator.",
+      "Makes it so raising shields isn't possible if there isn't sufficient power."
+    ],
     "features": [
       "Adds the highly anticipated damage report refactor. Check out this doc page for more information: https://thoriumsim.com/docs/task-reports/"
     ]
+  },
+  "1.1.8": {
+    "fixes": ["Fixes a critical error with teams."]
   },
   "1.1.7": {
     "fixes": [

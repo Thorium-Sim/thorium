@@ -18,55 +18,57 @@ const sendUpdate = () => {
 App.on("shieldRaised", ({ id }) => {
   const system = App.systems.find(sys => sys.id === id);
   if (system) {
-    pubsub.publish("notify", {
-      id: uuid.v4(),
-      simulatorId: system.simulatorId,
-      type: "Shields",
-      station: "Core",
-      title: `Shields Raised`,
-      body: `${shieldNames[system.position]}`,
-      color: "info"
-    });
-    App.handleEvent(
-      {
+    if (system.shieldState(true)) {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
         simulatorId: system.simulatorId,
+        type: "Shields",
+        station: "Core",
         title: `Shields Raised`,
         body: `${shieldNames[system.position]}`,
-        component: "ShieldControlCore",
         color: "info"
-      },
-      "addCoreFeed"
-    );
-    system.shieldState(true);
+      });
+      App.handleEvent(
+        {
+          simulatorId: system.simulatorId,
+          title: `Shields Raised`,
+          body: `${shieldNames[system.position]}`,
+          component: "ShieldControlCore",
+          color: "info"
+        },
+        "addCoreFeed"
+      );
+    }
   } else {
     //Check to see if the ID is the simulator ID
     const sim = App.simulators.find(sim => sim.id === id);
     if (sim) {
       // Loop through the shields
-      App.systems
+      const raised = App.systems
         .filter(sys => sys.simulatorId === id && sys.type === "Shield")
-        .forEach(sys => {
-          sys.shieldState(true);
-        });
-      pubsub.publish("notify", {
-        id: uuid.v4(),
-        simulatorId: id,
-        type: "Shields",
-        station: "Core",
-        title: `Shields Raised`,
-        body: `All`,
-        color: "info"
-      });
-      App.handleEvent(
-        {
+        .map(sys => sys.shieldState(true))
+        .filter(Boolean);
+      if (raised.length > 0) {
+        pubsub.publish("notify", {
+          id: uuid.v4(),
           simulatorId: id,
+          type: "Shields",
+          station: "Core",
           title: `Shields Raised`,
-          component: "ShieldControlCore",
           body: `All`,
           color: "info"
-        },
-        "addCoreFeed"
-      );
+        });
+        App.handleEvent(
+          {
+            simulatorId: id,
+            title: `Shields Raised`,
+            component: "ShieldControlCore",
+            body: `All`,
+            color: "info"
+          },
+          "addCoreFeed"
+        );
+      }
     }
   }
   sendUpdate();
