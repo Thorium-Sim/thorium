@@ -33,10 +33,11 @@ const MESSAGING_SUB = gql`
 
 const TEAMS_SUB = gql`
   subscription TeamsUpdate($simulatorId: ID) {
-    teamsUpdate(simulatorId: $simulatorId) {
+    teamsUpdate(simulatorId: $simulatorId, cleared: true) {
       id
       name
       type
+      cleared
     }
   }
 `;
@@ -100,20 +101,29 @@ class Messaging extends Component {
     );
     const messageGroups = this.props.station.messageGroups;
     const { messageInput, stationsShown, selectedConversation } = this.state;
-    const convoObj = messages.reduce((prev, next) => {
-      if (next.sender === this.props.station.name) {
-        prev[next.destination] = Object.assign({}, next, {
-          convo: next.destination
-        });
-      } else if (messageGroups.indexOf(next.destination) > -1) {
-        prev[next.destination] = Object.assign({}, next, {
-          convo: next.destination
-        });
-      } else {
-        prev[next.sender] = Object.assign({}, next, { convo: next.sender });
-      }
-      return prev;
-    }, {});
+    const convoObj = messages
+      .filter(
+        m =>
+          !teams.find(
+            t =>
+              t.cleared === true &&
+              (t.name === m.sender || t.name === m.destination)
+          )
+      )
+      .reduce((prev, next) => {
+        if (next.sender === this.props.station.name) {
+          prev[next.destination] = Object.assign({}, next, {
+            convo: next.destination
+          });
+        } else if (messageGroups.indexOf(next.destination) > -1) {
+          prev[next.destination] = Object.assign({}, next, {
+            convo: next.destination
+          });
+        } else {
+          prev[next.sender] = Object.assign({}, next, { convo: next.sender });
+        }
+        return prev;
+      }, {});
     const conversations = Object.keys(convoObj)
       .map(c => convoObj[c])
       .sort((a, b) => {
@@ -222,6 +232,7 @@ class Messaging extends Component {
                 {teams &&
                   teams.filter(
                     t =>
+                      !t.cleared &&
                       messageGroups.findIndex(
                         m => m.toLowerCase().indexOf(t.type.toLowerCase()) > -1
                       ) > -1
@@ -232,6 +243,7 @@ class Messaging extends Component {
                   teams
                     .filter(
                       t =>
+                        !t.cleared &&
                         messageGroups.findIndex(
                           m =>
                             m.toLowerCase().indexOf(t.type.toLowerCase()) > -1
@@ -319,10 +331,11 @@ const MESSAGING_QUERY = gql`
       simulatorId
       destination
     }
-    teams(simulatorId: $simulatorId) {
+    teams(simulatorId: $simulatorId, cleared: true) {
       id
       name
       type
+      cleared
     }
     simulators(id: $simId) {
       id
