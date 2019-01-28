@@ -5,7 +5,8 @@
       "Makes it so raising shields isn't possible if there isn't sufficient power.",
       "Modify ShipStation layout so it uses the bank gothic font. Also improve button appearance.",
       "Importing missions now doesn't overwrite old versions of a mission.",
-      "Fixes issues with shield triggers not working."
+      "Fixes issues with shield triggers not working.",
+      "Fixes an issue with auto thrusters on tactical maps."
     ],
     "features": [
       "Adds the highly anticipated damage report refactor. Check out this doc page for more information: https://thoriumsim.com/docs/task-reports/",
