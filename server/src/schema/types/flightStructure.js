@@ -77,6 +77,7 @@ type Simulator {
   panels:[ID]
   commandLines:[ID]
   triggers:[ID]
+  triggersPaused: Boolean
   bridgeOfficerMessaging: Boolean
   assets: SimulatorAssets
   lighting:Lighting

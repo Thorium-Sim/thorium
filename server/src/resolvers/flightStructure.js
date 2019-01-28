@@ -209,6 +209,10 @@ export const FlightStructureMutations = {
   setSimulatorHasPrinter(rootValue, params, context) {
     App.handleEvent(params, "setSimulatorHasPrinter", context);
   },
+  setSimulatorTriggersPaused(rootValue, params, context) {
+    App.handleEvent(params, "setSimulatorTriggersPaused", context);
+  },
+
   // Timeline
   addTimelineStep(root, args, context) {
     const id = uuid.v4();
