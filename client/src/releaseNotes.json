@@ -7,7 +7,8 @@
       "Importing missions now doesn't overwrite old versions of a mission."
     ],
     "features": [
-      "Adds the highly anticipated damage report refactor. Check out this doc page for more information: https://thoriumsim.com/docs/task-reports/"
+      "Adds the highly anticipated damage report refactor. Check out this doc page for more information: https://thoriumsim.com/docs/task-reports/",
+      "Adds actions to triggers to make it so sound effects get cancelled."
     ]
   },
   "1.1.8": {
