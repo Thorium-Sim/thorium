@@ -1,12 +1,22 @@
 {
   "1.1.9": {
-    "fixes": ["Fixes an issue with adding shuttlebays to a simulator."]
+    "fixes": [
+      "Fixes an issue with adding shuttlebays to a simulator.",
+      "Makes it so raising shields isn't possible if there isn't sufficient power.",
+      "Modify ShipStation layout so it uses the bank gothic font. Also improve button appearance.",
+      "Importing missions now doesn't overwrite old versions of a mission.",
+      "Fixes issues with shield triggers not working.",
+      "Fixes an issue with auto thrusters on tactical maps."
+    ],
+    "features": [
+      "Adds the highly anticipated damage report refactor. Check out this doc page for more information: https://thoriumsim.com/docs/task-reports/",
+      "Adds actions to triggers to make it so sound effects get cancelled.",
+      "Make it possible to pause triggers on a simulator from the Ship Core.",
+      "Automatically hides team conversations when the team is recalled or cleared."
+    ]
   },
   "1.1.8": {
-    "fixes": ["Fixes a critical error with teams."],
-    "features": [
-      "Adds the highly anticipated damage report refactor. Check out this doc page for more information: https://thoriumsim.com/docs/task-reports/"
-    ]
+    "fixes": ["Fixes a critical error with teams."]
   },
   "1.1.7": {
     "fixes": [

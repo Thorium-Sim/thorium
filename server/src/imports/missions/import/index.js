@@ -85,10 +85,8 @@ export default function ImportMission(filepath, cb) {
           if (error) throw error;
           streamToString(readStream, str => {
             const mission = JSON.parse(str);
-            if (App.missions.find(t => t.id === mission.id)) {
-              App.missions = App.missions.filter(t => t.id !== mission.id);
-            }
-            App.missions.push(new Classes.Mission(mission));
+            // No replacing missions
+            App.missions.push(new Classes.Mission({ ...mission, id: null }));
             importZip.readEntry();
           });
         });

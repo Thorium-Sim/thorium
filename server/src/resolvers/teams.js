@@ -47,7 +47,7 @@ export const TeamsMutations = {
 
 export const TeamsSubscriptions = {
   teamsUpdate: {
-    resolve(rootValue, { simulatorId, type }) {
+    resolve(rootValue, { simulatorId, type, cleared }) {
       // Get the simulator
       let returnVal = rootValue;
       if (type) {
@@ -56,7 +56,8 @@ export const TeamsSubscriptions = {
       if (simulatorId) {
         returnVal = returnVal.filter(t => t.simulatorId === simulatorId);
       }
-      return returnVal;
+      if (cleared) return returnVal;
+      return returnVal.filter(c => !c.cleared);
     },
     subscribe: withFilter(
       () => pubsub.asyncIterator("teamsUpdate"),

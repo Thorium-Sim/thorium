@@ -8,8 +8,10 @@ export default `
     location: Location
     orders: String
     officers: [Crew]
+    cleared: Boolean
   }
 
+  
   input TeamInput {
     id: ID
     type: TEAM_TYPES
