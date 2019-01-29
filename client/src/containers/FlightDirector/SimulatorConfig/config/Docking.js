@@ -16,6 +16,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
         type
       }
     };
+    console.log(variables);
     client.mutate({
       mutation,
       variables,
@@ -116,7 +117,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
             ))}
           </tbody>
         </Table>
-        <Button color="success" onClick={addDocking}>
+        <Button color="success" onClick={() => addDocking("shuttlebay")}>
           Add Shuttlebay
         </Button>
       </fieldset>

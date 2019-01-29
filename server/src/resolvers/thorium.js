@@ -19,6 +19,9 @@ export const ThoriumMutations = {
   },
   setTrackingPreference(root, args, context) {
     App.handleEvent(args, "setTrackingPreference", context);
+  },
+  importTaskTemplates(root, args, context) {
+    App.handleEvent(args, "importTaskTemplates", context);
   }
 };
 

@@ -68,7 +68,6 @@ export default [
                 .filter(d => d.simulatorId === simulator.id)
                 .map(d => d.number)
             );
-      console.log("blach", deck, deckNum, isNaN(deck));
       if (station && task.station === station.name)
         return reportReplace(`${preamble} Evacuate and seal Deck ${deckNum}.`, {
           simulator,
@@ -90,7 +89,7 @@ export default [
             ? d.id === deck
             : d.simulatorId === simulator.id && d.number === parseInt(deck, 10)
       );
-      return deckObj.doors === true && deckObj.evac === true;
+      return deckObj && deckObj.doors === true && deckObj.evac === true;
     }
   }
 ];

@@ -196,10 +196,11 @@ ${text}`,
     },
     verify({ simulator, requiredValues: { teamName } }) {
       const team = App.teams.find(
-        t => t.name === teamName && t.simulatorId === simulator.id
+        t =>
+          t.name.toLowerCase() === teamName.toLowerCase() &&
+          t.simulatorId === simulator.id
       );
-      // If the team doesn't exist, no need to wait for them to disappear, yeah?
-      return !team;
+      return team && team.cleared;
     }
   },
   {

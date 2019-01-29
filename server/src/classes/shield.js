@@ -36,9 +36,21 @@ export default class Shield extends System {
     super.setPower(powerLevel);
   }
   shieldState(state) {
-    if (!this.damage.damaged) {
+    if (!state) {
+      // Lower always works
       this.state = state;
+      return true;
     }
+    // Isn't damaged and has enough power.
+    if (
+      !this.damage.damaged &&
+      this.power.powerLevels.length &&
+      this.power.power >= this.power.powerLevels[0]
+    ) {
+      this.state = state;
+      return true;
+    }
+    return false;
   }
   setIntegrity(integrity) {
     this.integrity = Math.min(1, Math.max(0, integrity));

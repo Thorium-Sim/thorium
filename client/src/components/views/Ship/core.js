@@ -8,20 +8,23 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const layouts = LayoutList;
 
+const queryData = `
+id
+name
+layout
+training
+stepDamage
+verifyStep
+bridgeOfficerMessaging
+triggersPaused
+ship {
+  bridgeCrew
+  radiation
+}`;
 const SHIP_CORE_SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
-      id
-      name
-      layout
-      training
-      stepDamage
-      verifyStep
-      bridgeOfficerMessaging
-      ship {
-        bridgeCrew
-        radiation
-      }
+      ${queryData}
     }
   }
 `;
@@ -153,6 +156,21 @@ class ShipCore extends Component {
       variables
     });
   };
+  setTriggersPaused = e => {
+    const mutation = gql`
+      mutation SetTriggersPaused($simulatorId: ID!, $paused: Boolean!) {
+        setSimulatorTriggersPaused(simulatorId: $simulatorId, paused: $paused)
+      }
+    `;
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      paused: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const simulator = this.props.data.simulators[0];
@@ -163,7 +181,8 @@ class ShipCore extends Component {
       training,
       stepDamage,
       verifyStep,
-      bridgeOfficerMessaging
+      bridgeOfficerMessaging,
+      triggersPaused
     } = simulator;
     const { bridgeCrew, radiation } = simulator.ship;
     return (
@@ -242,6 +261,21 @@ class ShipCore extends Component {
                 position: "relative"
               }}
               type="checkbox"
+              checked={triggersPaused}
+              onChange={this.setTriggersPaused}
+            />
+            Triggers Paused
+          </label>
+        </div>
+        <div>
+          <label>
+            <Input
+              style={{
+                marginLeft: "10px",
+                marginRight: "10px",
+                position: "relative"
+              }}
+              type="checkbox"
               checked={bridgeOfficerMessaging}
               onChange={this.setBridgeOfficerMessaging}
             />
@@ -281,17 +315,7 @@ class ShipCore extends Component {
 const SHIP_CORE_QUERY = gql`
   query Ship($simulatorId: String) {
     simulators(id: $simulatorId) {
-      id
-      name
-      layout
-      training
-      stepDamage
-      verifyStep
-      bridgeOfficerMessaging
-      ship {
-        bridgeCrew
-        radiation
-      }
+      ${queryData}
     }
   }
 `;

@@ -15,6 +15,7 @@ export default class Team {
     this.priority = params.priority || "low";
     this.orders = params.orders || "";
     this.officers = params.officers || [];
+    this.cleared = params.cleared || false;
   }
   update({ name, location, orders, priority, officers }) {
     if (name || name === "") this.name = name;
@@ -28,5 +29,8 @@ export default class Team {
   }
   removeOfficer(officerId) {
     this.officers = this.officers.filter(o => o !== officerId);
+  }
+  clear() {
+    this.cleared = true;
   }
 }

@@ -29,12 +29,41 @@ export default class TaskReport {
     this.type = params.type || "default";
     this.stepCount = params.stepCount || 8;
     this.name = params.name || `${fullType} Report`;
+    this.cleared = params.cleared || false;
     // Generate the report from the task templates when the task report is created
     // Tasks is a list of task IDs for tasks that are stored in App.tasks
     this.tasks = params.tasks
       ? params.tasks.map(t => new Task(t))
       : TaskReport.generateReport(params);
   }
+  clear() {
+    this.cleared = true;
+  }
+  complete() {
+    // Verify all of the tasks in the report
+    this.tasks.filter(t => !t.verified).forEach(t => t.verify());
+    this.clear();
+  }
+  verifyTask(stepId) {
+    this.tasks.find(t => t.id === stepId).verify();
+  }
+  requestVerify(stepId) {
+    this.tasks.find(t => t.id === stepId).requestVerify();
+  }
+  assignTask(stepId, station) {
+    const task = this.tasks.find(t => t.id === stepId);
+    const simulator = App.simulators.find(s => s.id === this.simulatorId);
+    const definition = taskDefinitions.find(t => t.name === task.definition);
+
+    let assignStation =
+      station || randomFromList(definition.stations({ simulator }) || []);
+    if (!assignStation) return;
+    const { id, ...taskObj } = task;
+    const newTask = new Task(taskObj);
+    task.assigned = newTask.id;
+    App.tasks.push(newTask);
+  }
+
   static generateReport({
     simulatorId,
     systemId,
@@ -80,10 +109,10 @@ export default class TaskReport {
       ? App.rooms
           .filter(r => system.locations.indexOf(r.id) > -1)
           .map(r => r.id)
-      : [];
+      : App.rooms.filter(r => r.simulatorId === simulator.id);
 
     function createTask(template) {
-      const { values, definition } = template;
+      const { values, definition, macros } = template;
       return new Task({
         definition: definition.name,
         simulatorId: simulator.id,
@@ -93,7 +122,8 @@ export default class TaskReport {
           ...values,
           system: system && system.id,
           room: randomFromList(rooms)
-        }
+        },
+        macros
       });
     }
 
@@ -141,6 +171,7 @@ export default class TaskReport {
       const template = randomFromList(definitionTemplates["Send Damage Team"]);
       tasks = tasks.concat(createTask(template));
       existingSteps += 1;
+      delete definitionTemplates["Send Damage Team"];
     }
 
     // Loop until we have the correct number of steps or run out of optional steps.
@@ -156,22 +187,7 @@ export default class TaskReport {
           const definition = randomFromList(Object.keys(definitionTemplates));
           const template = randomFromList(definitionTemplates[definition]);
           delete definitionTemplates[definition];
-          // If it's another "Send Damage Team", add a step to clear the other team first.
-          const otherTeam = tasks.find(
-            t => t.definition === "Send Damage Team"
-          );
-          if (!otherTeam) return template;
-          return [
-            {
-              definition: { name: "Wait For Team To Clear" },
-              values: {
-                preamble:
-                  "The team that was sent needs time to complete their work.",
-                teamName: otherTeam.values.teamName
-              }
-            },
-            template
-          ];
+          return template;
         })
         .reduce((prev, next) => prev.concat(next), [])
         .map(createTask)
@@ -235,6 +251,13 @@ export default class TaskReport {
     // a generic task which says it's completed.
     // that task has a macro associated with it which is performed when
     // the task is completed.
+    const endMacros = [];
+    if (type === "default") {
+      endMacros.push({
+        event: "repairSystem",
+        args: { systemId: system.id }
+      });
+    }
     if (system) {
       tasks = tasks.concat(
         createTask({
@@ -244,7 +267,8 @@ export default class TaskReport {
               type
             )} report, a reactivation code must be accepted.`,
             system: system.id
-          }
+          },
+          macros: endMacros
         })
       );
     } else {
@@ -254,7 +278,8 @@ export default class TaskReport {
           values: {
             name: "Report Complete",
             message: `This ${colloquialType(type)} report is complete.`
-          }
+          },
+          macros: endMacros
         })
       );
     }

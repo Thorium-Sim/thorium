@@ -14,7 +14,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import GroupManager from "./groupManager";
 
-function reduceMessages(messages, stationNames, correctSenders) {
+function reduceMessages(messages, stationNames) {
   const talkers = Object.keys(
     messages.reduce((prev, next) => {
       prev[next.sender] = true;
@@ -47,11 +47,9 @@ class Conversations extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { messages, simulator } = this.props;
     const stationNames = simulator.stations.map(s => s.name);
-    const messageList = Object.values(
-      reduceMessages(messages, stationNames, true)
-    );
+    const messageList = Object.values(reduceMessages(messages, stationNames));
     const oldMessageList = Object.values(
-      reduceMessages(prevProps.messages, stationNames, true)
+      reduceMessages(prevProps.messages, stationNames)
     );
     const list = messageList.filter(
       m =>

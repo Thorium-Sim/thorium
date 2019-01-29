@@ -9,7 +9,8 @@ const TemplateList = ({
 }) => (
   <Fragment>
     <h3>Templates</h3>
-    <ListGroup style={{ flex: 1, overflowY: "auto", maxHeight: "80vh" }}>
+
+    <ListGroup style={{ flex: 1, overflowY: "auto", maxHeight: "70vh" }}>
       {taskTemplates.filter(t => t.definition === selectedDef).map(t => (
         <ListGroupItem
           key={t.id}

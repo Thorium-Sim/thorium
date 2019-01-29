@@ -157,6 +157,7 @@ import CoreFeed from "./CoreFeed";
 import RoomSearchCore from "./RoomSearch";
 import MacrosCore from "./Macros";
 import DockingPortCore from "./DockingPorts/core";
+import TaskReportCore from "./TaskReports/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -405,7 +406,8 @@ export const Cores = {
   CoreFeed,
   RoomSearchCore,
   MacrosCore,
-  DockingPortCore
+  DockingPortCore,
+  TaskReportCore
 };
 
 export default Views;

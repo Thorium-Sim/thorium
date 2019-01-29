@@ -13626,6 +13626,7 @@ export default {
   thoriumId: randomWords(5).join("-"),
   doTrack: false,
   askedToTrack: false,
+  addedTaskTemplates: false,
   migrations: {
     assets: true
   },

@@ -120,6 +120,7 @@ export default class Simulator {
     this.panels = params.panels || [];
     this.commandLines = params.commandLines || [];
     this.triggers = params.triggers || [];
+    this.triggersPaused = params.triggersPaused || false;
 
     params.stations &&
       params.stations.forEach(s => this.stations.push(new Station(s)));
@@ -254,6 +255,9 @@ export default class Simulator {
   }
   updateTriggers(triggers) {
     this.triggers = triggers || [];
+  }
+  setTriggersPaused(paused) {
+    this.triggersPaused = paused;
   }
 
   setAssets(assets) {

@@ -21,19 +21,20 @@ function checkLoweredId(simulatorId) {
   return true;
 }
 export function shieldRaised({ id }) {
-  console.log(raisedIds);
   const system = App.systems.find(s => s.id === id);
-  if (!system) return {};
-  if (checkRaisedId(system.simulatorId, raisedIds)) {
-    return { simulatorId: system.simulatorId };
+  const simulator = App.simulators.find(s => s.id === id);
+  if (!system && !simulator) return {};
+  if (checkRaisedId(system ? system.simulatorId : simulator.id, raisedIds)) {
+    return { simulatorId: system ? system.simulatorId : simulator.id };
   }
   return {};
 }
 export function shieldLowered({ id }) {
   const system = App.systems.find(s => s.id === id);
-  if (!system) return {};
-  if (checkLoweredId(system.simulatorId, loweredIds)) {
-    return { simulatorId: system.simulatorId };
+  const simulator = App.simulators.find(s => s.id === id);
+  if (!system && !simulator) return {};
+  if (checkLoweredId(system ? system.simulatorId : simulator.id, raisedIds)) {
+    return { simulatorId: system ? system.simulatorId : simulator.id };
   }
   return {};
 }

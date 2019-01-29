@@ -4,15 +4,15 @@ import {
   Row,
   Col,
   ListGroup,
-  ListGroupItem,
-  Input
+  ListGroupItem
+  //Input
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import DefinitionList from "../../../TaskTemplates/definitionList";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Query, Mutation } from "react-apollo";
-import FontAwesome from "react-fontawesome";
+//import FontAwesome from "react-fontawesome";
 const queryData = `
 id
 name
@@ -223,6 +223,7 @@ class DamageTasks extends Component {
                             />{" "}
                             Required
                           </label>
+                          {/* <Fragment>
                           <p>
                             <strong>
                               Steps that <em>must</em> follow this step (must
@@ -256,29 +257,27 @@ class DamageTasks extends Component {
                                 </option>
                               ))}
                           </Input>
-                          {task.nextSteps.map(
-                            s =>
-                              console.log(s) || (
-                                <p key={`next-${s.id}`}>
-                                  {s.name} ({s.definition}){" "}
-                                  <FontAwesome
-                                    name="ban"
-                                    className="text-danger"
-                                    onClick={() => {
-                                      action({
-                                        variables: {
-                                          id,
-                                          taskId: selectedTemplate,
-                                          nextSteps: task.nextSteps
-                                            .map(ns => ns.id)
-                                            .filter(ns => ns !== s.id)
-                                        }
-                                      });
-                                    }}
-                                  />
-                                </p>
-                              )
-                          )}
+                          {task.nextSteps.map(s => (
+                            <p key={`next-${s.id}`}>
+                              {s.name} ({s.definition}){" "}
+                              <FontAwesome
+                                name="ban"
+                                className="text-danger"
+                                onClick={() => {
+                                  action({
+                                    variables: {
+                                      id,
+                                      taskId: selectedTemplate,
+                                      nextSteps: task.nextSteps
+                                        .map(ns => ns.id)
+                                        .filter(ns => ns !== s.id)
+                                    }
+                                  });
+                                }}
+                              />
+                            </p>
+                          ))}
+                          </Fragment> */}
                         </div>
                       );
                     }}

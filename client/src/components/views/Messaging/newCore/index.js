@@ -16,10 +16,11 @@ query Messages($simulatorId: ID!) {
   messages(simulatorId: $simulatorId) {
 ${queryData}
   }
-  teams(simulatorId: $simulatorId) {
+  teams(simulatorId: $simulatorId, cleared: true) {
     id
     name
     type
+    cleared
   }
 }
 `;
@@ -34,10 +35,11 @@ const MESSAGING_SUB = gql`
 
 const TEAMS_SUB = gql`
   subscription TeamsUpdate($simulatorId: ID) {
-    teamsUpdate(simulatorId: $simulatorId) {
+    teamsUpdate(simulatorId: $simulatorId, cleared: true) {
       id
       name
       type
+      cleared
     }
   }
 `;
@@ -89,6 +91,7 @@ const MessagingData = props => (
                   simulatorId: props.simulator.id
                 },
                 updateQuery: (previousResult, { subscriptionData }) => {
+                  console.log(subscriptionData.data);
                   return Object.assign({}, previousResult, {
                     teams: subscriptionData.data.teamsUpdate
                   });
@@ -99,7 +102,18 @@ const MessagingData = props => (
           <div
             style={{ height: "100%", display: "flex", flexDirection: "column" }}
           >
-            <Conversations {...props} messages={messages} teams={teams} />
+            <Conversations
+              {...props}
+              messages={messages.filter(
+                m =>
+                  !teams.find(
+                    t =>
+                      t.cleared === true &&
+                      (t.name === m.sender || t.name === m.destination)
+                  )
+              )}
+              teams={teams.filter(t => !t.cleared)}
+            />
           </div>
         </SubscriptionHelper>
       );

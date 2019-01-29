@@ -26,7 +26,10 @@ export default function handleTrigger(eventName, args) {
     .filter(Boolean)
     .reduce((prev, next) => prev.concat(next), [])
     .reduce((prev, next) => prev.concat(next.macros), []);
-  if (triggerActions.length === 0) return;
+  const simulator = App.simulators.find(
+    s => s.id === processedArgs.simulatorId
+  );
+  if (triggerActions.length === 0 || simulator.triggersPaused) return;
   App.handleEvent(
     { simulatorId: processedArgs.simulatorId, macros: triggerActions },
     "triggerMacros"

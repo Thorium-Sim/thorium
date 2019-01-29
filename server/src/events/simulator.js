@@ -151,6 +151,11 @@ App.on("updateSimulatorTriggers", ({ simulatorId, triggers }) => {
   simulator.updateTriggers(triggers);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setSimulatorTriggersPaused", ({ simulatorId, paused }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.setTriggersPaused(paused);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setStepDamage", ({ simulatorId, stepDamage }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.stepDamage = stepDamage;

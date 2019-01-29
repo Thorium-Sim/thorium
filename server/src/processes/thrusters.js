@@ -68,7 +68,7 @@ const updateThrusters = () => {
       }
 
       // Also update the tactical map icons
-      // This is a lazy implementation. Any simulator can control the movements of the
+      // This is a lazy implementation. Any simulator on the flight can control the movements of the
       // contacts. It should be scoped to a specific simulator, but I want to keep
       // it simple for now.
 
@@ -86,6 +86,7 @@ const updateThrusters = () => {
             t.flightId === flight.id
         )
         .forEach(map => {
+          let mapUpdate = false;
           map.layers.filter(l => l.type === "objects").forEach(layer => {
             layer.items.forEach(item => {
               // Rotation
@@ -97,6 +98,7 @@ const updateThrusters = () => {
                 if (rotation !== 0) {
                   item.rotation += rotation;
                   updateNeeded = true;
+                  mapUpdate = true;
                 }
               }
               if (item.thrusterControls.rotation === "pitch") {
@@ -107,6 +109,7 @@ const updateThrusters = () => {
                 if (rotation !== 0) {
                   item.rotation += rotation;
                   updateNeeded = true;
+                  mapUpdate = true;
                 }
               }
               if (item.thrusterControls.rotation === "roll") {
@@ -117,6 +120,7 @@ const updateThrusters = () => {
                 if (rotation !== 0) {
                   item.rotation += rotation;
                   updateNeeded = true;
+                  mapUpdate = true;
                 }
               }
               // Movement
@@ -149,6 +153,7 @@ const updateThrusters = () => {
               };
               if (movement.x || movement.y) {
                 updateNeeded = true;
+                mapUpdate = true;
               }
               // If we are honoring the rotation, rotate the movement around
               // the rotation axis
@@ -166,6 +171,7 @@ const updateThrusters = () => {
               }
             });
           });
+          if (mapUpdate) pubsub.publish("tacticalMapUpdate", map);
         });
     }
   });
