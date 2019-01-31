@@ -7,7 +7,8 @@
       "Fix issue with has printer button on the simulator config not being sticky."
     ],
     "features": [
-      "Thorium will now close if it detects another version of Thorium running on the same device."
+      "Thorium will now close if it detects another version of Thorium running on the same device.",
+      "Add a sensors processed data action to the triggers."
     ]
   },
   "1.1.9": {
