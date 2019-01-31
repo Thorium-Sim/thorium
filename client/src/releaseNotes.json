@@ -1,4 +1,9 @@
 {
+  "1.1.10": {
+    "fixes": [
+      "Made some adjustments that will hopefully improve speed for instances with large snapshots."
+    ]
+  },
   "1.1.9": {
     "fixes": [
       "Fixes an issue with adding shuttlebays to a simulator.",
