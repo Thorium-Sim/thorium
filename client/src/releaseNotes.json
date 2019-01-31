@@ -5,7 +5,8 @@
       "Fix several issues with task instructions generation.",
       "Makes it so changes to the task template type checkboxes actually appear.",
       "Fix issue with has printer button on the simulator config not being sticky.",
-      "Fix an issue where task templates can appear to replicate. Makes it more apparent what is a default value and what has been specified in the config."
+      "Fix an issue where task templates can appear to replicate. Makes it more apparent what is a default value and what has been specified in the config.",
+      "Fixes for the damage control screen with task reports."
     ],
     "features": [
       "Thorium will now close if it detects another version of Thorium running on the same device.",
