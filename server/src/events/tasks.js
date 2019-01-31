@@ -133,6 +133,7 @@ App.on("setTaskTemplateValues", ({ id, values }) => {
 App.on("setTaskTemplateReportTypes", ({ id, reportTypes }) => {
   const task = App.taskTemplates.find(t => t.id === id);
   task && task.setReportTypes(reportTypes);
+  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
 });
 
 App.on("addTaskMacro", ({ id, macro }) => {

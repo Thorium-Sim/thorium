@@ -183,6 +183,7 @@ class DamageControl extends Component {
       taskReports = []
     } = this.props;
     const damagedSystem = systems.find(s => selectedSystem === s.id) || {
+      ...taskReports.find(s => s.id === selectedSystem),
       damage: {}
     };
     const system =
@@ -362,17 +363,15 @@ class DamageControl extends Component {
                 )}
               </Mutation>
             )}
-            {damagedSystem.damage.neededReactivationCode && (
-              <Card
-                className="reactivation-code-entry"
+            {(damagedSystem.damage.neededReactivationCode ||
+              damagedSystem.tasks) && (
+              <Button
+                block
+                color="primary"
                 onClick={reactivationCodeModal ? () => {} : this.toggle}
               >
-                <CardBody>
-                  <p className={`${codeEntry ? "code-entry" : ""}`}>
-                    {codeEntry ? codeEntry : "Enter Reactivation Code..."}
-                  </p>
-                </CardBody>
-              </Card>
+                {codeEntry ? codeEntry : "Enter Reactivation Code..."}
+              </Button>
             )}
           </Col>
           <Col sm="9" className="damage-report">

@@ -46,6 +46,18 @@ export default () => {
   });
 
   const server = express();
+
+  server.on("error", err => {
+    if (err.code === "EADDRINUSE") {
+      console.log(
+        chalk.redBright(
+          "There is already a version of Thorium running on this computer. Shutting down..."
+        )
+      );
+      process.exit(0);
+    }
+  });
+
   server.use(require("express-status-monitor")({}));
 
   server.use("*", cors());
@@ -106,7 +118,7 @@ export default () => {
 
     // If we're in production, the last thing we want is for the server to crash
     // Print all server errors, but don't terminate the process
-    setInterval(function() {}, Number.MAX_VALUE);
+    setInterval(function() {}, Math.pow(2, 31) - 1);
     process.on("uncaughtException", err => {
       console.log(chalk.red(`Caught exception: ${err}\n`));
       console.log(err);

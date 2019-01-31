@@ -12,6 +12,7 @@ const ValueInput = ({
   type,
   placeholder,
   value,
+  definitionValue,
   onBlur,
   simulatorId
 }) => {
@@ -24,7 +25,7 @@ const ValueInput = ({
               {titleCase(label)}
               <Input
                 type="text"
-                placeholder={value || placeholder}
+                placeholder={placeholder || definitionValue}
                 defaultValue={value}
                 onBlur={e => onBlur(e.target.value)}
               />
@@ -37,7 +38,7 @@ const ValueInput = ({
               <Input
                 type="textarea"
                 rows={3}
-                placeholder={value || placeholder}
+                placeholder={placeholder || definitionValue}
                 defaultValue={value}
                 onBlur={e => onBlur(e.target.value)}
               />
@@ -118,9 +119,10 @@ const ValueInput = ({
               {titleCase(label)}
               <Input
                 type="select"
-                value={value}
+                value={value || ""}
                 onChange={e => onBlur(e.target.value)}
               >
+                <option value={""}>Select one</option>
                 {type.map(v => (
                   <option key={`${v.label}-${v.value}`} value={v.value}>
                     {v.label}

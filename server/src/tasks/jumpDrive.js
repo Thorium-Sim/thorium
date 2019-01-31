@@ -41,7 +41,7 @@ export default [
       );
       const jumpDrive = App.systems.find(
         s => s.simulatorId === simulator.id && s.type === "JumpDrive"
-      );
+      ) || { name: "#SYSTEMNAME" };
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Activate the ${jumpDrive.displayName ||
@@ -55,7 +55,7 @@ export default [
             : `person in charge of the ${jumpDrive.displayName ||
                 jumpDrive.name}`
         } to activate the ${jumpDrive.displayName || jumpDrive.name}.`,
-        { simulator, system }
+        { simulator, system: system || jumpDrive }
       );
     },
     verify({ simulator }) {
@@ -108,7 +108,7 @@ export default [
       );
       const jumpDrive = App.systems.find(
         s => s.simulatorId === simulator.id && s.type === "JumpDrive"
-      );
+      ) || { name: "#SYSTEMNAME" };
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Stabilize the ${jumpDrive.displayName ||
@@ -125,7 +125,7 @@ export default [
             : `person in charge of the ${jumpDrive.displayName ||
                 jumpDrive.name}`
         } to stabilize the ${jumpDrive.displayName || jumpDrive.name}.`,
-        { system, simulator }
+        { system: system || jumpDrive, simulator }
       );
     },
     verify({ simulator }) {

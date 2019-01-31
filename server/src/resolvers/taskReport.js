@@ -38,7 +38,8 @@ export const TaskReportMutations = {
 
 export const TaskReportSubscriptions = {
   taskReportUpdate: {
-    resolve(rootValue, { simulatorId, type, cleared }) {
+    resolve(rootValue = [], { simulatorId, type, cleared }) {
+      console.log(rootValue);
       let returnVal = rootValue;
       if (simulatorId) {
         returnVal = returnVal.filter(s => s.simulatorId === simulatorId);

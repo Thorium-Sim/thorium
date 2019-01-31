@@ -40,9 +40,10 @@ export default [
       // First, get some values
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
+          sys &&
+          (s.id === sys ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
       ) || { name: sys };
       const shuttleBay = isNaN(shuttle)
         ? App.dockingPorts.find(s => s.id === shuttle)
@@ -133,9 +134,10 @@ export default [
       // First, get some values
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
+          sys &&
+          (s.id === sys ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
       ) || { name: sys };
       const shuttleBay = isNaN(shuttle)
         ? App.dockingPorts.find(s => s.id === shuttle)
@@ -217,9 +219,10 @@ export default [
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
+          sys &&
+          (s.id === sys ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
       ) || { name: sys };
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "Shuttles")
@@ -274,9 +277,10 @@ export default [
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
+          sys &&
+          (s.id === sys ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
       ) || { name: sys };
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "Shuttles")

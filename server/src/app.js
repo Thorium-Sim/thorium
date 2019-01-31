@@ -22,7 +22,7 @@ const snapshotName =
 const store = new Store({
   name: "Thorium",
   path: `${snapshotDir}${snapshotName}`,
-  debounce: 1000 * 2
+  debounce: 1000 * 30
 });
 
 class Events extends EventEmitter {
