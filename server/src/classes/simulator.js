@@ -33,7 +33,7 @@ class Lighting {
     this.transitionDuration = params.transitionDuration || 1000;
 
     // If it's null, use the alert color
-    this.useAlertColor = params.useAlertColor || true;
+    this.useAlertColor = params.useAlertColor === false ? false : true;
     this.color = params.color || null;
   }
   update({ intensity, action, actionStrength, transitionDuration, color }) {
@@ -133,11 +133,10 @@ export default class Simulator {
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
     }
-
-    this.hasPrinter = params.hasPrinter || true;
+    this.hasPrinter = params.hasPrinter === false ? false : true;
 
     // Damage reports
-    this.stepDamage = params.stepDamage || true;
+    this.stepDamage = params.stepDamage === false ? false : true;
     this.verifyStep = params.verifyStep || false;
     this.requiredDamageSteps = [];
     this.optionalDamageSteps = [];

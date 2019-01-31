@@ -3,7 +3,8 @@
     "fixes": [
       "Made some adjustments that will hopefully improve speed for instances with large snapshots.",
       "Fix several issues with task instructions generation.",
-      "Makes it so changes to the task template type checkboxes actually appear."
+      "Makes it so changes to the task template type checkboxes actually appear.",
+      "Fix issue with has printer button on the simulator config not being sticky."
     ],
     "features": [
       "Thorium will now close if it detects another version of Thorium running on the same device."
