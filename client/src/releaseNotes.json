@@ -2,6 +2,9 @@
   "1.1.10": {
     "fixes": [
       "Made some adjustments that will hopefully improve speed for instances with large snapshots."
+    ],
+    "features": [
+      "Thorium will now close if it detects another version of Thorium running on the same device."
     ]
   },
   "1.1.9": {
