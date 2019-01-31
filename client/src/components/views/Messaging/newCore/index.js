@@ -91,7 +91,6 @@ const MessagingData = props => (
                   simulatorId: props.simulator.id
                 },
                 updateQuery: (previousResult, { subscriptionData }) => {
-                  console.log(subscriptionData.data);
                   return Object.assign({}, previousResult, {
                     teams: subscriptionData.data.teamsUpdate
                   });

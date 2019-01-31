@@ -10,7 +10,6 @@ const ReportButtonsLegacy = ({ verifyStep, system }) => {
   const steps = report
     ? report.split(/Step [0-9]+:\n/gi).filter(s => s && s !== "\n")
     : [];
-  console.log(steps, system);
   return (
     <Mutation
       mutation={gql`
