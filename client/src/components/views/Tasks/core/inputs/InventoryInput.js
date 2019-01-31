@@ -19,7 +19,7 @@ const InventoryInput = ({ simulatorId, onChange, value }) => {
       {({ loading, data }) =>
         loading ? null : (
           <div>
-            {Object.entries(value).map(([id, count]) => (
+            {Object.entries(value || {}).map(([id, count]) => (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {data ? (
                   <select

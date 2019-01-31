@@ -96,7 +96,8 @@ const TaskConfig = ({ id, name, values, definition, reportTypes = [] }) => {
               key={v}
               label={v}
               type={definition.valuesInput[v]}
-              value={values[v] || definition.valuesValue[v]}
+              value={values[v]}
+              definitionValue={definition.valuesValue[v]}
               onBlur={value =>
                 action({
                   variables: {
