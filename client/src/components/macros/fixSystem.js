@@ -24,7 +24,8 @@ const systems = [
   "Thx",
   "Sickbay",
   "JumpDrive",
-  "Railgun"
+  "Railgun",
+  "SubspaceField"
 ];
 
 export default ({ updateArgs, args, client }) => {

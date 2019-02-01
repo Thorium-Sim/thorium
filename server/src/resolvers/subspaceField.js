@@ -4,7 +4,7 @@ import { withFilter } from "graphql-subscriptions";
 
 export const SubspaceFieldQueries = {
   subspaceField(root, { simulatorId }) {
-    let returnVal = App.systems.find(s => s.class === "SubspaceField");
+    let returnVal = App.systems.filter(s => s.class === "SubspaceField");
     if (simulatorId)
       returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
     return returnVal;

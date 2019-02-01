@@ -1,11 +1,17 @@
-import uuid from "uuid";
+import { System } from "./generic";
 
-export default class SubspaceField {
+export default class SubspaceField extends System {
   static sectors = ["fore", "aft", "port", "starboard", "ventral", "dorsal"];
   constructor(params) {
-    this.id = params.id || uuid.v4();
+    super(params);
     this.class = "SubspaceField";
-    this.simulatorId = params.simulatorId || null;
+    this.type = "SubspaceField";
+    this.name = params.name || "Subspace Field";
+    this.power = params.power || {
+      power: 0,
+      powerLevels: [],
+      defaultLevel: 0
+    };
     this.totalPower = params.totalPower || 300;
     this.fore = params.fore || {
       required: 50,
@@ -36,7 +42,7 @@ export default class SubspaceField {
     if (!which) {
       SubspaceField.sectors.forEach(v => this.flux(v));
       this.totalPower = SubspaceField.sectors.reduce(
-        (prev, next) => prev + next.required,
+        (prev, next) => prev + this[next].required,
         0
       );
       return;

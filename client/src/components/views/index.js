@@ -158,6 +158,7 @@ import RoomSearchCore from "./RoomSearch";
 import MacrosCore from "./Macros";
 import DockingPortCore from "./DockingPorts/core";
 import TaskReportCore from "./TaskReports/core";
+import SubspaceFieldCore from "./SubspaceField/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -407,7 +408,8 @@ export const Cores = {
   RoomSearchCore,
   MacrosCore,
   DockingPortCore,
-  TaskReportCore
+  TaskReportCore,
+  SubspaceFieldCore
 };
 
 export default Views;
