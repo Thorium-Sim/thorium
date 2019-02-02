@@ -19,6 +19,11 @@ export default class Transwarp extends heatMixin(System) {
     this.quad3 = params.quad3 || { ...baseQuad };
     this.quad4 = params.quad1 || { ...baseQuad };
     this.active = params.active || false;
+    this.power = params.power || {
+      power: 0,
+      powerLevels: [40],
+      defaultLevel: 0
+    };
   }
   get stealthFactor() {
     if (!this.active) return 0;
