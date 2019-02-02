@@ -3,6 +3,8 @@ import ChargeBar from "../StealthField/chargeBar";
 import { titleCase } from "change-case";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import Tour from "helpers/tourHelper";
+
 const subspaceSectors = [
   "fore",
   "port",
@@ -13,11 +15,30 @@ const subspaceSectors = [
 ];
 class SubspaceField extends React.Component {
   state = {};
+  trainingSteps = () => {
+    const { name, displayName } = this.props;
+    const sysName = displayName || name;
+    return [
+      {
+        selector: ".selector",
+        content: `The ${sysName} is a powerful field which substantially decreases the inertia on your ship. This helps to limit the strain on your ship when traveling at ultra-high velocities or through exotic space.`
+      },
+      {
+        selector: ".subspace-charge",
+        content: `Each sector of your ship must be charged appropriately for the ${sysName} to sufficiently protect your ship. Drag the arrows next to each sector's power bar to the light blue line. The line might change position based on how the ${sysName} distributes the stress across your ship. If the bar ever changes, make sure to line it up again.`
+      },
+      {
+        selector: ".power-levels",
+        content: `You can know that the sector power levels are balanced when the power available and power used are the same number.`
+      }
+    ];
+  };
   render() {
     const {
       simulator: { assets },
       totalPower,
-      id
+      id,
+      clientObj
     } = this.props;
     const diff = which => {
       const { value, required } = this.props[which];
@@ -162,6 +183,7 @@ class SubspaceField extends React.Component {
           <h1>Power In Use: {total}</h1>
           <h1>Power Available: {totalPower}</h1>
         </div>
+        <Tour steps={this.trainingSteps()} client={clientObj} />
       </div>
     );
   }
