@@ -286,7 +286,6 @@ class Store {
         return replacer == null ? value : replacer.call(this, key, value);
       };
     }
-
     return stringify(this.data, replacer, space);
   }
 
@@ -323,15 +322,17 @@ class Store {
 
   writeFile() {
     mkdir(path.dirname(this.path), this.options.mkdir);
+    const jsonData = this.json();
     fs.writeFile(
       this.path.replace(".json", "-restore.json"),
-      this.json(),
+      jsonData,
       { mode: 0o0600 },
       err => {
         if (err) {
           console.error(err);
         }
-        fs.writeFile(this.path, this.json(), { mode: 0o0600 }, err => {
+
+        fs.writeFile(this.path, jsonData, { mode: 0o0600 }, err => {
           if (err) {
             console.error(err);
           }

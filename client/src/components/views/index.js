@@ -84,6 +84,7 @@ import Tasks from "./Tasks";
 import ProbeScience from "./ProbeScience";
 import CommandLine from "./CommandLine";
 import DockingPorts from "./DockingPorts";
+import SubspaceField from "./SubspaceField";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -158,6 +159,7 @@ import RoomSearchCore from "./RoomSearch";
 import MacrosCore from "./Macros";
 import DockingPortCore from "./DockingPorts/core";
 import TaskReportCore from "./TaskReports/core";
+import SubspaceFieldCore from "./SubspaceField/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -251,7 +253,8 @@ const Views = {
   Tasks,
   ProbeScience,
   CommandLine,
-  DockingPorts
+  DockingPorts,
+  SubspaceField
 };
 
 export const Widgets = {
@@ -407,7 +410,8 @@ export const Cores = {
   RoomSearchCore,
   MacrosCore,
   DockingPortCore,
-  TaskReportCore
+  TaskReportCore,
+  SubspaceFieldCore
 };
 
 export default Views;

@@ -151,9 +151,10 @@ export default [
             : ""
       }
     },
+
     instructions({
       simulator,
-      requiredValues: { preamble, shield: shieldId, system },
+      requiredValues: { preamble, shield: shieldId, system = shieldId },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
@@ -239,7 +240,7 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, shield: shieldId, system },
+      requiredValues: { preamble, shield: shieldId, system = shieldId },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
@@ -322,7 +323,12 @@ export default [
     },
     instructions({
       simulator,
-      requiredValues: { preamble, shield: shieldId, frequency, system },
+      requiredValues: {
+        preamble,
+        shield: shieldId,
+        frequency,
+        system = shieldId
+      },
       task = {}
     }) {
       const station = simulator.stations.find(s =>
@@ -330,9 +336,9 @@ export default [
       );
       const shield = App.systems.find(
         s =>
-          s.id === shield ||
-          (s.name === shield && s.simulatorId === simulator.id) ||
-          (s.displayName === shield && s.simulatorId === simulator.id)
+          s.id === shieldId ||
+          (s.name === shieldId && s.simulatorId === simulator.id) ||
+          (s.displayName === shieldId && s.simulatorId === simulator.id)
       );
       if (station && task.station === station.name)
         return reportReplace(

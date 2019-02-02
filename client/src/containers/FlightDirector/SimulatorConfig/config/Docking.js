@@ -16,7 +16,6 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
         type
       }
     };
-    console.log(variables);
     client.mutate({
       mutation,
       variables,

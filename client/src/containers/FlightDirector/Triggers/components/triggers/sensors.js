@@ -30,3 +30,41 @@ export const sensorScanRequest = {
   inputs: [],
   config: []
 };
+
+export const processedData = {
+  name: "processedData",
+  category: "Triggers",
+  component: () => (
+    <div>
+      Event: Processed Sensor
+      <div>
+        <small>
+          Request will be fuzzy-matched with connected switch values. If data is
+          sent with a flash, flash will be "yes".
+        </small>
+      </div>
+    </div>
+  ),
+  outputs: [
+    {
+      id: "triggerOut",
+      color: "orange",
+      title: "Triggers the action",
+      type: "Trigger"
+    },
+    {
+      id: "data",
+      color: "brown",
+      title: "Data",
+      type: "String"
+    },
+    {
+      id: "flash",
+      color: "yellow",
+      title: "Flash",
+      type: "String"
+    }
+  ],
+  inputs: [],
+  config: []
+};

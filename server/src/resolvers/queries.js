@@ -51,6 +51,7 @@ import { TasksQueries } from "./tasks";
 import { CommandLineQueries } from "./commandLine.js";
 import { TriggerQueries } from "./trigger.js";
 import { TaskReportQueries } from "./taskReport.js";
+import { SubspaceFieldQueries } from "./subspaceField.js";
 
 const queryMap = Object.assign(
   {},
@@ -106,7 +107,8 @@ const queryMap = Object.assign(
   TasksQueries,
   CommandLineQueries,
   TriggerQueries,
-  TaskReportQueries
+  TaskReportQueries,
+  SubspaceFieldQueries
 );
 
 export default queryMap;

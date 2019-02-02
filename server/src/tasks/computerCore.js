@@ -48,9 +48,10 @@ export default [
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
+          sys &&
+          ((sys && s.id === sys) ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
       ) || { name: sys };
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
@@ -140,10 +141,11 @@ Password: ${password}`,
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
-      ) || { name: sys };
+          sys &&
+          ((sys && s.id === sys) ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
+      ) || { name: sys, users: [] };
       const u = system.users.find(us => us.id === user);
       const { level, name } = u || { name: user, level: null };
       const station = simulator.stations.find(s =>
@@ -281,10 +283,11 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
-      ) || { name: sys };
+          sys &&
+          ((sys && s.id === sys) ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
+      ) || { name: sys, terminals: [] };
       const t = system.terminals.find(
         t => t.id === terminal || t.name === terminal
       );
@@ -383,10 +386,11 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
-      ) || { name: sys };
+          sys &&
+          ((sys && s.id === sys) ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
+      ) || { name: sys, users: [] };
       const u = system.users.find(us => us.id === user);
       const { name } = u || { name: user, level: null };
       const station = simulator.stations.find(s =>
@@ -491,10 +495,11 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
-      ) || { name: sys };
+          sys &&
+          ((sys && s.id === sys) ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
+      ) || { name: sys, files: [] };
       const f = system.files.find(us => us.id === file);
       const { name, level } = f || { name: file, level: null };
       const station = simulator.stations.find(s =>
@@ -581,9 +586,10 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
+          sys &&
+          ((sys && s.id === sys) ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
       ) || { name: sys };
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")
@@ -650,9 +656,10 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
+          sys &&
+          ((sys && s.id === sys) ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
       ) || { name: sys };
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore")

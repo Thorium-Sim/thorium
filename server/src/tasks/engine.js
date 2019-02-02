@@ -62,9 +62,10 @@ export default [
     }) {
       const system = App.systems.find(
         s =>
-          (sys && s.id === sys) ||
-          s.name.toLowerCase() === sys.toLowerCase() ||
-          s.displayName.toLowerCase() === sys.toLowerCase()
+          sys &&
+          (s.id === sys ||
+            s.name.toLowerCase() === sys.toLowerCase() ||
+            s.displayName.toLowerCase() === sys.toLowerCase())
       ) || { name: sys };
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "EngineControl")

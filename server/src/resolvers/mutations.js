@@ -54,6 +54,7 @@ import { EnvironmentMutations } from "./environment";
 import { CommandLineMutations } from "./commandLine.js";
 import { TriggerMutations } from "./trigger.js";
 import { TaskReportMutations } from "./taskReport.js";
+import { SubspaceFieldMutations } from "./subspaceField.js";
 
 const mutationMap = Object.assign(
   FlightStructureMutations,
@@ -110,7 +111,8 @@ const mutationMap = Object.assign(
   EnvironmentMutations,
   CommandLineMutations,
   TriggerMutations,
-  TaskReportMutations
+  TaskReportMutations,
+  SubspaceFieldMutations
 );
 
 export default mutationMap;

@@ -180,18 +180,20 @@ export default class TaskReport {
         ? Object.keys(definitionTemplates).length
         : stepCount) - existingSteps;
 
-    tasks = tasks.concat(
-      Array(taskCount)
-        .fill(0)
-        .map(() => {
-          const definition = randomFromList(Object.keys(definitionTemplates));
-          const template = randomFromList(definitionTemplates[definition]);
-          delete definitionTemplates[definition];
-          return template;
-        })
-        .reduce((prev, next) => prev.concat(next), [])
-        .map(createTask)
-    );
+    if (taskCount > 0) {
+      tasks = tasks.concat(
+        Array(taskCount)
+          .fill(0)
+          .map(() => {
+            const definition = randomFromList(Object.keys(definitionTemplates));
+            const template = randomFromList(definitionTemplates[definition]);
+            delete definitionTemplates[definition];
+            return template;
+          })
+          .reduce((prev, next) => prev.concat(next), [])
+          .map(createTask)
+      );
+    }
 
     // Add any required damage steps that specifically are assigned
     // to the end of the report.
