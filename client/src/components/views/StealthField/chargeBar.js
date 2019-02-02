@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
 import Arrow from "./arrow";
-
+import col from "color";
 class ChargeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      level: props.value
+      level: props.value || 0
     };
   }
   componentDidUpdate() {
-    if (!this.state.dragging && this.state.level !== this.props.value) {
+    const { value = 0 } = this.props;
+    if (!this.state.dragging && this.state.level !== value) {
       this.setState({
-        level: this.props.value
+        level: value
       });
     }
   }
@@ -28,66 +27,95 @@ class ChargeBar extends Component {
     document.addEventListener("touchend", this.mouseUp);
   };
   mouseUp = () => {
-    const mutation = gql`
-      mutation StealthQuadrant($id: ID, $which: String, $value: Float) {
-        setStealthQuadrant(id: $id, which: $which, value: $value)
-      }
-    `;
-    const variables = {
-      id: this.props.id,
-      which: this.props.label.toLowerCase(),
-      value: Math.round(this.state.level * 20) / 20
-    };
-    this.props.client
-      .mutate({
-        mutation,
-        variables
-      })
-      .then(() => {
+    if (this.props.mouseUp) {
+      const mouseUpRes = this.props.mouseUp(this.state.level);
+      if (mouseUpRes && mouseUpRes.then) {
+        mouseUpRes.then(() =>
+          this.setState({
+            dragging: false
+          })
+        );
+      } else {
         this.setState({
           dragging: false
         });
-      });
+      }
+    }
     document.removeEventListener("mousemove", this.mouseMove);
     document.removeEventListener("mouseup", this.mouseUp);
     document.removeEventListener("touchmove", this.mouseMove);
     document.removeEventListener("touchend", this.mouseUp);
   };
   mouseMove = evt => {
+    const { invert } = this.props;
     const node = ReactDOM.findDOMNode(this).querySelector(".bar-holder");
-    this.setState({
-      level: Math.min(
-        1,
-        Math.max(
-          0,
-          ((evt.clientY || evt.touches[0].clientY) -
-            node.getBoundingClientRect().top) /
-            node.getBoundingClientRect().height
-        )
+    const level = Math.min(
+      1,
+      Math.max(
+        0,
+        ((evt.clientY || evt.touches[0].clientY) -
+          node.getBoundingClientRect().top) /
+          node.getBoundingClientRect().height
       )
+    );
+    this.setState({
+      level: Math.abs((invert ? 1 : 0) - level)
     });
+    this.props.mouseMove && this.props.mouseMove(level);
   };
   render() {
     const { level } = this.state;
-    const { label } = this.props;
+    const {
+      label = "Charge",
+      levelMultiply = 20,
+      lineLevel = 0.5,
+      color = "#0f0",
+      levelColor = "yellow",
+      invert
+    } = this.props;
     return (
-      <div className="chargeBar">
+      <div className="vertical-chargeBar">
         <div className="bar-holder">
-          <div className="bar">
-            <div className="bar-line" />
+          <div
+            className="bar"
+            style={{
+              background: `linear-gradient(
+      to bottom,
+      ${color} 0%,
+      ${col(color)
+        .darken(0.6)
+        .toString()} 50%,
+      ${col(color)
+        .darken(0.8)
+        .toString()} 100%
+    )`
+            }}
+          >
+            <div
+              className="bar-line"
+              style={{
+                top: `${(invert ? Math.abs(1 - lineLevel) : lineLevel) * 100}%`,
+                background: `linear-gradient(
+                  to bottom,
+                  transparent 0%,
+                  ${levelColor} 50%,
+                  transparent 100%
+                )`
+              }}
+            />
           </div>
           <Arrow
-            alertLevel={this.props.simulator.alertLevel}
-            level={level}
+            alertLevel={this.props.simulator && this.props.simulator.alertLevel}
+            level={Math.abs((invert ? 1 : 0) - level)}
             mouseDown={this.mouseDown}
           />
         </div>
         <p>
-          {label}: {Math.round(level * 20)}
+          {label}: {Math.round(level * levelMultiply)}
         </p>
       </div>
     );
   }
 }
 
-export default withApollo(ChargeBar);
+export default ChargeBar;

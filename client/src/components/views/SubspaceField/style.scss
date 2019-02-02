@@ -1,2 +1,96 @@
-.card-template {
+.card-subspaceField {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 150px) 1fr 1fr repeat(3, 150px);
+  grid-template-rows: 25% 19% 25% 32%;
+  .power-levels {
+    grid-row: 4;
+    grid-column: 6/9;
+    align-self: center;
+    h1 {
+      font-size: 2.3rem;
+    }
+  }
+  .subspace-charge {
+    width: 100%;
+    height: 100%;
+    &.fore {
+      grid-row: 1/3;
+    }
+    &.port {
+      grid-row: 1/3;
+      grid-column: 3;
+    }
+    &.dorsal {
+      grid-row: 2/4;
+    }
+    &.aft {
+      grid-row: 1/3;
+      grid-column: 6;
+    }
+    &.starboard {
+      grid-row: 1/3;
+      grid-column: 8;
+    }
+    &.ventral {
+      grid-row: 2/4;
+      grid-column: 7;
+    }
+  }
+  .ship-side {
+    grid-row: 4;
+    grid-column: 1/ 5;
+    position: relative;
+    div {
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
+    .dorsal {
+      height: 50%;
+      top: 0;
+      background-position: top;
+    }
+    .ventral {
+      height: 50%;
+      bottom: 0;
+      background-position: bottom;
+    }
+  }
+  .ship-top {
+    grid-row: 1/4;
+    grid-column: 4/6;
+    transform: rotate(-90deg);
+    position: relative;
+    div {
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
+    .fore {
+      width: 40%;
+      right: 0;
+      background-position: right;
+    }
+    .port {
+      height: 40%;
+      top: 0;
+      background-position: top;
+    }
+    .starboard {
+      height: 40%;
+      bottom: 0;
+      background-position: bottom;
+    }
+    .aft {
+      width: 40%;
+      left: 0;
+      background-position: left;
+    }
+  }
+  .bar {
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+  }
 }

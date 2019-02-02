@@ -84,6 +84,7 @@ import Tasks from "./Tasks";
 import ProbeScience from "./ProbeScience";
 import CommandLine from "./CommandLine";
 import DockingPorts from "./DockingPorts";
+import SubspaceField from "./SubspaceField";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -252,7 +253,8 @@ const Views = {
   Tasks,
   ProbeScience,
   CommandLine,
-  DockingPorts
+  DockingPorts,
+  SubspaceField
 };
 
 export const Widgets = {

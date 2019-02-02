@@ -2,36 +2,63 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import Template from "./template";
+import SubspaceField from "./subspaceField";
 import "./style.scss";
 
 const queryData = `
+id
+name
+totalPower
+fore {
+  required
+  value
+}
+aft {
+  required
+  value
+}
+port {
+  required
+  value
+}
+starboard {
+  required
+  value
+}
+ventral {
+  required
+  value
+}
+dorsal {
+  required
+  value
+}
 `;
 
 const QUERY = gql`
-  query Template($simulatorId: ID!) {
-    template(simulatorId: $simulatorId) {
+  query SubspaceField($simulatorId: ID!) {
+    subspaceField(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription TemplateUpdate($simulatorId: ID!) {
-    templateUpdate(simulatorId: $simulatorId) {
+  subscription SubspaceFieldUpdate($simulatorId: ID!) {
+    subspaceFieldUpdate(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 
-class TemplateData extends Component {
+class SubspaceFieldData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { template } = data;
-          if (loading || !template) return null;
-          if (!template[0]) return <div>No Template</div>;
+          const { subspaceField } = data;
+          if (loading || !subspaceField) return null;
+          if (!subspaceField[0]) return <div>No Subspace Field</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -40,13 +67,13 @@ class TemplateData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      template: subscriptionData.data.templateUpdate
+                      subspaceField: subscriptionData.data.subspaceFieldUpdate
                     });
                   }
                 })
               }
             >
-              <Template {...this.props} {...template[0]} />
+              <SubspaceField {...this.props} {...subspaceField[0]} />
             </SubscriptionHelper>
           );
         }}
@@ -54,4 +81,4 @@ class TemplateData extends Component {
     );
   }
 }
-export default TemplateData;
+export default SubspaceFieldData;
