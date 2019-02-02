@@ -50,6 +50,7 @@ import { TasksSubscriptions } from "./tasks";
 import { CommandLineSubscriptions } from "./commandLine.js";
 import { TriggerSubscriptions } from "./trigger.js";
 import { TaskReportSubscriptions } from "./taskReport.js";
+import { SubspaceFieldSubscriptions } from "./subspaceField.js";
 
 const subscriptionMap = Object.assign(
   {},
@@ -104,7 +105,8 @@ const subscriptionMap = Object.assign(
   TasksSubscriptions,
   CommandLineSubscriptions,
   TriggerSubscriptions,
-  TaskReportSubscriptions
+  TaskReportSubscriptions,
+  SubspaceFieldSubscriptions
 );
 
 export default subscriptionMap;

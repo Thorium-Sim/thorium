@@ -33,6 +33,7 @@ const systems = [
   "Sickbay",
   "SignalJammer",
   "StealthField",
+  "SubspaceField",
   "Targeting",
   "Thrusters",
   "Thx",

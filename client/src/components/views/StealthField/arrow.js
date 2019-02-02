@@ -10,14 +10,16 @@ const Arrow = ({
 }) => {
   return (
     <div
-      onMouseDown={() => mouseDown(dimensions)}
-      onTouchStart={() => mouseDown(dimensions)}
       style={{
-        transform: `translateY(${level * 97}%) ${flop ? "scaleX(-1)" : ""}`
+        transform: `translateY(${level * 97}%) ${flop ? "scaleX(-1)" : ""}`,
+        pointerEvents: "none"
       }}
       className="arrow"
     >
       <svg
+        onMouseDown={() => mouseDown(dimensions)}
+        onTouchStart={() => mouseDown(dimensions)}
+        style={{ pointerEvents: "all" }}
         version="1.1"
         x="0px"
         y="0px"

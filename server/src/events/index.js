@@ -54,3 +54,4 @@ import "./environment";
 import "./commandLine.js";
 import "./trigger";
 import "./taskReport.js";
+import "./subspaceField.js";
