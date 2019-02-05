@@ -17,7 +17,7 @@ export default class Transwarp extends heatMixin(System) {
     this.quad1 = params.quad1 || { ...baseQuad };
     this.quad2 = params.quad2 || { ...baseQuad };
     this.quad3 = params.quad3 || { ...baseQuad };
-    this.quad4 = params.quad1 || { ...baseQuad };
+    this.quad4 = params.quad4 || { ...baseQuad };
     this.active = params.active || false;
     this.power = params.power || {
       power: 0,
@@ -72,6 +72,7 @@ export default class Transwarp extends heatMixin(System) {
     this[quad][field].required = 25;
   }
   setValue(quad, field, value) {
+    console.log(quad, field, value);
     if (!Transwarp.quads.includes(quad)) return;
     if (!Transwarp.fields.includes(field)) return;
     this[quad][field].value = value;

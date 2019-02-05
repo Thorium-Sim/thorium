@@ -41,6 +41,18 @@ power {
 damage {
   damaged
 }
+heat
+coolant
+`;
+
+const HEATCHANGE_SUB = gql`
+  subscription HeatChanged($simulatorId: ID) {
+    heatChange(simulatorId: $simulatorId) {
+      id
+      heat
+      coolant
+    }
+  }
 `;
 
 const QUERY = gql`
@@ -81,6 +93,25 @@ class TranswarpData extends Component {
                 })
               }
             >
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: HEATCHANGE_SUB,
+                    variables: { simulatorId: this.props.simulator.id },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      const { transwarp } = previousResult;
+                      const { heatChange } = subscriptionData.data;
+                      return {
+                        ...previousResult,
+                        transwarp: transwarp.map(
+                          t =>
+                            t.id === heatChange.id ? { ...t, ...heatChange } : t
+                        )
+                      };
+                    }
+                  })
+                }
+              />
               <Transwarp {...this.props} {...transwarp[0]} />
             </SubscriptionHelper>
           );
