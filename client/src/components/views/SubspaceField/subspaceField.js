@@ -40,13 +40,16 @@ class SubspaceField extends React.Component {
       id,
       clientObj
     } = this.props;
-    const diff = which => {
-      const { value, required } = this.props[which];
-      const stateVal = this.state[which];
-      const distance = Math.abs(
-        (stateVal || stateVal === 0 ? stateVal * 100 : value) / required - 1
-      );
-      return Math.abs(1 - distance);
+    const diff = () => {
+      const totalDiff = subspaceSectors.reduce((prev, which) => {
+        const { value, required } = this.props[which];
+        const stateVal = this.state[which];
+        const distance = Math.abs(
+          (stateVal || stateVal === 0 ? stateVal * 100 : value) / required - 1
+        );
+        return prev + Math.abs(1 - distance);
+      }, 0);
+      return totalDiff / subspaceSectors.length;
     };
     const total = subspaceSectors.reduce(
       (prev, next) => prev + this.props[next].value,
@@ -98,84 +101,20 @@ class SubspaceField extends React.Component {
         <div className="ship-top">
           <div
             className="main"
-            style={{ backgroundImage: `url('/assets${assets.top}')` }}
-            alt="Ship Top"
-          />
-          <div
-            className="fore"
             style={{
-              filter: `drop-shadow(0px 0px 20px rgba(0, 255, 255, ${diff(
-                "fore"
-              )}))`,
+              filter: `drop-shadow(0px 0px 20px rgba(0, 255, 255, ${diff()}))`,
               backgroundImage: `url('/assets${assets.top}')`
             }}
-            alt="Ship Top"
-          />
-          <div
-            className="starboard"
-            style={{
-              filter: `drop-shadow(0px 0px 20px rgba(0, 255, 255, ${diff(
-                "starboard"
-              )}))`,
-              backgroundImage: `url('/assets${assets.top}')`
-            }}
-            alt="Ship Top"
-          />
-          <div
-            className="aft"
-            style={{
-              filter: `drop-shadow(0px 0px 20px rgba(0, 255, 255, ${diff(
-                "aft"
-              )}))`,
-              backgroundImage: `url('/assets${assets.top}')`
-            }}
-            alt="Ship Top"
-          />
-          <div
-            className="port"
-            style={{
-              filter: `drop-shadow(0px 0px 20px rgba(0, 255, 255, ${diff(
-                "port"
-              )}))`,
-              backgroundImage: `url('/assets${assets.top}')`
-            }}
-            alt="Ship Top"
-          />
-          <div
-            className="main"
-            style={{ backgroundImage: `url('/assets${assets.top}')` }}
             alt="Ship Top"
           />
         </div>
         <div className="ship-side">
           <div
             className="main"
-            style={{ backgroundImage: `url('/assets${assets.side}')` }}
-            alt="Ship Side"
-          />
-          <div
-            className="dorsal"
             style={{
-              filter: `drop-shadow(0px 0px 20px rgba(0, 255, 255, ${diff(
-                "dorsal"
-              )}))`,
+              filter: `drop-shadow(0px 0px 20px rgba(0, 255, 255, ${diff()}))`,
               backgroundImage: `url('/assets${assets.side}')`
             }}
-            alt="Ship Top"
-          />
-          <div
-            className="ventral"
-            style={{
-              filter: `drop-shadow(0px 0px 20px rgba(0, 255, 255, ${diff(
-                "ventral"
-              )}))`,
-              backgroundImage: `url('/assets${assets.side}')`
-            }}
-            alt="Ship Top"
-          />
-          <div
-            className="main"
-            style={{ backgroundImage: `url('/assets${assets.side}')` }}
             alt="Ship Side"
           />
         </div>
