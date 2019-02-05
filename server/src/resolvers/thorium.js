@@ -1,5 +1,6 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import GraphQLClient from "../helpers/graphqlClient";
 
 export const ThoriumQueries = {
   thorium(root) {
@@ -22,6 +23,15 @@ export const ThoriumMutations = {
   },
   importTaskTemplates(root, args, context) {
     App.handleEvent(args, "importTaskTemplates", context);
+  },
+  setSpaceEdventuresToken(root, args, context) {
+    return new Promise(resolve => {
+      App.handleEvent(
+        { ...args, cb: resolve },
+        "setSpaceEdventuresToken",
+        context
+      );
+    });
   }
 };
 
@@ -37,5 +47,29 @@ export const ThoriumSubscriptions = {
       return new Date();
     },
     subscribe: () => pubsub.asyncIterator("clockSync")
+  }
+};
+
+export const ThoriumTypes = {
+  Thorium: {
+    spaceEdventuresCenter: async () => {
+      const {
+        data: { center }
+      } = await GraphQLClient.query({
+        query: `query {
+          center {
+            id
+            name
+          }
+        }`,
+        headers: {
+          authorization: `Bearer ${App.spaceEdventuresToken}`
+        }
+      });
+      if (!center) {
+        App.spaceEdventuresToken = null;
+      }
+      return { ...center, token: App.spaceEdventuresToken };
+    }
   }
 };

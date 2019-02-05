@@ -66,6 +66,7 @@ class Events extends EventEmitter {
     this.doTrack = false;
     this.askedToTrack = false;
     this.addedTaskTemplates = false;
+    this.spaceEdventuresToken = null;
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;

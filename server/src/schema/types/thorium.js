@@ -6,5 +6,13 @@ type Thorium{
   doTrack: Boolean
   askedToTrack: Boolean
   addedTaskTemplates: Boolean
+  spaceEdventuresToken: String
+  spaceEdventuresCenter: SpaceEdventuresCenter
+}
+
+type SpaceEdventuresCenter {
+  id: ID
+  name: String
+  token: String
 }
 `;
