@@ -21,6 +21,8 @@ field {
 
 const queryData = `
 id
+name
+displayName
 quad1 {
   ${coreData}
 }

@@ -3,9 +3,36 @@ import { ListGroup, ListGroupItem, Button } from "reactstrap";
 import PowerLine from "../JumpDrive/powerLine";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import Tour from "helpers/tourHelper";
 import HeatBar from "../EngineControl/heatbar";
 class Transwarp extends Component {
   state = {};
+  trainingSteps = () => {
+    const { name, displayName } = this.props;
+    const sysName = displayName || name;
+    return [
+      {
+        selector: ".selector",
+        content: `The ${sysName} is a propulsion device capable of propelling a ship at ultra-luminary speeds. It does this by encasing the ship in several layers of subspace and quantum waves. While dangerous to operate, it will allow your ship to traverse vast distances in a very short period of time. While it is activated, you must carefully monitor the power levels to ensure they are properly aligned.`
+      },
+      {
+        selector: ".power-bars",
+        content: `Each quadrant of the ship has three sets of power levels that must be maintained. Adjust the power levels by dragging the gray or green bars left or right until they are at the desired level. The yellow line represents the level the power must be at for the ${sysName} to be stable.`
+      },
+      {
+        selector: ".power",
+        content: `You can see the power used, the power required, and the power provided to you here. Make sure the power used and the power required are always balanced. If you don't have sufficient power available, you can ask the person in charge of power distribution to allocate more power to the ${sysName}`
+      },
+      {
+        selector: ".activate",
+        content: `Click this button to activate or deactivate the ${sysName}. You can only activate it when the power levels are properly balanced.`
+      },
+      {
+        selector: ".transwarp-heat",
+        content: `The ${sysName} produces a lot of heat while activated. Make sure it does not overheat by regularly flushing coolant through the system.`
+      }
+    ];
+  };
   applyCoolant = () => {
     const { id } = this.props;
     const mutation = gql`
@@ -51,7 +78,8 @@ class Transwarp extends Component {
       power,
       active,
       heat,
-      coolant
+      coolant,
+      clientObj
     } = this.props;
     const { dragPower, dragQuad, dragField } = this.state;
     const requiredPower = Object.values({ quad1, quad2, quad3, quad4 })
@@ -82,7 +110,7 @@ class Transwarp extends Component {
           .fill(0)
           .map((_, i) => (
             <div key={`quad-${i}`} className={`quad quad${i + 1}`}>
-              <ListGroup>
+              <ListGroup className="power-bars">
                 <ListGroupItem active>
                   <strong>Quadrant {i + 1}</strong>
                 </ListGroupItem>
@@ -208,6 +236,7 @@ class Transwarp extends Component {
             )}
           </Mutation>
         </div>
+        <Tour steps={this.trainingSteps()} client={clientObj} />
       </div>
     );
   }
