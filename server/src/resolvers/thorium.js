@@ -71,5 +71,76 @@ export const ThoriumTypes = {
       }
       return { ...center, token: App.spaceEdventuresToken };
     }
+  },
+  SpaceEdventuresCenter: {
+    simulators: async center => {
+      const {
+        data: { center }
+      } = await GraphQLClient.query({
+        query: `query {
+          center {
+            id
+            name
+            simulators {
+              id
+              name
+            }
+          }
+        }`,
+        headers: {
+          authorization: `Bearer ${App.spaceEdventuresToken}`
+        }
+      });
+      if (!center) {
+        App.spaceEdventuresToken = null;
+      }
+      return center.simulators;
+    },
+    missions: async center => {
+      const {
+        data: { center }
+      } = await GraphQLClient.query({
+        query: `query {
+          center {
+            id
+            name
+            badges(type:mission) {
+              id
+              name
+            }
+          }
+        }`,
+        headers: {
+          authorization: `Bearer ${App.spaceEdventuresToken}`
+        }
+      });
+      if (!center) {
+        App.spaceEdventuresToken = null;
+      }
+      return center.badges;
+    },
+    badges: async center => {
+      const {
+        data: { center }
+      } = await GraphQLClient.query({
+        query: `query {
+          center {
+            id
+            name
+            badges(type:badge) {
+              id
+              name
+            }
+          }
+        }`,
+        headers: {
+          authorization: `Bearer ${App.spaceEdventuresToken}`
+        }
+      });
+      if (!center) {
+        App.spaceEdventuresToken = null;
+      }
+      return center.badges;
+    }
   }
 };
