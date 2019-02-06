@@ -50,6 +50,19 @@ function addAspects(template, sim) {
         if (!deck) return;
         newAspect.deckId = deck.id;
       }
+      // Docking ports also need to reference their deck
+      if (aspect === "dockingPorts") {
+        const oldDeck = App.decks.find(d => d.id === newAspect.deckId);
+        const deck = App.decks.find(
+          d =>
+            d &&
+            oldDeck &&
+            d.simulatorId === sim.id &&
+            d.number === oldDeck.number
+        );
+        if (!deck) return;
+        newAspect.deckId = deck.id;
+      }
       if (aspect === "inventory") {
         // Inventory needs to reference the correct room
         const rooms = Object.keys(newAspect.roomCount);

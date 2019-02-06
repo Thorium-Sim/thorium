@@ -29,7 +29,7 @@ import { ExternalsTypes } from "./externals";
 import { ViewscreenTypes } from "./viewscreen";
 import { TasksTypes } from "./tasks";
 import { TaskReportTypes } from "./taskReport";
-
+import { DockingTypes } from "./docking";
 export default Object.assign(
   AssetsTypes,
   EngineTypes,
@@ -61,5 +61,6 @@ export default Object.assign(
   ExternalsTypes,
   ViewscreenTypes,
   TasksTypes,
-  TaskReportTypes
+  TaskReportTypes,
+  DockingTypes
 );

@@ -53,3 +53,10 @@ export const DockingSubscriptions = {
     )
   }
 };
+export const DockingTypes = {
+  DockingPort: {
+    deck: port => {
+      return App.decks.find(d => d.id === port.deckId);
+    }
+  }
+};

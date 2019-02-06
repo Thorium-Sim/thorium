@@ -56,7 +56,7 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
     });
   }
 
-  const { docking, assetFolders } = data;
+  const { docking, assetFolders, decks } = data;
   if (!docking) return null;
   return (
     <div className="docking-config">
@@ -140,7 +140,6 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                     }
                   />
                 </td>
-
                 <td>
                   <Button
                     color="danger"
@@ -163,12 +162,19 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
 };
 
 const DOCKING_QUERY = gql`
-  query DockingConfig($id: ID) {
+  query DockingConfig($id: ID!) {
     docking(simulatorId: $id) {
       id
       name
       type
       image
+      deck {
+        id
+      }
+    }
+    decks(simulatorId: $id) {
+      id
+      number
     }
     assetFolders(names: ["Docking Images"]) {
       id

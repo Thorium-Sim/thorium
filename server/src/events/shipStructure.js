@@ -244,8 +244,14 @@ App.on("transferCargo", ({ inventory, fromRoom, toRoom }) => {
   });
 
   // Add some logs for the cargo transfer
-  const fromRoomObj = App.rooms.find(r => r.id === fromRoom);
-  const toRoomObj = App.rooms.find(r => r.id === toRoom);
+  const roomSearchList = App.rooms.concat(
+    App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
+      ...d,
+      name: `${d.shipName || d.name} Loading`
+    }))
+  );
+  const fromRoomObj = roomSearchList.find(r => r.id === fromRoom);
+  const toRoomObj = roomSearchList.find(r => r.id === toRoom);
   const fromDeckObj = App.decks.find(d => d.id === fromRoomObj.deckId);
   const toDeckObj = App.decks.find(d => d.id === toRoomObj.deckId);
   const location = `From ${fromRoomObj.name}, Deck ${fromDeckObj.number} to ${
