@@ -1,4 +1,10 @@
 {
+  "1.1.11": {
+    "features": [
+      "Added the subspace field system and card.",
+      "Added the Transwarp system and card."
+    ]
+  },
   "1.1.10": {
     "fixes": [
       "Made some adjustments that will hopefully improve speed for instances with large snapshots.",

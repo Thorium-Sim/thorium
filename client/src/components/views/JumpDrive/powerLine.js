@@ -45,6 +45,7 @@ class PowerLine extends Component {
     this.setState({
       power: newPower
     });
+    this.props.onChanging && this.props.onChanging(newPower);
   };
   render() {
     const { power } = this.state;

@@ -1,5 +1,6 @@
 import { System } from "./generic";
 
+const baseSector = { required: 50, value: 0 };
 export default class SubspaceField extends System {
   static sectors = ["fore", "aft", "port", "starboard", "ventral", "dorsal"];
   constructor(params) {
@@ -13,30 +14,12 @@ export default class SubspaceField extends System {
       defaultLevel: 0
     };
     this.totalPower = params.totalPower || 300;
-    this.fore = params.fore || {
-      required: 50,
-      value: 0
-    };
-    this.aft = params.aft || {
-      required: 50,
-      value: 0
-    };
-    this.port = params.port || {
-      required: 50,
-      value: 0
-    };
-    this.starboard = params.starboard || {
-      required: 50,
-      value: 0
-    };
-    this.ventral = params.ventral || {
-      required: 50,
-      value: 0
-    };
-    this.dorsal = params.dorsal || {
-      required: 50,
-      value: 0
-    };
+    this.fore = params.fore || { ...baseSector };
+    this.aft = params.aft || { ...baseSector };
+    this.port = params.port || { ...baseSector };
+    this.starboard = params.starboard || { ...baseSector };
+    this.ventral = params.ventral || { ...baseSector };
+    this.dorsal = params.dorsal || { ...baseSector };
   }
   flux(which) {
     if (!which) {
@@ -57,6 +40,10 @@ export default class SubspaceField extends System {
       return;
     }
     if (!SubspaceField.sectors.includes(which)) return;
+    this.totalPower = SubspaceField.sectors.reduce(
+      (prev, next) => prev + this[next].required,
+      0
+    );
     this[which].required = 50;
   }
   setValue(which, value) {
