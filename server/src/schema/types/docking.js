@@ -14,6 +14,7 @@ type DockingPort {
   direction: DOCKING_DIRECTION
   position: Coordinates
   deck: Deck
+  inventory: [InventoryItem]
 }
 
 input DockingPortInput {

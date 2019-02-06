@@ -292,4 +292,10 @@ ${inventory
   pubsub.publish("simulatorsUpdate", App.simulators);
 
   pubsub.publish("inventoryUpdate", App.inventory);
+  if (
+    fromRoomObj.class === "DockingPort" ||
+    toRoomObj.class === "DockingPort"
+  ) {
+    pubsub.publish("dockingUpdate", App.dockingPorts);
+  }
 });

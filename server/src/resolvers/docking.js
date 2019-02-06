@@ -57,6 +57,14 @@ export const DockingTypes = {
   DockingPort: {
     deck: port => {
       return App.decks.find(d => d.id === port.deckId);
+    },
+    inventory(port) {
+      return App.inventory
+        .filter(i => Object.keys(i.roomCount).indexOf(port.id) > -1)
+        .map(i => {
+          i.count = i.roomCount[port.id];
+          return i;
+        });
     }
   }
 };

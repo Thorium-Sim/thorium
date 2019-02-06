@@ -86,6 +86,7 @@ import CommandLine from "./CommandLine";
 import DockingPorts from "./DockingPorts";
 import SubspaceField from "./SubspaceField";
 import Transwarp from "./Transwarp";
+import SpecializedDocking from "./SpecializedDocking";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -162,6 +163,7 @@ import DockingPortCore from "./DockingPorts/core";
 import TaskReportCore from "./TaskReports/core";
 import SubspaceFieldCore from "./SubspaceField/core";
 import TranswarpCore from "./Transwarp/core";
+import SpecializedDockingCore from "./SpecializedDocking/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -257,7 +259,8 @@ const Views = {
   CommandLine,
   DockingPorts,
   SubspaceField,
-  Transwarp
+  Transwarp,
+  SpecializedDocking
 };
 
 export const Widgets = {
@@ -415,7 +418,8 @@ export const Cores = {
   DockingPortCore,
   TaskReportCore,
   SubspaceFieldCore,
-  TranswarpCore
+  TranswarpCore,
+  SpecializedDockingCore
 };
 
 export default Views;

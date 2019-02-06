@@ -157,6 +157,96 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
           Add Docking Port
         </Button>
       </fieldset>
+      <fieldset className="form-group">
+        <label>Specialized Docking</label>
+        <Table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Deck</th>
+              <th>Image</th>
+              <th>Preview</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {docking.filter(d => d.type === "specialized").map(d => (
+              <tr key={d.id}>
+                <td>
+                  <Input
+                    defaultValue={d.name || ""}
+                    onChange={evt =>
+                      updateDocking(d.id, "name", evt.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <Input
+                    type="select"
+                    value={(d.deck && d.deck.id) || ""}
+                    onChange={evt =>
+                      updateDocking(d.id, "deckId", evt.target.value)
+                    }
+                  >
+                    <option value="" disabled>
+                      No Deck
+                    </option>
+                    {decks
+                      .concat()
+                      .sort((a, b) => {
+                        if (a.number > b.number) return 1;
+                        if (a.number < b.number) return -1;
+                        return 0;
+                      })
+                      .map(d => (
+                        <option key={d.id} value={d.id}>
+                          Deck {d.number}
+                        </option>
+                      ))}
+                  </Input>
+                </td>
+                <td>
+                  <Input
+                    type="select"
+                    value={d.image || ""}
+                    onChange={evt =>
+                      updateDocking(d.id, "image", evt.target.value)
+                    }
+                  >
+                    <option value="" disabled>
+                      Select An Image
+                    </option>
+                    {assetFolders[0].objects.map(a => (
+                      <option key={a.id} value={a.fullPath}>
+                        {a.name}
+                      </option>
+                    ))}
+                  </Input>
+                </td>
+                <td>
+                  <img
+                    alt="Specialized Docking"
+                    src={`/assets${d.image}`}
+                    width="40"
+                  />
+                </td>
+                <td>
+                  <Button
+                    color="danger"
+                    size="xs"
+                    onClick={() => removeDocking(d.id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <Button color="success" onClick={() => addDocking("specialized")}>
+          Add Specialized Docking
+        </Button>
+      </fieldset>
     </div>
   );
 };
