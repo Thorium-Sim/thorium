@@ -13,6 +13,8 @@ type DockingPort {
   damage: Damage
   direction: DOCKING_DIRECTION
   position: Coordinates
+  deck: Deck
+  inventory: [InventoryItem]
 }
 
 input DockingPortInput {
@@ -28,11 +30,13 @@ input DockingPortInput {
   docked: Boolean
   direction: DOCKING_DIRECTION
   position: CoordinatesInput
+  deckId: ID
 }
 
 enum DOCKING_TYPES {
   shuttlebay
   dockingport
+  specialized
 }
 
 enum DOCKING_DIRECTION {

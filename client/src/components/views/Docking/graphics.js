@@ -17,6 +17,7 @@ export const Doors = props => {
         <div className="tri-11" />
         <div className="tri-12" />
       </div>
+      <div style={{ marginTop: "100%" }} />
     </div>
   );
 };

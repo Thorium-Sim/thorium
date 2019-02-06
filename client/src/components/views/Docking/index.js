@@ -145,7 +145,7 @@ class Docking extends Component {
               </Button>
             </div>
           </Col>
-          <Col className="graphics" sm={{ size: 2, offset: 2 }}>
+          <Col className="graphics" sm={{ size: 5, offset: 2 }}>
             {graphic === "clamps" && <Clamps transform={clamps} />}
             {graphic === "ramps" && <Ramps transform={ramps} />}
             {graphic === "doors" && <Doors transform={airlock} />}
