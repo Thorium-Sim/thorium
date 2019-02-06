@@ -15,7 +15,13 @@ export const ShipStructureQueries = {
     return decks;
   },
   rooms(root, { simulatorId, deck, name, role }) {
-    let rooms = App.rooms;
+    // Include any rooms that are implied by docked ships
+    let rooms = App.rooms.concat(
+      App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
+        ...d,
+        name: `${d.shipName || d.name} Loading`
+      }))
+    );
     if (simulatorId) {
       rooms = rooms.filter(r => r.simulatorId === simulatorId);
     }
@@ -42,7 +48,14 @@ export const ShipStructureQueries = {
       inventory = inventory.filter(i => i.roomCount[room] > 0);
     }
     if (deck) {
-      const rooms = App.rooms.filter(r => r.deckId === deck);
+      const rooms = App.rooms
+        .concat(
+          App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
+            ...d,
+            name: `${d.shipName || d.name} Loading`
+          }))
+        )
+        .filter(r => r.deckId === deck);
       inventory = inventory.map(i => {
         Object.keys(i.roomCount)
           .filter(r => rooms.indexOf(r) === -1)
@@ -192,7 +205,14 @@ export const ShipStructureSubscriptions = {
 export const ShipStructureTypes = {
   Deck: {
     rooms(deck) {
-      return App.rooms.filter(r => r.deckId === deck.id);
+      return App.rooms
+        .concat(
+          App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
+            ...d,
+            name: `${d.shipName || d.name} Loading`
+          }))
+        )
+        .filter(r => r.deckId === deck.id);
     },
     crewCount(deck) {
       return App.crew.filter(c => c.location === deck.id).length;
@@ -216,11 +236,17 @@ export const ShipStructureTypes = {
   },
   InventoryItem: {
     roomCount(inventory) {
+      const rooms = App.rooms.concat(
+        App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
+          ...d,
+          name: `${d.shipName || d.name} Loading`
+        }))
+      );
       return Object.keys(inventory.roomCount).map(r => ({
         room:
           r === "ready"
             ? { id: "ready", name: "Ready Cargo" }
-            : App.rooms.find(room => room.id === r),
+            : rooms.find(room => room.id === r),
         count: inventory.roomCount[r]
       }));
     },
