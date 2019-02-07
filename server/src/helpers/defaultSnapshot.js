@@ -13627,6 +13627,7 @@ export default {
   doTrack: false,
   askedToTrack: false,
   addedTaskTemplates: false,
+  spaceEdventuresToken: "",
   migrations: {
     assets: true
   },

@@ -83,7 +83,9 @@ type Simulator {
   lighting:Lighting
   ambiance:[Ambiance]
   hasPrinter:Boolean
+  spaceEdventuresId: String
 }
+
 
 type Lighting {
   intensity: Float
