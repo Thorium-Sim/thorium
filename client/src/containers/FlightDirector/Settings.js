@@ -113,14 +113,15 @@ const Settings = () => (
                 their ranks.
               </small>
             </div>
-            {data.thorium.spaceEdventuresCenter && (
-              <div>
-                <h2>
-                  Connected to SpaceEdventures.org center:{" "}
-                  {data.thorium.spaceEdventuresCenter.name}
-                </h2>
-              </div>
-            )}
+            {data.thorium.spaceEdventuresCenter &&
+              data.thorium.spaceEdventuresCenter.id && (
+                <div>
+                  <h2>
+                    Connected to SpaceEdventures.org center:{" "}
+                    {data.thorium.spaceEdventuresCenter.name}
+                  </h2>
+                </div>
+              )}
           </div>
         </Container>
       )

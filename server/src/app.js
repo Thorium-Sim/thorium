@@ -98,7 +98,9 @@ class Events extends EventEmitter {
         key === "migrations" ||
         key === "thoriumId" ||
         key === "doTrack" ||
-        key === "askedToTrack"
+        key === "askedToTrack" ||
+        key === "addedTaskTemplates" ||
+        key === "spaceEdventuresToken"
       ) {
         this[key] = snapshot[key];
       }

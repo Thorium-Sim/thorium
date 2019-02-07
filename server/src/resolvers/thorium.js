@@ -61,19 +61,14 @@ export const ThoriumTypes = {
             id
             name
           }
-        }`,
-        headers: {
-          authorization: `Bearer ${App.spaceEdventuresToken}`
-        }
+        }`
       });
-      if (!center) {
-        App.spaceEdventuresToken = null;
-      }
+      if (!center) return;
       return { ...center, token: App.spaceEdventuresToken };
     }
   },
   SpaceEdventuresCenter: {
-    simulators: async center => {
+    simulators: async () => {
       const {
         data: { center }
       } = await GraphQLClient.query({
@@ -86,17 +81,12 @@ export const ThoriumTypes = {
               name
             }
           }
-        }`,
-        headers: {
-          authorization: `Bearer ${App.spaceEdventuresToken}`
-        }
+        }`
       });
-      if (!center) {
-        App.spaceEdventuresToken = null;
-      }
+      if (!center) return;
       return center.simulators;
     },
-    missions: async center => {
+    missions: async () => {
       const {
         data: { center }
       } = await GraphQLClient.query({
@@ -109,17 +99,13 @@ export const ThoriumTypes = {
               name
             }
           }
-        }`,
-        headers: {
-          authorization: `Bearer ${App.spaceEdventuresToken}`
-        }
+        }`
       });
-      if (!center) {
-        App.spaceEdventuresToken = null;
-      }
+      if (!center) return;
+
       return center.badges;
     },
-    badges: async center => {
+    badges: async () => {
       const {
         data: { center }
       } = await GraphQLClient.query({
@@ -132,14 +118,10 @@ export const ThoriumTypes = {
               name
             }
           }
-        }`,
-        headers: {
-          authorization: `Bearer ${App.spaceEdventuresToken}`
-        }
+        }`
       });
-      if (!center) {
-        App.spaceEdventuresToken = null;
-      }
+      if (!center) return;
+
       return center.badges;
     }
   }

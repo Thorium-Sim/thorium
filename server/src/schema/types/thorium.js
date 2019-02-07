@@ -14,9 +14,9 @@ type SpaceEdventuresCenter {
   id: ID
   name: String
   token: String
-  simulators: NamedObject
-  missions: NamedObject
-  badges: NamedObject
+  simulators: [NamedObject]
+  missions: [NamedObject]
+  badges: [NamedObject]
 }
 
 type NamedObject {

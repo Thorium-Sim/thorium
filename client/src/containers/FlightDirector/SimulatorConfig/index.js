@@ -20,6 +20,7 @@ stepDamage
 verifyStep
 hasPrinter
 bridgeOfficerMessaging
+spaceEdventuresId
 requiredDamageSteps {
   id
   name
