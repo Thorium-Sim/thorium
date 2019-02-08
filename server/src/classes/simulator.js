@@ -153,6 +153,9 @@ export default class Simulator {
     this.damageTasks = [];
     params.damageTasks &&
       params.damageTasks.forEach(s => this.damageTasks.push(new DamageTask(s)));
+
+    // For Space EdVentures
+    this.spaceEdventuresId = params.spaceEdventuresId || null;
   }
   get alertlevel() {
     const stealthField = App.systems.find(
@@ -301,5 +304,9 @@ export default class Simulator {
   }
   removeDamageTask(id) {
     this.damageTasks = this.damageTasks.filter(t => t.id !== id);
+  }
+
+  setSpaceEdventuresId(id) {
+    this.spaceEdventuresId = id;
   }
 }

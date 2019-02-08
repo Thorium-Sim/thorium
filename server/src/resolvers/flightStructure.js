@@ -209,6 +209,9 @@ export const FlightStructureMutations = {
   setSimulatorHasPrinter(rootValue, params, context) {
     App.handleEvent(params, "setSimulatorHasPrinter", context);
   },
+  setSimulatorSpaceEdventuresId(rootValue, params, context) {
+    App.handleEvent(params, "setSimulatorSpaceEdventuresId", context);
+  },
   setSimulatorTriggersPaused(rootValue, params, context) {
     App.handleEvent(params, "setSimulatorTriggersPaused", context);
   },

@@ -51,6 +51,11 @@ const ops = {
     mutation SetHasPrinter($id: ID!, $value: Boolean!) {
       setSimulatorHasPrinter(simulatorId: $id, hasPrinter: $value)
     }
+  `,
+  spaceEdventures: gql`
+    mutation SetSpaceEdventuresId($id: ID!, $value: String!) {
+      setSimulatorSpaceEdventuresId(simulatorId: $id, spaceEdventuresId: $value)
+    }
   `
 };
 class SimulatorConfigView extends Component {

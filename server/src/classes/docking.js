@@ -4,6 +4,8 @@ export default class DockingPort extends System {
   constructor(params = {}) {
     super(params);
     this.class = "DockingPort";
+
+    // Type can be 'dockingport', 'shuttlebay', or 'specialized'
     this.type = params.type || "shuttlebay";
     if (this.type === "shuttlebay") {
       this.clamps = params.clamps || true;
@@ -23,6 +25,7 @@ export default class DockingPort extends System {
 
     this.direction = params.direction || "unspecified"; // or 'arriving' or 'departing'
 
+    this.deckId = params.deckId || null;
     // Position on the top image of the ship. A number between 0 and 1
     // so it can be easily scaled to the size of the image if it is bigger
     // or smaller.`
@@ -37,7 +40,8 @@ export default class DockingPort extends System {
     doors,
     image,
     docked,
-    direction
+    direction,
+    deckId
   }) {
     if (name || name === "") {
       this.name = name;
@@ -65,6 +69,9 @@ export default class DockingPort extends System {
     }
     if (direction) {
       this.direction = direction;
+    }
+    if (deckId || deckId === false) {
+      this.deckId = deckId;
     }
   }
 }

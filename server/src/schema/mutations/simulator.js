@@ -54,6 +54,7 @@ updateSimulatorAmbiance(id: ID!, ambiance: AmbianceInput!):String
 removeSimulatorAmbiance(id: ID!, ambianceId: ID!):String
 setSimulatorHasPrinter(simulatorId: ID!, hasPrinter:Boolean!):String
 
+setSimulatorSpaceEdventuresId(simulatorId: ID!, spaceEdventuresId: String!):String
 
 ## Stations
 addSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!, cardComponent: String!):String

@@ -66,6 +66,7 @@ class Events extends EventEmitter {
     this.doTrack = false;
     this.askedToTrack = false;
     this.addedTaskTemplates = false;
+    this.spaceEdventuresToken = null;
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -97,7 +98,9 @@ class Events extends EventEmitter {
         key === "migrations" ||
         key === "thoriumId" ||
         key === "doTrack" ||
-        key === "askedToTrack"
+        key === "askedToTrack" ||
+        key === "addedTaskTemplates" ||
+        key === "spaceEdventuresToken"
       ) {
         this[key] = snapshot[key];
       }

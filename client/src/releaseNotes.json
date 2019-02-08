@@ -1,4 +1,11 @@
 {
+  "1.1.11": {
+    "features": [
+      "Added the subspace field system and card.",
+      "Added the Transwarp system and card.",
+      "Add the specialized docking card. This is similar to the USS Ranger docking card on the Magellan (2012) controls, and adds support for transferring cargo to docked ships."
+    ]
+  },
   "1.1.10": {
     "fixes": [
       "Made some adjustments that will hopefully improve speed for instances with large snapshots.",

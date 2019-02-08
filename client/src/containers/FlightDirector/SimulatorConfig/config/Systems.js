@@ -40,6 +40,7 @@ const systems = [
   "Torpedo",
   "TractorBeam",
   "Transporters",
+  "Transwarp",
   "Generic"
 ];
 

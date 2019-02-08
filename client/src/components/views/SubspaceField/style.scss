@@ -1,3 +1,6 @@
+.subspaceField-core {
+  text-align: right;
+}
 .card-subspaceField {
   height: 100%;
   display: grid;
@@ -42,20 +45,11 @@
     grid-column: 1/ 5;
     position: relative;
     div {
-      background-size: cover;
+      background-repeat: no-repeat;
+      background-size: contain;
       height: 100%;
       width: 100%;
       position: absolute;
-    }
-    .dorsal {
-      height: 50%;
-      top: 0;
-      background-position: top;
-    }
-    .ventral {
-      height: 50%;
-      bottom: 0;
-      background-position: bottom;
     }
   }
   .ship-top {
@@ -64,30 +58,11 @@
     transform: rotate(-90deg);
     position: relative;
     div {
-      background-size: cover;
+      background-repeat: no-repeat;
+      background-size: contain;
       height: 100%;
       width: 100%;
       position: absolute;
-    }
-    .fore {
-      width: 40%;
-      right: 0;
-      background-position: right;
-    }
-    .port {
-      height: 40%;
-      top: 0;
-      background-position: top;
-    }
-    .starboard {
-      height: 40%;
-      bottom: 0;
-      background-position: bottom;
-    }
-    .aft {
-      width: 40%;
-      left: 0;
-      background-position: left;
     }
   }
   .bar {

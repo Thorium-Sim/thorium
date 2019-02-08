@@ -1,5 +1,7 @@
 import React from "react";
 import LayoutList from "components/layouts";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const Layouts = Object.keys(LayoutList).filter(
   s => s.indexOf("Viewscreen") === -1
@@ -56,6 +58,60 @@ export default ({ selectedSimulator, handleChange }) => (
           <option value="p">P</option>
         </select>
       </fieldset>
+
+      <Query
+        query={gql`
+          query {
+            thorium {
+              spaceEdventuresCenter {
+                simulators {
+                  id
+                  name
+                }
+              }
+            }
+          }
+        `}
+      >
+        {({ data: { thorium }, loading }) =>
+          loading ||
+          !thorium.spaceEdventuresCenter ||
+          !thorium.spaceEdventuresCenter.simulators ? null : (
+            <fieldset className="form-group">
+              <label>Space EdVentures Simulator</label>
+              <div>
+                <small>
+                  This is the simulator on{" "}
+                  <a
+                    href="https://spaceedventures.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    SpaceEdventures.org
+                  </a>{" "}
+                  that participants will be assigned to when they do a flight on
+                  this simulator.
+                </small>
+              </div>
+              <div>
+                <select
+                  className="form-control"
+                  value={selectedSimulator.spaceEdventuresId || ""}
+                  name="spaceEdventures"
+                  onChange={handleChange}
+                >
+                  <option value="">Choose a Simulator</option>
+                  {thorium.spaceEdventuresCenter.simulators.map(s => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </fieldset>
+          )
+        }
+      </Query>
     </form>
   </div>
 );
