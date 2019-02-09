@@ -1,6 +1,9 @@
 {
   "1.1.12": {
-    "fixes": ["Fixes an issue where transwarp quadrants mirror each other."]
+    "fixes": [
+      "Fixes an issue where transwarp quadrants mirror each other.",
+      "Fixes an issue with adding inventory to the cargo task configuration."
+    ]
   },
   "1.1.11": {
     "features": [

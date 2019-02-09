@@ -32,7 +32,7 @@ export const ShipStructureQueries = {
       rooms = rooms.filter(r => r.name === name);
     }
     if (role) {
-      rooms = rooms.filter(r => r.roles.indexOf(role) > -1);
+      rooms = rooms.filter(r => (r.roles || []).indexOf(role) > -1);
     }
     return rooms;
   },
