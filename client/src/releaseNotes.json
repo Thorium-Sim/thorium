@@ -1,4 +1,7 @@
 {
+  "1.1.12": {
+    "fixes": ["Fixes an issue where transwarp quadrants mirror each other."]
+  },
   "1.1.11": {
     "features": [
       "Added the subspace field system and card.",
