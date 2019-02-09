@@ -3,7 +3,7 @@ import addAsset from "../../addAsset";
 
 export default function buildExport(zip, i, type) {
   if (i.event === "showViewscreenTactical") {
-    const args = JSON.parse(i.args);
+    const args = typeof i.args === "string" ? JSON.parse(i.args) : i.args;
     if (!args) return;
     const mapId = args.mapId;
     const tactical = App.tacticalMaps.find(m => m.id === mapId);

@@ -23,6 +23,8 @@ import exportSoftwarePanel from "../imports/softwarePanels/export";
 import importSoftwarePanel from "../imports/softwarePanels/import";
 import exportFlight from "../imports/flights/export";
 import importFlight from "../imports/flights/import";
+import exportTrigger from "../imports/triggers/export";
+import importTrigger from "../imports/triggers/import";
 
 const exports = {
   exportMission: exportMission,
@@ -31,7 +33,8 @@ const exports = {
   exportTacticalMap: exportTacticalMap,
   exportLibrary: exportLibrary,
   exportSoftwarePanel: exportSoftwarePanel,
-  exportFlight
+  exportFlight,
+  exportTrigger
 };
 
 const imports = {
@@ -41,7 +44,8 @@ const imports = {
   importTacticalMap: importTacticalMap,
   importAssets: importAssets,
   importSoftwarePanel: importSoftwarePanel,
-  importFlight
+  importFlight,
+  importTrigger
 };
 export default () => {
   let appDir = "./";
