@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
-import { Button, Card } from "reactstrap";
+import { Button, Card, Input } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
@@ -60,15 +60,36 @@ class MacrosCore extends Component {
           </div>
           <div style={{ flex: 1, overflowY: "auto" }}>
             {action && (
-              <MacroConfig
-                key={action.id}
-                action={action}
-                updateAction={action =>
-                  this.setState(state => ({
-                    actions: actions.map(a => (a.id === action.id ? action : a))
-                  }))
-                }
-              />
+              <div>
+                <label style={{ display: "block" }}>
+                  Delay (in ms)
+                  <Input
+                    key={action.id}
+                    type="number"
+                    style={{ height: "20px" }}
+                    defaultValue={action.delay}
+                    onBlur={e => {
+                      const delay = e.target.value || 0;
+                      this.setState(state => ({
+                        actions: state.actions.map(
+                          a => (a.id === action.id ? { ...a, delay } : a)
+                        )
+                      }));
+                    }}
+                  />
+                </label>
+                <MacroConfig
+                  key={action.id}
+                  action={action}
+                  updateAction={actionUpdate =>
+                    this.setState(state => ({
+                      actions: state.actions.map(
+                        a => (a.id === action.id ? actionUpdate : a)
+                      )
+                    }))
+                  }
+                />
+              </div>
             )}
           </div>
         </div>
