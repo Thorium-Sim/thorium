@@ -1,4 +1,14 @@
 {
+  "1.1.12": {
+    "features": ["Add delay to the macros core."],
+    "fixes": [
+      "Fixes an issue where transwarp quadrants mirror each other.",
+      "Fixes an issue with adding inventory to the cargo task configuration.",
+      "Fixes an issue where preset scan answers don't properly add themselves.",
+      "Alert colors for incoming messages now appear again on the new messaging core.",
+      "Fix some weird scrolling on the torpedos system config."
+    ]
+  },
   "1.1.11": {
     "features": [
       "Added the subspace field system and card.",

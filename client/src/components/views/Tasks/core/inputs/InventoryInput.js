@@ -19,6 +19,9 @@ const InventoryInput = ({ simulatorId, onChange, value }) => {
       {({ loading, data }) =>
         loading ? null : (
           <div>
+            <small>
+              Change the inventory item's name before adding another.
+            </small>
             {Object.entries(value || {}).map(([id, count]) => (
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {data ? (

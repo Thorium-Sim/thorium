@@ -45,7 +45,9 @@ function reduceMessages(messages, stationNames) {
 class Conversations extends Component {
   state = { alert: {} };
   componentDidUpdate(prevProps, prevState) {
+    console.log("Conversatiosn Update");
     const { messages, simulator } = this.props;
+    const { selectedConvo } = this.state;
     const stationNames = simulator.stations.map(s => s.name);
     const messageList = Object.values(reduceMessages(messages, stationNames));
     const oldMessageList = Object.values(
@@ -53,7 +55,8 @@ class Conversations extends Component {
     );
     const list = messageList.filter(
       m =>
-        stationNames.indexOf(m.sender) > -1 &&
+        stationNames.indexOf(m.destination) > -1 &&
+        m.sender !== (selectedConvo && selectedConvo.sender) &&
         !oldMessageList.find(o => o.id === m.id)
     );
     if (list.length === 0) return;

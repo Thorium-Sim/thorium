@@ -23,7 +23,10 @@ const SpecializedDocking = ({ docking, clientObj }) => {
       [which]: !port[which]
     };
     action({ variables: { port: update } });
-    timeout.current = setTimeout(() => setAnimating(false), 4000);
+    timeout.current = setTimeout(() => {
+      setAnimating(false);
+      setGraphic(null);
+    }, 4000);
   };
 
   const trainingSteps = () => {
