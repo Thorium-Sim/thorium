@@ -24,6 +24,24 @@ const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 export default class Trigger extends Component {
   state = {};
+  handleImport = evt => {
+    const data = new FormData();
+    Array.from(evt.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:${parseInt(
+        window.location.port,
+        10
+      ) + 1}/importTrigger`,
+      {
+        method: "POST",
+        body: data
+      }
+    ).then(() => {
+      //  window.location.reload();
+    });
+  };
   render() {
     const { triggers } = this.props;
     const { selectedTrigger } = this.state;
@@ -73,6 +91,12 @@ export default class Trigger extends Component {
                 </Button>
               )}
             </Mutation>
+            <label style={{ display: "block" }}>
+              <div className="btn btn-info btn-sm btn-block">
+                Import Trigger
+              </div>
+              <input type="file" hidden onChange={this.handleImport} />
+            </label>
             {trigger && (
               <Fragment>
                 <Mutation
@@ -129,6 +153,18 @@ export default class Trigger extends Component {
                     </Button>
                   )}
                 </Mutation>
+                <Button
+                  size="sm"
+                  tag="a"
+                  href={`${window.location.protocol}//${
+                    window.location.hostname
+                  }:${parseInt(window.location.port, 10) +
+                    1}/exportTrigger/${selectedTrigger}`}
+                  block
+                  color="info"
+                >
+                  Export Trigger
+                </Button>
               </Fragment>
             )}
           </Col>

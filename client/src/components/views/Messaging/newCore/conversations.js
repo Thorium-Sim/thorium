@@ -45,7 +45,6 @@ function reduceMessages(messages, stationNames) {
 class Conversations extends Component {
   state = { alert: {} };
   componentDidUpdate(prevProps, prevState) {
-    console.log("Conversatiosn Update");
     const { messages, simulator } = this.props;
     const { selectedConvo } = this.state;
     const stationNames = simulator.stations.map(s => s.name);

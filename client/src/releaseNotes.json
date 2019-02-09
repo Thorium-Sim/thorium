@@ -1,4 +1,11 @@
 {
+  "1.1.13": {
+    "features": [
+      "Clicking on notifications now switches to the relevant card. Thanks Eric Mansfield!",
+      "Add the ability to export and import flights.",
+      "Add the ability to export and import trigger groups."
+    ]
+  },
   "1.1.12": {
     "features": ["Add delay to the macros core."],
     "fixes": [

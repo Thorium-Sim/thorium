@@ -21,6 +21,10 @@ import exportTacticalMap from "../imports/tacticalMaps/export";
 import importTacticalMap from "../imports/tacticalMaps/import";
 import exportSoftwarePanel from "../imports/softwarePanels/export";
 import importSoftwarePanel from "../imports/softwarePanels/import";
+import exportFlight from "../imports/flights/export";
+import importFlight from "../imports/flights/import";
+import exportTrigger from "../imports/triggers/export";
+import importTrigger from "../imports/triggers/import";
 
 const exports = {
   exportMission: exportMission,
@@ -28,7 +32,9 @@ const exports = {
   exportKeyboard: exportKeyboard,
   exportTacticalMap: exportTacticalMap,
   exportLibrary: exportLibrary,
-  exportSoftwarePanel: exportSoftwarePanel
+  exportSoftwarePanel: exportSoftwarePanel,
+  exportFlight,
+  exportTrigger
 };
 
 const imports = {
@@ -37,7 +43,9 @@ const imports = {
   importKeyboard: importKeyboard,
   importTacticalMap: importTacticalMap,
   importAssets: importAssets,
-  importSoftwarePanel: importSoftwarePanel
+  importSoftwarePanel: importSoftwarePanel,
+  importFlight,
+  importTrigger
 };
 export default () => {
   let appDir = "./";
