@@ -14,10 +14,28 @@ export default class Transwarp extends heatMixin(System) {
     this.class = "Transwarp";
     this.type = "Transwarp";
     this.name = params.name || "Transwarp";
-    this.quad1 = params.quad1 || { ...baseQuad };
-    this.quad2 = params.quad2 || { ...baseQuad };
-    this.quad3 = params.quad3 || { ...baseQuad };
-    this.quad4 = params.quad4 || { ...baseQuad };
+
+    this.quad1 = params.quad1 || {
+      field: { required: 25, value: 0 },
+      core: { required: 25, value: 0 },
+      warp: { required: 25, value: 0 }
+    };
+    this.quad2 = params.quad2 || {
+      field: { required: 25, value: 0 },
+      core: { required: 25, value: 0 },
+      warp: { required: 25, value: 0 }
+    };
+    this.quad3 = params.quad3 || {
+      field: { required: 25, value: 0 },
+      core: { required: 25, value: 0 },
+      warp: { required: 25, value: 0 }
+    };
+    this.quad4 = params.quad4 || {
+      field: { required: 25, value: 0 },
+      core: { required: 25, value: 0 },
+      warp: { required: 25, value: 0 }
+    };
+
     this.active = params.active || false;
     this.power = params.power || {
       power: 0,
