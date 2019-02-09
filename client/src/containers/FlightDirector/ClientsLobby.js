@@ -207,6 +207,18 @@ It will permenantly erase all simulators running in this flight.`
                     )}
                   </Mutation>
                 )}
+                <Button
+                  tag="a"
+                  href={`${window.location.protocol}//${
+                    window.location.hostname
+                  }:${parseInt(window.location.port, 10) + 1}/exportFlight/${
+                    props.match.params.flightId
+                  }`}
+                  block
+                  color="info"
+                >
+                  Export Flight
+                </Button>
               </ButtonGroup>
               <h5 className="text-right">
                 <Link
