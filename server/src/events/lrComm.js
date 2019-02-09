@@ -46,7 +46,8 @@ App.on(
             station: s.name,
             title: `New Long Range Message Queued`,
             body: `Message composed by ${sender}`,
-            color: "info"
+            color: "info",
+            relevantCards: [ cardName ]
           });
         }
       });
@@ -63,7 +64,8 @@ App.on(
             station: s.name,
             title: `New Long Range Message`,
             body: `From ${sender}`,
-            color: "info"
+            color: "info",
+            relevantCards: [ "CommDecoding" ]
           });
         }
       });
@@ -133,7 +135,8 @@ App.on("approveLongRangeMessage", ({ id, message }) => {
       station: s.name,
       title: `New Long Range Message Queued`,
       body: `Message composed by ${messageObj.sender}`,
-      color: "info"
+      color: "info",
+      relevantCards: [ "LongRangeComm" ]
     });
   });
 });

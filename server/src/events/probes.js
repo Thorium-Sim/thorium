@@ -156,7 +156,8 @@ App.on("probeProcessedData", ({ id, simulatorId, data = "", flash }) => {
       station: s.name,
       title: `New Processed Data`,
       body: data,
-      color: "info"
+      color: "info",
+      relevantCards: [ "ProbeNetwork" ]
     });
   });
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
