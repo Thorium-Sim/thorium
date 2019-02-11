@@ -21,6 +21,7 @@ type Flight {
   running: Boolean
   timelineStep: Int
   simulators: [Simulator]
+  flightType: String
 }
 
 input SimulatorInput {

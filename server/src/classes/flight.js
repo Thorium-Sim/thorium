@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import randomWords from "random-words";
+
 export default class Flight {
   constructor(params = {}) {
     this.class = "Flight";
@@ -8,6 +9,9 @@ export default class Flight {
     this.date = params.date || Date.now();
     this.running = params.running || false;
     this.simulators = params.simulators || [];
+
+    // Space EdVentures Flight Type
+    this.flightType = params.flightType || null;
   }
   addSimulator(simulator) {
     this.simulators.push(simulator.id);

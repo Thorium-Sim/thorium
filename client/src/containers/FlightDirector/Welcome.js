@@ -1,7 +1,19 @@
 import React, { Fragment, Component } from "react";
-import { Col, Row, Container, Button, Card, CardBody, Alert } from "reactstrap";
+import {
+  Col,
+  Row,
+  Container,
+  Button,
+  Card,
+  CardBody,
+  Alert,
+  UncontrolledDropdown as Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle
+} from "reactstrap";
 import gql from "graphql-tag";
-import { graphql, Mutation } from "react-apollo";
+import { graphql, Mutation, Query } from "react-apollo";
 import { Link } from "react-router-dom";
 import semver from "semver";
 import Tour from "helpers/tourHelper";
@@ -291,15 +303,64 @@ class Welcome extends Component {
           </div>
           <div className="new-flight">
             <h3>Start a new Flight</h3>
-            <Button
-              tag={Link}
-              to="/config/flight"
-              color="success"
-              block
-              size="lg"
+            <Query
+              query={gql`
+                query {
+                  thorium {
+                    spaceEdventuresCenter {
+                      id
+                      name
+                      flightTypes {
+                        id
+                        name
+                        classHours
+                        flightHours
+                      }
+                    }
+                  }
+                }
+              `}
             >
-              New Flight
-            </Button>
+              {({ loading, data }) =>
+                !loading &&
+                data.thorium &&
+                data.thorium.spaceEdventuresCenter &&
+                data.thorium.spaceEdventuresCenter.flightTypes &&
+                data.thorium.spaceEdventuresCenter.flightTypes.length > 0 ? (
+                  <Dropdown>
+                    <DropdownToggle caret size="lg" block color="success">
+                      New Flight
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem tag={Link} to="/config/flight">
+                        Unspecified Flight Type
+                      </DropdownItem>
+                      <DropdownItem divider />
+                      {data.thorium.spaceEdventuresCenter.flightTypes.map(f => (
+                        <DropdownItem
+                          tag={Link}
+                          to={`/config/flight?flightType=${f.id}`}
+                          key={f.id}
+                          value={f.id}
+                        >
+                          {f.name}
+                        </DropdownItem>
+                      ))}
+                    </DropdownMenu>
+                  </Dropdown>
+                ) : (
+                  <Button
+                    tag={Link}
+                    to="/config/flight"
+                    color="success"
+                    block
+                    size="lg"
+                  >
+                    New Flight
+                  </Button>
+                )
+              }
+            </Query>
           </div>
         </Row>
         <Tour

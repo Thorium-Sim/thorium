@@ -123,6 +123,27 @@ export const ThoriumTypes = {
       if (!center) return;
 
       return center.badges;
+    },
+    flightTypes: async () => {
+      const {
+        data: { center }
+      } = await GraphQLClient.query({
+        query: `query {
+          center {
+            id
+            name
+            flightTypes {
+              id
+              name
+              flightHours
+              classHours
+            }
+          }
+        }`
+      });
+      if (!center) return;
+
+      return center.flightTypes;
     }
   }
 };
