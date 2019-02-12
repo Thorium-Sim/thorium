@@ -57,10 +57,8 @@ App.on("assignSpaceEdventuresFlightRecord", ({ flightId }) => {
 const badgeAssign = ({
   badgeId,
   station,
-  context: { simulator, flight, clientId },
-  context
+  context: { simulator, flight, clientId }
 }) => {
-  console.log("CONTEXT", context);
   const clients = App.clients.filter(c => {
     if (clientId) return c.id === clientId;
     if (station) return c.simulatorId === simulator.id && c.station === station;

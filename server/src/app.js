@@ -139,7 +139,6 @@ class Events extends EventEmitter {
   }
   handleEvent(param, eventName, context = {}) {
     const { clientId } = context;
-    console.log("CONTEXT", context);
     this.timestamp = new Date();
     this.version = this.version + 1;
     const client = this.clients.find(c => c.id === clientId);
