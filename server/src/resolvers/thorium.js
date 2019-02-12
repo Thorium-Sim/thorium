@@ -32,6 +32,12 @@ export const ThoriumMutations = {
         context
       );
     });
+  },
+  assignSpaceEdventuresBadge(root, args, context) {
+    App.handleEvent(args, "assignSpaceEdventuresBadge", context);
+  },
+  assignSpaceEdventuresMission(root, args, context) {
+    App.handleEvent(args, "assignSpaceEdventuresBadge", context);
   }
 };
 

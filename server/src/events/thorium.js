@@ -49,3 +49,31 @@ App.on("setSpaceEdventuresToken", async ({ token, cb }) => {
   }
   cb();
 });
+
+App.on("assignSpaceEdventuresFlightRecord", ({}) => {
+  const mutation = `mutation FlightRecordCreate(
+    $flightId: ID!, 
+    $flightType: ID!, 
+    $simulators:[FlightSimulatorInput!]!
+  ){
+      flightRecordCreate(
+        flightId:$flightId, 
+        flightType:$flightType, 
+        simulators:$simulators) 
+      {
+        id
+      }
+    }`;
+});
+App.on(
+  "assignSpaceEdventuresBadge",
+  ({ badgeId, context: { simulator, flight } }) => {
+    console.log("Space Edventures Badge");
+  }
+);
+App.on(
+  "assignSpaceEdventuresMission",
+  ({ badgeId, context: { simulator, flight } }) => {
+    console.log("Space Edventures Mission");
+  }
+);

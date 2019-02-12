@@ -4,4 +4,11 @@ triggerAutoUpdate:String
 setTrackingPreference(pref:Boolean!):String
 importTaskTemplates:String
 setSpaceEdventuresToken(token:String!):SpaceEdventuresCenter
+
+#Macro: Space EdVentures: Assign Space EdVentures Badge
+assignSpaceEdventuresBadge(badgeId: ID!):String
+
+#Macro: Space EdVentures: Assign Space EdVentures Mission
+assignSpaceEdventuresMission(badgeId: ID!):String
+
 `;
