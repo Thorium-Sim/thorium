@@ -38,7 +38,6 @@
   flex-direction: column;
   .lower {
     flex: 1;
-    flex-wrap: wrap;
     display: flex;
     & > div {
       flex: 1;
@@ -47,6 +46,7 @@
 }
 
 .viewscreen-card-list {
+  height: 100%;
   flex: 1;
   background-color: #333;
   overflow-y: scroll;
@@ -76,5 +76,8 @@
     font-size: 16px;
     padding: 3px;
     border-radius: 4px;
+  }
+  .config {
+    height: 100%;
   }
 }

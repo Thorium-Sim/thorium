@@ -4,6 +4,11 @@
       "Clicking on notifications now switches to the relevant card. Thanks Eric Mansfield!",
       "Add the ability to export and import flights.",
       "Add the ability to export and import trigger groups."
+    ],
+    "fixes": [
+      "Improvement to widget and training layering.",
+      "Fixes the squashed short range comm config.",
+      "Fix layout issues with the sensors grid and the viewscreen core."
     ]
   },
   "1.1.12": {
