@@ -7,7 +7,8 @@
     ],
     "fixes": [
       "Improvement to widget and training layering.",
-      "Fixes the squashed short range comm config."
+      "Fixes the squashed short range comm config.",
+      "Fix layout issues with the sensors grid and the viewscreen core."
     ]
   },
   "1.1.12": {
