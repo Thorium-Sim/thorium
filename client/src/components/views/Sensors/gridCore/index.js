@@ -435,6 +435,7 @@ class GridCore extends Component {
           <Col
             sm={4}
             style={{
+              height: "100%",
               display: "flex",
               justifyContent: "space-between",
               flexDirection: "column"
