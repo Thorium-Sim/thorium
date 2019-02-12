@@ -233,11 +233,7 @@ App.on("deleteFlight", ({ flightId }) => {
     .concat()
     .filter(c => c.flightId === flightId)
     .forEach(c => {
-      c.setTraining(false);
-      c.logout();
-      c.setOfflineState(null);
-      c.setFlight(null);
-      c.setHypercard(null);
+      c.reset(true);
     });
   App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
   flight.simulators.forEach(simId => {
@@ -262,10 +258,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full }) => {
     .concat()
     .filter(c => c.flightId === flightId)
     .forEach(c => {
-      c.setTraining(false);
-      c.logout();
-      c.setOfflineState(null);
-      c.setHypercard(null);
+      c.reset();
     });
   App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
 

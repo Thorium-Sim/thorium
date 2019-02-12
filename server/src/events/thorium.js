@@ -50,30 +50,24 @@ App.on("setSpaceEdventuresToken", async ({ token, cb }) => {
   cb();
 });
 
-App.on("assignSpaceEdventuresFlightRecord", ({}) => {
-  const mutation = `mutation FlightRecordCreate(
-    $flightId: ID!, 
-    $flightType: ID!, 
-    $simulators:[FlightSimulatorInput!]!
-  ){
-      flightRecordCreate(
-        flightId:$flightId, 
-        flightType:$flightType, 
-        simulators:$simulators) 
-      {
-        id
-      }
-    }`;
+App.on("assignSpaceEdventuresFlightRecord", ({ flightId }) => {
+  const flight = App.flights.find(f => f.id === flightId);
+  flight.submitSpaceEdventure();
 });
-App.on(
-  "assignSpaceEdventuresBadge",
-  ({ badgeId, context: { simulator, flight } }) => {
-    console.log("Space Edventures Badge");
-  }
-);
-App.on(
-  "assignSpaceEdventuresMission",
-  ({ badgeId, context: { simulator, flight } }) => {
-    console.log("Space Edventures Mission");
-  }
-);
+const badgeAssign = ({
+  badgeId,
+  station,
+  context: { simulator, flight, clientId },
+  context
+}) => {
+  console.log("CONTEXT", context);
+  const clients = App.clients.filter(c => {
+    if (clientId) return c.id === clientId;
+    if (station) return c.simulatorId === simulator.id && c.station === station;
+    return c.flightId === flight.id;
+  });
+  const badges = clients.map(c => ({ clientId: c.id, badgeId }));
+  flight.addBadges(badges);
+};
+App.on("assignSpaceEdventuresBadge", badgeAssign);
+App.on("assignSpaceEdventuresMission", badgeAssign);

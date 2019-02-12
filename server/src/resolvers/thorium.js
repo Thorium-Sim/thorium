@@ -38,6 +38,9 @@ export const ThoriumMutations = {
   },
   assignSpaceEdventuresMission(root, args, context) {
     App.handleEvent(args, "assignSpaceEdventuresBadge", context);
+  },
+  assignSpaceEdventuresFlightRecord(root, args, context) {
+    App.handleEvent(args, "assignSpaceEdventuresFlightRecord", context);
   }
 };
 
@@ -103,6 +106,7 @@ export const ThoriumTypes = {
             badges(type:mission) {
               id
               name
+              description
             }
           }
         }`
@@ -122,6 +126,7 @@ export const ThoriumTypes = {
             badges(type:badge) {
               id
               name
+              description
             }
           }
         }`

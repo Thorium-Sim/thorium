@@ -11,4 +11,5 @@ assignSpaceEdventuresBadge(badgeId: ID!):String
 #Macro: Space EdVentures: Assign Space EdVentures Mission
 assignSpaceEdventuresMission(badgeId: ID!):String
 
+assignSpaceEdventuresFlightRecord(flightId: ID!): String
 `;

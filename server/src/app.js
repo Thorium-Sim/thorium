@@ -139,7 +139,7 @@ class Events extends EventEmitter {
   }
   handleEvent(param, eventName, context = {}) {
     const { clientId } = context;
-
+    console.log("CONTEXT", context);
     this.timestamp = new Date();
     this.version = this.version + 1;
     const client = this.clients.find(c => c.id === clientId);
@@ -162,13 +162,16 @@ class Events extends EventEmitter {
     // the event might remove
     context = {
       ...context,
-      flight: this.flights.find(f => f.id === client && client.flightId),
-      simulator: this.simulators.find(
-        s => s.id === client && client.simulatorId
-      ),
+      flight:
+        this.flights.find(f => f.id === (client && client.flightId)) ||
+        context.flight,
+      simulator:
+        this.simulators.find(s => s.id === (client && client.simulatorId)) ||
+        context.simulator,
       client
     };
     handleTrigger(eventName, param, context);
+
     this.emit(eventName, { ...param, context });
     process.env.NODE_ENV === "production" && this.snapshot();
   }
