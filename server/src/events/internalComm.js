@@ -89,7 +89,8 @@ App.on("internalCommCallIncoming", ({ id, incoming }) => {
       station: s.name,
       title: `New Internal Call`,
       body: incoming,
-      color: "info"
+      color: "info",
+      relevantCards: [ "CommInternal" ]
     });
   });
 });

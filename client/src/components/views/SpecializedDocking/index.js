@@ -59,7 +59,6 @@ class SpecializedDockingData extends Component {
                   document: SUBSCRIPTION,
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
-                    console.log(subscriptionData);
                     return Object.assign({}, previousResult, {
                       docking: subscriptionData.data.dockingUpdate
                     });

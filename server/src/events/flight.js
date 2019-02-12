@@ -26,11 +26,11 @@ export const aspectList = [
   "tasks"
 ];
 
-function addAspects(template, sim) {
+export function addAspects(template, sim, data = App) {
   // Duplicate all of the other stuff attached to the simulator too.
   aspectList.forEach(aspect => {
     if (aspect === "softwarePanels" || aspect === "commandLines") return;
-    const filterAspect = App[aspect].filter(
+    const filterAspect = data[aspect].filter(
       a => a.simulatorId === template.simulatorId
     );
     filterAspect.forEach(a => {
@@ -39,7 +39,7 @@ function addAspects(template, sim) {
       newAspect.simulatorId = sim.id;
       // Rooms need to reference their deck
       if (aspect === "rooms") {
-        const oldDeck = App.decks.find(d => d.id === newAspect.deckId);
+        const oldDeck = data.decks.find(d => d.id === newAspect.deckId);
         const deck = App.decks.find(
           d =>
             d &&
@@ -52,7 +52,7 @@ function addAspects(template, sim) {
       }
       // Docking ports also need to reference their deck
       if (aspect === "dockingPorts") {
-        const oldDeck = App.decks.find(d => d.id === newAspect.deckId);
+        const oldDeck = data.decks.find(d => d.id === newAspect.deckId);
         const deck = App.decks.find(
           d =>
             d &&
@@ -68,11 +68,11 @@ function addAspects(template, sim) {
         const rooms = Object.keys(newAspect.roomCount);
         const newRoomCount = {};
         rooms.forEach(room => {
-          const oldRoom = App.rooms.find(r => r.id === room);
+          const oldRoom = data.rooms.find(r => r.id === room);
           if (!oldRoom) {
             return;
           }
-          const oldDeck = App.decks.find(d => d.id === oldRoom.deckId);
+          const oldDeck = data.decks.find(d => d.id === oldRoom.deckId);
           const deck = App.decks.find(
             d =>
               d &&
@@ -80,26 +80,29 @@ function addAspects(template, sim) {
               d.simulatorId === sim.id &&
               d.number === oldDeck.number
           );
-          const newRoom = App.rooms.find(
+          const newRoomObj = App.rooms.find(
             r =>
+              deck &&
               r.name === oldRoom.name &&
               r.simulatorId === sim.id &&
               r.deckId === deck.id
-          ).id;
+          );
+          if (!newRoomObj) return;
+          const newRoom = newRoomObj.id;
           newRoomCount[newRoom] = newAspect.roomCount[room];
         });
         newAspect.roomCount = newRoomCount;
       }
       if (aspect === "systems") {
         // Create a new isochip for that system, if one exists
-        const isochip = App.isochips.find(i => i.system === a.id);
+        const isochip = data.isochips.find(i => i.system === a.id);
         // Override the system ID
         newAspect.id = uuid.v4();
         if (isochip) {
           isochip.id = uuid.v4();
           isochip.system = newAspect.id;
           isochip.simulatorId = sim.id;
-          App.isochips.push(new Classes.Isochip(isochip));
+          data.isochips.push(new Classes.Isochip(isochip));
         }
         if (newAspect.power && newAspect.power.powerLevels.length) {
           newAspect.power.power = newAspect.power.defaultLevel
@@ -115,15 +118,17 @@ function addAspects(template, sim) {
           newAspect.heat = 0;
         }
       }
-      App[aspect].push(
-        new Classes[newAspect.class](Object.assign({}, newAspect), true)
+      const classItem = new Classes[newAspect.class](
+        Object.assign({}, newAspect),
+        true
       );
+      App[aspect].push(classItem);
     });
   });
   // Add the panels
   sim.panels = sim.panels
     .map(p => {
-      const panelData = App.softwarePanels.find(s => s.id === p);
+      const panelData = data.softwarePanels.find(s => s.id === p);
       if (!panelData) return null;
       const panel = { ...panelData };
       const id = uuid.v4();
@@ -134,7 +139,7 @@ function addAspects(template, sim) {
           component: c.component === p ? id : c.component
         }))
       }));
-      App.softwarePanels.push(
+      data.softwarePanels.push(
         new Classes.SoftwarePanel({
           id,
           name: panel.name,
@@ -151,7 +156,7 @@ function addAspects(template, sim) {
   // And the command lines
   sim.commandLines = sim.commandLines
     .map(c => {
-      const commandLineData = App.commandLine.find(s => s.id === c);
+      const commandLineData = data.commandLine.find(s => s.id === c);
       if (!commandLineData) return null;
       const id = uuid.v4();
       const commandLine = {
@@ -160,7 +165,7 @@ function addAspects(template, sim) {
         id,
         simulatorId: sim.id
       };
-      App.commandLine.push(new Classes.CommandLine(commandLine));
+      data.commandLine.push(new Classes.CommandLine(commandLine));
       return id;
     })
     .filter(Boolean);
@@ -168,7 +173,7 @@ function addAspects(template, sim) {
   // And the triggers
   sim.triggers = sim.triggers
     .map(c => {
-      const triggerData = App.triggerGroups.find(s => s.id === c);
+      const triggerData = data.triggerGroups.find(s => s.id === c);
       if (!triggerData) return null;
       const id = uuid.v4();
       const trigger = {
@@ -177,7 +182,7 @@ function addAspects(template, sim) {
         id,
         simulatorId: sim.id
       };
-      App.triggerGroups.push(new Classes.Trigger(trigger));
+      data.triggerGroups.push(new Classes.Trigger(trigger));
       return id;
     })
     .filter(Boolean);

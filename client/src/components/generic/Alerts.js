@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag";
 import { withApollo } from "react-apollo";
-import { subscribe } from "helpers/pubsub";
+import { subscribe, publish } from "helpers/pubsub";
 // Speech Handling
 const synth = window.speechSynthesis;
 const holderStyle = {
@@ -21,6 +21,7 @@ const NOTIFY_SUB = gql`
       type
       color
       duration
+      relevantCards
     }
   }
 `;
@@ -100,7 +101,7 @@ class Alerts extends Component {
       this.onDismiss(id);
     }, timeoutDuration);
   }
-  onDismiss = id => {
+  onDismiss = (id, changeToCard) => {
     const alerts = this.state.alerts;
     this.setState({
       alerts: alerts.map(a => {
@@ -113,6 +114,9 @@ class Alerts extends Component {
         alerts: this.state.alerts.filter(a => a.id !== id)
       });
     }, 2000);
+    if(changeToCard) {
+      publish("cardChangeRequest", { changeToCard });
+    }
   };
   render() {
     return <AlertsHolder alerts={this.state.alerts} dismiss={this.onDismiss} />;
@@ -129,7 +133,7 @@ export const AlertsHolder = ({ alerts, dismiss }) => (
 
 const AlertItem = ({ dismiss, notify }) => {
   return (
-    <div onClick={() => dismiss(notify.id)}>
+    <div onClick={() => dismiss(notify.id, notify.relevantCards)}>
       <div className={`alert alert-${notify.color}`}>
         <h5 className="alert-heading">
           {notify.title}{" "}

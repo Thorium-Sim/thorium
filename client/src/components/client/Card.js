@@ -6,6 +6,7 @@ import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
+import { subscribe } from "../../helpers/pubsub";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -139,6 +140,29 @@ export default class CardFrame extends Component {
         card: this.props.station.cards && this.props.station.cards[0].name
       };
     }
+  }
+  componentDidMount() {
+    this.cardChangeRequestSubscription =
+    subscribe("cardChangeRequest", payload => {
+      // Searching in order of priority, find a matching card by component (card
+      // names may have been changed to protect the innocent) then change to that card's name.
+      let found = false;
+      for(let i=0; i<payload.changeToCard.length; i++) {
+        let matchingCard = this.props.station.cards.find(c => c.component === payload.changeToCard[i]);
+        if(matchingCard) {
+          this.changeCard(matchingCard.name);
+          found = true;
+          break;
+        }
+      }
+      if(!found) {
+        // TODO: See if we can open a relevant widget instead
+      }
+    });
+  }
+  componentWillUnmount() {
+    // Unsubscribe
+    this.cardChangeRequestSubscription();
   }
   componentDidUpdate(prevProps) {
     if (prevProps.station.name !== this.props.station.name) {

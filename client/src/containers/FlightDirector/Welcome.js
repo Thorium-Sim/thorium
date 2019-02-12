@@ -96,6 +96,24 @@ class Welcome extends Component {
       }
     ];
   };
+  handleImport = evt => {
+    const data = new FormData();
+    Array.from(evt.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:${parseInt(
+        window.location.port,
+        10
+      ) + 1}/importFlight`,
+      {
+        method: "POST",
+        body: data
+      }
+    ).then(() => {
+      //  window.location.reload();
+    });
+  };
   render() {
     if (this.props.data.loading || !this.props.data.flights) return null;
     const flights = this.props.data.flights;
@@ -263,6 +281,10 @@ class Welcome extends Component {
                 ))}
               </CardBody>
             </Card>
+            <label style={{ display: "block" }}>
+              <div className="btn btn-info btn-block">Import Flight</div>
+              <input type="file" hidden onChange={this.handleImport} />
+            </label>
           </div>
           <div>
             <h4 className="text-center">or</h4>

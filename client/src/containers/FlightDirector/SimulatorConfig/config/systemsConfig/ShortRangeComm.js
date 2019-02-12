@@ -67,22 +67,24 @@ const ShortRangeComm = props => {
 
   return (
     <GenericSystemConfig {...props}>
-      <div>Default Comm Signals</div>
-      <Mutation
-        mutation={gql`
-          mutation UpdateSignals($id: ID!, $signals: [CommSignalInput]!) {
-            commUpdateSignals(id: $id, signals: $signals)
-          }
-        `}
-      >
-        {action => (
-          <Button size="sm" onClick={() => defaultSignals(action)("trek")}>
-            Star Trek
-          </Button>
-        )}
-      </Mutation>
-      <div style={{ height: `calc(100% - 60px)` }}>
-        <SignalsCore simulator={{ id: simulatorId }} />
+      <div style={{ height: "70vh" }}>
+        <div>Default Comm Signals</div>
+        <Mutation
+          mutation={gql`
+            mutation UpdateSignals($id: ID!, $signals: [CommSignalInput]!) {
+              commUpdateSignals(id: $id, signals: $signals)
+            }
+          `}
+        >
+          {action => (
+            <Button size="sm" onClick={() => defaultSignals(action)("trek")}>
+              Star Trek
+            </Button>
+          )}
+        </Mutation>
+        <div style={{ height: `calc(100% - 60px)` }}>
+          <SignalsCore simulator={{ id: simulatorId }} />
+        </div>
       </div>
     </GenericSystemConfig>
   );
