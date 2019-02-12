@@ -5,7 +5,10 @@
       "Add the ability to export and import flights.",
       "Add the ability to export and import trigger groups."
     ],
-    "fixes": ["Improvement to widget and training layering."]
+    "fixes": [
+      "Improvement to widget and training layering.",
+      "Fixes the squashed short range comm config."
+    ]
   },
   "1.1.12": {
     "features": ["Add delay to the macros core."],
