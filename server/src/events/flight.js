@@ -188,7 +188,7 @@ export function addAspects(template, sim, data = App) {
     .filter(Boolean);
 }
 // Flight
-App.on("startFlight", ({ id, name, simulators, context }) => {
+App.on("startFlight", ({ id, name, simulators, flightType, context }) => {
   // Loop through all of the simulators
   const simIds = simulators.map(s => {
     const template = Object.assign(
@@ -217,7 +217,9 @@ App.on("startFlight", ({ id, name, simulators, context }) => {
     );
     return sim.id;
   });
-  App.flights.push(new Classes.Flight({ id, name, simulators: simIds }));
+  App.flights.push(
+    new Classes.Flight({ id, name, simulators: simIds, flightType })
+  );
   pubsub.publish("flightsUpdate", App.flights);
   context.callback && context.callback();
 });
@@ -231,11 +233,7 @@ App.on("deleteFlight", ({ flightId }) => {
     .concat()
     .filter(c => c.flightId === flightId)
     .forEach(c => {
-      c.setTraining(false);
-      c.logout();
-      c.setOfflineState(null);
-      c.setFlight(null);
-      c.setHypercard(null);
+      c.reset(true);
     });
   App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
   flight.simulators.forEach(simId => {
@@ -260,10 +258,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full }) => {
     .concat()
     .filter(c => c.flightId === flightId)
     .forEach(c => {
-      c.setTraining(false);
-      c.logout();
-      c.setOfflineState(null);
-      c.setHypercard(null);
+      c.reset();
     });
   App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
 

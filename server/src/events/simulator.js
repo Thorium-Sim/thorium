@@ -174,13 +174,22 @@ const allowedMacros = [
 ];
 App.on("triggerMacros", ({ simulatorId, macros }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
+  const flight = App.flights.find(f => f.simulators.indexOf(simulatorId) > -1);
+  const context = { simulator, flight };
   macros.forEach(({ stepId, event, args, delay = 0 }) => {
     if (stepId) {
       simulator.executeTimelineStep(stepId);
     }
     setTimeout(() => {
       const parsedArgs = typeof args === "string" ? JSON.parse(args) : args;
-      App.handleEvent(Object.assign({ simulatorId }, parsedArgs), event);
+      App.handleEvent(
+        {
+          ...parsedArgs,
+          simulatorId
+        },
+        event,
+        context
+      );
     }, delay);
   });
   pubsub.publish("simulatorsUpdate", App.simulators);

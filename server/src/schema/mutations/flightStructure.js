@@ -6,7 +6,7 @@ importMission(jsonString: String!):String
 
 
 
-startFlight(name: String, simulators: [SimulatorInput!]!):String
+startFlight(name: String, simulators: [SimulatorInput!]!, flightType: String):String
 createSimulator(name: String!,template: Boolean):String
 #Macro: Flight: Reset Flight
 resetFlight(flightId: ID!, full: Boolean): String
