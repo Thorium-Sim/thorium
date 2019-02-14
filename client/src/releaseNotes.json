@@ -2,7 +2,7 @@
   "1.1.14": {
     "features": [
       "Add notifications that the engines stopped when power is removed or the system is damaged.",
-      "Add a "0 default power" button to the systems config screen so systems can be configured to start with no power."
+      "Add a '0 default power' button to the systems config screen so systems can be configured to start with no power."
     ],
     "fixes": [
       "Fixes weird scrolling on new messaging core.",
