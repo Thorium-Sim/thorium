@@ -78,11 +78,18 @@ class Conversations extends Component {
     return (
       <Fragment>
         <Container
-          style={{ flex: 1, maxHeight: "100%" }}
+          style={{ flex: 1, height: "100%" }}
           className="new-messaging-core"
         >
           <Row style={{ height: "100%" }}>
-            <Col sm={4} style={{ display: "flex", flexDirection: "column" }}>
+            <Col
+              sm={4}
+              style={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
               <ListGroup style={{ flex: 1, overflowY: "scroll" }}>
                 {messageList.map(m => (
                   <ListGroupItem
@@ -113,7 +120,14 @@ class Conversations extends Component {
                 </Button>
               )}
             </Col>
-            <Col sm={8} style={{ display: "flex", flexDirection: "column" }}>
+            <Col
+              sm={8}
+              style={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column"
+              }}
+            >
               <Card
                 className="full flex-max auto-scroll"
                 style={{ flexDirection: "column-reverse" }}

@@ -15,7 +15,7 @@ export default class TorpedoTube extends Transitioner {
       targeting
     } = this.props;
     return (
-      <div style={{ position: "absolute", width: "100%", height: "100%" }}>
+      <div>
         <div className="torpedoButton">
           {torpedoState === "idle" ? (
             <Button

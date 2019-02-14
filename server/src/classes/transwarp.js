@@ -40,7 +40,7 @@ export default class Transwarp extends heatMixin(System) {
     this.power = params.power || {
       power: 0,
       powerLevels: [40],
-      defaultLevel: 0
+      defaultLevel: -1
     };
   }
   get stealthFactor() {

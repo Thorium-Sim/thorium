@@ -191,7 +191,7 @@ class ViewscreenManager extends Component {
         <div className="core" style={{ height: "100%" }}>
           <div className="q2">
             <Row style={{ height: "100%" }}>
-              <Col sm={6}>
+              <Col sm={6} style={{ height: "100%" }}>
                 <Label>Viewscreen</Label>
                 <Input
                   type="select"
@@ -283,7 +283,14 @@ class ViewscreenManager extends Component {
                   'Option' + 'Shift'
                 </small>
               </Col>
-              <Col sm={6} style={{ display: "flex", flexDirection: "column" }}>
+              <Col
+                sm={6}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%"
+                }}
+              >
                 <Label>Cards</Label>
                 <ViewscreenCardList
                   previewComponent={previewComponent}
