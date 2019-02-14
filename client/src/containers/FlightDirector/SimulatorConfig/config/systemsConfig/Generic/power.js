@@ -87,6 +87,23 @@ const Power = ({ id, simulatorId, power, powerRender }) => {
                   )}
                 </div>
               ))}
+            <Mutation
+              mutation={gql`
+                mutation ChangeDefaultLevel($id: ID!, $level: Int!) {
+                  changeSystemDefaultPowerLevel(id: $id, level: $level)
+                }
+              `}
+              variables={{ id, level: -1 }}
+              refetchQueries={[
+                { query: GENERIC_QUERY, variables: { id, simulatorId } }
+              ]}
+            >
+              {action => (
+                <Button color="warning" onClick={action}>
+                  0 Power Default
+                </Button>
+              )}
+            </Mutation>
             {powerRender && powerRender()}
           </div>
         )}

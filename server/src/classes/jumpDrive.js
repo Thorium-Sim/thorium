@@ -27,7 +27,7 @@ export default class JumpDrive extends System {
     this.power = params.power || {
       power: 5,
       powerLevels: [10, 16, 22, 28, 34, 40],
-      defaultLevel: 0
+      defaultLevel: -1
     };
     this.sectors = {
       fore: new Sector(
