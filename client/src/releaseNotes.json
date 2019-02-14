@@ -1,4 +1,7 @@
 {
+  "1.1.14": {
+    "fixes": ["Fixes weird scrolling on new messaging core."]
+  },
   "1.1.13": {
     "features": [
       "Clicking on notifications now switches to the relevant card. Thanks Eric Mansfield!",
