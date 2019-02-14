@@ -3,7 +3,10 @@
     "features": [
       "Add notifications that the engines stopped when power is removed or the system is damaged."
     ],
-    "fixes": ["Fixes weird scrolling on new messaging core."]
+    "fixes": [
+      "Fixes weird scrolling on new messaging core.",
+      "Makes it possible to scroll the torpedo control on the targeting screen when there are many torpedo launchers."
+    ]
   },
   "1.1.13": {
     "features": [
