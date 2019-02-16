@@ -36,8 +36,8 @@ export class InterfaceDevice {
     this.id = params.id || uuid.v4();
     this.class = "InterfaceDevice";
     this.name = params.name || "Generic Interface Device";
-    this.width = params.width || 1920;
-    this.height = params.height || 1080;
+    this.width = params.width || 320;
+    this.height = params.height || 568;
   }
   get isLandscape() {
     return this.width > this.height;

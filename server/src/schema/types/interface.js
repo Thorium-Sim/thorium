@@ -5,7 +5,7 @@ type Interface{
   name: String
   components: JSON
   connections: JSON
-  value: JSON
+  values: JSON
   config: JSON
 }
 

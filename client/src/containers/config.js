@@ -18,7 +18,8 @@ import {
   Settings,
   TaskTemplates,
   CommandLineConfig,
-  Triggers
+  Triggers,
+  Interfaces
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -171,6 +172,10 @@ class Config extends Component {
           <Route
             path="/config/triggers"
             render={props => <Triggers {...props} history={history} />}
+          />
+          <Route
+            path="/config/interfaces"
+            render={props => <Interfaces {...props} history={history} />}
           />
           <Route path="/config/debug" component={DebugList} />
         </div>
