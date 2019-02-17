@@ -6,7 +6,9 @@
     ],
     "fixes": [
       "Fixes weird scrolling on new messaging core.",
-      "Makes it possible to scroll the torpedo control on the targeting screen when there are many torpedo launchers."
+      "Makes it possible to scroll the torpedo control on the targeting screen when there are many torpedo launchers.",
+      "Adds a fix where shuttles and docking ports are properly created when a flight is started.",
+      "Attempts to fix an issue with new lines on the damage report card."
     ]
   },
   "1.1.13": {
