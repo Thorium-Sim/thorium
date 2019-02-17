@@ -60,8 +60,9 @@ export function addAspects(template, sim, data = App) {
             d.simulatorId === sim.id &&
             d.number === oldDeck.number
         );
-        if (!deck) return;
-        newAspect.deckId = deck.id;
+        if (deck) {
+          newAspect.deckId = deck.id;
+        }
       }
       if (aspect === "inventory") {
         // Inventory needs to reference the correct room
