@@ -171,8 +171,16 @@ export default class Client {
   setOverlay(overlay) {
     this.overlay = overlay;
   }
+  reset(hardReset) {
+    this.setTraining(false);
+    this.logout();
+    this.setOfflineState(null);
+    this.setHypercard(null);
+    if (hardReset) {
+      this.setFlight(null);
+    }
+  }
   diagnostic() {}
-  reset() {}
   lockScreen() {}
   unlockScreen() {}
 }

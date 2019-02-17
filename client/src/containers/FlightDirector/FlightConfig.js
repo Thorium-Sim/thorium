@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Query } from "react-apollo";
 import { Link } from "react-router-dom";
 import {
   Col,
@@ -18,6 +18,19 @@ import randomWords from "random-words";
 import { FormattedMessage } from "react-intl";
 
 import "./flightConfig.scss";
+
+function parseQuery(queryString) {
+  var query = {};
+  var pairs = (queryString[0] === "?"
+    ? queryString.substr(1)
+    : queryString
+  ).split("&");
+  for (var i = 0; i < pairs.length; i++) {
+    var pair = pairs[i].split("=");
+    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || "");
+  }
+  return query;
+}
 
 class FlightConfig extends Component {
   state = {
@@ -47,14 +60,24 @@ class FlightConfig extends Component {
   };
   startFlight = () => {
     const { name, flightConfig } = this.state;
+    const { flightType } = parseQuery(window.location.search);
     const mutation = gql`
-      mutation StartFlight($name: String!, $simulators: [SimulatorInput!]!) {
-        startFlight(name: $name, simulators: $simulators)
+      mutation StartFlight(
+        $name: String!
+        $simulators: [SimulatorInput!]!
+        $flightType: String
+      ) {
+        startFlight(
+          name: $name
+          simulators: $simulators
+          flightType: $flightType
+        )
       }
     `;
     const variables = {
       name,
-      simulators: flightConfig
+      simulators: flightConfig,
+      flightType
     };
     this.props.client
       .mutate({
@@ -157,6 +180,7 @@ class FlightConfig extends Component {
     const { simulators, missions } = this.props.data;
     const selectedSimObj =
       simulators.find(s => s.id === selectedSimulator) || {};
+    const { flightType: flightTypeId } = parseQuery(window.location.search);
     return (
       <Container className="flight-config">
         <h4>
@@ -170,16 +194,61 @@ class FlightConfig extends Component {
             </Link>
           </small>
         </h4>
-        <FormGroup className="name-input">
-          <Label>
-            Name
-            <Input
-              type="text"
-              value={name}
-              onChange={e => this.setState({ name: e.target.value })}
-            />
-          </Label>
-        </FormGroup>
+        <div style={{ display: "flex" }}>
+          <FormGroup className="name-input">
+            <Label>
+              Name
+              <Input
+                type="text"
+                value={name}
+                onChange={e => this.setState({ name: e.target.value })}
+              />
+            </Label>
+          </FormGroup>
+          {
+            <Query
+              query={gql`
+                query {
+                  thorium {
+                    spaceEdventuresCenter {
+                      id
+                      name
+                      flightTypes {
+                        id
+                        name
+                        classHours
+                        flightHours
+                      }
+                    }
+                  }
+                }
+              `}
+            >
+              {({ loading, data }) => {
+                if (loading) return null;
+
+                const flightType =
+                  data &&
+                  data.thorium &&
+                  data.thorium.spaceEdventuresCenter &&
+                  data.thorium.spaceEdventuresCenter.flightTypes &&
+                  data.thorium.spaceEdventuresCenter.flightTypes.find(
+                    t => t.id === flightTypeId
+                  );
+
+                if (!flightType) return null;
+                return (
+                  <FormGroup className="name-input">
+                    <Label>
+                      Flight Type
+                      <Input type="text" readOnly value={flightType.name} />
+                    </Label>
+                  </FormGroup>
+                );
+              }}
+            </Query>
+          }
+        </div>
         <Row>
           <Col sm={3} className="simulator-pick">
             <h5>Pick a simulator</h5>
@@ -195,9 +264,22 @@ class FlightConfig extends Component {
                   }
                   className={`list-group-item ${
                     s.id === selectedSimulator ? "selected" : ""
+                  } ${
+                    flightTypeId && !s.spaceEdventuresId ? "text-danger" : ""
                   }`}
                 >
                   {s.name}
+                  {flightTypeId &&
+                    !s.spaceEdventuresId && (
+                      <Fragment>
+                        <br />
+                        <small>
+                          This simulator will not be recorded with Space
+                          EdVentures. Please add a Simulator ID from
+                          SpaceEdventures.org to the simulator config.
+                        </small>
+                      </Fragment>
+                    )}
                 </li>
               ))}
             </Card>
@@ -343,6 +425,7 @@ const FLIGHT_QUERY = gql`
     simulators(template: true) {
       id
       name
+      spaceEdventuresId
       stationSets {
         id
         name

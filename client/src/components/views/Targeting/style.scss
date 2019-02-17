@@ -148,7 +148,8 @@
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
       grid-gap: 10px;
-      overflow-y: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
       .torpedo-loader {
         width: auto;
         height: auto;

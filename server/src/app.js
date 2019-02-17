@@ -139,12 +139,11 @@ class Events extends EventEmitter {
   }
   handleEvent(param, eventName, context = {}) {
     const { clientId } = context;
-
     this.timestamp = new Date();
     this.version = this.version + 1;
+    const client = this.clients.find(c => c.id === clientId);
     if (clientId) {
       // Get the current flight of the client
-      const client = this.clients.find(c => c.id === clientId);
       let flightId = null;
       if (client) {
         flightId = client.flightId;
@@ -160,7 +159,18 @@ class Events extends EventEmitter {
     }
     // Handle any triggers before the event so we can capture data that
     // the event might remove
+    context = {
+      ...context,
+      flight:
+        this.flights.find(f => f.id === (client && client.flightId)) ||
+        context.flight,
+      simulator:
+        this.simulators.find(s => s.id === (client && client.simulatorId)) ||
+        context.simulator,
+      client
+    };
     handleTrigger(eventName, param, context);
+
     this.emit(eventName, { ...param, context });
     process.env.NODE_ENV === "production" && this.snapshot();
   }

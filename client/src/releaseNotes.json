@@ -1,4 +1,16 @@
 {
+  "1.1.14": {
+    "features": [
+      "Add notifications that the engines stopped when power is removed or the system is damaged.",
+      "Add a '0 default power' button to the systems config screen so systems can be configured to start with no power."
+    ],
+    "fixes": [
+      "Fixes weird scrolling on new messaging core.",
+      "Makes it possible to scroll the torpedo control on the targeting screen when there are many torpedo launchers.",
+      "Adds a fix where shuttles and docking ports are properly created when a flight is started.",
+      "Attempts to fix an issue with new lines on the damage report card."
+    ]
+  },
   "1.1.13": {
     "features": [
       "Clicking on notifications now switches to the relevant card. Thanks Eric Mansfield!",

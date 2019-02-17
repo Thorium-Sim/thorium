@@ -44,16 +44,20 @@ class MacrosCore extends Component {
                 className={"btn btn-sm btn-success"}
                 handleChange={e => {
                   const { value: event } = e.target;
-                  this.setState(state => ({
-                    actions: state.actions
-                      .map(({ __typename, ...rest }) => rest)
-                      .concat({
-                        event,
-                        args: "{}",
-                        delay: 0,
-                        id: uuid.v4()
-                      })
-                  }));
+                  this.setState(state => {
+                    const id = uuid.v4();
+                    return {
+                      actions: state.actions
+                        .map(({ __typename, ...rest }) => rest)
+                        .concat({
+                          event,
+                          args: "{}",
+                          delay: 0,
+                          id
+                        }),
+                      selectedAction: id
+                    };
+                  });
                 }}
               />
             </Card>

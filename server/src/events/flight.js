@@ -60,8 +60,9 @@ export function addAspects(template, sim, data = App) {
             d.simulatorId === sim.id &&
             d.number === oldDeck.number
         );
-        if (!deck) return;
-        newAspect.deckId = deck.id;
+        if (deck) {
+          newAspect.deckId = deck.id;
+        }
       }
       if (aspect === "inventory") {
         // Inventory needs to reference the correct room
@@ -105,11 +106,13 @@ export function addAspects(template, sim, data = App) {
           data.isochips.push(new Classes.Isochip(isochip));
         }
         if (newAspect.power && newAspect.power.powerLevels.length) {
-          newAspect.power.power = newAspect.power.defaultLevel
-            ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
+          newAspect.power.power =
+            newAspect.power.defaultLevel || newAspect.power.defaultLevel === 0
               ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
-              : newAspect.power.powerLevels[0]
-            : newAspect.power.powerLevels[0];
+                ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
+                : newAspect.power.powerLevels[0]
+              : newAspect.power.powerLevels[0];
+          if (newAspect.power.defaultLevel === -1) newAspect.power.power = 0;
         }
         if (newAspect.power && !newAspect.power.powerLevels.length) {
           newAspect.power.power = 0;
@@ -188,7 +191,7 @@ export function addAspects(template, sim, data = App) {
     .filter(Boolean);
 }
 // Flight
-App.on("startFlight", ({ id, name, simulators, context }) => {
+App.on("startFlight", ({ id, name, simulators, flightType, context }) => {
   // Loop through all of the simulators
   const simIds = simulators.map(s => {
     const template = Object.assign(
@@ -217,7 +220,9 @@ App.on("startFlight", ({ id, name, simulators, context }) => {
     );
     return sim.id;
   });
-  App.flights.push(new Classes.Flight({ id, name, simulators: simIds }));
+  App.flights.push(
+    new Classes.Flight({ id, name, simulators: simIds, flightType })
+  );
   pubsub.publish("flightsUpdate", App.flights);
   context.callback && context.callback();
 });
@@ -231,11 +236,7 @@ App.on("deleteFlight", ({ flightId }) => {
     .concat()
     .filter(c => c.flightId === flightId)
     .forEach(c => {
-      c.setTraining(false);
-      c.logout();
-      c.setOfflineState(null);
-      c.setFlight(null);
-      c.setHypercard(null);
+      c.reset(true);
     });
   App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
   flight.simulators.forEach(simId => {
@@ -260,10 +261,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full }) => {
     .concat()
     .filter(c => c.flightId === flightId)
     .forEach(c => {
-      c.setTraining(false);
-      c.logout();
-      c.setOfflineState(null);
-      c.setHypercard(null);
+      c.reset();
     });
   App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
 

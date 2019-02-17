@@ -94,6 +94,15 @@ App.on("clientSetStation", ({ client, stationName }) => {
 App.on("clientLogin", ({ client, loginName }) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.login(loginName);
+
+  // Log in the client to indicate that it was part of this flight
+  const flight = App.flights.find(f => f.id === clientObj.flightId);
+  flight.loginClient({
+    id: clientObj.id,
+    simulatorId: clientObj.simulatorId,
+    name: clientObj.station
+  });
+
   pubsub.publish("clientChanged", App.clients);
 });
 App.on("clientLogout", ({ client }) => {

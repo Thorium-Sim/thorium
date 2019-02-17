@@ -48,3 +48,9 @@ export {
   default as removeTriggerFromSimulator
 } from "./addTriggerToSimulator";
 export { default as fluxSystemPower } from "./fluxSystemPower";
+export {
+  default as assignSpaceEdventuresBadge
+} from "./assignSpaceEdventuresBadge";
+export {
+  default as assignSpaceEdventuresMission
+} from "./assignSpaceEdventuresMission";

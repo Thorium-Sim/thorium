@@ -2,7 +2,7 @@ import App from "../app";
 import { System } from "./generic";
 import HeatMixin from "./generic/heatMixin";
 import { pubsub } from "../helpers/subscriptionManager.js";
-
+import uuid from "uuid";
 export default class Engine extends HeatMixin(System) {
   constructor(params = {}) {
     super(params);
@@ -46,14 +46,37 @@ export default class Engine extends HeatMixin(System) {
   }
   break(report, destroyed, which) {
     // Stop all of the engines
+    let stopped = false;
     App.systems
       .filter(s => s.simulatorId === this.simulatorId && s.class === "Engine")
       .forEach(s => {
         if (s.id === this.id || s.speed <= 0) {
           s.setSpeed(); // By default it turns off engines
           pubsub.publish("engineUpdate", s);
+          stopped = true;
         }
       });
+    if (stopped) {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: this.simulatorId,
+        station: "Core",
+        type: "Engines",
+        title: `Speed Change Full Stop`,
+        body: ``,
+        color: "info"
+      });
+      App.handleEvent(
+        {
+          simulatorId: this.simulatorId,
+          title: `Speed Change Full Stop`,
+          component: "EngineControlCore",
+          body: null,
+          color: "info"
+        },
+        "addCoreFeed"
+      );
+    }
     super.break(report, destroyed, which);
   }
   setPower(powerLevel) {
@@ -61,6 +84,7 @@ export default class Engine extends HeatMixin(System) {
     if (this.on && this.power.powerLevels[this.speed - 1] > powerLevel) {
       this.speed = this.power.powerLevels.findIndex(p => p === powerLevel) + 1;
       if (this.speed === 0) {
+        let stopped = false;
         // Stop all of the engines that aren't going.
         App.systems
           .filter(
@@ -69,9 +93,31 @@ export default class Engine extends HeatMixin(System) {
           .forEach(s => {
             if (s.id === this.id || s.speed <= 0) {
               s.setSpeed(); // By default it turns off engines
+              stopped = true;
               pubsub.publish("engineUpdate", s);
             }
           });
+        if (stopped) {
+          pubsub.publish("notify", {
+            id: uuid.v4(),
+            simulatorId: this.simulatorId,
+            station: "Core",
+            type: "Engines",
+            title: `Speed Change Full Stop`,
+            body: ``,
+            color: "info"
+          });
+          App.handleEvent(
+            {
+              simulatorId: this.simulatorId,
+              title: `Speed Change Full Stop`,
+              component: "EngineControlCore",
+              body: null,
+              color: "info"
+            },
+            "addCoreFeed"
+          );
+        }
       }
     }
     super.setPower(powerLevel);

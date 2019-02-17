@@ -32,6 +32,15 @@ export const ThoriumMutations = {
         context
       );
     });
+  },
+  assignSpaceEdventuresBadge(root, args, context) {
+    App.handleEvent(args, "assignSpaceEdventuresBadge", context);
+  },
+  assignSpaceEdventuresMission(root, args, context) {
+    App.handleEvent(args, "assignSpaceEdventuresBadge", context);
+  },
+  assignSpaceEdventuresFlightRecord(root, args, context) {
+    App.handleEvent(args, "assignSpaceEdventuresFlightRecord", context);
   }
 };
 
@@ -97,6 +106,7 @@ export const ThoriumTypes = {
             badges(type:mission) {
               id
               name
+              description
             }
           }
         }`
@@ -116,6 +126,7 @@ export const ThoriumTypes = {
             badges(type:badge) {
               id
               name
+              description
             }
           }
         }`
@@ -123,6 +134,27 @@ export const ThoriumTypes = {
       if (!center) return;
 
       return center.badges;
+    },
+    flightTypes: async () => {
+      const {
+        data: { center }
+      } = await GraphQLClient.query({
+        query: `query {
+          center {
+            id
+            name
+            flightTypes {
+              id
+              name
+              flightHours
+              classHours
+            }
+          }
+        }`
+      });
+      if (!center) return;
+
+      return center.flightTypes;
     }
   }
 };
