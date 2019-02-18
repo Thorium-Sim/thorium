@@ -2,71 +2,56 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import Interfaces from "./interfaces";
+import InterfaceCard from "./interface";
+import "./style.scss";
 
 const queryData = `
 id
 name
-deviceType {
-  id
-  name
-  width
-  height
-  isLandscape
-}
-components
-connections
-config
-values
 `;
 
 const QUERY = gql`
-  query Interfaces {
-    interfaces {
+  query Interface($simulatorId: ID!) {
+    interfaces(simulatorId: $simulatorId) {
 ${queryData}
-    }
-    interfaceDevices {
-      id
-      name
-      width
-      height
-      isLandscape
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription InterfaceUpdate {
-    interfaceUpdate {
+  subscription InterfaceUpdate($simulatorId: ID!) {
+    interfaceUpdate(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 
-class InterfacesData extends Component {
+class InterfaceData extends Component {
   state = {};
   render() {
+    const { interfaceId } = this.props;
     return (
-      <Query query={QUERY}>
+      <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { interfaces, interfaceDevices } = data;
+          const { interfaces } = data;
           if (loading || !interfaces) return null;
+          if (!interfaces[0]) return <div>No Interface</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
                   document: SUBSCRIPTION,
+                  variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      interfaces: subscriptionData.data.interfaceUpdate
+                      interface: subscriptionData.data.interfaceUpdate
                     });
                   }
                 })
               }
             >
-              <Interfaces
+              <InterfaceCard
                 {...this.props}
-                interfaces={interfaces}
-                interfaceDevices={interfaceDevices}
+                {...interfaces.find(i => i.id === interfaceId)}
               />
             </SubscriptionHelper>
           );
@@ -75,5 +60,4 @@ class InterfacesData extends Component {
     );
   }
 }
-
-export default InterfacesData;
+export default InterfaceData;

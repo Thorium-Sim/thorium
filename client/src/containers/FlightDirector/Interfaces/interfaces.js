@@ -34,7 +34,7 @@ export default class Interfaces extends Component {
   //   });
   // };
   render() {
-    const { interfaces } = this.props;
+    const { interfaces, interfaceDevices } = this.props;
     const { selectedInterface } = this.state;
     const interfaceObj = interfaces.find(c => c.id === selectedInterface);
     return (
@@ -160,7 +160,10 @@ export default class Interfaces extends Component {
               </Fragment>
             )}
           </Col>
-          <Canvas interfaceObj={interfaceObj} />
+          <Canvas
+            interfaceObj={interfaceObj}
+            interfaceDevices={interfaceDevices}
+          />
         </Row>
       </Container>
     );

@@ -16,6 +16,7 @@ exocomps
 panels
 commandLines
 triggers
+interfaces
 stepDamage
 verifyStep
 hasPrinter

@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import { Col } from "reactstrap";
+import { Col, Input } from "reactstrap";
 import gql from "graphql-tag";
 import {
   Library,
@@ -32,7 +32,8 @@ const updateComponents = debounce(
   2500
 );
 
-const InterfaceCanvas = ({ interfaceObj }) => {
+const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
+  console.log(interfaceObj);
   if (!interfaceObj) return null;
   return (
     <Mutation
@@ -108,6 +109,7 @@ const InterfaceCanvas = ({ interfaceObj }) => {
             }, {});
             return (
               <DiagramProvider
+                key={interfaceObj.deviceType && interfaceObj.deviceType.id}
                 {...interfaceObj}
                 components={[
                   {
@@ -134,7 +136,48 @@ const InterfaceCanvas = ({ interfaceObj }) => {
                 registeredComponents={{ ...components, ...eventList }}
                 onUpdate={data => updateComponents(action, interfaceObj, data)}
               >
-                <Col sm={3} style={{ height: "100%" }}>
+                <Col
+                  sm={3}
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column"
+                  }}
+                >
+                  <label>
+                    Device Types
+                    <Mutation
+                      mutation={gql`
+                        mutation UpdateDeviceType($id: ID!, $deviceType: ID!) {
+                          updateInterface(id: $id, deviceType: $deviceType)
+                        }
+                      `}
+                    >
+                      {action => (
+                        <Input
+                          type="select"
+                          value={
+                            interfaceObj.deviceType &&
+                            interfaceObj.deviceType.id
+                          }
+                          onChange={e =>
+                            action({
+                              variables: {
+                                id: interfaceObj.id,
+                                deviceType: e.target.value
+                              }
+                            })
+                          }
+                        >
+                          {interfaceDevices.map(i => (
+                            <option key={i.id} value={i.id}>
+                              {i.name} - {i.width}×{i.height}
+                            </option>
+                          ))}
+                        </Input>
+                      )}
+                    </Mutation>
+                  </label>
                   <DiagramContext.Consumer>
                     {({ selectedComponent }) =>
                       selectedComponent ? <Config /> : <Library />

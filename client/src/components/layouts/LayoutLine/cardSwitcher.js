@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { Tooltip } from "reactstrap";
 
-const regex = /.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const spregex = /software-panel-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const intregex = /interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 class CardButton extends Component {
   state = {};
   card = React.createRef();
@@ -15,7 +16,11 @@ class CardButton extends Component {
   };
   render() {
     const { component, changeCard, currentCard, name } = this.props;
-    const cardName = component.match(regex) ? "SoftwarePanels" : component;
+    const cardName = component.match(spregex)
+      ? "SoftwarePanels"
+      : component.match(intregex)
+        ? "Interface"
+        : component;
 
     return (
       <Fragment>

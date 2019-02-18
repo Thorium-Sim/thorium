@@ -79,6 +79,7 @@ type Simulator {
   commandLines:[ID]
   triggers:[ID]
   triggersPaused: Boolean
+  interfaces:[ID]
   bridgeOfficerMessaging: Boolean
   assets: SimulatorAssets
   lighting:Lighting
@@ -86,7 +87,6 @@ type Simulator {
   hasPrinter:Boolean
   spaceEdventuresId: String
 }
-
 
 type Lighting {
   intensity: Float

@@ -42,6 +42,7 @@ setSimulatorMission(simulatorId: ID!, missionId: ID!): String
 updateSimulatorPanels(simulatorId: ID!, panels: [ID]!):String
 updateSimulatorCommandLines(simulatorId: ID!, commandLines: [ID]!):String
 updateSimulatorTriggers(simulatorId: ID!, triggers: [ID]!):String
+updateSimulatorInterfaces(simulatorId: ID!, interfaces: [ID]!):String
 setSimulatorTriggersPaused(simulatorId: ID!, paused: Boolean!): String
 
 setStepDamage(simulatorId:ID!, stepDamage:Boolean!):String
