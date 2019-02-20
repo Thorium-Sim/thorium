@@ -1,4 +1,10 @@
 {
+  "1.1.16": {
+    "features": [],
+    "fixes": [
+      "Fixes an issue where the coolant screen doesn't appear correctly."
+    ]
+  },
   "1.1.15": {
     "features": [
       "Add widgets for Engineering reports and R&D Reports.",

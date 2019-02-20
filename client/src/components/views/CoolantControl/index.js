@@ -15,6 +15,7 @@ const COOLANT_SUB = gql`
     coolantUpdate(simulatorId: $simulatorId) {
       id
       name
+      displayName
       coolant
       coolantRate
       damage {
@@ -134,13 +135,16 @@ class CoolantControl extends Component {
                 if (a.type < b.type) return -1;
                 return 0;
               })
-              .map(s => (
-                <CoolantBar
-                  {...s}
-                  key={s.systemId}
-                  transferCoolant={this.transferCoolant.bind(this)}
-                />
-              ))}
+              .map(
+                s =>
+                  console.log(s) || (
+                    <CoolantBar
+                      {...s}
+                      key={s.systemId}
+                      transferCoolant={this.transferCoolant.bind(this)}
+                    />
+                  )
+              )}
           </div>
         </Row>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
@@ -170,14 +174,14 @@ const trainingSteps = [
 const CoolantBar = ({
   systemId,
   name,
-  displayName = name,
+  displayName,
   coolant,
   transferCoolant
 }) => {
   return (
     <div>
       <div className="coolant-bar">
-        <p>{displayName}</p>
+        <p>{displayName || name}</p>
         <CoolantLeftBracket />
         <CoolantMiddleBar />
         <div
@@ -262,6 +266,7 @@ const COOLANT_QUERY = gql`
     coolant(simulatorId: $simulatorId) {
       id
       name
+      displayName
       coolant
       coolantRate
       damage {

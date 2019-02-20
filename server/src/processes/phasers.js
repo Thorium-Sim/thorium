@@ -22,9 +22,7 @@ const updatePhasers = () => {
           .map(s => {
             return {
               systemId: s.id,
-              simulatorId: s.simulatorId,
-              name: s.name,
-              coolant: s.coolant
+              ...s
             };
           })
       );

@@ -10,6 +10,7 @@ type CoolantTank {
 	simulatorId: ID
 	type: String
 	name: String
+	displayName: String
 	coolant: Float
 	coolantRate: Float
 	damage: Damage
@@ -29,6 +30,7 @@ type SystemCoolant {
 	systemId: ID
 	simulatorId: ID
 	name: String
+	displayName: String
 	type: String
 	coolant: Float
 	coolantRate: Float
