@@ -12,6 +12,7 @@ const REACTOR_QUERY = gql`
       model
       powerOutput
       batteryChargeRate
+      requireBalance
       efficiencies {
         label
         color
@@ -125,6 +126,31 @@ const Reactor = props => {
                         />
                       )}
                     </Mutation>
+                  </Label>
+                  <Label style={{ marginLeft: "30px" }}>
+                    <Mutation
+                      mutation={gql`
+                        mutation RequireBalance($id: ID!, $balance: Boolean!) {
+                          reactorRequireBalance(id: $id, balance: $balance)
+                        }
+                      `}
+                      refetchQueries={[
+                        { query: REACTOR_QUERY, variables: { id } }
+                      ]}
+                    >
+                      {action => (
+                        <Input
+                          type="checkbox"
+                          defaultChecked={reactor.requireBalance}
+                          onChange={evt =>
+                            action({
+                              variables: { id, balance: evt.target.checked }
+                            })
+                          }
+                        />
+                      )}
+                    </Mutation>
+                    Warn crew of Unbalanced Power
                   </Label>
                   <Mutation
                     mutation={gql`

@@ -68,6 +68,8 @@ export default class Reactor extends HeatMixin(System) {
       this.heatRate = null;
     }
 
+    this.requireBalance = params.requireBalance || true;
+
     // For Dilithium Stress
     const alpha = Math.round(Math.random() * 100);
     const beta = Math.round(Math.random() * 100);
@@ -121,5 +123,8 @@ export default class Reactor extends HeatMixin(System) {
   }
   setDilithiumRate(rate) {
     this.dilithiumRate = rate;
+  }
+  setRequireBalance(tf) {
+    this.requireBalance = tf;
   }
 }

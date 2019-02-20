@@ -29,6 +29,10 @@
   .q4 {
     margin-left: 50%;
     height: 50%;
+    .col-sm-6 {
+      height: 100%;
+      overflow: auto;
+    }
   }
 }
 

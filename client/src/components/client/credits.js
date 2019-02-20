@@ -177,6 +177,7 @@ class Credits extends Component {
     fetch("https://api.github.com/repos/thorium-sim/thorium-kiosk/releases")
       .then(res => res.json())
       .then(res => {
+        if (this.unmounted) return;
         const release = res[0];
         if (!release) return;
         const mac = release.assets.find(a => a.name.indexOf("mac.zip") > -1)
@@ -187,6 +188,9 @@ class Credits extends Component {
           .browser_download_url;
         this.setState({ mac, win, linux });
       });
+  }
+  componentWillUnmount() {
+    this.unmounted = true;
   }
   toggleDebug = () => {
     this.setState({

@@ -71,7 +71,7 @@ export default withApollo(props => {
         })}
         <DamageOverlay
           system={engines[0]}
-          message={`${engines[0].name} Engines Offline`}
+          message={`${engines[0].displayName || engines[0].name} Offline`}
         />
       </Col>
       <Col sm={2} className="flex-column">
@@ -166,7 +166,7 @@ export default withApollo(props => {
         })}
         <DamageOverlay
           system={engines[1]}
-          message={`${engines[1].name} Engines Offline`}
+          message={`${engines[1].displayName || engines[1].name} Offline`}
         />
       </Col>
     </Fragment>

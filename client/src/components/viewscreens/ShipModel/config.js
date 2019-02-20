@@ -7,7 +7,8 @@ export default ({ data, updateData, simple }) => (
     style={{
       display: "flex",
       flexDirection: "column",
-      height: "100%"
+      height: "100%",
+      minHeight: "400px"
     }}
   >
     <label>Title</label>

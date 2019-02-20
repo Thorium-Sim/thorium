@@ -23,9 +23,7 @@ const updateHeat = () => {
                 .map(s => {
                   return {
                     systemId: s.id,
-                    simulatorId: s.simulatorId,
-                    name: s.name,
-                    coolant: s.coolant
+                    ...s
                   };
                 })
             );
@@ -55,9 +53,7 @@ const updateHeat = () => {
                 .map(s => {
                   return {
                     systemId: s.id,
-                    simulatorId: s.simulatorId,
-                    name: s.name,
-                    coolant: s.coolant
+                    ...s
                   };
                 })
             );

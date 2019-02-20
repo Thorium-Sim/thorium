@@ -16,10 +16,7 @@ class StealthBars extends Transitioner {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;
     }
-    if (sys.type === "Engine") {
-      return `${sys.name} Engines`;
-    }
-    return sys.name;
+    return sys.displayName || sys.name;
   }
   render() {
     const { systems } = this.props;
@@ -169,9 +166,7 @@ class StealthField extends Component {
           );
 
           return {
-            id: s.id,
-            name: s.name,
-            type: s.type,
+            ...s,
             stealthFactor
           };
         })
@@ -273,6 +268,7 @@ const STEALTH_QUERY = gql`
     systems(simulatorId: $simulatorId) {
       id
       name
+      displayName
       type
       stealthFactor
     }
