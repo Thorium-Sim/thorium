@@ -1,4 +1,7 @@
 {
+  "1.1.15": {
+    "features": ["Add widgets for Engineering reports and R&D Reports."]
+  },
   "1.1.14": {
     "features": [
       "Add notifications that the engines stopped when power is removed or the system is damaged.",
