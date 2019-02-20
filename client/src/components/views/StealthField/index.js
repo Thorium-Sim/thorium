@@ -35,6 +35,7 @@ ${queryData}
     systems(simulatorId: $simulatorId) {
       id
       name
+      displayName
       type
       stealthFactor
     }
@@ -45,6 +46,7 @@ const SYSTEMS_QUERY = gql`
     systems(simulatorId: $simulatorId) {
       id
       name
+      displayName
       type
       stealthFactor
     }

@@ -11,6 +11,7 @@ import "./style.scss";
 const updateData = `
 id
 name
+displayName
 power {
   power
   powerLevels

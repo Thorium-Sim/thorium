@@ -34,6 +34,7 @@ const COOLANT_SYSTEM_SUB = gql`
       systemId
       simulatorId
       name
+      displayName
       type
       coolant
       coolantRate
@@ -166,11 +167,17 @@ const trainingSteps = [
   }
 ];
 
-const CoolantBar = ({ systemId, name, coolant, transferCoolant }) => {
+const CoolantBar = ({
+  systemId,
+  name,
+  displayName = name,
+  coolant,
+  transferCoolant
+}) => {
   return (
     <div>
       <div className="coolant-bar">
-        <p>{name}</p>
+        <p>{displayName}</p>
         <CoolantLeftBracket />
         <CoolantMiddleBar />
         <div
@@ -269,6 +276,7 @@ const COOLANT_QUERY = gql`
       systemId
       simulatorId
       name
+      displayName
       type
       coolant
       coolantRate

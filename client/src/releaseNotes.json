@@ -8,7 +8,9 @@
     ],
     "fixes": [
       "Fix some scrolling issues on the viewscreen core layout.",
-      "Fixes an issue where actions from the actions core sometimes don't work."
+      "Fixes an issue where actions from the actions core sometimes don't work.",
+      "Fixes an issue where the tractor beam bars go off the screen.",
+      "Updates engines so they display their name more sensibly. This might require an update where the display name is corrected on the engines config."
     ]
   },
   "1.1.14": {
