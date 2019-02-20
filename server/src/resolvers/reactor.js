@@ -48,6 +48,9 @@ export const ReactorMutations = {
   },
   setDilithiumStressRate(root, args, context) {
     App.handleEvent(args, "setDilithiumStressRate", context);
+  },
+  reactorRequireBalance(root, args, context) {
+    App.handleEvent(args, "reactorRequireBalance", context);
   }
 };
 

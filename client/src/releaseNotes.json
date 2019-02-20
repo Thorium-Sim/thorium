@@ -1,6 +1,9 @@
 {
   "1.1.15": {
-    "features": ["Add widgets for Engineering reports and R&D Reports."]
+    "features": [
+      "Add widgets for Engineering reports and R&D Reports.",
+      "Adds the ability to trigger a warning if the power is left unbalanced. Configure it on the reactor system config."
+    ]
   },
   "1.1.14": {
     "features": [

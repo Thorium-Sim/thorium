@@ -5,6 +5,7 @@ import uuid from "uuid";
 
 const throttles = {};
 const heatThrottles = {};
+const powerThrottles = {};
 const triggerWarning = sys => {
   if (!throttles[sys.id]) {
     throttles[sys.id] = throttle(sys => {
@@ -58,6 +59,34 @@ const triggerHeatWarning = sys => {
   }
   return heatThrottles[sys.id];
 };
+const triggerPowerWarning = sys => {
+  if (!powerThrottles[sys.id]) {
+    powerThrottles[sys.id] = throttle(
+      sys => {
+        const simulator = App.simulators.find(s => s.id === sys.simulatorId);
+        const stations = simulator.stations.filter(s =>
+          s.cards.find(c => c.component === "PowerDistribution")
+        );
+        stations.forEach(s =>
+          pubsub.publish("notify", {
+            id: uuid.v4(),
+            simulatorId: sys.simulatorId,
+            type: "Reactor",
+            station: s.name,
+            title: `Power Imbalance`,
+            body: "Please balance your power.",
+            color: "danger",
+            relevantCards: ["PowerDistribution"]
+          })
+        );
+      },
+      30 * 1000,
+      { leading: false }
+    );
+  }
+  return powerThrottles[sys.id];
+};
+
 const calcStressLevel = ({
   alphaTarget,
   betaTarget,
@@ -98,6 +127,14 @@ const updateReactor = () => {
         }, 0);
 
         const level = oldLevel - reactorLevel;
+
+        if (level > 0) {
+          const reactor = reactors.find(r => r.requireBalance);
+          if (reactor) {
+            // Too much power, and we should warn them
+            triggerPowerWarning(reactor)(reactor);
+          }
+        }
 
         //Adjust the reactors heat
         reactors.forEach(reactor => {
