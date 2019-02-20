@@ -3,7 +3,8 @@
     "features": [
       "Add widgets for Engineering reports and R&D Reports.",
       "Adds the ability to trigger a warning if the power is left unbalanced. Configure it on the reactor system config.",
-      "Adds a warning to the crew if their reactor overheats."
+      "Adds a warning to the crew if their reactor overheats.",
+      "Improves the color of the text on the reactor control screen when the power is imbalanced."
     ]
   },
   "1.1.14": {
