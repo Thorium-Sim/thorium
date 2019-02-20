@@ -26,6 +26,7 @@ const SYSTEMS_SUB = gql`
     systemsUpdate(simulatorId: $simulatorId) {
       id
       name
+      displayName
       power {
         power
         powerLevels
@@ -90,10 +91,7 @@ class DamageControlCore extends Component {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;
     }
-    if (sys.type === "Engine") {
-      return `${sys.name} Engines`;
-    }
-    return sys.name;
+    return sys.displayName || sys.name;
   }
   setPower(system, power) {
     const mutation = gql`
@@ -401,6 +399,7 @@ const SYSTEMS_QUERY = gql`
     systems(simulatorId: $simulatorId) {
       id
       name
+      displayName
       power {
         power
         powerLevels

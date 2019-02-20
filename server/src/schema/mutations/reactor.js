@@ -9,4 +9,5 @@ updateDilithiumStress(id:ID!, alphaLevel:Float, betaLevel:Float, alphaTarget:Flo
 fluxDilithiumStress(id:ID!):String
 setReactorEffciciencies(id:ID!, efficiencies:[ReactorEfficiencyInput]!):String
 setDilithiumStressRate(id:ID!, rate:Float!):String
+reactorRequireBalance(id:ID!, balance:Boolean!):String
 `;

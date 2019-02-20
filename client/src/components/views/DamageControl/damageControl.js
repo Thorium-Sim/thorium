@@ -108,10 +108,8 @@ class DamageControl extends Component {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;
     }
-    if (sys.type === "Engine") {
-      return `${sys.name} Engines`;
-    }
-    return sys.name;
+
+    return sys.displayName || sys.name;
   }
   selectSystem(id) {
     const { systems, taskReports } = this.props;

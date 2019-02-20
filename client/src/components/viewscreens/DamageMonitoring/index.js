@@ -11,6 +11,7 @@ const SYSTEMS_SUB = gql`
     systemsUpdate(simulatorId: $simulatorId, extra: true) {
       id
       name
+      displayName
       type
       damage {
         damaged
@@ -24,10 +25,7 @@ class DamageMonitoring extends Component {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;
     }
-    if (sys.type === "Engine") {
-      return `${sys.name} Engines`;
-    }
-    return sys.name;
+    return sys.displayName || sys.name;
   }
   render() {
     const { loading, systems } = this.props.data;
@@ -103,6 +101,7 @@ const SYSTEMS_QUERY = gql`
     systems(simulatorId: $simulatorId, extra: true) {
       id
       name
+      displayName
       type
       damage {
         damaged

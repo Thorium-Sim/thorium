@@ -127,3 +127,12 @@ App.on("setDilithiumStressRate", ({ id, rate }) => {
     App.systems.filter(s => s.type === "Reactor")
   );
 });
+
+App.on("reactorRequireBalance", ({ id, balance }) => {
+  const system = App.systems.find(sys => sys.id === id);
+  system.setRequireBalance(balance);
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor")
+  );
+});
