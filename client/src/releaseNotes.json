@@ -6,7 +6,10 @@
       "Adds a warning to the crew if their reactor overheats.",
       "Improves the color of the text on the reactor control screen when the power is imbalanced."
     ],
-    "fixes": ["Fix some scrolling issues on the viewscreen core layout."]
+    "fixes": [
+      "Fix some scrolling issues on the viewscreen core layout.",
+      "Fixes an issue where actions from the actions core sometimes don't work."
+    ]
   },
   "1.1.14": {
     "features": [

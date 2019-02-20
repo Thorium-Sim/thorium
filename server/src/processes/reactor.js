@@ -52,6 +52,7 @@ const triggerHeatWarning = sys => {
           relevantCards: ["ReactorControl"]
         })
       );
+
       pubsub.publish("notify", {
         id: uuid.v4(),
         simulatorId: sys.simulatorId,
