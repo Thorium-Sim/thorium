@@ -36,6 +36,22 @@ const triggerWarning = sys => {
 const triggerHeatWarning = sys => {
   if (!heatThrottles[sys.id]) {
     heatThrottles[sys.id] = throttle(sys => {
+      const simulator = App.simulators.find(s => s.id === sys.simulatorId);
+      const stations = simulator.stations.filter(s =>
+        s.cards.find(c => c.component === "ReactorControl")
+      );
+      stations.forEach(s =>
+        pubsub.publish("notify", {
+          id: uuid.v4(),
+          simulatorId: sys.simulatorId,
+          type: "Reactor",
+          station: s.name,
+          title: `Reactor Overheating`,
+          body: "Please cool the main reactor.",
+          color: "danger",
+          relevantCards: ["ReactorControl"]
+        })
+      );
       pubsub.publish("notify", {
         id: uuid.v4(),
         simulatorId: sys.simulatorId,
