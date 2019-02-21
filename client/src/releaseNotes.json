@@ -1,7 +1,8 @@
 {
   "1.1.17": {
     "fixes": [
-      "Fixes an issue where servers can crash when flights are deleted."
+      "Fixes an issue where servers can crash when flights are deleted.",
+      "Command line screen now takes up more available space."
     ]
   },
   "1.1.16": {
