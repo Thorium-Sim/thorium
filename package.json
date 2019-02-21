@@ -150,7 +150,9 @@
       "eslint-plugin-cypress",
       "react-hooks"
     ],
-    "env": { "cypress/globals": true },
+    "env": {
+      "cypress/globals": true
+    },
     "rules": {
       "jsx-a11y/href-no-hash": "off",
       "react-hooks/rules-of-hooks": "error"
