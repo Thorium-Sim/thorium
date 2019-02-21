@@ -1,4 +1,9 @@
 {
+  "1.1.17": {
+    "fixes": [
+      "Fixes an issue where servers can crash when flights are deleted."
+    ]
+  },
   "1.1.16": {
     "features": [],
     "fixes": [
