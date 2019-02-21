@@ -73,3 +73,19 @@ App.on("updateInterfaceDevice", ({ id, width, height }) => {
   const device = App.interfaceDevices.find(d => d.id === id);
   device && device.update({ width, height });
 });
+
+App.on(
+  "toggleInterfaceObjectHidden",
+  ({ simulatorId, id, objectId, hidden }) => {
+    const interfaceObj = App.interfaces.find(
+      i => i.id === id || (i.simulatorId === simulatorId && i.templateId === id)
+    );
+    interfaceObj.update({
+      config: {
+        ...interfaceObj.config,
+        [objectId]: { ...interfaceObj.config[objectId], hidden }
+      }
+    });
+    pubsub.publish("interfaceUpdate", App.interfaces);
+  }
+);

@@ -1,0 +1,3 @@
+- add a plop for creating views
+- fix the mutation plop so it places mutations in the right place.
+- better yet, refactor to use the same schema setup that Space Edventures does.

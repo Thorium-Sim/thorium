@@ -44,6 +44,9 @@ export const InterfaceMutations = {
   },
   updateInterfaceDevice(rootQuery, args, context) {
     App.handleEvent(args, "updateInterfaceDevice", context);
+  },
+  toggleInterfaceObjectHidden(root, args, context) {
+    App.handleEvent(args, "toggleInterfaceObjectHidden", context);
   }
 };
 
