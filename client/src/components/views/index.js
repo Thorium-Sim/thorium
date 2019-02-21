@@ -323,6 +323,20 @@ export const Widgets = {
     size: "lg",
     color: "rgb(200, 100, 100)"
   },
+  engineeringReport: {
+    widget: EngineeringReports,
+    icon: "file-code-o",
+    name: "Engineering Report",
+    size: "lg",
+    color: "rgb(180,100, 30)"
+  },
+  rndReport: {
+    widget: RnDReports,
+    icon: "file-excel-o",
+    name: "R&D Report",
+    size: "lg",
+    color: "rgb(180,100, 130)"
+  },
   officerLog: {
     widget: OfficerLog,
     icon: "book",

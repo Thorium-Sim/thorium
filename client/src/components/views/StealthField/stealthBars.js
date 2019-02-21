@@ -7,10 +7,8 @@ export default class StealthBars extends Transitioner {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;
     }
-    if (sys.type === "Engine") {
-      return `${sys.name} Engines`;
-    }
-    return sys.name;
+
+    return sys.displayName || sys.name;
   }
   render() {
     const { systems } = this.props;

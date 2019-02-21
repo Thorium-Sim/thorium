@@ -303,7 +303,15 @@ class ReactorControl extends Component {
                   formatValue={n => `${Math.round(n)}`}
                 />
               </h2>
-              <h2>Power Used: {powerTotal}</h2>
+              <h2
+                className={
+                  reactor.efficiency * reactor.powerOutput < powerTotal
+                    ? "text-danger"
+                    : ""
+                }
+              >
+                Power Used: {powerTotal}
+              </h2>
             </div>
           </Col>
 

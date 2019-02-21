@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import uuid from "uuid";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { withApollo } from "react-apollo";
 import Spark from "components/views/Actions/spark";
 const synth = window.speechSynthesis;
 
@@ -20,100 +20,102 @@ const ACTIONS_SUB = gql`
   }
 `;
 
-class ActionsMixin extends Component {
-  constructor(props) {
-    super(props);
-    this.subscription = null;
-    this.state = {
-      sparks: [],
-      flash: false
-    };
-  }
-  flash(duration) {
+const useFlash = () => {
+  const [flash, setFlash] = useState(false);
+  const timeoutRef = useRef(null);
+  const doFlash = duration => {
+    duration = duration || duration === 0 ? duration : 10;
     if (duration <= 0) {
-      this.setState({ flash: false });
-      return;
+      return setFlash(false);
     }
-    this.setState({ flash: !this.state.flash });
-    setTimeout(this.flash.bind(this, duration - 1), 100);
-  }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!this.subscription && !nextProps.data.loading && this.props.simulator) {
-      this.subscription = nextProps.data.subscribeToMore({
-        document: ACTIONS_SUB,
-        variables: {
-          simulatorId: this.props.simulator.id,
-          stationId: this.props.station.name
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          let {
-            action,
-            message,
-            voice,
-            duration
-          } = subscriptionData.data.actionsUpdate;
-          switch (action) {
-            case "flash":
-              duration = duration || 10;
-              this.flash(duration);
-              break;
-            case "spark":
-              duration = duration || 5000;
-              const id = uuid.v4();
-              this.setState({
-                sparks: [...this.state.sparks, id]
-              });
-              setTimeout(() => {
-                this.setState(oldState => ({
-                  sparks: oldState.sparks.filter(s => s !== id)
-                }));
-              }, duration);
-              break;
-            case "reload":
-              window.location.reload();
-              break;
-            case "speak":
-              const voices = synth.getVoices();
-              const words = new SpeechSynthesisUtterance(message);
-              if (voice) words.voice = voices.find(v => v.name === voice);
-              synth.speak(words);
-              break;
-            case "shutdown":
-            case "restart":
-            case "sleep":
-            case "quit":
-            case "beep":
-            case "freak":
-              window.thorium.sendMessage({ action });
-              break;
-            case "changeCard":
-              this.props.changeCard(message);
-              break;
-            default:
-              return;
-          }
-        }
-      });
-    }
-  }
-  render() {
-    return (
-      <div className={`actionsContainer ${this.state.flash ? "flash" : ""}`}>
-        {this.props.children}
-        {this.state.sparks.map(s => (
-          <Spark key={s} />
-        ))}
-      </div>
-    );
-  }
-}
+    setFlash(oldFlash => !oldFlash);
+    timeoutRef.current = setTimeout(() => doFlash(duration - 1), 100);
+  };
+  useEffect(() => () => clearTimeout(timeoutRef.current), []);
+  return { flash, doFlash };
+};
 
-const ACTIONS_QUERY = gql`
-  query ActionsQuery {
-    actions {
-      action
-      duration
-    }
-  }
-`;
-export default graphql(ACTIONS_QUERY)(ActionsMixin);
+const useSpark = () => {
+  const [sparks, setSparks] = useState([]);
+  const timeoutRef = useRef([]);
+  const doSpark = duration => {
+    duration = duration || 5000;
+    const id = uuid.v4();
+    setSparks([...sparks, id]);
+    timeoutRef.current.push(
+      setTimeout(() => {
+        setSparks(sparks.filter(s => s !== id));
+      }, duration)
+    );
+  };
+  useEffect(
+    () => () => timeoutRef.current.forEach(ref => clearTimeout(ref)),
+    []
+  );
+  return {
+    doSpark,
+    Sparks: () => sparks.map(s => <Spark key={s} />)
+  };
+};
+
+const ActionsMixin = ({ simulator, station, changeCard, children, client }) => {
+  const { flash, doFlash } = useFlash();
+  const { doSpark, Sparks } = useSpark();
+  useEffect(
+    () => {
+      const subscription = client
+        .subscribe({
+          query: ACTIONS_SUB,
+          variables: {
+            simulatorId: simulator.id,
+            stationId: station.name
+          }
+        })
+        .subscribe({
+          next({
+            data: {
+              actionsUpdate: { action, message, voice, duration }
+            }
+          }) {
+            switch (action) {
+              case "flash":
+                return doFlash(duration);
+              case "spark":
+                return doSpark(duration);
+              case "reload":
+                return window.location.reload();
+              case "speak":
+                const voices = synth.getVoices();
+                const words = new SpeechSynthesisUtterance(message);
+                if (voice) words.voice = voices.find(v => v.name === voice);
+                return synth.speak(words);
+              case "shutdown":
+              case "restart":
+              case "sleep":
+              case "quit":
+              case "beep":
+              case "freak":
+                return window.thorium.sendMessage({ action });
+              case "changeCard":
+                return changeCard(message);
+              default:
+                return;
+            }
+          },
+          error(err) {
+            console.error("err", err);
+          }
+        });
+      return () => subscription.unsubscribe();
+    },
+    [simulator, station]
+  );
+  return (
+    <div className={`actionsContainer ${flash ? "flash" : ""}`}>
+      {children}
+      <Sparks />
+    </div>
+  );
+};
+
+export default withApollo(ActionsMixin);

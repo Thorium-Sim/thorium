@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.1.14",
+  "version": "1.1.16",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -150,9 +150,7 @@
       "eslint-plugin-cypress",
       "react-hooks"
     ],
-    "env": {
-      "cypress/globals": true
-    },
+    "env": { "cypress/globals": true },
     "rules": {
       "jsx-a11y/href-no-hash": "off",
       "react-hooks/rules-of-hooks": "error"

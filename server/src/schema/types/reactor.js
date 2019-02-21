@@ -29,6 +29,7 @@ type Reactor implements SystemInterface{
   dilithiumRate: Float
 
   locations: [Room]
+  requireBalance: Boolean
 }
 
 enum REACTOR_MODELS {

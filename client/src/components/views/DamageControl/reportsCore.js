@@ -10,6 +10,7 @@ const SYSTEMS_SUB = gql`
     systemsUpdate(simulatorId: $simulatorId, extra: true) {
       id
       name
+      displayName
       damage {
         damaged
         report
@@ -86,10 +87,7 @@ class DamageReportCore extends Component {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;
     }
-    if (sys.type === "Engine") {
-      return `${sys.name} Engines`;
-    }
-    return sys.name;
+    return sys.displayName || sys.name;
   }
   loadReport(e) {
     const self = this;
@@ -518,6 +516,7 @@ const SYSTEMS_QUERY = gql`
     systems(simulatorId: $simulatorId, extra: true) {
       id
       name
+      displayName
       damage {
         damaged
         report

@@ -7,6 +7,7 @@ import "./style.scss";
 
 const queryData = `
 id
+displayName
 name
 damage {
   damaged

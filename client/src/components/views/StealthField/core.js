@@ -45,10 +45,7 @@ class StealthFieldCore extends Component {
     if (sys.type === "Shield") {
       return `${sys.name} Shields`;
     }
-    if (sys.type === "Engine") {
-      return `${sys.name} Engines`;
-    }
-    return sys.name;
+    return sys.displayName || sys.name;
   }
   toggleStealth = () => {
     const { stealthField } = this.props;
@@ -175,6 +172,7 @@ const SYSTEMS_QUERY = gql`
     systems(simulatorId: $simulatorId) {
       id
       name
+      displayName
       type
       stealthFactor
     }
