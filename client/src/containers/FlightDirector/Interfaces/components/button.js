@@ -3,7 +3,11 @@ import { Button } from "reactstrap";
 export default {
   name: "Button",
   component: ({ value = {}, config = {} }) => {
-    return <Button>{config.buttonText || "Button"}</Button>;
+    return (
+      <Button style={{ opacity: config.hidden ? 0.2 : 1 }}>
+        {config.objectLabel || "Button"}
+      </Button>
+    );
   },
   outputs: [
     {
@@ -16,10 +20,17 @@ export default {
   inputs: [],
   config: [
     {
-      id: "buttonText",
+      id: "objectLabel",
       title: "Button Text",
       props: {
         type: "text"
+      }
+    },
+    {
+      id: "hidden",
+      title: "Hidden",
+      props: {
+        type: "checkbox"
       }
     }
   ]
