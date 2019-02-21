@@ -37,6 +37,7 @@ const triggerHeatWarning = sys => {
   if (!heatThrottles[sys.id]) {
     heatThrottles[sys.id] = throttle(sys => {
       const simulator = App.simulators.find(s => s.id === sys.simulatorId);
+      if (!simulator) return;
       const stations = simulator.stations.filter(s =>
         s.cards.find(c => c.component === "ReactorControl")
       );
@@ -81,6 +82,7 @@ const triggerPowerWarning = sys => {
     powerThrottles[sys.id] = throttle(
       sys => {
         const simulator = App.simulators.find(s => s.id === sys.simulatorId);
+        if (!simulator) return;
         const stations = simulator.stations.filter(s =>
           s.cards.find(c => c.component === "PowerDistribution")
         );
