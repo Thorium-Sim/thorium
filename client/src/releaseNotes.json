@@ -2,7 +2,8 @@
   "1.1.17": {
     "fixes": [
       "Fixes an issue where servers can crash when flights are deleted.",
-      "Command line screen now takes up more available space."
+      "Command line screen now takes up more available space.",
+      "Fixes the sensors core scrolling when using history."
     ]
   },
   "1.1.16": {
