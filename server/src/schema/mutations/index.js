@@ -21,7 +21,6 @@ export { default as targeting } from "./targeting";
 export { default as probes } from "./probes";
 export { default as stealthField } from "./stealthField";
 export { default as issueTracker } from "./issueTracker";
-export { default as actions } from "./actions";
 export { default as coolant } from "./coolant";
 export { default as tractorBeam } from "./tractorBeam";
 export { default as crew } from "./crew";

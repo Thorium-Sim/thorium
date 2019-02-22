@@ -3,6 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 import { randomFromList } from "../classes/generic/damageReports/constants";
 App.on("triggerAction", args => {
+  console.log(args);
   args.stationId = args.stationId || "all";
   let clients = [];
   let stations = [];

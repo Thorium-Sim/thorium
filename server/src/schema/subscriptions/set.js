@@ -1,3 +1,2 @@
 export default `
-setsUpdate: [Set]
 `;

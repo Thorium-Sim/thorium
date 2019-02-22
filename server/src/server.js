@@ -4,7 +4,7 @@ import log from "./bootstrap/logs";
 import migrate from "./bootstrap/migration";
 import init from "./bootstrap/init";
 import express from "./bootstrap/express";
-import graphql from "./bootstrap/graphql";
+import apollo from "./bootstrap/apollo";
 import websockets from "./bootstrap/websockets";
 import broadcast from "./bootstrap/broadcast";
 import clientServer from "./bootstrap/client-server.js";
@@ -25,7 +25,7 @@ Promise.resolve()
   .then(() => express())
   .then(server =>
     websockets(server, WS_PORT).then(() =>
-      graphql(server, GRAPHQL_PORT, CLIENT_PORT)
+      apollo(server, GRAPHQL_PORT, CLIENT_PORT)
     )
   )
   .then(() => {

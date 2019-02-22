@@ -20,7 +20,6 @@ import { TorpedoQueries } from "./torpedo";
 import { PhaserQueries } from "./phasers";
 import { ProbesQueries } from "./probes";
 import { StealthFieldQueries } from "./stealthField";
-import { ActionsQueries } from "./actions";
 import { CoolantQueries } from "./coolant";
 import { TractorBeamQueries } from "./tractorBeam";
 import { CrewQueries } from "./crew";
@@ -78,7 +77,6 @@ const queryMap = Object.assign(
   PhaserQueries,
   ProbesQueries,
   StealthFieldQueries,
-  ActionsQueries,
   CoolantQueries,
   TractorBeamQueries,
   CrewQueries,

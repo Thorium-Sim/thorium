@@ -21,7 +21,6 @@ import { TorpedoMutations } from "./torpedo";
 import { PhaserMutations } from "./phasers";
 import { ProbesMutations } from "./probes";
 import { StealthFieldMutations } from "./stealthField";
-import { ActionsMutations } from "./actions";
 import { CoolantMutations } from "./coolant";
 import { TractorBeamMutations } from "./tractorBeam";
 import { CrewMutations } from "./crew";
@@ -81,7 +80,6 @@ const mutationMap = Object.assign(
   ProbesMutations,
   StealthFieldMutations,
   IssueTrackerMutations,
-  ActionsMutations,
   CoolantMutations,
   TractorBeamMutations,
   CrewMutations,

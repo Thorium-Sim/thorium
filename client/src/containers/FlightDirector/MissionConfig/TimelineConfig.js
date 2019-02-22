@@ -102,7 +102,7 @@ export default class TimelineConfig extends Component {
           $missionId: ID
           $timelineStepId: ID!
           $timelineItemId: ID!
-          $timelineItem: TimelineitemInput!
+          $timelineItem: TimelineItemInput!
         ) {
           updateTimelineStepItem(
             simulatorId: $simulatorId
@@ -172,7 +172,7 @@ export default class TimelineConfig extends Component {
           $missionId: ID
           $timelineStepId: ID!
           $timelineItemId: ID!
-          $timelineItem: TimelineitemInput!
+          $timelineItem: TimelineItemInput!
         ) {
           updateTimelineStepItem(
             simulatorId: $simulatorId
@@ -261,7 +261,7 @@ export default class TimelineConfig extends Component {
         $simulatorId: ID
         $missionId: ID
         $timelineStepId: ID!
-        $timelineItem: TimelineitemInput!
+        $timelineItem: TimelineItemInput!
       ) {
         addTimelineItemToTimelineStep(
           simulatorId: $simulatorId

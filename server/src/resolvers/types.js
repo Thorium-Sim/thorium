@@ -31,8 +31,9 @@ import { TasksTypes } from "./tasks";
 import { TaskReportTypes } from "./taskReport";
 import { ThoriumTypes } from "./thorium";
 import { DockingTypes } from "./docking";
+
 export default Object.assign(
-  AssetsTypes,
+  //AssetsTypes,
   EngineTypes,
   SensorsTypes,
   FlightStructureTypes,

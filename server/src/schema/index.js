@@ -19,14 +19,12 @@ ${Object.keys(types)
 
 #Queries definition
 type Query {
-  events: [String]
   users(id: String, token: String, email: String): [user]
   ${Object.keys(queries).map(query => queries[query])}
 }
 
 #Mutations definition
 type Mutation {
-  snapshot: String
   ${Object.keys(mutations).map(mutation => mutations[mutation])}
 }
 

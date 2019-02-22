@@ -20,7 +20,6 @@ import { TorpedoSubscriptions } from "./torpedo";
 import { PhaserSubscriptions } from "./phasers";
 import { ProbesSubscriptions } from "./probes";
 import { StealthFieldSubscriptions } from "./stealthField";
-import { ActionsSubscriptions } from "./actions";
 import { CoolantSubscriptions } from "./coolant";
 import { TractorBeamSubscriptions } from "./tractorBeam";
 import { CrewSubscriptions } from "./crew";
@@ -77,7 +76,6 @@ const subscriptionMap = Object.assign(
   PhaserSubscriptions,
   ProbesSubscriptions,
   StealthFieldSubscriptions,
-  ActionsSubscriptions,
   CoolantSubscriptions,
   TractorBeamSubscriptions,
   CrewSubscriptions,

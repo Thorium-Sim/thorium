@@ -19,7 +19,6 @@ export { default as torpedo } from "./torpedo";
 export { default as targeting } from "./targeting";
 export { default as probes } from "./probes";
 export { default as stealthField } from "./stealthField";
-export { default as actions } from "./actions";
 export { default as coolant } from "./coolant";
 export { default as tractorBeam } from "./tractorBeam";
 export { default as crew } from "./crew";

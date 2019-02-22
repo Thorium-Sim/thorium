@@ -4,8 +4,6 @@ import fs from "fs";
 import cors from "cors";
 import path from "path";
 import chalk from "chalk";
-import { printSchema } from "graphql/utilities/schemaPrinter";
-import schema from "../data";
 import { uploadAsset } from "../resolvers/assets";
 
 import exportMission from "../imports/missions/export";
@@ -70,10 +68,10 @@ export default () => {
 
   server.use("*", cors());
 
-  server.use("/schema", (req, res) => {
-    res.set("Content-Type", "text/plain");
-    res.send(printSchema(schema));
-  });
+  // server.use("/schema", (req, res) => {
+  //   res.set("Content-Type", "text/plain");
+  //   res.send(printSchema(schema));
+  // });
 
   server.post("/upload", upload.any(), async (req, res) => {
     uploadAsset({}, Object.assign({}, req.body, { files: req.files }), {});
