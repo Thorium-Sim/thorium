@@ -115,9 +115,6 @@ function getClassValue({ systemId, class: className, key }) {
   }
 }
 
-// We define all of the resolvers necessary for
-// the functionality in this file. These will be
-// deep merged with the other resolvers.
 const resolver = {
   Targeting: {
     targetedSensorContact(targeting) {

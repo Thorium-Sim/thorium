@@ -149,9 +149,7 @@ const schema = gql`
     cancelLoopingSounds(clientId: ID): Boolean
   }
 `;
-// We define all of the resolvers necessary for
-// the functionality in this file. These will be
-// deep merged with the other resolvers.
+
 const resolver = {
   Client: {
     flight(rootValue) {

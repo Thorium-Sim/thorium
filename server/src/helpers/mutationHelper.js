@@ -10,7 +10,15 @@ export default function mutationHelper(schema, exceptions = []) {
         ...prev,
         [next]: async (root, args, context) =>
           new Promise(resolve => {
-            App.handleEvent({ ...args, cb: resolve }, next, context);
+            App.handleEvent(
+              {
+                ...args,
+                cb: (a, b, c) => console.log(next, a, b, c) || resolve(a)
+              },
+              next,
+              context
+            );
+            setTimeout(() => resolve(), 1000);
           })
       }),
       {}

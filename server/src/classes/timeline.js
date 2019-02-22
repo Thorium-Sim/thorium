@@ -1,5 +1,4 @@
 import uuid from "uuid";
-import { mutationMap } from "../resolvers";
 
 export class TimelineObject {
   constructor(params) {
@@ -71,33 +70,6 @@ export class TimelineObject {
   updateTimelineStepItem(timelineStepId, timelineItemId, timelineItem) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
     timeline.updateTimelineItem(timelineItemId, timelineItem);
-  }
-  nextTimeline(noExecute) {
-    this.timelineStep += 1;
-    if (!noExecute) {
-      if (this.timeline[this.timelineStep]) {
-        this.triggerTimelineStep(this.timeline[this.timelineStep].id);
-      }
-    }
-  }
-  triggerTimelineStep(timelineStepId) {
-    // Trigger the event for the timeline step id.
-    // We'll use the resolver functions for this.
-    const timelineStep = this.timeline.find(t => t.id === timelineStepId);
-    timelineStep.timelineItems.forEach(i => {
-      // Execute the timeline item.
-      const args = JSON.parse(i.args) || {};
-      if (this.class === "Simulator") {
-        args.simulatorId = this.id;
-      }
-      if (this.class === "Mission") {
-        args.missionId = this.id;
-      }
-      if (this.class === "Flight") {
-        args.flightId = this.id;
-      }
-      mutationMap[i.event]({}, args, { clientId: "timeline" });
-    });
   }
 }
 

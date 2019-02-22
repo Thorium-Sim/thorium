@@ -1,6 +1,6 @@
 import App from "../app";
-import { gql, withFilter } from "apollo-server-express";
-import { pubsub } from "../helpers/subscriptionManager";
+import { gql } from "apollo-server-express";
+import mutationHelper from "../helpers/mutationHelper";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -181,9 +181,6 @@ const schema = gql`
   }
 `;
 
-// We define all of the resolvers necessary for
-// the functionality in this file. These will be
-// deep merged with the other resolvers.
 const resolver = {
   DamageTask: {
     taskTemplate(rootValue) {
@@ -195,19 +192,7 @@ const resolver = {
       );
     }
   },
-  Query: {},
-  Mutation: {},
-  Subscription: {
-    templateUpdate: {
-      resolve(rootQuery) {},
-      subscribe: withFilter(
-        () => pubsub.asyncIterator("templateUpdate"),
-        (rootValue, args) => {
-          return true;
-        }
-      )
-    }
-  }
+  Mutation: mutationHelper(schema)
 };
 
 export default { schema, resolver };

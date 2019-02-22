@@ -2,7 +2,7 @@ import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
 import mutationHelper from "../helpers/mutationHelper";
-import StationResolver from "../helpers/stationResolver";
+import { StationResolver } from "../helpers/stationResolver";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -43,9 +43,6 @@ const schema = gql`
   }
 `;
 
-// We define all of the resolvers necessary for
-// the functionality in this file. These will be
-// deep merged with the other resolvers.
 const resolver = {
   Thx: {
     clients(thx) {

@@ -3,6 +3,10 @@ import { gql } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
 import mutationHelper from "../helpers/mutationHelper";
 import GraphQLClient from "../helpers/graphqlClient";
+import request from "request";
+
+const issuesUrl =
+  "https://12usj3vwf1.execute-api.us-east-1.amazonaws.com/prod/issueTracker";
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -55,6 +59,14 @@ const schema = gql`
     assignSpaceEdventuresMission(badgeId: ID!): String
 
     assignSpaceEdventuresFlightRecord(flightId: ID!): String
+
+    addIssue(
+      title: String!
+      body: String!
+      person: String!
+      priority: Int
+      type: String!
+    ): String
   }
   extend type Subscription {
     thoriumUpdate: Thorium
@@ -62,9 +74,6 @@ const schema = gql`
   }
 `;
 
-// We define all of the resolvers necessary for
-// the functionality in this file. These will be
-// deep merged with the other resolvers.
 const resolver = {
   Thorium: {
     spaceEdventuresCenter: async () => {
@@ -168,7 +177,32 @@ const resolver = {
       return App;
     }
   },
-  Mutation: mutationHelper(schema),
+  Mutation: {
+    ...mutationHelper(schema, ["addIssue"]),
+    addIssue(rootValue, { title, body, person, priority, type }) {
+      // Create our body
+      var postBody =
+        `
+          ### Requested By: ${person}
+    
+          ### Priority: ${priority}
+    
+          ### Version: ${require("../../package.json").version}
+        `
+          .replace(/^\s+/gm, "")
+          .replace(/\s+$/m, "\n\n") + body;
+
+      var postOptions = {
+        title,
+        body: postBody,
+        type
+      };
+      request.post(
+        { url: issuesUrl, body: postOptions, json: true },
+        function() {}
+      );
+    }
+  },
   Subscription: {
     thoriumUpdate: {
       resolve(rootValue) {

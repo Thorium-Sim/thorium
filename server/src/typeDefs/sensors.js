@@ -251,9 +251,6 @@ const schema = gql`
   }
 `;
 
-// We define all of the resolvers necessary for
-// the functionality in this file. These will be
-// deep merged with the other resolvers.
 const resolver = {
   Sensors: {
     locations(rootValue) {

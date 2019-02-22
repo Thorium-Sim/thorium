@@ -4,7 +4,7 @@ import fs from "fs";
 import cors from "cors";
 import path from "path";
 import chalk from "chalk";
-import { uploadAsset } from "../resolvers/assets";
+import uploadAsset from "../helpers/uploadAsset";
 
 import exportMission from "../imports/missions/export";
 import importMission from "../imports/missions/import";
