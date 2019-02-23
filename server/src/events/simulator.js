@@ -6,7 +6,7 @@ import uuid from "uuid";
 // Simulator
 App.on(
   "createSimulator",
-  ({ id, name, template, flightId, timeline, stationSet }) => {
+  ({ id = uuid.v4(), name, template, flightId, timeline, stationSet }) => {
     const simulator = new Classes.Simulator({
       id,
       name,

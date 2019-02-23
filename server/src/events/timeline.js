@@ -1,5 +1,6 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
+import uuid from "uuid";
 
 function getTimelineObject(simulatorId, missionId) {
   if (simulatorId) return App.simulators.find(s => s.id === simulatorId);
@@ -10,11 +11,15 @@ function getTimelineObject(simulatorId, missionId) {
 // Timeline
 App.on(
   "addTimelineStep",
-  ({ simulatorId, missionId, timelineStepId, name, description }) => {
+  ({ simulatorId, missionId, timelineStepId, name, description, cb }) => {
+    if (!timelineStepId) {
+      timelineStepId = uuid.v4();
+    }
     const object = getTimelineObject(simulatorId, missionId);
     object.addTimelineStep({ timelineStepId, name, description });
     pubsub.publish("missionsUpdate", App.missions);
     pubsub.publish("simulatorsUpdate", App.simulators);
+    cb(timelineStepId);
   }
 );
 App.on("removeTimelineStep", ({ simulatorId, missionId, timelineStepId }) => {
@@ -52,7 +57,7 @@ App.on(
     simulatorId,
     missionId,
     timelineStepId,
-    timelineItemId,
+    timelineItemId = uuid.v4(),
     timelineItem
   }) => {
     const object = getTimelineObject(simulatorId, missionId);

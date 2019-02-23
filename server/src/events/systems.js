@@ -298,6 +298,10 @@ App.on("fixSystem", ({ simulatorId, type, name }) => {
   sys && sys.repair();
   sendUpdate(sys);
 });
+App.on("generateDamageReport", ({ systemId, steps, cb }) => {
+  let sys = App.systems.find(s => s.id === systemId);
+  cb(sys.generateDamageReport(steps));
+});
 App.on("trainingMode", ({ simulatorId }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   sim.trainingMode(true);
@@ -362,7 +366,7 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
         title: `Damage report step validation rejected`,
         body: sys.name,
         color: "danger",
-        relevantCards: [ "DamageControl" ]
+        relevantCards: ["DamageControl"]
       })
     );
   } else {
@@ -412,7 +416,7 @@ App.on("validateDamageStep", ({ id }) => {
       title: `Damage report step validation accepted`,
       body: sys.name,
       color: "success",
-      relevantCards: [ "DamageControl" ]
+      relevantCards: ["DamageControl"]
     })
   );
   sendUpdate(sys);

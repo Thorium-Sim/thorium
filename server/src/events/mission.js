@@ -1,12 +1,13 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
-
+import uuid from "uuid";
 // Mission
-App.on("createMission", ({ id, name }) => {
+App.on("createMission", ({ id = uuid.v4(), name, cb }) => {
   const mission = new Classes.Mission({ id, name });
   App.missions.push(mission);
   pubsub.publish("missionsUpdate", App.missions);
+  cb(id);
 });
 App.on("removeMission", ({ missionId }) => {
   App.missions = App.missions.filter(m => m.id !== missionId);
