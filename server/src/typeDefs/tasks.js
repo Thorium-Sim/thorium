@@ -64,7 +64,9 @@ const schema = gql`
     ): String
   }
   extend type Mutation {
-    #Macro: Tasks: Add Task
+    """
+    Macro: Tasks: Add Task
+    """
     addTask(taskInput: TaskInput!): String
     verifyTask(taskId: ID!, dismiss: Boolean): String
     requestTaskVerify(id: ID!): String

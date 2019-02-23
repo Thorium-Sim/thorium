@@ -14,7 +14,9 @@ const schema = gql`
     actions(stationId: ID, clientId: ID): Action
   }
   extend type Mutation {
-    #Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.)
+    """
+    Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.)
+    """
     triggerAction(
       action: String!
       message: String

@@ -25,7 +25,9 @@ const schema = gql`
       simulators: [SimulatorInput!]!
       flightType: String
     ): String
-    #Macro: Flight: Reset Flight
+    """
+    Macro: Flight: Reset Flight
+    """
     resetFlight(flightId: ID!, full: Boolean): String
     deleteFlight(flightId: ID!): String
     pauseFlight(flightId: ID!): String

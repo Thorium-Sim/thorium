@@ -49,7 +49,6 @@ class CommandLine extends Component {
   showMsg = () => "Hello World";
 
   render() {
-    console.log(this.props);
     return (
       <Container
         fluid

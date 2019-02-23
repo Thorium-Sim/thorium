@@ -44,7 +44,9 @@ const schema = gql`
     clearTransportTargets(transporter: ID!): String
     setTransportCharge(transporter: ID!, charge: Float!): String
     completeTransport(transporter: ID!, target: ID!): String
-    #Macro: Transporters: Set Target Count
+    """
+    Macro: Transporters: Set Target Count
+    """
     setTransporterTargets(transporter: ID!, targets: Int!): String
     setTransporterChargeSpeed(id: ID!, chargeSpeed: Float!): String
   }

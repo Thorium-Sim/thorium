@@ -154,10 +154,14 @@ const schema = gql`
     removeSystemDamageTask(systemId: ID!, taskId: ID!): String
     updateSystemDamageTask(systemId: ID!, task: DamageTaskInput!): String
 
-    #Macro: Damage Control: Break system
+    """
+    Macro: Damage Control: Break system
+    """
     breakSystem(simulatorId: ID!, type: String!, name: String): String
 
-    #Macro: Damage Control: Fix system
+    """
+    Macro: Damage Control: Fix system
+    """
     fixSystem(simulatorId: ID!, type: String!, name: String): String
 
     setDamageStepValidation(id: ID!, validation: Boolean!): String

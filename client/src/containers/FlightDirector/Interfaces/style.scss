@@ -8,25 +8,25 @@
     //   overflow-x: visible;
     // }
   }
-  .macro-component {
-    display: flex;
-    flex-direction: column;
-    background-color: #333;
-    border: solid 2px #666;
-    max-width: 300px;
-    border-radius: 5px;
-    padding: 5px;
-  }
-  .content-container > div > div:first-of-type {
-    pointer-events: none;
-    textarea,
-    button,
-    input,
-    select,
-    label,
-    .file-container,
-    .rc-menu {
-      pointer-events: all;
-    }
+}
+.macro-component {
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+  border: solid 2px #666;
+  max-width: 300px;
+  border-radius: 5px;
+  padding: 5px;
+}
+.content-container > div > div:first-of-type {
+  pointer-events: none;
+  textarea,
+  button,
+  input,
+  select,
+  label,
+  .file-container,
+  .rc-menu {
+    pointer-events: all;
   }
 }

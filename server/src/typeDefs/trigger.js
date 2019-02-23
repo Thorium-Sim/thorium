@@ -28,10 +28,14 @@ const schema = gql`
       config: JSON
     ): String
 
-    #Macro: Triggers: Add trigger to simulator
+    """
+    Macro: Triggers: Add trigger to simulator
+    """
     addTriggerToSimulator(simulatorId: ID!, trigger: ID!): String
 
-    #Macro: Triggers: Remove trigger to simulator
+    """
+    Macro: Triggers: Remove trigger to simulator
+    """
     removeTriggerFromSimulator(simulatorId: ID!, trigger: ID!): String
   }
   extend type Subscription {

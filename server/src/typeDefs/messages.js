@@ -31,7 +31,9 @@ const schema = gql`
       group: String!
       state: Boolean!
     ): String
-    #Macro: Messaging: Send an inter-ship message
+    """
+    Macro: Messaging: Send an inter-ship message
+    """
     sendMessage(message: MessageInput!): String
   }
   extend type Subscription {

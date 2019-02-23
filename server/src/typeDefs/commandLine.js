@@ -36,9 +36,13 @@ const schema = gql`
       config: JSON
     ): String
     executeCommandLine(simulatorId: ID!, command: String!, arg: String): String
-    #Macro: Command Line: Add command line
+    """
+    Macro: Command Line: Add command line
+    """
     addCommandLineToSimulator(simulatorId: ID!, commandLine: ID!): String
-    #Macro: Command Line: Remove command line
+    """
+    Macro: Command Line: Remove command line
+    """
     removeCommandLineFromSimulator(simulatorId: ID!, commandLine: ID!): String
   }
   extend type Subscription {

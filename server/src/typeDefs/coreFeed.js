@@ -24,7 +24,9 @@ const schema = gql`
   }
   extend type Mutation {
     ignoreCoreFeed(id: ID): String
-    #Macro: Core: Set a timer on core (requires sync time enabled)
+    """
+    Macro: Core: Set a timer on core (requires sync time enabled)
+    """
     syncTimer(time: String, active: Boolean, simulatorId: ID!): String
   }
   extend type Subscription {

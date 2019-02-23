@@ -28,9 +28,13 @@ const schema = gql`
     objective(simulatorId: ID): [Objective]
   }
   extend type Mutation {
-    #Macro: Objective: Add Objective
+    """
+    Macro: Objective: Add Objective
+    """
     addObjective(objective: ObjectiveInput!): String
-    #Macro: Objective: Complete Objective
+    """
+    Macro: Objective: Complete Objective
+    """
     completeObjective(
       id: ID!
       title: String

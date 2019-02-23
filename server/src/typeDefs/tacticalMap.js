@@ -213,7 +213,9 @@ const schema = gql`
     ): String
     removeTacticalMapPath(mapId: ID!, layerId: ID!, pathId: ID!): String
 
-    #Macro: Viewscreen: Show Tactical Map
+    """
+    Macro: Viewscreen: Show Tactical Map
+    """
     showViewscreenTactical(mapId: ID!, secondary: Boolean): String
   }
   extend type Subscription {

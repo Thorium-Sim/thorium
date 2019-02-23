@@ -34,11 +34,15 @@ const schema = gql`
     libraryEntries(simulatorId: ID, type: String, all: Boolean): [LibraryEntry]
   }
   extend type Mutation {
-    #Macro: Library: Add Entry
+    """
+    Macro: Library: Add Entry
+    """
     addLibraryEntry(entry: LibraryInput!): String
     updateLibraryEntry(entry: LibraryInput!): String
 
-    #Macro: Library: Remove Entry
+    """
+    Macro: Library: Remove Entry
+    """
     removeLibraryEntry(entry: ID, slug: String): String
     importLibraryEntry(
       simulatorId: ID!

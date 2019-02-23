@@ -389,7 +389,7 @@ class Clients extends Component {
             }}
           >
             <h4>Clients</h4>
-            <table className="table table-striped table-hover table-sm client-table">
+            <table className="table table-striped table-sm client-table">
               <thead>
                 <tr>
                   <th>Client Name</th>
