@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Layouts from "../layouts";
 import Keyboard from "components/views/Keyboard";
+import InterfaceCard from "components/views/Interface";
 import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
@@ -96,6 +97,14 @@ const CardRenderer = props => {
       />
     );
   }
+  if (station.name.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+    return (
+      <InterfaceCard
+        interfaceId={station.name.replace("interface-id:", "")}
+        simulator={simulator}
+      />
+    );
+  }
   if (station.name === "Sound") {
     return <SoundPlayer simulator={simulator} />;
   }
@@ -142,23 +151,27 @@ export default class CardFrame extends Component {
     }
   }
   componentDidMount() {
-    this.cardChangeRequestSubscription =
-    subscribe("cardChangeRequest", payload => {
-      // Searching in order of priority, find a matching card by component (card
-      // names may have been changed to protect the innocent) then change to that card's name.
-      let found = false;
-      for(let i=0; i<payload.changeToCard.length; i++) {
-        let matchingCard = this.props.station.cards.find(c => c.component === payload.changeToCard[i]);
-        if(matchingCard) {
-          this.changeCard(matchingCard.name);
-          found = true;
-          break;
+    this.cardChangeRequestSubscription = subscribe(
+      "cardChangeRequest",
+      payload => {
+        // Searching in order of priority, find a matching card by component (card
+        // names may have been changed to protect the innocent) then change to that card's name.
+        let found = false;
+        for (let i = 0; i < payload.changeToCard.length; i++) {
+          let matchingCard = this.props.station.cards.find(
+            c => c.component === payload.changeToCard[i]
+          );
+          if (matchingCard) {
+            this.changeCard(matchingCard.name);
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          // TODO: See if we can open a relevant widget instead
         }
       }
-      if(!found) {
-        // TODO: See if we can open a relevant widget instead
-      }
-    });
+    );
   }
   componentWillUnmount() {
     // Unsubscribe

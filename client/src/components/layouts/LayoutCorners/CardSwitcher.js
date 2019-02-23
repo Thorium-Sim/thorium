@@ -26,10 +26,15 @@ class CardSwitcher extends Component {
   }
 }
 
+const spregex = /software-panel-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const intregex = /interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+
 const CardButton = props => {
-  const cardName = props.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+  const cardName = props.component.match(spregex)
     ? "SoftwarePanels"
-    : props.component;
+    : props.component.match(intregex)
+      ? "Interface"
+      : props.component;
   return (
     <div className="card-icon-item">
       <div

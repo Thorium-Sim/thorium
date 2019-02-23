@@ -69,6 +69,10 @@ const QUERY = gql`
       id
       name
     }
+    interfaces {
+      id
+      name
+    }
   }
 `;
 

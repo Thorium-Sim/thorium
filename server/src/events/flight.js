@@ -23,6 +23,7 @@ export const aspectList = [
   "objectives",
   "commandLine",
   "triggerGroups",
+  "interfaces",
   "tasks"
 ];
 
@@ -186,6 +187,23 @@ export function addAspects(template, sim, data = App) {
         simulatorId: sim.id
       };
       data.triggerGroups.push(new Classes.Trigger(trigger));
+      return id;
+    })
+    .filter(Boolean);
+
+  // And the interfaces
+  sim.interfaces = sim.interfaces
+    .map(c => {
+      const interfaceData = data.interfaces.find(s => s.id === c);
+      if (!interfaceData) return null;
+      const id = uuid.v4();
+      const interfaceObj = {
+        ...interfaceData,
+        templateId: interfaceData.id,
+        id,
+        simulatorId: sim.id
+      };
+      data.interfaces.push(new Classes.Interface(interfaceObj));
       return id;
     })
     .filter(Boolean);

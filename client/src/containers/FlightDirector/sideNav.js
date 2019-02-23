@@ -87,6 +87,11 @@ const makeLinks = () => {
       link: "/config/triggers"
     },
     {
+      name: "Interfaces Config",
+      icon: "clone",
+      link: "/config/interfaces"
+    },
+    {
       name: "Settings",
       icon: "cog",
       link: "/config/settings"

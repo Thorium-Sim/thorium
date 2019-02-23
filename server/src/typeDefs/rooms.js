@@ -77,10 +77,12 @@ const resolver = {
     rooms(root, { simulatorId, deck, name, role }) {
       // Include any rooms that are implied by docked ships
       let rooms = App.rooms.concat(
-        App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
-          ...d,
-          name: `${d.shipName || d.name} Loading`
-        }))
+        App.dockingPorts
+          .filter(d => d.deckId && d.docked)
+          .map(d => ({
+            ...d,
+            name: `${d.shipName || d.name} Loading`
+          }))
       );
       if (simulatorId) {
         rooms = rooms.filter(r => r.simulatorId === simulatorId);
