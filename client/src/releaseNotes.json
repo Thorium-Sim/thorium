@@ -1,4 +1,7 @@
 {
+  "1.2.0": {
+    "fixes": ["Fixes an issue where command line commands dont' work."]
+  },
   "1.1.17": {
     "fixes": [
       "Fixes an issue where servers can crash when flights are deleted.",
