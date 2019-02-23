@@ -1,5 +1,9 @@
 {
   "1.2.0": {
+    "features": [
+      "Updates external package dependencies to the latest version.",
+      "Improves the back-end developer experience so new developers can work on Thorium better."
+    ],
     "fixes": ["Fixes an issue where command line commands dont' work."]
   },
   "1.1.17": {

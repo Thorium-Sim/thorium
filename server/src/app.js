@@ -16,8 +16,8 @@ const snapshotName =
   process.env.NODE_ENV === "production"
     ? "snapshot.json"
     : process.env.NODE_ENV === "test"
-      ? "snapshot-test.json"
-      : "snapshot-dev.json";
+    ? "snapshot-test.json"
+    : "snapshot-dev.json";
 
 const store = new Store({
   name: "Thorium",
