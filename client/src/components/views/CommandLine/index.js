@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Terminal from "terminal-in-react";
+import { Container } from "reactstrap";
 import gql from "graphql-tag";
 import Tour from "helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
-
+import "./style.scss";
 const trainingSteps = [
   {
     selector: ".nothing",
@@ -48,7 +49,8 @@ class CommandLine extends Component {
 
   render() {
     return (
-      <div
+      <Container
+        fluid
         style={{
           display: "flex",
           justifyContent: "center",
@@ -140,7 +142,7 @@ Last login: ip-10-0-43-69.ec2.internal
 Type "help" to get a list of available commands`}
         />
         <Tour steps={trainingSteps} client={this.props.clientObj} />
-      </div>
+      </Container>
     );
   }
 }

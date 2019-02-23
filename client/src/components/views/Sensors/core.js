@@ -285,7 +285,7 @@ class SensorsCore extends Component {
         <div style={fieldStyle}>
           <Row style={{ flex: 1 }}>
             {sensor.history && (
-              <Col sm={4}>
+              <Col sm={4} style={{ height: "100%" }}>
                 <div className="scan-list">
                   {sensor.scans
                     .concat()

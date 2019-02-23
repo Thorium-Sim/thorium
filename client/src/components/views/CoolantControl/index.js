@@ -135,16 +135,13 @@ class CoolantControl extends Component {
                 if (a.type < b.type) return -1;
                 return 0;
               })
-              .map(
-                s =>
-                  console.log(s) || (
-                    <CoolantBar
-                      {...s}
-                      key={s.systemId}
-                      transferCoolant={this.transferCoolant.bind(this)}
-                    />
-                  )
-              )}
+              .map(s => (
+                <CoolantBar
+                  {...s}
+                  key={s.systemId}
+                  transferCoolant={this.transferCoolant.bind(this)}
+                />
+              ))}
           </div>
         </Row>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
