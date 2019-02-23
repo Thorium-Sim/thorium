@@ -4,7 +4,8 @@
       "Updates external package dependencies to the latest version.",
       "Improves the back-end developer experience so new developers can work on Thorium better.",
       "Add all existing macros to command line and triggers.",
-      "Add a notification explaining the alert condition cooldown."
+      "Add a notification explaining the alert condition cooldown.",
+      "Make it possible to allow crew members to check off their own objectives."
     ],
     "fixes": ["Fixes an issue where command line commands dont' work."]
   },

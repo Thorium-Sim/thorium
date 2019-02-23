@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Input, FormGroup, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -15,6 +15,7 @@ const OBJECTIVE_SUB = gql`
       station
       completed
       cancelled
+      crewComplete
     }
   }
 `;
@@ -25,7 +26,8 @@ const Objective = ({
   description,
   completed,
   cancelled,
-  client
+  client,
+  crewComplete
 }) => {
   const complete = (e, cancel) => {
     const completed = e.target ? e.target.checked : e;
@@ -62,6 +64,31 @@ const Objective = ({
           {title}
         </strong>
         <p>{description}</p>
+      </div>
+      <div>
+        <label>
+          <Mutation
+            mutation={gql`
+              mutation SetObjectiveCrewComplete(
+                $id: ID!
+                $crewComplete: Boolean!
+              ) {
+                objectiveSetCrewComplete(id: $id, crewComplete: $crewComplete)
+              }
+            `}
+          >
+            {action => (
+              <input
+                type="checkbox"
+                checked={crewComplete}
+                onChange={e =>
+                  action({ variables: { id, crewComplete: e.target.checked } })
+                }
+              />
+            )}
+          </Mutation>{" "}
+          Allow Crew Check Off
+        </label>
       </div>
     </div>
   );
@@ -149,6 +176,7 @@ const OBJECTIVE_QUERY = gql`
       station
       completed
       cancelled
+      crewComplete
     }
   }
 `;
