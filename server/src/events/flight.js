@@ -191,41 +191,44 @@ export function addAspects(template, sim, data = App) {
     .filter(Boolean);
 }
 // Flight
-App.on("startFlight", ({ id, name, simulators, flightType, context }) => {
-  // Loop through all of the simulators
-  const simIds = simulators.map(s => {
-    const template = Object.assign(
-      {},
-      App.simulators.find(sim => sim.id === s.simulatorId)
+App.on(
+  "startFlight",
+  ({ id = uuid.v4(), name, simulators, flightType, cb }) => {
+    // Loop through all of the simulators
+    const simIds = simulators.map(s => {
+      const template = Object.assign(
+        {},
+        App.simulators.find(sim => sim.id === s.simulatorId)
+      );
+      template.id = null;
+      const sim = new Classes.Simulator(template);
+      sim.template = false;
+      sim.templateId = s.simulatorId;
+      sim.mission = s.missionId;
+      sim.executedTimelineSteps = [];
+      const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
+      sim.stations = stationSet.stations.map(s => new Classes.Station(s));
+
+      sim.stationSet = stationSet.id;
+      sim.ship.bridgeCrew = stationSet.crewCount || 14;
+
+      App.simulators.push(sim);
+      addAspects(s, sim);
+
+      // Create exocomps for the simulator
+      App.handleEvent(
+        { simulatorId: sim.id, count: sim.exocomps },
+        "setSimulatorExocomps"
+      );
+      return sim.id;
+    });
+    App.flights.push(
+      new Classes.Flight({ id, name, simulators: simIds, flightType })
     );
-    template.id = null;
-    const sim = new Classes.Simulator(template);
-    sim.template = false;
-    sim.templateId = s.simulatorId;
-    sim.mission = s.missionId;
-    sim.executedTimelineSteps = [];
-    const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
-    sim.stations = stationSet.stations.map(s => new Classes.Station(s));
-
-    sim.stationSet = stationSet.id;
-    sim.ship.bridgeCrew = stationSet.crewCount || 14;
-
-    App.simulators.push(sim);
-    addAspects(s, sim);
-
-    // Create exocomps for the simulator
-    App.handleEvent(
-      { simulatorId: sim.id, count: sim.exocomps },
-      "setSimulatorExocomps"
-    );
-    return sim.id;
-  });
-  App.flights.push(
-    new Classes.Flight({ id, name, simulators: simIds, flightType })
-  );
-  pubsub.publish("flightsUpdate", App.flights);
-  context.callback && context.callback();
-});
+    pubsub.publish("flightsUpdate", App.flights);
+    cb && cb(id);
+  }
+);
 
 App.on("deleteFlight", ({ flightId }) => {
   const flight = App.flights.find(f => f.id === flightId);

@@ -108,9 +108,10 @@ App.on("denyTaskVerify", ({ id }) => {
   });
 });
 
-App.on("addTaskTemplate", ({ id, definition }) => {
+App.on("addTaskTemplate", ({ id = uuid.v4(), definition, cb }) => {
   App.taskTemplates.push(new Classes.TaskTemplate({ id, definition }));
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+  cb(id);
 });
 
 App.on("removeTaskTemplate", ({ id }) => {
