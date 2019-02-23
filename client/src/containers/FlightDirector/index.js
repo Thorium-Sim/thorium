@@ -13,3 +13,4 @@ export { default as Settings } from "./Settings";
 export { default as TaskTemplates } from "./TaskTemplates";
 export { default as CommandLineConfig } from "./CommandLineConfig";
 export { default as Triggers } from "./Triggers";
+export { default as Interfaces } from "./Interfaces";

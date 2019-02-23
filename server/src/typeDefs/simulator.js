@@ -38,6 +38,7 @@ const schema = gql`
     commandLines: [ID]
     triggers: [ID]
     triggersPaused: Boolean
+    interfaces: [ID]
     bridgeOfficerMessaging: Boolean
     hasPrinter: Boolean
     spaceEdventuresId: String
@@ -79,6 +80,7 @@ const schema = gql`
     updateSimulatorCommandLines(simulatorId: ID!, commandLines: [ID]!): String
     updateSimulatorTriggers(simulatorId: ID!, triggers: [ID]!): String
     setSimulatorTriggersPaused(simulatorId: ID!, paused: Boolean!): String
+    updateSimulatorInterfaces(simulatorId: ID!, interfaces: [ID]!): String
 
     setStepDamage(simulatorId: ID!, stepDamage: Boolean!): String
     setVerifyDamage(simulatorId: ID!, verifyStep: Boolean!): String

@@ -45,6 +45,7 @@ const CLIENT_CHANGE_QUERY = gql`
         name
         alertlevel
         layout
+        interfaces
         stations {
           name
         }
@@ -90,15 +91,17 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
           )}
           <optgroup label="Other Flights">
             {flights ? (
-              flights.filter(f => f.id !== flightId).map(f => {
-                return (
-                  <option key={`flight-${p.id}-${f.id}`} value={f.id}>
-                    {`${f.name}: ${DateTime.fromJSDate(
-                      new Date(f.date)
-                    ).toFormat("M/d/y hh:mma")}`}
-                  </option>
-                );
-              })
+              flights
+                .filter(f => f.id !== flightId)
+                .map(f => {
+                  return (
+                    <option key={`flight-${p.id}-${f.id}`} value={f.id}>
+                      {`${f.name}: ${DateTime.fromJSDate(
+                        new Date(f.date)
+                      ).toFormat("M/d/y hh:mma")}`}
+                    </option>
+                  );
+                })
             ) : (
               <option disabled>No Flights</option>
             )}
@@ -180,6 +183,38 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
                           {keyboard.map(k => (
                             <option key={k.id} value={`keyboard:${k.id}`}>
                               {k.name}
+                            </option>
+                          ))}
+                        </optgroup>
+                      </Fragment>
+                    );
+                  }}
+                </Query>
+                <Query
+                  query={gql`
+                    query Interfaces {
+                      interfaces {
+                        id
+                        name
+                      }
+                    }
+                  `}
+                >
+                  {({ loading, data: { interfaces } }) => {
+                    if (loading) return null;
+                    const simInterfaces = p.simulator.interfaces
+                      .map(i => interfaces.find(ii => ii.id === i))
+                      .filter(Boolean);
+                    if (simInterfaces.length === 0) {
+                      return null;
+                    }
+                    return (
+                      <Fragment>
+                        <option disabled>──────────</option>
+                        <optgroup label="Interfaces">
+                          {simInterfaces.map(i => (
+                            <option key={i.id} value={`interface-id:${i.id}`}>
+                              {i.name}
                             </option>
                           ))}
                         </optgroup>
@@ -443,6 +478,7 @@ const CLIENTS_QUERY = gql`
         name
         alertlevel
         layout
+        interfaces
         stations {
           name
         }

@@ -87,6 +87,11 @@ const makeLinks = () => {
       link: "/config/triggers"
     },
     {
+      name: "Interfaces Config",
+      icon: "clone",
+      link: "/config/interfaces"
+    },
+    {
       name: "Settings",
       icon: "cog",
       link: "/config/settings"
@@ -219,30 +224,27 @@ export const SideNavLink = withApollo(
           >
             {m.icon && <FontAwesome name={m.icon.replace("fa-", "")} />}{" "}
             {m.name}{" "}
-            {m.children &&
-              m.children.length > 0 && (
-                <FontAwesome
-                  name={open ? "chevron-down" : "chevron-left"}
-                  className="pull-right"
-                />
-              )}
-          </NavLink>
-          {m.children &&
-            m.children.length > 0 &&
-            open && (
-              <Nav vertical style={{ marginLeft: "20px" }}>
-                {m.children.concat().map(c => (
-                  <SideNavLink
-                    key={`sidemenu-${c.id || c.name}`}
-                    {...c}
-                    onClick={e => {
-                      c.onClick && c.onClick(m.client, e);
-                      m.onClick(e);
-                    }}
-                  />
-                ))}
-              </Nav>
+            {m.children && m.children.length > 0 && (
+              <FontAwesome
+                name={open ? "chevron-down" : "chevron-left"}
+                className="pull-right"
+              />
             )}
+          </NavLink>
+          {m.children && m.children.length > 0 && open && (
+            <Nav vertical style={{ marginLeft: "20px" }}>
+              {m.children.concat().map(c => (
+                <SideNavLink
+                  key={`sidemenu-${c.id || c.name}`}
+                  {...c}
+                  onClick={e => {
+                    c.onClick && c.onClick(m.client, e);
+                    m.onClick(e);
+                  }}
+                />
+              ))}
+            </Nav>
+          )}
         </NavItem>
       ) : null;
     }

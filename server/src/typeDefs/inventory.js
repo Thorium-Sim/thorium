@@ -126,10 +126,12 @@ const resolver = {
   InventoryItem: {
     roomCount(inventory) {
       const rooms = App.rooms.concat(
-        App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
-          ...d,
-          name: `${d.shipName || d.name} Loading`
-        }))
+        App.dockingPorts
+          .filter(d => d.deckId && d.docked)
+          .map(d => ({
+            ...d,
+            name: `${d.shipName || d.name} Loading`
+          }))
       );
       return Object.keys(inventory.roomCount).map(r => ({
         room:
@@ -161,10 +163,12 @@ const resolver = {
       if (deck) {
         const rooms = App.rooms
           .concat(
-            App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
-              ...d,
-              name: `${d.shipName || d.name} Loading`
-            }))
+            App.dockingPorts
+              .filter(d => d.deckId && d.docked)
+              .map(d => ({
+                ...d,
+                name: `${d.shipName || d.name} Loading`
+              }))
           )
           .filter(r => r.deckId === deck);
         inventory = inventory.map(i => {

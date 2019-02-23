@@ -151,6 +151,11 @@ App.on("updateSimulatorTriggers", ({ simulatorId, triggers }) => {
   simulator.updateTriggers(triggers);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("updateSimulatorInterfaces", ({ simulatorId, interfaces }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.updateInterfaces(interfaces);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setSimulatorTriggersPaused", ({ simulatorId, paused }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.setTriggersPaused(paused);

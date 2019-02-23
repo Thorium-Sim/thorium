@@ -54,3 +54,6 @@ export {
 export {
   default as assignSpaceEdventuresMission
 } from "./assignSpaceEdventuresMission";
+export {
+  default as toggleInterfaceObjectHidden
+} from "./toggleInterfaceObjectHidden";

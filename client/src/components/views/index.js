@@ -87,6 +87,7 @@ import DockingPorts from "./DockingPorts";
 import SubspaceField from "./SubspaceField";
 import Transwarp from "./Transwarp";
 import SpecializedDocking from "./SpecializedDocking";
+import Interface from "./Interface";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -260,7 +261,8 @@ const Views = {
   DockingPorts,
   SubspaceField,
   Transwarp,
-  SpecializedDocking
+  SpecializedDocking,
+  Interface
 };
 
 export const Widgets = {

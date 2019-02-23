@@ -48,10 +48,12 @@ const resolver = {
     rooms(deck) {
       return App.rooms
         .concat(
-          App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
-            ...d,
-            name: `${d.shipName || d.name} Loading`
-          }))
+          App.dockingPorts
+            .filter(d => d.deckId && d.docked)
+            .map(d => ({
+              ...d,
+              name: `${d.shipName || d.name} Loading`
+            }))
         )
         .filter(r => r.deckId === deck.id);
     },
