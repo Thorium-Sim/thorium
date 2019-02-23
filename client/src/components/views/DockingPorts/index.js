@@ -17,6 +17,10 @@ docked
 damage {
   damaged
 }
+position {
+  x
+  y
+}
 `;
 
 const QUERY = gql`

@@ -41,7 +41,8 @@ export default class DockingPort extends System {
     image,
     docked,
     direction,
-    deckId
+    deckId,
+    position
   }) {
     if (name || name === "") {
       this.name = name;
@@ -72,6 +73,9 @@ export default class DockingPort extends System {
     }
     if (deckId || deckId === false) {
       this.deckId = deckId;
+    }
+    if (position) {
+      this.position = position;
     }
   }
 }
