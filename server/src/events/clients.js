@@ -269,18 +269,22 @@ App.on(
         client.setSimulator(simulatorId);
         client.setStation(c.station.replace("mobile:", ""));
         // If the station name is 'Viewscreen', check for or create a viewscreen for the client
-        if (
-          c.station === "Viewscreen" &&
-          !App.viewscreens.find(
+        if (c.station === "Viewscreen") {
+          const vs = App.viewscreens.find(
             v => v.id === client.id && v.simulatorId === client.simulatorId
-          )
-        ) {
-          App.viewscreens.push(
-            new Viewscreen({
-              id: client.id,
-              simulatorId: client.simulatorId
-            })
           );
+          console.log(c);
+          if (!vs) {
+            App.viewscreens.push(
+              new Viewscreen({
+                id: client.id,
+                simulatorId: client.simulatorId,
+                secondary: c.secondary
+              })
+            );
+          } else {
+            vs.secondary = c.secondary;
+          }
         }
       });
     pubsub.publish("viewscreensUpdate", App.viewscreens);

@@ -6,7 +6,6 @@ import { graphql, withApollo, Query } from "react-apollo";
 import "./setConfig.scss";
 
 class SetConfig extends Component {
-  subscription = null;
   state = {};
   addSet = () => {
     const name = prompt("What is the name of the set?");
@@ -142,6 +141,27 @@ class SetConfig extends Component {
             c.stationSet.id === selectedStationSet
         ) || {};
     return clientSet.station || true;
+  };
+  updateSecondary = (e, clientId) => {
+    const { selectedSet } = this.state;
+    const mutation = gql`
+      mutation UpdateSet($id: ID!, $clientId: ID!, $secondary: Boolean) {
+        updateSetClient(
+          id: $id
+          client: { id: $clientId, secondary: $secondary }
+        )
+      }
+    `;
+    const variables = {
+      id: selectedSet,
+      clientId,
+      secondary: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ["Sets"]
+    });
   };
   render() {
     const { data } = this.props;
@@ -387,6 +407,22 @@ class SetConfig extends Component {
                           />
                           {s.id}
                         </label>
+                        {selectedStation === "Viewscreen" &&
+                          this.getCurrentClient(s.id).id && (
+                            <label>
+                              <Input
+                                checked={this.getCurrentClient(s.id).secondary}
+                                onChange={e =>
+                                  this.updateSecondary(
+                                    e,
+                                    this.getCurrentClient(s.id).id
+                                  )
+                                }
+                                type="checkbox"
+                              />
+                              <small>Secondary Viewscreen</small>
+                            </label>
+                          )}
                       </li>
                     ))}
                 </ul>
@@ -434,6 +470,7 @@ const SIMULATOR_QUERY = gql`
           name
         }
         station
+        secondary
       }
     }
     clients {

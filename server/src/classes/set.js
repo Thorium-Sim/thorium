@@ -30,11 +30,13 @@ class SetClient {
     this.simulatorId = params.simulatorId || null;
     this.stationSet = params.stationSet || null;
     this.station = params.station || null;
+    this.secondary = params.secondary || false;
   }
-  update({ clientId, simulatorId, stationSet, station }) {
+  update({ clientId, simulatorId, stationSet, station, secondary }) {
     if (clientId) this.clientId = clientId;
     if (simulatorId) this.simulatorId = simulatorId;
     if (stationSet) this.stationSet = stationSet;
     if (station) this.station = station;
+    if (secondary || secondary === false) this.secondary = secondary;
   }
 }

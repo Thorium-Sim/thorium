@@ -17,6 +17,7 @@ const schema = gql`
     simulator: Simulator
     stationSet: StationSet
     station: String
+    secondary: Boolean
   }
 
   input SetClientInput {
@@ -25,6 +26,7 @@ const schema = gql`
     simulatorId: ID
     stationSet: ID
     station: ID
+    secondary: Boolean
   }
   extend type Query {
     sets: [Set]
