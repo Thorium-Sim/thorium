@@ -11,7 +11,8 @@
       "Make it possible to specify a viewscreen as secondary in a set config.",
       "Make it possible to configure task macros as part of a task template.",
       "Make it so long range comms can be partially decoded if the waves aren't totally lined up.",
-      "Adds the ability to damage exocomps, including task report generation for exocomps."
+      "Adds the ability to damage exocomps, including task report generation for exocomps.",
+      "Adds a new core which shows thumbnails of the timeline items that change the viewscreen."
     ],
     "fixes": ["Fixes an issue where command line commands don't work."]
   },
