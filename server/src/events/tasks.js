@@ -137,14 +137,8 @@ App.on("setTaskTemplateReportTypes", ({ id, reportTypes }) => {
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
 });
 
-App.on("addTaskMacro", ({ id, macro }) => {
+App.on("setTaskTemplateMacros", ({ id, macros }) => {
   const task = App.taskTemplates.find(t => t.id === id);
-  task && task.addMacro(macro);
-  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
-});
-
-App.on("removeTaskMacro", ({ id, macroId }) => {
-  const task = App.taskTemplates.find(t => t.id === id);
-  task && task.removeMacro(macroId);
+  task && task.setMacros(macros);
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
 });

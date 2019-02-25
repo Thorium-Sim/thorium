@@ -24,7 +24,14 @@ const ConfigureTask = ({
   configureMacro
 }) => (
   <div style={{ display: "flex", flex: 1, height: "100%" }}>
-    <div style={{ flex: 3, height: "100%", overflowY: "auto" }}>
+    <div
+      style={{
+        flex: 3,
+        height: "100%",
+        overflowY: "auto",
+        paddingBottom: "30px"
+      }}
+    >
       Definitions
       <ListGroup>
         {Object.entries(definitionGroups).map(([key, value]) => (
@@ -66,7 +73,8 @@ const ConfigureTask = ({
               overflowY: "auto",
               height: "100%",
               overflowX: "hidden",
-              padding: "0 10px"
+              padding: "0 10px",
+              paddingBottom: "30px"
             }}
           >
             <div>
@@ -79,6 +87,9 @@ const ConfigureTask = ({
                     t => t.id === e.target.value
                   );
                   updateRequiredValues(template.values);
+                  template.macros &&
+                    template.macros.length &&
+                    updateMacros(template.macros);
                 }}
               >
                 <option value="none">Choose a Template</option>
@@ -194,12 +205,14 @@ const ConfigureTask = ({
                 handleChange={e => {
                   const { value: event } = e.target;
                   updateMacros(
-                    macros.map(({ __typename, ...rest }) => rest).concat({
-                      event,
-                      args: "{}",
-                      delay: 0,
-                      id: uuid.v4()
-                    })
+                    macros
+                      .map(({ __typename, ...rest }) => rest)
+                      .concat({
+                        event,
+                        args: "{}",
+                        delay: 0,
+                        id: uuid.v4()
+                      })
                   );
                 }}
               />

@@ -77,8 +77,7 @@ const schema = gql`
     renameTaskTemplate(id: ID!, name: String!): String
     setTaskTemplateValues(id: ID!, values: JSON!): String
     setTaskTemplateReportTypes(id: ID!, reportTypes: [String]!): String
-    addTaskMacro(id: ID!, macro: TimelineItemInput!): String
-    removeTaskMacro(id: ID!, macroId: ID!): String
+    setTaskTemplateMacros(id: ID!, macros: [TimelineItemInput]!): String
   }
   extend type Subscription {
     tasksUpdate(
