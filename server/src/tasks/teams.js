@@ -107,12 +107,14 @@ export default [
         .join("\n");
       const room = App.rooms.find(r => r.id === roomId);
       const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
+      const decks = App.decks.find(d => d.simulatorId === simulator.id);
+      const randomDeck = randomFromList(decks);
       const location =
         !room && !deck
-          ? "All Decks"
+          ? `Deck ${randomDeck ? randomDeck.number : 1}`
           : room
-            ? `${room.name}, Deck ${deck.number}`
-            : `Deck ${deck.number}`;
+          ? `${room.name}, Deck ${deck.number}`
+          : `Deck ${deck.number}`;
       const text = `Team Name: ${teamName}
 Location: ${location}
 Officers:
@@ -271,12 +273,14 @@ ${text}`,
       );
       const room = App.rooms.find(r => r.id === roomId);
       const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
+      const decks = App.decks.find(d => d.simulatorId === simulator.id);
+      const randomDeck = randomFromList(decks);
       const location =
         !room && !deck
-          ? "All Decks"
+          ? `Deck ${randomDeck ? randomDeck.number : 1}`
           : room
-            ? `${room.name}, Deck ${deck.number}`
-            : `Deck ${deck.number}`;
+          ? `${room.name}, Deck ${deck.number}`
+          : `Deck ${deck.number}`;
       const text = `Team Name: ${teamName}
 Location: ${location}
 Orders: ${orders}`;
@@ -367,12 +371,14 @@ ${text}`,
       );
       const room = App.rooms.find(r => r.id === roomId);
       const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
+      const decks = App.decks.find(d => d.simulatorId === simulator.id);
+      const randomDeck = randomFromList(decks);
       const location =
         !room && !deck
-          ? "All Decks"
+          ? `Deck ${randomDeck ? randomDeck.number : 1}`
           : room
-            ? `${room.name}, Deck ${deck.number}`
-            : `Deck ${deck.number}`;
+          ? `${room.name}, Deck ${deck.number}`
+          : `Deck ${deck.number}`;
       const text = `Team Name: ${teamName}
 Location: ${location}
 Orders: ${orders}`;

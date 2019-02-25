@@ -5,11 +5,13 @@ import uuid from "uuid";
 
 App.on(
   "generateTaskReport",
-  ({ simulatorId, systemId, name, type, stepCount }) => {
+  ({ simulatorId, systemId, name, type, stepCount, cb }) => {
     App.taskReports.push(
       new Classes.TaskReport({ simulatorId, systemId, name, type, stepCount })
     );
     pubsub.publish("taskReportUpdate", App.taskReports);
+
+    cb();
   }
 );
 

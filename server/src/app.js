@@ -112,7 +112,12 @@ class Events extends EventEmitter {
             try {
               this[key].push(new Classes[obj.class](obj));
             } catch (err) {
-              console.log({ message: "Undefined key in class", key });
+              console.log(err);
+              console.log({
+                message: "Undefined key in class",
+                key,
+                class: obj.class
+              });
             }
           }
         });

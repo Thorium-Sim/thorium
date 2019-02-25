@@ -160,8 +160,14 @@ class DamageControl extends Component {
         )
       }
     `;
+    const { systems = [], taskReports = [] } = this.props;
+    const system = systems.find(s => s.id === this.state.selectedSystem);
+
+    const taskReport = taskReports.find(
+      s => s.id === this.state.selectedSystem
+    );
     const variables = {
-      systemId: this.state.selectedSystem,
+      systemId: system ? system.id : taskReport && taskReport.system.id,
       code: this.state.codeEntry,
       station: this.props.station.name
     };

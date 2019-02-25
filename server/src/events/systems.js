@@ -111,7 +111,9 @@ App.on("updateSystemName", ({ systemId, name, displayName }) => {
 App.on("damageSystem", ({ systemId, report, destroyed, which = "default" }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
     if (!sys) return;
   }
   sys.break(report, destroyed, which);
@@ -120,7 +122,9 @@ App.on("damageSystem", ({ systemId, report, destroyed, which = "default" }) => {
 App.on("damageReport", ({ systemId, report }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   sys.damageReport(report);
   sendUpdate(sys);
@@ -128,7 +132,9 @@ App.on("damageReport", ({ systemId, report }) => {
 App.on("repairSystem", ({ systemId }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   sys.repair();
   sendUpdate(sys);
@@ -136,7 +142,9 @@ App.on("repairSystem", ({ systemId }) => {
 App.on("updateCurrentDamageStep", ({ systemId, step }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   sys.updateCurrentStep(step);
   sendUpdate(sys);
@@ -144,8 +152,11 @@ App.on("updateCurrentDamageStep", ({ systemId, step }) => {
 App.on("systemReactivationCode", ({ systemId, station, code }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
+  console.log(sys, systemId);
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,
@@ -181,7 +192,9 @@ App.on("changeSystemPowerLevels", ({ systemId, powerLevels }) => {
 App.on("requestDamageReport", ({ systemId }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   App.handleEvent(
     {
@@ -208,7 +221,9 @@ App.on("requestDamageReport", ({ systemId }) => {
 App.on("systemReactivationCodeResponse", ({ systemId, response }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   pubsub.publish("notify", {
     id: uuid.v4(),

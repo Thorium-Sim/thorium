@@ -31,6 +31,12 @@ export default class DockingPort extends System {
     // or smaller.`
     this.position = params.position || { x: 0, y: 0 };
   }
+  get displayName() {
+    return this.name;
+  }
+  set displayName(name) {
+    return;
+  }
   updateDockingPort({
     name,
     shipName,

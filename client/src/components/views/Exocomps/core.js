@@ -70,7 +70,7 @@ class ExocompsCore extends Component {
         />
         <Row>
           <Col sm={showHistory ? 6 : 12}>
-            <Table striped hover size="sm">
+            <Table striped size="sm">
               <thead>
                 <tr>
                   <th>#</th>
