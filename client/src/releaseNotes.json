@@ -9,7 +9,8 @@
       "Make it possible to specify the position of docking ports on the ship image when configuring them. The docking port positions appear on the docking port screen.",
       "Make it possible to specify screens for mobile devices in set configurations.",
       "Make it possible to specify a viewscreen as secondary in a set config.",
-      "Make it possible to configure task macros as part of a task template."
+      "Make it possible to configure task macros as part of a task template.",
+      "Make it so long range comms can be partially decoded if the waves aren't totally lined up."
     ],
     "fixes": ["Fixes an issue where command line commands dont' work."]
   },
