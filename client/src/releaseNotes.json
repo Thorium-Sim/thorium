@@ -6,7 +6,8 @@
       "Add all existing macros to command line and triggers.",
       "Add a notification explaining the alert condition cooldown.",
       "Make it possible to allow crew members to check off their own objectives.",
-      "Make it possible to specify the position of docking ports on the ship image when configuring them. The docking port positions appear on the docking port screen."
+      "Make it possible to specify the position of docking ports on the ship image when configuring them. The docking port positions appear on the docking port screen.",
+      "Make it possible to specify screens for mobile devices in set configurations."
     ],
     "fixes": ["Fixes an issue where command line commands dont' work."]
   },

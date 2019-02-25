@@ -153,6 +153,9 @@ class SetConfig extends Component {
       selectedStation
     } = this.state;
     const { clients, simulators, sets } = data;
+    const mobileScreens = clients
+      .reduce((prev, next) => prev.concat(next.cards), [])
+      .filter((a, i, arr) => arr.indexOf(a) === i);
     return (
       <Container fluid className="set-config">
         <h4>Set Config </h4>
@@ -255,104 +258,121 @@ class SetConfig extends Component {
           </Col>
           <Col className="flex-column">
             <h5>Station</h5>
-            {selectedSimulator &&
-              selectedStationSet && (
-                <Card className="flex-max auto-scroll">
-                  {simulators
-                    .find(s => s.id === selectedSimulator)
-                    .stationSets.find(s => s.id === selectedStationSet)
-                    .stations.map(s => (
-                      <li
-                        key={`station-${s.name}`}
-                        className={`list-group-item ${
-                          s.name === selectedStation ? "selected" : ""
-                        }`}
-                        onClick={() =>
-                          this.setState({ selectedStation: s.name })
-                        }
-                      >
-                        {s.name}
-                      </li>
-                    ))}
-                  <li
-                    key={`station-viewscreen`}
-                    className={`list-group-item ${
-                      selectedStation === "Viewscreen" ? "selected" : ""
-                    }`}
-                    onClick={() =>
-                      this.setState({ selectedStation: "Viewscreen" })
-                    }
-                  >
-                    Viewscreen
-                  </li>
-                  <li
-                    className={`list-group-item ${
-                      selectedStation === "Sound" ? "selected" : ""
-                    }`}
-                    onClick={() => this.setState({ selectedStation: "Sound" })}
-                  >
-                    Sound Player
-                  </li>
-                  <li
-                    key={`station-blackout`}
-                    className={`list-group-item ${
-                      selectedStation === "Blackout" ? "selected" : ""
-                    }`}
-                    onClick={() =>
-                      this.setState({ selectedStation: "Blackout" })
-                    }
-                  >
-                    Blackout
-                  </li>
-                  <Query
-                    query={gql`
-                      query Keyboards {
-                        keyboard {
-                          id
-                          name
-                        }
+            {selectedSimulator && selectedStationSet && (
+              <Card className="flex-max auto-scroll">
+                {simulators
+                  .find(s => s.id === selectedSimulator)
+                  .stationSets.find(s => s.id === selectedStationSet)
+                  .stations.map(s => (
+                    <li
+                      key={`station-${s.name}`}
+                      className={`list-group-item ${
+                        s.name === selectedStation ? "selected" : ""
+                      }`}
+                      onClick={() => this.setState({ selectedStation: s.name })}
+                    >
+                      {s.name}
+                    </li>
+                  ))}
+                <li
+                  key={`station-viewscreen`}
+                  className={`list-group-item ${
+                    selectedStation === "Viewscreen" ? "selected" : ""
+                  }`}
+                  onClick={() =>
+                    this.setState({ selectedStation: "Viewscreen" })
+                  }
+                >
+                  Viewscreen
+                </li>
+                <li
+                  className={`list-group-item ${
+                    selectedStation === "Sound" ? "selected" : ""
+                  }`}
+                  onClick={() => this.setState({ selectedStation: "Sound" })}
+                >
+                  Sound Player
+                </li>
+                <li
+                  key={`station-blackout`}
+                  className={`list-group-item ${
+                    selectedStation === "Blackout" ? "selected" : ""
+                  }`}
+                  onClick={() => this.setState({ selectedStation: "Blackout" })}
+                >
+                  Blackout
+                </li>
+                <Query
+                  query={gql`
+                    query Keyboards {
+                      keyboard {
+                        id
+                        name
                       }
-                    `}
-                  >
-                    {({ loading, data: { keyboard } }) => {
-                      if (loading || keyboard.length === 0) {
-                        return null;
+                    }
+                  `}
+                >
+                  {({ loading, data: { keyboard } }) => {
+                    if (loading || keyboard.length === 0) {
+                      return null;
+                    }
+                    return (
+                      <Fragment>
+                        <li>Keyboards</li>
+                        {keyboard.map(k => (
+                          <li
+                            key={k.id}
+                            className={`list-group-item ${
+                              selectedStation === `keyboard:${k.id}`
+                                ? "selected"
+                                : ""
+                            }`}
+                            onClick={() =>
+                              this.setState({
+                                selectedStation: `keyboard:${k.id}`
+                              })
+                            }
+                          >
+                            {k.name}
+                          </li>
+                        ))}
+                      </Fragment>
+                    );
+                  }}
+                </Query>
+                <Fragment>
+                  <li>Mobile</li>
+                  {mobileScreens.map(k => (
+                    <li
+                      key={k}
+                      className={`list-group-item ${
+                        selectedStation === `mobile:${k}` ? "selected" : ""
+                      }`}
+                      onClick={() =>
+                        this.setState({
+                          selectedStation: `mobile:${k}`
+                        })
                       }
-                      return (
-                        <Fragment>
-                          <li>Keyboards</li>
-                          {keyboard.map(k => (
-                            <li
-                              key={k.id}
-                              className={`list-group-item ${
-                                selectedStation === `keyboard:${k.id}`
-                                  ? "selected"
-                                  : ""
-                              }`}
-                              onClick={() =>
-                                this.setState({
-                                  selectedStation: `keyboard:${k.id}`
-                                })
-                              }
-                            >
-                              {k.name}
-                            </li>
-                          ))}
-                        </Fragment>
-                      );
-                    }}
-                  </Query>
-                </Card>
-              )}
+                    >
+                      {k}
+                    </li>
+                  ))}
+                </Fragment>
+              </Card>
+            )}
           </Col>
           <Col className="flex-column">
             <h5>Clients</h5>
-            {selectedSimulator &&
-              selectedStationSet &&
-              selectedStation && (
-                <Card className="flex-max auto-scroll">
-                  <ul style={{ padding: 0 }}>
-                    {clients.map(s => (
+            {selectedSimulator && selectedStationSet && selectedStation && (
+              <Card className="flex-max auto-scroll">
+                <ul style={{ padding: 0 }}>
+                  {clients
+                    .filter(s =>
+                      selectedStation.indexOf("mobile:") === -1
+                        ? !s.mobile
+                        : s.mobile
+                    )
+                    .map(s => (
                       <li key={s.id} className={`list-group-item`}>
                         <label>
                           <Input
@@ -369,9 +389,9 @@ class SetConfig extends Component {
                         </label>
                       </li>
                     ))}
-                  </ul>
-                </Card>
-              )}
+                </ul>
+              </Card>
+            )}
           </Col>
         </Row>
       </Container>
@@ -418,6 +438,8 @@ const SIMULATOR_QUERY = gql`
     }
     clients {
       id
+      cards
+      mobile
     }
   }
 `;

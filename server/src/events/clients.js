@@ -267,7 +267,7 @@ App.on(
         const client = App.clients.find(cl => c.clientId === cl.id);
         client.setFlight(flightId);
         client.setSimulator(simulatorId);
-        client.setStation(c.station);
+        client.setStation(c.station.replace("mobile:", ""));
         // If the station name is 'Viewscreen', check for or create a viewscreen for the client
         if (
           c.station === "Viewscreen" &&
