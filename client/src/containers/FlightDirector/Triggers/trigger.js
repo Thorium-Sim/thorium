@@ -18,6 +18,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import * as components from "./components";
 import "./style.scss";
+import MacroListMaker from "../macroListMaker";
 
 // I'm lazy
 const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -190,34 +191,42 @@ export default class Trigger extends Component {
               `}
             >
               {action => (
-                <DiagramProvider
-                  {...trigger}
-                  registeredComponents={components}
-                  onUpdate={({ components, connections, config, values }) => {
-                    const variables = { id: trigger.id };
-                    if (!compare(components, trigger.components))
-                      variables.components = components;
-                    if (!compare(connections, trigger.connections))
-                      variables.connections = connections;
-                    if (!compare(config, trigger.config))
-                      variables.config = config;
-                    if (!compare(values, trigger.values))
-                      variables.values = values;
-                    action({ variables });
-                  }}
-                >
-                  <Col sm={3} style={{ height: "100%" }}>
-                    <DiagramContext.Consumer>
-                      {({ selectedComponent }) =>
-                        selectedComponent ? <Config /> : <Library />
-                      }
-                    </DiagramContext.Consumer>
-                  </Col>
-                  <Col sm={6} style={{ height: "100%" }}>
-                    {" "}
-                    <Canvas />
-                  </Col>
-                </DiagramProvider>
+                <MacroListMaker>
+                  {eventList => (
+                    <DiagramProvider
+                      {...trigger}
+                      registeredComponents={{ ...components, ...eventList }}
+                      onUpdate={({
+                        components,
+                        connections,
+                        config,
+                        values
+                      }) => {
+                        const variables = { id: trigger.id };
+                        if (!compare(components, trigger.components))
+                          variables.components = components;
+                        if (!compare(connections, trigger.connections))
+                          variables.connections = connections;
+                        if (!compare(config, trigger.config))
+                          variables.config = config;
+                        if (!compare(values, trigger.values))
+                          variables.values = values;
+                        action({ variables });
+                      }}
+                    >
+                      <Col sm={3} style={{ height: "100%" }}>
+                        <DiagramContext.Consumer>
+                          {({ selectedComponent }) =>
+                            selectedComponent ? <Config /> : <Library />
+                          }
+                        </DiagramContext.Consumer>
+                      </Col>
+                      <Col sm={6} style={{ height: "100%" }}>
+                        <Canvas />
+                      </Col>
+                    </DiagramProvider>
+                  )}
+                </MacroListMaker>
               )}
             </Mutation>
           )}

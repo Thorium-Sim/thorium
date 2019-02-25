@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Terminal from "terminal-in-react";
 import { Container } from "reactstrap";
 import gql from "graphql-tag";
+import { withApollo } from "react-apollo";
 import Tour from "helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
 import "./style.scss";
@@ -147,4 +148,4 @@ Type "help" to get a list of available commands`}
   }
 }
 
-export default CommandLine;
+export default withApollo(CommandLine);

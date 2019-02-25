@@ -31,9 +31,13 @@ const schema = gql`
     setTractorBeamScanning(id: ID!, scanning: Boolean!): String
     setTractorBeamTargetLabel(id: ID!, label: String!): String
 
-    #Macro: Tractor Beam: Add Target
+    """
+    Macro: Tractor Beam: Add Target
+    """
     addTractorTarget(id: ID!, label: String): String
-    #Macro: Tractor Beam: Remove Target
+    """
+    Macro: Tractor Beam: Remove Target
+    """
     removeTractorTarget(id: ID!): String
   }
   extend type Subscription {

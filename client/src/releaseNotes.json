@@ -1,4 +1,21 @@
 {
+  "1.2.0": {
+    "features": [
+      "Updates external package dependencies to the latest version.",
+      "Improves the back-end developer experience so new developers can work on Thorium better.",
+      "Add all existing macros to command line and triggers.",
+      "Add a notification explaining the alert condition cooldown.",
+      "Make it possible to allow crew members to check off their own objectives.",
+      "Make it possible to specify the position of docking ports on the ship image when configuring them. The docking port positions appear on the docking port screen.",
+      "Make it possible to specify screens for mobile devices in set configurations.",
+      "Make it possible to specify a viewscreen as secondary in a set config.",
+      "Make it possible to configure task macros as part of a task template.",
+      "Make it so long range comms can be partially decoded if the waves aren't totally lined up.",
+      "Adds the ability to damage exocomps, including task report generation for exocomps.",
+      "Adds a new core which shows thumbnails of the timeline items that change the viewscreen."
+    ],
+    "fixes": ["Fixes an issue where command line commands don't work."]
+  },
   "1.1.17": {
     "fixes": [
       "Fixes an issue where servers can crash when flights are deleted.",

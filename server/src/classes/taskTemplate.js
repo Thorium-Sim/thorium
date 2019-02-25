@@ -33,11 +33,7 @@ export default class TaskTemplate {
   setReportTypes(reportTypes) {
     this.reportTypes = reportTypes || [];
   }
-  addMacro(macro) {
-    // event, args, delay
-    this.macros.push({ ...macro, id: uuid.v4() });
-  }
-  removeMacro(id) {
-    this.macros = this.macros.filter(m => m.id !== id);
+  setMacros(macros) {
+    this.macros = macros || [];
   }
 }

@@ -31,6 +31,12 @@ export default class DockingPort extends System {
     // or smaller.`
     this.position = params.position || { x: 0, y: 0 };
   }
+  get displayName() {
+    return this.name;
+  }
+  set displayName(name) {
+    return;
+  }
   updateDockingPort({
     name,
     shipName,
@@ -41,7 +47,8 @@ export default class DockingPort extends System {
     image,
     docked,
     direction,
-    deckId
+    deckId,
+    position
   }) {
     if (name || name === "") {
       this.name = name;
@@ -72,6 +79,9 @@ export default class DockingPort extends System {
     }
     if (deckId || deckId === false) {
       this.deckId = deckId;
+    }
+    if (position) {
+      this.position = position;
     }
   }
 }

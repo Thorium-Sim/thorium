@@ -33,8 +33,8 @@ const CardButton = props => {
   const cardName = props.component.match(spregex)
     ? "SoftwarePanels"
     : props.component.match(intregex)
-      ? "Interface"
-      : props.component;
+    ? "Interface"
+    : props.component;
   return (
     <div className="card-icon-item">
       <div

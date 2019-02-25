@@ -24,6 +24,7 @@ export default function actionHelper(
   };
   return {
     name,
+    hiddenInLibrary: true,
     category: "Actions",
     component: Component,
     outputs: [],

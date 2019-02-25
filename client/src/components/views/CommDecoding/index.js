@@ -18,7 +18,7 @@ import "react-rangeslider/lib/index.css";
 import Tour from "helpers/tourHelper";
 import DecodingCanvas from "./decodingCanvas";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-
+import Prando from "prando";
 import "./style.scss";
 
 const DECODING_SUB = gql`
@@ -113,15 +113,21 @@ class Decoding extends Component {
       // Deterministic function to figure out the char code. Char codes go from 32 to
       // 126 Get the adjuster
       decodedMessage = decodedMessage.split();
-      const adjuster =
-        ((Math.round(Math.sin(decodeProgress * a + f) * ra + rf) +
-          message.length) %
-          94) +
-        32;
+
       if (a === ra && f === rf) {
         decodedMessage[decodeProgress] = message[decodeProgress - 1];
       } else {
-        decodedMessage[decodeProgress] = String.fromCharCode(adjuster);
+        const adjuster =
+          ((Math.round(Math.sin(decodeProgress * a + f) * ra + rf) +
+            message.length) %
+            94) +
+          32;
+        let char = String.fromCharCode(adjuster);
+        // If it is partially decoded, reveal random characters based on how much is is decoded.
+        const diff =
+          Math.abs(a / 50 - ra / 50) / 2 + Math.abs(f / 50 - rf / 50) / 2;
+        if (this.rng.next() > diff) char = message[decodeProgress - 1];
+        decodedMessage[decodeProgress] = char;
       }
       this.setState({
         decodedMessage: decodedMessage.join(""),
@@ -245,18 +251,17 @@ class Decoding extends Component {
               >
                 {({ measureRef }) => (
                   <div ref={measureRef}>
-                    {this.state.dimensions &&
-                      selectedMessage && (
-                        <DecodingCanvas
-                          dimensions={this.state.dimensions}
-                          decodeProgress={this.state.decodeProgress}
-                          ra={selectedMessage.ra}
-                          rf={selectedMessage.rf}
-                          message={selectedMessage.message}
-                          a={this.state.a}
-                          f={this.state.f}
-                        />
-                      )}
+                    {this.state.dimensions && selectedMessage && (
+                      <DecodingCanvas
+                        dimensions={this.state.dimensions}
+                        decodeProgress={this.state.decodeProgress}
+                        ra={selectedMessage.ra}
+                        rf={selectedMessage.rf}
+                        message={selectedMessage.message}
+                        a={this.state.a}
+                        f={this.state.f}
+                      />
+                    )}
                   </div>
                 )}
               </Measure>
@@ -269,6 +274,7 @@ class Decoding extends Component {
                   color="secondary"
                   block
                   onClick={() => {
+                    this.rng = new Prando(selectedMessage.id);
                     this.setState(
                       {
                         decodedMessage: "",

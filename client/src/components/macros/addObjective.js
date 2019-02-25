@@ -25,6 +25,18 @@ export default ({ updateArgs, args: { objective = {} } }) => {
           )
         }
       />
+      <Label>Allow Crew Check Off</Label>
+      <Input
+        style={{ marginLeft: "20px" }}
+        type="checkbox"
+        defaultChecked={objective.crewComplete}
+        onChange={evt =>
+          updateArgs(
+            "objective",
+            Object.assign({}, objective, { crewComplete: evt.target.checked })
+          )
+        }
+      />
     </FormGroup>
   );
 };

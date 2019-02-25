@@ -33,6 +33,12 @@ ${queryData}
       name
       type
     }
+    exocomps(simulatorId:$simulatorId) {
+      id
+      damage {
+        damaged
+      }
+    }
   }
 `;
 const SUBSCRIPTION = gql`
@@ -47,7 +53,7 @@ class TaskReportCreator extends Component {
   state = { type: "default", name: "", stepCount: 8 };
   render() {
     const { type, systemId, name, stepCount } = this.state;
-    const { simulator, cancel, systems } = this.props;
+    const { simulator, cancel, systems, exocomps } = this.props;
     return (
       <div className="taskReport-creator">
         <p>Create New Task Report</p>
@@ -68,7 +74,13 @@ class TaskReportCreator extends Component {
           >
             <option value="nothing">Choose a System</option>
             {systems
-              .concat()
+              .concat(
+                exocomps.map((e, i) => ({
+                  ...e,
+                  type: "Exocomp",
+                  name: `Exocomp ${i + 1}`
+                }))
+              )
               .sort((a, b) => {
                 if (a.type > b.type) return 1;
                 if (a.type < b.type) return -1;
@@ -164,7 +176,7 @@ function typeLabel(type) {
 class TaskReportCore extends Component {
   state = {};
   render() {
-    const { simulator, systems, taskReport } = this.props;
+    const { simulator, systems, taskReport, exocomps } = this.props;
     const { creating, selectedReport } = this.state;
     const report = taskReport.find(t => t.id === selectedReport);
     return (
@@ -173,6 +185,7 @@ class TaskReportCore extends Component {
           <TaskReportCreator
             simulator={simulator}
             systems={systems}
+            exocomps={exocomps}
             cancel={() => this.setState({ creating: false })}
           />
         ) : (
@@ -186,41 +199,44 @@ class TaskReportCore extends Component {
                   .map(type => (
                     <Fragment key={`report-${type}`}>
                       <ListGroupItem disabled>{typeLabel(type)}</ListGroupItem>
-                      {taskReport.filter(t => t.type === type).map(t => (
-                        <ListGroupItem
-                          key={t.id}
-                          active={t.id === selectedReport}
-                          onClick={() =>
-                            this.setState({ selectedReport: t.id })
-                          }
-                          className={`${
-                            t.tasks.find(tt => tt.verifyRequested)
-                              ? "text-info"
-                              : ""
-                          } ${
-                            !t.tasks.find(tt => !tt.verified)
-                              ? "text-success"
-                              : ""
-                          }`}
-                        >
-                          <p>
-                            {t.name}{" "}
-                            {t.tasks.filter(v => v.verified).length <
-                            t.tasks.length
-                              ? `(${t.tasks.filter(v => v.verified).length + 1}/
+                      {taskReport
+                        .filter(t => t.type === type)
+                        .map(t => (
+                          <ListGroupItem
+                            key={t.id}
+                            active={t.id === selectedReport}
+                            onClick={() =>
+                              this.setState({ selectedReport: t.id })
+                            }
+                            className={`${
+                              t.tasks.find(tt => tt.verifyRequested)
+                                ? "text-info"
+                                : ""
+                            } ${
+                              !t.tasks.find(tt => !tt.verified)
+                                ? "text-success"
+                                : ""
+                            }`}
+                          >
+                            <p>
+                              {t.name}{" "}
+                              {t.tasks.filter(v => v.verified).length <
+                              t.tasks.length
+                                ? `(${t.tasks.filter(v => v.verified).length +
+                                    1}/
                             ${t.tasks.length})`
-                              : null}
-                          </p>
-                          <small>{t.system.name}</small>
-                        </ListGroupItem>
-                      ))}
+                                : null}
+                            </p>
+                            <small>{t.system.name}</small>
+                          </ListGroupItem>
+                        ))}
                     </Fragment>
                   ))}
               </ListGroup>
               <div className="instructions">
                 {report && (
                   <Fragment>
-                    <strong>{report.name}</strong>
+                    <strong>{console.log(report) || report.name}</strong>
                     <div className="button-area">
                       <Mutation
                         mutation={gql`
@@ -326,8 +342,8 @@ class TaskReportCore extends Component {
 const TaskReportData = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulator.id }}>
     {({ loading, data, subscribeToMore }) => {
-      const { taskReport, systems } = data;
-      if (loading || !taskReport || !systems) return null;
+      const { taskReport, systems, exocomps } = data;
+      if (loading || !taskReport || !systems || !exocomps) return null;
       return (
         <SubscriptionHelper
           subscribe={() =>
@@ -346,6 +362,7 @@ const TaskReportData = props => (
             {...props}
             taskReport={taskReport}
             systems={systems}
+            exocomps={exocomps}
           />
         </SubscriptionHelper>
       );

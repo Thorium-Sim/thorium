@@ -17,7 +17,6 @@ export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
       requireResolversForResolveType: false
     }
   });
-
   const graphqlOptions = {
     schema,
     engine: process.env.ENGINE_API_KEY,

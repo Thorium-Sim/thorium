@@ -14,6 +14,7 @@ const schema = gql`
     description: String
     completed: Boolean
     cancelled: Boolean
+    crewComplete: Boolean
   }
   input ObjectiveInput {
     id: ID
@@ -23,20 +24,26 @@ const schema = gql`
     description: String
     completed: Boolean
     cancelled: Boolean
+    crewComplete: Boolean
   }
   extend type Query {
     objective(simulatorId: ID): [Objective]
   }
   extend type Mutation {
-    #Macro: Objective: Add Objective
+    """
+    Macro: Objective: Add Objective
+    """
     addObjective(objective: ObjectiveInput!): String
-    #Macro: Objective: Complete Objective
+    """
+    Macro: Objective: Complete Objective
+    """
     completeObjective(
       id: ID!
       title: String
       state: Boolean
       cancel: Boolean
     ): String
+    objectiveSetCrewComplete(id: ID!, crewComplete: Boolean!): String
   }
   extend type Subscription {
     objectiveUpdate(simulatorId: ID): [Objective]

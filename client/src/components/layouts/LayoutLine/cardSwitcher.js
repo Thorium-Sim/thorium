@@ -19,8 +19,8 @@ class CardButton extends Component {
     const cardName = component.match(spregex)
       ? "SoftwarePanels"
       : component.match(intregex)
-        ? "Interface"
-        : component;
+      ? "Interface"
+      : component;
 
     return (
       <Fragment>

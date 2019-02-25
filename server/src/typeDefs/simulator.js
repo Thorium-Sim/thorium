@@ -51,23 +51,35 @@ const schema = gql`
     createSimulator(name: String!, template: Boolean): String
     removeSimulator(simulatorId: ID!): String
     triggerMacros(simulatorId: ID!, macros: [MacroInput]!): String
-    #Macro: Timeline: Auto-Advance Timeline Step (Use with Delay)
+    """
+    Macro: Timeline: Auto-Advance Timeline Step (Use with Delay)
+    """
     autoAdvance(simulatorId: ID!, prev: Boolean): String
-    #Macro: Flight: Start Training Mode
+    """
+    Macro: Flight: Start Training Mode
+    """
     trainingMode(simulatorId: ID!): String
 
-    #Macro: Simulator: Set Alert Condition Lock
+    """
+    Macro: Simulator: Set Alert Condition Lock
+    """
     setAlertConditionLock(simulatorId: ID!, lock: Boolean!): String
 
-    #Macro: Simulator: Rename Simulator
+    """
+    Macro: Simulator: Rename Simulator
+    """
     renameSimulator(simulatorId: ID!, name: String!): String
 
-    #Macro: Simulator: Change Simulator Layout
+    """
+    Macro: Simulator: Change Simulator Layout
+    """
     changeSimulatorLayout(simulatorId: ID!, layout: String!): String
 
     changeSimulatorCaps(simulatorId: ID!, caps: Boolean!): String
 
-    #Macro: Simulator: Change Alert Level
+    """
+    Macro: Simulator: Change Alert Level
+    """
     changeSimulatorAlertLevel(simulatorId: ID!, alertLevel: String!): String
 
     changeSimulatorExocomps(simulatorId: ID!, exocomps: Int!): String

@@ -25,12 +25,13 @@ function whichEvent({ clamps, compress, doors, docked }) {
   return null;
 }
 
-App.on("createDockingPort", ({ port }) => {
+App.on("createDockingPort", ({ port, cb }) => {
   const dockingPort = new Classes.DockingPort(port);
   App.dockingPorts.push(dockingPort);
   pubsub.publish("dockingUpdate", App.dockingPorts);
+  cb();
 });
-App.on("updateDockingPort", ({ port = {} }) => {
+App.on("updateDockingPort", ({ port = {}, cb }) => {
   const dockingPort = App.dockingPorts.find(d => {
     if (port.id) {
       return d.id === port.id;
@@ -47,7 +48,7 @@ App.on("updateDockingPort", ({ port = {} }) => {
   });
   dockingPort.updateDockingPort(port);
   pubsub.publish("dockingUpdate", App.dockingPorts);
-  if (!whichEvent(port)) return;
+  if (!whichEvent(port)) return cb();
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: dockingPort.simulatorId,
@@ -69,8 +70,10 @@ App.on("updateDockingPort", ({ port = {} }) => {
     },
     "addCoreFeed"
   );
+  cb();
 });
-App.on("removeDockingPort", ({ port }) => {
+App.on("removeDockingPort", ({ port, cb }) => {
   App.dockingPorts = App.dockingPorts.filter(d => d.id !== port);
   pubsub.publish("dockingUpdate", App.dockingPorts);
+  cb();
 });

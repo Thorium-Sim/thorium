@@ -115,7 +115,9 @@ const schema = gql`
     commAddSignal(id: ID!, commSignalInput: CommSignalInput!): String
     commUpdateSignal(id: ID!, commSignalInput: CommSignalInput!): String
 
-    #Macro: Short Range: Set Signals
+    """
+    Macro: Short Range: Set Signals
+    """
     commUpdateSignals(id: ID!, signals: [CommSignalInput]!): String
     commRemoveSignal(id: ID!, signalId: ID!): String
     commAddArrow(id: ID!, commArrowInput: CommArrowInput!): String
@@ -127,14 +129,18 @@ const schema = gql`
     cancelHail(id: ID!, core: Boolean): String
     connectHail(id: ID!): String
 
-    #Macro: Short Range: Add Signal
+    """
+    Macro: Short Range: Add Signal
+    """
     addShortRangeComm(
       simulatorId: ID!
       frequency: Float
       signalName: String
     ): String
 
-    #Macro: Short Range: Remove Signal
+    """
+    Macro: Short Range: Remove Signal
+    """
     removeShortRangeComm(
       simulatorId: ID!
       frequency: Float

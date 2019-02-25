@@ -42,7 +42,6 @@ App.on("setSpaceEdventuresToken", async ({ token, cb }) => {
       authorization: `Bearer ${token}`
     }
   });
-  console.log(center);
   if (center) {
     App.spaceEdventuresToken = token;
     cb(center);

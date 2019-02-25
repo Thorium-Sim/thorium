@@ -44,7 +44,9 @@ const schema = gql`
     renameInterfaceDevice(id: ID!, name: String!): String
     removeInterfaceDevice(id: ID!): String
     updateInterfaceDevice(id: ID!, width: Int, height: Int): String
-    #Macro: Interfaces: Set Object Hidden
+    """
+    Macro: Interfaces: Set Object Hidden
+    """
     toggleInterfaceObjectHidden(
       id: ID!
       objectId: ID!

@@ -248,7 +248,7 @@ App.on(
   }
 );
 
-App.on("deleteFlight", ({ flightId }) => {
+App.on("deleteFlight", ({ flightId, cb }) => {
   const flight = App.flights.find(f => f.id === flightId);
   // We need to remove all reference to this flight.
   // Loop over the simulators
@@ -270,9 +270,10 @@ App.on("deleteFlight", ({ flightId }) => {
   App.flights = App.flights.filter(f => f.id !== flightId);
   pubsub.publish("flightsUpdate", App.flights);
   pubsub.publish("clientChanged", App.clients);
+  cb();
 });
 
-App.on("resetFlight", ({ flightId, simulatorId, full }) => {
+App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
   const flight = App.flights.find(
     f => f.id === flightId || f.simulators.indexOf(simulatorId) > -1
   );
@@ -346,6 +347,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full }) => {
     pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
     pubsub.publish("simulatorsUpdate", App.simulators);
   });
+  cb();
 });
 App.on("pauseFlight", ({ flightId }) => {
   const flight = App.flights.find(f => f.id === flightId);

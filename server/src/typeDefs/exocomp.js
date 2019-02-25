@@ -16,6 +16,7 @@ const schema = gql`
     destination: System
     logs: [ExocompLog]
     difficulty: Float
+    damage: Damage
   }
 
   type ExocompLog {

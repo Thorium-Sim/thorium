@@ -165,6 +165,7 @@ import TaskReportCore from "./TaskReports/core";
 import SubspaceFieldCore from "./SubspaceField/core";
 import TranswarpCore from "./Transwarp/core";
 import SpecializedDockingCore from "./SpecializedDocking/core";
+import TimelineThumbnailCore from "./Timeline/thumbnailData";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -435,7 +436,8 @@ export const Cores = {
   TaskReportCore,
   SubspaceFieldCore,
   TranswarpCore,
-  SpecializedDockingCore
+  SpecializedDockingCore,
+  TimelineThumbnailCore
 };
 
 export default Views;

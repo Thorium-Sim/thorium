@@ -51,7 +51,9 @@ const schema = gql`
     longRangeCommunications(simulatorId: ID): [LRCommunications]
   }
   extend type Mutation {
-    #Macro: Long Range: Send Long Range Message
+    """
+    Macro: Long Range: Send Long Range Message
+    """
     sendLongRangeMessage(
       id: ID
       simulatorId: ID
@@ -74,13 +76,19 @@ const schema = gql`
     encryptLongRangeMessage(id: ID!, message: ID!): String
     setLongRangeSatellites(id: ID!, num: Int!): String
 
-    #Macro: Interception: Add Interception Signal
+    """
+    Macro: Interception: Add Interception Signal
+    """
     addInterceptionSignal(id: ID!): String
 
-    #Macro: Interception: Remove Interception Signal
+    """
+    Macro: Interception: Remove Interception Signal
+    """
     removeInterceptionSignal(id: ID!): String
 
-    #Macro: Long Range: Set preset messages
+    """
+    Macro: Long Range: Set preset messages
+    """
     setLongRangePresetMessages(
       id: ID
       simulatorId: ID

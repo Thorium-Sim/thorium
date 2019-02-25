@@ -14,7 +14,9 @@ const schema = gql`
 
     changeSystemDefaultPowerLevel(id: ID!, level: Int!): String
 
-    #Macro: Systems: Flux Power
+    """
+    Macro: Systems: Flux Power
+    """
     fluxSystemPower(
       id: ID
       all: Boolean

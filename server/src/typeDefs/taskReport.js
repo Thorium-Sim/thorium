@@ -2,6 +2,7 @@ import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
 import mutationHelper from "../helpers/mutationHelper";
+import getDamageSystem from "../helpers/getDamageSystem";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -43,7 +44,7 @@ const schema = gql`
 const resolver = {
   TaskReport: {
     system: taskReport => {
-      return App.systems.find(s => s.id === taskReport.systemId);
+      return getDamageSystem(taskReport.systemId);
     }
   },
   Query: {

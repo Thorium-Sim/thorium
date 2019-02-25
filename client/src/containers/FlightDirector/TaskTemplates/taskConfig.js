@@ -1,10 +1,24 @@
-import React from "react";
-import { Input } from "reactstrap";
-import { Mutation } from "react-apollo";
+import React, { useState } from "react";
+import { Input, Button } from "reactstrap";
+import { Mutation, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import ValueInput from "../../../components/views/Tasks/core/ValueInput";
+import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
+import EventName from "containers/FlightDirector/MissionConfig/EventName";
+import FontAwesome from "react-fontawesome";
+import uuid from "uuid";
+import MacroConfig from "../../../components/views/Macros/macroConfig";
 
-const TaskConfig = ({ id, name, values, definition, reportTypes = [] }) => {
+const TaskConfig = ({
+  id,
+  name,
+  values,
+  definition,
+  macros,
+  reportTypes = [],
+  client
+}) => {
+  const [configureMacro, setConfigureMacro] = useState(null);
   const updateReportTypes = (which, checked, action) => {
     const newReportTypes = checked
       ? reportTypes.concat(which)
@@ -113,7 +127,111 @@ const TaskConfig = ({ id, name, values, definition, reportTypes = [] }) => {
           ))
         }
       </Mutation>
+      <Mutation
+        mutation={gql`
+          mutation SetTaskMacro($id: ID!, $macros: [TimelineItemInput]!) {
+            setTaskTemplateMacros(id: $id, macros: $macros)
+          }
+        `}
+      >
+        {action => {
+          if (configureMacro) {
+            const update = ({ id: macroId, event, args, delay }) => {
+              action({
+                variables: {
+                  id,
+                  macros: macros.map(m =>
+                    m.id === macroId ? { ...m, event, args, delay } : m
+                  )
+                }
+              });
+            };
+            const macro = macros.find(c => c.id === configureMacro);
+            return (
+              <div className="macro-config">
+                <div style={{ flex: 1 }}>
+                  <label>Macro Config</label>
+                  <MacroConfig
+                    action={macro}
+                    updateAction={update}
+                    client={client}
+                  />
+                </div>
+                <Button
+                  size="sm"
+                  block
+                  color="success"
+                  onClick={() => setConfigureMacro(null)}
+                  style={{ marginBottom: "20px" }}
+                >
+                  Done Configuring Macro
+                </Button>
+              </div>
+            );
+          }
+          return (
+            <div>
+              <label>
+                Macros <small>Will be triggered when task is complete</small>
+              </label>
+              <EventPicker
+                className={"btn btn-sm btn-success"}
+                handleChange={e => {
+                  const { value: event } = e.target;
+                  action({
+                    variables: {
+                      id,
+                      macros: macros
+                        .map(({ __typename, ...rest }) => rest)
+                        .concat({
+                          event,
+                          args: "{}",
+                          delay: 0,
+                          id: uuid.v4()
+                        })
+                    }
+                  });
+                }}
+              />
+              {macros.map(m => (
+                <div
+                  key={m.id}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <span>
+                    <EventName id={m.event} label={m.event} />
+                  </span>{" "}
+                  <Button
+                    size="sm"
+                    color="warning"
+                    onClick={() => setConfigureMacro(m.id)}
+                  >
+                    Configure Macro
+                  </Button>{" "}
+                  <FontAwesome
+                    name="ban"
+                    className="text-danger"
+                    onClick={() =>
+                      action({
+                        variables: {
+                          id,
+                          macros: macros
+                            .map(({ __typename, ...rest }) => rest)
+                            .filter(mm => mm.id !== m.id)
+                        }
+                      })
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+          );
+        }}
+      </Mutation>
     </div>
   );
 };
-export default TaskConfig;
+export default withApollo(TaskConfig);

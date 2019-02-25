@@ -95,11 +95,15 @@ const schema = gql`
       id: ID!
       coordinates: StringCoordinatesInput
     ): String
-    #Macro: Targeting: Clear Targeting Classes
+    """
+    Macro: Targeting: Clear Targeting Classes
+    """
     clearAllTargetingContacts(id: ID!): String
     setTargetingRange(id: ID!, range: Float!): String
 
-    #Macro: Targeting: Set Targeting Classes
+    """
+    Macro: Targeting: Set Targeting Classes
+    """
     setTargetingClasses(id: ID!, classInput: [TargetClassInput]!): String
   }
   extend type Subscription {

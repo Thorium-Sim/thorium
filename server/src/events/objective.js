@@ -3,6 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 
 App.on("addObjective", args => {
+  console.log(args);
   const { objective, simulatorId } = args;
   const obj = new Classes.Objective(
     simulatorId ? Object.assign({}, objective, { simulatorId }) : objective
@@ -21,5 +22,11 @@ App.on("completeObjective", ({ id, title, cancel, simulatorId, state }) => {
   } else {
     obj && obj.complete();
   }
+  pubsub.publish("objectiveUpdate", App.objectives);
+});
+
+App.on("objectiveSetCrewComplete", ({ id, crewComplete }) => {
+  const obj = App.objectives.find(o => o.id === id);
+  obj.setCrewComplete(crewComplete);
   pubsub.publish("objectiveUpdate", App.objectives);
 });

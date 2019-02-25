@@ -5,6 +5,7 @@ import { withApollo, Query } from "react-apollo";
 import { Tooltip } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import { publish } from "helpers/pubsub";
 
 const queryData = `
 id
@@ -59,7 +60,14 @@ class AlertCondition extends Component {
     this.setState({ cooldown: true });
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => this.setState({ cooldown: false }), 5000);
-    if (this.state.cooldown) return;
+    if (this.state.cooldown) {
+      publish("triggerNotification", {
+        title: "Cannot trigger alert change.",
+        body: "Please wait a few seconds before changing the alert condition.",
+        color: "warning"
+      });
+      return;
+    }
     const mutation = gql`
       mutation AlertLevel($id: ID!, $level: String!) {
         changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $level)
@@ -122,7 +130,7 @@ class AlertCondition extends Component {
                 />
               </Label>
               <div className="button-container">
-                {[5, 4, 3, 2, 1].map(a => (
+                {["5", "4", "3", "2", "1"].map(a => (
                   <div
                     key={`alert-condition-${a}`}
                     className={`alert-button alert-${a}`}

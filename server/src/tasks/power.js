@@ -1,6 +1,7 @@
 import reportReplace from "../helpers/reportReplacer";
 import App from "../app";
 import { randomFromList } from "../classes/generic/damageReports/constants";
+import getDamageSystem from "../helpers/getDamageSystem";
 
 export default [
   {
@@ -52,9 +53,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "PowerDistribution")
       );
-      const system = App.systems.find(
-        s => s.id === sys || s.name === sys || s.displayName === sys
-      );
+      const system = getDamageSystem(sys);
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Remove all power from the ${system.displayName ||
@@ -129,9 +128,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "PowerDistribution")
       );
-      const system = App.systems.find(
-        s => s.id === sys || s.name === sys || s.displayName === sys
-      );
+      const system = getDamageSystem(sys);
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Restore power in the ${system.displayName ||
@@ -212,9 +209,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "PowerDistribution")
       );
-      const system = App.systems.find(
-        s => s.id === sys || s.name === sys || s.displayName === sys
-      );
+      const system = getDamageSystem(sys);
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Set the power level of the ${system.displayName ||

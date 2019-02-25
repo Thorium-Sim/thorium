@@ -41,7 +41,11 @@ export default ({ selectedSimulator, handleChange }) => (
         min="0"
         max="5"
         name="exocomps"
-        onChange={handleChange}
+        onChange={e =>
+          handleChange({
+            target: { name: "exocomps", value: parseInt(e.target.value) }
+          })
+        }
         defaultValue={selectedSimulator.exocomps}
       />{" "}
       {selectedSimulator.exocomps}

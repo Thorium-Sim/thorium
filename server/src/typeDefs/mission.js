@@ -35,6 +35,7 @@ const schema = gql`
   }
 
   input TimelineItemInput {
+    id: ID
     name: String
     type: String
     event: String

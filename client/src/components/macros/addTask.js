@@ -53,10 +53,10 @@ class TasksCore extends Component {
   state = {
     selectedDefinition: "nothing"
   };
-  updateTask = (key, value) => {
+  updateTask = data => {
     const { updateArgs, args = {} } = this.props;
     const { taskInput = {} } = args;
-    updateArgs("taskInput", { ...taskInput, [key]: value });
+    updateArgs("taskInput", { ...taskInput, ...data });
   };
   render() {
     const {
@@ -73,6 +73,7 @@ class TasksCore extends Component {
       values: requiredValues = {},
       macros = []
     } = taskInput;
+    console.log(taskInput);
     const { configureMacroId } = this.state;
     const definitionGroups = taskDefinitions
       .concat()
@@ -91,18 +92,18 @@ class TasksCore extends Component {
       <div
         className="core-tasks"
         style={{ display: "flex", flexDirection: "column", height: "100%" }}
+        key={this.state.forcedKey}
       >
         {configureMacro ? (
           <ConfigureMacro
             cancel={() => this.setState({ configureMacroId: null })}
             macro={configureMacro}
             update={action =>
-              this.updateTask(
-                "macros",
-                macros.map(
-                  m => (m.id === configureMacroId ? { ...m, ...action } : m)
+              this.updateTask({
+                macros: macros.map(m =>
+                  m.id === configureMacroId ? { ...m, ...action } : m
                 )
-              )
+              })
             }
             client={client}
           />
@@ -123,7 +124,7 @@ class TasksCore extends Component {
                             key={v.name}
                             active={v.name === selectedDefinition}
                             onClick={() =>
-                              this.updateTask("definition", v.name)
+                              this.updateTask({ definition: v.name })
                             }
                           >
                             {v.name}{" "}
@@ -154,7 +155,12 @@ class TasksCore extends Component {
                         const template = taskTemplates.find(
                           t => t.id === e.target.value
                         );
-                        this.updateTask("values", template.values);
+                        console.log(template);
+                        this.updateTask({
+                          values: template.values,
+                          macros: template.macros
+                        });
+                        this.setState({ forcedKey: Math.random() });
                       }}
                     >
                       <option value="none">Choose a Template</option>
@@ -187,9 +193,11 @@ class TasksCore extends Component {
                           value={requiredValues[v]}
                           placeholder={definition.valuesValue[v]}
                           onBlur={value =>
-                            this.updateTask("values", {
-                              ...requiredValues,
-                              [v]: value
+                            this.updateTask({
+                              values: {
+                                ...requiredValues,
+                                [v]: value
+                              }
                             })
                           }
                         />
@@ -253,15 +261,16 @@ class TasksCore extends Component {
                       className={"btn btn-sm btn-success"}
                       handleChange={e => {
                         const { value: event } = e.target;
-                        this.updateTask(
-                          "macros",
-                          macros.map(({ __typename, ...rest }) => rest).concat({
-                            event,
-                            args: "{}",
-                            delay: 0,
-                            id: uuid.v4()
-                          })
-                        );
+                        this.updateTask({
+                          macros: macros
+                            .map(({ __typename, ...rest }) => rest)
+                            .concat({
+                              event,
+                              args: "{}",
+                              delay: 0,
+                              id: uuid.v4()
+                            })
+                        });
                       }}
                     />
                     {macros.map(m => (
@@ -288,10 +297,9 @@ class TasksCore extends Component {
                           name="ban"
                           className="text-danger"
                           onClick={() =>
-                            this.updateTask(
-                              "macros",
-                              macros.filter(mm => mm.id !== m.id)
-                            )
+                            this.updateTask({
+                              macros: macros.filter(mm => mm.id !== m.id)
+                            })
                           }
                         />
                       </div>

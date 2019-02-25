@@ -2,51 +2,63 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import DockingPorts from "./dockingPorts";
+import Timeline from "./thumbnail";
 import "./style.scss";
 
 const queryData = `
 id
-name
-shipName
-clamps
-compress
-doors
-image
-docked
-damage {
-  damaged
-}
-position {
-  x
-  y
+currentTimelineStep
+executedTimelineSteps
+mission {
+  id
+  name
+  description
+  timeline {
+    id
+    name
+    order
+    description
+    timelineItems {
+      id
+      name
+      type
+      args
+      event
+      delay
+    }
+  }
 }
 `;
 
 const QUERY = gql`
-  query Docking($simulatorId: ID!) {
-    docking(simulatorId: $simulatorId, type: dockingport) {
+  query Timeline($simulatorId: String) {
+    missions {
+      id
+      name
+      description
+    }
+    simulators(id: $simulatorId) {
 ${queryData}
     }
   }
 `;
 const SUBSCRIPTION = gql`
-  subscription DockingUpdate($simulatorId: ID!) {
-    dockingUpdate(simulatorId: $simulatorId, type: dockingport) {
+  subscription TimelineUpdate($simulatorId: ID!) {
+    simulatorsUpdate(simulatorId: $simulatorId) {
 ${queryData}
     }
   }
 `;
 
-class DockingData extends Component {
+class TimelineData extends Component {
   state = {};
   render() {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { docking } = data;
-          if (loading || !docking) return null;
-          if (docking.length === 0) return <div>No Docking Ports</div>;
+          const { simulators, missions } = data;
+          if (loading || !simulators) return null;
+          if (!simulators[0]) return <div>No Timeline</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -55,13 +67,17 @@ class DockingData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      docking: subscriptionData.data.dockingUpdate
+                      simulators: subscriptionData.data.simulatorsUpdate
                     });
                   }
                 })
               }
             >
-              <DockingPorts {...this.props} dockingPorts={docking} />
+              <Timeline
+                {...this.props}
+                {...simulators[0]}
+                missions={missions}
+              />
             </SubscriptionHelper>
           );
         }}
@@ -69,4 +85,4 @@ class DockingData extends Component {
     );
   }
 }
-export default DockingData;
+export default TimelineData;

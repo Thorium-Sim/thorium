@@ -91,15 +91,17 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
           )}
           <optgroup label="Other Flights">
             {flights ? (
-              flights.filter(f => f.id !== flightId).map(f => {
-                return (
-                  <option key={`flight-${p.id}-${f.id}`} value={f.id}>
-                    {`${f.name}: ${DateTime.fromJSDate(
-                      new Date(f.date)
-                    ).toFormat("M/d/y hh:mma")}`}
-                  </option>
-                );
-              })
+              flights
+                .filter(f => f.id !== flightId)
+                .map(f => {
+                  return (
+                    <option key={`flight-${p.id}-${f.id}`} value={f.id}>
+                      {`${f.name}: ${DateTime.fromJSDate(
+                        new Date(f.date)
+                      ).toFormat("M/d/y hh:mma")}`}
+                    </option>
+                  );
+                })
             ) : (
               <option disabled>No Flights</option>
             )}
@@ -387,7 +389,7 @@ class Clients extends Component {
             }}
           >
             <h4>Clients</h4>
-            <table className="table table-striped table-hover table-sm client-table">
+            <table className="table table-striped table-sm client-table">
               <thead>
                 <tr>
                   <th>Client Name</th>

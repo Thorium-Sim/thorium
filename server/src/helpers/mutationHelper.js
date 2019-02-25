@@ -13,7 +13,7 @@ export default function mutationHelper(schema, exceptions = []) {
             App.handleEvent(
               {
                 ...args,
-                cb: (a, b, c) => console.log(next, a, b, c) || resolve(a)
+                cb: (a, b, c) => resolve(a)
               },
               next,
               context

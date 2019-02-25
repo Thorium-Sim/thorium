@@ -9,7 +9,13 @@ id
 name
 definition
 values
-reportTypes`;
+reportTypes
+macros {
+  id
+  event
+  args
+  delay
+}`;
 
 const TASK_QUERY = gql`query TaskTemplates{
   taskTemplates {

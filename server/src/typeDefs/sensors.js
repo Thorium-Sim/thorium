@@ -162,7 +162,9 @@ const schema = gql`
     sensorScanRequest(id: ID!, request: String!): String
     sensorScanResult(id: ID!, result: String!): String
 
-    #Macro: Sensors: Processed Data
+    """
+    Macro: Sensors: Processed Data
+    """
     processedData(
       id: ID
       simulatorId: ID
@@ -173,7 +175,9 @@ const schema = gql`
 
     sensorScanCancel(id: ID!): String
 
-    #Macro: Sensors: Scan Answers
+    """
+    Macro: Sensors: Scan Answers
+    """
     setPresetAnswers(
       simulatorId: ID!
       domain: String!
@@ -193,7 +197,9 @@ const schema = gql`
       contact: SensorContactInput!
     ): String
 
-    #Macro: Sensors: Set Army Sensor Contacts
+    """
+    Macro: Sensors: Set Army Sensor Contacts
+    """
     setArmyContacts(
       simulatorId: ID!
       domain: String!

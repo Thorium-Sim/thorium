@@ -10,8 +10,8 @@ class CardSwitcher extends Component {
     const iconName = currentCard.component.match(spregex)
       ? "SoftwarePanels"
       : currentCard.component.match(intregex)
-        ? "Interface"
-        : currentCard.component;
+      ? "Interface"
+      : currentCard.component;
     const { shown } = this.state;
     return (
       <div
@@ -35,8 +35,8 @@ class CardSwitcher extends Component {
               const cardName = c.component.match(spregex)
                 ? "SoftwarePanels"
                 : c.component.match(intregex)
-                  ? "Interface"
-                  : c.component;
+                ? "Interface"
+                : c.component;
               return (
                 <div
                   key={`card-${c.name}`}
