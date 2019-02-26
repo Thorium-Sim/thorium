@@ -14,7 +14,10 @@
       "Adds the ability to damage exocomps, including task report generation for exocomps.",
       "Adds a new core which shows thumbnails of the timeline items that change the viewscreen."
     ],
-    "fixes": ["Fixes an issue where command line commands don't work."]
+    "fixes": [
+      "Fixes an issue where command line commands don't work.",
+      "Fixes an issue with scrolling on the tactical maps screen."
+    ]
   },
   "1.1.17": {
     "fixes": [

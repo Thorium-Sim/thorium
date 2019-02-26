@@ -8,7 +8,6 @@ import { typeDefs, resolvers } from "../data";
 import "../events";
 import "../analytics";
 import "../processes";
-
 export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
   const schema = makeExecutableSchema({
     typeDefs,
@@ -19,8 +18,12 @@ export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
   });
   const graphqlOptions = {
     schema,
-    engine: process.env.ENGINE_API_KEY,
+    engine: {
+      apiKey: "service:Thorium:yZHa-qq7-_kVSpmsc9Ka1A"
+    },
     tracing: process.env.NODE_ENV !== "production",
+    introspection: true,
+    playground: true,
     uploads: false,
     context: ({ req }) => ({ clientId: req && req.headers.clientid })
   };
