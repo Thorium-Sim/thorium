@@ -358,6 +358,13 @@ export const Widgets = {
     name: "Sensors",
     size: "lg",
     color: "#6FEDC5"
+  },
+  commandLine: {
+    widget: CommandLine,
+    icon: "terminal",
+    name: "Command Line",
+    size: "lg",
+    color: "#5FFF5F"
   }
 };
 

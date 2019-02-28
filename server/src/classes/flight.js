@@ -114,8 +114,8 @@ export default class Flight {
       $simulators:[FlightSimulatorInput!]!
     ){
         flightRecordCreate(
-          flightId:$flightId, 
-          flightType:$flightType, 
+          thoriumFlightId:$flightId, 
+          flightTypeId:$flightType, 
           simulators:$simulators) 
         {
           id
@@ -127,8 +127,9 @@ export default class Flight {
         query: mutation,
         variables
       })
-      .catch(err => console.error(err));
-
+      .catch(err => {
+        console.error(err);
+      });
     // Remove the flight type so it is not transmitted again.
     this.flightType = null;
   }

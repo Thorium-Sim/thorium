@@ -3,12 +3,11 @@ import vanity from "./vanity";
 import http from "http";
 import ipaddress from "../helpers/ipaddress";
 import { typeDefs, resolvers } from "../data";
-
+import chalk from "chalk";
 // Load some other stuff
 import "../events";
 import "../analytics";
 import "../processes";
-
 export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
   const schema = makeExecutableSchema({
     typeDefs,
@@ -19,8 +18,12 @@ export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
   });
   const graphqlOptions = {
     schema,
-    engine: process.env.ENGINE_API_KEY,
+    engine: {
+      apiKey: "service:Thorium:yZHa-qq7-_kVSpmsc9Ka1A"
+    },
     tracing: process.env.NODE_ENV !== "production",
+    introspection: true,
+    playground: true,
     uploads: false,
     context: ({ req }) => ({ clientId: req && req.headers.clientid })
   };
@@ -31,6 +34,18 @@ export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
   apollo.installSubscriptionHandlers(httpServer);
 
   vanity();
+
+  app.on("error", err => {
+    if (err.code === "EADDRINUSE") {
+      console.log(
+        chalk.redBright(
+          "There is already a version of Thorium running on this computer. Shutting down..."
+        )
+      );
+      process.exit(0);
+    }
+  });
+
   httpServer.listen(GRAPHQL_PORT, () => {
     console.log(
       `

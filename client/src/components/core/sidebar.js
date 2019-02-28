@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./sidebar.scss";
 import { Cores } from "components/views";
 import { subscribe } from "helpers/pubsub";
+import CoreError from "./layouts/coreError";
 
 const defaultSidebar = [
   {
@@ -123,7 +124,11 @@ class Sidebar extends Component {
                   (() => {
                     const Comp = Cores[s.component];
                     if (!Comp) return null;
-                    return <Comp {...this.props} />;
+                    return (
+                      <CoreError>
+                        <Comp {...this.props} />
+                      </CoreError>
+                    );
                   })()}
               </div>
             );
