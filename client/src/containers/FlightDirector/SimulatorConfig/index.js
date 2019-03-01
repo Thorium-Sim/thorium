@@ -9,7 +9,7 @@ import * as Config from "./config";
 import "./SimulatorConfig.scss";
 
 const fragment = gql`
-  fragment SimulatorData on Simulator {
+  fragment SimulatorConfigData on Simulator {
     id
     name
     layout
@@ -172,7 +172,7 @@ const fragment = gql`
 const SIMULATOR_SUB = gql`
   subscription SimulatorsUpdate {
     simulatorsUpdate(template: true) {
-      ...SimulatorData
+      ...SimulatorConfigData
     }
   }
   ${fragment}
@@ -303,7 +303,7 @@ class SimulatorConfig extends Component {
 const SIMULATOR_QUERY = gql`
   query Simulators($simulatorId: String!) {
     simulators(id: $simulatorId) {
-      ...SimulatorData
+      ...SimulatorConfigData
     }
   }
   ${fragment}

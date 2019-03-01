@@ -6,7 +6,7 @@ import DilithiumStress from "./dilithiumStress";
 import "./style.scss";
 
 const fragment = gql`
-  fragment ReactorData on Reactor {
+  fragment DilithiumData on Reactor {
     id
     alphaLevel
     betaLevel
@@ -18,7 +18,7 @@ const fragment = gql`
 const QUERY = gql`
   query Template($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
-      ...ReactorData
+      ...DilithiumData
     }
   }
   ${fragment}
@@ -26,7 +26,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
-      ...ReactorData
+      ...DilithiumData
     }
   }
   ${fragment}

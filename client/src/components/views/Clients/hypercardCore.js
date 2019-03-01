@@ -9,7 +9,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragment = gql`
-  fragment ClientData on Client {
+  fragment HypercardData on Client {
     id
     station {
       name
@@ -21,7 +21,7 @@ const fragment = gql`
 const QUERY = gql`
   query Clients($simulatorId: ID!) {
     clients(simulatorId: $simulatorId) {
-      ...ClientData
+      ...HypercardData
     }
   }
   ${fragment}
@@ -29,7 +29,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
-      ...ClientData
+      ...HypercardData
     }
   }
   ${fragment}

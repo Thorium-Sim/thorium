@@ -6,7 +6,7 @@ import VideoViewscreen from "./videoViewscreen";
 import "./style.scss";
 
 const fragment = gql`
-  fragment ViewscreenData on Viewscreen {
+  fragment ViewscreenViewData on Viewscreen {
     id
     name
     data
@@ -20,7 +20,7 @@ const fragment = gql`
 const QUERY = gql`
   query Viewscreens($simulatorId: ID!) {
     viewscreens(simulatorId: $simulatorId) {
-      ...ViewscreenData
+      ...ViewscreenViewData
     }
   }
   ${fragment}
@@ -28,7 +28,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription ViewscreensUpdate($simulatorId: ID!) {
     viewscreensUpdate(simulatorId: $simulatorId) {
-      ...ViewscreenData
+      ...ViewscreenViewData
     }
   }
   ${fragment}

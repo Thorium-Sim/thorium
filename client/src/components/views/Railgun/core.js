@@ -6,8 +6,8 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragments = {
-  railgunData: gql`
-    fragment RailgunData on Railgun {
+  RailgunCoreData: gql`
+    fragment RailgunCoreData on Railgun {
       id
       ammo
       maxAmmo
@@ -19,17 +19,17 @@ const fragments = {
 const QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
-      ...RailgunData
+      ...RailgunCoreData
     }
   }
-  ${fragments.railgunData}
+  ${fragments.RailgunCoreData}
 `;
 const SUBSCRIPTION = gql`
   subscription RailgunUpdate($simulatorId: ID!) {
     railgunUpdate(simulatorId: $simulatorId) {
-      ...RailgunData
+      ...RailgunCoreData
     }
-    ${fragments.railgunData}
+    ${fragments.RailgunCoreData}
   }
 `;
 
@@ -101,7 +101,7 @@ const RailgunCore = ({ id, ammo, maxAmmo, availableAmmo }) => {
   );
 };
 
-const RailgunData = props => (
+const RailgunCoreData = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulator.id }}>
     {({ loading, data, subscribeToMore }) => {
       const { railgun } = data;
@@ -127,4 +127,4 @@ const RailgunData = props => (
     }}
   </Query>
 );
-export default RailgunData;
+export default RailgunCoreData;

@@ -14,7 +14,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Query, Mutation } from "react-apollo";
 //import FontAwesome from "react-fontawesome";
 const fragment = gql`
-  fragment TaskTemplateData on TaskTemplate {
+  fragment TaskTemplateConfigData on TaskTemplate {
     id
     name
     definition
@@ -26,7 +26,7 @@ const fragment = gql`
 const SUB = gql`
   subscription TaskTemplatesUpdate {
     taskTemplatesUpdate {
-      ...TaskTemplateData
+      ...TaskTemplateConfigData
     }
   }
   ${fragment}
@@ -35,7 +35,7 @@ const SUB = gql`
 const QUERY = gql`
   query TaskDefinitions {
     taskTemplates {
-      ...TaskTemplateData
+      ...TaskTemplateConfigData
     }
     taskDefinitions {
       id

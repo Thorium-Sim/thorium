@@ -6,7 +6,7 @@ import Timeline from "./timeline";
 import "./style.scss";
 
 const fragment = gql`
-  fragment SimulatorData on Simulator {
+  fragment TimelineData on Simulator {
     id
     currentTimelineStep
     executedTimelineSteps
@@ -40,7 +40,7 @@ const QUERY = gql`
       description
     }
     simulators(id: $simulatorId) {
-      ...SimulatorData
+      ...TimelineData
     }
   }
   ${fragment}
@@ -48,7 +48,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription TimelineUpdate($simulatorId: ID!) {
     simulatorsUpdate(simulatorId: $simulatorId) {
-      ...SimulatorData
+      ...TimelineData
     }
   }
   ${fragment}

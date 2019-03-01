@@ -25,7 +25,7 @@ function distance3d(coord2, coord1) {
 
 const fragments = {
   contactFragment: gql`
-    fragment ContactData on SensorContact {
+    fragment ProbeScienceCoreData on SensorContact {
       id
       location {
         x
@@ -52,7 +52,7 @@ const fragments = {
     }
   `,
   probesFragment: gql`
-    fragment ProbesData on Probes {
+    fragment ProbeScienceCoreData on Probes {
       id
       scienceTypes {
         id
@@ -79,7 +79,7 @@ const fragments = {
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
-      ...ProbesData
+      ...ProbeScienceCoreData
     }
   }
   ${fragments.probesFragment}
@@ -88,13 +88,13 @@ const PROBES_SUB = gql`
 const QUERY = gql`
   query Particles($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, type: "burst") {
-      ...ContactData
+      ...ProbeScienceCoreData
     }
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
     }
     probes(simulatorId: $simulatorId) {
-      ...ProbesData
+      ...ProbeScienceCoreData
     }
   }
   ${fragments.probesFragment}
@@ -103,7 +103,7 @@ const QUERY = gql`
 const CONTACTS_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "burst") {
-      ...ContactData
+      ...ProbeScienceCoreData
     }
   }
   ${fragments.contactFragment}

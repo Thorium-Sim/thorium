@@ -9,7 +9,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 const layouts = LayoutList;
 
 const fragment = gql`
-  fragment SimulatorData on Simulator {
+  fragment ShipData on Simulator {
     id
     name
     layout
@@ -27,7 +27,7 @@ const fragment = gql`
 const SHIP_CORE_SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
-      ...SimulatorData
+      ...ShipData
     }
   }
   ${fragment}
@@ -319,7 +319,7 @@ class ShipCore extends Component {
 const SHIP_CORE_QUERY = gql`
   query Ship($simulatorId: String) {
     simulators(id: $simulatorId) {
-      ...SimulatorData
+      ...ShipData
     }
   }
   ${fragment}

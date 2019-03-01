@@ -6,7 +6,7 @@ import SpecializedDocking from "./specializedDocking";
 import "./style.scss";
 
 const fragment = gql`
-  fragment DockingData on DockingPort {
+  fragment SpecializedDockingData on DockingPort {
     id
     name
     clamps
@@ -33,7 +33,7 @@ const fragment = gql`
 const QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: specialized) {
-      ...DockingData
+      ...SpecializedDockingData
     }
   }
   ${fragment}
@@ -41,13 +41,13 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: specialized) {
-      ...DockingData
+      ...SpecializedDockingData
     }
   }
   ${fragment}
 `;
 
-class SpecializedDockingData extends Component {
+class SpecializedSpecializedDockingData extends Component {
   state = {};
   render() {
     return (
@@ -78,4 +78,4 @@ class SpecializedDockingData extends Component {
     );
   }
 }
-export default SpecializedDockingData;
+export default SpecializedSpecializedDockingData;

@@ -8,7 +8,7 @@ import PatientControls from "./PatientControls";
 import "../style.scss";
 
 const fragment = gql`
-  fragment SickbayData on Sickbay {
+  fragment SickbayCoreData on Sickbay {
     id
     bunks {
       id
@@ -47,7 +47,7 @@ const fragment = gql`
 const QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
-      ...SickbayData
+      ...SickbayCoreData
     }
   }
   ${fragment}
@@ -55,7 +55,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
-      ...SickbayData
+      ...SickbayCoreData
     }
   }
   ${fragment}
@@ -109,7 +109,7 @@ class SickbayCore extends Component {
   }
 }
 
-const SickbayData = props => (
+const SickbayCoreData = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulator.id }}>
     {({ loading, data, subscribeToMore }) => {
       const { sickbay } = data;
@@ -135,4 +135,4 @@ const SickbayData = props => (
     }}
   </Query>
 );
-export default SickbayData;
+export default SickbayCoreData;

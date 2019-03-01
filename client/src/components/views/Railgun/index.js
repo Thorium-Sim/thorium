@@ -23,7 +23,7 @@ const fragments = {
     }
   `,
   contactFragment: gql`
-    fragment ContactData on SensorContact {
+    fragment RailgunContactData on SensorContact {
       id
       location {
         x
@@ -55,7 +55,7 @@ const QUERY = gql`
       ...RailgunData
     }
     sensorContacts(simulatorId: $simulatorId, type: "projectile") {
-      ...ContactData
+      ...RailgunContactData
     }
   }
   ${fragments.railgunFragment}
@@ -73,7 +73,7 @@ const SUBSCRIPTION = gql`
 const CONTACTS_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "projectile") {
-      ...ContactData
+      ...RailgunContactData
     }
   }
   ${fragments.contactFragment}

@@ -6,7 +6,7 @@ import { InputField, OutputField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const fragment = gql`
-  fragment ReactorData on Reactor {
+  fragment PowerData on Reactor {
     id
     type
     model
@@ -18,7 +18,7 @@ const fragment = gql`
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
-      ...ReactorData
+      ...PowerData
     }
   }
   ${fragment}
@@ -397,7 +397,7 @@ class DamageControlCore extends Component {
 const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
     reactors(simulatorId: $simulatorId) {
-      ...ReactorData
+      ...PowerData
     }
     systems(simulatorId: $simulatorId) {
       id

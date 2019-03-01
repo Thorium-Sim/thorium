@@ -9,7 +9,7 @@ import Statistics from "./Statistics";
 
 const fragments = {
   taskFragment: gql`
-    fragment TaskData on Task {
+    fragment TaskCoreData on Task {
       id
       verified
       dismissed
@@ -22,7 +22,7 @@ const fragments = {
     }
   `,
   taskTemplateFragment: gql`
-    fragment TaskTemplateData on TaskTemplate {
+    fragment TaskTemplateCoreData on TaskTemplate {
       id
       name
       definition
@@ -40,10 +40,10 @@ const fragments = {
 const QUERY = gql`
   query Tasks($simulatorId: ID!) {
     tasks(simulatorId: $simulatorId) {
-      ...TaskData
+      ...TaskCoreData
     }
     taskTemplates {
-      ...TaskTemplateData
+      ...TaskTemplateCoreData
     }
   }
   ${fragments.taskFragment}
@@ -52,7 +52,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription TasksUpdate($simulatorId: ID!) {
     tasksUpdate(simulatorId: $simulatorId) {
-      ...TaskData
+      ...TaskCoreData
     }
   }
   ${fragments.taskFragment}
@@ -61,7 +61,7 @@ const SUBSCRIPTION = gql`
 const TEMPLATE_SUB = gql`
   subscription TaskTemplatesUpdate {
     taskTemplatesUpdate {
-      ...TaskTemplateData
+      ...TaskTemplateCoreData
     }
   }
   ${fragments.taskTemplateFragment}

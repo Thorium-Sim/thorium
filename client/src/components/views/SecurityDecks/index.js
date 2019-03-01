@@ -63,7 +63,7 @@ const fragments = {
     }
   `,
   taskFragment: gql`
-    fragment TaskData on Task {
+    fragment SecurityTaskData on Task {
       id
       verified
       instructions
@@ -86,7 +86,7 @@ const DECK_SUB = gql`
 const SUBSCRIPTION = gql`
   subscription TasksUpdate($simulatorId: ID!, $definitions: [String!]) {
     tasksUpdate(simulatorId: $simulatorId, definitions: $definitions) {
-      ...TaskData
+      ...SecurityTaskData
     }
   }
   ${fragments.taskFragment}
@@ -370,7 +370,7 @@ const DECK_QUERY = gql`
       ...DeckData
     }
     tasks(simulatorId: $simulatorId, definitions: $definitions) {
-      ...TaskData
+      ...SecurityTaskData
     }
   }
   ${fragments.taskFragment}

@@ -6,7 +6,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragment = gql`
-  fragment DockingData on DockingPort {
+  fragment DockingCoreData on DockingPort {
     id
     name
     shipName
@@ -24,7 +24,7 @@ const fragment = gql`
 const QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: dockingport) {
-      ...DockingData
+      ...DockingCoreData
     }
   }
   ${fragment}
@@ -32,7 +32,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: dockingport) {
-      ...DockingData
+      ...DockingCoreData
     }
   }
   ${fragment}

@@ -24,7 +24,7 @@ const fragments = {
     }
   `,
   transwarpFragment: gql`
-    fragment TranswarpData on Transwarp {
+    fragment TranswarpCoreData on Transwarp {
       id
       quad1 {
         ...CoreData
@@ -50,7 +50,7 @@ const fragments = {
 const QUERY = gql`
   query Transwarp($simulatorId: ID!) {
     transwarp(simulatorId: $simulatorId) {
-      ...TranswarpData
+      ...TranswarpCoreData
     }
   }
   ${fragments.coreData}
@@ -59,7 +59,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription TranswarpUpdate($simulatorId: ID!) {
     transwarpUpdate(simulatorId: $simulatorId) {
-      ...TranswarpData
+      ...TranswarpCoreData
     }
   }
   ${fragments.coreData}

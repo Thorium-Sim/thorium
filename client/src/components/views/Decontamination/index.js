@@ -6,7 +6,7 @@ import Decon from "./decon";
 import "./style.scss";
 
 const fragment = gql`
-  fragment SickbayData on Sickbay {
+  fragment DeconData on Sickbay {
     id
     deconActive
     deconProgram
@@ -20,7 +20,7 @@ const fragment = gql`
 const QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
-      ...SickbayData
+      ...DeconData
     }
     decks(simulatorId: $simulatorId) {
       id
@@ -36,7 +36,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
-      ...SickbayData
+      ...DeconData
     }
   }
   ${fragment}

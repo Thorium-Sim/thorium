@@ -8,7 +8,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 //import "./style.scss";
 
 const fragment = gql`
-  fragment TacticalMapData on TacticalMap {
+  fragment TacticalMapViewscreenData on TacticalMap {
     id
     name
     flight {
@@ -96,7 +96,7 @@ const fragment = gql`
 const TACTICALMAP_SUB = gql`
   subscription UpdateTacticalMap($id: ID!) {
     tacticalMapUpdate(id: $id) {
-      ...TacticalMapData
+      ...TacticalMapViewscreenData
     }
   }
   ${fragment}
@@ -105,7 +105,7 @@ const TACTICALMAP_SUB = gql`
 const TACTICALMAP_QUERY = gql`
   query TacticalMapQuery($id: ID!) {
     tacticalMap(id: $id) {
-      ...TacticalMapData
+      ...TacticalMapViewscreenData
     }
   }
   ${fragment}

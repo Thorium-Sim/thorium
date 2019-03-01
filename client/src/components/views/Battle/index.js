@@ -5,7 +5,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import BattleCore from "./battle";
 
 const fragment = gql`
-  fragment ContactData on SensorContact {
+  fragment BattleCoreData on SensorContact {
     id
     name
     icon
@@ -17,7 +17,7 @@ const fragment = gql`
 const QUERY = gql`
   query SensorContacts($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, hostile: true) {
-      ...ContactData
+      ...BattleCoreData
     }
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
@@ -31,7 +31,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription SensorContactsUpdate($simulatorId: ID!) {
     sensorContactUpdate(simulatorId: $simulatorId, hostile: true) {
-      ...ContactData
+      ...BattleCoreData
     }
   }
   ${fragment}

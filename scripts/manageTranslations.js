@@ -3,7 +3,7 @@ import * as fs from "fs";
 import path from "path";
 import { sync as globSync } from "glob";
 import { sync as mkdirpSync } from "mkdirp";
-import { transformFile } from "babel-core";
+import { transformFile } from "@babel/core";
 import ProgressBar from "progress";
 
 const regex = /\.(js|jsx)$/i;

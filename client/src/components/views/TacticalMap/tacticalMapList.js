@@ -26,7 +26,7 @@ const importTacticalMap = evt => {
 };
 
 const fragment = gql`
-  fragment TacticalMapData on TacticalMap {
+  fragment TacticalMapListData on TacticalMap {
     id
     name
     flight {
@@ -39,7 +39,7 @@ const fragment = gql`
 const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate {
     tacticalMapsUpdate {
-      ...TacticalMapData
+      ...TacticalMapListData
     }
   }
   ${fragment}
@@ -48,7 +48,7 @@ const TACTICALMAP_SUB = gql`
 const TACTICALMAP_QUERY = gql`
   query TacticalMap {
     tacticalMaps {
-      ...TacticalMapData
+      ...TacticalMapListData
     }
   }
   ${fragment}

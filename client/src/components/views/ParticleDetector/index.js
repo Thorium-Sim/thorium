@@ -6,7 +6,7 @@ import ParticleDetector from "./particleDetector";
 import "./style.scss";
 
 const fragment = gql`
-  fragment SensorContactData on SensorContact {
+  fragment ParticleDetectorData on SensorContact {
     id
     location {
       x
@@ -36,7 +36,7 @@ const fragment = gql`
 const QUERY = gql`
   query Particles($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, type: "particle") {
-      ...SensorContactData
+      ...ParticleDetectorData
     }
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
@@ -47,7 +47,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "particle") {
-      ...SensorContactData
+      ...ParticleDetectorData
     }
   }
   ${fragment}

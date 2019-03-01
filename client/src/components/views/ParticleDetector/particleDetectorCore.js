@@ -24,7 +24,7 @@ function distance3d(coord2, coord1) {
 }
 
 const fragment = gql`
-  fragment SensorContactData on SensorContact {
+  fragment ParticleDetectorCoreData on SensorContact {
     id
     location {
       x
@@ -54,7 +54,7 @@ const fragment = gql`
 const QUERY = gql`
   query Particles($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, type: "particle") {
-      ...SensorContactData
+      ...ParticleDetectorCoreData
     }
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
@@ -65,7 +65,7 @@ const QUERY = gql`
 const CONTACTS_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "particle") {
-      ...SensorContactData
+      ...ParticleDetectorCoreData
     }
   }
   ${fragment}

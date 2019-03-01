@@ -7,7 +7,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragment = gql`
-  fragment SubspaceFieldData on SubspaceField {
+  fragment SubspaceFieldCoreData on SubspaceField {
     id
     name
     totalPower
@@ -41,7 +41,7 @@ const fragment = gql`
 const QUERY = gql`
   query SubspaceField($simulatorId: ID!) {
     subspaceField(simulatorId: $simulatorId) {
-      ...SubspaceFieldData
+      ...SubspaceFieldCoreData
     }
   }
   ${fragment}
@@ -49,7 +49,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription SubspaceFieldUpdate($simulatorId: ID!) {
     subspaceFieldUpdate(simulatorId: $simulatorId) {
-      ...SubspaceFieldData
+      ...SubspaceFieldCoreData
     }
   }
   ${fragment}

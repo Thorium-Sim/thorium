@@ -6,7 +6,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragment = gql`
-  fragment DockingData on DockingPort {
+  fragment SpecializedDockingCoreData on DockingPort {
     id
     name
     clamps
@@ -33,7 +33,7 @@ const fragment = gql`
 const QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: specialized) {
-      ...DockingData
+      ...SpecializedDockingCoreData
     }
   }
   ${fragment}
@@ -41,7 +41,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: specialized) {
-      ...DockingData
+      ...SpecializedDockingCoreData
     }
   }
   ${fragment}
@@ -141,7 +141,7 @@ const SpecializedDockingCore = ({ docking }) => {
   );
 };
 
-const SpecializedDockingData = props => (
+const SpecializedSpecializedDockingCoreData = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulator.id }}>
     {({ loading, data, subscribeToMore }) => {
       const { docking } = data;
@@ -167,4 +167,4 @@ const SpecializedDockingData = props => (
     }}
   </Query>
 );
-export default SpecializedDockingData;
+export default SpecializedSpecializedDockingCoreData;

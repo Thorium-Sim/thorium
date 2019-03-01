@@ -6,7 +6,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragment = gql`
-  fragment ClientData on Client {
+  fragment ClientCoreData on Client {
     id
     station {
       name
@@ -18,7 +18,7 @@ const fragment = gql`
 const QUERY = gql`
   query Clients($simulatorId: ID!) {
     clients(simulatorId: $simulatorId) {
-      ...ClientData
+      ...ClientCoreData
     }
   }
   ${fragment}
@@ -26,7 +26,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
-      ...ClientData
+      ...ClientCoreData
     }
   }
   ${fragment}
@@ -70,7 +70,7 @@ const ClientCore = ({ clients }) => (
   </div>
 );
 
-const ClientData = props => (
+const ClientCoreData = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulator.id }}>
     {({ loading, data, subscribeToMore }) => {
       const { clients } = data;
@@ -95,4 +95,4 @@ const ClientData = props => (
     }}
   </Query>
 );
-export default ClientData;
+export default ClientCoreData;

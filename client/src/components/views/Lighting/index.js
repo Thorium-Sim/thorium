@@ -7,7 +7,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import ColorPicker from "helpers/colorPicker";
 
 const fragment = gql`
-  fragment SimulatorData on Simulator {
+  fragment LightingData on Simulator {
     id
     lighting {
       intensity
@@ -22,7 +22,7 @@ const fragment = gql`
 const QUERY = gql`
   query Lighting($id: String!) {
     simulators(id: $id) {
-      ...SimulatorData
+      ...LightingData
     }
   }
   ${fragment}
@@ -30,7 +30,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription SimulatorsUpdate($id: ID!) {
     simulatorsUpdate(simulatorId: $id) {
-      ...SimulatorData
+      ...LightingData
     }
   }
   ${fragment}

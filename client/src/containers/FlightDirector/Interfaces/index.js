@@ -5,7 +5,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import Interfaces from "./interfaces";
 
 const fragment = gql`
-  fragment InterfaceData on Interface {
+  fragment InterfaceConfigData on Interface {
     id
     name
     deviceType {
@@ -25,7 +25,7 @@ const fragment = gql`
 const QUERY = gql`
   query Interfaces {
     interfaces {
-      ...InterfaceData
+      ...InterfaceConfigData
     }
     interfaceDevices {
       id
@@ -40,7 +40,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription InterfaceUpdate {
     interfaceUpdate {
-      ...InterfaceData
+      ...InterfaceConfigData
     }
   }
   ${fragment}

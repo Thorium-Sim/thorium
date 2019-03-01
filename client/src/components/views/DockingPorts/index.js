@@ -6,7 +6,7 @@ import DockingPorts from "./dockingPorts";
 import "./style.scss";
 
 const fragment = gql`
-  fragment DockingData on DockingPort {
+  fragment DockingPortData on DockingPort {
     id
     name
     shipName
@@ -28,7 +28,7 @@ const fragment = gql`
 const QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: dockingport) {
-      ...DockingData
+      ...DockingPortData
     }
   }
   ${fragment}
@@ -36,13 +36,13 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: dockingport) {
-      ...DockingData
+      ...DockingPortData
     }
   }
   ${fragment}
 `;
 
-class DockingData extends Component {
+class DockingPortData extends Component {
   state = {};
   render() {
     return (
@@ -73,4 +73,4 @@ class DockingData extends Component {
     );
   }
 }
-export default DockingData;
+export default DockingPortData;

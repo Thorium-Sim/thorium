@@ -8,7 +8,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import { publish } from "helpers/pubsub";
 
 const fragment = gql`
-  fragment SimulatorData on Simulator {
+  fragment AlertConditionData on Simulator {
     id
     alertlevel
     alertLevelLock
@@ -99,7 +99,7 @@ class AlertCondition extends Component {
         query={gql`
           query simulators($id: String) {
             simulators(id: $id) {
-              ...SimulatorData
+              ...AlertConditionData
             }
           }
           ${fragment}
@@ -115,7 +115,7 @@ class AlertCondition extends Component {
                     document: gql`
                       subscription SimulatorsSub($id: ID) {
                         simulatorsUpdate(simulatorId: $id) {
-                          ...SimulatorData
+                          ...AlertConditionData
                         }
                       }
                       ${fragment}

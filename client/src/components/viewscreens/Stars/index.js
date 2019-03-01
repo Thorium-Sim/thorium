@@ -5,7 +5,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import Stars from "./stars";
 
 const fragment = gql`
-  fragment EngineData on Engine {
+  fragment StarsData on Engine {
     id
     speed
     previousSpeed
@@ -20,7 +20,7 @@ const fragment = gql`
 const QUERY = gql`
   query Template($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
-      ...EngineData
+      ...StarsData
     }
   }
   ${fragment}
@@ -28,7 +28,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription EngineUpdate($simulatorId: ID!) {
     engineUpdate(simulatorId: $simulatorId) {
-      ...EngineData
+      ...StarsData
     }
   }
   ${fragment}

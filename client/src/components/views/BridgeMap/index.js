@@ -6,7 +6,7 @@ import BridgeMap from "./bridgeMap";
 import "./style.scss";
 
 const fragment = gql`
-  fragment ClientData on Client {
+  fragment BridgeMapData on Client {
     id
     loginName
     station {
@@ -19,7 +19,7 @@ const fragment = gql`
 const QUERY = gql`
   query Clients($simulatorId: ID!) {
     clients(simulatorId: $simulatorId) {
-      ...ClientData
+      ...BridgeMapData
     }
   }
   ${fragment}
@@ -27,7 +27,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription ClientsUpdate($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
-      ...ClientData
+      ...BridgeMapData
     }
   }
   ${fragment}

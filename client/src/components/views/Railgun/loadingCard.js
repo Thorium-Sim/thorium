@@ -7,7 +7,7 @@ import Loader from "./loader";
 import "./style.scss";
 
 const fragment = gql`
-  fragment RailgunData on Railgun {
+  fragment RailgunLoadingData on Railgun {
     id
     displayName
     damage {
@@ -26,7 +26,7 @@ const fragment = gql`
 const QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
-      ...RailgunData
+      ...RailgunLoadingData
     }
   }
   ${fragment}
@@ -34,13 +34,13 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription RailgunUpdate($simulatorId: ID!) {
     railgunUpdate(simulatorId: $simulatorId) {
-      ...RailgunData
+      ...RailgunLoadingData
     }
   }
   ${fragment}
 `;
 
-class RailgunData extends Component {
+class RailgunLoadingData extends Component {
   state = {};
   render() {
     return (
@@ -78,4 +78,4 @@ class RailgunData extends Component {
   }
 }
 
-export default RailgunData;
+export default RailgunLoadingData;

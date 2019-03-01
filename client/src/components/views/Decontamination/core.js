@@ -7,7 +7,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragment = gql`
-  fragment SickbayData on Sickbay {
+  fragment DeconCoreData on Sickbay {
     id
     deconActive
     deconProgram
@@ -20,7 +20,7 @@ const fragment = gql`
 const QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
-      ...SickbayData
+      ...DeconCoreData
     }
   }
   ${fragment}
@@ -28,7 +28,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
-      ...SickbayData
+      ...DeconCoreData
     }
   }
   ${fragment}

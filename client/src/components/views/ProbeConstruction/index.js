@@ -12,7 +12,7 @@ import ProbeSelector from "./probeSelector";
 import "./style.scss";
 
 const fragment = gql`
-  fragment ProbesData on Probes {
+  fragment ProbeConstructionData on Probes {
     id
     simulatorId
     type
@@ -60,7 +60,7 @@ const fragment = gql`
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
-      ...ProbesData
+      ...ProbeConstructionData
     }
   }
   ${fragment}
@@ -69,7 +69,7 @@ const PROBES_SUB = gql`
 const PROBES_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
-      ...ProbesData
+      ...ProbeConstructionData
     }
   }
   ${fragment}
