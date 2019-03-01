@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import ReactDOM from "react-dom";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Row, Col, Container, Button, Input, ButtonGroup } from "reactstrap";
 import Grid from "../GridDom";
@@ -21,49 +21,54 @@ function distance3d(coord2, coord1) {
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
-const queryData = `
-id
-type
-autoTarget
-autoThrusters
-interference
-movement {
-  x
-  y
-  z
-}
-segments {
-  ring
-  line
-  state
-}
-armyContacts {
-  id
-  name
-  size
-  icon
-  picture
-  color
-  infrared
-  cloaked
-  destroyed
-  locked
-  disabled
-  hostile
-}`;
+const fragment = gql`
+  fragment SensorsData on Sensors {
+    id
+    type
+    autoTarget
+    autoThrusters
+    interference
+    movement {
+      x
+      y
+      z
+    }
+    segments {
+      ring
+      line
+      state
+    }
+    armyContacts {
+      id
+      name
+      size
+      icon
+      picture
+      color
+      infrared
+      cloaked
+      destroyed
+      locked
+      disabled
+      hostile
+    }
+  }
+`;
 const GRID_QUERY = gql`
   query GetSensors($simulatorId: ID) {
     sensors(simulatorId: $simulatorId, domain: "external") {
-      ${queryData}
+      ...SensorsData
     }
   }
+  ${fragment}
 `;
 const SENSOR_SUB = gql`
   subscription SensorsChanged($id: ID) {
     sensorsUpdate(simulatorId: $id, domain: "external") {
-${queryData}
+      ...SensorsData
     }
   }
+  ${fragment}
 `;
 
 class GridCore extends Component {

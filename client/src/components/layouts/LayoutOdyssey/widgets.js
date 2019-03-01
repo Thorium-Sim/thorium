@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Widgets } from "components/views";
 import { Tooltip } from "reactstrap";
 import FontAwesome from "react-fontawesome";

@@ -10,7 +10,7 @@ import {
   Input
 } from "reactstrap";
 import uuid from "uuid";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import "./style.scss";
 import ComponentLibrary from "./componentLibrary";
@@ -159,11 +159,10 @@ class App extends Component {
               : []
           )
           .map(c => components.find(d => d.id === c))
-          .map(
-            c =>
-              calcedComps[comp.id] || calcedComps[comp.id] === 0
-                ? calcedComps[comp.id]
-                : calcLevel(c)
+          .map(c =>
+            calcedComps[comp.id] || calcedComps[comp.id] === 0
+              ? calcedComps[comp.id]
+              : calcLevel(c)
           )
           .filter(c => (Array.isArray(c) ? c.length > 0 : c || c === 0))
           .concat(

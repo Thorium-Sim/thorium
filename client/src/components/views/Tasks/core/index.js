@@ -1,60 +1,71 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import TaskCreator from "./TaskCreator";
 import TasksManager from "./TasksManager";
 import "./style.scss";
 import Statistics from "./Statistics";
 
-const queryData = `
-id
-verified
-dismissed
-instructions
-station
-definition
-verifyRequested
-startTime
-endTime
-`;
-
-const templateQueryData = `
-id
-name
-definition
-values
-macros {
-  id
-  args
-  event
-  delay
-}`;
+const fragments = {
+  taskFragment: gql`
+    fragment TaskData on Task {
+      id
+      verified
+      dismissed
+      instructions
+      station
+      definition
+      verifyRequested
+      startTime
+      endTime
+    }
+  `,
+  taskTemplateFragment: gql`
+    fragment TaskTemplateData on TaskTemplate {
+      id
+      name
+      definition
+      values
+      macros {
+        id
+        args
+        event
+        delay
+      }
+    }
+  `
+};
 
 const QUERY = gql`
   query Tasks($simulatorId: ID!) {
     tasks(simulatorId: $simulatorId) {
-${queryData}
+      ...TaskData
     }
     taskTemplates {
-   ${templateQueryData}
+      ...TaskTemplateData
+    }
   }
-  }
+  ${fragments.taskFragment}
+  ${fragments.taskTemplateFragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TasksUpdate($simulatorId: ID!) {
     tasksUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...TaskData
     }
   }
+  ${fragments.taskFragment}
 `;
 
 const TEMPLATE_SUB = gql`
-subscription TaskTemplatesUpdate {
-  taskTemplatesUpdate {
-    ${templateQueryData}
+  subscription TaskTemplatesUpdate {
+    taskTemplatesUpdate {
+      ...TaskTemplateData
+    }
   }
-}`;
+  ${fragments.taskTemplateFragment}
+`;
 
 class RenderPage extends Component {
   state = {};

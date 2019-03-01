@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import DamageOverlay from "../helpers/DamageOverlay";

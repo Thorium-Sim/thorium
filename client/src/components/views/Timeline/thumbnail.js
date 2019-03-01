@@ -2,7 +2,7 @@ import React from "react";
 import MissionSelector from "./missionSelector";
 import allowedMacros from "./allowedMacros";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { VideoPreview } from "../TacticalMap/fileExplorer";
 
 const StepRender = ({ args, event }) => {

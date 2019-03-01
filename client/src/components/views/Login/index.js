@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Row, Col, Input } from "reactstrap";
 import { withApollo, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Asset } from "helpers/assets";
 import Tour from "helpers/tourHelper";
 import { publish } from "helpers/pubsub";

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Mutation } from "react-apollo";
 
 const SpeedAsker = ({

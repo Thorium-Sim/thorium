@@ -1,52 +1,56 @@
 import React, { Fragment, Component } from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Button, Input, ListGroup, ListGroupItem } from "reactstrap";
 import "./style.scss";
 
-const queryData = `
-id
-type
-name
-system {
-  id
-  name
-}
-stepCount
-tasks {
-  id
-  instructions
-  verified
-  definition
-  verifyRequested
-}
+const fragment = gql`
+  fragment TaskReportData on TaskReport {
+    id
+    type
+    name
+    system {
+      id
+      name
+    }
+    stepCount
+    tasks {
+      id
+      instructions
+      verified
+      definition
+      verifyRequested
+    }
+  }
 `;
 
 const QUERY = gql`
   query TaskReport($simulatorId: ID!) {
     taskReport(simulatorId: $simulatorId) {
-${queryData}
+      ...TaskReportData
     }
-    systems(simulatorId:$simulatorId) {
+    systems(simulatorId: $simulatorId) {
       id
       name
       type
     }
-    exocomps(simulatorId:$simulatorId) {
+    exocomps(simulatorId: $simulatorId) {
       id
       damage {
         damaged
       }
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TaskReportUpdate($simulatorId: ID!) {
     taskReportUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...TaskReportData
     }
   }
+  ${fragment}
 `;
 
 class TaskReportCreator extends Component {

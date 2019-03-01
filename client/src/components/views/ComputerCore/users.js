@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Row, Col, Table, Button } from "reactstrap";
 import UserModal from "./addUserModal";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 class Users extends Component {
   state = {};
   render() {
@@ -21,17 +21,19 @@ class Users extends Component {
                 </tr>
               </thead>
               <tbody>
-                {users.filter(u => u.level === selectedLevel).map(u => (
-                  <tr
-                    key={u.id}
-                    className={selectedUser === u.id ? "selected" : ""}
-                    onClick={() => this.setState({ selectedUser: u.id })}
-                  >
-                    <td>{u.name}</td>
-                    <td>········</td>
-                    <td>Level {u.level}</td>
-                  </tr>
-                ))}
+                {users
+                  .filter(u => u.level === selectedLevel)
+                  .map(u => (
+                    <tr
+                      key={u.id}
+                      className={selectedUser === u.id ? "selected" : ""}
+                      onClick={() => this.setState({ selectedUser: u.id })}
+                    >
+                      <td>{u.name}</td>
+                      <td>········</td>
+                      <td>Level {u.level}</td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Col>

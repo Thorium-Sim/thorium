@@ -1,5 +1,5 @@
 import React from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const Settings = props => {
   const logout = () => {

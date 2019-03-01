@@ -1,32 +1,36 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import BridgeMap from "./bridgeMap";
 import "./style.scss";
 
-const queryData = `
-id
-loginName
-station {
-  name
-  description
-}
+const fragment = gql`
+  fragment ClientData on Client {
+    id
+    loginName
+    station {
+      name
+      description
+    }
+  }
 `;
 
 const QUERY = gql`
-query Clients($simulatorId: ID!){
-  clients(simulatorId:$simulatorId){
-${queryData}
+  query Clients($simulatorId: ID!) {
+    clients(simulatorId: $simulatorId) {
+      ...ClientData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
-subscription ClientsUpdate($simulatorId:ID!) {
-  clientChanged(simulatorId:$simulatorId) {
-${queryData}
+  subscription ClientsUpdate($simulatorId: ID!) {
+    clientChanged(simulatorId: $simulatorId) {
+      ...ClientData
     }
   }
+  ${fragment}
 `;
 
 class BridgeMapData extends Component {

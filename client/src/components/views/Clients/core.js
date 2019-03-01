@@ -1,31 +1,35 @@
 import React from "react";
 import { Table } from "reactstrap";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const queryData = `
-id
-station {
-  name
-}
-loginName
+const fragment = gql`
+  fragment ClientData on Client {
+    id
+    station {
+      name
+    }
+    loginName
+  }
 `;
 
 const QUERY = gql`
   query Clients($simulatorId: ID!) {
     clients(simulatorId: $simulatorId) {
-${queryData}
+      ...ClientData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
-${queryData}
+      ...ClientData
     }
   }
+  ${fragment}
 `;
 
 const excludedStations = ["Sound", "Viewscreen"];

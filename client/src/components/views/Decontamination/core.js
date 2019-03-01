@@ -1,33 +1,37 @@
 import React from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const queryData = `
+const fragment = gql`
+  fragment SickbayData on Sickbay {
     id
     deconActive
     deconProgram
     deconOffset
     deconLocation
     autoFinishDecon
+  }
 `;
 
 const QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
-${queryData}
+      ...SickbayData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...SickbayData
     }
   }
+  ${fragment}
 `;
 
 const DecontaminationCore = ({

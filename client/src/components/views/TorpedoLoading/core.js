@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Button, ButtonGroup } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { OutputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import { titleCase } from "change-case";

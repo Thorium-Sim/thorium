@@ -1,30 +1,33 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Table, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const queryData = `
-id
-state
-completion
-difficulty
-destination {
-  id
-  displayName
-}
-logs {
-  timestamp
-  message
-}
+const fragment = gql`
+  fragment ExocompData on Exocomp {
+    id
+    state
+    completion
+    difficulty
+    destination {
+      id
+      displayName
+    }
+    logs {
+      timestamp
+      message
+    }
+  }
 `;
 
 const EXOCOMP_SUB = gql`
   subscription Exocomps($simulatorId: ID!) {
     exocompsUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ExocompData
     }
   }
+  ${fragment}
 `;
 
 class ExocompsCore extends Component {
@@ -156,9 +159,10 @@ class ExocompsCore extends Component {
 const QUERY = gql`
   query Exocomps($simulatorId: ID!) {
     exocomps(simulatorId: $simulatorId) {
-${queryData}
+      ...ExocompData
     }
   }
+  ${fragment}
 `;
 
 export default graphql(QUERY, {

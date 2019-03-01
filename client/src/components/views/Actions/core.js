@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo, Query } from "react-apollo";
 import SoundPicker from "helpers/soundPicker";
 import { titleCase } from "change-case";

@@ -13,7 +13,7 @@ import {
   Button
 } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
 

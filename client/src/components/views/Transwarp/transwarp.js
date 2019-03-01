@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ListGroup, ListGroupItem, Button } from "reactstrap";
 import PowerLine from "../JumpDrive/powerLine";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import HeatBar from "../EngineControl/heatbar";
 class Transwarp extends Component {

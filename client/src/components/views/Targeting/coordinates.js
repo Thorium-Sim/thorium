@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col } from "reactstrap";
 import Keypad from "../Navigation/keypad";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 function compareCoord(coord1 = {}, coord2 = {}) {
   const { x, y, z } = coord1 || {};

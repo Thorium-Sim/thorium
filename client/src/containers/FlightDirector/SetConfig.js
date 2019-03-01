@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from "react";
 import { Container, Row, Col, Card, Button, Input } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo, Query } from "react-apollo";
 
 import "./setConfig.scss";

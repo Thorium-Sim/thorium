@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container } from "reactstrap";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -11,63 +11,68 @@ import ProbeAction from "./probeAction";
 import ProbeSelector from "./probeSelector";
 import "./style.scss";
 
-const queryData = `      id
-simulatorId
-type
-torpedo
-types {
-  id
-  name
-  size
-  count
-  description
-  availableEquipment {
+const fragment = gql`
+  fragment ProbesData on Probes {
     id
+    simulatorId
+    type
+    torpedo
+    types {
+      id
+      name
+      size
+      count
+      description
+      availableEquipment {
+        id
+        name
+        size
+        count
+        description
+      }
+    }
+    probes {
+      id
+      name
+      equipment {
+        id
+      }
+    }
     name
-    size
-    count
-    description
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    torpedo
+    scienceTypes {
+      id
+      name
+      type
+      description
+      equipment
+    }
   }
-}
-probes {
-  id
-  name
-  equipment {
-    id
-  }
-}
-name
-power {
-  power
-  powerLevels
-}
-damage {
-  damaged
-  report
-}
-torpedo
-scienceTypes {
-  id
-  name
-  type
-  description
-  equipment
-}
 `;
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ProbesData
     }
   }
+  ${fragment}
 `;
 
 const PROBES_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
-      ${queryData}
+      ...ProbesData
     }
   }
+  ${fragment}
 `;
 
 class ProbeConstruction extends Component {

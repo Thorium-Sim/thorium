@@ -1,60 +1,64 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import PatientControls from "./PatientControls";
 
 import "../style.scss";
 
-const queryData = `
-id
-bunks {
-  id
-  patient {
+const fragment = gql`
+  fragment SickbayData on Sickbay {
     id
-    age
-    rank
-    name
-    gender
-    position
-    charts {
+    bunks {
       id
-      o2levels
-      symptoms
-      heartRate
-      diagnosis
-      treatment
-      treatmentRequest
-      temperature
-      bloodPressure
-      admitTime
-      dischargeTime
-      painPoints {
-        x,
-        y
+      patient {
+        id
+        age
+        rank
+        name
+        gender
+        position
+        charts {
+          id
+          o2levels
+          symptoms
+          heartRate
+          diagnosis
+          treatment
+          treatmentRequest
+          temperature
+          bloodPressure
+          admitTime
+          dischargeTime
+          painPoints {
+            x
+            y
+          }
+        }
       }
+      scanning
+      scanRequest
+      scanResults
     }
   }
-  scanning
-  scanRequest
-  scanResults
-}
 `;
 
 const QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
-${queryData}
+      ...SickbayData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...SickbayData
     }
   }
+  ${fragment}
 `;
 
 class SickbayCore extends Component {

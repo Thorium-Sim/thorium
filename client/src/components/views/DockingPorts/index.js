@@ -1,41 +1,45 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import DockingPorts from "./dockingPorts";
 import "./style.scss";
 
-const queryData = `
-id
-name
-shipName
-clamps
-compress
-doors
-image
-docked
-damage {
-  damaged
-}
-position {
-  x
-  y
-}
+const fragment = gql`
+  fragment DockingData on DockingPort {
+    id
+    name
+    shipName
+    clamps
+    compress
+    doors
+    image
+    docked
+    damage {
+      damaged
+    }
+    position {
+      x
+      y
+    }
+  }
 `;
 
 const QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: dockingport) {
-${queryData}
+      ...DockingData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: dockingport) {
-${queryData}
+      ...DockingData
     }
   }
+  ${fragment}
 `;
 
 class DockingData extends Component {

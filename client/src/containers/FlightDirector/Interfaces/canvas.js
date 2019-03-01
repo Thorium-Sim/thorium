@@ -1,7 +1,7 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import { Col, Input } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import {
   Library,
   DiagramProvider,

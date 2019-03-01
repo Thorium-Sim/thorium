@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { FormGroup, Label, Input } from "reactstrap";
 import SoundPicker from "helpers/soundPicker";
 

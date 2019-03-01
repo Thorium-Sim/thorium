@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { ListGroup, ListGroupItem, Button } from "reactstrap";
 
 function status(stat) {

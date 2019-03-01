@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import DamageOverlay from "../helpers/DamageOverlay";
 import TorpedoPick from "./picker";
 import TorpedoTube from "./tube";

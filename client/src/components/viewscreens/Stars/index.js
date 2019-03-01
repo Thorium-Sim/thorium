@@ -1,33 +1,37 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Stars from "./stars";
 
-const queryData = `
-id
-speed
-previousSpeed
-speeds {
-  text
-  number
-}
-on
+const fragment = gql`
+  fragment EngineData on Engine {
+    id
+    speed
+    previousSpeed
+    speeds {
+      text
+      number
+    }
+    on
+  }
 `;
 
 const QUERY = gql`
   query Template($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
-${queryData}
+      ...EngineData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription EngineUpdate($simulatorId: ID!) {
     engineUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...EngineData
     }
   }
+  ${fragment}
 `;
 
 class TemplateData extends Component {

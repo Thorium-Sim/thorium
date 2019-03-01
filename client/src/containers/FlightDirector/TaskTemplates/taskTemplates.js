@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
 import "./style.scss";
 import TaskConfig from "./taskConfig";

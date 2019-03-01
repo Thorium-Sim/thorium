@@ -1,31 +1,35 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import DilithiumStress from "./dilithiumStress";
 import "./style.scss";
 
-const queryData = `
-id
-alphaLevel
-betaLevel
-alphaTarget
-betaTarget
+const fragment = gql`
+  fragment ReactorData on Reactor {
+    id
+    alphaLevel
+    betaLevel
+    alphaTarget
+    betaTarget
+  }
 `;
 
 const QUERY = gql`
   query Template($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
-${queryData}
+      ...ReactorData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ReactorData
     }
   }
+  ${fragment}
 `;
 
 class DilithiumStressData extends Component {

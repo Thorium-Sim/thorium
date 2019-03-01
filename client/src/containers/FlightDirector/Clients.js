@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Col, Row, Container } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo, Query } from "react-apollo";
 import { DateTime } from "luxon";
 import { titleCase } from "change-case";
@@ -308,19 +308,28 @@ class Clients extends Component {
     }
   ];
   select = (p, type, e) => {
-    let m = null;
+    let mutation = null;
     if (type === "flight") {
-      m = "clientSetFlight(client: $client, flightId: $id)";
+      mutation = gql`
+        mutation UpdateClient($client: ID!, $id: ID!) {
+          clientSetFlight(client: $client, flightId: $id)
+        }
+      `;
     }
     if (type === "simulator") {
-      m = "clientSetSimulator(client: $client, simulatorId: $id)";
+      mutation = gql`
+        mutation UpdateClient($client: ID!, $id: ID!) {
+          clientSetSimulator(client: $client, simulatorId: $id)
+        }
+      `;
     }
     if (type === "station") {
-      m = "clientSetStation(client: $client, stationName: $id)";
+      mutation = gql`
+        mutation UpdateClient($client: ID!, $id: ID!) {
+          clientSetStation(client: $client, stationName: $id)
+        }
+      `;
     }
-    const mutation = gql`mutation UpdateClient($client: ID!, $id: ID!) {
-    ${m} 
-    }`;
     const obj = {
       client: p.id,
       id: e.target.value

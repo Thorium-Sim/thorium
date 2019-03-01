@@ -2,33 +2,38 @@ import React from "react";
 import { ButtonGroup, Button, Row, Container, Col, Input } from "reactstrap";
 import { titleCase } from "change-case";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import ColorPicker from "helpers/colorPicker";
 
-const queryData = `
-id
-lighting {
-  intensity
-  action
-  actionStrength
-  transitionDuration
-  useAlertColor
-  color
-}`;
-const QUERY = gql`
-query Lighting($id: String!) {
-  simulators(id: $id) {
-    ${queryData}
+const fragment = gql`
+  fragment SimulatorData on Simulator {
+    id
+    lighting {
+      intensity
+      action
+      actionStrength
+      transitionDuration
+      useAlertColor
+      color
+    }
   }
-}
+`;
+const QUERY = gql`
+  query Lighting($id: String!) {
+    simulators(id: $id) {
+      ...SimulatorData
+    }
+  }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
-        subscription SimulatorsUpdate($id:ID!) {
-  simulatorsUpdate(simulatorId:$id) {
-    ${queryData}
+  subscription SimulatorsUpdate($id: ID!) {
+    simulatorsUpdate(simulatorId: $id) {
+      ...SimulatorData
+    }
   }
-}
+  ${fragment}
 `;
 
 const LightingCore = ({ clients, simulator: { id } }) => {

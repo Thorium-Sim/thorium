@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Card, CardBody } from "reactstrap";
 import Tour from "helpers/tourHelper";
 import FontAwesome from "react-fontawesome";
 import { Mutation, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { FormattedMessage } from "react-intl";
 import ReportView from "./reportView";
 

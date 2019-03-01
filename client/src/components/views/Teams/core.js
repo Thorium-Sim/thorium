@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Label, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -153,8 +153,8 @@ class Teams extends Component {
                       {room.name
                         ? `${room.name}, Deck ${deck.number}`
                         : deck
-                          ? `Deck ${deck.number}`
-                          : "Unknown"}
+                        ? `Deck ${deck.number}`
+                        : "Unknown"}
                     </p>
                   </div>
                   <div className="label-section">

@@ -1,36 +1,38 @@
 import React, { Component } from "react";
 import { Query, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import StealthField from "./stealthField";
 import "./style.scss";
 
-const queryData = `
-id
-name
-state
-charge
-activated
-quadrants {
-  fore
-  aft
-  port
-  starboard
-}
-power {
-  power
-  powerLevels
-}
-damage {
-  damaged
-  report
-}
+const fragment = gql`
+  fragment StealthData on StealthField {
+    id
+    name
+    state
+    charge
+    activated
+    quadrants {
+      fore
+      aft
+      port
+      starboard
+    }
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+  }
 `;
 
 const QUERY = gql`
   query StealthField($simulatorId: ID!) {
     stealthField(simulatorId: $simulatorId) {
-${queryData}
+      ...StealthData
     }
     systems(simulatorId: $simulatorId) {
       id
@@ -40,6 +42,7 @@ ${queryData}
       stealthFactor
     }
   }
+  ${fragment}
 `;
 const SYSTEMS_QUERY = gql`
   query Sytems($simulatorId: ID!) {
@@ -55,9 +58,10 @@ const SYSTEMS_QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription StealthFieldUpdate($simulatorId: ID!) {
     stealthFieldUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...StealthData
     }
   }
+  ${fragment}
 `;
 
 class StealthFieldData extends Component {

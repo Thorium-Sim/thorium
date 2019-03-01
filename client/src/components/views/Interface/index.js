@@ -1,28 +1,32 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import InterfaceCard from "./interface";
 import "./style.scss";
 
-const queryData = `
-id
-name
+const fragment = gql`
+  fragment InterfaceData on Interface {
+    id
+    name
+  }
 `;
 
 const QUERY = gql`
   query Interface($simulatorId: ID!) {
     interfaces(simulatorId: $simulatorId) {
-${queryData}
+      ...InterfaceData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription InterfaceUpdate($simulatorId: ID!) {
     interfaceUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...InterfaceData
     }
   }
+  ${fragment}
 `;
 
 class InterfaceData extends Component {

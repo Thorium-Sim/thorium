@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "reactstrap";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const QUERY = gql`
   query Thorium {

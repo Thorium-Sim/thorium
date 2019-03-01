@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Tooltip, Button } from "reactstrap";
 import { Widgets } from "components/views";
 import FontAwesome from "react-fontawesome";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import Measure from "react-measure";
 

@@ -1,24 +1,26 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Decon from "./decon";
 import "./style.scss";
 
-const queryData = `
-  id
-  deconActive
-  deconProgram
-  deconLocation
-  bunks {
+const fragment = gql`
+  fragment SickbayData on Sickbay {
     id
+    deconActive
+    deconProgram
+    deconLocation
+    bunks {
+      id
+    }
   }
 `;
 
 const QUERY = gql`
   query Sickbay($simulatorId: ID!) {
-    sickbay(simulatorId:$simulatorId) {
-      ${queryData}
+    sickbay(simulatorId: $simulatorId) {
+      ...SickbayData
     }
     decks(simulatorId: $simulatorId) {
       id
@@ -29,13 +31,15 @@ const QUERY = gql`
       }
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
-    sickbayUpdate(simulatorId:$simulatorId) {
-      ${queryData}
+    sickbayUpdate(simulatorId: $simulatorId) {
+      ...SickbayData
     }
   }
+  ${fragment}
 `;
 
 class DeconData extends Component {

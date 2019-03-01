@@ -1,39 +1,43 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Loader from "./loader";
 import "./style.scss";
 
-const queryData = `
-id
-displayName
-damage {
-  damaged
-}
-power {
-  power
-  powerLevels
-}
-ammo
-maxAmmo
-availableAmmo
+const fragment = gql`
+  fragment RailgunData on Railgun {
+    id
+    displayName
+    damage {
+      damaged
+    }
+    power {
+      power
+      powerLevels
+    }
+    ammo
+    maxAmmo
+    availableAmmo
+  }
 `;
 
 const QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
-${queryData}
+      ...RailgunData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription RailgunUpdate($simulatorId: ID!) {
     railgunUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...RailgunData
     }
   }
+  ${fragment}
 `;
 
 class RailgunData extends Component {

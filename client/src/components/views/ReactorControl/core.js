@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
@@ -28,43 +28,46 @@ function parseDepletion(time) {
     .join(", ");
 }
 
-const queryData = `
-id
-type
-name
-heat
-heatRate
-model
-coolant
-damage {
-  damaged
-}
-ejected
-externalPower
-efficiency
-efficiencies {
-  label
-  color
-  efficiency
-}
-displayName
-powerOutput
-batteryChargeRate
-batteryChargeLevel
-depletion
-# For Dilithium Stress
-alphaLevel
-betaLevel
-alphaTarget
-betaTarget
-dilithiumRate
-      `;
+const fragment = gql`
+  fragment ReactorData on Reactor {
+    id
+    type
+    name
+    heat
+    heatRate
+    model
+    coolant
+    damage {
+      damaged
+    }
+    ejected
+    externalPower
+    efficiency
+    efficiencies {
+      label
+      color
+      efficiency
+    }
+    displayName
+    powerOutput
+    batteryChargeRate
+    batteryChargeLevel
+    depletion
+    # For Dilithium Stress
+    alphaLevel
+    betaLevel
+    alphaTarget
+    betaTarget
+    dilithiumRate
+  }
+`;
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ReactorData
     }
   }
+  ${fragment}
 `;
 
 const rateSpeeds = (
@@ -378,9 +381,10 @@ class ReactorControl extends Component {
 const REACTOR_QUERY = gql`
   query Reactors($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
-      ${queryData}
+      ...ReactorData
     }
   }
+  ${fragment}
 `;
 export default graphql(REACTOR_QUERY, {
   options: ownProps => ({

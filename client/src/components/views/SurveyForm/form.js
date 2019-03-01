@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Card, CardBody, Row, Col, Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import * as Components from "../../../containers/FlightDirector/SurveyConfig/components";
 class Form extends Component {
   state = {

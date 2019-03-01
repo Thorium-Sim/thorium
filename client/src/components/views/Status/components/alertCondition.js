@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { Label } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo, Query } from "react-apollo";
 import { Tooltip } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { publish } from "helpers/pubsub";
 
-const queryData = `
-id
-alertlevel
-alertLevelLock`;
+const fragment = gql`
+  fragment SimulatorData on Simulator {
+    id
+    alertlevel
+    alertLevelLock
+  }
+`;
 
 const AlertMessage = ({ number }) => {
   switch (number) {
@@ -94,12 +97,13 @@ class AlertCondition extends Component {
     return (
       <Query
         query={gql`
-        query simulators($id: String) {
-          simulators(id: $id) {
-            ${queryData}
+          query simulators($id: String) {
+            simulators(id: $id) {
+              ...SimulatorData
+            }
           }
-        }
-      `}
+          ${fragment}
+        `}
         variables={{ id: this.props.simulator.id }}
       >
         {({ loading, data, subscribeToMore }) =>
@@ -111,9 +115,11 @@ class AlertCondition extends Component {
                     document: gql`
                       subscription SimulatorsSub($id: ID) {
                         simulatorsUpdate(simulatorId: $id) {
-                          ${queryData}
+                          ...SimulatorData
                         }
-                      }`,
+                      }
+                      ${fragment}
+                    `,
                     variables: { id: this.props.simulator.id },
                     updateQuery: (previousResult, { subscriptionData }) => {
                       return Object.assign({}, previousResult, {

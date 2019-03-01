@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Col, Row } from "reactstrap";
 import { SliderPicker } from "react-color";
 import tinycolor from "tinycolor2";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { TypingField } from "../../../generic/core";
 import Nudge from "./nudge";
 

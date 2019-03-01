@@ -1,52 +1,56 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import ParticleDetector from "./particleDetector";
 import "./style.scss";
 
-const contactsData = `
-id
-location {
-  x
-  y
-  z
-}
-destination {
-  x
-  y
-  z
-}
-position {
-  x
-  y
-  z
-}
-icon
-type
-destroyed
-startTime
-endTime
-speed
-particle
+const fragment = gql`
+  fragment SensorContactData on SensorContact {
+    id
+    location {
+      x
+      y
+      z
+    }
+    destination {
+      x
+      y
+      z
+    }
+    position {
+      x
+      y
+      z
+    }
+    icon
+    type
+    destroyed
+    startTime
+    endTime
+    speed
+    particle
+  }
 `;
 
 const QUERY = gql`
   query Particles($simulatorId: ID!) {
-    sensorContacts(simulatorId:$simulatorId, type:"particle") {
-      ${contactsData}
+    sensorContacts(simulatorId: $simulatorId, type: "particle") {
+      ...SensorContactData
     }
-    sensors(simulatorId:$simulatorId, domain:"external") {
+    sensors(simulatorId: $simulatorId, domain: "external") {
       id
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "particle") {
-      ${contactsData}
+      ...SensorContactData
     }
   }
+  ${fragment}
 `;
 
 class ParticleDetectorData extends Component {

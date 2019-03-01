@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import tinycolor from "tinycolor2";
 import { CompactPicker } from "react-color";
 import { Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";
 import SubscriptionHelper from "helpers/subscriptionHelper";

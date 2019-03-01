@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import {
   Container,
@@ -216,10 +216,9 @@ class Messaging extends Component {
                       {s.name}
                     </DropdownItem>
                   ))}
-                {messageGroups &&
-                  bridgeOfficerMessaging && (
-                    <DropdownItem disabled>--------------</DropdownItem>
-                  )}
+                {messageGroups && bridgeOfficerMessaging && (
+                  <DropdownItem disabled>--------------</DropdownItem>
+                )}
                 {messageGroups &&
                   messageGroups.map(g => (
                     <DropdownItem

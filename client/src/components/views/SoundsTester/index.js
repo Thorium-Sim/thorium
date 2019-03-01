@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import uuid from "uuid";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Asset } from "helpers/assets.js";
 

@@ -3,7 +3,7 @@ import { FormGroup, Input, Label, Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import { GENERIC_QUERY } from "./index";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const Power = ({ id, simulatorId, power, powerRender }) => {
   return (

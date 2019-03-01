@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import { subscribe, publish } from "helpers/pubsub";
 import uuid from "uuid";

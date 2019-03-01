@@ -1,5 +1,5 @@
 import React from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query } from "react-apollo";
 import Menu, { SubMenu, MenuItem } from "rc-menu";
 import "rc-menu/assets/index.css";

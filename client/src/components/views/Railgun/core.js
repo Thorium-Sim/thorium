@@ -1,29 +1,35 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { InputField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const queryData = `
-id
-ammo
-maxAmmo
-availableAmmo
-`;
+const fragments = {
+  railgunData: gql`
+    fragment RailgunData on Railgun {
+      id
+      ammo
+      maxAmmo
+      availableAmmo
+    }
+  `
+};
 
 const QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
-${queryData}
+      ...RailgunData
     }
   }
+  ${fragments.railgunData}
 `;
 const SUBSCRIPTION = gql`
   subscription RailgunUpdate($simulatorId: ID!) {
     railgunUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...RailgunData
     }
+    ${fragments.railgunData}
   }
 `;
 

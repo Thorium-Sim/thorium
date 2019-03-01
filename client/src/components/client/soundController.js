@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Subscription } from "react-apollo";
 import playSound from "../generic/SoundPlayer";
 

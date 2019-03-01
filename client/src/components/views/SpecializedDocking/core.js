@@ -1,46 +1,50 @@
 import React, { useState } from "react";
 import { Query, Mutation } from "react-apollo";
 import { ListGroup, ListGroupItem } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const queryData = `
-id
-name
-clamps
-compress
-doors
-image
-docked
-damage {
-  damaged
-}
-deck {
-  id
-  number
-}
-direction
-inventory {
-  id
-  name
-  count
-}
+const fragment = gql`
+  fragment DockingData on DockingPort {
+    id
+    name
+    clamps
+    compress
+    doors
+    image
+    docked
+    damage {
+      damaged
+    }
+    deck {
+      id
+      number
+    }
+    direction
+    inventory {
+      id
+      name
+      count
+    }
+  }
 `;
 
 const QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: specialized) {
-${queryData}
+      ...DockingData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: specialized) {
-${queryData}
+      ...DockingData
     }
   }
+  ${fragment}
 `;
 
 const SpecializedDockingCore = ({ docking }) => {

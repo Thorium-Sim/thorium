@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import { Duration } from "luxon";
 import { graphql, withApollo } from "react-apollo";
@@ -302,40 +302,37 @@ class SelfDestructModal extends Component {
             </Col>
           )}
           <Col sm={12}>
-            {!setCode &&
-              (code ? code === inputCode : true) && (
-                <div>
-                  <h3>Enter Countdown Time:</h3>
-                  <div className="countdown-input">
-                    <Input
-                      type="text"
-                      value={hours}
-                      onChange={evt =>
-                        this.setState({ hours: evt.target.value })
-                      }
-                      maxLength={2}
-                    />
-                    <span className="divider">:</span>
-                    <Input
-                      type="text"
-                      value={minutes}
-                      onChange={evt =>
-                        this.setState({ minutes: evt.target.value })
-                      }
-                      maxLength={2}
-                    />
-                    <span className="divider">:</span>
-                    <Input
-                      type="text"
-                      value={seconds}
-                      onChange={evt =>
-                        this.setState({ seconds: evt.target.value })
-                      }
-                      maxLength={2}
-                    />
-                  </div>
+            {!setCode && (code ? code === inputCode : true) && (
+              <div>
+                <h3>Enter Countdown Time:</h3>
+                <div className="countdown-input">
+                  <Input
+                    type="text"
+                    value={hours}
+                    onChange={evt => this.setState({ hours: evt.target.value })}
+                    maxLength={2}
+                  />
+                  <span className="divider">:</span>
+                  <Input
+                    type="text"
+                    value={minutes}
+                    onChange={evt =>
+                      this.setState({ minutes: evt.target.value })
+                    }
+                    maxLength={2}
+                  />
+                  <span className="divider">:</span>
+                  <Input
+                    type="text"
+                    value={seconds}
+                    onChange={evt =>
+                      this.setState({ seconds: evt.target.value })
+                    }
+                    maxLength={2}
+                  />
                 </div>
-              )}
+              </div>
+            )}
           </Col>
           <Col sm={6}>
             <Button color="secondary" size="lg" block onClick={toggle}>

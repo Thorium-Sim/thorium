@@ -5,7 +5,7 @@ import uuid from "uuid";
 import FontAwesome from "react-fontawesome";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ValueInput from "./ValueInput";
 
 const ConfigureTask = ({

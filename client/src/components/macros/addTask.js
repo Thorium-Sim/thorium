@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import { Query } from "react-apollo";
 import { Badge, ListGroup, ListGroupItem, Input, Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import uuid from "uuid";
 import ValueInput from "../views/Tasks/core/ValueInput";
 import FontAwesome from "react-fontawesome";
@@ -18,18 +18,6 @@ input TaskInput {
 }
 */
 
-const templateQueryData = `
-id
-name
-definition
-values
-macros {
-  id
-  args
-  event
-  delay
-}`;
-
 const QUERY = gql`
   query TaskDefinitions($simulatorId: ID) {
     taskDefinitions(simulatorId: $simulatorId) {
@@ -44,8 +32,17 @@ const QUERY = gql`
       valuesValue
     }
     taskTemplates {
-   ${templateQueryData}
-  }
+      id
+      name
+      definition
+      values
+      macros {
+        id
+        args
+        event
+        delay
+      }
+    }
   }
 `;
 

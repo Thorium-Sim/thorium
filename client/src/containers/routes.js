@@ -8,7 +8,7 @@ import { FlightDirector } from "./FlightDirector";
 import Config from "./config";
 import Releases from "./FlightDirector/releases";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const history = createHistory();
 

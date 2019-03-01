@@ -2,38 +2,42 @@ import React from "react";
 import { Row, Col, Progress, Button, ButtonGroup } from "reactstrap";
 import { OutputField } from "../../generic/core";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const queryData = `
-id
-name
-clients {
-  id
-  lock
-  charge
-  station {
+const fragment = gql`
+  fragment THXData on Thx {
+    id
     name
+    clients {
+      id
+      lock
+      charge
+      station {
+        name
+      }
+      executive
+    }
+    activated
   }
-  executive
-}
-activated
 `;
 
 const QUERY = gql`
   query THX($simulatorId: ID!) {
     thx(simulatorId: $simulatorId) {
-${queryData}
+      ...THXData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription THXUpdate($simulatorId: ID!) {
     thxUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...THXData
     }
   }
+  ${fragment}
 `;
 
 const THXCore = ({ simulator, activated, name, clients, id }) => (

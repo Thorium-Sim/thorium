@@ -12,7 +12,7 @@ import {
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { RoomDropdown } from "helpers/shipStructure";
 
 import "./style.scss";
@@ -47,41 +47,49 @@ const trainingSteps = [
   }
 ];
 
-const queryData = `
-id
-number
-evac
-doors
-crewCount
-rooms {
-  id
-  name
-  gas
-}`;
-
-const tasksData = `
-id
-verified
-instructions
-definition
-values
-verifyRequested
-`;
+const fragments = {
+  deckFragment: gql`
+    fragment DeckData on Deck {
+      id
+      number
+      evac
+      doors
+      crewCount
+      rooms {
+        id
+        name
+        gas
+      }
+    }
+  `,
+  taskFragment: gql`
+    fragment TaskData on Task {
+      id
+      verified
+      instructions
+      definition
+      values
+      verifyRequested
+    }
+  `
+};
 
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
     decksUpdate(simulatorId: $simulatorId) {
-      ${queryData}
+      ...DeckData
     }
   }
+  ${fragments.deckFragment}
 `;
 
 const SUBSCRIPTION = gql`
   subscription TasksUpdate($simulatorId: ID!, $definitions: [String!]) {
-    tasksUpdate(simulatorId: $simulatorId, definitions:$definitions) {
-${tasksData}
+    tasksUpdate(simulatorId: $simulatorId, definitions: $definitions) {
+      ...TaskData
     }
   }
+  ${fragments.taskFragment}
 `;
 
 class SecurityDecks extends Component {
@@ -359,12 +367,14 @@ class SecurityDecks extends Component {
 const DECK_QUERY = gql`
   query SimulatorDecks($simulatorId: ID!, $definitions: [String!]) {
     decks(simulatorId: $simulatorId) {
-      ${queryData}
+      ...DeckData
     }
-    tasks(simulatorId:$simulatorId, definitions:$definitions) {
-      ${tasksData}
+    tasks(simulatorId: $simulatorId, definitions: $definitions) {
+      ...TaskData
     }
   }
+  ${fragments.taskFragment}
+  ${fragments.deckFragment}
 `;
 
 export default graphql(DECK_QUERY, {

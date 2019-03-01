@@ -1,33 +1,37 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import VideoViewscreen from "./videoViewscreen";
 import "./style.scss";
 
-const queryData = `
-id
-name
-data
-auto
-component
-secondary
-overlay
+const fragment = gql`
+  fragment ViewscreenData on Viewscreen {
+    id
+    name
+    data
+    auto
+    component
+    secondary
+    overlay
+  }
 `;
 
 const QUERY = gql`
   query Viewscreens($simulatorId: ID!) {
     viewscreens(simulatorId: $simulatorId) {
-${queryData}
+      ...ViewscreenData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription ViewscreensUpdate($simulatorId: ID!) {
     viewscreensUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ViewscreenData
     }
   }
+  ${fragment}
 `;
 
 class TemplateData extends Component {

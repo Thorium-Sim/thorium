@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import GenericSystemConfig from "./Generic";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
 const SENSORS_QUERY = gql`
   query Sensors($id: ID!) {

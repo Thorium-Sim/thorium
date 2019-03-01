@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { OutputField, TypingField } from "../../generic/core";
 import { Button, Container, Row, Col } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import ScanPresets from "./ScanPresets";
 import { subscribe } from "helpers/pubsub";

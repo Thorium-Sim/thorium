@@ -9,7 +9,7 @@ import {
   ListGroupItem
 } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { InputField } from "../../generic/core";
 
 class KeypadCore extends Component {

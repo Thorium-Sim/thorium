@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "helpers/tourHelper";
@@ -433,31 +433,30 @@ class Targeting extends Component {
             <DamageOverlay system={phasers} message="Phasers Offline" />
             <div className="phaser-holder">
               {phasers &&
-                phasers.beams.map(
-                  (p, i, arr) =>
-                    arr.length > 2 ? (
-                      <PhaserFire
-                        key={p.id}
-                        {...p}
-                        disabled={this.state.disabledPhasers[p.id]}
-                        index={i + 1}
-                        firePhasers={this.firePhasers.bind(this)}
-                        coolPhasers={this.coolPhasers.bind(this)}
-                      />
-                    ) : (
-                      <PhaserBeam
-                        key={p.id}
-                        {...p}
-                        name={phasers.displayName || phasers.name}
-                        disabled={this.state.disabledPhasers[p.id]}
-                        index={i + 1}
-                        chargePhasers={this.chargePhasers.bind(this)}
-                        dischargePhasers={this.dischargePhasers.bind(this)}
-                        coolPhasers={this.coolPhasers.bind(this)}
-                        firePhasers={this.firePhasers.bind(this)}
-                        targeting={true}
-                      />
-                    )
+                phasers.beams.map((p, i, arr) =>
+                  arr.length > 2 ? (
+                    <PhaserFire
+                      key={p.id}
+                      {...p}
+                      disabled={this.state.disabledPhasers[p.id]}
+                      index={i + 1}
+                      firePhasers={this.firePhasers.bind(this)}
+                      coolPhasers={this.coolPhasers.bind(this)}
+                    />
+                  ) : (
+                    <PhaserBeam
+                      key={p.id}
+                      {...p}
+                      name={phasers.displayName || phasers.name}
+                      disabled={this.state.disabledPhasers[p.id]}
+                      index={i + 1}
+                      chargePhasers={this.chargePhasers.bind(this)}
+                      dischargePhasers={this.dischargePhasers.bind(this)}
+                      coolPhasers={this.coolPhasers.bind(this)}
+                      firePhasers={this.firePhasers.bind(this)}
+                      targeting={true}
+                    />
+                  )
                 )}
             </div>
             <Row>

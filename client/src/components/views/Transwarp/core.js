@@ -1,58 +1,69 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Button } from "reactstrap";
 import { OutputField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const coreData = `
-core {
-  required
-  value
-}
-warp {
-  required
-  value
-}
-field {
-  required
-  value
-}`;
-const queryData = `
-id
-quad1 {
-  ${coreData}
-}
-quad2 {
-  ${coreData}
-}
-quad3 {
-  ${coreData}
-}
-quad4 {
-  ${coreData}
-}
-active
-power {
-  power
-  powerLevels
-}
-`;
+const fragments = {
+  coreData: gql`
+    fragment CoreData on TranswarpQuad {
+      core {
+        required
+        value
+      }
+      warp {
+        required
+        value
+      }
+      field {
+        required
+        value
+      }
+    }
+  `,
+  transwarpFragment: gql`
+    fragment TranswarpData on Transwarp {
+      id
+      quad1 {
+        ...CoreData
+      }
+      quad2 {
+        ...CoreData
+      }
+      quad3 {
+        ...CoreData
+      }
+      quad4 {
+        ...CoreData
+      }
+      active
+      power {
+        power
+        powerLevels
+      }
+    }
+  `
+};
 
 const QUERY = gql`
   query Transwarp($simulatorId: ID!) {
     transwarp(simulatorId: $simulatorId) {
-${queryData}
+      ...TranswarpData
     }
   }
+  ${fragments.coreData}
+  ${fragments.transwarpFragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TranswarpUpdate($simulatorId: ID!) {
     transwarpUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...TranswarpData
     }
   }
+  ${fragments.coreData}
+  ${fragments.transwarpFragment}
 `;
 
 const TranswarpCore = ({ id, quad1, quad2, quad3, quad4, active, power }) => {

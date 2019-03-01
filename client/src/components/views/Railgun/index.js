@@ -1,73 +1,82 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Railgun from "./railgun";
 import "./style.scss";
 
-const queryData = `
-id
-displayName
-damage {
-  damaged
-}
-power {
-  power
-  powerLevels
-}
-ammo
-maxAmmo
-availableAmmo
-`;
-
-const contactsData = `
-id
-location {
-  x
-  y
-  z
-}
-destination {
-  x
-  y
-  z
-}
-position {
-  x
-  y
-  z
-}
-type
-hitpoints
-destroyed
-startTime
-endTime
-speed
-`;
+const fragments = {
+  railgunFragment: gql`
+    fragment RailgunData on Railgun {
+      id
+      displayName
+      damage {
+        damaged
+      }
+      power {
+        power
+        powerLevels
+      }
+      ammo
+      maxAmmo
+      availableAmmo
+    }
+  `,
+  contactFragment: gql`
+    fragment ContactData on SensorContact {
+      id
+      location {
+        x
+        y
+        z
+      }
+      destination {
+        x
+        y
+        z
+      }
+      position {
+        x
+        y
+        z
+      }
+      type
+      hitpoints
+      destroyed
+      startTime
+      endTime
+      speed
+    }
+  `
+};
 const QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
-${queryData}
+      ...RailgunData
     }
-    sensorContacts(simulatorId:$simulatorId, type:"projectile") {
-      ${contactsData}
+    sensorContacts(simulatorId: $simulatorId, type: "projectile") {
+      ...ContactData
     }
   }
+  ${fragments.railgunFragment}
+  ${fragments.contactFragment}
 `;
 const SUBSCRIPTION = gql`
   subscription RailgunUpdate($simulatorId: ID!) {
     railgunUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...RailgunData
     }
   }
+  ${fragments.railgunFragment}
 `;
 
 const CONTACTS_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "projectile") {
-      ${contactsData}
+      ...ContactData
     }
   }
+  ${fragments.contactFragment}
 `;
 class RailgunData extends Component {
   state = {};

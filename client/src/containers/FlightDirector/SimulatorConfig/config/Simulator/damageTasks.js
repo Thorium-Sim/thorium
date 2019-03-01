@@ -9,29 +9,34 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import DefinitionList from "../../../TaskTemplates/definitionList";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Query, Mutation } from "react-apollo";
 //import FontAwesome from "react-fontawesome";
-const queryData = `
-id
-name
-definition
-values
-reportTypes`;
+const fragment = gql`
+  fragment TaskTemplateData on TaskTemplate {
+    id
+    name
+    definition
+    values
+    reportTypes
+  }
+`;
 
 const SUB = gql`
-subscription TaskTemplatesUpdate {
-  taskTemplatesUpdate {
-    ${queryData}
+  subscription TaskTemplatesUpdate {
+    taskTemplatesUpdate {
+      ...TaskTemplateData
+    }
   }
-}`;
+  ${fragment}
+`;
 
 const QUERY = gql`
   query TaskDefinitions {
     taskTemplates {
-   ${queryData}
-  }
+      ...TaskTemplateData
+    }
     taskDefinitions {
       id
       class
@@ -43,6 +48,7 @@ const QUERY = gql`
       valuesValue
     }
   }
+  ${fragment}
 `;
 
 const SIMULATOR_ADD = gql`

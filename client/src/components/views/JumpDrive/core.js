@@ -1,56 +1,60 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Table, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { OutputField, InputField } from "../../generic/core";
 import { titleCase } from "change-case";
 import "./style.scss";
 
-const queryData = `
-id
-name
-displayName
-stress
-power {
-  power
-}
-sectors {
-  aft {
-    level
-    offset
+const fragment = gql`
+  fragment JumpDriveData on JumpDrive {
+    id
+    name
+    displayName
+    stress
+    power {
+      power
+    }
+    sectors {
+      aft {
+        level
+        offset
+      }
+      fore {
+        level
+        offset
+      }
+      port {
+        level
+        offset
+      }
+      starboard {
+        level
+        offset
+      }
+    }
+    env
+    enabled
+    activated
   }
-  fore {
-    level
-    offset
-  }
-  port {
-    level
-    offset
-  }
-  starboard {
-    level
-    offset
-  }
-}
-env
-enabled
-activated
 `;
 
 const QUERY = gql`
   query JumpDrive($simulatorId: ID!) {
     jumpDrive(simulatorId: $simulatorId) {
-${queryData}
+      ...JumpDriveData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription JumpDriveUpdate($simulatorId: ID!) {
     jumpDriveUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...JumpDriveData
     }
   }
+  ${fragment}
 `;
 
 const JumpDriveCore = ({

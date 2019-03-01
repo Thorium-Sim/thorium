@@ -1,6 +1,6 @@
 import React from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { FormGroup, Label, Input } from "reactstrap";
 
 export default ({ updateArgs, args, client }) => {
@@ -29,9 +29,9 @@ export default ({ updateArgs, args, client }) => {
               ) : error ? (
                 "Error loading missions."
               ) : data &&
-              data.thorium &&
-              data.thorium.spaceEdventuresCenter &&
-              data.thorium.spaceEdventuresCenter.missions ? (
+                data.thorium &&
+                data.thorium.spaceEdventuresCenter &&
+                data.thorium.spaceEdventuresCenter.missions ? (
                 <Input
                   type="select"
                   value={args ? args.badgeId : "select"}

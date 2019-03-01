@@ -1,31 +1,35 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import CommandLineConfig from "./commandLineConfig";
 
-const queryData = `
-id
-name
-components
-connections
-config
-values
+const fragment = gql`
+  fragment CommandLineData on CommandLine {
+    id
+    name
+    components
+    connections
+    config
+    values
+  }
 `;
 
 const QUERY = gql`
   query CommandLine {
     commandLine {
-${queryData}
+      ...CommandLineData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription CommandLineUpdate {
     commandLineUpdate {
-${queryData}
+      ...CommandLineData
     }
   }
+  ${fragment}
 `;
 
 class CommandLineData extends Component {

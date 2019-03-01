@@ -1,60 +1,64 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Grid from "./grid";
 import "./style.scss";
 
-const queryData = `
-id
-name
-size
-color
-icon
-picture
-speed
-type
-rotation
-location {
-  x
-  y
-  z
-}
-destination {
-  x
-  y
-  z
-}
-position {
-  x
-  y
-  z
-}
-startTime
-endTime
-infrared
-cloaked
-destroyed
-forceUpdate
-targeted
-locked
-disabled
-hostile
+const fragment = gql`
+  fragment ContactData on SensorContact {
+    id
+    name
+    size
+    color
+    icon
+    picture
+    speed
+    type
+    rotation
+    location {
+      x
+      y
+      z
+    }
+    destination {
+      x
+      y
+      z
+    }
+    position {
+      x
+      y
+      z
+    }
+    startTime
+    endTime
+    infrared
+    cloaked
+    destroyed
+    forceUpdate
+    targeted
+    locked
+    disabled
+    hostile
+  }
 `;
 
 export const QUERY = gql`
   query Contacts($sensorsId: ID) {
     sensorContacts(sensorsId: $sensorsId) {
-${queryData}
+      ...ContactData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription SensorContactsChanged($sensorId: ID) {
     sensorContactUpdate(sensorId: $sensorId) {
-${queryData}
+      ...ContactData
     }
   }
+  ${fragment}
 `;
 
 class GridData extends Component {
