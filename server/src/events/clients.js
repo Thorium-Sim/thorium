@@ -61,17 +61,19 @@ App.on("clientDisconnect", ({ client }) => {
   pubsub.publish("clientChanged", App.clients);
 });
 
-App.on("clientSetFlight", ({ client, flightId }) => {
+App.on("clientSetFlight", ({ client, flightId, cb }) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setFlight(flightId);
   pubsub.publish("clientChanged", App.clients);
+  cb && cb();
 });
-App.on("clientSetSimulator", ({ client, simulatorId }) => {
+App.on("clientSetSimulator", ({ client, simulatorId, cb }) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setSimulator(simulatorId);
   pubsub.publish("clientChanged", App.clients);
+  cb && cb();
 });
-App.on("clientSetStation", ({ client, stationName }) => {
+App.on("clientSetStation", ({ client, stationName, cb }) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setStation(stationName);
   pubsub.publish("clientChanged", App.clients);
@@ -90,6 +92,7 @@ App.on("clientSetStation", ({ client, stationName }) => {
     );
     pubsub.publish("viewscreensUpdate", App.viewscreens);
   }
+  cb && cb();
 });
 App.on("clientLogin", ({ client, loginName }) => {
   const clientObj = App.clients.find(c => c.id === client);

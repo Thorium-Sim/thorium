@@ -312,7 +312,9 @@ class CargoControlCore extends Component {
                   })
                   .map(
                     ({ timestamp, log }) =>
-                      `${new Date(timestamp).toLocaleTimeString()}: ${log}`
+                      `${new Date(
+                        parseInt(timestamp)
+                      ).toLocaleTimeString()}: ${log}`
                   )
                   .join("\n\n")}
               </div>

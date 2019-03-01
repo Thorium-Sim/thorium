@@ -18,6 +18,9 @@ export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
   });
   const graphqlOptions = {
     schema,
+    resolverValidationOptions: {
+      requireResolversForResolveType: false
+    },
     engine: {
       apiKey: "service:Thorium:yZHa-qq7-_kVSpmsc9Ka1A"
     },
