@@ -143,9 +143,9 @@ class CoreFeed extends Component {
                     onClick={() => this.showComponent(c.id)}
                   >
                     <strong className="alert-heading">
-                      {DateTime.fromJSDate(new Date(c.timestamp)).toFormat(
-                        "h:mm:ssa"
-                      )}{" "}
+                      {DateTime.fromJSDate(
+                        new Date(parseInt(c.timestamp))
+                      ).toFormat("h:mm:ssa")}{" "}
                       - {c.title}
                     </strong>
                     {c.body && <p>{c.body}</p>}

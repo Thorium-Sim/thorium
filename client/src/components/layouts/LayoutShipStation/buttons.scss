@@ -95,6 +95,11 @@ $alertp: #7a24cf;
     &:focus,
     &.focus {
       // Avoid using mixin so we can pass custom focus shadow properly
+
+      &:before {
+        background-color: lighten($background, 1%);
+      }
+
       filter: drop-shadow(0px 0px 5px rgba($border, 0.5));
       box-shadow: none;
     }
@@ -111,6 +116,9 @@ $alertp: #7a24cf;
     .show > &.dropdown-toggle {
       color: color-yiq($active-background);
       background-color: $active-background;
+      &:before {
+        background-color: lighten($background, 5%);
+      }
       &:focus {
         // Avoid using mixin so we can pass custom focus shadow properly
         filter: drop-shadow(0px 0px 5px rgba($border, 0.5));

@@ -18,7 +18,8 @@
     "fixes": [
       "Fixes an issue where command line commands don't work.",
       "Fixes an issue with scrolling on the tactical maps screen.",
-      "Reactivation code buttons now match what is shown on the damage report screen."
+      "Reactivation code buttons now match what is shown on the damage report screen.",
+      "Makes selected buttons easier to see on ShipStation layout."
     ]
   },
   "1.1.17": {
