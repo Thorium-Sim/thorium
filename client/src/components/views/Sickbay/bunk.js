@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Card, Button, CardBody } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import TimeCared from "./timeCared";
 
 const Bunk = ({

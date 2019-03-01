@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Row, Col, Card } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { keys } from "../../../components/views/Widgets/keyboard";
 import EventPicker from "../MissionConfig/EventPicker";
 import MacroConfig from "./macroConfig";

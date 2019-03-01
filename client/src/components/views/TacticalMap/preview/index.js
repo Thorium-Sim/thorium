@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import layerComps from "./layerComps";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 class TacticalMapPreview extends Component {
   keypress = evt => {
     const distance = 0.005;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql } from "react-apollo";
 import NavigationScanner from "components/views/Navigation/NavigationScanner";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";

@@ -10,7 +10,7 @@ import {
   Button
 } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { FormattedMessage } from "react-intl";
 import FontAwesome from "react-fontawesome";
 

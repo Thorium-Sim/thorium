@@ -1,42 +1,44 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Core from "./CoreComponents";
 
-const queryData = `
-id
-name
-date
-running
-simulators {
-  id
-  name
-  layout
-  stations {
+const fragment = gql`
+  fragment FlightData on Flight {
+    id
     name
-    cards {
+    date
+    running
+    simulators {
+      id
       name
+      layout
+      stations {
+        name
+        cards {
+          name
+        }
+        messageGroups
+      }
+      assets {
+        mesh
+        texture
+        side
+        top
+        logo
+        bridge
+      }
     }
-    messageGroups
   }
-  assets {
-    mesh
-    texture
-    side
-    top
-    logo
-    bridge
-  }
-}
 `;
 
 const QUERY = gql`
   query Flights($id: ID!) {
     flights(id: $id) {
-${queryData}
+      ...FlightData
     }
-    clients(flightId:$id) {
+    clients(flightId: $id) {
       id
       simulator {
         id
@@ -46,13 +48,15 @@ ${queryData}
       }
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription FlightsUpdate($id: ID!) {
     flightsUpdate(id: $id) {
-${queryData}
+      ...FlightData
     }
   }
+  ${fragment}
 `;
 const CACHE_INVALID_SUB = gql`
   subscription ClearCache($flight: ID!) {

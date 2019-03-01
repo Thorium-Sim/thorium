@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ContactContextMenu from "./contactContextMenu";
 
 const ADD_ARMY_CONTACT = gql`

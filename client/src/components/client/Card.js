@@ -9,7 +9,7 @@ import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
 import { subscribe } from "../../helpers/pubsub";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const Blackout = () => {
   return (

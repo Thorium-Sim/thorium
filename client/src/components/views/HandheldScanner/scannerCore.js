@@ -8,7 +8,7 @@ import {
   ListGroupItem
 } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { OutputField, TypingField } from "../../generic/core";
 import ScanPresets from "../Sensors/ScanPresets";
 

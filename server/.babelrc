@@ -1,4 +1,11 @@
 {
-  "presets": ["env", "stage-3"],
-  "plugins": ["transform-class-properties", "import-glob"]
+  "presets": ["@babel/env"],
+  "plugins": [
+    "transform-class-properties",
+    "import-glob",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-syntax-import-meta",
+    ["@babel/plugin-proposal-class-properties", { "loose": false }],
+    "@babel/plugin-proposal-json-strings"
+  ]
 }

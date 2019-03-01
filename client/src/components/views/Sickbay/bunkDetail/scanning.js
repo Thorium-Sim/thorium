@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Input, Button } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 class Scanning extends Component {
   constructor(props) {
     super(props);

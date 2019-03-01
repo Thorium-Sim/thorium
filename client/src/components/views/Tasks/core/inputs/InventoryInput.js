@@ -1,6 +1,6 @@
 import React from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import { Button } from "reactstrap";
 import { randomFromList } from "helpers/randomFromList";

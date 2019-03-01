@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Mutation, Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Input, Button } from "reactstrap";
 import { InputField } from "../../generic/core";
 

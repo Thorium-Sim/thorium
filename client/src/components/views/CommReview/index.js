@@ -1,35 +1,39 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Review from "./review";
 import "./style.scss";
 
-const queryData = `
-id
-messages(crew: false, sent: false, approved: false) {
-  id
-  sender
-  message
-  encrypted
-  datestamp
-  sent
-}
+const fragment = gql`
+  fragment LRCommData on LRCommunications {
+    id
+    messages(crew: false, sent: false, approved: false) {
+      id
+      sender
+      message
+      encrypted
+      datestamp
+      sent
+    }
+  }
 `;
 
 const QUERY = gql`
   query LongRangeCommunications($simulatorId: ID!) {
     longRangeCommunications(simulatorId: $simulatorId) {
-${queryData}
+      ...LRCommData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription LongRangeCommunicationsUpdate($simulatorId: ID!) {
     longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...LRCommData
     }
   }
+  ${fragment}
 `;
 
 class LongRangeCommunicationsData extends Component {

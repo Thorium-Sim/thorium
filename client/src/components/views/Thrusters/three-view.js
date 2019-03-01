@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as THREE from "three";
 import OBJLoader from "three-obj-loader";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import Arrow from "./arrow";
 import Circle from "./circle";
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "reactstrap";
 import { Mutation, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ValueInput from "../../../components/views/Tasks/core/ValueInput";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Card, Input } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import * as stepConfigs from "./steps";

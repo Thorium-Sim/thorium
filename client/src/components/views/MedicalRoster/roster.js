@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 import RosterDetail from "./rosterDetail";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import RosterList from "./rosterList";
 class Roster extends Component {
   state = { roster: "bridge", search: "", selectedCrew: { id: "newCrew" } };

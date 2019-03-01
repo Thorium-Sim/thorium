@@ -1,26 +1,31 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Template from "./template";
 import "./style.scss";
 
-const queryData = `
+const fragment = gql`
+fragment TemplateData on Template {
+
+}
 `;
 
 const QUERY = gql`
   query Template($simulatorId: ID!) {
     template(simulatorId: $simulatorId) {
-${queryData}
+      ...TemplateData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     templateUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...TemplateData
     }
   }
+  ${fragment}
 `;
 
 class TemplateData extends Component {

@@ -1,7 +1,7 @@
 import React from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 import GenericSystemConfig from "./Generic";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Mutation, Query } from "react-apollo";
 
 const PHASER_QUERY = gql`

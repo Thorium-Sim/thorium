@@ -1,5 +1,5 @@
 // Bootstrap things one step at a time with promises;
-import "babel-polyfill";
+import "@babel/polyfill";
 import log from "./bootstrap/logs";
 import migrate from "./bootstrap/migration";
 import init from "./bootstrap/init";

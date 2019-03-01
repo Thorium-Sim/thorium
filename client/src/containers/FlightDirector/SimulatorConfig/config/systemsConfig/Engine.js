@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Button } from "reactstrap";
 import GenericSystemConfig from "./Generic";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
 import { Input, FormGroup, Label } from "reactstrap";
 

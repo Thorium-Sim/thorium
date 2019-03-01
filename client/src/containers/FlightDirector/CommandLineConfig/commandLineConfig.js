@@ -15,7 +15,7 @@ import {
   Button
 } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import * as components from "./components";
 import MacroListMaker from "../macroListMaker";
 const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);

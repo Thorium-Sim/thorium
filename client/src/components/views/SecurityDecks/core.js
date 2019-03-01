@@ -1,26 +1,30 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const queryData = `
-id
-number
-evac
-doors
-crewCount
-rooms {
-  id
-  name
-  gas
-}`;
+const fragment = gql`
+  fragment DeckData on Deck {
+    id
+    number
+    evac
+    doors
+    crewCount
+    rooms {
+      id
+      name
+      gas
+    }
+  }
+`;
 const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
     decksUpdate(simulatorId: $simulatorId) {
-      ${queryData}
+      ...DeckData
     }
   }
+  ${fragment}
 `;
 
 class SecurityTeams extends Component {
@@ -168,9 +172,10 @@ const TranzineSelect = ({ deck }) => {
 const DECK_QUERY = gql`
   query SimulatorDecks($simulatorId: ID!) {
     decks(simulatorId: $simulatorId) {
-      ${queryData}
+      ...DeckData
     }
   }
+  ${fragment}
 `;
 
 export default graphql(DECK_QUERY, {

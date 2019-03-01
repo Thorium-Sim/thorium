@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withApollo, Query } from "react-apollo";
 import { Container, Row, Col } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -20,10 +20,13 @@ const trainingSteps = [
   }
 ];
 
-const queryData = `
-id
-alertlevel
-alertLevelLock`;
+const fragment = gql`
+  fragment AlertData on Simulator {
+    id
+    alertlevel
+    alertLevelLock
+  }
+`;
 
 class AlertCondition extends Component {
   state = { hoverAlert: null };
@@ -75,9 +78,10 @@ class AlertCondition extends Component {
         query={gql`
           query simulators($id: String) {
             simulators(id: $id) {
-              ${queryData}
+              ...AlertData
             }
           }
+          ${fragment}
         `}
         variables={{ id: this.props.simulator.id }}
       >
@@ -88,11 +92,13 @@ class AlertCondition extends Component {
                 subscribe={() =>
                   subscribeToMore({
                     document: gql`
-              subscription SimulatorsSub($id: ID) {
-    simulatorsUpdate(simulatorId: $id) {
-      ${queryData}
-    }
-  }`,
+                      subscription SimulatorsSub($id: ID) {
+                        simulatorsUpdate(simulatorId: $id) {
+                          ...AlertData
+                        }
+                      }
+                      ${fragment}
+                    `,
                     variables: { id: this.props.simulator.id },
                     updateQuery: (previousResult, { subscriptionData }) => {
                       return Object.assign({}, previousResult, {

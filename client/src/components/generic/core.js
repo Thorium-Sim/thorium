@@ -22,7 +22,8 @@ export const InputField = props => {
       props.prompt,
       props.promptValue || props.children || ""
     );
-    props.onClick(value);
+    const parseValue = isNaN(Number(value)) ? value : Number(value);
+    props.onClick(parseValue);
   };
   return (
     <div className="input-field" {...props} onClick={onClick} style={style}>

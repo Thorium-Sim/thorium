@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const TIMESYNC_SUB = gql`
   subscription SyncTime($simulatorId: ID!) {

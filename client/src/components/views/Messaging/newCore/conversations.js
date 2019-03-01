@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import GroupManager from "./groupManager";
 
 function reduceMessages(messages, stationNames) {

@@ -1,38 +1,42 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Thx from "./thx";
 import "./style.scss";
 
-const queryData = `
-id
-name
-clients {
-  id
-  lock
-  charge
-  station {
+const fragment = gql`
+  fragment THXData on Thx {
+    id
     name
+    clients {
+      id
+      lock
+      charge
+      station {
+        name
+      }
+      executive
+    }
+    activated
   }
-  executive
-}
-activated
 `;
 
 const QUERY = gql`
   query Thx($simulatorId: ID!) {
     thx(simulatorId: $simulatorId) {
-${queryData}
+      ...THXData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription ThxUpdate($simulatorId: ID!) {
     thxUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...THXData
     }
   }
+  ${fragment}
 `;
 
 class ThxData extends Component {

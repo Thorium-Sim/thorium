@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import SineWaves from "sine-waves";
 import { Container, Row, Col } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import tinycolor from "tinycolor2";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -215,8 +215,8 @@ class Communications extends Component {
                     {c.connected
                       ? "Connected"
                       : c.hailing
-                        ? "Hailing"
-                        : "Incoming Call"}
+                      ? "Hailing"
+                      : "Incoming Call"}
                   </h3>
                 </Col>
               ))

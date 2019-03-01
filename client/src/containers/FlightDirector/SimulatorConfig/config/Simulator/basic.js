@@ -1,7 +1,7 @@
 import React from "react";
 import LayoutList from "components/layouts";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const Layouts = Object.keys(LayoutList).filter(
   s => s.indexOf("Viewscreen") === -1

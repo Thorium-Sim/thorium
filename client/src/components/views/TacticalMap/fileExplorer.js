@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import ObjPreview from "./3dObjPreview";
 import SubscriptionHelper from "helpers/subscriptionHelper";

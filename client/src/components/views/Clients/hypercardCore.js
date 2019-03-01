@@ -1,34 +1,38 @@
 import React from "react";
 import { Table } from "reactstrap";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Input } from "reactstrap";
 import { titleCase } from "change-case";
 import Views from "../index";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const queryData = `
-id
-station {
-  name
-}
-hypercard
+const fragment = gql`
+  fragment HypercardData on Client {
+    id
+    station {
+      name
+    }
+    hypercard
+  }
 `;
 
 const QUERY = gql`
   query Clients($simulatorId: ID!) {
     clients(simulatorId: $simulatorId) {
-${queryData}
+      ...HypercardData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
-${queryData}
+      ...HypercardData
     }
   }
+  ${fragment}
 `;
 
 const excludedStations = ["Sound"];

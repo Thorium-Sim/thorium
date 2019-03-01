@@ -3,7 +3,7 @@ import { Mutation } from "react-apollo";
 import Measure from "react-measure";
 import tinycolor from "tinycolor2";
 import Explosion from "helpers/explosions";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { subscribe } from "helpers/pubsub";
 import { particleTypes } from "../../ParticleDetector/particleConstants";
 const burstIcon = require(`../../ProbeScience/burst.svg`);
@@ -295,17 +295,15 @@ export default class SensorContact extends Component {
                 />
               )}
             </Measure>
-            {!core &&
-              this.state.dimensions &&
-              selected && (
-                <ContactSelection
-                  contactDims={this.state.dimensions}
-                  width={width}
-                  x={x}
-                  y={y}
-                  size={size}
-                />
-              )}
+            {!core && this.state.dimensions && selected && (
+              <ContactSelection
+                contactDims={this.state.dimensions}
+                width={width}
+                x={x}
+                y={y}
+                size={size}
+              />
+            )}
           </Fragment>
           {core && (
             <Fragment>
@@ -361,17 +359,15 @@ export default class SensorContact extends Component {
             )}
           </Measure>
 
-          {!core &&
-            this.state.dimensions &&
-            selected && (
-              <ContactSelection
-                contactDims={this.state.dimensions}
-                width={width}
-                x={x}
-                y={y}
-                size={size}
-              />
-            )}
+          {!core && this.state.dimensions && selected && (
+            <ContactSelection
+              contactDims={this.state.dimensions}
+              width={width}
+              x={x}
+              y={y}
+              size={size}
+            />
+          )}
         </Fragment>
         {core && (
           <Fragment>

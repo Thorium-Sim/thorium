@@ -1,24 +1,27 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Table, Button } from "reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const queryData = `
-id
-type
-model
-efficiency
-displayName
-powerOutput
-      `;
+const fragment = gql`
+  fragment PowerData on Reactor {
+    id
+    type
+    model
+    efficiency
+    displayName
+    powerOutput
+  }
+`;
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...PowerData
     }
   }
+  ${fragment}
 `;
 
 const SYSTEMS_SUB = gql`
@@ -394,7 +397,7 @@ class DamageControlCore extends Component {
 const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
     reactors(simulatorId: $simulatorId) {
-      ${queryData}
+      ...PowerData
     }
     systems(simulatorId: $simulatorId) {
       id
@@ -414,6 +417,7 @@ const SYSTEMS_QUERY = gql`
       type
     }
   }
+  ${fragment}
 `;
 
 export default graphql(SYSTEMS_QUERY, {

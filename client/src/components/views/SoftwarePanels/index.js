@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card } from "reactstrap";
 import Measure from "react-measure";
@@ -87,11 +87,10 @@ class SoftwarePanels extends Component {
               : []
           )
           .map(c => components.find(d => d.id === c))
-          .map(
-            c =>
-              calcedComps[comp.id] || calcedComps[comp.id] === 0
-                ? calcedComps[comp.id]
-                : calcLevel(c)
+          .map(c =>
+            calcedComps[comp.id] || calcedComps[comp.id] === 0
+              ? calcedComps[comp.id]
+              : calcLevel(c)
           )
           .filter(c => (Array.isArray(c) ? c.length > 0 : c || c === 0))
           .concat(

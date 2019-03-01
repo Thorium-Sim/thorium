@@ -1,6 +1,6 @@
 import React from "react";
 import ContactContextMenu from "./contactContextMenu";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 const ContactSelect = ({ id, clearSelection, contacts, client }) => {
   const mainContact = contacts[0];
   const updateContact = (contact, key, value) => {

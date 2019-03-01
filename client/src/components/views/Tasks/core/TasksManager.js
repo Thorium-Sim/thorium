@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Card, Button, ListGroup, ListGroupItem } from "reactstrap";
 import { Duration } from "luxon";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { titleCase } from "change-case";
 
 export function parseDuration(time) {

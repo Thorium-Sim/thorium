@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Button, Label, Input } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -25,28 +25,33 @@ const importTacticalMap = evt => {
   }
 };
 
-const TACTICAL_MAP_DATA = `
-id
-name
-flight {
-  id
-}
-template`;
+const fragment = gql`
+  fragment TacticalMapListData on TacticalMap {
+    id
+    name
+    flight {
+      id
+    }
+    template
+  }
+`;
 
 const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate {
     tacticalMapsUpdate {
-     ${TACTICAL_MAP_DATA}
+      ...TacticalMapListData
     }
   }
+  ${fragment}
 `;
 
 const TACTICALMAP_QUERY = gql`
   query TacticalMap {
     tacticalMaps {
-      ${TACTICAL_MAP_DATA}
+      ...TacticalMapListData
     }
   }
+  ${fragment}
 `;
 
 const TacticalMapList = ({
@@ -118,9 +123,8 @@ const TacticalMapList = ({
         if (loading || !data) return null;
         const { tacticalMaps } = data;
         const maps = tacticalMaps
-          ? tacticalMaps.filter(
-              t =>
-                flightId ? !t.flight || t.flight.id === flightId : !t.flight
+          ? tacticalMaps.filter(t =>
+              flightId ? !t.flight || t.flight.id === flightId : !t.flight
             )
           : [];
         return (
@@ -140,15 +144,17 @@ const TacticalMapList = ({
               <Fragment>
                 <p>Saved Maps</p>
                 <ul className="saved-list">
-                  {maps.filter(t => t.template).map(t => (
-                    <li
-                      key={t.id}
-                      className={t.id === tacticalMapId ? "selected" : ""}
-                      onClick={() => selectTactical(t.id)}
-                    >
-                      {t.name}
-                    </li>
-                  ))}
+                  {maps
+                    .filter(t => t.template)
+                    .map(t => (
+                      <li
+                        key={t.id}
+                        className={t.id === tacticalMapId ? "selected" : ""}
+                        onClick={() => selectTactical(t.id)}
+                      >
+                        {t.name}
+                      </li>
+                    ))}
                 </ul>
                 <div>
                   <Button color="success" size="sm" onClick={addTactical}>
@@ -191,15 +197,17 @@ const TacticalMapList = ({
               <div>
                 <p>Flight Maps</p>
                 <ul className="saved-list">
-                  {maps.filter(t => !t.template).map(t => (
-                    <li
-                      key={t.id}
-                      className={t.id === tacticalMapId ? "selected" : ""}
-                      onClick={() => selectTactical(t.id)}
-                    >
-                      {t.name}
-                    </li>
-                  ))}
+                  {maps
+                    .filter(t => !t.template)
+                    .map(t => (
+                      <li
+                        key={t.id}
+                        className={t.id === tacticalMapId ? "selected" : ""}
+                        onClick={() => selectTactical(t.id)}
+                      >
+                        {t.name}
+                      </li>
+                    ))}
                 </ul>
                 <Button color="success" size="sm">
                   Save as Template Map

@@ -1,49 +1,55 @@
 import React, { Component } from "react";
 import { Query, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import randomWords from "random-words";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import SimulatorData from "./simulatorData";
 import Credits from "./credits";
 import "./client.scss";
 
-const queryData = `
-id
-flight {
-  id
-  name
-  date
-}
-simulator {
-  id
-  name
-}
-station {
-  name
-}
-loginName
-loginState
-offlineState
-hypercard
-movie
-training
-caches
-overlay
-`;
+const fragments = {
+  clientData: gql`
+    fragment ClientData on Client {
+      id
+      flight {
+        id
+        name
+        date
+      }
+      simulator {
+        id
+        name
+      }
+      station {
+        name
+      }
+      loginName
+      loginState
+      offlineState
+      hypercard
+      movie
+      training
+      caches
+      overlay
+    }
+  `
+};
 
 const QUERY = gql`
   query Client($clientId: ID!) {
     clients(clientId: $clientId) {
-${queryData}
+      ...ClientData
     }
   }
+  ${fragments.clientData}
 `;
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($clientId: ID!) {
     clientChanged(client: $clientId) {
-${queryData}
+      ...ClientData
     }
   }
+  ${fragments.clientData}
 `;
 
 class ClientData extends Component {

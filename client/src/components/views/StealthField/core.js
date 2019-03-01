@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button } from "reactstrap";
 import { Query, withApollo } from "react-apollo";
 import { OutputField } from "../../generic/core";
@@ -88,12 +88,14 @@ class StealthFieldCore extends Component {
     const { systems, stealthField } = this.props;
     // Calculate the systems that are highest
     let alertHigh = false;
-    const highSystems = systems.filter(s => s.stealthFactor > 0.5).map(s => {
-      if (s.stealthFactor > 0.8) {
-        alertHigh = true;
-      }
-      return s;
-    });
+    const highSystems = systems
+      .filter(s => s.stealthFactor > 0.5)
+      .map(s => {
+        if (s.stealthFactor > 0.8) {
+          alertHigh = true;
+        }
+        return s;
+      });
 
     const sysStyle = {};
     if (highSystems.length > 0) {
@@ -131,17 +133,16 @@ class StealthFieldCore extends Component {
               {highSystems.length === 0
                 ? "No Alert Systems"
                 : highSystems.length > 1
-                  ? `${highSystems.length} Alert Systems`
-                  : `${highSystems[0] && highSystems[0].name} (${Math.round(
-                      highSystems[0] ? highSystems[0].stealthFactor * 100 : 0
-                    )})`}
+                ? `${highSystems.length} Alert Systems`
+                : `${highSystems[0] && highSystems[0].name} (${Math.round(
+                    highSystems[0] ? highSystems[0].stealthFactor * 100 : 0
+                  )})`}
             </OutputField>
-            {stealthField &&
-              stealthField.charge && (
-                <OutputField alert={!isAligned(stealthField.quadrants)}>
-                  {isAligned(stealthField.quadrants) ? "Aligned" : "Misaligned"}
-                </OutputField>
-              )}
+            {stealthField && stealthField.charge && (
+              <OutputField alert={!isAligned(stealthField.quadrants)}>
+                {isAligned(stealthField.quadrants) ? "Aligned" : "Misaligned"}
+              </OutputField>
+            )}
           </Col>
         </Row>
       </Container>

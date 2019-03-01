@@ -1,6 +1,6 @@
 import React from "react";
 import GenericSystemConfig from "./Generic";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query } from "react-apollo";
 import TorpedoInventory from "components/views/TorpedoLoading/inventory";
 

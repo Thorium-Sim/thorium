@@ -48,6 +48,7 @@
     "escape-string-regexp": "^1.0.5",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
+    "graphql-tag.macro": "^2.1.0",
     "http-proxy-middleware": "^0.19.1",
     "keycode": "^2.2.0",
     "luxon": "^1.11.3",

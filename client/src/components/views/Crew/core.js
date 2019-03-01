@@ -8,7 +8,7 @@ import {
   Input,
   Button
 } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Input, Container, Row, Col, Label } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ops from "./ops";
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "components/views/index";

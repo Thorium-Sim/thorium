@@ -11,7 +11,7 @@ import {
   Input
 } from "reactstrap";
 import MacroWrapper from "./MacroConfig";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import EventPicker from "./EventPicker";

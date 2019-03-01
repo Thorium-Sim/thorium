@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Label, Input, FormGroup } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import HashtagDefinition from "../../../../../../helpers/hashtagDefinition";
 
 export default class GenericConfig extends Component {

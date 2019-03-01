@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Mutation } from "react-apollo";
 import { Button } from "reactstrap";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 class AmbianceConfig extends Component {
   state = {};

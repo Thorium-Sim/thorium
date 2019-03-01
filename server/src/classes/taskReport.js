@@ -88,7 +88,7 @@ export default class TaskReport {
         )
       }))
       // Filter out the templates that don't correspond with this report
-      .filter(t => t.reportTypes.indexOf(type) > -1)
+      .filter(t => t.reportTypes && t.reportTypes.indexOf(type) > -1)
 
       // Get the task definition, and filter out any that are
       // not currently active.

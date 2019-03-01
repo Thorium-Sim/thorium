@@ -3,7 +3,7 @@ import { DraggableCore } from "react-draggable";
 import { Button } from "reactstrap";
 import distance from "helpers/distance";
 import { throttle } from "helpers/debounce";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 export default class MovementCore extends PureComponent {
   constructor(props) {

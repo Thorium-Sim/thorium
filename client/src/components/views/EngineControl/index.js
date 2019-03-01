@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, Row, Col, Container } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, compose } from "react-apollo";
 import Engine1 from "./engine-1";
 import Engine2 from "./engine-2";
@@ -8,32 +8,36 @@ import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const updateData = `
-id
-name
-displayName
-power {
-  power
-  powerLevels
-}
-damage {
-  damaged
-  report
-}
-speeds {
-  text
-  number
-}
-heat
-speed
-coolant
-on`;
+const fragment = gql`
+  fragment EngineData on Engine {
+    id
+    name
+    displayName
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    speeds {
+      text
+      number
+    }
+    heat
+    speed
+    coolant
+    on
+  }
+`;
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
-${updateData}
+      ...EngineData
     }
   }
+  ${fragment}
 `;
 
 const HEATCHANGE_SUB = gql`
@@ -112,14 +116,13 @@ class EngineControl extends Component {
                   return previousResult;
                 }
                 return {
-                  engines: previousResult.engines.map(
-                    (e, i) =>
-                      i === engineIndex
-                        ? Object.assign({}, e, {
-                            heat: subscriptionData.data.heatChange.heat,
-                            coolant: subscriptionData.data.heatChange.coolant
-                          })
-                        : e
+                  engines: previousResult.engines.map((e, i) =>
+                    i === engineIndex
+                      ? Object.assign({}, e, {
+                          heat: subscriptionData.data.heatChange.heat,
+                          coolant: subscriptionData.data.heatChange.coolant
+                        })
+                      : e
                   )
                 };
               }
@@ -231,9 +234,10 @@ const trainingSteps = [
 const ENGINE_QUERY = gql`
   query getEngines($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
-      ${updateData}
+      ...EngineData
     }
   }
+  ${fragment}
 `;
 
 const SET_SPEED = gql`

@@ -5,7 +5,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query } from "react-apollo";
 class DestinationSelect extends Component {
   state = { dropdownOpen: false };

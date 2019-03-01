@@ -1,5 +1,4 @@
 // TODO: Figure out why we need import { Engine } what to do about it
-import { Engine } from "../../src/classes/engine";
 import { System } from "../../src/classes/generic";
 import JumpDrive from "../../src/classes/jumpDrive";
 

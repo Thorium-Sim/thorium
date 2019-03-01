@@ -4,7 +4,7 @@ import { Asset } from "helpers/assets";
 import { withApollo, Mutation } from "react-apollo";
 import Tour from "helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const ShipImage = ({
   simulatorId,

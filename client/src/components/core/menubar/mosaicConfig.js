@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Query, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import {
   Modal,
   ModalHeader,

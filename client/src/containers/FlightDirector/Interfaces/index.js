@@ -1,29 +1,31 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Interfaces from "./interfaces";
 
-const queryData = `
-id
-name
-deviceType {
-  id
-  name
-  width
-  height
-  isLandscape
-}
-components
-connections
-config
-values
+const fragment = gql`
+  fragment InterfaceConfigData on Interface {
+    id
+    name
+    deviceType {
+      id
+      name
+      width
+      height
+      isLandscape
+    }
+    components
+    connections
+    config
+    values
+  }
 `;
 
 const QUERY = gql`
   query Interfaces {
     interfaces {
-${queryData}
+      ...InterfaceConfigData
     }
     interfaceDevices {
       id
@@ -33,13 +35,15 @@ ${queryData}
       isLandscape
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription InterfaceUpdate {
     interfaceUpdate {
-${queryData}
+      ...InterfaceConfigData
     }
   }
+  ${fragment}
 `;
 
 class InterfacesData extends Component {

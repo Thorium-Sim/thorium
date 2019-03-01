@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import {
   Container,
@@ -480,17 +480,19 @@ const TeamList = ({ team, teams, crew, selectedCrew, selectCrew }) => {
   const officers = teams.reduce((prev, next) => {
     return prev.concat(next.officers.filter(Boolean).map(o => o.id));
   }, []);
-  return crew.filter(c => officers.indexOf(c.id) === -1).map(o => (
-    <p
-      key={`crew-${o.id}`}
-      className={`crew-item ${selectedCrew === o.id ? "selected" : ""} ${
-        o.inventory.filter(i => i.count > 0).length > 0 ? "has-inventory" : ""
-      }`}
-      onClick={() => selectCrew(o.id)}
-    >
-      {o.name}
-    </p>
-  ));
+  return crew
+    .filter(c => officers.indexOf(c.id) === -1)
+    .map(o => (
+      <p
+        key={`crew-${o.id}`}
+        className={`crew-item ${selectedCrew === o.id ? "selected" : ""} ${
+          o.inventory.filter(i => i.count > 0).length > 0 ? "has-inventory" : ""
+        }`}
+        onClick={() => selectCrew(o.id)}
+      >
+        {o.name}
+      </p>
+    ));
 };
 
 const QUERY = gql`

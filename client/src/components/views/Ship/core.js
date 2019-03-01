@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
 import { Input, Button } from "reactstrap";
@@ -8,25 +8,29 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const layouts = LayoutList;
 
-const queryData = `
-id
-name
-layout
-training
-stepDamage
-verifyStep
-bridgeOfficerMessaging
-triggersPaused
-ship {
-  bridgeCrew
-  radiation
-}`;
+const fragment = gql`
+  fragment ShipData on Simulator {
+    id
+    name
+    layout
+    training
+    stepDamage
+    verifyStep
+    bridgeOfficerMessaging
+    triggersPaused
+    ship {
+      bridgeCrew
+      radiation
+    }
+  }
+`;
 const SHIP_CORE_SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
-      ${queryData}
+      ...ShipData
     }
   }
+  ${fragment}
 `;
 
 class ShipCore extends Component {
@@ -315,9 +319,10 @@ class ShipCore extends Component {
 const SHIP_CORE_QUERY = gql`
   query Ship($simulatorId: String) {
     simulators(id: $simulatorId) {
-      ${queryData}
+      ...ShipData
     }
   }
+  ${fragment}
 `;
 export default graphql(SHIP_CORE_QUERY, {
   options: ownProps => ({
