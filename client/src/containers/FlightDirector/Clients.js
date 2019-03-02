@@ -59,8 +59,54 @@ const CLIENT_CHANGE_QUERY = gql`
     }
   }
 `;
+const Keyboards = ({ keyboards = [] }) => {
+  if (keyboards.length === 0) {
+    return null;
+  }
+  return (
+    <Fragment>
+      <option disabled>──────────</option>
+      <optgroup label="Keyboards">
+        {keyboards.map(k => (
+          <option key={k.id} value={`keyboard:${k.id}`}>
+            {k.name}
+          </option>
+        ))}
+      </optgroup>
+    </Fragment>
+  );
+};
+const Interfaces = ({ p, interfaces = [] }) => {
+  const simInterfaces = p.simulator.interfaces
+    .map(i => interfaces.find(ii => ii.id === i))
+    .filter(Boolean);
+  if (simInterfaces.length === 0) {
+    return null;
+  }
+  return (
+    <Fragment>
+      <option disabled>──────────</option>
+      <optgroup label="Interfaces">
+        {simInterfaces.map(i => (
+          <option key={i.id} value={`interface-id:${i.id}`}>
+            {i.name}
+          </option>
+        ))}
+      </optgroup>
+    </Fragment>
+  );
+};
 
-const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
+const ClientRow = ({
+  p,
+  index,
+  removeClient,
+  select,
+  flights,
+  flightId,
+  interfaces,
+  keyboards
+}) => {
   const thisFlight = flights.find(f => f.id === flightId);
   return (
     <tr key={`flight-${p.id}-${index}`}>
@@ -162,66 +208,8 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
                 <option value={"Viewscreen"}>Viewscreen</option>
                 <option value={"Sound"}>Sound</option>
                 <option value={"Blackout"}>Blackout</option>
-                <Query
-                  query={gql`
-                    query Keyboards {
-                      keyboard {
-                        id
-                        name
-                      }
-                    }
-                  `}
-                >
-                  {({ loading, data: { keyboard } }) => {
-                    if (loading || keyboard.length === 0) {
-                      return null;
-                    }
-                    return (
-                      <Fragment>
-                        <option disabled>──────────</option>
-                        <optgroup label="Keyboards">
-                          {keyboard.map(k => (
-                            <option key={k.id} value={`keyboard:${k.id}`}>
-                              {k.name}
-                            </option>
-                          ))}
-                        </optgroup>
-                      </Fragment>
-                    );
-                  }}
-                </Query>
-                <Query
-                  query={gql`
-                    query Interfaces {
-                      interfaces {
-                        id
-                        name
-                      }
-                    }
-                  `}
-                >
-                  {({ loading, data: { interfaces } }) => {
-                    if (loading) return null;
-                    const simInterfaces = p.simulator.interfaces
-                      .map(i => interfaces.find(ii => ii.id === i))
-                      .filter(Boolean);
-                    if (simInterfaces.length === 0) {
-                      return null;
-                    }
-                    return (
-                      <Fragment>
-                        <option disabled>──────────</option>
-                        <optgroup label="Interfaces">
-                          {simInterfaces.map(i => (
-                            <option key={i.id} value={`interface-id:${i.id}`}>
-                              {i.name}
-                            </option>
-                          ))}
-                        </optgroup>
-                      </Fragment>
-                    );
-                  }}
-                </Query>
+                <Keyboards p={p} keyboards={keyboards} />
+                <Interfaces p={p} interfaces={interfaces} />
               </Fragment>
             )}
           </select>
@@ -451,6 +439,8 @@ class Clients extends Component {
                             select={this.select}
                             flightId={this.props.flightId}
                             flights={this.props.data.flights}
+                            interfaces={this.props.data.interfaces}
+                            keyboards={this.props.data.keyboard}
                           />
                         ))}
                     </Fragment>
@@ -498,6 +488,14 @@ const CLIENTS_QUERY = gql`
       loginName
       loginState
       training
+    }
+    interfaces {
+      id
+      name
+    }
+    keyboard {
+      id
+      name
     }
     flights {
       id
