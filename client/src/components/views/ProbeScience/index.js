@@ -7,7 +7,7 @@ import "./style.scss";
 
 const fragments = {
   contactFragment: gql`
-    fragment ProbeScienceData on SensorContact {
+    fragment ProbeScienceSensorContactData on SensorContact {
       id
       location {
         x
@@ -70,7 +70,7 @@ const PROBES_SUB = gql`
 const QUERY = gql`
   query Bursts($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, type: "burst") {
-      ...ProbeScienceData
+      ...ProbeScienceSensorContactData
     }
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
@@ -85,7 +85,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "burst") {
-      ...ProbeScienceData
+      ...ProbeScienceSensorContactData
     }
   }
   ${fragments.contactFragment}

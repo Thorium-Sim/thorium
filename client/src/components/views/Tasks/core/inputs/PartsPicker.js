@@ -21,7 +21,7 @@ class PartsPicker extends Component {
     return (
       <Query
         query={gql`
-          {
+          query ExocompParts {
             exocompParts
           }
         `}

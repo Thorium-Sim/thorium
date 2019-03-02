@@ -303,7 +303,7 @@ class Welcome extends Component {
             <h3>Start a new Flight</h3>
             <Query
               query={gql`
-                query {
+                query Thorium {
                   thorium {
                     spaceEdventuresCenter {
                       id

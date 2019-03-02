@@ -61,7 +61,7 @@ export default ({ selectedSimulator, handleChange }) => (
 
       <Query
         query={gql`
-          query {
+          query Thorium {
             thorium {
               spaceEdventuresCenter {
                 simulators {

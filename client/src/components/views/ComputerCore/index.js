@@ -35,7 +35,7 @@ const fragment = gql`
 const QUERY = gql`
   query ComputerCore($simulatorId: ID!) {
     computerCore(simulatorId: $simulatorId) {
-      ...ShortRangeData
+      ...ComputerCoreData
     }
   }
   ${fragment}
@@ -43,7 +43,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription ComputerCoreUpdate($simulatorId: ID!) {
     computerCoreUpdate(simulatorId: $simulatorId) {
-      ...ShortRangeData
+      ...ComputerCoreData
     }
   }
   ${fragment}

@@ -112,7 +112,7 @@ export default class MissionPicker extends Component {
                   <h2>Mission Library</h2>
                   <Query
                     query={gql`
-                      {
+                      query Externals {
                         externals {
                           missions {
                             title

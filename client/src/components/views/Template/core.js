@@ -5,14 +5,14 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragment = gql`
-fragment TemplateData on Template {
-
-}
+  fragment TemplateData on Template {
+    id
+  }
 `;
 
 const QUERY = gql`
   query Template($simulatorId: ID!) {
-    template(simulatorId: $simulatorId) {
+    _template(simulatorId: $simulatorId) {
       ...TemplateData
     }
   }
@@ -20,7 +20,7 @@ const QUERY = gql`
 `;
 const SUBSCRIPTION = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
-    templateUpdate(simulatorId: $simulatorId) {
+    _templateUpdate(simulatorId: $simulatorId) {
       ...TemplateData
     }
   }

@@ -208,7 +208,7 @@ class FlightConfig extends Component {
           {
             <Query
               query={gql`
-                query {
+                query FlightTypes {
                   thorium {
                     spaceEdventuresCenter {
                       id
