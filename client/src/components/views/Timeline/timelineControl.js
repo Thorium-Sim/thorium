@@ -18,6 +18,7 @@ class TimelineControl extends Component {
     } = this.props;
     const currentStep = timeline[currentTimelineStep];
     if (!currentStep) return;
+
     const variables = {
       simulatorId,
       macros: currentStep.timelineItems
@@ -28,11 +29,13 @@ class TimelineControl extends Component {
             typeof t.args === "string"
               ? JSON.stringify({ ...JSON.parse(t.args), ...itemValues })
               : JSON.stringify({ ...t.args, ...itemValues });
+          const stepDelay = delay[t.id];
+
           return {
             stepId: t.id,
             event: t.event,
             args,
-            delay: delay || delay === 0 ? delay : t.delay
+            delay: stepDelay || stepDelay === 0 ? stepDelay : t.delay
           };
         })
     };

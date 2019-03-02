@@ -58,7 +58,9 @@ class ActionPreview extends Component {
               defaultValue={delay}
               type="number"
               min="0"
-              onChange={e => updateDelay({ ...delay, [id]: e.target.value })}
+              onChange={e =>
+                updateDelay({ ...delay, [id]: parseInt(e.target.value) })
+              }
             />
           </Label>
         </div>
