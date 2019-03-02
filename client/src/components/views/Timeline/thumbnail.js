@@ -7,7 +7,6 @@ import { VideoPreview } from "../TacticalMap/fileExplorer";
 
 const StepRender = ({ args, event }) => {
   const stepArgs = JSON.parse(args);
-  console.log(stepArgs);
   if (event === "updateViewscreenComponent") {
     if (stepArgs.component === "Video") {
       const data = JSON.parse(stepArgs.data) || {};

@@ -70,7 +70,6 @@ class TasksCore extends Component {
       values: requiredValues = {},
       macros = []
     } = taskInput;
-    console.log(taskInput);
     const { configureMacroId } = this.state;
     const definitionGroups = taskDefinitions
       .concat()
@@ -152,7 +151,6 @@ class TasksCore extends Component {
                         const template = taskTemplates.find(
                           t => t.id === e.target.value
                         );
-                        console.log(template);
                         this.updateTask({
                           values: template.values,
                           macros: template.macros

@@ -52,7 +52,6 @@ App.on("executeCommandLine", ({ simulatorId, command, arg = "", cb }) => {
     com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
   )
     return cb(com.error);
-  console.log(com.connectedComponents);
   App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
   return cb(com.output);
 });

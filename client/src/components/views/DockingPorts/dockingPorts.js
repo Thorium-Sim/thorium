@@ -52,7 +52,6 @@ const DockingPorts = ({ dockingPorts, simulator, clientObj }) => {
       setDimensions(imageRef.current.getBoundingClientRect());
     }
   }, [imageRef.current, dimensions]);
-  console.log(dimensions);
   const dockingPort = dockingPorts.find(d => d.id === selectedPort);
   return (
     <Container className="card-dockingPorts">

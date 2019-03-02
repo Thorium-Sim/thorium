@@ -156,7 +156,6 @@ App.on("systemReactivationCode", ({ systemId, station, code }) => {
       App.dockingPorts.find(s => s.id === systemId) ||
       App.exocomps.find(s => s.id === systemId);
   }
-  console.log(sys, systemId);
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,

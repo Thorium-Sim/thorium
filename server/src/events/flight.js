@@ -347,7 +347,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
     pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
     pubsub.publish("simulatorsUpdate", App.simulators);
   });
-  cb();
+  cb && cb();
 });
 App.on("pauseFlight", ({ flightId }) => {
   const flight = App.flights.find(f => f.id === flightId);

@@ -8,7 +8,7 @@ import { titleCase } from "change-case";
 import "./style.scss";
 
 const fragment = gql`
-  fragment JumpDriveData on JumpDrive {
+  fragment JumpDriveCoreData on JumpDrive {
     id
     name
     displayName
@@ -43,7 +43,7 @@ const fragment = gql`
 const QUERY = gql`
   query JumpDrive($simulatorId: ID!) {
     jumpDrive(simulatorId: $simulatorId) {
-      ...JumpDriveData
+      ...JumpDriveCoreData
     }
   }
   ${fragment}
@@ -51,7 +51,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription JumpDriveUpdate($simulatorId: ID!) {
     jumpDriveUpdate(simulatorId: $simulatorId) {
-      ...JumpDriveData
+      ...JumpDriveCoreData
     }
   }
   ${fragment}

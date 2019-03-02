@@ -14,7 +14,7 @@ class TimelineControl extends Component {
       timeline,
       currentTimelineStep,
       values,
-      delay
+      delay = {}
     } = this.props;
     const currentStep = timeline[currentTimelineStep];
     if (!currentStep) return;

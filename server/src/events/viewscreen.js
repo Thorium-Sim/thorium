@@ -14,7 +14,6 @@ App.on(
         v.id === id ||
         (v.simulatorId === simulatorId && v.secondary === secondary)
     );
-    console.log(viewscreens, id);
     if (viewscreens.length === 0) return;
     // First de-auto the viewscreen, since we want to force this component;
     const simulator = App.simulators.find(
