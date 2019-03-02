@@ -36,18 +36,7 @@ const schema = gql`
 
 const resolver = {
   Query: {},
-  Mutation: {},
-  Subscription: {
-    templateUpdate: {
-      resolve(rootQuery) {},
-      subscribe: withFilter(
-        () => pubsub.asyncIterator("templateUpdate"),
-        (rootValue, args) => {
-          return true;
-        }
-      )
-    }
-  }
+  Mutation: {}
 };
 
 export default { schema, resolver };

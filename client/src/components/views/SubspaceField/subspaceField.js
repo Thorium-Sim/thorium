@@ -61,7 +61,11 @@ class SubspaceField extends React.Component {
           <div key={`sector-${s}`} className={`subspace-charge ${s}`}>
             <Mutation
               mutation={gql`
-                mutation($id: ID!, $which: String!, $value: Int!) {
+                mutation SetSubspaceFieldValue(
+                  $id: ID!
+                  $which: String!
+                  $value: Int!
+                ) {
                   setSubspaceFieldSectorValue(
                     id: $id
                     which: $which

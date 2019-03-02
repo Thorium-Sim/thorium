@@ -31,7 +31,7 @@ const Symptoms = ({
         <DropdownMenu style={{ maxHeight: "200px", overflowY: "auto" }}>
           <Query
             query={gql`
-              {
+              query Symptoms {
                 symptoms
               }
             `}

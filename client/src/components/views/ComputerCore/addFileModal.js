@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag.macro";
 import {
   Button,
   FormGroup,
@@ -15,8 +13,8 @@ import {
 class AddFileModal extends Component {
   state = {};
   render() {
-    const { name, password, level } = this.state;
-    const { id, modal, toggle } = this.props;
+    const { name, level } = this.state;
+    const { modal, toggle } = this.props;
     return (
       <Modal isOpen={modal} toggle={toggle} className="modal-themed">
         <ModalHeader toggle={toggle}>Create File</ModalHeader>
@@ -49,12 +47,8 @@ class AddFileModal extends Component {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Mutation
-            mutation={gql`
-              mutation addFile($id: ID!, $File: ComputerCoreFileInput) {
-                addComputerCoreFile(id: $id, File: $File)
-              }
-            `}
+          {/* <Mutation
+            
             variables={{ id, file: { name, password, level } }}
           >
             {action => (
@@ -69,7 +63,7 @@ class AddFileModal extends Component {
                 Create File
               </Button>
             )}
-          </Mutation>
+          </Mutation> */}
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>

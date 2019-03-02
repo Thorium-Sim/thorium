@@ -1,18 +1,20 @@
-import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
 import mutationHelper from "../helpers/mutationHelper";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
+  type Template {
+    id: ID
+  }
   extend type Query {
-    _template: String
+    _template(simulatorId: ID!): Template
   }
   extend type Mutation {
     _template: String
   }
   extend type Subscription {
-    templateUpdate(simulatorId: ID): String
+    _templateUpdate(simulatorId: ID): Template
   }
 `;
 
@@ -20,7 +22,7 @@ const resolver = {
   Query: {},
   Mutation: mutationHelper(schema),
   Subscription: {
-    templateUpdate: {
+    _templateUpdate: {
       resolve(rootQuery) {},
       subscribe: withFilter(
         () => pubsub.asyncIterator("templateUpdate"),
