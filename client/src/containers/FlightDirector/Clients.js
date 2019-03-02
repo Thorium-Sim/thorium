@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Col, Row, Container } from "reactstrap";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo, Query } from "react-apollo";
+import { graphql, withApollo } from "react-apollo";
 import { DateTime } from "luxon";
 import { titleCase } from "change-case";
 import FontAwesome from "react-fontawesome";
