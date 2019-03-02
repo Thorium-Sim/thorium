@@ -121,7 +121,7 @@ export default class Flight {
           id
         }
       }`;
-
+    console.log(variables);
     graphqlClient
       .query({
         query: mutation,

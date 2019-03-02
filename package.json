@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.2.0-beta2",
+  "version": "1.2.0-beta3",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -37,9 +37,8 @@
     "test-e2e-dev": "NODE_ENV=test npm-run-all --parallel start cy-open",
     "cy-run": "cypress run",
     "cy-open": "cypress open",
-    "build": "NODE_ENV=production npm-run-all build-code build-server mk-build copy-files pkg",
-    "build-code": "npm-run-all  build-client build-server",
-    "build-client": "npm-run-all build-js",
+    "build": "NODE_ENV=production npm-run-all build-code mk-build copy-files pkg",
+    "build-code": "npm-run-all  build-js build-server",
     "build-js": "npm run build --prefix client",
     "build-server": "npm run build --prefix server",
     "mk-build": "mkdir -p build",
@@ -61,6 +60,7 @@
     "plop": "plop"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "@sentry/node": "^4.6.3",
     "apollo-cache-hermes": "^0.8.8",
     "apollo-server": "^2.4.6",

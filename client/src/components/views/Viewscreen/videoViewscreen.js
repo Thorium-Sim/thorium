@@ -37,6 +37,9 @@ class VideoViewscreenCore extends Component {
             onChange={e => this.setState({ viewscreen: e.target.value })}
             style={{ width: "auto", height: "20px", float: "left" }}
           >
+            <option value="nothing" disabled>
+              Choose a Viewscreen
+            </option>
             {viewscreens.map(v => (
               <option key={v.id} value={v.id}>
                 {v.name}
