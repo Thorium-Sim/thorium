@@ -193,7 +193,7 @@ export default class Trigger extends Component {
               {action => (
                 <MacroListMaker>
                   {eventList =>
-                    console.log(eventList, components) || (
+                    console.log({ ...components, ...eventList }) || (
                       <DiagramProvider
                         {...trigger}
                         registeredComponents={{ ...components, ...eventList }}

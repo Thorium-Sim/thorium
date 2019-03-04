@@ -56,7 +56,8 @@ App.on("assignTaskReportStep", ({ id, stepId, station }) => {
     station: station,
     title: `New Task`,
     body: `${task.values.name || task.definition}`,
-    color: "info"
+    color: "info",
+    relevantCards: ["Tasks", "tasks"]
   });
   pubsub.publish("widgetNotify", {
     widget: "tasks",

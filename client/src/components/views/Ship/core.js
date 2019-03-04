@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { InputField } from "../../generic/core";
+import { InputField, OutputField } from "../../generic/core";
 import { Input, Button } from "reactstrap";
 import LayoutList from "../../layouts/list";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -31,6 +31,12 @@ const SHIP_CORE_SUB = gql`
     }
   }
   ${fragment}
+`;
+
+const POP_SUB = gql`
+  subscription Population($simulatorId: ID) {
+    crewCountUpdate(simulatorId: $simulatorId, killed: false)
+  }
 `;
 
 class ShipCore extends Component {
@@ -178,6 +184,7 @@ class ShipCore extends Component {
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const simulator = this.props.data.simulators[0];
+    const { crewCount } = this.props.data;
     if (!simulator) return;
     const {
       name,
@@ -201,6 +208,19 @@ class ShipCore extends Component {
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {
                   simulators: subscriptionData.data.simulatorsUpdate
+                });
+              }
+            })
+          }
+        />
+        <SubscriptionHelper
+          subscribe={() =>
+            this.props.data.subscribeToMore({
+              document: POP_SUB,
+              variables: { simulatorId: this.props.simulator.id },
+              updateQuery: (previousResult, { subscriptionData }) => {
+                return Object.assign({}, previousResult, {
+                  crewCount: subscriptionData.data.crewCountUpdate
                 });
               }
             })
@@ -286,13 +306,25 @@ class ShipCore extends Component {
             Bridge Officer Messaging
           </label>
         </div>
-        <p>Bridge Crew: </p>
-        <InputField
-          prompt={"What would you like to change the bridge crew to?"}
-          onClick={this.updateBridgeCrew}
-        >
-          {bridgeCrew}
-        </InputField>
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: 1 }}>
+            <p>Bridge Crew: </p>
+            <InputField
+              prompt={"What would you like to change the bridge crew to?"}
+              onClick={this.updateBridgeCrew}
+            >
+              {bridgeCrew}
+            </InputField>
+          </div>
+          <div style={{ flex: 1 }}>
+            <p>Roster Crew: </p>
+            <OutputField>{crewCount}</OutputField>
+          </div>
+          <div style={{ flex: 1 }}>
+            <p>Total Crew: </p>
+            <OutputField>{crewCount + bridgeCrew}</OutputField>
+          </div>
+        </div>
 
         <p>Radiation: </p>
         <input
@@ -317,10 +349,11 @@ class ShipCore extends Component {
 }
 
 const SHIP_CORE_QUERY = gql`
-  query Ship($simulatorId: String) {
+  query Ship($simulatorId: String, $simId: ID!) {
     simulators(id: $simulatorId) {
       ...ShipData
     }
+    crewCount(simulatorId: $simId)
   }
   ${fragment}
 `;
@@ -329,7 +362,8 @@ export default graphql(SHIP_CORE_QUERY, {
     fetchPolicy: "cache-and-network",
 
     variables: {
-      simulatorId: ownProps.simulator.id
+      simulatorId: ownProps.simulator.id,
+      simId: ownProps.simulator.id
     }
   })
 })(withApollo(ShipCore));

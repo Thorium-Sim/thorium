@@ -240,7 +240,7 @@ class TaskReportCore extends Component {
               <div className="instructions">
                 {report && (
                   <Fragment>
-                    <strong>{console.log(report) || report.name}</strong>
+                    <strong>{report.name}</strong>
                     <div className="button-area">
                       <Mutation
                         mutation={gql`

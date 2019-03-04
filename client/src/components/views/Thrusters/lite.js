@@ -252,6 +252,7 @@ gamepadLoop(){
       switch (handlerName) {
         case "onDragStart":
           obj[which] = newPosition;
+          document.body.classList.add("switcherLocked");
           this.setState(obj);
           break;
         case "onDrag":
@@ -328,6 +329,7 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDragStop":
+          document.body.classList.remove("switcherLocked");
           if (!this.state[which]) {
             throw new Error("onDragEnd called before onDragStart.");
           }

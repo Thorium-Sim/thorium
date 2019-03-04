@@ -5,6 +5,7 @@ import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import Measure from "react-measure";
+import { subscribe } from "helpers/pubsub";
 
 import Tour from "helpers/tourHelper";
 import "./widgets.scss";
@@ -107,6 +108,16 @@ export class Widget extends Component {
     widgetNotifications: {},
     position: { x: 0, y: 0 }
   };
+  componentDidMount() {
+    this.widgetOpenSub = subscribe("widgetOpen", widgetName => {
+      if (widgetName === this.props.wkey) {
+        this.setState({ modal: true });
+      }
+    });
+  }
+  componentWillUnmount() {
+    this.widgetOpenSub && this.widgetOpenSub();
+  }
   mouseDown = evt => {
     this.setState(
       {

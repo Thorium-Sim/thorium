@@ -276,7 +276,6 @@ App.on(
           const vs = App.viewscreens.find(
             v => v.id === client.id && v.simulatorId === client.simulatorId
           );
-          console.log(c);
           if (!vs) {
             App.viewscreens.push(
               new Viewscreen({

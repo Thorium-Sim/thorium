@@ -38,6 +38,7 @@ const schema = gql`
   }
   extend type Query {
     crew(simulatorId: ID, position: String, killed: Boolean): [Crew]
+    crewCount(simulatorId: ID!, position: String, killed: Boolean): Int
   }
   extend type Mutation {
     addCrewmember(crew: CrewInput): String
@@ -53,9 +54,54 @@ const schema = gql`
   }
   extend type Subscription {
     crewUpdate(simulatorId: ID, position: String, killed: Boolean): [Crew]
+    crewCountUpdate(simulatorId: ID, position: String, killed: Boolean): Int
   }
 `;
 
+function getCrew(simulatorId, position, killed, crew) {
+  let returnVal = crew || App.crew.concat();
+  if (simulatorId) {
+    returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
+  }
+  if (killed === false) {
+    returnVal = returnVal.filter(c => !c.killed);
+  }
+  if (killed === true) {
+    returnVal = returnVal.filter(c => c.killed);
+  }
+  if (position) {
+    // Special considerations for the security and damage
+    if (position === "security") {
+      const regex = /security/gi;
+      returnVal = returnVal.filter(c => regex.test(c.position));
+    } else if (position === "damage") {
+      const damagePositions = [
+        "Computer Specialist",
+        "Custodian",
+        "Quality Assurance",
+        "Electrician",
+        "Explosive Expert",
+        "Fire Control",
+        "General Engineer",
+        "Hazardous Waste Expert",
+        "Maintenance Officer",
+        "Mechanic",
+        "Plumber",
+        "Structural Engineer",
+        "Welder"
+      ];
+      returnVal = returnVal.filter(
+        c => damagePositions.indexOf(c.position) > -1
+      );
+    } else if (position === "medical") {
+      const medicalPositions = ["Medical", "Nurse", "Doctor"];
+      returnVal = returnVal.filter(c =>
+        medicalPositions.find(p => c.position.indexOf(p) > -1)
+      );
+    }
+  }
+  return returnVal;
+}
 const resolver = {
   Crew: {
     name(crew) {
@@ -72,100 +118,30 @@ const resolver = {
   },
   Query: {
     crew(root, { id, simulatorId, position, killed }) {
-      let returnVal = App.crew.concat();
-      if (simulatorId) {
-        returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
-      }
-      if (killed === false) {
-        returnVal = returnVal.filter(c => !c.killed);
-      }
-      if (killed === true) {
-        returnVal = returnVal.filter(c => c.killed);
-      }
-      if (position) {
-        // Special considerations for the security and damage
-        if (position === "security") {
-          const regex = /security/gi;
-          returnVal = returnVal.filter(c => regex.test(c.position));
-        } else if (position === "damage") {
-          const damagePositions = [
-            "Computer Specialist",
-            "Custodian",
-            "Quality Assurance",
-            "Electrician",
-            "Explosive Expert",
-            "Fire Control",
-            "General Engineer",
-            "Hazardous Waste Expert",
-            "Maintenance Officer",
-            "Mechanic",
-            "Plumber",
-            "Structural Engineer",
-            "Welder"
-          ];
-          returnVal = returnVal.filter(
-            c => damagePositions.indexOf(c.position) > -1
-          );
-        } else if (position === "medical") {
-          const medicalPositions = ["Medical", "Nurse", "Doctor"];
-          returnVal = returnVal.filter(c =>
-            medicalPositions.find(p => c.position.indexOf(p) > -1)
-          );
-        }
-      }
-      return returnVal;
+      return getCrew(simulatorId, position, killed);
+    },
+    crewCount(root, { simulatorId, position, killed }) {
+      return getCrew(simulatorId, position, killed).length;
     }
   },
   Mutation: mutationHelper(schema),
   Subscription: {
     crewUpdate: {
       resolve(rootValue, { simulatorId, position, killed }) {
-        let returnVal = rootValue;
-        if (simulatorId) {
-          returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
-        }
-        if (killed === false) {
-          returnVal = returnVal.filter(c => !c.killed);
-        }
-        if (killed === true) {
-          returnVal = returnVal.filter(c => c.killed);
-        }
-        if (position) {
-          // Special considerations for the security and damage
-          if (position === "security") {
-            const regex = /security/gi;
-            returnVal = returnVal.filter(c => regex.test(c.position));
-          } else if (position === "damage") {
-            const damagePositions = [
-              "Computer Specialist",
-              "Custodian",
-              "Quality Assurance",
-              "Electrician",
-              "Explosive Expert",
-              "Fire Control",
-              "General Engineer",
-              "Hazardous Waste Expert",
-              "Maintenance Officer",
-              "Mechanic",
-              "Plumber",
-              "Structural Engineer",
-              "Welder"
-            ];
-            returnVal = returnVal.filter(
-              c => damagePositions.indexOf(c.position) > -1
-            );
-          } else if (position === "medical") {
-            const medicalPositions = ["Medical", "Nurse", "Doctor"];
-            returnVal = returnVal.filter(c =>
-              medicalPositions.find(p => c.position.indexOf(p) > -1)
-            );
-          }
-        }
-        return returnVal;
+        return getCrew(simulatorId, position, killed, rootValue);
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("crewUpdate"),
         rootValue => (rootValue.length > 0 ? true : false)
+      )
+    },
+    crewCountUpdate: {
+      resolve(rootValue, { simulatorId, position, killed }) {
+        return getCrew(simulatorId, position, killed, rootValue).length;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("crewCountUpdate"),
+        rootValue => true
       )
     }
   }

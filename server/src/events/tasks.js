@@ -14,7 +14,8 @@ App.on("addTask", ({ taskInput, simulatorId }) => {
     station: task.station,
     title: `New Task`,
     body: `${task.values.name || task.definition}`,
-    color: "info"
+    color: "info",
+    relevantCards: ["Tasks", "tasks"]
   });
   pubsub.publish("widgetNotify", {
     widget: "tasks",
@@ -104,7 +105,8 @@ App.on("denyTaskVerify", ({ id }) => {
     station: task.station,
     title: `Task Verification Failed`,
     body: task.values.name || task.definition,
-    color: "warning"
+    color: "warning",
+    relevantCards: ["Tasks", "tasks"]
   });
 });
 
