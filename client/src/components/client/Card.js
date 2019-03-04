@@ -7,7 +7,7 @@ import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
-import { subscribe } from "../../helpers/pubsub";
+import { subscribe, publish } from "../../helpers/pubsub";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 
@@ -168,7 +168,12 @@ export default class CardFrame extends Component {
           }
         }
         if (!found) {
-          // TODO: See if we can open a relevant widget instead
+          const widgetName = payload.changeToCard.find(c =>
+            this.props.station.widgets.includes(c)
+          );
+          if (widgetName) {
+            publish("widgetOpen", widgetName);
+          }
         }
       }
     );

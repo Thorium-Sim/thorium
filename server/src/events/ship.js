@@ -34,8 +34,8 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
         which === "clamps"
           ? `Clamps are now ${state ? "Attached" : "Detached"}`
           : which === "ramps"
-            ? `Ramps are now ${state ? "Extended" : "Retracted"}`
-            : `Doors are now ${state ? "Open" : "Closed"}`,
+          ? `Ramps are now ${state ? "Extended" : "Retracted"}`
+          : `Doors are now ${state ? "Open" : "Closed"}`,
       color: "info"
     });
     App.handleEvent(
@@ -47,8 +47,8 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
           which === "clamps"
             ? `Clamps are now ${state ? "Attached" : "Detached"}`
             : which === "ramps"
-              ? `Ramps are now ${state ? "Extended" : "Retracted"}`
-              : `Doors are now ${state ? "Open" : "Closed"}`,
+            ? `Ramps are now ${state ? "Extended" : "Retracted"}`
+            : `Doors are now ${state ? "Open" : "Closed"}`,
         color: "info"
       },
       "addCoreFeed"
@@ -99,7 +99,8 @@ App.on("remoteAccessUpdateCode", ({ simulatorId, codeId, state }) => {
     station: code.station,
     title: "Remote Access Code",
     body: `Remote Access Code ${code.code} was ${state}`,
-    color: state === "Accepted" ? "success" : "danger"
+    color: state === "Accepted" ? "success" : "danger",
+    relevantCards: ["remote"]
   });
 });
 App.on("setSelfDestructTime", ({ simulatorId, time }) => {

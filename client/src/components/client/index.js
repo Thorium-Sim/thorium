@@ -61,23 +61,24 @@ class ClientData extends Component {
       localStorage.setItem("thorium_clientId", clientId);
     }
     this.state = {
-      clientId
+      clientId,
+      registered: false
     };
   }
   componentDidMount() {
     const { clientId } = this.state;
     const { client } = this.props;
     // Register the client for the first time.
-    setTimeout(() => {
-      client.mutate({
+    client
+      .mutate({
         mutation: gql`
           mutation RegisterClient($client: ID!) {
             clientConnect(client: $client)
           }
         `,
         variables: { client: clientId }
-      });
-    }, 100);
+      })
+      .then(() => this.setState({ registered: true }));
     // Keep the context menu from opening.
     if (process.env.NODE_ENV === "production") {
       window.oncontextmenu = function(event) {
@@ -125,12 +126,20 @@ class ClientData extends Component {
       });
   };
   render() {
-    const { clientId } = this.state;
+    const { clientId, registered } = this.state;
     if (!clientId) return null;
 
     return (
-      <Query query={QUERY} variables={{ clientId }}>
+      <Query query={QUERY} variables={{ clientId }} skip={!registered}>
         {({ loading, data, subscribeToMore }) => {
+          if (!data)
+            return (
+              <Credits
+                {...this.props}
+                clientId={clientId}
+                updateClientId={this.updateClientId}
+              />
+            );
           const { clients } = data;
           if (loading || !clients) return null;
           return (
