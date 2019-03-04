@@ -14,7 +14,8 @@
       "Adds the ability to damage exocomps, including task report generation for exocomps.",
       "Adds a new core which shows thumbnails of the timeline items that change the viewscreen.",
       "Adds a command line widget.",
-      "Make it so you can use the sensors history with the full-page sensors grid and scans card."
+      "Make it so you can use the sensors history with the full-page sensors grid and scans card.",
+      "Adds additional fields to the ship core to better illustrate the ship's population."
     ],
     "fixes": [
       "Fixes an issue where command line commands don't work.",

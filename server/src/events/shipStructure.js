@@ -198,6 +198,7 @@ App.on("addInventory", ({ inventory }) => {
   pubsub.publish("inventoryUpdate", App.inventory);
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish("crewCountUpdate", App.crew);
 });
 App.on("removeInventory", ({ id }) => {
   App.inventory = App.inventory.filter(i => i.id !== id);
@@ -225,6 +226,7 @@ App.on("updateCrewInventory", ({ crewId, inventory, roomId }) => {
   });
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish("crewCountUpdate", App.crew);
 });
 App.on("removeCrewInventory", ({ crewId, inventory, roomId }) => {
   inventory.forEach(e => {
@@ -233,6 +235,7 @@ App.on("removeCrewInventory", ({ crewId, inventory, roomId }) => {
   });
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish("crewCountUpdate", App.crew);
 });
 
 App.on("transferCargo", ({ inventory, fromRoom, toRoom, cb }) => {

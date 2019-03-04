@@ -8,10 +8,7 @@ import "./style.scss";
 
 const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {
-    crewUpdate(simulatorId: $simulatorId, position: $teamType) {
-      id
-      name
-    }
+    crewCountUpdate(simulatorId: $simulatorId, position: $teamType)
   }
 `;
 
@@ -72,10 +69,10 @@ class Teams extends Component {
   };
   render() {
     if (this.props.data.loading) return null;
-    const { teams, crew, decks } = this.props.data;
-    if (!teams || !crew || !decks) return null;
+    const { teams, crewCount, decks } = this.props.data;
+    if (!teams || !decks) return null;
     const { selectedTeam } = this.state;
-    if (crew.length === 0) return <p>Need crew for teams</p>;
+    if (crewCount === 0) return <p>Need crew for teams</p>;
     return (
       <Container fluid className="damage-teams-core">
         <SubscriptionHelper
@@ -88,7 +85,7 @@ class Teams extends Component {
               },
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {
-                  crew: subscriptionData.data.crewUpdate
+                  crewCount: subscriptionData.data.crewCountUpdate
                 });
               }
             })
@@ -191,11 +188,8 @@ class Teams extends Component {
 }
 
 const TEAMS_QUERY = gql`
-  query Teams($simulatorId: ID, $simId: ID!, $teamType: String!) {
-    crew(simulatorId: $simulatorId, position: $teamType) {
-      id
-      name
-    }
+  query Teams($simulatorId: ID!, $simId: ID!, $teamType: String!) {
+    crewCount(simulatorId: $simulatorId, position: $teamType)
     teams(simulatorId: $simulatorId, type: $teamType) {
       id
       name
