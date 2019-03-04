@@ -29,6 +29,8 @@ const MacroListMaker = ({ children, exceptions = [] }) => (
             ...prev,
             [`macro-${next.name}`]: {
               name: next.name,
+              label: next.description,
+              objectKey: `macro-${next.name}`,
               category: "Actions",
               willHide: true,
               inputs: [
