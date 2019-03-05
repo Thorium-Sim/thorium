@@ -9,7 +9,9 @@ $alertp: #7a24cf;
   color: white;
   background-color: black;
   font-family: "Bank Gothic";
-
+  input[type="password"], .txtPassword {
+    font-family: sans-serif !important; 
+  }
   .card-frame {
     width: 100vw;
     height: 100vh;
