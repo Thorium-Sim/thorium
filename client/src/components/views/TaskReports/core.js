@@ -6,7 +6,7 @@ import { Button, Input, ListGroup, ListGroupItem } from "reactstrap";
 import "./style.scss";
 
 const fragment = gql`
-  fragment TaskReportData on TaskReport {
+  fragment TaskReportCoreData on TaskReport {
     id
     type
     name
@@ -28,7 +28,7 @@ const fragment = gql`
 const QUERY = gql`
   query TaskReport($simulatorId: ID!) {
     taskReport(simulatorId: $simulatorId) {
-      ...TaskReportData
+      ...TaskReportCoreData
     }
     systems(simulatorId: $simulatorId) {
       id
@@ -47,7 +47,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription TaskReportUpdate($simulatorId: ID!) {
     taskReportUpdate(simulatorId: $simulatorId) {
-      ...TaskReportData
+      ...TaskReportCoreData
     }
   }
   ${fragment}

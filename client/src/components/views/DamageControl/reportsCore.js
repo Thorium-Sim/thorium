@@ -93,7 +93,7 @@ class DamageReportCore extends Component {
     const self = this;
     var reader = new FileReader();
     reader.onload = function() {
-      const result = this.result;
+      const result = this.result.replace(/\r/gi, "\n");
       self.setState({
         sent: false,
         selectedReport: result

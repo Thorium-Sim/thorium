@@ -25,7 +25,8 @@
       "Makes selected buttons easier to see on ShipStation layout.",
       "Fixes issues with viewscreens not properly updating.",
       "The card switcher is now locked with thrusters are being adjusted.",
-      "Fix a bunch of problems with triggers."
+      "Fix a bunch of problems with triggers.",
+      "Fixes the issue with damage report formatting."
     ]
   },
   "1.1.17": {

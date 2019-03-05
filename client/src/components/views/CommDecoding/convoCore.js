@@ -15,7 +15,7 @@ function processTime(time) {
   );
 }
 const fragment = gql`
-  fragment LRCommData on LRCommunications {
+  fragment LRCommCoreData on LRCommunications {
     id
     messages {
       id
@@ -40,7 +40,7 @@ const fragment = gql`
 const QUERY = gql`
   query LongRangeComm($simulatorId: ID!) {
     longRangeCommunications(simulatorId: $simulatorId) {
-      ...LRCommData
+      ...LRCommCoreData
     }
   }
   ${fragment}
@@ -48,7 +48,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription LongRangeCommUpdate($simulatorId: ID!) {
     longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
-      ...LRCommData
+      ...LRCommCoreData
     }
   }
   ${fragment}
