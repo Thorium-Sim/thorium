@@ -108,7 +108,7 @@ class ProbeConstruction extends Component {
     const variables = {
       id: probes.id,
       probe: {
-        name,
+        name: String(name),
         type: selectedProbeType,
         equipment: equipment.map(({ id, count }) => ({
           id,

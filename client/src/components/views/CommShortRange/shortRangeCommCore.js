@@ -128,7 +128,7 @@ class CommShortRange extends Component {
             </select>
             <Button
               size="sm"
-              color="default"
+              color="primary"
               disabled={!selectedCall}
               onClick={this._commHail}
             >
@@ -160,7 +160,7 @@ class CommShortRange extends Component {
               onClick={this._commCancel}
               size="sm"
               block
-              color="default"
+              color="primary"
             >
               Cancel
             </Button>

@@ -16,6 +16,9 @@ body {
 }
 
 .actionsContainer {
+  .table {
+    color: white;
+  }
   &.flash {
     filter: invert(1);
   }
