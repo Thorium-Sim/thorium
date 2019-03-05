@@ -1,10 +1,90 @@
-import React, { Component } from "react";
+import React, { Component, useState, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
 import { Col, Row } from "reactstrap";
-import { SliderPicker } from "react-color";
+import { ChromePicker } from "react-color";
 import tinycolor from "tinycolor2";
 import gql from "graphql-tag.macro";
 import { TypingField } from "../../../generic/core";
 import Nudge from "./nudge";
+
+function useOnClickOutside(ref, handler) {
+  useEffect(
+    () => {
+      const listener = event => {
+        // Do nothing if clicking ref's element or descendent elements
+        if (!ref.current || ref.current.contains(event.target)) {
+          return;
+        }
+
+        handler(event);
+      };
+
+      document.addEventListener("mousedown", listener);
+      document.addEventListener("touchstart", listener);
+
+      return () => {
+        document.removeEventListener("mousedown", listener);
+        document.removeEventListener("touchstart", listener);
+      };
+    },
+    // Add ref and handler to effect dependencies
+    // It's worth noting that because passed in handler is a new ...
+    // ... function on every render that will cause this effect ...
+    // ... callback/cleanup to run every render. It's not a big deal ...
+    // ... but to optimize you can wrap handler in useCallback before ...
+    // ... passing it into this hook.
+    [ref, handler]
+  );
+}
+
+const ColorPicker = ({ color, onChangeComplete }) => {
+  const ref = useRef();
+
+  const [isOpen, setIsOpen] = useState(false);
+  useOnClickOutside(ref, () => setIsOpen(false));
+  return (
+    <>
+      <div
+        style={{
+          padding: "5px",
+          background: "#fff",
+          borderRadius: "1px",
+          boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
+          display: "inline-block",
+          cursor: "pointer"
+        }}
+        onClick={e => setIsOpen({ x: e.clientX, y: e.clientY })}
+      >
+        <div
+          style={{
+            width: "36px",
+            height: "14px",
+            borderRadius: "2px",
+            background: color.a
+              ? `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
+              : color
+          }}
+        />
+      </div>
+      {isOpen &&
+        ReactDOM.createPortal(
+          <div
+            ref={ref}
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              transform: `translate(${isOpen.x}px, ${isOpen.y}px)`,
+              zIndex: 1
+            }}
+          >
+            <ChromePicker color={color} onChangeComplete={onChangeComplete} />
+          </div>,
+          document.body
+        )}
+    </>
+  );
+};
 
 class ExtraControls extends Component {
   state = {
@@ -84,7 +164,7 @@ class ExtraControls extends Component {
             <input
               type="checkbox"
               checked={askForSpeed}
-              onClick={evt => {
+              onChange={evt => {
                 updateAskForSpeed(evt.target.checked);
                 localStorage.setItem(
                   "thorium-core-sensors-askforspeed",
@@ -99,7 +179,7 @@ class ExtraControls extends Component {
           <input
             type="checkbox"
             checked={sensors.autoTarget}
-            onClick={this.autoTarget}
+            onChange={this.autoTarget}
           />
         </label>
         <label>
@@ -107,7 +187,7 @@ class ExtraControls extends Component {
           <input
             type="checkbox"
             checked={sensors.autoThrusters}
-            onClick={this.autoThrusters}
+            onChange={this.autoThrusters}
           />
         </label>
         <small>Option-click grid segments to black out</small>
@@ -129,8 +209,7 @@ class ExtraControls extends Component {
               onChange={e => this.setState({ planetSize: e.target.value })}
             />
 
-            <label>Color</label>
-            <SliderPicker
+            <ColorPicker
               color={this.state.planetColor}
               onChangeComplete={color =>
                 this.setState({ planetColor: color.hex })
@@ -175,7 +254,7 @@ class ExtraControls extends Component {
               value={this.state.borderSize}
               onChange={e => this.setState({ borderSize: e.target.value })}
             />
-            <SliderPicker
+            <ColorPicker
               color={this.state.borderColor}
               onChangeComplete={color =>
                 this.setState({ borderColor: color.hex })
@@ -214,7 +293,7 @@ class ExtraControls extends Component {
               value={this.state.pingSize}
               onChange={e => this.setState({ pingSize: e.target.value })}
             />
-            <SliderPicker
+            <ColorPicker
               color={this.state.pingColor}
               onChangeComplete={color =>
                 this.setState({ pingColor: color.hex })
