@@ -261,6 +261,7 @@ class ProbeScienceCore extends Component {
     }));
   };
   triggerUpdate = speed => {
+    speed = Number(speed);
     const sensors = this.props.sensors;
     const { client } = this.props;
     const { draggingContacts, dimensions } = this.state;

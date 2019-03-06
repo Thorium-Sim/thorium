@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Label } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo, Query } from "react-apollo";
-import { Tooltip } from "reactstrap";
+// import { Tooltip } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { publish } from "helpers/pubsub";
@@ -15,47 +15,47 @@ const fragment = gql`
   }
 `;
 
-const AlertMessage = ({ number }) => {
-  switch (number) {
-    case 1:
-      return (
-        <FormattedMessage
-          id="alert-level-description-1"
-          defaultMessage="This alert condition is used when the ship is in danger or under attack. All crew members are put on duty at battle stations."
-        />
-      );
-    case 2:
-      return (
-        <FormattedMessage
-          id="alert-level-description-2"
-          defaultMessage="This alert condition is used when the ship is in a dangerous situation, but is safe for the moment. All crew members are put on duty."
-        />
-      );
-    case 3:
-      return (
-        <FormattedMessage
-          id="alert-level-description-3"
-          defaultMessage="This alert condition is used when the ship needs to be ready for a crisis. All off duty personnel are put on stand by status."
-        />
-      );
-    case 4:
-      return (
-        <FormattedMessage
-          id="alert-level-description-4"
-          defaultMessage="This alert condition is used when the station has a minor problem. All crew except damage control is on standard duty."
-        />
-      );
-    case 5:
-      return (
-        <FormattedMessage
-          id="alert-level-description-5"
-          defaultMessage="This alert condition is used when the ship is at normal running status. The crew is on standard duty and the ship is in no danger."
-        />
-      );
-    default:
-      return "";
-  }
-};
+// const AlertMessage = ({ number }) => {
+//   switch (number) {
+//     case 1:
+//       return (
+//         <FormattedMessage
+//           id="alert-level-description-1"
+//           defaultMessage="This alert condition is used when the ship is in danger or under attack. All crew members are put on duty at battle stations."
+//         />
+//       );
+//     case 2:
+//       return (
+//         <FormattedMessage
+//           id="alert-level-description-2"
+//           defaultMessage="This alert condition is used when the ship is in a dangerous situation, but is safe for the moment. All crew members are put on duty."
+//         />
+//       );
+//     case 3:
+//       return (
+//         <FormattedMessage
+//           id="alert-level-description-3"
+//           defaultMessage="This alert condition is used when the ship needs to be ready for a crisis. All off duty personnel are put on stand by status."
+//         />
+//       );
+//     case 4:
+//       return (
+//         <FormattedMessage
+//           id="alert-level-description-4"
+//           defaultMessage="This alert condition is used when the station has a minor problem. All crew except damage control is on standard duty."
+//         />
+//       );
+//     case 5:
+//       return (
+//         <FormattedMessage
+//           id="alert-level-description-5"
+//           defaultMessage="This alert condition is used when the ship is at normal running status. The crew is on standard duty and the ship is in no danger."
+//         />
+//       );
+//     default:
+//       return "";
+//   }
+// };
 
 class AlertCondition extends Component {
   state = { cooldown: false };
