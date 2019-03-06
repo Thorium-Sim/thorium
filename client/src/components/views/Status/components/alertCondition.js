@@ -148,15 +148,15 @@ class AlertCondition extends Component {
                     }
                   >
                     {a}
-                    <Tooltip
+                    {/* <Tooltip
                       placement="top"
                       isOpen={this.state[`alert${a}`]}
-                      target={`alert${a}`}
+                      target={`#alert${a}`}
                       toggle={() => this.toggle(a)}
                       delay={{ show: 0, hide: 0 }}
                     >
                       <AlertMessage number={a} />
-                    </Tooltip>
+                    </Tooltip> */}
                   </div>
                 ))}
               </div>
