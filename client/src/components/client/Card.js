@@ -151,6 +151,9 @@ export default class CardFrame extends Component {
     }
   }
   componentDidMount() {
+    setTimeout(() => {
+      this.setState({ visible: true });
+    }, 500);
     this.cardChangeRequestSubscription = subscribe(
       "cardChangeRequest",
       payload => {
@@ -211,8 +214,13 @@ export default class CardFrame extends Component {
       simulator: { caps, training: simTraining },
       client
     } = this.props;
+    const { visible } = this.state;
     return (
-      <div className={caps ? "all-caps" : ""}>
+      <div
+        className={`client-container ${caps ? "all-caps" : ""} ${
+          visible ? "visible" : ""
+        }`}
+      >
         <ActionsMixin {...this.props} changeCard={this.changeCard}>
           <CardRenderer
             {...this.props}

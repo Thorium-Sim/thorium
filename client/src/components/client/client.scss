@@ -1,3 +1,10 @@
+.client-container {
+  transition: opacity 1s ease;
+  opacity: 0;
+  &.visible {
+    opacity: 1;
+  }
+}
 .credit-bg,
 .error-boundary {
   height: 100vh;

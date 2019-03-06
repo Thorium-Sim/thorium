@@ -277,7 +277,7 @@ App.on("removeSimulatorAmbiance", ({ id, ambianceId }) => {
 });
 App.on(
   "addSimulatorStationCard",
-  ({ simulatorId, station, cardName, cardComponent }) => {
+  ({ simulatorId, station, cardName, cardComponent, cb }) => {
     const sim = App.simulators.find(s => s.id === simulatorId);
     const stat = sim.stations.find(s => s.name === station);
     stat.addCard({
@@ -285,6 +285,7 @@ App.on(
       component: cardComponent
     });
     pubsub.publish("simulatorsUpdate", App.simulators);
+    cb && cb();
   }
 );
 App.on("removeSimulatorStationCard", ({ simulatorId, station, cardName }) => {

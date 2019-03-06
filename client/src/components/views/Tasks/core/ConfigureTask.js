@@ -71,7 +71,7 @@ const ConfigureTask = ({
               display: "flex",
               flexDirection: "column",
               overflowY: "auto",
-              height: "100%",
+              height: "calc(100% - 34px)",
               overflowX: "hidden",
               padding: "0 10px",
               paddingBottom: "30px"
