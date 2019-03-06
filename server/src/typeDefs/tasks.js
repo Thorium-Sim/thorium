@@ -96,6 +96,9 @@ const resolver = {
       const simulator = App.simulators.find(s => s.id === simulatorId);
       const taskDef = taskDefinitions.find(d => d.name === definition);
       return taskDef.instructions({ simulator, requiredValues: values, task });
+    },
+    assigned(task) {
+      return !!task.assigned;
     }
   },
   TaskDefinition: {
