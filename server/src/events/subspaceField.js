@@ -12,14 +12,17 @@ function performAction(id, action) {
   );
 }
 
-App.on("fluxSubspaceField", ({ id, which }) => {
+App.on("fluxSubspaceField", ({ id, which, cb }) => {
   performAction(id, sys => sys.flux(which));
+  cb && cb();
 });
 
-App.on("normalSubspaceField", ({ id, which }) => {
+App.on("normalSubspaceField", ({ id, which, cb }) => {
   performAction(id, sys => sys.normal(which));
+  cb && cb();
 });
 
-App.on("setSubspaceFieldSectorValue", ({ id, which, value }) => {
+App.on("setSubspaceFieldSectorValue", ({ id, which, value, cb }) => {
   performAction(id, sys => sys.setValue(which, value));
+  cb && cb();
 });

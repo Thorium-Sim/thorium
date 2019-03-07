@@ -13,13 +13,18 @@ export default class SubspaceField extends System {
       powerLevels: [],
       defaultLevel: 0
     };
-    this.totalPower = params.totalPower || 300;
     this.fore = params.fore || { ...baseSector };
     this.aft = params.aft || { ...baseSector };
     this.port = params.port || { ...baseSector };
     this.starboard = params.starboard || { ...baseSector };
     this.ventral = params.ventral || { ...baseSector };
     this.dorsal = params.dorsal || { ...baseSector };
+
+    this.totalPower =
+      SubspaceField.sectors.reduce(
+        (prev, next) => prev + this[next].required,
+        0
+      ) || 300;
   }
   flux(which) {
     if (!which) {
