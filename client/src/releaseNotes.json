@@ -27,7 +27,9 @@
       "The card switcher is now locked with thrusters are being adjusted.",
       "Fix a bunch of problems with triggers.",
       "Fixes the issue with damage report formatting.",
-      "Fixes issues with the self destruct screen."
+      "Fixes issues with the self destruct screen.",
+      "Fixes an issue where the subspace field power isn't correct when Thorium first starts.",
+      "Make it possible to edit the user list on the computer core."
     ]
   },
   "1.1.17": {

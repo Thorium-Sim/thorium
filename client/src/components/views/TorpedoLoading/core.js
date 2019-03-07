@@ -70,6 +70,7 @@ const TorpedoLoadingCore = ({ torpedos }) => {
     </Container>
   );
 };
+
 const fragment = gql`
   fragment TorpedoCoreData on Torpedo {
     id
@@ -83,6 +84,7 @@ const fragment = gql`
     state
   }
 `;
+
 const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
     torpedosUpdate(simulatorId: $simulatorId) {
@@ -118,6 +120,7 @@ const TorpedoData = props => {
                 document: TORPEDO_SUB,
                 variables: { simulatorId },
                 updateQuery: (previousResult, { subscriptionData }) => {
+                  debugger;
                   return Object.assign({}, previousResult, {
                     torpedos: subscriptionData.data.torpedosUpdate
                   });
