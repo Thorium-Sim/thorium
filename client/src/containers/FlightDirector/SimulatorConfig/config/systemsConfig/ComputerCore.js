@@ -90,7 +90,7 @@ const ComputerCore = props => {
                           Level {l}
                         </ListGroupItem>
                         {computerCore.users
-                          .filter(f => f.level == l)
+                          .filter(f => parseInt(f.level) === parseInt(l))
                           .map(m => (
                             <ListGroupItem
                               key={m.id}
