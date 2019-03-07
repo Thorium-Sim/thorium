@@ -11,3 +11,4 @@ export { default as Thrusters } from "./Thrusters";
 export { default as Probes } from "./Probes";
 export { default as Torpedo } from "./Torpedo";
 export { default as Targeting } from "./Targeting";
+export { default as ComputerCore } from "./ComputerCore";

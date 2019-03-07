@@ -10,6 +10,12 @@ class User {
     this.hacker = params.hacker || false;
     this.level = params.level || Math.round(Math.random() * 10 + 1);
   }
+  update({ name, password, hacker, level }) {
+    if (name) this.name = name;
+    if (password) this.password = password;
+    if (hacker || hacker === false) this.hacker = hacker;
+    if (level) this.level = level;
+  }
 }
 
 class File {
@@ -95,8 +101,14 @@ export default class ComputerCore extends System {
     ).forEach(t => this.terminals.push(new Terminal(t)));
   }
   addUser(params) {
-    this.history.unshift(`New User: ${params.name} (${params.level})`);
-    this.users.push(new User(params));
+    const user = new User(params);
+    this.history.unshift(`New User: ${user.name} (${user.level})`);
+    this.users.push(user);
+    return user;
+  }
+  updateUser(id, data) {
+    const user = this.users.find(u => u.id === id);
+    user.update(data);
   }
   removeUser(id) {
     const user = this.users.find(u => u.id === id);

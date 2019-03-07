@@ -57,9 +57,18 @@ const schema = gql`
   }
   extend type Query {
     computerCore(simulatorId: ID): [ComputerCore]
+    oneComputerCore(id: ID!): ComputerCore
   }
   extend type Mutation {
-    addComputerCoreUser(id: ID!, user: ComputerCoreUserInput): String
+    addComputerCoreUser(id: ID!, user: ComputerCoreUserInput): ComputerCoreUser
+    updateComputerCoreUser(
+      id: ID!
+      userId: ID!
+      name: String
+      level: Int
+      password: String
+      hacker: Boolean
+    ): String
     removeComputerCoreUser(id: ID!, userId: ID!): String
     restoreComputerCoreFile(
       id: ID!
@@ -77,12 +86,22 @@ const schema = gql`
 `;
 
 const resolver = {
+  // ComputerCore: {
+  //   locations(rootValue) {
+  //     return rootValue.locations.map(r =>
+  //       App.rooms.find(room => room.id === r)
+  //     );
+  //   }
+  // },
   Query: {
     computerCore(root, { simulatorId }) {
       let returnVal = App.systems.filter(s => s.class === "ComputerCore");
       if (simulatorId)
         returnVal = returnVal.filter(i => i.simulatorId === simulatorId);
       return returnVal;
+    },
+    oneComputerCore(root, { id }) {
+      return App.systems.find(s => s.id === id);
     }
   },
   Mutation: mutationHelper(schema),

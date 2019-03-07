@@ -12,14 +12,27 @@ function performAction(id, action) {
   );
 }
 
-App.on("addComputerCoreUser", ({ id, user }) => {
+App.on("addComputerCoreUser", ({ id, user, cb }) => {
   performAction(id, sys => {
-    sys.addUser(user);
+    const newUser = sys.addUser(user);
+    cb(newUser);
   });
 });
 
-App.on("removeComputerCoreUser", ({ id, userId }) => {
-  performAction(id, sys => sys.removeUser(userId));
+App.on(
+  "updateComputerCoreUser",
+  ({ id, userId, name, password, level, hacker, cb }) => {
+    performAction(id, sys => {
+      sys.updateUser(userId, { name, password, level, hacker });
+      cb && cb();
+    });
+  }
+);
+App.on("removeComputerCoreUser", ({ id, userId, cb }) => {
+  performAction(id, sys => {
+    sys.removeUser(userId);
+    cb && cb();
+  });
 });
 
 App.on("restoreComputerCoreFile", ({ id, fileId, level, all }) => {
@@ -44,22 +57,24 @@ App.on("restoreComputerCoreFile", ({ id, fileId, level, all }) => {
       sys.files.forEach(f => sys.restoreFile(f.id));
     }
     if (level) {
-      sys.files.filter(f => f.level === level).forEach((f, i) =>
-        setTimeout(() => {
-          sys.restoreFile(f.id);
-          pubsub.publish(
-            "computerCoreUpdate",
-            App.systems.filter(s => s.class === "ComputerCore")
-          );
+      sys.files
+        .filter(f => f.level === level)
+        .forEach((f, i) =>
           setTimeout(() => {
-            sys.uncorruptFile(f.id);
+            sys.restoreFile(f.id);
             pubsub.publish(
               "computerCoreUpdate",
               App.systems.filter(s => s.class === "ComputerCore")
             );
-          }, 4000);
-        }, 500 * i)
-      );
+            setTimeout(() => {
+              sys.uncorruptFile(f.id);
+              pubsub.publish(
+                "computerCoreUpdate",
+                App.systems.filter(s => s.class === "ComputerCore")
+              );
+            }, 4000);
+          }, 500 * i)
+        );
       // Verify any relevant tasks
       App.tasks
         .filter(
