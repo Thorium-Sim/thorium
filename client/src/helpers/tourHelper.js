@@ -47,7 +47,7 @@ const TourHelper = ({
       {action => (
         <Tour
           steps={steps}
-          isOpen={training}
+          isOpen={training || false}
           onRequestClose={() => {
             synth && synth.cancel();
             onRequestClose ? onRequestClose() : action();

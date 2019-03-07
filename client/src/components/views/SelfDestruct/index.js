@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import { Duration } from "luxon";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -50,7 +50,7 @@ class SelfDestruct extends Component {
   };
   activate = (time, force) => {
     const sim = this.props.data.simulators[0];
-    if (sim.ship.selfDestructTime && !force) {
+    if (sim.ship.selfDestructTime && sim.ship.selfDestructCode && !force) {
       return this.setState({
         modal: false,
         deactivating: true,
@@ -219,15 +219,35 @@ class SelfDestruct extends Component {
               </Button>
             </Col>
             <Col sm={6}>
-              <Button
-                color="success"
-                block
-                disabled={
-                  !password || !passwordVerify || password !== passwordVerify
-                }
+              <Mutation
+                mutation={gql`
+                  mutation SelfDestructCode($simulatorId: ID!, $code: String!) {
+                    setSelfDestructCode(simulatorId: $simulatorId, code: $code)
+                  }
+                `}
+                variables={{
+                  simulatorId: this.props.simulator.id,
+                  code: this.state.password
+                }}
               >
-                Set Code
-              </Button>
+                {action => (
+                  <Button
+                    color="success"
+                    block
+                    disabled={
+                      !password ||
+                      !passwordVerify ||
+                      password !== passwordVerify
+                    }
+                    onClick={() => {
+                      action();
+                      this.setState({ settingCode: false });
+                    }}
+                  >
+                    Set Code
+                  </Button>
+                )}
+              </Mutation>
             </Col>
           </Row>
         ) : (

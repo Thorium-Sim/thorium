@@ -306,12 +306,14 @@ class GridCore extends Component {
     }));
   };
   triggerUpdate = speed => {
+    speed = Number(speed);
+
     const sensors = this.props.data.sensors[0];
     const { client } = this.props;
-    const { draggingContacts, dimensions } = this.state;
+    let { draggingContacts, dimensions } = this.state;
 
     // Delete any dragging contacts that are out of bounds
-    const contacts = draggingContacts
+    const contacts = (draggingContacts || [])
       .map(c => {
         const contactEl = ReactDOM.findDOMNode(this).querySelector(
           `#contact-${c.id}`
@@ -378,7 +380,7 @@ class GridCore extends Component {
       })
       .then(() => {
         this.setState({
-          draggingContacts: null,
+          draggingContacts: [],
           iconWidth: null,
           iconHeight: null,
           speedAsking: null
@@ -581,7 +583,7 @@ class GridCore extends Component {
                   speedAsking={speedAsking}
                   cancelMove={() =>
                     this.setState({
-                      draggingContacts: null,
+                      draggingContacts: [],
                       selectedContacts: [],
                       speedAsking: null
                     })

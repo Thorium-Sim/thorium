@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 import "./style.scss";
 
 const fragment = gql`
-  fragment ComputerCoreData on ComputerCore {
+  fragment ComputerCoreCoreData on ComputerCore {
     id
     history
     users {
@@ -35,7 +35,7 @@ const fragment = gql`
 const QUERY = gql`
   query ComputerCore($simulatorId: ID!) {
     computerCore(simulatorId: $simulatorId) {
-      ...ComputerCoreData
+      ...ComputerCoreCoreData
     }
   }
   ${fragment}
@@ -43,7 +43,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription ComputerCoreUpdate($simulatorId: ID!) {
     computerCoreUpdate(simulatorId: $simulatorId) {
-      ...ComputerCoreData
+      ...ComputerCoreCoreData
     }
   }
   ${fragment}
