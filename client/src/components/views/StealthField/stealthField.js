@@ -49,6 +49,8 @@ export default class StealthField extends Component {
       state,
       name,
       charge,
+      damage,
+      power,
       activated,
       systems,
       quadrants,
@@ -143,6 +145,12 @@ export default class StealthField extends Component {
                       color="primary"
                       className="stealth-button"
                       block
+                      disabled={
+                        (damage && damage.damaged) ||
+                        (power &&
+                          power.powerLevels &&
+                          power.power < power.powerLevels[0])
+                      }
                       onClick={action}
                     >
                       Activate {name}
