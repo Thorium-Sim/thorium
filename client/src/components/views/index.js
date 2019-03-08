@@ -32,7 +32,7 @@ import SelfDestruct from "./SelfDestruct";
 import ProbeControl from "./ProbeControl";
 import ReactorControl from "./ReactorControl";
 import Viewscreen from "./Viewscreen";
-import Messages from "./Messaging";
+import Messages, { trainingSteps as MessagesTraining } from "./Messaging";
 import Isochips from "./Isochips";
 import Shuttles from "./Shuttles";
 import Status from "./Status";
@@ -315,7 +315,8 @@ export const Widgets = {
     icon: "comments-o",
     name: "Messaging",
     size: "lg",
-    color: "rgb(100,150,200)"
+    color: "rgb(100,150,200)",
+    training: MessagesTraining
   },
   damageReport: {
     widget: DamageControl,

@@ -17,7 +17,8 @@
       "Make it so you can use the sensors history with the full-page sensors grid and scans card.",
       "Adds additional fields to the ship core to better illustrate the ship's population.",
       "Crew clicking on notifications will now properly open relevant widgets.",
-      "Add a label to indicate what the green text on the timeline means."
+      "Add a label to indicate what the green text on the timeline means.",
+      "Add training for messaging."
     ],
     "fixes": [
       "Fixes an issue where command line commands don't work.",
