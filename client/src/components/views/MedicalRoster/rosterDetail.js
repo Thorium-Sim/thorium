@@ -12,7 +12,7 @@ const RosterDetail = ({
   gender,
   position
 }) => (
-  <Row>
+  <Row className="crew-form">
     <Col sm={6}>
       <FormGroup>
         <Label>First Name</Label>
@@ -84,7 +84,12 @@ const RosterDetail = ({
     </Col>
     <Col sm={{ size: 6, offset: 6 }}>
       {!id && (
-        <Button color="success" block onClick={action}>
+        <Button
+          color="success"
+          className="finish-adding-crew"
+          block
+          onClick={action}
+        >
           Add Crew
         </Button>
       )}

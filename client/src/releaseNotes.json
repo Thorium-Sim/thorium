@@ -18,7 +18,8 @@
       "Adds additional fields to the ship core to better illustrate the ship's population.",
       "Crew clicking on notifications will now properly open relevant widgets.",
       "Add a label to indicate what the green text on the timeline means.",
-      "Add training for messaging."
+      "Add training for messaging.",
+      "Add training for the medical roster."
     ],
     "fixes": [
       "Fixes an issue where command line commands don't work.",

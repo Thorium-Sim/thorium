@@ -59,7 +59,7 @@ export const trainingSteps = [
     selector: ".message-dropdown",
     content: (
       <FormattedMessage
-        id="messages-training-1"
+        id="messages-training-2"
         defaultMessage="To send a message, click this button. A dropdown will appear showing you all of the options for places you can send your message."
       />
     )
@@ -68,7 +68,7 @@ export const trainingSteps = [
     selector: ".convoList",
     content: (
       <FormattedMessage
-        id="messages-training-1"
+        id="messages-training-3"
         defaultMessage="This is your list of current conversations. Click on a conversation to see that conversation on the right side."
       />
     )
@@ -77,7 +77,7 @@ export const trainingSteps = [
     selector: ".messages-list",
     content: (
       <FormattedMessage
-        id="messages-training-1"
+        id="messages-training-4"
         defaultMessage="The messages in the selected conversation appear here."
       />
     )
@@ -86,7 +86,7 @@ export const trainingSteps = [
     selector: ".text-input",
     content: (
       <FormattedMessage
-        id="messages-training-1"
+        id="messages-training-5"
         defaultMessage="Type any message you want to send in this box. Press the enter key or the 'Send Message' button to send the message."
       />
     )
