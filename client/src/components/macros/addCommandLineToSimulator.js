@@ -4,7 +4,6 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 
 export default ({ updateArgs, args, client }) => {
-  console.log(args);
   return (
     <FormGroup className="macro-addCommandLine">
       <Label>Command Line</Label>
