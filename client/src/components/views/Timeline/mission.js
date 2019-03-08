@@ -76,7 +76,11 @@ class Mission extends Component {
             }}
             style={{ margin: 0 }}
           />
+          -{" "}
         </Label>
+        <div className="text-success">
+          Green indicates the action has already been triggered
+        </div>
         <TimelineStep
           actions={actions}
           checkAction={step =>

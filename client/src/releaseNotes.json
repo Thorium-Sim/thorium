@@ -16,7 +16,10 @@
       "Adds a command line widget.",
       "Make it so you can use the sensors history with the full-page sensors grid and scans card.",
       "Adds additional fields to the ship core to better illustrate the ship's population.",
-      "Crew clicking on notifications will now properly open relevant widgets."
+      "Crew clicking on notifications will now properly open relevant widgets.",
+      "Add a label to indicate what the green text on the timeline means.",
+      "Add training for messaging.",
+      "Add training for the medical roster."
     ],
     "fixes": [
       "Fixes an issue where command line commands don't work.",
@@ -29,7 +32,8 @@
       "Fixes the issue with damage report formatting.",
       "Fixes issues with the self destruct screen.",
       "Fixes an issue where the subspace field power isn't correct when Thorium first starts.",
-      "Make it possible to edit the user list on the computer core."
+      "Make it possible to edit the user list on the computer core.",
+      "The stealth field will no longer be activated if the system is damaged."
     ]
   },
   "1.1.17": {

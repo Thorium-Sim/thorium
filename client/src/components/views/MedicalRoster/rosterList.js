@@ -21,6 +21,7 @@ class RosterList extends Component {
         <Row>
           <Col sm={6}>
             <Button
+              className="bridge-crew"
               color="secondary"
               block
               onClick={() => this.setState({ roster: "bridge" })}
@@ -31,6 +32,7 @@ class RosterList extends Component {
           </Col>
           <Col sm={6}>
             <Button
+              className="duty-crew"
               color="primary"
               block
               onClick={() => this.setState({ roster: "crew" })}
@@ -41,6 +43,7 @@ class RosterList extends Component {
           </Col>
         </Row>
         <Input
+          className="search-crew"
           style={{ marginTop: "20px" }}
           type="text"
           value={search}
@@ -48,12 +51,11 @@ class RosterList extends Component {
           placeholder="Search..."
         />
         <ListGroup style={{ height: "60vh", overflowY: "auto" }}>
-          {roster === "bridge" &&
-            sickbayRoster.length === 0 && (
-              <ListGroupItem>
-                <ListGroupItemHeading>No bridge crew.</ListGroupItemHeading>
-              </ListGroupItem>
-            )}
+          {roster === "bridge" && sickbayRoster.length === 0 && (
+            <ListGroupItem>
+              <ListGroupItemHeading>No bridge crew.</ListGroupItemHeading>
+            </ListGroupItem>
+          )}
           {(roster === "bridge" ? sickbayRoster : crew)
             .filter(f => {
               if (search) {
@@ -79,12 +81,16 @@ class RosterList extends Component {
               </ListGroupItem>
             ))}
         </ListGroup>
-        {roster === "bridge" &&
-          add && (
-            <Button color="success" block onClick={() => selectCrew({})}>
-              Add Bridge Crew
-            </Button>
-          )}
+        {roster === "bridge" && add && (
+          <Button
+            color="success"
+            className="add-crew"
+            block
+            onClick={() => selectCrew({})}
+          >
+            Add Bridge Crew
+          </Button>
+        )}
       </Fragment>
     );
   }

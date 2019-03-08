@@ -18,6 +18,9 @@ import {
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { titleCase } from "change-case";
+import { FormattedMessage } from "react-intl";
+import Tour from "helpers/tourHelper";
+
 const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!, $station: String) {
     sendMessage(simulatorId: $simulatorId, station: $station) {
@@ -41,6 +44,54 @@ const TEAMS_SUB = gql`
     }
   }
 `;
+
+export const trainingSteps = [
+  {
+    selector: "#nothing",
+    content: (
+      <FormattedMessage
+        id="messages-training-1"
+        defaultMessage="Messaging allows you to send text messages between people within your ship."
+      />
+    )
+  },
+  {
+    selector: ".message-dropdown",
+    content: (
+      <FormattedMessage
+        id="messages-training-2"
+        defaultMessage="To send a message, click this button. A dropdown will appear showing you all of the options for places you can send your message."
+      />
+    )
+  },
+  {
+    selector: ".convoList",
+    content: (
+      <FormattedMessage
+        id="messages-training-3"
+        defaultMessage="This is your list of current conversations. Click on a conversation to see that conversation on the right side."
+      />
+    )
+  },
+  {
+    selector: ".messages-list",
+    content: (
+      <FormattedMessage
+        id="messages-training-4"
+        defaultMessage="The messages in the selected conversation appear here."
+      />
+    )
+  },
+  {
+    selector: ".text-input",
+    content: (
+      <FormattedMessage
+        id="messages-training-5"
+        defaultMessage="Type any message you want to send in this box. Press the enter key or the 'Send Message' button to send the message."
+      />
+    )
+  }
+];
 
 class Messaging extends Component {
   state = {
@@ -196,7 +247,7 @@ class Messaging extends Component {
               ))}
             </Card>
             <ButtonDropdown
-              className="btn-block"
+              className="btn-block message-dropdown"
               isOpen={stationsShown}
               toggle={this.toggleStations}
               direction="up"
@@ -261,7 +312,7 @@ class Messaging extends Component {
               </DropdownMenu>
             </ButtonDropdown>
           </Col>
-          <Col sm={9}>
+          <Col sm={9} className="messages-list">
             <h4>Messages</h4>
 
             <Card>
@@ -290,6 +341,7 @@ class Messaging extends Component {
               </div>
             </Card>
             <form
+              className="text-input"
               // eslint-disable-next-line
               action={"javascript:void(0);"}
               onSubmit={this.sendMessage}
@@ -315,6 +367,7 @@ class Messaging extends Component {
             </form>
           </Col>
         </Row>
+        <Tour steps={trainingSteps} client={this.props.clientObj} />
       </Container>
     );
   }

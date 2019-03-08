@@ -187,7 +187,6 @@ App.on("triggerMacros", ({ simulatorId, macros }) => {
     }
     setTimeout(() => {
       const parsedArgs = typeof args === "string" ? JSON.parse(args) : args;
-      console.log(event);
       App.handleEvent(
         {
           ...parsedArgs,

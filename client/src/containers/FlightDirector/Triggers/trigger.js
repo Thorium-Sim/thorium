@@ -192,42 +192,40 @@ export default class Trigger extends Component {
             >
               {action => (
                 <MacroListMaker>
-                  {eventList =>
-                    console.log({ ...components, ...eventList }) || (
-                      <DiagramProvider
-                        {...trigger}
-                        registeredComponents={{ ...components, ...eventList }}
-                        onUpdate={({
-                          components,
-                          connections,
-                          config,
-                          values
-                        }) => {
-                          const variables = { id: trigger.id };
-                          if (!compare(components, trigger.components))
-                            variables.components = components;
-                          if (!compare(connections, trigger.connections))
-                            variables.connections = connections;
-                          if (!compare(config, trigger.config))
-                            variables.config = config;
-                          if (!compare(values, trigger.values))
-                            variables.values = values;
-                          action({ variables });
-                        }}
-                      >
-                        <Col sm={3} style={{ height: "100%" }}>
-                          <DiagramContext.Consumer>
-                            {({ selectedComponent }) =>
-                              selectedComponent ? <Config /> : <Library />
-                            }
-                          </DiagramContext.Consumer>
-                        </Col>
-                        <Col sm={6} style={{ height: "100%" }}>
-                          <Canvas />
-                        </Col>
-                      </DiagramProvider>
-                    )
-                  }
+                  {eventList => (
+                    <DiagramProvider
+                      {...trigger}
+                      registeredComponents={{ ...components, ...eventList }}
+                      onUpdate={({
+                        components,
+                        connections,
+                        config,
+                        values
+                      }) => {
+                        const variables = { id: trigger.id };
+                        if (!compare(components, trigger.components))
+                          variables.components = components;
+                        if (!compare(connections, trigger.connections))
+                          variables.connections = connections;
+                        if (!compare(config, trigger.config))
+                          variables.config = config;
+                        if (!compare(values, trigger.values))
+                          variables.values = values;
+                        action({ variables });
+                      }}
+                    >
+                      <Col sm={3} style={{ height: "100%" }}>
+                        <DiagramContext.Consumer>
+                          {({ selectedComponent }) =>
+                            selectedComponent ? <Config /> : <Library />
+                          }
+                        </DiagramContext.Consumer>
+                      </Col>
+                      <Col sm={6} style={{ height: "100%" }}>
+                        <Canvas />
+                      </Col>
+                    </DiagramProvider>
+                  )}
                 </MacroListMaker>
               )}
             </Mutation>
