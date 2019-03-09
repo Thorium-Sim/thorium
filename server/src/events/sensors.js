@@ -83,7 +83,7 @@ App.on("sensorScanResult", ({ id, result }) => {
 });
 App.on(
   "processedData",
-  ({ id, simulatorId, domain = "external", data, flash }) => {
+  ({ id, simulatorId, domain = "external", data = "", flash }) => {
     let system;
     if (id) {
       system = App.systems.find(sys => sys.id === id);
@@ -172,7 +172,7 @@ App.on("sensorScanCancel", ({ id }) => {
 });
 App.on(
   "setPresetAnswers",
-  ({ simulatorId, domain = "external", presetAnswers }) => {
+  ({ simulatorId, domain = "external", presetAnswers = [] }) => {
     const system = App.systems.find(
       sys =>
         sys.simulatorId === simulatorId &&

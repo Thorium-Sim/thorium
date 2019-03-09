@@ -33,7 +33,8 @@
       "Fixes issues with the self destruct screen.",
       "Fixes an issue where the subspace field power isn't correct when Thorium first starts.",
       "Make it possible to edit the user list on the computer core.",
-      "The stealth field will no longer be activated if the system is damaged."
+      "The stealth field will no longer be activated if the system is damaged.",
+      "Fixes a couple of issues that pop up in timelines sometime."
     ]
   },
   "1.1.17": {

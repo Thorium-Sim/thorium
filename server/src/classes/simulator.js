@@ -180,7 +180,7 @@ export default class Simulator {
   rename(name) {
     this.name = name;
   }
-  setAlertLevel(alertlevel) {
+  setAlertLevel(alertlevel = "5") {
     if (["5", "4", "3", "2", "1", "p"].indexOf(alertlevel) === -1) {
       throw new Error(
         "Invalid Alert Level. Must be one of '5','4','3','2','1','p'"
