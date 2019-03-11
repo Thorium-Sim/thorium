@@ -19,7 +19,9 @@
       "Crew clicking on notifications will now properly open relevant widgets.",
       "Add a label to indicate what the green text on the timeline means.",
       "Add training for messaging.",
-      "Add training for the medical roster."
+      "Add training for the medical roster.",
+      "Add a notification for incoming internal calls.",
+      "Adds notifications for security deck doors and evac."
     ],
     "fixes": [
       "Fixes an issue where command line commands don't work.",
@@ -33,7 +35,8 @@
       "Fixes issues with the self destruct screen.",
       "Fixes an issue where the subspace field power isn't correct when Thorium first starts.",
       "Make it possible to edit the user list on the computer core.",
-      "The stealth field will no longer be activated if the system is damaged."
+      "The stealth field will no longer be activated if the system is damaged.",
+      "Fixes a couple of issues that pop up in timelines sometime."
     ]
   },
   "1.1.17": {

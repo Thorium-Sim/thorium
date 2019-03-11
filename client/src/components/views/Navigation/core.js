@@ -115,9 +115,9 @@ class NavigationCore extends Component {
     `;
     const variables = {
       id: navigation.id,
-      x: course.x,
-      y: course.y,
-      z: course.z
+      x: String(course.x),
+      y: String(course.y),
+      z: String(course.z)
     };
     this.props.client.mutate({
       mutation,

@@ -15,60 +15,62 @@ App.on(
         s => s.simulatorId === simulatorId && s.type === "LongRangeComm"
       );
     }
-    const simulator = App.simulators.find(s => s.id === system.simulatorId);
-    system &&
-      system.createMessage(
-        message.replace(/#SIM/gi, simulator.name),
-        crew,
-        decoded,
-        sender
-      );
+    if (system) {
+      const simulator = App.simulators.find(s => s.id === system.simulatorId);
+      system &&
+        system.createMessage(
+          message.replace(/#SIM/gi, simulator.name),
+          crew,
+          decoded,
+          sender
+        );
 
-    if (crew === false) {
-      // Find the station(s) which has long range message sending
+      if (crew === false) {
+        // Find the station(s) which has long range message sending
 
-      // If the simulator has a comm review card, send it there first
-      const cardName = simulator.stations.find(s =>
-        s.cards.find(c => c.component === "CommReview")
-      )
-        ? "CommReview"
-        : "LongRangeComm";
+        // If the simulator has a comm review card, send it there first
+        const cardName = simulator.stations.find(s =>
+          s.cards.find(c => c.component === "CommReview")
+        )
+          ? "CommReview"
+          : "LongRangeComm";
 
-      const stations = simulator.stations.filter(s =>
-        s.cards.find(c => c.component === cardName)
-      );
-      stations.forEach(s => {
-        if (s.name !== sender) {
-          pubsub.publish("notify", {
-            id: uuid.v4(),
-            simulatorId: system.simulatorId,
-            type: "Long Range Comm",
-            station: s.name,
-            title: `New Long Range Message Queued`,
-            body: `Message composed by ${sender}`,
-            color: "info",
-            relevantCards: [ cardName ]
-          });
-        }
-      });
-    } else {
-      const stations = simulator.stations.filter(s =>
-        s.cards.find(c => c.component === "CommDecoding")
-      );
-      stations.forEach(s => {
-        if (s.name !== sender) {
-          pubsub.publish("notify", {
-            id: uuid.v4(),
-            simulatorId: system.simulatorId,
-            type: "Long Range Comm",
-            station: s.name,
-            title: `New Long Range Message`,
-            body: `From ${sender}`,
-            color: "info",
-            relevantCards: [ "CommDecoding" ]
-          });
-        }
-      });
+        const stations = simulator.stations.filter(s =>
+          s.cards.find(c => c.component === cardName)
+        );
+        stations.forEach(s => {
+          if (s.name !== sender) {
+            pubsub.publish("notify", {
+              id: uuid.v4(),
+              simulatorId: system.simulatorId,
+              type: "Long Range Comm",
+              station: s.name,
+              title: `New Long Range Message Queued`,
+              body: `Message composed by ${sender}`,
+              color: "info",
+              relevantCards: [cardName]
+            });
+          }
+        });
+      } else {
+        const stations = simulator.stations.filter(s =>
+          s.cards.find(c => c.component === "CommDecoding")
+        );
+        stations.forEach(s => {
+          if (s.name !== sender) {
+            pubsub.publish("notify", {
+              id: uuid.v4(),
+              simulatorId: system.simulatorId,
+              type: "Long Range Comm",
+              station: s.name,
+              title: `New Long Range Message`,
+              body: `From ${sender}`,
+              color: "info",
+              relevantCards: ["CommDecoding"]
+            });
+          }
+        });
+      }
     }
     pubsub.publish(
       "longRangeCommunicationsUpdate",
@@ -136,7 +138,7 @@ App.on("approveLongRangeMessage", ({ id, message }) => {
       title: `New Long Range Message Queued`,
       body: `Message composed by ${messageObj.sender}`,
       color: "info",
-      relevantCards: [ "LongRangeComm" ]
+      relevantCards: ["LongRangeComm"]
     });
   });
 });

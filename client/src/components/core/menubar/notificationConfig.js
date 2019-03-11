@@ -37,6 +37,7 @@ const components = [
   "Reactor",
   "Remote Access",
   "Security Teams",
+  "Security Doors",
   "Self Destruct",
   "Shields",
   "Short Range Comm",

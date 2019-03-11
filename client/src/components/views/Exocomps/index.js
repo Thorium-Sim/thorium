@@ -15,6 +15,9 @@ const EXOCOMP_SUB = gql`
       state
       parts
       completion
+      damage {
+        damaged
+      }
       destination {
         id
         displayName
@@ -208,6 +211,9 @@ const QUERY = gql`
       state
       parts
       completion
+      damage {
+        damaged
+      }
       logs {
         timestamp
         message

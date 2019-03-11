@@ -88,7 +88,9 @@ class Core extends Component {
         parseInt(level, 10) < 1
       )
         return;
-      action({ variables: { id: this.props.id, name, level } });
+      action({
+        variables: { id: this.props.id, name, level: parseInt(level, 10) }
+      });
     };
   };
   render() {
@@ -199,7 +201,9 @@ class Core extends Component {
                     addComputerCoreUser(
                       id: $id
                       user: { name: $name, level: $level, hacker: true }
-                    )
+                    ) {
+                      id
+                    }
                   }
                 `}
               >

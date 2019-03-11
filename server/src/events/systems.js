@@ -84,15 +84,16 @@ const sendUpdate = sys => {
     pubsub.publish("dockingUpdate", App.dockingPorts);
   pubsub.publish("systemsUpdate", App.systems);
 };
-App.on("addSystemToSimulator", ({ simulatorId, className, params }) => {
+App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {
   const init = JSON.parse(params);
   init.simulatorId = simulatorId;
   const ClassObj = Classes[className];
   const obj = new ClassObj(init);
   App.systems.push(obj);
   pubsub.publish("systemsUpdate", App.systems);
+  cb && cb();
 });
-App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type }) => {
+App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type, cb }) => {
   if (systemId) {
     App.systems = App.systems.filter(s => s.id !== systemId);
   } else if (simulatorId && type) {
@@ -102,6 +103,7 @@ App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type }) => {
     App.systems = App.systems.filter(s => s.id !== sys.id);
   }
   pubsub.publish("systemsUpdate", App.systems);
+  cb && cb();
 });
 App.on("updateSystemName", ({ systemId, name, displayName }) => {
   const sys = App.systems.find(s => s.id === systemId);
@@ -367,7 +369,11 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
     // damage step widget and card
     const stations = sim.stations
       .filter(s => {
-        return s.cards.find(c => c.component === "DamageControl");
+        return s.cards.find(c =>
+          ["DamageControl", "EngineeringReports", "RnDReports"].includes(
+            c.component
+          )
+        );
       })
       .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
       .map(s => s.name)
@@ -380,7 +386,7 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
         title: `Damage report step validation rejected`,
         body: sys.name,
         color: "danger",
-        relevantCards: ["DamageControl"]
+        relevantCards: ["DamageControl", "EngineeringReports", "RnDReports"]
       })
     );
   } else {
@@ -417,7 +423,11 @@ App.on("validateDamageStep", ({ id }) => {
   // damage step widget and card
   const stations = sim.stations
     .filter(s => {
-      return s.cards.find(c => c.component === "DamageControl");
+      return s.cards.find(c =>
+        ["DamageControl", "EngineeringReports", "RnDReports"].includes(
+          c.component
+        )
+      );
     })
     .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
     .map(s => s.name)
@@ -430,7 +440,7 @@ App.on("validateDamageStep", ({ id }) => {
       title: `Damage report step validation accepted`,
       body: sys.name,
       color: "success",
-      relevantCards: ["DamageControl"]
+      relevantCards: ["DamageControl", "EngineeringReports", "RnDReports"]
     })
   );
   sendUpdate(sys);

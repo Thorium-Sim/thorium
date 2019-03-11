@@ -35,11 +35,50 @@ App.on("deckDoors", ({ deckId, doors }) => {
   const deck = App.decks.find(d => d.id === deckId);
   deck.setDoors(doors);
   pubsub.publish("decksUpdate", App.decks);
+
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: deck.simulatorId,
+    type: "Security Doors",
+    station: "Core",
+    title: `Deck ${deck.number} Doors ${doors ? "Closed" : "Opened"}`,
+    body: "",
+    color: "info"
+  });
+  App.handleEvent(
+    {
+      simulatorId: deck.simulatorId,
+      title: `Deck ${deck.number} Doors ${doors ? "Closed" : "Opened"}`,
+      body: "",
+      component: "SecurityDecksCore",
+      color: "info"
+    },
+    "addCoreFeed"
+  );
 });
 App.on("deckEvac", ({ deckId, evac }) => {
   const deck = App.decks.find(d => d.id === deckId);
   deck.setEvac(evac);
   pubsub.publish("decksUpdate", App.decks);
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: deck.simulatorId,
+    type: "Security Doors",
+    station: "Core",
+    title: `Deck ${deck.number} ${evac ? "Evacuated" : "All-Clear"}`,
+    body: "",
+    color: "info"
+  });
+  App.handleEvent(
+    {
+      simulatorId: deck.simulatorId,
+      title: `Deck ${deck.number} ${evac ? "Evacuated" : "All-Clear"}`,
+      body: "",
+      component: "SecurityDecksCore",
+      color: "info"
+    },
+    "addCoreFeed"
+  );
 });
 App.on("updateHallwaySvg", ({ deckId, svg }) => {
   const deck = App.decks.find(d => d.id === deckId);

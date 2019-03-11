@@ -468,7 +468,7 @@ class Targeting extends Component {
           </Col>
         </Row>
         <Row className="target-area flex-max">
-          <Col sm={7}>
+          <Col sm={6} style={{ paddingTop: "20px" }}>
             <TargetControls
               targetedContact={
                 targeting.coordinateTargeting
@@ -479,10 +479,10 @@ class Targeting extends Component {
               targetSystem={this.targetSystem}
             />
           </Col>
-          <Col sm={5} className="torpedos" style={{ height: "100%" }}>
+          <Col sm={6} className="torpedos" style={{ height: "100%" }}>
             <TorpedoLoading
               simulator={this.props.simulator}
-              maxLaunchers={1}
+              maxLaunchers={2}
               targeting={true}
             />
           </Col>

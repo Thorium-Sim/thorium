@@ -66,10 +66,15 @@ class AddUserModal extends Component {
           <Mutation
             mutation={gql`
               mutation addUser($id: ID!, $user: ComputerCoreUserInput) {
-                addComputerCoreUser(id: $id, user: $user)
+                addComputerCoreUser(id: $id, user: $user) {
+                  id
+                }
               }
             `}
-            variables={{ id, user: { name, password, level } }}
+            variables={{
+              id,
+              user: { name, password, level: parseInt(level, 10) }
+            }}
           >
             {action => (
               <Button

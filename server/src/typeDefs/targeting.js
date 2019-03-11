@@ -111,9 +111,9 @@ const schema = gql`
   }
 `;
 
-function getClassValue({ systemId, class: className, key }) {
+function getClassValue({ systemId, class: classId, key }) {
   const system = App.systems.find(s => s.id === systemId);
-  const targetClass = system.classes.find(c => c.id === className);
+  const targetClass = system.classes.find(c => c.id === classId);
   if (targetClass) {
     return targetClass[key];
   }
@@ -153,25 +153,25 @@ const resolver = {
   },
   TargetingContact: {
     name(rootValue) {
-      getClassValue({ ...rootValue, key: "name" });
+      return getClassValue({ ...rootValue, key: "name" });
     },
     size(rootValue) {
-      getClassValue({ ...rootValue, key: "size" });
+      return getClassValue({ ...rootValue, key: "size" });
     },
     icon(rootValue) {
-      getClassValue({ ...rootValue, key: "icon" });
+      return getClassValue({ ...rootValue, key: "icon" });
     },
     picture(rootValue) {
-      getClassValue({ ...rootValue, key: "picture" });
+      return getClassValue({ ...rootValue, key: "picture" });
     },
     speed(rootValue) {
-      getClassValue({ ...rootValue, key: "speed" });
+      return getClassValue({ ...rootValue, key: "speed" });
     },
     quadrant(rootValue) {
-      getClassValue({ ...rootValue, key: "quadrant" });
+      return getClassValue({ ...rootValue, key: "quadrant" });
     },
     moving(rootValue) {
-      getClassValue({ ...rootValue, key: "moving" });
+      return getClassValue({ ...rootValue, key: "moving" });
     }
   },
   Query: {
