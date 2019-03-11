@@ -97,7 +97,7 @@ class ScannerCore extends Component {
                     backgroundColor: c.scanning ? `rgba(255, 0, 0, 0.3)` : null
                   }}
                 >
-                  {c.id}
+                  {c.label}
                 </ListGroupItem>
               ))}
             </ListGroup>

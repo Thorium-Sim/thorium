@@ -29,6 +29,7 @@ const CLIENT_CHANGE_QUERY = gql`
   subscription ClientChanged {
     clientChanged {
       id
+      label
       mobile
       cards
       flight {
@@ -116,7 +117,7 @@ const ClientRow = ({
           className="text-danger remove-client"
           onClick={() => removeClient(p.id)}
         />{" "}
-        {`${p.id}`}
+        {p.label}
       </td>
       <td data-testid="flight-picker-cell">
         <select
@@ -461,6 +462,7 @@ const CLIENTS_QUERY = gql`
   query Clients {
     clients {
       id
+      label
       mobile
       cards
       flight {

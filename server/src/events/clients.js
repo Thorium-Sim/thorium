@@ -37,17 +37,18 @@ function performScannerAction(id, action) {
   }
 }
 
-App.on("clientConnect", ({ client, mobile, cards }) => {
+App.on("clientConnect", ({ client, label, mobile, cards }) => {
   const clientObj = App.clients.find(c => c.id === client);
   if (clientObj) {
     // There is a client alread in the database
     // Just make sure it is connected
-    clientObj.connect({ mobile, cards });
+    clientObj.connect({ mobile, label, cards });
   } else {
     // Add it to the server
     const newClient = new Client({
       id: client,
       connected: true,
+      label,
       mobile,
       cards
     });

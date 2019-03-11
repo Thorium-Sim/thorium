@@ -8,6 +8,7 @@ import "./style.scss";
 const fragment = gql`
   fragment KeypadData on Keypad {
     id
+    label
     code
     enteredCode
     codeLength

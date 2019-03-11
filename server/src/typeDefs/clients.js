@@ -8,6 +8,7 @@ import { StationResolver } from "../helpers/stationResolver";
 const schema = gql`
   type Client {
     id: ID
+    label: String
     connected: Boolean
     flight: Flight
     simulator: Simulator
@@ -29,6 +30,7 @@ const schema = gql`
 
   type Keypad {
     id: ID
+    label: String
     code: [Int]
     enteredCode: [Int]
     codeLength: Int
@@ -40,6 +42,7 @@ const schema = gql`
 
   type Scanner {
     id: ID
+    label: String
     scanRequest: String
     scanResults: String
     scanning: Boolean
@@ -80,7 +83,12 @@ const schema = gql`
     scanners(simulatorId: ID!): [Scanner]
   }
   extend type Mutation {
-    clientConnect(client: ID!, mobile: Boolean, cards: [String]): String
+    clientConnect(
+      client: ID!
+      label: String
+      mobile: Boolean
+      cards: [String]
+    ): String
     clientDisconnect(client: ID!): String
     clientPing(client: ID!, ping: String!): String
     clientSetFlight(client: ID!, flightId: ID!): String

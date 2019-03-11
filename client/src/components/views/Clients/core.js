@@ -8,6 +8,7 @@ import "./style.scss";
 const fragment = gql`
   fragment ClientCoreData on Client {
     id
+    label
     station {
       name
     }
@@ -62,7 +63,7 @@ const ClientCore = ({ clients }) => (
             <tr key={c.id}>
               <td>{c.loginName}</td>
               <td>{c.station.name}</td>
-              <td>{c.id}</td>
+              <td>{c.label}</td>
             </tr>
           ))}
       </tbody>

@@ -8,6 +8,7 @@ import "./style.scss";
 const fragment = gql`
   fragment ScannerData on Scanner {
     id
+    label
     scanRequest
     scanResults
     scanning
