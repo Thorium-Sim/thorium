@@ -369,7 +369,11 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
     // damage step widget and card
     const stations = sim.stations
       .filter(s => {
-        return s.cards.find(c => c.component === "DamageControl");
+        return s.cards.find(c =>
+          ["DamageControl", "EngineeringReports", "RnDReports"].includes(
+            c.component
+          )
+        );
       })
       .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
       .map(s => s.name)
@@ -382,7 +386,7 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
         title: `Damage report step validation rejected`,
         body: sys.name,
         color: "danger",
-        relevantCards: ["DamageControl"]
+        relevantCards: ["DamageControl", "EngineeringReports", "RnDReports"]
       })
     );
   } else {
@@ -419,7 +423,11 @@ App.on("validateDamageStep", ({ id }) => {
   // damage step widget and card
   const stations = sim.stations
     .filter(s => {
-      return s.cards.find(c => c.component === "DamageControl");
+      return s.cards.find(c =>
+        ["DamageControl", "EngineeringReports", "RnDReports"].includes(
+          c.component
+        )
+      );
     })
     .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
     .map(s => s.name)
@@ -432,7 +440,7 @@ App.on("validateDamageStep", ({ id }) => {
       title: `Damage report step validation accepted`,
       body: sys.name,
       color: "success",
-      relevantCards: ["DamageControl"]
+      relevantCards: ["DamageControl", "EngineeringReports", "RnDReports"]
     })
   );
   sendUpdate(sys);
