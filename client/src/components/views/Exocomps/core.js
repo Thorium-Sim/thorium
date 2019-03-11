@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Table, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -10,6 +10,9 @@ const fragment = gql`
     state
     completion
     difficulty
+    damage {
+      damaged
+    }
     destination {
       id
       displayName
@@ -96,31 +99,55 @@ class ExocompsCore extends Component {
               </thead>
               <tbody>
                 {exocomps.map((e, i) => (
-                  <tr key={e.id}>
-                    <td>{i + 1}</td>
-                    <td>
-                      {e.destination ? e.destination.displayName : "None"}
-                    </td>
-                    <td>{e.state}</td>
-                    <td>{Math.round(e.completion * 1000) / 10}%</td>
-                    {!showHistory && (
-                      <td>
-                        <input
-                          type="range"
-                          defaultValue={e.difficulty}
-                          onChange={evt =>
-                            this.updateDifficulty(e.id, evt.target.value)
-                          }
-                          min={0.001}
-                          max={0.5}
-                          step={0.005}
-                        />
-                      </td>
+                  <Mutation
+                    mutation={
+                      e.damage.damaged
+                        ? gql`
+                            mutation RepairSystem($systemId: ID!) {
+                              repairSystem(systemId: $systemId)
+                            }
+                          `
+                        : gql`
+                            mutation DamageSystem($systemId: ID!) {
+                              damageSystem(systemId: $systemId)
+                            }
+                          `
+                    }
+                    variables={{ systemId: e.id }}
+                  >
+                    {action => (
+                      <tr
+                        key={e.id}
+                        onDoubleClick={action}
+                        className={e.damage.damaged ? "text-danger" : ""}
+                      >
+                        <td>{i + 1}</td>
+                        <td>
+                          {e.destination ? e.destination.displayName : "None"}
+                        </td>
+                        <td>{e.state}</td>
+                        <td>{Math.round(e.completion * 1000) / 10}%</td>
+                        {!showHistory && (
+                          <td>
+                            <input
+                              type="range"
+                              defaultValue={e.difficulty}
+                              onChange={evt =>
+                                this.updateDifficulty(e.id, evt.target.value)
+                              }
+                              min={0.001}
+                              max={0.5}
+                              step={0.005}
+                            />
+                          </td>
+                        )}
+                      </tr>
                     )}
-                  </tr>
+                  </Mutation>
                 ))}
               </tbody>
             </Table>
+            <small>Double click to break exocomp.</small>
           </Col>
           {showHistory && (
             <Col sm={6}>

@@ -31,6 +31,13 @@ export default class Exocomp extends System {
   set displayName(name) {
     return;
   }
+  break(report, destroyed, which) {
+    this.state = "idle";
+    this.parts = [];
+    this.completion = 0;
+    this.destination = null;
+    super.break(report, destroyed, which);
+  }
   updateState(state) {
     this.state = state;
     const system = App.systems.find(s => s.id === this.destination) || {};
