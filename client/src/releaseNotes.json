@@ -20,7 +20,8 @@
       "Add a label to indicate what the green text on the timeline means.",
       "Add training for messaging.",
       "Add training for the medical roster.",
-      "Add a notification for incoming internal calls."
+      "Add a notification for incoming internal calls.",
+      "Adds notifications for security deck doors and evac."
     ],
     "fixes": [
       "Fixes an issue where command line commands don't work.",

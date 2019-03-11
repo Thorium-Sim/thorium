@@ -3,7 +3,9 @@
     margin-top: 10px;
     height: 100%;
     &.search-container {
-      height: calc(100% - 72px);
+      position: absolute;
+      height: 50vh;
+      width: 100%;
       overflow-y: auto;
     }
     p {
