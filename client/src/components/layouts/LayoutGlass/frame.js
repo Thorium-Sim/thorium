@@ -11,6 +11,8 @@ function videoColor(al) {
     return "orange";
   } else if (al === "1") {
     return "red";
+  } else if (al === "p") {
+    return "purple";
   }
   return "blue";
 }
