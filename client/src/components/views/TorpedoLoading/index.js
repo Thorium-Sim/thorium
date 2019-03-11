@@ -56,7 +56,13 @@ class TorpedoLoading extends Component {
     const torpedos = this.props.data.torpedos;
     if (!torpedos) return null;
     return (
-      <div className="torpedo-loading">
+      <div
+        className={`torpedo-loading ${
+          torpedos.length > (this.props.maxLaunchers || Infinity)
+            ? "fire-grid"
+            : ""
+        }`}
+      >
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -70,6 +76,7 @@ class TorpedoLoading extends Component {
             })
           }
         />
+
         {torpedos.map(t => {
           if (torpedos.length > (this.props.maxLaunchers || Infinity)) {
             return (

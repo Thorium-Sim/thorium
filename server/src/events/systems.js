@@ -84,15 +84,16 @@ const sendUpdate = sys => {
     pubsub.publish("dockingUpdate", App.dockingPorts);
   pubsub.publish("systemsUpdate", App.systems);
 };
-App.on("addSystemToSimulator", ({ simulatorId, className, params }) => {
+App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {
   const init = JSON.parse(params);
   init.simulatorId = simulatorId;
   const ClassObj = Classes[className];
   const obj = new ClassObj(init);
   App.systems.push(obj);
   pubsub.publish("systemsUpdate", App.systems);
+  cb && cb();
 });
-App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type }) => {
+App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type, cb }) => {
   if (systemId) {
     App.systems = App.systems.filter(s => s.id !== systemId);
   } else if (simulatorId && type) {
@@ -102,6 +103,7 @@ App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type }) => {
     App.systems = App.systems.filter(s => s.id !== sys.id);
   }
   pubsub.publish("systemsUpdate", App.systems);
+  cb && cb();
 });
 App.on("updateSystemName", ({ systemId, name, displayName }) => {
   const sys = App.systems.find(s => s.id === systemId);
