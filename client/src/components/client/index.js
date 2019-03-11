@@ -11,6 +11,7 @@ const fragments = {
   clientData: gql`
     fragment ClientData on Client {
       id
+      cracked
       flight {
         id
         name

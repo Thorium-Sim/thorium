@@ -22,6 +22,7 @@ const schema = gql`
     caches: [String]
     hypercard: String
     overlay: Boolean
+    cracked: Boolean
 
     mobile: Boolean
     cards: [String]
@@ -138,6 +139,7 @@ const schema = gql`
       stationSetId: ID!
     ): String
     setClientOverlay(id: ID!, overlay: Boolean!): String
+    clientCrack(id: ID!, crack: Boolean!): String
 
     setKeypadCode(id: ID!, code: [Int]): String
     setKeypadEnteredCode(id: ID!, code: [Int!]): String

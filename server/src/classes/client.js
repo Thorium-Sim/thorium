@@ -97,7 +97,7 @@ export default class Client {
     this.training = params.training || false;
     this.overlay = params.overlay || false;
     this.caches = params.caches || [];
-
+    this.cracked = params.cracked || false;
     // For the mobile app
     this.mobile = params.mobile || false;
     this.cards = params.cards || [];
@@ -189,6 +189,12 @@ export default class Client {
     if (hardReset) {
       this.setFlight(null);
     }
+  }
+  crack() {
+    this.cracked = true;
+  }
+  uncrack() {
+    this.cracked = false;
   }
   diagnostic() {}
   lockScreen() {}

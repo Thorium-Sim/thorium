@@ -125,6 +125,16 @@ App.on("triggerAction", args => {
         });
       });
       break;
+    case "crack":
+      clients.forEach(c => {
+        App.handleEvent({ id: c, crack: true }, "clientCrack");
+      });
+      break;
+    case "uncrack":
+      clients.forEach(c => {
+        App.handleEvent({ id: c, crack: false }, "clientCrack");
+      });
+      break;
     default:
       pubsub.publish("actionsUpdate", { ...args, stations, clients });
       break;

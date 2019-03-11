@@ -413,6 +413,8 @@ class ActionsCore extends Component {
               <option value="lockdown">Lockdown</option>
               <option value="maintenance">Maintenance</option>
               <option value="soviet">Soviet</option>
+              <option value="crack">Crack</option>
+              <option value="uncrack">Un-Crack</option>
             </optgroup>
             <optgroup>
               <option value="reload">Reload Browser</option>

@@ -222,6 +222,7 @@ export default class CardFrame extends Component {
         }`}
       >
         <ActionsMixin {...this.props} changeCard={this.changeCard}>
+          {client.cracked && <div className="cracked-screen" />}
           <CardRenderer
             {...this.props}
             card={this.state.card}

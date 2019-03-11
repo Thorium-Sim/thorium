@@ -306,6 +306,11 @@ App.on("setClientOverlay", ({ id, overlay }) => {
   pubsub.publish("clientChanged", App.clients);
 });
 
+App.on("clientCrack", ({ id, crack }) => {
+  const c = App.clients.find(c => c.id === id);
+  c && (crack ? c.crack() : c.uncrack());
+  pubsub.publish("clientChanged", App.clients);
+});
 App.on("setKeypadCode", ({ id, code }) => {
   performKeypadAction(id, client => {
     client.setCode(code);
