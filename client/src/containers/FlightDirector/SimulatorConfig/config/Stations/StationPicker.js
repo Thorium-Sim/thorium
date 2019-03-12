@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Input, Card, Button, ButtonGroup } from "reactstrap";
 import ops from "./ops";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const StationPicker = ({
   client,

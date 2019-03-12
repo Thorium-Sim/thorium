@@ -12,3 +12,4 @@ export { default as Panels } from "./Panels";
 export { default as Ambiance } from "./Ambiance";
 export { default as CommandLines } from "./CommandLines";
 export { default as Triggers } from "./Triggers";
+export { default as Interfaces } from "./Interfaces";

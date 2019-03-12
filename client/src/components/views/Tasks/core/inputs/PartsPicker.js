@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { randomFromList } from "helpers/randomFromList";
 import FontAwesome from "react-fontawesome";
 
@@ -21,7 +21,7 @@ class PartsPicker extends Component {
     return (
       <Query
         query={gql`
-          {
+          query ExocompParts {
             exocompParts
           }
         `}

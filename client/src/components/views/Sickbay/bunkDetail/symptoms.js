@@ -10,7 +10,7 @@ import {
   Button
 } from "reactstrap";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import { titleCase } from "change-case";
 
@@ -31,7 +31,7 @@ const Symptoms = ({
         <DropdownMenu style={{ maxHeight: "200px", overflowY: "auto" }}>
           <Query
             query={gql`
-              {
+              query Symptoms {
                 symptoms
               }
             `}

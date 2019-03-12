@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Button, ButtonGroup } from "reactstrap";
 import { TypingField, InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import "./style.scss";
 
 const MessagePresets = [

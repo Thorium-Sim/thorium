@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Mutation, graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "helpers/tourHelper";
@@ -367,15 +367,14 @@ class Sensors extends Component {
                   </Card>
                 </Col>
               </Row>
-              {pings &&
-                !needScans && (
-                  <PingControl
-                    selectPing={this.selectPing}
-                    pingMode={pingMode}
-                    ping={ping}
-                    triggerPing={this.triggerPing}
-                  />
-                )}
+              {pings && !needScans && (
+                <PingControl
+                  selectPing={this.selectPing}
+                  pingMode={pingMode}
+                  ping={ping}
+                  triggerPing={this.triggerPing}
+                />
+              )}
               {!needScans && (
                 <Button onClick={this.showWeaponsRange} block>
                   Show Weapons Range

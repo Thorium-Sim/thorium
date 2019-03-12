@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Rings } from "../helpers/loaders";
 import { DateTime } from "luxon";
 
@@ -112,7 +112,7 @@ export default class MissionPicker extends Component {
                   <h2>Mission Library</h2>
                   <Query
                     query={gql`
-                      {
+                      query Externals {
                         externals {
                           missions {
                             title

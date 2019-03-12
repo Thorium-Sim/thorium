@@ -8,7 +8,7 @@ import { FlightDirector } from "./FlightDirector";
 import Config from "./config";
 import Releases from "./FlightDirector/releases";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const history = createHistory();
 
@@ -44,7 +44,8 @@ class App extends Component {
       .subscribe({
         next: ({ loading, data: { clockSync } }) => {
           // This magic number is the round-trip offset. Could be better, but this works for now.
-          window.thorium.clockSync = new Date(clockSync) - new Date() + 400;
+          window.thorium.clockSync =
+            new Date(parseInt(clockSync, 10)) - new Date() + 400;
         },
         error(err) {
           console.error("Error resetting cache", err);

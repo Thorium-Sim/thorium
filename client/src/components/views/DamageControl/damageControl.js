@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Card, CardBody } from "reactstrap";
 import Tour from "helpers/tourHelper";
 import FontAwesome from "react-fontawesome";
 import { Mutation, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { FormattedMessage } from "react-intl";
 import ReportView from "./reportView";
 
@@ -160,8 +160,14 @@ class DamageControl extends Component {
         )
       }
     `;
+    const { systems = [], taskReports = [] } = this.props;
+    const system = systems.find(s => s.id === this.state.selectedSystem);
+
+    const taskReport = taskReports.find(
+      s => s.id === this.state.selectedSystem
+    );
     const variables = {
-      systemId: this.state.selectedSystem,
+      systemId: system ? system.id : taskReport && taskReport.system.id,
       code: this.state.codeEntry,
       station: this.props.station.name
     };

@@ -67,6 +67,7 @@ App.on("assignPatient", ({ id, bunkId, crewId }) => {
     const crew = App.crew.concat(sys.sickbayRoster).find(c => c.id === crewId);
     crew.addChart();
     pubsub.publish("crewUpdate", App.crew);
+    pubsub.publish("crewCountUpdate", App.crew);
     pubsub.publish("notify", {
       id: uuid.v4(),
       simulatorId: sys.simulatorId,
@@ -99,6 +100,7 @@ App.on("dischargePatient", ({ id, bunkId }) => {
       if (crew) {
         crew.dischargeChart();
         pubsub.publish("crewUpdate", App.crew);
+        pubsub.publish("crewCountUpdate", App.crew);
       }
     }
     pubsub.publish("notify", {
@@ -154,6 +156,7 @@ App.on("updatePatientChart", ({ simulatorId, crewId, chart }) => {
     );
   }
   pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish("crewCountUpdate", App.crew);
   pubsub.publish(
     "sickbayUpdate",
     App.systems.filter(s => s.class === "Sickbay")
@@ -224,7 +227,7 @@ App.on("completeDeconProgram", ({ id }) => {
           title: `Decon Program Complete`,
           body: `${sys.deconProgram}: ${sys.deconLocation}`,
           color: "success",
-          relevantCards: [ "Decontamination" ]
+          relevantCards: ["Decontamination"]
         });
       });
     sys.endDeconProgram();

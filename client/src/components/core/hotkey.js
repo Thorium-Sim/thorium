@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from "react";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Cores } from "components/views";
 import categories from "./categories";
 import { titleCase } from "change-case";
@@ -131,15 +131,17 @@ class Hotkey extends Component {
               }`}
               style={categories.find(c => c.name === showing).style}
             >
-              {categories.find(c => c.name === showing).components.map(c => {
-                const Comp = Cores[c];
-                return (
-                  <div className="hotkey-core-comp" style={{ gridArea: c }}>
-                    <p>{titleCase(c)}</p>
-                    <Comp {...this.props} />
-                  </div>
-                );
-              })}
+              {categories
+                .find(c => c.name === showing)
+                .components.map(c => {
+                  const Comp = Cores[c];
+                  return (
+                    <div className="hotkey-core-comp" style={{ gridArea: c }}>
+                      <p>{titleCase(c)}</p>
+                      <Comp {...this.props} />
+                    </div>
+                  );
+                })}
             </div>
           )}
         </div>

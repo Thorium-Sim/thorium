@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import {
   Container,
   Row,

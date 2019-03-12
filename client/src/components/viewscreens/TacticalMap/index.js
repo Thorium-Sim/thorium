@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query, withApollo } from "react-apollo";
 import Preview from "components/views/TacticalMap/preview";
 //import { Asset } from "helpers/assets";
@@ -7,103 +7,108 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 //import "./style.scss";
 
-const queryData = `
-id
-name
-flight {
-  id
-}
-layers {
-  id
-  name
-  type
-  items {
+const fragment = gql`
+  fragment TacticalMapViewscreenData on TacticalMap {
     id
-    layerId
-    font
-    label
-    fontSize
-    fontColor
-    icon
-    size
-    speed
-    velocity {
-      x
-      y
-      z
+    name
+    flight {
+      id
     }
-    location {
-      x
-      y
-      z
+    layers {
+      id
+      name
+      type
+      items {
+        id
+        layerId
+        font
+        label
+        fontSize
+        fontColor
+        icon
+        size
+        speed
+        velocity {
+          x
+          y
+          z
+        }
+        location {
+          x
+          y
+          z
+        }
+        locationJson
+        destination {
+          x
+          y
+          z
+        }
+        rotation
+        opacity
+        flash
+        ijkl
+        wasd
+      }
+      paths {
+        id
+        layerId
+        start {
+          x
+          y
+          z
+        }
+        end {
+          x
+          y
+          z
+        }
+        c1 {
+          x
+          y
+          z
+        }
+        c2 {
+          x
+          y
+          z
+        }
+        color
+        width
+        arrow
+      }
+      image
+      color
+      labels
+      gridCols
+      gridRows
+      advance
+      asset
+      autoplay
+      loop
+      playbackSpeed
     }
-    locationJson
-    destination {
-      x
-      y
-      z
-    }
-    rotation
-    opacity
-    flash
-    ijkl
-    wasd
+    frozen
+    template
   }
-  paths {
-    id
-    layerId
-    start {
-      x
-      y
-      z
-    }
-    end {
-      x
-      y
-      z
-    }
-    c1 {
-      x
-      y
-      z
-    }
-    c2 {
-      x
-      y
-      z
-    }
-    color
-    width
-    arrow
-  }
-  image
-  color
-  labels
-  gridCols
-  gridRows
-  advance
-  asset
-  autoplay
-  loop
-  playbackSpeed
-}
-frozen
-template`;
+`;
 
 const TACTICALMAP_SUB = gql`
   subscription UpdateTacticalMap($id: ID!) {
     tacticalMapUpdate(id: $id) {
-      ${queryData}
+      ...TacticalMapViewscreenData
     }
   }
+  ${fragment}
 `;
 
 const TACTICALMAP_QUERY = gql`
   query TacticalMapQuery($id: ID!) {
     tacticalMap(id: $id) {
-      ${queryData}
+      ...TacticalMapViewscreenData
     }
   }
+  ${fragment}
 `;
 
 class TacticalMapViewscreen extends Component {

@@ -1,3 +1,9 @@
+body.switcherLocked {
+  .card-switcher {
+    pointer-events: none;
+  }
+}
+
 .cardThrusters {
   display: flex;
   justify-content: center;

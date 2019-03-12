@@ -30,7 +30,7 @@ Actions.propTypes = {
 
 export default {
   name: "triggerAction",
-  category: "Outputs",
+  category: "Actions",
   component: Actions,
   outputs: [],
   inputs: [

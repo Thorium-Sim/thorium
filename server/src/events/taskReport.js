@@ -5,11 +5,13 @@ import uuid from "uuid";
 
 App.on(
   "generateTaskReport",
-  ({ simulatorId, systemId, name, type, stepCount }) => {
+  ({ simulatorId, systemId, name, type, stepCount, cb }) => {
     App.taskReports.push(
       new Classes.TaskReport({ simulatorId, systemId, name, type, stepCount })
     );
     pubsub.publish("taskReportUpdate", App.taskReports);
+
+    cb();
   }
 );
 
@@ -54,7 +56,8 @@ App.on("assignTaskReportStep", ({ id, stepId, station }) => {
     station: station,
     title: `New Task`,
     body: `${task.values.name || task.definition}`,
-    color: "info"
+    color: "info",
+    relevantCards: ["Tasks", "tasks"]
   });
   pubsub.publish("widgetNotify", {
     widget: "tasks",

@@ -22,7 +22,7 @@ App.on("setTrackingPreference", ({ pref }) => {
 App.on("importTaskTemplates", () => {
   if (App.addedTaskTemplates) return;
   App.addedTaskTemplates = true;
-  const templates = require("../helpers/baseTaskTemplates.json");
+  const templates = require("../helpers/baseTaskTemplates.js")();
   App.taskTemplates = App.taskTemplates.concat(templates);
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
 });
@@ -42,7 +42,6 @@ App.on("setSpaceEdventuresToken", async ({ token, cb }) => {
       authorization: `Bearer ${token}`
     }
   });
-  console.log(center);
   if (center) {
     App.spaceEdventuresToken = token;
     cb(center);

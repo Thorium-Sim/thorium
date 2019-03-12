@@ -1,6 +1,45 @@
 {
   "1.2.0": {
-    "fixes": ["Fixes an issue where command line commands dont' work."]
+    "features": [
+      "Updates external package dependencies to the latest version.",
+      "Improves the back-end developer experience so new developers can work on Thorium better.",
+      "Add all existing macros to command line and triggers.",
+      "Add a notification explaining the alert condition cooldown.",
+      "Make it possible to allow crew members to check off their own objectives.",
+      "Make it possible to specify the position of docking ports on the ship image when configuring them. The docking port positions appear on the docking port screen.",
+      "Make it possible to specify screens for mobile devices in set configurations.",
+      "Make it possible to specify a viewscreen as secondary in a set config.",
+      "Make it possible to configure task macros as part of a task template.",
+      "Make it so long range comms can be partially decoded if the waves aren't totally lined up.",
+      "Adds the ability to damage exocomps, including task report generation for exocomps.",
+      "Adds a new core which shows thumbnails of the timeline items that change the viewscreen.",
+      "Adds a command line widget.",
+      "Make it so you can use the sensors history with the full-page sensors grid and scans card.",
+      "Adds additional fields to the ship core to better illustrate the ship's population.",
+      "Crew clicking on notifications will now properly open relevant widgets.",
+      "Add a label to indicate what the green text on the timeline means.",
+      "Add training for messaging.",
+      "Add training for the medical roster.",
+      "Add a notification for incoming internal calls.",
+      "Adds notifications for security deck doors and evac.",
+      "Makes it possible to connect multiple mobile devices of the same name.",
+      "Add a crack action for overlaying a glass crack effect on any card. Use the Actions Core to enable it on individual stations."
+    ],
+    "fixes": [
+      "Fixes an issue where command line commands don't work.",
+      "Fixes an issue with scrolling on the tactical maps screen.",
+      "Reactivation code buttons now match what is shown on the damage report screen.",
+      "Makes selected buttons easier to see on ShipStation layout.",
+      "Fixes issues with viewscreens not properly updating.",
+      "The card switcher is now locked with thrusters are being adjusted.",
+      "Fix a bunch of problems with triggers.",
+      "Fixes the issue with damage report formatting.",
+      "Fixes issues with the self destruct screen.",
+      "Fixes an issue where the subspace field power isn't correct when Thorium first starts.",
+      "Make it possible to edit the user list on the computer core.",
+      "The stealth field will no longer be activated if the system is damaged.",
+      "Fixes a couple of issues that pop up in timelines sometime."
+    ]
   },
   "1.1.17": {
     "fixes": [

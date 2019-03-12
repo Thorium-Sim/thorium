@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const MissionSelector = ({ mission, simulatorId, missions }) => {
   return (

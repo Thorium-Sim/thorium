@@ -37,17 +37,18 @@ function performScannerAction(id, action) {
   }
 }
 
-App.on("clientConnect", ({ client, mobile, cards }) => {
+App.on("clientConnect", ({ client, label, mobile, cards }) => {
   const clientObj = App.clients.find(c => c.id === client);
   if (clientObj) {
     // There is a client alread in the database
     // Just make sure it is connected
-    clientObj.connect({ mobile, cards });
+    clientObj.connect({ mobile, label, cards });
   } else {
     // Add it to the server
     const newClient = new Client({
       id: client,
       connected: true,
+      label,
       mobile,
       cards
     });
@@ -61,17 +62,19 @@ App.on("clientDisconnect", ({ client }) => {
   pubsub.publish("clientChanged", App.clients);
 });
 
-App.on("clientSetFlight", ({ client, flightId }) => {
+App.on("clientSetFlight", ({ client, flightId, cb }) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setFlight(flightId);
   pubsub.publish("clientChanged", App.clients);
+  cb && cb();
 });
-App.on("clientSetSimulator", ({ client, simulatorId }) => {
+App.on("clientSetSimulator", ({ client, simulatorId, cb }) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setSimulator(simulatorId);
   pubsub.publish("clientChanged", App.clients);
+  cb && cb();
 });
-App.on("clientSetStation", ({ client, stationName }) => {
+App.on("clientSetStation", ({ client, stationName, cb }) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setStation(stationName);
   pubsub.publish("clientChanged", App.clients);
@@ -90,6 +93,7 @@ App.on("clientSetStation", ({ client, stationName }) => {
     );
     pubsub.publish("viewscreensUpdate", App.viewscreens);
   }
+  cb && cb();
 });
 App.on("clientLogin", ({ client, loginName }) => {
   const clientObj = App.clients.find(c => c.id === client);
@@ -267,20 +271,23 @@ App.on(
         const client = App.clients.find(cl => c.clientId === cl.id);
         client.setFlight(flightId);
         client.setSimulator(simulatorId);
-        client.setStation(c.station);
+        client.setStation(c.station.replace("mobile:", ""));
         // If the station name is 'Viewscreen', check for or create a viewscreen for the client
-        if (
-          c.station === "Viewscreen" &&
-          !App.viewscreens.find(
+        if (c.station === "Viewscreen") {
+          const vs = App.viewscreens.find(
             v => v.id === client.id && v.simulatorId === client.simulatorId
-          )
-        ) {
-          App.viewscreens.push(
-            new Viewscreen({
-              id: client.id,
-              simulatorId: client.simulatorId
-            })
           );
+          if (!vs) {
+            App.viewscreens.push(
+              new Viewscreen({
+                id: client.id,
+                simulatorId: client.simulatorId,
+                secondary: c.secondary
+              })
+            );
+          } else {
+            vs.secondary = c.secondary;
+          }
         }
       });
     pubsub.publish("viewscreensUpdate", App.viewscreens);
@@ -299,6 +306,11 @@ App.on("setClientOverlay", ({ id, overlay }) => {
   pubsub.publish("clientChanged", App.clients);
 });
 
+App.on("clientCrack", ({ id, crack }) => {
+  const c = App.clients.find(c => c.id === id);
+  c && (crack ? c.crack() : c.uncrack());
+  pubsub.publish("clientChanged", App.clients);
+});
 App.on("setKeypadCode", ({ id, code }) => {
   performKeypadAction(id, client => {
     client.setCode(code);

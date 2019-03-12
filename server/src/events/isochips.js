@@ -26,11 +26,16 @@ App.on("updateIsochip", ({ id, simulatorId, slot, isochip }) => {
   updateChip.updateIsochip(isochip);
   pubsub.publish("isochipsUpdate", App.isochips);
 });
-App.on("batchIsochipUpdate", ({ simulatorId, chips }) => {
+App.on("batchIsochipUpdate", ({ simulatorId, chips, cb }) => {
   const isochips = App.isochips.filter(i => i.simulatorId === simulatorId);
   chips.forEach(chip => {
     const updateChip = isochips.find(i => i.slot === chip.slot);
     if (updateChip) updateChip.updateIsochip(chip);
   });
   pubsub.publish("isochipsUpdate", App.isochips);
+  cb(
+    simulatorId
+      ? App.isochips.filter(i => i.simulatorId === simulatorId)
+      : App.isochips
+  );
 });

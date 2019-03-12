@@ -36,12 +36,25 @@ export default function renderCards(props) {
     .map(card => {
       if (card.name === cardName) {
         const component = Views[card.component];
-        if (card.component.match(/.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+        if (
+          card.component.match(/software-panel-.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+        ) {
           // Software Panel
           return (
             <CardHolder
               component={Views.SoftwarePanels}
-              panel={card.component}
+              panel={card.component.replace("software-panel-", "")}
+              {...props}
+              key={card.name}
+            />
+          );
+        }
+        if (card.component.match(/interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+          // Interface
+          return (
+            <CardHolder
+              component={Views.Interface}
+              interfaceId={card.component.replace("interface-", "")}
               {...props}
               key={card.name}
             />

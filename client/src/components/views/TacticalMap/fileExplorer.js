@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import { Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import ObjPreview from "./3dObjPreview";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -203,34 +203,29 @@ class FileExplorer extends Component {
             <div ref={measureRef}>
               {dimensions && (
                 <div className="directory-container">
-                  {currentDirectory !== directory &&
-                    currentDirectory !== "/" && (
-                      <div
-                        style={{ maxWidth: dimensions.width * widthFactor }}
-                        onClick={() => {
-                          //Get the current directory's folder
-                          let dir = this.props.data.assetFolders.filter(
-                            folder => {
-                              return folder.fullPath === currentDirectory;
-                            }
-                          )[0];
-                          this.setState({
-                            currentDirectory: dir ? dir.folderPath : "/"
-                          });
-                          this.props.folderChange &&
-                            this.props.folderChange(dir ? dir.folderPath : "/");
-                        }}
-                      >
-                        <div className="file-container">
-                          <FontAwesome
-                            flip="horizontal"
-                            size="3x"
-                            name="share"
-                          />
-                          <p>Back</p>
-                        </div>
+                  {currentDirectory !== directory && currentDirectory !== "/" && (
+                    <div
+                      style={{ maxWidth: dimensions.width * widthFactor }}
+                      onClick={() => {
+                        //Get the current directory's folder
+                        let dir = this.props.data.assetFolders.filter(
+                          folder => {
+                            return folder.fullPath === currentDirectory;
+                          }
+                        )[0];
+                        this.setState({
+                          currentDirectory: dir ? dir.folderPath : "/"
+                        });
+                        this.props.folderChange &&
+                          this.props.folderChange(dir ? dir.folderPath : "/");
+                      }}
+                    >
+                      <div className="file-container">
+                        <FontAwesome flip="horizontal" size="3x" name="share" />
+                        <p>Back</p>
                       </div>
-                    )}
+                    </div>
+                  )}
                   {assetFolders
                     .filter(folder => {
                       return folder.folderPath === currentDirectory;
@@ -308,7 +303,7 @@ class FileExplorer extends Component {
   }
 }
 
-class VideoPreview extends Component {
+export class VideoPreview extends Component {
   state = { loaded: false };
   render() {
     return (

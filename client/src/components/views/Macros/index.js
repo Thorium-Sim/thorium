@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Button, Card, Input } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
@@ -75,8 +75,8 @@ class MacrosCore extends Component {
                     onBlur={e => {
                       const delay = e.target.value || 0;
                       this.setState(state => ({
-                        actions: state.actions.map(
-                          a => (a.id === action.id ? { ...a, delay } : a)
+                        actions: state.actions.map(a =>
+                          a.id === action.id ? { ...a, delay } : a
                         )
                       }));
                     }}
@@ -87,8 +87,8 @@ class MacrosCore extends Component {
                   action={action}
                   updateAction={actionUpdate =>
                     this.setState(state => ({
-                      actions: state.actions.map(
-                        a => (a.id === action.id ? actionUpdate : a)
+                      actions: state.actions.map(a =>
+                        a.id === action.id ? actionUpdate : a
                       )
                     }))
                   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Button, Row, Col, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Target from "./targeting";

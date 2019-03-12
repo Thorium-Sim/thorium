@@ -1,47 +1,52 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ComputerCore from "./computerCore";
 import "./style.scss";
 
-const queryData = `
-id
-users {
-  id
-  name
-  level
-  hacker
-  password
-}
-files {
-  id
-  name
-  level
-  corrupted
-  restoring
-}
-virii {
-  id
-  name
-}
-terminals {
-  id
-  name
-  status
-}`;
+const fragment = gql`
+  fragment ComputerCoreData on ComputerCore {
+    id
+    users {
+      id
+      name
+      level
+      hacker
+      password
+    }
+    files {
+      id
+      name
+      level
+      corrupted
+      restoring
+    }
+    virii {
+      id
+      name
+    }
+    terminals {
+      id
+      name
+      status
+    }
+  }
+`;
 const QUERY = gql`
   query ComputerCore($simulatorId: ID!) {
     computerCore(simulatorId: $simulatorId) {
-${queryData}
+      ...ComputerCoreData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription ComputerCoreUpdate($simulatorId: ID!) {
     computerCoreUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ComputerCoreData
     }
   }
+  ${fragment}
 `;
 
 class ComputerCoreData extends Component {

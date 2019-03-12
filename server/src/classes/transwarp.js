@@ -90,7 +90,6 @@ export default class Transwarp extends heatMixin(System) {
     this[quad][field].required = 25;
   }
   setValue(quad, field, value) {
-    console.log(quad, field, value);
     if (!Transwarp.quads.includes(quad)) return;
     if (!Transwarp.fields.includes(field)) return;
     this[quad][field].value = value;

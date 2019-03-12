@@ -1,57 +1,61 @@
 import React from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import CommShortRange from "./shortRangeCommCore";
 import "./style.scss";
 
-const queryData = `
-id
-simulatorId
-name
-arrows {
-  id
-  signal
-  frequency
-  connected
-  muted
-}
-signals {
-  id
-  name
-  image
-  color
-  range {
-    lower
-    upper
+const fragment = gql`
+  fragment ShortRangeData on ShortRangeComm {
+    id
+    simulatorId
+    name
+    arrows {
+      id
+      signal
+      frequency
+      connected
+      muted
+    }
+    signals {
+      id
+      name
+      image
+      color
+      range {
+        lower
+        upper
+      }
+    }
+    state
+    frequency
+    amplitude
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
   }
-}
-state
-frequency
-amplitude
-power {
-  power
-  powerLevels
-}
-damage {
-  damaged
-  report
-}
 `;
 
 const QUERY = gql`
   query ShortRangeComm($simulatorId: ID!) {
     shortRangeComm(simulatorId: $simulatorId) {
-${queryData}
+      ...ShortRangeData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription ShortRangeCommUpdate($simulatorId: ID!) {
     shortRangeCommUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ShortRangeData
     }
   }
+  ${fragment}
 `;
 
 const ShortRangeCommCoreData = props => (

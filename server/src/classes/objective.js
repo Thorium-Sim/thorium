@@ -11,6 +11,7 @@ export default class Objective {
     this.description = params.description || "";
     this.completed = params.completed || false;
     this.cancelled = params.cancelled || false;
+    this.crewComplete = params.crewComplete || false;
   }
   complete() {
     this.completed = true;
@@ -22,5 +23,8 @@ export default class Objective {
   cancel() {
     this.completed = true;
     this.cancelled = true;
+  }
+  setCrewComplete(cc) {
+    this.crewComplete = cc;
   }
 }

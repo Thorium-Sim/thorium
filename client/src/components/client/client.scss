@@ -1,3 +1,20 @@
+.client-container {
+  transition: opacity 1s ease;
+  opacity: 0;
+  &.visible {
+    opacity: 1;
+  }
+}
+.cracked-screen {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10000000;
+  background: url("./crack.png");
+  background-size: cover;
+  background-position: right;
+}
 .credit-bg,
 .error-boundary {
   height: 100vh;

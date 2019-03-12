@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownToggle
 } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, Mutation, Query } from "react-apollo";
 import { Link } from "react-router-dom";
 import semver from "semver";
@@ -162,118 +162,116 @@ class Welcome extends Component {
             <h3 className="text-center">
               <small>{this.state.quote}</small>
             </h3>
-            {!askedToTrack &&
-              !stateAskedToTrack && (
-                <Alert color={"info"}>
-                  <FormattedMessage
-                    id="ask-to-track"
-                    defaultMessage="Would you like opt-in to share some analytics data about Thorium with the developer? You can opt-out at any time from the Settings sidebar menu."
-                  />
-                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                    {!this.state.upgrading && (
-                      <Mutation
-                        mutation={gql`
-                          mutation SetTrackingPreference($pref: Boolean!) {
-                            setTrackingPreference(pref: $pref)
-                          }
-                        `}
-                      >
-                        {action => (
-                          <Fragment>
-                            <Button
-                              outline
-                              color="secondary"
-                              onClick={() => {
-                                action({ variables: { pref: false } });
-                                this.setState({
-                                  askedToTrack: true
-                                });
-                              }}
-                              style={{ marginRight: "20px" }}
-                            >
-                              <FormattedMessage
-                                id="no-track"
-                                defaultMessage="No Thanks"
-                              />
-                            </Button>
-                            <Button
-                              outline
-                              color="secondary"
-                              onClick={() => {
-                                action({ variables: { pref: true } });
-                                this.setState({
-                                  askedToTrack: true
-                                });
-                              }}
-                            >
-                              <FormattedMessage
-                                id="track-me"
-                                defaultMessage="Track Me"
-                              />
-                            </Button>
-                          </Fragment>
-                        )}
-                      </Mutation>
-                    )}
-                  </div>
-                </Alert>
-              )}
-            {autoUpdate &&
-              (this.state.outdated || this.state.upgrading) && (
-                <Alert color={this.state.major ? "danger" : "warning"}>
-                  <FormattedMessage
-                    id="upgrade-warning"
-                    defaultMessage="Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}"
-                    values={{
-                      oldVersion: require("../../../package.json").version,
-                      newVersion: this.state.outdated
-                    }}
-                  />{" "}
-                  {this.state.major && (
-                    <strong>
-                      <FormattedMessage
-                        id="major-upgrade-warning"
-                        defaultMessage="This is a major upgrade. Make sure you backup your Thorium data directory and program file before performing this upgrade."
-                      />
-                    </strong>
-                  )}
-                  <p>
-                    {!this.state.upgrading && (
-                      <Mutation
-                        mutation={gql`
-                          mutation TriggerAutoUpdate {
-                            triggerAutoUpdate
-                          }
-                        `}
-                      >
-                        {action => (
+            {!askedToTrack && !stateAskedToTrack && (
+              <Alert color={"info"}>
+                <FormattedMessage
+                  id="ask-to-track"
+                  defaultMessage="Would you like opt-in to share some analytics data about Thorium with the developer? You can opt-out at any time from the Settings sidebar menu."
+                />
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  {!this.state.upgrading && (
+                    <Mutation
+                      mutation={gql`
+                        mutation SetTrackingPreference($pref: Boolean!) {
+                          setTrackingPreference(pref: $pref)
+                        }
+                      `}
+                    >
+                      {action => (
+                        <Fragment>
                           <Button
                             outline
                             color="secondary"
                             onClick={() => {
-                              action();
+                              action({ variables: { pref: false } });
                               this.setState({
-                                outdated: false,
-                                upgrading: true
+                                askedToTrack: true
+                              });
+                            }}
+                            style={{ marginRight: "20px" }}
+                          >
+                            <FormattedMessage
+                              id="no-track"
+                              defaultMessage="No Thanks"
+                            />
+                          </Button>
+                          <Button
+                            outline
+                            color="secondary"
+                            onClick={() => {
+                              action({ variables: { pref: true } });
+                              this.setState({
+                                askedToTrack: true
                               });
                             }}
                           >
-                            Download Update
+                            <FormattedMessage
+                              id="track-me"
+                              defaultMessage="Track Me"
+                            />
                           </Button>
-                        )}
-                      </Mutation>
-                    )}
-                    {this.state.upgrading && (
-                      <small>
-                        <FormattedMessage
-                          id="upgrade-instructions"
-                          defaultMessage="The update is downloading in the background. Wait until the Thorium Server command line window says 'Download Complete' before restarting Thorium Server"
-                        />
-                      </small>
-                    )}
-                  </p>
-                </Alert>
-              )}
+                        </Fragment>
+                      )}
+                    </Mutation>
+                  )}
+                </div>
+              </Alert>
+            )}
+            {autoUpdate && (this.state.outdated || this.state.upgrading) && (
+              <Alert color={this.state.major ? "danger" : "warning"}>
+                <FormattedMessage
+                  id="upgrade-warning"
+                  defaultMessage="Your version of Thorium is outdated. Current version is {newVersion}. Your version is {oldVersion}"
+                  values={{
+                    oldVersion: require("../../../package.json").version,
+                    newVersion: this.state.outdated
+                  }}
+                />{" "}
+                {this.state.major && (
+                  <strong>
+                    <FormattedMessage
+                      id="major-upgrade-warning"
+                      defaultMessage="This is a major upgrade. Make sure you backup your Thorium data directory and program file before performing this upgrade."
+                    />
+                  </strong>
+                )}
+                <p>
+                  {!this.state.upgrading && (
+                    <Mutation
+                      mutation={gql`
+                        mutation TriggerAutoUpdate {
+                          triggerAutoUpdate
+                        }
+                      `}
+                    >
+                      {action => (
+                        <Button
+                          outline
+                          color="secondary"
+                          onClick={() => {
+                            action();
+                            this.setState({
+                              outdated: false,
+                              upgrading: true
+                            });
+                          }}
+                        >
+                          Download Update
+                        </Button>
+                      )}
+                    </Mutation>
+                  )}
+                  {this.state.upgrading && (
+                    <small>
+                      <FormattedMessage
+                        id="upgrade-instructions"
+                        defaultMessage="The update is downloading in the background. Wait until the Thorium Server command line window says 'Download Complete' before restarting Thorium Server"
+                      />
+                    </small>
+                  )}
+                </p>
+              </Alert>
+            )}
           </Col>
         </Row>
         <Row className="content-row">
@@ -305,7 +303,7 @@ class Welcome extends Component {
             <h3>Start a new Flight</h3>
             <Query
               query={gql`
-                query {
+                query Thorium {
                   thorium {
                     spaceEdventuresCenter {
                       id

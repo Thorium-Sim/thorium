@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ContactContextMenu from "./contactContextMenu";
 
 const ADD_ARMY_CONTACT = gql`
-  mutation(
+  mutation AddArmyContact(
     $id: ID!
     $name: String
     $size: Float
@@ -29,7 +29,7 @@ const ADD_ARMY_CONTACT = gql`
 `;
 
 const REMOVE_ARMY_CONTACT = gql`
-  mutation($id: ID!, $contact: ID!) {
+  mutation RemoveArmyContact($id: ID!, $contact: ID!) {
     removeSensorArmyContact(id: $id, contact: $contact)
   }
 `;
@@ -85,7 +85,7 @@ class ContactsList extends Component {
     newContact[key] = value;
     this.props.client.mutate({
       mutation: gql`
-        mutation($id: ID!, $contact: SensorContactInput!) {
+        mutation UpdateArmyContact($id: ID!, $contact: SensorContactInput!) {
           updateSensorArmyContact(id: $id, contact: $contact)
         }
       `,

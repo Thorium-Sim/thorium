@@ -73,10 +73,12 @@ export default class TaskReport {
     const simulator = App.simulators.find(s => s.id === simulatorId);
     if (!simulator) return [];
 
-    const system = App.systems.find(s => s.id === systemId);
+    const system =
+      App.systems.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
 
     const taskTemplates = simulator.damageTasks
-      .concat(system ? system.damageTasks : [])
+      .concat(system && system.damageTasks ? system.damageTasks : [])
       .map(t => ({
         ...t,
         ...App.taskTemplates.find(tt => t.id === tt.id),
@@ -86,7 +88,7 @@ export default class TaskReport {
         )
       }))
       // Filter out the templates that don't correspond with this report
-      .filter(t => t.reportTypes.indexOf(type) > -1)
+      .filter(t => t.reportTypes && t.reportTypes.indexOf(type) > -1)
 
       // Get the task definition, and filter out any that are
       // not currently active.
@@ -107,7 +109,7 @@ export default class TaskReport {
 
     const rooms = system
       ? App.rooms
-          .filter(r => system.locations.indexOf(r.id) > -1)
+          .filter(r => system.locations && system.locations.indexOf(r.id) > -1)
           .map(r => r.id)
       : App.rooms.filter(r => r.simulatorId === simulator.id);
 

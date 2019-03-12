@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 import IssueTracker from "../../components/admin/IssueTracker";
 
@@ -86,6 +86,11 @@ const makeLinks = () => {
       icon: "code-fork",
       link: "/config/triggers"
     },
+    // {
+    //   name: "Interfaces Config",
+    //   icon: "clone",
+    //   link: "/config/interfaces"
+    // },
     {
       name: "Settings",
       icon: "cog",
@@ -219,30 +224,27 @@ export const SideNavLink = withApollo(
           >
             {m.icon && <FontAwesome name={m.icon.replace("fa-", "")} />}{" "}
             {m.name}{" "}
-            {m.children &&
-              m.children.length > 0 && (
-                <FontAwesome
-                  name={open ? "chevron-down" : "chevron-left"}
-                  className="pull-right"
-                />
-              )}
-          </NavLink>
-          {m.children &&
-            m.children.length > 0 &&
-            open && (
-              <Nav vertical style={{ marginLeft: "20px" }}>
-                {m.children.concat().map(c => (
-                  <SideNavLink
-                    key={`sidemenu-${c.id || c.name}`}
-                    {...c}
-                    onClick={e => {
-                      c.onClick && c.onClick(m.client, e);
-                      m.onClick(e);
-                    }}
-                  />
-                ))}
-              </Nav>
+            {m.children && m.children.length > 0 && (
+              <FontAwesome
+                name={open ? "chevron-down" : "chevron-left"}
+                className="pull-right"
+              />
             )}
+          </NavLink>
+          {m.children && m.children.length > 0 && open && (
+            <Nav vertical style={{ marginLeft: "20px" }}>
+              {m.children.concat().map(c => (
+                <SideNavLink
+                  key={`sidemenu-${c.id || c.name}`}
+                  {...c}
+                  onClick={e => {
+                    c.onClick && c.onClick(m.client, e);
+                    m.onClick(e);
+                  }}
+                />
+              ))}
+            </Nav>
+          )}
         </NavItem>
       ) : null;
     }

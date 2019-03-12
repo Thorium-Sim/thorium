@@ -1,31 +1,35 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Trigger from "./trigger";
 
-const queryData = `
-id
-name
-components
-connections
-config
-values
+const fragment = gql`
+  fragment TriggerData on Trigger {
+    id
+    name
+    components
+    connections
+    config
+    values
+  }
 `;
 
 const QUERY = gql`
   query Triggers {
     triggers {
-${queryData}
+      ...TriggerData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TriggersUpdate {
     triggersUpdate {
-${queryData}
+      ...TriggerData
     }
   }
+  ${fragment}
 `;
 
 class TriggerData extends Component {

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { GENERIC_QUERY } from "./index";
 const Basic = ({ id, name, displayName, simulatorId }) => {
   return (

@@ -1,6 +1,7 @@
 import App from "../app";
 import reportReplace from "../helpers/reportReplacer";
 import { randomFromList } from "../classes/generic/damageReports/constants";
+import getDamageSystem from "../helpers/getDamageSystem";
 
 export default [
   // Simple, generic task definition.
@@ -52,9 +53,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "DamageControl")
       );
-      const system = App.systems.find(
-        s => s.id === sys || s.name === sys || s.displayName === sys
-      );
+      const system = getDamageSystem(sys);
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Enter the following reactivation code for the #SYSTEMNAME system: ${code}.`,
@@ -74,9 +73,7 @@ export default [
       );
     },
     verify({ simulator, requiredValues: { system: sys, code } }) {
-      const system = App.systems.find(
-        s => s.id === sys || s.name === sys || s.displayName === sys
-      );
+      const system = getDamageSystem(sys);
       return system && system.damage && system.damage.reactivationCode === code;
     }
   }

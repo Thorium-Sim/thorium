@@ -1,27 +1,41 @@
 import React from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import TaskTemplates from "./taskTemplates";
 
-const queryData = `
-id
-name
-definition
-values
-reportTypes`;
+const fragment = gql`
+  fragment TaskTemplateData on TaskTemplate {
+    id
+    name
+    definition
+    values
+    reportTypes
+    macros {
+      id
+      event
+      args
+      delay
+    }
+  }
+`;
 
-const TASK_QUERY = gql`query TaskTemplates{
-  taskTemplates {
-   ${queryData}
+const TASK_QUERY = gql`
+  query TaskTemplates {
+    taskTemplates {
+      ...TaskTemplateData
+    }
   }
-}`;
+  ${fragment}
+`;
 const SUB = gql`
-subscription TaskTemplatesUpdate {
-  taskTemplatesUpdate {
-    ${queryData}
+  subscription TaskTemplatesUpdate {
+    taskTemplatesUpdate {
+      ...TaskTemplateData
+    }
   }
-}`;
+  ${fragment}
+`;
 const TaskTemplatesData = props => {
   return (
     <Query query={TASK_QUERY}>

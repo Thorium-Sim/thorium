@@ -14,7 +14,8 @@ App.on("addTask", ({ taskInput, simulatorId }) => {
     station: task.station,
     title: `New Task`,
     body: `${task.values.name || task.definition}`,
-    color: "info"
+    color: "info",
+    relevantCards: ["Tasks", "tasks"]
   });
   pubsub.publish("widgetNotify", {
     widget: "tasks",
@@ -104,13 +105,15 @@ App.on("denyTaskVerify", ({ id }) => {
     station: task.station,
     title: `Task Verification Failed`,
     body: task.values.name || task.definition,
-    color: "warning"
+    color: "warning",
+    relevantCards: ["Tasks", "tasks"]
   });
 });
 
-App.on("addTaskTemplate", ({ id, definition }) => {
+App.on("addTaskTemplate", ({ id = uuid.v4(), definition, cb }) => {
   App.taskTemplates.push(new Classes.TaskTemplate({ id, definition }));
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+  cb(id);
 });
 
 App.on("removeTaskTemplate", ({ id }) => {
@@ -136,14 +139,8 @@ App.on("setTaskTemplateReportTypes", ({ id, reportTypes }) => {
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
 });
 
-App.on("addTaskMacro", ({ id, macro }) => {
+App.on("setTaskTemplateMacros", ({ id, macros }) => {
   const task = App.taskTemplates.find(t => t.id === id);
-  task && task.addMacro(macro);
-  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
-});
-
-App.on("removeTaskMacro", ({ id, macroId }) => {
-  const task = App.taskTemplates.find(t => t.id === id);
-  task && task.removeMacro(macroId);
+  task && task.setMacros(macros);
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
 });

@@ -28,6 +28,8 @@ PlaySound.propTypes = {
 export default {
   name: "playSound",
   category: "Actions",
+  hiddenInLibrary: true,
+
   component: PlaySound,
   outputs: [],
   inputs: [

@@ -1,51 +1,57 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Transwarp from "./transwarp";
 import "./style.scss";
 
-const coreData = `
-core {
-  required
-  value
-}
-warp {
-  required
-  value
-}
-field {
-  required
-  value
-}`;
-
-const queryData = `
-id
-name
-displayName
-quad1 {
-  ${coreData}
-}
-quad2 {
-  ${coreData}
-}
-quad3 {
-  ${coreData}
-}
-quad4 {
-  ${coreData}
-}
-active
-power {
-  power
-  powerLevels
-}
-damage {
-  damaged
-}
-heat
-coolant
-`;
+const fragments = {
+  coreData: gql`
+    fragment CoreData on TranswarpQuad {
+      core {
+        required
+        value
+      }
+      warp {
+        required
+        value
+      }
+      field {
+        required
+        value
+      }
+    }
+  `,
+  transwarpFragment: gql`
+    fragment TranswarpData on Transwarp {
+      id
+      name
+      displayName
+      quad1 {
+        ...CoreData
+      }
+      quad2 {
+        ...CoreData
+      }
+      quad3 {
+        ...CoreData
+      }
+      quad4 {
+        ...CoreData
+      }
+      active
+      power {
+        power
+        powerLevels
+      }
+      damage {
+        damaged
+      }
+      heat
+      coolant
+    }
+  `
+};
 
 const HEATCHANGE_SUB = gql`
   subscription HeatChanged($simulatorId: ID) {
@@ -60,16 +66,20 @@ const HEATCHANGE_SUB = gql`
 const QUERY = gql`
   query Transwarp($simulatorId: ID!) {
     transwarp(simulatorId: $simulatorId) {
-${queryData}
+      ...TranswarpData
     }
   }
+  ${fragments.coreData}
+  ${fragments.transwarpFragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TranswarpUpdate($simulatorId: ID!) {
     transwarpUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...TranswarpData
     }
   }
+  ${fragments.coreData}
+  ${fragments.transwarpFragment}
 `;
 
 class TranswarpData extends Component {
@@ -105,9 +115,8 @@ class TranswarpData extends Component {
                       const { heatChange } = subscriptionData.data;
                       return {
                         ...previousResult,
-                        transwarp: transwarp.map(
-                          t =>
-                            t.id === heatChange.id ? { ...t, ...heatChange } : t
+                        transwarp: transwarp.map(t =>
+                          t.id === heatChange.id ? { ...t, ...heatChange } : t
                         )
                       };
                     }

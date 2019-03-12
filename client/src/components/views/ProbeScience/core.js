@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Query, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Grid from "../Sensors/GridDom/grid";
@@ -23,79 +23,90 @@ function distance3d(coord2, coord1) {
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
-const contactsData = `
-id
-location {
-  x
-  y
-  z
-}
-destination {
-  x
-  y
-  z
-}
-position {
-  x
-  y
-  z
-}
-icon
-type
-destroyed
-startTime
-endTime
-speed
-particle
-`;
-
-const queryData = `id
-scienceTypes {
-  id
-  name
-  type
-  description
-  equipment
-}
-probes {
-  id
-  type
-  name
-  launched
-  equipment {
-    id
-    name
-    count
-  }
-}`;
+const fragments = {
+  contactFragment: gql`
+    fragment ProbeScienceContactData on SensorContact {
+      id
+      location {
+        x
+        y
+        z
+      }
+      destination {
+        x
+        y
+        z
+      }
+      position {
+        x
+        y
+        z
+      }
+      icon
+      type
+      destroyed
+      startTime
+      endTime
+      speed
+      particle
+    }
+  `,
+  probesFragment: gql`
+    fragment ProbeScienceCoreData on Probes {
+      id
+      scienceTypes {
+        id
+        name
+        type
+        description
+        equipment
+      }
+      probes {
+        id
+        type
+        name
+        launched
+        equipment {
+          id
+          name
+          count
+        }
+      }
+    }
+  `
+};
 
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ProbeScienceCoreData
     }
   }
+  ${fragments.probesFragment}
 `;
 
 const QUERY = gql`
   query Particles($simulatorId: ID!) {
-    sensorContacts(simulatorId:$simulatorId, type:"burst") {
-      ${contactsData}
+    sensorContacts(simulatorId: $simulatorId, type: "burst") {
+      ...ProbeScienceContactData
     }
-    sensors(simulatorId:$simulatorId, domain:"external") {
+    sensors(simulatorId: $simulatorId, domain: "external") {
       id
     }
     probes(simulatorId: $simulatorId) {
-${queryData}
+      ...ProbeScienceCoreData
     }
   }
+  ${fragments.probesFragment}
+  ${fragments.contactFragment}
 `;
 const CONTACTS_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "burst") {
-      ${contactsData}
+      ...ProbeScienceContactData
     }
   }
+  ${fragments.contactFragment}
 `;
 
 class BurstIcon extends Component {
@@ -250,6 +261,7 @@ class ProbeScienceCore extends Component {
     }));
   };
   triggerUpdate = speed => {
+    speed = Number(speed);
     const sensors = this.props.sensors;
     const { client } = this.props;
     const { draggingContacts, dimensions } = this.state;
@@ -396,14 +408,16 @@ class ProbeScienceCore extends Component {
               <Button block color="warning" size="sm" onClick={this.random}>
                 Random
               </Button>
-              {probes.scienceTypes.filter(i => i.type === "detector").map(i => (
-                <BurstLine
-                  key={`line-${i.id}`}
-                  {...i}
-                  dimensions={dimensions}
-                  sensors={sensors}
-                />
-              ))}
+              {probes.scienceTypes
+                .filter(i => i.type === "detector")
+                .map(i => (
+                  <BurstLine
+                    key={`line-${i.id}`}
+                    {...i}
+                    dimensions={dimensions}
+                    sensors={sensors}
+                  />
+                ))}
             </div>
           </Col>
           <Col sm={8}>

@@ -63,7 +63,7 @@ App.on("removeEngine", param => {
   });
   pubsub.publish("engineChange", App.engines);
 });
-App.on("speedChange", param => {
+App.on("setSpeed", param => {
   const system = App.systems.find(sys => sys.id === param.id);
   const engineIndex = App.systems
     .filter(s => s.simulatorId === system.simulatorId && s.type === "Engine")

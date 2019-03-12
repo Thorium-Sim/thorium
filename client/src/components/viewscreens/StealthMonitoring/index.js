@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 
 import TransitionGroup from "react-transition-group/TransitionGroup";
@@ -231,9 +231,11 @@ class StealthField extends Component {
         </Row>
         <Row className="stealth-board">
           <TransitionGroup>
-            {[StealthBars].filter(s => s.state).map(Comp => (
-              <Comp key={Comp.name} systems={systems} />
-            ))}
+            {[StealthBars]
+              .filter(s => s.state)
+              .map(Comp => (
+                <Comp key={Comp.name} systems={systems} />
+              ))}
           </TransitionGroup>
         </Row>
       </Container>

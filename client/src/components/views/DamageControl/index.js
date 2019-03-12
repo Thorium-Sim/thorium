@@ -1,85 +1,95 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import DamageControl from "./damageControl";
 import "./style.scss";
 
-const queryData = `
-id
-displayName
-name
-damage {
-  damaged
-  destroyed
-  report
-  requested
-  reactivationCode
-  neededReactivationCode
-  currentStep
-  validate
-  which
-}
-simulatorId
-type
-`;
-
-const taskReportData = `
-id
-name
-tasks {
-  id
-  verified
-  instructions
-  verifyRequested
-  station
-  assigned
-}
-system {
-  id
-  name
-  displayName
-  damage {
-    damaged
-    destroyed
-    report
-    requested
-    reactivationCode
-    neededReactivationCode
-    currentStep
-    validate
-    which
-  }
-}`;
+const fragments = {
+  systemData: gql`
+    fragment SystemData on System {
+      id
+      displayName
+      name
+      damage {
+        damaged
+        destroyed
+        report
+        requested
+        reactivationCode
+        neededReactivationCode
+        currentStep
+        validate
+        which
+      }
+      simulatorId
+      type
+    }
+  `,
+  taskReportData: gql`
+    fragment TaskReportData on TaskReport {
+      id
+      name
+      tasks {
+        id
+        verified
+        instructions
+        verifyRequested
+        station
+        assigned
+      }
+      system {
+        id
+        name
+        displayName
+        damage {
+          damaged
+          destroyed
+          report
+          requested
+          reactivationCode
+          neededReactivationCode
+          currentStep
+          validate
+          which
+        }
+      }
+    }
+  `
+};
 const QUERY = gql`
-  query Systems($simulatorId: ID!, $simId: String, $which:String) {
+  query Systems($simulatorId: ID!, $simId: String, $which: String) {
     simulators(id: $simId) {
       id
       stepDamage
       verifyStep
     }
-    systems(simulatorId: $simulatorId, extra:true, damageWhich:$which) {
-${queryData}
+    systems(simulatorId: $simulatorId, extra: true, damageWhich: $which) {
+      ...SystemData
     }
-    taskReport(simulatorId:$simulatorId, type:$which) {
-     ${taskReportData}
+    taskReport(simulatorId: $simulatorId, type: $which) {
+      ...TaskReportData
     }
   }
+  ${fragments.systemData}
+  ${fragments.taskReportData}
 `;
 const SUBSCRIPTION = gql`
   subscription SystemsUpdate($simulatorId: ID!, $which: String) {
     systemsUpdate(simulatorId: $simulatorId, extra: true, damageWhich: $which) {
-${queryData}
+      ...SystemData
     }
   }
+  ${fragments.systemData}
 `;
 
 const TASK_REPORT_SUB = gql`
   subscription TaskReports($simulatorId: ID!, $which: String) {
     taskReportUpdate(simulatorId: $simulatorId, type: $which) {
-${taskReportData}
+      ...TaskReportData
     }
   }
+  ${fragments.taskReportData}
 `;
 
 class DamageControlData extends Component {

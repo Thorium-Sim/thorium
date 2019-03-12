@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, ButtonGroup } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import Misc from "./misc";
 import Basic from "./basic";

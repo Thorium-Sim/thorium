@@ -1,56 +1,62 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Client from "./client";
 import playSound from "../generic/SoundPlayer";
 
-const queryData = `
-id
-name
-caps
-alertlevel
-layout
-bridgeOfficerMessaging
-training
-hasPrinter
-assets {
-  mesh
-  texture
-  side
-  top
-  logo
-  bridge
-}
-stations {
-  name
-  login
-  training
-  ambiance
-  executive
-  layout
-  messageGroups
-  widgets
-  cards {
-    name
-    component
-  }
-}
-`;
+const fragments = {
+  simulatorData: gql`
+    fragment SimulatorData on Simulator {
+      id
+      name
+      caps
+      alertlevel
+      layout
+      bridgeOfficerMessaging
+      training
+      hasPrinter
+      assets {
+        mesh
+        texture
+        side
+        top
+        logo
+        bridge
+      }
+      stations {
+        name
+        login
+        training
+        ambiance
+        executive
+        layout
+        messageGroups
+        widgets
+        cards {
+          name
+          component
+        }
+      }
+    }
+  `
+};
 
 const QUERY = gql`
   query Simulator($simulatorId: String!) {
     simulators(id: $simulatorId) {
-${queryData}
+      ...SimulatorData
     }
   }
+  ${fragments.simulatorData}
 `;
 const SUBSCRIPTION = gql`
   subscription SimulatorUpdate($simulatorId: ID!) {
     simulatorsUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...SimulatorData
     }
   }
+  ${fragments.simulatorData}
 `;
 
 class SimulatorData extends Component {

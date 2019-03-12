@@ -70,7 +70,10 @@ App.on("sensorScanResult", ({ id, result }) => {
       title: `Sensor Scan Answered`,
       body: result,
       color: "info",
-      relevantCards: system.domain === "external" ? [ "SensorScans", "Sensors" ] : [ "SecurityScans" ]
+      relevantCards:
+        system.domain === "external"
+          ? ["SensorScans", "Sensors", "sensors"]
+          : ["SecurityScans"]
     });
   });
   pubsub.publish(
@@ -80,7 +83,7 @@ App.on("sensorScanResult", ({ id, result }) => {
 });
 App.on(
   "processedData",
-  ({ id, simulatorId, domain = "external", data, flash }) => {
+  ({ id, simulatorId, domain = "external", data = "", flash }) => {
     let system;
     if (id) {
       system = App.systems.find(sys => sys.id === id);
@@ -135,7 +138,7 @@ App.on(
         title: `New Processed Data`,
         body: data,
         color: "info",
-        relevantCards: [ "Sensors", "JrSensors" ] 
+        relevantCards: ["Sensors", "JrSensors", "sensors"]
       });
     });
   }
@@ -169,7 +172,7 @@ App.on("sensorScanCancel", ({ id }) => {
 });
 App.on(
   "setPresetAnswers",
-  ({ simulatorId, domain = "external", presetAnswers }) => {
+  ({ simulatorId, domain = "external", presetAnswers = [] }) => {
     const system = App.systems.find(
       sys =>
         sys.simulatorId === simulatorId &&
@@ -217,12 +220,13 @@ App.on("moveSensorContact", ({ id, contact }) => {
   system.moveContact(contact);
   pubsub.publish("sensorContactUpdate", system);
 });
-App.on("updateSensorContactLocation", ({ id, contact }) => {
+App.on("updateSensorContactLocation", ({ id, contact, cb }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.updateContact(contact);
   pubsub.publish("sensorContactUpdate", system);
+  cb && cb();
 });
-App.on("removeSensorContact", ({ id, contact }) => {
+App.on("removeSensorContact", ({ id, contact, cb }) => {
   const system = App.systems.find(sys => sys.id === id);
   const classId = contact.id;
   system.removeContact(contact);
@@ -237,6 +241,7 @@ App.on("removeSensorContact", ({ id, contact }) => {
     App.systems.filter(s => s.type === "Targeting")
   );
   pubsub.publish("sensorContactUpdate", system);
+  cb && cb();
 });
 App.on("removeAllSensorContacts", ({ id, type }) => {
   const system = App.systems.find(sys => sys.id === id);
@@ -310,7 +315,7 @@ App.on("destroySensorContact", ({ id, contact, contacts = [] }) => {
     }, 1100);
 });
 App.on("updateSensorContact", args => {
-  const { id, simulatorId, contact } = args;
+  const { id, simulatorId, contact, cb } = args;
   const system = App.systems.find(
     sys =>
       sys.id === id ||
@@ -320,6 +325,7 @@ App.on("updateSensorContact", args => {
   );
   system.updateContact(contact);
   pubsub.publish("sensorContactUpdate", system);
+  cb && cb();
 });
 
 // Army Contacts
@@ -486,7 +492,7 @@ App.on("setAutoMovement", ({ id, movement }) => {
     App.systems.filter(s => s.type === "Sensors")
   );
 });
-App.on("updateSensorContacts", ({ id, contacts }) => {
+App.on("updateSensorContacts", ({ id, contacts, cb }) => {
   const system = App.systems.find(sys => sys.id === id);
   contacts.forEach(contact => {
     if (contact.destination) {
@@ -496,6 +502,7 @@ App.on("updateSensorContacts", ({ id, contacts }) => {
     }
   });
   pubsub.publish("sensorContactUpdate", system);
+  cb && cb();
 });
 
 const findNewPoint = (angle, r) => ({

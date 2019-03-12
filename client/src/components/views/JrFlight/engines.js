@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, compose } from "react-apollo";
 
 import "./style.scss";

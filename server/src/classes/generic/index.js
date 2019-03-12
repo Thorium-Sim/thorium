@@ -10,7 +10,7 @@ import processReport from "./processReport";
 import DamageStep from "./damageStep";
 import DamageTask from "./damageTask";
 
-class Damage {
+export class Damage {
   constructor(params = {}) {
     this.damaged = params.damaged || false;
     this.report = params.report || null;
@@ -308,10 +308,10 @@ export class System {
     const location = room
       ? `${room.name}, Deck ${deck.number}`
       : deck
-        ? `Deck ${deck.number}`
-        : randomLocation
-          ? `${randomLocation.name}, Deck ${randomLocationDeck.number}`
-          : "None";
+      ? `Deck ${deck.number}`
+      : randomLocation
+      ? `${randomLocation.name}, Deck ${randomLocationDeck.number}`
+      : "None";
     // First create our context object
     const context = Object.assign(
       { damageSteps, simulator: sim, stations, deck, room, location, crew },

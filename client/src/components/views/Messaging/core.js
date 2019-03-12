@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Input, Card, Button } from "reactstrap";
 import "./style.scss";
@@ -193,48 +193,47 @@ class Messaging extends Component {
                   ))}
             </Card>
           </Col>
-          {selectedDestination &&
-            selectedSender && (
-              <Col sm={8} className="vertical-row">
-                <h4>Messages</h4>
-                <Card className="full">
-                  {messages
-                    .filter(
-                      m =>
-                        (m.sender === selectedSender &&
-                          m.destination === selectedDestination) ||
-                        (m.sender === selectedDestination &&
-                          m.destination === selectedSender)
-                    )
-                    .concat()
-                    .sort((a, b) => {
-                      if (a.timestamp > b.timestamp) return 1;
-                      if (a.timestamp < b.timestamp) return -1;
-                      return 0;
-                    })
-                    .reverse()
-                    .map(m => (
-                      <p key={m.id} style={{ whiteSpace: "pre-wrap" }}>
-                        <strong>{m.sender}</strong>: {m.content}
-                      </p>
-                    ))}
-                </Card>
-                <form
-                  // eslint-disable-next-line
-                  action={"javascript:void(0);"}
-                  onSubmit={this.sendMessage}
-                >
-                  <Input
-                    size="sm"
-                    type="text"
-                    value={messageInput}
-                    onChange={evt =>
-                      this.setState({ messageInput: evt.target.value })
-                    }
-                  />
-                </form>
-              </Col>
-            )}
+          {selectedDestination && selectedSender && (
+            <Col sm={8} className="vertical-row">
+              <h4>Messages</h4>
+              <Card className="full">
+                {messages
+                  .filter(
+                    m =>
+                      (m.sender === selectedSender &&
+                        m.destination === selectedDestination) ||
+                      (m.sender === selectedDestination &&
+                        m.destination === selectedSender)
+                  )
+                  .concat()
+                  .sort((a, b) => {
+                    if (a.timestamp > b.timestamp) return 1;
+                    if (a.timestamp < b.timestamp) return -1;
+                    return 0;
+                  })
+                  .reverse()
+                  .map(m => (
+                    <p key={m.id} style={{ whiteSpace: "pre-wrap" }}>
+                      <strong>{m.sender}</strong>: {m.content}
+                    </p>
+                  ))}
+              </Card>
+              <form
+                // eslint-disable-next-line
+                action={"javascript:void(0);"}
+                onSubmit={this.sendMessage}
+              >
+                <Input
+                  size="sm"
+                  type="text"
+                  value={messageInput}
+                  onChange={evt =>
+                    this.setState({ messageInput: evt.target.value })
+                  }
+                />
+              </form>
+            </Col>
+          )}
         </Row>
       </Container>
     );

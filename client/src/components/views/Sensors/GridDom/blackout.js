@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {

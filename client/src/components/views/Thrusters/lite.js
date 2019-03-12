@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
 import { Row, Col } from "reactstrap";
@@ -252,6 +252,7 @@ gamepadLoop(){
       switch (handlerName) {
         case "onDragStart":
           obj[which] = newPosition;
+          document.body.classList.add("switcherLocked");
           this.setState(obj);
           break;
         case "onDrag":
@@ -328,6 +329,7 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDragStop":
+          document.body.classList.remove("switcherLocked");
           if (!this.state[which]) {
             throw new Error("onDragEnd called before onDragStart.");
           }
@@ -460,35 +462,34 @@ gamepadLoop(){
             </div>
           </Col>
           <Col className="col-sm-6">
-            {thruster &&
-              thruster.rotation && (
-                <Row>
-                  <IndicatorCircle
-                    name={`Yaw: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.yaw))
-                    )}`}
-                    required={thruster.rotationRequired.yaw}
-                    current={thruster.rotation.yaw}
-                  />
-                  <IndicatorCircle
-                    name={`Pitch: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.pitch))
-                    )}`}
-                    required={thruster.rotationRequired.pitch}
-                    current={thruster.rotation.pitch}
-                  />
-                  <IndicatorCircle
-                    name={`Roll: ${Math.min(
-                      359,
-                      Math.max(0, Math.round(thruster.rotation.roll))
-                    )}`}
-                    required={thruster.rotationRequired.roll}
-                    current={thruster.rotation.roll}
-                  />
-                </Row>
-              )}
+            {thruster && thruster.rotation && (
+              <Row>
+                <IndicatorCircle
+                  name={`Yaw: ${Math.min(
+                    359,
+                    Math.max(0, Math.round(thruster.rotation.yaw))
+                  )}`}
+                  required={thruster.rotationRequired.yaw}
+                  current={thruster.rotation.yaw}
+                />
+                <IndicatorCircle
+                  name={`Pitch: ${Math.min(
+                    359,
+                    Math.max(0, Math.round(thruster.rotation.pitch))
+                  )}`}
+                  required={thruster.rotationRequired.pitch}
+                  current={thruster.rotation.pitch}
+                />
+                <IndicatorCircle
+                  name={`Roll: ${Math.min(
+                    359,
+                    Math.max(0, Math.round(thruster.rotation.roll))
+                  )}`}
+                  required={thruster.rotationRequired.roll}
+                  current={thruster.rotation.roll}
+                />
+              </Row>
+            )}
           </Col>
           <Col className="col-sm-3 draggerContainer rotation-drag">
             <label>Rotation</label>

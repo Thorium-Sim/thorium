@@ -23,6 +23,7 @@ export const aspectList = [
   "objectives",
   "commandLine",
   "triggerGroups",
+  "interfaces",
   "tasks"
 ];
 
@@ -189,45 +190,65 @@ export function addAspects(template, sim, data = App) {
       return id;
     })
     .filter(Boolean);
+
+  // And the interfaces
+  sim.interfaces = sim.interfaces
+    .map(c => {
+      const interfaceData = data.interfaces.find(s => s.id === c);
+      if (!interfaceData) return null;
+      const id = uuid.v4();
+      const interfaceObj = {
+        ...interfaceData,
+        templateId: interfaceData.id,
+        id,
+        simulatorId: sim.id
+      };
+      data.interfaces.push(new Classes.Interface(interfaceObj));
+      return id;
+    })
+    .filter(Boolean);
 }
 // Flight
-App.on("startFlight", ({ id, name, simulators, flightType, context }) => {
-  // Loop through all of the simulators
-  const simIds = simulators.map(s => {
-    const template = Object.assign(
-      {},
-      App.simulators.find(sim => sim.id === s.simulatorId)
+App.on(
+  "startFlight",
+  ({ id = uuid.v4(), name, simulators, flightType, cb }) => {
+    // Loop through all of the simulators
+    const simIds = simulators.map(s => {
+      const template = Object.assign(
+        {},
+        App.simulators.find(sim => sim.id === s.simulatorId)
+      );
+      template.id = null;
+      const sim = new Classes.Simulator(template);
+      sim.template = false;
+      sim.templateId = s.simulatorId;
+      sim.mission = s.missionId;
+      sim.executedTimelineSteps = [];
+      const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
+      sim.stations = stationSet.stations.map(s => new Classes.Station(s));
+
+      sim.stationSet = stationSet.id;
+      sim.ship.bridgeCrew = stationSet.crewCount || 14;
+
+      App.simulators.push(sim);
+      addAspects(s, sim);
+
+      // Create exocomps for the simulator
+      App.handleEvent(
+        { simulatorId: sim.id, count: sim.exocomps },
+        "setSimulatorExocomps"
+      );
+      return sim.id;
+    });
+    App.flights.push(
+      new Classes.Flight({ id, name, simulators: simIds, flightType })
     );
-    template.id = null;
-    const sim = new Classes.Simulator(template);
-    sim.template = false;
-    sim.templateId = s.simulatorId;
-    sim.mission = s.missionId;
-    sim.executedTimelineSteps = [];
-    const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
-    sim.stations = stationSet.stations.map(s => new Classes.Station(s));
+    pubsub.publish("flightsUpdate", App.flights);
+    cb && cb(id);
+  }
+);
 
-    sim.stationSet = stationSet.id;
-    sim.ship.bridgeCrew = stationSet.crewCount || 14;
-
-    App.simulators.push(sim);
-    addAspects(s, sim);
-
-    // Create exocomps for the simulator
-    App.handleEvent(
-      { simulatorId: sim.id, count: sim.exocomps },
-      "setSimulatorExocomps"
-    );
-    return sim.id;
-  });
-  App.flights.push(
-    new Classes.Flight({ id, name, simulators: simIds, flightType })
-  );
-  pubsub.publish("flightsUpdate", App.flights);
-  context.callback && context.callback();
-});
-
-App.on("deleteFlight", ({ flightId }) => {
+App.on("deleteFlight", ({ flightId, cb }) => {
   const flight = App.flights.find(f => f.id === flightId);
   // We need to remove all reference to this flight.
   // Loop over the simulators
@@ -249,9 +270,10 @@ App.on("deleteFlight", ({ flightId }) => {
   App.flights = App.flights.filter(f => f.id !== flightId);
   pubsub.publish("flightsUpdate", App.flights);
   pubsub.publish("clientChanged", App.clients);
+  cb();
 });
 
-App.on("resetFlight", ({ flightId, simulatorId, full }) => {
+App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
   const flight = App.flights.find(
     f => f.id === flightId || f.simulators.indexOf(simulatorId) > -1
   );
@@ -325,6 +347,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full }) => {
     pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
     pubsub.publish("simulatorsUpdate", App.simulators);
   });
+  cb && cb();
 });
 App.on("pauseFlight", ({ flightId }) => {
   const flight = App.flights.find(f => f.id === flightId);

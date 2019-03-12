@@ -1,10 +1,17 @@
 .task-templates {
   height: 100%;
   min-height: 80vh;
+
   .row,
   .col {
     height: 100%;
     min-height: 80vh;
+  }
+  .macro-config {
+    .row,
+    .col {
+      min-height: unset;
+    }
   }
   label {
     width: 100%;

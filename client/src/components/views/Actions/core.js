@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo, Query } from "react-apollo";
 import SoundPicker from "helpers/soundPicker";
 import { titleCase } from "change-case";
@@ -413,6 +413,8 @@ class ActionsCore extends Component {
               <option value="lockdown">Lockdown</option>
               <option value="maintenance">Maintenance</option>
               <option value="soviet">Soviet</option>
+              <option value="crack">Crack</option>
+              <option value="uncrack">Un-Crack</option>
             </optgroup>
             <optgroup>
               <option value="reload">Reload Browser</option>

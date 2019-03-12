@@ -31,12 +31,14 @@ export const sensorScanRequest = {
   config: []
 };
 
-export const processedData = {
+export const triggerProcessedData = {
   name: "processedData",
+  label: "Processed Sensor Data",
+  objectKey: "triggerProcessedData",
   category: "Triggers",
   component: () => (
     <div>
-      Event: Processed Sensor
+      Event: Processed Sensor Data
       <div>
         <small>
           Request will be fuzzy-matched with connected switch values. If data is

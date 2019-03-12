@@ -2,8 +2,9 @@ import uuid from "uuid";
 import App from "../app";
 
 class Keypad {
-  constructor(params = {}, clientId) {
+  constructor(params = {}, clientId, label) {
     this.id = clientId;
+    this.label = label;
     this.enteredCode = params.enteredCode || [];
     this.giveHints = params.giveHints || true;
     this.allowedAttempts = params.allowedAttempts || 0; // Default - infinte
@@ -20,6 +21,7 @@ class Keypad {
     // code.length will override codeLength if both are present
     this.codeLength = this.code.length;
   }
+
   setCode(code) {
     if (code && code.length > 0) {
       const codeArr = code.slice(0, 8);
@@ -58,8 +60,9 @@ class Keypad {
 }
 
 class Scanner {
-  constructor(params = {}, clientId) {
+  constructor(params = {}, clientId, label) {
     this.id = clientId;
+    this.label = label;
     this.scanRequest = params.scanRequest || "";
     this.scanResults = params.scanResults || "";
     this.scanning = params.scanning || false;
@@ -80,6 +83,7 @@ class Scanner {
 export default class Client {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
+    this.clientLabel = params.label || "";
     this.class = "Client";
     this.flightId = params.flightId || null;
     this.simulatorId = params.simulatorId || null;
@@ -93,14 +97,20 @@ export default class Client {
     this.training = params.training || false;
     this.overlay = params.overlay || false;
     this.caches = params.caches || [];
-
+    this.cracked = params.cracked || false;
     // For the mobile app
     this.mobile = params.mobile || false;
     this.cards = params.cards || [];
 
     // Keypad
-    this.keypad = new Keypad(params.keypad, this.id);
-    this.scanner = new Scanner(params.scanner, this.id);
+    this.keypad = new Keypad(params.keypad, this.id, this.label);
+    this.scanner = new Scanner(params.scanner, this.id, this.label);
+  }
+  get label() {
+    return this.clientLabel || this.id;
+  }
+  set label(l) {
+    this.clientLabel = l;
   }
   connect({ mobile, cards }) {
     this.connected = true;
@@ -179,6 +189,12 @@ export default class Client {
     if (hardReset) {
       this.setFlight(null);
     }
+  }
+  crack() {
+    this.cracked = true;
+  }
+  uncrack() {
+    this.cracked = false;
   }
   diagnostic() {}
   lockScreen() {}

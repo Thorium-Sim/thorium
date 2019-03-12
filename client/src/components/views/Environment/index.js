@@ -1,38 +1,42 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import Environment from "./environment";
 import "./style.css";
 
-const queryData = `
-id
-number
-environment{
-  nitrogen
-  oxygen
-  trace
-  temperature
-  humidity
-  gravity
-  pressure
-}
+const fragment = gql`
+  fragment DeckData on Deck {
+    id
+    number
+    environment {
+      nitrogen
+      oxygen
+      trace
+      temperature
+      humidity
+      gravity
+      pressure
+    }
+  }
 `;
 
 const QUERY = gql`
   query Environment($simulatorId: ID!) {
     decks(simulatorId: $simulatorId) {
-${queryData}
+      ...DeckData
     }
   }
+  ${fragment}
 `;
 
 const SUBSCRIPTION = gql`
   subscription EnvironmentUpdate($simulatorId: ID!) {
     decksUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...DeckData
     }
   }
+  ${fragment}
 `;
 
 class EnvironmentData extends Component {

@@ -1,53 +1,63 @@
 import React, { Fragment, Component } from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Button, Input, ListGroup, ListGroupItem } from "reactstrap";
 import "./style.scss";
 
-const queryData = `
-id
-type
-name
-system {
-  id
-  name
-}
-stepCount
-tasks {
-  id
-  instructions
-  verified
-  definition
-  verifyRequested
-}
+const fragment = gql`
+  fragment TaskReportCoreData on TaskReport {
+    id
+    type
+    name
+    system {
+      id
+      name
+    }
+    stepCount
+    tasks {
+      id
+      instructions
+      verified
+      definition
+      verifyRequested
+    }
+  }
 `;
 
 const QUERY = gql`
   query TaskReport($simulatorId: ID!) {
     taskReport(simulatorId: $simulatorId) {
-${queryData}
+      ...TaskReportCoreData
     }
-    systems(simulatorId:$simulatorId) {
+    systems(simulatorId: $simulatorId) {
       id
       name
       type
     }
+    exocomps(simulatorId: $simulatorId) {
+      id
+      damage {
+        damaged
+      }
+    }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TaskReportUpdate($simulatorId: ID!) {
     taskReportUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...TaskReportCoreData
     }
   }
+  ${fragment}
 `;
 
 class TaskReportCreator extends Component {
   state = { type: "default", name: "", stepCount: 8 };
   render() {
     const { type, systemId, name, stepCount } = this.state;
-    const { simulator, cancel, systems } = this.props;
+    const { simulator, cancel, systems, exocomps } = this.props;
     return (
       <div className="taskReport-creator">
         <p>Create New Task Report</p>
@@ -68,7 +78,13 @@ class TaskReportCreator extends Component {
           >
             <option value="nothing">Choose a System</option>
             {systems
-              .concat()
+              .concat(
+                exocomps.map((e, i) => ({
+                  ...e,
+                  type: "Exocomp",
+                  name: `Exocomp ${i + 1}`
+                }))
+              )
               .sort((a, b) => {
                 if (a.type > b.type) return 1;
                 if (a.type < b.type) return -1;
@@ -164,7 +180,7 @@ function typeLabel(type) {
 class TaskReportCore extends Component {
   state = {};
   render() {
-    const { simulator, systems, taskReport } = this.props;
+    const { simulator, systems, taskReport, exocomps } = this.props;
     const { creating, selectedReport } = this.state;
     const report = taskReport.find(t => t.id === selectedReport);
     return (
@@ -173,6 +189,7 @@ class TaskReportCore extends Component {
           <TaskReportCreator
             simulator={simulator}
             systems={systems}
+            exocomps={exocomps}
             cancel={() => this.setState({ creating: false })}
           />
         ) : (
@@ -186,34 +203,37 @@ class TaskReportCore extends Component {
                   .map(type => (
                     <Fragment key={`report-${type}`}>
                       <ListGroupItem disabled>{typeLabel(type)}</ListGroupItem>
-                      {taskReport.filter(t => t.type === type).map(t => (
-                        <ListGroupItem
-                          key={t.id}
-                          active={t.id === selectedReport}
-                          onClick={() =>
-                            this.setState({ selectedReport: t.id })
-                          }
-                          className={`${
-                            t.tasks.find(tt => tt.verifyRequested)
-                              ? "text-info"
-                              : ""
-                          } ${
-                            !t.tasks.find(tt => !tt.verified)
-                              ? "text-success"
-                              : ""
-                          }`}
-                        >
-                          <p>
-                            {t.name}{" "}
-                            {t.tasks.filter(v => v.verified).length <
-                            t.tasks.length
-                              ? `(${t.tasks.filter(v => v.verified).length + 1}/
+                      {taskReport
+                        .filter(t => t.type === type)
+                        .map(t => (
+                          <ListGroupItem
+                            key={t.id}
+                            active={t.id === selectedReport}
+                            onClick={() =>
+                              this.setState({ selectedReport: t.id })
+                            }
+                            className={`${
+                              t.tasks.find(tt => tt.verifyRequested)
+                                ? "text-info"
+                                : ""
+                            } ${
+                              !t.tasks.find(tt => !tt.verified)
+                                ? "text-success"
+                                : ""
+                            }`}
+                          >
+                            <p>
+                              {t.name}{" "}
+                              {t.tasks.filter(v => v.verified).length <
+                              t.tasks.length
+                                ? `(${t.tasks.filter(v => v.verified).length +
+                                    1}/
                             ${t.tasks.length})`
-                              : null}
-                          </p>
-                          <small>{t.system.name}</small>
-                        </ListGroupItem>
-                      ))}
+                                : null}
+                            </p>
+                            <small>{t.system.name}</small>
+                          </ListGroupItem>
+                        ))}
                     </Fragment>
                   ))}
               </ListGroup>
@@ -326,8 +346,8 @@ class TaskReportCore extends Component {
 const TaskReportData = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulator.id }}>
     {({ loading, data, subscribeToMore }) => {
-      const { taskReport, systems } = data;
-      if (loading || !taskReport || !systems) return null;
+      const { taskReport, systems, exocomps } = data;
+      if (loading || !taskReport || !systems || !exocomps) return null;
       return (
         <SubscriptionHelper
           subscribe={() =>
@@ -346,6 +366,7 @@ const TaskReportData = props => (
             {...props}
             taskReport={taskReport}
             systems={systems}
+            exocomps={exocomps}
           />
         </SubscriptionHelper>
       );

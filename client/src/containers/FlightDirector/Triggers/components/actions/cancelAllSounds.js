@@ -22,6 +22,8 @@ CancelAllSounds.propTypes = {
 export default {
   name: "stopAllSounds",
   category: "Actions",
+  hiddenInLibrary: true,
+
   component: CancelAllSounds,
   outputs: [],
   inputs: [

@@ -151,6 +151,24 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "sassyspock",
+      "name": "sassyspock",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/43680869?v=4",
+      "profile": "https://github.com/sassyspock",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Justintime50",
+      "name": "Justin",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/39606064?v=4",
+      "profile": "http://justinpaulhammond.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "repoType": "github"

@@ -1,58 +1,45 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Sickbay from "./sickbay";
 import "./style.scss";
 
-const queryData = `
-id
-bunks {
-  id
-  patient {
+const fragment = gql`
+  fragment SickbayData on Sickbay {
     id
-    age
-    rank
-    name
-    gender
-    position
-    charts {
+    bunks {
       id
-      o2levels
-      symptoms
-      heartRate
-      diagnosis
-      treatment
-      treatmentRequest
-      temperature
-      bloodPressure
-      admitTime
-      dischargeTime
-      painPoints {
-        x,
-        y
+      patient {
+        id
+        age
+        rank
+        name
+        gender
+        position
+        charts {
+          id
+          o2levels
+          symptoms
+          heartRate
+          diagnosis
+          treatment
+          treatmentRequest
+          temperature
+          bloodPressure
+          admitTime
+          dischargeTime
+          painPoints {
+            x
+            y
+          }
+        }
       }
+      scanning
+      scanRequest
+      scanResults
     }
-  }
-  scanning
-  scanRequest
-  scanResults
-}
-sickbayRoster {
-  id
-  name
-  position
-  firstName
-  lastName
-}
-`;
-
-const QUERY = gql`
-  query Sickbay($simulatorId: ID!) {
-    sickbay(simulatorId: $simulatorId) {
-${queryData}
-    }
-    crew(simulatorId:$simulatorId) {
+    sickbayRoster {
       id
       name
       position
@@ -60,6 +47,22 @@ ${queryData}
       lastName
     }
   }
+`;
+
+const QUERY = gql`
+  query Sickbay($simulatorId: ID!) {
+    sickbay(simulatorId: $simulatorId) {
+      ...SickbayData
+    }
+    crew(simulatorId: $simulatorId) {
+      id
+      name
+      position
+      firstName
+      lastName
+    }
+  }
+  ${fragment}
 `;
 
 const CREWSUB = gql`
@@ -76,9 +79,10 @@ const CREWSUB = gql`
 const SUBSCRIPTION = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
-      ${queryData}
+      ...SickbayData
     }
   }
+  ${fragment}
 `;
 
 class SickbayData extends Component {

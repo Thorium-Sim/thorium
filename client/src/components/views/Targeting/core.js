@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button, Media } from "reactstrap";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -7,55 +7,61 @@ import { publish } from "helpers/pubsub";
 import CoreTargets from "./coreTargets";
 import "./style.scss";
 
-const queryData = `id
-type
-name
-quadrants
-coordinateTargeting
-targetedSensorContact {
-  id
-  picture
-  name
-}
-power {
-  power
-  powerLevels
-}
-damage {
-  damaged
-  report
-}
-contacts {
-  id
-  class
-  targeted
-  system
-  destroyed
-}
-range
-classes {
-  id
-  name
-  size
-  icon
-  speed
-  picture
-  quadrant
-  moving
-}`;
+const fragment = gql`
+  fragment TargetingData on Targeting {
+    id
+    type
+    name
+    quadrants
+    coordinateTargeting
+    targetedSensorContact {
+      id
+      picture
+      name
+    }
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    contacts {
+      id
+      class
+      targeted
+      system
+      destroyed
+    }
+    range
+    classes {
+      id
+      name
+      size
+      icon
+      speed
+      picture
+      quadrant
+      moving
+    }
+  }
+`;
 const TARGETING_SUB = gql`
   subscription TargetingUpdate($simulatorId: ID) {
     targetingUpdate(simulatorId: $simulatorId) {
-      ${queryData}
+      ...TargetingData
     }
   }
+  ${fragment}
 `;
 const TARGETING_QUERY = gql`
   query Targeting($simulatorId: ID) {
     targeting(simulatorId: $simulatorId) {
-     ${queryData}
+      ...TargetingData
     }
   }
+  ${fragment}
 `;
 
 class TargetingCore extends Component {

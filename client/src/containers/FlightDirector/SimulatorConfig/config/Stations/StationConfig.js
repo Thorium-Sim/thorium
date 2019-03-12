@@ -1,7 +1,7 @@
 import React from "react";
 import { Input, Container, Row, Col, Label } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ops from "./ops";
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "components/views/index";
@@ -22,14 +22,14 @@ const viewList = Object.keys(Views)
   })
   .sort();
 
-const ConfigStation = props => {
-  const {
-    client,
-    selectedStationSet,
-    simulator,
-    station,
-    data: { loading, softwarePanels }
-  } = props;
+const CardSelect = ({
+  action,
+  simulator,
+  softwarePanels = [],
+  value = "nothing",
+  interfaces = [],
+  selectedStationSet
+}) => {
   const inSim = comp => {
     const stationSet = simulator.stationSets.find(
       s => s.id === selectedStationSet
@@ -40,6 +40,44 @@ const ConfigStation = props => {
     );
     return cards.indexOf(comp) > -1;
   };
+  return (
+    <select className="c-select form-control" value={value} onChange={action}>
+      <option value="nothing">Please Select A Card</option>
+      <optgroup label="Cards">
+        {viewList.map(e => (
+          <option key={`card-select-${e}`} value={e}>
+            {`${inSim(e) ? "✅ " : ""}${e}`}
+          </option>
+        ))}
+      </optgroup>
+      <optgroup label="Software Panels">
+        {simulator.panels.map(p => (
+          <option key={p} value={`software-panel-${p}`}>
+            {softwarePanels.find(s => s.id === p) &&
+              softwarePanels.find(s => s.id === p).name}
+          </option>
+        ))}
+      </optgroup>
+      {/* <optgroup label="Interfaces">
+        {simulator.interfaces.map(p => (
+          <option key={p} value={`interface-${p}`}>
+            {interfaces.find(s => s.id === p) &&
+              interfaces.find(s => s.id === p).name}
+          </option>
+        ))}
+      </optgroup> */}
+    </select>
+  );
+};
+const ConfigStation = props => {
+  const {
+    client,
+    selectedStationSet,
+    simulator,
+    station,
+    data: { softwarePanels, interfaces }
+  } = props;
+
   const updateStationCard = (type, card, e) => {
     const variables = {
       stationSetId: selectedStationSet,
@@ -66,13 +104,27 @@ const ConfigStation = props => {
     }
   };
   const addCard = e => {
-    let name = prompt("What is the card name?", titleCase(e.target.value));
+    let sampleName = e.target.value;
+    if (sampleName.indexOf("software-panel-") > -1) {
+      const panel = softwarePanels.find(
+        i => i.id === sampleName.replace("software-panel-", "")
+      );
+      sampleName = panel ? panel.name : sampleName;
+    }
+    if (sampleName.indexOf("interface-") > -1) {
+      const int = interfaces.find(
+        i => i.id === sampleName.replace("interface-", "")
+      );
+      sampleName = int ? int.name : sampleName;
+    }
+    let name = prompt("What is the card name?", titleCase(sampleName));
+    const cardComponent = e.target.value;
     if (name) {
       const variables = {
         id: selectedStationSet,
         name: station.name,
         cardName: name,
-        cardComponent: e.target.value
+        cardComponent
       };
       client.mutate({
         mutation: ops.addCard,
@@ -268,27 +320,14 @@ const ConfigStation = props => {
                       />
                     </td>
                     <td>
-                      <Input
-                        type="select"
+                      <CardSelect
+                        action={e => updateStationCard("component", card, e)}
                         value={card.component}
-                        onChange={e => updateStationCard("component", card, e)}
-                      >
-                        {viewList.map(e => {
-                          return (
-                            <option key={e} value={e}>
-                              {e}
-                            </option>
-                          );
-                        })}
-                        <option disabled>-----------</option>
-                        {!loading &&
-                          simulator.panels.map(p => (
-                            <option key={p} value={p}>
-                              {softwarePanels.find(s => s.id === p) &&
-                                softwarePanels.find(s => s.id === p).name}
-                            </option>
-                          ))}
-                      </Input>
+                        simulator={simulator}
+                        interfaces={interfaces}
+                        softwarePanels={softwarePanels}
+                        selectedStationSet={selectedStationSet}
+                      />
                     </td>
                     <td>
                       <FontAwesome
@@ -303,26 +342,13 @@ const ConfigStation = props => {
             </tbody>
           </table>
           <label>Select a component to add a card</label>
-          <select
-            className="c-select form-control"
-            value="nothing"
-            onChange={e => addCard(e)}
-          >
-            <option value="nothing">Please Select A Card</option>
-            {viewList.map(e => (
-              <option key={`card-select-${e}`} value={e}>
-                {`${inSim(e) ? "✅ " : ""}${e}`}
-              </option>
-            ))}
-            <option disabled>-----------</option>
-            {!loading &&
-              simulator.panels.map(p => (
-                <option key={p} value={p}>
-                  {softwarePanels.find(s => s.id === p) &&
-                    softwarePanels.find(s => s.id === p).name}
-                </option>
-              ))}
-          </select>
+          <CardSelect
+            action={e => addCard(e)}
+            simulator={simulator}
+            interfaces={interfaces}
+            softwarePanels={softwarePanels}
+            selectedStationSet={selectedStationSet}
+          />
           <label>Message Groups:</label>
           <Row>
             {["SecurityTeams", "DamageTeams", "MedicalTeams"].map(group => (

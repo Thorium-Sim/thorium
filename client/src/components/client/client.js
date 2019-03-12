@@ -17,8 +17,9 @@ class Client extends Component {
       )
     )
       return;
-    this.props.playSound({ url: "/sciences.ogg" });
-
+    setTimeout(() => {
+      this.props.playSound({ url: "/sciences.ogg" });
+    }, 1000);
     // Start up any ambiance
     if (this.props.station.ambiance) {
       this.props.playSound({

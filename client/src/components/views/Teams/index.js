@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
 import Tour from "helpers/tourHelper";
@@ -259,20 +259,22 @@ class Teams extends Component {
             </Button>
           </Col>
           <Col sm={{ size: 8, offset: 1 }} className="damage-team-entry">
-            <TeamConfig
-              key={selectedTeam ? selectedTeam.id : "no-team"}
-              selectedTeam={selectedTeam}
-              decks={decks}
-              teamType={teamType}
-              crew={crew}
-              assignedOfficers={assignedOfficers}
-              update={team => this.setState({ selectedTeam: team })}
-              createTeam={this.createTeam}
-              commitTeam={this.commitTeam}
-              assignOfficer={this.assignOfficer}
-              removeOfficer={this.removeOfficer}
-              removeTeam={this.removeTeam}
-            />
+            {selectedTeam && selectedTeam.id && (
+              <TeamConfig
+                key={selectedTeam ? selectedTeam.id : "no-team"}
+                selectedTeam={selectedTeam}
+                decks={decks}
+                teamType={teamType}
+                crew={crew}
+                assignedOfficers={assignedOfficers}
+                update={team => this.setState({ selectedTeam: team })}
+                createTeam={this.createTeam}
+                commitTeam={this.commitTeam}
+                assignOfficer={this.assignOfficer}
+                removeOfficer={this.removeOfficer}
+                removeTeam={this.removeTeam}
+              />
+            )}
           </Col>
         </Row>
         <Tour steps={training[teamType]} client={this.props.clientObj} />
