@@ -352,6 +352,7 @@ class Clients extends Component {
       this.props.history.push("/");
       return null;
     }
+    const { keyboard, interfaces } = this.props.data;
     return (
       <Container>
         <SubscriptionHelper
@@ -416,6 +417,8 @@ class Clients extends Component {
                             removeClient={this.removeClient}
                             select={this.select}
                             flights={this.props.data.flights}
+                            interfaces={interfaces}
+                            keyboards={keyboard}
                           />
                         ))}
                       <tr>
@@ -440,8 +443,8 @@ class Clients extends Component {
                             select={this.select}
                             flightId={this.props.flightId}
                             flights={this.props.data.flights}
-                            interfaces={this.props.data.interfaces}
-                            keyboards={this.props.data.keyboard}
+                            interfaces={interfaces}
+                            keyboards={keyboard}
                           />
                         ))}
                     </Fragment>

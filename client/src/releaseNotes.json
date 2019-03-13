@@ -1,4 +1,7 @@
 {
+  "1.2.1": {
+    "fixes": ["Fixes an issue where keyboards cannot be assigned."]
+  },
   "1.2.0": {
     "features": [
       "Updates external package dependencies to the latest version.",
