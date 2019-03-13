@@ -28,6 +28,24 @@ class Client extends Component {
         ambiance: true
       });
     }
+    if (process.env.NODE_ENV === "production") {
+      document.addEventListener("keydown", e => {
+        console.log(e);
+        const forbiddenKeys = ["q", "w", "s", "i", "f"];
+        if ((e.metaKey || e.ctrlKey) && forbiddenKeys.includes(e.key)) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        if (e.key === "Escape") {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
+      // Go to fullscreen on load
+      if (document.body.requestFullscreen) {
+        document.body.requestFullscreen().catch(() => {});
+      }
+    }
   }
   componentDidUpdate(prevProps) {
     if (this.props.station.name !== prevProps.station.name) {
