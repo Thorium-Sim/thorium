@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 
-const spregex = /software-panel-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const spregex = /.*.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 const intregex = /interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 class CardSwitcher extends Component {
   state = {};
   render() {
     const { cards, cardName, changeCard, hyperCard } = this.props;
     const currentCard = cards.find(c => c.name === cardName) || cards[0];
-    const iconName = currentCard.component.match(spregex)
-      ? "SoftwarePanels"
-      : currentCard.component.match(intregex)
+    const iconName = currentCard.component.match(intregex)
       ? "Interface"
+      : currentCard.component.match(spregex)
+      ? "SoftwarePanels"
       : currentCard.component;
     const { shown } = this.state;
     return (

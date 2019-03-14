@@ -26,6 +26,15 @@ export default function renderCards(props) {
     const Comp = Views[clientObj.hypercard];
     return <CardHolder component={Comp} {...props} />;
   }
+  function getCompName(name) {
+    const cleanedName = name
+      .replace("software-panel-", "")
+      .replace("interface-", "");
+    if (props.simulator.panels.includes(cleanedName)) {
+      return "SoftwarePanels";
+    }
+    return "Interface";
+  }
   return cards
     .concat({ name: "Login", component: "Login", icon: "Login" })
     .concat({
@@ -35,26 +44,28 @@ export default function renderCards(props) {
     })
     .map(card => {
       if (card.name === cardName) {
-        const component = Views[card.component];
-        if (
-          card.component.match(/software-panel-.{8}-.{4}-.{4}-.{4}-.{12}/gi)
-        ) {
-          // Software Panel
-          return (
-            <CardHolder
-              component={Views.SoftwarePanels}
-              panel={card.component.replace("software-panel-", "")}
-              {...props}
-              key={card.name}
-            />
-          );
-        }
-        if (card.component.match(/interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+        const compName = card.component.match(/.*.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+          ? getCompName(card.component)
+          : card.component;
+        const component = Views[compName];
+
+        if (compName === "Interface") {
           // Interface
           return (
             <CardHolder
               component={Views.Interface}
               interfaceId={card.component.replace("interface-", "")}
+              {...props}
+              key={card.name}
+            />
+          );
+        }
+        if (card.component.match(/.*.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+          // Software Panel
+          return (
+            <CardHolder
+              component={Views.SoftwarePanels}
+              panel={card.component.replace("software-panel-", "")}
               {...props}
               key={card.name}
             />

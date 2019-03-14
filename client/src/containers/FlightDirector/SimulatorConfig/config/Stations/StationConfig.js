@@ -52,7 +52,7 @@ const CardSelect = ({
       </optgroup>
       <optgroup label="Software Panels">
         {simulator.panels.map(p => (
-          <option key={p} value={`software-panel-${p}`}>
+          <option key={p} value={`${p}`}>
             {softwarePanels.find(s => s.id === p) &&
               softwarePanels.find(s => s.id === p).name}
           </option>

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Tooltip } from "reactstrap";
 
-const spregex = /software-panel-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const spregex = /.*.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 const intregex = /interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 class CardButton extends Component {
   state = {};
@@ -16,10 +16,10 @@ class CardButton extends Component {
   };
   render() {
     const { component, changeCard, currentCard, name } = this.props;
-    const cardName = component.match(spregex)
-      ? "SoftwarePanels"
-      : component.match(intregex)
+    const cardName = component.match(intregex)
       ? "Interface"
+      : component.match(spregex)
+      ? "SoftwarePanels"
       : component;
 
     return (

@@ -199,6 +199,7 @@ class SoftwarePanels extends Component {
     const { selectedPanel, components, connections, cables } = this.state;
     const shownPanel = panel || selectedPanel;
     if (loading) return null;
+    console.log(panel);
     return (
       <Container className="softwarePanels-card software-panels">
         <SubscriptionHelper
