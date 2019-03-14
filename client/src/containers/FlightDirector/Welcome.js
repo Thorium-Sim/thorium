@@ -126,6 +126,38 @@ class Welcome extends Component {
       //  window.location.reload();
     });
   };
+  queryResult = ({ loading, data }) =>
+    !loading &&
+    data.thorium &&
+    data.thorium.spaceEdventuresCenter &&
+    data.thorium.spaceEdventuresCenter.flightTypes &&
+    data.thorium.spaceEdventuresCenter.flightTypes.length > 0 ? (
+      <Dropdown>
+        <DropdownToggle caret size="lg" block color="success">
+          New Flight
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem tag={Link} to="/config/flight">
+            Unspecified Flight Type
+          </DropdownItem>
+          <DropdownItem divider />
+          {data.thorium.spaceEdventuresCenter.flightTypes.map(f => (
+            <DropdownItem
+              tag={Link}
+              to={`/config/flight?flightType=${f.id}`}
+              key={f.id}
+              value={f.id}
+            >
+              {f.name}
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      </Dropdown>
+    ) : (
+      <Button tag={Link} to="/config/flight" color="success" block size="lg">
+        New Flight
+      </Button>
+    );
   render() {
     if (this.props.data.loading || !this.props.data.flights) return null;
     const flights = this.props.data.flights;
@@ -319,45 +351,7 @@ class Welcome extends Component {
                 }
               `}
             >
-              {({ loading, data }) =>
-                !loading &&
-                data.thorium &&
-                data.thorium.spaceEdventuresCenter &&
-                data.thorium.spaceEdventuresCenter.flightTypes &&
-                data.thorium.spaceEdventuresCenter.flightTypes.length > 0 ? (
-                  <Dropdown>
-                    <DropdownToggle caret size="lg" block color="success">
-                      New Flight
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem tag={Link} to="/config/flight">
-                        Unspecified Flight Type
-                      </DropdownItem>
-                      <DropdownItem divider />
-                      {data.thorium.spaceEdventuresCenter.flightTypes.map(f => (
-                        <DropdownItem
-                          tag={Link}
-                          to={`/config/flight?flightType=${f.id}`}
-                          key={f.id}
-                          value={f.id}
-                        >
-                          {f.name}
-                        </DropdownItem>
-                      ))}
-                    </DropdownMenu>
-                  </Dropdown>
-                ) : (
-                  <Button
-                    tag={Link}
-                    to="/config/flight"
-                    color="success"
-                    block
-                    size="lg"
-                  >
-                    New Flight
-                  </Button>
-                )
-              }
+              {this.queryResult}
             </Query>
           </div>
         </Row>

@@ -68,3 +68,48 @@ const badgeAssign = ({
 };
 App.on("assignSpaceEdventuresBadge", badgeAssign);
 App.on("assignSpaceEdventuresMission", badgeAssign);
+App.on("getSpaceEdventuresLogin", async ({ token, context, cb }) => {
+  let res = {};
+  try {
+    res = await GraphQLClient.query({
+      query: `query GetUser($token:String!) {
+      user:userByToken(token:$token) {
+        id
+        profile {
+          name
+          displayName
+          rank {
+            name
+          }
+        }
+      }
+    }    
+    `,
+      variables: { token }
+    });
+  } catch (err) {
+    cb(err.message.replace("GraphQL error:", "Error:"));
+    return;
+  }
+  const {
+    data: { user }
+  } = res;
+  const clientId = context.clientId;
+  if (user) {
+    const client = App.clients.find(c => c.id === clientId);
+    client.login(
+      user.profile.displayName || user.profile.name || user.profile.rank.name
+    );
+    const flight = App.flights.find(f => f.id === client.flightId);
+    if (flight) {
+      flight.addSpaceEdventuresUser(client.id, user.id);
+      flight.loginClient({
+        id: client.id,
+        simulatorId: client.simulatorId,
+        name: client.station
+      });
+    }
+  }
+  pubsub.publish("clientChanged", App.clients);
+  cb();
+});
