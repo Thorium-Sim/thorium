@@ -8,6 +8,8 @@ import request from "request";
 const issuesUrl =
   "https://12usj3vwf1.execute-api.us-east-1.amazonaws.com/prod/issueTracker";
 
+let spaceEdventuresData = null;
+let spaceEdventuresTimeout = 0;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -63,6 +65,7 @@ const schema = gql`
     assignSpaceEdventuresMission(badgeId: ID!): String
 
     assignSpaceEdventuresFlightRecord(flightId: ID!): String
+    getSpaceEdventuresLogin(token: String!): String
 
     addIssue(
       title: String!
@@ -80,27 +83,11 @@ const schema = gql`
 
 const resolver = {
   Thorium: {
-    spaceEdventuresCenter: async () => {
-      const {
-        data: { center }
-      } = await GraphQLClient.query({
-        query: `query {
-          center {
-            id
-            name
-          }
-        }`
-      });
-      if (!center) return;
-      return { ...center, token: App.spaceEdventuresToken };
-    }
-  },
-  SpaceEdventuresCenter: {
-    simulators: async () => {
-      const {
-        data: { center }
-      } = await GraphQLClient.query({
-        query: `query {
+    spaceEdventuresCenter: () => {
+      // Simple timeout based caching
+      if (spaceEdventuresTimeout + 1000 * 60 < new Date()) {
+        GraphQLClient.query({
+          query: `query {
           center {
             id
             name
@@ -108,60 +95,16 @@ const resolver = {
               id
               name
             }
-          }
-        }`
-      });
-      if (!center) return;
-      return center.simulators;
-    },
-    missions: async () => {
-      const {
-        data: { center }
-      } = await GraphQLClient.query({
-        query: `query {
-          center {
-            id
-            name
-            badges(type:mission) {
-              id
-              name
-              description
-            }
-          }
-        }`
-      });
-      if (!center) return;
-
-      return center.badges;
-    },
-    badges: async () => {
-      const {
-        data: { center }
-      } = await GraphQLClient.query({
-        query: `query {
-          center {
-            id
-            name
             badges(type:badge) {
               id
               name
               description
             }
-          }
-        }`
-      });
-      if (!center) return;
-
-      return center.badges;
-    },
-    flightTypes: async () => {
-      const {
-        data: { center }
-      } = await GraphQLClient.query({
-        query: `query {
-          center {
-            id
-            name
+            missions: badges(type:mission) {
+              id
+              name
+              description
+            }
             flightTypes {
               id
               name
@@ -170,10 +113,13 @@ const resolver = {
             }
           }
         }`
-      });
-      if (!center) return;
-
-      return center.flightTypes;
+        }).then(({ data: { center } }) => {
+          if (!center) return;
+          spaceEdventuresData = { ...center, token: App.spaceEdventuresToken };
+          return spaceEdventuresData;
+        });
+      }
+      if (spaceEdventuresData) return spaceEdventuresData;
     }
   },
   Query: {

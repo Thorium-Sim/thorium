@@ -27,4 +27,22 @@
     background-repeat: no-repeat;
     background-position: center;
   }
+  .login-form-container {
+    position: relative;
+    height: 90px;
+  }
+  .name-field,
+  .space-edventures-field {
+    position: absolute;
+    width: 100%;
+    transition: all 0.5s ease;
+    opacity: 0;
+    //  height: 0;
+    pointer-events: none;
+    &.expand {
+      pointer-events: all;
+      opacity: 1;
+      // height: 90px;
+    }
+  }
 }
