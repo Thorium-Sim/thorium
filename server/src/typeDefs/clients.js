@@ -319,7 +319,8 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("soundSub"),
         (rootValue, { clientId }) => {
-          if (rootValue.clients.indexOf(clientId) > -1) return true;
+          if (rootValue && rootValue.clients.indexOf(clientId) > -1)
+            return true;
           return false;
         }
       )
@@ -329,26 +330,27 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("cancelSound"),
         (rootValue, { clientId }) => {
-          if (rootValue.clients.indexOf(clientId) > -1) return true;
+          if (rootValue && rootValue.clients.indexOf(clientId) > -1)
+            return true;
           return false;
         }
       )
     },
     cancelAllSounds: {
-      resolve: payload => payload,
+      resolve: payload => !!payload,
       subscribe: withFilter(
         () => pubsub.asyncIterator("cancelAllSounds"),
         (rootValue, { clientId }) => {
-          return !!rootValue.find(c => c.id === clientId);
+          return rootValue && !!rootValue.find(c => c.id === clientId);
         }
       )
     },
     cancelLoopingSounds: {
-      resolve: payload => payload,
+      resolve: payload => !!payload,
       subscribe: withFilter(
         () => pubsub.asyncIterator("cancelLoopingSounds"),
         (rootValue, { clientId }) => {
-          return !!rootValue.find(c => c.id === clientId);
+          return rootValue && !!rootValue.find(c => c.id === clientId);
         }
       )
     }
