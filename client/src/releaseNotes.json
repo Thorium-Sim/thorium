@@ -9,7 +9,8 @@
       "Better illustration of how the engine buttons are temporarily disabled on the engine control screen right after a button is pushed.",
       "Fixes issues with the size and color of planets not being changable.",
       "Automatically generated damage reports no longer require more damage team members than are available on the ship.",
-      "Widgets now hide when the station is offlined."
+      "Widgets now hide when the station is offlined.",
+      "Fixes an issue where looping sounds won't cancel."
     ]
   },
   "1.2.2": {
