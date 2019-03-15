@@ -18,6 +18,7 @@ export default function renderCards(props) {
   if (clientObj.offlineState) {
     cardName = "Offline";
   }
+
   if (
     !clientObj.offlineState &&
     clientObj.hypercard &&
@@ -47,8 +48,13 @@ export default function renderCards(props) {
         const compName = card.component.match(/.*.{8}-.{4}-.{4}-.{4}-.{12}/gi)
           ? getCompName(card.component)
           : card.component;
-        const component = Views[compName];
-
+        let component = Views[compName];
+        if (
+          clientObj.offlineState === "spaceEdventuresToken" &&
+          clientObj.token
+        ) {
+          component = Views.SpaceEdventuresToken;
+        }
         if (compName === "Interface") {
           // Interface
           return (

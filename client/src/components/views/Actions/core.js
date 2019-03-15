@@ -338,7 +338,7 @@ class ActionsCore extends Component {
     );
   };
   render() {
-    const { bridgeMap } = this.props;
+    const { bridgeMap, flight } = this.props;
     const { actionName } = this.state;
     return (
       <div className="core-action">
@@ -408,6 +408,11 @@ class ActionsCore extends Component {
             </optgroup>
             <optgroup>
               <option value="online">Online</option>
+              {flight.flightType && (
+                <option value="spaceEdventuresToken">
+                  Space EdVentures Token
+                </option>
+              )}
               <option value="offline">Offline</option>
               <option value="power">Power Loss</option>
               <option value="lockdown">Lockdown</option>

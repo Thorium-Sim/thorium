@@ -2,6 +2,7 @@ import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
+import tokenGenerator from "../helpers/tokenGenerator";
 
 export const aspectList = [
   "systems",
@@ -357,5 +358,16 @@ App.on("pauseFlight", ({ flightId }) => {
 App.on("resumeFlight", ({ flightId }) => {
   const flight = App.flights.find(f => f.id === flightId);
   flight.resume();
+  pubsub.publish("flightsUpdate", App.flights);
+});
+App.on("clientAddExtra", ({ flightId, simulatorId, name }) => {
+  const flight = App.flights.find(f => f.id === flightId);
+  const extra = {
+    id: name,
+    token: tokenGenerator(),
+    simulatorId,
+    name
+  };
+  flight.loginClient(extra);
   pubsub.publish("flightsUpdate", App.flights);
 });
