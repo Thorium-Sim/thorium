@@ -2,6 +2,20 @@ import paths from "../helpers/paths";
 import fs from "fs";
 import mkdirp from "mkdirp";
 
+// There is an error message freaking users out, and I
+// can't figure out how to turn it off. So monkey patching
+// so it doesn't show up anymore.
+const warn = console.warn;
+console.warn = message => {
+  if (
+    message.indexOf(
+      'Pass false into "resolverValidationOptions.requireResolversForResolveType'
+    ) > -1
+  )
+    return;
+  warn(message);
+};
+
 // Check to see if we are in development mode or not.
 if (
   process.argv0.split("/").indexOf("node") === -1 &&

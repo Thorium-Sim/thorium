@@ -20,6 +20,7 @@ class GraphQLClient {
 }
 
 export default new GraphQLClient(
-  "http://localhost:5000/space-edventures/us-central1/api/graphql"
-  // "https://us-central1-space-edventures-beta.cloudfunctions.net/api/graphql"
+  process.env.NODE_ENV === "production"
+    ? "https://us-central1-space-edventures.cloudfunctions.net/api/graphql"
+    : "http://localhost:5000/space-edventures/us-central1/api/graphql"
 );

@@ -6,7 +6,7 @@ import HeatBar from "./heatbar";
 import DamageOverlay from "../helpers/DamageOverlay";
 
 export default withApollo(props => {
-  const { engines, setSpeed } = props;
+  const { engines, setSpeed, locked } = props;
   const applyCoolant = id => {
     const mutation = gql`
       mutation CoolEngine($id: ID!, $state: Boolean) {
@@ -50,6 +50,7 @@ export default withApollo(props => {
           return (
             <Button
               disabled={
+                locked ||
                 engines[0].damage.damaged ||
                 engines[0].power.powerLevels.findIndex(
                   p => p > engines[0].power.power
@@ -145,6 +146,7 @@ export default withApollo(props => {
           return (
             <Button
               disabled={
+                locked ||
                 engines[1].damage.damaged ||
                 engines[1].power.powerLevels.findIndex(
                   p => p > engines[1].power.power

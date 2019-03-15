@@ -138,7 +138,7 @@ class ExtraControls extends Component {
     const sensors = this.props.sensors;
     const variables = {
       id: sensors.id,
-      interference: e.target.value
+      interference: parseFloat(e.target.value)
     };
     this.props.client.mutate({
       mutation,
