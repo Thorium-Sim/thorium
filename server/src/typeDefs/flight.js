@@ -13,8 +13,15 @@ const schema = gql`
     timelineStep: Int
     simulators: [Simulator]
     flightType: String
+    clients: [SpaceEdventuresClient]
   }
 
+  type SpaceEdventuresClient {
+    id: ID
+    token: String
+    name: String
+    email: String
+  }
   extend type Query {
     flights(running: Boolean, id: ID): [Flight]
     events: [String]
@@ -32,6 +39,9 @@ const schema = gql`
     deleteFlight(flightId: ID!): String
     pauseFlight(flightId: ID!): String
     resumeFlight(flightId: ID!): String
+
+    # Space EdVentures
+    clientAddExtra(flightId: ID!, simulatorId: ID!, name: String!): String
   }
   extend type Subscription {
     flightsUpdate(id: ID): [Flight]

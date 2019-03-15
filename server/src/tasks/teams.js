@@ -6,7 +6,6 @@ import {
 import reportReplace from "../helpers/reportReplacer";
 
 function randomOfficers(officerList = damagePositions) {
-  console.log(officerList);
   const typeCount = Math.min(
     Math.floor(Math.random() * 2 + 1),
     officerList.length

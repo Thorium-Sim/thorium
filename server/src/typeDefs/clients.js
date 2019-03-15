@@ -24,6 +24,11 @@ const schema = gql`
     overlay: Boolean
     cracked: Boolean
 
+    # Space EdVentures
+    token: String
+    email: String
+
+    # Mobile App
     mobile: Boolean
     cards: [String]
     keypad: Keypad
@@ -96,6 +101,7 @@ const schema = gql`
     clientSetSimulator(client: ID!, simulatorId: ID!): String
     clientSetStation(client: ID!, stationName: ID!): String
     clientLogin(client: ID!, loginName: String): String
+    clientSetEmail(client: ID!, email: String!): String
     clientLogout(client: ID!): String
     clientDiagnostic(client: ID!): String
     clientReset(client: ID!): String
@@ -173,6 +179,18 @@ const resolver = {
     },
     simulator(rootValue) {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
+    },
+    token(client) {
+      const flight = App.flights.find(f => f.id === client.flightId);
+      const flightClient =
+        flight && flight.clients.find(c => c.id === client.id);
+      return flightClient && flightClient.token;
+    },
+    email(client) {
+      const flight = App.flights.find(f => f.id === client.flightId);
+      const flightClient =
+        flight && flight.clients.find(c => c.id === client.id);
+      return flightClient && flightClient.email;
     },
     station: StationResolver
   },

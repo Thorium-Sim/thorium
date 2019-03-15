@@ -88,6 +88,7 @@ import SubspaceField from "./SubspaceField";
 import Transwarp from "./Transwarp";
 import SpecializedDocking from "./SpecializedDocking";
 import Interface from "./Interface";
+import SpaceEdventuresToken from "./SpaceEdventuresToken";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -166,6 +167,7 @@ import SubspaceFieldCore from "./SubspaceField/core";
 import TranswarpCore from "./Transwarp/core";
 import SpecializedDockingCore from "./SpecializedDocking/core";
 import TimelineThumbnailCore from "./Timeline/thumbnailData";
+import SpaceEdventuresTokenCore from "./SpaceEdventuresToken/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -263,7 +265,8 @@ const Views = {
   SubspaceField,
   Transwarp,
   SpecializedDocking,
-  Interface
+  Interface,
+  SpaceEdventuresToken
 };
 
 export const Widgets = {
@@ -445,7 +448,8 @@ export const Cores = {
   SubspaceFieldCore,
   TranswarpCore,
   SpecializedDockingCore,
-  TimelineThumbnailCore
+  TimelineThumbnailCore,
+  SpaceEdventuresTokenCore
 };
 
 export default Views;

@@ -42,6 +42,11 @@ export default class Flight {
       .concat(clientId)
       .filter((a, i, arr) => arr.findIndex(c => c.id === a.id) === i);
   }
+  addClientEmail(clientId, email) {
+    this.clients = this.clients.map(c =>
+      c.id === clientId ? { ...c, email } : c
+    );
+  }
   addBadges(badges) {
     this.badges = this.badges.concat(badges);
   }
@@ -99,7 +104,16 @@ export default class Flight {
         id: s.spaceEdventuresId,
         stations: clients
           .filter(c => c.simulatorId === s.id)
-          .map(c => ({ name: c.name, badges: c.badges, userId: c.userId }))
+          .map(c => ({
+            name: c.name,
+            badges: c.badges,
+            token: c.userId ? null : c.token,
+            userId: c.userId,
+            email: c.email,
+            logs: App.officerLogs
+              .filter(o => o.clientId === c.id && o.flightId === this.id)
+              .map(o => ({ id: o.id, date: new Date(o.timestamp), log: o.log }))
+          }))
       }));
     const variables = {
       flightId: this.id,
