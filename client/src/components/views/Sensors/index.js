@@ -215,6 +215,7 @@ class Sensors extends Component {
       !this.props.widget &&
       !this.props.station.cards.find(c => c.component === "SensorScans");
     const sensors = this.props.data.sensors[0];
+    if (!sensors) return <p>No sensors system.</p>;
     const { pingMode } = sensors;
     const pings = false;
     const { hoverContact, ping, pingTime, weaponsRange } = this.state;

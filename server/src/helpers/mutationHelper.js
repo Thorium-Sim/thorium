@@ -18,7 +18,7 @@ export default function mutationHelper(schema, exceptions = []) {
               next,
               context
             );
-            setTimeout(() => resolve(), 1000);
+            setTimeout(() => resolve(), 500);
           })
       }),
       {}
