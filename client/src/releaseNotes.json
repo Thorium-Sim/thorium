@@ -1,5 +1,8 @@
 {
   "1.2.3": {
+    "features": [
+      "Adds a notification when power is taken out of the stealth field."
+    ],
     "fixes": [
       "Make it so Tactical Map items speed can change.",
       "Fixes the font size adjustment for tactical map items.",
