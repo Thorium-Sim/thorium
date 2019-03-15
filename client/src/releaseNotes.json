@@ -7,7 +7,8 @@
       "Make it so Tactical Map items speed can change.",
       "Fixes the font size adjustment for tactical map items.",
       "Better illustration of how the engine buttons are temporarily disabled on the engine control screen right after a button is pushed.",
-      "Fixes issues with the size and color of planets not being changable."
+      "Fixes issues with the size and color of planets not being changable.",
+      "Automatically generated damage reports no longer require more damage team members than are available on the ship."
     ]
   },
   "1.2.2": {
