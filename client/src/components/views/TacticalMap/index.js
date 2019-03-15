@@ -147,11 +147,11 @@ class TacticalMapCore extends Component {
       layerId: object ? object.layerId : this.state.layerId,
       item: {
         id: object ? object.id : this.state.objectId,
-        [key]: value
+        [key]: isNaN(Number(value)) ? value : Number(value)
       }
     };
     if (speed) {
-      variables.item.speed = speed;
+      variables.item.speed = parseFloat(speed);
     }
     const mutation = gql`
       mutation UpdateTacticalItem(
