@@ -200,7 +200,7 @@ class GridCore extends Component {
       contact: {
         icon,
         type,
-        size,
+        size: parseFloat(size),
         name,
         color,
         picture,
