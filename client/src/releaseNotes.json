@@ -2,7 +2,8 @@
   "1.2.3": {
     "fixes": [
       "Make it so Tactical Map items speed can change.",
-      "Fixes the font size adjustment for tactical map items."
+      "Fixes the font size adjustment for tactical map items.",
+      "Better illustration of how the engine buttons are temporarily disabled on the engine control screen right after a button is pushed."
     ]
   },
   "1.2.2": {
