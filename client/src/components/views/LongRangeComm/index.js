@@ -161,13 +161,15 @@ class LongRangeComm extends Component {
       message: this.state.selectedMessage
     };
     this.setState({
+      sendingMessage: true,
       messageLoc: { x: this.state.selectedSat.x, y: this.state.selectedSat.y }
     });
     const sendMessage = () => {
       this.setState(
         {
           selectedMessage: null,
-          selectedSat: null
+          selectedSat: null,
+          sendingMessage: false
         },
         () => {
           this.props.client.mutate({
@@ -351,7 +353,7 @@ class LongRangeComm extends Component {
                       onClick={this.deleteMessage.bind(this)}
                       size="lg"
                       block
-                      disabled={!messageObj}
+                      disabled={!messageObj || this.state.sendingMessage}
                       color="danger"
                     >
                       Delete Message
@@ -360,7 +362,11 @@ class LongRangeComm extends Component {
                   <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
                     <Button
                       onClick={this.sendMessage.bind(this)}
-                      disabled={!this.state.selectedSat || !messageObj}
+                      disabled={
+                        !this.state.selectedSat ||
+                        !messageObj ||
+                        this.state.sendingMessage
+                      }
                       size="lg"
                       block
                       color="success"

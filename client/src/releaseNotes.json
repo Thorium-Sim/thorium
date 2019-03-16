@@ -1,6 +1,9 @@
 {
   "1.2.4": {
-    "fixes": ["Removes an errant log that was showing up in the command line."]
+    "fixes": [
+      "Removes an errant log that was showing up in the command line.",
+      "Disables sending buttons on the message sending screen when the message is in transit."
+    ]
   },
   "1.2.3": {
     "features": [
