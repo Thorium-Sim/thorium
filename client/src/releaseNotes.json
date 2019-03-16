@@ -1,4 +1,7 @@
 {
+  "1.2.4": {
+    "fixes": ["Removes an errant log that was showing up in the command line."]
+  },
   "1.2.3": {
     "features": [
       "Adds a notification when power is taken out of the stealth field."

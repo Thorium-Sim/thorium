@@ -30,7 +30,6 @@ class Client extends Component {
     }
     if (process.env.NODE_ENV === "production") {
       document.addEventListener("keydown", e => {
-        console.log(e);
         const forbiddenKeys = ["q", "w", "s", "i", "f"];
         if ((e.metaKey || e.ctrlKey) && forbiddenKeys.includes(e.key)) {
           e.preventDefault();
