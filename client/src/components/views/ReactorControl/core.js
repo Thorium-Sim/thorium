@@ -271,7 +271,9 @@ class ReactorControl extends Component {
                 <Input
                   size="sm"
                   type="select"
-                  onChange={evt => this.setEfficiency(evt.target.value)}
+                  onChange={evt =>
+                    this.setEfficiency(parseFloat(evt.target.value))
+                  }
                   value={
                     reactor.externalPower ? "external" : reactor.efficiency
                   }
@@ -301,7 +303,9 @@ class ReactorControl extends Component {
                 <Input
                   size="sm"
                   type="select"
-                  onChange={evt => this.setHeatRate(evt.target.value)}
+                  onChange={evt =>
+                    this.setHeatRate(parseFloat(evt.target.value))
+                  }
                   value={reactor.heatRate}
                 >
                   {rateSpeeds}

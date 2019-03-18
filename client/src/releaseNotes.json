@@ -13,7 +13,8 @@
       "Fixes adding cargo and items to the armory.",
       "Fixes resetting a flight with a macro.",
       "Fixes changing the speeds on thrusters.",
-      "Fixes changing ship radiation."
+      "Fixes changing ship radiation.",
+      "Fixes changing values for the reactor."
     ]
   },
   "1.2.3": {
