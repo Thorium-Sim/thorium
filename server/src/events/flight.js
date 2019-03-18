@@ -278,7 +278,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
   const flight = App.flights.find(
     f => f.id === flightId || f.simulators.indexOf(simulatorId) > -1
   );
-
+  flightId = flight.id;
   // Log out the clients
   App.clients
     .concat()
@@ -343,9 +343,10 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
     pubsub.publish("clientChanged", App.clients);
     pubsub.publish(
       "clearCache",
-      App.clients.filter(c => c.flightId === flightId)
+      App.clients
+        .filter(c => c.flightId === flightId)
+        .concat(App.flights.filter(f => f.id === flightId))
     );
-    pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
     pubsub.publish("simulatorsUpdate", App.simulators);
   });
   cb && cb();

@@ -10,7 +10,8 @@
       "Fixes the self destruct code on core.",
       "Fixes changing the dilithium stress rate.",
       "Fixes changing alert condition from core.",
-      "Fixes adding cargo and items to the armory."
+      "Fixes adding cargo and items to the armory.",
+      "Fixes resetting a flight with a macro."
     ]
   },
   "1.2.3": {
