@@ -77,13 +77,11 @@ export default class SetArmyContacts extends Component {
                 <label onClick={() => this.selectContact(contact)}>
                   {contact.name}
                 </label>
-                {removeContacts && (
-                  <FontAwesome
-                    name="ban"
-                    className="text-danger pull-right clickable"
-                    onClick={() => this.removeContact(contact)}
-                  />
-                )}
+                <FontAwesome
+                  name="ban"
+                  className="text-danger pull-right clickable"
+                  onClick={() => this.removeContact(contact)}
+                />
               </Col>
             );
           })}
@@ -91,7 +89,7 @@ export default class SetArmyContacts extends Component {
         <Button size="sm" color="success" onClick={this.addArmyContact}>
           Add Contact
         </Button>
-        <label>
+        {/* <label>
           <input
             type="checkbox"
             onChange={e => {
@@ -99,7 +97,7 @@ export default class SetArmyContacts extends Component {
             }}
           />{" "}
           Remove
-        </label>
+        </label> */}
         {contactObj && (
           <div
             style={{
