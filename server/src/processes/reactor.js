@@ -207,7 +207,8 @@ const updateReactor = () => {
               s.cards.find(c => c.component === "DilithiumStress")
             )
           ) {
-            const dilithiumSys = systems[0];
+            const dilithiumSys = systems.find(r => r.model === "reactor");
+            console.log(dilithiumSys);
             if (!dilithiumSys) return;
             let {
               alphaLevel,

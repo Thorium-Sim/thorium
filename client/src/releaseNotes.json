@@ -2,7 +2,10 @@
   "1.2.4": {
     "fixes": [
       "Removes an errant log that was showing up in the command line.",
-      "Disables sending buttons on the message sending screen when the message is in transit."
+      "Disables sending buttons on the message sending screen when the message is in transit.",
+      "Fixes jumping to arbitrary timeline steps.",
+      "Fixes the self destruct code on core.",
+      "Fixes changing the dilithium stress rate."
     ]
   },
   "1.2.3": {
