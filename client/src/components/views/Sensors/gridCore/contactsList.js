@@ -128,7 +128,7 @@ class ContactsList extends Component {
   };
   render() {
     const { sensors, dragStart } = this.props;
-    const { contextContact, removeContacts } = this.state;
+    const { contextContact } = this.state;
     return (
       <div className="sensors-contact-list">
         <p>Contacts:</p>
