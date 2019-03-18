@@ -12,7 +12,8 @@
       "Fixes changing alert condition from core.",
       "Fixes adding cargo and items to the armory.",
       "Fixes resetting a flight with a macro.",
-      "Fixes changing the speeds on thrusters."
+      "Fixes changing the speeds on thrusters.",
+      "Fixes changing ship radiation."
     ]
   },
   "1.2.3": {
