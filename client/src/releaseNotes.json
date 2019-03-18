@@ -14,7 +14,8 @@
       "Fixes resetting a flight with a macro.",
       "Fixes changing the speeds on thrusters.",
       "Fixes changing ship radiation.",
-      "Fixes changing values for the reactor."
+      "Fixes changing values for the reactor.",
+      "Fixes setting the tractor beam stress."
     ]
   },
   "1.2.3": {
