@@ -85,7 +85,7 @@ class SelfDestruct extends Component {
     const sim = this.props.data.simulators[0];
     const variables = {
       id: sim.id,
-      code
+      code: String(code)
     };
     this.props.client.mutate({
       mutation,

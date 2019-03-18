@@ -141,7 +141,7 @@ class TimelineControl extends Component {
                 updateTimelineStep({
                   variables: {
                     simulatorId,
-                    step
+                    step: parseInt(step, 10)
                   }
                 })
               }

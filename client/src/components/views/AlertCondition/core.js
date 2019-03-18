@@ -88,7 +88,10 @@ class AlertConditionCore extends Component {
                 style={typeof l.color === "object" ? l.color : null}
                 onClick={() =>
                   action({
-                    variables: { id: this.props.simulator.id, level: l.id }
+                    variables: {
+                      id: this.props.simulator.id,
+                      level: String(l.id)
+                    }
                   })
                 }
               >

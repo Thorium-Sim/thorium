@@ -329,11 +329,11 @@ class ShipCore extends Component {
         <p>Radiation: </p>
         <input
           type="range"
-          value={radiation}
+          defaultValue={radiation}
           min={0}
           max={1}
           step={0.01}
-          onChange={evt => this.updateRadiation(evt.target.value)}
+          onBlur={evt => this.updateRadiation(parseFloat(evt.target.value))}
         />
         <Button
           size="sm"

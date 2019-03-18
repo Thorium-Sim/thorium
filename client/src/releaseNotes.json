@@ -1,4 +1,25 @@
 {
+  "1.2.4": {
+    "features": [
+      "Makes it possible to change the opacity of planets, borders, and pings.",
+      "Adds a label to to the contact info box on Sensors."
+    ],
+    "fixes": [
+      "Removes an errant log that was showing up in the command line.",
+      "Disables sending buttons on the message sending screen when the message is in transit.",
+      "Fixes jumping to arbitrary timeline steps.",
+      "Fixes the self destruct code on core.",
+      "Fixes changing the dilithium stress rate.",
+      "Fixes changing alert condition from core.",
+      "Fixes adding cargo and items to the armory.",
+      "Fixes resetting a flight with a macro.",
+      "Fixes changing the speeds on thrusters.",
+      "Fixes changing ship radiation.",
+      "Fixes changing values for the reactor.",
+      "Fixes setting the tractor beam stress.",
+      "Fixes a crash when probe network probes are deleted."
+    ]
+  },
   "1.2.3": {
     "features": [
       "Adds a notification when power is taken out of the stealth field."

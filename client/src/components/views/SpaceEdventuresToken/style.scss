@@ -1,0 +1,53 @@
+.flyer-container {
+  width: 100%;
+  background-color: white;
+  color: black;
+
+  * {
+    color: black;
+  }
+  p {
+    margin: 0;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: black;
+    text-align: center;
+  }
+}
+.space-edventures-flyer {
+  box-sizing: border-box;
+  width: 50%;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  float: left;
+  border: dashed 1px black;
+  padding: 50px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  background-color: white;
+  svg {
+    text {
+      fill: black !important;
+    }
+  }
+  .token {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+@media screen {
+  .space-edventures-flyer {
+    min-height: 500px;
+  }
+}

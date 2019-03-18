@@ -93,6 +93,7 @@ App.on("triggerAction", args => {
     case "lockdown":
     case "maintenance":
     case "soviet":
+    case "spaceEdventuresToken":
       clients.forEach(c =>
         App.handleEvent({ client: c, state: args.action }, "clientOfflineState")
       );

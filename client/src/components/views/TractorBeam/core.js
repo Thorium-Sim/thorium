@@ -81,7 +81,7 @@ class TractorBeamCore extends Component {
     `;
     const variables = {
       id: tractorBeam.id,
-      stress: this.state.stress
+      stress: parseFloat(this.state.stress)
     };
     this.props.client.mutate({
       mutation,

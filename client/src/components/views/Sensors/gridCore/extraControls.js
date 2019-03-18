@@ -78,7 +78,16 @@ const ColorPicker = ({ color, onChangeComplete }) => {
               zIndex: 1
             }}
           >
-            <ChromePicker color={color} onChangeComplete={onChangeComplete} />
+            <ChromePicker
+              color={color}
+              onChangeComplete={color =>
+                onChangeComplete(
+                  `rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${
+                    color.rgb.a
+                  })`
+                )
+              }
+            />
           </div>,
           document.body
         )}
@@ -211,9 +220,7 @@ class ExtraControls extends Component {
 
             <ColorPicker
               color={this.state.planetColor}
-              onChangeComplete={color =>
-                this.setState({ planetColor: color.hex })
-              }
+              onChangeComplete={color => this.setState({ planetColor: color })}
             />
           </Col>
           <Col sm={2}>
@@ -256,9 +263,7 @@ class ExtraControls extends Component {
             />
             <ColorPicker
               color={this.state.borderColor}
-              onChangeComplete={color =>
-                this.setState({ borderColor: color.hex })
-              }
+              onChangeComplete={color => this.setState({ borderColor: color })}
             />
           </Col>
           <Col sm={2}>
@@ -295,9 +300,7 @@ class ExtraControls extends Component {
             />
             <ColorPicker
               color={this.state.pingColor}
-              onChangeComplete={color =>
-                this.setState({ pingColor: color.hex })
-              }
+              onChangeComplete={color => this.setState({ pingColor: color })}
             />
           </Col>
           <Col sm={2}>

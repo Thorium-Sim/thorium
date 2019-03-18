@@ -2,6 +2,7 @@ import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
+import tokenGenerator from "../helpers/tokenGenerator";
 
 export const aspectList = [
   "systems",
@@ -277,7 +278,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
   const flight = App.flights.find(
     f => f.id === flightId || f.simulators.indexOf(simulatorId) > -1
   );
-
+  flightId = flight.id;
   // Log out the clients
   App.clients
     .concat()
@@ -342,9 +343,10 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
     pubsub.publish("clientChanged", App.clients);
     pubsub.publish(
       "clearCache",
-      App.clients.filter(c => c.flightId === flightId)
+      App.clients
+        .filter(c => c.flightId === flightId)
+        .concat(App.flights.filter(f => f.id === flightId))
     );
-    pubsub.publish("clearCache", App.flights.filter(f => f.id === flightId));
     pubsub.publish("simulatorsUpdate", App.simulators);
   });
   cb && cb();
@@ -357,5 +359,16 @@ App.on("pauseFlight", ({ flightId }) => {
 App.on("resumeFlight", ({ flightId }) => {
   const flight = App.flights.find(f => f.id === flightId);
   flight.resume();
+  pubsub.publish("flightsUpdate", App.flights);
+});
+App.on("clientAddExtra", ({ flightId, simulatorId, name }) => {
+  const flight = App.flights.find(f => f.id === flightId);
+  const extra = {
+    id: name,
+    token: tokenGenerator(),
+    simulatorId,
+    name
+  };
+  flight.loginClient(extra);
   pubsub.publish("flightsUpdate", App.flights);
 });
