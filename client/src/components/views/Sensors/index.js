@@ -329,6 +329,9 @@ class Sensors extends Component {
             <Col sm={{ size: 3, offset: !needScans ? 1 : 0 }} className="data">
               <Row className="contact-info">
                 <Col className="col-sm-12">
+                  <h3>Contact Information</h3>
+                </Col>
+                <Col className="col-sm-12">
                   <div className="card contactPictureContainer">
                     {hoverContact.picture && (
                       <Asset asset={hoverContact.picture}>

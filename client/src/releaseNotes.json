@@ -1,7 +1,8 @@
 {
   "1.2.4": {
     "features": [
-      "Makes it possible to change the opacity of planets, borders, and pings."
+      "Makes it possible to change the opacity of planets, borders, and pings.",
+      "Adds a label to to the contact info box on Sensors."
     ],
     "fixes": [
       "Removes an errant log that was showing up in the command line.",
