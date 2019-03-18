@@ -3,7 +3,7 @@ import React from "react";
 export const InputField = ({
   children,
   promptValue,
-  prompt,
+  prompt: inputPrompt,
   alert,
   ...props
 }) => {
@@ -24,7 +24,7 @@ export const InputField = ({
     style.borderColor = "#a00";
   }
   const onClick = () => {
-    const value = prompt(prompt, promptValue || children || "");
+    const value = prompt(inputPrompt, promptValue || children || "");
     const parseValue = isNaN(Number(value)) ? value : Number(value);
     props.onClick(parseValue);
   };

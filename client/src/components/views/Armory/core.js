@@ -133,7 +133,7 @@ const CrewCargo = ({ simulatorId, crew: { id, name, inventory } }) => {
         simulatorId,
         name: iName,
         metadata: {},
-        crewCount: [{ crew: id, count }]
+        crewCount: [{ crew: id, count: parseInt(count, 10) }]
       }
     };
     mutate({ variables });
