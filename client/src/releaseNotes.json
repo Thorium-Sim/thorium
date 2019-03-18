@@ -11,7 +11,8 @@
       "Fixes changing the dilithium stress rate.",
       "Fixes changing alert condition from core.",
       "Fixes adding cargo and items to the armory.",
-      "Fixes resetting a flight with a macro."
+      "Fixes resetting a flight with a macro.",
+      "Fixes changing the speeds on thrusters."
     ]
   },
   "1.2.3": {
