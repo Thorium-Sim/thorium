@@ -15,7 +15,8 @@
       "Fixes changing the speeds on thrusters.",
       "Fixes changing ship radiation.",
       "Fixes changing values for the reactor.",
-      "Fixes setting the tractor beam stress."
+      "Fixes setting the tractor beam stress.",
+      "Fixes a crash when probe network probes are deleted."
     ]
   },
   "1.2.3": {
