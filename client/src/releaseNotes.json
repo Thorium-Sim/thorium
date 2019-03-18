@@ -5,7 +5,8 @@
       "Disables sending buttons on the message sending screen when the message is in transit.",
       "Fixes jumping to arbitrary timeline steps.",
       "Fixes the self destruct code on core.",
-      "Fixes changing the dilithium stress rate."
+      "Fixes changing the dilithium stress rate.",
+      "Fixes changing alert condition from core."
     ]
   },
   "1.2.3": {
