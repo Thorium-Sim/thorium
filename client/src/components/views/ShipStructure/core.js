@@ -42,7 +42,7 @@ class DecksCore extends Component {
     `;
     const variables = {
       simulatorId: this.props.simulator.id,
-      number
+      number: parseInt(number, 10)
     };
     this.props.client.mutate({
       mutation,

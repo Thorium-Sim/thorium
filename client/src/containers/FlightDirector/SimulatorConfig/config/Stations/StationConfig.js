@@ -228,7 +228,7 @@ const ConfigStation = props => {
             border: "solid 1px rgba(0,0,0,0.5)"
           }}
         >
-          <table className="table table-sm table-striped table-hover">
+          <table className="table table-sm">
             <thead className="thead-default">
               <tr>
                 <th colSpan="3">

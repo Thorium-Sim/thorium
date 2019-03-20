@@ -299,7 +299,7 @@ export const PhaserBeam = ({
             <Button
               block
               color="primary"
-              onClick={chargePhasers.bind(this, id)}
+              onMouseDown={chargePhasers.bind(this, id)}
             >
               Charge
             </Button>

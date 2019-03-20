@@ -208,7 +208,6 @@ const updateReactor = () => {
             )
           ) {
             const dilithiumSys = systems.find(r => r.model === "reactor");
-            console.log(dilithiumSys);
             if (!dilithiumSys) return;
             let {
               alphaLevel,

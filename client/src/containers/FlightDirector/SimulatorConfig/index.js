@@ -12,6 +12,7 @@ const fragment = gql`
   fragment SimulatorConfigData on Simulator {
     id
     name
+    alertlevel
     layout
     caps
     exocomps

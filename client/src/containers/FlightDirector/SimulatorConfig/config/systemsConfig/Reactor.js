@@ -119,7 +119,10 @@ const Reactor = props => {
                           defaultValue={reactor.powerOutput}
                           onChange={evt =>
                             action({
-                              variables: { id, output: evt.target.value }
+                              variables: {
+                                id,
+                                output: parseInt(evt.target.value, 10)
+                              }
                             })
                           }
                         />

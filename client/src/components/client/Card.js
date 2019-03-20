@@ -80,7 +80,7 @@ const CardRenderer = props => {
   const layoutName =
     client.layout || station.layout || simulator.layout || "LayoutCorners";
 
-  let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
+  let LayoutComponent = Layouts[layoutName] || Layouts.LayoutCorners;
   if (station.name === "Viewscreen") {
     LayoutComponent = Layouts[layoutName + "Viewscreen"] || LayoutComponent;
   }
@@ -106,7 +106,7 @@ const CardRenderer = props => {
     );
   }
   if (station.name === "Sound") {
-    return <SoundPlayer simulator={simulator} />;
+    return <SoundPlayer clientObj={client} simulator={simulator} />;
   }
   return (
     <LayoutComponent

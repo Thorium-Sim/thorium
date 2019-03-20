@@ -147,7 +147,7 @@ export default class TimelineConfig extends Component {
       variables: obj
     });
   }
-  _updateItem(type, e) {
+  _updateItem = (type, e) => {
     let obj = {
       timelineStepId: this.state.selectedTimelineStep,
       timelineItemId: this.state.selectedTimelineItem
@@ -185,7 +185,7 @@ export default class TimelineConfig extends Component {
       `,
       variables: obj
     });
-  }
+  };
   _addTimelineStep = async inserted => {
     const name = prompt("What is the name of the timeline step?");
     const mutation = gql`
@@ -611,8 +611,12 @@ export default class TimelineConfig extends Component {
                       <Label>Item Delay (in milliseconds)</Label>
                       <Input
                         type="number"
-                        value={item.delay}
-                        onChange={this._updateItem.bind(this, "delay")}
+                        defaultValue={item.delay}
+                        onBlur={e =>
+                          this._updateItem("delay", {
+                            target: { value: parseInt(e.target.value) }
+                          })
+                        }
                       />
                     </FormGroup>
                     <MacroWrapper
