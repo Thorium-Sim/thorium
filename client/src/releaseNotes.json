@@ -8,7 +8,8 @@
       "All currently playing sounds on the sound player are now removed when the flight is reset.",
       "Fixes the alert condition card.",
       "Remove the LayoutDefault.",
-      "Fixes adding decks and rooms in the simulator config."
+      "Fixes adding decks and rooms in the simulator config.",
+      "Fixes tactical map toggles for flash, WASD, etc."
     ]
   },
   "1.2.4": {
