@@ -29,7 +29,7 @@ const wsLink = ApolloLink.from([
         )
       );
     if (networkError) console.log(`[Network error]: ${networkError}`);
-    response.errors = null;
+    if (response) response.errors = null;
   }),
   new WebSocketLink({
     uri: `ws://${hostname}:${parseInt(window.location.port, 10) + 1}/graphql`,

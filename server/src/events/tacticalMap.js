@@ -26,7 +26,7 @@ App.on("duplicateTacticalMap", ({ id, name }) => {
   );
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
-App.on("loadTacticalMap", ({ id = uuid.v4(), newId, flightId, cb }) => {
+App.on("loadTacticalMap", ({ id, newId = uuid.v4(), flightId, cb }) => {
   const map = App.tacticalMaps.find(t => t.id === id);
   App.tacticalMaps.push(
     new Classes.TacticalMap(
@@ -43,7 +43,7 @@ App.on("loadTacticalMap", ({ id = uuid.v4(), newId, flightId, cb }) => {
     "tacticalMapUpdate",
     App.tacticalMaps.find(t => t.id === newId)
   );
-  cb(id);
+  cb(newId);
 });
 App.on("removeTacticalMap", ({ id }) => {
   App.tacticalMaps = App.tacticalMaps.filter(i => i.id !== id);

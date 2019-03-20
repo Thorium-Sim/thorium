@@ -15,7 +15,8 @@
       "Properly updates the name of the system in the list on the system config screen.",
       "Fixes the targeting coordinates buttons.",
       "If phaser charging exists on the same station, it will only show phaser firing on the targeting screen.",
-      "Fixes hold to charge phasers on targeting."
+      "Fixes hold to charge phasers on targeting.",
+      "Fixes tactical maps not loading correctly."
     ]
   },
   "1.2.4": {
