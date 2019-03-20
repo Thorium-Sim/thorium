@@ -73,7 +73,7 @@ class MacrosCore extends Component {
                     style={{ height: "20px" }}
                     defaultValue={action.delay}
                     onBlur={e => {
-                      const delay = e.target.value || 0;
+                      const delay = parseInt(e.target.value, 10) || 0;
                       this.setState(state => ({
                         actions: state.actions.map(a =>
                           a.id === action.id ? { ...a, delay } : a
