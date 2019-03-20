@@ -6,7 +6,8 @@
       "Fixes changing the reactor output in the simulator config.",
       "Fixes changing the delay when writing timeline steps.",
       "All currently playing sounds on the sound player are now removed when the flight is reset.",
-      "Fixes the alert condition card. "
+      "Fixes the alert condition card.",
+      "Remove the LayoutDefault."
     ]
   },
   "1.2.4": {
