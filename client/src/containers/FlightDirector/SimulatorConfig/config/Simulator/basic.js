@@ -55,7 +55,7 @@ export default ({ selectedSimulator, handleChange }) => (
           <option value="3">3</option>
           <option value="2">2</option>
           <option value="2">1</option>
-          <option value="p">P</option>
+          <option value="p">Cloak</option>
         </select>
       </fieldset>
 
