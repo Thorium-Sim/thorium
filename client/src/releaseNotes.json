@@ -10,7 +10,8 @@
       "Remove the LayoutDefault.",
       "Fixes adding decks and rooms in the simulator config.",
       "Fixes tactical map toggles for flash, WASD, etc.",
-      "Fixes the alert level selector in the simulator config."
+      "Fixes the alert level selector in the simulator config.",
+      "Removes a hover state on the station description field."
     ]
   },
   "1.2.4": {
