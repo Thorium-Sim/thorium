@@ -23,7 +23,7 @@ export default class Keypad extends Component {
     document.removeEventListener("keydown", this.handleKeydown, false);
   }
   render() {
-    const { keydown, clear, enter, margin } = this.props;
+    const { keydown, clear, enter } = this.props;
     return (
       <div className={`keypadButtons`}>
         <div onClick={() => keydown(7)} className="keypad alertBack">

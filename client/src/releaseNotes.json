@@ -13,7 +13,8 @@
       "Fixes the alert level selector in the simulator config.",
       "Removes a hover state on the station description field.",
       "Properly updates the name of the system in the list on the system config screen.",
-      "Fixes the targeting coordinates buttons."
+      "Fixes the targeting coordinates buttons.",
+      "If phaser charging exists on the same station, it will only show phaser firing on the targeting screen."
     ]
   },
   "1.2.4": {

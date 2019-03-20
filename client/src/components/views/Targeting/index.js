@@ -434,7 +434,10 @@ class Targeting extends Component {
             <div className="phaser-holder">
               {phasers &&
                 phasers.beams.map((p, i, arr) =>
-                  arr.length > 2 ? (
+                  arr.length > 2 ||
+                  this.props.station.cards.find(
+                    c => c.component === "PhaserCharging"
+                  ) ? (
                     <PhaserFire
                       key={p.id}
                       {...p}
@@ -482,7 +485,13 @@ class Targeting extends Component {
           <Col sm={6} className="torpedos" style={{ height: "100%" }}>
             <TorpedoLoading
               simulator={this.props.simulator}
-              maxLaunchers={2}
+              maxLaunchers={
+                this.props.station.cards.find(
+                  c => c.component === "TorpedoLoading"
+                )
+                  ? 1
+                  : 2
+              }
               targeting={true}
             />
           </Col>
