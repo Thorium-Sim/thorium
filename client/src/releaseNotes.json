@@ -4,7 +4,8 @@
       "Fixes an issue where you couldn't change the viewscreen from the core.",
       "Fixes issues with ambiance not being removable.",
       "Fixes changing the reactor output in the simulator config.",
-      "Fixes changing the delay when writing timeline steps."
+      "Fixes changing the delay when writing timeline steps.",
+      "All currently playing sounds on the sound player are now removed when the flight is reset."
     ]
   },
   "1.2.4": {

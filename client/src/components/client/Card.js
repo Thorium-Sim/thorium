@@ -106,7 +106,7 @@ const CardRenderer = props => {
     );
   }
   if (station.name === "Sound") {
-    return <SoundPlayer simulator={simulator} />;
+    return <SoundPlayer clientObj={client} simulator={simulator} />;
   }
   return (
     <LayoutComponent
