@@ -102,6 +102,7 @@ const TARGETING_QUERY = gql`
       }
       arc
       coolant
+      holdToCharge
     }
   }
 `;
@@ -177,6 +178,7 @@ const PHASERS_SUB = gql`
       }
       arc
       coolant
+      holdToCharge
     }
   }
 `;
@@ -284,7 +286,26 @@ class Targeting extends Component {
       mutation,
       variables
     });
+    if (phasers.holdToCharge) {
+      document.addEventListener("mouseup", this.stopCharging);
+    }
   }
+  stopCharging = () => {
+    document.removeEventListener("mouseup", this.stopCharging);
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+      mutation ChargePhaserBeam($id: ID!) {
+        stopChargingPhasers(id: $id)
+      }
+    `;
+    const variables = {
+      id: phasers.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   dischargePhasers(beamId) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
