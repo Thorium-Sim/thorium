@@ -259,20 +259,23 @@ App.on("updateSimulatorLighting", ({ id, lighting }) => {
     }, duration);
   }
 });
-App.on("updateSimulatorAmbiance", ({ id, ambiance }) => {
+App.on("updateSimulatorAmbiance", ({ id, ambiance, cb }) => {
   const sim = App.simulators.find(s => s.id === id);
   sim.updateAmbiance(ambiance);
   pubsub.publish("simulatorsUpdate", App.simulators);
+  cb && cb();
 });
-App.on("addSimulatorAmbiance", ({ id, name }) => {
+App.on("addSimulatorAmbiance", ({ id, name, cb }) => {
   const sim = App.simulators.find(s => s.id === id);
   sim.addAmbiance({ name });
   pubsub.publish("simulatorsUpdate", App.simulators);
+  cb && cb();
 });
-App.on("removeSimulatorAmbiance", ({ id, ambianceId }) => {
+App.on("removeSimulatorAmbiance", ({ id, ambianceId, cb }) => {
   const sim = App.simulators.find(s => s.id === id);
   sim.removeAmbiance(ambianceId);
   pubsub.publish("simulatorsUpdate", App.simulators);
+  cb && cb();
 });
 App.on(
   "addSimulatorStationCard",

@@ -1,4 +1,10 @@
 {
+  "1.2.5": {
+    "fixes": [
+      "Fixes an issue where you couldn't change the viewscreen from the core.",
+      "Fixes issues with ambiance not being removable."
+    ]
+  },
   "1.2.4": {
     "features": [
       "Makes it possible to change the opacity of planets, borders, and pings.",
