@@ -25,7 +25,7 @@ export default class Keypad extends Component {
   render() {
     const { keydown, clear, enter, margin } = this.props;
     return (
-      <div className={`keypadButtons card ${!margin ? "" : "margin"}`}>
+      <div className={`keypadButtons`}>
         <div onClick={() => keydown(7)} className="keypad alertBack">
           7
         </div>
