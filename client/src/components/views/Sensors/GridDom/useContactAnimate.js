@@ -121,32 +121,32 @@ function contactLocation(c) {
   return { ...c, position };
 }
 
-function handleMovement(
-  contacts,
-  movement = { x: 0, y: 0, z: 0 },
-  totalMovement = {}
-) {
-  const mConst = 100;
-  return contacts.reduce((prev, c) => {
-    const axesValue = axes.reduce(
-      (prev, a) => ({ ...prev, [a]: c.locked ? 0 : movement[a] / mConst }),
-      {}
-    );
-    return {
-      ...prev,
-      [c.id]: axesValue + (totalMovement[c.id] || 0)
-    };
-  }, {});
-}
+// function handleMovement(
+//   contacts,
+//   movement = { x: 0, y: 0, z: 0 },
+//   totalMovement = {}
+// ) {
+//   const mConst = 100;
+//   return contacts.reduce((prev, c) => {
+//     const axesValue = axes.reduce(
+//       (prev, a) => ({ ...prev, [a]: c.locked ? 0 : movement[a] / mConst }),
+//       {}
+//     );
+//     return {
+//       ...prev,
+//       [c.id]: axesValue + (totalMovement[c.id] || 0)
+//     };
+//   }, {});
+// }
 
-function contactMovement({ position, location, destination }, movement) {
-  if (!movement) return null;
-  return {
-    position: position + movement,
-    location: location + movement,
-    destination: destination + movement
-  };
-}
+// function contactMovement({ position, location, destination }, movement) {
+//   if (!movement) return null;
+//   return {
+//     position: position + movement,
+//     location: location + movement,
+//     destination: destination + movement
+//   };
+// }
 // Takes in sensor contacts and properly animates them,
 // including interpolating server values
 export default function useContactAnimate(contacts = [], movement) {
