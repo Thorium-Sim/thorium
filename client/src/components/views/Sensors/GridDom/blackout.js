@@ -69,9 +69,16 @@ class SensorsSegments extends Component {
     document.removeEventListener("keyup", this.keyup);
   }
   render() {
-    const { rings = 3, lines = 12, aligned = false, dimensions } = this.props;
+    const {
+      segments,
+      client,
+      sensors,
+      rings = 3,
+      lines = 12,
+      aligned = false,
+      dimensions
+    } = this.props;
 
-    const { segments, client, sensors } = this.props;
     const setSegment = (ring, line) => {
       const mutation = gql`
         mutation SensorsSegment(
