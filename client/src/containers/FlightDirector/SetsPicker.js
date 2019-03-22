@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Card } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -12,7 +12,7 @@ class SetsPicker extends Component {
       selector: ".set-picker",
       content: (
         <span>
-          This is the set picker. Sets connection stations to clients, making it
+          This is the set picker. Sets connect stations to clients, making it
           easy to immediately set all of the clients to the correct station for
           the flight. Click on the simulator name for the set you want to
           activate.

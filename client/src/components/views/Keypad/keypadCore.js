@@ -9,7 +9,7 @@ import {
   ListGroupItem
 } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { InputField } from "../../generic/core";
 
 class KeypadCore extends Component {
@@ -41,7 +41,7 @@ class KeypadCore extends Component {
     const { keypads } = this.props;
     const { selectedKeypad, changed } = this.state;
     const clients = this.props.clients
-      .filter(c => c.station && c.station.name === "RemoteAccess")
+      .filter(c => c.station && c.station.name === "Keypad")
       .map(c => keypads.find(k => k.id === c.id));
     const keypad = keypads.find(k => k.id === selectedKeypad);
     return clients.length === 0 ? (
@@ -67,7 +67,7 @@ class KeypadCore extends Component {
                       : null
                   }}
                 >
-                  {c.id}
+                  {c.label}
                 </ListGroupItem>
               ))}
             </ListGroup>
@@ -75,7 +75,7 @@ class KeypadCore extends Component {
           {keypad && (
             <Col sm={8}>
               <p>
-                <strong>Name:</strong> {keypad.id}
+                <strong>Name:</strong> {keypad.label}
               </p>
               <div>
                 <strong>Req. Code:</strong>

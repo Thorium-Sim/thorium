@@ -1,4 +1,107 @@
 {
+  "1.2.5": {
+    "fixes": [
+      "Fixes an issue where you couldn't change the viewscreen from the core.",
+      "Fixes issues with ambiance not being removable.",
+      "Fixes changing the reactor output in the simulator config.",
+      "Fixes changing the delay when writing timeline steps.",
+      "All currently playing sounds on the sound player are now removed when the flight is reset.",
+      "Fixes the alert condition card.",
+      "Remove the LayoutDefault.",
+      "Fixes adding decks and rooms in the simulator config.",
+      "Fixes tactical map toggles for flash, WASD, etc.",
+      "Fixes the alert level selector in the simulator config.",
+      "Removes a hover state on the station description field.",
+      "Properly updates the name of the system in the list on the system config screen.",
+      "Fixes the targeting coordinates buttons.",
+      "If phaser charging exists on the same station, it will only show phaser firing on the targeting screen.",
+      "Fixes hold to charge phasers on targeting.",
+      "Fixes tactical maps not loading correctly."
+    ]
+  },
+  "1.2.4": {
+    "features": [
+      "Makes it possible to change the opacity of planets, borders, and pings.",
+      "Adds a label to to the contact info box on Sensors."
+    ],
+    "fixes": [
+      "Removes an errant log that was showing up in the command line.",
+      "Disables sending buttons on the message sending screen when the message is in transit.",
+      "Fixes jumping to arbitrary timeline steps.",
+      "Fixes the self destruct code on core.",
+      "Fixes changing the dilithium stress rate.",
+      "Fixes changing alert condition from core.",
+      "Fixes adding cargo and items to the armory.",
+      "Fixes resetting a flight with a macro.",
+      "Fixes changing the speeds on thrusters.",
+      "Fixes changing ship radiation.",
+      "Fixes changing values for the reactor.",
+      "Fixes setting the tractor beam stress.",
+      "Fixes a crash when probe network probes are deleted."
+    ]
+  },
+  "1.2.3": {
+    "features": [
+      "Adds a notification when power is taken out of the stealth field."
+    ],
+    "fixes": [
+      "Make it so Tactical Map items speed can change.",
+      "Fixes the font size adjustment for tactical map items.",
+      "Better illustration of how the engine buttons are temporarily disabled on the engine control screen right after a button is pushed.",
+      "Fixes issues with the size and color of planets not being changable.",
+      "Automatically generated damage reports no longer require more damage team members than are available on the ship.",
+      "Widgets now hide when the station is offlined.",
+      "Fixes an issue where looping sounds won't cancel."
+    ]
+  },
+  "1.2.2": {
+    "fixes": ["Fixes issues with software panels"]
+  },
+  "1.2.1": {
+    "fixes": ["Fixes an issue where keyboards cannot be assigned."]
+  },
+  "1.2.0": {
+    "features": [
+      "Updates external package dependencies to the latest version.",
+      "Improves the back-end developer experience so new developers can work on Thorium better.",
+      "Add all existing macros to command line and triggers.",
+      "Add a notification explaining the alert condition cooldown.",
+      "Make it possible to allow crew members to check off their own objectives.",
+      "Make it possible to specify the position of docking ports on the ship image when configuring them. The docking port positions appear on the docking port screen.",
+      "Make it possible to specify screens for mobile devices in set configurations.",
+      "Make it possible to specify a viewscreen as secondary in a set config.",
+      "Make it possible to configure task macros as part of a task template.",
+      "Make it so long range comms can be partially decoded if the waves aren't totally lined up.",
+      "Adds the ability to damage exocomps, including task report generation for exocomps.",
+      "Adds a new core which shows thumbnails of the timeline items that change the viewscreen.",
+      "Adds a command line widget.",
+      "Make it so you can use the sensors history with the full-page sensors grid and scans card.",
+      "Adds additional fields to the ship core to better illustrate the ship's population.",
+      "Crew clicking on notifications will now properly open relevant widgets.",
+      "Add a label to indicate what the green text on the timeline means.",
+      "Add training for messaging.",
+      "Add training for the medical roster.",
+      "Add a notification for incoming internal calls.",
+      "Adds notifications for security deck doors and evac.",
+      "Makes it possible to connect multiple mobile devices of the same name.",
+      "Add a crack action for overlaying a glass crack effect on any card. Use the Actions Core to enable it on individual stations."
+    ],
+    "fixes": [
+      "Fixes an issue where command line commands don't work.",
+      "Fixes an issue with scrolling on the tactical maps screen.",
+      "Reactivation code buttons now match what is shown on the damage report screen.",
+      "Makes selected buttons easier to see on ShipStation layout.",
+      "Fixes issues with viewscreens not properly updating.",
+      "The card switcher is now locked with thrusters are being adjusted.",
+      "Fix a bunch of problems with triggers.",
+      "Fixes the issue with damage report formatting.",
+      "Fixes issues with the self destruct screen.",
+      "Fixes an issue where the subspace field power isn't correct when Thorium first starts.",
+      "Make it possible to edit the user list on the computer core.",
+      "The stealth field will no longer be activated if the system is damaged.",
+      "Fixes a couple of issues that pop up in timelines sometime."
+    ]
+  },
   "1.1.17": {
     "fixes": [
       "Fixes an issue where servers can crash when flights are deleted.",

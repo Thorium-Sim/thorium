@@ -13,7 +13,7 @@ import { FormattedMessage } from "react-intl";
 import Tour from "helpers/tourHelper";
 import { titleCase } from "change-case";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import uuid from "uuid";
 
 export function getProbeConfig(probes, probe) {

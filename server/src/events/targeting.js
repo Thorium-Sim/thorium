@@ -94,7 +94,8 @@ App.on("removeTarget", ({ id, targetId }) => {
   );
 });
 App.on("addTargetClass", ({ id, classInput }) => {
-  App.systems.find(s => s.id === id).addTargetClass(classInput);
+  const sys = App.systems.find(s => s.id === id);
+  sys && sys.addTargetClass(classInput);
   pubsub.publish(
     "targetingUpdate",
     App.systems.filter(s => s.type === "Targeting")

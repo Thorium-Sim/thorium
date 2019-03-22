@@ -30,7 +30,7 @@ App.on("sendMessage", args => {
   App.handleEvent(
     {
       simulatorId: messageClass.simulatorId,
-      component: "MessagingCore",
+      component: "NewMessagingCore",
       title: `Message: ${messageClass.sender} -> ${messageClass.destination}`,
       body: truncatedContent,
       color: "info"
@@ -53,7 +53,8 @@ App.on("sendMessage", args => {
           station: s.name,
           title: `New Message - ${messageClass.sender}`,
           body: truncatedContent,
-          color: "info"
+          color: "info",
+          relevantCards: ["Messages", "messages"]
         });
         pubsub.publish("widgetNotify", {
           widget: "messages",
@@ -68,7 +69,8 @@ App.on("sendMessage", args => {
       station: messageClass.destination,
       title: `New Message - ${messageClass.sender}`,
       body: truncatedContent,
-      color: "info"
+      color: "info",
+      relevantCards: ["Messages", "messages"]
     });
     pubsub.publish("widgetNotify", {
       widget: "messages",

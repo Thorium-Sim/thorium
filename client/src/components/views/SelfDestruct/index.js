@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import { Duration } from "luxon";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -50,7 +50,7 @@ class SelfDestruct extends Component {
   };
   activate = (time, force) => {
     const sim = this.props.data.simulators[0];
-    if (sim.ship.selfDestructTime && !force) {
+    if (sim.ship.selfDestructTime && sim.ship.selfDestructCode && !force) {
       return this.setState({
         modal: false,
         deactivating: true,
@@ -85,7 +85,7 @@ class SelfDestruct extends Component {
     const sim = this.props.data.simulators[0];
     const variables = {
       id: sim.id,
-      code
+      code: String(code)
     };
     this.props.client.mutate({
       mutation,
@@ -219,15 +219,35 @@ class SelfDestruct extends Component {
               </Button>
             </Col>
             <Col sm={6}>
-              <Button
-                color="success"
-                block
-                disabled={
-                  !password || !passwordVerify || password !== passwordVerify
-                }
+              <Mutation
+                mutation={gql`
+                  mutation SelfDestructCode($simulatorId: ID!, $code: String!) {
+                    setSelfDestructCode(simulatorId: $simulatorId, code: $code)
+                  }
+                `}
+                variables={{
+                  simulatorId: this.props.simulator.id,
+                  code: this.state.password
+                }}
               >
-                Set Code
-              </Button>
+                {action => (
+                  <Button
+                    color="success"
+                    block
+                    disabled={
+                      !password ||
+                      !passwordVerify ||
+                      password !== passwordVerify
+                    }
+                    onClick={() => {
+                      action();
+                      this.setState({ settingCode: false });
+                    }}
+                  >
+                    Set Code
+                  </Button>
+                )}
+              </Mutation>
             </Col>
           </Row>
         ) : (
@@ -302,40 +322,37 @@ class SelfDestructModal extends Component {
             </Col>
           )}
           <Col sm={12}>
-            {!setCode &&
-              (code ? code === inputCode : true) && (
-                <div>
-                  <h3>Enter Countdown Time:</h3>
-                  <div className="countdown-input">
-                    <Input
-                      type="text"
-                      value={hours}
-                      onChange={evt =>
-                        this.setState({ hours: evt.target.value })
-                      }
-                      maxLength={2}
-                    />
-                    <span className="divider">:</span>
-                    <Input
-                      type="text"
-                      value={minutes}
-                      onChange={evt =>
-                        this.setState({ minutes: evt.target.value })
-                      }
-                      maxLength={2}
-                    />
-                    <span className="divider">:</span>
-                    <Input
-                      type="text"
-                      value={seconds}
-                      onChange={evt =>
-                        this.setState({ seconds: evt.target.value })
-                      }
-                      maxLength={2}
-                    />
-                  </div>
+            {!setCode && (code ? code === inputCode : true) && (
+              <div>
+                <h3>Enter Countdown Time:</h3>
+                <div className="countdown-input">
+                  <Input
+                    type="text"
+                    value={hours}
+                    onChange={evt => this.setState({ hours: evt.target.value })}
+                    maxLength={2}
+                  />
+                  <span className="divider">:</span>
+                  <Input
+                    type="text"
+                    value={minutes}
+                    onChange={evt =>
+                      this.setState({ minutes: evt.target.value })
+                    }
+                    maxLength={2}
+                  />
+                  <span className="divider">:</span>
+                  <Input
+                    type="text"
+                    value={seconds}
+                    onChange={evt =>
+                      this.setState({ seconds: evt.target.value })
+                    }
+                    maxLength={2}
+                  />
                 </div>
-              )}
+              </div>
+            )}
           </Col>
           <Col sm={6}>
             <Button color="secondary" size="lg" block onClick={toggle}>

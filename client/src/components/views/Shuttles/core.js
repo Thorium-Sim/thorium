@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { TypingField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -147,9 +147,9 @@ class Shuttles extends Component {
                       this.updateShuttle(d.id, "direction", evt.target.value)
                     }
                   >
-                    <option value='unspecified'>Unspecified</option>
-                    <option value='arriving'>Arriving</option>
-                    <option value='departing'>Departing</option>
+                    <option value="unspecified">Unspecified</option>
+                    <option value="arriving">Arriving</option>
+                    <option value="departing">Departing</option>
                   </select>
                 </td>
                 <td>

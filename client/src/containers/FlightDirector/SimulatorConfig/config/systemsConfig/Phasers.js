@@ -1,7 +1,7 @@
 import React from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 import GenericSystemConfig from "./Generic";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Mutation, Query } from "react-apollo";
 
 const PHASER_QUERY = gql`
@@ -47,7 +47,10 @@ const Phasers = props => {
                         defaultValue={phaser.beams.length}
                         onMouseUp={evt => {
                           action({
-                            variables: { id, count: evt.target.value }
+                            variables: {
+                              id,
+                              count: parseInt(evt.target.value, 10)
+                            }
                           });
                         }}
                       />
@@ -110,7 +113,10 @@ const Phasers = props => {
                           defaultValue={phaser.chargeSpeed}
                           onMouseUp={evt => {
                             action({
-                              variables: { id, speed: evt.target.value }
+                              variables: {
+                                id,
+                                speed: parseFloat(evt.target.value)
+                              }
                             });
                           }}
                         />

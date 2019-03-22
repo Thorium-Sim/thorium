@@ -19,13 +19,25 @@ if (!clientId) {
 
 const hostname = window.location.hostname;
 
-const wsLink = new WebSocketLink({
-  uri: `ws://${hostname}:${parseInt(window.location.port, 10) +
-    2}/subscriptions`,
-  options: {
-    reconnect: true
-  }
-});
+const wsLink = ApolloLink.from([
+  onError(args => {
+    const { response, graphQLErrors, networkError } = args;
+    if (graphQLErrors)
+      graphQLErrors.map(({ message, locations, path }) =>
+        console.log(
+          `[Subscription Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        )
+      );
+    if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (response) response.errors = null;
+  }),
+  new WebSocketLink({
+    uri: `ws://${hostname}:${parseInt(window.location.port, 10) + 1}/graphql`,
+    options: {
+      reconnect: true
+    }
+  })
+]);
 
 const httpLink = ApolloLink.from([
   onError(({ graphQLErrors, networkError }) => {

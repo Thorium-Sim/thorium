@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, Input, Label, FormGroup, Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { ChromePicker } from "react-color";
 
 import ImageConfig from "./imageConfig";
@@ -151,7 +151,7 @@ export default class Bottom extends Component {
     return (
       <div style={{ height: "100%" }}>
         <Row style={{ height: "100%" }}>
-          <Col sm={3}>
+          <Col sm={3} style={{ height: "100%" }}>
             <h3>{selectedLayer.name}</h3>
             <Input
               type="select"
@@ -199,7 +199,7 @@ export default class Bottom extends Component {
               />
             </Fragment>
           </Col>
-          <Col sm={9}>
+          <Col sm={9} style={{ height: "100%" }}>
             {(() => {
               const Comp = configs[`${selectedLayer.type}Config`];
               return (

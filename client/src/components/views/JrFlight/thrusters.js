@@ -3,7 +3,7 @@ import { Row, Col } from "reactstrap";
 import { Asset } from "helpers/assets";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const Thrusters = props => {
   const { simulator, client, data } = props;

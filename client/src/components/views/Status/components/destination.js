@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Label } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 const DEST_SUB = gql`
@@ -55,8 +55,8 @@ class Destination extends Component {
           {nav.scanning
             ? "Calculating Course..."
             : onCourse
-              ? nav.destination
-              : "No Course"}
+            ? nav.destination
+            : "No Course"}
         </div>
       </div>
     );

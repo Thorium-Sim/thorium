@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from "react";
 import { Row, Col, Container, Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -299,7 +299,7 @@ export const PhaserBeam = ({
             <Button
               block
               color="primary"
-              onClick={chargePhasers.bind(this, id)}
+              onMouseDown={chargePhasers.bind(this, id)}
             >
               Charge
             </Button>

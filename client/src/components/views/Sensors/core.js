@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { OutputField, TypingField } from "../../generic/core";
 import { Button, Container, Row, Col } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import ScanPresets from "./ScanPresets";
 import { subscribe } from "helpers/pubsub";
@@ -101,7 +101,7 @@ class SensorsCore extends Component {
   sendScanResult = sensors => {
     let mutation;
     let variables;
-    if (sensors.history) {
+    if (sensors.history && this.state.selectedScan !== "basic-scan") {
       if (!this.state.selectedScan) return;
       mutation = gql`
         mutation ScanResponse($id: ID!, $scan: SensorScanInput!) {
@@ -287,6 +287,22 @@ class SensorsCore extends Component {
             {sensor.history && (
               <Col sm={4} style={{ height: "100%" }}>
                 <div className="scan-list">
+                  {sensor.scanning && (
+                    <p
+                      className={`${
+                        selectedScan === "basic-scan" ? "selected" : ""
+                      }`}
+                      onClick={() =>
+                        this.selectScan({
+                          id: "basic-scan",
+                          request: sensor.scanRequest
+                        })
+                      }
+                    >
+                      {sensor.scanRequest.substr(0, 15)}
+                      ... <FontAwesome name="refresh" spin />
+                    </p>
+                  )}
                   {sensor.scans
                     .concat()
                     .reverse()
@@ -315,10 +331,15 @@ class SensorsCore extends Component {
             >
               <OutputField
                 style={{ flexGrow: 2, minHeight: "44px" }}
-                alert={sensor.history ? scan && scan.scanning : sensor.scanning}
+                alert={
+                  sensor.history
+                    ? (scan && scan.scanning) ||
+                      (selectedScan === "basic-scan" && sensor.scanning)
+                    : sensor.scanning
+                }
               >
                 {(() => {
-                  if (sensor.history) {
+                  if (sensor.history && selectedScan !== "basic-scan") {
                     if (scan) {
                       const date = new Date(scan.timestamp);
                       return (

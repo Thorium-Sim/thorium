@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query, withApollo } from "react-apollo";
 import Sidebar from "./sidebar";
 import Bottom from "./bottom";
@@ -7,113 +7,118 @@ import Preview from "./preview";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const TACTICAL_MAP_DATA = `
-id
-name
-flight {
-  id
-}
-layers {
-  id
-  name
-  type
-  items {
+const fragment = gql`
+  fragment TacticalMapData on TacticalMap {
     id
-    layerId
-    font
-    label
-    fontSize
-    fontColor
-    icon
-    size
-    speed
-    velocity {
-      x
-      y
-      z
+    name
+    flight {
+      id
     }
-    location {
-      x
-      y
-      z
+    layers {
+      id
+      name
+      type
+      items {
+        id
+        layerId
+        font
+        label
+        fontSize
+        fontColor
+        icon
+        size
+        speed
+        velocity {
+          x
+          y
+          z
+        }
+        location {
+          x
+          y
+          z
+        }
+        destination {
+          x
+          y
+          z
+        }
+        rotation
+        opacity
+        flash
+        ijkl
+        wasd
+        thrusters
+        rotationMatch
+        thrusterControls {
+          rotation
+          reversed
+          matchRotation
+          up
+          down
+          left
+          right
+        }
+      }
+      paths {
+        id
+        layerId
+        start {
+          x
+          y
+          z
+        }
+        end {
+          x
+          y
+          z
+        }
+        c1 {
+          x
+          y
+          z
+        }
+        c2 {
+          x
+          y
+          z
+        }
+        color
+        width
+        arrow
+      }
+      image
+      color
+      labels
+      gridCols
+      gridRows
+      advance
+      asset
+      autoplay
+      loop
+      playbackSpeed
+      opacity
     }
-    destination {
-      x
-      y
-      z
-    }
-    rotation
-    opacity
-    flash
-    ijkl
-    wasd
-    thrusters
-    rotationMatch
-    thrusterControls {
-      rotation
-      reversed
-      matchRotation
-      up
-      down
-      left
-      right
-    }
+    frozen
+    template
   }
-  paths {
-    id
-    layerId
-    start {
-      x
-      y
-      z
-    }
-    end {
-      x
-      y
-      z
-    }
-    c1 {
-      x
-      y
-      z
-    }
-    c2 {
-      x
-      y
-      z
-    }
-    color
-    width
-    arrow
-  }
-  image
-  color
-  labels
-  gridCols
-  gridRows
-  advance
-  asset
-  autoplay
-  loop
-  playbackSpeed
-  opacity
-}
-frozen
-template`;
+`;
 const TACTICALMAP_SUB = gql`
-  subscription TacticalMapUpdate($id:ID!) {
-    tacticalMapUpdate(id:$id) {
-     ${TACTICAL_MAP_DATA}
+  subscription TacticalMapUpdate($id: ID!) {
+    tacticalMapUpdate(id: $id) {
+      ...TacticalMapData
     }
   }
+  ${fragment}
 `;
 
 const TACTICALMAP_QUERY = gql`
-  query TacticalMap($id:ID!) {
-    tacticalMap(id:$id) {
-      ${TACTICAL_MAP_DATA}
+  query TacticalMap($id: ID!) {
+    tacticalMap(id: $id) {
+      ...TacticalMapData
     }
   }
+  ${fragment}
 `;
 
 class TacticalMapCore extends Component {
@@ -142,11 +147,18 @@ class TacticalMapCore extends Component {
       layerId: object ? object.layerId : this.state.layerId,
       item: {
         id: object ? object.id : this.state.objectId,
-        [key]: value
+        [key]:
+          value === true
+            ? true
+            : value === false
+            ? false
+            : isNaN(Number(value))
+            ? value
+            : Number(value)
       }
     };
     if (speed) {
-      variables.item.speed = speed;
+      variables.item.speed = parseFloat(speed);
     }
     const mutation = gql`
       mutation UpdateTacticalItem(

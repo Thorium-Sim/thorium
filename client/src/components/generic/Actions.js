@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import uuid from "uuid";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import Spark from "components/views/Actions/spark";
 const synth = window.speechSynthesis;
@@ -61,55 +61,52 @@ const useSpark = () => {
 const ActionsMixin = ({ simulator, station, changeCard, children, client }) => {
   const { flash, doFlash } = useFlash();
   const { doSpark, Sparks } = useSpark();
-  useEffect(
-    () => {
-      const subscription = client
-        .subscribe({
-          query: ACTIONS_SUB,
-          variables: {
-            simulatorId: simulator.id,
-            stationId: station.name
+  useEffect(() => {
+    const subscription = client
+      .subscribe({
+        query: ACTIONS_SUB,
+        variables: {
+          simulatorId: simulator.id,
+          stationId: station.name
+        }
+      })
+      .subscribe({
+        next({
+          data: {
+            actionsUpdate: { action, message, voice, duration }
           }
-        })
-        .subscribe({
-          next({
-            data: {
-              actionsUpdate: { action, message, voice, duration }
-            }
-          }) {
-            switch (action) {
-              case "flash":
-                return doFlash(duration);
-              case "spark":
-                return doSpark(duration);
-              case "reload":
-                return window.location.reload();
-              case "speak":
-                const voices = synth.getVoices();
-                const words = new SpeechSynthesisUtterance(message);
-                if (voice) words.voice = voices.find(v => v.name === voice);
-                return synth.speak(words);
-              case "shutdown":
-              case "restart":
-              case "sleep":
-              case "quit":
-              case "beep":
-              case "freak":
-                return window.thorium.sendMessage({ action });
-              case "changeCard":
-                return changeCard(message);
-              default:
-                return;
-            }
-          },
-          error(err) {
-            console.error("err", err);
+        }) {
+          switch (action) {
+            case "flash":
+              return doFlash(duration);
+            case "spark":
+              return doSpark(duration);
+            case "reload":
+              return window.location.reload();
+            case "speak":
+              const voices = synth.getVoices();
+              const words = new SpeechSynthesisUtterance(message);
+              if (voice) words.voice = voices.find(v => v.name === voice);
+              return synth.speak(words);
+            case "shutdown":
+            case "restart":
+            case "sleep":
+            case "quit":
+            case "beep":
+            case "freak":
+              return window.thorium.sendMessage({ action });
+            case "changeCard":
+              return changeCard(message);
+            default:
+              return;
           }
-        });
-      return () => subscription.unsubscribe();
-    },
-    [simulator, station]
-  );
+        },
+        error(err) {
+          console.error("err", err);
+        }
+      });
+    return () => subscription.unsubscribe();
+  }, [simulator, station]);
   return (
     <div className={`actionsContainer ${flash ? "flash" : ""}`}>
       {children}

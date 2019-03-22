@@ -3,6 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import autoUpdate from "../bootstrap/autoupdate";
 import heap from "../helpers/heap";
 import GraphQLClient from "../helpers/graphqlClient";
+import tokenGenerator from "../helpers/tokenGenerator";
 
 App.on("toggleAutoUpdate", ({ autoUpdate }) => {
   App.autoUpdate = autoUpdate;
@@ -22,7 +23,7 @@ App.on("setTrackingPreference", ({ pref }) => {
 App.on("importTaskTemplates", () => {
   if (App.addedTaskTemplates) return;
   App.addedTaskTemplates = true;
-  const templates = require("../helpers/baseTaskTemplates.json");
+  const templates = require("../helpers/baseTaskTemplates.js")();
   App.taskTemplates = App.taskTemplates.concat(templates);
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
 });
@@ -42,7 +43,6 @@ App.on("setSpaceEdventuresToken", async ({ token, cb }) => {
       authorization: `Bearer ${token}`
     }
   });
-  console.log(center);
   if (center) {
     App.spaceEdventuresToken = token;
     cb(center);
@@ -69,3 +69,49 @@ const badgeAssign = ({
 };
 App.on("assignSpaceEdventuresBadge", badgeAssign);
 App.on("assignSpaceEdventuresMission", badgeAssign);
+App.on("getSpaceEdventuresLogin", async ({ token, context, cb }) => {
+  let res = {};
+  try {
+    res = await GraphQLClient.query({
+      query: `query GetUser($token:String!) {
+      user:userByToken(token:$token) {
+        id
+        profile {
+          name
+          displayName
+          rank {
+            name
+          }
+        }
+      }
+    }    
+    `,
+      variables: { token }
+    });
+  } catch (err) {
+    cb(err.message.replace("GraphQL error:", "Error:"));
+    return;
+  }
+  const {
+    data: { user }
+  } = res;
+  const clientId = context.clientId;
+  if (user) {
+    const client = App.clients.find(c => c.id === clientId);
+    client.login(
+      user.profile.displayName || user.profile.name || user.profile.rank.name
+    );
+    const flight = App.flights.find(f => f.id === client.flightId);
+    if (flight) {
+      flight.addSpaceEdventuresUser(client.id, user.id);
+      flight.loginClient({
+        id: client.id,
+        token: tokenGenerator(),
+        simulatorId: client.simulatorId,
+        name: client.station
+      });
+    }
+  }
+  pubsub.publish("clientChanged", App.clients);
+  cb();
+});

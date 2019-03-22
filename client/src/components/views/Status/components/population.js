@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { Label } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 const POP_SUB = gql`
   subscription Population($simulatorId: ID) {
-    crewUpdate(simulatorId: $simulatorId, killed: false) {
-      id
-    }
+    crewCountUpdate(simulatorId: $simulatorId, killed: false)
   }
 `;
 
@@ -24,11 +22,11 @@ const SIM_SUB = gql`
 
 class Population extends Component {
   render() {
-    if (this.props.data.loading || !this.props.data.crew) return null;
-    const crew = this.props.data.crew;
+    if (this.props.data.loading) return null;
+    const crewCount = this.props.data.crewCount || 0;
     if (!this.props.data.simulators) return null;
     const { ship } = this.props.data.simulators[0];
-    if (!ship || !crew || crew.length === 0) return null;
+    if (!ship) return null;
     return (
       <div>
         <SubscriptionHelper
@@ -51,7 +49,7 @@ class Population extends Component {
               variables: { simulatorId: this.props.simulator.id },
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {
-                  crew: subscriptionData.data.crewUpdate
+                  crewCount: subscriptionData.data.crewCountUpdate
                 });
               }
             })
@@ -59,7 +57,7 @@ class Population extends Component {
         />
         <Label>Crew Population</Label>
         <div className="status-field">
-          {crew.length + (ship.bridgeCrew ? ship.bridgeCrew : 0)}
+          {crewCount + (ship.bridgeCrew ? ship.bridgeCrew : 0)}
         </div>
       </div>
     );
@@ -67,10 +65,8 @@ class Population extends Component {
 }
 
 const POP_QUERY = gql`
-  query Population($simulatorId: ID, $simId: String) {
-    crew(simulatorId: $simulatorId, killed: false) {
-      id
-    }
+  query Population($simulatorId: ID!, $simId: String) {
+    crewCount(simulatorId: $simulatorId, killed: false)
     simulators(id: $simId) {
       id
       ship {

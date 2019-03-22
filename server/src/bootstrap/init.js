@@ -5,7 +5,6 @@ import path from "path";
 import https from "https";
 import ProgressBar from "progress";
 import importAssets from "../imports/asset/import";
-
 export const download = function(url, dest, callback) {
   const file = fs.createWriteStream(dest);
   https.get(url, function(res) {
@@ -47,9 +46,8 @@ export default () => {
         .join("")}`
     );
 
-    fs.exists(
-      snapshotDir,
-      exists => (exists ? resolve() : fs.mkdir(snapshotDir, () => resolve()))
+    fs.exists(snapshotDir, exists =>
+      exists ? resolve() : fs.mkdir(snapshotDir, () => resolve())
     );
   })
     .then(() => {
@@ -60,9 +58,8 @@ export default () => {
           assetDir = paths.userData + "/assets";
         }
         // Ensure the asset folder exists
-        fs.exists(
-          assetDir,
-          exists => (exists ? resolve() : fs.mkdir(assetDir, () => resolve()))
+        fs.exists(assetDir, exists =>
+          exists ? resolve() : fs.mkdir(assetDir, () => resolve())
         );
       });
     })

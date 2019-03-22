@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
 import { Button, Col, Row } from "reactstrap";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 import HeatBar from "./heatbar";
 
 export default withApollo(props => {
-  const { engines, setSpeed } = props;
+  const { engines, setSpeed, locked } = props;
   const applyCoolant = () => {
     const id = props.engines[0].id;
     const mutation = gql`
@@ -56,9 +56,13 @@ export default withApollo(props => {
               color="primary"
               className="speedBtn"
               disabled={
+                locked ||
+                engines[0].damage.damaged ||
                 engines[0].power.powerLevels.findIndex(
                   p => p > engines[0].power.power
-                ) > speedIndex
+                ) -
+                  1 <
+                  speedIndex
               }
               onClick={() => {
                 setSpeed(engines[0], speedIndex, engines, 0);

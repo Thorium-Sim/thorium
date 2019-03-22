@@ -3,11 +3,12 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
 
-App.on("newTacticalMap", ({ id, name, flightId }) => {
+App.on("newTacticalMap", ({ id = uuid.v4(), name, flightId, cb }) => {
   App.tacticalMaps.push(
     new Classes.TacticalMap({ id, name, flightId, template: !flightId })
   );
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+  cb(id);
 });
 App.on("updateTacticalMap", ({ id }) => {});
 App.on("freezeTacticalMap", ({ id, freeze }) => {
@@ -25,7 +26,7 @@ App.on("duplicateTacticalMap", ({ id, name }) => {
   );
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
-App.on("loadTacticalMap", ({ id, newId, flightId }) => {
+App.on("loadTacticalMap", ({ id, newId = uuid.v4(), flightId, cb }) => {
   const map = App.tacticalMaps.find(t => t.id === id);
   App.tacticalMaps.push(
     new Classes.TacticalMap(
@@ -42,6 +43,7 @@ App.on("loadTacticalMap", ({ id, newId, flightId }) => {
     "tacticalMapUpdate",
     App.tacticalMaps.find(t => t.id === newId)
   );
+  cb(newId);
 });
 App.on("removeTacticalMap", ({ id }) => {
   App.tacticalMaps = App.tacticalMaps.filter(i => i.id !== id);
@@ -85,7 +87,7 @@ App.on("removeTacticalMapLayer", ({ mapId, layerId }) => {
   );
 });
 
-App.on("addTacticalMapItem", ({ mapId, layerId, item }) => {
+App.on("addTacticalMapItem", ({ mapId, layerId, item, cb }) => {
   const map = App.tacticalMaps.find(t => t.id === mapId);
   map.addItemToLayer(layerId, item);
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
@@ -93,8 +95,9 @@ App.on("addTacticalMapItem", ({ mapId, layerId, item }) => {
     "tacticalMapUpdate",
     App.tacticalMaps.find(t => t.id === mapId)
   );
+  cb();
 });
-App.on("updateTacticalMapItem", ({ mapId, layerId, item }) => {
+App.on("updateTacticalMapItem", ({ mapId, layerId, item, cb }) => {
   const map = App.tacticalMaps.find(t => t.id === mapId);
   map.updateItemInLayer(layerId, item);
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
@@ -102,8 +105,9 @@ App.on("updateTacticalMapItem", ({ mapId, layerId, item }) => {
     "tacticalMapUpdate",
     App.tacticalMaps.find(t => t.id === mapId)
   );
+  cb();
 });
-App.on("removeTacticalMapItem", ({ mapId, layerId, itemId }) => {
+App.on("removeTacticalMapItem", ({ mapId, layerId, itemId, cb }) => {
   const map = App.tacticalMaps.find(t => t.id === mapId);
   map.removeItemFromLayer(layerId, itemId);
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
@@ -111,6 +115,7 @@ App.on("removeTacticalMapItem", ({ mapId, layerId, itemId }) => {
     "tacticalMapUpdate",
     App.tacticalMaps.find(t => t.id === mapId)
   );
+  cb();
 });
 
 App.on("addTacticalMapPath", ({ mapId, layerId, path }) => {

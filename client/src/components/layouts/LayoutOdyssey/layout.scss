@@ -14,6 +14,9 @@
     color: white;
   }
   font-family: "Bank Gothic";
+  input[type='password'], .txtPassword {
+    font-family: sans-serif !important;
+  }
   perspective: 900px;
   .perspectiveContainer {
     background-color: black;

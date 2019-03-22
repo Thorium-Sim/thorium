@@ -17,8 +17,9 @@ class Client extends Component {
       )
     )
       return;
-    this.props.playSound({ url: "/sciences.ogg" });
-
+    setTimeout(() => {
+      this.props.playSound({ url: "/sciences.ogg" });
+    }, 1000);
     // Start up any ambiance
     if (this.props.station.ambiance) {
       this.props.playSound({
@@ -26,6 +27,23 @@ class Client extends Component {
         looping: true,
         ambiance: true
       });
+    }
+    if (process.env.NODE_ENV === "production") {
+      document.addEventListener("keydown", e => {
+        const forbiddenKeys = ["q", "w", "s", "i", "f"];
+        if ((e.metaKey || e.ctrlKey) && forbiddenKeys.includes(e.key)) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        if (e.key === "Escape") {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
+      // Go to fullscreen on load
+      if (document.body.requestFullscreen) {
+        document.body.requestFullscreen().catch(() => {});
+      }
     }
   }
   componentDidUpdate(prevProps) {

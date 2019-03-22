@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Label } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 const SUB = gql`

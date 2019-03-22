@@ -1,37 +1,40 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import BattleCore from "./battle";
 
-const queryData = `
-id
-name
-icon
-hostile
-autoFire
-
+const fragment = gql`
+  fragment BattleCoreData on SensorContact {
+    id
+    name
+    icon
+    hostile
+    autoFire
+  }
 `;
 
 const QUERY = gql`
   query SensorContacts($simulatorId: ID!) {
-    sensorContacts(simulatorId: $simulatorId, hostile:true) {
-${queryData}
+    sensorContacts(simulatorId: $simulatorId, hostile: true) {
+      ...BattleCoreData
     }
-    sensors(simulatorId:$simulatorId, domain:"external") {
-    id
-    defaultSpeed
-    defaultHitpoints
-    missPercent
+    sensors(simulatorId: $simulatorId, domain: "external") {
+      id
+      defaultSpeed
+      defaultHitpoints
+      missPercent
+    }
   }
-  }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription SensorContactsUpdate($simulatorId: ID!) {
     sensorContactUpdate(simulatorId: $simulatorId, hostile: true) {
-${queryData}
+      ...BattleCoreData
     }
   }
+  ${fragment}
 `;
 
 const SENSORS_SUB = gql`

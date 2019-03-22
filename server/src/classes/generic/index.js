@@ -10,7 +10,7 @@ import processReport from "./processReport";
 import DamageStep from "./damageStep";
 import DamageTask from "./damageTask";
 
-class Damage {
+export class Damage {
   constructor(params = {}) {
     this.damaged = params.damaged || false;
     this.report = params.report || null;
@@ -125,6 +125,12 @@ export class System {
       .map(c => c.position)
       .filter(c => damagePositions.indexOf(c) > -1)
       .filter((c, i, a) => a.indexOf(c) === i);
+    const damageTeamCrewCount = crew
+      .filter(c => damagePositions.indexOf(c.position) > -1)
+      .reduce((prev, next) => {
+        prev[next.position] = prev[next.position] ? prev[next.position] + 1 : 1;
+        return prev;
+      }, {});
     const securityTeamCrew = crew
       .map(c => c.position)
       .filter(c => c.indexOf("Security") > -1);
@@ -308,13 +314,24 @@ export class System {
     const location = room
       ? `${room.name}, Deck ${deck.number}`
       : deck
-        ? `Deck ${deck.number}`
-        : randomLocation
-          ? `${randomLocation.name}, Deck ${randomLocationDeck.number}`
-          : "None";
+      ? `Deck ${deck.number}`
+      : randomLocation
+      ? `${randomLocation.name}, Deck ${randomLocationDeck.number}`
+      : "None";
     // First create our context object
     const context = Object.assign(
-      { damageSteps, simulator: sim, stations, deck, room, location, crew },
+      {
+        damageSteps,
+        simulator: sim,
+        stations,
+        deck,
+        room,
+        location,
+        crew,
+        damageTeamCrew,
+        damageTeamCrewCount,
+        securityTeamCrew
+      },
       this
     );
     const damageReport = damageSteps

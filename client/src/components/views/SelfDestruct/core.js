@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
@@ -26,10 +26,28 @@ const SELF_DESTRUCT_SUB = gql`
   }
 `;
 
+function checkNum(num) {
+  if (!num && num !== 0 && num !== "0") return false;
+  return true;
+}
 class SelfDestructCore extends Component {
   activate = time => {
-    if (!time && time !== 0) return;
-    const [hours, minutes, seconds] = time.split(":").map(t => parseInt(t, 10));
+    time = time.toString();
+    if (!time && time !== "0") return;
+    const [first, second, third] = time.split(":").map(t => parseInt(t, 10));
+    let [hours, minutes, seconds] = [0, 0, 0];
+    if (checkNum(first) && !checkNum(second) && !checkNum(third)) {
+      seconds = first;
+    }
+    if (checkNum(first) && checkNum(second) && !checkNum(third)) {
+      minutes = first;
+      seconds = second;
+    }
+    if (checkNum(first) && checkNum(second) && checkNum(third)) {
+      hours = first;
+      minutes = second;
+      seconds = third;
+    }
     const duration = Duration.fromObject({
       hours,
       minutes,
@@ -60,7 +78,7 @@ class SelfDestructCore extends Component {
     const sim = this.props.data.simulators[0];
     const variables = {
       id: sim.id,
-      code
+      code: String(code) || ""
     };
     this.props.client.mutate({
       mutation,
@@ -134,7 +152,7 @@ class SelfDestructCore extends Component {
           </InputField>
         </div>
         <InputField
-          prompt="What is the time in &quot;hh:mm:ss&quot; format?"
+          prompt='What is the time in "hh:mm:ss" format?'
           alert={selfDestructTime && selfDestructTime > 0}
           onClick={this.activate}
         >{`${padDigits(duration.hours, 2)}:${padDigits(

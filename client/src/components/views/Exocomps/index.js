@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import Tour from "helpers/tourHelper";
 import Exocomp from "./exocomp";
@@ -15,6 +15,9 @@ const EXOCOMP_SUB = gql`
       state
       parts
       completion
+      damage {
+        damaged
+      }
       destination {
         id
         displayName
@@ -208,6 +211,9 @@ const QUERY = gql`
       state
       parts
       completion
+      damage {
+        damaged
+      }
       logs {
         timestamp
         message

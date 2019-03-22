@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import {
   Container,
@@ -168,17 +168,11 @@ class Library extends Component {
               </div>
               <Input hidden type="file" onChange={this.importEntries} />
             </Label>
-            {entry &&
-              entry.id && (
-                <Button
-                  color="danger"
-                  size="sm"
-                  block
-                  onClick={this.removeEntry}
-                >
-                  Delete Entry
-                </Button>
-              )}
+            {entry && entry.id && (
+              <Button color="danger" size="sm" block onClick={this.removeEntry}>
+                Delete Entry
+              </Button>
+            )}
             <Button
               size="sm"
               block

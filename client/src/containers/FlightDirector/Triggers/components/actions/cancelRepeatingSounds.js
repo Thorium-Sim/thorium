@@ -22,6 +22,8 @@ CancelRepeatingSounds.propTypes = {
 export default {
   name: "cancelLoopingSounds",
   category: "Actions",
+  hiddenInLibrary: true,
+
   component: CancelRepeatingSounds,
   outputs: [],
   inputs: [

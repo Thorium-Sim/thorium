@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import keycode from "keycode";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 import "./style.scss";
 

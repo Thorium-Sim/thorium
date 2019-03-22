@@ -2,7 +2,7 @@ import React from "react";
 import { FormGroup, Input, Label } from "reactstrap";
 import { Mutation } from "react-apollo";
 import { GENERIC_QUERY } from "./index";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const Power = ({ id, simulatorId, heatRate }) => {
   return (

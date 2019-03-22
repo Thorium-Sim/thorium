@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Container } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "helpers/tourHelper";
@@ -102,6 +102,7 @@ const TARGETING_QUERY = gql`
       }
       arc
       coolant
+      holdToCharge
     }
   }
 `;
@@ -177,6 +178,7 @@ const PHASERS_SUB = gql`
       }
       arc
       coolant
+      holdToCharge
     }
   }
 `;
@@ -284,7 +286,26 @@ class Targeting extends Component {
       mutation,
       variables
     });
+    if (phasers.holdToCharge) {
+      document.addEventListener("mouseup", this.stopCharging);
+    }
   }
+  stopCharging = () => {
+    document.removeEventListener("mouseup", this.stopCharging);
+    const phasers = this.props.data.phasers[0];
+    const mutation = gql`
+      mutation ChargePhaserBeam($id: ID!) {
+        stopChargingPhasers(id: $id)
+      }
+    `;
+    const variables = {
+      id: phasers.id
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  };
   dischargePhasers(beamId) {
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
@@ -433,31 +454,33 @@ class Targeting extends Component {
             <DamageOverlay system={phasers} message="Phasers Offline" />
             <div className="phaser-holder">
               {phasers &&
-                phasers.beams.map(
-                  (p, i, arr) =>
-                    arr.length > 2 ? (
-                      <PhaserFire
-                        key={p.id}
-                        {...p}
-                        disabled={this.state.disabledPhasers[p.id]}
-                        index={i + 1}
-                        firePhasers={this.firePhasers.bind(this)}
-                        coolPhasers={this.coolPhasers.bind(this)}
-                      />
-                    ) : (
-                      <PhaserBeam
-                        key={p.id}
-                        {...p}
-                        name={phasers.displayName || phasers.name}
-                        disabled={this.state.disabledPhasers[p.id]}
-                        index={i + 1}
-                        chargePhasers={this.chargePhasers.bind(this)}
-                        dischargePhasers={this.dischargePhasers.bind(this)}
-                        coolPhasers={this.coolPhasers.bind(this)}
-                        firePhasers={this.firePhasers.bind(this)}
-                        targeting={true}
-                      />
-                    )
+                phasers.beams.map((p, i, arr) =>
+                  arr.length > 2 ||
+                  this.props.station.cards.find(
+                    c => c.component === "PhaserCharging"
+                  ) ? (
+                    <PhaserFire
+                      key={p.id}
+                      {...p}
+                      disabled={this.state.disabledPhasers[p.id]}
+                      index={i + 1}
+                      firePhasers={this.firePhasers.bind(this)}
+                      coolPhasers={this.coolPhasers.bind(this)}
+                    />
+                  ) : (
+                    <PhaserBeam
+                      key={p.id}
+                      {...p}
+                      name={phasers.displayName || phasers.name}
+                      disabled={this.state.disabledPhasers[p.id]}
+                      index={i + 1}
+                      chargePhasers={this.chargePhasers.bind(this)}
+                      dischargePhasers={this.dischargePhasers.bind(this)}
+                      coolPhasers={this.coolPhasers.bind(this)}
+                      firePhasers={this.firePhasers.bind(this)}
+                      targeting={true}
+                    />
+                  )
                 )}
             </div>
             <Row>
@@ -469,7 +492,7 @@ class Targeting extends Component {
           </Col>
         </Row>
         <Row className="target-area flex-max">
-          <Col sm={7}>
+          <Col sm={6} style={{ paddingTop: "20px" }}>
             <TargetControls
               targetedContact={
                 targeting.coordinateTargeting
@@ -480,10 +503,16 @@ class Targeting extends Component {
               targetSystem={this.targetSystem}
             />
           </Col>
-          <Col sm={5} className="torpedos" style={{ height: "100%" }}>
+          <Col sm={6} className="torpedos" style={{ height: "100%" }}>
             <TorpedoLoading
               simulator={this.props.simulator}
-              maxLaunchers={1}
+              maxLaunchers={
+                this.props.station.cards.find(
+                  c => c.component === "TorpedoLoading"
+                )
+                  ? 1
+                  : 2
+              }
               targeting={true}
             />
           </Col>

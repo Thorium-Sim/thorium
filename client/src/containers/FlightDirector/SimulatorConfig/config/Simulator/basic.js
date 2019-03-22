@@ -1,7 +1,7 @@
 import React from "react";
 import LayoutList from "components/layouts";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const Layouts = Object.keys(LayoutList).filter(
   s => s.indexOf("Viewscreen") === -1
@@ -55,13 +55,13 @@ export default ({ selectedSimulator, handleChange }) => (
           <option value="3">3</option>
           <option value="2">2</option>
           <option value="2">1</option>
-          <option value="p">P</option>
+          <option value="p">Cloak</option>
         </select>
       </fieldset>
 
       <Query
         query={gql`
-          query {
+          query Thorium {
             thorium {
               spaceEdventuresCenter {
                 simulators {

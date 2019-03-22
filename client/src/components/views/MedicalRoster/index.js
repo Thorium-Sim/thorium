@@ -1,19 +1,21 @@
 import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Roster from "./roster";
 import "./style.scss";
 
-const queryData = `
-id
-firstName
-lastName
-age
-rank
-name
-gender
-position
+const fragment = gql`
+  fragment CrewData on Crew {
+    id
+    firstName
+    lastName
+    age
+    rank
+    name
+    gender
+    position
+  }
 `;
 
 const QUERY = gql`
@@ -21,31 +23,34 @@ const QUERY = gql`
     sickbay(simulatorId: $simulatorId) {
       id
       sickbayRoster {
-        ${queryData}
+        ...CrewData
       }
     }
     crew(simulatorId: $simulatorId) {
-      ${queryData}
+      ...CrewData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
-subscription Sickbay($simulatorId: ID!) {
-  sickbayUpdate(simulatorId:$simulatorId) {
-    id
-    sickbayRoster {
-      ${queryData}
+  subscription Sickbay($simulatorId: ID!) {
+    sickbayUpdate(simulatorId: $simulatorId) {
+      id
+      sickbayRoster {
+        ...CrewData
+      }
     }
   }
-}
+  ${fragment}
 `;
 
 const CREWSUB = gql`
-subscription CrewSub($simulatorId: ID!) {
-  crewUpdate(simulatorId:$simulatorId) {
-    ${queryData}
+  subscription CrewSub($simulatorId: ID!) {
+    crewUpdate(simulatorId: $simulatorId) {
+      ...CrewData
+    }
   }
-}
+  ${fragment}
 `;
 
 class TemplateData extends Component {

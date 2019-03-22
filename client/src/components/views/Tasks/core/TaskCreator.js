@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
 import { Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ConfigureTask from "./ConfigureTask";
 import ConfigureMacro from "./ConfigureMacro";
 import "./style.scss";
@@ -72,8 +72,8 @@ class TasksCore extends Component {
             macro={configureMacro}
             update={action =>
               this.setState(state => ({
-                macros: state.macros.map(
-                  m => (m.id === configureMacroId ? { ...m, ...action } : m)
+                macros: state.macros.map(m =>
+                  m.id === configureMacroId ? { ...m, ...action } : m
                 )
               }))
             }

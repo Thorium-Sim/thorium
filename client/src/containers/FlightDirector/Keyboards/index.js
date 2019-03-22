@@ -9,7 +9,7 @@ import {
   Input
 } from "reactstrap";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import KeyboardList from "./keyboardList";
 import KeyboardControl from "./keyboardControl";
 const KEYBOARD_QUERY = gql`

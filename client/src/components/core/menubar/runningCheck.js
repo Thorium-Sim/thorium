@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Button } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const RunningCheck = ({ flight }) =>
   flight && !flight.running ? (

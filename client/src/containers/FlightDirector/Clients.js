@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Col, Row, Container } from "reactstrap";
-import gql from "graphql-tag";
-import { graphql, withApollo, Query } from "react-apollo";
+import gql from "graphql-tag.macro";
+import { graphql, withApollo } from "react-apollo";
 import { DateTime } from "luxon";
 import { titleCase } from "change-case";
 import FontAwesome from "react-fontawesome";
@@ -29,6 +29,7 @@ const CLIENT_CHANGE_QUERY = gql`
   subscription ClientChanged {
     clientChanged {
       id
+      label
       mobile
       cards
       flight {
@@ -45,6 +46,7 @@ const CLIENT_CHANGE_QUERY = gql`
         name
         alertlevel
         layout
+        interfaces
         stations {
           name
         }
@@ -58,8 +60,54 @@ const CLIENT_CHANGE_QUERY = gql`
     }
   }
 `;
+const Keyboards = ({ keyboards = [] }) => {
+  if (keyboards.length === 0) {
+    return null;
+  }
+  return (
+    <Fragment>
+      <option disabled>──────────</option>
+      <optgroup label="Keyboards">
+        {keyboards.map(k => (
+          <option key={k.id} value={`keyboard:${k.id}`}>
+            {k.name}
+          </option>
+        ))}
+      </optgroup>
+    </Fragment>
+  );
+};
+const Interfaces = ({ p, interfaces = [] }) => {
+  const simInterfaces = p.simulator.interfaces
+    .map(i => interfaces.find(ii => ii.id === i))
+    .filter(Boolean);
+  if (simInterfaces.length === 0) {
+    return null;
+  }
+  return (
+    <Fragment>
+      <option disabled>──────────</option>
+      <optgroup label="Interfaces">
+        {simInterfaces.map(i => (
+          <option key={i.id} value={`interface-id:${i.id}`}>
+            {i.name}
+          </option>
+        ))}
+      </optgroup>
+    </Fragment>
+  );
+};
 
-const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
+const ClientRow = ({
+  p,
+  index,
+  removeClient,
+  select,
+  flights,
+  flightId,
+  interfaces,
+  keyboards
+}) => {
   const thisFlight = flights.find(f => f.id === flightId);
   return (
     <tr key={`flight-${p.id}-${index}`}>
@@ -69,7 +117,7 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
           className="text-danger remove-client"
           onClick={() => removeClient(p.id)}
         />{" "}
-        {`${p.id}`}
+        {p.label}
       </td>
       <td data-testid="flight-picker-cell">
         <select
@@ -90,15 +138,17 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
           )}
           <optgroup label="Other Flights">
             {flights ? (
-              flights.filter(f => f.id !== flightId).map(f => {
-                return (
-                  <option key={`flight-${p.id}-${f.id}`} value={f.id}>
-                    {`${f.name}: ${DateTime.fromJSDate(
-                      new Date(f.date)
-                    ).toFormat("M/d/y hh:mma")}`}
-                  </option>
-                );
-              })
+              flights
+                .filter(f => f.id !== flightId)
+                .map(f => {
+                  return (
+                    <option key={`flight-${p.id}-${f.id}`} value={f.id}>
+                      {`${f.name}: ${DateTime.fromJSDate(
+                        new Date(f.date)
+                      ).toFormat("M/d/y hh:mma")}`}
+                    </option>
+                  );
+                })
             ) : (
               <option disabled>No Flights</option>
             )}
@@ -159,34 +209,8 @@ const ClientRow = ({ p, index, removeClient, select, flights, flightId }) => {
                 <option value={"Viewscreen"}>Viewscreen</option>
                 <option value={"Sound"}>Sound</option>
                 <option value={"Blackout"}>Blackout</option>
-                <Query
-                  query={gql`
-                    query Keyboards {
-                      keyboard {
-                        id
-                        name
-                      }
-                    }
-                  `}
-                >
-                  {({ loading, data: { keyboard } }) => {
-                    if (loading || keyboard.length === 0) {
-                      return null;
-                    }
-                    return (
-                      <Fragment>
-                        <option disabled>──────────</option>
-                        <optgroup label="Keyboards">
-                          {keyboard.map(k => (
-                            <option key={k.id} value={`keyboard:${k.id}`}>
-                              {k.name}
-                            </option>
-                          ))}
-                        </optgroup>
-                      </Fragment>
-                    );
-                  }}
-                </Query>
+                <Keyboards p={p} keyboards={keyboards} />
+                <Interfaces p={p} interfaces={interfaces} />
               </Fragment>
             )}
           </select>
@@ -273,19 +297,28 @@ class Clients extends Component {
     }
   ];
   select = (p, type, e) => {
-    let m = null;
+    let mutation = null;
     if (type === "flight") {
-      m = "clientSetFlight(client: $client, flightId: $id)";
+      mutation = gql`
+        mutation UpdateClient($client: ID!, $id: ID!) {
+          clientSetFlight(client: $client, flightId: $id)
+        }
+      `;
     }
     if (type === "simulator") {
-      m = "clientSetSimulator(client: $client, simulatorId: $id)";
+      mutation = gql`
+        mutation UpdateClient($client: ID!, $id: ID!) {
+          clientSetSimulator(client: $client, simulatorId: $id)
+        }
+      `;
     }
     if (type === "station") {
-      m = "clientSetStation(client: $client, stationName: $id)";
+      mutation = gql`
+        mutation UpdateClient($client: ID!, $id: ID!) {
+          clientSetStation(client: $client, stationName: $id)
+        }
+      `;
     }
-    const mutation = gql`mutation UpdateClient($client: ID!, $id: ID!) {
-    ${m} 
-    }`;
     const obj = {
       client: p.id,
       id: e.target.value
@@ -319,6 +352,7 @@ class Clients extends Component {
       this.props.history.push("/");
       return null;
     }
+    const { keyboard, interfaces } = this.props.data;
     return (
       <Container>
         <SubscriptionHelper
@@ -354,7 +388,7 @@ class Clients extends Component {
             }}
           >
             <h4>Clients</h4>
-            <table className="table table-striped table-hover table-sm client-table">
+            <table className="table table-striped table-sm client-table">
               <thead>
                 <tr>
                   <th>Client Name</th>
@@ -383,6 +417,8 @@ class Clients extends Component {
                             removeClient={this.removeClient}
                             select={this.select}
                             flights={this.props.data.flights}
+                            interfaces={interfaces}
+                            keyboards={keyboard}
                           />
                         ))}
                       <tr>
@@ -407,6 +443,8 @@ class Clients extends Component {
                             select={this.select}
                             flightId={this.props.flightId}
                             flights={this.props.data.flights}
+                            interfaces={interfaces}
+                            keyboards={keyboard}
                           />
                         ))}
                     </Fragment>
@@ -427,6 +465,7 @@ const CLIENTS_QUERY = gql`
   query Clients {
     clients {
       id
+      label
       mobile
       cards
       flight {
@@ -443,6 +482,7 @@ const CLIENTS_QUERY = gql`
         name
         alertlevel
         layout
+        interfaces
         stations {
           name
         }
@@ -453,6 +493,14 @@ const CLIENTS_QUERY = gql`
       loginName
       loginState
       training
+    }
+    interfaces {
+      id
+      name
+    }
+    keyboard {
+      id
+      name
     }
     flights {
       id

@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Button } from "reactstrap";
 
 const ReportViewTask = ({ system, stepDamage }) => {
@@ -28,50 +28,49 @@ ${task.instructions}`}
 ${t.instructions}`}
       </p>
 
-      {!t.verified &&
-        t.id === task.id && (
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <Mutation
-              mutation={gql`
-                mutation AssignTask($id: ID!, $stepId: ID!, $station: String) {
-                  assignTaskReportStep(
-                    id: $id
-                    stepId: $stepId
-                    station: $station
-                  )
-                }
-              `}
-              variables={{
-                id: system.id,
-                stepId: t.id,
-                station: t.station
-              }}
-            >
-              {action => (
-                <Button color="warning" onClick={action} disabled={t.assigned}>
-                  Assign To {t.station}
-                </Button>
-              )}
-            </Mutation>
-            <Mutation
-              mutation={gql`
-                mutation VerifyTask($id: ID!, $stepId: ID!) {
-                  requestVerifyTaskReportStep(id: $id, stepId: $stepId)
-                }
-              `}
-              variables={{
-                id: system.id,
-                stepId: t.id
-              }}
-            >
-              {action => (
-                <Button onClick={action} disabled={t.verifyRequested}>
-                  {t.verifyRequested ? "Verifying" : "Verify"} Step
-                </Button>
-              )}
-            </Mutation>
-          </div>
-        )}
+      {!t.verified && t.id === task.id && (
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <Mutation
+            mutation={gql`
+              mutation AssignTask($id: ID!, $stepId: ID!, $station: String) {
+                assignTaskReportStep(
+                  id: $id
+                  stepId: $stepId
+                  station: $station
+                )
+              }
+            `}
+            variables={{
+              id: system.id,
+              stepId: t.id,
+              station: t.station
+            }}
+          >
+            {action => (
+              <Button color="warning" onClick={action} disabled={t.assigned}>
+                Assign To {t.station}
+              </Button>
+            )}
+          </Mutation>
+          <Mutation
+            mutation={gql`
+              mutation VerifyTask($id: ID!, $stepId: ID!) {
+                requestVerifyTaskReportStep(id: $id, stepId: $stepId)
+              }
+            `}
+            variables={{
+              id: system.id,
+              stepId: t.id
+            }}
+          >
+            {action => (
+              <Button onClick={action} disabled={t.verifyRequested}>
+                {t.verifyRequested ? "Verifying" : "Verify"} Step
+              </Button>
+            )}
+          </Mutation>
+        </div>
+      )}
     </div>
   ));
 };

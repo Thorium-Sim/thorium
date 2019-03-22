@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
 import { Button, Row, Col } from "reactstrap";
@@ -255,6 +255,7 @@ gamepadLoop(){
         case "onDragStart":
           obj[which] = newPosition;
           this.setState(obj);
+          document.body.classList.add("switcherLocked");
           break;
         case "onDrag":
           const clientX = e.clientX || e.clientX === 0 || e.touches[0].clientX;
@@ -330,6 +331,7 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDragStop":
+          document.body.classList.remove("switcherLocked");
           if (!this.state[which]) {
             throw new Error("onDragEnd called before onDragStart.");
           }
@@ -565,37 +567,36 @@ gamepadLoop(){
             </Col>
           </Row>
           <Row className="indicatorCircles">
-            {!this.props.data.loading &&
-              thruster.rotation && (
-                <Col lg={{ size: 6, offset: 3 }}>
-                  <Row>
-                    <IndicatorCircle
-                      name={`Yaw: ${Math.min(
-                        359,
-                        Math.max(0, Math.round(thruster.rotation.yaw))
-                      )}`}
-                      required={thruster.rotationRequired.yaw}
-                      current={thruster.rotation.yaw}
-                    />
-                    <IndicatorCircle
-                      name={`Pitch: ${Math.min(
-                        359,
-                        Math.max(0, Math.round(thruster.rotation.pitch))
-                      )}`}
-                      required={thruster.rotationRequired.pitch}
-                      current={thruster.rotation.pitch}
-                    />
-                    <IndicatorCircle
-                      name={`Roll: ${Math.min(
-                        359,
-                        Math.max(0, Math.round(thruster.rotation.roll))
-                      )}`}
-                      required={thruster.rotationRequired.roll}
-                      current={thruster.rotation.roll}
-                    />
-                  </Row>
-                </Col>
-              )}
+            {!this.props.data.loading && thruster.rotation && (
+              <Col lg={{ size: 6, offset: 3 }}>
+                <Row>
+                  <IndicatorCircle
+                    name={`Yaw: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.yaw))
+                    )}`}
+                    required={thruster.rotationRequired.yaw}
+                    current={thruster.rotation.yaw}
+                  />
+                  <IndicatorCircle
+                    name={`Pitch: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.pitch))
+                    )}`}
+                    required={thruster.rotationRequired.pitch}
+                    current={thruster.rotation.pitch}
+                  />
+                  <IndicatorCircle
+                    name={`Roll: ${Math.min(
+                      359,
+                      Math.max(0, Math.round(thruster.rotation.roll))
+                    )}`}
+                    required={thruster.rotationRequired.roll}
+                    current={thruster.rotation.roll}
+                  />
+                </Row>
+              </Col>
+            )}
           </Row>
         </div>
         <Tour steps={trainingSteps} client={this.props.clientObj} />

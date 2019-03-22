@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, Row, Col, Container } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, compose } from "react-apollo";
 import Engine1 from "./engine-1";
 import Engine2 from "./engine-2";
@@ -8,32 +8,36 @@ import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const updateData = `
-id
-name
-displayName
-power {
-  power
-  powerLevels
-}
-damage {
-  damaged
-  report
-}
-speeds {
-  text
-  number
-}
-heat
-speed
-coolant
-on`;
+const fragment = gql`
+  fragment EngineData on Engine {
+    id
+    name
+    displayName
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    speeds {
+      text
+      number
+    }
+    heat
+    speed
+    coolant
+    on
+  }
+`;
 const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
-${updateData}
+      ...EngineData
     }
   }
+  ${fragment}
 `;
 
 const HEATCHANGE_SUB = gql`
@@ -47,7 +51,11 @@ const HEATCHANGE_SUB = gql`
 `;
 
 class EngineControl extends Component {
+  state = {};
   interactionTime = 0;
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
   speedBarStyle(array, speed, engineCount, index) {
     let width = (speed / array.length) * 100;
     if (engineCount - 1 === index) {
@@ -63,10 +71,13 @@ class EngineControl extends Component {
     if (
       !engine.damage.damaged &&
       engine.power.power >= engine.power.powerLevels[0] &&
-      Date.now() - this.interactionTime > 1000
+      this.state.locked !== true
     ) {
       this.props.setSpeed({ id: engine.id, speed: speed + 1, on: true });
-      this.interactionTime = Date.now();
+      this.setState({ locked: true });
+      this.timeout = setTimeout(() => {
+        this.setState({ locked: false });
+      }, 1000);
     }
   }
   fullStop() {
@@ -112,14 +123,13 @@ class EngineControl extends Component {
                   return previousResult;
                 }
                 return {
-                  engines: previousResult.engines.map(
-                    (e, i) =>
-                      i === engineIndex
-                        ? Object.assign({}, e, {
-                            heat: subscriptionData.data.heatChange.heat,
-                            coolant: subscriptionData.data.heatChange.coolant
-                          })
-                        : e
+                  engines: previousResult.engines.map((e, i) =>
+                    i === engineIndex
+                      ? Object.assign({}, e, {
+                          heat: subscriptionData.data.heatChange.heat,
+                          coolant: subscriptionData.data.heatChange.coolant
+                        })
+                      : e
                   )
                 };
               }
@@ -185,10 +195,18 @@ class EngineControl extends Component {
         </Row>
         <Row className="flex-max">
           {engines.length === 1 && (
-            <Engine1 engines={engines} setSpeed={this.setSpeed.bind(this)} />
+            <Engine1
+              engines={engines}
+              setSpeed={this.setSpeed.bind(this)}
+              locked={this.state.locked}
+            />
           )}
           {engines.length === 2 && (
-            <Engine2 engines={engines} setSpeed={this.setSpeed.bind(this)} />
+            <Engine2
+              engines={engines}
+              setSpeed={this.setSpeed.bind(this)}
+              locked={this.state.locked}
+            />
           )}
         </Row>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
@@ -231,9 +249,10 @@ const trainingSteps = [
 const ENGINE_QUERY = gql`
   query getEngines($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
-      ${updateData}
+      ...EngineData
     }
   }
+  ${fragment}
 `;
 
 const SET_SPEED = gql`

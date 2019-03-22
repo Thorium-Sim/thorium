@@ -11,29 +11,27 @@ import {
   Input,
   Label
 } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import playSound from "components/generic/SoundPlayer";
 import SoundPicker from "helpers/soundPicker";
 
-const queryData = `
-id
-ambiance {
-  id
-  name
-  asset
-  volume
-  channel
-  playbackRate
-}`;
-
 const QUERY = gql`
-query Ambiance($id:String!) {
-  simulators(id:$id) {
-    ${queryData}
+  query Ambiance($id: String!) {
+    simulators(id: $id) {
+      id
+      ambiance {
+        id
+        name
+        asset
+        volume
+        channel
+        playbackRate
+      }
+    }
   }
-}`;
+`;
 
 const AmbianceConfig = ({
   simulatorId,
@@ -281,8 +279,9 @@ class AmbianceComp extends Component {
                           return;
                         action({
                           variables: { id, ambianceId: selectedAmbiance }
+                        }).then(() => {
+                          selectAmbiance(null);
                         });
-                        this.setState({ selectedAmbiance: null });
                       }}
                     >
                       Delete Ambiance
@@ -300,7 +299,10 @@ class AmbianceComp extends Component {
             </p>
             {selectedAmbiance && (
               <AmbianceConfigWrapped
-                key={ambiance.find(s => s.id === selectedAmbiance).id}
+                key={
+                  ambiance.find(s => s.id === selectedAmbiance) &&
+                  ambiance.find(s => s.id === selectedAmbiance).id
+                }
                 simulatorId={id}
                 {...ambiance.find(s => s.id === selectedAmbiance)}
               />

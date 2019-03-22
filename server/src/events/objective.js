@@ -23,3 +23,9 @@ App.on("completeObjective", ({ id, title, cancel, simulatorId, state }) => {
   }
   pubsub.publish("objectiveUpdate", App.objectives);
 });
+
+App.on("objectiveSetCrewComplete", ({ id, crewComplete }) => {
+  const obj = App.objectives.find(o => o.id === id);
+  obj.setCrewComplete(crewComplete);
+  pubsub.publish("objectiveUpdate", App.objectives);
+});

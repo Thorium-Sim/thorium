@@ -1,49 +1,58 @@
 import React, { Component } from "react";
 import { Query, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import randomWords from "random-words";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import SimulatorData from "./simulatorData";
 import Credits from "./credits";
 import "./client.scss";
 
-const queryData = `
-id
-flight {
-  id
-  name
-  date
-}
-simulator {
-  id
-  name
-}
-station {
-  name
-}
-loginName
-loginState
-offlineState
-hypercard
-movie
-training
-caches
-overlay
-`;
+const fragments = {
+  clientData: gql`
+    fragment ClientData on Client {
+      id
+      token
+      email
+      cracked
+      flight {
+        id
+        name
+        date
+      }
+      simulator {
+        id
+        name
+      }
+      station {
+        name
+      }
+      loginName
+      loginState
+      offlineState
+      hypercard
+      movie
+      training
+      caches
+      overlay
+    }
+  `
+};
 
 const QUERY = gql`
   query Client($clientId: ID!) {
     clients(clientId: $clientId) {
-${queryData}
+      ...ClientData
     }
   }
+  ${fragments.clientData}
 `;
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($clientId: ID!) {
     clientChanged(client: $clientId) {
-${queryData}
+      ...ClientData
     }
   }
+  ${fragments.clientData}
 `;
 
 class ClientData extends Component {
@@ -55,23 +64,24 @@ class ClientData extends Component {
       localStorage.setItem("thorium_clientId", clientId);
     }
     this.state = {
-      clientId
+      clientId,
+      registered: false
     };
   }
   componentDidMount() {
     const { clientId } = this.state;
     const { client } = this.props;
     // Register the client for the first time.
-    setTimeout(() => {
-      client.mutate({
+    client
+      .mutate({
         mutation: gql`
           mutation RegisterClient($client: ID!) {
             clientConnect(client: $client)
           }
         `,
         variables: { client: clientId }
-      });
-    }, 100);
+      })
+      .then(() => this.setState({ registered: true }));
     // Keep the context menu from opening.
     if (process.env.NODE_ENV === "production") {
       window.oncontextmenu = function(event) {
@@ -119,12 +129,20 @@ class ClientData extends Component {
       });
   };
   render() {
-    const { clientId } = this.state;
+    const { clientId, registered } = this.state;
     if (!clientId) return null;
 
     return (
-      <Query query={QUERY} variables={{ clientId }}>
+      <Query query={QUERY} variables={{ clientId }} skip={!registered}>
         {({ loading, data, subscribeToMore }) => {
+          if (!data)
+            return (
+              <Credits
+                {...this.props}
+                clientId={clientId}
+                updateClientId={this.updateClientId}
+              />
+            );
           const { clients } = data;
           if (loading || !clients) return null;
           return (

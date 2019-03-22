@@ -6,7 +6,7 @@ import uuid from "uuid";
 // Simulator
 App.on(
   "createSimulator",
-  ({ id, name, template, flightId, timeline, stationSet }) => {
+  ({ id = uuid.v4(), name, template, flightId, timeline, stationSet }) => {
     const simulator = new Classes.Simulator({
       id,
       name,
@@ -151,6 +151,11 @@ App.on("updateSimulatorTriggers", ({ simulatorId, triggers }) => {
   simulator.updateTriggers(triggers);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("updateSimulatorInterfaces", ({ simulatorId, interfaces }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.updateInterfaces(interfaces);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("setSimulatorTriggersPaused", ({ simulatorId, paused }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.setTriggersPaused(paused);
@@ -254,24 +259,27 @@ App.on("updateSimulatorLighting", ({ id, lighting }) => {
     }, duration);
   }
 });
-App.on("updateSimulatorAmbiance", ({ id, ambiance }) => {
+App.on("updateSimulatorAmbiance", ({ id, ambiance, cb }) => {
   const sim = App.simulators.find(s => s.id === id);
   sim.updateAmbiance(ambiance);
   pubsub.publish("simulatorsUpdate", App.simulators);
+  cb && cb();
 });
-App.on("addSimulatorAmbiance", ({ id, name }) => {
+App.on("addSimulatorAmbiance", ({ id, name, cb }) => {
   const sim = App.simulators.find(s => s.id === id);
   sim.addAmbiance({ name });
   pubsub.publish("simulatorsUpdate", App.simulators);
+  cb && cb();
 });
-App.on("removeSimulatorAmbiance", ({ id, ambianceId }) => {
+App.on("removeSimulatorAmbiance", ({ id, ambianceId, cb }) => {
   const sim = App.simulators.find(s => s.id === id);
   sim.removeAmbiance(ambianceId);
   pubsub.publish("simulatorsUpdate", App.simulators);
+  cb && cb();
 });
 App.on(
   "addSimulatorStationCard",
-  ({ simulatorId, station, cardName, cardComponent }) => {
+  ({ simulatorId, station, cardName, cardComponent, cb }) => {
     const sim = App.simulators.find(s => s.id === simulatorId);
     const stat = sim.stations.find(s => s.name === station);
     stat.addCard({
@@ -279,6 +287,7 @@ App.on(
       component: cardComponent
     });
     pubsub.publish("simulatorsUpdate", App.simulators);
+    cb && cb();
   }
 );
 App.on("removeSimulatorStationCard", ({ simulatorId, station, cardName }) => {

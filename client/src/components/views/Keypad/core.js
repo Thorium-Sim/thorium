@@ -1,34 +1,39 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import KeypadCore from "./keypadCore";
 import "./style.scss";
 
-const queryData = `
-id
-code
-enteredCode
-codeLength
-giveHints
-allowedAttempts
-attempts
-locked
+const fragment = gql`
+  fragment KeypadData on Keypad {
+    id
+    label
+    code
+    enteredCode
+    codeLength
+    giveHints
+    allowedAttempts
+    attempts
+    locked
+  }
 `;
 
 const QUERY = gql`
   query Keypad($simulatorId: ID!) {
     keypads(simulatorId: $simulatorId) {
-${queryData}
+      ...KeypadData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription KeypadUpdate($simulatorId: ID!) {
     keypadsUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...KeypadData
     }
   }
+  ${fragment}
 `;
 
 class KeypadData extends Component {

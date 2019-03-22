@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import DamageOverlay from "../helpers/DamageOverlay";
 import TorpedoPick from "./picker";
 import TorpedoTube from "./tube";
@@ -9,7 +9,7 @@ export default class TorpedoLoader extends Component {
     super(props);
     let type = "other";
     let torpState = props.torpedo.state;
-    if (props.torpedo.loaded !== "false") {
+    if (props.torpedo.loaded) {
       const loadedTorp = props.torpedo.inventory.find(
         t => t.id === props.torpedo.loaded
       );
@@ -32,7 +32,7 @@ export default class TorpedoLoader extends Component {
     let torpedo = props.torpedo;
     let torpState = torpedo.state;
     let type = state.torpedoType;
-    if (torpedo.loaded !== "false") {
+    if (torpedo.loaded) {
       const loadedTorp = torpedo.inventory.find(t => t.id === torpedo.loaded);
       if (loadedTorp) {
         type = loadedTorp.type;

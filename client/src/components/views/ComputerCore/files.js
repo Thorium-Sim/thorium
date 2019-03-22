@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Row, Col, Table, Button } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 function randomString(length, chars) {
   var result = "";
@@ -17,11 +17,11 @@ class FileName extends Component {
       name: props.restoring
         ? "Restoring..."
         : !props.corrupted
-          ? props.name
-          : randomString(
-              10,
-              "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
-            )
+        ? props.name
+        : randomString(
+            10,
+            "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
+          )
     };
   }
   componentDidMount() {
@@ -53,11 +53,11 @@ class FileName extends Component {
       name: this.props.restoring
         ? "Restoring..."
         : !this.props.corrupted
-          ? this.props.name
-          : randomString(
-              10,
-              "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
-            )
+        ? this.props.name
+        : randomString(
+            10,
+            "0123456789abcdefghijklmnopqrstuvwxyz~`!@#$%^&*()_+-={}[]:\";'<>?,./|\\"
+          )
     });
   }
   render() {
@@ -81,18 +81,20 @@ class Files extends Component {
                 </tr>
               </thead>
               <tbody>
-                {files.filter(u => u.level === selectedLevel).map(u => (
-                  <tr
-                    key={u.id}
-                    className={selectedFile === u.id ? "selected" : ""}
-                    onClick={() => this.setState({ selectedFile: u.id })}
-                  >
-                    <td>
-                      <FileName {...u} />
-                    </td>
-                    <td>Level {u.level}</td>
-                  </tr>
-                ))}
+                {files
+                  .filter(u => u.level === selectedLevel)
+                  .map(u => (
+                    <tr
+                      key={u.id}
+                      className={selectedFile === u.id ? "selected" : ""}
+                      onClick={() => this.setState({ selectedFile: u.id })}
+                    >
+                      <td>
+                        <FileName {...u} />
+                      </td>
+                      <td>Level {u.level}</td>
+                    </tr>
+                  ))}
               </tbody>
             </Table>
           </Col>

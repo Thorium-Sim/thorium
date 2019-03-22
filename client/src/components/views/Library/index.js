@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Input, Button } from "reactstrap";
 import { Asset } from "helpers/assets";

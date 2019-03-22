@@ -34,7 +34,7 @@ App.on(
   }
 );
 
-App.on("executeCommandLine", ({ simulatorId, command, arg = "", callback }) => {
+App.on("executeCommandLine", ({ simulatorId, command, arg = "", cb }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   const com = App.commandLine
     .filter(c => c.simulatorId === simulatorId)
@@ -43,17 +43,17 @@ App.on("executeCommandLine", ({ simulatorId, command, arg = "", callback }) => {
       []
     )[0];
   // Only allow a single command. Keeps things simpler.
-  if (!com) return callback(`command not found: ${command}`);
+  if (!com) return cb(`command not found: ${command}`);
   if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
-    return callback(com.help);
+    return cb(com.help);
   }
   if (
     com.options.length > 0 &&
     com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
   )
-    return callback(com.error);
+    return cb(com.error);
   App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
-  return callback(com.output);
+  return cb(com.output);
 });
 
 App.on("addCommandLineToSimulator", ({ simulatorId, commandLine }) => {

@@ -1,33 +1,37 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Tasks from "./tasks";
 import "./style.scss";
 
-const queryData = `
-id
-instructions
-verified
-dismissed
-values
-definition
-verifyRequested
+const fragment = gql`
+  fragment TaskData on Task {
+    id
+    instructions
+    verified
+    dismissed
+    values
+    definition
+    verifyRequested
+  }
 `;
 
 const QUERY = gql`
-query Tasks($simulatorId:ID!, $station:String) {
-  tasks(simulatorId:$simulatorId, station:$station) {
-${queryData}
+  query Tasks($simulatorId: ID!, $station: String) {
+    tasks(simulatorId: $simulatorId, station: $station) {
+      ...TaskData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
-subscription TasksUpdate($simulatorId:ID!, $station:String) {
-  tasksUpdate(simulatorId:$simulatorId, station:$station) {
-${queryData}
+  subscription TasksUpdate($simulatorId: ID!, $station: String) {
+    tasksUpdate(simulatorId: $simulatorId, station: $station) {
+      ...TaskData
     }
   }
+  ${fragment}
 `;
 
 class TasksData extends Component {

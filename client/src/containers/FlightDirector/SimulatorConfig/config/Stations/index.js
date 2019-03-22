@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo, graphql } from "react-apollo";
 import StationSetPicker from "./StationSetPicker";
 import StationPicker from "./StationPicker";
@@ -66,6 +66,10 @@ class StationConfig extends Component {
 const QUERY = gql`
   query Panels {
     softwarePanels {
+      id
+      name
+    }
+    interfaces {
       id
       name
     }

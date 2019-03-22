@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Button, Row, Col, Container, Input } from "reactstrap";
 
 class MessageComposer extends Component {

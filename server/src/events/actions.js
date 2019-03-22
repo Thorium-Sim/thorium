@@ -61,7 +61,9 @@ App.on("triggerAction", args => {
         .filter(
           c =>
             (c.simulatorId === args.simulatorId &&
-              c.station.toLowerCase() === args.stationId.toLowerCase()) ||
+              (c.station &&
+                args.stationId &&
+                c.station.toLowerCase() === args.stationId.toLowerCase())) ||
             c.id === args.clientId ||
             c.id === args.stationId
         )
@@ -70,7 +72,9 @@ App.on("triggerAction", args => {
         .find(s => s.id === args.simulatorId)
         .stations.filter(
           s =>
-            s.name.toLowerCase() === args.stationId.toLowerCase() ||
+            (s.name &&
+              args.stationId &&
+              s.name.toLowerCase() === args.stationId.toLowerCase()) ||
             (client && client.station === s.name)
         )
         .map(s => s.name);
@@ -89,6 +93,7 @@ App.on("triggerAction", args => {
     case "lockdown":
     case "maintenance":
     case "soviet":
+    case "spaceEdventuresToken":
       clients.forEach(c =>
         App.handleEvent({ client: c, state: args.action }, "clientOfflineState")
       );
@@ -119,6 +124,16 @@ App.on("triggerAction", args => {
           body: "",
           color: "info"
         });
+      });
+      break;
+    case "crack":
+      clients.forEach(c => {
+        App.handleEvent({ id: c, crack: true }, "clientCrack");
+      });
+      break;
+    case "uncrack":
+      clients.forEach(c => {
+        App.handleEvent({ id: c, crack: false }, "clientCrack");
       });
       break;
     default:

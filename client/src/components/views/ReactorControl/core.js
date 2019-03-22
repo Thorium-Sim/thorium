@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
@@ -28,43 +28,46 @@ function parseDepletion(time) {
     .join(", ");
 }
 
-const queryData = `
-id
-type
-name
-heat
-heatRate
-model
-coolant
-damage {
-  damaged
-}
-ejected
-externalPower
-efficiency
-efficiencies {
-  label
-  color
-  efficiency
-}
-displayName
-powerOutput
-batteryChargeRate
-batteryChargeLevel
-depletion
-# For Dilithium Stress
-alphaLevel
-betaLevel
-alphaTarget
-betaTarget
-dilithiumRate
-      `;
+const fragment = gql`
+  fragment ReactorData on Reactor {
+    id
+    type
+    name
+    heat
+    heatRate
+    model
+    coolant
+    damage {
+      damaged
+    }
+    ejected
+    externalPower
+    efficiency
+    efficiencies {
+      label
+      color
+      efficiency
+    }
+    displayName
+    powerOutput
+    batteryChargeRate
+    batteryChargeLevel
+    depletion
+    # For Dilithium Stress
+    alphaLevel
+    betaLevel
+    alphaTarget
+    betaTarget
+    dilithiumRate
+  }
+`;
 const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ReactorData
     }
   }
+  ${fragment}
 `;
 
 const rateSpeeds = (
@@ -197,7 +200,8 @@ class ReactorControl extends Component {
   };
   setDilithiumRate = value => {
     const { reactors } = this.props.data;
-    const reactor = reactors[0] || {};
+    const reactor = reactors.find(r => r.model === "reactor");
+    if (!reactor) return;
     const mutation = gql`
       mutation SetDilithiumRate($id: ID!, $rate: Float!) {
         setDilithiumStressRate(id: $id, rate: $rate)
@@ -205,7 +209,7 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: reactor.id,
-      rate: value
+      rate: parseFloat(value)
     };
     this.props.client.mutate({
       mutation,
@@ -214,8 +218,9 @@ class ReactorControl extends Component {
   };
   calcStressLevel = () => {
     const { reactors } = this.props.data;
-    if (!reactors[0]) return;
-    const { alphaTarget, betaTarget, alphaLevel, betaLevel } = reactors[0];
+    const reactor = reactors.find(r => r.model === "reactor");
+    if (!reactor) return;
+    const { alphaTarget, betaTarget, alphaLevel, betaLevel } = reactor;
     const alphaDif = Math.abs(alphaTarget - alphaLevel);
     const betaDif = Math.abs(betaTarget - betaLevel);
     const stressLevel = alphaDif + betaDif > 100 ? 100 : alphaDif + betaDif;
@@ -266,7 +271,9 @@ class ReactorControl extends Component {
                 <Input
                   size="sm"
                   type="select"
-                  onChange={evt => this.setEfficiency(evt.target.value)}
+                  onChange={evt =>
+                    this.setEfficiency(parseFloat(evt.target.value))
+                  }
                   value={
                     reactor.externalPower ? "external" : reactor.efficiency
                   }
@@ -296,7 +303,9 @@ class ReactorControl extends Component {
                 <Input
                   size="sm"
                   type="select"
-                  onChange={evt => this.setHeatRate(evt.target.value)}
+                  onChange={evt =>
+                    this.setHeatRate(parseFloat(evt.target.value))
+                  }
                   value={reactor.heatRate}
                 >
                   {rateSpeeds}
@@ -333,7 +342,7 @@ class ReactorControl extends Component {
               </Fragment>
             )}
 
-            {this.calcStressLevel() ? (
+            {this.calcStressLevel() || this.calcStressLevel() === 0 ? (
               <Fragment>
                 <p>Dilithium Stress:</p>
                 <div style={{ display: "flex" }}>
@@ -346,7 +355,7 @@ class ReactorControl extends Component {
                         fluxDilithiumStress(id: $id)
                       }
                     `}
-                    variables={{ id: reactors[0].id }}
+                    variables={{ id: reactor.id }}
                   >
                     {action => (
                       <Button
@@ -378,9 +387,10 @@ class ReactorControl extends Component {
 const REACTOR_QUERY = gql`
   query Reactors($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
-      ${queryData}
+      ...ReactorData
     }
   }
+  ${fragment}
 `;
 export default graphql(REACTOR_QUERY, {
   options: ownProps => ({

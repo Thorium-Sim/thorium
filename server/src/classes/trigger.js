@@ -1,5 +1,5 @@
 import uuid from "uuid";
-
+import { camelCase } from "change-case";
 export default class Trigger {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -25,9 +25,12 @@ export default class Trigger {
     if (values) this.values = values;
     if (config) this.config = config;
   }
+  processName(name) {
+    return camelCase(name.replace("trigger", ""));
+  }
   getTriggerActions(eventName, args) {
     return this.components
-      .filter(c => c.component.name === eventName)
+      .filter(c => this.processName(c.component.name) === eventName)
       .map(c => ({
         ...c,
         values: { ...this.values[c.id], ...args },
@@ -39,7 +42,6 @@ export default class Trigger {
         // 2) which go to a switch that has the correct
         //    conditional value
         //const connections = []
-
         const processConnections = c => {
           // We are only worried about connections from the
           // components' trigger output nodes
@@ -96,7 +98,7 @@ export default class Trigger {
             }, []);
         };
         const macros = processConnections(comp).map(c => ({
-          event: c.name,
+          event: c.name.replace("macro-", ""),
           args: { ...c.config, ...c.values },
           delay: c.config && c.config.delay ? c.config.delay : 0
         }));

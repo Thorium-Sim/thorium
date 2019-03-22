@@ -11,7 +11,7 @@ import {
   Input
 } from "reactstrap";
 import MacroWrapper from "./MacroConfig";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import EventPicker from "./EventPicker";
@@ -102,7 +102,7 @@ export default class TimelineConfig extends Component {
           $missionId: ID
           $timelineStepId: ID!
           $timelineItemId: ID!
-          $timelineItem: TimelineitemInput!
+          $timelineItem: TimelineItemInput!
         ) {
           updateTimelineStepItem(
             simulatorId: $simulatorId
@@ -147,7 +147,7 @@ export default class TimelineConfig extends Component {
       variables: obj
     });
   }
-  _updateItem(type, e) {
+  _updateItem = (type, e) => {
     let obj = {
       timelineStepId: this.state.selectedTimelineStep,
       timelineItemId: this.state.selectedTimelineItem
@@ -172,7 +172,7 @@ export default class TimelineConfig extends Component {
           $missionId: ID
           $timelineStepId: ID!
           $timelineItemId: ID!
-          $timelineItem: TimelineitemInput!
+          $timelineItem: TimelineItemInput!
         ) {
           updateTimelineStepItem(
             simulatorId: $simulatorId
@@ -185,7 +185,7 @@ export default class TimelineConfig extends Component {
       `,
       variables: obj
     });
-  }
+  };
   _addTimelineStep = async inserted => {
     const name = prompt("What is the name of the timeline step?");
     const mutation = gql`
@@ -261,7 +261,7 @@ export default class TimelineConfig extends Component {
         $simulatorId: ID
         $missionId: ID
         $timelineStepId: ID!
-        $timelineItem: TimelineitemInput!
+        $timelineItem: TimelineItemInput!
       ) {
         addTimelineItemToTimelineStep(
           simulatorId: $simulatorId
@@ -611,8 +611,12 @@ export default class TimelineConfig extends Component {
                       <Label>Item Delay (in milliseconds)</Label>
                       <Input
                         type="number"
-                        value={item.delay}
-                        onChange={this._updateItem.bind(this, "delay")}
+                        defaultValue={item.delay}
+                        onBlur={e =>
+                          this._updateItem("delay", {
+                            target: { value: parseInt(e.target.value) }
+                          })
+                        }
                       />
                     </FormGroup>
                     <MacroWrapper

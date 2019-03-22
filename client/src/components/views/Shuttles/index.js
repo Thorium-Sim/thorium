@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
 import Tour from "helpers/tourHelper";
@@ -39,7 +39,7 @@ const trainingSteps = [
   {
     selector: ".departure-button",
     content:
-      "To use a shuttle, first click \"Prepare for departure\" to begin the departure sequence."
+      'To use a shuttle, first click "Prepare for departure" to begin the departure sequence.'
   },
   {
     selector: ".clamps-button",
@@ -157,71 +157,65 @@ class ShuttleBay extends Component {
     } = this.props;
     const { animating } = this.state;
 
-    let hint = { clamps: '', compress: '', doors: '' };
+    let hint = { clamps: "", compress: "", doors: "" };
 
-    let shuttleStatusMsg = '';
-    if(direction === 'departing' && docked) {
-      shuttleStatusMsg = 'Preparing shuttle for departure.';
-      
-      if(!clamps) hint.clamps = 'ok';
-      if(!compress) hint.compress = 'ok';
-      if(!doors) hint.doors = 'ok';
+    let shuttleStatusMsg = "";
+    if (direction === "departing" && docked) {
+      shuttleStatusMsg = "Preparing shuttle for departure.";
 
-      if(clamps) hint.clamps = 'attention';
-      else if(compress) hint.compress = 'attention';
-      else if(doors) hint.doors = 'attention';
-      else shuttleStatusMsg = 'Shuttle is departing.';
+      if (!clamps) hint.clamps = "ok";
+      if (!compress) hint.compress = "ok";
+      if (!doors) hint.doors = "ok";
+
+      if (clamps) hint.clamps = "attention";
+      else if (compress) hint.compress = "attention";
+      else if (doors) hint.doors = "attention";
+      else shuttleStatusMsg = "Shuttle is departing.";
+    } else if (direction === "departing" && !docked) {
+      shuttleStatusMsg = "Shuttle has departed. Secure shuttle bay.";
+
+      if (!clamps) hint.clamps = "ok";
+      if (compress) hint.compress = "ok";
+      if (doors) hint.doors = "ok";
+
+      if (!doors) hint.doors = "attention";
+      else if (!compress) hint.compress = "attention";
+      else shuttleStatusMsg = "Shuttle bay secured.";
+    } else if (direction === "arriving" && !docked) {
+      shuttleStatusMsg = "Shuttle approaching. Prepare for arrival.";
+
+      if (!clamps) hint.clamps = "ok";
+      if (!compress) hint.compress = "ok";
+      if (!doors) hint.doors = "ok";
+
+      if (clamps) hint.clamps = "attention";
+      else if (compress) hint.compress = "attention";
+      else if (doors) hint.doors = "attention";
+      else shuttleStatusMsg = "The shuttle is entering the bay. Please wait.";
+    } else if (direction === "arriving" && docked) {
+      shuttleStatusMsg = "Shuttle has arrived. Please secure shuttle.";
+
+      if (clamps) hint.clamps = "ok";
+      if (compress) hint.compress = "ok";
+      if (doors) hint.doors = "ok";
+
+      if (!doors) hint.doors = "attention";
+      else if (!compress) hint.compress = "attention";
+      else if (!clamps) hint.clamps = "attention";
+      else shuttleStatusMsg = "Shuttle secured.";
+    } else if (!docked) {
+      if (!clamps) hint.clamps = "ok";
+      if (compress) hint.compress = "ok";
+      if (doors) hint.doors = "ok";
+    } else if (docked) {
+      if (clamps) hint.clamps = "ok";
+      if (compress) hint.compress = "ok";
+      if (doors) hint.doors = "ok";
     }
-    else if (direction === 'departing' && !docked) {
-      shuttleStatusMsg = 'Shuttle has departed. Secure shuttle bay.';
-
-      if(!clamps) hint.clamps = 'ok';
-      if(compress) hint.compress = 'ok';
-      if(doors) hint.doors = 'ok';
-      
-      if(!doors) hint.doors = 'attention';
-      else if(!compress) hint.compress = 'attention';
-      else shuttleStatusMsg = 'Shuttle bay secured.';
-    }
-    else if (direction === 'arriving' && !docked) {
-      shuttleStatusMsg = 'Shuttle approaching. Prepare for arrival.';
-
-      if(!clamps) hint.clamps = 'ok';
-      if(!compress) hint.compress = 'ok';
-      if(!doors) hint.doors = 'ok';
-
-      if(clamps) hint.clamps = 'attention';
-      else if(compress) hint.compress = 'attention';
-      else if(doors) hint.doors = 'attention';
-      else shuttleStatusMsg = 'The shuttle is entering the bay. Please wait.';
-    }
-    else if (direction === 'arriving' && docked) {
-      shuttleStatusMsg = 'Shuttle has arrived. Please secure shuttle.';
-
-      if(clamps) hint.clamps = 'ok';
-      if(compress) hint.compress = 'ok';
-      if(doors) hint.doors = 'ok';
-
-      if(!doors) hint.doors = 'attention';
-      else if(!compress) hint.compress = 'attention';
-      else if(!clamps) hint.clamps = 'attention';
-      else shuttleStatusMsg = 'Shuttle secured.';
-    }
-    else if (!docked) {
-      if(!clamps) hint.clamps = 'ok';
-      if(compress) hint.compress = 'ok';
-      if(doors) hint.doors = 'ok';
-    }
-    else if (docked) {
-      if(clamps) hint.clamps = 'ok';
-      if(compress) hint.compress = 'ok';
-      if(doors) hint.doors = 'ok';
-    }
-
 
     var hintStrings = {
-      'ok': <FontAwesome name="check"/>,
-      'attention': <FontAwesome name="arrow-right"/>
+      ok: <FontAwesome name="check" />,
+      attention: <FontAwesome name="arrow-right" />
     };
 
     return (
@@ -229,32 +223,36 @@ class ShuttleBay extends Component {
         <DamageOverlay system={{ damage }} message={`${name} Offline`} />
         <CardBody>
           <h3 className="text-center">{name}</h3>
-          
+
           <Row>
             <Col sm={7}>
-              {direction === "unspecified" && docked &&
-              <Button
-                block
-                className="departure-button"
-                color="success"
-                onClick={() => this.updateShuttle(id, "direction", "departing")}
+              {direction === "unspecified" && docked && (
+                <Button
+                  block
+                  className="departure-button"
+                  color="success"
+                  onClick={() =>
+                    this.updateShuttle(id, "direction", "departing")
+                  }
                 >
-                Prepare for departure
-              </Button>
-              }
-              {direction === "departing" && docked &&
-              <Button
-                block
-                className="departure-button"
-                color="danger"
-                onClick={() => this.updateShuttle(id, "direction", "unspecified")}
+                  Prepare for departure
+                </Button>
+              )}
+              {direction === "departing" && docked && (
+                <Button
+                  block
+                  className="departure-button"
+                  color="danger"
+                  onClick={() =>
+                    this.updateShuttle(id, "direction", "unspecified")
+                  }
                 >
-                Abort departure sequence
-              </Button>
-              }
-              <div className='docking-icon-wrapper'>
+                  Abort departure sequence
+                </Button>
+              )}
+              <div className="docking-icon-wrapper">
                 <div className={`docking-icon ${hint.clamps}`}>
-                  { hintStrings[hint.clamps] }
+                  {hintStrings[hint.clamps]}
                 </div>
                 <Button
                   block
@@ -262,15 +260,14 @@ class ShuttleBay extends Component {
                   disabled={!!animating || !docked}
                   color="primary"
                   onClick={() => this.toggleShuttle(id, "clamps")}
-                  >
+                >
                   Clamps {clamps ? "attached" : "detached"}
                 </Button>
               </div>
-              <div className='docking-icon-wrapper'>
+              <div className="docking-icon-wrapper">
                 <div className={`docking-icon ${hint.compress}`}>
-                  { hintStrings[hint.compress] }
-             
-                </div>              
+                  {hintStrings[hint.compress]}
+                </div>
                 <Button
                   block
                   disabled={!!animating || !doors}
@@ -281,9 +278,9 @@ class ShuttleBay extends Component {
                   {compress ? "Compressed" : "Decompressed"}
                 </Button>
               </div>
-              <div className='docking-icon-wrapper'>
-              <div className={`docking-icon ${hint.doors}`}>
-                  { hintStrings[hint.doors] }             
+              <div className="docking-icon-wrapper">
+                <div className={`docking-icon ${hint.doors}`}>
+                  {hintStrings[hint.doors]}
                 </div>
                 <Button
                   block
@@ -295,9 +292,7 @@ class ShuttleBay extends Component {
                   Doors {doors ? "closed" : "open"}
                 </Button>
               </div>
-              <div className='docking-status-message'>
-                { shuttleStatusMsg }
-              </div>
+              <div className="docking-status-message">{shuttleStatusMsg}</div>
             </Col>
             <Col sm={5}>
               {animating === "clamps" && <Clamps transform={clamps} />}

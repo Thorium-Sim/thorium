@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Mutation } from "react-apollo";
 
 import Tour from "helpers/tourHelper";
@@ -49,6 +49,8 @@ export default class StealthField extends Component {
       state,
       name,
       charge,
+      damage,
+      power,
       activated,
       systems,
       quadrants,
@@ -143,6 +145,12 @@ export default class StealthField extends Component {
                       color="primary"
                       className="stealth-button"
                       block
+                      disabled={
+                        (damage && damage.damaged) ||
+                        (power &&
+                          power.powerLevels &&
+                          power.power < power.powerLevels[0])
+                      }
                       onClick={action}
                     >
                       Activate {name}

@@ -1,8 +1,20 @@
 import React, { Fragment } from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { GENERIC_QUERY } from "./index";
+
+const SYSTEM_QUERY = gql`
+  query Systems($simulatorId: ID!) {
+    systems(simulatorId: $simulatorId) {
+      id
+      name
+      type
+      displayName
+    }
+  }
+`;
+
 const Basic = ({ id, name, displayName, simulatorId }) => {
   return (
     <Mutation
@@ -16,7 +28,8 @@ const Basic = ({ id, name, displayName, simulatorId }) => {
         }
       `}
       refetchQueries={[
-        { query: GENERIC_QUERY, variables: { id, simulatorId } }
+        { query: GENERIC_QUERY, variables: { id, simulatorId } },
+        { query: SYSTEM_QUERY, variables: { simulatorId } }
       ]}
     >
       {action => (

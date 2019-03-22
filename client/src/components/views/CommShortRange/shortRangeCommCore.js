@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, ButtonGroup, Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 
 class CommShortRange extends Component {
@@ -128,7 +128,7 @@ class CommShortRange extends Component {
             </select>
             <Button
               size="sm"
-              color="default"
+              color="primary"
               disabled={!selectedCall}
               onClick={this._commHail}
             >
@@ -160,7 +160,7 @@ class CommShortRange extends Component {
               onClick={this._commCancel}
               size="sm"
               block
-              color="default"
+              color="primary"
             >
               Cancel
             </Button>

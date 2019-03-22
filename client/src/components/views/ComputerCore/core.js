@@ -1,47 +1,52 @@
 import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Button } from "reactstrap";
 import "./style.scss";
 
-const queryData = `
-id
-history
-users {
-  id
-  name
-  level
-  hacker
-  password
-}
-files {
-  id
-  name
-  level
-  corrupted
-}
-virii {
-  id
-  name
-}
-terminals {
-  id
-  name
-  status
-}`;
+const fragment = gql`
+  fragment ComputerCoreCoreData on ComputerCore {
+    id
+    history
+    users {
+      id
+      name
+      level
+      hacker
+      password
+    }
+    files {
+      id
+      name
+      level
+      corrupted
+    }
+    virii {
+      id
+      name
+    }
+    terminals {
+      id
+      name
+      status
+    }
+  }
+`;
 const QUERY = gql`
   query ComputerCore($simulatorId: ID!) {
     computerCore(simulatorId: $simulatorId) {
-${queryData}
+      ...ComputerCoreCoreData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription ComputerCoreUpdate($simulatorId: ID!) {
     computerCoreUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ComputerCoreCoreData
     }
   }
+  ${fragment}
 `;
 
 class Core extends Component {
@@ -58,17 +63,19 @@ class Core extends Component {
     let mapper = [];
     if (type === "user") mapper = users;
     if (type === "file") mapper = files;
-    return mapper.filter(m => m.level === level).map(m => (
-      <p
-        key={m.id}
-        className={`${m.hacker ? "text-danger" : ""} ${
-          m.corrupted ? "text-danger" : ""
-        } ${selectedObj === m.id ? "selected" : ""}`}
-        onClick={() => this.setState({ selectedObj: m.id })}
-      >
-        {m.name}
-      </p>
-    ));
+    return mapper
+      .filter(m => m.level === level)
+      .map(m => (
+        <p
+          key={m.id}
+          className={`${m.hacker ? "text-danger" : ""} ${
+            m.corrupted ? "text-danger" : ""
+          } ${selectedObj === m.id ? "selected" : ""}`}
+          onClick={() => this.setState({ selectedObj: m.id })}
+        >
+          {m.name}
+        </p>
+      ));
   }
   addHacker = action => {
     return () => {
@@ -81,7 +88,9 @@ class Core extends Component {
         parseInt(level, 10) < 1
       )
         return;
-      action({ variables: { id: this.props.id, name, level } });
+      action({
+        variables: { id: this.props.id, name, level: parseInt(level, 10) }
+      });
     };
   };
   render() {
@@ -172,15 +181,17 @@ class Core extends Component {
             </p>
             <div className="list-div">
               {users.filter(u => u.hacker).length > 0
-                ? users.filter(u => u.hacker).map(u => (
-                    <p
-                      key={`hacker-${u.id}`}
-                      className={selectedHacker === u.id ? "selected" : ""}
-                      onClick={() => this.setState({ selectedHacker: u.id })}
-                    >
-                      {u.name} ({u.level})
-                    </p>
-                  ))
+                ? users
+                    .filter(u => u.hacker)
+                    .map(u => (
+                      <p
+                        key={`hacker-${u.id}`}
+                        className={selectedHacker === u.id ? "selected" : ""}
+                        onClick={() => this.setState({ selectedHacker: u.id })}
+                      >
+                        {u.name} ({u.level})
+                      </p>
+                    ))
                 : "No Hackers"}
             </div>
             <div>
@@ -190,7 +201,9 @@ class Core extends Component {
                     addComputerCoreUser(
                       id: $id
                       user: { name: $name, level: $level, hacker: true }
-                    )
+                    ) {
+                      id
+                    }
                   }
                 `}
               >

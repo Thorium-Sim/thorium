@@ -5,7 +5,7 @@ import { withApollo } from "react-apollo";
 
 import Tour from "helpers/tourHelper";
 import RemoteFiles from "./remoteFiles";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 class Assets extends Component {
   state = {};

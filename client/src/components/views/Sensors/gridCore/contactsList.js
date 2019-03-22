@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import ContactContextMenu from "./contactContextMenu";
 
 const ADD_ARMY_CONTACT = gql`
-  mutation(
+  mutation AddArmyContact(
     $id: ID!
     $name: String
     $size: Float
@@ -29,7 +29,7 @@ const ADD_ARMY_CONTACT = gql`
 `;
 
 const REMOVE_ARMY_CONTACT = gql`
-  mutation($id: ID!, $contact: ID!) {
+  mutation RemoveArmyContact($id: ID!, $contact: ID!) {
     removeSensorArmyContact(id: $id, contact: $contact)
   }
 `;
@@ -85,7 +85,7 @@ class ContactsList extends Component {
     newContact[key] = value;
     this.props.client.mutate({
       mutation: gql`
-        mutation($id: ID!, $contact: SensorContactInput!) {
+        mutation UpdateArmyContact($id: ID!, $contact: SensorContactInput!) {
           updateSensorArmyContact(id: $id, contact: $contact)
         }
       `,
@@ -128,7 +128,7 @@ class ContactsList extends Component {
   };
   render() {
     const { sensors, dragStart } = this.props;
-    const { contextContact, removeContacts } = this.state;
+    const { contextContact } = this.state;
     return (
       <div className="sensors-contact-list">
         <p>Contacts:</p>
@@ -145,16 +145,17 @@ class ContactsList extends Component {
                   className="armyContact"
                   src={`/assets${contact.icon}`}
                 />
-                <label onContextMenu={e => this.contextMenu(contact, e)}>
+                <label
+                  onContextMenu={e => this.contextMenu(contact, e)}
+                  style={{ flex: 1 }}
+                >
                   {contact.name}
                 </label>
-                {removeContacts && (
-                  <FontAwesome
-                    name="ban"
-                    className="text-danger pull-right clickable"
-                    onClick={() => this.removeArmyContact(contact)}
-                  />
-                )}
+                <FontAwesome
+                  name="ban"
+                  className="text-danger pull-right clickable"
+                  onClick={() => this.removeArmyContact(contact)}
+                />
               </Col>
             );
           })}
@@ -162,7 +163,9 @@ class ContactsList extends Component {
         <Button size="sm" color="success" onClick={this.addArmyContact}>
           Add Contact
         </Button>
-        <label>
+        <p>Right-click to configure.</p>
+
+        {/* <label>
           <input
             type="checkbox"
             checked={removeContacts}
@@ -171,7 +174,7 @@ class ContactsList extends Component {
             }}
           />{" "}
           Remove
-        </label>
+        </label> */}
         {contextContact && (
           <ContactContextMenu
             closeMenu={this.closeContext}

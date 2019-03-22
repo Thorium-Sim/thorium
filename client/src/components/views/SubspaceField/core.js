@@ -1,54 +1,58 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { OutputField } from "../../generic/core";
 import { Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const queryData = `
-id
-name
-totalPower
-fore {
-  required
-  value
-}
-aft {
-  required
-  value
-}
-port {
-  required
-  value
-}
-starboard {
-  required
-  value
-}
-ventral {
-  required
-  value
-}
-dorsal {
-  required
-  value
-}
+const fragment = gql`
+  fragment SubspaceFieldCoreData on SubspaceField {
+    id
+    name
+    totalPower
+    fore {
+      required
+      value
+    }
+    aft {
+      required
+      value
+    }
+    port {
+      required
+      value
+    }
+    starboard {
+      required
+      value
+    }
+    ventral {
+      required
+      value
+    }
+    dorsal {
+      required
+      value
+    }
+  }
 `;
 
 const QUERY = gql`
   query SubspaceField($simulatorId: ID!) {
     subspaceField(simulatorId: $simulatorId) {
-${queryData}
+      ...SubspaceFieldCoreData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription SubspaceFieldUpdate($simulatorId: ID!) {
     subspaceFieldUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...SubspaceFieldCoreData
     }
   }
+  ${fragment}
 `;
 
 const SubspaceFieldCore = ({

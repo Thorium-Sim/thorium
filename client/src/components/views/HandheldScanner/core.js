@@ -1,30 +1,35 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import ScannerCore from "./scannerCore";
 import "./style.scss";
 
-const queryData = `
-id
-scanRequest
-scanResults
-scanning
+const fragment = gql`
+  fragment ScannerData on Scanner {
+    id
+    label
+    scanRequest
+    scanResults
+    scanning
+  }
 `;
 
 const QUERY = gql`
   query Scanner($simulatorId: ID!) {
     scanners(simulatorId: $simulatorId) {
-${queryData}
+      ...ScannerData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription ScannerUpdate($simulatorId: ID!) {
     scannersUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ScannerData
     }
   }
+  ${fragment}
 `;
 
 class ScannerData extends Component {

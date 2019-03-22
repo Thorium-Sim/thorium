@@ -2,7 +2,7 @@ import React from "react";
 import ChargeBar from "../StealthField/chargeBar";
 import { titleCase } from "change-case";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 
 const subspaceSectors = [
@@ -61,7 +61,11 @@ class SubspaceField extends React.Component {
           <div key={`sector-${s}`} className={`subspace-charge ${s}`}>
             <Mutation
               mutation={gql`
-                mutation($id: ID!, $which: String!, $value: Int!) {
+                mutation SetSubspaceFieldValue(
+                  $id: ID!
+                  $which: String!
+                  $value: Int!
+                ) {
                   setSubspaceFieldSectorValue(
                     id: $id
                     which: $which

@@ -1,8 +1,10 @@
 import uuid from "uuid";
 import App from "../app";
+import { System } from "./generic";
 
-export default class Exocomp {
+export default class Exocomp extends System {
   constructor(params = {}) {
+    super(params);
     this.id = params.id || uuid.v4();
     this.class = "Exocomp";
     this.simulatorId = params.simulatorId;
@@ -14,6 +16,27 @@ export default class Exocomp {
     this.destination = params.destination || null;
     this.logs = params.logs || [];
     this.difficulty = params.difficulty || 0.05;
+
+    this.power = null;
+  }
+  get name() {
+    return "Exocomp";
+  }
+  get displayName() {
+    return "Exocomp";
+  }
+  set name(name) {
+    return;
+  }
+  set displayName(name) {
+    return;
+  }
+  break(report, destroyed, which) {
+    this.state = "idle";
+    this.parts = [];
+    this.completion = 0;
+    this.destination = null;
+    super.break(report, destroyed, which);
   }
   updateState(state) {
     this.state = state;

@@ -1,6 +1,6 @@
 import { PureComponent } from "react";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const assetPath = `${window.location.protocol}//${window.location.host}/assets`;
 export default (assetKey, simulatorId, extension, CORS) => {

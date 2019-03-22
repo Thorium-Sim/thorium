@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from "react";
 import { graphql, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Row, Col, ListGroup, ListGroupItem, Button } from "reactstrap";
 import Measure from "react-measure";
 import Satellites from "./Satellites";
@@ -161,13 +161,15 @@ class LongRangeComm extends Component {
       message: this.state.selectedMessage
     };
     this.setState({
+      sendingMessage: true,
       messageLoc: { x: this.state.selectedSat.x, y: this.state.selectedSat.y }
     });
     const sendMessage = () => {
       this.setState(
         {
           selectedMessage: null,
-          selectedSat: null
+          selectedSat: null,
+          sendingMessage: false
         },
         () => {
           this.props.client.mutate({
@@ -344,39 +346,36 @@ class LongRangeComm extends Component {
                   </div>
                 )}
               </Measure>
-              {scanProgress === 1 &&
-                satellites.length > 0 && (
-                  <Row style={{ marginTop: "10px" }}>
-                    <Col
-                      lg={{ size: 4, offset: 1 }}
-                      xl={{ size: 3, offset: 2 }}
+              {scanProgress === 1 && satellites.length > 0 && (
+                <Row style={{ marginTop: "10px" }}>
+                  <Col lg={{ size: 4, offset: 1 }} xl={{ size: 3, offset: 2 }}>
+                    <Button
+                      onClick={this.deleteMessage.bind(this)}
+                      size="lg"
+                      block
+                      disabled={!messageObj || this.state.sendingMessage}
+                      color="danger"
                     >
-                      <Button
-                        onClick={this.deleteMessage.bind(this)}
-                        size="lg"
-                        block
-                        disabled={!messageObj}
-                        color="danger"
-                      >
-                        Delete Message
-                      </Button>
-                    </Col>
-                    <Col
-                      lg={{ size: 4, offset: 2 }}
-                      xl={{ size: 3, offset: 2 }}
+                      Delete Message
+                    </Button>
+                  </Col>
+                  <Col lg={{ size: 4, offset: 2 }} xl={{ size: 3, offset: 2 }}>
+                    <Button
+                      onClick={this.sendMessage.bind(this)}
+                      disabled={
+                        !this.state.selectedSat ||
+                        !messageObj ||
+                        this.state.sendingMessage
+                      }
+                      size="lg"
+                      block
+                      color="success"
                     >
-                      <Button
-                        onClick={this.sendMessage.bind(this)}
-                        disabled={!this.state.selectedSat || !messageObj}
-                        size="lg"
-                        block
-                        color="success"
-                      >
-                        Send Message
-                      </Button>
-                    </Col>
-                  </Row>
-                )}
+                      Send Message
+                    </Button>
+                  </Col>
+                </Row>
+              )}
               {satellites.length < 1 &&
                 (scanProgress === 1 || scanProgress === 0) && (
                   <Row style={{ marginTop: "10px" }}>
@@ -392,14 +391,13 @@ class LongRangeComm extends Component {
                     </Col>
                   </Row>
                 )}
-              {scanProgress < 1 &&
-                scanProgress > 0 && (
-                  <Row style={{ marginTop: "10px" }}>
-                    <Col sm={12} className="text-center">
-                      <h2>Scanning...</h2>
-                    </Col>
-                  </Row>
-                )}
+              {scanProgress < 1 && scanProgress > 0 && (
+                <Row style={{ marginTop: "10px" }}>
+                  <Col sm={12} className="text-center">
+                    <h2>Scanning...</h2>
+                  </Col>
+                </Row>
+              )}
               <MessageBox message={messageText} />
             </Fragment>
           )}

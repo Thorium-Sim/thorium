@@ -1,37 +1,41 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
 import { TypingField } from "../../generic/core";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const queryData = `
-id
-name
-shipName
-clamps
-compress
-doors
-image
-docked
-damage {
-  damaged
-}
+const fragment = gql`
+  fragment DockingCoreData on DockingPort {
+    id
+    name
+    shipName
+    clamps
+    compress
+    doors
+    image
+    docked
+    damage {
+      damaged
+    }
+  }
 `;
 
 const QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: dockingport) {
-${queryData}
+      ...DockingCoreData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: dockingport) {
-${queryData}
+      ...DockingCoreData
     }
   }
+  ${fragment}
 `;
 
 const DockingPortCore = ({ docking }) => (

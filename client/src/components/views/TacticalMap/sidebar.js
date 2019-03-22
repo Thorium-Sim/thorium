@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import TacticalMapList from "./tacticalMapList";
 
@@ -133,44 +133,43 @@ export default class Sidebar extends Component {
           client={this.props.client}
         />
 
-        {tacticalMapId &&
-          tacticalMap && (
-            <div>
-              <h3>{tacticalMap.name}</h3>
-              <p>Layers</p>
-              <div className="layer-list">
-                <SortableList
-                  items={tacticalMap.layers}
-                  onSortEnd={this.onSortEnd}
-                  selectedLayer={layerId}
-                  selectLayer={l => selectLayer(l.id)}
-                />
-              </div>
-
-              <Button color="success" size="sm" onClick={this.addLayer}>
-                Add Layer
-              </Button>
-              <Button
-                color="warning"
-                size="sm"
-                onClick={this.removeLayer}
-                disabled={!layerId}
-              >
-                Remove Layer
-              </Button>
-              <Button color="danger" size="sm" onClick={this.clearTactical}>
-                Clear Tactical
-              </Button>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={tacticalMap.frozen}
-                  onChange={this.freezeTactical}
-                />{" "}
-                Frozen
-              </label>
+        {tacticalMapId && tacticalMap && (
+          <div>
+            <h3>{tacticalMap.name}</h3>
+            <p>Layers</p>
+            <div className="layer-list">
+              <SortableList
+                items={tacticalMap.layers}
+                onSortEnd={this.onSortEnd}
+                selectedLayer={layerId}
+                selectLayer={l => selectLayer(l.id)}
+              />
             </div>
-          )}
+
+            <Button color="success" size="sm" onClick={this.addLayer}>
+              Add Layer
+            </Button>
+            <Button
+              color="warning"
+              size="sm"
+              onClick={this.removeLayer}
+              disabled={!layerId}
+            >
+              Remove Layer
+            </Button>
+            <Button color="danger" size="sm" onClick={this.clearTactical}>
+              Clear Tactical
+            </Button>
+            <label>
+              <input
+                type="checkbox"
+                checked={tacticalMap.frozen}
+                onChange={this.freezeTactical}
+              />{" "}
+              Frozen
+            </label>
+          </div>
+        )}
       </div>
     );
   }

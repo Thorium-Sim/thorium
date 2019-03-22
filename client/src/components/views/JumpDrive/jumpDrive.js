@@ -2,7 +2,7 @@ import React, { Fragment, Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import Slider from "../NavigationAdvanced/slider.js";
 import PowerLine from "./powerLine";

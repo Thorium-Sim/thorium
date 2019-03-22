@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import { Button, ButtonGroup } from "reactstrap";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { titleCase } from "change-case";
 import Basic from "./basic";
 import Power from "./power";

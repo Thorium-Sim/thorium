@@ -1,5 +1,5 @@
 import { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import playSound from "../generic/SoundPlayer";
 

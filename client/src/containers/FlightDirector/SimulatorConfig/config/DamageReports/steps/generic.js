@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Label, Input, FormGroup } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import HashtagDefinition from "../../../../../../helpers/hashtagDefinition";
 
 export default class GenericConfig extends Component {
@@ -47,13 +47,24 @@ export default class GenericConfig extends Component {
     });
   };
   updateEnd = evt => {
-    const { systemId, id, client } = this.props;
-    const mutation = gql`
-      mutation UpdateDamageStep($systemId: ID!, $step: DamageStepInput!) {
-        updateSystemDamageStep(systemId: $systemId, step: $step)
-      }
-    `;
+    const { simulatorId, systemId, id, client } = this.props;
+    const mutation =
+      systemId === "simulator"
+        ? gql`
+            mutation UpdateDamageStep(
+              $simulatorId: ID!
+              $step: DamageStepInput!
+            ) {
+              updateSimulatorDamageStep(simulatorId: $simulatorId, step: $step)
+            }
+          `
+        : gql`
+            mutation UpdateDamageStep($systemId: ID!, $step: DamageStepInput!) {
+              updateSystemDamageStep(systemId: $systemId, step: $step)
+            }
+          `;
     const variables = {
+      simulatorId,
       systemId,
       step: {
         id,

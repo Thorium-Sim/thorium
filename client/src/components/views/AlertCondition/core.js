@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, Input, Label } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, Mutation } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 const levels = [
@@ -88,7 +88,10 @@ class AlertConditionCore extends Component {
                 style={typeof l.color === "object" ? l.color : null}
                 onClick={() =>
                   action({
-                    variables: { id: this.props.simulator.id, level: l.id }
+                    variables: {
+                      id: this.props.simulator.id,
+                      level: String(l.id)
+                    }
                   })
                 }
               >

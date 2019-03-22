@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { ListGroup, ListGroupItem, Button } from "reactstrap";
 import { InputField } from "../../generic/core";
@@ -14,40 +14,44 @@ function processTime(time) {
     DateTime.TIME_SIMPLE
   );
 }
-const queryData = `
-id
-messages {
-  id
-  sent
-  crew
-  message
-  decodedMessage
-  deleted
-  encrypted
-  approved
-  sender
-  timestamp
-  a
-  f
-  ra
-  rf
-}
-satellites
+const fragment = gql`
+  fragment LRCommCoreData on LRCommunications {
+    id
+    messages {
+      id
+      sent
+      crew
+      message
+      decodedMessage
+      deleted
+      encrypted
+      approved
+      sender
+      timestamp
+      a
+      f
+      ra
+      rf
+    }
+    satellites
+  }
 `;
 
 const QUERY = gql`
   query LongRangeComm($simulatorId: ID!) {
     longRangeCommunications(simulatorId: $simulatorId) {
-${queryData}
+      ...LRCommCoreData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription LongRangeCommUpdate($simulatorId: ID!) {
     longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...LRCommCoreData
     }
   }
+  ${fragment}
 `;
 
 class ConvoCore extends Component {

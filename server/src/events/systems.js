@@ -84,15 +84,16 @@ const sendUpdate = sys => {
     pubsub.publish("dockingUpdate", App.dockingPorts);
   pubsub.publish("systemsUpdate", App.systems);
 };
-App.on("addSystemToSimulator", ({ simulatorId, className, params }) => {
+App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {
   const init = JSON.parse(params);
   init.simulatorId = simulatorId;
   const ClassObj = Classes[className];
   const obj = new ClassObj(init);
   App.systems.push(obj);
   pubsub.publish("systemsUpdate", App.systems);
+  cb && cb();
 });
-App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type }) => {
+App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type, cb }) => {
   if (systemId) {
     App.systems = App.systems.filter(s => s.id !== systemId);
   } else if (simulatorId && type) {
@@ -102,6 +103,7 @@ App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type }) => {
     App.systems = App.systems.filter(s => s.id !== sys.id);
   }
   pubsub.publish("systemsUpdate", App.systems);
+  cb && cb();
 });
 App.on("updateSystemName", ({ systemId, name, displayName }) => {
   const sys = App.systems.find(s => s.id === systemId);
@@ -111,7 +113,9 @@ App.on("updateSystemName", ({ systemId, name, displayName }) => {
 App.on("damageSystem", ({ systemId, report, destroyed, which = "default" }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
     if (!sys) return;
   }
   sys.break(report, destroyed, which);
@@ -120,7 +124,9 @@ App.on("damageSystem", ({ systemId, report, destroyed, which = "default" }) => {
 App.on("damageReport", ({ systemId, report }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   sys.damageReport(report);
   sendUpdate(sys);
@@ -128,7 +134,9 @@ App.on("damageReport", ({ systemId, report }) => {
 App.on("repairSystem", ({ systemId }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   sys.repair();
   sendUpdate(sys);
@@ -136,7 +144,9 @@ App.on("repairSystem", ({ systemId }) => {
 App.on("updateCurrentDamageStep", ({ systemId, step }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   sys.updateCurrentStep(step);
   sendUpdate(sys);
@@ -144,7 +154,9 @@ App.on("updateCurrentDamageStep", ({ systemId, step }) => {
 App.on("systemReactivationCode", ({ systemId, station, code }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   pubsub.publish("notify", {
     id: uuid.v4(),
@@ -181,7 +193,9 @@ App.on("changeSystemPowerLevels", ({ systemId, powerLevels }) => {
 App.on("requestDamageReport", ({ systemId }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   App.handleEvent(
     {
@@ -208,7 +222,9 @@ App.on("requestDamageReport", ({ systemId }) => {
 App.on("systemReactivationCodeResponse", ({ systemId, response }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
-    sys = App.dockingPorts.find(s => s.id === systemId);
+    sys =
+      App.dockingPorts.find(s => s.id === systemId) ||
+      App.exocomps.find(s => s.id === systemId);
   }
   pubsub.publish("notify", {
     id: uuid.v4(),
@@ -233,20 +249,23 @@ App.on("updateSystemRooms", ({ systemId, locations }) => {
   if (sys.updateLocations) sys.updateLocations(locations);
   sendUpdate(sys);
 });
-App.on("addSystemDamageStep", ({ systemId, step }) => {
+App.on("addSystemDamageStep", ({ systemId, step, cb }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.addDamageStep(step);
   sendUpdate(sys);
+  cb && cb();
 });
-App.on("updateSystemDamageStep", ({ systemId, step }) => {
-  const sys = App.systems.find(s => s.id === systemId);
-  sys.updateDamageStep(step);
+App.on("updateSystemDamageStep", ({ systemId, step, cb, context }) => {
+  let sys = App.systems.find(s => s.id === systemId);
+  sys && sys.updateDamageStep(step);
   sendUpdate(sys);
+  cb && cb();
 });
-App.on("removeSystemDamageStep", ({ systemId, step }) => {
+App.on("removeSystemDamageStep", ({ systemId, step, cb }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.removeDamageStep(step);
   sendUpdate(sys);
+  cb && cb();
 });
 App.on("addSystemDamageTask", ({ systemId, task }) => {
   const sys = App.systems.find(s => s.id === systemId);
@@ -297,6 +316,10 @@ App.on("fixSystem", ({ simulatorId, type, name }) => {
   const sys = systems.find(s => s.damage.damaged === true);
   sys && sys.repair();
   sendUpdate(sys);
+});
+App.on("generateDamageReport", ({ systemId, steps, cb }) => {
+  let sys = App.systems.find(s => s.id === systemId);
+  cb(sys.generateDamageReport(steps));
 });
 App.on("trainingMode", ({ simulatorId }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
@@ -349,7 +372,11 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
     // damage step widget and card
     const stations = sim.stations
       .filter(s => {
-        return s.cards.find(c => c.component === "DamageControl");
+        return s.cards.find(c =>
+          ["DamageControl", "EngineeringReports", "RnDReports"].includes(
+            c.component
+          )
+        );
       })
       .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
       .map(s => s.name)
@@ -362,7 +389,7 @@ App.on("setDamageStepValidation", ({ id, validation }) => {
         title: `Damage report step validation rejected`,
         body: sys.name,
         color: "danger",
-        relevantCards: [ "DamageControl" ]
+        relevantCards: ["DamageControl", "EngineeringReports", "RnDReports"]
       })
     );
   } else {
@@ -399,7 +426,11 @@ App.on("validateDamageStep", ({ id }) => {
   // damage step widget and card
   const stations = sim.stations
     .filter(s => {
-      return s.cards.find(c => c.component === "DamageControl");
+      return s.cards.find(c =>
+        ["DamageControl", "EngineeringReports", "RnDReports"].includes(
+          c.component
+        )
+      );
     })
     .concat(sim.stations.filter(s => s.widgets.indexOf("damageReport") > -1))
     .map(s => s.name)
@@ -412,7 +443,7 @@ App.on("validateDamageStep", ({ id }) => {
       title: `Damage report step validation accepted`,
       body: sys.name,
       color: "success",
-      relevantCards: [ "DamageControl" ]
+      relevantCards: ["DamageControl", "EngineeringReports", "RnDReports"]
     })
   );
   sendUpdate(sys);

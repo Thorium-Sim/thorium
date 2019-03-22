@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { FormattedMessage } from "react-intl";
 import { Container, Row, Col } from "reactstrap";
 import SensorGrid from "../Sensors/GridDom/grid";

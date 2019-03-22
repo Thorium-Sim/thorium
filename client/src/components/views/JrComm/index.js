@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import SineWaves from "sine-waves";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
 import tinycolor from "tinycolor2";
@@ -263,10 +263,10 @@ class CommShortRange extends Component {
       ShortRange.state === "hailing"
         ? "Calling..."
         : ShortRange.arrows.length === 0
-          ? "No Calls"
-          : ShortRange.arrows.find(a => a.connected)
-            ? "Call Answered"
-            : "Incoming Call";
+        ? "No Calls"
+        : ShortRange.arrows.find(a => a.connected)
+        ? "Call Answered"
+        : "Incoming Call";
     if (!ShortRange) return <p>No short range comm</p>;
     return (
       <Container className="shortRangeComm">

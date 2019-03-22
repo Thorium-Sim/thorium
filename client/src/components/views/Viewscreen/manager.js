@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { Label, Row, Col, Input, Button, ButtonGroup } from "reactstrap";
 import Preview, { Viewscreen } from "./index";
@@ -11,20 +11,24 @@ import "./style.scss";
 
 const CardPreview = Viewscreen;
 
-const queryData = `
-id
-name
-component
-data
-auto
-secondary
-overlay`;
+const fragment = gql`
+  fragment ViewscreenData on Viewscreen {
+    id
+    name
+    component
+    data
+    auto
+    secondary
+    overlay
+  }
+`;
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {
     viewscreensUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ViewscreenData
     }
   }
+  ${fragment}
 `;
 
 class ViewscreenManager extends Component {
@@ -390,9 +394,10 @@ class ViewscreenManager extends Component {
 const VIEWSCREEN_QUERY = gql`
   query Viewscreens($simulatorId: ID) {
     viewscreens(simulatorId: $simulatorId) {
-      ${queryData}
+      ...ViewscreenData
     }
   }
+  ${fragment}
 `;
 export default graphql(VIEWSCREEN_QUERY, {
   options: ownProps => ({

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
-import { graphql, withApollo } from "react-apollo";
+import gql from "graphql-tag.macro";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 
@@ -18,15 +18,41 @@ const OBJECTIVE_SUB = gql`
       station
       completed
       cancelled
+      crewComplete
     }
   }
 `;
 
-const Objective = ({ title, description, completed, cancelled }) => {
+const Objective = ({
+  id,
+  title,
+  description,
+  completed,
+  cancelled,
+  crewComplete
+}) => {
   return (
     <div className="objective">
       <div>
-        <div className="completed">{completed && <div />}</div>
+        <Mutation
+          mutation={gql`
+            mutation CompleteObjective($id: ID!) {
+              completeObjective(id: $id, state: true)
+            }
+          `}
+          variables={{ id }}
+        >
+          {action => (
+            <div
+              className={`completed ${completed ? "is-completed" : ""} ${
+                crewComplete ? "crew-complete" : ""
+              }`}
+              onClick={crewComplete && !completed ? action : () => null}
+            >
+              {completed && <div />}
+            </div>
+          )}
+        </Mutation>
       </div>
       <div>
         <h3 style={{ textDecoration: cancelled ? "line-through" : "" }}>
@@ -117,6 +143,7 @@ const OBJECTIVE_QUERY = gql`
       station
       completed
       cancelled
+      crewComplete
     }
   }
 `;

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Button, ButtonGroup } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import StepModal from "./stepModal";
 
 class TimelineControl extends Component {
@@ -14,25 +14,30 @@ class TimelineControl extends Component {
       timeline,
       currentTimelineStep,
       values,
-      delay
+      delay = {}
     } = this.props;
     const currentStep = timeline[currentTimelineStep];
     if (!currentStep) return;
+
     const variables = {
       simulatorId,
-      macros: currentStep.timelineItems.filter(t => actions[t.id]).map(t => {
-        const itemValues = values[t.id] || {};
-        const args =
-          typeof t.args === "string"
-            ? JSON.stringify({ ...JSON.parse(t.args), ...itemValues })
-            : JSON.stringify({ ...t.args, ...itemValues });
-        return {
-          stepId: t.id,
-          event: t.event,
-          args,
-          delay: delay || delay === 0 ? delay : t.delay
-        };
-      })
+      macros: currentStep.timelineItems
+        .filter(t => actions[t.id])
+        .map(t => {
+          const itemValues = values[t.id] || {};
+          const args =
+            typeof t.args === "string"
+              ? JSON.stringify({ ...JSON.parse(t.args), ...itemValues })
+              : JSON.stringify({ ...t.args, ...itemValues });
+          const stepDelay = delay[t.id];
+
+          return {
+            stepId: t.id,
+            event: t.event,
+            args,
+            delay: stepDelay || stepDelay === 0 ? stepDelay : t.delay
+          };
+        })
     };
     triggerMacro({ variables });
     updateTimelineStep &&
@@ -136,7 +141,7 @@ class TimelineControl extends Component {
                 updateTimelineStep({
                   variables: {
                     simulatorId,
-                    step
+                    step: parseInt(step, 10)
                   }
                 })
               }

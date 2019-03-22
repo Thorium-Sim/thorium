@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Container, Row, Col, Button } from "reactstrap";
 import DamageOverlay from "../helpers/DamageOverlay";
@@ -235,38 +235,36 @@ class InternalComm extends Component {
           className="buttons-section"
         >
           <Col sm={{ size: 8, offset: 2 }}>
-            {internalComm.state !== "connected" &&
-              internalComm.incoming && (
-                <div>
-                  <h1 className="text-center">
-                    Incoming call from: {internalComm.incoming}
-                  </h1>
-                  <Button
-                    style={buttonStyle}
-                    color="info"
-                    block
-                    onClick={this.connect.bind(this)}
-                  >
-                    Connect
-                  </Button>
-                </div>
-              )}
-            {internalComm.state !== "connected" &&
-              internalComm.outgoing && (
-                <div>
-                  <h1 className="text-center">
-                    Calling: {internalComm.outgoing}
-                  </h1>
-                  <Button
-                    style={buttonStyle}
-                    color="warning"
-                    block
-                    onClick={this.cancelCall.bind(this)}
-                  >
-                    Cancel Call
-                  </Button>
-                </div>
-              )}
+            {internalComm.state !== "connected" && internalComm.incoming && (
+              <div>
+                <h1 className="text-center">
+                  Incoming call from: {internalComm.incoming}
+                </h1>
+                <Button
+                  style={buttonStyle}
+                  color="info"
+                  block
+                  onClick={this.connect.bind(this)}
+                >
+                  Connect
+                </Button>
+              </div>
+            )}
+            {internalComm.state !== "connected" && internalComm.outgoing && (
+              <div>
+                <h1 className="text-center">
+                  Calling: {internalComm.outgoing}
+                </h1>
+                <Button
+                  style={buttonStyle}
+                  color="warning"
+                  block
+                  onClick={this.cancelCall.bind(this)}
+                >
+                  Cancel Call
+                </Button>
+              </div>
+            )}
             {internalComm.state === "connected" && (
               <div>
                 <h1 className="text-center">

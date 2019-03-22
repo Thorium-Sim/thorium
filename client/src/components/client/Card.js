@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import Layouts from "../layouts";
 import Keyboard from "components/views/Keyboard";
+import InterfaceCard from "components/views/Interface";
 import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
-import { subscribe } from "../../helpers/pubsub";
+import { subscribe, publish } from "../../helpers/pubsub";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const Blackout = () => {
   return (
@@ -79,7 +80,7 @@ const CardRenderer = props => {
   const layoutName =
     client.layout || station.layout || simulator.layout || "LayoutCorners";
 
-  let LayoutComponent = Layouts[layoutName] || Layouts.LayoutDefault;
+  let LayoutComponent = Layouts[layoutName] || Layouts.LayoutCorners;
   if (station.name === "Viewscreen") {
     LayoutComponent = Layouts[layoutName + "Viewscreen"] || LayoutComponent;
   }
@@ -96,8 +97,16 @@ const CardRenderer = props => {
       />
     );
   }
+  if (station.name.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+    return (
+      <InterfaceCard
+        interfaceId={station.name.replace("interface-id:", "")}
+        simulator={simulator}
+      />
+    );
+  }
   if (station.name === "Sound") {
-    return <SoundPlayer simulator={simulator} />;
+    return <SoundPlayer clientObj={client} simulator={simulator} />;
   }
   return (
     <LayoutComponent
@@ -142,23 +151,35 @@ export default class CardFrame extends Component {
     }
   }
   componentDidMount() {
-    this.cardChangeRequestSubscription =
-    subscribe("cardChangeRequest", payload => {
-      // Searching in order of priority, find a matching card by component (card
-      // names may have been changed to protect the innocent) then change to that card's name.
-      let found = false;
-      for(let i=0; i<payload.changeToCard.length; i++) {
-        let matchingCard = this.props.station.cards.find(c => c.component === payload.changeToCard[i]);
-        if(matchingCard) {
-          this.changeCard(matchingCard.name);
-          found = true;
-          break;
+    setTimeout(() => {
+      this.setState({ visible: true });
+    }, 500);
+    this.cardChangeRequestSubscription = subscribe(
+      "cardChangeRequest",
+      payload => {
+        // Searching in order of priority, find a matching card by component (card
+        // names may have been changed to protect the innocent) then change to that card's name.
+        let found = false;
+        for (let i = 0; i < payload.changeToCard.length; i++) {
+          let matchingCard = this.props.station.cards.find(
+            c => c.component === payload.changeToCard[i]
+          );
+          if (matchingCard) {
+            this.changeCard(matchingCard.name);
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          const widgetName = payload.changeToCard.find(c =>
+            this.props.station.widgets.includes(c)
+          );
+          if (widgetName) {
+            publish("widgetOpen", widgetName);
+          }
         }
       }
-      if(!found) {
-        // TODO: See if we can open a relevant widget instead
-      }
-    });
+    );
   }
   componentWillUnmount() {
     // Unsubscribe
@@ -193,9 +214,15 @@ export default class CardFrame extends Component {
       simulator: { caps, training: simTraining },
       client
     } = this.props;
+    const { visible } = this.state;
     return (
-      <div className={caps ? "all-caps" : ""}>
+      <div
+        className={`client-container ${caps ? "all-caps" : ""} ${
+          visible ? "visible" : ""
+        }`}
+      >
         <ActionsMixin {...this.props} changeCard={this.changeCard}>
+          {client.cracked && <div className="cracked-screen" />}
           <CardRenderer
             {...this.props}
             card={this.state.card}

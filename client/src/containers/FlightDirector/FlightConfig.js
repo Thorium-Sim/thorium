@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo, Query } from "react-apollo";
 import { Link } from "react-router-dom";
 import {
@@ -163,6 +163,29 @@ class FlightConfig extends Component {
       }
     ];
   };
+  flightType = ({ loading, data }) => {
+    if (loading) return null;
+    const { flightType: flightTypeId } = parseQuery(window.location.search);
+
+    const flightType =
+      data &&
+      data.thorium &&
+      data.thorium.spaceEdventuresCenter &&
+      data.thorium.spaceEdventuresCenter.flightTypes &&
+      data.thorium.spaceEdventuresCenter.flightTypes.find(
+        t => t.id === flightTypeId
+      );
+
+    if (!flightType) return null;
+    return (
+      <FormGroup className="name-input">
+        <Label>
+          Flight Type
+          <Input type="text" readOnly value={flightType.name} />
+        </Label>
+      </FormGroup>
+    );
+  };
   render() {
     if (
       this.props.data.loading ||
@@ -208,7 +231,7 @@ class FlightConfig extends Component {
           {
             <Query
               query={gql`
-                query {
+                query FlightTypes {
                   thorium {
                     spaceEdventuresCenter {
                       id
@@ -224,28 +247,7 @@ class FlightConfig extends Component {
                 }
               `}
             >
-              {({ loading, data }) => {
-                if (loading) return null;
-
-                const flightType =
-                  data &&
-                  data.thorium &&
-                  data.thorium.spaceEdventuresCenter &&
-                  data.thorium.spaceEdventuresCenter.flightTypes &&
-                  data.thorium.spaceEdventuresCenter.flightTypes.find(
-                    t => t.id === flightTypeId
-                  );
-
-                if (!flightType) return null;
-                return (
-                  <FormGroup className="name-input">
-                    <Label>
-                      Flight Type
-                      <Input type="text" readOnly value={flightType.name} />
-                    </Label>
-                  </FormGroup>
-                );
-              }}
+              {this.flightType}
             </Query>
           }
         </div>
@@ -269,17 +271,16 @@ class FlightConfig extends Component {
                   }`}
                 >
                   {s.name}
-                  {flightTypeId &&
-                    !s.spaceEdventuresId && (
-                      <Fragment>
-                        <br />
-                        <small>
-                          This simulator will not be recorded with Space
-                          EdVentures. Please add a Simulator ID from
-                          SpaceEdventures.org to the simulator config.
-                        </small>
-                      </Fragment>
-                    )}
+                  {flightTypeId && !s.spaceEdventuresId && (
+                    <Fragment>
+                      <br />
+                      <small>
+                        This simulator will not be recorded with Space
+                        EdVentures. Please add a Simulator ID from
+                        SpaceEdventures.org to the simulator config.
+                      </small>
+                    </Fragment>
+                  )}
                 </li>
               ))}
             </Card>

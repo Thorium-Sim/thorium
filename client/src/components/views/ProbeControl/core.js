@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button } from "reactstrap";
 import { OutputField, InputField, TypingField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
@@ -8,45 +8,50 @@ import { titleCase } from "change-case";
 import { getProbeConfig } from "../ProbeScience/probeScience";
 import "./style.scss";
 
-const queryData = `id
-types {
-  id
-  name
-  count
-}
-torpedo
-scienceTypes {
-  id
-  name
-  type
-  description
-  equipment
-}
-probes {
-  id
-  type
-  name
-  query
-  querying
-  response
-  launched
-  charge
-  history {
-    date
-    text
-  }
-  equipment {
+const fragment = gql`
+  fragment ProbeControlData on Probes {
     id
-    name
-    count
+    types {
+      id
+      name
+      count
+    }
+    torpedo
+    scienceTypes {
+      id
+      name
+      type
+      description
+      equipment
+    }
+    probes {
+      id
+      type
+      name
+      query
+      querying
+      response
+      launched
+      charge
+      history {
+        date
+        text
+      }
+      equipment {
+        id
+        name
+        count
+      }
+    }
   }
-}`;
+`;
 const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...ProbeControlData
     }
   }
+  ${fragment}
 `;
 
 class ProbeControl extends Component {
@@ -179,10 +184,10 @@ class ProbeControl extends Component {
                 <strong>{titleCase(probe.type)}</strong>
               </p>
               {this.renderEquipment()}
-              {probe && probe.type === "science" && this.renderScience(probe)}
+              {probe.type === "science" && this.renderScience(probe)}
             </Col>
           )}
-          {selectedProbe && (
+          {probe && (
             <Col sm={6}>
               <div
                 style={{
@@ -193,11 +198,9 @@ class ProbeControl extends Component {
               >
                 <OutputField
                   style={{ flex: 1, whiteSpace: "pre-wrap" }}
-                  alert={
-                    probes.probes.find(p => p.id === selectedProbe).querying
-                  }
+                  alert={probe.querying}
                 >
-                  {probes.probes.find(p => p.id === selectedProbe).query}
+                  {probe.query}
                 </OutputField>
                 <TypingField
                   style={{ flex: 3, textAlign: "left" }}
@@ -272,9 +275,10 @@ class ProbeControl extends Component {
 const PROBES_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
-${queryData}
+      ...ProbeControlData
     }
   }
+  ${fragment}
 `;
 
 export default graphql(PROBES_QUERY, {

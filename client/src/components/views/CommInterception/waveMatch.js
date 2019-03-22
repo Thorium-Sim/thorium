@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Button } from "reactstrap";
 import Measure from "react-measure";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 export default class WaveMatch extends Component {
   constructor(props) {

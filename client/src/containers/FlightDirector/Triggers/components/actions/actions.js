@@ -31,6 +31,8 @@ Actions.propTypes = {
 export default {
   name: "triggerAction",
   category: "Actions",
+  hiddenInLibrary: true,
+
   component: Actions,
   outputs: [],
   inputs: [

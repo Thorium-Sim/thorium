@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import { Row, Col, Button } from "reactstrap";
 import { InputField } from "../../generic/core";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import FileExplorer from "../TacticalMap/fileExplorer";

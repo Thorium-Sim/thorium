@@ -1,5 +1,5 @@
 $alert5: #233f7a;
-$alert4: #237A23;
+$alert4: #237a23;
 $alert3: #4d4d16;
 $alert2: #804d19;
 $alert1: #801919;
@@ -16,6 +16,9 @@ body {
 }
 
 .actionsContainer {
+  .table {
+    color: white;
+  }
   &.flash {
     filter: invert(1);
   }
@@ -64,12 +67,12 @@ body {
 }
 
 @mixin cardIcon($color) {
-  .card-icon-container .card-icon-item .card-button-background, .card-icon-color {
+  .card-icon-container .card-icon-item .card-button-background,
+  .card-icon-color {
     background: $color;
   }
   .active .card-icon-color {
     background: saturate(lighten($color, 20%), 20%);
-
   }
 }
 
@@ -110,7 +113,7 @@ body {
 }
 
 .viewscreen {
-  cursor: none;  
+  cursor: none;
 }
 
 .widgets {
@@ -122,6 +125,9 @@ body {
     pointer-events: none;
     -webkit-filter: brightness(0.7);
     filter: brightness(0.7);
+    .widget-body {
+      display: none;
+    }
   }
   .widget-item {
     float: left;
@@ -304,7 +310,7 @@ body {
   }
 }
 
-@mixin alertColor($color,$url) {
+@mixin alertColor($color, $url) {
   background: radial-gradient(
       ellipse at center,
       rgba(0, 0, 0, 0) 0%,
@@ -452,19 +458,19 @@ body {
   //Alert Classes
   &.alertColor5,
   &.alertColor4 {
-    @include alertColor($alert5,"./images/background-blue.svg");
+    @include alertColor($alert5, "./images/background-blue.svg");
   }
   &.alertColor3 {
-    @include alertColor($alert3,"./images/background-yellow.svg");
+    @include alertColor($alert3, "./images/background-yellow.svg");
   }
   &.alertColor2 {
-    @include alertColor($alert2,"./images/background-orange.svg");
+    @include alertColor($alert2, "./images/background-orange.svg");
   }
   &.alertColor1 {
-    @include alertColor($alert1,"./images/background-red.svg");
+    @include alertColor($alert1, "./images/background-red.svg");
   }
   &.alertColorp {
-    @include alertColor($alertp,"./images/background-purple.svg");
+    @include alertColor($alertp, "./images/background-purple.svg");
   }
 
   .simulator-image {
@@ -485,7 +491,7 @@ body {
       }
     }*/
   }
-  
+
   .frame-text {
     pointer-events: none;
     user-select: none;
@@ -750,7 +756,7 @@ body {
         transform: scaleX(-1);
       }
     }
-   /* @media (min-width: 1700px) {
+    /* @media (min-width: 1700px) {
       .part-1-1 {
         top: 0px;
         width: 50px;
@@ -1089,4 +1095,3 @@ body {
 // This is just for the viewscreen
 @media (width: 1920px) {
 }
-

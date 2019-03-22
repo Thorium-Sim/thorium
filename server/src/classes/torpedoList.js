@@ -7,7 +7,7 @@ export default class Torpedo extends System {
     this.class = "Torpedo";
     this.type = "Torpedo";
     this.name = params.name || "Torpedo";
-    this.loaded = params.loaded || false;
+    this.loaded = params.loaded || null;
     this.state = params.state || "idle";
     this.inventory = [];
     this.stealthCompromised = false;
@@ -56,7 +56,7 @@ export default class Torpedo extends System {
     this.state = "loaded";
   }
   unload() {
-    this.loaded = false;
+    this.loaded = null;
     this.state = "idle";
   }
   setWarheadCount(type, count) {
@@ -76,7 +76,7 @@ export default class Torpedo extends System {
   fireWarhead() {
     //Remove the loaded warhead from inventory
     this.removeWarhead(this.loaded);
-    this.loaded = false;
+    this.loaded = null;
     this.state = "fired";
     this.stealthCompromised = true;
     setTimeout(() => (this.stealthCompromised = false), 10 * 1000);

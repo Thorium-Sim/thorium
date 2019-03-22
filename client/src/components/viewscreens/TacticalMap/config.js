@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -86,15 +86,17 @@ class TacticalMapConfig extends Component {
         />
         <p>Saved Maps</p>
         <ul className="saved-list">
-          {tacticalMaps.filter(t => t.template).map(t => (
-            <li
-              key={t.id}
-              className={t.id === tacticalMapId ? "selected" : ""}
-              onClick={() => this.selectTactical(t.id)}
-            >
-              {t.name}
-            </li>
-          ))}
+          {tacticalMaps
+            .filter(t => t.template)
+            .map(t => (
+              <li
+                key={t.id}
+                className={t.id === tacticalMapId ? "selected" : ""}
+                onClick={() => this.selectTactical(t.id)}
+              >
+                {t.name}
+              </li>
+            ))}
         </ul>
         <Button color="primary" size="sm" onClick={this.loadTactical}>
           Load Tactical

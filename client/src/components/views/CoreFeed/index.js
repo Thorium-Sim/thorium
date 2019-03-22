@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Cores } from "../";
 import { Button, ButtonGroup } from "reactstrap";
@@ -143,9 +143,9 @@ class CoreFeed extends Component {
                     onClick={() => this.showComponent(c.id)}
                   >
                     <strong className="alert-heading">
-                      {DateTime.fromJSDate(new Date(c.timestamp)).toFormat(
-                        "h:mm:ssa"
-                      )}{" "}
+                      {DateTime.fromJSDate(
+                        new Date(parseInt(c.timestamp))
+                      ).toFormat("h:mm:ssa")}{" "}
                       - {c.title}
                     </strong>
                     {c.body && <p>{c.body}</p>}

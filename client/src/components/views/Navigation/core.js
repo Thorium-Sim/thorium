@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
@@ -115,9 +115,9 @@ class NavigationCore extends Component {
     `;
     const variables = {
       id: navigation.id,
-      x: course.x,
-      y: course.y,
-      z: course.z
+      x: String(course.x),
+      y: String(course.y),
+      z: String(course.z)
     };
     this.props.client.mutate({
       mutation,

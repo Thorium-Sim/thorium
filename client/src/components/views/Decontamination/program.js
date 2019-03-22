@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import { Mutation, withApollo } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import Bars from "../TractorBeam/bars";
 class DeconProgram extends Component {
   state = {

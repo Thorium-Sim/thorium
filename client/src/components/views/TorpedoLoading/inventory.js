@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Button } from "reactstrap";
 import { OutputField, InputField } from "../../generic/core";
 import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 
 const UPDATE_COUNT = gql`
   mutation AddWarhead($id: ID!, $type: String!, $count: Int!) {

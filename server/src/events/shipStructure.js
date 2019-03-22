@@ -35,11 +35,50 @@ App.on("deckDoors", ({ deckId, doors }) => {
   const deck = App.decks.find(d => d.id === deckId);
   deck.setDoors(doors);
   pubsub.publish("decksUpdate", App.decks);
+
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: deck.simulatorId,
+    type: "Security Doors",
+    station: "Core",
+    title: `Deck ${deck.number} Doors ${doors ? "Closed" : "Opened"}`,
+    body: "",
+    color: "info"
+  });
+  App.handleEvent(
+    {
+      simulatorId: deck.simulatorId,
+      title: `Deck ${deck.number} Doors ${doors ? "Closed" : "Opened"}`,
+      body: "",
+      component: "SecurityDecksCore",
+      color: "info"
+    },
+    "addCoreFeed"
+  );
 });
 App.on("deckEvac", ({ deckId, evac }) => {
   const deck = App.decks.find(d => d.id === deckId);
   deck.setEvac(evac);
   pubsub.publish("decksUpdate", App.decks);
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: deck.simulatorId,
+    type: "Security Doors",
+    station: "Core",
+    title: `Deck ${deck.number} ${evac ? "Evacuated" : "All-Clear"}`,
+    body: "",
+    color: "info"
+  });
+  App.handleEvent(
+    {
+      simulatorId: deck.simulatorId,
+      title: `Deck ${deck.number} ${evac ? "Evacuated" : "All-Clear"}`,
+      body: "",
+      component: "SecurityDecksCore",
+      color: "info"
+    },
+    "addCoreFeed"
+  );
 });
 App.on("updateHallwaySvg", ({ deckId, svg }) => {
   const deck = App.decks.find(d => d.id === deckId);
@@ -198,6 +237,7 @@ App.on("addInventory", ({ inventory }) => {
   pubsub.publish("inventoryUpdate", App.inventory);
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish("crewCountUpdate", App.crew);
 });
 App.on("removeInventory", ({ id }) => {
   App.inventory = App.inventory.filter(i => i.id !== id);
@@ -225,6 +265,7 @@ App.on("updateCrewInventory", ({ crewId, inventory, roomId }) => {
   });
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish("crewCountUpdate", App.crew);
 });
 App.on("removeCrewInventory", ({ crewId, inventory, roomId }) => {
   inventory.forEach(e => {
@@ -233,9 +274,10 @@ App.on("removeCrewInventory", ({ crewId, inventory, roomId }) => {
   });
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
+  pubsub.publish("crewCountUpdate", App.crew);
 });
 
-App.on("transferCargo", ({ inventory, fromRoom, toRoom }) => {
+App.on("transferCargo", ({ inventory, fromRoom, toRoom, cb }) => {
   let simId = null;
   inventory.forEach(({ id, count }) => {
     const inv = App.inventory.find(i => i.id === id);
@@ -245,10 +287,12 @@ App.on("transferCargo", ({ inventory, fromRoom, toRoom }) => {
 
   // Add some logs for the cargo transfer
   const roomSearchList = App.rooms.concat(
-    App.dockingPorts.filter(d => d.deckId && d.docked).map(d => ({
-      ...d,
-      name: `${d.shipName || d.name} Loading`
-    }))
+    App.dockingPorts
+      .filter(d => d.deckId && d.docked)
+      .map(d => ({
+        ...d,
+        name: `${d.shipName || d.name} Loading`
+      }))
   );
   const fromRoomObj = roomSearchList.find(r => r.id === fromRoom);
   const toRoomObj = roomSearchList.find(r => r.id === toRoom);
@@ -259,11 +303,10 @@ App.on("transferCargo", ({ inventory, fromRoom, toRoom }) => {
   }, Deck ${toDeckObj.number}`;
   const log = `Transfer ${location}
 ${inventory
-    .map(
-      ({ id, count }) =>
-        `${App.inventory.find(i => i.id === id).name}: ${count}`
-    )
-    .join("\n")}`;
+  .map(
+    ({ id, count }) => `${App.inventory.find(i => i.id === id).name}: ${count}`
+  )
+  .join("\n")}`;
   const simulator = App.simulators.find(s => s.id === simId);
   simulator.ship.inventoryLogs.push({
     timestamp: new Date(),
@@ -298,4 +341,5 @@ ${inventory
   ) {
     pubsub.publish("dockingUpdate", App.dockingPorts);
   }
+  cb && cb();
 });

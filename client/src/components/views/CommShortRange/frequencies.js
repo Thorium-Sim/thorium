@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Card } from "reactstrap";
 import tinycolor from "tinycolor2";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import Measure from "react-measure";
 import Arrow from "./arrow";
 

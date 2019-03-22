@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "reactstrap";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 
 const PathConfig = ({ client, tacticalMapId, layerId }) => {

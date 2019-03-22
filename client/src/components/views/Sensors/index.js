@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Mutation, graphql, withApollo } from "react-apollo";
 import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "helpers/tourHelper";
@@ -215,6 +215,7 @@ class Sensors extends Component {
       !this.props.widget &&
       !this.props.station.cards.find(c => c.component === "SensorScans");
     const sensors = this.props.data.sensors[0];
+    if (!sensors) return <p>No sensors system.</p>;
     const { pingMode } = sensors;
     const pings = false;
     const { hoverContact, ping, pingTime, weaponsRange } = this.state;
@@ -328,6 +329,9 @@ class Sensors extends Component {
             <Col sm={{ size: 3, offset: !needScans ? 1 : 0 }} className="data">
               <Row className="contact-info">
                 <Col className="col-sm-12">
+                  <h3>Contact Information</h3>
+                </Col>
+                <Col className="col-sm-12">
                   <div className="card contactPictureContainer">
                     {hoverContact.picture && (
                       <Asset asset={hoverContact.picture}>
@@ -367,15 +371,14 @@ class Sensors extends Component {
                   </Card>
                 </Col>
               </Row>
-              {pings &&
-                !needScans && (
-                  <PingControl
-                    selectPing={this.selectPing}
-                    pingMode={pingMode}
-                    ping={ping}
-                    triggerPing={this.triggerPing}
-                  />
-                )}
+              {pings && !needScans && (
+                <PingControl
+                  selectPing={this.selectPing}
+                  pingMode={pingMode}
+                  ping={ping}
+                  triggerPing={this.triggerPing}
+                />
+              )}
               {!needScans && (
                 <Button onClick={this.showWeaponsRange} block>
                   Show Weapons Range

@@ -16,8 +16,8 @@ const snapshotName =
   process.env.NODE_ENV === "production"
     ? "snapshot.json"
     : process.env.NODE_ENV === "test"
-      ? "snapshot-test.json"
-      : "snapshot-dev.json";
+    ? "snapshot-test.json"
+    : "snapshot-dev.json";
 
 const store = new Store({
   name: "Thorium",
@@ -60,6 +60,8 @@ class Events extends EventEmitter {
     this.tasks = [];
     this.commandLine = [];
     this.triggerGroups = [];
+    this.interfaces = [];
+    this.interfaceDevices = [];
     this.autoUpdate = true;
     this.migrations = { assets: true };
     this.thoriumId = randomWords(5).join("-");
@@ -110,10 +112,12 @@ class Events extends EventEmitter {
             try {
               this[key].push(new Classes[obj.class](obj));
             } catch (err) {
-              console.error(err);
-              throw new Error(
-                JSON.stringify({ message: "Undefined key in class", key, obj })
-              );
+              console.log(err);
+              console.log({
+                message: "Undefined key in class",
+                key,
+                class: obj.class
+              });
             }
           }
         });

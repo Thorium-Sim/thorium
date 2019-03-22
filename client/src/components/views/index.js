@@ -32,7 +32,7 @@ import SelfDestruct from "./SelfDestruct";
 import ProbeControl from "./ProbeControl";
 import ReactorControl from "./ReactorControl";
 import Viewscreen from "./Viewscreen";
-import Messages from "./Messaging";
+import Messages, { trainingSteps as MessagesTraining } from "./Messaging";
 import Isochips from "./Isochips";
 import Shuttles from "./Shuttles";
 import Status from "./Status";
@@ -87,6 +87,8 @@ import DockingPorts from "./DockingPorts";
 import SubspaceField from "./SubspaceField";
 import Transwarp from "./Transwarp";
 import SpecializedDocking from "./SpecializedDocking";
+import Interface from "./Interface";
+import SpaceEdventuresToken from "./SpaceEdventuresToken";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -164,6 +166,8 @@ import TaskReportCore from "./TaskReports/core";
 import SubspaceFieldCore from "./SubspaceField/core";
 import TranswarpCore from "./Transwarp/core";
 import SpecializedDockingCore from "./SpecializedDocking/core";
+import TimelineThumbnailCore from "./Timeline/thumbnailData";
+import SpaceEdventuresTokenCore from "./SpaceEdventuresToken/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -260,7 +264,9 @@ const Views = {
   DockingPorts,
   SubspaceField,
   Transwarp,
-  SpecializedDocking
+  SpecializedDocking,
+  Interface,
+  SpaceEdventuresToken
 };
 
 export const Widgets = {
@@ -312,7 +318,8 @@ export const Widgets = {
     icon: "comments-o",
     name: "Messaging",
     size: "lg",
-    color: "rgb(100,150,200)"
+    color: "rgb(100,150,200)",
+    training: MessagesTraining
   },
   damageReport: {
     widget: DamageControl,
@@ -355,6 +362,13 @@ export const Widgets = {
     name: "Sensors",
     size: "lg",
     color: "#6FEDC5"
+  },
+  commandLine: {
+    widget: CommandLine,
+    icon: "terminal",
+    name: "Command Line",
+    size: "lg",
+    color: "#5FFF5F"
   }
 };
 
@@ -433,7 +447,9 @@ export const Cores = {
   TaskReportCore,
   SubspaceFieldCore,
   TranswarpCore,
-  SpecializedDockingCore
+  SpecializedDockingCore,
+  TimelineThumbnailCore,
+  SpaceEdventuresTokenCore
 };
 
 export default Views;

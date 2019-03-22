@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import "./issueTracker.scss";
 
@@ -35,7 +35,7 @@ class IssueTracker extends Component {
     const variables = this.state;
     this.props.client.mutate({
       mutation,
-      variables
+      variables: { ...variables, priority: Number(variables.priority) }
     });
     this.setState({});
     this.props.close && this.props.close();
@@ -43,6 +43,43 @@ class IssueTracker extends Component {
   render() {
     return (
       <div id="issues-tracker">
+        <p>
+          <strong>
+            Note: As of March 2019, Alex Anderson will no longer be prioritizing
+            working on Thorium bugs and feature requests.
+          </strong>{" "}
+          Feel free to submit the issue report, but please recognize that it
+          might take a while to be addressed.
+        </p>
+        <p>
+          What can you do to get your issue report addressed sooner? If you have
+          an urgent need or want to prioritize something, submit a{" "}
+          <a
+            href="https://thoriumsim.com/service/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Service Request Form
+          </a>
+          . If you know of developers who are capable of working on Thorium, you
+          can point them at the{" "}
+          <a
+            href="https://github.com/thorium-sim/thorium"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Github Repository
+          </a>
+          . And if you have further questions, feel free to reach out on the{" "}
+          <a
+            href="https://discord.gg/UvxTQZz"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Discord Server
+          </a>
+          .
+        </p>
         <div className="issues-body">
           <form>
             <div className="form-group">

@@ -34,6 +34,7 @@ const components = [
   "ReactivationCore",
   "ReactorControlCore",
   "RemoteCore",
+  "SecurityDecksCore",
   "SecurityTeamsCore",
   "SelfDestructCore",
   "SensorsCore",

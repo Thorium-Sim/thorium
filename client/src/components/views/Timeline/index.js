@@ -1,33 +1,35 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Timeline from "./timeline";
 import "./style.scss";
 
-const queryData = `
-id
-currentTimelineStep
-executedTimelineSteps
-mission {
-  id
-  name
-  description
-  timeline {
+const fragment = gql`
+  fragment TimelineData on Simulator {
     id
-    name
-    order
-    description
-    timelineItems {
+    currentTimelineStep
+    executedTimelineSteps
+    mission {
       id
       name
-      type
-      args
-      event
-      delay
+      description
+      timeline {
+        id
+        name
+        order
+        description
+        timelineItems {
+          id
+          name
+          type
+          args
+          event
+          delay
+        }
+      }
     }
   }
-}
 `;
 
 const QUERY = gql`
@@ -38,16 +40,18 @@ const QUERY = gql`
       description
     }
     simulators(id: $simulatorId) {
-${queryData}
+      ...TimelineData
     }
   }
+  ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TimelineUpdate($simulatorId: ID!) {
     simulatorsUpdate(simulatorId: $simulatorId) {
-${queryData}
+      ...TimelineData
     }
   }
+  ${fragment}
 `;
 
 class TimelineData extends Component {

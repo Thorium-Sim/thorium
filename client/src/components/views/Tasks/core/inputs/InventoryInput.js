@@ -1,6 +1,6 @@
 import React from "react";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import { Button } from "reactstrap";
 import { randomFromList } from "helpers/randomFromList";
@@ -23,7 +23,10 @@ const InventoryInput = ({ simulatorId, onChange, value }) => {
               Change the inventory item's name before adding another.
             </small>
             {Object.entries(value || {}).map(([id, count]) => (
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div
+                key={id}
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
                 {data ? (
                   <select
                     value={id}

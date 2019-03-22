@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
+import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button, Input, Label } from "reactstrap";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
@@ -42,7 +42,7 @@ class DecksCore extends Component {
     `;
     const variables = {
       simulatorId: this.props.simulator.id,
-      number
+      number: parseInt(number, 10)
     };
     this.props.client.mutate({
       mutation,
@@ -350,79 +350,78 @@ class DecksCore extends Component {
           </Col>
           <Col sm={4}>
             <p>Config</p>
-            {selectedDeck &&
-              selectedRoom && (
-                <div>
-                  <Label>
-                    Roles
-                    <Input
-                      type="select"
-                      value="select"
-                      onChange={e => this.addRole(e.target.value)}
-                    >
-                      <option value="select" disabled>
-                        Select a role to add
+            {selectedDeck && selectedRoom && (
+              <div>
+                <Label>
+                  Roles
+                  <Input
+                    type="select"
+                    value="select"
+                    onChange={e => this.addRole(e.target.value)}
+                  >
+                    <option value="select" disabled>
+                      Select a role to add
+                    </option>
+                    {[
+                      "probe",
+                      "torpedo",
+                      "damageTeam",
+                      "securityTeam",
+                      "medicalTeam"
+                    ].map(r => (
+                      <option key={r} value={r}>
+                        {r}
                       </option>
-                      {[
-                        "probe",
-                        "torpedo",
-                        "damageTeam",
-                        "securityTeam",
-                        "medicalTeam"
-                      ].map(r => (
-                        <option key={r} value={r}>
-                          {r}
-                        </option>
-                      ))}
-                    </Input>
-                  </Label>
-                  {decks
-                    .find(d => d.id === selectedDeck)
-                    .rooms.find(r => r.id === selectedRoom)
-                    .roles.map(r => (
-                      <p key={`${selectedRoom}-${r}`}>
-                        {r}{" "}
-                        <FontAwesome
-                          name="ban"
-                          className="text-warning"
-                          onClick={() => this.removeRole(r)}
-                        />
-                      </p>
                     ))}
-                  <Label>
-                    Change Deck
-                    <Mutation
-                      mutation={gql`
-                        mutation ChangeDeck($deckId: ID!, $roomId: ID!) {
-                          changeRoomDeck(roomId: $roomId, deckId: $deckId)
-                        }
-                      `}
-                    >
-                      {action => (
-                        <Input
-                          type="select"
-                          value={selectedDeck}
-                          onChange={e => {
-                            action({
-                              variables: {
-                                deckId: e.target.value,
-                                roomId: selectedRoom
-                              }
-                            });
-                            this.setState({ selectedRoom: null });
-                          }}
-                        >
-                          {decks.map(d => (
-                            <option key={d.id} value={d.id}>
-                              Deck {d.number}
-                            </option>
-                          ))}
-                        </Input>
-                      )}
-                    </Mutation>
-                  </Label>
-                </div>
-              )}
+                  </Input>
+                </Label>
+                {decks
+                  .find(d => d.id === selectedDeck)
+                  .rooms.find(r => r.id === selectedRoom)
+                  .roles.map(r => (
+                    <p key={`${selectedRoom}-${r}`}>
+                      {r}{" "}
+                      <FontAwesome
+                        name="ban"
+                        className="text-warning"
+                        onClick={() => this.removeRole(r)}
+                      />
+                    </p>
+                  ))}
+                <Label>
+                  Change Deck
+                  <Mutation
+                    mutation={gql`
+                      mutation ChangeDeck($deckId: ID!, $roomId: ID!) {
+                        changeRoomDeck(roomId: $roomId, deckId: $deckId)
+                      }
+                    `}
+                  >
+                    {action => (
+                      <Input
+                        type="select"
+                        value={selectedDeck}
+                        onChange={e => {
+                          action({
+                            variables: {
+                              deckId: e.target.value,
+                              roomId: selectedRoom
+                            }
+                          });
+                          this.setState({ selectedRoom: null });
+                        }}
+                      >
+                        {decks.map(d => (
+                          <option key={d.id} value={d.id}>
+                            Deck {d.number}
+                          </option>
+                        ))}
+                      </Input>
+                    )}
+                  </Mutation>
+                </Label>
+              </div>
+            )}
           </Col>
         </Row>
       </Container>
