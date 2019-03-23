@@ -1,6 +1,9 @@
 {
   "1.2.6": {
-    "fixes": ["Fixes reactor efficiencies not updating on the config screen."]
+    "fixes": [
+      "Fixes reactor efficiencies not updating on the config screen.",
+      "Fixes issues around playing sounds through the actions core and actions macro."
+    ]
   },
   "1.2.5": {
     "fixes": [

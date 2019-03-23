@@ -36,6 +36,7 @@ const MOVIE_QUERY = gql`
 export const triggerAction = ({
   actionName,
   actionDest,
+  selectedSound,
   selectedMovie,
   selectedCard,
   selectedVoice,
@@ -47,6 +48,7 @@ export const triggerAction = ({
     message = prompt("What do you want to say?");
     if (!message) return;
   }
+  if (actionName === "sound") message = selectedSound;
   if (actionName === "changeCard") message = selectedCard;
   if (actionName === "movie") message = selectedMovie;
   if (actionDest === "random") {
@@ -161,7 +163,18 @@ class ActionsCore extends Component {
           </Col>
           {!bridgeMap && (
             <Col sm={4}>
-              <Button block color="primary" size="sm" onClick={this.playSound}>
+              <Button
+                block
+                color="primary"
+                size="sm"
+                onClick={() =>
+                  triggerAction({
+                    ...this.state,
+                    simulator: this.props.data.simulators[0],
+                    client: this.props.client
+                  })
+                }
+              >
                 Play
               </Button>
             </Col>
