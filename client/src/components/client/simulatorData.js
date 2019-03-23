@@ -69,7 +69,7 @@ class SimulatorData extends Component {
     } = this.props;
     return (
       <Query query={QUERY} variables={{ simulatorId: simulator.id }}>
-        {({ loading, data, subscribeToMore }) => {
+        {({ loading, data = {}, subscribeToMore }) => {
           const { simulators } = data;
           if (loading || !simulators) return null;
           if (!simulators[0]) return <div>No Simulator</div>;
