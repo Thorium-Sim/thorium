@@ -7,7 +7,7 @@ import { titleCase } from "change-case";
 
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
-
+import { randomFromList } from "helpers/randomFromList";
 const STATION_CHANGE_QUERY = gql`
   subscription StationsUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
@@ -117,10 +117,7 @@ class ActionsCore extends Component {
   playSound = () => {
     let { selectedSound, actionDest } = this.state;
     if (actionDest === "random") {
-      const index = Math.floor(
-        Math.random() * this.props.data.simulators[0].stations
-      );
-      actionDest = this.props.data.simulators[0].stations[index].name;
+      actionDest = randomFromList(this.props.data.simulators[0].stations).name;
     }
     const mutation = gql`
       mutation PlaySound($asset: String!, $station: String, $simulatorId: ID) {

@@ -24,14 +24,17 @@ class VideoConfig extends Component {
     }
   }
   togglePause = () => {
-    this.props.client.mutate({
-      mutation: gql`
-        mutation ToggleVideo($simulatorId: ID!) {
-          toggleViewscreenVideo(simulatorId: $simulatorId)
+    this.props.simulator &&
+      this.props.client.mutate({
+        mutation: gql`
+          mutation ToggleVideo($simulatorId: ID!) {
+            toggleViewscreenVideo(simulatorId: $simulatorId)
+          }
+        `,
+        variables: {
+          simulatorId: this.props.simulator.id
         }
-      `,
-      variables: { simulatorId: this.props.simulator.id }
-    });
+      });
   };
   render() {
     let { data, updateData, simple } = this.props;
