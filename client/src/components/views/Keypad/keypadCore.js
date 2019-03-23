@@ -100,7 +100,9 @@ class KeypadCore extends Component {
                         action({
                           variables: {
                             id: keypad.id,
-                            code: value.split("").map(v => parseInt(v, 10))
+                            code: String(value)
+                              .split("")
+                              .map(v => parseInt(v, 10))
                           }
                         })
                       }
