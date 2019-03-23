@@ -9,6 +9,8 @@ import { WebSocketLink } from "apollo-link-ws";
 import { MockLink } from "react-apollo/test-utils";
 import { Hermes } from "apollo-cache-hermes";
 import { FLIGHTS_QUERY } from "../containers/FlightDirector/Welcome";
+import * as Sentry from "@sentry/browser";
+
 // Set a clientId for the client
 let clientId = localStorage.getItem("thorium_clientId");
 if (!clientId) {
@@ -23,12 +25,18 @@ const wsLink = ApolloLink.from([
   onError(args => {
     const { response, graphQLErrors, networkError } = args;
     if (graphQLErrors)
-      graphQLErrors.map(({ message, locations, path }) =>
+      graphQLErrors.forEach(error => {
+        const { message, locations, path } = error;
         console.log(
           `[Subscription Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        )
-      );
-    if (networkError) console.log(`[Network error]: ${networkError}`);
+        );
+        Sentry.captureException(error);
+      });
+
+    if (networkError) {
+      console.log(`[Network error]: ${networkError}`);
+      Sentry.captureException(networkError);
+    }
     if (response) response.errors = null;
   }),
   new WebSocketLink({

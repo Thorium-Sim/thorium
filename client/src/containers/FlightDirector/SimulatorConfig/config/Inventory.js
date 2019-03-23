@@ -135,14 +135,16 @@ class Inventory extends Component {
         defense: metadata.defense
       },
       roomCount: roomCount
-        .map(
-          r =>
-            r.room && {
-              room: r.room.id || r.room,
-              count: r.count
-            }
-        )
-        .filter(Boolean)
+        ? roomCount
+            .map(
+              r =>
+                r.room && {
+                  room: r.room.id || r.room,
+                  count: r.count
+                }
+            )
+            .filter(Boolean)
+        : []
     };
     this.props.client.mutate({
       mutation,

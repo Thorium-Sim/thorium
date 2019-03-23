@@ -94,22 +94,29 @@ const DockingConfig = ({ data, selectedSimulator, client }) => {
                     />
                   </td>
                   <td>
-                    <Input
-                      type="select"
-                      value={d.image || ""}
-                      onChange={evt =>
-                        updateDocking(d.id, "image", evt.target.value)
-                      }
-                    >
-                      <option value="" disabled>
-                        Select An Image
-                      </option>
-                      {assetFolders[0].objects.map(a => (
-                        <option key={a.id} value={a.fullPath}>
-                          {a.name}
+                    {assetFolders[0] ? (
+                      <Input
+                        type="select"
+                        value={d.image || ""}
+                        onChange={evt =>
+                          updateDocking(d.id, "image", evt.target.value)
+                        }
+                      >
+                        <option value="" disabled>
+                          Select An Image
                         </option>
-                      ))}
-                    </Input>
+                        {assetFolders[0].objects.map(a => (
+                          <option key={a.id} value={a.fullPath}>
+                            {a.name}
+                          </option>
+                        ))}
+                      </Input>
+                    ) : (
+                      <p>
+                        Make sure you have a 'Docking Images' folder inside your
+                        assets folder.
+                      </p>
+                    )}
                   </td>
                   <td>
                     <img alt="Shuttle" src={`/assets${d.image}`} width="40" />
