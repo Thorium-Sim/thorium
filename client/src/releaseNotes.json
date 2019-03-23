@@ -1,4 +1,7 @@
 {
+  "1.2.6": {
+    "fixes": ["Fixes reactor efficiencies not updating on the config screen."]
+  },
   "1.2.5": {
     "fixes": [
       "Fixes an issue where you couldn't change the viewscreen from the core.",

@@ -38,7 +38,14 @@ const Reactor = props => {
       variables: {
         id: reactor.id,
         efficiencies: reactor.efficiencies.map(({ __typename, ...e }, ind) =>
-          ind === i ? { ...e, [key]: evt.target.value } : e
+          ind === i
+            ? {
+                ...e,
+                [key]: isNaN(parseFloat(evt.target.value))
+                  ? evt.target.value
+                  : parseFloat(evt.target.value)
+              }
+            : e
         )
       }
     });
