@@ -123,18 +123,19 @@ export default class Flight {
 
     // Send the flight record to Space EdVentures
     const mutation = `mutation FlightRecordCreate(
-      $flightId: ID!, 
-      $flightType: ID!, 
-      $simulators:[FlightSimulatorInput!]!
-    ){
-        flightRecordCreate(
-          thoriumFlightId:$flightId, 
-          flightTypeId:$flightType, 
-          simulators:$simulators) 
-        {
-          id
-        }
-      }`;
+      $flightId: ID!
+      $flightType: ID!
+      $simulators: [FlightSimulatorInput!]!
+    ) {
+      flightRecordCreate(
+        thoriumFlightId: $flightId
+        flightTypeId: $flightType
+        simulators: $simulators
+      ) {
+        id
+      }
+    }
+    `;
     graphqlClient
       .query({
         query: mutation,

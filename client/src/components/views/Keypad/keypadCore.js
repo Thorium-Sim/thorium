@@ -51,25 +51,28 @@ class KeypadCore extends Component {
         <Row>
           <Col sm={4}>
             <ListGroup>
-              {clients.map(c => (
-                <ListGroupItem
-                  key={c.id}
-                  active={c.id === selectedKeypad}
-                  onClick={() =>
-                    this.setState(state => ({
-                      selectedKeypad: c.id,
-                      changed: { ...state.changed, [c.id]: false }
-                    }))
-                  }
-                  style={{
-                    backgroundColor: changed[c.id]
-                      ? `rgba(255, 0, 0, 0.3)`
-                      : null
-                  }}
-                >
-                  {c.label}
-                </ListGroupItem>
-              ))}
+              {clients.map(
+                c =>
+                  c && (
+                    <ListGroupItem
+                      key={c.id}
+                      active={c.id === selectedKeypad}
+                      onClick={() =>
+                        this.setState(state => ({
+                          selectedKeypad: c.id,
+                          changed: { ...state.changed, [c.id]: false }
+                        }))
+                      }
+                      style={{
+                        backgroundColor: changed[c.id]
+                          ? `rgba(255, 0, 0, 0.3)`
+                          : null
+                      }}
+                    >
+                      {c.label}
+                    </ListGroupItem>
+                  )
+              )}
             </ListGroup>
           </Col>
           {keypad && (
@@ -93,10 +96,13 @@ class KeypadCore extends Component {
                         keypad.codeLength
                       } numerical digits, or leave blank to pick a random code.`}
                       onClick={value =>
+                        value &&
                         action({
                           variables: {
                             id: keypad.id,
-                            code: value.split("").map(v => parseInt(v, 10))
+                            code: String(value)
+                              .split("")
+                              .map(v => parseInt(v, 10))
                           }
                         })
                       }

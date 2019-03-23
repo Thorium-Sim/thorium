@@ -1,4 +1,11 @@
 {
+  "1.2.6": {
+    "fixes": [
+      "Fixes reactor efficiencies not updating on the config screen.",
+      "Fixes issues around playing sounds through the actions core and actions macro.",
+      "Fixes issues with the keypad core not allowing the required code to be changed."
+    ]
+  },
   "1.2.5": {
     "fixes": [
       "Fixes an issue where you couldn't change the viewscreen from the core.",

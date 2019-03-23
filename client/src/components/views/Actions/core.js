@@ -7,7 +7,7 @@ import { titleCase } from "change-case";
 
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
-
+import { randomFromList } from "helpers/randomFromList";
 const STATION_CHANGE_QUERY = gql`
   subscription StationsUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
@@ -36,6 +36,7 @@ const MOVIE_QUERY = gql`
 export const triggerAction = ({
   actionName,
   actionDest,
+  selectedSound,
   selectedMovie,
   selectedCard,
   selectedVoice,
@@ -47,6 +48,7 @@ export const triggerAction = ({
     message = prompt("What do you want to say?");
     if (!message) return;
   }
+  if (actionName === "sound") message = selectedSound;
   if (actionName === "changeCard") message = selectedCard;
   if (actionName === "movie") message = selectedMovie;
   if (actionDest === "random") {
@@ -117,10 +119,7 @@ class ActionsCore extends Component {
   playSound = () => {
     let { selectedSound, actionDest } = this.state;
     if (actionDest === "random") {
-      const index = Math.floor(
-        Math.random() * this.props.data.simulators[0].stations
-      );
-      actionDest = this.props.data.simulators[0].stations[index].name;
+      actionDest = randomFromList(this.props.data.simulators[0].stations).name;
     }
     const mutation = gql`
       mutation PlaySound($asset: String!, $station: String, $simulatorId: ID) {
@@ -164,7 +163,18 @@ class ActionsCore extends Component {
           </Col>
           {!bridgeMap && (
             <Col sm={4}>
-              <Button block color="primary" size="sm" onClick={this.playSound}>
+              <Button
+                block
+                color="primary"
+                size="sm"
+                onClick={() =>
+                  triggerAction({
+                    ...this.state,
+                    simulator: this.props.data.simulators[0],
+                    client: this.props.client
+                  })
+                }
+              >
                 Play
               </Button>
             </Col>
