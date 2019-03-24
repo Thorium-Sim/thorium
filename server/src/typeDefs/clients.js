@@ -24,6 +24,11 @@ const schema = gql`
     overlay: Boolean
     cracked: Boolean
 
+    # Space EdVentures
+    token: String
+    email: String
+
+    # Mobile App
     mobile: Boolean
     cards: [String]
     keypad: Keypad
@@ -96,6 +101,7 @@ const schema = gql`
     clientSetSimulator(client: ID!, simulatorId: ID!): String
     clientSetStation(client: ID!, stationName: ID!): String
     clientLogin(client: ID!, loginName: String): String
+    clientSetEmail(client: ID!, email: String!): String
     clientLogout(client: ID!): String
     clientDiagnostic(client: ID!): String
     clientReset(client: ID!): String
@@ -173,6 +179,18 @@ const resolver = {
     },
     simulator(rootValue) {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
+    },
+    token(client) {
+      const flight = App.flights.find(f => f.id === client.flightId);
+      const flightClient =
+        flight && flight.clients.find(c => c.id === client.id);
+      return flightClient && flightClient.token;
+    },
+    email(client) {
+      const flight = App.flights.find(f => f.id === client.flightId);
+      const flightClient =
+        flight && flight.clients.find(c => c.id === client.id);
+      return flightClient && flightClient.email;
     },
     station: StationResolver
   },
@@ -319,7 +337,8 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("soundSub"),
         (rootValue, { clientId }) => {
-          if (rootValue.clients.indexOf(clientId) > -1) return true;
+          if (rootValue && rootValue.clients.indexOf(clientId) > -1)
+            return true;
           return false;
         }
       )
@@ -329,26 +348,27 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("cancelSound"),
         (rootValue, { clientId }) => {
-          if (rootValue.clients.indexOf(clientId) > -1) return true;
+          if (rootValue && rootValue.clients.indexOf(clientId) > -1)
+            return true;
           return false;
         }
       )
     },
     cancelAllSounds: {
-      resolve: payload => payload,
+      resolve: payload => !!payload,
       subscribe: withFilter(
         () => pubsub.asyncIterator("cancelAllSounds"),
         (rootValue, { clientId }) => {
-          return !!rootValue.find(c => c.id === clientId);
+          return rootValue && !!rootValue.find(c => c.id === clientId);
         }
       )
     },
     cancelLoopingSounds: {
-      resolve: payload => payload,
+      resolve: payload => !!payload,
       subscribe: withFilter(
         () => pubsub.asyncIterator("cancelLoopingSounds"),
         (rootValue, { clientId }) => {
-          return !!rootValue.find(c => c.id === clientId);
+          return rootValue && !!rootValue.find(c => c.id === clientId);
         }
       )
     }

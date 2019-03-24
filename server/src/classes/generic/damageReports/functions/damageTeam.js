@@ -2,7 +2,7 @@ import { damagePositions, damageTexts, randomFromList } from "../constants";
 
 export default (
   { end, cleanup, name: teamName, orders, room, preamble, type },
-  { damageSteps, name, displayName = name, location },
+  { damageSteps, name, displayName = name, location, damageTeamCrewCount },
   index
 ) => {
   if (end) {
@@ -28,7 +28,9 @@ You can send a message to the damage team to check on their progress.`;
       
 Damage Team Name: ${displayName} Cleanup
 Location: ${location}
-Officers: ${Math.floor(Math.random() * 2 + 1)} Custodian(s)
+Officers: ${Math.floor(
+      Math.min(damageTeamCrewCount.Custodian - 1, Math.random() * 2) + 1
+    )} Custodian(s)
 Orders: Clean up the mess left from repairing the ${displayName} system.
       `;
   }
@@ -44,7 +46,9 @@ Orders: Clean up the mess left from repairing the ${displayName} system.
       
 Damage Team Name: ${teamName || displayName + " Repair"}
 Location: ${room || location}
-Officers: ${Math.floor(Math.random() * 2 + 1)} ${teamType}(s)
+Officers: ${Math.floor(
+    Math.min(damageTeamCrewCount[teamType] - 1, Math.random() * 2) + 1
+  )} ${teamType}(s)
 Orders: ${orders || damageText.orders.replace("%SYSTEM%", displayName)}
       `;
 };

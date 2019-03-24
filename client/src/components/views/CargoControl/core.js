@@ -150,7 +150,7 @@ class CargoControlCore extends Component {
             simulatorId: this.props.simulator.id,
             name,
             metadata: {},
-            roomCount: [{ room, count }]
+            roomCount: [{ room, count: parseInt(count, 10) }]
           }
         };
         this.props.client.mutate({

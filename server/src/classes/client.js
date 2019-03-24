@@ -165,7 +165,7 @@ export default class Client {
   setOfflineState(state) {
     // Clear the movie
     this.movie = null;
-    // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', 'maintenance'
+    // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', 'maintenance', 'spaceEdventuresToken
     this.offlineState = state;
   }
   addCache(cacheItem) {

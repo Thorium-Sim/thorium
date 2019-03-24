@@ -87,90 +87,92 @@ const updateThrusters = () => {
         )
         .forEach(map => {
           let mapUpdate = false;
-          map.layers.filter(l => l.type === "objects").forEach(layer => {
-            layer.items.forEach(item => {
-              // Rotation
-              if (item.thrusterControls.rotation === "yaw") {
-                const rotation =
-                  sys.rotationDelta.yaw *
-                  sys.rotationSpeed *
-                  (item.thrusterControls.reversed ? -1 : 1);
-                if (rotation !== 0) {
-                  item.rotation += rotation;
-                  updateNeeded = true;
-                  mapUpdate = true;
+          map.layers
+            .filter(l => l.type === "objects")
+            .forEach(layer => {
+              layer.items.forEach(item => {
+                // Rotation
+                if (item.thrusterControls.rotation === "yaw") {
+                  const rotation =
+                    sys.rotationDelta.yaw *
+                    sys.rotationSpeed *
+                    (item.thrusterControls.reversed ? -1 : 1);
+                  if (rotation !== 0) {
+                    item.rotation += rotation;
+                    updateNeeded = true;
+                    mapUpdate = true;
+                  }
                 }
-              }
-              if (item.thrusterControls.rotation === "pitch") {
-                const rotation =
-                  sys.rotationDelta.pitch *
-                  sys.rotationSpeed *
-                  (item.thrusterControls.reversed ? -1 : 1);
-                if (rotation !== 0) {
-                  item.rotation += rotation;
-                  updateNeeded = true;
-                  mapUpdate = true;
+                if (item.thrusterControls.rotation === "pitch") {
+                  const rotation =
+                    sys.rotationDelta.pitch *
+                    sys.rotationSpeed *
+                    (item.thrusterControls.reversed ? -1 : 1);
+                  if (rotation !== 0) {
+                    item.rotation += rotation;
+                    updateNeeded = true;
+                    mapUpdate = true;
+                  }
                 }
-              }
-              if (item.thrusterControls.rotation === "roll") {
-                const rotation =
-                  sys.rotationDelta.roll *
-                  sys.rotationSpeed *
-                  (item.thrusterControls.reversed ? -1 : 1);
-                if (rotation !== 0) {
-                  item.rotation += rotation;
-                  updateNeeded = true;
-                  mapUpdate = true;
+                if (item.thrusterControls.rotation === "roll") {
+                  const rotation =
+                    sys.rotationDelta.roll *
+                    sys.rotationSpeed *
+                    (item.thrusterControls.reversed ? -1 : 1);
+                  if (rotation !== 0) {
+                    item.rotation += rotation;
+                    updateNeeded = true;
+                    mapUpdate = true;
+                  }
                 }
-              }
-              // Movement
-              const distance = 0.01;
-              const ratio = 16 / 9;
-              const movement = {
-                x:
-                  (getMovementDirection(
-                    sys.direction,
-                    item.thrusterControls.left
-                  ) -
-                    getMovementDirection(
+                // Movement
+                const distance = 0.01;
+                const ratio = 16 / 9;
+                const movement = {
+                  x:
+                    (getMovementDirection(
                       sys.direction,
-                      item.thrusterControls.right
-                    )) *
-                  distance *
-                  item.speed,
-                y:
-                  (getMovementDirection(
-                    sys.direction,
-                    item.thrusterControls.down
-                  ) -
-                    getMovementDirection(
+                      item.thrusterControls.left
+                    ) -
+                      getMovementDirection(
+                        sys.direction,
+                        item.thrusterControls.right
+                      )) *
+                    distance *
+                    item.speed,
+                  y:
+                    (getMovementDirection(
                       sys.direction,
-                      item.thrusterControls.up
-                    )) *
-                  distance *
-                  item.speed *
-                  -1
-              };
-              if (movement.x || movement.y) {
-                updateNeeded = true;
-                mapUpdate = true;
-              }
-              // If we are honoring the rotation, rotate the movement around
-              // the rotation axis
-              if (item.thrusterControls.matchRotation) {
-                const rotated = rotate(movement.x, movement.y, item.rotation);
-                item.destination.x += rotated.x;
-                item.destination.y += rotated.y;
-                item.location.x += rotated.x;
-                item.location.y += rotated.y;
-              } else {
-                item.destination.x += movement.x;
-                item.destination.y += movement.y;
-                item.location.x += movement.x;
-                item.location.y += movement.y;
-              }
+                      item.thrusterControls.down
+                    ) -
+                      getMovementDirection(
+                        sys.direction,
+                        item.thrusterControls.up
+                      )) *
+                    distance *
+                    item.speed *
+                    -1
+                };
+                if (movement.x || movement.y) {
+                  updateNeeded = true;
+                  mapUpdate = true;
+                }
+                // If we are honoring the rotation, rotate the movement around
+                // the rotation axis
+                if (item.thrusterControls.matchRotation) {
+                  const rotated = rotate(movement.x, movement.y, item.rotation);
+                  item.destination.x += rotated.x;
+                  item.destination.y += rotated.y;
+                  item.location.x += rotated.x;
+                  item.location.y += rotated.y;
+                } else {
+                  item.destination.x += movement.x;
+                  item.destination.y += movement.y;
+                  item.location.x += movement.x;
+                  item.location.y += movement.y;
+                }
+              });
             });
-          });
           if (mapUpdate) pubsub.publish("tacticalMapUpdate", map);
         });
     }

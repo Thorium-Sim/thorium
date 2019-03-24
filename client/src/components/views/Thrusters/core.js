@@ -237,7 +237,10 @@ class ThrusterCore extends Component {
                   value={thrusters.rotationSpeed}
                   onChange={e => {
                     action({
-                      variables: { id: thrusters.id, speed: e.target.value }
+                      variables: {
+                        id: thrusters.id,
+                        speed: parseFloat(e.target.value)
+                      }
                     });
                   }}
                 >
@@ -274,7 +277,10 @@ class ThrusterCore extends Component {
                   value={thrusters.movementSpeed}
                   onChange={e => {
                     action({
-                      variables: { id: thrusters.id, speed: e.target.value }
+                      variables: {
+                        id: thrusters.id,
+                        speed: parseFloat(e.target.value)
+                      }
                     });
                   }}
                 >

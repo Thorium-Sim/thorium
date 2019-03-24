@@ -200,7 +200,8 @@ class ReactorControl extends Component {
   };
   setDilithiumRate = value => {
     const { reactors } = this.props.data;
-    const reactor = reactors[0] || {};
+    const reactor = reactors.find(r => r.model === "reactor");
+    if (!reactor) return;
     const mutation = gql`
       mutation SetDilithiumRate($id: ID!, $rate: Float!) {
         setDilithiumStressRate(id: $id, rate: $rate)
@@ -208,7 +209,7 @@ class ReactorControl extends Component {
     `;
     const variables = {
       id: reactor.id,
-      rate: value
+      rate: parseFloat(value)
     };
     this.props.client.mutate({
       mutation,
@@ -217,8 +218,9 @@ class ReactorControl extends Component {
   };
   calcStressLevel = () => {
     const { reactors } = this.props.data;
-    if (!reactors[0]) return;
-    const { alphaTarget, betaTarget, alphaLevel, betaLevel } = reactors[0];
+    const reactor = reactors.find(r => r.model === "reactor");
+    if (!reactor) return;
+    const { alphaTarget, betaTarget, alphaLevel, betaLevel } = reactor;
     const alphaDif = Math.abs(alphaTarget - alphaLevel);
     const betaDif = Math.abs(betaTarget - betaLevel);
     const stressLevel = alphaDif + betaDif > 100 ? 100 : alphaDif + betaDif;
@@ -269,7 +271,9 @@ class ReactorControl extends Component {
                 <Input
                   size="sm"
                   type="select"
-                  onChange={evt => this.setEfficiency(evt.target.value)}
+                  onChange={evt =>
+                    this.setEfficiency(parseFloat(evt.target.value))
+                  }
                   value={
                     reactor.externalPower ? "external" : reactor.efficiency
                   }
@@ -299,7 +303,9 @@ class ReactorControl extends Component {
                 <Input
                   size="sm"
                   type="select"
-                  onChange={evt => this.setHeatRate(evt.target.value)}
+                  onChange={evt =>
+                    this.setHeatRate(parseFloat(evt.target.value))
+                  }
                   value={reactor.heatRate}
                 >
                   {rateSpeeds}
@@ -336,7 +342,7 @@ class ReactorControl extends Component {
               </Fragment>
             )}
 
-            {this.calcStressLevel() ? (
+            {this.calcStressLevel() || this.calcStressLevel() === 0 ? (
               <Fragment>
                 <p>Dilithium Stress:</p>
                 <div style={{ display: "flex" }}>
@@ -349,7 +355,7 @@ class ReactorControl extends Component {
                         fluxDilithiumStress(id: $id)
                       }
                     `}
-                    variables={{ id: reactors[0].id }}
+                    variables={{ id: reactor.id }}
                   >
                     {action => (
                       <Button

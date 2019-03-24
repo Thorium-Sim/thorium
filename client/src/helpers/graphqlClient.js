@@ -9,6 +9,8 @@ import { WebSocketLink } from "apollo-link-ws";
 import { MockLink } from "react-apollo/test-utils";
 import { Hermes } from "apollo-cache-hermes";
 import { FLIGHTS_QUERY } from "../containers/FlightDirector/Welcome";
+import * as Sentry from "@sentry/browser";
+
 // Set a clientId for the client
 let clientId = localStorage.getItem("thorium_clientId");
 if (!clientId) {
@@ -19,12 +21,31 @@ if (!clientId) {
 
 const hostname = window.location.hostname;
 
-const wsLink = new WebSocketLink({
-  uri: `ws://${hostname}:${parseInt(window.location.port, 10) + 1}/graphql`,
-  options: {
-    reconnect: true
-  }
-});
+const wsLink = ApolloLink.from([
+  onError(args => {
+    const { response, graphQLErrors, networkError } = args;
+    if (graphQLErrors)
+      graphQLErrors.forEach(error => {
+        const { message, locations, path } = error;
+        console.log(
+          `[Subscription Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        );
+        Sentry.captureException(error);
+      });
+
+    if (networkError) {
+      console.log(`[Network error]: ${networkError}`);
+      Sentry.captureException(networkError);
+    }
+    if (response) response.errors = null;
+  }),
+  new WebSocketLink({
+    uri: `ws://${hostname}:${parseInt(window.location.port, 10) + 1}/graphql`,
+    options: {
+      reconnect: true
+    }
+  })
+]);
 
 const httpLink = ApolloLink.from([
   onError(({ graphQLErrors, networkError }) => {

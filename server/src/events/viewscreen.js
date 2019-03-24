@@ -15,10 +15,9 @@ App.on(
         (v.simulatorId === simulatorId && v.secondary === secondary)
     );
     if (viewscreens.length === 0) return;
+    const client = App.clients.find(c => c.id === viewscreens[0].id);
     // First de-auto the viewscreen, since we want to force this component;
-    const simulator = App.simulators.find(
-      s => s.id === viewscreens[0].simulatorId
-    );
+    const simulator = App.simulators.find(s => s.id === client.simulatorId);
     viewscreens.forEach(viewscreen => {
       viewscreen.updateAuto(false);
       viewscreen.updateComponent(

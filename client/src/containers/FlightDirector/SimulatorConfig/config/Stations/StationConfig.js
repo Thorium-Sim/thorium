@@ -52,7 +52,7 @@ const CardSelect = ({
       </optgroup>
       <optgroup label="Software Panels">
         {simulator.panels.map(p => (
-          <option key={p} value={`software-panel-${p}`}>
+          <option key={p} value={`${p}`}>
             {softwarePanels.find(s => s.id === p) &&
               softwarePanels.find(s => s.id === p).name}
           </option>
@@ -228,7 +228,7 @@ const ConfigStation = props => {
             border: "solid 1px rgba(0,0,0,0.5)"
           }}
         >
-          <table className="table table-sm table-striped table-hover">
+          <table className="table table-sm">
             <thead className="thead-default">
               <tr>
                 <th colSpan="3">

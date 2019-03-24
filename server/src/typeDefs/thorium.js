@@ -85,8 +85,8 @@ const resolver = {
   Thorium: {
     spaceEdventuresCenter: () => {
       // Simple timeout based caching
-      if (spaceEdventuresTimeout + 1000 * 60 < new Date()) {
-        GraphQLClient.query({
+      if (spaceEdventuresTimeout + 1000 * 60 * 5 < new Date()) {
+        return GraphQLClient.query({
           query: `query {
           center {
             id
@@ -114,7 +114,7 @@ const resolver = {
           }
         }`
         }).then(({ data: { center } }) => {
-          if (!center) return;
+          if (!center) return spaceEdventuresData;
           spaceEdventuresData = { ...center, token: App.spaceEdventuresToken };
           return spaceEdventuresData;
         });

@@ -30,7 +30,7 @@ App.on("sendMessage", args => {
   App.handleEvent(
     {
       simulatorId: messageClass.simulatorId,
-      component: "MessagingCore",
+      component: "NewMessagingCore",
       title: `Message: ${messageClass.sender} -> ${messageClass.destination}`,
       body: truncatedContent,
       color: "info"

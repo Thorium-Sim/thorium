@@ -279,8 +279,9 @@ class AmbianceComp extends Component {
                           return;
                         action({
                           variables: { id, ambianceId: selectedAmbiance }
+                        }).then(() => {
+                          selectAmbiance(null);
                         });
-                        this.setState({ selectedAmbiance: null });
                       }}
                     >
                       Delete Ambiance
@@ -298,7 +299,10 @@ class AmbianceComp extends Component {
             </p>
             {selectedAmbiance && (
               <AmbianceConfigWrapped
-                key={ambiance.find(s => s.id === selectedAmbiance).id}
+                key={
+                  ambiance.find(s => s.id === selectedAmbiance) &&
+                  ambiance.find(s => s.id === selectedAmbiance).id
+                }
                 simulatorId={id}
                 {...ambiance.find(s => s.id === selectedAmbiance)}
               />

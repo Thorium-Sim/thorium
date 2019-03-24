@@ -215,6 +215,7 @@ class Sensors extends Component {
       !this.props.widget &&
       !this.props.station.cards.find(c => c.component === "SensorScans");
     const sensors = this.props.data.sensors[0];
+    if (!sensors) return <p>No sensors system.</p>;
     const { pingMode } = sensors;
     const pings = false;
     const { hoverContact, ping, pingTime, weaponsRange } = this.state;
@@ -327,6 +328,9 @@ class Sensors extends Component {
             </Col>
             <Col sm={{ size: 3, offset: !needScans ? 1 : 0 }} className="data">
               <Row className="contact-info">
+                <Col className="col-sm-12">
+                  <h3>Contact Information</h3>
+                </Col>
                 <Col className="col-sm-12">
                   <div className="card contactPictureContainer">
                     {hoverContact.picture && (

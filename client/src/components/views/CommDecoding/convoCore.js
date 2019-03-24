@@ -169,7 +169,7 @@ ${message.message}`;
 
 const TemplateData = props => (
   <Query query={QUERY} variables={{ simulatorId: props.simulator.id }}>
-    {({ loading, data, subscribeToMore }) => {
+    {({ loading, data = {}, subscribeToMore }) => {
       const { longRangeCommunications } = data;
       if (loading || !longRangeCommunications) return null;
       if (!longRangeCommunications[0]) return <div>No Long Range Comm</div>;

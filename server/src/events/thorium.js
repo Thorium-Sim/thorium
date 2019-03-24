@@ -3,6 +3,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import autoUpdate from "../bootstrap/autoupdate";
 import heap from "../helpers/heap";
 import GraphQLClient from "../helpers/graphqlClient";
+import tokenGenerator from "../helpers/tokenGenerator";
 
 App.on("toggleAutoUpdate", ({ autoUpdate }) => {
   App.autoUpdate = autoUpdate;
@@ -105,6 +106,7 @@ App.on("getSpaceEdventuresLogin", async ({ token, context, cb }) => {
       flight.addSpaceEdventuresUser(client.id, user.id);
       flight.loginClient({
         id: client.id,
+        token: tokenGenerator(),
         simulatorId: client.simulatorId,
         name: client.station
       });

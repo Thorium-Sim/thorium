@@ -184,10 +184,10 @@ class ProbeControl extends Component {
                 <strong>{titleCase(probe.type)}</strong>
               </p>
               {this.renderEquipment()}
-              {probe && probe.type === "science" && this.renderScience(probe)}
+              {probe.type === "science" && this.renderScience(probe)}
             </Col>
           )}
-          {selectedProbe && (
+          {probe && (
             <Col sm={6}>
               <div
                 style={{
@@ -198,11 +198,9 @@ class ProbeControl extends Component {
               >
                 <OutputField
                   style={{ flex: 1, whiteSpace: "pre-wrap" }}
-                  alert={
-                    probes.probes.find(p => p.id === selectedProbe).querying
-                  }
+                  alert={probe.querying}
                 >
-                  {probes.probes.find(p => p.id === selectedProbe).query}
+                  {probe.query}
                 </OutputField>
                 <TypingField
                   style={{ flex: 3, textAlign: "left" }}

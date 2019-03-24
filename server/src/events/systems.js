@@ -249,20 +249,23 @@ App.on("updateSystemRooms", ({ systemId, locations }) => {
   if (sys.updateLocations) sys.updateLocations(locations);
   sendUpdate(sys);
 });
-App.on("addSystemDamageStep", ({ systemId, step }) => {
+App.on("addSystemDamageStep", ({ systemId, step, cb }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.addDamageStep(step);
   sendUpdate(sys);
+  cb && cb();
 });
-App.on("updateSystemDamageStep", ({ systemId, step }) => {
-  const sys = App.systems.find(s => s.id === systemId);
-  sys.updateDamageStep(step);
+App.on("updateSystemDamageStep", ({ systemId, step, cb, context }) => {
+  let sys = App.systems.find(s => s.id === systemId);
+  sys && sys.updateDamageStep(step);
   sendUpdate(sys);
+  cb && cb();
 });
-App.on("removeSystemDamageStep", ({ systemId, step }) => {
+App.on("removeSystemDamageStep", ({ systemId, step, cb }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.removeDamageStep(step);
   sendUpdate(sys);
+  cb && cb();
 });
 App.on("addSystemDamageTask", ({ systemId, task }) => {
   const sys = App.systems.find(s => s.id === systemId);

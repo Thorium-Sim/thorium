@@ -9,6 +9,7 @@ const fragment = gql`
     id
     name
     date
+    flightType
     running
     simulators {
       id

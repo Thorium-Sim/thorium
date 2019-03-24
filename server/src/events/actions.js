@@ -32,12 +32,14 @@ App.on("triggerAction", args => {
     case "random":
       clients = [
         randomFromList(
-          App.clients.filter(
-            c =>
-              c.simulatorId === args.simulatorId &&
-              bridgeStations.indexOf(c.station) > -1
-          )
-        ).map(c => c.id)
+          App.clients
+            .filter(
+              c =>
+                c.simulatorId === args.simulatorId &&
+                bridgeStations.indexOf(c.station) > -1
+            )
+            .map(c => c.id)
+        )
       ];
       stations = [
         randomFromList(
@@ -93,6 +95,7 @@ App.on("triggerAction", args => {
     case "lockdown":
     case "maintenance":
     case "soviet":
+    case "spaceEdventuresToken":
       clients.forEach(c =>
         App.handleEvent({ client: c, state: args.action }, "clientOfflineState")
       );
@@ -100,7 +103,7 @@ App.on("triggerAction", args => {
     case "sound":
       App.handleEvent(
         {
-          sound: { asset: args.asset },
+          sound: { asset: args.asset || args.message },
           station: args.stationId,
           simulatorId: args.simulatorId,
           clients

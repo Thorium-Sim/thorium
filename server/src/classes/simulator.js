@@ -98,7 +98,7 @@ export default class Simulator {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Simulator";
-    this.layout = params.layout || "LayoutDefault";
+    this.layout = params.layout || "LayoutCorners";
     this.caps = params.caps || false;
     this.alertLevel = params.alertLevel || "5";
     this.alertLevelLock = params.alertLevelLock || false;

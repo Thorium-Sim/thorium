@@ -1,4 +1,7 @@
+import App from "../app";
 import { System } from "./generic";
+import { pubsub } from "../helpers/subscriptionManager.js";
+import uuid from "uuid";
 
 export default class StealthField extends System {
   constructor(params) {
@@ -54,6 +57,27 @@ export default class StealthField extends System {
   }
   break(report, destroyed, which) {
     this.deactivate();
+    if (this.state) {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: this.simulatorId,
+        type: "Stealth Field",
+        station: "Core",
+        title: `Stealth Deactivated`,
+        body: "",
+        color: "info"
+      });
+      App.handleEvent(
+        {
+          simulatorId: this.simulatorId,
+          title: `Stealth Deactivated`,
+          component: "StealthFieldCore",
+          body: null,
+          color: "info"
+        },
+        "addCoreFeed"
+      );
+    }
     super.break(report, destroyed, which);
   }
   setPower(powerLevel) {
@@ -61,6 +85,27 @@ export default class StealthField extends System {
       this.power.powerLevels.length &&
       powerLevel < this.power.powerLevels[0]
     ) {
+      if (this.state) {
+        pubsub.publish("notify", {
+          id: uuid.v4(),
+          simulatorId: this.simulatorId,
+          type: "Stealth Field",
+          station: "Core",
+          title: `Stealth Deactivated`,
+          body: "",
+          color: "info"
+        });
+        App.handleEvent(
+          {
+            simulatorId: this.simulatorId,
+            title: `Stealth Deactivated`,
+            component: "StealthFieldCore",
+            body: null,
+            color: "info"
+          },
+          "addCoreFeed"
+        );
+      }
       this.deactivate();
     }
     super.setPower(powerLevel);

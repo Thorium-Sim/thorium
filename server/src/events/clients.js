@@ -7,6 +7,7 @@ import path from "path";
 import paths from "../helpers/paths";
 import fs from "fs";
 import uuid from "uuid";
+import tokenGenerator from "../helpers/tokenGenerator";
 function randomFromList(list) {
   if (!list) return;
   const length = list.length;
@@ -103,10 +104,18 @@ App.on("clientLogin", ({ client, loginName }) => {
   const flight = App.flights.find(f => f.id === clientObj.flightId);
   flight.loginClient({
     id: clientObj.id,
+    token: tokenGenerator(),
     simulatorId: clientObj.simulatorId,
     name: clientObj.station
   });
 
+  pubsub.publish("clientChanged", App.clients);
+});
+App.on("clientSetEmail", ({ client, email }) => {
+  const clientObj = App.clients.find(c => c.id === client);
+
+  const flight = App.flights.find(f => f.id === clientObj.flightId);
+  flight.addClientEmail(client, email);
   pubsub.publish("clientChanged", App.clients);
 });
 App.on("clientLogout", ({ client }) => {

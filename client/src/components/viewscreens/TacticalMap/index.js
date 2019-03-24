@@ -154,7 +154,14 @@ class TacticalMapViewscreen extends Component {
       layerId: object ? object.layerId : this.state.layerId,
       item: {
         id: object ? object.id : this.state.objectId,
-        [key]: value
+        [key]:
+          value === true
+            ? true
+            : value === false
+            ? false
+            : isNaN(Number(value))
+            ? value
+            : Number(value)
       }
     };
     const mutation = gql`

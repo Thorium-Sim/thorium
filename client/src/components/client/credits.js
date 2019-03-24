@@ -1,6 +1,44 @@
-import React, { Component } from "react";
-import { Container, Button } from "reactstrap";
+import React, { Component, useState } from "react";
+import {
+  Container,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  Label
+} from "reactstrap";
 import "./credits.scss";
+
+const ClientNameModal = ({ clientId, modal, toggle, changeClientId }) => {
+  const [name, setName] = useState(clientId);
+  return (
+    <Modal isOpen={modal} toggle={toggle} size="large">
+      <ModalHeader toggle={toggle}>Change Client ID</ModalHeader>
+      <ModalBody>
+        <Label>
+          Client ID
+          <Input value={name} onChange={e => setName(e.target.value)} />
+        </Label>
+      </ModalBody>
+      <ModalFooter>
+        <Button color="secondary" onClick={toggle}>
+          Cancel
+        </Button>
+        <Button
+          color="primary"
+          onClick={() => {
+            changeClientId(name);
+            toggle();
+          }}
+        >
+          Change Client ID
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+};
 
 const creditList = [
   {
@@ -34,6 +72,10 @@ const creditList = [
   {
     header: "Epsilon Design",
     content: "Inspired by the Empty Epsilon Bridge Simulator"
+  },
+  {
+    header: "Rollins Center for Entrepreneurship and Technlology",
+    content: "2019 App Competition Winner"
   },
   {
     header: "Code Contributors",
@@ -197,9 +239,7 @@ class Credits extends Component {
       debug: !this.state.debug
     });
   };
-  changeClientId = evt => {
-    evt.preventDefault();
-    const newClientId = prompt("What is the new client ID?");
+  changeClientId = newClientId => {
     if (newClientId) {
       this.props.updateClientId(newClientId);
     }
@@ -224,7 +264,10 @@ class Credits extends Component {
           {this.state.debug ? (
             <div className="debug">
               <h4>
-                <Button color="info" onClick={this.changeClientId}>
+                <Button
+                  color="info"
+                  onClick={() => this.setState({ showModal: true })}
+                >
                   Client ID: {clientId}
                 </Button>
               </h4>
@@ -267,6 +310,12 @@ class Credits extends Component {
             </div>
           )}
         </Container>
+        <ClientNameModal
+          clientId={clientId}
+          changeClientId={this.changeClientId}
+          modal={this.state.showModal}
+          toggle={() => this.setState({ showModal: false })}
+        />
       </div>
     );
   }

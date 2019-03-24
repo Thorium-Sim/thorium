@@ -1,6 +1,69 @@
 {
   "1.2.6": {
-    "features":["Add a task definition for changing the reactor efficiency."]
+    "features":["Add a task definition for changing the reactor efficiency."],
+    "fixes": [
+      "Fixes reactor efficiencies not updating on the config screen.",
+      "Fixes issues around playing sounds through the actions core and actions macro.",
+      "Fixes issues with the keypad core not allowing the required code to be changed."
+    ]
+  },
+  "1.2.5": {
+    "fixes": [
+      "Fixes an issue where you couldn't change the viewscreen from the core.",
+      "Fixes issues with ambiance not being removable.",
+      "Fixes changing the reactor output in the simulator config.",
+      "Fixes changing the delay when writing timeline steps.",
+      "All currently playing sounds on the sound player are now removed when the flight is reset.",
+      "Fixes the alert condition card.",
+      "Remove the LayoutDefault.",
+      "Fixes adding decks and rooms in the simulator config.",
+      "Fixes tactical map toggles for flash, WASD, etc.",
+      "Fixes the alert level selector in the simulator config.",
+      "Removes a hover state on the station description field.",
+      "Properly updates the name of the system in the list on the system config screen.",
+      "Fixes the targeting coordinates buttons.",
+      "If phaser charging exists on the same station, it will only show phaser firing on the targeting screen.",
+      "Fixes hold to charge phasers on targeting.",
+      "Fixes tactical maps not loading correctly."
+    ]
+  },
+  "1.2.4": {
+    "features": [
+      "Makes it possible to change the opacity of planets, borders, and pings.",
+      "Adds a label to to the contact info box on Sensors."
+    ],
+    "fixes": [
+      "Removes an errant log that was showing up in the command line.",
+      "Disables sending buttons on the message sending screen when the message is in transit.",
+      "Fixes jumping to arbitrary timeline steps.",
+      "Fixes the self destruct code on core.",
+      "Fixes changing the dilithium stress rate.",
+      "Fixes changing alert condition from core.",
+      "Fixes adding cargo and items to the armory.",
+      "Fixes resetting a flight with a macro.",
+      "Fixes changing the speeds on thrusters.",
+      "Fixes changing ship radiation.",
+      "Fixes changing values for the reactor.",
+      "Fixes setting the tractor beam stress.",
+      "Fixes a crash when probe network probes are deleted."
+    ]
+  },
+  "1.2.3": {
+    "features": [
+      "Adds a notification when power is taken out of the stealth field."
+    ],
+    "fixes": [
+      "Make it so Tactical Map items speed can change.",
+      "Fixes the font size adjustment for tactical map items.",
+      "Better illustration of how the engine buttons are temporarily disabled on the engine control screen right after a button is pushed.",
+      "Fixes issues with the size and color of planets not being changable.",
+      "Automatically generated damage reports no longer require more damage team members than are available on the ship.",
+      "Widgets now hide when the station is offlined.",
+      "Fixes an issue where looping sounds won't cancel."
+    ]
+  },
+  "1.2.2": {
+    "fixes": ["Fixes issues with software panels"]
   },
   "1.2.1": {
     "fixes": ["Fixes an issue where keyboards cannot be assigned."]

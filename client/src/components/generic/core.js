@@ -1,6 +1,12 @@
 import React from "react";
 
-export const InputField = props => {
+export const InputField = ({
+  children,
+  promptValue,
+  prompt: inputPrompt,
+  alert,
+  ...props
+}) => {
   const style = Object.assign(
     {
       backgroundColor: "#FBFE3D",
@@ -13,21 +19,18 @@ export const InputField = props => {
     },
     props.style
   );
-  if (props.alert) {
+  if (alert) {
     style.backgroundColor = "#f00";
     style.borderColor = "#a00";
   }
   const onClick = () => {
-    const value = prompt(
-      props.prompt,
-      props.promptValue || props.children || ""
-    );
+    const value = prompt(inputPrompt, promptValue || children || "");
     const parseValue = isNaN(Number(value)) ? value : Number(value);
     props.onClick(parseValue);
   };
   return (
     <div className="input-field" {...props} onClick={onClick} style={style}>
-      {props.children}
+      {children}
     </div>
   );
 };

@@ -435,6 +435,7 @@ class DamageReportCore extends Component {
                       <Input
                         onChange={this.loadReport.bind(this)}
                         style={{ position: "absolute", opacity: 0 }}
+                        value={""}
                         type="file"
                         name="file"
                         id="exampleFile"

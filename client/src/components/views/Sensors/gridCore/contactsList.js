@@ -128,7 +128,7 @@ class ContactsList extends Component {
   };
   render() {
     const { sensors, dragStart } = this.props;
-    const { contextContact, removeContacts } = this.state;
+    const { contextContact } = this.state;
     return (
       <div className="sensors-contact-list">
         <p>Contacts:</p>
@@ -145,16 +145,17 @@ class ContactsList extends Component {
                   className="armyContact"
                   src={`/assets${contact.icon}`}
                 />
-                <label onContextMenu={e => this.contextMenu(contact, e)}>
+                <label
+                  onContextMenu={e => this.contextMenu(contact, e)}
+                  style={{ flex: 1 }}
+                >
                   {contact.name}
                 </label>
-                {removeContacts && (
-                  <FontAwesome
-                    name="ban"
-                    className="text-danger pull-right clickable"
-                    onClick={() => this.removeArmyContact(contact)}
-                  />
-                )}
+                <FontAwesome
+                  name="ban"
+                  className="text-danger pull-right clickable"
+                  onClick={() => this.removeArmyContact(contact)}
+                />
               </Col>
             );
           })}
@@ -162,7 +163,9 @@ class ContactsList extends Component {
         <Button size="sm" color="success" onClick={this.addArmyContact}>
           Add Contact
         </Button>
-        <label>
+        <p>Right-click to configure.</p>
+
+        {/* <label>
           <input
             type="checkbox"
             checked={removeContacts}
@@ -171,7 +174,7 @@ class ContactsList extends Component {
             }}
           />{" "}
           Remove
-        </label>
+        </label> */}
         {contextContact && (
           <ContactContextMenu
             closeMenu={this.closeContext}

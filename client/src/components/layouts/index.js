@@ -1,4 +1,3 @@
-import LayoutDefault from "./default.jsx";
 import LayoutCorners from "./LayoutCorners";
 import LayoutGlass from "./LayoutGlass";
 import LayoutJr from "./LayoutJr";
@@ -11,7 +10,6 @@ import LayoutEpsilon from "./LayoutEpsilon";
 import LayoutBlack from "./LayoutBlack";
 
 import LayoutCornersViewscreen from "./LayoutCorners/Viewscreen";
-import LayoutDefaultViewscreen from "./LayoutDefault/Viewscreen";
 import LayoutOdysseyViewscreen from "./LayoutOdyssey/viewscreen";
 import LayoutGlassViewscreen from "./LayoutGlass/viewscreen";
 import LayoutJrViewscreen from "./LayoutJr";
@@ -23,7 +21,6 @@ import LayoutEpsilonViewscreen from "./LayoutEpsilon/viewscreen";
 import LayoutBlackViewscreen from "./LayoutBlack/viewscreen";
 
 const Layouts = {
-  LayoutDefault,
   LayoutCorners,
   LayoutGlass,
   LayoutJr,
@@ -35,7 +32,6 @@ const Layouts = {
   LayoutEpsilon,
   LayoutBlack,
   LayoutCornersViewscreen,
-  LayoutDefaultViewscreen,
   LayoutOdysseyViewscreen,
   LayoutGlassViewscreen,
   LayoutJrViewscreen,
