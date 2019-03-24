@@ -1,4 +1,7 @@
 {
+  "1.2.6": {
+    "features":["Add a task definition for changing the reactor efficiency."]
+  },
   "1.2.1": {
     "fixes": ["Fixes an issue where keyboards cannot be assigned."]
   },

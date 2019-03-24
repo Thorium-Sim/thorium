@@ -106,9 +106,9 @@ const resolver = {
     active({ active, simulatorId }) {
       if (!simulatorId) return false;
       const simulator = App.simulators.find(s => s.id === simulatorId);
-      return active({
+      return Boolean(active({
         simulator
-      });
+      }));
     },
     stations({ stations, simulatorId }) {
       if (!simulatorId) return null;
