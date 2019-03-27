@@ -1,7 +1,12 @@
 import { gql } from "apollo-server-express";
 import merge from "lodash/merge";
-import * as schema from "./typeDefs/*.js";
-// console.log(schema);
+import fs from "fs";
+import path from "path";
+const schema = fs
+  .readdirSync(path.resolve(__dirname + "/typeDefs"))
+  .filter(f => f[0] !== "_")
+  .map(f => require(path.resolve(`${__dirname}/typeDefs/${f}`)).default);
+
 const MainSchema = gql`
   # A type for all of the system-wide settings.
 
