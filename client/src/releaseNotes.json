@@ -1,5 +1,6 @@
 {
   "1.2.8": {
+    "features": ["Add a macro for sending notifications to core."],
     "fixes": [
       "The count on the simulator inventory config now shows the total count of the inventory item."
     ]
