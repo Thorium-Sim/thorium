@@ -158,7 +158,9 @@
       "avatar_url": "https://avatars2.githubusercontent.com/u/43680869?v=4",
       "profile": "https://github.com/sassyspock",
       "contributions": [
-        "doc"
+        "doc",
+        "bug",
+        "code"
       ]
     },
     {
@@ -176,7 +178,7 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/48568289?v=4",
       "profile": "https://github.com/thoriumsim",
       "contributions": [
-        "docs",
+        "doc",
         "tutorial",
         "video"
       ]
