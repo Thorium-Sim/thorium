@@ -18,8 +18,8 @@ export default (
     )} protocol on the ${displayName} system.`,
     `Ensure there is no residual power flow in the ${displayName} system capacitors.`
   ];
-  return `${preamble || `A call should be made to the system's room.`}
-Ask the ${stationName} officer to make the following internal call:
+  return `${preamble || `A message should be sent to the system's room.`}
+Ask the ${stationName} officer to send the following internal message:
 
 Room: ${room || location}
 Message: ${message || randomFromList(messageList)}
