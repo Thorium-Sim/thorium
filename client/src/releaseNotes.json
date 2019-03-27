@@ -1,4 +1,9 @@
 {
+  "1.2.8": {
+    "fixes": [
+      "The count on the simulator inventory config now shows the total count of the inventory item."
+    ]
+  },
   "1.2.6": {
     "fixes": [
       "Fixes reactor efficiencies not updating on the config screen.",
