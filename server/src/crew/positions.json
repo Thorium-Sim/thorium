@@ -89,7 +89,7 @@
   "Computer Core Maintenance",
   "Computer Reinitiation Station",
   "Coroner",
-  "Cook"
+  "Cook",
   "Cook Assistant",
   "Counselor",
   "Crew Dispatch Officer",
@@ -266,7 +266,7 @@
   "Quantum Mechanic",
   "Quantum Mechanics Researcher",
   "Quartermaster",
-  "Radiation Specialist"
+  "Radiation Specialist",
   "RCS Thruster Control",
   "RCS Thruster Maintenance",
   "RCS Thruster Unit Chief",
@@ -384,5 +384,5 @@
   "Xenotoxicologist",
   "Xenozoologist",
   "Zoologist",
-  "Zoology Lab Technican",
+  "Zoology Lab Technican"
 ]
