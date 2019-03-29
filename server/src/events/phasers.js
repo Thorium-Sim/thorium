@@ -82,15 +82,15 @@ App.on("applyPhaserCoolant", ({ id, beamId }) => {
   const beam = phaser.beams.find(b => b.id === beamId);
   if (phaser.coolant === 0 || beam.heat === 0) {
     phaser.coolBeam(null);
-    pubsub.publish(
-      "phasersUpdate",
-      App.systems.filter(s => s.type === "Phasers")
-  );
   }
   else{
     phaser.setCoolant(Math.min(1, Math.max(0, phaser.coolant - 0.005)));
     beam.setHeat(Math.min(1, Math.max(0, beam.heat - 0.01)));
   }
+  pubsub.publish(
+    "phasersUpdate",
+    App.systems.filter(s => s.type === "Phasers")
+  );
 });
 App.on("setPhaserBeamCount", ({ id, beamCount }) => {
   App.systems.find(s => s.id === id).setBeams(beamCount);
