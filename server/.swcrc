@@ -1,0 +1,24 @@
+{
+  "module": {
+    "type": "commonjs",
+    "strict": false,
+    "strictMode": true,
+    "lazy": false,
+    "noInterop": false
+  },
+  "jsc": {
+    "parser": {
+      "syntax": "ecmascript",
+      "jsx": false,
+      "dynamicImport": true,
+      "numericSeparator": false,
+      "classPrivateProperty": false,
+      "privateMethod": false,
+      "classProperty": true,
+      "functionBind": false,
+      "decorators": false,
+      "decoratorsBeforeExport": false
+    },
+    "target": "es2018"
+  }
+}

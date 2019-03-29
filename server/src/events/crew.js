@@ -1,14 +1,17 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
-import firstNames from "../crew/firstNames.json";
-import lastNames from "../crew/lastNames.json";
-import positions from "../crew/positions.json";
-import ranks from "../crew/ranks.json";
 import {
   randomFromList,
   damagePositions
 } from "../classes/generic/damageReports/constants";
+import path from "path";
+const firstNames = require(path.resolve(
+  __dirname + "/../crew/firstNames.json"
+));
+const lastNames = require(path.resolve(__dirname + "/../crew/lastNames.json"));
+const positions = require(path.resolve(__dirname + "/../crew/positions.json"));
+const ranks = require(path.resolve(__dirname + "/../crew/ranks.json"));
 
 App.on("addCrewmember", ({ crew }) => {
   App.crew.push(new Classes.Crew(crew));

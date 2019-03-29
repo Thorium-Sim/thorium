@@ -107,7 +107,7 @@ export default class Flight {
           .map(c => ({
             name: c.name,
             badges: c.badges,
-            token: c.userId ? null : c.token,
+            token: c.token,
             userId: c.userId,
             email: c.email,
             logs: App.officerLogs
@@ -136,6 +136,7 @@ export default class Flight {
       }
     }
     `;
+    console.log(JSON.stringify(variables));
     graphqlClient
       .query({
         query: mutation,

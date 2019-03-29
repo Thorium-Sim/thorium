@@ -1,4 +1,19 @@
 {
+  "1.2.8": {
+    "features": [
+      "Add a macro for sending notifications to core.",
+      "If a system has more power in it than is necessary, it changes the system's color to yellow to indicate a problem.",
+      "Makes it possible to print multi-page cypher messages and change the header."
+    ],
+    "fixes": [
+      "The count on the simulator inventory config now shows the total count of the inventory item.",
+      "Fixes an issue where certain events that alter the viewscreen cause a server crash.",
+      "Add crack and uncrack to the actions macro.",
+      "Change the default for reactors to not be on external power, since clamps default to not docked and many missions start in space.",
+      "Fixes changing the heat rate in the systems config.",
+      "Fixes the wrapping on the timeline step display."
+    ]
+  },
   "1.2.6": {
     "fixes": [
       "Fixes reactor efficiencies not updating on the config screen.",
