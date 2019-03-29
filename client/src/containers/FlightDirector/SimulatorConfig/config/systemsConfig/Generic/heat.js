@@ -23,7 +23,9 @@ const Power = ({ id, simulatorId, heatRate }) => {
             type="number"
             min={0}
             defaultValue={heatRate}
-            onChange={e => action({ variables: { id, rate: e.target.value } })}
+            onChange={e =>
+              action({ variables: { id, rate: parseFloat(e.target.value) } })
+            }
           />
         )}
       </Mutation>

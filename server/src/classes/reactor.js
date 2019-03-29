@@ -54,11 +54,7 @@ export default class Reactor extends HeatMixin(System) {
     this.powerOutput = params.powerOutput || 120;
     this.efficiency = params.efficiency || 1;
     this.efficiencies = params.efficiencies || [...efficiencies];
-    this.externalPower = !this.efficiencies.find(
-      e => !e.efficiency && e.efficiency !== 0
-    )
-      ? false
-      : params.externalPower || true;
+    this.externalPower = false;
     this.batteryChargeLevel = params.batteryChargeLevel || 1;
     this.batteryChargeRate = params.batteryChargeRate || 1 / 1000;
     this.depletion = params.depletion || 0;

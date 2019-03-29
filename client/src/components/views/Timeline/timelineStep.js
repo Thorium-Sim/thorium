@@ -20,7 +20,7 @@ const TimelineStep = ({
     return (
       <Fragment>
         <h5>{currentStep.name}</h5>
-        <p>{currentStep.description}</p>
+        <p className="mission-step-description">{currentStep.description}</p>
         <ul className="timeline-list">
           {currentStep.timelineItems.map(i => (
             <TimelineItem
