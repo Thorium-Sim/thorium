@@ -1,8 +1,12 @@
 {
   "1.2.8": {
-    "features": ["Add a macro for sending notifications to core."],
+    "features": [
+      "Add a macro for sending notifications to core.",
+      "If a system has more power in it than is necessary, it changes the system's color to yellow to indicate a problem."
+    ],
     "fixes": [
-      "The count on the simulator inventory config now shows the total count of the inventory item."
+      "The count on the simulator inventory config now shows the total count of the inventory item.",
+      "Fixes an issue where certain events that alter the viewscreen cause a server crash."
     ]
   },
   "1.2.6": {

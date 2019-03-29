@@ -72,6 +72,15 @@ class DamageControlCore extends Component {
     ) {
       obj.color = "#888";
     }
+    // Overloaded the power levels
+    if (
+      sys.power &&
+      sys.power.powerLevels &&
+      sys.power.powerLevels.length > 0 &&
+      sys.power.powerLevels[sys.power.powerLevels.length - 1] < sys.power.power
+    ) {
+      obj.color = "goldenrod";
+    }
     if (sys.damage.damaged) {
       obj.color = "red";
     }
@@ -315,7 +324,16 @@ class DamageControlCore extends Component {
                 <tr>
                   <td>Total</td>
                   <td>
-                    <OutputField>
+                    <OutputField
+                      alert={
+                        Math.round(reactor.powerOutput * reactor.efficiency) <
+                        this.props.data.systems.reduce(
+                          (prev, next) =>
+                            next.power ? prev + next.power.power : prev,
+                          0
+                        )
+                      }
+                    >
                       {this.props.data.systems.reduce(
                         (prev, next) =>
                           next.power ? prev + next.power.power : prev,
