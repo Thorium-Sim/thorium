@@ -5,13 +5,10 @@ import {
   randomFromList,
   damagePositions
 } from "../classes/generic/damageReports/constants";
-import path from "path";
-const firstNames = require(path.resolve(
-  __dirname + "/../crew/firstNames.json"
-));
-const lastNames = require(path.resolve(__dirname + "/../crew/lastNames.json"));
-const positions = require(path.resolve(__dirname + "/../crew/positions.json"));
-const ranks = require(path.resolve(__dirname + "/../crew/ranks.json"));
+import firstNames from "../crew/firstNames";
+import lastNames from "../crew/lastNames";
+import positions from "../crew/positions";
+import ranks from "../crew/ranks";
 
 App.on("addCrewmember", ({ crew }) => {
   App.crew.push(new Classes.Crew(crew));
