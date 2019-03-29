@@ -10,7 +10,8 @@
       "Fixes an issue where certain events that alter the viewscreen cause a server crash.",
       "Add crack and uncrack to the actions macro.",
       "Change the default for reactors to not be on external power, since clamps default to not docked and many missions start in space.",
-      "Fixes changing the heat rate in the systems config."
+      "Fixes changing the heat rate in the systems config.",
+      "Fixes the wrapping on the timeline step display."
     ]
   },
   "1.2.6": {
