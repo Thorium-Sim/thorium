@@ -131,6 +131,8 @@ export default ({ updateArgs, args, noStations }) => {
             <option value="lockdown">Lockdown</option>
             <option value="maintenance">Maintenance</option>
             <option value="soviet">Soviet</option>
+            <option value="crack">Crack</option>
+            <option value="uncrack">Un-Crack</option>
           </optgroup>
         </Input>
         {noStations || (

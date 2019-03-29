@@ -2,11 +2,13 @@
   "1.2.8": {
     "features": [
       "Add a macro for sending notifications to core.",
-      "If a system has more power in it than is necessary, it changes the system's color to yellow to indicate a problem."
+      "If a system has more power in it than is necessary, it changes the system's color to yellow to indicate a problem.",
+      "Makes it possible to print multi-page cypher messages and change the header."
     ],
     "fixes": [
       "The count on the simulator inventory config now shows the total count of the inventory item.",
-      "Fixes an issue where certain events that alter the viewscreen cause a server crash."
+      "Fixes an issue where certain events that alter the viewscreen cause a server crash.",
+      "Add crack and uncrack to the actions macro."
     ]
   },
   "1.2.6": {
