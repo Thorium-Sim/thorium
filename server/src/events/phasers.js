@@ -80,9 +80,13 @@ App.on("coolPhaserBeam", ({ id, beamId }) => {
 App.on("applyPhaserCoolant", ({ id, beamId }) => {
   const phaser = App.systems.find(s => s.id === id);
   const beam = phaser.beams.find(b => b.id === beamId);
-  phaser.setCoolant(Math.min(1, Math.max(0, phaser.coolant - 0.005)));
-  beam.setHeat(Math.min(1, Math.max(0, beam.heat - 0.01)));
-  if (phaser.coolant === 0 || beam.heat === 0) phaser.coolBeam(null);
+  if (phaser.coolant === 0 || beam.heat === 0) {
+    phaser.coolBeam(null);
+  }
+  else{
+    phaser.setCoolant(Math.min(1, Math.max(0, phaser.coolant - 0.005)));
+    beam.setHeat(Math.min(1, Math.max(0, beam.heat - 0.01)));
+  }
   pubsub.publish(
     "phasersUpdate",
     App.systems.filter(s => s.type === "Phasers")
