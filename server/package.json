@@ -1,6 +1,6 @@
 {
   "name": "thorium-server",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Starship Simulator Controls Server, built with GraphQL",
   "private": true,
   "repository": {
@@ -17,7 +17,7 @@
     "prestart": "rm -f ~/.babel.json",
     "start": "nodemon ./src/server.js -e js,graphql --ignore snapshots/ --exec babel-node",
     "build": "npm-run-all clean-build build-js",
-    "build-js": "NODE_ENV=production swc src -d build",
+    "build-js": "NODE_ENV=production babel src -d build",
     "clean": "rm -rf node_modules",
     "clean-build": "rm -rf build",
     "test": "jest --setupFiles ./tests/setup.js"
