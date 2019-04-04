@@ -4,7 +4,8 @@
       "You can now remove survey form fields.",
       "Fixes issues with dropdown and checkbox survey form fields.",
       "Fixes an issue where you cannot change sensor contact size.",
-      "Fixes issues with setting sickbay bunks."
+      "Fixes issues with setting sickbay bunks.",
+      "Make it possible to update library types."
     ]
   },
   "1.2.8": {
