@@ -35,15 +35,20 @@ class Form extends Component {
     });
   };
   updateForm = (id, which, value) => {
-    this.setState({
-      form: this.state.form.map(f => {
+    this.setState(state => ({
+      form: state.form.map(f => {
         if (f.id === id) {
           return { ...f, [which]: value };
         }
         return f;
       }),
       edited: true
-    });
+    }));
+  };
+  removeField = id => {
+    this.setState(state => ({
+      form: state.form.filter(f => f.id !== id)
+    }));
   };
   render() {
     const { form, edited } = this.state;
@@ -51,7 +56,12 @@ class Form extends Component {
     return (
       <div style={{ height: "80vh", overflowY: "auto" }}>
         {form.map(f => (
-          <FormContainer {...f} key={f.id} updateForm={this.updateForm} />
+          <FormContainer
+            {...f}
+            key={f.id}
+            updateForm={this.updateForm}
+            removeField={this.removeField}
+          />
         ))}
         <Button
           color={edited ? "warning" : "success"}

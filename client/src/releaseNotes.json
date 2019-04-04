@@ -1,4 +1,10 @@
 {
+  "1.2.10": {
+    "fixes": [
+      "You can now remove survey form fields.",
+      "Fixes issues with dropdown and checkbox survey form fields."
+    ]
+  },
   "1.2.8": {
     "features": [
       "Add a macro for sending notifications to core.",

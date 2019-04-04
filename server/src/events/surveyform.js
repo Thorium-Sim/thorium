@@ -2,10 +2,11 @@ import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
-App.on("createSurveyForm", ({ name }) => {
+App.on("createSurveyForm", ({ name, cb }) => {
   const form = new Classes.SurveyForm({ title: name });
   App.surveyForms.push(form);
   pubsub.publish("surveyformUpdate", App.surveyForms);
+  cb(form.id);
 });
 
 App.on("removeSurveyForm", ({ id }) => {
