@@ -20,7 +20,7 @@ const Dropdown = ({
         if (o.id === oId) {
           return { ...o, label: uvalue };
         }
-        return 0;
+        return o;
       })
     );
   };
@@ -50,7 +50,7 @@ const Dropdown = ({
           Select an option.
         </option>
         {options.map(o => (
-          <option key={o.id} value={o.id}>
+          <option key={`input-${o.id}`} value={o.id}>
             {o.label}
           </option>
         ))}

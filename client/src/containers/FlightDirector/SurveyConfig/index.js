@@ -49,10 +49,14 @@ class Surveys extends Component {
     const variables = {
       name
     };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
+    this.props.client
+      .mutate({
+        mutation,
+        variables
+      })
+      .then(({ data }) => {
+        this.setState({ selectedForm: data && data.createSurveyForm });
+      });
   };
   removeForm = () => {
     if (!window.confirm("Are you sure you want to delete this survey?")) return;

@@ -123,6 +123,7 @@ const creditList = [
         <li>Kimball Frank</li>
         <li>Nathan Young</li>
         <li>Jensen Caldwell</li>
+        <li>Justin Hammond</li>
       </ul>
     )
   },
