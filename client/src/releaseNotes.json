@@ -2,7 +2,8 @@
   "1.2.10": {
     "fixes": [
       "You can now remove survey form fields.",
-      "Fixes issues with dropdown and checkbox survey form fields."
+      "Fixes issues with dropdown and checkbox survey form fields.",
+      "Fixes an issue where you cannot change sensor contact size."
     ]
   },
   "1.2.8": {
