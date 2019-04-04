@@ -5,7 +5,8 @@
       "Fixes issues with dropdown and checkbox survey form fields.",
       "Fixes an issue where you cannot change sensor contact size.",
       "Fixes issues with setting sickbay bunks.",
-      "Make it possible to update library types."
+      "Make it possible to update library types.",
+      "Fixes issues with setting the crew count on station set configs."
     ]
   },
   "1.2.8": {
