@@ -13,11 +13,12 @@ export default class Library {
     this.categories = params.categories || [];
     this.seeAlso = params.seeAlso || [];
   }
-  update({ title, body, image, categories, seeAlso }) {
+  update({ title, type, body, image, categories, seeAlso }) {
     if (title) {
       this.title = title;
       this.slug = paramCase(this.title);
     }
+    if (type) this.type = type;
     if (body) this.body = body;
     if (image) this.image = image;
     if (categories) this.categories = categories;

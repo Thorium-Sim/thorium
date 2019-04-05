@@ -137,3 +137,17 @@ App.on("setSelfDestructAuto", ({ simulatorId, auto }) => {
   sim.setSelfDestructAuto(auto);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on(
+  "notify",
+  ({ simulatorId, type, station = "Core", title, body, color = "primary" }) => {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId,
+      type,
+      station,
+      title,
+      body,
+      color
+    });
+  }
+);

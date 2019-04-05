@@ -27,6 +27,9 @@
       user-select: text;
     }
   }
+  .mission-step-description {
+    white-space: pre-wrap;
+  }
 }
 .timeline-thumbnail {
   width: calc(100% - 10px);

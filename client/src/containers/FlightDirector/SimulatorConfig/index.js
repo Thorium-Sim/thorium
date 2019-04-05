@@ -334,6 +334,7 @@ class ConfigComponent extends React.PureComponent {
                 returnSimulator.stationSets.push({
                   id: ss.id,
                   name: ss.name,
+                  crewCount: ss.crewCount,
                   stations: ss.stations,
                   __typename: ss.__typename
                 });

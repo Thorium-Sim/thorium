@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.2.6",
+  "version": "1.2.10",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -133,6 +133,10 @@
   },
   "bin": "./server.js",
   "pkg": {
+    "scripts": [
+      "typeDefs/**/*",
+      "crew/**/*"
+    ],
     "assets": [
       "assets/**/*",
       "snapshot.json",
@@ -144,6 +148,7 @@
       "cardIcons/**/*",
       "systems/**/*",
       "viewscreen/**/*",
+      "helpers/mutationHelper.js",
       "sciences.ogg",
       "favicon.ico"
     ]

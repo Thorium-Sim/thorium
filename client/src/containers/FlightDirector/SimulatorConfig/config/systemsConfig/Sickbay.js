@@ -47,7 +47,10 @@ const Sickbay = props => {
                         defaultValue={sickbay.bunks.length}
                         onMouseUp={evt => {
                           action({
-                            variables: { id, count: evt.target.value }
+                            variables: {
+                              id,
+                              count: parseInt(evt.target.value, 10)
+                            }
                           });
                         }}
                       />

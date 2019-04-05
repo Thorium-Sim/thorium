@@ -12,8 +12,9 @@ function performAction(id, action) {
   );
 }
 
-App.on("setSickbayBunks", ({ id, count }) => {
+App.on("setSickbayBunks", ({ id, count, cb }) => {
   performAction(id, sys => sys.setBunkCount(count));
+  cb();
 });
 
 App.on("addSickbayCrew", ({ id, crew }) => {

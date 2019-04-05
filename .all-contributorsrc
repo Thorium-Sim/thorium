@@ -158,7 +158,9 @@
       "avatar_url": "https://avatars2.githubusercontent.com/u/43680869?v=4",
       "profile": "https://github.com/sassyspock",
       "contributions": [
-        "doc"
+        "doc",
+        "bug",
+        "code"
       ]
     },
     {
@@ -167,7 +169,9 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/39606064?v=4",
       "profile": "http://justinpaulhammond.com",
       "contributions": [
-        "doc"
+        "doc",
+        "bug",
+        "blog"
       ]
     },
     {
@@ -176,9 +180,27 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/48568289?v=4",
       "profile": "https://github.com/thoriumsim",
       "contributions": [
-        "docs",
+        "doc",
         "tutorial",
         "video"
+      ]
+    },
+    {
+      "login": "JordanDeSmith",
+      "name": "JordanDeSmith",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/48338615?v=4",
+      "profile": "https://github.com/JordanDeSmith",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Unit1229",
+      "name": "Mason Edmondson",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/35549562?v=4",
+      "profile": "https://github.com/Unit1229",
+      "contributions": [
+        "bug"
       ]
     }
   ],

@@ -1,6 +1,6 @@
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-import mutationHelper from "../helpers/mutationHelper";
+const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -41,7 +41,16 @@ const schema = gql`
     duration: Int
     relevantCards: [String]
   }
-
+  enum NotifyColors {
+    primary
+    secondary
+    success
+    danger
+    warning
+    info
+    light
+    dark
+  }
   extend type Mutation {
     shipDockingChange(simulatorId: ID!, which: String!, state: Boolean!): String
     remoteAccessSendCode(
@@ -57,7 +66,19 @@ const schema = gql`
     setSelfDestructTime(simulatorId: ID!, time: Float): String
     setSelfDestructCode(simulatorId: ID!, code: String): String
     setSelfDestructAuto(simulatorId: ID!, auto: Boolean): String
+    """
+    Macro: Actions: Send Notification
+    """
+    notify(
+      simulatorId: ID!
+      type: String
+      station: String
+      title: String!
+      body: String
+      color: NotifyColors
+    ): String
   }
+
   extend type Subscription {
     notify(simulatorId: ID!, station: String, trigger: String): Notification
     widgetNotify(simulatorId: ID!, station: String): String

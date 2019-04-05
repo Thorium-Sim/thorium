@@ -57,3 +57,4 @@ export {
 export {
   default as toggleInterfaceObjectHidden
 } from "./toggleInterfaceObjectHidden";
+export { default as notify } from "./notify";
