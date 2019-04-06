@@ -2,7 +2,8 @@
   "1.2.11": {
     "features": [
       "Adds a collapse all button to the core feed.",
-      "Add a brief note to the login training about the objectives widget."
+      "Add a brief note to the login training about the objectives widget.",
+      "Allows auto thrusters to rotate the sensor grid with yaw."
     ],
     "fixes": [
       "Fixed setting secondary viewscreens to auto.",
