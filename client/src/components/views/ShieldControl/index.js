@@ -157,16 +157,15 @@ class ShieldControl extends Component {
   startLoop(which, shields) {
     const frequency = this.state.frequency;
     frequency[shields.id] = shields.frequency;
-    this.setState({
-      frequency,
-      frequencySpeed: 150
-    });
+    this.setState(
+      {
+        frequency,
+        frequencySpeed: 150
+      },
+      () => this._loop(which, shields)
+    );
     document.addEventListener("mouseup", this.stopLoop.bind(this, shields));
     document.addEventListener("touchend", this.stopLoop.bind(this, shields));
-    this.freqLoop = setTimeout(
-      this._loop.bind(this, which, shields),
-      this.state.frequencySpeed
-    );
   }
   stopLoop(shields) {
     clearTimeout(this.freqLoop);
