@@ -140,7 +140,7 @@ class Inventory extends Component {
               r =>
                 r.room && {
                   room: r.room.id || r.room,
-                  count: r.count
+                  count: parseInt(r.count, 10)
                 }
             )
             .filter(Boolean)
