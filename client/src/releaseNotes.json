@@ -3,7 +3,8 @@
     "fixes": [
       "Fixed setting secondary viewscreens to auto.",
       "Fixes issues with updating timeline steps.",
-      "Fixes issues with adding inventory to rooms."
+      "Fixes issues with adding inventory to rooms.",
+      "Fixes the core feed messaging filter."
     ]
   },
   "1.2.10": {
