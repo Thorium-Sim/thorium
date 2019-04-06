@@ -60,6 +60,12 @@ class CoreFeed extends Component {
       variables
     });
   };
+  collapseAll = () => {
+    const coreFeed = this.props.data.coreFeed.concat();
+    this.setState({
+      components: coreFeed.reduce((acc, cf) => ({ ...acc, [cf.id]: false }), {})
+    });
+  };
   showComponent = id => {
     this.setState({
       components: Object.assign({}, this.state.components, { [id]: true })
@@ -106,6 +112,9 @@ class CoreFeed extends Component {
           </Button>
           <Button color="info" size="sm" onClick={this.ignoreAll}>
             Ignore All
+          </Button>
+          <Button color="primary" size="sm" onClick={this.collapseAll}>
+            Collapse All
           </Button>
         </ButtonGroup>
         <p>Click on core feed notification for contextual component.</p>

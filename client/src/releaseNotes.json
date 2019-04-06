@@ -1,5 +1,6 @@
 {
   "1.2.11": {
+    "features": ["Adds a collapse all button to the core feed."],
     "fixes": [
       "Fixed setting secondary viewscreens to auto.",
       "Fixes issues with updating timeline steps.",
