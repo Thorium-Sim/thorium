@@ -1,6 +1,9 @@
 {
   "1.2.11": {
-    "fixes": ["Fixed setting secondary viewscreens to auto."]
+    "fixes": [
+      "Fixed setting secondary viewscreens to auto.",
+      "Fixes issues with updating timeline steps."
+    ]
   },
   "1.2.10": {
     "fixes": [
