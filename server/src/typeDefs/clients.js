@@ -1,8 +1,8 @@
 import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import { StationResolver } from "../helpers/stationResolver";
+const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -19,6 +19,7 @@ const schema = gql`
     offlineState: String
     movie: String
     training: Boolean
+    soundPlayer: Boolean
     caches: [String]
     hypercard: String
     overlay: Boolean
@@ -110,6 +111,8 @@ const schema = gql`
     clientOfflineState(client: ID!, state: String): String
     clientMovieState(client: ID!, movie: String!): String
     clientSetTraining(client: ID!, training: Boolean!): String
+    clientSetSoundPlayer(client: ID!, soundPlayer: Boolean!): String
+
     clientAddCache(
       client: ID
       simulatorId: ID

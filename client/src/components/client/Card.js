@@ -94,6 +94,7 @@ const CardRenderer = props => {
       <Keyboard
         keyboard={station.name.replace("keyboard:", "")}
         simulator={simulator}
+        clientObj={client}
       />
     );
   }

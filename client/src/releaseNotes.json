@@ -3,7 +3,8 @@
     "features": [
       "Adds a collapse all button to the core feed.",
       "Add a brief note to the login training about the objectives widget.",
-      "Allows auto thrusters to rotate the sensor grid with yaw."
+      "Allows auto thrusters to rotate the sensor grid with yaw.",
+      "Makes it possible to turn keyboards and viewscreens into sound players, just like the sound player station."
     ],
     "fixes": [
       "Fixed setting secondary viewscreens to auto.",
