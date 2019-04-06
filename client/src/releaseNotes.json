@@ -1,4 +1,7 @@
 {
+  "1.2.11": {
+    "fixes": ["Fixed setting secondary viewscreens to auto."]
+  },
   "1.2.10": {
     "fixes": [
       "You can now remove survey form fields.",

@@ -44,8 +44,8 @@ App.on("updateViewscreenAuto", ({ id, simulatorId, auto }) => {
 App.on("setViewscreenToAuto", ({ id, simulatorId, secondary = false }) => {
   const viewscreen = App.viewscreens.filter(
     v =>
-      (v.id === id || v.simulatorId === simulatorId) &&
-      v.secondary === secondary
+      v.id === id ||
+      (v.simulatorId === simulatorId && v.secondary === secondary)
   );
   viewscreen.forEach(v => {
     v.updateAuto(true);
