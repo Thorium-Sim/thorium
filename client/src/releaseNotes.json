@@ -12,7 +12,8 @@
       "Fixes issues with adding inventory to rooms.",
       "Fixes the core feed messaging filter.",
       "Properly loads the correct step name when configuring mission timeline steps.",
-      "Fixes a minor issue with the communications viewscreen."
+      "Fixes a minor issue with the communications viewscreen.",
+      "Fixes issues with the army contacts macro."
     ]
   },
   "1.2.10": {
