@@ -213,7 +213,8 @@ App.on(
           (c.simulatorId === simulatorId &&
             (c.station === stationObj || stationObj === "all")) ||
           c.id === clientId ||
-          c.id === station
+          c.id === station ||
+          (stationObj === "Sound" && c.soundPlayer)
       );
       clients = clients.map(c => c.id);
     }
@@ -281,6 +282,7 @@ App.on(
         client.setFlight(flightId);
         client.setSimulator(simulatorId);
         client.setStation(c.station.replace("mobile:", ""));
+        if (c.soundPlayer) client.setSoundPlayer(true);
         // If the station name is 'Viewscreen', check for or create a viewscreen for the client
         if (c.station === "Viewscreen") {
           const vs = App.viewscreens.find(
@@ -306,6 +308,12 @@ App.on(
 App.on("clientMovieState", ({ client, movie }) => {
   const c = App.clients.find(c => c.id === client);
   c.setMovie(movie);
+  pubsub.publish("clientChanged", App.clients);
+});
+
+App.on("clientSetSoundPlayer", ({ client, soundPlayer }) => {
+  const c = App.clients.find(c => c.id === client);
+  c.setSoundPlayer(soundPlayer);
   pubsub.publish("clientChanged", App.clients);
 });
 

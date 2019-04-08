@@ -163,6 +163,27 @@ class SetConfig extends Component {
       refetchQueries: ["Sets"]
     });
   };
+  updateSoundPlayer = (e, clientId) => {
+    const { selectedSet } = this.state;
+    const mutation = gql`
+      mutation UpdateSet($id: ID!, $clientId: ID!, $soundPlayer: Boolean) {
+        updateSetClient(
+          id: $id
+          client: { id: $clientId, soundPlayer: $soundPlayer }
+        )
+      }
+    `;
+    const variables = {
+      id: selectedSet,
+      clientId,
+      soundPlayer: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ["Sets"]
+    });
+  };
   render() {
     const { data } = this.props;
     if (data.loading) return null;
@@ -423,6 +444,25 @@ class SetConfig extends Component {
                               <small>Secondary Viewscreen</small>
                             </label>
                           )}
+                        {(selectedStation === "Viewscreen" ||
+                          selectedStation.indexOf("keyboard") > -1) &&
+                          this.getCurrentClient(s.id).id && (
+                            <label>
+                              <Input
+                                checked={
+                                  this.getCurrentClient(s.id).soundPlayer
+                                }
+                                onChange={e =>
+                                  this.updateSoundPlayer(
+                                    e,
+                                    this.getCurrentClient(s.id).id
+                                  )
+                                }
+                                type="checkbox"
+                              />
+                              <small>Sound Player</small>
+                            </label>
+                          )}
                       </li>
                     ))}
                 </ul>
@@ -471,6 +511,7 @@ const SIMULATOR_QUERY = gql`
         }
         station
         secondary
+        soundPlayer
       }
     }
     clients {

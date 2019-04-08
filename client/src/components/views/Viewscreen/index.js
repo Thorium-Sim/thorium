@@ -3,6 +3,7 @@ import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import * as ViewscreenCards from "components/viewscreens";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import SoundPlayer from "../../client/soundPlayer";
 
 import "./style.scss";
 
@@ -73,6 +74,12 @@ export class Viewscreen extends Component {
     if (!this.props.data) return null;
     return (
       <Fragment>
+        {this.props.clientObj.soundPlayer && (
+          <div>
+            <p>Sound Player</p>
+            <SoundPlayer {...this.props} invisible />
+          </div>
+        )}
         <SubscriptionHelper
           subscribe={() => {
             return this.props.data.subscribeToMore({

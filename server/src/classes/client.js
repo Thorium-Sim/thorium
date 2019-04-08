@@ -96,6 +96,7 @@ export default class Client {
     this.hypercard = params.hypercard || null;
     this.training = params.training || false;
     this.overlay = params.overlay || false;
+    this.soundPlayer = params.soundPlayer || false;
     this.caches = params.caches || [];
     this.cracked = params.cracked || false;
     // For the mobile app
@@ -168,6 +169,9 @@ export default class Client {
     // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', 'maintenance', 'spaceEdventuresToken
     this.offlineState = state;
   }
+  setSoundPlayer(tf) {
+    this.soundPlayer = tf;
+  }
   addCache(cacheItem) {
     const url = `/assets${cacheItem}`;
     if (this.caches.indexOf(url) === -1) {
@@ -188,6 +192,7 @@ export default class Client {
     this.setHypercard(null);
     if (hardReset) {
       this.setFlight(null);
+      this.setSoundPlayer(false);
     }
   }
   crack() {

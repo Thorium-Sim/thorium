@@ -1,4 +1,22 @@
 {
+  "1.2.11": {
+    "features": [
+      "Adds a collapse all button to the core feed.",
+      "Add a brief note to the login training about the objectives widget.",
+      "Allows auto thrusters to rotate the sensor grid with yaw.",
+      "Makes it possible to turn keyboards and viewscreens into sound players, just like the sound player station.",
+      "Adds a 'Course set' scan preset. Thanks @JordanDeSmith."
+    ],
+    "fixes": [
+      "Fixed setting secondary viewscreens to auto.",
+      "Fixes issues with updating timeline steps.",
+      "Fixes issues with adding inventory to rooms.",
+      "Fixes the core feed messaging filter.",
+      "Properly loads the correct step name when configuring mission timeline steps.",
+      "Fixes a minor issue with the communications viewscreen.",
+      "Fixes issues with the army contacts macro."
+    ]
+  },
   "1.2.10": {
     "fixes": [
       "You can now remove survey form fields.",

@@ -394,7 +394,8 @@ class Armory extends Component {
                 <UncontrolledDropdown>
                   <DropdownToggle block caret className="officer-selector">
                     {team
-                      ? teams.find(t => t.id === team).name
+                      ? teams.find(t => t.id === team) &&
+                        teams.find(t => t.id === team).name
                       : "Unassigned Officers"}
                   </DropdownToggle>
                   <DropdownMenu
