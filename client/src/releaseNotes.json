@@ -11,7 +11,8 @@
       "Fixes issues with updating timeline steps.",
       "Fixes issues with adding inventory to rooms.",
       "Fixes the core feed messaging filter.",
-      "Properly loads the correct step name when configuring mission timeline steps."
+      "Properly loads the correct step name when configuring mission timeline steps.",
+      "Fixes a minor issue with the communications viewscreen."
     ]
   },
   "1.2.10": {
