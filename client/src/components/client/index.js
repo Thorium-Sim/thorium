@@ -34,6 +34,7 @@ const fragments = {
       training
       caches
       overlay
+      soundPlayer
     }
   `
 };

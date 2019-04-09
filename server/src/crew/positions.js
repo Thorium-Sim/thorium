@@ -1,4 +1,4 @@
-[
+export default [
   "Air Filtration Maintenance",
   "Air Pumping Controller",
   "Air Pumping Supervisor",
@@ -385,4 +385,4 @@
   "Xenozoologist",
   "Zoologist",
   "Zoology Lab Technican"
-]
+];

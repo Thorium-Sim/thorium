@@ -1,14 +1,14 @@
 import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
-import firstNames from "../crew/firstNames.json";
-import lastNames from "../crew/lastNames.json";
-import positions from "../crew/positions.json";
-import ranks from "../crew/ranks.json";
 import {
   randomFromList,
   damagePositions
 } from "../classes/generic/damageReports/constants";
+import firstNames from "../crew/firstNames";
+import lastNames from "../crew/lastNames";
+import positions from "../crew/positions";
+import ranks from "../crew/ranks";
 
 App.on("addCrewmember", ({ crew }) => {
   App.crew.push(new Classes.Crew(crew));

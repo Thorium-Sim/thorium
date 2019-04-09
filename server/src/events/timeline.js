@@ -82,7 +82,8 @@ App.on(
     missionId,
     timelineStepId,
     timelineItemId,
-    updateTimelineItem
+    updateTimelineItem,
+    cb
   }) => {
     const object = getTimelineObject(simulatorId, missionId);
     object.updateTimelineStepItem(
@@ -92,5 +93,6 @@ App.on(
     );
     pubsub.publish("missionsUpdate", App.missions);
     pubsub.publish("simulatorsUpdate", App.simulators);
+    cb();
   }
 );

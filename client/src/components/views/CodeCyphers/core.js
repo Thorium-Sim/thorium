@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
-import { TypingField } from "../../generic/core";
+import { TypingField, InputField } from "../../generic/core";
 import { cypherMap } from "./index";
 import Printable from "helpers/printable";
 
@@ -10,65 +10,70 @@ const greekUtils = {
 };
 // Control what codes are available
 // Code and print encoded messages
-class CypherCore extends Component {
-  state = { message: "" };
-  sendMessage = () => {
+const CypherCore = () => {
+  const [message, setMessage] = useState("");
+  const [cypher, setCypher] = useState("");
+  const [header, setHeader] = useState("=== Intercepted Message ===");
+  const sendMessage = () => {
     setTimeout(() => {
       window.print();
     }, 1000);
   };
-  render() {
-    return (
-      <Container style={{ height: "100%" }} className="core-codeCyphers">
-        <Row style={{ height: "100%" }}>
-          <Col sm={12}>
-            <TypingField
-              style={{ height: "100%", textAlign: "left" }}
-              controlled
-              value={this.state.message}
-              onChange={e => this.setState({ message: e.target.value })}
-            />
-          </Col>
-          <Col sm={6}>
-            <select
-              className="btn btn-warning btn-block btn-sm"
-              value={this.state.cypher || "nothing"}
-              onChange={e => this.setState({ cypher: e.target.value })}
-            >
-              <option disabled value="nothing">
-                Select a cypher
+  return (
+    <Container style={{ height: "100%" }} className="core-codeCyphers">
+      <Row style={{ height: "100%" }}>
+        <Col sm={12}>
+          <InputField
+            children={header}
+            prompt={"What will you change the header to?"}
+            onClick={e => setHeader(e)}
+          />
+          <TypingField
+            style={{ height: "100%", textAlign: "left" }}
+            controlled
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+          />
+        </Col>
+        <Col sm={6}>
+          <select
+            className="btn btn-warning btn-block btn-sm"
+            value={cypher || "nothing"}
+            onChange={e => setCypher(e.target.value)}
+          >
+            <option disabled value="nothing">
+              Select a cypher
+            </option>
+            {Object.keys(cypherMap).map(c => (
+              <option value={c} key={c}>
+                {c} - {cypherMap[c]}
               </option>
-              {Object.keys(cypherMap).map(c => (
-                <option value={c} key={c}>
-                  {c} - {cypherMap[c]}
-                </option>
-              ))}
-            </select>
-          </Col>
-          <Col sm={6}>
-            <Button
-              size="sm"
-              color="success"
-              onClick={this.sendMessage}
-              disabled={!this.state.cypher || !this.state.message}
-            >
-              Print Message
-            </Button>
-          </Col>
-        </Row>
-        <Printable>
-          <div className="cypher-printing">
-            <h1>=== Intercepted Message ===</h1>
-            <pre className={`${cypherMap[this.state.cypher]}`}>
-              {cypherMap[this.state.cypher] === "Symbol"
-                ? greekUtils.toGreek(this.state.message.toLowerCase())
-                : this.state.message}
-            </pre>
-          </div>
-        </Printable>
-      </Container>
-    );
-  }
-}
+            ))}
+          </select>
+        </Col>
+        <Col sm={6}>
+          <Button
+            size="sm"
+            color="success"
+            onClick={sendMessage}
+            disabled={!cypher || !message}
+          >
+            Print Message
+          </Button>
+        </Col>
+      </Row>
+      <Printable>
+        <div className="cypher-printing">
+          <h1>{header}</h1>
+          <pre className={`${cypherMap[cypher]}`}>
+            {cypherMap[cypher] === "Symbol"
+              ? greekUtils.toGreek(message.toLowerCase())
+              : message}
+          </pre>
+        </div>
+      </Printable>
+    </Container>
+  );
+};
 
 export default CypherCore;

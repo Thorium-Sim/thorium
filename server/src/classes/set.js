@@ -31,12 +31,21 @@ class SetClient {
     this.stationSet = params.stationSet || null;
     this.station = params.station || null;
     this.secondary = params.secondary || false;
+    this.soundPlayer = params.soundPlayer || false;
   }
-  update({ clientId, simulatorId, stationSet, station, secondary }) {
+  update({
+    clientId,
+    simulatorId,
+    stationSet,
+    station,
+    secondary,
+    soundPlayer
+  }) {
     if (clientId) this.clientId = clientId;
     if (simulatorId) this.simulatorId = simulatorId;
     if (stationSet) this.stationSet = stationSet;
     if (station) this.station = station;
     if (secondary || secondary === false) this.secondary = secondary;
+    if (soundPlayer || soundPlayer === false) this.soundPlayer = soundPlayer;
   }
 }

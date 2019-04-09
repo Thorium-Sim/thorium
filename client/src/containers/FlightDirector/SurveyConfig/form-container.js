@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "reactstrap";
+import { Input, Button } from "reactstrap";
 import * as Components from "./components";
 
 const style = {
@@ -11,7 +11,14 @@ const style = {
 };
 export default class FormContainer extends React.Component {
   render() {
-    const { type, title, description, id, updateForm } = this.props;
+    const {
+      type,
+      title,
+      description,
+      id,
+      updateForm,
+      removeField
+    } = this.props;
     const Comp = Components[type];
     if (!Comp) return null;
     return (
@@ -28,6 +35,9 @@ export default class FormContainer extends React.Component {
           onChange={e => updateForm(id, "description", e.target.value)}
         />
         <Comp {...this.props} disabled />
+        <Button color={"danger"} outline onClick={() => removeField(id)}>
+          Remove Field
+        </Button>
       </div>
     );
   }

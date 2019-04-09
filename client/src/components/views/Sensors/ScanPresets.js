@@ -80,6 +80,11 @@ export default which =>
       value:
         "Asteroids detected in the area. It is recommended that Thrusters be used to dodge asteroids. The weapon systems can be used to destroy incoming projectiles before impact."
     },
+    {
+      label: "On Course",
+      value:
+        "Now on course "
+    },
     which && {
       label: `Use ${which === "internal" ? "External" : "Internal"}`,
       value: `Unable to complete scan. Recommend using ${

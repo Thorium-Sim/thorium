@@ -60,6 +60,12 @@ class CoreFeed extends Component {
       variables
     });
   };
+  collapseAll = () => {
+    const coreFeed = this.props.data.coreFeed.concat();
+    this.setState({
+      components: coreFeed.reduce((acc, cf) => ({ ...acc, [cf.id]: false }), {})
+    });
+  };
   showComponent = id => {
     this.setState({
       components: Object.assign({}, this.state.components, { [id]: true })
@@ -70,10 +76,18 @@ class CoreFeed extends Component {
     const allowed = storedAllowed ? JSON.parse(storedAllowed) : {};
     this.setState({ config: !this.state.config, allowed });
   };
+  coreFeedFilter = c => {
+    const { allowed } = this.state;
+    if (c.ignored) return false;
+    if (c.component === "NewMessagingCore" && allowed.MessagingCore === false)
+      return false;
+    if (allowed[c.component] === false) return false;
+    return true;
+  };
   render() {
     if (this.props.data.loading || !this.props.data.coreFeed) return null;
     const coreFeed = this.props.data.coreFeed.concat().reverse();
-    const { components, config, allowed } = this.state;
+    const { components, config } = this.state;
     return (
       <div className="coreFeed-core">
         <SubscriptionHelper
@@ -99,11 +113,14 @@ class CoreFeed extends Component {
           <Button color="info" size="sm" onClick={this.ignoreAll}>
             Ignore All
           </Button>
+          <Button color="primary" size="sm" onClick={this.collapseAll}>
+            Collapse All
+          </Button>
         </ButtonGroup>
         <p>Click on core feed notification for contextual component.</p>
         {coreFeed.length ? (
           coreFeed
-            .filter(c => !c.ignored && allowed[c.component] !== false)
+            .filter(this.coreFeedFilter)
             .filter((c, i) => (i < 50 ? true : false))
             .map(c => {
               if (components[c.id] && c.component && Cores[c.component]) {
