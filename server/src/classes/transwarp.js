@@ -1,5 +1,8 @@
+import App from "../app";
 import { System } from "./generic";
 import heatMixin from "./generic/heatMixin";
+import uuid from "uuid";
+import { pubsub } from "../helpers/subscriptionManager.js";
 
 const baseQuad = {
   field: { required: 25, value: 0 },
@@ -48,6 +51,27 @@ export default class Transwarp extends heatMixin(System) {
     else return 0.9;
   }
   break(report, destroyed, which) {
+    if (this.active) {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: this.simulatorId,
+        station: "Core",
+        type: "Transwarp",
+        title: `Transwarp Drive Deactivated`,
+        body: ``,
+        color: "info"
+      });
+      App.handleEvent(
+        {
+          simulatorId: this.simulatorId,
+          title: `Transwarp Drive Deactivated`,
+          component: "TranswarpCore",
+          body: null,
+          color: "info"
+        },
+        "addCoreFeed"
+      );
+    }
     this.active = false;
     super.break(report, destroyed, which);
   }
@@ -56,12 +80,73 @@ export default class Transwarp extends heatMixin(System) {
       this.power.powerLevels.length &&
       powerLevel < this.power.powerLevels[0]
     ) {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: this.simulatorId,
+        station: "Core",
+        type: "Transwarp",
+        title: `Transwarp Drive Deactivated`,
+        body: ``,
+        color: "info"
+      });
+      App.handleEvent(
+        {
+          simulatorId: this.simulatorId,
+          title: `Transwarp Drive Deactivated`,
+          component: "TranswarpCore",
+          body: null,
+          color: "info"
+        },
+          "addCoreFeed"
+        );
       this.active = false;
     }
     super.setPower(powerLevel);
   }
   setActive(tf) {
     this.active = tf;
+    if(this.active){
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: this.simulatorId,
+        station: "Core",
+        type: "Transwarp",
+        title: `Transwarp Drive Activated`,
+        body: ``,
+        color: "info"
+      });
+      App.handleEvent(
+        {
+          simulatorId: this.simulatorId,
+          title: `Transwarp Drive Activated`,
+          component: "TranswarpCore",
+          body: null,
+          color: "info"
+        },
+        "addCoreFeed"
+      );
+    }
+    else{
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: this.simulatorId,
+      station: "Core",
+      type: "Transwarp",
+      title: `Transwarp Drive Deactivated`,
+      body: ``,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: this.simulatorId,
+        title: `Transwarp Drive Deactivated`,
+        component: "TranswarpCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+    }
   }
   flux(quad, field) {
     if (!quad) {
