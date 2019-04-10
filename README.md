@@ -35,7 +35,7 @@ I will not:
 
 Fortunately, you can get help from the excellent people on [Thorium's Discord Server](https://discord.gg/UvxTQZz).
 
-If you need better support for your Thorium simulator, I more than happy to contract with you to do so. Fill out the [Thorium Service Request Form](https://thoriumsim.com/service/) to start that process. That's how I make money to pay the bills, after all. 😁
+If you need better support for your Thorium simulator, I more than happy to contract with you to do so. Fill out the [Thorium Service Request Form](https://thoriumsim.com/service/) to start that process. 
 
 If you want to learn to contribute to Thorium, check out the [development video series](https://www.youtube.com/watch?v=iEU6NcOKhyE&list=PLvw0SNT6wHt9au1-6yCOh7QHj-p5ir0l6) for how to get started.
 
