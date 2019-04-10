@@ -47,7 +47,8 @@ const components = [
   "ThxCore",
   "TorpedoCore",
   "TractorBeamCore",
-  "TransporterCore"
+  "TransporterCore",
+  "TranswarpCore"
 ];
 
 class CoreFeedConfig extends Component {
