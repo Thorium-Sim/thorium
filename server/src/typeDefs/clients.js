@@ -195,7 +195,38 @@ const resolver = {
         flight && flight.clients.find(c => c.id === client.id);
       return flightClient && flightClient.email;
     },
-    station: StationResolver
+    station: StationResolver,
+    connected(client) {
+      return Boolean(client.connected);
+    },
+    training(client) {
+      return Boolean(client.training);
+    },
+    soundPlayer(client) {
+      return Boolean(client.soundPlayer);
+    },
+    overlay(client) {
+      return Boolean(client.overlay);
+    },
+    cracked(client) {
+      return Boolean(client.cracked);
+    },
+    mobile(client) {
+      return Boolean(client.mobile);
+    }
+  },
+  Keypad: {
+    giveHints(client) {
+      return Boolean(client.giveHints);
+    },
+    locked(client) {
+      return Boolean(client.locked);
+    }
+  },
+  Scanner: {
+    scanning(client) {
+      return Boolean(client.scanning);
+    }
   },
   Sound: {
     url(rootValue) {
@@ -206,6 +237,9 @@ const resolver = {
         o => o.containerId === assetContainer.id && o.simulatorId === "default"
       );
       return asset ? asset.url : "";
+    },
+    looping(sound) {
+      return Boolean(sound.looping);
     }
   },
   Query: {
@@ -319,7 +353,7 @@ const resolver = {
       )
     },
     clearCache: {
-      resolve: payload => payload,
+      resolve: payload => Boolean(payload),
       subscribe: withFilter(
         () => pubsub.asyncIterator("clearCache"),
         (rootValue, { client, flight }) => {
@@ -331,7 +365,7 @@ const resolver = {
           } else {
             output = rootValue.filter(c => c.connected).length > 0;
           }
-          return output;
+          return Boolean(output);
         }
       )
     },
