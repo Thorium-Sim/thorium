@@ -2,7 +2,8 @@
   "1.2.12": {
     "fixes": [
       "Removes weird Sound Player text on the viewscreen.",
-      "Transwarp cannot be activated when damaged or there isn't enough power."
+      "Transwarp cannot be activated when damaged or there isn't enough power.",
+      "Looping sounds are now cancelled when the flight is reset."
     ]
   },
   "1.2.11": {
