@@ -1,4 +1,7 @@
 {
+  "1.2.12": {
+    "fixes": ["Removes weird Sound Player text on the viewscreen."]
+  },
   "1.2.11": {
     "features": [
       "Adds a collapse all button to the core feed.",

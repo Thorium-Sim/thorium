@@ -75,10 +75,7 @@ export class Viewscreen extends Component {
     return (
       <Fragment>
         {this.props.clientObj.soundPlayer && (
-          <div>
-            <p>Sound Player</p>
-            <SoundPlayer {...this.props} invisible />
-          </div>
+          <SoundPlayer {...this.props} invisible />
         )}
         <SubscriptionHelper
           subscribe={() => {
