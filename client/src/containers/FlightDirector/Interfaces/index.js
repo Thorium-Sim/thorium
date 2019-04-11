@@ -8,6 +8,7 @@ const fragment = gql`
   fragment InterfaceConfigData on Interface {
     id
     name
+    simulatorId
     deviceType {
       id
       name
@@ -69,7 +70,7 @@ class InterfacesData extends Component {
             >
               <InterfacesControl
                 {...this.props}
-                interfaces={interfaces}
+                interfaces={interfaces.filter(i => !i.simulatorId)}
                 interfaceDevices={interfaceDevices}
               />
             </SubscriptionHelper>

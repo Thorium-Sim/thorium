@@ -16,6 +16,31 @@ sure what it is or how to work with Thorium? Guides are in the
 [docs website](https://thoriumsim.com/docs/overview.html). Thorium accepts
 [donations](https://thoriumsim.com/en/donate.html).
 
+## A note about support
+
+Thorium is a "community support" project. While I encourage everyone to use it and continue to submit issues and bug reports, I won't be actively maintaining the project as I have in the past. Here's what I will continue to do:
+
+* Review issues
+* Review pull requests and provide feedback
+* Merge pull requests
+* Create new builds/releases
+* Encourage and assist other developers
+
+I will not:
+
+* Actively build new features (usually -- some exceptions)
+* Actively fix bugs (usually -- some exceptions)
+* Guarantee a response or turnaround time
+* Give support over phone or in person (except through service contract agreements)
+
+Fortunately, you can get help from the excellent people on [Thorium's Discord Server](https://discord.gg/UvxTQZz).
+
+If you need better support for your Thorium simulator, I more than happy to contract with you to do so. Fill out the [Thorium Service Request Form](https://thoriumsim.com/service/) to start that process. 
+
+If you want to learn to contribute to Thorium, check out the [development video series](https://www.youtube.com/watch?v=iEU6NcOKhyE&list=PLvw0SNT6wHt9au1-6yCOh7QHj-p5ir0l6) for how to get started.
+
+Hope this helps! ~Alex
+
 ## What is Thorium
 
 Thorium is a simulator controls platform which eventually hopes to encapsulate

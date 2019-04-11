@@ -1,19 +1,27 @@
 import React, { Component } from "react";
-import { Query } from "react-apollo";
-import gql from "graphql-tag.macro";
-import SubscriptionHelper from "helpers/subscriptionHelper";
-import InterfaceCard from "./interface";
-import "./style.scss";
 
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+import Interfaces from "./interfaces";
 const fragment = gql`
   fragment InterfaceData on Interface {
     id
     name
+    values
+    config
+    deviceType {
+      id
+      name
+      width
+      height
+    }
+    components
+    connections
   }
 `;
-
 const QUERY = gql`
-  query Interface($simulatorId: ID!) {
+  query Interfaces($simulatorId: ID!) {
     interfaces(simulatorId: $simulatorId) {
       ...InterfaceData
     }
@@ -21,7 +29,7 @@ const QUERY = gql`
   ${fragment}
 `;
 const SUBSCRIPTION = gql`
-  subscription InterfaceUpdate($simulatorId: ID!) {
+  subscription TranswarpUpdate($simulatorId: ID!) {
     interfaceUpdate(simulatorId: $simulatorId) {
       ...InterfaceData
     }
@@ -32,13 +40,12 @@ const SUBSCRIPTION = gql`
 class InterfaceData extends Component {
   state = {};
   render() {
-    const { interfaceId } = this.props;
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
           const { interfaces } = data;
           if (loading || !interfaces) return null;
-          if (!interfaces[0]) return <div>No Interface</div>;
+          const iFace = interfaces.find(i => i.id === this.props.interfaceId);
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -47,16 +54,17 @@ class InterfaceData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      interface: subscriptionData.data.interfaceUpdate
+                      interfaces: subscriptionData.data.interfaceUpdate
                     });
                   }
                 })
               }
             >
-              <InterfaceCard
-                {...this.props}
-                {...interfaces.find(i => i.id === interfaceId)}
-              />
+              {iFace ? (
+                <Interfaces {...this.props} iFace={iFace} />
+              ) : (
+                "Invalid Interface ID"
+              )}
             </SubscriptionHelper>
           );
         }}
@@ -64,4 +72,5 @@ class InterfaceData extends Component {
     );
   }
 }
+
 export default InterfaceData;

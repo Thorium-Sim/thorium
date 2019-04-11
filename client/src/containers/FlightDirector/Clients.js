@@ -79,6 +79,7 @@ const Keyboards = ({ keyboards = [] }) => {
   );
 };
 const Interfaces = ({ p, interfaces = [] }) => {
+  if (!p.simulator) return null;
   const simInterfaces = p.simulator.interfaces
     .map(i => interfaces.find(ii => ii.id === i))
     .filter(Boolean);
@@ -177,11 +178,16 @@ const ClientRow = ({
             className="form-control-sm c-select station-picker"
           >
             <option value="">Select a screen</option>
-            {p.cards.map(c => (
-              <option key={`${p.id}-station-${c}`} value={c}>
-                {titleCase(c)}
-              </option>
-            ))}
+            {p.cards
+              .filter(c => c !== "Interfaces")
+              .map(c => (
+                <option key={`${p.id}-station-${c}`} value={c}>
+                  {titleCase(c)}
+                </option>
+              ))}
+            {p.cards.includes("Interfaces") && (
+              <Interfaces p={p} interfaces={interfaces} />
+            )}
           </select>
         ) : (
           <select

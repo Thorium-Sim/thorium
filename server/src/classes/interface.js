@@ -29,6 +29,34 @@ export default class Interface {
     if (values) this.values = values;
     if (config) this.config = config;
   }
+  triggerObject(objectId) {
+    // Get all of the connections to macros
+    return this.connections
+      .filter(({ to, from }) => to.id === objectId || from.id === objectId)
+      .map(c => {
+        if (c.to.nodeId === "trigger")
+          return {
+            ...this.components.find(comp => comp.id === c.to.id),
+            values: this.values[c.to.id] || {},
+            config: this.config[c.to.id] || {}
+          };
+        if (c.from.nodeId === "trigger")
+          return {
+            ...this.components.find(comp => comp.id === c.from.id),
+            values: this.values[c.from.id] || {},
+            config: this.config[c.from.id] || {}
+          };
+        return null;
+      })
+      .filter(Boolean)
+      .map(comp => {
+        return {
+          event: comp.component.name.replace("macro-", ""),
+          args: comp.values,
+          delay: 0
+        };
+      });
+  }
 }
 
 export class InterfaceDevice {

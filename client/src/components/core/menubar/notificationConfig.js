@@ -48,7 +48,8 @@ export const notifyComponents = [
   "Targeting",
   "Torpedos",
   "Tractor Beam",
-  "Transporter"
+  "Transporter",
+  "Transwarp"
 ];
 
 class NotificationConfig extends Component {
