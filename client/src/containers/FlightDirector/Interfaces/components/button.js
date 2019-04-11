@@ -1,10 +1,15 @@
 import React from "react";
 import { Button } from "reactstrap";
+
 export default {
   name: "Button",
   component: ({ value = {}, config = {} }) => {
     return (
-      <Button style={{ opacity: config.hidden ? 0.2 : 1 }}>
+      <Button
+        style={{
+          opacity: config.hidden ? 0.2 : 1
+        }}
+      >
         {config.objectLabel || "Button"}
       </Button>
     );

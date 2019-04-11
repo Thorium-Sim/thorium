@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Layouts from "../layouts";
 import Keyboard from "components/views/Keyboard";
-import InterfaceCard from "components/views/Interface";
+import InterfaceCard from "components/views/Interfaces";
 import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";

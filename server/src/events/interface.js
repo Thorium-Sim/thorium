@@ -74,18 +74,33 @@ App.on("updateInterfaceDevice", ({ id, width, height }) => {
   device && device.update({ width, height });
 });
 
+App.on("triggerInterfaceObject", ({ id, objectId }) => {
+  const interfaceObj = App.interfaces.find(i => i.id === id);
+  const macros = interfaceObj.triggerObject(objectId);
+  App.handleEvent(
+    { simulatorId: interfaceObj.simulatorId, macros },
+    "triggerMacros"
+  );
+});
+
 App.on(
   "toggleInterfaceObjectHidden",
   ({ simulatorId, id, objectId, hidden }) => {
-    const interfaceObj = App.interfaces.find(
-      i => i.id === id || (i.simulatorId === simulatorId && i.templateId === id)
+    const interfaceObj = App.interfaces.find(i =>
+      simulatorId
+        ? i.simulatorId === simulatorId && i.templateId === id
+        : i.id === id
     );
     interfaceObj.update({
       config: {
         ...interfaceObj.config,
-        [objectId]: { ...interfaceObj.config[objectId], hidden }
+        [objectId]: {
+          ...interfaceObj.config[objectId],
+          hidden: Boolean(hidden)
+        }
       }
     });
+
     pubsub.publish("interfaceUpdate", App.interfaces);
   }
 );

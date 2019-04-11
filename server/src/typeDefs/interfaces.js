@@ -7,6 +7,8 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 const schema = gql`
   type Interface {
     id: ID
+    simulatorId: ID
+    templateId: ID
     deviceType: InterfaceDevice
     name: String
     components: JSON
@@ -44,6 +46,7 @@ const schema = gql`
     renameInterfaceDevice(id: ID!, name: String!): String
     removeInterfaceDevice(id: ID!): String
     updateInterfaceDevice(id: ID!, width: Int, height: Int): String
+    triggerInterfaceObject(id: ID!, objectId: ID!): String
     """
     Macro: Interfaces: Set Object Hidden
     """

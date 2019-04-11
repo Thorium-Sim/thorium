@@ -87,7 +87,7 @@ import DockingPorts from "./DockingPorts";
 import SubspaceField from "./SubspaceField";
 import Transwarp from "./Transwarp";
 import SpecializedDocking from "./SpecializedDocking";
-import Interface from "./Interface";
+import Interface from "./Interfaces";
 import SpaceEdventuresToken from "./SpaceEdventuresToken";
 
 // Cores

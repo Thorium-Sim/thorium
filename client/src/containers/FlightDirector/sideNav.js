@@ -86,11 +86,11 @@ const makeLinks = () => {
       icon: "code-fork",
       link: "/config/triggers"
     },
-    // {
-    //   name: "Interfaces Config",
-    //   icon: "clone",
-    //   link: "/config/interfaces"
-    // },
+    {
+      name: "Interfaces Config",
+      icon: "clone",
+      link: "/config/interfaces"
+    },
     {
       name: "Settings",
       icon: "cog",
