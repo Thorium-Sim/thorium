@@ -1,4 +1,10 @@
 {
+  "1.2.13": {
+    "fixes": [
+      "Fixes an issue where the transporter speed cannot be changed.",
+      "Fixes an issue where action commands cannot be sent to viewscreens."
+    ]
+  },
   "1.2.12": {
     "fixes": [
       "Removes weird Sound Player text on the viewscreen.",
