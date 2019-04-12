@@ -117,7 +117,7 @@ class TransporterCore extends Component {
                     action({
                       variables: {
                         id: transporter.id,
-                        chargeSpeed: e.target.value
+                        chargeSpeed: parseFloat(e.target.value)
                       }
                     })
                   }
