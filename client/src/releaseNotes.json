@@ -2,7 +2,8 @@
   "1.2.13": {
     "fixes": [
       "Fixes an issue where the transporter speed cannot be changed.",
-      "Fixes an issue where action commands cannot be sent to viewscreens."
+      "Fixes an issue where action commands cannot be sent to viewscreens.",
+      "Sound effects now only play in the simulator they are supposed to play in."
     ]
   },
   "1.2.12": {

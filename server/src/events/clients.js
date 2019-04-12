@@ -214,7 +214,9 @@ App.on(
             (c.station === stationObj || stationObj === "all")) ||
           c.id === clientId ||
           c.id === station ||
-          (stationObj === "Sound" && c.soundPlayer)
+          (c.simulatorId === simulatorId &&
+            stationObj === "Sound" &&
+            c.soundPlayer)
       );
       clients = clients.map(c => c.id);
     }
