@@ -122,15 +122,15 @@ $defaultBrowserList : webkit, moz, ms;
 
 @mixin -range__reset ( $browserList... ) {
 
-  @include browser-restrict-to($browserList...){
-    $deep: "/deep/";
-    &, & #{unquote($deep)} * {
-      &, &::before, &::after {
-        box-sizing: border-box;
-      }
-    }
-    overflow: hidden;
-  }
+  // @include browser-restrict-to($browserList...){
+  //   $deep: "/deep/";
+  //   &, & #{unquote($deep)} * {
+  //     &, &::before, &::after {
+  //       box-sizing: border-box;
+  //     }
+  //   }
+  //   overflow: hidden;
+  // }
 
   @if( length($browserList) == 0 ){ $browserList: $defaultBrowserList}
 
