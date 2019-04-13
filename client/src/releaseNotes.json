@@ -1,5 +1,8 @@
 {
   "1.2.13": {
+    "features": [
+      "Adds support for each open window becoming its own client. This allows for multiple stations to be assigned on the same computer without opening incognito tabs or additional browsers. It keeps track of the clientIDs that you assign to windows in the order which they are opened. It also works really well with the new Thorium Kiosk, which appends the window number to the end of the client name."
+    ],
     "fixes": [
       "Fixes an issue where the transporter speed cannot be changed.",
       "Fixes an issue where action commands cannot be sent to viewscreens.",
