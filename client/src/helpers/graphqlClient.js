@@ -1,23 +1,16 @@
-import randomWords from "random-words";
 import { ApolloClient } from "apollo-client";
 import { HttpLink } from "apollo-link-http";
-import { split } from "apollo-link";
+import { ApolloLink, split, from } from "apollo-link";
 import { getMainDefinition } from "apollo-utilities";
 import { onError } from "apollo-link-error";
-import { ApolloLink } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 import { MockLink } from "react-apollo/test-utils";
 import { Hermes } from "apollo-cache-hermes";
 import { FLIGHTS_QUERY } from "../containers/FlightDirector/Welcome";
-import * as Sentry from "@sentry/browser";
+import { getClientId } from "helpers/getClientId";
+import { setContext } from "apollo-link-context";
 
-// Set a clientId for the client
-let clientId = localStorage.getItem("thorium_clientId");
-if (!clientId) {
-  clientId = randomWords(3).join("-");
-  // Just to test out the webpack
-  localStorage.setItem("thorium_clientId", clientId);
-}
+import * as Sentry from "@sentry/browser";
 
 const hostname = window.location.hostname;
 
@@ -47,6 +40,12 @@ const wsLink = ApolloLink.from([
   })
 ]);
 
+const headersMiddleware = setContext((operation, { headers }) =>
+  getClientId().then(clientId => ({
+    headers: { ...headers, clientId }
+  }))
+);
+
 const httpLink = ApolloLink.from([
   onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
@@ -62,7 +61,6 @@ const httpLink = ApolloLink.from([
     : new HttpLink({
         uri: `http://${hostname}:${parseInt(window.location.port, 10) +
           1}/graphql`,
-        headers: { clientId },
         opts: {
           mode: "cors"
         }
@@ -92,7 +90,7 @@ const cache = new Hermes({
 });
 
 const client = new ApolloClient({
-  link,
+  link: from([headersMiddleware, link]),
   // use restore on the cache instead of initialState
   cache: cache.restore(window.__APOLLO_CLIENT__),
   ssrMode: true,
