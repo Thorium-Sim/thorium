@@ -1,6 +1,6 @@
 import randomWords from "random-words";
 
-const key = "thorium_clientId";
+const key = "thorium_clientPersistentId";
 let clientId = sessionStorage.getItem(key);
 let windows = [];
 let broadcastChannel;
@@ -79,8 +79,11 @@ function getClientList() {
     // It errored - it either doesn't exist or isn't JSON.
     // If it's blank, create a new one
   }
+
   if (!clientList) {
-    clientList = [localStorage.getItem(key) || randomWords(3).join("-")];
+    clientList = [
+      localStorage.getItem("thorium_clientId") || randomWords(3).join("-")
+    ];
     localStorage.setItem(key, JSON.stringify(clientList));
   }
   return clientList;
