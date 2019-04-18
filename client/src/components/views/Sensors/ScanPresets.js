@@ -41,8 +41,8 @@ export default which =>
       value: "Unable to complete scan.  No probe has been launched."
     },
     {
-      label: "Not in range",
-      value: "Unable to complete scan. USS ***** is not within range."
+      label: "Ship not in range",
+      value: "Unable to complete scan. Ship is not within range."
     },
     {
       label: "Radiation from nebula",
