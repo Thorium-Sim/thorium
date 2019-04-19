@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import gql from "graphql-tag.macro";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
-import { Container, Row, Col, Input, Progress } from "reactstrap";
+import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Duration } from "luxon";
 import { titleCase } from "change-case";
@@ -366,7 +366,7 @@ class ReactorControl extends Component {
                     variables={{ id: reactor.id }}
                   >
                     {action => (
-                      <div
+                      <Button
                         style={{ 
                           width: "20px", 
                           height: "17px", 
@@ -381,10 +381,11 @@ class ReactorControl extends Component {
                         <FontAwesome name="random" 
                           style={{
                             position: "relative",
-                            left: "5px"
+                            left: "-5px",
+                            bottom: "3px"
                           }}
                         />
-                      </div>
+                      </Button>
                     )}
                   </Mutation>
                 </div>
