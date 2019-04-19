@@ -372,9 +372,8 @@ class ReactorControl extends Component {
                           height: "17px", 
                           fontSize: ".9em", 
                           display: "block" ,
-                          background: "#dc3545",
-                          borderRadius: "5px"
                         }}
+                        color="danger"
                         
                         onClick={action}
                       >
