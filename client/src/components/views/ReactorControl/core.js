@@ -6,7 +6,6 @@ import { Container, Row, Col, Button, Input, Progress } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Duration } from "luxon";
 import { titleCase } from "change-case";
-import FontAwesome from "react-fontawesome";
 
 import "./style.scss";
 
@@ -227,12 +226,6 @@ class ReactorControl extends Component {
     const stressLevel = alphaDif + betaDif > 100 ? 100 : alphaDif + betaDif;
     return stressLevel;
   };
-  calculateColor = () => {
-    let stress = this.calcStressLevel();
-    if (stress < 50) return "";
-    else if (stress < 90) return "warning";
-    else return "danger";
-  }
   render() {
     if (this.props.data.loading || !this.props.data.reactors) return null;
     const { reactors } = this.props.data;
@@ -353,10 +346,9 @@ class ReactorControl extends Component {
               <Fragment>
                 <p>Dilithium Stress:</p>
                 <div style={{ display: "flex" }}>
-                  <Progress color = {this.calculateColor()} style={{ flex: 1 }} value={this.calcStressLevel()}>
+                  <Progress style={{ flex: 1 }} value={this.calcStressLevel()}>
                     {Math.round(this.calcStressLevel())}%
                   </Progress>
-                  
                   <Mutation
                     mutation={gql`
                       mutation FluxDilithium($id: ID!) {
@@ -367,24 +359,10 @@ class ReactorControl extends Component {
                   >
                     {action => (
                       <Button
-                        style={{ 
-                          width: "20px", 
-                          height: "17px", 
-                          fontSize: ".9em", 
-                          display: "block" ,
-                        }}
+                        style={{ width: "20px" }}
                         color="danger"
-                        
                         onClick={action}
-                      >
-                        <FontAwesome name="random" 
-                          style={{
-                            position: "relative",
-                            left: "-5px",
-                            bottom: "3px"
-                          }}
-                        />
-                      </Button>
+                      />
                     )}
                   </Mutation>
                 </div>
