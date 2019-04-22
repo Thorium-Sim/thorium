@@ -1,0 +1,87 @@
+.viewscreen-core {
+  height: 100%;
+  position: relative;
+  .viewscreen {
+    cursor: unset;
+  }
+  .container-fluid {
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  .q1,
+  .q3 {
+    background-color: #333;
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    border: solid 3px rgba(0, 0, 0, 0.5);
+    transform-origin: top left;
+  }
+  .q3 {
+    transform: scale(0.45) translate(-61%, 61%);
+    bottom: 10px;
+    transform-origin: bottom left;
+  }
+  .q2,
+  .q4 {
+    margin-left: 50%;
+    height: 50%;
+    .col-sm-6 {
+      height: 100%;
+      overflow: auto;
+    }
+  }
+}
+
+.core-viewscreen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .lower {
+    flex: 1;
+    display: flex;
+    & > div {
+      flex: 1;
+    }
+  }
+}
+
+.viewscreen-card-list {
+  height: 100%;
+  flex: 1;
+  background-color: #333;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  width: 100%;
+  img {
+    width: 100%;
+  }
+  .viewscreen-card {
+    min-width: 100px;
+    width: 48%;
+    margin: 5px 0;
+    border-radius: 5px;
+    padding: 5px;
+    &.selected {
+      background-color: #888;
+    }
+    &.previewing {
+      background-color: darkgreen;
+    }
+  }
+  p {
+    text-align: center;
+    font-size: 16px;
+    padding: 3px;
+    border-radius: 4px;
+  }
+  .config {
+    height: 100%;
+  }
+}

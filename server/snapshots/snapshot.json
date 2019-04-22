@@ -1,0 +1,39 @@
+{
+	"_eventsCount": 0,
+	"simulators": [],
+	"stationSets": [],
+	"flights": [],
+	"missions": [],
+	"systems": [],
+	"clients": [],
+	"sets": [],
+	"decks": [],
+	"rooms": [],
+	"crew": [],
+	"teams": [],
+	"inventory": [],
+	"isochips": [],
+	"dockingPorts": [],
+	"coreLayouts": [],
+	"coreFeed": [],
+	"assetFolders": [
+		{
+			"id": "c7235894-5917-4c7d-bff9-095c8d5f523c",
+			"folderPath": null,
+			"fullPath": "/",
+			"name": "/",
+			"class": "AssetFolder"
+		}
+	],
+	"assetContainers": [],
+	"assetObjects": [],
+	"viewscreens": [],
+	"messages": [],
+	"tacticalMaps": [],
+	"officerLogs": [],
+	"exocomps": [],
+	"libraryDatabase": [],
+	"snapshotVersion": 0,
+	"version": 0,
+	"timestamp": 1516212081530
+}

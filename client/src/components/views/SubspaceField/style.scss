@@ -1,0 +1,71 @@
+.subspaceField-core {
+  text-align: right;
+}
+.card-subspaceField {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 150px) 1fr 1fr repeat(3, 150px);
+  grid-template-rows: 25% 19% 25% 32%;
+  .power-levels {
+    grid-row: 4;
+    grid-column: 6/9;
+    align-self: center;
+    h1 {
+      font-size: 2.3rem;
+    }
+  }
+  .subspace-charge {
+    width: 100%;
+    height: 100%;
+    &.fore {
+      grid-row: 1/3;
+    }
+    &.port {
+      grid-row: 1/3;
+      grid-column: 3;
+    }
+    &.dorsal {
+      grid-row: 2/4;
+    }
+    &.aft {
+      grid-row: 1/3;
+      grid-column: 6;
+    }
+    &.starboard {
+      grid-row: 1/3;
+      grid-column: 8;
+    }
+    &.ventral {
+      grid-row: 2/4;
+      grid-column: 7;
+    }
+  }
+  .ship-side {
+    grid-row: 4;
+    grid-column: 1/ 5;
+    position: relative;
+    div {
+      background-repeat: no-repeat;
+      background-size: contain;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
+  }
+  .ship-top {
+    grid-row: 1/4;
+    grid-column: 4/6;
+    transform: rotate(-90deg);
+    position: relative;
+    div {
+      background-repeat: no-repeat;
+      background-size: contain;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
+  }
+  .bar {
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5));
+  }
+}

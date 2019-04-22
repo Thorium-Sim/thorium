@@ -1,0 +1,58 @@
+.print-mission {
+  height: 100vh;
+  padding: 50px;
+  overflow-y: scroll;
+  user-select: text;
+  * {
+    user-select: text;
+  }
+  .mission-step {
+    margin-bottom: 50px;
+  }
+  .mission-item-holder {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .description {
+    font-size: 22px;
+  }
+  .mission-item {
+    flex: 1;
+    margin: 0 20px;
+    min-width: 30%;
+    max-width: 50%;
+  }
+  h3 {
+    font-size: 23px;
+  }
+}
+
+@media print {
+  #root .config-container {
+    color: black;
+    background: white;
+    background-image: none;
+    .top-bar {
+      display: none;
+    }
+  }
+  .print-mission {
+    height: auto;
+    overflow-y: visible;
+    padding: 0;
+  }
+  .hider {
+    display: none;
+  }
+  .mission-step {
+    page-break-inside: avoid;
+  }
+  body {
+    overflow: visible !important;
+    overflow-y: auto !important;
+    position: relative;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+}

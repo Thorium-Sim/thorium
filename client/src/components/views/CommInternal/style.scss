@@ -1,0 +1,21 @@
+.search-box {
+  z-index: 1000;
+  width: 300px;
+  min-height: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+  position: absolute;
+  background-color: #333;
+  border: solid 1px #666;
+  .search-item {
+    color: white;
+    margin: 0;
+    margin-bottom: 2px;
+    padding: 2px;
+    line-height: 1;
+    font-size: 12px;
+    &:active {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}

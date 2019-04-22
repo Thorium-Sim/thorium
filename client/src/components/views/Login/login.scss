@@ -1,0 +1,48 @@
+.loginCard {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  h1,
+  h2 {
+    width: 100%;
+    text-align: center;
+  }
+  input {
+    width: 100%;
+  }
+  img {
+    margin-bottom: 70px;
+    filter: drop-shadow(16px 16px 10px rgba(0, 0, 0, 0.6));
+  }
+  .login-logo {
+    filter: drop-shadow(16px 16px 10px rgba(0, 0, 0, 0.6));
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-bottom: 50px;
+  }
+  .ship-logo {
+    width: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .login-form-container {
+    position: relative;
+    height: 90px;
+  }
+  .name-field,
+  .space-edventures-field {
+    position: absolute;
+    width: 100%;
+    transition: all 0.5s ease;
+    opacity: 0;
+    //  height: 0;
+    pointer-events: none;
+    &.expand {
+      pointer-events: all;
+      opacity: 1;
+      // height: 90px;
+    }
+  }
+}

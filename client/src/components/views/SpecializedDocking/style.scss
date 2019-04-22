@@ -1,0 +1,74 @@
+.card-specializedDocking {
+  display: flex;
+  height: 100%;
+  .port-list {
+    flex: 1;
+  }
+  .port-config {
+    flex: 5;
+    height: 100%;
+    display: grid;
+    padding: 30px;
+    grid-template-rows: 9% 37% 34%;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10%;
+    grid-template-areas:
+      "name name"
+      "buttons view"
+      "inventory image";
+  }
+  .name {
+    grid-area: name;
+  }
+  .docking-buttons {
+    grid-area: buttons;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  .docking-view {
+    grid-area: view;
+    display: flex;
+    justify-content: center;
+    .docking-graphic {
+      width: 20vw;
+      height: 20vw;
+    }
+  }
+  .inventory {
+    grid-area: inventory;
+    display: flex;
+    flex-direction: column;
+    .card {
+      flex: 1;
+    }
+  }
+  .not-present {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-row: 1/3;
+    grid-column: 1/3;
+  }
+  .image {
+    grid-area: image;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}
+.specializedDocking-core {
+  display: flex;
+  .port-list {
+    flex: 1;
+  }
+  .port-config {
+    flex: 4;
+  }
+}

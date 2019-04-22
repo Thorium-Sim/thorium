@@ -1,0 +1,17 @@
+.viewscreen-shipview {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  h1 {
+    white-space: pre-line;
+    font-size: 60px;
+  }
+  h2 {
+    white-space: pre-line;    
+    font-size: 45px;
+  }
+  img {
+    width: 100%;
+    margin: 50px;
+  }
+}

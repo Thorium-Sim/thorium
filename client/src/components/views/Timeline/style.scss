@@ -1,0 +1,51 @@
+.core-timeline {
+  padding: 0 4px;
+  .btn-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .btn {
+      flex: 1;
+    }
+  }
+  pre {
+    white-space: pre-line;
+    color: white;
+  }
+  .timeline-list {
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    margin-top: 10px;
+    padding: 10px 0;
+    height: calc(100vh - 120px);
+    display: block;
+    overflow-y: auto;
+  }
+
+  .timeline-item {
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    * {
+      user-select: text;
+    }
+  }
+  .mission-step-description {
+    white-space: pre-wrap;
+  }
+}
+.timeline-thumbnail {
+  width: calc(100% - 10px);
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  text-align: center;
+  cursor: pointer;
+  img,
+  video {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+.current-step {
+  background-color: rgba(255, 255, 255, 0.3);
+}

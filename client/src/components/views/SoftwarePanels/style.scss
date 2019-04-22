@@ -1,0 +1,14 @@
+.softwarePanels-card {
+  .card {
+    max-width: 960px;
+    align-self: center;
+  }
+  p {
+    margin: 0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  p.selected {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+}

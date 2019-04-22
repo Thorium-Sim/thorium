@@ -1,0 +1,86 @@
+.card-computerCore {
+  height: 100%;
+  & > .row {
+    height: 100%;
+  }
+  .list-group {
+    .list-group-item {
+      &.selected {
+        background-color: rgba(255, 255, 255, 0.3);
+        font-weight: 800;
+      }
+    }
+  }
+  .terminal-list {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .content-table {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 60vh;
+    max-height: 60vh;
+    overflow-y: auto;
+    tr.selected {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    td {
+      vertical-align: middle;
+      text-align: center;
+    }
+  }
+}
+
+.computerCore-core {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .selected {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  .user-row {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+    .history-block {
+      height: 100%;
+      flex: 2;
+      display: flex;
+      justify-content: space-between;
+      div {
+        height: 100%;
+      }
+    }
+    .side-block {
+      flex: 1;
+      overflow: auto;
+    }
+  }
+  .user-detail {
+    height: 100%;
+    flex: 1;
+    overflow: auto;
+  }
+  .history-area {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+  }
+  .baddie-row {
+    border-top: solid 1px rgba(255, 255, 255, 0.5);
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    .hacker-block,
+    .virii-block {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .list-div {
+        flex: 1;
+      }
+    }
+  }
+}

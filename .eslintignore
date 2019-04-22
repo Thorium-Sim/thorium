@@ -1,0 +1,8 @@
+**/test/**
+**/coverage/**
+**/scripts/**
+**/node_modules/**
+**/build/**
+**/TweenMax.min.js
+**/plopfile.js
+**/config/**

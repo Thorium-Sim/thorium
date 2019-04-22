@@ -1,0 +1,337 @@
+/* devanagari */
+@font-face {
+  font-family: "Teko";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Teko Light"), local("Teko-Light"),
+    url(../fonts/Teko-Light.woff) format("woff");
+  unicode-range: U+02bc, U+0900-097f, U+1cd0-1cf6, U+1cf8-1cf9, U+200b-200d,
+    U+20a8, U+20b9, U+25cc, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Teko";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Teko Light"), local("Teko-Light"),
+    url(../fonts/Teko-Light.woff) format("woff");
+  unicode-range: U+0100-024f, U+1-1eff, U+20a0-20ab, U+20ad-20cf, U+2c60-2c7f,
+    U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Teko";
+  font-style: normal;
+  font-weight: 300;
+  src: local("Teko Light"), local("Teko-Light"),
+    url(../fonts/Teko-Light.woff) format("woff");
+  unicode-range: U+0000-00ff, U+0131, U+0152-0153, U+02c6, U+02da, U+02dc,
+    U+2000-206f, U+2074, U+20ac, U+2212, U+2215;
+}
+
+/* devanagari */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Sarpanch Regular"), local("Sarpanch-Regular"),
+    url(../fonts/Sarpanch-Regular.woff) format("woff");
+  unicode-range: U+02bc, U+0900-097f, U+1cd0-1cf6, U+1cf8-1cf9, U+200b-200d,
+    U+20a8, U+20b9, U+25cc, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Sarpanch Regular"), local("Sarpanch-Regular"),
+    url(../fonts/Sarpanch-Regular.woff) format("woff");
+  unicode-range: U+0100-024f, U+1-1eff, U+20a0-20ab, U+20ad-20cf, U+2c60-2c7f,
+    U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Sarpanch Regular"), local("Sarpanch-Regular"),
+    url(../fonts/Sarpanch-Regular.woff) format("woff");
+  unicode-range: U+0000-00ff, U+0131, U+0152-0153, U+02c6, U+02da, U+02dc,
+    U+2000-206f, U+2074, U+20ac, U+2212, U+2215;
+}
+/* devanagari */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Sarpanch Medium"), local("Sarpanch-Medium"),
+    url(../fonts/Sarpanch-Medium.woff) format("woff");
+  unicode-range: U+02bc, U+0900-097f, U+1cd0-1cf6, U+1cf8-1cf9, U+200b-200d,
+    U+20a8, U+20b9, U+25cc, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Sarpanch Medium"), local("Sarpanch-Medium"),
+    url(../fonts/Sarpanch-Medium.woff) format("woff");
+  unicode-range: U+0100-024f, U+1-1eff, U+20a0-20ab, U+20ad-20cf, U+2c60-2c7f,
+    U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 500;
+  src: local("Sarpanch Medium"), local("Sarpanch-Medium"),
+    url(../fonts/Sarpanch-Medium.woff) format("woff");
+  unicode-range: U+0000-00ff, U+0131, U+0152-0153, U+02c6, U+02da, U+02dc,
+    U+2000-206f, U+2074, U+20ac, U+2212, U+2215;
+}
+/* devanagari */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Sarpanch SemiBold"), local("Sarpanch-SemiBold"),
+    url(../fonts/Sarpanch-SemiBold.woff) format("woff");
+  unicode-range: U+02bc, U+0900-097f, U+1cd0-1cf6, U+1cf8-1cf9, U+200b-200d,
+    U+20a8, U+20b9, U+25cc, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Sarpanch SemiBold"), local("Sarpanch-SemiBold"),
+    url(../fonts/Sarpanch-SemiBold.woff) format("woff");
+  unicode-range: U+0100-024f, U+1-1eff, U+20a0-20ab, U+20ad-20cf, U+2c60-2c7f,
+    U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 600;
+  src: local("Sarpanch SemiBold"), local("Sarpanch-SemiBold"),
+    url(../fonts/Sarpanch-SemiBold.woff) format("woff");
+  unicode-range: U+0000-00ff, U+0131, U+0152-0153, U+02c6, U+02da, U+02dc,
+    U+2000-206f, U+2074, U+20ac, U+2212, U+2215;
+}
+/* devanagari */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Sarpanch Bold"), local("Sarpanch-Bold"),
+    url(../fonts/Sarpanch-Bold.woff) format("woff");
+  unicode-range: U+02bc, U+0900-097f, U+1cd0-1cf6, U+1cf8-1cf9, U+200b-200d,
+    U+20a8, U+20b9, U+25cc, U+A830-A839, U+A8E0-A8FB;
+}
+/* latin-ext */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Sarpanch Bold"), local("Sarpanch-Bold"),
+    url(../fonts/Sarpanch-Bold.woff) format("woff");
+  unicode-range: U+0100-024f, U+1-1eff, U+20a0-20ab, U+20ad-20cf, U+2c60-2c7f,
+    U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: "Sarpanch";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Sarpanch Bold"), local("Sarpanch-Bold"),
+    url(../fonts/Sarpanch-Bold.woff) format("woff");
+  unicode-range: U+0000-00ff, U+0131, U+0152-0153, U+02c6, U+02da, U+02dc,
+    U+2000-206f, U+2074, U+20ac, U+2212, U+2215;
+}
+@font-face {
+  font-family: "Bank Gothic";
+  font-style: normal;
+  font-weight: 700;
+  src: url(../fonts/BankGothicMedium.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Bebas Neue";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../fonts/BebasNeue Bold.woff") format("woff");
+}
+@font-face {
+  font-family: "Bebas Neue";
+  font-style: normal;
+  font-weight: 600;
+  src: url("../fonts/BebasNeue Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Bebas Neue";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/BebasNeue Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Bebas Neue";
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/BebasNeue Light.WOFF") format("woff"),
+    url("../fonts/BebasNeue Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Bebas Neue";
+  font-style: normal;
+  font-weight: 200;
+  src: url("../fonts/BebasNeue Thin.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("../fonts/bebasneue-webfont.eot");
+  src: url("../fonts/bebasneue-webfont.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/bebasneue-webfont.woff2") format("woff2"),
+    url("../fonts/bebasneue-webfont.woff") format("woff"),
+    url("../fonts/bebasneue-webfont.ttf") format("truetype"),
+    url("../fonts/bebasneue-webfont.svg#bebas_neueregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Battlefield";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/BATTLE3.woff") format("woff"),
+    url("../fonts/BATTLE3.TTF") format("truetype");
+}
+@font-face {
+  font-family: "Bank Gothic";
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/BankGothicLight.woff) format("woff");
+}
+@font-face {
+  font-family: "LiquidCrystal";
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/LiquidCrystal-Normal.woff) format("woff");
+}
+
+@font-face {
+  font-family: "Andorian";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Andorian.woff") format("woff");
+}
+@font-face {
+  font-family: "Decepticon";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Decepticon.woff") format("woff");
+}
+@font-face {
+  font-family: "Preservers";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Preservers.woff") format("woff");
+}
+@font-face {
+  font-family: "Tengwar";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Tengwar.woff") format("woff");
+}
+@font-face {
+  font-family: "Aurabesh";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Aurabesh.woff") format("woff");
+}
+@font-face {
+  font-family: "Dethek";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Dethek.woff") format("woff");
+}
+@font-face {
+  font-family: "Rihannsu";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Rihannsu.woff") format("woff"),
+    url("../fonts/cyphers/Romulan.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Trill";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Trill.woff") format("woff");
+}
+@font-face {
+  font-family: "Borg";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Borg.woff") format("woff");
+}
+@font-face {
+  font-family: "DwarfSpiritas";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/DwarfSpiritas.woff") format("woff");
+}
+@font-face {
+  font-family: "Shadow";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Shadow.woff") format("woff"),
+    url("../fonts/cyphers/Centauri.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Visitor";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Visitor.woff") format("woff");
+}
+@font-face {
+  font-family: "Cardassian";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Cardassian.woff") format("woff");
+}
+@font-face {
+  font-family: "Fabrini";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Fabrini.woff") format("woff");
+}
+@font-face {
+  font-family: "Skaven";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Skaven.woff") format("woff");
+}
+@font-face {
+  font-family: "Voth";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Voth.woff") format("woff");
+}
+@font-face {
+  font-family: "DarkArts";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/DarkArts.woff") format("woff");
+}
+@font-face {
+  font-family: "Klingon";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Klingon.woff") format("woff");
+}
+@font-face {
+  font-family: "Symbol";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/cyphers/Symbol.woff") format("woff");
+}

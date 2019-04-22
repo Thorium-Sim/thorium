@@ -1,0 +1,223 @@
+.sensorGridCore {
+  #threeSensors {
+    overflow: hidden;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .col-sm-3 {
+    position: relative;
+    z-index: 1000;
+    pointer-events: none;
+    * {
+      pointer-events: all;
+    }
+  }
+  .sensorGridHolder {
+    background-color: #ccc;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .heightPlaceholder {
+    margin-top: 100%;
+  }
+  #sensorGrid {
+    background-color: #333;
+  }
+  .core .react-grid-item .sensorGridCore div {
+    height: initial;
+  }
+  .slider-picker > div:nth-child(1) {
+    margin-bottom: -15px;
+  }
+  .planet-dragger {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: solid 2px #999;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .border-dragger {
+    width: 20px;
+    height: 15px;
+    background-color: white;
+    border: solid 2px #999;
+    cursor: pointer;
+  }
+  .pings-dragger {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: solid 2px #999;
+    cursor: pointer;
+  }
+  img.armyContact {
+    height: 16px;
+    width: 16px;
+  }
+  .flex-container {
+    display: flex;
+  }
+  select.form-control:not([size]):not([multiple]),
+  input[type="text"] {
+    height: calc(1.25rem - 2px);
+  }
+  .contacts-container {
+    //position: absolute;
+    left: 0;
+    height: 100%;
+  }
+  .sensors-extras {
+    flex: 1;
+  }
+  .sensors-contact-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .contact-scroll {
+    flex: 1;
+    overflow-y: scroll;
+  }
+  .contextMenu {
+    z-index: 100;
+    position: absolute;
+    overflow-y: auto;
+    // width: 300%;
+    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    .file-explorer {
+      height: 80%;
+      .directory-container {
+        grid-template-columns: 1fr;
+      }
+      .file-container {
+        width: 100px;
+        padding: 2px;
+        margin: 2px;
+      }
+    }
+    .form-group {
+      margin-bottom: 0;
+    }
+    label {
+      padding: 0;
+    }
+    .row {
+      margin-bottom: 2px;
+    }
+    select.form-control:not([size]):not([multiple]) {
+      height: calc(1.25rem - 2px);
+    }
+    .form-check {
+      padding-left: 20px;
+    }
+    .card-block {
+      padding: 4px;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+  .nudge {
+    width: 100%;
+    select {
+      width: 60%;
+      float: left;
+    }
+    .buttons {
+      width: 40%;
+      float: left;
+      span {
+        text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        width: 33%;
+        &.up {
+          width: 100%;
+        }
+        &:active {
+          color: white;
+        }
+      }
+    }
+  }
+
+  .draggerHolder {
+    position: relative;
+    padding-bottom: calc(100% - 3vw);
+    width: calc(100% - 3vw);
+  }
+  .draggerCircle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+    border: 2px solid #9c9da0;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.9) 100%
+      ),
+      linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      width: 1px;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.5);
+      left: 50%;
+      right: 50%;
+      position: absolute;
+    }
+    &::after {
+      width: 100%;
+      height: 1px;
+      top: 50%;
+      bottom: 50%;
+      left: 0;
+      right: 0;
+    }
+  }
+  .dragger {
+    width: 14%;
+    height: 14%;
+    position: absolute;
+    left: calc(50% - 7%);
+    top: calc(50% - 7%);
+    border: 2px solid #9c9da0;
+    border-radius: 50%;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3),
+      inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+  .draggerBar .dragger {
+    height: 100%;
+    top: 0;
+  }
+}
+
+.speed-container {
+  p {
+    font-family: "Gill Sans", sans-serif;
+    line-height: 16px;
+    font-size: 12px;
+    margin: 0;
+  }
+}

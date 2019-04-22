@@ -1,0 +1,193 @@
+body.switcherLocked {
+  .card-switcher {
+    pointer-events: none;
+  }
+}
+
+.cardThrusters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  & > div {
+    width: 100%;
+  }
+  .draggerContainer {
+    display: inline-block;
+    position: relative;
+    margin-top: 80px;
+  }
+  &.lite {
+    .draggerContainer {
+      margin-top: 0px;
+    }
+  }
+  .spacer {
+    margin-top: calc(100% + 20px);
+  }
+  .draggerContainer .spacer {
+    margin-top: calc(100% + 30px);
+  }
+  .draggerCircle {
+    margin-top: 30px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 50%;
+    border: 2px solid #9c9da0;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.9) 100%
+      ),
+      linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
+  }
+  .draggerBar {
+    height: 15.5%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.9) 100%
+      ),
+      linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
+    border: 2px solid #9c9da0;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 100px;
+    margin-top: 50px;
+  }
+  .dragger {
+    width: 14%;
+    height: 14%;
+    position: absolute;
+    left: calc(50% - 7%);
+    top: calc(50% - 7%);
+    border: 2px solid #9c9da0;
+    border-radius: 50%;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3),
+      inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+  .draggerBar .dragger {
+    height: 100%;
+    top: 0;
+  }
+  .rotationIndicator {
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3),
+      inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
+    border: 2px solid #9c9da0;
+    border-radius: 50%;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(80, 80, 80, 0.9) 0%,
+        rgba(80, 80, 80, 0.9) 100%
+      ),
+      linear-gradient(165deg, #505050 0%, rgba(80, 80, 80, 0) 50%, #505050 100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+  }
+  .indicatorContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    padding: 0px 20px;
+  }
+  .pointer {
+    width: 4px;
+    height: 40%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10%;
+    margin: 0 auto;
+    transform-origin: bottom;
+    transform: rotate(0deg);
+    &.current {
+      background-color: #bdb028;
+    }
+    &.required {
+      background-color: #dd0000;
+    }
+  }
+  label {
+    color: white;
+    text-align: center;
+    width: 100%;
+  }
+  .label {
+    position: absolute;
+    &.up {
+      left: 0;
+      right: 0;
+      top: 0;
+      text-align: center;
+    }
+    &.right {
+      right: 0;
+      bottom: 0;
+      top: 46%;
+    }
+    &.down {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      text-align: center;
+    }
+    &.left {
+      left: 0;
+      bottom: 0;
+      top: 46%;
+    }
+  }
+  .draggerBar .label {
+    &.right,
+    &.left {
+      top: 40%;
+    }
+  }
+  @media (width: 1024px) {
+    .indicatorCircles {
+      margin-top: 90px;
+    }
+    .spacer {
+      margin-top: calc(100% + 10px);
+    }
+  }
+}
+
+.thrustersCore {
+  .core-title {
+    display: inline-block;
+  }
+  label {
+    margin-left: 10px;
+  }
+  .thruster-symbol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .fa {
+      text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+      &.on {
+        color: white;
+      }
+      &:hover {
+        color: #666;
+      }
+      &:active {
+        color: #aaa;
+      }
+    }
+  }
+}

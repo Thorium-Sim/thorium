@@ -1,0 +1,14 @@
+.ship-model-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  .three-container {
+    width: 100vw;
+    height: 100vh;
+  }
+  &.has-text {
+    .three-container {
+      width: 40vw;
+    }
+  }
+}

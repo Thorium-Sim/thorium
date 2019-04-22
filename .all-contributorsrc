@@ -1,0 +1,208 @@
+{
+  "projectName": "Thorium",
+  "projectOwner": "thorium-sim",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "alexanderson1993",
+      "name": "Alex",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/6558157?v=4",
+      "profile": "http://ralexanderson.com",
+      "contributions": [
+        "code",
+        "doc",
+        "design"
+      ]
+    },
+    {
+      "login": "Emrix",
+      "name": "Emrix",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1387836?v=4",
+      "profile": "https://github.com/Emrix",
+      "contributions": [
+        "code",
+        "review",
+        "ideas"
+      ]
+    },
+    {
+      "login": "ctolley6",
+      "name": "ctolley6",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/30132958?v=4",
+      "profile": "https://github.com/ctolley6",
+      "contributions": [
+        "ideas",
+        "tutorial"
+      ]
+    },
+    {
+      "login": "Rasbandit",
+      "name": "Todd Rasband",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/22157796?v=4",
+      "profile": "https://github.com/Rasbandit",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "brentjanderson",
+      "name": "Brent Anderson",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/45031?v=4",
+      "profile": "http://www.brentjanderson.com",
+      "contributions": [
+        "ideas"
+      ]
+    },
+    {
+      "login": "farpoint",
+      "name": "Farpoint",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/4927395?v=4",
+      "profile": "http://www.farpointStation.org",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "isaacOstler",
+      "name": "Isaac Ostler",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/30113240?v=4",
+      "profile": "https://github.com/isaacOstler",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "j-f1",
+      "name": "Jed Fox",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/25517624?v=4",
+      "profile": "https://j-f1.github.io",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "G33kX",
+      "name": "Lilah",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2187124?v=4",
+      "profile": "https://github.com/G33kX",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kimballfrank",
+      "name": "kimballfrank",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1413863?v=4",
+      "profile": "https://github.com/kimballfrank",
+      "contributions": [
+        "design",
+        "ideas"
+      ]
+    },
+    {
+      "login": "aBlueShadow",
+      "name": "aBlueShadow",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/25465934?v=4",
+      "profile": "https://github.com/aBlueShadow",
+      "contributions": [
+        "ideas",
+        "translation"
+      ]
+    },
+    {
+      "login": "jrobe",
+      "name": "John Robe",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1224343?v=4",
+      "profile": "http://jrobe.me",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "ksmithut",
+      "name": "Keith Smith",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1906967?v=4",
+      "profile": "https://github.com/ksmithut",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "MaesonBusk",
+      "name": "MaesonBusk",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/40648791?v=4",
+      "profile": "https://github.com/MaesonBusk",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ericman314",
+      "name": "Eric Mansfield",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6345617?v=4",
+      "profile": "https://github.com/ericman314",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "sassyspock",
+      "name": "sassyspock",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/43680869?v=4",
+      "profile": "https://github.com/sassyspock",
+      "contributions": [
+        "doc",
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "Justintime50",
+      "name": "Justin",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/39606064?v=4",
+      "profile": "http://justinpaulhammond.com",
+      "contributions": [
+        "doc",
+        "bug",
+        "blog"
+      ]
+    },
+    {
+      "login": "thoriumsim",
+      "name": "thoriumsim",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/48568289?v=4",
+      "profile": "https://github.com/thoriumsim",
+      "contributions": [
+        "doc",
+        "tutorial",
+        "video"
+      ]
+    },
+    {
+      "login": "JordanDeSmith",
+      "name": "JordanDeSmith",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/48338615?v=4",
+      "profile": "https://github.com/JordanDeSmith",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Unit1229",
+      "name": "Mason Edmondson",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/35549562?v=4",
+      "profile": "https://github.com/Unit1229",
+      "contributions": [
+        "bug"
+      ]
+    }
+  ],
+  "repoType": "github"
+}

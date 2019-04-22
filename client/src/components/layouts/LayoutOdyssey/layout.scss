@@ -1,0 +1,483 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+#layout-odyssey {
+  background-color: black;
+  color: white;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: white;
+  }
+  font-family: "Bank Gothic";
+  input[type='password'], .txtPassword {
+    font-family: sans-serif !important;
+  }
+  perspective: 900px;
+  .perspectiveContainer {
+    background-color: black;
+    transition: transform 0.3s ease;
+  }
+  .perspectiveContainer.active {
+    transform: translateZ(-208px) translateY(-800px) rotatex(-33deg);
+  }
+
+  svg {
+    top: 0;
+    z-index: 10;
+  }
+  .cardContainer {
+    position: absolute;
+    width: 92% !important;
+    left: 4%;
+    height: 77%;
+    top: 12%;
+    padding: 16px;
+    position: absolute;
+    align-self: center;
+    overflow: hidden;
+  }
+  .cardName {
+    font-family: "Gamecuben";
+    text-transform: uppercase;
+    font-size: 30px;
+    margin: 30px;
+    &:hover {
+      color: rgb(199, 156, 64);
+    }
+  }
+  .card-holder {
+    z-index: 1001;
+    top: 0;
+    position: fixed;
+    pointer-events: none;
+
+    .backdrop {
+      top: 0;
+      opacity: 0;
+      pointer-events: none;
+      background: rgba(0, 0, 0, 0.7);
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      padding: 20%;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      transition: opacity 0.5s ease !important;
+    }
+    .cardName {
+      opacity: 0;
+      line-height: 3;
+      position: relative;
+
+      &:hover {
+        color: rgb(199, 156, 64);
+      }
+      &:nth-child(1) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+      &:nth-child(2) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+      &:nth-child(3) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+      &:nth-child(4) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+      &:nth-child(5) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+      &:nth-child(6) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+      &:nth-child(7) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+      &:nth-child(8) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+      &:nth-child(9) {
+        transition: opacity 0.3s ease, line-height 0.3s ease, color 0.2s ease;
+      }
+    }
+    &.active {
+      pointer-events: all;
+      .cardName {
+        opacity: 1;
+        line-height: 1;
+        z-index: 1001;
+        &:nth-child(1) {
+          transition: opacity 0.3s ease 0s, line-height 0.3s ease 0s,
+            color 0.2s ease;
+        }
+        &:nth-child(2) {
+          transition: opacity 0.3s ease 0.1s, line-height 0.3s 0.1s ease,
+            color 0.2s ease;
+        }
+        &:nth-child(3) {
+          transition: opacity 0.3s ease 0.2s, line-height 0.3s 0.2s ease,
+            color 0.2s ease;
+        }
+        &:nth-child(4) {
+          transition: opacity 0.3s ease 0.3s, line-height 0.3s 0.3s ease,
+            color 0.2s ease;
+        }
+        &:nth-child(5) {
+          transition: opacity 0.3s ease 0.4s, line-height 0.3s 0.4s ease,
+            color 0.2s ease;
+        }
+        &:nth-child(6) {
+          transition: opacity 0.3s ease 0.5s, line-height 0.3s 0.5s ease,
+            color 0.2s ease;
+        }
+        &:nth-child(7) {
+          transition: opacity 0.3s ease 0.6s, line-height 0.3s 0.6s ease,
+            color 0.2s ease;
+        }
+        &:nth-child(8) {
+          transition: opacity 0.3s ease 0.7s, line-height 0.3s 0.7s ease,
+            color 0.2s ease;
+        }
+        &:nth-child(9) {
+          transition: opacity 0.3s ease 0.8s, line-height 0.3s 0.8s ease,
+            color 0.2s ease;
+        }
+      }
+      .backdrop {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+  }
+  .frame-text {
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    font-family: "Gamecuben";
+    text-transform: uppercase;
+  }
+  .simulator-name {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+  }
+  .station-name {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  .card-name {
+    min-width: 400px;
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.2),
+      inset 3px 3px 5px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    position: absolute;
+    font-size: 25px;
+    top: 7px;
+    left: 10px;
+    transition: background-color 0.3s ease;
+    pointer-events: all;
+  }
+  .card-name:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+  .btn {
+    display: inline-block;
+    font-weight: $btn-font-weight;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    font-family: "Bank Gothic";
+    color: white;
+    text-transform: uppercase;
+    background-image: url("./lines.svg");
+    background-size: 1px 4px;
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 1),
+      inset 0px 0px 3px 1px rgba(255, 255, 255, 0.5);
+
+    @include button-size(
+      $btn-padding-y,
+      $btn-padding-x,
+      $font-size-base,
+      $btn-line-height,
+      $btn-border-radius
+    );
+    @include transition($btn-transition);
+
+    // Share hover and focus styles
+    @include hover-focus {
+      text-decoration: none;
+    }
+
+    &:focus,
+    &.focus {
+      outline: 0;
+      box-shadow: $btn-focus-box-shadow;
+    }
+
+    // Disabled comes first so active can properly restyle
+    &.disabled,
+    &:disabled {
+      opacity: $btn-disabled-opacity;
+      @include box-shadow(none);
+    }
+
+    // Opinionated: add "hand" cursor to non-disabled .btn elements
+    &:not(:disabled):not(.disabled) {
+      cursor: pointer;
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active {
+      //background-image: none;
+      @include box-shadow($btn-active-box-shadow);
+
+      &:focus {
+        @include box-shadow($btn-focus-box-shadow, $btn-active-box-shadow);
+      }
+    }
+  }
+
+  // Future-proof disabling of clicks on `<a>` elements
+  a.btn.disabled,
+  fieldset:disabled a.btn {
+    pointer-events: none;
+  }
+
+  //
+  // Alternate buttons
+  //
+  @mixin odyssey-button-variant(
+    $background,
+    $border,
+    $hover-background: darken($background, 10.5%),
+    $hover-border: darken($border, 14%),
+    $active-background: darken($background, 20%),
+    $active-border: darken($border, 22.5%)
+  ) {
+    color: white;
+    @include gradient-bg($background);
+    border-color: $border;
+    @include box-shadow($btn-box-shadow);
+
+    @include hover {
+      @include gradient-bg($hover-background);
+      border-color: $hover-border;
+    }
+
+    &:focus,
+    &.focus {
+      // Avoid using mixin so we can pass custom focus shadow properly
+      @if $enable-shadows {
+        box-shadow: $btn-box-shadow, 0 0 0 $btn-focus-width rgba($border, 0.5);
+      } @else {
+        box-shadow: 0 0 0 $btn-focus-width rgba($border, 0.5);
+      }
+    }
+
+    // Disabled comes first so active can properly restyle
+    &.disabled,
+    &:disabled {
+      background-color: $background;
+      border-color: $border;
+    }
+
+    &:not(:disabled):not(.disabled):active,
+    &:not(:disabled):not(.disabled).active,
+    .show > &.dropdown-toggle {
+      background-color: $active-background;
+      border-color: $active-border;
+
+      &:focus {
+        // Avoid using mixin so we can pass custom focus shadow properly
+        @if $enable-shadows {
+          box-shadow: $btn-active-box-shadow,
+            0 0 0 $btn-focus-width rgba($border, 0.5);
+        } @else {
+          box-shadow: 0 0 0 $btn-focus-width rgba($border, 0.5);
+        }
+      }
+    }
+  }
+  @each $color, $value in $theme-colors {
+    .btn-#{$color} {
+      @include odyssey-button-variant($value, $value);
+    }
+  }
+
+  .btn-default {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  .btn-cloak {
+    background-color: #4d1980;
+  }
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    color: white;
+  }
+  .list-group-item {
+    border: solid 1px transparent;
+    background-color: rgba(0, 0, 0, 0.1);
+    &.active {
+      background-color: rgba(255, 255, 255, 0.3);
+      border: solid 1px rgba(255, 255, 255, 0.5);
+    }
+  }
+  pre {
+    color: white;
+  }
+  .card,
+  .list-group,
+  input[type="text"].form-control,
+  input[type="number"].form-control,
+  textarea {
+    background-image: url("./lines.svg");
+    background-size: 1px 4px;
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 1),
+      inset 0px 0px 3px 1px rgba(255, 255, 255, 0.5);
+  }
+
+  &.alertColor1 {
+    .card,
+    .list-group,
+    input[type="text"].form-control,
+    input[type="number"].form-control,
+    textarea {
+      background-color: #701919;
+    }
+  }
+  &.alertColor2 {
+    .card,
+    .list-group,
+    input[type="text"].form-control,
+    input[type="number"].form-control,
+    textarea {
+      background-color: #704419;
+    }
+  }
+  &.alertColor3 {
+    .card,
+    .list-group,
+    input[type="text"].form-control,
+    input[type="number"].form-control,
+    textarea {
+      background-color: #707019;
+    }
+  }
+  &.alertColor4 {
+    .card,
+    .list-group,
+    input[type="text"].form-control,
+    input[type="number"].form-control,
+    textarea {
+      background-color: #18236f;
+    }
+  }
+  &.alertColor5 {
+    .card,
+    .list-group,
+    input[type="text"].form-control,
+    input[type="number"].form-control,
+    textarea {
+      background-color: #18236f;
+    }
+  }
+  &.alertColorp {
+    .card,
+    .list-group,
+    input[type="text"].form-control,
+    input[type="number"].form-control,
+    textarea {
+      background-color: #441970;
+    }
+  }
+  .dropdown-toggle {
+    overflow: hidden;
+  }
+  .dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.8);
+
+    button {
+      color: white;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      &:active,
+      &:focus {
+        background-color: rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
+
+  .widgets {
+    bottom: 25px;
+    right: 30px;
+    left: unset;
+  }
+
+  //Card Adjustments
+  .shields .shieldControlBox {
+    margin-top: 20px;
+  }
+  .frequencyContainer.card {
+    background-color: black;
+  }
+  .cardSensors {
+    .list-group-item {
+      padding: 0.2rem 1.25rem;
+    }
+  }
+  .probe-construction .probeEquipment .card {
+    max-height: 31vh;
+  }
+  .long-range-comm pre {
+    height: 28vh;
+  }
+  .cardThrusters .draggerContainer {
+    margin-top: 10px;
+  }
+  .cardThrusters .draggerContainer .spacer {
+    margin-top: calc(100% + 100px);
+  }
+  .cardThrusters .draggerCircle {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+  .cardThrusters .draggerBar {
+    margin-top: 0;
+  }
+  .cardThrusters .indicatorCircles {
+    margin-top: -100px;
+  }
+  .powerlevel-containers h5 {
+    line-height: 0;
+  }
+}
+
+.viewscreen {
+  #layout-odyssey {
+    .cardContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      div {
+        width: 100%;
+      }
+    }
+  }
+}

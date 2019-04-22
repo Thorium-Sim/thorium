@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Template">
+        <g id="Targeting">
+            <path d="M128,0L128,128L0,128L0,0L128,0ZM64,24C86.077,24 104,41.923 104,64C104,86.077 86.077,104 64,104C41.923,104 24,86.077 24,64C24,41.923 41.923,24 64,24ZM64,45L55.819,34.093C45.28,36.973 36.973,45.28 34.093,55.819L45,64L34.093,72.181C36.973,82.72 45.28,91.027 55.819,93.907L64,83L72.181,93.907C82.72,91.027 91.027,82.72 93.907,72.181L83,64L93.907,55.819C91.027,45.28 82.72,36.973 72.181,34.093L64,45ZM64,58C67.311,58 70,60.689 70,64C70,67.311 67.311,70 64,70C60.689,70 58,67.311 58,64C58,60.689 60.689,58 64,58Z" style="stroke:rgb(44,44,44);stroke-width:3px;"/>
+        </g>
+    </g>
+</svg>

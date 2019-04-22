@@ -1,0 +1,36 @@
+.card-template {
+}
+
+.taskReport-core {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .taskReport-creator {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .report-area {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+  }
+  .instructions {
+    flex: 3;
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 10px;
+    overflow-x: none;
+  }
+  .task {
+    margin-bottom: 20px;
+  }
+  .instructions {
+    white-space: pre-wrap;
+  }
+  .button-area {
+    display: flex;
+    justify-content: space-between;
+  }
+}

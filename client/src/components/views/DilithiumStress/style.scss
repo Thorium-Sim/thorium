@@ -1,0 +1,109 @@
+.card-dilithium-stress {
+  display: flex;
+  flex-direction: column;
+  height: 50%;
+  justify-content: space-between;
+  .dilithium-effects {
+    width: 70vh;
+    height: 70vh;
+    position: absolute;
+    bottom: 8%;
+    left: 27%;
+  }
+  .stressHolder {
+    position: absolute;
+    right: 24%;
+    left: calc(75% - 25px);
+    border: solid 2px white;
+    padding: 10px;
+    height: 300px;
+    width: 75px;
+  }
+  .stressBar {
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.5) 100%
+      ),
+      linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+    background-size: 5px 3px, 100%;
+    background-color: red;
+    transition: height 0.5s ease-out;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+  }
+
+  .aBar {
+    position: absolute;
+    top: 61%;
+    left: 10%;
+  }
+  .mBar {
+    position: absolute;
+    top: 5%;
+    left: 10%;
+  }
+  .bar-holder {
+    width: 20vw;
+  }
+  img {
+    position: absolute;
+    bottom: 0;
+    left: 43%;
+    height: 60%;
+  }
+  video {
+    position: absolute;
+    mix-blend-mode: screen;
+    height: 100%;
+    right: 50%;
+    pointer-events: none;
+  }
+  .reaction {
+    height: 100%;
+    pointer-events: none;
+    right: -14%;
+    left: unset;
+  }
+  .matter-label {
+    font-size: 3vw;
+    position: absolute;
+    left: 15%;
+    top: 15%;
+  }
+  .antimatter-label {
+    font-size: 3vw;
+    position: absolute;
+    left: 15%;
+    bottom: 15%;
+  }
+  .stress-label {
+    font-size: 3vw;
+    position: absolute;
+    right: 27%;
+    top: 15%;
+    width: 300px;
+  }
+  .antimatter,
+  .matter,
+  .plasma {
+    width: 24%;
+    left: 30.5%;
+    position: absolute;
+  }
+  .antimatter {
+    bottom: -1%;
+  }
+  .matter {
+    transform: rotate(180deg);
+    top: -1%;
+  }
+  .plasma {
+    left: -37%;
+    transform: rotate(90deg);
+    top: 52%;
+  }
+}

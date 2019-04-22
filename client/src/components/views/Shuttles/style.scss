@@ -1,0 +1,93 @@
+.shuttles-card {
+  height: 100%;
+  overflow-y: auto;
+  .spacer {
+    margin-top: 103%;
+  }
+  .row {
+    justify-content: space-around;
+  }
+  .shuttleBay {
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 1 0 50%;
+    max-width: 33%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  .shuttle {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    h2 {
+      align-self: center;
+      text-align: center;
+    }
+  }
+  .docking-graphic {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 100%;
+  }
+  .docking-icon-wrapper {
+    display: flex;
+    align-items: center;
+    .btn {
+      flex-grow: 1;
+    }
+  }
+  .docking-icon {
+    width: 12px;
+    margin-right: 15px;
+    flex-shrink: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  .docking-icon.ok {
+    color: #0f0;
+  }
+  .docking-icon.attention {
+    color: #ff0;
+    animation-name: docking-icon-attention-animation;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+  .docking-status-message {
+    margin-top: 4px;
+  }
+  .door {
+    background-color: #222;
+    border: solid 2px white;
+    overflow: hidden;
+    .door-container {
+      background: url("./stars.svg");
+      clip-path: polygon(1% 94%, 99% 94%, 99% 25%, 78% 4%, 22% 4%, 1% 25%);
+    }
+    svg {
+      transition: transform 2s ease;
+      &.open {
+        transform: translateY(-90%);
+      }
+    }
+  }
+  .fizzlefade {
+    width: 100%;
+    canvas {
+      width: 100%;
+      padding: 4px;
+      border: solid 2px white;
+    }
+  }
+}
+@keyframes docking-icon-attention-animation {
+  from {
+    transform: translate(-15px, 0);
+  }
+  to {
+    transform: translate(0px, 0);
+  }
+}
