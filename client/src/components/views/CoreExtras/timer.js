@@ -141,10 +141,12 @@ class Timer extends Component {
       seconds: parseInt(seconds)
     }).normalize();
     const data = `Estimated time to arrival calculated: Approximately ${
-      dur.hours > 0 ? `${dur.hours} hours, ` : ""
-    }${dur.minutes > 0 ? `${dur.minutes} minutes, ` : ""}${
-      dur.seconds
-    } seconds at current speed.`;
+      dur.hours > 0 ? `${dur.hours} hour${dur.hours === 1 ? "" : "s"}, ` : ""
+    }${
+      dur.minutes > 0
+        ? `${dur.minutes} minute${dur.minutes === 1 ? "" : "s"}, `
+        : ""
+    }${dur.seconds} second${dur.seconds === 1 ? "" : "s"} at current speed.`;
     publish("sensorData", data);
   };
   render() {

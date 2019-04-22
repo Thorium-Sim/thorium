@@ -33,7 +33,7 @@ export default class Interface {
     // Get all of the connections to macros
     const value = this.values[objectId];
     let levelDirection = null;
-    if (value.level || value.level === 0) {
+    if (value && (value.level || value.level === 0)) {
       this.values[objectId].level = value.level ? 0 : 1;
       levelDirection = value.level ? "up" : "down";
     }

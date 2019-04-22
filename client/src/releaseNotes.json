@@ -6,7 +6,12 @@
     "fixes": [
       "Fixes an issue where the transporter speed cannot be changed.",
       "Fixes an issue where action commands cannot be sent to viewscreens.",
-      "Sound effects now only play in the simulator they are supposed to play in."
+      "Sound effects now only play in the simulator they are supposed to play in.",
+      "Send to sensors for the timer now properly pluralizes the unit of time.",
+      "Fixes an issue where the tactical map video speed cannot be changed.",
+      "Improves the text of some sensor scan preset answers.",
+      "Improves the layout of the dilithium stress core.",
+      "Improves the layout of the computer core core component."
     ]
   },
   "1.2.12": {
