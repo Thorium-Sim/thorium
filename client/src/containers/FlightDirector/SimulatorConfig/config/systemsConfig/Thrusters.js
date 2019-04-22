@@ -43,7 +43,7 @@ const Thrusters = props => {
                       value={thruster.rotationSpeed}
                       onChange={e => {
                         action({
-                          variables: { id, speed: e.target.value }
+                          variables: { id, speed: parseFloat(e.target.value) }
                         });
                       }}
                     >
@@ -83,7 +83,7 @@ const Thrusters = props => {
                       value={thruster.movementSpeed}
                       onChange={e => {
                         action({
-                          variables: { id, speed: e.target.value }
+                          variables: { id, speed: parseFloat(e.target.value) }
                         });
                       }}
                     >
