@@ -2,7 +2,7 @@ import React from "react";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 
 export default {
-  name: "Image",
+  name: "Video",
   component: ({ value = {}, config = {} }) => {
     return (
       <div
@@ -13,12 +13,17 @@ export default {
           alignItems: "center"
         }}
       >
-        <img
+        <video
           src={`/assets${config.src}`}
           style={{
             width: `${config.width || 50}px`,
-            height: config.height ? `${config.height}px` : null
+            height: config.height ? `${config.height}px` : null,
+            objectFit: "fill"
           }}
+          autoplay
+          muted
+          loop
+          playsInline
           alt={config.label}
           draggable={false}
         />
@@ -69,7 +74,7 @@ export default {
     },
     {
       id: "src",
-      title: "Image",
+      title: "Video",
       component: props => {
         return (
           <div style={{ maxHeight: "300px", overflowY: "auto" }}>
