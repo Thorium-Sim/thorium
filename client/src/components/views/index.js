@@ -89,6 +89,7 @@ import Transwarp from "./Transwarp";
 import SpecializedDocking from "./SpecializedDocking";
 import Interface from "./Interface";
 import SpaceEdventuresToken from "./SpaceEdventuresToken";
+import Crm from "./Crm";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -168,6 +169,7 @@ import TranswarpCore from "./Transwarp/core";
 import SpecializedDockingCore from "./SpecializedDocking/core";
 import TimelineThumbnailCore from "./Timeline/thumbnailData";
 import SpaceEdventuresTokenCore from "./SpaceEdventuresToken/core";
+import CrmCore from "./Crm/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -266,7 +268,8 @@ const Views = {
   Transwarp,
   SpecializedDocking,
   Interface,
-  SpaceEdventuresToken
+  SpaceEdventuresToken,
+  Crm
 };
 
 export const Widgets = {
@@ -449,7 +452,8 @@ export const Cores = {
   TranswarpCore,
   SpecializedDockingCore,
   TimelineThumbnailCore,
-  SpaceEdventuresTokenCore
+  SpaceEdventuresTokenCore,
+  CrmCore
 };
 
 export default Views;

@@ -1,0 +1,36 @@
+.card-crm {
+  height: 100%;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: 30% 1fr 1fr;
+  grid-template-areas:
+    "ship-image blank station-list"
+    "reset-password blank station-list"
+    "activate activate select-all"
+    "power power power";
+  gap: 40px;
+  img {
+    width: 100%;
+  }
+  .ship-image {
+    grid-area: ship-image;
+  }
+  .station-list {
+    grid-area: station-list;
+    .list-group {
+      height: 100%;
+    }
+  }
+  .reset-password {
+    grid-area: reset-password;
+  }
+  .activate-crm {
+    grid-area: activate;
+  }
+  .select-all-stations {
+    grid-area: select-all;
+  }
+  .power-control {
+    grid-area: power;
+  }
+}
