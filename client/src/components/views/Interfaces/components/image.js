@@ -2,7 +2,7 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-export const CompVideo = ({ id, interfaceId, config }) => {
+export const CompImage = ({ id, interfaceId, config }) => {
   return (
     <Mutation
       mutation={gql`
@@ -14,19 +14,14 @@ export const CompVideo = ({ id, interfaceId, config }) => {
     >
       {action => (
         <div onClick={() => action().catch(err => console.log(err))}>
-          <video
-            src={`/assets${config.src}`}
+          <img
             style={{
-              width: `${config.width || 50}px`,
-              height: config.height ? `${config.height}px` : null,
-              objectFit: "fill"
+              width: parseFloat(config.width) || 50,
+              height: parseFloat(config.height),
+              resizeMode: "stretch"
             }}
-            autoPlay
-            muted
-            loop
-            playsInline
-            alt={config.label}
-            draggable={false}
+            alt=""
+            src={`/assets${config.src}`}
           />
         </div>
       )}

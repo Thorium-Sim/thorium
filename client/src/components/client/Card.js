@@ -216,6 +216,7 @@ export default class CardFrame extends Component {
       client
     } = this.props;
     const { visible } = this.state;
+
     return (
       <div
         className={`client-container ${caps ? "all-caps" : ""} ${

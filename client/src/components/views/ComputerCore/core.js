@@ -108,7 +108,9 @@ class Core extends Component {
                 <ul>
                   {history.length === 0
                     ? "No history"
-                    : history.map((h, i) => <li key={`history-${i}`}>{h}</li>)}
+                    : history
+                        .filter((h, i) => i < 200)
+                        .map((h, i) => <li key={`history-${i}`}>{h}</li>)}
                 </ul>
               </div>
             </div>

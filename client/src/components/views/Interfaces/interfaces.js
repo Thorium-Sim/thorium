@@ -15,8 +15,9 @@ function parseComponents({ components, config, values }) {
 class Interfaces extends Component {
   render() {
     const { iFace } = this.props;
-    const { width, height } = iFace.deviceType;
     const { innerHeight: deviceHeight, innerWidth: deviceWidth } = window;
+    const { width = deviceWidth, height = deviceHeight } =
+      iFace.deviceType || {};
     const widthMultiply = deviceWidth / width;
     const heightMultiply = deviceHeight / height;
     const components = parseComponents(iFace);

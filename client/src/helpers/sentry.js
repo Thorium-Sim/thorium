@@ -1,10 +1,6 @@
 import * as Sentry from "@sentry/browser";
 import { version } from "../../package.json";
 
-window.addEventListener("error", function(e) {
-  console.error(e);
-});
-
 if (process.env.NODE_ENV === "production") {
   Sentry.init({
     release: `react@${version}`,
@@ -17,5 +13,9 @@ if (process.env.NODE_ENV === "production") {
         return null;
       return event;
     }
+  });
+} else {
+  window.addEventListener("error", function(e) {
+    console.error(e);
   });
 }

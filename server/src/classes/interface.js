@@ -31,8 +31,26 @@ export default class Interface {
   }
   triggerObject(objectId) {
     // Get all of the connections to macros
+    const value = this.values[objectId];
+    let levelDirection = null;
+    if (value && (value.level || value.level === 0)) {
+      this.values[objectId].level = value.level ? 0 : 1;
+      levelDirection = value.level ? "up" : "down";
+    }
     return this.connections
       .filter(({ to, from }) => to.id === objectId || from.id === objectId)
+      .filter(({ to, from }) => {
+        // Add handler for the toggle switch
+        if (levelDirection) {
+          if (
+            to.nodeId === `triggerOut-${levelDirection}` ||
+            from.nodeId === `triggerOut-${levelDirection}`
+          )
+            return true;
+          return false;
+        }
+        return true;
+      })
       .map(c => {
         if (c.to.nodeId === "trigger")
           return {
