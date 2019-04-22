@@ -18,6 +18,7 @@ import inventory from "./inventory";
 import probes from "./probes";
 import softwarePanels from "./softwarePanels";
 import reactivationCode from "./reactivationCode";
+import reactor from './reactor';
 
 export default [
   ...docking,
@@ -39,5 +40,6 @@ export default [
   ...inventory,
   ...probes,
   ...softwarePanels,
-  ...reactivationCode
+  ...reactivationCode,
+  ...reactor
 ];

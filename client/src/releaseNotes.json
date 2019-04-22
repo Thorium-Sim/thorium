@@ -70,6 +70,7 @@
     ]
   },
   "1.2.6": {
+    "features":["Add a task definition for changing the reactor efficiency."],
     "fixes": [
       "Fixes reactor efficiencies not updating on the config screen.",
       "Fixes issues around playing sounds through the actions core and actions macro.",
