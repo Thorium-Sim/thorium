@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Mutation } from "react-apollo";
 import { Col, Input } from "reactstrap";
 import gql from "graphql-tag.macro";
@@ -33,6 +33,7 @@ const updateComponents = debounce(
 );
 
 const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
+  const [snapping, setSnapping] = useState(false);
   if (!interfaceObj) return null;
   return (
     <Mutation
@@ -127,6 +128,14 @@ const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
                     )}
                   </Mutation>
                 </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    onChange={e => setSnapping(e.target.checked)}
+                    checked={snapping}
+                  />{" "}
+                  Snap to Grid
+                </label>
                 <DiagramContext.Consumer>
                   {({ selectedComponent }) =>
                     selectedComponent ? <Config /> : <Library />
@@ -139,7 +148,7 @@ const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
                 onContextMenu={e => e.preventDefault()}
               >
                 {" "}
-                <Canvas />
+                <Canvas snapping={snapping} />
               </Col>
             </DiagramProvider>
           )}

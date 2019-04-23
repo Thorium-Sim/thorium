@@ -71,7 +71,8 @@ class InnerCanvas extends Component {
       removeConnection,
       updateSelectedComponent,
       selectedComponent,
-      config
+      config,
+      snapping = false
     } = this.props;
     return (
       <PanZoomElement
@@ -92,6 +93,7 @@ class InnerCanvas extends Component {
               value={values[c.id]}
               onClick={() => updateSelectedComponent(c.id)}
               selected={selectedComponent === c.id}
+              snapping={snapping}
             />
           );
         })}

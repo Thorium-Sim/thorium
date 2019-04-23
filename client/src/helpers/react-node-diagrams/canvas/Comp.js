@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import debounce from "../helpers/debounce";
 import styles from "../compStyles.module.css";
 
+const snapGridSize = 20;
 export default class Comp extends Component {
   static propTypes = {
     id: PropTypes.any.isRequired,
@@ -140,7 +141,8 @@ export default class Comp extends Component {
       position: { x, y },
       component,
       updateValue = () => {},
-      registeredComponents
+      registeredComponents,
+      snapping
     } = this.props;
     const RenderComp = registeredComponents.find(
       c => c.objectKey === component.name || c.name === component.name
@@ -152,7 +154,11 @@ export default class Comp extends Component {
           styles.comp
         }`}
         style={{
-          transform: `translate(${x}px, ${y}px)`,
+          transform: `translate(${
+            snapping ? Math.round(x / snapGridSize) * snapGridSize : x
+          }px, ${
+            snapping ? Math.round(y / snapGridSize) * snapGridSize : y
+          }px)`,
           position: "absolute",
           pointerEvents: RenderComp.locked ? "none" : ""
         }}

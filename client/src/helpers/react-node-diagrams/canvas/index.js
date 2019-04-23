@@ -23,7 +23,7 @@ const Canvas = props => {
                 style={{ backgroundPosition: `${view.x}px ${view.y}px` }}
                 onClick={() => state.updateSelectedComponent(null)}
               >
-                {dimensions && <InnerCanvas {...state} />}
+                {dimensions && <InnerCanvas {...state} {...props} />}
               </div>
             )}
           </Measure>
