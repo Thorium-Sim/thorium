@@ -46,6 +46,7 @@ class InterfaceData extends Component {
           const { interfaces } = data;
           if (loading || !interfaces) return null;
           const iFace = interfaces.find(i => i.id === this.props.interfaceId);
+          console.log(iFace, this.props.interfaceId, interfaces);
           return (
             <SubscriptionHelper
               subscribe={() =>

@@ -3,7 +3,8 @@
     "features": [
       "Add the ability to right click on Interface, Command Line, and Trigger canvases to pan the canvas.",
       "Add the ability to set the autoPlay and looping of Interface videos.",
-      "Added a macro for toggling interface videos playing."
+      "Added a macro for toggling interface videos playing.",
+      "Makes interfaces stick around after a simulator is reset."
     ]
   },
   "1.2.14": {
