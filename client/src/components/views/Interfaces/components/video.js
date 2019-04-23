@@ -2,7 +2,8 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-export const CompVideo = ({ id, interfaceId, config }) => {
+export const CompVideo = ({ id, interfaceId, config = {} }) => {
+  const { autoPlay = true, loop = true } = config;
   return (
     <Mutation
       mutation={gql`
@@ -21,9 +22,9 @@ export const CompVideo = ({ id, interfaceId, config }) => {
               height: config.height ? `${config.height}px` : null,
               objectFit: "fill"
             }}
-            autoPlay
+            autoPlay={autoPlay}
             muted
-            loop
+            loop={loop}
             playsInline
             alt={config.label}
             draggable={false}

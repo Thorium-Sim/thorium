@@ -19,7 +19,10 @@ const Config = () => {
         );
         const compConfig = config[comp.id] || {};
         return (
-          <div className="config">
+          <div
+            className="config"
+            style={{ maxHeight: "80vh", overflowY: "auto" }}
+          >
             <h2>Config</h2>
             {compDef.config.map(c => {
               const val = compConfig[c.id];
@@ -36,7 +39,8 @@ const Config = () => {
                 );
               }
               const inputProps = {
-                [c.props.type === "checkbox" ? "checked" : "value"]: val
+                [c.props.type === "checkbox" ? "checked" : "value"]:
+                  val || val === false ? val : c.default
               };
               return (
                 <div key={c.id}>

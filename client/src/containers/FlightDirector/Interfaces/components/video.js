@@ -20,9 +20,9 @@ export default {
             height: config.height ? `${config.height}px` : null,
             objectFit: "fill"
           }}
-          autoplay
+          autoPlay={config.autoPlay}
           muted
-          loop
+          loop={config.loop}
           playsInline
           alt={config.label}
           draggable={false}
@@ -73,16 +73,30 @@ export default {
       }
     },
     {
+      id: "autoPlay",
+      title: "Auto Play",
+      default: true,
+      props: {
+        type: "checkbox"
+      }
+    },
+    {
+      id: "loop",
+      title: "Loop",
+      default: true,
+      props: {
+        type: "checkbox"
+      }
+    },
+    {
       id: "src",
       title: "Video",
       component: props => {
         return (
-          <div style={{ maxHeight: "300px", overflowY: "auto" }}>
-            <FileExplorer
-              selectedFiles={[props.value]}
-              onClick={(evt, container) => props.onChange(container.fullPath)}
-            />
-          </div>
+          <FileExplorer
+            selectedFiles={[props.value]}
+            onClick={(evt, container) => props.onChange(container.fullPath)}
+          />
         );
       },
       props: {

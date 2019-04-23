@@ -1,7 +1,8 @@
 {
   "1.2.15": {
     "features": [
-      "Add the ability to right click on Interface, Command Line, and Trigger canvases to pan the canvas."
+      "Add the ability to right click on Interface, Command Line, and Trigger canvases to pan the canvas.",
+      "Add the ability to set the autoPlay and looping of Interface videos."
     ]
   },
   "1.2.14": {
