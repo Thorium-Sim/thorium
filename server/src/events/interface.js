@@ -104,3 +104,28 @@ App.on(
     pubsub.publish("interfaceUpdate", App.interfaces);
   }
 );
+
+App.on("toggleInterfaceObjectPlaying", ({ simulatorId, id, objectId }) => {
+  const interfaceObj = App.interfaces.find(i =>
+    simulatorId
+      ? i.simulatorId === simulatorId && i.templateId === id
+      : i.id === id
+  );
+  const autoPlay = interfaceObj.config[objectId].autoPlay;
+  const values = interfaceObj.values[objectId] || {};
+  const initialPlaying = values.playing;
+  const playing = !(initialPlaying || initialPlaying === false
+    ? initialPlaying
+    : autoPlay);
+  interfaceObj.update({
+    values: {
+      ...interfaceObj.values,
+      [objectId]: {
+        ...interfaceObj.values[objectId],
+        playing
+      }
+    }
+  });
+
+  pubsub.publish("interfaceUpdate", App.interfaces);
+});

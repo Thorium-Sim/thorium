@@ -55,6 +55,10 @@ const schema = gql`
       objectId: ID!
       hidden: Boolean!
     ): String
+    """
+    Macro: Interfaces: Toggle Video playing
+    """
+    toggleInterfaceObjectPlaying(id: ID!, objectId: ID!): String
   }
   extend type Subscription {
     interfaceUpdate(simulatorId: ID): [Interface]
