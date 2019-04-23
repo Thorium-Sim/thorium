@@ -5,7 +5,7 @@ import {
   DiagramContext,
   Canvas,
   Config
-} from "react-node-diagrams";
+} from "helpers/react-node-diagrams";
 import {
   Col,
   Row,

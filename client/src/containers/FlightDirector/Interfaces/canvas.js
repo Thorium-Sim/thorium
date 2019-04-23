@@ -8,7 +8,7 @@ import {
   DiagramContext,
   Canvas,
   Config
-} from "react-node-diagrams";
+} from "helpers/react-node-diagrams";
 import * as components from "./components";
 import debounce from "helpers/debounce";
 import MacroListMaker from "../macroListMaker";
@@ -133,7 +133,11 @@ const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
                   }
                 </DiagramContext.Consumer>
               </Col>
-              <Col sm={6} style={{ height: "100%" }}>
+              <Col
+                sm={6}
+                style={{ height: "100%" }}
+                onContextMenu={e => e.preventDefault()}
+              >
                 {" "}
                 <Canvas />
               </Col>

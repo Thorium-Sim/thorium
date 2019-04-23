@@ -1,4 +1,9 @@
 {
+  "1.2.15": {
+    "features": [
+      "Add the ability to right click on Interface, Command Line, and Trigger canvases to pan the canvas."
+    ]
+  },
   "1.2.14": {
     "features": [
       "Adds the Interfaces feature, which allows Flight Directors to use buttons, toggle switches, images, and videos to create their own interactive user interfaces for crew stations."
@@ -70,7 +75,7 @@
     ]
   },
   "1.2.6": {
-    "features":["Add a task definition for changing the reactor efficiency."],
+    "features": ["Add a task definition for changing the reactor efficiency."],
     "fixes": [
       "Fixes reactor efficiencies not updating on the config screen.",
       "Fixes issues around playing sounds through the actions core and actions macro.",
