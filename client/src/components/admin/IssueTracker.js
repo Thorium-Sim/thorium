@@ -32,7 +32,18 @@ class IssueTracker extends Component {
         )
       }
     `;
-    const variables = this.state;
+    const variables = {
+      title: this.state.title,
+      body:
+        this.state.body +
+        `
+      
+### Steps to Reproduce
+${this.state.reproduce}`,
+      person: this.state.person,
+      type: this.state.type,
+      priority: this.state.priority
+    };
     this.props.client.mutate({
       mutation,
       variables: { ...variables, priority: Number(variables.priority) }
@@ -43,43 +54,6 @@ class IssueTracker extends Component {
   render() {
     return (
       <div id="issues-tracker">
-        <p>
-          <strong>
-            Note: As of March 2019, Alex Anderson will no longer be prioritizing
-            working on Thorium bugs and feature requests.
-          </strong>{" "}
-          Feel free to submit the issue report, but please recognize that it
-          might take a while to be addressed.
-        </p>
-        <p>
-          What can you do to get your issue report addressed sooner? If you have
-          an urgent need or want to prioritize something, submit a{" "}
-          <a
-            href="https://thoriumsim.com/service/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Service Request Form
-          </a>
-          . If you know of developers who are capable of working on Thorium, you
-          can point them at the{" "}
-          <a
-            href="https://github.com/thorium-sim/thorium"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Github Repository
-          </a>
-          . And if you have further questions, feel free to reach out on the{" "}
-          <a
-            href="https://discord.gg/UvxTQZz"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Discord Server
-          </a>
-          .
-        </p>
         <div className="issues-body">
           <form>
             <div className="form-group">
@@ -110,6 +84,18 @@ class IssueTracker extends Component {
                 className="form-control form-control-sm"
               />
             </div>
+            {this.state.type === "bug" && (
+              <div className="form-group">
+                <label>Steps to Reproduce</label>
+                <textarea
+                  onChange={this._handleEvent.bind(this, "reproduce")}
+                  rows="5"
+                  placeholder="Explain step-by-step what someone can do to reproduce this issue. If you can't provide step-by-step instructions, try recreating the bug yourself. Once you can reproduce the bug, submit an issue."
+                  required
+                  className="form-control form-control-sm"
+                />
+              </div>
+            )}
             <div className="form-group">
               <label>Type</label>
               <select
@@ -155,6 +141,36 @@ class IssueTracker extends Component {
             </div>
           </form>
         </div>
+
+        <p>
+          What can you do to get your issue report addressed sooner? If you have
+          an urgent need or want to prioritize something, submit a{" "}
+          <a
+            href="https://thoriumsim.com/service/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Service Request Form
+          </a>
+          . If you know of developers who are capable of working on Thorium, you
+          can point them at the{" "}
+          <a
+            href="https://github.com/thorium-sim/thorium"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Github Repository
+          </a>
+          . And if you have further questions, feel free to reach out on the{" "}
+          <a
+            href="https://discord.gg/UvxTQZz"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Discord Server
+          </a>
+          .
+        </p>
       </div>
     );
   }
