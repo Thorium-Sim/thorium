@@ -1,0 +1,90 @@
+button {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.175rem 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.25;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  cursor: pointer;
+  -webkit-appearance: button;
+  color: #fff;
+  background-color: rgba(102, 115, 125, 0.1);
+  border-color: #6c757d;
+}
+button:hover {
+  text-decoration: none;
+  color: #fff;
+  background-color: rgba(102, 115, 125, 0.4);
+  border-color: #545b62;
+}
+button:focus {
+  box-shadow: 0 0 0.2rem 0.2rem rgba(108, 117, 125, 0.5);
+  outline: 0;
+}
+button:active {
+  color: #fff;
+  background-color: #545b62;
+  border-color: #4e555b;
+}
+button[disabled] {
+  color: #fff;
+  background-color: #6c757d;
+  border-color: #6c757d;
+  opacity: 0.65;
+}
+
+/* Component Library */
+.component-inner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 300px;
+  user-select: none;
+}
+.component-inner-container details,
+.component-inner-container summary {
+  user-select: none;
+  outline: none;
+}
+.component-holder {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+}
+.component-holder details:focus {
+  outline: none;
+}
+.component-holder summary {
+  text-align: left;
+}
+.component-holder .grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.component-holder .comp {
+  overflow: hidden;
+  position: relative;
+  height: 70px;
+  overflow: hidden;
+  user-select: none;
+}
+.component-holder .comp p {
+  text-align: center;
+  font-size: 12px;
+}
+.component-holder .comp * {
+  pointer-events: none;
+}

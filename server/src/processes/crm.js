@@ -19,30 +19,6 @@ function crmContactMove() {
           if (!crm) return;
           crm.interval = interval;
           crm.enemies.forEach((e, ii) => {
-            // e.velocity = {
-            //   x: Math.max(
-            //     e.maxVelocity * -1,
-            //     Math.min(
-            //       e.maxVelocity,
-            //       noise.noise2D(1, tick * 0.05) * e.maxVelocity
-            //     )
-            //   ),
-            //   y: Math.max(
-            //     e.maxVelocity * -1,
-            //     Math.min(
-            //       e.maxVelocity,
-            //       noise.noise2D(2, tick * 0.05) * e.maxVelocity
-            //     )
-            //   ),
-            //   z: Math.max(
-            //     e.maxVelocity * -1,
-            //     Math.min(
-            //       e.maxVelocity,
-            //       noise.noise2D(3, tick * 0.05) * e.maxVelocity
-            //     )
-            //   )
-            // };
-
             e.position = {
               x: Math.min(
                 1000,

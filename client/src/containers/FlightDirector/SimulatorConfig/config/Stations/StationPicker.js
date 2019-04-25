@@ -73,7 +73,7 @@ const StationPicker = ({
               {action => (
                 <Input
                   key={stationSet.id}
-                  defaultValue={console.log(stationSet) || stationSet.crewCount}
+                  defaultValue={stationSet.crewCount}
                   onBlur={e =>
                     action({
                       variables: {

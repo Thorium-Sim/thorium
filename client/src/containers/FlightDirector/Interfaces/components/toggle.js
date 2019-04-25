@@ -22,7 +22,7 @@ export default {
         >
           <div className={`toggle ${value.level === 1 ? "on" : "off"}`} />
         </div>
-        <label>{config.objectLabel}</label>
+        <label>{config.label}</label>
       </div>
     );
   },
@@ -44,6 +44,13 @@ export default {
   config: [
     {
       id: "objectLabel",
+      title: "Object ID",
+      props: {
+        type: "text"
+      }
+    },
+    {
+      id: "label",
       title: "Toggle Text",
       props: {
         type: "text"

@@ -30,7 +30,6 @@ const SUBSCRIPTION = gql`
   ${fragment}
 `;
 const CrmCore = props => {
-  console.log(props);
   return (
     <div className="crm-core">
       <Mutation
