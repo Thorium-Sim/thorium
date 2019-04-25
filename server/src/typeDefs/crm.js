@@ -23,6 +23,7 @@ const schema = gql`
     enemyCount: Int
     fighterDestroyedCount: Int
     enemyDestroyedCount: Int
+    interval: Float
   }
   type CrmFighter {
     id: ID
@@ -47,9 +48,9 @@ const schema = gql`
     crm(simulatorId: ID!): Crm
   }
   extend type Mutation {
-    crmSetActivated(id:ID!, state:Boolean!):String
-    crmSetPassword(id:ID!, password:String!):String
-    crmAddEnemy(id: ID!):String
+    crmSetActivated(id: ID!, state: Boolean!): String
+    crmSetPassword(id: ID!, password: String!): String
+    crmAddEnemy(id: ID!): String
   }
   extend type Subscription {
     crmUpdate(simulatorId: ID): Crm
@@ -58,8 +59,10 @@ const schema = gql`
 
 const resolver = {
   Query: {
-    crm(rootQuery, {simulatorId}) {
-      return App.systems.find(s => s.simulatorId === simulatorId && s.class === "Crm");
+    crm(rootQuery, { simulatorId }) {
+      return App.systems.find(
+        s => s.simulatorId === simulatorId && s.class === "Crm"
+      );
     }
   },
   Mutation: mutationHelper(schema),
@@ -70,7 +73,7 @@ const resolver = {
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("crmUpdate"),
-        (rootValue, {simulatorId}) => {
+        (rootValue, { simulatorId }) => {
           return rootValue.simulatorId === simulatorId;
         }
       )

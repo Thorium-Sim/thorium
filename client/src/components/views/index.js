@@ -90,6 +90,7 @@ import SpecializedDocking from "./SpecializedDocking";
 import Interface from "./Interfaces";
 import SpaceEdventuresToken from "./SpaceEdventuresToken";
 import Crm from "./Crm";
+import CrmFighter from "./CrmFighter";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -269,7 +270,8 @@ const Views = {
   SpecializedDocking,
   Interface,
   SpaceEdventuresToken,
-  Crm
+  Crm,
+  CrmFighter
 };
 
 export const Widgets = {

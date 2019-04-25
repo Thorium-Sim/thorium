@@ -83,6 +83,7 @@
     "node-fetch": "^2.3.0",
     "random-words": "^1.1.0",
     "react-dev-utils": "^7.0.3",
+    "styled-components": "^4.2.0",
     "subscriptions-transport-ws": "^0.9.15",
     "three": "^0.101.1",
     "unzip": "^0.1.11",
@@ -159,7 +160,9 @@
       "eslint-plugin-cypress",
       "react-hooks"
     ],
-    "env": { "cypress/globals": true },
+    "env": {
+      "cypress/globals": true
+    },
     "rules": {
       "jsx-a11y/href-no-hash": "off",
       "react-hooks/rules-of-hooks": "error"

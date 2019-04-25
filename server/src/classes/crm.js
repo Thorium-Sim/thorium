@@ -27,7 +27,8 @@ class CrmFighter {
       y: 0,
       z: 0
     };
-    this.maxVelocity = 2;
+    this.maxVelocity = 10;
+    this.interval = 0;
   }
 }
 
@@ -43,24 +44,24 @@ export default class Crm extends System {
     this.activated = params.activated || false;
     this.fighters = [];
     if (params.fighters && params.fighters.length > 0) {
-        params.fighters.forEach(f => this.fighters.push(new CrmFighter(f)))
+      params.fighters.forEach(f => this.fighters.push(new CrmFighter(f)));
     }
     this.enemies = [];
     if (params.enemies && params.enemies.length > 0) {
-        params.enemies.forEach(f => this.enemies.push(new CrmFighter(f)))
+      params.enemies.forEach(f => this.enemies.push(new CrmFighter(f)));
     }
   }
   get fighterCount() {
-      return this.fighters.length;
+    return this.fighters.length;
   }
   get enemyCount() {
-      return this.enemies.length;
+    return this.enemies.length;
   }
   get fighterDestroyedCount() {
-      return this.fighters.filter(f => f.destroyed).length;
+    return this.fighters.filter(f => f.destroyed).length;
   }
   get enemyDestroyedCount() {
-      return this.enemies.filter(f => f.destroyed).length;
+    return this.enemies.filter(f => f.destroyed).length;
   }
   changePassword(newPassword) {
     this.password = newPassword;
