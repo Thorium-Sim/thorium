@@ -1,6 +1,6 @@
 {
   "name": "thorium-server",
-  "version": "1.2.15",
+  "version": "1.2.16",
   "description": "Starship Simulator Controls Server, built with GraphQL",
   "private": true,
   "repository": {
