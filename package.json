@@ -83,6 +83,7 @@
     "node-fetch": "^2.3.0",
     "random-words": "^1.1.0",
     "react-dev-utils": "^7.0.3",
+    "simplex-noise": "^2.4.0",
     "styled-components": "^4.2.0",
     "subscriptions-transport-ws": "^0.9.15",
     "three": "^0.101.1",
