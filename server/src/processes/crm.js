@@ -15,16 +15,24 @@ function crmContactMove() {
 
           crm.enemies.forEach(e => {
             e.velocity = {
-              x: Math.max(e.maxVelocity * -1, Math.min(e.maxVelocity, e.velocity.x + Math.random() - 0.5)),
-              y: Math.max(e.maxVelocity * -1, Math.min(e.maxVelocity,e.velocity.y + Math.random() - 0.5)),
-              z: Math.max(e.maxVelocity * -1, Math.min(e.maxVelocity,e.velocity.z + Math.random() - 0.5))
+              x: Math.max(
+                e.maxVelocity * -1,
+                Math.min(e.maxVelocity, e.velocity.x + Math.random() - 0.5)
+              ),
+              y: Math.max(
+                e.maxVelocity * -1,
+                Math.min(e.maxVelocity, e.velocity.y + Math.random() - 0.5)
+              ),
+              z: Math.max(
+                e.maxVelocity * -1,
+                Math.min(e.maxVelocity, e.velocity.z + Math.random() - 0.5)
+              )
             };
             e.position = {
               x: Math.min(1000, Math.max(-1000, e.position.x + e.velocity.x)),
-              y: Math.min(1000, Math.max(-1000,e.position.y + e.velocity.y)),
-              z: Math.min(1000, Math.max(-1000,e.position.z + e.velocity.z))
+              y: Math.min(1000, Math.max(-1000, e.position.y + e.velocity.y)),
+              z: Math.min(1000, Math.max(-1000, e.position.z + e.velocity.z))
             };
-            console.log(e);
           });
         });
     });
