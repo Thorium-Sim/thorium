@@ -1,20 +1,95 @@
 .card-crm-fighter {
   height: 100%;
+  display: grid;
+  width: 95%;
+  grid-template-columns: 20% 5% 25% 25% 25%;
+  grid-template-rows: 65% 35%;
+  grid-template-areas:
+    "phaser-charge canvas canvas canvas canvas"
+    "torpedo torpedo control shield joystick";
+  gap: 10px;
   .fighter-canvas {
+    border: solid 2px rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
+    grid-area: canvas;
     width: 100%;
     height: 100%;
     position: relative;
+    overflow: hidden;
+    .enemy-outer {
+      pointer-events: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      .enemy-inner {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: red;
+      }
+    }
   }
-  .enemy-outer {
-    pointer-events: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    .enemy-inner {
-      width: 20px;
-      height: 20px;
+  .phaser-charging {
+    grid-area: phaser-charge;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .charge-holder {
+      flex: 1;
+      width: 100%;
+      max-width: 100px;
+      border: solid 1px rgba(255, 255, 255, 0.5);
+      background-color: rgba(0, 0, 0, 0.5);
+      position: relative;
+      padding: 5px;
+    }
+    .charge-bar {
+      position: relative;
+      background: linear-gradient(
+        to bottom,
+        #ffff00 0%,
+        #888800 50%,
+        #ffff00 100%
+      );
+      background-size: 5px 3px;
+    }
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    grid-area: control;
+  }
+  .joystick {
+    grid-area: joystick;
+    width: 200px;
+    height: 200px;
+    justify-self: flex-end;
+    .returning {
+      transition: transform 0.2s ease;
+    }
+    .inner-circle {
+      height: 100%;
       border-radius: 50%;
-      background-color: red;
+      border: 2px solid #9c9da0;
+      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+      background: radial-gradient(
+          ellipse at center,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0.9) 100%
+        ),
+        linear-gradient(165deg, #000000 0%, rgba(0, 0, 0, 0) 50%, #000000 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .joystick-handle {
+      width: 10%;
+      height: 10%;
+      border: 2px solid #9c9da0;
+      border-radius: 50%;
+      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3),
+        inset 0px 0px 30px 10px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
     }
   }
 }

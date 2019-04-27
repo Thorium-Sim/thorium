@@ -18,13 +18,15 @@ function crmContactMove() {
           );
           if (!crm) return;
           crm.interval = interval;
+
+          // Update the enemy movement
           crm.enemies.forEach((e, ii) => {
             e.position = {
               x: Math.min(
                 1000,
                 Math.max(
                   -1000,
-                  noise.noise2D(1 + (i + 1) * ii, tick * 0.0001 * interval) *
+                  noise.noise2D(1 + (i + 1) * ii, tick * 0.00001 * interval) *
                     1000
                 )
               ),
@@ -32,7 +34,7 @@ function crmContactMove() {
                 1000,
                 Math.max(
                   -1000,
-                  noise.noise2D(2 + (i + 1) * ii, tick * 0.0001 * interval) *
+                  noise.noise2D(2 + (i + 1) * ii, tick * 0.00001 * interval) *
                     1000
                 )
               ),
@@ -40,13 +42,23 @@ function crmContactMove() {
                 1000,
                 Math.max(
                   -1000,
-                  noise.noise2D(3 + (i + 1) * ii, tick * 0.0001 * interval) *
+                  noise.noise2D(3 + (i + 1) * ii, tick * 0.00001 * interval) *
                     1000
                 )
               )
             };
           });
-          pubsub.publish("crmUpdate", crm);
+
+          // Update the fighter movement
+          crm.fighters.forEach(e => {
+            // Move based on the velocity.
+            e.position = {
+              x: Math.min(1000, Math.max(-1000, e.position.x + e.velocity.x)),
+              y: Math.min(1000, Math.max(-1000, e.position.y + e.velocity.y)),
+              z: Math.min(1000, Math.max(-1000, e.position.z + e.velocity.z))
+            };
+          });
+          pubsub.publish("crmMovementUpdate", crm);
         });
     });
   setTimeout(crmContactMove, interval);

@@ -46,14 +46,19 @@ const schema = gql`
   }
   extend type Query {
     crm(simulatorId: ID!): Crm
+    crmFighter(simulatorId: ID!, clientId: ID!): CrmFighter
   }
   extend type Mutation {
     crmSetActivated(id: ID!, state: Boolean!): String
     crmSetPassword(id: ID!, password: String!): String
     crmAddEnemy(id: ID!): String
+    crmSetVelocity(id: ID!, clientId: ID!, velocity: CoordinatesInput!): String
+    crmSetPhaserCharge(id: ID!, clientId: ID!, phaser: Float!): String
   }
   extend type Subscription {
     crmUpdate(simulatorId: ID): Crm
+    crmMovementUpdate(simulatorId: ID!): Crm
+    crmFighterUpdate(simulatorId: ID!, clientId: ID!): CrmFighter
   }
 `;
 
@@ -63,6 +68,18 @@ const resolver = {
       return App.systems.find(
         s => s.simulatorId === simulatorId && s.class === "Crm"
       );
+    },
+    crmFighter(rootQuery, { simulatorId, clientId }) {
+      // If the client's fighter doesn't exist yet, create it
+      const crm = App.systems.find(
+        s => s.simulatorId === simulatorId && s.class === "Crm"
+      );
+      if (!crm) return null;
+      let fighter = crm.fighters.find(c => c.clientId === clientId);
+      if (!fighter) {
+        fighter = crm.addFighter({ clientId });
+      }
+      return fighter;
     }
   },
   Mutation: mutationHelper(schema),
@@ -73,6 +90,31 @@ const resolver = {
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("crmUpdate"),
+        (rootValue, { simulatorId }) => {
+          return rootValue.simulatorId === simulatorId;
+        }
+      )
+    },
+    crmFighterUpdate: {
+      resolve(rootQuery) {
+        return rootQuery;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("crmFighterUpdate"),
+        (rootValue, { simulatorId, clientId }) => {
+          return (
+            rootValue.simulatorId === simulatorId &&
+            rootValue.clientId === clientId
+          );
+        }
+      )
+    },
+    crmMovementUpdate: {
+      resolve(rootQuery) {
+        return rootQuery;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("crmMovementUpdate"),
         (rootValue, { simulatorId }) => {
           return rootValue.simulatorId === simulatorId;
         }

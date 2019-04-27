@@ -3,6 +3,7 @@ import uuid from "uuid";
 class CrmFighter {
   constructor(params) {
     this.id = params.id || uuid.v4();
+    this.simulatorId = params.simulatorId;
     this.clientId = params.clientId || "";
     this.icon = params.icon || "/Sensor Contacts/Icons/Default.svg";
     this.size = params.size || 1;
@@ -17,11 +18,14 @@ class CrmFighter {
     this.torpedoLoaded = params.torpedoLoaded || false;
     this.destroyed = params.destroyed || false;
     this.docked = params.docked || true;
-    this.position = params.position || {
-      x: Math.random() * 2000 - 1000,
-      y: Math.random() * 2000 - 1000,
-      z: Math.random() * 2000 - 1000
-    };
+    this.position =
+      params.position || params.type === "fighter"
+        ? { x: 0, y: 0, z: 0 }
+        : {
+            x: Math.random() * 2000 - 1000,
+            y: Math.random() * 2000 - 1000,
+            z: Math.random() * 2000 - 1000
+          };
     this.velocity = params.velocity || {
       x: 0,
       y: 0,
@@ -29,6 +33,16 @@ class CrmFighter {
     };
     this.maxVelocity = 10;
     this.interval = 0;
+  }
+  setPhaserCharge(phaser) {
+    this.phaserLevel = Math.min(1, Math.max(0, phaser));
+  }
+  setVelocity({ x, y, z }) {
+    this.velocity = {
+      x: Math.min(this.maxVelocity, Math.max(-1 * this.maxVelocity, x)),
+      y: Math.min(this.maxVelocity, Math.max(-1 * this.maxVelocity, y)),
+      z: Math.min(this.maxVelocity, Math.max(-1 * this.maxVelocity, z))
+    };
   }
 }
 
@@ -44,11 +58,23 @@ export default class Crm extends System {
     this.activated = params.activated || false;
     this.fighters = [];
     if (params.fighters && params.fighters.length > 0) {
-      params.fighters.forEach(f => this.fighters.push(new CrmFighter(f)));
+      params.fighters.forEach(f =>
+        this.fighters.push(
+          new CrmFighter({
+            ...f,
+            type: "fighter",
+            simulatorId: this.simulatorId
+          })
+        )
+      );
     }
     this.enemies = [];
     if (params.enemies && params.enemies.length > 0) {
-      params.enemies.forEach(f => this.enemies.push(new CrmFighter(f)));
+      params.enemies.forEach(f =>
+        this.enemies.push(
+          new CrmFighter({ ...f, simulatorId: this.simulatorId })
+        )
+      );
     }
   }
   get fighterCount() {
@@ -80,6 +106,17 @@ export default class Crm extends System {
     super.setPower(powerLevel);
   }
   addEnemy(enemy = {}) {
-    this.enemies.push(new CrmFighter(enemy));
+    this.enemies.push(
+      new CrmFighter({ ...enemy, simulatorId: this.simulatorId })
+    );
+  }
+  addFighter(f = {}) {
+    const fighter = new CrmFighter({
+      ...f,
+      type: "fighter",
+      simulatorId: this.simulatorId
+    });
+    this.fighters.push(fighter);
+    return fighter;
   }
 }
