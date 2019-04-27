@@ -1,4 +1,7 @@
 {
+  "1.2.17": {
+    "fixes": ["Fixes a situation where auto-viewscreen can crash the server."]
+  },
   "1.2.16": {
     "features": [
       "Adds colors to the buttons on interfaces.",
