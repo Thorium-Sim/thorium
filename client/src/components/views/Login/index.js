@@ -40,7 +40,7 @@ class Login extends Component {
   generateTraining = () => {
     const {
       simulator: { name: simName },
-      station: { name }
+      station: { name, widgets }
     } = this.props;
     const training = [
       {
@@ -58,6 +58,13 @@ class Login extends Component {
           </p>
         )
       },
+      widgets.includes("objectives")
+        ? {
+            selector: "#widget-objectives",
+            content:
+              "This is the objectives widget. You can use it to see what your mission objective are at any time during the mission. Be sure to open it up and check it periodically to make sure you know what you are supposed to be doing."
+          }
+        : null,
       {
         selector: ".card-switcher",
         content:
@@ -74,7 +81,7 @@ class Login extends Component {
           "You should now log in to your station. Good luck with training and on your mission!"
       }
     ];
-    return training;
+    return training.filter(Boolean);
   };
   training = action => {
     action().then(() => {

@@ -15,9 +15,8 @@ function viewscreenMachine() {
 
     // First, calculate the priority of all of the screens
     // Red Alert
-    const simulator = App.simulators.find(
-      sim => sim.id === viewscreen.simulatorId
-    );
+    const simulator =
+      App.simulators.find(sim => sim.id === viewscreen.simulatorId) || {};
     cache.RedAlert = { priority: simulator.alertlevel === "1" ? 0.21 : 0 };
 
     // Forward Scans - this is the default

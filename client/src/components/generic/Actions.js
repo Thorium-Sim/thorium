@@ -106,7 +106,7 @@ const ActionsMixin = ({ simulator, station, changeCard, children, client }) => {
         }
       });
     return () => subscription.unsubscribe();
-  }, [simulator, station]);
+  }, [changeCard, client, doFlash, doSpark, simulator, station]);
   return (
     <div className={`actionsContainer ${flash ? "flash" : ""}`}>
       {children}

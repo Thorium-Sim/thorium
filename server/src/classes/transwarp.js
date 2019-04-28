@@ -1,11 +1,59 @@
+import App from "../app";
 import { System } from "./generic";
 import heatMixin from "./generic/heatMixin";
+import uuid from "uuid";
+import { pubsub } from "../helpers/subscriptionManager.js";
 
 const baseQuad = {
   field: { required: 25, value: 0 },
   core: { required: 25, value: 0 },
   warp: { required: 25, value: 0 }
 };
+
+function notifyActive(tf, simulatorId) {
+  if (tf) {
+    /// activated
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: simulatorId,
+      station: "Core",
+      type: "Transwarp",
+      title: `Transwarp Drive Activated`,
+      body: ``,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: simulatorId,
+        title: `Transwarp Drive Activated`,
+        component: "TranswarpCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  } else {
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: simulatorId,
+      station: "Core",
+      type: "Transwarp",
+      title: `Transwarp Drive Deactivated`,
+      body: ``,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: simulatorId,
+        title: `Transwarp Drive Deactivated`,
+        component: "TranswarpCore",
+        body: null,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
+  }
+}
 export default class Transwarp extends heatMixin(System) {
   static quads = ["quad1", "quad2", "quad3", "quad4"];
   static fields = ["field", "core", "warp"];
@@ -48,6 +96,9 @@ export default class Transwarp extends heatMixin(System) {
     else return 0.9;
   }
   break(report, destroyed, which) {
+    if (this.active) {
+      notifyActive(false, this.simulatorId);
+    }
     this.active = false;
     super.break(report, destroyed, which);
   }
@@ -56,12 +107,26 @@ export default class Transwarp extends heatMixin(System) {
       this.power.powerLevels.length &&
       powerLevel < this.power.powerLevels[0]
     ) {
+      if (this.active) {
+        notifyActive(false, this.simulatorId);
+      }
       this.active = false;
     }
     super.setPower(powerLevel);
   }
   setActive(tf) {
+    if (
+      this.damage.damaged ||
+      (this.power.powerLevels.length &&
+        this.power.power < this.power.powerLevels[0])
+    )
+      return;
     this.active = tf;
+    if (this.active) {
+      notifyActive(true, this.simulatorId);
+    } else {
+      notifyActive(false, this.simulatorId);
+    }
   }
   flux(quad, field) {
     if (!quad) {

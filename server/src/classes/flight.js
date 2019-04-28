@@ -136,7 +136,6 @@ export default class Flight {
       }
     }
     `;
-    console.log(JSON.stringify(variables));
     graphqlClient
       .query({
         query: mutation,

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Col, Row, Container } from "reactstrap";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo, Mutation } from "react-apollo";
 import { DateTime } from "luxon";
 import { titleCase } from "change-case";
 import FontAwesome from "react-fontawesome";
@@ -57,6 +57,7 @@ const CLIENT_CHANGE_QUERY = gql`
       loginName
       loginState
       training
+      soundPlayer
     }
   }
 `;
@@ -78,6 +79,7 @@ const Keyboards = ({ keyboards = [] }) => {
   );
 };
 const Interfaces = ({ p, interfaces = [] }) => {
+  if (!p.simulator) return null;
   const simInterfaces = p.simulator.interfaces
     .map(i => interfaces.find(ii => ii.id === i))
     .filter(Boolean);
@@ -128,12 +130,7 @@ const ClientRow = ({
           <option value="">Select a flight</option>
           {flights && (
             <optgroup label="This Flight">
-              <option value={flightId}>
-                {thisFlight.name}:{" "}
-                {DateTime.fromJSDate(new Date(thisFlight.date)).toFormat(
-                  "M/d/y hh:mma"
-                )}
-              </option>
+              <option value={flightId}>{thisFlight.name}</option>
             </optgroup>
           )}
           <optgroup label="Other Flights">
@@ -181,11 +178,16 @@ const ClientRow = ({
             className="form-control-sm c-select station-picker"
           >
             <option value="">Select a screen</option>
-            {p.cards.map(c => (
-              <option key={`${p.id}-station-${c}`} value={c}>
-                {titleCase(c)}
-              </option>
-            ))}
+            {p.cards
+              .filter(c => c !== "Interfaces")
+              .map(c => (
+                <option key={`${p.id}-station-${c}`} value={c}>
+                  {titleCase(c)}
+                </option>
+              ))}
+            {p.cards.includes("Interfaces") && (
+              <Interfaces p={p} interfaces={interfaces} />
+            )}
           </select>
         ) : (
           <select
@@ -215,6 +217,31 @@ const ClientRow = ({
             )}
           </select>
         )}
+      </td>
+      <td>
+        {p.station &&
+          (p.station.name.indexOf("keyboard") > -1 ||
+            p.station.name === "Viewscreen") && (
+            <Mutation
+              mutation={gql`
+                mutation SetSoundPlayer($id: ID!, $soundPlayer: Boolean!) {
+                  clientSetSoundPlayer(client: $id, soundPlayer: $soundPlayer)
+                }
+              `}
+            >
+              {action => (
+                <input
+                  type="checkbox"
+                  checked={p.soundPlayer}
+                  onChange={e =>
+                    action({
+                      variables: { id: p.id, soundPlayer: e.target.checked }
+                    })
+                  }
+                />
+              )}
+            </Mutation>
+          )}
       </td>
     </tr>
   );
@@ -372,6 +399,8 @@ class Clients extends Component {
             this.props.data.subscribeToMore({
               document: FLIGHTS_SUB,
               updateQuery: (previousResult, { subscriptionData }) => {
+                this.props.data.refetch();
+
                 return Object.assign({}, previousResult, {
                   flights: subscriptionData.data.flightsUpdate
                 });
@@ -395,6 +424,7 @@ class Clients extends Component {
                   <th>Flight</th>
                   <th>Simulator</th>
                   <th>Station</th>
+                  <th>Sound Player</th>
                 </tr>
               </thead>
               <tbody>
@@ -422,7 +452,7 @@ class Clients extends Component {
                           />
                         ))}
                       <tr>
-                        <td colSpan="4">
+                        <td colSpan="5">
                           <strong>Clients Assigned to Other Flights</strong>
                         </td>
                       </tr>
@@ -493,6 +523,7 @@ const CLIENTS_QUERY = gql`
       loginName
       loginState
       training
+      soundPlayer
     }
     interfaces {
       id

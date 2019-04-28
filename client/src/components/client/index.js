@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Query, withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
-import randomWords from "random-words";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import { getClientId, setClientId } from "helpers/getClientId";
 import SimulatorData from "./simulatorData";
 import Credits from "./credits";
 import "./client.scss";
@@ -34,6 +34,7 @@ const fragments = {
       training
       caches
       overlay
+      soundPlayer
     }
   `
 };
@@ -58,54 +59,50 @@ const SUBSCRIPTION = gql`
 class ClientData extends Component {
   constructor(props) {
     super(props);
-    let clientId = localStorage.getItem("thorium_clientId");
-    if (!clientId) {
-      clientId = randomWords(3).join("-");
-      localStorage.setItem("thorium_clientId", clientId);
-    }
     this.state = {
-      clientId,
       registered: false
     };
   }
   componentDidMount() {
-    const { clientId } = this.state;
-    const { client } = this.props;
-    // Register the client for the first time.
-    client
-      .mutate({
-        mutation: gql`
-          mutation RegisterClient($client: ID!) {
-            clientConnect(client: $client)
-          }
-        `,
-        variables: { client: clientId }
-      })
-      .then(() => this.setState({ registered: true }));
-    // Keep the context menu from opening.
-    if (process.env.NODE_ENV === "production") {
-      window.oncontextmenu = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        return false;
+    getClientId().then(clientId => {
+      this.setState({ clientId });
+      const { client } = this.props;
+      // Register the client for the first time.
+      client
+        .mutate({
+          mutation: gql`
+            mutation RegisterClient($client: ID!) {
+              clientConnect(client: $client)
+            }
+          `,
+          variables: { client: clientId }
+        })
+        .then(() => this.setState({ registered: true }));
+      // Keep the context menu from opening.
+      if (process.env.NODE_ENV === "production") {
+        window.oncontextmenu = function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          return false;
+        };
+      }
+      // Disconnect the client when the browser closes.
+      window.onbeforeunload = () => {
+        client.mutate({
+          mutation: gql`
+            mutation RemoveClient($id: ID!) {
+              clientDisconnect(client: $id)
+            }
+          `,
+          variables: { id: clientId }
+        });
+        return null;
       };
-    }
-    // Disconnect the client when the browser closes.
-    window.onbeforeunload = () => {
-      client.mutate({
-        mutation: gql`
-          mutation RemoveClient($id: ID!) {
-            clientDisconnect(client: $id)
-          }
-        `,
-        variables: { id: clientId }
-      });
-      return null;
-    };
+    });
   }
-  updateClientId = clientId => {
-    const oldClientId = this.state.clientId;
-    localStorage.setItem("thorium_clientId", clientId);
+  updateClientId = async clientId => {
+    const oldClientId = await getClientId();
+    setClientId(clientId);
     this.setState({ clientId });
     this.props.client.mutate({
       mutation: gql`

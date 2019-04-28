@@ -1,8 +1,8 @@
 import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import { StationResolver } from "../helpers/stationResolver";
+const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -19,6 +19,7 @@ const schema = gql`
     offlineState: String
     movie: String
     training: Boolean
+    soundPlayer: Boolean
     caches: [String]
     hypercard: String
     overlay: Boolean
@@ -110,6 +111,8 @@ const schema = gql`
     clientOfflineState(client: ID!, state: String): String
     clientMovieState(client: ID!, movie: String!): String
     clientSetTraining(client: ID!, training: Boolean!): String
+    clientSetSoundPlayer(client: ID!, soundPlayer: Boolean!): String
+
     clientAddCache(
       client: ID
       simulatorId: ID
@@ -192,7 +195,38 @@ const resolver = {
         flight && flight.clients.find(c => c.id === client.id);
       return flightClient && flightClient.email;
     },
-    station: StationResolver
+    station: StationResolver,
+    connected(client) {
+      return Boolean(client.connected);
+    },
+    training(client) {
+      return Boolean(client.training);
+    },
+    soundPlayer(client) {
+      return Boolean(client.soundPlayer);
+    },
+    overlay(client) {
+      return Boolean(client.overlay);
+    },
+    cracked(client) {
+      return Boolean(client.cracked);
+    },
+    mobile(client) {
+      return Boolean(client.mobile);
+    }
+  },
+  Keypad: {
+    giveHints(client) {
+      return Boolean(client.giveHints);
+    },
+    locked(client) {
+      return Boolean(client.locked);
+    }
+  },
+  Scanner: {
+    scanning(client) {
+      return Boolean(client.scanning);
+    }
   },
   Sound: {
     url(rootValue) {
@@ -203,6 +237,9 @@ const resolver = {
         o => o.containerId === assetContainer.id && o.simulatorId === "default"
       );
       return asset ? asset.url : "";
+    },
+    looping(sound) {
+      return Boolean(sound.looping);
     }
   },
   Query: {
@@ -316,7 +353,7 @@ const resolver = {
       )
     },
     clearCache: {
-      resolve: payload => payload,
+      resolve: payload => Boolean(payload),
       subscribe: withFilter(
         () => pubsub.asyncIterator("clearCache"),
         (rootValue, { client, flight }) => {
@@ -328,7 +365,7 @@ const resolver = {
           } else {
             output = rootValue.filter(c => c.connected).length > 0;
           }
-          return output;
+          return Boolean(output);
         }
       )
     },

@@ -41,13 +41,13 @@ export default which =>
       value: "Unable to complete scan.  No probe has been launched."
     },
     {
-      label: "Not in range",
-      value: "Unable to complete scan. USS ***** is not within range."
+      label: "Ship not in range",
+      value: "Unable to complete scan. Ship is not within range."
     },
     {
-      label: "Radiation from nebula",
+      label: "Radiation interference",
       value:
-        "Radiation from the nebula is interferring with sensors.  Unable to complete scan."
+        "Radiation is interfering with sensors.  Unable to complete scan."
     },
     {
       label: "Scanning...",
@@ -79,6 +79,11 @@ export default which =>
       label: "Asteroids",
       value:
         "Asteroids detected in the area. It is recommended that Thrusters be used to dodge asteroids. The weapon systems can be used to destroy incoming projectiles before impact."
+    },
+    {
+      label: "On Course",
+      value:
+        "Now on course "
     },
     which && {
       label: `Use ${which === "internal" ? "External" : "Internal"}`,

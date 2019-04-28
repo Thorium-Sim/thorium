@@ -78,7 +78,7 @@ const StationPicker = ({
                     action({
                       variables: {
                         stationSetId: stationSet.id,
-                        crewCount: e.target.value
+                        crewCount: parseInt(e.target.value, 10)
                       }
                     })
                   }
