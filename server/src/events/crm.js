@@ -31,3 +31,6 @@ App.on("crmSetPhaserCharge", ({ id, clientId, phaser }) => {
 App.on("crmSetVelocity", ({ id, clientId, velocity }) => {
   performFighterAction(id, clientId, f => f.setVelocity(velocity));
 });
+App.on("crmSetShieldState", ({ id, clientId, shield }) => {
+  performFighterAction(id, clientId, f => f.setShield(shield));
+});

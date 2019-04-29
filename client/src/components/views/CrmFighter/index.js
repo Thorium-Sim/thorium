@@ -9,6 +9,7 @@ const MOVEMENT_QUERY = gql`
   query CrmMovement($simulatorId: ID!) {
     crm(simulatorId: $simulatorId) {
       id
+      fighterImage
       enemies {
         id
         icon

@@ -47,17 +47,19 @@ const trainingSteps = [
 ];
 
 const Crm = ({
-  crm: { id, enemies, fighters, interval },
-  fighter: { phaserLevel },
+  crm: { id, enemies, fighters, interval, fighterImage },
+  fighter: { phaserLevel, id: fighterId, shield, hull, shieldRaised },
   clientObj,
   client
 }) => {
   return (
     <div className="card-crm-fighter">
       <FighterCanvas
+        clientId={clientObj.id}
         enemies={enemies}
         fighters={fighters}
         interval={interval}
+        fighterId={fighterId}
       />
       <PhaserCharging
         id={id}
@@ -65,8 +67,18 @@ const Crm = ({
         phaserLevel={phaserLevel}
       />
       <TorpedoLoading />
-      <Controls />
-      <Shield />
+      <Controls
+        id={id}
+        clientId={clientObj.id}
+        phaserLevel={phaserLevel}
+        shieldRaised={shieldRaised}
+      />
+      <Shield
+        fighterImage={fighterImage}
+        shield={shield}
+        hull={hull}
+        shieldRaised={shieldRaised}
+      />
       <Joystick id={id} clientId={clientObj.id} client={client} />
       <Tour steps={trainingSteps} client={clientObj} />
     </div>

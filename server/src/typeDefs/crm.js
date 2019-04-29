@@ -17,6 +17,7 @@ const schema = gql`
     locations: [Room]
     password: String
     activated: Boolean
+    fighterImage: String
     fighters: [CrmFighter]
     enemies: [CrmFighter]
     fighterCount: Int
@@ -54,6 +55,7 @@ const schema = gql`
     crmAddEnemy(id: ID!): String
     crmSetVelocity(id: ID!, clientId: ID!, velocity: CoordinatesInput!): String
     crmSetPhaserCharge(id: ID!, clientId: ID!, phaser: Float!): String
+    crmSetShieldState(id: ID!, clientId: ID!, shield: Boolean!): String
   }
   extend type Subscription {
     crmUpdate(simulatorId: ID): Crm

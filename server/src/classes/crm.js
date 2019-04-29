@@ -44,6 +44,9 @@ class CrmFighter {
       z: Math.min(this.maxVelocity, Math.max(-1 * this.maxVelocity, z))
     };
   }
+  setShield(shield) {
+    this.shieldRaised = shield;
+  }
 }
 
 export default class Crm extends System {
@@ -56,6 +59,8 @@ export default class Crm extends System {
 
     this.password = params.password || "";
     this.activated = params.activated || false;
+    this.fighterImage = params.fighterImage || "/Docking Images/Default.png";
+
     this.fighters = [];
     if (params.fighters && params.fighters.length > 0) {
       params.fighters.forEach(f =>
