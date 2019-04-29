@@ -14,7 +14,15 @@ function calculatePosition({ position, center, zoomFactor, track = true }) {
       50
   };
 }
-const Fighters = ({ fighters, zoomFactor = 10, center, track, fighterId }) => {
+const Fighters = ({
+  fighters,
+  zoomFactor = 10,
+  center,
+  track,
+  fighterId,
+  targeted,
+  setTargeted = () => {}
+}) => {
   return fighters.map(e => {
     const { x, y } = calculatePosition({
       position: e.position,
@@ -30,18 +38,34 @@ const Fighters = ({ fighters, zoomFactor = 10, center, track, fighterId }) => {
           transform: `translate(${x}%,${y}%)`
         }}
       >
+        {e.id === targeted && (
+          <img
+            draggable="false"
+            className="reticule"
+            src={require("./reticle.svg")}
+            alt="reticule"
+          />
+        )}
         <div
-          className="enemy-inner"
+          className={`enemy-inner ${e.isEnemy ? "is-enemy" : ""}`}
           style={{
             backgroundColor:
-              e.id === fighterId ? "#ff0" : e.isEnemy ? "#f00" : "#0f0"
+              e.id === fighterId ? "#ff0" : e.isEnemy ? "#800" : "#0f0"
           }}
+          onClick={() => setTargeted(e.id)}
         />
       </div>
     );
   });
 };
-const FighterCanvas = ({ enemies, fighters, interval, fighterId }) => {
+const FighterCanvas = ({
+  enemies,
+  fighters,
+  interval,
+  fighterId,
+  targeted,
+  setTargeted
+}) => {
   const fighterContacts = useInterpolate(
     fighters.concat(enemies.map(e => ({ ...e, isEnemy: true }))),
     interval
@@ -56,6 +80,8 @@ const FighterCanvas = ({ enemies, fighters, interval, fighterId }) => {
         interval={interval}
         center={center}
         fighterId={fighterId}
+        targeted={targeted}
+        setTargeted={setTargeted}
       />
       <div className="inner-canvas">
         <Fighters

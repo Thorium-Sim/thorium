@@ -34,3 +34,6 @@ App.on("crmSetVelocity", ({ id, clientId, velocity }) => {
 App.on("crmSetShieldState", ({ id, clientId, shield }) => {
   performFighterAction(id, clientId, f => f.setShield(shield));
 });
+App.on("crmLoadTorpedo", ({ id, clientId }) => {
+  performFighterAction(id, clientId, f => f.loadTorpedo());
+});

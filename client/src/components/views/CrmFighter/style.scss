@@ -35,7 +35,18 @@
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background-color: red;
+    }
+    .is-enemy {
+      cursor: url("./reticle.png") 16 16, pointer;
+      pointer-events: all;
+      background-color: #800;
+    }
+    .reticule {
+      width: 32px;
+      height: 32px;
+      position: absolute;
+      left: -6px;
+      top: -6px;
     }
     .inner-canvas {
       position: absolute;
@@ -126,6 +137,36 @@
       height: 200px;
       object-fit: contain;
       transition: filter 1s ease;
+    }
+  }
+  .torpedo-loading {
+    grid-area: torpedo;
+    position: relative;
+    padding: 5px;
+    .launcher-holder {
+      position: absolute;
+      max-height: 214px;
+      max-width: 486px;
+      width: 100%;
+    }
+    .torpedo-launcher {
+      width: 100%;
+    }
+    .load-button {
+      position: absolute;
+      left: 30%;
+      top: 50%;
+    }
+    .torpedo-icon {
+      position: absolute;
+      left: 1.3%;
+      width: 11%;
+      height: 13.5%;
+      top: 15.5%;
+      transition: transform 0.5s ease 0.2s;
+      &.loaded {
+        transition: transform 0.7s ease;
+      }
     }
   }
 }

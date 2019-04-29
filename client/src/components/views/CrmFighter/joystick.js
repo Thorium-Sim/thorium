@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import distance from "helpers/distance";
 import { throttle } from "helpers/debounce";
 import gql from "graphql-tag.macro";
+import { withApollo } from "react-apollo";
+
 function useDraggable(callback, upCallback = () => {}) {
   function mouseup() {
     document.removeEventListener("mouseup", mouseup);
@@ -98,4 +100,4 @@ const Joystick = ({ client, id, clientId }) => {
     </div>
   );
 };
-export default Joystick;
+export default withApollo(Joystick);

@@ -47,6 +47,9 @@ class CrmFighter {
   setShield(shield) {
     this.shieldRaised = shield;
   }
+  loadTorpedo() {
+    this.torpedoLoaded = true;
+  }
 }
 
 export default class Crm extends System {

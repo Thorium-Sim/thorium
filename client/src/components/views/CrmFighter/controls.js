@@ -3,13 +3,21 @@ import { Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 
-const Controls = ({ id, clientId, phaserLevel, shieldRaised }) => {
+const Controls = ({
+  id,
+  clientId,
+  phaserLevel,
+  torpedoLoaded,
+  shield,
+  shieldRaised,
+  targeted
+}) => {
   return (
     <div className="controls">
-      <Button block color="warning" disabled={phaserLevel < 0.05}>
+      <Button block color="warning" disabled={phaserLevel < 0.05 || !targeted}>
         Fire Phaser
       </Button>
-      <Button block color="warning">
+      <Button block color="warning" disabled={!torpedoLoaded || !targeted}>
         Fire Torpedo
       </Button>
       <Mutation
@@ -21,13 +29,13 @@ const Controls = ({ id, clientId, phaserLevel, shieldRaised }) => {
         variables={{ id, clientId, shield: !shieldRaised }}
       >
         {action => (
-          <Button block color="info" onClick={action}>
+          <Button block color="info" onClick={action} disabled={shield === 0}>
             {shieldRaised ? "Lower" : "Raise"} Shields
           </Button>
         )}
       </Mutation>
       <Button block color="danger">
-        Dock Viper
+        Dock Fighter
       </Button>
     </div>
   );

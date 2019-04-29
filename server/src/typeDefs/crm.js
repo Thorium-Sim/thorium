@@ -56,6 +56,8 @@ const schema = gql`
     crmSetVelocity(id: ID!, clientId: ID!, velocity: CoordinatesInput!): String
     crmSetPhaserCharge(id: ID!, clientId: ID!, phaser: Float!): String
     crmSetShieldState(id: ID!, clientId: ID!, shield: Boolean!): String
+    crmLoadTorpedo(id: ID!, clientId: ID!): String
+    crmFireTorpedo(id: ID!, clientId: ID!, target: ID!): String
   }
   extend type Subscription {
     crmUpdate(simulatorId: ID): Crm
