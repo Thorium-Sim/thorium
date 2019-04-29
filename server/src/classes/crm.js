@@ -31,7 +31,7 @@ class CrmFighter {
       y: 0,
       z: 0
     };
-    this.maxVelocity = 10;
+    this.maxVelocity = 1;
     this.interval = 0;
   }
   setPhaserCharge(phaser) {
