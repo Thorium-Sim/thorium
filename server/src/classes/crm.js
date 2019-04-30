@@ -1,4 +1,5 @@
 import { System } from "./generic";
+import * as THREE from "three";
 import uuid from "uuid";
 class CrmFighter {
   constructor(params) {
@@ -14,6 +15,8 @@ class CrmFighter {
     this.shield = params.shield || 1;
     this.shieldRaised = params.shieldRaised || false;
     this.phaserLevel = params.phaserLevel || 0;
+    this.phaserTarget = params.phaserTarget || null;
+    this.phaserStrength = 1; // Hit per tick
     this.torpedoCount = params.torpedoCount || 6;
     this.torpedoLoaded = params.torpedoLoaded || false;
     this.destroyed = params.destroyed || false;
@@ -50,6 +53,44 @@ class CrmFighter {
   loadTorpedo() {
     this.torpedoLoaded = true;
   }
+  fireTorpedo() {
+    this.torpedoLoaded = false;
+    this.torpedoCount--;
+  }
+  setPhaserTarget(target) {
+    this.phaserTarget = target;
+  }
+  hit(damage) {
+    if (this.shield && this.shieldRaised) {
+      this.shield = this.shield - damage;
+      if (this.shield < 0) {
+        damage = this.shield * -1;
+        this.shield = 0;
+        this.shieldRaised = false;
+      } else {
+        return;
+      }
+    }
+    this.hull = this.hull - damage;
+    if (this.hull < 0) {
+      this.destroyed = true;
+    }
+  }
+}
+
+class CrmTorpedo {
+  constructor(params) {
+    this.id = params.id || uuid.v4();
+    this.fighterId = params.fighterId;
+    this.position = params.position || { x: 0, y: 0, z: 0 };
+    this.velocity = params.velocity || { x: 0, y: 0, z: 0 };
+    // Include the starting position so the torpedo has limited range
+    this.startingPosition = params.startingPosition || { x: 0, y: 0, z: 0 };
+    this.destroyed = params.destroyed || false;
+
+    // Random damage value that this torpedo will inflict
+    this.strength = params.strength || Math.round(Math.random() * 30) + 20;
+  }
 }
 
 export default class Crm extends System {
@@ -82,6 +123,14 @@ export default class Crm extends System {
         this.enemies.push(
           new CrmFighter({ ...f, simulatorId: this.simulatorId })
         )
+      );
+    }
+
+    this.torpedos = [];
+
+    if (params.torpedos && params.torpedos.length > 0) {
+      params.torpedos.forEach(t =>
+        this.torpedos.push(new CrmTorpedo({ ...t }))
       );
     }
   }
@@ -126,5 +175,36 @@ export default class Crm extends System {
     });
     this.fighters.push(fighter);
     return fighter;
+  }
+  destroyTorpedo(torpedoId) {
+    const torpedo = this.torpedos.find(t => t.id === torpedoId);
+    torpedo.destroyed = true;
+    setTimeout(() => {
+      this.torpedos = this.torpedos.filter(t => t.id !== torpedoId);
+    }, 1000);
+  }
+  fireTorpedo(fighterId, targetId) {
+    const torpedoSpeed = 3;
+    // Get the fighter
+    const allFighters = this.enemies.concat(this.fighters);
+    const fighter = allFighters.find(
+      f => f.id === fighterId || f.clientId === fighterId
+    );
+    const target = allFighters.find(
+      f => f.id === targetId || f.clientId === targetId
+    );
+    const fighterPosition = new THREE.Vector3(...fighter.position);
+    const targetPosition = new THREE.Vector3(...target.position);
+    const velocity = fighterPosition
+      .sub(targetPosition)
+      .normalize()
+      .multiplyScalar(torpedoSpeed);
+    const torpedo = new CrmTorpedo({
+      fighterId,
+      position: fighter.position,
+      startingPosition: fighter.position,
+      velocity
+    });
+    this.torpedos.push(torpedo);
   }
 }

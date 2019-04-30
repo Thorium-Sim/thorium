@@ -25,6 +25,11 @@ const schema = gql`
     fighterDestroyedCount: Int
     enemyDestroyedCount: Int
     interval: Float
+    phasers: [CrmPhaserShot]
+  }
+  type CrmPhaserShot {
+    target: Coordinates
+    destination: Coordinates
   }
   type CrmFighter {
     id: ID
@@ -58,6 +63,8 @@ const schema = gql`
     crmSetShieldState(id: ID!, clientId: ID!, shield: Boolean!): String
     crmLoadTorpedo(id: ID!, clientId: ID!): String
     crmFireTorpedo(id: ID!, clientId: ID!, target: ID!): String
+    crmFirePhaser(id: ID!, clientId: ID!, target: ID!): String
+    crmStopPhaser(id: ID!, clientId: ID!): String
   }
   extend type Subscription {
     crmUpdate(simulatorId: ID): Crm
@@ -67,6 +74,18 @@ const schema = gql`
 `;
 
 const resolver = {
+  Crm: {
+    phasers(crm) {
+      const allFighters = crm.fighters.concat(crm.enemies);
+      const phasers = allFighters
+        .filter(f => f.phaserTarget)
+        .map(f => {
+          const t = allFighters.find(e => e.id === f.phaserTarget);
+          return { target: f.position, destination: t.destination };
+        });
+      return phasers;
+    }
+  },
   Query: {
     crm(rootQuery, { simulatorId }) {
       return App.systems.find(

@@ -28,12 +28,24 @@ App.on("crmAddEnemy", ({ id }) => {
 App.on("crmSetPhaserCharge", ({ id, clientId, phaser }) => {
   performFighterAction(id, clientId, f => f.setPhaserCharge(phaser));
 });
-App.on("crmSetVelocity", ({ id, clientId, velocity }) => {
-  performFighterAction(id, clientId, f => f.setVelocity(velocity));
+App.on("crmSetVelocity", ({ id, clientId, velocity, cb }) => {
+  performFighterAction(id, clientId, f => {
+    f.setVelocity(velocity);
+    cb && cb();
+  });
 });
 App.on("crmSetShieldState", ({ id, clientId, shield }) => {
   performFighterAction(id, clientId, f => f.setShield(shield));
 });
 App.on("crmLoadTorpedo", ({ id, clientId }) => {
   performFighterAction(id, clientId, f => f.loadTorpedo());
+});
+App.on("crmFireTorpedo", ({ id, clientId, target }) => {
+  performAction(id, sys => sys.fireTorpedo(clientId, target));
+});
+App.on("crmFirePhaser", ({ id, clientId, target }) => {
+  performFighterAction(id, clientId, f => f.setPhaserTarget(target));
+});
+App.on("crmStopPhaser", ({ id, clientId }) => {
+  performFighterAction(id, clientId, f => f.setPhaserTarget(null));
 });
