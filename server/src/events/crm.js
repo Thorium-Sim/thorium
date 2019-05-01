@@ -41,8 +41,14 @@ App.on("crmLoadTorpedo", ({ id, clientId }) => {
   performFighterAction(id, clientId, f => f.loadTorpedo());
 });
 App.on("crmFireTorpedo", ({ id, clientId, target }) => {
-  performAction(id, sys => sys.fireTorpedo(clientId, target));
+  performAction(id, sys => {
+    sys.fireTorpedo(clientId, target);
+    const fighter = sys.fighters.find(c => c.clientId === clientId);
+
+    pubsub.publish("crmFighterUpdate", fighter);
+  });
 });
+
 App.on("crmFirePhaser", ({ id, clientId, target }) => {
   performFighterAction(id, clientId, f => f.setPhaserTarget(target));
 });

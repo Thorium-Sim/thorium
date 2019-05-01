@@ -26,10 +26,16 @@ const schema = gql`
     enemyDestroyedCount: Int
     interval: Float
     phasers: [CrmPhaserShot]
+    torpedos: [CrmTorpedo]
   }
   type CrmPhaserShot {
     target: Coordinates
     destination: Coordinates
+  }
+  type CrmTorpedo {
+    id: ID
+    position: Coordinates
+    destroyed: Boolean
   }
   type CrmFighter {
     id: ID
@@ -81,7 +87,7 @@ const resolver = {
         .filter(f => f.phaserTarget)
         .map(f => {
           const t = allFighters.find(e => e.id === f.phaserTarget);
-          return { target: f.position, destination: t.destination };
+          return { target: f.position, destination: t.position };
         });
       return phasers;
     }

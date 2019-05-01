@@ -44,19 +44,20 @@ function crmContactMove() {
                     e.maxVelocity
                 )
               ),
-              z: Math.min(
-                e.maxVelocity,
-                Math.max(
-                  -e.maxVelocity,
-                  noise.noise2D(3 + (i + 1) * ii, tick * 0.00001 * interval) *
-                    e.maxVelocity
-                )
-              )
+              z: 0
+              //  Math.min(
+              //   e.maxVelocity,
+              //   Math.max(
+              //     -e.maxVelocity,
+              //     noise.noise2D(3 + (i + 1) * ii, tick * 0.00001 * interval) *
+              //       e.maxVelocity
+              //   )
+              // )
             };
             e.position = {
               x: Math.min(1000, Math.max(-1000, e.position.x + e.velocity.x)),
               y: Math.min(1000, Math.max(-1000, e.position.y + e.velocity.y)),
-              z: Math.min(1000, Math.max(-1000, e.position.z + e.velocity.z))
+              z: 0 //Math.min(1000, Math.max(-1000, e.position.z + e.velocity.z))
             };
           });
 
@@ -66,9 +67,11 @@ function crmContactMove() {
             e.position = {
               x: Math.min(1000, Math.max(-1000, e.position.x + e.velocity.x)),
               y: Math.min(1000, Math.max(-1000, e.position.y + e.velocity.y)),
-              z: Math.min(1000, Math.max(-1000, e.position.z + e.velocity.z))
+              z: 0 //Math.min(1000, Math.max(-1000, e.position.z + e.velocity.z))
             };
           });
+
+          const allFighters = crm.fighters.concat(crm.enemies);
 
           // Update the torpedo movement
           crm.torpedos.forEach(t => {
@@ -79,23 +82,30 @@ function crmContactMove() {
             };
 
             // Check collisions
-            const allFighters = crm.fighters.concat(crm.enemies);
-            crm.torpedos.forEach(t => {
-              if (t.destroyed) return;
-              const collisions = allFighters.filter(f => {
-                return distance3d(f.position, t.position) < 10;
-              });
-              if (collisions.length > 0) {
-                crm.destroyTorpedo(t.id);
-              }
-              collisions.forEach(f => {
-                f.hit(t.strength);
-              });
+            if (t.destroyed) return;
+            const collisions = allFighters.filter(f => {
+              return (
+                t.fighterId !== f.id && distance3d(f.position, t.position) < 5
+              );
+            });
+            if (collisions.length > 0) {
+              crm.destroyTorpedo(t.id);
+            }
+            collisions.forEach(f => {
+              t.velocity = f.velocity;
+              f.hit(t.strength);
             });
 
-            // Phaser damage
-            allFighters.forEach(f => {
-              if (f.phaserTarget && f.phaserLevel > 0) {
+            if (distance3d(t.position, t.startingPosition) > 200) {
+              crm.destroyTorpedo(t.id);
+            }
+          });
+          // Phaser damage
+          allFighters.forEach(f => {
+            if (f.phaserTarget) {
+              pubsub.publish("crmFighterUpdate", f);
+
+              if (f.phaserLevel > 0) {
                 const t = allFighters.find(e => e.id === f.phaserTarget);
                 if (distance3d(f.position, t.position) < 150) {
                   t.hit(f.phaserStrength);
@@ -103,8 +113,10 @@ function crmContactMove() {
                 } else {
                   f.phaserTarget = null;
                 }
+              } else {
+                f.phaserTarget = null;
               }
-            });
+            }
           });
           pubsub.publish("crmMovementUpdate", crm);
         });

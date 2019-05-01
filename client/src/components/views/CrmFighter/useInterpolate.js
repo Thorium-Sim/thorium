@@ -37,8 +37,10 @@ export default function useInterpolate(inputs, interval) {
     const filteredContacts = contacts
       .filter(({ id }) => inputIds.indexOf(id) > -1)
       .map(c => {
+        if (!previousInputObj[c.id] || !inputObj[c.id]) return null;
         return {
           ...c,
+          ...inputObj[c.id],
           position: {
             x: lerp(
               previousInputObj[c.id].position.x,
@@ -52,7 +54,8 @@ export default function useInterpolate(inputs, interval) {
             )
           }
         };
-      });
+      })
+      .filter(Boolean);
     setContacts(newContacts.concat(filteredContacts));
   });
   return contacts;

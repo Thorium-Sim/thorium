@@ -10,6 +10,24 @@ const MOVEMENT_QUERY = gql`
     crm(simulatorId: $simulatorId) {
       id
       fighterImage
+      phasers {
+        target {
+          x
+          y
+        }
+        destination {
+          x
+          y
+        }
+      }
+      torpedos {
+        id
+        position {
+          x
+          y
+        }
+        destroyed
+      }
       enemies {
         id
         icon
@@ -39,12 +57,31 @@ const MOVEMENT_SUBSCRIPTION = gql`
   subscription CrmMovement($simulatorId: ID!) {
     crmMovementUpdate(simulatorId: $simulatorId) {
       id
+      phasers {
+        target {
+          x
+          y
+        }
+        destination {
+          x
+          y
+        }
+      }
+      torpedos {
+        id
+        position {
+          x
+          y
+        }
+        destroyed
+      }
       enemies {
         id
         position {
           x
           y
         }
+        destroyed
       }
       fighters {
         id
@@ -52,6 +89,7 @@ const MOVEMENT_SUBSCRIPTION = gql`
           x
           y
         }
+        destroyed
       }
       interval
     }
@@ -81,6 +119,8 @@ class CrmData extends Component {
                       enemies,
                       fighters,
                       interval,
+                      phasers,
+                      torpedos,
                       id
                     } = subscriptionData.data.crmMovementUpdate;
                     if (id !== crm.id) return previousResult;
@@ -92,13 +132,16 @@ class CrmData extends Component {
                       (acc, e) => ({ ...acc, [e.id]: e }),
                       {}
                     );
+                    const newEnemies = enemies.map(e => ({
+                      ...crmEnemies[e.id],
+                      ...e
+                    }));
                     return Object.assign({}, previousResult, {
                       crm: {
                         ...crm,
-                        enemies: enemies.map(e => ({
-                          ...crmEnemies[e.id],
-                          ...e
-                        })),
+                        phasers,
+                        torpedos,
+                        enemies: newEnemies,
                         fighters: fighters.map(e => ({
                           ...crmFighters[e.id],
                           ...e

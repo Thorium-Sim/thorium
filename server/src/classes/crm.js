@@ -16,7 +16,7 @@ class CrmFighter {
     this.shieldRaised = params.shieldRaised || false;
     this.phaserLevel = params.phaserLevel || 0;
     this.phaserTarget = params.phaserTarget || null;
-    this.phaserStrength = 1; // Hit per tick
+    this.phaserStrength = 0.03; // Hit per tick
     this.torpedoCount = params.torpedoCount || 6;
     this.torpedoLoaded = params.torpedoLoaded || false;
     this.destroyed = params.destroyed || false;
@@ -34,7 +34,7 @@ class CrmFighter {
       y: 0,
       z: 0
     };
-    this.maxVelocity = 1;
+    this.maxVelocity = this.clientId ? 5 : 1;
     this.interval = 0;
   }
   setPhaserCharge(phaser) {
@@ -89,7 +89,7 @@ class CrmTorpedo {
     this.destroyed = params.destroyed || false;
 
     // Random damage value that this torpedo will inflict
-    this.strength = params.strength || Math.round(Math.random() * 30) + 20;
+    this.strength = params.strength || Math.round(Math.random() * 0.3) + 0.2;
   }
 }
 
@@ -193,14 +193,17 @@ export default class Crm extends System {
     const target = allFighters.find(
       f => f.id === targetId || f.clientId === targetId
     );
-    const fighterPosition = new THREE.Vector3(...fighter.position);
-    const targetPosition = new THREE.Vector3(...target.position);
-    const velocity = fighterPosition
-      .sub(targetPosition)
+    const fighterPosition = new THREE.Vector3(
+      ...Object.values(fighter.position)
+    );
+    // fighter.fireTorpedo();
+    const targetPosition = new THREE.Vector3(...Object.values(target.position));
+    const velocity = targetPosition
+      .sub(fighterPosition)
       .normalize()
       .multiplyScalar(torpedoSpeed);
     const torpedo = new CrmTorpedo({
-      fighterId,
+      fighterId: fighter.id,
       position: fighter.position,
       startingPosition: fighter.position,
       velocity

@@ -40,12 +40,7 @@ const TorpedoLoading = ({ id, clientId, torpedoCount, torpedoLoaded }) => {
       .fill(0)
       .map(() => ({ id: uuid.v4() }))
   );
-  console.log(
-    torpedos,
-    torpedoCount,
-    torpedoLoaded,
-    torpedoCount - (torpedoLoaded ? 1 : 0)
-  );
+
   useEffect(() => {
     dispatch({ count: torpedoCount - (torpedoLoaded ? 1 : 0) });
   }, [torpedoCount, torpedoLoaded]);

@@ -48,7 +48,7 @@ const trainingSteps = [
 ];
 
 const Crm = ({
-  crm: { id, enemies, fighters, interval, fighterImage },
+  crm: { id, enemies, fighters, interval, fighterImage, phasers, torpedos },
   fighter: {
     phaserLevel,
     id: fighterId,
@@ -61,13 +61,17 @@ const Crm = ({
   clientObj
 }) => {
   const [targeted, setTargeted] = useState(null);
+
+  // Untarget when necessary
   useEffect(() => {
     const fighterObj = fighters.find(f => f.id === fighterId);
     const target = enemies.find(t => t.id === targeted);
     if (!fighterObj || !target) return;
-    if (distance(target.position, fighterObj.position) > 200) {
+    if (
+      target.destroyed ||
+      distance(target.position, fighterObj.position) > 200
+    ) {
       setTargeted(null);
-      console.log("Lost Target");
     }
   }, [enemies, fighterId, fighters, targeted]);
   return (
@@ -80,6 +84,8 @@ const Crm = ({
         fighterId={fighterId}
         targeted={targeted}
         setTargeted={setTargeted}
+        phasers={phasers}
+        torpedos={torpedos}
       />
       <PhaserCharging
         id={id}

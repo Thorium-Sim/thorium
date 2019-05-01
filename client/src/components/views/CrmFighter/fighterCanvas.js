@@ -47,16 +47,78 @@ const Fighters = ({
           />
         )}
         <div
-          className={`enemy-inner ${e.isEnemy ? "is-enemy" : ""}`}
+          className={`enemy-inner ${e.type === "enemy" ? "is-enemy" : ""}`}
           style={{
-            backgroundColor:
-              e.id === fighterId ? "#ff0" : e.isEnemy ? "#800" : "#0f0"
+            width: e.type === "torpedo" ? "5px" : null,
+            height: e.type === "torpedo" ? "5px" : null,
+            backgroundColor: e.destroyed
+              ? "#f0f"
+              : e.id === fighterId
+              ? "#ff0"
+              : e.type === "enemy"
+              ? "#800"
+              : e.type === "torpedo"
+              ? "white"
+              : "#0f0"
           }}
-          onClick={() => setTargeted(e.id)}
+          onClick={() => e.type !== "torpedo" && setTargeted(e.id)}
         />
       </div>
     );
   });
+};
+
+const Phasers = ({ phasers, center, zoomFactor = 10, track = true }) => {
+  return phasers.map(
+    ({ target: initTarget, destination: initDestination }, i) => {
+      const target = calculatePosition({
+        position: initTarget,
+        center,
+        zoomFactor,
+        track
+      });
+      const destination = calculatePosition({
+        position: initDestination,
+        center,
+        zoomFactor,
+        track
+      });
+
+      const width = Math.abs(target.x - destination.x) + 0.7;
+      const height = Math.abs(target.y - destination.y) + 0.7;
+      const left = Math.min(target.x, destination.x) + 0.7;
+      const top = Math.min(target.y, destination.y) + 0.7;
+      let isRight = true;
+      if (
+        (target.x > destination.x && target.y < destination.y) ||
+        (target.x < destination.x && target.y > destination.y)
+      ) {
+        isRight = false;
+      }
+      return (
+        <div
+          key={`phaser-${i}`}
+          className="enemy-outer"
+          style={{
+            transform: `translate(${left}%, ${top}%)`
+          }}
+        >
+          <div
+            style={{
+              width: `${width}%`,
+              height: `${height}%`,
+              background: `linear-gradient(to top ${isRight ? "right" : "left"},
+              rgba(0,0,0,0) 0%,
+              rgba(0,0,0,0) calc(50% - 2px),
+              rgba(255,255,0,0.8) 50%,
+              rgba(0,0,0,0) calc(50% + 2px),
+              rgba(0,0,0,0) 100%)`
+            }}
+          />
+        </div>
+      );
+    }
+  );
 };
 const FighterCanvas = ({
   enemies,
@@ -64,10 +126,15 @@ const FighterCanvas = ({
   interval,
   fighterId,
   targeted,
-  setTargeted
+  setTargeted,
+  phasers,
+  torpedos
 }) => {
   const fighterContacts = useInterpolate(
-    fighters.concat(enemies.map(e => ({ ...e, isEnemy: true }))),
+    torpedos
+      .map(t => ({ ...t, type: "torpedo" }))
+      .concat(enemies.map(e => ({ ...e, type: "enemy" })))
+      .concat(fighters),
     interval
   );
 
@@ -75,6 +142,7 @@ const FighterCanvas = ({
   const { position: center } = fighter;
   return (
     <div className="fighter-canvas">
+      <Phasers phasers={phasers} center={center} />
       <Fighters
         fighters={fighterContacts}
         interval={interval}
@@ -83,6 +151,7 @@ const FighterCanvas = ({
         targeted={targeted}
         setTargeted={setTargeted}
       />
+
       <div className="inner-canvas">
         <Fighters
           fighters={fighterContacts}
