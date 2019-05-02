@@ -4,7 +4,8 @@
       "Fixes a situation where auto-viewscreen can crash the server.",
       "Fixes issues with using auto-advancing features with the timeline thumbnail core. Note: The timeline thumbnail core will now highlight the current timeline step, but the standard timeline core will show the next timeline step.",
       "Fixes an issue where very tall images on the ship view viewscreen go out of bounds.",
-      "Fixes an issue where adjusting the volume on the play sound macro causes jank."
+      "Fixes an issue where adjusting the volume on the play sound macro causes jank.",
+      "Fixes an issue where running the stop looping sound macro twice will stop all sounds."
     ]
   },
   "1.2.16": {
