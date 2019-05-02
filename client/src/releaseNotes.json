@@ -16,7 +16,8 @@
       "The kiosk can now play sounds attached to command + q, command + w, and command + r.",
       "Fixes a graphical issue with software panels toggle switches.",
       "Fixes an issue where sparks never stop.",
-      "Add more blocks in place to make sure the tractor beam doesn't go out of bounds."
+      "Add more blocks in place to make sure the tractor beam doesn't go out of bounds.",
+      "Fixes issues with engine buttons."
     ]
   },
   "1.2.16": {
