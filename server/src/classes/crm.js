@@ -34,17 +34,39 @@ class CrmFighter {
       y: 0,
       z: 0
     };
-    this.maxVelocity = this.clientId ? 5 : 1;
+    this.acceleration = {
+      x: 0,
+      y: 0,
+      z: 0
+    };
+    this.maxPosition = 1000;
+    this.maxVelocity = this.clientId ? 2.5 : 1;
+    this.maxAcceleration = 0.1;
     this.interval = 0;
   }
+
   setPhaserCharge(phaser) {
     this.phaserLevel = Math.min(1, Math.max(0, phaser));
+  }
+  setPosition({ x, y, z }) {
+    this.position = {
+      x: Math.min(this.maxPosition, Math.max(-1 * this.maxPosition, x)),
+      y: Math.min(this.maxPosition, Math.max(-1 * this.maxPosition, y)),
+      z: Math.min(this.maxPosition, Math.max(-1 * this.maxPosition, z))
+    };
   }
   setVelocity({ x, y, z }) {
     this.velocity = {
       x: Math.min(this.maxVelocity, Math.max(-1 * this.maxVelocity, x)),
       y: Math.min(this.maxVelocity, Math.max(-1 * this.maxVelocity, y)),
       z: Math.min(this.maxVelocity, Math.max(-1 * this.maxVelocity, z))
+    };
+  }
+  setAcceleration({ x, y, z }) {
+    this.acceleration = {
+      x: Math.min(this.maxAcceleration, Math.max(-1 * this.maxAcceleration, x)),
+      y: Math.min(this.maxAcceleration, Math.max(-1 * this.maxAcceleration, y)),
+      z: Math.min(this.maxAcceleration, Math.max(-1 * this.maxAcceleration, z))
     };
   }
   setShield(shield) {
@@ -89,7 +111,7 @@ class CrmTorpedo {
     this.destroyed = params.destroyed || false;
 
     // Random damage value that this torpedo will inflict
-    this.strength = params.strength || Math.round(Math.random() * 0.3) + 0.2;
+    this.strength = params.strength || Math.round(Math.random() * 0.5) + 0.5;
   }
 }
 

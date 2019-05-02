@@ -1,7 +1,7 @@
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager";
 import SimplexNoise from "simplex-noise";
-
+import * as THREE from "three";
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
   let { x: x2, y: y2, z: z2 } = coord2;
@@ -25,67 +25,60 @@ function crmContactMove() {
           if (!crm) return;
           crm.interval = interval;
 
-          // Update the enemy movement
+          // // Update the enemy movement
           crm.enemies.forEach((e, ii) => {
-            e.velocity = {
-              x: Math.min(
+            e.setVelocity({
+              x:
+                noise.noise2D(1 + (i + 1) * ii, tick * 0.00001 * interval) *
                 e.maxVelocity,
-                Math.max(
-                  -e.maxVelocity,
-                  noise.noise2D(1 + (i + 1) * ii, tick * 0.00001 * interval) *
-                    e.maxVelocity
-                )
-              ),
-              y: Math.min(
+              y:
+                noise.noise2D(2 + (i + 1) * ii, tick * 0.00001 * interval) *
                 e.maxVelocity,
-                Math.max(
-                  -e.maxVelocity,
-                  noise.noise2D(2 + (i + 1) * ii, tick * 0.00001 * interval) *
-                    e.maxVelocity
-                )
-              ),
               z: 0
-              //  Math.min(
-              //   e.maxVelocity,
-              //   Math.max(
-              //     -e.maxVelocity,
-              //     noise.noise2D(3 + (i + 1) * ii, tick * 0.00001 * interval) *
-              //       e.maxVelocity
-              //   )
-              // )
-            };
-            e.position = {
-              x: Math.min(1000, Math.max(-1000, e.position.x + e.velocity.x)),
-              y: Math.min(1000, Math.max(-1000, e.position.y + e.velocity.y)),
-              z: 0 //Math.min(1000, Math.max(-1000, e.position.z + e.velocity.z))
-            };
+            });
+            e.setPosition({
+              x: e.position.x + e.velocity.x,
+              y: e.position.y + e.velocity.y,
+              z: 0
+            });
           });
 
           // Update the fighter movement
           crm.fighters.forEach(e => {
-            // Move based on the velocity.
-            e.position = {
-              x: Math.min(1000, Math.max(-1000, e.position.x + e.velocity.x)),
-              y: Math.min(1000, Math.max(-1000, e.position.y + e.velocity.y)),
-              z: 0 //Math.min(1000, Math.max(-1000, e.position.z + e.velocity.z))
-            };
+            const dragScalar = 0.02;
+            // Move based on the acceleration.
+            const velocity = new THREE.Vector3(
+              e.acceleration.x + e.velocity.x,
+              e.acceleration.y + e.velocity.y,
+              e.acceleration.z + e.velocity.z
+            );
+            const drag = velocity.clone().multiplyScalar(dragScalar);
+            e.setVelocity(velocity.sub(drag));
+            e.setPosition({
+              x: e.position.x + e.velocity.x,
+              y: e.position.y + e.velocity.y,
+              z: 0
+            });
           });
 
           const allFighters = crm.fighters.concat(crm.enemies);
 
           // Update the torpedo movement
           crm.torpedos.forEach(t => {
+            // Don't limit the torpedo's position. Let it fly off into the distance.
             t.position = {
-              x: Math.min(1000, Math.max(-1000, t.position.x + t.velocity.x)),
-              y: Math.min(1000, Math.max(-1000, t.position.y + t.velocity.y)),
-              z: Math.min(1000, Math.max(-1000, t.position.z + t.velocity.z))
+              x: t.position.x + t.velocity.x,
+              y: t.position.y + t.velocity.y,
+              z: t.position.z + t.velocity.z
             };
 
             // Check collisions
             if (t.destroyed) return;
             const collisions = allFighters.filter(f => {
               return (
-                t.fighterId !== f.id && distance3d(f.position, t.position) < 5
+                !f.destroyed &&
+                t.fighterId !== f.id &&
+                distance3d(f.position, t.position) < 5
               );
             });
             if (collisions.length > 0) {

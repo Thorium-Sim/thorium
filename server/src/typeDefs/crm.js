@@ -64,7 +64,11 @@ const schema = gql`
     crmSetActivated(id: ID!, state: Boolean!): String
     crmSetPassword(id: ID!, password: String!): String
     crmAddEnemy(id: ID!): String
-    crmSetVelocity(id: ID!, clientId: ID!, velocity: CoordinatesInput!): String
+    crmSetAcceleration(
+      id: ID!
+      clientId: ID!
+      acceleration: CoordinatesInput!
+    ): String
     crmSetPhaserCharge(id: ID!, clientId: ID!, phaser: Float!): String
     crmSetShieldState(id: ID!, clientId: ID!, shield: Boolean!): String
     crmLoadTorpedo(id: ID!, clientId: ID!): String

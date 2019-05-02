@@ -26,20 +26,24 @@ function useDraggable(callback, upCallback = () => {}) {
 const Joystick = ({ client, id, clientId }) => {
   const radius = 200;
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const updateVelocity = throttle(function updateVelocity(x, y) {
+  const updateAcceleration = throttle(function updateAcceleration(x, y) {
     const mutation = gql`
-      mutation UpdateVelocity(
+      mutation UpdateAcceleration(
         $id: ID!
         $clientId: ID!
-        $velocity: CoordinatesInput!
+        $acceleration: CoordinatesInput!
       ) {
-        crmSetVelocity(id: $id, clientId: $clientId, velocity: $velocity)
+        crmSetAcceleration(
+          id: $id
+          clientId: $clientId
+          acceleration: $acceleration
+        )
       }
     `;
     const variables = {
       id,
       clientId,
-      velocity: { x, y, z: 0 }
+      acceleration: { x, y, z: 0 }
     };
     client.mutate({ mutation, variables });
   }, 1000 / 10);
@@ -73,11 +77,11 @@ const Joystick = ({ client, id, clientId }) => {
         x,
         y
       });
-      updateVelocity((x / radius) * 10, (y / radius) * 10);
+      updateAcceleration(x / radius, y / radius);
     },
     () => {
       setReturning(true);
-      updateVelocity(0, 0);
+      updateAcceleration(0, 0);
     }
   );
   useEffect(() => {

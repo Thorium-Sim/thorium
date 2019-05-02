@@ -28,9 +28,9 @@ App.on("crmAddEnemy", ({ id }) => {
 App.on("crmSetPhaserCharge", ({ id, clientId, phaser }) => {
   performFighterAction(id, clientId, f => f.setPhaserCharge(phaser));
 });
-App.on("crmSetVelocity", ({ id, clientId, velocity, cb }) => {
+App.on("crmSetAcceleration", ({ id, clientId, acceleration, cb }) => {
   performFighterAction(id, clientId, f => {
-    f.setVelocity(velocity);
+    f.setAcceleration(acceleration);
     cb && cb();
   });
 });
