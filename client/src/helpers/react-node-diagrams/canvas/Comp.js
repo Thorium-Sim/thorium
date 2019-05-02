@@ -172,7 +172,7 @@ export default class Comp extends Component {
             <div className={`${styles.br}`} />
           </div>
         )}
-        <p>{config.label}</p>
+        {/* <p>{config.label}</p> */}
         <RenderComp.component
           {...this.props}
           updateValue={value => updateValue(id, value)}
