@@ -136,7 +136,7 @@ export default class Comp extends Component {
   render() {
     const {
       id,
-      config = {},
+      // config = {},
       selected,
       position: { x, y },
       component,
