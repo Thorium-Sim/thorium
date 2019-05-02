@@ -13,7 +13,8 @@
       "Fixes an issue with the reactor task definition.",
       "Fixes an issue where radiation doesn't properly update.",
       "Enable the return and delete keys for keyboard actions.",
-      "The kiosk can now play sounds attached to command + q, command + w, and command + r."
+      "The kiosk can now play sounds attached to command + q, command + w, and command + r.",
+      "Fixes a graphical issue with software panels toggle switches."
     ]
   },
   "1.2.16": {
