@@ -14,7 +14,8 @@
       "Fixes an issue where radiation doesn't properly update.",
       "Enable the return and delete keys for keyboard actions.",
       "The kiosk can now play sounds attached to command + q, command + w, and command + r.",
-      "Fixes a graphical issue with software panels toggle switches."
+      "Fixes a graphical issue with software panels toggle switches.",
+      "Fixes an issue where sparks never stop."
     ]
   },
   "1.2.16": {
