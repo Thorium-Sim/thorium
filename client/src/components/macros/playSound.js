@@ -4,7 +4,32 @@ import SoundPicker from "helpers/soundPicker";
 import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 
-export default ({ updateArgs, args }) => {
+const Clients = React.memo(() => {
+  return (
+    <Query
+      query={gql`
+        query Clients {
+          clients(all: true) {
+            id
+          }
+        }
+      `}
+    >
+      {({ loading, data: { clients } }) =>
+        loading ? null : (
+          <optgroup label="Clients">
+            {clients.map(c => (
+              <option value={c.id} key={c.id}>
+                {c.id}
+              </option>
+            ))}
+          </optgroup>
+        )
+      }
+    </Query>
+  );
+});
+export default function playSound({ updateArgs, args }) {
   const sound = args.sound || {};
   const updateSound = (which, val) => {
     updateArgs("sound", { ...sound, [which]: val });
@@ -43,27 +68,7 @@ export default ({ updateArgs, args }) => {
             <option value="random">Random Station</option>
             <option value="ECS">ECS</option>
           </optgroup>
-          <Query
-            query={gql`
-              query Clients {
-                clients(all: true) {
-                  id
-                }
-              }
-            `}
-          >
-            {({ loading, data: { clients } }) =>
-              loading ? null : (
-                <optgroup label="Clients">
-                  {clients.map(c => (
-                    <option value={c.id} key={c.id}>
-                      {c.id}
-                    </option>
-                  ))}
-                </optgroup>
-              )
-            }
-          </Query>
+          <Clients />
         </Input>
         <Label>Volume</Label>
         <Input
@@ -101,4 +106,4 @@ export default ({ updateArgs, args }) => {
       </FormGroup>
     </div>
   );
-};
+}

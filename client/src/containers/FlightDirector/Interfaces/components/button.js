@@ -23,7 +23,7 @@ export default {
         }}
         color={config.color}
       >
-        {config.objectLabel || "Button"}
+        {config.label || config.objectLabel || "Button"}
       </Button>
     );
   },
@@ -39,6 +39,13 @@ export default {
   config: [
     {
       id: "objectLabel",
+      title: "Object Label",
+      props: {
+        type: "text"
+      }
+    },
+    {
+      id: "label",
       title: "Button Text",
       props: {
         type: "text"

@@ -47,9 +47,7 @@ export const Toggle = ({ id, interfaceId, config, value = {} }) => {
               />
             )}
           </svg>
-          {config.objectLabel && (
-            <p style={{ color: "white" }}>{config.objectLabel}</p>
-          )}
+          {config.label && <p style={{ color: "white" }}>{config.label}</p>}
         </div>
       )}
     </Mutation>

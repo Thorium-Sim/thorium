@@ -54,7 +54,7 @@ const schema = gql`
     """
     Macro: Timeline: Auto-Advance Timeline Step (Use with Delay)
     """
-    autoAdvance(simulatorId: ID!, prev: Boolean): String
+    autoAdvance(simulatorId: ID!, prev: Boolean, limited: Boolean): String
     """
     Macro: Flight: Start Training Mode
     """

@@ -107,11 +107,11 @@ ${this.state.reproduce}`,
                 <option disabled value="select">
                   Select a Type
                 </option>
-                <option value="bug">Bug</option>
-                <option value="feature">Feature Request</option>
-                <option value="card">Card Request</option>
-                <option value="question">Question</option>
-                <option value="enhancement">Enhancement</option>
+                <option value="type/bug">Bug</option>
+                <option value="type/feature">Feature Request</option>
+                <option value="type/card">Card Request</option>
+                <option value="type/question">Question</option>
+                <option value="type/enhancement">Enhancement</option>
               </select>
             </div>
             <div className="form-group">

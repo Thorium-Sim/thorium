@@ -78,6 +78,9 @@
   .componentInstance div {
     pointer-events: all;
     display: inline-block;
+    .no-inline.switch {
+      display: flex;
+    }
   }
 
   .output {

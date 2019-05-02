@@ -5,7 +5,7 @@ import { InputField, OutputField } from "../../generic/core";
 import { Input, Button } from "reactstrap";
 import LayoutList from "../../layouts/list";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-
+import debounce from "helpers/debounce";
 const layouts = LayoutList;
 
 const fragment = gql`
@@ -89,7 +89,7 @@ class ShipCore extends Component {
       variables
     });
   };
-  updateRadiation = radiation => {
+  updateRadiation = debounce(radiation => {
     const mutation = gql`
       mutation SetRadiation($simulatorId: ID!, $radiation: Float!) {
         changeSimulatorRadiation(
@@ -106,7 +106,7 @@ class ShipCore extends Component {
       mutation,
       variables
     });
-  };
+  }, 500);
   startTraining = () => {
     const mutation = gql`
       mutation StartTraining($simulatorId: ID!) {
@@ -333,7 +333,7 @@ class ShipCore extends Component {
           min={0}
           max={1}
           step={0.01}
-          onBlur={evt => this.updateRadiation(parseFloat(evt.target.value))}
+          onChange={evt => this.updateRadiation(parseFloat(evt.target.value))}
         />
         <Button
           size="sm"
