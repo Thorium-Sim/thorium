@@ -17,7 +17,8 @@
       "Fixes a graphical issue with software panels toggle switches.",
       "Fixes an issue where sparks never stop.",
       "Add more blocks in place to make sure the tractor beam doesn't go out of bounds.",
-      "Fixes issues with engine buttons."
+      "Fixes issues with engine buttons.",
+      "Fixes an issue where inventory items cannot be added."
     ]
   },
   "1.2.16": {
