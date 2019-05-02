@@ -10,5 +10,6 @@ export default [
   "LayoutPhoenix",
   "LayoutShipStation",
   "LayoutEpsilon",
-  "LayoutBlack"
+  "LayoutBlack",
+  "LayoutClear"
 ];
