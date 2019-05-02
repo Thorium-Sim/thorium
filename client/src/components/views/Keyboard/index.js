@@ -46,10 +46,10 @@ class Keyboard extends Component {
     };
   }
   componentDidMount() {
-    document.addEventListener("keydown", this.keydown);
+    document.addEventListener("keydown", this.keydown, true);
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.keydown);
+    document.removeEventListener("keydown", this.keydown, true);
   }
   render() {
     const { clientObj } = this.props;

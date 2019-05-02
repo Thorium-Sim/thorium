@@ -268,7 +268,7 @@ class Inventory extends Component {
                   <Input
                     type="text"
                     readOnly
-                    value={inventoryItem.roomCount.reduce(
+                    value={(inventoryItem.roomCount || []).reduce(
                       (prev, next) => prev + (parseInt(next.count, 10) || 0),
                       0
                     )}

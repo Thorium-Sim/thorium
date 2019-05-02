@@ -42,7 +42,7 @@ const schema = gql`
     ): String
     addInterfaceToSimulator(simulatorId: ID!, interfaceId: ID!): String
     removeInterfaceFromSimulator(simulatorId: ID!, interfaceId: ID!): String
-    addInterfaceDevice(name: String!): String
+    addInterfaceDevice(name: String!, width: Int!, height: Int!): String
     renameInterfaceDevice(id: ID!, name: String!): String
     removeInterfaceDevice(id: ID!): String
     updateInterfaceDevice(id: ID!, width: Int, height: Int): String
@@ -55,6 +55,10 @@ const schema = gql`
       objectId: ID!
       hidden: Boolean!
     ): String
+    """
+    Macro: Interfaces: Toggle Video playing
+    """
+    toggleInterfaceObjectPlaying(id: ID!, objectId: ID!): String
   }
   extend type Subscription {
     interfaceUpdate(simulatorId: ID): [Interface]

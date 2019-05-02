@@ -13,7 +13,11 @@ export const CompButton = ({ id, interfaceId, config }) => {
       `}
       variables={{ id: interfaceId, objectId: id }}
     >
-      {action => <Button onClick={() => action()}>{config.objectLabel}</Button>}
+      {action => (
+        <Button onClick={() => action()} color={config.color}>
+          {config.label || config.objectLabel}
+        </Button>
+      )}
     </Mutation>
   );
 };

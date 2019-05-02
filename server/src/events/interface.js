@@ -56,22 +56,27 @@ App.on("removeInterfaceFromSimulator", ({ simulatorId, interfaceId }) => {
   });
 });
 
-App.on("addInterfaceDevice", ({ name }) => {
-  App.interfaceDevices.push(new Classes.InterfaceDevice({ name }));
+App.on("addInterfaceDevice", ({ name, width, height, cb }) => {
+  const device = new Classes.InterfaceDevice({ name, width, height });
+  App.interfaceDevices.push(device);
+  cb && cb(device.id);
 });
 
-App.on("renameInterfaceDevice", ({ id, name }) => {
+App.on("renameInterfaceDevice", ({ id, name, cb }) => {
   const device = App.interfaceDevices.find(d => d.id === id);
   device && device.rename(name);
+  cb && cb();
 });
 
-App.on("removeInterfaceDevice", ({ id }) => {
-  App.interfaces = App.interfaceDevices.filter(c => c.id !== id);
+App.on("removeInterfaceDevice", ({ id, cb }) => {
+  App.interfaceDevices = App.interfaceDevices.filter(c => c.id !== id);
+  cb && cb();
 });
 
-App.on("updateInterfaceDevice", ({ id, width, height }) => {
+App.on("updateInterfaceDevice", ({ id, width, height, cb }) => {
   const device = App.interfaceDevices.find(d => d.id === id);
   device && device.update({ width, height });
+  cb && cb();
 });
 
 App.on("triggerInterfaceObject", ({ id, objectId }) => {
@@ -104,3 +109,28 @@ App.on(
     pubsub.publish("interfaceUpdate", App.interfaces);
   }
 );
+
+App.on("toggleInterfaceObjectPlaying", ({ simulatorId, id, objectId }) => {
+  const interfaceObj = App.interfaces.find(i =>
+    simulatorId
+      ? i.simulatorId === simulatorId && i.templateId === id
+      : i.id === id
+  );
+  const autoPlay = interfaceObj.config[objectId].autoPlay;
+  const values = interfaceObj.values[objectId] || {};
+  const initialPlaying = values.playing;
+  const playing = !(initialPlaying || initialPlaying === false
+    ? initialPlaying
+    : autoPlay);
+  interfaceObj.update({
+    values: {
+      ...interfaceObj.values,
+      [objectId]: {
+        ...interfaceObj.values[objectId],
+        playing
+      }
+    }
+  });
+
+  pubsub.publish("interfaceUpdate", App.interfaces);
+});

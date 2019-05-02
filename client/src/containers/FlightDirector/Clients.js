@@ -399,6 +399,8 @@ class Clients extends Component {
             this.props.data.subscribeToMore({
               document: FLIGHTS_SUB,
               updateQuery: (previousResult, { subscriptionData }) => {
+                this.props.data.refetch();
+
                 return Object.assign({}, previousResult, {
                   flights: subscriptionData.data.flightsUpdate
                 });

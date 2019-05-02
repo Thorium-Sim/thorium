@@ -175,7 +175,8 @@ App.on("setVerifyDamage", ({ simulatorId, verifyStep }) => {
 const allowedMacros = [
   "updateViewscreenComponent",
   "setViewscreenToAuto",
-  "showViewscreenTactical"
+  "showViewscreenTactical",
+  "autoAdvance"
 ];
 App.on("triggerMacros", ({ simulatorId, macros }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
@@ -209,23 +210,20 @@ App.on("autoAdvance", ({ simulatorId, prev }) => {
   const timelineStep =
     missionObj.timeline[currentTimelineStep - (prev ? 2 : 0)];
   if (!timelineStep) return;
-  timelineStep.timelineItems
-    .filter(
-      t =>
-        executedTimelineSteps.indexOf(t.id) === -1 ||
-        allowedMacros.indexOf(t.event) > -1
-    )
-    .forEach(({ id, event, args, delay = 0 }) => {
-      sim.executeTimelineStep(id);
 
-      setTimeout(() => {
-        App.handleEvent(
-          Object.assign({ simulatorId }, JSON.parse(args)),
-          event
-        );
-      }, delay);
-    });
+  const macros = timelineStep.timelineItems.filter(t => {
+    if (executedTimelineSteps.indexOf(t.id) === -1) return true;
+    if (allowedMacros.indexOf(t.event) > -1) return true;
+    if (executedTimelineSteps.indexOf(t.id) > -1) return false;
+    return true;
+  });
+
+  macros.forEach(({ id }) => {
+    sim.executeTimelineStep(id);
+  });
+  App.handleEvent({ simulatorId, macros }, "triggerMacros");
   sim.setTimelineStep(currentTimelineStep + (prev ? -1 : 1));
+
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("setBridgeMessaging", ({ id, messaging }) => {
