@@ -46,23 +46,24 @@ const Fighters = ({
             alt="reticule"
           />
         )}
-        <div
-          className={`enemy-inner ${e.type === "enemy" ? "is-enemy" : ""}`}
-          style={{
-            width: e.type === "torpedo" ? "5px" : null,
-            height: e.type === "torpedo" ? "5px" : null,
-            backgroundColor: e.destroyed
-              ? "#f0f"
-              : e.id === fighterId
-              ? "#ff0"
-              : e.type === "enemy"
-              ? "#800"
-              : e.type === "torpedo"
-              ? "white"
-              : "#0f0"
-          }}
-          onClick={() => e.type !== "torpedo" && setTargeted(e.id)}
-        />
+        {e.type === "torpedo" ? (
+          <div
+            className={`enemy-inner ${e.type === "enemy" ? "is-enemy" : ""}`}
+            style={{
+              width: "5px",
+              height: "5px",
+              backgroundColor: "white"
+            }}
+          />
+        ) : (
+          <div
+            className={`enemy-inner ${e.type === "enemy" ? "is-enemy" : ""}`}
+            style={{
+              backgroundImage: `url('/assets${e.icon}')`
+            }}
+            onClick={() => e.type !== "torpedo" && setTargeted(e.id)}
+          />
+        )}
       </div>
     );
   });
@@ -84,10 +85,10 @@ const Phasers = ({ phasers, center, zoomFactor = 10, track = true }) => {
         track
       });
 
-      const width = Math.abs(target.x - destination.x) + 0.7;
-      const height = Math.abs(target.y - destination.y) + 0.7;
-      const left = Math.min(target.x, destination.x) + 0.7;
-      const top = Math.min(target.y, destination.y) + 0.7;
+      const width = Math.abs(target.x - destination.x);
+      const height = Math.abs(target.y - destination.y);
+      const left = Math.min(target.x, destination.x);
+      const top = Math.min(target.y, destination.y);
       let isRight = true;
       if (
         (target.x > destination.x && target.y < destination.y) ||

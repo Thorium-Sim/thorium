@@ -34,19 +34,21 @@
     .enemy-inner {
       width: 20px;
       height: 20px;
-      border-radius: 50%;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: translate(-10px, -10px);
     }
     .is-enemy {
       cursor: url("./reticle.png") 16 16, pointer;
       pointer-events: all;
-      background-color: #800;
     }
     .reticule {
       width: 32px;
       height: 32px;
       position: absolute;
-      left: -6px;
-      top: -6px;
+      left: -16px;
+      top: -16px;
     }
     .inner-canvas {
       position: absolute;
