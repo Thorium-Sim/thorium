@@ -1,5 +1,6 @@
 {
   "1.2.17": {
+    "features": ["Adds a 'Reject Task Verification' button to the tasks core."],
     "fixes": [
       "Fixes a situation where auto-viewscreen can crash the server.",
       "Fixes issues with using auto-advancing features with the timeline thumbnail core. Note: The timeline thumbnail core will now highlight the current timeline step, but the standard timeline core will show the next timeline step.",

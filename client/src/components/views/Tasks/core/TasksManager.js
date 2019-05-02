@@ -172,6 +172,28 @@ class TasksManager extends Component {
                         </Button>
                       )}
                     </Mutation>
+                    {task.verifyRequested && (
+                      <Mutation
+                        mutation={gql`
+                          mutation RejectTask($taskId: ID!) {
+                            denyTaskVerify(id: $taskId)
+                          }
+                        `}
+                        variables={{ taskId: task.id }}
+                      >
+                        {action => (
+                          <Button
+                            size="sm"
+                            color="danger"
+                            onClick={() => {
+                              action();
+                            }}
+                          >
+                            Reject
+                          </Button>
+                        )}
+                      </Mutation>
+                    )}
                   </Fragment>
                 )}
               </Fragment>
