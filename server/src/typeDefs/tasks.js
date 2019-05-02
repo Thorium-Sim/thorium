@@ -1,8 +1,8 @@
 import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import taskDefinitions from "../tasks";
+const mutationHelper = require("../helpers/mutationHelper").default;
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -106,9 +106,11 @@ const resolver = {
     active({ active, simulatorId }) {
       if (!simulatorId) return false;
       const simulator = App.simulators.find(s => s.id === simulatorId);
-      return active({
-        simulator
-      });
+      return Boolean(
+        active({
+          simulator
+        })
+      );
     },
     stations({ stations, simulatorId }) {
       if (!simulatorId) return null;

@@ -26,7 +26,7 @@ export class Viewscreen extends Component {
     };
     const mutation = gql`
       mutation AutoAdvance($simulatorId: ID!, $prev: Boolean) {
-        autoAdvance(simulatorId: $simulatorId, prev: $prev)
+        autoAdvance(simulatorId: $simulatorId, prev: $prev, limited: true)
       }
     `;
     if (e.which === 39 || e.which === 33) {
@@ -75,10 +75,7 @@ export class Viewscreen extends Component {
     return (
       <Fragment>
         {this.props.clientObj.soundPlayer && (
-          <div>
-            <p>Sound Player</p>
-            <SoundPlayer {...this.props} invisible />
-          </div>
+          <SoundPlayer {...this.props} invisible />
         )}
         <SubscriptionHelper
           subscribe={() => {

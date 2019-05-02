@@ -1,5 +1,5 @@
-import React from "react";
-import { Mutation } from "react-apollo";
+import React, { useState } from "react";
+import { Mutation, withApollo } from "react-apollo";
 import { Col, Input } from "reactstrap";
 import gql from "graphql-tag.macro";
 import {
@@ -8,11 +8,11 @@ import {
   DiagramContext,
   Canvas,
   Config
-} from "react-node-diagrams";
+} from "helpers/react-node-diagrams";
 import * as components from "./components";
 import debounce from "helpers/debounce";
 import MacroListMaker from "../macroListMaker";
-
+import { DEVICE_QUERY } from "./";
 // I'm lazy
 const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -32,8 +32,98 @@ const updateComponents = debounce(
   2500
 );
 
-const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
+const InterfaceCanvas = ({ interfaceObj, interfaceDevices, client }) => {
+  const [snapping, setSnapping] = useState(false);
   if (!interfaceObj) return null;
+  const handleChange = ({ update }) => e => {
+    if (e.target.value === "create") {
+      const mutation = gql`
+        mutation CreateInterfaceDevice(
+          $name: String!
+          $width: Int!
+          $height: Int!
+        ) {
+          addInterfaceDevice(name: $name, width: $width, height: $height)
+        }
+      `;
+      const name = prompt("What is the name of the new interface device?");
+      if (!name) return;
+      const dims = prompt(
+        'What are the dimensions of the new interface device? (eg. "320x480")',
+        "320x480"
+      );
+      const splitDims = dims.split("x");
+      const width = parseInt(splitDims[0], 10);
+      const height = parseInt(splitDims[1], 10);
+      if (!width || !height) return;
+      const variables = {
+        name,
+        width,
+        height
+      };
+      return client
+        .mutate({
+          mutation,
+          variables,
+          refetchQueries: [{ query: DEVICE_QUERY }]
+        })
+        .then(({ data: { addInterfaceDevice } }) => {
+          update({
+            variables: {
+              id: interfaceObj.id,
+              deviceType: addInterfaceDevice
+            }
+          });
+        });
+    }
+    if (e.target.value === "delete") {
+      const mutation = gql`
+        mutation RemoveDevice($id: ID!) {
+          removeInterfaceDevice(id: $id)
+        }
+      `;
+      if (
+        !window.confirm(
+          "Are you sure you want to remove this device? Any interfaces that use this device will default to the size of the screen they are shown on."
+        )
+      );
+      const variables = {
+        id: interfaceObj.deviceType && interfaceObj.deviceType.id
+      };
+      return client.mutate({
+        mutation,
+        variables,
+        refetchQueries: [{ query: DEVICE_QUERY }]
+      });
+    }
+    if (e.target.value === "rename") {
+      const mutation = gql`
+        mutation RenameDevice($id: ID!, $name: String!) {
+          renameInterfaceDevice(id: $id, name: $name)
+        }
+      `;
+      const name = prompt(
+        "What is the new name of the interface device?",
+        interfaceObj.deviceType && interfaceObj.deviceType.name
+      );
+      if (!name) return;
+      const variables = {
+        id: interfaceObj.deviceType && interfaceObj.deviceType.id,
+        name
+      };
+      return client.mutate({
+        mutation,
+        variables,
+        refetchQueries: [{ query: DEVICE_QUERY }]
+      });
+    }
+    update({
+      variables: {
+        id: interfaceObj.id,
+        deviceType: e.target.value
+      }
+    });
+  };
   return (
     <Mutation
       key={interfaceObj.id}
@@ -109,23 +199,41 @@ const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
                         value={
                           interfaceObj.deviceType && interfaceObj.deviceType.id
                         }
-                        onChange={e =>
-                          action({
-                            variables: {
-                              id: interfaceObj.id,
-                              deviceType: e.target.value
-                            }
-                          })
-                        }
+                        onChange={handleChange({ update: action })}
                       >
+                        <option value={null}>
+                          Scale To Device Screen Size
+                        </option>
                         {interfaceDevices.map(i => (
                           <option key={i.id} value={i.id}>
                             {i.name} - {i.width}×{i.height}
                           </option>
                         ))}
+                        <option disabled>----------</option>
+                        <option value="create">Create New Device Type</option>
+                        <option
+                          value="rename"
+                          disabled={!interfaceObj.deviceType}
+                        >
+                          Rename Device Type
+                        </option>
+                        <option
+                          value="delete"
+                          disabled={!interfaceObj.deviceType}
+                        >
+                          Delete Device Type
+                        </option>
                       </Input>
                     )}
                   </Mutation>
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    onChange={e => setSnapping(e.target.checked)}
+                    checked={snapping}
+                  />{" "}
+                  Snap to Grid
                 </label>
                 <DiagramContext.Consumer>
                   {({ selectedComponent }) =>
@@ -133,9 +241,13 @@ const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
                   }
                 </DiagramContext.Consumer>
               </Col>
-              <Col sm={6} style={{ height: "100%" }}>
+              <Col
+                sm={6}
+                style={{ height: "100%" }}
+                onContextMenu={e => e.preventDefault()}
+              >
                 {" "}
-                <Canvas />
+                <Canvas snapping={snapping} />
               </Col>
             </DiagramProvider>
           )}
@@ -145,4 +257,4 @@ const InterfaceCanvas = ({ interfaceObj, interfaceDevices }) => {
   );
 };
 
-export default InterfaceCanvas;
+export default withApollo(InterfaceCanvas);

@@ -121,7 +121,7 @@ function removeSound(id, force, ambiance) {
       sound.source.stop();
       delete sounds[id];
     } else {
-      sound.looping = false;
+      // sound.looping = false;
       sound.source.loop = false;
       sound.source.onended = () => removeSound(id, true);
     }

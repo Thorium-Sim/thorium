@@ -8,6 +8,7 @@ const QUERY = gql`
     interfaces {
       id
       name
+      simulatorId
       config
       components
     }
@@ -32,11 +33,13 @@ export default ({ updateArgs, args }) => {
                 <option value={"nothing"} disabled>
                   Choose an interface
                 </option>
-                {data.interfaces.map(i => (
-                  <option key={i.id} value={i.id}>
-                    {i.name}
-                  </option>
-                ))}
+                {data.interfaces
+                  .filter(i => !i.simulatorId)
+                  .map(i => (
+                    <option key={i.id} value={i.id}>
+                      {i.name}
+                    </option>
+                  ))}
               </Input>
             </Label>
             {selectedInterface && (

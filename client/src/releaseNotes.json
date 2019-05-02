@@ -1,4 +1,67 @@
 {
+  "1.2.17": {
+    "features": [
+      "Adds a 'Reject Task Verification' button to the tasks core.",
+      "Particle Detector core now persists the types of each line."
+    ],
+    "fixes": [
+      "Fixes a situation where auto-viewscreen can crash the server.",
+      "Fixes issues with using auto-advancing features with the timeline thumbnail core. Note: The timeline thumbnail core will now highlight the current timeline step, but the standard timeline core will show the next timeline step.",
+      "Fixes an issue where very tall images on the ship view viewscreen go out of bounds.",
+      "Fixes an issue where adjusting the volume on the play sound macro causes jank.",
+      "Fixes an issue where running the stop looping sound macro twice will stop all sounds.",
+      "Fixes an issue with the reactor task definition.",
+      "Fixes an issue where radiation doesn't properly update.",
+      "Enable the return and delete keys for keyboard actions.",
+      "The kiosk can now play sounds attached to command + q, command + w, and command + r.",
+      "Fixes a graphical issue with software panels toggle switches.",
+      "Fixes an issue where sparks never stop.",
+      "Add more blocks in place to make sure the tractor beam doesn't go out of bounds.",
+      "Fixes issues with engine buttons.",
+      "Fixes an issue where inventory items cannot be added."
+    ]
+  },
+  "1.2.16": {
+    "features": [
+      "Adds colors to the buttons on interfaces.",
+      "Makes it so interface switches aren't required to have labels."
+    ]
+  },
+  "1.2.15": {
+    "features": [
+      "Add the ability to right click on Interface, Command Line, and Trigger canvases to pan the canvas.",
+      "Add the ability to set the autoPlay and looping of Interface videos.",
+      "Added a macro for toggling interface videos playing.",
+      "Makes interfaces stick around after a simulator is reset."
+    ]
+  },
+  "1.2.14": {
+    "features": [
+      "Adds the Interfaces feature, which allows Flight Directors to use buttons, toggle switches, images, and videos to create their own interactive user interfaces for crew stations."
+    ]
+  },
+  "1.2.13": {
+    "features": [
+      "Adds support for each open window becoming its own client. This allows for multiple stations to be assigned on the same computer without opening incognito tabs or additional browsers. It keeps track of the clientIDs that you assign to windows in the order which they are opened. It also works really well with the new Thorium Kiosk, which appends the window number to the end of the client name."
+    ],
+    "fixes": [
+      "Fixes an issue where the transporter speed cannot be changed.",
+      "Fixes an issue where action commands cannot be sent to viewscreens.",
+      "Sound effects now only play in the simulator they are supposed to play in.",
+      "Send to sensors for the timer now properly pluralizes the unit of time.",
+      "Fixes an issue where the tactical map video speed cannot be changed.",
+      "Improves the text of some sensor scan preset answers.",
+      "Improves the layout of the dilithium stress core.",
+      "Improves the layout of the computer core core component."
+    ]
+  },
+  "1.2.12": {
+    "fixes": [
+      "Removes weird Sound Player text on the viewscreen.",
+      "Transwarp cannot be activated when damaged or there isn't enough power.",
+      "Looping sounds are now cancelled when the flight is reset."
+    ]
+  },
   "1.2.11": {
     "features": [
       "Adds a collapse all button to the core feed.",
@@ -43,6 +106,7 @@
     ]
   },
   "1.2.6": {
+    "features": ["Add a task definition for changing the reactor efficiency."],
     "fixes": [
       "Fixes reactor efficiencies not updating on the config screen.",
       "Fixes issues around playing sounds through the actions core and actions macro.",
