@@ -19,7 +19,9 @@ import gql from "graphql-tag.macro";
 import * as components from "./components";
 import "./style.scss";
 import MacroListMaker from "../macroListMaker";
+import debounce from "helpers/debounce";
 
+const debouncedUpdate = debounce(func => func(), 1000);
 // I'm lazy
 const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -202,16 +204,18 @@ export default class Trigger extends Component {
                         config,
                         values
                       }) => {
-                        const variables = { id: trigger.id };
-                        if (!compare(components, trigger.components))
-                          variables.components = components;
-                        if (!compare(connections, trigger.connections))
-                          variables.connections = connections;
-                        if (!compare(config, trigger.config))
-                          variables.config = config;
-                        if (!compare(values, trigger.values))
-                          variables.values = values;
-                        action({ variables });
+                        debouncedUpdate(() => {
+                          const variables = { id: trigger.id };
+                          if (!compare(components, trigger.components))
+                            variables.components = components;
+                          if (!compare(connections, trigger.connections))
+                            variables.connections = connections;
+                          if (!compare(config, trigger.config))
+                            variables.config = config;
+                          if (!compare(values, trigger.values))
+                            variables.values = values;
+                          action({ variables });
+                        });
                       }}
                     >
                       <Col sm={3} style={{ height: "100%" }}>
