@@ -6,7 +6,8 @@
       "Fixes an issue where very tall images on the ship view viewscreen go out of bounds.",
       "Fixes an issue where adjusting the volume on the play sound macro causes jank.",
       "Fixes an issue where running the stop looping sound macro twice will stop all sounds.",
-      "Fixes an issue with the reactor task definition."
+      "Fixes an issue with the reactor task definition.",
+      "Fixes an issue where radiation doesn't properly update."
     ]
   },
   "1.2.16": {
