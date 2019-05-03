@@ -106,49 +106,48 @@ class AlertCondition extends Component {
         `}
         variables={{ id: this.props.simulator.id }}
       >
-        {({ loading, data, subscribeToMore }) =>
-          loading ? null : (
-            <div className="alert-condition">
-              <SubscriptionHelper
-                subscribe={() =>
-                  subscribeToMore({
-                    document: gql`
-                      subscription SimulatorsSub($id: ID) {
-                        simulatorsUpdate(simulatorId: $id) {
-                          ...AlertConditionData
-                        }
+        {({ loading, data, subscribeToMore }) => (
+          <div className="alert-condition">
+            <SubscriptionHelper
+              subscribe={() =>
+                subscribeToMore({
+                  document: gql`
+                    subscription SimulatorsSub($id: ID) {
+                      simulatorsUpdate(simulatorId: $id) {
+                        ...AlertConditionData
                       }
-                      ${fragment}
-                    `,
-                    variables: { id: this.props.simulator.id },
-                    updateQuery: (previousResult, { subscriptionData }) => {
-                      return Object.assign({}, previousResult, {
-                        simulators: subscriptionData.data.simulatorsUpdate
-                      });
                     }
-                  })
-                }
+                    ${fragment}
+                  `,
+                  variables: { id: this.props.simulator.id },
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      simulators: subscriptionData.data.simulatorsUpdate
+                    });
+                  }
+                })
+              }
+            />
+            <Label>
+              <FormattedMessage
+                id="alert-condition"
+                defaultMessage="Alert Condition"
               />
-              <Label>
-                <FormattedMessage
-                  id="alert-condition"
-                  defaultMessage="Alert Condition"
-                />
-              </Label>
-              <div className="button-container">
-                {["5", "4", "3", "2", "1"].map(a => (
-                  <div
-                    key={`alert-condition-${a}`}
-                    className={`alert-button alert-${a}`}
-                    id={`alert${a}`}
-                    onClick={
-                      data.simulators[0].alertLevelLock
-                        ? () => {}
-                        : () => this.setAlert(a)
-                    }
-                  >
-                    {a}
-                    {/* <Tooltip
+            </Label>
+            <div className="button-container">
+              {["5", "4", "3", "2", "1"].map(a => (
+                <div
+                  key={`alert-condition-${a}`}
+                  className={`alert-button alert-${a}`}
+                  id={`alert${a}`}
+                  onClick={
+                    data.simulators && data.simulators[0].alertLevelLock
+                      ? () => {}
+                      : () => this.setAlert(a)
+                  }
+                >
+                  {a}
+                  {/* <Tooltip
                       placement="top"
                       isOpen={this.state[`alert${a}`]}
                       target={`#alert${a}`}
@@ -157,12 +156,11 @@ class AlertCondition extends Component {
                     >
                       <AlertMessage number={a} />
                     </Tooltip> */}
-                  </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          )
-        }
+          </div>
+        )}
       </Query>
     );
   }
