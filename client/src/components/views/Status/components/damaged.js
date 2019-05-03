@@ -25,7 +25,7 @@ class Damage extends Component {
     if (this.props.data.loading || !this.props.data.systems) return null;
     const { systems } = this.props.data;
     return (
-      <div>
+      <div className="damaged-systems-list">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({

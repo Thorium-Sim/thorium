@@ -1,2 +1,303 @@
+$alert5: rgb(23, 122, 184);
+$alert4: rgb(23, 184, 23);
+$alert3: rgb(184, 181, 23);
+$alert2: rgb(184, 120, 23);
+$alert1: rgb(184, 23, 23);
+$alertp: rgb(152, 23, 184);
+
 .layout-clear {
+  .card-switcher-holder {
+    z-index: 100;
+    position: absolute;
+    top: 30px;
+    width: calc(100% - 626px);
+    left: 396px;
+  }
+  .card-switcher {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    img {
+      margin: 0 20px;
+      width: 40px;
+      border-radius: 50%;
+      box-sizing: content-box;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+  }
+  @mixin cardSwitcherColors($color) {
+    .card-switcher {
+      img {
+        background-color: $color;
+        border: solid 2px $color;
+        &:hover {
+          background-color: darken($color, 20%);
+          border: solid 2px darken($color, 20%);
+        }
+        &.active {
+          background-color: lighten($color, 20%);
+          border: solid 2px lighten($color, 20%);
+        }
+      }
+    }
+  }
+  &.alertColor5 {
+    @include cardSwitcherColors($alert5);
+  }
+  &.alertColor4 {
+    @include cardSwitcherColors($alert4);
+  }
+  &.alertColor3 {
+    @include cardSwitcherColors($alert3);
+  }
+  &.alertColor2 {
+    @include cardSwitcherColors($alert2);
+  }
+  &.alertColor1 {
+    @include cardSwitcherColors($alert1);
+  }
+  &.alertColorp {
+    @include cardSwitcherColors($alertp);
+  }
+}
+.layout-clear {
+  color: white;
+  background-color: black;
+  .card-frame {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    box-sizing: border-box;
+  }
+  .bottom-left,
+  .bottom-right,
+  .top-left,
+  .top-right,
+  .name-box,
+  .ship-logo {
+    position: absolute;
+    pointer-events: none;
+  }
+  .bottom-left {
+    left: 0;
+    bottom: 0;
+  }
+  .bottom-right {
+    bottom: 0;
+    right: 0;
+  }
+  .top-left {
+    top: 0;
+    left: 0;
+  }
+  .top-right {
+    top: 0;
+    right: 0;
+  }
+  .name-box {
+    z-index: 20;
+    width: 300px;
+    top: 20px;
+    left: 90px;
+  }
+  .ship-logo {
+    left: 20px;
+    top: 20px;
+    width: 100px;
+    height: 100px;
+    z-index: 21;
+    background-color: black;
+    background-position: center;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    border: solid 2px #888;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  }
+  .simulator-name,
+  .station-name,
+  .login-name,
+  .alert-condition-text {
+    z-index: 11;
+    position: absolute;
+    font-family: "Battlefield";
+    line-height: 0;
+    text-shadow: 0px 0px 10px black;
+  }
+  .simulator-name {
+    right: 30px;
+    bottom: 30px;
+    text-align: right;
+  }
+  .station-name {
+    top: 78px;
+    left: 132px;
+    z-index: 25;
+    text-align: center;
+    width: 239px;
+    font-family: "Gill Sans", sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+  .login-name {
+    top: 58px;
+    z-index: 25;
+    left: 134px;
+    width: 239px;
+    font-size: 25px;
+    font-family: "Gill Sans", sans-serif;
+  }
+  .alert-condition-text {
+    right: 55px;
+    top: 65px;
+    font-size: 80px;
+  }
+  .alert-condition-indicator {
+    position: absolute;
+    right: 47px;
+    top: 107px;
+    width: 105px;
+    height: 9px;
+    z-index: 12;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 6px 100%, 0 calc(100% - 4px));
+  }
+  .frame-container {
+    z-index: 11;
+    pointer-events: none;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    left: 20px;
+    top: 20px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: filter 0.2s ease;
+  }
+  .card-area {
+    top: 126px;
+    left: 98px;
+    width: calc(100% - 141px);
+    height: calc(100% - 216px);
+    position: relative;
+  }
+  &.viewscreen {
+    .card-area {
+      z-index: 1;
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      left: 0;
+      top: 0;
+    }
+  }
+  .widgets {
+    left: 120px;
+    bottom: 30px;
+  }
+
+  @mixin colors($color) {
+    & {
+      background: linear-gradient(
+        145deg,
+        #000000 22%,
+        rgba(0, 0, 0, 0) 53%,
+        #000000 80%
+      );
+      background-color: darken($color, 30%);
+      transition: background-color 0.5s ease;
+    }
+    .frame-container {
+      filter: drop-shadow(0px 0px 5px $color) drop-shadow(0px 0px 10px $color)
+        drop-shadow(0px 0px 2px $color);
+    }
+    .alert-condition-indicator {
+      background-color: $color;
+      transition: background-color 0.5s ease;
+    }
+  }
+
+  &.alertColor5 {
+    @include colors($alert5);
+  }
+  &.alertColor4 {
+    @include colors($alert4);
+  }
+  &.alertColor3 {
+    @include colors($alert3);
+  }
+  &.alertColor2 {
+    @include colors($alert2);
+  }
+  &.alertColor1 {
+    @include colors($alert1);
+  }
+  &.alertColorp {
+    @include colors($alertp);
+  }
+  .btn-cloak {
+    border-color: $alertp;
+    &:hover {
+      background-color: darken($alertp, 5%);
+    }
+  }
+  .btn-default {
+    border-color: gray;
+    &:hover {
+      background-color: darken(gray, 5%);
+    }
+  }
+  // Theme
+  .dropdown-menu {
+    background-color: black;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+    border-width: 2px;
+  }
+  .dropdown-item {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+    border-width: 2px;
+    &:hover {
+      background-color: gray;
+      color: white;
+    }
+  }
+  .btn,
+  .btn.disabled,
+  .btn:disabled {
+    border-radius: 10px;
+    border-width: 2px;
+    background-color: transparent;
+    color: white;
+  }
+  .form-control,
+  .form-control:active,
+  .form-control:focus,
+  .form-control:disabled,
+  .form-control.disabled,
+  .form-control:read-only {
+    border-width: 2px;
+    background-color: transparent;
+    color: white;
+  }
+  .form-control:disabled,
+  .form-control.disabled {
+    color: gray;
+    border-color: gray;
+  }
+  .list-group-item {
+    background-color: transparent;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  .card {
+    background-color: transparent;
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+  }
+  pre {
+    color: white;
+  }
 }
