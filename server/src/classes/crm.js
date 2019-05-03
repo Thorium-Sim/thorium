@@ -6,7 +6,11 @@ class CrmFighter {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId;
     this.clientId = params.clientId || "";
-    this.icon = params.icon || "/Sensor Contacts/Icons/Default.svg";
+    this.icon =
+      params.icon ||
+      (params.clientId
+        ? "/Sensor Contacts/Icons/Default.svg"
+        : "/Sensor Contacts/Icons/IO.svg");
     this.size = params.size || 1;
     this.speed = params.speed || 1;
     this.strength = params.strength || 1;

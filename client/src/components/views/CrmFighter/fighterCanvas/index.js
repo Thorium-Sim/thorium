@@ -2,7 +2,6 @@ import React from "react";
 import useInterpolate from "./useInterpolate";
 import Phasers from "./phasers";
 import Fighters from "./fighters";
-import useDimensions from "helpers/hooks/useDimensions";
 import calculatePosition from "./calculatePosition";
 
 const FighterCanvas = ({
@@ -22,9 +21,8 @@ const FighterCanvas = ({
       .concat(fighters),
     interval
   );
-  const [ref, dims] = useDimensions();
-  const fighter = fighterContacts.find(c => c.id === fighterId);
-  const { position: center } = fighter;
+  const fighter = fighterContacts.find(c => c.id === fighterId) || {};
+  const { position: center = { x: 0, y: 0, z: 0 } } = fighter;
   const { x, y } = calculatePosition({
     position: { x: 0, y: 0 },
     center: center,
@@ -35,7 +33,6 @@ const FighterCanvas = ({
   return (
     <div
       className="fighter-canvas"
-      ref={ref}
       style={{
         backgroundPosition: `${x}% ${y}%`
       }}
