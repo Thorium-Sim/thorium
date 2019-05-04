@@ -58,6 +58,7 @@ const Docked = ({
             >
               {action => (
                 <Button
+                  className="restock-button"
                   color="warning"
                   disabled={torpedoCount === 6}
                   onClick={action}
@@ -89,7 +90,13 @@ const Docked = ({
               variables={{ clientId }}
             >
               {action => (
-                <Button block size="lg" color="danger" onClick={action}>
+                <Button
+                  block
+                  size="lg"
+                  color="danger"
+                  onClick={action}
+                  className="station-control"
+                >
                   Return Normal Station Control
                 </Button>
               )}
@@ -113,6 +120,7 @@ const Docked = ({
                 block
                 size="lg"
                 color="success"
+                className="launch-button"
                 disabled={delay > 0}
                 onClick={action}
               >

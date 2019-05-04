@@ -49,6 +49,7 @@ const Controls = ({
             {stop => (
               <Button
                 block
+                className="phaser-fire-button"
                 color="warning"
                 disabled={phaserLevel < 0.05 || !targeted}
                 onMouseDown={firePhaserBeam(fire, stop)}
@@ -70,6 +71,7 @@ const Controls = ({
         {action => (
           <Button
             block
+            className="torpedo-fire-button"
             color="warning"
             disabled={!torpedoLoaded || !targeted}
             onClick={action}
@@ -87,7 +89,13 @@ const Controls = ({
         variables={{ id, clientId, shield: !shieldRaised }}
       >
         {action => (
-          <Button block color="info" onClick={action} disabled={shield === 0}>
+          <Button
+            block
+            className="shield-raise-button"
+            color="info"
+            onClick={action}
+            disabled={shield === 0}
+          >
             {shieldRaised ? "Lower" : "Raise"} Shields
           </Button>
         )}
@@ -106,6 +114,7 @@ const Controls = ({
         {action => (
           <Button
             block
+            className="fighter-dock-button"
             color="danger"
             disabled={
               distance3d({ x: 0, y: 0, z: 0 }, { ...center, z: 0 }) > 25

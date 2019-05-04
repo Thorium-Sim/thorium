@@ -8,6 +8,7 @@ import "./style.scss";
 const fragment = gql`
   fragment CrmMovementData on Crm {
     id
+    displayName
     fighterImage
     phasers {
       target {

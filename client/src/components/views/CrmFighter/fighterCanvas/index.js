@@ -60,7 +60,12 @@ const FighterCanvas = ({
           transform: `translate(${x}%, ${y}%)`
         }}
       >
-        <img src={`/assets${simulator.assets.top}`} draggable={false} alt="" />
+        <img
+          className="simulator-image"
+          src={`/assets${simulator.assets.top}`}
+          draggable={false}
+          alt=""
+        />
       </div>
       <div className="inner-canvas">
         <div
