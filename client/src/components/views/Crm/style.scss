@@ -34,3 +34,28 @@
     grid-area: power;
   }
 }
+.crm-core {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .crm-clients {
+    flex: 1;
+  }
+  .crm-images {
+    p {
+      text-align: center;
+    }
+    display: flex;
+    justify-content: space-between;
+  }
+  .crm-image {
+    cursor: pointer;
+    padding: 0 5px;
+    flex: 1;
+    img {
+      width: 100%;
+      max-height: 32px;
+      object-fit: contain;
+    }
+  }
+}

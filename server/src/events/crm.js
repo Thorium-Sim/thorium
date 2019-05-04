@@ -55,3 +55,44 @@ App.on("crmFirePhaser", ({ id, clientId, target }) => {
 App.on("crmStopPhaser", ({ id, clientId }) => {
   performFighterAction(id, clientId, f => f.setPhaserTarget(null));
 });
+App.on("crmSetFighterDocked", ({ id, clientId, docked }) => {
+  performFighterAction(id, clientId, f => (docked ? f.dock() : f.undock()));
+  // Just update the CRM for core status update
+  performAction(id, f => {});
+});
+App.on("crmRestockTorpedos", ({ id, clientId }) => {
+  performFighterAction(id, clientId, f => f.restockTorpedos());
+});
+App.on("crmSetAttacking", ({ id, attacking }) => {
+  performAction(id, f => {
+    f.setAttacking(attacking);
+  });
+});
+App.on("crmSetFighterImage", ({ id, image }) => {
+  performAction(id, f => {
+    f.setFighterImage(image);
+    f.fighters.forEach(f => {
+      console.log(f);
+      pubsub.publish("crmFighterUpdate", f);
+    });
+  });
+});
+App.on("crmSetFighterIcon", ({ id, image }) => {
+  performAction(id, f => {
+    f.setFighterIcon(image);
+  });
+});
+App.on("crmSetEnemyIcon", ({ id, image }) => {
+  performAction(id, f => {
+    f.setEnemyIcon(image);
+  });
+});
+App.on("crmSetEnemyCount", ({ id, count }) => {
+  performAction(id, f => {
+    f.setEnemyCount(count);
+  });
+});
+App.on("crmRestoreFighter", ({ id, clientId }) => {
+  performFighterAction(id, clientId, f => f.restore());
+  performAction(id, f => {});
+});

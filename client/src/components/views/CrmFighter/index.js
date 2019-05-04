@@ -5,97 +5,72 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import FighterData from "./fighterData";
 import "./style.scss";
 
+const fragment = gql`
+  fragment CrmMovementData on Crm {
+    id
+    fighterImage
+    phasers {
+      target {
+        x
+        y
+      }
+      destination {
+        x
+        y
+      }
+    }
+    torpedos {
+      id
+      position {
+        x
+        y
+      }
+      destroyed
+    }
+    enemies {
+      id
+      icon
+      size
+      destroyed
+      position {
+        x
+        y
+      }
+    }
+    fighters {
+      id
+      icon
+      size
+      destroyed
+      docked
+      position {
+        x
+        y
+      }
+    }
+    interval
+  }
+`;
+
 const MOVEMENT_QUERY = gql`
   query CrmMovement($simulatorId: ID!) {
     crm(simulatorId: $simulatorId) {
-      id
-      fighterImage
-      phasers {
-        target {
-          x
-          y
-        }
-        destination {
-          x
-          y
-        }
-      }
-      torpedos {
-        id
-        position {
-          x
-          y
-        }
-        destroyed
-      }
-      enemies {
-        id
-        icon
-        size
-        destroyed
-        position {
-          x
-          y
-        }
-      }
-      fighters {
-        id
-        icon
-        size
-        destroyed
-        docked
-        position {
-          x
-          y
-        }
-      }
-      interval
+      ...CrmMovementData
     }
   }
+  ${fragment}
 `;
 const MOVEMENT_SUBSCRIPTION = gql`
   subscription CrmMovement($simulatorId: ID!) {
     crmMovementUpdate(simulatorId: $simulatorId) {
-      id
-      phasers {
-        target {
-          x
-          y
-        }
-        destination {
-          x
-          y
-        }
-      }
-      torpedos {
-        id
-        position {
-          x
-          y
-        }
-        destroyed
-      }
-      enemies {
-        id
-        position {
-          x
-          y
-        }
-        destroyed
-      }
-      fighters {
-        id
-        position {
-          x
-          y
-        }
-        destroyed
-      }
-      interval
+      ...CrmMovementData
     }
   }
+  ${fragment}
 `;
 class CrmData extends Component {
+  static hypercard = true;
+
   state = {};
   render() {
     return (
@@ -114,40 +89,8 @@ class CrmData extends Component {
                   document: MOVEMENT_SUBSCRIPTION,
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
-                    const crm = previousResult.crm;
-                    const {
-                      enemies,
-                      fighters,
-                      interval,
-                      phasers,
-                      torpedos,
-                      id
-                    } = subscriptionData.data.crmMovementUpdate;
-                    if (id !== crm.id) return previousResult;
-                    const crmEnemies = crm.enemies.reduce(
-                      (acc, e) => ({ ...acc, [e.id]: e }),
-                      {}
-                    );
-                    const crmFighters = crm.fighters.reduce(
-                      (acc, e) => ({ ...acc, [e.id]: e }),
-                      {}
-                    );
-                    const newEnemies = enemies.map(e => ({
-                      ...crmEnemies[e.id],
-                      ...e
-                    }));
                     return Object.assign({}, previousResult, {
-                      crm: {
-                        ...crm,
-                        phasers,
-                        torpedos,
-                        enemies: newEnemies,
-                        fighters: fighters.map(e => ({
-                          ...crmFighters[e.id],
-                          ...e
-                        })),
-                        interval
-                      }
+                      crm: subscriptionData.data.crmMovementUpdate
                     });
                   }
                 })

@@ -51,6 +51,7 @@ const Joystick = ({ client, id, clientId }) => {
   const parentRef = useRef();
   const mousedown = useDraggable(
     e => {
+      if (!parentRef.current) return;
       const { clientX, clientY } = e;
       const {
         left,
@@ -77,7 +78,7 @@ const Joystick = ({ client, id, clientId }) => {
         x,
         y
       });
-      updateAcceleration(x / radius, y / radius);
+      updateAcceleration(x / radius / 10, y / radius / 10);
     },
     () => {
       setReturning(true);

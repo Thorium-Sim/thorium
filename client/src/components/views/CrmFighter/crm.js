@@ -7,7 +7,11 @@ import TorpedoLoading from "./torpedoLoading";
 import Controls from "./controls";
 import Shield from "./shield";
 import Joystick from "./joystick";
+import Docked from "./docked";
+import Destroyed from "./destroyed";
+
 import distance from "helpers/distance";
+
 const trainingSteps = [
   {
     selector: ".blank",
@@ -56,15 +60,18 @@ const Crm = ({
     hull,
     shieldRaised,
     torpedoCount,
-    torpedoLoaded
+    torpedoLoaded,
+    docked,
+    destroyed
   },
+  simulator,
   clientObj
 }) => {
   const [targeted, setTargeted] = useState(null);
+  const fighterObj = fighters.find(f => f.id === fighterId);
 
   // Untarget when necessary
   useEffect(() => {
-    const fighterObj = fighters.find(f => f.id === fighterId);
     const target = enemies.find(t => t.id === targeted);
     if (!fighterObj || !target) return;
     if (
@@ -73,47 +80,66 @@ const Crm = ({
     ) {
       setTargeted(null);
     }
-  }, [enemies, fighterId, fighters, targeted]);
+  }, [enemies, fighterObj, targeted]);
   return (
     <div className="card-crm-fighter">
-      <FighterCanvas
-        clientId={clientObj.id}
-        enemies={enemies}
-        fighters={fighters}
-        interval={interval}
-        fighterId={fighterId}
-        targeted={targeted}
-        setTargeted={setTargeted}
-        phasers={phasers}
-        torpedos={torpedos}
-      />
-      <PhaserCharging
-        id={id}
-        clientId={clientObj.id}
-        phaserLevel={phaserLevel}
-      />
-      <TorpedoLoading
-        id={id}
-        clientId={clientObj.id}
-        torpedoCount={torpedoCount}
-        torpedoLoaded={torpedoLoaded}
-      />
-      <Controls
-        id={id}
-        clientId={clientObj.id}
-        phaserLevel={phaserLevel}
-        shieldRaised={shieldRaised}
-        targeted={targeted}
-        torpedoLoaded={torpedoLoaded}
-        shield={shield}
-      />
-      <Shield
-        fighterImage={fighterImage}
-        shield={shield}
-        hull={hull}
-        shieldRaised={shieldRaised}
-      />
-      <Joystick id={id} clientId={clientObj.id} />
+      {docked ? (
+        <Docked
+          id={id}
+          clientId={clientObj.id}
+          fighterImage={fighterImage}
+          shield={shield}
+          hull={hull}
+          torpedoCount={torpedoCount}
+          hypercard={clientObj.hypercard}
+        />
+      ) : destroyed ? (
+        <Destroyed />
+      ) : (
+        <>
+          <FighterCanvas
+            simulator={simulator}
+            clientId={clientObj.id}
+            enemies={enemies}
+            fighters={fighters}
+            interval={interval}
+            fighterId={fighterId}
+            targeted={targeted}
+            setTargeted={setTargeted}
+            phasers={phasers}
+            torpedos={torpedos}
+          />
+          <PhaserCharging
+            id={id}
+            clientId={clientObj.id}
+            phaserLevel={phaserLevel}
+          />
+          <TorpedoLoading
+            id={id}
+            clientId={clientObj.id}
+            torpedoCount={torpedoCount}
+            torpedoLoaded={torpedoLoaded}
+          />
+          <Controls
+            id={id}
+            clientId={clientObj.id}
+            phaserLevel={phaserLevel}
+            shieldRaised={shieldRaised}
+            targeted={targeted}
+            torpedoLoaded={torpedoLoaded}
+            shield={shield}
+            center={fighterObj.position}
+          />
+          <Shield
+            fighterImage={fighterImage}
+            shield={shield}
+            hull={hull}
+            shieldRaised={shieldRaised}
+          />
+          <Joystick id={id} clientId={clientObj.id} />
+        </>
+      )}
+
       <Tour steps={trainingSteps} client={clientObj} />
     </div>
   );

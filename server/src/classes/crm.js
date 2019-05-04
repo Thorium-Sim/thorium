@@ -6,15 +6,10 @@ class CrmFighter {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId;
     this.clientId = params.clientId || "";
-    this.icon =
-      params.icon ||
-      (params.clientId
-        ? "/Sensor Contacts/Icons/Default.svg"
-        : "/Sensor Contacts/Icons/IO.svg");
     this.size = params.size || 1;
+    this.type = params.type || "enemy";
     this.speed = params.speed || 1;
     this.strength = params.strength || 1;
-    this.attacking = params.attacking || true;
     this.hull = params.hull || 1;
     this.shield = params.shield || 1;
     this.shieldRaised = params.shieldRaised || false;
@@ -26,13 +21,14 @@ class CrmFighter {
     this.destroyed = params.destroyed || false;
     this.docked = params.docked || true;
     this.position =
-      params.position || params.type === "fighter"
+      params.position ||
+      (params.type === "fighter"
         ? { x: 0, y: 0, z: 0 }
         : {
             x: Math.random() * 2000 - 1000,
             y: Math.random() * 2000 - 1000,
             z: Math.random() * 2000 - 1000
-          };
+          });
     this.velocity = params.velocity || {
       x: 0,
       y: 0,
@@ -47,6 +43,9 @@ class CrmFighter {
     this.maxVelocity = this.clientId ? 2.5 : 1;
     this.maxAcceleration = 0.1;
     this.interval = 0;
+
+    // Keep a count of frags
+    this.frags = params.frags || 0;
   }
 
   setPhaserCharge(phaser) {
@@ -73,15 +72,35 @@ class CrmFighter {
       z: Math.min(this.maxAcceleration, Math.max(-1 * this.maxAcceleration, z))
     };
   }
+  undock() {
+    this.docked = false;
+    this.setPosition({ x: 0, y: 0, z: 0 });
+    this.setVelocity({ x: 0, y: 0, z: 0 });
+    this.setAcceleration({ x: 0, y: 0, z: 0 });
+  }
+  dock() {
+    this.setPosition({ x: 0, y: 0, z: 0 });
+    this.setVelocity({ x: 0, y: 0, z: 0 });
+    this.setAcceleration({ x: 0, y: 0, z: 0 });
+    this.setPhaserCharge(0);
+    this.torpedoLoaded = false;
+    this.shieldRaised = false;
+    this.docked = true;
+  }
   setShield(shield) {
     this.shieldRaised = shield;
   }
   loadTorpedo() {
-    this.torpedoLoaded = true;
+    if (this.torpedoCount > 0) {
+      this.torpedoLoaded = true;
+    }
   }
   fireTorpedo() {
     this.torpedoLoaded = false;
     this.torpedoCount--;
+  }
+  restockTorpedos() {
+    this.torpedoCount = 6;
   }
   setPhaserTarget(target) {
     this.phaserTarget = target;
@@ -89,7 +108,7 @@ class CrmFighter {
   hit(damage) {
     if (this.shield && this.shieldRaised) {
       this.shield = this.shield - damage;
-      if (this.shield < 0) {
+      if (this.shield <= 0) {
         damage = this.shield * -1;
         this.shield = 0;
         this.shieldRaised = false;
@@ -97,10 +116,24 @@ class CrmFighter {
         return;
       }
     }
-    this.hull = this.hull - damage;
-    if (this.hull < 0) {
+    this.hull = Math.max(0, this.hull - damage);
+    if (this.hull <= 0) {
       this.destroyed = true;
     }
+  }
+  repair(damage) {
+    if (this.hull < 1) {
+      this.hull = Math.min(1, this.hull + damage);
+    } else {
+      this.shield = Math.min(1, this.shield + damage);
+    }
+  }
+  restore() {
+    this.restockTorpedos();
+    this.dock();
+    this.destroyed = false;
+    this.hull = 1;
+    this.shield = 1;
   }
 }
 
@@ -115,7 +148,7 @@ class CrmTorpedo {
     this.destroyed = params.destroyed || false;
 
     // Random damage value that this torpedo will inflict
-    this.strength = params.strength || Math.round(Math.random() * 0.5) + 0.5;
+    this.strength = params.strength || Math.round(Math.random() * 0.4) + 0.4;
   }
 }
 
@@ -130,6 +163,13 @@ export default class Crm extends System {
     this.password = params.password || "";
     this.activated = params.activated || false;
     this.fighterImage = params.fighterImage || "/Docking Images/Default.png";
+
+    // Values that override the CRMFighter
+    this.fighterIcon =
+      params.fighterIcon || "/Sensor Contacts/Icons/Default.svg";
+    this.enemyIcon = params.enemyIcon || "/Sensor Contacts/Icons/IO.svg";
+    this.attacking = params.attacking || false;
+    this.speed = params.speed || 1;
 
     this.fighters = [];
     if (params.fighters && params.fighters.length > 0) {
@@ -182,6 +222,34 @@ export default class Crm extends System {
     this.activated = false;
     super.break(report, destroyed, which);
   }
+  setAttacking(attacking) {
+    this.attacking = attacking;
+  }
+  setFighterImage(image) {
+    this.fighterImage = image;
+  }
+  setFighterIcon(image) {
+    this.fighterIcon = image;
+  }
+  setEnemyIcon(image) {
+    this.enemyIcon = image;
+  }
+  setEnemyCount(count) {
+    if (count < 0) return;
+    if (this.enemyCount > count) {
+      // Remove enemies, starting with destroyed enemies
+      while (this.enemyCount !== count) {
+        const enemyId = this.enemies.find(e => e.destroyed) || this.enemies[0];
+        this.enemies = this.enemies.filter(e => e.id !== enemyId.id);
+      }
+    } else if (this.enemyCount < count) {
+      // Add enemies
+      while (this.enemyCount !== count) {
+        this.addEnemy();
+      }
+    }
+    return;
+  }
   setPower(powerLevel) {
     if (this.power && this.power.powerLevels[0] > powerLevel) {
       this.activated = false;
@@ -222,7 +290,7 @@ export default class Crm extends System {
     const fighterPosition = new THREE.Vector3(
       ...Object.values(fighter.position)
     );
-    // fighter.fireTorpedo();
+    fighter.fireTorpedo();
     const targetPosition = new THREE.Vector3(...Object.values(target.position));
     const velocity = targetPosition
       .sub(fighterPosition)

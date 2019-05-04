@@ -24,6 +24,9 @@ const schema = gql`
     enemyCount: Int
     fighterDestroyedCount: Int
     enemyDestroyedCount: Int
+    fighterIcon: String
+    enemyIcon: String
+    attacking: Boolean
     interval: Float
     phasers: [CrmPhaserShot]
     torpedos: [CrmTorpedo]
@@ -40,6 +43,7 @@ const schema = gql`
   type CrmFighter {
     id: ID
     clientId: ID
+    client: Client
     icon: String
     size: Float
     speed: Float
@@ -55,6 +59,7 @@ const schema = gql`
     docked: Boolean
     position: Coordinates
     velocity: Coordinates
+    frags: Int
   }
   extend type Query {
     crm(simulatorId: ID!): Crm
@@ -75,6 +80,14 @@ const schema = gql`
     crmFireTorpedo(id: ID!, clientId: ID!, target: ID!): String
     crmFirePhaser(id: ID!, clientId: ID!, target: ID!): String
     crmStopPhaser(id: ID!, clientId: ID!): String
+    crmSetFighterDocked(id: ID!, clientId: ID!, docked: Boolean!): String
+    crmRestockTorpedos(id: ID!, clientId: ID!): String
+    crmSetAttacking(id: ID!, attacking: Boolean!): String
+    crmSetFighterImage(id: ID!, image: String!): String
+    crmSetFighterIcon(id: ID!, image: String!): String
+    crmSetEnemyIcon(id: ID!, image: String!): String
+    crmSetEnemyCount(id: ID!, count: Int!): String
+    crmRestoreFighter(id: ID!, clientId: ID!): String
   }
   extend type Subscription {
     crmUpdate(simulatorId: ID): Crm
@@ -94,6 +107,23 @@ const resolver = {
           return { target: f.position, destination: t.position };
         });
       return phasers;
+    }
+  },
+  CrmFighter: {
+    client(fighter) {
+      return App.clients.find(c => c.id === fighter.clientId);
+    },
+    icon(fighter) {
+      const key = fighter.type === "fighter" ? "fighterIcon" : "enemyIcon";
+      const crm = App.systems.find(
+        s => s.simulatorId === fighter.simulatorId && s.class === "Crm"
+      );
+      return crm[key];
+    },
+    attacking(fighter) {
+      return App.systems.find(
+        s => s.simulatorId === fighter.simulatorId && s.class === "Crm"
+      ).attacking;
     }
   },
   Query: {

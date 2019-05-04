@@ -143,7 +143,7 @@ This can only be done once per flight and should only be done when the flight is
       variables={{ flightId: props.match.params.flightId }}
     >
       {({ loading, data }) => {
-        if (loading) return null;
+        if (loading || !data) return null;
         const flight =
           data.flights &&
           data.flights.find(f => f.id === props.match.params.flightId);

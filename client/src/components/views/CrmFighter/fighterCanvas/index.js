@@ -12,13 +12,16 @@ const FighterCanvas = ({
   targeted,
   setTargeted,
   phasers,
-  torpedos
+  torpedos,
+  simulator
 }) => {
   const fighterContacts = useInterpolate(
     torpedos
       .map(t => ({ ...t, type: "torpedo" }))
-      .concat(enemies.map(e => ({ ...e, type: "enemy" })))
-      .concat(fighters),
+      .concat(
+        enemies.map(e => ({ ...e, type: "enemy" })).filter(f => !f.docked)
+      )
+      .concat(fighters.filter(f => !f.docked)),
     interval
   );
   const fighter = fighterContacts.find(c => c.id === fighterId) || {};
@@ -29,7 +32,12 @@ const FighterCanvas = ({
     zoomFactor: 10,
     track: true
   });
-
+  const { x: smX, y: smY } = calculatePosition({
+    position: { x: 0, y: 0 },
+    center: center,
+    zoomFactor: 1,
+    track: false
+  });
   return (
     <div
       className="fighter-canvas"
@@ -46,8 +54,23 @@ const FighterCanvas = ({
         targeted={targeted}
         setTargeted={setTargeted}
       />
-
+      <div
+        className="simulator-base"
+        style={{
+          transform: `translate(${x}%, ${y}%)`
+        }}
+      >
+        <img src={`/assets${simulator.assets.top}`} draggable={false} alt="" />
+      </div>
       <div className="inner-canvas">
+        <div
+          className="simulator-base"
+          style={{
+            transform: `translate(${smX}%, ${smY}%)`
+          }}
+        >
+          <div />
+        </div>
         <Fighters
           fighters={fighterContacts}
           interval={interval}

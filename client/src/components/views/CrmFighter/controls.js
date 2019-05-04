@@ -3,6 +3,12 @@ import { Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 
+function distance3d(coord2, coord1) {
+  const { x: x1, y: y1, z: z1 } = coord1;
+  let { x: x2, y: y2, z: z2 } = coord2;
+  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
+}
+
 const Controls = ({
   id,
   clientId,
@@ -10,7 +16,8 @@ const Controls = ({
   torpedoLoaded,
   shield,
   shieldRaised,
-  targeted
+  targeted,
+  center
 }) => {
   const firePhaserBeam = (fire, stop) => () => {
     fire();
@@ -85,9 +92,30 @@ const Controls = ({
           </Button>
         )}
       </Mutation>
-      <Button block color="danger">
-        Dock Fighter
-      </Button>
+      <Mutation
+        mutation={gql`
+          mutation Dock($id: ID!, $clientId: ID!) {
+            crmSetFighterDocked(id: $id, clientId: $clientId, docked: true)
+          }
+        `}
+        variables={{
+          id,
+          clientId
+        }}
+      >
+        {action => (
+          <Button
+            block
+            color="danger"
+            disabled={
+              distance3d({ x: 0, y: 0, z: 0 }, { ...center, z: 0 }) > 25
+            }
+            onClick={action}
+          >
+            Dock Fighter
+          </Button>
+        )}
+      </Mutation>
     </div>
   );
 };
