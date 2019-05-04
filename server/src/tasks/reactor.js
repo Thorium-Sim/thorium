@@ -17,7 +17,10 @@ export default [
           s.cards.find(c => c.component === "ReactorControl")
         ) &&
         App.systems.find(
-          s => s.simulatorId === simulator.id && s.type === "Reactor" && s.model === "reactor"
+          s =>
+            s.simulatorId === simulator.id &&
+            s.type === "Reactor" &&
+            s.model === "reactor"
         )
       );
     },
@@ -34,21 +37,31 @@ export default [
     values: {
       preamble: {
         input: () => "textarea",
-        value: () =>
-          "The reactor efficiency is not at the correct level."
+        value: () => "The reactor efficiency is not at the correct level."
       },
       efficiency: {
-        input: ({simulator}) => {
+        input: ({ simulator }) => {
+          if (!simulator) return "text";
           const reactor = App.systems.find(
-            s => s.simulatorId === simulator.id && s.type === "Reactor" && s.model === "reactor"
-          )
-          return reactor.efficiencies.map(e => ({label:e.label, value:e.efficiency}))
+            s =>
+              s.simulatorId === simulator.id &&
+              s.type === "Reactor" &&
+              s.model === "reactor"
+          );
+          return reactor.efficiencies.map(e => ({
+            label: e.label,
+            value: e.efficiency
+          }));
         },
-        value:({simulator}) => {
+        value: ({ simulator }) => {
+          if (!simulator) return 1;
           const reactor = App.systems.find(
-            s => s.simulatorId === simulator.id && s.type === "Reactor" && s.model === "reactor"
-          )
-          return randomFromList(reactor.efficiencies.map(e => (e.efficiency)))
+            s =>
+              s.simulatorId === simulator.id &&
+              s.type === "Reactor" &&
+              s.model === "reactor"
+          );
+          return randomFromList(reactor.efficiencies.map(e => e.efficiency));
         }
       }
     },
@@ -63,11 +76,18 @@ export default [
       );
 
       const reactor = App.systems.find(
-        s => s.simulatorId === simulator.id && s.type === "Reactor" && s.model === "reactor"
-      )
-      const efficiencyObject = reactor.efficiencies.find(e => e.efficiency === parseFloat(efficiency))
-      const efficiencyName = efficiencyObject ? efficiencyObject.label : "Cruise";
-      
+        s =>
+          s.simulatorId === simulator.id &&
+          s.type === "Reactor" &&
+          s.model === "reactor"
+      );
+      const efficiencyObject = reactor.efficiencies.find(
+        e => e.efficiency === parseFloat(efficiency)
+      );
+      const efficiencyName = efficiencyObject
+        ? efficiencyObject.label
+        : "Cruise";
+
       // If we have assigned the task to the station that will perform
       // the action, tell them to just do it.
       if (station && task.station === station.name)
@@ -90,11 +110,14 @@ export default [
       );
     },
     verify({ simulator, requiredValues = {} }) {
-     // Make sure the task has been properly acomplished.
-     const reactor = App.systems.find(
-      s => s.simulatorId === simulator.id && s.type === "Reactor" && s.model === "reactor"
-    )
-    return parseFloat(requiredValues.efficiency) === reactor.efficiency;
+      // Make sure the task has been properly acomplished.
+      const reactor = App.systems.find(
+        s =>
+          s.simulatorId === simulator.id &&
+          s.type === "Reactor" &&
+          s.model === "reactor"
+      );
+      return parseFloat(requiredValues.efficiency) === reactor.efficiency;
     }
   }
 ];

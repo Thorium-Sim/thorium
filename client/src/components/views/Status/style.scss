@@ -1,4 +1,8 @@
 .status-card {
+  height: 100%;
+  .row {
+    height: 100%;
+  }
   label {
     font-size: 18px;
   }
@@ -24,8 +28,13 @@
       5px 5px 10px rgba(0, 0, 0, 0.3);
     margin: 0 0 10px 0;
   }
+  .damaged-systems-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
   .damage-list {
-    height: 60vh;
+    flex: 1;
     overflow-y: scroll;
     p {
       margin-bottom: 0.25rem;
@@ -109,5 +118,6 @@
     margin: 10px;
     border-radius: 50%;
     transition: box-shadow 2s ease-in-out;
+    position: absolute;
   }
 }

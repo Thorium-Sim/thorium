@@ -44,7 +44,7 @@ export default {
   config: [
     {
       id: "objectLabel",
-      title: "Object ID",
+      title: "Object Label",
       props: {
         type: "text"
       }

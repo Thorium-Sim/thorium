@@ -44,14 +44,13 @@ const useSpark = () => {
     setSparks([...sparks, id]);
     timeoutRef.current.push(
       setTimeout(() => {
-        setSparks(sparks.filter(s => s !== id));
+        setSparks(sparks => sparks.filter(s => s !== id));
       }, duration)
     );
   };
-  useEffect(
-    () => () => timeoutRef.current.forEach(ref => clearTimeout(ref)),
-    []
-  );
+  useEffect(() => {
+    return () => timeoutRef.current.forEach(ref => clearTimeout(ref));
+  }, []);
   return {
     doSpark,
     Sparks: () => sparks.map(s => <Spark key={s} />)

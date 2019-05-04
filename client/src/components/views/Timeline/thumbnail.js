@@ -83,7 +83,7 @@ const Mission = ({
       updateTimelineStep({
         variables: {
           simulatorId,
-          step: stepIndex
+          step: stepIndex + 1
         }
       });
   };
@@ -93,11 +93,12 @@ const Mission = ({
     <div className="thumbnail-list">
       {filteredTimeline.map(t => {
         const stepIndex = timeline.findIndex(i => i.id === t.id);
+
         return (
           <div
             key={t.id}
             className={`${
-              stepIndex === currentTimelineStep ? "current-step" : ""
+              stepIndex === currentTimelineStep - 1 ? "current-step" : ""
             } timeline-thumbnail`}
             onClick={() => runMacro(t)}
           >

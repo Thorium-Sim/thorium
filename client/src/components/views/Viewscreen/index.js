@@ -26,7 +26,7 @@ export class Viewscreen extends Component {
     };
     const mutation = gql`
       mutation AutoAdvance($simulatorId: ID!, $prev: Boolean) {
-        autoAdvance(simulatorId: $simulatorId, prev: $prev)
+        autoAdvance(simulatorId: $simulatorId, prev: $prev, limited: true)
       }
     `;
     if (e.which === 39 || e.which === 33) {

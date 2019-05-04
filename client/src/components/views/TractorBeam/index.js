@@ -137,7 +137,10 @@ class TractorBeam extends Component {
           active={tractorBeam.state}
           simulator={this.props.simulator}
           max={Math.abs(maxPower - 1)}
-          level={Math.abs(Math.min(tractorBeam.strength, maxPower) - 1)}
+          level={Math.min(
+            1,
+            Math.max(0, Math.abs(Math.min(tractorBeam.strength, maxPower) - 1))
+          )}
           id={tractorBeam.id}
           mouseUp={level =>
             this.props.client.mutate({
@@ -148,7 +151,7 @@ class TractorBeam extends Component {
               `,
               variables: {
                 id: tractorBeam.id,
-                strength: Math.abs(level - 1)
+                strength: Math.min(1, Math.max(0, Math.abs(level - 1)))
               }
             })
           }

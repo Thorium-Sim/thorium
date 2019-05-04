@@ -1,6 +1,25 @@
 {
   "1.2.17": {
-    "fixes": ["Fixes a situation where auto-viewscreen can crash the server."]
+    "features": [
+      "Adds a 'Reject Task Verification' button to the tasks core.",
+      "Particle Detector core now persists the types of each line."
+    ],
+    "fixes": [
+      "Fixes a situation where auto-viewscreen can crash the server.",
+      "Fixes issues with using auto-advancing features with the timeline thumbnail core. Note: The timeline thumbnail core will now highlight the current timeline step, but the standard timeline core will show the next timeline step.",
+      "Fixes an issue where very tall images on the ship view viewscreen go out of bounds.",
+      "Fixes an issue where adjusting the volume on the play sound macro causes jank.",
+      "Fixes an issue where running the stop looping sound macro twice will stop all sounds.",
+      "Fixes an issue with the reactor task definition.",
+      "Fixes an issue where radiation doesn't properly update.",
+      "Enable the return and delete keys for keyboard actions.",
+      "The kiosk can now play sounds attached to command + q, command + w, and command + r.",
+      "Fixes a graphical issue with software panels toggle switches.",
+      "Fixes an issue where sparks never stop.",
+      "Add more blocks in place to make sure the tractor beam doesn't go out of bounds.",
+      "Fixes issues with engine buttons.",
+      "Fixes an issue where inventory items cannot be added."
+    ]
   },
   "1.2.16": {
     "features": [

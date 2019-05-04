@@ -6,6 +6,7 @@ import ErrorBoundary from "./helpers/errorBoundary";
 import EasterEgg from "./helpers/easter-egg";
 import IntlProvider from "./helpers/intl";
 import "./app.scss";
+import "./fonts.scss";
 
 const ApolloApp = () => (
   <ApolloProvider client={client}>
