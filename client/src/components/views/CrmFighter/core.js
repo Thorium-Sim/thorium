@@ -7,7 +7,7 @@ import { OutputField } from "../../generic/core";
 import "./style.scss";
 
 const fragment = gql`
-  fragment CrmData on Crm {
+  fragment CrmCoreData on Crm {
     id
     activated
   }
@@ -16,7 +16,7 @@ const fragment = gql`
 const QUERY = gql`
   query Crm($simulatorId: ID!) {
     crm(simulatorId: $simulatorId) {
-      ...CrmData
+      ...CrmCoreData
     }
   }
   ${fragment}
@@ -24,12 +24,13 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription CrmUpdate($simulatorId: ID!) {
     crmUpdate(simulatorId: $simulatorId) {
-      ...CrmData
+      ...CrmCoreData
     }
   }
   ${fragment}
 `;
 const CrmCore = props => {
+  console.log(props);
   return (
     <div className="crm-core">
       <Mutation

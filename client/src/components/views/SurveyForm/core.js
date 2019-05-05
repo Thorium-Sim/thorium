@@ -102,7 +102,7 @@ class SurveyCore extends Component {
     } = this.props;
     if (loading || !surveyform || !allForms) return null;
     return (
-      <Container className="surveyForm-card">
+      <Container className="surveyForm-core">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
