@@ -19,6 +19,7 @@
     grid-area: station-list;
     .list-group {
       height: 100%;
+      overflow-y: auto;
     }
   }
   .reset-password {
@@ -40,6 +41,12 @@
   flex-direction: column;
   .crm-clients {
     flex: 1;
+  }
+  .strength-ranges {
+    display: flex;
+    label {
+      flex: 1;
+    }
   }
   .crm-images {
     p {

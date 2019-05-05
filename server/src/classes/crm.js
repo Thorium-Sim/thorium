@@ -9,7 +9,6 @@ class CrmFighter {
     this.size = params.size || 1;
     this.type = params.type || "enemy";
     this.speed = params.speed || 1;
-    this.strength = params.strength || 1;
     this.hull = params.hull || 1;
     this.shield = params.shield || 1;
     this.shieldRaised = params.shieldRaised || false;
@@ -170,6 +169,8 @@ export default class Crm extends System {
     this.enemyIcon = params.enemyIcon || "/Sensor Contacts/Icons/IO.svg";
     this.attacking = params.attacking || false;
     this.speed = params.speed || 1;
+    this.fighterStrength = params.fighterStrength || 1;
+    this.enemyStrength = params.enemyStrength || 1;
 
     this.fighters = [];
     if (params.fighters && params.fighters.length > 0) {
@@ -249,6 +250,24 @@ export default class Crm extends System {
       }
     }
     return;
+  }
+  setFighterStrength(strength) {
+    this.fighterStrength = strength;
+  }
+  setEnemyStrength(strength) {
+    this.enemyStrength = strength;
+  }
+  destroyUndocked() {
+    this.fighters.forEach(f => {
+      if (!f.docked) {
+        f.destroyed = true;
+      }
+    });
+  }
+  restoreAll() {
+    this.fighters.forEach(f => {
+      f.restore();
+    });
   }
   setPower(powerLevel) {
     if (this.power && this.power.powerLevels[0] > powerLevel) {

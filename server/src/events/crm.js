@@ -72,7 +72,6 @@ App.on("crmSetFighterImage", ({ id, image }) => {
   performAction(id, f => {
     f.setFighterImage(image);
     f.fighters.forEach(f => {
-      console.log(f);
       pubsub.publish("crmFighterUpdate", f);
     });
   });
@@ -95,4 +94,26 @@ App.on("crmSetEnemyCount", ({ id, count }) => {
 App.on("crmRestoreFighter", ({ id, clientId }) => {
   performFighterAction(id, clientId, f => f.restore());
   performAction(id, f => {});
+});
+App.on("crmDestroyUndockedFighters", ({ id }) => {
+  performAction(id, f => {
+    f.destroyUndocked();
+    f.fighters.forEach(f => {
+      pubsub.publish("crmFighterUpdate", f);
+    });
+  });
+});
+App.on("crmRestoreFighters", ({ id }) => {
+  performAction(id, f => {
+    f.restoreAll();
+    f.fighters.forEach(f => {
+      pubsub.publish("crmFighterUpdate", f);
+    });
+  });
+});
+App.on("crmSetFighterStrength", ({ id, strength }) => {
+  performAction(id, crm => crm.setFighterStrength(strength));
+});
+App.on("crmSetEnemyStrength", ({ id, strength }) => {
+  performAction(id, crm => crm.setEnemyStrength(strength));
 });

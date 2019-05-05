@@ -235,7 +235,7 @@ const Crm = ({
           />
         </>
       ) : destroyed ? (
-        <Destroyed />
+        <Destroyed clientId={clientObj.id} hypercard={clientObj.hypercard} />
       ) : (
         <>
           <FighterCanvas
@@ -269,7 +269,7 @@ const Crm = ({
             targeted={targeted}
             torpedoLoaded={torpedoLoaded}
             shield={shield}
-            center={fighterObj.position}
+            center={fighterObj ? fighterObj.position : { x: 0, y: 0, z: 0 }}
           />
           <Shield
             fighterImage={fighterImage}

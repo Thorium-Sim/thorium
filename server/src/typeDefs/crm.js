@@ -20,6 +20,8 @@ const schema = gql`
     fighterImage: String
     fighters: [CrmFighter]
     enemies: [CrmFighter]
+    fighterStrength: Float
+    enemyStrength: Float
     fighterCount: Int
     enemyCount: Int
     fighterDestroyedCount: Int
@@ -88,6 +90,10 @@ const schema = gql`
     crmSetEnemyIcon(id: ID!, image: String!): String
     crmSetEnemyCount(id: ID!, count: Int!): String
     crmRestoreFighter(id: ID!, clientId: ID!): String
+    crmDestroyUndockedFighters(id: ID!): String
+    crmRestoreFighters(id: ID!): String
+    crmSetFighterStrength(id: ID!, strength: Float!): String
+    crmSetEnemyStrength(id: ID!, strength: Float!): String
   }
   extend type Subscription {
     crmUpdate(simulatorId: ID): Crm

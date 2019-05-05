@@ -80,7 +80,7 @@ const Docked = ({
       </Row>
       <Row className="buttons-area">
         {hypercard && (
-          <Col sm={{ size: 4, offset: 2 }}>
+          <Col sm={{ size: 6 }}>
             <Mutation
               mutation={gql`
                 mutation Hypercard($clientId: ID!) {
@@ -103,7 +103,9 @@ const Docked = ({
             </Mutation>
           </Col>
         )}
-        <Col sm={{ size: 4 }}>
+      </Row>
+      <Row>
+        <Col sm={{ size: 6 }}>
           <Mutation
             mutation={gql`
               mutation Undock($id: ID!, $clientId: ID!) {

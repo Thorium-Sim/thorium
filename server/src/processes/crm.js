@@ -101,14 +101,18 @@ function crmContactMove() {
               crm.destroyTorpedo(t.id);
             }
             collisions.forEach(f => {
+              const fragFighter = allFighters.find(f => f.id === t.fighterId);
               t.velocity = f.velocity;
-              f.hit(t.strength);
+              const strengthKey =
+                fragFighter.type === "fighter"
+                  ? "fighterStrength"
+                  : "enemyStrength";
+              f.hit(t.strength * crm[strengthKey]);
               pubsub.publish("crmFighterUpdate", f);
 
               if (f.destroyed) {
                 triggerUpdate = true;
                 // Get the fighter that fired it
-                const fragFighter = allFighters.find(f => f.id === t.fighterId);
                 fragFighter.frags += 1;
               }
             });
@@ -125,7 +129,9 @@ function crmContactMove() {
               if (f.phaserLevel > 0) {
                 const t = allFighters.find(e => e.id === f.phaserTarget);
                 if (!t.destroyed && distance3d(f.position, t.position) < 150) {
-                  t.hit(f.phaserStrength);
+                  const strengthKey =
+                    f.type === "fighter" ? "fighterStrength" : "enemyStrength";
+                  t.hit(f.phaserStrength * crm[strengthKey]);
                   if (tick % 10 === 0) {
                     pubsub.publish("crmFighterUpdate", t);
                   }
