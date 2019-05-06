@@ -16,7 +16,7 @@ const trainingSteps = [
   {
     selector: ".number-pad",
     content:
-      "Using the number pad, input the calculated course coordinates in the Current Course fields to set your course."
+      "Using the number pad, input the calculated course coordinates in the current destination fields to set course."
   }
 ];
 
@@ -374,7 +374,7 @@ class Navigation extends Component {
             {navigation.calculate && <CourseNumber {...navigation} />}
             {!navigation.thrusters && (
               <div className="currentCourse card">
-                <label>Current Course</label>
+                <label>Current Destination</label>
                 <Row>
                   <Col className="col-sm-3">X:</Col>
                   <Col
