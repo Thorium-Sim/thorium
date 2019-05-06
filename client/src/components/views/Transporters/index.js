@@ -51,7 +51,7 @@ const TargetSelect = props => {
         <Input
           defaultValue={props.target}
           onBlur={props.updateTarget}
-          placeholder="Enter Target..."
+          placeholder="Enter Transport Target..."
           size="lg"
         />
         <div className="destination-input" style={{ height: "60px" }} />
@@ -59,7 +59,7 @@ const TargetSelect = props => {
         <Input
           defaultValue={props.destination}
           onBlur={props.updateDestination}
-          placeholder="Enter Destination..."
+          placeholder="Enter Final Destination..."
           size="lg"
         />
         <div style={{ height: "30px" }} />
@@ -250,12 +250,12 @@ const trainingSteps = [
   {
     selector: ".target-destination",
     content:
-      "Input the name of the object you want to transport, as well as your target destination for transporting. Type something into these boxes, such as 'Apple' for the target and 'Outer Space' for the destination. Click the 'Begin Scan' button before proceeding."
+      "Input the name of the object you want to transport, as well as your target's final destination for transporting. Type something into these boxes, such as 'Apple' for the target and 'Outer Space' for the destination. Click the 'Begin Scan' button before proceeding."
   },
   {
     selector: ".transporterScan",
     content:
-      "The computer has to find the target and destination before you can proceed. Wait for your scan to complete."
+      "The computer has to find the target and approve the destination before you can proceed. Wait for your scan to complete."
   },
   {
     selector: ".targetBox",
@@ -265,7 +265,7 @@ const trainingSteps = [
   {
     selector: ".chargeBox",
     content:
-      "Once you have locked onto your target, slowly drag the yellow bars upward from the bottom of this box by hovering over the yellow bars and moving your mouse upward. This will maintain the connection with the target until the transporters have fully engaged. If you reach the top, your target will successfully transport to the destination."
+      "Once you have locked onto your target, slowly drag the yellow bars upward from the bottom of this box by hovering over the yellow bars and moving your cursor upward. This will maintain the connection with the target until the transporters have fully engaged. If you reach the top, your target will successfully transport to the destination."
   }
 ];
 
