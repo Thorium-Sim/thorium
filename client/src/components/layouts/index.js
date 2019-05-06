@@ -8,6 +8,7 @@ import LayoutPhoenix from "./LayoutPhoenix";
 import LayoutShipStation from "./LayoutShipStation";
 import LayoutEpsilon from "./LayoutEpsilon";
 import LayoutBlack from "./LayoutBlack";
+import LayoutClear from "./LayoutClear";
 
 import LayoutCornersViewscreen from "./LayoutCorners/Viewscreen";
 import LayoutOdysseyViewscreen from "./LayoutOdyssey/viewscreen";
@@ -19,6 +20,7 @@ import LayoutPhoenixViewscreen from "./LayoutPhoenix/viewscreen";
 import LayoutShipStationViewscreen from "./LayoutShipStation/viewscreen";
 import LayoutEpsilonViewscreen from "./LayoutEpsilon/viewscreen";
 import LayoutBlackViewscreen from "./LayoutBlack/viewscreen";
+import LayoutClearViewscreen from "./LayoutClear/viewscreen";
 
 const Layouts = {
   LayoutCorners,
@@ -31,6 +33,7 @@ const Layouts = {
   LayoutShipStation,
   LayoutEpsilon,
   LayoutBlack,
+  LayoutClear,
   LayoutCornersViewscreen,
   LayoutOdysseyViewscreen,
   LayoutGlassViewscreen,
@@ -40,6 +43,7 @@ const Layouts = {
   LayoutPhoenixViewscreen,
   LayoutShipStationViewscreen,
   LayoutEpsilonViewscreen,
-  LayoutBlackViewscreen
+  LayoutBlackViewscreen,
+  LayoutClearViewscreen
 };
 export default Layouts;
