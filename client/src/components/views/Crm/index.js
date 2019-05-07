@@ -17,6 +17,7 @@ const fragment = gql`
     }
     displayName
     activated
+    password
   }
 `;
 
@@ -25,8 +26,26 @@ const QUERY = gql`
     crm(simulatorId: $simulatorId) {
       ...CrmData
     }
+    clients(simulatorId: $simulatorId) {
+      id
+      station {
+        name
+      }
+      hypercard
+    }
   }
   ${fragment}
+`;
+const CLIENT_SUB = gql`
+  subscription Clients($simulatorId: ID!) {
+    clientChanged(simulatorId: $simulatorId) {
+      id
+      station {
+        name
+      }
+      hypercard
+    }
+  }
 `;
 const SUBSCRIPTION = gql`
   subscription CrmUpdate($simulatorId: ID!) {
@@ -43,7 +62,7 @@ class CrmData extends Component {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { crm } = data;
+          const { crm, clients } = data;
           if (loading) return null;
           if (!crm) return <div>No CRM System</div>;
           return (
@@ -60,7 +79,20 @@ class CrmData extends Component {
                 })
               }
             >
-              <Crm {...this.props} {...crm} />
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: CLIENT_SUB,
+                    variables: { simulatorId: this.props.simulator.id },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      return Object.assign({}, previousResult, {
+                        clients: subscriptionData.data.clientChanged
+                      });
+                    }
+                  })
+                }
+              />
+              <Crm {...this.props} {...crm} clients={clients} />
             </SubscriptionHelper>
           );
         }}

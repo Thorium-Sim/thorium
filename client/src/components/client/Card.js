@@ -274,14 +274,16 @@ export default class CardFrame extends Component {
                 )}
               </Mutation>
             )}
-          <Alerts
-            key={`alerts-${
-              this.props.simulator ? this.props.simulator.id : "simulator"
-            }-${this.props.station ? this.props.station.name : "station"}`}
-            ref="alert-widget"
-            simulator={this.props.simulator}
-            station={this.props.station}
-          />
+          {client.offlineState !== "blackout" && (
+            <Alerts
+              key={`alerts-${
+                this.props.simulator ? this.props.simulator.id : "simulator"
+              }-${this.props.station ? this.props.station.name : "station"}`}
+              ref="alert-widget"
+              simulator={this.props.simulator}
+              station={this.props.station}
+            />
+          )}
         </ActionsMixin>
       </div>
     );

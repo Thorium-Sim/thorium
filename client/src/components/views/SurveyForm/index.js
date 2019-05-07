@@ -39,14 +39,16 @@ class SurveyForm extends Component {
     if (surveyform.length === 0) {
       return (
         <div className="center-all">
-          <h1>No survey in progress.</h1>
+          <h1>Thank you for your response.</h1>
         </div>
       );
     }
     if (surveyform.length > 1 && !selectedForm) {
       return (
         <div className="center-all">
-          <h2>Select a survey.</h2>
+          <div>
+            <h2>Select a survey.</h2>
+          </div>
           <ListGroup>
             {surveyform.map(s => (
               <ListGroupItem

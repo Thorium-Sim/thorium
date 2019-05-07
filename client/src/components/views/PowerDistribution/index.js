@@ -135,7 +135,7 @@ class PowerDistribution extends Component {
       },
       {
         selector: ".totalPowerText",
-        content: "This is the total amount of power being used by the ship."
+        content: "This is the total amount of power the ship has available and how much is being used based on the power levels above."
       },
       hasBattery && {
         selector: ".battery-holder",
@@ -212,29 +212,31 @@ class PowerDistribution extends Component {
                   />
                 ))}
             </div>
-            <h4 className="totalPowerText">Total Power Used: {powerTotal}</h4>
-            {reactor && (
-              <h4>
+            <div className="totalPowerText">
+              {reactor && (
+                <h4>
                 Total Power Available:{" "}
-                {Math.round(reactor.efficiency * reactor.powerOutput)}
-              </h4>
-            )}
-            {reactor && (
-              <h4
-                className={` ${
-                  Math.round(reactor.efficiency * reactor.powerOutput) -
-                    powerTotal <
-                  0
-                    ? "text-danger"
-                    : ""
-                }`}
-              >
-                Power Draw:{" "}
-                {Math.round(reactor.efficiency * reactor.powerOutput) -
-                  powerTotal}
-              </h4>
-            )}
-          </Col>
+                  {Math.round(reactor.efficiency * reactor.powerOutput)}
+                </h4>
+                )}
+                <h4>Total Power Used: {powerTotal}</h4>
+                {reactor && (
+                  <h4
+                    className={` ${
+                      Math.round(reactor.efficiency * reactor.powerOutput) -
+                        powerTotal <
+                      0
+                        ? "text-danger"
+                        : ""
+                    }`}
+                  >
+                    Remaining Power:{" "}
+                    {Math.round(reactor.efficiency * reactor.powerOutput) -
+                      powerTotal}
+                  </h4>
+                )}
+            </div>
+        </Col>
           {battery && (
             <Col sm="4" className="battery-holder">
               <Card>

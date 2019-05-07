@@ -172,7 +172,10 @@ class Surveys extends Component {
             {selectedForm && (
               <Form
                 saveForm={this.saveForm}
-                form={surveyform.find(f => f.id === selectedForm).form}
+                form={
+                  surveyform.find(f => f.id === selectedForm) &&
+                  surveyform.find(f => f.id === selectedForm).form
+                }
               />
             )}
           </Col>

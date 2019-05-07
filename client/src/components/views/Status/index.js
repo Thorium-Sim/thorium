@@ -49,7 +49,7 @@ const Status = props => {
         <Col sm={6} style={{ pointerEvents: "none" }}>
           <Stealth {...props} />
         </Col>
-        <Col sm={3}>
+        <Col sm={3} style={{ display: "flex", flexDirection: "column" }}>
           <Damaged {...props} />
           {!props.viewscreen && <AlertCondition {...props} />}
         </Col>
