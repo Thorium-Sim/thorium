@@ -9,7 +9,8 @@
       "Fixes an issue where the nudge doesn't work after changing the speed of the contacts.",
       "Notifications no longer appear on blacked out stations.",
       "Shows all of the probes in a scrolling list when there are many.",
-      "Made the internal comm overlay show up on the proper layer."
+      "Made the internal comm overlay show up on the proper layer.",
+      "Fixes an issue with the handheld scanner core."
     ]
   },
   "1.2.17": {
