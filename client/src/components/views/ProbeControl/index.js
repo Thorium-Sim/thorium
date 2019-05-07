@@ -7,7 +7,9 @@ import {
   Card,
   CardBody,
   Input,
-  Button /*
+  Button,
+  ListGroup,
+  ListGroupItem /*
   TabContent,
   TabPane,
   Nav,
@@ -100,48 +102,45 @@ class ProbeControl extends Component {
           }
         />
         <Row>
-          <Col sm={3}>
+          <Col
+            sm={3}
+            style={{ display: "flex", flexDirection: "column", height: "100%" }}
+          >
             <h3>Probes</h3>
-            <Card className="probe-list">
-              <CardBody>
-                {network && (
-                  <div
-                    onClick={() =>
-                      this.setState({
-                        selectedProbe: probes.probes.filter(p =>
-                          /[1-8]/.test(p.name)
-                        )[0].id
-                      })
-                    }
-                    className={`probe-list ${
-                      selectedProbe ===
-                      probes.probes.filter(p => /[1-8]/.test(p.name))[0].id
-                        ? "selected"
-                        : ""
-                    }`}
+            <ListGroup style={{ flex: 1, overflowY: "auto" }}>
+              {network && (
+                <ListGroupItem
+                  onClick={() =>
+                    this.setState({
+                      selectedProbe: probes.probes.filter(p =>
+                        /[1-8]/.test(p.name)
+                      )[0].id
+                    })
+                  }
+                  active={
+                    selectedProbe ===
+                    probes.probes.filter(p => /[1-8]/.test(p.name))[0].id
+                  }
+                >
+                  <p className="probe-name">Probe Network</p>
+                  <small />
+                </ListGroupItem>
+              )}
+              {probes.probes
+                .filter(p => !/^[1-8]{1}$/.test(p.name))
+                .map(p => (
+                  <ListGroupItem
+                    key={p.id}
+                    onClick={() => this.setState({ selectedProbe: p.id })}
+                    active={selectedProbe === p.id}
                   >
-                    <p className="probe-name">Probe Network</p>
-                    <small />
-                  </div>
-                )}
-                {probes.probes
-                  .filter(p => !/^[1-8]{1}$/.test(p.name))
-                  .map(p => (
-                    <div
-                      key={p.id}
-                      onClick={() => this.setState({ selectedProbe: p.id })}
-                      className={`probe-list ${
-                        selectedProbe === p.id ? "selected" : ""
-                      }`}
-                    >
-                      <p className="probe-name">{p.name}</p>
-                      <small>
-                        {probes.types.find(t => t.id === p.type).name}
-                      </small>
-                    </div>
-                  ))}
-              </CardBody>
-            </Card>
+                    <p className="probe-name">{p.name}</p>
+                    <small>
+                      {probes.types.find(t => t.id === p.type).name}
+                    </small>
+                  </ListGroupItem>
+                ))}
+            </ListGroup>
           </Col>
           <Col sm={9}>
             <ProbeControlWrapper

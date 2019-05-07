@@ -7,7 +7,8 @@
       "Fixes an issue where interface switches can't be connected.",
       "Making a client go online removes the hypercard on that client.",
       "Fixes an issue where the nudge doesn't work after changing the speed of the contacts.",
-      "Notifications no longer appear on blacked out stations."
+      "Notifications no longer appear on blacked out stations.",
+      "Shows all of the probes in a scrolling list when there are many."
     ]
   },
   "1.2.17": {
