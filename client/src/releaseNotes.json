@@ -5,7 +5,8 @@
     ],
     "fixes": [
       "Fixes an issue where interface switches can't be connected.",
-      "Making a client go online removes the hypercard on that client."
+      "Making a client go online removes the hypercard on that client.",
+      "Fixes an issue where the nudge doesn't work after changing the speed of the contacts."
     ]
   },
   "1.2.17": {

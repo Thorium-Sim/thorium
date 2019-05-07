@@ -30,7 +30,7 @@ export default class Nudge extends Component {
     const variables = {
       id: sensor,
       amount,
-      speed,
+      speed: parseFloat(speed),
       yaw: yaw * nudge
     };
     client.mutate({
