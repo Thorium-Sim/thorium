@@ -50,8 +50,10 @@ App.on("setSpaceEdventuresToken", async ({ token, cb }) => {
   cb();
 });
 
-App.on("assignSpaceEdventuresFlightRecord", ({ flightId }) => {
-  const flight = App.flights.find(f => f.id === flightId);
+App.on("assignSpaceEdventuresFlightRecord", ({ simulatorId, flightId }) => {
+  const flight = App.flights.find(
+    f => f.id === flightId || f.simulators.includes(simulatorId)
+  );
   flight.submitSpaceEdventure();
 });
 const badgeAssign = ({
@@ -70,10 +72,11 @@ const badgeAssign = ({
 App.on("assignSpaceEdventuresBadge", badgeAssign);
 App.on("assignSpaceEdventuresMission", badgeAssign);
 App.on("getSpaceEdventuresLogin", async ({ token, context, cb }) => {
-  let res = {};
-  try {
-    res = await GraphQLClient.query({
-      query: `query GetUser($token:String!) {
+  async function doLogin() {
+    let res = {};
+    try {
+      res = await GraphQLClient.query({
+        query: `query GetUser($token:String!) {
       user:userByToken(token:$token) {
         id
         profile {
@@ -86,32 +89,32 @@ App.on("getSpaceEdventuresLogin", async ({ token, context, cb }) => {
       }
     }    
     `,
-      variables: { token }
-    });
-  } catch (err) {
-    cb(err.message.replace("GraphQL error:", "Error:"));
-    return;
-  }
-  const {
-    data: { user }
-  } = res;
-  const clientId = context.clientId;
-  if (user) {
-    const client = App.clients.find(c => c.id === clientId);
-    client.login(
-      user.profile.displayName || user.profile.name || user.profile.rank.name
-    );
-    const flight = App.flights.find(f => f.id === client.flightId);
-    if (flight) {
-      flight.addSpaceEdventuresUser(client.id, user.id);
-      flight.loginClient({
-        id: client.id,
-        token: tokenGenerator(),
-        simulatorId: client.simulatorId,
-        name: client.station
+        variables: { token }
       });
+    } catch (err) {
+      return err.message.replace("GraphQL error:", "Error:");
     }
+    const {
+      data: { user }
+    } = res;
+    const clientId = context.clientId;
+    if (user) {
+      const client = App.clients.find(c => c.id === clientId);
+      client.login(
+        user.profile.displayName || user.profile.name || user.profile.rank.name
+      );
+      const flight = App.flights.find(f => f.id === client.flightId);
+      if (flight) {
+        flight.addSpaceEdventuresUser(client.id, user.id);
+        flight.loginClient({
+          id: client.id,
+          token: tokenGenerator(),
+          simulatorId: client.simulatorId,
+          name: client.station
+        });
+      }
+    }
+    pubsub.publish("clientChanged", App.clients);
   }
-  pubsub.publish("clientChanged", App.clients);
-  cb();
+  cb(doLogin());
 });

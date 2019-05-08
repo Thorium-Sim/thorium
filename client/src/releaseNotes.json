@@ -10,7 +10,8 @@
       "Notifications no longer appear on blacked out stations.",
       "Shows all of the probes in a scrolling list when there are many.",
       "Made the internal comm overlay show up on the proper layer.",
-      "Fixes an issue with the handheld scanner core."
+      "Fixes an issue with the handheld scanner core.",
+      "Improvements to Space EdVentures."
     ]
   },
   "1.2.17": {

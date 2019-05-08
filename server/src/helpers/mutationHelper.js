@@ -8,18 +8,23 @@ export default function mutationHelper(schema, exceptions = []) {
     .reduce(
       (prev, next) => ({
         ...prev,
-        [next]: async (root, args, context) =>
-          new Promise(resolve => {
+        [next]: async (root, args, context) => {
+          let timeout = null;
+          return new Promise(resolve => {
             App.handleEvent(
               {
                 ...args,
-                cb: (a, b, c) => resolve(a)
+                cb: (a, b, c) => {
+                  clearTimeout(timeout);
+                  resolve(a);
+                }
               },
               next,
               context
             );
-            setTimeout(() => resolve(), 500);
-          })
+            timeout = setTimeout(() => resolve(), 500);
+          });
+        }
       }),
       {}
     );

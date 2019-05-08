@@ -212,7 +212,7 @@ class Login extends Component {
                       }
                     />
                     <Button disabled={loading} type="submit" block>
-                      Submit Rank Token
+                      Submit Officer Code
                     </Button>
                   </form>
                 )}
