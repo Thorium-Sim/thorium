@@ -8,7 +8,7 @@ const schema = gql`
   type Macro {
     id: ID
     name: String
-    actions: [Action]
+    actions: [MacroAction]
   }
   extend type Query {
     macros(simulatorId: ID): [Macro]
