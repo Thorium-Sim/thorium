@@ -13624,6 +13624,7 @@ export default {
   taskReports: [],
   interfaces: [],
   interfaceDevices: [],
+  macros: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),
   doTrack: false,
