@@ -3,7 +3,15 @@
     "features": [
       "Adds the CRM-114. This is a fighter system where each client with the card has it's own fighter to destroy contacts around the ship. Use the 'CrmFighter' card on a single station or use the 'Crm' card to allow the crew to activate the fighter card as a hypercard on any station."
     ],
-    "fixes": ["Fixes an issue where interface switches can't be connected."]
+    "fixes": [
+      "Fixes an issue where interface switches can't be connected.",
+      "Making a client go online removes the hypercard on that client.",
+      "Fixes an issue where the nudge doesn't work after changing the speed of the contacts.",
+      "Notifications no longer appear on blacked out stations.",
+      "Shows all of the probes in a scrolling list when there are many.",
+      "Made the internal comm overlay show up on the proper layer.",
+      "Fixes an issue with the handheld scanner core."
+    ]
   },
   "1.2.17": {
     "features": [
