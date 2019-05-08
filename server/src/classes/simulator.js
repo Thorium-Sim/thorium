@@ -65,6 +65,7 @@ class Ship {
     this.clamps = params.clamps || false; // Detached
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed
+    this.legs = params.legs || false; //Retracted
     this.bridgeCrew = params.bridgeCrew || 14;
     this.radiation = params.radiation || 0.1;
     this.speed = params.speed || 0;
@@ -225,6 +226,9 @@ export default class Simulator {
   }
   airlock(tf) {
     this.ship.airlock = tf;
+  }
+  legs(tf) {
+    this.ship.legs = tf;
   }
   bridgeCrew(num) {
     this.ship.bridgeCrew = num;

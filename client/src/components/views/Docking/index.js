@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Clamps, Ramps, Doors } from "./graphics";
+import { Clamps, Ramps, Doors, Legs } from "./graphics";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
@@ -15,6 +15,7 @@ const DOCKING_SUB = gql`
         clamps
         ramps
         airlock
+        legs
       }
     }
   }
@@ -89,10 +90,26 @@ class Docking extends Component {
       variables
     });
   }
+  legs() {
+    this.setState({
+      graphic: "legs",
+      disabled: true
+    });
+    this.timeout = setTimeout(this.undisable, 2000);
+    const variables = {
+      simulatorId: this.props.simulator.id,
+      which: "legs",
+      state: !this.props.data.simulators[0].ship.legs
+    };
+    this.props.client.mutate({
+      mutation,
+      variables
+    });
+  }
   render() {
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const { graphic, disabled } = this.state;
-    const { clamps, ramps, airlock } = this.props.data.simulators[0].ship;
+    const { clamps, ramps, airlock, legs } = this.props.data.simulators[0].ship;
     return (
       <Container fluid className="docking">
         <SubscriptionHelper
@@ -143,12 +160,23 @@ class Docking extends Component {
               >
                 {airlock ? "Close" : "Open"} Airlock Doors
               </Button>
+              <Button
+                disabled={disabled}
+                block
+                size="lg"
+                className="legs-button"
+                color="primary"
+                onClick={this.legs.bind(this)}
+              >
+                {legs ? "Retract" : "Extend"} Landing Legs
+              </Button>
             </div>
           </Col>
           <Col className="graphics" sm={{ size: 5, offset: 2 }}>
             {graphic === "clamps" && <Clamps transform={clamps} />}
             {graphic === "ramps" && <Ramps transform={ramps} />}
             {graphic === "doors" && <Doors transform={airlock} />}
+            {graphic === "legs" && <Legs transform={legs} />}
           </Col>
         </Row>
         <Tour steps={trainingSteps} client={this.props.clientObj} />
@@ -183,6 +211,7 @@ const DOCKING_QUERY = gql`
         clamps
         ramps
         airlock
+        legs
       }
     }
   }

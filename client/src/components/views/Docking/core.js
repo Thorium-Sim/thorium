@@ -12,6 +12,7 @@ const DOCKING_SUB = gql`
         clamps
         ramps
         airlock
+        legs
       }
     }
   }
@@ -67,7 +68,7 @@ class DockingCore extends Component {
           }
         />
         <Row>
-          <Col sm={4}>
+          <Col sm={3}>
             <Button
               onClick={this.toggle.bind(this, "clamps")}
               size="sm"
@@ -76,7 +77,7 @@ class DockingCore extends Component {
               Clamps
             </Button>
           </Col>
-          <Col sm={4}>
+          <Col sm={3}>
             <Button
               onClick={this.toggle.bind(this, "ramps")}
               size="sm"
@@ -85,13 +86,22 @@ class DockingCore extends Component {
               Ramps
             </Button>
           </Col>
-          <Col sm={4}>
+          <Col sm={3}>
             <Button
               onClick={this.toggle.bind(this, "airlock")}
               size="sm"
               color={ship.airlock ? "danger" : "success"}
             >
               Doors
+            </Button>
+          </Col>
+          <Col sm={3}>
+            <Button
+              onClick={this.toggle.bind(this, "legs")}
+              size="sm"
+              color={ship.legs ? "danger" : "success"}
+            >
+              Legs
             </Button>
           </Col>
         </Row>
@@ -108,6 +118,7 @@ const DOCKING_QUERY = gql`
         clamps
         ramps
         airlock
+        legs
       }
     }
   }

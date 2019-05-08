@@ -73,3 +73,25 @@ export class Clamps extends Component {
     );
   }
 }
+
+export const Legs = props => {
+  return (
+    <div className="docking-graphic">
+      <div className={`legs ${props.transform ? "on" : ""}`}>
+        <div className="tri-1" />
+        <div className="tri-2" />
+        <div className="tri-3" />
+        <div className="tri-4" />
+        <div className="tri-5" />
+        <div className="tri-6" />
+        <div className="tri-7" />
+        <div className="tri-8" />
+        <div className="tri-9" />
+        <div className="tri-10" />
+        <div className="tri-11" />
+        <div className="tri-12" />
+      </div>
+      <div style={{ marginTop: "100%" }} />
+    </div>
+  );
+};
