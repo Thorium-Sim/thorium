@@ -58,6 +58,6 @@ App.on("updateViewscreenSecondary", ({ id, secondary }) => {
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
 
-App.on("toggleViewscreenVideo", ({ simulatorId }) => {
-  pubsub.publish("viewscreenVideoToggle", simulatorId);
+App.on("toggleViewscreenVideo", ({ simulatorId, viewscreenId }) => {
+  pubsub.publish("viewscreenVideoToggle", { simulatorId, viewscreenId });
 });

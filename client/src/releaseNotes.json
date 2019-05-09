@@ -1,4 +1,9 @@
 {
+  "1.2.19": {
+    "fixes": [
+      "Viewscreen targets an individual viewscreen instead of every viewscreen on a simulator."
+    ]
+  },
   "1.2.18": {
     "features": [
       "Adds the CRM-114. This is a fighter system where each client with the card has it's own fighter to destroy contacts around the ship. Use the 'CrmFighter' card on a single station or use the 'Crm' card to allow the crew to activate the fighter card as a hypercard on any station."

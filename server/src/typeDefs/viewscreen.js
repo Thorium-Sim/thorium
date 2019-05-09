@@ -40,11 +40,11 @@ const schema = gql`
     """
     setViewscreenToAuto(id: ID, simulatorId: ID, secondary: Boolean): String
     updateViewscreenAuto(id: ID!, auto: Boolean!): String
-    toggleViewscreenVideo(simulatorId: ID!): String
+    toggleViewscreenVideo(simulatorId: ID, viewscreenId: ID): String
   }
   extend type Subscription {
     viewscreensUpdate(simulatorId: ID): [Viewscreen]
-    viewscreenVideoToggle(simulatorId: ID): Boolean
+    viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
   }
 `;
 
@@ -99,8 +99,15 @@ const resolver = {
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("viewscreenVideoToggle"),
-        (rootValue, { simulatorId }) => {
-          return rootValue === simulatorId;
+        (rootValue, { simulatorId, viewscreenId }) => {
+          return (
+            (rootValue.simulatorId &&
+              simulatorId &&
+              rootValue.simulatorId === simulatorId) ||
+            (rootValue.viewscreenId &&
+              viewscreenId &&
+              rootValue.viewscreenId === viewscreenId)
+          );
         }
       )
     }

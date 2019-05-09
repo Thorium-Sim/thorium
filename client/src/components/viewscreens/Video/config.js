@@ -24,15 +24,15 @@ class VideoConfig extends Component {
     }
   }
   togglePause = () => {
-    this.props.simulator &&
+    this.props.viewscreen &&
       this.props.client.mutate({
         mutation: gql`
-          mutation ToggleVideo($simulatorId: ID!) {
-            toggleViewscreenVideo(simulatorId: $simulatorId)
+          mutation ToggleVideo($viewscreenId: ID) {
+            toggleViewscreenVideo(viewscreenId: $viewscreenId)
           }
         `,
         variables: {
-          simulatorId: this.props.simulator.id
+          viewscreenId: this.props.viewscreen.id
         }
       });
   };
@@ -41,7 +41,12 @@ class VideoConfig extends Component {
     data = JSON.parse(data);
     return (
       <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        <Button size="sm" color="info" onClick={this.togglePause}>
+        <Button
+          size="sm"
+          color="info"
+          onClick={this.togglePause}
+          disabled={!this.props.viewscreen}
+        >
           Toggle Video Paused
         </Button>
         <div>
