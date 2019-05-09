@@ -99,6 +99,7 @@ const Settings = () => (
                 {action => (
                   <input
                     defaultValue={data.thorium.spaceEdventuresToken}
+                    type="password"
                     onBlur={e =>
                       action({ variables: { token: e.target.value } })
                     }
