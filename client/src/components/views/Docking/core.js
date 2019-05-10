@@ -13,6 +13,7 @@ const DOCKING_SUB = gql`
         ramps
         airlock
         legs
+        hasLegs
       }
     }
   }
@@ -50,6 +51,25 @@ class DockingCore extends Component {
     )
       return null;
     const { ship } = this.props.data.simulators[0];
+
+    let legButton;
+    let colSize;
+    if (ship.hasLegs) {
+      legButton = (<Col sm={3}>
+      <Button
+        onClick={this.toggle.bind(this, "legs")}
+        size="sm"
+        color={ship.legs ? "danger" : "success"}
+      >
+        Legs
+      </Button>
+      </Col>);
+      
+      colSize = 3;
+    } else {
+      legButton = null;
+      colSize = 4;
+    }
     return (
       <Container className="docking-core">
         <SubscriptionHelper
@@ -68,7 +88,7 @@ class DockingCore extends Component {
           }
         />
         <Row>
-          <Col sm={3}>
+          <Col sm={colSize}>
             <Button
               onClick={this.toggle.bind(this, "clamps")}
               size="sm"
@@ -77,7 +97,7 @@ class DockingCore extends Component {
               Clamps
             </Button>
           </Col>
-          <Col sm={3}>
+          <Col sm={colSize}>
             <Button
               onClick={this.toggle.bind(this, "ramps")}
               size="sm"
@@ -86,7 +106,7 @@ class DockingCore extends Component {
               Ramps
             </Button>
           </Col>
-          <Col sm={3}>
+          <Col sm={colSize}>
             <Button
               onClick={this.toggle.bind(this, "airlock")}
               size="sm"
@@ -95,15 +115,7 @@ class DockingCore extends Component {
               Doors
             </Button>
           </Col>
-          <Col sm={3}>
-            <Button
-              onClick={this.toggle.bind(this, "legs")}
-              size="sm"
-              color={ship.legs ? "danger" : "success"}
-            >
-              Legs
-            </Button>
-          </Col>
+          {legButton}
         </Row>
       </Container>
     );
@@ -119,6 +131,7 @@ const DOCKING_QUERY = gql`
         ramps
         airlock
         legs
+        hasLegs
       }
     }
   }

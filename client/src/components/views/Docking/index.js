@@ -16,6 +16,7 @@ const DOCKING_SUB = gql`
         ramps
         airlock
         legs
+        hasLegs
       }
     }
   }
@@ -107,9 +108,27 @@ class Docking extends Component {
     });
   }
   render() {
+    
+
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const { graphic, disabled } = this.state;
-    const { clamps, ramps, airlock, legs } = this.props.data.simulators[0].ship;
+    const { clamps, ramps, airlock, legs, hasLegs } = this.props.data.simulators[0].ship;
+    let legButton;
+    if(hasLegs) {
+      legButton = 
+        <Button
+          disabled={disabled}
+          block
+          size="lg"
+          className="legs-button"
+          color="primary"
+          onClick={this.legs.bind(this)}
+        >
+          {legs ? "Retract" : "Extend"} Landing Legs
+        </Button>;
+    } else {
+      legButton = null;
+    }
     return (
       <Container fluid className="docking">
         <SubscriptionHelper
@@ -160,16 +179,7 @@ class Docking extends Component {
               >
                 {airlock ? "Close" : "Open"} Airlock Doors
               </Button>
-              <Button
-                disabled={disabled}
-                block
-                size="lg"
-                className="legs-button"
-                color="primary"
-                onClick={this.legs.bind(this)}
-              >
-                {legs ? "Retract" : "Extend"} Landing Legs
-              </Button>
+              {legButton}
             </div>
           </Col>
           <Col className="graphics" sm={{ size: 5, offset: 2 }}>
@@ -212,6 +222,7 @@ const DOCKING_QUERY = gql`
         ramps
         airlock
         legs
+        hasLegs
       }
     }
   }
