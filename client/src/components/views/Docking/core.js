@@ -8,12 +8,12 @@ const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
+      hasLegs
       ship {
         clamps
         ramps
         airlock
         legs
-        hasLegs
       }
     }
   }
@@ -51,23 +51,10 @@ class DockingCore extends Component {
     )
       return null;
     const { ship } = this.props.data.simulators[0];
-
-    let legButton;
     let colSize;
-    if (ship.hasLegs) {
-      legButton = (<Col sm={3}>
-      <Button
-        onClick={this.toggle.bind(this, "legs")}
-        size="sm"
-        color={ship.legs ? "danger" : "success"}
-      >
-        Legs
-      </Button>
-      </Col>);
-      
+    if (this.props.data.simulators[0].hasLegs) {
       colSize = 3;
     } else {
-      legButton = null;
       colSize = 4;
     }
     return (
@@ -115,7 +102,16 @@ class DockingCore extends Component {
               Doors
             </Button>
           </Col>
-          {legButton}
+          {this.props.data.simulators[0].hasLegs &&
+            <Col sm={colSize}>
+              <Button
+                onClick={this.toggle.bind(this, "legs")}
+                size="sm"
+                color={ship.legs ? "danger" : "success"}
+              >
+                Legs
+              </Button>
+            </Col>}
         </Row>
       </Container>
     );
@@ -126,12 +122,12 @@ const DOCKING_QUERY = gql`
   query Simulator($simulatorId: String) {
     simulators(id: $simulatorId) {
       id
+      hasLegs
       ship {
         clamps
         ramps
         airlock
         legs
-        hasLegs
       }
     }
   }

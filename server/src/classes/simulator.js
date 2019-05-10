@@ -66,7 +66,6 @@ class Ship {
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed
     this.legs = params.legs || false; //Retracted
-    this.hasLegs = params.hasLegs || false; //No Legs
     this.bridgeCrew = params.bridgeCrew || 14;
     this.radiation = params.radiation || 0.1;
     this.speed = params.speed || 0;
@@ -102,6 +101,7 @@ export default class Simulator {
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutCorners";
     this.caps = params.caps || false;
+    this.hasLegs = params.hasLegs || false;
     this.alertLevel = params.alertLevel || "5";
     this.alertLevelLock = params.alertLevelLock || false;
     this.template = params.template || false;
@@ -231,9 +231,6 @@ export default class Simulator {
   legs(tf) {
     this.ship.legs = tf;
   }
-  hasLegs(tf) {
-    this.ships.hasLegs = tf;
-  }
   bridgeCrew(num) {
     this.ship.bridgeCrew = num;
   }
@@ -278,6 +275,9 @@ export default class Simulator {
   }
   setHasPrinter(hasPrinter) {
     this.hasPrinter = hasPrinter;
+  }
+  setHasLegs(hasLegs) {
+    this.hasLegs = hasLegs;
   }
 
   // Damage Steps

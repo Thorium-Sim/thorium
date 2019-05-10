@@ -23,6 +23,7 @@ const fragment = gql`
     stepDamage
     verifyStep
     hasPrinter
+    hasLegs
     bridgeOfficerMessaging
     spaceEdventuresId
     requiredDamageSteps {

@@ -35,6 +35,17 @@ export default ({ selectedSimulator, handleChange }) => (
       />
     </fieldset>
     <fieldset className="form-group">
+      <label>
+        Landing Legs (Enables docking controls to land on a planet)
+      </label>
+      <input
+        type="checkbox"
+        defaultChecked={selectedSimulator.hasLegs}
+        name="hasLegs"
+        onChange={handleChange}
+      />
+    </fieldset>
+    <fieldset className="form-group">
       <label>Exocomp Count</label>
       <input
         type="range"

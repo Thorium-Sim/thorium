@@ -9,7 +9,6 @@ const schema = gql`
     ramps: Boolean
     airlock: Boolean
     legs: Boolean
-    hasLegs: Boolean
     bridgeCrew: Int
     radiation: Float
     velocity: Float

@@ -11,12 +11,12 @@ const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
+      hasLegs
       ship {
         clamps
         ramps
         airlock
         legs
-        hasLegs
       }
     }
   }
@@ -112,23 +112,8 @@ class Docking extends Component {
 
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const { graphic, disabled } = this.state;
-    const { clamps, ramps, airlock, legs, hasLegs } = this.props.data.simulators[0].ship;
-    let legButton;
-    if(hasLegs) {
-      legButton = 
-        <Button
-          disabled={disabled}
-          block
-          size="lg"
-          className="legs-button"
-          color="primary"
-          onClick={this.legs.bind(this)}
-        >
-          {legs ? "Retract" : "Extend"} Landing Legs
-        </Button>;
-    } else {
-      legButton = null;
-    }
+    const { clamps, ramps, airlock, legs } = this.props.data.simulators[0].ship;
+    
     return (
       <Container fluid className="docking">
         <SubscriptionHelper
@@ -179,7 +164,17 @@ class Docking extends Component {
               >
                 {airlock ? "Close" : "Open"} Airlock Doors
               </Button>
-              {legButton}
+              {this.props.data.simulators[0].hasLegs && 
+              <Button
+                disabled={disabled}
+                block
+                size="lg"
+                className="legs-button"
+                color="primary"
+                onClick={this.legs.bind(this)}
+              >
+                {legs ? "Retract" : "Extend"} Landing Legs
+              </Button>}
             </div>
           </Col>
           <Col className="graphics" sm={{ size: 5, offset: 2 }}>
@@ -217,12 +212,12 @@ const DOCKING_QUERY = gql`
   query Simulator($simulatorId: String) {
     simulators(id: $simulatorId) {
       id
+      hasLegs
       ship {
         clamps
         ramps
         airlock
         legs
-        hasLegs
       }
     }
   }
