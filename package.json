@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "0.0.0-development",
+  "version": "1.2.18",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "@semantic-release/exec": "^3.3.2",
     "@sentry/node": "^4.6.3",
     "apollo-cache-hermes": "^0.8.8",
     "apollo-server": "^2.4.6",

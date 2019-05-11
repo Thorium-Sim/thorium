@@ -9,17 +9,18 @@ stages:
   - name: deploy
     if: branch = master
 
+env:
+  - TEST_SUITE=client
+  - TEST_SUITE=server
+
+install:
+  - npm install
+  - npm install --prefix $TEST_SUITE
+script:
+  - npm run test-$TEST_SUITE -- --forceExit
+
 jobs:
   include:
-    - stage: test
-      env:
-        - TEST_SUITE=client
-        - TEST_SUITE=server
-      install:
-        - npm install
-        - npm install --prefix $TEST_SUITE
-      script:
-        - npm run test-$TEST_SUITE -- --forceExit
     - stage: deploy
       install:
         - npm install
