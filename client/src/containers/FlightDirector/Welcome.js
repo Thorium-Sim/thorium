@@ -49,7 +49,9 @@ const quotes = [
   "I am burdened with glorious purpose.",
   "While you live, shine; have no grief at all. Life exists only for a short while and Time demands his due.",
   "The hardest choices require the strongest wills.",
-  "Like a snowflake in a blizzard..."
+  "Like a snowflake in a blizzard...",
+  "Fun isn’t something one considers when balancing the universe. But this… does put a smile on my face.",
+  "The work is done, as it always will be. I am inevitable."
 ];
 
 class Welcome extends Component {
@@ -61,17 +63,20 @@ class Welcome extends Component {
   };
   componentDidMount() {
     if (!process.env.CI) {
-      fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
+      fetch("https://api.github.com/repos/thorium-sim/thorium/releases")
         .then(res => res.json())
         .then(res => {
           if (
-            semver.gt(res[0].name, require("../../../package.json").version) &&
-            semver(res[0].name).prerelease.length === 0
+            semver.gt(
+              res[0].tag_name,
+              require("../../../package.json").version
+            ) &&
+            semver(res[0].tag_name).prerelease.length === 0
           ) {
-            this.setState({ outdated: res[0].name });
+            this.setState({ outdated: res[0].tag_name });
           }
           if (
-            semver.major(res[0].name) >
+            semver.major(res[0].tag_name) >
             semver.major(require("../../../package.json").version)
           ) {
             this.setState({ major: true });

@@ -31,9 +31,7 @@ jobs:
         - npm install --prefix client
         - npm install --prefix server
       script:
-        - npm run build
-        - npm run zip
-        - npm run sentry-upload
+        - echo "Deploying to Github"
       deploy:
         provider: script
         skip_cleanup: true

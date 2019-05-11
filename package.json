@@ -20,23 +20,10 @@
     "postinstall": "npm-run-all --parallel install-server install-client",
     "install-server": "npm install --prefix server",
     "install-client": "npm install --prefix client",
-    "clean-all": "npm-run-all clean-build clean",
-    "clean": "npm-run-all --parallel clean-main clean-client clean-server",
-    "clean-main": "rm -r node_modules",
-    "clean-client": "npm run clean --prefix client",
-    "clean-server": "npm run clean --prefix server",
-    "clean-build": "npm-run-all --parallel clean-build-main clean-build-client clean-build-server",
-    "clean-build-main": "rm -rf build && rm -rf zip",
-    "clean-build-client": "npm run clean-build --prefix client",
-    "clean-build-server": "npm run clean-build --prefix server",
     "test": "npm-run-all --parallel test-client test-server",
     "test-server": "npm t --prefix server",
     "test-client": "npm t --prefix client",
-    "test-e2e": "is-ci \"test-e2e-run\" \"test-e2e-dev\"",
-    "test-e2e-run": "start-server-and-test start http://localhost:3001 cy-run",
-    "test-e2e-dev": "NODE_ENV=test npm-run-all --parallel start cy-open",
-    "build": "NODE_ENV=production npm-run-all build-code mk-build copy-files pkg",
-    "build-code": "npm-run-all  build-js build-server",
+    "build": "NODE_ENV=production npm-run-all build-js build-server mk-build copy-files pkg",
     "build-js": "npm run build --prefix client",
     "build-server": "npm run build --prefix server",
     "mk-build": "mkdir -p build",
@@ -50,15 +37,12 @@
     "sentry-upload": "node ./scripts/sentryFiles.js",
     "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
     "translate": "babel-node scripts/manageTranslations.js",
-    "upload": "node scripts/uploadTos3.js",
-    "deploy": "npm-run-all build zip upload sentry-upload clean-build",
-    "prepare-commit-msg": "exec < /dev/tty && git cz --hook",
-    "lint-staged": "lint-staged",
-    "precommit": "npm-run-all lint-staged prepare-commit-msg",
     "add-contributor": "all-contributors add",
     "generate-contributor": "all-contributors generate",
     "plop": "plop",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "commit": "git-cz",
+    "deploy": "npm-run-all build zip sentry-upload"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -210,7 +194,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "npm run bump ${nextRelease.version}"
+          "prepareCmd": "npm run bump ${nextRelease.version} && npm run deploy"
         }
       ]
     ]
