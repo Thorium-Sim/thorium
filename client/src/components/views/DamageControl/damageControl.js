@@ -372,6 +372,7 @@ class DamageControl extends Component {
               <Button
                 block
                 color="primary"
+                className={codeEntry ? "reactivate-button" : ""}
                 onClick={reactivationCodeModal ? () => {} : this.toggle}
               >
                 {codeEntry ? codeEntry : "Enter Reactivation Code..."}

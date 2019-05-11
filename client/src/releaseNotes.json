@@ -1,4 +1,18 @@
 {
+  "1.2.19": {
+    "fixes": [
+      "Viewscreen targets an individual viewscreen instead of every viewscreen on a simulator.",
+      "Fixed a minor weirdness with the clear layout.",
+      "Cancelled loopings sounds no longer stops non-looping sounds.",
+      "Improves visibility of the reactivation code when entered.",
+      "Fixes scrolling issues on the Battle Core.",
+      "Fixes an issue with incorrect passwords on generated damage report steps.",
+      "Improves how engines handle sending notifications when broken or power is removed.",
+      "Fixes issues with adjusting the reactor power levels.",
+      "Fixes incorrect display of trigger macro.",
+      "Improves the playSound macro."
+    ]
+  },
   "1.2.18": {
     "features": [
       "Adds the CRM-114. This is a fighter system where each client with the card has it's own fighter to destroy contacts around the ship. Use the 'CrmFighter' card on a single station or use the 'Crm' card to allow the crew to activate the fighter card as a hypercard on any station."

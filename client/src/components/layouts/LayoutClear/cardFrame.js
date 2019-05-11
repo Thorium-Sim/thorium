@@ -50,7 +50,7 @@ class CardFrame extends Component {
                 alt=""
               />
               <div
-                className="ship-logo"
+                className="ship-icon-logo"
                 style={{
                   backgroundImage: `url('/assets${simulator.assets.logo}')`
                 }}

@@ -18,11 +18,11 @@ class Video extends Component {
     this.videoToggleSub = this.props.client
       .subscribe({
         query: gql`
-          subscription ToggleVideo($simulatorId: ID) {
-            viewscreenVideoToggle(simulatorId: $simulatorId)
+          subscription ToggleVideo($viewscreenId: ID) {
+            viewscreenVideoToggle(viewscreenId: $viewscreenId)
           }
         `,
-        variables: { simulatorId: this.props.simulatorId }
+        variables: { viewscreenId: this.props.viewscreen.id }
       })
       .subscribe({
         next: ({ data: { viewscreenVideoToggle } }) => {
