@@ -53,6 +53,11 @@ const SUBSCRIPTION = gql`
   }
   ${fragment}
 `;
+const DELETE_MUTATION = gql`
+  mutation DeleteMessage($id: ID!, $message: ID!) {
+    deleteLongRangeMessage(id: $id, message: $message)
+  }
+`;
 
 class ConvoCore extends Component {
   state = { selectedMessage: null };
@@ -123,11 +128,33 @@ class ConvoCore extends Component {
                   return <DecodingCore {...this.props} />;
                 const message = messages.find(m => m.id === selectedMessage);
                 if (!message) return null;
-                return `${processTime(message.timestamp)}${
-                  message.encrypted ? ` - Encrypted` : ""
-                }${message.approved ? ` - Approved` : ""}
+                return (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: "100%"
+                    }}
+                  >
+                    <div style={{ flex: 1 }}>{`${processTime(
+                      message.timestamp
+                    )}${message.encrypted ? ` - Encrypted` : ""}${
+                      message.approved ? ` - Approved` : ""
+                    }
 From: ${message.sender}
-${message.message}`;
+${message.message}`}</div>
+                    <Mutation
+                      mutation={DELETE_MUTATION}
+                      variables={{ id, message: message.id }}
+                    >
+                      {action => (
+                        <Button color="danger" onClick={action} size="sm">
+                          Delete Message
+                        </Button>
+                      )}
+                    </Mutation>
+                  </div>
+                );
               })()}
             </div>
           </div>
