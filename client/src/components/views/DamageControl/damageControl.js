@@ -41,7 +41,7 @@ class DamageControl extends Component {
           content: (
             <FormattedMessage
               id="damage-report-rnd-training-2"
-              defaultMessage="If a research and development report hasn't been calculated, you need to request a report by clicking on this button."
+              defaultMessage="If a research and development report hasn't been compiled, you need to request a report by clicking on this button."
             />
           )
         },
@@ -50,7 +50,7 @@ class DamageControl extends Component {
           content: (
             <FormattedMessage
               id="damage-report-rnd-training-3"
-              defaultMessage="When a system may be upgraded, instructions to perform the upgrade will appear here. Follow them exactly."
+              defaultMessage="When a system may be upgraded instructions to perform the upgrade will appear here. Follow them exactly."
             />
           )
         },
@@ -71,7 +71,7 @@ class DamageControl extends Component {
         content: (
           <FormattedMessage
             id="damage-report-training-1"
-            defaultMessage="The ship’s systems are intelligent enough to know when they’re damaged, and to understand (mostly) how they can be fixed. A list of damaged systems appears here. Click a system to see the damage report"
+            defaultMessage="The ship’s systems are intelligent enough to know when they’re damaged, and to understand generally how they can be fixed. A list of damaged systems appears here. Click a system to see the damage report"
           />
         )
       },
@@ -80,7 +80,7 @@ class DamageControl extends Component {
         content: (
           <FormattedMessage
             id="damage-report-training-2"
-            defaultMessage="If a damage report hasn't been calculated, you need to request a damage report by clicking on this button."
+            defaultMessage="If a damage report hasn't been compiled, you need to request a damage report by clicking on this button."
           />
         )
       },
@@ -98,7 +98,7 @@ class DamageControl extends Component {
         content: (
           <FormattedMessage
             id="damage-report-training-4"
-            defaultMessage="Sometimes, a system needs a reactivation code to be entered before it can be repaired. Click the 'Enter Reactivation Code' button, then press the symbols listed in your damage report. Once the reactivation code is accepted, the system will be repaired."
+            defaultMessage="Occasionally a system needs a reactivation code to be entered before it can be repaired. Click the 'Enter Reactivation Code' button, then press the symbols listed in your damage report. Once the reactivation code is accepted, the system will be repaired."
           />
         )
       }
@@ -287,7 +287,7 @@ class DamageControl extends Component {
                         >
                           <FormattedMessage
                             id="damage-report-cancel"
-                            description="A button to stop entering a reactivation code"
+                            description="A button to stop entering a reactivation code."
                             defaultMessage="Cancel"
                           />
                         </Button>
@@ -300,7 +300,7 @@ class DamageControl extends Component {
                         >
                           <FormattedMessage
                             id="damage-report-clear"
-                            description="A button to clear the reactivation code input"
+                            description="A button to clear the reactivation code input."
                             defaultMessage="Clear"
                           />
                         </Button>
@@ -321,7 +321,7 @@ class DamageControl extends Component {
               >
                 <FormattedMessage
                   id="damage-report-reactivate"
-                  description="A button to confirm the entered reactivation code and begin the reactivation process"
+                  description="A button to confirm the entered reactivation code and begin the reactivation process."
                   defaultMessage="Reactivate"
                 />
               </Button>
@@ -347,19 +347,19 @@ class DamageControl extends Component {
                     {which === "rnd" ? (
                       <FormattedMessage
                         id="rnd-report-request"
-                        description="A button to request a report for a system"
+                        description="A button to request a report for a system."
                         defaultMessage="Request Report"
                       />
                     ) : which === "engineering" ? (
                       <FormattedMessage
                         id="engineering-report-request"
-                        description="A button to request a report for a system"
+                        description="A button to request a report for a system."
                         defaultMessage="Request Engineering Report"
                       />
                     ) : (
                       <FormattedMessage
                         id="damage-report-request"
-                        description="A button to request a repair report for a damaged system"
+                        description="A button to request a repair report for a damaged system."
                         defaultMessage="Request Damage Report"
                       />
                     )}
@@ -372,6 +372,7 @@ class DamageControl extends Component {
               <Button
                 block
                 color="primary"
+                className={codeEntry ? "reactivate-button" : ""}
                 onClick={reactivationCodeModal ? () => {} : this.toggle}
               >
                 {codeEntry ? codeEntry : "Enter Reactivation Code..."}

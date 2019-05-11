@@ -56,7 +56,7 @@ class Destination extends Component {
             ? "Calculating Course..."
             : onCourse
             ? nav.destination
-            : "No Course"}
+            : "No Destination"}
         </div>
       </div>
     );

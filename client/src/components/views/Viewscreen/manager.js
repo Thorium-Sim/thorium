@@ -353,6 +353,7 @@ class ViewscreenManager extends Component {
                         flightId={this.props.flightId}
                         data={currentData}
                         updateData={this.updateData}
+                        viewscreen={viewscreen}
                       />
                     );
                   }

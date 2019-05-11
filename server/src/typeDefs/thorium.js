@@ -1,9 +1,9 @@
 import App from "../app";
 import { gql } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import GraphQLClient from "../helpers/graphqlClient";
 import request from "request";
+const mutationHelper = require("../helpers/mutationHelper").default;
 
 const issuesUrl =
   "https://12usj3vwf1.execute-api.us-east-1.amazonaws.com/prod/issueTracker";
@@ -57,13 +57,16 @@ const schema = gql`
     """
     Macro: Space EdVentures: Assign Space EdVentures Badge
     """
-    assignSpaceEdventuresBadge(badgeId: ID!): String
+    assignSpaceEdventuresBadge(station: String, badgeId: ID!): String
 
     """
     Macro: Space EdVentures: Assign Space EdVentures Mission
     """
-    assignSpaceEdventuresMission(badgeId: ID!): String
+    assignSpaceEdventuresMission(station: String, badgeId: ID!): String
 
+    """
+    Macro: Space EdVentures: Transmit to Space EdVentures
+    """
     assignSpaceEdventuresFlightRecord(flightId: ID!): String
     getSpaceEdventuresLogin(token: String!): String
 

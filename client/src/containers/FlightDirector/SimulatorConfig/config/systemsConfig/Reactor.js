@@ -51,12 +51,16 @@ const Reactor = props => {
     });
   };
   const removeEfficiency = (action, reactor, i) => () => {
+    console.log(
+      reactor.efficiencies,
+      reactor.efficiencies.filter((_, ind) => ind !== i)
+    );
     action({
       variables: {
         id: reactor.id,
         efficiencies: reactor.efficiencies
-          .map(({ __typename, ...e }) => e)
           .filter((_, ind) => ind !== i)
+          .map(({ __typename, ...e }) => e)
       }
     });
   };
@@ -188,7 +192,7 @@ const Reactor = props => {
                           </Col>
                         </Row>
                         {reactor.efficiencies.map((e, i) => (
-                          <Row key={`${reactor.id}-${i}`}>
+                          <Row key={`${reactor.id}-${i}-${e.label}-${e.color}`}>
                             <Col sm={4}>
                               <Input
                                 type="text"
