@@ -4,31 +4,6 @@ import SoundPicker from "helpers/soundPicker";
 import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 
-const Clients = React.memo(() => {
-  return (
-    <Query
-      query={gql`
-        query Clients {
-          clients(all: true) {
-            id
-          }
-        }
-      `}
-    >
-      {({ loading, data: { clients } }) =>
-        loading ? null : (
-          <optgroup label="Clients">
-            {clients.map(c => (
-              <option value={c.id} key={c.id}>
-                {c.id}
-              </option>
-            ))}
-          </optgroup>
-        )
-      }
-    </Query>
-  );
-});
 export default function playSound({ updateArgs, args }) {
   const sound = args.sound || {};
   const updateSound = (which, val) => {
@@ -57,19 +32,40 @@ export default function playSound({ updateArgs, args }) {
         />
 
         <Label>Sound Player</Label>
-        <Input
-          type="select"
-          value={args.station}
-          onChange={e => updateArgs("station", e.target.value)}
+        <Query
+          fetchPolicy={"cache-first"}
+          query={gql`
+            query Clients {
+              clients(all: true) {
+                id
+              }
+            }
+          `}
         >
-          <optgroup label="Generic Players">
-            <option value="Sound">Sound Player</option>
-            <option value="all">All Stations</option>
-            <option value="random">Random Station</option>
-            <option value="ECS">ECS</option>
-          </optgroup>
-          <Clients />
-        </Input>
+          {({ loading, data: { clients } }) =>
+            loading ? null : (
+              <Input
+                type="select"
+                value={args.station}
+                onChange={e => updateArgs("station", e.target.value)}
+              >
+                <optgroup label="Generic Players">
+                  <option value="Sound">Sound Player</option>
+                  <option value="all">All Stations</option>
+                  <option value="random">Random Station</option>
+                  <option value="ECS">ECS</option>
+                </optgroup>
+                <optgroup label="Clients">
+                  {clients.map(c => (
+                    <option value={c.id} key={c.id}>
+                      {c.id}
+                    </option>
+                  ))}
+                </optgroup>
+              </Input>
+            )
+          }
+        </Query>
         <Label>Volume</Label>
         <Input
           type="range"
