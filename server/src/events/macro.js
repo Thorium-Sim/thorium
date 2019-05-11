@@ -9,9 +9,11 @@ function performAction(id, action) {
   pubsub.publish("macrosUpdate", App.macros);
 }
 
-App.on("addMacro", ({ name }) => {
-  App.macros.push(new Classes.Macro({ name }));
+App.on("addMacro", ({ name, cb }) => {
+  const macro = new Classes.Macro({ name });
+  App.macros.push(macro);
   pubsub.publish("macrosUpdate", App.macros);
+  cb && cb(macro.id);
 });
 App.on("removeMacro", ({ id }) => {
   App.macros = App.macros.filter(m => m.id !== id);

@@ -11,10 +11,10 @@ const schema = gql`
     actions: [MacroAction]
   }
   extend type Query {
-    macros(simulatorId: ID): [Macro]
+    macros: [Macro]
   }
   extend type Mutation {
-    addMacro(name: String!): String
+    addMacro(name: String!): ID
     removeMacro(id: ID!): String
     renameMacro(id: ID!, name: String!): String
     updateMacroActions(id: ID!, actions: [ActionInput]): String
@@ -24,7 +24,7 @@ const schema = gql`
     triggerMacroAction(simulatorId: ID!, macroId: ID!): String
   }
   extend type Subscription {
-    macrosUpdate(simulatorId: ID): [Macro]
+    macrosUpdate: [Macro]
   }
 `;
 
@@ -41,12 +41,7 @@ const resolver = {
       resolve(rootQuery) {
         return rootQuery;
       },
-      subscribe: withFilter(
-        () => pubsub.asyncIterator("macroUpdate"),
-        (rootValue, args) => {
-          return true;
-        }
-      )
+      subscribe: () => pubsub.asyncIterator("macrosUpdate")
     }
   }
 };
