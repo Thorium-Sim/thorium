@@ -4,7 +4,8 @@
       "Viewscreen targets an individual viewscreen instead of every viewscreen on a simulator.",
       "Fixed a minor weirdness with the clear layout.",
       "Cancelled loopings sounds no longer stops non-looping sounds.",
-      "Improves visibility of the reactivation code when entered."
+      "Improves visibility of the reactivation code when entered.",
+      "Fixes scrolling issues on the Battle Core."
     ]
   },
   "1.2.18": {
