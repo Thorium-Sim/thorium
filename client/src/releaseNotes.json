@@ -8,7 +8,8 @@
       "Fixes scrolling issues on the Battle Core.",
       "Fixes an issue with incorrect passwords on generated damage report steps.",
       "Improves how engines handle sending notifications when broken or power is removed.",
-      "Fixes issues with adjusting the reactor power levels."
+      "Fixes issues with adjusting the reactor power levels.",
+      "Fixes incorrect display of trigger macro."
     ]
   },
   "1.2.18": {
