@@ -101,7 +101,8 @@ App.on("getSpaceEdventuresLogin", async ({ token, context, cb }) => {
     if (user) {
       const client = App.clients.find(c => c.id === clientId);
       client.login(
-        user.profile.displayName || user.profile.name || user.profile.rank.name
+        user.profile.displayName || user.profile.name || user.profile.rank.name,
+        true
       );
       const flight = App.flights.find(f => f.id === client.flightId);
       if (flight) {
