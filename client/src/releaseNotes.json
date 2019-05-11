@@ -1,7 +1,8 @@
 {
   "1.2.19": {
     "fixes": [
-      "Viewscreen targets an individual viewscreen instead of every viewscreen on a simulator."
+      "Viewscreen targets an individual viewscreen instead of every viewscreen on a simulator.",
+      "Fixed a minor weirdness with the clear layout."
     ]
   },
   "1.2.18": {
