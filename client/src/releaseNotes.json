@@ -2,7 +2,8 @@
   "1.2.19": {
     "fixes": [
       "Viewscreen targets an individual viewscreen instead of every viewscreen on a simulator.",
-      "Fixed a minor weirdness with the clear layout."
+      "Fixed a minor weirdness with the clear layout.",
+      "Cancel sounds Cancel loopings sounds no longer stops non-looping sounds."
     ]
   },
   "1.2.18": {
