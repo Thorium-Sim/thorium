@@ -5,7 +5,8 @@
       "Fixed a minor weirdness with the clear layout.",
       "Cancelled loopings sounds no longer stops non-looping sounds.",
       "Improves visibility of the reactivation code when entered.",
-      "Fixes scrolling issues on the Battle Core."
+      "Fixes scrolling issues on the Battle Core.",
+      "Fixes an issue with incorrect passwords on generated damage report steps."
     ]
   },
   "1.2.18": {
