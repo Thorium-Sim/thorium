@@ -71,10 +71,8 @@ class Welcome extends Component {
             this.setState({ outdated: res[0].name });
           }
           if (
-            semver.minor(res[0].name) >
-              semver.minor(require("../../../package.json").version) ||
             semver.major(res[0].name) >
-              semver.major(require("../../../package.json").version)
+            semver.major(require("../../../package.json").version)
           ) {
             this.setState({ major: true });
           }

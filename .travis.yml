@@ -1,16 +1,36 @@
 language: node_js
 node_js:
-  - "node"
+  - 10
 dist: trusty
 sudo: false
-addons:
-  code_climate:
-    repo_token: $CODECLIMATE_REPO_TOKEN
-install:
-  - npm install
-script:
-  - npm run test-client -- --coverage --forceExit
-  - npm run test-server -- --coverage --forceExit
-after_success:
-  - npm install -g codeclimate-test-reporter
-  - codeclimate-test-reporter < coverage/lcov.info
+
+stages:
+  - test
+  - name: deploy
+    if: branch = master
+
+jobs:
+  include:
+    - stage: test
+      env:
+        - TEST_SUITE=client
+        - TEST_SUITE=server
+      install:
+        - npm install
+        - npm install --prefix $TEST_SUITE
+      script:
+        - npm run test-$TEST_SUITE -- --forceExit
+    - stage: deploy
+      install:
+        - npm install
+        - npm install --prefix client
+        - npm install --prefix server
+      script:
+        - npm run build
+        - npm run zip
+        - npm run sentry-upload
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npx semantic-release
