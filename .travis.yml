@@ -4,6 +4,10 @@ node_js:
 dist: trusty
 sudo: false
 
+branches:
+  only:
+    - master
+
 stages:
   - test
   - name: deploy
