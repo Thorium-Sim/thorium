@@ -78,20 +78,18 @@ export const Legs = props => {
   return (
     <div className="docking-graphic">
       <div className={`legs ${props.transform ? "on" : ""}`}>
-        <div className="tri-1" />
-        <div className="tri-2" />
-        <div className="tri-3" />
-        <div className="tri-4" />
-        <div className="tri-5" />
-        <div className="tri-6" />
-        <div className="tri-7" />
-        <div className="tri-8" />
-        <div className="tri-9" />
-        <div className="tri-10" />
-        <div className="tri-11" />
-        <div className="tri-12" />
+        <div className="ship-bottom">
+          <div className="left" />
+          <div className="middle" />
+          <div className="right" />
+        </div>
+        <div className="ymove">
+          <div className="left-leg" />
+          <div className="right-leg" />
+          <div className="left-foot" />
+          <div className="right-foot" />
+        </div>
       </div>
-      <div style={{ marginTop: "100%" }} />
     </div>
   );
 };
