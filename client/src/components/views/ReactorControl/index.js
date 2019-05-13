@@ -57,6 +57,7 @@ const DOCKING_SUB = gql`
         clamps
         ramps
         airlock
+        legs
       }
     }
   }
@@ -379,6 +380,7 @@ const REACTOR_QUERY = gql`
         clamps
         ramps
         airlock
+        legs
       }
     }
     systems(simulatorId: $simulatorId, power: true) {

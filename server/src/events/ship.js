@@ -35,7 +35,9 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
           ? `Clamps are now ${state ? "Attached" : "Detached"}`
           : which === "ramps"
           ? `Ramps are now ${state ? "Extended" : "Retracted"}`
-          : `Doors are now ${state ? "Open" : "Closed"}`,
+          : which === "airlock"
+          ? `Doors are now ${state ? "Open" : "Closed"}`
+          : `Legs are now ${state ? "Extended" : "Retracted"}`,
       color: "info"
     });
     App.handleEvent(
@@ -48,7 +50,9 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
             ? `Clamps are now ${state ? "Attached" : "Detached"}`
             : which === "ramps"
             ? `Ramps are now ${state ? "Extended" : "Retracted"}`
-            : `Doors are now ${state ? "Open" : "Closed"}`,
+            : which === "airlock"
+            ? `Doors are now ${state ? "Open" : "Closed"}`
+            :  `Legs are now ${state ? "Extended" : "Retracted"}`,
         color: "info"
       },
       "addCoreFeed"
