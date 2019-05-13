@@ -94,8 +94,9 @@ class Keyboards extends Component {
     const { selectedKeyboard } = this.state;
     return (
       <Query query={KEYBOARD_QUERY}>
-        {({ loading, data: { keyboard }, subscribeToMore }) => {
-          if (loading) return null;
+        {({ loading, data, subscribeToMore }) => {
+          const { keyboard } = data || {};
+          if (loading || !keyboard) return null;
           return (
             <Container fluid className="survey-forms">
               <h4>Keyboard Config </h4>

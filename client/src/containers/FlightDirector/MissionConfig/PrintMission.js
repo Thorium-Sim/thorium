@@ -2,38 +2,10 @@ import React from "react";
 import * as Macros from "../../../components/macrosPrint";
 import { Button } from "reactstrap";
 import Printable from "helpers/printable";
+import EventName from "containers/FlightDirector/MissionConfig/EventName";
 
 import "./printStyle.scss";
 
-export const macroNames = {
-  addTractorTarget: "Add Tractor Target",
-  removeTractorTarget: "Remove Tractor Target",
-  hitShields: "Hit Shields",
-  setPresetAnswers: "Set Preset Scan Answers",
-  setArmyContacts: "Set Army Contacts",
-  sendLongRangeMessage: "Send Long Range Message",
-  processedData: "Send Processed Sensors Data",
-  probeProcessedData: "Send Processed Probe Network Data",
-  updateViewscreenComponent: "Show On Viewscreen",
-  showViewscreenTactical: "Show Tactical on Viewscreen",
-  navSetPresets: "Set Navigation Presets",
-  setViewscreenToAuto: "Set Viewscreen to Auto",
-  addShortRangeComm: "Add Short Range Comm Hail",
-  removeShortRangeComm: "Remove Short Range Comm Hail",
-  breakSystem: "Break System",
-  fixSystem: "Fix System",
-  addLibraryEntry: "Add Library Entry",
-  removeLibraryEntry: "Remove Library Entry",
-  triggerAction: "Trigger Action",
-  signalJammerSignals: "Set Signal Jammer Signals",
-  setTransporterTargets: "Set Transporter Targets",
-  navCourseResponse: "Send Nav Course Response",
-  addObjective: "Add Mission Objective",
-  completeObjective: "Complete Mission Objective",
-  autoAdvance: "Auto Advance Timeline",
-  syncTimer: "Set Core Timer",
-  sendMessage: "Send Inter-ship Message"
-};
 const PrintMission = ({ mission, clearMission }) => {
   return (
     <div className="printMission-holder">
@@ -73,7 +45,9 @@ const PrintMission = ({ mission, clearMission }) => {
                   })
                   .map(i => (
                     <div key={i.id} className="mission-item">
-                      <h3>{macroNames[i.event]}</h3>
+                      <h3>
+                        <EventName id={i.event} label={i.event} />
+                      </h3>
                       {i.delay ? (
                         <span>
                           <strong>Delay: </strong>

@@ -61,3 +61,4 @@ export { default as notify } from "./notify";
 export {
   default as toggleInterfaceObjectPlaying
 } from "./toggleInterfaceObjectPlaying";
+export { default as triggerMacroAction } from "./triggerMacroAction";
