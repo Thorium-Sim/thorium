@@ -52,6 +52,11 @@ const ops = {
       setSimulatorHasPrinter(simulatorId: $id, hasPrinter: $value)
     }
   `,
+  hasLegs: gql`
+    mutation SetHasLegs($id: ID!, $value: Boolean!) {
+      setSimulatorHasLegs(simulatorId: $id, hasLegs: $value)
+    }
+  `,
   spaceEdventures: gql`
     mutation SetSpaceEdventuresId($id: ID!, $value: String!) {
       setSimulatorSpaceEdventuresId(simulatorId: $id, spaceEdventuresId: $value)

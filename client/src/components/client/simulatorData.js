@@ -16,6 +16,7 @@ const fragments = {
       bridgeOfficerMessaging
       training
       hasPrinter
+      hasLegs
       panels
       assets {
         mesh

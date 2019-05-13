@@ -354,6 +354,12 @@ App.on("setSimulatorHasPrinter", ({ simulatorId, hasPrinter }) => {
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 
+App.on("setSimulatorHasLegs", ({ simulatorId, hasLegs }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.setHasLegs(hasLegs);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+})
+
 App.on(
   "setSimulatorSpaceEdventuresId",
   ({ simulatorId, spaceEdventuresId }) => {

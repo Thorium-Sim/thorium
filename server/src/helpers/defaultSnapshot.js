@@ -31,6 +31,7 @@ export default {
         clamps: false,
         ramps: false,
         airlock: false,
+        legs: false,
         bridgeCrew: 14,
         radiation: 0.1,
         speed: 0,

@@ -8,10 +8,12 @@ const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
+      hasLegs
       ship {
         clamps
         ramps
         airlock
+        legs
       }
     }
   }
@@ -49,6 +51,12 @@ class DockingCore extends Component {
     )
       return null;
     const { ship } = this.props.data.simulators[0];
+    let colSize;
+    if (this.props.data.simulators[0].hasLegs) {
+      colSize = 3;
+    } else {
+      colSize = 4;
+    }
     return (
       <Container className="docking-core">
         <SubscriptionHelper
@@ -67,7 +75,7 @@ class DockingCore extends Component {
           }
         />
         <Row>
-          <Col sm={4}>
+          <Col sm={colSize}>
             <Button
               onClick={this.toggle.bind(this, "clamps")}
               size="sm"
@@ -76,7 +84,7 @@ class DockingCore extends Component {
               Clamps
             </Button>
           </Col>
-          <Col sm={4}>
+          <Col sm={colSize}>
             <Button
               onClick={this.toggle.bind(this, "ramps")}
               size="sm"
@@ -85,7 +93,7 @@ class DockingCore extends Component {
               Ramps
             </Button>
           </Col>
-          <Col sm={4}>
+          <Col sm={colSize}>
             <Button
               onClick={this.toggle.bind(this, "airlock")}
               size="sm"
@@ -94,6 +102,16 @@ class DockingCore extends Component {
               Doors
             </Button>
           </Col>
+          {this.props.data.simulators[0].hasLegs &&
+            <Col sm={colSize}>
+              <Button
+                onClick={this.toggle.bind(this, "legs")}
+                size="sm"
+                color={ship.legs ? "danger" : "success"}
+              >
+                Legs
+              </Button>
+            </Col>}
         </Row>
       </Container>
     );
@@ -104,10 +122,12 @@ const DOCKING_QUERY = gql`
   query Simulator($simulatorId: String) {
     simulators(id: $simulatorId) {
       id
+      hasLegs
       ship {
         clamps
         ramps
         airlock
+        legs
       }
     }
   }
