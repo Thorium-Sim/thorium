@@ -41,6 +41,7 @@ const schema = gql`
     interfaces: [ID]
     bridgeOfficerMessaging: Boolean
     hasPrinter: Boolean
+    hasLegs: Boolean
     spaceEdventuresId: String
   }
 
@@ -100,6 +101,7 @@ const schema = gql`
     setSimulatorAssets(id: ID!, assets: SimulatorAssetsInput!): String
     updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
     setSimulatorHasPrinter(simulatorId: ID!, hasPrinter: Boolean!): String
+    setSimulatorHasLegs(simulatorId: ID!, hasLegs: Boolean!): String
 
     setSimulatorSpaceEdventuresId(
       simulatorId: ID!

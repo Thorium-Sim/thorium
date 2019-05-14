@@ -58,3 +58,4 @@ import "./subspaceField.js";
 import "./transwarp.js";
 import "./interface.js";
 import "./crm";
+import "./macro.js";

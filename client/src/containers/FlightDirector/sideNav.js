@@ -47,6 +47,11 @@ const makeLinks = () => {
       link: "/config/mission"
     },
     {
+      name: "Macros Config",
+      icon: "window-restore",
+      link: "/config/macros"
+    },
+    {
       name: "Task Templates",
       icon: "list",
       link: "/config/taskTemplates"

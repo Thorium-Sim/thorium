@@ -19,7 +19,8 @@ import {
   TaskTemplates,
   CommandLineConfig,
   Triggers,
-  Interfaces
+  Interfaces,
+  Macros
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -164,6 +165,10 @@ class Config extends Component {
           <Route
             path="/config/taskTemplates"
             render={props => <TaskTemplates {...props} history={history} />}
+          />
+          <Route
+            path="/config/macros"
+            render={props => <Macros {...props} history={history} />}
           />
           <Route
             path="/config/commandLine"
