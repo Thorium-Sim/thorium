@@ -94,7 +94,9 @@
   "devDependencies": {
     "eslint-plugin-react-hooks": "^1.2.0",
     "jest-localstorage-mock": "^2.4.0",
-    "node-sass-chokidar": "^1.3.4"
+    "node-sass-chokidar": "^1.3.4",
+    "preval.macro": "^3.0.0",
+    "showdown": "^1.9.0"
   },
   "browserslist": {
     "development": [
