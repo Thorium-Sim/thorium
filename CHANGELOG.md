@@ -1,3 +1,17 @@
+# [1.3.0](https://github.com/Thorium-Sim/thorium/compare/1.2.18...1.3.0) (2019-05-14)
+
+
+### Bug Fixes
+
+* **LRComm:** Add ability to delete messages. ([2ef61a1](https://github.com/Thorium-Sim/thorium/commit/2ef61a1)), closes [#2159](https://github.com/Thorium-Sim/thorium/issues/2159)
+
+
+### Features
+
+* **build:** Improves the build and release process ([f1cdf6f](https://github.com/Thorium-Sim/thorium/commit/f1cdf6f))
+* **Docking:** Added Landing Legs ([#2174](https://github.com/Thorium-Sim/thorium/issues/2174)) ([e3f2ce9](https://github.com/Thorium-Sim/thorium/commit/e3f2ce9))
+* **Macros:** Macro of macros ([077ff8b](https://github.com/Thorium-Sim/thorium/commit/077ff8b))
+
 # [1.2.19](https://github.com/Thorium-Sim/thorium/compare/1.2.18...1.2.19)
 
 ### Bug Fixes
