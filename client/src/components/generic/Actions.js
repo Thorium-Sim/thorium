@@ -29,7 +29,7 @@ const useFlash = () => {
       return setFlash(false);
     }
     setFlash(oldFlash => !oldFlash);
-    timeoutRef.current = setTimeout(() => doFlash(duration - 1), 100);
+    timeoutRef.current = setTimeout(() => doFlash(duration - 1), 150);
   };
   useEffect(() => () => clearTimeout(timeoutRef.current), []);
   return { flash, doFlash };
@@ -57,7 +57,7 @@ const useSpark = () => {
   };
 };
 
-const ActionsMixin = ({ simulator, station, changeCard, children, client }) => {
+const ActionsMixin = ({ simulator, station, changeCard, client }) => {
   const { flash, doFlash } = useFlash();
   const { doSpark, Sparks } = useSpark();
   useEffect(() => {
@@ -108,7 +108,6 @@ const ActionsMixin = ({ simulator, station, changeCard, children, client }) => {
   }, [changeCard, client, doFlash, doSpark, simulator, station]);
   return (
     <div className={`actionsContainer ${flash ? "flash" : ""}`}>
-      {children}
       <Sparks />
     </div>
   );
