@@ -21,6 +21,23 @@ const MissionConfig = ({ mission, updateMission }) => {
           onChange={e => updateMission("description", e)}
         />
       </FormGroup>
+      <FormGroup>
+        <Label>
+          <Input
+            type="checkbox"
+            defaultChecked={mission.aux}
+            name="text"
+            onChange={e => updateMission("aux", e)}
+          />
+          Auxiliary Mission
+        </Label>
+        <div>
+          <small>
+            Auxiliary missions are reserved for second story lines and are not
+            available as the primary mission for a simulator.
+          </small>
+        </div>
+      </FormGroup>
     </Fragment>
   );
 };

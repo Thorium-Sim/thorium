@@ -10,6 +10,8 @@ const schema = gql`
     name: String
     description: String
     timeline: [TimelineStep]
+    simulators: [Simulator]
+    aux: Boolean
   }
   input MacroInput {
     stepId: ID
@@ -42,13 +44,27 @@ const schema = gql`
     args: String
     delay: Int
   }
+
+  type TimelineInstance {
+    id: ID
+    mission: Mission
+    currentTimelineStep: Int
+    executedTimelineSteps: [ID]
+  }
   extend type Query {
-    missions(id: ID): [Mission]
+    missions(id: ID, aux: Boolean): [Mission]
+    auxTimelines(simulatorId: ID!): [TimelineInstance]
   }
   extend type Mutation {
     createMission(name: String!): String
     removeMission(missionId: ID!): String
-    editMission(missionId: ID!, name: String, description: String): String
+    editMission(
+      missionId: ID!
+      name: String
+      description: String
+      aux: Boolean
+      simulators: [ID]
+    ): String
     importMission(jsonString: String!): String
     addTimelineStep(
       simulatorId: ID
@@ -94,9 +110,17 @@ const schema = gql`
       updateTimelineItem: TimelineItemInput!
     ): String
     duplicateTimelineStep(missionId: ID!, timelineStepId: ID!): String
+
+    # Aux Timelines
+    """
+    Macro: Timelines: Start Aux Timeline
+    """
+    startAuxTimeline(simulatorId: ID!, missionId: ID!): ID
+    setAuxTimelineStep(simulatorId: ID!, timelineId: ID!, step: Int!): String
   }
   extend type Subscription {
     missionsUpdate(missionId: ID): [Mission]
+    auxTimelinesUpdate(simulatorId: ID!): [TimelineInstance]
   }
 `;
 
@@ -120,6 +144,20 @@ const resolver = {
         : App.missions.find(m => m.id === rootValue);
       return mission.description;
     },
+    aux(rootValue) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return mission.aux;
+    },
+    simulators(rootValue) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      return mission.simulators.map(id =>
+        App.simulators.find(s => s.id === id)
+      );
+    },
     timeline(rootValue) {
       const mission = rootValue.timeline
         ? rootValue
@@ -128,8 +166,11 @@ const resolver = {
     }
   },
   Query: {
-    missions(root, { id }) {
+    missions(root, { id, aux }) {
       if (id) return App.missions.filter(m => m.id === id);
+      if (aux || aux === false) {
+        return App.missions.filter(m => m.aux === aux);
+      }
       return App.missions;
     }
   },

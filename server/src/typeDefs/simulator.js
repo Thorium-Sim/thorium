@@ -25,6 +25,7 @@ const schema = gql`
     mission: Mission
     currentTimelineStep: Int
     executedTimelineSteps: [ID]
+    timelines: [TimelineInstance]
     decks: [Deck]
     rooms: [Room]
     ship: Ship

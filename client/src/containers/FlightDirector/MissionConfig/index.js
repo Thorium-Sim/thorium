@@ -14,6 +14,7 @@ const MISSION_SUB = gql`
       id
       name
       description
+      aux
       timeline {
         id
         name
@@ -76,20 +77,22 @@ class MissionsConfig extends Component {
   updateMission = (type, e) => {
     const { mission } = this.props;
     const missionId = mission.id;
-    const { value } = e.target;
+    const { value, checked } = e.target;
     const obj = { missionId };
-    obj[type] = value;
+    obj[type] = value === "on" ? checked : value;
     this.props.client.mutate({
       mutation: gql`
         mutation EditMission(
           $missionId: ID!
           $name: String
           $description: String
+          $aux: Boolean
         ) {
           editMission(
             missionId: $missionId
             name: $name
             description: $description
+            aux: $aux
           )
         }
       `,
@@ -140,6 +143,7 @@ const MissionsConfigQuery = gql`
       id
       name
       description
+      aux
       timeline {
         id
         description

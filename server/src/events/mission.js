@@ -13,9 +13,10 @@ App.on("removeMission", ({ missionId }) => {
   App.missions = App.missions.filter(m => m.id !== missionId);
   pubsub.publish("missionsUpdate", App.missions);
 });
-App.on("editMission", ({ missionId, name, description, simulators }) => {
+App.on("editMission", ({ missionId, name, description, simulators, aux }) => {
+  console.log("event", aux);
   const mission = App.missions.find(m => m.id === missionId);
-  mission.update({ name, description, simulators });
+  mission.update({ name, description, simulators, aux });
   pubsub.publish("missionsUpdate", App.missions);
 });
 App.on("importMission", ({ jsonString }) => {
@@ -39,4 +40,17 @@ App.on("removeSimulatorToMission", ({ missionId, simulatorId }) => {
   mission.removeSimulator(simulatorId);
   App.simulators = App.simulators.filter(s => s.id !== simulatorId);
   pubsub.publish("missionsUpdate", App.missions);
+});
+
+// Aux Timelines
+App.on("startAuxTimeline", ({ simulatorId, missionId }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.addAuxTimeline(missionId);
+  pubsub.publish("auxTimelinesUpdate", simulator.timelines);
+});
+
+App.on("setAuxTimelineStep", ({ simulatorId, timelineId, step }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.setAuxTimelineStep(timelineId, step);
+  pubsub.publish("auxTimelinesUpdate", simulator.timelines);
 });
