@@ -38,7 +38,7 @@ const SUB = gql`
 
 class SurveyCore extends Component {
   state = {};
-  startSurvey = e => {
+  startSurvey = () => {
     const mutation = gql`
       mutation TriggerSurvey($simulatorId: ID!, $id: ID!) {
         triggerSurvey(simulatorId: $simulatorId, id: $id)
@@ -46,12 +46,13 @@ class SurveyCore extends Component {
     `;
     const variables = {
       simulatorId: this.props.simulator.id,
-      id: e.target.value
+      id: this.state.survey
     };
     this.props.client.mutate({
       mutation,
       variables
     });
+    this.setState({ survey: null });
   };
   downloadResults = s => {
     // Map the results
@@ -118,16 +119,30 @@ class SurveyCore extends Component {
         />
         <Row>
           <Col sm={12}>
-            <Input type="select" value="nothing" onChange={this.startSurvey}>
-              <option value="nothing" disabled>
-                Start a new survey
-              </option>
-              {allForms.map(f => (
-                <option key={`${f.id}-all`} value={f.id}>
-                  {f.title}
+            <div style={{ display: "flex" }}>
+              <Input
+                type="select"
+                value={this.state.survey || "nothing"}
+                onChange={e => this.setState({ survey: e.target.value })}
+              >
+                <option value="nothing" disabled>
+                  Choose a new survey
                 </option>
-              ))}
-            </Input>
+                {allForms.map(f => (
+                  <option key={`${f.id}-all`} value={f.id}>
+                    {f.title}
+                  </option>
+                ))}
+              </Input>
+              <Button
+                disabled={!this.state.survey}
+                size="sm"
+                color="success"
+                onClick={this.startSurvey}
+              >
+                Start
+              </Button>
+            </div>
             <p>
               <strong>Running Surveys:</strong>
             </p>
