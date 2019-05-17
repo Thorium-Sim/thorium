@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Input, Label } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { Mutation } from "react-apollo";
-import SubscriptionHelper from "helpers/subscriptionHelper";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
 import { useQuery } from "@apollo/react-hooks";
 
