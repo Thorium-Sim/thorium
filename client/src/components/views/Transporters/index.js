@@ -47,19 +47,19 @@ const TargetSelect = props => {
     <Row>
       <Col sm={{ size: 6, push: 3 }} className="target-destination">
         <div className="target-input" style={{ height: "60px" }} />
-        <h3>Enter Target:</h3>
+        <h3>Enter Transport Target:</h3>
         <Input
           defaultValue={props.target}
           onBlur={props.updateTarget}
-          placeholder="Enter Transport Target..."
+          placeholder="Enter Target..."
           size="lg"
         />
         <div className="destination-input" style={{ height: "60px" }} />
-        <h3>Enter Destination:</h3>
+        <h3>Transport to:</h3>
         <Input
           defaultValue={props.destination}
           onBlur={props.updateDestination}
-          placeholder="Enter Final Destination..."
+          placeholder="Enter Location..."
           size="lg"
         />
         <div style={{ height: "30px" }} />
