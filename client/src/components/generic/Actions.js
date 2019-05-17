@@ -49,6 +49,7 @@ const useSpark = () => {
     );
   };
   useEffect(() => {
+    // eslint-disable-next-line
     return () => timeoutRef.current.forEach(ref => clearTimeout(ref));
   }, []);
   return {
