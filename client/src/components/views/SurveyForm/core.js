@@ -67,9 +67,12 @@ class SurveyCore extends Component {
             if (s.form.find(m => m.id === f.id)) {
               const option = s.form
                 .find(m => m.id === f.id)
-                .options.find(o => o.id === f.value);
+                .options.filter(o => f.value.split(",").includes(o.id))
+                .map(o => o.label)
+                .join("; ");
+              console.log(option);
               if (option) {
-                return option.label;
+                return option;
               }
             }
             if (parseInt(f.value, 10)) {

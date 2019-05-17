@@ -33,7 +33,7 @@ const SUB = gql`
 
 class SurveyForm extends Component {
   static hypercard = true;
-  state = {};
+  state = { submitted: [] };
   renderSurvey = surveyform => {
     const { selectedForm } = this.state;
     if (surveyform.length === 0) {
@@ -68,6 +68,12 @@ class SurveyForm extends Component {
     return (
       <Form
         form={surveyform.find(s => s.id === selectedForm) || surveyform[0]}
+        submitForm={() =>
+          this.setState(state => ({
+            selectedForm: null,
+            submitted: state.submitted.concat(state.selectedForm)
+          }))
+        }
         clientId={this.props.clientObj.id}
         client={this.props.client}
       />
