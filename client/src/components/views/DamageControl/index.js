@@ -58,8 +58,8 @@ const fragments = {
   `
 };
 const QUERY = gql`
-  query Systems($simulatorId: ID!, $simId: String, $which: String) {
-    simulators(id: $simId) {
+  query Systems($simulatorId: ID!, $which: String) {
+    simulators(id: $simulatorId) {
       id
       stepDamage
       verifyStep

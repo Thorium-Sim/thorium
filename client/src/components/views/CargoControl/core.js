@@ -327,8 +327,8 @@ class CargoControlCore extends Component {
 }
 
 const INVENTORY_QUERY = gql`
-  query InventoryQ($simulatorId: ID!, $simId: String) {
-    simulators(id: $simId) {
+  query InventoryQ($simulatorId: ID!) {
+    simulators(id: $simulatorId) {
       id
       ship {
         inventoryLogs {

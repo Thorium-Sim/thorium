@@ -349,8 +349,8 @@ class ShipCore extends Component {
 }
 
 const SHIP_CORE_QUERY = gql`
-  query Ship($simulatorId: String, $simId: ID!) {
-    simulators(id: $simulatorId) {
+  query Ship($simId: ID!) {
+    simulators(id: $simId) {
       ...ShipData
     }
     crewCount(simulatorId: $simId)

@@ -46,7 +46,7 @@ const schema = gql`
   }
 
   extend type Query {
-    simulators(template: Boolean, id: String): [Simulator]
+    simulators(template: Boolean, id: ID): [Simulator]
   }
   extend type Mutation {
     createSimulator(name: String!, template: Boolean): String

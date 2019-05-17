@@ -102,7 +102,7 @@ class DockingCore extends Component {
               Doors
             </Button>
           </Col>
-          {this.props.data.simulators[0].hasLegs &&
+          {this.props.data.simulators[0].hasLegs && (
             <Col sm={colSize}>
               <Button
                 onClick={this.toggle.bind(this, "legs")}
@@ -111,7 +111,8 @@ class DockingCore extends Component {
               >
                 Legs
               </Button>
-            </Col>}
+            </Col>
+          )}
         </Row>
       </Container>
     );
@@ -119,7 +120,7 @@ class DockingCore extends Component {
 }
 
 const DOCKING_QUERY = gql`
-  query Simulator($simulatorId: String) {
+  query Simulator($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
       hasLegs

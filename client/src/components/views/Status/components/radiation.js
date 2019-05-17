@@ -43,7 +43,7 @@ class Radiation extends Component {
 }
 
 const QUERY = gql`
-  query Ship($simulatorId: String) {
+  query Ship($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
       ship {

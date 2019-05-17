@@ -470,7 +470,7 @@ class ActionsCore extends Component {
 }
 
 const STATION_QUERY = gql`
-  query Stations($simulatorId: String) {
+  query Stations($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
       stations {

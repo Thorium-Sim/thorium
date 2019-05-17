@@ -124,7 +124,7 @@ class RemoteAccessCore extends Component {
 }
 
 const REMOTE_ACCESS_QUERY = gql`
-  query Simulator($simulatorId: String) {
+  query Simulator($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
       ship {

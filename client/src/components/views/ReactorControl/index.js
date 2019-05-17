@@ -351,7 +351,7 @@ class ReactorControl extends Component {
 }
 
 const REACTOR_QUERY = gql`
-  query Reactors($simulatorId: ID!, $simId: String!) {
+  query Reactors($simulatorId: ID!, $simId: ID!) {
     reactors(simulatorId: $simulatorId) {
       id
       type

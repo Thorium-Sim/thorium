@@ -270,7 +270,7 @@ class SelfDestruct extends Component {
 }
 
 const SELF_DESTRUCT_QUERY = gql`
-  query SelfDestruct($id: String) {
+  query SelfDestruct($id: ID) {
     simulators(id: $id) {
       id
       ship {

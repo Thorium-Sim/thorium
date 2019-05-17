@@ -108,12 +108,10 @@ class Docking extends Component {
     });
   }
   render() {
-    
-
     if (this.props.data.loading || !this.props.data.simulators) return null;
     const { graphic, disabled } = this.state;
     const { clamps, ramps, airlock, legs } = this.props.data.simulators[0].ship;
-    
+
     return (
       <Container fluid className="docking">
         <SubscriptionHelper
@@ -164,17 +162,18 @@ class Docking extends Component {
               >
                 {airlock ? "Close" : "Open"} Airlock Doors
               </Button>
-              {this.props.data.simulators[0].hasLegs && 
-              <Button
-                disabled={disabled}
-                block
-                size="lg"
-                className="legs-button"
-                color="primary"
-                onClick={this.legs.bind(this)}
-              >
-                {legs ? "Retract" : "Extend"} Landing Legs
-              </Button>}
+              {this.props.data.simulators[0].hasLegs && (
+                <Button
+                  disabled={disabled}
+                  block
+                  size="lg"
+                  className="legs-button"
+                  color="primary"
+                  onClick={this.legs.bind(this)}
+                >
+                  {legs ? "Retract" : "Extend"} Landing Legs
+                </Button>
+              )}
             </div>
           </Col>
           <Col className="graphics" sm={{ size: 5, offset: 2 }}>
@@ -209,7 +208,7 @@ const trainingSteps = [
 ];
 
 const DOCKING_QUERY = gql`
-  query Simulator($simulatorId: String) {
+  query Simulator($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
       hasLegs

@@ -65,9 +65,9 @@ class Population extends Component {
 }
 
 const POP_QUERY = gql`
-  query Population($simulatorId: ID!, $simId: String) {
+  query Population($simulatorId: ID!) {
     crewCount(simulatorId: $simulatorId, killed: false)
-    simulators(id: $simId) {
+    simulators(id: $simulatorId) {
       id
       ship {
         bridgeCrew
