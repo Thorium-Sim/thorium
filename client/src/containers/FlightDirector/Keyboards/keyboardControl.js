@@ -6,7 +6,7 @@ import gql from "graphql-tag.macro";
 import { keys } from "../../../components/views/Widgets/keyboard";
 import EventPicker from "../MissionConfig/EventPicker";
 import MacroConfig from "./macroConfig";
-import { macroNames } from "../MissionConfig/PrintMission";
+import EventName from "containers/FlightDirector/MissionConfig/EventName";
 
 const Key = ({
   label,
@@ -42,7 +42,7 @@ const UPDATE_KEY = gql`
     $id: ID!
     $key: String!
     $meta: [String]!
-    $actions: [KeyActionInput]!
+    $actions: [ActionInput]!
   ) {
     updateKeyboardKey(
       id: $id
@@ -196,7 +196,7 @@ class KeyboardControl extends Component {
                                 e.id === selectedAction ? "selected" : ""
                               } list-group-item`}
                             >
-                              {macroNames[e.event] || e.event}{" "}
+                              <EventName id={e.event} label={e.event} />{" "}
                               <FontAwesome
                                 name="ban"
                                 className="text-danger pull-right"

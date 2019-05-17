@@ -135,8 +135,14 @@ function removeAllSounds(ambiance) {
 }
 
 function stopLooping(ambiance) {
-  Object.keys(sounds).forEach(key => {
-    removeSound(key, false, ambiance);
+  Object.keys(sounds).forEach(id => {
+    const sound = sounds[id];
+    if (sound) {
+      if (sound.ambiance && !ambiance) return;
+      // sound.looping = false;
+      sound.source.loop = false;
+      sound.source.onended = () => removeSound(id, true);
+    }
   });
 }
 const withSound = Comp => {

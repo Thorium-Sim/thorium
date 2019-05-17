@@ -15,23 +15,23 @@ const schema = gql`
     id: ID
     key: String
     meta: [String]
-    actions: [KeyActions]
+    actions: [MacroAction]
   }
 
   input KeyboardKeyInput {
     id: ID
     key: String
     meta: [String]
-    actions: [KeyActionInput]
+    actions: [ActionInput]
   }
-  type KeyActions {
+  type MacroAction {
     id: ID
     event: String
     args: String
     delay: Int
   }
 
-  input KeyActionInput {
+  input ActionInput {
     id: ID
     event: String
     args: String

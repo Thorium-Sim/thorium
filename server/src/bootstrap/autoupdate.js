@@ -17,28 +17,31 @@ export default autoUpdate => {
     process.env.NODE_ENV === "production" &&
     (App.autoUpdate || autoUpdate)
   ) {
-    return fetch("https://api.github.com/repos/thorium-sim/thorium/tags")
+    return fetch("https://api.github.com/repos/thorium-sim/thorium/releases")
       .then(res => res.json())
       .then(res => {
-        if (semver.gt(res[0].name, require("../../package.json").version)) {
+        if (semver.gt(res[0].tag_name, require("../../package.json").version)) {
           // It's newer. Download the latest.
           const platforms = {
             darwin: {
-              url: "https://s3.amazonaws.com/thoriumsim/thorium-macos.zip",
+              url: res[0].assets.find(a => a.name === "thorium-macos.zip")
+                .browser_download_url,
               name: "thorium-macos"
             },
             linux: {
-              url: "https://s3.amazonaws.com/thoriumsim/thorium-linux.zip",
+              url: res[0].assets.find(a => a.name === "thorium-linux.zip")
+                .browser_download_url,
               name: "thorium-linux"
             },
             win32: {
-              url: "https://s3.amazonaws.com/thoriumsim/thorium-win.exe.zip",
+              url: res[0].assets.find(a => a.name === "thorium-win.exe.zip")
+                .browser_download_url,
               name: "thorium-win.exe"
             }
           };
 
           const processPath = process.execPath;
-          const tempPath = path.resolve(paths.userData + "/" + "temp");
+          const tempPath = path.resolve(paths.userData + "/temp");
           if (!fs.existsSync(tempPath)) {
             fs.mkdirSync(tempPath);
           }

@@ -74,6 +74,10 @@ const creditList = [
     content: "Inspired by the Empty Epsilon Bridge Simulator"
   },
   {
+    header: "Curve Frame Design",
+    content: "Emily Paxman 🕶"
+  },
+  {
     header: "Rollins Center for Entrepreneurship and Technlology",
     content: "2019 App Competition Winner"
   },

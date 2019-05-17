@@ -37,6 +37,7 @@ const DECODING_SUB = gql`
         message
         decodedMessage
         datestamp
+        deleted
       }
     }
   }
@@ -221,7 +222,7 @@ class Decoding extends Component {
     let selectedMessage = { a: 10, f: 10 };
     if (this.state.selectedMessage) {
       selectedMessage = sys.messages.find(
-        m => m.id === this.state.selectedMessage
+        m => m.id === this.state.selectedMessage && !m.deleted
       );
     }
     return (
@@ -332,15 +333,17 @@ class Decoding extends Component {
               style={{ minHeight: "40px" }}
               className="flex-max auto-scroll"
             >
-              {sys.messages.map(m => (
-                <ListGroupItem
-                  key={m.id}
-                  onClick={this._selectMessage.bind(this, m)}
-                  active={m.id === this.state.selectedMessage}
-                >
-                  {m.datestamp} - {m.sender}
-                </ListGroupItem>
-              ))}
+              {sys.messages
+                .filter(m => !m.deleted)
+                .map(m => (
+                  <ListGroupItem
+                    key={m.id}
+                    onClick={this._selectMessage.bind(this, m)}
+                    active={m.id === this.state.selectedMessage}
+                  >
+                    {m.datestamp} - {m.sender}
+                  </ListGroupItem>
+                ))}
             </ListGroup>
           </Col>
         </Row>
@@ -366,6 +369,7 @@ const DECODING_QUERY = gql`
         message
         decodedMessage
         datestamp
+        deleted
       }
     }
   }

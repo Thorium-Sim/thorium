@@ -120,7 +120,6 @@ const TorpedoData = props => {
                 document: TORPEDO_SUB,
                 variables: { simulatorId },
                 updateQuery: (previousResult, { subscriptionData }) => {
-                  debugger;
                   return Object.assign({}, previousResult, {
                     torpedos: subscriptionData.data.torpedosUpdate
                   });

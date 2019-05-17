@@ -15,7 +15,6 @@ import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import EventPicker from "./EventPicker";
-import { macroNames } from "./PrintMission";
 import MissionConfig from "./MissionConfig";
 import EventName from "./EventName";
 
@@ -280,7 +279,7 @@ export default class TimelineConfig extends Component {
       obj.simulatorId = this.props.object.id;
     }
     let timelineItem = {
-      name: macroNames[e.target.value],
+      name: e.target.value,
       type: "event",
       event: e.target.value
     };

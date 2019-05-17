@@ -1,6 +1,6 @@
 {
   "name": "thorium-client",
-  "version": "1.2.18",
+  "version": "1.3.0",
   "description": "Starship Simulator Controls built with React",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "clean": "rm -rf node_modules",
@@ -94,7 +94,9 @@
   "devDependencies": {
     "eslint-plugin-react-hooks": "^1.2.0",
     "jest-localstorage-mock": "^2.4.0",
-    "node-sass-chokidar": "^1.3.4"
+    "node-sass-chokidar": "^1.3.4",
+    "preval.macro": "^3.0.0",
+    "showdown": "^1.9.0"
   },
   "browserslist": {
     "development": [

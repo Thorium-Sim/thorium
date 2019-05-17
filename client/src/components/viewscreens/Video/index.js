@@ -21,11 +21,11 @@ class VideoConfig extends Component {
     this.videoToggleSub = this.props.client
       .subscribe({
         query: gql`
-          subscription ToggleVideo($simulatorId: ID) {
-            viewscreenVideoToggle(simulatorId: $simulatorId)
+          subscription ToggleVideo($viewscreenId: ID) {
+            viewscreenVideoToggle(viewscreenId: $viewscreenId)
           }
         `,
-        variables: { simulatorId: this.props.simulator.id }
+        variables: { viewscreenId: this.props.viewscreen.id }
       })
       .subscribe({
         next: () => {
@@ -51,14 +51,16 @@ class VideoConfig extends Component {
   }
   keypress = evt => {
     if (evt.code === "Space") {
-      this.props.client.mutate({
-        mutation: gql`
-          mutation ToggleVideo($simulatorId: ID!) {
-            toggleViewscreenVideo(simulatorId: $simulatorId)
-          }
-        `,
-        variables: { simulatorId: this.props.simulator.id }
-      });
+      this.props.viewscreen &&
+        this.props.viewscreen.id &&
+        this.props.client.mutate({
+          mutation: gql`
+            mutation ToggleVideo($viewscreenId: ID) {
+              toggleViewscreenVideo(viewscreenId: $viewscreenId)
+            }
+          `,
+          variables: { viewscreenId: this.props.viewscreen.id }
+        });
     }
   };
   render() {
