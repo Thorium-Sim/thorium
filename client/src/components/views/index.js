@@ -172,6 +172,7 @@ import TimelineThumbnailCore from "./Timeline/thumbnailData";
 import SpaceEdventuresTokenCore from "./SpaceEdventuresToken/core";
 import CrmCore from "./Crm/core";
 import CardsCore from "./Cards/core";
+import CommandLineCore from "./CommandLine/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -457,7 +458,8 @@ export const Cores = {
   TimelineThumbnailCore,
   SpaceEdventuresTokenCore,
   CrmCore,
-  CardsCore
+  CardsCore,
+  CommandLineCore
 };
 
 export default Views;

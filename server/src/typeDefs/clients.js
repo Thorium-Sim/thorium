@@ -25,7 +25,7 @@ const schema = gql`
     overlay: Boolean
     cracked: Boolean
     commandLineOutput: [String]
-
+    commandLineFeedback: [CommandLineFeedback]
     # Space EdVentures
     token: String
     email: String
@@ -36,6 +36,14 @@ const schema = gql`
     keypad: Keypad
   }
 
+  type CommandLineFeedback {
+    id: ID
+    clientId: ID
+    command: String
+    approve: String
+    deny: String
+    triggers: [TimelineItem]
+  }
   type Keypad {
     id: ID
     label: String
@@ -169,6 +177,7 @@ const schema = gql`
     scannersUpdate(simulatorId: ID!): [Scanner]
     scannerUpdate(client: ID!): Scanner
     commandLineOutputUpdate(clientId: ID!): String
+    commandLinesOutputUpdate(simulatorId: ID!): [Client]
     clearCache(client: ID, flight: ID): Boolean
     soundSub(clientId: ID): Sound
     cancelSound(clientId: ID): ID
@@ -185,6 +194,7 @@ const resolver = {
     simulator(rootValue) {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
     },
+
     commandLineOutput(rootValue) {
       const simulator = App.simulators.find(
         s => s.id === rootValue.simulatorId
@@ -213,6 +223,13 @@ const resolver = {
         return simulator.commandLineOutputs[rootValue.id];
       }
       return output;
+    },
+    commandLineFeedback(rootValue) {
+      const simulator = App.simulators.find(
+        s => s.id === rootValue.simulatorId
+      );
+      if (!simulator) return [];
+      return simulator.commandLineFeedback[rootValue.id] || [];
     },
     token(client) {
       const flight = App.flights.find(f => f.id === client.flightId);
@@ -389,6 +406,17 @@ const resolver = {
         () => pubsub.asyncIterator("commandLineOutputUpdate"),
         (data, { clientId }) => {
           return data.id === clientId;
+        }
+      )
+    },
+    commandLinesOutputUpdate: {
+      resolve: (payload, { simulatorId }) => {
+        return payload;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("commandLinesOutputUpdate"),
+        (data, { simulatorId }) => {
+          return data && data.find(s => s.simulatorId === simulatorId);
         }
       )
     },

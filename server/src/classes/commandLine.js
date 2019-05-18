@@ -36,6 +36,7 @@ function generateHelpText(component, length = "short", simulator) {
 }
 
 function generateTriggerActions(component, simulator = {}, args) {
+  if (!component.connectedComponents) return [];
   return component.connectedComponents
     .filter(c => c.inputNode === "trigger")
     .map(c => ({
@@ -92,7 +93,50 @@ export default class CommandLine {
       }))
       .filter((a, i, arr) => arr.indexOf(a) === i && Boolean);
   }
+  getConnections = c => {
+    this.connectionList.push(c.id);
+    const connections = this.connections
+      .map(o => {
+        if (o.from.id === c.id) {
+          if (this.connectionList.includes(o.to.id)) return null;
+          const comp = this.components.find(m => m.id === o.to.id);
+          const inputNode = o.to.nodeId;
+          const outputNode = o.from.nodeId;
+          if (comp) return { ...comp, inputNode, outputNode };
+        }
+        if (o.to.id === c.id) {
+          if (this.connectionList.includes(o.from.id)) return null;
+          const comp = this.components.find(m => m.id === o.from.id);
+          const inputNode = o.from.nodeId;
+          const outputNode = o.to.nodeId;
+          if (comp) return { ...comp, inputNode, outputNode };
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .map(c => ({
+        ...c,
+        config: this.config[c.id] || {},
+        value: this.values[c.id]
+      }));
+    return {
+      ...c,
+      connectedComponents: connections
+        .map(this.getConnections)
+        .map(this.getOutput)
+    };
+  };
+  getOutput = c => {
+    const output = c.connectedComponents.find(o => o.outputNode === "output");
+    const error = c.connectedComponents.find(o => o.outputNode === "error");
+    return {
+      ...c,
+      output: output ? output : { value: "Command sent." },
+      error: error ? error : { value: "Unknown error in command." }
+    };
+  };
   getRawCommands() {
+    this.connectionList = [];
     return this.components
       .filter(c => c.component && c.component.name === "Command")
       .map(c => ({
@@ -100,43 +144,8 @@ export default class CommandLine {
         config: this.config[c.id] || {},
         name: this.values[c.id]
       }))
-      .map(c => {
-        const connections = this.connections
-          .map(o => {
-            if (o.from.id === c.id) {
-              const comp = this.components.find(m => m.id === o.to.id);
-              const inputNode = o.to.nodeId;
-              const outputNode = o.from.nodeId;
-              if (comp) return { ...comp, inputNode, outputNode };
-            }
-            if (o.to.id === c.id) {
-              const comp = this.components.find(m => m.id === o.from.id);
-              const inputNode = o.from.nodeId;
-              const outputNode = o.to.nodeId;
-              if (comp) return { ...comp, inputNode, outputNode };
-            }
-            return null;
-          })
-          .filter(Boolean)
-          .map(c => ({
-            ...c,
-            config: this.config[c.id] || {},
-            value: this.values[c.id]
-          }));
-
-        return { ...c, connectedComponents: connections };
-      })
-      .map(c => {
-        const output = c.connectedComponents.find(
-          o => o.outputNode === "output"
-        );
-        const error = c.connectedComponents.find(o => o.outputNode === "error");
-        return {
-          ...c,
-          output: output ? output.value : "Command sent.",
-          error: error ? error.value : "Unknown error in command."
-        };
-      });
+      .map(this.getConnections)
+      .map(this.getOutput);
   }
   getHelp() {
     return this.getRawCommands().map(c => ({
@@ -144,24 +153,45 @@ export default class CommandLine {
       help: generateHelpText(c, "short")
     }));
   }
+  parseOutput(c, simulator, args) {
+    if (typeof c.output.value === "string") {
+      return c.output.value
+        .replace(/#ARG1/gi, args[0])
+        .replace(/#ARG2/gi, args[1]);
+    }
+    return {
+      ...c.output.value,
+      text:
+        c.output.value.text &&
+        c.output.value.text
+          .replace(/#ARG1/gi, args[0])
+          .replace(/#ARG2/gi, args[1]),
+      fallback:
+        c.output.value.fallback &&
+        c.output.value.fallback
+          .replace(/#ARG1/gi, args[0])
+          .replace(/#ARG2/gi, args[1]),
+      approve: c.output.output.value,
+      deny: c.output.error.value,
+      triggers: generateTriggerActions(c.output, simulator, args)
+    };
+  }
   getCommand(command, argument = "", simulator) {
     const args = argument.split(" ");
     return this.getRawCommands()
       .filter(c => c.name.toLowerCase().trim() === command.toLowerCase().trim())
       .map(c => ({
         ...c,
+        connectedComponents: c.connectedComponents.map(cc => ({
+          ...cc,
+          triggers: generateTriggerActions(cc, simulator, args)
+        })),
         options: generateOptions(c, simulator),
         needsArg: c.connectedComponents.find(c => c.outputNode === "argument"),
-        output:
-          typeof c.output === "string"
-            ? c.output.replace(/#ARG1/gi, args[0]).replace(/#ARG2/gi, args[1])
-            : {
-                ...c.output,
-                text: c.output.text
-                  .replace(/#ARG1/gi, args[0])
-                  .replace(/#ARG2/gi, args[1])
-              },
-        error: c.error.replace(/#ARG1/gi, args[0]).replace(/#ARG2/gi, args[1]),
+        output: this.parseOutput(c, simulator, args),
+        error: c.error.value
+          .replace(/#ARG1/gi, args[0])
+          .replace(/#ARG2/gi, args[1]),
         help: generateHelpText(c, "long", simulator),
         triggers: generateTriggerActions(c, simulator, args)
       }));

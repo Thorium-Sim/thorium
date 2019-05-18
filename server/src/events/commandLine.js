@@ -47,22 +47,10 @@ App.on(
   "executeCommandLine",
   ({ simulatorId, command, arg = "", context: { client }, cb }) => {
     const simulator = App.simulators.find(s => s.id === simulatorId);
-    const com = App.commandLine
-      .filter(c => c.simulatorId === simulatorId)
-      .reduce(
-        (prev, next) => prev.concat(next.getCommand(command, arg, simulator)),
-        []
-      )[0];
-
+    let output = null;
     // Send the original input
     simulator.addCommandLineOutput(client.id, `> ${command}`);
-    pubsub.publish("commandLineOutputUpdate", {
-      id: client.id,
-      commandLineOutput: simulator.commandLineOutputs[client.id]
-    });
 
-    let output = `command not found: ${command}`;
-    // Only allow a single command. Keeps things simpler.
     if (command.toLowerCase().trim() === "help") {
       output = App.commandLine
         .filter(c => c.simulatorId === simulatorId)
@@ -75,43 +63,132 @@ App.on(
     } else if (["clear", "cls"].includes(command.toLowerCase().trim())) {
       output = "";
       client.clearCommandLine(client.id);
-    } else if (!com) {
-    } else if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
-      output = com.help;
-    } else if (
-      com.options.length > 0 &&
-      com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
-    ) {
-      output = com.error;
-    } else {
-      App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
-      if (typeof com.output === "string") {
-        output = com.output;
-      } else if (com.output.delay && com.output.text) {
-        const strings = com.output.text.split("\n");
-        const clientId = client.id;
-        strings.reduce((acc, string) => {
-          return acc.then(() =>
-            delayPromise(() => {
-              simulator.addCommandLineOutput(clientId, string);
-              pubsub.publish("commandLineOutputUpdate", {
-                id: client.id,
-                commandLineOutput: simulator.commandLineOutputs[client.id]
-              });
-            }, com.output.delay)
-          );
-        }, Promise.resolve());
-        return;
-      }
     }
-    simulator.addCommandLineOutput(client.id, output);
+    if (output) {
+      simulator.addCommandLineOutput(client.id, output);
+    }
+    const coms = App.commandLine
+      .filter(c => c.simulatorId === simulatorId)
+      .reduce(
+        (prev, next) => prev.concat(next.getCommand(command, arg, simulator)),
+        []
+      );
+    if (!output && coms.length === 0) {
+      simulator.addCommandLineOutput(
+        client.id,
+        `command not found: ${command}`
+      );
+    }
+    coms.forEach(com => {
+      let output = ``;
+      if (!com) {
+      } else if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
+        output = com.help;
+      } else if (
+        com.options.length > 0 &&
+        com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
+      ) {
+        output = com.error;
+      } else {
+        App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
+        if (typeof com.output === "string") {
+          output = com.output;
+        } else if (com.output.delay && com.output.text) {
+          const strings = com.output.text.split("\n");
+          const clientId = client.id;
+          strings.reduce((acc, string) => {
+            return acc.then(() =>
+              delayPromise(() => {
+                simulator.addCommandLineOutput(clientId, string);
+                pubsub.publish("commandLineOutputUpdate", {
+                  id: client.id,
+                  commandLineOutput: simulator.commandLineOutputs[client.id]
+                });
+              }, com.output.delay)
+            );
+          }, Promise.resolve());
+          return;
+        } else if (com.output.text) {
+          simulator.addCommandLineOutput(client.id, com.output.text);
+
+          const id = uuid.v4();
+          simulator.addCommandLineFeedback(client.id, {
+            id,
+            command,
+            clientId: client.id,
+            simulatorId: simulator.id,
+            ...com.output
+          });
+          if (parseInt(com.output.timeout, 10)) {
+            setTimeout(() => {
+              if (
+                simulator.commandLineFeedback[client.id].find(c => c.id === id)
+              ) {
+                simulator.removeCommandLineFeedback(client.id, id);
+                simulator.addCommandLineOutput(client.id, com.output.fallback);
+
+                pubsub.publish("clientChanged", App.clients);
+                pubsub.publish("commandLineOutputUpdate", {
+                  id: client.id,
+                  commandLineOutput: simulator.commandLineOutputs[client.id]
+                });
+              }
+            }, parseInt(com.output.timeout, 10));
+          }
+          return;
+        }
+      }
+      simulator.addCommandLineOutput(client.id, output);
+    });
     pubsub.publish("commandLineOutputUpdate", {
       id: client.id,
       commandLineOutput: simulator.commandLineOutputs[client.id]
     });
+    pubsub.publish("clientChanged", App.clients);
   }
 );
 
+App.on(
+  "handleCommandLineFeedback",
+  ({ simulatorId, clientId, feedbackId, isApproved }) => {
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    const feedback = simulator.commandLineFeedback[clientId].find(
+      c => c.id === feedbackId
+    );
+    if (!feedback) return;
+    if (isApproved) {
+      if (feedback.triggers && feedback.triggers.length) {
+        App.handleEvent(
+          { simulatorId, macros: feedback.triggers },
+          "triggerMacros"
+        );
+      }
+      if (feedback.approve) {
+        simulator.addCommandLineOutput(clientId, feedback.approve);
+      }
+    } else {
+      if (feedback.deny) {
+        simulator.addCommandLineOutput(clientId, feedback.deny);
+      }
+    }
+    simulator.removeCommandLineFeedback(clientId, feedbackId);
+
+    pubsub.publish("commandLineOutputUpdate", {
+      id: clientId,
+      commandLineOutput: simulator.commandLineOutputs[clientId]
+    });
+    pubsub.publish("clientChanged", App.clients);
+  }
+);
+App.on("addCommandLineOutput", ({ simulatorId, clientId, output }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.addCommandLineOutput(clientId, output);
+  pubsub.publish("commandLineOutputUpdate", {
+    id: clientId,
+    commandLineOutput: simulator.commandLineOutputs[clientId]
+  });
+  pubsub.publish("clientChanged", App.clients);
+});
 App.on("addCommandLineToSimulator", ({ simulatorId, commandLine }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   const commandLineData = App.commandLine.find(s => s.id === commandLine);

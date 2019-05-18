@@ -160,6 +160,7 @@ export default class Simulator {
 
     // Command Lines
     this.commandLineOutputs = {};
+    this.commandLineFeedback = {};
 
     // For Space EdVentures
     this.spaceEdventuresId = params.spaceEdventuresId || null;
@@ -349,6 +350,16 @@ export default class Simulator {
     if (!this.commandLineOutputs[clientId])
       this.commandLineOutputs[clientId] = [];
     this.commandLineOutputs[clientId].push(line);
+  }
+  addCommandLineFeedback(clientId, feedback) {
+    if (!this.commandLineFeedback[clientId])
+      this.commandLineFeedback[clientId] = [];
+    this.commandLineFeedback[clientId].push(feedback);
+  }
+  removeCommandLineFeedback(clientId, id) {
+    this.commandLineFeedback[clientId] = this.commandLineFeedback[
+      clientId
+    ].filter(c => c.id !== id);
   }
   clearCommandLine(clientId) {
     this.commandLineOutputs[clientId] = [];
