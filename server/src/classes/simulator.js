@@ -346,6 +346,8 @@ export default class Simulator {
   }
   // Command Line
   addCommandLineOutput(clientId, line) {
+    if (!this.commandLineOutputs[clientId])
+      this.commandLineOutputs[clientId] = [];
     this.commandLineOutputs[clientId].push(line);
   }
   clearCommandLine(clientId) {

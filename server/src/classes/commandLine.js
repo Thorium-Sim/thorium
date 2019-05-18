@@ -131,7 +131,6 @@ export default class CommandLine {
           o => o.outputNode === "output"
         );
         const error = c.connectedComponents.find(o => o.outputNode === "error");
-
         return {
           ...c,
           output: output ? output.value : "Command sent.",
@@ -153,9 +152,15 @@ export default class CommandLine {
         ...c,
         options: generateOptions(c, simulator),
         needsArg: c.connectedComponents.find(c => c.outputNode === "argument"),
-        output: c.output
-          .replace(/#ARG1/gi, args[0])
-          .replace(/#ARG2/gi, args[1]),
+        output:
+          typeof c.output === "string"
+            ? c.output.replace(/#ARG1/gi, args[0]).replace(/#ARG2/gi, args[1])
+            : {
+                ...c.output,
+                text: c.output.text
+                  .replace(/#ARG1/gi, args[0])
+                  .replace(/#ARG2/gi, args[1])
+              },
         error: c.error.replace(/#ARG1/gi, args[0]).replace(/#ARG2/gi, args[1]),
         help: generateHelpText(c, "long", simulator),
         triggers: generateTriggerActions(c, simulator, args)

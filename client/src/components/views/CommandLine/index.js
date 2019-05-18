@@ -1,8 +1,9 @@
 import React from "react";
 import { Container, Input } from "reactstrap";
 import gql from "graphql-tag.macro";
-import { withApollo, Mutation, Subscription, Query } from "react-apollo";
+import { withApollo, Mutation, Query } from "react-apollo";
 import Tour from "helpers/tourHelper";
+import SubscriptionHelper from "helpers/subscriptionHelper";
 import { FormattedMessage } from "react-intl";
 import "./style.scss";
 const trainingSteps = [
@@ -35,6 +36,12 @@ const trainingSteps = [
   }
 ];
 
+const SUB = gql`
+  subscription ClientUpdate($clientId: ID!) {
+    commandLineOutputUpdate(clientId: $clientId)
+  }
+`;
+
 // It might be possible to make this more complex by having
 // the ability to perform multiple actions as part of the
 // node diagram API which link into the command line
@@ -56,43 +63,17 @@ const CommandLineOutput = ({ output }) => {
     </div>
   );
 };
-const CommandLine = ({ clientObj, simulator }) => {
+const CommandLineInner = ({ data, simulator }) => {
   const [input, setInput] = React.useState("");
   return (
-    <Container fluid className="terminal-card">
-      <Query
-        query={gql`
-          query Client($clientId: ID!) {
-            clients(clientId: $clientId) {
-              id
-              commandLineOutput
-            }
-          }
-        `}
-        variables={{ clientId: clientObj.id }}
-      >
-        {({ loading, data }) => (
-          <Subscription
-            subscription={gql`
-              subscription ClientUpdate($clientId: ID!) {
-                commandLineOutputUpdate(clientId: $clientId)
-              }
-            `}
-            variables={{ clientId: clientObj.id }}
-          >
-            {() => (
-              <CommandLineOutput
-                output={
-                  !data.clients
-                    ? "Accessing Command Line Interface..."
-                    : data.clients[0].commandLineOutput.join("\n")
-                }
-              />
-            )}
-          </Subscription>
-        )}
-      </Query>
-
+    <>
+      <CommandLineOutput
+        output={
+          !data.clients
+            ? "Accessing Command Line Interface..."
+            : data.clients[0].commandLineOutput.join("\n")
+        }
+      />
       <Mutation
         mutation={gql`
           mutation Mutation(
@@ -131,6 +112,53 @@ const CommandLine = ({ clientObj, simulator }) => {
           />
         )}
       </Mutation>
+    </>
+  );
+};
+const CommandLine = ({ clientObj, simulator }) => {
+  return (
+    <Container fluid className="terminal-card">
+      <Query
+        query={gql`
+          query Client($clientId: ID!) {
+            clients(clientId: $clientId) {
+              id
+              commandLineOutput
+            }
+          }
+        `}
+        variables={{ clientId: clientObj.id }}
+      >
+        {({ loading, data, subscribeToMore }) => (
+          <>
+            {loading ? null : (
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: SUB,
+                    variables: { clientId: clientObj.id },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      const client = previousResult.clients[0];
+
+                      return Object.assign({}, previousResult, {
+                        clients: [
+                          {
+                            ...client,
+                            commandLineOutput: subscriptionData.data.commandLineOutputUpdate.split(
+                              "\n"
+                            )
+                          }
+                        ]
+                      });
+                    }
+                  })
+                }
+              />
+            )}
+            <CommandLineInner data={data} simulator={simulator} />
+          </>
+        )}
+      </Query>
 
       <Tour steps={trainingSteps} client={clientObj} />
     </Container>

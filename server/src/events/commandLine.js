@@ -3,6 +3,15 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
 
+function delayPromise(action, delay) {
+  return new Promise(resolve =>
+    setTimeout(() => {
+      action();
+      return resolve(Promise.resolve());
+    }, delay)
+  );
+}
+
 function performAction(id, action) {
   const sys = App.commandLine.find(s => s.id === id);
   if (sys) {
@@ -76,7 +85,24 @@ App.on(
       output = com.error;
     } else {
       App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
-      output = com.output;
+      if (typeof com.output === "string") {
+        output = com.output;
+      } else if (com.output.delay && com.output.text) {
+        const strings = com.output.text.split("\n");
+        const clientId = client.id;
+        strings.reduce((acc, string) => {
+          return acc.then(() =>
+            delayPromise(() => {
+              simulator.addCommandLineOutput(clientId, string);
+              pubsub.publish("commandLineOutputUpdate", {
+                id: client.id,
+                commandLineOutput: simulator.commandLineOutputs[client.id]
+              });
+            }, com.output.delay)
+          );
+        }, Promise.resolve());
+        return;
+      }
     }
     simulator.addCommandLineOutput(client.id, output);
     pubsub.publish("commandLineOutputUpdate", {
