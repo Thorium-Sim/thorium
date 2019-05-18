@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/Thorium-Sim/thorium/compare/1.4.0...1.4.1) (2019-05-18)
+
+
+### Bug Fixes
+
+* **Build:** Fixes an issue with the automated build process. ([6902c0d](https://github.com/Thorium-Sim/thorium/commit/6902c0d))
+
 # [1.4.0](https://github.com/Thorium-Sim/thorium/compare/1.3.0...1.4.0) (2019-05-18)
 
 
