@@ -74,7 +74,7 @@ const creditList = [
     content: "Inspired by the Empty Epsilon Bridge Simulator"
   },
   {
-    header: "Curve Frame Design",
+    header: "Clear Frame Design",
     content: "Emily Paxman 🕶"
   },
   {
