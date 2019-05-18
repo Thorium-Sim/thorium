@@ -46,8 +46,11 @@ App.on(
       )[0];
 
     // Send the original input
-    client.addCommandLineOutput(`> ${command}`);
-    pubsub.publish("commandLineOutputUpdate", client);
+    simulator.addCommandLineOutput(client.id, `> ${command}`);
+    pubsub.publish("commandLineOutputUpdate", {
+      id: client.id,
+      commandLineOutput: simulator.commandLineOutputs[client.id]
+    });
 
     let output = `command not found: ${command}`;
     // Only allow a single command. Keeps things simpler.
@@ -62,7 +65,7 @@ App.on(
       output = "Alex Anderson 🚀";
     } else if (["clear", "cls"].includes(command.toLowerCase().trim())) {
       output = "";
-      client.clearCommandLine();
+      client.clearCommandLine(client.id);
     } else if (!com) {
     } else if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
       output = com.help;
@@ -75,8 +78,11 @@ App.on(
       App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
       output = com.output;
     }
-    client.addCommandLineOutput(output);
-    pubsub.publish("commandLineOutputUpdate", client);
+    simulator.addCommandLineOutput(client.id, output);
+    pubsub.publish("commandLineOutputUpdate", {
+      id: client.id,
+      commandLineOutput: simulator.commandLineOutputs[client.id]
+    });
   }
 );
 

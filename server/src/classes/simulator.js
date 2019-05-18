@@ -157,6 +157,9 @@ export default class Simulator {
     params.damageTasks &&
       params.damageTasks.forEach(s => this.damageTasks.push(new DamageTask(s)));
 
+    // Command Lines
+    this.commandLineOutputs = {};
+
     // For Space EdVentures
     this.spaceEdventuresId = params.spaceEdventuresId || null;
   }
@@ -315,6 +318,14 @@ export default class Simulator {
   }
   removeDamageTask(id) {
     this.damageTasks = this.damageTasks.filter(t => t.id !== id);
+  }
+
+  // Command Line
+  addCommandLineOutput(clientId, line) {
+    this.commandLineOutputs[clientId].push(line);
+  }
+  clearCommandLine(clientId) {
+    this.commandLineOutputs[clientId] = [];
   }
 
   setSpaceEdventuresId(id) {

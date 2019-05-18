@@ -108,26 +108,6 @@ export default class Client {
     // Keypad
     this.keypad = new Keypad(params.keypad, this.id, this.label);
     this.scanner = new Scanner(params.scanner, this.id, this.label);
-
-    // Command Line
-    this.commandLineOutput = [
-      `Welcome to Ubuntu 31.04.5 LTS (GNU/Linux 3.13.0-125-generic x86_64)
-
-    System information
-  
-    System load:  0.26                Processes:           133
-    Usage of /:   63.7% of 147.51YB   Users logged in:     0
-    Memory usage: 85%                 IP address for eth0: 172.19.45.181
-    Swap usage:   0%
-  
-  79 packages can be updated.
-  60 updates are security updates.
-  
-  
-  Last login: ip-10-0-43-69.ec2.internal
-  
-  Type "help" to get a list of available commands`
-    ];
   }
   get label() {
     return this.clientLabel || this.id;
@@ -229,12 +209,6 @@ export default class Client {
   }
   uncrack() {
     this.cracked = false;
-  }
-  addCommandLineOutput(line) {
-    this.commandLineOutput.push(line);
-  }
-  clearCommandLine() {
-    this.commandLineOutput = [];
   }
   diagnostic() {}
   lockScreen() {}
