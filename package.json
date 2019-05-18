@@ -193,6 +193,12 @@
         }
       ],
       [
+        "@semantic-release/exec",
+        {
+          "prepareCmd": "npm run bump ${nextRelease.version} && npm run deploy"
+        }
+      ],
+      [
         "@semantic-release/git",
         {
           "assets": [
@@ -202,13 +208,6 @@
             "server/package.json"
           ],
           "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
-        }
-      ],
-      [
-        "@semantic-release/exec",
-        {
-          "generateNotes": "npm run bump ${nextRelease.version}",
-          "prepareCmd": "npm run deploy"
         }
       ]
     ]
