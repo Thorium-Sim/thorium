@@ -23,7 +23,7 @@ class Form extends Component {
       client: this.props.clientId,
       form: this.state.responses.map((r, i) => {
         const form = this.props.form.form[i];
-        return { id: form.id, value: r };
+        return { id: form.id, value: String(r) };
       })
     };
     this.props.client.mutate({
@@ -35,7 +35,7 @@ class Form extends Component {
     });
   };
   render() {
-    const { form } = this.props;
+    const { form, submitForm } = this.props;
     const { currentForm, responses, submitted } = this.state;
     const formItem = form.form[currentForm];
     const Comp = formItem && Components[formItem.type];
@@ -54,10 +54,10 @@ class Form extends Component {
             {submitted || !Comp ? (
               <h1>Thank you for your response.</h1>
             ) : (
-              <div>
+              <div style={{ maxWidth: "60%" }}>
                 <h3>{formItem.title}</h3>
                 <p>{formItem.description}</p>
-                <div style={{ width: "80%" }}>
+                <div>
                   <Comp
                     survey
                     {...formItem}
@@ -100,7 +100,15 @@ class Form extends Component {
                   </p>
                 )}
               {responses.length === form.form.length && (
-                <Button color="success" block size="lg" onClick={this.submit}>
+                <Button
+                  color="success"
+                  block
+                  size="lg"
+                  onClick={() => {
+                    this.submit();
+                    submitForm();
+                  }}
+                >
                   Submit
                 </Button>
               )}
