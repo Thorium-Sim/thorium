@@ -1,4 +1,6 @@
 .core-timeline {
+  display: flex;
+  flex-direction: column;
   padding: 0 4px;
   .btn-group {
     width: 100%;
@@ -16,9 +18,9 @@
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     margin-top: 10px;
     padding: 10px 0;
-    height: calc(100vh - 120px);
     display: block;
     overflow-y: auto;
+    flex: 1;
   }
 
   .timeline-item {
@@ -48,4 +50,28 @@
 }
 .current-step {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+.core-auxtimeline {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  .auxtimeline-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .list-group {
+      flex: 1;
+      overflow-y: auto;
+    }
+  }
+  .timeline-info {
+    flex: 2;
+    overflow-y: auto;
+    padding: 0 5px;
+    overflow-x: hidden;
+    .form-check-input {
+      position: relative;
+    }
+  }
 }

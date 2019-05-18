@@ -202,8 +202,15 @@ class ThreeView extends Component {
       this.objectGroup.rotation.setFromVector3(rot);
     }
   }
+  empty(elem) {
+    while (elem.lastChild) elem.removeChild(elem.lastChild);
+  }
   componentWillUnmount() {
     this.animating = false;
+    this.renderer.domElement.addEventListener("dblclick", null, false); //remove listener to render
+    this.scene = null;
+    this.camera = null;
+    this.empty(this.objectGroup);
     cancelAnimationFrame(this.frame);
   }
   animate = () => {

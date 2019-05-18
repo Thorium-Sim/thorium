@@ -15,25 +15,27 @@ class Video extends Component {
     }
   }
   componentDidMount() {
-    this.videoToggleSub = this.props.client
-      .subscribe({
-        query: gql`
-          subscription ToggleVideo($viewscreenId: ID) {
-            viewscreenVideoToggle(viewscreenId: $viewscreenId)
+    if (this.props.viewscreen) {
+      this.videoToggleSub = this.props.client
+        .subscribe({
+          query: gql`
+            subscription ToggleVideo($viewscreenId: ID) {
+              viewscreenVideoToggle(viewscreenId: $viewscreenId)
+            }
+          `,
+          variables: { viewscreenId: this.props.viewscreen.id }
+        })
+        .subscribe({
+          next: ({ data: { viewscreenVideoToggle } }) => {
+            this.player.current.paused === false
+              ? this.player.current.pause()
+              : this.player.current.play();
+          },
+          error(err) {
+            console.error("Error in subscription", err);
           }
-        `,
-        variables: { viewscreenId: this.props.viewscreen.id }
-      })
-      .subscribe({
-        next: ({ data: { viewscreenVideoToggle } }) => {
-          this.player.current.paused === false
-            ? this.player.current.pause()
-            : this.player.current.play();
-        },
-        error(err) {
-          console.error("Error in subscription", err);
-        }
-      });
+        });
+    }
     const { playbackSpeed = 1 } = this.props;
     if (this.player.current)
       this.player.current.playbackRate = parseFloat(playbackSpeed) || 1;
