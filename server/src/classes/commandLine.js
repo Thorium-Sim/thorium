@@ -1,13 +1,20 @@
 import uuid from "uuid";
+import App from "../app";
 
+const standardOptions = ["Stations", "Library Entry Slugs"];
 function generateOptions(component, simulator) {
   const options = component.connectedComponents.find(
     c => c.component && c.component.name === "Options"
   );
   if (!options) return [];
-  if (options.value && options.value !== "Stations")
+  if (options.value && !standardOptions.includes(options.value))
     return options.value.split("\n");
-  if (simulator) return simulator.stations.map(s => s.name).sort();
+  if (options.value === "Stations" && simulator)
+    return simulator.stations.map(s => s.name).sort();
+  if (options.value === "Library Entry Slugs" && simulator)
+    return App.libraryDatabase
+      .filter(l => l.simulatorId === simulator.id)
+      .map(l => l.slug);
   return [];
 }
 function generateHelpText(component, length = "short", simulator) {
@@ -19,14 +26,11 @@ function generateHelpText(component, length = "short", simulator) {
   let optionsText = description ? description.value + "\n" : "";
   if (options && options.length > 0) {
     optionsText += "Available Options:\n";
-    if (options.value)
-      optionsText += options.value
-        .split("\n")
-        .map(v => `\t${v}`)
-        .join("\n");
-    // The default is the stations on the simulator
-    if (simulator)
-      optionsText += simulator.stations.map(s => `\t${s.name}`).join("\n");
+    optionsText += options.map(v => `\t${v}`).join("\n");
+  }
+  // The default is the stations on the simulator
+  else if (simulator) {
+    optionsText += simulator.stations.map(s => `\t${s.name}`).join("\n");
   }
   return optionsText;
 }
