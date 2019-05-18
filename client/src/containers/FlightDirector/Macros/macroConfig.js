@@ -55,7 +55,6 @@ const ActionList = ({
 };
 
 const ActionConfig = ({ event, delay, args, updateAction }) => {
-  console.log(args);
   return (
     <Fragment>
       <EventName id={event} />{" "}

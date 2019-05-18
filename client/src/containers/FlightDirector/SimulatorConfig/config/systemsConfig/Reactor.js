@@ -51,10 +51,6 @@ const Reactor = props => {
     });
   };
   const removeEfficiency = (action, reactor, i) => () => {
-    console.log(
-      reactor.efficiencies,
-      reactor.efficiencies.filter((_, ind) => ind !== i)
-    );
     action({
       variables: {
         id: reactor.id,

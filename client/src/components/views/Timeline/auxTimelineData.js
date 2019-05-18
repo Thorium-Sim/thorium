@@ -54,7 +54,6 @@ class TimelineData extends Component {
         {({ loading, data, subscribeToMore }) => {
           const { auxTimelines, missions } = data;
           if (loading) return null;
-          console.log(auxTimelines, missions);
           return (
             <SubscriptionHelper
               subscribe={() =>
