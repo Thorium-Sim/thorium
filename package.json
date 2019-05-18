@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.3.0",
+  "version": "1.4.1",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -147,9 +147,7 @@
   },
   "eslintConfig": {
     "extends": "react-app",
-    "plugins": [
-      "react-hooks"
-    ],
+    "plugins": ["react-hooks"],
     "rules": {
       "jsx-a11y/href-no-hash": "off",
       "react-hooks/rules-of-hooks": "error"
