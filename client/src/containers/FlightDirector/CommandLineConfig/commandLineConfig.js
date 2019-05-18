@@ -152,7 +152,12 @@ export default class CommandLineConfig extends Component {
             >
               {action => (
                 <MacroListMaker
-                  exceptions={["triggerAction", "removeLibraryEntry"]}
+                  exceptions={[
+                    "triggerAction",
+                    "removeLibraryEntry",
+                    "hideSimulatorCard",
+                    "unhideSimulatorCard"
+                  ]}
                 >
                   {eventList => (
                     <DiagramProvider

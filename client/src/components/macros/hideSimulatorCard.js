@@ -12,18 +12,20 @@ export default ({ updateArgs, args, client }) => {
           onBlur={e => updateArgs("cardName", e.target.value)}
         />
       </Label>
-      <Label>
-        Delay to Show
-        <Input
-          type="number"
-          value={args.delay}
-          onBlur={e => updateArgs("delay", e.target.value)}
-        />
-        <small>
-          A delay for showing the card again. To not show the card again, leave
-          blank or use 0.
-        </small>
-      </Label>
+      <div>
+        <Label>
+          Delay to Show
+          <Input
+            type="number"
+            value={args.delay}
+            onBlur={e => updateArgs("delay", e.target.value)}
+          />
+          <small>
+            A delay for showing the card again. To not show the card again,
+            leave blank or use 0.
+          </small>
+        </Label>
+      </div>
     </FormGroup>
   );
 };

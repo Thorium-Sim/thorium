@@ -35,7 +35,7 @@ function generateHelpText(component, length = "short", simulator) {
   return optionsText;
 }
 
-function generateTriggerActions(component, simulator = {}, argument) {
+function generateTriggerActions(component, simulator = {}, args) {
   return component.connectedComponents
     .filter(c => c.inputNode === "trigger")
     .map(c => ({
@@ -43,12 +43,17 @@ function generateTriggerActions(component, simulator = {}, argument) {
       delay: c.config.delay || 0,
       args: component.connectedComponents
         .filter(o => c.id === o.id && o.inputNode !== "trigger")
-        .map(
-          o =>
-            o.outputNode.indexOf("argument") > -1 && {
-              [o.inputNode]: argument
-            }
-        )
+        .map(o => {
+          if (o.outputNode === "argument1")
+            return {
+              [o.inputNode]: args[0]
+            };
+          if (o.outputNode === "argument2")
+            return {
+              [o.inputNode]: args[1]
+            };
+          return null;
+        })
         .reduce((prev, next) => ({ ...prev, ...next }), c.value || {})
     }));
 }
@@ -141,16 +146,19 @@ export default class CommandLine {
     }));
   }
   getCommand(command, argument = "", simulator) {
+    const args = argument.split(" ");
     return this.getRawCommands()
       .filter(c => c.name.toLowerCase().trim() === command.toLowerCase().trim())
       .map(c => ({
         ...c,
         options: generateOptions(c, simulator),
         needsArg: c.connectedComponents.find(c => c.outputNode === "argument"),
-        output: c.output.replace(/#ARG/gi, argument),
-        error: c.error.replace(/#ARG/gi, argument),
+        output: c.output
+          .replace(/#ARG1/gi, args[0])
+          .replace(/#ARG2/gi, args[1]),
+        error: c.error.replace(/#ARG1/gi, args[0]).replace(/#ARG2/gi, args[1]),
         help: generateHelpText(c, "long", simulator),
-        triggers: generateTriggerActions(c, simulator, argument)
+        triggers: generateTriggerActions(c, simulator, args)
       }));
   }
 }

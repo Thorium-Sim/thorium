@@ -4,7 +4,7 @@ import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 import DamageTask from "./generic/damageTask";
 import { Station } from "./stationSet";
-import { lowerCase, titleCase } from "change-case";
+import { lowerCase, camelCase } from "change-case";
 class Ambiance {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -321,24 +321,24 @@ export default class Simulator {
     this.damageTasks = this.damageTasks.filter(t => t.id !== id);
   }
   hideCard(cardName) {
-    const name = lowerCase(titleCase(cardName));
+    const name = lowerCase(camelCase(cardName));
     const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
     cards.forEach(card => {
       if (
-        lowerCase(titleCase(card.name)) === name ||
-        lowerCase(titleCase(card.component)) === name
+        lowerCase(camelCase(card.name)) === name ||
+        lowerCase(camelCase(card.component)) === name
       ) {
         card.hide();
       }
     });
   }
   unhideCard(cardName) {
-    const name = lowerCase(titleCase(cardName));
+    const name = lowerCase(camelCase(cardName));
     const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
     cards.forEach(card => {
       if (
-        lowerCase(titleCase(card.name)) === name ||
-        lowerCase(titleCase(card.component)) === name
+        lowerCase(camelCase(card.name)) === name ||
+        lowerCase(camelCase(card.component)) === name
       ) {
         card.unhide();
       }
