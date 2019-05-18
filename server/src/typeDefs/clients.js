@@ -24,6 +24,7 @@ const schema = gql`
     hypercard: String
     overlay: Boolean
     cracked: Boolean
+    commandLineOutput: [String]
 
     # Space EdVentures
     token: String
@@ -167,6 +168,7 @@ const schema = gql`
     keypadUpdate(client: ID!): Keypad
     scannersUpdate(simulatorId: ID!): [Scanner]
     scannerUpdate(client: ID!): Scanner
+    commandLineOutputUpdate(clientId: ID!): String
     clearCache(client: ID, flight: ID): Boolean
     soundSub(clientId: ID): Sound
     cancelSound(clientId: ID): ID
@@ -349,6 +351,15 @@ const resolver = {
         () => pubsub.asyncIterator("scannersUpdate"),
         (data, { simulatorId }) => {
           return data.filter(c => c.simulatorId === simulatorId).length > 0;
+        }
+      )
+    },
+    commandLineOutputUpdate: {
+      resolve: payload => payload.commandLineOutput.join("\n"),
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("commandLineOutputUpdate"),
+        (data, { clientId }) => {
+          return data.id === clientId;
         }
       )
     },

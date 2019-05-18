@@ -34,27 +34,51 @@ App.on(
   }
 );
 
-App.on("executeCommandLine", ({ simulatorId, command, arg = "", cb }) => {
-  const simulator = App.simulators.find(s => s.id === simulatorId);
-  const com = App.commandLine
-    .filter(c => c.simulatorId === simulatorId)
-    .reduce(
-      (prev, next) => prev.concat(next.getCommand(command, arg, simulator)),
-      []
-    )[0];
-  // Only allow a single command. Keeps things simpler.
-  if (!com) return cb(`command not found: ${command}`);
-  if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
-    return cb(com.help);
+App.on(
+  "executeCommandLine",
+  ({ simulatorId, command, arg = "", context: { client }, cb }) => {
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    const com = App.commandLine
+      .filter(c => c.simulatorId === simulatorId)
+      .reduce(
+        (prev, next) => prev.concat(next.getCommand(command, arg, simulator)),
+        []
+      )[0];
+
+    // Send the original input
+    client.addCommandLineOutput(`> ${command}`);
+    pubsub.publish("commandLineOutputUpdate", client);
+
+    let output = `command not found: ${command}`;
+    // Only allow a single command. Keeps things simpler.
+    if (command.toLowerCase().trim() === "help") {
+      output = App.commandLine
+        .filter(c => c.simulatorId === simulatorId)
+        .reduce((prev, next) => prev.concat(next.commands), [])
+        .filter(c => !c.hidden)
+        .map(c => `${c.name}${c.help ? ": " : ""}${c.help}`)
+        .join("\n");
+    } else if (command.toLowerCase().trim() === "programmer") {
+      output = "Alex Anderson 🚀";
+    } else if (["clear", "cls"].includes(command.toLowerCase().trim())) {
+      output = "";
+      client.clearCommandLine();
+    } else if (!com) {
+    } else if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
+      output = com.help;
+    } else if (
+      com.options.length > 0 &&
+      com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
+    ) {
+      output = com.error;
+    } else {
+      App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
+      output = com.output;
+    }
+    client.addCommandLineOutput(output);
+    pubsub.publish("commandLineOutputUpdate", client);
   }
-  if (
-    com.options.length > 0 &&
-    com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
-  )
-    return cb(com.error);
-  App.handleEvent({ simulatorId, macros: com.triggers }, "triggerMacros");
-  return cb(com.output);
-});
+);
 
 App.on("addCommandLineToSimulator", ({ simulatorId, commandLine }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);

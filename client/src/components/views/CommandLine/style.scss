@@ -1,3 +1,30 @@
+.terminal-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 80%;
+  margin-top: 5%;
+}
+.terminal-output {
+  flex: 1;
+  white-space: pre-wrap;
+  font-family: monospace;
+  width: 100%;
+  width: 80%;
+  border: solid 2px rgba(255, 255, 255, 0.3);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0 5px;
+  overflow-y: auto;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #0f0;
+}
+input.form-control {
+  width: 80%;
+  font-family: monospace;
+  color: #0f0;
+}
 .terminal-base {
   min-width: 100%;
   width: 100%;

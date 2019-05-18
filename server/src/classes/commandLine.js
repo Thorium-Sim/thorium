@@ -138,7 +138,7 @@ export default class CommandLine {
   }
   getCommand(command, argument = "", simulator) {
     return this.getRawCommands()
-      .filter(c => c.name === command)
+      .filter(c => c.name.toLowerCase().trim() === command.toLowerCase().trim())
       .map(c => ({
         ...c,
         options: generateOptions(c, simulator),
