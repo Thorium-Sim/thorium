@@ -171,6 +171,7 @@ import SpecializedDockingCore from "./SpecializedDocking/core";
 import TimelineThumbnailCore from "./Timeline/thumbnailData";
 import SpaceEdventuresTokenCore from "./SpaceEdventuresToken/core";
 import CrmCore from "./Crm/core";
+import AuxTimelineCore from "./Timeline/auxTimelineData";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -455,7 +456,8 @@ export const Cores = {
   SpecializedDockingCore,
   TimelineThumbnailCore,
   SpaceEdventuresTokenCore,
-  CrmCore
+  CrmCore,
+  AuxTimelineCore
 };
 
 export default Views;

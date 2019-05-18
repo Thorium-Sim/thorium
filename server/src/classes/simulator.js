@@ -95,6 +95,18 @@ class Assets {
   }
 }
 
+class TimelineInstance {
+  constructor(params = {}) {
+    this.id = uuid.v4();
+    this.missionId = params.missionId || null;
+    this.currentTimelineStep = params.currentTimelineStep || 0;
+    this.executedTimelineSteps = params.executedTimelineSteps || [];
+  }
+  setTimelineStep(step) {
+    this.currentTimelineStep = step;
+  }
+}
+
 export default class Simulator {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -114,6 +126,11 @@ export default class Simulator {
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.executedTimelineSteps = params.executedTimelineSteps || [];
+    this.timelines = [];
+    params.timelines &&
+      params.timelines.forEach(t =>
+        this.timelines.push(new TimelineInstance(t, this.id))
+      );
     this.bridgeOfficerMessaging =
       params.bridgeOfficerMessaging === false ? false : true;
     this.teams = [];
@@ -196,14 +213,27 @@ export default class Simulator {
   setLayout(layout) {
     this.layout = layout;
   }
-  setTimelineStep(step) {
-    this.currentTimelineStep = step;
+  setTimelineStep(step, timelineId) {
+    if (timelineId) {
+      this.setAuxTimelineStep(timelineId, step);
+    } else {
+      this.currentTimelineStep = step;
+    }
   }
   executeTimelineStep(stepId) {
     this.executedTimelineSteps.push(stepId);
     this.executedTimelineSteps = this.executedTimelineSteps.filter(
       (a, i, arr) => arr.indexOf(a) === i
     );
+  }
+  addAuxTimeline(missionId) {
+    const timeline = new TimelineInstance({ missionId }, this.id);
+    this.timelines.push(timeline);
+    return timeline.id;
+  }
+  setAuxTimelineStep(timelineId, step) {
+    const timeline = this.timelines.find(t => t.id === timelineId);
+    timeline && timeline.setTimelineStep(step);
   }
   updateLighting(lighting) {
     this.lighting.update(lighting);
