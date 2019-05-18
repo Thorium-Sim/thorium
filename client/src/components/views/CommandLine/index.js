@@ -53,7 +53,7 @@ const SUB = gql`
 const CommandLineOutput = ({ output }) => {
   const outputRef = React.useRef();
   React.useEffect(() => {
-    if (outputRef.current) {
+    if (outputRef.current && output) {
       outputRef.current.scrollTop = outputRef.current.scrollHeight;
     }
   }, [output]);
