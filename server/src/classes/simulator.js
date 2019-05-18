@@ -4,6 +4,7 @@ import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 import DamageTask from "./generic/damageTask";
 import { Station } from "./stationSet";
+import { lowerCase, camelCase } from "change-case";
 class Ambiance {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -95,6 +96,18 @@ class Assets {
   }
 }
 
+class TimelineInstance {
+  constructor(params = {}) {
+    this.id = uuid.v4();
+    this.missionId = params.missionId || null;
+    this.currentTimelineStep = params.currentTimelineStep || 0;
+    this.executedTimelineSteps = params.executedTimelineSteps || [];
+  }
+  setTimelineStep(step) {
+    this.currentTimelineStep = step;
+  }
+}
+
 export default class Simulator {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -114,6 +127,11 @@ export default class Simulator {
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.executedTimelineSteps = params.executedTimelineSteps || [];
+    this.timelines = [];
+    params.timelines &&
+      params.timelines.forEach(t =>
+        this.timelines.push(new TimelineInstance(t, this.id))
+      );
     this.bridgeOfficerMessaging =
       params.bridgeOfficerMessaging === false ? false : true;
     this.teams = [];
@@ -157,6 +175,10 @@ export default class Simulator {
     params.damageTasks &&
       params.damageTasks.forEach(s => this.damageTasks.push(new DamageTask(s)));
 
+    // Command Lines
+    this.commandLineOutputs = {};
+    this.commandLineFeedback = {};
+
     // For Space EdVentures
     this.spaceEdventuresId = params.spaceEdventuresId || null;
   }
@@ -196,14 +218,27 @@ export default class Simulator {
   setLayout(layout) {
     this.layout = layout;
   }
-  setTimelineStep(step) {
-    this.currentTimelineStep = step;
+  setTimelineStep(step, timelineId) {
+    if (timelineId) {
+      this.setAuxTimelineStep(timelineId, step);
+    } else {
+      this.currentTimelineStep = step;
+    }
   }
   executeTimelineStep(stepId) {
     this.executedTimelineSteps.push(stepId);
     this.executedTimelineSteps = this.executedTimelineSteps.filter(
       (a, i, arr) => arr.indexOf(a) === i
     );
+  }
+  addAuxTimeline(missionId) {
+    const timeline = new TimelineInstance({ missionId }, this.id);
+    this.timelines.push(timeline);
+    return timeline.id;
+  }
+  setAuxTimelineStep(timelineId, step) {
+    const timeline = this.timelines.find(t => t.id === timelineId);
+    timeline && timeline.setTimelineStep(step);
   }
   updateLighting(lighting) {
     this.lighting.update(lighting);
@@ -315,6 +350,49 @@ export default class Simulator {
   }
   removeDamageTask(id) {
     this.damageTasks = this.damageTasks.filter(t => t.id !== id);
+  }
+  hideCard(cardName) {
+    const name = lowerCase(camelCase(cardName));
+    const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
+    cards.forEach(card => {
+      if (
+        lowerCase(camelCase(card.name)) === name ||
+        lowerCase(camelCase(card.component)) === name
+      ) {
+        card.hide();
+      }
+    });
+  }
+  unhideCard(cardName) {
+    const name = lowerCase(camelCase(cardName));
+    const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
+    cards.forEach(card => {
+      if (
+        lowerCase(camelCase(card.name)) === name ||
+        lowerCase(camelCase(card.component)) === name
+      ) {
+        card.unhide();
+      }
+    });
+  }
+  // Command Line
+  addCommandLineOutput(clientId, line) {
+    if (!this.commandLineOutputs[clientId])
+      this.commandLineOutputs[clientId] = [];
+    this.commandLineOutputs[clientId].push(line);
+  }
+  addCommandLineFeedback(clientId, feedback) {
+    if (!this.commandLineFeedback[clientId])
+      this.commandLineFeedback[clientId] = [];
+    this.commandLineFeedback[clientId].push(feedback);
+  }
+  removeCommandLineFeedback(clientId, id) {
+    this.commandLineFeedback[clientId] = this.commandLineFeedback[
+      clientId
+    ].filter(c => c.id !== id);
+  }
+  clearCommandLine(clientId) {
+    this.commandLineOutputs[clientId] = [];
   }
 
   setSpaceEdventuresId(id) {

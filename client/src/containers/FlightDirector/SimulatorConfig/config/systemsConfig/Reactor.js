@@ -42,7 +42,9 @@ const Reactor = props => {
             ? {
                 ...e,
                 [key]: isNaN(parseFloat(evt.target.value))
-                  ? evt.target.value
+                  ? !evt.target.value
+                    ? null
+                    : evt.target.value
                   : parseFloat(evt.target.value)
               }
             : e
@@ -51,10 +53,6 @@ const Reactor = props => {
     });
   };
   const removeEfficiency = (action, reactor, i) => () => {
-    console.log(
-      reactor.efficiencies,
-      reactor.efficiencies.filter((_, ind) => ind !== i)
-    );
     action({
       variables: {
         id: reactor.id,
@@ -197,7 +195,7 @@ const Reactor = props => {
                               <Input
                                 type="text"
                                 defaultValue={e.label}
-                                onChange={updateEfficiencies(
+                                onBlur={updateEfficiencies(
                                   action,
                                   reactor,
                                   i,
@@ -227,7 +225,7 @@ const Reactor = props => {
                               <Input
                                 type="number"
                                 defaultValue={e.efficiency}
-                                onChange={updateEfficiencies(
+                                onBlur={updateEfficiencies(
                                   action,
                                   reactor,
                                   i,

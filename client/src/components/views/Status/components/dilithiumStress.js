@@ -54,7 +54,7 @@ class DilithiumStress extends Component {
               variables: { simulatorId: this.props.simulator.id },
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {
-                  reators: subscriptionData.data.reactors
+                  reactors: subscriptionData.data.reactorUpdate
                 });
               }
             })

@@ -115,6 +115,7 @@ class Thrusters extends Component {
     this.rotationSubscription = null;
     this.thrusterSub = null;
     this.state = {
+      showThree: false,
       control: false,
       gamepad: null,
       lastTimeMsec: null,
@@ -150,6 +151,11 @@ class Thrusters extends Component {
         direction
       });
     }, 15);
+  }
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ showThree: true });
+    }, 200);
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
@@ -486,7 +492,7 @@ gamepadLoop(){
               >
                 {({ measureRef }) => (
                   <div ref={measureRef} style={{ height: "100%" }}>
-                    {this.state.dimensions && (
+                    {this.state.dimensions && this.state.showThree && (
                       <ThrusterThree
                         direction={direction}
                         simulator={this.props.simulator}

@@ -6,9 +6,29 @@
   }
   .center-all {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
+  }
+  .list-group-item {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    &:active,
+    &.active {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+    &.disabled {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #aaa;
+    }
+  }
+  input,
+  textarea {
+    min-width: 500px;
+  }
+  textarea {
+    min-height: 250px;
   }
 }

@@ -48,7 +48,7 @@ class TemplateData extends Component {
               const baseSpeed = next.speed / next.speeds.length;
               if (next.on === true)
                 return {
-                  velocity: i === 0 ? baseSpeed * 5 : baseSpeed * 100,
+                  velocity: i === 0 ? baseSpeed * 2.5 : baseSpeed * 40,
                   activating: next.previousSpeed === -1
                 };
               return prev;

@@ -22,6 +22,7 @@ const QUERY = gql`
     missions {
       id
       name
+      aux
     }
   }
 `;
@@ -75,6 +76,7 @@ export default class MissionPicker extends Component {
                         key={m.id}
                         tag={Link}
                         to={`/config/mission/${m.id}`}
+                        className={m.aux ? "text-warning" : ""}
                       >
                         {m.name}
                       </ListGroupItem>
@@ -133,7 +135,8 @@ export default class MissionPicker extends Component {
                           overflowY: "auto",
                           display: "flex",
                           justifyContent: "center",
-                          alignItems: "center"
+                          alignItems: "center",
+                          flexDirection: "column"
                         }}
                       >
                         {loading && (

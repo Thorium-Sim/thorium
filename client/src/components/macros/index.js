@@ -62,3 +62,5 @@ export {
   default as toggleInterfaceObjectPlaying
 } from "./toggleInterfaceObjectPlaying";
 export { default as triggerMacroAction } from "./triggerMacroAction";
+export { default as hideSimulatorCard } from "./hideSimulatorCard";
+export { default as unhideSimulatorCard } from "./unhideSimulatorCard";
