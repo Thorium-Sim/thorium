@@ -165,6 +165,11 @@ const resolver = {
       return mission.timeline;
     }
   },
+  TimelineInstance: {
+    mission(timeline) {
+      return App.missions.find(m => m.id === timeline.missionId);
+    }
+  },
   Query: {
     missions(root, { id, aux }) {
       if (id) return App.missions.filter(m => m.id === id);
@@ -172,6 +177,10 @@ const resolver = {
         return App.missions.filter(m => m.aux === aux);
       }
       return App.missions;
+    },
+    auxTimelines(root, { simulatorId }) {
+      const sim = App.simulators.find(s => s.id === simulatorId);
+      return sim && sim.timelines;
     }
   },
   Mutation: mutationHelper(schema),
@@ -190,6 +199,17 @@ const resolver = {
             return !!rootValue.find(m => m.id === missionId);
           }
           return true;
+        }
+      )
+    },
+    auxTimelinesUpdate: {
+      resolve: (rootValue, { missionId }) => {
+        return rootValue.timelines;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("auxTimelinesUpdate"),
+        (rootValue, { simulatorId }) => {
+          return rootValue.id === simulatorId;
         }
       )
     }

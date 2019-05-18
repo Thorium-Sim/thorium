@@ -43,14 +43,15 @@ App.on("removeSimulatorToMission", ({ missionId, simulatorId }) => {
 });
 
 // Aux Timelines
-App.on("startAuxTimeline", ({ simulatorId, missionId }) => {
+App.on("startAuxTimeline", ({ simulatorId, missionId, cb }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
-  simulator.addAuxTimeline(missionId);
-  pubsub.publish("auxTimelinesUpdate", simulator.timelines);
+  const timelineId = simulator.addAuxTimeline(missionId);
+  pubsub.publish("auxTimelinesUpdate", simulator);
+  cb && cb(timelineId);
 });
 
 App.on("setAuxTimelineStep", ({ simulatorId, timelineId, step }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.setAuxTimelineStep(timelineId, step);
-  pubsub.publish("auxTimelinesUpdate", simulator.timelines);
+  pubsub.publish("auxTimelinesUpdate", simulator);
 });

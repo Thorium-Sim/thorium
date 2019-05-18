@@ -48,47 +48,54 @@ const Objective = ({
   };
   return (
     <div className="objective">
-      <FormGroup check>
-        <Input type="checkbox" checked={completed} onClick={complete} />
-      </FormGroup>
-      <Button
-        disabled={completed}
-        size="sm"
-        color="warning"
-        onClick={() => complete(true, true)}
-      >
-        Cancel
-      </Button>
+      <div>
+        <div>
+          <label>
+            <input type="checkbox" checked={completed} onClick={complete} />{" "}
+            Complete
+          </label>
+        </div>
+        <Button
+          disabled={completed}
+          size="sm"
+          color="warning"
+          onClick={() => complete(true, true)}
+        >
+          Cancel
+        </Button>
+        <div>
+          <label>
+            <Mutation
+              mutation={gql`
+                mutation SetObjectiveCrewComplete(
+                  $id: ID!
+                  $crewComplete: Boolean!
+                ) {
+                  objectiveSetCrewComplete(id: $id, crewComplete: $crewComplete)
+                }
+              `}
+            >
+              {action => (
+                <input
+                  type="checkbox"
+                  checked={crewComplete}
+                  onChange={e =>
+                    action({
+                      variables: { id, crewComplete: e.target.checked }
+                    })
+                  }
+                />
+              )}
+            </Mutation>{" "}
+            Allow Crew Check Off
+          </label>
+        </div>
+      </div>
       <div style={{ flex: 1, marginLeft: "20px" }}>
         <strong style={{ textDecoration: cancelled ? "line-through" : "" }}>
           {title}
         </strong>
         <p>{description}</p>
-      </div>
-      <div>
-        <label>
-          <Mutation
-            mutation={gql`
-              mutation SetObjectiveCrewComplete(
-                $id: ID!
-                $crewComplete: Boolean!
-              ) {
-                objectiveSetCrewComplete(id: $id, crewComplete: $crewComplete)
-              }
-            `}
-          >
-            {action => (
-              <input
-                type="checkbox"
-                checked={crewComplete}
-                onChange={e =>
-                  action({ variables: { id, crewComplete: e.target.checked } })
-                }
-              />
-            )}
-          </Mutation>{" "}
-          Allow Crew Check Off
-        </label>
       </div>
     </div>
   );

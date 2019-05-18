@@ -129,7 +129,7 @@ export default class Simulator {
     this.timelines = [];
     params.timelines &&
       params.timelines.forEach(t =>
-        this.timelines.push(new TimelineInstance(t))
+        this.timelines.push(new TimelineInstance(t, this.id))
       );
     this.bridgeOfficerMessaging =
       params.bridgeOfficerMessaging === false ? false : true;
@@ -213,8 +213,12 @@ export default class Simulator {
   setLayout(layout) {
     this.layout = layout;
   }
-  setTimelineStep(step) {
-    this.currentTimelineStep = step;
+  setTimelineStep(step, timelineId) {
+    if (timelineId) {
+      this.setAuxTimelineStep(timelineId, step);
+    } else {
+      this.currentTimelineStep = step;
+    }
   }
   executeTimelineStep(stepId) {
     this.executedTimelineSteps.push(stepId);
@@ -223,7 +227,9 @@ export default class Simulator {
     );
   }
   addAuxTimeline(missionId) {
-    this.timelines.push(new TimelineInstance({ missionId }));
+    const timeline = new TimelineInstance({ missionId }, this.id);
+    this.timelines.push(timeline);
+    return timeline.id;
   }
   setAuxTimelineStep(timelineId, step) {
     const timeline = this.timelines.find(t => t.id === timelineId);
