@@ -18,6 +18,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import * as components from "./components";
 import MacroListMaker from "../macroListMaker";
+import debounce from "helpers/debounce";
 const compare = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 export default class CommandLineConfig extends Component {
   state = {};
@@ -150,44 +151,54 @@ export default class CommandLineConfig extends Component {
                 }
               `}
             >
-              {action => (
-                <MacroListMaker exceptions={["triggerAction"]}>
-                  {eventList => (
-                    <DiagramProvider
-                      registeredComponents={{ ...components, ...eventList }}
-                      {...commandLine}
-                      onUpdate={({
-                        components,
-                        connections,
-                        config,
-                        values
-                      }) => {
-                        const variables = { id: commandLine.id };
-                        if (!compare(components, commandLine.components))
-                          variables.components = components;
-                        if (!compare(connections, commandLine.connections))
-                          variables.connections = connections;
-                        if (!compare(config, commandLine.config))
-                          variables.config = config;
-                        if (!compare(values, commandLine.values))
-                          variables.values = values;
-                        action({ variables });
-                      }}
-                    >
-                      <Col sm={3} style={{ height: "100%" }}>
-                        <DiagramContext.Consumer>
-                          {({ selectedComponent, registeredComponents }) =>
-                            selectedComponent ? <Config /> : <Library />
-                          }
-                        </DiagramContext.Consumer>
-                      </Col>
-                      <Col sm={6} style={{ height: "100%" }}>
-                        <Canvas />
-                      </Col>
-                    </DiagramProvider>
-                  )}
-                </MacroListMaker>
-              )}
+              {mutate => {
+                const action = debounce(args => mutate(args), 1000);
+                return (
+                  <MacroListMaker
+                    exceptions={[
+                      "triggerAction",
+                      "removeLibraryEntry",
+                      "hideSimulatorCard",
+                      "unhideSimulatorCard"
+                    ]}
+                  >
+                    {eventList => (
+                      <DiagramProvider
+                        registeredComponents={{ ...components, ...eventList }}
+                        {...commandLine}
+                        onUpdate={({
+                          components,
+                          connections,
+                          config,
+                          values
+                        }) => {
+                          const variables = { id: commandLine.id };
+                          if (!compare(components, commandLine.components))
+                            variables.components = components;
+                          if (!compare(connections, commandLine.connections))
+                            variables.connections = connections;
+                          if (!compare(config, commandLine.config))
+                            variables.config = config;
+                          if (!compare(values, commandLine.values))
+                            variables.values = values;
+                          action({ variables });
+                        }}
+                      >
+                        <Col sm={3} style={{ height: "100%" }}>
+                          <DiagramContext.Consumer>
+                            {({ selectedComponent, registeredComponents }) =>
+                              selectedComponent ? <Config /> : <Library />
+                            }
+                          </DiagramContext.Consumer>
+                        </Col>
+                        <Col sm={6} style={{ height: "100%" }}>
+                          <Canvas />
+                        </Col>
+                      </DiagramProvider>
+                    )}
+                  </MacroListMaker>
+                );
+              }}
             </Mutation>
           )}
         </Row>

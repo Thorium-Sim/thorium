@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+const options = ["Stations", "Library Entry Slugs"];
 class Options extends React.Component {
   render() {
     const { value = "Stations", updateValue = () => {} } = this.props;
@@ -13,9 +14,11 @@ class Options extends React.Component {
           onMouseDown={e => e.stopPropagation()}
         >
           <option>Custom</option>
-          <option>Stations</option>
+          {options.map(o => (
+            <option key={o}>{o}</option>
+          ))}
         </select>
-        {value !== "Stations" && (
+        {!options.includes(value) && (
           <textarea
             onMouseDown={e => {
               e.stopPropagation();

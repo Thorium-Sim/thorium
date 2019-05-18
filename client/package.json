@@ -85,7 +85,6 @@
     "styled-components": "^4.1.3",
     "subscriptions-transport-ws": "^0.9.15",
     "svg-to-jsx": "^1.0.0",
-    "terminal-in-react": "^4.3.0",
     "three": "^0.101.1",
     "three-obj-loader": "^1.1.3",
     "tinycolor2": "^1.4.1",

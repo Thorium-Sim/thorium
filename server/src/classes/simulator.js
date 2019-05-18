@@ -4,6 +4,7 @@ import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 import DamageTask from "./generic/damageTask";
 import { Station } from "./stationSet";
+import { lowerCase, camelCase } from "change-case";
 class Ambiance {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -173,6 +174,10 @@ export default class Simulator {
     this.damageTasks = [];
     params.damageTasks &&
       params.damageTasks.forEach(s => this.damageTasks.push(new DamageTask(s)));
+
+    // Command Lines
+    this.commandLineOutputs = {};
+    this.commandLineFeedback = {};
 
     // For Space EdVentures
     this.spaceEdventuresId = params.spaceEdventuresId || null;
@@ -345,6 +350,49 @@ export default class Simulator {
   }
   removeDamageTask(id) {
     this.damageTasks = this.damageTasks.filter(t => t.id !== id);
+  }
+  hideCard(cardName) {
+    const name = lowerCase(camelCase(cardName));
+    const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
+    cards.forEach(card => {
+      if (
+        lowerCase(camelCase(card.name)) === name ||
+        lowerCase(camelCase(card.component)) === name
+      ) {
+        card.hide();
+      }
+    });
+  }
+  unhideCard(cardName) {
+    const name = lowerCase(camelCase(cardName));
+    const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
+    cards.forEach(card => {
+      if (
+        lowerCase(camelCase(card.name)) === name ||
+        lowerCase(camelCase(card.component)) === name
+      ) {
+        card.unhide();
+      }
+    });
+  }
+  // Command Line
+  addCommandLineOutput(clientId, line) {
+    if (!this.commandLineOutputs[clientId])
+      this.commandLineOutputs[clientId] = [];
+    this.commandLineOutputs[clientId].push(line);
+  }
+  addCommandLineFeedback(clientId, feedback) {
+    if (!this.commandLineFeedback[clientId])
+      this.commandLineFeedback[clientId] = [];
+    this.commandLineFeedback[clientId].push(feedback);
+  }
+  removeCommandLineFeedback(clientId, id) {
+    this.commandLineFeedback[clientId] = this.commandLineFeedback[
+      clientId
+    ].filter(c => c.id !== id);
+  }
+  clearCommandLine(clientId) {
+    this.commandLineOutputs[clientId] = [];
   }
 
   setSpaceEdventuresId(id) {

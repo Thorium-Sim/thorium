@@ -38,6 +38,7 @@ const fragments = {
         cards {
           name
           component
+          hidden
         }
       }
     }
