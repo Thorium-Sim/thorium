@@ -207,7 +207,8 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "npm run bump ${nextRelease.version} && npm run deploy"
+          "generateNotes": "npm run bump ${nextRelease.version}",
+          "prepareCmd": "npm run deploy"
         }
       ]
     ]

@@ -19,7 +19,7 @@ const ClientInfo = ({
   const [input, setInput] = React.useState("");
   const outputRef = React.useRef();
   React.useEffect(() => {
-    if (outputRef.current) {
+    if (outputRef.current && commandLineOutput) {
       outputRef.current.scrollTop = outputRef.current.scrollHeight;
     }
   }, [commandLineOutput]);
