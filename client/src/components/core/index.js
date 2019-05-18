@@ -19,6 +19,7 @@ const fragment = gql`
         name
         cards {
           name
+          hidden
         }
         messageGroups
       }

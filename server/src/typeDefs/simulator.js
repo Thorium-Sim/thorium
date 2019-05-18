@@ -83,6 +83,15 @@ const schema = gql`
     """
     changeSimulatorAlertLevel(simulatorId: ID!, alertLevel: String!): String
 
+    """
+    Macro: Station: Hide Card
+    """
+    hideSimulatorCard(simulatorId: ID!, cardName: String!, delay: Int): String
+    """
+    Macro: Station: Unhide Card
+    """
+    unhideSimulatorCard(simulatorId: ID!, cardName: String!): String
+
     changeSimulatorExocomps(simulatorId: ID!, exocomps: Int!): String
     changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String
     changeSimulatorRadiation(simulatorId: ID!, radiation: Float!): String

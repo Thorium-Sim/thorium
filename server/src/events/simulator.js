@@ -358,7 +358,7 @@ App.on("setSimulatorHasLegs", ({ simulatorId, hasLegs }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   sim.setHasLegs(hasLegs);
   pubsub.publish("simulatorsUpdate", App.simulators);
-})
+});
 
 App.on(
   "setSimulatorSpaceEdventuresId",
@@ -368,3 +368,20 @@ App.on(
     pubsub.publish("simulatorsUpdate", App.simulators);
   }
 );
+App.on("hideSimulatorCard", ({ simulatorId, cardName, delay }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.hideCard(cardName);
+  if (parseInt(delay, 10)) {
+    setTimeout(() => {
+      sim.unhideCard(cardName);
+      pubsub.publish("simulatorsUpdate", App.simulators);
+    }, delay);
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("unhideSimulatorCard", ({ simulatorId, cardName }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.unhideCard(cardName);
+
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
