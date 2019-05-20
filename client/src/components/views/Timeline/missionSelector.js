@@ -2,7 +2,7 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 
-const MissionSelector = ({ mission, simulatorId, missions }) => {
+const MissionSelector = ({ mission, simulatorId, missions, onChange }) => {
   return (
     <Mutation
       mutation={gql`
@@ -15,9 +15,11 @@ const MissionSelector = ({ mission, simulatorId, missions }) => {
         <select
           value={mission ? mission.id : "nothing"}
           onChange={e =>
-            action({
-              variables: { simulatorId, missionId: e.target.value }
-            })
+            onChange
+              ? onChange(e)
+              : action({
+                  variables: { simulatorId, missionId: e.target.value }
+                })
           }
         >
           <option disabled value="nothing">

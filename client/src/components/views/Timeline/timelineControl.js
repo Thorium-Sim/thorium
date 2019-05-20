@@ -11,6 +11,7 @@ class TimelineControl extends Component {
     const {
       actions,
       simulatorId,
+      auxTimelineId,
       timeline,
       currentTimelineStep,
       values,
@@ -44,19 +45,33 @@ class TimelineControl extends Component {
       updateTimelineStep({
         variables: {
           simulatorId,
+          auxTimelineId,
           step: currentTimelineStep + 1
         }
       });
   };
   render() {
-    const { simulatorId, timeline, currentTimelineStep } = this.props;
+    const {
+      simulatorId,
+      timeline,
+      currentTimelineStep,
+      auxTimelineId
+    } = this.props;
     const { modal } = this.state;
     const stepCheck = step => Math.max(0, Math.min(timeline.length - 1, step));
     return (
       <Mutation
         mutation={gql`
-          mutation UpdateTimelineStep($simulatorId: ID!, $step: Int!) {
-            setSimulatorTimelineStep(simulatorId: $simulatorId, step: $step)
+          mutation UpdateTimelineStep(
+            $simulatorId: ID!
+            $auxTimelineId: ID
+            $step: Int!
+          ) {
+            setSimulatorTimelineStep(
+              simulatorId: $simulatorId
+              timelineId: $auxTimelineId
+              step: $step
+            )
           }
         `}
       >
@@ -70,6 +85,7 @@ class TimelineControl extends Component {
                   updateTimelineStep({
                     variables: {
                       simulatorId,
+                      auxTimelineId,
                       step: stepCheck(currentTimelineStep - 1)
                     }
                   })
@@ -124,6 +140,7 @@ class TimelineControl extends Component {
                   updateTimelineStep({
                     variables: {
                       simulatorId,
+                      auxTimelineId,
                       step: stepCheck(currentTimelineStep + 1)
                     }
                   })
@@ -141,6 +158,7 @@ class TimelineControl extends Component {
                 updateTimelineStep({
                   variables: {
                     simulatorId,
+                    auxTimelineId,
                     step: parseInt(step, 10)
                   }
                 })

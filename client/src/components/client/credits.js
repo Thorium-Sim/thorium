@@ -74,7 +74,7 @@ const creditList = [
     content: "Inspired by the Empty Epsilon Bridge Simulator"
   },
   {
-    header: "Curve Frame Design",
+    header: "Clear Frame Design",
     content: "Emily Paxman 🕶"
   },
   {
@@ -128,6 +128,8 @@ const creditList = [
         <li>Nathan Young</li>
         <li>Jensen Caldwell</li>
         <li>Justin Hammond</li>
+        <li>Jordan Smith</li>
+        <li>Brylee Perry</li>
       </ul>
     )
   },

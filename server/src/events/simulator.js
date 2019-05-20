@@ -93,12 +93,15 @@ App.on("changeSimulatorRadiation", ({ simulatorId, radiation }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
-App.on("setSimulatorTimelineStep", ({ simulatorId, step }) => {
+App.on("setSimulatorTimelineStep", ({ simulatorId, timelineId, step }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
-    simulator.setTimelineStep(step);
+    simulator.setTimelineStep(step, timelineId);
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
+  if (timelineId) {
+    pubsub.publish("auxTimelinesUpdate", simulator);
+  }
 });
 App.on("addSimulatorDamageStep", ({ simulatorId, step }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
@@ -358,7 +361,7 @@ App.on("setSimulatorHasLegs", ({ simulatorId, hasLegs }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   sim.setHasLegs(hasLegs);
   pubsub.publish("simulatorsUpdate", App.simulators);
-})
+});
 
 App.on(
   "setSimulatorSpaceEdventuresId",
@@ -368,3 +371,20 @@ App.on(
     pubsub.publish("simulatorsUpdate", App.simulators);
   }
 );
+App.on("hideSimulatorCard", ({ simulatorId, cardName, delay }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.hideCard(cardName);
+  if (parseInt(delay, 10)) {
+    setTimeout(() => {
+      sim.unhideCard(cardName);
+      pubsub.publish("simulatorsUpdate", App.simulators);
+    }, delay);
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("unhideSimulatorCard", ({ simulatorId, cardName }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.unhideCard(cardName);
+
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

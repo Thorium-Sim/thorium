@@ -19,6 +19,7 @@ const fragment = gql`
         name
         cards {
           name
+          hidden
         }
         messageGroups
       }
@@ -47,6 +48,18 @@ const QUERY = gql`
       station {
         name
       }
+      commandLineOutput
+      commandLineFeedback {
+        id
+        clientId
+        command
+        approve
+        deny
+        triggers {
+          id
+          event
+        }
+      }
     }
   }
   ${fragment}
@@ -73,6 +86,18 @@ const CLIENT_SUB = gql`
       }
       station {
         name
+      }
+      commandLineOutput
+      commandLineFeedback {
+        id
+        clientId
+        command
+        approve
+        deny
+        triggers {
+          id
+          event
+        }
       }
     }
   }

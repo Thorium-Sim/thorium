@@ -2,27 +2,22 @@ import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import Timeline from "./timeline";
+import AuxTimeline from "./auxTimeline";
 import "./style.scss";
 
 const fragment = gql`
-  fragment TimelineData on Simulator {
+  fragment AuxTimelineData on TimelineInstance {
     id
     currentTimelineStep
     executedTimelineSteps
     mission {
       id
       name
-      description
       timeline {
         id
         name
-        order
-        description
         timelineItems {
           id
-          name
-          type
           args
           event
           delay
@@ -31,24 +26,21 @@ const fragment = gql`
     }
   }
 `;
-
-const QUERY = gql`
-  query Timeline($simulatorId: ID) {
-    missions(aux: false) {
-      id
-      name
-      description
-    }
-    simulators(id: $simulatorId) {
-      ...TimelineData
-    }
+const QUERY = gql`query AuxTimelines($simulatorId:ID!) {
+  missions(aux:true) {
+    id
+    name
+  }
+  auxTimelines(simulatorId:$simulatorId) {
+  ...AuxTimelineData
   }
   ${fragment}
-`;
+}`;
+
 const SUBSCRIPTION = gql`
   subscription TimelineUpdate($simulatorId: ID!) {
-    simulatorsUpdate(simulatorId: $simulatorId) {
-      ...TimelineData
+    auxTimelinesUpdate(simulatorId: $simulatorId) {
+      ...AuxTimelineData
     }
   }
   ${fragment}
@@ -60,9 +52,8 @@ class TimelineData extends Component {
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
-          const { simulators, missions } = data;
-          if (loading || !simulators) return null;
-          if (!simulators[0]) return <div>No Timeline</div>;
+          const { auxTimelines, missions } = data;
+          if (loading) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -71,15 +62,15 @@ class TimelineData extends Component {
                   variables: { simulatorId: this.props.simulator.id },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
-                      simulators: subscriptionData.data.simulatorsUpdate
+                      auxTimelines: subscriptionData.data.auxTimelinesUpdate
                     });
                   }
                 })
               }
             >
-              <Timeline
+              <AuxTimeline
                 {...this.props}
-                {...simulators[0]}
+                auxTimelines={auxTimelines}
                 missions={missions}
               />
             </SubscriptionHelper>

@@ -34,7 +34,7 @@ const schema = gql`
     addTriggerToSimulator(simulatorId: ID!, trigger: ID!): String
 
     """
-    Macro: Triggers: Remove trigger to simulator
+    Macro: Triggers: Remove trigger from simulator
     """
     removeTriggerFromSimulator(simulatorId: ID!, trigger: ID!): String
   }

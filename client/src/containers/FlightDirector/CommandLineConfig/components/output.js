@@ -16,7 +16,8 @@ class Output extends React.Component {
         />
         <small>This is the value that will be written.</small>
         <small>
-          Use <code>#ARG</code> for the command's argument.
+          Use <code>#ARG1</code> and <code>#ARG1</code> for the command's
+          arguments.
         </small>
       </div>
     );

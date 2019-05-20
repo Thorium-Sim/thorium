@@ -3,7 +3,7 @@ import { FormGroup, Label, Input } from "reactstrap";
 import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 
-export default ({ updateArgs, args, client }) => {
+export default React.memo(({ updateArgs, args, client }) => {
   return (
     <Query
       query={gql`
@@ -19,7 +19,7 @@ export default ({ updateArgs, args, client }) => {
       `}
     >
       {({ loading, data: { commandLine } }) =>
-        loading ? null : (
+        commandLine ? (
           <FormGroup className="macro-addCommandLine">
             <Label>Command Line</Label>
             <Input
@@ -37,8 +37,8 @@ export default ({ updateArgs, args, client }) => {
               ))}
             </Input>
           </FormGroup>
-        )
+        ) : null
       }
     </Query>
   );
-};
+});

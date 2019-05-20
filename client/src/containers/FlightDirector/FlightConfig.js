@@ -435,7 +435,7 @@ const FLIGHT_QUERY = gql`
         }
       }
     }
-    missions {
+    missions(aux: false) {
       id
       name
       description
