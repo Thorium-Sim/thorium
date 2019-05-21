@@ -206,7 +206,10 @@ class ThxRender extends Component {
     return (
       <Container className="card-thx">
         <Row>
-          <Col sm={{ size: 8, offset: executive ? 2 : 0 }}>
+          <Col
+            sm={{ size: 8, offset: executive ? 2 : 0 }}
+            className="noPointerEvents"
+          >
             <ShipImage
               view={assets.top}
               simulatorId={simulatorId}
