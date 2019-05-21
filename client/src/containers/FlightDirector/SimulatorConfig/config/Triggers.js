@@ -1,9 +1,20 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import { graphql, Mutation } from "react-apollo";
+import { Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
+import { useQuery } from "@apollo/react-hooks";
 
-const App = ({ data: { loading, triggers }, selectedSimulator, client }) => {
+const QUERY = gql`
+  query Triggers {
+    triggers {
+      id
+      name
+    }
+  }
+`;
+
+const App = ({ selectedSimulator, client }) => {
+  const { loading, data } = useQuery(QUERY);
   const updateTriggers = (e, action) => {
     const variables = {
       simulatorId: selectedSimulator.id,
@@ -22,7 +33,8 @@ const App = ({ data: { loading, triggers }, selectedSimulator, client }) => {
       variables
     });
   };
-  if (loading || !triggers) return null;
+  if (loading || !data) return null;
+  const { triggers } = data;
   return (
     <Mutation
       mutation={gql`
@@ -77,13 +89,4 @@ const App = ({ data: { loading, triggers }, selectedSimulator, client }) => {
   );
 };
 
-const QUERY = gql`
-  query Triggers {
-    triggers {
-      id
-      name
-    }
-  }
-`;
-
-export default graphql(QUERY)(App);
+export default App;

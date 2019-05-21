@@ -1,68 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag.macro";
-import { withApollo, graphql } from "react-apollo";
+import { withApollo } from "react-apollo";
 import StationSetPicker from "./StationSetPicker";
 import StationPicker from "./StationPicker";
 import ConfigStation from "./StationConfig";
-
-class StationConfig extends Component {
-  state = {};
-  render() {
-    const { selectedSimulator, data, client } = this.props;
-    const { selectedStationSet, selectedStation } = this.state;
-    const { stationSets } = selectedSimulator;
-
-    return (
-      <Container fluid>
-        <Row>
-          <Col sm={3}>
-            <StationSetPicker
-              sim={selectedSimulator}
-              client={client}
-              selectedStationSet={selectedStationSet}
-              setStationSet={set =>
-                this.setState({
-                  selectedStationSet: set,
-                  selectedStation: null
-                })
-              }
-            />
-          </Col>
-          <Col sm={3}>
-            {selectedStationSet && (
-              <StationPicker
-                client={client}
-                stationSet={stationSets.find(s => s.id === selectedStationSet)}
-                selectedStation={selectedStation}
-                selectStation={station =>
-                  this.setState({ selectedStation: station })
-                }
-              />
-            )}
-          </Col>
-          <Col sm={6}>
-            {selectedStation && (
-              <ConfigStation
-                data={data}
-                client={client}
-                simulator={selectedSimulator}
-                selectedStationSet={selectedStationSet}
-                station={
-                  stationSets.find(s => s.id === selectedStationSet) &&
-                  stationSets
-                    .find(s => s.id === selectedStationSet)
-                    .stations.find(s => s.name === selectedStation)
-                }
-              />
-            )}
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
-
+import { useQuery } from "@apollo/react-hooks";
 const QUERY = gql`
   query Panels {
     softwarePanels {
@@ -76,4 +19,55 @@ const QUERY = gql`
   }
 `;
 
-export default withApollo(graphql(QUERY)(StationConfig));
+const StationConfig = ({ selectedSimulator, client }) => {
+  const { data } = useQuery(QUERY);
+  const [selectedStationSet, setSelectedStationSet] = React.useState(null);
+  const [selectedStation, setSelectedStation] = React.useState(null);
+  const { stationSets } = selectedSimulator;
+
+  return (
+    <Container fluid>
+      <Row>
+        <Col sm={3}>
+          <StationSetPicker
+            sim={selectedSimulator}
+            client={client}
+            selectedStationSet={selectedStationSet}
+            setStationSet={set => {
+              setSelectedStation(null);
+              setSelectedStationSet(set);
+            }}
+          />
+        </Col>
+        <Col sm={3}>
+          {selectedStationSet && (
+            <StationPicker
+              client={client}
+              stationSet={stationSets.find(s => s.id === selectedStationSet)}
+              selectedStation={selectedStation}
+              selectStation={station => setSelectedStation(station)}
+            />
+          )}
+        </Col>
+        <Col sm={6}>
+          {selectedStation && (
+            <ConfigStation
+              data={data}
+              client={client}
+              simulator={selectedSimulator}
+              selectedStationSet={selectedStationSet}
+              station={
+                stationSets.find(s => s.id === selectedStationSet) &&
+                stationSets
+                  .find(s => s.id === selectedStationSet)
+                  .stations.find(s => s.name === selectedStation)
+              }
+            />
+          )}
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+
+export default withApollo(StationConfig);
