@@ -24,6 +24,7 @@ export const notifyComponents = [
   "External Sensors",
   "Handheld Scanner",
   "Interception",
+  "Internal Comm",
   "Internal Sensors",
   "Jump Drive",
   "Keypad",
