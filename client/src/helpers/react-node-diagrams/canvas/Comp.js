@@ -14,12 +14,22 @@ export default class Comp extends Component {
     scale: PropTypes.number,
     view: PropTypes.object
   };
+  getRenderComp() {
+    const { component, registeredComponents } = this.props;
+
+    let RenderComp = registeredComponents.find(
+      c => c.objectKey === component.name
+    );
+    if (!RenderComp)
+      RenderComp = registeredComponents.find(c => c.name === component.name);
+    return RenderComp;
+  }
   constructor(props) {
     super(props);
-    const { id, component, registeredComponents } = this.props;
-    const RenderComp = registeredComponents.find(
-      c => c.objectKey === component.name || c.name === component.name
-    );
+    const { id } = this.props;
+    const RenderComp = this.getRenderComp();
+    this.allRefs = {};
+    if (!RenderComp) return;
     this.allRefs = {
       ...RenderComp.inputs.reduce(
         (prev, next) => ({
@@ -139,15 +149,12 @@ export default class Comp extends Component {
       // config = {},
       selected,
       position: { x, y },
-      component,
       updateValue = () => {},
-      registeredComponents,
       snapping
     } = this.props;
-    const RenderComp = registeredComponents.find(
-      c => c.objectKey === component.name || c.name === component.name
-    );
+    const RenderComp = this.getRenderComp();
 
+    if (!RenderComp) return null;
     return (
       <div
         className={`${RenderComp.locked ? "component-locked" : ""} ${
