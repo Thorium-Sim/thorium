@@ -34,6 +34,7 @@ export { default as ShipModel } from "./ShipModel";
 export { default as Timer } from "./Timer";
 export { default as Thrusters } from "../views/Thrusters/viewscreen";
 export { default as LowPower } from "./LowPower";
+export { default as Picture } from "./Picture";
 
 export { default as InformationConfig } from "./Information/config";
 export { default as InternalSensorsConfig } from "./InternalSensors/config";
@@ -46,3 +47,4 @@ export { default as TacticalMapConfig } from "./TacticalMap/config";
 export { default as FacesConfig } from "./Faces/config";
 export { default as ShipModelConfig } from "./ShipModel/config";
 export { default as TimerConfig } from "./Timer/config";
+export { default as PictureConfig } from "./Picture/config";
