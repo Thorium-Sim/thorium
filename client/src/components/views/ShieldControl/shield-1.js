@@ -8,6 +8,13 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
   const s = shields[0];
   const color = shieldColor(s);
   const { assets } = simulator;
+  const [disabled, setDisabled] = React.useState();
+  React.useEffect(() => {
+    if (disabled) {
+      const timeout = setTimeout(() => setDisabled(false), 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [disabled]);
   return (
     <Container className="shields">
       <DamageOverlay system={s} message={`${s.name} Shields Offline`} />
@@ -32,8 +39,16 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
               <h1 className="arrow">
                 <FontAwesome
                   name="arrow-down"
-                  onMouseDown={startLoop.bind(this, "down", s)}
-                  onTouchStart={startLoop.bind(this, "down", s)}
+                  onMouseDown={() => {
+                    if (disabled) return;
+                    startLoop("down", s);
+                    setDisabled(true);
+                  }}
+                  onTouchStart={() => {
+                    if (disabled) return;
+                    startLoop("down", s);
+                    setDisabled(true);
+                  }}
                 />
               </h1>
             </Col>
@@ -46,8 +61,16 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
               <h1 className="arrow">
                 <FontAwesome
                   name="arrow-up"
-                  onMouseDown={startLoop.bind(this, "up", s)}
-                  onTouchStart={startLoop.bind(this, "up", s)}
+                  onMouseDown={() => {
+                    if (disabled) return;
+                    startLoop("up", s);
+                    setDisabled(true);
+                  }}
+                  onTouchStart={() => {
+                    if (disabled) return;
+                    startLoop("up", s);
+                    setDisabled(true);
+                  }}
                 />
               </h1>
             </Col>
