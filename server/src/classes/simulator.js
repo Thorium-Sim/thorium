@@ -150,6 +150,9 @@ export default class Simulator {
     this.ambiance = [];
     if (params.ambiance)
       params.ambiance.forEach(a => this.ambiance.push(new Ambiance(a)));
+
+    this.crackedClients = params.crackedClients || {};
+
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
@@ -393,6 +396,13 @@ export default class Simulator {
   }
   clearCommandLine(clientId) {
     this.commandLineOutputs[clientId] = [];
+  }
+
+  crackClient(clientId) {
+    this.crackedClients[clientId] = true;
+  }
+  uncrackClient(clientId) {
+    this.crackedClients[clientId] = false;
   }
 
   setSpaceEdventuresId(id) {

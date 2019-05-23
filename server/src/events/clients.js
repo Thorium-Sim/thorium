@@ -327,7 +327,10 @@ App.on("setClientOverlay", ({ id, overlay }) => {
 
 App.on("clientCrack", ({ id, crack }) => {
   const c = App.clients.find(c => c.id === id);
-  c && (crack ? c.crack() : c.uncrack());
+  if (!c) return;
+  const simulator = App.simulators.find(s => s.id === c.simulatorId);
+  if (!simulator) return;
+  crack ? simulator.crackClient(c.id) : simulator.uncrackClient(c.id);
   pubsub.publish("clientChanged", App.clients);
 });
 App.on("setKeypadCode", ({ id, code }) => {
