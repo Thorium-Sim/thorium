@@ -153,14 +153,14 @@ class Events extends EventEmitter {
       if (client) {
         flightId = client.flightId;
       }
-      const event = {
-        event: eventName,
-        params: param,
-        clientId: clientId,
-        flightId: flightId,
-        timestamp: new Date()
-      };
-      this.events.push(event);
+      // const event = {
+      //   event: eventName,
+      //   params: param,
+      //   clientId: clientId,
+      //   flightId: flightId,
+      //   timestamp: new Date()
+      // };
+      // this.events.push(event);
     }
     // Handle any triggers before the event so we can capture data that
     // the event might remove

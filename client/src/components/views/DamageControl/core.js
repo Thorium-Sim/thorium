@@ -326,12 +326,13 @@ class DamageControlCore extends Component {
                   <td>
                     <OutputField
                       alert={
+                        reactor &&
                         Math.round(reactor.powerOutput * reactor.efficiency) <
-                        this.props.data.systems.reduce(
-                          (prev, next) =>
-                            next.power ? prev + next.power.power : prev,
-                          0
-                        )
+                          this.props.data.systems.reduce(
+                            (prev, next) =>
+                              next.power ? prev + next.power.power : prev,
+                            0
+                          )
                       }
                     >
                       {this.props.data.systems.reduce(

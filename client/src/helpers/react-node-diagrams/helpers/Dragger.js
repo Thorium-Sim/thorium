@@ -51,16 +51,21 @@ export default class Dragger extends Component {
       component: { name: component }
     });
   };
+  getRenderComp() {
+    const { component, registeredComponents } = this.props;
+
+    let RenderComp = registeredComponents.find(c => c.objectKey === component);
+    if (!RenderComp)
+      RenderComp = registeredComponents.find(c => c.name === component);
+    return RenderComp;
+  }
   render() {
     const {
       view: { scale = 1 },
-      registeredComponents,
-      component
+      registeredComponents
     } = this.props;
     const { position } = this.state;
-    const Comp = registeredComponents.find(
-      c => c.objectKey === component || c.name === component
-    );
+    const Comp = this.getRenderComp();
     return ReactDOM.createPortal(
       <div
         className={`${styles.comp} ${styles["dragging-comp"]}`}

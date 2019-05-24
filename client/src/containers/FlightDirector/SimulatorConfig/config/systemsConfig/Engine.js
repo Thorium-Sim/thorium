@@ -129,7 +129,7 @@ const Speed = ({ index, speed, speeds, action, id }) => {
           Optimal Speed <small>(for Stealth)</small>
           <Input
             type="checkbox"
-            style={{ marginLeft: "20px" }}
+            style={{ marginLeft: "20px", position: "relative" }}
             checked={speed.optimal}
             onChange={evt => {
               const newSpeeds = speeds.map(

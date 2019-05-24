@@ -100,7 +100,7 @@ export default class Client {
     this.overlay = params.overlay || false;
     this.soundPlayer = params.soundPlayer || false;
     this.caches = params.caches || [];
-    this.cracked = params.cracked || false;
+
     // For the mobile app
     this.mobile = params.mobile || false;
     this.cards = params.cards || [];
@@ -204,12 +204,7 @@ export default class Client {
       this.setSoundPlayer(false);
     }
   }
-  crack() {
-    this.cracked = true;
-  }
-  uncrack() {
-    this.cracked = false;
-  }
+
   diagnostic() {}
   lockScreen() {}
   unlockScreen() {}

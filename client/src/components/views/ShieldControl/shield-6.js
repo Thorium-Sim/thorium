@@ -5,6 +5,13 @@ import shieldStyle from "./shieldStyle";
 import DamageOverlay from "../helpers/DamageOverlay";
 
 const ShieldData = ({ s, startLoop, state, _toggleShields }) => {
+  const [disabled, setDisabled] = React.useState();
+  React.useEffect(() => {
+    if (disabled) {
+      const timeout = setTimeout(() => setDisabled(false), 500);
+      return () => clearTimeout(timeout);
+    }
+  }, [disabled]);
   return (
     <Col sm="6" key={s.id} className="shieldControlBox">
       <DamageOverlay
@@ -22,8 +29,17 @@ const ShieldData = ({ s, startLoop, state, _toggleShields }) => {
           <h4 className="arrow">
             <FontAwesome
               name="arrow-down"
-              onMouseDown={startLoop.bind(this, "down", s)}
-              onTouchStart={startLoop.bind(this, "down", s)}
+              disabled={disabled}
+              onMouseDown={() => {
+                if (disabled) return;
+                startLoop("down", s);
+                setDisabled(true);
+              }}
+              onTouchStart={() => {
+                if (disabled) return;
+                startLoop("down", s);
+                setDisabled(true);
+              }}
             />
           </h4>
         </Col>
@@ -36,8 +52,17 @@ const ShieldData = ({ s, startLoop, state, _toggleShields }) => {
           <h4 className="arrow">
             <FontAwesome
               name="arrow-up"
-              onMouseDown={startLoop.bind(this, "up", s)}
-              onTouchStart={startLoop.bind(this, "up", s)}
+              disabled={disabled}
+              onMouseDown={() => {
+                if (disabled) return;
+                startLoop("up", s);
+                setDisabled(true);
+              }}
+              onTouchStart={() => {
+                if (disabled) return;
+                startLoop("up", s);
+                setDisabled(true);
+              }}
             />
           </h4>
         </Col>

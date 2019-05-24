@@ -1,7 +1,8 @@
 import React from "react";
 
 export default {
-  name: "sendLongRangeMessageEvent",
+  name: "sendLongRangeMessage",
+  objectKey: "sendLongRangeMessage",
   category: "Triggers",
   component: () => (
     <div>

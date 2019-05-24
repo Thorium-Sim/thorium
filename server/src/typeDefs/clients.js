@@ -257,7 +257,9 @@ const resolver = {
       return Boolean(client.overlay);
     },
     cracked(client) {
-      return Boolean(client.cracked);
+      const simulator = App.simulators.find(s => s.id === client.simulatorId);
+      if (!simulator) return false;
+      return simulator.crackedClients[client.id];
     },
     mobile(client) {
       return Boolean(client.mobile);

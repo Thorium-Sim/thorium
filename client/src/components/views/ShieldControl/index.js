@@ -154,7 +154,7 @@ class ShieldControl extends Component {
       frequencySpeed
     });
   }
-  startLoop(which, shields) {
+  startLoop = (which, shields) => {
     const frequency = this.state.frequency;
     frequency[shields.id] = shields.frequency;
     this.setState(
@@ -166,8 +166,8 @@ class ShieldControl extends Component {
     );
     document.addEventListener("mouseup", this.stopLoop.bind(this, shields));
     document.addEventListener("touchend", this.stopLoop.bind(this, shields));
-  }
-  stopLoop(shields) {
+  };
+  stopLoop = shields => {
     clearTimeout(this.freqLoop);
     // Update the server with the shield frequency
     const mutation = gql`
@@ -184,7 +184,7 @@ class ShieldControl extends Component {
       variables
     });
     this.freqLoop = null;
-  }
+  };
   render() {
     //Define the color
     if (this.props.data.loading || !this.props.data.shields) return null;
