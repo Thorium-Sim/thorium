@@ -1,3 +1,12 @@
+## [1.4.2](https://github.com/Thorium-Sim/thorium/compare/1.4.1...1.4.2) (2019-05-22)
+
+
+### Bug Fixes
+
+* **Ambiance:** Cancelling looping sounds doesn't stop ambiance anymore. Closes [#2208](https://github.com/Thorium-Sim/thorium/issues/2208) ([dd3aea5](https://github.com/Thorium-Sim/thorium/commit/dd3aea5))
+* **Probe Control:** The missing probe query response box is now back. ([2923550](https://github.com/Thorium-Sim/thorium/commit/2923550))
+* **THX:** Makes it so certain ship images don't overlay on top of the THX activate button. Fixes [#2209](https://github.com/Thorium-Sim/thorium/issues/2209). ([f3b1be7](https://github.com/Thorium-Sim/thorium/commit/f3b1be7))
+
 ## [1.4.1](https://github.com/Thorium-Sim/thorium/compare/1.4.0...1.4.1) (2019-05-18)
 
 
