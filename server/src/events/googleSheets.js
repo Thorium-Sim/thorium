@@ -85,11 +85,7 @@ App.on("googleSheetsFileSearch", async ({ searchText, cb }) => {
 
 App.on(
   "googleSheetsAppendData",
-  async ({
-    spreadsheetId = "155poKeKfLeSbuYY4CpFPOccFOw41Z_J-a9YqFDU7bWI",
-    sheetId = "Sheet1",
-    data
-  }) => {
+  async ({ spreadsheetId, sheetId, headers, row }) => {
     const auth = getOAuthClient();
     const sheets = google.sheets({ version: "v4", auth });
     const range = await sheets.spreadsheets.values
@@ -99,15 +95,12 @@ App.on(
       })
       .catch(err => console.error(err));
 
-    const dataHeaders = Object.keys(data);
-    const row = Object.values(data);
-
-    if (!range.data.values) {
+    if (!range.data.values && headers) {
       // There's nothing in the first line, which is enough
       // to tell us that the spreadsheet is empty.
       // Just add the header row and the next row
 
-      const values = [dataHeaders, row];
+      const values = [headers, row];
       const resource = { values };
       return sheets.spreadsheets.values
         .append({

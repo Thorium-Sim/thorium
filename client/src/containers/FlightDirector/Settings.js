@@ -174,7 +174,7 @@ const Settings = () => (
                           >
                             {complete => (
                               <Input
-                                onBlur={e =>
+                                onChange={e =>
                                   complete({
                                     variables: { token: e.target.value }
                                   })
