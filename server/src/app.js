@@ -70,6 +70,7 @@ class Events extends EventEmitter {
     this.askedToTrack = false;
     this.addedTaskTemplates = false;
     this.spaceEdventuresToken = null;
+    this.googleSheetsTokens = {};
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -103,7 +104,8 @@ class Events extends EventEmitter {
         key === "doTrack" ||
         key === "askedToTrack" ||
         key === "addedTaskTemplates" ||
-        key === "spaceEdventuresToken"
+        key === "spaceEdventuresToken" ||
+        key === "googleSheetsTokens"
       ) {
         this[key] = snapshot[key];
       }

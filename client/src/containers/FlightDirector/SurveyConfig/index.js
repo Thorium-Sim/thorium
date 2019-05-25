@@ -8,10 +8,16 @@ import {
   Button
 } from "reactstrap";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
+import { Query, graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Form from "./form";
 import "./style.scss";
+import Search, { SheetPicker } from "./sheets";
+const GoogleSheetsQuery = gql`
+  query HasToken {
+    googleSheets
+  }
+`;
 
 const SUB = gql`
   subscription SurveyFormsUpdate {
@@ -32,6 +38,9 @@ const SUB = gql`
       }
       title
       simulatorId
+      googleSpreadsheet
+      googleSpreadsheetName
+      googleSheet
     }
   }
 `;
@@ -115,12 +124,38 @@ class Surveys extends Component {
       variables
     });
   };
+  handleSpreadsheetPick = ({ id, name, sheet }) => {
+    this.props.client.mutate({
+      mutation: gql`
+        mutation SetSpreadsheet(
+          $id: ID!
+          $spreadsheetId: ID
+          $spreadsheetName: String
+          $sheetId: ID
+        ) {
+          setSurveyFormGoogleSheet(
+            id: $id
+            spreadsheetId: $spreadsheetId
+            spreadsheetName: $spreadsheetName
+            sheetId: $sheetId
+          )
+        }
+      `,
+      variables: {
+        id: this.state.selectedForm,
+        spreadsheetId: id,
+        spreadsheetName: name,
+        sheetId: sheet
+      }
+    });
+  };
   render() {
     const {
       data: { loading, surveyform }
     } = this.props;
     const { selectedForm } = this.state;
     if (loading || !surveyform) return null;
+    const form = surveyform.find(f => f.id === selectedForm);
     return (
       <Container fluid className="survey-forms">
         <SubscriptionHelper
@@ -168,17 +203,42 @@ class Surveys extends Component {
               </Button>
             )}
           </Col>
-          <Col sm={9}>
-            {selectedForm && (
-              <Form
-                saveForm={this.saveForm}
-                form={
-                  surveyform.find(f => f.id === selectedForm) &&
-                  surveyform.find(f => f.id === selectedForm).form
-                }
-              />
-            )}
-          </Col>
+          {form && (
+            <>
+              <Col sm={3}>
+                <Query query={GoogleSheetsQuery}>
+                  {({ loading, data: { googleSheets } }) =>
+                    googleSheets ? (
+                      <div>
+                        <h3>Google Sheets Connection</h3>
+                        <Search
+                          defaultValue={form.googleSpreadsheetName}
+                          select={this.handleSpreadsheetPick}
+                        />
+                        {form.googleSpreadsheetName && (
+                          <SheetPicker
+                            id={form.googleSpreadsheet}
+                            name={form.googleSpreadsheetName}
+                            sheet={form.googleSheet}
+                            select={this.handleSpreadsheetPick}
+                          />
+                        )}
+                        <p>
+                          <small>
+                            This will transmit form responses to this Google
+                            Sheet when the form is submitted.
+                          </small>
+                        </p>
+                      </div>
+                    ) : null
+                  }
+                </Query>
+              </Col>
+              <Col sm={6}>
+                <Form saveForm={this.saveForm} form={form.form} />
+              </Col>
+            </>
+          )}
         </Row>
       </Container>
     );
@@ -204,6 +264,9 @@ const QUERY = gql`
       }
       title
       simulatorId
+      googleSpreadsheet
+      googleSpreadsheetName
+      googleSheet
     }
   }
 `;

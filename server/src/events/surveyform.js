@@ -46,4 +46,12 @@ App.on("surveyFormResponse", ({ id, response }) => {
   pubsub.publish("surveyformUpdate", App.surveyForms);
 });
 
+App.on(
+  "setSurveyFormGoogleSheet",
+  ({ id, spreadsheetId, spreadsheetName, sheetId }) => {
+    const form = App.surveyForms.find(s => s.id === id);
+    form && form.updateGoogleSheets(spreadsheetId, spreadsheetName, sheetId);
+    pubsub.publish("surveyformUpdate", App.surveyForms);
+  }
+);
 App.on("endSurvey", ({ id }) => {});

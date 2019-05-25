@@ -13632,6 +13632,7 @@ export default {
   askedToTrack: false,
   addedTaskTemplates: false,
   spaceEdventuresToken: "",
+  googleSheetsTokens: {},
   migrations: {
     assets: true
   },

@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -23,9 +23,10 @@
     "test": "npm-run-all --parallel test-client test-server",
     "test-server": "npm t --prefix server",
     "test-client": "npm t --prefix client",
-    "build": "NODE_ENV=production npm-run-all build-js build-server mk-build copy-files pkg",
+    "build": "NODE_ENV=production npm-run-all build-js build-server mk-build copy-files build-env pkg",
     "build-js": "npm run build --prefix client",
     "build-server": "npm run build --prefix server",
+    "build-env": "node ./scripts/build-env.js",
     "mk-build": "mkdir -p build",
     "copy-files": "npm-run-all  copy-server copy-client copy-package",
     "copy-server": "cp -R ./server/build/. build",
@@ -56,6 +57,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "express-status-monitor": "^1.2.3",
+    "googleapis": "^40.0.0",
     "graphql": "^14.1.1",
     "graphql-server-express": "^1.4.0",
     "graphql-subscriptions": "^1.0.0",
@@ -142,12 +144,15 @@
       "viewscreen/**/*",
       "helpers/mutationHelper.js",
       "sciences.ogg",
-      "favicon.ico"
+      "favicon.ico",
+      ".env"
     ]
   },
   "eslintConfig": {
     "extends": "react-app",
-    "plugins": ["react-hooks"],
+    "plugins": [
+      "react-hooks"
+    ],
     "rules": {
       "jsx-a11y/href-no-hash": "off",
       "react-hooks/rules-of-hooks": "error"
