@@ -25,6 +25,8 @@ import exportTrigger from "../imports/triggers/export";
 import importTrigger from "../imports/triggers/import";
 import exportSurvey from "../imports/surveys/export";
 import importSurvey from "../imports/surveys/import";
+import exportCoreLayout from "../imports/coreLayout/export";
+import importCoreLayout from "../imports/coreLayout/import";
 
 const exports = {
   exportMission: exportMission,
@@ -35,7 +37,8 @@ const exports = {
   exportSoftwarePanel: exportSoftwarePanel,
   exportFlight,
   exportTrigger,
-  exportSurvey
+  exportSurvey,
+  exportCoreLayout
 };
 
 const imports = {
@@ -47,7 +50,8 @@ const imports = {
   importSoftwarePanel: importSoftwarePanel,
   importFlight,
   importTrigger,
-  importSurvey
+  importSurvey,
+  importCoreLayout
 };
 export default () => {
   let appDir = "./";
