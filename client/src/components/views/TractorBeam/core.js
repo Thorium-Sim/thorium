@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Container } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
