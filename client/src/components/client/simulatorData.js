@@ -91,13 +91,11 @@ class SimulatorData extends Component {
                 })
               }
             >
-              {console.log(station.cards) || (
-                <Client
-                  {...this.props}
-                  simulator={simulators[0]}
-                  station={station || this.props.station}
-                />
-              )}
+              <Client
+                {...this.props}
+                simulator={simulators[0]}
+                station={station || this.props.station}
+              />
             </SubscriptionHelper>
           );
         }}
