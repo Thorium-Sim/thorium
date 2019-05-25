@@ -1,3 +1,32 @@
+# [1.5.0](https://github.com/Thorium-Sim/thorium/compare/1.4.2...1.5.0) (2019-05-24)
+
+
+### Bug Fixes
+
+* **Client:** Cracks no longer persist between flights. Closes [#2204](https://github.com/Thorium-Sim/thorium/issues/2204) ([34ed08b](https://github.com/Thorium-Sim/thorium/commit/34ed08b))
+* **Decoding:** Fixes the decoding output field not scrolling. Closes [#2183](https://github.com/Thorium-Sim/thorium/issues/2183) ([71e7a4a](https://github.com/Thorium-Sim/thorium/commit/71e7a4a))
+* **Layout:** Fixes a layout issue with the checkboxes for setting optimal speed. Closes [#2206](https://github.com/Thorium-Sim/thorium/issues/2206) ([b61aa11](https://github.com/Thorium-Sim/thorium/commit/b61aa11))
+* **Messaging:** Fixes scrolling on the old messaging core. Closes [#2177](https://github.com/Thorium-Sim/thorium/issues/2177) ([f2b3607](https://github.com/Thorium-Sim/thorium/commit/f2b3607))
+* **Notifications:** Adds a proper notification type for Internal Comm. Closes [#2193](https://github.com/Thorium-Sim/thorium/issues/2193) ([812e9ad](https://github.com/Thorium-Sim/thorium/commit/812e9ad))
+* **Shields:** Adds a limit to how often you can change the shield frequencies. Closes [#2172](https://github.com/Thorium-Sim/thorium/issues/2172) ([1be401f](https://github.com/Thorium-Sim/thorium/commit/1be401f))
+* **Systems:** Fixes an issue where not having a proper reactor breaks the systems core. Closes [#2194](https://github.com/Thorium-Sim/thorium/issues/2194) ([a4f47a4](https://github.com/Thorium-Sim/thorium/commit/a4f47a4))
+* **Timeline:** Fix scrolling for timeline actions. Closes [#2213](https://github.com/Thorium-Sim/thorium/issues/2213) ([a2e3706](https://github.com/Thorium-Sim/thorium/commit/a2e3706))
+* **Triggers:** Fixes the 'sendLongRangeComm' trigger. Closes [#2184](https://github.com/Thorium-Sim/thorium/issues/2184) ([24f122a](https://github.com/Thorium-Sim/thorium/commit/24f122a))
+
+
+### Features
+
+* **Viewscreen:** Add a Picture viewscreen for full-screen images. Closes [#2207](https://github.com/Thorium-Sim/thorium/issues/2207) ([036517a](https://github.com/Thorium-Sim/thorium/commit/036517a))
+
+## [1.4.2](https://github.com/Thorium-Sim/thorium/compare/1.4.1...1.4.2) (2019-05-22)
+
+
+### Bug Fixes
+
+* **Ambiance:** Cancelling looping sounds doesn't stop ambiance anymore. Closes [#2208](https://github.com/Thorium-Sim/thorium/issues/2208) ([dd3aea5](https://github.com/Thorium-Sim/thorium/commit/dd3aea5))
+* **Probe Control:** The missing probe query response box is now back. ([2923550](https://github.com/Thorium-Sim/thorium/commit/2923550))
+* **THX:** Makes it so certain ship images don't overlay on top of the THX activate button. Fixes [#2209](https://github.com/Thorium-Sim/thorium/issues/2209). ([f3b1be7](https://github.com/Thorium-Sim/thorium/commit/f3b1be7))
+
 ## [1.4.1](https://github.com/Thorium-Sim/thorium/compare/1.4.0...1.4.1) (2019-05-18)
 
 
