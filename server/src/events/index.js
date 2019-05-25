@@ -59,3 +59,4 @@ import "./transwarp.js";
 import "./interface.js";
 import "./crm";
 import "./macro.js";
+import "./googleSheets.js";

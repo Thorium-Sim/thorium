@@ -30,7 +30,7 @@ export default function renderCards(props) {
   function getCompName(name) {
     const cleanedName = name
       .replace("software-panel-", "")
-      .replace("interface-", "");
+      .replace("interface-id:", "");
     if (props.simulator.panels.includes(cleanedName)) {
       return "SoftwarePanels";
     }
@@ -60,7 +60,7 @@ export default function renderCards(props) {
           return (
             <CardHolder
               component={Views.Interface}
-              interfaceId={card.component.replace("interface-", "")}
+              interfaceId={card.component.replace("interface-id:", "")}
               {...props}
               key={card.name}
             />

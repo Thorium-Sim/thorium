@@ -68,11 +68,43 @@ class DynamicPicker extends Component {
     if (value === "change") {
       return this.setState({ modal: true });
     }
+    if (value === "export") {
+      const href = `${window.location.protocol}//${
+        window.location.hostname
+      }:${parseInt(window.location.port, 10) + 1}/exportCoreLayout/${
+        this.state.layout
+      }`;
+      window.open(href);
+      return;
+    }
+    if (value === "import") {
+      this.fileRef.current.click();
+      return;
+    }
     this.setState({ layout: value });
     this.props.onChange(
       JSON.parse(coreLayouts.find(l => l.id === value).config)
     );
   };
+  handleImport = evt => {
+    const data = new FormData();
+    Array.from(evt.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:${parseInt(
+        window.location.port,
+        10
+      ) + 1}/importCoreLayout`,
+      {
+        method: "POST",
+        body: data
+      }
+    ).then(() => {
+      window.location.reload();
+    });
+  };
+  fileRef = React.createRef();
   render() {
     const { modal } = this.state;
     const {
@@ -93,6 +125,13 @@ class DynamicPicker extends Component {
             })
           }
         />
+        <input
+          hidden
+          type="file"
+          ref={this.fileRef}
+          value=""
+          onChange={this.handleImport}
+        />
         <select
           value={this.state.layout}
           className="btn btn-warning btn-sm"
@@ -111,6 +150,10 @@ class DynamicPicker extends Component {
             Delete Core Layout
           </option>
           <option value="change">Reorder Core Layouts</option>
+          <option value="export" disabled={this.state.layout === "nothing"}>
+            Export Core Layout
+          </option>
+          <option value="import">Import Core Layout</option>
         </select>
         {modal && (
           <MosaicConfig

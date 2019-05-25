@@ -10,6 +10,9 @@ const schema = gql`
     simulatorId: ID
     title: String
     active: Boolean
+    googleSpreadsheet: ID
+    googleSpreadsheetName: String
+    googleSheet: String
     form: [FormFields]
     results: [FormResults]
   }
@@ -61,6 +64,12 @@ const schema = gql`
   extend type Mutation {
     createSurveyForm(name: String!): String
     removeSurveyForm(id: ID!): String
+    setSurveyFormGoogleSheet(
+      id: ID!
+      spreadsheetId: ID
+      spreadsheetName: String
+      sheetId: ID
+    ): String
     updateSurveyForm(id: ID!, form: [FormFieldsInput]!): String
     triggerSurvey(simulatorId: ID!, id: ID!): String
     surveyFormResponse(id: ID!, response: FormResultsInput): String

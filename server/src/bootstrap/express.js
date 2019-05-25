@@ -23,6 +23,10 @@ import exportFlight from "../imports/flights/export";
 import importFlight from "../imports/flights/import";
 import exportTrigger from "../imports/triggers/export";
 import importTrigger from "../imports/triggers/import";
+import exportSurvey from "../imports/surveys/export";
+import importSurvey from "../imports/surveys/import";
+import exportCoreLayout from "../imports/coreLayout/export";
+import importCoreLayout from "../imports/coreLayout/import";
 
 const exports = {
   exportMission: exportMission,
@@ -32,7 +36,9 @@ const exports = {
   exportLibrary: exportLibrary,
   exportSoftwarePanel: exportSoftwarePanel,
   exportFlight,
-  exportTrigger
+  exportTrigger,
+  exportSurvey,
+  exportCoreLayout
 };
 
 const imports = {
@@ -43,7 +49,9 @@ const imports = {
   importAssets: importAssets,
   importSoftwarePanel: importSoftwarePanel,
   importFlight,
-  importTrigger
+  importTrigger,
+  importSurvey,
+  importCoreLayout
 };
 export default () => {
   let appDir = "./";

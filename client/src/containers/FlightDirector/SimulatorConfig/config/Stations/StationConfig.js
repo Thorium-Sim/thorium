@@ -58,14 +58,14 @@ const CardSelect = ({
           </option>
         ))}
       </optgroup>
-      {/* <optgroup label="Interfaces">
+      <optgroup label="Interfaces">
         {simulator.interfaces.map(p => (
-          <option key={p} value={`interface-${p}`}>
+          <option key={p} value={`interface-id:${p}`}>
             {interfaces.find(s => s.id === p) &&
               interfaces.find(s => s.id === p).name}
           </option>
         ))}
-      </optgroup> */}
+      </optgroup>
     </select>
   );
 };
@@ -111,9 +111,9 @@ const ConfigStation = props => {
       );
       sampleName = panel ? panel.name : sampleName;
     }
-    if (sampleName.indexOf("interface-") > -1) {
+    if (sampleName.indexOf("interface-id:-") > -1) {
       const int = interfaces.find(
-        i => i.id === sampleName.replace("interface-", "")
+        i => i.id === sampleName.replace("interface-id:", "")
       );
       sampleName = int ? int.name : sampleName;
     }
