@@ -149,6 +149,24 @@ class Surveys extends Component {
       }
     });
   };
+  handleImport = evt => {
+    const data = new FormData();
+    Array.from(evt.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:${parseInt(
+        window.location.port,
+        10
+      ) + 1}/importSurvey`,
+      {
+        method: "POST",
+        body: data
+      }
+    ).then(() => {
+      window.location.reload();
+    });
+  };
   render() {
     const {
       data: { loading, surveyform }
@@ -198,10 +216,28 @@ class Surveys extends Component {
               Create Form
             </Button>
             {selectedForm && (
-              <Button color="danger" block onClick={this.removeForm}>
-                Remove Form
-              </Button>
+              <>
+                <Button color="danger" block onClick={this.removeForm}>
+                  Remove Form
+                </Button>
+                <Button
+                  size="sm"
+                  tag="a"
+                  href={`${window.location.protocol}//${
+                    window.location.hostname
+                  }:${parseInt(window.location.port, 10) +
+                    1}/exportSurvey/${selectedForm}`}
+                  block
+                  color="info"
+                >
+                  Export Survey
+                </Button>
+              </>
             )}
+            <label style={{ display: "block" }}>
+              <div className="btn btn-info btn-sm btn-block">Import Survey</div>
+              <input type="file" hidden onChange={this.handleImport} />
+            </label>
           </Col>
           {form && (
             <>
