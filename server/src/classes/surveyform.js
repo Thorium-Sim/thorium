@@ -9,11 +9,19 @@ export default class SurveyForm {
     this.form = params.form || [];
     this.results = params.results || [];
     this.active = params.active || false;
+    this.googleSpreadsheet = params.googleSpreadsheet || null;
+    this.googleSpreadsheetName = params.googleSpreadsheetName || null;
+    this.googleSheet = params.googleSheet || null;
   }
   updateForm(form) {
     if (Array.isArray(form)) {
       this.form = form;
     }
+  }
+  updateGoogleSheets(spreadsheedId, spreadsheetName, sheetId) {
+    this.googleSpreadsheet = spreadsheedId;
+    this.googleSpreadsheetName = spreadsheetName;
+    this.googleSheet = sheetId;
   }
   addResults({ client, form }) {
     const clientObj = App.clients.find(c => c.id === client);

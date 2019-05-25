@@ -6,10 +6,12 @@ import * as Classes from "../classes";
 
 const SCOPES = [
   "https://www.googleapis.com/auth/spreadsheets",
-  "https://www.googleapis.com/auth/drive.metadata.readonly"
+  "https://www.googleapis.com/auth/drive.metadata.readonly",
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile"
 ];
 
-function getOAuthClient() {
+export function getOAuthClient() {
   // Authorize a client with credentials, then call the Google Sheets API.
   const credentials = {
     installed: {
@@ -50,7 +52,6 @@ App.on("googleSheetsAuthorize", ({ cb }) => {
 });
 App.on("googleSheetsCompleteAuthorize", ({ token }) => {
   const oAuth2Client = getOAuthClient();
-  console.log(token);
   oAuth2Client.getToken(token, (err, authToken) => {
     if (err) {
       console.log(err);
@@ -61,7 +62,9 @@ App.on("googleSheetsCompleteAuthorize", ({ token }) => {
     oAuth2Client.setCredentials(authToken);
   });
 });
-
+App.on("googleSheetsRevoke", () => {
+  App.googleSheetsTokens = {};
+});
 App.on("googleSheetsFileSearch", async ({ searchText, cb }) => {
   async function doIt() {
     const oAuth2Client = getOAuthClient();
@@ -76,16 +79,6 @@ App.on("googleSheetsFileSearch", async ({ searchText, cb }) => {
       })
       .catch(err => console.log(err));
     return response.data.files;
-  }
-  cb && cb(doIt());
-});
-
-App.on("googleSheetsGetSpreadsheet", ({ cb, spreadsheetId }) => {
-  async function doIt() {
-    const auth = getOAuthClient();
-    const sheets = google.sheets({ version: "v4", auth });
-    const sheet = await sheets.spreadsheets.get({ spreadsheetId });
-    return sheet;
   }
   cb && cb(doIt());
 });

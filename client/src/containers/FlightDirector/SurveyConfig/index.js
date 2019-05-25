@@ -8,10 +8,20 @@ import {
   Button
 } from "reactstrap";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
+import { Query, graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Form from "./form";
+import ReactDOM from "react-dom";
+import { Input } from "reactstrap";
+import Measure from "react-measure";
+
+import debounce from "helpers/debounce";
 import "./style.scss";
+const GoogleSheetsQuery = gql`
+  query HasToken {
+    googleSheets
+  }
+`;
 
 const SUB = gql`
   subscription SurveyFormsUpdate {
@@ -32,10 +42,150 @@ const SUB = gql`
       }
       title
       simulatorId
+      googleSpreadsheet
+      googleSpreadsheetName
+      googleSheet
     }
   }
 `;
 
+const Search = ({ location, items, select, boxStyle = {}, listStyle = {} }) => (
+  <div
+    className="search-box"
+    style={{
+      left: `${location.left}px`,
+      top: `${location.top + location.height}px`,
+      ...boxStyle
+    }}
+  >
+    {items.length === 0 && (
+      <p className="search-item" style={listStyle}>
+        No Results
+      </p>
+    )}
+    {items.map(item => (
+      <p
+        className="search-item"
+        key={item.id}
+        onClick={() => select(item)}
+        style={listStyle}
+      >
+        {item.name}
+      </p>
+    ))}
+  </div>
+);
+
+class SearchForm extends Component {
+  state = { searchQuery: this.props.defaultValue };
+  setSearch = debounce((value, client) => {
+    if (!value) {
+      return this.setState({
+        sheets: null,
+        searchQuery: value
+      });
+    }
+    if (value.length < 3) return;
+    client
+      .mutate({
+        mutation: gql`
+          mutation Search($searchText: String!) {
+            googleSheetsFileSearch(searchText: $searchText) {
+              id
+              name
+            }
+          }
+        `,
+        variables: {
+          searchText: value
+        }
+      })
+      .then(({ data: { googleSheetsFileSearch } }) =>
+        this.setState({ searchQuery: value, sheets: googleSheetsFileSearch })
+      );
+  }, 500);
+  render() {
+    const { select = () => {}, inputProps = {}, listProps = {} } = this.props;
+    return (
+      <>
+        <Measure bounds onResize={d => this.setState({ dimensions: d.bounds })}>
+          {({ measureRef }) => (
+            <div ref={measureRef}>
+              <Input
+                bsSize="sm"
+                type="text"
+                placeholder="Sheet Search..."
+                onChange={e =>
+                  this.setSearch(e.target.value, this.props.client)
+                }
+                value={this.state.searchQuery}
+                {...inputProps}
+              />
+            </div>
+          )}
+        </Measure>
+        {this.state.sheets &&
+          ReactDOM.createPortal(
+            <Search
+              items={this.state.sheets}
+              location={this.state.dimensions}
+              select={item => {
+                select(item);
+                this.setState({ sheets: null });
+              }}
+              {...listProps}
+            />,
+            document.body
+          )}
+      </>
+    );
+  }
+}
+
+const SheetPicker = ({ sheet, id, name, select }) => {
+  function handleChange(e) {}
+  return (
+    <Query
+      query={gql`
+        query Spreadsheet($id: ID!) {
+          googleSheetsGetSpreadsheet(spreadsheetId: $id) {
+            id
+            title
+            sheets {
+              id
+              title
+            }
+          }
+        }
+      `}
+      variables={{ id }}
+    >
+      {({ loading, data }) => {
+        if (loading) return "Loading...";
+        const { googleSheetsGetSpreadsheet } = data;
+        return (
+          <Input
+            type="select"
+            value={sheet || "nothing"}
+            onChange={e => select({ id, name, sheet: e.target.value })}
+          >
+            <option value="nothing" disabled>
+              Choose a sheet.
+            </option>
+            {googleSheetsGetSpreadsheet.sheets.map(s => (
+              <option key={s.title} value={s.title}>
+                {s.title}
+              </option>
+            ))}
+          </Input>
+        );
+        return "hi";
+      }}
+    </Query>
+  );
+};
+
+const WrappedSearch = withApollo(SearchForm);
 class Surveys extends Component {
   state = {};
   createForm = () => {
@@ -115,12 +265,38 @@ class Surveys extends Component {
       variables
     });
   };
+  handleSpreadsheetPick = ({ id, name, sheet }) => {
+    this.props.client.mutate({
+      mutation: gql`
+        mutation SetSpreadsheet(
+          $id: ID!
+          $spreadsheetId: ID
+          $spreadsheetName: String
+          $sheetId: ID
+        ) {
+          setSurveyFormGoogleSheet(
+            id: $id
+            spreadsheetId: $spreadsheetId
+            spreadsheetName: $spreadsheetName
+            sheetId: $sheetId
+          )
+        }
+      `,
+      variables: {
+        id: this.state.selectedForm,
+        spreadsheetId: id,
+        spreadsheetName: name,
+        sheetId: sheet
+      }
+    });
+  };
   render() {
     const {
       data: { loading, surveyform }
     } = this.props;
     const { selectedForm } = this.state;
     if (loading || !surveyform) return null;
+    const form = surveyform.find(f => f.id === selectedForm);
     return (
       <Container fluid className="survey-forms">
         <SubscriptionHelper
@@ -168,17 +344,42 @@ class Surveys extends Component {
               </Button>
             )}
           </Col>
-          <Col sm={9}>
-            {selectedForm && (
-              <Form
-                saveForm={this.saveForm}
-                form={
-                  surveyform.find(f => f.id === selectedForm) &&
-                  surveyform.find(f => f.id === selectedForm).form
-                }
-              />
-            )}
-          </Col>
+          {form && (
+            <>
+              <Col sm={3}>
+                <Query query={GoogleSheetsQuery}>
+                  {({ loading, data: { googleSheets } }) =>
+                    googleSheets ? (
+                      <div>
+                        <h3>Google Sheets Connection</h3>
+                        <WrappedSearch
+                          defaultValue={form.googleSpreadsheetName}
+                          select={this.handleSpreadsheetPick}
+                        />
+                        {form.googleSpreadsheetName && (
+                          <SheetPicker
+                            id={form.googleSpreadsheet}
+                            name={form.googleSpreadsheetName}
+                            sheet={form.googleSheet}
+                            select={this.handleSpreadsheetPick}
+                          />
+                        )}
+                        <p>
+                          <small>
+                            This will transmit form responses to this Google
+                            Sheet when the form is submitted.
+                          </small>
+                        </p>
+                      </div>
+                    ) : null
+                  }
+                </Query>
+              </Col>
+              <Col sm={6}>
+                <Form saveForm={this.saveForm} form={form.form} />
+              </Col>
+            </>
+          )}
         </Row>
       </Container>
     );
@@ -204,6 +405,9 @@ const QUERY = gql`
       }
       title
       simulatorId
+      googleSpreadsheet
+      googleSpreadsheetName
+      googleSheet
     }
   }
 `;

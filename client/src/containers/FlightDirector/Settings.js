@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "reactstrap";
+import { Container, Button, Input } from "reactstrap";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 
@@ -15,6 +15,12 @@ const QUERY = gql`
         name
       }
     }
+  }
+`;
+
+const GoogleSheetsQuery = gql`
+  query HasToken {
+    googleSheets
   }
 `;
 
@@ -105,7 +111,7 @@ const Settings = () => (
                     }
                   />
                 )}
-              </Mutation>{" "}
+              </Mutation>
             </label>
             <div>
               <small>
@@ -123,6 +129,76 @@ const Settings = () => (
                   </h2>
                 </div>
               )}
+          </div>
+          <div>
+            <h3>Google Sheets Connections</h3>
+            <Query query={GoogleSheetsQuery}>
+              {({ loading, data: { googleSheets } }) => (
+                <Mutation
+                  mutation={gql`
+                    mutation Authorize {
+                      googleSheetsAuthorize
+                    }
+                  `}
+                >
+                  {(action, { data }) =>
+                    googleSheets ? (
+                      <div>
+                        <p>Connected to Google Sheets: {googleSheets}</p>
+                        <Mutation
+                          mutation={gql`
+                            mutation Revoke {
+                              googleSheetsRevoke
+                            }
+                          `}
+                          awaitRefetchQueries
+                          refetchQueries={[{ query: GoogleSheetsQuery }]}
+                        >
+                          {action => (
+                            <Button onClick={action}>Revoke Connection</Button>
+                          )}
+                        </Mutation>
+                      </div>
+                    ) : data && data.googleSheetsAuthorize ? (
+                      <div>
+                        <label>
+                          Paste Access Token Here
+                          <Mutation
+                            mutation={gql`
+                              mutation Authenticate($token: String!) {
+                                googleSheetsCompleteAuthorize(token: $token)
+                              }
+                            `}
+                            awaitRefetchQueries
+                            refetchQueries={[{ query: GoogleSheetsQuery }]}
+                          >
+                            {complete => (
+                              <Input
+                                onBlur={e =>
+                                  complete({
+                                    variables: { token: e.target.value }
+                                  })
+                                }
+                              />
+                            )}
+                          </Mutation>
+                        </label>
+                      </div>
+                    ) : (
+                      <Button
+                        onClick={() =>
+                          action().then(({ data: { googleSheetsAuthorize } }) =>
+                            window.open(googleSheetsAuthorize)
+                          )
+                        }
+                      >
+                        Connect Google Sheets
+                      </Button>
+                    )
+                  }
+                </Mutation>
+              )}
+            </Query>
           </div>
         </Container>
       )
