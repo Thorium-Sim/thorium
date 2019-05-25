@@ -216,7 +216,14 @@ const schema = gql`
     """
     Macro: Viewscreen: Show Tactical Map
     """
-    showViewscreenTactical(mapId: ID!, secondary: Boolean): String
+    showViewscreenTactical(
+      mapId: ID!
+      secondary: Boolean
+      """
+      Dynamic: Station
+      """
+      client: ID
+    ): String
   }
   extend type Subscription {
     tacticalMapsUpdate(flightId: ID): [TacticalMap]
