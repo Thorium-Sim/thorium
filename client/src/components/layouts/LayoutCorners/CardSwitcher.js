@@ -26,7 +26,7 @@ class CardSwitcher extends Component {
   }
 }
 
-const intregex = /interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const intregex = /interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 const spregex = /.*.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 
 const CardButton = props => {

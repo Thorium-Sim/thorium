@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 const spregex = /.*.{8}-.{4}-.{4}-.{4}-.{12}/gi;
-const intregex = /interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const intregex = /interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 class CardSwitcher extends Component {
   state = {};
   render() {

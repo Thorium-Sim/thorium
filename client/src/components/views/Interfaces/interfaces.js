@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import "./style.scss";
 import * as comps from "./components";
 
 function parseComponents({ components, config, values }) {
@@ -23,6 +23,7 @@ class Interfaces extends Component {
     const components = parseComponents(iFace);
     return (
       <div
+        className="interface-card"
         style={{
           backgroundColor: "black",
           width: deviceWidth,
