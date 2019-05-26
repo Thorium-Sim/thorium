@@ -25,6 +25,8 @@ const store = new Store({
   debounce: 1000 * 30
 });
 
+console.log(process.env);
+
 class Events extends EventEmitter {
   constructor(params) {
     super(params);
