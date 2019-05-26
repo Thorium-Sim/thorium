@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/Thorium-Sim/thorium/compare/1.6.0...1.6.1) (2019-05-26)
+
+
+### Bug Fixes
+
+* **Build:** This is a test build. Please don't use it. ([92d3658](https://github.com/Thorium-Sim/thorium/commit/92d3658))
+
 # [1.6.0](https://github.com/Thorium-Sim/thorium/compare/1.5.0...1.6.0) (2019-05-25)
 
 
