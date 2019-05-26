@@ -26,6 +26,7 @@ const store = new Store({
 });
 
 console.log(process.env);
+
 class Events extends EventEmitter {
   constructor(params) {
     super(params);
