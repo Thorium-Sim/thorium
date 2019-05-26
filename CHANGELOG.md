@@ -1,3 +1,20 @@
+# [1.6.0](https://github.com/Thorium-Sim/thorium/compare/1.5.0...1.6.0) (2019-05-25)
+
+
+### Bug Fixes
+
+* **CoreFeed:** FIxes a layout issue with the core feed and tractor beam core. Closes [#2119](https://github.com/Thorium-Sim/thorium/issues/2119) ([33ee6c8](https://github.com/Thorium-Sim/thorium/commit/33ee6c8))
+
+
+### Features
+
+* **Core Layouts:** Add the ability to export and import core layouts from the core. Closes [#2017](https://github.com/Thorium-Sim/thorium/issues/2017) ([419038e](https://github.com/Thorium-Sim/thorium/commit/419038e))
+* **Engines:** Max engine speed is now shown on the systems core. Closes [#2166](https://github.com/Thorium-Sim/thorium/issues/2166) ([159b539](https://github.com/Thorium-Sim/thorium/commit/159b539))
+* **Interfaces:** Add the ability to assign interfaces as cards to stations. Closes [#2162](https://github.com/Thorium-Sim/thorium/issues/2162) ([c59a604](https://github.com/Thorium-Sim/thorium/commit/c59a604))
+* **Interfaces:** Adds interfaces as an option for set configs. Closes [#2163](https://github.com/Thorium-Sim/thorium/issues/2163) ([92ce479](https://github.com/Thorium-Sim/thorium/commit/92ce479))
+* **Surveys:** Adds ability to export and import surveys. ([16fda93](https://github.com/Thorium-Sim/thorium/commit/16fda93))
+* **Surveys:** Adds the ability to transmit survey data to Google Sheets. See the documentation page on https://thoriumsim.com/docs/forms_google_sheets for more information. ([772a0f0](https://github.com/Thorium-Sim/thorium/commit/772a0f0))
+
 # [1.5.0](https://github.com/Thorium-Sim/thorium/compare/1.4.2...1.5.0) (2019-05-24)
 
 
