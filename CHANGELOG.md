@@ -1,166 +1,264 @@
-## [1.6.1](https://github.com/Thorium-Sim/thorium/compare/1.6.0...1.6.1) (2019-05-27)
-
-
-### Bug Fixes
-
-* **Build:** Another build test. Don't use this version. ([79ab705](https://github.com/Thorium-Sim/thorium/commit/79ab705))
-* **Build:** Build test. Do not use. ([475d821](https://github.com/Thorium-Sim/thorium/commit/475d821))
-* **Build:** Build test. Do not use. ([445fa0a](https://github.com/Thorium-Sim/thorium/commit/445fa0a))
-* **Build:** Fixes an issue with the build process that made the environment variables not usable. ([71669e7](https://github.com/Thorium-Sim/thorium/commit/71669e7))
-* **Build:** Test build. Do not use. ([561519b](https://github.com/Thorium-Sim/thorium/commit/561519b))
-* **Build:** This is a test build. Please don't use it. ([92d3658](https://github.com/Thorium-Sim/thorium/commit/92d3658))
-
 # [1.6.0](https://github.com/Thorium-Sim/thorium/compare/1.5.0...1.6.0) (2019-05-25)
 
-
 ### Bug Fixes
 
-* **CoreFeed:** FIxes a layout issue with the core feed and tractor beam core. Closes [#2119](https://github.com/Thorium-Sim/thorium/issues/2119) ([33ee6c8](https://github.com/Thorium-Sim/thorium/commit/33ee6c8))
-
+- **CoreFeed:** Fixes a layout issue with the core feed and tractor beam core.
+  Closes [#2119](https://github.com/Thorium-Sim/thorium/issues/2119)
+  ([33ee6c8](https://github.com/Thorium-Sim/thorium/commit/33ee6c8))
 
 ### Features
 
-* **Core Layouts:** Add the ability to export and import core layouts from the core. Closes [#2017](https://github.com/Thorium-Sim/thorium/issues/2017) ([419038e](https://github.com/Thorium-Sim/thorium/commit/419038e))
-* **Engines:** Max engine speed is now shown on the systems core. Closes [#2166](https://github.com/Thorium-Sim/thorium/issues/2166) ([159b539](https://github.com/Thorium-Sim/thorium/commit/159b539))
-* **Interfaces:** Add the ability to assign interfaces as cards to stations. Closes [#2162](https://github.com/Thorium-Sim/thorium/issues/2162) ([c59a604](https://github.com/Thorium-Sim/thorium/commit/c59a604))
-* **Interfaces:** Adds interfaces as an option for set configs. Closes [#2163](https://github.com/Thorium-Sim/thorium/issues/2163) ([92ce479](https://github.com/Thorium-Sim/thorium/commit/92ce479))
-* **Surveys:** Adds ability to export and import surveys. ([16fda93](https://github.com/Thorium-Sim/thorium/commit/16fda93))
-* **Surveys:** Adds the ability to transmit survey data to Google Sheets. See the documentation page on https://thoriumsim.com/docs/forms_google_sheets for more information. ([772a0f0](https://github.com/Thorium-Sim/thorium/commit/772a0f0))
+- **Core Layouts:** Add the ability to export and import core layouts from the
+  core. Closes [#2017](https://github.com/Thorium-Sim/thorium/issues/2017)
+  ([419038e](https://github.com/Thorium-Sim/thorium/commit/419038e))
+- **Engines:** Max engine speed is now shown on the systems core. Closes
+  [#2166](https://github.com/Thorium-Sim/thorium/issues/2166)
+  ([159b539](https://github.com/Thorium-Sim/thorium/commit/159b539))
+- **Interfaces:** Add the ability to assign interfaces as cards to stations.
+  Closes [#2162](https://github.com/Thorium-Sim/thorium/issues/2162)
+  ([c59a604](https://github.com/Thorium-Sim/thorium/commit/c59a604))
+- **Interfaces:** Adds interfaces as an option for set configs. Closes
+  [#2163](https://github.com/Thorium-Sim/thorium/issues/2163)
+  ([92ce479](https://github.com/Thorium-Sim/thorium/commit/92ce479))
+- **Surveys:** Adds ability to export and import surveys.
+  ([16fda93](https://github.com/Thorium-Sim/thorium/commit/16fda93))
+- **Surveys:** Adds the ability to transmit survey data to Google Sheets. See
+  the documentation page on https://thoriumsim.com/docs/forms_google_sheets for
+  more information.
+  ([772a0f0](https://github.com/Thorium-Sim/thorium/commit/772a0f0))
 
 # [1.5.0](https://github.com/Thorium-Sim/thorium/compare/1.4.2...1.5.0) (2019-05-24)
 
-
 ### Bug Fixes
 
-* **Client:** Cracks no longer persist between flights. Closes [#2204](https://github.com/Thorium-Sim/thorium/issues/2204) ([34ed08b](https://github.com/Thorium-Sim/thorium/commit/34ed08b))
-* **Decoding:** Fixes the decoding output field not scrolling. Closes [#2183](https://github.com/Thorium-Sim/thorium/issues/2183) ([71e7a4a](https://github.com/Thorium-Sim/thorium/commit/71e7a4a))
-* **Layout:** Fixes a layout issue with the checkboxes for setting optimal speed. Closes [#2206](https://github.com/Thorium-Sim/thorium/issues/2206) ([b61aa11](https://github.com/Thorium-Sim/thorium/commit/b61aa11))
-* **Messaging:** Fixes scrolling on the old messaging core. Closes [#2177](https://github.com/Thorium-Sim/thorium/issues/2177) ([f2b3607](https://github.com/Thorium-Sim/thorium/commit/f2b3607))
-* **Notifications:** Adds a proper notification type for Internal Comm. Closes [#2193](https://github.com/Thorium-Sim/thorium/issues/2193) ([812e9ad](https://github.com/Thorium-Sim/thorium/commit/812e9ad))
-* **Shields:** Adds a limit to how often you can change the shield frequencies. Closes [#2172](https://github.com/Thorium-Sim/thorium/issues/2172) ([1be401f](https://github.com/Thorium-Sim/thorium/commit/1be401f))
-* **Systems:** Fixes an issue where not having a proper reactor breaks the systems core. Closes [#2194](https://github.com/Thorium-Sim/thorium/issues/2194) ([a4f47a4](https://github.com/Thorium-Sim/thorium/commit/a4f47a4))
-* **Timeline:** Fix scrolling for timeline actions. Closes [#2213](https://github.com/Thorium-Sim/thorium/issues/2213) ([a2e3706](https://github.com/Thorium-Sim/thorium/commit/a2e3706))
-* **Triggers:** Fixes the 'sendLongRangeComm' trigger. Closes [#2184](https://github.com/Thorium-Sim/thorium/issues/2184) ([24f122a](https://github.com/Thorium-Sim/thorium/commit/24f122a))
-
+- **Client:** Cracks no longer persist between flights. Closes
+  [#2204](https://github.com/Thorium-Sim/thorium/issues/2204)
+  ([34ed08b](https://github.com/Thorium-Sim/thorium/commit/34ed08b))
+- **Decoding:** Fixes the decoding output field not scrolling. Closes
+  [#2183](https://github.com/Thorium-Sim/thorium/issues/2183)
+  ([71e7a4a](https://github.com/Thorium-Sim/thorium/commit/71e7a4a))
+- **Layout:** Fixes a layout issue with the checkboxes for setting optimal
+  speed. Closes [#2206](https://github.com/Thorium-Sim/thorium/issues/2206)
+  ([b61aa11](https://github.com/Thorium-Sim/thorium/commit/b61aa11))
+- **Messaging:** Fixes scrolling on the old messaging core. Closes
+  [#2177](https://github.com/Thorium-Sim/thorium/issues/2177)
+  ([f2b3607](https://github.com/Thorium-Sim/thorium/commit/f2b3607))
+- **Notifications:** Adds a proper notification type for Internal Comm. Closes
+  [#2193](https://github.com/Thorium-Sim/thorium/issues/2193)
+  ([812e9ad](https://github.com/Thorium-Sim/thorium/commit/812e9ad))
+- **Shields:** Adds a limit to how often you can change the shield frequencies.
+  Closes [#2172](https://github.com/Thorium-Sim/thorium/issues/2172)
+  ([1be401f](https://github.com/Thorium-Sim/thorium/commit/1be401f))
+- **Systems:** Fixes an issue where not having a proper reactor breaks the
+  systems core. Closes
+  [#2194](https://github.com/Thorium-Sim/thorium/issues/2194)
+  ([a4f47a4](https://github.com/Thorium-Sim/thorium/commit/a4f47a4))
+- **Timeline:** Fix scrolling for timeline actions. Closes
+  [#2213](https://github.com/Thorium-Sim/thorium/issues/2213)
+  ([a2e3706](https://github.com/Thorium-Sim/thorium/commit/a2e3706))
+- **Triggers:** Fixes the 'sendLongRangeComm' trigger. Closes
+  [#2184](https://github.com/Thorium-Sim/thorium/issues/2184)
+  ([24f122a](https://github.com/Thorium-Sim/thorium/commit/24f122a))
 
 ### Features
 
-* **Viewscreen:** Add a Picture viewscreen for full-screen images. Closes [#2207](https://github.com/Thorium-Sim/thorium/issues/2207) ([036517a](https://github.com/Thorium-Sim/thorium/commit/036517a))
+- **Viewscreen:** Add a Picture viewscreen for full-screen images. Closes
+  [#2207](https://github.com/Thorium-Sim/thorium/issues/2207)
+  ([036517a](https://github.com/Thorium-Sim/thorium/commit/036517a))
 
 ## [1.4.2](https://github.com/Thorium-Sim/thorium/compare/1.4.1...1.4.2) (2019-05-22)
 
-
 ### Bug Fixes
 
-* **Ambiance:** Cancelling looping sounds doesn't stop ambiance anymore. Closes [#2208](https://github.com/Thorium-Sim/thorium/issues/2208) ([dd3aea5](https://github.com/Thorium-Sim/thorium/commit/dd3aea5))
-* **Probe Control:** The missing probe query response box is now back. ([2923550](https://github.com/Thorium-Sim/thorium/commit/2923550))
-* **THX:** Makes it so certain ship images don't overlay on top of the THX activate button. Fixes [#2209](https://github.com/Thorium-Sim/thorium/issues/2209). ([f3b1be7](https://github.com/Thorium-Sim/thorium/commit/f3b1be7))
+- **Ambiance:** Cancelling looping sounds doesn't stop ambiance anymore. Closes
+  [#2208](https://github.com/Thorium-Sim/thorium/issues/2208)
+  ([dd3aea5](https://github.com/Thorium-Sim/thorium/commit/dd3aea5))
+- **Probe Control:** The missing probe query response box is now back.
+  ([2923550](https://github.com/Thorium-Sim/thorium/commit/2923550))
+- **THX:** Makes it so certain ship images don't overlay on top of the THX
+  activate button. Fixes
+  [#2209](https://github.com/Thorium-Sim/thorium/issues/2209).
+  ([f3b1be7](https://github.com/Thorium-Sim/thorium/commit/f3b1be7))
 
 ## [1.4.1](https://github.com/Thorium-Sim/thorium/compare/1.4.0...1.4.1) (2019-05-18)
 
-
 ### Bug Fixes
 
-* **Build:** Fixes an issue with the automated build process. ([6902c0d](https://github.com/Thorium-Sim/thorium/commit/6902c0d))
+- **Build:** Fixes an issue with the automated build process.
+  ([6902c0d](https://github.com/Thorium-Sim/thorium/commit/6902c0d))
 
 # [1.4.0](https://github.com/Thorium-Sim/thorium/compare/1.3.0...1.4.0) (2019-05-18)
 
-
 ### Bug Fixes
 
-* **Command Line:** Fixes an issue that prevented the release of 1.4.1. ([2323644](https://github.com/Thorium-Sim/thorium/commit/2323644))
-* **Macros:** Corrected wording of removing a trigger macro ([0e76e8b](https://github.com/Thorium-Sim/thorium/commit/0e76e8b))
-* **Probes:** Add training mode fixtures for the science probes. ([6b38cad](https://github.com/Thorium-Sim/thorium/commit/6b38cad)), closes [#2182](https://github.com/Thorium-Sim/thorium/issues/2182)
-* **Reactor:** Fixes issues with changing the reactor efficiencies. ([3a17289](https://github.com/Thorium-Sim/thorium/commit/3a17289)), closes [#2187](https://github.com/Thorium-Sim/thorium/issues/2187)
-* **Stars:** Improvements to the stars viewscreen. ([1a2df84](https://github.com/Thorium-Sim/thorium/commit/1a2df84))
-* **Status:** Fixes dilithium stress subscription. ([8a531e6](https://github.com/Thorium-Sim/thorium/commit/8a531e6)), closes [#2186](https://github.com/Thorium-Sim/thorium/issues/2186)
-* **Survey:** Improves the layout of the survey card and core. ([7a0e68e](https://github.com/Thorium-Sim/thorium/commit/7a0e68e))
-* **Surveys:** Changes the surveyform core to start surveys with a 'Go' button. ([6ef166d](https://github.com/Thorium-Sim/thorium/commit/6ef166d))
-* **Tactical Maps:** Fixes an error that crashed videos on tactical maps. Closes [#2197](https://github.com/Thorium-Sim/thorium/issues/2197) ([44b7547](https://github.com/Thorium-Sim/thorium/commit/44b7547))
-* **Thrusters:** Fixes memory leak with the thrusters card. ([e2268c9](https://github.com/Thorium-Sim/thorium/commit/e2268c9))
-* **translations:** Add additional French translations  ([93d7e59](https://github.com/Thorium-Sim/thorium/commit/93d7e59))
-* **Viewscreen:** Fixes the stealth monitoring viewscreen. Closes [#2195](https://github.com/Thorium-Sim/thorium/issues/2195) ([23a88ba](https://github.com/Thorium-Sim/thorium/commit/23a88ba))
-
+- **Command Line:** Fixes an issue that prevented the release of 1.4.1.
+  ([2323644](https://github.com/Thorium-Sim/thorium/commit/2323644))
+- **Macros:** Corrected wording of removing a trigger macro
+  ([0e76e8b](https://github.com/Thorium-Sim/thorium/commit/0e76e8b))
+- **Probes:** Add training mode fixtures for the science probes.
+  ([6b38cad](https://github.com/Thorium-Sim/thorium/commit/6b38cad)), closes
+  [#2182](https://github.com/Thorium-Sim/thorium/issues/2182)
+- **Reactor:** Fixes issues with changing the reactor efficiencies.
+  ([3a17289](https://github.com/Thorium-Sim/thorium/commit/3a17289)), closes
+  [#2187](https://github.com/Thorium-Sim/thorium/issues/2187)
+- **Stars:** Improvements to the stars viewscreen.
+  ([1a2df84](https://github.com/Thorium-Sim/thorium/commit/1a2df84))
+- **Status:** Fixes dilithium stress subscription.
+  ([8a531e6](https://github.com/Thorium-Sim/thorium/commit/8a531e6)), closes
+  [#2186](https://github.com/Thorium-Sim/thorium/issues/2186)
+- **Survey:** Improves the layout of the survey card and core.
+  ([7a0e68e](https://github.com/Thorium-Sim/thorium/commit/7a0e68e))
+- **Surveys:** Changes the surveyform core to start surveys with a 'Go' button.
+  ([6ef166d](https://github.com/Thorium-Sim/thorium/commit/6ef166d))
+- **Tactical Maps:** Fixes an error that crashed videos on tactical maps. Closes
+  [#2197](https://github.com/Thorium-Sim/thorium/issues/2197)
+  ([44b7547](https://github.com/Thorium-Sim/thorium/commit/44b7547))
+- **Thrusters:** Fixes memory leak with the thrusters card.
+  ([e2268c9](https://github.com/Thorium-Sim/thorium/commit/e2268c9))
+- **translations:** Add additional French translations
+  ([93d7e59](https://github.com/Thorium-Sim/thorium/commit/93d7e59))
+- **Viewscreen:** Fixes the stealth monitoring viewscreen. Closes
+  [#2195](https://github.com/Thorium-Sim/thorium/issues/2195)
+  ([23a88ba](https://github.com/Thorium-Sim/thorium/commit/23a88ba))
 
 ### Features
 
-* **AuxTimeline:** Add Auxiliary Timeline core ([db93011](https://github.com/Thorium-Sim/thorium/commit/db93011))
-* **Command Line:** Add a Command Line core. ([bf99677](https://github.com/Thorium-Sim/thorium/commit/bf99677))
-* **Command Line:** Add a delayed output command that prints each line of output one at a time,each after a short delay. ([a9bc02f](https://github.com/Thorium-Sim/thorium/commit/a9bc02f))
-* **Command Line:** Add ability to view library entry slugs and connect them to the removeLibraryEntry action. ([0c582ca](https://github.com/Thorium-Sim/thorium/commit/0c582ca))
-* **Command Line:** Add support for multiple command line arguments. ([8e679cb](https://github.com/Thorium-Sim/thorium/commit/8e679cb))
-* **Command Line:** Command line sessions are now persisted between card changes. ([8a7e575](https://github.com/Thorium-Sim/thorium/commit/8a7e575))
-* **Macro:** Add macros for hiding and un-hiding cards on the simulator. ([c76cf21](https://github.com/Thorium-Sim/thorium/commit/c76cf21))
+- **AuxTimeline:** Add Auxiliary Timeline core
+  ([db93011](https://github.com/Thorium-Sim/thorium/commit/db93011))
+- **Command Line:** Add a Command Line core.
+  ([bf99677](https://github.com/Thorium-Sim/thorium/commit/bf99677))
+- **Command Line:** Add a delayed output command that prints each line of output
+  one at a time,each after a short delay.
+  ([a9bc02f](https://github.com/Thorium-Sim/thorium/commit/a9bc02f))
+- **Command Line:** Add ability to view library entry slugs and connect them to
+  the removeLibraryEntry action.
+  ([0c582ca](https://github.com/Thorium-Sim/thorium/commit/0c582ca))
+- **Command Line:** Add support for multiple command line arguments.
+  ([8e679cb](https://github.com/Thorium-Sim/thorium/commit/8e679cb))
+- **Command Line:** Command line sessions are now persisted between card
+  changes. ([8a7e575](https://github.com/Thorium-Sim/thorium/commit/8a7e575))
+- **Macro:** Add macros for hiding and un-hiding cards on the simulator.
+  ([c76cf21](https://github.com/Thorium-Sim/thorium/commit/c76cf21))
 
 # [1.4.0](https://github.com/Thorium-Sim/thorium/compare/1.3.0...1.4.0) (2019-05-18)
 
-
 ### Bug Fixes
 
-* **Macros:** Corrected wording of removing a trigger macro ([0e76e8b](https://github.com/Thorium-Sim/thorium/commit/0e76e8b))
-* **Probes:** Add training mode fixtures for the science probes. ([6b38cad](https://github.com/Thorium-Sim/thorium/commit/6b38cad)), closes [#2182](https://github.com/Thorium-Sim/thorium/issues/2182)
-* **Reactor:** Fixes issues with changing the reactor efficiencies. ([3a17289](https://github.com/Thorium-Sim/thorium/commit/3a17289)), closes [#2187](https://github.com/Thorium-Sim/thorium/issues/2187)
-* **Stars:** Improvements to the stars viewscreen. ([1a2df84](https://github.com/Thorium-Sim/thorium/commit/1a2df84))
-* **Status:** Fixes dilithium stress subscription. ([8a531e6](https://github.com/Thorium-Sim/thorium/commit/8a531e6)), closes [#2186](https://github.com/Thorium-Sim/thorium/issues/2186)
-* **Survey:** Improves the layout of the survey card and core. ([7a0e68e](https://github.com/Thorium-Sim/thorium/commit/7a0e68e))
-* **Surveys:** Changes the surveyform core to start surveys with a 'Go' button. ([6ef166d](https://github.com/Thorium-Sim/thorium/commit/6ef166d))
-* **Tactical Maps:** Fixes an error that crashed videos on tactical maps. Closes [#2197](https://github.com/Thorium-Sim/thorium/issues/2197) ([44b7547](https://github.com/Thorium-Sim/thorium/commit/44b7547))
-* **Thrusters:** Fixes memory leak with the thrusters card. ([e2268c9](https://github.com/Thorium-Sim/thorium/commit/e2268c9))
-* **translations:** Add additional French translations  ([93d7e59](https://github.com/Thorium-Sim/thorium/commit/93d7e59))
-* **Viewscreen:** Fixes the stealth monitoring viewscreen. Closes [#2195](https://github.com/Thorium-Sim/thorium/issues/2195) ([23a88ba](https://github.com/Thorium-Sim/thorium/commit/23a88ba))
-
+- **Macros:** Corrected wording of removing a trigger macro
+  ([0e76e8b](https://github.com/Thorium-Sim/thorium/commit/0e76e8b))
+- **Probes:** Add training mode fixtures for the science probes.
+  ([6b38cad](https://github.com/Thorium-Sim/thorium/commit/6b38cad)), closes
+  [#2182](https://github.com/Thorium-Sim/thorium/issues/2182)
+- **Reactor:** Fixes issues with changing the reactor efficiencies.
+  ([3a17289](https://github.com/Thorium-Sim/thorium/commit/3a17289)), closes
+  [#2187](https://github.com/Thorium-Sim/thorium/issues/2187)
+- **Stars:** Improvements to the stars viewscreen.
+  ([1a2df84](https://github.com/Thorium-Sim/thorium/commit/1a2df84))
+- **Status:** Fixes dilithium stress subscription.
+  ([8a531e6](https://github.com/Thorium-Sim/thorium/commit/8a531e6)), closes
+  [#2186](https://github.com/Thorium-Sim/thorium/issues/2186)
+- **Survey:** Improves the layout of the survey card and core.
+  ([7a0e68e](https://github.com/Thorium-Sim/thorium/commit/7a0e68e))
+- **Surveys:** Changes the surveyform core to start surveys with a 'Go' button.
+  ([6ef166d](https://github.com/Thorium-Sim/thorium/commit/6ef166d))
+- **Tactical Maps:** Fixes an error that crashed videos on tactical maps. Closes
+  [#2197](https://github.com/Thorium-Sim/thorium/issues/2197)
+  ([44b7547](https://github.com/Thorium-Sim/thorium/commit/44b7547))
+- **Thrusters:** Fixes memory leak with the thrusters card.
+  ([e2268c9](https://github.com/Thorium-Sim/thorium/commit/e2268c9))
+- **translations:** Add additional French translations
+  ([93d7e59](https://github.com/Thorium-Sim/thorium/commit/93d7e59))
+- **Viewscreen:** Fixes the stealth monitoring viewscreen. Closes
+  [#2195](https://github.com/Thorium-Sim/thorium/issues/2195)
+  ([23a88ba](https://github.com/Thorium-Sim/thorium/commit/23a88ba))
 
 ### Features
 
-* **AuxTimeline:** Add Auxiliary Timeline core ([db93011](https://github.com/Thorium-Sim/thorium/commit/db93011))
-* **Command Line:** Add a Command Line core. ([bf99677](https://github.com/Thorium-Sim/thorium/commit/bf99677))
-* **Command Line:** Add a delayed output command that prints each line of output one at a time,each after a short delay. ([a9bc02f](https://github.com/Thorium-Sim/thorium/commit/a9bc02f))
-* **Command Line:** Add ability to view library entry slugs and connect them to the removeLibraryEntry action. ([0c582ca](https://github.com/Thorium-Sim/thorium/commit/0c582ca))
-* **Command Line:** Add support for multiple command line arguments. ([8e679cb](https://github.com/Thorium-Sim/thorium/commit/8e679cb))
-* **Command Line:** Command line sessions are now persisted between card changes. ([8a7e575](https://github.com/Thorium-Sim/thorium/commit/8a7e575))
-* **Macro:** Add macros for hiding and un-hiding cards on the simulator. ([c76cf21](https://github.com/Thorium-Sim/thorium/commit/c76cf21))
+- **AuxTimeline:** Add Auxiliary Timeline core
+  ([db93011](https://github.com/Thorium-Sim/thorium/commit/db93011))
+- **Command Line:** Add a Command Line core.
+  ([bf99677](https://github.com/Thorium-Sim/thorium/commit/bf99677))
+- **Command Line:** Add a delayed output command that prints each line of output
+  one at a time,each after a short delay.
+  ([a9bc02f](https://github.com/Thorium-Sim/thorium/commit/a9bc02f))
+- **Command Line:** Add ability to view library entry slugs and connect them to
+  the removeLibraryEntry action.
+  ([0c582ca](https://github.com/Thorium-Sim/thorium/commit/0c582ca))
+- **Command Line:** Add support for multiple command line arguments.
+  ([8e679cb](https://github.com/Thorium-Sim/thorium/commit/8e679cb))
+- **Command Line:** Command line sessions are now persisted between card
+  changes. ([8a7e575](https://github.com/Thorium-Sim/thorium/commit/8a7e575))
+- **Macro:** Add macros for hiding and un-hiding cards on the simulator.
+  ([c76cf21](https://github.com/Thorium-Sim/thorium/commit/c76cf21))
 
 # [1.4.0](https://github.com/Thorium-Sim/thorium/compare/1.3.0...1.4.0) (2019-05-18)
 
-
 ### Bug Fixes
 
-* **Macros:** Corrected wording of removing a trigger macro ([0e76e8b](https://github.com/Thorium-Sim/thorium/commit/0e76e8b))
-* **Probes:** Add training mode fixtures for the science probes. ([6b38cad](https://github.com/Thorium-Sim/thorium/commit/6b38cad)), closes [#2182](https://github.com/Thorium-Sim/thorium/issues/2182)
-* **Reactor:** Fixes issues with changing the reactor efficiencies. ([3a17289](https://github.com/Thorium-Sim/thorium/commit/3a17289)), closes [#2187](https://github.com/Thorium-Sim/thorium/issues/2187)
-* **Stars:** Improvements to the stars viewscreen. ([1a2df84](https://github.com/Thorium-Sim/thorium/commit/1a2df84))
-* **Status:** Fixes dilithium stress subscription. ([8a531e6](https://github.com/Thorium-Sim/thorium/commit/8a531e6)), closes [#2186](https://github.com/Thorium-Sim/thorium/issues/2186)
-* **Survey:** Improves the layout of the survey card and core. ([7a0e68e](https://github.com/Thorium-Sim/thorium/commit/7a0e68e))
-* **Surveys:** Changes the surveyform core to start surveys with a 'Go' button. ([6ef166d](https://github.com/Thorium-Sim/thorium/commit/6ef166d))
-* **Tactical Maps:** Fixes an error that crashed videos on tactical maps. Closes [#2197](https://github.com/Thorium-Sim/thorium/issues/2197) ([44b7547](https://github.com/Thorium-Sim/thorium/commit/44b7547))
-* **Thrusters:** Fixes memory leak with the thrusters card. ([e2268c9](https://github.com/Thorium-Sim/thorium/commit/e2268c9))
-* **translations:** Add additional French translations  ([93d7e59](https://github.com/Thorium-Sim/thorium/commit/93d7e59))
-* **Viewscreen:** Fixes the stealth monitoring viewscreen. Closes [#2195](https://github.com/Thorium-Sim/thorium/issues/2195) ([23a88ba](https://github.com/Thorium-Sim/thorium/commit/23a88ba))
-
+- **Macros:** Corrected wording of removing a trigger macro
+  ([0e76e8b](https://github.com/Thorium-Sim/thorium/commit/0e76e8b))
+- **Probes:** Add training mode fixtures for the science probes.
+  ([6b38cad](https://github.com/Thorium-Sim/thorium/commit/6b38cad)), closes
+  [#2182](https://github.com/Thorium-Sim/thorium/issues/2182)
+- **Reactor:** Fixes issues with changing the reactor efficiencies.
+  ([3a17289](https://github.com/Thorium-Sim/thorium/commit/3a17289)), closes
+  [#2187](https://github.com/Thorium-Sim/thorium/issues/2187)
+- **Stars:** Improvements to the stars viewscreen.
+  ([1a2df84](https://github.com/Thorium-Sim/thorium/commit/1a2df84))
+- **Status:** Fixes dilithium stress subscription.
+  ([8a531e6](https://github.com/Thorium-Sim/thorium/commit/8a531e6)), closes
+  [#2186](https://github.com/Thorium-Sim/thorium/issues/2186)
+- **Survey:** Improves the layout of the survey card and core.
+  ([7a0e68e](https://github.com/Thorium-Sim/thorium/commit/7a0e68e))
+- **Surveys:** Changes the surveyform core to start surveys with a 'Go' button.
+  ([6ef166d](https://github.com/Thorium-Sim/thorium/commit/6ef166d))
+- **Tactical Maps:** Fixes an error that crashed videos on tactical maps. Closes
+  [#2197](https://github.com/Thorium-Sim/thorium/issues/2197)
+  ([44b7547](https://github.com/Thorium-Sim/thorium/commit/44b7547))
+- **Thrusters:** Fixes memory leak with the thrusters card.
+  ([e2268c9](https://github.com/Thorium-Sim/thorium/commit/e2268c9))
+- **translations:** Add additional French translations
+  ([93d7e59](https://github.com/Thorium-Sim/thorium/commit/93d7e59))
+- **Viewscreen:** Fixes the stealth monitoring viewscreen. Closes
+  [#2195](https://github.com/Thorium-Sim/thorium/issues/2195)
+  ([23a88ba](https://github.com/Thorium-Sim/thorium/commit/23a88ba))
 
 ### Features
 
-* **AuxTimeline:** Add Auxiliary Timeline core ([db93011](https://github.com/Thorium-Sim/thorium/commit/db93011))
-* **Command Line:** Add a Command Line core. ([bf99677](https://github.com/Thorium-Sim/thorium/commit/bf99677))
-* **Command Line:** Add a delayed output command that prints each line of output one at a time,each after a short delay. ([a9bc02f](https://github.com/Thorium-Sim/thorium/commit/a9bc02f))
-* **Command Line:** Add ability to view library entry slugs and connect them to the removeLibraryEntry action. ([0c582ca](https://github.com/Thorium-Sim/thorium/commit/0c582ca))
-* **Command Line:** Add support for multiple command line arguments. ([8e679cb](https://github.com/Thorium-Sim/thorium/commit/8e679cb))
-* **Command Line:** Command line sessions are now persisted between card changes. ([8a7e575](https://github.com/Thorium-Sim/thorium/commit/8a7e575))
-* **Macro:** Add macros for hiding and un-hiding cards on the simulator. ([c76cf21](https://github.com/Thorium-Sim/thorium/commit/c76cf21))
+- **AuxTimeline:** Add Auxiliary Timeline core
+  ([db93011](https://github.com/Thorium-Sim/thorium/commit/db93011))
+- **Command Line:** Add a Command Line core.
+  ([bf99677](https://github.com/Thorium-Sim/thorium/commit/bf99677))
+- **Command Line:** Add a delayed output command that prints each line of output
+  one at a time,each after a short delay.
+  ([a9bc02f](https://github.com/Thorium-Sim/thorium/commit/a9bc02f))
+- **Command Line:** Add ability to view library entry slugs and connect them to
+  the removeLibraryEntry action.
+  ([0c582ca](https://github.com/Thorium-Sim/thorium/commit/0c582ca))
+- **Command Line:** Add support for multiple command line arguments.
+  ([8e679cb](https://github.com/Thorium-Sim/thorium/commit/8e679cb))
+- **Command Line:** Command line sessions are now persisted between card
+  changes. ([8a7e575](https://github.com/Thorium-Sim/thorium/commit/8a7e575))
+- **Macro:** Add macros for hiding and un-hiding cards on the simulator.
+  ([c76cf21](https://github.com/Thorium-Sim/thorium/commit/c76cf21))
 
 # [1.3.0](https://github.com/Thorium-Sim/thorium/compare/1.2.18...1.3.0) (2019-05-14)
 
-
 ### Bug Fixes
 
-* **LRComm:** Add ability to delete messages. ([2ef61a1](https://github.com/Thorium-Sim/thorium/commit/2ef61a1)), closes [#2159](https://github.com/Thorium-Sim/thorium/issues/2159)
-
+- **LRComm:** Add ability to delete messages.
+  ([2ef61a1](https://github.com/Thorium-Sim/thorium/commit/2ef61a1)), closes
+  [#2159](https://github.com/Thorium-Sim/thorium/issues/2159)
 
 ### Features
 
-* **build:** Improves the build and release process ([f1cdf6f](https://github.com/Thorium-Sim/thorium/commit/f1cdf6f))
-* **Docking:** Added Landing Legs ([#2174](https://github.com/Thorium-Sim/thorium/issues/2174)) ([e3f2ce9](https://github.com/Thorium-Sim/thorium/commit/e3f2ce9))
-* **Macros:** Macro of macros ([077ff8b](https://github.com/Thorium-Sim/thorium/commit/077ff8b))
+- **build:** Improves the build and release process
+  ([f1cdf6f](https://github.com/Thorium-Sim/thorium/commit/f1cdf6f))
+- **Docking:** Added Landing Legs
+  ([#2174](https://github.com/Thorium-Sim/thorium/issues/2174))
+  ([e3f2ce9](https://github.com/Thorium-Sim/thorium/commit/e3f2ce9))
+- **Macros:** Macro of macros
+  ([077ff8b](https://github.com/Thorium-Sim/thorium/commit/077ff8b))
 
 # [1.2.19](https://github.com/Thorium-Sim/thorium/compare/1.2.18...1.2.19)
 

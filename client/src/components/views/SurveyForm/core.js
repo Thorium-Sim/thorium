@@ -70,7 +70,6 @@ class SurveyCore extends Component {
                 .options.filter(o => f.value.split(",").includes(o.id))
                 .map(o => o.label)
                 .join("; ");
-              console.log(option);
               if (option) {
                 return option;
               }

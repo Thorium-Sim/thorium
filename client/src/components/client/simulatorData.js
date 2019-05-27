@@ -75,7 +75,6 @@ class SimulatorData extends Component {
           const { simulators } = data;
           if (loading || !simulators) return null;
           if (!simulators[0]) return <div>No Simulator</div>;
-          console.log(simulators[0].stations);
           const station = simulators[0].stations.find(s => s.name === name);
           return (
             <SubscriptionHelper
