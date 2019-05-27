@@ -25,9 +25,6 @@ const store = new Store({
   debounce: 1000 * 30
 });
 
-console.log(process.env);
-console.log(fs.readdirSync(__dirname));
-console.log(fs.readdirSync("./"));
 class Events extends EventEmitter {
   constructor(params) {
     super(params);
