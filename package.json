@@ -129,8 +129,7 @@
   "pkg": {
     "scripts": [
       "typeDefs/**/*",
-      "crew/**/*",
-      ".env"
+      "crew/**/*"
     ],
     "assets": [
       "assets/**/*",
