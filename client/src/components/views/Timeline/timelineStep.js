@@ -12,7 +12,9 @@ const TimelineStep = ({
   values = {},
   updateValues,
   delay,
-  updateDelay
+  updateDelay,
+  stations,
+  clients
 }) => {
   const currentStep = timeline[currentTimelineStep];
 
@@ -34,6 +36,8 @@ const TimelineStep = ({
               values={values}
               updateValues={updateValues}
               updateDelay={updateDelay}
+              stations={stations}
+              clients={clients}
             />
           ))}
         </ul>

@@ -156,10 +156,6 @@ const schema = gql`
       Dynamic: Station
       """
       station: String
-      """
-      Dynamic: Client
-      """
-      client: ID
     ): String
     """
     Macro: Sounds: Stop Looping All Sounds
@@ -170,10 +166,6 @@ const schema = gql`
       Dynamic: Station
       """
       station: String
-      """
-      Dynamic: Client
-      """
-      client: ID
     ): String
     applyClientSet(
       id: ID!

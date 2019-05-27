@@ -62,10 +62,6 @@ const schema = gql`
       Dynamic: Station
       """
       station: String
-      """
-      Dynamic: Client
-      """
-      client: ID
       badgeId: ID!
     ): String
 

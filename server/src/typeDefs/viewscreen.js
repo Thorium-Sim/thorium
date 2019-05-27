@@ -27,15 +27,14 @@ const schema = gql`
     Macro: Viewscreen: Change Viewscreen Card
     """
     updateViewscreenComponent(
+      """
+      Dynamic: Client
+      """
       id: ID
       simulatorId: ID
       component: String!
       data: String
       secondary: Boolean
-      """
-      Dynamic: Client
-      """
-      client: ID
     ): String
     updateViewscreenData(id: ID!, data: String!): String
 
@@ -43,13 +42,12 @@ const schema = gql`
     Macro: Viewscreen: Set Viewscreen to Auto
     """
     setViewscreenToAuto(
-      id: ID
-      simulatorId: ID
-      secondary: Boolean
       """
       Dynamic: Client
       """
-      client: ID
+      id: ID
+      simulatorId: ID
+      secondary: Boolean
     ): String
     updateViewscreenAuto(id: ID!, auto: Boolean!): String
     toggleViewscreenVideo(simulatorId: ID, viewscreenId: ID): String

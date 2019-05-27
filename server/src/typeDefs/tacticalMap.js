@@ -220,9 +220,9 @@ const schema = gql`
       mapId: ID!
       secondary: Boolean
       """
-      Dynamic: Station
+      Dynamic: Client
       """
-      client: ID
+      viewscreenId: ID
     ): String
   }
   extend type Subscription {
