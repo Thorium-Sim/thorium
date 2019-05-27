@@ -10,6 +10,7 @@ branches:
 
 stages:
   - test
+  - env
   - name: deploy
     if: branch = master
 
@@ -25,6 +26,11 @@ script:
 
 jobs:
   include:
+    - stage: env
+      install:
+        - npm install
+      script:
+        - npm run mk-build && npm run build-env && cat ./build/.env
     - stage: deploy
       install:
         - npm install
