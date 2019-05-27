@@ -6,7 +6,7 @@ import paths from "./helpers/paths";
 import Store from "./helpers/data-store";
 import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
-
+import fs from "fs";
 let snapshotDir = "./snapshots/";
 
 if (process.env.NODE_ENV === "production") {

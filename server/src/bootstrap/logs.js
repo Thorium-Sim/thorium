@@ -2,7 +2,7 @@ import paths from "../helpers/paths";
 import fs from "fs";
 import mkdirp from "mkdirp";
 
-require("dotenv").config();
+require("dotenv").config({ debug: true, path: `${__dirname}/../.env` });
 
 // There is an error message freaking users out, and I
 // can't figure out how to turn it off. So monkey patching
