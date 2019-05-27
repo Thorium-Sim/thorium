@@ -225,6 +225,7 @@ const resolver = {
               return c;
             })
           };
+        return station;
       });
     },
     stationSets(rootValue) {

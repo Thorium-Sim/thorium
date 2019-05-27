@@ -153,6 +153,7 @@ export function addAspects(template, sim, data = App) {
       data.softwarePanels.push(
         new Classes.SoftwarePanel({
           id,
+          templateId: panel.id,
           name: panel.name,
           simulatorId: sim.id,
           cables: panel.cables,

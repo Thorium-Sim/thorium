@@ -28,13 +28,10 @@ export default function renderCards(props) {
     return <CardHolder component={Comp} {...props} />;
   }
   function getCompName(name) {
-    const cleanedName = name
-      .replace("software-panel-", "")
-      .replace("interface-id:", "");
-    if (props.simulator.panels.includes(cleanedName)) {
-      return "SoftwarePanels";
+    if (name.indexOf("interface-id:") > -1) {
+      return "Interface";
     }
-    return "Interface";
+    return "SoftwarePanels";
   }
   return cards
     .concat({ name: "Login", component: "Login", icon: "Login" })
