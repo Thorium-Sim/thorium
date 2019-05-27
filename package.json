@@ -150,7 +150,9 @@
   },
   "eslintConfig": {
     "extends": "react-app",
-    "plugins": ["react-hooks"],
+    "plugins": [
+      "react-hooks"
+    ],
     "rules": {
       "jsx-a11y/href-no-hash": "off",
       "react-hooks/rules-of-hooks": "error"
@@ -196,7 +198,7 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "npm run bump ${nextRelease.version} && env && npm run deploy && cat ./build/.env"
+          "prepareCmd": "npm run bump ${nextRelease.version} && npm run deploy"
         }
       ],
       [

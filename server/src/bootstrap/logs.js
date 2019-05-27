@@ -4,13 +4,6 @@ import mkdirp from "mkdirp";
 
 require("dotenv").config({ debug: true, path: `${__dirname}/../.env` });
 
-console.log(process.env);
-console.log(fs.readdirSync(`${__dirname}/..`));
-try {
-  console.log(fs.readFileSync(`${__dirname}/../.env`, "utf8"));
-} catch {
-  console.log(`Could not find or load ${__dirname}/../.env`);
-}
 // There is an error message freaking users out, and I
 // can't figure out how to turn it off. So monkey patching
 // so it doesn't show up anymore.
