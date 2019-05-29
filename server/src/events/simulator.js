@@ -193,7 +193,15 @@ App.on("triggerMacros", ({ simulatorId, macros }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   const flight = App.flights.find(f => f.simulators.indexOf(simulatorId) > -1);
   const context = { simulator, flight };
+
+  // Compile the simulator-specific args based on station set
+  const actions = Object.values(simulator.missionConfigs)
+    .map(m => {
+      return m[simulator.stationSet];
+    })
+    .reduce((acc, next) => ({ ...acc, ...next }), {});
   macros.forEach(({ stepId, event, args, delay = 0 }) => {
+    const simArgs = actions[stepId] || {};
     if (stepId) {
       simulator.executeTimelineStep(stepId);
     }
@@ -202,6 +210,7 @@ App.on("triggerMacros", ({ simulatorId, macros }) => {
       App.handleEvent(
         {
           ...parsedArgs,
+          ...simArgs,
           simulatorId
         },
         event,

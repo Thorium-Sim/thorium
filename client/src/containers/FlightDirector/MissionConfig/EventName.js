@@ -36,7 +36,7 @@ const EventName = ({ id, label, client }) => {
       setOutput(name);
     });
   }, [client, id]);
-  return output;
+  return output || null;
 };
 
 export default withApollo(EventName);

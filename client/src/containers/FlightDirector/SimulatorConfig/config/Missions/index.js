@@ -1,20 +1,8 @@
-import React, { Fragment, Component, PureComponent } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  ListGroup,
-  ListGroupItem,
-  Card,
-  FormGroup,
-  Input,
-  Label
-} from "reactstrap";
+import React from "react";
+import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
-import MacroConfig from "containers/FlightDirector/MissionConfig/MacroConfig";
 import * as Macros from "components/macros";
 
 import "./style.scss";
