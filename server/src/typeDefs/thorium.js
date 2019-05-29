@@ -57,7 +57,13 @@ const schema = gql`
     """
     Macro: Space EdVentures: Assign Space EdVentures Badge
     """
-    assignSpaceEdventuresBadge(station: String, badgeId: ID!): String
+    assignSpaceEdventuresBadge(
+      """
+      Dynamic: Station
+      """
+      station: String
+      badgeId: ID!
+    ): String
 
     """
     Macro: Space EdVentures: Assign Space EdVentures Mission

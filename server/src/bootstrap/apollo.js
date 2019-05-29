@@ -8,14 +8,14 @@ import chalk from "chalk";
 import "../events";
 import "../analytics";
 import "../processes";
+export const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+  resolverValidationOptions: {
+    requireResolversForResolveType: false
+  }
+});
 export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
-  const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers,
-    resolverValidationOptions: {
-      requireResolversForResolveType: false
-    }
-  });
   const graphqlOptions = {
     schema,
     resolverValidationOptions: {

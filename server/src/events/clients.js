@@ -245,8 +245,15 @@ App.on(
     pubsub.publish("soundSub", soundObj);
   }
 );
-App.on("stopAllSounds", ({ simulatorId }) => {
-  const clients = App.clients.filter(s => s.simulatorId === simulatorId);
+App.on("stopAllSounds", ({ simulatorId, station }) => {
+  const clients = App.clients.filter(s => {
+    if (s.simulatorId !== simulatorId) return false;
+    if (station) {
+      if (s.station === station || s.id === station) return true;
+      return false;
+    }
+    return true;
+  });
   // Remove all of the sounds that have one of the clients
   App.sounds = App.sounds.filter(s => {
     const client = clients.find(c => s.clients.indexOf(c) > -1);
@@ -255,8 +262,15 @@ App.on("stopAllSounds", ({ simulatorId }) => {
   });
   pubsub.publish("cancelAllSounds", clients);
 });
-App.on("cancelLoopingSounds", ({ simulatorId }) => {
-  const clients = App.clients.filter(s => s.simulatorId === simulatorId);
+App.on("cancelLoopingSounds", ({ simulatorId, station }) => {
+  const clients = App.clients.filter(s => {
+    if (s.simulatorId !== simulatorId) return false;
+    if (station) {
+      if (s.station === station || s.id === station) return true;
+      return false;
+    }
+    return true;
+  });
   // Remove all of the sounds that have one of the clients
   App.sounds = App.sounds.filter(s => {
     const client = clients.find(c => s.clients.indexOf(c) > -1);

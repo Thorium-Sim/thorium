@@ -73,6 +73,9 @@ const schema = gql`
     notify(
       simulatorId: ID!
       type: String
+      """
+      Dynamic: Station
+      """
       station: String
       title: String!
       body: String

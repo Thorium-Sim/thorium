@@ -4,6 +4,7 @@ import { titleCase } from "change-case";
 const properties = [
   "Simulator",
   "Stations",
+  "Missions",
   "Decks",
   "Systems",
   "Inventory",

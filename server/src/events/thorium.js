@@ -63,7 +63,11 @@ const badgeAssign = ({
 }) => {
   const clients = App.clients.filter(c => {
     if (clientId) return c.id === clientId;
-    if (station) return c.simulatorId === simulator.id && c.station === station;
+    if (station)
+      return (
+        c.simulatorId === simulator.id &&
+        (c.station === station || c.id === station)
+      );
     return c.flightId === flight.id;
   });
   const badges = clients.map(c => ({ clientId: c.id, badgeId }));

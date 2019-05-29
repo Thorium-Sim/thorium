@@ -49,7 +49,9 @@ class Mission extends Component {
       executedTimelineSteps,
       currentTimelineStep,
       timeline,
-      auxTimelineId
+      auxTimelineId,
+      stations,
+      clients
     } = this.props;
     const { actions, showDescriptions, values, delay } = this.state;
     return (
@@ -105,6 +107,8 @@ class Mission extends Component {
           updateDelay={newDelay => {
             this.setState({ delay: newDelay });
           }}
+          stations={stations}
+          clients={clients}
         />
       </Fragment>
     );

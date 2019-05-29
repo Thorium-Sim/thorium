@@ -124,6 +124,8 @@ export default class Simulator {
     this.stationSet = params.stationSet || null;
     this.stations = [];
     this.exocomps = params.exocomps || 0;
+
+    // Mission Stuff
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.executedTimelineSteps = params.executedTimelineSteps || [];
@@ -132,6 +134,8 @@ export default class Simulator {
       params.timelines.forEach(t =>
         this.timelines.push(new TimelineInstance(t, this.id))
       );
+    this.missionConfigs = params.missionConfigs || {};
+
     this.bridgeOfficerMessaging =
       params.bridgeOfficerMessaging === false ? false : true;
     this.teams = [];
@@ -242,6 +246,15 @@ export default class Simulator {
   setAuxTimelineStep(timelineId, step) {
     const timeline = this.timelines.find(t => t.id === timelineId);
     timeline && timeline.setTimelineStep(step);
+  }
+  setMissionConfig(missionId, stationSetId, actionId, args) {
+    this.missionConfigs[missionId] = this.missionConfigs[missionId] || {};
+    this.missionConfigs[missionId][stationSetId] =
+      this.missionConfigs[missionId][stationSetId] || {};
+    this.missionConfigs[missionId][stationSetId][actionId] = {
+      ...this.missionConfigs[missionId][stationSetId][actionId],
+      ...args
+    };
   }
   updateLighting(lighting) {
     this.lighting.update(lighting);

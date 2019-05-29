@@ -27,6 +27,7 @@ const MISSION_SUB = gql`
           event
           args
           delay
+          needsConfig
         }
       }
     }
@@ -132,6 +133,10 @@ class MissionsConfig extends Component {
           updateMission={this.updateMission}
           exportMissionScript={this.exportMissionScript}
         />
+        <small>
+          Yellow timeline actions might need additional configuration in the
+          simulator config.
+        </small>
       </Container>
     );
   }
@@ -156,6 +161,7 @@ const MissionsConfigQuery = gql`
           event
           name
           type
+          needsConfig
         }
       }
     }
