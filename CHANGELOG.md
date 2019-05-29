@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/Thorium-Sim/thorium/compare/1.6.2...1.7.0) (2019-05-29)
+
+
+### Features
+
+* **Timeline:** Adds simulator mission timeline args. This allows timelines to use data from the simulator in their config, like stations and clients. This also allows for more than two viewscreens to be configured in a single mission. Closes [#2111](https://github.com/Thorium-Sim/thorium/issues/2111). ([7faff7d](https://github.com/Thorium-Sim/thorium/commit/7faff7d))
+
 ## [1.6.2](https://github.com/Thorium-Sim/thorium/compare/1.6.1...1.6.2) (2019-05-28)
 
 
