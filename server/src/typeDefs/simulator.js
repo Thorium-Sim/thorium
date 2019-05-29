@@ -24,6 +24,7 @@ const schema = gql`
     systems: [System]
     stations: [Station]
     mission: Mission
+    missionConfigs: JSON
     currentTimelineStep: Int
     executedTimelineSteps: [ID]
     timelines: [TimelineInstance]
@@ -104,6 +105,13 @@ const schema = gql`
     ): String
 
     setSimulatorMission(simulatorId: ID!, missionId: ID!): String
+    setSimulatorMissionConfig(
+      simulatorId: ID!
+      missionId: ID!
+      stationSetId: ID!
+      actionId: ID!
+      args: JSON!
+    ): String
     updateSimulatorPanels(simulatorId: ID!, panels: [ID]!): String
     updateSimulatorCommandLines(simulatorId: ID!, commandLines: [ID]!): String
     updateSimulatorTriggers(simulatorId: ID!, triggers: [ID]!): String

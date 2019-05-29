@@ -17,6 +17,7 @@ const fragment = gql`
     caps
     exocomps
     panels
+    missionConfigs
     commandLines
     triggers
     interfaces

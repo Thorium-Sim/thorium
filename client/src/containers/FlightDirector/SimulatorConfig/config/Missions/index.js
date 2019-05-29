@@ -14,6 +14,8 @@ import {
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
+import MacroConfig from "containers/FlightDirector/MissionConfig/MacroConfig";
+import * as Macros from "components/macros";
 
 import "./style.scss";
 
@@ -51,6 +53,7 @@ function reducer(state, action) {
 }
 
 const MissionConfig = ({ missions, simulator }) => {
+  const { missionConfigs } = simulator;
   const [state, dispatch] = React.useReducer(reducer, {});
   const { selectedMission, selectedStationSet, selectedAction } = state;
   const mission = missions.find(s => s.id === selectedMission) || {};
@@ -78,8 +81,13 @@ const MissionConfig = ({ missions, simulator }) => {
         })
     : [];
 
-  console.log(actions);
   const action = actions.find(a => a.id === selectedAction) || {};
+
+  const config =
+    (missionConfigs[selectedMission] &&
+      missionConfigs[selectedMission][selectedStationSet] &&
+      missionConfigs[selectedMission][selectedStationSet][selectedAction]) ||
+    {};
   return (
     <Container fluid className="sim-missions-config">
       <Row>
@@ -119,7 +127,7 @@ const MissionConfig = ({ missions, simulator }) => {
             <ListGroup>
               {actions.map(m => (
                 <ListGroupItem
-                  key={m.id}
+                  key={`${m.id}-${m.stepId}`}
                   active={action.id === m.id}
                   onClick={() => dispatch({ type: "setAction", id: m.id })}
                 >
@@ -133,6 +141,74 @@ const MissionConfig = ({ missions, simulator }) => {
                 </ListGroupItem>
               ))}
             </ListGroup>
+          </Col>
+        )}
+        {action.id && (
+          <Col sm={5}>
+            Action
+            <Query
+              query={gql`
+                query Clients {
+                  clients {
+                    id
+                    label
+                  }
+                }
+              `}
+            >
+              {({ data, client }) => {
+                const EventMacro =
+                  Macros[action.event] ||
+                  (() => {
+                    return null;
+                  });
+                const args = JSON.parse(action.args) || {};
+                return (
+                  EventMacro && (
+                    <Mutation
+                      mutation={gql`
+                        mutation setSimulatorConfig(
+                          $simulatorId: ID!
+                          $missionId: ID!
+                          $stationSetId: ID!
+                          $actionId: ID!
+                          $args: JSON!
+                        ) {
+                          setSimulatorMissionConfig(
+                            simulatorId: $simulatorId
+                            missionId: $missionId
+                            stationSetId: $stationSetId
+                            actionId: $actionId
+                            args: $args
+                          )
+                        }
+                      `}
+                      refetchQueries={["Simulators"]}
+                    >
+                      {action => (
+                        <EventMacro
+                          stations={stationSet.stations}
+                          clients={data && data.clients}
+                          updateArgs={(key, value) => {
+                            action({
+                              variables: {
+                                simulatorId: simulator.id,
+                                missionId: mission.id,
+                                stationSetId: stationSet.id,
+                                actionId: selectedAction,
+                                args: { ...config, [key]: value }
+                              }
+                            });
+                          }}
+                          args={{ ...args, ...config }}
+                          client={client}
+                        />
+                      )}
+                    </Mutation>
+                  )
+                );
+              }}
+            </Query>
           </Col>
         )}
       </Row>
