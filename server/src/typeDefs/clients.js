@@ -136,19 +136,37 @@ const schema = gql`
     """
     playSound(
       sound: SoundInput!
+      """
+      Dynamic: Station
+      """
       station: String
       simulatorId: ID
+      """
+      Dynamic: Client
+      """
       clientId: String
     ): String
 
     """
     Macro: Sounds: Cancel All Sounds
     """
-    stopAllSounds(simulatorId: ID!): String
+    stopAllSounds(
+      simulatorId: ID!
+      """
+      Dynamic: Station
+      """
+      station: String
+    ): String
     """
     Macro: Sounds: Stop Looping All Sounds
     """
-    cancelLoopingSounds(simulatorId: ID!): String
+    cancelLoopingSounds(
+      simulatorId: ID!
+      """
+      Dynamic: Station
+      """
+      station: String
+    ): String
     applyClientSet(
       id: ID!
       flightId: ID!

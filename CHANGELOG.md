@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/Thorium-Sim/thorium/compare/1.6.1...1.6.2) (2019-05-28)
+
+
+### Bug Fixes
+
+* **Build:** Fixes the build process. ([d31e173](https://github.com/Thorium-Sim/thorium/commit/d31e173))
+
 ## [1.6.1](https://github.com/Thorium-Sim/thorium/compare/1.6.0...1.6.1) (2019-05-27)
 
 

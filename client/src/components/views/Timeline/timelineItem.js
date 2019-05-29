@@ -23,7 +23,9 @@ class ActionPreview extends Component {
       values,
       delay,
       updateDelay,
-      updateValues
+      updateValues,
+      stations,
+      clients
     } = this.props;
     return (
       <div className="timeline-item">
@@ -79,6 +81,8 @@ class ActionPreview extends Component {
                 args={{ ...args, ...values[id] }}
                 updateArgs={edit ? this.setArg : () => {}}
                 lite
+                stations={stations}
+                clients={clients}
               />
             );
           })()}
@@ -107,7 +111,9 @@ class TimelineItem extends Component {
       values,
       updateValues,
       delay,
-      updateDelay
+      updateDelay,
+      stations,
+      clients
     } = this.props;
     const { expanded } = this.state;
 
@@ -145,6 +151,8 @@ class TimelineItem extends Component {
                 updateValues={updateValues}
                 delay={delay}
                 updateDelay={updateDelay}
+                stations={stations}
+                clients={clients}
               />
             )}
           </Fragment>

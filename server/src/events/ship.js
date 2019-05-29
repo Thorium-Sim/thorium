@@ -52,7 +52,7 @@ App.on("shipDockingChange", ({ simulatorId, which, state }) => {
             ? `Ramps are now ${state ? "Extended" : "Retracted"}`
             : which === "airlock"
             ? `Doors are now ${state ? "Open" : "Closed"}`
-            :  `Legs are now ${state ? "Extended" : "Retracted"}`,
+            : `Legs are now ${state ? "Extended" : "Retracted"}`,
         color: "info"
       },
       "addCoreFeed"

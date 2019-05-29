@@ -32,10 +32,15 @@ const schema = gql`
     name: String
     type: String
     event: String
+    needsConfig: Boolean
     args: String
     delay: Int
   }
 
+  enum TIMELINE_ITEM_CONFIG_TYPE {
+    client
+    station
+  }
   input TimelineItemInput {
     id: ID
     name: String
@@ -124,6 +129,7 @@ const schema = gql`
   }
 `;
 
+let logged = false;
 const resolver = {
   Mission: {
     id(rootValue) {
@@ -168,6 +174,16 @@ const resolver = {
   TimelineInstance: {
     mission(timeline) {
       return App.missions.find(m => m.id === timeline.missionId);
+    }
+  },
+  TimelineItem: {
+    needsConfig({ event }) {
+      const { schema } = require("../bootstrap/apollo");
+      const field = schema.getMutationType().getFields()[event];
+
+      return Boolean(
+        field.args.find(a => a.description.indexOf("Dynamic") > -1)
+      );
     }
   },
   Query: {
