@@ -76,6 +76,7 @@ export default class ContactContextMenu extends Component {
                       backgroundColor: "rgba(20,20,50,0.5)"
                     }}
                     src={`/assets${contact.icon}`}
+                    className="sensors-contact-army-picture"
                     onClick={() => this.setState({ pickingIcon: true })}
                   />
                 </Col>
@@ -91,6 +92,7 @@ export default class ContactContextMenu extends Component {
                       backgroundColor: "rgba(20,20,50,0.5)"
                     }}
                     src={`/assets${contact.picture}`}
+                    className="sensors-contact-army-picture"
                     onClick={() => this.setState({ pickingPicture: true })}
                   />
                 </Col>

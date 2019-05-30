@@ -66,7 +66,6 @@ const SetArmyContacts = ({ args, updateArgs }) => {
                 onClick={() => selectContact(contact.id)}
                 draggable="false"
                 role="presentation"
-                style={{ width: "30px" }}
                 className="armyContact clickable"
                 src={`/assets${contact.icon}`}
               />
@@ -75,7 +74,6 @@ const SetArmyContacts = ({ args, updateArgs }) => {
                 onClick={() => selectContact(contact)}
                 draggable="false"
                 role="presentation"
-                style={{ width: "30px" }}
                 className="armyContact clickable"
                 src={`/assets${contact.picture}`}
               />
