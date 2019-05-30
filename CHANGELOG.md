@@ -1,3 +1,11 @@
+## [1.7.1](https://github.com/Thorium-Sim/thorium/compare/1.7.0...1.7.1) (2019-05-30)
+
+
+### Bug Fixes
+
+* **Planetary Scan:** Make the image input for planetary scan a little bit nicer. Closes [#2231](https://github.com/Thorium-Sim/thorium/issues/2231) ([6c94694](https://github.com/Thorium-Sim/thorium/commit/6c94694))
+* **Sensor Contacts:** Makes the click area for sensor contacts in the macro config a little bit nicer. Closes [#2232](https://github.com/Thorium-Sim/thorium/issues/2232). ([0bbafd5](https://github.com/Thorium-Sim/thorium/commit/0bbafd5))
+
 # [1.7.0](https://github.com/Thorium-Sim/thorium/compare/1.6.2...1.7.0) (2019-05-29)
 
 
