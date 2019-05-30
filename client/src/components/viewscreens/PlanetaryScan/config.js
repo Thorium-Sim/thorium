@@ -81,6 +81,7 @@ class PlanetaryScanConfig extends Component {
                 src={`/assets/${planet}`}
                 alt="Planet"
                 style={{ cursor: "pointer", width: "100%", maxWidth: "150px" }}
+                className="planetary-scan-config-image"
                 draggable={false}
                 onClick={() => this.setState({ config: "planet" })}
               />
@@ -96,6 +97,7 @@ class PlanetaryScanConfig extends Component {
                     width: "100%",
                     maxWidth: "150px"
                   }}
+                  className="planetary-scan-config-image"
                   draggable={false}
                   onClick={() => this.setState({ config: "clouds" })}
                 />
