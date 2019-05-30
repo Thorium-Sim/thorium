@@ -5,6 +5,7 @@ const properties = [
   "Simulator",
   "Stations",
   "Missions",
+  "Macros",
   "Decks",
   "Systems",
   "Inventory",

@@ -186,6 +186,16 @@ const resolver = {
       );
     }
   },
+  MacroAction: {
+    needsConfig({ event }) {
+      const { schema } = require("../bootstrap/apollo");
+      const field = schema.getMutationType().getFields()[event];
+
+      return Boolean(
+        field.args.find(a => a.description.indexOf("Dynamic") > -1)
+      );
+    }
+  },
   Query: {
     missions(root, { id, aux }) {
       if (id) return App.missions.filter(m => m.id === id);
