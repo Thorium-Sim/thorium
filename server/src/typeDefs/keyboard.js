@@ -29,6 +29,7 @@ const schema = gql`
     event: String
     args: String
     delay: Int
+    needsConfig: String
   }
 
   input ActionInput {
