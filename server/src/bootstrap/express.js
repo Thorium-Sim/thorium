@@ -33,7 +33,6 @@ const exports = {
   exportSimulator: exportSimulator,
   exportKeyboard: exportKeyboard,
   exportTacticalMap: exportTacticalMap,
-  exportLibrary: exportLibrary,
   exportSoftwarePanel: exportSoftwarePanel,
   exportFlight,
   exportTrigger,
@@ -93,6 +92,9 @@ export default () => {
     });
   });
 
+  server.get("/exportLibrary/:simId", (req, res) => {
+    exportLibrary(req.params.simId, null, res);
+  });
   server.get("/exportLibrary/:simId/:entryId", (req, res) => {
     exportLibrary(req.params.simId, req.params.entryId, res);
   });
