@@ -200,7 +200,7 @@ App.on("triggerMacros", ({ simulatorId, macros }) => {
       return m[simulator.stationSet];
     })
     .reduce((acc, next) => ({ ...acc, ...next }), {});
-  macros.forEach(({ stepId, event, args, delay = 0 }) => {
+  macros.forEach(({ id, stepId = id, event, args, delay = 0 }) => {
     const simArgs = actions[stepId] || {};
     if (stepId) {
       simulator.executeTimelineStep(stepId);

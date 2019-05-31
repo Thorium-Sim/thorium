@@ -5,6 +5,7 @@ const properties = [
   "Simulator",
   "Stations",
   "Missions",
+  "Macros",
   "Decks",
   "Systems",
   "Inventory",
@@ -17,7 +18,8 @@ const properties = [
   "Ambiance",
   "CommandLines",
   "Triggers",
-  "Interfaces"
+  "Interfaces",
+  "Keyboards"
 ];
 export default ({ selectProperty, selectedProperty }) => {
   return (

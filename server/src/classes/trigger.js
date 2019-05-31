@@ -98,6 +98,7 @@ export default class Trigger {
             }, []);
         };
         const macros = processConnections(comp).map(c => ({
+          id: c.id,
           event: c.name.replace("macro-", ""),
           args: { ...c.config, ...c.values },
           delay: c.config && c.config.delay ? c.config.delay : 0

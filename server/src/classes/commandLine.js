@@ -40,6 +40,7 @@ function generateTriggerActions(component, simulator = {}, args) {
   return component.connectedComponents
     .filter(c => c.inputNode === "trigger")
     .map(c => ({
+      id: c.id,
       event: c.component.name.replace("macro-", ""),
       delay: c.config.delay || 0,
       args: component.connectedComponents
