@@ -30,7 +30,7 @@ const ActionList = ({
   return (
     <Fragment>
       <h3>Actions</h3>
-      <ListGroup>
+      <ListGroup style={{ maxHeight: "60vh", overflowY: "auto" }}>
         {actions.map(e => (
           <ListGroupItem
             key={`${id}-${e.id}`}
@@ -92,7 +92,7 @@ const MacroConfig = ({ macros }) => {
       <Row style={{ height: "100%" }}>
         <Col sm={3} style={{ height: "100%" }}>
           <h3>Macros</h3>
-          <ListGroup>
+          <ListGroup style={{ maxHeight: "60vh", overflowY: "auto" }}>
             {macros.map(m => (
               <ListGroupItem
                 key={m.id}
