@@ -1,14 +1,32 @@
 import React from "react";
-import gql from "graphql-tag.macro";
-import { graphql, Query, Mutation } from "react-apollo";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
+import gql from "graphql-tag.macro";
+import { Query, Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
-import FontAwesome from "react-fontawesome";
+
+const KeyboardConfigQuery = gql`
+  query Keyboards {
+    keyboard {
+      id
+      name
+      keys {
+        id
+        key
+        meta
+        actions {
+          id
+          args
+          event
+        }
+      }
+    }
+  }
+`;
 
 function reducer(state, action) {
-  if (action.type === "setInterface") {
-    return { selectedInterface: action.id };
+  if (action.type === "setKeyboard") {
+    return { selectedKeyboard: action.id };
   }
   if (action.type === "setStationSet") {
     return { ...state, selectedStationSet: action.id, selectedAction: null };
@@ -19,121 +37,61 @@ function reducer(state, action) {
   return state;
 }
 
-function parseInterface({ components, values }) {
-  return components
-    .filter(c => c.component.name.indexOf("macro-") > -1)
-    .map(c => ({
-      id: c.id,
-      event: c.component.name.replace("macro-", ""),
-      args: values[c.id]
-    }));
-}
-
-const App = ({
-  data: { loading, interfaces },
-  selectedSimulator: simulator,
-  client
-}) => {
-  const updateInterfaces = (e, action) => {
-    const variables = {
-      simulatorId: simulator.id,
-      interfaces: simulator.interfaces.concat(e.target.value)
-    };
-    action({
-      variables
-    });
-  };
-  const removeInterfaces = (id, action) => {
-    const variables = {
-      simulatorId: simulator.id,
-      interfaces: (simulator.interfaces || []).filter(s => s !== id)
-    };
-    action({
-      variables
-    });
-  };
-
+const KeyboardConfig = ({ keyboards, simulator }) => {
   const { missionConfigs } = simulator;
   const [state, dispatch] = React.useReducer(reducer, {});
-  const { selectedInterface, selectedStationSet, selectedAction } = state;
-
-  if (loading || !interfaces) return null;
-
-  const iFace = interfaces.find(s => s.id === selectedInterface) || {};
+  const { selectedKeyboard, selectedStationSet, selectedAction } = state;
+  const keyboard = keyboards.find(s => s.id === selectedKeyboard) || {};
   const stationSet =
     simulator.stationSets.find(s => s.id === selectedStationSet) || {};
-  const actions = iFace.id ? parseInterface(iFace) : [];
-
+  const actions = keyboard.id
+    ? keyboard.keys
+        .reduce(
+          (acc, t, i) =>
+            console.log(t) ||
+            acc.concat(
+              t.actions.map(item => ({
+                ...item,
+                order: i,
+                stepName: `${t.meta.join("+")}${t.meta.length > 0 ? " " : ""}${
+                  t.key
+                }`,
+                stepId: t.id
+              }))
+            ),
+          []
+        )
+        .sort((a, b) => {
+          if (a.order > b.order) return 1;
+          if (a.order < b.order) return -1;
+          return 0;
+        })
+    : [];
   const action = actions.find(a => a.id === selectedAction) || {};
 
   const config =
-    (missionConfigs[selectedInterface] &&
-      missionConfigs[selectedInterface][selectedStationSet] &&
-      missionConfigs[selectedInterface][selectedStationSet][selectedAction]) ||
+    (missionConfigs[selectedKeyboard] &&
+      missionConfigs[selectedKeyboard][selectedStationSet] &&
+      missionConfigs[selectedKeyboard][selectedStationSet][selectedAction]) ||
     {};
-
   return (
-    <Container fluid>
+    <Container fluid className="sim-missions-config">
       <Row>
-        <Mutation
-          mutation={gql`
-            mutation UpdateSimulatorInterfaces(
-              $simulatorId: ID!
-              $interfaces: [ID]!
-            ) {
-              updateSimulatorInterfaces(
-                simulatorId: $simulatorId
-                interfaces: $interfaces
-              )
-            }
-          `}
-        >
-          {action => (
-            <Col sm={2}>
-              Interfaces
-              <ListGroup>
-                {(simulator.interfaces || []).map(s => {
-                  const interfaceObj = interfaces.find(c => c.id === s);
-                  if (!interfaceObj) return null;
-                  return (
-                    <ListGroupItem
-                      key={s}
-                      active={iFace.id === s}
-                      onClick={() => dispatch({ type: "setInterface", id: s })}
-                    >
-                      {" "}
-                      <FontAwesome
-                        className="text-danger"
-                        name="ban"
-                        onClick={() => removeInterfaces(s, action)}
-                      />{" "}
-                      {interfaceObj.name}{" "}
-                    </ListGroupItem>
-                  );
-                })}
-              </ListGroup>
-              <select
-                className="btn btn-primary btn-block"
-                value={"nothing"}
-                onChange={e => updateInterfaces(e, action)}
+        <Col sm={2}>
+          Keyboards
+          <ListGroup>
+            {keyboards.map(m => (
+              <ListGroupItem
+                key={m.id}
+                active={keyboard.id === m.id}
+                onClick={() => dispatch({ type: "setKeyboard", id: m.id })}
               >
-                <option value="nothing">
-                  Add an interface to the simulator
-                </option>
-                {interfaces
-                  .filter(
-                    s => !(simulator.interfaces || []).find(c => c === s.id)
-                  )
-                  .map(s => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
-              </select>
-            </Col>
-          )}
-        </Mutation>
-        {iFace.id && (
+                {m.name}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        </Col>
+        {keyboard.id && (
           <Col sm={2}>
             Station Sets
             <ListGroup>
@@ -159,7 +117,11 @@ const App = ({
                   active={action.id === m.id}
                   onClick={() => dispatch({ type: "setAction", id: m.id })}
                 >
-                  <EventName id={m.event} label={m.event} />
+                  <div>{m.stepName}</div>
+                  <small>
+                    {" "}
+                    <EventName id={m.event} label={m.event} />
+                  </small>
                 </ListGroupItem>
               ))}
             </ListGroup>
@@ -184,7 +146,7 @@ const App = ({
                   (() => {
                     return null;
                   });
-                const args = action.args || {};
+                const args = JSON.parse(action.args) || {};
                 return (
                   EventMacro && (
                     <Mutation
@@ -215,7 +177,7 @@ const App = ({
                             action({
                               variables: {
                                 simulatorId: simulator.id,
-                                missionId: iFace.id,
+                                missionId: keyboard.id,
                                 stationSetId: stationSet.id,
                                 actionId: selectedAction,
                                 args: { ...config, [key]: value }
@@ -237,16 +199,18 @@ const App = ({
     </Container>
   );
 };
-
-const QUERY = gql`
-  query Interfaces {
-    interfaces {
-      id
-      name
-      components
-      values
-    }
-  }
-`;
-
-export default graphql(QUERY)(App);
+const KeyboardData = ({ selectedSimulator }) => {
+  return (
+    <Query query={KeyboardConfigQuery}>
+      {({ loading, data }) =>
+        loading ? null : (
+          <KeyboardConfig
+            keyboards={data.keyboard}
+            simulator={selectedSimulator}
+          />
+        )
+      }
+    </Query>
+  );
+};
+export default KeyboardData;
