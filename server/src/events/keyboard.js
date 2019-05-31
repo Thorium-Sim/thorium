@@ -34,13 +34,6 @@ App.on("triggerKeyboardAction", ({ simulatorId, id, key, meta }) => {
       JSON.stringify(meta.sort()) === JSON.stringify(k.meta.sort())
   );
   if (keyObj) {
-    keyObj.actions.forEach(({ event, args, delay = 0 }) => {
-      setTimeout(() => {
-        App.handleEvent(
-          Object.assign({ simulatorId }, JSON.parse(args)),
-          event
-        );
-      }, delay);
-    });
+    App.handleEvent({ simulatorId, macros: keyObj.actions }, "triggerMacros");
   }
 });

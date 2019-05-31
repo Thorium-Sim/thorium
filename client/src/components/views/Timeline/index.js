@@ -10,6 +10,10 @@ const fragment = gql`
     id
     currentTimelineStep
     executedTimelineSteps
+    missionConfigs
+    stationSet {
+      id
+    }
     mission {
       id
       name

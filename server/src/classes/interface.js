@@ -69,6 +69,7 @@ export default class Interface {
       .filter(Boolean)
       .map(comp => {
         return {
+          id: comp.id,
           event: comp.component.name.replace("macro-", ""),
           args: comp.values,
           delay: 0

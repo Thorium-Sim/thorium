@@ -1,14 +1,32 @@
 import React from "react";
-import gql from "graphql-tag.macro";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
-import { graphql, Query, Mutation } from "react-apollo";
+import gql from "graphql-tag.macro";
+import { Query, Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
-import FontAwesome from "react-fontawesome";
+
+const KeyboardConfigQuery = gql`
+  query Keyboards {
+    keyboard {
+      id
+      name
+      keys {
+        id
+        key
+        meta
+        actions {
+          id
+          args
+          event
+        }
+      }
+    }
+  }
+`;
 
 function reducer(state, action) {
-  if (action.type === "setTrigger") {
-    return { selectedTrigger: action.id };
+  if (action.type === "setKeyboard") {
+    return { selectedKeyboard: action.id };
   }
   if (action.type === "setStationSet") {
     return { ...state, selectedStationSet: action.id, selectedAction: null };
@@ -19,118 +37,61 @@ function reducer(state, action) {
   return state;
 }
 
-function parseTrigger({ components, values }) {
-  return components
-    .filter(c => c.component.name.indexOf("macro-") > -1)
-    .map(c => ({
-      id: c.id,
-      event: c.component.name.replace("macro-", ""),
-      args: values[c.id]
-    }));
-}
-
-const App = ({
-  data: { loading, triggers },
-  selectedSimulator: simulator,
-  client
-}) => {
-  const updateTriggers = (e, action) => {
-    const variables = {
-      simulatorId: simulator.id,
-      triggers: simulator.triggers.concat(e.target.value)
-    };
-    action({
-      variables
-    });
-  };
-  const removeTriggers = (id, action) => {
-    const variables = {
-      simulatorId: simulator.id,
-      triggers: (simulator.triggers || []).filter(s => s !== id)
-    };
-    action({
-      variables
-    });
-  };
-
+const KeyboardConfig = ({ keyboards, simulator }) => {
   const { missionConfigs } = simulator;
   const [state, dispatch] = React.useReducer(reducer, {});
-  const { selectedTrigger, selectedStationSet, selectedAction } = state;
-
-  if (loading || !triggers) return null;
-  const trigger = triggers.find(s => s.id === selectedTrigger) || {};
+  const { selectedKeyboard, selectedStationSet, selectedAction } = state;
+  const keyboard = keyboards.find(s => s.id === selectedKeyboard) || {};
   const stationSet =
     simulator.stationSets.find(s => s.id === selectedStationSet) || {};
-  const actions = trigger.id ? parseTrigger(trigger) : [];
-
+  const actions = keyboard.id
+    ? keyboard.keys
+        .reduce(
+          (acc, t, i) =>
+            console.log(t) ||
+            acc.concat(
+              t.actions.map(item => ({
+                ...item,
+                order: i,
+                stepName: `${t.meta.join("+")}${t.meta.length > 0 ? " " : ""}${
+                  t.key
+                }`,
+                stepId: t.id
+              }))
+            ),
+          []
+        )
+        .sort((a, b) => {
+          if (a.order > b.order) return 1;
+          if (a.order < b.order) return -1;
+          return 0;
+        })
+    : [];
   const action = actions.find(a => a.id === selectedAction) || {};
 
   const config =
-    (missionConfigs[selectedTrigger] &&
-      missionConfigs[selectedTrigger][selectedStationSet] &&
-      missionConfigs[selectedTrigger][selectedStationSet][selectedAction]) ||
+    (missionConfigs[selectedKeyboard] &&
+      missionConfigs[selectedKeyboard][selectedStationSet] &&
+      missionConfigs[selectedKeyboard][selectedStationSet][selectedAction]) ||
     {};
-
   return (
-    <Container fluid>
+    <Container fluid className="sim-missions-config">
       <Row>
-        <Mutation
-          mutation={gql`
-            mutation UpdateSimulatorTriggers(
-              $simulatorId: ID!
-              $triggers: [ID]!
-            ) {
-              updateSimulatorTriggers(
-                simulatorId: $simulatorId
-                triggers: $triggers
-              )
-            }
-          `}
-        >
-          {action => (
-            <Col sm={2}>
-              Triggers
-              <ListGroup>
-                {(simulator.triggers || []).map(s => {
-                  const triggerObj = triggers.find(c => c.id === s);
-                  if (!triggerObj) return null;
-                  return (
-                    <ListGroupItem
-                      key={s}
-                      active={trigger.id === s}
-                      onClick={() => dispatch({ type: "setTrigger", id: s })}
-                    >
-                      {" "}
-                      <FontAwesome
-                        className="text-danger"
-                        name="ban"
-                        onClick={() => removeTriggers(s, action)}
-                      />{" "}
-                      {triggerObj.name}{" "}
-                    </ListGroupItem>
-                  );
-                })}
-              </ListGroup>
-              <select
-                className="btn btn-primary btn-block"
-                value={"nothing"}
-                onChange={e => updateTriggers(e, action)}
+        <Col sm={2}>
+          Keyboards
+          <ListGroup>
+            {keyboards.map(m => (
+              <ListGroupItem
+                key={m.id}
+                active={keyboard.id === m.id}
+                onClick={() => dispatch({ type: "setKeyboard", id: m.id })}
               >
-                <option value="nothing">Add a trigger to the simulator</option>
-                {triggers
-                  .filter(
-                    s => !(simulator.triggers || []).find(c => c === s.id)
-                  )
-                  .map(s => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
-              </select>
-            </Col>
-          )}
-        </Mutation>
-        {trigger.id && (
+                {m.name}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        </Col>
+        {keyboard.id && (
           <Col sm={2}>
             Station Sets
             <ListGroup>
@@ -156,7 +117,11 @@ const App = ({
                   active={action.id === m.id}
                   onClick={() => dispatch({ type: "setAction", id: m.id })}
                 >
-                  <EventName id={m.event} label={m.event} />
+                  <div>{m.stepName}</div>
+                  <small>
+                    {" "}
+                    <EventName id={m.event} label={m.event} />
+                  </small>
                 </ListGroupItem>
               ))}
             </ListGroup>
@@ -181,7 +146,7 @@ const App = ({
                   (() => {
                     return null;
                   });
-                const args = action.args || {};
+                const args = JSON.parse(action.args) || {};
                 return (
                   EventMacro && (
                     <Mutation
@@ -212,7 +177,7 @@ const App = ({
                             action({
                               variables: {
                                 simulatorId: simulator.id,
-                                missionId: trigger.id,
+                                missionId: keyboard.id,
                                 stationSetId: stationSet.id,
                                 actionId: selectedAction,
                                 args: { ...config, [key]: value }
@@ -234,16 +199,18 @@ const App = ({
     </Container>
   );
 };
-
-const QUERY = gql`
-  query Triggers {
-    triggers {
-      id
-      name
-      components
-      values
-    }
-  }
-`;
-
-export default graphql(QUERY)(App);
+const KeyboardData = ({ selectedSimulator }) => {
+  return (
+    <Query query={KeyboardConfigQuery}>
+      {({ loading, data }) =>
+        loading ? null : (
+          <KeyboardConfig
+            keyboards={data.keyboard}
+            simulator={selectedSimulator}
+          />
+        )
+      }
+    </Query>
+  );
+};
+export default KeyboardData;

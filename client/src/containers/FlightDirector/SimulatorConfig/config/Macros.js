@@ -1,14 +1,28 @@
 import React from "react";
-import gql from "graphql-tag.macro";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
-import { graphql, Query, Mutation } from "react-apollo";
+import gql from "graphql-tag.macro";
+import { Query, Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
-import FontAwesome from "react-fontawesome";
+
+const MacrosConfigQuery = gql`
+  query Macros {
+    macros {
+      id
+      name
+      actions {
+        id
+        args
+        event
+        needsConfig
+      }
+    }
+  }
+`;
 
 function reducer(state, action) {
-  if (action.type === "setCommandLine") {
-    return { selectedCommandLine: action.id };
+  if (action.type === "setMacro") {
+    return { selectedMacro: action.id };
   }
   if (action.type === "setStationSet") {
     return { ...state, selectedStationSet: action.id, selectedAction: null };
@@ -19,131 +33,41 @@ function reducer(state, action) {
   return state;
 }
 
-function parseCommandLine({ components, values }) {
-  return components
-    .filter(c => c.component.name.indexOf("macro-") > -1)
-    .map(c => ({
-      id: c.id,
-      event: c.component.name.replace("macro-", ""),
-      args: values[c.id]
-    }));
-}
-
-const App = ({
-  data: { loading, commandLine },
-  selectedSimulator: simulator,
-  client
-}) => {
-  const updateCommandLines = (e, action) => {
-    const variables = {
-      simulatorId: simulator.id,
-      commandLines: simulator.commandLines.concat(e.target.value)
-    };
-    action({
-      variables
-    });
-  };
-  const removeCommandLine = (id, action) => {
-    const variables = {
-      simulatorId: simulator.id,
-      commandLines: (simulator.commandLines || []).filter(s => s !== id)
-    };
-    action({
-      variables
-    });
-  };
-
+const MacrosConfig = ({ macros, simulator }) => {
   const { missionConfigs } = simulator;
   const [state, dispatch] = React.useReducer(reducer, {});
-  const { selectedCommandLine, selectedStationSet, selectedAction } = state;
-
-  if (loading || !commandLine) return null;
-
-  const commandLineObj =
-    commandLine.find(s => s.id === selectedCommandLine) || {};
+  const { selectedMacro, selectedStationSet, selectedAction } = state;
+  const macro = macros.find(s => s.id === selectedMacro) || {};
   const stationSet =
     simulator.stationSets.find(s => s.id === selectedStationSet) || {};
-  console.log(commandLineObj);
-  const actions = commandLineObj.id ? parseCommandLine(commandLineObj) : [];
+  const actions = macro.id ? macro.actions.filter(t => t.needsConfig) : [];
 
   const action = actions.find(a => a.id === selectedAction) || {};
 
   const config =
-    (missionConfigs[selectedCommandLine] &&
-      missionConfigs[selectedCommandLine][selectedStationSet] &&
-      missionConfigs[selectedCommandLine][selectedStationSet][
-        selectedAction
-      ]) ||
+    (missionConfigs[selectedMacro] &&
+      missionConfigs[selectedMacro][selectedStationSet] &&
+      missionConfigs[selectedMacro][selectedStationSet][selectedAction]) ||
     {};
-
+  console.log(macro);
   return (
-    <Container fluid>
+    <Container fluid className="sim-missions-config">
       <Row>
-        <Mutation
-          mutation={gql`
-            mutation UpdateSimulatorCommandLines(
-              $simulatorId: ID!
-              $commandLines: [ID]!
-            ) {
-              updateSimulatorCommandLines(
-                simulatorId: $simulatorId
-                commandLines: $commandLines
-              )
-            }
-          `}
-        >
-          {action => (
-            <Col sm={2}>
-              <ListGroup>
-                {(simulator.commandLines || []).map(s => {
-                  const command = commandLine.find(c => c.id === s);
-                  if (!command) return null;
-                  return (
-                    <ListGroupItem
-                      key={s}
-                      active={commandLineObj.id === s}
-                      onClick={() =>
-                        dispatch({ type: "setCommandLine", id: s })
-                      }
-                    >
-                      {" "}
-                      <FontAwesome
-                        className="text-danger"
-                        name="ban"
-                        onClick={() => removeCommandLine(s, action)}
-                      />{" "}
-                      {command.name}{" "}
-                      <div>
-                        <small>
-                          {command.commands.map(c => c.name).join(", ")}
-                        </small>
-                      </div>
-                    </ListGroupItem>
-                  );
-                })}
-              </ListGroup>
-              <select
-                className="btn btn-primary btn-block"
-                value={"nothing"}
-                onChange={e => updateCommandLines(e, action)}
+        <Col sm={2}>
+          Macros
+          <ListGroup>
+            {macros.map(m => (
+              <ListGroupItem
+                key={m.id}
+                active={macro.id === m.id}
+                onClick={() => dispatch({ type: "setMacro", id: m.id })}
               >
-                <option value="nothing">
-                  Add a command line to the simulator
-                </option>
-                {commandLine
-                  .filter(
-                    s => !(simulator.commandLines || []).find(c => c === s.id)
-                  )
-                  .map(s => (
-                    <option key={s.id} value={s.id}>
-                      {s.name}
-                    </option>
-                  ))}
-              </select>
-            </Col>
-          )}
-        </Mutation>
-        {commandLineObj.id && (
+                {m.name}
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        </Col>
+        {macro.id && (
           <Col sm={2}>
             Station Sets
             <ListGroup>
@@ -194,7 +118,7 @@ const App = ({
                   (() => {
                     return null;
                   });
-                const args = action.args || {};
+                const args = JSON.parse(action.args) || {};
                 return (
                   EventMacro && (
                     <Mutation
@@ -225,7 +149,7 @@ const App = ({
                             action({
                               variables: {
                                 simulatorId: simulator.id,
-                                missionId: commandLineObj.id,
+                                missionId: macro.id,
                                 stationSetId: stationSet.id,
                                 actionId: selectedAction,
                                 args: { ...config, [key]: value }
@@ -247,19 +171,15 @@ const App = ({
     </Container>
   );
 };
-
-const QUERY = gql`
-  query CommandLines {
-    commandLine {
-      id
-      name
-      commands {
-        name
+const MacrosData = ({ selectedSimulator }) => {
+  return (
+    <Query query={MacrosConfigQuery}>
+      {({ loading, data }) =>
+        loading ? null : (
+          <MacrosConfig macros={data.macros} simulator={selectedSimulator} />
+        )
       }
-      components
-      values
-    }
-  }
-`;
-
-export default graphql(QUERY)(App);
+    </Query>
+  );
+};
+export default MacrosData;

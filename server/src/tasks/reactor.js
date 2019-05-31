@@ -48,10 +48,13 @@ export default [
               s.type === "Reactor" &&
               s.model === "reactor"
           );
-          return reactor.efficiencies.map(e => ({
-            label: e.label,
-            value: e.efficiency
-          }));
+
+          return reactor
+            ? reactor.efficiencies.map(e => ({
+                label: e.label,
+                value: e.efficiency
+              }))
+            : "text";
         },
         value: ({ simulator }) => {
           if (!simulator) return 1;
@@ -61,7 +64,9 @@ export default [
               s.type === "Reactor" &&
               s.model === "reactor"
           );
-          return randomFromList(reactor.efficiencies.map(e => e.efficiency));
+          return reactor
+            ? randomFromList(reactor.efficiencies.map(e => e.efficiency))
+            : 1;
         }
       }
     },

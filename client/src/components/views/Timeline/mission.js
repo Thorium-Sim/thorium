@@ -51,7 +51,8 @@ class Mission extends Component {
       timeline,
       auxTimelineId,
       stations,
-      clients
+      clients,
+      simArgs
     } = this.props;
     const { actions, showDescriptions, values, delay } = this.state;
     return (
@@ -109,6 +110,7 @@ class Mission extends Component {
           }}
           stations={stations}
           clients={clients}
+          simArgs={simArgs}
         />
       </Fragment>
     );

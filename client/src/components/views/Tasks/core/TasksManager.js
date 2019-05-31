@@ -13,7 +13,7 @@ export function parseDuration(time) {
       days: 0,
       hours: 0,
       minutes: 0,
-      seconds: Math.round(time / 1000)
+      seconds: Math.round((time || 0) / 1000)
     })
       .normalize()
       .toObject()
