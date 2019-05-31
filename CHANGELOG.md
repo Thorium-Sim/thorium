@@ -1,3 +1,16 @@
+# [1.8.0](https://github.com/Thorium-Sim/thorium/compare/1.7.1...1.8.0) (2019-05-31)
+
+
+### Bug Fixes
+
+* **Macro:** Fixes a scrolling issue on the macro config screen. Closes [#2238](https://github.com/Thorium-Sim/thorium/issues/2238) ([3935350](https://github.com/Thorium-Sim/thorium/commit/3935350))
+
+
+### Features
+
+* **Tasks:** Add a sensor scan task, with fuzzy-text maching for auto-verification. Closes [#2239](https://github.com/Thorium-Sim/thorium/issues/2239) ([b76ecd1](https://github.com/Thorium-Sim/thorium/commit/b76ecd1))
+* **Timeline Actions:** Make it possible to assign specific stations to certain timeline actions based on simulator and station set. This is configured in the Simulator config and applys to missions, macros, interfaces, command lines, triggers, keyboards, and the macros core. Closes [#2165](https://github.com/Thorium-Sim/thorium/issues/2165) ([e8c2023](https://github.com/Thorium-Sim/thorium/commit/e8c2023))
+
 ## [1.7.1](https://github.com/Thorium-Sim/thorium/compare/1.7.0...1.7.1) (2019-05-30)
 
 
