@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { Label } from "reactstrap";
 import gql from "graphql-tag.macro";
-import { graphql } from "react-apollo";
-import SubscriptionHelper from "helpers/subscriptionHelper";
+import { useQuery } from "@apollo/react-hooks";
+import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
+
 const POP_SUB = gql`
   subscription Population($simulatorId: ID) {
     crewCountUpdate(simulatorId: $simulatorId, killed: false)
@@ -19,51 +20,6 @@ const SIM_SUB = gql`
     }
   }
 `;
-
-class Population extends Component {
-  render() {
-    if (this.props.data.loading) return null;
-    const crewCount = this.props.data.crewCount || 0;
-    if (!this.props.data.simulators) return null;
-    const { ship } = this.props.data.simulators[0];
-    if (!ship) return null;
-    return (
-      <div>
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: SIM_SUB,
-              variables: { simulatorId: this.props.simulator.id },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  simulators: subscriptionData.data.simulatorsUpdate
-                });
-              }
-            })
-          }
-        />
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: POP_SUB,
-              variables: { simulatorId: this.props.simulator.id },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  crewCount: subscriptionData.data.crewCountUpdate
-                });
-              }
-            })
-          }
-        />
-        <Label>Crew Population</Label>
-        <div className="status-field">
-          {crewCount + (ship.bridgeCrew ? ship.bridgeCrew : 0)}
-        </div>
-      </div>
-    );
-  }
-}
-
 const POP_QUERY = gql`
   query Population($simulatorId: ID!) {
     crewCount(simulatorId: $simulatorId, killed: false)
@@ -76,13 +32,37 @@ const POP_QUERY = gql`
   }
 `;
 
-export default graphql(POP_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
+const Population = ({ simulator }) => {
+  const { loading, data, subscribeToMore } = useQuery(POP_QUERY, {
+    variables: { simulatorId: simulator.id }
+  });
+  useSubscribeToMore(subscribeToMore, SIM_SUB, {
+    variables: { simulatorId: simulator.id },
+    updateQuery: (previousResult, { subscriptionData }) => ({
+      ...previousResult,
+      simulators: subscriptionData.data.simulatorsUpdate
+    })
+  });
+  useSubscribeToMore(subscribeToMore, POP_SUB, {
+    variables: { simulatorId: simulator.id },
+    updateQuery: (previousResult, { subscriptionData }) => ({
+      ...previousResult,
+      crewCount: subscriptionData.data.crewCountUpdate
+    })
+  });
+  const { simulators, crewCount = 0 } = data;
+  if (loading || !simulators) return null;
+  const { ship } = simulators[0];
 
-    variables: {
-      simulatorId: ownProps.simulator.id,
-      simId: ownProps.simulator.id
-    }
-  })
-})(Population);
+  if (!ship) return null;
+  return (
+    <div>
+      <Label>Crew Population</Label>
+      <div className="status-field">
+        {crewCount + (ship.bridgeCrew ? ship.bridgeCrew : 0)}
+      </div>
+    </div>
+  );
+};
+
+export default Population;
