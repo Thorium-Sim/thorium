@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 import { Duration } from "luxon";
-import { graphql, withApollo, Mutation } from "react-apollo";
+import { withApollo, Mutation } from "react-apollo";
 import Tour from "helpers/tourHelper";
-import SubscriptionHelper from "helpers/subscriptionHelper";
+import { useQuery } from "@apollo/react-hooks";
+import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
 
 import "./style.scss";
 
@@ -15,8 +16,8 @@ function padDigits(number, digits) {
 }
 
 const SELF_DESTRUCT_SUB = gql`
-  subscription SelfDestructUpdate($id: ID) {
-    simulatorsUpdate(simulatorId: $id) {
+  subscription SelfDestructUpdate($simulatorId: ID) {
+    simulatorsUpdate(simulatorId: $simulatorId) {
       id
       ship {
         selfDestructTime
@@ -38,240 +39,9 @@ const trainingSteps = [
       "Click this button to activate and deactivate the self destruct. You have the option to set a time on the self destruct in Hour:Minute:Second format. Give yourself enough time ."
   }
 ];
-class SelfDestruct extends Component {
-  state = {
-    modal: false
-  };
-  toggle = () => {
-    this.setState({
-      modal: !this.state.modal,
-      setCode: false
-    });
-  };
-  activate = (time, force) => {
-    const sim = this.props.data.simulators[0];
-    if (sim.ship.selfDestructTime && sim.ship.selfDestructCode && !force) {
-      return this.setState({
-        modal: false,
-        deactivating: true,
-        deactivateCode: ""
-      });
-    }
-    const mutation = gql`
-      mutation ActivateSelfDestruct($id: ID!, $time: Float) {
-        setSelfDestructTime(simulatorId: $id, time: $time)
-      }
-    `;
-    const variables = {
-      id: sim.id,
-      time: sim.ship.selfDestructTime ? null : time
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-    this.setState({
-      modal: false,
-      deactivating: false,
-      deactivateCode: ""
-    });
-  };
-  setCode = code => {
-    const mutation = gql`
-      mutation SetSelfDestructCode($id: ID!, $code: String) {
-        setSelfDestructCode(simulatorId: $id, code: $code)
-      }
-    `;
-    const sim = this.props.data.simulators[0];
-    const variables = {
-      id: sim.id,
-      code: String(code)
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-    this.setState({ modal: false, setCode: false });
-  };
-  openCodeModal = () => {
-    this.setState({ modal: true, setCode: true });
-  };
-  render() {
-    if (this.props.data.loading || !this.props.data.simulators) return null;
-    const {
-      modal,
-      setCode,
-      settingCode,
-      password,
-      passwordVerify,
-      deactivating,
-      deactivateCode
-    } = this.state;
-    if (!this.props.data.simulators) return null;
-    const {
-      selfDestructTime,
-      selfDestructCode
-    } = this.props.data.simulators[0].ship;
-    const duration = Duration.fromObject({
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-      milliseconds: selfDestructTime
-    }).normalize();
-    return (
-      <Container className="self-destruct">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: SELF_DESTRUCT_SUB,
-              variables: {
-                id: this.props.simulator.id
-              },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  simulators: subscriptionData.data.simulatorsUpdate
-                });
-              }
-            })
-          }
-        />
-        {modal ? (
-          <SelfDestructModal
-            modal={modal}
-            toggle={this.toggle}
-            activate={this.activate}
-            code={selfDestructCode}
-            setCode={setCode}
-            setCodeFunc={this.setCode}
-          />
-        ) : deactivating ? (
-          <Row>
-            <Col sm={{ offset: 3, size: 6 }}>
-              <h3>Enter Self-Destruct Code:</h3>
-              <Input
-                type="text"
-                className="txtPassword"
-                value={deactivateCode}
-                disabled={deactivateCode === selfDestructCode}
-                onChange={evt =>
-                  this.setState({ deactivateCode: evt.target.value }, () => {
-                    if (this.state.deactivateCode === selfDestructCode) {
-                      this.activate(null, true);
-                    }
-                  })
-                }
-              />
-            </Col>
-          </Row>
-        ) : (
-          <div className={`holder  ${selfDestructTime ? "on" : ""}`}>
-            <div
-              className="self-destruct-button"
-              onClick={selfDestructTime ? this.activate : this.toggle}
-            >
-              {selfDestructTime ? "Deactivate" : "Activate"} Self-Destruct
-            </div>
-          </div>
-        )}
-        {selfDestructTime && selfDestructTime > 0 ? (
-          <div className="counter">
-            {`${padDigits(duration.hours, 2)}:${padDigits(
-              duration.minutes,
-              2
-            )}:${padDigits(duration.seconds, 2)}`}
-          </div>
-        ) : settingCode ? (
-          <Row>
-            <Col sm={12}>
-              <h3>Enter Self-Destruct Code</h3>
-            </Col>
-            <Col sm={6}>
-              <Input
-                type="password"
-                placeholder="Enter Password"
-                value={password}
-                onChange={e => this.setState({ password: e.target.value })}
-              />
-            </Col>
-            <Col sm={6}>
-              <Input
-                type="password"
-                placeholder="Verify Password"
-                value={passwordVerify}
-                onChange={e =>
-                  this.setState({ passwordVerify: e.target.value })
-                }
-              />
-            </Col>
-            <Col sm={6}>
-              <Button
-                color="danger"
-                block
-                onClick={() =>
-                  this.setState({
-                    password: "",
-                    passwordVerify: "",
-                    settingCode: false
-                  })
-                }
-              >
-                Cancel
-              </Button>
-            </Col>
-            <Col sm={6}>
-              <Mutation
-                mutation={gql`
-                  mutation SelfDestructCode($simulatorId: ID!, $code: String!) {
-                    setSelfDestructCode(simulatorId: $simulatorId, code: $code)
-                  }
-                `}
-                variables={{
-                  simulatorId: this.props.simulator.id,
-                  code: this.state.password
-                }}
-              >
-                {action => (
-                  <Button
-                    color="success"
-                    block
-                    disabled={
-                      !password ||
-                      !passwordVerify ||
-                      password !== passwordVerify
-                    }
-                    onClick={() => {
-                      action();
-                      this.setState({ settingCode: false });
-                    }}
-                  >
-                    Set Code
-                  </Button>
-                )}
-              </Mutation>
-            </Col>
-          </Row>
-        ) : (
-          <div className="set-code">
-            <Button
-              block
-              color="warning"
-              size="lg"
-              onClick={() => this.setState({ settingCode: true })}
-            >
-              Set Self-Destruct Code
-            </Button>
-          </div>
-        )}
-
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
-      </Container>
-    );
-  }
-}
-
 const SELF_DESTRUCT_QUERY = gql`
-  query SelfDestruct($id: ID) {
-    simulators(id: $id) {
+  query SelfDestruct($simulatorId: ID) {
+    simulators(id: $simulatorId) {
       id
       ship {
         selfDestructTime
@@ -280,14 +50,208 @@ const SELF_DESTRUCT_QUERY = gql`
     }
   }
 `;
-export default graphql(SELF_DESTRUCT_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      id: ownProps.simulator.id
+const SelfDestruct = ({ simulator, client, clientObj }) => {
+  const [modal, setModal] = React.useState(false);
+  const [setCode, setSetCode] = React.useState(false);
+  const [deactivating, setDeactivating] = React.useState(false);
+  const [deactivateCode, setDeactivateCode] = React.useState(false);
+  const [settingCode, setSettingCode] = React.useState(null);
+  const [password, setPassword] = React.useState(null);
+  const [passwordVerify, setPasswordVerify] = React.useState(null);
+  const { loading, data, subscribeToMore } = useQuery(SELF_DESTRUCT_QUERY, {
+    variables: { simulatorId: simulator.id }
+  });
+  useSubscribeToMore(subscribeToMore, SELF_DESTRUCT_SUB, {
+    variables: { simulatorId: simulator.id },
+    updateQuery: (previousResult, { subscriptionData }) => ({
+      ...previousResult,
+      simulators: subscriptionData.data.simulatorsUpdate
+    })
+  });
+  const { simulators } = data;
+  if (loading || !simulators) return null;
+  const { ship } = simulators[0];
+  const toggle = () => {
+    setModal(!modal);
+    setSetCode(false);
+  };
+  const activate = (time, force) => {
+    if (ship.selfDestructTime && ship.selfDestructCode && !force) {
+      setModal(false);
+      setDeactivating(true);
+      setDeactivateCode("");
+      return;
     }
-  })
-})(withApollo(SelfDestruct));
+    const mutation = gql`
+      mutation ActivateSelfDestruct($id: ID!, $time: Float) {
+        setSelfDestructTime(simulatorId: $id, time: $time)
+      }
+    `;
+    const variables = {
+      id: simulator.id,
+      time: ship.selfDestructTime ? null : time
+    };
+    client.mutate({
+      mutation,
+      variables
+    });
+    setModal(false);
+    setDeactivating(false);
+    setDeactivateCode("");
+  };
+  const setCodeFunc = code => {
+    const mutation = gql`
+      mutation SetSelfDestructCode($id: ID!, $code: String) {
+        setSelfDestructCode(simulatorId: $id, code: $code)
+      }
+    `;
+    const variables = {
+      id: simulator.id,
+      code: String(code)
+    };
+    client.mutate({
+      mutation,
+      variables
+    });
+    setModal(false);
+    setSetCode(false);
+  };
+  const { selfDestructTime, selfDestructCode } = ship;
+  const duration = Duration.fromObject({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    milliseconds: selfDestructTime
+  }).normalize();
+  return (
+    <Container className="self-destruct">
+      {modal ? (
+        <SelfDestructModal
+          modal={modal}
+          toggle={toggle}
+          activate={activate}
+          code={selfDestructCode}
+          setCode={setCode}
+          setCodeFunc={setCodeFunc}
+        />
+      ) : deactivating ? (
+        <Row>
+          <Col sm={{ offset: 3, size: 6 }}>
+            <h3>Enter Self-Destruct Code:</h3>
+            <Input
+              type="text"
+              className="txtPassword"
+              value={deactivateCode}
+              disabled={deactivateCode === selfDestructCode}
+              onChange={evt => {
+                setDeactivateCode(evt.target.value);
+                if (evt.target.value === selfDestructCode) {
+                  activate(null, true);
+                }
+              }}
+            />
+          </Col>
+        </Row>
+      ) : (
+        <div className={`holder  ${selfDestructTime ? "on" : ""}`}>
+          <div
+            className="self-destruct-button"
+            onClick={selfDestructTime ? activate : toggle}
+          >
+            {selfDestructTime ? "Deactivate" : "Activate"} Self-Destruct
+          </div>
+        </div>
+      )}
+      {selfDestructTime && selfDestructTime > 0 ? (
+        <div className="counter">
+          {`${padDigits(duration.hours, 2)}:${padDigits(
+            duration.minutes,
+            2
+          )}:${padDigits(duration.seconds, 2)}`}
+        </div>
+      ) : settingCode ? (
+        <Row>
+          <Col sm={12}>
+            <h3>Enter Self-Destruct Code</h3>
+          </Col>
+          <Col sm={6}>
+            <Input
+              type="password"
+              placeholder="Enter Password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </Col>
+          <Col sm={6}>
+            <Input
+              type="password"
+              placeholder="Verify Password"
+              value={passwordVerify}
+              onChange={e => setPasswordVerify(e.target.value)}
+            />
+          </Col>
+          <Col sm={6}>
+            <Button
+              color="danger"
+              block
+              onClick={() => {
+                setPassword("");
+                setPasswordVerify("");
+                setSettingCode(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </Col>
+          <Col sm={6}>
+            <Mutation
+              mutation={gql`
+                mutation SelfDestructCode($simulatorId: ID!, $code: String!) {
+                  setSelfDestructCode(simulatorId: $simulatorId, code: $code)
+                }
+              `}
+              variables={{
+                simulatorId: simulator.id,
+                code: password
+              }}
+            >
+              {action => (
+                <Button
+                  color="success"
+                  block
+                  disabled={
+                    !password || !passwordVerify || password !== passwordVerify
+                  }
+                  onClick={() => {
+                    action();
+                    setSettingCode(false);
+                  }}
+                >
+                  Set Code
+                </Button>
+              )}
+            </Mutation>
+          </Col>
+        </Row>
+      ) : (
+        <div className="set-code">
+          <Button
+            block
+            color="warning"
+            size="lg"
+            onClick={() => setSettingCode(true)}
+          >
+            Set Self-Destruct Code
+          </Button>
+        </div>
+      )}
+
+      <Tour steps={trainingSteps} client={clientObj} />
+    </Container>
+  );
+};
+
+export default withApollo(SelfDestruct);
 
 class SelfDestructModal extends Component {
   state = {};
