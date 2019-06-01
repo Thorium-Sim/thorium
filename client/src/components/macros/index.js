@@ -66,3 +66,4 @@ export { default as hideSimulatorCard } from "./hideSimulatorCard";
 export { default as unhideSimulatorCard } from "./unhideSimulatorCard";
 export { default as cancelLoopingSounds } from "./cancelLoopingSounds";
 export { default as stopAllSounds } from "./stopAllSounds";
+export { default as clientAddExtra } from "./clientAddExtra";

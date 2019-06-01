@@ -125,11 +125,6 @@ export default ({ updateArgs, args, noStations, stations, clients }) => {
             <option value="blackout">Blackout</option>
           </optgroup>
           <optgroup>
-            <option value="spaceEdventuresToken">
-              Space EdVentures Token Screen
-            </option>
-          </optgroup>
-          <optgroup>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
             <option value="power">Power Loss</option>
@@ -138,6 +133,11 @@ export default ({ updateArgs, args, noStations, stations, clients }) => {
             <option value="soviet">Soviet</option>
             <option value="crack">Crack</option>
             <option value="uncrack">Un-Crack</option>
+          </optgroup>
+          <optgroup>
+            <option value="spaceEdventuresToken">
+              Space EdVentures Token Screen
+            </option>
           </optgroup>
         </Input>
         {noStations || (
