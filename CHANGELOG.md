@@ -1,3 +1,12 @@
+## [1.8.1](https://github.com/Thorium-Sim/thorium/compare/1.8.0...1.8.1) (2019-05-31)
+
+
+### Bug Fixes
+
+* **Command Line:** Makes it possible for command line feedback modules to use delayed outputs as their approve or denied output. Closes [#2237](https://github.com/Thorium-Sim/thorium/issues/2237) ([a1af372](https://github.com/Thorium-Sim/thorium/commit/a1af372))
+* **Library:** Fixes an issue that threw an error when trying to export library entries. Closes [#2240](https://github.com/Thorium-Sim/thorium/issues/2240) ([c5b506b](https://github.com/Thorium-Sim/thorium/commit/c5b506b))
+* **Timeline:** Fixes an issue with loading the Timeline core without a mission selected. ([6be32b6](https://github.com/Thorium-Sim/thorium/commit/6be32b6))
+
 # [1.8.0](https://github.com/Thorium-Sim/thorium/compare/1.7.1...1.8.0) (2019-05-31)
 
 
