@@ -3,9 +3,10 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 import { FormGroup, Label, Input } from "reactstrap";
 
-export default ({ updateArgs, args, client }) => {
+export default ({ updateArgs, args, stations, clients }) => {
   return (
     <Query
+      fetchPolicy="cache-first"
       query={gql`
         query Badges {
           thorium {
@@ -24,7 +25,7 @@ export default ({ updateArgs, args, client }) => {
           <Label>
             Space EdVentures Badge
             <div>
-              {loading ? (
+              {!data && !data.thorium ? (
                 "Loading"
               ) : error ? (
                 "Error loading badges."
@@ -44,11 +45,44 @@ export default ({ updateArgs, args, client }) => {
                     </option>
                   ))}
                 </Input>
+              ) : loading ? (
+                "Loading..."
               ) : (
                 "Not connected to a SpaceEdVentures.com Center. Cannot get badges."
               )}
             </div>
           </Label>
+          <div>
+            <Label>Station</Label>
+
+            <Input
+              type="select"
+              value={args.station || ""}
+              onChange={e => updateArgs("station", e.target.value)}
+            >
+              <option value="" disabled>
+                Select a Station
+              </option>
+              {stations && stations.length > 0 && (
+                <optgroup label="Stations">
+                  {stations.map(c => (
+                    <option value={c.name} key={c.name}>
+                      {c.name}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+              {clients && clients.length > 0 && (
+                <optgroup label="Clients">
+                  {clients.map(c => (
+                    <option value={c.id} key={c.id}>
+                      {c.id}
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+            </Input>
+          </div>
         </FormGroup>
       )}
     </Query>

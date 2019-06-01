@@ -1,6 +1,7 @@
 import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
+import { StationResolver } from "../helpers/stationResolver";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -23,6 +24,7 @@ const schema = gql`
     systems: [System]
     stations: [Station]
     mission: Mission
+    missionConfigs: JSON
     currentTimelineStep: Int
     executedTimelineSteps: [ID]
     timelines: [TimelineInstance]
@@ -103,6 +105,13 @@ const schema = gql`
     ): String
 
     setSimulatorMission(simulatorId: ID!, missionId: ID!): String
+    setSimulatorMissionConfig(
+      simulatorId: ID!
+      missionId: ID!
+      stationSetId: ID!
+      actionId: ID!
+      args: JSON!
+    ): String
     updateSimulatorPanels(simulatorId: ID!, panels: [ID]!): String
     updateSimulatorCommandLines(simulatorId: ID!, commandLines: [ID]!): String
     updateSimulatorTriggers(simulatorId: ID!, triggers: [ID]!): String
@@ -203,6 +212,29 @@ const resolver = {
     },
     systems(rootValue) {
       return App.systems.filter(s => s.simulatorId === rootValue.id);
+    },
+    stations(rootValue) {
+      const interfaces = rootValue.interfaces.map(i =>
+        App.interfaces.find(({ id }) => i === id)
+      );
+      return rootValue.stations.map(station => {
+        if (station)
+          return {
+            ...station,
+            cards: station.cards.map(c => {
+              if (
+                c.component.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+              ) {
+                const iface = interfaces.find(
+                  i => i.templateId === c.component.replace("interface-id:", "")
+                );
+                return { ...c, component: `interface-id:${iface.id}` };
+              }
+              return c;
+            })
+          };
+        return station;
+      });
     },
     stationSets(rootValue) {
       return App.stationSets.filter(s => s.simulatorId === rootValue.id);

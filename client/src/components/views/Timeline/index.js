@@ -10,6 +10,10 @@ const fragment = gql`
     id
     currentTimelineStep
     executedTimelineSteps
+    missionConfigs
+    stationSet {
+      id
+    }
     mission {
       id
       name
@@ -57,6 +61,7 @@ const SUBSCRIPTION = gql`
 class TimelineData extends Component {
   state = {};
   render() {
+    const { simulator, clients } = this.props;
     return (
       <Query query={QUERY} variables={{ simulatorId: this.props.simulator.id }}>
         {({ loading, data, subscribeToMore }) => {
@@ -81,6 +86,8 @@ class TimelineData extends Component {
                 {...this.props}
                 {...simulators[0]}
                 missions={missions}
+                stations={simulator.stations}
+                clients={clients}
               />
             </SubscriptionHelper>
           );

@@ -90,13 +90,11 @@ class SimulatorData extends Component {
                 })
               }
             >
-              {
-                <Client
-                  {...this.props}
-                  simulator={simulators[0]}
-                  station={station || this.props.station}
-                />
-              }
+              <Client
+                {...this.props}
+                simulator={simulators[0]}
+                station={station || this.props.station}
+              />
             </SubscriptionHelper>
           );
         }}

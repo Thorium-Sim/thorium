@@ -58,3 +58,4 @@ export { default as Transwarp } from "./transwarp";
 export { default as Interface, InterfaceDevice } from "./interface";
 export { default as Crm } from "./crm";
 export { default as Macro } from "./macro";
+export { default as GoogleSheets } from "./googleSheets";

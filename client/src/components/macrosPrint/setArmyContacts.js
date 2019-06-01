@@ -20,7 +20,7 @@ export default class SetArmyContacts extends Component {
                   className="armyContact"
                   src={`/assets${contact.icon}`}
                 />
-                )}
+
                 <img
                   alt="armyContactPicture"
                   draggable="false"

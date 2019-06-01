@@ -184,6 +184,17 @@ class DamageControlCore extends Component {
     });
     //this.toggleDamage(e, s, true)
   };
+  renderEngineSpeed = system => {
+    if (system.type !== "Engine") return null;
+    const engines = this.props.data.engines;
+    const engine = engines.find(e => e.id === system.id);
+    const speedIndex =
+      system.power.powerLevels.filter(p => p <= system.power.power).length - 1;
+    const maxSpeed = engine.speeds[speedIndex]
+      ? engine.speeds[speedIndex].number
+      : 0;
+    return `(${maxSpeed})`;
+  };
   damageOption = (e, option) => {
     const { system } = this.state.context;
     if (option === "destroy") {
@@ -287,7 +298,7 @@ class DamageControlCore extends Component {
                         onContextMenu={e => this.setContext(e, s)}
                         style={this.systemStyle(s)}
                       >
-                        {this.systemName(s)}
+                        {this.systemName(s)} {this.renderEngineSpeed(s)}
                       </td>
                       <td>
                         {(s.power.power || s.power.power === 0) && (
@@ -326,12 +337,13 @@ class DamageControlCore extends Component {
                   <td>
                     <OutputField
                       alert={
+                        reactor &&
                         Math.round(reactor.powerOutput * reactor.efficiency) <
-                        this.props.data.systems.reduce(
-                          (prev, next) =>
-                            next.power ? prev + next.power.power : prev,
-                          0
-                        )
+                          this.props.data.systems.reduce(
+                            (prev, next) =>
+                              next.power ? prev + next.power.power : prev,
+                            0
+                          )
                       }
                     >
                       {this.props.data.systems.reduce(
@@ -416,6 +428,12 @@ const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
     reactors(simulatorId: $simulatorId) {
       ...PowerData
+    }
+    engines(simulatorId: $simulatorId) {
+      id
+      speeds {
+        number
+      }
     }
     systems(simulatorId: $simulatorId) {
       id

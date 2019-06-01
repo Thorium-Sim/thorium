@@ -216,6 +216,7 @@ class KeyboardControl extends Component {
                   </Col>
                   <Col sm={6} style={{ maxHeight: "40vh", overflowY: "auto" }}>
                     <MacroConfig
+                      key={selectedAction}
                       selectedAction={selectedAction}
                       selectedKey={selectedKeyObj}
                       updateAction={action =>

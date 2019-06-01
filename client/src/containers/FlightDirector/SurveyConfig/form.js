@@ -50,17 +50,35 @@ class Form extends Component {
       form: state.form.filter(f => f.id !== id)
     }));
   };
+  reorder = (index, direction) => {
+    function move(array, old_index, new_index) {
+      if (new_index >= array.length) {
+        var k = new_index - array.length;
+        while (k-- + 1) {
+          array.push(undefined);
+        }
+      }
+      array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+      return array; // for testing purposes
+    }
+    let form = this.state.form.concat();
+    move(form, index, index + direction);
+    this.setState({ form, edited: true });
+  };
   render() {
     const { form, edited } = this.state;
     const { saveForm } = this.props;
     return (
       <div style={{ height: "80vh", overflowY: "auto" }}>
-        {form.map(f => (
+        {form.map((f, i) => (
           <FormContainer
             {...f}
             key={f.id}
+            i={i}
+            length={form.length}
             updateForm={this.updateForm}
             removeField={this.removeField}
+            reorder={sign => this.reorder(i, sign)}
           />
         ))}
         <Button

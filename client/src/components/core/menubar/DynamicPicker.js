@@ -32,12 +32,14 @@ const DELETE_CORE_LAYOUT = gql`
     removeCoreLayout(id: $id)
   }
 `;
-const DynamicPicker = ({ onChange }) => {
+const DynamicPicker = ({ onChange, mosaic }) => {
   const [layout, setLayout] = React.useState("nothing");
   const [modal, setModal] = React.useState(false);
   const { loading, data } = useQueryAndSubscription([CORE_LAYOUTS], [SUB]);
   const [addCoreLayout] = useMutation(ADD_CORE_LAYOUT);
   const [deleteCoreLayout] = useMutation(DELETE_CORE_LAYOUT);
+  const fileRef = React.useRef();
+
   if (loading) return null;
   const { coreLayouts } = data;
   const add = () => {
@@ -46,21 +48,20 @@ const DynamicPicker = ({ onChange }) => {
       addCoreLayout({
         variables: {
           name,
-          config: JSON.stringify(this.props.mosaic)
+          config: JSON.stringify(mosaic)
         }
       });
     }
   };
   const deleteLayout = () => {
-    const { layout: value } = this.state;
-    const layout = coreLayouts.find(l => l.id === value);
+    const layoutObj = coreLayouts.find(l => l.id === layout);
     if (
       window.confirm(
-        `Are you sure you want to delete the '${layout.name}' layout?`
+        `Are you sure you want to delete the '${layoutObj.name}' layout?`
       )
     ) {
       setLayout("nothing");
-      deleteCoreLayout({ variables: { id: layout.id } });
+      deleteCoreLayout({ variables: { id: layoutObj.id } });
     }
   };
   const onChangeDropdown = value => {
@@ -73,11 +74,48 @@ const DynamicPicker = ({ onChange }) => {
     if (value === "change") {
       return setModal(true);
     }
+    if (value === "export") {
+      const href = `${window.location.protocol}//${
+        window.location.hostname
+      }:${parseInt(window.location.port, 10) + 1}/exportCoreLayout/${layout}`;
+      window.open(href);
+      return;
+    }
+    if (value === "import") {
+      fileRef.current.click();
+      return;
+    }
     setLayout(value);
     onChange(JSON.parse(coreLayouts.find(l => l.id === value).config));
   };
+  const handleImport = evt => {
+    const data = new FormData();
+    Array.from(evt.target.files).forEach((f, index) =>
+      data.append(`files[${index}]`, f)
+    );
+    fetch(
+      `${window.location.protocol}//${window.location.hostname}:${parseInt(
+        window.location.port,
+        10
+      ) + 1}/importCoreLayout`,
+      {
+        method: "POST",
+        body: data
+      }
+    ).then(() => {
+      window.location.reload();
+    });
+  };
+
   return (
     <Fragment>
+      <input
+        hidden
+        type="file"
+        ref={fileRef}
+        value=""
+        onChange={handleImport}
+      />
       <select
         value={layout}
         className="btn btn-warning btn-sm"
@@ -96,6 +134,10 @@ const DynamicPicker = ({ onChange }) => {
           Delete Core Layout
         </option>
         <option value="change">Reorder Core Layouts</option>
+        <option value="export" disabled={layout === "nothing"}>
+          Export Core Layout
+        </option>
+        <option value="import">Import Core Layout</option>
       </select>
       {modal && <MosaicConfig modal={modal} toggle={() => setModal(false)} />}
     </Fragment>

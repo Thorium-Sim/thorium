@@ -359,7 +359,9 @@ class SetConfig extends Component {
                     }
                     return (
                       <Fragment>
-                        <li>Keyboards</li>
+                        <li className={`list-group-item disabled`} disabled>
+                          Keyboards
+                        </li>
                         {keyboard.map(k => (
                           <li
                             key={k.id}
@@ -381,24 +383,78 @@ class SetConfig extends Component {
                     );
                   }}
                 </Query>
-                <Fragment>
-                  <li>Mobile</li>
-                  {mobileScreens.map(k => (
-                    <li
-                      key={k}
-                      className={`list-group-item ${
-                        selectedStation === `mobile:${k}` ? "selected" : ""
-                      }`}
-                      onClick={() =>
-                        this.setState({
-                          selectedStation: `mobile:${k}`
-                        })
+                <Query
+                  query={gql`
+                    query SimInterface($id: String) {
+                      simulators(id: $id) {
+                        interfaces
                       }
-                    >
-                      {k}
+                      interfaces {
+                        id
+                        name
+                      }
+                    }
+                  `}
+                  variables={{ id: selectedSimulator }}
+                >
+                  {({ loading, data }) => {
+                    if (!data.simulators) return null;
+                    const interfaces = data.simulators[0].interfaces
+                      .map(i => data.interfaces.find(ii => ii.id === i))
+                      .filter(Boolean);
+                    if (loading || interfaces.length === 0) {
+                      return null;
+                    }
+                    return (
+                      <Fragment>
+                        <li className={`list-group-item disabled`} disabled>
+                          Interfaces
+                        </li>
+                        {interfaces.map(k => (
+                          <li
+                            key={k.id}
+                            className={`list-group-item ${
+                              selectedStation === `interface-id:${k.id}`
+                                ? "selected"
+                                : ""
+                            }`}
+                            onClick={() =>
+                              this.setState({
+                                selectedStation: `interface-id:${k.id}`
+                              })
+                            }
+                          >
+                            {k.name}
+                          </li>
+                        ))}
+                      </Fragment>
+                    );
+                  }}
+                </Query>
+                {mobileScreens.length > 0 ? (
+                  <Fragment>
+                    <li className={`list-group-item disabled`} disabled>
+                      Mobile
                     </li>
-                  ))}
-                </Fragment>
+                    {mobileScreens
+                      .filter(k => k !== "Interfaces")
+                      .map(k => (
+                        <li
+                          key={k}
+                          className={`list-group-item ${
+                            selectedStation === `mobile:${k}` ? "selected" : ""
+                          }`}
+                          onClick={() =>
+                            this.setState({
+                              selectedStation: `mobile:${k}`
+                            })
+                          }
+                        >
+                          {k}
+                        </li>
+                      ))}
+                  </Fragment>
+                ) : null}
               </Card>
             )}
           </Col>
@@ -408,11 +464,13 @@ class SetConfig extends Component {
               <Card className="flex-max auto-scroll">
                 <ul style={{ padding: 0 }}>
                   {clients
-                    .filter(s =>
-                      selectedStation.indexOf("mobile:") === -1
+                    .filter(s => {
+                      if (selectedStation.indexOf("interface-id:") > -1)
+                        return true;
+                      return selectedStation.indexOf("mobile:") === -1
                         ? !s.mobile
-                        : s.mobile
-                    )
+                        : s.mobile;
+                    })
                     .map(s => (
                       <li key={s.id} className={`list-group-item`}>
                         <label>

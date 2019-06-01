@@ -41,6 +41,9 @@ const schema = gql`
     resumeFlight(flightId: ID!): String
 
     # Space EdVentures
+    """
+    Macro: Space EdVentures: Add Extra Crew Member
+    """
     clientAddExtra(flightId: ID!, simulatorId: ID!, name: String!): String
   }
   extend type Subscription {

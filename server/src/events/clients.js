@@ -245,8 +245,15 @@ App.on(
     pubsub.publish("soundSub", soundObj);
   }
 );
-App.on("stopAllSounds", ({ simulatorId }) => {
-  const clients = App.clients.filter(s => s.simulatorId === simulatorId);
+App.on("stopAllSounds", ({ simulatorId, station }) => {
+  const clients = App.clients.filter(s => {
+    if (s.simulatorId !== simulatorId) return false;
+    if (station) {
+      if (s.station === station || s.id === station) return true;
+      return false;
+    }
+    return true;
+  });
   // Remove all of the sounds that have one of the clients
   App.sounds = App.sounds.filter(s => {
     const client = clients.find(c => s.clients.indexOf(c) > -1);
@@ -255,8 +262,15 @@ App.on("stopAllSounds", ({ simulatorId }) => {
   });
   pubsub.publish("cancelAllSounds", clients);
 });
-App.on("cancelLoopingSounds", ({ simulatorId }) => {
-  const clients = App.clients.filter(s => s.simulatorId === simulatorId);
+App.on("cancelLoopingSounds", ({ simulatorId, station }) => {
+  const clients = App.clients.filter(s => {
+    if (s.simulatorId !== simulatorId) return false;
+    if (station) {
+      if (s.station === station || s.id === station) return true;
+      return false;
+    }
+    return true;
+  });
   // Remove all of the sounds that have one of the clients
   App.sounds = App.sounds.filter(s => {
     const client = clients.find(c => s.clients.indexOf(c) > -1);
@@ -327,7 +341,10 @@ App.on("setClientOverlay", ({ id, overlay }) => {
 
 App.on("clientCrack", ({ id, crack }) => {
   const c = App.clients.find(c => c.id === id);
-  c && (crack ? c.crack() : c.uncrack());
+  if (!c) return;
+  const simulator = App.simulators.find(s => s.id === c.simulatorId);
+  if (!simulator) return;
+  crack ? simulator.crackClient(c.id) : simulator.uncrackClient(c.id);
   pubsub.publish("clientChanged", App.clients);
 });
 App.on("setKeypadCode", ({ id, code }) => {

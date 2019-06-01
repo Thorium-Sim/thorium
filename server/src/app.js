@@ -6,7 +6,7 @@ import paths from "./helpers/paths";
 import Store from "./helpers/data-store";
 import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
-
+import fs from "fs";
 let snapshotDir = "./snapshots/";
 
 if (process.env.NODE_ENV === "production") {
@@ -70,6 +70,7 @@ class Events extends EventEmitter {
     this.askedToTrack = false;
     this.addedTaskTemplates = false;
     this.spaceEdventuresToken = null;
+    this.googleSheetsTokens = {};
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -103,7 +104,8 @@ class Events extends EventEmitter {
         key === "doTrack" ||
         key === "askedToTrack" ||
         key === "addedTaskTemplates" ||
-        key === "spaceEdventuresToken"
+        key === "spaceEdventuresToken" ||
+        key === "googleSheetsTokens"
       ) {
         this[key] = snapshot[key];
       }
@@ -153,14 +155,14 @@ class Events extends EventEmitter {
       if (client) {
         flightId = client.flightId;
       }
-      const event = {
-        event: eventName,
-        params: param,
-        clientId: clientId,
-        flightId: flightId,
-        timestamp: new Date()
-      };
-      this.events.push(event);
+      // const event = {
+      //   event: eventName,
+      //   params: param,
+      //   clientId: clientId,
+      //   flightId: flightId,
+      //   timestamp: new Date()
+      // };
+      // this.events.push(event);
     }
     // Handle any triggers before the event so we can capture data that
     // the event might remove

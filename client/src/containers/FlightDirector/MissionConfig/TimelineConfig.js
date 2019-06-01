@@ -547,7 +547,9 @@ export default class TimelineConfig extends Component {
                         e.id === this.state.selectedTimelineItem
                           ? "selected"
                           : ""
-                      } list-group-item`}
+                      } list-group-item ${
+                        e.needsConfig ? "list-group-item-warning" : ""
+                      }`}
                     >
                       <EventName id={e.event} />{" "}
                       <FontAwesome

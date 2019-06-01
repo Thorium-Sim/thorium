@@ -13,10 +13,13 @@ const colors = [
   "dark"
 ];
 export default props => {
-  const { updateArgs, args } = props;
+  const { updateArgs, args, stations, clients } = props;
 
   return (
-    <FormGroup className="macro-template">
+    <FormGroup
+      className="macro-template"
+      style={{ display: "flex", flexDirection: "column" }}
+    >
       <p>Send a notification to Core</p>
       <Label>
         Type
@@ -35,6 +38,33 @@ export default props => {
           ))}
         </Input>
       </Label>
+      <Label>Station</Label>
+
+      <Input
+        type="select"
+        value={args.station}
+        onChange={e => updateArgs("station", e.target.value)}
+      >
+        <option value="Core">Core</option>
+        {stations && stations.length > 0 && (
+          <optgroup label="Stations">
+            {stations.map(c => (
+              <option value={c.name} key={c.name}>
+                {c.name}
+              </option>
+            ))}
+          </optgroup>
+        )}
+        {clients && clients.length > 0 && (
+          <optgroup label="Clients">
+            {clients.map(c => (
+              <option value={c.id} key={c.id}>
+                {c.id}
+              </option>
+            ))}
+          </optgroup>
+        )}
+      </Input>
       <Label>
         Title
         <Input

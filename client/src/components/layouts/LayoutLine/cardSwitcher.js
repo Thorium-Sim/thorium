@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Tooltip } from "reactstrap";
 
 const spregex = /.*.{8}-.{4}-.{4}-.{4}-.{12}/gi;
-const intregex = /interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const intregex = /interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 class CardButton extends Component {
   state = {};
   card = React.createRef();

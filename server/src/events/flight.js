@@ -153,6 +153,7 @@ export function addAspects(template, sim, data = App) {
       data.softwarePanels.push(
         new Classes.SoftwarePanel({
           id,
+          templateId: panel.id,
           name: panel.name,
           simulatorId: sim.id,
           cables: panel.cables,
@@ -399,7 +400,9 @@ App.on("resumeFlight", ({ flightId }) => {
   pubsub.publish("flightsUpdate", App.flights);
 });
 App.on("clientAddExtra", ({ flightId, simulatorId, name }) => {
-  const flight = App.flights.find(f => f.id === flightId);
+  const flight = App.flights.find(
+    f => f.id === flightId || f.simulators.includes(simulatorId)
+  );
   const extra = {
     id: name,
     token: tokenGenerator(),

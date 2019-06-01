@@ -148,6 +148,27 @@ App.on(
   }
 );
 
+function processCommandLineOutput(simulator, clientId, com) {
+  let output = "";
+  if (typeof com.output === "string") {
+    output = com.output;
+  } else if (com.output.delay && com.output.text) {
+    const strings = com.output.text.split("\n");
+    strings.reduce((acc, string) => {
+      return acc.then(() =>
+        delayPromise(() => {
+          simulator.addCommandLineOutput(clientId, string);
+          pubsub.publish("commandLineOutputUpdate", {
+            id: clientId,
+            commandLineOutput: simulator.commandLineOutputs[clientId]
+          });
+        }, com.output.delay)
+      );
+    }, Promise.resolve());
+    return;
+  }
+  simulator.addCommandLineOutput(clientId, output);
+}
 App.on(
   "handleCommandLineFeedback",
   ({ simulatorId, clientId, feedbackId, isApproved }) => {
@@ -164,11 +185,15 @@ App.on(
         );
       }
       if (feedback.approve) {
-        simulator.addCommandLineOutput(clientId, feedback.approve);
+        processCommandLineOutput(simulator, clientId, {
+          output: feedback.approve
+        });
       }
     } else {
       if (feedback.deny) {
-        simulator.addCommandLineOutput(clientId, feedback.deny);
+        processCommandLineOutput(simulator, clientId, {
+          output: feedback.deny
+        });
       }
     }
     simulator.removeCommandLineFeedback(clientId, feedbackId);

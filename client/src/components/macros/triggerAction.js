@@ -98,7 +98,7 @@ const renderButtons = ({
   return null;
 };
 
-export default ({ updateArgs, args, noStations }) => {
+export default ({ updateArgs, args, noStations, stations, clients }) => {
   return (
     <div>
       <p>Performs the action on all stations in the simulator.</p>
@@ -134,6 +134,11 @@ export default ({ updateArgs, args, noStations }) => {
             <option value="crack">Crack</option>
             <option value="uncrack">Un-Crack</option>
           </optgroup>
+          <optgroup>
+            <option value="spaceEdventuresToken">
+              Space EdVentures Token Screen
+            </option>
+          </optgroup>
         </Input>
         {noStations || (
           <Input
@@ -145,6 +150,25 @@ export default ({ updateArgs, args, noStations }) => {
             <option value="random">Random Station</option>
             <option value="bridge">Bridge stations</option>
             <option value="viewscreen">Viewscreens</option>
+
+            {stations && stations.length > 0 && (
+              <optgroup label="Stations">
+                {stations.map(c => (
+                  <option value={c.name} key={c.name}>
+                    {c.name}
+                  </option>
+                ))}
+              </optgroup>
+            )}
+            {clients && clients.length > 0 && (
+              <optgroup label="Clients">
+                {clients.map(c => (
+                  <option value={c.id} key={c.id}>
+                    {c.id}
+                  </option>
+                ))}
+              </optgroup>
+            )}
           </Input>
         )}
         {renderButtons({ args, updateArgs })}
