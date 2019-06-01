@@ -125,6 +125,11 @@ export default ({ updateArgs, args, noStations, stations, clients }) => {
             <option value="blackout">Blackout</option>
           </optgroup>
           <optgroup>
+            <option value="spaceEdventuresToken">
+              Space EdVentures Token Screen
+            </option>
+          </optgroup>
+          <optgroup>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
             <option value="power">Power Loss</option>
