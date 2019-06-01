@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
-import { graphql, Query, Mutation } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
 import FontAwesome from "react-fontawesome";
@@ -42,7 +42,6 @@ const QUERY = gql`
 `;
 
 const App = ({ selectedSimulator: simulator }) => {
-  const { loading, data } = useQuery(QUERY);
   const updateTriggers = (e, action) => {
     const variables = {
       simulatorId: simulator.id,
@@ -61,14 +60,14 @@ const App = ({ selectedSimulator: simulator }) => {
       variables
     });
   };
-  if (loading || !data) return null;
-  const { triggers } = data;
+  const { loading, data } = useQuery(QUERY);
 
   const { missionConfigs } = simulator;
   const [state, dispatch] = React.useReducer(reducer, {});
   const { selectedTrigger, selectedStationSet, selectedAction } = state;
+  if (loading || !data) return null;
+  const { triggers } = data;
 
-  if (loading || !triggers) return null;
   const trigger = triggers.find(s => s.id === selectedTrigger) || {};
   const stationSet =
     simulator.stationSets.find(s => s.id === selectedStationSet) || {};

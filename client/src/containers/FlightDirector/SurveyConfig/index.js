@@ -10,7 +10,6 @@ import {
 import gql from "graphql-tag.macro";
 import { useQuery } from "@apollo/react-hooks";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
-import { withApollo } from "react-apollo";
 import { Query, withApollo } from "react-apollo";
 import Form from "./form";
 import "./style.scss";
