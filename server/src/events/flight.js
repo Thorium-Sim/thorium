@@ -400,7 +400,9 @@ App.on("resumeFlight", ({ flightId }) => {
   pubsub.publish("flightsUpdate", App.flights);
 });
 App.on("clientAddExtra", ({ flightId, simulatorId, name }) => {
-  const flight = App.flights.find(f => f.id === flightId);
+  const flight = App.flights.find(
+    f => f.id === flightId || f.simulators.includes(simulatorId)
+  );
   const extra = {
     id: name,
     token: tokenGenerator(),

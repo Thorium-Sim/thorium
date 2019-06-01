@@ -150,7 +150,6 @@ App.on(
 
 function processCommandLineOutput(simulator, clientId, com) {
   let output = "";
-  console.log(com);
   if (typeof com.output === "string") {
     output = com.output;
   } else if (com.output.delay && com.output.text) {

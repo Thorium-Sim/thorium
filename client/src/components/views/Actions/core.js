@@ -418,11 +418,6 @@ class ActionsCore extends Component {
             </optgroup>
             <optgroup>
               <option value="online">Online</option>
-              {flight.flightType && (
-                <option value="spaceEdventuresToken">
-                  Space EdVentures Token
-                </option>
-              )}
               <option value="offline">Offline</option>
               <option value="power">Power Loss</option>
               <option value="lockdown">Lockdown</option>
@@ -431,6 +426,13 @@ class ActionsCore extends Component {
               <option value="crack">Crack</option>
               <option value="uncrack">Un-Crack</option>
             </optgroup>
+            {flight.flightType && (
+              <optgroup>
+                <option value="spaceEdventuresToken">
+                  Space EdVentures Token
+                </option>
+              </optgroup>
+            )}
             <optgroup>
               <option value="reload">Reload Browser</option>
               <option value="shutdown">Shutdown</option>
