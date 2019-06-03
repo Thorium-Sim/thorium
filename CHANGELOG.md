@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/Thorium-Sim/thorium/compare/1.8.2...1.8.3) (2019-06-03)
+
+
+### Bug Fixes
+
+* **Stability:** Refactors a lot of data fetching code to helpfully solve some memory leak issues on both the client and server. *Please get in touch on Discord or via email or the issue reporter if you run into any problems.* ([1bf0518](https://github.com/Thorium-Sim/thorium/commit/1bf0518))
+
 ## [1.8.2](https://github.com/Thorium-Sim/thorium/compare/1.8.1...1.8.2) (2019-06-01)
 
 
