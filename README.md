@@ -65,8 +65,6 @@ the following features (and maybe more):
 
 - 3D Rendering
 
-- Physics Simulations
-
 - Pre-recorded macros
 
 - Timelines
