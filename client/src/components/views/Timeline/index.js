@@ -37,7 +37,7 @@ const fragment = gql`
 `;
 
 const QUERY = gql`
-  query Timeline($simulatorId: String) {
+  query Timeline($simulatorId: ID) {
     missions(aux: false) {
       id
       name

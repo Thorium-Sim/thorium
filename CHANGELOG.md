@@ -1,3 +1,13 @@
+## [1.8.2](https://github.com/Thorium-Sim/thorium/compare/1.8.1...1.8.2) (2019-06-01)
+
+
+### Bug Fixes
+
+* **Sensors:** Hidden sensors segments now properly reset. Closes [#2250](https://github.com/Thorium-Sim/thorium/issues/2250) ([4618e10](https://github.com/Thorium-Sim/thorium/commit/4618e10))
+* **Space EdVentures:** Add the Go to Space EdVentures Token screen action to the action core and to the 'Trigger Action' timeline action. Refs [#2248](https://github.com/Thorium-Sim/thorium/issues/2248) ([be645b8](https://github.com/Thorium-Sim/thorium/commit/be645b8))
+* **Space EdVentures:** Adds a timeline action for adding extra crew members to Space EdVentures. Closes [#2248](https://github.com/Thorium-Sim/thorium/issues/2248) ([575bdca](https://github.com/Thorium-Sim/thorium/commit/575bdca))
+* **Surveys:** Make it possible to reorder survey form items. Closes [#2247](https://github.com/Thorium-Sim/thorium/issues/2247) ([de655f9](https://github.com/Thorium-Sim/thorium/commit/de655f9))
+
 ## [1.8.1](https://github.com/Thorium-Sim/thorium/compare/1.8.0...1.8.1) (2019-05-31)
 
 

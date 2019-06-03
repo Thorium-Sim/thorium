@@ -304,7 +304,7 @@ class SimulatorConfig extends Component {
 }
 
 const SIMULATOR_QUERY = gql`
-  query Simulators($simulatorId: String!) {
+  query Simulators($simulatorId: ID!) {
     simulators(id: $simulatorId) {
       ...SimulatorConfigData
     }

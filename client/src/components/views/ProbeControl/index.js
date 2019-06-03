@@ -17,7 +17,7 @@ import {
   NavLink*/
 } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import { graphql, withApollo } from "react-apollo";
+import { withApollo, Query } from "react-apollo";
 import Tour from "helpers/tourHelper";
 
 import "./style.scss";
@@ -79,79 +79,92 @@ class ProbeControl extends Component {
     selectedProbe: null
   };
   render() {
-    if (this.props.data.loading || !this.props.data.probes) return null;
-    const probes = this.props.data.probes[0];
-    const { selectedProbe } = this.state;
-    if (!probes) return <p>No Probe Launcher</p>;
-    // Check to see if we have a probe network
-    const network =
-      probes.probes.filter(p => /[1-8]/.test(p.name)).length === 8;
     return (
-      <Container fluid className="probe-control">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: PROBES_SUB,
-              variables: { simulatorId: this.props.simulator.id },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  probes: subscriptionData.data.probesUpdate
-                });
-              }
-            })
-          }
-        />
-        <Row>
-          <Col
-            sm={3}
-            style={{ display: "flex", flexDirection: "column", height: "100%" }}
-          >
-            <h3>Probes</h3>
-            <ListGroup style={{ flex: 1, overflowY: "auto" }}>
-              {network && (
-                <ListGroupItem
-                  onClick={() =>
-                    this.setState({
-                      selectedProbe: probes.probes.filter(p =>
-                        /[1-8]/.test(p.name)
-                      )[0].id
-                    })
-                  }
-                  active={
-                    selectedProbe ===
-                    probes.probes.filter(p => /[1-8]/.test(p.name))[0].id
-                  }
+      <Query
+        query={PROBES_QUERY}
+        variables={{ simulatorId: this.props.simulator.id }}
+      >
+        {({ data, loading, subscribeToMore }) => {
+          if (loading || !data.probes) return null;
+          const probes = data.probes[0];
+          const { selectedProbe } = this.state;
+          if (!probes) return <p>No Probe Launcher</p>;
+          // Check to see if we have a probe network
+          const network =
+            probes.probes.filter(p => /[1-8]/.test(p.name)).length === 8;
+          return (
+            <Container fluid className="probe-control">
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: PROBES_SUB,
+                    variables: { simulatorId: this.props.simulator.id },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      return Object.assign({}, previousResult, {
+                        probes: subscriptionData.data.probesUpdate
+                      });
+                    }
+                  })
+                }
+              />
+              <Row>
+                <Col
+                  sm={3}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%"
+                  }}
                 >
-                  <p className="probe-name">Probe Network</p>
-                  <small />
-                </ListGroupItem>
-              )}
-              {probes.probes
-                .filter(p => !/^[1-8]{1}$/.test(p.name))
-                .map(p => (
-                  <ListGroupItem
-                    key={p.id}
-                    onClick={() => this.setState({ selectedProbe: p.id })}
-                    active={selectedProbe === p.id}
-                  >
-                    <p className="probe-name">{p.name}</p>
-                    <small>
-                      {probes.types.find(t => t.id === p.type).name}
-                    </small>
-                  </ListGroupItem>
-                ))}
-            </ListGroup>
-          </Col>
-          <Col sm={9}>
-            <ProbeControlWrapper
-              {...probes.probes.find(p => p.id === selectedProbe) || {}}
-              probeId={probes.id}
-              client={this.props.client}
-            />
-          </Col>
-        </Row>
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
-      </Container>
+                  <h3>Probes</h3>
+                  <ListGroup style={{ flex: 1, overflowY: "auto" }}>
+                    {network && (
+                      <ListGroupItem
+                        onClick={() =>
+                          this.setState({
+                            selectedProbe: probes.probes.filter(p =>
+                              /[1-8]/.test(p.name)
+                            )[0].id
+                          })
+                        }
+                        active={
+                          selectedProbe ===
+                          probes.probes.filter(p => /[1-8]/.test(p.name))[0].id
+                        }
+                      >
+                        <p className="probe-name">Probe Network</p>
+                        <small />
+                      </ListGroupItem>
+                    )}
+                    {probes.probes
+                      .filter(p => !/^[1-8]{1}$/.test(p.name))
+                      .map(p => (
+                        <ListGroupItem
+                          key={p.id}
+                          onClick={() => this.setState({ selectedProbe: p.id })}
+                          active={selectedProbe === p.id}
+                        >
+                          <p className="probe-name">{p.name}</p>
+                          <small>
+                            {probes.types.find(t => t.id === p.type).name}
+                          </small>
+                        </ListGroupItem>
+                      ))}
+                  </ListGroup>
+                </Col>
+                <Col sm={9}>
+                  <ProbeControlWrapper
+                    {...probes.probes.find(p => p.id === selectedProbe) || {}}
+                    probeId={probes.id}
+                    client={this.props.client}
+                  />
+                </Col>
+              </Row>
+              <Tour steps={trainingSteps} client={this.props.clientObj} />
+            </Container>
+          );
+        }}
+      </Query>
     );
   }
 }
@@ -181,12 +194,7 @@ const PROBES_QUERY = gql`
   }
 `;
 
-export default graphql(PROBES_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: { simulatorId: ownProps.simulator.id }
-  })
-})(withApollo(ProbeControl));
+export default withApollo(ProbeControl);
 
 class ProbeControlWrapper extends Component {
   constructor(props) {

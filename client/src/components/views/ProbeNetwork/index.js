@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
+import { Query, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -49,61 +49,76 @@ const PROBES_SUB = gql`
 class ProbeNetwork extends Component {
   state = {};
   render() {
-    if (this.props.data.loading || !this.props.data.probes) return null;
-    const probes = this.props.data.probes[0];
-    const { processedData, probes: network } = probes;
     return (
-      <Container fluid className="probe-network" style={{ height: "100%" }}>
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: PROBES_SUB,
-              variables: {
-                simulatorId: this.props.simulator.id
-              },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  probes: subscriptionData.data.probesUpdate
-                });
-              }
-            })
-          }
-        />
-        <Row style={{ height: "100%" }}>
-          <Col
-            sm={{ size: 6, offset: 1 }}
-            style={{ height: "100%" }}
-            className="network-grid"
-          >
-            <Measure
-              bounds
-              onResize={contentRect => {
-                this.setState({ dimensions: contentRect.bounds });
-              }}
+      <Query
+        query={PROBE_NETWORK_QUERY}
+        variables={{
+          simulatorId: this.props.simulator.id
+        }}
+      >
+        {({ loading, data, subscribeToMore }) => {
+          if (loading || !data.probes) return null;
+          const probes = data.probes[0];
+          const { processedData, probes: network } = probes;
+          return (
+            <Container
+              fluid
+              className="probe-network"
+              style={{ height: "100%" }}
             >
-              {({ measureRef }) => (
-                <div ref={measureRef}>
-                  {this.state.dimensions && (
-                    <Grid
-                      dimensions={this.state.dimensions}
-                      network={network}
-                    />
-                  )}
-                </div>
-              )}
-            </Measure>
-          </Col>
-          <Col sm={{ size: 3, offset: 2 }}>
-            <h3>Processed Data</h3>
-            <Card className="processedData">
-              <CardBody>
-                <pre>{processedData}</pre>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
-      </Container>
+              <SubscriptionHelper
+                subscribe={() =>
+                  subscribeToMore({
+                    document: PROBES_SUB,
+                    variables: {
+                      simulatorId: this.props.simulator.id
+                    },
+                    updateQuery: (previousResult, { subscriptionData }) => {
+                      return Object.assign({}, previousResult, {
+                        probes: subscriptionData.data.probesUpdate
+                      });
+                    }
+                  })
+                }
+              />
+              <Row style={{ height: "100%" }}>
+                <Col
+                  sm={{ size: 6, offset: 1 }}
+                  style={{ height: "100%" }}
+                  className="network-grid"
+                >
+                  <Measure
+                    bounds
+                    onResize={contentRect => {
+                      this.setState({ dimensions: contentRect.bounds });
+                    }}
+                  >
+                    {({ measureRef }) => (
+                      <div ref={measureRef}>
+                        {this.state.dimensions && (
+                          <Grid
+                            dimensions={this.state.dimensions}
+                            network={network}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </Measure>
+                </Col>
+                <Col sm={{ size: 3, offset: 2 }}>
+                  <h3>Processed Data</h3>
+                  <Card className="processedData">
+                    <CardBody>
+                      <pre>{processedData}</pre>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+              <Tour steps={trainingSteps} client={this.props.clientObj} />
+            </Container>
+          );
+        }}
+      </Query>
     );
   }
 }
@@ -122,14 +137,7 @@ const PROBE_NETWORK_QUERY = gql`
   }
 `;
 
-export default graphql(PROBE_NETWORK_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      simulatorId: ownProps.simulator.id
-    }
-  })
-})(withApollo(ProbeNetwork));
+export default withApollo(ProbeNetwork);
 
 class Grid extends Component {
   constructor(props) {

@@ -1,11 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import gql from "graphql-tag.macro";
 import { Container } from "reactstrap";
-import { graphql, withApollo } from "react-apollo";
+import { withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
-import SubscriptionHelper from "helpers/subscriptionHelper";
 import { Duration } from "luxon";
 import "./style.scss";
+import { useQuery } from "@apollo/react-hooks";
+import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
 
 function padDigits(number, digits) {
   return (
@@ -14,8 +15,21 @@ function padDigits(number, digits) {
 }
 
 const SELF_DESTRUCT_SUB = gql`
-  subscription SelfDestructUpdate($id: ID) {
-    simulatorsUpdate(simulatorId: $id) {
+  subscription SelfDestructUpdate($simulatorId: ID) {
+    simulatorsUpdate(simulatorId: $simulatorId) {
+      id
+      ship {
+        selfDestructTime
+        selfDestructCode
+        selfDestructAuto
+      }
+    }
+  }
+`;
+
+const SELF_DESTRUCT_QUERY = gql`
+  query SelfDestruct($simulatorId: ID) {
+    simulators(id: $simulatorId) {
       id
       ship {
         selfDestructTime
@@ -30,8 +44,8 @@ function checkNum(num) {
   if (!num && num !== 0 && num !== "0") return false;
   return true;
 }
-class SelfDestructCore extends Component {
-  activate = time => {
+const SelfDestructCore = ({ simulator, client }) => {
+  const activate = time => {
     time = time.toString();
     if (!time && time !== "0") return;
     const [first, second, third] = time.split(":").map(t => parseInt(t, 10));
@@ -59,128 +73,101 @@ class SelfDestructCore extends Component {
         setSelfDestructTime(simulatorId: $id, time: $time)
       }
     `;
-    const sim = this.props.data.simulators[0];
     const variables = {
-      id: sim.id,
+      id: simulator.id,
       time: duration
     };
-    this.props.client.mutate({
+    client.mutate({
       mutation,
       variables
     });
   };
-  setCode = code => {
+  const setCode = code => {
     const mutation = gql`
       mutation SetSelfDestructCode($id: ID!, $code: String) {
         setSelfDestructCode(simulatorId: $id, code: $code)
       }
     `;
-    const sim = this.props.data.simulators[0];
     const variables = {
-      id: sim.id,
+      id: simulator.id,
       code: String(code) || ""
     };
-    this.props.client.mutate({
+    client.mutate({
       mutation,
       variables
     });
   };
-  setAuto = evt => {
+  const setAuto = evt => {
     const mutation = gql`
       mutation SetSelfDestructAuto($id: ID!, $auto: Boolean) {
         setSelfDestructAuto(simulatorId: $id, auto: $auto)
       }
     `;
-    const sim = this.props.data.simulators[0];
     const variables = {
-      id: sim.id,
+      id: simulator.id,
       auto: evt.target.checked
     };
-    this.props.client.mutate({
+    client.mutate({
       mutation,
       variables
     });
   };
-  render() {
-    if (this.props.data.loading || !this.props.data.simulators) return null;
-    const {
-      selfDestructTime,
-      selfDestructCode,
-      selfDestructAuto
-    } = this.props.data.simulators[0].ship;
-    const duration = Duration.fromObject({
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-      milliseconds: selfDestructTime
-    }).normalize();
-    return (
-      <Container className="self-destruct">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: SELF_DESTRUCT_SUB,
-              variables: {
-                id: this.props.simulator.id
-              },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  simulators: subscriptionData.data.simulatorsUpdate
-                });
-              }
-            })
-          }
-        />
-        <div>
-          <label>
-            Auto:{" "}
-            <input
-              type="checkbox"
-              checked={selfDestructAuto}
-              onChange={this.setAuto}
-            />
-          </label>
-        </div>
-        <div>
-          <span style={{ float: "" }}>Code: </span>
-          <InputField
-            prompt="What is the new self-destruct code?"
-            style={{ width: "calc(100% - 40px)", display: "inline-block" }}
-            onClick={this.setCode}
-          >
-            {selfDestructCode}
-          </InputField>
-        </div>
-        <InputField
-          prompt='What is the time in "hh:mm:ss" format?'
-          alert={selfDestructTime && selfDestructTime > 0}
-          onClick={this.activate}
-        >{`${padDigits(duration.hours, 2)}:${padDigits(
-          duration.minutes,
-          2
-        )}:${padDigits(duration.seconds, 2)}`}</InputField>
-      </Container>
-    );
-  }
-}
 
-const SELF_DESTRUCT_QUERY = gql`
-  query SelfDestruct($id: String) {
-    simulators(id: $id) {
-      id
-      ship {
-        selfDestructTime
-        selfDestructCode
-        selfDestructAuto
-      }
-    }
-  }
-`;
-export default graphql(SELF_DESTRUCT_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      id: ownProps.simulator.id
-    }
-  })
-})(withApollo(SelfDestructCore));
+  const { loading, data, subscribeToMore } = useQuery(SELF_DESTRUCT_QUERY, {
+    variables: { simulatorId: simulator.id }
+  });
+  useSubscribeToMore(subscribeToMore, SELF_DESTRUCT_SUB, {
+    variables: { simulatorId: simulator.id },
+    updateQuery: (previousResult, { subscriptionData }) => ({
+      ...previousResult,
+      simulators: subscriptionData.data.simulatorsUpdate
+    })
+  });
+  const { simulators } = data;
+  if (loading || !simulators) return null;
+
+  const { ship } = simulators[0];
+
+  const { selfDestructTime, selfDestructCode, selfDestructAuto } = ship;
+
+  const duration = Duration.fromObject({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    milliseconds: selfDestructTime
+  }).normalize();
+  return (
+    <Container className="self-destruct">
+      <div>
+        <label>
+          Auto:{" "}
+          <input
+            type="checkbox"
+            checked={selfDestructAuto}
+            onChange={setAuto}
+          />
+        </label>
+      </div>
+      <div>
+        <span style={{ float: "" }}>Code: </span>
+        <InputField
+          prompt="What is the new self-destruct code?"
+          style={{ width: "calc(100% - 40px)", display: "inline-block" }}
+          onClick={setCode}
+        >
+          {selfDestructCode}
+        </InputField>
+      </div>
+      <InputField
+        prompt='What is the time in "hh:mm:ss" format?'
+        alert={selfDestructTime && selfDestructTime > 0}
+        onClick={activate}
+      >{`${padDigits(duration.hours, 2)}:${padDigits(
+        duration.minutes,
+        2
+      )}:${padDigits(duration.seconds, 2)}`}</InputField>
+    </Container>
+  );
+};
+
+export default withApollo(SelfDestructCore);

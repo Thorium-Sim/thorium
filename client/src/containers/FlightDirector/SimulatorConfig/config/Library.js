@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
+import { withApollo, Query } from "react-apollo";
 import {
   Container,
   Row,
@@ -97,25 +97,12 @@ class Library extends Component {
     }
   };
   render() {
-    const {
-      data: { loading, libraryEntries }
-    } = this.props;
+    const { libraryEntries } = this.props;
     const { entry } = this.state;
-    if (loading || !libraryEntries) return null;
+    console.log(libraryEntries);
+    if (!libraryEntries) return null;
     return (
       <Container>
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: SUB,
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  libraryEntries: subscriptionData.data.libraryEntriesUpdate
-                });
-              }
-            })
-          }
-        />
         <h3>Library</h3>
         <Row>
           <Col sm={3}>
@@ -416,4 +403,30 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY)(withApollo(Library));
+const LibraryData = props => {
+  return (
+    <Query query={QUERY}>
+      {({ loading, data, subscribeToMore }) => {
+        if (loading) return null;
+        return (
+          <>
+            <SubscriptionHelper
+              subscribe={() =>
+                subscribeToMore({
+                  document: SUB,
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      libraryEntries: subscriptionData.data.libraryEntriesUpdate
+                    });
+                  }
+                })
+              }
+            />
+            <Library {...props} libraryEntries={data.libraryEntries} />
+          </>
+        );
+      }}
+    </Query>
+  );
+};
+export default withApollo(LibraryData);

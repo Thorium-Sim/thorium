@@ -1,12 +1,18 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
+import { withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";
-const App = ({
-  data: { loading, softwarePanels },
-  selectedSimulator,
-  client
-}) => {
+import { useQuery } from "@apollo/react-hooks";
+const QUERY = gql`
+  query SoftwarePanels {
+    softwarePanels {
+      id
+      name
+    }
+  }
+`;
+const App = ({ selectedSimulator, client }) => {
+  const { loading, data } = useQuery(QUERY);
   const mutation = gql`
     mutation UpdateSimulatorPanels($simulatorId: ID!, $panels: [ID]!) {
       updateSimulatorPanels(simulatorId: $simulatorId, panels: $panels)
@@ -32,7 +38,8 @@ const App = ({
       variables
     });
   };
-  if (loading || !softwarePanels) return null;
+  if (loading || !data) return null;
+  const { softwarePanels } = data;
   return (
     <div>
       <select
@@ -63,13 +70,4 @@ const App = ({
   );
 };
 
-const QUERY = gql`
-  query SoftwarePanels {
-    softwarePanels {
-      id
-      name
-    }
-  }
-`;
-
-export default graphql(QUERY)(withApollo(App));
+export default withApollo(App);

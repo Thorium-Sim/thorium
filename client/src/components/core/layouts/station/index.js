@@ -27,7 +27,7 @@ const viewList = Object.keys(Views)
   })
   .sort();
 export const STATION_QUERY = gql`
-  query Station($simulatorId: ID!, $simId: String!, $station: String!) {
+  query Station($simulatorId: ID!, $station: String!) {
     station(simulatorId: $simulatorId, station: $station) {
       name
       login
@@ -39,7 +39,7 @@ export const STATION_QUERY = gql`
       executive
       messageGroups
     }
-    simulators(id: $simId) {
+    simulators(id: $simulatorId) {
       id
       panels
     }

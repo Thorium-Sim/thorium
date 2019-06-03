@@ -1,10 +1,11 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
-import { graphql, Query, Mutation } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
 import FontAwesome from "react-fontawesome";
+import { useQuery } from "@apollo/react-hooks";
 
 function reducer(state, action) {
   if (action.type === "setTrigger") {
@@ -29,11 +30,18 @@ function parseTrigger({ components, values }) {
     }));
 }
 
-const App = ({
-  data: { loading, triggers },
-  selectedSimulator: simulator,
-  client
-}) => {
+const QUERY = gql`
+  query Triggers {
+    triggers {
+      id
+      name
+      components
+      values
+    }
+  }
+`;
+
+const App = ({ selectedSimulator: simulator }) => {
   const updateTriggers = (e, action) => {
     const variables = {
       simulatorId: simulator.id,
@@ -52,12 +60,14 @@ const App = ({
       variables
     });
   };
+  const { loading, data } = useQuery(QUERY);
 
   const { missionConfigs } = simulator;
   const [state, dispatch] = React.useReducer(reducer, {});
   const { selectedTrigger, selectedStationSet, selectedAction } = state;
+  if (loading || !data) return null;
+  const { triggers } = data;
 
-  if (loading || !triggers) return null;
   const trigger = triggers.find(s => s.id === selectedTrigger) || {};
   const stationSet =
     simulator.stationSets.find(s => s.id === selectedStationSet) || {};
@@ -235,15 +245,4 @@ const App = ({
   );
 };
 
-const QUERY = gql`
-  query Triggers {
-    triggers {
-      id
-      name
-      components
-      values
-    }
-  }
-`;
-
-export default graphql(QUERY)(App);
+export default App;
