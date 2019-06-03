@@ -46,7 +46,7 @@ const fragments = {
 };
 
 const QUERY = gql`
-  query Simulator($simulatorId: String!) {
+  query Simulator($simulatorId: ID!) {
     simulators(id: $simulatorId) {
       ...SimulatorData
     }

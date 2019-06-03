@@ -97,7 +97,7 @@ class AlertCondition extends Component {
     return (
       <Query
         query={gql`
-          query simulators($id: String) {
+          query simulators($id: ID) {
             simulators(id: $id) {
               ...AlertConditionData
             }

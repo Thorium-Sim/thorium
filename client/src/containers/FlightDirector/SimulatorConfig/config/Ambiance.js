@@ -18,7 +18,7 @@ import playSound from "components/generic/SoundPlayer";
 import SoundPicker from "helpers/soundPicker";
 
 const QUERY = gql`
-  query Ambiance($id: String!) {
+  query Ambiance($id: ID!) {
     simulators(id: $id) {
       id
       ambiance {

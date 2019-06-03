@@ -223,68 +223,67 @@ export default class CardFrame extends Component {
           visible ? "visible" : ""
         }`}
       >
-        <ActionsMixin {...this.props} changeCard={this.changeCard}>
-          {client.cracked && <div className="cracked-screen" />}
-          <CardRenderer
-            {...this.props}
-            card={this.state.card}
-            changeCard={this.changeCard}
-            client={{
-              ...client,
-              training:
-                simTraining && stationTraining && isMedia(stationTraining)
-                  ? false
-                  : client.training
-            }}
+        <ActionsMixin {...this.props} changeCard={this.changeCard} />
+        {client.cracked && <div className="cracked-screen" />}
+        <CardRenderer
+          {...this.props}
+          card={this.state.card}
+          changeCard={this.changeCard}
+          client={{
+            ...client,
+            training:
+              simTraining && stationTraining && isMedia(stationTraining)
+                ? false
+                : client.training
+          }}
+        />
+        {this.props.client && (
+          <Reset
+            station={this.props.station}
+            clientId={this.props.client.id}
+            reset={() =>
+              this.setState({
+                card:
+                  this.props.station.cards &&
+                  this.props.station.cards[0] &&
+                  this.props.station.cards[0].name
+              })
+            }
           />
-          {this.props.client && (
-            <Reset
-              station={this.props.station}
-              clientId={this.props.client.id}
-              reset={() =>
-                this.setState({
-                  card:
-                    this.props.station.cards &&
-                    this.props.station.cards[0] &&
-                    this.props.station.cards[0].name
-                })
-              }
-            />
+        )}
+        {simTraining &&
+          stationTraining &&
+          client.training &&
+          isMedia(stationTraining) && (
+            <Mutation
+              mutation={gql`
+                mutation ClientSetTraining($id: ID!, $training: Boolean!) {
+                  clientSetTraining(client: $id, training: $training)
+                }
+              `}
+              variables={{
+                id: client.id,
+                training: false
+              }}
+            >
+              {action => (
+                <TrainingPlayer
+                  src={`/assets${stationTraining}`}
+                  close={action}
+                />
+              )}
+            </Mutation>
           )}
-          {simTraining &&
-            stationTraining &&
-            client.training &&
-            isMedia(stationTraining) && (
-              <Mutation
-                mutation={gql`
-                  mutation ClientSetTraining($id: ID!, $training: Boolean!) {
-                    clientSetTraining(client: $id, training: $training)
-                  }
-                `}
-                variables={{
-                  id: client.id,
-                  training: false
-                }}
-              >
-                {action => (
-                  <TrainingPlayer
-                    src={`/assets${stationTraining}`}
-                    close={action}
-                  />
-                )}
-              </Mutation>
-            )}
-          {client.offlineState !== "blackout" && (
-            <Alerts
-              key={`alerts-${
-                this.props.simulator ? this.props.simulator.id : "simulator"
-              }-${this.props.station ? this.props.station.name : "station"}`}
-              ref="alert-widget"
-              simulator={this.props.simulator}
-              station={this.props.station}
-            />
-          )}
-        </ActionsMixin>
+        {client.offlineState !== "blackout" && (
+          <Alerts
+            key={`alerts-${
+              this.props.simulator ? this.props.simulator.id : "simulator"
+            }-${this.props.station ? this.props.station.name : "station"}`}
+            ref="alert-widget"
+            simulator={this.props.simulator}
+            station={this.props.station}
+          />
+        )}
       </div>
     );
   }

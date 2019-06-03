@@ -6,7 +6,7 @@ import playSound from "../generic/SoundPlayer";
 import Reset from "./reset";
 
 const QUERY = gql`
-  query Ambiance($id: String!) {
+  query Ambiance($id: ID!) {
     simulators(id: $id) {
       id
       ambiance {

@@ -55,6 +55,8 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("actionsUpdate"),
         (rootValue, { simulatorId, stationId, clientId }) => {
+          if (!simulatorId) return;
+          if (!rootValue) return;
           const {
             simulatorId: toSimulator,
             stationId: toStation,

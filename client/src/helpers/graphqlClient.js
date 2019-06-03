@@ -6,7 +6,7 @@ import { onError } from "apollo-link-error";
 import { WebSocketLink } from "apollo-link-ws";
 import { MockLink } from "react-apollo/test-utils";
 import { Hermes } from "apollo-cache-hermes";
-import { FLIGHTS_QUERY } from "../containers/FlightDirector/Welcome";
+import { FLIGHTS_QUERY } from "../containers/FlightDirector/Welcome/Welcome";
 import { getClientId } from "helpers/getClientId";
 import { setContext } from "apollo-link-context";
 
