@@ -8,7 +8,7 @@ export default ({ updateArgs, args, client }) => {
         Card Name
         <Input
           type="text"
-          value={args.cardName}
+          defaultValue={args.cardName}
           onBlur={e => updateArgs("cardName", e.target.value)}
         />
       </Label>

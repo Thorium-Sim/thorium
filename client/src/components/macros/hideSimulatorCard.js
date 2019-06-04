@@ -8,7 +8,7 @@ export default ({ updateArgs, args, client }) => {
         Card Name
         <Input
           type="text"
-          value={args.cardName}
+          defaultValue={args.cardName}
           onBlur={e => updateArgs("cardName", e.target.value)}
         />
       </Label>
@@ -17,7 +17,7 @@ export default ({ updateArgs, args, client }) => {
           Delay to Show
           <Input
             type="number"
-            value={args.delay}
+            defaultValue={args.delay}
             onBlur={e => updateArgs("delay", e.target.value)}
           />
           <small>
