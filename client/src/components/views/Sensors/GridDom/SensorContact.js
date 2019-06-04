@@ -7,7 +7,11 @@ import gql from "graphql-tag.macro";
 import { subscribe } from "helpers/pubsub";
 import { particleTypes } from "../../ParticleDetector/particleConstants";
 const burstIcon = require(`../../ProbeScience/burst.svg`);
-
+function distance3d(coord2, coord1) {
+  const { x: x1, y: y1, z: z1 } = coord1;
+  let { x: x2, y: y2, z: z2 } = coord2;
+  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
+}
 class Ping extends Component {
   constructor(props) {
     super(props);
@@ -139,14 +143,17 @@ export default class SensorContact extends Component {
       disabled,
       particles,
       particle,
-      mouseover = () => {},
       mousedown = () => {},
       removeContact = () => {}
     } = this.props;
+    let { mouseover = () => {} } = this.props;
     const { hilite } = this.state;
     if (!location) return null;
     const { x, y } = location;
     const { x: dx = 0, y: dy = 0 } = destination;
+    if (distance3d({ x, y, z: 0 }, { x: 0, y: 0, z: 0 }) > 1) {
+      mouseover = () => {};
+    }
     if (type === "particle" && !particles) return null;
     if (type !== "particle" && particles && !particle) return null;
     if (type === "ping") {
