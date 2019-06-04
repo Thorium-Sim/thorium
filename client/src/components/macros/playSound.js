@@ -1,8 +1,9 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input, Button } from "reactstrap";
 import SoundPicker from "helpers/soundPicker";
+import playSoundHOC from "components/generic/SoundPlayer";
 
-export default function playSound({ updateArgs, args, stations, clients }) {
+function playSound({ updateArgs, args, stations, clients, playSound }) {
   const sound = args.sound || {};
   const updateSound = (which, val) => {
     updateArgs("sound", { ...sound, [which]: val });
@@ -63,14 +64,19 @@ export default function playSound({ updateArgs, args, stations, clients }) {
         </Input>
 
         <Label>Volume</Label>
-        <Input
-          type="range"
-          min={0}
-          step={0.01}
-          max={1}
-          value={sound.volume}
-          onChange={e => updateSound("volume", e.target.value)}
-        />
+        <div style={{ display: "flex" }}>
+          <Input
+            style={{ flex: 1 }}
+            type="range"
+            min={0}
+            step={0.01}
+            max={1}
+            value={sound.volume || sound.volume === 0 ? sound.volume : 1}
+            onChange={e => updateSound("volume", e.target.value)}
+          />
+          <span>{sound.volume || sound.volume === 0 ? sound.volume : 1}</span>
+        </div>
+
         <Label>Playback Rate</Label>
         <Input
           type="number"
@@ -95,7 +101,20 @@ export default function playSound({ updateArgs, args, stations, clients }) {
           checked={sound.looping}
           onChange={e => updateSound("looping", e.target.checked)}
         />
+        <div>
+          <Button
+            color="info"
+            size="sm"
+            onClick={() => {
+              playSound(sound);
+            }}
+          >
+            Test Sound
+          </Button>
+        </div>
       </FormGroup>
     </div>
   );
 }
+
+export default playSoundHOC(playSound);
