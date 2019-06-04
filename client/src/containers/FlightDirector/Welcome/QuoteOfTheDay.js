@@ -20,7 +20,11 @@ const quotes = [
   "The hardest choices require the strongest wills.",
   "Like a snowflake in a blizzard...",
   "Fun isn’t something one considers when balancing the universe. But this… does put a smile on my face.",
-  "The work is done, as it always will be. I am inevitable."
+  "The work is done, as it always will be. I am inevitable.",
+  "It's better to look good than to feel good.",
+  "Some of us have to work for a living!",
+  "Educating minds with the discipline of wonder.",
+  "While others sleep, you dream."
 ];
 
 const QuoteOfTheDay = () => {
