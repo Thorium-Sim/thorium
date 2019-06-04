@@ -8,6 +8,7 @@
     max-height: 80vh;
     font-size: 28px;
     width: 100% !important;
+    text-transform: lowercase !important;
     div {
       line-height: 1.5;
       margin: 0 30px;
@@ -41,6 +42,8 @@
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
+    text-transform: lowercase !important;
+
     width: 100% !important;
     div {
       line-height: 1.5;
@@ -88,6 +91,9 @@
 .card-codeCyphers,
 .core-codeCyphers,
 .cypher-printing {
+  .coded {
+    text-transform: lowercase !important;
+  }
   .Andorian {
     font-family: "Andorian";
   }
