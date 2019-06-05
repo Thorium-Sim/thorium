@@ -1,3 +1,22 @@
+# [1.9.0](https://github.com/Thorium-Sim/thorium/compare/1.8.3...1.9.0) (2019-06-05)
+
+
+### Bug Fixes
+
+* **Code Cyphers:** Cypher text appears correctly when using the all caps option. Closes [#2257](https://github.com/Thorium-Sim/thorium/issues/2257) ([36a0f7f](https://github.com/Thorium-Sim/thorium/commit/36a0f7f))
+* **Issue Tracker:** The issue tracker now works just a little bit better. ([0fd23d9](https://github.com/Thorium-Sim/thorium/commit/0fd23d9))
+* **Sensors:** Made it possible to place sensor contacts well outside of sensors range into the prep area. Closes [#2255](https://github.com/Thorium-Sim/thorium/issues/2255). ([5dfecd4](https://github.com/Thorium-Sim/thorium/commit/5dfecd4))
+* **Sensors:** Made it so contacts outside of sensors range don't show up when hovered. ([564843a](https://github.com/Thorium-Sim/thorium/commit/564843a))
+* **Simulator:** Add macros to change simulator layout and name. Closes [#2222](https://github.com/Thorium-Sim/thorium/issues/2222) ([40211f6](https://github.com/Thorium-Sim/thorium/commit/40211f6))
+* **Sound Action:** Makes it easier to tell what the volume of the sound in the sound macro is. Closes [#2254](https://github.com/Thorium-Sim/thorium/issues/2254) ([82182cd](https://github.com/Thorium-Sim/thorium/commit/82182cd))
+* **Station:** Fixes an issue that makes it impossible to hide and show simulator cards. Closes [#2225](https://github.com/Thorium-Sim/thorium/issues/2225) ([7033674](https://github.com/Thorium-Sim/thorium/commit/7033674))
+
+
+### Features
+
+* **Asset Explorer:** Adds a search field to the asset explorer. Closes [#2256](https://github.com/Thorium-Sim/thorium/issues/2256) ([25e75f6](https://github.com/Thorium-Sim/thorium/commit/25e75f6))
+* **Sounds:** Add a search to the sound picker. ([f513dcb](https://github.com/Thorium-Sim/thorium/commit/f513dcb))
+
 ## [1.8.3](https://github.com/Thorium-Sim/thorium/compare/1.8.2...1.8.3) (2019-06-03)
 
 
