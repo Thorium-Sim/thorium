@@ -55,6 +55,7 @@
     "http-proxy-middleware": "^0.19.1",
     "keycode": "^2.2.0",
     "luxon": "^1.13.2",
+    "match-sorter": "^3.0.0",
     "papaparse": "^4.6.3",
     "prando": "^5.1.0",
     "random-words": "^1.1.0",
