@@ -14,7 +14,8 @@ class IssueTracker extends Component {
     this.setState(state);
   }
 
-  _submit() {
+  _submit = e => {
+    e.preventDefault();
     const mutation = gql`
       mutation IssueTracker(
         $title: String!
@@ -38,8 +39,12 @@ class IssueTracker extends Component {
         this.state.body +
         `
       
-### Steps to Reproduce
-${this.state.reproduce}`,
+${
+  this.state.reproduce
+    ? `### Steps to Reproduce
+${this.state.reproduce}`
+    : ""
+}`,
       person: this.state.person,
       type: this.state.type,
       priority: this.state.priority
@@ -50,12 +55,12 @@ ${this.state.reproduce}`,
     });
     this.setState({});
     this.props.close && this.props.close();
-  }
+  };
   render() {
     return (
       <div id="issues-tracker">
         <div className="issues-body">
-          <form>
+          <form onSubmit={this._submit}>
             <div className="form-group">
               <label>Title</label>
               <input
@@ -84,7 +89,7 @@ ${this.state.reproduce}`,
                 className="form-control form-control-sm"
               />
             </div>
-            {this.state.type === "bug" && (
+            {this.state.type === "type/bug" && (
               <div className="form-group">
                 <label>Steps to Reproduce</label>
                 <textarea
@@ -131,11 +136,7 @@ ${this.state.reproduce}`,
               </select>
             </div>
             <div className="form-group submit-button">
-              <button
-                onClick={this._submit.bind(this)}
-                className="btn btn-sm btn-primary"
-                type="button"
-              >
+              <button className="btn btn-sm btn-primary" type="submit">
                 Submit
               </button>
             </div>
