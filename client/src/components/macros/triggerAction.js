@@ -135,6 +135,7 @@ export default ({ updateArgs, args, noStations, stations, clients }) => {
             <option value="uncrack">Un-Crack</option>
           </optgroup>
           <optgroup>
+            <option value="reload">Reload Browser</option>
             <option value="spaceEdventuresToken">
               Space EdVentures Token Screen
             </option>
