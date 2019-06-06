@@ -19,6 +19,7 @@ class ActionPreview extends Component {
       id,
       event,
       args,
+      simArgs,
       simulatorId,
       values,
       delay,
@@ -78,7 +79,7 @@ class ActionPreview extends Component {
               <MacroPreview
                 key={this.state.previewKey}
                 simulatorId={simulatorId}
-                args={{ ...args, ...values[id] }}
+                args={{ ...args, ...simArgs[id], ...values[id] }}
                 updateArgs={edit ? this.setArg : () => {}}
                 lite
                 stations={stations}
@@ -117,7 +118,6 @@ class TimelineItem extends Component {
       simArgs
     } = this.props;
     const { expanded } = this.state;
-
     return (
       <li>
         <input
@@ -147,7 +147,8 @@ class TimelineItem extends Component {
                 simulatorId={simulatorId}
                 id={id}
                 event={event}
-                args={{ ...args, ...simArgs[id] }}
+                simArgs={simArgs}
+                args={args}
                 values={values}
                 updateValues={updateValues}
                 delay={delay}
