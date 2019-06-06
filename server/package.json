@@ -70,8 +70,6 @@
     "@babel/plugin-syntax-import-meta": "^7.2.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-stage-3": "^7.0.0",
-    "@swc/cli": "^0.1.18",
-    "@swc/core": "^1.0.39",
     "babel-jest": "^24.1.0",
     "babel-plugin-import-directory": "^1.0.3",
     "babel-plugin-import-glob": "^2.0.0",

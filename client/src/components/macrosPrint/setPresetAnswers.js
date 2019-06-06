@@ -4,8 +4,8 @@ import { FormGroup, Label } from "reactstrap";
 export default ({ args = {} }) => {
   let answers = args ? args.presetAnswers : [];
   answers = answers
-    .map(a => `${a.label || ""}${a.value && ";" + a.value}`)
-    .join("\n");
+    ? answers.map(a => `${a.label || ""}${a.value && ";" + a.value}`).join("\n")
+    : "";
   return (
     <FormGroup className="macro-setPresetAnswer">
       <strong>Domain</strong>

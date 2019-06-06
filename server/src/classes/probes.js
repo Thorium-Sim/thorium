@@ -379,7 +379,7 @@ const probesEquipment = [
   {
     id: "radiation-shielding",
     name: "Radiation Shielding",
-    description: "Protects the probe from moderate levels of radiaiton.",
+    description: "Protects the probe from moderate levels of radiation.",
     size: 3,
     count: 16,
     availableProbes: []
@@ -427,6 +427,15 @@ const probesEquipment = [
       "A Decoy Package sends out signals to make sensor devices detect the probe as a ship.",
     size: 4,
     count: 23,
+    availableProbes: []
+  },
+  {
+    id: "tractor-beam",
+    name: "Tractor Beam",
+    description:
+      "Projects dark matter particles to create areas of negative gravitation. Can be used to pull objects towards the probe.",
+    size: 5,
+    count: 7,
     availableProbes: []
   },
   {

@@ -40,7 +40,7 @@ class TimeCared extends Component {
     this.timeout = setTimeout(this.loop, 1000);
   };
   render() {
-    const { admitTime } = this.props;
+    const { admitTime = Date.now() } = this.props;
     return parseTime(
       Duration.fromObject({
         months: 0,
@@ -49,7 +49,7 @@ class TimeCared extends Component {
         hours: 0,
         minutes: 0,
         seconds: 0,
-        milliseconds: new Date() - new Date(admitTime)
+        milliseconds: new Date() - new Date(parseInt(admitTime, 10))
       })
         .normalize()
         .toObject()

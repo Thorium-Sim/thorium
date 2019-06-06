@@ -94,6 +94,7 @@ class SetsPicker extends Component {
                     .filter(se =>
                       se.clients.find(
                         c =>
+                          c.stationSet &&
                           c.simulatorId === s.simulatorId &&
                           c.stationSet.id === s.stationSet.id
                       )
