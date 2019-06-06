@@ -5,7 +5,7 @@ import gql from "graphql-tag.macro";
 import "./style.scss";
 import Printable from "helpers/printable";
 import useQrCode from "react-qrcode-hook";
-import { ReactComponent as Logo } from "./logo.svg";
+import { ReactComponent as Logo } from "./logo-black.svg";
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -27,18 +27,22 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-const Flyer = ({ station: { name, token, userId } }) => {
+const Flyer = ({ station: { name, token, userId }, simulator, loginName }) => {
   const qrCode = useQrCode(`https://spaceedventures.org/redeem?token=${token}`);
   // If there is a UserId already, no need to print a flyer.
   if (userId) return null;
   return (
     <div className="space-edventures-flyer">
       <Logo style={{ height: "100px" }} />
+      <h2>{loginName}</h2>
+
       <p>
         This signifies that on {new Date().toLocaleDateString()} you completed a
-        flight on the following station:
+        flight on the following simulator and station:
       </p>
-      <h2>{name}</h2>
+      <h2>
+        {simulator.name}: {name}
+      </h2>
       <p>
         Add this flight to your rank by going to{" "}
         <u>https://spaceedventures.org/redeem</u> and typing in the following
@@ -66,6 +70,7 @@ const FLIGHT_QUERY = gql`
     }
     clients(simulatorId: $simulatorId) {
       id
+      loginName
       station {
         name
       }
@@ -228,12 +233,17 @@ This can only be done once per flight and should only be done when the flight is
               <div className="flyer-container">
                 {flight.clients
                   .map(c => clients.find(cc => cc.id === c.id) || c)
-                  .map(c => (
-                    <Flyer
-                      key={c.id}
-                      station={c.station ? { ...c.station, ...c } : c}
-                    />
-                  ))}
+                  .map(
+                    c =>
+                      console.log(c) || (
+                        <Flyer
+                          key={c.id}
+                          simulator={simulator}
+                          loginName={c.loginName}
+                          station={c.station ? { ...c.station, ...c } : c}
+                        />
+                      )
+                  )}
               </div>
             </Printable>
           </div>
