@@ -115,7 +115,10 @@ class Form extends Component {
             </Col>
             <Col sm={{ size: 3, offset: 1 }}>
               <Button
-                disabled={currentForm === form.form.length - 1}
+                disabled={
+                  !responses[currentForm] ||
+                  currentForm === form.form.length - 1
+                }
                 color="primary"
                 size="lg"
                 block
