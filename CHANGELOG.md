@@ -1,3 +1,17 @@
+## [1.9.1](https://github.com/Thorium-Sim/thorium/compare/1.9.0...1.9.1) (2019-06-06)
+
+
+### Bug Fixes
+
+* **Actions:** Adds an action to reload the Thorium browser to the action macro. Closes [#2283](https://github.com/Thorium-Sim/thorium/issues/2283) ([7756f86](https://github.com/Thorium-Sim/thorium/commit/7756f86))
+* **Probes:** Adds tractor beams as probe type options. Closes [#2259](https://github.com/Thorium-Sim/thorium/issues/2259) ([abfd97f](https://github.com/Thorium-Sim/thorium/commit/abfd97f))
+* **Sets:** Fixes an issue where a misconfigured set can cause a client crash. Closes [#2284](https://github.com/Thorium-Sim/thorium/issues/2284) ([6dbc7fe](https://github.com/Thorium-Sim/thorium/commit/6dbc7fe))
+* **Sickbay:** Fixes an issue where admiting patients breaks. Closes [#2271](https://github.com/Thorium-Sim/thorium/issues/2271) ([2229c38](https://github.com/Thorium-Sim/thorium/commit/2229c38))
+* **Space EdVentures:** Add simulator and login name to the Space EdVentures crew flyer. Closes [#2281](https://github.com/Thorium-Sim/thorium/issues/2281) ([c2857f6](https://github.com/Thorium-Sim/thorium/commit/c2857f6))
+* **Surveys:** Requires all inputs to be filled out on the survey forms, which helps when submitting to Google Sheets. Closes [#2282](https://github.com/Thorium-Sim/thorium/issues/2282). Closes [#2275](https://github.com/Thorium-Sim/thorium/issues/2275). ([ea55632](https://github.com/Thorium-Sim/thorium/commit/ea55632))
+* **Timeline:** Fixes an issue where the timeline can crash with uninitialized arguments. Closes [#2279](https://github.com/Thorium-Sim/thorium/issues/2279) ([cf90595](https://github.com/Thorium-Sim/thorium/commit/cf90595))
+* **Timeline:** Fixes an issue where timeline details don't show up on the timeline core. Closes [#2273](https://github.com/Thorium-Sim/thorium/issues/2273) ([bf532f0](https://github.com/Thorium-Sim/thorium/commit/bf532f0))
+
 # [1.9.0](https://github.com/Thorium-Sim/thorium/compare/1.8.3...1.9.0) (2019-06-05)
 
 
