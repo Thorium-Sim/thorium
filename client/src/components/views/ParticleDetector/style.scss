@@ -1,5 +1,8 @@
 .card-particleDetector,
 .particleDetector-core {
+  .grid {
+    overflow: hidden;
+  }
   height: 100%;
   .row,
   .col {
