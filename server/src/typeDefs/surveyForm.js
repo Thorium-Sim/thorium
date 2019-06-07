@@ -71,6 +71,9 @@ const schema = gql`
       sheetId: ID
     ): String
     updateSurveyForm(id: ID!, form: [FormFieldsInput]!): String
+    """
+    Macro: Surveys: Trigger Survey
+    """
     triggerSurvey(simulatorId: ID!, id: ID!): String
     surveyFormResponse(id: ID!, response: FormResultsInput): String
     endSurvey(id: ID!): String

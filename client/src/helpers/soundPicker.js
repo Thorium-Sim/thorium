@@ -47,7 +47,6 @@ const SoundSubMenu = props => {
         .filter(f => isAudio.find(a => f.name.includes(a))),
     [assetFolders]
   );
-  console.log(allObjects);
   const searchObjects = React.useMemo(
     () => matchSorter(allObjects, search, { keys: ["name"] }),
     [allObjects, search]

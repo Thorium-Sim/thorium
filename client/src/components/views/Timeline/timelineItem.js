@@ -19,7 +19,7 @@ class ActionPreview extends Component {
       id,
       event,
       args,
-      simArgs,
+      simArgs = {},
       simulatorId,
       values,
       delay,

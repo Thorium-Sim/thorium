@@ -16,6 +16,8 @@ class IssueTracker extends Component {
 
   _submit = e => {
     e.preventDefault();
+    if (!this.state.type) return;
+    if (!this.state.priority) return;
     const mutation = gql`
       mutation IssueTracker(
         $title: String!
