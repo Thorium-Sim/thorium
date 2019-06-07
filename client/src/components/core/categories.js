@@ -7,7 +7,7 @@ const categories = [
       "ActionsCore",
       "ExtrasCore",
       "RemoteCore",
-      "MessagingCore",
+      "NewMessagingCore",
       "LoginNameCore",
       "CoreFeed"
     ],
@@ -15,7 +15,7 @@ const categories = [
       gridTemplateRows: "100px 400px",
       gridTemplateColumns: "300px 300px 300px 300px",
       gridTemplateAreas: `"ActionsCore ExtrasCore RemoteCore CoreFeed"
-"MessagingCore LoginNameCore LoginNameCore CoreFeed"`
+"NewMessagingCore LoginNameCore LoginNameCore CoreFeed"`
     }
   },
   {
@@ -27,12 +27,13 @@ const categories = [
       "ArmoryCore",
       "HeatCore",
       "SelfDestructCore",
-      "ObjectivesCore"
+      "ObjectivesCore",
+      "AlertConditionCore"
     ],
     style: {
       gridTemplateRows: "200px 200px 400px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"CrewCore CrewCore SelfDestructCore" "HeatCore ArmoryCore CargoCore" "ShipCore ObjectivesCore CargoCore"`
+      gridTemplateAreas: `"CrewCore CrewCore SelfDestructCore" "HeatCore ArmoryCore CargoCore" "ShipCore ObjectivesCore AlertConditionCore"`
     }
   },
   {
@@ -41,13 +42,16 @@ const categories = [
       "EngineControlCore",
       "ThrusterCore",
       "NavigationCore",
-      "DockingCore"
+      "DockingCore",
+      "SubspaceFieldCore",
+      "TranswarpCore",
+      "JumpDriveCore"
     ],
     style: {
       gridTemplateRows: "150px 125px 125px",
-      gridTemplateColumns: "300px 300px",
-      gridTemplateAreas: `"NavigationCore ThrusterCore"
-"EngineControlCore DockingCore" "nothing nothing"`
+      gridTemplateColumns: "300px 300px 300px",
+      gridTemplateAreas: `"NavigationCore ThrusterCore JumpDriveCore"
+"EngineControlCore DockingCore JumpDriveCore" "SubspaceFieldCore TranswarpCore nothing"`
     }
   },
   {
@@ -58,12 +62,14 @@ const categories = [
       "TorpedoCore",
       "RailgunCore",
       "BattleCore",
-      "ShieldControlCore"
+      "ShieldControlCore",
+      "ThxCore",
+      "CrmCore"
     ],
     style: {
-      gridTemplateRows: "300px 300px",
+      gridTemplateRows: "300px 100px 200px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"TargetingCore PhaserCore ShieldControlCore" "RailgunCore TorpedoCore BattleCore"`
+      gridTemplateAreas: `"TargetingCore TorpedoCore ShieldControlCore" "RailgunCore PhaserCore BattleCore" "ThxCore CrmCore BattleCore"`
     }
   },
   {
@@ -81,12 +87,13 @@ const categories = [
       "SensorsGridCore",
       "SensorsCore",
       "ProbeControlCore",
-      "ProbeNetworkCore"
+      "ProbeNetworkCore",
+      "AlternateSensorsCore"
     ],
     style: {
-      gridTemplateRows: "300px 200px",
+      gridTemplateRows: "300px 200px 300px",
       gridTemplateColumns: "600px 400px 400px",
-      gridTemplateAreas: `"SensorsGridCore SensorsCore SensorsCore" "SensorsGridCore ProbeControlCore ProbeNetworkCore"`
+      gridTemplateAreas: `"SensorsGridCore SensorsCore SensorsCore" "SensorsGridCore ProbeControlCore ProbeNetworkCore" "AlternateSensorsCore nothing nothing"`
     }
   },
   {
@@ -112,20 +119,31 @@ const categories = [
   },
   {
     name: "Engineer",
-    components: ["ReactorControlCore", "ExocompsCore"],
+    components: [
+      "ReactorControlCore",
+      "ExocompsCore",
+      "DockingPortCore",
+      "SpecializedDockingCore",
+      "CommandLineCore"
+    ],
     style: {
-      gridTemplateRows: "400px",
-      gridTemplateColumns: "400px 400px",
-      gridTemplateAreas: `"ReactorControlCore ExocompsCore"`
+      gridTemplateRows: "400px 300px",
+      gridTemplateColumns: "400px 400px 400px",
+      gridTemplateAreas: `"ReactorControlCore ExocompsCore DockingPortCore" "SpecializedDockingCore CommandLineCore nothing"`
     }
   },
   {
     name: "Security",
-    components: ["SecurityDecksCore", "SecurityTeamsCore", "CrewCore"],
+    components: [
+      "SecurityDecksCore",
+      "SecurityTeamsCore",
+      "CrewCore",
+      "RoomSearchCore"
+    ],
     style: {
-      gridTemplateRows: "200px 200px",
+      gridTemplateRows: "300px 300px 200px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"CrewCore CrewCore SecurityDecksCore" "SecurityTeamsCore SecurityTeamsCore SecurityDecksCore"`
+      gridTemplateAreas: `"CrewCore CrewCore SecurityDecksCore RoomSearchCore" "SecurityTeamsCore SecurityTeamsCore SecurityDecksCore RoomSearchCore"`
     }
   },
   {
@@ -159,7 +177,21 @@ const comps = categories.reduce(
   []
 );
 
-const filterList = ["DecodingCore", "LRCommCore"];
+const filterList = [
+  "MessagingCore",
+  "DecodingCore",
+  "LRCommCore",
+  "JrNavigationCore",
+  "ReactivationCore",
+  "TimelineCore",
+  "TimelineThumbnailCore",
+  "CardsCore",
+  "HandheldScannerCore",
+  "AssetsCore",
+  "KeypadCore",
+  "ClientsCore",
+  "HypercardCore"
+];
 const other = {
   name: "Other",
   style: {
@@ -171,4 +203,5 @@ const other = {
     .filter(c => filterList.indexOf(c) === -1)
 };
 
+console.log(other.components);
 export default categories.concat(other);
