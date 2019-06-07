@@ -1,3 +1,13 @@
+## [1.9.2](https://github.com/Thorium-Sim/thorium/compare/1.9.1...1.9.2) (2019-06-07)
+
+
+### Bug Fixes
+
+* **Aux Timeline:** Fixes an issue where the aux timeline can crash. Closes [#2270](https://github.com/Thorium-Sim/thorium/issues/2270) ([0379974](https://github.com/Thorium-Sim/thorium/commit/0379974))
+* **Core:** Adjust the categories for the F-key core overlay. ([5f6911d](https://github.com/Thorium-Sim/thorium/commit/5f6911d))
+* **Particle Detector:** Hides contacts that are outside of the particle detector grid. Closes [#2261](https://github.com/Thorium-Sim/thorium/issues/2261) ([04e045d](https://github.com/Thorium-Sim/thorium/commit/04e045d))
+* **Surveys:** Add a timeline action for starting surveys. ([a65d1a6](https://github.com/Thorium-Sim/thorium/commit/a65d1a6))
+
 ## [1.9.1](https://github.com/Thorium-Sim/thorium/compare/1.9.0...1.9.1) (2019-06-06)
 
 
