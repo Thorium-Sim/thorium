@@ -29,7 +29,7 @@ const QUERY = gql`
   ${fragment}
 `;
 const SUBSCRIPTION = gql`
-  subscription TranswarpUpdate($simulatorId: ID!) {
+  subscription InterfaceUpdate($simulatorId: ID!) {
     interfaceUpdate(simulatorId: $simulatorId) {
       ...InterfaceData
     }

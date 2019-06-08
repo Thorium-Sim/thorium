@@ -31,9 +31,14 @@ export default class Interface {
   }
   triggerObject(objectId) {
     // Get all of the connections to macros
+    this.values[objectId] = this.values[objectId] || {};
     const value = this.values[objectId];
+    const component = this.components.find(o => o.id === objectId);
     let levelDirection = null;
-    if (value && (value.level || value.level === 0)) {
+    if (
+      (value && (value.level || value.level === 0)) ||
+      component.component.name === "Toggle"
+    ) {
       this.values[objectId].level = value.level ? 0 : 1;
       levelDirection = value.level ? "up" : "down";
     }

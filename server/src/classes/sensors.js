@@ -76,7 +76,6 @@ export default class Sensors extends System {
     this.interference = params.interference || 0;
     this.movement = params.movement || { x: 0, y: 0, z: 0 };
     this.thrusterMovement = params.thrusterMovement || { x: 0, y: 0, z: 0 };
-    console.log(params.segments);
     this.segments = newlyCreated ? [] : [...(params.segments || [])];
   }
 
