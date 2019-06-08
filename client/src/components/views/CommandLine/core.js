@@ -155,7 +155,9 @@ const CommandLineCore = ({ simulator, clients, ...rest }) => {
           {clients
             .map(c => ({
               ...c,
-              station: simulator.stations.find(s => s.name === c.station.name)
+              station: simulator.stations.find(
+                s => c.station && s.name === c.station.name
+              )
             }))
             .filter(
               c =>

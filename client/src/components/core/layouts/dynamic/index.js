@@ -29,6 +29,12 @@ class UpdateSelect extends React.PureComponent {
     );
   };
   render() {
+    const hasLighting = this.props.clients.find(
+      c =>
+        c.id.toLowerCase().indexOf("ecs") === 0 &&
+        c.simulator &&
+        c.simulator.id === this.props.simulator.id
+    );
     return (
       <select
         type="select"
@@ -41,6 +47,7 @@ class UpdateSelect extends React.PureComponent {
         </option>
         {Object.keys(Cores)
           .sort()
+          .filter(s => (s === "LightingCore" && !hasLighting ? false : true))
           .map(s => {
             return mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? (
               <option key={s} value={s} disabled>{`${s}${" - ✅"}`}</option>
@@ -98,7 +105,12 @@ class Dynamic extends Component {
               path={path}
               title={
                 this.props.edit ? (
-                  <UpdateSelect mosaic={this.props.mosaic} id={id} />
+                  <UpdateSelect
+                    mosaic={this.props.mosaic}
+                    id={id}
+                    clients={this.props.clients}
+                    simulator={this.props.simulator}
+                  />
                 ) : (
                   titleCase(id)
                 )
