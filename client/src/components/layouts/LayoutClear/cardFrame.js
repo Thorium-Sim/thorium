@@ -10,6 +10,10 @@ class CardFrame extends Component {
       viewscreen,
       clientObj
     } = this.props;
+    let displayAlert = simulator.alertlevel;
+    if (simulator.alertlevel === "p") {
+      displayAlert = "s";
+    }
     return (
       <div className="card-frame">
         <div className="chrome">
@@ -39,7 +43,7 @@ class CardFrame extends Component {
             alt=""
           />
           <h1 className="simulator-name">{simulator.name}</h1>
-          <h1 className="alert-condition-text">{simulator.alertlevel}</h1>
+          <h1 className="alert-condition-text">{displayAlert}</h1>
           <div className="alert-condition-indicator" />
           {!viewscreen && (
             <>
