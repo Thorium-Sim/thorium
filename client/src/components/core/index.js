@@ -20,6 +20,7 @@ const fragment = gql`
         cards {
           name
           hidden
+          component
         }
         messageGroups
       }

@@ -203,5 +203,4 @@ const other = {
     .filter(c => filterList.indexOf(c) === -1)
 };
 
-console.log(other.components);
 export default categories.concat(other);
