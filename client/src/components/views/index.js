@@ -174,6 +174,7 @@ import CrmCore from "./Crm/core";
 import CardsCore from "./Cards/core";
 import CommandLineCore from "./CommandLine/core";
 import AuxTimelineCore from "./Timeline/auxTimelineData";
+import LightingCore from "./Lighting";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -461,7 +462,8 @@ export const Cores = {
   CrmCore,
   CardsCore,
   CommandLineCore,
-  AuxTimelineCore
+  AuxTimelineCore,
+  LightingCore
 };
 
 export default Views;

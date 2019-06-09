@@ -86,6 +86,7 @@ App.on("triggerInterfaceObject", ({ id, objectId }) => {
     { simulatorId: interfaceObj.simulatorId, macros },
     "triggerMacros"
   );
+  pubsub.publish("interfaceUpdate", App.interfaces);
 });
 
 App.on(

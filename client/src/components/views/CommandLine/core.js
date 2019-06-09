@@ -144,15 +144,29 @@ const ClientInfo = ({
     </>
   );
 };
-const CommandLineCore = ({ simulator, clients }) => {
+const CommandLineCore = ({ simulator, clients, ...rest }) => {
   const [selectedClient, setSelectedClient] = React.useState(null);
   const client = clients.find(c => c.id === selectedClient);
+  console.log(simulator, rest);
   return (
     <div className="commandline-core">
       <div className="commandline-clients">
         <ListGroup>
           {clients
-            .filter(c => c.commandLineOutput && c.commandLineOutput.length > 0)
+            .map(c => ({
+              ...c,
+              station: simulator.stations.find(
+                s => c.station && s.name === c.station.name
+              )
+            }))
+            .filter(
+              c =>
+                console.log(c) ||
+                (c.commandLineOutput &&
+                  c.commandLineOutput.length > 0 &&
+                  c.station &&
+                  c.station.cards.find(s => s.component === "CommandLine"))
+            )
             .map(c => (
               <ListGroupItem
                 key={c.id}
