@@ -2,12 +2,21 @@ import React from "react";
 import { Button } from "reactstrap";
 import Transitioner from "./transitioner";
 
+const images = {
+  photon: require(`./torpedos/photon.svg`),
+  quantum: require(`./torpedos/quantum.svg`),
+  probe: require(`./torpedos/probe.svg`),
+  other: require("./torpedos/other.svg")
+};
+
 export default class TorpedoPick extends Transitioner {
   render() {
-    const torpedoWidth = 120;
+    const torpedoWidth = 300;
     const { updateScreen, loadTorpedo, inventory } = this.props;
     const types = inventory.reduce((prev, next) => {
-      if (prev[next.type]) {
+      if (next.probe) {
+        prev[next.probe.id] = 1;
+      } else if (prev[next.type]) {
         prev[next.type] += 1;
       } else {
         prev[next.type] = 1;
@@ -24,30 +33,49 @@ export default class TorpedoPick extends Transitioner {
           >
             {Object.keys(types).map((t, i) => {
               let imgKey = t;
-
-              if (["photon", "quantum", "probe"].indexOf(imgKey) < 0) {
+              let name = t;
+              let id = null;
+              if (!images[imgKey]) {
                 imgKey = "other";
               }
-              const img = require(`./torpedos/${imgKey}.svg`);
+              if (imgKey === "other") {
+                const probe = inventory.find(i => i.probe && i.probe.id === t);
+                if (probe) {
+                  imgKey = "probe";
+                  name = `Probe: ${probe.probe.name}`;
+                  id = probe.id;
+                }
+              }
+              const img = images[imgKey];
               return (
                 <div
                   key={t + i}
                   onClick={loadTorpedo.bind(
                     this,
-                    (inventory.find(inv => inv.type === t) || {}).id
+                    id || (inventory.find(inv => inv.type === t) || {}).id
                   )}
                   className="torpedoPick"
-                  style={{ width: torpedoWidth }}
+                  style={{
+                    minWidth: "120px",
+                    padding: "0 20px"
+                  }}
                 >
                   <img
                     alt="torpedo"
                     draggable="false"
                     role="presentation"
+                    style={{ width: "60px" }}
                     src={img}
                   />
-                  <span style={{ textTransform: "capitalize" }}>
-                    {t} ({types[t]})
-                  </span>
+                  <pre
+                    style={{
+                      textTransform: "capitalize",
+                      textAlign: "center",
+                      overflow: "hidden"
+                    }}
+                  >
+                    {name} ({types[t]})
+                  </pre>
                 </div>
               );
             })}

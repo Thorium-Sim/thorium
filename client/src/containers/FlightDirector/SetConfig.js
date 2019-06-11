@@ -385,7 +385,7 @@ class SetConfig extends Component {
                 </Query>
                 <Query
                   query={gql`
-                    query SimInterface($id: String) {
+                    query SimInterface($id: ID) {
                       simulators(id: $id) {
                         interfaces
                       }

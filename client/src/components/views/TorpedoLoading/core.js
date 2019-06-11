@@ -79,7 +79,10 @@ const fragment = gql`
     inventory {
       id
       type
-      probe
+      probe {
+        id
+        name
+      }
     }
     state
   }
