@@ -124,18 +124,6 @@ $color: $alert5;
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   }
-  .table {
-    background-color: rgba(0, 0, 0, 0.5);
-    border: solid 1px #888;
-    border-radius: 15px;
-    color: #fff;
-    &.table-striped > tbody > tr:nth-child(odd) {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-    &.table-hover > tbody > tr:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-  }
   .btn {
     position: relative;
     z-index: 1;
