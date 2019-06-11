@@ -2,6 +2,32 @@ import App from "../app.js";
 import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 
+App.on("shipSetDocking", ({ simulatorId, clamps, ramps, airlock, legs }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.clamps(clamps);
+  simulator.ramps(ramps);
+  simulator.airlock(airlock);
+  simulator.legs(legs);
+  if (!clamps) {
+    // Turn off external power if clamps are false
+    const reactors = App.systems.filter(
+      s =>
+        s.class === "Reactor" &&
+        s.simulatorId === simulator.id &&
+        s.model === "reactor"
+    );
+    reactors.forEach(r => {
+      if (r.externalPower) {
+        r.changeEfficiency(1);
+      }
+    });
+    pubsub.publish(
+      "reactorUpdate",
+      App.systems.filter(s => s.type === "Reactor")
+    );
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("shipDockingChange", ({ simulatorId, which, state }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
