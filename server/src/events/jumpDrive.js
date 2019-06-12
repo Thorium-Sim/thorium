@@ -70,3 +70,6 @@ App.on("setJumpDriveEnabled", ({ id, enabled }) => {
 App.on("hitJumpDriveStress", ({ id, sector }) => {
   performAction(id, sys => sys.hitSectorOffset(sector));
 });
+App.on("setJumpDriveRingsExtended", ({ id, ringsExtended }) => {
+  performAction(id, sys => sys.setRingsExtended(ringsExtended));
+});

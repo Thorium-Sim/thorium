@@ -96,9 +96,10 @@ class JumpDrive extends Component {
     return power - powerUsed;
   };
   canActivate = () => {
-    const { sectors, enabled } = this.props;
+    const { sectors, enabled, ringsExtended } = this.props;
     return (
       enabled &&
+      ringsExtended &&
       sectors.fore.level > 0 &&
       sectors.aft.level > 0 &&
       sectors.starboard.level > 0 &&
@@ -113,7 +114,8 @@ class JumpDrive extends Component {
       stress,
       activated,
       damage,
-      power: { power, powerLevels }
+      power: { power, powerLevels },
+      ringsExtended
     } = this.props;
     const { env } = this.state;
     const sectorStates = ["starboard", "port", "fore", "aft"].map((s, i) => ({
@@ -330,6 +332,42 @@ class JumpDrive extends Component {
               />
               <div className="stress-bar" />
             </div>
+            <Mutation
+              mutation={gql`
+                mutation SetJumpDriveEnabled(
+                  $id: ID!
+                  $ringsExtended: Boolean!
+                ) {
+                  setJumpDriveRingsExtended(
+                    id: $id
+                    ringsExtended: $ringsExtended
+                  )
+                }
+              `}
+              variables={{ id, ringsExtended: !ringsExtended }}
+            >
+              {action => (
+                <Button
+                  style={{ marginTop: "50px" }}
+                  block
+                  size="lg"
+                  color="warning"
+                  onClick={action}
+                >
+                  {ringsExtended ? (
+                    <FormattedMessage
+                      defaultMessage="Retract Jump Rings"
+                      id="jump-drive-retract-jump-rings"
+                    />
+                  ) : (
+                    <FormattedMessage
+                      defaultMessage="Extend Jump Rings"
+                      id="jump-drive-extend-jump-rings"
+                    />
+                  )}
+                </Button>
+              )}
+            </Mutation>
           </Col>
         </Row>
         <Tour steps={this.trainingSteps()} client={this.props.clientObj} />
