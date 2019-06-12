@@ -211,6 +211,10 @@ const ClientRow = ({
                 <option value={"Viewscreen"}>Viewscreen</option>
                 <option value={"Sound"}>Sound</option>
                 <option value={"Blackout"}>Blackout</option>
+                {(p.id.toLowerCase().indexOf("ecs") > -1 ||
+                  p.label.toLowerCase().indexOf("ecs") > -1) && (
+                  <option value={"Lighting"}>Lighting</option>
+                )}
                 <Keyboards p={p} keyboards={keyboards} />
                 <Interfaces p={p} interfaces={interfaces} />
               </Fragment>

@@ -343,6 +343,18 @@ class SetConfig extends Component {
                 >
                   Blackout
                 </li>
+                <li
+                  className={`list-group-item ${
+                    selectedStation === `Lighting` ? "selected" : ""
+                  }`}
+                  onClick={() =>
+                    this.setState({
+                      selectedStation: `Lighting`
+                    })
+                  }
+                >
+                  Lighting
+                </li>
                 <Query
                   query={gql`
                     query Keyboards {
