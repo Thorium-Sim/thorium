@@ -76,6 +76,11 @@ const schema = gql`
     assignSpaceEdventuresFlightRecord(flightId: ID!): String
     getSpaceEdventuresLogin(token: String!): String
 
+    """
+    Macro: Generic: Do a generic thing. Use for triggers.
+    """
+    generic(simulatorId: ID!, key: String!): String
+
     addIssue(
       title: String!
       body: String!

@@ -26,6 +26,7 @@ export default function handleTrigger(eventName, args) {
     .filter(Boolean)
     .reduce((prev, next) => prev.concat(next), [])
     .reduce((prev, next) => prev.concat(next.macros), []);
+  console.log(triggerActions);
   const simulator = App.simulators.find(
     s => s.id === processedArgs.simulatorId
   );
