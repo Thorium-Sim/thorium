@@ -77,8 +77,6 @@ export default class Trigger {
                     (c.to.id === o.id && c.to.nodeId === "check")
                 );
 
-                console.log(checkInput);
-
                 if (!checkInput) return null;
                 const checkValue = o.config && o.config.check;
                 const compId =
@@ -92,10 +90,6 @@ export default class Trigger {
                 const checkValues =
                   comp.id === compId ? comp.values : this.values[compId];
 
-                console.log("VALUES", this.values, comp.values);
-                console.log("CHECK KEY", checkKey);
-                console.log("CHECK VALUES", checkValues);
-                console.log("CHECK VALUE", checkValue);
                 // Do a loose check
                 if (checkValues[checkKey] == checkValue) {
                   return prev.concat(processConnections(o));
@@ -105,15 +99,12 @@ export default class Trigger {
               return prev.concat(o);
             }, []);
         };
-        const macros = processConnections(comp).map(
-          c =>
-            console.log("CONNECTION", c) || {
-              id: c.id,
-              event: c.name.replace("macro-", ""),
-              args: { ...c.config, ...c.values },
-              delay: c.config && c.config.delay ? c.config.delay : 0
-            }
-        );
+        const macros = processConnections(comp).map(c => ({
+          id: c.id,
+          event: c.name.replace("macro-", ""),
+          args: { ...c.config, ...c.values },
+          delay: c.config && c.config.delay ? c.config.delay : 0
+        }));
         return { ...comp, macros };
       });
   }
