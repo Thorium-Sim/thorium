@@ -29,12 +29,14 @@ class UpdateSelect extends React.PureComponent {
     );
   };
   render() {
-    const hasLighting = this.props.clients.find(
-      c =>
-        c.id.toLowerCase().indexOf("ecs") === 0 &&
-        c.simulator &&
-        c.simulator.id === this.props.simulator.id
-    );
+    const hasLighting =
+      this.props.clients &&
+      this.props.clients.find(
+        c =>
+          c.id.toLowerCase().indexOf("ecs") === 0 &&
+          c.simulator &&
+          c.simulator.id === this.props.simulator.id
+      );
     return (
       <select
         type="select"
