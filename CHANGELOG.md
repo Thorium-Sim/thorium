@@ -1,3 +1,15 @@
+## [1.9.3](https://github.com/Thorium-Sim/thorium/compare/1.9.2...1.9.3) (2019-06-09)
+
+
+### Bug Fixes
+
+* **Alert Level:** Changes alert level indicator to say "S" instead of "P". ([21c5608](https://github.com/Thorium-Sim/thorium/commit/21c5608))
+* **Command Line:** Core only shows active command lines. Closes [#2294](https://github.com/Thorium-Sim/thorium/issues/2294) ([83b9720](https://github.com/Thorium-Sim/thorium/commit/83b9720))
+* **Interfaces:** Toggle components now work properly. Closes [#2296](https://github.com/Thorium-Sim/thorium/issues/2296) ([8c8a362](https://github.com/Thorium-Sim/thorium/commit/8c8a362))
+* **Lighting:** Fixes and improvements to the lighting core. ([020b80f](https://github.com/Thorium-Sim/thorium/commit/020b80f))
+* **Planetary Scan:** Fixes a funky text input box for the planetary scan. Closes [#2289](https://github.com/Thorium-Sim/thorium/issues/2289) ([c89fc3a](https://github.com/Thorium-Sim/thorium/commit/c89fc3a))
+* **Sensors:** Fixes an issue where sensors cannot be added to a new simulator config. Closes [#2291](https://github.com/Thorium-Sim/thorium/issues/2291). Closes [#2304](https://github.com/Thorium-Sim/thorium/issues/2304) ([2141a61](https://github.com/Thorium-Sim/thorium/commit/2141a61))
+
 ## [1.9.2](https://github.com/Thorium-Sim/thorium/compare/1.9.1...1.9.2) (2019-06-07)
 
 
