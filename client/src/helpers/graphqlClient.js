@@ -91,6 +91,7 @@ const cache = new Hermes({
 
 const client = new ApolloClient({
   link: from([headersMiddleware, link]),
+  assumeImmutableResults: true,
   // use restore on the cache instead of initialState
   cache: cache.restore(window.__APOLLO_CLIENT__),
   ssrMode: true,
