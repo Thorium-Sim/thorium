@@ -1,4 +1,5 @@
 export { default as torpedoFire } from "./torpedoFire";
+export { default as generic } from "./generic";
 export { default as firePhaserBeam } from "./firePhaserBeam";
 export { default as completeTransport } from "./completeTransport";
 export { default as directionUpdate } from "./directionUpdate";

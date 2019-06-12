@@ -26,7 +26,8 @@ class ActionPreview extends Component {
       updateDelay,
       updateValues,
       stations,
-      clients
+      clients,
+      simple
     } = this.props;
     return (
       <div className="timeline-item">
@@ -43,28 +44,34 @@ class ActionPreview extends Component {
             Restore Values
           </Button>
         ) : (
-          <Button
-            size="sm"
-            style={{ height: "16px", lineHeight: 1 }}
-            color="info"
-            onClick={() => this.setState({ edit: true })}
-          >
-            Edit
-          </Button>
+          !simple && (
+            <Button
+              size="sm"
+              style={{ height: "16px", lineHeight: 1 }}
+              color="info"
+              onClick={() => this.setState({ edit: true })}
+            >
+              Edit
+            </Button>
+          )
         )}
         {values[id] && <p className={"text-danger"}>Edited</p>}
         <div>
           <Label>
             Delay
-            <Input
-              bsSize="sm"
-              defaultValue={delay}
-              type="number"
-              min="0"
-              onChange={e =>
-                updateDelay({ ...delay, [id]: parseInt(e.target.value) })
-              }
-            />
+            {simple ? (
+              `: ${delay}ms`
+            ) : (
+              <Input
+                bsSize="sm"
+                defaultValue={delay}
+                type="number"
+                min="0"
+                onChange={e =>
+                  updateDelay({ ...delay, [id]: parseInt(e.target.value) })
+                }
+              />
+            )}
           </Label>
         </div>
         {Macros[event] &&
@@ -115,16 +122,19 @@ class TimelineItem extends Component {
       updateDelay,
       stations,
       clients,
-      simArgs
+      simArgs,
+      simple
     } = this.props;
     const { expanded } = this.state;
     return (
       <li>
-        <input
-          type="checkbox"
-          checked={actions[id]}
-          onChange={() => checkAction(id)}
-        />
+        {!simple && (
+          <input
+            type="checkbox"
+            checked={actions[id]}
+            onChange={() => checkAction(id)}
+          />
+        )}
         <span
           className={
             executedTimelineSteps.indexOf(id) > -1 &&
@@ -155,6 +165,7 @@ class TimelineItem extends Component {
                 updateDelay={updateDelay}
                 stations={stations}
                 clients={clients}
+                simple={simple}
               />
             )}
           </Fragment>

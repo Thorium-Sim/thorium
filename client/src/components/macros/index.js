@@ -70,3 +70,5 @@ export { default as clientAddExtra } from "./clientAddExtra";
 export { default as changeSimulatorLayout } from "./changeSimulatorLayout";
 export { default as renameSimulator } from "./renameSimulator";
 export { default as triggerSurvey } from "./triggerSurvey";
+export { default as shipSetDocking } from "./shipSetDocking";
+export { default as generic } from "./generic";

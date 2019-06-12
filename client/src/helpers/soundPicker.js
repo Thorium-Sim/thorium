@@ -98,6 +98,7 @@ const SoundPicker = ({ selectedSound, setSound, pickFolder }) => {
           <Menu triggerSubMenuAction="click" key={selectedSound}>
             {pickFolder ? (
               <SubMenu
+                popupClassName="sound-picker-menu"
                 title={
                   selectedSound === "nothing" ? "Pick a sound" : selectedSound
                 }
@@ -112,6 +113,7 @@ const SoundPicker = ({ selectedSound, setSound, pickFolder }) => {
               </SubMenu>
             ) : (
               <SoundSubMenu
+                popupClassName="sound-picker-menu"
                 setSound={setSound}
                 assetFolders={assetFolders}
                 fullPath={"/Sounds"}

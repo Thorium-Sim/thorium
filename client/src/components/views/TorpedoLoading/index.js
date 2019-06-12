@@ -43,7 +43,10 @@ const TORPEDO_SUB = gql`
       inventory {
         id
         type
-        probe
+        probe {
+          id
+          name
+        }
       }
       state
     }
@@ -117,7 +120,10 @@ const TORPEDO_QUERY = gql`
       inventory {
         id
         type
-        probe
+        probe {
+          id
+          name
+        }
       }
       state
     }

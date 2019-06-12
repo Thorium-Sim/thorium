@@ -33,6 +33,19 @@
   .mission-step-description {
     white-space: pre-wrap;
   }
+  .list-group-item.active {
+    & > div {
+      background-color: #dc3545 !important;
+    }
+    border-color: #b62a38 !important;
+  }
+  .expand-toggle {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    &.expanded {
+      transform: rotate(90deg);
+    }
+  }
 }
 .timeline-thumbnail {
   width: calc(100% - 10px);

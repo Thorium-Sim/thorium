@@ -115,6 +115,10 @@ const DockingCore = ({ simulator, client }) => {
           </Col>
         )}
       </Row>
+      <small>
+        Red means attached and docked; Green means detached and ready for space
+        travel
+      </small>
     </Container>
   );
 };

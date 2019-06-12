@@ -343,6 +343,18 @@ class SetConfig extends Component {
                 >
                   Blackout
                 </li>
+                <li
+                  className={`list-group-item ${
+                    selectedStation === `Lighting` ? "selected" : ""
+                  }`}
+                  onClick={() =>
+                    this.setState({
+                      selectedStation: `Lighting`
+                    })
+                  }
+                >
+                  Lighting
+                </li>
                 <Query
                   query={gql`
                     query Keyboards {
@@ -385,7 +397,7 @@ class SetConfig extends Component {
                 </Query>
                 <Query
                   query={gql`
-                    query SimInterface($id: String) {
+                    query SimInterface($id: ID) {
                       simulators(id: $id) {
                         interfaces
                       }
