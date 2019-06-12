@@ -1,3 +1,23 @@
+# [1.10.0](https://github.com/Thorium-Sim/thorium/compare/1.9.3...1.10.0) (2019-06-12)
+
+
+### Bug Fixes
+
+* **Computer Core:** Improves the rendering of tables to make the text more visible. Closes [#2307](https://github.com/Thorium-Sim/thorium/issues/2307) ([504148b](https://github.com/Thorium-Sim/thorium/commit/504148b))
+* **Dynamic Core:** Fixes an issue where no core components causes a crash. Closes [#2326](https://github.com/Thorium-Sim/thorium/issues/2326) ([2982873](https://github.com/Thorium-Sim/thorium/commit/2982873))
+* **Probe Launching:** Gives each probe it's own option when choosing what to launch out of the torpedo launcher. Closes [#2322](https://github.com/Thorium-Sim/thorium/issues/2322) ([4ecea48](https://github.com/Thorium-Sim/thorium/commit/4ecea48))
+* **Sound PIcker:** Updates the sound picker so it doesn't hide under other cores anymore. Closes [#2308](https://github.com/Thorium-Sim/thorium/issues/2308) ([a1a9341](https://github.com/Thorium-Sim/thorium/commit/a1a9341))
+* **Space EdVentures:** Added a better caching mechanism so Space EdVentures data loads faster. ([38f3101](https://github.com/Thorium-Sim/thorium/commit/38f3101))
+
+
+### Features
+
+* **Docking:** Adds a macro for changing the docked state of the ship. Closes [#2323](https://github.com/Thorium-Sim/thorium/issues/2323) ([2d0d9ea](https://github.com/Thorium-Sim/thorium/commit/2d0d9ea))
+* **Jump Drive:** Adds an extend jump rings button to the jump drive. Closes [#2317](https://github.com/Thorium-Sim/thorium/issues/2317) ([7ef3163](https://github.com/Thorium-Sim/thorium/commit/7ef3163))
+* **Lighting:** Makes it possible to set the lighting control in the set config. Closes [#2325](https://github.com/Thorium-Sim/thorium/issues/2325) ([94792c0](https://github.com/Thorium-Sim/thorium/commit/94792c0))
+* **Timeline:** Adds a 'Classic' Timeline that shows the timeline steps in a list rather than as individual steps. Closes [#2318](https://github.com/Thorium-Sim/thorium/issues/2318) ([ca4a032](https://github.com/Thorium-Sim/thorium/commit/ca4a032))
+* **Triggers:** Adds a generic trigger macro. Closes [#2313](https://github.com/Thorium-Sim/thorium/issues/2313) ([772bd96](https://github.com/Thorium-Sim/thorium/commit/772bd96))
+
 ## [1.9.3](https://github.com/Thorium-Sim/thorium/compare/1.9.2...1.9.3) (2019-06-09)
 
 
