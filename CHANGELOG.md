@@ -1,3 +1,16 @@
+# [1.11.0](https://github.com/Thorium-Sim/thorium/compare/1.10.0...1.11.0) (2019-06-13)
+
+
+### Bug Fixes
+
+* **Analytics:** Updates analytics. ([07b1f06](https://github.com/Thorium-Sim/thorium/commit/07b1f06))
+* **Timeline:** Adds notes to the aux timelines. ([41abf61](https://github.com/Thorium-Sim/thorium/commit/41abf61))
+
+
+### Features
+
+* **Button Macros:** Add the button macro core and button macro config. This allows for pre-defined macros to be executed at the push of a button. ([dbaaef7](https://github.com/Thorium-Sim/thorium/commit/dbaaef7))
+
 # [1.10.0](https://github.com/Thorium-Sim/thorium/compare/1.9.3...1.10.0) (2019-06-12)
 
 
