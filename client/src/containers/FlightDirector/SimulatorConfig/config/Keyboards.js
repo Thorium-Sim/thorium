@@ -48,7 +48,6 @@ const KeyboardConfig = ({ keyboards, simulator }) => {
     ? keyboard.keys
         .reduce(
           (acc, t, i) =>
-            console.log(t) ||
             acc.concat(
               t.actions.map(item => ({
                 ...item,

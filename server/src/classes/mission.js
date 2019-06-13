@@ -11,7 +11,6 @@ export default class Mission extends TimelineObject {
     this.simulators = params.simulators || [];
   }
   update({ name, description, aux, simulators }) {
-    console.log("updating", aux);
     if (name || name === "") this.name = name;
     if (description || description === "") this.description = description;
     if (aux || aux === false) this.aux = aux;

@@ -147,7 +147,6 @@ const ClientInfo = ({
 const CommandLineCore = ({ simulator, clients, ...rest }) => {
   const [selectedClient, setSelectedClient] = React.useState(null);
   const client = clients.find(c => c.id === selectedClient);
-  console.log(simulator, rest);
   return (
     <div className="commandline-core">
       <div className="commandline-clients">
@@ -161,11 +160,10 @@ const CommandLineCore = ({ simulator, clients, ...rest }) => {
             }))
             .filter(
               c =>
-                console.log(c) ||
-                (c.commandLineOutput &&
-                  c.commandLineOutput.length > 0 &&
-                  c.station &&
-                  c.station.cards.find(s => s.component === "CommandLine"))
+                c.commandLineOutput &&
+                c.commandLineOutput.length > 0 &&
+                c.station &&
+                c.station.cards.find(s => s.component === "CommandLine")
             )
             .map(c => (
               <ListGroupItem

@@ -233,17 +233,14 @@ This can only be done once per flight and should only be done when the flight is
               <div className="flyer-container">
                 {flight.clients
                   .map(c => clients.find(cc => cc.id === c.id) || c)
-                  .map(
-                    c =>
-                      console.log(c) || (
-                        <Flyer
-                          key={c.id}
-                          simulator={simulator}
-                          loginName={c.loginName}
-                          station={c.station ? { ...c.station, ...c } : c}
-                        />
-                      )
-                  )}
+                  .map(c => (
+                    <Flyer
+                      key={c.id}
+                      simulator={simulator}
+                      loginName={c.loginName}
+                      station={c.station ? { ...c.station, ...c } : c}
+                    />
+                  ))}
               </div>
             </Printable>
           </div>

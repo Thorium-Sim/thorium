@@ -16,6 +16,7 @@ const fragment = gql`
       timeline {
         id
         name
+        description
         timelineItems {
           id
           args

@@ -49,7 +49,6 @@ const MacrosConfig = ({ macros, simulator }) => {
       missionConfigs[selectedMacro][selectedStationSet] &&
       missionConfigs[selectedMacro][selectedStationSet][selectedAction]) ||
     {};
-  console.log(macro);
   return (
     <Container fluid className="sim-missions-config">
       <Row>

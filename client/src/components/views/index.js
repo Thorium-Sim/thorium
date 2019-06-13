@@ -175,6 +175,7 @@ import CardsCore from "./Cards/core";
 import CommandLineCore from "./CommandLine/core";
 import AuxTimelineCore from "./Timeline/auxTimelineData";
 import LightingCore from "./Lighting";
+import MacroButtonsCore from "./Macros/macroButtons";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -463,7 +464,8 @@ export const Cores = {
   CardsCore,
   CommandLineCore,
   AuxTimelineCore,
-  LightingCore
+  LightingCore,
+  MacroButtonsCore
 };
 
 export default Views;

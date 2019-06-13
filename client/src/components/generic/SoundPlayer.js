@@ -135,7 +135,6 @@ function removeAllSounds(ambiance) {
 }
 
 function stopLooping(ambiance) {
-  console.log("Stopping looping", ambiance);
   Object.keys(sounds).forEach(id => {
     const sound = sounds[id];
     if (sound) {
