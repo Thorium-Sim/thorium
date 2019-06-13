@@ -20,7 +20,8 @@ import {
   CommandLineConfig,
   Triggers,
   Interfaces,
-  Macros
+  Macros,
+  MacroButtons
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -169,6 +170,10 @@ class Config extends Component {
           <Route
             path="/config/macros"
             render={props => <Macros {...props} history={history} />}
+          />
+          <Route
+            path="/config/macroButtons"
+            render={props => <MacroButtons {...props} history={history} />}
           />
           <Route
             path="/config/commandLine"

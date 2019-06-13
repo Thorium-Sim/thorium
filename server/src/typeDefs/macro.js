@@ -10,8 +10,21 @@ const schema = gql`
     name: String
     actions: [MacroAction]
   }
+  type MacroButtonConfig {
+    id: ID
+    name: String
+    buttons: [MacroButton]
+  }
+  type MacroButton {
+    id: ID
+    name: String
+    actions: [MacroAction]
+    color: NotifyColors
+    category: String
+  }
   extend type Query {
     macros: [Macro]
+    macroButtons: [MacroButtonConfig]
   }
   extend type Mutation {
     addMacro(name: String!): ID
@@ -22,9 +35,26 @@ const schema = gql`
     Macro: Macros: Trigger Macro
     """
     triggerMacroAction(simulatorId: ID!, macroId: ID!): String
+
+    addMacroButtonConfig(name: String!): ID
+    removeMacroButtonConfig(id: ID!): String
+    renameMacroButtonConfig(id: ID!, name: String!): String
+    addMacroButton(configId: ID!, name: String!): String
+    removeMacroButton(configId: ID!, id: ID!): String
+    renameMacroButton(configId: ID!, id: ID!, name: String!): String
+    setMacroButtonCategory(configId: ID!, id: ID!, category: String!): String
+    setMacroButtonColor(configId: ID!, id: ID!, color: NotifyColors!): String
+    updateMacroButtonActions(
+      configId: ID!
+      id: ID!
+      actions: [ActionInput]
+    ): String
+
+    triggerMacroButton(simulatorId: ID!, configId: ID!, buttonId: ID!): String
   }
   extend type Subscription {
     macrosUpdate: [Macro]
+    macroButtonsUpdate: [MacroButtonConfig]
   }
 `;
 
@@ -32,6 +62,10 @@ const resolver = {
   Query: {
     macros(root) {
       let returnVal = App.macros;
+      return returnVal;
+    },
+    macroButtons(root) {
+      let returnVal = App.macroButtonConfigs;
       return returnVal;
     }
   },
@@ -42,6 +76,12 @@ const resolver = {
         return rootQuery;
       },
       subscribe: () => pubsub.asyncIterator("macrosUpdate")
+    },
+    macroButtonsUpdate: {
+      resolve(rootQuery) {
+        return rootQuery;
+      },
+      subscribe: () => pubsub.asyncIterator("macroButtonsUpdate")
     }
   }
 };

@@ -13626,6 +13626,7 @@ export default {
   interfaces: [],
   interfaceDevices: [],
   macros: [],
+  macroButtonConfigs: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),
   doTrack: false,
