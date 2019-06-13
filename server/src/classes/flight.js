@@ -37,6 +37,9 @@ export default class Flight {
   resume() {
     this.running = true;
   }
+  setFlightType(flightType) {
+    this.flightType = flightType;
+  }
   loginClient(clientId) {
     this.clients = this.clients
       .concat(clientId)
