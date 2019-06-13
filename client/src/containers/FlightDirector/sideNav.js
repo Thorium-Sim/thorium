@@ -14,6 +14,27 @@ import {
 import { Link } from "react-router-dom";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
+import {
+  FaSpaceShuttle,
+  FaHome,
+  FaDesktop,
+  FaImage,
+  FaUserSecret,
+  FaWindowRestore,
+  FaList,
+  FaMap,
+  FaTasks,
+  FaCogs,
+  FaFileAlt,
+  FaKeyboard,
+  FaTerminal,
+  FaCodeBranch,
+  FaClone,
+  FaCog,
+  FaCamera,
+  FaMousePointer,
+  FaTimes
+} from "react-icons/fa";
 
 import IssueTracker from "../../components/admin/IssueTracker";
 
@@ -24,98 +45,93 @@ const makeLinks = () => {
     {
       link: "/",
       name: "Home",
-      icon: "home"
+      icon: FaHome
     },
     {
       link: "/client",
       name: "Client",
-      icon: "desktop"
+      icon: FaDesktop
     },
     {
       name: "Simulator Config",
-      icon: "space-shuttle",
+      icon: FaSpaceShuttle,
       link: "/config/simulator"
     },
     {
       name: "Asset Config",
-      icon: "picture-o",
+      icon: FaImage,
       link: "/config/assetConfig"
     },
     {
       name: "Mission Config",
-      icon: "user-secret",
+      icon: FaUserSecret,
       link: "/config/mission"
     },
     {
       name: "Macros Config",
-      icon: "window-restore",
+      icon: FaWindowRestore,
       link: "/config/macros"
     },
     {
+      name: "Macro Buttons Config",
+      icon: FaMousePointer,
+      link: "/config/macroButtons"
+    },
+    {
       name: "Task Templates",
-      icon: "list",
+      icon: FaList,
       link: "/config/taskTemplates"
     },
     {
       name: "Tactical Map Config",
-      icon: "map-o",
+      icon: FaMap,
       link: "/config/tacticals"
     },
     {
       name: "Sets Config",
-      icon: "tasks",
+      icon: FaTasks,
       link: "/config/sets"
     },
     {
       name: "Software Panel Config",
-      icon: "cogs",
+      icon: FaCogs,
       link: "/config/panels"
     },
     {
       name: "Survey Form Config",
-      icon: "file-text-o",
+      icon: FaFileAlt,
       link: "/config/survey"
     },
     {
       name: "Keyboard Config",
-      icon: "keyboard-o",
+      icon: FaKeyboard,
       link: "/config/keyboard"
     },
     {
       name: "Command Line Config",
-      icon: "terminal",
+      icon: FaTerminal,
       link: "/config/commandLine"
     },
     {
       name: "Triggers Config",
-      icon: "code-fork",
+      icon: FaCodeBranch,
       link: "/config/triggers"
     },
     {
       name: "Interfaces Config",
-      icon: "clone",
+      icon: FaClone,
       link: "/config/interfaces"
     },
     {
       name: "Settings",
-      icon: "cog",
+      icon: FaCog,
       link: "/config/settings"
     }
   ];
   if (process.env.NODE_ENV !== "production") {
     links.push({
-      name: "Debug",
-      icon: "bug",
-      link: "/config/debug"
-    });
-    links.push({
-      name: "Debug Core",
-      icon: "bug",
-      link: "/config/flight/c/core"
-    });
-    links.push({
       name: "Snapshot",
-      icon: "camera",
+      icon: FaCamera,
       onClick: (client, e) => {
         e.preventDefault();
         client.mutate({
@@ -186,7 +202,7 @@ class SideNav extends Component {
       </div>
       <Nav vertical className={`sideNav ${this.state.open ? "open" : ""}`}>
         <SideNavLink
-          icon="times"
+          icon={FaTimes}
           name="Close"
           link="#"
           onClick={() => {
@@ -212,6 +228,7 @@ export const SideNavLink = withApollo(
     state = { open: false };
     render() {
       const m = this.props;
+      const Icon = m.icon;
       const { open } = this.state;
       return (m.children && m.children.length > 0) || m.link || m.onClick ? (
         <NavItem>
@@ -227,8 +244,7 @@ export const SideNavLink = withApollo(
                   }
             }
           >
-            {m.icon && <FontAwesome name={m.icon.replace("fa-", "")} />}{" "}
-            {m.name}{" "}
+            {Icon && <Icon />} {m.name}{" "}
             {m.children && m.children.length > 0 && (
               <FontAwesome
                 name={open ? "chevron-down" : "chevron-left"}
