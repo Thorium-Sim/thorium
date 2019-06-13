@@ -99,7 +99,6 @@ class Library extends Component {
   render() {
     const { libraryEntries } = this.props;
     const { entry } = this.state;
-    console.log(libraryEntries);
     if (!libraryEntries) return null;
     return (
       <Container>

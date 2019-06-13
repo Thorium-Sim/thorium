@@ -8,9 +8,7 @@ import { initializeClient } from "helpers/getClientId";
 initializeClient();
 
 window.thorium = window.thorium || {
-  sendMessage: args => {
-    console.log(args);
-  },
+  sendMessage: args => {},
   clockSync: 0
 };
 render(<App />, document.getElementById("root"));

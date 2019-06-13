@@ -63,7 +63,6 @@ const App = ({
     commandLine.find(s => s.id === selectedCommandLine) || {};
   const stationSet =
     simulator.stationSets.find(s => s.id === selectedStationSet) || {};
-  console.log(commandLineObj);
   const actions = commandLineObj.id ? parseCommandLine(commandLineObj) : [];
 
   const action = actions.find(a => a.id === selectedAction) || {};

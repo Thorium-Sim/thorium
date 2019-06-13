@@ -14,7 +14,6 @@ App.on("removeMission", ({ missionId }) => {
   pubsub.publish("missionsUpdate", App.missions);
 });
 App.on("editMission", ({ missionId, name, description, simulators, aux }) => {
-  console.log("event", aux);
   const mission = App.missions.find(m => m.id === missionId);
   mission.update({ name, description, simulators, aux });
   pubsub.publish("missionsUpdate", App.missions);
