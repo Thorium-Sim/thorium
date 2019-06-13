@@ -6,7 +6,6 @@ import { typeDefs, resolvers } from "../data";
 import chalk from "chalk";
 // Load some other stuff
 import "../events";
-import "../analytics";
 import "../processes";
 export const schema = makeExecutableSchema({
   typeDefs,
