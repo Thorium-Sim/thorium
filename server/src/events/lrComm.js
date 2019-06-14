@@ -200,6 +200,14 @@ App.on("setLongRangeSatellites", ({ id, num }) => {
   );
 });
 
+App.on("setInterceptionDifficulty", ({ id, difficulty }) => {
+  const lr = App.systems.find(s => s.id === id);
+  lr.update({ difficulty });
+  pubsub.publish(
+    "longRangeCommunicationsUpdate",
+    App.systems.filter(s => s.type === "LongRangeComm")
+  );
+});
 App.on("addInterceptionSignal", ({ id, simulatorId }) => {
   const lr = App.systems.find(
     s =>
