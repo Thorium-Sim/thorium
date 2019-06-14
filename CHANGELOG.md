@@ -1,3 +1,18 @@
+# [1.12.0](https://github.com/Thorium-Sim/thorium/compare/1.11.0...1.12.0) (2019-06-14)
+
+
+### Bug Fixes
+
+* **Command Line:** Makes the command line list properly scroll. Closes [#2336](https://github.com/Thorium-Sim/thorium/issues/2336). Closes [#2335](https://github.com/Thorium-Sim/thorium/issues/2335) ([e36197f](https://github.com/Thorium-Sim/thorium/commit/e36197f))
+* **Layout ShipStation:** Properly overlays the shipstation layout. Closes [#2330](https://github.com/Thorium-Sim/thorium/issues/2330) ([0577f40](https://github.com/Thorium-Sim/thorium/commit/0577f40))
+
+
+### Features
+
+* **Interception:** Add a difficulty option to the interception core to make interception a little easier. Closes [#2337](https://github.com/Thorium-Sim/thorium/issues/2337) ([fdf41b5](https://github.com/Thorium-Sim/thorium/commit/fdf41b5))
+* **Space EdVentures:** Adds a timeline action for turning a regular flight into a Space EdVentures flight. ([91b5017](https://github.com/Thorium-Sim/thorium/commit/91b5017))
+* **Viewscreen:** Add a 'random video' toggle for the viewscreen video screen which allows you to choose several videos. When the viewscreen is changed, it will pick one of those videos to display. Refs [#2316](https://github.com/Thorium-Sim/thorium/issues/2316) ([f820875](https://github.com/Thorium-Sim/thorium/commit/f820875))
+
 # [1.11.0](https://github.com/Thorium-Sim/thorium/compare/1.10.0...1.11.0) (2019-06-13)
 
 
