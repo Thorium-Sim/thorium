@@ -1,3 +1,5 @@
+import { randomFromList } from "./generic/damageReports/constants";
+
 export default class Viewscreen {
   constructor(params) {
     this.id = params.id; // Since the ID is the same as the client ID, it doesn't work if we don't have an ID.
@@ -24,6 +26,16 @@ export default class Viewscreen {
       this.data = JSON.stringify(data);
     } else {
       this.data = data;
+    }
+
+    const datum = JSON.parse(this.data);
+
+    // If the component is 'video' and data.asset is an array, pick a random one.
+    if (this.component === "Video" && Array.isArray(datum.asset)) {
+      this.data = JSON.stringify({
+        ...datum,
+        asset: randomFromList(datum.asset)
+      });
     }
   }
 }

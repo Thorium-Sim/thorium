@@ -73,6 +73,17 @@ const badgeAssign = ({
   const badges = clients.map(c => ({ clientId: c.id, badgeId }));
   flight.addBadges(badges);
 };
+App.on(
+  "assignSpaceEdventuresFlightType",
+  ({ flightId, simulatorId, flightType }) => {
+    const flight = App.flights.find(
+      f => f.id === flightId || f.simulators.includes(simulatorId)
+    );
+    if (!flight) return;
+    flight.setFlightType(flightType);
+    pubsub.publish("flightsUpdate", App.flights);
+  }
+);
 App.on("assignSpaceEdventuresBadge", badgeAssign);
 App.on("assignSpaceEdventuresMission", badgeAssign);
 App.on("getSpaceEdventuresLogin", async ({ token, context, cb }) => {

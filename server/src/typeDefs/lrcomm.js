@@ -19,6 +19,7 @@ const schema = gql`
     interception: Boolean
     locked: Boolean
     decoded: Boolean
+    difficulty: Int
     presetMessages: [PresetAnswer]
   }
 
@@ -85,7 +86,7 @@ const schema = gql`
     Macro: Interception: Remove Interception Signal
     """
     removeInterceptionSignal(id: ID!): String
-
+    setInterceptionDifficulty(id: ID!, difficulty: Int!): String
     """
     Macro: Long Range: Set preset messages
     """

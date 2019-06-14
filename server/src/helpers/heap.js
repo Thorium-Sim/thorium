@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 // Analytics Package
 
 const ignoredEvents = [
+  // Exclude events that might include sensitive information
   "addCoreFeed",
   "addLog",
   "clientLogin",
@@ -22,7 +23,24 @@ const ignoredEvents = [
   "googleSheetsCompleteAuthorize",
   "googleSheetsRevoke",
   "googleSheetsFileSearch",
-  "googleSheetsAppendData"
+  "googleSheetsAppendData",
+
+  // Exclude events that don't mean much and happen a lot.
+  "addHeat",
+  "reactorBatteryChargeLevel",
+  "directionUpdate",
+  "setPhaserBeamCharge",
+  "engineCool",
+  "setPhaserBeamHeat",
+  "shieldFrequencySet",
+  "cancelCoolantTransfer",
+  "updateCommandLine",
+  "updateTimelineStepItem",
+  "rotationUpdate",
+  "rotationSet",
+  "stopPhaserBeams",
+  "updateTacticalMapItem",
+  "triggerKeyboardAction"
 ];
 let uploadBatch = [];
 
@@ -67,7 +85,8 @@ class Heap {
       simulatorName,
       flightName,
       clientName,
-      stationName
+      stationName,
+      thoriumVersion: require("../../package.json").version
     };
     Object.keys(output).forEach(
       key => output[key] == null && delete output[key]

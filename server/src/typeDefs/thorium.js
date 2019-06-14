@@ -71,6 +71,11 @@ const schema = gql`
     assignSpaceEdventuresMission(station: String, badgeId: ID!): String
 
     """
+    Macro: Space EdVentures: Change Flight Type
+    """
+    assignSpaceEdventuresFlightType(flightId: ID!, flightType: ID!): String
+
+    """
     Macro: Space EdVentures: Transmit to Space EdVentures
     """
     assignSpaceEdventuresFlightRecord(flightId: ID!): String

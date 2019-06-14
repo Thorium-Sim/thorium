@@ -23,6 +23,7 @@ const SUB = gql`
         powerLevels
       }
       interception
+      difficulty
       locked
       decoded
     }
@@ -143,6 +144,7 @@ const QUEUING_QUERY = gql`
       }
       interception
       locked
+      difficulty
       decoded
     }
   }

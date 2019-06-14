@@ -208,7 +208,7 @@ class CardFrame extends Component {
         </Measure>
         <div
           className="card-area"
-          style={{ zIndex: viewscreen && !clientObj.overlay ? 1000 : 1 }}
+          style={{ zIndex: viewscreen && !clientObj.overlay ? 1000 : 0 }}
         >
           {children}
         </div>

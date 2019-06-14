@@ -63,6 +63,7 @@ class FileExplorer extends Component {
               {createFolder && (
                 <Button
                   color="primary"
+                  size="sm"
                   onClick={() => createFolder({ currentDirectory })}
                 >
                   Create Folder <FaFolderOpen />
@@ -78,7 +79,7 @@ class FileExplorer extends Component {
                     hidden
                     onChange={event => massUpload({ event, currentDirectory })}
                   />
-                  <div className="btn btn-info">
+                  <div className="btn btn-info btn-sm">
                     Upload Assets <FaUpload />
                   </div>
                 </label>
@@ -96,29 +97,28 @@ class FileExplorer extends Component {
             <div ref={measureRef}>
               {dimensions && (
                 <div className="directory-container">
-                  {currentDirectory !== directory &&
-                    currentDirectory !== "/" && (
-                      <div
-                        style={{ maxWidth: dimensions.width * widthFactor }}
-                        onClick={() => {
-                          //Get the current directory's folder
-                          let dir = assetFolders.filter(folder => {
-                            return folder.fullPath === currentDirectory;
-                          })[0];
-                          this.setState({
-                            currentDirectory: dir ? dir.folderPath : "/"
-                          });
-                        }}
-                      >
-                        <div className="file-container">
-                          <FaShare
-                            size="3em"
-                            style={{ transform: "scaleX(-1)" }}
-                          />
-                          <p>Back</p>
-                        </div>
+                  {currentDirectory !== directory && currentDirectory !== "/" && (
+                    <div
+                      style={{ maxWidth: dimensions.width * widthFactor }}
+                      onClick={() => {
+                        //Get the current directory's folder
+                        let dir = assetFolders.filter(folder => {
+                          return folder.fullPath === currentDirectory;
+                        })[0];
+                        this.setState({
+                          currentDirectory: dir ? dir.folderPath : "/"
+                        });
+                      }}
+                    >
+                      <div className="file-container">
+                        <FaShare
+                          size="3em"
+                          style={{ transform: "scaleX(-1)" }}
+                        />
+                        <p>Back</p>
                       </div>
-                    )}
+                    </div>
+                  )}
                   {assetFolders
                     .filter(folder => {
                       return folder.folderPath === currentDirectory;
@@ -133,13 +133,12 @@ class FileExplorer extends Component {
                           <FaFolder size="3em" name="folder" />
                           <p>
                             {folder.name}{" "}
-                            {admin &&
-                              removeFolder && (
-                                <FaBan
-                                  className="text-danger"
-                                  onClick={e => removeFolder(folder, e)}
-                                />
-                              )}{" "}
+                            {admin && removeFolder && (
+                              <FaBan
+                                className="text-danger"
+                                onClick={e => removeFolder(folder, e)}
+                              />
+                            )}{" "}
                           </p>
                         </div>
                       </div>
