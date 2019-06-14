@@ -85,7 +85,8 @@ class Heap {
       simulatorName,
       flightName,
       clientName,
-      stationName
+      stationName,
+      thoriumVersion: require("../../package.json").version
     };
     Object.keys(output).forEach(
       key => output[key] == null && delete output[key]
