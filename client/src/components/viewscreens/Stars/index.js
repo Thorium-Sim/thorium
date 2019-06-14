@@ -46,11 +46,12 @@ class TemplateData extends Component {
           const { velocity, activating } = engines.reduce(
             (prev, next, i) => {
               const baseSpeed = next.speed / next.speeds.length;
-              if (next.on === true)
+              if (next.on === true) {
                 return {
                   velocity: i === 0 ? baseSpeed * 2.5 : baseSpeed * 40,
                   activating: next.previousSpeed === -1
                 };
+              }
               return prev;
             },
             { velocity: 0, activating: false }

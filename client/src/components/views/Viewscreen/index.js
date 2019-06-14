@@ -7,6 +7,8 @@ import SoundPlayer from "../../client/soundPlayer";
 
 import "./style.scss";
 
+export const ViewscreenScaleContext = React.createContext(1);
+
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {
     viewscreensUpdate(simulatorId: $simulatorId) {
@@ -87,16 +89,19 @@ export class Viewscreen extends Component {
     const pip = viewscreen.pictureInPicture;
     if (ViewscreenCards[pip.component]) {
       const ViewscreenComponent = ViewscreenCards[pip.component];
+      const sizes = { small: 0.25, medium: 0.33, large: 0.45 };
       return (
         <div
           className={`viewscreen-picture-in-picture pip-size-${
             pip.size
           } pip-position-${pip.position}`}
         >
-          <ViewscreenComponent
-            {...this.props}
-            viewscreen={{ ...pip, data: JSON.stringify(pip.data) }}
-          />
+          <ViewscreenScaleContext.Provider value={sizes[pip.size]}>
+            <ViewscreenComponent
+              {...this.props}
+              viewscreen={{ ...pip, data: JSON.stringify(pip.data) }}
+            />
+          </ViewscreenScaleContext.Provider>
         </div>
       );
     }
