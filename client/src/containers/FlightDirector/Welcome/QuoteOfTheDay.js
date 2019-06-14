@@ -24,7 +24,14 @@ const quotes = [
   "It's better to look good than to feel good.",
   "Some of us have to work for a living!",
   "Educating minds with the discipline of wonder.",
-  "While others sleep, you dream."
+  "While others sleep, you dream.",
+  "Time is an illusion. Lunchtime doubly so.",
+  "I may not have gone where I intended to go, but I think I have ended up where I needed to be.",
+  "Don't Panic.",
+  "I'd far rather be happy than right any day.",
+  "For a moment, nothing happened. Then, after a second or so, nothing continued to happen.",
+  "Reality is frequently inaccurate.",
+  "It is a mistake to think you can solve any major problems just with potatoes."
 ];
 
 const QuoteOfTheDay = () => {
