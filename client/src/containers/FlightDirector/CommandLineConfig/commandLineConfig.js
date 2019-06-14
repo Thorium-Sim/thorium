@@ -36,7 +36,7 @@ export default class CommandLineConfig extends Component {
         <Row style={{ height: "100%" }}>
           <Col sm={3} style={{ height: "100%" }}>
             <h3>Command Lines</h3>
-            <ListGroup>
+            <ListGroup style={{ maxHeight: "60vh", overflowY: "auto" }}>
               {commandLines.map(c => (
                 <ListGroupItem
                   key={c.id}
