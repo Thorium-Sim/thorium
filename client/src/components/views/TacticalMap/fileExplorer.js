@@ -180,7 +180,7 @@ class FileExplorer extends Component {
           )}
           {!simple && (
             <Fragment>
-              <Button color="primary" onClick={this._createFolder}>
+              <Button color="primary" size="sm" onClick={this._createFolder}>
                 Create Folder <FontAwesome name="folder-open" />
               </Button>
               <label>
@@ -192,7 +192,7 @@ class FileExplorer extends Component {
                   hidden
                   onChange={this._massUpload}
                 />
-                <div className="btn btn-warning">
+                <div className="btn btn-warning btn-sm">
                   Upload Assets <FontAwesome name="upload" />
                 </div>
               </label>
