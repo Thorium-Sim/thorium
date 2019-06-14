@@ -75,3 +75,9 @@ export { default as generic } from "./generic";
 export {
   default as assignSpaceEdventuresFlightType
 } from "./assignSpaceEdventuresFlightType";
+export {
+  default as setViewscreenPictureInPicture
+} from "./setViewscreenPictureInPicture";
+export {
+  default as removeViewscreenPictureInPicture
+} from "./removeViewscreenPictureInPicture";

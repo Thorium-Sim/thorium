@@ -15,6 +15,25 @@ const schema = gql`
     auto: Boolean
     secondary: Boolean
     overlay: Boolean
+    pictureInPicture: ViewscreenPictureInPicture
+  }
+  type ViewscreenPictureInPicture {
+    component: String
+    data: JSON
+    position: PIP_POSITION
+    size: PIP_SIZE
+  }
+  enum PIP_POSITION {
+    bottomLeft
+    bottomRight
+    topLeft
+    topRight
+    center
+  }
+  enum PIP_SIZE {
+    small
+    medium
+    large
   }
   extend type Query {
     viewscreens(simulatorId: ID): [Viewscreen]
@@ -42,6 +61,32 @@ const schema = gql`
     Macro: Viewscreen: Set Viewscreen to Auto
     """
     setViewscreenToAuto(
+      """
+      Dynamic: Client
+      """
+      id: ID
+      simulatorId: ID
+      secondary: Boolean
+    ): String
+    """
+    Macro: Viewscreen: Set Viewscreen Picture-in-Picture
+    """
+    setViewscreenPictureInPicture(
+      """
+      Dynamic: Client
+      """
+      id: ID
+      simulatorId: ID
+      secondary: Boolean
+      component: String!
+      data: JSON
+      size: PIP_SIZE
+      position: PIP_POSITION
+    ): String
+    """
+    Macro: Viewscreen: Remove Viewscreen Picture-in-Picture
+    """
+    removeViewscreenPictureInPicture(
       """
       Dynamic: Client
       """

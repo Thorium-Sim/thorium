@@ -5,7 +5,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import MacroConfig from "./macroConfig.js";
 
 const fragment = gql`
-  fragment MacrosData on MacroButtonConfig {
+  fragment MacrosButtonData on MacroButtonConfig {
     id
     name
     buttons {
@@ -26,7 +26,7 @@ const fragment = gql`
 const QUERY = gql`
   query Macros {
     macroButtons {
-      ...MacrosData
+      ...MacrosButtonData
     }
   }
   ${fragment}
@@ -34,7 +34,7 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription MacroUpdate {
     macroButtonsUpdate {
-      ...MacrosData
+      ...MacrosButtonData
     }
   }
   ${fragment}

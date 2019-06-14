@@ -48,7 +48,52 @@
     }
   }
 }
-
+.viewscreen-picture-in-picture {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  border: solid 2px rgba(255, 255, 255, 0.2);
+  box-shadow: 10px 10px 40px rgba(0, 0, 0, 0.5);
+  z-index: 100000;
+  &.pip-size-small {
+    --pip-scale: 0.25;
+  }
+  &.pip-size-medium {
+    --pip-scale: 0.33;
+  }
+  &.pip-size-large {
+    --pip-scale: 0.45;
+  }
+  &.pip-position-bottomRight {
+    transform-origin: bottom right;
+    --pip-translate-x: -40px;
+    --pip-translate-y: -40px;
+  }
+  &.pip-position-bottomLeft {
+    transform-origin: bottom left;
+    --pip-translate-x: 40px;
+    --pip-translate-y: -40px;
+  }
+  &.pip-position-topRight {
+    transform-origin: top right;
+    --pip-translate-x: -40px;
+    --pip-translate-y: 40px;
+  }
+  &.pip-position-topLeft {
+    transform-origin: top left;
+    --pip-translate-x: 40px;
+    --pip-translate-y: 40px;
+  }
+  &.pip-position-center {
+    --pip-translate-x: 0px;
+    --pip-translate-y: 0px;
+  }
+  transform: translate(var(--pip-translate-x), var(--pip-translate-y))
+    scale(var(--pip-scale));
+}
 .viewscreen-card-list {
   height: 100%;
   flex: 1;
