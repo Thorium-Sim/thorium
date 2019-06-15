@@ -220,7 +220,9 @@ class AdvancedNavigation extends Component {
           >
             <Row>
               <Col sm={4}>
-                <Card className={`${this.engineSpeedClass()} crystal-display`}>
+                <Card
+                  className={`${this.engineSpeedClass()} crystal-display one-line`}
+                >
                   {this.getCurrentSpeed()}
                 </Card>
               </Col>
