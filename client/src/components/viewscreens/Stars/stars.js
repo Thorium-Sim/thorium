@@ -16,7 +16,6 @@ const Stars = props => {
       setVelocity(props.velocity);
     }
   }, [props.activating, props.velocity]);
-  console.log(props.activating, props.velocity, velocity);
 
   const [measureRef, dimensions] = useMeasure();
   const scale = React.useContext(ViewscreenScaleContext);

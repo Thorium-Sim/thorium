@@ -50,9 +50,7 @@ class ThreeView extends Component {
   componentDidMount() {
     this.animating = true;
     this.animate();
-    document
-      .getElementById("reactorMount")
-      .appendChild(this.renderer.domElement);
+    this.reactorMount.current.appendChild(this.renderer.domElement);
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.frame);
@@ -69,8 +67,9 @@ class ThreeView extends Component {
     this.renderer.render(this.scene, this.camera);
     this.frame = requestAnimationFrame(this.animate);
   };
+  reactorMount = React.createRef();
   render() {
-    return <div id="reactorMount" />;
+    return <div ref={this.reactorMount} />;
   }
 }
 export default ThreeView;

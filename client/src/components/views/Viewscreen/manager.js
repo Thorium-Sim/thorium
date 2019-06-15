@@ -20,6 +20,12 @@ const fragment = gql`
     auto
     secondary
     overlay
+    pictureInPicture {
+      data
+      size
+      position
+      component
+    }
   }
 `;
 const VIEWSCREEN_SUB = gql`
@@ -39,7 +45,9 @@ class ViewscreenManager extends Component {
   state = {
     selectedViewscreen: null,
     preview: true,
-    configData: "{}"
+    configData: "{}",
+    pipPosition: "bottomRight",
+    pipSize: "medium"
   };
   componentWillUnmount() {
     this.sub && this.sub();
@@ -68,26 +76,61 @@ class ViewscreenManager extends Component {
     }
   }
   updateCard = component => {
-    const { previewComponent, configData } = this.state;
+    const { previewComponent, configData, configuringPip } = this.state;
 
-    const mutation = gql`
-      mutation UpdateViewscreen($id: ID!, $component: String!, $data: String) {
-        updateViewscreenComponent(id: $id, component: $component, data: $data)
+    if (configuringPip) {
+      const mutation = gql`
+        mutation PictureInPicture(
+          $id: ID!
+          $component: String!
+          $data: JSON
+          $size: PIP_SIZE
+          $position: PIP_POSITION
+        ) {
+          setViewscreenPictureInPicture(
+            id: $id
+            component: $component
+            data: $data
+            size: $size
+            position: $position
+          )
+        }
+      `;
+      const variables = {
+        id: this.state.selectedViewscreen,
+        component,
+        data: JSON.parse(configData),
+        size: this.state.pipSize,
+        position: this.state.pipPosition
+      };
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
+    } else {
+      const mutation = gql`
+        mutation UpdateViewscreen(
+          $id: ID!
+          $component: String!
+          $data: String
+        ) {
+          updateViewscreenComponent(id: $id, component: $component, data: $data)
+        }
+      `;
+      const variables = {
+        id: this.state.selectedViewscreen,
+        component
+      };
+      if (component === previewComponent) {
+        // If the component we are switching to is the same as the preview component
+        // Apply the preview data to the new component
+        variables.data = configData;
       }
-    `;
-    const variables = {
-      id: this.state.selectedViewscreen,
-      component
-    };
-    if (component === previewComponent) {
-      // If the component we are switching to is the same as the preview component
-      // Apply the preview data to the new component
-      variables.data = configData;
+      this.props.client.mutate({
+        mutation,
+        variables
+      });
     }
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
   };
   updateData = data => {
     const mutation = gql`
@@ -152,13 +195,19 @@ class ViewscreenManager extends Component {
     const { viewscreens } = this.props.data;
     const {
       selectedViewscreen = null,
-      preview,
       previewComponent,
       configData,
-      config
+      config,
+      configuringPip
     } = this.state;
     if (!viewscreens) return <div>No Viewscreens</div>;
     const scaleFactor = (window.innerWidth / 1920) * 0.45;
+    const viewscreen =
+      (selectedViewscreen &&
+        viewscreens.length &&
+        viewscreens.find(v => v.id === selectedViewscreen) &&
+        viewscreens.find(v => v.id === selectedViewscreen)) ||
+      {};
     return (
       <div className="viewscreen-core">
         <div
@@ -212,80 +261,126 @@ class ViewscreenManager extends Component {
                     </option>
                   ))}
                 </Input>
-                <Label>
-                  <input
-                    type="checkbox"
-                    checked={
-                      selectedViewscreen &&
-                      viewscreens.length &&
-                      viewscreens.find(v => v.id === selectedViewscreen) &&
-                      viewscreens.find(v => v.id === selectedViewscreen).auto
-                    }
-                    onChange={this.toggleAuto}
-                  />{" "}
-                  Auto-switch generic tactical cards
-                </Label>
-                <Label>
-                  <input
-                    type="checkbox"
-                    checked={
-                      selectedViewscreen && viewscreens.length
-                        ? viewscreens.find(v => v.id === selectedViewscreen)
-                            .secondary
-                        : false
-                    }
-                    onChange={this.toggleSecondary}
-                  />{" "}
-                  Secondary Screen?
-                </Label>
-
-                <label>
-                  <Mutation
-                    mutation={gql`
-                      mutation SetOverlay($id: ID!, $overlay: Boolean!) {
-                        setClientOverlay(id: $id, overlay: $overlay)
-                      }
-                    `}
-                  >
-                    {action => (
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedViewscreen &&
-                          viewscreens.length &&
-                          viewscreens.find(v => v.id === selectedViewscreen)
-                            .overlay
-                        }
-                        onChange={e =>
-                          action({
-                            variables: {
-                              id:
-                                selectedViewscreen &&
-                                viewscreens.length &&
-                                viewscreens.find(
-                                  v => v.id === selectedViewscreen
-                                ).id,
-                              overlay: e.target.checked
-                            }
-                          })
-                        }
-                      />
-                    )}
-                  </Mutation>{" "}
-                  Show card overlay
-                </label>
                 <div>
                   <Button
+                    color="success"
                     size="sm"
-                    onClick={() => this.setState({ config: true })}
+                    onClick={() =>
+                      this.setState({ configuringPip: !configuringPip })
+                    }
                   >
-                    Configure Hotkeys
+                    Configure {configuringPip ? "Main Screen" : "PiP"}
                   </Button>
+                  {viewscreen.pictureInPicture && (
+                    <Mutation
+                      mutation={gql`
+                        mutation RemovePIP($id: ID!) {
+                          removeViewscreenPictureInPicture(id: $id)
+                        }
+                      `}
+                      variables={{ id: viewscreen.id }}
+                    >
+                      {action => (
+                        <Button color="danger" size="sm" onClick={action}>
+                          Remove PiP
+                        </Button>
+                      )}
+                    </Mutation>
+                  )}
                 </div>
-                <small>
-                  Viewscreen Hotkeys are available on any core by pressing
-                  'Option' + 'Shift'
-                </small>
+                {configuringPip ? (
+                  <>
+                    <Label>
+                      Position
+                      <Input
+                        type="select"
+                        value={this.state.pipPosition}
+                        onChange={e =>
+                          this.setState({ pipPosition: e.target.value })
+                        }
+                      >
+                        <option value={"bottomRight"}>Bottom Right</option>
+                        <option value={"bottomLeft"}>Bottom Left</option>
+                        <option value={"topRight"}>Top Right</option>
+                        <option value={"topLeft"}>Top Left</option>
+                        <option value={"center"}>Center</option>
+                      </Input>
+                    </Label>
+                    <Label>
+                      Size
+                      <Input
+                        type="select"
+                        value={this.state.pipSize}
+                        onChange={e =>
+                          this.setState({ pipSize: e.target.value })
+                        }
+                      >
+                        <option value={"small"}>Small</option>
+                        <option value={"medium"}>Medium</option>
+                        <option value={"large"}>Large</option>
+                      </Input>
+                    </Label>
+                  </>
+                ) : (
+                  <>
+                    <Label>
+                      <input
+                        type="checkbox"
+                        checked={viewscreen.auto}
+                        onChange={this.toggleAuto}
+                      />{" "}
+                      Auto-switch generic tactical cards
+                    </Label>
+                    <Label>
+                      <input
+                        type="checkbox"
+                        disabled={!viewscreen}
+                        checked={viewscreen.secondary}
+                        onChange={this.toggleSecondary}
+                      />{" "}
+                      Secondary Screen?
+                    </Label>
+
+                    <label>
+                      <Mutation
+                        mutation={gql`
+                          mutation SetOverlay($id: ID!, $overlay: Boolean!) {
+                            setClientOverlay(id: $id, overlay: $overlay)
+                          }
+                        `}
+                      >
+                        {action => (
+                          <input
+                            type="checkbox"
+                            disabled={!viewscreen}
+                            checked={viewscreen.overlay}
+                            onChange={e =>
+                              action({
+                                variables: {
+                                  id: viewscreen.id,
+                                  overlay: e.target.checked
+                                }
+                              })
+                            }
+                          />
+                        )}
+                      </Mutation>{" "}
+                      Show card overlay
+                    </label>
+                    <div>
+                      <Button
+                        size="sm"
+                        onClick={() => this.setState({ config: true })}
+                      >
+                        Configure Hotkeys
+                      </Button>
+                    </div>
+                    <small>
+                      Viewscreen Hotkeys are available on any core by pressing
+                      'Option' + 'Shift'
+                    </small>
+                  </>
+                )}
               </Col>
               <Col
                 sm={6}
@@ -298,36 +393,15 @@ class ViewscreenManager extends Component {
                 <Label>Cards</Label>
                 <ViewscreenCardList
                   previewComponent={previewComponent}
-                  viewscreen={
-                    selectedViewscreen &&
-                    viewscreens.find(v => v.id === selectedViewscreen)
-                  }
-                  update={c =>
-                    preview
-                      ? this.setState({ previewComponent: c })
-                      : this.updateCard(c)
-                  }
+                  viewscreen={configuringPip ? viewscreen.pip : viewscreen}
+                  update={c => this.setState({ previewComponent: c })}
                 />
                 <ButtonGroup>
                   <Button
-                    color="primary"
-                    className={preview ? "active" : ""}
-                    onClick={() => this.setState({ preview: true })}
-                  >
-                    Preview
-                  </Button>
-                  <Button
-                    color="info"
+                    color="success"
                     onClick={() => this.updateCard(previewComponent)}
                   >
                     Go
-                  </Button>
-                  <Button
-                    color="success"
-                    className={!preview ? "active" : ""}
-                    onClick={() => this.setState({ preview: false })}
-                  >
-                    Change
                   </Button>
                 </ButtonGroup>
               </Col>
