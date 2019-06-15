@@ -329,15 +329,9 @@ class AdvancedNavigation extends Component {
                             .reverse()
                             .concat(0)
                     }
-                    disabled={
-                      e.useAcceleration &&
-                      engines.find(
-                        eng =>
-                          eng.id !== e.id &&
-                          eng.useAcceleration === false &&
-                          eng.on === true
-                      )
-                    }
+                    disabled={engines.find(
+                      eng => eng.id !== e.id && eng.on === true
+                    )}
                     defaultLevel={
                       e.useAcceleration ? 0.5 : this.getInitialValue(e)
                     }
