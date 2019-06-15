@@ -86,6 +86,13 @@ App.on("changeSimulatorBridgeCrew", ({ simulatorId, crew }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("changeSimulatorExtraPeople", ({ simulatorId, crew }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.extraPeople(crew);
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("changeSimulatorRadiation", ({ simulatorId, radiation }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {

@@ -16,6 +16,7 @@ const SIM_SUB = gql`
       id
       ship {
         bridgeCrew
+        extraPeople
       }
     }
   }
@@ -27,6 +28,7 @@ const POP_QUERY = gql`
       id
       ship {
         bridgeCrew
+        extraPeople
       }
     }
   }
@@ -57,9 +59,11 @@ const Population = ({ simulator }) => {
   if (!ship) return null;
   return (
     <div>
-      <Label>Crew Population</Label>
+      <Label>Ship Population</Label>
       <div className="status-field">
-        {crewCount + (ship.bridgeCrew ? ship.bridgeCrew : 0)}
+        {crewCount +
+          (ship.bridgeCrew ? ship.bridgeCrew : 0) +
+          (ship.extraPeople ? ship.extraPeople : 0)}
       </div>
     </div>
   );

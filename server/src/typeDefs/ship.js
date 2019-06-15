@@ -10,6 +10,7 @@ const schema = gql`
     airlock: Boolean
     legs: Boolean
     bridgeCrew: Int
+    extraPeople: Int
     radiation: Float
     velocity: Float
     remoteAccessCodes: [RemoteAccessCode]

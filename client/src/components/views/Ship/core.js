@@ -22,6 +22,7 @@ const fragment = gql`
     triggersPaused
     ship {
       bridgeCrew
+      extraPeople
       radiation
     }
   }
@@ -103,6 +104,21 @@ const ShipCore = ({ simulator, client }) => {
     const mutation = gql`
       mutation SetBridgeCrew($simulatorId: ID!, $crew: Int!) {
         changeSimulatorBridgeCrew(simulatorId: $simulatorId, crew: $crew)
+      }
+    `;
+    const variables = {
+      simulatorId: simulator.id,
+      crew
+    };
+    client.mutate({
+      mutation,
+      variables
+    });
+  };
+  const updateExtraPeople = crew => {
+    const mutation = gql`
+      mutation SetBridgeCrew($simulatorId: ID!, $crew: Int!) {
+        changeSimulatorExtraPeople(simulatorId: $simulatorId, crew: $crew)
       }
     `;
     const variables = {
@@ -221,7 +237,7 @@ const ShipCore = ({ simulator, client }) => {
     ship
   } = data.simulators[0];
   const { crewCount } = data;
-  const { bridgeCrew, radiation } = ship;
+  const { bridgeCrew, extraPeople, radiation } = ship;
 
   return (
     <div className="core-ship">
@@ -316,12 +332,21 @@ const ShipCore = ({ simulator, client }) => {
           </InputField>
         </div>
         <div style={{ flex: 1 }}>
+          <p>Extra People: </p>
+          <InputField
+            prompt={"What would you like to change the extra people count to?"}
+            onClick={updateExtraPeople}
+          >
+            {extraPeople}
+          </InputField>
+        </div>
+        <div style={{ flex: 1 }}>
           <p>Roster Crew: </p>
           <OutputField>{crewCount}</OutputField>
         </div>
         <div style={{ flex: 1 }}>
           <p>Total Crew: </p>
-          <OutputField>{crewCount + bridgeCrew}</OutputField>
+          <OutputField>{crewCount + bridgeCrew + extraPeople}</OutputField>
         </div>
       </div>
 
