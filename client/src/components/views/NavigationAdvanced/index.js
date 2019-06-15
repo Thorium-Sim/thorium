@@ -136,11 +136,13 @@ class AdvancedNavigation extends Component {
         return prev.concat(next.speeds);
       }, [])
       .reduce((prev, next) => {
+        if (isNaN(parseFloat(next.velocity))) return prev;
         if (next.velocity > velocity) return prev;
         if (!prev) return next;
         if (next.velocity > prev.velocity) return next;
         return prev;
       }, null);
+    console.log(speed);
     return speed ? speed.text : "Full Stop";
   }
   engineSpeedClass = () => {

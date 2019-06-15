@@ -95,7 +95,7 @@ const Speed = ({ index, speed, speeds, action, id }) => {
               const newSpeeds = speeds.map(
                 ({ text, number, velocity, optimal }, i) => {
                   const obj = { text, number, velocity, optimal };
-                  if (index === i) obj.number = evt.target.value;
+                  if (index === i) obj.number = parseFloat(evt.target.value);
                   return obj;
                 }
               );
@@ -114,7 +114,7 @@ const Speed = ({ index, speed, speeds, action, id }) => {
               const newSpeeds = speeds.map(
                 ({ text, number, velocity, optimal }, i) => {
                   const obj = { text, number, velocity, optimal };
-                  if (index === i) obj.velocity = evt.target.value;
+                  if (index === i) obj.velocity = parseFloat(evt.target.value);
                   return obj;
                 }
               );
