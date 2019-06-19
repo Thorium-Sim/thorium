@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardBody, Row, Col, Button } from "reactstrap";
+import { Card, CardBody, Row, Col, Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import * as Components from "../../../containers/FlightDirector/SurveyConfig/components";
 class Form extends Component {

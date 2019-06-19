@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Col } from "reactstrap";
+import { Button, Col } from "helpers/reactstrap";
 import Transitioner from "../helpers/transitioner";
 import ProbeName from "./probeName";
 import "./style.scss";

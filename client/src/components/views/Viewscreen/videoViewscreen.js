@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Button, ButtonGroup } from "reactstrap";
+import { Input, Button, ButtonGroup } from "helpers/reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import ViewscreenCardList from "./viewscreenCardList";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Row, Col, Button } from "helpers/reactstrap";
 import { OutputField } from "../../generic/core";
 import TargetingContact from "./coreTargetingContact";
 

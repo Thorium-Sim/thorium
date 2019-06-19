@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Cores } from "components/views";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button } from "helpers/reactstrap";
 import {
   Mosaic,
   MosaicWindow,

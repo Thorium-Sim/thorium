@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Query, Mutation } from "react-apollo";
-import { ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";

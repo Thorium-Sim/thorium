@@ -1,5 +1,5 @@
 import React from "react";
-import { Label } from "reactstrap";
+import { Label } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { useQuery } from "@apollo/react-hooks";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";

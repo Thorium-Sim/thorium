@@ -8,7 +8,7 @@ import {
   Button,
   Card,
   CardBody
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { titleCase } from "change-case";
 import Priority from "./priority";
 import Location from "./location";
@@ -164,20 +164,22 @@ const TeamConfig = ({
         </Label>
         <Card className="crew-list">
           <CardBody>
-            {crew.filter(c => assignedOfficers.indexOf(c.id) === -1).map(c => (
-              <div
-                className="officer"
-                key={c.id}
-                onClick={() => {
-                  if (team) {
-                    assignOfficer(c);
-                  }
-                }}
-              >
-                <p>{c.name}</p>
-                <small>{c.position}</small>
-              </div>
-            ))}
+            {crew
+              .filter(c => assignedOfficers.indexOf(c.id) === -1)
+              .map(c => (
+                <div
+                  className="officer"
+                  key={c.id}
+                  onClick={() => {
+                    if (team) {
+                      assignOfficer(c);
+                    }
+                  }}
+                >
+                  <p>{c.name}</p>
+                  <small>{c.position}</small>
+                </div>
+              ))}
           </CardBody>
         </Card>
         <Label for="teamName" size="lg">

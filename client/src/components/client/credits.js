@@ -8,7 +8,7 @@ import {
   ModalFooter,
   Input,
   Label
-} from "reactstrap";
+} from "helpers/reactstrap";
 import "./credits.scss";
 
 const ClientNameModal = ({ clientId, modal, toggle, changeClientId }) => {

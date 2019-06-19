@@ -7,7 +7,7 @@ import {
   ListGroup,
   ListGroupItem,
   Button
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import Canvas from "./canvas";

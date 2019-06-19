@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Row, Button, Col } from "reactstrap";
+import { Row, Button, Col } from "helpers/reactstrap";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 import HeatBar from "./heatbar";

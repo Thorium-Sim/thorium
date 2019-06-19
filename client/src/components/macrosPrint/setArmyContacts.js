@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, Col } from "reactstrap";
+import { FormGroup, Col } from "helpers/reactstrap";
 
 export default class SetArmyContacts extends Component {
   render() {

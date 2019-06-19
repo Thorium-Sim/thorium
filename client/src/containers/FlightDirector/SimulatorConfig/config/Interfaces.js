@@ -1,7 +1,13 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import { graphql, Query, Mutation } from "react-apollo";
-import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem
+} from "helpers/reactstrap";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
 import FontAwesome from "react-fontawesome";

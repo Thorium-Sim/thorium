@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "helpers/reactstrap";
 import RosterDetail from "./rosterDetail";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

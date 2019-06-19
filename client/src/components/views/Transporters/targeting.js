@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Draggable from "react-draggable";
-import { Button, Row, Col } from "reactstrap";
+import { Button, Row, Col } from "helpers/reactstrap";
 import Measure from "react-measure";
 import { throttle } from "helpers/debounce";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "helpers/reactstrap";
 import { withApollo } from "react-apollo";
 
 import * as Macros from "../../../components/macros";

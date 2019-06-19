@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "helpers/reactstrap";
 
 export default props => {
   const { viewscreen = { data: "{}" } } = props;

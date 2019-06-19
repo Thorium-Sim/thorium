@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup } from "reactstrap";
+import { FormGroup } from "helpers/reactstrap";
 import { paramCase } from "change-case";
 
 export default ({ args: { entry = {} } }) => {

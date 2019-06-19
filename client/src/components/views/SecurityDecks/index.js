@@ -8,7 +8,7 @@ import {
   Button,
   Card,
   CardBody
-} from "reactstrap";
+} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 

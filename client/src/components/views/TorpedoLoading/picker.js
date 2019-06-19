@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import Transitioner from "./transitioner";
 
 const images = {

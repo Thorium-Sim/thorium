@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Button
+} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
 import "./style.scss";

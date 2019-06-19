@@ -10,7 +10,7 @@ import {
   Card,
   CardBody,
   Input
-} from "reactstrap";
+} from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 import Views, { Widgets } from "components/views/index";
 import { titleCase } from "change-case";

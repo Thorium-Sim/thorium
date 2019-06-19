@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Col, Row, Container } from "reactstrap";
+import { Button, Col, Row, Container } from "helpers/reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 

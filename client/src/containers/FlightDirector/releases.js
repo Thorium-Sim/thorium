@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "reactstrap";
+import { Container } from "helpers/reactstrap";
 import preval from "preval.macro";
 import { Link } from "react-router-dom";
 import styled from "styled-components";

@@ -1,6 +1,6 @@
 import React from "react";
 import Assets from "../../components/views/AdminAssets";
-import { Container } from "reactstrap";
+import { Container } from "helpers/reactstrap";
 
 export default props => {
   return (

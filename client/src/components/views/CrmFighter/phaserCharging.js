@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import useAnimationFrame from "helpers/hooks/useAnimationFrame";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";

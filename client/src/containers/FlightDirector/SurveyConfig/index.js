@@ -6,7 +6,7 @@ import {
   ListGroup,
   ListGroupItem,
   Button
-} from "reactstrap";
+} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { useQuery } from "@apollo/react-hooks";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
-import { Input } from "reactstrap";
+import { Input } from "helpers/reactstrap";
 import Measure from "react-measure";
 import escapeRegex from "escape-string-regexp";
 import "./style.scss";
@@ -60,13 +60,15 @@ class RoomSearch extends Component {
 
     const regex = new RegExp(escapeRegex(evt.target.value || ""), "gui");
     this.setState({
-      searchRooms: rooms.filter(i => i.name.match(regex)).sort((a, b) => {
-        if (a.number > b.number) return 1;
-        if (a.number < b.number) return -1;
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
-        return 0;
-      }),
+      searchRooms: rooms
+        .filter(i => i.name.match(regex))
+        .sort((a, b) => {
+          if (a.number > b.number) return 1;
+          if (a.number < b.number) return -1;
+          if (a.name > b.name) return 1;
+          if (a.name < b.name) return -1;
+          return 0;
+        }),
       searchQuery: evt.target.value
     });
   };

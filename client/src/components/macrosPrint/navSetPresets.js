@@ -7,7 +7,7 @@ import {
   Input,
   Label,
   Button
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 export default class NavSetPresetConfig extends Component {
   constructor(props) {

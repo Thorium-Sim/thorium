@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "reactstrap";
+import { Card } from "helpers/reactstrap";
 import { titleCase } from "change-case";
 const properties = [
   "Simulator",
@@ -11,6 +11,7 @@ const properties = [
   "Inventory",
   "Crew",
   "Assets",
+  "SoundEffects",
   "Docking",
   "DamageReports",
   "Library",

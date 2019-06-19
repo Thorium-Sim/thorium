@@ -1,7 +1,7 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Button, ButtonGroup } from "reactstrap";
+import { Button, ButtonGroup } from "helpers/reactstrap";
 import debounce from "helpers/debounce";
 
 const Buttons = ({

@@ -5,6 +5,8 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import Client from "./client";
 import playSound from "../generic/SoundPlayer";
 
+export const SimulatorContext = React.createContext({});
+
 const fragments = {
   simulatorData: gql`
     fragment SimulatorData on Simulator {
@@ -25,6 +27,12 @@ const fragments = {
         top
         logo
         bridge
+      }
+      soundEffects {
+        buttonClick
+        buttonHover
+        cardChange
+        notification
       }
       stations {
         name
@@ -90,11 +98,13 @@ class SimulatorData extends Component {
                 })
               }
             >
-              <Client
-                {...this.props}
-                simulator={simulators[0]}
-                station={station || this.props.station}
-              />
+              <SimulatorContext.Provider value={simulators[0]}>
+                <Client
+                  {...this.props}
+                  simulator={simulators[0]}
+                  station={station || this.props.station}
+                />
+              </SimulatorContext.Provider>
             </SubscriptionHelper>
           );
         }}

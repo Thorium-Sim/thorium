@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "helpers/reactstrap";
 import "./style.scss";
 
 const probeTypes = ["class-i", "class-ii", "class-iii", "defense", "science"];
@@ -38,8 +38,8 @@ const ProbeSelector = ({
                 transform: launching
                   ? `translate(20%,30%)`
                   : selected
-                    ? `translate(30%, 60%)`
-                    : `translateX(${(i * 80) / arr.length - 35}%)`
+                  ? `translate(30%, 60%)`
+                  : `translateX(${(i * 80) / arr.length - 35}%)`
               }}
             >
               <div className={`probe-type ${selected}`}>

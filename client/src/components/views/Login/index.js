@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Row, Col, Input } from "reactstrap";
+import { Button, Row, Col, Input } from "helpers/reactstrap";
 import { withApollo, Query, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";

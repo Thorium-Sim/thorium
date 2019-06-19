@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import uuid from "uuid";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import FormAdder from "./form-adder";
 import FormContainer from "./form-container";
 

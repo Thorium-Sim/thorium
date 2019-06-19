@@ -10,7 +10,7 @@ import {
   FormGroup,
   Input,
   Label
-} from "reactstrap";
+} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";

@@ -263,6 +263,11 @@ App.on("setSimulatorAssets", ({ id, assets }) => {
   sim.setAssets(assets);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("setSimulatorSoundEffects", ({ id, soundEffects }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.setSoundEffects(soundEffects);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 const lightingTimeouts = {};
 App.on("updateSimulatorLighting", ({ id, lighting }) => {
   const sim = App.simulators.find(s => s.id === id);

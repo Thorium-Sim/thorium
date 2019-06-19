@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import ParticleDetectorCore from "./particleDetectorCore";
 import ProbeScienceCore from "../ProbeScience/core";
 

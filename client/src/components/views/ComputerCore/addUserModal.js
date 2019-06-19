@@ -10,7 +10,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 class AddUserModal extends Component {
   state = {};
