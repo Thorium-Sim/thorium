@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col, Input, Label, FormGroup, Button } from "reactstrap";
+import { Row, Col, Input, Label, FormGroup, Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { ChromePicker } from "react-color";
 

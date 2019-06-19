@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card } from "reactstrap";
+import { Card } from "helpers/reactstrap";
 import tinycolor from "tinycolor2";
 import gql from "graphql-tag.macro";
 import Measure from "react-measure";

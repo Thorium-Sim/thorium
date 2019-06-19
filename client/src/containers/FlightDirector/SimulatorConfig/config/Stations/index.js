@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import StationSetPicker from "./StationSetPicker";

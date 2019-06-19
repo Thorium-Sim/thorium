@@ -1,42 +1,33 @@
-import React, { Component } from "react";
+import React from "react";
 import ThreeView from "./threeView";
-import Measure from "react-measure";
 import "./style.scss";
+import useMeasure from "helpers/hooks/useMeasure";
+import { ViewscreenScaleContext } from "../../views/Viewscreen";
 
 export default props => {
   const data = JSON.parse(props.viewscreen.data);
   return <RenderSphere {...data} />;
 };
 
-class RenderSphere extends Component {
-  state = { rotation: 0 };
-  _onAnimate = () => {
-    this.setState({
-      rotation: this.state.rotation + 0.005
-    });
-  };
-  render() {
-    const { text } = this.props;
-    const { dimensions } = this.state;
-    return (
-      <div className="planetary-scan">
-        <Measure
-          bounds
-          onResize={contentRect => {
-            this.setState({ dimensions: contentRect.bounds });
-          }}
-        >
-          {({ measureRef }) => (
-            <div className="scannerBox" ref={measureRef}>
-              <div className="scannerBar" />
-              {dimensions && (
-                <ThreeView {...this.props} dimensions={dimensions} />
-              )}
-            </div>
-          )}
-        </Measure>
-        <div className="text-box">{text}</div>
+const RenderSphere = props => {
+  const { text } = props;
+  const [measureRef, dimensions] = useMeasure();
+  const scale = React.useContext(ViewscreenScaleContext);
+  return (
+    <div className="planetary-scan">
+      <div className="scannerBox" ref={measureRef}>
+        <div className="scannerBar" />
+        {dimensions.width && (
+          <ThreeView
+            {...props}
+            dimensions={{
+              width: dimensions.width / scale,
+              height: dimensions.height / scale
+            }}
+          />
+        )}
       </div>
-    );
-  }
-}
+      <div className="text-box">{text}</div>
+    </div>
+  );
+};

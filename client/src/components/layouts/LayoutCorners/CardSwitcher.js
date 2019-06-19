@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import "./cardSwitcher.scss";
 
 class CardSwitcher extends Component {

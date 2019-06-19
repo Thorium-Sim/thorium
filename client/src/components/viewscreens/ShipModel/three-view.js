@@ -70,12 +70,11 @@ class ThreeView extends Component {
       });
       this.objectGroup.add(obj);
     });
-    document
-      .getElementById("thrustersMount")
-      .appendChild(this.renderer.domElement);
+    this.thrustersMount.current.appendChild(this.renderer.domElement);
     this.animating = true;
     this.animate();
   }
+  thrustersMount = React.createRef();
   componentDidUpdate(oldProps) {
     const {
       wireframe,
@@ -128,14 +127,14 @@ class ThreeView extends Component {
       degtorad(this.rotation * -1),
       degtorad(0)
     );
-    const rotationAmount = (1000 / 60 / 60) * this.props.speed;
+    const rotationAmount = (1000 / 60 / 60) * (this.props.speed || 1);
     this.rotation += rotationAmount;
     this.objectGroup.rotation.setFromVector3(rot);
     this.renderer.render(this.scene, this.camera);
     this.frame = requestAnimationFrame(this.animate);
   };
   render() {
-    return <div id="thrustersMount" />;
+    return <div ref={this.thrustersMount} />;
   }
 }
 export default ThreeView;

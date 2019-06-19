@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button } from "helpers/reactstrap";
 import { withApollo } from "react-apollo";
 import "./style.scss";
 import { useQuery } from "@apollo/react-hooks";

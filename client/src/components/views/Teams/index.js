@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  Button
+} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import { titleCase } from "change-case";
 import training from "./training";

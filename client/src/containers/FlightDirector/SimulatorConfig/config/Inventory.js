@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Container, Row, Col, Button, Input, Label } from "reactstrap";
+import { Container, Row, Col, Button, Input, Label } from "helpers/reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 const INVENTORY_SUB = gql`

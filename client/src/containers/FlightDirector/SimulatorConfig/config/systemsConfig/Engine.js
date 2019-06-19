@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
-import { Input, FormGroup, Label } from "reactstrap";
+import { Input, FormGroup, Label } from "helpers/reactstrap";
 
 const ENGINE_QUERY = gql`
   query Engine($id: ID!) {
@@ -95,7 +95,7 @@ const Speed = ({ index, speed, speeds, action, id }) => {
               const newSpeeds = speeds.map(
                 ({ text, number, velocity, optimal }, i) => {
                   const obj = { text, number, velocity, optimal };
-                  if (index === i) obj.number = evt.target.value;
+                  if (index === i) obj.number = parseFloat(evt.target.value);
                   return obj;
                 }
               );
@@ -114,7 +114,7 @@ const Speed = ({ index, speed, speeds, action, id }) => {
               const newSpeeds = speeds.map(
                 ({ text, number, velocity, optimal }, i) => {
                   const obj = { text, number, velocity, optimal };
-                  if (index === i) obj.velocity = evt.target.value;
+                  if (index === i) obj.velocity = parseFloat(evt.target.value);
                   return obj;
                 }
               );

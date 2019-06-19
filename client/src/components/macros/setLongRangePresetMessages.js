@@ -7,7 +7,7 @@ import {
   Button,
   ListGroup,
   ListGroupItem
-} from "reactstrap";
+} from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 
 export default class LongRange extends Component {
@@ -79,11 +79,10 @@ export default class LongRange extends Component {
                   onBlur={e => {
                     updateArgs(
                       "messages",
-                      messages.map(
-                        (m, i) =>
-                          i === currentMessage
-                            ? { ...m, label: e.target.value }
-                            : m
+                      messages.map((m, i) =>
+                        i === currentMessage
+                          ? { ...m, label: e.target.value }
+                          : m
                       )
                     );
                   }}
@@ -95,11 +94,10 @@ export default class LongRange extends Component {
                   onBlur={e => {
                     updateArgs(
                       "messages",
-                      messages.map(
-                        (m, i) =>
-                          i === currentMessage
-                            ? { ...m, value: e.target.value }
-                            : m
+                      messages.map((m, i) =>
+                        i === currentMessage
+                          ? { ...m, value: e.target.value }
+                          : m
                       )
                     );
                   }}

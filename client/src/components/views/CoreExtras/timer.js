@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import { Duration } from "luxon";

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input } from "helpers/reactstrap";
 
 const MissionConfig = ({ mission, updateMission }) => {
   return (

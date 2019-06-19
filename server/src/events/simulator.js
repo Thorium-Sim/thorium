@@ -86,6 +86,13 @@ App.on("changeSimulatorBridgeCrew", ({ simulatorId, crew }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("changeSimulatorExtraPeople", ({ simulatorId, crew }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.extraPeople(crew);
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("changeSimulatorRadiation", ({ simulatorId, radiation }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
@@ -254,6 +261,11 @@ App.on("setBridgeMessaging", ({ id, messaging }) => {
 App.on("setSimulatorAssets", ({ id, assets }) => {
   const sim = App.simulators.find(s => s.id === id);
   sim.setAssets(assets);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("setSimulatorSoundEffects", ({ id, soundEffects }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.setSoundEffects(soundEffects);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 const lightingTimeouts = {};

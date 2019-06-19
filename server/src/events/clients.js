@@ -333,10 +333,11 @@ App.on("clientSetSoundPlayer", ({ client, soundPlayer }) => {
   pubsub.publish("clientChanged", App.clients);
 });
 
-App.on("setClientOverlay", ({ id, overlay }) => {
+App.on("setClientOverlay", ({ id, overlay, cb }) => {
   const c = App.clients.find(c => c.id === id);
   c.setOverlay(overlay);
   pubsub.publish("clientChanged", App.clients);
+  cb && cb();
 });
 
 App.on("clientCrack", ({ id, crack }) => {

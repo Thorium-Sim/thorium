@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef, Fragment } from "react";
-import { Container, Row, Col, Button, Card, CardBody } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Card,
+  CardBody
+} from "helpers/reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";

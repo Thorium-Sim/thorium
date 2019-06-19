@@ -7,7 +7,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { Link } from "react-router-dom";
 
 const QueryResult = ({ loading, data }) =>

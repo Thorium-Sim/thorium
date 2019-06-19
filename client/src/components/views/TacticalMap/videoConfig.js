@@ -1,6 +1,6 @@
 import React from "react";
 import FileExplorer from "./fileExplorer";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "helpers/reactstrap";
 
 export default ({ selectedLayer, updateLayer }) => (
   <Row>
@@ -48,7 +48,9 @@ export default ({ selectedLayer, updateLayer }) => (
           <select
             value={selectedLayer.playbackSpeed || "1"}
             type="select"
-            onChange={evt => updateLayer("playbackSpeed", parseFloat(evt.target.value))}
+            onChange={evt =>
+              updateLayer("playbackSpeed", parseFloat(evt.target.value))
+            }
           >
             <option value="0.125">1/8 Speed</option>
             <option value="0.25">1/4 Speed</option>

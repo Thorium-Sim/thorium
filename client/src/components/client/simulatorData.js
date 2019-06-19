@@ -4,6 +4,7 @@ import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Client from "./client";
 import playSound from "../generic/SoundPlayer";
+export const SimulatorContext = React.createContext({});
 
 const fragments = {
   simulatorData: gql`
@@ -26,6 +27,7 @@ const fragments = {
         logo
         bridge
       }
+      soundEffects
       stations {
         name
         login
@@ -90,11 +92,13 @@ class SimulatorData extends Component {
                 })
               }
             >
-              <Client
-                {...this.props}
-                simulator={simulators[0]}
-                station={station || this.props.station}
-              />
+              <SimulatorContext.Provider value={simulators[0]}>
+                <Client
+                  {...this.props}
+                  simulator={simulators[0]}
+                  station={station || this.props.station}
+                />
+              </SimulatorContext.Provider>
             </SubscriptionHelper>
           );
         }}

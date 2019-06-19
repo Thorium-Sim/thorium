@@ -11,7 +11,7 @@ import {
   Label,
   Col,
   Row
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 export const notifyComponents = [
   "Alert Condition",

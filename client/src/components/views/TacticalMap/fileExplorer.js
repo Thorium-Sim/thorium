@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
@@ -453,6 +453,7 @@ const AssetObject = ({ object, removeObject }) => {
             />
           )}
         </p>
+        <audio className="audio-preview" controls src={object.url} />
       </div>
     );
   }

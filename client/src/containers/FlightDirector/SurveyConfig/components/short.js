@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "reactstrap";
+import { Input } from "helpers/reactstrap";
 const Short = ({ value = "", updateValue = () => {}, required, disabled }) => {
   return (
     <div>

@@ -61,3 +61,32 @@ App.on("updateViewscreenSecondary", ({ id, secondary }) => {
 App.on("toggleViewscreenVideo", ({ simulatorId, viewscreenId }) => {
   pubsub.publish("viewscreenVideoToggle", { simulatorId, viewscreenId });
 });
+App.on(
+  "setViewscreenPictureInPicture",
+  ({ simulatorId, id, secondary = false, component, data, size, position }) => {
+    const viewscreens = App.viewscreens.filter(
+      v =>
+        v.id === id ||
+        (!id && v.simulatorId === simulatorId && v.secondary === secondary)
+    );
+    viewscreens.forEach(viewscreen => {
+      viewscreen.setPictureInPicture(component, data, position, size);
+    });
+    console.log(viewscreens);
+    pubsub.publish("viewscreensUpdate", App.viewscreens);
+  }
+);
+App.on(
+  "removeViewscreenPictureInPicture",
+  ({ simulatorId, id, secondary = false }) => {
+    const viewscreens = App.viewscreens.filter(
+      v =>
+        v.id === id ||
+        (!id && v.simulatorId === simulatorId && v.secondary === secondary)
+    );
+    viewscreens.forEach(viewscreen => {
+      viewscreen && viewscreen.clearPictureInPicture();
+    });
+    pubsub.publish("viewscreensUpdate", App.viewscreens);
+  }
+);

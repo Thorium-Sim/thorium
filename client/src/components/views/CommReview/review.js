@@ -10,7 +10,7 @@ import {
   ListGroupItemText,
   Card,
   CardBody
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";

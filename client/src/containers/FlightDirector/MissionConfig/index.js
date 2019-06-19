@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { withApollo, Query } from "react-apollo";
-import { Container, Button } from "reactstrap";
+import { Container, Button } from "helpers/reactstrap";
 
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";

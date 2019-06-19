@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 import { Widgets } from "components/views";
-import { Tooltip } from "reactstrap";
+import { Tooltip } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 
 import { Widget } from "../LayoutCorners/Widgets";
+import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
 
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
@@ -145,46 +146,49 @@ class WidgetsContainer extends Component {
   }
 }
 
-class StaticWidget extends Component {
-  state = {};
-  toggle = () => {
-    this.setState({
-      tooltipOpen: !this.state.tooltipOpen
-    });
+const StaticWidget = ({
+  icon,
+  color,
+  onClick = () => {},
+  name,
+  className = "",
+  touch
+}) => {
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
+  const playEffect = useSoundEffect();
+
+  const toggle = () => {
+    if (!tooltipOpen) {
+      playEffect("buttonHover");
+    }
+    setTooltipOpen(!tooltipOpen);
   };
-  render() {
-    const {
-      icon,
-      color,
-      onClick = () => {},
-      name,
-      className = "",
-      touch
-    } = this.props;
-    return (
-      <div className="widget-item">
-        <FontAwesome
-          size="2x"
-          fixedWidth
-          name={icon}
-          className={`widget-icon ${className}`}
-          onClick={onClick}
-          id={`widget-${icon}`}
-          style={{ color: color || "rgb(200,150,255)" }}
-        />
-        {!touch && (
-          <Tooltip
-            placement="bottom"
-            isOpen={this.state.tooltipOpen}
-            target={`widget-${icon}`}
-            toggle={this.toggle}
-            delay={{ show: 0, hide: 20 }}
-          >
-            {name}
-          </Tooltip>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="widget-item">
+      <FontAwesome
+        size="2x"
+        fixedWidth
+        name={icon}
+        className={`widget-icon ${className}`}
+        onClick={e => {
+          playEffect("buttonClick");
+          onClick(e);
+        }}
+        id={`widget-${icon}`}
+        style={{ color: color || "rgb(200,150,255)" }}
+      />
+      {!touch && (
+        <Tooltip
+          placement="bottom"
+          isOpen={tooltipOpen}
+          target={`widget-${icon}`}
+          toggle={toggle}
+          delay={{ show: 0, hide: 20 }}
+        >
+          {name}
+        </Tooltip>
+      )}
+    </div>
+  );
+};
 export default withApollo(WidgetsContainer);

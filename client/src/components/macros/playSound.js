@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input, Button } from "reactstrap";
+import { FormGroup, Label, Input, Button } from "helpers/reactstrap";
 import SoundPicker from "helpers/soundPicker";
 import playSoundHOC from "components/generic/SoundPlayer";
 

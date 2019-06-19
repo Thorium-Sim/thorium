@@ -7,6 +7,8 @@ import SoundPlayer from "../../client/soundPlayer";
 
 import "./style.scss";
 
+export const ViewscreenScaleContext = React.createContext(1);
+
 const VIEWSCREEN_SUB = gql`
   subscription ViewscreenSub($simulatorId: ID) {
     viewscreensUpdate(simulatorId: $simulatorId) {
@@ -14,6 +16,12 @@ const VIEWSCREEN_SUB = gql`
       name
       component
       data
+      pictureInPicture {
+        data
+        size
+        position
+        component
+      }
     }
   }
 `;
@@ -69,9 +77,40 @@ export class Viewscreen extends Component {
       return <div>No Viewscreen Component for {viewscreen.component}</div>;
     }
   }
+  renderPip() {
+    const {
+      data: { loading, viewscreens },
+      clientObj
+    } = this.props;
+    if (loading || !viewscreens) return null;
+    const viewscreen = viewscreens.find(v => v.id === clientObj.id);
+    if (!viewscreen) return null;
+    if (!viewscreen.pictureInPicture) return null;
+    const pip = viewscreen.pictureInPicture;
+    if (ViewscreenCards[pip.component]) {
+      const ViewscreenComponent = ViewscreenCards[pip.component];
+      const sizes = { small: 0.25, medium: 0.33, large: 0.45 };
+      return (
+        <div
+          className={`viewscreen-picture-in-picture pip-size-${
+            pip.size
+          } pip-position-${pip.position}`}
+        >
+          <ViewscreenScaleContext.Provider value={sizes[pip.size]}>
+            <ViewscreenComponent
+              {...this.props}
+              viewscreen={{ ...pip, data: JSON.stringify(pip.data) }}
+            />
+          </ViewscreenScaleContext.Provider>
+        </div>
+      );
+    }
+    return null;
+  }
   render() {
     if (this.props.component) return this.renderComponent();
     if (!this.props.data) return null;
+
     return (
       <Fragment>
         {this.props.clientObj.soundPlayer && (
@@ -93,6 +132,7 @@ export class Viewscreen extends Component {
           }}
         />
         {this.renderComponent()}
+        {this.renderPip()}
       </Fragment>
     );
   }
@@ -105,6 +145,12 @@ const VIEWSCREEN_QUERY = gql`
       name
       component
       data
+      pictureInPicture {
+        data
+        size
+        position
+        component
+      }
     }
   }
 `;

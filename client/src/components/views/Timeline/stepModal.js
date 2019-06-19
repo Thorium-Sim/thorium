@@ -6,7 +6,7 @@ import {
   ModalBody,
   ModalFooter,
   Input
-} from "reactstrap";
+} from "helpers/reactstrap";
 class StepModal extends Component {
   constructor(props) {
     super(props);

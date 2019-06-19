@@ -9,7 +9,7 @@ import {
   FormGroup,
   Label,
   Input
-} from "reactstrap";
+} from "helpers/reactstrap";
 import MacroWrapper from "./MacroConfig";
 import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";

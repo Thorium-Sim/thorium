@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "reactstrap";
+import { Table } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { Query } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";

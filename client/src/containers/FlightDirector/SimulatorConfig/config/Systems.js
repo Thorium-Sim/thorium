@@ -7,7 +7,7 @@ import {
   CardBody,
   Button,
   ButtonGroup
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { titleCase, camelCase } from "change-case";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

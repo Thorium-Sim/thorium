@@ -1,48 +1,45 @@
-import React, { Component } from "react";
-import Measure from "react-measure";
+import React from "react";
 import ThreeView from "./threeView";
+import useMeasure from "helpers/hooks/useMeasure";
+import { ViewscreenScaleContext } from "../../views/Viewscreen";
 
-class Stars extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      velocity: props.activating ? 0 : props.velocity
-    };
+const Stars = props => {
+  const [velocity, setVelocity] = React.useState(
+    props.activating ? 0 : props.velocity
+  );
+  React.useEffect(() => {
     if (props.activating) {
       setTimeout(() => {
-        this.setState({ velocity: props.velocity });
+        setVelocity(props.velocity);
       }, 1000);
+    } else {
+      setVelocity(props.velocity);
     }
-  }
-  componentDidUpdate(oldProps) {
-    if (oldProps.velocity !== this.props.velocity)
-      this.setState({ velocity: this.props.velocity });
-  }
-  render() {
-    const { dimensions, velocity } = this.state;
-    return (
-      <div className="stars" style={{ background: "black" }}>
-        <Measure
-          bounds
-          onResize={contentRect => {
-            this.setState({ dimensions: contentRect.bounds });
-          }}
-        >
-          {({ measureRef }) => (
-            <div
-              id="three-container"
-              ref={measureRef}
-              style={{
-                width: "100vw",
-                height: "100vh"
-              }}
-            >
-              {dimensions && <ThreeView {...dimensions} velocity={velocity} />}
-            </div>
-          )}
-        </Measure>
+  }, [props.activating, props.velocity]);
+
+  const [measureRef, dimensions] = useMeasure();
+  const scale = React.useContext(ViewscreenScaleContext);
+  return (
+    <div className="stars" style={{ background: "black" }}>
+      <div
+        id="three-container"
+        ref={measureRef}
+        style={{
+          width: "100vw",
+          height: "100vh"
+        }}
+      >
+        {dimensions.width && (
+          <ThreeView
+            {...{
+              width: dimensions.width / scale,
+              height: dimensions.height / scale
+            }}
+            velocity={velocity}
+          />
+        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 export default Stars;

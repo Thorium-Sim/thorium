@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Input } from "reactstrap";
+import { FormGroup, Input } from "helpers/reactstrap";
 import LayoutList from "../layouts/list";
 
 export default ({ updateArgs, args, client }) => {

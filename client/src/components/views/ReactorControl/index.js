@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
-import { Container, Row, Col, Button, Card } from "reactstrap";
+import { Container, Row, Col, Button, Card } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import AnimatedNumber from "react-animated-number";
 import { useQuery } from "@apollo/react-hooks";

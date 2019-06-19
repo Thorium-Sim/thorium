@@ -9,7 +9,7 @@ import {
   Button,
   Col,
   Row
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 import SortableList from "helpers/sortableList";
 

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import ReactDOM from "react-dom";
-import { FormGroup, Col, Button } from "reactstrap";
+import { FormGroup, Col, Button } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 import ContactContextMenu from "components/views/Sensors/gridCore/contactContextMenu";
 import uuid from "uuid";

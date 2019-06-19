@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import ErrorBoundary from "helpers/errorBoundary";
 
 const TweenMax = window.TweenMax;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Row, Col, Container, Card } from "reactstrap";
+import { Row, Col, Container, Card } from "helpers/reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
 import Tour from "helpers/tourHelper";
@@ -135,7 +135,8 @@ class PowerDistribution extends Component {
       },
       {
         selector: ".totalPowerText",
-        content: "This is the total amount of power the ship has available and how much is being used based on the power levels above."
+        content:
+          "This is the total amount of power the ship has available and how much is being used based on the power levels above."
       },
       hasBattery && {
         selector: ".battery-holder",
@@ -215,28 +216,28 @@ class PowerDistribution extends Component {
             <div className="totalPowerText">
               {reactor && (
                 <h4>
-                Total Power Available:{" "}
+                  Total Power Available:{" "}
                   {Math.round(reactor.efficiency * reactor.powerOutput)}
                 </h4>
-                )}
-                <h4>Total Power Used: {powerTotal}</h4>
-                {reactor && (
-                  <h4
-                    className={` ${
-                      Math.round(reactor.efficiency * reactor.powerOutput) -
-                        powerTotal <
-                      0
-                        ? "text-danger"
-                        : ""
-                    }`}
-                  >
-                    Remaining Power:{" "}
-                    {Math.round(reactor.efficiency * reactor.powerOutput) -
-                      powerTotal}
-                  </h4>
-                )}
+              )}
+              <h4>Total Power Used: {powerTotal}</h4>
+              {reactor && (
+                <h4
+                  className={` ${
+                    Math.round(reactor.efficiency * reactor.powerOutput) -
+                      powerTotal <
+                    0
+                      ? "text-danger"
+                      : ""
+                  }`}
+                >
+                  Remaining Power:{" "}
+                  {Math.round(reactor.efficiency * reactor.powerOutput) -
+                    powerTotal}
+                </h4>
+              )}
             </div>
-        </Col>
+          </Col>
           {battery && (
             <Col sm="4" className="battery-holder">
               <Card>

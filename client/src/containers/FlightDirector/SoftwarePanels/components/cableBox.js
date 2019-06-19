@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./cableBox.scss";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 
 export default class CableBox extends Component {
   state = { open: false };

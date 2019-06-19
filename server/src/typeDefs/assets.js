@@ -59,6 +59,7 @@ const schema = gql`
 
   extend type Simulator {
     assets: SimulatorAssets
+    soundEffects: JSON
   }
   extend type Query {
     asset(assetKey: String!): Asset

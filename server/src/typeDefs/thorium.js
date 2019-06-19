@@ -3,6 +3,8 @@ import { gql } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
 import GraphQLClient from "../helpers/graphqlClient";
 import request from "request";
+import fetch from "node-fetch";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 
 const issuesUrl =
@@ -93,6 +95,7 @@ const schema = gql`
       priority: Int
       type: String!
     ): String
+    addIssueUpload(data: String!, filename: String!, ext: String!): String
   }
   extend type Subscription {
     thoriumUpdate: Thorium
@@ -153,7 +156,7 @@ const resolver = {
     }
   },
   Mutation: {
-    ...mutationHelper(schema, ["addIssue"]),
+    ...mutationHelper(schema, ["addIssue", "addIssueUpload"]),
     addIssue(rootValue, { title, body, person, priority, type }) {
       // Create our body
       var postBody =
@@ -176,6 +179,31 @@ const resolver = {
         { url: issuesUrl, body: postOptions, json: true },
         function() {}
       );
+    },
+    addIssueUpload(rootValue, { data, filename, ext }) {
+      const uploadPath = `uploads/${filename}-${uuid.v4()}.${ext}`;
+      const url =
+        "https://api.github.com/repos/thorium-sim/issue-uploads/contents/" +
+        uploadPath;
+      const payload = {
+        message: "issue tracker snapshot",
+        branch: "master",
+        content: data
+      };
+
+      return fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "token " + process.env.GITHUB_ISSUE_TOKEN
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(res => {
+          return res.content.html_url + "?raw=true";
+        })
+        .catch(err => console.error(err));
     }
   },
   Subscription: {

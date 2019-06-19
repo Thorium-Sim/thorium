@@ -8,7 +8,7 @@ import {
   FormGroup,
   Button,
   ButtonGroup
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { ChromePicker } from "react-color";
 import FileExplorer from "./fileExplorer";
 import FontAwesome from "react-fontawesome";

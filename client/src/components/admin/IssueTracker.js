@@ -6,12 +6,12 @@ import "./issueTracker.scss";
 class IssueTracker extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      uploads: []
+    };
   }
   _handleEvent(which, e) {
-    const state = this.state;
-    state[which] = e.target.value;
-    this.setState(state);
+    this.setState({ [which]: e.target.value });
   }
 
   _submit = e => {
@@ -58,6 +58,45 @@ ${this.state.reproduce}`
     this.setState({});
     this.props.close && this.props.close();
   };
+  upload = e => {
+    const parts = e.target.files[0].name.split(".");
+    const ext = parts.pop();
+    const filename = parts.join("-");
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      const base64 = result.split(",")[1];
+      this.setState({ uploading: true });
+      this.props.client
+        .mutate({
+          mutation: gql`
+            mutation AddUpload(
+              $data: String!
+              $filename: String!
+              $ext: String!
+            ) {
+              addIssueUpload(data: $data, filename: $filename, ext: $ext)
+            }
+          `,
+          variables: { data: base64, filename, ext }
+        })
+        .then(({ data: { addIssueUpload } }) =>
+          this.setState(({ body }) => {
+            return {
+              body: `${body || ""}
+          
+![${filename}](${addIssueUpload})`
+            };
+          })
+        )
+        .catch(err => console.error(err))
+        .finally(() => {
+          this.setState({ uploading: false });
+        });
+    };
+    e.target.files[0] && reader.readAsDataURL(e.target.files[0]);
+  };
+  fileRef = React.createRef();
   render() {
     return (
       <div id="issues-tracker">
@@ -85,6 +124,7 @@ ${this.state.reproduce}`
               <label>Body</label>
               <textarea
                 onChange={this._handleEvent.bind(this, "body")}
+                value={this.state.body}
                 rows="5"
                 placeholder="Please be specific. Include as much detail as possible. If you are filing a bug report, explain detailed steps to reproduce the bug. Include how you would want the bug to be fixed or the feature to be implemented. The more specific you are, the more likely the bug will be fixed or feature will be implemented. This field supports Markdown"
                 required
@@ -137,6 +177,21 @@ ${this.state.reproduce}`
                 <option value="1">Low</option>
               </select>
             </div>
+            {this.state.uploading ? (
+              "Uploading..."
+            ) : (
+              <label for="image-upload">
+                <input
+                  id="image-upload"
+                  value=""
+                  type="file"
+                  ref={this.fileRef}
+                  onChange={this.upload}
+                  hidden
+                />
+                <div className="btn btn-sm btn-success">Upload Attachment</div>
+              </label>
+            )}
             <div className="form-group submit-button">
               <button className="btn btn-sm btn-primary" type="submit">
                 Submit

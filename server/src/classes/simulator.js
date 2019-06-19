@@ -68,6 +68,7 @@ class Ship {
     this.airlock = params.airlock || false; // Closed
     this.legs = params.legs || false; //Retracted
     this.bridgeCrew = params.bridgeCrew || 14;
+    this.extraPeople = params.extraPeople || 0;
     this.radiation = params.radiation || 0.1;
     this.speed = params.speed || 0;
     this.selfDestructTime = params.selfDestructTime || null;
@@ -96,6 +97,16 @@ class Assets {
   }
 }
 
+class SoundEffects {
+  constructor(params = {}) {
+    this.buttonClick = params.buttonClick || [];
+    this.buttonHover = params.buttonHover || [];
+    this.cardChange = params.cardChange || [];
+    this.notification = params.notification || [];
+    this.login = params.login || [];
+  }
+}
+
 class TimelineInstance {
   constructor(params = {}) {
     this.id = uuid.v4();
@@ -121,6 +132,7 @@ export default class Simulator {
     this.templateId = params.templateId || null;
     this.class = "Simulator";
     this.assets = new Assets({ ...params.assets });
+    this.soundEffects = new SoundEffects({ ...params.soundEffects });
     this.stationSet = params.stationSet || null;
     this.stations = [];
     this.exocomps = params.exocomps || 0;
@@ -285,6 +297,9 @@ export default class Simulator {
   bridgeCrew(num) {
     this.ship.bridgeCrew = num;
   }
+  extraPeople(num) {
+    this.ship.extraPeople = num;
+  }
   radiation(num) {
     this.ship.radiation = num;
   }
@@ -323,6 +338,9 @@ export default class Simulator {
   }
   setAssets(assets) {
     this.assets = new Assets(assets);
+  }
+  setSoundEffects(effects) {
+    this.soundEffects = new SoundEffects(effects);
   }
   setHasPrinter(hasPrinter) {
     this.hasPrinter = hasPrinter;

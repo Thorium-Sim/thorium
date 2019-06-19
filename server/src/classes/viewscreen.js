@@ -10,6 +10,7 @@ export default class Viewscreen {
     this.data = params.data || `{}`;
     this.auto = false;
     this.secondary = params.secondary || false;
+    this.pictureInPicture = params.pictureInPicture || null;
   }
   updateName(name) {
     if (name) this.name = name;
@@ -37,5 +38,16 @@ export default class Viewscreen {
         asset: randomFromList(datum.asset)
       });
     }
+  }
+  setPictureInPicture(
+    component = "ShipLogo",
+    data = {},
+    position = "bottomRight",
+    size = "medium"
+  ) {
+    this.pictureInPicture = { component, data, position, size };
+  }
+  clearPictureInPicture() {
+    this.pictureInPicture = null;
   }
 }

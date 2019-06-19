@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button } from "helpers/reactstrap";
 import { TypingField, InputField } from "../../generic/core";
 import { cypherMap } from "./index";
 import Printable from "helpers/printable";

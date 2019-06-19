@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import { TypingField } from "../../../generic/core";
 import { titleCase } from "change-case";
 import HashtagDefinition from "helpers/hashtagDefinition";

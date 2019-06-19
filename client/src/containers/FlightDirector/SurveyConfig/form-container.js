@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Button } from "reactstrap";
+import { Input, Button } from "helpers/reactstrap";
 import * as Components from "./components";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 

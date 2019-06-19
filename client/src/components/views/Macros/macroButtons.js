@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag.macro";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { Input, Button } from "reactstrap";
+import { Input, Button } from "helpers/reactstrap";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
 import { titleCase } from "change-case";
 

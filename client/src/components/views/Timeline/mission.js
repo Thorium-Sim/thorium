@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Label, Input } from "reactstrap";
+import { Label, Input } from "helpers/reactstrap";
 import TimelineControl from "./timelineControl";
 import TimelineStep from "./timelineStep";
 import allowedMacros from "./allowedMacros";

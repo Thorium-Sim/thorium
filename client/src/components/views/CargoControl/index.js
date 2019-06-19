@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo, Mutation } from "react-apollo";
-import { Container, Row, Col, Input, Card, CardBody, Button } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Input,
+  Card,
+  CardBody,
+  Button
+} from "helpers/reactstrap";
 import { DeckDropdown, RoomDropdown } from "helpers/shipStructure";
 import { FormattedMessage } from "react-intl";
 import escapeRegex from "escape-string-regexp";

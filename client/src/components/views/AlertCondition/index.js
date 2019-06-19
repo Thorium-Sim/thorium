@@ -1,11 +1,12 @@
 import React, { Component, useState } from "react";
 import { withApollo, Query } from "react-apollo";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
+import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
 
 const trainingSteps = [
   {
@@ -57,7 +58,9 @@ const alertLevels = [
 
 const Card = ({ alertLevelLock, simulator, client }) => {
   const [hoverAlert, setHoverAlert] = useState(null);
+  const playEffect = useSoundEffect();
   const setAlert = number => {
+    playEffect("buttonClick");
     const mutation = gql`
       mutation AlertLevel($id: ID!, $level: String!) {
         changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $level)
@@ -80,7 +83,10 @@ const Card = ({ alertLevelLock, simulator, client }) => {
             <li
               key={`alert-${l.number}`}
               className={`alert${l.number}`}
-              onMouseLeave={() => setHoverAlert(null)}
+              onMouseLeave={() => {
+                setHoverAlert(null);
+                playEffect("buttonHover");
+              }}
               onMouseEnter={() => setHoverAlert(l.number)}
               onClick={alertLevelLock ? () => {} : () => setAlert(l.number)}
             >

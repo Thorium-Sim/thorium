@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row, Container, Button } from "reactstrap";
+import { Col, Row, Container, Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { Query, withApollo } from "react-apollo";
 
@@ -90,6 +90,7 @@ const fragment = gql`
       logo
       bridge
     }
+    soundEffects
     systems {
       id
       type

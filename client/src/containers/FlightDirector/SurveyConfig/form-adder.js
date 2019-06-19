@@ -5,7 +5,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 export default class Example extends React.Component {
   constructor(props) {
