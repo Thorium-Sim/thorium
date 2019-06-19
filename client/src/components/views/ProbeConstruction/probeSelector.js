@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col } from "helpers/reactstrap";
 import "./style.scss";
+import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
 
 const probeTypes = ["class-i", "class-ii", "class-iii", "defense", "science"];
 const probeImages = probeTypes.reduce((prev, next) => {
@@ -15,6 +16,7 @@ const ProbeSelector = ({
   setDescription,
   launching
 }) => {
+  const playEffect = useSoundEffect();
   return (
     <Row
       style={{
@@ -46,7 +48,10 @@ const ProbeSelector = ({
                 <div
                   onMouseOut={setDescription.bind(this, null)}
                   onMouseOver={setDescription.bind(this, t.description)}
-                  onClick={selectProbe.bind(this, t.id)}
+                  onClick={() => {
+                    playEffect("buttonClick");
+                    selectProbe(t.id);
+                  }}
                 >
                   <p>
                     {t.name}: {t.count}

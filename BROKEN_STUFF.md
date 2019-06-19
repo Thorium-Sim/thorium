@@ -1,6 +1,5 @@
 _Sound Effects_
 
-- Probe Construction
 - Status alert condition switches
 - Cloaking Device Arrows
 - Crew roster buttons
@@ -12,8 +11,6 @@ _Sound Effects_
 - thruster joysticks
 - Decoding ranges
 - message sending satellites
-- short range comm arrow
-- tractor beam arrows
 - shield frequency arrows
 - torpedo loading torp images
 - interception ranges

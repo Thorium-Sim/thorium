@@ -1,4 +1,5 @@
 import React from "react";
+import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
 
 const Arrow = ({
   alertLevel,
@@ -8,6 +9,7 @@ const Arrow = ({
   flop,
   connected
 }) => {
+  const playEffect = useSoundEffect();
   return (
     <div
       style={{
@@ -17,8 +19,14 @@ const Arrow = ({
       className="arrow"
     >
       <svg
-        onMouseDown={() => mouseDown(dimensions)}
-        onTouchStart={() => mouseDown(dimensions)}
+        onMouseDown={() => {
+          playEffect("buttonClick");
+          mouseDown(dimensions);
+        }}
+        onTouchStart={() => {
+          playEffect("buttonClick");
+          mouseDown(dimensions);
+        }}
         style={{ pointerEvents: "all" }}
         version="1.1"
         x="0px"
