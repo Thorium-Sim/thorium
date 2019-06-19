@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
-import { Input } from "reactstrap";
+import { Input } from "helpers/reactstrap";
 import Measure from "react-measure";
 import escapeRegex from "escape-string-regexp";
 import "./style.scss";

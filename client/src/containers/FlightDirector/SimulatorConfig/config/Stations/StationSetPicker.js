@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Card, Button, ButtonGroup } from "reactstrap";
+import { Card, Button, ButtonGroup } from "helpers/reactstrap";
 import ops from "./ops";
 
 class SimulatorConfigView extends Component {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "helpers/reactstrap";
 import "./style.scss";
 
 const probeTypes = ["class-i", "class-ii", "class-iii", "defense", "science"];

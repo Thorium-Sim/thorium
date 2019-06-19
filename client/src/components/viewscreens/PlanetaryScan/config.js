@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Input } from "reactstrap";
+import { Input } from "helpers/reactstrap";
 import { titleCase } from "change-case";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import ColorPicker from "helpers/colorPicker";

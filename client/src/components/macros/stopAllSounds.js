@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input } from "helpers/reactstrap";
 
 export default function stopAllSounds({ updateArgs, args, stations, clients }) {
   if (!args.station) {

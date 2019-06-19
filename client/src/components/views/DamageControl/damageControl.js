@@ -1,5 +1,12 @@
 import React, { Fragment, Component } from "react";
-import { Container, Row, Col, Button, Card, CardBody } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Card,
+  CardBody
+} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import FontAwesome from "react-fontawesome";
 import { Mutation, withApollo } from "react-apollo";

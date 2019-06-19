@@ -2,7 +2,7 @@ import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
-import { Input, FormGroup, Label, Row, Col, Button } from "reactstrap";
+import { Input, FormGroup, Label, Row, Col, Button } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 
 const REACTOR_QUERY = gql`

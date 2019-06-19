@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import { TypingField, InputField } from "../../generic/core";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button } from "helpers/reactstrap";
 import "./style.scss";
 import { useQuery } from "@apollo/react-hooks";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";

@@ -3,7 +3,7 @@ import gql from "graphql-tag.macro";
 import { Query, withApollo } from "react-apollo";
 
 import ReactDOM from "react-dom";
-import { Input } from "reactstrap";
+import { Input } from "helpers/reactstrap";
 import Measure from "react-measure";
 
 import debounce from "helpers/debounce";

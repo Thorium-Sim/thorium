@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Row, Col, Card, CardBody } from "reactstrap";
+import { Row, Col, Card, CardBody } from "helpers/reactstrap";
 import { FormattedMessage } from "react-intl";
 import ReportViewLegacy from "./legacyReport";
 import ReportButtonsLegacy from "./legacyButtons";

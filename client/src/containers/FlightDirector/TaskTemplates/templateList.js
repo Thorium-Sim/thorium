@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem } from "helpers/reactstrap";
 
 const TemplateList = ({
   taskTemplates,

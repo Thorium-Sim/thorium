@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button } from "helpers/reactstrap";
 import { Asset } from "helpers/assets";
 import { withApollo, Mutation } from "react-apollo";
 import Tour from "helpers/tourHelper";

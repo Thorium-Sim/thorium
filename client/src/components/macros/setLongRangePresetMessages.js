@@ -7,7 +7,7 @@ import {
   Button,
   ListGroup,
   ListGroupItem
-} from "reactstrap";
+} from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 
 export default class LongRange extends Component {

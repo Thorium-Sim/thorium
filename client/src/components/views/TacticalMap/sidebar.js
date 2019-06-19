@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import TacticalMapList from "./tacticalMapList";

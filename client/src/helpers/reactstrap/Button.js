@@ -8,7 +8,6 @@ const Button = ({ onClick = () => {}, onMouseOver = () => {}, ...props }) => {
   const simulator = React.useContext(SimulatorContext);
 
   const click = e => {
-    console.log(simulator);
     if (simulator.soundEffects && simulator.soundEffects.buttonClick) {
       console.log(
         `/assets${randomFromList(simulator.soundEffects.buttonClick)}`

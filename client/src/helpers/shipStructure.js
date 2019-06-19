@@ -4,7 +4,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 const deckLabel = (selectedDeck, decks) => {
   if (selectedDeck) {

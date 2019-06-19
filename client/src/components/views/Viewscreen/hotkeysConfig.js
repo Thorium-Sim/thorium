@@ -7,7 +7,7 @@ import {
   ModalBody,
   ModalFooter,
   Button
-} from "reactstrap";
+} from "helpers/reactstrap";
 import * as Components from "../../viewscreens";
 import { titleCase } from "change-case";
 import ConfigComponent from "./ConfigComponent";

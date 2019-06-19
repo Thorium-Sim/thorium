@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
-import { Row, Col, Button, Input, Card, CardBody } from "reactstrap";
+import { Row, Col, Button, Input, Card, CardBody } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import FontAwesome from "react-fontawesome";

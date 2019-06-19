@@ -2,7 +2,14 @@ import React, { Component, Fragment } from "react";
 import ReactDOM from "react-dom";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Row, Col, Container, Button, Input, ButtonGroup } from "reactstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Button,
+  Input,
+  ButtonGroup
+} from "helpers/reactstrap";
 import Grid from "../GridDom";
 import ExtraControls from "./extraControls";
 import ContactsList from "./contactsList";

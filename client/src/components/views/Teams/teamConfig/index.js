@@ -8,7 +8,7 @@ import {
   Button,
   Card,
   CardBody
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { titleCase } from "change-case";
 import Priority from "./priority";
 import Location from "./location";

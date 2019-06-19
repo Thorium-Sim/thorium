@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Row, Col, Container } from "reactstrap";
+import { Row, Col, Container } from "helpers/reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import Isochips from "./isochips";
 // import Battery from "./batteryCharging";

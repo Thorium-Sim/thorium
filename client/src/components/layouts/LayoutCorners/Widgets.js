@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Tooltip, Button } from "reactstrap";
+import { Tooltip, Button } from "helpers/reactstrap";
 import { Widgets } from "components/views";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";

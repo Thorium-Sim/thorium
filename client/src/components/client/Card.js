@@ -10,6 +10,8 @@ import TrainingPlayer from "helpers/trainingPlayer";
 import { subscribe, publish } from "../../helpers/pubsub";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
+import { playSound } from "../generic/SoundPlayer";
+import { randomFromList } from "helpers/randomFromList";
 
 const Blackout = () => {
   return (
@@ -205,6 +207,17 @@ export default class CardFrame extends Component {
     if (this.cardChanged || this.state.card === card) return;
     this.cardChanged = true;
     setTimeout(() => (this.cardChanged = false), 500);
+    if (
+      this.props.simulator &&
+      this.props.simulator.soundEffects &&
+      this.props.simulator.soundEffects.cardChange
+    ) {
+      playSound({
+        url: `/assets${randomFromList(
+          this.props.simulator.soundEffects.cardChange
+        )}`
+      });
+    }
     this.setState({
       card
     });

@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup } from "reactstrap";
+import { FormGroup } from "helpers/reactstrap";
 import { SignalPicker } from "../views/CommShortRange/signalsCore";
 export default ({ updateArgs, args }) => {
   const shortRangeComm = { signals: args.signals || [] };

@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import { withApollo, Query } from "react-apollo";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";

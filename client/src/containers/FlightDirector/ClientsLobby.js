@@ -2,7 +2,7 @@ import React from "react";
 import Clients from "./Clients";
 import SetsPicker from "./SetsPicker";
 import { Link } from "react-router-dom";
-import { Container, Button, ButtonGroup } from "reactstrap";
+import { Container, Button, ButtonGroup } from "helpers/reactstrap";
 import { withApollo, Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
