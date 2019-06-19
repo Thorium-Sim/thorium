@@ -90,12 +90,7 @@ const fragment = gql`
       logo
       bridge
     }
-    soundEffects {
-      buttonClick
-      buttonHover
-      cardChange
-      notification
-    }
+    soundEffects
     systems {
       id
       type

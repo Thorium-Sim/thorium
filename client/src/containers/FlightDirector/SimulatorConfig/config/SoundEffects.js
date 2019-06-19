@@ -9,25 +9,7 @@ import {
 import { Mutation } from "react-apollo";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import gql from "graphql-tag.macro";
-
-const assetList = [
-  {
-    name: "Button Click",
-    fullPath: "buttonClick"
-  },
-  {
-    name: "Button Hover",
-    fullPath: "buttonHover"
-  },
-  {
-    name: "Card Change",
-    fullPath: "cardChange"
-  },
-  {
-    name: "Notification",
-    fullPath: "notification"
-  }
-];
+import { titleCase } from "change-case";
 
 class Assets extends Component {
   state = {};
@@ -36,6 +18,7 @@ class Assets extends Component {
     const { selectedSimulator: sim } = this.props;
     const { soundEffects: soundEffectsData } = sim;
     const { __typename, ...soundEffects } = soundEffectsData;
+    const assetList = Object.keys(soundEffects);
     return (
       <Container className="assets">
         <p>Assets</p>
@@ -44,11 +27,11 @@ class Assets extends Component {
             <ListGroup>
               {assetList.map(a => (
                 <ListGroupItem
-                  key={a.fullPath}
-                  active={selectedAsset === a.fullPath}
-                  onClick={() => this.setState({ selectedAsset: a.fullPath })}
+                  key={a}
+                  active={selectedAsset === a}
+                  onClick={() => this.setState({ selectedAsset: a })}
                 >
-                  {a.name}
+                  {titleCase(a)}
                 </ListGroupItem>
               ))}
             </ListGroup>
@@ -57,10 +40,7 @@ class Assets extends Component {
             {selectedAsset && (
               <Mutation
                 mutation={gql`
-                  mutation SetAssets(
-                    $id: ID!
-                    $soundEffects: SimulatorSoundEffectsInput!
-                  ) {
+                  mutation SetAssets($id: ID!, $soundEffects: JSON!) {
                     setSimulatorSoundEffects(
                       id: $id
                       soundEffects: $soundEffects

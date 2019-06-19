@@ -103,6 +103,7 @@ class SoundEffects {
     this.buttonHover = params.buttonHover || [];
     this.cardChange = params.cardChange || [];
     this.notification = params.notification || [];
+    this.login = params.login || [];
   }
 }
 

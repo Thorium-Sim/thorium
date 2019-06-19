@@ -1,28 +1,23 @@
 import React from "react";
 import { Button as RSButton } from "reactstrap";
-import { playSound } from "components/generic/SoundPlayer";
-import { SimulatorContext } from "components/client/simulatorData";
-import { randomFromList } from "helpers/randomFromList";
+import useSoundEffect from "../hooks/useSoundEffect";
 
-const Button = ({ onClick = () => {}, onMouseOver = () => {}, ...props }) => {
-  const simulator = React.useContext(SimulatorContext);
-
+const Button = ({
+  onClick = () => {},
+  onMouseOver = () => {},
+  silent,
+  ...props
+}) => {
+  const playEffect = useSoundEffect();
   const click = e => {
-    if (simulator.soundEffects && simulator.soundEffects.buttonClick) {
-      console.log(
-        `/assets${randomFromList(simulator.soundEffects.buttonClick)}`
-      );
-      playSound({
-        url: `/assets${randomFromList(simulator.soundEffects.buttonClick)}`
-      });
+    if (!silent) {
+      playEffect("buttonClick");
     }
     onClick(e);
   };
   const mouseOver = e => {
-    if (simulator.soundEffects && simulator.soundEffects.buttonHover) {
-      playSound({
-        url: `/assets${randomFromList(simulator.soundEffects.buttonHover)}`
-      });
+    if (!silent) {
+      playEffect("buttonHover");
     }
     onMouseOver(e);
   };

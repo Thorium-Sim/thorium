@@ -123,10 +123,7 @@ const schema = gql`
     setVerifyDamage(simulatorId: ID!, verifyStep: Boolean!): String
     setBridgeMessaging(id: ID!, messaging: Boolean!): String
     setSimulatorAssets(id: ID!, assets: SimulatorAssetsInput!): String
-    setSimulatorSoundEffects(
-      id: ID!
-      soundEffects: SimulatorSoundEffectsInput!
-    ): String
+    setSimulatorSoundEffects(id: ID!, soundEffects: JSON!): String
     updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
     setSimulatorHasPrinter(simulatorId: ID!, hasPrinter: Boolean!): String
     setSimulatorHasLegs(simulatorId: ID!, hasLegs: Boolean!): String

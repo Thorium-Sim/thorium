@@ -27,12 +27,7 @@ const fragments = {
         logo
         bridge
       }
-      soundEffects {
-        buttonClick
-        buttonHover
-        cardChange
-        notification
-      }
+      soundEffects
       stations {
         name
         login

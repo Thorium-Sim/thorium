@@ -47,12 +47,6 @@ const schema = gql`
     logo: String
     bridge: String
   }
-  type SimulatorSoundEffects {
-    buttonClick: [String]
-    buttonHover: [String]
-    cardChange: [String]
-    notification: [String]
-  }
 
   input SimulatorAssetsInput {
     mesh: String
@@ -63,16 +57,9 @@ const schema = gql`
     bridge: String
   }
 
-  input SimulatorSoundEffectsInput {
-    buttonClick: [String]
-    buttonHover: [String]
-    cardChange: [String]
-    notification: [String]
-  }
-
   extend type Simulator {
     assets: SimulatorAssets
-    soundEffects: SimulatorSoundEffects
+    soundEffects: JSON
   }
   extend type Query {
     asset(assetKey: String!): Asset
