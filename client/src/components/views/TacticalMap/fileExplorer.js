@@ -453,6 +453,7 @@ const AssetObject = ({ object, removeObject }) => {
             />
           )}
         </p>
+        <audio className="audio-preview" controls src={object.url} />
       </div>
     );
   }
