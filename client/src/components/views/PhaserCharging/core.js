@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from "helpers/reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { InputField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Col, Row, Container } from "helpers/reactstrap";
+import { Col, Row, Container } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import { DateTime } from "luxon";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardBody, Button } from "helpers/reactstrap";
+import { Card, CardBody, Button } from "reactstrap";
 import { titleCase } from "change-case";
 import partsImages from "./parts";
 import DamageOverlay from "../helpers/DamageOverlay";

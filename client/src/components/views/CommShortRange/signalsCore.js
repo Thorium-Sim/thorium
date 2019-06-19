@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import tinycolor from "tinycolor2";
 import { CompactPicker } from "react-color";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";

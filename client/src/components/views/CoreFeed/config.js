@@ -9,7 +9,7 @@ import {
   FormGroup,
   Input,
   Label
-} from "helpers/reactstrap";
+} from "reactstrap";
 import { titleCase } from "change-case";
 const components = [
   "AlertConditionCore",

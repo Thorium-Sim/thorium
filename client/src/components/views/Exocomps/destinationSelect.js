@@ -4,7 +4,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem
-} from "helpers/reactstrap";
+} from "reactstrap";
 import gql from "graphql-tag.macro";
 import { Query } from "react-apollo";
 class DestinationSelect extends Component {

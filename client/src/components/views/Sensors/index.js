@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import gql from "graphql-tag.macro";
 import { Mutation, graphql, withApollo } from "react-apollo";
-import { Button, Row, Col, Card, CardBody } from "helpers/reactstrap";
+import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "helpers/tourHelper";
 import { Typing } from "react-typing";
 import "./style.scss";

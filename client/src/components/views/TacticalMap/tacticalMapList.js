@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Button, Label, Input } from "helpers/reactstrap";
+import { Button, Label, Input } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { Query } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";

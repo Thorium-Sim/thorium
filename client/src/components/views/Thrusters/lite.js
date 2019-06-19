@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
-import { Row, Col } from "helpers/reactstrap";
+import { Row, Col } from "reactstrap";
 import distance from "helpers/distance";
 import throttle from "helpers/debounce";
 import SubscriptionHelper from "helpers/subscriptionHelper";

@@ -7,7 +7,7 @@ import {
   FormGroup,
   Input,
   Button
-} from "helpers/reactstrap";
+} from "reactstrap";
 import gql from "graphql-tag.macro";
 import { TypingField } from "../../generic/core";
 import { graphql, withApollo } from "react-apollo";

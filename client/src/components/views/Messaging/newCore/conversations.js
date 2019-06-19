@@ -8,7 +8,7 @@ import {
   Card,
   Input,
   Button
-} from "helpers/reactstrap";
+} from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

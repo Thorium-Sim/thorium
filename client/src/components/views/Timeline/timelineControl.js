@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Button, ButtonGroup } from "helpers/reactstrap";
+import { Button, ButtonGroup } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

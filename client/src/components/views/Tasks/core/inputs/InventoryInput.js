@@ -2,7 +2,7 @@ import React from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import { randomFromList } from "helpers/randomFromList";
 
 const INV_QUERY = gql`

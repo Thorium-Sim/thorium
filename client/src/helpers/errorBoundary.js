@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Button } from "helpers/reactstrap";
+import { Container, Button } from "reactstrap";
 import * as Sentry from "@sentry/browser";
 
 export default class ErrorBoundary extends Component {

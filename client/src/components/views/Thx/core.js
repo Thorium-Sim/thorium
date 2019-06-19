@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Progress, Button, ButtonGroup } from "helpers/reactstrap";
+import { Row, Col, Progress, Button, ButtonGroup } from "reactstrap";
 import { OutputField } from "../../generic/core";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

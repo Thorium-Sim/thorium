@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Button
-} from "helpers/reactstrap";
+} from "reactstrap";
 import "./style.scss";
 import { FormattedMessage } from "react-intl";
 import Tour from "helpers/tourHelper";

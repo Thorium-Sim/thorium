@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import SimulatorPicker from "./simulatorPicker";
 import LayoutPicker from "./layoutPicker";

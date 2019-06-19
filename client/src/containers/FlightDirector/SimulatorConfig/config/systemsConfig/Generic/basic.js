@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { FormGroup, Label, Input } from "helpers/reactstrap";
+import { FormGroup, Label, Input } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import { GENERIC_QUERY } from "./index";

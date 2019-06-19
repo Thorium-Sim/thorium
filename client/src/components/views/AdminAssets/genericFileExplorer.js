@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import {
   FaBan,
   FaFolderOpen,

@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Input, Label, Button } from "helpers/reactstrap";
+import { FormGroup, Input, Label, Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import { GENERIC_QUERY } from "./index";

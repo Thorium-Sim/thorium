@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import gql from "graphql-tag.macro";
 import ConfigureTask from "./ConfigureTask";
 import ConfigureMacro from "./ConfigureMacro";

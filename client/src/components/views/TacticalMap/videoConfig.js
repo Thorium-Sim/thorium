@@ -1,6 +1,6 @@
 import React from "react";
 import FileExplorer from "./fileExplorer";
-import { Row, Col } from "helpers/reactstrap";
+import { Row, Col } from "reactstrap";
 
 export default ({ selectedLayer, updateLayer }) => (
   <Row>

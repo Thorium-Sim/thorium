@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Input, Button } from "helpers/reactstrap";
+import { Container, Row, Col, Input, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 

@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Row,
-  Col,
-  Media,
-  Button,
-  Input,
-  Label,
-  FormGroup
-} from "helpers/reactstrap";
+import { Row, Col, Media, Button, Input, Label, FormGroup } from "reactstrap";
 import { Asset } from "helpers/assets";
 
 export default ({ targetedContact, untargetContact, targetSystem }) => {

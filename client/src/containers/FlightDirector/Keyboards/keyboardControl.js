@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col, Card } from "helpers/reactstrap";
+import { Row, Col, Card } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

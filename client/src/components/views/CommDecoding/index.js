@@ -8,7 +8,7 @@ import {
   Label,
   ListGroup,
   ListGroupItem
-} from "helpers/reactstrap";
+} from "reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Query, Mutation } from "react-apollo";
-import { Table, Button } from "helpers/reactstrap";
+import { Table, Button } from "reactstrap";
 import gql from "graphql-tag.macro";
 import "./style.scss";
 import Printable from "helpers/printable";

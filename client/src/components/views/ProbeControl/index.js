@@ -15,7 +15,7 @@ import {
   Nav,
   NavItem,
   NavLink*/
-} from "helpers/reactstrap";
+} from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { withApollo, Query } from "react-apollo";
 import Tour from "helpers/tourHelper";

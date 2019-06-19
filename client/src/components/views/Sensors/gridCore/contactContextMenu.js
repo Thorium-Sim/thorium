@@ -7,7 +7,7 @@ import {
   Label,
   Button,
   ButtonGroup
-} from "helpers/reactstrap";
+} from "reactstrap";
 import FileExplorer from "../../TacticalMap/fileExplorer";
 
 export default class ContactContextMenu extends Component {

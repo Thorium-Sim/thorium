@@ -1,8 +1,8 @@
 import React from "react";
-import { Table } from "helpers/reactstrap";
+import { Table } from "reactstrap";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Input } from "helpers/reactstrap";
+import { Input } from "reactstrap";
 import { titleCase } from "change-case";
 import Views from "../index";
 import SubscriptionHelper from "helpers/subscriptionHelper";

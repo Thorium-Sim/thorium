@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import SineWaves from "sine-waves";
-import { Container, Row, Col } from "helpers/reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import tinycolor from "tinycolor2";

@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Container, Row, Col, Button } from "helpers/reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

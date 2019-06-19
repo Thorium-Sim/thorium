@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Button, ButtonGroup } from "helpers/reactstrap";
+import { Container, Button, ButtonGroup } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { OutputField } from "../../generic/core";
 import { Query } from "react-apollo";

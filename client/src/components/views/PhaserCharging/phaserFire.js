@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import AnimatedNumber from "react-animated-number";
 
 const PhaserBeam = ({

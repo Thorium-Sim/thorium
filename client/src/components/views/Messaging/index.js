@@ -14,7 +14,7 @@ import {
   DropdownItem,
   InputGroup,
   InputGroupAddon
-} from "helpers/reactstrap";
+} from "reactstrap";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { titleCase } from "change-case";

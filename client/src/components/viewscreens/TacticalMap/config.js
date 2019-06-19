@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const TACTICALMAP_SUB = gql`

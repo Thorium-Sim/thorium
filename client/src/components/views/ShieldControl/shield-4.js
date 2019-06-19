@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Button } from "helpers/reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import shieldStyle from "./shieldStyle";
 import DamageOverlay from "../helpers/DamageOverlay";

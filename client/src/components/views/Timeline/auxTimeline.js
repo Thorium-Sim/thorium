@@ -1,7 +1,7 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { ListGroup, ListGroupItem } from "helpers/reactstrap";
+import { ListGroup, ListGroupItem } from "reactstrap";
 import MissionSelector from "./missionSelector";
 import Mission from "./mission";
 

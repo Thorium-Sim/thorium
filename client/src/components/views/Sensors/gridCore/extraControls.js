@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-import { Col, Row } from "helpers/reactstrap";
+import { Col, Row } from "reactstrap";
 import { ChromePicker } from "react-color";
 import tinycolor from "tinycolor2";
 import gql from "graphql-tag.macro";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 
 export default function EngineButtons({ engine, locked, engines, setSpeed }) {
   return engine.speeds.map((speed, speedIndex) => {

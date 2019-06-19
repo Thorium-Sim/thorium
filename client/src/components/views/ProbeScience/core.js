@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Query, withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Container, Row, Col, Button } from "helpers/reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Grid from "../Sensors/GridDom/grid";
 // import SpeedAsker from "../Sensors/gridCore/speedAsker";

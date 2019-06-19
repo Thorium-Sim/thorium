@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Alert, Button } from "helpers/reactstrap";
+import { Alert, Button } from "reactstrap";
 import GenericFileExplorer from "./genericFileExplorer";
 
 class RemoteFiles extends Component {

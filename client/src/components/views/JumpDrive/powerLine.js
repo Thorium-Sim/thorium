@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Measure from "react-measure";
-import { Row, Col } from "helpers/reactstrap";
+import { Row, Col } from "reactstrap";
 
 function calcBorderColor(i, power, powerLevels) {
   const color = i >= power ? "transparent" : "#0b0";

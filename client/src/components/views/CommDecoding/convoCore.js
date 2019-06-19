@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import { ListGroup, ListGroupItem, Button } from "helpers/reactstrap";
+import { ListGroup, ListGroupItem, Button } from "reactstrap";
 import { InputField } from "../../generic/core";
 import DecodingCore from "../CommDecoding/core";
 import { DateTime } from "luxon";

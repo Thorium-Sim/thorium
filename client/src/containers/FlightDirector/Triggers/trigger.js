@@ -13,7 +13,7 @@ import {
   ListGroup,
   ListGroupItem,
   Button
-} from "helpers/reactstrap";
+} from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import * as components from "./components";

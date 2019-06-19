@@ -10,7 +10,7 @@ import {
   Label,
   Input,
   Button
-} from "helpers/reactstrap";
+} from "reactstrap";
 import { Link } from "react-router-dom";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

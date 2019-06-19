@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Container } from "helpers/reactstrap";
+import { Row, Col, Container } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";

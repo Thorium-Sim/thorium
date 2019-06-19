@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label } from "helpers/reactstrap";
+import { FormGroup, Label } from "reactstrap";
 
 export default ({ args = {} }) => {
   let answers = args ? args.presetAnswers : [];

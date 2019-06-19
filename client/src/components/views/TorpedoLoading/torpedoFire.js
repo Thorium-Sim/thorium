@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import DamageOverlay from "../helpers/DamageOverlay";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import { titleCase } from "change-case";
 class TorpedoFire extends Component {
   state = { enabled: true };

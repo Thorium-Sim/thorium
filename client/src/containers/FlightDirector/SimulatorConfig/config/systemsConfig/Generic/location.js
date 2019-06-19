@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, Label, Row, Col, Button } from "helpers/reactstrap";
+import { FormGroup, Label, Row, Col, Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";

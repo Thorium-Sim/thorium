@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "helpers/reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
 import "./style.scss";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Label } from "helpers/reactstrap";
+import { Label } from "reactstrap";
 import gql from "graphql-tag.macro";
 import Dot from "./dots";
 import { useQuery } from "@apollo/react-hooks";

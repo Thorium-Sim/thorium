@@ -1,2 +1,2 @@
-export * from "helpers/reactstrap";
+export * from "reactstrap";
 export { default as Button } from "./Button";

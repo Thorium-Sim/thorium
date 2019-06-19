@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Row, Col } from "helpers/reactstrap";
+import { Row, Col } from "reactstrap";
 import Transitioner from "../helpers/transitioner";
 
 export default class StealthBars extends Transitioner {

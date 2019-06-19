@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Container, Row, Col, Label } from "helpers/reactstrap";
+import { Input, Container, Row, Col, Label } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import ops from "./ops";

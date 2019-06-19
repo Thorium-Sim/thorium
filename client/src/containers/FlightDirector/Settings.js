@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Button, Input } from "helpers/reactstrap";
+import { Container, Button, Input } from "reactstrap";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 import { FormattedMessage } from "react-intl";
-import { Container, Row, Col } from "helpers/reactstrap";
+import { Container, Row, Col } from "reactstrap";
 import SensorGrid from "../Sensors/GridDom/grid";
 import { throttle } from "helpers/debounce";
 import RailgunLoader from "./loader";

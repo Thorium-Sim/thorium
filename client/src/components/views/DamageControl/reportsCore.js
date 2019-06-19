@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Button, Input } from "helpers/reactstrap";
+import { Container, Row, Col, Button, Input } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import { TypingField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";

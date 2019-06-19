@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Container, Button } from "helpers/reactstrap";
+import { Container, Button } from "reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import { OutputField, TypingField } from "../../generic/core";
 import "./style.scss";

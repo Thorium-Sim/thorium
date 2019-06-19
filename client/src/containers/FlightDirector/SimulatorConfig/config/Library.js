@@ -11,7 +11,7 @@ import {
   FormGroup,
   Input,
   Label
-} from "helpers/reactstrap";
+} from "reactstrap";
 import { paramCase } from "change-case";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";

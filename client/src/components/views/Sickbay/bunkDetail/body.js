@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Row, Col, Button } from "helpers/reactstrap";
+import { Row, Col, Button } from "reactstrap";
 
 import BodySvg from "./BodySvg";
 

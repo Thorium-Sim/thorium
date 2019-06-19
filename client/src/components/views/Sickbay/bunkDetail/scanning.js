@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Button } from "helpers/reactstrap";
+import { Input, Button } from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 class Scanning extends Component {

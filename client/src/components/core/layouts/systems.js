@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "helpers/reactstrap";
+import { Container } from "reactstrap";
 import SystemsConfig from "../../../containers/FlightDirector/SimulatorConfig/config/Systems";
 
 const SystemsCore = props => {

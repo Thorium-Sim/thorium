@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Input } from "helpers/reactstrap";
+import { Container, Input } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo, Mutation, Query } from "react-apollo";
 import Tour from "helpers/tourHelper";

@@ -1,5 +1,5 @@
 import React, { useReducer, useState, useEffect } from "react";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import { ReactComponent as Launcher } from "./launcher.svg";
 import { ReactComponent as Torpedo } from "../TorpedoLoading/torpedos/torpedo.svg";
 import uuid from "uuid";

@@ -3,7 +3,7 @@ import Patient from "./patient";
 import Scan from "./scan";
 import Treatment from "./treatment";
 
-import { ButtonGroup, Button } from "helpers/reactstrap";
+import { ButtonGroup, Button } from "reactstrap";
 
 class PatientControls extends Component {
   state = {

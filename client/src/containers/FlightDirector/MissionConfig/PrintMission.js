@@ -1,6 +1,6 @@
 import React from "react";
 import * as Macros from "../../../components/macrosPrint";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import Printable from "helpers/printable";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 

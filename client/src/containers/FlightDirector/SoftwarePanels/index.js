@@ -8,7 +8,7 @@ import {
   ListGroupItem,
   Label,
   Input
-} from "helpers/reactstrap";
+} from "reactstrap";
 import uuid from "uuid";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";

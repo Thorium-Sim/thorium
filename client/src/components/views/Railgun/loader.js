@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import { CSSTransitionGroup } from "react-transition-group";
 import Tour from "helpers/tourHelper";

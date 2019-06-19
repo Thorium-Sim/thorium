@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import { Container } from "helpers/reactstrap";
+import { Container } from "reactstrap";
 import { withApollo } from "react-apollo";
 import { InputField } from "../../generic/core";
 import { Duration } from "luxon";

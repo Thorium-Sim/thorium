@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import Torpedo from "./torpedo";
 import Transitioner from "./transitioner";
 

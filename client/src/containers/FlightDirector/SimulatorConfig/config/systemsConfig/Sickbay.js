@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input } from "helpers/reactstrap";
+import { FormGroup, Label, Input } from "reactstrap";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";

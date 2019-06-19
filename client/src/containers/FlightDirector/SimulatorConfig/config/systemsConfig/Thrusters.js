@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Row, Col } from "helpers/reactstrap";
+import { Input, Row, Col } from "reactstrap";
 import GenericSystemConfig from "./Generic";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

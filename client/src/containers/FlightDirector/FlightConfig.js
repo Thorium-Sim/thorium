@@ -12,7 +12,7 @@ import {
   FormGroup,
   Label,
   Input
-} from "helpers/reactstrap";
+} from "reactstrap";
 import Tour from "helpers/tourHelper";
 import randomWords from "random-words";
 import { FormattedMessage } from "react-intl";

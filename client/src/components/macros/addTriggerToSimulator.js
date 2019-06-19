@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label } from "helpers/reactstrap";
+import { FormGroup, Label } from "reactstrap";
 import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 

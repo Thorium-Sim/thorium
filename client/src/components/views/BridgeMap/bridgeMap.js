@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card, CardBody } from "helpers/reactstrap";
+import { Container, Row, Col, Card, CardBody } from "reactstrap";
 import Tour from "helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
 

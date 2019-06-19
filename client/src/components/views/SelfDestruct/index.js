@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Container, Row, Col, Button, Input } from "helpers/reactstrap";
+import { Container, Row, Col, Button, Input } from "reactstrap";
 import { Duration } from "luxon";
 import { withApollo, Mutation } from "react-apollo";
 import Tour from "helpers/tourHelper";

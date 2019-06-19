@@ -1,6 +1,6 @@
 import React from "react";
 import { titleCase } from "change-case";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import { MosaicWindowContext } from "react-mosaic-component";
 import categories from "../../categories";
 

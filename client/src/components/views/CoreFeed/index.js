@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { Cores } from "../";
-import { Button, ButtonGroup } from "helpers/reactstrap";
+import { Button, ButtonGroup } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import CoreFeedConfig from "./config";

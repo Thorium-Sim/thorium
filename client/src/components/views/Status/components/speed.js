@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql } from "react-apollo";
-import { Label } from "helpers/reactstrap";
+import { Label } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SPEEDCHANGE_SUB = gql`

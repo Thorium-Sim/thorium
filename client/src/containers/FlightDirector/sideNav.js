@@ -10,7 +10,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter
-} from "helpers/reactstrap";
+} from "reactstrap";
 import { Link } from "react-router-dom";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";

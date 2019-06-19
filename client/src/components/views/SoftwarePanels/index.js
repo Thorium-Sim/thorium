@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Card } from "helpers/reactstrap";
+import { Container, Row, Col, Card } from "reactstrap";
 import Measure from "react-measure";
 import Canvas from "../../../containers/FlightDirector/SoftwarePanels/canvas";
 import { getComponentLevel } from "../../../containers/FlightDirector/SoftwarePanels";

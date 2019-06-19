@@ -1,13 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import {
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem
-} from "helpers/reactstrap";
+import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 import Form from "./form";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";

@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup } from "helpers/reactstrap";
+import { FormGroup } from "reactstrap";
 
 export default ({ args: { entry = {} } }) => {
   return (

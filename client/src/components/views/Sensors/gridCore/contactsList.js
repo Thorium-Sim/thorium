@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Button } from "helpers/reactstrap";
+import { Col, Button } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import ContactContextMenu from "./contactContextMenu";

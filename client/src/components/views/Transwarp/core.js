@@ -1,7 +1,7 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import { OutputField } from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";

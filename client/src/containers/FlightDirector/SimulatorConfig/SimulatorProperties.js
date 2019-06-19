@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "helpers/reactstrap";
+import { Card } from "reactstrap";
 import { titleCase } from "change-case";
 const properties = [
   "Simulator",

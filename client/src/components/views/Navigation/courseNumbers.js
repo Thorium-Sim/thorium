@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col } from "helpers/reactstrap";
+import { Row, Col } from "reactstrap";
 
 class CourseNumber extends Component {
   state = { calculatedCourse: { x: "", y: "", z: "" } };

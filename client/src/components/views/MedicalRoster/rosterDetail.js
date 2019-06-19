@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, FormGroup, Label, Input, Button } from "helpers/reactstrap";
+import { Row, Col, FormGroup, Label, Input, Button } from "reactstrap";
 
 const RosterDetail = ({
   action,

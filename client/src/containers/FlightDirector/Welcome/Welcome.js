@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Container, Card, CardBody } from "helpers/reactstrap";
+import { Col, Row, Container, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { Link } from "react-router-dom";
 import Tour from "helpers/tourHelper";

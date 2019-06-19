@@ -1,5 +1,5 @@
 import React from "react";
-import { Label, Input } from "helpers/reactstrap";
+import { Label, Input } from "reactstrap";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 

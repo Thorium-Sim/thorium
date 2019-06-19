@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "helpers/reactstrap";
+import { Row, Col } from "reactstrap";
 import { Asset } from "helpers/assets";
 import { graphql, withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";

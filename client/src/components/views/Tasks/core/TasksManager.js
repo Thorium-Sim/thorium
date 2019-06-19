@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Card, Button, ListGroup, ListGroupItem } from "helpers/reactstrap";
+import { Card, Button, ListGroup, ListGroupItem } from "reactstrap";
 import { Duration } from "luxon";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

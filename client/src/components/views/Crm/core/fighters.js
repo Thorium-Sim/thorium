@@ -1,7 +1,7 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Table, Button } from "helpers/reactstrap";
+import { Table, Button } from "reactstrap";
 
 const Fighters = ({ fighters, id }) => {
   return (

@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  ButtonGroup,
-  Button,
-  Row,
-  Container,
-  Col,
-  Input
-} from "helpers/reactstrap";
+import { ButtonGroup, Button, Row, Container, Col, Input } from "reactstrap";
 import { titleCase } from "change-case";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

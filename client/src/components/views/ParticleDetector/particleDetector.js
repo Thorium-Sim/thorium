@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { Container, Row, Col, Button } from "helpers/reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import Grid from "../Sensors/GridDom/grid";
 import { particleTypes, particleBootstrapClasses } from "./particleConstants";
 import { FormattedMessage } from "react-intl";

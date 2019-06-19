@@ -4,7 +4,6 @@ import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Client from "./client";
 import playSound from "../generic/SoundPlayer";
-
 export const SimulatorContext = React.createContext({});
 
 const fragments = {

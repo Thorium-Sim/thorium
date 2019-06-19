@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Button, ButtonGroup } from "helpers/reactstrap";
+import { Button, ButtonGroup } from "reactstrap";
 import { publish } from "helpers/pubsub";
 import NotificationConfig from "./notificationConfig";
 import SidebarConfig from "./sidebarConfig";

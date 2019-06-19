@@ -6,7 +6,7 @@ import {
   ModalFooter,
   Button,
   Input
-} from "helpers/reactstrap";
+} from "reactstrap";
 import { Cores } from "../../views";
 import { publish } from "helpers/pubsub";
 import { titleCase } from "change-case";

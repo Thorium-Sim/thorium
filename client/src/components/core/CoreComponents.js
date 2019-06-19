@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as Layouts from "./layouts";
 import Hotkey from "./hotkey";
 
-import { ListGroup, ListGroupItem } from "helpers/reactstrap";
+import { ListGroup, ListGroupItem } from "reactstrap";
 import Alerts from "../generic/Alerts";
 
 import "./CoreComponents.scss";

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Card } from "helpers/reactstrap";
+import { Container, Row, Col, Card } from "reactstrap";
 import { Asset } from "helpers/assets";
 import { throttle } from "helpers/debounce";
 import AnimatedNumber from "react-animated-number";

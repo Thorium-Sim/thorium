@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
-import { Input, Button } from "helpers/reactstrap";
+import { Input, Button } from "reactstrap";
 import LayoutList from "../../layouts/list";
 import debounce from "helpers/debounce";
 import { useQuery } from "@apollo/react-hooks";

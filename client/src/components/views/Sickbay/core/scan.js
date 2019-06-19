@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import { OutputField, TypingField } from "../../../generic/core";
 import ScanPresets from "../../Sensors/ScanPresets";
 

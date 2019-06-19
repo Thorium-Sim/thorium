@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Input } from "helpers/reactstrap";
+import { Button, Input } from "reactstrap";
 import Measure from "react-measure";
 import "./style.scss";
 

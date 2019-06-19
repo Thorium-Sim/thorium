@@ -6,7 +6,7 @@ import {
   Button,
   ListGroup,
   ListGroupItem
-} from "helpers/reactstrap";
+} from "reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import { OutputField, TypingField } from "../../generic/core";

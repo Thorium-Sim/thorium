@@ -8,7 +8,7 @@ import {
   ListGroupItem,
   Input,
   Button
-} from "helpers/reactstrap";
+} from "reactstrap";
 import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";

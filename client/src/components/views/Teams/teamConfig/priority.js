@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { FormGroup, Label, Button, Row, Col } from "helpers/reactstrap";
+import { FormGroup, Label, Button, Row, Col } from "reactstrap";
 import { titleCase } from "change-case";
 const Priority = ({ update, team = {} }) => {
   const updatePriority = priority => {

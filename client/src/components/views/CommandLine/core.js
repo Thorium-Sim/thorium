@@ -5,7 +5,7 @@ import {
   ListGroupItem,
   Button,
   ButtonGroup
-} from "helpers/reactstrap";
+} from "reactstrap";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";

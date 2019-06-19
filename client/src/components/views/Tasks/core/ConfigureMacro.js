@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Button } from "helpers/reactstrap";
+import { Button } from "reactstrap";
 import MacroConfig from "../../Macros/macroConfig";
 
 const ConfigureMacro = ({ cancel, macro, update, client }) => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input } from "helpers/reactstrap";
+import { FormGroup, Label, Input } from "reactstrap";
 import FontAwesome from "react-fontawesome";
 import uuid from "uuid";
 const Multi = ({

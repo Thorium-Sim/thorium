@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input } from "helpers/reactstrap";
+import { Input } from "reactstrap";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 
 class ShipViewsConfig extends Component {

@@ -7,7 +7,7 @@ import {
   CardBody,
   ListGroup,
   ListGroupItem
-} from "helpers/reactstrap";
+} from "reactstrap";
 import Transitioner from "../helpers/transitioner";
 import { titleCase } from "change-case";
 

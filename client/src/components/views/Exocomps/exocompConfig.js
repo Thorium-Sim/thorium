@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Row,
-  Col,
-  Card,
-  CardBody,
-  FormGroup,
-  Label,
-  Button
-} from "helpers/reactstrap";
+import { Row, Col, Card, CardBody, FormGroup, Label, Button } from "reactstrap";
 import DestinationSelect from "./destinationSelect";
 import partsImages from "./parts";
 

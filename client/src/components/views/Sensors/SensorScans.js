@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Row, Col, Card, CardBody } from "helpers/reactstrap";
+import { Button, Row, Col, Card, CardBody } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { Typing } from "react-typing";
 

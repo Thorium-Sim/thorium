@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "helpers/reactstrap";
+import { Input } from "reactstrap";
 const Long = ({ value = "", updateValue = () => {}, required, disabled }) => {
   return (
     <div>

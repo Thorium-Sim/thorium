@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import * as Components from "./components";
-import {
-  Container,
-  Col,
-  Row,
-  Button,
-  Card,
-  CardBody
-} from "helpers/reactstrap";
+import { Container, Col, Row, Button, Card, CardBody } from "reactstrap";
 
 class ComponentLibrary extends Component {
   render() {

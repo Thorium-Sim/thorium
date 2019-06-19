@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Label } from "helpers/reactstrap";
+import { Label } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo, Query } from "react-apollo";
-// import { Tooltip } from "helpers/reactstrap";
+// import { Tooltip } from "reactstrap";
 import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { publish } from "helpers/pubsub";

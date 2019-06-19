@@ -1,12 +1,6 @@
 import React, { Fragment, Component } from "react";
 import { Query } from "react-apollo";
-import {
-  Badge,
-  ListGroup,
-  ListGroupItem,
-  Input,
-  Button
-} from "helpers/reactstrap";
+import { Badge, ListGroup, ListGroupItem, Input, Button } from "reactstrap";
 import gql from "graphql-tag.macro";
 import uuid from "uuid";
 import ValueInput from "../views/Tasks/core/ValueInput";

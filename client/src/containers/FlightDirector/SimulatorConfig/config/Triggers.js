@@ -1,12 +1,6 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import {
-  Container,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem
-} from "helpers/reactstrap";
+import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
 import { Query, Mutation } from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";

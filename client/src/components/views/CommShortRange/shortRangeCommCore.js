@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, ButtonGroup, Button } from "helpers/reactstrap";
+import { Container, Row, Col, ButtonGroup, Button } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 

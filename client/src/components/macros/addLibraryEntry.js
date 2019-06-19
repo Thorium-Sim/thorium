@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input } from "helpers/reactstrap";
+import { FormGroup, Label, Input } from "reactstrap";
 import { paramCase } from "change-case";
 import FontAwesome from "react-fontawesome";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";

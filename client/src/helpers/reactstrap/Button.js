@@ -1,5 +1,5 @@
 import React from "react";
-import { Button as RSButton } from "helpers/reactstrap";
+import { Button as RSButton } from "reactstrap";
 import { playSound } from "components/generic/SoundPlayer";
 import { SimulatorContext } from "components/client/simulatorData";
 import { randomFromList } from "helpers/randomFromList";

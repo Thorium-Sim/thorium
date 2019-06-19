@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Button } from "helpers/reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import { Clamps, Ramps, Doors, Legs } from "./graphics";

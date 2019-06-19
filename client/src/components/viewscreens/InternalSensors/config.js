@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InputGroup, InputGroupAddon, Button, Input } from "helpers/reactstrap";
+import { InputGroup, InputGroupAddon, Button, Input } from "reactstrap";
 
 export default class InternalScanConfig extends Component {
   constructor(props) {

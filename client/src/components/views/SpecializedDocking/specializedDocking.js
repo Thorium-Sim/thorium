@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Button,
-  Card,
-  CardBody,
-  ListGroup,
-  ListGroupItem
-} from "helpers/reactstrap";
+import { Button, Card, CardBody, ListGroup, ListGroupItem } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { Mutation } from "react-apollo";
 import { Clamps, Ramps, Doors } from "../Docking/graphics";
