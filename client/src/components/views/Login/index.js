@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Button, Row, Col, Input } from "helpers/reactstrap";
 import { withApollo, Query, Mutation } from "react-apollo";
 import FontAwesome from "react-fontawesome";

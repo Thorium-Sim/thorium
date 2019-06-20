@@ -4,7 +4,6 @@ import { Widgets } from "components/views";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
-import Measure from "react-measure";
 import { subscribe } from "helpers/pubsub";
 
 import Tour from "helpers/tourHelper";
