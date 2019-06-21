@@ -13,6 +13,7 @@ const FlightQuery = gql`
       id
       name
       flightType
+      transmitted
       running
     }
   }
@@ -237,7 +238,7 @@ This can only be done once per flight and should only be done when the flight is
                 >
                   Export Flight
                 </Button>
-                {flight.flightType && (
+                {!flight.transmitted && (
                   <Mutation
                     mutation={gql`
                       mutation TransmitFlight($flightId: ID!) {

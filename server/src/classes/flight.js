@@ -14,6 +14,7 @@ export default class Flight {
 
     // Space EdVentures Flight Type
     this.flightType = params.flightType || null;
+    this.transmitted = params.transmitted || false;
     // {clientId, badgeId}
     this.badges = params.badges || [];
     // {clientId, userId}
@@ -68,6 +69,7 @@ export default class Flight {
 
     // Don't submit if there isn't a flight type.
     if (!this.flightType) return;
+    if (this.transmitted) return;
 
     // Concatenate the clients so there are no duplicate space edventures users.
     // Only use clients that have logged in during this flight.
@@ -148,6 +150,6 @@ export default class Flight {
         console.error(err);
       });
     // Remove the flight type so it is not transmitted again.
-    this.flightType = null;
+    this.transmitted = true;
   }
 }
