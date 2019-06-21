@@ -6,6 +6,7 @@ export { default as Offline } from "./ViewscreenOffline";
 export { default as ForwardScans } from "./ForwardScans";
 export { default as AsteroidField } from "./AsteroidField";
 export { default as Docking } from "./Docking";
+export { default as Undocking } from "./Undocking";
 export { default as Overheating } from "./Overheating";
 export { default as Information } from "./Information";
 export { default as InternalSensors } from "./InternalSensors";
