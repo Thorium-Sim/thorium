@@ -1,7 +1,6 @@
 import React from "react";
-import { Input, Row, Col } from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
-import { Query, Mutation } from "react-apollo";
+import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
 import Images from "components/views/Crm/core/images";
 
