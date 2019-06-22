@@ -1,19 +1,19 @@
 import React from "react";
-import { Button as RSButton } from "reactstrap";
+import { DropdownToggle as RSDropdownToggle } from "reactstrap";
 import useSoundEffect from "../hooks/useSoundEffect";
 
-const Button = ({
-  onMouseDown = () => {},
+const DropdownToggle = ({
+  onClick = () => {},
   onMouseOver = () => {},
   silent,
   ...props
 }) => {
   const playEffect = useSoundEffect();
-  const mouseDown = e => {
+  const click = e => {
     if (!silent) {
       playEffect("buttonClick");
     }
-    onMouseDown(e);
+    onClick(e);
   };
   const mouseOver = e => {
     if (!silent && !props.disabled) {
@@ -22,7 +22,7 @@ const Button = ({
     onMouseOver(e);
   };
   return (
-    <RSButton onMouseDown={mouseDown} onMouseOver={mouseOver} {...props} />
+    <RSDropdownToggle onClick={click} onMouseOver={mouseOver} {...props} />
   );
 };
-export default Button;
+export default DropdownToggle;
