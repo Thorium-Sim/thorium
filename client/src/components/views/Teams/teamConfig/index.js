@@ -6,8 +6,8 @@ import {
   Label,
   Input,
   Button,
-  Card,
-  CardBody
+  ListGroup,
+  ListGroupItem
 } from "helpers/reactstrap";
 import { titleCase } from "change-case";
 import Priority from "./priority";
@@ -162,57 +162,53 @@ const TeamConfig = ({
         <Label for="teamName" size="lg">
           Available Officers
         </Label>
-        <Card className="crew-list">
-          <CardBody>
-            {crew
-              .filter(c => assignedOfficers.indexOf(c.id) === -1)
-              .map(c => (
-                <div
-                  className="officer"
-                  key={c.id}
-                  onClick={() => {
-                    if (team) {
-                      assignOfficer(c);
-                    }
-                  }}
-                >
-                  <p>{c.name}</p>
-                  <small>{c.position}</small>
-                </div>
-              ))}
-          </CardBody>
-        </Card>
+        <ListGroup className="crew-list">
+          {crew
+            .filter(c => assignedOfficers.indexOf(c.id) === -1)
+            .map(c => (
+              <ListGroupItem
+                className="officer"
+                key={c.id}
+                onClick={() => {
+                  if (team) {
+                    assignOfficer(c);
+                  }
+                }}
+              >
+                <p>{c.name}</p>
+                <small>{c.position}</small>
+              </ListGroupItem>
+            ))}
+        </ListGroup>
         <Label for="teamName" size="lg">
           Assigned Officers
         </Label>
-        <Card className="crew-assigned">
-          <CardBody>
-            {team &&
-              team.officers &&
-              team.officers
-                .concat()
-                .filter(Boolean)
-                .sort((a, b) => {
-                  if (a.position > b.position) return 1;
-                  if (a.position < b.position) return -1;
-                  return 0;
-                })
-                .map(c => (
-                  <div
-                    key={c.id}
-                    onClick={() => {
-                      if (team) {
-                        removeOfficer(c);
-                      }
-                    }}
-                    className={`officer ${c.killed ? "text-danger" : ""}`}
-                  >
-                    <p>{c.name}</p>
-                    <small>{c.position}</small>
-                  </div>
-                ))}
-          </CardBody>
-        </Card>
+        <ListGroup className="crew-assigned">
+          {team &&
+            team.officers &&
+            team.officers
+              .concat()
+              .filter(Boolean)
+              .sort((a, b) => {
+                if (a.position > b.position) return 1;
+                if (a.position < b.position) return -1;
+                return 0;
+              })
+              .map(c => (
+                <ListGroupItem
+                  key={c.id}
+                  onClick={() => {
+                    if (team) {
+                      removeOfficer(c);
+                    }
+                  }}
+                  className={`officer ${c.killed ? "text-danger" : ""}`}
+                >
+                  <p>{c.name}</p>
+                  <small>{c.position}</small>
+                </ListGroupItem>
+              ))}
+        </ListGroup>
       </Col>
     </Row>
   );

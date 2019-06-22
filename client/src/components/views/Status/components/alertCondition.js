@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Label } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo, Query } from "react-apollo";
@@ -6,7 +6,7 @@ import { withApollo, Query } from "react-apollo";
 import { FormattedMessage } from "react-intl";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { publish } from "helpers/pubsub";
-
+import useSoundEffect from "helpers/hooks/useSoundEffect";
 const fragment = gql`
   fragment AlertConditionData on Simulator {
     id
@@ -57,13 +57,20 @@ const fragment = gql`
 //   }
 // };
 
-class AlertCondition extends Component {
-  state = { cooldown: false };
-  setAlert = number => {
-    this.setState({ cooldown: true });
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.setState({ cooldown: false }), 5000);
-    if (this.state.cooldown) {
+const AlertCondition = ({ simulator, client }) => {
+  const [cooldown, setCooldown] = React.useState(false);
+  const playEffect = useSoundEffect();
+  React.useEffect(() => {
+    let timeout;
+    if (cooldown) {
+      timeout = setTimeout(() => setCooldown(false), 5000);
+    }
+    return () => clearTimeout(timeout);
+  }, [cooldown]);
+  const setAlert = number => {
+    setCooldown(true);
+    playEffect("buttonClick");
+    if (cooldown) {
       publish("triggerNotification", {
         title: "Cannot trigger alert change.",
         body: "Please wait a few seconds before changing the alert condition.",
@@ -77,77 +84,68 @@ class AlertCondition extends Component {
       }
     `;
     const variables = {
-      id: this.props.simulator.id,
+      id: simulator.id,
       level: number
     };
-    this.props.client.mutate({
+    client.mutate({
       mutation,
       variables
     });
   };
-  componentWillUnmount() {
-    clearTimeout(this.timeout);
-  }
-  toggle = which => {
-    this.setState({
-      [`alert${which}`]: !this.state[`alert${which}`]
-    });
-  };
-  render() {
-    return (
-      <Query
-        query={gql`
-          query simulators($id: ID) {
-            simulators(id: $id) {
-              ...AlertConditionData
-            }
+  return (
+    <Query
+      query={gql`
+        query simulators($id: ID) {
+          simulators(id: $id) {
+            ...AlertConditionData
           }
-          ${fragment}
-        `}
-        variables={{ id: this.props.simulator.id }}
-      >
-        {({ loading, data, subscribeToMore }) => (
-          <div className="alert-condition">
-            <SubscriptionHelper
-              subscribe={() =>
-                subscribeToMore({
-                  document: gql`
-                    subscription SimulatorsSub($id: ID) {
-                      simulatorsUpdate(simulatorId: $id) {
-                        ...AlertConditionData
-                      }
+        }
+        ${fragment}
+      `}
+      variables={{ id: simulator.id }}
+    >
+      {({ loading, data, subscribeToMore }) => (
+        <div className="alert-condition">
+          <SubscriptionHelper
+            subscribe={() =>
+              subscribeToMore({
+                document: gql`
+                  subscription SimulatorsSub($id: ID) {
+                    simulatorsUpdate(simulatorId: $id) {
+                      ...AlertConditionData
                     }
-                    ${fragment}
-                  `,
-                  variables: { id: this.props.simulator.id },
-                  updateQuery: (previousResult, { subscriptionData }) => {
-                    return Object.assign({}, previousResult, {
-                      simulators: subscriptionData.data.simulatorsUpdate
-                    });
                   }
-                })
-              }
+                  ${fragment}
+                `,
+                variables: { id: simulator.id },
+                updateQuery: (previousResult, { subscriptionData }) => {
+                  return Object.assign({}, previousResult, {
+                    simulators: subscriptionData.data.simulatorsUpdate
+                  });
+                }
+              })
+            }
+          />
+          <Label>
+            <FormattedMessage
+              id="alert-condition"
+              defaultMessage="Alert Condition"
             />
-            <Label>
-              <FormattedMessage
-                id="alert-condition"
-                defaultMessage="Alert Condition"
-              />
-            </Label>
-            <div className="button-container">
-              {["5", "4", "3", "2", "1"].map(a => (
-                <div
-                  key={`alert-condition-${a}`}
-                  className={`alert-button alert-${a}`}
-                  id={`alert${a}`}
-                  onClick={
-                    data.simulators && data.simulators[0].alertLevelLock
-                      ? () => {}
-                      : () => this.setAlert(a)
-                  }
-                >
-                  {a}
-                  {/* <Tooltip
+          </Label>
+          <div className="button-container">
+            {["5", "4", "3", "2", "1"].map(a => (
+              <div
+                key={`alert-condition-${a}`}
+                className={`alert-button alert-${a}`}
+                id={`alert${a}`}
+                onClick={
+                  data.simulators && data.simulators[0].alertLevelLock
+                    ? () => {}
+                    : () => setAlert(a)
+                }
+              >
+                {a}
+                {/* <Tooltip
                       placement="top"
                       isOpen={this.state[`alert${a}`]}
                       target={`#alert${a}`}
@@ -156,14 +154,13 @@ class AlertCondition extends Component {
                     >
                       <AlertMessage number={a} />
                     </Tooltip> */}
-                </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        )}
-      </Query>
-    );
-  }
-}
+        </div>
+      )}
+    </Query>
+  );
+};
 
 export default withApollo(AlertCondition);

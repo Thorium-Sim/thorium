@@ -71,7 +71,7 @@ const Speed = ({ index, speed, speeds, action, id }) => {
           Speed Text
           <Input
             type="text"
-            value={speed.text}
+            defaultValue={speed.text}
             onChange={evt => {
               const newSpeeds = speeds.map(
                 ({ text, number, velocity, optimal }, i) => {
@@ -90,7 +90,7 @@ const Speed = ({ index, speed, speeds, action, id }) => {
           Speed Number
           <Input
             type="number"
-            value={speed.number}
+            defaultValue={speed.number}
             onChange={evt => {
               const newSpeeds = speeds.map(
                 ({ text, number, velocity, optimal }, i) => {
@@ -109,7 +109,7 @@ const Speed = ({ index, speed, speeds, action, id }) => {
           Velocity (km/s)
           <Input
             type="number"
-            value={speed.velocity}
+            defaultValue={speed.velocity}
             onChange={evt => {
               const newSpeeds = speeds.map(
                 ({ text, number, velocity, optimal }, i) => {

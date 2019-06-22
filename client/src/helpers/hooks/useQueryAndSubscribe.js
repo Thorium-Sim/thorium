@@ -8,8 +8,10 @@ export default function useQueryAndSubscription(query, subscription) {
 }
 
 export function useSubscribeToMore(subscribeToMore, subscription, config) {
+  const s2m = React.useCallback(subscribeToMore, []);
+
   React.useEffect(() => {
-    const sub = subscribeToMore({ document: subscription, ...config });
+    const sub = s2m({ document: subscription, ...config });
     return () => sub();
-  }, [config, subscribeToMore, subscription]);
+  }, [config, s2m, subscription]);
 }

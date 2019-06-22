@@ -12,8 +12,9 @@ export default class Library {
     this.type = params.type || "general";
     this.categories = params.categories || [];
     this.seeAlso = params.seeAlso || [];
+    this.font = params.font || "";
   }
-  update({ title, type, body, image, categories, seeAlso }) {
+  update({ title, type, body, image, categories, seeAlso, font }) {
     if (title) {
       this.title = title;
       this.slug = paramCase(this.title);
@@ -23,5 +24,6 @@ export default class Library {
     if (image) this.image = image;
     if (categories) this.categories = categories;
     if (seeAlso) this.seeAlso = seeAlso;
+    if (font || font === "") this.font = font;
   }
 }

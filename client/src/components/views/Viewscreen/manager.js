@@ -50,7 +50,7 @@ class ViewscreenManager extends Component {
     .filter(c => c.indexOf("Config") > -1)
     .sort();
   state = {
-    selectedViewscreen: null,
+    selectedViewscreen: "all",
     preview: true,
     configData: "{}",
     pipPosition: "bottomRight",
@@ -89,6 +89,7 @@ class ViewscreenManager extends Component {
       const mutation = gql`
         mutation PictureInPicture(
           $id: ID!
+          $simulatorId: ID
           $component: String!
           $data: JSON
           $size: PIP_SIZE
@@ -96,6 +97,7 @@ class ViewscreenManager extends Component {
         ) {
           setViewscreenPictureInPicture(
             id: $id
+            simulatorId: $simulatorId
             component: $component
             data: $data
             size: $size
@@ -105,6 +107,7 @@ class ViewscreenManager extends Component {
       `;
       const variables = {
         id: this.state.selectedViewscreen,
+        simulatorId: this.props.simulator.id,
         component,
         data: JSON.parse(configData),
         size: this.state.pipSize,
@@ -118,14 +121,21 @@ class ViewscreenManager extends Component {
       const mutation = gql`
         mutation UpdateViewscreen(
           $id: ID!
+          $simulatorId: ID
           $component: String!
           $data: String
         ) {
-          updateViewscreenComponent(id: $id, component: $component, data: $data)
+          updateViewscreenComponent(
+            id: $id
+            simulatorId: $simulatorId
+            component: $component
+            data: $data
+          )
         }
       `;
       const variables = {
         id: this.state.selectedViewscreen,
+        simulatorId: this.props.simulator.id,
         component
       };
       if (component === previewComponent) {
@@ -147,6 +157,7 @@ class ViewscreenManager extends Component {
     `;
     const variables = {
       id: this.state.selectedViewscreen,
+      simulatorId: this.props.simulator.id,
       data
     };
     this.props.client.mutate({
@@ -169,6 +180,7 @@ class ViewscreenManager extends Component {
     `;
     const variables = {
       id,
+      simulatorId: this.props.simulator.id,
       auto
     };
     this.props.client.mutate({
@@ -201,7 +213,7 @@ class ViewscreenManager extends Component {
     if (this.props.data.loading || !this.props.data.viewscreens) return null;
     const { viewscreens } = this.props.data;
     const {
-      selectedViewscreen = null,
+      selectedViewscreen = "all",
       previewComponent,
       configData,
       config,
@@ -212,9 +224,15 @@ class ViewscreenManager extends Component {
     const viewscreen =
       (selectedViewscreen &&
         viewscreens.length &&
-        viewscreens.find(v => v.id === selectedViewscreen) &&
-        viewscreens.find(v => v.id === selectedViewscreen)) ||
+        viewscreens.find(
+          v =>
+            v.id === selectedViewscreen ||
+            selectedViewscreen === "all" ||
+            (selectedViewscreen === "primary" && !v.secondary) ||
+            (selectedViewscreen === "secondary" && v.secondary)
+        )) ||
       {};
+
     return (
       <div className="viewscreen-core">
         <div
@@ -227,7 +245,7 @@ class ViewscreenManager extends Component {
             <Preview
               simulator={this.props.simulator}
               flightId={this.props.flightId}
-              clientObj={{ id: selectedViewscreen }}
+              clientObj={{ id: viewscreen.id }}
               core
             />
           )}
@@ -261,7 +279,12 @@ class ViewscreenManager extends Component {
                     this.setState({ selectedViewscreen: evt.target.value });
                   }}
                 >
-                  <option value="select">Select a viewscreen</option>
+                  <option value="select" disabled>
+                    Select a viewscreen
+                  </option>
+                  <option value="all">All Viewscreens</option>
+                  <option value="primary">Primary Viewscreens</option>
+                  <option value="secondary">Secondary Viewscreens</option>
                   {viewscreens.map(v => (
                     <option key={v.id} value={v.id}>
                       {v.name}
@@ -338,15 +361,19 @@ class ViewscreenManager extends Component {
                       />{" "}
                       Auto-switch generic tactical cards
                     </Label>
-                    <Label>
-                      <input
-                        type="checkbox"
-                        disabled={!viewscreen}
-                        checked={viewscreen.secondary}
-                        onChange={this.toggleSecondary}
-                      />{" "}
-                      Secondary Screen?
-                    </Label>
+                    {!["all", "primary", "secondary"].includes(
+                      selectedViewscreen
+                    ) && (
+                      <Label>
+                        <input
+                          type="checkbox"
+                          disabled={!viewscreen}
+                          checked={viewscreen.secondary}
+                          onChange={this.toggleSecondary}
+                        />{" "}
+                        Secondary Screen?
+                      </Label>
+                    )}
 
                     <label>
                       <Mutation
@@ -420,9 +447,6 @@ class ViewscreenManager extends Component {
               <Col sm={6}>
                 <Label>Current Viewscreen</Label>
                 {(() => {
-                  const viewscreen =
-                    selectedViewscreen &&
-                    viewscreens.find(v => v.id === selectedViewscreen);
                   const currentComponent = viewscreen && viewscreen.component;
                   const currentData = viewscreen && viewscreen.data;
                   if (this.configs.indexOf(`${currentComponent}Config`) > -1) {

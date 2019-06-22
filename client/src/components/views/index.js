@@ -176,6 +176,7 @@ import CommandLineCore from "./CommandLine/core";
 import AuxTimelineCore from "./Timeline/auxTimelineData";
 import LightingCore from "./Lighting";
 import MacroButtonsCore from "./Macros/macroButtons";
+import OfficerLogCore from "./OfficerLog/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -465,7 +466,8 @@ export const Cores = {
   CommandLineCore,
   AuxTimelineCore,
   LightingCore,
-  MacroButtonsCore
+  MacroButtonsCore,
+  OfficerLogCore
 };
 
 export default Views;

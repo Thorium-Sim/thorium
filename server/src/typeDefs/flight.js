@@ -13,6 +13,7 @@ const schema = gql`
     timelineStep: Int
     simulators: [Simulator]
     flightType: String
+    transmitted: Boolean
     clients: [SpaceEdventuresClient]
   }
 

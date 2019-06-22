@@ -356,12 +356,12 @@ class JumpDrive extends Component {
                 >
                   {ringsExtended ? (
                     <FormattedMessage
-                      defaultMessage="Retract Jump Rings"
+                      defaultMessage="Retract Rings"
                       id="jump-drive-retract-jump-rings"
                     />
                   ) : (
                     <FormattedMessage
-                      defaultMessage="Extend Jump Rings"
+                      defaultMessage="Extend Rings"
                       id="jump-drive-extend-jump-rings"
                     />
                   )}

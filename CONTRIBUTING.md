@@ -46,6 +46,14 @@ issues are labeled
 [Help Wanted](https://github.com/Thorium-Sim/thorium/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 and are a good place to start.
 
+## Learning How to Contribute
+
+There is a
+[development video series](https://www.youtube.com/watch?v=iEU6NcOKhyE&list=PLvw0SNT6wHt9au1-6yCOh7QHj-p5ir0l6)
+which you can watch to learn how Thorium features are developed. The
+[Thorium Discord server](https://discord.gg/UvxTQZz) is also a great place to
+ask questions and get up to speed.
+
 ## Add yourself as a contributor
 
 This project follows the [all contributors][all-contributors] specification. To

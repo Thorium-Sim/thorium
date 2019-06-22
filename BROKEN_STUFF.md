@@ -1,13 +1,5 @@
 _Sound Effects_
 
-- Status alert condition switches
-- Cloaking Device Arrows
-- Crew roster buttons
-- Any list group item
-- Power distribution lines
-- Dropdown Menus - cargo
-- Navigation Buttons
-- Engine speed bars
 - thruster joysticks
 - Decoding ranges
 - message sending satellites
@@ -24,3 +16,4 @@ _Sound Effects_
 - railgun firing
 - particle detector
 - crm joystick
+- training

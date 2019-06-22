@@ -49,7 +49,7 @@ App.on(
     const simulator = App.simulators.find(s => s.id === simulatorId);
     let output = null;
     // Send the original input
-    simulator.addCommandLineOutput(client.id, `> ${command}`);
+    simulator.addCommandLineOutput(client.id, `> ${command} ${arg}`);
 
     if (command.toLowerCase().trim() === "help") {
       output = App.commandLine
@@ -110,6 +110,26 @@ App.on(
           return;
         } else if (com.output.text) {
           simulator.addCommandLineOutput(client.id, com.output.text);
+
+          App.handleEvent(
+            {
+              simulatorId: simulator.id,
+              title: `Command Line Feedback`,
+              component: "CommandLineCore",
+              body: null,
+              color: "info"
+            },
+            "addCoreFeed"
+          );
+          pubsub.publish("notify", {
+            id: uuid.v4(),
+            simulatorId: simulator.id,
+            type: "Command Line",
+            station: "Core",
+            title: `Command Line Feedback`,
+            body: ``,
+            color: "info"
+          });
 
           const id = uuid.v4();
           simulator.addCommandLineFeedback(client.id, {

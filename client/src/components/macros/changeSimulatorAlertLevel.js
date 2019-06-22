@@ -7,9 +7,12 @@ export default ({ updateArgs, args: { alertLevel } }) => {
       <Label>Level</Label>{" "}
       <Input
         type="select"
-        defaultValue={alertLevel}
+        defaultValue={alertLevel || ""}
         onChange={evt => updateArgs("alertLevel", evt.target.value)}
       >
+        <option value="" disabled>
+          Choose One
+        </option>
         <option>5</option>
         <option>4</option>
         <option>3</option>

@@ -159,7 +159,8 @@ export default class CommandLineConfig extends Component {
                       "triggerAction",
                       "removeLibraryEntry",
                       "hideSimulatorCard",
-                      "unhideSimulatorCard"
+                      "unhideSimulatorCard",
+                      "changeSimulatorAlertLevel"
                     ]}
                   >
                     {eventList => (

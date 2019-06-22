@@ -8,7 +8,8 @@ import EngineButtons from "./engineButtons";
 
 export default withApollo(props => {
   const { engines, setSpeed, locked } = props;
-  const applyCoolant = id => {
+  const applyCoolant = ({ id, heat }) => {
+    if (heat < 0.01) return;
     const mutation = gql`
       mutation CoolEngine($id: ID!, $state: Boolean) {
         engineCool(id: $id, state: $state)
@@ -77,8 +78,8 @@ export default withApollo(props => {
               block
               className="cool-engines"
               color="info"
-              onMouseDown={applyCoolant.bind(this, engines[0].id)}
-              onTouchStart={applyCoolant.bind(this, engines[0].id)}
+              onMouseDown={applyCoolant.bind(this, engines[0])}
+              onTouchStart={applyCoolant.bind(this, engines[0])}
             >
               Coolant
             </Button>
@@ -108,8 +109,8 @@ export default withApollo(props => {
             <Button
               block
               color="info"
-              onMouseDown={applyCoolant.bind(this, engines[1].id)}
-              onTouchStart={applyCoolant.bind(this, engines[1].id)}
+              onMouseDown={applyCoolant.bind(this, engines[1])}
+              onTouchStart={applyCoolant.bind(this, engines[1])}
             >
               Coolant
             </Button>

@@ -10,7 +10,7 @@ export default class StealthField extends System {
     this.type = "StealthField";
     this.name = params.name || "Stealth Field";
     this.charge = params.charge || false;
-    this.activated = params.activated || true;
+    this.activated = params.activated;
     this.state = params.state || !this.activated;
     this.changeAlert = params.changeAlert || false;
     this.quadrants = params.quadrants || {

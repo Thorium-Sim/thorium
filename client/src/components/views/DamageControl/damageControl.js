@@ -5,7 +5,9 @@ import {
   Col,
   Button,
   Card,
-  CardBody
+  CardBody,
+  ListGroup,
+  ListGroupItem
 } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import FontAwesome from "react-fontawesome";
@@ -13,6 +15,7 @@ import { Mutation, withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 import { FormattedMessage } from "react-intl";
 import ReportView from "./reportView";
+import useSoundEffect from "helpers/hooks/useSoundEffect";
 
 import "./style.scss";
 
@@ -24,6 +27,20 @@ function systemClasses(s, selected) {
     (s.damage ? s.damage.validate : task.verifyRequested) ? "validate" : ""
   } ${s.damage && s.damage.destroyed ? "destroyed" : ""}`;
 }
+const FlexBox = ({ c, setCodeEntry }) => {
+  const playSound = useSoundEffect();
+  return (
+    <li
+      key={c}
+      onClick={() => {
+        playSound("buttonClick");
+        setCodeEntry(c);
+      }}
+    >
+      {c}
+    </li>
+  );
+};
 class DamageControl extends Component {
   state = {
     selectedSystem: null,
@@ -207,7 +224,8 @@ class DamageControl extends Component {
       )
       .map(s => ({
         ...s,
-        className: systemClasses(s, selectedSystem === s.id),
+        className: systemClasses(s),
+        active: selectedSystem === s.id,
         type: "legacy",
         onClick: s.damage.destroyed ? () => {} : () => this.selectSystem(s.id),
         name: this.systemName(s),
@@ -223,7 +241,8 @@ class DamageControl extends Component {
           const task = t.tasks ? t.tasks.find(tt => !tt.verified) || {} : {};
           return {
             ...t,
-            className: systemClasses(t, selectedSystem === t.id),
+            className: systemClasses(t),
+            actve: selectedSystem === t.id,
             type: "task",
             onClick: () => this.selectSystem(t.id),
             children: (
@@ -272,18 +291,14 @@ class DamageControl extends Component {
               )}
             </h4>
 
-            <Card>
-              <CardBody className="damaged-systems">
-                {reactivationCodeModal ? (
+            {reactivationCodeModal ? (
+              <Card>
+                <CardBody className="damaged-systems">
                   <div className="reactivation-modal">
                     <ul className="flex-boxes">
-                      {["¥", "Ω", "∏", "§", "-", "∆", "£", "∑", "∂"].map(
-                        (c, i) => (
-                          <li key={i} onClick={() => this.setCodeEntry(c)}>
-                            {c}
-                          </li>
-                        )
-                      )}
+                      {["¥", "Ω", "∏", "§", "-", "∆", "£", "∑", "∂"].map(c => (
+                        <FlexBox c={c} setCodeEntry={this.setCodeEntry} />
+                      ))}
                     </ul>
                     <Row>
                       <Col sm={5}>
@@ -314,11 +329,15 @@ class DamageControl extends Component {
                       </Col>
                     </Row>
                   </div>
-                ) : (
-                  reportList.map(s => <p key={s.id} {...s} />)
-                )}
-              </CardBody>
-            </Card>
+                </CardBody>
+              </Card>
+            ) : (
+              <ListGroup className="damaged-systems">
+                {reportList.map(s => (
+                  <ListGroupItem key={s.id} {...s} />
+                ))}
+              </ListGroup>
+            )}
             {reactivationCodeModal ? (
               <Button
                 block

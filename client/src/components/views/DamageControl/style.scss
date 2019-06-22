@@ -1,8 +1,9 @@
 .damage-control,
 .damageReport-core {
-  .card {
+  .card,
+  .list-group {
     height: 60vh;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   p {
     margin: 0;
@@ -44,7 +45,7 @@
   }
   .reactivation-code {
     .card {
-      height: 45vh;
+      height: 55vh;
     }
     .reactivation-code-entry {
       &.card {
