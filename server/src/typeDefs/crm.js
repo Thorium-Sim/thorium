@@ -64,7 +64,7 @@ const schema = gql`
     frags: Int
   }
   extend type Query {
-    crm(simulatorId: ID!): Crm
+    crm(id: ID, simulatorId: ID): Crm
     crmFighter(simulatorId: ID!, clientId: ID!): CrmFighter
   }
   extend type Mutation {
@@ -133,9 +133,9 @@ const resolver = {
     }
   },
   Query: {
-    crm(rootQuery, { simulatorId }) {
+    crm(rootQuery, { id, simulatorId }) {
       return App.systems.find(
-        s => s.simulatorId === simulatorId && s.class === "Crm"
+        s => s.id === id || (s.simulatorId === simulatorId && s.class === "Crm")
       );
     },
     crmFighter(rootQuery, { simulatorId, clientId }) {
