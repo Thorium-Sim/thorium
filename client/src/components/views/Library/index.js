@@ -10,7 +10,6 @@ import {
   Input,
   Button
 } from "helpers/reactstrap";
-import { Asset } from "helpers/assets";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import escapeRegex from "escape-string-regexp";
