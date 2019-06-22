@@ -1,3 +1,28 @@
+# [1.14.0](https://github.com/Thorium-Sim/thorium/compare/1.13.0...1.14.0) (2019-06-22)
+
+
+### Bug Fixes
+
+* **Command Line:** Command line output now shows args for the command. Closes [#2353](https://github.com/Thorium-Sim/thorium/issues/2353) ([a76262a](https://github.com/Thorium-Sim/thorium/commit/a76262a))
+* **Docking:** Resolves issues with erratic docking. Closes [#2338](https://github.com/Thorium-Sim/thorium/issues/2338) ([5c755cf](https://github.com/Thorium-Sim/thorium/commit/5c755cf))
+* **Engines:** Fixes an issue where clicking the coolant button too many times can cause lag. Closes [#2309](https://github.com/Thorium-Sim/thorium/issues/2309) ([2646709](https://github.com/Thorium-Sim/thorium/commit/2646709))
+* **Engines:** Fixes an issue where engine speed levels cannot be configured properly. Closes [#2347](https://github.com/Thorium-Sim/thorium/issues/2347) ([973a989](https://github.com/Thorium-Sim/thorium/commit/973a989))
+* **Space EdVentures:** Makes it possible to change the flight type of a Space EdVentures flight. ([f7493e7](https://github.com/Thorium-Sim/thorium/commit/f7493e7))
+* **Stealth Field:** When stealth field is set to be always activated, the Activate/Deactivate button no longer appears. Closes [#2342](https://github.com/Thorium-Sim/thorium/issues/2342). Closes [#2352](https://github.com/Thorium-Sim/thorium/issues/2352). ([587ceb4](https://github.com/Thorium-Sim/thorium/commit/587ceb4))
+
+
+### Features
+
+* **Clear Layout:** Makes the clear layout overlay on top of the viewscreen contents. Closes [#2349](https://github.com/Thorium-Sim/thorium/issues/2349) ([a7bdbd7](https://github.com/Thorium-Sim/thorium/commit/a7bdbd7))
+* **Command Line:** Add command line feedback requests to the core feed. Closes [#2297](https://github.com/Thorium-Sim/thorium/issues/2297) ([abbac19](https://github.com/Thorium-Sim/thorium/commit/abbac19))
+* **Command Line:** Adds options for changing the alert level from the command line. Closes [#2234](https://github.com/Thorium-Sim/thorium/issues/2234) ([7487f91](https://github.com/Thorium-Sim/thorium/commit/7487f91))
+* **CRM-114:** Makes it possible to set the image defaults when configuring the CRM-114 system. Closes [#2210](https://github.com/Thorium-Sim/thorium/issues/2210) ([bbf5ce7](https://github.com/Thorium-Sim/thorium/commit/bbf5ce7))
+* **Library:** Add the ability to set the visible font of library entries. Closes [#2350](https://github.com/Thorium-Sim/thorium/issues/2350) ([e94c62c](https://github.com/Thorium-Sim/thorium/commit/e94c62c))
+* **Officers Log:** Add an officers log core for viewing officer log entries. Closes [#1903](https://github.com/Thorium-Sim/thorium/issues/1903) ([944adc8](https://github.com/Thorium-Sim/thorium/commit/944adc8))
+* **Space EdVentures:** Makes it possible to remove stations from the Space EdVentures transmission. Closes [#2295](https://github.com/Thorium-Sim/thorium/issues/2295) ([3d73685](https://github.com/Thorium-Sim/thorium/commit/3d73685))
+* **Viewscreen:** Add "Undocking" viewscreen. ([6dff211](https://github.com/Thorium-Sim/thorium/commit/6dff211))
+* **Viewscreen:** Add the ability to change all viewscreens at the same time, including differentiating between primary and secondary viewscreens. Closes [#2351](https://github.com/Thorium-Sim/thorium/issues/2351) ([9fb03ef](https://github.com/Thorium-Sim/thorium/commit/9fb03ef))
+
 # [1.13.0](https://github.com/Thorium-Sim/thorium/compare/1.12.0...1.13.0) (2019-06-20)
 
 
