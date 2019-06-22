@@ -22,14 +22,14 @@ const schema = gql`
     log: String
   }
   extend type Query {
-    officerLogs(clientId: ID!, flightId: ID!): [Log]
+    officerLogs(clientId: ID, flightId: ID!): [Log]
     shipLogs(simulatorId: ID!): [Log]
   }
   extend type Mutation {
     addLog(log: LogInput): String
   }
   extend type Subscription {
-    officerLogsUpdate(clientId: ID!, flightId: ID!): [Log]
+    officerLogsUpdate(clientId: ID, flightId: ID!): [Log]
     shipLogsUpdate(simulatorId: ID!): [Log]
   }
 `;
@@ -37,6 +37,9 @@ const schema = gql`
 const resolver = {
   Query: {
     officerLogs(rootValue, { clientId, flightId }) {
+      if (!clientId) {
+        return App.officerLogs.filter(l => l.flightId === flightId);
+      }
       return App.officerLogs.filter(
         l => l.clientId === clientId && l.flightId === flightId
       );
@@ -49,6 +52,9 @@ const resolver = {
   Subscription: {
     officerLogsUpdate: {
       resolve(rootValue, { clientId, flightId }) {
+        if (!clientId) {
+          return rootValue.filter(l => l.flightId === flightId);
+        }
         return rootValue.filter(
           l => l.clientId === clientId && l.flightId === flightId
         );
