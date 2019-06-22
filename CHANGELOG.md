@@ -1,3 +1,23 @@
+# [1.13.0](https://github.com/Thorium-Sim/thorium/compare/1.12.0...1.13.0) (2019-06-20)
+
+
+### Bug Fixes
+
+* **Navigation Advanced:** Fixes an issue when speeds are set to a value over 1. Closes [#2268](https://github.com/Thorium-Sim/thorium/issues/2268) ([9309eb5](https://github.com/Thorium-Sim/thorium/commit/9309eb5))
+* **Navigation Advanced:** Fixes the formatting when going a speed that is longer than the available space in the box. Closes [#2269](https://github.com/Thorium-Sim/thorium/issues/2269) ([b95ff26](https://github.com/Thorium-Sim/thorium/commit/b95ff26))
+* **Navigation Advanced:** Makes it so one engine cannot be changed unless the other is deactivated. Closes [#2267](https://github.com/Thorium-Sim/thorium/issues/2267) ([34b923b](https://github.com/Thorium-Sim/thorium/commit/34b923b))
+* **Quote of the Day:** Add more quotes. ([8a89b8e](https://github.com/Thorium-Sim/thorium/commit/8a89b8e))
+* **Sound Picker:** Properly fixes the sound picker. Closes  [#2308](https://github.com/Thorium-Sim/thorium/issues/2308) ([316747d](https://github.com/Thorium-Sim/thorium/commit/316747d))
+
+
+### Features
+
+* **File Explorer:** Adds audio preview to the file explorer. ([3167ffe](https://github.com/Thorium-Sim/thorium/commit/3167ffe))
+* **Interface Sound Effects:** Adds interface sound effects to Thorium for things like clicking buttons, changing cards, and logging in. These are opt-in and must be configured for each simulator with the Sound Effects config. You can use your own sounds, or use sounds from this [bonus sound pack](https://s3.amazonaws.com/thoriumsim/Bonus%20Sounds.zip) that can be imported into Thorium. Every sound effect can have multiple sounds associated, and it will pick a random one whenever the sound is played. Closes [#2223](https://github.com/Thorium-Sim/thorium/issues/2223) ([bc52316](https://github.com/Thorium-Sim/thorium/commit/bc52316))
+* **Issue Tracker:** Makes it possible to upload an image through the issue tracker. Closes [#2340](https://github.com/Thorium-Sim/thorium/issues/2340) ([7e970af](https://github.com/Thorium-Sim/thorium/commit/7e970af))
+* **Status:** Adds an extra field for tracking the number of people on the ship. Closes [#2315](https://github.com/Thorium-Sim/thorium/issues/2315) ([21fda91](https://github.com/Thorium-Sim/thorium/commit/21fda91))
+* **Viewscreen:** Adds a picture-in-picture feature to the viewscreen. Configure it with the Viewscreen core or in your timeline with macros. Refs [#2316](https://github.com/Thorium-Sim/thorium/issues/2316) ([ad7e02b](https://github.com/Thorium-Sim/thorium/commit/ad7e02b))
+
 # [1.12.0](https://github.com/Thorium-Sim/thorium/compare/1.11.0...1.12.0) (2019-06-14)
 
 
