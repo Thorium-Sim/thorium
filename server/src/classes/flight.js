@@ -51,6 +51,9 @@ export default class Flight {
       c.id === clientId ? { ...c, email } : c
     );
   }
+  removeClient(clientId) {
+    this.clients = this.clients.filter(c => c.id !== clientId);
+  }
   addBadges(badges) {
     this.badges = this.badges.concat(badges);
   }

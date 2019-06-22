@@ -230,7 +230,8 @@ This can only be done once per flight and should only be done when the flight is
                 variables={{ flightId }}
                 refetchQueries={[
                   {
-                    query: FLIGHT_QUERY
+                    query: FLIGHT_QUERY,
+                    variables: { flightId, simulatorId: simulator.id }
                   }
                 ]}
               >
@@ -257,6 +258,7 @@ This can only be done once per flight and should only be done when the flight is
                   <th>Station</th>
                   <th>Token</th>
                   <th>Email Added</th>
+                  <th>Remove</th>
                 </tr>
               </thead>
               <tbody>
@@ -268,6 +270,46 @@ This can only be done once per flight and should only be done when the flight is
                       <td>{c.name || c.station.name}</td>
                       <td>{c.token}</td>
                       <td>{c.email ? "✅" : "🚫"}</td>
+                      <td>
+                        <Mutation
+                          mutation={gql`
+                            mutation RemoveClient(
+                              $flightId: ID!
+                              $clientId: ID!
+                            ) {
+                              removeSpaceEdventuresClient(
+                                flightId: $flightId
+                                clientId: $clientId
+                              )
+                            }
+                          `}
+                          variables={{ flightId, clientId: c.id }}
+                          refetchQueries={[
+                            {
+                              query: FLIGHT_QUERY,
+                              variables: { flightId, simulatorId: simulator.id }
+                            }
+                          ]}
+                        >
+                          {action => (
+                            <Button
+                              size="sm"
+                              color="danger"
+                              onClick={() => {
+                                if (
+                                  window.confirm(
+                                    "Are you sure you want to remove this client? To add it back, log out of the client and then log back in."
+                                  )
+                                ) {
+                                  action();
+                                }
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </Mutation>
+                      </td>
                     </tr>
                   ))}
               </tbody>

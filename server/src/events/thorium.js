@@ -84,6 +84,12 @@ App.on(
     pubsub.publish("flightsUpdate", App.flights);
   }
 );
+App.on("removeSpaceEdventuresClient", ({ flightId, clientId }) => {
+  const flight = App.flights.find(f => f.id === flightId);
+  if (!flight) return;
+  flight.removeClient(clientId);
+  pubsub.publish("flightsUpdate", App.flights);
+});
 App.on("assignSpaceEdventuresBadge", badgeAssign);
 App.on("assignSpaceEdventuresMission", badgeAssign);
 App.on("getSpaceEdventuresLogin", async ({ token, context, cb }) => {
