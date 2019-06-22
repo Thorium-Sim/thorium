@@ -9,9 +9,14 @@ App.on("updateViewscreenName", ({ id, name }) => {
 App.on(
   "updateViewscreenComponent",
   ({ id, simulatorId, component, data, secondary = false, context }) => {
+    console.log(simulatorId, id);
     const viewscreens = App.viewscreens.filter(
       v =>
         v.id === id ||
+        (v.simulatorId === simulatorId &&
+          (id === "all" ||
+            (id === "primary" && !v.secondary) ||
+            (id === "secondary" && v.secondary))) ||
         (!id && v.simulatorId === simulatorId && v.secondary === secondary)
     );
     if (viewscreens.length === 0) return;
@@ -30,7 +35,14 @@ App.on(
   }
 );
 App.on("updateViewscreenData", ({ id, data }) => {
-  const viewscreen = App.viewscreens.find(v => v.id === id);
+  const viewscreen = App.viewscreens.find(
+    v =>
+      v.id === id ||
+      (v.simulatorId === simulatorId &&
+        (id === "all" ||
+          (id === "primary" && !v.secondary) ||
+          (id === "secondary" && v.secondary)))
+  );
   viewscreen.updateData(data);
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
@@ -45,6 +57,10 @@ App.on("setViewscreenToAuto", ({ id, simulatorId, secondary = false }) => {
   const viewscreen = App.viewscreens.filter(
     v =>
       v.id === id ||
+      (v.simulatorId === simulatorId &&
+        (id === "all" ||
+          (id === "primary" && !v.secondary) ||
+          (id === "secondary" && v.secondary))) ||
       (!id && v.simulatorId === simulatorId && v.secondary === secondary)
   );
   viewscreen.forEach(v => {
@@ -67,6 +83,10 @@ App.on(
     const viewscreens = App.viewscreens.filter(
       v =>
         v.id === id ||
+        (v.simulatorId === simulatorId &&
+          (id === "all" ||
+            (id === "primary" && !v.secondary) ||
+            (id === "secondary" && v.secondary))) ||
         (!id && v.simulatorId === simulatorId && v.secondary === secondary)
     );
     viewscreens.forEach(viewscreen => {
@@ -82,6 +102,10 @@ App.on(
     const viewscreens = App.viewscreens.filter(
       v =>
         v.id === id ||
+        (v.simulatorId === simulatorId &&
+          (id === "all" ||
+            (id === "primary" && !v.secondary) ||
+            (id === "secondary" && v.secondary))) ||
         (!id && v.simulatorId === simulatorId && v.secondary === secondary)
     );
     viewscreens.forEach(viewscreen => {
