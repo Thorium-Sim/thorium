@@ -27,6 +27,7 @@ const SUB = gql`
       title
       image
       categories
+      font
     }
   }
 `;
@@ -106,7 +107,7 @@ class Library extends Component {
               onChange={e => this.setState({ searchFilter: e.target.value })}
             />
             <Card className="entry-list">
-              <CardBody>
+              <CardBody className="font-container">
                 {libraryEntries
                   .concat()
                   .filter(
@@ -131,7 +132,9 @@ class Library extends Component {
                   .map(l => (
                     <p
                       key={l.id}
-                      className={l.id === selectedEntry ? "selected" : ""}
+                      className={`${l.id === selectedEntry ? "selected" : ""} ${
+                        l.font ? "coded" : ""
+                      } ${l.font}`}
                       onClick={() => this.setState({ selectedEntry: l.id })}
                     >
                       {l.title}
@@ -176,36 +179,29 @@ class Library extends Component {
             <Row>
               <Col sm={{ size: 6, offset: 1 }}>
                 <h4>Entry</h4>
-                <Card className="entry-body">
-                  <CardBody>{sEntry && sEntry.body}</CardBody>
+                <Card className="entry-body font-container">
+                  <CardBody
+                    className={`${sEntry && sEntry.font ? "coded" : ""} ${
+                      sEntry ? sEntry.font : ""
+                    }`}
+                  >
+                    {sEntry && sEntry.body}
+                  </CardBody>
                 </Card>
               </Col>
               <Col sm={5}>
                 <h4>Image</h4>
                 {sEntry && (
-                  <Asset
-                    fail
-                    asset={
-                      sEntry &&
-                      ((sEntry.image &&
-                        (sEntry.image.substr(
-                          0,
-                          sEntry.image.lastIndexOf(".")
-                        ) ||
-                          sEntry.image)) ||
-                        "/Library Images/noImage.png")
-                    }
-                  >
-                    {({ src }) => (
-                      <div
-                        className="entry-image"
-                        style={{
-                          backgroundImage: `url('${src ||
-                            require("./noImage.png")}')`
-                        }}
-                      />
-                    )}
-                  </Asset>
+                  <div
+                    className="entry-image"
+                    style={{
+                      backgroundImage: `url('${
+                        sEntry && sEntry.image
+                          ? `/assets${sEntry.image}`
+                          : require("./noImage.png")
+                      }')`
+                    }}
+                  />
                 )}
                 {/* <h4>See Also</h4>
                 <Card className="entry-seeAlso">
@@ -247,6 +243,7 @@ const QUERY = gql`
       title
       image
       categories
+      font
     }
   }
 `;

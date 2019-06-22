@@ -14,6 +14,7 @@ const schema = gql`
     type: String
     categories: [String]
     seeAlso: [LibraryEntry]
+    font: String
   }
   type LibraryCategory {
     name: String
@@ -29,6 +30,7 @@ const schema = gql`
     type: String
     categories: [String]
     seeAlso: [ID]
+    font: String
   }
   extend type Query {
     libraryEntries(simulatorId: ID, type: String, all: Boolean): [LibraryEntry]

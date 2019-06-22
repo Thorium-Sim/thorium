@@ -16,6 +16,7 @@ import { paramCase } from "change-case";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import { cypherMap } from "components/views/CodeCyphers";
 const SUB = gql`
   subscription Library {
     libraryEntriesUpdate {
@@ -29,6 +30,7 @@ const SUB = gql`
         id
         title
       }
+      font
       categories
     }
   }
@@ -43,7 +45,17 @@ class Library extends Component {
   };
   submit = () => {
     const {
-      entry: { id, title, type, body, image, seeAlso, categories, simulatorId }
+      entry: {
+        id,
+        title,
+        type,
+        body,
+        image,
+        seeAlso,
+        categories,
+        font,
+        simulatorId
+      }
     } = this.state;
     let mutation = gql`
       mutation AddLibraryEntry($entry: LibraryInput!) {
@@ -58,7 +70,17 @@ class Library extends Component {
       `;
     }
     const variables = {
-      entry: { id, title, type, body, image, seeAlso, categories, simulatorId }
+      entry: {
+        id,
+        title,
+        type,
+        body,
+        image,
+        seeAlso,
+        categories,
+        font,
+        simulatorId
+      }
     };
     this.props.client.mutate({ mutation, variables }).then(() => {
       this.setState({ entry: null });
@@ -310,6 +332,21 @@ class Library extends Component {
                         </div>
                       ))}
                     </FormGroup>
+                    <FormGroup>
+                      <Label>Font</Label>
+                      <Input
+                        type="select"
+                        value={entry.font}
+                        onChange={e => this.updateEntry("font", e.target.value)}
+                      >
+                        <option value="">Normal Font</option>
+                        {Object.keys(cypherMap).map(c => (
+                          <option value={cypherMap[c]} key={c}>
+                            {cypherMap[c]}
+                          </option>
+                        ))}
+                      </Input>
+                    </FormGroup>
                   </Col>
 
                   <Col sm={12}>
@@ -397,6 +434,7 @@ const QUERY = gql`
         id
         title
       }
+      font
       categories
     }
   }
