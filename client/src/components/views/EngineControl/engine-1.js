@@ -10,6 +10,7 @@ export default withApollo(props => {
   const { engines, setSpeed, locked } = props;
   const applyCoolant = () => {
     const id = props.engines[0].id;
+    if (props.engines[0].heat < 0.01) return;
     const mutation = gql`
       mutation CoolEngine($id: ID!, $state: Boolean) {
         engineCool(id: $id, state: $state)
