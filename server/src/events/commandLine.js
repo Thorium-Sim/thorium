@@ -49,7 +49,7 @@ App.on(
     const simulator = App.simulators.find(s => s.id === simulatorId);
     let output = null;
     // Send the original input
-    simulator.addCommandLineOutput(client.id, `> ${command}`);
+    simulator.addCommandLineOutput(client.id, `> ${command} ${arg}`);
 
     if (command.toLowerCase().trim() === "help") {
       output = App.commandLine
