@@ -3,6 +3,7 @@ import { Col, Button } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import ContactContextMenu from "./contactContextMenu";
+import { withApollo } from "react-apollo";
 
 const ADD_ARMY_CONTACT = gql`
   mutation AddArmyContact(
@@ -191,4 +192,4 @@ class ContactsList extends Component {
   }
 }
 
-export default ContactsList;
+export default withApollo(ContactsList);

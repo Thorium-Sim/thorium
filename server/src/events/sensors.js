@@ -504,6 +504,9 @@ App.on("updateSensorContacts", ({ id, contacts, cb }) => {
   pubsub.publish("sensorContactUpdate", system);
   cb && cb();
 });
+App.on("updateSensorGrid", ({ id, contacts, cb }) => {
+  console.log("update");
+});
 
 const findNewPoint = (angle, r) => ({
   x: Math.cos(angle) * r,
