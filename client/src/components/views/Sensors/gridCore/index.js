@@ -15,7 +15,7 @@ import { CoreSidebar } from "./CoreSidebar";
 import "./gridCore.scss";
 import { useMouseDown } from "./hooks/useMouseDown";
 import { checkContactPosition } from "./hooks/checkContactPosition";
-
+import uuid from "uuid";
 const DELETE_CONTACT = gql`
   mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
     removeSensorContact(id: $id, contact: $contact)
@@ -26,9 +26,16 @@ const MOVE_CONTACT = gql`
     updateSensorContacts(id: $id, contacts: $contacts)
   }
 `;
+const noOp = () => {};
 
-const GridCore = ({ simulator }) => {
-  const sensors = useSensorsData(simulator.id) || {};
+const GridCore = ({
+  simulator,
+  lite = false,
+  defaultSensors = {},
+  updateContacts = noOp,
+  contacts = []
+}) => {
+  const sensors = useSensorsData(simulator.id) || defaultSensors;
   const [deleteContact] = useMutation(DELETE_CONTACT);
   const [moveContact] = useMutation(MOVE_CONTACT);
   const [measureRef, dimensions, node] = useMeasure();
@@ -49,7 +56,8 @@ const GridCore = ({ simulator }) => {
   const triggerUpdate = speed => {
     speed = Number(speed);
     // Delete any dragging contacts that are out of bounds
-    const contacts = (draggingContacts || [])
+    const newContacts = (draggingContacts || [])
+      .concat(contacts)
       .map(c => checkContactPosition(c, node, dimensions))
       .filter(c => {
         if (c.delete) {
@@ -59,29 +67,40 @@ const GridCore = ({ simulator }) => {
           return false;
         }
         return true;
-      })
-      // Now that the ones that need to be deleted are gone,
-      // Update the rest
-      .map(c => {
-        const { x = 0, y = 0, z = 0 } = c.destination;
-        return {
-          id: c.id,
-          speed,
-          destination: { x, y, z }
-        };
       });
+    // Now that the ones that need to be deleted are gone,
+    // Update the rest
+
+    updateContacts(newContacts.map(c => ({ ...c, speed })));
+    const moveContacts = newContacts.map(c => {
+      const { x = 0, y = 0, z = 0 } = c.destination;
+      return {
+        id: c.id,
+        speed,
+        destination: { x, y, z }
+      };
+    });
     moveContact({
       variables: {
         id: sensors.id,
-        contacts
+        contacts: moveContacts
       }
     }).then(() => {
       setDraggingContacts([]);
       setSpeedAsking(false);
     });
   };
-
-  const [dragStart, addingContact] = useDragStart(sensors, dimensions);
+  const addContact = React.useCallback(
+    function(c) {
+      return updateContacts(contacts.concat({ ...c, id: uuid.v4() }));
+    },
+    [contacts, updateContacts]
+  );
+  const [dragStart, addingContact] = useDragStart(
+    sensors,
+    dimensions,
+    addContact
+  );
   const [mouseDown] = useMouseDown({
     dimensions,
     selectedContacts,
@@ -97,6 +116,7 @@ const GridCore = ({ simulator }) => {
   const extraContacts = []
     .concat(addingContact && addingContact.location ? addingContact : null)
     .concat(draggingContacts)
+    .concat(contacts)
     .filter(Boolean);
 
   if (!sensors.id) return <p>No Sensor Grid</p>;
@@ -121,6 +141,7 @@ const GridCore = ({ simulator }) => {
             setAskForSpeed={setAskForSpeed}
             selectedContacts={selectedContacts}
             setSelectedContacts={setSelectedContacts}
+            lite={lite}
           />
         </Col>
         <Col sm={8}>

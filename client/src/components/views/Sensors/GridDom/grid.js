@@ -228,41 +228,44 @@ class InnerGrid extends Component {
       .concat(contacts)
       .concat(extraContacts.filter(c => !contacts.find(e => e.id === c.id)))
       .filter(Boolean)
+      .filter(c =>
+        includeTypes.length > 0 ? includeTypes.indexOf(c.type) > -1 : true
+      );
+    return contactOutput
       .filter(
-        c =>
-          includeTypes.length > 0 ? includeTypes.indexOf(c.type) > -1 : true
-      );
-    return contactOutput.map(contact => {
-      const extraContact = extraContacts.find(e => e.id === contact.id);
-      const { position, location, destination } =
-        sContacts[contact.id] || contact;
-      return (
-        <SensorContact
-          key={contact.id}
-          width={width}
-          core={core}
-          sensorsId={sensor}
-          {...contact}
-          location={position || location}
-          destination={extraContact ? extraContact.destination : destination}
-          selected={
-            selectedContacts
-              ? selectedContacts.indexOf(contact.id) > -1
-              : contact.id === selectedContact
-          }
-          mousedown={(e, contact) =>
-            mouseDown &&
-            mouseDown(e, contact, contact =>
-              this.setState({
-                selectedContact: contact.id ? contact.id : contact
-              })
-            )
-          }
-          mouseover={hoverContact}
-          particles={particles}
-        />
-      );
-    });
+        (c, i, arr) => arr.findIndex(contact => contact.id === c.id) === i
+      )
+      .map(contact => {
+        const extraContact = extraContacts.find(e => e.id === contact.id);
+        const { position, location, destination } =
+          sContacts[contact.id] || contact;
+        return (
+          <SensorContact
+            key={contact.id}
+            width={width}
+            core={core}
+            sensorsId={sensor}
+            {...contact}
+            location={position || location}
+            destination={extraContact ? extraContact.destination : destination}
+            selected={
+              selectedContacts
+                ? selectedContacts.indexOf(contact.id) > -1
+                : contact.id === selectedContact
+            }
+            mousedown={(e, contact) =>
+              mouseDown &&
+              mouseDown(e, contact, contact =>
+                this.setState({
+                  selectedContact: contact.id ? contact.id : contact
+                })
+              )
+            }
+            mouseover={hoverContact}
+            particles={particles}
+          />
+        );
+      });
   };
   render() {
     const {

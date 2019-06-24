@@ -27,7 +27,8 @@ export const CoreSidebar = ({
   setAskForSpeed,
   selectedContacts,
   setSelectedContacts,
-  dragStart
+  dragStart,
+  lite
 }) => {
   const [clearContacts] = useMutation(CLEAR_CONTACTS, {
     variables: { id: sensors.id }
@@ -57,9 +58,11 @@ export const CoreSidebar = ({
       <Button size="sm" color="danger" block onClick={clearContacts}>
         Clear
       </Button>
-      <Button size="sm" color="warning" block onClick={stopContacts}>
-        Stop
-      </Button>
+      {!lite && (
+        <Button size="sm" color="warning" block onClick={stopContacts}>
+          Stop
+        </Button>
+      )}
       {selectedContacts.length > 0 ? (
         <ContactSelect
           id={sensors.id}
@@ -86,14 +89,16 @@ export const CoreSidebar = ({
             >
               Extras
             </Button>
-            <Button
-              active={currentControl === "movement"}
-              size="sm"
-              color="primary"
-              onClick={() => setCurrentControl("movement")}
-            >
-              Move
-            </Button>
+            {!lite && (
+              <Button
+                active={currentControl === "movement"}
+                size="sm"
+                color="primary"
+                onClick={() => setCurrentControl("movement")}
+              >
+                Move
+              </Button>
+            )}
           </ButtonGroup>
           {currentControl === "extras" && (
             <ExtraControls
@@ -106,7 +111,7 @@ export const CoreSidebar = ({
             />
           )}
           {currentControl === "contacts" && (
-            <ContactsList sensors={sensors} dragStart={dragStart} />
+            <ContactsList sensors={sensors} dragStart={dragStart} lite={lite} />
           )}
           {currentControl === "movement" && (
             <MovementCore sensors={sensors} client={client} />

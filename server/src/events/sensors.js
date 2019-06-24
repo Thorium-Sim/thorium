@@ -205,11 +205,13 @@ App.on(
 // Contacts
 App.on("createSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
+  if (!system) return;
   system.createContact(contact);
   pubsub.publish("sensorContactUpdate", system);
 });
 App.on("createSensorContacts", ({ id, contacts }) => {
   const system = App.systems.find(sys => sys.id === id);
+  if (!system) return;
   contacts.forEach(c => {
     system.createContact(c);
   });

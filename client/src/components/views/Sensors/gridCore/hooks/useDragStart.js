@@ -8,7 +8,7 @@ const CREATE_CONTACT = gql`
     createSensorContact(id: $id, contact: $contact)
   }
 `;
-export function useDragStart({ id }, dimensions) {
+export function useDragStart({ id }, dimensions, addContact) {
   const [createContact] = useMutation(CREATE_CONTACT);
   const [movingContact, setMovingContact] = React.useState(null);
   React.useEffect(() => {
@@ -48,6 +48,11 @@ export function useDragStart({ id }, dimensions) {
         return;
       }
       const { id: contactId, ...contactVariables } = movingContact;
+      addContact({
+        ...contactVariables,
+        size: parseFloat(size),
+        destination: location
+      });
       createContact({
         variables: {
           id,
@@ -66,7 +71,7 @@ export function useDragStart({ id }, dimensions) {
       document.removeEventListener("mousemove", dragMove);
       document.removeEventListener("mouseup", dragUp);
     };
-  }, [createContact, dimensions, id, movingContact]);
+  }, [addContact, createContact, dimensions, id, movingContact]);
   function dragStart(movingContact) {
     setMovingContact({ type: "contact", ...movingContact, location: null });
   }

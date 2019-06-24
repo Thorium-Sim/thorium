@@ -1,3 +1,4 @@
+import React from "react";
 import gql from "graphql-tag.macro";
 import { useQuery } from "@apollo/react-hooks";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
@@ -56,15 +57,19 @@ export function useSensorsData(simulatorId) {
   const { loading, data, subscribeToMore } = useQuery(GRID_QUERY, {
     variables: { simulatorId }
   });
-  useSubscribeToMore(subscribeToMore, SENSOR_SUB, {
-    variables: { simulatorId },
-    updateQuery: (previousResult, { subscriptionData }) => {
-      return Object.assign({}, previousResult, {
-        sensors: subscriptionData.data.sensorsUpdate
-      });
-    }
-  });
-  if (loading) return null;
+  const config = React.useMemo(
+    () => ({
+      variables: { simulatorId },
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          sensors: subscriptionData.data.sensorsUpdate
+        });
+      }
+    }),
+    [simulatorId]
+  );
+  useSubscribeToMore(subscribeToMore, SENSOR_SUB, config);
+  if (!simulatorId || loading) return null;
   const sensors = data.sensors[0];
   return sensors;
 }
