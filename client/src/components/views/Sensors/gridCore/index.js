@@ -57,7 +57,6 @@ const GridCore = ({
     speed = Number(speed);
     // Delete any dragging contacts that are out of bounds
     const newContacts = draggingContacts
-      .concat(contacts)
       .map(c => checkContactPosition(c, node, dimensions))
       .filter(c => {
         if (c.delete) {
@@ -68,9 +67,15 @@ const GridCore = ({
         }
         return true;
       });
+    const updatedContacts = contacts
+      .map(c => checkContactPosition(c, node, dimensions))
+      .filter(c => !c.delete)
+      .map(c => {
+        return { ...c, ...draggingContacts.find(d => d.id === c.id), speed };
+      });
     // Now that the ones that need to be deleted are gone,
     // Update the rest
-    updateContacts(newContacts.map(c => ({ ...c, speed })));
+    updateContacts(updatedContacts);
     const moveContacts = newContacts
       .map(c => {
         const { x = 0, y = 0, z = 0 } = c.destination;

@@ -513,7 +513,7 @@ App.on("updateSensorGrid", ({ simulatorId, contacts, cb }) => {
       sys.domain === "external" &&
       sys.class === "Sensors"
   );
-  console.log(system);
+
   const contactIds = system.contacts.map(c => c.id);
 
   const newContacts = contacts.filter(c => !contactIds.includes(c.id));
@@ -536,7 +536,11 @@ App.on("updateSensorGrid", ({ simulatorId, contacts, cb }) => {
       App.systems.filter(s => s.type === "Targeting")
     );
   });
-  newContacts.forEach(contact => system.createContact(contact));
+  newContacts.forEach(contact => {
+    const { destination, speed, ...rest } = contact;
+    const id = system.createContact(rest);
+    setTimeout(() => system.moveContact({ id, destination, speed }), 1000);
+  });
   movingContacts.forEach(contact => system.moveContact(contact));
   // console.log(movingContacts);
   pubsub.publish("sensorContactUpdate", system);

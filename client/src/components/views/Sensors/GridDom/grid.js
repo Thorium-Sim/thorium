@@ -102,11 +102,14 @@ class InnerGrid extends Component {
         position: destination
       };
     }
+
     // Total movement time is the difference between the distance and location
     // Divided by the speed times one second (1000 ms)
     const currentTime = time - c.startTime;
     // Location is a function of the current time and the end time.
-    const endTime = c.endTime || c.startTime + 1000;
+    const endTime = c.endTime
+      ? c.endTime + window.thorium.clockSync
+      : c.startTime + 1000;
     const newLoc = {
       ...location,
       x:

@@ -133,9 +133,12 @@ export default class Sensors extends System {
     this.presetAnswers = presetAnswers;
   }
   createContact(contact) {
+    console.log(contact);
     const newContact = contact;
     newContact.sensorId = this.id;
-    this.contacts.push(new SensorContact(newContact));
+    const contactObj = new SensorContact(newContact);
+    this.contacts.push(contactObj);
+    return contactObj.id;
   }
   setArmyContacts(armyContacts) {
     this.armyContacts = [];
