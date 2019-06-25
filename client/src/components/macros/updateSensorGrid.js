@@ -47,7 +47,8 @@ export default ({
   updateArgs,
   args,
   client,
-  delay
+  delay,
+  lite
 }) => {
   const armyContacts = getArmyContacts(steps, currentStep, id, delay);
   const { contacts } = args;
@@ -55,8 +56,6 @@ export default ({
     updateArgs("contacts", getContacts(steps, currentStep));
     return null;
   }
-  console.log(getContacts(steps, currentStep));
-  console.log(contacts);
   return (
     <div
       css={css`
@@ -66,6 +65,7 @@ export default ({
       <GridCore
         simulator={{}}
         lite
+        ultraLite={lite}
         defaultSensors={{ id: "sensors", armyContacts }}
         contacts={contacts}
         updateContacts={contacts => updateArgs("contacts", contacts)}

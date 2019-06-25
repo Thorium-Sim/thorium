@@ -506,8 +506,40 @@ App.on("updateSensorContacts", ({ id, contacts, cb }) => {
   pubsub.publish("sensorContactUpdate", system);
   cb && cb();
 });
-App.on("updateSensorGrid", ({ id, contacts, cb }) => {
-  console.log("update");
+App.on("updateSensorGrid", ({ simulatorId, contacts, cb }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.simulatorId === simulatorId &&
+      sys.domain === "external" &&
+      sys.class === "Sensors"
+  );
+  console.log(system);
+  const contactIds = system.contacts.map(c => c.id);
+
+  const newContacts = contacts.filter(c => !contactIds.includes(c.id));
+  const movingContacts = contacts.filter(c => contactIds.includes(c.id));
+  const deleteContacts = contactIds.filter(
+    c => !contacts.find(cc => cc.id === c)
+  );
+
+  deleteContacts.forEach(contact => {
+    const classId = contact.id;
+    system.removeContact(contact);
+
+    // Get rid of any targeting classes
+    const targeting = App.systems.find(
+      s => s.simulatorId === system.simulatorId && s.class === "Targeting"
+    );
+    targeting.removeTargetClass(classId);
+    pubsub.publish(
+      "targetingUpdate",
+      App.systems.filter(s => s.type === "Targeting")
+    );
+  });
+  newContacts.forEach(contact => system.createContact(contact));
+  movingContacts.forEach(contact => system.moveContact(contact));
+  // console.log(movingContacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 
 const findNewPoint = (angle, r) => ({

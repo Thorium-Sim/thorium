@@ -33,18 +33,18 @@ const GridCore = ({
   lite = false,
   defaultSensors = {},
   updateContacts = noOp,
-  contacts = []
+  contacts = [],
+  ultraLite
 }) => {
   const sensors = useSensorsData(simulator.id) || defaultSensors;
   const [deleteContact] = useMutation(DELETE_CONTACT);
   const [moveContact] = useMutation(MOVE_CONTACT);
   const [measureRef, dimensions, node] = useMeasure();
   const targetingRange = useTargeting();
-  const [askForSpeedVal, setAskForSpeed] = useLocalStorage(
+  const [askForSpeed, setAskForSpeed] = useLocalStorage(
     "thorium-core-sensors-askforspeed",
-    "no"
+    false
   );
-  const askForSpeed = askForSpeedVal === "yes";
   const [speed, setSpeed] = useLocalStorage(
     "thorium-core-sensors-speed",
     "0.6"
@@ -56,7 +56,7 @@ const GridCore = ({
   const triggerUpdate = speed => {
     speed = Number(speed);
     // Delete any dragging contacts that are out of bounds
-    const newContacts = (draggingContacts || [])
+    const newContacts = draggingContacts
       .concat(contacts)
       .map(c => checkContactPosition(c, node, dimensions))
       .filter(c => {
@@ -70,16 +70,17 @@ const GridCore = ({
       });
     // Now that the ones that need to be deleted are gone,
     // Update the rest
-
     updateContacts(newContacts.map(c => ({ ...c, speed })));
-    const moveContacts = newContacts.map(c => {
-      const { x = 0, y = 0, z = 0 } = c.destination;
-      return {
-        id: c.id,
-        speed,
-        destination: { x, y, z }
-      };
-    });
+    const moveContacts = newContacts
+      .map(c => {
+        const { x = 0, y = 0, z = 0 } = c.destination;
+        return {
+          id: c.id,
+          speed,
+          destination: { x, y, z }
+        };
+      })
+      .filter((c, i, arr) => arr.findIndex(cc => cc.id === c.id) === i);
     moveContact({
       variables: {
         id: sensors.id,
@@ -90,6 +91,7 @@ const GridCore = ({
       setSpeedAsking(false);
     });
   };
+
   const addContact = React.useCallback(
     function(c) {
       return updateContacts(contacts.concat({ ...c, id: uuid.v4() }));
@@ -101,6 +103,7 @@ const GridCore = ({
     dimensions,
     addContact
   );
+
   const [mouseDown] = useMouseDown({
     dimensions,
     selectedContacts,
@@ -109,6 +112,7 @@ const GridCore = ({
     setDraggingContacts,
     triggerUpdate,
     askForSpeed,
+    speedAsking,
     setSpeedAsking,
     speed
   });
@@ -123,28 +127,30 @@ const GridCore = ({
   return (
     <Container className="sensorGridCore" fluid style={{ height: "100%" }}>
       <Row style={{ height: "100%" }}>
-        <Col
-          sm={4}
-          style={{
-            height: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "column"
-          }}
-        >
-          <CoreSidebar
-            dragStart={dragStart}
-            sensors={sensors}
-            speed={speed}
-            setSpeed={setSpeed}
-            askForSpeed={askForSpeed}
-            setAskForSpeed={setAskForSpeed}
-            selectedContacts={selectedContacts}
-            setSelectedContacts={setSelectedContacts}
-            lite={lite}
-          />
-        </Col>
-        <Col sm={8}>
+        {!ultraLite && (
+          <Col
+            sm={4}
+            style={{
+              height: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "column"
+            }}
+          >
+            <CoreSidebar
+              dragStart={dragStart}
+              sensors={sensors}
+              speed={speed}
+              setSpeed={setSpeed}
+              askForSpeed={askForSpeed}
+              setAskForSpeed={setAskForSpeed}
+              selectedContacts={selectedContacts}
+              setSelectedContacts={setSelectedContacts}
+              lite={lite}
+            />
+          </Col>
+        )}
+        <Col sm={ultraLite ? 12 : 8}>
           <div id="threeSensors" ref={measureRef} className="array">
             <Grid
               core
