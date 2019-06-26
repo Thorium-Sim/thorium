@@ -6,7 +6,7 @@ import {
   ListGroup,
   ListGroupItem,
   Button
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 import Terminals from "./terminals";
 import Users from "./users";

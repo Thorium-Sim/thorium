@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Button, ButtonGroup } from "reactstrap";
+import { Input, Button, ButtonGroup } from "helpers/reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import ViewscreenCardList from "./viewscreenCardList";
@@ -12,16 +12,18 @@ class VideoViewscreenCore extends Component {
       component: "Video",
       data: "{}",
       viewscreen:
-        props.viewscreens.length === 1 ? props.viewscreens[0].id : "nothing"
+        props.viewscreens.length === 1 ? props.viewscreens[0].id : "all"
     };
   }
   updateViewscreen = action => () => {
     const { viewscreen: id, data, component } = this.state;
-    action({ variables: { id, data, component } });
+    action({
+      variables: { id, data, component, simulatorId: this.props.simulator.id }
+    });
   };
   viewscreenAuto = action => () => {
     const { viewscreen: id } = this.state;
-    action({ variables: { id } });
+    action({ variables: { id, simulatorId: this.props.simulator.id } });
   };
   render() {
     const { viewscreens, simulator, flightId } = this.props;
@@ -40,6 +42,9 @@ class VideoViewscreenCore extends Component {
             <option value="nothing" disabled>
               Choose a Viewscreen
             </option>
+            <option value="all">All Viewscreens</option>
+            <option value="primary">Primary Viewscreens</option>
+            <option value="secondary">Secondary Viewscreens</option>
             {viewscreens.map(v => (
               <option key={v.id} value={v.id}>
                 {v.name}
@@ -51,11 +56,13 @@ class VideoViewscreenCore extends Component {
               mutation={gql`
                 mutation UpdateViewscreen(
                   $id: ID!
+                  $simulatorId: ID
                   $component: String!
                   $data: String!
                 ) {
                   updateViewscreenComponent(
                     id: $id
+                    simulatorId: $simulatorId
                     component: $component
                     data: $data
                   )
@@ -75,8 +82,8 @@ class VideoViewscreenCore extends Component {
             </Mutation>
             <Mutation
               mutation={gql`
-                mutation SetViewscreenAuto($id: ID!) {
-                  setViewscreenToAuto(id: $id)
+                mutation SetViewscreenAuto($id: ID!, $simulatorId: ID) {
+                  setViewscreenToAuto(id: $id, simulatorId: $simulatorId)
                 }
               `}
             >

@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "helpers/reactstrap";
 import Transitioner from "../helpers/transitioner";
 import "./style.scss";
 

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Input, Card, Button, ButtonGroup } from "reactstrap";
+import { Input, Card, Button, ButtonGroup } from "helpers/reactstrap";
 import ops from "./ops";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
@@ -78,7 +78,7 @@ const StationPicker = ({
                     action({
                       variables: {
                         stationSetId: stationSet.id,
-                        crewCount: e.target.value
+                        crewCount: parseInt(e.target.value, 10)
                       }
                     })
                   }

@@ -2,7 +2,7 @@ import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
-import { Input, FormGroup, Label, Row, Col, Button } from "reactstrap";
+import { Input, FormGroup, Label, Row, Col, Button } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 
 const REACTOR_QUERY = gql`
@@ -42,7 +42,9 @@ const Reactor = props => {
             ? {
                 ...e,
                 [key]: isNaN(parseFloat(evt.target.value))
-                  ? evt.target.value
+                  ? !evt.target.value
+                    ? null
+                    : evt.target.value
                   : parseFloat(evt.target.value)
               }
             : e
@@ -55,8 +57,8 @@ const Reactor = props => {
       variables: {
         id: reactor.id,
         efficiencies: reactor.efficiencies
-          .map(({ __typename, ...e }) => e)
           .filter((_, ind) => ind !== i)
+          .map(({ __typename, ...e }) => e)
       }
     });
   };
@@ -188,12 +190,12 @@ const Reactor = props => {
                           </Col>
                         </Row>
                         {reactor.efficiencies.map((e, i) => (
-                          <Row key={`${reactor.id}-${i}`}>
+                          <Row key={`${reactor.id}-${i}-${e.label}-${e.color}`}>
                             <Col sm={4}>
                               <Input
                                 type="text"
                                 defaultValue={e.label}
-                                onChange={updateEfficiencies(
+                                onBlur={updateEfficiencies(
                                   action,
                                   reactor,
                                   i,
@@ -223,7 +225,7 @@ const Reactor = props => {
                               <Input
                                 type="number"
                                 defaultValue={e.efficiency}
-                                onChange={updateEfficiencies(
+                                onBlur={updateEfficiencies(
                                   action,
                                   reactor,
                                   i,

@@ -45,18 +45,7 @@ export default class Engine extends HeatMixin(System) {
     this.speeds = speeds;
   }
   break(report, destroyed, which) {
-    // Stop all of the engines
-    let stopped = false;
-    App.systems
-      .filter(s => s.simulatorId === this.simulatorId && s.class === "Engine")
-      .forEach(s => {
-        if (s.id === this.id || s.speed <= 0) {
-          s.setSpeed(); // By default it turns off engines
-          pubsub.publish("engineUpdate", s);
-          stopped = true;
-        }
-      });
-    if (stopped) {
+    if (this.on) {
       pubsub.publish("notify", {
         id: uuid.v4(),
         simulatorId: this.simulatorId,
@@ -77,6 +66,8 @@ export default class Engine extends HeatMixin(System) {
         "addCoreFeed"
       );
     }
+    this.setSpeed();
+
     super.break(report, destroyed, which);
   }
   setPower(powerLevel) {
@@ -84,20 +75,7 @@ export default class Engine extends HeatMixin(System) {
     if (this.on && this.power.powerLevels[this.speed - 1] > powerLevel) {
       this.speed = this.power.powerLevels.findIndex(p => p === powerLevel) + 1;
       if (this.speed === 0) {
-        let stopped = false;
-        // Stop all of the engines that aren't going.
-        App.systems
-          .filter(
-            s => s.simulatorId === this.simulatorId && s.class === "Engine"
-          )
-          .forEach(s => {
-            if (s.id === this.id || s.speed <= 0) {
-              s.setSpeed(); // By default it turns off engines
-              stopped = true;
-              pubsub.publish("engineUpdate", s);
-            }
-          });
-        if (stopped) {
+        if (this.on) {
           pubsub.publish("notify", {
             id: uuid.v4(),
             simulatorId: this.simulatorId,
@@ -118,6 +96,7 @@ export default class Engine extends HeatMixin(System) {
             "addCoreFeed"
           );
         }
+        this.setSpeed();
       }
     }
     super.setPower(powerLevel);

@@ -9,13 +9,12 @@ import {
   FormGroup,
   Label,
   Input
-} from "reactstrap";
+} from "helpers/reactstrap";
 import MacroWrapper from "./MacroConfig";
 import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import EventPicker from "./EventPicker";
-import { macroNames } from "./PrintMission";
 import MissionConfig from "./MissionConfig";
 import EventName from "./EventName";
 
@@ -280,7 +279,7 @@ export default class TimelineConfig extends Component {
       obj.simulatorId = this.props.object.id;
     }
     let timelineItem = {
-      name: macroNames[e.target.value],
+      name: e.target.value,
       type: "event",
       event: e.target.value
     };
@@ -548,7 +547,9 @@ export default class TimelineConfig extends Component {
                         e.id === this.state.selectedTimelineItem
                           ? "selected"
                           : ""
-                      } list-group-item`}
+                      } list-group-item ${
+                        e.needsConfig ? "list-group-item-warning" : ""
+                      }`}
                     >
                       <EventName id={e.event} />{" "}
                       <FontAwesome
@@ -577,6 +578,7 @@ export default class TimelineConfig extends Component {
                   <Label>Step Name</Label>
                   <Input
                     type="text"
+                    key={step.id}
                     defaultValue={step && step.name}
                     onChange={this._updateStep.bind(this, "name")}
                   />
@@ -586,6 +588,7 @@ export default class TimelineConfig extends Component {
                   <Input
                     type="textarea"
                     rows={8}
+                    key={step.id}
                     defaultValue={step.description}
                     placeholder="Here is where you would explain what is going on during this part of the mission. This serves as your script, explaining what actions should be taken and where the story goes next."
                     onChange={this._updateStep.bind(this, "description")}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Row, Col, Button } from "helpers/reactstrap";
 import Measure from "react-measure";
 import gql from "graphql-tag.macro";
 
@@ -22,9 +22,10 @@ export default class WaveMatch extends Component {
     );
     this.loop = delta => {
       if (!this.animating) return;
+      const { difficulty = 30000 } = this.props.lrComm;
       this.frame = requestAnimationFrame(this.loop);
       this.setState({ phase: this.state.phase + 2 });
-      if (delta % 30000 > 29000) {
+      if (delta % difficulty > difficulty - 1000) {
         this.updateState();
       }
     };

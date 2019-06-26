@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { withApollo, Query } from "react-apollo";
-import { Container, Button } from "reactstrap";
+import { Container, Button } from "helpers/reactstrap";
 
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";
@@ -14,6 +14,7 @@ const MISSION_SUB = gql`
       id
       name
       description
+      aux
       timeline {
         id
         name
@@ -26,6 +27,7 @@ const MISSION_SUB = gql`
           event
           args
           delay
+          needsConfig
         }
       }
     }
@@ -76,20 +78,22 @@ class MissionsConfig extends Component {
   updateMission = (type, e) => {
     const { mission } = this.props;
     const missionId = mission.id;
-    const { value } = e.target;
+    const { value, checked } = e.target;
     const obj = { missionId };
-    obj[type] = value;
+    obj[type] = value === "on" ? checked : value;
     this.props.client.mutate({
       mutation: gql`
         mutation EditMission(
           $missionId: ID!
           $name: String
           $description: String
+          $aux: Boolean
         ) {
           editMission(
             missionId: $missionId
             name: $name
             description: $description
+            aux: $aux
           )
         }
       `,
@@ -129,6 +133,10 @@ class MissionsConfig extends Component {
           updateMission={this.updateMission}
           exportMissionScript={this.exportMissionScript}
         />
+        <small>
+          Yellow timeline actions might need additional configuration in the
+          simulator config.
+        </small>
       </Container>
     );
   }
@@ -140,6 +148,7 @@ const MissionsConfigQuery = gql`
       id
       name
       description
+      aux
       timeline {
         id
         description
@@ -152,6 +161,7 @@ const MissionsConfigQuery = gql`
           event
           name
           type
+          needsConfig
         }
       }
     }

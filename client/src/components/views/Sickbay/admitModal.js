@@ -6,7 +6,7 @@ import {
   ModalFooter,
   Button,
   Col
-} from "reactstrap";
+} from "helpers/reactstrap";
 import RosterList from "../MedicalRoster/rosterList";
 
 const AdmitModal = ({

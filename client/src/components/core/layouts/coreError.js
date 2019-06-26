@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as Sentry from "@sentry/browser";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 class CoreError extends Component {
   state = { error: false };
   componentDidCatch(error, errorInfo) {

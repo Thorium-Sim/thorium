@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Card, CardBody, Container, Row, Col, Button } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  Container,
+  Row,
+  Col,
+  Button
+} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo, Mutation } from "react-apollo";
 import Measure from "react-measure";

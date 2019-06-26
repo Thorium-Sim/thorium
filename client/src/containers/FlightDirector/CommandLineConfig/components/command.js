@@ -36,7 +36,13 @@ export default {
       type: "Trigger"
     },
     {
-      id: "argument",
+      id: "argument1",
+      title: "The first additional option typed after the command.",
+      color: "rebeccapurple",
+      type: "Argument"
+    },
+    {
+      id: "argument2",
       title: "The first additional option typed after the command.",
       color: "rebeccapurple",
       type: "Argument"

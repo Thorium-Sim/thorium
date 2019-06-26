@@ -6,7 +6,7 @@ import playSound from "../generic/SoundPlayer";
 import Reset from "./reset";
 
 const QUERY = gql`
-  query Ambiance($id: String!) {
+  query Ambiance($id: ID!) {
     simulators(id: $id) {
       id
       ambiance {
@@ -42,6 +42,16 @@ class SoundPlayer extends Component {
     this.props.removeAllSounds(true);
   }
   render() {
+    if (this.props.invisible)
+      return (
+        <Reset
+          clientId={this.props.clientObj.id}
+          station={{ name: "Sound", cards: [] }}
+          reset={() => {
+            this.props.removeAllSounds();
+          }}
+        />
+      );
     return (
       <div className="keyboard-holder">
         <Reset

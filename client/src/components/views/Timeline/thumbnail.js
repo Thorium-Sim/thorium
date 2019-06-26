@@ -6,7 +6,7 @@ import gql from "graphql-tag.macro";
 import { VideoPreview } from "../TacticalMap/fileExplorer";
 
 const StepRender = ({ args, event }) => {
-  const stepArgs = JSON.parse(args);
+  const stepArgs = JSON.parse(args) || {};
   if (event === "updateViewscreenComponent") {
     if (stepArgs.component === "Video") {
       const data = JSON.parse(stepArgs.data) || {};
@@ -55,12 +55,14 @@ const Mission = ({
   triggerMacros,
   updateTimelineStep
 }) => {
-  const filteredTimeline = timeline.filter(step =>
-    step.timelineItems.find(i => allowedMacros.indexOf(i.event) > -1)
-  );
+  const filteredTimeline = timeline
+    .map((t, i) => ({ ...t, index: i }))
+    .filter(step =>
+      step.timelineItems.find(i => allowedMacros.indexOf(i.event) > -1)
+    );
   const runMacro = t => {
     if (!t) return;
-    const stepIndex = filteredTimeline.findIndex(i => i.id === t.id);
+    const stepIndex = filteredTimeline.find(i => i.id === t.id).index;
     const variables = {
       simulatorId,
       macros: t.timelineItems
@@ -83,7 +85,7 @@ const Mission = ({
       updateTimelineStep({
         variables: {
           simulatorId,
-          step: stepIndex
+          step: stepIndex + 1
         }
       });
   };
@@ -93,11 +95,12 @@ const Mission = ({
     <div className="thumbnail-list">
       {filteredTimeline.map(t => {
         const stepIndex = timeline.findIndex(i => i.id === t.id);
+
         return (
           <div
             key={t.id}
             className={`${
-              stepIndex === currentTimelineStep ? "current-step" : ""
+              stepIndex === currentTimelineStep - 1 ? "current-step" : ""
             } timeline-thumbnail`}
             onClick={() => runMacro(t)}
           >

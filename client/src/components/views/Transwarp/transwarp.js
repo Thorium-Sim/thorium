@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ListGroup, ListGroupItem, Button } from "reactstrap";
+import { ListGroup, ListGroupItem, Button } from "helpers/reactstrap";
 import PowerLine from "../JumpDrive/powerLine";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";

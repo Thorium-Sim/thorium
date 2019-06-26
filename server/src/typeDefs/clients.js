@@ -1,8 +1,8 @@
 import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import { StationResolver } from "../helpers/stationResolver";
+const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -19,11 +19,13 @@ const schema = gql`
     offlineState: String
     movie: String
     training: Boolean
+    soundPlayer: Boolean
     caches: [String]
     hypercard: String
     overlay: Boolean
     cracked: Boolean
-
+    commandLineOutput: [String]
+    commandLineFeedback: [CommandLineFeedback]
     # Space EdVentures
     token: String
     email: String
@@ -34,6 +36,14 @@ const schema = gql`
     keypad: Keypad
   }
 
+  type CommandLineFeedback {
+    id: ID
+    clientId: ID
+    command: String
+    approve: String
+    deny: String
+    triggers: [TimelineItem]
+  }
   type Keypad {
     id: ID
     label: String
@@ -110,6 +120,8 @@ const schema = gql`
     clientOfflineState(client: ID!, state: String): String
     clientMovieState(client: ID!, movie: String!): String
     clientSetTraining(client: ID!, training: Boolean!): String
+    clientSetSoundPlayer(client: ID!, soundPlayer: Boolean!): String
+
     clientAddCache(
       client: ID
       simulatorId: ID
@@ -124,19 +136,37 @@ const schema = gql`
     """
     playSound(
       sound: SoundInput!
+      """
+      Dynamic: Station
+      """
       station: String
       simulatorId: ID
+      """
+      Dynamic: Client
+      """
       clientId: String
     ): String
 
     """
     Macro: Sounds: Cancel All Sounds
     """
-    stopAllSounds(simulatorId: ID!): String
+    stopAllSounds(
+      simulatorId: ID!
+      """
+      Dynamic: Station
+      """
+      station: String
+    ): String
     """
     Macro: Sounds: Stop Looping All Sounds
     """
-    cancelLoopingSounds(simulatorId: ID!): String
+    cancelLoopingSounds(
+      simulatorId: ID!
+      """
+      Dynamic: Station
+      """
+      station: String
+    ): String
     applyClientSet(
       id: ID!
       flightId: ID!
@@ -164,6 +194,8 @@ const schema = gql`
     keypadUpdate(client: ID!): Keypad
     scannersUpdate(simulatorId: ID!): [Scanner]
     scannerUpdate(client: ID!): Scanner
+    commandLineOutputUpdate(clientId: ID!): String
+    commandLinesOutputUpdate(simulatorId: ID!): [Client]
     clearCache(client: ID, flight: ID): Boolean
     soundSub(clientId: ID): Sound
     cancelSound(clientId: ID): ID
@@ -180,6 +212,43 @@ const resolver = {
     simulator(rootValue) {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
     },
+
+    commandLineOutput(rootValue) {
+      const simulator = App.simulators.find(
+        s => s.id === rootValue.simulatorId
+      );
+      if (!simulator) return [];
+      const output = simulator.commandLineOutputs[rootValue.id];
+      if (!output) {
+        simulator.commandLineOutputs[rootValue.id] = [
+          `Welcome to Ubuntu 31.04.5 LTS (GNU/Linux 3.13.0-125-generic x86_64)
+  
+      System information
+    
+      System load:  0.26                Processes:           133
+      Usage of /:   63.7% of 147.51YB   Users logged in:     0
+      Memory usage: 85%                 IP address for eth0: 172.19.45.181
+      Swap usage:   0%
+    
+    79 packages can be updated.
+    60 updates are security updates.
+    
+    
+    Last login: ip-10-0-43-69.ec2.internal
+    
+    Type "help" to get a list of available commands`
+        ];
+        return simulator.commandLineOutputs[rootValue.id];
+      }
+      return output;
+    },
+    commandLineFeedback(rootValue) {
+      const simulator = App.simulators.find(
+        s => s.id === rootValue.simulatorId
+      );
+      if (!simulator) return [];
+      return simulator.commandLineFeedback[rootValue.id] || [];
+    },
     token(client) {
       const flight = App.flights.find(f => f.id === client.flightId);
       const flightClient =
@@ -192,7 +261,40 @@ const resolver = {
         flight && flight.clients.find(c => c.id === client.id);
       return flightClient && flightClient.email;
     },
-    station: StationResolver
+    station: StationResolver,
+    connected(client) {
+      return Boolean(client.connected);
+    },
+    training(client) {
+      return Boolean(client.training);
+    },
+    soundPlayer(client) {
+      return Boolean(client.soundPlayer);
+    },
+    overlay(client) {
+      return Boolean(client.overlay);
+    },
+    cracked(client) {
+      const simulator = App.simulators.find(s => s.id === client.simulatorId);
+      if (!simulator) return false;
+      return simulator.crackedClients[client.id];
+    },
+    mobile(client) {
+      return Boolean(client.mobile);
+    }
+  },
+  Keypad: {
+    giveHints(client) {
+      return Boolean(client.giveHints);
+    },
+    locked(client) {
+      return Boolean(client.locked);
+    }
+  },
+  Scanner: {
+    scanning(client) {
+      return Boolean(client.scanning);
+    }
   },
   Sound: {
     url(rootValue) {
@@ -203,6 +305,9 @@ const resolver = {
         o => o.containerId === assetContainer.id && o.simulatorId === "default"
       );
       return asset ? asset.url : "";
+    },
+    looping(sound) {
+      return Boolean(sound.looping);
     }
   },
   Query: {
@@ -315,8 +420,28 @@ const resolver = {
         }
       )
     },
+    commandLineOutputUpdate: {
+      resolve: payload => payload.commandLineOutput.join("\n"),
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("commandLineOutputUpdate"),
+        (data, { clientId }) => {
+          return data.id === clientId;
+        }
+      )
+    },
+    commandLinesOutputUpdate: {
+      resolve: (payload, { simulatorId }) => {
+        return payload;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("commandLinesOutputUpdate"),
+        (data, { simulatorId }) => {
+          return data && data.find(s => s.simulatorId === simulatorId);
+        }
+      )
+    },
     clearCache: {
-      resolve: payload => payload,
+      resolve: payload => Boolean(payload),
       subscribe: withFilter(
         () => pubsub.asyncIterator("clearCache"),
         (rootValue, { client, flight }) => {
@@ -328,7 +453,7 @@ const resolver = {
           } else {
             output = rootValue.filter(c => c.connected).length > 0;
           }
-          return output;
+          return Boolean(output);
         }
       )
     },

@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input } from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import { Query, Mutation } from "react-apollo";
@@ -47,7 +47,10 @@ const Sickbay = props => {
                         defaultValue={sickbay.bunks.length}
                         onMouseUp={evt => {
                           action({
-                            variables: { id, count: evt.target.value }
+                            variables: {
+                              id,
+                              count: parseInt(evt.target.value, 10)
+                            }
                           });
                         }}
                       />

@@ -1,20 +1,39 @@
-import React, { Component } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import React from "react";
+import { Container, Row, Col, Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
-import { Clamps, Ramps, Doors } from "./graphics";
+import { withApollo } from "react-apollo";
+import { Clamps, Ramps, Doors, Legs } from "./graphics";
 import Tour from "helpers/tourHelper";
-import SubscriptionHelper from "helpers/subscriptionHelper";
+import { useQuery } from "@apollo/react-hooks";
+import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
+
 import "./style.scss";
+
+const DOCKING_QUERY = gql`
+  query Simulator($simulatorId: ID) {
+    simulators(id: $simulatorId) {
+      id
+      hasLegs
+      ship {
+        clamps
+        ramps
+        airlock
+        legs
+      }
+    }
+  }
+`;
 
 const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
+      hasLegs
       ship {
         clamps
         ramps
         airlock
+        legs
       }
     }
   }
@@ -26,136 +45,149 @@ const mutation = gql`
   }
 `;
 
-class Docking extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      graphic: null
+const Docking = ({ simulator, client, clientObj }) => {
+  const [graphic, setGraphic] = React.useState(null);
+  const [disabled, setDisabled] = React.useState(null);
+  React.useEffect(() => {
+    let timeout;
+    if (disabled) {
+      timeout = setTimeout(() => setDisabled(false), 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [disabled]);
+
+  const { loading, data, subscribeToMore } = useQuery(DOCKING_QUERY, {
+    variables: { simulatorId: simulator.id }
+  });
+  const config = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => ({
+        ...previousResult,
+        simulators: subscriptionData.data.simulatorsUpdate
+      })
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, DOCKING_SUB, config);
+  const { simulators } = data;
+  if (loading || !simulators) return null;
+  const { ship } = simulators[0];
+
+  const clamps = () => {
+    setGraphic("clamps");
+    setDisabled(true);
+    const variables = {
+      simulatorId: simulator.id,
+      which: "clamps",
+      state: !ship.clamps
     };
-  }
-  componentWillUnmount() {
-    clearTimeout(this.timeout);
-  }
-  undisable = () => {
-    this.setState({
-      disabled: false
+    client.mutate({
+      mutation,
+      variables
     });
   };
-  clamps() {
-    this.setState({
-      graphic: "clamps",
-      disabled: true
-    });
-    this.timeout = setTimeout(this.undisable, 3000);
+  const ramps = () => {
+    setGraphic("ramps");
+    setDisabled(true);
     const variables = {
-      simulatorId: this.props.simulator.id,
-      which: "clamps",
-      state: !this.props.data.simulators[0].ship.clamps
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  }
-  ramps() {
-    this.setState({
-      graphic: "ramps",
-      disabled: true
-    });
-    this.timeout = setTimeout(this.undisable, 1000);
-    const variables = {
-      simulatorId: this.props.simulator.id,
+      simulatorId: simulator.id,
       which: "ramps",
-      state: !this.props.data.simulators[0].ship.ramps
+      state: !ship.ramps
     };
-    this.props.client.mutate({
+    client.mutate({
       mutation,
       variables
     });
-  }
-  doors() {
-    this.setState({
-      graphic: "doors",
-      disabled: true
-    });
-    this.timeout = setTimeout(this.undisable, 2000);
+  };
+  const doors = () => {
+    setGraphic("doors");
+    setDisabled(true);
+
     const variables = {
-      simulatorId: this.props.simulator.id,
+      simulatorId: simulator.id,
       which: "airlock",
-      state: !this.props.data.simulators[0].ship.airlock
+      state: !ship.airlock
     };
-    this.props.client.mutate({
+    client.mutate({
       mutation,
       variables
     });
-  }
-  render() {
-    if (this.props.data.loading || !this.props.data.simulators) return null;
-    const { graphic, disabled } = this.state;
-    const { clamps, ramps, airlock } = this.props.data.simulators[0].ship;
-    return (
-      <Container fluid className="docking">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: DOCKING_SUB,
-              variables: {
-                simulatorId: this.props.simulator.id
-              },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  simulators: subscriptionData.data.simulatorsUpdate
-                });
-              }
-            })
-          }
-        />
-        <Row>
-          <Col sm={5}>
-            <div className="flex">
+  };
+  const legs = () => {
+    setGraphic("legs");
+    setDisabled(true);
+    const variables = {
+      simulatorId: simulator.id,
+      which: "legs",
+      state: !ship.legs
+    };
+    client.mutate({
+      mutation,
+      variables
+    });
+  };
+
+  return (
+    <Container fluid className="docking">
+      <Row>
+        <Col sm={5}>
+          <div className="flex">
+            <Button
+              disabled={disabled}
+              block
+              size="lg"
+              className="clamps-button"
+              color="primary"
+              onClick={clamps}
+            >
+              {ship.clamps ? "Detach" : "Attach"} Docking Clamps
+            </Button>
+            <Button
+              disabled={disabled}
+              block
+              size="lg"
+              className="ramps-button"
+              color="primary"
+              onClick={ramps}
+            >
+              {ship.ramps ? "Retract" : "Extend"} Boarding Ramps
+            </Button>
+            <Button
+              disabled={disabled}
+              block
+              size="lg"
+              className="doors-button"
+              color="primary"
+              onClick={doors}
+            >
+              {ship.airlock ? "Close" : "Open"} Airlock Doors
+            </Button>
+            {simulators[0].hasLegs && (
               <Button
                 disabled={disabled}
                 block
                 size="lg"
-                className="clamps-button"
+                className="legs-button"
                 color="primary"
-                onClick={this.clamps.bind(this)}
+                onClick={legs}
               >
-                {clamps ? "Detach" : "Attach"} Docking Clamps
+                {ship.legs ? "Retract" : "Extend"} Landing Legs
               </Button>
-              <Button
-                disabled={disabled}
-                block
-                size="lg"
-                className="ramps-button"
-                color="primary"
-                onClick={this.ramps.bind(this)}
-              >
-                {ramps ? "Retract" : "Extend"} Boarding Ramps
-              </Button>
-              <Button
-                disabled={disabled}
-                block
-                size="lg"
-                className="doors-button"
-                color="primary"
-                onClick={this.doors.bind(this)}
-              >
-                {airlock ? "Close" : "Open"} Airlock Doors
-              </Button>
-            </div>
-          </Col>
-          <Col className="graphics" sm={{ size: 5, offset: 2 }}>
-            {graphic === "clamps" && <Clamps transform={clamps} />}
-            {graphic === "ramps" && <Ramps transform={ramps} />}
-            {graphic === "doors" && <Doors transform={airlock} />}
-          </Col>
-        </Row>
-        <Tour steps={trainingSteps} client={this.props.clientObj} />
-      </Container>
-    );
-  }
-}
+            )}
+          </div>
+        </Col>
+        <Col className="graphics" sm={{ size: 5, offset: 2 }}>
+          {graphic === "clamps" && <Clamps transform={ship.clamps} />}
+          {graphic === "ramps" && <Ramps transform={ship.ramps} />}
+          {graphic === "doors" && <Doors transform={ship.airlock} />}
+          {graphic === "legs" && <Legs transform={ship.legs} />}
+        </Col>
+      </Row>
+      <Tour steps={trainingSteps} client={clientObj} />
+    </Container>
+  );
+};
 
 const trainingSteps = [
   {
@@ -175,24 +207,4 @@ const trainingSteps = [
   }
 ];
 
-const DOCKING_QUERY = gql`
-  query Simulator($simulatorId: String) {
-    simulators(id: $simulatorId) {
-      id
-      ship {
-        clamps
-        ramps
-        airlock
-      }
-    }
-  }
-`;
-
-export default graphql(DOCKING_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      simulatorId: ownProps.simulator.id
-    }
-  })
-})(withApollo(Docking));
+export default withApollo(Docking);

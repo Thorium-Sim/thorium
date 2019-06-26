@@ -1,6 +1,13 @@
 import React, { Fragment, Component } from "react";
 import FileExplorer from "../TacticalMap/fileExplorer";
-import { Row, Col, FormGroup, Label, Button, FormText } from "reactstrap";
+import {
+  Row,
+  Col,
+  FormGroup,
+  Label,
+  Button,
+  FormText
+} from "helpers/reactstrap";
 import { withApollo } from "react-apollo";
 
 import Tour from "helpers/tourHelper";

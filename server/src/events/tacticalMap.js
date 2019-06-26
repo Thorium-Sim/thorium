@@ -171,8 +171,10 @@ App.on(
     }
     const viewscreens = App.viewscreens.filter(
       v =>
-        (v.id === viewscreenId || v.simulatorId === simulatorId) &&
-        v.secondary === secondary
+        v.id === viewscreenId ||
+        (!viewscreenId &&
+          v.simulatorId === simulatorId &&
+          v.secondary === secondary)
     );
 
     if (viewscreens.length === 0) return;

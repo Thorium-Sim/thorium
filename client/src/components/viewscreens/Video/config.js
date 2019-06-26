@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 const ADD_CACHE_MUTATION = gql`
   mutation AddCache($clientId: ID!, $cacheItem: String!) {
     clientAddCache(client: $clientId, cacheItem: $cacheItem)
@@ -13,7 +13,11 @@ class VideoConfig extends Component {
   componentDidUpdate(prevProps) {
     const oldData = JSON.parse(prevProps.data);
     const data = JSON.parse(this.props.data);
-    if (data.asset !== oldData.asset && this.props.selectedClient) {
+    if (
+      !Array.isArray(data.asset) &&
+      data.asset !== oldData.asset &&
+      this.props.selectedClient
+    ) {
       this.props.client.mutate({
         mutation: ADD_CACHE_MUTATION,
         variables: {
@@ -24,15 +28,15 @@ class VideoConfig extends Component {
     }
   }
   togglePause = () => {
-    this.props.simulator &&
+    this.props.viewscreen &&
       this.props.client.mutate({
         mutation: gql`
-          mutation ToggleVideo($simulatorId: ID!) {
-            toggleViewscreenVideo(simulatorId: $simulatorId)
+          mutation ToggleVideo($viewscreenId: ID) {
+            toggleViewscreenVideo(viewscreenId: $viewscreenId)
           }
         `,
         variables: {
-          simulatorId: this.props.simulator.id
+          viewscreenId: this.props.viewscreen.id
         }
       });
   };
@@ -41,7 +45,12 @@ class VideoConfig extends Component {
     data = JSON.parse(data);
     return (
       <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-        <Button size="sm" color="info" onClick={this.togglePause}>
+        <Button
+          size="sm"
+          color="info"
+          onClick={this.togglePause}
+          disabled={!this.props.viewscreen}
+        >
           Toggle Video Paused
         </Button>
         <div>
@@ -77,7 +86,7 @@ class VideoConfig extends Component {
               Loop
             </label>
           </div>
-          <div>
+          <div style={{ float: "left", marginLeft: "5px" }}>
             <label>
               <input
                 checked={data.overlay}
@@ -91,6 +100,25 @@ class VideoConfig extends Component {
                 }
               />{" "}
               Overlay
+            </label>
+          </div>
+          <div>
+            <label>
+              <input
+                checked={data.randomVideo}
+                type="checkbox"
+                onChange={evt =>
+                  updateData(
+                    JSON.stringify(
+                      Object.assign({}, data, {
+                        randomVideo: evt.target.checked,
+                        asset: data.asset ? data.asset[0] : null
+                      })
+                    )
+                  )
+                }
+              />{" "}
+              Random Video
             </label>
           </div>
           <div>
@@ -138,19 +166,27 @@ class VideoConfig extends Component {
             </label>
           </div>
         </div>
-        <label>Video</label>
+        {data.randomVideo && <small>Click to toggle multiple videos.</small>}
         <div style={{ flex: 1, overflowY: "auto" }}>
           <FileExplorer
             simple={simple}
             directory="/Viewscreen/Videos"
-            selectedFiles={[data.asset]}
-            onClick={(evt, container) =>
-              updateData(
-                JSON.stringify(
-                  Object.assign({}, data, { asset: container.fullPath })
-                )
-              )
+            selectedFiles={
+              data.asset && data.asset.length ? data.asset : [data.asset]
             }
+            onClick={(evt, container) => {
+              let path = container.fullPath;
+              console.log(data.asset);
+              if (data.randomVideo) {
+                path =
+                  data.asset && data.asset.includes(path)
+                    ? data.asset.filter(a => a !== path)
+                    : [data.asset].concat(path).flat();
+              }
+              updateData(
+                JSON.stringify(Object.assign({}, data, { asset: path }))
+              );
+            }}
           />
         </div>
       </div>

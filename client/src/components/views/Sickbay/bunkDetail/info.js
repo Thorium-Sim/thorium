@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Col, Input } from "reactstrap";
+import { FormGroup, Label, Col, Input } from "helpers/reactstrap";
 const whichGender = g => {
   if (g === "M") return "Male";
   if (g === "F") return "Female";

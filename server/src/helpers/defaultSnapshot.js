@@ -31,6 +31,7 @@ export default {
         clamps: false,
         ramps: false,
         airlock: false,
+        legs: false,
         bridgeCrew: 14,
         radiation: 0.1,
         speed: 0,
@@ -13624,12 +13625,15 @@ export default {
   taskReports: [],
   interfaces: [],
   interfaceDevices: [],
+  macros: [],
+  macroButtonConfigs: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),
   doTrack: false,
   askedToTrack: false,
   addedTaskTemplates: false,
   spaceEdventuresToken: "",
+  googleSheetsTokens: {},
   migrations: {
     assets: true
   },

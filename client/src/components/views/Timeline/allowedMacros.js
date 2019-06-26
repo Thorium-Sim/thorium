@@ -1,5 +1,6 @@
 export default [
   "updateViewscreenComponent",
   "setViewscreenToAuto",
-  "showViewscreenTactical"
+  "showViewscreenTactical",
+  "autoAdvance"
 ];

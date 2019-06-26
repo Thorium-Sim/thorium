@@ -50,6 +50,7 @@ export default class JumpDrive extends System {
     this.env = params.env || 0;
     this.activated = params.activated || false;
     this.enabled = params.enabled || true;
+    this.ringsExtended = params.ringsExtended || false;
   }
   get stealthFactor() {
     return this.activated ? Math.min(1, this.stress) : 0;
@@ -79,6 +80,12 @@ export default class JumpDrive extends System {
   }
   setSectorOffset(sector, offset) {
     this.sectors[sector].setOffset(offset);
+  }
+  setRingsExtended(tf) {
+    if (!tf) {
+      this.activated = false;
+    }
+    this.ringsExtended = tf;
   }
   break(report, destroyed, which) {
     this.activated = false;

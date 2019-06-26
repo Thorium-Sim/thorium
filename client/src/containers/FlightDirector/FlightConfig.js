@@ -12,7 +12,7 @@ import {
   FormGroup,
   Label,
   Input
-} from "reactstrap";
+} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import randomWords from "random-words";
 import { FormattedMessage } from "react-intl";
@@ -435,7 +435,7 @@ const FLIGHT_QUERY = gql`
         }
       }
     }
-    missions {
+    missions(aux: false) {
       id
       name
       description

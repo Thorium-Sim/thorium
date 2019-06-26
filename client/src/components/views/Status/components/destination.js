@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Label } from "reactstrap";
+import { Label } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -56,7 +56,7 @@ class Destination extends Component {
             ? "Calculating Course..."
             : onCourse
             ? nav.destination
-            : "No Course"}
+            : "No Destination"}
         </div>
       </div>
     );

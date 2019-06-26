@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import "./style.scss";
 
 const fragment = gql`
@@ -108,7 +108,9 @@ class Core extends Component {
                 <ul>
                   {history.length === 0
                     ? "No history"
-                    : history.map((h, i) => <li key={`history-${i}`}>{h}</li>)}
+                    : history
+                        .filter((h, i) => i < 200)
+                        .map((h, i) => <li key={`history-${i}`}>{h}</li>)}
                 </ul>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ButtonGroup } from "reactstrap";
+import { Button, ButtonGroup } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import Misc from "./misc";
@@ -50,6 +50,11 @@ const ops = {
   hasPrinter: gql`
     mutation SetHasPrinter($id: ID!, $value: Boolean!) {
       setSimulatorHasPrinter(simulatorId: $id, hasPrinter: $value)
+    }
+  `,
+  hasLegs: gql`
+    mutation SetHasLegs($id: ID!, $value: Boolean!) {
+      setSimulatorHasLegs(simulatorId: $id, hasLegs: $value)
     }
   `,
   spaceEdventures: gql`

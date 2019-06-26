@@ -1,11 +1,13 @@
 import React, { Fragment, Component } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 import FontAwesome from "react-fontawesome";
 import ObjPreview from "./3dObjPreview";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Measure from "react-measure";
+import matchSorter from "match-sorter";
+import debounce from "helpers/debounce";
 import "./fileExplorer.scss";
 
 const ASSET_FOLDER_SUB = gql`
@@ -59,7 +61,8 @@ class FileExplorer extends Component {
         .join("/");
     }
     this.state = {
-      currentDirectory
+      currentDirectory,
+      search: ""
     };
     this.props.folderChange && this.props.folderChange(currentDirectory);
   }
@@ -143,6 +146,9 @@ class FileExplorer extends Component {
       }
     );
   };
+  setSearch = debounce(searchValue => {
+    this.setState({ search: searchValue });
+  }, 500);
   render() {
     if (this.props.data.loading || !this.props.data.assetFolders) return null;
     const { assetFolders = [] } = this.props.data;
@@ -174,7 +180,7 @@ class FileExplorer extends Component {
           )}
           {!simple && (
             <Fragment>
-              <Button color="primary" onClick={this._createFolder}>
+              <Button color="primary" size="sm" onClick={this._createFolder}>
                 Create Folder <FontAwesome name="folder-open" />
               </Button>
               <label>
@@ -186,13 +192,26 @@ class FileExplorer extends Component {
                   hidden
                   onChange={this._massUpload}
                 />
-                <div className="btn btn-warning">
+                <div className="btn btn-warning btn-sm">
                   Upload Assets <FontAwesome name="upload" />
                 </div>
               </label>
             </Fragment>
           )}
         </div>
+        <input
+          type={"search"}
+          placeholder="Search..."
+          value={this.state.searchText}
+          onChange={e => {
+            this.setState({ searchText: e.target.value });
+            if (!e.target.value) {
+              this.setState({ search: "" });
+            } else {
+              this.setSearch(e.target.value);
+            }
+          }}
+        />
         <Measure
           bounds
           onResize={contentRect => {
@@ -203,62 +222,16 @@ class FileExplorer extends Component {
             <div ref={measureRef}>
               {dimensions && (
                 <div className="directory-container">
-                  {currentDirectory !== directory && currentDirectory !== "/" && (
-                    <div
-                      style={{ maxWidth: dimensions.width * widthFactor }}
-                      onClick={() => {
-                        //Get the current directory's folder
-                        let dir = this.props.data.assetFolders.filter(
-                          folder => {
-                            return folder.fullPath === currentDirectory;
-                          }
-                        )[0];
-                        this.setState({
-                          currentDirectory: dir ? dir.folderPath : "/"
-                        });
-                        this.props.folderChange &&
-                          this.props.folderChange(dir ? dir.folderPath : "/");
-                      }}
-                    >
-                      <div className="file-container">
-                        <FontAwesome flip="horizontal" size="3x" name="share" />
-                        <p>Back</p>
-                      </div>
-                    </div>
-                  )}
-                  {assetFolders
-                    .filter(folder => {
-                      return folder.folderPath === currentDirectory;
-                    })
-                    .map(folder => (
-                      <div
-                        style={{ maxWidth: dimensions.width * widthFactor }}
-                        key={folder.id}
-                        onClick={() => this.setDirectory(folder.fullPath)}
-                      >
-                        <div className="file-container">
-                          <FontAwesome size="3x" name="folder" />
-                          <p>
-                            {folder.name}{" "}
-                            {this.props.admin && (
-                              <FontAwesome
-                                name="ban"
-                                className="text-danger"
-                                onClick={e =>
-                                  this._removeFolder(folder.fullPath, e)
-                                }
-                              />
-                            )}{" "}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  {this.props.data.assetFolders &&
-                    this.props.data.assetFolders.length &&
-                    this.props.data.assetFolders
-                      .concat({ fullPath: "/", objects: [] })
-                      .find(folder => folder.fullPath === currentDirectory)
-                      .objects.map(object => {
+                  {this.state.search ? (
+                    <>
+                      {matchSorter(
+                        assetFolders.reduce(
+                          (acc, next) => acc.concat(next.objects || []),
+                          []
+                        ),
+                        this.state.search,
+                        { keys: ["name"] }
+                      ).map(object => {
                         return (
                           <div
                             style={{ maxWidth: dimensions.width * widthFactor }}
@@ -283,16 +256,117 @@ class FileExplorer extends Component {
                                   : ""
                               }`}
                             >
-                              <AssetObject
-                                object={object}
-                                removeObject={
-                                  this.props.admin ? this._removeObject : null
-                                }
-                              />
+                              <AssetObject object={object} />
                             </div>
                           </div>
                         );
                       })}
+                    </>
+                  ) : (
+                    <>
+                      {currentDirectory !== directory &&
+                        currentDirectory !== "/" && (
+                          <div
+                            style={{ maxWidth: dimensions.width * widthFactor }}
+                            onClick={() => {
+                              //Get the current directory's folder
+                              let dir = this.props.data.assetFolders.filter(
+                                folder => {
+                                  return folder.fullPath === currentDirectory;
+                                }
+                              )[0];
+                              this.setState({
+                                currentDirectory: dir ? dir.folderPath : "/"
+                              });
+                              this.props.folderChange &&
+                                this.props.folderChange(
+                                  dir ? dir.folderPath : "/"
+                                );
+                            }}
+                          >
+                            <div className="file-container">
+                              <FontAwesome
+                                flip="horizontal"
+                                size="3x"
+                                name="share"
+                              />
+                              <p>Back</p>
+                            </div>
+                          </div>
+                        )}
+                      {assetFolders
+                        .filter(folder => {
+                          return folder.folderPath === currentDirectory;
+                        })
+                        .map(folder => (
+                          <div
+                            style={{ maxWidth: dimensions.width * widthFactor }}
+                            key={folder.id}
+                            onClick={() => this.setDirectory(folder.fullPath)}
+                          >
+                            <div className="file-container">
+                              <FontAwesome size="3x" name="folder" />
+                              <p>
+                                {folder.name}{" "}
+                                {this.props.admin && (
+                                  <FontAwesome
+                                    name="ban"
+                                    className="text-danger"
+                                    onClick={e =>
+                                      this._removeFolder(folder.fullPath, e)
+                                    }
+                                  />
+                                )}{" "}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      {this.props.data.assetFolders &&
+                        this.props.data.assetFolders.length &&
+                        this.props.data.assetFolders
+                          .concat({ fullPath: "/", objects: [] })
+                          .find(folder => folder.fullPath === currentDirectory)
+                          .objects.map(object => {
+                            return (
+                              <div
+                                style={{
+                                  maxWidth: dimensions.width * widthFactor
+                                }}
+                                key={object.id}
+                                onClick={evt =>
+                                  this.props.onClick &&
+                                  this.props.onClick(evt, object)
+                                }
+                                onMouseDown={evt =>
+                                  this.props.onMouseDown &&
+                                  this.props.onMouseDown(evt, object)
+                                }
+                                onMouseUp={evt =>
+                                  this.props.onMouseUp &&
+                                  this.props.onMouseUp(evt, object)
+                                }
+                              >
+                                <div
+                                  className={`file-container ${
+                                    selectedFiles.indexOf(object.fullPath) > -1
+                                      ? "selected"
+                                      : ""
+                                  }`}
+                                >
+                                  <AssetObject
+                                    object={object}
+                                    removeObject={
+                                      this.props.admin
+                                        ? this._removeObject
+                                        : null
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })}
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -379,6 +453,7 @@ const AssetObject = ({ object, removeObject }) => {
             />
           )}
         </p>
+        <audio className="audio-preview" controls src={object.url} />
       </div>
     );
   }

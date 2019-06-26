@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Card } from "reactstrap";
+import { Container, Row, Col, Card } from "helpers/reactstrap";
 import { Asset } from "helpers/assets";
 import { throttle } from "helpers/debounce";
 import AnimatedNumber from "react-animated-number";
@@ -136,11 +136,13 @@ class AdvancedNavigation extends Component {
         return prev.concat(next.speeds);
       }, [])
       .reduce((prev, next) => {
+        if (isNaN(parseFloat(next.velocity))) return prev;
         if (next.velocity > velocity) return prev;
         if (!prev) return next;
         if (next.velocity > prev.velocity) return next;
         return prev;
       }, null);
+    console.log(speed);
     return speed ? speed.text : "Full Stop";
   }
   engineSpeedClass = () => {
@@ -220,7 +222,9 @@ class AdvancedNavigation extends Component {
           >
             <Row>
               <Col sm={4}>
-                <Card className={`${this.engineSpeedClass()} crystal-display`}>
+                <Card
+                  className={`${this.engineSpeedClass()} crystal-display one-line`}
+                >
                   {this.getCurrentSpeed()}
                 </Card>
               </Col>
@@ -327,15 +331,9 @@ class AdvancedNavigation extends Component {
                             .reverse()
                             .concat(0)
                     }
-                    disabled={
-                      e.useAcceleration &&
-                      engines.find(
-                        eng =>
-                          eng.id !== e.id &&
-                          eng.useAcceleration === false &&
-                          eng.on === true
-                      )
-                    }
+                    disabled={engines.find(
+                      eng => eng.id !== e.id && eng.on === true
+                    )}
                     defaultLevel={
                       e.useAcceleration ? 0.5 : this.getInitialValue(e)
                     }

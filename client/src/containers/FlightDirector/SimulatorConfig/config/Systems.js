@@ -7,7 +7,7 @@ import {
   CardBody,
   Button,
   ButtonGroup
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { titleCase, camelCase } from "change-case";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
@@ -16,6 +16,7 @@ import * as Configs from "./systemsConfig";
 const systems = [
   "ComputerCore",
   "Coolant",
+  "Crm",
   "Engine",
   "InternalComm",
   "JumpDrive",

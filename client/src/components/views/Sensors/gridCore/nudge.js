@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
-import { Input } from "reactstrap";
+import { Input } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 
 export default class Nudge extends Component {
@@ -30,7 +30,7 @@ export default class Nudge extends Component {
     const variables = {
       id: sensor,
       amount,
-      speed,
+      speed: parseFloat(speed),
       yaw: yaw * nudge
     };
     client.mutate({

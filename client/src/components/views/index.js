@@ -87,8 +87,10 @@ import DockingPorts from "./DockingPorts";
 import SubspaceField from "./SubspaceField";
 import Transwarp from "./Transwarp";
 import SpecializedDocking from "./SpecializedDocking";
-import Interface from "./Interface";
+import Interface from "./Interfaces";
 import SpaceEdventuresToken from "./SpaceEdventuresToken";
+import Crm from "./Crm";
+import CrmFighter from "./CrmFighter";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -168,6 +170,13 @@ import TranswarpCore from "./Transwarp/core";
 import SpecializedDockingCore from "./SpecializedDocking/core";
 import TimelineThumbnailCore from "./Timeline/thumbnailData";
 import SpaceEdventuresTokenCore from "./SpaceEdventuresToken/core";
+import CrmCore from "./Crm/core";
+import CardsCore from "./Cards/core";
+import CommandLineCore from "./CommandLine/core";
+import AuxTimelineCore from "./Timeline/auxTimelineData";
+import LightingCore from "./Lighting";
+import MacroButtonsCore from "./Macros/macroButtons";
+import OfficerLogCore from "./OfficerLog/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -266,7 +275,9 @@ const Views = {
   Transwarp,
   SpecializedDocking,
   Interface,
-  SpaceEdventuresToken
+  SpaceEdventuresToken,
+  Crm,
+  CrmFighter
 };
 
 export const Widgets = {
@@ -449,7 +460,14 @@ export const Cores = {
   TranswarpCore,
   SpecializedDockingCore,
   TimelineThumbnailCore,
-  SpaceEdventuresTokenCore
+  SpaceEdventuresTokenCore,
+  CrmCore,
+  CardsCore,
+  CommandLineCore,
+  AuxTimelineCore,
+  LightingCore,
+  MacroButtonsCore,
+  OfficerLogCore
 };
 
 export default Views;

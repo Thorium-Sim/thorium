@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem } from "helpers/reactstrap";
 
 const TemplateList = ({
   taskTemplates,
@@ -11,15 +11,17 @@ const TemplateList = ({
     <h3>Templates</h3>
 
     <ListGroup style={{ flex: 1, overflowY: "auto", maxHeight: "70vh" }}>
-      {taskTemplates.filter(t => t.definition === selectedDef).map(t => (
-        <ListGroupItem
-          key={t.id}
-          onClick={() => setSelectedTemplate(t.id)}
-          active={t.id === selectedTemplate}
-        >
-          {t.name}
-        </ListGroupItem>
-      ))}
+      {taskTemplates
+        .filter(t => t.definition === selectedDef)
+        .map(t => (
+          <ListGroupItem
+            key={t.id}
+            onClick={() => setSelectedTemplate(t.id)}
+            active={t.id === selectedTemplate}
+          >
+            {t.name}
+          </ListGroupItem>
+        ))}
     </ListGroup>
   </Fragment>
 );

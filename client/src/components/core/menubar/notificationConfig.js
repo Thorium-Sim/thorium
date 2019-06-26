@@ -11,7 +11,7 @@ import {
   Label,
   Col,
   Row
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 export const notifyComponents = [
   "Alert Condition",
@@ -24,6 +24,7 @@ export const notifyComponents = [
   "External Sensors",
   "Handheld Scanner",
   "Interception",
+  "Internal Comm",
   "Internal Sensors",
   "Jump Drive",
   "Keypad",
@@ -48,7 +49,8 @@ export const notifyComponents = [
   "Targeting",
   "Torpedos",
   "Tractor Beam",
-  "Transporter"
+  "Transporter",
+  "Transwarp"
 ];
 
 class NotificationConfig extends Component {

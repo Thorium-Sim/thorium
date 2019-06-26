@@ -14,7 +14,7 @@
       align-items: center;
     }
   }
-  ul.sideNav {
+  .sideNav {
     position: fixed;
     left: 0;
     top: 0;
@@ -22,10 +22,11 @@
     transition: transform 0.3s ease-out;
     transform: translate(-100%);
     background-color: #222;
-    border-right: solid 1px #rgba(255, 255, 255, 0.5);
+    border-right: solid 1px rgba(255, 255, 255, 0.5);
     overflow-y: auto;
     height: 100%;
     display: inline-flex;
+    flex-wrap: nowrap;
     &.open {
       transform: translate(0%);
     }

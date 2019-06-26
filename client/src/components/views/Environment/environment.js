@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col } from "reactstrap";
+import { Container, Row, Col } from "helpers/reactstrap";
 
 const Environment = props => {
   const { decks } = props;
@@ -12,4 +12,5 @@ const Environment = props => {
     </Container>
   );
 };
+
 export default Environment;

@@ -11,19 +11,19 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Officers will sometimes need equipment to complete whatever tasks they have been assigned. You can use this screen to see the available equipment and assign it to members of your crew.",
+        "defaultMessage": "Officers sometimes need equipment to complete the tasks they have been assigned. This screen displays available equipment and allows for it to be assigned to crew members.",
         "id": "armory-training-1"
       },
       {
-        "defaultMessage": "This button will allow you to change between the officers you have assigned to specific teams, and unassigned crew members without current orders.",
+        "defaultMessage": "This button allows for you to change between the officers assigned to teams and officers without current orders.",
         "id": "armory-training-2"
       },
       {
-        "defaultMessage": "This list shows you the officers on the team you selected above, or any unassigned officers. Officers whose names are white have not been assigned any equipment.  Those highlighted in red are carrying items.",
+        "defaultMessage": "This list displays the officers on the selected team or any unassigned officers. White officer names have not been assigned any equipment whereas names highlighted in red are carrying items.",
         "id": "armory-training-3"
       },
       {
-        "defaultMessage": "You are authorized to access equipment from the rooms listed in this area.  Click to select different rooms from a drop down list.",
+        "defaultMessage": "Rooms with equipment you are authorized to access are listed here.  Click to select different rooms from a drop down list.",
         "id": "armory-training-4"
       },
       {
@@ -31,11 +31,11 @@
         "id": "armory-training-5"
       },
       {
-        "defaultMessage": "This is the ready area.  Once you have selected all of the equipment you need to assign you can select the name of the officer from the area on the right and click “Transfer to Officer.”  If you need to return an item to a room click on the item and it will return to the room it came from.",
+        "defaultMessage": "This is the ready area.  Once you have selected all of the equipment you need to assign select the name of the officer from the area on the right and click “Transfer to Officer.”  If you need to return an item to a room click on the item and it will return to the room it came from.",
         "id": "armory-training-6"
       },
       {
-        "defaultMessage": "Officer items will be displayed in the Equipment field. Pressing the “Remove Inventory” button will transfer all items to the ready area.",
+        "defaultMessage": "Officer items will be displayed in the equipment field. Pressing the “Remove Inventory” button will transfer all items to the ready area.",
         "id": "armory-training-7"
       }
     ],
@@ -44,7 +44,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "This screen shows a map of the bridge. You can use it to see what each station on the bridge does. Hover your mouse over or tap on a station to see a description on the right side of the screen.",
+        "defaultMessage": "This screen shows a map of the bridge. Hover your mouse over or tap on a station to see its description on the right side of the screen.",
         "id": "bridge-map-training-1"
       }
     ],
@@ -54,12 +54,12 @@
     "descriptors": [
       {
         "defaultMessage": "Transfer Cargo",
-        "description": "The location where cargo will be sent from.",
+        "description": "The cargo's original location.",
         "id": "transfer-cargo-location"
       },
       {
         "defaultMessage": "Receive Cargo",
-        "description": "The location where cargo will be sent to, or which will receive the cargo.",
+        "description": "The location that receives the cargo.",
         "id": "receive-cargo-location"
       },
       {
@@ -76,31 +76,31 @@
         "id": "transfer-cargo"
       },
       {
-        "defaultMessage": "This screen allows you to move cargo between the rooms on the ship.",
+        "defaultMessage": "This screen allows you to move cargo between rooms on the ship.",
         "id": "cargo-training-1"
       },
       {
-        "defaultMessage": "Use this search box to locate an item of cargo that you need from anywhere on the ship.",
+        "defaultMessage": "Use this search box to locate where the cargo you need is being stored.",
         "id": "cargo-training-2"
       },
       {
-        "defaultMessage": "Use these dropdowns to select choose a deck and room that you want to transfer cargo from.",
+        "defaultMessage": "Use these dropdowns to select the deck and room that the cargo is being held on.",
         "id": "cargo-training-3"
       },
       {
-        "defaultMessage": "The items that are available in that part of the ship will show up here. Click on the inventory that you would like to move. The inventory will move into the ready cargo area. Click multiple times to move multiple items of the same type of cargo.",
+        "defaultMessage": "The items that are available in that part of the ship will show up here. Click on the inventory that you would like to move. The inventory will move into the ready cargo area. Click again to increase the amount of that cargo being transferred by one.",
         "id": "cargo-training-4"
       },
       {
-        "defaultMessage": "Use these dropdowns to select the part of the ship you want to move the inventory to.",
+        "defaultMessage": "Use these dropdowns to select the part of the ship you want the cargo sent.",
         "id": "cargo-training-5"
       },
       {
-        "defaultMessage": "Ready cargo is cargo which is being prepared to move to another place. Before transferring cargo, make sure you have put all of the cargo you want to move into the ready cargo area. You can click on items here to remove them from ready cargo.",
+        "defaultMessage": "Ready cargo is cargo which is being prepared to move to another place. Before transferring cargo it is recommended to add all the cargo that you want to transfer into the ready cargo area. You can click on items here to remove them from ready cargo.",
         "id": "cargo-training-6"
       },
       {
-        "defaultMessage": "Click this button to transfer the items in the ready cargo to the room which you have selected to move the cargo into.",
+        "defaultMessage": "Click this button to transfer the items in the ready cargo to the area selected in “Receive Cargo.”",
         "id": "cargo-training-7"
       }
     ],
@@ -109,15 +109,15 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Cyphers are used to decode messages on paper. You can see the cypher characters on your screen and match them with the characters on your printed encoded message.",
+        "defaultMessage": "Cyphers are used to decode printed messsages. To do that, match the characters on the message with the cypher characters on the screen.",
         "id": "cypher-training-1"
       },
       {
-        "defaultMessage": "This is a list of the available cyphers. Click to choose a cypher.",
+        "defaultMessage": "Click to choose a cypher from the available list here.",
         "id": "cypher-training-2"
       },
       {
-        "defaultMessage": "Here you can see the cypher characters, and the Roman character which it represents.",
+        "defaultMessage": "Here you can see the cypher characters and the Roman character each one represents.",
         "id": "cypher-training-3"
       }
     ],
@@ -126,39 +126,39 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "The computer core is the brains of your ship. Controls for all of the stations on the bridge and throughout the ship are managed by the computer core. It runs a sophisticated operating system which mostly takes care of itself.",
+        "defaultMessage": "Controls for all of the stations on the bridge and throughout the ship are managed by the computer core. It runs a sophisticated operating system which mostly takes care of itself.",
         "id": "computer-core-training-1"
       },
       {
-        "defaultMessage": "However, like all software, the computer core is not perfectly engineered. It is succeptible to attacks from outside forces. Hackers and viruses can gain access to the system and cause files to become corrupt, which causes terminals to shut down. Your job is to keep the terminals running properly. If too many terminals shut down, systems on the ship could behave erratically.",
+        "defaultMessage": "However, like all software, the computer core is not perfectly engineered. It is succeptible to attacks from outside forces. Hackers and viruses can gain access to the system and corupt files which may cause terminals to shut down. Your job is to keep the terminals running properly. If too many terminals shut down, systems on the ship could behave erratically.",
         "id": "computer-core-training-2"
       },
       {
-        "defaultMessage": "This is a list of the terminals on the ship, showing the number and the status. If a terminal is ever offline, you need to restart it. First, select the terminal you want to restart.",
+        "defaultMessage": "This is a list of the number and status of all the terminals on the ship. When terminals go offline, they need to be restarted.",
         "id": "computer-core-training-3"
       },
       {
-        "defaultMessage": "Click this button to restart a terminal. It can take a couple of seconds.",
+        "defaultMessage": "To restart a terminal you must first selected it then click this button. It may take a few seconds for the restart to complete.",
         "id": "computer-core-training-4"
       },
       {
-        "defaultMessage": "Viruses infect the computer core and cause files to become corrupted. You can easily find and remove viruses by first scanning for the viruses by clicking this button. If a virus is found, click the 'Remove Virus' button to remove it.",
+        "defaultMessage": "Viruses infect the computer core and cause files to become corrupted. You can easily find and remove viruses by clickig this button to scan for them. If a virus is found select the 'Remove Virus' button to remove it.",
         "id": "computer-core-training-5"
       },
       {
-        "defaultMessage": "You can see all of the users with access to the computer core and all of the files that make the computer core run properly. Toggle between viewing users and files with these buttons. Click on the 'Users' button now.",
+        "defaultMessage": "You can see all of the users with access to the computer core and all of the files that make the computer core run properly here. Toggle between viewing users and files with these buttons. Click on the 'Users' button now.",
         "id": "computer-core-training-6"
       },
       {
-        "defaultMessage": "Both users and files are organized into access levels, where level 1 is the highest, most privliaged level and level 10 is the lowest level. Click on a level to see the users in that level.",
+        "defaultMessage": "Both users and files are organized into access levels, level 1 being the highest most privileged level and level 10 being lowest level. By selecting a level you can view all users with that clearance.",
         "id": "computer-core-training-7"
       },
       {
-        "defaultMessage": "The users appear in this table. You should regularly peruse the user list to make sure there aren't any unusual users on the list. That user might be a hacker. Remember, hackers create viruses which can corrupt files. Remove any hackers, and new viruses won't be created.",
+        "defaultMessage": "All users appear in this table. You should regularly peruse the user list to make sure there aren't any unusual users on the list. Unusual users may be hackers that have infiltrated the system. Hackers can create viruses in the computer systems so you will want to remove hackers before any viruses are created.",
         "id": "computer-core-training-8"
       },
       {
-        "defaultMessage": "Use these buttons to create a new user and remove the currently selected user. When creating a new user, you must specify a username, password, and level. Only give the user the highest necessary level - they don't need more access than is required.",
+        "defaultMessage": "Use these buttons to create a new user or remove the currently selected user. When creating a new user, you must specify a username, password, and level. Only give the user the highest necessary level - they don't need more access than is required.",
         "id": "computer-core-training-9"
       },
       {
@@ -166,11 +166,11 @@
         "id": "computer-core-training-10"
       },
       {
-        "defaultMessage": "Here are your files. Files usually have boring, descriptive names. Corrupt files, however, have corrupted names. They'll look wrong and unintelligable. These corrupt files will shut down terminals. Fortunately, we keep an immutable backup which you can use to restore corrupt files.",
+        "defaultMessage": "Files usually have generic and descriptive names. Corrupt files will have names that are unintelligible or odd. These corrupt files will shut down terminals. Fortunately there is an immutable backup you can use to restore corrupt files.",
         "id": "computer-core-training-11"
       },
       {
-        "defaultMessage": "Select a file to restore the file individually. If there are too many corrupt files, you can always restore all files for a level. This will create a clean-slate state for this level of files.",
+        "defaultMessage": "Select a file to restore the file individually. If there are too many corrupt files, you may restore all files on that level. This will create a clean-slate state for the entire level.",
         "id": "computer-core-training-12"
       },
       {
@@ -183,115 +183,115 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "At certain times during the mission, you may be able to complete Research and Development reports. These reports allow you to upgrade, improve, and activate ship systems.",
+        "defaultMessage": "Occasionally Research and Development reports may become available to you. These reports upgrade, improve, and activate newer ship systems.",
         "id": "damage-report-rnd-training-1"
       },
       {
-        "defaultMessage": "If a research and development report hasn't been calculated, you need to request a report by clicking on this button.",
+        "defaultMessage": "If the Research and Development report hasn't been compiled, click here to request it.",
         "id": "damage-report-rnd-training-2"
       },
       {
-        "defaultMessage": "When a system may be upgraded, instructions to perform the upgrade will appear here. Follow them exactly.",
+        "defaultMessage": "Due to the state of upgrades and new systems, the steps available will be very specific. Follow them exactly.",
         "id": "damage-report-rnd-training-3"
       },
       {
-        "defaultMessage": "Sometimes, a system needs a reactivation code to be entered before it can be upgraded. Click the 'Enter Reactivation Code' button, then press the symbols listed in your upgrade report. Once the reactivation code is accepted, the report will be complete.",
+        "defaultMessage": "Sometimes a system needs a reactivation code to be entered before it can be upgraded. Click the 'Enter Reactivation Code' button, then press the symbols listed in your upgrade report. Once the reactivation code is accepted, the report will be complete.",
         "id": "damage-report-rnd-training-4"
       },
       {
-        "defaultMessage": "The ship’s systems are intelligent enough to know when they’re damaged, and to understand (mostly) how they can be fixed. A list of damaged systems appears here. Click a system to see the damage report",
+        "defaultMessage": "The ship’s systems are intelligent enough to know when they are damaged, and to understand generally how to repair them. The list of damaged systems appears here. Select a system to see its report",
         "id": "damage-report-training-1"
       },
       {
-        "defaultMessage": "If a damage report hasn't been calculated, you need to request a damage report by clicking on this button.",
+        "defaultMessage": "If a damage report hasn't been compiled you may request it by clicking on this button.",
         "id": "damage-report-training-2"
       },
       {
-        "defaultMessage": "When a system is damaged, instructions to troubleshoot and repair the damaged system will appear here. Follow them exactly.",
+        "defaultMessage": "When a system is damaged, instructions to troubleshoot and repair the damaged system will appear here. Follow them exactly to avoid further damage.",
         "id": "damage-report-training-3"
       },
       {
-        "defaultMessage": "Sometimes, a system needs a reactivation code to be entered before it can be repaired. Click the 'Enter Reactivation Code' button, then press the symbols listed in your damage report. Once the reactivation code is accepted, the system will be repaired.",
+        "defaultMessage": "Occasionally, systems need a reactivation code to be entered before they can be repaired. Click the 'Enter Reactivation Code' button, then press the symbols listed in your damage report. Once the reactivation code is accepted, the system will be repaired.",
         "id": "damage-report-training-4"
       },
       {
         "defaultMessage": "Available R&D Reports",
-        "description": "Below this header is a list of available research and development reports",
+        "description": "Below this header is a list of available Research and Development reports.",
         "id": "damage-report-rnd"
       },
       {
         "defaultMessage": "Engineering Bypass",
-        "description": "Below this header is a list of engineering reports",
+        "description": "Below this header is a list of engineering reports.",
         "id": "damage-report-engineering"
       },
       {
         "defaultMessage": "Damaged Systems",
-        "description": "Below this header is a list of damaged system repair reports",
+        "description": "Below this header is a list of damaged system repair reports.",
         "id": "damage-report-systems"
       },
       {
         "defaultMessage": "Cancel",
-        "description": "A button to stop entering a reactivation code",
+        "description": "A button to stop entering a reactivation code.",
         "id": "damage-report-cancel"
       },
       {
         "defaultMessage": "Clear",
-        "description": "A button to clear the reactivation code input",
+        "description": "A button to clear the reactivation code input.",
         "id": "damage-report-clear"
       },
       {
         "defaultMessage": "Reactivate",
-        "description": "A button to confirm the entered reactivation code and begin the reactivation process",
+        "description": "A button to confirm the entered reactivation code and begin the reactivation process.",
         "id": "damage-report-reactivate"
       },
       {
         "defaultMessage": "Request Report",
-        "description": "A button to request a report for a system",
+        "description": "A button to request necessary steps for a system.",
         "id": "rnd-report-request"
       },
       {
         "defaultMessage": "Request Engineering Report",
-        "description": "A button to request a report for a system",
+        "description": "A button to request necessary steps for a system.",
         "id": "engineering-report-request"
       },
       {
         "defaultMessage": "Request Damage Report",
-        "description": "A button to request a repair report for a damaged system",
+        "description": "A button to request a repair report for a damaged system.",
         "id": "damage-report-request"
       },
       {
         "defaultMessage": "R&D Report",
-        "description": "A header for the research & development report readout",
+        "description": "A header for the Research & Development report readout.",
         "id": "damage-report-rnd-report"
       },
       {
         "defaultMessage": "Engineering Report",
-        "description": "A header for the engineering report readout",
+        "description": "A header for the engineering report readout.",
         "id": "engineering-report-report"
       },
       {
         "defaultMessage": "Damage Report",
-        "description": "A header for the damage report readout",
+        "description": "A header for the damage report readout.",
         "id": "damage-report-report"
       },
       {
         "defaultMessage": "Previous Step",
-        "description": "A button to go to the previous step",
+        "description": "A button to return to the previous step.",
         "id": "damage-report-previous"
       },
       {
         "defaultMessage": "Verifying Step",
-        "description": "A message indicating that the damage report step is currently being verified",
+        "description": "A message indicating that the damage report step is currently being verified.",
         "id": "damage-report-verifying"
       },
       {
         "defaultMessage": "Verify Step",
-        "description": "A button to initiate verification of the damage report step to ensure it was completed correctly",
+        "description": "A button to initiate verification of the damage report step to ensure it was completed correctly.",
         "id": "damage-report-verify"
       },
       {
         "defaultMessage": "Next Step",
-        "description": "A button to go to the next step",
+        "description": "A button to go to the next step.",
         "id": "damage-report-next"
       }
     ],
@@ -362,11 +362,11 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "During your mission you will have different objectives or goals you need to complete.  Objectives will appear with a title, and a description.",
+        "defaultMessage": "During your mission there are different objectives or goals you need to complete.  Objectives appear with a title and description.",
         "id": "objectives-training-1"
       },
       {
-        "defaultMessage": "When an objective is completed, the circle next to it will be filled. When an objective is changed, a line will strike through the title of the objective. Check back often to remember your objectives so you can work toward their completion.",
+        "defaultMessage": "When an objective is completed the circle next to it will be filled. When an objective is changed, a line will strike through the title of the objective. Check back often to remember your objectives so you can work toward their completion.",
         "id": "objectives-training-2"
       },
       {
@@ -380,7 +380,7 @@
     "descriptors": [
       {
         "defaultMessage": "Particle Types",
-        "description": "The particle detector detects different particles outside in space. This is a header for a list of the possible particles that can be detected",
+        "description": "The particle detector detects different particles outside in space. This is a header for a list of the possible particles that can be detected.",
         "id": "particle-types"
       },
       {
@@ -392,7 +392,7 @@
         "id": "particle-detector-training-2"
       },
       {
-        "defaultMessage": "Click anywhere on the grid to detect particles. You can only detect a specific type of particle within a small area at any time, so you might have to click in several areas to see where all the particles are. Be sure to switch between the different types to detect any other particles.",
+        "defaultMessage": "Click anywhere on the grid to detect particles. You can only detect a specific type of particle within a small area at any time, so you may need to click in several areas to see where all the particles are. Be sure to switch between the different types to detect other particles.",
         "id": "particle-detector-training-3"
       }
     ],
@@ -401,7 +401,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "The railgun is a point-defense weapon designed to destroy incoming projectiles. This screen is where you load bolts into the railgun.",
+        "defaultMessage": "The railgun is a point-defense weapon designed to destroy incoming projectiles. This screen is where bolt are loaded into the railgun.",
         "id": "railgun-loader-training-1"
       },
       {
@@ -410,17 +410,17 @@
       },
       {
         "defaultMessage": "Load Railgun",
-        "description": "A button which adds one bolt of ammunition to the railgun.",
+        "description": "This button adds one bolt of ammunition to the railgun.",
         "id": "railgun-load"
       },
       {
         "defaultMessage": "Loaded Ammunition: {ammo}",
-        "description": "How much ammunition has been loaded into the railgun.",
+        "description": "How much ammunition has been loaded into the railgun is displayed here.",
         "id": "railgun-loaded-ammo"
       },
       {
         "defaultMessage": "Available Ammunition: {availableAmmo}",
-        "description": "How much ammunition is available to be loaded into the railgun.",
+        "description": "How much ammunition is available to be loaded into the railgun is displayed here.",
         "id": "railgun-available-ammo"
       },
       {
@@ -479,7 +479,7 @@
         "id": "alert-level-description-1"
       },
       {
-        "defaultMessage": "This alert condition is used when the ship is in a dangerous situation, but is safe for the moment. All crew members are put on duty.",
+        "defaultMessage": "This alert condition is used when the ship is in a dangerous situation, but is safe for the moment. All crew members enter active duty.",
         "id": "alert-level-description-2"
       },
       {
@@ -487,11 +487,11 @@
         "id": "alert-level-description-3"
       },
       {
-        "defaultMessage": "This alert condition is used when the station has a minor problem. All crew except damage control is on standard duty.",
+        "defaultMessage": "This alert condition is used when the station has a minor problem. All crew, except damage control, is on standard duty.",
         "id": "alert-level-description-4"
       },
       {
-        "defaultMessage": "This alert condition is used when the ship is at normal running status. The crew is on standard duty and the ship is in no danger.",
+        "defaultMessage": "This alert condition is used when the ship is at normal running status. The crew is on standard duty and the ship is in no known danger.",
         "id": "alert-level-description-5"
       },
       {
@@ -533,19 +533,19 @@
         "id": "thx-training-2"
       },
       {
-        "defaultMessage": "You can see how much your sector is charged with this bar.",
+        "defaultMessage": "You can see how much of the sector is charged with this bar.",
         "id": "thx-training-3"
       },
       {
-        "defaultMessage": "Once you are finished charging your sector, click the 'Lock Sector' button.",
+        "defaultMessage": "Once your sector has been charged click the 'Lock Sector' button.",
         "id": "thx-training-4"
       },
       {
-        "defaultMessage": "Once you see that all of the sectors have been charged, press this button to activate the {name}.",
+        "defaultMessage": "Once all the sectors have been charged, press this button to activate the {name}.",
         "id": "thx-training-5"
       },
       {
-        "defaultMessage": "The {name} is a very powerful device which must be charged in every sector of the ship to be used. Once all sectors have been charged, it can be activated.",
+        "defaultMessage": "The {name} is a very powerful device which must be charged in every sector of the ship to be used. It cannot be activated until all sectors are charged.",
         "id": "thx-training-1"
       }
     ],

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Container } from "reactstrap";
+import { Container } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";

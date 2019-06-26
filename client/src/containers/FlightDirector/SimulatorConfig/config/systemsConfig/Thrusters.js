@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Row, Col } from "reactstrap";
+import { Input, Row, Col } from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
@@ -43,7 +43,7 @@ const Thrusters = props => {
                       value={thruster.rotationSpeed}
                       onChange={e => {
                         action({
-                          variables: { id, speed: e.target.value }
+                          variables: { id, speed: parseFloat(e.target.value) }
                         });
                       }}
                     >
@@ -83,7 +83,7 @@ const Thrusters = props => {
                       value={thruster.movementSpeed}
                       onChange={e => {
                         action({
-                          variables: { id, speed: e.target.value }
+                          variables: { id, speed: parseFloat(e.target.value) }
                         });
                       }}
                     >

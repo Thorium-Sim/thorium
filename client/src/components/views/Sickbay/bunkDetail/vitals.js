@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, FormGroup, Label, Input } from "reactstrap";
+import { Row, Col, FormGroup, Label, Input } from "helpers/reactstrap";
 
 const Vitals = ({
   update,

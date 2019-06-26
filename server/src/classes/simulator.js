@@ -4,6 +4,7 @@ import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 import DamageTask from "./generic/damageTask";
 import { Station } from "./stationSet";
+import { lowerCase, camelCase } from "change-case";
 class Ambiance {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -65,7 +66,9 @@ class Ship {
     this.clamps = params.clamps || false; // Detached
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed
+    this.legs = params.legs || false; //Retracted
     this.bridgeCrew = params.bridgeCrew || 14;
+    this.extraPeople = params.extraPeople || 0;
     this.radiation = params.radiation || 0.1;
     this.speed = params.speed || 0;
     this.selfDestructTime = params.selfDestructTime || null;
@@ -94,24 +97,57 @@ class Assets {
   }
 }
 
+class SoundEffects {
+  constructor(params = {}) {
+    this.buttonClick = params.buttonClick || [];
+    this.buttonHover = params.buttonHover || [];
+    this.cardChange = params.cardChange || [];
+    this.notification = params.notification || [];
+    this.login = params.login || [];
+  }
+}
+
+class TimelineInstance {
+  constructor(params = {}) {
+    this.id = uuid.v4();
+    this.missionId = params.missionId || null;
+    this.currentTimelineStep = params.currentTimelineStep || 0;
+    this.executedTimelineSteps = params.executedTimelineSteps || [];
+  }
+  setTimelineStep(step) {
+    this.currentTimelineStep = step;
+  }
+}
+
 export default class Simulator {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutCorners";
     this.caps = params.caps || false;
+    this.hasLegs = params.hasLegs || false;
     this.alertLevel = params.alertLevel || "5";
     this.alertLevelLock = params.alertLevelLock || false;
     this.template = params.template || false;
     this.templateId = params.templateId || null;
     this.class = "Simulator";
     this.assets = new Assets({ ...params.assets });
+    this.soundEffects = new SoundEffects({ ...params.soundEffects });
     this.stationSet = params.stationSet || null;
     this.stations = [];
     this.exocomps = params.exocomps || 0;
+
+    // Mission Stuff
     this.mission = params.mission || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;
     this.executedTimelineSteps = params.executedTimelineSteps || [];
+    this.timelines = [];
+    params.timelines &&
+      params.timelines.forEach(t =>
+        this.timelines.push(new TimelineInstance(t, this.id))
+      );
+    this.missionConfigs = params.missionConfigs || {};
+
     this.bridgeOfficerMessaging =
       params.bridgeOfficerMessaging === false ? false : true;
     this.teams = [];
@@ -130,6 +166,9 @@ export default class Simulator {
     this.ambiance = [];
     if (params.ambiance)
       params.ambiance.forEach(a => this.ambiance.push(new Ambiance(a)));
+
+    this.crackedClients = params.crackedClients || {};
+
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
@@ -154,6 +193,10 @@ export default class Simulator {
     this.damageTasks = [];
     params.damageTasks &&
       params.damageTasks.forEach(s => this.damageTasks.push(new DamageTask(s)));
+
+    // Command Lines
+    this.commandLineOutputs = {};
+    this.commandLineFeedback = {};
 
     // For Space EdVentures
     this.spaceEdventuresId = params.spaceEdventuresId || null;
@@ -194,14 +237,36 @@ export default class Simulator {
   setLayout(layout) {
     this.layout = layout;
   }
-  setTimelineStep(step) {
-    this.currentTimelineStep = step;
+  setTimelineStep(step, timelineId) {
+    if (timelineId) {
+      this.setAuxTimelineStep(timelineId, step);
+    } else {
+      this.currentTimelineStep = step;
+    }
   }
   executeTimelineStep(stepId) {
     this.executedTimelineSteps.push(stepId);
     this.executedTimelineSteps = this.executedTimelineSteps.filter(
       (a, i, arr) => arr.indexOf(a) === i
     );
+  }
+  addAuxTimeline(missionId) {
+    const timeline = new TimelineInstance({ missionId }, this.id);
+    this.timelines.push(timeline);
+    return timeline.id;
+  }
+  setAuxTimelineStep(timelineId, step) {
+    const timeline = this.timelines.find(t => t.id === timelineId);
+    timeline && timeline.setTimelineStep(step);
+  }
+  setMissionConfig(missionId, stationSetId, actionId, args) {
+    this.missionConfigs[missionId] = this.missionConfigs[missionId] || {};
+    this.missionConfigs[missionId][stationSetId] =
+      this.missionConfigs[missionId][stationSetId] || {};
+    this.missionConfigs[missionId][stationSetId][actionId] = {
+      ...this.missionConfigs[missionId][stationSetId][actionId],
+      ...args
+    };
   }
   updateLighting(lighting) {
     this.lighting.update(lighting);
@@ -226,8 +291,14 @@ export default class Simulator {
   airlock(tf) {
     this.ship.airlock = tf;
   }
+  legs(tf) {
+    this.ship.legs = tf;
+  }
   bridgeCrew(num) {
     this.ship.bridgeCrew = num;
+  }
+  extraPeople(num) {
+    this.ship.extraPeople = num;
   }
   radiation(num) {
     this.ship.radiation = num;
@@ -268,8 +339,14 @@ export default class Simulator {
   setAssets(assets) {
     this.assets = new Assets(assets);
   }
+  setSoundEffects(effects) {
+    this.soundEffects = new SoundEffects(effects);
+  }
   setHasPrinter(hasPrinter) {
     this.hasPrinter = hasPrinter;
+  }
+  setHasLegs(hasLegs) {
+    this.hasLegs = hasLegs;
   }
 
   // Damage Steps
@@ -307,6 +384,56 @@ export default class Simulator {
   }
   removeDamageTask(id) {
     this.damageTasks = this.damageTasks.filter(t => t.id !== id);
+  }
+  hideCard(cardName) {
+    const name = lowerCase(camelCase(cardName));
+    const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
+    cards.forEach(card => {
+      if (
+        lowerCase(camelCase(card.name)) === name ||
+        lowerCase(camelCase(card.component)) === name
+      ) {
+        card.hide();
+      }
+    });
+  }
+  unhideCard(cardName) {
+    const name = lowerCase(camelCase(cardName));
+    const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
+    cards.forEach(card => {
+      if (
+        lowerCase(camelCase(card.name)) === name ||
+        lowerCase(camelCase(card.component)) === name
+      ) {
+        card.unhide();
+      }
+    });
+  }
+  // Command Line
+  addCommandLineOutput(clientId, line) {
+    if (!this.commandLineOutputs[clientId])
+      this.commandLineOutputs[clientId] = [];
+    this.commandLineOutputs[clientId].push(line);
+  }
+  addCommandLineFeedback(clientId, feedback) {
+    if (!this.commandLineFeedback[clientId])
+      this.commandLineFeedback[clientId] = [];
+    this.commandLineFeedback[clientId].push(feedback);
+  }
+  removeCommandLineFeedback(clientId, id) {
+    this.commandLineFeedback[clientId] = this.commandLineFeedback[
+      clientId
+    ].filter(c => c.id !== id);
+  }
+  clearCommandLine(clientId) {
+    this.commandLineOutputs[clientId] = [];
+  }
+
+  crackClient(clientId) {
+    this.crackedClients[clientId] = true;
+  }
+  uncrackClient(clientId) {
+    this.crackedClients[clientId] = false;
   }
 
   setSpaceEdventuresId(id) {

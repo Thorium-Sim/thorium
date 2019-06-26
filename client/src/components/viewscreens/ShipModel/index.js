@@ -1,56 +1,46 @@
-import React, { Component } from "react";
-import Measure from "react-measure";
+import React from "react";
 import ThreeView from "./three-view";
-import { Asset } from "helpers/assets";
 import "./style.scss";
+import useMeasure from "helpers/hooks/useMeasure";
+import { ViewscreenScaleContext } from "../../views/Viewscreen";
 
-class ShipModel extends Component {
-  state = {};
-  render() {
-    const {
-      viewscreen = { data: "{}" },
-      simulator: { assets }
-    } = this.props;
-    const data = JSON.parse(viewscreen.data);
-    const { title, description } = data;
-    return (
-      <div
-        className={`ship-model-container ${
-          title || description ? "has-text" : ""
-        }`}
-      >
-        {(title || description) && (
-          <div style={{ width: "40vh" }}>
-            <h1>{title}</h1>
-            <p>{description}</p>
-          </div>
+const ShipModel = props => {
+  const {
+    viewscreen = { data: "{}" },
+    simulator: { assets }
+  } = props;
+  const data = JSON.parse(viewscreen.data);
+  const { title, description } = data;
+  const [measureRef, dimensions] = useMeasure();
+  const scale = React.useContext(ViewscreenScaleContext);
+  return (
+    <div
+      className={`ship-model-container ${
+        title || description ? "has-text" : ""
+      }`}
+    >
+      {(title || description) && (
+        <div style={{ width: "40vh" }}>
+          <h1>{title}</h1>
+          <p>{description}</p>
+        </div>
+      )}
+
+      <div ref={measureRef} className="three-container">
+        {dimensions.width && (
+          <ThreeView
+            {...data}
+            src={`/assets${data.mesh || assets.mesh}`}
+            texSrc={"/3D/Texture/Simulator/default.jpg"}
+            simulatorId={props.simulator.id}
+            dimensions={{
+              width: dimensions.width / scale,
+              height: dimensions.height / scale
+            }}
+          />
         )}
-        <Asset asset={data.mesh || assets.mesh}>
-          {({ src }) => (
-            <Measure
-              bounds
-              onResize={contentRect => {
-                this.setState({ dimensions: contentRect.bounds });
-              }}
-            >
-              {({ measureRef }) => (
-                <div ref={measureRef} className="three-container">
-                  {this.state.dimensions && (
-                    <ThreeView
-                      {...data}
-                      src={src}
-                      texSrc={"/3D/Texture/Simulator/default.jpg"}
-                      simulatorId={this.props.simulator.id}
-                      dimensions={this.state.dimensions}
-                    />
-                  )}
-                </div>
-              )}
-            </Measure>
-          )}
-        </Asset>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 export default ShipModel;

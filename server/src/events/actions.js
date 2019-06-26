@@ -6,6 +6,7 @@ App.on("triggerAction", args => {
   args.stationId = args.stationId || "all";
   let clients = [];
   let stations = [];
+
   const bridgeStations = App.simulators
     .find(s => s.id === args.simulatorId)
     .stations.map(s => s.name);
@@ -72,7 +73,8 @@ App.on("triggerAction", args => {
         .map(c => c.id);
       stations = App.simulators
         .find(s => s.id === args.simulatorId)
-        .stations.filter(
+        .stations.concat({ name: "Viewscreen" })
+        .filter(
           s =>
             (s.name &&
               args.stationId &&

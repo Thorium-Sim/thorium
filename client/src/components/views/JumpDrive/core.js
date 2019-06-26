@@ -1,7 +1,7 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Table, Button } from "reactstrap";
+import { Table, Button } from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { OutputField, InputField } from "../../generic/core";
 import { titleCase } from "change-case";
@@ -37,6 +37,7 @@ const fragment = gql`
     env
     enabled
     activated
+    ringsExtended
   }
 `;
 
@@ -64,7 +65,8 @@ const JumpDriveCore = ({
   env,
   activated,
   stress,
-  enabled
+  enabled,
+  ringsExtended
 }) => (
   <div className="jumpDrive-core">
     <Mutation
@@ -99,6 +101,21 @@ const JumpDriveCore = ({
           )}
         </Mutation>
         Enabled
+      </label>
+      <label>
+        <Mutation
+          mutation={gql`
+            mutation SetJumpDriveEnabled($id: ID!, $ringsExtended: Boolean!) {
+              setJumpDriveRingsExtended(id: $id, ringsExtended: $ringsExtended)
+            }
+          `}
+          variables={{ id, ringsExtended: !ringsExtended }}
+        >
+          {action => (
+            <input type="checkbox" checked={ringsExtended} onChange={action} />
+          )}
+        </Mutation>
+        Rings Extended
       </label>
       <span>
         Current Envelope:{" "}

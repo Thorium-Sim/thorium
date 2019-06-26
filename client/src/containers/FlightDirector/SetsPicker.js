@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Card } from "reactstrap";
+import { Container, Row, Col, Card } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -94,6 +94,7 @@ class SetsPicker extends Component {
                     .filter(se =>
                       se.clients.find(
                         c =>
+                          c.stationSet &&
                           c.simulatorId === s.simulatorId &&
                           c.stationSet.id === s.stationSet.id
                       )

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, Col } from "reactstrap";
+import { FormGroup, Col } from "helpers/reactstrap";
 
 export default class SetArmyContacts extends Component {
   render() {
@@ -20,7 +20,7 @@ export default class SetArmyContacts extends Component {
                   className="armyContact"
                   src={`/assets${contact.icon}`}
                 />
-                )}
+
                 <img
                   alt="armyContactPicture"
                   draggable="false"

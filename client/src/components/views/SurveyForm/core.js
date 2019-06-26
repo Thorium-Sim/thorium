@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Input, Button } from "reactstrap";
+import { Container, Row, Col, Input, Button } from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
@@ -38,7 +38,7 @@ const SUB = gql`
 
 class SurveyCore extends Component {
   state = {};
-  startSurvey = e => {
+  startSurvey = () => {
     const mutation = gql`
       mutation TriggerSurvey($simulatorId: ID!, $id: ID!) {
         triggerSurvey(simulatorId: $simulatorId, id: $id)
@@ -46,12 +46,13 @@ class SurveyCore extends Component {
     `;
     const variables = {
       simulatorId: this.props.simulator.id,
-      id: e.target.value
+      id: this.state.survey
     };
     this.props.client.mutate({
       mutation,
       variables
     });
+    this.setState({ survey: null });
   };
   downloadResults = s => {
     // Map the results
@@ -66,9 +67,11 @@ class SurveyCore extends Component {
             if (s.form.find(m => m.id === f.id)) {
               const option = s.form
                 .find(m => m.id === f.id)
-                .options.find(o => o.id === f.value);
+                .options.filter(o => f.value.split(",").includes(o.id))
+                .map(o => o.label)
+                .join("; ");
               if (option) {
-                return option.label;
+                return option;
               }
             }
             if (parseInt(f.value, 10)) {
@@ -102,7 +105,7 @@ class SurveyCore extends Component {
     } = this.props;
     if (loading || !surveyform || !allForms) return null;
     return (
-      <Container className="surveyForm-card">
+      <Container className="surveyForm-core">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -118,16 +121,30 @@ class SurveyCore extends Component {
         />
         <Row>
           <Col sm={12}>
-            <Input type="select" value="nothing" onChange={this.startSurvey}>
-              <option value="nothing" disabled>
-                Start a new survey
-              </option>
-              {allForms.map(f => (
-                <option key={`${f.id}-all`} value={f.id}>
-                  {f.title}
+            <div style={{ display: "flex" }}>
+              <Input
+                type="select"
+                value={this.state.survey || "nothing"}
+                onChange={e => this.setState({ survey: e.target.value })}
+              >
+                <option value="nothing" disabled>
+                  Choose a new survey
                 </option>
-              ))}
-            </Input>
+                {allForms.map(f => (
+                  <option key={`${f.id}-all`} value={f.id}>
+                    {f.title}
+                  </option>
+                ))}
+              </Input>
+              <Button
+                disabled={!this.state.survey}
+                size="sm"
+                color="success"
+                onClick={this.startSurvey}
+              >
+                Start
+              </Button>
+            </div>
             <p>
               <strong>Running Surveys:</strong>
             </p>

@@ -86,6 +86,13 @@ App.on("changeSimulatorBridgeCrew", ({ simulatorId, crew }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("changeSimulatorExtraPeople", ({ simulatorId, crew }) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  if (simulator) {
+    simulator.extraPeople(crew);
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("changeSimulatorRadiation", ({ simulatorId, radiation }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
@@ -93,12 +100,15 @@ App.on("changeSimulatorRadiation", ({ simulatorId, radiation }) => {
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
-App.on("setSimulatorTimelineStep", ({ simulatorId, step }) => {
+App.on("setSimulatorTimelineStep", ({ simulatorId, timelineId, step }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   if (simulator) {
-    simulator.setTimelineStep(step);
+    simulator.setTimelineStep(step, timelineId);
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
+  if (timelineId) {
+    pubsub.publish("auxTimelinesUpdate", simulator);
+  }
 });
 App.on("addSimulatorDamageStep", ({ simulatorId, step }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
@@ -136,6 +146,14 @@ App.on("setSimulatorMission", ({ simulatorId, missionId }) => {
   simulator.setTimelineStep(0);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on(
+  "setSimulatorMissionConfig",
+  ({ simulatorId, missionId, stationSetId, actionId, args }) => {
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    simulator.setMissionConfig(missionId, stationSetId, actionId, args);
+    pubsub.publish("simulatorsUpdate", App.simulators);
+  }
+);
 App.on("updateSimulatorPanels", ({ simulatorId, panels }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.updatePanels(panels);
@@ -175,13 +193,22 @@ App.on("setVerifyDamage", ({ simulatorId, verifyStep }) => {
 const allowedMacros = [
   "updateViewscreenComponent",
   "setViewscreenToAuto",
-  "showViewscreenTactical"
+  "showViewscreenTactical",
+  "autoAdvance"
 ];
 App.on("triggerMacros", ({ simulatorId, macros }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   const flight = App.flights.find(f => f.simulators.indexOf(simulatorId) > -1);
   const context = { simulator, flight };
-  macros.forEach(({ stepId, event, args, delay = 0 }) => {
+
+  // Compile the simulator-specific args based on station set
+  const actions = Object.values(simulator.missionConfigs)
+    .map(m => {
+      return m[simulator.stationSet];
+    })
+    .reduce((acc, next) => ({ ...acc, ...next }), {});
+  macros.forEach(({ id, stepId = id, event, args, delay = 0 }) => {
+    const simArgs = actions[stepId] || {};
     if (stepId) {
       simulator.executeTimelineStep(stepId);
     }
@@ -190,6 +217,7 @@ App.on("triggerMacros", ({ simulatorId, macros }) => {
       App.handleEvent(
         {
           ...parsedArgs,
+          ...simArgs,
           simulatorId
         },
         event,
@@ -209,23 +237,20 @@ App.on("autoAdvance", ({ simulatorId, prev }) => {
   const timelineStep =
     missionObj.timeline[currentTimelineStep - (prev ? 2 : 0)];
   if (!timelineStep) return;
-  timelineStep.timelineItems
-    .filter(
-      t =>
-        executedTimelineSteps.indexOf(t.id) === -1 ||
-        allowedMacros.indexOf(t.event) > -1
-    )
-    .forEach(({ id, event, args, delay = 0 }) => {
-      sim.executeTimelineStep(id);
 
-      setTimeout(() => {
-        App.handleEvent(
-          Object.assign({ simulatorId }, JSON.parse(args)),
-          event
-        );
-      }, delay);
-    });
+  const macros = timelineStep.timelineItems.filter(t => {
+    if (executedTimelineSteps.indexOf(t.id) === -1) return true;
+    if (allowedMacros.indexOf(t.event) > -1) return true;
+    if (executedTimelineSteps.indexOf(t.id) > -1) return false;
+    return true;
+  });
+
+  macros.forEach(({ id }) => {
+    sim.executeTimelineStep(id);
+  });
+  App.handleEvent({ simulatorId, macros }, "triggerMacros");
   sim.setTimelineStep(currentTimelineStep + (prev ? -1 : 1));
+
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("setBridgeMessaging", ({ id, messaging }) => {
@@ -236,6 +261,11 @@ App.on("setBridgeMessaging", ({ id, messaging }) => {
 App.on("setSimulatorAssets", ({ id, assets }) => {
   const sim = App.simulators.find(s => s.id === id);
   sim.setAssets(assets);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("setSimulatorSoundEffects", ({ id, soundEffects }) => {
+  const sim = App.simulators.find(s => s.id === id);
+  sim.setSoundEffects(soundEffects);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 const lightingTimeouts = {};
@@ -356,6 +386,12 @@ App.on("setSimulatorHasPrinter", ({ simulatorId, hasPrinter }) => {
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 
+App.on("setSimulatorHasLegs", ({ simulatorId, hasLegs }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.setHasLegs(hasLegs);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+
 App.on(
   "setSimulatorSpaceEdventuresId",
   ({ simulatorId, spaceEdventuresId }) => {
@@ -364,3 +400,20 @@ App.on(
     pubsub.publish("simulatorsUpdate", App.simulators);
   }
 );
+App.on("hideSimulatorCard", ({ simulatorId, cardName, delay }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.hideCard(cardName);
+  if (parseInt(delay, 10)) {
+    setTimeout(() => {
+      sim.unhideCard(cardName);
+      pubsub.publish("simulatorsUpdate", App.simulators);
+    }, delay);
+  }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("unhideSimulatorCard", ({ simulatorId, cardName }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  sim.unhideCard(cardName);
+
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});

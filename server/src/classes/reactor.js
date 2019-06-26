@@ -23,7 +23,7 @@ const efficiencies = [
     efficiency: 0.5
   },
   {
-    label: "Auxilliary",
+    label: "Auxiliary",
     color: "info",
     efficiency: 0.38
   },

@@ -1,10 +1,10 @@
 import React from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "helpers/reactstrap";
 import { withApollo } from "react-apollo";
 
 import * as Macros from "components/macros";
 
-const MacroConfig = ({ action, updateAction, client }) => {
+const MacroConfig = ({ action, updateAction, client, stations, clients }) => {
   if (!action) return null;
   const args = JSON.parse(action.args);
 
@@ -22,6 +22,8 @@ const MacroConfig = ({ action, updateAction, client }) => {
             }}
             args={args || {}}
             client={client}
+            stations={stations}
+            clients={clients}
           />
         ) : (
           "No config for this macro."

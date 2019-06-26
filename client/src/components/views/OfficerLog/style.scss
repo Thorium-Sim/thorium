@@ -26,3 +26,10 @@
     }
   }
 }
+.officers-log-core {
+  height: 100%;
+  overflow-y: auto;
+  pre {
+    color: white;
+  }
+}

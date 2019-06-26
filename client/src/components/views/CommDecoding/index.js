@@ -4,12 +4,11 @@ import {
   Row,
   Col,
   Card,
-  CardBody,
   Button,
   Label,
   ListGroup,
   ListGroupItem
-} from "reactstrap";
+} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import Measure from "react-measure";
@@ -37,6 +36,7 @@ const DECODING_SUB = gql`
         message
         decodedMessage
         datestamp
+        deleted
       }
     }
   }
@@ -221,7 +221,7 @@ class Decoding extends Component {
     let selectedMessage = { a: 10, f: 10 };
     if (this.state.selectedMessage) {
       selectedMessage = sys.messages.find(
-        m => m.id === this.state.selectedMessage
+        m => m.id === this.state.selectedMessage && !m.deleted
       );
     }
     return (
@@ -266,7 +266,7 @@ class Decoding extends Component {
                 )}
               </Measure>
             </Card>
-            <Row>
+            <div>
               <Col sm={{ size: 4, offset: 8 }}>
                 <Button
                   className="decode-button"
@@ -289,8 +289,8 @@ class Decoding extends Component {
                   Decode
                 </Button>
               </Col>
-            </Row>
-            <Row className="decode-sliders">
+            </div>
+            <div className="decode-sliders">
               <Col>
                 <Label>Frequency</Label>
                 <Slider
@@ -317,14 +317,10 @@ class Decoding extends Component {
                   max={50}
                 />
               </Col>
-            </Row>
-            <Row className="flex-max">
-              <Card className="message-field">
-                <CardBody>
-                  <pre>{this.state.decodedMessage}</pre>
-                </CardBody>
-              </Card>
-            </Row>
+            </div>
+            <div className="flex-max message-field">
+              <pre>{this.state.decodedMessage}</pre>
+            </div>
           </Col>
           <Col sm={4} className="incoming-messages flex-column">
             <h3>Incoming Messages</h3>
@@ -332,15 +328,17 @@ class Decoding extends Component {
               style={{ minHeight: "40px" }}
               className="flex-max auto-scroll"
             >
-              {sys.messages.map(m => (
-                <ListGroupItem
-                  key={m.id}
-                  onClick={this._selectMessage.bind(this, m)}
-                  active={m.id === this.state.selectedMessage}
-                >
-                  {m.datestamp} - {m.sender}
-                </ListGroupItem>
-              ))}
+              {sys.messages
+                .filter(m => !m.deleted)
+                .map(m => (
+                  <ListGroupItem
+                    key={m.id}
+                    onClick={this._selectMessage.bind(this, m)}
+                    active={m.id === this.state.selectedMessage}
+                  >
+                    {m.datestamp} - {m.sender}
+                  </ListGroupItem>
+                ))}
             </ListGroup>
           </Col>
         </Row>
@@ -366,6 +364,7 @@ const DECODING_QUERY = gql`
         message
         decodedMessage
         datestamp
+        deleted
       }
     }
   }

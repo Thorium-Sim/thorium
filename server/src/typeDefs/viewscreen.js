@@ -15,6 +15,25 @@ const schema = gql`
     auto: Boolean
     secondary: Boolean
     overlay: Boolean
+    pictureInPicture: ViewscreenPictureInPicture
+  }
+  type ViewscreenPictureInPicture {
+    component: String
+    data: JSON
+    position: PIP_POSITION
+    size: PIP_SIZE
+  }
+  enum PIP_POSITION {
+    bottomLeft
+    bottomRight
+    topLeft
+    topRight
+    center
+  }
+  enum PIP_SIZE {
+    small
+    medium
+    large
   }
   extend type Query {
     viewscreens(simulatorId: ID): [Viewscreen]
@@ -27,6 +46,9 @@ const schema = gql`
     Macro: Viewscreen: Change Viewscreen Card
     """
     updateViewscreenComponent(
+      """
+      Dynamic: Client
+      """
       id: ID
       simulatorId: ID
       component: String!
@@ -38,13 +60,46 @@ const schema = gql`
     """
     Macro: Viewscreen: Set Viewscreen to Auto
     """
-    setViewscreenToAuto(id: ID, simulatorId: ID, secondary: Boolean): String
+    setViewscreenToAuto(
+      """
+      Dynamic: Client
+      """
+      id: ID
+      simulatorId: ID
+      secondary: Boolean
+    ): String
+    """
+    Macro: Viewscreen: Set Viewscreen Picture-in-Picture
+    """
+    setViewscreenPictureInPicture(
+      """
+      Dynamic: Client
+      """
+      id: ID
+      simulatorId: ID
+      secondary: Boolean
+      component: String!
+      data: JSON
+      size: PIP_SIZE
+      position: PIP_POSITION
+    ): String
+    """
+    Macro: Viewscreen: Remove Viewscreen Picture-in-Picture
+    """
+    removeViewscreenPictureInPicture(
+      """
+      Dynamic: Client
+      """
+      id: ID
+      simulatorId: ID
+      secondary: Boolean
+    ): String
     updateViewscreenAuto(id: ID!, auto: Boolean!): String
-    toggleViewscreenVideo(simulatorId: ID!): String
+    toggleViewscreenVideo(simulatorId: ID, viewscreenId: ID): String
   }
   extend type Subscription {
     viewscreensUpdate(simulatorId: ID): [Viewscreen]
-    viewscreenVideoToggle(simulatorId: ID): Boolean
+    viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
   }
 `;
 
@@ -99,8 +154,15 @@ const resolver = {
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("viewscreenVideoToggle"),
-        (rootValue, { simulatorId }) => {
-          return rootValue === simulatorId;
+        (rootValue, { simulatorId, viewscreenId }) => {
+          return (
+            (rootValue.simulatorId &&
+              simulatorId &&
+              rootValue.simulatorId === simulatorId) ||
+            (rootValue.viewscreenId &&
+              viewscreenId &&
+              rootValue.viewscreenId === viewscreenId)
+          );
         }
       )
     }

@@ -1,6 +1,7 @@
 import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
+import { StationResolver } from "../helpers/stationResolver";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -23,8 +24,10 @@ const schema = gql`
     systems: [System]
     stations: [Station]
     mission: Mission
+    missionConfigs: JSON
     currentTimelineStep: Int
     executedTimelineSteps: [ID]
+    timelines: [TimelineInstance]
     decks: [Deck]
     rooms: [Room]
     ship: Ship
@@ -41,11 +44,12 @@ const schema = gql`
     interfaces: [ID]
     bridgeOfficerMessaging: Boolean
     hasPrinter: Boolean
+    hasLegs: Boolean
     spaceEdventuresId: String
   }
 
   extend type Query {
-    simulators(template: Boolean, id: String): [Simulator]
+    simulators(template: Boolean, id: ID): [Simulator]
   }
   extend type Mutation {
     createSimulator(name: String!, template: Boolean): String
@@ -54,7 +58,7 @@ const schema = gql`
     """
     Macro: Timeline: Auto-Advance Timeline Step (Use with Delay)
     """
-    autoAdvance(simulatorId: ID!, prev: Boolean): String
+    autoAdvance(simulatorId: ID!, prev: Boolean, limited: Boolean): String
     """
     Macro: Flight: Start Training Mode
     """
@@ -82,12 +86,33 @@ const schema = gql`
     """
     changeSimulatorAlertLevel(simulatorId: ID!, alertLevel: String!): String
 
+    """
+    Macro: Station: Hide Card
+    """
+    hideSimulatorCard(simulatorId: ID!, cardName: String!, delay: Int): String
+    """
+    Macro: Station: Unhide Card
+    """
+    unhideSimulatorCard(simulatorId: ID!, cardName: String!): String
+
     changeSimulatorExocomps(simulatorId: ID!, exocomps: Int!): String
     changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String
+    changeSimulatorExtraPeople(simulatorId: ID!, crew: Int!): String
     changeSimulatorRadiation(simulatorId: ID!, radiation: Float!): String
-    setSimulatorTimelineStep(simulatorId: ID!, step: Int!): String
+    setSimulatorTimelineStep(
+      simulatorId: ID!
+      timelineId: ID
+      step: Int!
+    ): String
 
     setSimulatorMission(simulatorId: ID!, missionId: ID!): String
+    setSimulatorMissionConfig(
+      simulatorId: ID!
+      missionId: ID!
+      stationSetId: ID!
+      actionId: ID!
+      args: JSON!
+    ): String
     updateSimulatorPanels(simulatorId: ID!, panels: [ID]!): String
     updateSimulatorCommandLines(simulatorId: ID!, commandLines: [ID]!): String
     updateSimulatorTriggers(simulatorId: ID!, triggers: [ID]!): String
@@ -98,8 +123,10 @@ const schema = gql`
     setVerifyDamage(simulatorId: ID!, verifyStep: Boolean!): String
     setBridgeMessaging(id: ID!, messaging: Boolean!): String
     setSimulatorAssets(id: ID!, assets: SimulatorAssetsInput!): String
+    setSimulatorSoundEffects(id: ID!, soundEffects: JSON!): String
     updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
     setSimulatorHasPrinter(simulatorId: ID!, hasPrinter: Boolean!): String
+    setSimulatorHasLegs(simulatorId: ID!, hasLegs: Boolean!): String
 
     setSimulatorSpaceEdventuresId(
       simulatorId: ID!
@@ -188,6 +215,29 @@ const resolver = {
     systems(rootValue) {
       return App.systems.filter(s => s.simulatorId === rootValue.id);
     },
+    stations(rootValue) {
+      const interfaces = rootValue.interfaces.map(i =>
+        App.interfaces.find(({ id }) => i === id)
+      );
+      return rootValue.stations.map(station => {
+        if (station)
+          return {
+            ...station,
+            cards: station.cards.map(c => {
+              if (
+                c.component.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+              ) {
+                const iface = interfaces.find(
+                  i => i.templateId === c.component.replace("interface-id:", "")
+                );
+                return { ...c, component: `interface-id:${iface.id}` };
+              }
+              return c;
+            })
+          };
+        return station;
+      });
+    },
     stationSets(rootValue) {
       return App.stationSets.filter(s => s.simulatorId === rootValue.id);
     },
@@ -223,6 +273,7 @@ const resolver = {
         () => pubsub.asyncIterator("simulatorsUpdate"),
         (rootValue, { simulatorId, template }) => {
           let returnVal = rootValue;
+          if (!returnVal) return false;
           if (template) returnVal = returnVal.filter(s => s.template);
           if (simulatorId)
             returnVal = returnVal.filter(s => s.id === simulatorId);

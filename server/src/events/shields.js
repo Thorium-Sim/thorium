@@ -134,10 +134,11 @@ App.on("shieldIntegritySet", ({ id, integrity }) => {
   system.setIntegrity(integrity);
   sendUpdate();
 });
-App.on("shieldFrequencySet", ({ id, frequency }) => {
+App.on("shieldFrequencySet", ({ id, frequency, cb }) => {
   const system = App.systems.find(sys => sys.id === id);
   system && system.setFrequency(frequency);
   sendUpdate();
+  cb();
 });
 App.on("hitShields", ({ id, simulatorId }) => {
   if (id) {

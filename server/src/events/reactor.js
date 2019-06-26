@@ -30,13 +30,14 @@ App.on("reactorEject", ({ id, tf = true }) => {
     App.systems.filter(s => s.type === "Reactor")
   );
 });
-App.on("reactorChangeModel", ({ id, model }) => {
+App.on("reactorChangeModel", ({ id, model, cb }) => {
   const system = App.systems.find(sys => sys.id === id);
   system && system.changeModel(model);
   pubsub.publish(
     "reactorUpdate",
     App.systems.filter(s => s.type === "Reactor")
   );
+  cb && cb();
 });
 App.on("reactorChangeOutput", ({ id, output }) => {
   const system = App.systems.find(sys => sys.id === id);
@@ -110,13 +111,14 @@ App.on("fluxDilithiumStress", ({ id }) => {
   );
 });
 
-App.on("setReactorEffciciencies", ({ id, efficiencies }) => {
+App.on("setReactorEffciciencies", ({ id, efficiencies, cb }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.updateEfficiencies(efficiencies);
   pubsub.publish(
     "reactorUpdate",
     App.systems.filter(s => s.type === "Reactor")
   );
+  cb && cb();
 });
 
 App.on("setDilithiumStressRate", ({ id, rate }) => {
@@ -128,11 +130,12 @@ App.on("setDilithiumStressRate", ({ id, rate }) => {
   );
 });
 
-App.on("reactorRequireBalance", ({ id, balance }) => {
+App.on("reactorRequireBalance", ({ id, balance, cb }) => {
   const system = App.systems.find(sys => sys.id === id);
   system.setRequireBalance(balance);
   pubsub.publish(
     "reactorUpdate",
     App.systems.filter(s => s.type === "Reactor")
   );
+  cb && cb();
 });

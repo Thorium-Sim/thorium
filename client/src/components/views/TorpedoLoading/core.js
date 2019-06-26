@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Container, Button, ButtonGroup } from "reactstrap";
+import { Container, Button, ButtonGroup } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { OutputField } from "../../generic/core";
 import { Query } from "react-apollo";
@@ -79,7 +79,10 @@ const fragment = gql`
     inventory {
       id
       type
-      probe
+      probe {
+        id
+        name
+      }
     }
     state
   }
@@ -120,7 +123,6 @@ const TorpedoData = props => {
                 document: TORPEDO_SUB,
                 variables: { simulatorId },
                 updateQuery: (previousResult, { subscriptionData }) => {
-                  debugger;
                   return Object.assign({}, previousResult, {
                     torpedos: subscriptionData.data.torpedosUpdate
                   });

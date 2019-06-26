@@ -44,6 +44,17 @@ const schema = gql`
     Macro: Command Line: Remove command line
     """
     removeCommandLineFromSimulator(simulatorId: ID!, commandLine: ID!): String
+    addCommandLineOutput(
+      simulatorId: ID!
+      clientId: ID!
+      output: String!
+    ): String
+    handleCommandLineFeedback(
+      simulatorId: ID!
+      clientId: ID!
+      feedbackId: ID!
+      isApproved: Boolean!
+    ): String
   }
   extend type Subscription {
     commandLineUpdate(simulatorId: ID): [CommandLine]

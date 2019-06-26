@@ -18,6 +18,7 @@ const schema = gql`
     stationSet: StationSet
     station: String
     secondary: Boolean
+    soundPlayer: Boolean
   }
 
   input SetClientInput {
@@ -27,6 +28,7 @@ const schema = gql`
     stationSet: ID
     station: ID
     secondary: Boolean
+    soundPlayer: Boolean
   }
   extend type Query {
     sets: [Set]

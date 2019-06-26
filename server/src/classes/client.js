@@ -90,14 +90,17 @@ export default class Client {
     this.station = params.station || null;
     this.loginName = params.loginName || null;
     this.loginState = params.loginState || "logout";
+    // If we're logged in with Space EdVentures, don't logout on reset.
+    this.isSpaceEdventures = params.isSpaceEdventures || false;
     this.connected = params.connected || false;
     this.offlineState = params.offlineState || null;
     this.movie = params.movie || null;
     this.hypercard = params.hypercard || null;
     this.training = params.training || false;
     this.overlay = params.overlay || false;
+    this.soundPlayer = params.soundPlayer || false;
     this.caches = params.caches || [];
-    this.cracked = params.cracked || false;
+
     // For the mobile app
     this.mobile = params.mobile || false;
     this.cards = params.cards || [];
@@ -140,9 +143,10 @@ export default class Client {
   setStation(station) {
     this.station = station;
   }
-  login(name) {
+  login(name, isSpaceEdventures) {
     this.loginName = name;
     this.loginState = "login";
+    this.isSpaceEdventures = isSpaceEdventures;
   }
   logout() {
     this.loginName = null;
@@ -165,8 +169,13 @@ export default class Client {
   setOfflineState(state) {
     // Clear the movie
     this.movie = null;
+    // Clear the hypercard
+    this.hypercard = null;
     // Allow one of null, 'blackout', 'offline', 'power', 'lockdown', 'maintenance', 'spaceEdventuresToken
     this.offlineState = state;
+  }
+  setSoundPlayer(tf) {
+    this.soundPlayer = tf;
   }
   addCache(cacheItem) {
     const url = `/assets${cacheItem}`;
@@ -183,19 +192,19 @@ export default class Client {
   }
   reset(hardReset) {
     this.setTraining(false);
-    this.logout();
+    if (!this.isSpaceEdventures) {
+      this.logout();
+    }
     this.setOfflineState(null);
     this.setHypercard(null);
     if (hardReset) {
+      this.isSpaceEdventures = false;
+      this.logout();
       this.setFlight(null);
+      this.setSoundPlayer(false);
     }
   }
-  crack() {
-    this.cracked = true;
-  }
-  uncrack() {
-    this.cracked = false;
-  }
+
   diagnostic() {}
   lockScreen() {}
   unlockScreen() {}

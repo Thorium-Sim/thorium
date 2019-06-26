@@ -14,6 +14,7 @@ export default class Explosion extends Component {
     const { frame } = this.state;
     if (!this.looping) return;
     if (frame === 16) return;
+
     this.setState({
       frame: frame + 1
     });
@@ -25,6 +26,7 @@ export default class Explosion extends Component {
     return (
       <img
         width={width}
+        className="explosion-effect"
         alt="explosion"
         draggable={false}
         style={style}

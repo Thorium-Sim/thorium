@@ -8,7 +8,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 class AddFileModal extends Component {
   state = {};

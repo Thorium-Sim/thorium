@@ -73,6 +73,7 @@ export default class LongRangeComm extends System {
       this.messages.push(new LRMessage(m, this.simulatorId))
     );
     this.interception = params.interception || false;
+    this.difficulty = params.difficulty || 30000;
     this.locked = params.locked || false;
     this.decoded = params.decoded || false;
     this.satellites = params.satellites || 3;
@@ -110,7 +111,7 @@ export default class LongRangeComm extends System {
       );
     }
   }
-  update({ interception, locked, decoded }) {
+  update({ interception, locked, decoded, difficulty }) {
     if (interception || interception === false) {
       this.interception = interception;
       this.locked = false;
@@ -118,6 +119,7 @@ export default class LongRangeComm extends System {
     }
     if (locked || locked === false) this.locked = locked;
     if (decoded || decoded === false) this.decoded = decoded;
+    if (difficulty) this.difficulty = difficulty;
   }
   createMessage(message, crew, decoded, sender) {
     const params = { message, crew, sender, sent: false };

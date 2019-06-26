@@ -10,6 +10,7 @@ function degtorad(deg) {
 class ThreeView extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.rotation = 0;
     this.cloudRotation = 0;
     const { width, height } = props.dimensions;
@@ -68,7 +69,7 @@ class ThreeView extends Component {
       this.clouds.visible = true;
     }
 
-    document.getElementById("threeMount").appendChild(this.renderer.domElement);
+    this.threeMount.current.appendChild(this.renderer.domElement);
     this.animating = true;
     this.animate();
   }
@@ -112,6 +113,7 @@ class ThreeView extends Component {
     this.animating = false;
     cancelAnimationFrame(this.frame);
   }
+  threeMount = React.createRef();
   animate = () => {
     if (!this.animating) return;
 
@@ -133,7 +135,7 @@ class ThreeView extends Component {
     this.frame = requestAnimationFrame(this.animate);
   };
   render() {
-    return <div id="threeMount" />;
+    return <div ref={this.threeMount} />;
   }
 }
 export default ThreeView;

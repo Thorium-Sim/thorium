@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button } from "helpers/reactstrap";
 import { Asset } from "helpers/assets";
 import { withApollo, Mutation } from "react-apollo";
 import Tour from "helpers/tourHelper";
@@ -206,7 +206,10 @@ class ThxRender extends Component {
     return (
       <Container className="card-thx">
         <Row>
-          <Col sm={{ size: 8, offset: executive ? 2 : 0 }}>
+          <Col
+            sm={{ size: 8, offset: executive ? 2 : 0 }}
+            className="noPointerEvents"
+          >
             <ShipImage
               view={assets.top}
               simulatorId={simulatorId}

@@ -8,6 +8,7 @@ const fragment = gql`
   fragment InterfaceConfigData on Interface {
     id
     name
+    simulatorId
     deviceType {
       id
       name
@@ -27,6 +28,11 @@ const QUERY = gql`
     interfaces {
       ...InterfaceConfigData
     }
+  }
+  ${fragment}
+`;
+export const DEVICE_QUERY = gql`
+  query Devices {
     interfaceDevices {
       id
       name
@@ -35,8 +41,8 @@ const QUERY = gql`
       isLandscape
     }
   }
-  ${fragment}
 `;
+
 const SUBSCRIPTION = gql`
   subscription InterfaceUpdate {
     interfaceUpdate {
@@ -52,7 +58,7 @@ class InterfacesData extends Component {
     return (
       <Query query={QUERY}>
         {({ loading, data, subscribeToMore }) => {
-          const { interfaces, interfaceDevices } = data;
+          const { interfaces } = data;
           if (loading || !interfaces) return null;
           return (
             <SubscriptionHelper
@@ -67,11 +73,20 @@ class InterfacesData extends Component {
                 })
               }
             >
-              <InterfacesControl
-                {...this.props}
-                interfaces={interfaces}
-                interfaceDevices={interfaceDevices}
-              />
+              <Query query={DEVICE_QUERY}>
+                {({ loading, data }) => {
+                  const { interfaceDevices } = data;
+                  if (loading || !interfaceDevices) return null;
+
+                  return (
+                    <InterfacesControl
+                      {...this.props}
+                      interfaces={interfaces.filter(i => !i.simulatorId)}
+                      interfaceDevices={interfaceDevices}
+                    />
+                  );
+                }}
+              </Query>
             </SubscriptionHelper>
           );
         }}

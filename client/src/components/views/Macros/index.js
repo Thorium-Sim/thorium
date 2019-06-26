@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Button, Card, Input } from "reactstrap";
+import { Button, Card, Input } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
@@ -11,7 +11,7 @@ import MacroConfig from "./macroConfig";
 class MacrosCore extends Component {
   state = { actions: [] };
   render() {
-    const { simulator } = this.props;
+    const { simulator, clients } = this.props;
     const { actions = [], selectedAction } = this.state;
     const action = actions.find(a => a.id === selectedAction);
     return (
@@ -85,6 +85,8 @@ class MacrosCore extends Component {
                 <MacroConfig
                   key={action.id}
                   action={action}
+                  stations={simulator.stations}
+                  clients={clients}
                   updateAction={actionUpdate =>
                     this.setState(state => ({
                       actions: state.actions.map(a =>

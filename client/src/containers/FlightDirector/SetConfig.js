@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Container, Row, Col, Card, Button, Input } from "reactstrap";
+import { Container, Row, Col, Card, Button, Input } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo, Query } from "react-apollo";
 
@@ -156,6 +156,27 @@ class SetConfig extends Component {
       id: selectedSet,
       clientId,
       secondary: e.target.checked
+    };
+    this.props.client.mutate({
+      mutation,
+      variables,
+      refetchQueries: ["Sets"]
+    });
+  };
+  updateSoundPlayer = (e, clientId) => {
+    const { selectedSet } = this.state;
+    const mutation = gql`
+      mutation UpdateSet($id: ID!, $clientId: ID!, $soundPlayer: Boolean) {
+        updateSetClient(
+          id: $id
+          client: { id: $clientId, soundPlayer: $soundPlayer }
+        )
+      }
+    `;
+    const variables = {
+      id: selectedSet,
+      clientId,
+      soundPlayer: e.target.checked
     };
     this.props.client.mutate({
       mutation,
@@ -322,6 +343,18 @@ class SetConfig extends Component {
                 >
                   Blackout
                 </li>
+                <li
+                  className={`list-group-item ${
+                    selectedStation === `Lighting` ? "selected" : ""
+                  }`}
+                  onClick={() =>
+                    this.setState({
+                      selectedStation: `Lighting`
+                    })
+                  }
+                >
+                  Lighting
+                </li>
                 <Query
                   query={gql`
                     query Keyboards {
@@ -338,7 +371,9 @@ class SetConfig extends Component {
                     }
                     return (
                       <Fragment>
-                        <li>Keyboards</li>
+                        <li className={`list-group-item disabled`} disabled>
+                          Keyboards
+                        </li>
                         {keyboard.map(k => (
                           <li
                             key={k.id}
@@ -360,24 +395,78 @@ class SetConfig extends Component {
                     );
                   }}
                 </Query>
-                <Fragment>
-                  <li>Mobile</li>
-                  {mobileScreens.map(k => (
-                    <li
-                      key={k}
-                      className={`list-group-item ${
-                        selectedStation === `mobile:${k}` ? "selected" : ""
-                      }`}
-                      onClick={() =>
-                        this.setState({
-                          selectedStation: `mobile:${k}`
-                        })
+                <Query
+                  query={gql`
+                    query SimInterface($id: ID) {
+                      simulators(id: $id) {
+                        interfaces
                       }
-                    >
-                      {k}
+                      interfaces {
+                        id
+                        name
+                      }
+                    }
+                  `}
+                  variables={{ id: selectedSimulator }}
+                >
+                  {({ loading, data }) => {
+                    if (!data.simulators) return null;
+                    const interfaces = data.simulators[0].interfaces
+                      .map(i => data.interfaces.find(ii => ii.id === i))
+                      .filter(Boolean);
+                    if (loading || interfaces.length === 0) {
+                      return null;
+                    }
+                    return (
+                      <Fragment>
+                        <li className={`list-group-item disabled`} disabled>
+                          Interfaces
+                        </li>
+                        {interfaces.map(k => (
+                          <li
+                            key={k.id}
+                            className={`list-group-item ${
+                              selectedStation === `interface-id:${k.id}`
+                                ? "selected"
+                                : ""
+                            }`}
+                            onClick={() =>
+                              this.setState({
+                                selectedStation: `interface-id:${k.id}`
+                              })
+                            }
+                          >
+                            {k.name}
+                          </li>
+                        ))}
+                      </Fragment>
+                    );
+                  }}
+                </Query>
+                {mobileScreens.length > 0 ? (
+                  <Fragment>
+                    <li className={`list-group-item disabled`} disabled>
+                      Mobile
                     </li>
-                  ))}
-                </Fragment>
+                    {mobileScreens
+                      .filter(k => k !== "Interfaces")
+                      .map(k => (
+                        <li
+                          key={k}
+                          className={`list-group-item ${
+                            selectedStation === `mobile:${k}` ? "selected" : ""
+                          }`}
+                          onClick={() =>
+                            this.setState({
+                              selectedStation: `mobile:${k}`
+                            })
+                          }
+                        >
+                          {k}
+                        </li>
+                      ))}
+                  </Fragment>
+                ) : null}
               </Card>
             )}
           </Col>
@@ -387,11 +476,13 @@ class SetConfig extends Component {
               <Card className="flex-max auto-scroll">
                 <ul style={{ padding: 0 }}>
                   {clients
-                    .filter(s =>
-                      selectedStation.indexOf("mobile:") === -1
+                    .filter(s => {
+                      if (selectedStation.indexOf("interface-id:") > -1)
+                        return true;
+                      return selectedStation.indexOf("mobile:") === -1
                         ? !s.mobile
-                        : s.mobile
-                    )
+                        : s.mobile;
+                    })
                     .map(s => (
                       <li key={s.id} className={`list-group-item`}>
                         <label>
@@ -421,6 +512,25 @@ class SetConfig extends Component {
                                 type="checkbox"
                               />
                               <small>Secondary Viewscreen</small>
+                            </label>
+                          )}
+                        {(selectedStation === "Viewscreen" ||
+                          selectedStation.indexOf("keyboard") > -1) &&
+                          this.getCurrentClient(s.id).id && (
+                            <label>
+                              <Input
+                                checked={
+                                  this.getCurrentClient(s.id).soundPlayer
+                                }
+                                onChange={e =>
+                                  this.updateSoundPlayer(
+                                    e,
+                                    this.getCurrentClient(s.id).id
+                                  )
+                                }
+                                type="checkbox"
+                              />
+                              <small>Sound Player</small>
                             </label>
                           )}
                       </li>
@@ -471,6 +581,7 @@ const SIMULATOR_QUERY = gql`
         }
         station
         secondary
+        soundPlayer
       }
     }
     clients {

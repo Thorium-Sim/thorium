@@ -22,6 +22,8 @@ class ResetCache extends Component {
       .subscribe({
         next: ({ loading }) => {
           if (!loading) {
+            // Reset all of the sounds that are currently playing
+            this.props.removeAllSounds();
             if (
               excludedStations.indexOf(this.props.station.name) > -1 ||
               (this.props.station.cards &&

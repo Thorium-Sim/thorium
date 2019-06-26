@@ -15,8 +15,9 @@ export default (
   Level: ${level || `#[1-10]`}
   Username: ${username || `${displayName} Repair`}
   Password: ${password ||
-    `${randomFromList(greekLetters) -
-      Math.round(Math.random() * 10000)}-${randomFromList(greekLetters)}`}
+    `${randomFromList(greekLetters)}-${Math.round(
+      Math.random() * 10000
+    )}-${randomFromList(greekLetters)}`}
   
   `;
 };

@@ -42,6 +42,9 @@
     background-color: black;
   }
 }
+.noPointerEvents {
+  pointer-events: none;
+}
 .thx-lock {
   height: 100%;
   font-size: 5vw;

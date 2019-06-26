@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Label } from "reactstrap";
+import { Label } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -25,7 +25,7 @@ class Damage extends Component {
     if (this.props.data.loading || !this.props.data.systems) return null;
     const { systems } = this.props.data;
     return (
-      <div>
+      <div className="damaged-systems-list">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({

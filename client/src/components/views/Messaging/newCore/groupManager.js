@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Button, Input } from "reactstrap";
+import { Container, Row, Col, Button, Input } from "helpers/reactstrap";
 class GroupManager extends Component {
   state = { sender: "", destination: "nothing" };
   render() {

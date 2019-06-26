@@ -266,6 +266,7 @@ class TacticalMapCore extends Component {
                       simulatorId={
                         this.props.simulator ? this.props.simulator.id : null
                       }
+                      viewscreen={this.props.viewscreen}
                       tacticalMapId={this.state.tacticalMapId}
                       layers={tacticalMap.layers}
                       layerId={this.state.layerId}

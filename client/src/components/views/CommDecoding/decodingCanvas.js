@@ -76,42 +76,40 @@ export default class DecodingCanvas extends Component {
             width: dimensions.width
           }).reduce(
             (prev, next, index) =>
-              prev + `${index % 2 === 0 ? "L" : ""} ${next} `,
-            `M 0 ${height / 2} `
+              prev + `${index % 2 === 0 ? "L" : ""} ${next}`,
+            `M 0 ${height / 2}`
           )}
           fill="transparent"
           stroke="red"
           strokeWidth={2}
         />
-        {rf &&
-          ra && (
-            <path
-              fill="transparent"
-              stroke={decodeProgress ? "magenta" : "yellow"}
-              strokeWidth={2}
-              d={(decodeProgress
-                ? decodePoints({
-                    rf,
-                    ra,
-                    message,
-                    decodeProgress,
-                    width: dimensions.width
-                  })
-                : sinPoints({
-                    f: rf,
-                    a: ra,
-                    p: p,
-                    animate: true,
-                    width: dimensions.width
-                  })
-              ).reduce(
-                (prev, next, index) =>
-                  prev +
-                  `${index % 2 === 0 && index !== 0 ? "L" : ""} ${next} `,
-                `M `
-              )}
-            />
-          )}
+        {rf && ra && (
+          <path
+            fill="transparent"
+            stroke={decodeProgress ? "magenta" : "yellow"}
+            strokeWidth={2}
+            d={(decodeProgress
+              ? decodePoints({
+                  rf,
+                  ra,
+                  message,
+                  decodeProgress,
+                  width: dimensions.width
+                })
+              : sinPoints({
+                  f: rf,
+                  a: ra,
+                  p: p,
+                  animate: true,
+                  width: dimensions.width
+                })
+            ).reduce(
+              (prev, next, index) =>
+                prev + `${index % 2 === 0 && index !== 0 ? "L" : ""} ${next} `,
+              `M `
+            )}
+          />
+        )}
       </svg>
     );
   }

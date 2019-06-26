@@ -1,13 +1,15 @@
 import React, { Fragment } from "react";
-import { Row, Button, Col } from "reactstrap";
+import { Row, Button, Col } from "helpers/reactstrap";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 import HeatBar from "./heatbar";
 import DamageOverlay from "../helpers/DamageOverlay";
+import EngineButtons from "./engineButtons";
 
 export default withApollo(props => {
   const { engines, setSpeed, locked } = props;
-  const applyCoolant = id => {
+  const applyCoolant = ({ id, heat }) => {
+    if (heat < 0.01) return;
     const mutation = gql`
       mutation CoolEngine($id: ID!, $state: Boolean) {
         engineCool(id: $id, state: $state)
@@ -42,34 +44,12 @@ export default withApollo(props => {
   return (
     <Fragment>
       <Col>
-        {engines[0].speeds.map((speed, speedIndex) => {
-          let speedWord = speed;
-          if (typeof speed === "object") {
-            speedWord = speed.text;
-          }
-          return (
-            <Button
-              disabled={
-                locked ||
-                engines[0].damage.damaged ||
-                engines[0].power.powerLevels.findIndex(
-                  p => p > engines[0].power.power
-                ) -
-                  1 <
-                  speedIndex
-              }
-              key={`speed-${speedIndex}`}
-              color="primary"
-              block
-              className="speedBtn"
-              onClick={() => {
-                setSpeed(engines[0], speedIndex, engines, 0);
-              }}
-            >
-              {speedWord}
-            </Button>
-          );
-        })}
+        <EngineButtons
+          engine={engines[0]}
+          locked={locked}
+          engines={engines}
+          setSpeed={setSpeed}
+        />
         <DamageOverlay
           system={engines[0]}
           message={`${engines[0].displayName || engines[0].name} Offline`}
@@ -98,8 +78,8 @@ export default withApollo(props => {
               block
               className="cool-engines"
               color="info"
-              onMouseDown={applyCoolant.bind(this, engines[0].id)}
-              onTouchStart={applyCoolant.bind(this, engines[0].id)}
+              onMouseDown={applyCoolant.bind(this, engines[0])}
+              onTouchStart={applyCoolant.bind(this, engines[0])}
             >
               Coolant
             </Button>
@@ -129,8 +109,8 @@ export default withApollo(props => {
             <Button
               block
               color="info"
-              onMouseDown={applyCoolant.bind(this, engines[1].id)}
-              onTouchStart={applyCoolant.bind(this, engines[1].id)}
+              onMouseDown={applyCoolant.bind(this, engines[1])}
+              onTouchStart={applyCoolant.bind(this, engines[1])}
             >
               Coolant
             </Button>
@@ -138,34 +118,12 @@ export default withApollo(props => {
         </Row>
       </Col>
       <Col className="flex-column auto-scroll">
-        {engines[1].speeds.map((speed, speedIndex) => {
-          let speedWord = speed;
-          if (typeof speed === "object") {
-            speedWord = speed.text;
-          }
-          return (
-            <Button
-              disabled={
-                locked ||
-                engines[1].damage.damaged ||
-                engines[1].power.powerLevels.findIndex(
-                  p => p > engines[1].power.power
-                ) -
-                  1 <
-                  speedIndex
-              }
-              key={`speed-${speedIndex}`}
-              color="primary"
-              block
-              className="speedBtn"
-              onClick={() => {
-                setSpeed(engines[1], speedIndex, engines, 1);
-              }}
-            >
-              {speedWord}
-            </Button>
-          );
-        })}
+        <EngineButtons
+          engine={engines[1]}
+          locked={locked}
+          engines={engines}
+          setSpeed={setSpeed}
+        />
         <DamageOverlay
           system={engines[1]}
           message={`${engines[1].displayName || engines[1].name} Offline`}

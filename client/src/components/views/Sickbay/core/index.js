@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Query } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Container } from "reactstrap";
+import { Container } from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import PatientControls from "./PatientControls";
 

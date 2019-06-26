@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo } from "react-apollo";
+import { withApollo, Query } from "react-apollo";
 import {
   Container,
   Row,
@@ -11,11 +11,12 @@ import {
   FormGroup,
   Input,
   Label
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { paramCase } from "change-case";
 import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import { cypherMap } from "components/views/CodeCyphers";
 const SUB = gql`
   subscription Library {
     libraryEntriesUpdate {
@@ -29,6 +30,7 @@ const SUB = gql`
         id
         title
       }
+      font
       categories
     }
   }
@@ -43,7 +45,17 @@ class Library extends Component {
   };
   submit = () => {
     const {
-      entry: { id, title, type, body, image, seeAlso, categories, simulatorId }
+      entry: {
+        id,
+        title,
+        type,
+        body,
+        image,
+        seeAlso,
+        categories,
+        font,
+        simulatorId
+      }
     } = this.state;
     let mutation = gql`
       mutation AddLibraryEntry($entry: LibraryInput!) {
@@ -58,7 +70,17 @@ class Library extends Component {
       `;
     }
     const variables = {
-      entry: { id, title, type, body, image, seeAlso, categories, simulatorId }
+      entry: {
+        id,
+        title,
+        type,
+        body,
+        image,
+        seeAlso,
+        categories,
+        font,
+        simulatorId
+      }
     };
     this.props.client.mutate({ mutation, variables }).then(() => {
       this.setState({ entry: null });
@@ -97,25 +119,11 @@ class Library extends Component {
     }
   };
   render() {
-    const {
-      data: { loading, libraryEntries }
-    } = this.props;
+    const { libraryEntries } = this.props;
     const { entry } = this.state;
-    if (loading || !libraryEntries) return null;
+    if (!libraryEntries) return null;
     return (
       <Container>
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: SUB,
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  libraryEntries: subscriptionData.data.libraryEntriesUpdate
-                });
-              }
-            })
-          }
-        />
         <h3>Library</h3>
         <Row>
           <Col sm={3}>
@@ -324,6 +332,21 @@ class Library extends Component {
                         </div>
                       ))}
                     </FormGroup>
+                    <FormGroup>
+                      <Label>Font</Label>
+                      <Input
+                        type="select"
+                        value={entry.font}
+                        onChange={e => this.updateEntry("font", e.target.value)}
+                      >
+                        <option value="">Normal Font</option>
+                        {Object.keys(cypherMap).map(c => (
+                          <option value={cypherMap[c]} key={c}>
+                            {cypherMap[c]}
+                          </option>
+                        ))}
+                      </Input>
+                    </FormGroup>
                   </Col>
 
                   <Col sm={12}>
@@ -411,9 +434,36 @@ const QUERY = gql`
         id
         title
       }
+      font
       categories
     }
   }
 `;
 
-export default graphql(QUERY)(withApollo(Library));
+const LibraryData = props => {
+  return (
+    <Query query={QUERY}>
+      {({ loading, data, subscribeToMore }) => {
+        if (loading) return null;
+        return (
+          <>
+            <SubscriptionHelper
+              subscribe={() =>
+                subscribeToMore({
+                  document: SUB,
+                  updateQuery: (previousResult, { subscriptionData }) => {
+                    return Object.assign({}, previousResult, {
+                      libraryEntries: subscriptionData.data.libraryEntriesUpdate
+                    });
+                  }
+                })
+              }
+            />
+            <Library {...props} libraryEntries={data.libraryEntries} />
+          </>
+        );
+      }}
+    </Query>
+  );
+};
+export default withApollo(LibraryData);

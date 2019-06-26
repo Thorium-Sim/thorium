@@ -34,6 +34,7 @@ export default class SoftwarePanel {
     this.id = params.id || uuid.v4();
     this.class = "SoftwarePanel";
     this.simulatorId = params.simulatorId || null;
+    this.templateId = params.templateId || null;
     this.name = params.name || "Panel";
     this.cables = [];
     this.components = [];

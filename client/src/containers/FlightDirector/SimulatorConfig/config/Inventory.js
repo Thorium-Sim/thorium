@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Container, Row, Col, Button, Input, Label } from "reactstrap";
+import { Container, Row, Col, Button, Input, Label } from "helpers/reactstrap";
 import { graphql, withApollo } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 const INVENTORY_SUB = gql`
@@ -140,7 +140,7 @@ class Inventory extends Component {
               r =>
                 r.room && {
                   room: r.room.id || r.room,
-                  count: r.count
+                  count: parseInt(r.count, 10)
                 }
             )
             .filter(Boolean)
@@ -268,7 +268,7 @@ class Inventory extends Component {
                   <Input
                     type="text"
                     readOnly
-                    value={inventoryItem.roomCount.reduce(
+                    value={(inventoryItem.roomCount || []).reduce(
                       (prev, next) => prev + (parseInt(next.count, 10) || 0),
                       0
                     )}

@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem
+} from "helpers/reactstrap";
 import Form from "./form";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
@@ -33,20 +39,22 @@ const SUB = gql`
 
 class SurveyForm extends Component {
   static hypercard = true;
-  state = {};
+  state = { submitted: [] };
   renderSurvey = surveyform => {
     const { selectedForm } = this.state;
     if (surveyform.length === 0) {
       return (
         <div className="center-all">
-          <h1>No survey in progress.</h1>
+          <h1>Thank you for your response.</h1>
         </div>
       );
     }
     if (surveyform.length > 1 && !selectedForm) {
       return (
         <div className="center-all">
-          <h2>Select a survey.</h2>
+          <div>
+            <h2>Select a survey.</h2>
+          </div>
           <ListGroup>
             {surveyform.map(s => (
               <ListGroupItem
@@ -66,6 +74,12 @@ class SurveyForm extends Component {
     return (
       <Form
         form={surveyform.find(s => s.id === selectedForm) || surveyform[0]}
+        submitForm={() =>
+          this.setState(state => ({
+            selectedForm: null,
+            submitted: state.submitted.concat(state.selectedForm)
+          }))
+        }
         clientId={this.props.clientObj.id}
         client={this.props.client}
       />

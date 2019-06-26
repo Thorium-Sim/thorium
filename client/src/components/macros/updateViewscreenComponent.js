@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input } from "helpers/reactstrap";
 import * as ViewscreenCards from "components/viewscreens";
 
 const cards = Object.keys(ViewscreenCards)
@@ -8,19 +8,9 @@ const cards = Object.keys(ViewscreenCards)
 const configs = Object.keys(ViewscreenCards)
   .filter(c => c.indexOf("Config") > -1)
   .sort();
-export default ({ updateArgs, args }) => {
+export function ViewscreenComponentSelector({ args, updateArgs }) {
   return (
-    <FormGroup className="macro-template">
-      <div>
-        <Label>
-          Secondary Screen?{" "}
-          <input
-            type="checkbox"
-            checked={args.secondary}
-            onChange={evt => updateArgs("secondary", evt.target.checked)}
-          />
-        </Label>
-      </div>
+    <>
       <Label>Cards</Label>
       <Input
         type="select"
@@ -47,6 +37,40 @@ export default ({ updateArgs, args }) => {
           );
         }
       })()}
+    </>
+  );
+}
+export default ({ updateArgs, args, clients }) => {
+  return (
+    <FormGroup className="macro-template">
+      <div>
+        <Label>
+          Secondary Screen?{" "}
+          <input
+            type="checkbox"
+            checked={args.secondary}
+            onChange={evt => updateArgs("secondary", evt.target.checked)}
+          />
+        </Label>
+
+        <Input
+          type="select"
+          value={args.id || ""}
+          onChange={e => updateArgs("id", e.target.value)}
+        >
+          <option value={""}>Use Secondary Checkbox</option>
+          {clients && clients.length > 0 && (
+            <optgroup label="Clients">
+              {clients.map(c => (
+                <option value={c.id} key={c.id}>
+                  {c.id}
+                </option>
+              ))}
+            </optgroup>
+          )}
+        </Input>
+      </div>
+      <ViewscreenComponentSelector args={args} updateArgs={updateArgs} />
     </FormGroup>
   );
 };

@@ -58,3 +58,26 @@ export {
   default as toggleInterfaceObjectHidden
 } from "./toggleInterfaceObjectHidden";
 export { default as notify } from "./notify";
+export {
+  default as toggleInterfaceObjectPlaying
+} from "./toggleInterfaceObjectPlaying";
+export { default as triggerMacroAction } from "./triggerMacroAction";
+export { default as hideSimulatorCard } from "./hideSimulatorCard";
+export { default as unhideSimulatorCard } from "./unhideSimulatorCard";
+export { default as cancelLoopingSounds } from "./cancelLoopingSounds";
+export { default as stopAllSounds } from "./stopAllSounds";
+export { default as clientAddExtra } from "./clientAddExtra";
+export { default as changeSimulatorLayout } from "./changeSimulatorLayout";
+export { default as renameSimulator } from "./renameSimulator";
+export { default as triggerSurvey } from "./triggerSurvey";
+export { default as shipSetDocking } from "./shipSetDocking";
+export { default as generic } from "./generic";
+export {
+  default as assignSpaceEdventuresFlightType
+} from "./assignSpaceEdventuresFlightType";
+export {
+  default as setViewscreenPictureInPicture
+} from "./setViewscreenPictureInPicture";
+export {
+  default as removeViewscreenPictureInPicture
+} from "./removeViewscreenPictureInPicture";

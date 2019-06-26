@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup } from "reactstrap";
+import { FormGroup } from "helpers/reactstrap";
 
 export default ({ args }) => {
   args = args || {};
@@ -17,16 +17,15 @@ export default ({ args }) => {
       <div>{args.component}</div>
       <strong>Config</strong>
       <ul>
-        {Object.keys(data).map(
-          k =>
-            k === "asset" ? (
-              <video muted style={{ width: "50%" }} src={`/assets${data[k]}`} />
-            ) : (
-              <li key={k}>
-                <strong>{k}: </strong>
-                {JSON.stringify(data[k])}
-              </li>
-            )
+        {Object.keys(data).map(k =>
+          k === "asset" ? (
+            <video muted style={{ width: "50%" }} src={`/assets${data[k]}`} />
+          ) : (
+            <li key={k}>
+              <strong>{k}: </strong>
+              {JSON.stringify(data[k])}
+            </li>
+          )
         )}
       </ul>
     </FormGroup>

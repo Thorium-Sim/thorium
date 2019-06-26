@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import * as Layouts from "./layouts";
 import Hotkey from "./hotkey";
 
-import { ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem } from "helpers/reactstrap";
 import Alerts from "../generic/Alerts";
 
 import "./CoreComponents.scss";
@@ -130,26 +130,13 @@ class CoreComponents extends Component {
             backgroundColor: "#333"
           }}
         >
-          {LayoutComponent &&
-            simulator && (
-              <LayoutComponent
-                {...this.props}
-                edit={editable}
-                editMode={() => this.setState({ editable: true })}
-                mosaic={mosaic}
-                updateMosaic={this.updateMosaic}
-                simulator={
-                  simulators.find(s => s.id === simulator) || {
-                    id: simulator
-                  }
-                }
-              />
-            )}
-        </div>
-        {simulator &&
-          sidebar && (
-            <Sidebar
+          {LayoutComponent && simulator && (
+            <LayoutComponent
               {...this.props}
+              edit={editable}
+              editMode={() => this.setState({ editable: true })}
+              mosaic={mosaic}
+              updateMosaic={this.updateMosaic}
               simulator={
                 simulators.find(s => s.id === simulator) || {
                   id: simulator
@@ -157,6 +144,17 @@ class CoreComponents extends Component {
               }
             />
           )}
+        </div>
+        {simulator && sidebar && (
+          <Sidebar
+            {...this.props}
+            simulator={
+              simulators.find(s => s.id === simulator) || {
+                id: simulator
+              }
+            }
+          />
+        )}
         {!simulator && (
           <ListGroup style={{ maxWidth: "500px" }}>
             {simulators.map(s => (

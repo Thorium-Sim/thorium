@@ -31,7 +31,13 @@ export const aspectList = [
 export function addAspects(template, sim, data = App) {
   // Duplicate all of the other stuff attached to the simulator too.
   aspectList.forEach(aspect => {
-    if (aspect === "softwarePanels" || aspect === "commandLines") return;
+    if (
+      aspect === "softwarePanels" ||
+      aspect === "commandLines" ||
+      aspect === "triggers" ||
+      aspect === "interfaces"
+    )
+      return;
     const filterAspect = data[aspect].filter(
       a => a.simulatorId === template.simulatorId
     );
@@ -147,6 +153,7 @@ export function addAspects(template, sim, data = App) {
       data.softwarePanels.push(
         new Classes.SoftwarePanel({
           id,
+          templateId: panel.id,
           name: panel.name,
           simulatorId: sim.id,
           cables: panel.cables,
@@ -205,6 +212,17 @@ export function addAspects(template, sim, data = App) {
         simulatorId: sim.id
       };
       data.interfaces.push(new Classes.Interface(interfaceObj));
+
+      // Update any clients assigned to this interface as a station
+      App.clients
+        .filter(
+          client =>
+            client.simulatorId === sim.id &&
+            client.station === `interface-id:${c}`
+        )
+        .forEach(client => {
+          client.setStation(`interface-id:${id}`);
+        });
       return id;
     })
     .filter(Boolean);
@@ -244,6 +262,8 @@ App.on(
     App.flights.push(
       new Classes.Flight({ id, name, simulators: simIds, flightType })
     );
+    pubsub.publish("interfaceUpdate", App.interfaces);
+
     pubsub.publish("flightsUpdate", App.flights);
     cb && cb(id);
   }
@@ -293,10 +313,26 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
     const sim = App.simulators.find(s => s.id === simId);
     const viewscreens = App.viewscreens.filter(s => s.simulatorId === sim.id);
     const tempId = sim.templateId;
+
+    // Update clients with interfaces so they point at the template.
+    // We'll change it to point at the simulator interface later.
+    App.clients
+      .filter(
+        client =>
+          client.simulatorId === sim.id &&
+          client.station.indexOf(`interface-id:`) > -1
+      )
+      .forEach(client => {
+        const interfaceId = client.station.replace("interface-id:", "");
+        const stationInterface = App.interfaces.find(i => i.id === interfaceId);
+        client.setStation(`interface-id:${stationInterface.templateId}`);
+      });
+
     // Remove all of the systems, inventory, crew, etc.
     aspectList.forEach(aspect => {
       App[aspect] = App[aspect].filter(a => a.simulatorId !== simId);
     });
+
     App.simulators = App.simulators.filter(s => s.id !== simId);
 
     // Create new simulators based on the template
@@ -340,7 +376,9 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
       "setSimulatorExocomps"
     );
     pubsub.publish("flightsUpdate", App.flights);
+    pubsub.publish("interfaceUpdate", App.interfaces);
     pubsub.publish("clientChanged", App.clients);
+
     pubsub.publish(
       "clearCache",
       App.clients
@@ -362,7 +400,9 @@ App.on("resumeFlight", ({ flightId }) => {
   pubsub.publish("flightsUpdate", App.flights);
 });
 App.on("clientAddExtra", ({ flightId, simulatorId, name }) => {
-  const flight = App.flights.find(f => f.id === flightId);
+  const flight = App.flights.find(
+    f => f.id === flightId || f.simulators.includes(simulatorId)
+  );
   const extra = {
     id: name,
     token: tokenGenerator(),

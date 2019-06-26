@@ -1,5 +1,8 @@
 .core-timeline {
+  display: flex;
+  flex-direction: column;
   padding: 0 4px;
+  max-height: calc(100vh - 23px);
   .btn-group {
     width: 100%;
     display: flex;
@@ -16,9 +19,9 @@
     border-top: 1px solid rgba(255, 255, 255, 0.5);
     margin-top: 10px;
     padding: 10px 0;
-    height: calc(100vh - 120px);
     display: block;
     overflow-y: auto;
+    flex: 1;
   }
 
   .timeline-item {
@@ -29,6 +32,19 @@
   }
   .mission-step-description {
     white-space: pre-wrap;
+  }
+  .list-group-item.active {
+    & > div {
+      background-color: #dc3545 !important;
+    }
+    border-color: #b62a38 !important;
+  }
+  .expand-toggle {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    &.expanded {
+      transform: rotate(90deg);
+    }
   }
 }
 .timeline-thumbnail {
@@ -48,4 +64,28 @@
 }
 .current-step {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+.core-auxtimeline {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  .auxtimeline-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .list-group {
+      flex: 1;
+      overflow-y: auto;
+    }
+  }
+  .timeline-info {
+    flex: 2;
+    overflow-y: auto;
+    padding: 0 5px;
+    overflow-x: hidden;
+    .form-check-input {
+      position: relative;
+    }
+  }
 }

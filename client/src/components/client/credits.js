@@ -8,7 +8,7 @@ import {
   ModalFooter,
   Input,
   Label
-} from "reactstrap";
+} from "helpers/reactstrap";
 import "./credits.scss";
 
 const ClientNameModal = ({ clientId, modal, toggle, changeClientId }) => {
@@ -74,6 +74,10 @@ const creditList = [
     content: "Inspired by the Empty Epsilon Bridge Simulator"
   },
   {
+    header: "Clear Frame Design",
+    content: "Emily Paxman 🕶"
+  },
+  {
     header: "Rollins Center for Entrepreneurship and Technlology",
     content: "2019 App Competition Winner"
   },
@@ -123,6 +127,9 @@ const creditList = [
         <li>Kimball Frank</li>
         <li>Nathan Young</li>
         <li>Jensen Caldwell</li>
+        <li>Justin Hammond</li>
+        <li>Jordan Smith</li>
+        <li>Brylee Perry</li>
       </ul>
     )
   },

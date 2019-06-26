@@ -6,15 +6,18 @@ import "./issueTracker.scss";
 class IssueTracker extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      uploads: []
+    };
   }
   _handleEvent(which, e) {
-    const state = this.state;
-    state[which] = e.target.value;
-    this.setState(state);
+    this.setState({ [which]: e.target.value });
   }
 
-  _submit() {
+  _submit = e => {
+    e.preventDefault();
+    if (!this.state.type) return;
+    if (!this.state.priority) return;
     const mutation = gql`
       mutation IssueTracker(
         $title: String!
@@ -32,25 +35,171 @@ class IssueTracker extends Component {
         )
       }
     `;
-    const variables = this.state;
+    const variables = {
+      title: this.state.title,
+      body:
+        this.state.body +
+        `
+      
+${
+  this.state.reproduce
+    ? `### Steps to Reproduce
+${this.state.reproduce}`
+    : ""
+}`,
+      person: this.state.person,
+      type: this.state.type,
+      priority: this.state.priority
+    };
     this.props.client.mutate({
       mutation,
       variables: { ...variables, priority: Number(variables.priority) }
     });
     this.setState({});
     this.props.close && this.props.close();
-  }
+  };
+  upload = e => {
+    const parts = e.target.files[0].name.split(".");
+    const ext = parts.pop();
+    const filename = parts.join("-");
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      const base64 = result.split(",")[1];
+      this.setState({ uploading: true });
+      this.props.client
+        .mutate({
+          mutation: gql`
+            mutation AddUpload(
+              $data: String!
+              $filename: String!
+              $ext: String!
+            ) {
+              addIssueUpload(data: $data, filename: $filename, ext: $ext)
+            }
+          `,
+          variables: { data: base64, filename, ext }
+        })
+        .then(({ data: { addIssueUpload } }) =>
+          this.setState(({ body }) => {
+            return {
+              body: `${body || ""}
+          
+![${filename}](${addIssueUpload})`
+            };
+          })
+        )
+        .catch(err => console.error(err))
+        .finally(() => {
+          this.setState({ uploading: false });
+        });
+    };
+    e.target.files[0] && reader.readAsDataURL(e.target.files[0]);
+  };
+  fileRef = React.createRef();
   render() {
     return (
       <div id="issues-tracker">
-        <p>
-          <strong>
-            Note: As of March 2019, Alex Anderson will no longer be prioritizing
-            working on Thorium bugs and feature requests.
-          </strong>{" "}
-          Feel free to submit the issue report, but please recognize that it
-          might take a while to be addressed.
-        </p>
+        <div className="issues-body">
+          <form onSubmit={this._submit}>
+            <div className="form-group">
+              <label>Title</label>
+              <input
+                onChange={this._handleEvent.bind(this, "title")}
+                required
+                placeholder="Required"
+                className="form-control form-control-sm"
+              />
+            </div>
+            <div className="form-group">
+              <label>Submitted By</label>
+              <input
+                onChange={this._handleEvent.bind(this, "person")}
+                required
+                placeholder="Your Name (email address optional) Eg. Alex (alex@fyreworks.us)"
+                className="form-control form-control-sm"
+              />
+            </div>
+            <div className="form-group">
+              <label>Body</label>
+              <textarea
+                onChange={this._handleEvent.bind(this, "body")}
+                value={this.state.body}
+                rows="5"
+                placeholder="Please be specific. Include as much detail as possible. If you are filing a bug report, explain detailed steps to reproduce the bug. Include how you would want the bug to be fixed or the feature to be implemented. The more specific you are, the more likely the bug will be fixed or feature will be implemented. This field supports Markdown"
+                required
+                className="form-control form-control-sm"
+              />
+            </div>
+            {this.state.type === "type/bug" && (
+              <div className="form-group">
+                <label>Steps to Reproduce</label>
+                <textarea
+                  onChange={this._handleEvent.bind(this, "reproduce")}
+                  rows="5"
+                  placeholder="Explain step-by-step what someone can do to reproduce this issue. If you can't provide step-by-step instructions, try recreating the bug yourself. Once you can reproduce the bug, submit an issue."
+                  required
+                  className="form-control form-control-sm"
+                />
+              </div>
+            )}
+            <div className="form-group">
+              <label>Type</label>
+              <select
+                onChange={this._handleEvent.bind(this, "type")}
+                required
+                defaultValue={"select"}
+                className="form-control form-control-sm"
+              >
+                <option disabled value="select">
+                  Select a Type
+                </option>
+                <option value="type/bug">Bug</option>
+                <option value="type/feature">Feature Request</option>
+                <option value="type/card">Card Request</option>
+                <option value="type/question">Question</option>
+                <option value="type/enhancement">Enhancement</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Priority</label>
+              <select
+                onChange={this._handleEvent.bind(this, "priority")}
+                required
+                defaultValue={"select"}
+                className="form-control form-control-sm"
+              >
+                <option disabled value="select">
+                  Select a Priority
+                </option>
+                <option value="3">High</option>
+                <option value="2">Medium</option>
+                <option value="1">Low</option>
+              </select>
+            </div>
+            {this.state.uploading ? (
+              "Uploading..."
+            ) : (
+              <label for="image-upload">
+                <input
+                  id="image-upload"
+                  value=""
+                  type="file"
+                  ref={this.fileRef}
+                  onChange={this.upload}
+                  hidden
+                />
+                <div className="btn btn-sm btn-success">Upload Attachment</div>
+              </label>
+            )}
+            <div className="form-group submit-button">
+              <button className="btn btn-sm btn-primary" type="submit">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+
         <p>
           What can you do to get your issue report addressed sooner? If you have
           an urgent need or want to prioritize something, submit a{" "}
@@ -80,81 +229,6 @@ class IssueTracker extends Component {
           </a>
           .
         </p>
-        <div className="issues-body">
-          <form>
-            <div className="form-group">
-              <label>Title</label>
-              <input
-                onChange={this._handleEvent.bind(this, "title")}
-                required
-                placeholder="Required"
-                className="form-control form-control-sm"
-              />
-            </div>
-            <div className="form-group">
-              <label>Submitted By</label>
-              <input
-                onChange={this._handleEvent.bind(this, "person")}
-                required
-                placeholder="Your Name (email address optional) Eg. Alex (alex@fyreworks.us)"
-                className="form-control form-control-sm"
-              />
-            </div>
-            <div className="form-group">
-              <label>Body</label>
-              <textarea
-                onChange={this._handleEvent.bind(this, "body")}
-                rows="5"
-                placeholder="Please be specific. Include as much detail as possible. If you are filing a bug report, explain detailed steps to reproduce the bug. Include how you would want the bug to be fixed or the feature to be implemented. The more specific you are, the more likely the bug will be fixed or feature will be implemented. This field supports Markdown"
-                required
-                className="form-control form-control-sm"
-              />
-            </div>
-            <div className="form-group">
-              <label>Type</label>
-              <select
-                onChange={this._handleEvent.bind(this, "type")}
-                required
-                defaultValue={"select"}
-                className="form-control form-control-sm"
-              >
-                <option disabled value="select">
-                  Select a Type
-                </option>
-                <option value="bug">Bug</option>
-                <option value="feature">Feature Request</option>
-                <option value="card">Card Request</option>
-                <option value="question">Question</option>
-                <option value="enhancement">Enhancement</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label>Priority</label>
-              <select
-                onChange={this._handleEvent.bind(this, "priority")}
-                required
-                defaultValue={"select"}
-                className="form-control form-control-sm"
-              >
-                <option disabled value="select">
-                  Select a Priority
-                </option>
-                <option value="3">High</option>
-                <option value="2">Medium</option>
-                <option value="1">Low</option>
-              </select>
-            </div>
-            <div className="form-group submit-button">
-              <button
-                onClick={this._submit.bind(this)}
-                className="btn btn-sm btn-primary"
-                type="button"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
       </div>
     );
   }

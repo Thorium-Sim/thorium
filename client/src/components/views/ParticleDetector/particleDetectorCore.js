@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Query, withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Container, Row, Col, Button } from "reactstrap";
+import { Container, Row, Col, Button } from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Grid from "../Sensors/GridDom/grid";
 // import SpeedAsker from "../Sensors/gridCore/speedAsker";
@@ -145,7 +145,11 @@ class ParticleIcon extends Component {
 const ParticleIconData = withApollo(ParticleIcon);
 
 class ParticleLine extends Component {
-  state = { type: "Dilithium" };
+  state = {
+    type:
+      window.localStorage.getItem(`thorium_core_particle_${this.props.id}`) ||
+      "Dilithium"
+  };
   render() {
     const { icon } = this.props;
     const { type } = this.state;
@@ -153,7 +157,13 @@ class ParticleLine extends Component {
       <div style={{ display: "flex" }}>
         <select
           value={type}
-          onChange={e => this.setState({ type: e.target.value })}
+          onChange={e => {
+            this.setState({ type: e.target.value });
+            window.localStorage.setItem(
+              `thorium_core_particle_${this.props.id}`,
+              e.target.value
+            );
+          }}
         >
           {Object.keys(particleTypes).map(p => (
             <option key={p}>{p}</option>
@@ -392,6 +402,7 @@ class ParticleDetectorCore extends Component {
             {particleIcons.map(i => (
               <ParticleLine
                 key={`line-${i}`}
+                id={`line-${i}`}
                 icon={i}
                 dimensions={dimensions}
                 sensors={sensors}

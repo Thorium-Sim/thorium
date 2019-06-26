@@ -8,7 +8,7 @@ import {
   ListGroupItem,
   ListGroupItemHeading,
   ListGroupItemText
-} from "reactstrap";
+} from "helpers/reactstrap";
 import escapeRegex from "escape-string-regexp";
 
 class RosterList extends Component {

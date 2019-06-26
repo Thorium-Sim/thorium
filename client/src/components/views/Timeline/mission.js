@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Label, Input } from "reactstrap";
+import { Label, Input } from "helpers/reactstrap";
 import TimelineControl from "./timelineControl";
 import TimelineStep from "./timelineStep";
 import allowedMacros from "./allowedMacros";
@@ -48,13 +48,18 @@ class Mission extends Component {
       simulatorId,
       executedTimelineSteps,
       currentTimelineStep,
-      timeline
+      timeline,
+      auxTimelineId,
+      stations,
+      clients,
+      simArgs
     } = this.props;
     const { actions, showDescriptions, values, delay } = this.state;
     return (
       <Fragment>
         <h4>{name}</h4>
         <TimelineControl
+          auxTimelineId={auxTimelineId}
           simulatorId={simulatorId}
           timeline={timeline}
           currentTimelineStep={currentTimelineStep}
@@ -62,22 +67,24 @@ class Mission extends Component {
           values={values}
           delay={delay}
         />
-        <Label check>
-          Expand Details
-          <Input
-            type="checkbox"
-            checked={showDescriptions}
-            onChange={e => {
-              this.setState({ showDescriptions: e.target.checked });
-              window.localStorage.setItem(
-                "thorium_coreShowDetails",
-                e.target.checked
-              );
-            }}
-            style={{ margin: 0 }}
-          />
-          -{" "}
-        </Label>
+        <div>
+          <Label check>
+            Expand Details
+            <Input
+              type="checkbox"
+              checked={showDescriptions}
+              onChange={e => {
+                this.setState({ showDescriptions: e.target.checked });
+                window.localStorage.setItem(
+                  "thorium_coreShowDetails",
+                  e.target.checked
+                );
+              }}
+              style={{ margin: 0 }}
+            />
+            -{" "}
+          </Label>
+        </div>
         <div className="text-success">
           Green indicates the action has already been triggered
         </div>
@@ -101,6 +108,9 @@ class Mission extends Component {
           updateDelay={newDelay => {
             this.setState({ delay: newDelay });
           }}
+          stations={stations}
+          clients={clients}
+          simArgs={simArgs}
         />
       </Fragment>
     );

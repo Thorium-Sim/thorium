@@ -4,7 +4,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 const deckLabel = (selectedDeck, decks) => {
   if (selectedDeck) {
@@ -91,17 +91,19 @@ export const RoomDropdown = ({
               : "All Decks"}
           </DropdownItem>
           {decks.find(d => d.id === selectedDeck) &&
-            decks.find(d => d.id === selectedDeck).rooms.map(r => (
-              <DropdownItem
-                key={r.id}
-                disabled={r.id === otherSelected}
-                onClick={() => {
-                  setSelected({ room: r.id });
-                }}
-              >
-                {r.name}
-              </DropdownItem>
-            ))}
+            decks
+              .find(d => d.id === selectedDeck)
+              .rooms.map(r => (
+                <DropdownItem
+                  key={r.id}
+                  disabled={r.id === otherSelected}
+                  onClick={() => {
+                    setSelected({ room: r.id });
+                  }}
+                >
+                  {r.name}
+                </DropdownItem>
+              ))}
         </DropdownMenu>
       )}
     </UncontrolledDropdown>

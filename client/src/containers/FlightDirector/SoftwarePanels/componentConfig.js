@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, FormGroup, Input, Label } from "reactstrap";
+import { Row, Col, FormGroup, Input, Label } from "helpers/reactstrap";
 import { ChromePicker } from "react-color";
 
 class Config extends Component {

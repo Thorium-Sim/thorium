@@ -26,7 +26,7 @@ const schema = gql`
     id: ID
     type: String
     #TODO Change probe to be a probe type
-    probe: ID
+    probe: Probe
   }
 
   input WarheadInput {
@@ -57,6 +57,21 @@ const resolver = {
       return rootValue.locations.map(r =>
         App.rooms.find(room => room.id === r)
       );
+    },
+    inventory(rootValue, args, context) {
+      context.simulatorId = rootValue.simulatorId;
+      return rootValue.inventory;
+    }
+  },
+  Warhead: {
+    probe(w, args, { simulatorId }) {
+      if (!w.probe) return;
+      const probes = App.systems.find(
+        s => s.simulatorId === simulatorId && s.type === "Probes"
+      );
+      if (probes) {
+        return probes.probes.find(p => p.id === w.probe);
+      }
     }
   },
   Query: {

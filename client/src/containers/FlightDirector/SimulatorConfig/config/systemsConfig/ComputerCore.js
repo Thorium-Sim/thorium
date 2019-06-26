@@ -8,7 +8,7 @@ import {
   Col,
   ListGroup,
   ListGroupItem
-} from "reactstrap";
+} from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import { Mutation, Query } from "react-apollo";

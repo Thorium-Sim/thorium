@@ -21,6 +21,7 @@ const schema = gql`
     activated: Boolean
     stress: Float
     enabled: Boolean
+    ringsExtended: Boolean
   }
 
   type JumpDriveSectors {
@@ -44,6 +45,7 @@ const schema = gql`
     fluxJumpdriveSector(id: ID!, sector: String): String
     setJumpDriveEnabled(id: ID!, enabled: Boolean): String
     hitJumpDriveStress(id: ID!, sector: String!): String
+    setJumpDriveRingsExtended(id: ID!, ringsExtended: Boolean!): String
   }
   extend type Subscription {
     jumpDriveUpdate(simulatorId: ID): [JumpDrive]

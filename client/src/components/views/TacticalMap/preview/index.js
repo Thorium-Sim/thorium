@@ -62,11 +62,11 @@ class TacticalMapPreview extends Component {
   toggleVideo = () => {
     this.props.client.mutate({
       mutation: gql`
-        mutation ToggleVideo($simulatorId: ID!) {
-          toggleViewscreenVideo(simulatorId: $simulatorId)
+        mutation ToggleVideo($viewscreenId: ID) {
+          toggleViewscreenVideo(viewscreenId: $viewscreenId)
         }
       `,
-      variables: { simulatorId: this.props.simulatorId }
+      variables: { viewscreenId: this.props.viewscreen.id }
     });
   };
   render() {
@@ -83,7 +83,8 @@ class TacticalMapPreview extends Component {
       removePath,
       core,
       frozen,
-      speed
+      speed,
+      viewscreen
     } = this.props;
     return (
       <div className="tactical-map-view">
@@ -110,6 +111,7 @@ class TacticalMapPreview extends Component {
                   updatePath={updatePath}
                   removePath={removePath}
                   speed={speed}
+                  viewscreen={viewscreen}
                 />
               </div>
             );

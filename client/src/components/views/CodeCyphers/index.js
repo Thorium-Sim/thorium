@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Container, Button, Row, Col, Card, CardBody } from "reactstrap";
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  Card,
+  CardBody
+} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import { FormattedMessage } from "react-intl";
 import Printable from "helpers/printable";

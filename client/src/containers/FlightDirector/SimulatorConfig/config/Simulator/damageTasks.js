@@ -6,7 +6,7 @@ import {
   ListGroup,
   ListGroupItem
   //Input
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { Link } from "react-router-dom";
 import DefinitionList from "../../../TaskTemplates/definitionList";
 import gql from "graphql-tag.macro";

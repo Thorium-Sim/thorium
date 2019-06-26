@@ -1,14 +1,16 @@
 import React, { Fragment } from "react";
-import { Button, Col, Row } from "reactstrap";
+import { Button, Col, Row } from "helpers/reactstrap";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 
 import HeatBar from "./heatbar";
+import EngineButtons from "./engineButtons";
 
 export default withApollo(props => {
   const { engines, setSpeed, locked } = props;
   const applyCoolant = () => {
     const id = props.engines[0].id;
+    if (props.engines[0].heat < 0.01) return;
     const mutation = gql`
       mutation CoolEngine($id: ID!, $state: Boolean) {
         engineCool(id: $id, state: $state)
@@ -44,34 +46,12 @@ export default withApollo(props => {
   return (
     <Fragment>
       <Col sm="4">
-        {engines[0].speeds.map((speed, speedIndex) => {
-          let speedWord = speed;
-          if (typeof speed === "object") {
-            speedWord = speed.text;
-          }
-          return (
-            <Button
-              key={`${speed.text}-${speedIndex}`}
-              block
-              color="primary"
-              className="speedBtn"
-              disabled={
-                locked ||
-                engines[0].damage.damaged ||
-                engines[0].power.powerLevels.findIndex(
-                  p => p > engines[0].power.power
-                ) -
-                  1 <
-                  speedIndex
-              }
-              onClick={() => {
-                setSpeed(engines[0], speedIndex, engines, 0);
-              }}
-            >
-              {speedWord}
-            </Button>
-          );
-        })}
+        <EngineButtons
+          engine={engines[0]}
+          locked={locked}
+          engines={engines}
+          setSpeed={setSpeed}
+        />
       </Col>
       <Col sm={{ size: 2, offset: 6 }} className="flex-column">
         <Row className="flex-max">

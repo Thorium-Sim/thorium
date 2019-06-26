@@ -54,8 +54,7 @@ class SoundController extends Component {
         <Subscription subscription={STOP_LOOPING} variables={{ clientId }}>
           {({ data = {} }) => {
             const { cancelLoopingSounds } = data;
-            if (cancelLoopingSounds)
-              this.props.stopLooping(cancelLoopingSounds);
+            if (cancelLoopingSounds) this.props.stopLooping();
             return null;
           }}
         </Subscription>

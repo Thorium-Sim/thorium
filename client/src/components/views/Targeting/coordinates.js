@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col } from "reactstrap";
+import { Row, Col } from "helpers/reactstrap";
 import Keypad from "../Navigation/keypad";
 import gql from "graphql-tag.macro";
 

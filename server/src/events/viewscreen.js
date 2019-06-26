@@ -9,10 +9,15 @@ App.on("updateViewscreenName", ({ id, name }) => {
 App.on(
   "updateViewscreenComponent",
   ({ id, simulatorId, component, data, secondary = false, context }) => {
+    console.log(simulatorId, id);
     const viewscreens = App.viewscreens.filter(
       v =>
         v.id === id ||
-        (v.simulatorId === simulatorId && v.secondary === secondary)
+        (v.simulatorId === simulatorId &&
+          (id === "all" ||
+            (id === "primary" && !v.secondary) ||
+            (id === "secondary" && v.secondary))) ||
+        (!id && v.simulatorId === simulatorId && v.secondary === secondary)
     );
     if (viewscreens.length === 0) return;
     const client = App.clients.find(c => c.id === viewscreens[0].id);
@@ -30,7 +35,14 @@ App.on(
   }
 );
 App.on("updateViewscreenData", ({ id, data }) => {
-  const viewscreen = App.viewscreens.find(v => v.id === id);
+  const viewscreen = App.viewscreens.find(
+    v =>
+      v.id === id ||
+      (v.simulatorId === simulatorId &&
+        (id === "all" ||
+          (id === "primary" && !v.secondary) ||
+          (id === "secondary" && v.secondary)))
+  );
   viewscreen.updateData(data);
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
@@ -44,8 +56,12 @@ App.on("updateViewscreenAuto", ({ id, simulatorId, auto }) => {
 App.on("setViewscreenToAuto", ({ id, simulatorId, secondary = false }) => {
   const viewscreen = App.viewscreens.filter(
     v =>
-      (v.id === id || v.simulatorId === simulatorId) &&
-      v.secondary === secondary
+      v.id === id ||
+      (v.simulatorId === simulatorId &&
+        (id === "all" ||
+          (id === "primary" && !v.secondary) ||
+          (id === "secondary" && v.secondary))) ||
+      (!id && v.simulatorId === simulatorId && v.secondary === secondary)
   );
   viewscreen.forEach(v => {
     v.updateAuto(true);
@@ -58,6 +74,43 @@ App.on("updateViewscreenSecondary", ({ id, secondary }) => {
   pubsub.publish("viewscreensUpdate", App.viewscreens);
 });
 
-App.on("toggleViewscreenVideo", ({ simulatorId }) => {
-  pubsub.publish("viewscreenVideoToggle", simulatorId);
+App.on("toggleViewscreenVideo", ({ simulatorId, viewscreenId }) => {
+  pubsub.publish("viewscreenVideoToggle", { simulatorId, viewscreenId });
 });
+App.on(
+  "setViewscreenPictureInPicture",
+  ({ simulatorId, id, secondary = false, component, data, size, position }) => {
+    const viewscreens = App.viewscreens.filter(
+      v =>
+        v.id === id ||
+        (v.simulatorId === simulatorId &&
+          (id === "all" ||
+            (id === "primary" && !v.secondary) ||
+            (id === "secondary" && v.secondary))) ||
+        (!id && v.simulatorId === simulatorId && v.secondary === secondary)
+    );
+    viewscreens.forEach(viewscreen => {
+      viewscreen.setPictureInPicture(component, data, position, size);
+    });
+    console.log(viewscreens);
+    pubsub.publish("viewscreensUpdate", App.viewscreens);
+  }
+);
+App.on(
+  "removeViewscreenPictureInPicture",
+  ({ simulatorId, id, secondary = false }) => {
+    const viewscreens = App.viewscreens.filter(
+      v =>
+        v.id === id ||
+        (v.simulatorId === simulatorId &&
+          (id === "all" ||
+            (id === "primary" && !v.secondary) ||
+            (id === "secondary" && v.secondary))) ||
+        (!id && v.simulatorId === simulatorId && v.secondary === secondary)
+    );
+    viewscreens.forEach(viewscreen => {
+      viewscreen && viewscreen.clearPictureInPicture();
+    });
+    pubsub.publish("viewscreensUpdate", App.viewscreens);
+  }
+);

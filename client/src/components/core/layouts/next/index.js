@@ -27,7 +27,9 @@ class Next extends Component {
           </CoreError>
         </div>
         <CoreError>
-          <Lighting {...props} />
+          <div className="lighting-container">
+            <Lighting {...props} />
+          </div>
         </CoreError>
         <div className="next-coreFeed">
           <CoreError>

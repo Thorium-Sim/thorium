@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 import uuid from "uuid";
 const Checkbox = ({
@@ -19,7 +19,7 @@ const Checkbox = ({
         if (o.id === oId) {
           return { ...o, label: uvalue };
         }
-        return 0;
+        return o;
       })
     );
   };
@@ -39,7 +39,7 @@ const Checkbox = ({
   return (
     <div>
       {options.map(o => (
-        <FormGroup check>
+        <FormGroup check key={`input-${o.id}`}>
           <Label check>
             <Input
               disabled={disabled}

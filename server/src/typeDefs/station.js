@@ -22,12 +22,13 @@ const schema = gql`
     messageGroups: [String]
     layout: String
     widgets: [String]
-    cards: [Card]
+    cards(showHidden: Boolean): [Card]
   }
 
   type Card {
     name: String
     component: String
+    hidden: Boolean
   }
   extend type Simulator {
     stationSets: [StationSet]
@@ -116,6 +117,12 @@ const resolver = {
   StationSet: {
     simulator(rootValue) {
       return App.simulators.find(s => s.id === rootValue.simulatorId);
+    }
+  },
+  Station: {
+    cards(station, { showHidden }) {
+      if (showHidden) return station.cards;
+      return station.cards.filter(c => !c.hidden);
     }
   },
   Query: {

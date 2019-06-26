@@ -4,6 +4,9 @@ import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import { subscribe, publish } from "helpers/pubsub";
 import uuid from "uuid";
+import { playSound } from "./SoundPlayer";
+import { randomFromList } from "helpers/randomFromList";
+
 // Speech Handling
 const synth = window.speechSynthesis;
 const holderStyle = {
@@ -55,6 +58,13 @@ class Alerts extends Component {
           if (notify && notify.id) {
             if (allowed[notify.type] !== false) {
               if (!self.props.disabled) {
+                const { soundEffects } = self.props.simulator;
+
+                if (soundEffects && soundEffects.notification) {
+                  playSound({
+                    url: `/assets${randomFromList(soundEffects.notification)}`
+                  });
+                }
                 alerts.push(Object.assign(notify, { visible: true }));
                 self.setState({
                   alerts
@@ -96,6 +106,10 @@ class Alerts extends Component {
     this.addSub && this.addSub();
   }
   trigger({ title, body, color, duration = 5000, id = uuid.v4() }) {
+    const { soundEffects } = this.props.simulator;
+    if (soundEffects && soundEffects.notification) {
+      playSound({ url: `/assets${randomFromList(soundEffects.notification)}` });
+    }
     this.setState(state => ({
       alerts: state.alerts.concat({ id, title, body, color, visible: true })
     }));

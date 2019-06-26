@@ -2,7 +2,7 @@ import React, { Fragment, Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, compose } from "react-apollo";
 import { DraggableCore } from "react-draggable";
-import { Button, Row, Col } from "reactstrap";
+import { Button, Row, Col } from "helpers/reactstrap";
 import ThrusterThree from "./three-view";
 import distance from "helpers/distance";
 import Measure from "react-measure";
@@ -115,6 +115,7 @@ class Thrusters extends Component {
     this.rotationSubscription = null;
     this.thrusterSub = null;
     this.state = {
+      showThree: false,
       control: false,
       gamepad: null,
       lastTimeMsec: null,
@@ -150,6 +151,11 @@ class Thrusters extends Component {
         direction
       });
     }, 15);
+  }
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ showThree: true });
+    }, 200);
   }
   componentWillUnmount() {
     cancelAnimationFrame(this.state.request);
@@ -486,7 +492,7 @@ gamepadLoop(){
               >
                 {({ measureRef }) => (
                   <div ref={measureRef} style={{ height: "100%" }}>
-                    {this.state.dimensions && (
+                    {this.state.dimensions && this.state.showThree && (
                       <ThrusterThree
                         direction={direction}
                         simulator={this.props.simulator}

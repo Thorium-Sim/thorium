@@ -1,23 +1,12 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Input, ButtonGroup } from "reactstrap";
+import { Row, Col, Button, Input, ButtonGroup } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import { graphql, withApollo, Query } from "react-apollo";
+import { withApollo, Query } from "react-apollo";
 import SoundPicker from "helpers/soundPicker";
 import { titleCase } from "change-case";
 
-import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 import { randomFromList } from "helpers/randomFromList";
-const STATION_CHANGE_QUERY = gql`
-  subscription StationsUpdate($simulatorId: ID) {
-    simulatorsUpdate(simulatorId: $simulatorId) {
-      id
-      stations {
-        name
-      }
-    }
-  }
-`;
 
 const MOVIE_QUERY = gql`
   query Movies {
@@ -119,7 +108,7 @@ class ActionsCore extends Component {
   playSound = () => {
     let { selectedSound, actionDest } = this.state;
     if (actionDest === "random") {
-      actionDest = randomFromList(this.props.data.simulators[0].stations).name;
+      actionDest = randomFromList(this.props.simulator.stations).name;
     }
     const mutation = gql`
       mutation PlaySound($asset: String!, $station: String, $simulatorId: ID) {
@@ -170,7 +159,7 @@ class ActionsCore extends Component {
                 onClick={() =>
                   triggerAction({
                     ...this.state,
-                    simulator: this.props.data.simulators[0],
+                    simulator: this.props.simulator,
                     client: this.props.client
                   })
                 }
@@ -232,7 +221,7 @@ class ActionsCore extends Component {
                 onClick={() =>
                   triggerAction({
                     ...this.state,
-                    simulator: this.props.data.simulators[0],
+                    simulator: this.props.simulator,
                     client: this.props.client
                   })
                 }
@@ -273,7 +262,7 @@ class ActionsCore extends Component {
                 onClick={() =>
                   triggerAction({
                     ...this.state,
-                    simulator: this.props.data.simulators[0],
+                    simulator: this.props.simulator,
                     client: this.props.client
                   })
                 }
@@ -318,7 +307,7 @@ class ActionsCore extends Component {
               onClick={() =>
                 triggerAction({
                   ...this.state,
-                  simulator: this.props.data.simulators[0],
+                  simulator: this.props.simulator,
                   client: this.props.client
                 })
               }
@@ -338,7 +327,7 @@ class ActionsCore extends Component {
         onClick={() =>
           triggerAction({
             ...this.state,
-            simulator: this.props.data.simulators[0],
+            simulator: this.props.simulator,
             client: this.props.client
           })
         }
@@ -352,20 +341,6 @@ class ActionsCore extends Component {
     const { actionName } = this.state;
     return (
       <div className="core-action">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: STATION_CHANGE_QUERY,
-              variables: { simulatorId: this.props.simulator.id },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  simulators: subscriptionData.data.simulatorsUpdate
-                });
-              }
-            })
-          }
-        />
-
         <div className="flex-container">
           <ButtonGroup>
             <Button
@@ -418,11 +393,6 @@ class ActionsCore extends Component {
             </optgroup>
             <optgroup>
               <option value="online">Online</option>
-              {flight.flightType && (
-                <option value="spaceEdventuresToken">
-                  Space EdVentures Token
-                </option>
-              )}
               <option value="offline">Offline</option>
               <option value="power">Power Loss</option>
               <option value="lockdown">Lockdown</option>
@@ -431,6 +401,13 @@ class ActionsCore extends Component {
               <option value="crack">Crack</option>
               <option value="uncrack">Un-Crack</option>
             </optgroup>
+            {flight.flightType && (
+              <optgroup>
+                <option value="spaceEdventuresToken">
+                  Space EdVentures Token
+                </option>
+              </optgroup>
+            )}
             <optgroup>
               <option value="reload">Reload Browser</option>
               <option value="shutdown">Shutdown</option>
@@ -447,15 +424,11 @@ class ActionsCore extends Component {
                 <option value="random">Random Station</option>
               </optgroup>
               <optgroup>
-                {!this.props.data.loading &&
-                  this.props.data.simulators &&
-                  this.props.data.simulators[0] &&
-                  this.props.data.simulators[0].stations &&
-                  this.props.data.simulators[0].stations.map(s => (
-                    <option key={s.name} value={s.name}>
-                      {s.name}
-                    </option>
-                  ))}
+                {this.props.simulator.stations.map(s => (
+                  <option key={s.name} value={s.name}>
+                    {s.name}
+                  </option>
+                ))}
               </optgroup>
               <optgroup>
                 <option value="Viewscreen">Viewscreen</option>
@@ -469,22 +442,4 @@ class ActionsCore extends Component {
   }
 }
 
-const STATION_QUERY = gql`
-  query Stations($simulatorId: String) {
-    simulators(id: $simulatorId) {
-      id
-      stations {
-        name
-      }
-    }
-  }
-`;
-
-export default graphql(STATION_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {
-      simulatorId: ownProps.simulator.id
-    }
-  })
-})(withApollo(ActionsCore));
+export default withApollo(ActionsCore);

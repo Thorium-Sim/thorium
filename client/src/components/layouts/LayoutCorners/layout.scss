@@ -14,13 +14,35 @@ body {
   height: 100vh;
   margin: 0;
 }
+.client-container {
+  .table {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: solid 1px #888;
+    border-radius: 15px;
+    color: #fff;
+    &.table-striped > tbody > tr:nth-child(odd) {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    &.table-hover > tbody > tr:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
 
 .actionsContainer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10000000;
+  pointer-events: none;
   .table {
     color: white;
   }
   &.flash {
-    filter: invert(1);
+    background-color: white;
+    mix-blend-mode: difference;
   }
 }
 .alertBackground-5 {

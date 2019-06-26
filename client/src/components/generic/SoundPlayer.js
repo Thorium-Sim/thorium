@@ -62,7 +62,7 @@ function downMixBuffer(buffer, channel) {
   return buff;
 }
 
-function playSound(opts) {
+export function playSound(opts) {
   removeSound(opts.id, true);
   opts.id = opts.id || uuid.v4();
   const volume = opts.muted ? 0 : opts.volume || 1;
@@ -121,7 +121,7 @@ function removeSound(id, force, ambiance) {
       sound.source.stop();
       delete sounds[id];
     } else {
-      sound.looping = false;
+      // sound.looping = false;
       sound.source.loop = false;
       sound.source.onended = () => removeSound(id, true);
     }
@@ -135,8 +135,14 @@ function removeAllSounds(ambiance) {
 }
 
 function stopLooping(ambiance) {
-  Object.keys(sounds).forEach(key => {
-    removeSound(key, false, ambiance);
+  Object.keys(sounds).forEach(id => {
+    const sound = sounds[id];
+    if (sound) {
+      if (sound.ambiance && !ambiance) return;
+      // sound.looping = false;
+      sound.source.loop = false;
+      sound.source.onended = () => removeSound(id, true);
+    }
   });
 }
 const withSound = Comp => {

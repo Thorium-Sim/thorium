@@ -14,6 +14,7 @@ export default class Flight {
 
     // Space EdVentures Flight Type
     this.flightType = params.flightType || null;
+    this.transmitted = params.transmitted || false;
     // {clientId, badgeId}
     this.badges = params.badges || [];
     // {clientId, userId}
@@ -37,6 +38,9 @@ export default class Flight {
   resume() {
     this.running = true;
   }
+  setFlightType(flightType) {
+    this.flightType = flightType;
+  }
   loginClient(clientId) {
     this.clients = this.clients
       .concat(clientId)
@@ -46,6 +50,9 @@ export default class Flight {
     this.clients = this.clients.map(c =>
       c.id === clientId ? { ...c, email } : c
     );
+  }
+  removeClient(clientId) {
+    this.clients = this.clients.filter(c => c.id !== clientId);
   }
   addBadges(badges) {
     this.badges = this.badges.concat(badges);
@@ -65,6 +72,7 @@ export default class Flight {
 
     // Don't submit if there isn't a flight type.
     if (!this.flightType) return;
+    if (this.transmitted) return;
 
     // Concatenate the clients so there are no duplicate space edventures users.
     // Only use clients that have logged in during this flight.
@@ -136,7 +144,6 @@ export default class Flight {
       }
     }
     `;
-    console.log(JSON.stringify(variables));
     graphqlClient
       .query({
         query: mutation,
@@ -146,6 +153,6 @@ export default class Flight {
         console.error(err);
       });
     // Remove the flight type so it is not transmitted again.
-    this.flightType = null;
+    this.transmitted = true;
   }
 }

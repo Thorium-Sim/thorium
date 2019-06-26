@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Layouts from "../layouts";
 import Keyboard from "components/views/Keyboard";
-import InterfaceCard from "components/views/Interface";
+import InterfaceCard from "components/views/Interfaces";
 import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
@@ -10,6 +10,8 @@ import TrainingPlayer from "helpers/trainingPlayer";
 import { subscribe, publish } from "../../helpers/pubsub";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
+import { playSound } from "../generic/SoundPlayer";
+import { randomFromList } from "helpers/randomFromList";
 
 const Blackout = () => {
   return (
@@ -94,6 +96,7 @@ const CardRenderer = props => {
       <Keyboard
         keyboard={station.name.replace("keyboard:", "")}
         simulator={simulator}
+        clientObj={client}
       />
     );
   }
@@ -204,6 +207,17 @@ export default class CardFrame extends Component {
     if (this.cardChanged || this.state.card === card) return;
     this.cardChanged = true;
     setTimeout(() => (this.cardChanged = false), 500);
+    if (
+      this.props.simulator &&
+      this.props.simulator.soundEffects &&
+      this.props.simulator.soundEffects.cardChange
+    ) {
+      playSound({
+        url: `/assets${randomFromList(
+          this.props.simulator.soundEffects.cardChange
+        )}`
+      });
+    }
     this.setState({
       card
     });
@@ -215,63 +229,65 @@ export default class CardFrame extends Component {
       client
     } = this.props;
     const { visible } = this.state;
+
     return (
       <div
         className={`client-container ${caps ? "all-caps" : ""} ${
           visible ? "visible" : ""
         }`}
       >
-        <ActionsMixin {...this.props} changeCard={this.changeCard}>
-          {client.cracked && <div className="cracked-screen" />}
-          <CardRenderer
-            {...this.props}
-            card={this.state.card}
-            changeCard={this.changeCard}
-            client={{
-              ...client,
-              training:
-                simTraining && stationTraining && isMedia(stationTraining)
-                  ? false
-                  : client.training
-            }}
+        <ActionsMixin {...this.props} changeCard={this.changeCard} />
+        {client.cracked && <div className="cracked-screen" />}
+        <CardRenderer
+          {...this.props}
+          card={this.state.card}
+          changeCard={this.changeCard}
+          client={{
+            ...client,
+            training:
+              simTraining && stationTraining && isMedia(stationTraining)
+                ? false
+                : client.training
+          }}
+        />
+        {this.props.client && (
+          <Reset
+            station={this.props.station}
+            clientId={this.props.client.id}
+            reset={() =>
+              this.setState({
+                card:
+                  this.props.station.cards &&
+                  this.props.station.cards[0] &&
+                  this.props.station.cards[0].name
+              })
+            }
           />
-          {this.props.client && (
-            <Reset
-              station={this.props.station}
-              clientId={this.props.client.id}
-              reset={() =>
-                this.setState({
-                  card:
-                    this.props.station.cards &&
-                    this.props.station.cards[0] &&
-                    this.props.station.cards[0].name
-                })
-              }
-            />
+        )}
+        {simTraining &&
+          stationTraining &&
+          client.training &&
+          isMedia(stationTraining) && (
+            <Mutation
+              mutation={gql`
+                mutation ClientSetTraining($id: ID!, $training: Boolean!) {
+                  clientSetTraining(client: $id, training: $training)
+                }
+              `}
+              variables={{
+                id: client.id,
+                training: false
+              }}
+            >
+              {action => (
+                <TrainingPlayer
+                  src={`/assets${stationTraining}`}
+                  close={action}
+                />
+              )}
+            </Mutation>
           )}
-          {simTraining &&
-            stationTraining &&
-            client.training &&
-            isMedia(stationTraining) && (
-              <Mutation
-                mutation={gql`
-                  mutation ClientSetTraining($id: ID!, $training: Boolean!) {
-                    clientSetTraining(client: $id, training: $training)
-                  }
-                `}
-                variables={{
-                  id: client.id,
-                  training: false
-                }}
-              >
-                {action => (
-                  <TrainingPlayer
-                    src={`/assets${stationTraining}`}
-                    close={action}
-                  />
-                )}
-              </Mutation>
-            )}
+        {client.offlineState !== "blackout" && (
           <Alerts
             key={`alerts-${
               this.props.simulator ? this.props.simulator.id : "simulator"
@@ -280,7 +296,7 @@ export default class CardFrame extends Component {
             simulator={this.props.simulator}
             station={this.props.station}
           />
-        </ActionsMixin>
+        )}
       </div>
     );
   }

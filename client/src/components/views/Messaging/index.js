@@ -14,7 +14,7 @@ import {
   DropdownItem,
   InputGroup,
   InputGroupAddon
-} from "reactstrap";
+} from "helpers/reactstrap";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { titleCase } from "change-case";
@@ -374,7 +374,7 @@ class Messaging extends Component {
 }
 
 const MESSAGING_QUERY = gql`
-  query Messages($simulatorId: ID!, $simId: String, $station: String) {
+  query Messages($simulatorId: ID!, $simId: ID, $station: String) {
     messages(simulatorId: $simulatorId, station: $station) {
       id
       sender

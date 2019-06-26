@@ -38,6 +38,7 @@ App.on("sendMessage", args => {
     "addCoreFeed"
   );
   const simulator = App.simulators.find(s => s.id === messageClass.simulatorId);
+  if (!simulator) return;
   const messageGroups = simulator.stations
     .reduce((prev, next) => prev.concat(next.messageGroups), [])
     .filter((a, i, arr) => arr.indexOf(a) === i && a);

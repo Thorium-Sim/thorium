@@ -1,10 +1,9 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input, Button } from "helpers/reactstrap";
 import SoundPicker from "helpers/soundPicker";
-import { Query } from "react-apollo";
-import gql from "graphql-tag.macro";
+import playSoundHOC from "components/generic/SoundPlayer";
 
-export default ({ updateArgs, args }) => {
+function playSound({ updateArgs, args, stations, clients, playSound }) {
   const sound = args.sound || {};
   const updateSound = (which, val) => {
     updateArgs("sound", { ...sound, [which]: val });
@@ -32,6 +31,7 @@ export default ({ updateArgs, args }) => {
         />
 
         <Label>Sound Player</Label>
+
         <Input
           type="select"
           value={args.station}
@@ -43,37 +43,40 @@ export default ({ updateArgs, args }) => {
             <option value="random">Random Station</option>
             <option value="ECS">ECS</option>
           </optgroup>
-          <Query
-            query={gql`
-              query Clients {
-                clients(all: true) {
-                  id
-                }
-              }
-            `}
-          >
-            {({ loading, data: { clients } }) =>
-              loading ? null : (
-                <optgroup label="Clients">
-                  {clients.map(c => (
-                    <option value={c.id} key={c.id}>
-                      {c.id}
-                    </option>
-                  ))}
-                </optgroup>
-              )
-            }
-          </Query>
+          {stations && stations.length > 0 && (
+            <optgroup label="Stations">
+              {stations.map(c => (
+                <option value={c.name} key={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </optgroup>
+          )}
+          {clients && clients.length > 0 && (
+            <optgroup label="Clients">
+              {clients.map(c => (
+                <option value={c.id} key={c.id}>
+                  {c.id}
+                </option>
+              ))}
+            </optgroup>
+          )}
         </Input>
+
         <Label>Volume</Label>
-        <Input
-          type="range"
-          min={0}
-          step={0.01}
-          max={1}
-          value={sound.volume}
-          onChange={e => updateSound("volume", e.target.value)}
-        />
+        <div style={{ display: "flex" }}>
+          <Input
+            style={{ flex: 1 }}
+            type="range"
+            min={0}
+            step={0.01}
+            max={1}
+            value={sound.volume || sound.volume === 0 ? sound.volume : 1}
+            onChange={e => updateSound("volume", e.target.value)}
+          />
+          <span>{sound.volume || sound.volume === 0 ? sound.volume : 1}</span>
+        </div>
+
         <Label>Playback Rate</Label>
         <Input
           type="number"
@@ -98,7 +101,20 @@ export default ({ updateArgs, args }) => {
           checked={sound.looping}
           onChange={e => updateSound("looping", e.target.checked)}
         />
+        <div>
+          <Button
+            color="info"
+            size="sm"
+            onClick={() => {
+              playSound(sound);
+            }}
+          >
+            Test Sound
+          </Button>
+        </div>
       </FormGroup>
     </div>
   );
-};
+}
+
+export default playSoundHOC(playSound);

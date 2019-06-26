@@ -2,7 +2,7 @@ import React from "react";
 
 export default {
   name: "Switch",
-  component: () => <span style={{ fontWeight: 800, fontSize: 32 }}>⑂</span>,
+  component: () => <div style={{ fontWeight: 800, fontSize: 32 }}>⑂</div>,
   outputs: [
     {
       id: "triggerOut",

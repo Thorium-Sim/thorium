@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Label, Input } from "reactstrap";
+import { Label, Input } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import HashtagDefinition from "../../../../../../helpers/hashtagDefinition";
 

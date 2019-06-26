@@ -82,6 +82,8 @@ const sendUpdate = sys => {
 
   if (sys.class === "DockingPort")
     pubsub.publish("dockingUpdate", App.dockingPorts);
+  if (sys.class === "Crm") 
+      pubsub.publish("crmUpdate", sys);
   pubsub.publish("systemsUpdate", App.systems);
 };
 App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row, Container, Button } from "reactstrap";
+import { Col, Row, Container, Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { Query, withApollo } from "react-apollo";
 
@@ -17,12 +17,14 @@ const fragment = gql`
     caps
     exocomps
     panels
+    missionConfigs
     commandLines
     triggers
     interfaces
     stepDamage
     verifyStep
     hasPrinter
+    hasLegs
     bridgeOfficerMessaging
     spaceEdventuresId
     requiredDamageSteps {
@@ -88,6 +90,7 @@ const fragment = gql`
       logo
       bridge
     }
+    soundEffects
     systems {
       id
       type
@@ -302,7 +305,7 @@ class SimulatorConfig extends Component {
 }
 
 const SIMULATOR_QUERY = gql`
-  query Simulators($simulatorId: String!) {
+  query Simulators($simulatorId: ID!) {
     simulators(id: $simulatorId) {
       ...SimulatorConfigData
     }
@@ -334,6 +337,7 @@ class ConfigComponent extends React.PureComponent {
                 returnSimulator.stationSets.push({
                   id: ss.id,
                   name: ss.name,
+                  crewCount: ss.crewCount,
                   stations: ss.stations,
                   __typename: ss.__typename
                 });

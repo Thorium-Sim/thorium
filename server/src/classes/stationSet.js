@@ -168,10 +168,17 @@ export class Card {
     this.icon = params.icon || null;
     this.component = params.component || "Login";
     this.class = "Card";
+    this.hidden = false;
   }
   update({ name, icon, component }) {
     if (name) this.name = name;
     if (icon) this.icon = icon;
     if (component) this.component = component;
+  }
+  hide() {
+    this.hidden = true;
+  }
+  unhide() {
+    this.hidden = false;
   }
 }

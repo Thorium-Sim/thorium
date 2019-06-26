@@ -8,7 +8,9 @@ const schema = gql`
     clamps: Boolean
     ramps: Boolean
     airlock: Boolean
+    legs: Boolean
     bridgeCrew: Int
+    extraPeople: Int
     radiation: Float
     velocity: Float
     remoteAccessCodes: [RemoteAccessCode]
@@ -53,6 +55,16 @@ const schema = gql`
   }
   extend type Mutation {
     shipDockingChange(simulatorId: ID!, which: String!, state: Boolean!): String
+    """
+    Macro: Docking: Set docking state
+    """
+    shipSetDocking(
+      simulatorId: ID!
+      clamps: Boolean
+      ramps: Boolean
+      airlock: Boolean
+      legs: Boolean
+    ): String
     remoteAccessSendCode(
       simulatorId: ID!
       code: String!
@@ -72,6 +84,9 @@ const schema = gql`
     notify(
       simulatorId: ID!
       type: String
+      """
+      Dynamic: Station
+      """
       station: String
       title: String!
       body: String

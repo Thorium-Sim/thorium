@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Container } from "reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
 import { InputField, OutputField } from "../../generic/core";
@@ -93,7 +92,7 @@ class TractorBeamCore extends Component {
     const tractorBeam = this.props.data.tractorBeam[0];
     if (!tractorBeam) return <p>No Tractor Beam</p>;
     return (
-      <Container className="tractor-beam-core">
+      <div className="tractor-beam-core">
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -133,21 +132,23 @@ class TractorBeamCore extends Component {
             {tractorBeam.targetLabel}
           </InputField>
         </div>
-        <label>Strength: {Math.round(tractorBeam.strength * 100)}</label>
-        <label>
-          Stress: {Math.round(tractorBeam.stress * 100)}{" "}
-          <input
-            style={{ width: "50%", float: "right" }}
-            onChange={this.setStress}
-            onMouseUp={this.updateStress}
-            defaultValue={tractorBeam.stress}
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-          />
-        </label>
-      </Container>
+        <div>
+          <label>Strength: {Math.round(tractorBeam.strength * 100)}</label>
+          <label>
+            Stress: {Math.round(tractorBeam.stress * 100)}{" "}
+            <input
+              style={{ width: "50%", float: "right" }}
+              onChange={this.setStress}
+              onMouseUp={this.updateStress}
+              defaultValue={tractorBeam.stress}
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+            />
+          </label>
+        </div>
+      </div>
     );
   }
 }

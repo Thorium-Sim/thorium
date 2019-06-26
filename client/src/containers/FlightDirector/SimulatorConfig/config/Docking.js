@@ -8,7 +8,7 @@ import {
   Modal,
   ModalHeader,
   ModalFooter
-} from "reactstrap";
+} from "helpers/reactstrap";
 
 const DockingConfig = ({ data, selectedSimulator, client }) => {
   const [settingPosition, setSettingPosition] = useState(false);

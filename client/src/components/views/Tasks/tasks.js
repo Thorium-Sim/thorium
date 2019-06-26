@@ -8,7 +8,7 @@ import {
   Card,
   CardBlock,
   Button
-} from "reactstrap";
+} from "helpers/reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import { FormattedMessage } from "react-intl";

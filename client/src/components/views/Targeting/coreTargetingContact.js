@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Row, Col, Button } from "helpers/reactstrap";
 import { InputField } from "../../generic/core";
 import gql from "graphql-tag.macro";
 import { Mutation } from "react-apollo";

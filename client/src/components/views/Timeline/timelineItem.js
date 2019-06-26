@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import * as MacrosPrint from "../../macrosPrint";
 import * as Macros from "../../macros";
-import { Button, Input, Label } from "reactstrap";
+import { Button, Input, Label } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 import allowedMacros from "./allowedMacros";
 import EventName from "../../../containers/FlightDirector/MissionConfig/EventName";
@@ -19,11 +19,15 @@ class ActionPreview extends Component {
       id,
       event,
       args,
+      simArgs = {},
       simulatorId,
       values,
       delay,
       updateDelay,
-      updateValues
+      updateValues,
+      stations,
+      clients,
+      simple
     } = this.props;
     return (
       <div className="timeline-item">
@@ -40,28 +44,34 @@ class ActionPreview extends Component {
             Restore Values
           </Button>
         ) : (
-          <Button
-            size="sm"
-            style={{ height: "16px", lineHeight: 1 }}
-            color="info"
-            onClick={() => this.setState({ edit: true })}
-          >
-            Edit
-          </Button>
+          !simple && (
+            <Button
+              size="sm"
+              style={{ height: "16px", lineHeight: 1 }}
+              color="info"
+              onClick={() => this.setState({ edit: true })}
+            >
+              Edit
+            </Button>
+          )
         )}
         {values[id] && <p className={"text-danger"}>Edited</p>}
         <div>
           <Label>
             Delay
-            <Input
-              bsSize="sm"
-              defaultValue={delay}
-              type="number"
-              min="0"
-              onChange={e =>
-                updateDelay({ ...delay, [id]: parseInt(e.target.value) })
-              }
-            />
+            {simple ? (
+              `: ${delay}ms`
+            ) : (
+              <Input
+                bsSize="sm"
+                defaultValue={delay}
+                type="number"
+                min="0"
+                onChange={e =>
+                  updateDelay({ ...delay, [id]: parseInt(e.target.value) })
+                }
+              />
+            )}
           </Label>
         </div>
         {Macros[event] &&
@@ -76,9 +86,11 @@ class ActionPreview extends Component {
               <MacroPreview
                 key={this.state.previewKey}
                 simulatorId={simulatorId}
-                args={{ ...args, ...values[id] }}
+                args={{ ...args, ...simArgs[id], ...values[id] }}
                 updateArgs={edit ? this.setArg : () => {}}
                 lite
+                stations={stations}
+                clients={clients}
               />
             );
           })()}
@@ -107,17 +119,22 @@ class TimelineItem extends Component {
       values,
       updateValues,
       delay,
-      updateDelay
+      updateDelay,
+      stations,
+      clients,
+      simArgs,
+      simple
     } = this.props;
     const { expanded } = this.state;
-
     return (
       <li>
-        <input
-          type="checkbox"
-          checked={actions[id]}
-          onChange={() => checkAction(id)}
-        />
+        {!simple && (
+          <input
+            type="checkbox"
+            checked={actions[id]}
+            onChange={() => checkAction(id)}
+          />
+        )}
         <span
           className={
             executedTimelineSteps.indexOf(id) > -1 &&
@@ -140,11 +157,15 @@ class TimelineItem extends Component {
                 simulatorId={simulatorId}
                 id={id}
                 event={event}
+                simArgs={simArgs}
                 args={args}
                 values={values}
                 updateValues={updateValues}
                 delay={delay}
                 updateDelay={updateDelay}
+                stations={stations}
+                clients={clients}
+                simple={simple}
               />
             )}
           </Fragment>

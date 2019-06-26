@@ -1,5 +1,5 @@
 import React from "react";
-import { FormGroup, Input, Label } from "reactstrap";
+import { FormGroup, Input, Label } from "helpers/reactstrap";
 
 export default ({ args }) => {
   return (

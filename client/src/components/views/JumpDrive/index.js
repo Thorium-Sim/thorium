@@ -39,6 +39,7 @@ const fragment = gql`
     env
     activated
     enabled
+    ringsExtended
   }
 `;
 

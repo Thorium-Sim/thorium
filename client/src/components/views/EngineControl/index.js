@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Button, Row, Col, Container } from "reactstrap";
+import { Button, Row, Col, Container } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql, compose } from "react-apollo";
 import Engine1 from "./engine-1";
 import Engine2 from "./engine-2";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import useSoundEffect from "helpers/hooks/useSoundEffect";
+
 import "./style.scss";
 
 const fragment = gql`
@@ -49,7 +51,49 @@ const HEATCHANGE_SUB = gql`
     }
   }
 `;
-
+const EngineBar = ({ engine, engines, index, setSpeed, speedBarStyle }) => {
+  const playEffect = useSoundEffect();
+  return (
+    <div key={engine.id} className="engineGroup">
+      <h4>{engine.name}</h4>
+      <ul className="engine">
+        {engine.speeds.map((speed, speedIndex) => {
+          const powerIndex =
+            engine.power.powerLevels
+              .concat(1000)
+              .findIndex(p => p > engine.power.power) - 1;
+          let speedWord = speed;
+          if (typeof speed === "object") {
+            speedWord = speed.number;
+          }
+          return (
+            <li
+              key={`${engine.id}-${speedWord}`}
+              className={`speedNums speedBtn ${
+                speedIndex <= powerIndex ? "powered" : ""
+              }`}
+              onClick={() => {
+                playEffect("buttonClick");
+                setSpeed(engine, speedIndex, engines, index);
+              }}
+            >
+              {speedWord}
+            </li>
+          );
+        })}
+      </ul>
+      <div
+        className="speedBar"
+        style={speedBarStyle(
+          engine.speeds,
+          engine.speed,
+          engines.length,
+          index
+        )}
+      />
+    </div>
+  );
+};
 class EngineControl extends Component {
   state = {};
   interactionTime = 0;
@@ -67,7 +111,7 @@ class EngineControl extends Component {
       width: `calc(${width}% - ${(40 / array.length) * speed}px)`
     };
   }
-  setSpeed(engine, speed) {
+  setSpeed = (engine, speed) => {
     if (
       !engine.damage.damaged &&
       engine.power.power >= engine.power.powerLevels[0] &&
@@ -79,7 +123,7 @@ class EngineControl extends Component {
         this.setState({ locked: false });
       }, 1000);
     }
-  }
+  };
   fullStop() {
     const engine =
       this.props.data.engines && this.props.data.engines.find(e => e.on);
@@ -139,47 +183,15 @@ class EngineControl extends Component {
         <Row>
           <Col className="col-sm-12 enginesBar">
             {(() => {
-              return engines.map((engine, index) => {
-                return (
-                  <div key={engine.id} className="engineGroup">
-                    <h4>{engine.name}</h4>
-                    <ul className="engine">
-                      {engine.speeds.map((speed, speedIndex) => {
-                        const powerIndex =
-                          engine.power.powerLevels
-                            .concat(1000)
-                            .findIndex(p => p > engine.power.power) - 1;
-                        let speedWord = speed;
-                        if (typeof speed === "object") {
-                          speedWord = speed.number;
-                        }
-                        return (
-                          <li
-                            key={`${engine.id}-${speedWord}`}
-                            className={`speedNums speedBtn ${
-                              speedIndex <= powerIndex ? "powered" : ""
-                            }`}
-                            onClick={() => {
-                              this.setSpeed(engine, speedIndex, engines, index);
-                            }}
-                          >
-                            {speedWord}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                    <div
-                      className="speedBar"
-                      style={this.speedBarStyle(
-                        engine.speeds,
-                        engine.speed,
-                        engines.length,
-                        index
-                      )}
-                    />
-                  </div>
-                );
-              });
+              return engines.map((engine, index) => (
+                <EngineBar
+                  engine={engine}
+                  engines={engines}
+                  index={index}
+                  setSpeed={this.setSpeed}
+                  speedBarStyle={this.speedBarStyle}
+                />
+              ));
             })()}
           </Col>
           <Col className="col-sm-4 offset-sm-4">

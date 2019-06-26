@@ -1,6 +1,7 @@
 import { System } from "./generic";
 import uuid from "uuid";
 import App from "../app.js";
+import { randomFromList } from "./generic/damageReports/constants";
 
 export default class Probes extends System {
   constructor(params = {}, init) {
@@ -36,6 +37,61 @@ export default class Probes extends System {
   get stealthFactor() {
     if (this.stealthCompromised) return 1;
     return 0;
+  }
+  trainingMode() {
+    // Launch two science probes
+    this.launchProbe({
+      name: "Carbon Detector",
+      type: "science",
+      equipment: [
+        { id: "sensor-array", count: 1 },
+        { id: "sample-retrieval-package", count: 1 },
+        { id: "carbon-emitter", count: 1 }
+      ]
+    });
+    this.launchProbe({
+      name: "Carbon Burst",
+      type: "science",
+      equipment: [
+        { id: "carbon-emitter", count: 1 },
+        { id: "extra-fuel-cell", count: 3 }
+      ]
+    });
+
+    // Add some stuff to detect
+    function randomOnPlane(radius) {
+      const angle = Math.random() * Math.PI * 2;
+      const x = Math.cos(angle) * Math.random() * radius;
+      const y = Math.sin(angle) * Math.random() * radius;
+      return { x, y, z: 0 };
+    }
+    const burstTypes = this.scienceTypes.map(t => t.name);
+    const num = Math.round(Math.random() * 30) + 20;
+    const contacts = Array(num)
+      .fill(0)
+      .map(() => {
+        const location = randomOnPlane(1);
+        return {
+          type: "burst",
+          particle: randomFromList(burstTypes),
+          location,
+          destination: location
+        };
+      });
+    const sensors = App.systems.find(
+      s =>
+        s.simulatorId === this.simulatorId &&
+        s.class === "Sensors" &&
+        s.domain === "external"
+    );
+    if (!sensors) return;
+    App.handleEvent(
+      {
+        id: sensors.id,
+        contacts
+      },
+      "createSensorContacts"
+    );
   }
   addProcessedData(data) {
     this.processedData = data;
@@ -323,7 +379,7 @@ const probesEquipment = [
   {
     id: "radiation-shielding",
     name: "Radiation Shielding",
-    description: "Protects the probe from moderate levels of radiaiton.",
+    description: "Protects the probe from moderate levels of radiation.",
     size: 3,
     count: 16,
     availableProbes: []
@@ -371,6 +427,15 @@ const probesEquipment = [
       "A Decoy Package sends out signals to make sensor devices detect the probe as a ship.",
     size: 4,
     count: 23,
+    availableProbes: []
+  },
+  {
+    id: "tractor-beam",
+    name: "Tractor Beam",
+    description:
+      "Projects dark matter particles to create areas of negative gravitation. Can be used to pull objects towards the probe.",
+    size: 5,
+    count: 7,
     availableProbes: []
   },
   {

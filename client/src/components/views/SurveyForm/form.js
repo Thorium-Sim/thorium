@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, CardBody, Row, Col, Button } from "reactstrap";
+import { Card, CardBody, Row, Col, Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import * as Components from "../../../containers/FlightDirector/SurveyConfig/components";
 class Form extends Component {
@@ -23,7 +23,7 @@ class Form extends Component {
       client: this.props.clientId,
       form: this.state.responses.map((r, i) => {
         const form = this.props.form.form[i];
-        return { id: form.id, value: r };
+        return { id: form.id, value: String(r) };
       })
     };
     this.props.client.mutate({
@@ -35,10 +35,10 @@ class Form extends Component {
     });
   };
   render() {
-    const { form } = this.props;
+    const { form, submitForm } = this.props;
     const { currentForm, responses, submitted } = this.state;
     const formItem = form.form[currentForm];
-    const Comp = Components[formItem.type];
+    const Comp = formItem && Components[formItem.type];
     return (
       <div>
         <h1 className="text-center">{form.title}</h1>
@@ -51,13 +51,13 @@ class Form extends Component {
               flexDirection: "column"
             }}
           >
-            {submitted ? (
+            {submitted || !Comp ? (
               <h1>Thank you for your response.</h1>
             ) : (
-              <div>
+              <div style={{ maxWidth: "60%" }}>
                 <h3>{formItem.title}</h3>
                 <p>{formItem.description}</p>
-                <div style={{ width: "80%" }}>
+                <div>
                   <Comp
                     survey
                     {...formItem}
@@ -100,14 +100,25 @@ class Form extends Component {
                   </p>
                 )}
               {responses.length === form.form.length && (
-                <Button color="success" block size="lg" onClick={this.submit}>
+                <Button
+                  color="success"
+                  block
+                  size="lg"
+                  onClick={() => {
+                    this.submit();
+                    submitForm();
+                  }}
+                >
                   Submit
                 </Button>
               )}
             </Col>
             <Col sm={{ size: 3, offset: 1 }}>
               <Button
-                disabled={currentForm === form.form.length - 1}
+                disabled={
+                  !responses[currentForm] ||
+                  currentForm === form.form.length - 1
+                }
                 color="primary"
                 size="lg"
                 block

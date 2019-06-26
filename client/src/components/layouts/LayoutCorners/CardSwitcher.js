@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 import "./cardSwitcher.scss";
 
 class CardSwitcher extends Component {
@@ -26,7 +26,7 @@ class CardSwitcher extends Component {
   }
 }
 
-const intregex = /interface-.{8}-.{4}-.{4}-.{4}-.{12}/gi;
+const intregex = /interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 const spregex = /.*.{8}-.{4}-.{4}-.{4}-.{12}/gi;
 
 const CardButton = props => {

@@ -1,5 +1,11 @@
 import React from "react";
-import { FormGroup, Label, Input, Button, ButtonGroup } from "reactstrap";
+import {
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  ButtonGroup
+} from "helpers/reactstrap";
 
 export default ({ updateArgs = () => {}, args, client }) => {
   const lrmText = e => {

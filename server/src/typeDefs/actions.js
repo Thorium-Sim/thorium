@@ -22,7 +22,13 @@ const schema = gql`
       message: String
       voice: String
       simulatorId: ID!
+      """
+      Dynamic: Station
+      """
       stationId: String
+      """
+      Dynamic: Client
+      """
       clientId: ID
       duration: Float
     ): String
@@ -49,6 +55,8 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("actionsUpdate"),
         (rootValue, { simulatorId, stationId, clientId }) => {
+          if (!simulatorId) return;
+          if (!rootValue) return;
           const {
             simulatorId: toSimulator,
             stationId: toStation,

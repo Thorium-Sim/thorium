@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ListGroupItem } from "reactstrap";
+import { ListGroupItem } from "helpers/reactstrap";
 class KeyboardList extends Component {
   componentDidMount() {
     this.sub = this.props.subscribe();

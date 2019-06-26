@@ -1,5 +1,5 @@
 import React from "react";
-import { Input } from "reactstrap";
+import { Input } from "helpers/reactstrap";
 import { titleCase } from "change-case";
 import DeckSelect from "./inputs/DeckSelect";
 import PartsPicker from "./inputs/PartsPicker";

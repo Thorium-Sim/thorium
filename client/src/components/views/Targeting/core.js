@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Container, Row, Col, Button, Media } from "reactstrap";
+import { Container, Row, Col, Button, Media } from "helpers/reactstrap";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { publish } from "helpers/pubsub";

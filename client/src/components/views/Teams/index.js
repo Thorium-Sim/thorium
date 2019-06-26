@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Card, CardBody, Button } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem,
+  Button
+} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import { titleCase } from "change-case";
 import training from "./training";
@@ -221,23 +228,19 @@ class Teams extends Component {
         />
         <Row>
           <Col sm={3}>
-            <Card className="team-list">
-              <CardBody>
-                {teams.map(t => (
-                  <p
-                    key={t.id}
-                    onClick={() => {
-                      this.setState({ selectedTeam: t });
-                    }}
-                    className={
-                      selectedTeam && t.id === selectedTeam.id ? "selected" : ""
-                    }
-                  >
-                    {t.name}
-                  </p>
-                ))}
-              </CardBody>
-            </Card>
+            <ListGroup className="team-list">
+              {teams.map(t => (
+                <ListGroupItem
+                  key={t.id}
+                  onClick={() => {
+                    this.setState({ selectedTeam: t });
+                  }}
+                  active={selectedTeam && t.id === selectedTeam.id}
+                >
+                  {t.name}
+                </ListGroupItem>
+              ))}
+            </ListGroup>
             <Button
               block
               color="success"

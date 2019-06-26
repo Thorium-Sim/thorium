@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import keycode from "keycode";
 import { withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
+import SoundPlayer from "../../client/soundPlayer";
 
 import "./style.scss";
 
@@ -45,13 +46,24 @@ class Keyboard extends Component {
     };
   }
   componentDidMount() {
-    document.addEventListener("keydown", this.keydown);
+    document.addEventListener("keydown", this.keydown, true);
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.keydown);
+    document.removeEventListener("keydown", this.keydown, true);
   }
   render() {
-    return <div className="keyboard-holder">Keyboard</div>;
+    const { clientObj } = this.props;
+    return (
+      <div className="keyboard-holder">
+        Keyboard
+        {clientObj.soundPlayer && (
+          <div>
+            <p>Sound Player</p>
+            <SoundPlayer {...this.props} invisible />
+          </div>
+        )}
+      </div>
+    );
   }
 }
 

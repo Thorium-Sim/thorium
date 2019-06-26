@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Label } from "reactstrap";
+import { Label } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { graphql } from "react-apollo";
 import Dots from "./dots";
@@ -54,7 +54,7 @@ class DilithiumStress extends Component {
               variables: { simulatorId: this.props.simulator.id },
               updateQuery: (previousResult, { subscriptionData }) => {
                 return Object.assign({}, previousResult, {
-                  reators: subscriptionData.data.reactors
+                  reactors: subscriptionData.data.reactorUpdate
                 });
               }
             })

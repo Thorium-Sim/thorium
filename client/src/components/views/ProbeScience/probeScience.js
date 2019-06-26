@@ -7,7 +7,7 @@ import {
   Button,
   ListGroup,
   ListGroupItem
-} from "reactstrap";
+} from "helpers/reactstrap";
 import Grid from "../Sensors/GridDom/grid";
 import { FormattedMessage } from "react-intl";
 import Tour from "helpers/tourHelper";

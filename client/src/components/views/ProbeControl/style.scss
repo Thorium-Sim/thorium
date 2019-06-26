@@ -1,4 +1,11 @@
 .probe-control {
+  height: 100%;
+  .row {
+    height: 100%;
+  }
+  .query-box {
+    height: unset;
+  }
   .probe-name {
     margin-bottom: 0;
   }

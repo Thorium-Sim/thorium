@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button } from "reactstrap";
+import { Input, Button } from "helpers/reactstrap";
 import { Mutation, withApollo } from "react-apollo";
 import gql from "graphql-tag.macro";
 import ValueInput from "../../../components/views/Tasks/core/ValueInput";

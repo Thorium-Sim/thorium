@@ -1,8 +1,9 @@
 import React from "react";
-import { FormGroup, Label, Input } from "reactstrap";
+import { FormGroup, Label, Input } from "helpers/reactstrap";
 import { paramCase } from "change-case";
 import FontAwesome from "react-fontawesome";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import { cypherMap } from "components/views/CodeCyphers";
 
 export default ({ updateArgs, args: { entry = {} }, client }) => {
   return (
@@ -97,6 +98,21 @@ export default ({ updateArgs, args: { entry = {} }, client }) => {
           />
         </div>
       ))}
+      <FormGroup>
+        <Label>Font</Label>
+        <Input
+          type="select"
+          value={entry.font}
+          onChange={e => updateArgs("font", e.target.value)}
+        >
+          <option value="">Normal Font</option>
+          {Object.keys(cypherMap).map(c => (
+            <option value={cypherMap[c]} key={c}>
+              {cypherMap[c]}
+            </option>
+          ))}
+        </Input>
+      </FormGroup>
       <Label>Body</Label>
       <Input
         rows={10}

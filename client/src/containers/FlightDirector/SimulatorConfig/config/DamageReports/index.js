@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Input } from "reactstrap";
+import { Row, Col, Card, Input } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import { withApollo } from "react-apollo";
 import FontAwesome from "react-fontawesome";

@@ -56,6 +56,8 @@
   .vertical-row {
     display: flex;
     flex-direction: column;
+    height: 100%;
+    padding-bottom: 30px;
     & > .card {
       flex: 1;
       height: 0;

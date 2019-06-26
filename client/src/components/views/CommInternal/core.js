@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { graphql, withApollo } from "react-apollo";
-import { Container, Row, Col, Input, Button } from "reactstrap";
+import { Container, Row, Col, Input, Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import RoomSearch from "./roomSearch";

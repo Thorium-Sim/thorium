@@ -210,6 +210,7 @@ class TacticalMapViewscreen extends Component {
         {tacticalMap && (
           <Preview
             simulatorId={this.props.simulator.id}
+            viewscreen={this.props.viewscreen}
             core={
               !(this.props.station && this.props.station.name === "Viewscreen")
             }

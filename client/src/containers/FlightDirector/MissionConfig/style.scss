@@ -1,4 +1,7 @@
 .missionConfig {
+  .list-group-item-warning {
+    color: #ffe699;
+  }
   .scroll {
     overflow-y: auto;
   }
@@ -7,6 +10,7 @@
       background-color: rgba(0, 0, 0, 0.1);
     }
   }
+
   .magic-container {
     display: flex;
   }
@@ -15,6 +19,31 @@
   }
 }
 
+.sensors-contact-army-picture {
+  display: block;
+  border: solid 2px rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 50, 0.5);
+  padding: 2px;
+  border-radius: 5px;
+  margin: 5px;
+  min-width: 40px;
+  min-height: 40px;
+  object-fit: contain;
+}
+.macro-setArmyContacts {
+  .contact-scroll {
+    img {
+      border: solid 2px rgba(255, 255, 255, 0.5);
+      background: rgba(0, 0, 50, 0.5);
+      padding: 2px;
+      border-radius: 5px;
+      margin: 5px;
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+  }
+}
 @keyframes spinloader {
   from {
     transform: rotate(0deg);

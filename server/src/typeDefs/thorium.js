@@ -1,9 +1,11 @@
 import App from "../app";
 import { gql } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import GraphQLClient from "../helpers/graphqlClient";
 import request from "request";
+import fetch from "node-fetch";
+import uuid from "uuid";
+const mutationHelper = require("../helpers/mutationHelper").default;
 
 const issuesUrl =
   "https://12usj3vwf1.execute-api.us-east-1.amazonaws.com/prod/issueTracker";
@@ -57,15 +59,35 @@ const schema = gql`
     """
     Macro: Space EdVentures: Assign Space EdVentures Badge
     """
-    assignSpaceEdventuresBadge(badgeId: ID!): String
+    assignSpaceEdventuresBadge(
+      """
+      Dynamic: Station
+      """
+      station: String
+      badgeId: ID!
+    ): String
 
     """
     Macro: Space EdVentures: Assign Space EdVentures Mission
     """
-    assignSpaceEdventuresMission(badgeId: ID!): String
+    assignSpaceEdventuresMission(station: String, badgeId: ID!): String
 
+    """
+    Macro: Space EdVentures: Change Flight Type
+    """
+    assignSpaceEdventuresFlightType(flightId: ID!, flightType: ID!): String
+
+    """
+    Macro: Space EdVentures: Transmit to Space EdVentures
+    """
     assignSpaceEdventuresFlightRecord(flightId: ID!): String
     getSpaceEdventuresLogin(token: String!): String
+    removeSpaceEdventuresClient(flightId: ID!, clientId: ID!): String
+
+    """
+    Macro: Generic: Do a generic thing. Use for triggers.
+    """
+    generic(simulatorId: ID!, key: String!): String
 
     addIssue(
       title: String!
@@ -74,6 +96,7 @@ const schema = gql`
       priority: Int
       type: String!
     ): String
+    addIssueUpload(data: String!, filename: String!, ext: String!): String
   }
   extend type Subscription {
     thoriumUpdate: Thorium
@@ -85,7 +108,11 @@ const resolver = {
   Thorium: {
     spaceEdventuresCenter: () => {
       // Simple timeout based caching
-      if (spaceEdventuresTimeout + 1000 * 60 * 5 < new Date()) {
+      if (
+        !spaceEdventuresData ||
+        spaceEdventuresTimeout + 1000 * 60 * 5 < new Date()
+      ) {
+        spaceEdventuresTimeout = Date.now();
         return GraphQLClient.query({
           query: `query {
           center {
@@ -119,7 +146,9 @@ const resolver = {
           return spaceEdventuresData;
         });
       }
-      if (spaceEdventuresData) return spaceEdventuresData;
+      if (spaceEdventuresData) {
+        return spaceEdventuresData;
+      }
     }
   },
   Query: {
@@ -128,7 +157,7 @@ const resolver = {
     }
   },
   Mutation: {
-    ...mutationHelper(schema, ["addIssue"]),
+    ...mutationHelper(schema, ["addIssue", "addIssueUpload"]),
     addIssue(rootValue, { title, body, person, priority, type }) {
       // Create our body
       var postBody =
@@ -151,6 +180,31 @@ const resolver = {
         { url: issuesUrl, body: postOptions, json: true },
         function() {}
       );
+    },
+    addIssueUpload(rootValue, { data, filename, ext }) {
+      const uploadPath = `uploads/${filename}-${uuid.v4()}.${ext}`;
+      const url =
+        "https://api.github.com/repos/thorium-sim/issue-uploads/contents/" +
+        uploadPath;
+      const payload = {
+        message: "issue tracker snapshot",
+        branch: "master",
+        content: data
+      };
+
+      return fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "token " + process.env.GITHUB_ISSUE_TOKEN
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(res => {
+          return res.content.html_url + "?raw=true";
+        })
+        .catch(err => console.error(err));
     }
   },
   Subscription: {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo, Mutation } from "react-apollo";
-import { Container, Row, Col, Card, CardBody } from "reactstrap";
+import { Container, Row, Col, Card, CardBody } from "helpers/reactstrap";
 import { FormattedMessage } from "react-intl";
 
 import SubscriptionHelper from "helpers/subscriptionHelper";

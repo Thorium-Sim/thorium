@@ -1,11 +1,12 @@
 import React, { useRef, useEffect } from "react";
 import { Query, Mutation } from "react-apollo";
-import { Table, Button } from "reactstrap";
+import { Table, Button } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import "./style.scss";
 import Printable from "helpers/printable";
 import useQrCode from "react-qrcode-hook";
-import { ReactComponent as Logo } from "./logo.svg";
+import { ReactComponent as Logo } from "./logo-black.svg";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -27,18 +28,22 @@ function useInterval(callback, delay) {
   }, [delay]);
 }
 
-const Flyer = ({ station: { name, token, userId } }) => {
+const Flyer = ({ station: { name, token, userId }, simulator, loginName }) => {
   const qrCode = useQrCode(`https://spaceedventures.org/redeem?token=${token}`);
   // If there is a UserId already, no need to print a flyer.
   if (userId) return null;
   return (
     <div className="space-edventures-flyer">
       <Logo style={{ height: "100px" }} />
+      <h2>{loginName}</h2>
+
       <p>
         This signifies that on {new Date().toLocaleDateString()} you completed a
-        flight on the following station:
+        flight on the following simulator and station:
       </p>
-      <h2>{name}</h2>
+      <h2>
+        {simulator.name}: {name}
+      </h2>
       <p>
         Add this flight to your rank by going to{" "}
         <u>https://spaceedventures.org/redeem</u> and typing in the following
@@ -57,6 +62,7 @@ const FLIGHT_QUERY = gql`
     flights(id: $flightId) {
       id
       flightType
+      transmitted
       clients {
         id
         name
@@ -66,6 +72,7 @@ const FLIGHT_QUERY = gql`
     }
     clients(simulatorId: $simulatorId) {
       id
+      loginName
       station {
         name
       }
@@ -78,6 +85,60 @@ const Refetch = ({ refetch }) => {
   useInterval(refetch, 1000);
   return null;
 };
+
+const QUERY = gql`
+  query Thorium {
+    thorium {
+      spaceEdventuresCenter {
+        id
+        name
+        flightTypes {
+          id
+          name
+          classHours
+          flightHours
+        }
+      }
+    }
+  }
+`;
+const SET_FLIGHT_TYPE = gql`
+  mutation FlightType($flightId: ID!, $flightType: ID!) {
+    assignSpaceEdventuresFlightType(
+      flightId: $flightId
+      flightType: $flightType
+    )
+  }
+`;
+
+const FlightTypePicker = ({ flightId, value = "" }) => {
+  const { loading, data } = useQuery(QUERY);
+  const [action] = useMutation(SET_FLIGHT_TYPE);
+  if (
+    !loading &&
+    data.thorium &&
+    data.thorium.spaceEdventuresCenter &&
+    data.thorium.spaceEdventuresCenter.flightTypes &&
+    data.thorium.spaceEdventuresCenter.flightTypes.length
+  )
+    return (
+      <select
+        value={value}
+        onChange={e =>
+          action({ variables: { flightId, flightType: e.target.value } })
+        }
+      >
+        <option value="" disabled>
+          Choose One
+        </option>
+        {data.thorium.spaceEdventuresCenter.flightTypes.map(f => (
+          <option key={f.id}>{f.name}</option>
+        ))}
+      </select>
+    );
+  return "Loading...";
+};
+
 const SpaceEdventuresTokenCore = ({ flightId, simulator }) => {
   const transmit = action => () => {
     if (
@@ -105,7 +166,18 @@ This can only be done once per flight and should only be done when the flight is
         if (loading || !data) return null;
         const clients = data.clients;
         const flight = data.flights[0];
-        if (!flight.flightType && !flight.clients)
+        if (!flight.flightType) {
+          return (
+            <div>
+              <p>
+                This is not a Space EdVentures flight. Assign a flight type to
+                transmit your crew records.
+              </p>
+              <FlightTypePicker flightId={flightId} />
+            </div>
+          );
+        }
+        if (flight.transmitted && !flight.clients)
           return (
             <p>
               This flight has either been transmitted without any crew records
@@ -148,7 +220,7 @@ This can only be done once per flight and should only be done when the flight is
                 </Button>
               )}
             </Mutation>
-            {flight.flightType ? (
+            {!flight.transmitted ? (
               <Mutation
                 mutation={gql`
                   mutation TransmitFlight($flightId: ID!) {
@@ -158,7 +230,8 @@ This can only be done once per flight and should only be done when the flight is
                 variables={{ flightId }}
                 refetchQueries={[
                   {
-                    query: FLIGHT_QUERY
+                    query: FLIGHT_QUERY,
+                    variables: { flightId, simulatorId: simulator.id }
                   }
                 ]}
               >
@@ -176,6 +249,8 @@ This can only be done once per flight and should only be done when the flight is
             <Button size="sm" color="info" onClick={() => window.print()}>
               Print Crew Flyers
             </Button>
+            <FlightTypePicker flightId={flightId} value={flight.flightType} />
+
             <Table size="sm" responsive>
               <thead>
                 <tr>
@@ -183,6 +258,7 @@ This can only be done once per flight and should only be done when the flight is
                   <th>Station</th>
                   <th>Token</th>
                   <th>Email Added</th>
+                  <th>Remove</th>
                 </tr>
               </thead>
               <tbody>
@@ -194,6 +270,46 @@ This can only be done once per flight and should only be done when the flight is
                       <td>{c.name || c.station.name}</td>
                       <td>{c.token}</td>
                       <td>{c.email ? "✅" : "🚫"}</td>
+                      <td>
+                        <Mutation
+                          mutation={gql`
+                            mutation RemoveClient(
+                              $flightId: ID!
+                              $clientId: ID!
+                            ) {
+                              removeSpaceEdventuresClient(
+                                flightId: $flightId
+                                clientId: $clientId
+                              )
+                            }
+                          `}
+                          variables={{ flightId, clientId: c.id }}
+                          refetchQueries={[
+                            {
+                              query: FLIGHT_QUERY,
+                              variables: { flightId, simulatorId: simulator.id }
+                            }
+                          ]}
+                        >
+                          {action => (
+                            <Button
+                              size="sm"
+                              color="danger"
+                              onClick={() => {
+                                if (
+                                  window.confirm(
+                                    "Are you sure you want to remove this client? To add it back, log out of the client and then log back in."
+                                  )
+                                ) {
+                                  action();
+                                }
+                              }}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </Mutation>
+                      </td>
                     </tr>
                   ))}
               </tbody>
@@ -231,6 +347,8 @@ This can only be done once per flight and should only be done when the flight is
                   .map(c => (
                     <Flyer
                       key={c.id}
+                      simulator={simulator}
+                      loginName={c.loginName}
                       station={c.station ? { ...c.station, ...c } : c}
                     />
                   ))}

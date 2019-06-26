@@ -2,7 +2,14 @@ import React, { Component, Fragment } from "react";
 import ReactDOM from "react-dom";
 import gql from "graphql-tag.macro";
 import { graphql, withApollo } from "react-apollo";
-import { Row, Col, Container, Button, Input, ButtonGroup } from "reactstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Button,
+  Input,
+  ButtonGroup
+} from "helpers/reactstrap";
 import Grid from "../GridDom";
 import ExtraControls from "./extraControls";
 import ContactsList from "./contactsList";
@@ -186,7 +193,7 @@ class GridCore extends Component {
     if (!location) return;
     const distance = distance3d({ x: 0, y: 0, z: 0 }, location);
     // Max Distance should be the distance + the width of the contact
-    const maxDistance = type === "planet" ? 1 + size / 2 : 1.1;
+    const maxDistance = type === "planet" ? 2 + size / 2 : 2;
     if (distance > maxDistance) {
       return;
     }

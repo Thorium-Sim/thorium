@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button, ButtonGroup } from "reactstrap";
+import { Table, Button, ButtonGroup } from "helpers/reactstrap";
 import { InputField, OutputField } from "../../generic/core";
 import { graphql, withApollo, Mutation } from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";

@@ -1,26 +1,70 @@
-.terminal-base {
-  min-width: 100%;
-  width: 100%;
-  max-width: 100%;
-  & > div > div {
-    max-width: 100%;
-    max-height: 100%;
-    input[type="text"],
-    input[type="text"]:focus {
-      border: none;
-      border-bottom-color: rgba(255, 255, 255, 0.5);
-      background-color: transparent;
-      box-shadow: none;
-      padding: 0;
-      padding-left: 10px;
-      margin: 0;
-      font-size: 18px;
+.terminal-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 80%;
+  margin-top: 5%;
+
+  .terminal-output {
+    flex: 1;
+    white-space: pre-wrap;
+    font-family: monospace;
+    width: 100%;
+    width: 80%;
+    border: solid 2px rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0 5px;
+    overflow-y: auto;
+    font-size: 18px;
+    line-height: 1.7;
+    color: #0f0;
+  }
+  input.form-control {
+    width: 80%;
+    font-family: monospace;
+    color: #0f0;
+  }
+}
+.commandline-core {
+  display: flex;
+  height: 100%;
+  .commandline-clients {
+    flex: 1;
+    .list-group {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
-    input[type="text"] {
-      border-bottom-width: 0;
+  }
+  .commandline-info {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
+    .output {
+      padding: 0 5px;
+
+      flex: 1;
+      white-space: pre-wrap;
+      font-family: monospace;
+      overflow-y: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: solid 1px rgba(255, 255, 255, 0.3);
     }
-    input[type="text"]:focus {
-      border-bottom-width: 2px;
+    .flex {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .flex-wrap {
+      flex-wrap: wrap;
+    }
+    pre {
+      color: white;
+    }
+    .trigger-name {
+      padding-left: 5px;
     }
   }
 }

@@ -1,8 +1,9 @@
 .damage-control,
 .damageReport-core {
-  .card {
+  .card,
+  .list-group {
     height: 60vh;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   p {
     margin: 0;
@@ -44,7 +45,7 @@
   }
   .reactivation-code {
     .card {
-      height: 45vh;
+      height: 55vh;
     }
     .reactivation-code-entry {
       &.card {
@@ -68,6 +69,10 @@
   }
   button {
     font-size: 0.9rem;
+  }
+  .reactivate-button {
+    font-family: monospace !important;
+    font-size: 1.5rem !important;
   }
 }
 .systems-context {
@@ -118,6 +123,7 @@
       }
     }
   }
+
   .code-entry {
     font-size: 30px;
     padding-left: 20%;

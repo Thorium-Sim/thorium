@@ -13,6 +13,9 @@
 .docking-graphic {
   height: 100%;
   width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
   max-width: 600px;
   max-height: 600px;
   background-color: black;
@@ -245,6 +248,117 @@
       }
     }
   }
+
+  .legs {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    //background-color: #222;
+      .ship-bottom {
+        position: absolute;
+        height: 5%;
+        width: 100%;
+        .left {
+          position: absolute;
+          height: 100%;
+          width: 43%;
+          right: 68%;
+          background-color: #444444;
+          display: inline-block;
+          transition: transform 1s ease-in-out 1.5s;
+          transform: translateX(25%);
+        }
+        .middle {
+          position: absolute;
+          height: 100%;
+          width: 15%;
+          right: 42.5%;
+          background-color: #444444;
+          display: inline-block;
+        }
+        .right {
+          position: absolute;
+          height: 100%;
+          width: 44%;
+          right: -11%;
+          background-color: #444444;
+          display: inline-block;
+          transition: transform 1s ease-in-out 1.5s;
+          transform: translateX(-25%);
+        }
+      }
+      .ymove {
+        transition: transform 2s ease-in-out;
+        transform: translateY(-100%);
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        .left-leg {
+          position: absolute;
+          height: 60%;
+          width: 7%;
+          right: 59%;
+          top: -5%;
+          background-color: #666666;
+        }
+        .right-leg {
+          position: absolute;
+          height: 60%;
+          width: 7%;
+          right: 34%;
+          top: -5%;
+          background-color: #666666;
+        }
+        .left-foot {
+          position: absolute;
+          height: 12%;
+          width: 7%;
+          right: 59%;
+          top: 55%;
+          clip-path: polygon(0 0, 100% 1%, 100% 100%, 25% 100%, 0 67%);
+          background-color: #666666;
+          transition: 1s ease-in-out;
+          transform: rotateZ(0deg);
+          transform-origin: top;
+        }
+        .right-foot {
+          position: absolute;
+          height: 12%;
+          width: 7%;
+          right: 34%;
+          top: 55%;
+          clip-path: polygon(0% 0%, 100% 0, 100% 72%, 75% 100%, 0% 100%);
+          background-color: #666666;
+          transition: 1s ease-in-out;
+          transform: rotateZ(0deg);
+        }
+      }
+
+      &.on {
+        .left {
+          transition: transform 1s ease-in-out;
+          transform: translateX(1%);
+        }
+        .right {
+          transition: transform 1s ease-in-out;
+          transform: translateX(1%);
+        }
+        .ymove {
+          transition: transform 2s ease-in-out;
+          transform: translateY(1%);
+        }
+        .left-foot {
+          transition: 1s ease-in-out 1s;
+          transform: rotateZ(90deg);
+          transform-origin: top right;
+        }
+        .right-foot {
+          transition: 1s ease-in-out 1s;
+          transform: rotateZ(-90deg);
+          transform-origin: top left;
+        }
+      }
+    }
 }
 
 .graphics {
@@ -252,5 +366,4 @@
   justify-content: center;
   align-content: center;
   flex-direction: column;
-  height: 80vh;
 }

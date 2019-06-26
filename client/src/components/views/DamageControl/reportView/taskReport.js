@@ -1,7 +1,7 @@
 import React from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
-import { Button } from "reactstrap";
+import { Button } from "helpers/reactstrap";
 
 const ReportViewTask = ({ system, stepDamage }) => {
   const task = system.tasks.find(t => !t.verified);

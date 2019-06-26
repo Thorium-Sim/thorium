@@ -29,7 +29,7 @@ const useFlash = () => {
       return setFlash(false);
     }
     setFlash(oldFlash => !oldFlash);
-    timeoutRef.current = setTimeout(() => doFlash(duration - 1), 100);
+    timeoutRef.current = setTimeout(() => doFlash(duration - 1), 150);
   };
   useEffect(() => () => clearTimeout(timeoutRef.current), []);
   return { flash, doFlash };
@@ -44,21 +44,21 @@ const useSpark = () => {
     setSparks([...sparks, id]);
     timeoutRef.current.push(
       setTimeout(() => {
-        setSparks(sparks.filter(s => s !== id));
+        setSparks(sparks => sparks.filter(s => s !== id));
       }, duration)
     );
   };
-  useEffect(
-    () => () => timeoutRef.current.forEach(ref => clearTimeout(ref)),
-    []
-  );
+  useEffect(() => {
+    // eslint-disable-next-line
+    return () => timeoutRef.current.forEach(ref => clearTimeout(ref));
+  }, []);
   return {
     doSpark,
     Sparks: () => sparks.map(s => <Spark key={s} />)
   };
 };
 
-const ActionsMixin = ({ simulator, station, changeCard, children, client }) => {
+const ActionsMixin = ({ simulator, station, changeCard, client }) => {
   const { flash, doFlash } = useFlash();
   const { doSpark, Sparks } = useSpark();
   useEffect(() => {
@@ -106,10 +106,9 @@ const ActionsMixin = ({ simulator, station, changeCard, children, client }) => {
         }
       });
     return () => subscription.unsubscribe();
-  }, [simulator, station]);
+  }, [changeCard, client, doFlash, doSpark, simulator, station]);
   return (
     <div className={`actionsContainer ${flash ? "flash" : ""}`}>
-      {children}
       <Sparks />
     </div>
   );

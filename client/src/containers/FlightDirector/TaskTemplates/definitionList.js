@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ListGroupItem, ListGroup, Badge } from "reactstrap";
+import { ListGroupItem, ListGroup, Badge } from "helpers/reactstrap";
 
 const DefinitionList = ({
   taskDefinitions,

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import * as THREE from "three";
 import TWEEN from "@tweenjs/tween.js";
+
 class ThreeView extends Component {
   constructor(props) {
     super(props);
@@ -14,13 +15,18 @@ class ThreeView extends Component {
     this.camera.position.y = 0;
     this.camera.position.z = 0;
     this.camera.lookAt(new THREE.Vector3(0, 0, -1));
+
+    const light = new THREE.PointLight(0xaaaaaa);
+    light.position.set(250, 0, 0);
+    this.scene.add(light);
+
     this.stars = [];
     const geometry = new THREE.CylinderGeometry(
-      0.8,
+      1,
       0,
-      this.state.velocity > 5 ? Math.min(Math.max(1, velocity * 3), 500) : 1,
-      8,
-      8
+      Math.min(Math.max(1, this.state.velocity * 4), 500),
+      16,
+      16
     );
     const staticGeometry = new THREE.CircleGeometry(1, 8);
     const staticMaterial = new THREE.MeshBasicMaterial({
@@ -35,9 +41,10 @@ class ThreeView extends Component {
       );
       this.scene.add(mesh);
     }
-    for (let i = 0; i < 2000; i++) {
-      const material = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(`hsl(${Math.random() * 360}, 16%, 80%)`),
+    for (let i = 0; i < 1000; i++) {
+      const material = new THREE.MeshLambertMaterial({
+        color: new THREE.Color(`hsl(0,0%,30%)`),
+        emissive: new THREE.Color(`hsl(0, 36%, 60%)`),
         transparent: true,
         opacity: 0.9
       });
@@ -88,13 +95,11 @@ class ThreeView extends Component {
     if (this.state.velocity !== prevState.velocity) {
       const length = this.stars.length;
       const geometry = new THREE.CylinderGeometry(
-        0.8,
+        1,
         0,
-        this.state.velocity > 5
-          ? Math.min(Math.max(1, this.state.velocity * 3), 500)
-          : 1,
-        8,
-        8
+        Math.min(Math.max(1, this.state.velocity * 4), 500),
+        16,
+        16
       );
       for (let i = 0; i < length; i++) {
         const mesh = this.stars[i];
@@ -113,13 +118,15 @@ class ThreeView extends Component {
       const { x, y, z } = mesh.position;
       if (z > 0) {
         mesh.position.set(
-          1500 * (Math.random() - 0.5),
-          1500 * (Math.random() - 0.5),
-          -10000
+          3000 * (Math.random() - 0.5),
+          3000 * (Math.random() - 0.5),
+          -5000
         );
       } else {
         mesh.position.set(x, y, z + velocity);
       }
+      const hue = mesh.position.z < -1250 ? 230 : 0.104 * mesh.position.z + 330;
+      mesh.material.emissive.set(`hsl(${hue}, 40%, 70%)`);
     }
 
     this.renderer.render(this.scene, this.camera);

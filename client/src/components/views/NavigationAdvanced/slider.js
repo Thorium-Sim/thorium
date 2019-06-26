@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 
 import "./slider.scss";
 export default class Slider extends Component {
@@ -45,7 +44,7 @@ export default class Slider extends Component {
     });
   };
   mouseMove = evt => {
-    const bounds = ReactDOM.findDOMNode(this).getBoundingClientRect();
+    const bounds = this.sliderRef.current.getBoundingClientRect();
     const y = evt.clientY || (evt.touches ? evt.touches[0].clientY : 0);
     const level = Math.abs(
       Math.min(1, Math.max(0, (y - bounds.top) / bounds.height)) - 1
@@ -53,9 +52,10 @@ export default class Slider extends Component {
     this.setState({ level: Math.max(0, level) });
     this.triggerChange(level);
   };
+  sliderRef = React.createRef();
   render() {
     return (
-      <div className="slider-bar">
+      <div className="slider-bar" ref={this.sliderRef}>
         <div className="numbers">
           {this.props.numbers.map(i => (
             <div className="number" key={i}>

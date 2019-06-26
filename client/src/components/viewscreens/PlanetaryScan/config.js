@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Input } from "reactstrap";
+import { Input } from "helpers/reactstrap";
 import { titleCase } from "change-case";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import ColorPicker from "helpers/colorPicker";
@@ -81,6 +81,7 @@ class PlanetaryScanConfig extends Component {
                 src={`/assets/${planet}`}
                 alt="Planet"
                 style={{ cursor: "pointer", width: "100%", maxWidth: "150px" }}
+                className="planetary-scan-config-image"
                 draggable={false}
                 onClick={() => this.setState({ config: "planet" })}
               />
@@ -96,6 +97,7 @@ class PlanetaryScanConfig extends Component {
                     width: "100%",
                     maxWidth: "150px"
                   }}
+                  className="planetary-scan-config-image"
                   draggable={false}
                   onClick={() => this.setState({ config: "clouds" })}
                 />
@@ -122,7 +124,7 @@ class PlanetaryScanConfig extends Component {
           <label>Text</label>
           <Input
             type="textarea"
-            value={data.text}
+            defaultValue={data.text}
             onChange={evt =>
               updateData(
                 JSON.stringify(

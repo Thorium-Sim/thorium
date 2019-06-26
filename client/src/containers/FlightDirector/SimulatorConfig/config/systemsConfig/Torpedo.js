@@ -11,7 +11,11 @@ const TORPEDO_QUERY = gql`
       inventory {
         id
         type
-        probe
+        probe {
+          id
+          name
+          launched
+        }
       }
     }
   }

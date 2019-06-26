@@ -1,22 +1,26 @@
 import React from "react";
-import { Card } from "reactstrap";
+import { Card } from "helpers/reactstrap";
 import { titleCase } from "change-case";
 const properties = [
   "Simulator",
   "Stations",
+  "Missions",
+  "Macros",
   "Decks",
   "Systems",
   "Inventory",
   "Crew",
   "Assets",
+  "SoundEffects",
   "Docking",
   "DamageReports",
   "Library",
   "Panels",
   "Ambiance",
   "CommandLines",
-  "Triggers"
-  //"Interfaces"
+  "Triggers",
+  "Interfaces",
+  "Keyboards"
 ];
 export default ({ selectProperty, selectedProperty }) => {
   return (

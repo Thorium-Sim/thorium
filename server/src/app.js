@@ -62,6 +62,8 @@ class Events extends EventEmitter {
     this.triggerGroups = [];
     this.interfaces = [];
     this.interfaceDevices = [];
+    this.macros = [];
+    this.macroButtonConfigs = [];
     this.autoUpdate = true;
     this.migrations = { assets: true };
     this.thoriumId = randomWords(5).join("-");
@@ -69,6 +71,7 @@ class Events extends EventEmitter {
     this.askedToTrack = false;
     this.addedTaskTemplates = false;
     this.spaceEdventuresToken = null;
+    this.googleSheetsTokens = {};
     this.events = [];
     this.replaying = false;
     this.snapshotVersion = 0;
@@ -102,7 +105,8 @@ class Events extends EventEmitter {
         key === "doTrack" ||
         key === "askedToTrack" ||
         key === "addedTaskTemplates" ||
-        key === "spaceEdventuresToken"
+        key === "spaceEdventuresToken" ||
+        key === "googleSheetsTokens"
       ) {
         this[key] = snapshot[key];
       }
@@ -146,35 +150,26 @@ class Events extends EventEmitter {
     this.timestamp = new Date();
     this.version = this.version + 1;
     const client = this.clients.find(c => c.id === clientId);
-    if (clientId) {
-      // Get the current flight of the client
-      let flightId = null;
-      if (client) {
-        flightId = client.flightId;
-      }
-      const event = {
-        event: eventName,
-        params: param,
-        clientId: clientId,
-        flightId: flightId,
-        timestamp: new Date()
-      };
-      this.events.push(event);
-    }
     // Handle any triggers before the event so we can capture data that
     // the event might remove
+    const flight = this.flights.find(
+      f =>
+        f.id === (client && client.flightId) ||
+        (param.simulatorId && f.simulators.includes(param.simulatorId))
+    );
+    const simulator = this.simulators.find(
+      s =>
+        s.id === (client && client.simulatorId) ||
+        (param.simulatorId && s.id === param.simulatorId)
+    );
     context = {
       ...context,
-      flight:
-        this.flights.find(f => f.id === (client && client.flightId)) ||
-        context.flight,
-      simulator:
-        this.simulators.find(s => s.id === (client && client.simulatorId)) ||
-        context.simulator,
+      flight: flight || context.flight,
+      simulator: simulator || context.simulator,
       client
     };
     handleTrigger(eventName, param, context);
-
+    heap.track(eventName, this.thoriumId, param, context);
     this.emit(eventName, { ...param, context });
     process.env.NODE_ENV === "production" && this.snapshot();
   }
