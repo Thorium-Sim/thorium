@@ -81,3 +81,4 @@ export {
 export {
   default as removeViewscreenPictureInPicture
 } from "./removeViewscreenPictureInPicture";
+export { default as updateSensorGrid } from "./updateSensorGrid";

@@ -205,11 +205,13 @@ App.on(
 // Contacts
 App.on("createSensorContact", ({ id, contact }) => {
   const system = App.systems.find(sys => sys.id === id);
+  if (!system) return;
   system.createContact(contact);
   pubsub.publish("sensorContactUpdate", system);
 });
 App.on("createSensorContacts", ({ id, contacts }) => {
   const system = App.systems.find(sys => sys.id === id);
+  if (!system) return;
   contacts.forEach(c => {
     system.createContact(c);
   });
@@ -503,6 +505,43 @@ App.on("updateSensorContacts", ({ id, contacts, cb }) => {
   });
   pubsub.publish("sensorContactUpdate", system);
   cb && cb();
+});
+App.on("updateSensorGrid", ({ simulatorId, contacts, cb }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.simulatorId === simulatorId &&
+      sys.domain === "external" &&
+      sys.class === "Sensors"
+  );
+
+  const contactIds = system.contacts.map(c => c.id);
+
+  const newContacts = contacts.filter(c => !contactIds.includes(c.id));
+  const movingContacts = contacts.filter(c => contactIds.includes(c.id));
+  const deleteContacts = contactIds.filter(
+    c => !contacts.find(cc => cc.id === c)
+  );
+  console.log(newContacts, movingContacts, deleteContacts);
+  deleteContacts.forEach(id => {
+    system.removeContact({ id });
+    // Get rid of any targeting classes
+    const targeting = App.systems.find(
+      s => s.simulatorId === system.simulatorId && s.class === "Targeting"
+    );
+    targeting.removeTargetClass(id);
+    pubsub.publish(
+      "targetingUpdate",
+      App.systems.filter(s => s.type === "Targeting")
+    );
+  });
+  newContacts.forEach(contact => {
+    const { destination, speed, ...rest } = contact;
+    const id = system.createContact(rest);
+    system.moveContact({ id, destination, speed });
+  });
+  movingContacts.forEach(contact => system.moveContact(contact));
+  // console.log(movingContacts);
+  pubsub.publish("sensorContactUpdate", system);
 });
 
 const findNewPoint = (angle, r) => ({

@@ -135,7 +135,9 @@ export default class Sensors extends System {
   createContact(contact) {
     const newContact = contact;
     newContact.sensorId = this.id;
-    this.contacts.push(new SensorContact(newContact));
+    const contactObj = new SensorContact(newContact);
+    this.contacts.push(contactObj);
+    return contactObj.id;
   }
   setArmyContacts(armyContacts) {
     this.armyContacts = [];
@@ -204,9 +206,10 @@ export default class Sensors extends System {
     );
     this.armyContacts.splice(contactIndex, 1);
   }
-  moveContact({ id, destination, speed, stop }) {
+  moveContact({ id, destination: { x = 0, y = 0, z = 0 }, speed, stop }) {
     const myContact = this.contacts.find(contact => contact.id === id);
-    myContact && myContact.move(destination, speed, stop);
+    myContact && myContact.move({ x, y, z }, speed, stop);
+    console.log("MYCONTACT", Date.now(), myContact);
   }
   removeContact({ id }) {
     this.contacts = this.contacts.filter(c => c.id !== id);

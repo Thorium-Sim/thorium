@@ -54,7 +54,7 @@ const ActionList = ({
   );
 };
 
-const ActionConfig = ({ event, delay, args, updateAction }) => {
+const ActionConfig = ({ id, event, delay, args, updateAction }) => {
   return (
     <Fragment>
       <EventName id={event} />{" "}
@@ -69,6 +69,8 @@ const ActionConfig = ({ event, delay, args, updateAction }) => {
             />
           </FormGroup>
           <MacroWrapper
+            id={id}
+            delay={delay}
             event={event}
             args={args}
             updateMacro={(key, data) => updateAction(key, data)}

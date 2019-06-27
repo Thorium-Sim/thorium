@@ -233,6 +233,11 @@ const schema = gql`
     setSensorsSegment(id: ID!, ring: Int!, line: Int!, state: Boolean!): String
     setAutoMovement(id: ID!, movement: CoordinatesInput!): String
     updateSensorContacts(id: ID!, contacts: [SensorContactInput]!): String
+    """
+    Macro: Sensors: Update Sensor Grid
+    """
+    updateSensorGrid(simulatorId: ID!, contacts: [SensorContactInput]!): String
+
     destroySensorContact(id: ID!, contact: ID, contacts: [ID]): String
     sensorsFireProjectile(
       simulatorId: ID!

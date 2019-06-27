@@ -623,6 +623,10 @@ export default class TimelineConfig extends Component {
                       />
                     </FormGroup>
                     <MacroWrapper
+                      id={item.id}
+                      delay={item.delay}
+                      steps={object.timeline}
+                      currentStep={this.state.selectedTimelineStep}
                       event={item.event}
                       args={item.args}
                       updateMacro={this._updateMacro.bind(this)}

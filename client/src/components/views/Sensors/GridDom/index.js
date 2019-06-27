@@ -70,6 +70,7 @@ class GridData extends Component {
           const { sensorContacts } = data;
           if (loading || !sensorContacts) return null;
           if (!sensorContacts) return <div>No Contacts</div>;
+          console.log(sensorContacts, this.props.extraContacts);
           return (
             <SubscriptionHelper
               subscribe={() =>
