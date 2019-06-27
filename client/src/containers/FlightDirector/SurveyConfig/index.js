@@ -193,13 +193,17 @@ const Surveys = ({ client }) => {
   };
 
   const { loading, data, subscribeToMore } = useQuery(QUERY);
-  useSubscribeToMore(subscribeToMore, SUB, {
-    updateQuery: (previousResult, { subscriptionData }) => {
-      return Object.assign({}, previousResult, {
-        surveyform: subscriptionData.data.surveyformUpdate
-      });
-    }
-  });
+  const config = React.useMemo(
+    () => ({
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          surveyform: subscriptionData.data.surveyformUpdate
+        });
+      }
+    }),
+    []
+  );
+  useSubscribeToMore(subscribeToMore, SUB, config);
   if (loading || !data) return null;
   const { surveyform } = data;
   const form = surveyform.find(f => f.id === selectedForm);

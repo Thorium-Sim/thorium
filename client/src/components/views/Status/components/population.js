@@ -38,20 +38,28 @@ const Population = ({ simulator }) => {
   const { loading, data, subscribeToMore } = useQuery(POP_QUERY, {
     variables: { simulatorId: simulator.id }
   });
-  useSubscribeToMore(subscribeToMore, SIM_SUB, {
-    variables: { simulatorId: simulator.id },
-    updateQuery: (previousResult, { subscriptionData }) => ({
-      ...previousResult,
-      simulators: subscriptionData.data.simulatorsUpdate
-    })
-  });
-  useSubscribeToMore(subscribeToMore, POP_SUB, {
-    variables: { simulatorId: simulator.id },
-    updateQuery: (previousResult, { subscriptionData }) => ({
-      ...previousResult,
-      crewCount: subscriptionData.data.crewCountUpdate
-    })
-  });
+  const simConfig = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => ({
+        ...previousResult,
+        simulators: subscriptionData.data.simulatorsUpdate
+      })
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, SIM_SUB, simConfig);
+  const popConfig = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => ({
+        ...previousResult,
+        crewCount: subscriptionData.data.crewCountUpdate
+      })
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, POP_SUB, popConfig);
   const { simulators, crewCount = 0 } = data;
   if (loading || !simulators) return null;
   const { ship } = simulators[0];

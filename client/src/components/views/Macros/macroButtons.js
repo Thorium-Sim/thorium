@@ -47,12 +47,16 @@ const MacroButtons = ({ simulator: { id: simulatorId } }) => {
       )
     }
   `);
-  useSubscribeToMore(subscribeToMore, SUBSCRIPTION, {
-    updateQuery: (previousResult, { subscriptionData }) => ({
-      ...previousResult,
-      macroButtons: subscriptionData.data.macroButtonsUpdate
-    })
-  });
+  const buttonsConfig = React.useMemo(
+    () => ({
+      updateQuery: (previousResult, { subscriptionData }) => ({
+        ...previousResult,
+        macroButtons: subscriptionData.data.macroButtonsUpdate
+      })
+    }),
+    []
+  );
+  useSubscribeToMore(subscribeToMore, SUBSCRIPTION, buttonsConfig);
   const { macroButtons } = data;
   const [selectedConfig, setSelectedConfig] = useLocalStorage(
     "thorium_macroButtonConfig",

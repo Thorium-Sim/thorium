@@ -58,26 +58,34 @@ const PowerDistribution = ({ client, simulator, clientObj }) => {
       simulatorId: simulator.id
     }
   });
-  useSubscribeToMore(subscribeToMore, REACTOR_SUB, {
-    variables: {
-      simulatorId: simulator.id
-    },
-    updateQuery: (previousResult, { subscriptionData }) => {
-      return Object.assign({}, previousResult, {
-        reactors: subscriptionData.data.reactorUpdate
-      });
-    }
-  });
-  useSubscribeToMore(subscribeToMore, SYSTEMS_SUB, {
-    variables: {
-      simulatorId: simulator.id
-    },
-    updateQuery: (previousResult, { subscriptionData }) => {
-      return Object.assign({}, previousResult, {
-        systems: subscriptionData.data.systemsUpdate
-      });
-    }
-  });
+  const reactorConfig = React.useMemo(
+    () => ({
+      variables: {
+        simulatorId: simulator.id
+      },
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          reactors: subscriptionData.data.reactorUpdate
+        });
+      }
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, REACTOR_SUB, reactorConfig);
+  const systemsConfig = React.useMemo(
+    () => ({
+      variables: {
+        simulatorId: simulator.id
+      },
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          systems: subscriptionData.data.systemsUpdate
+        });
+      }
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, SYSTEMS_SUB, systemsConfig);
 
   if (loading || !data.reactors) return null;
   // Get the batteries, get just the first one.

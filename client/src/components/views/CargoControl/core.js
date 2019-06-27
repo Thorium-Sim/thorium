@@ -109,21 +109,29 @@ const CargoControlCore = ({ simulator, client }) => {
   const { loading, data, subscribeToMore } = useQuery(INVENTORY_QUERY, {
     variables: { simulatorId: simulator.id }
   });
-  useSubscribeToMore(subscribeToMore, LOG_SUB, {
-    variables: { simulatorId: simulator.id },
-    updateQuery: (previousResult, { subscriptionData }) => ({
-      ...previousResult,
-      simulators: subscriptionData.data.simulatorsUpdate
-    })
-  });
-  useSubscribeToMore(subscribeToMore, INVENTORY_SUB, {
-    variables: { simulatorId: simulator.id },
-    updateQuery: (previousResult, { subscriptionData }) => {
-      return Object.assign({}, previousResult, {
-        inventory: subscriptionData.data.inventoryUpdate
-      });
-    }
-  });
+  const logConfig = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => ({
+        ...previousResult,
+        simulators: subscriptionData.data.simulatorsUpdate
+      })
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, LOG_SUB, logConfig);
+  const inventoryConfig = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          inventory: subscriptionData.data.inventoryUpdate
+        });
+      }
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, INVENTORY_SUB, inventoryConfig);
   const { simulators, decks, inventory } = data;
   if (loading || !simulators) return null;
   const { ship } = simulators[0];
