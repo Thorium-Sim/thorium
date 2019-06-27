@@ -521,16 +521,14 @@ App.on("updateSensorGrid", ({ simulatorId, contacts, cb }) => {
   const deleteContacts = contactIds.filter(
     c => !contacts.find(cc => cc.id === c)
   );
-
-  deleteContacts.forEach(contact => {
-    const classId = contact.id;
-    system.removeContact(contact);
-
+  console.log(newContacts, movingContacts, deleteContacts);
+  deleteContacts.forEach(id => {
+    system.removeContact({ id });
     // Get rid of any targeting classes
     const targeting = App.systems.find(
       s => s.simulatorId === system.simulatorId && s.class === "Targeting"
     );
-    targeting.removeTargetClass(classId);
+    targeting.removeTargetClass(id);
     pubsub.publish(
       "targetingUpdate",
       App.systems.filter(s => s.type === "Targeting")
@@ -539,7 +537,7 @@ App.on("updateSensorGrid", ({ simulatorId, contacts, cb }) => {
   newContacts.forEach(contact => {
     const { destination, speed, ...rest } = contact;
     const id = system.createContact(rest);
-    setTimeout(() => system.moveContact({ id, destination, speed }), 1000);
+    system.moveContact({ id, destination, speed });
   });
   movingContacts.forEach(contact => system.moveContact(contact));
   // console.log(movingContacts);

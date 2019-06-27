@@ -70,6 +70,12 @@ export default ({
         contacts={contacts}
         updateContacts={contacts => updateArgs("contacts", contacts)}
       />
+      <small>
+        Note: Use a "Set Army Sensor Contacts" timeline action to configure the
+        available sensor contacts. Lots of features are still missing. If there
+        is something this timeline action doesn't do, submit an issue describing
+        what you want it to do.
+      </small>
     </div>
   );
 };
