@@ -26,6 +26,7 @@ class MacroConfig extends Component {
         <Col sm="12">
           {EventMacro && (
             <EventMacro
+              {...this.props}
               updateArgs={this._handleArg}
               args={args || {}}
               client={client}

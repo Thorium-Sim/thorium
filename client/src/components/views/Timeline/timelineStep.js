@@ -15,7 +15,8 @@ const TimelineStep = ({
   updateDelay,
   stations,
   clients,
-  simArgs
+  simArgs,
+  steps
 }) => {
   const currentStep = timeline[currentTimelineStep];
 
@@ -28,6 +29,7 @@ const TimelineStep = ({
           {currentStep.timelineItems.map(i => (
             <TimelineItem
               {...i}
+              steps={timeline}
               simulatorId={simulatorId}
               showDescription={showDescription}
               actions={actions}
