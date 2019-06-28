@@ -196,7 +196,7 @@ const resolver = {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "token " + process.env.GITHUB_ISSUE_TOKEN
+          Authorization: "token " + process.env.GH_ISSUE_TOKEN
         },
         body: JSON.stringify(payload)
       })
