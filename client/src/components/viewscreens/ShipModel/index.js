@@ -20,9 +20,9 @@ const ShipModel = props => {
       }`}
     >
       {(title || description) && (
-        <div style={{ width: "40vh" }}>
+        <div style={{ width: "40vh", position: "absolute", left: "10vw" }}>
           <h1>{title}</h1>
-          <p>{description}</p>
+          <h3>{description}</h3>
         </div>
       )}
 
