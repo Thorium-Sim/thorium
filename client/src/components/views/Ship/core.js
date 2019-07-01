@@ -209,20 +209,28 @@ const ShipCore = ({ simulator, client }) => {
   const { loading, data, subscribeToMore } = useQuery(SHIP_CORE_QUERY, {
     variables: { simulatorId: simulator.id }
   });
-  useSubscribeToMore(subscribeToMore, SHIP_CORE_SUB, {
-    variables: { simulatorId: simulator.id },
-    updateQuery: (previousResult, { subscriptionData }) => ({
-      ...previousResult,
-      simulators: subscriptionData.data.simulatorsUpdate
-    })
-  });
-  useSubscribeToMore(subscribeToMore, POP_SUB, {
-    variables: { simulatorId: simulator.id },
-    updateQuery: (previousResult, { subscriptionData }) => ({
-      ...previousResult,
-      crewCount: subscriptionData.data.crewCountUpdate
-    })
-  });
+  const shipConfig = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => ({
+        ...previousResult,
+        simulators: subscriptionData.data.simulatorsUpdate
+      })
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, SHIP_CORE_SUB, shipConfig);
+  const popConfig = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => ({
+        ...previousResult,
+        crewCount: subscriptionData.data.crewCountUpdate
+      })
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, POP_SUB, popConfig);
 
   if (loading || !data.simulators) return null;
   if (!data.simulators[0]) return;

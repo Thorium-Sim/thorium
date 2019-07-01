@@ -39,15 +39,18 @@ const AlertConditionCore = ({ simulator: sim }) => {
       id: sim.id
     }
   });
-
-  useSubscribeToMore(subscribeToMore, SUB, {
-    variables: { id: sim.id },
-    updateQuery: (previousResult, { subscriptionData }) => {
-      return Object.assign({}, previousResult, {
-        simulators: subscriptionData.data.simulatorsUpdate
-      });
-    }
-  });
+  const config = React.useMemo(
+    () => ({
+      variables: { id: sim.id },
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          simulators: subscriptionData.data.simulatorsUpdate
+        });
+      }
+    }),
+    [sim.id]
+  );
+  useSubscribeToMore(subscribeToMore, SUB, config);
   if (loading) return null;
   const { simulators } = data;
   const simulator = simulators[0];

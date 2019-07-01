@@ -2,13 +2,16 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+  height: 100%;
   .three-container {
     width: 100vw;
     height: 100vh;
   }
   &.has-text {
     .three-container {
-      width: 40vw;
+      width: 60vw;
+      position: absolute;
+      right: 10vw;
     }
   }
 }

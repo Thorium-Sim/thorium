@@ -4,6 +4,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 
 export default ({ updateArgs, args, client }) => {
+  console.log(args);
   return (
     <FormGroup className="macro-macroAction">
       <Label>Macro</Label>
@@ -27,7 +28,11 @@ export default ({ updateArgs, args, client }) => {
         >
           {({ loading, data }) => {
             if (loading) return null;
-            return data.macros.map(m => <option value={m.id}>{m.name}</option>);
+            return data.macros.map(m => (
+              <option key={m.id} value={m.id}>
+                {m.name}
+              </option>
+            ));
           }}
         </Query>
       </Input>

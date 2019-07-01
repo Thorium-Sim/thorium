@@ -14,8 +14,7 @@ const Offline = props => {
     },
     power: {
       title: "Power Loss",
-      message:
-        "This station has insufficient power to operate. Please contact your chief engineer."
+      message: "This station has insufficient power to operate."
     },
     lockdown: {
       title: "Lockdown",

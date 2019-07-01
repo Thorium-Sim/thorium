@@ -116,13 +116,17 @@ const SelfDestructCore = ({ simulator, client }) => {
   const { loading, data, subscribeToMore } = useQuery(SELF_DESTRUCT_QUERY, {
     variables: { simulatorId: simulator.id }
   });
-  useSubscribeToMore(subscribeToMore, SELF_DESTRUCT_SUB, {
-    variables: { simulatorId: simulator.id },
-    updateQuery: (previousResult, { subscriptionData }) => ({
-      ...previousResult,
-      simulators: subscriptionData.data.simulatorsUpdate
-    })
-  });
+  const config = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => ({
+        ...previousResult,
+        simulators: subscriptionData.data.simulatorsUpdate
+      })
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, SELF_DESTRUCT_SUB, config);
   const { simulators } = data;
   if (loading || !simulators) return null;
 

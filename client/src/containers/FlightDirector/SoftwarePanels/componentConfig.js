@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, FormGroup, Input, Label } from "helpers/reactstrap";
 import { ChromePicker } from "react-color";
+import { ColorPicker } from "../../../components/views/Sensors/gridCore/extraControls";
 
 class Config extends Component {
   constructor(props) {
@@ -70,16 +71,9 @@ class Config extends Component {
             ["Light", "PlasmaChannel"].indexOf(component.component) > -1 && (
               <FormGroup>
                 <Label>Color</Label>
-                <ChromePicker
+                <ColorPicker
                   color={this.state.color}
-                  onChangeComplete={color =>
-                    update(
-                      `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${
-                        color.rgb.a
-                      })`,
-                      "color"
-                    )
-                  }
+                  onChangeComplete={color => update(color, "color")}
                 />
               </FormGroup>
             )}

@@ -94,13 +94,20 @@ const updateThrusters = () => {
         f => f.simulators.indexOf(sys.simulatorId) > -1
       );
       if (!flight) return;
-
+      const viewscreens = App.viewscreens.filter(
+        v =>
+          flight.simulators.includes(v.simulatorId) &&
+          (v.component === "TacticalMap" ||
+            (v.pictureInPicture && v.pictureInPicture === "TacticalMap"))
+      );
+      const mapIds = viewscreens.map(v => JSON.parse(v.data).tacticalMapId);
       App.tacticalMaps
         .filter(
           t =>
             t.template === false &&
             t.frozen === false &&
-            t.flightId === flight.id
+            t.flightId === flight.id &&
+            mapIds.includes(t.id)
         )
         .forEach(map => {
           let mapUpdate = false;

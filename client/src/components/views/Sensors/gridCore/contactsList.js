@@ -3,6 +3,7 @@ import { Col, Button } from "helpers/reactstrap";
 import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import ContactContextMenu from "./contactContextMenu";
+import { withApollo } from "react-apollo";
 
 const ADD_ARMY_CONTACT = gql`
   mutation AddArmyContact(
@@ -127,7 +128,7 @@ class ContactsList extends Component {
     });
   };
   render() {
-    const { sensors, dragStart } = this.props;
+    const { sensors, dragStart, lite } = this.props;
     const { contextContact } = this.state;
     return (
       <div className="sensors-contact-list">
@@ -139,32 +140,41 @@ class ContactsList extends Component {
                 <img
                   alt="contact"
                   onMouseDown={() => dragStart(contact)}
-                  onContextMenu={e => this.contextMenu(contact, e)}
+                  onContextMenu={e =>
+                    lite ? null : this.contextMenu(contact, e)
+                  }
                   draggable="false"
                   role="presentation"
                   className="armyContact"
                   src={`/assets${contact.icon}`}
                 />
                 <label
-                  onContextMenu={e => this.contextMenu(contact, e)}
+                  onContextMenu={e =>
+                    lite ? null : this.contextMenu(contact, e)
+                  }
                   style={{ flex: 1 }}
                 >
                   {contact.name}
                 </label>
-                <FontAwesome
-                  name="ban"
-                  className="text-danger pull-right clickable"
-                  onClick={() => this.removeArmyContact(contact)}
-                />
+                {!lite && (
+                  <FontAwesome
+                    name="ban"
+                    className="text-danger pull-right clickable"
+                    onClick={() => this.removeArmyContact(contact)}
+                  />
+                )}
               </Col>
             );
           })}
         </div>
-        <Button size="sm" color="success" onClick={this.addArmyContact}>
-          Add Contact
-        </Button>
-        <p>Right-click to configure.</p>
-
+        {!lite && (
+          <>
+            <Button size="sm" color="success" onClick={this.addArmyContact}>
+              Add Contact
+            </Button>
+            <p>Right-click to configure.</p>
+          </>
+        )}
         {/* <label>
           <input
             type="checkbox"
@@ -191,4 +201,4 @@ class ContactsList extends Component {
   }
 }
 
-export default ContactsList;
+export default withApollo(ContactsList);

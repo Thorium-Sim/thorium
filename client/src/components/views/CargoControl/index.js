@@ -143,7 +143,7 @@ class CargoControl extends Component {
           }
         />
         <Row>
-          <Col sm={4}>
+          <Col sm={{ size: 4, offset: 4 }}>
             <h3>
               <FormattedMessage
                 id="transfer-cargo-location"
@@ -203,6 +203,47 @@ class CargoControl extends Component {
           </Col>
         </Row>
         <Row className="inventoryRow flex-max">
+          <Col sm={{ size: 4 }}>
+            <h3>
+              <FormattedMessage id="find-cargo" defaultMessage="Find Cargo" />:{" "}
+            </h3>
+            <Input
+              className="find-inventory"
+              size="sm"
+              value={this.state.findInventory}
+              onChange={this.findInv.bind(this)}
+            />
+            {this.state.findInventory && (
+              <Card className="search-container">
+                <CardBody>
+                  {inventory
+                    .filter(i =>
+                      i.name.match(
+                        new RegExp(
+                          escapeRegex(this.state.findInventory || ""),
+                          "gi"
+                        )
+                      )
+                    )
+                    .map(i => (
+                      <div key={`find-${i.id}`}>
+                        {i.name}
+                        <ul>
+                          {i.roomCount
+                            .filter(r => r.count > 0)
+                            .map((r, index) => (
+                              <li key={`loc-${index}`}>
+                                {r.room.name}, Deck {r.room.deck.number} (
+                                {r.count})
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    ))}
+                </CardBody>
+              </Card>
+            )}
+          </Col>
           <Col sm={4} className="to-cargo">
             <Card>
               <CardBody>
@@ -250,50 +291,9 @@ class CargoControl extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col sm={{ size: 4 }}>
-            <h3>
-              <FormattedMessage id="find-cargo" defaultMessage="Find Cargo" />:{" "}
-            </h3>
-            <Input
-              className="find-inventory"
-              size="sm"
-              value={this.state.findInventory}
-              onChange={this.findInv.bind(this)}
-            />
-            {this.state.findInventory && (
-              <Card className="search-container">
-                <CardBody>
-                  {inventory
-                    .filter(i =>
-                      i.name.match(
-                        new RegExp(
-                          escapeRegex(this.state.findInventory || ""),
-                          "gi"
-                        )
-                      )
-                    )
-                    .map(i => (
-                      <div key={`find-${i.id}`}>
-                        {i.name}
-                        <ul>
-                          {i.roomCount
-                            .filter(r => r.count > 0)
-                            .map((r, index) => (
-                              <li key={`loc-${index}`}>
-                                {r.room.name}, Deck {r.room.deck.number} (
-                                {r.count})
-                              </li>
-                            ))}
-                        </ul>
-                      </div>
-                    ))}
-                </CardBody>
-              </Card>
-            )}
-          </Col>
         </Row>
         <Row className="readyRow flex-max">
-          <Col sm={{ size: 4, offset: 2 }}>
+          <Col sm={{ size: 4, offset: 6 }}>
             <div
               style={{
                 marginTop: "10px",

@@ -37,7 +37,7 @@ function useOnClickOutside(ref, handler) {
   );
 }
 
-const ColorPicker = ({ color, onChangeComplete }) => {
+export const ColorPicker = ({ color, onChangeComplete }) => {
   const ref = useRef();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -74,7 +74,7 @@ const ColorPicker = ({ color, onChangeComplete }) => {
               position: "absolute",
               left: 0,
               top: 0,
-              transform: `translate(${isOpen.x}px, ${isOpen.y}px)`,
+              transform: `translate(${isOpen.x}px, ${isOpen.y - 40}px)`,
               zIndex: 1
             }}
           >
