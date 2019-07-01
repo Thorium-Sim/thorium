@@ -31,6 +31,7 @@ const schema = gql`
     shieldLowered(id: ID!): String
     shieldIntegritySet(id: ID!, integrity: Float): String
     shieldFrequencySet(id: ID!, frequency: Float): String
+    shieldFrequencySetAll(simulatorId: ID!, frequency: Float!): String
     """
     Macro: Shields: Hit all shields
     """

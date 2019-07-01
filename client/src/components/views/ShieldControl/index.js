@@ -57,26 +57,10 @@ class ShieldControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      frequency: {},
-      frequencyAdder: 0.1,
-      frequencySpeed: 150,
       disabledButton: {}
     };
     this.shieldSub = null;
     this.freqLoop = null;
-  }
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.data.shields) {
-      if (nextProps.data.shields) {
-        const freq = this.state.frequency;
-        nextProps.data.shields.forEach(s => {
-          freq[s.id] = s.frequency || 200;
-        });
-        this.setState({
-          frequency: freq
-        });
-      }
-    }
   }
   componentWillUnmount() {
     this.shieldSub && this.shieldSub();
@@ -133,58 +117,6 @@ class ShieldControl extends Component {
       });
     }, 3000);
   }
-  _loop(which, shields) {
-    let { frequency, frequencyAdder, frequencySpeed } = this.state;
-    if (which === "down") {
-      frequencyAdder *= -1;
-    }
-    if (frequencySpeed > 5) {
-      frequencySpeed -= 7;
-    }
-    frequency[shields.id] = Math.min(
-      350,
-      Math.max(100, frequency[shields.id] + frequencyAdder)
-    );
-    this.freqLoop = setTimeout(
-      this._loop.bind(this, which, shields),
-      this.state.frequencySpeed
-    );
-    this.setState({
-      frequency,
-      frequencySpeed
-    });
-  }
-  startLoop = (which, shields) => {
-    const frequency = this.state.frequency;
-    frequency[shields.id] = shields.frequency;
-    this.setState(
-      {
-        frequency,
-        frequencySpeed: 150
-      },
-      () => this._loop(which, shields)
-    );
-    document.addEventListener("mouseup", this.stopLoop.bind(this, shields));
-    document.addEventListener("touchend", this.stopLoop.bind(this, shields));
-  };
-  stopLoop = shields => {
-    clearTimeout(this.freqLoop);
-    // Update the server with the shield frequency
-    const mutation = gql`
-      mutation SetShieldFrequency($id: ID!, $freq: Float) {
-        shieldFrequencySet(id: $id, frequency: $freq)
-      }
-    `;
-    const variables = {
-      id: shields.id,
-      freq: this.state.frequency[shields.id]
-    };
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-    this.freqLoop = null;
-  };
   render() {
     //Define the color
     if (this.props.data.loading || !this.props.data.shields) return null;
@@ -212,7 +144,6 @@ class ShieldControl extends Component {
             return (
               <Shield1
                 shields={shields}
-                startLoop={this.startLoop.bind(this)}
                 state={this.state}
                 _toggleShields={this._toggleShields.bind(this)}
                 simulator={this.props.simulator}
@@ -223,7 +154,6 @@ class ShieldControl extends Component {
             return (
               <Shield4
                 shields={shields}
-                startLoop={this.startLoop.bind(this)}
                 state={this.state}
                 _toggleShields={this._toggleShields.bind(this)}
                 simulator={this.props.simulator}
@@ -234,7 +164,6 @@ class ShieldControl extends Component {
             return (
               <Shield6
                 shields={shields}
-                startLoop={this.startLoop.bind(this)}
                 state={this.state}
                 _toggleShields={this._toggleShields.bind(this)}
                 simulator={this.props.simulator}
