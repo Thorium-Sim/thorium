@@ -96,17 +96,21 @@ App.on(
         } else if (com.output.delay && com.output.text) {
           const strings = com.output.text.split("\n");
           const clientId = client.id;
-          strings.reduce((acc, string) => {
-            return acc.then(() =>
-              delayPromise(() => {
-                simulator.addCommandLineOutput(clientId, string);
-                pubsub.publish("commandLineOutputUpdate", {
-                  id: client.id,
-                  commandLineOutput: simulator.commandLineOutputs[client.id]
-                });
-              }, com.output.delay)
-            );
-          }, Promise.resolve());
+          strings
+            .reduce((acc, string) => {
+              return acc.then(() =>
+                delayPromise(() => {
+                  simulator.addCommandLineOutput(clientId, string);
+                  pubsub.publish("commandLineOutputUpdate", {
+                    id: client.id,
+                    commandLineOutput: simulator.commandLineOutputs[client.id]
+                  });
+                }, com.output.delay)
+              );
+            }, Promise.resolve())
+            .then(() => {
+              pubsub.publish("clientChanged", App.clients);
+            });
           return;
         } else if (com.output.text) {
           simulator.addCommandLineOutput(client.id, com.output.text);
