@@ -132,7 +132,9 @@ const FlightTypePicker = ({ flightId, value = "" }) => {
           Choose One
         </option>
         {data.thorium.spaceEdventuresCenter.flightTypes.map(f => (
-          <option key={f.id}>{f.name}</option>
+          <option key={f.id} value={f.id}>
+            {f.name}
+          </option>
         ))}
       </select>
     );
