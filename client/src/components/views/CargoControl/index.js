@@ -143,66 +143,6 @@ class CargoControl extends Component {
           }
         />
         <Row>
-          <Col sm={{ size: 4, offset: 4 }}>
-            <h3>
-              <FormattedMessage
-                id="transfer-cargo-location"
-                description="The location where cargo will be sent from."
-                defaultMessage="Transfer Cargo"
-              />
-            </h3>
-            <Row>
-              {decks.length > 1 && (
-                <Col sm="6">
-                  <DeckDropdown
-                    selectedDeck={fromDeck}
-                    decks={decks}
-                    setSelected={this.setSelected.bind(this, "from")}
-                  />
-                </Col>
-              )}
-              <Col className="from-room" sm={decks.length > 1 ? 6 : 12}>
-                <RoomDropdown
-                  selectedDeck={fromDeck}
-                  selectedRoom={fromRoom}
-                  otherSelected={toRoom}
-                  decks={decks}
-                  setSelected={this.setSelected.bind(this, "from")}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col sm={4}>
-            <h3>
-              <FormattedMessage
-                id="receive-cargo-location"
-                description="The location where cargo will be sent to, or which will receive the cargo."
-                defaultMessage="Receive Cargo"
-              />
-            </h3>
-            <Row>
-              {decks.length > 1 && (
-                <Col sm={{ size: 6 }}>
-                  <DeckDropdown
-                    selectedDeck={toDeck}
-                    decks={decks}
-                    setSelected={this.setSelected.bind(this, "to")}
-                  />
-                </Col>
-              )}
-              <Col className="to-room" sm={{ size: decks.length > 1 ? 6 : 12 }}>
-                <RoomDropdown
-                  selectedDeck={toDeck}
-                  selectedRoom={toRoom}
-                  otherSelected={fromRoom}
-                  decks={decks}
-                  setSelected={this.setSelected.bind(this, "to")}
-                />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        <Row className="inventoryRow flex-max">
           <Col sm={{ size: 4 }}>
             <h3>
               <FormattedMessage id="find-cargo" defaultMessage="Find Cargo" />:{" "}
@@ -244,136 +184,211 @@ class CargoControl extends Component {
               </Card>
             )}
           </Col>
-          <Col sm={4} className="to-cargo">
-            <Card>
-              <CardBody>
-                {fromRoom &&
-                  inventory
-                    .map(i => {
-                      const roomCount = i.roomCount.find(
-                        r => r.room.id === fromRoom
-                      );
-                      const reduceValue = ready[i.id] || 0;
-                      if (!roomCount) return null;
-                      const count = roomCount.count - reduceValue;
-                      if (count === 0) return null;
-                      return { id: i.id, name: i.name, count };
-                    })
-                    .filter(i => i)
-                    .map(i => (
-                      <p key={`to-${i.id}`} onClick={() => this.addReady(i)}>
-                        {i.name} ({i.count})
-                      </p>
-                    ))}
-              </CardBody>
-            </Card>
-          </Col>
+          <Col sm={8}>
+            <Row>
+              <Col sm={6}>
+                <h3>
+                  <FormattedMessage
+                    id="transfer-cargo-location"
+                    description="The location where cargo will be sent from."
+                    defaultMessage="Transfer Cargo"
+                  />
+                </h3>
+                <Row>
+                  {decks.length > 1 && (
+                    <Col sm="6">
+                      <DeckDropdown
+                        selectedDeck={fromDeck}
+                        decks={decks}
+                        setSelected={this.setSelected.bind(this, "from")}
+                      />
+                    </Col>
+                  )}
+                  <Col className="from-room" sm={decks.length > 1 ? 6 : 12}>
+                    <RoomDropdown
+                      selectedDeck={fromDeck}
+                      selectedRoom={fromRoom}
+                      otherSelected={toRoom}
+                      decks={decks}
+                      setSelected={this.setSelected.bind(this, "from")}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+              <Col sm={6}>
+                <h3>
+                  <FormattedMessage
+                    id="receive-cargo-location"
+                    description="The location where cargo will be sent to, or which will receive the cargo."
+                    defaultMessage="Receive Cargo"
+                  />
+                </h3>
+                <Row>
+                  {decks.length > 1 && (
+                    <Col sm={{ size: 6 }}>
+                      <DeckDropdown
+                        selectedDeck={toDeck}
+                        decks={decks}
+                        setSelected={this.setSelected.bind(this, "to")}
+                      />
+                    </Col>
+                  )}
+                  <Col
+                    className="to-room"
+                    sm={{ size: decks.length > 1 ? 6 : 12 }}
+                  >
+                    <RoomDropdown
+                      selectedDeck={toDeck}
+                      selectedRoom={toRoom}
+                      otherSelected={fromRoom}
+                      decks={decks}
+                      setSelected={this.setSelected.bind(this, "to")}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row className="inventoryRow flex-max">
+              <Col sm={6} className="to-cargo">
+                <Card>
+                  <CardBody>
+                    {fromRoom &&
+                      inventory
+                        .map(i => {
+                          const roomCount = i.roomCount.find(
+                            r => r.room.id === fromRoom
+                          );
+                          const reduceValue = ready[i.id] || 0;
+                          if (!roomCount) return null;
+                          const count = roomCount.count - reduceValue;
+                          if (count === 0) return null;
+                          return { id: i.id, name: i.name, count };
+                        })
+                        .filter(i => i)
+                        .map(i => (
+                          <p
+                            key={`to-${i.id}`}
+                            onClick={() => this.addReady(i)}
+                          >
+                            {i.name} ({i.count})
+                          </p>
+                        ))}
+                  </CardBody>
+                </Card>
+              </Col>
 
-          <Col sm={{ size: 4 }}>
-            <Card>
-              <CardBody>
-                {toRoom &&
-                  inventory
-                    .map(i => {
-                      const roomCount = i.roomCount.find(
-                        r => r.room.id === toRoom
-                      );
-                      if (!roomCount) return null;
-                      if (roomCount.count === 0) return null;
-                      return { id: i.id, name: i.name, count: roomCount.count };
-                    })
-                    .filter(i => i)
-                    .map(i => (
-                      <p key={`to-${i.id}`}>
-                        {i.name} ({i.count})
-                      </p>
-                    ))}
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row className="readyRow flex-max">
-          <Col sm={{ size: 4, offset: 6 }}>
-            <div
-              style={{
-                marginTop: "10px",
-                display: "flex",
-                flexDirection: "column",
-                height: "100%"
-              }}
-            >
-              <h2>
-                <FormattedMessage
-                  id="ready-cargo"
-                  description="A holding area for cargo which is being transferred."
-                  defaultMessage="Ready Cargo"
-                />
-              </h2>
-              <Card style={{ flex: 1 }} className="ready-cargo">
-                <CardBody>
-                  {Object.entries(ready)
-                    .map(([id, count]) => {
-                      const item = inventory.find(i => i.id === id);
-                      return { id, name: item.name, count };
-                    })
-                    .filter(i => i.count > 0)
-                    .map(i => (
-                      <p
-                        key={`ready-${i.id}`}
-                        onClick={() => this.removeReady(i.id)}
-                      >
-                        {i.name} ({i.count})
-                      </p>
-                    ))}
-                </CardBody>
-              </Card>
-              <Mutation
-                mutation={gql`
-                  mutation TransferCargo(
-                    $inventory: [InventoryCountInput]
-                    $toRoom: ID!
-                    $fromRoom: ID!
-                  ) {
-                    transferCargo(
-                      inventory: $inventory
-                      toRoom: $toRoom
-                      fromRoom: $fromRoom
-                    )
-                  }
-                `}
-                variables={{
-                  inventory: Object.entries(ready).map(([id, count]) => ({
-                    id,
-                    count
-                  })),
-                  toRoom,
-                  fromRoom
-                }}
-              >
-                {action => (
-                  <Button
-                    block
-                    color="success"
-                    className="transfer-cargo"
-                    disabled={
-                      !toRoom ||
-                      Object.entries(ready).filter(([id, count]) => count > 0)
-                        .length === 0
-                    }
-                    onClick={() => {
-                      action().then(() => {
-                        this.setState({ ready: {} });
-                      });
+              <Col sm={{ size: 6 }}>
+                <Card>
+                  <CardBody>
+                    {toRoom &&
+                      inventory
+                        .map(i => {
+                          const roomCount = i.roomCount.find(
+                            r => r.room.id === toRoom
+                          );
+                          if (!roomCount) return null;
+                          if (roomCount.count === 0) return null;
+                          return {
+                            id: i.id,
+                            name: i.name,
+                            count: roomCount.count
+                          };
+                        })
+                        .filter(i => i)
+                        .map(i => (
+                          <p key={`to-${i.id}`}>
+                            {i.name} ({i.count})
+                          </p>
+                        ))}
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            <Row className="readyRow flex-max">
+              <Col sm={{ size: 6, offset: 3 }}>
+                <div
+                  style={{
+                    marginTop: "40px",
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%"
+                  }}
+                >
+                  <h2>
+                    <FormattedMessage
+                      id="ready-cargo"
+                      description="A holding area for cargo which is being transferred."
+                      defaultMessage="Ready Cargo"
+                    />
+                  </h2>
+                  <Card style={{ flex: 1 }} className="ready-cargo">
+                    <CardBody>
+                      {Object.entries(ready)
+                        .map(([id, count]) => {
+                          const item = inventory.find(i => i.id === id);
+                          return { id, name: item.name, count };
+                        })
+                        .filter(i => i.count > 0)
+                        .map(i => (
+                          <p
+                            key={`ready-${i.id}`}
+                            onClick={() => this.removeReady(i.id)}
+                          >
+                            {i.name} ({i.count})
+                          </p>
+                        ))}
+                    </CardBody>
+                  </Card>
+                  <Mutation
+                    mutation={gql`
+                      mutation TransferCargo(
+                        $inventory: [InventoryCountInput]
+                        $toRoom: ID!
+                        $fromRoom: ID!
+                      ) {
+                        transferCargo(
+                          inventory: $inventory
+                          toRoom: $toRoom
+                          fromRoom: $fromRoom
+                        )
+                      }
+                    `}
+                    variables={{
+                      inventory: Object.entries(ready).map(([id, count]) => ({
+                        id,
+                        count
+                      })),
+                      toRoom,
+                      fromRoom
                     }}
                   >
-                    <FormattedMessage
-                      id="transfer-cargo"
-                      defaultMessage="Transfer Cargo"
-                    />
-                  </Button>
-                )}
-              </Mutation>
-            </div>
+                    {action => (
+                      <Button
+                        block
+                        color="success"
+                        className="transfer-cargo"
+                        disabled={
+                          !toRoom ||
+                          Object.entries(ready).filter(
+                            ([id, count]) => count > 0
+                          ).length === 0
+                        }
+                        onClick={() => {
+                          action().then(() => {
+                            this.setState({ ready: {} });
+                          });
+                        }}
+                      >
+                        <FormattedMessage
+                          id="transfer-cargo"
+                          defaultMessage="Transfer Cargo"
+                        />
+                      </Button>
+                    )}
+                  </Mutation>
+                </div>
+              </Col>
+            </Row>
           </Col>
         </Row>
         <Tour steps={trainingSteps} client={this.props.clientObj} />

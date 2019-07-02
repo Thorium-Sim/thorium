@@ -17,15 +17,17 @@
       }
     }
   }
-  .readyCargo {
-    height: 300px;
+  .ready-cargo {
+    height: 10vh;
+    overflow-y: auto;
   }
-  .card-block {
+  .card-body {
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .inventoryRow .card {
-    overflow-y: scroll;
+    overflow-y: auto;
+    height: 30vh;
   }
 }
 
