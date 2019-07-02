@@ -31,7 +31,10 @@ const quotes = [
   "I'd far rather be happy than right any day.",
   "For a moment, nothing happened. Then, after a second or so, nothing continued to happen.",
   "Reality is frequently inaccurate.",
-  "It is a mistake to think you can solve any major problems just with potatoes."
+  "It is a mistake to think you can solve any major problems just with potatoes.",
+  "Dangerous But Not Unbearably So",
+  "So much for subtlety",
+  "Just as likely to still be an intergalactic jellyfish."
 ];
 
 const QuoteOfTheDay = () => {

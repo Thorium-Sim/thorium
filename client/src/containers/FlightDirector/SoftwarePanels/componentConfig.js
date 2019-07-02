@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Row, Col, FormGroup, Input, Label } from "helpers/reactstrap";
-import { ChromePicker } from "react-color";
 import { ColorPicker } from "../../../components/views/Sensors/gridCore/extraControls";
 
 class Config extends Component {

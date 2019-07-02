@@ -1,17 +1,10 @@
 import React from "react";
 import { Container, Row, Col, Button } from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import shieldStyle from "./shieldStyle";
 import DamageOverlay from "../helpers/DamageOverlay";
+import FrequencyArrows from "./frequencyArrows";
 
-const ShieldData = ({ s, startLoop, state, _toggleShields }) => {
-  const [disabled, setDisabled] = React.useState();
-  React.useEffect(() => {
-    if (disabled) {
-      const timeout = setTimeout(() => setDisabled(false), 500);
-      return () => clearTimeout(timeout);
-    }
-  }, [disabled]);
+const ShieldData = ({ s, simulator, state, _toggleShields }) => {
   return (
     <Col sm="6" key={s.id} className="shieldControlBox">
       <DamageOverlay
@@ -23,50 +16,7 @@ const ShieldData = ({ s, startLoop, state, _toggleShields }) => {
       <h5 className="integrity">
         Integrity: {`${Math.round(s.integrity * 100)}%`}
       </h5>
-      <h5>Frequency:</h5>
-      <Row className="frequency">
-        <Col sm="auto">
-          <h4 className="arrow">
-            <FontAwesome
-              name="arrow-down"
-              disabled={disabled}
-              onMouseDown={() => {
-                if (disabled) return;
-                startLoop("down", s);
-                setDisabled(true);
-              }}
-              onTouchStart={() => {
-                if (disabled) return;
-                startLoop("down", s);
-                setDisabled(true);
-              }}
-            />
-          </h4>
-        </Col>
-        <Col sm="6">
-          <h5 className="text-center">{`${Math.round(
-            state.frequency[s.id] * 100
-          ) / 100} MHz`}</h5>
-        </Col>
-        <Col sm="auto">
-          <h4 className="arrow">
-            <FontAwesome
-              name="arrow-up"
-              disabled={disabled}
-              onMouseDown={() => {
-                if (disabled) return;
-                startLoop("up", s);
-                setDisabled(true);
-              }}
-              onTouchStart={() => {
-                if (disabled) return;
-                startLoop("up", s);
-                setDisabled(true);
-              }}
-            />
-          </h4>
-        </Col>
-      </Row>
+      <FrequencyArrows shields={s} simulator={simulator} />
       <Button
         color="success"
         block
@@ -137,6 +87,7 @@ export default ({ shields, startLoop, state, _toggleShields, simulator }) => {
                   startLoop={startLoop}
                   state={state}
                   _toggleShields={_toggleShields}
+                  simulator={simulator}
                 />
               );
             })}

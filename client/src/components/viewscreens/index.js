@@ -36,6 +36,7 @@ export { default as Timer } from "./Timer";
 export { default as Thrusters } from "../views/Thrusters/viewscreen";
 export { default as LowPower } from "./LowPower";
 export { default as Picture } from "./Picture";
+export { default as Objectives } from "./Objectives";
 
 export { default as InformationConfig } from "./Information/config";
 export { default as InternalSensorsConfig } from "./InternalSensors/config";

@@ -140,6 +140,15 @@ App.on("shieldFrequencySet", ({ id, frequency, cb }) => {
   sendUpdate();
   cb();
 });
+App.on("shieldFrequencySetAll", ({ simulatorId, frequency, cb }) => {
+  App.systems
+    .filter(sys => sys.simulatorId === simulatorId && sys.class === "Shield")
+    .forEach(sys => {
+      sys.setFrequency && sys.setFrequency(frequency);
+    });
+  sendUpdate();
+  cb();
+});
 App.on("hitShields", ({ id, simulatorId }) => {
   if (id) {
     const system = App.systems.find(sys => sys.id === id);
