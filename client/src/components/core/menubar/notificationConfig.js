@@ -16,6 +16,7 @@ import {
 export const notifyComponents = [
   "Alert Condition",
   "Cargo",
+  "Command Line",
   "Damage Reports",
   "Damage Teams",
   "Decontamination",

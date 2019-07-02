@@ -62,7 +62,7 @@ class RemoteAccess {
 }
 // A separate object for vestigial parts of the ship
 class Ship {
-  constructor(params = {}) {
+  constructor(params = {}, newlyCreated) {
     this.clamps = params.clamps || false; // Detached
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed
@@ -80,7 +80,9 @@ class Ship {
     codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
 
     // Inventory Logs
-    this.inventoryLogs = params.inventoryLogs
+    this.inventoryLogs = newlyCreated
+      ? []
+      : params.inventoryLogs
       ? params.inventoryLogs.concat()
       : [];
   }
@@ -120,7 +122,7 @@ class TimelineInstance {
 }
 
 export default class Simulator {
-  constructor(params = {}) {
+  constructor(params = {}, newlyCreated) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutCorners";
@@ -152,7 +154,7 @@ export default class Simulator {
       params.bridgeOfficerMessaging === false ? false : true;
     this.teams = [];
     this.training = params.training || false;
-    this.ship = new Ship({ ...params.ship });
+    this.ship = new Ship({ ...params.ship }, newlyCreated);
     this.panels = params.panels || [];
     this.commandLines = params.commandLines || [];
     this.triggers = params.triggers || [];
