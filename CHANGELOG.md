@@ -1,3 +1,26 @@
+# [1.15.0](https://github.com/Thorium-Sim/thorium/compare/1.14.0...1.15.0) (2019-07-02)
+
+
+### Bug Fixes
+
+* **Cargo:** Adjusts the layout of the cargo transfer screen so it has a better flow.  Closes [#2371](https://github.com/Thorium-Sim/thorium/issues/2371) ([965e4d3](https://github.com/Thorium-Sim/thorium/commit/965e4d3))
+* **Issue Tracker:** Fixes uploads for the issue tracker. ([de028de](https://github.com/Thorium-Sim/thorium/commit/de028de))
+* **Macros:** Fixes an issue where the selected macro name doesn't show up properly when configuring it in mission timelines. Closes [#2363](https://github.com/Thorium-Sim/thorium/issues/2363). Closes [#2354](https://github.com/Thorium-Sim/thorium/issues/2354) ([36ae716](https://github.com/Thorium-Sim/thorium/commit/36ae716))
+* **Offline:** Removes the Chief Engineer part of the power loss offline screen. Closes [#2372](https://github.com/Thorium-Sim/thorium/issues/2372) ([7c348bd](https://github.com/Thorium-Sim/thorium/commit/7c348bd))
+* **Software Panels:** Makes it easier to adjust colors when configuring software panels. Closes [#2348](https://github.com/Thorium-Sim/thorium/issues/2348). ([e35b31f](https://github.com/Thorium-Sim/thorium/commit/e35b31f))
+* **Space EdVentures:** Space EdVentures dropdown on the core now shows the correct flight type. Closes [#2382](https://github.com/Thorium-Sim/thorium/issues/2382) ([929ad0c](https://github.com/Thorium-Sim/thorium/commit/929ad0c))
+* **Subscriptions:** Fixes some poorly configured subscriptions which should help with server-side memory leaks. ([ccc64fb](https://github.com/Thorium-Sim/thorium/commit/ccc64fb))
+* **Tactical Maps:** Thrusters won't affect the tactical map if the map isn't showing. Closes [#2376](https://github.com/Thorium-Sim/thorium/issues/2376) ([07cb8c0](https://github.com/Thorium-Sim/thorium/commit/07cb8c0))
+* **Thrusters:** Thrusters now properly stop thrusting when the card changes. Closes [#2375](https://github.com/Thorium-Sim/thorium/issues/2375) ([b00ace1](https://github.com/Thorium-Sim/thorium/commit/b00ace1))
+* **Viewscreen:** Adjusts the ship model viewscreen to properly fit the model and text. Closes [#2360](https://github.com/Thorium-Sim/thorium/issues/2360) ([c852c14](https://github.com/Thorium-Sim/thorium/commit/c852c14))
+
+
+### Features
+
+* **Sensor Grid:** Add a timeline action to add, remove, and change the position of sensor contacts on the sensor grid. It supports updating the sensor grid based on what the grid looked like in previous sensor grid timeline actions. Closes [#1987](https://github.com/Thorium-Sim/thorium/issues/1987). Closes [#484](https://github.com/Thorium-Sim/thorium/issues/484) ([78cf6c5](https://github.com/Thorium-Sim/thorium/commit/78cf6c5))
+* **Shields:** Has a button which sets all of the shield frequencies to one of the other shield frequencies. Closes [#2345](https://github.com/Thorium-Sim/thorium/issues/2345) ([ac06a1f](https://github.com/Thorium-Sim/thorium/commit/ac06a1f))
+* **Viewscreen:** Add a mission objective viewscreen. Closes [#2331](https://github.com/Thorium-Sim/thorium/issues/2331) ([f212c8f](https://github.com/Thorium-Sim/thorium/commit/f212c8f))
+
 # [1.14.0](https://github.com/Thorium-Sim/thorium/compare/1.13.0...1.14.0) (2019-06-22)
 
 
