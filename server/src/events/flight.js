@@ -238,7 +238,7 @@ App.on(
         App.simulators.find(sim => sim.id === s.simulatorId)
       );
       template.id = null;
-      const sim = new Classes.Simulator(template);
+      const sim = new Classes.Simulator(template, true);
       sim.template = false;
       sim.templateId = s.simulatorId;
       sim.mission = s.missionId;
@@ -341,7 +341,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
       App.simulators.find(tempSim => tempSim.id === tempId)
     );
     template.id = sim.id;
-    const newSim = new Classes.Simulator(template);
+    const newSim = new Classes.Simulator(template, true);
     newSim.template = false;
     newSim.templateId = tempId;
     newSim.mission = sim.missionId;
