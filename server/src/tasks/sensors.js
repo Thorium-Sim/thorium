@@ -1,6 +1,16 @@
 import reportReplace from "../helpers/reportReplacer";
 import App from "../app";
 import Fuzz from "fuse.js";
+import { randomFromList } from "../classes/generic/damageReports/constants";
+
+export const particleTypes = [
+  "Dilithium",
+  "Tachyon",
+  "Neutrino",
+  "AntiMatter",
+  "Anomaly"
+];
+
 export default [
   {
     name: "Perform Sensor Scan",
@@ -57,7 +67,7 @@ export default [
         );
       return reportReplace(
         `${preamble} Ask the ${
-          station ? `${station.name} Officer` : "person in charge sensors"
+          station ? `${station.name} Officer` : "person in charge of sensors"
         } to perform the following sensors scan: "${scanText}"`,
         { simulator, system }
       );
@@ -78,6 +88,71 @@ export default [
           return true;
         return false;
       });
+    }
+  },
+  {
+    name: "Search Particle Detector",
+    class: "Sensors",
+    active({ simulator }) {
+      return (
+        simulator &&
+        simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ParticleDetector")
+        ) &&
+        App.systems.find(
+          s => s.simulatorId === simulator.id && s.class === "Sensors"
+        )
+      );
+    },
+    stations({ simulator }) {
+      return (
+        simulator &&
+        simulator.stations.filter(s =>
+          s.cards.find(c => c.component === "ParticleDetector")
+        )
+      );
+    },
+    values: {
+      preamble: {
+        input: () => "textarea",
+        value: () => "We should check for particles."
+      },
+      particleType: {
+        input: () =>
+          particleTypes.map(t => ({
+            label: t,
+            value: t
+          })),
+        value: () => randomFromList(particleTypes)
+      }
+    },
+    instructions({
+      simulator,
+      requiredValues: { preamble, particleType, system },
+      task = {}
+    }) {
+      const station =
+        simulator &&
+        simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ParticleDetector")
+        );
+      if (station && task.station === station.name)
+        return reportReplace(
+          `${preamble} Use the particle detector to look for "${particleType}" particles.`,
+          { simulator, system }
+        );
+      return reportReplace(
+        `${preamble} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : "person in charge of the particle detector"
+        } to use the particle detector to look for "${particleType}" particles.`,
+        { simulator, system }
+      );
+    },
+    verify({ simulator, requiredValues: { scanText } }) {
+      // No check
+      return false;
     }
   }
 ];
