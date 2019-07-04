@@ -85,6 +85,7 @@ App.on(
       } else if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
         output = com.help;
       } else if (
+        !com.config.allowAllArgs &&
         com.options.length > 0 &&
         com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
       ) {

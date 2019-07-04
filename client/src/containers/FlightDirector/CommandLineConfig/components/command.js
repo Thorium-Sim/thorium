@@ -81,6 +81,13 @@ export default {
       props: {
         type: "checkbox"
       }
+    },
+    {
+      id: "allowAllArgs",
+      title: "Allow Any Args",
+      props: {
+        type: "checkbox"
+      }
     }
   ]
 };
