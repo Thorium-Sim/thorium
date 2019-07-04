@@ -35,6 +35,17 @@ const ScannerCore = ({ scanners, clients }) => {
     Y: ${Math.round(Math.random() * 100000) / 100}
     Z: ${Math.round(Math.random() * 100000) / 100}`;
     }
+    if (data === "weakness") {
+      data = `Fault in ${randomFromList([
+        "engines",
+        "shields",
+        "weapons",
+        "hull",
+        "sensors",
+        "communications",
+        "tractor beam"
+      ])} detected.`;
+    }
     if (data === "thrusterdodge") {
       data = `Incoming weapons detected. Recommend firing ${randomFromList([
         "port",

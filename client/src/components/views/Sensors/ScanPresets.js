@@ -17,6 +17,7 @@ export default which =>
       label: "Omni course",
       value: "omnicourse"
     },
+
     {
       label: "Eta",
       value:
@@ -46,8 +47,7 @@ export default which =>
     },
     {
       label: "Radiation interference",
-      value:
-        "Radiation is interfering with sensors.  Unable to complete scan."
+      value: "Radiation is interfering with sensors.  Unable to complete scan."
     },
     {
       label: "Scanning...",
@@ -82,8 +82,11 @@ export default which =>
     },
     {
       label: "On Course",
-      value:
-        "Now on course "
+      value: "Now on course "
+    },
+    {
+      label: "Weakness",
+      value: "weakness"
     },
     which && {
       label: `Use ${which === "internal" ? "External" : "Internal"}`,
