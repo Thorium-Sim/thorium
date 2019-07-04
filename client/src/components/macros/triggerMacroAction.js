@@ -8,34 +8,37 @@ export default ({ updateArgs, args, client }) => {
   return (
     <FormGroup className="macro-macroAction">
       <Label>Macro</Label>
-      <Input
-        type="select"
-        value={args.macroId || "nothing"}
-        onChange={e => updateArgs("macroId", e.target.value)}
-      >
-        <option disabled value="nothing">
-          Pick a macro
-        </option>
-        <Query
-          query={gql`
-            query Macros {
-              macros {
-                id
-                name
-              }
+      <Query
+        query={gql`
+          query Macros {
+            macros {
+              id
+              name
             }
-          `}
-        >
-          {({ loading, data }) => {
-            if (loading) return null;
-            return data.macros.map(m => (
-              <option key={m.id} value={m.id}>
-                {m.name}
+          }
+        `}
+      >
+        {({ loading, data }) => {
+          if (loading) return null;
+          return (
+            <Input
+              type="select"
+              value={args.macroId || "nothing"}
+              onChange={e => updateArgs("macroId", e.target.value)}
+            >
+              <option disabled value="nothing">
+                Pick a macro
               </option>
-            ));
-          }}
-        </Query>
-      </Input>
+
+              {data.macros.map(m => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </Input>
+          );
+        }}
+      </Query>
     </FormGroup>
   );
 };

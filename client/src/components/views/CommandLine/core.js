@@ -91,12 +91,14 @@ const ClientInfo = ({
                   $clientId: ID!
                   $feedbackId: ID!
                   $isApproved: Boolean!
+                  $ignore: Boolean
                 ) {
                   handleCommandLineFeedback(
                     simulatorId: $simulatorId
                     clientId: $clientId
                     feedbackId: $feedbackId
                     isApproved: $isApproved
+                    ignore: $ignore
                   )
                 }
               `}
@@ -134,6 +136,23 @@ const ClientInfo = ({
                     }
                   >
                     Approve
+                  </Button>
+                  <Button
+                    size="sm"
+                    color="secondary"
+                    onClick={() =>
+                      action({
+                        variables: {
+                          simulatorId: simulator.id,
+                          clientId: id,
+                          ignore: true,
+                          feedbackId: c.id,
+                          isApproved: true
+                        }
+                      })
+                    }
+                  >
+                    Ignore
                   </Button>
                 </ButtonGroup>
               )}

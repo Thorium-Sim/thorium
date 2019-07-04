@@ -34,7 +34,10 @@ const quotes = [
   "It is a mistake to think you can solve any major problems just with potatoes.",
   "Dangerous But Not Unbearably So",
   "So much for subtlety",
-  "Just as likely to still be an intergalactic jellyfish."
+  "Just as likely to still be an intergalactic jellyfish.",
+  "And the world will fall with ignorance...",
+  "You don't know I'm not crazy.",
+  "If you cannot do great things, do small things in a great way."
 ];
 
 const QuoteOfTheDay = () => {

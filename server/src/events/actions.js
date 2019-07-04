@@ -115,7 +115,10 @@ App.on("triggerAction", args => {
       break;
     case "movie":
       clients.forEach(c =>
-        App.handleEvent({ client: c, movie: args.message }, "clientMovieState")
+        App.handleEvent(
+          { client: c, movie: args.message || args.asset },
+          "clientMovieState"
+        )
       );
       break;
     case "message":

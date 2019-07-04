@@ -85,6 +85,7 @@ App.on(
       } else if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
         output = com.help;
       } else if (
+        !com.config.allowAllArgs &&
         com.options.length > 0 &&
         com.options.map(o => o.toLowerCase()).indexOf(arg.toLowerCase()) === -1
       ) {
@@ -195,29 +196,31 @@ function processCommandLineOutput(simulator, clientId, com) {
 }
 App.on(
   "handleCommandLineFeedback",
-  ({ simulatorId, clientId, feedbackId, isApproved }) => {
+  ({ simulatorId, clientId, feedbackId, ignore, isApproved }) => {
     const simulator = App.simulators.find(s => s.id === simulatorId);
     const feedback = simulator.commandLineFeedback[clientId].find(
       c => c.id === feedbackId
     );
     if (!feedback) return;
-    if (isApproved) {
-      if (feedback.triggers && feedback.triggers.length) {
-        App.handleEvent(
-          { simulatorId, macros: feedback.triggers },
-          "triggerMacros"
-        );
-      }
-      if (feedback.approve) {
-        processCommandLineOutput(simulator, clientId, {
-          output: feedback.approve
-        });
-      }
-    } else {
-      if (feedback.deny) {
-        processCommandLineOutput(simulator, clientId, {
-          output: feedback.deny
-        });
+    if (!ignore) {
+      if (isApproved) {
+        if (feedback.triggers && feedback.triggers.length) {
+          App.handleEvent(
+            { simulatorId, macros: feedback.triggers },
+            "triggerMacros"
+          );
+        }
+        if (feedback.approve) {
+          processCommandLineOutput(simulator, clientId, {
+            output: feedback.approve
+          });
+        }
+      } else {
+        if (feedback.deny) {
+          processCommandLineOutput(simulator, clientId, {
+            output: feedback.deny
+          });
+        }
       }
     }
     simulator.removeCommandLineFeedback(clientId, feedbackId);

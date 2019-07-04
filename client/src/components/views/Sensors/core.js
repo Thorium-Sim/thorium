@@ -165,6 +165,17 @@ class SensorsCore extends Component {
       Y: ${Math.round(Math.random() * 100000) / 100}
       Z: ${Math.round(Math.random() * 100000) / 100}`;
     }
+    if (dataField === "weakness") {
+      dataField = `Fault in ${randomFromList([
+        "engines",
+        "shields",
+        "weapons",
+        "hull",
+        "sensors",
+        "communications",
+        "tractor beam"
+      ])} detected.`;
+    }
     if (dataField === "thrusterdodge") {
       dataField = `Incoming weapons detected. Recommend firing ${randomFromList(
         ["port", "starboard", "forward", "reverse", "up", "down"]

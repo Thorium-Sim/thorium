@@ -5,6 +5,13 @@ import { Button } from "helpers/reactstrap";
 import { OutputField, TypingField } from "../../../generic/core";
 import ScanPresets from "../../Sensors/ScanPresets";
 
+function randomFromList(list) {
+  if (!list) return;
+  const length = list.length;
+  const index = Math.floor(Math.random() * length);
+  return list[index];
+}
+
 class Scan extends Component {
   state = { dataField: "" };
   scanPreset = evt => {
@@ -14,6 +21,17 @@ class Scan extends Component {
       X: ${Math.round(Math.random() * 100000) / 100}
       Y: ${Math.round(Math.random() * 100000) / 100}
       Z: ${Math.round(Math.random() * 100000) / 100}`;
+    }
+    if (dataField === "weakness") {
+      dataField = `Fault in ${randomFromList([
+        "engines",
+        "shields",
+        "weapons",
+        "hull",
+        "sensors",
+        "communications",
+        "tractor beam"
+      ])} detected.`;
     }
     this.setState({
       dataField

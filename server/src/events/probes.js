@@ -157,7 +157,7 @@ App.on("probeProcessedData", ({ id, simulatorId, data = "", flash }) => {
       title: `New Processed Data`,
       body: data,
       color: "info",
-      relevantCards: [ "ProbeNetwork" ]
+      relevantCards: ["ProbeNetwork"]
     });
   });
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
@@ -217,6 +217,36 @@ App.on("activateProbeEmitter", ({ id, probeId }) => {
   const scienceProbeType = getProbeConfig(sys, probe);
 
   if (scienceProbeType) {
+    // Clear the task, if any.
+    const clearedTask = App.tasks
+      .concat(
+        App.taskReports
+          .filter(s => s.simulatorId === sys.simulatorId && !s.cleared)
+          .map(r => r.tasks.filter(t => !t.verified))
+          .reduce((prev, next) => prev.concat(next), [])
+      )
+      .filter(
+        t =>
+          !t.verified &&
+          t.simulatorId === sys.simulatorId &&
+          t.definition === "Execute Science Probe Function" &&
+          Math.abs(parseFloat(t.values.charge) - probe.charge * 100) < 10 &&
+          t.values.type &&
+          t.values.type.toLowerCase() ===
+            `${scienceProbeType.name}-${scienceProbeType.type}`.toLowerCase()
+      )
+      .map(t => {
+        t.verify();
+        return true;
+      });
+    if (clearedTask.length > 0) {
+      pubsub.publish("taskReportUpdate", App.taskReports);
+
+      pubsub.publish(
+        "tasksUpdate",
+        App.tasks.filter(s => s.simulatorId === sys.simulatorId)
+      );
+    }
     // Update the history of the probe
     probe.addHistory(
       `Activated ${scienceProbeType.name} ${
@@ -231,7 +261,6 @@ App.on("activateProbeEmitter", ({ id, probeId }) => {
       type: scienceProbeType.type,
       charge: probe.charge
     });
-    probe.setCharge(0);
 
     // Send the regular publish.
     pubsub.publish(
@@ -259,5 +288,6 @@ App.on("activateProbeEmitter", ({ id, probeId }) => {
       },
       "addCoreFeed"
     );
+    probe.setCharge(0);
   }
 });

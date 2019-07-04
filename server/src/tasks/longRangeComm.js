@@ -182,5 +182,64 @@ Message: ${message}`,
       if (!m) return;
       return m.f === m.rf && m.a === m.ra;
     }
+  },
+  {
+    name: "Intercept Signal",
+    class: "Long Range Comm",
+    active({ simulator }) {
+      const system = App.systems.find(
+        s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+      );
+
+      return (
+        simulator.stations.find(s =>
+          s.cards.find(c => c.component === "Interception")
+        ) && system
+      );
+    },
+    stations({ simulator }) {
+      return (
+        simulator &&
+        simulator.stations.filter(s =>
+          s.cards.find(c => c.component === "Interception")
+        )
+      );
+    },
+    values: {
+      preamble: {
+        input: () => "textarea",
+        value: () => "A signal has been detected and may be processed."
+      }
+    },
+    instructions({
+      simulator,
+      requiredValues: { preamble, system },
+      task = {}
+    }) {
+      const station = simulator.stations.find(s =>
+        s.cards.find(c => c.component === "Interception")
+      );
+
+      if (station && station.name === task.station)
+        return reportReplace(`${preamble} Attempt to intercept the signal.`, {
+          simulator,
+          system
+        });
+      return reportReplace(
+        `${preamble} Ask the ${
+          station
+            ? `${station.name} Officer`
+            : "person in charge of interception"
+        } to attempt to intercept the signal.`,
+        { simulator, system }
+      );
+    },
+    verify({ simulator }) {
+      const system = App.systems.find(
+        s => s.simulatorId === simulator.id && s.type === "LongRangeComm"
+      );
+      if (!system) return;
+      return system.locked;
+    }
   }
 ];
