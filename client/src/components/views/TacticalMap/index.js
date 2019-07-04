@@ -14,6 +14,7 @@ const fragment = gql`
     flight {
       id
     }
+    interval
     layers {
       id
       name
@@ -31,17 +32,14 @@ const fragment = gql`
         velocity {
           x
           y
-          z
         }
         location {
           x
           y
-          z
         }
         destination {
           x
           y
-          z
         }
         rotation
         opacity
@@ -66,22 +64,18 @@ const fragment = gql`
         start {
           x
           y
-          z
         }
         end {
           x
           y
-          z
         }
         c1 {
           x
           y
-          z
         }
         c2 {
           x
           y
-          z
         }
         color
         width
@@ -266,6 +260,7 @@ class TacticalMapCore extends Component {
                       simulatorId={
                         this.props.simulator ? this.props.simulator.id : null
                       }
+                      interval={tacticalMap.interval}
                       viewscreen={this.props.viewscreen}
                       tacticalMapId={this.state.tacticalMapId}
                       layers={tacticalMap.layers}
@@ -273,7 +268,6 @@ class TacticalMapCore extends Component {
                       selectObject={this.selectObject}
                       objectId={this.state.objectId}
                       updateObject={this.updateObject}
-                      removeObject={this.removeObject}
                       updatePath={this.updatePath}
                       removePath={this.removePath}
                       speed={this.state.speed}
@@ -306,6 +300,7 @@ class TacticalMapCore extends Component {
                     layerId={this.state.layerId}
                     objectId={this.state.objectId}
                     updateObject={this.updateObject}
+                    removeObject={this.removeObject}
                     {...this.props}
                   />
                 </div>

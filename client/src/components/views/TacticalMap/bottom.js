@@ -143,6 +143,7 @@ export default class Bottom extends Component {
       objectId,
       tacticalMap,
       updateObject,
+      removeObject,
       updateSpeed,
       speed
     } = this.props;
@@ -211,6 +212,7 @@ export default class Bottom extends Component {
                   selectedLayer={selectedLayer}
                   updateLayer={this.updateLayer}
                   updateObject={updateObject}
+                  removeObject={removeObject}
                 />
               );
             })()}
