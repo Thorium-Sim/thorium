@@ -53,6 +53,7 @@ const schema = gql`
       simulatorId: ID!
       clientId: ID!
       feedbackId: ID!
+      ignore: Boolean
       isApproved: Boolean!
     ): String
   }
