@@ -5,16 +5,16 @@ import { pubsub } from "../helpers/subscriptionManager";
 const interval = 1000 / 5;
 
 function distance3d(coord2, coord1) {
-  const { x: x1, y: y1, z: z1 } = coord1;
-  let { x: x2, y: y2, z: z2 } = coord2;
+  const { x: x1, y: y1, z: z1 = 0 } = coord1;
+  let { x: x2, y: y2, z: z2 = 0 } = coord2;
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
 const moveContact = (dest, loc, speed, frozen, i) => {
   if (speed > 100) return dest;
   if (speed === 0 || frozen) return loc;
-  if (distance3d(dest, loc) < 0.001) {
-    return dest;
+  if (distance3d(dest, loc) < 0.1) {
+    speed = distance3d(dest, loc) * speed;
   }
   const locVec = new THREE.Vector3(loc.x, loc.y, loc.z);
   const destVec = new THREE.Vector3(dest.x, dest.y, dest.z);

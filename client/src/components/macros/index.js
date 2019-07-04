@@ -82,3 +82,4 @@ export {
   default as removeViewscreenPictureInPicture
 } from "./removeViewscreenPictureInPicture";
 export { default as updateSensorGrid } from "./updateSensorGrid";
+export { default as addTacticalMapsToFlight } from "./addTacticalMapsToFlight";

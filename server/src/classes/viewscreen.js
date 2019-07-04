@@ -1,3 +1,4 @@
+import App from "../app";
 import { randomFromList } from "./generic/damageReports/constants";
 
 export default class Viewscreen {
@@ -30,6 +31,21 @@ export default class Viewscreen {
     }
 
     const datum = JSON.parse(this.data);
+
+    // If the component is 'TacticalMap', change data.tacticalMapId to be an actual map
+    if (this.component === "TacticalMap") {
+      const flight = App.flights.find(f =>
+        f.simulators.includes(this.simulatorId)
+      );
+      const tacticalMap = App.tacticalMaps.find(
+        t => t.templateId === datum.tacticalMapId && t.flightId === flight.id
+      );
+      if (!tacticalMap) return;
+      this.data = JSON.stringify({
+        ...datum,
+        tacticalMapId: tacticalMap.id
+      });
+    }
 
     // If the component is 'video' and data.asset is an array, pick a random one.
     if (this.component === "Video" && Array.isArray(datum.asset)) {

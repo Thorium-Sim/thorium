@@ -101,17 +101,40 @@ App.on("removeTacticalMapPath", ({ mapId, layerId, pathId }) => {
   pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
 });
 
+App.on("addTacticalMapsToFlight", ({ mapIds, simulatorId }) => {
+  const flight = App.flights.find(f => f.simulators.indexOf(simulatorId) > -1);
+  mapIds.forEach(mapId => {
+    let flightMap = App.tacticalMaps.find(
+      t => t.flightId === flight.id && t.templateId === mapId
+    );
+    if (!flightMap) {
+      const newId = uuid.v4();
+      const map = App.tacticalMaps.find(t => t.id === mapId);
+      flightMap = new Classes.TacticalMap(
+        Object.assign({}, map, {
+          id: newId,
+          dup: true,
+          flightId: flight.id,
+          template: false,
+          templateId: mapId
+        })
+      );
+      App.tacticalMaps.push(flightMap);
+    }
+  });
+  pubsub.publish("tacticalMapsUpdate", App.tacticalMaps);
+});
 App.on(
   "showViewscreenTactical",
   ({ viewscreenId, mapId, simulatorId, secondary = false }) => {
     const flight = App.flights.find(
       f => f.simulators.indexOf(simulatorId) > -1
     );
-    let flightMap = App.tacticalMaps.find(t => t.templateId === mapId);
-    let id = mapId;
+    let flightMap = App.tacticalMaps.find(
+      t => t.flightId === flight.id && t.templateId === mapId
+    );
     if (!flightMap) {
       const newId = uuid.v4();
-      id = newId;
       const map = App.tacticalMaps.find(t => t.id === mapId);
       flightMap = new Classes.TacticalMap(
         Object.assign({}, map, {
