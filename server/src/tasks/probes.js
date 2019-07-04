@@ -2,7 +2,9 @@ import reportReplace from "../helpers/reportReplacer";
 import App from "../app";
 import { randomFromList } from "../classes/generic/damageReports/constants";
 import { Probes } from "../classes";
-
+import Fuzz from "fuse.js";
+import { titleCase } from "change-case";
+import { scienceProbeTypes } from "../classes/probes";
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
@@ -128,9 +130,7 @@ export default [
         );
       return reportReplace(
         `${preamble} Ask the ${
-          station
-            ? `${station.name} Officer`
-            : "person in charge of security decks"
+          station ? `${station.name} Officer` : "person in charge of probes"
         } to launch a ${probeTypeObj.name} probe${
           equipmentText.length > 0
             ? ` with the following equipment:\n\n${equipmentText})}`
@@ -155,8 +155,157 @@ export default [
         return true;
       });
     }
+  },
+  {
+    name: "Perform Probe Query",
+    class: "Probes",
+    active({ simulator }) {
+      const probeSystem = App.systems.find(
+        s => s.simulatorId === simulator.id && s.class === "Probes"
+      );
+      return (
+        simulator &&
+        simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ProbeControl")
+        ) &&
+        probeSystem
+      );
+    },
+    stations({ simulator }) {
+      return (
+        simulator &&
+        simulator.stations.filter(s =>
+          s.cards.find(c => c.component === "ProbeControl")
+        )
+      );
+    },
+    values: {
+      preamble: {
+        input: () => "textarea",
+        value: () => "We should use a probe to gather more information."
+      },
+      query: {
+        input: () => "text",
+        value: () => ""
+      }
+    },
+    instructions({
+      simulator,
+      requiredValues: { preamble, query, system },
+      task = {}
+    }) {
+      const station =
+        simulator &&
+        simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ProbeControl")
+        );
+
+      if (station && task.station === station.name)
+        return reportReplace(`${preamble} Perform a probe query: "${query}"`, {
+          simulator,
+          system
+        });
+      return reportReplace(
+        `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of probes"
+        } to perform a probe query: "${query}"`,
+        { simulator, system }
+      );
+    },
+    verify({ simulator, requiredValues: { query } }) {
+      const systems = App.systems.filter(
+        s => s.simulatorId === simulator.id && s.class === "Probes"
+      );
+      // Create a fuzzy matcher
+      const matcher = new Fuzz([query], { threshold: 0.2 });
+      return systems.find(s => {
+        if (
+          s.probes.find(
+            probe => probe.querying && matcher.search(probe.query).length > 0
+          )
+        )
+          return true;
+        return false;
+      });
+    }
+  },
+  {
+    name: "Execute Science Probe Function",
+    class: "Probes",
+    active({ simulator }) {
+      const probeSystem = App.systems.find(
+        s => s.simulatorId === simulator.id && s.class === "Probes"
+      );
+      return (
+        simulator &&
+        simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ProbeConstruction")
+        ) &&
+        probeSystem
+      );
+    },
+    stations({ simulator }) {
+      return (
+        simulator &&
+        simulator.stations.filter(s =>
+          s.cards.find(c => c.component === "ProbeConstruction")
+        )
+      );
+    },
+    values: {
+      preamble: {
+        input: () => "textarea",
+        value: () => "A science probe could perform a valuable function."
+      },
+      type: {
+        input: () =>
+          scienceProbeTypes.map(p => ({
+            value: p.id,
+            label: `${p.name} ${titleCase(p.type)}`
+          })),
+        value: () => {
+          const p = randomFromList(scienceProbeTypes);
+          return p.id;
+        }
+      },
+      charge: {
+        input: () => ({ type: "range", min: 0, max: 100 }),
+        value: () => Math.round(Math.random() * 100)
+      }
+    },
+    instructions({
+      simulator,
+      requiredValues: { preamble, type, charge, system },
+      task = {}
+    }) {
+      const station =
+        simulator &&
+        simulator.stations.find(s =>
+          s.cards.find(c => c.component === "ProbeConstruction")
+        );
+
+      const probeType = scienceProbeTypes.find(p => p.id === type);
+      const typeLabel = `${probeType.name} ${titleCase(probeType.type)}`;
+
+      if (station && task.station === station.name)
+        return reportReplace(
+          `${preamble} Construct a science probe capable of ${typeLabel}. Then activate the ${typeLabel} at ${charge}% power.`,
+          {
+            simulator,
+            system
+          }
+        );
+      return reportReplace(
+        `${preamble} Ask the ${
+          station ? `${station.name} Officer` : "person in charge of probes"
+        } to construct a science probe capable of ${typeLabel}. Then activate the ${typeLabel} at ${charge}% power.`,
+        { simulator, system }
+      );
+    },
+    verify({ simulator, requiredValues: { query } }) {
+      // Cleared by an event.
+    }
   }
 ];
 
-// Perform query
 // Science Burst

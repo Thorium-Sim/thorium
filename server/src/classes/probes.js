@@ -635,7 +635,7 @@ const probesEquipment = [
   }
 ];
 
-const scienceProbeTypes = [
+export const scienceProbeTypes = [
   {
     id: "resonance-burst",
     name: "Resonance",
