@@ -1,7 +1,8 @@
 import App from "../app";
 import * as THREE from "three";
+import { pubsub } from "../helpers/subscriptionManager";
 
-const interval = 30;
+const interval = 1000 / 5;
 
 function distance3d(coord2, coord1) {
   const { x: x1, y: y1, z: z1 } = coord1;
@@ -44,6 +45,8 @@ const moveTacticalMap = () => {
         });
       });
     });
+    m.interval = interval;
+    pubsub.publish("tacticalMapUpdate", m);
   });
   setTimeout(moveTacticalMap, interval);
 };

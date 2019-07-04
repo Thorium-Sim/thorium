@@ -84,7 +84,8 @@ class TacticalMapPreview extends Component {
       core,
       frozen,
       speed,
-      viewscreen
+      viewscreen,
+      interval
     } = this.props;
     return (
       <div className="tactical-map-view">
@@ -99,6 +100,7 @@ class TacticalMapPreview extends Component {
               >
                 <Comp
                   {...l}
+                  interval={interval}
                   simulatorId={simulatorId}
                   core={core}
                   frozen={frozen}

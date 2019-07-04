@@ -13,6 +13,8 @@ const schema = gql`
 
     layers: [TacticalLayer]
     frozen: Boolean
+
+    interval: Float
   }
 
   type TacticalLayer {

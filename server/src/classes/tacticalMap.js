@@ -189,6 +189,7 @@ export default class TacticalMap {
     this.flightId = params.flightId || null;
     this.frozen = params.frozen || false;
     this.layers = [];
+    this.interval = params.interval || 1000 / 20;
     (params.layers || []).forEach(l =>
       this.layers.push(
         new TacticalLayer(Object.assign({}, l, { dup: params.dup }))
