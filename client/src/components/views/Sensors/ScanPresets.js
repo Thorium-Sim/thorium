@@ -1,4 +1,71 @@
-export default which =>
+import React from "react";
+
+function randomFromList(list) {
+  if (!list) return;
+  const length = list.length;
+  const index = Math.floor(Math.random() * length);
+  return list[index];
+}
+
+const ScanPresets = ({ onChange, domain, ...props }) => {
+  const handleChange = evt => {
+    let dataField = evt.target.value;
+    if (dataField === "omnicourse") {
+      dataField = `Course Calculated:
+      X: ${Math.round(Math.random() * 100000) / 100}
+      Y: ${Math.round(Math.random() * 100000) / 100}
+      Z: ${Math.round(Math.random() * 100000) / 100}`;
+    }
+    if (dataField === "weakness") {
+      dataField = `Fault in ${randomFromList([
+        "engines",
+        "shields",
+        "weapons",
+        "hull",
+        "sensors",
+        "communications",
+        "tractor beam"
+      ])} detected.`;
+    }
+    if (dataField === "thrusterdodge") {
+      dataField = `Incoming weapons detected. Recommend firing ${randomFromList(
+        ["port", "starboard", "forward", "reverse", "up", "down"]
+      )} thrusters to dodge.`;
+    }
+    onChange(dataField);
+  };
+  React.useEffect(() => {
+    const keypress = evt => {
+      if (evt.altKey) {
+        evt.preventDefault();
+        const index = parseInt(evt.code.substr(-1, 1), 10);
+        if (!isNaN(index)) {
+          const data =
+            index === 0 ? ScanPresets()[10] : ScanPresets()[index - 1];
+          this.scanPreset({ target: { value: data.value } });
+        }
+      }
+    };
+    document.addEventListener("keydown", keypress);
+    return () => document.removeEventListener("keydown", keypress);
+  }, []);
+
+  return (
+    <select value={"answers"} onChange={handleChange} {...props}>
+      <option value={"answers"} disabled>
+        Answers
+      </option>
+      {getPresetOptions(domain).map(p => (
+        <option key={p.label} value={p.value}>
+          {p.label}
+        </option>
+      ))}
+    </select>
+  );
+};
+export default ScanPresets;
+
+const getPresetOptions = which =>
   [
     { label: "None detected.", value: "None detected." },
     {

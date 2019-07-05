@@ -12,13 +12,6 @@ import gql from "graphql-tag.macro";
 import { OutputField, TypingField } from "../../generic/core";
 import ScanPresets from "../Sensors/ScanPresets";
 
-function randomFromList(list) {
-  if (!list) return;
-  const length = list.length;
-  const index = Math.floor(Math.random() * length);
-  return list[index];
-}
-
 const ScannerCore = ({ scanners, clients }) => {
   const screens = ["MedicalTricorder", "Tricorder"];
   const [selectedScanner, setSelectedScanner] = React.useState(null);
@@ -27,37 +20,6 @@ const ScannerCore = ({ scanners, clients }) => {
     .filter(c => c.station && screens.indexOf(c.station.name) > -1)
     .map(c => scanners.find(k => k.id === c.id));
   const scanner = scanners.find(k => k.id === selectedScanner);
-  const scanPreset = evt => {
-    let data = evt.target.value;
-    if (data === "omnicourse") {
-      data = `Course Calculated:
-    X: ${Math.round(Math.random() * 100000) / 100}
-    Y: ${Math.round(Math.random() * 100000) / 100}
-    Z: ${Math.round(Math.random() * 100000) / 100}`;
-    }
-    if (data === "weakness") {
-      data = `Fault in ${randomFromList([
-        "engines",
-        "shields",
-        "weapons",
-        "hull",
-        "sensors",
-        "communications",
-        "tractor beam"
-      ])} detected.`;
-    }
-    if (data === "thrusterdodge") {
-      data = `Incoming weapons detected. Recommend firing ${randomFromList([
-        "port",
-        "starboard",
-        "forward",
-        "reverse",
-        "up",
-        "down"
-      ])} thrusters to dodge.`;
-    }
-    setDataField(data);
-  };
   const fieldStyle = {
     display: "flex",
     flexDirection: "column",
@@ -127,20 +89,10 @@ const ScannerCore = ({ scanners, clients }) => {
                     </Button>
                   )}
                 </Mutation>
-                <select
-                  value={"answers"}
-                  onChange={scanPreset}
+                <ScanPresets
                   style={{ flexGrow: 4, maxWidth: 100 }}
-                >
-                  <option value={"answers"} disabled>
-                    Answers
-                  </option>
-                  {ScanPresets().map(p => (
-                    <option key={p.label} value={p.value}>
-                      {p.label}
-                    </option>
-                  ))}
-                </select>
+                  onChange={e => setDataField(e)}
+                />
               </div>
             </div>
           </Col>

@@ -5,38 +5,8 @@ import { Button } from "helpers/reactstrap";
 import { OutputField, TypingField } from "../../../generic/core";
 import ScanPresets from "../../Sensors/ScanPresets";
 
-function randomFromList(list) {
-  if (!list) return;
-  const length = list.length;
-  const index = Math.floor(Math.random() * length);
-  return list[index];
-}
-
 class Scan extends Component {
   state = { dataField: "" };
-  scanPreset = evt => {
-    let dataField = evt.target.value;
-    if (dataField === "omnicourse") {
-      dataField = `Course Calculated:
-      X: ${Math.round(Math.random() * 100000) / 100}
-      Y: ${Math.round(Math.random() * 100000) / 100}
-      Z: ${Math.round(Math.random() * 100000) / 100}`;
-    }
-    if (dataField === "weakness") {
-      dataField = `Fault in ${randomFromList([
-        "engines",
-        "shields",
-        "weapons",
-        "hull",
-        "sensors",
-        "communications",
-        "tractor beam"
-      ])} detected.`;
-    }
-    this.setState({
-      dataField
-    });
-  };
   render() {
     const { scanning, scanRequest, sickbayId, id } = this.props;
     const { dataField } = this.state;
@@ -91,20 +61,14 @@ class Scan extends Component {
               </Button>
             )}
           </Mutation>
-          <select
-            value={"answers"}
-            onChange={this.scanPreset}
+          <ScanPresets
             style={{ flexGrow: 4, maxWidth: 100 }}
-          >
-            <option value={"answers"} disabled>
-              Answers
-            </option>
-            {ScanPresets().map(p => (
-              <option key={p.label} value={p.value}>
-                {p.label}
-              </option>
-            ))}
-          </select>
+            onChange={e =>
+              this.setState({
+                dataField: e
+              })
+            }
+          />
         </div>
       </Fragment>
     );

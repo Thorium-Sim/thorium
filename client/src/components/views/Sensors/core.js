@@ -8,13 +8,6 @@ import ScanPresets from "./ScanPresets";
 import { subscribe } from "helpers/pubsub";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-function randomFromList(list) {
-  if (!list) return;
-  const length = list.length;
-  const index = Math.floor(Math.random() * length);
-  return list[index];
-}
-
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
     sensorsUpdate(simulatorId: $simulatorId) {
@@ -54,7 +47,6 @@ class SensorsCore extends Component {
     };
   }
   componentDidMount() {
-    document.addEventListener("keydown", this.keypress);
     this.sensorDataBox = subscribe("sensorData", data => {
       this.setState({
         dataField: data
@@ -62,7 +54,6 @@ class SensorsCore extends Component {
     });
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.keypress);
     this.sensorDataBox && this.sensorDataBox();
   }
   componentDidUpdate(prevProps) {
@@ -88,16 +79,7 @@ class SensorsCore extends Component {
         dataField: sensor.scanResults
       });
   }
-  keypress = evt => {
-    if (evt.altKey) {
-      evt.preventDefault();
-      const index = parseInt(evt.code.substr(-1, 1), 10);
-      if (!isNaN(index)) {
-        const data = index === 0 ? ScanPresets()[10] : ScanPresets()[index - 1];
-        this.scanPreset({ target: { value: data.value } });
-      }
-    }
-  };
+
   sendScanResult = sensors => {
     let mutation;
     let variables;
@@ -157,34 +139,7 @@ class SensorsCore extends Component {
       }
     });
   };
-  scanPreset = evt => {
-    let dataField = evt.target.value;
-    if (dataField === "omnicourse") {
-      dataField = `Course Calculated:
-      X: ${Math.round(Math.random() * 100000) / 100}
-      Y: ${Math.round(Math.random() * 100000) / 100}
-      Z: ${Math.round(Math.random() * 100000) / 100}`;
-    }
-    if (dataField === "weakness") {
-      dataField = `Fault in ${randomFromList([
-        "engines",
-        "shields",
-        "weapons",
-        "hull",
-        "sensors",
-        "communications",
-        "tractor beam"
-      ])} detected.`;
-    }
-    if (dataField === "thrusterdodge") {
-      dataField = `Incoming weapons detected. Recommend firing ${randomFromList(
-        ["port", "starboard", "forward", "reverse", "up", "down"]
-      )} thrusters to dodge.`;
-    }
-    this.setState({
-      dataField
-    });
-  };
+
   probeData = (probe, flash) => {
     const mutation = gql`
       mutation ProbeData($id: ID!, $data: String!, $flash: Boolean) {
@@ -392,22 +347,13 @@ class SensorsCore extends Component {
           >
             Flash
           </Button>*/}
-            <select
-              value={"answers"}
-              onChange={this.scanPreset}
+            <ScanPresets
+              domain={this.state.domain}
               style={{ flexGrow: 4, maxWidth: 100 }}
-            >
-              <option value={"answers"} disabled>
-                Answers
-              </option>
-              {ScanPresets(this.state.domain).map(p => (
-                <option key={p.label} value={p.value}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
+              onChange={e => this.setState({ dataField: e })}
+            />
             <select
-              onChange={this.scanPreset}
+              onChange={e => this.setState({ dataField: e.target.value })}
               value={"answers"}
               style={{ flexGrow: 4, maxWidth: 50 }}
             >

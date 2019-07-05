@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { Col, Row } from "helpers/reactstrap";
 import { ChromePicker } from "react-color";
@@ -139,7 +139,6 @@ const ExtraControls = ({
         toggleSensorsAutoTarget(id: $id, target: $target)
       }
     `;
-    const sensors = sensors;
     const variables = {
       id: sensors.id,
       target: e.target.checked
@@ -155,7 +154,6 @@ const ExtraControls = ({
         toggleSensorsAutoThrusters(id: $id, thrusters: $thrusters)
       }
     `;
-    const sensors = sensors;
     const variables = {
       id: sensors.id,
       thrusters: e.target.checked
@@ -171,7 +169,6 @@ const ExtraControls = ({
         setSensorsInterference(id: $id, interference: $interference)
       }
     `;
-    const sensors = sensors;
     const variables = {
       id: sensors.id,
       interference: parseFloat(e.target.value)
