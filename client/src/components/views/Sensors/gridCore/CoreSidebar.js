@@ -10,7 +10,10 @@ import { speeds } from "./constants";
 
 const CLEAR_CONTACTS = gql`
   mutation DeleteContact($id: ID!) {
-    removeAllSensorContacts(id: $id)
+    removeAllSensorContacts(
+      id: $id
+      type: ["contact", "planet", "border", "ping"]
+    )
   }
 `;
 const STOP_CONTACTS = gql`
