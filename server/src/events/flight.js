@@ -389,13 +389,17 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
   });
   cb && cb();
 });
-App.on("pauseFlight", ({ flightId }) => {
-  const flight = App.flights.find(f => f.id === flightId);
+App.on("pauseFlight", ({ flightId, simulatorId }) => {
+  const flight = App.flights.find(
+    f => f.id === flightId || f.simulators.includes(simulatorId)
+  );
   flight.pause();
   pubsub.publish("flightsUpdate", App.flights);
 });
-App.on("resumeFlight", ({ flightId }) => {
-  const flight = App.flights.find(f => f.id === flightId);
+App.on("resumeFlight", ({ flightId, simulatorId }) => {
+  const flight = App.flights.find(
+    f => f.id === flightId || f.simulators.includes(simulatorId)
+  );
   flight.resume();
   pubsub.publish("flightsUpdate", App.flights);
 });

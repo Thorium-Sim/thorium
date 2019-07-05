@@ -38,7 +38,13 @@ const schema = gql`
     """
     resetFlight(flightId: ID!, full: Boolean): String
     deleteFlight(flightId: ID!): String
+    """
+    Macro: Flight: Pause Flight
+    """
     pauseFlight(flightId: ID!): String
+    """
+    Macro: Flight: Resume Flight
+    """
     resumeFlight(flightId: ID!): String
 
     # Space EdVentures
