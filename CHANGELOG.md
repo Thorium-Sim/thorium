@@ -1,3 +1,26 @@
+# [1.16.0](https://github.com/Thorium-Sim/thorium/compare/1.15.0...1.16.0) (2019-07-04)
+
+
+### Bug Fixes
+
+* **Actions:** Makes it so setting a movie on a station properly works from the actions macro. Closes [#2397](https://github.com/Thorium-Sim/thorium/issues/2397) ([230d11c](https://github.com/Thorium-Sim/thorium/commit/230d11c))
+* **Cargo:** Fixes an issue where cargo logs linger between flights. Closes [#2379](https://github.com/Thorium-Sim/thorium/issues/2379) ([7d61bbe](https://github.com/Thorium-Sim/thorium/commit/7d61bbe))
+* **Cargo:** Fixes major layout issues with the cargo control screen. ([b14f7f2](https://github.com/Thorium-Sim/thorium/commit/b14f7f2))
+* **Command Line:** Output for delayed command line actions are now shown on core when completed. Closes [#2369](https://github.com/Thorium-Sim/thorium/issues/2369) ([c1e443a](https://github.com/Thorium-Sim/thorium/commit/c1e443a))
+* **Errors:** Decreases the number of errors being reported, which keeps me in the limit for my error tracker. Closes [#2400](https://github.com/Thorium-Sim/thorium/issues/2400) ([fecad55](https://github.com/Thorium-Sim/thorium/commit/fecad55))
+* **Macros:** Fixes the display of macro options on the trigger macros macro. Closes [#2396](https://github.com/Thorium-Sim/thorium/issues/2396) ([6240aff](https://github.com/Thorium-Sim/thorium/commit/6240aff))
+* **Notifications:** Add an option to disable command line notifications and core feed items. Closes [#2365](https://github.com/Thorium-Sim/thorium/issues/2365) ([c9354ee](https://github.com/Thorium-Sim/thorium/commit/c9354ee))
+* **Thrusters:** Thrusters now automatically stop after a longer timeout. Closes [#2399](https://github.com/Thorium-Sim/thorium/issues/2399) ([ea90d53](https://github.com/Thorium-Sim/thorium/commit/ea90d53))
+
+
+### Features
+
+* **Command Line:** Add the ability to ignore command line feedback requests. Closes [#2391](https://github.com/Thorium-Sim/thorium/issues/2391) ([45dbdd4](https://github.com/Thorium-Sim/thorium/commit/45dbdd4))
+* **Command Line:** Allows command line commands to take any kind of arguments. This is activated by clicking on the command and choosing the 'Allow Any Args' options. Closes [#2389](https://github.com/Thorium-Sim/thorium/issues/2389) ([7e74c74](https://github.com/Thorium-Sim/thorium/commit/7e74c74))
+* **Sensors:** Adds a weakness sensor preset. Closes [#2390](https://github.com/Thorium-Sim/thorium/issues/2390) ([607e34a](https://github.com/Thorium-Sim/thorium/commit/607e34a))
+* **Tasks:** Add additional tasks for sensors and probes. Closes [#2377](https://github.com/Thorium-Sim/thorium/issues/2377) ([f9117f3](https://github.com/Thorium-Sim/thorium/commit/f9117f3))
+* **Tasks:** Adds a task for interception. Closes [#2394](https://github.com/Thorium-Sim/thorium/issues/2394) ([e497158](https://github.com/Thorium-Sim/thorium/commit/e497158))
+
 # [1.15.0](https://github.com/Thorium-Sim/thorium/compare/1.14.0...1.15.0) (2019-07-02)
 
 
