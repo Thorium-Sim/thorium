@@ -90,6 +90,7 @@ const fragment = gql`
     }
     frozen
     template
+    interval
   }
 `;
 
@@ -178,26 +179,6 @@ class TacticalMapViewscreen extends Component {
       variables
     });
   };
-  removeObject = objectId => {
-    const { tacticalMapId } = this.props;
-    const mutation = gql`
-      mutation RemoveTacticalItem($mapId: ID!, $layerId: ID!, $itemId: ID!) {
-        removeTacticalMapItem(mapId: $mapId, layerId: $layerId, itemId: $itemId)
-      }
-    `;
-    const variables = {
-      mapId: tacticalMapId,
-      layerId: this.state.layerId,
-      itemId: objectId || this.state.objectId
-    };
-    this.setState({
-      objectId: null
-    });
-    this.props.client.mutate({
-      mutation,
-      variables
-    });
-  };
   render() {
     const { core, tacticalMap } = this.props;
     return (
@@ -214,12 +195,12 @@ class TacticalMapViewscreen extends Component {
             core={
               !(this.props.station && this.props.station.name === "Viewscreen")
             }
+            interval={tacticalMap.interval}
             frozen={tacticalMap.frozen}
             layers={tacticalMap.layers}
             selectObject={this.selectObject}
             objectId={this.state.objectId}
             updateObject={this.updateObject}
-            removeObject={this.removeObject}
           />
         )}
       </div>

@@ -8,7 +8,11 @@ const cards = Object.keys(ViewscreenCards)
 const configs = Object.keys(ViewscreenCards)
   .filter(c => c.indexOf("Config") > -1)
   .sort();
-export function ViewscreenComponentSelector({ args, updateArgs }) {
+export function ViewscreenComponentSelector({
+  args,
+  updateArgs,
+  tacticalMaps
+}) {
   return (
     <>
       <Label>Cards</Label>
@@ -33,6 +37,7 @@ export function ViewscreenComponentSelector({ args, updateArgs }) {
             <ConfigComponent
               data={args.data || "{}"}
               updateData={data => updateArgs("data", data)}
+              inputTacticalMaps={tacticalMaps}
             />
           );
         }
@@ -40,7 +45,22 @@ export function ViewscreenComponentSelector({ args, updateArgs }) {
     </>
   );
 }
-export default ({ updateArgs, args, clients }) => {
+
+const parseActions = ({ timelineItems }) => {
+  return timelineItems.map(t => ({ ...t, args: JSON.parse(t.args) }));
+};
+
+export default ({ updateArgs, args, clients, steps }) => {
+  const tacticalMaps = steps
+    .reduce((acc, step) => {
+      const actions = parseActions(step);
+      return acc.concat(
+        actions
+          .filter(e => e.event === "addTacticalMapsToFlight")
+          .map(e => e.args.mapIds)
+      );
+    }, [])
+    .reduce((acc, next) => acc.concat(next), []);
   return (
     <FormGroup className="macro-template">
       <div>
@@ -70,7 +90,11 @@ export default ({ updateArgs, args, clients }) => {
           )}
         </Input>
       </div>
-      <ViewscreenComponentSelector args={args} updateArgs={updateArgs} />
+      <ViewscreenComponentSelector
+        args={args}
+        updateArgs={updateArgs}
+        tacticalMaps={tacticalMaps}
+      />
     </FormGroup>
   );
 };

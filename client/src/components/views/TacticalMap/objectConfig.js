@@ -79,7 +79,7 @@ export default class ObjectConfig extends Component {
     });
   };
   render() {
-    const { objectId, selectedLayer, updateObject } = this.props;
+    const { objectId, selectedLayer, updateObject, removeObject } = this.props;
     const { draggingObject, thrusters } = this.state;
     const selectedObject = selectedLayer.items.find(i => i.id === objectId);
     return (
@@ -94,6 +94,7 @@ export default class ObjectConfig extends Component {
           ) : (
             <ObjectSettings
               {...selectedObject}
+              removeObject={() => removeObject(objectId, selectedLayer.id)}
               updateObject={updateObject}
               duplicate={() => {
                 const {
@@ -333,7 +334,8 @@ const ObjectSettings = ({
   rotation,
   //rotationMatch
   duplicate,
-  configThrusters
+  configThrusters,
+  removeObject
 }) => {
   return (
     <Row className="tactical-object-config">
@@ -394,25 +396,6 @@ const ObjectSettings = ({
             />
           </Label>
         </FormGroup>
-        <FormGroup>
-          <Label>
-            Speed
-            <Input
-              type="select"
-              size="sm"
-              value={speed}
-              onChange={evt => updateObject("speed", evt.target.value)}
-            >
-              <option value="1000">Instant</option>
-              <option value="1.5">Warp</option>
-              <option value="0.2">Very Fast</option>
-              <option value="0.08">Fast</option>
-              <option value="0.05">Moderate</option>
-              <option value="0.02">Slow</option>
-              <option value="0.008">Very Slow</option>
-            </Input>
-          </Label>
-        </FormGroup>
       </Col>
       <Col>
         <FormGroup>
@@ -455,6 +438,9 @@ const ObjectSettings = ({
             IJKL Keys
           </Label>
         </FormGroup>
+        <Button size="sm" color="danger" onClick={() => removeObject()}>
+          Remove Item
+        </Button>
       </Col>
       <Col>
         <FormGroup>
@@ -489,6 +475,25 @@ const ObjectSettings = ({
               Config Thrusters
             </Button>
           </ButtonGroup>
+        </FormGroup>
+        <FormGroup>
+          <Label>
+            Speed
+            <Input
+              type="select"
+              size="sm"
+              value={speed}
+              onChange={evt => updateObject("speed", evt.target.value)}
+            >
+              <option value="1000">Instant</option>
+              <option value="1.5">Warp</option>
+              <option value="0.2">Very Fast</option>
+              <option value="0.08">Fast</option>
+              <option value="0.05">Moderate</option>
+              <option value="0.02">Slow</option>
+              <option value="0.008">Very Slow</option>
+            </Input>
+          </Label>
         </FormGroup>
       </Col>
       <Col>

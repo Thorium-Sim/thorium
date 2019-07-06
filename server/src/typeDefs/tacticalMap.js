@@ -13,6 +13,8 @@ const schema = gql`
 
     layers: [TacticalLayer]
     frozen: Boolean
+
+    interval: Float
   }
 
   type TacticalLayer {
@@ -224,6 +226,11 @@ const schema = gql`
       """
       viewscreenId: ID
     ): String
+
+    """
+    Macro: Tactical Map: Add Tactical Maps to Flight
+    """
+    addTacticalMapsToFlight(mapIds: [ID!]!): String
   }
   extend type Subscription {
     tacticalMapsUpdate(flightId: ID): [TacticalMap]

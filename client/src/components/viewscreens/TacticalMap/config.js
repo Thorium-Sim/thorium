@@ -64,9 +64,21 @@ class TacticalMapConfig extends Component {
       .then(res => this.selectFlightTactical(res.data.loadTacticalMap));
   };
   render() {
-    const { tacticalData } = this.props;
+    let { tacticalData, inputTacticalMaps } = this.props;
+    let tacticalMaps = [];
     if (tacticalData.loading || !tacticalData.tacticalMaps) return null;
-    const { tacticalMaps } = this.props.tacticalData;
+    if (inputTacticalMaps) {
+      tacticalMaps = inputTacticalMaps
+        .map(id => {
+          return {
+            ...this.props.tacticalData.tacticalMaps.find(t => t.id === id),
+            input: true
+          };
+        })
+        .filter(({ id }) => id);
+    } else {
+      tacticalMaps = this.props.tacticalData.tacticalMaps;
+    }
     const { tacticalMapId } = this.state;
     const data = JSON.parse(this.props.data);
     const flightTacticalId = data.tacticalMapId;
@@ -84,23 +96,27 @@ class TacticalMapConfig extends Component {
             })
           }
         />
-        <p>Saved Maps</p>
-        <ul className="saved-list">
-          {tacticalMaps
-            .filter(t => t.template)
-            .map(t => (
-              <li
-                key={t.id}
-                className={t.id === tacticalMapId ? "selected" : ""}
-                onClick={() => this.selectTactical(t.id)}
-              >
-                {t.name}
-              </li>
-            ))}
-        </ul>
-        <Button color="primary" size="sm" onClick={this.loadTactical}>
-          Load Tactical
-        </Button>
+        {!this.props.inputTacticalMaps && (
+          <>
+            <p>Saved Maps</p>
+            <ul className="saved-list">
+              {tacticalMaps
+                .filter(t => t.template)
+                .map(t => (
+                  <li
+                    key={t.id}
+                    className={t.id === tacticalMapId ? "selected" : ""}
+                    onClick={() => this.selectTactical(t.id)}
+                  >
+                    {t.name}
+                  </li>
+                ))}
+            </ul>
+            <Button color="primary" size="sm" onClick={this.loadTactical}>
+              Load Tactical
+            </Button>
+          </>
+        )}
         <div>
           <p>Flight Maps</p>
           {flightTacticalId && (
@@ -118,7 +134,10 @@ class TacticalMapConfig extends Component {
           )}
           <ul className="saved-list">
             {tacticalMaps
-              .filter(t => t.flight && t.flight.id === this.props.flightId)
+              .filter(
+                t =>
+                  t.input || (t.flight && t.flight.id === this.props.flightId)
+              )
               .map(t => (
                 <li
                   key={t.id}

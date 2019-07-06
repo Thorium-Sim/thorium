@@ -7,6 +7,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import { titleCase } from "change-case";
 import { getProbeConfig } from "../ProbeScience/probeScience";
 import "./style.scss";
+import ScanPresets from "../Sensors/ScanPresets";
 
 const fragment = gql`
   fragment ProbeControlData on Probes {
@@ -214,6 +215,9 @@ class ProbeControl extends Component {
                   <Button size="sm" onClick={this.response}>
                     Send Response
                   </Button>
+                  <ScanPresets
+                    onChange={e => this.setState({ responseString: e })}
+                  />
                   <Button size="sm" color="danger" onClick={this.destroyProbe}>
                     Destroy
                   </Button>

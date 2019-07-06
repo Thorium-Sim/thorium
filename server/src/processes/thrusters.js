@@ -110,7 +110,6 @@ const updateThrusters = () => {
             mapIds.includes(t.id)
         )
         .forEach(map => {
-          let mapUpdate = false;
           map.layers
             .filter(l => l.type === "objects")
             .forEach(layer => {
@@ -124,7 +123,6 @@ const updateThrusters = () => {
                   if (rotation !== 0) {
                     item.rotation += rotation;
                     updateNeeded = true;
-                    mapUpdate = true;
                   }
                 }
                 if (item.thrusterControls.rotation === "pitch") {
@@ -135,7 +133,6 @@ const updateThrusters = () => {
                   if (rotation !== 0) {
                     item.rotation += rotation;
                     updateNeeded = true;
-                    mapUpdate = true;
                   }
                 }
                 if (item.thrusterControls.rotation === "roll") {
@@ -146,7 +143,6 @@ const updateThrusters = () => {
                   if (rotation !== 0) {
                     item.rotation += rotation;
                     updateNeeded = true;
-                    mapUpdate = true;
                   }
                 }
                 // Movement
@@ -179,7 +175,6 @@ const updateThrusters = () => {
                 };
                 if (movement.x || movement.y) {
                   updateNeeded = true;
-                  mapUpdate = true;
                 }
                 // If we are honoring the rotation, rotate the movement around
                 // the rotation axis
@@ -197,7 +192,6 @@ const updateThrusters = () => {
                 }
               });
             });
-          if (mapUpdate) pubsub.publish("tacticalMapUpdate", map);
         });
     }
   });
