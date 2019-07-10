@@ -82,11 +82,10 @@ const Objects = ({
       );
     }
   };
-  const preContacts = React.useMemo(
+  const contacts = React.useMemo(
     () => items.map(i => ({ ...i, position: i.location })),
     [items]
   );
-  const contacts = useInterpolate(preContacts, interval);
   return (
     <div
       className="tactical-objects"
@@ -99,6 +98,7 @@ const Objects = ({
             key={i.id}
             layerId={id}
             {...i}
+            interval={interval}
             core={core}
             moveMultiple={selected.length ? moveMultiple : () => {}}
             movement={movements[i.id]}

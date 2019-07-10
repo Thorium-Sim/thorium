@@ -42,7 +42,7 @@ const getContacts = (steps, currentStep, stepId, delay) => {
 };
 export default ({
   id,
-  steps,
+  steps = [],
   currentStep,
   updateArgs,
   args,

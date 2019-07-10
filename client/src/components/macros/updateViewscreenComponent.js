@@ -50,7 +50,7 @@ const parseActions = ({ timelineItems }) => {
   return timelineItems.map(t => ({ ...t, args: JSON.parse(t.args) }));
 };
 
-export default ({ updateArgs, args, clients, steps }) => {
+export default ({ updateArgs, args, clients, steps = [] }) => {
   const tacticalMaps = steps
     .reduce((acc, step) => {
       const actions = parseActions(step);

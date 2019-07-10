@@ -387,11 +387,14 @@ export default class Simulator {
   }
   hideCard(cardName) {
     const name = lowerCase(camelCase(cardName));
-    const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
+    const cards = this.stations
+      ? this.stations.reduce((acc, s) => acc.concat(s.cards), [])
+      : [];
     cards.forEach(card => {
       if (
-        lowerCase(camelCase(card.name)) === name ||
-        lowerCase(camelCase(card.component)) === name
+        card &&
+        (lowerCase(camelCase(card.name)) === name ||
+          lowerCase(camelCase(card.component)) === name)
       ) {
         card.hide();
       }
@@ -399,11 +402,14 @@ export default class Simulator {
   }
   unhideCard(cardName) {
     const name = lowerCase(camelCase(cardName));
-    const cards = this.stations.reduce((acc, s) => acc.concat(s.cards), []);
+    const cards = this.stations
+      ? this.stations.reduce((acc, s) => acc.concat(s.cards), [])
+      : [];
     cards.forEach(card => {
       if (
-        lowerCase(camelCase(card.name)) === name ||
-        lowerCase(camelCase(card.component)) === name
+        card &&
+        (lowerCase(camelCase(card.name)) === name ||
+          lowerCase(camelCase(card.component)) === name)
       ) {
         card.unhide();
       }

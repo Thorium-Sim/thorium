@@ -81,6 +81,7 @@ export default class TacticalIcon extends Component {
       core,
       rotation,
       opacity,
+      interval,
       movement = { x: 0, y: 0, z: 0 },
       isSelected
     } = this.props;
@@ -91,6 +92,7 @@ export default class TacticalIcon extends Component {
           destination={destination}
           location={location}
           movement={movement}
+          interval={interval}
           size={size}
           objectId={objectId}
           isSelected={isSelected}
@@ -114,6 +116,7 @@ export default class TacticalIcon extends Component {
         location={location}
         movement={movement}
         destination={destination}
+        interval={interval}
         size={size}
         objectId={objectId}
         isSelected={isSelected}
