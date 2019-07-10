@@ -1,7 +1,6 @@
 import React from "react";
 import TacticalIcon from "./TacticalIcon";
 import Selection from "./select";
-import useInterpolate from "../../../CrmFighter/fighterCanvas/useInterpolate";
 import useInterval from "helpers/hooks/useInterval";
 
 const Objects = ({
