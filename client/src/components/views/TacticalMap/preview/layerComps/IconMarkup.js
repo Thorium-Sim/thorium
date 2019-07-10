@@ -18,7 +18,8 @@ const IconMarkup = ({
   rotation,
   opacity,
   core,
-  isSelected
+  isSelected,
+  interval
 }) => {
   if (core) {
     opacity = Math.max(0.5, opacity);
@@ -29,6 +30,7 @@ const IconMarkup = ({
         className={"tactical-icon"}
         key={`icon-location-${id}`}
         style={{
+          transition: `transform ${interval}ms linear`,
           transform: `translate(${location.x * 100}%, ${location.y * 100}%)`,
           opacity: core ? 0.5 : opacity
         }}

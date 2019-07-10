@@ -3,19 +3,13 @@ import * as THREE from "three";
 import { pubsub } from "../helpers/subscriptionManager";
 
 const interval = 1000 / 5;
-
-function distance3d(coord2, coord1) {
-  const { x: x1, y: y1, z: z1 = 0 } = coord1;
-  let { x: x2, y: y2, z: z2 = 0 } = coord2;
-  return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
-}
-
+let lastTime = Date.now();
 const moveContact = (dest, loc, speed, frozen, i) => {
   if (speed > 100) return dest;
   if (speed === 0 || frozen) return loc;
-  if (distance3d(dest, loc) < 0.1) {
-    speed = distance3d(dest, loc) * speed;
-  }
+  // if (distance3d(dest, loc) < 0.01) {
+  //   speed = distance3d(dest, loc) * speed;
+  // }
   const locVec = new THREE.Vector3(loc.x, loc.y, loc.z);
   const destVec = new THREE.Vector3(dest.x, dest.y, dest.z);
   const v = destVec
@@ -23,14 +17,31 @@ const moveContact = (dest, loc, speed, frozen, i) => {
     .normalize()
     .multiplyScalar(speed);
   const newLoc = {
-    x: loc.x + Math.round((v.x / (10000 / i)) * 1000000) / 1000000,
-    y: loc.y + Math.round((v.y / (10000 / i)) * 1000000) / 1000000,
-    z: loc.z + Math.round((v.z / (10000 / i)) * 1000000) / 1000000
+    x: loc.x + v.x / (10000 / i),
+    y: loc.y + v.y / (10000 / i),
+    z: loc.z + v.z / (10000 / i)
   };
+  if (
+    (loc.x > dest.x && dest.x > newLoc.x) ||
+    (loc.x < dest.x && dest.x < newLoc.x)
+  )
+    newLoc.x = dest.x;
+  if (
+    (loc.y > dest.y && dest.y > newLoc.y) ||
+    (loc.y < dest.y && dest.y < newLoc.y)
+  )
+    newLoc.y = dest.y;
+  if (
+    (loc.z > dest.z && dest.z > newLoc.z) ||
+    (loc.z < dest.z && dest.z < newLoc.z)
+  )
+    newLoc.z = dest.z;
   return newLoc;
 };
 
 const moveTacticalMap = () => {
+  const delta = Date.now() - lastTime;
+  lastTime = Date.now();
   App.tacticalMaps.forEach(m => {
     m.layers.forEach(l => {
       l.items.forEach(i => {
@@ -40,7 +51,7 @@ const moveTacticalMap = () => {
             i.location,
             i.speed,
             m.frozen,
-            interval
+            delta
           )
         });
       });
