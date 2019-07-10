@@ -1,3 +1,21 @@
+# [1.17.0](https://github.com/Thorium-Sim/thorium/compare/1.16.0...1.17.0) (2019-07-06)
+
+
+### Bug Fixes
+
+* **Sensors:** Clearing sensors no longer clears the particle detector. Closes [#2404](https://github.com/Thorium-Sim/thorium/issues/2404) ([e7866e1](https://github.com/Thorium-Sim/thorium/commit/e7866e1))
+
+
+### Features
+
+* **Flight:** Add macros for pausing and resuming flights. Closes [#2406](https://github.com/Thorium-Sim/thorium/issues/2406) ([21f91a7](https://github.com/Thorium-Sim/thorium/commit/21f91a7))
+* **Probes:** Adds the basic preset scan answers to the probe query response core. Closes [#2361](https://github.com/Thorium-Sim/thorium/issues/2361) ([968bb21](https://github.com/Thorium-Sim/thorium/commit/968bb21))
+* **Sensors:** Planet, border, and ping settings are now saved and retained. ([b5ccda9](https://github.com/Thorium-Sim/thorium/commit/b5ccda9))
+* **Tactical Maps:** Adds a new "Add Tactical Maps to Flight" macro which allows you to pre-add maps to your flight. This also allows support for selecting a tactical map from the 'Change Viewscreen Card' macro. Try to avoid using the "Viewscreen: Show Tactical Map" macro from now on. Closes [#2387](https://github.com/Thorium-Sim/thorium/issues/2387) ([1b77e66](https://github.com/Thorium-Sim/thorium/commit/1b77e66))
+* **Tactical Maps:** Objects on the tactical map must now be explicitly removed by selecting them and clicking the 'Remove Item' button. ([e5a7da9](https://github.com/Thorium-Sim/thorium/commit/e5a7da9))
+* **Tactical Maps:** Tactical map animation is now much smoother and more consistent. ([255ba0e](https://github.com/Thorium-Sim/thorium/commit/255ba0e))
+* **Triggers:** Add a trigger for probe processed data. Closes [#2358](https://github.com/Thorium-Sim/thorium/issues/2358) ([c971012](https://github.com/Thorium-Sim/thorium/commit/c971012))
+
 # [1.16.0](https://github.com/Thorium-Sim/thorium/compare/1.15.0...1.16.0) (2019-07-04)
 
 
