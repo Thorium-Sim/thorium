@@ -402,17 +402,19 @@ App.on(
 );
 App.on("hideSimulatorCard", ({ simulatorId, cardName, delay }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
+  if (!sim) return;
   sim.hideCard(cardName);
-  if (parseInt(delay, 10)) {
+  if (!isNaN(parseInt(delay, 10))) {
     setTimeout(() => {
       sim.unhideCard(cardName);
       pubsub.publish("simulatorsUpdate", App.simulators);
-    }, delay);
+    }, parseInt(delay, 10));
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on("unhideSimulatorCard", ({ simulatorId, cardName }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
+  if (!sim) return sim;
   sim.unhideCard(cardName);
 
   pubsub.publish("simulatorsUpdate", App.simulators);
