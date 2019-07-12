@@ -8,7 +8,9 @@ export default class Shield extends System {
     this.name = params.name || "Full";
     this.displayName =
       params.displayName ||
-      (this.name === "Full" ? "Shields" : this.name + " Shields");
+      (this.name === "Full" || this.name === "Shields"
+        ? "Shields"
+        : this.name + " Shields");
     // One of '0,1,2,3,4,5,6'
     this.position = params.position || 0;
     this.frequency = params.frequency || 260.5;

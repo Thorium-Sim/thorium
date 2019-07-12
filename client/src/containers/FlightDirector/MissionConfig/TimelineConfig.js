@@ -608,7 +608,10 @@ export default class TimelineConfig extends Component {
             return (
               <Col sm="6" key={item.id}>
                 <EventName id={item.event} />{" "}
-                <Card className="scroll" style={{ maxHeight: "75vh" }}>
+                <Card
+                  className="scroll"
+                  style={{ overflowY: "auto", maxHeight: "75vh" }}
+                >
                   <CardBody>
                     <FormGroup>
                       <Label>Item Delay (in milliseconds)</Label>

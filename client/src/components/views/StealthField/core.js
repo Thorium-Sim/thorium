@@ -42,7 +42,7 @@ class StealthFieldCore extends Component {
     clearTimeout(this.timeout);
   }
   systemName(sys) {
-    if (sys.type === "Shield") {
+    if (sys.type === "Shield" && sys.name !== "Shields") {
       return `${sys.name} Shields`;
     }
     return sys.displayName || sys.name;

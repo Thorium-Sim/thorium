@@ -84,7 +84,7 @@ class DamageReportCore extends Component {
     return obj;
   }
   systemName(sys) {
-    if (sys.type === "Shield") {
+    if (sys.type === "Shield" && sys.name !== "Shields") {
       return `${sys.name} Shields`;
     }
     return sys.displayName || sys.name;

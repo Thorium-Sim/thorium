@@ -1,3 +1,12 @@
+## [1.17.1](https://github.com/Thorium-Sim/thorium/compare/1.17.0...1.17.1) (2019-07-10)
+
+
+### Bug Fixes
+
+* **Hide Card:** Fixes some possible problems with hiding cards. Closes [#2409](https://github.com/Thorium-Sim/thorium/issues/2409) ([e246a12](https://github.com/Thorium-Sim/thorium/commit/e246a12))
+* **Macros:** Fixes an issue where updating viewscreen macros crashes. Closes [#2419](https://github.com/Thorium-Sim/thorium/issues/2419). Closes [#2412](https://github.com/Thorium-Sim/thorium/issues/2412) ([e648f95](https://github.com/Thorium-Sim/thorium/commit/e648f95))
+* **Tactical Map:** Improves the animation of the tactical map. Closes [#2415](https://github.com/Thorium-Sim/thorium/issues/2415). Closes [#2416](https://github.com/Thorium-Sim/thorium/issues/2416). ([7876d82](https://github.com/Thorium-Sim/thorium/commit/7876d82))
+
 # [1.17.0](https://github.com/Thorium-Sim/thorium/compare/1.16.0...1.17.0) (2019-07-06)
 
 

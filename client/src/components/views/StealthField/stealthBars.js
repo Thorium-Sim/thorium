@@ -4,7 +4,7 @@ import Transitioner from "../helpers/transitioner";
 
 export default class StealthBars extends Transitioner {
   systemName(sys) {
-    if (sys.type === "Shield") {
+    if (sys.type === "Shield" && sys.name !== "Shields") {
       return `${sys.name} Shields`;
     }
 

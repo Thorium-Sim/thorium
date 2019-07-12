@@ -7,33 +7,36 @@ function randomFromList(list) {
   return list[index];
 }
 
-const ScanPresets = ({ onChange, domain, ...props }) => {
-  const handleChange = evt => {
-    let dataField = evt.target.value;
-    if (dataField === "omnicourse") {
-      dataField = `Course Calculated:
+const ScanPresets = ({ onChange = () => {}, domain, ...props }) => {
+  const handleChange = React.useCallback(
+    evt => {
+      let dataField = evt.target.value;
+      if (dataField === "omnicourse") {
+        dataField = `Course Calculated:
       X: ${Math.round(Math.random() * 100000) / 100}
       Y: ${Math.round(Math.random() * 100000) / 100}
       Z: ${Math.round(Math.random() * 100000) / 100}`;
-    }
-    if (dataField === "weakness") {
-      dataField = `Fault in ${randomFromList([
-        "engines",
-        "shields",
-        "weapons",
-        "hull",
-        "sensors",
-        "communications",
-        "tractor beam"
-      ])} detected.`;
-    }
-    if (dataField === "thrusterdodge") {
-      dataField = `Incoming weapons detected. Recommend firing ${randomFromList(
-        ["port", "starboard", "forward", "reverse", "up", "down"]
-      )} thrusters to dodge.`;
-    }
-    onChange(dataField);
-  };
+      }
+      if (dataField === "weakness") {
+        dataField = `Fault in ${randomFromList([
+          "engines",
+          "shields",
+          "weapons",
+          "hull",
+          "sensors",
+          "communications",
+          "tractor beam"
+        ])} detected.`;
+      }
+      if (dataField === "thrusterdodge") {
+        dataField = `Incoming weapons detected. Recommend firing ${randomFromList(
+          ["port", "starboard", "forward", "reverse", "up", "down"]
+        )} thrusters to dodge.`;
+      }
+      onChange(dataField);
+    },
+    [onChange]
+  );
   React.useEffect(() => {
     const keypress = evt => {
       if (evt.altKey) {
@@ -41,14 +44,16 @@ const ScanPresets = ({ onChange, domain, ...props }) => {
         const index = parseInt(evt.code.substr(-1, 1), 10);
         if (!isNaN(index)) {
           const data =
-            index === 0 ? ScanPresets()[10] : ScanPresets()[index - 1];
-          this.scanPreset({ target: { value: data.value } });
+            index === 0
+              ? getPresetOptions(domain)[10]
+              : getPresetOptions(domain)[index - 1];
+          handleChange({ target: { value: data.value } });
         }
       }
     };
     document.addEventListener("keydown", keypress);
     return () => document.removeEventListener("keydown", keypress);
-  }, []);
+  }, [domain, handleChange]);
 
   return (
     <select value={"answers"} onChange={handleChange} {...props}>
