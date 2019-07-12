@@ -135,7 +135,7 @@ const ActionConfig = ({ id, event, delay, args, updateAction }) => {
   return (
     <Fragment>
       <EventName id={event} />{" "}
-      <Card className="scroll" style={{ maxHeight: "75vh" }}>
+      <Card className="scroll" style={{ overflowY: "auto", maxHeight: "75vh" }}>
         <CardBody>
           <FormGroup>
             <Label>Item Delay (in milliseconds)</Label>
