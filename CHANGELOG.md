@@ -1,3 +1,12 @@
+## [1.17.2](https://github.com/Thorium-Sim/thorium/compare/1.17.1...1.17.2) (2019-07-12)
+
+
+### Bug Fixes
+
+* **Macros:** Fixes an issue where you can't scroll to configure macros. Closes [#2428](https://github.com/Thorium-Sim/thorium/issues/2428) ([02c0fdd](https://github.com/Thorium-Sim/thorium/commit/02c0fdd))
+* **Sensor Scans:** Fixes the alt-key scan preset hotkey. Closes [#2426](https://github.com/Thorium-Sim/thorium/issues/2426) ([b9f7fca](https://github.com/Thorium-Sim/thorium/commit/b9f7fca))
+* **Shields:** Standardizes the way that single shields are labelled. Closes [#2403](https://github.com/Thorium-Sim/thorium/issues/2403) ([c0164e0](https://github.com/Thorium-Sim/thorium/commit/c0164e0))
+
 ## [1.17.1](https://github.com/Thorium-Sim/thorium/compare/1.17.0...1.17.1) (2019-07-10)
 
 
