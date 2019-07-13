@@ -27,5 +27,27 @@ const RunningCheck = ({ flight }) =>
         )}
       </Mutation>
     </Fragment>
-  ) : null;
+  ) : (
+    <Fragment>
+      <Mutation
+        mutation={gql`
+          mutation ResumeFlight($flightId: ID!) {
+            pauseFlight(flightId: $flightId)
+          }
+        `}
+        variables={{ flightId: flight.id }}
+      >
+        {action => (
+          <Button
+            className="pause-flight"
+            color="warning"
+            size="sm"
+            onClick={action}
+          >
+            Pause Flight
+          </Button>
+        )}
+      </Mutation>
+    </Fragment>
+  );
 export default RunningCheck;
