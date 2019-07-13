@@ -42,7 +42,7 @@ const Flyer = ({ station: { name, token, userId }, simulator, loginName }) => {
         flight on the following simulator and station:
       </p>
       <h2>
-        {simulator.name}: {name}
+        {simulator && simulator.name}: {name}
       </h2>
       <p>
         Add this flight to your rank by going to{" "}
@@ -266,54 +266,60 @@ This can only be done once per flight and should only be done when the flight is
               <tbody>
                 {flight.clients
                   .map(c => clients.find(cc => cc.id === c.id) || c)
-                  .map(c => (
-                    <tr key={c.id}>
-                      <td>{c.id}</td>
-                      <td>{c.name || c.station.name}</td>
-                      <td>{c.token}</td>
-                      <td>{c.email ? "✅" : "🚫"}</td>
-                      <td>
-                        <Mutation
-                          mutation={gql`
-                            mutation RemoveClient(
-                              $flightId: ID!
-                              $clientId: ID!
-                            ) {
-                              removeSpaceEdventuresClient(
-                                flightId: $flightId
-                                clientId: $clientId
-                              )
-                            }
-                          `}
-                          variables={{ flightId, clientId: c.id }}
-                          refetchQueries={[
-                            {
-                              query: FLIGHT_QUERY,
-                              variables: { flightId, simulatorId: simulator.id }
-                            }
-                          ]}
-                        >
-                          {action => (
-                            <Button
-                              size="sm"
-                              color="danger"
-                              onClick={() => {
-                                if (
-                                  window.confirm(
-                                    "Are you sure you want to remove this client? To add it back, log out of the client and then log back in."
-                                  )
+                  .map(
+                    c =>
+                      c && (
+                        <tr key={c.id}>
+                          <td>{c.id}</td>
+                          <td>{c.name || (c.station && c.station.name)}</td>
+                          <td>{c.token}</td>
+                          <td>{c.email ? "✅" : "🚫"}</td>
+                          <td>
+                            <Mutation
+                              mutation={gql`
+                                mutation RemoveClient(
+                                  $flightId: ID!
+                                  $clientId: ID!
                                 ) {
-                                  action();
+                                  removeSpaceEdventuresClient(
+                                    flightId: $flightId
+                                    clientId: $clientId
+                                  )
                                 }
-                              }}
+                              `}
+                              variables={{ flightId, clientId: c.id }}
+                              refetchQueries={[
+                                {
+                                  query: FLIGHT_QUERY,
+                                  variables: {
+                                    flightId,
+                                    simulatorId: simulator.id
+                                  }
+                                }
+                              ]}
                             >
-                              Remove
-                            </Button>
-                          )}
-                        </Mutation>
-                      </td>
-                    </tr>
-                  ))}
+                              {action => (
+                                <Button
+                                  size="sm"
+                                  color="danger"
+                                  onClick={() => {
+                                    if (
+                                      window.confirm(
+                                        "Are you sure you want to remove this client? To add it back, log out of the client and then log back in."
+                                      )
+                                    ) {
+                                      action();
+                                    }
+                                  }}
+                                >
+                                  Remove
+                                </Button>
+                              )}
+                            </Mutation>
+                          </td>
+                        </tr>
+                      )
+                  )}
               </tbody>
             </Table>
             <p>
