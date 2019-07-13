@@ -18,6 +18,7 @@ class IssueTracker extends Component {
     e.preventDefault();
     if (!this.state.type) return;
     if (!this.state.priority) return;
+    if (this.state.uploading) return;
     const mutation = gql`
       mutation IssueTracker(
         $title: String!
@@ -193,7 +194,11 @@ ${this.state.reproduce}`
               </label>
             )}
             <div className="form-group submit-button">
-              <button className="btn btn-sm btn-primary" type="submit">
+              <button
+                disabled={this.state.uploading}
+                className="btn btn-sm btn-primary"
+                type="submit"
+              >
                 Submit
               </button>
             </div>
