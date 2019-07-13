@@ -6,7 +6,6 @@ import tinycolor from "tinycolor2";
 import gql from "graphql-tag.macro";
 import { TypingField } from "../../../generic/core";
 import Nudge from "./nudge";
-import useLocalStorage from "helpers/hooks/useLocalStorage";
 import useFlightLocalStorage from "../../../../helpers/hooks/useFlightLocalStorage";
 
 function useOnClickOutside(ref, handler) {

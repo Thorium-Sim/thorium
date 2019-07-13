@@ -7,14 +7,9 @@ export default function useFlightLocalStorage(flightId, key, initialValue) {
 
   const [storedValue, setStoredValue] = React.useState(() => {
     const item = flightItem[key];
-    try {
-      // Get from local storage by key
-      // Parse stored json or if none return initialValue
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      return item;
-    }
+    return item || initialValue;
   });
+  console.log(storedValue);
 
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
