@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import gql from "graphql-tag.macro";
-import { Query, withApollo } from "react-apollo";
+import { withApollo } from "react-apollo";
 import Preview from "components/views/TacticalMap/preview";
-//import { Asset } from "helpers/assets";
-import SubscriptionHelper from "helpers/subscriptionHelper";
-
+import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
+import { useQuery } from "@apollo/react-hooks";
 //import "./style.scss";
 
 const fragment = gql`
@@ -208,48 +207,43 @@ class TacticalMapViewscreen extends Component {
   }
 }
 
-class TacticalMapViewscreenData extends Component {
-  state = {
-    tacticalMapId: null,
-    layerId: null,
-    objectId: null,
-    layers: {}
-  };
-
-  render() {
-    const data = JSON.parse(this.props.viewscreen.data);
-    const { tacticalMapId } = data;
-    if (!tacticalMapId) return null;
-    return (
-      <Query query={TACTICALMAP_QUERY} variables={{ id: tacticalMapId }}>
-        {({ loading, data: { tacticalMap }, subscribeToMore }) => (
-          <SubscriptionHelper
-            subscribe={() =>
-              subscribeToMore({
-                document: TACTICALMAP_SUB,
-                variables: {
-                  id: tacticalMapId
-                },
-                updateQuery: (previousResult, { subscriptionData }) => {
-                  return Object.assign({}, previousResult, {
-                    tacticalMap: subscriptionData.data.tacticalMapUpdate
-                  });
-                }
-              })
-            }
-          >
-            {tacticalMap && (
-              <TacticalMapViewscreen
-                {...this.props}
-                tacticalMap={tacticalMap}
-                tacticalMapId={tacticalMapId}
-              />
-            )}
-          </SubscriptionHelper>
-        )}
-      </Query>
-    );
-  }
-}
+const TacticalMapViewscreenData = props => {
+  const { tacticalMapId } = JSON.parse(props.viewscreen.data);
+  const { loading, data, subscribeToMore } = useQuery(TACTICALMAP_QUERY, {
+    skip: !tacticalMapId,
+    variables: { id: tacticalMapId }
+  });
+  const config = React.useMemo(
+    () => ({
+      variables: {
+        id: tacticalMapId,
+        lowInterval: props.core
+      },
+      updateQuery: (previousResult, { subscriptionData }) => {
+        if (!subscriptionData.data) return previousResult;
+        return Object.assign({}, previousResult, {
+          tacticalMap: subscriptionData.data.tacticalMapUpdate
+        });
+      }
+    }),
+    [tacticalMapId, props.core]
+  );
+  useSubscribeToMore(
+    subscribeToMore,
+    TACTICALMAP_SUB,
+    config
+    // props.core && props.preview
+  );
+  if (loading || !data) return null;
+  const { tacticalMap } = data;
+  if (!tacticalMap) return null;
+  return (
+    <TacticalMapViewscreen
+      {...props}
+      tacticalMap={tacticalMap}
+      tacticalMapId={tacticalMapId}
+    />
+  );
+};
 
 export default withApollo(TacticalMapViewscreenData);

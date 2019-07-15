@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "production") {
     }
   });
 } else {
-  window.addEventListener("error", function(e) {
-    console.error(e);
-  });
+  // window.addEventListener("error", function(e) {
+  //  // console.error(e);
+  // });
 }

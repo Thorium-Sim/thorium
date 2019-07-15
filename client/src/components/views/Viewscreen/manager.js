@@ -263,6 +263,7 @@ class ViewscreenManager extends Component {
               flightId={this.props.flightId}
               viewscreen={{ data: configData }}
               core
+              preview
             />
           )}
         </div>

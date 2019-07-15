@@ -1,14 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import gql from "graphql-tag.macro";
 import { Container } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import SubscriptionHelper from "helpers/subscriptionHelper";
 import { graphql, withApollo } from "react-apollo";
 import ProbeEquipment from "./probeEquipment";
 import DamageOverlay from "../helpers/DamageOverlay";
 import ProbeDescription from "./probeDescription";
 import ProbeAction from "./probeAction";
 import ProbeSelector from "./probeSelector";
+import useFlightLocalStorage from "../../../helpers/hooks/useFlightLocalStorage";
+import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
+import { useQuery } from "@apollo/react-hooks";
 import "./style.scss";
 
 const fragment = gql`
@@ -75,31 +77,59 @@ const PROBES_QUERY = gql`
   ${fragment}
 `;
 
-class ProbeConstruction extends Component {
-  state = {
-    selectedProbeType: null,
-    launching: false,
-    description: null,
-    equipment: [],
-    modal: false
-  };
+const ProbeConstruction = ({
+  simulator,
+  clientObj,
+  flight: { id: flightId },
+  client
+}) => {
+  const { loading, data, subscribeToMore } = useQuery(PROBES_QUERY, {
+    variables: {
+      simulatorId: simulator.id
+    }
+  });
+  const config = React.useMemo(
+    () => ({
+      variables: { simulatorId: simulator.id },
+      updateQuery: (previousResult, { subscriptionData }) => {
+        return Object.assign({}, previousResult, {
+          probes: subscriptionData.data.probesUpdate
+        });
+      }
+    }),
+    [simulator.id]
+  );
+  useSubscribeToMore(subscribeToMore, PROBES_SUB, config);
 
-  selectProbe(id) {
-    this.setState({
-      selectedProbeType: id,
-      launching: false,
-      equipment: id === null ? [] : this.state.equipment
-    });
+  const probes = data && data.probes ? data.probes[0] : null;
+
+  const [selectedProbeType, setSelectedProbeType] = useFlightLocalStorage(
+    flightId,
+    "probe_construction_probe_type",
+    null
+  );
+  const [launching, setLaunching] = useFlightLocalStorage(
+    flightId,
+    "probe_construction_launching",
+    false
+  );
+  const [equipment, setEquipment] = useFlightLocalStorage(
+    flightId,
+    "probe_construction_equipment",
+    []
+  );
+  const [description, setDescription] = React.useState(null);
+  const [modal, setModal] = React.useState(false);
+  function selectProbe(id) {
+    setSelectedProbeType(id);
+    setLaunching(false);
+    setEquipment(eq => (id === null ? [] : eq));
   }
-  prepareProbe(equipment) {
-    this.setState({
-      equipment,
-      launching: true
-    });
+  function prepareProbe(equipment) {
+    setEquipment(equipment);
+    setLaunching(true);
   }
-  launchProbe = name => {
-    const probes = this.props.data.probes[0];
-    const { selectedProbeType, equipment } = this.state;
+  const launchProbe = name => {
     const mutation = gql`
       mutation LaunchProbe($id: ID!, $probe: ProbeInput!) {
         launchProbe(id: $id, probe: $probe)
@@ -116,19 +146,16 @@ class ProbeConstruction extends Component {
         }))
       }
     };
-    this.props.client.mutate({
+    client.mutate({
       mutation,
       variables
     });
-    this.setState({
-      selectedProbeType: null,
-      launching: false,
-      equipment: [],
-      modal: false
-    });
+    setSelectedProbeType(null);
+    setLaunching(false);
+    setEquipment([]);
+    setModal(false);
   };
-  trainingSteps = () => {
-    const probes = this.props.data.probes && this.props.data.probes[0];
+  const trainingSteps = () => {
     return [
       {
         selector: ".nothing",
@@ -172,76 +199,62 @@ class ProbeConstruction extends Component {
       }
     ];
   };
-  render() {
-    if (this.props.data.loading || !this.props.data.probes) return null;
-    const probes = this.props.data.probes && this.props.data.probes[0];
-    const { selectedProbeType, launching } = this.state;
-    if (!probes) return <p>No Probe Launcher</p>;
-    const comps = { ProbeDescription, ProbeEquipment, ProbeAction };
-    return (
-      <Container fluid className="probe-construction">
-        <SubscriptionHelper
-          subscribe={() =>
-            this.props.data.subscribeToMore({
-              document: PROBES_SUB,
-              variables: { simulatorId: this.props.simulator.id },
-              updateQuery: (previousResult, { subscriptionData }) => {
-                return Object.assign({}, previousResult, {
-                  probes: subscriptionData.data.probesUpdate
-                });
-              }
-            })
+  if (loading) return null;
+  if (!probes) return <p>No Probe Launcher</p>;
+  const comps = { ProbeDescription, ProbeEquipment, ProbeAction };
+  return (
+    <Container fluid className="probe-construction">
+      <DamageOverlay
+        system={probes}
+        message={"Probe Launcher Offline"}
+        style={{ height: "50vh" }}
+      />
+      <ProbeSelector
+        types={probes.types}
+        selectedProbeType={selectedProbeType}
+        setDescription={e => setDescription(e)}
+        selectProbe={selectProbe}
+        launching={launching}
+      />
+      {Object.keys(comps)
+        .filter(compName => {
+          if (compName === "ProbeDescription" && !selectedProbeType) {
+            return true;
           }
-        />
-        <DamageOverlay
-          system={probes}
-          message={"Probe Launcher Offline"}
-          style={{ height: "50vh" }}
-        />
-        <ProbeSelector
-          types={probes.types}
-          selectedProbeType={selectedProbeType}
-          setDescription={e => this.setState({ description: e })}
-          selectProbe={this.selectProbe.bind(this)}
-          launching={launching}
-        />
-        {Object.keys(comps)
-          .filter(compName => {
-            if (compName === "ProbeDescription" && !selectedProbeType) {
-              return true;
-            }
-            if (
-              compName === "ProbeEquipment" &&
-              selectedProbeType &&
-              !launching
-            ) {
-              return true;
-            }
-            if (compName === "ProbeAction" && selectedProbeType && launching) {
-              return true;
-            }
-            return false;
-          })
-          .map(compName => {
-            const Comp = comps[compName];
-            return (
-              <Comp
-                key={compName}
-                {...this.state}
-                cancelProbe={this.selectProbe.bind(this, null)}
-                prepareProbe={this.prepareProbe.bind(this)}
-                selectProbe={this.selectProbe.bind(this)}
-                equipment={this.state.equipment}
-                launchProbe={this.launchProbe}
-                probes={probes}
-              />
-            );
-          })}
-        <Tour steps={this.trainingSteps()} client={this.props.clientObj} />
-      </Container>
-    );
-  }
-}
+          if (
+            compName === "ProbeEquipment" &&
+            selectedProbeType &&
+            !launching
+          ) {
+            return true;
+          }
+          if (compName === "ProbeAction" && selectedProbeType && launching) {
+            return true;
+          }
+          return false;
+        })
+        .map(compName => {
+          const Comp = comps[compName];
+          return (
+            <Comp
+              key={compName}
+              selectedProbeType={selectedProbeType}
+              launching={launching}
+              equipment={equipment}
+              description={description}
+              modal={modal}
+              cancelProbe={() => selectProbe(null)}
+              prepareProbe={prepareProbe}
+              selectProbe={selectProbe}
+              launchProbe={launchProbe}
+              probes={probes}
+            />
+          );
+        })}
+      <Tour steps={trainingSteps()} client={clientObj} />
+    </Container>
+  );
+};
 
 export default graphql(PROBES_QUERY, {
   options: ownProps => ({

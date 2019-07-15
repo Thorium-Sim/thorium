@@ -6,7 +6,7 @@ import tinycolor from "tinycolor2";
 import gql from "graphql-tag.macro";
 import { TypingField } from "../../../generic/core";
 import Nudge from "./nudge";
-import useLocalStorage from "helpers/hooks/useLocalStorage";
+import useFlightLocalStorage from "../../../../helpers/hooks/useFlightLocalStorage";
 
 function useOnClickOutside(ref, handler) {
   useEffect(
@@ -97,6 +97,7 @@ export const ColorPicker = ({ color, onChangeComplete }) => {
 };
 
 const ExtraControls = ({
+  flightId,
   sensors,
   askForSpeed,
   updateAskForSpeed,
@@ -104,35 +105,46 @@ const ExtraControls = ({
   speed,
   dragStart
 }) => {
-  const [planetSize, setPlanetSize] = useLocalStorage(
+  const [planetSize, setPlanetSize] = useFlightLocalStorage(
+    flightId,
     "core_sensors_planetSize",
     1
   );
-  const [planetColor, setPlanetColor] = useLocalStorage(
+  const [planetColor, setPlanetColor] = useFlightLocalStorage(
+    flightId,
     "core_sensors_planetColor",
     "#663399"
   );
-  const [planetLabel, setPlanetLabel] = useLocalStorage(
+  const [planetLabel, setPlanetLabel] = useFlightLocalStorage(
+    flightId,
     "core_sensors_planetLabel",
     ""
   );
-  const [borderColor, setBorderColor] = useLocalStorage(
+  const [borderColor, setBorderColor] = useFlightLocalStorage(
+    flightId,
     "core_sensors_borderColor",
     "#663399"
   );
-  const [borderSize, setBorderSize] = useLocalStorage(
+  const [borderSize, setBorderSize] = useFlightLocalStorage(
+    flightId,
     "core_sensors_borderSize",
     3
   );
-  const [borderLabel, setBorderLabel] = useLocalStorage(
+  const [borderLabel, setBorderLabel] = useFlightLocalStorage(
+    flightId,
     "core_sensors_borderLabel",
     ""
   );
-  const [pingColor, setPingColor] = useLocalStorage(
+  const [pingColor, setPingColor] = useFlightLocalStorage(
+    flightId,
     "core_sensors_pingColor",
     "#663399"
   );
-  const [pingSize, setPingSize] = useLocalStorage("core_sensors_pingSize", 1);
+  const [pingSize, setPingSize] = useFlightLocalStorage(
+    flightId,
+    "core_sensors_pingSize",
+    1
+  );
   const autoTarget = e => {
     const mutation = gql`
       mutation SensorsAutoTarget($id: ID!, $target: Boolean!) {

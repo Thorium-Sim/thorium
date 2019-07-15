@@ -7,11 +7,17 @@ export default function useQueryAndSubscription(query, subscription) {
   return { loading, data, error };
 }
 
-export function useSubscribeToMore(subscribeToMore, subscription, config) {
+export function useSubscribeToMore(
+  subscribeToMore,
+  subscription,
+  config,
+  noSub = false
+) {
   const s2m = React.useCallback(subscribeToMore, []);
 
   React.useEffect(() => {
+    if (noSub) return () => {};
     const sub = s2m({ document: subscription, ...config });
     return () => sub();
-  }, [config, s2m, subscription]);
+  }, [config, noSub, s2m, subscription]);
 }

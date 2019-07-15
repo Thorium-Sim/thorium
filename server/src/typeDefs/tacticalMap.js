@@ -234,7 +234,7 @@ const schema = gql`
   }
   extend type Subscription {
     tacticalMapsUpdate(flightId: ID): [TacticalMap]
-    tacticalMapUpdate(id: ID!): TacticalMap
+    tacticalMapUpdate(id: ID!, lowInterval: Boolean): TacticalMap
   }
 `;
 
@@ -300,7 +300,8 @@ const resolver = {
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("tacticalMapUpdate"),
-        (rootValue, { id }) => {
+        (rootValue, { id, lowInterval }) => {
+          if (lowInterval && Date.now() % 20 > 0) return false;
           return id === rootValue.id;
         }
       )

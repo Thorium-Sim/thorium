@@ -1,18 +1,15 @@
 import React from "react";
 
-export default function useLocalStorage(key, initialValue) {
-  // State to store our value
-  // Pass initial state function to useState so logic is only executed once
+export default function useFlightLocalStorage(flightId, key, initialValue) {
+  const flightItem = window.localStorage.getItem(flightId)
+    ? JSON.parse(window.localStorage.getItem(flightId))
+    : {};
+
   const [storedValue, setStoredValue] = React.useState(() => {
-    const item = window.localStorage.getItem(key);
-    try {
-      // Get from local storage by key
-      // Parse stored json or if none return initialValue
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      return item;
-    }
+    const item = flightItem[key];
+    return item || initialValue;
   });
+  console.log(storedValue);
 
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.
@@ -24,7 +21,11 @@ export default function useLocalStorage(key, initialValue) {
       // Save state
       setStoredValue(valueToStore);
       // Save to local storage
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      const flightItem = window.localStorage.getItem(flightId)
+        ? JSON.parse(window.localStorage.getItem(flightId))
+        : {};
+      flightItem[key] = valueToStore;
+      window.localStorage.setItem(flightId, JSON.stringify(flightItem));
     } catch (error) {
       // A more advanced implementation would handle the error case
       console.log(error);

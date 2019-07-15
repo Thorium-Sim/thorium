@@ -34,7 +34,8 @@ const GridCore = ({
   defaultSensors = {},
   updateContacts = noOp,
   contacts = [],
-  ultraLite
+  ultraLite,
+  flightId
 }) => {
   const sensors = useSensorsData(simulator.id) || defaultSensors;
   const [deleteContact] = useMutation(DELETE_CONTACT);
@@ -143,6 +144,7 @@ const GridCore = ({
             }}
           >
             <CoreSidebar
+              flightId={flightId}
               dragStart={dragStart}
               sensors={sensors}
               speed={speed}

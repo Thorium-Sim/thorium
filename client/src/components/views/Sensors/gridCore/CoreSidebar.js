@@ -23,6 +23,7 @@ const STOP_CONTACTS = gql`
 `;
 
 export const CoreSidebar = ({
+  flightId,
   sensors,
   speed,
   setSpeed,
@@ -105,6 +106,7 @@ export const CoreSidebar = ({
           </ButtonGroup>
           {currentControl === "extras" && (
             <ExtraControls
+              flightId={flightId}
               sensors={sensors}
               askForSpeed={askForSpeed}
               updateAskForSpeed={e => setAskForSpeed(e)}
