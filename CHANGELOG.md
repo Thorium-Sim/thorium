@@ -1,3 +1,16 @@
+## [1.17.3](https://github.com/Thorium-Sim/thorium/compare/1.17.2...1.17.3) (2019-07-15)
+
+
+### Bug Fixes
+
+* **Computer Core:** Adds scrollbars to the hacker and virus list on the computer core core. Closes [#2445](https://github.com/Thorium-Sim/thorium/issues/2445) ([a10d3c7](https://github.com/Thorium-Sim/thorium/commit/a10d3c7))
+* **Core:** Add a pause button to the core menubar. Closes [#2427](https://github.com/Thorium-Sim/thorium/issues/2427) ([1a2b32e](https://github.com/Thorium-Sim/thorium/commit/1a2b32e))
+* **Issue Tracker:** The issue tracker will now not allow you to submit issues until all uploads are complete. ([4880fe3](https://github.com/Thorium-Sim/thorium/commit/4880fe3))
+* **Probes:** Probe equipment configurations now persist between card changes. Closes [#2433](https://github.com/Thorium-Sim/thorium/issues/2433). Closes [#2431](https://github.com/Thorium-Sim/thorium/issues/2431) ([d75400f](https://github.com/Thorium-Sim/thorium/commit/d75400f))
+* **Sensors:** Persistent changes to planet, border, and ping controls are now scoped to the flight. ([5dca7c7](https://github.com/Thorium-Sim/thorium/commit/5dca7c7))
+* **Space EdVentures:** Fixes an error on the space edventures core. Closes [#2434](https://github.com/Thorium-Sim/thorium/issues/2434). ([392a2dc](https://github.com/Thorium-Sim/thorium/commit/392a2dc))
+* **Tactical Maps:** Switching tactical maps should properly switch every time. Closes [#2432](https://github.com/Thorium-Sim/thorium/issues/2432) ([ab3d33e](https://github.com/Thorium-Sim/thorium/commit/ab3d33e))
+
 ## [1.17.2](https://github.com/Thorium-Sim/thorium/compare/1.17.1...1.17.2) (2019-07-12)
 
 
