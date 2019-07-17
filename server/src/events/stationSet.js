@@ -10,6 +10,14 @@ App.on("createStationSet", ({ id, name, simulatorId }) => {
 });
 App.on("removeStationSet", ({ stationSetID }) => {
   App.stationSets = App.stationSets.filter(s => s.id !== stationSetID);
+  // Also update sets
+  App.sets.forEach(s =>
+    s.clients.forEach(c => {
+      if (c.stationSet === stationSetID) {
+        s.removeClient(c.id);
+      }
+    })
+  );
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
 App.on("renameStationSet", ({ stationSetID, name }) => {
@@ -30,6 +38,14 @@ App.on("addStationToStationSet", ({ stationSetID, stationName }) => {
 App.on("removeStationFromStationSet", ({ stationSetID, stationName }) => {
   const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
   stationSet.removeStation(stationName);
+  // Also update sets
+  App.sets.forEach(s =>
+    s.clients.forEach(c => {
+      if (c.stationSet === stationSetID && c.station === stationName) {
+        s.removeClient(c.id);
+      }
+    })
+  );
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
 App.on(
