@@ -1,3 +1,13 @@
+## [1.17.4](https://github.com/Thorium-Sim/thorium/compare/1.17.3...1.17.4) (2019-07-17)
+
+
+### Bug Fixes
+
+* **Damage Reports:** Fixes an issue with configuring legacy Damage Reports where the damage team type cannot be selected. Closes [#2448](https://github.com/Thorium-Sim/thorium/issues/2448) ([2ca5c7d](https://github.com/Thorium-Sim/thorium/commit/2ca5c7d))
+* **Damage Reports:** Fixes the internal call Legacy Damage Report configuration. Closes [#2447](https://github.com/Thorium-Sim/thorium/issues/2447) ([f74c536](https://github.com/Thorium-Sim/thorium/commit/f74c536))
+* **Damage Reports:** Legacy damage reports no longer assign damage teams that don't have crew. Closes [#2418](https://github.com/Thorium-Sim/thorium/issues/2418) ([1f87ca1](https://github.com/Thorium-Sim/thorium/commit/1f87ca1))
+* **Sets:** When removing stations, all sets also remove the station. Closes [#2449](https://github.com/Thorium-Sim/thorium/issues/2449) ([a09ac2b](https://github.com/Thorium-Sim/thorium/commit/a09ac2b))
+
 ## [1.17.3](https://github.com/Thorium-Sim/thorium/compare/1.17.2...1.17.3) (2019-07-15)
 
 
