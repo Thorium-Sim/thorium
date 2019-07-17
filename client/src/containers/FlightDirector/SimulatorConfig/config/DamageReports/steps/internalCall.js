@@ -13,7 +13,7 @@ export default class InternalCallConfig extends Component {
       this.setState(this.props.args);
     }
   }
-  update = (evt, which) => {
+  update = (evt, which, isCheckbox) => {
     const { simulatorId, systemId, id, client } = this.props;
     const mutation =
       systemId === "simulator"
@@ -36,10 +36,7 @@ export default class InternalCallConfig extends Component {
       step: {
         id,
         args: {
-          [which]:
-            evt.target.checked || evt.target.checked === false
-              ? evt.target.checked
-              : evt.target.value
+          [which]: isCheckbox ? evt.target.checked : evt.target.value
         }
       }
     };
@@ -56,7 +53,7 @@ export default class InternalCallConfig extends Component {
             <Input
               type="checkbox"
               checked={this.props.args.end}
-              onChange={evt => this.update(evt, "end")}
+              onChange={evt => this.update(evt, "end", true)}
             />
           </Label>
         </FormGroup>

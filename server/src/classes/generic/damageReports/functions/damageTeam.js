@@ -36,7 +36,10 @@ Orders: Clean up the mess left from repairing the ${displayName} system.
   }
   const teamType = type
     ? type
-    : randomFromList(damagePositions.filter(p => p !== "Custodian"));
+    : randomFromList(
+        Object.keys(damageTeamCrewCount).filter(p => p !== "Custodian")
+      );
+  if (!teamType) return "";
   const damageText = randomFromList(damageTexts[teamType]);
   return `${preamble ||
     damageText.preamble.replace(
