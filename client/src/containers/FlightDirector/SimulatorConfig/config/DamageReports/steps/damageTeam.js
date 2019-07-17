@@ -2,7 +2,21 @@ import React, { Component } from "react";
 import { Label, Input, FormGroup } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import HashtagDefinition from "helpers/hashtagDefinition";
-
+const damagePositions = [
+  "Computer Specialist",
+  "Custodian",
+  "Quality Assurance",
+  "Electrician",
+  "Explosive Expert",
+  "Fire Control",
+  "General Engineer",
+  "Hazardous Waste Expert",
+  "Maintenance Officer",
+  "Mechanic",
+  "Plumber",
+  "Structural Engineer",
+  "Welder"
+];
 export default class GenericConfig extends Component {
   constructor(props) {
     super(props);
@@ -100,9 +114,18 @@ export default class GenericConfig extends Component {
         <Label>Type</Label>
         <Input
           type="select"
-          value={this.props.args.type}
+          value={this.props.args.type || ""}
           onChange={evt => this.update(evt, "type")}
-        />
+        >
+          <option value="" disabled>
+            Choose one
+          </option>
+          {damagePositions.map(d => (
+            <option key={d} value={d}>
+              {d}
+            </option>
+          ))}
+        </Input>
         <Label>Name</Label>
         <Input
           type="textarea"
