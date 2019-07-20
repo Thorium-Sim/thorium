@@ -22,6 +22,7 @@ const schema = gql`
     instructions: String
     startTime: String
     endTime: String
+    timeElapsedInMS: Int
     macros: [TimelineItem]
     assigned: Boolean
   }

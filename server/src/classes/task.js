@@ -80,6 +80,7 @@ export default class Task {
     // Timing
     this.startTime = new Date();
     this.endTime = null;
+    this.timeElapsedInMS = params.timeElapsedInMS || 0;
 
     // Macros
     this.macros = [];

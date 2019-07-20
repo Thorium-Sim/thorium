@@ -14,6 +14,8 @@ const fragment = gql`
     values
     definition
     verifyRequested
+    timeElapsedInMS
+    station
   }
 `;
 
@@ -42,7 +44,7 @@ class TasksData extends Component {
         query={QUERY}
         variables={{
           simulatorId: this.props.simulator.id,
-          station: this.props.station.name
+          station: this.props.station.executive ? null : this.props.station.name
         }}
       >
         {({ loading, data, subscribeToMore }) => {
@@ -55,7 +57,9 @@ class TasksData extends Component {
                   document: SUBSCRIPTION,
                   variables: {
                     simulatorId: this.props.simulator.id,
-                    station: this.props.station.name
+                    station: this.props.station.executive
+                      ? null
+                      : this.props.station.name
                   },
                   updateQuery: (previousResult, { subscriptionData }) => {
                     return Object.assign({}, previousResult, {
