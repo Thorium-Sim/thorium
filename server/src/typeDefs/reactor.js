@@ -62,6 +62,9 @@ const schema = gql`
     reactorEject(id: ID!, tf: Boolean!): String
     reactorChangeModel(id: ID!, model: String!): String
     reactorChangeOutput(id: ID!, output: Int!): String
+    """
+    Macro: Reactor: Change Reactor Efficiency
+    """
     reactorChangeEfficiency(id: ID!, efficiency: Float): String
     reactorBatteryChargeLevel(id: ID!, level: Float!): String
     reactorBatteryChargeRate(id: ID!, rate: Float!): String
