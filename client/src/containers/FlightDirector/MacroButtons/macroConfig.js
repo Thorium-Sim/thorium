@@ -131,7 +131,14 @@ const ActionList = ({
   );
 };
 
-const ActionConfig = ({ id, event, delay, args, updateAction }) => {
+const ActionConfig = ({
+  id,
+  event,
+  delay,
+  noCancelOnReset,
+  args,
+  updateAction
+}) => {
   return (
     <Fragment>
       <EventName id={event} />{" "}
@@ -144,6 +151,16 @@ const ActionConfig = ({ id, event, delay, args, updateAction }) => {
               defaultValue={delay}
               onBlur={e => updateAction("delay", parseInt(e.target.value))}
             />
+          </FormGroup>
+          <FormGroup style={{ marginLeft: "5ch" }}>
+            <Label>
+              <Input
+                type="checkbox"
+                defaultChecked={noCancelOnReset}
+                onBlur={e => updateAction("noCancelOnReset", e.target.value)}
+              />
+              Don't Cancel Delay on Flight Reset
+            </Label>
           </FormGroup>
           <MacroWrapper
             id={id}

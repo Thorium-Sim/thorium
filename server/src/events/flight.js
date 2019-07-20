@@ -274,6 +274,8 @@ App.on("deleteFlight", ({ flightId, cb }) => {
   // We need to remove all reference to this flight.
   // Loop over the simulators
   // Reset the clients
+  flight.clearTimeouts();
+
   App.clients
     .concat()
     .filter(c => c.flightId === flightId)
@@ -298,6 +300,8 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
   const flight = App.flights.find(
     f => f.id === flightId || f.simulators.indexOf(simulatorId) > -1
   );
+  flight.clearTimeouts();
+
   flightId = flight.id;
   // Log out the clients
   App.clients
@@ -320,6 +324,7 @@ App.on("resetFlight", ({ flightId, simulatorId, full, cb }) => {
       .filter(
         client =>
           client.simulatorId === sim.id &&
+          client.station &&
           client.station.indexOf(`interface-id:`) > -1
       )
       .forEach(client => {

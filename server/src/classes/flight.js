@@ -22,6 +22,7 @@ export default class Flight {
     // These are IDs of clients that have logged in during this flight.
     // {id, simulatorId, name (which is the station name)}
     this.clients = params.clients || [];
+    this.timeouts = [];
   }
   addSimulator(simulator) {
     this.simulators.push(simulator.id);
@@ -37,6 +38,10 @@ export default class Flight {
   }
   resume() {
     this.running = true;
+  }
+  clearTimeouts() {
+    this.timeouts.forEach(t => clearTimeout(t));
+    this.timeouts = [];
   }
   setFlightType(flightType) {
     this.flightType = flightType;

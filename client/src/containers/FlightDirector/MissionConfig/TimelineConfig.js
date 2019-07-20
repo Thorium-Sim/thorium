@@ -625,6 +625,20 @@ export default class TimelineConfig extends Component {
                         }
                       />
                     </FormGroup>
+                    <FormGroup style={{ marginLeft: "5ch" }}>
+                      <Label>
+                        <Input
+                          type="checkbox"
+                          defaultChecked={item.noCancelOnReset}
+                          onBlur={e =>
+                            this._updateItem("noCancelOnReset", {
+                              target: { value: e.target.checked }
+                            })
+                          }
+                        />
+                        Don't Cancel Delay on Flight Reset
+                      </Label>
+                    </FormGroup>
                     <MacroWrapper
                       id={item.id}
                       delay={item.delay}

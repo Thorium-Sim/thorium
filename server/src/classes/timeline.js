@@ -114,12 +114,15 @@ export class TimelineItem {
     this.event = params.event || null;
     this.args = params.args || null;
     this.delay = params.delay || 0;
+    this.noCancelOnReset = params.noCancelOnReset || false;
   }
-  update({ name, type, event, delay, args }) {
+  update({ name, type, event, delay, args, noCancelOnReset }) {
     if (name) this.name = name;
     if (type) this.type = type;
     if (event) this.event = event;
     if (delay) this.delay = delay;
     if (args) this.args = args;
+    if (noCancelOnReset || noCancelOnReset === false)
+      this.noCancelOnReset = noCancelOnReset;
   }
 }

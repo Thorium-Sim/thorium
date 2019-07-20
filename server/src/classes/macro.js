@@ -7,6 +7,7 @@ class Action {
     this.event = params.event || "";
     this.args = params.args || "{}";
     this.delay = params.delay || 0;
+    this.noCancelOnReset = params.noCancelOnReset || false;
   }
 }
 
