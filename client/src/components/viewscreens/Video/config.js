@@ -176,7 +176,6 @@ class VideoConfig extends Component {
             }
             onClick={(evt, container) => {
               let path = container.fullPath;
-              console.log(data.asset);
               if (data.randomVideo) {
                 path =
                   data.asset && data.asset.includes(path)

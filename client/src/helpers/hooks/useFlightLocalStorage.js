@@ -9,7 +9,6 @@ export default function useFlightLocalStorage(flightId, key, initialValue) {
     const item = flightItem[key];
     return item || initialValue;
   });
-  console.log(storedValue);
 
   // Return a wrapped version of useState's setter function that ...
   // ... persists the new value to localStorage.

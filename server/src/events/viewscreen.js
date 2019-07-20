@@ -9,7 +9,6 @@ App.on("updateViewscreenName", ({ id, name }) => {
 App.on(
   "updateViewscreenComponent",
   ({ id, simulatorId, component, data, secondary = false, context }) => {
-    console.log(simulatorId, id);
     const viewscreens = App.viewscreens.filter(
       v =>
         v.id === id ||
@@ -92,7 +91,6 @@ App.on(
     viewscreens.forEach(viewscreen => {
       viewscreen.setPictureInPicture(component, data, position, size);
     });
-    console.log(viewscreens);
     pubsub.publish("viewscreensUpdate", App.viewscreens);
   }
 );
