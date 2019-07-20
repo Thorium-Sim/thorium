@@ -23,9 +23,10 @@ const Login = ({
   const login = e => {
     e.preventDefault();
     e.stopPropagation();
-    playEffect("login");
     const clientId = clientObj.id;
     if (loginName.length > 0) {
+      playEffect("login");
+
       const obj = {
         client: clientId,
         loginName
