@@ -6,7 +6,7 @@ import tinycolor from "tinycolor2";
 import gql from "graphql-tag.macro";
 import { TypingField } from "../../../generic/core";
 import Nudge from "./nudge";
-import useFlightLocalStorage from "../../../../helpers/hooks/useFlightLocalStorage";
+import useFlightLocalStorage from "helpers/hooks/useFlightLocalStorage";
 
 function useOnClickOutside(ref, handler) {
   useEffect(
@@ -103,7 +103,9 @@ const ExtraControls = ({
   updateAskForSpeed,
   client,
   speed,
-  dragStart
+  dragStart,
+  showLabels,
+  setShowLabels
 }) => {
   const [planetSize, setPlanetSize] = useFlightLocalStorage(
     flightId,
@@ -145,6 +147,7 @@ const ExtraControls = ({
     "core_sensors_pingSize",
     1
   );
+
   const autoTarget = e => {
     const mutation = gql`
       mutation SensorsAutoTarget($id: ID!, $target: Boolean!) {
@@ -216,6 +219,14 @@ const ExtraControls = ({
           type="checkbox"
           checked={sensors.autoTarget}
           onChange={autoTarget}
+        />
+      </label>
+      <label>
+        Show contact labels{" "}
+        <input
+          type="checkbox"
+          checked={showLabels}
+          onChange={e => setShowLabels(e.target.checked)}
         />
       </label>
       <label>

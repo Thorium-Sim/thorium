@@ -32,7 +32,9 @@ export const CoreSidebar = ({
   selectedContacts,
   setSelectedContacts,
   dragStart,
-  lite
+  lite,
+  showLabels,
+  setShowLabels
 }) => {
   const [clearContacts] = useMutation(CLEAR_CONTACTS, {
     variables: { id: sensors.id }
@@ -113,6 +115,8 @@ export const CoreSidebar = ({
               client={client}
               speed={speed}
               dragStart={dragStart}
+              showLabels={showLabels}
+              setShowLabels={setShowLabels}
             />
           )}
           {currentControl === "contacts" && (
