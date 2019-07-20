@@ -93,7 +93,14 @@ class TasksCore extends Component {
     return (
       <div
         className="core-tasks"
-        style={{ display: "flex", flexDirection: "column", height: "100%" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          maxHeight: "60vh",
+          width: "100%",
+          maxWidth: "30vw"
+        }}
         key={this.state.forcedKey}
       >
         {configureMacro ? (
@@ -113,7 +120,14 @@ class TasksCore extends Component {
           <div style={{ display: "flex", flex: 1, height: "100%" }}>
             {!lite && (
               <Fragment>
-                <div style={{ flex: 5, height: "100%", overflowY: "auto" }}>
+                <div
+                  style={{
+                    flex: 5,
+                    height: "100%",
+                    maxHeight: "calc(60vh - 20px)",
+                    overflowY: "auto"
+                  }}
+                >
                   Definitions
                   <ListGroup>
                     {Object.entries(definitionGroups).map(([key, value]) => (
@@ -145,7 +159,13 @@ class TasksCore extends Component {
                 </div>
               </Fragment>
             )}
-            <div style={{ flex: 7 }}>
+            <div
+              style={{
+                flex: 7,
+                maxHeight: "calc(60vh - 20px)",
+                overflowY: "auto"
+              }}
+            >
               {definition && (
                 <Fragment>
                   <div>
@@ -279,6 +299,7 @@ class TasksCore extends Component {
                         key={m.id}
                         style={{
                           display: "flex",
+                          alignItems: "center",
                           justifyContent: "space-between"
                         }}
                       >
