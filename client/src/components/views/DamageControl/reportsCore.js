@@ -447,12 +447,24 @@ class DamageReportCore extends Component {
                     <Col sm={4}>
                       <select
                         className="btn btn-warning btn-sm btn-block"
-                        onChange={evt =>
-                          this.generateReport(parseInt(evt.target.value, 10))
-                        }
+                        onChange={evt => {
+                          if (evt.target.value === "set") {
+                            const count = window.prompt("How many steps?");
+                            if (
+                              isNaN(parseInt(count, 10)) ||
+                              parseInt(count, 10) <= 0
+                            )
+                              return;
+                            this.generateReport(parseInt(count, 10));
+
+                            return;
+                          }
+                          this.generateReport(parseInt(evt.target.value, 10));
+                        }}
                         value={"select"}
                       >
                         <option value="select">Generate</option>
+                        <option value="set">Enter Step Count</option>
                         <option value="3">Superficial</option>
                         <option value="5">Short</option>
                         <option value="8">Medium</option>

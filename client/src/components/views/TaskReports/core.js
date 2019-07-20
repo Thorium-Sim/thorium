@@ -114,10 +114,21 @@ class TaskReportCreator extends Component {
           <Input
             type="select"
             value={stepCount}
-            onChange={e =>
-              this.setState({ stepCount: parseInt(e.target.value, 10) })
-            }
+            onChange={e => {
+              if (e.target.value === "set") {
+                const count = window.prompt("How many steps?");
+                if (isNaN(parseInt(count, 10)) || parseInt(count, 10) <= 0)
+                  return;
+                this.setState({ stepCount: parseInt(count, 10) });
+                return;
+              }
+              this.setState({ stepCount: parseInt(e.target.value, 10) });
+            }}
           >
+            {![3, 5, 8, 12].includes(stepCount) && (
+              <option value={stepCount}>{stepCount} Steps</option>
+            )}
+            <option value="set">Enter Step Count</option>
             <option value="3">Superficial</option>
             <option value="5">Short</option>
             <option value="8">Medium</option>
