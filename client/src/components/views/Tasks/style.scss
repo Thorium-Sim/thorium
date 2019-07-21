@@ -11,6 +11,10 @@
     flex: 1;
     overflow-y: auto;
   }
+  .list-group {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
   .truncated-instructions {
     width: 100%;
     // height: 2ex;

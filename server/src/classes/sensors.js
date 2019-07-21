@@ -209,7 +209,6 @@ export default class Sensors extends System {
   moveContact({ id, destination: { x = 0, y = 0, z = 0 }, speed, stop }) {
     const myContact = this.contacts.find(contact => contact.id === id);
     myContact && myContact.move({ x, y, z }, speed, stop);
-    console.log("MYCONTACT", Date.now(), myContact);
   }
   removeContact({ id }) {
     this.contacts = this.contacts.filter(c => c.id !== id);

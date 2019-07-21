@@ -157,6 +157,13 @@
       border: solid 3px #417;
       border-radius: 50%;
     }
+    .sensors-border,
+    .sensors-planet {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
     .sensor-ping-mover {
       width: 50%;
       height: 50%;

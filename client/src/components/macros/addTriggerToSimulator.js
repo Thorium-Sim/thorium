@@ -20,7 +20,7 @@ export default ({ updateArgs, args, client }) => {
         {({ loading, data: { triggers } }) =>
           loading ? null : (
             <select
-              class={"form-control"}
+              className={"form-control"}
               type="select"
               value={args.trigger}
               onChange={e => updateArgs("trigger", e.target.value)}

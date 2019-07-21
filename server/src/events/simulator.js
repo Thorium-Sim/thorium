@@ -207,24 +207,27 @@ App.on("triggerMacros", ({ simulatorId, macros }) => {
       return m[simulator.stationSet];
     })
     .reduce((acc, next) => ({ ...acc, ...next }), {});
-  macros.forEach(({ id, stepId = id, event, args, delay = 0 }) => {
-    const simArgs = actions[stepId] || {};
-    if (stepId) {
-      simulator.executeTimelineStep(stepId);
+  macros.forEach(
+    ({ id, stepId = id, event, args, delay = 0, noCancelOnReset }) => {
+      const simArgs = actions[stepId] || {};
+      if (stepId) {
+        simulator.executeTimelineStep(stepId);
+      }
+      const timeout = setTimeout(() => {
+        const parsedArgs = typeof args === "string" ? JSON.parse(args) : args;
+        App.handleEvent(
+          {
+            ...parsedArgs,
+            ...simArgs,
+            simulatorId
+          },
+          event,
+          context
+        );
+      }, delay);
+      if (!noCancelOnReset) flight.timeouts.push(timeout);
     }
-    setTimeout(() => {
-      const parsedArgs = typeof args === "string" ? JSON.parse(args) : args;
-      App.handleEvent(
-        {
-          ...parsedArgs,
-          ...simArgs,
-          simulatorId
-        },
-        event,
-        context
-      );
-    }, delay);
-  });
+  );
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 

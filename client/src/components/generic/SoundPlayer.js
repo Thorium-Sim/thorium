@@ -101,7 +101,7 @@ export function playSound(opts) {
             sounds[opts.id] = sound;
           },
           function onFailure() {
-            console.error(new Error("Decoding the audio buffer failed"));
+            // console.error(new Error("Decoding the audio buffer failed"));
           }
         );
       })

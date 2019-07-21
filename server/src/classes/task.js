@@ -9,6 +9,7 @@ class Macro {
     this.event = params.event || "";
     this.args = params.args || "{}";
     this.delay = params.delay || 0;
+    this.noCancelOnReset = params.noCancelOnReset || false;
   }
 }
 export default class Task {
@@ -80,6 +81,7 @@ export default class Task {
     // Timing
     this.startTime = new Date();
     this.endTime = null;
+    this.timeElapsedInMS = params.timeElapsedInMS || 0;
 
     // Macros
     this.macros = [];

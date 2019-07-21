@@ -10,7 +10,6 @@ function degtorad(deg) {
 class ThreeView extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.rotation = 0;
     this.cloudRotation = 0;
     const { width, height } = props.dimensions;

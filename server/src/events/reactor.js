@@ -47,8 +47,14 @@ App.on("reactorChangeOutput", ({ id, output }) => {
     App.systems.filter(s => s.type === "Reactor")
   );
 });
-App.on("reactorChangeEfficiency", ({ id, efficiency }) => {
-  const system = App.systems.find(sys => sys.id === id);
+App.on("reactorChangeEfficiency", ({ id, efficiency, simulatorId }) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId &&
+        sys.class === "Reactor" &&
+        sys.model === "reactor")
+  );
   system.changeEfficiency(efficiency);
   App.handleEvent(
     {

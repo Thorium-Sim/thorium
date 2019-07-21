@@ -72,7 +72,7 @@ export default ({ updateArgs, args }) => {
               <Input
                 style={{ marginLeft: "30px" }}
                 type="checkbox"
-                checkbox={args.hidden}
+                checked={args.hidden}
                 onChange={e => updateArgs("hidden", e.target.checked)}
               />
               <div>

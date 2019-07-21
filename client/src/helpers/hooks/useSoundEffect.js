@@ -9,7 +9,8 @@ export default function useSoundEffect() {
   return function(sound) {
     if (simulator.soundEffects && simulator.soundEffects[sound]) {
       playSound({
-        url: `/assets${randomFromList(simulator.soundEffects[sound])}`
+        url: `/assets${randomFromList(simulator.soundEffects[sound])}`,
+        volume: parseInt(simulator.soundEffects[`${sound}Volume`], 10)
       });
     }
   };

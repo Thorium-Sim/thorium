@@ -18,7 +18,9 @@ class Assets extends Component {
     const { selectedSimulator: sim } = this.props;
     const { soundEffects: soundEffectsData } = sim;
     const { __typename, ...soundEffects } = soundEffectsData;
-    const assetList = Object.keys(soundEffects);
+    const assetList = Object.keys(soundEffects).filter(
+      s => !s.includes("Volume")
+    );
     return (
       <Container className="assets">
         <p>Assets</p>
@@ -49,32 +51,58 @@ class Assets extends Component {
                 `}
               >
                 {action => (
-                  <FileExplorer
-                    // key={soundEffects[selectedAsset]}
-                    selectedFiles={[...soundEffects[selectedAsset]]}
-                    onClick={(evt, container) => {
-                      const variable = soundEffects[selectedAsset].includes(
-                        container.fullPath
-                      )
-                        ? soundEffects[selectedAsset].filter(
-                            s => s !== container.fullPath
-                          )
-                        : soundEffects[selectedAsset].concat(
-                            container.fullPath
-                          );
-                      action({
-                        variables: {
-                          id: sim.id,
-                          soundEffects: {
-                            ...soundEffects,
-                            [selectedAsset]: variable
+                  <>
+                    <div>
+                      <label>Volume</label>
+                      <div style={{ display: "flex" }}>
+                        <input
+                          type="range"
+                          min="0"
+                          max="2"
+                          step="0.1"
+                          defaultValue={soundEffects[`${selectedAsset}Volume`]}
+                          onMouseUp={e => {
+                            action({
+                              variables: {
+                                id: sim.id,
+                                soundEffects: {
+                                  ...soundEffects,
+                                  [`${selectedAsset}Volume`]: e.target.value
+                                }
+                              }
+                            });
+                          }}
+                        />{" "}
+                        {soundEffects[`${selectedAsset}Volume`]}
+                      </div>
+                    </div>
+                    <FileExplorer
+                      // key={soundEffects[selectedAsset]}
+                      selectedFiles={[...soundEffects[selectedAsset]]}
+                      onClick={(evt, container) => {
+                        const variable = soundEffects[selectedAsset].includes(
+                          container.fullPath
+                        )
+                          ? soundEffects[selectedAsset].filter(
+                              s => s !== container.fullPath
+                            )
+                          : soundEffects[selectedAsset].concat(
+                              container.fullPath
+                            );
+                        action({
+                          variables: {
+                            id: sim.id,
+                            soundEffects: {
+                              ...soundEffects,
+                              [selectedAsset]: variable
+                            }
                           }
-                        }
-                      }).then(() => {
-                        this.props.update && this.props.update();
-                      });
-                    }}
-                  />
+                        }).then(() => {
+                          this.props.update && this.props.update();
+                        });
+                      }}
+                    />
+                  </>
                 )}
               </Mutation>
             )}

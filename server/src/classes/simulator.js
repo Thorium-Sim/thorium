@@ -106,6 +106,11 @@ class SoundEffects {
     this.cardChange = params.cardChange || [];
     this.notification = params.notification || [];
     this.login = params.login || [];
+    this.buttonClickVolume = params.buttonClickVolume || 1;
+    this.buttonHoverVolume = params.buttonHoverVolume || 1;
+    this.cardChangeVolume = params.cardChangeVolume || 1;
+    this.notificationVolume = params.notificationVolume || 1;
+    this.loginVolume = params.loginVolume || 1;
   }
 }
 

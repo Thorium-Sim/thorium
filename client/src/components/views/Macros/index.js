@@ -82,6 +82,24 @@ class MacrosCore extends Component {
                     }}
                   />
                 </label>
+                <label style={{ display: "block", marginLeft: "5ch" }}>
+                  <Input
+                    key={action.id}
+                    type="checkbox"
+                    defaultChecked={action.noCancelOnReset}
+                    onBlur={e => {
+                      const checked = e.target.checked;
+                      this.setState(state => ({
+                        actions: state.actions.map(a =>
+                          a.id === action.id
+                            ? { ...a, noCancelOnReset: checked }
+                            : a
+                        )
+                      }));
+                    }}
+                  />
+                  Don't Cancel Delay on Flight Reset
+                </label>
                 <MacroConfig
                   key={action.id}
                   action={action}

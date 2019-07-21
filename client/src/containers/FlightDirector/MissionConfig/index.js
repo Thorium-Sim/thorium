@@ -28,6 +28,7 @@ const MISSION_SUB = gql`
           args
           delay
           needsConfig
+          noCancelOnReset
         }
       }
     }
@@ -162,6 +163,7 @@ const MissionsConfigQuery = gql`
           name
           type
           needsConfig
+          noCancelOnReset
         }
       }
     }

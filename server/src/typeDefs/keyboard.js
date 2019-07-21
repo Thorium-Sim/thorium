@@ -30,6 +30,7 @@ const schema = gql`
     args: String
     delay: Int
     needsConfig: String
+    noCancelOnReset: Boolean
   }
 
   input ActionInput {
@@ -37,6 +38,7 @@ const schema = gql`
     event: String
     args: String
     delay: Int
+    noCancelOnReset: Boolean
   }
   extend type Query {
     keyboard: [Keyboard]

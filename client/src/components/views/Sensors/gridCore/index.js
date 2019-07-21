@@ -46,6 +46,10 @@ const GridCore = ({
     "thorium-core-sensors-askforspeed",
     false
   );
+  const [showLabels, setShowLabels] = useLocalStorage(
+    "core_sensors_showLabels",
+    false
+  );
   const [speed, setSpeed] = useLocalStorage(
     "thorium-core-sensors-speed",
     "0.6"
@@ -154,6 +158,8 @@ const GridCore = ({
               selectedContacts={selectedContacts}
               setSelectedContacts={setSelectedContacts}
               lite={lite}
+              showLabels={showLabels}
+              setShowLabels={setShowLabels}
             />
           </Col>
         )}
@@ -176,6 +182,7 @@ const GridCore = ({
                 "ping",
                 "projectile"
               ]}
+              showLabels={showLabels}
               movement={sensors.movement}
               speeds={speeds}
               askForSpeed={askForSpeed}

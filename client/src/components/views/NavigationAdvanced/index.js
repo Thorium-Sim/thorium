@@ -142,7 +142,6 @@ class AdvancedNavigation extends Component {
         if (next.velocity > prev.velocity) return next;
         return prev;
       }, null);
-    console.log(speed);
     return speed ? speed.text : "Full Stop";
   }
   engineSpeedClass = () => {

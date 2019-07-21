@@ -220,7 +220,8 @@ class InnerGrid extends Component {
       hoverContact,
       mouseDown,
       extraContacts = [],
-      particles
+      particles,
+      showLabels
     } = this.props;
     const { width: dimWidth, height: dimHeight } = dimensions;
     const width = Math.min(dimWidth, dimHeight);
@@ -249,6 +250,7 @@ class InnerGrid extends Component {
             core={core}
             sensorsId={sensor}
             {...contact}
+            showLabels={showLabels}
             location={position || location}
             destination={extraContact ? extraContact.destination : destination}
             selected={

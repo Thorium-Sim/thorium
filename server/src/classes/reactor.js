@@ -94,7 +94,7 @@ export default class Reactor extends HeatMixin(System) {
     this.efficiencies = e;
   }
   changeEfficiency(efficiency) {
-    if (!efficiency && efficiency !== 0) {
+    if (efficiency === "-1" || (!efficiency && efficiency !== 0)) {
       this.externalPower = true;
       this.efficiency = 1.5;
     } else {

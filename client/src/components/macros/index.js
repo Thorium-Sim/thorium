@@ -83,3 +83,5 @@ export {
 } from "./removeViewscreenPictureInPicture";
 export { default as updateSensorGrid } from "./updateSensorGrid";
 export { default as addTacticalMapsToFlight } from "./addTacticalMapsToFlight";
+export { default as reactorChangeEfficiency } from "./reactorChangeEfficiency";
+export { default as shieldFrequencySetAll } from "./shieldFrequencySetAll";

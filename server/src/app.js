@@ -141,9 +141,11 @@ class Events extends EventEmitter {
     _maxListeners,
     domain,
     events,
+    flights,
     ...snapshot
   }) {
-    return snapshot;
+    const newFlights = flights.map(({ timeouts, ...f }) => f);
+    return { ...snapshot, flights: newFlights };
   }
   handleEvent(param, eventName, context = {}) {
     const { clientId } = context;

@@ -138,7 +138,7 @@ App.on("shieldFrequencySet", ({ id, frequency, cb }) => {
   const system = App.systems.find(sys => sys.id === id);
   system && system.setFrequency(frequency);
   sendUpdate();
-  cb();
+  cb && cb();
 });
 App.on("shieldFrequencySetAll", ({ simulatorId, frequency, cb }) => {
   App.systems
@@ -147,7 +147,7 @@ App.on("shieldFrequencySetAll", ({ simulatorId, frequency, cb }) => {
       sys.setFrequency && sys.setFrequency(frequency);
     });
   sendUpdate();
-  cb();
+  cb && cb();
 });
 App.on("hitShields", ({ id, simulatorId }) => {
   if (id) {

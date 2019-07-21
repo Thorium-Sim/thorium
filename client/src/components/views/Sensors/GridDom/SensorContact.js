@@ -143,6 +143,8 @@ export default class SensorContact extends Component {
       disabled,
       particles,
       particle,
+      showLabels,
+      name,
       mousedown = () => {},
       removeContact = () => {}
     } = this.props;
@@ -196,7 +198,9 @@ export default class SensorContact extends Component {
                 transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                   dy}px) rotate(${rotation}deg)`
               }}
-            />
+            >
+              {showLabels ? name : ""}
+            </div>
           )}
         </div>
       );
@@ -232,7 +236,9 @@ export default class SensorContact extends Component {
                 transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
                   dy}px) scale(${size})`
               }}
-            />
+            >
+              {showLabels ? name : ""}
+            </div>
           )}
         </div>
       );
@@ -387,6 +393,7 @@ export default class SensorContact extends Component {
               }}
             >
               {particle}
+              {showLabels ? name : ""}
             </p>
             <img
               id={`contact-${id}`}

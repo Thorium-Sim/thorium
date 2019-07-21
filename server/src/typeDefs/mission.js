@@ -18,6 +18,7 @@ const schema = gql`
     event: String
     args: String
     delay: Int
+    noCancelOnReset: Boolean
   }
   type TimelineStep {
     id: ID!
@@ -35,6 +36,7 @@ const schema = gql`
     needsConfig: Boolean
     args: String
     delay: Int
+    noCancelOnReset: Boolean
   }
 
   enum TIMELINE_ITEM_CONFIG_TYPE {
@@ -48,6 +50,7 @@ const schema = gql`
     event: String
     args: String
     delay: Int
+    noCancelOnReset: Boolean
   }
 
   type TimelineInstance {
