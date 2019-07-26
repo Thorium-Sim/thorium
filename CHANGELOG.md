@@ -1,3 +1,17 @@
+# [1.19.0](https://github.com/Thorium-Sim/thorium/compare/1.18.0...1.19.0) (2019-07-26)
+
+
+### Bug Fixes
+
+* **Tasks:** Completed tasks are now sorted to the bottom of the list. Closes [#2469](https://github.com/Thorium-Sim/thorium/issues/2469) ([7d5946b](https://github.com/Thorium-Sim/thorium/commit/7d5946b))
+* **Tasks:** Fix a minor UI error. Closes [#2467](https://github.com/Thorium-Sim/thorium/issues/2467) ([074abf0](https://github.com/Thorium-Sim/thorium/commit/074abf0))
+* **Tasks:** Shield frequency tasks won't crash the server when executed from a task template. Closes  [#2471](https://github.com/Thorium-Sim/thorium/issues/2471) ([c38e2e0](https://github.com/Thorium-Sim/thorium/commit/c38e2e0))
+
+
+### Features
+
+* **Task:** Adds the ability to assign macros to tasks which trigger when the task is created. This applies to the task core and task templates.  Closes [#1917](https://github.com/Thorium-Sim/thorium/issues/1917) ([9714648](https://github.com/Thorium-Sim/thorium/commit/9714648))
+
 # [1.18.0](https://github.com/Thorium-Sim/thorium/compare/1.17.4...1.18.0) (2019-07-21)
 
 
