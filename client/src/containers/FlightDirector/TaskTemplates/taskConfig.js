@@ -15,10 +15,10 @@ const TaskConfig = ({
   values,
   definition,
   macros,
+  preMacros,
   reportTypes = [],
   client
 }) => {
-  const [configureMacro, setConfigureMacro] = useState(null);
   const updateReportTypes = (which, checked, action) => {
     const newReportTypes = checked
       ? reportTypes.concat(which)
@@ -134,103 +134,130 @@ const TaskConfig = ({
           }
         `}
       >
-        {action => {
-          if (configureMacro) {
-            const update = ({ id: macroId, event, args, delay }) => {
+        {action => (
+          <ConfigureMacro
+            action={action}
+            id={id}
+            macros={macros}
+            client={client}
+          />
+        )}
+      </Mutation>
+      <Mutation
+        mutation={gql`
+          mutation SetTaskMacro($id: ID!, $macros: [TimelineItemInput]!) {
+            setTaskTemplatePreMacros(id: $id, macros: $macros)
+          }
+        `}
+      >
+        {action => (
+          <ConfigureMacro
+            pre
+            action={action}
+            id={id}
+            macros={preMacros}
+            client={client}
+          />
+        )}
+      </Mutation>
+    </div>
+  );
+};
+
+const ConfigureMacro = ({ action, id, macros, client, pre }) => {
+  const [configureMacro, setConfigureMacro] = useState(null);
+
+  if (configureMacro) {
+    const update = ({ id: macroId, event, args, delay }) => {
+      action({
+        variables: {
+          id,
+          macros: macros.map(m =>
+            m.id === macroId ? { ...m, event, args, delay } : m
+          )
+        }
+      });
+    };
+    const macro = macros.find(c => c.id === configureMacro);
+    return (
+      <div className="macro-config">
+        <div style={{ flex: 1 }}>
+          <label>Macro Config</label>
+          <MacroConfig action={macro} updateAction={update} client={client} />
+        </div>
+        <Button
+          size="sm"
+          block
+          color="success"
+          onClick={() => setConfigureMacro(null)}
+          style={{ marginBottom: "20px" }}
+        >
+          Done Configuring Macro
+        </Button>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <label>
+        {pre ? "Pre" : ""}Macros{" "}
+        <small>
+          Will be triggered when task is {pre ? "created" : "complete"}
+        </small>
+      </label>
+      <EventPicker
+        className={"btn btn-sm btn-success"}
+        handleChange={e => {
+          const { value: event } = e.target;
+          action({
+            variables: {
+              id,
+              macros: macros
+                .map(({ __typename, ...rest }) => rest)
+                .concat({
+                  event,
+                  args: "{}",
+                  delay: 0,
+                  id: uuid.v4()
+                })
+            }
+          });
+        }}
+      />
+      {macros.map(m => (
+        <div
+          key={m.id}
+          style={{
+            display: "flex",
+            justifyContent: "space-between"
+          }}
+        >
+          <span>
+            <EventName id={m.event} label={m.event} />
+          </span>{" "}
+          <Button
+            size="sm"
+            color="warning"
+            onClick={() => setConfigureMacro(m.id)}
+          >
+            Configure Macro
+          </Button>{" "}
+          <FontAwesome
+            name="ban"
+            className="text-danger"
+            onClick={() =>
               action({
                 variables: {
                   id,
-                  macros: macros.map(m =>
-                    m.id === macroId ? { ...m, event, args, delay } : m
-                  )
+                  macros: macros
+                    .map(({ __typename, ...rest }) => rest)
+                    .filter(mm => mm.id !== m.id)
                 }
-              });
-            };
-            const macro = macros.find(c => c.id === configureMacro);
-            return (
-              <div className="macro-config">
-                <div style={{ flex: 1 }}>
-                  <label>Macro Config</label>
-                  <MacroConfig
-                    action={macro}
-                    updateAction={update}
-                    client={client}
-                  />
-                </div>
-                <Button
-                  size="sm"
-                  block
-                  color="success"
-                  onClick={() => setConfigureMacro(null)}
-                  style={{ marginBottom: "20px" }}
-                >
-                  Done Configuring Macro
-                </Button>
-              </div>
-            );
-          }
-          return (
-            <div>
-              <label>
-                Macros <small>Will be triggered when task is complete</small>
-              </label>
-              <EventPicker
-                className={"btn btn-sm btn-success"}
-                handleChange={e => {
-                  const { value: event } = e.target;
-                  action({
-                    variables: {
-                      id,
-                      macros: macros
-                        .map(({ __typename, ...rest }) => rest)
-                        .concat({
-                          event,
-                          args: "{}",
-                          delay: 0,
-                          id: uuid.v4()
-                        })
-                    }
-                  });
-                }}
-              />
-              {macros.map(m => (
-                <div
-                  key={m.id}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between"
-                  }}
-                >
-                  <span>
-                    <EventName id={m.event} label={m.event} />
-                  </span>{" "}
-                  <Button
-                    size="sm"
-                    color="warning"
-                    onClick={() => setConfigureMacro(m.id)}
-                  >
-                    Configure Macro
-                  </Button>{" "}
-                  <FontAwesome
-                    name="ban"
-                    className="text-danger"
-                    onClick={() =>
-                      action({
-                        variables: {
-                          id,
-                          macros: macros
-                            .map(({ __typename, ...rest }) => rest)
-                            .filter(mm => mm.id !== m.id)
-                        }
-                      })
-                    }
-                  />
-                </div>
-              ))}
-            </div>
-          );
-        }}
-      </Mutation>
+              })
+            }
+          />
+        </div>
+      ))}
     </div>
   );
 };

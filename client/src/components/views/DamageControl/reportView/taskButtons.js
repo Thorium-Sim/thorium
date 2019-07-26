@@ -4,7 +4,7 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 // All task-based reports auto-advanced based on the validation of the task.
 const TaskButtons = ({ system }) => {
-  const task = system.tasks.find(t => !t.verified);
+  const task = system.tasks.find(t => !t.verified) || {};
   const stepCount = system.tasks.findIndex(t => t.id === task.id) + 1;
   if (task) {
     return (

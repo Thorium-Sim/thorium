@@ -33,6 +33,12 @@ const fragments = {
         event
         delay
       }
+      preMacros {
+        id
+        args
+        event
+        delay
+      }
     }
   `
 };

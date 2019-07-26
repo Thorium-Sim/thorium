@@ -7,6 +7,13 @@ App.on("addTask", ({ taskInput, simulatorId }) => {
   const input = { simulatorId, ...taskInput };
   const task = new Classes.Task(input);
   App.tasks.push(task);
+  // Execute the pre-macros
+  taskInput.preMacros.length > 0 &&
+    App.handleEvent(
+      { simulatorId: task.simulatorId, macros: taskInput.preMacros },
+      "triggerMacros"
+    );
+
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: task.simulatorId,
@@ -142,5 +149,10 @@ App.on("setTaskTemplateReportTypes", ({ id, reportTypes }) => {
 App.on("setTaskTemplateMacros", ({ id, macros }) => {
   const task = App.taskTemplates.find(t => t.id === id);
   task && task.setMacros(macros);
+  pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+});
+App.on("setTaskTemplatePreMacros", ({ id, macros }) => {
+  const task = App.taskTemplates.find(t => t.id === id);
+  task && task.setPreMacros(macros);
   pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
 });

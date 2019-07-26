@@ -10,6 +10,7 @@ export default class TaskTemplate {
     this.definition = params.definition || "Generic";
     this.reportTypes = params.reportTypes || ["default", "rnd", "engineering"];
     this.macros = params.macros || [];
+    this.preMacros = params.preMacros || [];
   }
   rename(name) {
     this.name = name;
@@ -35,5 +36,8 @@ export default class TaskTemplate {
   }
   setMacros(macros) {
     this.macros = macros || [];
+  }
+  setPreMacros(macros) {
+    this.preMacros = macros || [];
   }
 }

@@ -17,6 +17,12 @@ const fragment = gql`
       args
       delay
     }
+    preMacros {
+      id
+      event
+      args
+      delay
+    }
   }
 `;
 
