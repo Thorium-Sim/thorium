@@ -55,10 +55,8 @@ Client Server is now running on http://${ipaddress}:${CLIENT_PORT}/client
 Access the Flight Director on http://${ipaddress}:${CLIENT_PORT}
 GraphQL Server is now running on http://${ipaddress}:${GRAPHQL_PORT}/graphql
 🚀 Subscriptions ready at ws://${ipaddress}:${GRAPHQL_PORT}${
-        server.subscriptionsPath
+        apollo.subscriptionsPath
       }`
     );
   });
 };
-
-const server = new ApolloServer({ typeDefs });

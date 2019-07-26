@@ -89,7 +89,14 @@ class Tasks extends Component {
     const myTasks = tasks
       .concat()
       .filter(t => t.station === stationName)
-      .sort();
+      .sort((a, b) => {
+        if (a.verified > b.verified) return 1;
+        if (a.verified < b.verified) return -1;
+        if (a.timeElapsedInMS > b.timeElapsedInMS) return -1;
+        if (a.timeElapsedInMS < b.timeElapsedInMS) return 1;
+        return 0;
+      });
+
     const crewTasks = Object.entries(
       tasks
         .filter(t => t.station !== stationName)
@@ -104,6 +111,8 @@ class Tasks extends Component {
       ])
       .filter(([station, tasks]) => tasks.length > 0)
       .sort((a, b) => {
+        if (a[1].verified > b[1].verified) return 1;
+        if (a[1].verified < b[1].verified) return -1;
         if (a[1].timeElapsedInMS > b[1].timeElapsedInMS) return -1;
         if (a[1].timeElapsedInMS < b[1].timeElapsedInMS) return 1;
         return 0;
@@ -152,31 +161,32 @@ class Tasks extends Component {
                   >
                     <strong>Crew Tasks</strong>
                   </ListGroupItem>
+
+                  {crewTasks.length === 0 ? (
+                    <ListGroupItem>No Tasks</ListGroupItem>
+                  ) : (
+                    crewTasks.map(([station, tasks]) => (
+                      <>
+                        <ListGroupItem
+                          style={{
+                            borderTop: `solid 2px rgba(255,255,255,0.5)`,
+                            borderBottom: `solid 1px rgba(255,255,255,0.1)`
+                          }}
+                        >
+                          {station}
+                        </ListGroupItem>
+                        {tasks.map(t => (
+                          <TaskItem
+                            key={t.id}
+                            {...t}
+                            instructions={""}
+                            setSelectedTask={() => {}}
+                          />
+                        ))}
+                      </>
+                    ))
+                  )}
                 </>
-              )}
-              {crewTasks.length === 0 ? (
-                <ListGroupItem>No Tasks</ListGroupItem>
-              ) : (
-                crewTasks.map(([station, tasks]) => (
-                  <>
-                    <ListGroupItem
-                      style={{
-                        borderTop: `solid 2px rgba(255,255,255,0.5)`,
-                        borderBottom: `solid 1px rgba(255,255,255,0.1)`
-                      }}
-                    >
-                      {station}
-                    </ListGroupItem>
-                    {tasks.map(t => (
-                      <TaskItem
-                        key={t.id}
-                        {...t}
-                        instructions={""}
-                        setSelectedTask={() => {}}
-                      />
-                    ))}
-                  </>
-                ))
               )}
             </ListGroup>
           </Col>
