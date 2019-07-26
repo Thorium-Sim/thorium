@@ -26,7 +26,8 @@ class TasksCore extends Component {
     selectedDefinition: "nothing",
     station: "nothing",
     requiredValues: {},
-    macros: []
+    macros: [],
+    preMacros: []
   };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.selectedDefinition !== this.state.selectedDefinition) {
@@ -45,6 +46,7 @@ class TasksCore extends Component {
       requiredValues,
       station,
       macros,
+      preMacros,
       configureMacroId,
       client
     } = this.state;
@@ -61,21 +63,30 @@ class TasksCore extends Component {
       }, {});
     const definition = taskDefinitions.find(t => t.id === selectedDefinition);
     const configureMacro = macros.find(c => c.id === configureMacroId);
+    const configurePreMacro = preMacros.find(c => c.id === configureMacroId);
     return (
       <div
         className="core-tasks"
         style={{ display: "flex", flexDirection: "column", height: "100%" }}
       >
-        {configureMacro ? (
+        {configureMacro || configurePreMacro ? (
           <ConfigureMacro
             cancel={() => this.setState({ configureMacroId: null })}
-            macro={configureMacro}
+            macro={configureMacro || configurePreMacro}
             update={action =>
-              this.setState(state => ({
-                macros: state.macros.map(m =>
-                  m.id === configureMacroId ? { ...m, ...action } : m
-                )
-              }))
+              this.setState(state =>
+                configureMacro
+                  ? {
+                      macros: state.macros.map(m =>
+                        m.id === configureMacroId ? { ...m, ...action } : m
+                      )
+                    }
+                  : {
+                      preMacros: state.preMacros.map(m =>
+                        m.id === configureMacroId ? { ...m, ...action } : m
+                      )
+                    }
+              )
             }
             client={client}
           />
@@ -89,12 +100,14 @@ class TasksCore extends Component {
             requiredValues={requiredValues}
             simulator={simulator}
             macros={macros}
+            preMacros={preMacros}
             updateSelectedDefinition={d =>
               this.setState({ selectedDefinition: d })
             }
             updateRequiredValues={val => this.setState({ requiredValues: val })}
             updateStation={stat => this.setState({ station: stat })}
             updateMacros={mac => this.setState({ macros: mac })}
+            updatePreMacros={mac => this.setState({ preMacros: mac })}
             configureMacro={id => this.setState({ configureMacroId: id })}
           />
         )}
@@ -117,7 +130,8 @@ class TasksCore extends Component {
                   ...requiredValues
                 },
                 station,
-                macros: macros.map(({ id, ...m }) => m)
+                macros: macros.map(({ id, ...m }) => m),
+                preMacros: preMacros.map(({ id, ...m }) => m)
               }
             }}
           >

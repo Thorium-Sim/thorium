@@ -33,6 +33,7 @@ const schema = gql`
     values: JSON
     station: String
     macros: [TimelineItemInput]
+    preMacros: [TimelineItemInput]
   }
 
   type TaskTemplate {
@@ -42,6 +43,7 @@ const schema = gql`
     definition: String
     reportTypes: [String]
     macros: [TimelineItem]
+    preMacros: [TimelineItem]
   }
 
   type TaskDefinition {
@@ -79,6 +81,7 @@ const schema = gql`
     setTaskTemplateValues(id: ID!, values: JSON!): String
     setTaskTemplateReportTypes(id: ID!, reportTypes: [String]!): String
     setTaskTemplateMacros(id: ID!, macros: [TimelineItemInput]!): String
+    setTaskTemplatePreMacros(id: ID!, macros: [TimelineItemInput]!): String
   }
   extend type Subscription {
     tasksUpdate(

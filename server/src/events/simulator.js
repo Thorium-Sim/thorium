@@ -200,7 +200,6 @@ App.on("triggerMacros", ({ simulatorId, macros }) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   const flight = App.flights.find(f => f.simulators.indexOf(simulatorId) > -1);
   const context = { simulator, flight };
-
   // Compile the simulator-specific args based on station set
   const actions = Object.values(simulator.missionConfigs)
     .map(m => {

@@ -23,10 +23,12 @@ const ConfigureTask = ({
   requiredValues,
   simulator,
   macros,
+  preMacros,
   updateSelectedDefinition,
   updateRequiredValues,
   updateStation,
   updateMacros,
+  updatePreMacros,
   configureMacro
 }) => (
   <div style={{ display: "flex", flex: 1, height: "100%" }}>
@@ -96,6 +98,9 @@ const ConfigureTask = ({
                   template.macros &&
                     template.macros.length &&
                     updateMacros(template.macros);
+                  template.preMacros &&
+                    template.preMacros.length &&
+                    updatePreMacros(template.preMacros);
                 }}
               >
                 <option value="none">Choose a Template</option>
@@ -202,54 +207,17 @@ const ConfigureTask = ({
               </Query>
             </div>
             <hr />
-            <div>
-              <label>
-                Macros <small>Will be triggered when task is complete</small>
-              </label>
-              <EventPicker
-                className={"btn btn-sm btn-success"}
-                handleChange={e => {
-                  const { value: event } = e.target;
-                  updateMacros(
-                    macros
-                      .map(({ __typename, ...rest }) => rest)
-                      .concat({
-                        event,
-                        args: "{}",
-                        delay: 0,
-                        id: uuid.v4()
-                      })
-                  );
-                }}
-              />
-              {macros.map(m => (
-                <div
-                  key={m.id}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between"
-                  }}
-                >
-                  <span>
-                    <EventName id={m.event} label={m.event} />
-                  </span>{" "}
-                  <Button
-                    size="sm"
-                    color="warning"
-                    onClick={() => configureMacro(m.id)}
-                  >
-                    Configure Macro
-                  </Button>{" "}
-                  <FontAwesome
-                    name="ban"
-                    className="text-danger"
-                    onClick={() =>
-                      updateMacros(macros.filter(mm => mm.id !== m.id))
-                    }
-                  />
-                </div>
-              ))}
-            </div>
+            <MacroPicker
+              updateMacros={updateMacros}
+              macros={macros}
+              configureMacro={configureMacro}
+            />
+            <MacroPicker
+              pre
+              updateMacros={updatePreMacros}
+              macros={preMacros}
+              configureMacro={configureMacro}
+            />
           </div>
         </Fragment>
       )}
@@ -258,3 +226,57 @@ const ConfigureTask = ({
 );
 
 export default ConfigureTask;
+
+const MacroPicker = ({ pre, updateMacros, macros, configureMacro }) => {
+  return (
+    <div>
+      <label>
+        {pre ? "Pre" : ""}Macros{" "}
+        <small>
+          Will be triggered when task is {pre ? "created" : "complete"}
+        </small>
+      </label>
+      <EventPicker
+        className={"btn btn-sm btn-success"}
+        handleChange={e => {
+          const { value: event } = e.target;
+          updateMacros(
+            macros
+              .map(({ __typename, ...rest }) => rest)
+              .concat({
+                event,
+                args: "{}",
+                delay: 0,
+                id: uuid.v4()
+              })
+          );
+        }}
+      />
+      {macros.map(m => (
+        <div
+          key={m.id}
+          style={{
+            display: "flex",
+            justifyContent: "space-between"
+          }}
+        >
+          <span>
+            <EventName id={m.event} label={m.event} />
+          </span>{" "}
+          <Button
+            size="sm"
+            color="warning"
+            onClick={() => configureMacro(m.id)}
+          >
+            Configure Macro
+          </Button>{" "}
+          <FontAwesome
+            name="ban"
+            className="text-danger"
+            onClick={() => updateMacros(macros.filter(mm => mm.id !== m.id))}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
