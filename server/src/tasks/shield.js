@@ -334,12 +334,19 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ShieldControl")
       );
-      const shield = App.systems.find(
-        s =>
-          s.id === shieldId ||
-          (s.name === shieldId && s.simulatorId === simulator.id) ||
-          (s.displayName === shieldId && s.simulatorId === simulator.id)
-      );
+      const shield =
+        App.systems.find(
+          s =>
+            s.class === "Shield" &&
+            (s.id === shieldId ||
+              (s.name === shieldId && s.simulatorId === simulator.id) ||
+              (s.displayName === shieldId && s.simulatorId === simulator.id))
+        ) ||
+        randomFromList(
+          App.systems.filter(
+            s => s.simulatorId === simulator.id && s.class === "Shield"
+          )
+        );
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Set the frequency of the ${shield.displayName ||
