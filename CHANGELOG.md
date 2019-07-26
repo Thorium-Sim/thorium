@@ -1,3 +1,22 @@
+# [1.18.0](https://github.com/Thorium-Sim/thorium/compare/1.17.4...1.18.0) (2019-07-21)
+
+
+### Bug Fixes
+
+* **Interfaces:** Fixes a minor UI inconsistency. Closes [#2455](https://github.com/Thorium-Sim/thorium/issues/2455) ([425dd4c](https://github.com/Thorium-Sim/thorium/commit/425dd4c))
+* **Interfaces:** Fixes the UI of the Add Task macro when using it for interfaces and other node-based configs. Closes [#2451](https://github.com/Thorium-Sim/thorium/issues/2451) ([a16fa9f](https://github.com/Thorium-Sim/thorium/commit/a16fa9f))
+* **Sound Effects:** Login sound effect no longer plays if the login is unsuccessful. Closes [#2460](https://github.com/Thorium-Sim/thorium/issues/2460) ([e1b57e6](https://github.com/Thorium-Sim/thorium/commit/e1b57e6))
+
+
+### Features
+
+* **Damage Reports:** Makes it possible to specify the number of steps in a damage report or task report. Closes [#2423](https://github.com/Thorium-Sim/thorium/issues/2423) ([3e13bf1](https://github.com/Thorium-Sim/thorium/commit/3e13bf1))
+* **Macros:** Add the ability to control whether a delayed macro will still run after a flight reset. Default is to cancel macros after flight reset. Closes [#2456](https://github.com/Thorium-Sim/thorium/issues/2456) ([31befdf](https://github.com/Thorium-Sim/thorium/commit/31befdf))
+* **Reactor:** Adds a macro for changing the reactor efficiency. This can be used to set a ship's reactor to external power at the beginning of a flight. Closes [#2440](https://github.com/Thorium-Sim/thorium/issues/2440) ([f41c5a1](https://github.com/Thorium-Sim/thorium/commit/f41c5a1))
+* **Sensors:** Adds a checkbox to the extras tab of sensors core allowing you to see labels for all of the sensor contacts. Closes [#2437](https://github.com/Thorium-Sim/thorium/issues/2437) ([1b921d2](https://github.com/Thorium-Sim/thorium/commit/1b921d2))
+* **Shields:** Adds a macro for changing the shield frequencies. Closes [#2442](https://github.com/Thorium-Sim/thorium/issues/2442) ([c4bcf66](https://github.com/Thorium-Sim/thorium/commit/c4bcf66))
+* **Sound Effects:** Makes it possible to change the volume of interface sound effects. Closes [#2444](https://github.com/Thorium-Sim/thorium/issues/2444) ([e43cbda](https://github.com/Thorium-Sim/thorium/commit/e43cbda))
+
 ## [1.17.4](https://github.com/Thorium-Sim/thorium/compare/1.17.3...1.17.4) (2019-07-17)
 
 
