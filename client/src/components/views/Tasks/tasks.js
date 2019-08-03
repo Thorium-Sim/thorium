@@ -198,7 +198,9 @@ class Tasks extends Component {
               />
             </h3>
             <Card>
-              <CardBlock>{task && task.instructions}</CardBlock>
+              <CardBlock style={{ whiteSpace: "pre-line" }}>
+                {task && task.instructions}
+              </CardBlock>
             </Card>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Mutation
