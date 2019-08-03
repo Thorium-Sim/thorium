@@ -26,7 +26,7 @@ const PowerLine = ({
   const [measureRef, { left, width }] = useMeasure();
   const playEffect = useSoundEffect();
   React.useEffect(() => {
-    if (power) {
+    if (power || power === 0) {
       setStoredPower(power);
     }
   }, [power]);
