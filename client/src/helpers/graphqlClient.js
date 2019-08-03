@@ -10,7 +10,7 @@ import { FLIGHTS_QUERY } from "../containers/FlightDirector/Welcome/Welcome";
 import { getClientId } from "helpers/getClientId";
 import { setContext } from "apollo-link-context";
 
-import * as Sentry from "@sentry/browser";
+// import * as Sentry from "@sentry/browser";
 
 const hostname = window.location.hostname;
 
@@ -23,12 +23,12 @@ const wsLink = ApolloLink.from([
         console.log(
           `[Subscription Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
         );
-        Sentry.captureException(error);
+        // Sentry.captureException(error);
       });
 
     if (networkError) {
       console.log(`[Network error]: ${networkError}`);
-      Sentry.captureException(networkError);
+      // Sentry.captureException(networkError);
     }
     if (response) response.errors = null;
   }),

@@ -63,6 +63,7 @@ function downMixBuffer(buffer, channel) {
 }
 
 export function playSound(opts) {
+  if (!opts.asset) return;
   removeSound(opts.id, true);
   opts.id = opts.id || uuid.v4();
   const volume = opts.muted ? 0 : opts.volume || 1;
