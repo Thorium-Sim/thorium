@@ -1,3 +1,14 @@
+## [1.19.1](https://github.com/Thorium-Sim/thorium/compare/1.19.0...1.19.1) (2019-08-03)
+
+
+### Bug Fixes
+
+* **Power Distribution:** Setting power levels to 0 in core show properly on the station. Closes [#2477](https://github.com/Thorium-Sim/thorium/issues/2477) ([945215e](https://github.com/Thorium-Sim/thorium/commit/945215e))
+* **Task Reports:** Fixes an issue with task report reactivation codes. Closes [#2481](https://github.com/Thorium-Sim/thorium/issues/2481). ([e78abaf](https://github.com/Thorium-Sim/thorium/commit/e78abaf))
+* **Task Reports:** Task reports properly disappear when a flight is reset. Closes [#2482](https://github.com/Thorium-Sim/thorium/issues/2482) ([46df570](https://github.com/Thorium-Sim/thorium/commit/46df570))
+* **Tasks:** Fixes issues with tasks that can cause server crashes. Closes [#2483](https://github.com/Thorium-Sim/thorium/issues/2483) ([4fca4eb](https://github.com/Thorium-Sim/thorium/commit/4fca4eb))
+* **Tasks:** Internal call task now properly handles custom locations. Closes [#2468](https://github.com/Thorium-Sim/thorium/issues/2468) ([860616c](https://github.com/Thorium-Sim/thorium/commit/860616c))
+
 # [1.19.0](https://github.com/Thorium-Sim/thorium/compare/1.18.0...1.19.0) (2019-07-26)
 
 
