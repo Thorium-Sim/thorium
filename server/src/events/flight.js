@@ -25,7 +25,8 @@ export const aspectList = [
   "commandLine",
   "triggerGroups",
   "interfaces",
-  "tasks"
+  "tasks",
+  "taskReports"
 ];
 
 export function addAspects(template, sim, data = App) {
