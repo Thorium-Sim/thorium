@@ -8,7 +8,8 @@ App.on("addTask", ({ taskInput, simulatorId }) => {
   const task = new Classes.Task(input);
   App.tasks.push(task);
   // Execute the pre-macros
-  taskInput.preMacros.length > 0 &&
+  taskInput.preMacros &&
+    taskInput.preMacros.length > 0 &&
     App.handleEvent(
       { simulatorId: task.simulatorId, macros: taskInput.preMacros },
       "triggerMacros"

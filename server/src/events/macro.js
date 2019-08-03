@@ -33,7 +33,9 @@ App.on("updateMacroActions", ({ id, actions }) => {
 });
 App.on("triggerMacroAction", ({ macroId, simulatorId }) => {
   const macro = App.macros.find(s => s.id === macroId);
-
+  if (!macro) {
+    return;
+  }
   // Don't allow a macro to trigger itself
   const macros = macro.actions.filter(a => {
     const args = typeof a.args === "string" ? JSON.parse(a.args) : a.args;
