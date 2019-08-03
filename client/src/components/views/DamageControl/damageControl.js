@@ -241,7 +241,7 @@ class DamageControl extends Component {
           return {
             ...t,
             className: systemClasses(t),
-            actve: selectedSystem === t.id,
+            active: selectedSystem === t.id,
             type: "task",
             onClick: () => this.selectSystem(t.id),
             children: (

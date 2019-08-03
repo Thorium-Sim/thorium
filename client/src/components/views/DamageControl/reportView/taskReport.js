@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import { Button } from "helpers/reactstrap";
 
 const ReportViewTask = ({ system, stepDamage }) => {
-  const task = system.tasks.find(t => !t.verified);
+  const task = system.tasks.find(t => !t.verified) || {};
   if (stepDamage) {
     // Get the first task that isn't verified;
     const stepCount = system.tasks.findIndex(t => t.id === task.id) + 1;
