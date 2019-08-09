@@ -1,8 +1,8 @@
 import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import { StationResolver } from "../helpers/stationResolver";
+const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -14,12 +14,14 @@ const schema = gql`
     executive: Boolean
   }
 
-  type Thx {
+  type Thx implements SystemInterface {
     id: ID
     simulatorId: ID
     type: String
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
     damage: Damage
     power: Power
     stealthFactor: Float

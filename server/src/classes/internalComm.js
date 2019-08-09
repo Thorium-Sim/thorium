@@ -2,11 +2,13 @@ import { System } from "./generic";
 
 export default class InternalComm extends System {
   constructor(params = {}) {
-    super(params);
+    super({
+      displayName: "Internal Comm",
+      name: "Internal Communications",
+      ...params
+    });
     this.type = "InternalComm";
     this.class = "InternalComm";
-    this.name = params.name || "Internal Communications";
-    this.displayName = params.displayName || "Internal Comm";
     this.state = params.state || "idle"; //One of 'idle', 'connected'
     this.outgoing = params.outgoing || null;
     this.incoming = params.incoming || null;

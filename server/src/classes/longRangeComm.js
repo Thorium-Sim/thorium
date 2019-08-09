@@ -61,11 +61,13 @@ class LRMessage {
 
 export default class LongRangeComm extends System {
   constructor(params = {}) {
-    super(params);
+    super({
+      displayName: "Long Range Comm",
+      name: "Long Range Communications",
+      ...params
+    });
     this.type = "LongRangeComm";
     this.class = "LongRangeComm";
-    this.name = params.name || "Long Range Communications";
-    this.displayName = "Long Range Comm";
     this.messages = [];
     this.messageSent = false;
     const messages = params.messages || [];

@@ -3,7 +3,7 @@ import App from "../app";
 import taskDefinitions from "../tasks";
 import { randomFromList } from "./generic/damageReports/constants";
 
-class Macro {
+export class Macro {
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.event = params.event || "";

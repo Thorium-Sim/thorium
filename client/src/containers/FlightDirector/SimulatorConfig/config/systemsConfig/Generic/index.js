@@ -15,6 +15,13 @@ export const GENERIC_QUERY = gql`
       id
       name
       displayName
+      upgradeName
+      upgradeMacros {
+        id
+        event
+        args
+        delay
+      }
       type
       heatRate
       power {
@@ -67,6 +74,7 @@ class GenericConfig extends Component {
         {({ loading, data }) => {
           if (loading) return null;
           const { type } = data.system;
+          console.log(data.system);
           return (
             <div>
               <h4>{titleCase(type)}</h4>

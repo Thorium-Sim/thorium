@@ -77,12 +77,10 @@ class Terminal {
 
 export default class ComputerCore extends System {
   constructor(params) {
-    super(params);
+    super({ name: "Main Computer", ...params });
     this.id = params.id || uuid.v4();
     this.class = "ComputerCore";
     this.type = "ComputerCore";
-    this.name = params.name || "Main Computer";
-    this.displayName = params.displayName || "Main Computer";
     this.simulatorId = params.simulatorId || null;
     this.users = []; // Hackers create virii
     this.virii = []; // Virii corrupt files

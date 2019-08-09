@@ -5,7 +5,7 @@ import { pubsub } from "../helpers/subscriptionManager.js";
 import uuid from "uuid";
 export default class Engine extends HeatMixin(System) {
   constructor(params = {}) {
-    super(params);
+    super({ displayName: params.name + " Engine", ...params });
     this.class = "Engine";
     this.type = "Engine";
     this.on = params.on || false;
@@ -16,7 +16,6 @@ export default class Engine extends HeatMixin(System) {
     this.speedFactor = params.speedFactor || 1250;
     this.acceleration = params.acceleration || 0;
     this.cooling = false;
-    this.displayName = params.displayName || this.name + " Engine";
   }
   get stealthFactor() {
     if (!this.on) return 0;

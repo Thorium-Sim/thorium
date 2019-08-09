@@ -11,6 +11,8 @@ const schema = gql`
     type: String
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
     power: Power
     damage: Damage
     #List torpedos take a list of warheads

@@ -5,13 +5,18 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
-  type Probes {
+  type Probes implements SystemInterface {
     id: ID
     simulatorId: ID
     type: String
     name: String
     power: Power
     damage: Damage
+    displayName: String
+    upgradeName: String
+    upgraded: Boolean
+    stealthFactor: Float
+    locations: [Room]
     torpedo: Boolean
     processedData: String
     probes(network: Boolean): [Probe]

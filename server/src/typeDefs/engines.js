@@ -12,6 +12,8 @@ const schema = gql`
     power: Power
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
     stealthFactor: Float
     speeds: [Speed]
     speed: Int

@@ -30,6 +30,7 @@ const SYSTEMS_SUB = gql`
       id
       name
       displayName
+      upgraded
       power {
         power
         powerLevels
@@ -260,7 +261,8 @@ class DamageControlCore extends Component {
                   <th>Set</th>
                   <th />
                   <th>Req</th>
-                  <th>Flux</th>
+                  <th title="Flux">F</th>
+                  <th title="Upgraded">U</th>
                 </tr>
               </thead>
               <tbody>
@@ -291,47 +293,71 @@ class DamageControlCore extends Component {
                     if (a.name < b.name) return -1;
                     return 0;
                   })
-                  .map(s => (
-                    <tr key={s.id}>
-                      <td
-                        onClick={e => this.toggleDamage(e, s)}
-                        onContextMenu={e => this.setContext(e, s)}
-                        style={this.systemStyle(s)}
-                      >
-                        {this.systemName(s)} {this.renderEngineSpeed(s)}
-                      </td>
-                      <td>
-                        {(s.power.power || s.power.power === 0) && (
-                          <InputField
-                            prompt="What is the power?"
-                            onClick={this.setPower.bind(this, s)}
+                  .map(
+                    s =>
+                      console.log(s, this.systemName(s)) || (
+                        <tr key={s.id}>
+                          <td
+                            onClick={e => this.toggleDamage(e, s)}
+                            onContextMenu={e => this.setContext(e, s)}
+                            style={this.systemStyle(s)}
                           >
-                            {s.power.power}
-                          </InputField>
-                        )}
-                      </td>
-                      <td>/</td>
-                      <td>
-                        {(s.power.power || s.power.power === 0) && (
-                          <OutputField>{s.power.powerLevels[0]}</OutputField>
-                        )}
-                      </td>
-                      <td>
-                        {s.power.powerLevels &&
-                          s.power.powerLevels.length > 0 && (
-                            <Button
-                              size="sm"
-                              color="warning"
-                              title="Flux"
-                              style={{ height: "15px" }}
-                              onClick={() =>
-                                action({ variables: { id: s.id } })
-                              }
-                            />
-                          )}
-                      </td>
-                    </tr>
-                  ))}
+                            {this.systemName(s)} {this.renderEngineSpeed(s)}
+                          </td>
+                          <td>
+                            {(s.power.power || s.power.power === 0) && (
+                              <InputField
+                                prompt="What is the power?"
+                                onClick={this.setPower.bind(this, s)}
+                              >
+                                {s.power.power}
+                              </InputField>
+                            )}
+                          </td>
+                          <td>/</td>
+                          <td>
+                            {(s.power.power || s.power.power === 0) && (
+                              <OutputField>
+                                {s.power.powerLevels[0]}
+                              </OutputField>
+                            )}
+                          </td>
+                          <td>
+                            {s.power.powerLevels &&
+                              s.power.powerLevels.length > 0 && (
+                                <Button
+                                  size="sm"
+                                  color="warning"
+                                  title="Flux"
+                                  style={{ height: "15px" }}
+                                  onClick={() =>
+                                    action({ variables: { id: s.id } })
+                                  }
+                                />
+                              )}
+                          </td>
+                          <td>
+                            <Mutation
+                              mutation={gql`
+                                mutation UpgradeSystem($systemId: ID!) {
+                                  upgradeSystem(systemId: $systemId)
+                                }
+                              `}
+                              variables={{ systemId: s.id }}
+                            >
+                              {action => (
+                                <input
+                                  type="checkbox"
+                                  checked={s.upgraded}
+                                  disabled={s.upgraded}
+                                  onClick={action}
+                                />
+                              )}
+                            </Mutation>
+                          </td>
+                        </tr>
+                      )
+                  )}
                 <tr>
                   <td>Total</td>
                   <td>
@@ -372,9 +398,10 @@ class DamageControlCore extends Component {
                       </InputField>
                     )}
                   </td>
+                  <td />
                 </tr>
                 <tr>
-                  <td colSpan={5}>Right-Click for options</td>
+                  <td colSpan={6}>Right-Click for options</td>
                 </tr>
                 <tr>
                   <td colSpan={1}>
@@ -382,7 +409,7 @@ class DamageControlCore extends Component {
                       Flux Random
                     </Button>
                   </td>
-                  <td colSpan={4}>
+                  <td colSpan={5}>
                     <Button
                       block
                       size="sm"
@@ -439,6 +466,7 @@ const SYSTEMS_QUERY = gql`
       id
       name
       displayName
+      upgraded
       power {
         power
         powerLevels

@@ -11,6 +11,8 @@ const schema = gql`
     type: String
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
     stealthFactor: Float
     heat: Float
     coolant: Float

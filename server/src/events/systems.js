@@ -82,8 +82,12 @@ const sendUpdate = sys => {
 
   if (sys.class === "DockingPort")
     pubsub.publish("dockingUpdate", App.dockingPorts);
-  if (sys.class === "Crm") 
-      pubsub.publish("crmUpdate", sys);
+  if (sys.class === "ComputerCore")
+    pubsub.publish(
+      "computerCoreUpdate",
+      App.systems.filter(s => s.class === "ComputerCore")
+    );
+  if (sys.class === "Crm") pubsub.publish("crmUpdate", sys);
   pubsub.publish("systemsUpdate", App.systems);
 };
 App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {
@@ -107,10 +111,28 @@ App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type, cb }) => {
   pubsub.publish("systemsUpdate", App.systems);
   cb && cb();
 });
-App.on("updateSystemName", ({ systemId, name, displayName }) => {
+App.on("updateSystemName", ({ systemId, name, displayName, upgradeName }) => {
   const sys = App.systems.find(s => s.id === systemId);
-  sys.updateName({ name, displayName });
+  sys.updateName({ name, displayName, upgradeName });
   sendUpdate(sys);
+});
+App.on("updateSystemUpgradeMacros", ({ systemId, upgradeMacros }) => {
+  const sys = App.systems.find(t => t.id === systemId);
+  sys && sys.setUpgradeMacros(upgradeMacros);
+  sendUpdate(sys);
+});
+App.on("upgradeSystem", ({ systemId }) => {
+  const sys = App.systems.find(t => t.id === systemId);
+  if (sys) {
+    sys.upgrade();
+    // Execute the macros
+    if (sys.upgradeMacros && sys.upgradeMacros.length > 0)
+      App.handleEvent(
+        { simulatorId: sys.simulatorId, macros: sys.upgradeMacros },
+        "triggerMacros"
+      );
+    sendUpdate(sys);
+  }
 });
 App.on("damageSystem", ({ systemId, report, destroyed, which = "default" }) => {
   let sys = App.systems.find(s => s.id === systemId);

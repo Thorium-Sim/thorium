@@ -11,6 +11,8 @@ const schema = gql`
     type: String
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
     damage: Damage
     power: Power
     stealthFactor: Float
@@ -29,6 +31,10 @@ const schema = gql`
     type: String
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
+    upgradeMacros: [TimelineItem]
+
     damage: Damage
     power: Power
     stealthFactor: Float
@@ -63,7 +69,17 @@ const schema = gql`
       simulatorId: ID
       type: String
     ): String
-    updateSystemName(systemId: ID!, name: String, displayName: String): String
+    updateSystemName(
+      systemId: ID!
+      name: String
+      displayName: String
+      upgradeName: String
+    ): String
+    updateSystemUpgradeMacros(
+      systemId: ID!
+      upgradeMacros: [TimelineItemInput]
+    ): String
+    upgradeSystem(systemId: ID!): String
     updateSystemRooms(systemId: ID!, locations: [ID]): String
   }
   extend type Subscription {

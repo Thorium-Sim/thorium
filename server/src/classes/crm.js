@@ -153,11 +153,9 @@ class CrmTorpedo {
 
 export default class Crm extends System {
   constructor(params) {
-    super(params);
+    super({ name: "Crm", displayName: "CRM-114", ...params });
     this.class = "Crm";
     this.type = "Crm";
-    this.name = params.name || "Crm";
-    this.displayName = params.name || "CRM-114";
 
     this.password = params.password || "";
     this.activated = params.activated || false;

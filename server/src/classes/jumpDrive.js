@@ -18,11 +18,10 @@ If a sector has more power than it needs
 */
 export default class JumpDrive extends System {
   constructor(params = {}) {
-    super(params);
+    super({ name: "Jump Drive", ...params });
     this.class = "JumpDrive";
     this.type = "JumpDrive";
-    this.name = params.name || "Jump Drive";
-    this.displayName = params.displayName || "Jump Drive";
+
     this.simulatorId = params.simulatorId || null;
     this.power = params.power || {
       power: 5,

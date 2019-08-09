@@ -2,15 +2,17 @@ import { System } from "./generic";
 
 export default class Shield extends System {
   constructor(params) {
-    super(params);
+    super({
+      name: "Full",
+      displayName:
+        params.name === "Full" || params.name === "Shields"
+          ? "Shields"
+          : params.name + " Shields",
+      ...params
+    });
     this.class = "Shield";
     this.type = "Shield";
-    this.name = params.name || "Full";
-    this.displayName =
-      params.displayName ||
-      (this.name === "Full" || this.name === "Shields"
-        ? "Shields"
-        : this.name + " Shields");
+
     // One of '0,1,2,3,4,5,6'
     this.position = params.position || 0;
     this.frequency = params.frequency || 260.5;
