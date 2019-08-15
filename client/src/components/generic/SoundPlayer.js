@@ -63,14 +63,14 @@ function downMixBuffer(buffer, channel) {
 }
 
 export function playSound(opts) {
-  if (!opts.asset) return;
+  if (!opts.asset && !opts.url) return;
   removeSound(opts.id, true);
   opts.id = opts.id || uuid.v4();
   const volume = opts.muted ? 0 : opts.volume || 1;
   const playbackRate = opts.paused ? 0 : opts.playbackRate || 1;
   const channel = opts.channel || [0, 1];
   const asset = opts.url || `/assets${opts.asset}`;
-  if (!asset) return;
+  if (!asset || asset === "/assetsundefined") return;
   try {
     fetch(asset)
       .then(res => res.arrayBuffer())
