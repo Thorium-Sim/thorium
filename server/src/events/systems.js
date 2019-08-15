@@ -131,6 +131,24 @@ App.on("upgradeSystem", ({ systemId }) => {
         { simulatorId: sys.simulatorId, macros: sys.upgradeMacros },
         "triggerMacros"
       );
+    pubsub.publish("notify", {
+      id: uuid.v4(),
+      simulatorId: sys.simulatorId,
+      type: "System",
+      station: "Core",
+      title: `${sys.displayName} Upgraded`,
+      body: sys.name,
+      color: "info"
+    });
+    App.handleEvent(
+      {
+        simulatorId: sys.simulatorId,
+        title: `${sys.displayName} Upgraded`,
+        body: sys.name,
+        color: "info"
+      },
+      "addCoreFeed"
+    );
     sendUpdate(sys);
   }
 });
