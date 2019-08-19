@@ -1,3 +1,14 @@
+## [1.19.2](https://github.com/Thorium-Sim/thorium/compare/1.19.1...1.19.2) (2019-08-19)
+
+
+### Bug Fixes
+
+* **CRM:** Fixes an issue with training crashing on the CRM screen. Closes [#2497](https://github.com/Thorium-Sim/thorium/issues/2497) ([841b7f9](https://github.com/Thorium-Sim/thorium/commit/841b7f9))
+* **Macro Buttons:** Makes it possible to remove macro buttons. Closes [#2507](https://github.com/Thorium-Sim/thorium/issues/2507) ([58cf673](https://github.com/Thorium-Sim/thorium/commit/58cf673))
+* **Sensors:** Sensor contact list now properly scrolls. Closes [#2509](https://github.com/Thorium-Sim/thorium/issues/2509) ([106deb7](https://github.com/Thorium-Sim/thorium/commit/106deb7))
+* **Sets:** Fixes an issue where the set config crashes. Closes [#2488](https://github.com/Thorium-Sim/thorium/issues/2488) ([3b94242](https://github.com/Thorium-Sim/thorium/commit/3b94242))
+* **Sound Effects:** Fixes interface sound effects. Closes [#2495](https://github.com/Thorium-Sim/thorium/issues/2495) ([11abc39](https://github.com/Thorium-Sim/thorium/commit/11abc39))
+
 ## [1.19.1](https://github.com/Thorium-Sim/thorium/compare/1.19.0...1.19.1) (2019-08-03)
 
 
