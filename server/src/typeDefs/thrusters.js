@@ -5,9 +5,12 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
-  type Thruster {
+  type Thruster implements SystemInterface {
     id: ID
     name: String
+    displayName: String
+    stealthFactor: Float
+    locations: [Room]
     type: String
     simulatorId: ID
     direction: Coordinates
@@ -17,6 +20,8 @@ const schema = gql`
     manualThrusters: Boolean
     power: Power
     damage: Damage
+    upgradeName: String
+    upgraded: Boolean
     rotationSpeed: Float
     movementSpeed: Float
   }

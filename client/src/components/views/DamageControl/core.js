@@ -30,6 +30,7 @@ const SYSTEMS_SUB = gql`
       id
       name
       displayName
+      upgraded
       power {
         power
         powerLevels
@@ -260,7 +261,8 @@ class DamageControlCore extends Component {
                   <th>Set</th>
                   <th />
                   <th>Req</th>
-                  <th>Flux</th>
+                  <th title="Upgraded">U</th>
+                  <th title="Flux">F</th>
                 </tr>
               </thead>
               <tbody>
@@ -315,6 +317,25 @@ class DamageControlCore extends Component {
                         {(s.power.power || s.power.power === 0) && (
                           <OutputField>{s.power.powerLevels[0]}</OutputField>
                         )}
+                      </td>
+                      <td>
+                        <Mutation
+                          mutation={gql`
+                            mutation UpgradeSystem($systemId: ID!) {
+                              upgradeSystem(systemId: $systemId)
+                            }
+                          `}
+                          variables={{ systemId: s.id }}
+                        >
+                          {action => (
+                            <input
+                              type="checkbox"
+                              checked={s.upgraded}
+                              disabled={s.upgraded}
+                              onClick={action}
+                            />
+                          )}
+                        </Mutation>
                       </td>
                       <td>
                         {s.power.powerLevels &&
@@ -372,9 +393,10 @@ class DamageControlCore extends Component {
                       </InputField>
                     )}
                   </td>
+                  <td />
                 </tr>
                 <tr>
-                  <td colSpan={5}>Right-Click for options</td>
+                  <td colSpan={6}>Right-Click for options</td>
                 </tr>
                 <tr>
                   <td colSpan={1}>
@@ -382,7 +404,7 @@ class DamageControlCore extends Component {
                       Flux Random
                     </Button>
                   </td>
-                  <td colSpan={4}>
+                  <td colSpan={5}>
                     <Button
                       block
                       size="sm"
@@ -439,6 +461,7 @@ const SYSTEMS_QUERY = gql`
       id
       name
       displayName
+      upgraded
       power {
         power
         powerLevels

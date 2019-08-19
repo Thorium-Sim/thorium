@@ -14,6 +14,8 @@ const schema = gql`
     displayName: String
     stealthFactor: Float
     damage: Damage
+    upgradeName: String
+    upgraded: Boolean
     locations: [Room]
 
     sectors: JumpDriveSectors

@@ -18,6 +18,9 @@
       pointer-events: all;
     }
   }
+  .sensors-contact-list {
+    height: calc(100% - 100px);
+  }
   .sensorGridHolder {
     background-color: #ccc;
     border-radius: 50%;

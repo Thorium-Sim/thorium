@@ -164,32 +164,47 @@ const TaskConfig = ({
   );
 };
 
-const ConfigureMacro = ({ action, id, macros, client, pre }) => {
+export const ConfigureMacro = ({
+  action,
+  id,
+  macros,
+  client,
+  pre,
+  label = `Will be triggered when task is ${pre ? "created" : "complete"}`
+}) => {
   const [configureMacro, setConfigureMacro] = useState(null);
+  const update = ({ id: macroId, ...rest }) => {
+    setConfigureMacro(macro => {
+      return { ...macro, ...rest };
+    });
+  };
 
   if (configureMacro) {
-    const update = ({ id: macroId, event, args, delay }) => {
-      action({
-        variables: {
-          id,
-          macros: macros.map(m =>
-            m.id === macroId ? { ...m, event, args, delay } : m
-          )
-        }
-      });
-    };
-    const macro = macros.find(c => c.id === configureMacro);
     return (
       <div className="macro-config">
         <div style={{ flex: 1 }}>
           <label>Macro Config</label>
-          <MacroConfig action={macro} updateAction={update} client={client} />
+          <MacroConfig
+            action={configureMacro}
+            updateAction={update}
+            client={client}
+          />
         </div>
         <Button
           size="sm"
           block
           color="success"
-          onClick={() => setConfigureMacro(null)}
+          onClick={() => {
+            action({
+              variables: {
+                id,
+                macros: macros.map(m =>
+                  m.id === configureMacro.id ? { ...m, ...configureMacro } : m
+                )
+              }
+            });
+            setConfigureMacro(null);
+          }}
           style={{ marginBottom: "20px" }}
         >
           Done Configuring Macro
@@ -200,10 +215,7 @@ const ConfigureMacro = ({ action, id, macros, client, pre }) => {
   return (
     <div>
       <label>
-        {pre ? "Pre" : ""}Macros{" "}
-        <small>
-          Will be triggered when task is {pre ? "created" : "complete"}
-        </small>
+        {pre ? "Pre" : ""}Macros <small>{label}</small>
       </label>
       <EventPicker
         className={"btn btn-sm btn-success"}
@@ -238,7 +250,7 @@ const ConfigureMacro = ({ action, id, macros, client, pre }) => {
           <Button
             size="sm"
             color="warning"
-            onClick={() => setConfigureMacro(m.id)}
+            onClick={() => setConfigureMacro(m)}
           >
             Configure Macro
           </Button>{" "}

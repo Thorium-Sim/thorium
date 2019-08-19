@@ -1,8 +1,8 @@
 import App from "../app";
 import { gql, withFilter } from "apollo-server-express";
 import { pubsub } from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import { symptoms } from "../classes/medical/symptoms";
+const mutationHelper = require("../helpers/mutationHelper").default;
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -12,6 +12,8 @@ const schema = gql`
     simulatorId: ID
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
     type: String
     damage: Damage
     power: Power

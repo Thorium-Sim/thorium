@@ -5,11 +5,14 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
-  type Transporter {
+  type Transporter implements SystemInterface {
     id: ID
     simulatorId: ID
+    upgradeName: String
+    upgraded: Boolean
     type: String
     name: String
+    displayName: String
     targets: [TransporterTarget]
     requestedTarget: String
     destination: String
@@ -18,6 +21,8 @@ const schema = gql`
     power: Power
     damage: Damage
     chargeSpeed: Float
+    stealthFactor: Float
+    locations: [Room]
   }
   type TransporterTarget {
     id: ID

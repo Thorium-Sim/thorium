@@ -5,16 +5,21 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
-  type InternalComm {
+  type InternalComm implements SystemInterface {
     id: ID
     simulatorId: ID
     type: String
     power: Power
     name: String
+    displayName: String
+    upgradeName: String
+    upgraded: Boolean
     state: String
     outgoing: String
     incoming: String
     damage: Damage
+    stealthFactor: Float
+    locations: [Room]
   }
   extend type Query {
     internalComm(simulatorId: ID!): [InternalComm]

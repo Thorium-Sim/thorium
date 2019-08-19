@@ -5,7 +5,7 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
-  type Navigation {
+  type Navigation implements SystemInterface {
     id: ID
     simulatorId: ID
     type: String
@@ -13,6 +13,9 @@ const schema = gql`
     displayName: String
     power: Power
     damage: Damage
+    upgradeName: String
+    upgraded: Boolean
+    stealthFactor: Float
     calculate: Boolean
     currentCourse: NavLoc
     calculatedCourse: NavLoc

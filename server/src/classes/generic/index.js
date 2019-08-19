@@ -10,6 +10,16 @@ import processReport from "./processReport";
 import DamageStep from "./damageStep";
 import DamageTask from "./damageTask";
 
+export class Macro {
+  constructor(params) {
+    this.id = params.id || uuid.v4();
+    this.event = params.event || "";
+    this.args = params.args || "{}";
+    this.delay = params.delay || 0;
+    this.noCancelOnReset = params.noCancelOnReset || false;
+  }
+}
+
 export class Damage {
   constructor(params = {}) {
     this.damaged = params.damaged || false;
@@ -33,7 +43,14 @@ export class System {
     this.type = "System";
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
-    this.displayName = params.displayName || params.name;
+    this.storedDisplayName =
+      params.storedDisplayName || params.displayName || params.name;
+    this.upgradeName = params.upgradeName || this.storedDisplayName;
+    this.upgraded = params.upgraded || false;
+    this.upgradeMacros = [];
+    params.upgradeMacros &&
+      params.upgradeMacros.forEach(m => this.upgradeMacros.push(new Macro(m)));
+
     this.power = params.power
       ? Object.assign({}, params.power)
       : {
@@ -62,12 +79,28 @@ export class System {
   get stealthFactor() {
     return null;
   }
+  set displayName(value) {
+    this.storedDisplayName = value;
+  }
+  get displayName() {
+    if (this.upgraded && this.upgradeName) {
+      return this.upgradeName;
+    }
+    return this.storedDisplayName;
+  }
   trainingMode() {
     return;
   }
-  updateName({ name, displayName }) {
+  updateName({ name, displayName, upgradeName }) {
     if (name || name === "") this.name = name;
     if (displayName || displayName === "") this.displayName = displayName;
+    if (upgradeName || upgradeName === "") this.upgradeName = upgradeName;
+  }
+  setUpgradeMacros(macros) {
+    this.upgradeMacros = macros || [];
+  }
+  upgrade() {
+    this.upgraded = true;
   }
   updateLocations(locations) {
     this.locations = locations || [];

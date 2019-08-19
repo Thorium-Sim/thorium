@@ -13,6 +13,8 @@ const schema = gql`
     damage: Damage
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
     stealthFactor: Float
     heat: Float
     coolant: Float

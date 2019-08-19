@@ -3,11 +3,10 @@ import HeatMixin from "./generic/heatMixin";
 
 export default class Railgun extends HeatMixin(System) {
   constructor(params) {
-    super(params);
+    super({ name: "Railgun", ...params });
     this.class = "Railgun";
     this.type = "Railgun";
-    this.name = params.name || "Railgun";
-    this.displayName = params.displayName || "Railgun";
+
     this.maxAmmo = params.maxAmmo || 25;
     this.ammo = params.ammo || 0;
     this.availableAmmo = params.availableAmmo || 250;

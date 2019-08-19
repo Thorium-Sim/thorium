@@ -5,13 +5,18 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
-  type LRCommunications {
+  type LRCommunications implements SystemInterface {
     id: ID
     simulatorId: ID
     type: String
     power: Power
     name: String
+    displayName: String
     damage: Damage
+    upgradeName: String
+    upgraded: Boolean
+    stealthFactor: Float
+    locations: [Room]
     messages(crew: Boolean, sent: Boolean, approved: Boolean): [LRMessage]
     satellites: Int
 

@@ -95,6 +95,14 @@ const fragment = gql`
       id
       type
       name
+      displayName
+      upgradeName
+      upgradeMacros {
+        id
+        event
+        args
+        delay
+      }
       requiredDamageSteps {
         id
         name

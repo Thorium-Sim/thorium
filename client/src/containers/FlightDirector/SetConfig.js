@@ -133,11 +133,14 @@ class SetConfig extends Component {
     const { selectedSet, selectedSimulator, selectedStationSet } = this.state;
     const clientSet =
       this.props.data.sets
-        .find(s => s.id === selectedSet)
+        .find(s => s && s.id === selectedSet)
         .clients.find(
           c =>
+            c.simulator &&
             c.simulator.id === selectedSimulator &&
+            c.client &&
             c.client.id === clientId &&
+            c.stationSet &&
             c.stationSet.id === selectedStationSet
         ) || {};
     return clientSet.station || true;

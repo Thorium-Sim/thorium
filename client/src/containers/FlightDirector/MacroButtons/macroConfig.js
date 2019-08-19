@@ -364,7 +364,12 @@ const MacroConfig = ({ macros }) => {
                               "Are you sure you want to remove this button?"
                             )
                           ) {
-                            action({ variables: { id: selectedButton } });
+                            action({
+                              variables: {
+                                id: selectedButton,
+                                configId: macro.id
+                              }
+                            });
                             setSelectedAction(null);
                             setSelectedButton(null);
                           }

@@ -11,16 +11,20 @@ const schema = gql`
     rate: Float
   }
 
-  type CoolantTank {
+  type CoolantTank implements SystemInterface {
     id: ID
     simulatorId: ID
     type: String
     name: String
     displayName: String
+    upgradeName: String
+    upgraded: Boolean
     coolant: Float
     coolantRate: Float
     damage: Damage
     power: Power
+    stealthFactor: Float
+    locations: [Room]
   }
 
   type CoolantRegulator {
