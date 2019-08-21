@@ -16,6 +16,7 @@ export const GENERIC_QUERY = gql`
       name
       displayName
       upgradeName
+      upgradeBoard
       upgradeMacros {
         id
         event

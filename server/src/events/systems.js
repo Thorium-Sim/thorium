@@ -121,6 +121,11 @@ App.on("updateSystemUpgradeMacros", ({ systemId, upgradeMacros }) => {
   sys && sys.setUpgradeMacros(upgradeMacros);
   sendUpdate(sys);
 });
+App.on("updateSystemUpgradeBoard", ({ systemId, upgradeBoard }) => {
+  const sys = App.systems.find(t => t.id === systemId);
+  sys && sys.setUpgradeBoard(upgradeBoard);
+  sendUpdate(sys);
+});
 App.on("upgradeSystem", ({ systemId }) => {
   const sys = App.systems.find(t => t.id === systemId);
   if (sys) {
