@@ -30,6 +30,7 @@ const schema = gql`
     parts: [String]
     # Destination refers to a system
     destination: ID
+    upgrade: Boolean
   }
   extend type Query {
     exocomps(simulatorId: ID): [Exocomp]

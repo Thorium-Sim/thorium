@@ -52,13 +52,17 @@ function exocompLoop() {
                     e.updateState("returning");
                   }
                 } else {
-                  e.logs.push({
-                    timestamp: Date.now(),
-                    message: `No repairs necessary for ${sys.displayName ||
-                      sys.name}.`
-                  });
-                  e.parts = [];
-                  e.updateState("returning");
+                  if (e.upgrade) {
+                    e.updateState("upgrading");
+                  } else {
+                    e.logs.push({
+                      timestamp: Date.now(),
+                      message: `No repairs necessary for ${sys.displayName ||
+                        sys.name}.`
+                    });
+                    e.parts = [];
+                    e.updateState("returning");
+                  }
                 }
               }
             }

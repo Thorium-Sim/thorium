@@ -14,7 +14,7 @@ class Game extends Component {
       ...this.props.board,
       functions: {},
       stack: [],
-      delay: 100,
+      delay: 200,
       clean: true
     };
   }
@@ -274,17 +274,6 @@ class Game extends Component {
                   Reset
                 </button>
               </div>
-              <input
-                type="range"
-                min="20"
-                max="2000"
-                defaultValue={this.state.delay}
-                onChange={evt => {
-                  this.setState({
-                    delay: parseInt(evt.target.value, 10)
-                  });
-                }}
-              />
             </div>
           </Fragment>
         </div>

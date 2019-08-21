@@ -43,7 +43,8 @@ const partsList = [
 class ExocompConfig extends Component {
   state = {};
   render() {
-    const { number, id, cancel, deploy, simulatorId } = this.props || {};
+    const { number, id, cancel, deploy, simulatorId, upgrade } =
+      this.props || {};
     const { destination, parts = [] } = this.state;
     return (
       <Card>
@@ -54,50 +55,55 @@ class ExocompConfig extends Component {
               <Label>Destination</Label>
             </div>
             <DestinationSelect
+              upgrade={upgrade}
               simulatorId={simulatorId}
               destination={destination}
               select={dest => this.setState({ destination: dest })}
             />
           </FormGroup>
-          <FormGroup className="parts">
-            <Label>Parts</Label>
-            <div className="parts-holder">
-              {Array(2)
-                .fill(0)
-                .map((_, i) => (
-                  <div
-                    key={`part-config-${id}-${i}`}
-                    className="exocomp-part"
-                    style={{
-                      backgroundImage: `url('${partsImages[parts[i]]}')`
-                    }}
-                    onClick={() =>
-                      this.setState({
-                        parts: parts.filter((__, idx) => idx !== i)
-                      })
-                    }
-                  />
+          {!upgrade && (
+            <>
+              <FormGroup className="parts">
+                <Label>Parts</Label>
+                <div className="parts-holder">
+                  {Array(2)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div
+                        key={`part-config-${id}-${i}`}
+                        className="exocomp-part"
+                        style={{
+                          backgroundImage: `url('${partsImages[parts[i]]}')`
+                        }}
+                        onClick={() =>
+                          this.setState({
+                            parts: parts.filter((__, idx) => idx !== i)
+                          })
+                        }
+                      />
+                    ))}
+                </div>
+              </FormGroup>
+              <div className="parts-container">
+                {partsList.map(p => (
+                  <div key={`part-list-${p}`} className="part-label">
+                    <div
+                      className="exocomp-part"
+                      style={{ backgroundImage: `url('${partsImages[p]}')` }}
+                      onClick={() => {
+                        if (parts.length < 2) {
+                          this.setState({
+                            parts: parts.concat(p)
+                          });
+                        }
+                      }}
+                    />
+                    <p>{p}</p>
+                  </div>
                 ))}
-            </div>
-          </FormGroup>
-          <div className="parts-container">
-            {partsList.map(p => (
-              <div key={`part-list-${p}`} className="part-label">
-                <div
-                  className="exocomp-part"
-                  style={{ backgroundImage: `url('${partsImages[p]}')` }}
-                  onClick={() => {
-                    if (parts.length < 2) {
-                      this.setState({
-                        parts: parts.concat(p)
-                      });
-                    }
-                  }}
-                />
-                <p>{p}</p>
               </div>
-            ))}
-          </div>
+            </>
+          )}
           <Row>
             <Col sm={{ size: 4, offset: 2 }}>
               <Button block color="danger" onClick={cancel}>
@@ -109,7 +115,7 @@ class ExocompConfig extends Component {
                 block
                 color="success"
                 disabled={!destination}
-                onClick={() => deploy(id, destination, parts)}
+                onClick={() => deploy(id, destination, parts, upgrade)}
               >
                 Deploy
               </Button>

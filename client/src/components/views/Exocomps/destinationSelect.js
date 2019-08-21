@@ -13,7 +13,7 @@ class DestinationSelect extends Component {
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
   };
   render() {
-    const { destination, select, simulatorId } = this.props;
+    const { destination, select, simulatorId, upgrade } = this.props;
     const query = gql`
       query Systems($simulatorId: ID!) {
         systems(simulatorId: $simulatorId, extra: true) {
@@ -21,6 +21,8 @@ class DestinationSelect extends Component {
           name
           type
           displayName
+          upgradeBoard
+          upgraded
           damage {
             damaged
           }
@@ -47,6 +49,13 @@ class DestinationSelect extends Component {
               </DropdownToggle>
               <DropdownMenu>
                 {systems
+                  .filter(sys => {
+                    if (upgrade) {
+                      if (sys.upgradeBoard && !sys.upgraded) return true;
+                      return false;
+                    }
+                    return true;
+                  })
                   .concat()
                   .sort((a, b) => {
                     if (a.displayName > b.displayName) return 1;

@@ -6,6 +6,7 @@ import Tour from "helpers/tourHelper";
 import Exocomp from "./exocomp";
 import ExocompConfig from "./exocompConfig";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import UpgradeScreen from "./UpgradeScreen";
 import "./style.scss";
 
 const EXOCOMP_SUB = gql`
@@ -21,6 +22,7 @@ const EXOCOMP_SUB = gql`
       destination {
         id
         displayName
+        upgradeBoard
       }
       logs {
         timestamp
@@ -80,8 +82,8 @@ const trainingSteps = [
   }
 ];
 class Exocomps extends Component {
-  state = { selectedExocomp: null };
-  deploy = (id, destination, parts) => {
+  state = { selectedExocomp: null, upgradeExocomp: null };
+  deploy = (id, destination, parts, upgrade) => {
     const mutation = gql`
       mutation DeployExocomp($exocomp: ExocompInput!) {
         deployExocomp(exocomp: $exocomp)
@@ -91,7 +93,8 @@ class Exocomps extends Component {
       exocomp: {
         destination,
         parts,
-        id
+        id,
+        upgrade
       }
     };
     this.props.client.mutate({
@@ -122,9 +125,10 @@ class Exocomps extends Component {
       data: { exocomps, loading }
     } = this.props;
     if (loading || !exocomps) return null;
-    const { selectedExocomp } = this.state;
+    const { selectedExocomp, upgradeExocomp } = this.state;
     const exocomp = exocomps.find(e => e.id === selectedExocomp);
     const exocompNum = exocomps.findIndex(e => e.id === selectedExocomp) + 1;
+    const upgradedExocomp = exocomps.find(e => e.id === upgradeExocomp);
     return (
       <Container className="card-exocomps">
         <SubscriptionHelper
@@ -152,8 +156,16 @@ class Exocomps extends Component {
                     {...e}
                     number={i + 1}
                     key={e.id}
-                    select={ex => this.setState({ selectedExocomp: ex })}
-                    recall={() => this.recall(e.id)}
+                    select={(ex, upgrade) =>
+                      this.setState({ selectedExocomp: ex, upgrade })
+                    }
+                    recall={() => {
+                      this.recall(e.id);
+                      this.setState({ upgrade: false });
+                    }}
+                    upgrade={ex => {
+                      this.setState({ upgradeExocomp: ex });
+                    }}
                   />
                 );
               })}
@@ -167,7 +179,10 @@ class Exocomps extends Component {
                 cancel={() => this.setState({ selectedExocomp: null })}
                 number={exocompNum}
                 deploy={this.deploy}
+                upgrade={this.state.upgrade}
               />
+            ) : upgradedExocomp ? (
+              <UpgradeScreen {...upgradedExocomp} />
             ) : (
               <div>
                 <h3>Information</h3>
@@ -221,6 +236,7 @@ const QUERY = gql`
       destination {
         id
         displayName
+        upgradeBoard
       }
     }
   }
