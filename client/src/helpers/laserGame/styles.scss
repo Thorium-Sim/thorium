@@ -1,8 +1,15 @@
 .laserGame-root {
+  --tx: 0px;
+  --ty: 0px;
+  --tz: 0px;
+  --scale: 1;
+  --deg: 0deg;
+  flex: 1;
+  height: 100%;
   font-family: sans-serif;
   display: flex;
   justify-content: space-between;
-
+  position: relative;
   .Easy {
     background-color: #ccffcc;
   }
@@ -25,11 +32,12 @@
     background-color: rgba(0, 0, 0, 0.2);
   }
   .laser-game {
-    max-width: 400px;
+    max-width: 500px;
     flex: 4;
     background-color: rgba(0, 0, 0, 0.8);
   }
   .game-area {
+    position: relative;
     display: flex;
     flex-direction: column;
   }
@@ -37,13 +45,6 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-  }
-  :root {
-    --tx: 0px;
-    --ty: 0px;
-    --tz: 0px;
-    --scale: 1;
-    --deg: 0deg;
   }
   .dragger {
     position: absolute;

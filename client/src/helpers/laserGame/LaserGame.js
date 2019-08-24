@@ -170,10 +170,11 @@ const LaserGame = ({
     positionCell,
     positionSide,
     positionSprite,
-    movingObject
+    movingObject,
+    containerRef
   } = useDraggable({ dispatch, objects, cellSize, width });
   return (
-    <div className="game-area">
+    <div className="game-area" ref={containerRef}>
       {position && (
         <div
           className="dragger"

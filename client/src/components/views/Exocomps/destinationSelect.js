@@ -29,6 +29,7 @@ class DestinationSelect extends Component {
         }
       }
     `;
+
     return (
       <Query
         query={query}
@@ -37,6 +38,20 @@ class DestinationSelect extends Component {
       >
         {({ data: { systems = [] } }) => {
           const selectedSystem = systems.find(s => s.id === destination);
+          const filteredSystems = systems
+            .filter(sys => {
+              if (upgrade) {
+                if (sys.upgradeBoard && !sys.upgraded) return true;
+                return false;
+              }
+              return true;
+            })
+            .concat()
+            .sort((a, b) => {
+              if (a.displayName > b.displayName) return 1;
+              if (a.displayName < b.displayName) return -1;
+              return 0;
+            });
           return (
             <ButtonDropdown
               isOpen={this.state.dropdownOpen}
@@ -48,25 +63,15 @@ class DestinationSelect extends Component {
                   : "Select a System"}
               </DropdownToggle>
               <DropdownMenu>
-                {systems
-                  .filter(sys => {
-                    if (upgrade) {
-                      if (sys.upgradeBoard && !sys.upgraded) return true;
-                      return false;
-                    }
-                    return true;
-                  })
-                  .concat()
-                  .sort((a, b) => {
-                    if (a.displayName > b.displayName) return 1;
-                    if (a.displayName < b.displayName) return -1;
-                    return 0;
-                  })
-                  .map(s => (
+                {filteredSystems.length > 0 ? (
+                  filteredSystems.map(s => (
                     <DropdownItem key={s.id} onClick={() => select(s.id)}>
                       {s.displayName}
                     </DropdownItem>
-                  ))}
+                  ))
+                ) : (
+                  <DropdownItem>No systems available.</DropdownItem>
+                )}
               </DropdownMenu>
             </ButtonDropdown>
           );

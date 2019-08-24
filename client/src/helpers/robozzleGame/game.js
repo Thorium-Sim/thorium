@@ -30,9 +30,11 @@ class Game extends Component {
   commandMouseDown = evt => {
     const funcnum = evt.target.dataset.funcnum;
     const index = evt.target.dataset.position;
+    const dimensions = this.gameboardRef.current.getBoundingClientRect();
+
     const position = {
-      x: evt.clientX - 15,
-      y: evt.clientY - 15
+      x: evt.clientX - dimensions.left - 15,
+      y: evt.clientY - dimensions.top - 15
     };
     this.setState(state => {
       // Check to see if there is a function there.
@@ -61,11 +63,12 @@ class Game extends Component {
   };
   mouseDown = (position, command, color) => {
     this.props.setDragging(true);
+    const dimensions = this.gameboardRef.current.getBoundingClientRect();
     this.setState({
       dragging: {
         position: {
-          x: position.x - 15,
-          y: position.y - 15
+          x: position.x - 20 - dimensions.left,
+          y: position.y - 20 - dimensions.top
         },
         command,
         color
@@ -242,6 +245,7 @@ class Game extends Component {
       }, this.state.delay);
     }
   };
+  gameboardRef = React.createRef();
   render() {
     const { dragging, functions, delay } = this.state;
     return (
@@ -251,7 +255,7 @@ class Game extends Component {
 --delay:${delay}ms
 }`}
         </style>
-        <div className="gameboard-holder">
+        <div className="gameboard-holder" ref={this.gameboardRef}>
           <Fragment>
             <GameBoard {...this.state} />
             <div className="player-controls">

@@ -81,6 +81,7 @@ const schema = gql`
       upgradeMacros: [TimelineItemInput]
     ): String
     updateSystemUpgradeBoard(systemId: ID!, upgradeBoard: ID): String
+
     upgradeSystem(systemId: ID!): String
     updateSystemRooms(systemId: ID!, locations: [ID]): String
   }

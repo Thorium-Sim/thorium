@@ -11,18 +11,20 @@ export default function useDraggable({ dispatch, objects, cellSize, width }) {
   const [movingCell, setMovingCell] = React.useState(null);
   const positionSide = React.useRef();
   const originalPosition = React.useRef({ x: 0, y: 0 });
+  const containerRef = React.useRef();
 
   const mouseDown = (e, movingObject, cell) => {
+    const dimensions = containerRef.current.getBoundingClientRect();
     const targetDims = e.target.getBoundingClientRect();
     const offset = {
-      x: e.clientX - targetDims.x,
-      y: e.clientY - targetDims.y
+      x: e.clientX - targetDims.x + dimensions.left,
+      y: e.clientY - targetDims.y + dimensions.top
     };
     setMovingObject(movingObject);
-    setPosition({ x: targetDims.x, y: targetDims.y });
+    setPosition({ x: e.pageX - offset.x, y: e.pageY - offset.y });
     setMovingCell(cell);
     setOffset(offset);
-    originalPosition.current = { x: targetDims.x, y: targetDims.y };
+    originalPosition.current = { x: e.pageX - offset.x, y: e.pageY - offset.y };
     const timeout = setTimeout(() => {
       document.removeEventListener("mouseup", mouseUp);
       dispatch({ type: "remove", ...cell });
@@ -40,9 +42,11 @@ export default function useDraggable({ dispatch, objects, cellSize, width }) {
   };
   const moved =
     distance(originalPosition.current, position || { x: 0, y: 0 }) > 3;
+
   React.useEffect(() => {
     const click = ({ x, y }) => {
-      const cell = objects[x][y];
+      const cell = objects[x] && objects[x][y];
+
       if (!cell) return;
       if (cell.includes("Red")) doDispatch(cell.replace("Red", "Green"));
       if (cell.includes("Green")) doDispatch(cell.replace("Green", "Blue"));
@@ -74,6 +78,7 @@ export default function useDraggable({ dispatch, objects, cellSize, width }) {
     function mouseUp(e) {
       const cell =
         objects[positionCell.x] && objects[positionCell.x][positionCell.y];
+
       if (moved) {
         if (
           (cell || cell === "") &&
@@ -112,6 +117,7 @@ export default function useDraggable({ dispatch, objects, cellSize, width }) {
     positionCell,
     positionSide,
     positionSprite,
-    movingObject
+    movingObject,
+    containerRef
   };
 }

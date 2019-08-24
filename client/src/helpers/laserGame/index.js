@@ -3,7 +3,7 @@ import data from "./data.json";
 import LaserGame from "./LaserGame.js";
 import "./styles.scss";
 
-function App({ id }) {
+function App({ id, onWin = () => {} }) {
   const game = React.useMemo(() => {
     const gamedata = data.find(d => d.id === id);
     if (!gamedata) return null;
@@ -15,16 +15,10 @@ function App({ id }) {
     const width = objects[0].length;
     return { objects, height, width };
   }, [id]);
-  console.log(game);
   return (
     <div className="laserGame-root">
       <div className="laser-game">
-        {game && (
-          <LaserGame
-            {...game}
-            onWin={() => window.alert("Congrats. You have won!")}
-          />
-        )}
+        {game && <LaserGame {...game} onWin={onWin} />}
       </div>
     </div>
   );

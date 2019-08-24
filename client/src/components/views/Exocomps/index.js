@@ -119,6 +119,9 @@ class Exocomps extends Component {
       variables
     });
   };
+  clearUpgradeBoard = () => {
+    this.setState({ upgradeExocomp: null });
+  };
   render() {
     const {
       simulator,
@@ -182,7 +185,11 @@ class Exocomps extends Component {
                 upgrade={this.state.upgrade}
               />
             ) : upgradedExocomp ? (
-              <UpgradeScreen {...upgradedExocomp} />
+              <UpgradeScreen
+                clearUpgradeBoard={this.clearUpgradeBoard}
+                exocompId={upgradedExocomp.id}
+                destination={upgradedExocomp.destination}
+              />
             ) : (
               <div>
                 <h3>Information</h3>

@@ -39,6 +39,7 @@ const schema = gql`
     setSimulatorExocomps(simulatorId: ID!, count: Int!): String
     deployExocomp(exocomp: ExocompInput!): String
     recallExocomp(exocomp: ID!): String
+    exocompCompleteUpgrade(exocomp: ID!): String
     updateExocompDifficulty(exocomp: ID!, difficulty: Float!): String
   }
   extend type Subscription {

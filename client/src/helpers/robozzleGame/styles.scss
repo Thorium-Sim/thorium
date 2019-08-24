@@ -6,7 +6,7 @@
   justify-content: space-between;
   --delay: 500ms;
   user-select: none;
-
+  flex: 1;
   &.dragging {
     cursor: grabbing;
   }
@@ -14,7 +14,7 @@
     position: relative;
     height: 100%;
     width: 25%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(121, 67, 67, 0.5);
     border: solid 1px rgba(255, 255, 255, 0.5);
     overflow-y: auto;
     padding: 2px;
@@ -29,7 +29,7 @@
     background-color: rgba(255, 255, 255, 0.5);
   }
   .gameboard-holder {
-    width: 75%;
+    width: 100%;
     max-width: 75vh;
     overflow: hidden;
   }
@@ -172,7 +172,7 @@
     background-color: hsla(0, 0%, 70%, 1);
     border: solid 1px hsl(0, 0%, 40%);
     background-size: 70%, 100%;
-    background-image: url(),
+    background-image: none,
       linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
   }
   .command:active {
