@@ -1,0 +1,202 @@
+.laserGame-root {
+  --tx: 0px;
+  --ty: 0px;
+  --tz: 0px;
+  --scale: 1;
+  --deg: 0deg;
+  flex: 1;
+  height: 100%;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  .Easy {
+    background-color: #ccffcc;
+  }
+  .Medium {
+    background-color: #ffffcc;
+  }
+  .Hard {
+    background-color: #ffcccc;
+  }
+  .list {
+    /* flex: 1; */
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  .list p {
+    margin: 0;
+    font-size: 12px;
+  }
+  .list p.selected {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  .laser-game {
+    max-width: 500px;
+    flex: 4;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  .game-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .game-objects {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .dragger {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 15;
+    transform: translate3d(var(--tx), var(--ty), 100px);
+  }
+  .game-object {
+    width: 100%;
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: grab;
+    transition: transform 0.2s ease;
+    transform: scale(var(--scale)) rotate(var(--deg));
+  }
+  .game-object:active {
+    cursor: grabbing;
+  }
+  .game-board {
+    border: solid 3px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+  .game-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border-right: solid 2px;
+    border-bottom: solid 2px;
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+  .game-cell.hilite {
+    box-shadow: inset 0px 0px 10px 2px rgba(255, 255, 0, 0.5);
+  }
+
+  .rotate-1 {
+    transition: none !important;
+    --deg: 360deg;
+  }
+  .rotate-2 {
+    --deg: 270deg;
+  }
+  .rotate-3 {
+    --deg: 180deg;
+  }
+  .rotate-4 {
+    --deg: 90deg;
+  }
+  .rotate-5 {
+    --deg: 0deg;
+  }
+  .sprite {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+    transform: translate3d(var(--tx), var(--ty), var(--tz)) scale(var(--scale))
+      rotate(var(--deg));
+    transition: transform 0.2s ease;
+    perspective: 300px;
+    box-sizing: content-box;
+  }
+  .sprite:active {
+    cursor: grabbing;
+  }
+
+  .sprite:before {
+    content: "";
+    width: 40%;
+    height: 40%;
+    border-radius: 50%;
+    opacity: 0.5;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    transform: translateZ(-50px);
+  }
+  .sprite.locked {
+    cursor: no-drop;
+  }
+  .Left {
+    --deg: 0deg;
+  }
+  .Top {
+    --deg: 90deg;
+  }
+  .Right {
+    --deg: 180deg;
+  }
+  .Bottom {
+    --deg: 270deg;
+  }
+  .CheckPointGreen::before {
+    background-color: #0f0;
+  }
+  .CheckPointYellow::before {
+    background-color: #ff0;
+  }
+  .CheckPointBlue::before {
+    background-color: #00f;
+  }
+  .CheckPointLightBlue::before {
+    background-color: #0ff;
+  }
+  .CheckPointPurple::before {
+    background-color: #f0f;
+  }
+  .CheckPointWhite::before {
+    background-color: #fff;
+  }
+  .CheckPointRed::before {
+    background-color: #f00;
+  }
+  .FilterBlue,
+  .FilterRed,
+  .FilterGreen {
+    background-blend-mode: multiply;
+  }
+  svg {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    position: absolute;
+    pointer-events: none;
+  }
+  svg.pulse {
+    animation: laserPulse 3s ease infinite;
+  }
+  svg.blurred {
+    filter: blur(5px);
+    opacity: 1;
+  }
+
+  @keyframes laserPulse {
+    0% {
+      opacity: 0.75;
+    }
+    50% {
+      opacity: 0.25;
+    }
+    100% {
+      opacity: 0.75;
+    }
+  }
+}

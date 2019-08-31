@@ -24,7 +24,9 @@ export default class Shield extends System {
   }
   break(report, destroyed, which) {
     this.state = false;
-    super.break(report, destroyed, which);
+    const { currentStep } = this.damage;
+    super.break(report || this.damage.report, destroyed, which);
+    this.damage.currentStep = currentStep;
   }
   repair() {
     super.repair();

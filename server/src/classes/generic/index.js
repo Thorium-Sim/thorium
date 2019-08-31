@@ -47,6 +47,7 @@ export class System {
       params.storedDisplayName || params.displayName || params.name;
     this.upgradeName = params.upgradeName || this.storedDisplayName;
     this.upgraded = params.upgraded || false;
+    this.upgradeBoard = params.upgradeBoard || null;
     this.upgradeMacros = [];
     params.upgradeMacros &&
       params.upgradeMacros.forEach(m => this.upgradeMacros.push(new Macro(m)));
@@ -98,6 +99,9 @@ export class System {
   }
   setUpgradeMacros(macros) {
     this.upgradeMacros = macros || [];
+  }
+  setUpgradeBoard(board) {
+    this.upgradeBoard = board;
   }
   upgrade() {
     this.upgraded = true;

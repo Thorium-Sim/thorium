@@ -126,7 +126,7 @@ export function addAspects(template, sim, data = App) {
         if (newAspect.power && !newAspect.power.powerLevels.length) {
           newAspect.power.power = 0;
         }
-        if (newAspect.heat) {
+        if (newAspect.heat && newAspect.class === "Reactor") {
           newAspect.heat = 0;
         }
       }

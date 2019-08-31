@@ -1,9 +1,125 @@
 import React, { Fragment } from "react";
-import { FormGroup, Label, Input } from "helpers/reactstrap";
+import {
+  FormGroup,
+  Label,
+  Input,
+  ButtonGroup,
+  Button,
+  ListGroup,
+  ListGroupItem
+} from "helpers/reactstrap";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import { GENERIC_QUERY } from "./index";
 import { ConfigureMacro } from "../../../../TaskTemplates/taskConfig";
+import lumenData from "helpers/laserGame/data.json";
+import robozzleData from "helpers/robozzleGame/data.json";
+import LaserGame from "helpers/laserGame";
+import RobozzleGame from "helpers/robozzleGame";
+
+const UPGRADE_BOARD = gql`
+  mutation UpgradeBoard($systemId: ID!, $upgradeBoard: ID) {
+    updateSystemUpgradeBoard(systemId: $systemId, upgradeBoard: $upgradeBoard)
+  }
+`;
+const ExocompControl = ({ simulatorId, upgradeBoard, systemId }) => {
+  const [game, setGame] = React.useState(() =>
+    upgradeBoard
+      ? upgradeBoard.includes("lumen")
+        ? "lumen"
+        : "robozzle"
+      : null
+  );
+  return (
+    <Mutation
+      mutation={UPGRADE_BOARD}
+      refetchQueries={[
+        { query: GENERIC_QUERY, variables: { id: systemId, simulatorId } },
+        { query: SYSTEM_QUERY, variables: { simulatorId } }
+      ]}
+    >
+      {action => (
+        <div>
+          Exocomp Upgrade Board{" "}
+          <small>Must be chosen to enable Exocomp system upgrades</small>
+          <div>
+            <ButtonGroup>
+              <Button
+                color="warning"
+                size="sm"
+                active={game === "lumen"}
+                onClick={() => setGame("lumen")}
+              >
+                Lumen
+              </Button>
+              <Button
+                color="info"
+                size="sm"
+                active={game === "robozzle"}
+                onClick={() => setGame("robozzle")}
+              >
+                Robozzle
+              </Button>
+              <Button
+                color="secondary"
+                size="sm"
+                active={game === null}
+                onClick={() => {
+                  setGame(null);
+                  action({
+                    variables: { systemId, upgradeBoard: null }
+                  });
+                }}
+              >
+                Nothing
+              </Button>
+            </ButtonGroup>
+          </div>
+          {game && (
+            <div style={{ display: "flex" }}>
+              <ListGroup
+                style={{ flex: 1, maxHeight: "200px", overflowY: "auto" }}
+              >
+                {(game === "lumen" ? lumenData : robozzleData).map(t => (
+                  <ListGroupItem
+                    key={t.id}
+                    active={
+                      upgradeBoard &&
+                      t.id ===
+                        upgradeBoard
+                          .replace(`lumen-`, "")
+                          .replace(`robozzle-`, "")
+                    }
+                    onClick={() =>
+                      action({
+                        variables: { systemId, upgradeBoard: `${game}-${t.id}` }
+                      })
+                    }
+                  >
+                    {t.name}
+                  </ListGroupItem>
+                ))}
+              </ListGroup>
+              {upgradeBoard && (
+                <div style={{ flex: 2, maxHeight: "200px" }}>
+                  {game === "lumen" ? (
+                    <LaserGame
+                      id={upgradeBoard && upgradeBoard.replace("lumen-", "")}
+                    />
+                  ) : (
+                    <RobozzleGame
+                      id={upgradeBoard && upgradeBoard.replace("robozzle-", "")}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </Mutation>
+  );
+};
 
 const SYSTEM_QUERY = gql`
   query Systems($simulatorId: ID!) {
@@ -13,6 +129,7 @@ const SYSTEM_QUERY = gql`
       type
       displayName
       upgradeName
+      upgradeBoard
       upgradeMacros {
         id
         event
@@ -28,6 +145,7 @@ const Basic = ({
   name,
   displayName,
   upgradeName,
+  upgradeBoard,
   upgradeMacros = [],
   simulatorId
 }) => {
@@ -117,6 +235,11 @@ const Basic = ({
           />
         )}
       </Mutation>
+      <ExocompControl
+        simulatorId={simulatorId}
+        systemId={id}
+        upgradeBoard={upgradeBoard}
+      />
     </>
   );
 };

@@ -1,0 +1,284 @@
+.robozzle-root {
+  font-family: sans-serif;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  --delay: 500ms;
+  user-select: none;
+  flex: 1;
+  &.dragging {
+    cursor: grabbing;
+  }
+  .boards {
+    position: relative;
+    height: 100%;
+    width: 25%;
+    background-color: rgba(121, 67, 67, 0.5);
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    overflow-y: auto;
+    padding: 2px;
+  }
+  .boards p {
+    border-radius: 10px;
+    padding: 3px;
+    margin: 1px;
+  }
+  .boards p.selected {
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  .gameboard-holder {
+    width: 100%;
+    max-width: 75vh;
+    overflow: hidden;
+  }
+  .gameboard {
+    width: 100%;
+    border: solid 1px white;
+    position: relative;
+  }
+  .game-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(0, 0, 0);
+  }
+  .game-row {
+    display: flex;
+    flex: 1;
+  }
+  .game-cell {
+    box-sizing: content-box;
+    flex: 1;
+    border-radius: 10%;
+    background-image: linear-gradient(
+      to top,
+      hsla(0, 0%, 0%, 0) 0%,
+      hsla(0, 0%, 0%, 0.5) 100%
+    );
+    border: solid 1px hsl(0, 67%, 40%);
+    transition: background-color var(--delay) ease,
+      border-color var(--delay) ease;
+    /* border-right: solid 1px rgba(255, 255, 255, 0.5);
+  border-bottom: solid 1px rgba(255, 255, 255, 0.5); */
+  }
+  .game-row:last-child .game-cell {
+    border-bottom: none;
+  }
+  .game-cell:last-child {
+    border-right: none;
+  }
+
+  .game-cell.transparent {
+    background: transparent;
+    border-color: transparent;
+  }
+  .game-cell.star:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-image: url(./img/star.svg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0.2vh 0.2vh 1px rgba(255, 81, 0, 0.5));
+    transition: opacity var(--delay) ease;
+    opacity: 1;
+  }
+  .game-cell.star.gone:after {
+    opacity: 0;
+  }
+  .spacer {
+    padding-top: 75%;
+  }
+  .game-ship-holder {
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform var(--delay) linear;
+  }
+  .game-ship {
+    width: 6.25%;
+    transition: transform var(--delay) ease;
+  }
+  .game-controls {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .player-controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  .function-holder {
+    display: flex;
+    align-items: center;
+  }
+  .function-holder img {
+    width: 30px;
+    height: 30px;
+  }
+  .function-area {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 220px;
+  }
+  .function-block {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: dashed 1px rgba(255, 255, 255, 0.3);
+    border-radius: 20%;
+    transition: background-color 0.2s ease;
+  }
+  .game-controls.dragging .function-block:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  .commands-area {
+    display: inline-flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+  }
+  .commands-area.dragging .command {
+    pointer-events: none;
+  }
+  .divider {
+    height: 10px;
+  }
+  .command {
+    cursor: grab;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    border-radius: 20%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: hsla(0, 0%, 70%, 1);
+    border: solid 1px hsl(0, 0%, 40%);
+    background-size: 70%, 100%;
+    background-image: none,
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command:active {
+    cursor: grabbing;
+  }
+  .command.forward {
+    background-image: url("./img/forward.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command.left {
+    background-image: url("./img/left.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command.right {
+    background-image: url("./img/right.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command.f1 {
+    background-image: url("./img/f1.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command.f2 {
+    background-image: url("./img/f2.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command.f3 {
+    background-image: url("./img/f3.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command.f4 {
+    background-image: url("./img/f4.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command.f5 {
+    background-image: url("./img/f5.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .command.f6 {
+    background-image: url("./img/f6.svg"),
+      linear-gradient(to top, hsla(0, 0%, 0%, 0) 0%, hsla(0, 0%, 0%, 0.5) 100%);
+  }
+  .color.clear {
+    background-color: hsla(0, 0%, 70%, 1);
+    border: solid 1px hsl(0, 0%, 40%);
+  }
+
+  .command.paint {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .command.paint:after {
+    content: "";
+    display: block;
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    border: solid 1px;
+  }
+  .command.paint.paint-red:after {
+    background-image: linear-gradient(
+      to top,
+      hsla(0, 67%, 40%, 1) 0%,
+      hsla(0, 67%, 20%, 1) 100%
+    );
+    border-color: hsl(0, 67%, 10%);
+  }
+  .command.paint.paint-blue:after {
+    background-image: linear-gradient(
+      to top,
+      hsla(210, 67%, 40%, 1) 0%,
+      hsla(210, 67%, 20%, 1) 100%
+    );
+    border-color: hsl(210, 67%, 10%);
+  }
+  .command.paint.paint-green:after {
+    background-image: linear-gradient(
+      to top,
+      hsla(128, 67%, 40%, 1) 0%,
+      hsla(128, 67%, 20%, 1) 100%
+    );
+    border-color: hsl(128, 67%, 10%);
+  }
+
+  .dragger {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .color.red,
+  .red {
+    background-color: hsla(0, 67%, 40%, 1);
+    border: solid 1px hsl(0, 67%, 40%);
+  }
+  .color.blue,
+  .blue {
+    background-color: hsla(210, 67%, 40%, 1);
+    border: solid 1px hsl(210, 67%, 40%);
+  }
+  .color.green,
+  .green {
+    background-color: hsla(128, 67%, 40%, 1);
+    border: solid 1px hsl(128, 67%, 40%);
+  }
+}

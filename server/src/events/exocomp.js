@@ -53,6 +53,20 @@ App.on("recallExocomp", ({ exocomp }) => {
   );
   pubsub.publish("exocompsUpdate", App.exocomps);
 });
+App.on("exocompCompleteUpgrade", ({ exocomp }) => {
+  const ex = App.exocomps.find(e => e.id === exocomp);
+  const sys = App.systems.find(s => s.id === ex.destination);
+
+  ex.logs.push({
+    timestamp: Date.now(),
+    message: `${sys.displayName} has been upgraded.`
+  });
+  ex.destination = null;
+  App.handleEvent({ systemId: sys.id }, "upgradeSystem");
+
+  ex.updateState("returning");
+});
+
 App.on("updateExocompDifficulty", ({ exocomp, difficulty }) => {
   const ex = App.exocomps.find(e => e.id === exocomp);
   ex.updateDifficulty(difficulty);

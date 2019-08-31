@@ -56,6 +56,16 @@ class Timer extends Component {
       return;
     }
     const [hours, minutes, seconds] = this.state.timer.split(":");
+    if (
+      isNaN(parseInt(hours)) ||
+      isNaN(parseInt(seconds)) ||
+      isNaN(parseInt(minutes))
+    ) {
+      this.setState({
+        timer: "00:00:00"
+      });
+      return;
+    }
     const dur = Duration.fromObject({
       hours: parseInt(hours),
       minutes: parseInt(minutes),

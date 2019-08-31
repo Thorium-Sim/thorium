@@ -16,6 +16,7 @@ export const GENERIC_QUERY = gql`
       name
       displayName
       upgradeName
+      upgradeBoard
       upgradeMacros {
         id
         event
@@ -74,7 +75,6 @@ class GenericConfig extends Component {
         {({ loading, data }) => {
           if (loading) return null;
           const { type } = data.system;
-          console.log(data.system);
           return (
             <div>
               <h4>{titleCase(type)}</h4>

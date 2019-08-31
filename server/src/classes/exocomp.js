@@ -16,6 +16,7 @@ export default class Exocomp extends System {
     this.destination = params.destination || null;
     this.logs = params.logs || [];
     this.difficulty = params.difficulty || 0.05;
+    this.upgrade = params.upgrade || false;
 
     this.power = null;
   }
@@ -36,6 +37,7 @@ export default class Exocomp extends System {
     this.parts = [];
     this.completion = 0;
     this.destination = null;
+    this.upgrade = false;
     super.break(report, destroyed, which);
   }
   updateState(state) {
@@ -54,6 +56,9 @@ export default class Exocomp extends System {
     if (state === "returning") {
       message = `Returning to base.`;
     }
+    if (state === "upgrading") {
+      message = `Ready to upgrade.`;
+    }
     this.logs.push({
       timestamp: Date.now(),
       message
@@ -65,10 +70,11 @@ export default class Exocomp extends System {
   updateCompletion(completion) {
     this.completion = completion;
   }
-  deploy({ destination, parts }) {
+  deploy({ destination, parts, upgrade }) {
     this.completion = 0;
     this.destination = destination;
     this.parts = parts;
+    this.upgrade = upgrade;
     this.updateState("deploying");
   }
   recall() {
@@ -76,6 +82,7 @@ export default class Exocomp extends System {
       this.completion = 0;
       this.destination = null;
       this.parts = [];
+      this.upgrade = false;
       this.updateState("returning");
     }
   }
