@@ -44,10 +44,10 @@ export default class TractorBeam extends System {
     this.targetLabel = label;
   }
   setStrength(perc) {
-    this.strength = perc;
+    this.strength = Math.min(1, Math.max(0, perc));
   }
   setStress(perc) {
-    this.stress = perc;
+    this.stress = Math.min(1, Math.max(0, perc));
   }
   setScanning(scanning) {
     this.scanning = scanning;
