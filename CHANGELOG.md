@@ -1,3 +1,19 @@
+# [1.20.0](https://github.com/Thorium-Sim/thorium/compare/1.19.2...1.20.0) (2019-08-31)
+
+
+### Bug Fixes
+
+* **Computer Core:** Fixes computer core history scrollbar. Closes [#2510](https://github.com/Thorium-Sim/thorium/issues/2510) ([b2f6cae](https://github.com/Thorium-Sim/thorium/commit/b2f6cae))
+* **Heat:** Heat and coolant are now  properly imported and exported from flights. Closes [#2519](https://github.com/Thorium-Sim/thorium/issues/2519) ([4b659a9](https://github.com/Thorium-Sim/thorium/commit/4b659a9))
+* **Shields:** When using the "HIt All" button on shields, it won't override the existing damage report. Closes  [#2408](https://github.com/Thorium-Sim/thorium/issues/2408) ([a621cb6](https://github.com/Thorium-Sim/thorium/commit/a621cb6))
+* **Timer:** Fixes an issue that caused the timer core to crash. Closes [#2513](https://github.com/Thorium-Sim/thorium/issues/2513) ([36c0bef](https://github.com/Thorium-Sim/thorium/commit/36c0bef))
+* **Tractor Beam:** Fixes an issue where the tractor beam strength arrow disappears. Closes [#2518](https://github.com/Thorium-Sim/thorium/issues/2518) ([9554940](https://github.com/Thorium-Sim/thorium/commit/9554940))
+
+
+### Features
+
+* **Exocomps:** Adds upgrades to exocomps. Configure the game board (either Robozzle or Lumen) in the simulator's system config. Also specify the name of the system when it is upgraded and any macros you want to run when the system is upgraded. Upgrades can be triggered manually by checking the upgrade checkbox on the systems core. Closes [#365](https://github.com/Thorium-Sim/thorium/issues/365) ([abaec19](https://github.com/Thorium-Sim/thorium/commit/abaec19))
+
 ## [1.19.2](https://github.com/Thorium-Sim/thorium/compare/1.19.1...1.19.2) (2019-08-19)
 
 
