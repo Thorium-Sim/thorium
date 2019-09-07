@@ -416,8 +416,6 @@ ${report}
   reactivationCodeResponse(response) {
     this.damage.reactivationCode = null;
     this.damage.reactivationRequester = null;
-    // For now, lets repair the station when it is accepted
-    if (response) this.repair();
   }
   // Damage Tasks
   // As a side note, can I just say how much more elegant
