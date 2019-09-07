@@ -132,6 +132,7 @@ class Exocomps extends Component {
     const exocomp = exocomps.find(e => e.id === selectedExocomp);
     const exocompNum = exocomps.findIndex(e => e.id === selectedExocomp) + 1;
     const upgradedExocomp = exocomps.find(e => e.id === upgradeExocomp);
+    console.log(this.state);
     return (
       <Container className="card-exocomps">
         <SubscriptionHelper
@@ -164,7 +165,11 @@ class Exocomps extends Component {
                     }
                     recall={() => {
                       this.recall(e.id);
-                      this.setState({ upgrade: false });
+                      this.setState({
+                        upgrade: false,
+                        upgradeExocomp: null,
+                        selectedExocomp: null
+                      });
                     }}
                     upgrade={ex => {
                       this.setState({ upgradeExocomp: ex });
@@ -179,7 +184,12 @@ class Exocomps extends Component {
               <ExocompConfig
                 {...exocomp}
                 simulatorId={simulator.id}
-                cancel={() => this.setState({ selectedExocomp: null })}
+                cancel={() =>
+                  this.setState({
+                    selectedExocomp: null,
+                    upgradeExocomp: null
+                  })
+                }
                 number={exocompNum}
                 deploy={this.deploy}
                 upgrade={this.state.upgrade}
