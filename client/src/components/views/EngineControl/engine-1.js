@@ -5,6 +5,7 @@ import gql from "graphql-tag.macro";
 
 import HeatBar from "./heatbar";
 import EngineButtons from "./engineButtons";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 export default withApollo(props => {
   const { engines, setSpeed, locked } = props;
@@ -51,6 +52,10 @@ export default withApollo(props => {
           locked={locked}
           engines={engines}
           setSpeed={setSpeed}
+        />
+        <DamageOverlay
+          system={engines[0]}
+          message={`${engines[0].displayName || engines[0].name} Offline`}
         />
       </Col>
       <Col sm={{ size: 2, offset: 6 }} className="flex-column">
