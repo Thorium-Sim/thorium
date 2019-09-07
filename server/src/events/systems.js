@@ -97,7 +97,7 @@ App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {
   const obj = new ClassObj(init);
   App.systems.push(obj);
   pubsub.publish("systemsUpdate", App.systems);
-  cb && cb();
+  cb && cb(obj.id);
 });
 App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type, cb }) => {
   if (systemId) {
