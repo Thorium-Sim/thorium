@@ -21,7 +21,8 @@ export class Macro {
 }
 
 export class Damage {
-  constructor(params = {}) {
+  constructor(params = {}, systemId) {
+    this.systemId = systemId;
     this.damaged = params.damaged || false;
     this.report = params.report || null;
     this.reportSteps = params.reportSteps || null;
@@ -59,7 +60,7 @@ export class System {
           powerLevels: params.extra ? [] : [5],
           defaultLevel: 0
         };
-    this.damage = new Damage(params.damage || {});
+    this.damage = new Damage(params.damage || {}, this.id);
     this.extra = params.extra || false;
     this.locations = params.locations || [];
     this.requiredDamageSteps = [];

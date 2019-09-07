@@ -186,6 +186,10 @@ App.on("repairSystem", ({ systemId }) => {
       App.exocomps.find(s => s.id === systemId);
   }
   sys.repair();
+  const taskReports = App.taskReports.filter(
+    t => t.systemId === systemId && t.type === "default" && t.cleared === false
+  );
+  taskReports.forEach(t => App.handleEvent({ id: t.id }, "clearTaskReport"));
   sendUpdate(sys);
 });
 App.on("updateCurrentDamageStep", ({ systemId, step }) => {

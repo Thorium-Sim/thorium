@@ -53,22 +53,34 @@ const SUBSCRIPTION = gql`
   ${fragment}
 `;
 
+function typeValue(type) {
+  if (type === "default") return "Repair";
+  if (type === "rnd") return "R&D";
+  if (type === "engineering") return "Report";
+  return "Report";
+}
 class TaskReportCreator extends Component {
   state = { type: "default", name: "", stepCount: 8 };
   render() {
     const { type, systemId, name, stepCount } = this.state;
     const { simulator, cancel, systems, exocomps } = this.props;
+    const defaultName =
+      systemId &&
+      `${
+        systems
+          .concat(
+            exocomps.map((e, i) => ({
+              ...e,
+              type: "Exocomp",
+              name: `Exocomp ${i + 1}`
+            }))
+          )
+          .find(s => s.id === systemId).name
+      } ${typeValue(type)}`;
     return (
       <div className="taskReport-creator">
         <p>Create New Task Report</p>
-        <label>
-          Name
-          <Input
-            type="text"
-            value={name}
-            onChange={e => this.setState({ name: e.target.value })}
-          />
-        </label>
+
         <label>
           System
           <Input
@@ -96,6 +108,15 @@ class TaskReportCreator extends Component {
                 </option>
               ))}
           </Input>
+        </label>
+        <label>
+          Name
+          <Input
+            type="text"
+            value={name}
+            placeholder={defaultName}
+            onChange={e => this.setState({ name: e.target.value })}
+          />
         </label>
         <label>
           Type
@@ -160,7 +181,7 @@ class TaskReportCreator extends Component {
             variables={{
               simulatorId: simulator.id,
               systemId,
-              name,
+              name: name || defaultName,
               stepCount,
               type
             }}
@@ -170,7 +191,7 @@ class TaskReportCreator extends Component {
                 style={{ flex: 1 }}
                 color="success"
                 size="sm"
-                disabled={!name || !systemId}
+                disabled={!systemId}
                 onClick={() => action().then(cancel)}
               >
                 Create

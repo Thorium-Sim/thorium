@@ -132,7 +132,6 @@ class Exocomps extends Component {
     const exocomp = exocomps.find(e => e.id === selectedExocomp);
     const exocompNum = exocomps.findIndex(e => e.id === selectedExocomp) + 1;
     const upgradedExocomp = exocomps.find(e => e.id === upgradeExocomp);
-    console.log(this.state);
     return (
       <Container className="card-exocomps">
         <SubscriptionHelper

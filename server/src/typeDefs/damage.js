@@ -15,6 +15,7 @@ const schema = gql`
     currentStep: Int
     validate: Boolean
     which: DAMAGE_TYPES
+    taskReportDamage: Boolean
   }
 
   enum DAMAGE_TYPES {
@@ -186,6 +187,31 @@ const schema = gql`
 `;
 
 const resolver = {
+  Damage: {
+    damaged(t) {
+      return (
+        t.damaged ||
+        Boolean(
+          App.taskReports.find(
+            tr =>
+              tr.systemId === t.systemId &&
+              tr.type === "default" &&
+              tr.cleared === false
+          )
+        )
+      );
+    },
+    taskReportDamage(t) {
+      return Boolean(
+        App.taskReports.find(
+          tr =>
+            tr.systemId === t.systemId &&
+            tr.type === "default" &&
+            tr.cleared === false
+        )
+      );
+    }
+  },
   DamageTask: {
     taskTemplate(rootValue) {
       return App.taskTemplates.find(t => t.id === rootValue.id);
