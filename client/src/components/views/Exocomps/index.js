@@ -164,7 +164,11 @@ class Exocomps extends Component {
                     }
                     recall={() => {
                       this.recall(e.id);
-                      this.setState({ upgrade: false });
+                      this.setState({
+                        upgrade: false,
+                        upgradeExocomp: null,
+                        selectedExocomp: null
+                      });
                     }}
                     upgrade={ex => {
                       this.setState({ upgradeExocomp: ex });
@@ -179,7 +183,12 @@ class Exocomps extends Component {
               <ExocompConfig
                 {...exocomp}
                 simulatorId={simulator.id}
-                cancel={() => this.setState({ selectedExocomp: null })}
+                cancel={() =>
+                  this.setState({
+                    selectedExocomp: null,
+                    upgradeExocomp: null
+                  })
+                }
                 number={exocompNum}
                 deploy={this.deploy}
                 upgrade={this.state.upgrade}

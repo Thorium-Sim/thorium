@@ -10,11 +10,9 @@ const COMPLETE_UPGRADE = gql`
   }
 `;
 const UpgradeScreen = React.memo(
-  ({
-    exocompId,
-    clearUpgradeBoard,
-    destination: { upgradeBoard, displayName }
-  }) => {
+  ({ exocompId, clearUpgradeBoard, destination }) => {
+    if (!destination) return;
+    const { upgradeBoard, displayName } = destination;
     return (
       <div>
         <h2>Upgrading {displayName}</h2>

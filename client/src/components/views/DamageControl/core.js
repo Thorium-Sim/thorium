@@ -40,6 +40,7 @@ const SYSTEMS_SUB = gql`
         report
         destroyed
         which
+        taskReportDamage
       }
       simulatorId
       type
@@ -85,6 +86,9 @@ class DamageControlCore extends Component {
     if (sys.damage.damaged) {
       obj.color = "red";
     }
+    if (sys.damage.taskReportDamage) {
+      obj.color = "orangered";
+    }
     if (!sys.name) {
       obj.color = "purple";
     }
@@ -99,6 +103,40 @@ class DamageControlCore extends Component {
       obj.textShadow = "0px 0px 1px rgba(255,255,255,1)";
     }
     return obj;
+  }
+  systemTitle(sys) {
+    if (sys.damage.taskReportDamage) {
+      return "Task Report Damage";
+    }
+    if (sys.damage.destroyed) {
+      return "Destroyed";
+    }
+    if (sys.damage.which === "engineering") {
+      return "Engineering";
+    }
+    if (sys.damage.which === "rnd") {
+      return "Research & Development";
+    }
+    if (sys.damage.damaged) {
+      return "Damaged";
+    }
+    // Overloaded the power levels
+    if (
+      sys.power &&
+      sys.power.powerLevels &&
+      sys.power.powerLevels.length > 0 &&
+      sys.power.powerLevels[sys.power.powerLevels.length - 1] < sys.power.power
+    ) {
+      return "Overloaded Power";
+    }
+    if (
+      sys.power &&
+      sys.power.powerLevels &&
+      sys.power.powerLevels.length > 0 &&
+      !sys.power.powerLevels.find(p => p <= sys.power.power)
+    ) {
+      return "Insufficient Power";
+    }
   }
   systemName(sys) {
     if (sys.type === "Shield" && sys.name !== "Shields") {
@@ -146,7 +184,7 @@ class DamageControlCore extends Component {
       which
     };
     let mutation;
-    if (system.damage.damaged) {
+    if (system.damage.damaged || system.damage.taskReportDamage) {
       // Fix it
       mutation = gql`
         mutation RepairSystem($systemId: ID!) {
@@ -298,6 +336,7 @@ class DamageControlCore extends Component {
                       <td
                         onClick={e => this.toggleDamage(e, s)}
                         onContextMenu={e => this.setContext(e, s)}
+                        title={this.systemTitle(s)}
                         style={this.systemStyle(s)}
                       >
                         {this.systemName(s)} {this.renderEngineSpeed(s)}
@@ -471,6 +510,7 @@ const SYSTEMS_QUERY = gql`
         report
         destroyed
         which
+        taskReportDamage
       }
       simulatorId
       type

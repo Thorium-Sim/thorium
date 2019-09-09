@@ -97,7 +97,7 @@ App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {
   const obj = new ClassObj(init);
   App.systems.push(obj);
   pubsub.publish("systemsUpdate", App.systems);
-  cb && cb();
+  cb && cb(obj.id);
 });
 App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type, cb }) => {
   if (systemId) {
@@ -186,6 +186,10 @@ App.on("repairSystem", ({ systemId }) => {
       App.exocomps.find(s => s.id === systemId);
   }
   sys.repair();
+  const taskReports = App.taskReports.filter(
+    t => t.systemId === systemId && t.type === "default" && t.cleared === false
+  );
+  taskReports.forEach(t => App.handleEvent({ id: t.id }, "clearTaskReport"));
   sendUpdate(sys);
 });
 App.on("updateCurrentDamageStep", ({ systemId, step }) => {
@@ -284,6 +288,9 @@ App.on("systemReactivationCodeResponse", ({ systemId, response }) => {
     color: response ? "success" : "danger"
   });
   sys.reactivationCodeResponse(response);
+
+  // If the responses is true, repair the system with an event
+  App.handleEvent({ systemId }, "repairSystem");
   sendUpdate(sys);
 });
 App.on("setCoolant", ({ systemId, coolant }) => {

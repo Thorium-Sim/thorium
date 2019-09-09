@@ -117,7 +117,6 @@ const PowerDistribution = ({ client, simulator, clientObj }) => {
           "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic."
       }
     ].filter(Boolean);
-
   return (
     <Container fluid={!!battery} className="powerLevels">
       <Row className="powerlevel-row">
@@ -165,8 +164,8 @@ const Systems = React.memo(
           .sort((a, b) => {
             if (a.type > b.type) return 1;
             if (a.type < b.type) return -1;
-            if (a.name > b.name) return 1;
-            if (a.name < b.name) return -1;
+            if (a.displayName > b.displayName) return 1;
+            if (a.displayName < b.displayName) return -1;
             return 0;
           })
           .filter(
@@ -199,6 +198,9 @@ const Systems = React.memo(
     const prevPower = prevProps.systems.map(p => p.power.power);
     const nextPower = nextProps.systems.map(p => p.power.power);
     if (prevPower.join(",") !== nextPower.join(",")) return false;
+    const prevDisplayName = prevProps.systems.map(p => p.displayName);
+    const nextDisplayName = nextProps.systems.map(p => p.displayName);
+    if (prevDisplayName.join(",") !== nextDisplayName.join(",")) return false;
     return true;
   }
 );
