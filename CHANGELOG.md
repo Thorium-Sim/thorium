@@ -1,3 +1,15 @@
+## [1.20.1](https://github.com/Thorium-Sim/thorium/compare/1.20.0...1.20.1) (2019-09-09)
+
+
+### Bug Fixes
+
+* **Damage Reports:** Repairing systems with a reactivation code now properly triggers any repair triggers. Closes [#2521](https://github.com/Thorium-Sim/thorium/issues/2521) ([dbeb660](https://github.com/Thorium-Sim/thorium/commit/dbeb660))
+* **Engines:** Single engine screens now properly show a disabled message when there is not enough power or the system is damaged. ([a7b6052](https://github.com/Thorium-Sim/thorium/commit/a7b6052))
+* **Exocomps:** Fixes a crash when trying to recall an exocomp while upgrading. Closes [#2523](https://github.com/Thorium-Sim/thorium/issues/2523) ([9eecc1b](https://github.com/Thorium-Sim/thorium/commit/9eecc1b))
+* **Systems:** Properly relabels systems on the power distribution card when the name changes. Closes [#2531](https://github.com/Thorium-Sim/thorium/issues/2531) ([00b824f](https://github.com/Thorium-Sim/thorium/commit/00b824f))
+* **Task Reports:** Provides ability to create custom systems  from the task reports field. Closes [#2116](https://github.com/Thorium-Sim/thorium/issues/2116). Closes [#2115](https://github.com/Thorium-Sim/thorium/issues/2115). Closes [#2502](https://github.com/Thorium-Sim/thorium/issues/2502). Closes [#2503](https://github.com/Thorium-Sim/thorium/issues/2503). ([59bd0af](https://github.com/Thorium-Sim/thorium/commit/59bd0af))
+* **Task Reports:** Task reports are now better integrated with damaged systems. Repair task reports for systems show up as damage reports and disable the related system until the report is cleared. Clicking on the damaged system on the systems core will automatically clear the report. Closes [#2502](https://github.com/Thorium-Sim/thorium/issues/2502) ([8eea8ef](https://github.com/Thorium-Sim/thorium/commit/8eea8ef))
+
 # [1.20.0](https://github.com/Thorium-Sim/thorium/compare/1.19.2...1.20.0) (2019-08-31)
 
 
