@@ -129,7 +129,7 @@ export default class Targeting extends System {
     } else {
       //Remove some
       for (let i = classContacts.length - count; i > 0; i--) {
-        this.removeTarget(this.contacts[i].id);
+        this.removeTarget(classContacts[i].id);
       }
     }
   }
