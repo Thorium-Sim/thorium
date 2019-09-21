@@ -290,7 +290,9 @@ App.on("systemReactivationCodeResponse", ({ systemId, response }) => {
   sys.reactivationCodeResponse(response);
 
   // If the responses is true, repair the system with an event
-  App.handleEvent({ systemId }, "repairSystem");
+  if (response) {
+    App.handleEvent({ systemId }, "repairSystem");
+  }
   sendUpdate(sys);
 });
 App.on("setCoolant", ({ systemId, coolant }) => {
