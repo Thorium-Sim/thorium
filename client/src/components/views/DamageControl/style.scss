@@ -39,6 +39,7 @@
     }
   }
   .damageReport-text {
+    user-select: text;
     white-space: pre-line;
     font-family: monospace;
     font-size: 18px;

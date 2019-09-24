@@ -5,6 +5,9 @@
     height: 100%;
     flex: 1 1 auto;
     padding: 1.25rem;
+    * {
+      user-select: text;
+    }
   }
   .list-group-item {
     &.selected {
