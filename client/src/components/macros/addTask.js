@@ -14,7 +14,7 @@ import FontAwesome from "react-fontawesome";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import ConfigureMacro from "../views/Tasks/core/ConfigureMacro";
-
+import { ConfigureMacro as ConfigMacro } from "containers/FlightDirector/TaskTemplates/taskConfig.js";
 /*
 input TaskInput {
   simulatorId: ID
@@ -48,6 +48,12 @@ const QUERY = gql`
         event
         delay
       }
+      preMacros {
+        id
+        args
+        event
+        delay
+      }
     }
   }
 `;
@@ -74,7 +80,8 @@ class TasksCore extends Component {
     const {
       definition: selectedDefinition,
       values: requiredValues = {},
-      macros = []
+      macros = [],
+      preMacros = []
     } = taskInput;
     const { configureMacroId } = this.state;
     const definitionGroups = taskDefinitions
@@ -179,7 +186,8 @@ class TasksCore extends Component {
                         );
                         this.updateTask({
                           values: template.values,
-                          macros: template.macros
+                          macros: template.macros,
+                          preMacros: template.preMacros
                         });
                         this.setState({ forcedKey: Math.random() });
                       }}
@@ -274,58 +282,23 @@ class TasksCore extends Component {
                   )}
                   <hr />
                   <div>
-                    <label>
-                      Macros{" "}
-                      <small>Will be triggered when task is complete</small>
-                    </label>
-                    <EventPicker
-                      className={"btn btn-sm btn-success"}
-                      handleChange={e => {
-                        const { value: event } = e.target;
-                        this.updateTask({
-                          macros: macros
-                            .map(({ __typename, ...rest }) => rest)
-                            .concat({
-                              event,
-                              args: "{}",
-                              delay: 0,
-                              id: uuid.v4()
-                            })
-                        });
-                      }}
+                    <ConfigMacro
+                      action={({ variables: { macros } }) =>
+                        this.updateTask({ macros })
+                      }
+                      id={"id"}
+                      macros={macros}
+                      client={client}
                     />
-                    {macros.map(m => (
-                      <div
-                        key={m.id}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <span>
-                          <EventName id={m.event} label={m.event} />
-                        </span>{" "}
-                        <Button
-                          size="sm"
-                          color="warning"
-                          onClick={() =>
-                            this.setState({ configureMacroId: m.id })
-                          }
-                        >
-                          Configure Macro
-                        </Button>{" "}
-                        <FontAwesome
-                          name="ban"
-                          className="text-danger"
-                          onClick={() =>
-                            this.updateTask({
-                              macros: macros.filter(mm => mm.id !== m.id)
-                            })
-                          }
-                        />
-                      </div>
-                    ))}
+                    <ConfigMacro
+                      pre
+                      action={({ variables: { macros } }) =>
+                        this.updateTask({ preMacros: macros })
+                      }
+                      id={"id"}
+                      macros={preMacros}
+                      client={client}
+                    />
                   </div>
                 </Fragment>
               )}
