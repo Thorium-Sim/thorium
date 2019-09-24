@@ -70,6 +70,7 @@ class Transwarp extends Component {
   render() {
     const {
       simulator: { assets },
+      displayName,
       id,
       quad1,
       quad2,
@@ -117,7 +118,7 @@ class Transwarp extends Component {
                 <ListGroupItem>
                   {[
                     { key: "field", label: "E.M. Field" },
-                    { key: "core", label: "Transwarp Core" },
+                    { key: "core", label: displayName },
                     { key: "warp", label: "Warp Field" }
                   ].map(v => (
                     <Mutation
