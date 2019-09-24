@@ -299,6 +299,12 @@ const ReactorControl = ({ simulator, client, clientObj }) => {
         <Col sm={7}>
           <div className="reactor-info">
             <h1>
+              Reactor Setting:{" "}
+              {efficiencies.find(e => e.efficiency === reactor.efficiency) &&
+                efficiencies.find(e => e.efficiency === reactor.efficiency)
+                  .label}
+            </h1>
+            <h2>
               Reactor Efficiency:{" "}
               <AnimatedNumber
                 stepPrecision={3}
@@ -306,8 +312,8 @@ const ReactorControl = ({ simulator, client, clientObj }) => {
                 duration={800}
                 formatValue={n => `${Math.round(n * 100)}%`}
               />
-            </h1>
-            <h2>
+            </h2>
+            <h3>
               Reactor Output:{" "}
               <AnimatedNumber
                 stepPrecision={3}
@@ -315,8 +321,8 @@ const ReactorControl = ({ simulator, client, clientObj }) => {
                 duration={800}
                 formatValue={n => `${Math.round(n)}`}
               />
-            </h2>
-            <h2
+            </h3>
+            <h3
               className={
                 reactor.efficiency * reactor.powerOutput < powerTotal
                   ? "text-danger"
@@ -324,7 +330,7 @@ const ReactorControl = ({ simulator, client, clientObj }) => {
               }
             >
               Power Used: {powerTotal}
-            </h2>
+            </h3>
           </div>
         </Col>
 
