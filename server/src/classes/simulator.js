@@ -5,6 +5,7 @@ import DamageStep from "./generic/damageStep";
 import DamageTask from "./generic/damageTask";
 import { Station } from "./stationSet";
 import { lowerCase, camelCase } from "change-case";
+import { Record, RecordSnippet } from "./records";
 class Ambiance {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
@@ -204,6 +205,16 @@ export default class Simulator {
     // Command Lines
     this.commandLineOutputs = {};
     this.commandLineFeedback = {};
+
+    // Records
+    this.records = [];
+    this.recordSnippets = [];
+    params.records &&
+      params.records.forEach(r => this.records.push(new Record(r)));
+    params.recordSnippets &&
+      params.recordSnippets.forEach(r =>
+        this.recordSnippets.push(new RecordSnippet(r))
+      );
 
     // For Space EdVentures
     this.spaceEdventuresId = params.spaceEdventuresId || null;
@@ -445,6 +456,22 @@ export default class Simulator {
   }
   uncrackClient(clientId) {
     this.crackedClients[clientId] = false;
+  }
+
+  // Records
+  createRecord(record) {
+    this.records.push(new Record(record));
+  }
+  createRecordSnippet(snippet) {
+    this.recordSnippets.push(new RecordSnippet(snippet));
+  }
+  addRecordToSnippet(snippetId, recordIds) {
+    const snippet = this.recordSnippets.find(s => s.id === snippetId);
+    snippet.addRecords(recordIds);
+  }
+  removeRecordFromSnippet(snippetId, recordId) {
+    const snippet = this.recordSnippets.find(s => s.id === snippetId);
+    snippet.removeRecord(recordId);
   }
 
   setSpaceEdventuresId(id) {
