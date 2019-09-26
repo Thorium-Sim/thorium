@@ -91,6 +91,7 @@ import Interface from "./Interfaces";
 import SpaceEdventuresToken from "./SpaceEdventuresToken";
 import Crm from "./Crm";
 import CrmFighter from "./CrmFighter";
+import Records from "./Records";
 
 // Cores
 import EngineControlCore from "./EngineControl/core";
@@ -177,6 +178,7 @@ import AuxTimelineCore from "./Timeline/auxTimelineData";
 import LightingCore from "./Lighting";
 import MacroButtonsCore from "./Macros/macroButtons";
 import OfficerLogCore from "./OfficerLog/core";
+import RecordsCore from "./Records/core";
 
 // Widgets
 import ComposerWidget from "./LongRangeComm/Composer";
@@ -277,7 +279,8 @@ const Views = {
   Interface,
   SpaceEdventuresToken,
   Crm,
-  CrmFighter
+  CrmFighter,
+  Records
 };
 
 export const Widgets = {
@@ -467,7 +470,8 @@ export const Cores = {
   AuxTimelineCore,
   LightingCore,
   MacroButtonsCore,
-  OfficerLogCore
+  OfficerLogCore,
+  RecordsCore
 };
 
 export default Views;
