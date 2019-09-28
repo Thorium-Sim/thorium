@@ -185,6 +185,20 @@ App.on("repairSystem", ({ systemId }) => {
       App.dockingPorts.find(s => s.id === systemId) ||
       App.exocomps.find(s => s.id === systemId);
   }
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      contents: `${sys.displayName} ${
+        sys.damage.which === "default"
+          ? "Repaired"
+          : sys.damage.which === "rnd"
+          ? "R&D Report Complete"
+          : "Engineering Report Complete"
+      }`,
+      category: "Systems"
+    },
+    "recordsCreate"
+  );
   sys.repair();
   const taskReports = App.taskReports.filter(
     t => t.systemId === systemId && t.type === "default" && t.cleared === false

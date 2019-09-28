@@ -93,11 +93,14 @@ App.on("setSpeed", param => {
       },
       "addCoreFeed"
     );
-    App.handleEvent({
-      simulatorId: system.simulatorId,
-      contents: `${speed ? speed.text : "Full Stop"}`,
-      category: "Engines"
-    });
+    App.handleEvent(
+      {
+        simulatorId: system.simulatorId,
+        contents: `${speed ? speed.text : "Full Stop"}`,
+        category: "Engines"
+      },
+      "recordsCreate"
+    );
   }
   pubsub.publish("engineUpdate", system);
   // Now stop the other engines

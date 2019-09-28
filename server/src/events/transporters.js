@@ -88,6 +88,17 @@ App.on("setTransportCharge", params => {
 });
 App.on("completeTransport", params => {
   const transporter = App.systems.find(sys => sys.id === params.transporter);
+  App.handleEvent(
+    {
+      simulatorId: transporter.simulatorId,
+      contents: `Transported ${transporter.requestedTarget} to ${
+        transporter.destination
+      }`,
+      category: "Transporters"
+    },
+    "recordsCreate"
+  );
+
   transporter.completeTransport(params.target);
   pubsub.publish("notify", {
     id: uuid.v4(),

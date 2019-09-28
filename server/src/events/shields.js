@@ -38,6 +38,14 @@ App.on("shieldRaised", ({ id }) => {
         },
         "addCoreFeed"
       );
+      App.handleEvent(
+        {
+          simulatorId: system.simulatorId,
+          contents: `Raised`,
+          category: "Shields"
+        },
+        "recordsCreate"
+      );
     }
   } else {
     //Check to see if the ID is the simulator ID
@@ -68,6 +76,14 @@ App.on("shieldRaised", ({ id }) => {
           },
           "addCoreFeed"
         );
+        App.handleEvent(
+          {
+            simulatorId: id,
+            contents: `Raised`,
+            category: "Shields"
+          },
+          "recordsCreate"
+        );
       }
     }
   }
@@ -94,6 +110,14 @@ App.on("shieldLowered", ({ id }) => {
         color: "info"
       },
       "addCoreFeed"
+    );
+    App.handleEvent(
+      {
+        simulatorId: system.simulatorId,
+        contents: `Lowered`,
+        category: "Shields"
+      },
+      "recordsCreate"
     );
     system.shieldState(false);
   } else {
@@ -124,6 +148,14 @@ App.on("shieldLowered", ({ id }) => {
           color: "info"
         },
         "addCoreFeed"
+      );
+      App.handleEvent(
+        {
+          simulatorId: id,
+          contents: `Lowered`,
+          category: "Shields"
+        },
+        "recordsCreate"
       );
     }
   }

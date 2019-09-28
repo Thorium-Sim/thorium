@@ -63,6 +63,11 @@ const resolver = {
     records(snippet) {
       const sim = App.simulators.find(s => s.id === snippet.simulatorId);
       if (!sim) return [];
+      console.log(
+        snippet.records
+          .map(id => sim.records.find(r => r.id === id))
+          .filter(Boolean)
+      );
       return snippet.records
         .map(id => sim.records.find(r => r.id === id))
         .filter(Boolean);
@@ -74,18 +79,27 @@ const resolver = {
       if (!sim) return [];
       const currentSnippet = {
         id: `current-${simulatorId}`,
+        simulatorId: sim.id,
         name: "==Current==",
         type: "normal",
         records: sim.records.map(r => r.id)
       };
+      console.log(sim.recordSnippets.concat(currentSnippet));
       return sim.recordSnippets.concat(currentSnippet);
     }
   },
   Mutation: mutationHelper(schema),
   Subscription: {
     recordSnippetsUpdate: {
-      resolve(payload) {
-        return payload;
+      resolve(simulator) {
+        const currentSnippet = {
+          id: `current-${simulator.id}`,
+          simulatorId: simulator.id,
+          name: "==Current==",
+          type: "normal",
+          records: simulator.records.map(r => r.id)
+        };
+        return simulator.recordSnippets.concat(currentSnippet);
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("recordSnippetsUpdate"),

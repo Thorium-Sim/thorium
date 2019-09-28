@@ -48,7 +48,7 @@ const RecordsData = props => {
       variables: { simulatorId: simulator.id },
       updateQuery: (previousResult, { subscriptionData }) => ({
         ...previousResult,
-        template: subscriptionData.data.templateUpdate
+        recordSnippets: subscriptionData.data.recordSnippetsUpdate
       })
     }),
     [simulator.id]
