@@ -1,3 +1,23 @@
+# [1.21.0](https://github.com/Thorium-Sim/thorium/compare/1.20.1...1.21.0) (2019-10-01)
+
+
+### Bug Fixes
+
+* **CRM:** Makes the CRM throttle joystick and phaser charging work on touchscreens. Closes [#2498](https://github.com/Thorium-Sim/thorium/issues/2498) ([f2a6bf5](https://github.com/Thorium-Sim/thorium/commit/f2a6bf5))
+* **Damage Control:** Denying reactivation codes no longer repairs the system. Closes [#2538](https://github.com/Thorium-Sim/thorium/issues/2538). Closes [#2537](https://github.com/Thorium-Sim/thorium/issues/2537). ([3e207be](https://github.com/Thorium-Sim/thorium/commit/3e207be))
+* **Targeting:** Fixes an issue where clicking the minus button on targeting removes the incorrect targeting contacts. Closes [#2539](https://github.com/Thorium-Sim/thorium/issues/2539) ([a79e09e](https://github.com/Thorium-Sim/thorium/commit/a79e09e))
+* **Thrusters:** Fixes an issue where the up and down and yaw thruster bars disappear. ([227e1a6](https://github.com/Thorium-Sim/thorium/commit/227e1a6))
+* **Torpedo Firing:** Torpedo launching scrolls when there are too many torpedo launchers. Closes [#2490](https://github.com/Thorium-Sim/thorium/issues/2490) ([cb9c7c1](https://github.com/Thorium-Sim/thorium/commit/cb9c7c1))
+* **Transwarp:** The charging section that used to be called "Transwarp Core" is now labeled with the display name of the Transwarp system. Closes [#2491](https://github.com/Thorium-Sim/thorium/issues/2491) ([4285873](https://github.com/Thorium-Sim/thorium/commit/4285873))
+
+
+### Features
+
+* **General:** Adds copy/paste ability to damage report field and chat messages. Closes [#2544](https://github.com/Thorium-Sim/thorium/issues/2544). ([4b85d89](https://github.com/Thorium-Sim/thorium/commit/4b85d89))
+* **Reactor:** Reactor control now displays the currently selected reactor efficiency setting. Closes [#2466](https://github.com/Thorium-Sim/thorium/issues/2466) ([7ec0696](https://github.com/Thorium-Sim/thorium/commit/7ec0696))
+* **Records:** Add a records screen. This automatically generates records based on user actions in the simulator. Records can be compiled into snippets or composed into a draft Long Range Message. The Records Core allows the flight director to delete records or create arbitarary records. If you want to include automatically generated records for more systems, file an issue. ([18146c5](https://github.com/Thorium-Sim/thorium/commit/18146c5))
+* **Tasks:** makes it possible to add pre-macros to tasks in the "Add Task" action definition. Closes [#2499](https://github.com/Thorium-Sim/thorium/issues/2499) ([4e87aa7](https://github.com/Thorium-Sim/thorium/commit/4e87aa7))
+
 ## [1.20.1](https://github.com/Thorium-Sim/thorium/compare/1.20.0...1.20.1) (2019-09-09)
 
 
