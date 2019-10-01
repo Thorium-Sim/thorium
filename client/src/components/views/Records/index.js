@@ -1,34 +1,44 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import Template from "./template";
+import Records from "./records";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
 import { useQuery } from "@apollo/react-hooks";
 import "./style.scss";
 
 const fragment = gql`
-  fragment TemplateData on Template {
+  fragment RecordData on RecordSnippet {
     id
+    name
+    type
+    launched
+    records {
+      id
+      contents
+      timestamp
+      category
+      modified
+    }
   }
 `;
 
 const QUERY = gql`
-  query Template($simulatorId: ID!) {
-    _template(simulatorId: $simulatorId) {
-      ...TemplateData
+  query Records($simulatorId: ID!) {
+    recordSnippets(simulatorId: $simulatorId) {
+      ...RecordData
     }
   }
   ${fragment}
 `;
 const SUBSCRIPTION = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
-    _templateUpdate(simulatorId: $simulatorId) {
-      ...TemplateData
+    recordSnippetsUpdate(simulatorId: $simulatorId) {
+      ...RecordData
     }
   }
   ${fragment}
 `;
 
-const TemplateData = props => {
+const RecordsData = props => {
   const { simulator } = props;
   const { loading, data = {}, subscribeToMore } = useQuery(QUERY, {
     variables: { simulatorId: simulator.id }
@@ -38,15 +48,14 @@ const TemplateData = props => {
       variables: { simulatorId: simulator.id },
       updateQuery: (previousResult, { subscriptionData }) => ({
         ...previousResult,
-        template: subscriptionData.data.templateUpdate
+        recordSnippets: subscriptionData.data.recordSnippetsUpdate
       })
     }),
     [simulator.id]
   );
   useSubscribeToMore(subscribeToMore, SUBSCRIPTION, subConfig);
-  const { template } = data;
-  if (loading || !template) return null;
-  if (!template[0]) return <div>No Template</div>;
-  return <Template {...props} {...template[0]} />;
+  const { recordSnippets } = data;
+  if (loading || !recordSnippets) return null;
+  return <Records {...props} recordSnippets={recordSnippets} />;
 };
-export default TemplateData;
+export default RecordsData;

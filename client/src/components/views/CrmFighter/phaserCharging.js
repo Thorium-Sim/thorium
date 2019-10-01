@@ -9,12 +9,14 @@ function useMouseHold(callback, mouseupCallback = () => {}) {
   function mouseup(e) {
     activeRef.current = false;
     document.removeEventListener("mouseup", mouseup);
+    document.removeEventListener("touchend", mouseup);
     mouseupCallback();
   }
 
   function mousedown(e) {
     activeRef.current = true;
     document.addEventListener("mouseup", mouseup);
+    document.addEventListener("touchend", mouseup);
   }
   useAnimationFrame(delta => {
     callback(delta);
@@ -63,7 +65,7 @@ const PhaserCharging = ({ id, clientId, client, phaserLevel = 0 }) => {
         />
       </div>
 
-      <Button color="warning" onMouseDown={mousedown}>
+      <Button color="warning" onMouseDown={mousedown} onTouchStart={mousedown}>
         Charge
       </Button>
     </div>

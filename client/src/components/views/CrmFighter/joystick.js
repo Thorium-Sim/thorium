@@ -7,17 +7,23 @@ import { withApollo } from "react-apollo";
 function useDraggable(callback, upCallback = () => {}) {
   function mouseup() {
     document.removeEventListener("mouseup", mouseup);
+    document.removeEventListener("touchend", mouseup);
     document.removeEventListener("mousemove", callback);
+    document.removeEventListener("touchmove", callback);
     upCallback();
   }
   function mousedown() {
     document.addEventListener("mouseup", mouseup);
+    document.addEventListener("touchend", mouseup);
     document.addEventListener("mousemove", callback);
+    document.addEventListener("touchmove", callback);
   }
   useEffect(() => {
     return () => {
       document.removeEventListener("mouseup", mouseup);
+      document.removeEventListener("touchend", mouseup);
       document.removeEventListener("mousemove", callback);
+      document.removeEventListener("touchmove", callback);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -52,7 +58,11 @@ const Joystick = ({ client, id, clientId }) => {
   const mousedown = useDraggable(
     e => {
       if (!parentRef.current) return;
-      const { clientX, clientY } = e;
+      const {
+        touches: [{ clientX: touchClientX, clientY: touchClientY }] = [{}],
+        clientX = touchClientX,
+        clientY = touchClientY
+      } = e;
       const {
         left,
         top,
@@ -97,6 +107,7 @@ const Joystick = ({ client, id, clientId }) => {
           className={`joystick-handle ${returning ? "returning" : ""}`}
           onTransitionEnd={() => setReturning(false)}
           onMouseDown={mousedown}
+          onTouchStart={mousedown}
           style={{
             transform: `translate(${position.x}px, ${position.y}px)`
           }}

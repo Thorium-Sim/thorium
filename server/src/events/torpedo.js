@@ -78,6 +78,16 @@ App.on("torpedoFire", ({ id }) => {
     },
     "addCoreFeed"
   );
+
+  // Records Notification
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      contents: `${torpedo.type} Torpedo Fired`,
+      category: "Weapons"
+    },
+    "recordsCreate"
+  );
 });
 App.on("torpedoSetWarheadCount", ({ id, warheadType, count }) => {
   App.systems.find(s => s.id === id).setWarheadCount(warheadType, count);

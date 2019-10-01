@@ -60,3 +60,4 @@ import "./interface.js";
 import "./crm";
 import "./macro.js";
 import "./googleSheets.js";
+import "./records.js";

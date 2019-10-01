@@ -52,6 +52,14 @@ App.on(
             });
           }
         });
+        App.handleEvent(
+          {
+            simulatorId: system.simulatorId,
+            contents: `Long Range Message composed by ${sender}`,
+            category: "Communication"
+          },
+          "recordsCreate"
+        );
       } else {
         const stations = simulator.stations.filter(s =>
           s.cards.find(c => c.component === "CommDecoding")
@@ -70,6 +78,14 @@ App.on(
             });
           }
         });
+        App.handleEvent(
+          {
+            simulatorId: system.simulatorId,
+            contents: `Long Range Message sent by ${sender}`,
+            category: "Communication"
+          },
+          "recordsCreate"
+        );
       }
     }
     pubsub.publish(
@@ -82,6 +98,7 @@ App.on(
 App.on("longRangeMessageSend", ({ id, message }) => {
   const sys = App.systems.find(s => s.id === id);
   sys.sendMessage(message);
+  const messageObj = sys.messages.find(m => m.id === message);
   pubsub.publish("notify", {
     id: uuid.v4(),
     simulatorId: sys.simulatorId,
@@ -100,6 +117,14 @@ App.on("longRangeMessageSend", ({ id, message }) => {
       color: "info"
     },
     "addCoreFeed"
+  );
+  App.handleEvent(
+    {
+      simulatorId: sys.simulatorId,
+      contents: `Long Range Message sent by ${messageObj.sender}`,
+      category: "Communication"
+    },
+    "recordsCreate"
   );
   pubsub.publish(
     "longRangeCommunicationsUpdate",

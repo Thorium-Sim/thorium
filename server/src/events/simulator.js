@@ -69,6 +69,16 @@ App.on("changeSimulatorAlertLevel", ({ simulatorId, alertLevel }) => {
       },
       "addCoreFeed"
     );
+
+    // Records Notification
+    App.handleEvent(
+      {
+        simulatorId: simulator.id,
+        contents: `${alertLevel}`,
+        category: "Alert Condition"
+      },
+      "recordsCreate"
+    );
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
 });

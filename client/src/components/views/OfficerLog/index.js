@@ -8,7 +8,7 @@ import Printable from "helpers/printable";
 
 import "./style.scss";
 
-const stardate = date => {
+export const stardate = date => {
   var calculatedDate = new Date(date).getTime() / 1000 / 60 / 60 / 30 / 2;
   var subtraction = Math.floor(calculatedDate);
   var finalDate = (calculatedDate - subtraction) * 100000;

@@ -15,8 +15,7 @@ class Circle extends THREE.Group {
         new THREE.Vector3(x2, y2, 0)
       ];
       const material = new THREE.LineBasicMaterial({
-        color: params.color || 0xff0000,
-        lineWidth: 1
+        color: params.color || 0xff0000
       });
       const line = new THREE.Line(geometry, material);
       this.add(line);
