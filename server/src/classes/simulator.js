@@ -213,9 +213,10 @@ export default class Simulator {
       params.records.forEach(r => this.records.push(new Record(r)));
     params.recordSnippets &&
       params.recordSnippets.forEach(r =>
-        this.recordSnippets.push(new RecordSnippet(r))
+        this.recordSnippets.push(
+          new RecordSnippet({ ...r, simulatorId: this.id })
+        )
       );
-
     // For Space EdVentures
     this.spaceEdventuresId = params.spaceEdventuresId || null;
   }
@@ -460,10 +461,13 @@ export default class Simulator {
 
   // Records
   createRecord(record) {
+    console.log(new Record(record), record);
     this.records.push(new Record(record));
   }
   createRecordSnippet(snippet) {
-    this.recordSnippets.push(new RecordSnippet(snippet));
+    const s = new RecordSnippet({ ...snippet, simulatorId: this.id });
+    this.recordSnippets.push(s);
+    return s.id;
   }
   addRecordToSnippet(snippetId, recordIds) {
     const snippet = this.recordSnippets.find(s => s.id === snippetId);
@@ -472,6 +476,9 @@ export default class Simulator {
   removeRecordFromSnippet(snippetId, recordId) {
     const snippet = this.recordSnippets.find(s => s.id === snippetId);
     snippet.removeRecord(recordId);
+  }
+  deleteRecord(recordId) {
+    this.records = this.records.filter(r => r.id !== recordId);
   }
 
   setSpaceEdventuresId(id) {

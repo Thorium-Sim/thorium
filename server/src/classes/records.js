@@ -6,7 +6,7 @@ export class Record {
     this.class = "Record";
     this.contents = params.contents || "";
     this.original = params.original || "";
-    this.timestamp = params.timestamp || new Date();
+    this.timestamp = params.timestamp || new Date().toISOString();
     this.category = params.category || "Manual";
     this.modified = params.modified || false;
   }

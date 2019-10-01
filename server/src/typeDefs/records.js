@@ -52,6 +52,7 @@ const schema = gql`
       snippetId: ID!
       recordId: ID!
     ): String
+    recordsDeleteRecord(simulatorId: ID!, recordId: ID!): String
   }
   extend type Subscription {
     recordSnippetsUpdate(simulatorId: ID): [RecordSnippet]
@@ -63,11 +64,6 @@ const resolver = {
     records(snippet) {
       const sim = App.simulators.find(s => s.id === snippet.simulatorId);
       if (!sim) return [];
-      console.log(
-        snippet.records
-          .map(id => sim.records.find(r => r.id === id))
-          .filter(Boolean)
-      );
       return snippet.records
         .map(id => sim.records.find(r => r.id === id))
         .filter(Boolean);
@@ -80,11 +76,10 @@ const resolver = {
       const currentSnippet = {
         id: `current-${simulatorId}`,
         simulatorId: sim.id,
-        name: "==Current==",
+        name: "All Records",
         type: "normal",
         records: sim.records.map(r => r.id)
       };
-      console.log(sim.recordSnippets.concat(currentSnippet));
       return sim.recordSnippets.concat(currentSnippet);
     }
   },
@@ -95,7 +90,7 @@ const resolver = {
         const currentSnippet = {
           id: `current-${simulator.id}`,
           simulatorId: simulator.id,
-          name: "==Current==",
+          name: "All Records",
           type: "normal",
           records: simulator.records.map(r => r.id)
         };
