@@ -461,7 +461,6 @@ export default class Simulator {
 
   // Records
   createRecord(record) {
-    console.log(new Record(record), record);
     this.records.push(new Record(record));
   }
   createRecordSnippet(snippet) {
