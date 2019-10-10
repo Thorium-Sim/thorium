@@ -521,7 +521,6 @@ App.on("updateSensorGrid", ({ simulatorId, contacts, cb }) => {
   const deleteContacts = contactIds.filter(
     c => !contacts.find(cc => cc.id === c)
   );
-  console.log(newContacts, movingContacts, deleteContacts);
   deleteContacts.forEach(id => {
     system.removeContact({ id });
     // Get rid of any targeting classes
