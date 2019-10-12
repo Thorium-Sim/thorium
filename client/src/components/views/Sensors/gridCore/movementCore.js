@@ -68,6 +68,13 @@ export default class MovementCore extends PureComponent {
               newPosition.top = Math.sin(theta) * -1;
             }
           }
+          // Snapping
+          if (newPosition.left < 0.05 && newPosition.left > -0.05) {
+            newPosition.left = 0;
+          }
+          if (newPosition.top < 0.05 && newPosition.top > -0.05) {
+            newPosition.top = 0;
+          }
           this.setState({ direction: newPosition });
           this.sendUpdate({ x: newPosition.left, y: newPosition.top, z: 0 });
           break;
