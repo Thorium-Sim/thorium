@@ -107,7 +107,7 @@ export default class ContactContextMenu extends Component {
                 id="sizeRange"
                 min="0.1"
                 defaultValue={contact.size}
-                max="5"
+                max="20"
                 step="0.1"
                 onChange={e => {
                   updateArmyContact(
