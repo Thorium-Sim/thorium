@@ -31,7 +31,7 @@ class BattleCore extends Component {
     action({
       variables: {
         id: sensors.id,
-        hitpoints: e.target.value
+        hitpoints: parseFloat(e.target.value)
       }
     });
   };
