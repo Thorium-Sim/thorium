@@ -1,3 +1,23 @@
+# [1.22.0](https://github.com/Thorium-Sim/thorium/compare/1.21.0...1.22.0) (2019-10-14)
+
+
+### Bug Fixes
+
+* **Battle Core:** Makes it possible to update the default hitpoints again. Closes [#2550](https://github.com/Thorium-Sim/thorium/issues/2550) ([31e414f](https://github.com/Thorium-Sim/thorium/commit/31e414f))
+* **Cargo:** The find overlay on cargo core is no longer obscured by the Add Inventory button. Closes [#2571](https://github.com/Thorium-Sim/thorium/issues/2571) ([9dd6210](https://github.com/Thorium-Sim/thorium/commit/9dd6210))
+* **Lighting:** Changes lighting core blackout button to change the light colors to black instead of taking down the intensity. Closes [#2570](https://github.com/Thorium-Sim/thorium/issues/2570) ([c7529d9](https://github.com/Thorium-Sim/thorium/commit/c7529d9))
+* **Probes:** Fixes a typo on the hydrogen burst scientific probe. Closes [#2564](https://github.com/Thorium-Sim/thorium/issues/2564) ([9e93b21](https://github.com/Thorium-Sim/thorium/commit/9e93b21))
+* **Railgun:** Railgun projectiles no longer go outside the sensor ring. Closes [#2573](https://github.com/Thorium-Sim/thorium/issues/2573) ([cb168f3](https://github.com/Thorium-Sim/thorium/commit/cb168f3))
+* **Sensor Scans:** Makes it so the scan request box wraps and scrolls for exceptionally long sensor scans. Closes [#2552](https://github.com/Thorium-Sim/thorium/issues/2552) ([afb1447](https://github.com/Thorium-Sim/thorium/commit/afb1447))
+* **Sensors:** Adds a bit of vertical and horizontal snapping to the sensors movement circle. Closes [#2559](https://github.com/Thorium-Sim/thorium/issues/2559) ([08576d8](https://github.com/Thorium-Sim/thorium/commit/08576d8))
+* **Sensors:** Made it so sensor contacts can be obnoxiously large. Closes [#2568](https://github.com/Thorium-Sim/thorium/issues/2568) ([795972d](https://github.com/Thorium-Sim/thorium/commit/795972d))
+* **Sounds:** Fixes cancelling all sounds on sound player viewscreens and keyboards. Closes [#2560](https://github.com/Thorium-Sim/thorium/issues/2560). Closes [#2567](https://github.com/Thorium-Sim/thorium/issues/2567) ([e51b291](https://github.com/Thorium-Sim/thorium/commit/e51b291))
+
+
+### Features
+
+* **Engines:** Adds a trigger for engine speed changes. You can use a trigger switch to determine the name of the engine that was activated, or use "Full Stop" for when the engines are deactivated. ([06b5096](https://github.com/Thorium-Sim/thorium/commit/06b5096))
+
 # [1.21.0](https://github.com/Thorium-Sim/thorium/compare/1.20.1...1.21.0) (2019-10-01)
 
 
