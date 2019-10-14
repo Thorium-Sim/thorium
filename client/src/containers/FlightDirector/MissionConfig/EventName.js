@@ -30,9 +30,8 @@ const EventName = ({ id, label, client }) => {
   React.useEffect(() => {
     if (!memo[id]) memo[id] = client.query({ query });
     memo[id].then(({ data }) => {
-      const name = data.__schema.mutationType.fields
-        .find(f => f.name === id)
-        .description.replace("Macro: ", "");
+      const item = data.__schema.mutationType.fields.find(f => f.name === id);
+      const name = item ? item.description.replace("Macro: ", "") : id;
       setOutput(name);
     });
   }, [client, id]);

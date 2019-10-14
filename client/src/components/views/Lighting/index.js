@@ -330,12 +330,16 @@ const LightingCore = ({ simulator: { lighting, id } }) => {
                 <Button
                   color="dark"
                   size="sm"
-                  active={intensity === 0}
+                  active={color === "black"}
                   onClick={e =>
                     update({
                       variables: {
                         id,
-                        lighting: { action: "normal", intensity: 0 }
+                        lighting: {
+                          action: "normal",
+                          color: "black",
+                          intensity: 1
+                        }
                       }
                     })
                   }

@@ -296,7 +296,12 @@ class SensorsCore extends Component {
               }}
             >
               <OutputField
-                style={{ flexGrow: 2, minHeight: "44px" }}
+                style={{
+                  flexGrow: 2,
+                  minHeight: "44px",
+                  whiteSpace: "pre-line",
+                  overflowY: "auto"
+                }}
                 alert={
                   sensor.history
                     ? (scan && scan.scanning) ||

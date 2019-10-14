@@ -249,7 +249,12 @@ App.on("stopAllSounds", ({ simulatorId, station }) => {
   const clients = App.clients.filter(s => {
     if (s.simulatorId !== simulatorId) return false;
     if (station) {
-      if (s.station === station || s.id === station) return true;
+      if (
+        s.station === station ||
+        s.id === station ||
+        (station === "Sound" && s.soundPlayer)
+      )
+        return true;
       return false;
     }
     return true;

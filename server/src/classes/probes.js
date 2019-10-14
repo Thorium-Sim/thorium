@@ -794,7 +794,7 @@ export const scienceProbeTypes = [
     name: "Hydrogen",
     type: "burst",
     description:
-      "Masks trace amounts of hydrogen. Can be used to stimulate fusion reactions and stall the collapse or red dwarf stars.",
+      "Masks trace amounts of hydrogen. Can be used to stimulate fusion reactions and stall the collapse of red dwarf stars.",
     equipment: ["hydrogen-emitter", "extra-fuel-cell", "extra-fuel-cell"]
   },
   {

@@ -43,6 +43,9 @@
     height: 100%;
   }
 }
+.core #sensorGrid .grid {
+  overflow: visible;
+}
 #sensorGrid {
   position: absolute;
   z-index: 1;
@@ -70,6 +73,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    overflow: hidden;
     background-color: rgba(0, 0, 0, 0.6);
 
     //Ping Stuff
