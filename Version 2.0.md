@@ -25,11 +25,15 @@ Some goals for this refactor:
 - Add proper mutation responses to all requests, to make it easier to transition
   to MST-GQL
 - Fix the weird mutation events system so it's not so weird.
--
+- Provide more client data in the GraphQL context, like simulator ID, station,
+  etc. This makes it so not every query and subscription has to pass a simulator
+  ID as an argument and notifications can be selectively sent depending on
+  whether the action was performed by a crew member or by a core.
 - Add Axe-Core and Jest-Axe to do accessibility testing. Fix accessibility bug
   that it finds.
 - Combine the GraphQL server and the client server into a single server, using a
-  single port. Make that port easy to type in, like 4444 or something.
+  single port. Make that port easy to type in, like 4444 or make it
+  configurable.
 - Combine all process loops into a single loop which is based on delta times.
 - Clean up and improve the configuration process.
 - Simplify so it's only running one flight at a time.
