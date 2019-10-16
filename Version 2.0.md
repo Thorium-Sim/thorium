@@ -4,7 +4,9 @@ A refactor of Thorium is underway to bring it upt to date with some libraries
 and coding practices while cleaning up the code and improving the user
 experience.
 
-Some goals for this refactor, in order of importance:
+Some of this stuff might be part of future refactors.
+
+Some goals for this refactor:
 
 - Partial TypeScript definitions, especially for the server
 - Add more tests, particularly on the client side
@@ -12,10 +14,18 @@ Some goals for this refactor, in order of importance:
 - Upgrade all components to be React StrictMode compatible.
 - Clean up the data flow for passing data down to the individual cards. Use
   context or MobX
+- Improve the queries so they properly have singular and plural queries for
+  things.
+- Make it so systems are stored on the simulator object instead of being stored
+  on the main App storage.
 - Redesign the GraphQL schema, especially so mutations are in
   {system}{Operation} format, like phasersFire
 - Make sure subscriptions are atomic and scoped to just what the subscriber
   wants.
+- Add proper mutation responses to all requests, to make it easier to transition
+  to MST-GQL
+- Fix the weird mutation events system so it's not so weird.
+-
 - Add Axe-Core and Jest-Axe to do accessibility testing. Fix accessibility bug
   that it finds.
 - Combine the GraphQL server and the client server into a single server, using a
