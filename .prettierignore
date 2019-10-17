@@ -1,0 +1,7 @@
+src/models/*
+server/build
+.cache
+build
+dist
+locales
+coverage

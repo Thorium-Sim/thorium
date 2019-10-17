@@ -56,6 +56,7 @@ Some goals for this refactor:
   which the crew members perform. Maybe see if they can be integrated together,
   so training for one card moves into the next, or even has a configurable
   preamble which shows on the Login screen.
+- Remove React-FontAwesome and use React-Icons instead.
 
 A few maybes?
 
@@ -85,3 +86,11 @@ these items:
 
 TypeScript conversions don't require writing additional tests, unless adding the
 type definitions requires refactoring the core functionality.
+
+## Other Things to Improve
+
+There are a number of things that are not good about the way Thorium is
+developed that could be improved. When you come across these things, try to make
+them better using the suggestions below. Some of these things include:
+
+- Inline styles. Replace them with CSS-in-JS definitions using Emotion.
