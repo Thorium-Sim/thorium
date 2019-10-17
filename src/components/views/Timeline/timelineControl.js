@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from "react";
 import {Button, ButtonGroup} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import StepModal from "./stepModal";
+import {FaArrowLeft, FaStepForward, FaPlay, FaArrowRight} from "react-icons/fa";
 
 class TimelineControl extends Component {
   state = {};
@@ -91,7 +91,7 @@ class TimelineControl extends Component {
                   })
                 }
               >
-                <FontAwesome fixedWidth name="arrow-left" />
+                <FaArrowLeft fixedWidth name="arrow-left" />
               </Button>
               <Mutation
                 mutation={gql`
@@ -110,7 +110,7 @@ class TimelineControl extends Component {
                       title="Run Step & Stay"
                       onClick={this.runMacro(triggerMacro)}
                     >
-                      <FontAwesome fixedWidth name="step-forward" />
+                      <FaStepForward fixedWidth name="step-forward" />
                     </Button>
                     <Button
                       color="info"
@@ -128,7 +128,7 @@ class TimelineControl extends Component {
                       title="Run & Go Forward"
                       onClick={this.runMacro(triggerMacro, updateTimelineStep)}
                     >
-                      <FontAwesome fixedWidth name="play" />
+                      <FaPlay fixedWidth name="play" />
                     </Button>
                   </Fragment>
                 )}
@@ -146,7 +146,7 @@ class TimelineControl extends Component {
                   })
                 }
               >
-                <FontAwesome fixedWidth name="arrow-right" />
+                <FaArrowRight fixedWidth name="arrow-right" />
               </Button>
             </ButtonGroup>
             <StepModal

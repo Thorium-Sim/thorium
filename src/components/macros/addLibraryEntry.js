@@ -1,9 +1,9 @@
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
 import {paramCase} from "change-case";
-import FontAwesome from "react-fontawesome";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import {cypherMap} from "components/views/CodeCyphers";
+import {FaBan} from "react-icons/fa";
 
 export default ({updateArgs, args: {entry = {}}, client}) => {
   return (
@@ -84,9 +84,8 @@ export default ({updateArgs, args: {entry = {}}, client}) => {
       {(entry.categories || []).map(s => (
         <div key={`categories-list-${entry.id}-${s}`}>
           {s}{" "}
-          <FontAwesome
+          <FaBan
             className="text-danger"
-            name="ban"
             onClick={() =>
               updateArgs(
                 "entry",

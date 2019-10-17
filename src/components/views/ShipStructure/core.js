@@ -2,10 +2,10 @@ import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Container, Row, Col, Button, Input, Label} from "helpers/reactstrap";
 import {graphql, withApollo, Mutation} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {parse, unparse} from "papaparse";
 import "./style.scss";
+import {FaBan} from "react-icons/fa";
 
 const DECKS_SUB = gql`
   subscription DecksSub($simulatorId: ID!) {
@@ -381,8 +381,7 @@ class DecksCore extends Component {
                   .roles.map(r => (
                     <p key={`${selectedRoom}-${r}`}>
                       {r}{" "}
-                      <FontAwesome
-                        name="ban"
+                      <FaBan
                         className="text-warning"
                         onClick={() => this.removeRole(r)}
                       />

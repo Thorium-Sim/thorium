@@ -10,7 +10,7 @@ import {
 } from "helpers/reactstrap";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 
 function reducer(state, action) {
   if (action.type === "setInterface") {
@@ -108,9 +108,8 @@ const App = ({
                       onClick={() => dispatch({type: "setInterface", id: s})}
                     >
                       {" "}
-                      <FontAwesome
+                      <FaBan
                         className="text-danger"
-                        name="ban"
                         onClick={() => removeInterfaces(s, action)}
                       />{" "}
                       {interfaceObj.name}{" "}

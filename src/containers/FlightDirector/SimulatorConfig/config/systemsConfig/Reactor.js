@@ -3,7 +3,7 @@ import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import {Query, Mutation} from "react-apollo";
 import {Input, FormGroup, Label, Row, Col, Button} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 
 const REACTOR_QUERY = gql`
   query Reactor($id: ID!) {
@@ -228,8 +228,7 @@ const Reactor = props => {
                               />
                             </Col>
                             <Col sm={1}>
-                              <FontAwesome
-                                name="ban"
+                              <FaBan
                                 className="text-danger"
                                 style={{cursor: "pointer"}}
                                 onClick={removeEfficiency(action, reactor, i)}

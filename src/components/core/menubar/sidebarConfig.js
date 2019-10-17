@@ -10,7 +10,6 @@ import {
 import {Cores} from "../../views";
 import {publish} from "helpers/pubsub";
 import {titleCase} from "change-case";
-import FontAwesome from "react-fontawesome";
 
 const defaultSidebar = [
   {
@@ -115,8 +114,7 @@ class NotificationConfig extends Component {
                       </option>
                     ))}
                 </Input>
-                <FontAwesome
-                  name="ban"
+                <FaBan
                   className="text-danger"
                   onClick={() =>
                     this.setState(

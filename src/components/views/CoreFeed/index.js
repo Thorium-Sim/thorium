@@ -3,11 +3,11 @@ import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import {Cores} from "../";
 import {Button, ButtonGroup} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import CoreFeedConfig from "./config";
 import {DateTime} from "luxon";
 import "./style.scss";
+import {FaTimes} from "react-icons/fa";
 
 const COREFEED_SUB = gql`
   subscription CoreFeedUpdate($simulatorId: ID) {
@@ -166,9 +166,8 @@ class CoreFeed extends Component {
                       - {c.title}
                     </strong>
                     {c.body && <p>{c.body}</p>}
-                    <FontAwesome
+                    <FaTimes
                       className="pull-right"
-                      name="times"
                       onClick={e => {
                         e.preventDefault();
                         e.stopPropagation();

@@ -10,7 +10,7 @@ import {
 import {graphql, Query, Mutation} from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 
 function reducer(state, action) {
   if (action.type === "setCommandLine") {
@@ -110,9 +110,8 @@ const App = ({
                       onClick={() => dispatch({type: "setCommandLine", id: s})}
                     >
                       {" "}
-                      <FontAwesome
+                      <FaBan
                         className="text-danger"
-                        name="ban"
                         onClick={() => removeCommandLine(s, action)}
                       />{" "}
                       {command.name}{" "}

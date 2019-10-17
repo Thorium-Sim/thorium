@@ -5,9 +5,9 @@ import gql from "graphql-tag.macro";
 import ValueInput from "../../../components/views/Tasks/core/ValueInput";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
-import FontAwesome from "react-fontawesome";
 import uuid from "uuid";
 import MacroConfig from "../../../components/views/Macros/macroConfig";
+import {FaBan} from "react-icons/fa";
 
 const TaskConfig = ({
   id,
@@ -254,8 +254,7 @@ export const ConfigureMacro = ({
           >
             Configure Macro
           </Button>{" "}
-          <FontAwesome
-            name="ban"
+          <FaBan
             className="text-danger"
             onClick={() =>
               action({

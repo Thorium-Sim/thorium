@@ -2,13 +2,21 @@ import React, {Fragment, Component} from "react";
 import {Button} from "helpers/reactstrap";
 import {graphql, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
-import FontAwesome from "react-fontawesome";
 import ObjPreview from "./3dObjPreview";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Measure from "react-measure";
 import matchSorter from "match-sorter";
 import debounce from "helpers/debounce";
 import "./fileExplorer.scss";
+import {
+  FaFolderOpen,
+  FaUpload,
+  FaShare,
+  FaFolder,
+  FaBan,
+  FaFileVideo,
+  FaFileAudio,
+} from "react-icons/fa";
 
 const ASSET_FOLDER_SUB = gql`
   subscription AssetFolderSubscription {
@@ -181,7 +189,7 @@ class FileExplorer extends Component {
           {!simple && (
             <Fragment>
               <Button color="primary" size="sm" onClick={this._createFolder}>
-                Create Folder <FontAwesome name="folder-open" />
+                Create Folder <FaFolderOpen />
               </Button>
               <label>
                 <input
@@ -193,7 +201,7 @@ class FileExplorer extends Component {
                   onChange={this._massUpload}
                 />
                 <div className="btn btn-warning btn-sm">
-                  Upload Assets <FontAwesome name="upload" />
+                  Upload Assets <FaUpload />
                 </div>
               </label>
             </Fragment>
@@ -285,10 +293,9 @@ class FileExplorer extends Component {
                             }}
                           >
                             <div className="file-container">
-                              <FontAwesome
-                                flip="horizontal"
-                                size="3x"
-                                name="share"
+                              <FaShare
+                                className="fa-flip-horizontal"
+                                size="3em"
                               />
                               <p>Back</p>
                             </div>
@@ -305,12 +312,11 @@ class FileExplorer extends Component {
                             onClick={() => this.setDirectory(folder.fullPath)}
                           >
                             <div className="file-container">
-                              <FontAwesome size="3x" name="folder" />
+                              <FaFolder size="3em" />
                               <p>
                                 {folder.name}{" "}
                                 {this.props.admin && (
-                                  <FontAwesome
-                                    name="ban"
+                                  <FaBan
                                     className="text-danger"
                                     onClick={e =>
                                       this._removeFolder(folder.fullPath, e)
@@ -382,9 +388,8 @@ export class VideoPreview extends Component {
   render() {
     return (
       <div>
-        <FontAwesome
-          size="3x"
-          name="file-video-o"
+        <FaFileVideo
+          size="3em"
           style={{display: !this.state.loaded ? "block" : "none"}}
         />
         <video
@@ -412,8 +417,7 @@ const AssetObject = ({object, removeObject}) => {
         <p>
           {object.name}{" "}
           {removeObject && (
-            <FontAwesome
-              name="ban"
+            <FaBan
               className="text-danger"
               onClick={e => removeObject(object.fullPath, e)}
             />
@@ -429,8 +433,7 @@ const AssetObject = ({object, removeObject}) => {
         <p>
           {object.name}{" "}
           {removeObject && (
-            <FontAwesome
-              name="ban"
+            <FaBan
               className="text-danger"
               onClick={e => removeObject(object.fullPath, e)}
             />
@@ -442,12 +445,11 @@ const AssetObject = ({object, removeObject}) => {
   if (["m4a", "wav", "mp3", "ogg", "aiff", "aif"].indexOf(ext) > -1) {
     return (
       <div>
-        <FontAwesome size="3x" name="file-audio-o" />
+        <FaFileAudio size="3em" />
         <p>
           {object.name}{" "}
           {removeObject && (
-            <FontAwesome
-              name="ban"
+            <FaBan
               className="text-danger"
               onClick={e => removeObject(object.fullPath, e)}
             />
@@ -463,8 +465,7 @@ const AssetObject = ({object, removeObject}) => {
       <p>
         {object.name}{" "}
         {removeObject && (
-          <FontAwesome
-            name="ban"
+          <FaBan
             className="text-danger"
             onClick={e => removeObject(object.fullPath, e)}
           />

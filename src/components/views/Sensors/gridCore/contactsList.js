@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {Col, Button} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import ContactContextMenu from "./contactContextMenu";
 import {withApollo} from "react-apollo";
+import {FaBan} from "react-icons/fa";
 
 const ADD_ARMY_CONTACT = gql`
   mutation AddArmyContact(
@@ -157,8 +157,7 @@ class ContactsList extends Component {
                   {contact.name}
                 </label>
                 {!lite && (
-                  <FontAwesome
-                    name="ban"
+                  <FaBan
                     className="text-danger pull-right clickable"
                     onClick={() => this.removeArmyContact(contact)}
                   />

@@ -13,9 +13,9 @@ import {
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {Query, Mutation} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import playSound from "components/generic/SoundPlayer";
 import SoundPicker from "helpers/soundPicker";
+import {FaVolumeUp} from "react-icons/fa";
 
 const QUERY = gql`
   query Ambiance($id: ID!) {
@@ -79,10 +79,9 @@ const AmbianceConfig = ({
                 }
               />
 
-              <FontAwesome
+              <FaVolumeUp
                 style={{margin: "10px", cursor: "pointer"}}
-                name="volume-up"
-                size="lg"
+                size="2em"
                 onClick={() => {
                   playSound({
                     id,

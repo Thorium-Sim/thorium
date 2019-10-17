@@ -1,7 +1,7 @@
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import uuid from "uuid";
+import {FaBan, FaPlus} from "react-icons/fa";
 const Checkbox = ({
   value = [],
   updateValue = () => {},
@@ -63,8 +63,7 @@ const Checkbox = ({
                   value={o.label}
                   onChange={e => updateLabel(o.id, e.target.value)}
                 />
-                <FontAwesome
-                  name="ban"
+                <FaBan
                   className="text-danger"
                   onClick={() => removeOption(o.id)}
                 />
@@ -79,7 +78,7 @@ const Checkbox = ({
           style={{cursor: "pointer"}}
           onClick={addOption}
         >
-          <FontAwesome name="plus" /> Add an option
+          <FaPlus name="plus" /> Add an option
         </div>
       )}
     </div>

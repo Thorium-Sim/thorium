@@ -5,7 +5,14 @@ import {Container, Row, Col, Input} from "helpers/reactstrap";
 import {InputField, OutputField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-import FontAwesome from "react-fontawesome";
+import {
+  FaArrowCircleDown,
+  FaArrowUp,
+  FaArrowCircleUp,
+  FaArrowLeft,
+  FaArrowDown,
+  FaArrowRight,
+} from "react-icons/fa";
 
 const ROTATION_CHANGE_SUB = gql`
   subscription RotationChanged($simulatorId: ID) {
@@ -170,7 +177,7 @@ class ThrusterCore extends Component {
           {thrusters.direction && (
             <Fragment>
               <ThrusterArrow
-                name="arrow-circle-down"
+                icon={FaArrowCircleDown}
                 value={
                   thrusters.direction.z < 0
                     ? Math.abs(thrusters.direction.z)
@@ -178,7 +185,7 @@ class ThrusterCore extends Component {
                 }
               />
               <ThrusterArrow
-                name="arrow-up"
+                icon={FaArrowUp}
                 value={
                   thrusters.direction.y > 0
                     ? Math.abs(thrusters.direction.y)
@@ -186,7 +193,7 @@ class ThrusterCore extends Component {
                 }
               />
               <ThrusterArrow
-                name="arrow-circle-up"
+                icon={FaArrowCircleUp}
                 value={
                   thrusters.direction.z > 0
                     ? Math.abs(thrusters.direction.z)
@@ -194,7 +201,7 @@ class ThrusterCore extends Component {
                 }
               />
               <ThrusterArrow
-                name="arrow-left"
+                icon={FaArrowLeft}
                 value={
                   thrusters.direction.x < 0
                     ? Math.abs(thrusters.direction.x)
@@ -202,7 +209,7 @@ class ThrusterCore extends Component {
                 }
               />
               <ThrusterArrow
-                name="arrow-down"
+                icon={FaArrowDown}
                 value={
                   thrusters.direction.y < 0
                     ? Math.abs(thrusters.direction.y)
@@ -210,7 +217,7 @@ class ThrusterCore extends Component {
                 }
               />
               <ThrusterArrow
-                name="arrow-right"
+                icon={FaArrowRight}
                 value={
                   thrusters.direction.x > 0
                     ? Math.abs(thrusters.direction.x)
@@ -307,12 +314,11 @@ class ThrusterCore extends Component {
   }
 }
 
-const ThrusterArrow = ({name, value}) => {
+const ThrusterArrow = ({icon: Icon, value}) => {
   return (
     <Col sm={4} className="thruster-symbol">
-      <FontAwesome
-        name={name}
-        size="lg"
+      <Icon
+        size="2em"
         style={{
           margin: "2px",
           color: `rgb(${Math.round(value * 255)},${Math.round(

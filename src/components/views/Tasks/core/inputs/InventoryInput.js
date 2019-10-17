@@ -1,9 +1,9 @@
 import React from "react";
 import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
-import FontAwesome from "react-fontawesome";
 import {Button} from "helpers/reactstrap";
 import {randomFromList} from "helpers/randomFromList";
+import {FaBan} from "react-icons/fa";
 
 const INV_QUERY = gql`
   query Inventory($simulatorId: ID!) {
@@ -57,8 +57,7 @@ const InventoryInput = ({simulatorId, onChange, value}) => {
                   max={5}
                   onBlur={e => onChange({...value, [id]: e.target.value})}
                 />
-                <FontAwesome
-                  name="ban"
+                <FaBan
                   className="text-danger"
                   style={{cursor: "pointer"}}
                   onClick={() => {

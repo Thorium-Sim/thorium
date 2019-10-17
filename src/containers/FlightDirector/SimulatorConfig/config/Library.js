@@ -13,10 +13,10 @@ import {
   Label,
 } from "helpers/reactstrap";
 import {paramCase} from "change-case";
-import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import {cypherMap} from "components/views/CodeCyphers";
+import {FaBan} from "react-icons/fa";
 const SUB = gql`
   subscription Library {
     libraryEntriesUpdate {
@@ -261,9 +261,8 @@ class Library extends Component {
                       {entry.categories.map(s => (
                         <div key={`categories-list-${entry.id}-${s}`}>
                           {s}{" "}
-                          <FontAwesome
+                          <FaBan
                             className="text-danger"
-                            name="ban"
                             onClick={() =>
                               this.updateEntry(
                                 "categories",
@@ -317,9 +316,8 @@ class Library extends Component {
                       {entry.seeAlso.map(s => (
                         <div key={`see-also-list-${entry.id}-${s}`}>
                           {libraryEntries.find(l => l.id === s).title}{" "}
-                          <FontAwesome
+                          <FaBan
                             className="text-danger"
-                            name="ban"
                             onClick={() =>
                               this.updateEntry(
                                 "seeAlso",

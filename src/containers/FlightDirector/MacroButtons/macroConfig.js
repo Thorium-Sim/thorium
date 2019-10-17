@@ -14,12 +14,12 @@ import {
 } from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import FontAwesome from "react-fontawesome";
 import EventName from "../MissionConfig/EventName";
 import MacroWrapper from "../MissionConfig/MacroConfig";
 import EventPicker from "../MissionConfig/EventPicker";
 import uuid from "uuid";
 import {titleCase} from "change-case";
+import {FaBan} from "react-icons/fa";
 
 const colors = [
   "primary",
@@ -115,8 +115,7 @@ const ActionList = ({
             active={e.id === selectedAction}
           >
             <EventName id={e.event} />{" "}
-            <FontAwesome
-              name="ban"
+            <FaBan
               className="text-danger pull-right"
               onClick={() => removeAction(e.id)}
             />

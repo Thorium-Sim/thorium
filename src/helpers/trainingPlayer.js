@@ -3,8 +3,8 @@ import "./tourHelper.scss";
 import {Media, Player, controls, withMediaProps} from "react-media-player";
 import "./trainingPlayer.scss";
 import Measure from "react-measure";
-import FontAwesome from "react-fontawesome";
 import {subscribe} from "helpers/pubsub";
+import {FaRegTimesCircle} from "react-icons/fa";
 
 const {CurrentTime, SeekBar, Duration, Volume} = controls;
 
@@ -130,9 +130,8 @@ class MediaPlayerObject extends Component {
           <Volume className="media-control media-control--volume" />
 
           {close && (
-            <FontAwesome
-              name="times-circle-o"
-              size="2x"
+            <FaRegTimesCircle
+              size="2em"
               style={{cursor: "pointer"}}
               onClick={close}
             />

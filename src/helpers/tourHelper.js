@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "reactour";
-import FontAwesome from "react-fontawesome";
 import IntlProvider from "./intl";
 import "./tourHelper.scss";
+import {FaVolumeUp} from "react-icons/fa";
 
 const synth = window.speechSynthesis;
 
@@ -55,7 +55,7 @@ const TourHelper = ({
           badgeContent={(current, total) => {
             return (
               <div className="tour-speaker" onClick={() => speak(current)}>
-                <FontAwesome size="lg" name="volume-up" /> Speak This
+                <FaVolumeUp size="2em" /> Speak This
               </div>
             );
           }}

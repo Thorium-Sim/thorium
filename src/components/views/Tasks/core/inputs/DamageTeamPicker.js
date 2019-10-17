@@ -3,7 +3,7 @@ import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button} from "helpers/reactstrap";
 import {randomFromList} from "helpers/randomFromList";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 
 const crewQuery = gql`
   query CrewPositions($simulatorId: ID) {
@@ -74,8 +74,7 @@ const DamageTeamPicker = ({simulatorId, onChange, value = {}}) => (
                 style={{width: "unset"}}
                 onChange={e => onChange({...value, [key]: e.target.value})}
               />
-              <FontAwesome
-                name="ban"
+              <FaBan
                 className="text-danger"
                 style={{cursor: "pointer"}}
                 onClick={() => {

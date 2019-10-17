@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from "react";
-import FontAwesome from "react-fontawesome";
 import {
   Nav,
   NavItem,
@@ -34,6 +33,7 @@ import {
   FaCamera,
   FaMousePointer,
   FaTimes,
+  FaBars,
 } from "react-icons/fa";
 
 import IssueTracker from "../../components/admin/IssueTracker";
@@ -164,7 +164,7 @@ class SideNav extends Component {
             className="menu-button"
             onClick={() => this.setState({open: true})}
           >
-            <FontAwesome name="bars" />
+            <FaBars />
           </Button>
           <img
             alt="Logo"
@@ -245,12 +245,6 @@ export const SideNavLink = withApollo(
             }
           >
             {Icon && <Icon />} {m.name}{" "}
-            {m.children && m.children.length > 0 && (
-              <FontAwesome
-                name={open ? "chevron-down" : "chevron-left"}
-                className="pull-right"
-              />
-            )}
           </NavLink>
           {m.children && m.children.length > 0 && open && (
             <Nav vertical style={{marginLeft: "20px"}}>

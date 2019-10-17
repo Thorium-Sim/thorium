@@ -6,9 +6,9 @@ import {Container, Row, Col, Button, Input, Progress} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {Duration} from "luxon";
 import {titleCase} from "change-case";
-import FontAwesome from "react-fontawesome";
 
 import "./style.scss";
+import {FaRandom} from "react-icons/fa";
 
 function parseDepletion(time) {
   if (Math.round(time) > 10000) return "Infinite";
@@ -380,8 +380,7 @@ class ReactorControl extends Component {
                         color="danger"
                         onClick={action}
                       >
-                        <FontAwesome
-                          name="random"
+                        <FaRandom
                           style={{
                             position: "relative",
                             left: "-5px",

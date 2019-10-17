@@ -3,10 +3,10 @@ import {OutputField, TypingField} from "../../generic/core";
 import {Button, Container, Row, Col} from "helpers/reactstrap";
 import {graphql, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
-import FontAwesome from "react-fontawesome";
 import ScanPresets from "./ScanPresets";
 import {subscribe} from "helpers/pubsub";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import {FaSyncAlt} from "react-icons/fa";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
@@ -266,7 +266,7 @@ class SensorsCore extends Component {
                       }
                     >
                       {sensor.scanRequest.substr(0, 15)}
-                      ... <FontAwesome name="refresh" spin />
+                      ... <FaSyncAlt className="fa-spin" />
                     </p>
                   )}
                   {sensor.scans
@@ -281,7 +281,7 @@ class SensorsCore extends Component {
                         onClick={() => this.selectScan(s)}
                       >
                         {s.request.substr(0, 15)}
-                        ... {s.scanning && <FontAwesome name="refresh" spin />}
+                        ... {s.scanning && <FaSyncAlt className="fa-spin" />}
                       </p>
                     ))}
                 </div>

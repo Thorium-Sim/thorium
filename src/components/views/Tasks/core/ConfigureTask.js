@@ -8,11 +8,11 @@ import {
   ListGroupItem,
 } from "helpers/reactstrap";
 import uuid from "uuid";
-import FontAwesome from "react-fontawesome";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import gql from "graphql-tag.macro";
 import ValueInput from "./ValueInput";
+import {FaBan} from "react-icons/fa";
 
 const ConfigureTask = ({
   definitionGroups,
@@ -270,8 +270,7 @@ const MacroPicker = ({pre, updateMacros, macros, configureMacro}) => {
           >
             Configure Macro
           </Button>{" "}
-          <FontAwesome
-            name="ban"
+          <FaBan
             className="text-danger"
             onClick={() => updateMacros(macros.filter(mm => mm.id !== m.id))}
           />

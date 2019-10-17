@@ -187,6 +187,22 @@ import RemoteWidget from "./RemoteAccess/widget";
 import Keyboard from "./Widgets/keyboard";
 import SensorsWidget from "./Sensors/widget";
 
+// Widget Icons
+import {
+  FaKeyboard,
+  FaPenFancy,
+  FaCalculator,
+  FaListUl,
+  FaRss,
+  FaRegComment,
+  FaRegFileAlt,
+  FaRegFileCode,
+  FaRegFileExcel,
+  FaBook,
+  FaTasks,
+  FaCircleNotch,
+  FaTerminal,
+} from "react-icons/fa";
 const Views = {
   Login,
   LongRangeComm,
@@ -286,32 +302,32 @@ const Views = {
 export const Widgets = {
   keyboard: {
     widget: Keyboard,
-    icon: "keyboard-o",
+    icon: FaKeyboard,
     name: "Keyboard",
     size: "lg",
     color: "rgb(90,180,255)",
   },
   composer: {
     widget: ComposerWidget,
-    icon: "pencil-square-o",
+    icon: FaPenFancy,
     name: "Long Range Message Composer",
     color: "rgb(200,150,255)",
   },
   calculator: {
     widget: CalculatorWidget,
-    icon: "calculator",
+    icon: FaCalculator,
     name: "Calculator",
     color: "rgb(255,200,100)",
   },
   objectives: {
     widget: Objectives,
-    icon: "list-ul",
+    icon: FaListUl,
     name: "Objectives",
     color: "rgb(200,200,200)",
   },
   remote: {
     widget: RemoteWidget,
-    icon: "rss",
+    icon: FaRss,
     name: "Remote Access",
     color: "rgb(100,200,100)",
     training: [
@@ -329,7 +345,7 @@ export const Widgets = {
   },
   messages: {
     widget: Messages,
-    icon: "comments-o",
+    icon: FaRegComment,
     name: "Messaging",
     size: "lg",
     color: "rgb(100,150,200)",
@@ -337,49 +353,49 @@ export const Widgets = {
   },
   damageReport: {
     widget: DamageControl,
-    icon: "file-text",
+    icon: FaRegFileAlt,
     name: "Damage Report",
     size: "lg",
     color: "rgb(200, 100, 100)",
   },
   engineeringReport: {
     widget: EngineeringReports,
-    icon: "file-code-o",
+    icon: FaRegFileCode,
     name: "Engineering Report",
     size: "lg",
     color: "rgb(180,100, 30)",
   },
   rndReport: {
     widget: RnDReports,
-    icon: "file-excel-o",
+    icon: FaRegFileExcel,
     name: "R&D Report",
     size: "lg",
     color: "rgb(180,100, 130)",
   },
   officerLog: {
     widget: OfficerLog,
-    icon: "book",
+    icon: FaBook,
     name: "Officer Log",
     size: "lg",
     color: "rgb(255,255,100)",
   },
   tasks: {
     widget: Tasks,
-    icon: "tasks",
+    icon: FaTasks,
     name: "Tasks",
     size: "lg",
     color: "#6F84EE",
   },
   sensors: {
     widget: SensorsWidget,
-    icon: "circle-o-notch",
+    icon: FaCircleNotch,
     name: "Sensors",
     size: "lg",
     color: "#6FEDC5",
   },
   commandLine: {
     widget: CommandLine,
-    icon: "terminal",
+    icon: FaTerminal,
     name: "Command Line",
     size: "lg",
     color: "#5FFF5F",

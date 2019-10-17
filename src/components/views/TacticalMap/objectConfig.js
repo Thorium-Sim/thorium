@@ -11,7 +11,12 @@ import {
 } from "helpers/reactstrap";
 import {ChromePicker} from "react-color";
 import FileExplorer from "./fileExplorer";
-import FontAwesome from "react-fontawesome";
+import {
+  FaArrowUp,
+  FaArrowDown,
+  FaArrowLeft,
+  FaArrowRight,
+} from "react-icons/fa";
 
 export default class ObjectConfig extends Component {
   state = {draggingObject: null};
@@ -249,7 +254,7 @@ const Thrusters = ({cancel, updateObject, thrusterControls}) => {
       <Col>
         <p>Thruster Direction</p>
         <div style={{display: "flex"}}>
-          <FontAwesome name="arrow-up" />{" "}
+          <FaArrowUp />{" "}
           <Input
             type="select"
             value={up}
@@ -265,7 +270,7 @@ const Thrusters = ({cancel, updateObject, thrusterControls}) => {
           </Input>
         </div>
         <div style={{display: "flex"}}>
-          <FontAwesome name="arrow-down" />{" "}
+          <FaArrowDown />{" "}
           <Input
             type="select"
             value={down}
@@ -281,7 +286,7 @@ const Thrusters = ({cancel, updateObject, thrusterControls}) => {
           </Input>
         </div>
         <div style={{display: "flex"}}>
-          <FontAwesome name="arrow-left" />{" "}
+          <FaArrowLeft />{" "}
           <Input
             type="select"
             value={left}
@@ -297,7 +302,7 @@ const Thrusters = ({cancel, updateObject, thrusterControls}) => {
           </Input>
         </div>
         <div style={{display: "flex"}}>
-          <FontAwesome name="arrow-right" />{" "}
+          <FaArrowRight />{" "}
           <Input
             type="select"
             value={right}

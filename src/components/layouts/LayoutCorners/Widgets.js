@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Tooltip, Button} from "helpers/reactstrap";
 import {Widgets} from "components/views";
-import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
 import {subscribe} from "helpers/pubsub";
@@ -10,6 +9,7 @@ import Tour from "helpers/tourHelper";
 import "./widgets.scss";
 import useWindowMove from "../../../helpers/hooks/useWindowMove";
 import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
+import {FaQuestionCircle} from "react-icons/fa";
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
     widgetNotify(simulatorId: $simulatorId, station: $station)
@@ -141,12 +141,11 @@ export const Widget = ({
     setModal(!modal);
   };
   const Comp = widget.widget;
+  const Icon = widget.icon;
   return (
     <div className="widget-item">
-      <FontAwesome
-        size="2x"
-        fixedWidth
-        name={widget.icon}
+      <Icon
+        size="2em"
         className={`widget-icon ${notify ? "notify" : ""}`}
         id={`widget-${wkey}`}
         onClick={toggleModal}
@@ -178,9 +177,8 @@ export const Widget = ({
           >
             {widget.name}
             {widget.training && (
-              <FontAwesome
+              <FaQuestionCircle
                 className="pull-right"
-                name="question-circle-o"
                 onClick={() => setTraining(true)}
               />
             )}

@@ -2,9 +2,9 @@ import React, {Component, Fragment} from "react";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import {Container, Row, Col, Button, Input} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import {TypingField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import {FaSyncAlt} from "react-icons/fa";
 const SYSTEMS_SUB = gql`
   subscription DamagedSystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, extra: true) {
@@ -292,7 +292,7 @@ class DamageReportCore extends Component {
                     onClick={this.selectSystem.bind(this, s.id)}
                   >
                     {s.damage.validate ? (
-                      <FontAwesome name="refresh" spin />
+                      <FaSyncAlt className="fa-spin" />
                     ) : null}{" "}
                     {this.systemName(s)} - {s.damage.currentStep + 1} /{" "}
                     {s.damage.report

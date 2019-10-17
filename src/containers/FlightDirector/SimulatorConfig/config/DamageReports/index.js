@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {Row, Col, Card, Input} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import * as stepConfigs from "./steps";
+import {FaBan} from "react-icons/fa";
 
 const steps = {
   ...stepConfigs,
@@ -179,9 +179,8 @@ class DamageReportsConfig extends Component {
                           }`}
                         >
                           {s.name}{" "}
-                          <FontAwesome
+                          <FaBan
                             className="text-danger"
-                            name="ban"
                             onClick={() => this.removeDamageStep(s.id)}
                           />
                         </li>
@@ -236,9 +235,8 @@ class DamageReportsConfig extends Component {
                           }`}
                         >
                           {s.name}{" "}
-                          <FontAwesome
+                          <FaBan
                             className="text-danger"
-                            name="ban"
                             onClick={() => this.removeDamageStep(s.id)}
                           />
                         </li>

@@ -1,12 +1,12 @@
 import React, {Component, Fragment} from "react";
 import {Row, Col, Card} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {keys} from "../../../components/views/Widgets/keyboard";
 import EventPicker from "../MissionConfig/EventPicker";
 import MacroConfig from "./macroConfig";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
+import {FaBan} from "react-icons/fa";
 
 const Key = ({
   label,
@@ -192,8 +192,7 @@ class KeyboardControl extends Component {
                               } list-group-item`}
                             >
                               <EventName id={e.event} label={e.event} />{" "}
-                              <FontAwesome
-                                name="ban"
+                              <FaBan
                                 className="text-danger pull-right"
                                 onClick={() =>
                                   this.removeAction(e.id, updateKey)

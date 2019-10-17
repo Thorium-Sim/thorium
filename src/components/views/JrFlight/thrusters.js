@@ -2,8 +2,13 @@ import React from "react";
 import {Row, Col} from "helpers/reactstrap";
 import {Asset} from "helpers/assets";
 import {graphql, withApollo} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
+import {
+  FaArrowUp,
+  FaArrowLeft,
+  FaArrowRight,
+  FaArrowDown,
+} from "react-icons/fa";
 
 const Thrusters = props => {
   const {simulator, client, data} = props;
@@ -32,9 +37,8 @@ const Thrusters = props => {
       <Col sm={12}>
         <Row style={{height: "auto"}}>
           <Col sm={{size: 2, offset: 5}}>
-            <FontAwesome
-              name="arrow-up"
-              size="3x"
+            <FaArrowUp
+              size="3em"
               onMouseDown={() => thrust({x: 0, y: 1})}
               onMouseUp={() => thrust({x: 0, y: 0})}
             />
@@ -43,9 +47,8 @@ const Thrusters = props => {
         <Row style={{height: "auto"}}>
           <Col sm={12}>
             <div className="center-area">
-              <FontAwesome
-                name="arrow-left"
-                size="3x"
+              <FaArrowLeft
+                size="3em"
                 onMouseDown={() => thrust({x: -1, y: 0})}
                 onMouseUp={() => thrust({x: 0, y: 0})}
               />
@@ -67,9 +70,8 @@ const Thrusters = props => {
                   />
                 )}
               </Asset>
-              <FontAwesome
-                name="arrow-right"
-                size="3x"
+              <FaArrowRight
+                size="3em"
                 onMouseDown={() => thrust({x: 1, y: 0})}
                 onMouseUp={() => thrust({x: 0, y: 0})}
               />
@@ -78,9 +80,8 @@ const Thrusters = props => {
         </Row>
         <Row style={{height: "auto"}}>
           <Col sm={{size: 2, offset: 5}}>
-            <FontAwesome
-              name="arrow-down"
-              size="3x"
+            <FaArrowDown
+              size="3em"
               onMouseDown={() => thrust({x: 0, y: -1})}
               onMouseUp={() => thrust({x: 0, y: 0})}
             />

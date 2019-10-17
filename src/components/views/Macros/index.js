@@ -2,11 +2,11 @@ import React, {Component} from "react";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button, Card, Input} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import uuid from "uuid";
 import MacroConfig from "./macroConfig";
+import {FaBan} from "react-icons/fa";
 
 class MacrosCore extends Component {
   state = {actions: []};
@@ -28,8 +28,7 @@ class MacrosCore extends Component {
                   } list-group-item`}
                 >
                   <EventName id={e.event} label={e.event} />{" "}
-                  <FontAwesome
-                    name="ban"
+                  <FaBan
                     className="text-danger pull-right"
                     onClick={() =>
                       this.setState(state => ({
