@@ -95,8 +95,8 @@ const CrmCore = ({fighterImage, fighterIcon, enemyIcon, ...props}) => {
 const CrmData = props => (
   <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
     {({loading, data, subscribeToMore}) => {
-      const {crm} = data;
       if (loading) return null;
+      const {crm} = data;
       if (!crm) return <div>No CRM System</div>;
       return (
         <SubscriptionHelper

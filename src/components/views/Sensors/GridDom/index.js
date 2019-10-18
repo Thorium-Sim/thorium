@@ -67,8 +67,8 @@ class GridData extends Component {
     return (
       <Query query={QUERY} variables={{sensorsId: this.props.sensor}}>
         {({loading, data, subscribeToMore, client}) => {
+          if (loading || !data) return null;
           const {sensorContacts} = data;
-          if (loading || !sensorContacts) return null;
           if (!sensorContacts) return <div>No Contacts</div>;
           return (
             <SubscriptionHelper

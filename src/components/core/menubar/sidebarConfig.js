@@ -10,7 +10,7 @@ import {
 import {Cores} from "../../views";
 import {publish} from "helpers/pubsub";
 import {titleCase} from "change-case";
-
+import {FaBan} from "react-icons/fa";
 const defaultSidebar = [
   {
     label: "Timeline",

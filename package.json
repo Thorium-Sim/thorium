@@ -21,7 +21,7 @@
     "de"
   ],
   "scripts": {
-    "start": "npm-run-all --parallel start:client",
+    "start": "npm-run-all --parallel start:client start:server",
     "start:client": "react-scripts start",
     "start:server": "nodemon ./server/index.js -e js,graphql --ignore snapshots/ --exec babel-node",
     "build": "NODE_ENV=production npm-run-all build:client build:server build:env",
@@ -46,11 +46,18 @@
     "build-storybook": "build-storybook -s public"
   },
   "nodemonConfig": {
+    "events": {
+      "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
+    },
+    "watch": [
+      "server/"
+    ],
     "ignore": [
-      "src/*",
-      "public/*",
-      ".config/*",
-      "types/*"
+      ".git",
+      "./src/*",
+      "./public/*",
+      "./.config/*",
+      "./types/*"
     ]
   },
   "browserslist": [
@@ -150,8 +157,8 @@
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-typescript": "^7.6.0",
-    "@blueprintjs/core": "^3.19.1",
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.10",

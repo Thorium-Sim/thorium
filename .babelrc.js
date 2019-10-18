@@ -4,7 +4,7 @@ module.exports = {
   presets: [
     "@babel/preset-env",
     "@babel/preset-react",
-    "react-app",
+    isTest ? "react-app" : null,
     [
       "@babel/preset-typescript",
       {
@@ -13,5 +13,9 @@ module.exports = {
       },
     ],
   ].filter(Boolean),
-  plugins: ["transform-node-env-inline", "import-glob"],
+  plugins: [
+    "transform-node-env-inline",
+    "import-glob",
+    "@babel/plugin-proposal-class-properties",
+  ],
 };

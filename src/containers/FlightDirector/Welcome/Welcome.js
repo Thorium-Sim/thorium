@@ -79,7 +79,8 @@ const Welcome = ({training, stopTraining}) => {
       //  window.location.reload();
     });
   };
-  const {loading, data, subscribeToMore} = useQuery(FLIGHTS_QUERY);
+  const {loading, data, error, subscribeToMore} = useQuery(FLIGHTS_QUERY);
+  console.log(loading, data, error);
   if (loading || !data.flights) return null;
   const {flights, thorium} = data;
   const {autoUpdate, askedToTrack} = thorium;

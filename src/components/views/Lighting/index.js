@@ -399,8 +399,9 @@ const LightingCoreData = ({clients, simulator: {id}}) => {
   if (!ecsClient) return null;
   return (
     <Query query={QUERY} variables={{id}}>
-      {({loading, data: {simulators}, subscribeToMore}) => {
+      {({loading, data, subscribeToMore}) => {
         if (loading) return null;
+        const {simulators} = data;
         const [simulator] = simulators;
         if (!simulator) return "No Simulator";
         return (

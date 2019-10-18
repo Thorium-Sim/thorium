@@ -26,8 +26,9 @@ const MacroConfigQuery = gql`
 
 export const EventList = ({children}) => (
   <Query query={MacroConfigQuery}>
-    {({loading, data: {__schema}}) => {
-      if (loading || !__schema) return null;
+    {({loading, data}) => {
+      if (loading || !data) return null;
+      const {__schema} = data;
       const events = __schema.mutationType.fields
         .filter(mutation => {
           return mutation.description.substr(0, 5) === "Macro";

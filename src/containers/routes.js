@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import createHistory from "history/createBrowserHistory";
+import {createBrowserHistory} from "history";
 import PropTypes from "prop-types";
 import {Router, Route, Switch, Link} from "react-router-dom";
 import CardContainer from "../components/client/Card";
@@ -10,7 +10,7 @@ import Releases from "./FlightDirector/releases";
 import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 
-const history = createHistory();
+const history = createBrowserHistory();
 
 const TestCard = props => {
   return <CardContainer test={true} component={props.match.params.component} />;

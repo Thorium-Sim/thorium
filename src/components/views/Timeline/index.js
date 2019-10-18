@@ -65,8 +65,8 @@ class TimelineData extends Component {
     return (
       <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {simulators, missions} = data;
-          if (loading || !simulators) return null;
           if (!simulators[0]) return <div>No Timeline</div>;
           return (
             <SubscriptionHelper

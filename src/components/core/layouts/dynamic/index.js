@@ -12,8 +12,6 @@ import {
 import Picker from "./picker";
 import CoreError from "../coreError";
 import "react-mosaic-component/react-mosaic-component.css";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "./dynamic.scss";
 import {titleCase} from "change-case";
 
@@ -62,25 +60,21 @@ class UpdateSelect extends React.PureComponent {
   }
 }
 
-class Split extends React.PureComponent {
-  static contextTypes = MosaicWindowContext;
-  context;
-  render() {
-    return (
-      <div style={{position: "relative"}}>
-        {createDefaultToolbarButton(
-          "Split Window",
-          " split-columns pt-icon-add-column-right",
-          this.split,
-        )}
-      </div>
-    );
-  }
-
-  split = e => {
-    this.context.mosaicWindowActions.split("Picker-" + Math.random());
+const Split = () => {
+  const {mosaicWindowActions} = React.useContext(MosaicWindowContext);
+  const split = e => {
+    mosaicWindowActions.split("Picker-" + Math.random());
   };
-}
+  return (
+    <div style={{position: "relative"}}>
+      {createDefaultToolbarButton(
+        "Split Window",
+        " split-columns pt-icon-add-column-right",
+        split,
+      )}
+    </div>
+  );
+};
 
 function mosaicComponents(page) {
   let components = [];
@@ -166,7 +160,7 @@ class Dynamic extends Component {
         }
         value={this.props.mosaic}
         onChange={this.props.updateMosaic}
-        className={"core mosaic mosaic-blueprint-theme  bp3-dark pt-dark"}
+        className={"core mosaic   bp3-dark pt-dark"}
       />
     );
   }

@@ -21,11 +21,17 @@
 }
 
 .mosaic {
+  background-color: black;
   font-family: "Gill Sans", sans-serif;
   font-size: 12;
   line-height: 1;
+  .mosaic-window-toolbar {
+    background: black;
+  }
+
   .mosaic-window-body {
-    overflow-y: scroll;
+    overflow-y: auto;
+    background: black;
   }
   .pt-button {
     color: #a7b6c2;
