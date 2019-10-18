@@ -1,7 +1,14 @@
 import React, {Component} from "react";
-import FontAwesome from "react-fontawesome";
 import {Input} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
+import {
+  FaUndo,
+  FaArrowUp,
+  FaRedo,
+  FaArrowLeft,
+  FaArrowDown,
+  FaArrowRight,
+} from "react-icons/fa";
 
 export default class Nudge extends Component {
   state = {
@@ -64,30 +71,12 @@ export default class Nudge extends Component {
           ))}
         </Input>
         <div className="buttons">
-          <FontAwesome
-            onClick={() => this.nudgeContacts({yaw: -1})}
-            name="rotate-left"
-          />
-          <FontAwesome
-            onClick={() => this.nudgeContacts({x: 0, y: -1})}
-            name="arrow-up"
-          />
-          <FontAwesome
-            onClick={() => this.nudgeContacts({yaw: 1})}
-            name="rotate-right"
-          />
-          <FontAwesome
-            onClick={() => this.nudgeContacts({x: -1, y: 0})}
-            name="arrow-left"
-          />
-          <FontAwesome
-            onClick={() => this.nudgeContacts({x: 0, y: 1})}
-            name="arrow-down"
-          />
-          <FontAwesome
-            onClick={() => this.nudgeContacts({x: 1, y: 0})}
-            name="arrow-right"
-          />
+          <FaUndo onClick={() => this.nudgeContacts({yaw: -1})} />
+          <FaArrowUp onClick={() => this.nudgeContacts({x: 0, y: -1})} />
+          <FaRedo onClick={() => this.nudgeContacts({yaw: 1})} />
+          <FaArrowLeft onClick={() => this.nudgeContacts({x: -1, y: 0})} />
+          <FaArrowDown onClick={() => this.nudgeContacts({x: 0, y: 1})} />
+          <FaArrowRight onClick={() => this.nudgeContacts({x: 1, y: 0})} />
         </div>
       </div>
     );

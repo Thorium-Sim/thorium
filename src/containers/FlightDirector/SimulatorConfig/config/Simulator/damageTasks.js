@@ -12,7 +12,7 @@ import DefinitionList from "../../../TaskTemplates/definitionList";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {Query, Mutation} from "react-apollo";
-//import FontAwesome from "react-fontawesome";
+
 const fragment = gql`
   fragment TaskTemplateConfigData on TaskTemplate {
     id
@@ -266,8 +266,7 @@ class DamageTasks extends Component {
                           {task.nextSteps.map(s => (
                             <p key={`next-${s.id}`}>
                               {s.name} ({s.definition}){" "}
-                              <FontAwesome
-                                name="ban"
+                              <FaBan
                                 className="text-danger"
                                 onClick={() => {
                                   action({

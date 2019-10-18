@@ -1,13 +1,13 @@
 import React from "react";
 import {Button, Row, Col, Input} from "helpers/reactstrap";
 import {withApollo, Query, Mutation} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import {Asset} from "helpers/assets";
 import Tour from "helpers/tourHelper";
 import {publish} from "helpers/pubsub";
 import "./login.scss";
 import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
+import {FaQuestionCircle} from "react-icons/fa";
 
 const Login = ({
   hasSpaceEd,
@@ -54,8 +54,8 @@ const Login = ({
           <p>
             Here are the widgets. These are controls which you can access on all
             of the screens on your station. Click on the icon to open the
-            widget. A <FontAwesome name="question-circle-o" /> icon in the top
-            right corner will open training for the widget when you click on it.
+            widget. A <FaQuestionCircle /> icon in the top right corner will
+            open training for the widget when you click on it.
           </p>
         ),
       },

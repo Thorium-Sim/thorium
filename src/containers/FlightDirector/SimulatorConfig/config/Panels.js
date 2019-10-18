@@ -1,8 +1,8 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import {useQuery} from "@apollo/react-hooks";
+import {FaBan} from "react-icons/fa";
 const QUERY = gql`
   query SoftwarePanels {
     softwarePanels {
@@ -59,11 +59,7 @@ const App = ({selectedSimulator, client}) => {
       {(selectedSimulator.panels || []).map(s => (
         <p key={s}>
           {(softwarePanels.find(c => c.id === s) || {}).name}{" "}
-          <FontAwesome
-            className="text-danger"
-            name="ban"
-            onClick={() => removePanel(s)}
-          />
+          <FaBan className="text-danger" onClick={() => removePanel(s)} />
         </p>
       ))}
     </div>

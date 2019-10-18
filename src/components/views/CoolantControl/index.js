@@ -2,13 +2,13 @@ import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Container, Row, Button} from "helpers/reactstrap";
 import {graphql, withApollo} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Tank from "./tank";
 
 import "./style.scss";
+import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 
 const COOLANT_SUB = gql`
   subscription CoolantUpdate($simulatorId: ID!) {
@@ -193,14 +193,14 @@ const CoolantBar = ({
           onMouseDown={transferCoolant.bind(this, systemId, "tank")}
           onTouchStart={transferCoolant.bind(this, systemId, "tank")}
         >
-          <FontAwesome name="arrow-left" /> Fill Reservoir
+          <FaArrowLeft /> Fill Reservoir
         </Button>
         <Button
           color="primary"
           onMouseDown={transferCoolant.bind(this, systemId, "system")}
           onTouchStart={transferCoolant.bind(this, systemId, "system")}
         >
-          Fill Coolant <FontAwesome name="arrow-right" />
+          Fill Coolant <FaArrowRight name="arrow-right" />
         </Button>
       </div>
     </div>

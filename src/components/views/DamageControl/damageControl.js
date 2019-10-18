@@ -10,7 +10,6 @@ import {
   ListGroupItem,
 } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import FontAwesome from "react-fontawesome";
 import {Mutation, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {FormattedMessage} from "react-intl";
@@ -18,6 +17,7 @@ import ReportView from "./reportView";
 import useSoundEffect from "helpers/hooks/useSoundEffect";
 
 import "./style.scss";
+import {FaSyncAlt} from "react-icons/fa";
 
 function systemClasses(s, selected) {
   const task = s.tasks ? s.tasks.find(t => !t.verified) || {} : {};
@@ -230,7 +230,7 @@ class DamageControl extends Component {
         name: this.systemName(s),
         children: (
           <Fragment>
-            {s.damage.validate ? <FontAwesome name="refresh" spin /> : null}{" "}
+            {s.damage.validate ? <FaSyncAlt className="fa-spin" /> : null}{" "}
             {this.systemName(s)}
           </Fragment>
         ),
@@ -247,7 +247,7 @@ class DamageControl extends Component {
             children: (
               <Fragment>
                 {task.verifyRequested ? (
-                  <FontAwesome name="refresh" spin />
+                  <FaSyncAlt className="fa-spin" />
                 ) : null}{" "}
                 {t.name}
               </Fragment>

@@ -3,7 +3,6 @@ import {graphql, withApollo} from "react-apollo";
 import {Row, Col, Button, Input, Card, CardBody} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
-import FontAwesome from "react-fontawesome";
 import {Typing} from "react-typing";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -11,6 +10,7 @@ import {DeckDropdown, RoomDropdown} from "helpers/shipStructure";
 import {Asset} from "helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
+import {FaSyncAlt} from "react-icons/fa";
 
 const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID, $domain: String) {
@@ -305,7 +305,7 @@ class Scanning extends Component {
                     >
                       {s.request.substr(0, 30)}
                       {s.request.length > 30 ? "... " : " "}
-                      {s.scanning && <FontAwesome name="refresh" spin />}
+                      {s.scanning && <FaSyncAlt className="fa-spin" />}
                     </p>
                   ))}
               </CardBody>

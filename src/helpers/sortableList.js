@@ -1,6 +1,6 @@
 import React from "react";
 import {SortableContainer, SortableElement} from "react-sortable-hoc";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 
 const sortableElement = SortableElement;
 const sortableContainer = SortableContainer;
@@ -12,11 +12,7 @@ const SortableItem = sortableElement(({item, selected, select, remove}) => (
   >
     {item.name}{" "}
     {remove && (
-      <FontAwesome
-        name="ban"
-        className="text-danger"
-        onClick={() => remove(item.id)}
-      />
+      <FaBan className="text-danger" onClick={() => remove(item.id)} />
     )}
   </li>
 ));

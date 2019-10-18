@@ -12,8 +12,8 @@ import {
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {FormattedMessage} from "react-intl";
-import FontAwesome from "react-fontawesome";
 import {Duration} from "luxon";
+import {FaSyncAlt} from "react-icons/fa";
 
 function timeHue(time) {
   const redTime = 1000 * 60 * 20; // 20 minutes
@@ -65,7 +65,7 @@ const TaskItem = ({
       >
         {values.name || definition}
       </strong>{" "}
-      {verifyRequested && <FontAwesome spin name="refresh" />}
+      {verifyRequested && <FaSyncAlt className="fa-spin" />}
     </div>
     <div
       style={{

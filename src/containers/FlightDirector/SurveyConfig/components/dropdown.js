@@ -1,7 +1,7 @@
 import React from "react";
 import {Input} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import uuid from "uuid";
+import {FaBan, FaPlus} from "react-icons/fa";
 const Dropdown = ({
   value = "",
   updateValue = () => {},
@@ -63,11 +63,7 @@ const Dropdown = ({
               value={o.label}
               onChange={e => updateLabel(o.id, e.target.value)}
             />
-            <FontAwesome
-              name="ban"
-              className="text-danger"
-              onClick={() => removeOption(o.id)}
-            />
+            <FaBan className="text-danger" onClick={() => removeOption(o.id)} />
           </span>
         ))}
       {!survey && (
@@ -76,7 +72,7 @@ const Dropdown = ({
           style={{cursor: "pointer"}}
           onClick={addOption}
         >
-          <FontAwesome name="plus" /> Add an option
+          <FaPlus name="plus" /> Add an option
         </div>
       )}
     </div>

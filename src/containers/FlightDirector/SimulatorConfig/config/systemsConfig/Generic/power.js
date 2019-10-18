@@ -1,9 +1,9 @@
 import React from "react";
 import {FormGroup, Input, Label, Button} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import {GENERIC_QUERY} from "./index";
 import gql from "graphql-tag.macro";
+import {FaPlusCircle, FaMinusCircle} from "react-icons/fa";
 
 const Power = ({id, simulatorId, power, powerRender}) => {
   return (
@@ -22,24 +22,22 @@ const Power = ({id, simulatorId, power, powerRender}) => {
       >
         {action => (
           <div>
-            <FontAwesome
+            <FaPlusCircle
               onClick={() => {
                 const lastLevel =
                   power.powerLevels[power.powerLevels.length - 1] || 4;
                 const levels = power.powerLevels.concat(lastLevel + 1);
                 action({variables: {id, levels}});
               }}
-              name="plus-circle"
               className="text-success"
             />
 
-            <FontAwesome
+            <FaMinusCircle
               onClick={() => {
                 const levels = power.powerLevels.concat();
                 levels.pop();
                 action({variables: {id, levels}});
               }}
-              name="minus-circle"
               className="text-danger"
             />
 

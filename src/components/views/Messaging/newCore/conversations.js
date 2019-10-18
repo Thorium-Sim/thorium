@@ -9,10 +9,10 @@ import {
   Input,
   Button,
 } from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import GroupManager from "./groupManager";
+import {FaArrowRight} from "react-icons/fa";
 
 function reduceMessages(messages, stationNames) {
   const talkers = Object.keys(
@@ -104,8 +104,8 @@ class Conversations extends Component {
                     }
                   >
                     <p>
-                      <strong>{m.sender}</strong>{" "}
-                      <FontAwesome name="arrow-right" /> {m.destination}
+                      <strong>{m.sender}</strong> <FaArrowRight />{" "}
+                      {m.destination}
                     </p>
                   </ListGroupItem>
                 ))}

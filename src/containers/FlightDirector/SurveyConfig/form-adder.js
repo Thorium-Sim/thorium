@@ -1,11 +1,18 @@
 import React from "react";
-import FontAwesome from "react-fontawesome";
 import {
   ButtonDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
 } from "helpers/reactstrap";
+import {
+  FaFont,
+  FaAlignLeft,
+  FaListUl,
+  FaRegCheckSquare,
+  FaRegCaretSquareDown,
+  FaArrowsAltH,
+} from "react-icons/fa";
 
 export default class Example extends React.Component {
   constructor(props) {
@@ -36,24 +43,24 @@ export default class Example extends React.Component {
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem onClick={() => addForm("Short")}>
-            <FontAwesome name="font" fixedWidth /> Short Answer
+            <FaFont /> Short Answer
           </DropdownItem>
           <DropdownItem onClick={() => addForm("Long")}>
-            <FontAwesome name="align-left" fixedWidth /> Paragraph
+            <FaAlignLeft fixedWidth /> Paragraph
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem onClick={() => addForm("Multi")}>
-            <FontAwesome name="list-ul" fixedWidth /> Multiple Choice
+            <FaListUl fixedWidth /> Multiple Choice
           </DropdownItem>
           <DropdownItem onClick={() => addForm("Checkbox")}>
-            <FontAwesome name="check-square-o" fixedWidth /> Checkbox
+            <FaRegCheckSquare fixedWidth /> Checkbox
           </DropdownItem>
           <DropdownItem onClick={() => addForm("Dropdown")}>
-            <FontAwesome name="caret-square-o-down" fixedWidth /> Dropdown
+            <FaRegCaretSquareDown fixedWidth /> Dropdown
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem onClick={() => addForm("Range")}>
-            <FontAwesome name="arrows-h" fixedWidth /> Range
+            <FaArrowsAltH fixedWidth /> Range
           </DropdownItem>
         </DropdownMenu>
       </ButtonDropdown>

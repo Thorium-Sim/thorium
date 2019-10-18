@@ -3,7 +3,6 @@ import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Widgets} from "components/views";
 import {Tooltip} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 
 import {Widget} from "../LayoutCorners/Widgets";
 import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
@@ -163,12 +162,11 @@ const StaticWidget = ({
     }
     setTooltipOpen(!tooltipOpen);
   };
+  const Icon = icon;
   return (
     <div className="widget-item">
-      <FontAwesome
-        size="2x"
-        fixedWidth
-        name={icon}
+      <Icon
+        size="2em"
         className={`widget-icon ${className}`}
         onClick={e => {
           playEffect("buttonClick");

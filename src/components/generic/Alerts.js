@@ -1,11 +1,11 @@
 import React, {Component} from "react";
-import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
 import {subscribe, publish} from "helpers/pubsub";
 import uuid from "uuid";
 import {playSound} from "./SoundPlayer";
 import {randomFromList} from "helpers/randomFromList";
+import {FaTimes} from "react-icons/fa";
 
 // Speech Handling
 const synth = window.speechSynthesis;
@@ -153,8 +153,7 @@ const AlertItem = ({dismiss, notify}) => {
     <div onClick={() => dismiss(notify.id, notify.relevantCards)}>
       <div className={`alert alert-${notify.color}`}>
         <h5 className="alert-heading">
-          {notify.title}{" "}
-          <FontAwesome name="times" onClick={() => dismiss(notify.id)} />
+          {notify.title} <FaTimes onClick={() => dismiss(notify.id)} />
         </h5>
         {notify.body}
       </div>

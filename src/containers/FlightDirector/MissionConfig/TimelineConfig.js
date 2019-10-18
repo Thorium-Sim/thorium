@@ -12,11 +12,11 @@ import {
 } from "helpers/reactstrap";
 import MacroWrapper from "./MacroConfig";
 import gql from "graphql-tag.macro";
-import FontAwesome from "react-fontawesome";
 import {SortableContainer, SortableElement} from "react-sortable-hoc";
 import EventPicker from "./EventPicker";
 import MissionConfig from "./MissionConfig";
 import EventName from "./EventName";
+import {FaBan} from "react-icons/fa";
 
 const sortableElement = SortableElement;
 const sortableContainer = SortableContainer;
@@ -552,8 +552,7 @@ export default class TimelineConfig extends Component {
                       }`}
                     >
                       <EventName id={e.event} />{" "}
-                      <FontAwesome
-                        name="ban"
+                      <FaBan
                         className="text-danger pull-right"
                         onClick={this._removeTimelineItem.bind(this, e)}
                       />

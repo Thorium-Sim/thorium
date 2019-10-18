@@ -3,7 +3,6 @@ import {Input, Container, Row, Col, Label} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import ops from "./ops";
-import FontAwesome from "react-fontawesome";
 import Views, {Widgets} from "components/views/index";
 import ExtraMessageGroups from "./messageGroups";
 import {titleCase} from "change-case";
@@ -11,6 +10,7 @@ import TrainingConfig from "./trainingConfig";
 import AmbianceConfig from "./ambianceConfig";
 import LayoutList from "components/layouts";
 import SortableList from "helpers/sortableList";
+import {FaBan} from "react-icons/fa";
 
 const Layouts = Object.keys(LayoutList).filter(
   s => s.indexOf("Viewscreen") === -1,
@@ -328,8 +328,7 @@ const ConfigStation = props => {
                       />
                     </td>
                     <td>
-                      <FontAwesome
-                        name="ban"
+                      <FaBan
                         className="text-danger"
                         onClick={() => removeCard(card)}
                       />

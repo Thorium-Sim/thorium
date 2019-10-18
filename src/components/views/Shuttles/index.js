@@ -10,7 +10,7 @@ import {Clamps} from "../Docking/graphics";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
-import FontAwesome from "react-fontawesome";
+import {FaCheck, FaArrowRight} from "react-icons/fa";
 
 const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
@@ -214,8 +214,8 @@ class ShuttleBay extends Component {
     }
 
     var hintStrings = {
-      ok: <FontAwesome name="check" />,
-      attention: <FontAwesome name="arrow-right" />,
+      ok: <FaCheck />,
+      attention: <FaArrowRight />,
     };
 
     return (

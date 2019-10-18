@@ -56,7 +56,6 @@ Some goals for this refactor:
   which the crew members perform. Maybe see if they can be integrated together,
   so training for one card moves into the next, or even has a configurable
   preamble which shows on the Login screen.
-- Remove React-FontAwesome and use React-Icons instead.
 
 A few maybes?
 

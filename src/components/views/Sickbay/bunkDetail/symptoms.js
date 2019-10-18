@@ -11,8 +11,8 @@ import {
 } from "helpers/reactstrap";
 import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
-import FontAwesome from "react-fontawesome";
 import {titleCase} from "change-case";
+import {FaBan} from "react-icons/fa";
 
 const Symptoms = ({
   symptoms,
@@ -70,8 +70,7 @@ const Symptoms = ({
         {symptoms.map(s => (
           <ListGroupItem key={`symptom-${s}`}>
             {titleCase(s)}{" "}
-            <FontAwesome
-              name="ban"
+            <FaBan
               className="text-danger"
               onClick={() => update("symptoms", symptoms.filter(c => c !== s))}
             />

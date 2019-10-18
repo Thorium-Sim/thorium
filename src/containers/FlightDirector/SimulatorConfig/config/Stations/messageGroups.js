@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Label, Input, Button} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 
 const defaultGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
 class ExtraMessageGroups extends Component {
@@ -59,8 +59,7 @@ class ExtraMessageGroups extends Component {
                 .map(m => (
                   <p key={m}>
                     {m}{" "}
-                    <FontAwesome
-                      name="ban"
+                    <FaBan
                       className="text-danger"
                       onClick={() =>
                         action({

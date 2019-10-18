@@ -1,9 +1,9 @@
 import React, {useState, useCallback} from "react";
 import ReactDOM from "react-dom";
 import {FormGroup, Col, Button} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import ContactContextMenu from "components/views/Sensors/gridCore/contactContextMenu";
 import uuid from "uuid";
+import {FaBan} from "react-icons/fa";
 
 function useClientRect() {
   const [rect, setRect] = useState(null);
@@ -80,8 +80,7 @@ const SetArmyContacts = ({args, updateArgs}) => {
               <label onClick={() => selectContact(contact)}>
                 {contact.name}
               </label>
-              <FontAwesome
-                name="ban"
+              <FaBan
                 className="text-danger pull-right clickable"
                 onClick={() => removeContact(contact)}
               />

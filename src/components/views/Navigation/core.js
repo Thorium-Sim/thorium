@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import FontAwesome from "react-fontawesome";
 import {Container, Row, Col, Button, Input} from "helpers/reactstrap";
 import {graphql, withApollo} from "react-apollo";
 import {OutputField, TypingField} from "../../generic/core";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import {FaRandom, FaRetweet} from "react-icons/fa";
 
 const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
@@ -243,7 +243,7 @@ class NavigationCore extends Component {
                   color="info"
                   disabled={navigation.thrusters}
                 >
-                  <FontAwesome name="random" />
+                  <FaRandom />
                 </Button>
               </Col>
               <Col sm="6">
@@ -253,7 +253,7 @@ class NavigationCore extends Component {
                   size="sm"
                   color="warning"
                 >
-                  <FontAwesome name="repeat" />
+                  <FaRetweet />
                 </Button>
               </Col>
             </Row>

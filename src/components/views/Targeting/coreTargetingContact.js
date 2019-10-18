@@ -3,8 +3,8 @@ import {Row, Col, Button} from "helpers/reactstrap";
 import {InputField} from "../../generic/core";
 import gql from "graphql-tag.macro";
 import {Mutation} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import FileExplorer from "../TacticalMap/fileExplorer";
+import {FaBan} from "react-icons/fa";
 
 const TargetCount = ({targetingId, id, contactCount}) => (
   <Mutation
@@ -211,8 +211,7 @@ class TargetingContact extends Component {
                   variables={{id: targetingId, classId: id}}
                 >
                   {action => (
-                    <FontAwesome
-                      name="ban"
+                    <FaBan
                       className="text-danger"
                       onClick={removeClass ? () => removeClass(id) : action}
                     />

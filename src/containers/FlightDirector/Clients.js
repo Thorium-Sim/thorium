@@ -4,8 +4,8 @@ import gql from "graphql-tag.macro";
 import {graphql, withApollo, Mutation} from "react-apollo";
 import {DateTime} from "luxon";
 import {titleCase} from "change-case";
-import FontAwesome from "react-fontawesome";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import {FaBan} from "react-icons/fa";
 
 const FLIGHTS_SUB = gql`
   subscription FlightsSub {
@@ -114,8 +114,7 @@ const ClientRow = ({
   return (
     <tr key={`flight-${p.id}-${index}`}>
       <td>
-        <FontAwesome
-          name="ban"
+        <FaBan
           className="text-danger remove-client"
           onClick={() => removeClient(p.id)}
         />{" "}

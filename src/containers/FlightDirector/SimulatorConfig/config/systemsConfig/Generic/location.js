@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {FormGroup, Label, Row, Col, Button} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
-import FontAwesome from "react-fontawesome";
 import gql from "graphql-tag.macro";
 import {GENERIC_QUERY} from "./index";
 import {DeckDropdown, RoomDropdown} from "helpers/shipStructure";
@@ -39,8 +38,7 @@ class Location extends Component {
                     l && (
                       <p key={l.id}>
                         {l.name}, Deck {l.deck && l.deck.number}{" "}
-                        <FontAwesome
-                          name="ban"
+                        <FaBan
                           className="text-danger"
                           onClick={() => {
                             const variables = {

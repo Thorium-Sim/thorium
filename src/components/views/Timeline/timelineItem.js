@@ -2,9 +2,9 @@ import React, {Fragment, Component} from "react";
 import * as MacrosPrint from "../../macrosPrint";
 import * as Macros from "../../macros";
 import {Button, Input, Label} from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
 import allowedMacros from "./allowedMacros";
 import EventName from "../../../containers/FlightDirector/MissionConfig/EventName";
+import {FaArrowDown, FaArrowRight} from "react-icons/fa";
 
 class ActionPreview extends Component {
   state = {};
@@ -152,8 +152,7 @@ class TimelineItem extends Component {
         {args && (
           <Fragment>
             <p onClick={() => this.setState({expanded: !expanded})}>
-              <FontAwesome name={expanded ? "arrow-down" : "arrow-right"} />{" "}
-              Details
+              {expanded ? <FaArrowDown /> : <FaArrowRight />} Details
             </p>
             {expanded && (
               <ActionPreview

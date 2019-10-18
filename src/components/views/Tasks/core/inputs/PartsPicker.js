@@ -3,7 +3,7 @@ import {Button} from "helpers/reactstrap";
 import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {randomFromList} from "helpers/randomFromList";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 
 class PartsPicker extends Component {
   state = {parts: this.props.value || []};
@@ -41,8 +41,7 @@ class PartsPicker extends Component {
                       </option>
                     ))}
                   </select>
-                  <FontAwesome
-                    name="ban"
+                  <FaBan
                     className="text-danger"
                     onClick={() =>
                       this.setState(state => ({

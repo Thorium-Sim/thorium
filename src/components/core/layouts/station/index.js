@@ -11,7 +11,7 @@ import {
   CardBody,
   Input,
 } from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 import Views, {Widgets} from "components/views/index";
 import {titleCase} from "change-case";
 import ExtraMessageGroups from "./messageGroups";
@@ -335,11 +335,7 @@ const Station = ({stations, simulatorId, station: stationName}) => {
                           }}
                         >
                           {action => (
-                            <FontAwesome
-                              name="ban"
-                              className="text-danger"
-                              onClick={action}
-                            />
+                            <FaBan className="text-danger" onClick={action} />
                           )}
                         </Mutation>
                       </td>

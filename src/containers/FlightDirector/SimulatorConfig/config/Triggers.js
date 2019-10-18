@@ -10,8 +10,8 @@ import {
 import {Query, Mutation} from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
-import FontAwesome from "react-fontawesome";
 import {useQuery} from "@apollo/react-hooks";
+import {FaBan} from "react-icons/fa";
 
 function reducer(state, action) {
   if (action.type === "setTrigger") {
@@ -117,9 +117,8 @@ const App = ({selectedSimulator: simulator}) => {
                       onClick={() => dispatch({type: "setTrigger", id: s})}
                     >
                       {" "}
-                      <FontAwesome
+                      <FaBan
                         className="text-danger"
-                        name="ban"
                         onClick={() => removeTriggers(s, action)}
                       />{" "}
                       {triggerObj.name}{" "}

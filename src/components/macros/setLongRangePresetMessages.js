@@ -8,7 +8,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from "helpers/reactstrap";
-import FontAwesome from "react-fontawesome";
+import {FaBan} from "react-icons/fa";
 
 export default class LongRange extends Component {
   state = {};
@@ -39,8 +39,7 @@ export default class LongRange extends Component {
                   onClick={() => this.setState({currentMessage: i})}
                 >
                   {l.label}{" "}
-                  <FontAwesome
-                    name="ban"
+                  <FaBan
                     className="text-danger"
                     style={{cursor: "pointer"}}
                     onClick={() =>
