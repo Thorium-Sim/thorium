@@ -41,7 +41,9 @@
     "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "format:different": "prettier --list-different \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "validate": "CI=true npm-run-all --parallel test:coverage typecheck format:different",
-    "lint-staged-validate": "lint-staged"
+    "lint-staged-validate": "lint-staged",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "nodemonConfig": {
     "ignore": [
@@ -154,6 +156,10 @@
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.10",
     "@sentry/browser": "^5.7.1",
+    "@storybook/addon-actions": "^5.2.4",
+    "@storybook/addon-links": "^5.2.4",
+    "@storybook/addons": "^5.2.4",
+    "@storybook/react": "^5.2.4",
     "@testing-library/jest-dom": "^4.1.2",
     "@tweenjs/tween.js": "^18.3.1",
     "apollo-cache-hermes": "^0.8.9",
