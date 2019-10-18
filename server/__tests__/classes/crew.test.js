@@ -1,4 +1,4 @@
-import Crew from "../../src/classes/crew";
+import Crew from "../../classes/crew";
 
 const getCrew = () =>
   new Crew({
@@ -23,7 +23,7 @@ describe("Crew", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const c = Crew();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor Crew cannot be invoked without 'new'/);
   });
 
   describe("constructor", () => {

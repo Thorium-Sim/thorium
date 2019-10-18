@@ -37,7 +37,7 @@ App.on("updateViewscreenData", ({id, data}) => {
   const viewscreen = App.viewscreens.find(
     v =>
       v.id === id ||
-      (v.simulatorId === simulatorId &&
+      (v.simulatorId === id &&
         (id === "all" ||
           (id === "primary" && !v.secondary) ||
           (id === "secondary" && v.secondary))),

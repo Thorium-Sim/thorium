@@ -10,6 +10,8 @@ export default function ImportSurvey(filepath, cb) {
     if (data.class === "SurveyForm") {
       App.surveyForms.push(new Classes.SurveyForm(data));
     }
-  } catch (err) {}
+  } catch (err) {
+    // Do nothing
+  }
   cb(null);
 }

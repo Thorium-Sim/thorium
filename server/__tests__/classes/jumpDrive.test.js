@@ -1,12 +1,12 @@
 // TODO: Figure out why we need import { Engine } what to do about it
-import {System} from "../../src/classes/generic";
-import JumpDrive from "../../src/classes/jumpDrive";
+import {System} from "../../classes/generic";
+import JumpDrive from "../../classes/jumpDrive";
 
 describe("JumpDrive", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const j = JumpDrive();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor JumpDrive cannot be invoked without 'new'/);
   });
 
   test("should extend System", () => {

@@ -77,6 +77,7 @@ App.on(
     coms.forEach(com => {
       let output = ``;
       if (!com) {
+        //
       } else if (arg.toLowerCase() === "help" || (!arg && com.needsArg)) {
         output = com.help;
       } else if (

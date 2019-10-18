@@ -13,7 +13,10 @@ import {setContext} from "apollo-link-context";
 // import * as Sentry from "@sentry/browser";
 
 const hostname = window.location.hostname;
-
+const graphqlUrl = `http://${hostname}:${parseInt(
+  window.location.port || 3000,
+  10,
+) + 1}/graphql`;
 const wsLink = ApolloLink.from([
   onError(args => {
     const {response, graphQLErrors, networkError} = args;
@@ -34,7 +37,8 @@ const wsLink = ApolloLink.from([
     if (response) response.errors = null;
   }),
   new WebSocketLink({
-    uri: `ws://${hostname}:${parseInt(window.location.port, 10) + 1}/graphql`,
+    uri: `ws://${hostname}:${parseInt(window.location.port || 3000, 10) +
+      1}/graphql`,
     options: {
       reconnect: true,
     },
@@ -61,8 +65,7 @@ const httpLink = ApolloLink.from([
   process.env.NODE_ENV === "test"
     ? new MockLink([{request: {query: FLIGHTS_QUERY}}])
     : new HttpLink({
-        uri: `http://${hostname}:${parseInt(window.location.port, 10) +
-          1}/graphql`,
+        uri: graphqlUrl,
         opts: {
           mode: "cors",
         },

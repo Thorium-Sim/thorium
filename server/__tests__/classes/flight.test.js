@@ -1,11 +1,11 @@
-import Flight from "../../src/classes/flight";
-import Simulator from "../../src/classes/simulator";
+import Flight from "../../classes/flight";
+import Simulator from "../../classes/simulator";
 
 describe("Flight", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const c = Flight();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor Flight cannot be invoked without 'new'/);
   });
 
   describe("constructor", () => {

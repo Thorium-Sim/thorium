@@ -10,6 +10,8 @@ export default function ImportCoreLayout(filepath, cb) {
     if (data.class === "CoreLayout") {
       App.coreLayouts.push(new Classes.CoreLayout(data));
     }
-  } catch (err) {}
+  } catch (err) {
+    // Do nothing.
+  }
   cb(null);
 }

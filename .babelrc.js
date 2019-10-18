@@ -3,12 +3,13 @@ const isTest = String(process.env.NODE_ENV) === "test";
 module.exports = {
   presets: [
     "@babel/preset-env",
-    isTest ? "react-app" : null,
+    "@babel/preset-react",
+    "react-app",
     [
       "@babel/preset-typescript",
       {
         isTsx: true,
-        allExtensions: true,
+        allExtensions: false,
       },
     ],
   ].filter(Boolean),

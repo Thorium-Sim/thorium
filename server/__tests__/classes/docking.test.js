@@ -1,11 +1,11 @@
-import {System} from "../../src/classes/generic";
-import DockingPort from "../../src/classes/docking";
+import {System} from "../../classes/generic";
+import DockingPort from "../../classes/docking";
 
 describe("DockingPort", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const d = DockingPort();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor DockingPort cannot be invoked without 'new'/);
   });
 
   test("should extend System", () => {

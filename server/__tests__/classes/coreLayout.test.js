@@ -1,10 +1,10 @@
-import CoreLayout from "../../src/classes/coreLayout";
+import CoreLayout from "../../classes/coreLayout";
 
 describe("CoreLayout", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const c = CoreLayout();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor CoreLayout cannot be invoked without 'new'/);
   });
 
   describe("constructor", () => {

@@ -1,12 +1,12 @@
 // TODO: Figure out why we need import { Engine } what to do about it
-import {System} from "../../src/classes/generic";
-import Coolant from "../../src/classes/coolant";
+import {System} from "../../classes/generic";
+import Coolant from "../../classes/coolant";
 
 describe("Coolant", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const c = Coolant();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor Coolant cannot be invoked without 'new'/);
   });
 
   test("should extend System", () => {

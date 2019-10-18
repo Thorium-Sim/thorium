@@ -1,10 +1,10 @@
-import Exocomp from "../../src/classes/exocomp";
+import Exocomp from "../../classes/exocomp";
 
 describe("Exocomp", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const e = Exocomp();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor Exocomp cannot be invoked without 'new'/);
   });
 
   describe("constructor", () => {

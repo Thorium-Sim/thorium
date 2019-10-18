@@ -1,10 +1,10 @@
-import Client from "../../src/classes/client";
+import Client from "../../classes/client";
 
 describe("Client", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const c = Client();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor Client cannot be invoked without 'new'/);
   });
 
   describe("constructor", () => {

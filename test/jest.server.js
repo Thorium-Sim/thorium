@@ -4,6 +4,7 @@ module.exports = {
   ...require("./jest.common.js"),
   displayName: "server",
   coverageDirectory: path.join(__dirname, "../coverage/server"),
+  setupFilesAfterEnv: [require.resolve("./setupServerTests.js")],
   testEnvironment: "jest-environment-node",
   testMatch: [
     "<rootDir>/server/**/*.{spec,test}.{js,jsx,ts,tsx}",

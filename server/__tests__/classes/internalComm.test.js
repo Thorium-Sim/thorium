@@ -1,11 +1,13 @@
-import {System} from "../../src/classes/generic";
-import InternalComm from "../../src/classes/internalComm";
+import {System} from "../../classes/generic";
+import InternalComm from "../../classes/internalComm";
 
 describe("InternalComm", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const i = InternalComm();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(
+      /Class constructor InternalComm cannot be invoked without 'new'/,
+    );
   });
 
   test("should extend System", () => {

@@ -1,4 +1,5 @@
-export default function HeatMixin(inheritClass) {
+class Noop {}
+export default function HeatMixin(inheritClass = Noop) {
   return class Heat extends inheritClass {
     constructor(params) {
       super(params);

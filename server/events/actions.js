@@ -10,6 +10,8 @@ App.on("triggerAction", args => {
   const bridgeStations = App.simulators
     .find(s => s.id === args.simulatorId)
     .stations.map(s => s.name);
+  const client = App.clients.find(c => c.id === args.stationId);
+
   switch (args.stationId) {
     case "all":
       clients = App.clients
@@ -59,7 +61,6 @@ App.on("triggerAction", args => {
       stations = ["Viewscreen"];
       break;
     default:
-      const client = App.clients.find(c => c.id === args.stationId);
       clients = App.clients
         .filter(
           c =>

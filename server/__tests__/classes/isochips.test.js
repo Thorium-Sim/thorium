@@ -1,4 +1,4 @@
-import Isochip from "../../src/classes/isochips";
+import Isochip from "../../classes/isochips";
 
 // TODO: Would be nice to import this little gem instead
 expect.extend({
@@ -16,7 +16,7 @@ describe("Isochip", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
       const i = Isochip();
-    }).toThrow(/Cannot call a class as a function/);
+    }).toThrow(/Class constructor Isochip cannot be invoked without 'new'/);
   });
 
   describe("constructor", () => {

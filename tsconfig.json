@@ -14,7 +14,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": "src/"
+    "baseUrl": ".",
+    "paths": {
+      "*": ["../node_modules/*", "../types/*", "./src/"],
+      "~*": ["./*"]
+    }
   },
   "include": ["src", "i18next-parser.config.js", "test/setupTests.js"]
 }

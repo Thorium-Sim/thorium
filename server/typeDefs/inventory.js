@@ -1,8 +1,8 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
 import escapeRegex from "escape-string-regexp";
+const mutationHelper = require("../helpers/mutationHelper").default;
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
