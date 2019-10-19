@@ -6,7 +6,7 @@ fs.readdirSync("./src/components/views")
     return fs.statSync(f.path).isDirectory();
   })
   .forEach((f, i) => {
-    if (fs.existsSync(`${f.path}/index.stories.js`)) return;
+    // if (fs.existsSync(`${f.path}/index.stories.js`)) return;
     // Create an index.stories.js file inside of the views folder
     const component = fs.existsSync(`${f.path}/index.js`);
     const core = fs.existsSync(`${f.path}/core.js`);
@@ -14,8 +14,17 @@ fs.readdirSync("./src/components/views")
     fs.writeFileSync(
       `./src/stories/${f.name}.stories.js`,
       `import React from 'react';
-import StorybookWrapper from './storybookWrapper.js';
-import baseProps from './baseProps.js';
+${
+  component
+    ? `import StorybookWrapper from './helpers/storybookWrapper.js';`
+    : ""
+}
+${
+  core
+    ? `import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";`
+    : ""
+}
+import baseProps from './helpers/baseProps.js';
 ${
   component
     ? `import Component from '../components/views/${f.name}/index.js';`
@@ -37,7 +46,7 @@ ${
 }
 ${
   core
-    ? `export const Core = () => <StorybookWrapper><CoreComponent {...baseProps} /></StorybookWrapper>`
+    ? `export const Core = () => <StorybookWrapperCore><CoreComponent {...baseProps} /></StorybookWrapperCore>`
     : ""
 }
       `,

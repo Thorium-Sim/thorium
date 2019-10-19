@@ -1,5 +1,5 @@
 import React, {Component, useState} from "react";
-import {withApollo, Query} from "react-apollo";
+import {Query, useMutation} from "react-apollo";
 import {Container, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
@@ -56,23 +56,22 @@ const alertLevels = [
   },
 ];
 
-const Card = ({alertLevelLock, simulator, client}) => {
+const CHANGE_ALERT_LEVEL = gql`
+  mutation AlertLevel($id: ID!, $level: String!) {
+    changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $level)
+  }
+`;
+const Card = ({alertLevelLock, simulator}) => {
   const [hoverAlert, setHoverAlert] = useState(null);
   const playEffect = useSoundEffect();
+  const [setAlertLevel] = useMutation(CHANGE_ALERT_LEVEL);
   const setAlert = number => {
     playEffect("buttonClick");
-    const mutation = gql`
-      mutation AlertLevel($id: ID!, $level: String!) {
-        changeSimulatorAlertLevel(simulatorId: $id, alertLevel: $level)
-      }
-    `;
-    const variables = {
-      id: simulator.id,
-      level: String(number),
-    };
-    client.mutate({
-      mutation,
-      variables,
+    setAlertLevel({
+      variables: {
+        id: simulator.id,
+        level: String(number),
+      },
     });
   };
   return (
@@ -103,53 +102,53 @@ const Card = ({alertLevelLock, simulator, client}) => {
     </Row>
   );
 };
-const CardData = withApollo(Card);
+export const ALERT_QUERY = gql`
+  query simulators($id: ID) {
+    simulators(id: $id) {
+      ...AlertData
+    }
+  }
+  ${fragment}
+`;
+export const ALERT_SUB = gql`
+  subscription SimulatorsSub($id: ID) {
+    simulatorsUpdate(simulatorId: $id) {
+      ...AlertData
+    }
+  }
+  ${fragment}
+`;
 class AlertCondition extends Component {
   render() {
     return (
-      <Query
-        query={gql`
-          query simulators($id: ID) {
-            simulators(id: $id) {
-              ...AlertData
-            }
+      <>
+        <Query query={ALERT_QUERY} variables={{id: this.props.simulator.id}}>
+          {({loading, data, subscribeToMore}) =>
+            loading || !data ? null : (
+              <Container fluid className="alert-condition">
+                <SubscriptionHelper
+                  subscribe={() =>
+                    subscribeToMore({
+                      document: ALERT_SUB,
+                      variables: {id: this.props.simulator.id},
+                      updateQuery: (previousResult, {subscriptionData}) => {
+                        return Object.assign({}, previousResult, {
+                          simulators: subscriptionData.data.simulatorsUpdate,
+                        });
+                      },
+                    })
+                  }
+                />
+                <Card
+                  simulator={this.props.simulator}
+                  alertLevelLock={data.simulators[0].alertLevelLock}
+                />
+                <Tour steps={trainingSteps} client={this.props.clientObj} />
+              </Container>
+            )
           }
-          ${fragment}
-        `}
-        variables={{id: this.props.simulator.id}}
-      >
-        {({loading, data, subscribeToMore}) =>
-          loading ? null : (
-            <Container fluid className="alert-condition">
-              <SubscriptionHelper
-                subscribe={() =>
-                  subscribeToMore({
-                    document: gql`
-                      subscription SimulatorsSub($id: ID) {
-                        simulatorsUpdate(simulatorId: $id) {
-                          ...AlertData
-                        }
-                      }
-                      ${fragment}
-                    `,
-                    variables: {id: this.props.simulator.id},
-                    updateQuery: (previousResult, {subscriptionData}) => {
-                      return Object.assign({}, previousResult, {
-                        simulators: subscriptionData.data.simulatorsUpdate,
-                      });
-                    },
-                  })
-                }
-              />
-              <CardData
-                simulator={this.props.simulator}
-                alertLevelLock={data.simulators[0].alertLevelLock}
-              />
-              <Tour steps={trainingSteps} client={this.props.clientObj} />
-            </Container>
-          )
-        }
-      </Query>
+        </Query>
+      </>
     );
   }
 }

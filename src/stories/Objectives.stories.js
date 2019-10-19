@@ -1,6 +1,7 @@
 import React from "react";
-import StorybookWrapper from "./storybookWrapper.js";
-import baseProps from "./baseProps.js";
+import StorybookWrapper from "./helpers/storybookWrapper.js";
+import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
+import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/Objectives/index.js";
 import CoreComponent from "../components/views/Objectives/core.js";
 
@@ -13,7 +14,7 @@ export const Objectives = () => (
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapper>
+  <StorybookWrapperCore>
     <CoreComponent {...baseProps} />
-  </StorybookWrapper>
+  </StorybookWrapperCore>
 );

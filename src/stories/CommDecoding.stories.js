@@ -1,6 +1,7 @@
 import React from "react";
-import StorybookWrapper from "./storybookWrapper.js";
-import baseProps from "./baseProps.js";
+import StorybookWrapper from "./helpers/storybookWrapper.js";
+import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
+import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/CommDecoding/index.js";
 import CoreComponent from "../components/views/CommDecoding/core.js";
 
@@ -13,7 +14,7 @@ export const CommDecoding = () => (
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapper>
+  <StorybookWrapperCore>
     <CoreComponent {...baseProps} />
-  </StorybookWrapper>
+  </StorybookWrapperCore>
 );

@@ -1,6 +1,7 @@
 import React from "react";
-import StorybookWrapper from "./storybookWrapper.js";
-import baseProps from "./baseProps.js";
+import StorybookWrapper from "./helpers/storybookWrapper.js";
+import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
+import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/BridgeMap/index.js";
 import CoreComponent from "../components/views/BridgeMap/core.js";
 
@@ -13,7 +14,7 @@ export const BridgeMap = () => (
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapper>
+  <StorybookWrapperCore>
     <CoreComponent {...baseProps} />
-  </StorybookWrapper>
+  </StorybookWrapperCore>
 );

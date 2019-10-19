@@ -1,6 +1,7 @@
 import React from "react";
-import StorybookWrapper from "./storybookWrapper.js";
-import baseProps from "./baseProps.js";
+
+import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
+import baseProps from "./helpers/baseProps.js";
 
 import CoreComponent from "../components/views/RemoteAccess/core.js";
 
@@ -9,7 +10,7 @@ export default {
 };
 
 export const Core = () => (
-  <StorybookWrapper>
+  <StorybookWrapperCore>
     <CoreComponent {...baseProps} />
-  </StorybookWrapper>
+  </StorybookWrapperCore>
 );

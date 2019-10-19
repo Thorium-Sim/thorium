@@ -7,7 +7,7 @@ export default {
     running: false,
     simulators: [
       {
-        id: "a334d67e-f832-48be-a10b-3727c02ff07e",
+        id: "test",
         name: "Voyager",
         layout: "LayoutCorners",
         stations: [
@@ -301,7 +301,7 @@ export default {
     },
   ],
   simulator: {
-    id: "a334d67e-f832-48be-a10b-3727c02ff07e",
+    id: "test",
     template: false,
     name: "Voyager",
     caps: false,

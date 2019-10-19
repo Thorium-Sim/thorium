@@ -13,7 +13,7 @@ const levels = [
   {id: 1, color: "danger"},
 ];
 
-const SUB = gql`
+export const ALERT_CORE_SUB = gql`
   subscription SimulatorsSub($id: ID) {
     simulatorsUpdate(simulatorId: $id) {
       id
@@ -23,7 +23,7 @@ const SUB = gql`
   }
 `;
 
-const QUERY = gql`
+export const ALERT_CORE_QUERY = gql`
   query simulators($id: ID) {
     simulators(id: $id) {
       id
@@ -34,7 +34,7 @@ const QUERY = gql`
 `;
 
 const AlertConditionCore = ({simulator: sim}) => {
-  const {loading, data, subscribeToMore} = useQuery(QUERY, {
+  const {loading, data, subscribeToMore} = useQuery(ALERT_CORE_QUERY, {
     variables: {
       id: sim.id,
     },
@@ -50,7 +50,7 @@ const AlertConditionCore = ({simulator: sim}) => {
     }),
     [sim.id],
   );
-  useSubscribeToMore(subscribeToMore, SUB, config);
+  useSubscribeToMore(subscribeToMore, ALERT_CORE_SUB, config);
   if (loading) return null;
   const {simulators} = data;
   const simulator = simulators[0];
