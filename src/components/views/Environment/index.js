@@ -3,7 +3,7 @@ import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
 import Environment from "./environment";
-import "./style.css";
+import "./style.scss";
 
 const fragment = gql`
   fragment DeckData on Deck {

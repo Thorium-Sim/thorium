@@ -2,7 +2,7 @@ import React from "react";
 import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "../../../helpers/subscriptionHelper";
-import "./style.css";
+import "./style.scss";
 
 const fragment = gql`
   fragment TemplateData on Template {
