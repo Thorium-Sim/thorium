@@ -83,7 +83,7 @@ const trainingSteps = [
     ),
   },
 ];
-const CREW_SUB = gql`
+export const ARMORY_CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {
     crewUpdate(simulatorId: $simulatorId, position: $teamType, killed: false) {
       id
@@ -97,7 +97,7 @@ const CREW_SUB = gql`
   }
 `;
 
-const TEAM_SUB = gql`
+export const ARMORY_TEAMS_SUB = gql`
   subscription TeamsUpdate($simulatorId: ID, $teamType: String!) {
     teamsUpdate(simulatorId: $simulatorId, type: $teamType) {
       id
@@ -110,7 +110,7 @@ const TEAM_SUB = gql`
   }
 `;
 
-const ROOMS_SUB = gql`
+export const ARMORY_ROOMS_SUB = gql`
   subscription RoomsUpdate($simulatorId: ID!, $roomRole: RoomRoles) {
     roomsUpdate(simulatorId: $simulatorId, role: $roomRole) {
       id
@@ -250,8 +250,9 @@ class Armory extends Component {
   };
   render() {
     const {
-      data: {loading, crew, rooms, teams},
+      data: {loading, error, crew, rooms, teams},
     } = this.props;
+    console.log(error);
     if (loading || !crew || !rooms || !teams) return null;
     const {room, team, selectedCrew, readyInventory = {}} = this.state;
     const roomObj = rooms.find(r => r.id === room);
@@ -261,10 +262,10 @@ class Armory extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: TEAM_SUB,
+              document: ARMORY_TEAMS_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
-                teamType: this.props.type || "damage",
+                teamType: this.props.type || "security",
               },
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -277,7 +278,7 @@ class Armory extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: CREW_SUB,
+              document: ARMORY_CREW_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
                 teamType: this.props.type || "security",
@@ -293,7 +294,7 @@ class Armory extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: ROOMS_SUB,
+              document: ARMORY_ROOMS_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
                 roomRole: this.props.type
@@ -497,7 +498,7 @@ const TeamList = ({team, teams, crew, selectedCrew, selectCrew}) => {
     ));
 };
 
-const QUERY = gql`
+export const ARMORY_QUERY = gql`
   query Armory($simulatorId: ID!, $type: String!, $roomRole: RoomRoles!) {
     crew(simulatorId: $simulatorId, position: $type) {
       id
@@ -530,7 +531,7 @@ const QUERY = gql`
     }
   }
 `;
-export default graphql(QUERY, {
+export default graphql(ARMORY_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
 

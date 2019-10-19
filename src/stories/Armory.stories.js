@@ -4,17 +4,18 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/Armory/index.js";
 import CoreComponent from "../components/views/Armory/core.js";
+import {armoryMocks} from "mocks/cards/Armory.mock.js";
 
 export default {
   title: "Cards|Armory",
 };
 export const Armory = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={armoryMocks}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={armoryMocks}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );

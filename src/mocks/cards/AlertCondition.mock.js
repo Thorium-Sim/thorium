@@ -30,8 +30,6 @@ export const alertConditionMocks = [
       },
     },
   },
-];
-export const alertConditionCoreMocks = [
   {
     request: {
       query: ALERT_CORE_QUERY,

@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import {Input, Button} from "helpers/reactstrap";
 import {InputField} from "../../generic/core";
 
-const ARMORY_QUERY = gql`
+export const ARMORY_CORE_QUERY = gql`
   query Crew($simulatorId: ID!) {
     teams(simulatorId: $simulatorId) {
       id
@@ -30,7 +30,7 @@ const ARMORY_QUERY = gql`
   }
 `;
 
-const CREW_SUB = gql`
+export const ARMORY_CORE_CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
     crewUpdate(simulatorId: $simulatorId, killed: false) {
       id
@@ -44,7 +44,7 @@ const CREW_SUB = gql`
   }
 `;
 
-const TEAM_SUB = gql`
+export const ARMORY_CORE_TEAM_SUB = gql`
   subscription TeamsUpdate($simulatorId: ID) {
     teamsUpdate(simulatorId: $simulatorId) {
       id
@@ -187,11 +187,12 @@ const CrewCargo = ({simulatorId, crew: {id, name, inventory}}) => {
   );
 };
 const ArmoryCoreData = ({simulator}) => (
-  <Query query={ARMORY_QUERY} variables={{simulatorId: simulator.id}}>
-    {({subscribeToMore, loading, data: {crew, teams}}) =>
-      !loading &&
-      crew &&
-      teams && (
+  <Query query={ARMORY_CORE_QUERY} variables={{simulatorId: simulator.id}}>
+    {({subscribeToMore, error, loading, data}) => {
+      console.log(error);
+      if (loading || !data) return null;
+      const {crew, teams} = data;
+      return (
         <ArmoryCore
           crew={crew}
           teams={teams}
@@ -199,7 +200,7 @@ const ArmoryCoreData = ({simulator}) => (
           subscribe={() => {
             return {
               teams: subscribeToMore({
-                document: TEAM_SUB,
+                document: ARMORY_CORE_TEAM_SUB,
                 variables: {simulatorId: simulator.id},
                 updateQuery: (previousResult, {subscriptionData}) => {
                   return Object.assign({}, previousResult, {
@@ -208,7 +209,7 @@ const ArmoryCoreData = ({simulator}) => (
                 },
               }),
               crew: subscribeToMore({
-                document: CREW_SUB,
+                document: ARMORY_CORE_CREW_SUB,
                 variables: {simulatorId: simulator.id},
                 updateQuery: (previousResult, {subscriptionData}) => {
                   return Object.assign({}, previousResult, {
@@ -219,8 +220,8 @@ const ArmoryCoreData = ({simulator}) => (
             };
           }}
         />
-      )
-    }
+      );
+    }}
   </Query>
 );
 

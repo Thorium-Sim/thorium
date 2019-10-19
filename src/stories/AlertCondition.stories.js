@@ -4,10 +4,7 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/AlertCondition/index.js";
 import CoreComponent from "../components/views/AlertCondition/core.js";
-import {
-  alertConditionMocks,
-  alertConditionCoreMocks,
-} from "mocks/cards/AlertCondition.js";
+import {alertConditionMocks} from "mocks/cards/AlertCondition.mock.js";
 
 export default {
   title: "Cards|AlertCondition",
@@ -18,7 +15,7 @@ export const AlertCondition = () => (
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore mocks={alertConditionCoreMocks}>
+  <StorybookWrapperCore mocks={alertConditionMocks}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );
