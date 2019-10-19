@@ -155,6 +155,7 @@ class Game extends Component {
   performAction = action => {
     this.setState(state => {
       const {Colors, RobotRow, RobotCol, RobotDir, functions, stack} = state;
+      let color = action.split("-")[1];
       switch (action) {
         case "left":
           return {
@@ -198,7 +199,6 @@ class Game extends Component {
         case "paint-red":
         case "paint-green":
         case "paint-blue":
-          let color = action.split("-")[1];
           if (color === "red") color = "R";
           if (color === "green") color = "G";
           if (color === "blue") color = "B";

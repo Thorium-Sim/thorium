@@ -1,13 +1,13 @@
 import React from "react";
 import {titleCase} from "change-case";
 import {Button} from "helpers/reactstrap";
-import {MosaicWindowContext} from "react-mosaic-component";
+import {MosaicContext} from "react-mosaic-component";
 import categories from "../../categories";
 
-const Picker = ({components}) => {
-  const {mosaicWindowActions} = React.useContext(MosaicWindowContext);
+const Picker = ({components, path}) => {
+  const {mosaicActions} = React.useContext(MosaicContext);
   const update = e => {
-    mosaicWindowActions.replaceWithNew(mosaicWindowActions.getPath(), e);
+    mosaicActions.replaceWith(path, e);
   };
   return (
     <div className="core-picker">

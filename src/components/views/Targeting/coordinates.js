@@ -48,6 +48,7 @@ export default class Coordinates extends Component {
       };
     }
     if (e.which) {
+      // Empty
     } else {
       key = e.toString();
     }

@@ -483,14 +483,14 @@ function set(data = {}, prop = "", val) {
 
 function del(data = {}, prop = "") {
   if (!prop) return false;
-  if (data.hasOwnProperty(prop)) {
+  if (Object.prototype.hasOwnProperty.call(data, prop)) {
     delete data[prop];
     return true;
   }
   const segs = split(prop);
   const last = segs.pop();
   const val = segs.length ? get(data, segs.join(".")) : data;
-  if (isObject(val) && val.hasOwnProperty(last)) {
+  if (isObject(val) && Object.prototype.hasOwnProperty.call(val, last)) {
     delete val[last];
     return true;
   }
@@ -529,12 +529,12 @@ function cloneDeep(value) {
 
 function hasOwn(data = {}, prop = "") {
   if (!prop) return false;
-  if (data.hasOwnProperty(prop)) return true;
+  if (Object.prototype.hasOwnProperty.call(data, prop)) return true;
   if (prop.indexOf(".") === -1) return false;
   const segs = split(prop);
   const last = segs.pop();
   const val = segs.length ? get(data, segs.join(".")) : data;
-  return isObject(val) && val.hasOwnProperty(last);
+  return isObject(val) && Object.prototype.hasOwnProperty.call(val, last);
 }
 
 function typeOf(val) {

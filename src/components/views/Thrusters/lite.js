@@ -250,6 +250,8 @@ gamepadLoop(){
       const rotation = {yaw: 0, pitch: 0, roll: 0};
       const direction = {x: 0, y: 0, z: 0};
       const {width} = node.offsetParent.getBoundingClientRect();
+      const clientX = e.clientX || e.clientX === 0 || e.touches[0].clientX;
+      const clientY = e.clientY || e.clientY === 0 || e.touches[0].clientY;
       switch (handlerName) {
         case "onDragStart":
           obj[which] = newPosition;
@@ -257,9 +259,6 @@ gamepadLoop(){
           this.setState(obj);
           break;
         case "onDrag":
-          const clientX = e.clientX || e.clientX === 0 || e.touches[0].clientX;
-          const clientY = e.clientY || e.clientY === 0 || e.touches[0].clientY;
-
           if (!this.state[which]) {
             throw new Error("onDrag called before onDragStart.");
           }

@@ -25,13 +25,41 @@
   font-family: "Gill Sans", sans-serif;
   font-size: 12;
   line-height: 1;
+  .mosaic-root {
+    background: #202a33;
+  }
+  .mosaic-toolbar-button {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1px;
+    cursor: pointer;
+    &:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    &:active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
   .mosaic-window-toolbar {
-    background: black;
+    background: #30404d;
+    box-shadow: 0 1px 1px rgba(16, 22, 26, 0.4);
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    margin: 0 1px;
   }
 
   .mosaic-window-body {
     overflow-y: auto;
-    background: black;
+    background: #293742;
+    border-top-width: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    margin: 1px;
   }
   .pt-button {
     color: #a7b6c2;

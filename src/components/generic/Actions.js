@@ -76,6 +76,8 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
             actionsUpdate: {action, message, voice, duration},
           },
         }) {
+          const voices = synth.getVoices();
+          const words = new SpeechSynthesisUtterance(message);
           switch (action) {
             case "flash":
               return doFlash(duration);
@@ -84,8 +86,6 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
             case "reload":
               return window.location.reload();
             case "speak":
-              const voices = synth.getVoices();
-              const words = new SpeechSynthesisUtterance(message);
               if (voice) words.voice = voices.find(v => v.name === voice);
               return synth.speak(words);
             case "shutdown":

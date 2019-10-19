@@ -53,8 +53,8 @@ class TimelineData extends Component {
     return (
       <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
         {({loading, data, subscribeToMore}) => {
-          const {auxTimelines, missions} = data;
           if (loading) return null;
+          const {auxTimelines, missions} = data;
           return (
             <SubscriptionHelper
               subscribe={() =>

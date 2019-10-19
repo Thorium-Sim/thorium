@@ -44,11 +44,10 @@ export default class MovementCore extends PureComponent {
         left,
         top,
       } = node.offsetParent.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
       switch (handlerName) {
         case "onDrag":
-          const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-          const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-
           newPosition.left = ((left + width / 2 - clientX) / width) * -1 * 2;
           newPosition.top = ((top + height / 2 - clientY) / width) * -1 * 2;
           if (

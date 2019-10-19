@@ -1,64 +1,46 @@
-import React, {Component} from "react";
+import React from "react";
 import {Cores} from "components/views";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import {
   Mosaic,
   MosaicWindow,
   MosaicWindowContext,
-  RemoveButton,
-  ExpandButton,
-  createDefaultToolbarButton,
+  MosaicContext,
 } from "react-mosaic-component";
 import Picker from "./picker";
 import CoreError from "../coreError";
 import "react-mosaic-component/react-mosaic-component.css";
 import "./dynamic.scss";
 import {titleCase} from "change-case";
+import {FaCodeBranch, FaWindowMaximize, FaTimes} from "react-icons/fa";
 
-class UpdateSelect extends React.PureComponent {
-  static contextTypes = MosaicWindowContext;
-  context;
-  update = e => {
-    this.context.mosaicActions.replaceWith(
-      this.context.mosaicWindowActions
-        ? this.context.mosaicWindowActions.getPath()
-        : [],
-      e.target.value,
-    );
+const UpdateSelect = ({id, path, mosaic}) => {
+  const {mosaicActions} = React.useContext(MosaicContext);
+  const update = e => {
+    mosaicActions.replaceWith(path || {}, e.target.value);
   };
-  render() {
-    const hasLighting =
-      this.props.clients &&
-      this.props.clients.find(
-        c =>
-          c.id.toLowerCase().indexOf("ecs") === 0 &&
-          c.simulator &&
-          c.simulator.id === this.props.simulator.id,
-      );
-    return (
-      <select
-        type="select"
-        className="btn btn-primary btn-sm"
-        value={this.props.id || "select"}
-        onChange={this.update}
-      >
-        <option value="select" disabled>
-          Select a Core
-        </option>
-        {Object.keys(Cores)
-          .sort()
-          .filter(s => (s === "LightingCore" && !hasLighting ? false : true))
-          .map(s => {
-            return mosaicComponents(this.props.mosaic).indexOf(s) > -1 ? (
-              <option key={s} value={s} disabled>{`${s}${" - ✅"}`}</option>
-            ) : (
-              <option key={s} value={s}>{`${s}`}</option>
-            );
-          })}
-      </select>
-    );
-  }
-}
+  return (
+    <select
+      type="select"
+      className="btn btn-primary btn-sm"
+      value={id || "select"}
+      onChange={update}
+    >
+      <option value="select" disabled>
+        Select a Core
+      </option>
+      {Object.keys(Cores)
+        .sort()
+        .map(s => {
+          return mosaicComponents(mosaic).indexOf(s) > -1 ? (
+            <option key={s} value={s} disabled>{`${s}${" - ✅"}`}</option>
+          ) : (
+            <option key={s} value={s}>{`${s}`}</option>
+          );
+        })}
+    </select>
+  );
+};
 
 const Split = () => {
   const {mosaicWindowActions} = React.useContext(MosaicWindowContext);
@@ -66,12 +48,30 @@ const Split = () => {
     mosaicWindowActions.split("Picker-" + Math.random());
   };
   return (
-    <div style={{position: "relative"}}>
-      {createDefaultToolbarButton(
-        "Split Window",
-        " split-columns pt-icon-add-column-right",
-        split,
-      )}
+    <div className="mosaic-toolbar-button">
+      <FaCodeBranch onClick={split} />
+    </div>
+  );
+};
+const Expand = ({path}) => {
+  const {mosaicActions} = React.useContext(MosaicContext);
+  const expand = e => {
+    mosaicActions.expand(path);
+  };
+  return (
+    <div className="mosaic-toolbar-button">
+      <FaWindowMaximize onClick={expand} />
+    </div>
+  );
+};
+const Remove = ({path}) => {
+  const {mosaicActions} = React.useContext(MosaicContext);
+  const expand = e => {
+    mosaicActions.remove(path);
+  };
+  return (
+    <div className="mosaic-toolbar-button">
+      <FaTimes onClick={expand} />
     </div>
   );
 };
@@ -91,79 +91,81 @@ function mosaicComponents(page) {
   }
   return components;
 }
-class Dynamic extends Component {
-  render() {
-    return (
-      <Mosaic
-        renderTile={(id, path) => {
-          return (
-            <MosaicWindow
-              path={path}
-              title={
-                this.props.edit ? (
-                  <UpdateSelect
-                    mosaic={this.props.mosaic}
-                    id={id}
-                    clients={this.props.clients}
-                    simulator={this.props.simulator}
-                  />
-                ) : (
-                  titleCase(id)
-                )
-              }
-              toolbarControls={[
-                <Split key="split-button" mosaic={this.props.mosaic} />,
-                <ExpandButton key="expand-button" />,
-                <RemoveButton key="remove-button" />,
-              ]}
-              createNode={e => e}
-            >
-              {(() => {
-                if (id && id.indexOf("Picker") > -1) {
-                  return (
-                    <Picker components={mosaicComponents(this.props.mosaic)} />
-                  );
-                }
-                const Comp = Cores[id] || (() => null);
-                return (
-                  <CoreError>
-                    <Comp {...this.props} />
-                  </CoreError>
-                );
-              })()}
-            </MosaicWindow>
-          );
-        }}
-        zeroStateView={
-          <Container>
-            <Row>
-              {this.props.edit ? (
-                <Col sm={12}>
-                  <h1>No cores loaded</h1>
-                  <h4>Add a core.</h4>
-                  <UpdateSelect mosaic={this.props.mosaic} />
-                </Col>
+const Dynamic = props => {
+  const {mosaic, updateMosaic, clients, simulator, editMode, edit} = props;
+  return (
+    <Mosaic
+      renderTile={(id, path) => {
+        return (
+          <MosaicWindow
+            draggable={edit}
+            path={path}
+            title={
+              edit ? (
+                <UpdateSelect
+                  mosaic={mosaic}
+                  id={id}
+                  clients={clients}
+                  simulator={simulator}
+                  path={path}
+                />
               ) : (
-                <Col sm={12}>
-                  <h1>No cores loaded</h1>
-                  <h4>
-                    Turn on{" "}
-                    <Button color="info" onClick={this.props.editMode}>
-                      Edit Mode
-                    </Button>{" "}
-                    to continue
-                  </h4>
-                </Col>
-              )}
-            </Row>
-          </Container>
-        }
-        value={this.props.mosaic}
-        onChange={this.props.updateMosaic}
-        className={"core mosaic   bp3-dark pt-dark"}
-      />
-    );
-  }
-}
+                titleCase(id)
+              )
+            }
+            toolbarControls={[
+              <Split key="split-button" mosaic={mosaic} />,
+              <Expand path={path} key="expand-button" />,
+              <Remove path={path} key="remove-button" />,
+            ]}
+            createNode={e => e}
+          >
+            {(() => {
+              console.log(id);
+              if (id && id.indexOf("Picker") > -1) {
+                return (
+                  <Picker components={mosaicComponents(mosaic)} path={path} />
+                );
+              }
+              const Comp = Cores[id] || (() => null);
+              return (
+                <CoreError>
+                  <Comp {...props} />
+                </CoreError>
+              );
+            })()}
+          </MosaicWindow>
+        );
+      }}
+      zeroStateView={
+        <Container>
+          <Row>
+            {edit ? (
+              <Col sm={12}>
+                <h1>No cores loaded</h1>
+                <h4>Add a core.</h4>
+                <UpdateSelect mosaic={mosaic} />
+              </Col>
+            ) : (
+              <Col sm={12}>
+                <h1>No cores loaded</h1>
+                <h4>
+                  Turn on{" "}
+                  <Button color="info" onClick={editMode}>
+                    Edit Mode
+                  </Button>{" "}
+                  to continue
+                </h4>
+              </Col>
+            )}
+          </Row>
+        </Container>
+      }
+      value={mosaic}
+      onChange={updateMosaic}
+      className={"core mosaic   bp3-dark pt-dark"}
+    />
+  );
+};
 
 export default Dynamic;
