@@ -5,8 +5,8 @@ import {withApollo, Query} from "react-apollo";
 import SoundPicker from "helpers/soundPicker";
 import {titleCase} from "change-case";
 
-import "./style.scss";
 import {randomFromList} from "helpers/randomFromList";
+import "./style.scss";
 
 const MOVIE_QUERY = gql`
   query Movies {
@@ -337,6 +337,7 @@ class ActionsCore extends Component {
     );
   };
   render() {
+    console.log(this.props);
     const {bridgeMap, flight} = this.props;
     const {actionName} = this.state;
     return (

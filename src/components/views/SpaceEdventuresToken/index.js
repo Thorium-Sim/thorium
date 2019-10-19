@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {Label, Input, Button} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import {ReactComponent as Logo} from "./logo.svg";
 const SpaceEdventuresToken = ({clientObj}) => {
   const [email, setEmail] = useState("");
   const style = {
@@ -16,7 +15,11 @@ const SpaceEdventuresToken = ({clientObj}) => {
   };
   return (
     <div style={{height: "100%"}}>
-      <Logo style={{maxWidth: "500px", maxHeight: "100px"}} />
+      <img
+        src={require("./logo.svg")}
+        alt="space edventures"
+        style={{maxWidth: "500px", maxHeight: "100px"}}
+      />
       <div style={{display: "flex", height: "80%"}}>
         <div style={style}>
           <h2 style={{maxWidth: "50vw"}}>

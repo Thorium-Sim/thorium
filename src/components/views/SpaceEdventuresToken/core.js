@@ -5,7 +5,6 @@ import gql from "graphql-tag.macro";
 import "./style.scss";
 import Printable from "helpers/printable";
 import useQrCode from "react-qrcode-hook";
-import {ReactComponent as Logo} from "./logo-black.svg";
 import {useQuery, useMutation} from "@apollo/react-hooks";
 
 function useInterval(callback, delay) {
@@ -34,7 +33,11 @@ const Flyer = ({station: {name, token, userId}, simulator, loginName}) => {
   if (userId) return null;
   return (
     <div className="space-edventures-flyer">
-      <Logo style={{height: "100px"}} />
+      <img
+        src={require("./logo-black.svg")}
+        alt="space edventures"
+        style={{height: "100px"}}
+      />
       <h2>{loginName}</h2>
 
       <p>

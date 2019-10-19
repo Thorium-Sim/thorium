@@ -1,7 +1,5 @@
 import React, {useReducer, useState, useEffect} from "react";
 import {Button} from "helpers/reactstrap";
-import {ReactComponent as Launcher} from "./launcher.svg";
-import {ReactComponent as Torpedo} from "../TorpedoLoading/torpedos/torpedo.svg";
 import uuid from "uuid";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
@@ -26,7 +24,9 @@ function LoadedTorpedo() {
     if (!inBarrel) setInBarrel(true);
   }, [inBarrel]);
   return (
-    <Torpedo
+    <img
+      src={require("../TorpedoLoading/torpedos/torpedo.svg")}
+      alt="torpedo"
       className="torpedo-icon loaded"
       style={{transform: `translate(${inBarrel ? 305 : 0}%, 0px)`}}
     />
@@ -47,9 +47,15 @@ const TorpedoLoading = ({id, clientId, torpedoCount, torpedoLoaded}) => {
   return (
     <div className="torpedo-loading">
       <div className="launcher-holder">
-        <Launcher className="torpedo-launcher" />
+        <img
+          alt="torpedo launcher"
+          src={require("./launcher.svg")}
+          className="torpedo-launcher"
+        />
         {torpedos.map((t, i) => (
-          <Torpedo
+          <img
+            src={require("../TorpedoLoading/torpedos/torpedo.svg")}
+            alt="torpedo"
             key={t.id}
             className="torpedo-icon"
             style={{transform: `translate(0px, ${i * 100}%)`}}
