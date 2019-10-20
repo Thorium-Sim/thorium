@@ -7,7 +7,7 @@ import CoreComponent from "../components/views/Armory/core.js";
 import {armoryMocks} from "mocks/cards/Armory.mock.js";
 
 export default {
-  title: "Cards|Armory",
+  title: "Cards|Crew/Armory",
 };
 export const Armory = () => (
   <StorybookWrapper mocks={armoryMocks}>

@@ -32,7 +32,7 @@ const damagePositions = [
   "Welder",
 ];
 
-const INTERNAL_SUB = gql`
+export const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID) {
     crewUpdate(simulatorId: $simulatorId) {
       id
@@ -198,8 +198,9 @@ class CrewCore extends Component {
   };
   render() {
     const {
-      data: {loading, crew},
+      data: {loading, error, crew},
     } = this.props;
+    console.log(error);
     const {selectedCrew, editing, search} = this.state;
     if (loading || !crew) return null;
     const selectedCrewMember = crew.find(c => c.id === selectedCrew);
@@ -208,7 +209,7 @@ class CrewCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: INTERNAL_SUB,
+              document: CREW_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -487,11 +488,10 @@ class CrewCore extends Component {
   }
 }
 
-const CREW_QUERY = gql`
+export const CREW_QUERY = gql`
   query Crew($simulatorId: ID) {
     crew(simulatorId: $simulatorId) {
       id
-      simulatorId
       firstName
       lastName
       position

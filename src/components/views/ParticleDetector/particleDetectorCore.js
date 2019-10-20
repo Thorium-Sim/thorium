@@ -440,8 +440,8 @@ class ParticleDetectorCore extends Component {
 const ParticleDetectorData = withApollo(props => (
   <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {sensorContacts, sensors} = data;
-      if (loading || !sensorContacts) return null;
       return (
         <SubscriptionHelper
           subscribe={() =>

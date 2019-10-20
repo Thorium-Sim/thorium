@@ -6,7 +6,7 @@ fs.readdirSync("./src/components/views")
     return fs.statSync(f.path).isDirectory();
   })
   .forEach((f, i) => {
-    // if (fs.existsSync(`${f.path}/index.stories.js`)) return;
+    if (fs.existsSync(`${f.path}/index.stories.js`)) return;
     // Create an index.stories.js file inside of the views folder
     const component = fs.existsSync(`${f.path}/index.js`);
     const core = fs.existsSync(`${f.path}/core.js`);

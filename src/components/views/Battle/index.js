@@ -14,7 +14,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const BATTLE_QUERY = gql`
   query SensorContacts($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, hostile: true) {
       ...BattleCoreData
@@ -28,7 +28,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const BATTLE_CONTACT_SUB = gql`
   subscription SensorContactsUpdate($simulatorId: ID!) {
     sensorContactUpdate(simulatorId: $simulatorId, hostile: true) {
       ...BattleCoreData
@@ -37,7 +37,7 @@ const SUBSCRIPTION = gql`
   ${fragment}
 `;
 
-const SENSORS_SUB = gql`
+export const BATTLE_SENSORS_SUB = gql`
   subscription SensorsSub($simulatorId: ID!) {
     sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
       id
@@ -52,15 +52,19 @@ class TemplateData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
-        {({loading, data, subscribeToMore}) => {
+      <Query
+        query={BATTLE_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
+        {({loading, data, error, subscribeToMore}) => {
+          console.log(error);
+          if (loading || !data) return null;
           const {sensorContacts, sensors} = data;
-          if (loading || !sensorContacts || !sensors) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: BATTLE_CONTACT_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {
@@ -73,7 +77,7 @@ class TemplateData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: SENSORS_SUB,
+                    document: BATTLE_SENSORS_SUB,
                     variables: {simulatorId: this.props.simulator.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       return Object.assign({}, previousResult, {

@@ -7,7 +7,7 @@ import CoreComponent from "../components/views/AlertCondition/core.js";
 import {alertConditionMocks} from "mocks/cards/AlertCondition.mock.js";
 
 export default {
-  title: "Cards|AlertCondition",
+  title: "Cards|Command/AlertCondition",
 };
 export const AlertCondition = () => (
   <StorybookWrapper mocks={alertConditionMocks}>

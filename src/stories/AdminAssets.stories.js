@@ -5,7 +5,7 @@ import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/AdminAssets/index.js";
 
 export default {
-  title: "Cards|AdminAssets",
+  title: "Cards|Core/AdminAssets",
 };
 export const AdminAssets = () => (
   <StorybookWrapper>

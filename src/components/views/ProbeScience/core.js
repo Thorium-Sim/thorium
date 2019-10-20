@@ -452,8 +452,8 @@ class ProbeScienceCore extends Component {
 const ProbeScienceCoreData = withApollo(props => (
   <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {sensorContacts, sensors, probes} = data;
-      if (loading || !sensorContacts) return null;
       if (!probes) return "No Probes System";
       if (!sensors) return "No Sensors System";
       return (
