@@ -12,6 +12,9 @@ export default [
     hasPrinter: true,
     hasLegs: false,
     panels: [],
+    ship: {
+      inventoryLogs: [],
+    },
     stations: [
       {
         cards: [

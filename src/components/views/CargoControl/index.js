@@ -18,7 +18,7 @@ import Tour from "helpers/tourHelper";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const INVENTORY_SUB = gql`
+export const INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
     inventoryUpdate(simulatorId: $simulatorId) {
       id
@@ -463,7 +463,7 @@ const trainingSteps = [
   },
 ];
 
-const INVENTORY_QUERY = gql`
+export const INVENTORY_QUERY = gql`
   query InventoryQ($simulatorId: ID!) {
     decks(simulatorId: $simulatorId) {
       id

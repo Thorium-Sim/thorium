@@ -7,7 +7,7 @@ import "./style.scss";
 import {useQuery} from "@apollo/react-hooks";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
-const INVENTORY_SUB = gql`
+export const CORE_INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
     inventoryUpdate(simulatorId: $simulatorId) {
       id
@@ -23,7 +23,7 @@ const INVENTORY_SUB = gql`
   }
 `;
 
-const LOG_SUB = gql`
+export const CORE_INVENTORY_LOG_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -37,7 +37,7 @@ const LOG_SUB = gql`
   }
 `;
 
-const INVENTORY_QUERY = gql`
+export const INVENTORY_CORE_QUERY = gql`
   query InventoryQ($simulatorId: ID!) {
     simulators(id: $simulatorId) {
       id
@@ -70,7 +70,7 @@ const INVENTORY_QUERY = gql`
   }
 `;
 
-const INVENTORY_SEARCH = gql`
+export const INVENTORY_CORE_SEARCH = gql`
   query InventorySearch($name: String, $simulatorId: ID) {
     inventory(name: $name, simulatorId: $simulatorId) {
       name
@@ -106,7 +106,7 @@ function reducer(state, {deck, room, which, value}) {
 const CargoControlCore = ({simulator, client}) => {
   const [findInventory, setFindInventory] = React.useState(null);
   const [{deck, room}, dispatch] = React.useReducer(reducer, {});
-  const {loading, data, subscribeToMore} = useQuery(INVENTORY_QUERY, {
+  const {loading, data, subscribeToMore} = useQuery(INVENTORY_CORE_QUERY, {
     variables: {simulatorId: simulator.id},
   });
   const logConfig = React.useMemo(
@@ -119,7 +119,7 @@ const CargoControlCore = ({simulator, client}) => {
     }),
     [simulator.id],
   );
-  useSubscribeToMore(subscribeToMore, LOG_SUB, logConfig);
+  useSubscribeToMore(subscribeToMore, CORE_INVENTORY_LOG_SUB, logConfig);
   const inventoryConfig = React.useMemo(
     () => ({
       variables: {simulatorId: simulator.id},
@@ -131,9 +131,9 @@ const CargoControlCore = ({simulator, client}) => {
     }),
     [simulator.id],
   );
-  useSubscribeToMore(subscribeToMore, INVENTORY_SUB, inventoryConfig);
+  useSubscribeToMore(subscribeToMore, CORE_INVENTORY_SUB, inventoryConfig);
+  if (loading || !data) return null;
   const {simulators, decks, inventory} = data;
-  if (loading || !simulators) return null;
   const {ship} = simulators[0];
 
   const findInv = e => {
@@ -145,7 +145,7 @@ const CargoControlCore = ({simulator, client}) => {
     if (variables.name) {
       client
         .query({
-          query: INVENTORY_SEARCH,
+          query: INVENTORY_CORE_SEARCH,
           variables,
         })
         .then(res => {
