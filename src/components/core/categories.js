@@ -190,7 +190,6 @@ const filterList = [
   "AssetsCore",
   "KeypadCore",
   "ClientsCore",
-  "HypercardCore",
 ];
 const other = {
   name: "Other",

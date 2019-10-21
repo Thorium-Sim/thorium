@@ -1,25 +1,28 @@
 import React from "react";
 import {Table} from "helpers/reactstrap";
-import {Query} from "react-apollo";
+import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
+import {Input} from "helpers/reactstrap";
+import {titleCase} from "change-case";
+import Views from "../index";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
 const fragment = gql`
-  fragment ClientCoreData on Client {
+  fragment HypercardData on Client {
     id
-    label
     station {
       name
     }
     loginName
+    hypercard
   }
 `;
 
 const QUERY = gql`
   query Clients($simulatorId: ID!) {
     clients(simulatorId: $simulatorId) {
-      ...ClientCoreData
+      ...HypercardData
     }
   }
   ${fragment}
@@ -27,22 +30,88 @@ const QUERY = gql`
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
-      ...ClientCoreData
+      ...HypercardData
     }
   }
   ${fragment}
 `;
 
-const excludedStations = ["Sound", "Viewscreen"];
+const excludedStations = ["Sound"];
 
-const ClientCore = ({clients}) => (
+const HypercardPicker = ({clientId = null, hypercard, simulatorId}) => {
+  const viewList = Object.keys(Views)
+    .filter(v => !Views[v].hypercard)
+    .concat()
+    .sort()
+    .map((v, i) => (
+      <option key={`${i}-${v}`} value={v}>
+        {titleCase(v)}
+      </option>
+    ));
+  const hypercardList = Object.keys(Views)
+    .filter(v => Views[v].hypercard)
+    .concat()
+    .sort()
+    .map((v, i) => (
+      <option key={`${i}-${v}`} value={v}>
+        {titleCase(v)}
+      </option>
+    ));
+  return (
+    <Mutation
+      mutation={gql`
+        mutation SetClientHypercard(
+          $clientId: ID
+          $simulatorId: ID
+          $component: String
+        ) {
+          setClientHypercard(
+            clientId: $clientId
+            component: $component
+            simulatorId: $simulatorId
+          )
+        }
+      `}
+    >
+      {action => (
+        <Input
+          bsSize="sm"
+          className="hypercard-picker"
+          value={hypercard === null ? "null" : hypercard || "nothing"}
+          onChange={e =>
+            action({
+              variables: {
+                clientId,
+                component: e.target.value === "null" ? null : e.target.value,
+                simulatorId: clientId ? null : simulatorId,
+              },
+            })
+          }
+          type="select"
+        >
+          {!clientId && (
+            <option value="nothing" disabled>
+              Change all clients
+            </option>
+          )}
+          <option value="null">No Hypercard</option>
+          <optgroup label="Designed to be Hypercards">{hypercardList}</optgroup>
+          <optgroup label="Standard Cards">{viewList}</optgroup>
+        </Input>
+      )}
+    </Mutation>
+  );
+};
+const ClientCore = ({clients, simulator}) => (
   <div className="client-card">
+    <HypercardPicker simulatorId={simulator.id} clientId={null} />
     <Table size="sm">
       <thead>
         <tr>
-          <th>Name</th>
           <th>Station</th>
+          <th>Name</th>
           <th>Client</th>
+          <th>Hypercard</th>
         </tr>
       </thead>
       <tbody>
@@ -53,17 +122,20 @@ const ClientCore = ({clients}) => (
               c.station.name.indexOf("keyboard") === -1 &&
               excludedStations.indexOf(c.station.name) === -1,
           )
-          .concat()
-          .sort((a, b) => {
-            if (a.station.name > b.station.name) return 1;
-            if (a.station.name < b.station.name) return -1;
-            return 0;
-          })
+
           .map(c => (
             <tr key={c.id}>
-              <td>{c.loginName}</td>
               <td>{c.station.name}</td>
-              <td>{c.label}</td>
+              <td>{c.loginName}</td>
+              <td>{c.id}</td>
+              <td>
+                {" "}
+                <HypercardPicker
+                  simulatorId={simulator.id}
+                  clientId={c.id}
+                  hypercard={c.hypercard}
+                />
+              </td>
             </tr>
           ))}
       </tbody>
@@ -71,11 +143,11 @@ const ClientCore = ({clients}) => (
   </div>
 );
 
-const ClientCoreData = props => (
+const ClientData = props => (
   <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {clients} = data;
-      if (loading || !clients) return null;
       return (
         <SubscriptionHelper
           subscribe={() =>
@@ -96,4 +168,4 @@ const ClientCoreData = props => (
     }}
   </Query>
 );
-export default ClientCoreData;
+export default ClientData;
