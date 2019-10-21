@@ -7,7 +7,7 @@ import CoreComponent from "../components/views/Clients/core.js";
 import ClientsMock from "mocks/cards/Clients.mock.js";
 
 export default {
-  title: "Cards|Clients",
+  title: "Cards|Core/Clients",
 };
 
 export const Core = () => (
