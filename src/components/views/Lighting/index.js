@@ -390,13 +390,6 @@ const LightingCore = ({simulator: {lighting, id}}) => {
   );
 };
 const LightingCoreData = ({clients, simulator: {id}}) => {
-  const ecsClient = clients.find(
-    c =>
-      c.id.toLowerCase().indexOf("ecs") === 0 &&
-      c.simulator &&
-      c.simulator.id === id,
-  );
-  if (!ecsClient) return null;
   return (
     <Query query={QUERY} variables={{id}}>
       {({loading, data, subscribeToMore}) => {
