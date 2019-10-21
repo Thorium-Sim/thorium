@@ -19,7 +19,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const CLIENTS_CORE_QUERY = gql`
   query Clients($simulatorId: ID!) {
     clients(simulatorId: $simulatorId) {
       ...HypercardData
@@ -27,7 +27,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const CLIENTS_CORE_SUBSCRIPTION = gql`
   subscription ClientUpdate($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
       ...HypercardData
@@ -91,7 +91,7 @@ const HypercardPicker = ({clientId = null, hypercard, simulatorId}) => {
         >
           {!clientId && (
             <option value="nothing" disabled>
-              Change all clients
+              Set hypercard on all clients
             </option>
           )}
           <option value="null">No Hypercard</option>
@@ -144,7 +144,10 @@ const ClientCore = ({clients, simulator}) => (
 );
 
 const ClientData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={CLIENTS_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
       if (loading || !data) return null;
       const {clients} = data;
@@ -152,7 +155,7 @@ const ClientData = props => (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: CLIENTS_CORE_SUBSCRIPTION,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
