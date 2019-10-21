@@ -17,7 +17,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const CARDS_CORE_QUERY = gql`
   query Simulator($simulatorId: ID!) {
     simulators(id: $simulatorId) {
       ...CardData
@@ -25,7 +25,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUB = gql`
+export const CARDS_CORE_SUB = gql`
   subscription Simulators($simulatorId: ID!) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       ...CardData
@@ -59,10 +59,14 @@ const CardsCore = ({cards}) => {
 
 const CardsData = props => {
   return (
-    <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
-      {({loading, data, subscribeToMore}) => {
+    <Query
+      query={CARDS_CORE_QUERY}
+      variables={{simulatorId: props.simulator.id}}
+    >
+      {({loading, data, error, subscribeToMore}) => {
+        console.log(error);
+        if (loading || !data) return null;
         const {simulators} = data;
-        if (loading) return null;
         const simulator = simulators.find(s => s.id === props.simulator.id);
         const cards = simulator.stations.reduce(
           (acc, s) => acc.concat(s.cards.map(c => ({...c, station: s.name}))),
@@ -72,7 +76,7 @@ const CardsData = props => {
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({
-                document: SUB,
+                document: CARDS_CORE_SUB,
                 variables: {simulatorId: props.simulator.id},
                 updateQuery: (previousResult, {subscriptionData}) => {
                   return Object.assign({}, previousResult, {
