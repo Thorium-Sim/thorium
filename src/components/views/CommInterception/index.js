@@ -8,7 +8,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
-const SUB = gql`
+export const INTERCEPTION_SUB = gql`
   subscription LRQueueingSub($simulatorId: ID) {
     longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
       id
@@ -107,7 +107,7 @@ class Interception extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: INTERCEPTION_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -128,7 +128,7 @@ class Interception extends Component {
     );
   }
 }
-const QUEUING_QUERY = gql`
+export const INTERCEPTION_QUERY = gql`
   query LRQueuing($simulatorId: ID) {
     longRangeCommunications(simulatorId: $simulatorId) {
       id
@@ -149,7 +149,7 @@ const QUEUING_QUERY = gql`
     }
   }
 `;
-export default graphql(QUEUING_QUERY, {
+export default graphql(INTERCEPTION_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

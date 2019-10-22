@@ -32,6 +32,10 @@ export default {
           crew: true,
         },
       ],
+      interception: true,
+      difficulty: 30000,
+      locked: false,
+      decoded: false,
       damage: {
         damaged: false,
         report: null,

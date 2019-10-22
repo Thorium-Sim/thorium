@@ -4,17 +4,18 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/CommInterception/index.js";
 import CoreComponent from "../components/views/CommInterception/core.js";
+import CommInterceptionMock from "mocks/cards/CommInterception.mock.js";
 
 export default {
-  title: "Cards|CommInterception",
+  title: "Cards|Communications/CommInterception",
 };
 export const CommInterception = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={CommInterceptionMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={CommInterceptionMock}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );
