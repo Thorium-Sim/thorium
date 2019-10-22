@@ -122,98 +122,101 @@ const SimulatorPicker = ({triggerAlert}) => {
                     }
                   `}
                 >
-                  {({loading, data: {externals}}) => (
-                    <div
-                      style={{
-                        height: "100%",
-                        display: "flex",
-                        maxHeight: "80vh",
-                        overflowY: "auto",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      {loading && (
-                        <Rings color="#08f" width={100} height={100} />
-                      )}
-                      {externals &&
-                      externals.simulators.filter(
-                        s => !data.simulators.find(sim => s.title === sim.name),
-                      ).length > 0 ? (
-                        externals.simulators
-                          .filter(
-                            s =>
-                              !data.simulators.find(
-                                sim => s.title === sim.name,
-                              ),
-                          )
-                          .map(s => (
-                            <Card key={s.title} style={{width: "100%"}}>
-                              <CardBody>
-                                <Mutation
-                                  mutation={gql`
-                                    mutation ImportSimulator($url: String!) {
-                                      importSimulatorFromUrl(url: $url)
-                                    }
-                                  `}
-                                  variables={{url: s.url}}
-                                >
-                                  {(action, {loading}) =>
-                                    !loading && (
-                                      <Button
-                                        style={{float: "right"}}
-                                        color="success"
-                                        onClick={() => {
-                                          triggerAlert({
-                                            color: "info",
-                                            title: "Downloading simulator...",
-                                            body:
-                                              "This simulator is downloading in the background. Don't turn off Thorium Server. You can monitor download progress on your Thorium Server window.",
-                                          });
-                                          action().then(() => {
+                  {({loading, data}) => {
+                    if (loading)
+                      return <Rings color="#08f" width={100} height={100} />;
+                    const {externals} = data;
+                    return (
+                      <div
+                        style={{
+                          height: "100%",
+                          display: "flex",
+                          maxHeight: "80vh",
+                          overflowY: "auto",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        {externals &&
+                        externals.simulators.filter(
+                          s =>
+                            !data.simulators.find(sim => s.title === sim.name),
+                        ).length > 0 ? (
+                          externals.simulators
+                            .filter(
+                              s =>
+                                !data.simulators.find(
+                                  sim => s.title === sim.name,
+                                ),
+                            )
+                            .map(s => (
+                              <Card key={s.title} style={{width: "100%"}}>
+                                <CardBody>
+                                  <Mutation
+                                    mutation={gql`
+                                      mutation ImportSimulator($url: String!) {
+                                        importSimulatorFromUrl(url: $url)
+                                      }
+                                    `}
+                                    variables={{url: s.url}}
+                                  >
+                                    {(action, {loading}) =>
+                                      !loading && (
+                                        <Button
+                                          style={{float: "right"}}
+                                          color="success"
+                                          onClick={() => {
                                             triggerAlert({
                                               color: "info",
-                                              title:
-                                                "Download complete. Refreshing browser...",
+                                              title: "Downloading simulator...",
+                                              body:
+                                                "This simulator is downloading in the background. Don't turn off Thorium Server. You can monitor download progress on your Thorium Server window.",
                                             });
-                                            setTimeout(
-                                              () => window.location.reload(),
-                                              1500,
-                                            );
-                                          });
-                                        }}
-                                      >
-                                        Download
-                                      </Button>
-                                    )
-                                  }
-                                </Mutation>
-                                <h3>{s.title}</h3>
-                                <div>Author: {s.author}</div>
-                                <div>
-                                  Date Published:{" "}
-                                  {DateTime.fromJSDate(
-                                    new Date(s.date),
-                                  ).toFormat("D")}
-                                </div>
-                                <div>Description:</div>
-                                <div>{s.description}</div>
-                              </CardBody>
-                            </Card>
-                          ))
-                      ) : (
-                        <Card>
-                          <CardBody>
-                            <h2>No simulators available.</h2>
-                            <p>
-                              You've already imported all of the available
-                              simulators.
-                            </p>
-                          </CardBody>
-                        </Card>
-                      )}
-                    </div>
-                  )}
+                                            action().then(() => {
+                                              triggerAlert({
+                                                color: "info",
+                                                title:
+                                                  "Download complete. Refreshing browser...",
+                                              });
+                                              setTimeout(
+                                                () => window.location.reload(),
+                                                1500,
+                                              );
+                                            });
+                                          }}
+                                        >
+                                          Download
+                                        </Button>
+                                      )
+                                    }
+                                  </Mutation>
+                                  <h3>{s.title}</h3>
+                                  <div>Author: {s.author}</div>
+                                  <div>
+                                    Date Published:{" "}
+                                    {DateTime.fromJSDate(
+                                      new Date(s.date),
+                                    ).toFormat("D")}
+                                  </div>
+                                  <div>Description:</div>
+                                  <div>{s.description}</div>
+                                </CardBody>
+                              </Card>
+                            ))
+                        ) : (
+                          <Card>
+                            <CardBody>
+                              <h2>No simulators available.</h2>
+                              <p>
+                                You've already imported all of the available
+                                simulators.
+                              </p>
+                            </CardBody>
+                          </Card>
+                        )}
+                      </div>
+                    );
+                  }}
                 </Query>
               </Col>
             </Row>

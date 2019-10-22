@@ -151,7 +151,6 @@ import CommConvoCore from "./CommDecoding/convoCore";
 import ViewscreenCore from "./Viewscreen/core";
 import BattleCore from "./Battle";
 import RailgunCore from "./Railgun/core";
-import HypercardCore from "./Clients/hypercardCore";
 import ClientsCore from "./Clients/core";
 import JumpDriveCore from "./JumpDrive/core";
 import BridgeMapCore from "./BridgeMap/core";
@@ -460,7 +459,6 @@ export const Cores = {
   BattleCore,
   RailgunCore,
   LoginNameCore,
-  HypercardCore,
   JumpDriveCore,
   ClientsCore,
   BridgeMapCore,
