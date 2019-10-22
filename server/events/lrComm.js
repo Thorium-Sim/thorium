@@ -111,7 +111,7 @@ App.on("longRangeMessageSend", ({id, message}) => {
   App.handleEvent(
     {
       simulatorId: sys.simulatorId,
-      component: "LRCommCore",
+      component: "CommDecodingCore",
       title: `New Long Range Message`,
       body: ``,
       color: "info",

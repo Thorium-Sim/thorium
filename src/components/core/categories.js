@@ -179,8 +179,6 @@ const comps = categories.reduce(
 
 const filterList = [
   "MessagingCore",
-  "DecodingCore",
-  "LRCommCore",
   "JrNavigationCore",
   "ReactivationCore",
   "TimelineCore",
