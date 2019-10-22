@@ -8,47 +8,54 @@ Some of this stuff might be part of future refactors.
 
 Some goals for this refactor:
 
-- Partial TypeScript definitions, especially for the server
 - Add more tests, particularly on the client side
 - Add storybook pages for custom components and cards.
-- Upgrade all components to be React StrictMode compatible.
 - Clean up the data flow for passing data down to the individual cards. Use
-  context or MobX
+  context
 - Improve the queries so they properly have singular and plural queries for
   things.
-- Make it so systems are stored on the simulator object instead of being stored
-  on the main App storage.
 - Redesign the GraphQL schema, especially so mutations are in
   {system}{Operation} format, like phasersFire
-- Make sure subscriptions are atomic and scoped to just what the subscriber
-  wants.
 - Add proper mutation responses to all requests, to make it easier to transition
   to MST-GQL
-- Fix the weird mutation events system so it's not so weird.
 - Provide more client data in the GraphQL context, like simulator ID, station,
   etc. This makes it so not every query and subscription has to pass a simulator
   ID as an argument and notifications can be selectively sent depending on
   whether the action was performed by a crew member or by a core.
-- Add Axe-Core and Jest-Axe to do accessibility testing. Fix accessibility bug
-  that it finds.
 - Combine the GraphQL server and the client server into a single server, using a
   single port. Make that port easy to type in, like 4444 or make it
   configurable.
-- Combine all process loops into a single loop which is based on delta times.
-- Clean up and improve the configuration process.
 - Simplify so it's only running one flight at a time.
-- Missions are no longer stored in the Snapshot, but are loaded in by the server
-  from separate files.
-- Simulator configs are no longer in the Snapshot, but are loaded in by the
-  server from separate files.
-- Significantly simplify the Flight Director experience for inexperienced flight
-  directors.
 - Switch from using PKG to using Electron to bundle the server and client into a
   single
 - Make the bundle size smaller by only including the packages and dependencies
   that are necessary.
 - Add DangerJS reviews to pull requests.
 - Make sure server errors are properly being logged to Sentry.
+
+## Version 3.0
+
+Once the 2.0 refactor is released, we'll start focusing on additional changes to
+further improve developer and user experience. Since many of these changes could
+be breaking changes, this release will be a version 3.0.
+
+- Partial TypeScript definitions, especially for the server
+- Upgrade all components to be React StrictMode compatible.
+- Make it so systems are stored on the simulator object instead of being stored
+  on the main App storage.
+- Make sure subscriptions are atomic and scoped to just what the subscriber
+  wants.
+- Fix the weird mutation events system so it's not so weird.
+- Add Axe-Core and Jest-Axe to do accessibility testing. Fix accessibility bug
+  that it finds.
+- Combine all process loops into a single loop which is based on delta times.
+- Clean up and improve the configuration process.
+- Missions are no longer stored in the Snapshot, but are loaded in by the server
+  from separate files.
+- Simulator configs are no longer in the Snapshot, but are loaded in by the
+  server from separate files.
+- Significantly simplify the Flight Director experience for inexperienced flight
+  directors.
 - Fix a bunch of Sentry errors.
 - Remove references to Apollo's `graphql` HOC and the `<Query>` and `<Mutation>`
   components (especially if we switch to MST-GQL)
@@ -56,7 +63,8 @@ Some goals for this refactor:
   which the crew members perform. Maybe see if they can be integrated together,
   so training for one card moves into the next, or even has a configurable
   preamble which shows on the Login screen.
-- Improve the timeline system so it's easier to create and compose missions
+- Improve the timeline system so it's easier to create and compose missions.
+  Provide a platform for hosting and sharing missions easily.
 
 A few maybes?
 
@@ -94,3 +102,4 @@ developed that could be improved. When you come across these things, try to make
 them better using the suggestions below. Some of these things include:
 
 - Inline styles. Replace them with CSS-in-JS definitions using Emotion.
+- Report any weird things, either directly to Alex, or by submitting an issue.
