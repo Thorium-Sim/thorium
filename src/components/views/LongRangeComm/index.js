@@ -27,7 +27,7 @@ function setCharAt(str, index, chr) {
   return str.substr(0, index) + chr + str.substr(index + 1);
 }
 
-const MESSAGES_SUB = gql`
+export const LONG_RANGE_COMM_SUB = gql`
   subscription LRQueueingSub($simulatorId: ID) {
     longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
       id
@@ -274,7 +274,7 @@ class LongRangeComm extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: MESSAGES_SUB,
+              document: LONG_RANGE_COMM_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -427,7 +427,7 @@ const trainingSteps = [
   },
 ];
 
-const QUEUING_QUERY = gql`
+export const LONG_RANGE_COMM_QUERY = gql`
   query LRQueuing($simulatorId: ID) {
     longRangeCommunications(simulatorId: $simulatorId) {
       id
@@ -453,7 +453,7 @@ const QUEUING_QUERY = gql`
     }
   }
 `;
-export default graphql(QUEUING_QUERY, {
+export default graphql(LONG_RANGE_COMM_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

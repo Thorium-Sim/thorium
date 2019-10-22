@@ -99,8 +99,6 @@ import TransporterCore from "./Transporters/core";
 import SensorsGridCore from "./Sensors/gridCore";
 import SensorsCore from "./Sensors/core";
 import ShieldControlCore from "./ShieldControl/core";
-import DecodingCore from "./CommDecoding/core";
-import LRCommCore from "./LongRangeComm/core";
 import InternalCommCore from "./CommInternal/core";
 import SystemsCore from "./DamageControl/core";
 import DockingCore from "./Docking/core";
@@ -147,7 +145,7 @@ import ComputerCoreCore from "./ComputerCore/core";
 import DecontaminationCore from "./Decontamination/core";
 import SickbayCore from "./Sickbay/core";
 import ThxCore from "./Thx/core";
-import CommConvoCore from "./CommDecoding/convoCore";
+import CommDecodingCore from "./CommDecoding/core";
 import ViewscreenCore from "./Viewscreen/core";
 import BattleCore from "./Battle";
 import RailgunCore from "./Railgun/core";
@@ -407,8 +405,6 @@ export const Cores = {
   SensorsGridCore,
   SensorsCore,
   ShieldControlCore,
-  DecodingCore,
-  LRCommCore,
   InternalCommCore,
   SystemsCore,
   DockingCore,
@@ -454,7 +450,7 @@ export const Cores = {
   DecontaminationCore,
   SickbayCore,
   ThxCore,
-  CommConvoCore,
+  CommDecodingCore,
   ViewscreenCore,
   BattleCore,
   RailgunCore,

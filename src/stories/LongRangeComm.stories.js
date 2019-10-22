@@ -1,20 +1,14 @@
 import React from "react";
 import StorybookWrapper from "./helpers/storybookWrapper.js";
-import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/LongRangeComm/index.js";
-import CoreComponent from "../components/views/LongRangeComm/core.js";
+import CommDecodingMock from "mocks/cards/CommDecoding.mock.js";
 
 export default {
-  title: "Cards|LongRangeComm",
+  title: "Cards|Communications/LongRangeComm",
 };
 export const LongRangeComm = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={CommDecodingMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
-);
-export const Core = () => (
-  <StorybookWrapperCore>
-    <CoreComponent {...baseProps} />
-  </StorybookWrapperCore>
 );

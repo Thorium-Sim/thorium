@@ -20,7 +20,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import Prando from "prando";
 import "./style.scss";
 
-const DECODING_SUB = gql`
+export const DECODING_SUB = gql`
   subscription LRDecoding($simulatorId: ID!) {
     longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
       id
@@ -348,7 +348,7 @@ class Decoding extends Component {
   }
 }
 
-const DECODING_QUERY = gql`
+export const DECODING_QUERY = gql`
   query LRDecoding($simulatorId: ID) {
     longRangeCommunications(simulatorId: $simulatorId) {
       id

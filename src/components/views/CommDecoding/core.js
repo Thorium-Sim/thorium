@@ -1,247 +1,226 @@
 import React, {Component} from "react";
-import {Row, Col, Button, ButtonGroup} from "helpers/reactstrap";
-import {TypingField, InputField} from "../../generic/core";
-import {graphql, withApollo} from "react-apollo";
+import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+import {ListGroup, ListGroupItem, Button} from "helpers/reactstrap";
+import {InputField} from "../../generic/core";
+import DecodingCore from "../CommDecoding/core";
+import {DateTime} from "luxon";
+
 import "./style.scss";
 
-const MessagePresets = [
-  {
-    label: "Send Updates",
-    messageSender: "Starbase 74",
-    value: `To: #SIM
-From: Starbase 74
-
-We want to be informed about any developments during your mission. Make sure you send us a message every 10 minutes.
-
-Starbase 74 out`,
-  },
-  {
-    label: "What is your status?",
-    messageSender: "Starbase 74",
-    value: `To: #SIM
-From: Starbase 74
-
-#SIM, we haven't heard from you in a while. What is your status?
-
-Starbase 74 out`,
-  },
-];
-
-class LRCommCore extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      messageSender: "",
-      message: "",
-      messageType: "inbound",
-      decoded: false,
-      sent: false,
-    };
-  }
-  _lrmText(e) {
-    let value = e.target.value;
-    const regex = /.*(?= out| out\.)/gi;
-    const match = value.match(regex);
-    if (match) {
-      this.setState({
-        messageSender: match[match.length - 2],
-      });
+function processTime(time) {
+  return DateTime.fromISO(new Date(time).toISOString()).toLocaleString(
+    DateTime.TIME_SIMPLE,
+  );
+}
+const fragment = gql`
+  fragment LRCommCoreData on LRCommunications {
+    id
+    messages {
+      id
+      sent
+      crew
+      message
+      decodedMessage
+      deleted
+      encrypted
+      approved
+      sender
+      timestamp
+      a
+      f
+      ra
+      rf
     }
-    this.setState({
-      message: value,
-    });
+    satellites
   }
-  _sendMessage() {
-    const mutation = gql`
-      mutation sendLRM(
-        $id: ID!
-        $sender: String
-        $crew: Boolean!
-        $message: String!
-        $decoded: Boolean
-      ) {
-        sendLongRangeMessage(
-          id: $id
-          crew: $crew
-          sender: $sender
-          message: $message
-          decoded: $decoded
-        )
-      }
-    `;
-    const variables = {
-      id: this.props.data.longRangeCommunications[0].id,
-      sender: this.state.messageSender,
-      crew: this.state.messageType === "inbound",
-      message: `${
-        this.state.messageType === "outbound"
-          ? `To: ${this.state.messageReceiver}`
-          : ""
-      }\n${this.state.message}`,
-      decoded: this.state.decoded,
-    };
-    this.props.client.mutate({
-      mutation,
-      variables,
-    });
-    this.setState({
-      sent: true,
-      sender: "",
-      message: "",
-    });
-    setTimeout(() => {
-      this.setState({
-        sent: false,
-      });
-    }, 4000);
+`;
+
+export const DECODING_CORE_QUERY = gql`
+  query LongRangeComm($simulatorId: ID!) {
+    longRangeCommunications(simulatorId: $simulatorId) {
+      ...LRCommCoreData
+    }
   }
-  _clearMessage = () => {
-    this.setState({
-      messageSender: "",
-      message: "",
-      decoded: false,
-      sent: false,
-    });
-  };
+  ${fragment}
+`;
+export const DECODING_CORE_SUBSCRIPTION = gql`
+  subscription LongRangeCommUpdate($simulatorId: ID!) {
+    longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
+      ...LRCommCoreData
+    }
+  }
+  ${fragment}
+`;
+const DELETE_MUTATION = gql`
+  mutation DeleteMessage($id: ID!, $message: ID!) {
+    deleteLongRangeMessage(id: $id, message: $message)
+  }
+`;
+
+class CommDecodingCore extends Component {
+  state = {selectedMessage: null};
   render() {
-    if (this.props.data.loading || !this.props.data.longRangeCommunications)
-      return null;
-    const {sent, messageType} = this.state;
-    if (sent) {
-      return (
-        <div>
-          <p>Message Sent</p>
-          <Button size="sm" onClick={this._clearMessage}>
-            Send Another
-          </Button>
-        </div>
-      );
-    }
-    if (this.props.data.longRangeCommunications.length === 0)
-      return "No Long Range Comm";
-    const comm = this.props.data.longRangeCommunications[0];
+    const {messages, satellites, id} = this.props;
+    const {selectedMessage} = this.state;
     return (
-      <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
-        <ButtonGroup>
-          <Button
-            size="sm"
-            onClick={() => this.setState({messageType: "inbound"})}
-            active={messageType === "inbound"}
-          >
-            Inbound
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => this.setState({messageType: "outbound"})}
-            active={messageType === "outbound"}
-          >
-            Outbound
-          </Button>
-        </ButtonGroup>
-        <Row>
-          <Col sm={messageType === "outbound" ? 6 : 12}>
-            <label>Sender</label>
-            <InputField
-              prompt={`What is the message sender? (eg. ${
-                messageType === "inbound" ? "Starbase 74" : "Lt. Carter"
-              })`}
-              onClick={e =>
-                this.setState({
-                  messageSender: e,
-                })
-              }
+      <div className="comm-convo-core">
+        <div className="upper-section">
+          <div className="convo-list">
+            <ListGroup>
+              {messages
+                .concat()
+                .reverse()
+                .map(
+                  ({
+                    id,
+                    sender,
+                    deleted,
+                    approved,
+                    encrypted,
+                    sent,
+                    timestamp,
+                    a,
+                    f,
+                    ra,
+                    rf,
+                  }) => (
+                    <ListGroupItem
+                      key={id}
+                      className={`${deleted === true ? "text-danger" : ""} ${
+                        approved === true && !sent && !deleted
+                          ? "text-warning"
+                          : ""
+                      } ${!approved && !sent && !deleted ? "text-info" : ""} ${
+                        a === ra && f === rf ? "text-success" : ""
+                      }`}
+                      title={`${sent === true ? "Sent" : ""} ${
+                        a === ra && f === rf ? "Decoded" : ""
+                      } ${deleted === true ? "Deleted" : ""} ${
+                        !approved && !sent && !deleted ? "Not approved" : ""
+                      } ${
+                        approved === true && !sent && !deleted
+                          ? "Approved, Not sent"
+                          : ""
+                      } `}
+                      onClick={() => this.setState({selectedMessage: id})}
+                      active={selectedMessage === id}
+                    >
+                      {sender} - {processTime(timestamp)}
+                    </ListGroupItem>
+                  ),
+                )}
+            </ListGroup>
+            <Button
+              color="success"
+              size="sm"
+              onClick={() => this.setState({selectedMessage: "new"})}
             >
-              {this.state.messageSender}
-            </InputField>
-          </Col>
-          {messageType === "outbound" && (
-            <Col sm={6}>
-              <label>Receiver</label>
-              <InputField
-                prompt="What is the message receiver? (eg. Starbase 74)"
-                onClick={e =>
-                  this.setState({
-                    messageReceiver: e,
-                  })
-                }
-              >
-                {this.state.messageReceiver}
-              </InputField>
-            </Col>
-          )}
-        </Row>
-        <TypingField
-          style={{flex: 1, textAlign: "left"}}
-          controlled
-          value={this.state.message}
-          onChange={this._lrmText.bind(this)}
-        />
-        <span style={{display: "flex", alignItems: "flex-start"}}>
-          <Button size="sm" onClick={this._sendMessage.bind(this)}>
-            Send
-          </Button>
-          <Button size="sm" onClick={this._clearMessage}>
-            Clear
-          </Button>
-          <label>
-            <input
-              type="checkbox"
-              onClick={e => {
-                this.setState({decoded: e.target.checked});
-              }}
-            />{" "}
-            Decoded
-          </label>
-          <select
-            style={{height: "18px"}}
-            value={"nothing"}
-            onChange={e => {
-              const {value, messageSender} = MessagePresets.concat(
-                comm.presetMessages,
-              ).find(m => m.label === e.target.value);
-
-              const regex = /.*(?= out| out\.)/gi;
-              const match = value.match(regex);
-
-              this.setState({
-                message: value.replace(/#SIM/gi, this.props.simulator.name),
-                messageSender: messageSender
-                  ? messageSender
-                  : match && match[match.length - 2],
-              });
-            }}
+              New Message
+            </Button>
+          </div>
+          <div className="convo-content">
+            <div className="content-area">
+              {(() => {
+                if (!selectedMessage) return null;
+                if (selectedMessage === "new")
+                  return <DecodingCore {...this.props} />;
+                const message = messages.find(m => m.id === selectedMessage);
+                if (!message) return null;
+                return (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: "100%",
+                    }}
+                  >
+                    <div style={{flex: 1}}>{`${processTime(message.timestamp)}${
+                      message.encrypted ? ` - Encrypted` : ""
+                    }${message.approved ? ` - Approved` : ""}
+From: ${message.sender}
+${message.message}`}</div>
+                    <Mutation
+                      mutation={DELETE_MUTATION}
+                      variables={{id, message: message.id}}
+                    >
+                      {action => (
+                        <Button color="danger" onClick={action} size="sm">
+                          Delete Message
+                        </Button>
+                      )}
+                    </Mutation>
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        </div>
+        <div>
+          <label>Satellites:</label>
+          <Mutation
+            mutation={gql`
+              mutation SetSatellites($id: ID!, $num: Int!) {
+                setLongRangeSatellites(id: $id, num: $num)
+              }
+            `}
           >
-            <option value="nothing" disabled>
-              Select a Message
-            </option>
-            {MessagePresets.concat(comm.presetMessages).map(p => (
-              <option key={p.label} value={p.label}>
-                {p.label}
-              </option>
-            ))}
-          </select>
-        </span>
+            {action => (
+              <InputField
+                prompt="How many satellites should they have?"
+                onClick={a => {
+                  action({
+                    variables: {
+                      id: id,
+                      num: a,
+                    },
+                  });
+                }}
+                style={{
+                  display: "inline-block",
+                  padding: "2px 7px",
+                }}
+              >
+                {satellites}
+              </InputField>
+            )}
+          </Mutation>
+        </div>
       </div>
     );
   }
 }
 
-const DECODING_QUERY = gql`
-  query LRDecoding($simulatorId: ID) {
-    longRangeCommunications(simulatorId: $simulatorId) {
-      id
-      presetMessages {
-        label
-        value
-      }
-    }
-  }
-`;
-
-export default graphql(DECODING_QUERY, {
-  options: ownProps => ({
-    fetchPolicy: "cache-and-network",
-    variables: {simulatorId: ownProps.simulator.id},
-  }),
-})(withApollo(LRCommCore));
+const TemplateData = props => (
+  <Query
+    query={DECODING_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
+    {({loading, data = {}, error, subscribeToMore}) => {
+      console.log(error);
+      const {longRangeCommunications} = data;
+      if (loading || !longRangeCommunications) return null;
+      if (!longRangeCommunications[0]) return <div>No Long Range Comm</div>;
+      return (
+        <SubscriptionHelper
+          subscribe={() =>
+            subscribeToMore({
+              document: DECODING_CORE_SUBSCRIPTION,
+              variables: {simulatorId: props.simulator.id},
+              updateQuery: (previousResult, {subscriptionData}) => {
+                return Object.assign({}, previousResult, {
+                  longRangeCommunications:
+                    subscriptionData.data.longRangeCommunicationsUpdate,
+                });
+              },
+            })
+          }
+        >
+          <CommDecodingCore {...props} {...longRangeCommunications[0]} />
+        </SubscriptionHelper>
+      );
+    }}
+  </Query>
+);
+export default TemplateData;

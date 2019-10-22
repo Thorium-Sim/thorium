@@ -1,6 +1,6 @@
 export default [
   {
-    id: "Command.local",
+    id: "test",
     loginName: "Peter Quincy Taggart",
     label: "Command.local",
     connected: true,
@@ -12,6 +12,7 @@ export default [
     overlay: false,
     cracked: null,
     token: "yh26ndsesr",
+    commandLineOutput: ["Hello there!"],
     station: {
       name: "Command",
       description: null,
@@ -30,6 +31,7 @@ export default [
     overlay: false,
     cracked: null,
     token: null,
+    commandLineOutput: ["Hello there!"],
     station: {
       name: "Operations",
       description: "",

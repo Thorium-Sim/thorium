@@ -36,7 +36,7 @@ const trainingSteps = [
   },
 ];
 
-const SUB = gql`
+export const COMMAND_LINE_SUB = gql`
   subscription ClientUpdate($clientId: ID!) {
     commandLineOutputUpdate(clientId: $clientId)
   }
@@ -65,6 +65,8 @@ const CommandLineOutput = ({output}) => {
 };
 const CommandLineInner = ({data, simulator}) => {
   const [input, setInput] = React.useState("");
+  if (!data) return null;
+  console.log(data);
   return (
     <>
       <CommandLineOutput
@@ -115,27 +117,25 @@ const CommandLineInner = ({data, simulator}) => {
     </>
   );
 };
+export const COMMAND_LINE_QUERY = gql`
+  query Client($clientId: ID!) {
+    clients(clientId: $clientId) {
+      id
+      commandLineOutput
+    }
+  }
+`;
 const CommandLine = ({clientObj, simulator}) => {
   return (
     <Container fluid className="terminal-card">
-      <Query
-        query={gql`
-          query Client($clientId: ID!) {
-            clients(clientId: $clientId) {
-              id
-              commandLineOutput
-            }
-          }
-        `}
-        variables={{clientId: clientObj.id}}
-      >
+      <Query query={COMMAND_LINE_QUERY} variables={{clientId: clientObj.id}}>
         {({loading, data, subscribeToMore}) => (
           <>
-            {loading ? null : (
+            {loading || !data ? null : (
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: SUB,
+                    document: COMMAND_LINE_SUB,
                     variables: {clientId: clientObj.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       const client = previousResult.clients[0];

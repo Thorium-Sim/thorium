@@ -518,6 +518,10 @@ export default {
             component: "Shuttles",
             hidden: false,
           },
+          {
+            name: "Command Line",
+            component: "CommandLine",
+          },
         ],
       },
       {
@@ -642,5 +646,8 @@ export default {
         ],
       },
     ],
+  },
+  clientObj: {
+    id: "test",
   },
 };

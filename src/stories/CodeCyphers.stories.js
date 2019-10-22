@@ -6,7 +6,7 @@ import Component from "../components/views/CodeCyphers/index.js";
 import CoreComponent from "../components/views/CodeCyphers/core.js";
 
 export default {
-  title: "Cards|CodeCyphers",
+  title: "Cards|Communications/CodeCyphers",
 };
 export const CodeCyphers = () => (
   <StorybookWrapper>

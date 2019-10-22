@@ -19,5 +19,3 @@ export const Core = () => (
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );
-
-console.log(CargoControlMock);

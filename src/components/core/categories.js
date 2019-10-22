@@ -99,7 +99,7 @@ const categories = [
   {
     name: "Comm",
     components: [
-      "CommConvoCore",
+      "CommDecodingCore",
       "CommShortRangeCore",
       "InternalCommCore",
       "SignalJammerCore",
@@ -110,10 +110,10 @@ const categories = [
     style: {
       gridTemplateRows: "150px 100px 100px 100px 200px",
       gridTemplateColumns: "400px 400px 400px",
-      gridTemplateAreas: `"CommShortRangeCore CommConvoCore CodeCyphersCore"
-      "CommShortRangeCore CommConvoCore CodeCyphersCore"
-      "InternalCommCore CommConvoCore ShortRangeSignalsCore"
-      "InterceptionCore CommConvoCore ShortRangeSignalsCore"
+      gridTemplateAreas: `"CommShortRangeCore CommDecodingCore CodeCyphersCore"
+      "CommShortRangeCore CommDecodingCore CodeCyphersCore"
+      "InternalCommCore CommDecodingCore ShortRangeSignalsCore"
+      "InterceptionCore CommDecodingCore ShortRangeSignalsCore"
       "SignalJammerCore Nothing ShortRangeSignalsCore"`,
     },
   },
