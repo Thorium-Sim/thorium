@@ -8,7 +8,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import Tour from "helpers/tourHelper";
 import RoomSearch from "./roomSearch";
 
-const INTERNAL_SUB = gql`
+export const INTERNAL_COMM_SUB = gql`
   subscription InternalCommUpdate($simulatorId: ID!) {
     internalCommUpdate(simulatorId: $simulatorId) {
       id
@@ -134,7 +134,7 @@ class InternalComm extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: INTERNAL_SUB,
+              document: INTERNAL_COMM_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -313,7 +313,7 @@ class InternalComm extends Component {
   }
 }
 
-const INTERNAL_QUERY = gql`
+export const INTERNAL_COMM_QUERY = gql`
   query InternalComm($simulatorId: ID!) {
     internalComm(simulatorId: $simulatorId) {
       id
@@ -341,7 +341,7 @@ const INTERNAL_QUERY = gql`
   }
 `;
 
-export default graphql(INTERNAL_QUERY, {
+export default graphql(INTERNAL_COMM_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

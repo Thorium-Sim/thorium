@@ -7,7 +7,7 @@ import RoomSearch from "./roomSearch";
 
 import "./style.scss";
 
-const INTERNAL_SUB = gql`
+export const INTERNAL_COMM_CORE_SUB = gql`
   subscription InternalCommUpdate($simulatorId: ID!) {
     internalCommUpdate(simulatorId: $simulatorId) {
       id
@@ -94,6 +94,7 @@ class InternalCommCore extends Component {
     });
   };
   render() {
+    console.log(this.props.data);
     if (this.props.data.loading || !this.props.data.internalComm) return null;
     const internalComm = this.props.data.internalComm[0];
     const decks = this.props.data.decks;
@@ -106,7 +107,7 @@ class InternalCommCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: INTERNAL_SUB,
+              document: INTERNAL_COMM_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -268,7 +269,7 @@ class InternalCommCore extends Component {
   }
 }
 
-const INTERNAL_QUERY = gql`
+export const INTERNAL_COMM_CORE_QUERY = gql`
   query InternalComm($simulatorId: ID!) {
     internalComm(simulatorId: $simulatorId) {
       id
@@ -288,7 +289,7 @@ const INTERNAL_QUERY = gql`
   }
 `;
 
-export default graphql(INTERNAL_QUERY, {
+export default graphql(INTERNAL_COMM_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

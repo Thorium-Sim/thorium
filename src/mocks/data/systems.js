@@ -1,4 +1,21 @@
 export default {
+  internalComm: [
+    {
+      id: "78d7bd75-e7af-41e7-adfc-0c0c29012bb0",
+      name: "Internal Communications",
+      state: "idle",
+      outgoing: null,
+      incoming: null,
+      damage: {
+        damaged: false,
+        report: null,
+      },
+      power: {
+        power: 0,
+        powerLevels: [],
+      },
+    },
+  ],
   longRangeCommunications: [
     {
       id: "11f2e785-a1b6-45cc-8d8d-a0090fdc4ab9",
