@@ -1,0 +1,38 @@
+export default [
+  {
+    id: "Command.local",
+    loginName: "Peter Quincy Taggart",
+    label: "Command.local",
+    connected: true,
+    loginState: "login",
+    offlineState: null,
+    movie: null,
+    training: false,
+    hypercard: null,
+    overlay: false,
+    cracked: null,
+    token: "yh26ndsesr",
+    station: {
+      name: "Command",
+      description: null,
+    },
+  },
+  {
+    id: "ECS-Viewscreen",
+    loginName: null,
+    label: "ECS-Viewscreen",
+    connected: true,
+    loginState: "logout",
+    offlineState: null,
+    movie: null,
+    training: false,
+    hypercard: null,
+    overlay: false,
+    cracked: null,
+    token: null,
+    station: {
+      name: "Operations",
+      description: "",
+    },
+  },
+];

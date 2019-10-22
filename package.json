@@ -42,7 +42,7 @@
     "format:different": "prettier --list-different \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "validate": "CI=true npm-run-all --parallel test:coverage typecheck format:different",
     "lint-staged-validate": "lint-staged",
-    "storybook": "start-storybook -p 9009 -s public",
+    "storybook": "start-storybook -p 9009 -s public,./",
     "build-storybook": "build-storybook -s public"
   },
   "nodemonConfig": {

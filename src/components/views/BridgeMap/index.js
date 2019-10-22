@@ -16,7 +16,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const BRIDGE_MAP_QUERY = gql`
   query Clients($simulatorId: ID!) {
     clients(simulatorId: $simulatorId) {
       ...BridgeMapData
@@ -24,7 +24,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const BRIDGE_MAP_SUBSCRIPTION = gql`
   subscription ClientsUpdate($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
       ...BridgeMapData
@@ -37,15 +37,18 @@ class BridgeMapData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={BRIDGE_MAP_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {clients} = data;
-          if (loading || !clients) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: BRIDGE_MAP_SUBSCRIPTION,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

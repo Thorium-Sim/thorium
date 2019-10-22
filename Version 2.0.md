@@ -56,6 +56,7 @@ Some goals for this refactor:
   which the crew members perform. Maybe see if they can be integrated together,
   so training for one card moves into the next, or even has a configurable
   preamble which shows on the Login screen.
+- Improve the timeline system so it's easier to create and compose missions
 
 A few maybes?
 
