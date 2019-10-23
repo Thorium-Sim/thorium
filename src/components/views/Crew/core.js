@@ -198,7 +198,7 @@ class CrewCore extends Component {
   };
   render() {
     const {
-      data: {loading, error, crew},
+      data: {loading, crew},
     } = this.props;
     const {selectedCrew, editing, search} = this.state;
     if (loading || !crew) return null;

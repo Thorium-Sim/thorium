@@ -12,7 +12,7 @@ import CoreComponent, {
 } from "../components/views/ComputerCore/core.js";
 
 export default {
-  title: "Cards|ComputerCore",
+  title: "Cards|Operations/ComputerCore",
 };
 export const ComputerCore = () => (
   <StorybookWrapper queries={[COMPUTER_CORE_QUERY, COMPUTER_CORE_SUB]}>

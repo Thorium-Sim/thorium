@@ -250,7 +250,7 @@ class Armory extends Component {
   };
   render() {
     const {
-      data: {loading, error, crew, rooms, teams},
+      data: {loading, crew, rooms, teams},
     } = this.props;
     if (loading || !crew || !rooms || !teams) return null;
     const {room, team, selectedCrew, readyInventory = {}} = this.state;
