@@ -3,14 +3,13 @@ import {Container, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import Measure from "react-measure";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
-import {Asset} from "helpers/assets";
 import Grid from "../Sensors/GridDom";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {Typing} from "react-typing";
 
 import "./style.scss";
 
-const SENSOR_SUB = gql`
+export const JR_SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
     sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
       id
@@ -46,7 +45,7 @@ class Sensors extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SENSOR_SUB,
+              document: JR_SENSOR_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -85,20 +84,16 @@ class Sensors extends Component {
               <Col className="col-sm-12">
                 <div className="card contactPictureContainer">
                   {hoverContact.picture && (
-                    <Asset asset={hoverContact.picture}>
-                      {({src}) => (
-                        <div
-                          className="contactPicture"
-                          style={{
-                            backgroundSize: "contain",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundColor: "black",
-                            backgroundImage: `url('${src}')`,
-                          }}
-                        />
-                      )}
-                    </Asset>
+                    <div
+                      className="contactPicture"
+                      style={{
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                        backgroundColor: "black",
+                        backgroundImage: `url('/assets${hoverContact.picture}')`,
+                      }}
+                    />
                   )}
                 </div>
               </Col>
@@ -129,7 +124,7 @@ class Sensors extends Component {
   }
 }
 
-const SENSOR_QUERY = gql`
+export const JR_SENSOR_QUERY = gql`
   query GetSensors($simulatorId: ID) {
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
@@ -144,7 +139,7 @@ const SENSOR_QUERY = gql`
   }
 `;
 
-export default graphql(SENSOR_QUERY, {
+export default graphql(JR_SENSOR_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

@@ -6,7 +6,7 @@ import NavigationScanner from "../Navigation/NavigationScanner";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const NAVIGATION_SUB = gql`
+export const JR_NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
     navigationUpdate(simulatorId: $simulatorId) {
       id
@@ -70,7 +70,7 @@ class Navigation extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: NAVIGATION_SUB,
+              document: JR_NAVIGATION_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -104,7 +104,7 @@ class Navigation extends Component {
   }
 }
 
-const NAVIGATION_QUERY = gql`
+export const JR_NAVIGATION_QUERY = gql`
   query Navigation($simulatorId: ID) {
     navigation(simulatorId: $simulatorId) {
       id
@@ -115,7 +115,7 @@ const NAVIGATION_QUERY = gql`
   }
 `;
 
-export default graphql(NAVIGATION_QUERY, {
+export default graphql(JR_NAVIGATION_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

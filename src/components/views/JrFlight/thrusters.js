@@ -92,7 +92,7 @@ const Thrusters = props => {
   );
 };
 
-const THRUSTER_QUERY = gql`
+export const JR_THRUSTER_QUERY = gql`
   query Thrusters($simulatorId: ID) {
     thrusters(simulatorId: $simulatorId) {
       id
@@ -100,7 +100,7 @@ const THRUSTER_QUERY = gql`
   }
 `;
 
-export default graphql(THRUSTER_QUERY, {
+export default graphql(JR_THRUSTER_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

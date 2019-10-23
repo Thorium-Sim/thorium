@@ -9,7 +9,7 @@ import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 const Components = [Isochips, Routing];
 
-const SYSTEMS_SUB = gql`
+export const JR_SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId) {
       name
@@ -97,7 +97,7 @@ class JrEng extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SYSTEMS_SUB,
+              document: JR_SYSTEMS_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -138,7 +138,7 @@ class JrEng extends Component {
   }
 }
 
-const SYSTEMS_QUERY = gql`
+export const JR_SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
     systems(simulatorId: $simulatorId) {
       name
@@ -152,7 +152,7 @@ const SYSTEMS_QUERY = gql`
   }
 `;
 
-export default graphql(SYSTEMS_QUERY, {
+export default graphql(JR_SYSTEMS_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

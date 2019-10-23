@@ -4,7 +4,7 @@ import {Button, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-const TRANSPORTER_SUB = gql`
+export const JR_TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {
     transporterUpdate(simulatorId: $simulatorId) {
       id
@@ -171,7 +171,7 @@ class Transporters extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: TRANSPORTER_SUB,
+              document: JR_TRANSPORTER_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -283,7 +283,7 @@ class Transporters extends Component {
   }
 }
 
-const TRANSPORTERS_QUERY = gql`
+export const JR_TRANSPORTERS_QUERY = gql`
   query GetTransporters($simulatorId: ID) {
     transporters(simulatorId: $simulatorId) {
       id
@@ -314,7 +314,7 @@ const TRANSPORTERS_QUERY = gql`
   }
 `;
 
-export default graphql(TRANSPORTERS_QUERY, {
+export default graphql(JR_TRANSPORTERS_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

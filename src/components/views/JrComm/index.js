@@ -7,7 +7,7 @@ import {Container, Row, Col, Button} from "helpers/reactstrap";
 import tinycolor from "tinycolor2";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const SHORTRANGE_SUB = gql`
+export const JR_COMM_SUB = gql`
   subscription ShortRangeCommSub($simulatorId: ID!) {
     shortRangeCommUpdate(simulatorId: $simulatorId) {
       id
@@ -273,7 +273,7 @@ class CommShortRange extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SHORTRANGE_SUB,
+              document: JR_COMM_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -327,7 +327,7 @@ class CommShortRange extends Component {
   }
 }
 
-const SHORTRANGE_QUERY = gql`
+export const JR_COMM_QUERY = gql`
   query ShortRangeComm($simulatorId: ID!) {
     shortRangeComm(simulatorId: $simulatorId) {
       id
@@ -364,7 +364,7 @@ const SHORTRANGE_QUERY = gql`
   }
 `;
 
-export default graphql(SHORTRANGE_QUERY, {
+export default graphql(JR_COMM_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

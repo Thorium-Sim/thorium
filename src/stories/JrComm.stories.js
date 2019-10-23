@@ -2,13 +2,16 @@ import React from "react";
 import StorybookWrapper from "./helpers/storybookWrapper.js";
 
 import baseProps from "./helpers/baseProps.js";
-import Component from "../components/views/JrComm/index.js";
+import Component, {
+  JR_COMM_QUERY,
+  JR_COMM_SUB,
+} from "../components/views/JrComm/index.js";
 
 export default {
-  title: "Cards|JrComm",
+  title: "Cards|Jr/JrComm",
 };
 export const JrComm = () => (
-  <StorybookWrapper>
+  <StorybookWrapper queries={[JR_COMM_QUERY, JR_COMM_SUB]}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );

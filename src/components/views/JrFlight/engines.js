@@ -6,7 +6,7 @@ import compose from "lodash.flowright";
 
 import "./style.scss";
 
-const SPEEDCHANGE_SUB = gql`
+export const JR_SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
       id
@@ -26,7 +26,7 @@ class EngineControl extends Component {
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.setSpeedSubscription && !nextProps.data.loading) {
       this.setSpeedSubscription = nextProps.data.subscribeToMore({
-        document: SPEEDCHANGE_SUB,
+        document: JR_SPEEDCHANGE_SUB,
         variables: {simulatorId: nextProps.simulator.id},
         updateQuery: (previousResult, {subscriptionData}) => {
           const engines = previousResult.engines.map(engine => {
@@ -224,7 +224,7 @@ class EngineControl extends Component {
   }
 }
 
-const ENGINE_QUERY = gql`
+export const JR_ENGINE_QUERY = gql`
   query getEngines($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
       id
@@ -255,7 +255,7 @@ const SET_SPEED = gql`
   }
 `;
 export default compose(
-  graphql(ENGINE_QUERY, {
+  graphql(JR_ENGINE_QUERY, {
     options: ownProps => ({
       fetchPolicy: "cache-and-network",
       variables: {simulatorId: ownProps.simulator.id},

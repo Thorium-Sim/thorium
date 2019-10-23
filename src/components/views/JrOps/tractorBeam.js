@@ -4,7 +4,7 @@ import {Button, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-const TRACTORBEAM_SUB = gql`
+export const JR_TRACTORBEAM_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {
     tractorBeamUpdate(simulatorId: $simulatorId) {
       id
@@ -177,7 +177,7 @@ class TractorBeam extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: TRACTORBEAM_SUB,
+              document: JR_TRACTORBEAM_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -288,7 +288,7 @@ class TractorBeam extends Component {
   }
 }
 
-const TRACTORBEAM_QUERY = gql`
+export const JR_TRACTORBEAM_QUERY = gql`
   query TractorBeamInfo($simulatorId: ID!) {
     tractorBeam(simulatorId: $simulatorId) {
       id
@@ -309,7 +309,7 @@ const TRACTORBEAM_QUERY = gql`
   }
 `;
 
-export default graphql(TRACTORBEAM_QUERY, {
+export default graphql(JR_TRACTORBEAM_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},
