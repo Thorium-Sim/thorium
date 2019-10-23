@@ -19,7 +19,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const COMM_REVIEW_QUERY = gql`
   query LongRangeCommunications($simulatorId: ID!) {
     longRangeCommunications(simulatorId: $simulatorId) {
       ...LRCommData
@@ -27,7 +27,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const COMM_REVIEW_SUB = gql`
   subscription LongRangeCommunicationsUpdate($simulatorId: ID!) {
     longRangeCommunicationsUpdate(simulatorId: $simulatorId) {
       ...LRCommData
@@ -40,17 +40,21 @@ class LongRangeCommunicationsData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
-        {({loading, data, subscribeToMore}) => {
+      <Query
+        query={COMM_REVIEW_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
+        {({loading, data, error, subscribeToMore}) => {
+          console.log(error);
+          if (loading || !data) return null;
           const {longRangeCommunications} = data;
-          if (loading || !longRangeCommunications) return null;
           if (!longRangeCommunications[0])
             return <div>No LongRangeCommunications</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: COMM_REVIEW_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

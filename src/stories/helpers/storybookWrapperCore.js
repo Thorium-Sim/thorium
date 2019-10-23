@@ -1,5 +1,5 @@
 import React from "react";
-import {MockedProvider} from "@apollo/react-testing";
+import Provider from "./mockProvider";
 import "bootstrap/scss/bootstrap.scss";
 import "../../app.scss";
 import "../../components/core/CoreComponents.scss";
@@ -8,10 +8,10 @@ window.thorium = window.thorium || {
   clockSync: 0,
 };
 
-export default ({children, mocks}) => {
+export default props => {
   return (
-    <MockedProvider mocks={mocks} addTypename={false}>
-      {children}
-    </MockedProvider>
+    <React.Suspense fallback={"Loading..."}>
+      <Provider {...props} />
+    </React.Suspense>
   );
 };

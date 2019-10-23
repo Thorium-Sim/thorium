@@ -1,5 +1,7 @@
 import React from "react";
-import {MockedProvider} from "@apollo/react-testing";
+
+import Provider from "./mockProvider";
+
 import "bootstrap/scss/bootstrap.scss";
 import "../../app.scss";
 import "../../components/layouts/LayoutClear/style.scss";
@@ -9,12 +11,12 @@ window.thorium = window.thorium || {
   clockSync: 0,
 };
 
-export default ({children, mocks}) => {
+export default props => {
   return (
-    <div className="layout-clear">
-      <MockedProvider mocks={mocks} addTypename={false}>
-        {children}
-      </MockedProvider>
-    </div>
+    <React.Suspense fallback={"Loading..."}>
+      <div className="layout-clear">
+        <Provider {...props} />
+      </div>
+    </React.Suspense>
   );
 };
