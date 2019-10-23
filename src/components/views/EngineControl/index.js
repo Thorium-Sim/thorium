@@ -34,7 +34,7 @@ const fragment = gql`
     on
   }
 `;
-const SPEEDCHANGE_SUB = gql`
+export const SPEEDCHANGE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
       ...EngineData
@@ -43,7 +43,7 @@ const SPEEDCHANGE_SUB = gql`
   ${fragment}
 `;
 
-const HEATCHANGE_SUB = gql`
+export const HEATCHANGE_SUB = gql`
   subscription HeatChanged($simulatorId: ID) {
     heatChange(simulatorId: $simulatorId) {
       id
@@ -259,7 +259,7 @@ const trainingSteps = [
   },
 ];
 
-const ENGINE_QUERY = gql`
+export const ENGINE_QUERY = gql`
   query getEngines($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
       ...EngineData
@@ -268,7 +268,7 @@ const ENGINE_QUERY = gql`
   ${fragment}
 `;
 
-const SET_SPEED = gql`
+export const SET_SPEED = gql`
   mutation setSpeed($id: ID!, $speed: Int!, $on: Boolean) {
     setSpeed(id: $id, speed: $speed, on: $on)
   }

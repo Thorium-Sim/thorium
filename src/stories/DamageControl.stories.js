@@ -1,20 +1,23 @@
 import React from "react";
 import StorybookWrapper from "./helpers/storybookWrapper.js";
-import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
-import Component from "../components/views/DamageControl/index.js";
-import CoreComponent from "../components/views/DamageControl/core.js";
+import Component, {
+  DAMAGE_REPORT_QUERY,
+  DAMAGE_SYSTEMS_SUB,
+  DAMAGE_TASK_REPORT_SUB,
+} from "../components/views/DamageControl/index.js";
 
 export default {
-  title: "Cards|DamageControl",
+  title: "Cards|Engineering/DamageControl",
 };
 export const DamageControl = () => (
-  <StorybookWrapper>
+  <StorybookWrapper
+    queries={[
+      [DAMAGE_REPORT_QUERY, [], {simulatorId: "test", which: "default"}],
+      [DAMAGE_SYSTEMS_SUB, [], {simulatorId: "test", which: "default"}],
+      [DAMAGE_TASK_REPORT_SUB, [], {simulatorId: "test", which: "default"}],
+    ]}
+  >
     <Component {...baseProps} />
   </StorybookWrapper>
-);
-export const Core = () => (
-  <StorybookWrapperCore>
-    <CoreComponent {...baseProps} />
-  </StorybookWrapperCore>
 );

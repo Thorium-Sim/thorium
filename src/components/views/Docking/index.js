@@ -9,7 +9,7 @@ import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 import "./style.scss";
 
-const DOCKING_QUERY = gql`
+export const DOCKING_QUERY = gql`
   query Simulator($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
@@ -24,7 +24,7 @@ const DOCKING_QUERY = gql`
   }
 `;
 
-const DOCKING_SUB = gql`
+export const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -70,8 +70,8 @@ const Docking = ({simulator, client, clientObj}) => {
     [simulator.id],
   );
   useSubscribeToMore(subscribeToMore, DOCKING_SUB, config);
+  if (loading || !data) return null;
   const {simulators} = data;
-  if (loading || !simulators) return null;
   const {ship} = simulators[0];
 
   const clamps = () => {

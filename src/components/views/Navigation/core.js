@@ -7,7 +7,7 @@ import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {FaRandom, FaRetweet} from "react-icons/fa";
 
-const NAVIGATION_SUB = gql`
+export const NAVIGATION_CORE_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
     navigationUpdate(simulatorId: $simulatorId) {
       id
@@ -174,7 +174,7 @@ class NavigationCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: NAVIGATION_SUB,
+              document: NAVIGATION_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -358,7 +358,7 @@ class NavigationCore extends Component {
   }
 }
 
-const NAVIGATION_QUERY = gql`
+export const NAVIGATION_CORE_QUERY = gql`
   query Navigation($simulatorId: ID) {
     navigation(simulatorId: $simulatorId) {
       id
@@ -396,7 +396,7 @@ const NAVIGATION_QUERY = gql`
   }
 `;
 
-export default graphql(NAVIGATION_QUERY, {
+export default graphql(NAVIGATION_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

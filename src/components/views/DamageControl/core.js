@@ -15,7 +15,7 @@ const fragment = gql`
     powerOutput
   }
 `;
-const REACTOR_SUB = gql`
+export const DAMAGE_REACTOR_CORE_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
       ...PowerData
@@ -24,7 +24,7 @@ const REACTOR_SUB = gql`
   ${fragment}
 `;
 
-const SYSTEMS_SUB = gql`
+export const DAMAGE_SYSTEMS_CORE_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId) {
       id
@@ -266,7 +266,7 @@ class DamageControlCore extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   this.props.data.subscribeToMore({
-                    document: SYSTEMS_SUB,
+                    document: DAMAGE_SYSTEMS_CORE_SUB,
                     variables: {
                       simulatorId: this.props.simulator.id,
                     },
@@ -281,7 +281,7 @@ class DamageControlCore extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   this.props.data.subscribeToMore({
-                    document: REACTOR_SUB,
+                    document: DAMAGE_REACTOR_CORE_SUB,
                     variables: {
                       simulatorId: this.props.simulator.id,
                     },
@@ -481,7 +481,7 @@ class DamageControlCore extends Component {
     );
   }
 }
-const SYSTEMS_QUERY = gql`
+export const DAMAGE_SYSTEMS_CORE_QUERY = gql`
   query Systems($simulatorId: ID) {
     reactors(simulatorId: $simulatorId) {
       ...PowerData
@@ -515,7 +515,7 @@ const SYSTEMS_QUERY = gql`
   ${fragment}
 `;
 
-export default graphql(SYSTEMS_QUERY, {
+export default graphql(DAMAGE_SYSTEMS_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

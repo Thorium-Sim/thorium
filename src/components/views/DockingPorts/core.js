@@ -21,7 +21,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const DOCKING_PORT_CORE_QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: dockingport) {
       ...DockingCoreData
@@ -29,7 +29,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const DOCKING_PORT_CORE_SUB = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: dockingport) {
       ...DockingCoreData
@@ -198,16 +198,19 @@ const DockingPortCore = ({docking}) => (
 );
 
 const DockingPortData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={DOCKING_PORT_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {docking} = data;
-      if (loading || !docking) return null;
       if (docking.length === 0) return <div>No Docking Ports</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: DOCKING_PORT_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

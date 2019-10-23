@@ -15,7 +15,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const DILITHIUM_QUERY = gql`
   query Template($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
       ...DilithiumData
@@ -23,7 +23,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const DILITHIUM_SUB = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
       ...DilithiumData
@@ -36,16 +36,19 @@ class DilithiumStressData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={DILITHIUM_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {reactors} = data;
-          if (loading || !reactors) return null;
           if (!reactors[0]) return <div>No Reactor</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: DILITHIUM_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

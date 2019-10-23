@@ -57,7 +57,7 @@ const fragments = {
     }
   `,
 };
-const QUERY = gql`
+export const DAMAGE_REPORT_QUERY = gql`
   query Systems($simulatorId: ID!, $which: String) {
     simulators(id: $simulatorId) {
       id
@@ -74,7 +74,7 @@ const QUERY = gql`
   ${fragments.systemData}
   ${fragments.taskReportData}
 `;
-const SUBSCRIPTION = gql`
+export const DAMAGE_SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID!, $which: String) {
     systemsUpdate(simulatorId: $simulatorId, extra: true, damageWhich: $which) {
       ...SystemData
@@ -83,7 +83,7 @@ const SUBSCRIPTION = gql`
   ${fragments.systemData}
 `;
 
-const TASK_REPORT_SUB = gql`
+export const DAMAGE_TASK_REPORT_SUB = gql`
   subscription TaskReports($simulatorId: ID!, $which: String) {
     taskReportUpdate(simulatorId: $simulatorId, type: $which) {
       ...TaskReportData
@@ -97,22 +97,22 @@ class DamageControlData extends Component {
   render() {
     return (
       <Query
-        query={QUERY}
+        query={DAMAGE_REPORT_QUERY}
         variables={{
           simulatorId: this.props.simulator.id,
-          simId: this.props.simulator.id,
           which: this.props.which || "default",
         }}
       >
-        {({loading, data, subscribeToMore}) => {
+        {({loading, data, error, subscribeToMore}) => {
+          console.log(error);
+          if (loading || !data) return null;
           const {systems, simulators, taskReport} = data;
-          if (loading || !systems || !simulators) return null;
           const [simulator] = simulators;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: DAMAGE_SYSTEMS_SUB,
                   variables: {
                     simulatorId: this.props.simulator.id,
                     which: this.props.which || "default",
@@ -128,7 +128,7 @@ class DamageControlData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: TASK_REPORT_SUB,
+                    document: DAMAGE_TASK_REPORT_SUB,
                     variables: {
                       simulatorId: this.props.simulator.id,
                       which: this.props.which || "default",

@@ -24,7 +24,7 @@ const fragment = gql`
   }
 `;
 
-const EXOCOMP_SUB = gql`
+export const EXOCOMP_CORE_SUB = gql`
   subscription Exocomps($simulatorId: ID!) {
     exocompsUpdate(simulatorId: $simulatorId) {
       ...ExocompData
@@ -62,7 +62,7 @@ class ExocompsCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: EXOCOMP_SUB,
+              document: EXOCOMP_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -183,7 +183,7 @@ class ExocompsCore extends Component {
   }
 }
 
-const QUERY = gql`
+export const EXOCOMP_CORE_QUERY = gql`
   query Exocomps($simulatorId: ID!) {
     exocomps(simulatorId: $simulatorId) {
       ...ExocompData
@@ -192,7 +192,7 @@ const QUERY = gql`
   ${fragment}
 `;
 
-export default graphql(QUERY, {
+export default graphql(EXOCOMP_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

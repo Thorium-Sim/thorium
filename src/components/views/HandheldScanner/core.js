@@ -15,7 +15,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const HANDHELD_SCANNER_QUERY = gql`
   query Scanner($simulatorId: ID!) {
     scanners(simulatorId: $simulatorId) {
       ...ScannerData
@@ -23,7 +23,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const HANDHELD_SCANNER_SUBSCRIPTION = gql`
   subscription ScannerUpdate($simulatorId: ID!) {
     scannersUpdate(simulatorId: $simulatorId) {
       ...ScannerData
@@ -36,15 +36,18 @@ class ScannerData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={HANDHELD_SCANNER_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {scanners} = data;
-          if (loading || !scanners) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: HANDHELD_SCANNER_SUBSCRIPTION,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

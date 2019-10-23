@@ -20,7 +20,7 @@ const trainingSteps = [
   },
 ];
 
-const NAVIGATION_SUB = gql`
+export const NAVIGATION_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
     navigationUpdate(simulatorId: $simulatorId) {
       id
@@ -427,7 +427,7 @@ class Navigation extends Component {
   }
 }
 
-const NAVIGATION_QUERY = gql`
+export const NAVIGATION_QUERY = gql`
   query Navigation($simulatorId: ID) {
     navigation(simulatorId: $simulatorId) {
       id

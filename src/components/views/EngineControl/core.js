@@ -5,7 +5,7 @@ import compose from "lodash.flowright";
 import {Container, Col, Row} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const SPEEDCHANGE_SUB = gql`
+export const SPEEDCHANGE_CORE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
       id
@@ -75,7 +75,7 @@ class EngineCoreView extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SPEEDCHANGE_SUB,
+              document: SPEEDCHANGE_CORE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -132,7 +132,7 @@ class EngineCoreView extends Component {
   }
 }
 
-const ENGINE_QUERY = gql`
+export const ENGINE_CORE_QUERY = gql`
   query getEngines($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
       id
@@ -158,7 +158,7 @@ const SET_SPEED = gql`
 `;
 
 export default compose(
-  graphql(ENGINE_QUERY, {
+  graphql(ENGINE_CORE_QUERY, {
     options: ownProps => ({
       fetchPolicy: "cache-and-network",
       variables: {simulatorId: ownProps.simulator.id},

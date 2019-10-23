@@ -9,7 +9,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import UpgradeScreen from "./UpgradeScreen";
 import "./style.scss";
 
-const EXOCOMP_SUB = gql`
+export const EXOCOMP_SUB = gql`
   subscription Exocomps($simulatorId: ID!) {
     exocompsUpdate(simulatorId: $simulatorId) {
       id
@@ -235,7 +235,7 @@ class Exocomps extends Component {
   }
 }
 
-const QUERY = gql`
+export const EXOCOMP_QUERY = gql`
   query Exocomps($simulatorId: ID) {
     exocomps(simulatorId: $simulatorId) {
       id
@@ -257,7 +257,7 @@ const QUERY = gql`
     }
   }
 `;
-export default graphql(QUERY, {
+export default graphql(EXOCOMP_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

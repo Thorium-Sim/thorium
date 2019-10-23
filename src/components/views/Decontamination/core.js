@@ -17,7 +17,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const DECON_CORE_QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
       ...DeconCoreData
@@ -25,7 +25,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const DECON_CORE_SUB = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
       ...DeconCoreData
@@ -89,16 +89,16 @@ const DecontaminationCore = ({
 );
 
 const DeconData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query query={DECON_CORE_QUERY} variables={{simulatorId: props.simulator.id}}>
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {sickbay} = data;
-      if (loading || !sickbay) return null;
       if (!sickbay[0]) return <div>No Sickbay</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: DECON_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

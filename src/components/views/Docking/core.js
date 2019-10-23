@@ -6,7 +6,7 @@ import "./style.scss";
 import {useQuery} from "@apollo/react-hooks";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
-const DOCKING_SUB = gql`
+export const DOCKING_CORE_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -26,7 +26,7 @@ const mutation = gql`
     shipDockingChange(simulatorId: $simulatorId, which: $which, state: $state)
   }
 `;
-const DOCKING_QUERY = gql`
+export const DOCKING_CORE_QUERY = gql`
   query Simulator($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
@@ -42,7 +42,7 @@ const DOCKING_QUERY = gql`
 `;
 
 const DockingCore = ({simulator, client}) => {
-  const {loading, data, subscribeToMore} = useQuery(DOCKING_QUERY, {
+  const {loading, data, subscribeToMore} = useQuery(DOCKING_CORE_QUERY, {
     variables: {simulatorId: simulator.id},
   });
   const config = React.useMemo(
@@ -55,9 +55,9 @@ const DockingCore = ({simulator, client}) => {
     }),
     [simulator.id],
   );
-  useSubscribeToMore(subscribeToMore, DOCKING_SUB, config);
+  useSubscribeToMore(subscribeToMore, DOCKING_CORE_SUB, config);
+  if (loading || !data) return null;
   const {simulators} = data;
-  if (loading || !simulators) return null;
   const {ship} = simulators[0];
 
   const toggle = which => {
