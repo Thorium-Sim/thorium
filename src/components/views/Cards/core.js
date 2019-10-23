@@ -64,7 +64,6 @@ const CardsData = props => {
       variables={{simulatorId: props.simulator.id}}
     >
       {({loading, data, error, subscribeToMore}) => {
-        console.log(error);
         if (loading || !data) return null;
         const {simulators} = data;
         const simulator = simulators.find(s => s.id === props.simulator.id);

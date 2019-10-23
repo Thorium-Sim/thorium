@@ -13,7 +13,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const CRM_FIGHTER_CORE_QUERY = gql`
   query Crm($simulatorId: ID!) {
     crm(simulatorId: $simulatorId) {
       ...CrmCoreData
@@ -21,7 +21,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const CRM_FIGHTER_CORE_SUB = gql`
   subscription CrmUpdate($simulatorId: ID!) {
     crmUpdate(simulatorId: $simulatorId) {
       ...CrmCoreData
@@ -54,16 +54,19 @@ const CrmCore = props => {
 };
 
 const CrmData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={CRM_FIGHTER_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {crm} = data;
-      if (loading) return null;
       if (!crm) return <div>No CRM System</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: CRM_FIGHTER_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

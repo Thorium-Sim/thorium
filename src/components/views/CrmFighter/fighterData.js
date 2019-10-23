@@ -26,7 +26,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const CRM_FIGHTER_DATA_QUERY = gql`
   query Crm($simulatorId: ID!, $clientId: ID!) {
     crmFighter(simulatorId: $simulatorId, clientId: $clientId) {
       ...CrmFighterData
@@ -34,7 +34,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const CRM_FIGHTER_DATA_SUB = gql`
   subscription CrmUpdate($simulatorId: ID!, $clientId: ID!) {
     crmFighterUpdate(simulatorId: $simulatorId, clientId: $clientId) {
       ...CrmFighterData
@@ -49,20 +49,20 @@ class FighterData extends Component {
     const {crm} = this.props;
     return (
       <Query
-        query={QUERY}
+        query={CRM_FIGHTER_DATA_QUERY}
         variables={{
           simulatorId: this.props.simulator.id,
           clientId: this.props.clientObj.id,
         }}
       >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {crmFighter} = data;
-          if (loading || !crmFighter) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: CRM_FIGHTER_DATA_SUB,
                   variables: {
                     simulatorId: this.props.simulator.id,
                     clientId: this.props.clientObj.id,

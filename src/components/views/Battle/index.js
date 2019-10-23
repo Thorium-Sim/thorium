@@ -57,7 +57,6 @@ class TemplateData extends Component {
         variables={{simulatorId: this.props.simulator.id}}
       >
         {({loading, data, error, subscribeToMore}) => {
-          console.log(error);
           if (loading || !data) return null;
           const {sensorContacts, sensors} = data;
           return (

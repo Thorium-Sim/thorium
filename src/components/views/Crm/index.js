@@ -21,7 +21,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const CRM_QUERY = gql`
   query Crm($simulatorId: ID!) {
     crm(simulatorId: $simulatorId) {
       ...CrmData
@@ -36,7 +36,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const CLIENT_SUB = gql`
+export const CRM_CLIENT_SUB = gql`
   subscription Clients($simulatorId: ID!) {
     clientChanged(simulatorId: $simulatorId) {
       id
@@ -47,7 +47,7 @@ const CLIENT_SUB = gql`
     }
   }
 `;
-const SUBSCRIPTION = gql`
+export const CRM_SUB = gql`
   subscription CrmUpdate($simulatorId: ID!) {
     crmUpdate(simulatorId: $simulatorId) {
       ...CrmData
@@ -60,16 +60,19 @@ class CrmData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={CRM_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {crm, clients} = data;
-          if (loading) return null;
           if (!crm) return <div>No CRM System</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: CRM_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {
@@ -82,7 +85,7 @@ class CrmData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: CLIENT_SUB,
+                    document: CRM_CLIENT_SUB,
                     variables: {simulatorId: this.props.simulator.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       return Object.assign({}, previousResult, {

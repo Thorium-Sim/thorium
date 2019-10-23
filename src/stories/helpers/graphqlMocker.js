@@ -10,6 +10,15 @@ import schemaString from "../../schema.graphql";
 const DEFAULT_MOCKS = [
   //{URL: "http://graphql-mocked-url.com"},
   // {DateTime: null},
+  {
+    Damage: {
+      damaged: false,
+    },
+    Power: {
+      power: 40,
+      powerLevels: [1],
+    },
+  },
 ];
 
 // Allow you to merge and replace an existing array with an empty array.

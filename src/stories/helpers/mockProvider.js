@@ -2,9 +2,10 @@ import React from "react";
 import {MockedProvider} from "@apollo/react-testing";
 import mockGraphqlQuery from "./graphqlMocker.js";
 import usePromise from "react-promise-suspense";
+const defaultVariables = {simulatorId: "test"};
 function allMockedQueries(queries) {
   return Promise.all(
-    queries.map(([query, overrides, variables = {simulatorId: "test"}]) =>
+    queries.map(([query, overrides, variables = defaultVariables]) =>
       mockGraphqlQuery(query, overrides, variables),
     ),
   );
@@ -18,11 +19,12 @@ const Provider = ({children, mocks = [], queries: queriesInput = []}) => {
   const queryMocks = queryResults.map((q, i) => ({
     request: {
       query: queries[i][0],
-      variables: queries[i][2] || {simulatorId: "test"},
+      variables: queries[i][2] || defaultVariables,
     },
     result: q,
   }));
   const allMocks = [...mocks, ...queryMocks];
+  console.log(allMocks);
   return (
     <MockedProvider mocks={allMocks} addTypename={false}>
       {children}

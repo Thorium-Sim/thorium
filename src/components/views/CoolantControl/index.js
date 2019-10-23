@@ -10,7 +10,7 @@ import Tank from "./tank";
 import "./style.scss";
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 
-const COOLANT_SUB = gql`
+export const COOLANT_SUB = gql`
   subscription CoolantUpdate($simulatorId: ID!) {
     coolantUpdate(simulatorId: $simulatorId) {
       id
@@ -29,7 +29,7 @@ const COOLANT_SUB = gql`
   }
 `;
 
-const COOLANT_SYSTEM_SUB = gql`
+export const COOLANT_SYSTEM_SUB = gql`
   subscription CoolanSystemtUpdate($simulatorId: ID!) {
     coolantSystemUpdate(simulatorId: $simulatorId) {
       systemId
@@ -92,6 +92,7 @@ class CoolantControl extends Component {
     if (this.props.data.loading || !this.props.data.coolant) return null;
     const coolant = this.props.data.coolant[0];
     const {systemCoolant} = this.props.data;
+    console.log(coolant);
     return (
       <Container fluid className="card-coolant">
         <SubscriptionHelper
@@ -258,7 +259,7 @@ const CoolantRightBracket = () => {
 const CoolantMiddleBar = () => {
   return <div className="coolant-bracket center" />;
 };
-const COOLANT_QUERY = gql`
+export const COOLANT_QUERY = gql`
   query Coolant($simulatorId: ID!) {
     coolant(simulatorId: $simulatorId) {
       id

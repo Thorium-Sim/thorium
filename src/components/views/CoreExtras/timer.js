@@ -5,7 +5,7 @@ import {withApollo} from "react-apollo";
 import {Duration} from "luxon";
 import {publish} from "helpers/pubsub";
 
-const TIMESYNC_SUB = gql`
+export const TIMESYNC_SUB = gql`
   subscription SyncTime($simulatorId: ID!) {
     syncTime(simulatorId: $simulatorId) {
       time

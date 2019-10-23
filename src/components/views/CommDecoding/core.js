@@ -198,7 +198,6 @@ const TemplateData = props => (
     variables={{simulatorId: props.simulator.id}}
   >
     {({loading, data = {}, error, subscribeToMore}) => {
-      console.log(error);
       const {longRangeCommunications} = data;
       if (loading || !longRangeCommunications) return null;
       if (!longRangeCommunications[0]) return <div>No Long Range Comm</div>;

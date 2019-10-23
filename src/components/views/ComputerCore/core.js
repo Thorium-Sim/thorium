@@ -32,7 +32,7 @@ const fragment = gql`
     }
   }
 `;
-const QUERY = gql`
+export const COMPUTER_CORE_CORE_QUERY = gql`
   query ComputerCore($simulatorId: ID!) {
     computerCore(simulatorId: $simulatorId) {
       ...ComputerCoreCoreData
@@ -40,7 +40,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const COMPUTER_CORE_CORE_SUB = gql`
   subscription ComputerCoreUpdate($simulatorId: ID!) {
     computerCoreUpdate(simulatorId: $simulatorId) {
       ...ComputerCoreCoreData
@@ -309,10 +309,13 @@ class ComputerCoreData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={COMPUTER_CORE_CORE_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {computerCore} = data;
-          if (loading || !computerCore) return null;
           if (!computerCore[0]) return <div>No Computer Core</div>;
           return (
             <Core
@@ -320,7 +323,7 @@ class ComputerCoreData extends Component {
               {...computerCore[0]}
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: COMPUTER_CORE_CORE_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

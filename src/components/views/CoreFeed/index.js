@@ -9,7 +9,7 @@ import {DateTime} from "luxon";
 import "./style.scss";
 import {FaTimes} from "react-icons/fa";
 
-const COREFEED_SUB = gql`
+export const COREFEED_SUB = gql`
   subscription CoreFeedUpdate($simulatorId: ID) {
     coreFeedUpdate(simulatorId: $simulatorId) {
       id
@@ -187,7 +187,7 @@ class CoreFeed extends Component {
   }
 }
 
-const COREFEED_QUERY = gql`
+export const COREFEED_QUERY = gql`
   query CoreFeed($simulatorId: ID) {
     coreFeed(simulatorId: $simulatorId) {
       id

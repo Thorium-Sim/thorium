@@ -337,7 +337,6 @@ class ActionsCore extends Component {
     );
   };
   render() {
-    console.log(this.props);
     const {bridgeMap, flight} = this.props;
     const {actionName} = this.state;
     return (

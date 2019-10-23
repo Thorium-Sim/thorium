@@ -66,7 +66,6 @@ const CommandLineOutput = ({output}) => {
 const CommandLineInner = ({data, simulator}) => {
   const [input, setInput] = React.useState("");
   if (!data) return null;
-  console.log(data);
   return (
     <>
       <CommandLineOutput

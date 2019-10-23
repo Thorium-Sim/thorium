@@ -252,7 +252,6 @@ class Armory extends Component {
     const {
       data: {loading, error, crew, rooms, teams},
     } = this.props;
-    console.log(error);
     if (loading || !crew || !rooms || !teams) return null;
     const {room, team, selectedCrew, readyInventory = {}} = this.state;
     const roomObj = rooms.find(r => r.id === room);

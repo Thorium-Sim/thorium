@@ -53,7 +53,7 @@ const fragment = gql`
   }
 `;
 
-const MOVEMENT_QUERY = gql`
+export const CRM_MOVEMENT_QUERY = gql`
   query CrmMovement($simulatorId: ID!) {
     crm(simulatorId: $simulatorId) {
       ...CrmMovementData
@@ -61,7 +61,7 @@ const MOVEMENT_QUERY = gql`
   }
   ${fragment}
 `;
-const MOVEMENT_SUBSCRIPTION = gql`
+export const CRM_MOVEMENT_SUBSCRIPTION = gql`
   subscription CrmMovement($simulatorId: ID!) {
     crmMovementUpdate(simulatorId: $simulatorId) {
       ...CrmMovementData
@@ -76,18 +76,19 @@ class CrmData extends Component {
   render() {
     return (
       <Query
-        query={MOVEMENT_QUERY}
+        query={CRM_MOVEMENT_QUERY}
         variables={{simulatorId: this.props.simulator.id}}
       >
-        {({loading, data, subscribeToMore}) => {
+        {({loading, data, error, subscribeToMore}) => {
+          console.log(error);
+          if (loading || !data) return null;
           const {crm} = data;
-          if (loading) return null;
           if (!crm) return <div>No CRM System</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: MOVEMENT_SUBSCRIPTION,
+                  document: CRM_MOVEMENT_SUBSCRIPTION,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

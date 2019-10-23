@@ -94,7 +94,6 @@ class InternalCommCore extends Component {
     });
   };
   render() {
-    console.log(this.props.data);
     if (this.props.data.loading || !this.props.data.internalComm) return null;
     const internalComm = this.props.data.internalComm[0];
     const decks = this.props.data.decks;

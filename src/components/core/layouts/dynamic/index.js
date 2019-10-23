@@ -121,7 +121,6 @@ const Dynamic = props => {
             createNode={e => e}
           >
             {(() => {
-              console.log(id);
               if (id && id.indexOf("Picker") > -1) {
                 return (
                   <Picker components={mosaicComponents(mosaic)} path={path} />

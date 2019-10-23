@@ -189,7 +189,6 @@ const CrewCargo = ({simulatorId, crew: {id, name, inventory}}) => {
 const ArmoryCoreData = ({simulator}) => (
   <Query query={ARMORY_CORE_QUERY} variables={{simulatorId: simulator.id}}>
     {({subscribeToMore, error, loading, data}) => {
-      console.log(error);
       if (loading || !data) return null;
       const {crew, teams} = data;
       return (
