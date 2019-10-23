@@ -7,7 +7,7 @@ import CoreComponent from "../components/views/CommInternal/core.js";
 import CommInternalMock from "mocks/cards/CommInternal.mock.js";
 
 export default {
-  title: "Cards|Communication/CommInternal",
+  title: "Cards|Communications/CommInternal",
 };
 export const CommInternal = () => (
   <StorybookWrapper mocks={CommInternalMock}>

@@ -9,7 +9,11 @@ function allMockedQueries(queries) {
     ),
   );
 }
-const Provider = ({children, mocks = [], queries = []}) => {
+const Provider = ({children, mocks = [], queries: queriesInput = []}) => {
+  const queries = queriesInput.map(q => {
+    if (Array.isArray(q)) return q;
+    return [q];
+  });
   const queryResults = usePromise(allMockedQueries, [queries]);
   const queryMocks = queryResults.map((q, i) => ({
     request: {

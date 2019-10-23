@@ -11,11 +11,11 @@ window.thorium = window.thorium || {
   clockSync: 0,
 };
 
-export default props => {
+export default ({mocks, queries, children}) => {
   return (
     <React.Suspense fallback={"Loading..."}>
       <div className="layout-clear">
-        <Provider {...props} />
+        <Provider mocks={mocks} queries={queries} children={children} />
       </div>
     </React.Suspense>
   );

@@ -41,7 +41,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const COMM_SHORT_RANGE_CORE_QUERY = gql`
   query ShortRangeComm($simulatorId: ID!) {
     shortRangeComm(simulatorId: $simulatorId) {
       ...ShortRangeData
@@ -49,7 +49,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const COMM_SHORT_RANGE_CORE_SUB = gql`
   subscription ShortRangeCommUpdate($simulatorId: ID!) {
     shortRangeCommUpdate(simulatorId: $simulatorId) {
       ...ShortRangeData
@@ -59,16 +59,19 @@ const SUBSCRIPTION = gql`
 `;
 
 const ShortRangeCommCoreData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={COMM_SHORT_RANGE_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {shortRangeComm} = data;
-      if (loading || !shortRangeComm) return null;
       if (!shortRangeComm[0]) return <div>No ShortRangeComm</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: COMM_SHORT_RANGE_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) =>
                 Object.assign({}, previousResult, {
