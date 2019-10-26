@@ -41,23 +41,15 @@ Created with ❤ by [Alex Anderson](http://ralexanderson.com) and
 
 ## A note about support
 
-Thorium is a "community support" project. While I encourage everyone to use it
-and continue to submit issues and bug reports, I won't be actively maintaining
-the project as I have in the past. Here's what I will continue to do:
+Thorium is a "community support" project. I encourage everyone to use it
+and continue to submit issues and bug reports. As maintainer, here's what I will continue to do:
 
 - Review issues
 - Review pull requests and provide feedback
 - Merge pull requests
 - Create new builds/releases
 - Encourage and assist other developers
-
-I will not:
-
-- Actively build new features (usually -- some exceptions)
-- Actively fix bugs (usually -- some exceptions)
-- Guarantee a response or turnaround time
-- Give support over phone or in person (except through service contract
-  agreements)
+- Focus my efforts on long-term projects and keeping the codebase modern.
 
 Fortunately, you can get help from the excellent people on
 [Thorium's Discord Server](https://discord.gg/UvxTQZz).
@@ -69,7 +61,7 @@ process.
 
 If you want to learn to contribute to Thorium, check out the
 [development video series](https://www.youtube.com/watch?v=iEU6NcOKhyE&list=PLvw0SNT6wHt9au1-6yCOh7QHj-p5ir0l6)
-for how to get started.
+for some ideas for how to get started.
 
 Hope this helps! ~[Alex](https://github.com/alexanderson1993)
 
