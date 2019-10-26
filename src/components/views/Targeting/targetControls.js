@@ -8,7 +8,6 @@ import {
   Label,
   FormGroup,
 } from "helpers/reactstrap";
-import {Asset} from "helpers/assets";
 
 export default ({targetedContact, untargetContact, targetSystem}) => {
   return (
@@ -19,11 +18,11 @@ export default ({targetedContact, untargetContact, targetSystem}) => {
             <h4>Targeted Contact</h4>
             <Media>
               <Media left href="#">
-                <Asset asset={targetedContact.picture}>
-                  {({src}) => (
-                    <Media object src={src} alt="Targeted Contact Image" />
-                  )}
-                </Asset>
+                <Media
+                  object
+                  src={`/assets${targetedContact.picture}`}
+                  alt="Targeted Contact Image"
+                />
               </Media>
               <Media body>
                 <Media heading>{targetedContact.name}</Media>

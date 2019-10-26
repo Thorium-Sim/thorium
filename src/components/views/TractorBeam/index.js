@@ -4,7 +4,6 @@ import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-import {Asset} from "helpers/assets";
 import Beam from "./beam";
 import Target from "./target";
 import Bars from "./bars";
@@ -104,22 +103,19 @@ class TractorBeam extends Component {
           message={`${tractorBeam.displayName || tractorBeam.name} Offline`}
         />
         <Beam shown={tractorBeam.state} />
-        <Asset asset={assets.side}>
-          {({src}) => (
-            <div
-              alt="ship"
-              style={{
-                height: "30vh",
-                backgroundImage: `url("${src}")`,
-                backgroundSize: "contain",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-              className="ship-side"
-              draggable="false"
-            />
-          )}
-        </Asset>
+
+        <div
+          alt="ship"
+          style={{
+            height: "30vh",
+            backgroundImage: `url("/assets/${assets.side}")`,
+            backgroundSize: "contain",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+          className="ship-side"
+          draggable="false"
+        />
         <Target shown={tractorBeam.target} label={tractorBeam.targetLabel} />
         <Bars
           className="stressBar"

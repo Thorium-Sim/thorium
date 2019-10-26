@@ -19,7 +19,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const KEYPAD_QUERY = gql`
   query Keypad($simulatorId: ID!) {
     keypads(simulatorId: $simulatorId) {
       ...KeypadData
@@ -27,7 +27,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const KEYPAD_SUB = gql`
   subscription KeypadUpdate($simulatorId: ID!) {
     keypadsUpdate(simulatorId: $simulatorId) {
       ...KeypadData
@@ -40,15 +40,18 @@ class KeypadData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={KEYPAD_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {keypads} = data;
-          if (loading || !keypads) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: KEYPAD_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

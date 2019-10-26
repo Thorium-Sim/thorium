@@ -2,13 +2,13 @@ import React from "react";
 import StorybookWrapper from "./helpers/storybookWrapper.js";
 
 import baseProps from "./helpers/baseProps.js";
-import Component from "../components/views/Login/index.js";
+import Component, {FLIGHT_QUERY} from "../components/views/Login/index.js";
 
 export default {
-  title: "Cards|Login",
+  title: "Cards|Crew/Login",
 };
 export const Login = () => (
-  <StorybookWrapper>
+  <StorybookWrapper queries={[[FLIGHT_QUERY, [], {flightId: "test"}]]}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );

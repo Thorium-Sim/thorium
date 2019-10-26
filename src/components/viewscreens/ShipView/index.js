@@ -1,6 +1,5 @@
 import React from "react";
 import {Container, Row, Col} from "helpers/reactstrap";
-import {Asset} from "helpers/assets";
 
 import "./style.scss";
 
@@ -11,9 +10,10 @@ export default props => {
       <Container fluid>
         <Row>
           <Col sm={6}>
-            <Asset asset={data.ship || "/Sensor Contacts/Pictures/Default"}>
-              {({src}) => <img alt="ship" src={src} />}
-            </Asset>
+            <img
+              alt="ship"
+              src={`/assets${data.ship || "/Sensor Contacts/Pictures/Default"}`}
+            />
           </Col>
           <Col sm={{size: 4, offset: 1}}>
             <h1>{data.name}</h1>

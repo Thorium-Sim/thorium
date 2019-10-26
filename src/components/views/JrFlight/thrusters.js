@@ -1,6 +1,5 @@
 import React from "react";
 import {Row, Col} from "helpers/reactstrap";
-import {Asset} from "helpers/assets";
 import {graphql, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {
@@ -52,24 +51,20 @@ const Thrusters = props => {
                 onMouseDown={() => thrust({x: -1, y: 0})}
                 onMouseUp={() => thrust({x: 0, y: 0})}
               />
-              <Asset asset={assets.top}>
-                {({src}) => (
-                  <div
-                    alt="thruster"
-                    draggable="false"
-                    style={{
-                      backgroundImage: `url('${src}')`,
-                      transform: "rotate(-90deg)",
-                      width: "200vw",
-                      height: "60vh",
-                      backgroundPosition: "center",
-                      backgroundSize: "contain",
-                      backgroundRepeat: "no-repeat",
-                      pointerEvents: "none",
-                    }}
-                  />
-                )}
-              </Asset>
+              <div
+                alt="thruster"
+                draggable="false"
+                style={{
+                  backgroundImage: `url('/assets${assets.top}')`,
+                  transform: "rotate(-90deg)",
+                  width: "200vw",
+                  height: "60vh",
+                  backgroundPosition: "center",
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  pointerEvents: "none",
+                }}
+              />
               <FaArrowRight
                 size="3em"
                 onMouseDown={() => thrust({x: 1, y: 0})}

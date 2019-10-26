@@ -1,6 +1,6 @@
 export default {
   flight: {
-    id: "3c97e138-c559-4392-8655-d0eb15c7934d",
+    id: "test",
     name: "deep-mysterious-herd",
     date: "2019-10-12T22:17:09.852Z",
     flightType: null,
@@ -649,5 +649,9 @@ export default {
   },
   clientObj: {
     id: "test",
+  },
+  station: {
+    name: "Test Station",
+    widgets: [],
   },
 };

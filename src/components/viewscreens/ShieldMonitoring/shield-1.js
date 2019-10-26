@@ -1,5 +1,4 @@
 import React from "react";
-import {Asset} from "helpers/assets";
 import {shieldColor} from "components/views/ShieldControl/shieldStyle";
 
 export default ({simulator, shields}) => {
@@ -8,18 +7,14 @@ export default ({simulator, shields}) => {
   const {assets} = simulator;
   return (
     <div className="shieldMonitoring">
-      <Asset asset={assets.top}>
-        {({src}) => (
-          <img
-            alt="ship"
-            role="presentation"
-            className="mw-100 ccw-90 shieldImage"
-            style={{filter: `drop-shadow(${color} 0px 0px 30px)`}}
-            draggable="false"
-            src={src}
-          />
-        )}
-      </Asset>
+      <img
+        alt="ship"
+        role="presentation"
+        className="mw-100 ccw-90 shieldImage"
+        style={{filter: `drop-shadow(${color} 0px 0px 30px)`}}
+        draggable="false"
+        src={`/assets${assets.top}`}
+      />
     </div>
   );
 };

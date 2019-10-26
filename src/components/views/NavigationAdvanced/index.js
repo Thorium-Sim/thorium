@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import {Container, Row, Col, Card} from "helpers/reactstrap";
-import {Asset} from "helpers/assets";
 import {throttle} from "helpers/debounce";
 import AnimatedNumber from "react-animated-number";
 import Slider from "./slider";
@@ -255,22 +254,18 @@ class AdvancedNavigation extends Component {
             </Row>
             <Row style={{flex: "1"}}>
               <Col sm={{size: 8, offset: 2}} className="ship-image">
-                <Asset asset={assets.side}>
-                  {({src}) => (
-                    <div
-                      alt="ship"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundImage: `url("${src}")`,
-                        backgroundSize: "contain",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                      }}
-                      draggable="false"
-                    />
-                  )}
-                </Asset>
+                <div
+                  alt="ship"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundImage: `url("/assets${assets.side}")`,
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                  draggable="false"
+                />
               </Col>
             </Row>
             <Row>

@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {Asset} from "helpers/assets";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -50,33 +49,29 @@ class DamageMonitoring extends Component {
         />
         <h1>Damage Monitor</h1>
         <div className="ship-view">
-          <Asset asset={this.props.simulator.assets.side}>
-            {({src}) => {
-              return (
-                <div
-                  alt="ship"
-                  style={{
-                    width: "70vw",
-                    height: "70vh",
-                    backgroundImage: `url("${src}")`,
-                    backgroundSize: "contain",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
-                  }}
-                  draggable="false"
-                >
-                  <div
-                    className="scanner-mask"
-                    style={{WebkitMaskImage: `url("${src}")`}}
-                  >
-                    <div className="scanner-holder">
-                      <div className="scanner" />
-                    </div>
-                  </div>
-                </div>
-              );
+          <div
+            alt="ship"
+            style={{
+              width: "70vw",
+              height: "70vh",
+              backgroundImage: `url("/assets${this.props.simulator.assets.side}")`,
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
             }}
-          </Asset>
+            draggable="false"
+          >
+            <div
+              className="scanner-mask"
+              style={{
+                WebkitMaskImage: `url(/assets${this.props.simulator.assets.side})`,
+              }}
+            >
+              <div className="scanner-holder">
+                <div className="scanner" />
+              </div>
+            </div>
+          </div>
         </div>
         <div className="damage-view">
           {damagedSystems.length > 0 ? (

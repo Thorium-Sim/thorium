@@ -9,7 +9,7 @@ import CoreComponent, {
 } from "../components/views/HandheldScanner/core.js";
 
 export default {
-  title: "Cards|Core/HandheldScanner",
+  title: "Cards|Mobile/HandheldScanner",
 };
 
 export const Core = () => (

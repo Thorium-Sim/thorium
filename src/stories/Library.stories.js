@@ -2,13 +2,21 @@ import React from "react";
 import StorybookWrapper from "./helpers/storybookWrapper.js";
 
 import baseProps from "./helpers/baseProps.js";
-import Component from "../components/views/Library/index.js";
+import Component, {
+  LIBRARY_SUB,
+  LIBRARY_QUERY,
+} from "../components/views/Library/index.js";
 
 export default {
-  title: "Cards|Library",
+  title: "Cards|Command/Library",
 };
 export const Library = () => (
-  <StorybookWrapper>
+  <StorybookWrapper
+    queries={[
+      [LIBRARY_SUB, [], {simulatorId: "test", type: "general"}],
+      [LIBRARY_QUERY, [], {simulatorId: "test", type: "general"}],
+    ]}
+  >
     <Component {...baseProps} />
   </StorybookWrapper>
 );

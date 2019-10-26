@@ -43,7 +43,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const JUMP_DRIVE_QUERY = gql`
   query JumpDrive($simulatorId: ID!) {
     jumpDrive(simulatorId: $simulatorId) {
       ...JumpDriveData
@@ -51,7 +51,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const JUMP_DRIVE_SUB = gql`
   subscription JumpDriveUpdate($simulatorId: ID!) {
     jumpDriveUpdate(simulatorId: $simulatorId) {
       ...JumpDriveData
@@ -64,16 +64,19 @@ class JumpDriveData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={JUMP_DRIVE_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {jumpDrive} = data;
-          if (loading || !jumpDrive) return null;
           if (!jumpDrive[0]) return <div>No Jump Drive</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: JUMP_DRIVE_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

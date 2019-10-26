@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import uuid from "uuid";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
-import {Asset} from "helpers/assets.js";
 
 import withSound from "../../generic/SoundPlayer";
 class SoundsTester extends Component {
@@ -29,17 +28,14 @@ class SoundsTester extends Component {
           }}
         >
           {sounds.map(s => (
-            <Asset asset={s.fullPath} key={s.id}>
-              {({src}) => (
-                <li
-                  onClick={() => {
-                    this.props.playSound({url: src});
-                  }}
-                >
-                  {s.name}
-                </li>
-              )}
-            </Asset>
+            <li
+              key={s.id}
+              onClick={() => {
+                this.props.playSound({url: `/assets${s.fullPath}`});
+              }}
+            >
+              {s.name}
+            </li>
           ))}
         </ul>
       </div>

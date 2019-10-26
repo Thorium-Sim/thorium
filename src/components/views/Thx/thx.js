@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from "react";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
-import {Asset} from "helpers/assets";
 import {withApollo, Mutation} from "react-apollo";
 import Tour from "helpers/tourHelper";
 import {FormattedMessage} from "react-intl";
@@ -10,43 +9,39 @@ const ShipImage = ({simulatorId, view, clients, charge, index, executive}) => {
   const clientList = clients.filter(c => !c.executive);
   return (
     <div className="ship-image">
-      <Asset asset={view}>
-        {({src}) => (
-          <Fragment>
+      <Fragment>
+        <div
+          alt="Ship Top"
+          style={{
+            backgroundImage: `url('/assets${view}')`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            width: "100%",
+            height: "40vh",
+            objectFit: "contain",
+          }}
+        />
+        <div
+          className="power-bars"
+          style={{
+            WebkitMaskImage: `url('/assets/${view}')`,
+          }}
+        >
+          {clientList.map((c, i) => (
             <div
-              alt="Ship Top"
+              key={`client-${c.id}`}
               style={{
-                backgroundImage: `url('${src}')`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                width: "100%",
-                height: "40vh",
-                objectFit: "contain",
+                width: `${(1 / clientList.length) * 100}%`,
+                left: `${((i * 1) / clientList.length) * 100}%`,
+                backgroundColor: c.lock
+                  ? "rgba(255,0,0,0.5)"
+                  : "rgba(255,255,0,0.5)",
+                opacity: executive ? c.charge : index === i ? charge : 0,
               }}
             />
-            <div
-              className="power-bars"
-              style={{
-                WebkitMaskImage: `url('${src}')`,
-              }}
-            >
-              {clientList.map((c, i) => (
-                <div
-                  key={`client-${c.id}`}
-                  style={{
-                    width: `${(1 / clientList.length) * 100}%`,
-                    left: `${((i * 1) / clientList.length) * 100}%`,
-                    backgroundColor: c.lock
-                      ? "rgba(255,0,0,0.5)"
-                      : "rgba(255,255,0,0.5)",
-                    opacity: executive ? c.charge : index === i ? charge : 0,
-                  }}
-                />
-              ))}
-            </div>
-          </Fragment>
-        )}
-      </Asset>
+          ))}
+        </div>
+      </Fragment>
     </div>
   );
 };

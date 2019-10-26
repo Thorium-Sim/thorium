@@ -24,7 +24,7 @@ const Provider = ({children, mocks = [], queries: queriesInput = []}) => {
     result: q,
   }));
   const allMocks = [...mocks, ...queryMocks];
-  console.log(allMocks);
+
   return (
     <MockedProvider mocks={allMocks} addTypename={false}>
       {children}

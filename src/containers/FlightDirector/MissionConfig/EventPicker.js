@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag.macro";
 import {Query} from "react-apollo";
 
-const MacroConfigQuery = gql`
+export const MacroConfigQuery = gql`
   query IntrospectionQuery {
     __schema {
       mutationType {

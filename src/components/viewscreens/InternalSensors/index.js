@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
-import {Asset} from "helpers/assets";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
@@ -69,14 +68,10 @@ class InternalSensorsViewscreen extends Component {
           }
         />
         <h1>Internal Scans</h1>
-        <Asset asset={assets.side}>
-          {({src}) => (
-            <div className="ship">
-              {scanning && <div className="scanner" style={{background}} />}
-              <img alt="ship" src={src} />
-            </div>
-          )}
-        </Asset>
+        <div className="ship">
+          {scanning && <div className="scanner" style={{background}} />}
+          <img alt="ship" src={`/assets${assets.side}`} />
+        </div>
         <h2>
           {scanning
             ? `Scanning${scanRequest ? ": " + scanRequest : "..."} `

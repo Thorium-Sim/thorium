@@ -2,7 +2,6 @@ import React from "react";
 import {Button, Row, Col, Input} from "helpers/reactstrap";
 import {withApollo, Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import {Asset} from "helpers/assets";
 import Tour from "helpers/tourHelper";
 import {publish} from "helpers/pubsub";
 import "./login.scss";
@@ -93,18 +92,15 @@ const Login = ({
   return (
     <Row className="loginCard">
       <Col sm={{size: 3, offset: 1}}>
-        <Asset asset={assets.logo}>
-          {({src}) => (
-            <div
-              alt="login logo"
-              role="presentation"
-              className="login-logo"
-              style={{backgroundImage: `url('${src}')`}}
-            >
-              <div style={{paddingTop: "100%"}} />
-            </div>
-          )}
-        </Asset>
+        <div
+          alt="login logo"
+          role="presentation"
+          className="login-logo"
+          style={{backgroundImage: `url('/assets${assets.logo}')`}}
+        >
+          <div style={{paddingTop: "100%"}} />
+        </div>
+
         <h1>{simName}</h1>
         <Mutation
           mutation={gql`
@@ -125,19 +121,15 @@ const Login = ({
         </Mutation>
       </Col>
       <Col sm={{size: 7, offset: 1}}>
-        <Asset asset={assets.side}>
-          {({src}) => (
-            <div
-              role="presentation"
-              alt="ship right"
-              style={{backgroundImage: `url('${src}')`}}
-              className="ship-logo"
-            >
-              {" "}
-              <div style={{paddingTop: "50%"}} />
-            </div>
-          )}
-        </Asset>
+        <div
+          role="presentation"
+          alt="ship right"
+          style={{backgroundImage: `url('/assets${assets.side}')`}}
+          className="ship-logo"
+        >
+          {" "}
+          <div style={{paddingTop: "50%"}} />
+        </div>
 
         <Col className="loginBlock" sm={{size: 8, offset: 2}}>
           <h2>Officer Login</h2>
@@ -214,19 +206,17 @@ const Login = ({
   );
 };
 
+export const FLIGHT_QUERY = gql`
+  query Flight($flightId: ID!) {
+    flights(id: $flightId) {
+      id
+      flightType
+    }
+  }
+`;
 const FlightData = props => {
   return (
-    <Query
-      query={gql`
-        query Flight($flightId: ID!) {
-          flights(id: $flightId) {
-            id
-            flightType
-          }
-        }
-      `}
-      variables={{flightId: props.flight.id}}
-    >
+    <Query query={FLIGHT_QUERY} variables={{flightId: props.flight.id}}>
       {({loading, data}) => (
         <Login
           {...props}

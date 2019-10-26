@@ -9,7 +9,6 @@ import "./style.scss";
 import Grid from "./GridDom";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";
-import {Asset} from "helpers/assets";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const SENSOR_SUB = gql`
@@ -334,20 +333,16 @@ class Sensors extends Component {
                 <Col className="col-sm-12">
                   <div className="card contactPictureContainer">
                     {hoverContact.picture && (
-                      <Asset asset={hoverContact.picture}>
-                        {({src}) => (
-                          <div
-                            className="contactPicture"
-                            style={{
-                              backgroundSize: "contain",
-                              backgroundPosition: "center",
-                              backgroundRepeat: "no-repeat",
-                              backgroundColor: "black",
-                              backgroundImage: `url('${src}')`,
-                            }}
-                          />
-                        )}
-                      </Asset>
+                      <div
+                        className="contactPicture"
+                        style={{
+                          backgroundSize: "contain",
+                          backgroundPosition: "center",
+                          backgroundRepeat: "no-repeat",
+                          backgroundColor: "black",
+                          backgroundImage: `url('/assets${hoverContact.picture}')`,
+                        }}
+                      />
                     )}
                   </div>
                 </Col>

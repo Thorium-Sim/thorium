@@ -16,7 +16,7 @@ import escapeRegex from "escape-string-regexp";
 
 import "./style.scss";
 
-const SUB = gql`
+export const LIBRARY_SUB = gql`
   subscription Library($simulatorId: ID, $type: String) {
     libraryEntriesUpdate(simulatorId: $simulatorId, type: $type) {
       id
@@ -82,7 +82,7 @@ class Library extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: LIBRARY_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
                 type: this.props.type || "general",
@@ -232,7 +232,7 @@ class Library extends Component {
   }
 }
 
-const QUERY = gql`
+export const LIBRARY_QUERY = gql`
   query Library($simulatorId: ID, $type: String) {
     libraryEntries(simulatorId: $simulatorId, type: $type) {
       id
@@ -246,7 +246,7 @@ const QUERY = gql`
     }
   }
 `;
-export default graphql(QUERY, {
+export default graphql(LIBRARY_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

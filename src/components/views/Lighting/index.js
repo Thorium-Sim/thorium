@@ -26,17 +26,17 @@ const fragment = gql`
     }
   }
 `;
-const QUERY = gql`
-  query Lighting($id: ID!) {
-    simulators(id: $id) {
+export const LIGHTING_QUERY = gql`
+  query Lighting($simulatorId: ID!) {
+    simulators(id: $simulatorId) {
       ...LightingData
     }
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
-  subscription SimulatorsUpdate($id: ID!) {
-    simulatorsUpdate(simulatorId: $id) {
+export const LIGHTING_SUB = gql`
+  subscription SimulatorsUpdate($simulatorId: ID!) {
+    simulatorsUpdate(simulatorId: $simulatorId) {
       ...LightingData
     }
   }
@@ -391,9 +391,9 @@ const LightingCore = ({simulator: {lighting, id}}) => {
 };
 const LightingCoreData = ({clients, simulator: {id}}) => {
   return (
-    <Query query={QUERY} variables={{id}}>
-      {({loading, data, subscribeToMore}) => {
-        if (loading) return null;
+    <Query query={LIGHTING_QUERY} variables={{simulatorId: id}}>
+      {({loading, data, error, subscribeToMore}) => {
+        if (loading || !data) return null;
         const {simulators} = data;
         const [simulator] = simulators;
         if (!simulator) return "No Simulator";
@@ -401,8 +401,8 @@ const LightingCoreData = ({clients, simulator: {id}}) => {
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({
-                document: SUBSCRIPTION,
-                variables: {id},
+                document: LIGHTING_SUB,
+                variables: {simulatorId: id},
                 updateQuery: (previousResult, {subscriptionData}) => {
                   return Object.assign({}, previousResult, {
                     simulators: subscriptionData.data.simulatorsUpdate,

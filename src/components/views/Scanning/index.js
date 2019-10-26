@@ -7,7 +7,6 @@ import {Typing} from "react-typing";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import {DeckDropdown, RoomDropdown} from "helpers/shipStructure";
-import {Asset} from "helpers/assets";
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 import {FaSyncAlt} from "react-icons/fa";
@@ -398,22 +397,19 @@ class Scanning extends Component {
                 <h4 className="text-center">Scan in progress...</h4>
                 {domain === "internal" ? (
                   <Card className="scannerBox" style={{overflow: "hidden"}}>
-                    <Asset asset={this.props.simulator.assets.side}>
-                      {({src}) => (
-                        <div
-                          alt="ship"
-                          style={{
-                            width: "100%",
-                            height: "30vh",
-                            backgroundImage: `url("${src}")`,
-                            backgroundSize: "contain",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                          }}
-                          draggable="false"
-                        />
-                      )}
-                    </Asset>
+                    <div
+                      alt="ship"
+                      style={{
+                        width: "100%",
+                        height: "30vh",
+                        backgroundImage: `url("/assets${this.props.simulator.assets.side}")`,
+                        backgroundSize: "contain",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
+                      draggable="false"
+                    />
+
                     <div className="scanner" />
                   </Card>
                 ) : (

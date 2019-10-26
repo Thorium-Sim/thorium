@@ -3,7 +3,6 @@ import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import {Container, Row, Col, Card, CardBody, Button} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import {Asset} from "helpers/assets";
 import Decompress from "./Decompress";
 import Door from "./Door";
 import {Clamps} from "../Docking/graphics";
@@ -301,19 +300,15 @@ class ShuttleBay extends Component {
                 <Door open={!doors} number={"0" + (i + 1)} />
               )}
               {docked ? (
-                <Asset asset={image} simulatorId={simulatorId}>
-                  {({src}) => (
-                    <div
-                      className="picture shuttle"
-                      style={{
-                        backgroundImage: `url('${src}')`,
-                        display: !animating ? "flex" : "none",
-                      }}
-                    >
-                      <div className="spacer" />
-                    </div>
-                  )}
-                </Asset>
+                <div
+                  className="picture shuttle"
+                  style={{
+                    backgroundImage: `url('/assets${image}')`,
+                    display: !animating ? "flex" : "none",
+                  }}
+                >
+                  <div className="spacer" />
+                </div>
               ) : (
                 <div
                   style={{display: !animating ? "flex" : "none"}}

@@ -5,7 +5,7 @@ import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/Keyboard/index.js";
 
 export default {
-  title: "Cards|Keyboard",
+  title: "Cards|Core/Keyboard",
 };
 export const Keyboard = () => (
   <StorybookWrapper>
