@@ -9,7 +9,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 export {default as PhaserFire} from "./phaserFire";
 
-const PHASERS_SUB = gql`
+export const PHASERS_SUB = gql`
   subscription PhasersUpdate($simulatorId: ID!) {
     phasersUpdate(simulatorId: $simulatorId) {
       id
@@ -442,7 +442,7 @@ export class PhaserArc extends Component {
     );
   }
 }
-const PHASERS_QUERY = gql`
+export const PHASERS_QUERY = gql`
   query Phasers($simulatorId: ID!) {
     phasers(simulatorId: $simulatorId) {
       id

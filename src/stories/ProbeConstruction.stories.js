@@ -3,12 +3,12 @@ import StorybookWrapper from "./helpers/storybookWrapper.js";
 
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/ProbeConstruction/index.js";
-
+import ProbeConstructionMock from "../mocks/cards/ProbeConstruction.mock";
 export default {
-  title: "Cards|ProbeConstruction",
+  title: "Cards|Sensors/ProbeConstruction",
 };
 export const ProbeConstruction = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={ProbeConstructionMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );

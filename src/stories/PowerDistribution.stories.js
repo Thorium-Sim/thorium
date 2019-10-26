@@ -1,20 +1,17 @@
 import React from "react";
 import StorybookWrapper from "./helpers/storybookWrapper.js";
-import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
-import Component from "../components/views/PowerDistribution/index.js";
-import CoreComponent from "../components/views/PowerDistribution/core.js";
+import Component, {
+  SYSTEMS_QUERY,
+  SYSTEMS_SUB,
+  REACTOR_SUB,
+} from "../components/views/PowerDistribution/index.js";
 
 export default {
-  title: "Cards|PowerDistribution",
+  title: "Cards|Operations/PowerDistribution",
 };
 export const PowerDistribution = () => (
-  <StorybookWrapper>
+  <StorybookWrapper queries={[SYSTEMS_QUERY, SYSTEMS_SUB, REACTOR_SUB]}>
     <Component {...baseProps} />
   </StorybookWrapper>
-);
-export const Core = () => (
-  <StorybookWrapperCore>
-    <CoreComponent {...baseProps} />
-  </StorybookWrapperCore>
 );

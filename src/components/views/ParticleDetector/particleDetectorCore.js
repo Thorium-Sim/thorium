@@ -51,7 +51,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const PARTICLE_CORE_QUERY = gql`
   query Particles($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, type: "particle") {
       ...ParticleDetectorCoreData
@@ -62,7 +62,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const CONTACTS_SUB = gql`
+export const PARTICLE_CONTACTS_CORE_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "particle") {
       ...ParticleDetectorCoreData
@@ -438,7 +438,10 @@ class ParticleDetectorCore extends Component {
 }
 
 const ParticleDetectorData = withApollo(props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={PARTICLE_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
       if (loading || !data) return null;
       const {sensorContacts, sensors} = data;
@@ -446,7 +449,7 @@ const ParticleDetectorData = withApollo(props => (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: CONTACTS_SUB,
+              document: PARTICLE_CONTACTS_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

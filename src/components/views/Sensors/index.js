@@ -11,19 +11,15 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import SensorScans from "./SensorScans";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const SENSOR_SUB = gql`
+export const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
     sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
       id
-      simulatorId
       scanResults
       scanRequest
-      processedData
       scanning
-      pings
-      pingMode
+      processedData
       interference
-      timeSincePing
       movement {
         x
         y
@@ -36,7 +32,6 @@ const SENSOR_SUB = gql`
       }
       damage {
         damaged
-        report
       }
       power {
         power
@@ -437,19 +432,15 @@ const PingControl = ({selectPing, pingMode, ping, triggerPing}) => {
     </Row>
   );
 };
-const SENSOR_QUERY = gql`
+export const SENSOR_QUERY = gql`
   query GetSensors($simulatorId: ID) {
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
-      simulatorId
       scanResults
       scanRequest
       scanning
       processedData
-      pings
-      pingMode
       interference
-      timeSincePing
       movement {
         x
         y
@@ -462,7 +453,6 @@ const SENSOR_QUERY = gql`
       }
       damage {
         damaged
-        report
       }
       power {
         power

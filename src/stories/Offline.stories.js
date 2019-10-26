@@ -5,7 +5,7 @@ import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/Offline/index.js";
 
 export default {
-  title: "Cards|Offline",
+  title: "Cards|Crew/Offline",
 };
 export const Offline = () => (
   <StorybookWrapper>

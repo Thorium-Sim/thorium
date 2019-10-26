@@ -44,7 +44,7 @@ const fragment = gql`
   }
 `;
 
-export const QUERY = gql`
+export const SENSOR_GRID_QUERY = gql`
   query Contacts($sensorsId: ID) {
     sensorContacts(sensorsId: $sensorsId) {
       ...ContactData
@@ -52,7 +52,7 @@ export const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const SENSOR_GRID_SUB = gql`
   subscription SensorContactsChanged($sensorId: ID) {
     sensorContactUpdate(sensorId: $sensorId) {
       ...ContactData
@@ -65,7 +65,10 @@ class GridData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{sensorsId: this.props.sensor}}>
+      <Query
+        query={SENSOR_GRID_QUERY}
+        variables={{sensorsId: this.props.sensor}}
+      >
         {({loading, data, subscribeToMore, client}) => {
           if (loading || !data) return null;
           const {sensorContacts} = data;
@@ -74,7 +77,7 @@ class GridData extends Component {
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: SENSOR_GRID_SUB,
                   variables: {sensorId: this.props.sensor},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

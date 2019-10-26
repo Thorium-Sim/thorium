@@ -7,7 +7,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
-const PHASERS_SUB = gql`
+export const PHASERS_CORE_SUB = gql`
   subscription PhasersUpdate($simulatorId: ID!) {
     phasersUpdate(simulatorId: $simulatorId) {
       id
@@ -67,7 +67,7 @@ class PhaserChargingCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: PHASERS_SUB,
+              document: PHASERS_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -111,7 +111,7 @@ class PhaserChargingCore extends Component {
   }
 }
 
-const PHASERS_QUERY = gql`
+export const PHASERS_CORE_QUERY = gql`
   query Phasers($simulatorId: ID!) {
     phasers(simulatorId: $simulatorId) {
       id
@@ -127,7 +127,7 @@ const PHASERS_QUERY = gql`
   }
 `;
 
-export default graphql(PHASERS_QUERY, {
+export default graphql(PHASERS_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

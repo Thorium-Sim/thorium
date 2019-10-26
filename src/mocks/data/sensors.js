@@ -1,6 +1,6 @@
 export default [
   {
-    id: "30442474-4c11-461c-a8db-9ba0c416a0b0",
+    id: "test",
     name: "External Sensors",
     displayName: "External Sensors",
     scanResults: "",

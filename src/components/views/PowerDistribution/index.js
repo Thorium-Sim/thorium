@@ -22,7 +22,7 @@ const mutation = gql`
   }
 `;
 
-const SYSTEMS_SUB = gql`
+export const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, power: true) {
       name
@@ -40,7 +40,7 @@ const SYSTEMS_SUB = gql`
   }
 `;
 
-const REACTOR_SUB = gql`
+export const REACTOR_SUB = gql`
   subscription ReactorUpdate($simulatorId: ID) {
     reactorUpdate(simulatorId: $simulatorId) {
       id
@@ -268,7 +268,7 @@ const Battery = ({level = 1}) => {
     </div>
   );
 };
-const SYSTEMS_QUERY = gql`
+export const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
     systems(simulatorId: $simulatorId, power: true) {
       name

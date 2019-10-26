@@ -59,7 +59,7 @@ const fragment = gql`
     }
   }
 `;
-const PROBES_SUB = gql`
+export const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
       ...ProbeConstructionData
@@ -68,7 +68,7 @@ const PROBES_SUB = gql`
   ${fragment}
 `;
 
-const PROBES_QUERY = gql`
+export const PROBES_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
       ...ProbeConstructionData

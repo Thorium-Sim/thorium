@@ -48,7 +48,7 @@ const trainingSteps = [
   },
 ];
 
-const PROBES_SUB = gql`
+export const PROBES_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
       id
@@ -85,7 +85,7 @@ class ProbeControl extends Component {
         variables={{simulatorId: this.props.simulator.id}}
       >
         {({data, loading, subscribeToMore}) => {
-          if (loading || !data.probes) return null;
+          if (loading || !data) return null;
           const probes = data.probes[0];
           const {selectedProbe} = this.state;
           if (!probes) return <p>No Probe Launcher</p>;
@@ -138,18 +138,21 @@ class ProbeControl extends Component {
                     )}
                     {probes.probes
                       .filter(p => !/^[1-8]{1}$/.test(p.name))
-                      .map(p => (
-                        <ListGroupItem
-                          key={p.id}
-                          onClick={() => this.setState({selectedProbe: p.id})}
-                          active={selectedProbe === p.id}
-                        >
-                          <p className="probe-name">{p.name}</p>
-                          <small>
-                            {probes.types.find(t => t.id === p.type).name}
-                          </small>
-                        </ListGroupItem>
-                      ))}
+                      .map(p => {
+                        const probeType = probes.types.find(
+                          t => t.id === p.type,
+                        );
+                        return (
+                          <ListGroupItem
+                            key={p.id}
+                            onClick={() => this.setState({selectedProbe: p.id})}
+                            active={selectedProbe === p.id}
+                          >
+                            <p className="probe-name">{p.name}</p>
+                            <small>{probeType && probeType.name}</small>
+                          </ListGroupItem>
+                        );
+                      })}
                   </ListGroup>
                 </Col>
                 <Col sm={9}>
@@ -169,7 +172,7 @@ class ProbeControl extends Component {
   }
 }
 
-const PROBES_QUERY = gql`
+export const PROBES_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
       id
@@ -241,7 +244,12 @@ class ProbeControlWrapper extends Component {
   render() {
     const {name, equipment = [], response, querying, type} = this.props;
     const {queryText} = this.state;
-    //const { activeTab } = this.state;
+    let probeImage = null;
+    try {
+      probeImage = require(`../ProbeConstruction/probes/${type}.svg`);
+    } catch {
+      //Nothing
+    }
     return (
       <Container>
         <h1>{name}</h1>
@@ -307,52 +315,13 @@ class ProbeControlWrapper extends Component {
                       width: "200px",
                       transform: "rotate(90deg) translate(-150px, -250px)",
                     }}
-                    src={require(`../ProbeConstruction/probes/${type}.svg`)}
+                    src={probeImage}
                   />
                 )}
               </Col>
             </Row>
           </Col>
         </Row>
-        {/*<Nav tabs>
-          <NavItem>
-            <NavLink
-              className={activeTab === '1' ? 'active' : ''}
-              onClick={() => {
-                this.toggle('1');
-              }}>
-              Tab1
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={activeTab === '2' ? 'active' : ''}
-              onClick={() => {
-                this.toggle('2');
-              }}>
-              Moar Tabs
-            </NavLink>
-          </NavItem>
-        </Nav>
-        <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="1">
-            <Row>
-              <Col sm="12">
-                <h4>Tab 1 Contents</h4>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="2">
-            <Row>
-              <Col sm="6">
-                <Card block>Something</Card>
-              </Col>
-              <Col sm="6">
-                <Card block>something else</Card>
-              </Col>
-            </Row>
-          </TabPane>
-        </TabContent>*/}
       </Container>
     );
   }

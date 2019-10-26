@@ -649,10 +649,12 @@ export default {
   },
   clientObj: {
     id: "test",
+    offlineState: "lockdown",
   },
   station: {
     name: "Test Station",
     widgets: [],
+    cards: [],
     messageGroups: ["security"],
   },
 };

@@ -21,6 +21,7 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
     position: {
       x: 0.5366140318228988,
       y: 0.4241625416583228,
@@ -60,6 +61,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: -0.7176238738738738,
       y: -0.2972972972972973,
@@ -99,6 +102,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: -0.17708333333333334,
       y: 0.2702702702702703,
@@ -138,6 +143,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: 0.4895833333333333,
       y: -0.40540540540540543,
@@ -177,6 +184,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: -0.4825846354166667,
       y: -0.4375,
@@ -216,6 +225,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: 0.2674153645833333,
       y: 0.5208333333333334,
@@ -255,6 +266,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: -0.53466796875,
       y: 0.28125,
@@ -294,6 +307,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: 0.7049153645833334,
       y: -0.3645833333333333,
@@ -333,6 +348,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: -0.4145380866327145,
       y: -0.3594625022698384,
@@ -372,6 +389,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: -0.5196801927605279,
       y: 0.585758731311664,
@@ -411,6 +430,8 @@ export default [
     movementTime: 0,
     startTime: 0,
     endTime: 0,
+    rotation: 0,
+
     position: {
       x: 0.21631455013416567,
       y: -0.6926142485321711,

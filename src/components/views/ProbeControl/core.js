@@ -46,7 +46,7 @@ const fragment = gql`
     }
   }
 `;
-const PROBES_SUB = gql`
+export const PROBES_CORE_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
       ...ProbeControlData
@@ -151,7 +151,7 @@ class ProbeControl extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: PROBES_SUB,
+              document: PROBES_CORE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -274,7 +274,7 @@ class ProbeControl extends Component {
   }
 }
 
-const PROBES_QUERY = gql`
+export const PROBES_CORE_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
       ...ProbeControlData
@@ -283,7 +283,7 @@ const PROBES_QUERY = gql`
   ${fragment}
 `;
 
-export default graphql(PROBES_QUERY, {
+export default graphql(PROBES_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},
