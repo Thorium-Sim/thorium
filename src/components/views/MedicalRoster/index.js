@@ -18,7 +18,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const MEDICAL_ROSTER_QUERY = gql`
   query Template($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
       id
@@ -32,7 +32,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const MEDICAL_ROSTER_SUB = gql`
   subscription Sickbay($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
       id
@@ -44,7 +44,7 @@ const SUBSCRIPTION = gql`
   ${fragment}
 `;
 
-const CREWSUB = gql`
+export const MEDICAL_ROSTER_CREW_SUB = gql`
   subscription CrewSub($simulatorId: ID!) {
     crewUpdate(simulatorId: $simulatorId) {
       ...CrewData
@@ -57,7 +57,10 @@ class TemplateData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={MEDICAL_ROSTER_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data = {}, subscribeToMore}) => {
           const {sickbay, crew} = data;
           if (loading || !sickbay) return null;
@@ -68,7 +71,7 @@ class TemplateData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: SUBSCRIPTION,
+                    document: MEDICAL_ROSTER_SUB,
                     variables: {simulatorId: this.props.simulator.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       return Object.assign({}, previousResult, {
@@ -81,7 +84,7 @@ class TemplateData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: CREWSUB,
+                    document: MEDICAL_ROSTER_CREW_SUB,
                     variables: {simulatorId: this.props.simulator.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       return Object.assign({}, previousResult, {

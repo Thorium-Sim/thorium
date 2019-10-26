@@ -21,7 +21,7 @@ import {titleCase} from "change-case";
 import {FormattedMessage} from "react-intl";
 import Tour from "helpers/tourHelper";
 
-const MESSAGING_SUB = gql`
+export const MESSAGING_SUB = gql`
   subscription GotMessage($simulatorId: ID!, $station: String) {
     sendMessage(simulatorId: $simulatorId, station: $station) {
       id
@@ -34,7 +34,7 @@ const MESSAGING_SUB = gql`
   }
 `;
 
-const TEAMS_SUB = gql`
+export const MESSAGING_TEAMS_SUB = gql`
   subscription TeamsUpdate($simulatorId: ID) {
     teamsUpdate(simulatorId: $simulatorId, cleared: true) {
       id
@@ -207,7 +207,7 @@ class Messaging extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: TEAMS_SUB,
+              document: MESSAGING_TEAMS_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -371,8 +371,8 @@ class Messaging extends Component {
   }
 }
 
-const MESSAGING_QUERY = gql`
-  query Messages($simulatorId: ID!, $simId: ID, $station: String) {
+export const MESSAGING_QUERY = gql`
+  query Messages($simulatorId: ID!, $station: String) {
     messages(simulatorId: $simulatorId, station: $station) {
       id
       sender
@@ -387,7 +387,7 @@ const MESSAGING_QUERY = gql`
       type
       cleared
     }
-    simulators(id: $simId) {
+    simulators(id: $simulatorId) {
       id
       bridgeOfficerMessaging
     }
@@ -398,7 +398,6 @@ export default graphql(MESSAGING_QUERY, {
     fetchPolicy: "cache-and-network",
     variables: {
       simulatorId: ownProps.simulator.id,
-      simId: ownProps.simulator.id,
       station: ownProps.station.name,
     },
   }),

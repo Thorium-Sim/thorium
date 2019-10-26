@@ -3,7 +3,7 @@ import gql from "graphql-tag.macro";
 import {useQuery} from "@apollo/react-hooks";
 import {useSubscribeToMore} from "../../../helpers/hooks/useQueryAndSubscribe";
 
-const QUERY = gql`
+export const OFFICER_LOG_CORE_QUERY = gql`
   query OfficerLog($clientId: ID, $flightId: ID!) {
     officerLogs(clientId: $clientId, flightId: $flightId) {
       id
@@ -13,7 +13,7 @@ const QUERY = gql`
     }
   }
 `;
-const SUB = gql`
+export const OFFICER_LOG_CORE_SUB = gql`
   subscription OfficerLogUpdate($clientId: ID, $flightId: ID!) {
     officerLogsUpdate(clientId: $clientId, flightId: $flightId) {
       id
@@ -25,7 +25,7 @@ const SUB = gql`
 `;
 
 const OfficerLogCore = ({flightId}) => {
-  const {loading, data, subscribeToMore} = useQuery(QUERY, {
+  const {loading, data, subscribeToMore} = useQuery(OFFICER_LOG_CORE_QUERY, {
     variables: {flightId},
   });
   const config = React.useMemo(
@@ -40,7 +40,7 @@ const OfficerLogCore = ({flightId}) => {
     }),
     [flightId],
   );
-  useSubscribeToMore(subscribeToMore, SUB, config);
+  useSubscribeToMore(subscribeToMore, OFFICER_LOG_CORE_SUB, config);
 
   if (loading || !data.officerLogs) return null;
 

@@ -15,7 +15,7 @@ export const stardate = date => {
   return Math.floor(finalDate) / 10;
 };
 
-const SUB = gql`
+export const OFFICER_LOG_SUB = gql`
   subscription OfficerLogUpdate($clientId: ID!, $flightId: ID!) {
     officerLogsUpdate(clientId: $clientId, flightId: $flightId) {
       id
@@ -72,7 +72,7 @@ class OfficerLog extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: OFFICER_LOG_SUB,
               variables: {
                 clientId: this.props.clientObj.id,
                 flightId: this.props.flight.id,
@@ -171,7 +171,7 @@ class OfficerLog extends Component {
   }
 }
 
-const QUERY = gql`
+export const OFFICER_LOG_QUERY = gql`
   query OfficerLog($clientId: ID!, $flightId: ID!) {
     officerLogs(clientId: $clientId, flightId: $flightId) {
       id
@@ -181,7 +181,7 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY, {
+export default graphql(OFFICER_LOG_QUERY, {
   options: ownProps => {
     return {
       fetchPolicy: "cache-and-network",

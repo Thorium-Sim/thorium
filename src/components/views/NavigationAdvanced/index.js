@@ -31,7 +31,7 @@ const sliderColors = [
     className: "text-warning",
   },
 ];
-const THRUSTER_SUB = gql`
+export const NAV_THRUSTER_SUB = gql`
   subscription ThrusterSub($simulatorId: ID) {
     rotationChange(simulatorId: $simulatorId) {
       id
@@ -57,7 +57,7 @@ const THRUSTER_SUB = gql`
   }
 `;
 
-const ENGINE_SUB = gql`
+export const NAV_ENGINE_SUB = gql`
   subscription EngineSub($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
       id
@@ -170,7 +170,7 @@ class AdvancedNavigation extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: THRUSTER_SUB,
+              document: NAV_THRUSTER_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -185,7 +185,7 @@ class AdvancedNavigation extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: ENGINE_SUB,
+              document: NAV_ENGINE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -368,7 +368,7 @@ class VelocityDisplay extends Component {
     );
   }
 }
-const NAV_QUERY = gql`
+export const NAV_QUERY = gql`
   query AdvancedNavigation($simulatorId: ID) {
     thrusters(simulatorId: $simulatorId) {
       id

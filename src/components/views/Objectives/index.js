@@ -9,7 +9,7 @@ import Tour from "helpers/tourHelper";
 
 import "./style.scss";
 
-const OBJECTIVE_SUB = gql`
+export const OBJECTIVE_SUB = gql`
   subscription ObjectivesUpdate($simulatorId: ID!) {
     objectiveUpdate(simulatorId: $simulatorId) {
       id
@@ -134,7 +134,7 @@ class Objectives extends Component {
   }
 }
 
-const OBJECTIVE_QUERY = gql`
+export const OBJECTIVE_QUERY = gql`
   query Objectives($simulatorId: ID!) {
     objective(simulatorId: $simulatorId) {
       id

@@ -653,5 +653,6 @@ export default {
   station: {
     name: "Test Station",
     widgets: [],
+    messageGroups: ["security"],
   },
 };

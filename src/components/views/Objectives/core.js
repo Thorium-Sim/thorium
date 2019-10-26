@@ -6,7 +6,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
-const OBJECTIVE_SUB = gql`
+export const OBJECTIVE_CORE_SUB = gql`
   subscription ObjectivesUpdate($simulatorId: ID!) {
     objectiveUpdate(simulatorId: $simulatorId) {
       id
@@ -144,7 +144,7 @@ class Objectives extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: OBJECTIVE_SUB,
+              document: OBJECTIVE_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -174,7 +174,7 @@ class Objectives extends Component {
   }
 }
 
-const OBJECTIVE_QUERY = gql`
+export const OBJECTIVE_CORE_QUERY = gql`
   query Objectives($simulatorId: ID!) {
     objective(simulatorId: $simulatorId) {
       id
@@ -187,7 +187,7 @@ const OBJECTIVE_QUERY = gql`
     }
   }
 `;
-export default graphql(OBJECTIVE_QUERY, {
+export default graphql(OBJECTIVE_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

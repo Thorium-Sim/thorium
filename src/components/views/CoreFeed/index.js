@@ -79,7 +79,7 @@ class CoreFeed extends Component {
   coreFeedFilter = c => {
     const {allowed} = this.state;
     if (c.ignored) return false;
-    if (c.component === "NewMessagingCore" && allowed.MessagingCore === false)
+    if (c.component === "MessagingCore" && allowed.MessagingCore === false)
       return false;
     if (allowed[c.component] === false) return false;
     return true;

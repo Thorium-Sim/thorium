@@ -155,7 +155,6 @@ import BridgeMapCore from "./BridgeMap/core";
 import KeypadCore from "./Keypad/core";
 import AssetsCore from "./AssetsCore/core";
 import HandheldScannerCore from "./HandheldScanner/core";
-import NewMessagingCore from "./Messaging/newCore";
 import TasksCore from "./Tasks/core";
 import AlternateSensorsCore from "./ParticleDetector/core";
 import CoreFeed from "./CoreFeed";
@@ -461,7 +460,6 @@ export const Cores = {
   KeypadCore,
   AssetsCore,
   HandheldScannerCore,
-  NewMessagingCore,
   TasksCore,
   AlternateSensorsCore,
   CoreFeed,

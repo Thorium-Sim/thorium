@@ -25,7 +25,7 @@ const defaultSidebar = [
     component: "ShipCore",
   },
   {label: "Core Feed", component: "CoreFeed"},
-  {label: "Messaging", component: "NewMessagingCore"},
+  {label: "Messaging", component: "MessagingCore"},
   {label: "Login Names", component: "LoginNameCore"},
   {
     label: "Tractor Beam",

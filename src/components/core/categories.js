@@ -7,7 +7,7 @@ const categories = [
       "ActionsCore",
       "ExtrasCore",
       "RemoteCore",
-      "NewMessagingCore",
+      "MessagingCore",
       "LoginNameCore",
       "CoreFeed",
     ],
@@ -15,7 +15,7 @@ const categories = [
       gridTemplateRows: "100px 400px",
       gridTemplateColumns: "300px 300px 300px 300px",
       gridTemplateAreas: `"ActionsCore ExtrasCore RemoteCore CoreFeed"
-"NewMessagingCore LoginNameCore LoginNameCore CoreFeed"`,
+"MessagingCore LoginNameCore LoginNameCore CoreFeed"`,
     },
   },
   {

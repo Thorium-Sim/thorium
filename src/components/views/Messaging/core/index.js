@@ -14,7 +14,7 @@ const fragment = gql`
     destination
   }
 `;
-const MESSAGING_QUERY = gql`
+export const MESSAGING_CORE_QUERY = gql`
   query Messages($simulatorId: ID!) {
     messages(simulatorId: $simulatorId) {
       ...MessageData
@@ -29,7 +29,7 @@ const MESSAGING_QUERY = gql`
   ${fragment}
 `;
 
-const MESSAGING_SUB = gql`
+export const MESSAGING_CORE_SUB = gql`
   subscription GotMessage($simulatorId: ID!) {
     sendMessage(simulatorId: $simulatorId) {
       ...MessageData
@@ -38,7 +38,7 @@ const MESSAGING_SUB = gql`
   ${fragment}
 `;
 
-const TEAMS_SUB = gql`
+export const MESSAGING_TEAMS_CORE_SUB = gql`
   subscription TeamsUpdate($simulatorId: ID) {
     teamsUpdate(simulatorId: $simulatorId, cleared: true) {
       id
@@ -50,15 +50,18 @@ const TEAMS_SUB = gql`
 `;
 
 const MessagingData = props => (
-  <Query query={MESSAGING_QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={MESSAGING_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {messages, teams} = data;
-      if (loading || !messages || !teams) return null;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: MESSAGING_SUB,
+              document: MESSAGING_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 if (!subscriptionData.data.sendMessage) return previousResult;
@@ -88,7 +91,7 @@ const MessagingData = props => (
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({
-                document: TEAMS_SUB,
+                document: MESSAGING_TEAMS_CORE_SUB,
                 variables: {
                   simulatorId: props.simulator.id,
                 },

@@ -2,13 +2,23 @@ import React from "react";
 import StorybookWrapper from "./helpers/storybookWrapper.js";
 
 import baseProps from "./helpers/baseProps.js";
-import Component from "../components/views/MedicalRoster/index.js";
+import Component, {
+  MEDICAL_ROSTER_CREW_SUB,
+  MEDICAL_ROSTER_QUERY,
+  MEDICAL_ROSTER_SUB,
+} from "../components/views/MedicalRoster/index.js";
 
 export default {
-  title: "Cards|MedicalRoster",
+  title: "Cards|Medical/MedicalRoster",
 };
 export const MedicalRoster = () => (
-  <StorybookWrapper>
+  <StorybookWrapper
+    queries={[
+      MEDICAL_ROSTER_CREW_SUB,
+      MEDICAL_ROSTER_QUERY,
+      MEDICAL_ROSTER_SUB,
+    ]}
+  >
     <Component {...baseProps} />
   </StorybookWrapper>
 );
