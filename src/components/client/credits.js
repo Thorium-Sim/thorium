@@ -134,6 +134,15 @@ const creditList = [
     ),
   },
   {
+    header: "Patreon Supporters",
+    content: (
+      <ul>
+        <li>Manuel</li>
+        <li>bashNinja</li>
+      </ul>
+    ),
+  },
+  {
     header: "Donors",
     content: (
       <ul>
