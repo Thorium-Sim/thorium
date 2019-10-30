@@ -49,7 +49,7 @@ const fragments = {
     }
   `,
 };
-const QUERY = gql`
+export const RAILGUN_QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
       ...RailgunData
@@ -61,7 +61,7 @@ const QUERY = gql`
   ${fragments.railgunFragment}
   ${fragments.contactFragment}
 `;
-const SUBSCRIPTION = gql`
+export const RAILGUN_SUB = gql`
   subscription RailgunUpdate($simulatorId: ID!) {
     railgunUpdate(simulatorId: $simulatorId) {
       ...RailgunData
@@ -70,7 +70,7 @@ const SUBSCRIPTION = gql`
   ${fragments.railgunFragment}
 `;
 
-const CONTACTS_SUB = gql`
+export const RAILGUN_CONTACTS_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "projectile") {
       ...RailgunContactData
@@ -82,16 +82,19 @@ class RailgunData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
-        {({loading, data, subscribeToMore}) => {
+      <Query
+        query={RAILGUN_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
+        {({loading, data, error, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {railgun, sensorContacts = []} = data;
-          if (loading || !railgun) return null;
           if (!railgun[0]) return <div>No Railgun</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: RAILGUN_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {
@@ -104,7 +107,7 @@ class RailgunData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: CONTACTS_SUB,
+                    document: RAILGUN_CONTACTS_SUB,
                     variables: {simulatorId: this.props.simulator.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       return Object.assign({}, previousResult, {

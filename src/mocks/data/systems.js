@@ -1238,7 +1238,198 @@ export default {
           ],
         },
       ],
-      probes: [],
+      processedData: "Hello there, friend.",
+      probes: [
+        {
+          id: "ab1bc45c-727b-4536-b18b-b39a201da0fb",
+          type: "class-i",
+          name: "1",
+          launched: true,
+          equipment: [
+            {
+              id: "probe-network-package",
+              name: "Probe Network Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "2d15942c-18d6-44f4-a256-b22f1e337793",
+          type: "class-i",
+          name: "2",
+          launched: true,
+          equipment: [
+            {
+              id: "probe-network-package",
+              name: "Probe Network Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "c8b37b9f-5a42-4d5b-a776-ed612a369a61",
+          type: "class-i",
+          name: "3",
+          launched: true,
+          equipment: [
+            {
+              id: "probe-network-package",
+              name: "Probe Network Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "1a2ab064-3d38-4bc2-8686-25ec2aff7192",
+          type: "class-ii",
+          name: "4",
+          launched: true,
+          equipment: [
+            {
+              id: "probe-network-package",
+              name: "Probe Network Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "71a9dcf0-ae9a-447b-9320-cdeadcbc2776",
+          type: "class-ii",
+          name: "5",
+          launched: true,
+          equipment: [
+            {
+              id: "probe-network-package",
+              name: "Probe Network Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "003d7b07-713c-46c7-9566-06ee21021c36",
+          type: "class-ii",
+          name: "6",
+          launched: true,
+          equipment: [
+            {
+              id: "probe-network-package",
+              name: "Probe Network Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "7468c006-dbc2-4bd9-97a2-93f9ceb4b960",
+          type: "class-ii",
+          name: "7",
+          launched: true,
+          equipment: [
+            {
+              id: "probe-network-package",
+              name: "Probe Network Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "13d6b534-48c6-4a32-88a5-ba94477b95e7",
+          type: "class-ii",
+          name: "8",
+          launched: true,
+          equipment: [
+            {
+              id: "probe-network-package",
+              name: "Probe Network Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "0c7ee97a-e466-4a81-b7d9-4ece0cd603ef",
+          type: "class-iii",
+          name: "Cool Probe",
+          launched: true,
+          equipment: [
+            {
+              id: "radio-transceiver",
+              name: "Radio Transceiver",
+              count: 1,
+            },
+            {
+              id: "communications-signal-booster",
+              name: "Communications Signal Booster",
+              count: 1,
+            },
+            {
+              id: "sensor-array",
+              name: "Sensor Array",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "35659e99-c400-4e7d-b8c3-e344fea54bcb",
+          type: "science",
+          name: "Carbon Detector",
+          launched: true,
+          equipment: [
+            {
+              id: "carbon-emitter",
+              name: "Carbon Emitter",
+              count: 1,
+            },
+            {
+              id: "sensor-array",
+              name: "Sensor Array",
+              count: 1,
+            },
+            {
+              id: "sample-retrieval-package",
+              name: "Sample Retrieval Package",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+        {
+          id: "a3bc54a1-e74a-489e-8a49-6ebb0e8ae8c0",
+          type: "science",
+          name: "Graviton Burst",
+          launched: true,
+          equipment: [
+            {
+              id: "graviton-emitter",
+              name: "Graviton Emitter",
+              count: 1,
+            },
+            {
+              id: "ecm-package",
+              name: "ECM Package",
+              count: 1,
+            },
+            {
+              id: "extra-fuel-cell",
+              name: "Extra Fuel Cell",
+              count: 1,
+            },
+            {
+              id: "communications-signal-booster",
+              name: "Communications Signal Booster",
+              count: 1,
+            },
+          ],
+          charge: 0,
+        },
+      ],
       name: "Probe Launcher",
       power: {
         power: 0,
@@ -1500,6 +1691,22 @@ export default {
           ],
         },
       ],
+    },
+  ],
+  railgun: [
+    {
+      id: "116451b5-c448-4779-9245-68a0d192dc4f",
+      displayName: "Railgun",
+      damage: {
+        damaged: false,
+      },
+      power: {
+        power: 5,
+        powerLevels: [5],
+      },
+      ammo: 0,
+      maxAmmo: 25,
+      availableAmmo: 250,
     },
   ],
 };

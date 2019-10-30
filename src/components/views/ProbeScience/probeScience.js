@@ -12,7 +12,7 @@ import Grid from "../Sensors/GridDom/grid";
 import {FormattedMessage} from "react-intl";
 import Tour from "helpers/tourHelper";
 import {titleCase} from "change-case";
-import {Mutation} from "react-apollo";
+import {Mutation, useSubscription} from "react-apollo";
 import gql from "graphql-tag.macro";
 import uuid from "uuid";
 
@@ -58,7 +58,7 @@ function distance3d(coord2, coord1) {
   return Math.sqrt((x2 -= x1) * x2 + (y2 -= y1) * y2 + (z2 -= z1) * z2);
 }
 
-const PROBE_SCIENCE_SUB = gql`
+export const PROBE_SCIENCE_EMITTER_SUB = gql`
   subscription ProbeScience($simulatorId: ID!) {
     scienceProbeEmitter(simulatorId: $simulatorId) {
       name
@@ -67,42 +67,24 @@ const PROBE_SCIENCE_SUB = gql`
     }
   }
 `;
-class ProbeScienceSub extends Component {
-  componentDidMount() {
-    this.scienceSub = this.props.client
-      .subscribe({
-        query: PROBE_SCIENCE_SUB,
-        variables: {
-          simulatorId: this.props.simulatorId,
-        },
-      })
-      .subscribe({
-        next: ({
-          loading,
-          data: {
-            scienceProbeEmitter: {name, type, charge},
-          },
-        }) => {
-          if (!loading) {
-            if (type === "burst") {
-              this.props.emit(charge);
-            } else {
-              this.props.detect(charge, name);
-            }
-          }
-        },
-        error(err) {
-          console.error("Error handling probe emitter sub", err);
-        },
-      });
-  }
-  componentWillUnmount() {
-    this.scienceSub && this.scienceSub.unsubscribe();
-  }
-  render() {
-    return null;
-  }
-}
+const ProbeScienceSub = props => {
+  const {simulatorId, emit, detect} = props;
+  const {data = {}, loading} = useSubscription(PROBE_SCIENCE_EMITTER_SUB, {
+    variables: {simulatorId},
+  });
+  const {scienceProbeEmitter: {name, type, charge} = {}} = data;
+  React.useEffect(() => {
+    if (!loading) {
+      if (type === "burst") {
+        emit(charge);
+      } else {
+        detect(charge, name);
+      }
+    }
+  }, [loading, name, type, charge, emit, detect]);
+
+  return null;
+};
 
 class ProbeScience extends Component {
   state = {emitContacts: [], detectorScale: 0};
@@ -327,7 +309,6 @@ class ProbeScience extends Component {
     return (
       <Container className="card-scienceProbes">
         <ProbeScienceSub
-          client={this.props.client}
           simulatorId={this.props.simulator.id}
           emit={this.emit}
           detect={this.detect}

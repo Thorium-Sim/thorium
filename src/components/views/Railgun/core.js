@@ -16,7 +16,7 @@ const fragments = {
   `,
 };
 
-const QUERY = gql`
+export const RAILGUN_CORE_QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
       ...RailgunCoreData
@@ -24,7 +24,7 @@ const QUERY = gql`
   }
   ${fragments.RailgunCoreData}
 `;
-const SUBSCRIPTION = gql`
+export const RAILGUN_CORE_SUB = gql`
   subscription RailgunUpdate($simulatorId: ID!) {
     railgunUpdate(simulatorId: $simulatorId) {
       ...RailgunCoreData
@@ -102,16 +102,19 @@ const RailgunCore = ({id, ammo, maxAmmo, availableAmmo}) => {
 };
 
 const RailgunCoreData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={RAILGUN_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {railgun} = data;
-      if (loading || !railgun) return null;
       if (!railgun[0]) return <div>No Railgun</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: RAILGUN_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

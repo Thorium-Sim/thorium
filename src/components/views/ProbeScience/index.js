@@ -58,7 +58,7 @@ const fragments = {
     }
   `,
 };
-const PROBES_SUB = gql`
+export const PROBES_SCIENCE_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
       ...ProbeScienceData
@@ -67,7 +67,7 @@ const PROBES_SUB = gql`
   ${fragments.probeFragment}
 `;
 
-const QUERY = gql`
+export const PROBES_SCIENCE_QUERY = gql`
   query Bursts($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, type: "burst") {
       ...ProbeScienceSensorContactData
@@ -82,7 +82,7 @@ const QUERY = gql`
   ${fragments.contactFragment}
   ${fragments.probeFragment}
 `;
-const SUBSCRIPTION = gql`
+export const PROBES_SCIENCE_CONTACT_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "burst") {
       ...ProbeScienceSensorContactData
@@ -95,17 +95,20 @@ class ParticleDetectorData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={PROBES_SCIENCE_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {sensorContacts, sensors, probes} = data;
-          if (loading || !sensorContacts) return null;
           if (!sensors[0]) return <div>No Sensors</div>;
           if (!probes[0]) return <div>No Probes</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: PROBES_SCIENCE_CONTACT_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {
@@ -118,7 +121,7 @@ class ParticleDetectorData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: PROBES_SUB,
+                    document: PROBES_SCIENCE_SUB,
                     variables: {simulatorId: this.props.simulator.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       return Object.assign({}, previousResult, {

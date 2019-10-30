@@ -40,8 +40,8 @@ class TemplateData extends Component {
     return (
       <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {viewscreens} = data;
-          if (loading || !viewscreens) return null;
           if (viewscreens.length === 0) return <div>No Viewscreens</div>;
           return (
             <SubscriptionHelper

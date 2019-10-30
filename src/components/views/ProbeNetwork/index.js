@@ -32,7 +32,7 @@ const trainingSteps = [
 
 const datagramImage = require(`./datagram.svg`);
 
-const PROBES_SUB = gql`
+export const PROBE_NETWORK_SUB = gql`
   subscription ProbesSub($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
       id
@@ -57,7 +57,7 @@ class ProbeNetwork extends Component {
         }}
       >
         {({loading, data, subscribeToMore}) => {
-          if (loading || !data.probes) return null;
+          if (loading || !data) return null;
           const probes = data.probes[0];
           const {processedData, probes: network} = probes;
           return (
@@ -65,7 +65,7 @@ class ProbeNetwork extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: PROBES_SUB,
+                    document: PROBE_NETWORK_SUB,
                     variables: {
                       simulatorId: this.props.simulator.id,
                     },
@@ -119,7 +119,7 @@ class ProbeNetwork extends Component {
   }
 }
 
-const PROBE_NETWORK_QUERY = gql`
+export const PROBE_NETWORK_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
       id

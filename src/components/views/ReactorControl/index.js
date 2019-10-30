@@ -12,7 +12,7 @@ import HeatBar from "../EngineControl/heatbar";
 import ReactorModel from "./model";
 import "./style.scss";
 
-const REACTOR_QUERY = gql`
+export const REACTOR_QUERY = gql`
   query Reactors($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
       id
@@ -55,7 +55,7 @@ const REACTOR_QUERY = gql`
   }
 `;
 
-const SYSTEMS_SUB = gql`
+export const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, power: true) {
       id
@@ -67,7 +67,7 @@ const SYSTEMS_SUB = gql`
   }
 `;
 
-const REACTOR_SUB = gql`
+export const REACTOR_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
       id
@@ -93,7 +93,7 @@ const REACTOR_SUB = gql`
     }
   }
 `;
-const DOCKING_SUB = gql`
+export const DOCKING_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -147,9 +147,9 @@ const ReactorControl = ({simulator, client, clientObj}) => {
   );
   useSubscribeToMore(subscribeToMore, DOCKING_SUB, dockingConfig);
   const [measureRef, dimensions] = useMeasure();
+  if (loading || !data) return null;
   const {reactors, simulators, systems} = data;
-  if (loading || !reactors) return null;
-
+  console.log(data);
   const reactor = reactors.find(r => r.model === "reactor");
   const battery = reactors.find(r => r.model === "battery");
   const charge = battery && battery.batteryChargeLevel;

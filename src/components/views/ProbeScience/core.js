@@ -76,7 +76,7 @@ const fragments = {
   `,
 };
 
-const PROBES_SUB = gql`
+export const PROBES_SCIENCE_CORE_SUB = gql`
   subscription ProbesUpdate($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
       ...ProbeScienceCoreData
@@ -85,7 +85,7 @@ const PROBES_SUB = gql`
   ${fragments.probesFragment}
 `;
 
-const QUERY = gql`
+export const PROBE_SCIENCE_CORE_QUERY = gql`
   query Particles($simulatorId: ID!) {
     sensorContacts(simulatorId: $simulatorId, type: "burst") {
       ...ProbeScienceContactData
@@ -100,7 +100,7 @@ const QUERY = gql`
   ${fragments.probesFragment}
   ${fragments.contactFragment}
 `;
-const CONTACTS_SUB = gql`
+export const PROBE_SCIENCE_CONTACTS_CORE_SUB = gql`
   subscription SensorContactsChanged($simulatorId: ID) {
     sensorContactUpdate(simulatorId: $simulatorId, type: "burst") {
       ...ProbeScienceContactData
@@ -450,7 +450,10 @@ class ProbeScienceCore extends Component {
 }
 
 const ProbeScienceCoreData = withApollo(props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={PROBE_SCIENCE_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
       if (loading || !data) return null;
       const {sensorContacts, sensors, probes} = data;
@@ -460,7 +463,7 @@ const ProbeScienceCoreData = withApollo(props => (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: CONTACTS_SUB,
+              document: PROBE_SCIENCE_CONTACTS_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -473,7 +476,7 @@ const ProbeScienceCoreData = withApollo(props => (
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({
-                document: PROBES_SUB,
+                document: PROBES_SCIENCE_CORE_SUB,
                 variables: {simulatorId: props.simulator.id},
                 updateQuery: (previousResult, {subscriptionData}) => {
                   return Object.assign({}, previousResult, {

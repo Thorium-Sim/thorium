@@ -145,7 +145,6 @@ class ShuttleBay extends Component {
       docked,
       image,
       name,
-      simulatorId,
       i,
       id,
       clamps,

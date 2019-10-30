@@ -4,17 +4,18 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/ProbeScience/index.js";
 import CoreComponent from "../components/views/ProbeScience/core.js";
+import ProbeScienceMock from "mocks/cards/ProbeScience.mock.js";
 
 export default {
-  title: "Cards|ProbeScience",
+  title: "Cards|Sensors/ProbeScience",
 };
 export const ProbeScience = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={ProbeScienceMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={ProbeScienceMock}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );

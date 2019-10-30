@@ -5,7 +5,7 @@ import {graphql, withApollo} from "react-apollo";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const PROBES_SUB = gql`
+export const PROBE_NETWORK_CORE_SUB = gql`
   subscription ProbesSub($simulatorId: ID!) {
     probesUpdate(simulatorId: $simulatorId) {
       id
@@ -75,7 +75,7 @@ class ProbeNetworkCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: PROBES_SUB,
+              document: PROBE_NETWORK_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -176,7 +176,7 @@ class ProbeNetworkCore extends Component {
   }
 }
 
-const PROBE_NETWORK_QUERY = gql`
+export const PROBE_NETWORK_CORE_QUERY = gql`
   query Probes($simulatorId: ID!) {
     probes(simulatorId: $simulatorId) {
       id
@@ -190,7 +190,7 @@ const PROBE_NETWORK_QUERY = gql`
   }
 `;
 
-export default graphql(PROBE_NETWORK_QUERY, {
+export default graphql(PROBE_NETWORK_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

@@ -62,7 +62,7 @@ const fragment = gql`
     dilithiumRate
   }
 `;
-const REACTOR_SUB = gql`
+export const REACTOR_CORE_SUB = gql`
   subscription ReactorsUpdate($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
       ...ReactorData
@@ -251,7 +251,7 @@ class ReactorControl extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: REACTOR_SUB,
+              document: REACTOR_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -409,7 +409,7 @@ class ReactorControl extends Component {
   }
 }
 
-const REACTOR_QUERY = gql`
+export const REACTOR_CORE_QUERY = gql`
   query Reactors($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
       ...ReactorData
@@ -417,7 +417,7 @@ const REACTOR_QUERY = gql`
   }
   ${fragment}
 `;
-export default graphql(REACTOR_QUERY, {
+export default graphql(REACTOR_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

@@ -3,7 +3,7 @@ import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button} from "helpers/reactstrap";
 import {FormattedMessage} from "react-intl";
-import {CSSTransitionGroup} from "react-transition-group";
+import {TransitionGroup, CSSTransition} from "react-transition-group";
 import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 
@@ -114,27 +114,29 @@ export default class RailgunLoader extends Component {
         <div className="railgun">
           <div className="ammo-holder">
             <div className="ammo-shadow" />
-            <CSSTransitionGroup
-              transitionName="fire"
-              transitionEnterTimeout={600}
-              transitionLeaveTimeout={100}
-            >
+            <TransitionGroup>
               {Array(ammo)
                 .fill(0)
                 .map((_, i, arr) => (
-                  <div key={`bolt-${i}`} className="bolt-holder">
-                    <img
-                      alt="bolt"
-                      draggable="false"
-                      src={require("./bolt.svg")}
-                      style={{
-                        transform: `translateY(-${(arr.length - i - 1) *
-                          20}px)`,
-                      }}
-                    />
-                  </div>
+                  <CSSTransition
+                    key={`bolt-${i}`}
+                    classNames="fire"
+                    timeout={{enter: 600, exit: 100}}
+                  >
+                    <div className="bolt-holder">
+                      <img
+                        alt="bolt"
+                        draggable="false"
+                        src={require("./bolt.svg")}
+                        style={{
+                          transform: `translateY(-${(arr.length - i - 1) *
+                            20}px)`,
+                        }}
+                      />
+                    </div>
+                  </CSSTransition>
                 ))}
-            </CSSTransitionGroup>
+            </TransitionGroup>
           </div>
         </div>
         {!mainScreen && (
