@@ -11,7 +11,7 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
 import {FaSyncAlt} from "react-icons/fa";
 
-const SENSOR_SUB = gql`
+export const SENSOR_SUB = gql`
   subscription SensorsChanged($simulatorId: ID, $domain: String) {
     sensorsUpdate(simulatorId: $simulatorId, domain: $domain) {
       id
@@ -501,7 +501,7 @@ class Scanning extends Component {
   }
 }
 
-const SENSOR_QUERY = gql`
+export const SENSOR_QUERY = gql`
   query GetSensors($simulatorId: ID!, $domain: String) {
     sensors(simulatorId: $simulatorId, domain: $domain) {
       id

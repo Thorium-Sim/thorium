@@ -21,7 +21,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const RECORDS_QUERY = gql`
   query Records($simulatorId: ID!) {
     recordSnippets(simulatorId: $simulatorId) {
       ...RecordData
@@ -29,7 +29,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const RECORDS_SUB = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     recordSnippetsUpdate(simulatorId: $simulatorId) {
       ...RecordData
@@ -40,7 +40,7 @@ const SUBSCRIPTION = gql`
 
 const RecordsData = props => {
   const {simulator} = props;
-  const {loading, data = {}, subscribeToMore} = useQuery(QUERY, {
+  const {loading, data = {}, subscribeToMore} = useQuery(RECORDS_QUERY, {
     variables: {simulatorId: simulator.id},
   });
   const subConfig = React.useMemo(
@@ -53,9 +53,9 @@ const RecordsData = props => {
     }),
     [simulator.id],
   );
-  useSubscribeToMore(subscribeToMore, SUBSCRIPTION, subConfig);
+  useSubscribeToMore(subscribeToMore, RECORDS_SUB, subConfig);
+  if (loading || !data) return null;
   const {recordSnippets} = data;
-  if (loading || !recordSnippets) return null;
   return <Records {...props} recordSnippets={recordSnippets} />;
 };
 export default RecordsData;

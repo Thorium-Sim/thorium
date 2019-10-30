@@ -1,11 +1,10 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {Container, Button} from "helpers/reactstrap";
-import {withApollo} from "react-apollo";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery, useApolloClient} from "@apollo/react-hooks";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
-const REMOTE_ACCESS_QUERY = gql`
+export const REMOTE_ACCESS_QUERY = gql`
   query Simulator($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
@@ -22,7 +21,7 @@ const REMOTE_ACCESS_QUERY = gql`
   }
 `;
 
-const REMOTE_ACCESS_SUB = gql`
+export const REMOTE_ACCESS_SUB = gql`
   subscription SimulatorSub($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -49,7 +48,8 @@ const mutation = gql`
   }
 `;
 
-const RemoteAccessCore = ({simulator, client}) => {
+const RemoteAccessCore = ({simulator}) => {
+  const client = useApolloClient();
   const {loading, data, subscribeToMore} = useQuery(REMOTE_ACCESS_QUERY, {
     variables: {simulatorId: simulator.id},
   });
@@ -64,8 +64,8 @@ const RemoteAccessCore = ({simulator, client}) => {
     [simulator.id],
   );
   useSubscribeToMore(subscribeToMore, REMOTE_ACCESS_SUB, config);
+  if (loading || !data) return null;
   const {simulators} = data;
-  if (loading || !simulators) return null;
   const {ship} = simulators[0];
 
   const respond = (codeId, state) => {
@@ -141,4 +141,4 @@ const RemoteAccessCore = ({simulator, client}) => {
   );
 };
 
-export default withApollo(RemoteAccessCore);
+export default RemoteAccessCore;

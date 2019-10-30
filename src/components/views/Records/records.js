@@ -78,16 +78,19 @@ const trainingSteps = [
 ];
 const Records = ({recordSnippets, simulator, station, clientObj}) => {
   const [selected, setSelected] = React.useState(`current-${simulator.id}`);
-  const selectedSnippet = recordSnippets.find(s => s.id === selected);
+  const selectedSnippet = recordSnippets.find(s => s.id === selected) || {
+    records: [],
+  };
   const [selectedRecords, setSelectedRecords] = React.useState([]);
   const [name, setName] = React.useState("Untitled Snippet");
   const [naming, setNaming] = React.useState(false);
   const [destination, setDestination] = React.useState("");
-  const filterOptions = Object.keys(
-    recordSnippets
-      .find(r => r.id === `current-${simulator.id}`)
-      .records.reduce((acc, r) => ({...acc, [r.category]: true}), {}),
-  );
+  const current = recordSnippets.find(r => r.id === `current-${simulator.id}`);
+  const filterOptions = current
+    ? Object.keys(
+        current.records.reduce((acc, r) => ({...acc, [r.category]: true}), {}),
+      )
+    : [];
   const [recordFilter, setRecordFilter] = React.useState([]);
   const [createRecord] = useMutation(CREATE_RECORDS);
   const [sendMessage] = useMutation(SEND_MESSAGE);

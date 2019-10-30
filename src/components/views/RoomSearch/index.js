@@ -3,7 +3,7 @@ import RoomSearch from "../CommInternal/roomSearch";
 import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 
-const QUERY = gql`
+export const ROOM_SEARCH_QUERY = gql`
   query Decks($simulatorId: ID!) {
     decks(simulatorId: $simulatorId) {
       id
@@ -18,9 +18,12 @@ const QUERY = gql`
 
 const RoomSearchData = props => {
   return (
-    <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
-      {({loading, data: {decks}}) =>
-        loading ? null : <RoomSearch decks={decks} />
+    <Query
+      query={ROOM_SEARCH_QUERY}
+      variables={{simulatorId: props.simulator.id}}
+    >
+      {({loading, data}) =>
+        loading || !data ? null : <RoomSearch decks={data.decks} />
       }
     </Query>
   );

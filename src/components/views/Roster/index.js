@@ -34,7 +34,7 @@ const columns = [
   },
 ];
 
-const SUB = gql`
+export const ROSTER_SUB = gql`
   subscription RosterUpdate($simulatorId: ID) {
     crewUpdate(simulatorId: $simulatorId) {
       id
@@ -87,7 +87,7 @@ class Roster extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: ROSTER_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -117,7 +117,7 @@ class Roster extends Component {
   }
 }
 
-const QUERY = gql`
+export const ROSTER_QUERY = gql`
   query Roster($simulatorId: ID) {
     crew(simulatorId: $simulatorId) {
       id
@@ -130,7 +130,7 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY, {
+export default graphql(ROSTER_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
 

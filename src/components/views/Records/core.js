@@ -23,7 +23,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const RECORDS_CORE_QUERY = gql`
   query Records($simulatorId: ID!) {
     recordSnippets(simulatorId: $simulatorId) {
       ...RecordData
@@ -31,7 +31,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const RECORDS_CORE_SUB = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     recordSnippetsUpdate(simulatorId: $simulatorId) {
       ...RecordData
@@ -62,7 +62,9 @@ const DELETE_RECORD = gql`
 
 const RecordsCore = ({recordSnippets, simulator}) => {
   const [selected, setSelected] = React.useState(`current-${simulator.id}`);
-  const selectedSnippet = recordSnippets.find(s => s.id === selected);
+  const selectedSnippet = recordSnippets.find(s => s.id === selected) || {
+    records: [],
+  };
   const [selectedRecord, setSelectedRecord] = React.useState(null);
   const [createRecord] = useMutation(CREATE_RECORD);
   const [deleteRecord] = useMutation(DELETE_RECORD, {
@@ -154,7 +156,7 @@ const RecordsCore = ({recordSnippets, simulator}) => {
 };
 const RecordsCoreData = props => {
   const {simulator} = props;
-  const {loading, data = {}, subscribeToMore} = useQuery(QUERY, {
+  const {loading, data = {}, subscribeToMore} = useQuery(RECORDS_CORE_QUERY, {
     variables: {simulatorId: simulator.id},
   });
   const subConfig = React.useMemo(
@@ -167,9 +169,9 @@ const RecordsCoreData = props => {
     }),
     [simulator.id],
   );
-  useSubscribeToMore(subscribeToMore, SUBSCRIPTION, subConfig);
+  useSubscribeToMore(subscribeToMore, RECORDS_CORE_SUB, subConfig);
+  if (loading || !data) return null;
   const {recordSnippets} = data;
-  if (loading || !recordSnippets) return null;
   return <RecordsCore {...props} recordSnippets={recordSnippets} />;
 };
 
