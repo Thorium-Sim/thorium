@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "scss/at-rule-no-unknown": true,
+    "at-rule-no-unknown": null
+  },
+  "extends": ["stylelint-config-recommended-scss"]
+}
