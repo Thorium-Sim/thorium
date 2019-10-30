@@ -438,6 +438,12 @@ App.on("toggleSimulatorCardHidden", ({simulatorId, cardName, toggle}) => {
   } else {
     sim.unhideCard(cardName);
   }
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("flipSimulator", ({ simulatorId, flip }) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  if (!sim) return sim;
+  sim.flip(flip);
 
   pubsub.publish("simulatorsUpdate", App.simulators);
 });

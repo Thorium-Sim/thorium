@@ -176,7 +176,7 @@ export default class Simulator {
       params.ambiance.forEach(a => this.ambiance.push(new Ambiance(a)));
 
     this.crackedClients = params.crackedClients || {};
-
+    this.flipped = params.flipped || false;
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
@@ -457,6 +457,9 @@ export default class Simulator {
   }
   uncrackClient(clientId) {
     this.crackedClients[clientId] = false;
+  }
+  flip(flip) {
+    this.flipped = flip;
   }
 
   // Records
