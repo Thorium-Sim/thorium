@@ -12,8 +12,14 @@ export default [
     hasPrinter: true,
     hasLegs: false,
     panels: [],
+    stepDamage: true,
+    verifyStep: false,
+    triggersPaused: false,
     ship: {
       inventoryLogs: [],
+      bridgeCrew: 14,
+      extraPeople: 0,
+      radiation: 0.1,
     },
     stations: [
       {

@@ -44,7 +44,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const SICKBAY_CORE_QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
       ...SickbayCoreData
@@ -52,7 +52,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const SICKBAY_CORE_SUB = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
       ...SickbayCoreData
@@ -110,16 +110,19 @@ class SickbayCore extends Component {
 }
 
 const SickbayCoreData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={SICKBAY_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {sickbay} = data;
-      if (loading || !sickbay) return null;
       if (!sickbay[0]) return <div>No Sickbay</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: SICKBAY_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

@@ -15,7 +15,7 @@ function padDigits(number, digits) {
   );
 }
 
-const SELF_DESTRUCT_SUB = gql`
+export const SELF_DESTRUCT_SUB = gql`
   subscription SelfDestructUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -39,7 +39,7 @@ const trainingSteps = [
       "Click this button to activate and deactivate the self destruct. You have the option to set a time on the self destruct in Hour:Minute:Second format. Give yourself enough time .",
   },
 ];
-const SELF_DESTRUCT_QUERY = gql`
+export const SELF_DESTRUCT_QUERY = gql`
   query SelfDestruct($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
@@ -72,8 +72,8 @@ const SelfDestruct = ({simulator, client, clientObj}) => {
     [simulator.id],
   );
   useSubscribeToMore(subscribeToMore, SELF_DESTRUCT_SUB, config);
+  if (loading || !data) return null;
   const {simulators} = data;
-  if (loading || !simulators) return null;
   const {ship} = simulators[0];
   const toggle = () => {
     setModal(!modal);

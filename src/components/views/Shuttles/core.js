@@ -5,7 +5,7 @@ import {TypingField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const SHUTTLE_SUB = gql`
+export const SHUTTLE_CORE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
     dockingUpdate(simulatorId: $simulatorId, type: shuttlebay) {
       id
@@ -48,7 +48,7 @@ class Shuttles extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SHUTTLE_SUB,
+              document: SHUTTLE_CORE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -178,8 +178,8 @@ class Shuttles extends Component {
   }
 }
 
-const SHUTTLE_QUERY = gql`
-  query Shuttles($simulatorId: ID, $names: [String]) {
+export const SHUTTLE_CORE_QUERY = gql`
+  query Shuttles($simulatorId: ID) {
     docking(simulatorId: $simulatorId, type: shuttlebay) {
       id
       name
@@ -193,7 +193,7 @@ const SHUTTLE_QUERY = gql`
       }
       direction
     }
-    assetFolders(names: $names) {
+    assetFolders(names: "Docking Images") {
       id
       name
       objects {
@@ -204,13 +204,12 @@ const SHUTTLE_QUERY = gql`
     }
   }
 `;
-export default graphql(SHUTTLE_QUERY, {
+export default graphql(SHUTTLE_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
 
     variables: {
       simulatorId: ownProps.simulator.id,
-      names: ["Docking Images"],
     },
   }),
 })(withApollo(Shuttles));

@@ -6,9 +6,9 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import gql from "graphql-tag.macro";
 
-const SHIELD_SUB = gql`
-  subscription ShieldSub($id: ID) {
-    shieldsUpdate(simulatorId: $id) {
+export const SHIELD_CORE_SUB = gql`
+  subscription ShieldSub($simulatorId: ID) {
+    shieldsUpdate(simulatorId: $simulatorId) {
       id
       name
       state
@@ -81,9 +81,9 @@ class ShieldsCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SHIELD_SUB,
+              document: SHIELD_CORE_SUB,
               variables: {
-                id: this.props.simulator.id,
+                simulatorId: this.props.simulator.id,
               },
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -203,7 +203,7 @@ class ShieldsCore extends Component {
   }
 }
 
-const SHIELD_QUERY = gql`
+export const SHIELD_CORE_QUERY = gql`
   query Shields($simulatorId: ID!) {
     shields(simulatorId: $simulatorId) {
       id
@@ -217,7 +217,7 @@ const SHIELD_QUERY = gql`
   }
 `;
 
-export default graphql(SHIELD_QUERY, {
+export default graphql(SHIELD_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

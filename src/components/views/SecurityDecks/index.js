@@ -74,7 +74,7 @@ const fragments = {
   `,
 };
 
-const DECK_SUB = gql`
+export const DECK_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
     decksUpdate(simulatorId: $simulatorId) {
       ...DeckData
@@ -83,7 +83,7 @@ const DECK_SUB = gql`
   ${fragments.deckFragment}
 `;
 
-const SUBSCRIPTION = gql`
+export const DECK_TASK_SUB = gql`
   subscription TasksUpdate($simulatorId: ID!, $definitions: [String!]) {
     tasksUpdate(simulatorId: $simulatorId, definitions: $definitions) {
       ...SecurityTaskData
@@ -219,7 +219,7 @@ class SecurityDecks extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUBSCRIPTION,
+              document: DECK_TASK_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
                 definitions: incidentDefinitions,
@@ -364,7 +364,7 @@ class SecurityDecks extends Component {
   }
 }
 
-const DECK_QUERY = gql`
+export const DECK_QUERY = gql`
   query SimulatorDecks($simulatorId: ID!, $definitions: [String!]) {
     decks(simulatorId: $simulatorId) {
       ...DeckData

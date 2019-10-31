@@ -18,7 +18,7 @@ const fragment = gql`
     }
   }
 `;
-const DECK_SUB = gql`
+export const DECK_CORE_SUB = gql`
   subscription DeckSubscribe($simulatorId: ID!) {
     decksUpdate(simulatorId: $simulatorId) {
       ...DeckData
@@ -91,7 +91,7 @@ class SecurityTeams extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: DECK_SUB,
+              document: DECK_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -169,7 +169,7 @@ const TranzineSelect = ({deck}) => {
   );
 };
 
-const DECK_QUERY = gql`
+export const DECK_CORE_QUERY = gql`
   query SimulatorDecks($simulatorId: ID!) {
     decks(simulatorId: $simulatorId) {
       ...DeckData
@@ -178,7 +178,7 @@ const DECK_QUERY = gql`
   ${fragment}
 `;
 
-export default graphql(DECK_QUERY, {
+export default graphql(DECK_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

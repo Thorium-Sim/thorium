@@ -110,8 +110,8 @@ class TasksCore extends Component {
     return (
       <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {tasks, taskTemplates} = data;
-          if (loading || !tasks) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>

@@ -41,6 +41,8 @@ class TimeCared extends Component {
   };
   render() {
     const {admitTime = Date.now()} = this.props;
+    let time = parseInt(admitTime, 10);
+    if (isNaN(time)) time = Date.now();
     return parseTime(
       Duration.fromObject({
         months: 0,
@@ -49,7 +51,7 @@ class TimeCared extends Component {
         hours: 0,
         minutes: 0,
         seconds: 0,
-        milliseconds: new Date() - new Date(parseInt(admitTime, 10)),
+        milliseconds: new Date() - new Date(time),
       })
         .normalize()
         .toObject(),

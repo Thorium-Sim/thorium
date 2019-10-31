@@ -49,7 +49,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const SICKBAY_QUERY = gql`
   query Sickbay($simulatorId: ID!) {
     sickbay(simulatorId: $simulatorId) {
       ...SickbayData
@@ -65,7 +65,7 @@ const QUERY = gql`
   ${fragment}
 `;
 
-const CREWSUB = gql`
+export const SICKBAY_CREW_SUB = gql`
   subscription CrewSub($simulatorId: ID!) {
     crewUpdate(simulatorId: $simulatorId) {
       id
@@ -76,7 +76,7 @@ const CREWSUB = gql`
     }
   }
 `;
-const SUBSCRIPTION = gql`
+export const SICKBAY_SUB = gql`
   subscription SickbayUpdate($simulatorId: ID!) {
     sickbayUpdate(simulatorId: $simulatorId) {
       ...SickbayData
@@ -89,16 +89,19 @@ class SickbayData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={SICKBAY_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {sickbay, crew} = data;
-          if (loading || !sickbay) return null;
           if (!sickbay[0]) return <div>No Sickbay</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: SICKBAY_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {
@@ -111,7 +114,7 @@ class SickbayData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: CREWSUB,
+                    document: SICKBAY_CREW_SUB,
                     variables: {simulatorId: this.props.simulator.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       return Object.assign({}, previousResult, {

@@ -32,7 +32,7 @@ const trainingSteps = [
   },
 ];
 
-const SHIELD_SUB = gql`
+export const SHIELD_SUB = gql`
   subscription ShieldSub($simulatorId: ID) {
     shieldsUpdate(simulatorId: $simulatorId) {
       id
@@ -178,7 +178,7 @@ class ShieldControl extends Component {
   }
 }
 
-const SHIELD_QUERY = gql`
+export const SHIELD_QUERY = gql`
   query Shields($simulatorId: ID!) {
     shields(simulatorId: $simulatorId) {
       id

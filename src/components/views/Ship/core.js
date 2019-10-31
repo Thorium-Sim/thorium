@@ -27,7 +27,7 @@ const fragment = gql`
     }
   }
 `;
-const SHIP_CORE_SUB = gql`
+export const SHIP_CORE_SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       ...ShipData
@@ -36,12 +36,12 @@ const SHIP_CORE_SUB = gql`
   ${fragment}
 `;
 
-const POP_SUB = gql`
+export const POP_SUB = gql`
   subscription Population($simulatorId: ID) {
     crewCountUpdate(simulatorId: $simulatorId, killed: false)
   }
 `;
-const SHIP_CORE_QUERY = gql`
+export const SHIP_CORE_QUERY = gql`
   query Ship($simulatorId: ID!) {
     simulators(id: $simulatorId) {
       ...ShipData

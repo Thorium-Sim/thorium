@@ -12,9 +12,9 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 import DamageOverlay from "../helpers/DamageOverlay";
 
-const SUB = gql`
-  subscription SignalJammerUpdate($id: ID!) {
-    signalJammersUpdate(simulatorId: $id) {
+export const SIGNAL_JAMMER_SUB = gql`
+  subscription SignalJammerUpdate($simulatorId: ID!) {
+    signalJammersUpdate(simulatorId: $simulatorId) {
       id
       name
       displayName
@@ -159,9 +159,9 @@ class SignalJammer extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: SIGNAL_JAMMER_SUB,
               variables: {
-                id: this.props.simulator.id,
+                simulatorId: this.props.simulator.id,
               },
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -288,9 +288,9 @@ class SignalJammer extends Component {
   }
 }
 
-const QUERY = gql`
-  query SignalJammer($id: ID!) {
-    signalJammers(simulatorId: $id) {
+export const SIGNAL_JAMMER_QUERY = gql`
+  query SignalJammer($simulatorId: ID!) {
+    signalJammers(simulatorId: $simulatorId) {
       id
       name
       displayName
@@ -314,12 +314,12 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY, {
+export default graphql(SIGNAL_JAMMER_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
 
     variables: {
-      id: ownProps.simulator.id,
+      simulatorId: ownProps.simulator.id,
     },
   }),
 })(withApollo(SignalJammer));

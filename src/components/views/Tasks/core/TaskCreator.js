@@ -159,8 +159,8 @@ class TasksCore extends Component {
 const TaskCreator = props => (
   <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {taskDefinitions} = data;
-      if (loading || !taskDefinitions) return null;
       return <TasksCore {...props} taskDefinitions={taskDefinitions} />;
     }}
   </Query>

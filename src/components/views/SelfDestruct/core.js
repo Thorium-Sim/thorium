@@ -14,7 +14,7 @@ function padDigits(number, digits) {
   );
 }
 
-const SELF_DESTRUCT_SUB = gql`
+export const SELF_DESTRUCT_SUB = gql`
   subscription SelfDestructUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -27,7 +27,7 @@ const SELF_DESTRUCT_SUB = gql`
   }
 `;
 
-const SELF_DESTRUCT_QUERY = gql`
+export const SELF_DESTRUCT_QUERY = gql`
   query SelfDestruct($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
@@ -127,8 +127,8 @@ const SelfDestructCore = ({simulator, client}) => {
     [simulator.id],
   );
   useSubscribeToMore(subscribeToMore, SELF_DESTRUCT_SUB, config);
+  if (loading || !data) return null;
   const {simulators} = data;
-  if (loading || !simulators) return null;
 
   const {ship} = simulators[0];
 

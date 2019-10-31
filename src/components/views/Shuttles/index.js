@@ -11,7 +11,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 import {FaCheck, FaArrowRight} from "react-icons/fa";
 
-const SHUTTLE_SUB = gql`
+export const SHUTTLE_SUB = gql`
   subscription ShuttlesUpdate($simulatorId: ID) {
     dockingUpdate(simulatorId: $simulatorId, type: shuttlebay) {
       id
@@ -325,7 +325,7 @@ class ShuttleBay extends Component {
   }
 }
 
-const SHUTTLE_QUERY = gql`
+export const SHUTTLE_QUERY = gql`
   query Shuttles($simulatorId: ID) {
     docking(simulatorId: $simulatorId, type: shuttlebay) {
       id
