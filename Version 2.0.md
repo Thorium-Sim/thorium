@@ -32,6 +32,7 @@ Some goals for this refactor:
   that are necessary.
 - Add DangerJS reviews to pull requests.
 - Make sure server errors are properly being logged to Sentry.
+- Fix all of the stylelint issues.
 
 ## Version 3.0
 
@@ -69,7 +70,10 @@ be breaking changes, this release will be a version 3.0.
 A few maybes?
 
 - Experiment with switching from Apollo GraphQL to MST-GQL.
-- If not MST-GQL (because Apollo GraphQL does a lot of great stuff for us), then use https://graphql-code-generator.com/, explore simplifying the subscription update process to remove boilerplate, and create a babel macro that generates GraphQL AST, like this: https://gqless.netlify.com
+- If not MST-GQL (because Apollo GraphQL does a lot of great stuff for us), then
+  use https://graphql-code-generator.com/, explore simplifying the subscription
+  update process to remove boilerplate, and create a babel macro that generates
+  GraphQL AST, like this: https://gqless.netlify.com
 - Use CSS-in-JS
 
 ## Contribution Guidelines
