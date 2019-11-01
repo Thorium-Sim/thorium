@@ -17,7 +17,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const VIEWSCREEN_CORE_QUERY = gql`
   query Viewscreens($simulatorId: ID!) {
     viewscreens(simulatorId: $simulatorId) {
       ...ViewscreenViewData
@@ -25,7 +25,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const VIEWSCREEN_CORE_SUB = gql`
   subscription ViewscreensUpdate($simulatorId: ID!) {
     viewscreensUpdate(simulatorId: $simulatorId) {
       ...ViewscreenViewData
@@ -38,7 +38,10 @@ class TemplateData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={VIEWSCREEN_CORE_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
           if (loading || !data) return null;
           const {viewscreens} = data;
@@ -47,7 +50,7 @@ class TemplateData extends Component {
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: VIEWSCREEN_CORE_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

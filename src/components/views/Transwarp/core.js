@@ -47,7 +47,7 @@ const fragments = {
   `,
 };
 
-const QUERY = gql`
+export const TRANSWARP_CORE_QUERY = gql`
   query Transwarp($simulatorId: ID!) {
     transwarp(simulatorId: $simulatorId) {
       ...TranswarpCoreData
@@ -56,7 +56,7 @@ const QUERY = gql`
   ${fragments.coreData}
   ${fragments.transwarpFragment}
 `;
-const SUBSCRIPTION = gql`
+export const TRANSWARP_CORE_SUB = gql`
   subscription TranswarpUpdate($simulatorId: ID!) {
     transwarpUpdate(simulatorId: $simulatorId) {
       ...TranswarpCoreData
@@ -167,16 +167,19 @@ const TranswarpCore = ({id, quad1, quad2, quad3, quad4, active, power}) => {
 };
 
 const TranswarpData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={TRANSWARP_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {transwarp} = data;
-      if (loading || !transwarp) return null;
       if (!transwarp[0]) return <div>No Transwarp</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: TRANSWARP_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

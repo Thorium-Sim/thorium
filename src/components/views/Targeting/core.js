@@ -47,7 +47,7 @@ const fragment = gql`
     }
   }
 `;
-const TARGETING_SUB = gql`
+export const TARGETING_CORE_SUB = gql`
   subscription TargetingUpdate($simulatorId: ID) {
     targetingUpdate(simulatorId: $simulatorId) {
       ...TargetingData
@@ -55,7 +55,7 @@ const TARGETING_SUB = gql`
   }
   ${fragment}
 `;
-const TARGETING_QUERY = gql`
+export const TARGETING_CORE_QUERY = gql`
   query Targeting($simulatorId: ID) {
     targeting(simulatorId: $simulatorId) {
       ...TargetingData
@@ -151,6 +151,7 @@ class TargetingCore extends Component {
     });
   };
   render() {
+    console.log(this.props.data);
     if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting[0];
     if (!targeting) return <p>No Targeting Systems</p>;
@@ -160,7 +161,7 @@ class TargetingCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: TARGETING_SUB,
+              document: TARGETING_CORE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -269,7 +270,7 @@ class TargetingCore extends Component {
   }
 }
 
-export default graphql(TARGETING_QUERY, {
+export default graphql(TARGETING_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
 

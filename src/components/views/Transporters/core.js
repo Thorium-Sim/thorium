@@ -5,7 +5,7 @@ import {graphql, withApollo, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const TRANSPORTER_SUB = gql`
+export const TRANSPORTER_CORE_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {
     transporterUpdate(simulatorId: $simulatorId) {
       id
@@ -66,7 +66,7 @@ class TransporterCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: TRANSPORTER_SUB,
+              document: TRANSPORTER_CORE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 const transporters = previousResult.transporters.map(
@@ -147,7 +147,7 @@ class TransporterCore extends Component {
   }
 }
 
-const TRANSPORTERS_QUERY = gql`
+export const TRANSPORTERS_CORE_QUERY = gql`
   query GetTransporters($simulatorId: ID) {
     transporters(simulatorId: $simulatorId) {
       id
@@ -164,7 +164,7 @@ const TRANSPORTERS_QUERY = gql`
   }
 `;
 
-export default graphql(TRANSPORTERS_QUERY, {
+export default graphql(TRANSPORTERS_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

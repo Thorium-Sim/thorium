@@ -5,7 +5,7 @@ import {InputField, OutputField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const TRACTORBEAM_SUB = gql`
+export const TRACTORBEAM_CORE_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {
     tractorBeamUpdate(simulatorId: $simulatorId) {
       id
@@ -96,7 +96,7 @@ class TractorBeamCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: TRACTORBEAM_SUB,
+              document: TRACTORBEAM_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -153,7 +153,7 @@ class TractorBeamCore extends Component {
   }
 }
 
-const TRACTORBEAM_QUERY = gql`
+export const TRACTORBEAM_CORE_QUERY = gql`
   query TractorBeamInfo($simulatorId: ID!) {
     tractorBeam(simulatorId: $simulatorId) {
       id
@@ -166,7 +166,7 @@ const TRACTORBEAM_QUERY = gql`
     }
   }
 `;
-export default graphql(TRACTORBEAM_QUERY, {
+export default graphql(TRACTORBEAM_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

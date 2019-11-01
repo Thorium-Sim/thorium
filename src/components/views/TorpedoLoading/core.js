@@ -88,7 +88,7 @@ const fragment = gql`
   }
 `;
 
-const TORPEDO_SUB = gql`
+export const TORPEDO_CORE_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
     torpedosUpdate(simulatorId: $simulatorId) {
       ...TorpedoCoreData
@@ -97,7 +97,7 @@ const TORPEDO_SUB = gql`
   ${fragment}
 `;
 
-const TORPEDO_QUERY = gql`
+export const TORPEDO_CORE_QUERY = gql`
   query Torpedos($simulatorId: ID!) {
     torpedos(simulatorId: $simulatorId) {
       ...TorpedoCoreData
@@ -111,16 +111,16 @@ const TorpedoData = props => {
     simulator: {id: simulatorId},
   } = props;
   return (
-    <Query query={TORPEDO_QUERY} variables={{simulatorId}}>
+    <Query query={TORPEDO_CORE_QUERY} variables={{simulatorId}}>
       {({loading, data, subscribeToMore}) => {
+        if (loading || !data) return null;
         const {torpedos} = data;
-        if (loading || !torpedos) return null;
         if (!torpedos[0]) return <div>No Torpedos</div>;
         return (
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({
-                document: TORPEDO_SUB,
+                document: TORPEDO_CORE_SUB,
                 variables: {simulatorId},
                 updateQuery: (previousResult, {subscriptionData}) => {
                   return Object.assign({}, previousResult, {

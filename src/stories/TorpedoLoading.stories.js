@@ -4,17 +4,17 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/TorpedoLoading/index.js";
 import CoreComponent from "../components/views/TorpedoLoading/core.js";
-
+import TorpedoLoadingMock from "../mocks/cards/TorpedoLoading.mock";
 export default {
-  title: "Cards|TorpedoLoading",
+  title: "Cards|Weapons/TorpedoLoading",
 };
 export const TorpedoLoading = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={TorpedoLoadingMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={TorpedoLoadingMock}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );

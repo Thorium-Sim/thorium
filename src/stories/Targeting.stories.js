@@ -4,17 +4,18 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/Targeting/index.js";
 import CoreComponent from "../components/views/Targeting/core.js";
+import TargetingMock from "mocks/cards/Targeting.mock.js";
 
 export default {
-  title: "Cards|Targeting",
+  title: "Cards|Weapons/Targeting",
 };
 export const Targeting = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={TargetingMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={TargetingMock}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );

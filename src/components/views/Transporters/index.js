@@ -10,7 +10,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
-const TRANSPORTER_SUB = gql`
+export const TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {
     transporterUpdate(simulatorId: $simulatorId) {
       id
@@ -185,6 +185,7 @@ class Transporters extends Component {
     });
   }
   render() {
+    console.log(this.props.data);
     // Assume that there is only one transporter
     if (this.props.data.loading || !this.props.data.transporters) return null;
     const transporter = this.props.data.transporters[0] || {};
@@ -269,7 +270,7 @@ const trainingSteps = [
   },
 ];
 
-const TRANSPORTERS_QUERY = gql`
+export const TRANSPORTERS_QUERY = gql`
   query GetTransporters($simulatorId: ID) {
     transporters(simulatorId: $simulatorId) {
       id

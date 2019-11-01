@@ -22,7 +22,7 @@ const trainingSteps = [
   {
     selector: ".targeting-area",
     content:
-      "Use this area to lock onto a target. Once a target is locked on, you will be able to acurately fire your weapons at it.",
+      "Use this area to lock onto a target. Once a target is locked on, you will be able to accurately fire your weapons at it.",
   },
   {
     selector: ".phaser-holder",
@@ -36,7 +36,7 @@ const trainingSteps = [
   },
 ];
 
-const TARGETING_QUERY = gql`
+export const TARGETING_QUERY = gql`
   query Targeting($simulatorId: ID) {
     targeting(simulatorId: $simulatorId) {
       id
@@ -107,7 +107,7 @@ const TARGETING_QUERY = gql`
   }
 `;
 
-const TARGETING_SUB = gql`
+export const TARGETING_SUB = gql`
   subscription TargetingUpdate($simulatorId: ID) {
     targetingUpdate(simulatorId: $simulatorId) {
       id
@@ -156,7 +156,7 @@ const TARGETING_SUB = gql`
   }
 `;
 
-const PHASERS_SUB = gql`
+export const TARGETING_PHASERS_SUB = gql`
   subscription PhasersUpdate($simulatorId: ID!) {
     phasersUpdate(simulatorId: $simulatorId) {
       id
@@ -405,7 +405,7 @@ class Targeting extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: PHASERS_SUB,
+              document: TARGETING_PHASERS_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

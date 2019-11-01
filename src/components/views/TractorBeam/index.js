@@ -12,7 +12,7 @@ import Tour from "helpers/tourHelper";
 
 import "./style.scss";
 
-const TRACTORBEAM_SUB = gql`
+export const TRACTORBEAM_SUB = gql`
   subscription TractorBeamUpdate($simulatorId: ID!) {
     tractorBeamUpdate(simulatorId: $simulatorId) {
       id
@@ -170,7 +170,7 @@ class TractorBeam extends Component {
   }
 }
 
-const TRACTORBEAM_QUERY = gql`
+export const TRACTORBEAM_QUERY = gql`
   query TractorBeamInfo($simulatorId: ID!) {
     tractorBeam(simulatorId: $simulatorId) {
       id

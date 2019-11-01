@@ -53,7 +53,7 @@ const fragments = {
   `,
 };
 
-const HEATCHANGE_SUB = gql`
+export const TRANSWARP_HEAT_SUB = gql`
   subscription HeatChanged($simulatorId: ID) {
     heatChange(simulatorId: $simulatorId) {
       id
@@ -63,7 +63,7 @@ const HEATCHANGE_SUB = gql`
   }
 `;
 
-const QUERY = gql`
+export const TRANSWARP_QUERY = gql`
   query Transwarp($simulatorId: ID!) {
     transwarp(simulatorId: $simulatorId) {
       ...TranswarpData
@@ -72,7 +72,7 @@ const QUERY = gql`
   ${fragments.coreData}
   ${fragments.transwarpFragment}
 `;
-const SUBSCRIPTION = gql`
+export const TRANSWARP_SUB = gql`
   subscription TranswarpUpdate($simulatorId: ID!) {
     transwarpUpdate(simulatorId: $simulatorId) {
       ...TranswarpData
@@ -86,16 +86,19 @@ class TranswarpData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={TRANSWARP_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {transwarp} = data;
-          if (loading || !transwarp) return null;
           if (!transwarp[0]) return <div>No Transwarp</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: TRANSWARP_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {
@@ -108,7 +111,7 @@ class TranswarpData extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: HEATCHANGE_SUB,
+                    document: TRANSWARP_HEAT_SUB,
                     variables: {simulatorId: this.props.simulator.id},
                     updateQuery: (previousResult, {subscriptionData}) => {
                       const {transwarp} = previousResult;

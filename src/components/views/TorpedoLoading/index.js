@@ -26,7 +26,7 @@ const trainingSteps = [
   },
 ];
 
-const TORPEDO_SUB = gql`
+export const TORPEDO_SUB = gql`
   subscription TorpedosUpdate($simulatorId: ID!) {
     torpedosUpdate(simulatorId: $simulatorId) {
       id
@@ -103,7 +103,7 @@ class TorpedoLoading extends Component {
   }
 }
 
-const TORPEDO_QUERY = gql`
+export const TORPEDO_QUERY = gql`
   query Torpedos($simulatorId: ID!) {
     torpedos(simulatorId: $simulatorId) {
       id
