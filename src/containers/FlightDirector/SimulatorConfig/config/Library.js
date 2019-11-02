@@ -104,16 +104,10 @@ class Library extends Component {
       Array.from(evt.target.files).forEach((f, index) =>
         data.append(`files[${index}]`, f),
       );
-      fetch(
-        `${window.location.protocol}//${window.location.hostname}:${parseInt(
-          window.location.port,
-          10,
-        ) + 1}/importLibrary/${this.props.selectedSimulator.id}`,
-        {
-          method: "POST",
-          body: data,
-        },
-      ).then(() => {
+      fetch(`/importLibrary/${this.props.selectedSimulator.id}`, {
+        method: "POST",
+        body: data,
+      }).then(() => {
         window.location.reload();
       });
     }
@@ -183,11 +177,7 @@ class Library extends Component {
               size="sm"
               block
               as="a"
-              href={`${window.location.protocol}//${
-                window.location.hostname
-              }:${parseInt(window.location.port, 10) + 1}/exportLibrary/${
-                this.props.selectedSimulator.id
-              }`}
+              href={`/exportLibrary/${this.props.selectedSimulator.id}`}
             >
               Export Library
             </Button>
@@ -387,12 +377,7 @@ class Library extends Component {
                       block
                       disabled={!this.state.entry.id}
                       as="a"
-                      href={`${window.location.protocol}//${
-                        window.location.hostname
-                      }:${parseInt(window.location.port, 10) +
-                        1}/exportLibrary/${this.state.entry.simulatorId}/${
-                        this.state.entry.id
-                      }`}
+                      href={`/exportLibrary/${this.state.entry.simulatorId}/${this.state.entry.id}`}
                     >
                       Export
                     </Button>

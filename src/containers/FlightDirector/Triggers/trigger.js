@@ -32,16 +32,10 @@ export default class Trigger extends Component {
     Array.from(evt.target.files).forEach((f, index) =>
       data.append(`files[${index}]`, f),
     );
-    fetch(
-      `${window.location.protocol}//${window.location.hostname}:${parseInt(
-        window.location.port,
-        10,
-      ) + 1}/importTrigger`,
-      {
-        method: "POST",
-        body: data,
-      },
-    ).then(() => {
+    fetch(`/importTrigger`, {
+      method: "POST",
+      body: data,
+    }).then(() => {
       //  window.location.reload();
     });
   };
@@ -159,10 +153,7 @@ export default class Trigger extends Component {
                 <Button
                   size="sm"
                   tag="a"
-                  href={`${window.location.protocol}//${
-                    window.location.hostname
-                  }:${parseInt(window.location.port, 10) +
-                    1}/exportTrigger/${selectedTrigger}`}
+                  href={`/exportTrigger/${selectedTrigger}`}
                   block
                   color="info"
                 >

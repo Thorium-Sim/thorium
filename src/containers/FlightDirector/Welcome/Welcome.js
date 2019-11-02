@@ -64,16 +64,10 @@ const Welcome = ({training, stopTraining}) => {
     Array.from(evt.target.files).forEach((f, index) =>
       data.append(`files[${index}]`, f),
     );
-    fetch(
-      `${window.location.protocol}//${window.location.hostname}:${parseInt(
-        window.location.port,
-        10,
-      ) + 1}/importFlight`,
-      {
-        method: "POST",
-        body: data,
-      },
-    ).then(() => {
+    fetch(`/importFlight`, {
+      method: "POST",
+      body: data,
+    }).then(() => {
       //  window.location.reload();
     });
   };

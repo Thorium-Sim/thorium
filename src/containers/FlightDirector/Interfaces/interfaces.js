@@ -15,24 +15,6 @@ import "./style.scss";
 
 export default class Interfaces extends Component {
   state = {};
-  // handleImport = evt => {
-  //   const data = new FormData();
-  //   Array.from(evt.target.files).forEach((f, index) =>
-  //     data.append(`files[${index}]`, f)
-  //   );
-  //   fetch(
-  //     `${window.location.protocol}//${window.location.hostname}:${parseInt(
-  //       window.location.port,
-  //       10
-  //     ) + 1}/importInterface`,
-  //     {
-  //       method: "POST",
-  //       body: data
-  //     }
-  //   ).then(() => {
-  //     //  window.location.reload();
-  //   });
-  // };
   render() {
     const {interfaces, interfaceDevices} = this.props;
     const {selectedInterface} = this.state;
@@ -145,18 +127,6 @@ export default class Interfaces extends Component {
                     </Button>
                   )}
                 </Mutation>
-                {/* <Button
-                  size="sm"
-                  tag="a"
-                  href={`${window.location.protocol}//${
-                    window.location.hostname
-                  }:${parseInt(window.location.port, 10) +
-                    1}/exportInterface/${selectedInterface}`}
-                  block
-                  color="info"
-                >
-                  Export Interface
-                </Button> */}
               </Fragment>
             )}
           </Col>

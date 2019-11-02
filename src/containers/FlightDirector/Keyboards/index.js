@@ -77,16 +77,10 @@ class Keyboards extends Component {
         Array.from(evt.target.files).forEach((f, index) =>
           data.append(`files[${index}]`, f),
         );
-        fetch(
-          `${window.location.protocol}//${window.location.hostname}:${parseInt(
-            window.location.port,
-            10,
-          ) + 1}/importKeyboard`,
-          {
-            method: "POST",
-            body: data,
-          },
-        ).then(() => {
+        fetch(`/importKeyboard`, {
+          method: "POST",
+          body: data,
+        }).then(() => {
           window.location.reload();
         });
       }
@@ -191,10 +185,7 @@ class Keyboards extends Component {
                         as="a"
                         block
                         size="sm"
-                        href={`${window.location.protocol}//${
-                          window.location.hostname
-                        }:${parseInt(window.location.port, 10) +
-                          1}/exportKeyboard/${selectedKeyboard}`}
+                        href={`/exportKeyboard/${selectedKeyboard}`}
                       >
                         Export Keyboard
                       </Button>

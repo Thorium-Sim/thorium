@@ -169,16 +169,10 @@ const Surveys = ({client}) => {
     Array.from(evt.target.files).forEach((f, index) =>
       data.append(`files[${index}]`, f),
     );
-    fetch(
-      `${window.location.protocol}//${window.location.hostname}:${parseInt(
-        window.location.port,
-        10,
-      ) + 1}/importSurvey`,
-      {
-        method: "POST",
-        body: data,
-      },
-    ).then(() => {
+    fetch(`/importSurvey`, {
+      method: "POST",
+      body: data,
+    }).then(() => {
       window.location.reload();
     });
   };
@@ -236,10 +230,7 @@ const Surveys = ({client}) => {
               <Button
                 size="sm"
                 tag="a"
-                href={`${window.location.protocol}//${
-                  window.location.hostname
-                }:${parseInt(window.location.port, 10) +
-                  1}/exportSurvey/${selectedForm}`}
+                href={`/exportSurvey/${selectedForm}`}
                 block
                 color="info"
               >

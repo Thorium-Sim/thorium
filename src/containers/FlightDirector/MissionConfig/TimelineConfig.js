@@ -492,11 +492,7 @@ export default class TimelineConfig extends Component {
           <Button
             tag="a"
             size="sm"
-            href={`${window.location.protocol}//${
-              window.location.hostname
-            }:${parseInt(window.location.port, 10) + 1}/exportMission/${
-              object.id
-            }`}
+            href={`/exportMission/${object.id}`}
             block
             color="info"
           >

@@ -229,11 +229,7 @@ This can only be done once per flight and should only be done when the flight is
                 )}
                 <Button
                   tag="a"
-                  href={`${window.location.protocol}//${
-                    window.location.hostname
-                  }:${parseInt(window.location.port, 10) + 1}/exportFlight/${
-                    props.match.params.flightId
-                  }`}
+                  href={`/exportFlight/${props.match.params.flightId}`}
                   color="info"
                 >
                   Export Flight

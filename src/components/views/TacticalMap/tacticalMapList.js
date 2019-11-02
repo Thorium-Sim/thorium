@@ -10,16 +10,10 @@ const importTacticalMap = evt => {
     Array.from(evt.target.files).forEach((f, index) =>
       data.append(`files[${index}]`, f),
     );
-    fetch(
-      `${window.location.protocol}//${window.location.hostname}:${parseInt(
-        window.location.port,
-        10,
-      ) + 1}/importTacticalMap`,
-      {
-        method: "POST",
-        body: data,
-      },
-    ).then(() => {
+    fetch(`/importTacticalMap`, {
+      method: "POST",
+      body: data,
+    }).then(() => {
       window.location.reload();
     });
   }
@@ -180,10 +174,7 @@ const TacticalMapList = ({
                     as="a"
                     size="sm"
                     disabled={!tacticalMapId}
-                    href={`${window.location.protocol}//${
-                      window.location.hostname
-                    }:${parseInt(window.location.port, 10) +
-                      1}/exportTacticalMap/${tacticalMapId}`}
+                    href={`/exportTacticalMap/${tacticalMapId}`}
                   >
                     Export
                   </Button>

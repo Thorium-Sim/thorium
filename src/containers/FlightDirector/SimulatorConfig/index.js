@@ -281,10 +281,7 @@ class SimulatorConfig extends Component {
             />
             <Button
               tag="a"
-              href={`${window.location.protocol}//${
-                window.location.hostname
-              }:${parseInt(window.location.port, 10) +
-                1}/exportSimulator/${simulatorId}`}
+              href={`/exportSimulator/${simulatorId}`}
               block
               size="sm"
               color="info"

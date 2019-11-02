@@ -75,9 +75,7 @@ const DynamicPicker = ({onChange, mosaic}) => {
       return setModal(true);
     }
     if (value === "export") {
-      const href = `${window.location.protocol}//${
-        window.location.hostname
-      }:${parseInt(window.location.port, 10) + 1}/exportCoreLayout/${layout}`;
+      const href = `/exportCoreLayout/${layout}`;
       window.open(href);
       return;
     }
@@ -93,16 +91,10 @@ const DynamicPicker = ({onChange, mosaic}) => {
     Array.from(evt.target.files).forEach((f, index) =>
       data.append(`files[${index}]`, f),
     );
-    fetch(
-      `${window.location.protocol}//${window.location.hostname}:${parseInt(
-        window.location.port,
-        10,
-      ) + 1}/importCoreLayout`,
-      {
-        method: "POST",
-        body: data,
-      },
-    ).then(() => {
+    fetch(`/importCoreLayout`, {
+      method: "POST",
+      body: data,
+    }).then(() => {
       window.location.reload();
     });
   };

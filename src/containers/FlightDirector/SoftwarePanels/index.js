@@ -124,16 +124,10 @@ class App extends Component {
       Array.from(evt.target.files).forEach((f, index) =>
         data.append(`files[${index}]`, f),
       );
-      fetch(
-        `${window.location.protocol}//${window.location.hostname}:${parseInt(
-          window.location.port,
-          10,
-        ) + 1}/importSoftwarePanel`,
-        {
-          method: "POST",
-          body: data,
-        },
-      ).then(() => {
+      fetch(`/importSoftwarePanel`, {
+        method: "POST",
+        body: data,
+      }).then(() => {
         window.location.reload();
       });
     }
@@ -482,10 +476,7 @@ class App extends Component {
                 tag="a"
                 color="warning"
                 block
-                href={`${window.location.protocol}//${
-                  window.location.hostname
-                }:${parseInt(window.location.port, 10) +
-                  1}/exportSoftwarePanel/${this.state.selectedPanel}`}
+                href={`/exportSoftwarePanel/${this.state.selectedPanel}`}
               >
                 Export Panel
               </Button>
