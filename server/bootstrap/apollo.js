@@ -1,7 +1,7 @@
 import {ApolloServer, makeExecutableSchema} from "apollo-server-express";
 import vanity from "./vanity";
 import http from "http";
-import ipaddress from "../helpers/ipaddress";
+import ipAddress from "../helpers/ipaddress";
 import {typeDefs, resolvers} from "../data";
 import chalk from "chalk";
 // Load some other stuff
@@ -14,7 +14,7 @@ export const schema = makeExecutableSchema({
     requireResolversForResolveType: false,
   },
 });
-export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
+export default (app, SERVER_PORT) => {
   const graphqlOptions = {
     schema,
     resolverValidationOptions: {
@@ -48,13 +48,13 @@ export default (app, GRAPHQL_PORT, CLIENT_PORT) => {
     }
   });
 
-  httpServer.listen(GRAPHQL_PORT, () => {
+  httpServer.listen(SERVER_PORT, () => {
     console.log(
       `
-Client Server is now running on http://${ipaddress}:${CLIENT_PORT}/client
-Access the Flight Director on http://${ipaddress}:${CLIENT_PORT}
-GraphQL Server is now running on http://${ipaddress}:${GRAPHQL_PORT}/graphql
-🚀 Subscriptions ready at ws://${ipaddress}:${GRAPHQL_PORT}${apollo.subscriptionsPath}`,
+Client Server is now running on http://${ipAddress}:${SERVER_PORT}/client
+Access the Flight Director on http://${ipAddress}:${SERVER_PORT}
+GraphQL Server is now running on http://${ipAddress}:${SERVER_PORT}/graphql
+🚀 Subscriptions ready at ws://${ipAddress}:${SERVER_PORT}${apollo.subscriptionsPath}`,
     );
   });
 };

@@ -17,7 +17,6 @@ let spaceEdventuresTimeout = 0;
 const schema = gql`
   type Thorium {
     thoriumId: String
-    autoUpdate: Boolean
     doTrack: Boolean
     askedToTrack: Boolean
     addedTaskTemplates: Boolean
@@ -50,8 +49,6 @@ const schema = gql`
     thorium: Thorium
   }
   extend type Mutation {
-    toggleAutoUpdate(autoUpdate: Boolean!): String
-    triggerAutoUpdate: String
     setTrackingPreference(pref: Boolean!): String
     importTaskTemplates: String
     setSpaceEdventuresToken(token: String!): SpaceEdventuresCenter

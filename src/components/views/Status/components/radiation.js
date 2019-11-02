@@ -42,8 +42,8 @@ const Radiation = ({simulator}) => {
     [simulator.id],
   );
   useSubscribeToMore(subscribeToMore, SUB, config);
+  if (loading || !data) return null;
   const {simulators} = data;
-  if (loading || !simulators) return null;
   const {radiation} = simulators[0].ship;
 
   return (

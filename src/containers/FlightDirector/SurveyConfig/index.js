@@ -259,6 +259,7 @@ const Surveys = ({client}) => {
                 {({loading, data}) => {
                   if (loading || !data) return null;
                   const {googleSheets} = data;
+                  if (!googleSheets) return null;
                   return (
                     <div>
                       <h3>Google Sheets Connection</h3>

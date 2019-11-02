@@ -8,14 +8,12 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./welcome.scss";
 import QuoteOfTheDay from "./QuoteOfTheDay";
 import TrackerPopup from "./TrackerPopup";
-import AutoUpdate from "./AutoUpdate";
 import NewFlight from "./NewFlight";
 import {useQuery} from "@apollo/react-hooks";
 
 export const FLIGHTS_QUERY = gql`
   query Flights {
     thorium {
-      autoUpdate
       askedToTrack
     }
     flights {
@@ -80,10 +78,10 @@ const Welcome = ({training, stopTraining}) => {
     });
   };
   const {loading, data, error, subscribeToMore} = useQuery(FLIGHTS_QUERY);
-  console.log(loading, data, error);
-  if (loading || !data.flights) return null;
+  if (loading || !data) return null;
+  if (error) return <h1>Error accessing Thorium server.</h1>;
   const {flights, thorium} = data;
-  const {autoUpdate, askedToTrack} = thorium;
+  const {askedToTrack} = thorium;
   return (
     <Container className="WelcomeView">
       <SubscriptionHelper
@@ -114,7 +112,6 @@ const Welcome = ({training, stopTraining}) => {
           </h6>
           <QuoteOfTheDay />
           <TrackerPopup askedToTrack={askedToTrack} />
-          <AutoUpdate autoUpdate={autoUpdate} />
         </Col>
       </Row>
       <Row className="content-row">

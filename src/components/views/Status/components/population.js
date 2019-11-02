@@ -60,8 +60,8 @@ const Population = ({simulator}) => {
     [simulator.id],
   );
   useSubscribeToMore(subscribeToMore, POP_SUB, popConfig);
+  if (loading || !data) return null;
   const {simulators, crewCount = 0} = data;
-  if (loading || !simulators) return null;
   const {ship} = simulators[0];
 
   if (!ship) return null;

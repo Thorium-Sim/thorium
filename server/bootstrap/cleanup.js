@@ -1,7 +1,5 @@
 import App from "../app";
 import {aspectList} from "../events/flight";
-import fs from "fs";
-import paths from "../helpers/paths";
 
 export default () => {
   // Get all of the flights.

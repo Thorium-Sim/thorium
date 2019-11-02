@@ -40,8 +40,8 @@ class TemplateData extends Component {
     return (
       <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {engines} = data;
-          if (loading || !engines) return null;
           if (!engines) return null;
           const {velocity, activating} = engines.reduce(
             (prev, next, i) => {

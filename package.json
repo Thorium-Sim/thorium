@@ -53,6 +53,7 @@
     "storybook": "start-storybook -p 9009 -s public,./",
     "build:storybook": "build-storybook -s public"
   },
+  "proxy": "http://localhost:3001",
   "nodemonConfig": {
     "watch": [
       "server/"
@@ -192,6 +193,7 @@
     "multer": "^1.4.2",
     "ncp": "^2.0.0",
     "power-off": "^1.1.2",
+    "react-dev-utils": "^9.1.0",
     "simplex-noise": "^2.4.0",
     "sleep-mode": "^1.1.0",
     "yauzl": "^2.10.0",

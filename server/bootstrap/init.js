@@ -5,6 +5,21 @@ import path from "path";
 import https from "https";
 import ProgressBar from "progress";
 import importAssets from "../imports/asset/import";
+import "../helpers/sentry";
+
+require("dotenv").config({debug: true, path: `${__dirname}/../.env`});
+
+const warn = console.warn;
+console.warn = message => {
+  if (
+    message.indexOf(
+      'Pass false into "resolverValidationOptions.requireResolversForResolveType',
+    ) > -1
+  )
+    return;
+  warn(message);
+};
+
 export const download = function(url, dest, callback) {
   const file = fs.createWriteStream(dest);
   https.get(url, function(res) {

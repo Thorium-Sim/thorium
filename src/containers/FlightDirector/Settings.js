@@ -6,7 +6,6 @@ import gql from "graphql-tag.macro";
 const QUERY = gql`
   query Thorium {
     thorium {
-      autoUpdate
       thoriumId
       doTrack
       spaceEdventuresToken
@@ -64,28 +63,6 @@ const Settings = () => (
                   Fyreworks to better understand how Thorium is used.
                 </small>
               </div>
-            </label>
-          </div>
-          <div>
-            <label>
-              <Mutation
-                mutation={gql`
-                  mutation ToggleAutoUpdate($autoUpdate: Boolean!) {
-                    toggleAutoUpdate(autoUpdate: $autoUpdate)
-                  }
-                `}
-              >
-                {action => (
-                  <input
-                    type="checkbox"
-                    defaultChecked={data.thorium.autoUpdate}
-                    onChange={e =>
-                      action({variables: {autoUpdate: e.target.checked}})
-                    }
-                  />
-                )}
-              </Mutation>{" "}
-              Automatically check for updates
             </label>
           </div>
           <div>

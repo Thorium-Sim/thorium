@@ -139,7 +139,7 @@ const AlertCondition = ({simulator, client}) => {
                 className={`alert-button alert-${a}`}
                 id={`alert${a}`}
                 onClick={
-                  data.simulators && data.simulators[0].alertLevelLock
+                  data && data.simulators && data.simulators[0].alertLevelLock
                     ? () => {}
                     : () => setAlert(a)
                 }

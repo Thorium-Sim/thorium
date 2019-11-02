@@ -71,8 +71,8 @@ class StealthFieldData extends Component {
     return (
       <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {stealthField, systems} = data;
-          if (loading || !stealthField) return null;
           if (!stealthField[0]) return <div>No Stealth Field</div>;
           return (
             <SubscriptionHelper

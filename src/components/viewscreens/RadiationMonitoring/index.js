@@ -44,8 +44,8 @@ const RadiationMonitor = ({simulator}) => {
     [simulator.id],
   );
   useSubscribeToMore(subscribeToMore, SUB, config);
+  if (loading || !data) return null;
   const {simulators} = data;
-  if (loading || !simulators) return null;
   const width = simulators[0].ship.radiation;
   return (
     <div className="radiation-monitoring">

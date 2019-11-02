@@ -86,8 +86,8 @@ const TasksData = props => {
     [props.simulator.id],
   );
   useSubscribeToMore(subscribeToMore, SUBSCRIPTION, config);
+  if (loading || !data) return null;
   const {tasks} = data;
-  if (loading || !tasks) return null;
   const crewTasks = Object.entries(
     tasks
       .filter(t => !t.verified)

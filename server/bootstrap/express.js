@@ -129,9 +129,7 @@ export default () => {
     }
   });
 
-  if (!process.env.NODE_ENV) {
-    server.use("/assets/", express.static(path.resolve("./assets")));
-
+  if (process.env.NODE_ENV === "production") {
     // If we're in production, the last thing we want is for the server to crash
     // Print all server errors, but don't terminate the process
     setInterval(function() {}, Math.pow(2, 31) - 1);
@@ -139,6 +137,8 @@ export default () => {
       console.log(chalk.red(`Caught exception: ${err}\n`));
       console.log(err);
     });
+  } else {
+    server.use("/assets/", express.static(path.resolve("./assets")));
   }
 
   return server;

@@ -1,25 +1,10 @@
 const express = require("express");
-const server = express();
 const path = require("path");
 const paths = require("../helpers/paths");
-const ipaddress = require("../helpers/ipaddress");
 
 const assetPath = path.resolve(path.dirname(process.argv[1]), "..");
-const openBrowser = require("react-dev-utils/openBrowser");
-const chalk = require("chalk");
 
-server.on("error", err => {
-  if (err.code === "EADDRINUSE") {
-    console.log(
-      chalk.redBright(
-        "There is already a version of Thorium running on this computer. Shutting down...",
-      ),
-    );
-    process.exit(0);
-  }
-});
-
-export default function(port = 3000) {
+export default function(server, port = 3000) {
   if (process.env.NODE_ENV === "production") {
     server.use(express.static(assetPath));
     let assetDir = path.resolve(paths.userData + "/assets");
@@ -39,9 +24,6 @@ export default function(port = 3000) {
         response.end();
       });
     });
-
-    server.listen(port, () => {
-      openBrowser(`http://${ipaddress.default}:${port}`);
-    });
   }
+  return server;
 }
