@@ -23,7 +23,7 @@ Some goals for this refactor:
       dependencies that are necessary.
 - [ ] Add DangerJS reviews to pull requests.
 - [x] Make sure server errors are properly being logged to Sentry.
-- [ ] Fix all of the stylelint issues.
+- [x] Fix all of the stylelint issues.
 
 ## Version 3.0
 

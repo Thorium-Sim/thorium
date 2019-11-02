@@ -74,7 +74,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all lint-staged-validate typecheck"
+      "pre-commit": "npm-run-all --parallel lint-staged-validate typecheck"
     }
   },
   "lint-staged": {
@@ -244,6 +244,7 @@
     "codegen.macro": "^3.0.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
+    "danger": "^9.2.2",
     "dotenv": "^6.2.0",
     "electron": "^7.0.1",
     "electron-builder": "^22.1.0",

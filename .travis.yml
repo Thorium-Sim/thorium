@@ -7,6 +7,8 @@ sudo: false
 branches:
   only:
     - master
+    - develop
+    - 2.0
 
 stages:
   - test
@@ -14,15 +16,11 @@ stages:
   - name: deploy
     if: branch = master
 
-env:
-  - TEST_SUITE=client
-  - TEST_SUITE=server
-
 install:
   - npm install
-  - npm install --prefix $TEST_SUITE
 script:
-  - npm run test-$TEST_SUITE -- --forceExit
+  - npm run validate -- --forceExit
+  - yarn danger ci
 
 jobs:
   include:
