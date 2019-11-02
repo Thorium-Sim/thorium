@@ -7,6 +7,9 @@
   .exocomp-list {
     max-height: 80vh;
     overflow-y: scroll;
+    .parts-holder {
+      float: left;
+    }
   }
   .card {
     margin-bottom: 20px;
@@ -16,11 +19,6 @@
     float: left;
     margin-bottom: 10px;
     margin-right: 20px;
-  }
-  .exocomp-list {
-    .parts-holder {
-      float: left;
-    }
   }
   .parts-holder {
     display: flex;

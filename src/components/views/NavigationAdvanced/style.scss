@@ -124,7 +124,6 @@
   input[type="range"]::-ms-thumb {
     box-shadow: 2px 2px 7.2px #000000, 0px 0px 2px #0d0d0d;
     border: 1.6px solid #009e00;
-    height: 100px;
     width: 24px;
     border-radius: 5px;
     background: #00be00;
@@ -153,6 +152,13 @@ $circleRadius: 100px;
   width: $circleRadius * 2 + $arrowSize * 2;
   label {
     pointer-events: none;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    user-select: none;
   }
   .arrow {
     cursor: pointer;
@@ -190,14 +196,5 @@ $circleRadius: 100px;
       border: solid 2px rgba(255, 255, 255, 0.5);
       user-select: none;
     }
-  }
-  label {
-    color: white;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    user-select: none;
   }
 }

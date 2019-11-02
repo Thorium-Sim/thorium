@@ -10,9 +10,9 @@ $alertp: #4d1980;
 $color: $alert5;
 
 @mixin button-variant($background) {
-  background-color: transparent;
   $background: lighten(desaturate($background, 20%), 10%);
   background: rgba($background, 0.3);
+  background-color: transparent;
   border: solid 1px $background;
   color: white;
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 1);

@@ -47,17 +47,6 @@ $color: $alert5;
       saturate(lighten($background, 10%), 5%) 100%
     );
     border-color: lighten($background, 12%);
-    &:hover,
-    &:focus,
-    &.focus {
-      //background: linear-gradient(to bottom, saturate(darken($background, 17%), 5%) 0%, saturate(darken($background, 9%), 5%) 50%, saturate(darken($background, 17%), 5%) 100%);
-      //border-color: lighten($background, 25%);
-    }
-  }
-  &:active,
-  &.active,
-  .open > .dropdown-toggle {
-    //background-image: none;
   }
   &.disabled,
   &[readonly],
@@ -125,6 +114,7 @@ $color: $alert5;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
   }
   .btn {
+    outline: none;
     position: relative;
     z-index: 1;
     text-transform: capitalize;
@@ -147,7 +137,6 @@ $color: $alert5;
     &:before {
       content: "";
       position: absolute;
-      top: 0;
       left: 0;
       width: calc(100% + 20px);
       margin-left: -10px;
@@ -226,7 +215,6 @@ $color: $alert5;
   input[type="password"]:focus,
   select.focus,
   select:focus,
-  textarea:focus,
   textarea:focus {
     box-shadow: 0px 0px 5px $alert5, 5px 5px 10px rgba(0, 0, 0, 0.3);
     color: #fff;
@@ -240,9 +228,7 @@ $color: $alert5;
     font-size: 16px;
     font-family: monospace;
   }
-  .btn {
-    outline: none;
-  }
+
   .textbox {
     box-shadow: rgba(255, 255, 255, 0.74902) 0px 0px 5px 0px,
       5px 5px 10px rgba(0, 0, 0, 0.3);

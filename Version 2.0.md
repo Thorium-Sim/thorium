@@ -10,19 +10,11 @@ Some goals for this refactor:
 
 - [ ] Add more tests, particularly on the client side
 - [x] Add storybook pages for custom components and cards.
-- [ ] Clean up the data flow for passing data down to the individual cards. Use
-      context
-- [ ] Improve the queries so they properly have singular and plural queries for
-      things.
-- [ ] Redesign the GraphQL schema, especially so mutations are in
-      {system}{Operation} format, like phasersFire
-- [ ] Add proper mutation responses to all requests, to make it easier to
-      transition to MST-GQL
 - [ ] Provide more client data in the GraphQL context, like simulator ID,
       station, etc. This makes it so notifications can be selectively sent
       depending on whether the action was performed by a crew member or by a
       core.
-- [ ] Combine the GraphQL server and the client server into a single server,
+- [x] Combine the GraphQL server and the client server into a single server,
       using a single port. Make that port easy to type in, like 4444 or make it
       configurable.
 - [x] Switch from using PKG to using Electron to bundle the server and client
@@ -30,7 +22,7 @@ Some goals for this refactor:
 - [x] Make the bundle size smaller by only including the packages and
       dependencies that are necessary.
 - [ ] Add DangerJS reviews to pull requests.
-- [ ] Make sure server errors are properly being logged to Sentry.
+- [x] Make sure server errors are properly being logged to Sentry.
 - [ ] Fix all of the stylelint issues.
 
 ## Version 3.0
@@ -39,6 +31,14 @@ Once the 2.0 refactor is released, we'll start focusing on additional changes to
 further improve developer and user experience. Since many of these changes could
 be breaking changes, this release will be a version 3.0.
 
+- [ ] Clean up the data flow for passing data down to the individual cards. Use
+      context
+- [ ] Improve the queries so they properly have singular and plural queries for
+      things.
+- [ ] Redesign the GraphQL schema, especially so mutations are in
+      {system}{Operation} format, like phasersFire
+- [ ] Add proper mutation responses to all requests, to make it easier to
+      transition to MST-GQL
 - [ ] Simplify so it's only running one flight at a time.
 - [ ] Partial TypeScript definitions, especially for the server
 - [ ] Upgrade all components to be React StrictMode compatible.

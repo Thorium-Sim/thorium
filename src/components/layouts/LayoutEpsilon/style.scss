@@ -349,7 +349,7 @@ $alertp: #4d1980;
 
   // *** Lists and Infoboxes ***
   .list-group-item {
-    color: #white;
+    color: white;
     background-color: $boxBG;
     border-color: #ccc;
     &.active {
@@ -419,8 +419,8 @@ $alertp: #4d1980;
   // *** handles and sliders ***
 
   .dragger {
-    background-color: white;
     background: radial-gradient(#ccc, white);
+    background-color: white;
     box-shadow: none;
     border: black solid 1px;
   }
@@ -445,8 +445,8 @@ $alertp: #4d1980;
     border-radius: 2rem;
   }
   .rangeslider__handle {
-    background-color: white;
     background: radial-gradient(#ccc, white);
+    background-color: white;
     left: 0;
     height: 30px;
     border-radius: 2rem;

@@ -68,13 +68,13 @@
   .speedBar {
     transition: width 0.2s ease-out;
     height: 30px;
-    background-color: yellow;
     background: linear-gradient(
       to bottom,
       #444400 0%,
       #ffff00 50%,
       #444400 100%
     );
+    background-color: yellow;
     background-size: 5px 3px;
     position: relative;
     top: -47px;

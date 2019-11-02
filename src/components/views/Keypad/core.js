@@ -3,7 +3,6 @@ import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import KeypadCore from "./keypadCore";
-import "./style.scss";
 
 const fragment = gql`
   fragment KeypadData on Keypad {

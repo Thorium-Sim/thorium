@@ -71,6 +71,18 @@
   .target-area {
     height: 100%;
     margin-top: 22px;
+    .torpedo-loading.fire-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-gap: 10px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      .torpedo-loader {
+        width: auto;
+        height: auto;
+      }
+    }
   }
   .crosshair,
   .target-label {
@@ -142,20 +154,6 @@
     min-height: 38px;
     &.selected {
       background-color: #555;
-    }
-  }
-  .target-area {
-    .torpedo-loading.fire-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      grid-gap: 10px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      .torpedo-loader {
-        width: auto;
-        height: auto;
-      }
     }
   }
 }

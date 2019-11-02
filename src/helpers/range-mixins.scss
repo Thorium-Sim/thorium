@@ -34,7 +34,7 @@ $defaultBrowserList: webkit, moz, ms;
     @if (_contains($browserList, ms)) {
       // http://browserhacks.com/#hack-f1070533535a12744a0381a75087a915
       @at-root {
-        _:-ms-input-placeholder,
+        :-ms-input-placeholder,
         :root & {
           @content;
         }

@@ -6,6 +6,8 @@ $alert1: rgb(184, 23, 23);
 $alertp: rgb(152, 23, 184);
 
 .layout-clear {
+  color: white;
+  background-color: black;
   .card-switcher-holder {
     z-index: 100;
     position: absolute;
@@ -51,26 +53,29 @@ $alertp: rgb(152, 23, 184);
   }
   &.alertColor5 {
     @include cardSwitcherColors($alert5);
+    @include colors($alert5);
   }
   &.alertColor4 {
     @include cardSwitcherColors($alert4);
+    @include colors($alert4);
   }
   &.alertColor3 {
     @include cardSwitcherColors($alert3);
+    @include colors($alert3);
   }
   &.alertColor2 {
     @include cardSwitcherColors($alert2);
+    @include colors($alert2);
   }
   &.alertColor1 {
     @include cardSwitcherColors($alert1);
+    @include colors($alert1);
   }
   &.alertColorp {
     @include cardSwitcherColors($alertp);
+    @include colors($alertp);
   }
-}
-.layout-clear {
-  color: white;
-  background-color: black;
+
   .card-frame {
     width: 100vw;
     height: 100vh;
@@ -225,24 +230,6 @@ $alertp: rgb(152, 23, 184);
     }
   }
 
-  &.alertColor5 {
-    @include colors($alert5);
-  }
-  &.alertColor4 {
-    @include colors($alert4);
-  }
-  &.alertColor3 {
-    @include colors($alert3);
-  }
-  &.alertColor2 {
-    @include colors($alert2);
-  }
-  &.alertColor1 {
-    @include colors($alert1);
-  }
-  &.alertColorp {
-    @include colors($alertp);
-  }
   .btn-cloak {
     border-color: $alertp;
     &:hover {

@@ -150,7 +150,6 @@ $alertp: #4d1980;
       width: $navigatorWidth;
       height: 14px;
       top: 66px;
-      transition: background-color 0.5s ease;
       background-image: linear-gradient(
         to right,
         rgba(0, 0, 0, 0) 0%,
@@ -158,7 +157,7 @@ $alertp: #4d1980;
       );
       clip-path: polygon(0 0, $navigatorWidth - 20px 0, 100% 100%, 0% 100%);
       cursor: pointer;
-      transition: transform 0.5s ease;
+      transition: all 0.5s ease;
     }
     &.hypercard {
       pointer-events: none;
@@ -267,7 +266,6 @@ $alertp: #4d1980;
   .btn,
   .btn.disabled,
   .btn:disabled {
-    border-radius: 10px;
     border-width: 1px;
     border-radius: 0;
     color: white;

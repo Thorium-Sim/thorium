@@ -7,6 +7,8 @@ $alertp: #7a24cf;
 
 .layout-black {
   background-color: black;
+  color: white;
+
   .card-switcher-holder {
     z-index: 100;
     position: absolute;
@@ -61,10 +63,7 @@ $alertp: #7a24cf;
   &.alertColorp {
     @include cardSwitcherColors($alertp);
   }
-}
-.layout-black {
-  color: white;
-  background-color: black;
+
   .card-frame {
     width: 100vw;
     height: 100vh;

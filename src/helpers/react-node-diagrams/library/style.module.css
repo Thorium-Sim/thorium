@@ -78,7 +78,6 @@ button[disabled] {
   overflow: hidden;
   position: relative;
   height: 70px;
-  overflow: hidden;
   user-select: none;
 }
 .component-holder .comp p {

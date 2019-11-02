@@ -20,6 +20,10 @@
   }
   .sensors-contact-list {
     height: calc(100% - 100px);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .sensorGridHolder {
     background-color: #ccc;
@@ -83,12 +87,7 @@
   .sensors-extras {
     flex: 1;
   }
-  .sensors-contact-list {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+
   .contact-scroll {
     flex: 1;
     overflow-y: scroll;

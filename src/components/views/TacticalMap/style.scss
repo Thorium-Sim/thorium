@@ -113,6 +113,7 @@
   }
   .path-line circle {
     pointer-events: all;
+    cursor: pointer;
   }
   .layer-grid,
   .layer-image {
@@ -239,8 +240,5 @@
   svg.path-holder {
     width: 100%;
     height: 100%;
-  }
-  .path-line circle {
-    cursor: pointer;
   }
 }

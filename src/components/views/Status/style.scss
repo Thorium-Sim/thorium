@@ -106,11 +106,10 @@
       left: 0;
       right: 0;
       background-color: gray;
-      position: absolute;
       mix-blend-mode: multiply;
-      -webkit-mask-position: center;
-      -webkit-mask-size: contain;
-      -webkit-mask-repeat: no-repeat;
+      mask-position: center;
+      mask-size: contain;
+      mask-repeat: no-repeat;
     }
   }
   .shieldBubble {

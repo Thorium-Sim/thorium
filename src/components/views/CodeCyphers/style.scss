@@ -38,7 +38,6 @@
     max-height: 90vh;
     display: flex;
     height: 100%;
-    max-height: 90vh;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
@@ -121,8 +120,8 @@
   }
   .Borg {
     font-family: "Borg";
-    font-size: 60px;
     line-height: 0;
+    font-size: 120px;
   }
   .DwarfSpiritas {
     font-family: "DwarfSpiritas";
@@ -155,13 +154,6 @@
     font-family: "Symbol";
   }
 }
-.cypher-printing {
-  .Borg {
-    font-family: "Borg";
-    font-size: 120px;
-    line-height: 0;
-  }
-}
 @media print {
   .core-container {
     *:not(.printable) {
@@ -175,8 +167,6 @@
       right: 0 !important;
       bottom: 0 !important;
     }
-  }
-  .core-container {
     .card-codeCyphers,
     .core-codeCyphers {
       *:not(.printable) {
@@ -201,7 +191,6 @@
           max-height: 90vh;
           display: flex;
           height: 100%;
-          max-height: 90vh;
           flex-direction: column;
           flex-wrap: wrap;
           justify-content: center;

@@ -63,8 +63,7 @@
   }
   .pt-button {
     color: #a7b6c2;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    border-radius: 3px;
     box-shadow: none;
     background: none;
     padding: 0;
@@ -78,7 +77,6 @@
     line-height: 30px;
     display: inline-block;
     border: none;
-    border-radius: 3px;
     cursor: pointer;
     box-sizing: border-box;
   }
