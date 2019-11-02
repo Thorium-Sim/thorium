@@ -36,7 +36,9 @@ class DestinationSelect extends Component {
         variables={{simulatorId: simulatorId}}
         pollInterval={1000}
       >
-        {({data: {systems = []}}) => {
+        {({data, loading}) => {
+          if (!data || loading) return null;
+          const {systems = []} = data;
           const selectedSystem = systems.find(s => s.id === destination);
           const filteredSystems = systems
             .filter(sys => {

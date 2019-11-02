@@ -256,8 +256,10 @@ const Surveys = ({client}) => {
           <>
             <Col sm={3}>
               <Query query={GoogleSheetsQuery}>
-                {({loading, data: {googleSheets}}) =>
-                  googleSheets ? (
+                {({loading, data}) => {
+                  if (loading || !data) return null;
+                  const {googleSheets} = data;
+                  return (
                     <div>
                       <h3>Google Sheets Connection</h3>
                       <Search
@@ -279,8 +281,8 @@ const Surveys = ({client}) => {
                         </small>
                       </p>
                     </div>
-                  ) : null
-                }
+                  );
+                }}
               </Query>
             </Col>
             <Col sm={6}>

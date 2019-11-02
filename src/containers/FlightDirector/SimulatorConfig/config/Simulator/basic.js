@@ -73,10 +73,12 @@ export default ({selectedSimulator, handleChange}) => (
           }
         `}
       >
-        {({data: {thorium}, loading}) =>
-          loading ||
-          !thorium.spaceEdventuresCenter ||
-          !thorium.spaceEdventuresCenter.simulators ? null : (
+        {({data, loading}) => {
+          if (loading || !data) return null;
+
+          const {thorium} = data;
+          return !thorium.spaceEdventuresCenter ||
+            !thorium.spaceEdventuresCenter.simulators ? null : (
             <fieldset className="form-group">
               <label>Space EdVentures Simulator</label>
               <div>
@@ -109,8 +111,8 @@ export default ({selectedSimulator, handleChange}) => (
                 </select>
               </div>
             </fieldset>
-          )
-        }
+          );
+        }}
       </Query>
     </form>
   </div>

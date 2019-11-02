@@ -18,8 +18,10 @@ export default React.memo(({updateArgs, args, client}) => {
         }
       `}
     >
-      {({loading, data: {commandLine}}) =>
-        commandLine ? (
+      {({loading, data}) => {
+        if (loading || !data) return null;
+        const {commandLine} = data;
+        return (
           <FormGroup className="macro-addCommandLine">
             <Label>Command Line</Label>
             <Input
@@ -37,8 +39,8 @@ export default React.memo(({updateArgs, args, client}) => {
               ))}
             </Input>
           </FormGroup>
-        ) : null
-      }
+        );
+      }}
     </Query>
   );
 });

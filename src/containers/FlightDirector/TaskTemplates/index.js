@@ -45,8 +45,10 @@ const SUB = gql`
 const TaskTemplatesData = props => {
   return (
     <Query query={TASK_QUERY}>
-      {({loading, data: {taskTemplates}, subscribeToMore}) =>
-        loading || !taskTemplates ? null : (
+      {({loading, data, subscribeToMore}) => {
+        if (loading || !data) return null;
+        const {taskTemplates} = data;
+        return (
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({
@@ -61,8 +63,8 @@ const TaskTemplatesData = props => {
           >
             <TaskTemplates {...props} taskTemplates={taskTemplates} />
           </SubscriptionHelper>
-        )
-      }
+        );
+      }}
     </Query>
   );
 };

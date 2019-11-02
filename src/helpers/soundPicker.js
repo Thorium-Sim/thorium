@@ -92,8 +92,9 @@ const SoundSubMenu = props => {
 const SoundPicker = ({selectedSound, setSound, pickFolder}) => {
   return (
     <Query query={SOUNDS_QUERY}>
-      {({loading, data: {assetFolders}}) => {
-        if (loading) return <p>Loading</p>;
+      {({loading, data}) => {
+        if (loading || !data) return <p>Loading</p>;
+        const {assetFolders} = data;
         return (
           <Menu triggerSubMenuAction="click" key={selectedSound}>
             {pickFolder ? (

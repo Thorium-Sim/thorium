@@ -363,8 +363,12 @@ class SetConfig extends Component {
                     }
                   `}
                 >
-                  {({loading, data: {keyboard}}) => {
-                    if (loading || keyboard.length === 0) {
+                  {({loading, data}) => {
+                    if (loading || !data) {
+                      return null;
+                    }
+                    const {keyboard} = data;
+                    if (keyboard.length === 0) {
                       return null;
                     }
                     return (

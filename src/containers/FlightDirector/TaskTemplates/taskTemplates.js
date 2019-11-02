@@ -35,8 +35,9 @@ class TaskTemplates extends Component {
     const {taskTemplates} = this.props;
     return (
       <Query query={QUERY}>
-        {({loading, data: {taskDefinitions}}) => {
-          if (loading) return null;
+        {({loading, data}) => {
+          if (loading || !data) return null;
+          const {taskDefinitions} = data;
           const taskTemplate = taskTemplates.find(
             t => t.id === selectedTemplate,
           );

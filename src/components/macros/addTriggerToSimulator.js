@@ -17,8 +17,10 @@ export default ({updateArgs, args, client}) => {
           }
         `}
       >
-        {({loading, data: {triggers}}) =>
-          loading ? null : (
+        {({loading, data}) => {
+          if (loading || !data) return null;
+          const {triggers} = data;
+          return (
             <select
               className={"form-control"}
               type="select"
@@ -33,8 +35,8 @@ export default ({updateArgs, args, client}) => {
                 </option>
               ))}
             </select>
-          )
-        }
+          );
+        }}
       </Query>
     </FormGroup>
   );

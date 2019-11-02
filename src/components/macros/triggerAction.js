@@ -35,10 +35,10 @@ const renderButtons = ({
   if (action === "movie")
     return (
       <Query query={MOVIE_QUERY}>
-        {({loading, data: {assetFolders}}) =>
-          loading ? (
-            <p>Loading</p>
-          ) : (
+        {({loading, data}) => {
+          if (loading || !data) return <p>Loading</p>;
+          const {assetFolders} = data;
+          return (
             <Input
               type="select"
               value={asset || "nothing"}
@@ -62,8 +62,8 @@ const renderButtons = ({
                     ))
                 : null}
             </Input>
-          )
-        }
+          );
+        }}
       </Query>
     );
   if (action === "speak")

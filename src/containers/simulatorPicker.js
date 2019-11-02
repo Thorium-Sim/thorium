@@ -122,10 +122,10 @@ const SimulatorPicker = ({triggerAlert}) => {
                     }
                   `}
                 >
-                  {({loading, data}) => {
-                    if (loading)
+                  {({loading, data: externalsData}) => {
+                    if (loading || !externalsData)
                       return <Rings color="#08f" width={100} height={100} />;
-                    const {externals} = data;
+                    const {externals} = externalsData;
                     return (
                       <div
                         style={{

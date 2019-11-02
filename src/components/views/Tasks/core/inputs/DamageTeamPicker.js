@@ -15,8 +15,9 @@ const crewQuery = gql`
 `;
 const DamageTeamPicker = ({simulatorId, onChange, value = {}}) => (
   <Query query={crewQuery} variables={{simulatorId}}>
-    {({loading, data: {crew = []}}) => {
-      if (loading) return null;
+    {({loading, data}) => {
+      if (loading || !data) return null;
+      const {crew = []} = data;
       const positions =
         crew.length > 0
           ? crew.reduce(

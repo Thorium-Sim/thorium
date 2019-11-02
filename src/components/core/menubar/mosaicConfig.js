@@ -99,9 +99,11 @@ class MosaicConfig extends Component {
 const MosaicConfigData = props => {
   return (
     <Query query={CORE_LAYOUTS}>
-      {({loading, data: {coreLayouts}}) =>
-        loading ? null : <MosaicConfig coreLayouts={coreLayouts} {...props} />
-      }
+      {({loading, data}) => {
+        if (loading || !data) return null;
+        const {coreLayouts} = data;
+        return <MosaicConfig coreLayouts={coreLayouts} {...props} />;
+      }}
     </Query>
   );
 };

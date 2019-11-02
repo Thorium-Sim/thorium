@@ -104,12 +104,9 @@ class DamageTasks extends Component {
     const {id, damageTasks, type = "simulator"} = this.props;
     return (
       <Query query={QUERY}>
-        {({
-          loading,
-          data: {taskDefinitions, taskTemplates},
-          subscribeToMore,
-        }) => {
-          if (loading) return null;
+        {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
+          const {taskDefinitions, taskTemplates} = data;
           return (
             <Container>
               <small>

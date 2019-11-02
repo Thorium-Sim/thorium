@@ -26,8 +26,10 @@ class PartsPicker extends Component {
           }
         `}
       >
-        {({loading, data: {exocompParts}}) =>
-          loading ? null : (
+        {({loading, data}) => {
+          if (!data || loading) return null;
+          const {exocompParts} = data;
+          return (
             <div>
               {parts.map((p, i) => (
                 <div key={`${p}-${i}`}>
@@ -63,8 +65,8 @@ class PartsPicker extends Component {
                 Add Part
               </Button>
             </div>
-          )
-        }
+          );
+        }}
       </Query>
     );
   }

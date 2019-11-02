@@ -74,6 +74,7 @@ module.exports = () => {
       height: 600,
       kiosk: false,
       webPreferences: {
+        sandbox: false,
         nodeIntegration: false,
         preload: path.resolve(__dirname + "/../preload.js"),
       },

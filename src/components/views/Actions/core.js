@@ -175,10 +175,10 @@ class ActionsCore extends Component {
         <Row>
           <Col sm={bridgeMap ? 12 : 8}>
             <Query query={MOVIE_QUERY}>
-              {({loading, data: {assetFolders}}) =>
-                loading ? (
-                  <p>Loading</p>
-                ) : (
+              {({loading, data}) => {
+                if (loading || !data) return <p>Loading</p>;
+                const {assetFolders} = data;
+                return (
                   <Input
                     style={{height: "20px"}}
                     type="select"
@@ -207,8 +207,8 @@ class ActionsCore extends Component {
                           ))
                       : null}
                   </Input>
-                )
-              }
+                );
+              }}
             </Query>
           </Col>
           {!bridgeMap && (

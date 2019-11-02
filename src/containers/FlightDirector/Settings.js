@@ -131,71 +131,77 @@ const Settings = () => (
           <div>
             <h3>Google Sheets Connections</h3>
             <Query query={GoogleSheetsQuery}>
-              {({loading, data: {googleSheets}}) => (
-                <Mutation
-                  mutation={gql`
-                    mutation Authorize {
-                      googleSheetsAuthorize
-                    }
-                  `}
-                >
-                  {(action, {data}) =>
-                    googleSheets ? (
-                      <div>
-                        <p>Connected to Google Sheets: {googleSheets}</p>
-                        <Mutation
-                          mutation={gql`
-                            mutation Revoke {
-                              googleSheetsRevoke
-                            }
-                          `}
-                          awaitRefetchQueries
-                          refetchQueries={[{query: GoogleSheetsQuery}]}
-                        >
-                          {action => (
-                            <Button onClick={action}>Revoke Connection</Button>
-                          )}
-                        </Mutation>
-                      </div>
-                    ) : data && data.googleSheetsAuthorize ? (
-                      <div>
-                        <label>
-                          Paste Access Token Here
+              {({loading, data}) => {
+                if (loading || !data) return null;
+                const {googleSheets} = data;
+                return (
+                  <Mutation
+                    mutation={gql`
+                      mutation Authorize {
+                        googleSheetsAuthorize
+                      }
+                    `}
+                  >
+                    {(action, {data}) =>
+                      googleSheets ? (
+                        <div>
+                          <p>Connected to Google Sheets: {googleSheets}</p>
                           <Mutation
                             mutation={gql`
-                              mutation Authenticate($token: String!) {
-                                googleSheetsCompleteAuthorize(token: $token)
+                              mutation Revoke {
+                                googleSheetsRevoke
                               }
                             `}
                             awaitRefetchQueries
                             refetchQueries={[{query: GoogleSheetsQuery}]}
                           >
-                            {complete => (
-                              <Input
-                                onChange={e =>
-                                  complete({
-                                    variables: {token: e.target.value},
-                                  })
-                                }
-                              />
+                            {action => (
+                              <Button onClick={action}>
+                                Revoke Connection
+                              </Button>
                             )}
                           </Mutation>
-                        </label>
-                      </div>
-                    ) : (
-                      <Button
-                        onClick={() =>
-                          action().then(({data: {googleSheetsAuthorize}}) =>
-                            window.open(googleSheetsAuthorize),
-                          )
-                        }
-                      >
-                        Connect Google Sheets
-                      </Button>
-                    )
-                  }
-                </Mutation>
-              )}
+                        </div>
+                      ) : data && data.googleSheetsAuthorize ? (
+                        <div>
+                          <label>
+                            Paste Access Token Here
+                            <Mutation
+                              mutation={gql`
+                                mutation Authenticate($token: String!) {
+                                  googleSheetsCompleteAuthorize(token: $token)
+                                }
+                              `}
+                              awaitRefetchQueries
+                              refetchQueries={[{query: GoogleSheetsQuery}]}
+                            >
+                              {complete => (
+                                <Input
+                                  onChange={e =>
+                                    complete({
+                                      variables: {token: e.target.value},
+                                    })
+                                  }
+                                />
+                              )}
+                            </Mutation>
+                          </label>
+                        </div>
+                      ) : (
+                        <Button
+                          onClick={() =>
+                            action().then(({data: {googleSheetsAuthorize}}) =>
+                              window.open(googleSheetsAuthorize),
+                            )
+                          }
+                        >
+                          Connect Google Sheets
+                        </Button>
+                      )
+                    }
+                  </Mutation>
+                );
+              }}
             </Query>
           </div>
         </Container>
