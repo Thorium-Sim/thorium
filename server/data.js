@@ -1,11 +1,32 @@
 import {gql} from "apollo-server-express";
 import merge from "lodash/merge";
-import fs from "fs";
-import path from "path";
-const schema = fs
+import codegen from "codegen.macro";
+
+// These codegen blocks dynamically import all of the tyepdef files
+// from the typeDef folder.
+codegen`
+const fs = require('fs')
+const path = require("path");
+const files = fs
   .readdirSync(path.resolve(__dirname + "/typeDefs"))
-  .filter(f => f[0] !== "_")
-  .map(f => require(path.resolve(`${__dirname}/typeDefs/${f}`)).default);
+  .filter(f => f[0] !== "_");
+
+function mapFiles(f) {
+  return "import " + f.replace(".js", "") + ' from "./typeDefs/' + f + '"';
+}
+module.exports = files.map(mapFiles).join("\\n");
+`;
+
+let schema = {};
+
+codegen`
+const fs = require('fs')
+const path = require("path");
+const files = fs
+  .readdirSync(path.resolve(__dirname + "/typeDefs"))
+  .filter(f => f[0] !== "_");
+module.exports = files.map(f => 'schema.' + f.replace(".js", "") + ' = ' + f.replace(".js", ";")).join("\\n");
+  `;
 
 const MainSchema = gql`
   # A type for all of the system-wide settings.

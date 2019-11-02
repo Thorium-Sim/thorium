@@ -1,6 +1,4 @@
 import paths from "../helpers/paths";
-import fs from "fs";
-import mkdirp from "mkdirp";
 
 require("dotenv").config({debug: true, path: `${__dirname}/../.env`});
 
@@ -19,21 +17,16 @@ console.warn = message => {
 };
 
 // Check to see if we are in development mode or not.
-if (
-  process.argv0.split("/").indexOf("node") === -1 &&
-  process.argv0.split("/").indexOf("node.exe") === -1 &&
-  process.argv0.split("\\").indexOf("node.exe") === -1
-) {
-  process.env.NODE_ENV = "production";
-} else {
-  // Load the Sentry error tracking
-  require("../helpers/sentry");
-}
-
-let logDir = "./logs";
-if (process.env.NODE_ENV === "production") {
-  logDir = paths.userData + "/logs";
-}
+// if (
+//   process.argv0.split("/").indexOf("node") === -1 &&
+//   process.argv0.split("/").indexOf("node.exe") === -1 &&
+//   process.argv0.split("\\").indexOf("node.exe") === -1
+// ) {
+//   process.env.NODE_ENV = "production";
+//   require("../helpers/sentry");
+// } else {
+//   // Load the Sentry error tracking
+// }
 
 export default function logger() {
   // mkdirp.sync(logDir);

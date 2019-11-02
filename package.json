@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.0.0",
+  "version": "2.0.0-beta1",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -24,10 +24,15 @@
     "start": "npm-run-all --parallel start:client start:server",
     "start:client": "react-scripts start",
     "start:server": "nodemon ./server/index.js -e js,graphql --ignore snapshots/ --exec babel-node",
-    "build": "NODE_ENV=production npm-run-all build:client build:server build:env",
+    "watch:electron": "wait-on http://localhost:3000 && electron .",
+    "start:electron": "BROWSER=none npm-run-all --parallel -l start:client watch:server watch:electron",
+    "build": "NODE_ENV=production npm-run-all build:client build:server build:env build:electron",
     "build:client": "react-scripts --max_old_space_size=4096 build",
+    "build:server": "parcel build server/index.js --out-dir build/server --target node --no-source-maps",
     "build:env": "node ./scripts/build-env.js",
     "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
+    "build:electron": "electron-builder",
+    "pack:electron": "electron-builder --dir",
     "test": "is-ci \"test:coverage\" \"test:watch\"",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -84,6 +89,40 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "build": {
+    "appId": "us.fyreworks.thorium",
+    "productName": "Thorium",
+    "asar": false,
+    "directories": {
+      "output": "./packages"
+    },
+    "publish": {
+      "provider": "github"
+    },
+    "files": [
+      "electron/**/*",
+      "node_modules/**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/node_modules/{typescript,@babel,eslint}/**",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    ],
+    "mac": {
+      "category": "public.app-category.entertainment",
+      "icon": "./public/icon.icns"
+    },
+    "win": {
+      "icon": "./public/icon.ico"
+    }
+  },
   "release": {
     "branch": "master",
     "tagFormat": "${version}",
@@ -138,7 +177,12 @@
     "@babel/polyfill": "^7.6.0",
     "@sentry/node": "^5.7.1",
     "apollo-server-express": "^2.9.6",
+    "bonjour": "^3.5.0",
+    "core-js": "^3.3.6",
     "cors": "^2.8.5",
+    "electron-is-dev": "^1.1.0",
+    "electron-settings": "^3.2.0",
+    "electron-updater": "^4.2.0",
     "express": "^4.17.1",
     "express-status-monitor": "^1.2.7",
     "fuse.js": "^3.4.5",
@@ -146,7 +190,9 @@
     "graphql-type-json": "^0.3.0",
     "multer": "^1.4.2",
     "ncp": "^2.0.0",
+    "power-off": "^1.1.2",
     "simplex-noise": "^2.4.0",
+    "sleep-mode": "^1.1.0",
     "yauzl": "^2.10.0",
     "yazl": "^2.5.1"
   },
@@ -189,9 +235,12 @@
     "bootstrap": "^4.3.1",
     "centered-pan-zoom": "^2.0.0",
     "change-case": "^3.1.0",
+    "codegen.macro": "^3.0.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
     "dotenv": "^6.2.0",
+    "electron": "^7.0.1",
+    "electron-builder": "^22.1.0",
     "eslint-config-prettier": "^6.4.0",
     "get-graphql-schema": "^2.1.2",
     "graphql": "^14.5.8",
@@ -211,6 +260,7 @@
     "nodemon": "^1.19.4",
     "npm-run-all": "^4.1.5",
     "papaparse": "^5.1.0",
+    "parcel-bundler": "^1.12.4",
     "prando": "^5.1.1",
     "prettier": "^1.16.4",
     "preval.macro": "^3.0.0",

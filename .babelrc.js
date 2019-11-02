@@ -17,5 +17,6 @@ module.exports = {
     "transform-node-env-inline",
     "import-glob",
     "@babel/plugin-proposal-class-properties",
+    "macros",
   ],
 };

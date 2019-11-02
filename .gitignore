@@ -10,6 +10,7 @@ coverage
 build
 zips
 dist
+packages
 .cache
 
 # misc
