@@ -31,7 +31,7 @@ App.on("createDockingPort", ({port, cb}) => {
   pubsub.publish("dockingUpdate", App.dockingPorts);
   cb();
 });
-App.on("updateDockingPort", ({port = {}, cb}) => {
+App.on("updateDockingPort", ({port = {}, cb, ...rest}) => {
   const dockingPort = App.dockingPorts.find(d => {
     if (port.id) {
       return d.id === port.id;

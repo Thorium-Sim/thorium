@@ -166,9 +166,7 @@
         {
           "assets": [
             "CHANGELOG.md",
-            "package.json",
-            "client/package.json",
-            "server/package.json"
+            "package.json"
           ],
           "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
         }
@@ -222,6 +220,8 @@
     "@storybook/react": "^5.2.4",
     "@testing-library/jest-dom": "^4.1.2",
     "@tweenjs/tween.js": "^18.3.1",
+    "acorn-jsx": "^5.1.0",
+    "acorn-loose": "^7.0.0",
     "apollo-cache-hermes": "^0.8.9",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",

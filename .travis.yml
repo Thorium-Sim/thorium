@@ -28,12 +28,10 @@ jobs:
       install:
         - npm install
       script:
-        - npm run mk-build && npm run build-env && cat ./build/.env
+        - npm run build
     - stage: deploy
       install:
         - npm install
-        - npm install --prefix client
-        - npm install --prefix server
       script:
         - echo "Deploying to Github"
       deploy:

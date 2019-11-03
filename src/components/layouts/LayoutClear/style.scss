@@ -51,6 +51,26 @@ $alertp: rgb(152, 23, 184);
       }
     }
   }
+  @mixin colors($color) {
+    & {
+      background: linear-gradient(
+        145deg,
+        #000000 22%,
+        rgba(0, 0, 0, 0) 53%,
+        #000000 80%
+      );
+      background-color: darken($color, 30%);
+      transition: background-color 0.5s ease;
+    }
+    .frame-container {
+      filter: drop-shadow(0px 0px 5px $color) drop-shadow(0px 0px 10px $color)
+        drop-shadow(0px 0px 2px $color);
+    }
+    .alert-condition-indicator {
+      background-color: $color;
+      transition: background-color 0.5s ease;
+    }
+  }
   &.alertColor5 {
     @include cardSwitcherColors($alert5);
     @include colors($alert5);
@@ -207,27 +227,6 @@ $alertp: rgb(152, 23, 184);
   .widgets {
     left: 120px;
     bottom: 30px;
-  }
-
-  @mixin colors($color) {
-    & {
-      background: linear-gradient(
-        145deg,
-        #000000 22%,
-        rgba(0, 0, 0, 0) 53%,
-        #000000 80%
-      );
-      background-color: darken($color, 30%);
-      transition: background-color 0.5s ease;
-    }
-    .frame-container {
-      filter: drop-shadow(0px 0px 5px $color) drop-shadow(0px 0px 10px $color)
-        drop-shadow(0px 0px 2px $color);
-    }
-    .alert-condition-indicator {
-      background-color: $color;
-      transition: background-color 0.5s ease;
-    }
   }
 
   .btn-cloak {

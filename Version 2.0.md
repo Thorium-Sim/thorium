@@ -10,7 +10,7 @@ Some goals for this refactor:
 
 - [ ] Add more tests, particularly on the client side
 - [x] Add storybook pages for custom components and cards.
-- [ ] Provide more client data in the GraphQL context, like simulator ID,
+- [x] Provide more client data in the GraphQL context, like simulator ID,
       station, etc. This makes it so notifications can be selectively sent
       depending on whether the action was performed by a crew member or by a
       core.
@@ -21,7 +21,7 @@ Some goals for this refactor:
       into a single
 - [x] Make the bundle size smaller by only including the packages and
       dependencies that are necessary.
-- [ ] Add DangerJS reviews to pull requests.
+- [x] Add DangerJS reviews to pull requests.
 - [x] Make sure server errors are properly being logged to Sentry.
 - [x] Fix all of the stylelint issues.
 
@@ -67,6 +67,8 @@ be breaking changes, this release will be a version 3.0.
       configurable preamble which shows on the Login screen.
 - [ ] Improve the timeline system so it's easier to create and compose missions.
       Provide a platform for hosting and sharing missions easily.
+- [ ] Combine regular notifications with Core Feed. Core feed maintains all core
+      notifications.
 
 A few maybes?
 

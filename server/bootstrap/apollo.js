@@ -27,7 +27,10 @@ export default (app, SERVER_PORT) => {
     introspection: true,
     playground: true,
     uploads: false,
-    context: ({req}) => ({clientId: req && req.headers.clientid}),
+    context: ({req}) => ({
+      clientId: req && req.headers.clientid,
+      core: req && req.headers.core,
+    }),
   };
   const apollo = new ApolloServer(graphqlOptions);
   apollo.applyMiddleware({app});
