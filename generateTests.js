@@ -47,3 +47,36 @@ const tests = fs
     acc[next.replace(".stories.js", "")] = output;
     return acc;
   }, {});
+
+console.log(JSON.stringify(tests));
+
+Object.entries(tests).forEach(([key, {path, imports}]) => {
+  const filePath = `./src/components/views/${key}/`;
+  const mock = imports.find(t => t.type.includes("Mock"));
+  const componentImport = imports.find(t => t.type === "Component");
+  if (componentImport) {
+    const queries = componentImport.imports;
+    fs.writeFileSync(
+      `${filePath}${key}.test.js`,
+      `import React from "react";
+import render from "../../../helpers/testHelper";
+import baseProps from "../../../stories/helpers/baseProps.js";
+import Component${
+        queries ? `, {${queries.join(",")}}` : ""
+      } from "./${componentImport.source.replace(
+        `../components/views/${key}/`,
+        "",
+      )}";
+${mock ? `import ${mock.type} from "../../${mock.source}";` : ""}
+
+it("should render", async () => {
+  const {container} = render(<Component {...baseProps} />, {
+    ${queries ? `queries: [${queries.map(q => `"${q}"`).join(", ")}],` : ""}
+    ${mock ? `mocks: ${mock.type}` : ""}
+  });
+  expect(container.innerHTML).toBeTruthy();
+});
+`,
+    );
+  }
+});
