@@ -19,14 +19,14 @@ stages:
 env:
   - SKIP_PREFLIGHT_CHECK=true
 
-install:
-  - npm install
-script:
-  - npm run validate -- --forceExit
-  - yarn danger ci
-
 jobs:
   include:
+    - stage: test
+      install:
+        - npm install
+      script:
+        - npm run validate
+        - yarn danger ci
     - stage: env
       install:
         - npm install
