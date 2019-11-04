@@ -16,6 +16,9 @@ stages:
   - name: deploy
     if: branch = master
 
+env:
+  - SKIP_PREFLIGHT_CHECK=true
+
 install:
   - npm install
 script:
