@@ -13,5 +13,6 @@ export default [
       room: "4de2726c-6a50-4956-ae76-afc646f1f0da",
     },
     verifyRequested: false,
+    __typename: "Task",
   },
 ];

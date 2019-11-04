@@ -32,37 +32,34 @@ export const HANDHELD_SCANNER_SUBSCRIPTION = gql`
   ${fragment}
 `;
 
-class ScannerData extends Component {
-  state = {};
-  render() {
-    return (
-      <Query
-        query={HANDHELD_SCANNER_QUERY}
-        variables={{simulatorId: this.props.simulator.id}}
-      >
-        {({loading, data, subscribeToMore}) => {
-          if (loading || !data) return null;
-          const {scanners} = data;
-          return (
-            <SubscriptionHelper
-              subscribe={() =>
-                subscribeToMore({
-                  document: HANDHELD_SCANNER_SUBSCRIPTION,
-                  variables: {simulatorId: this.props.simulator.id},
-                  updateQuery: (previousResult, {subscriptionData}) => {
-                    return Object.assign({}, previousResult, {
-                      scanners: subscriptionData.data.scannersUpdate,
-                    });
-                  },
-                })
-              }
-            >
-              <ScannerCore {...this.props} scanners={scanners} />
-            </SubscriptionHelper>
-          );
-        }}
-      </Query>
-    );
-  }
-}
+const ScannerData = () => {
+  return (
+    <Query
+      query={HANDHELD_SCANNER_QUERY}
+      variables={{simulatorId: this.props.simulator.id}}
+    >
+      {({loading, data, subscribeToMore}) => {
+        if (loading || !data) return null;
+        const {scanners} = data;
+        return (
+          <SubscriptionHelper
+            subscribe={() =>
+              subscribeToMore({
+                document: HANDHELD_SCANNER_SUBSCRIPTION,
+                variables: {simulatorId: this.props.simulator.id},
+                updateQuery: (previousResult, {subscriptionData}) => {
+                  return Object.assign({}, previousResult, {
+                    scanners: subscriptionData.data.scannersUpdate,
+                  });
+                },
+              })
+            }
+          >
+            <ScannerCore {...this.props} scanners={scanners} />
+          </SubscriptionHelper>
+        );
+      }}
+    </Query>
+  );
+};
 export default ScannerData;

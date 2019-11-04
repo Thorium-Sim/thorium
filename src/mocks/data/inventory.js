@@ -1,44 +1,55 @@
 export default [
   {
-    id: "6de35174-2893-4a86-87b2-25bc649f7a03",
+    id: "418bac66-7954-4d43-a054-05de2d683099",
     name: "Phaser",
     roomCount: [
       {
         room: {
           deck: {
             number: 13,
+            __typename: "Deck",
           },
           name: "Primary Armory",
-          id: "c8afd9a5-f9d4-46d5-a635-e8f577aab99e",
+          id: "32a93e33-7e16-40a7-aa57-688d006a6dcb",
+          __typename: "Room",
         },
         count: 10,
+        __typename: "RoomCount",
       },
       {
         room: {
           deck: {
             number: 13,
+            __typename: "Deck",
           },
           name: "High Security Storage",
-          id: "c6e33404-166c-470c-970d-19370f2847f7",
+          id: "90f2ff9b-5722-41ec-a0cb-2ccafa78666d",
+          __typename: "Room",
         },
         count: 1,
+        __typename: "RoomCount",
       },
     ],
+    __typename: "InventoryItem",
   },
   {
-    id: "c1f47b4f-8dd5-40e6-bdc5-b6195eaedadb",
+    id: "a723e745-3e5e-4a81-8ec7-03dc29bcddd8",
     name: "Thermal Detonator",
     roomCount: [
       {
         room: {
           deck: {
             number: 13,
+            __typename: "Deck",
           },
           name: "High Security Storage",
-          id: "c6e33404-166c-470c-970d-19370f2847f7",
+          id: "90f2ff9b-5722-41ec-a0cb-2ccafa78666d",
+          __typename: "Room",
         },
         count: 5,
+        __typename: "RoomCount",
       },
     ],
+    __typename: "InventoryItem",
   },
 ];

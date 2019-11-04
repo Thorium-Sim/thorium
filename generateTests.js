@@ -48,17 +48,17 @@ const tests = fs
     return acc;
   }, {});
 
-console.log(JSON.stringify(tests));
-
 Object.entries(tests).forEach(([key, {path, imports}]) => {
   const filePath = `./src/components/views/${key}/`;
   const mock = imports.find(t => t.type.includes("Mock"));
   const componentImport = imports.find(t => t.type === "Component");
+  const coreImport = imports.find(t => t.type === "CoreComponent");
   if (componentImport) {
     const queries = componentImport.imports;
     fs.writeFileSync(
       `${filePath}${key}.test.js`,
       `import React from "react";
+import {waitForElementToBeRemoved} from '@testing-library/react';
 import render from "../../../helpers/testHelper";
 import baseProps from "../../../stories/helpers/baseProps.js";
 import Component${
@@ -67,14 +67,53 @@ import Component${
         `../components/views/${key}/`,
         "",
       )}";
-${mock ? `import ${mock.type} from "../../${mock.source}";` : ""}
+${
+  mock
+    ? `import ${mock.type} from "${mock.source.replace(/\.\.\//g, "")}";`
+    : ""
+}
 
 it("should render", async () => {
-  const {container} = render(<Component {...baseProps} />, {
-    ${queries ? `queries: [${queries.map(q => `"${q}"`).join(", ")}],` : ""}
+  const {container, getByText} = render(<Component {...baseProps} />, {
+    ${queries ? `queries: [${queries.map(q => q).join(", ")}],` : ""}
     ${mock ? `mocks: ${mock.type}` : ""}
   });
+  await waitForElementToBeRemoved(() => getByText("Loading..."))
   expect(container.innerHTML).toBeTruthy();
+  expect(container.innerHTML).not.toBe("Error");
+});
+`,
+    );
+  }
+
+  if (coreImport) {
+    const queries = coreImport.imports;
+    fs.writeFileSync(
+      `${filePath}${key}Core.test.js`,
+      `import React from "react";
+import {waitForElementToBeRemoved} from '@testing-library/react';
+import render from "../../../helpers/testHelper";
+import baseProps from "../../../stories/helpers/baseProps.js";
+import Core${
+        queries ? `, {${queries.join(",")}}` : ""
+      } from "./${coreImport.source.replace(
+        `../components/views/${key}/`,
+        "",
+      )}";
+${
+  mock
+    ? `import ${mock.type} from "${mock.source.replace(/\.\.\//g, "")}";`
+    : ""
+}
+
+it("should render", async () => {
+  const {container, getByText} = render(<Core {...baseProps} />, {
+    ${queries ? `queries: [${queries.map(q => q).join(", ")}],` : ""}
+    ${mock ? `mocks: ${mock.type}` : ""}
+  });
+  await waitForElementToBeRemoved(() => getByText("Loading..."))
+  expect(container.innerHTML).toBeTruthy();
+  expect(container.innerHTML).not.toBe("Error");
 });
 `,
     );

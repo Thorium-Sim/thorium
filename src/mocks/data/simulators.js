@@ -1,6 +1,64 @@
+/*query Ship($simulatorId: ID!) {
+  simulators(id: $simulatorId) {
+    id
+    template
+    name
+    caps
+    alertlevel
+    alertLevelLock
+    layout
+    bridgeOfficerMessaging
+    training
+    hasPrinter
+    hasLegs
+    panels
+    stepDamage
+    verifyStep
+    triggersPaused
+    ship {
+      legs
+      ramps
+      clamps
+      airlock
+      velocity
+      radiation
+      bridgeCrew
+      extraPeople
+      inventoryLogs {
+        log
+        timestamp
+        __typename
+      }
+      selfDestructTime
+      selfDestructCode
+      selfDestructAuto
+      remoteAccessCodes {
+        id
+        code
+        state
+        station
+        timestamp
+        __typename
+      }
+      __typename
+    }
+    stations {
+      name
+      cards {
+        name
+        hidden
+        component
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+}
+*/
 export default [
   {
-    id: "test",
+    id: "e0b50c95-092b-4010-a08f-89fbdea782df",
     template: false,
     name: "Voyager",
     caps: false,
@@ -16,234 +74,305 @@ export default [
     verifyStep: false,
     triggersPaused: false,
     ship: {
-      inventoryLogs: [],
+      legs: false,
+      ramps: false,
+      clamps: false,
+      airlock: false,
+      velocity: null,
+      radiation: 0.1,
       bridgeCrew: 14,
       extraPeople: 0,
-      radiation: 0.1,
+      inventoryLogs: [],
+      selfDestructTime: null,
+      selfDestructCode: null,
+      selfDestructAuto: false,
+      remoteAccessCodes: [],
+      __typename: "Ship",
     },
     stations: [
       {
+        name: "Command",
         cards: [
           {
             name: "Status",
-            component: "Status",
             hidden: false,
+            component: "Status",
+            __typename: "Card",
           },
           {
             name: "Self Destruct",
-            component: "SelfDestruct",
             hidden: false,
+            component: "SelfDestruct",
+            __typename: "Card",
           },
           {
             name: "ComputerCore",
-            component: "ComputerCore",
             hidden: false,
+            component: "ComputerCore",
+            __typename: "Card",
           },
           {
             name: "Roster",
-            component: "Roster",
             hidden: false,
+            component: "Roster",
+            __typename: "Card",
+          },
+          {
+            name: "CRM Fighter",
+            hidden: false,
+            component: "CrmFighter",
+            __typename: "Card",
           },
         ],
+        __typename: "Station",
       },
       {
+        name: "Flight Control",
         cards: [
           {
             name: "Engines",
-            component: "EngineControl",
             hidden: false,
+            component: "EngineControl",
+            __typename: "Card",
           },
           {
             name: "Thrusters",
-            component: "Thrusters",
             hidden: false,
+            component: "Thrusters",
+            __typename: "Card",
           },
           {
             name: "Navigation",
-            component: "Navigation",
             hidden: false,
+            component: "Navigation",
+            __typename: "Card",
           },
           {
             name: "Docking",
-            component: "Docking",
             hidden: false,
+            component: "Docking",
+            __typename: "Card",
           },
         ],
+        __typename: "Station",
       },
       {
+        name: "Engineering",
         cards: [
           {
             name: "Damage Report",
-            component: "DamageControl",
             hidden: false,
+            component: "DamageControl",
+            __typename: "Card",
           },
           {
             name: "Damage Teams",
-            component: "DamageTeams",
             hidden: false,
+            component: "DamageTeams",
+            __typename: "Card",
           },
           {
             name: "Coolant",
-            component: "CoolantControl",
             hidden: false,
+            component: "CoolantControl",
+            __typename: "Card",
           },
         ],
+        __typename: "Station",
       },
       {
+        name: "Tactical",
         cards: [
           {
             name: "Targeting",
-            component: "Targeting",
             hidden: false,
+            component: "Targeting",
+            __typename: "Card",
           },
           {
             name: "Shields",
-            component: "ShieldControl",
             hidden: false,
+            component: "ShieldControl",
+            __typename: "Card",
           },
           {
             name: "Stealth Field",
-            component: "StealthField",
             hidden: false,
+            component: "StealthField",
+            __typename: "Card",
           },
           {
             name: "Tractor Beam",
-            component: "TractorBeam",
             hidden: false,
+            component: "TractorBeam",
+            __typename: "Card",
           },
           {
             name: "Torpedos",
-            component: "TorpedoLoading",
             hidden: false,
+            component: "TorpedoLoading",
+            __typename: "Card",
           },
           {
             name: "Phasers",
-            component: "PhaserCharging",
             hidden: false,
+            component: "PhaserCharging",
+            __typename: "Card",
           },
         ],
+        __typename: "Station",
       },
       {
+        name: "Operations",
         cards: [
           {
             name: "Power Distribution",
-            component: "PowerDistribution",
             hidden: false,
+            component: "PowerDistribution",
+            __typename: "Card",
           },
           {
             name: "Cargo Control",
-            component: "CargoControl",
             hidden: false,
+            component: "CargoControl",
+            __typename: "Card",
           },
           {
             name: "Reactor Control",
-            component: "ReactorControl",
             hidden: false,
+            component: "ReactorControl",
+            __typename: "Card",
           },
           {
             name: "Transporters",
-            component: "Transporters",
             hidden: false,
+            component: "Transporters",
+            __typename: "Card",
           },
           {
             name: "Shuttles",
-            component: "Shuttles",
             hidden: false,
+            component: "Shuttles",
+            __typename: "Card",
           },
         ],
+        __typename: "Station",
       },
       {
+        name: "Sensors",
         cards: [
           {
             name: "Sensors",
-            component: "Sensors",
             hidden: false,
+            component: "Sensors",
+            __typename: "Card",
           },
           {
             name: "Scanning",
-            component: "SensorScans",
             hidden: false,
+            component: "SensorScans",
+            __typename: "Card",
           },
           {
             name: "Probe Construction",
-            component: "ProbeConstruction",
             hidden: false,
+            component: "ProbeConstruction",
+            __typename: "Card",
           },
           {
             name: "Probe Control",
-            component: "ProbeControl",
             hidden: false,
+            component: "ProbeControl",
+            __typename: "Card",
           },
           {
             name: "Probe Network",
-            component: "ProbeNetwork",
             hidden: false,
+            component: "ProbeNetwork",
+            __typename: "Card",
           },
         ],
+        __typename: "Station",
       },
       {
+        name: "Comm",
         cards: [
           {
             name: "Short Range Comm",
-            component: "CommShortRange",
             hidden: false,
+            component: "CommShortRange",
+            __typename: "Card",
           },
           {
             name: "Decoding",
-            component: "CommDecoding",
             hidden: false,
+            component: "CommDecoding",
+            __typename: "Card",
           },
           {
             name: "Long Range Comm",
-            component: "LongRangeComm",
             hidden: false,
+            component: "LongRangeComm",
+            __typename: "Card",
           },
           {
             name: "Internal Comm",
-            component: "CommInternal",
             hidden: false,
+            component: "CommInternal",
+            __typename: "Card",
           },
           {
             name: "Signal Jammer",
-            component: "SignalJammer",
             hidden: false,
+            component: "SignalJammer",
+            __typename: "Card",
           },
           {
             name: "Comm Review",
-            component: "CommReview",
             hidden: false,
+            component: "CommReview",
+            __typename: "Card",
           },
         ],
+        __typename: "Station",
       },
       {
+        name: "Security",
         cards: [
           {
             name: "Deck Control",
-            component: "SecurityDecks",
             hidden: false,
+            component: "SecurityDecks",
+            __typename: "Card",
           },
           {
             name: "Security Scans",
-            component: "SecurityScans",
             hidden: false,
+            component: "SecurityScans",
+            __typename: "Card",
           },
           {
             name: "Security Teams",
-            component: "SecurityTeams",
             hidden: false,
+            component: "SecurityTeams",
+            __typename: "Card",
           },
           {
             name: "Security Armory",
-            component: "SecurityArmory",
             hidden: false,
+            component: "SecurityArmory",
+            __typename: "Card",
           },
           {
             name: "Security Library",
-            component: "SecurityLibrary",
             hidden: false,
+            component: "SecurityLibrary",
+            __typename: "Card",
           },
         ],
+        __typename: "Station",
       },
     ],
+    __typename: "Simulator",
   },
 ];

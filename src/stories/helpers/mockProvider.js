@@ -2,6 +2,8 @@ import React from "react";
 import {MockedProvider} from "@apollo/react-testing";
 import mockGraphqlQuery from "./graphqlMocker.js";
 import usePromise from "react-promise-suspense";
+import IntlProvider from "helpers/intl";
+
 const defaultVariables = {simulatorId: "test"};
 function allMockedQueries(queries) {
   return Promise.all(
@@ -26,9 +28,11 @@ const Provider = ({children, mocks = [], queries: queriesInput = []}) => {
   const allMocks = [...mocks, ...queryMocks];
 
   return (
-    <MockedProvider mocks={allMocks} addTypename={false}>
-      {children}
-    </MockedProvider>
+    <IntlProvider>
+      <MockedProvider mocks={allMocks} addTypename={true}>
+        {children}
+      </MockedProvider>
+    </IntlProvider>
   );
 };
 

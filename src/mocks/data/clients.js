@@ -16,7 +16,9 @@ export default [
     station: {
       name: "Command",
       description: null,
+      __typename: "Station",
     },
+    __typename: "Client",
   },
   {
     id: "ECS-Viewscreen",
@@ -35,6 +37,8 @@ export default [
     station: {
       name: "Operations",
       description: "",
+      __typename: "Station",
     },
+    __typename: "Client",
   },
 ];

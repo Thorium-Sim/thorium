@@ -4,7 +4,7 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/TorpedoLoading/index.js";
 import CoreComponent from "../components/views/TorpedoLoading/core.js";
-import TorpedoLoadingMock from "../mocks/cards/TorpedoLoading.mock";
+import TorpedoLoadingMock from "mocks/cards/TorpedoLoading.mock";
 export default {
   title: "Cards|Weapons/TorpedoLoading",
 };

@@ -5,6 +5,7 @@ module.exports = {
   setupFilesAfterEnv: [],
 
   transform: {
+    "^.+\\.(gql|graphql)$": "@jagi/jest-transform-graphql",
     "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
     "^.+\\.css$": "<rootDir>/test/cssTransform.js",
     "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/test/fileTransform.js",
