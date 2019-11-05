@@ -25,8 +25,7 @@ const Provider = ({children, mocks = [], queries: queriesInput = []}) => {
     },
     result: q,
   }));
-  const allMocks = [...mocks, ...queryMocks];
-
+  const allMocks = [...mocks, ...queryMocks, ...queryMocks];
   return (
     <IntlProvider>
       <MockedProvider mocks={allMocks} addTypename={true}>

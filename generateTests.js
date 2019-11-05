@@ -58,7 +58,7 @@ Object.entries(tests).forEach(([key, {path, imports}]) => {
     fs.writeFileSync(
       `${filePath}${key}.test.js`,
       `import React from "react";
-import {waitForElementToBeRemoved} from '@testing-library/react';
+import {waitForElementToBeRemoved, wait} from '@testing-library/react';
 import render from "../../../helpers/testHelper";
 import baseProps from "../../../stories/helpers/baseProps.js";
 import Component${
@@ -79,6 +79,7 @@ it("should render", async () => {
     ${mock ? `mocks: ${mock.type}` : ""}
   });
   await waitForElementToBeRemoved(() => getByText("Loading..."))
+  await wait();
   expect(container.innerHTML).toBeTruthy();
   expect(container.innerHTML).not.toBe("Error");
 });
@@ -91,7 +92,7 @@ it("should render", async () => {
     fs.writeFileSync(
       `${filePath}${key}Core.test.js`,
       `import React from "react";
-import {waitForElementToBeRemoved} from '@testing-library/react';
+import {waitForElementToBeRemoved, wait} from '@testing-library/react';
 import render from "../../../helpers/testHelper";
 import baseProps from "../../../stories/helpers/baseProps.js";
 import Core${
@@ -112,6 +113,7 @@ it("should render", async () => {
     ${mock ? `mocks: ${mock.type}` : ""}
   });
   await waitForElementToBeRemoved(() => getByText("Loading..."))
+  await wait();
   expect(container.innerHTML).toBeTruthy();
   expect(container.innerHTML).not.toBe("Error");
 });
