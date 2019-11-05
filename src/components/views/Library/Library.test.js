@@ -6,7 +6,10 @@ import Component, {LIBRARY_SUB, LIBRARY_QUERY} from "./index.js";
 
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {
-    queries: [LIBRARY_SUB, LIBRARY_QUERY],
+    queries: [
+      [LIBRARY_SUB, [], {simulatorId: "test", type: "general"}],
+      [LIBRARY_QUERY, [], {simulatorId: "test", type: "general"}],
+    ],
   });
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();

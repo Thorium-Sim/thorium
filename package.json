@@ -34,7 +34,7 @@
     "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
     "build:electron": "electron-builder",
     "pack:electron": "electron-builder --dir",
-    "test": "is-ci \"test:coverage\" \"test:watch\"",
+    "test": "is-ci test:coverage test:watch",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "sentry-upload": "node ./scripts/sentryFiles.js",

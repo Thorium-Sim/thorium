@@ -32,11 +32,12 @@ export const HANDHELD_SCANNER_SUBSCRIPTION = gql`
   ${fragment}
 `;
 
-const ScannerData = () => {
+const ScannerData = (props) => {
+  const {simulator} = props;
   return (
     <Query
       query={HANDHELD_SCANNER_QUERY}
-      variables={{simulatorId: this.props.simulator.id}}
+      variables={{simulatorId: simulator.id}}
     >
       {({loading, data, subscribeToMore}) => {
         if (loading || !data) return null;
@@ -46,7 +47,7 @@ const ScannerData = () => {
             subscribe={() =>
               subscribeToMore({
                 document: HANDHELD_SCANNER_SUBSCRIPTION,
-                variables: {simulatorId: this.props.simulator.id},
+                variables: {simulatorId: simulator.id},
                 updateQuery: (previousResult, {subscriptionData}) => {
                   return Object.assign({}, previousResult, {
                     scanners: subscriptionData.data.scannersUpdate,
@@ -55,7 +56,7 @@ const ScannerData = () => {
               })
             }
           >
-            <ScannerCore {...this.props} scanners={scanners} />
+            <ScannerCore {...props} scanners={scanners} />
           </SubscriptionHelper>
         );
       }}

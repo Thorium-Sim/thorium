@@ -5,7 +5,7 @@ import baseProps from "../../../stories/helpers/baseProps.js";
 import Core, {
   PARTICLE_CORE_QUERY,
   PARTICLE_CONTACTS_CORE_SUB,
-} from "./components/views/ParticleDetector/particleDetectorCore.js";
+} from "./particleDetectorCore.js";
 
 it("should render", async () => {
   const {container, getByText} = render(<Core {...baseProps} />, {

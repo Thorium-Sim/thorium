@@ -6,7 +6,10 @@ import Core, {OFFICER_LOG_CORE_QUERY, OFFICER_LOG_CORE_SUB} from "./core.js";
 
 it("should render", async () => {
   const {container, getByText} = render(<Core {...baseProps} />, {
-    queries: [OFFICER_LOG_CORE_QUERY, OFFICER_LOG_CORE_SUB],
+    queries: [
+      [OFFICER_LOG_CORE_QUERY, [], {clientId: "test", flightId: "test"}],
+      [OFFICER_LOG_CORE_SUB, [], {clientId: "test", flightId: "test"}],
+    ],
   });
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();

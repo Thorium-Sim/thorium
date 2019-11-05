@@ -6,10 +6,19 @@ import Component, {
   CRM_MOVEMENT_QUERY,
   CRM_MOVEMENT_SUBSCRIPTION,
 } from "./index.js";
+import {
+  CRM_FIGHTER_DATA_QUERY,
+  CRM_FIGHTER_DATA_SUB,
+} from "components/views/CrmFighter/fighterData.js";
 
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {
-    queries: [CRM_MOVEMENT_QUERY, CRM_MOVEMENT_SUBSCRIPTION],
+    queries: [
+      CRM_MOVEMENT_QUERY,
+      CRM_MOVEMENT_SUBSCRIPTION,
+      [CRM_FIGHTER_DATA_QUERY, [], {clientId: "test", simulatorId: "test"}],
+      [CRM_FIGHTER_DATA_SUB, [], {clientId: "test", simulatorId: "test"}],
+    ],
   });
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();

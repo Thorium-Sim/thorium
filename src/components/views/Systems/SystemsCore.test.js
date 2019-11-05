@@ -6,7 +6,7 @@ import Core, {
   DAMAGE_REACTOR_CORE_SUB,
   DAMAGE_SYSTEMS_CORE_SUB,
   DAMAGE_SYSTEMS_CORE_QUERY,
-} from "./../components/views/DamageControl/core.js";
+} from "../DamageControl/core.js";
 
 it("should render", async () => {
   const {container, getByText} = render(<Core {...baseProps} />, {
