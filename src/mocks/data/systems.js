@@ -2335,4 +2335,648 @@ export default {
       __typename: "Torpedo",
     },
   ],
+  /* query Navigation($simulatorId: ID!) {
+  navigation(simulatorId: $simulatorId) {
+    id
+    name
+    presets {
+      name
+      course {
+        x
+        y
+        z
+        __typename
+      }
+      __typename
+    }
+    scanning
+    calculate
+    currentCourse {
+      x
+      y
+      z
+      __typename
+    }
+    calculatedCourse {
+      x
+      y
+      z
+      __typename
+    }
+    destination
+    destinations
+    thrusters
+    power {
+      power
+      powerLevels
+      __typename
+    }
+    damage {
+      damaged
+      __typename
+    }
+    __typename
+  }
+}
+ */
+  navigation: [
+    {
+      id: "93e6adcc-9608-49a6-8335-8f42d0758954",
+      name: "Navigation",
+      presets: [],
+      scanning: false,
+      calculate: true,
+      currentCourse: {
+        x: null,
+        y: null,
+        z: null,
+        __typename: "NavLoc",
+      },
+      calculatedCourse: {
+        x: 258.12,
+        y: 242.51,
+        z: 83.24,
+        __typename: "NavLoc",
+      },
+      destination: null,
+      destinations: [],
+      thrusters: false,
+      power: {
+        power: 3,
+        powerLevels: [3],
+        __typename: "Power",
+      },
+      damage: {
+        damaged: false,
+        __typename: "Damage",
+      },
+      __typename: "Navigation",
+    },
+  ],
+  /* query getEngines($simulatorId: ID!) {
+  engines(simulatorId: $simulatorId) {
+    id
+    name
+    speeds {
+      text
+      number
+      velocity
+      __typename
+    }
+    velocity
+    heat
+    speed
+    on
+    stealthFactor
+
+    displayName
+    power {
+      power
+      powerLevels
+      __typename
+    }
+    damage {
+      damaged
+      report
+      __typename
+    }
+
+    coolant
+    on
+    __typename
+  }
+}
+ */
+  engines: [
+    {
+      id: "b6b0b865-4225-4e9e-a689-d3049f98e7eb",
+      name: "Impulse",
+      speeds: [
+        {
+          text: "1/4 Impulse",
+          number: 0.25,
+          velocity: 18750,
+          __typename: "Speed",
+        },
+        {
+          text: "1/2 Impulse",
+          number: 0.5,
+          velocity: 37500,
+          __typename: "Speed",
+        },
+        {
+          text: "3/4 Impulse",
+          number: 0.75,
+          velocity: 56250,
+          __typename: "Speed",
+        },
+        {
+          text: "Full Impulse",
+          number: 1,
+          velocity: 75000,
+          __typename: "Speed",
+        },
+        {
+          text: "Destructive Impulse",
+          number: 1.25,
+          velocity: 93750,
+          __typename: "Speed",
+        },
+      ],
+      velocity: 0,
+      heat: 0,
+      speed: -1,
+      on: false,
+      stealthFactor: 0,
+      displayName: "Impulse Engine",
+      power: {
+        power: 6,
+        powerLevels: [6, 8, 10, 12, 14],
+        __typename: "Power",
+      },
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
+      coolant: 1,
+      __typename: "Engine",
+    },
+    {
+      id: "55237b3d-162d-4400-ac61-2e12ce64690e",
+      name: "Warp",
+      speeds: [
+        {
+          text: "Warp 1",
+          number: 1,
+          velocity: 749277,
+          __typename: "Speed",
+        },
+        {
+          text: "Warp 2",
+          number: 2,
+          velocity: 900321,
+          __typename: "Speed",
+        },
+        {
+          text: "Warp 3",
+          number: 3,
+          velocity: 1443619,
+          __typename: "Speed",
+        },
+        {
+          text: "Warp 4",
+          number: 4,
+          velocity: 3265257,
+          __typename: "Speed",
+        },
+        {
+          text: "Warp 5",
+          number: 5,
+          velocity: 9381363,
+          __typename: "Speed",
+        },
+        {
+          text: "Warp 6",
+          number: 6,
+          velocity: 30652599,
+          __typename: "Speed",
+        },
+        {
+          text: "Warp 7",
+          number: 7,
+          velocity: 109919571,
+          __typename: "Speed",
+        },
+        {
+          text: "Warp 8",
+          number: 8,
+          velocity: 447053408,
+          __typename: "Speed",
+        },
+        {
+          text: "Warp 9",
+          number: 9,
+          velocity: 2429304561,
+          __typename: "Speed",
+        },
+        {
+          text: "Destructive Warp",
+          number: 9.54,
+          velocity: 9062165670,
+          __typename: "Speed",
+        },
+      ],
+      velocity: 0,
+      heat: 0,
+      speed: -1,
+      on: false,
+      stealthFactor: 0,
+      displayName: "Warp Engine",
+      power: {
+        power: 37,
+        powerLevels: [10, 13, 16, 19, 22, 25, 28, 31, 34, 37],
+        __typename: "Power",
+      },
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
+      coolant: 1,
+      __typename: "Engine",
+    },
+  ],
+  /*
+  query Coolant($simulatorId: ID!) {
+  coolant(simulatorId: $simulatorId) {
+    id
+    name
+    displayName
+    coolant
+    coolantRate
+    damage {
+      damaged
+      __typename
+    }
+    power {
+      power
+      powerLevels
+      __typename
+    }
+    __typename
+  }
+}
+*/
+
+  coolant: [
+    {
+      id: "4d013bce-5e90-48f8-9e79-272e0a2bdf3d",
+      name: "Coolant",
+      displayName: "Coolant",
+      coolant: 1,
+      coolantRate: 0.2,
+      damage: {
+        damaged: false,
+        __typename: "Damage",
+      },
+      power: {
+        power: null,
+        powerLevels: null,
+        __typename: "Power",
+      },
+      __typename: "CoolantTank",
+    },
+  ],
+  /*
+query Reactors($simulatorId: ID!) {
+  reactors(simulatorId: $simulatorId) {
+    id
+    id
+    type
+    name
+    heat
+    model
+    coolant
+    damage {
+      damaged
+      __typename
+    }
+    ejected
+    efficiency
+    displayName
+    powerOutput
+    batteryChargeRate
+    batteryChargeLevel
+    efficiencies {
+      label
+      color
+      efficiency
+      __typename
+    }
+    alphaLevel
+    alphaTarget
+    betaLevel
+    betaTarget
+    __typename
+  }
+}
+*/
+  reactors: [
+    {
+      id: "d19e0602-fa91-4345-841c-e5d1bd203196",
+      type: "Reactor",
+      name: "Battery",
+      heat: null,
+      model: "battery",
+      coolant: null,
+      damage: {
+        damaged: false,
+        __typename: "Damage",
+      },
+      ejected: false,
+      efficiency: 1,
+      displayName: "Battery",
+      powerOutput: 120,
+      batteryChargeRate: 0.001,
+      batteryChargeLevel: 0.9995280000000126,
+      efficiencies: [
+        {
+          label: "Overload",
+          color: "danger",
+          efficiency: 1.25,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Cruise",
+          color: "primary",
+          efficiency: 1,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Silent Running",
+          color: "cloak",
+          efficiency: 0.87,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Reduced",
+          color: "default",
+          efficiency: 0.5,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Auxiliary",
+          color: "info",
+          efficiency: 0.38,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Minimal",
+          color: "warning",
+          efficiency: 0.27,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Power Down",
+          color: "danger",
+          efficiency: 0,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "External Power",
+          color: "success",
+          efficiency: null,
+          __typename: "ReactorEfficiency",
+        },
+      ],
+      alphaLevel: 68,
+      alphaTarget: 68,
+      betaLevel: 67,
+      betaTarget: 67,
+      __typename: "Reactor",
+    },
+    {
+      id: "ab773137-8573-4714-89e3-892983a157c1",
+      type: "Reactor",
+      name: "Reactor",
+      heat: 0,
+      model: "reactor",
+      coolant: 1,
+      damage: {
+        damaged: false,
+        __typename: "Damage",
+      },
+      ejected: false,
+      efficiency: 1,
+      displayName: "Reactor",
+      powerOutput: 100,
+      batteryChargeRate: 0.001,
+      batteryChargeLevel: 1,
+      efficiencies: [
+        {
+          label: "Overload",
+          color: "danger",
+          efficiency: 1.25,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Cruise",
+          color: "primary",
+          efficiency: 1,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Silent Running",
+          color: "cloak",
+          efficiency: 0.87,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Reduced",
+          color: "default",
+          efficiency: 0.5,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Auxiliary",
+          color: "info",
+          efficiency: 0.38,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Minimal",
+          color: "warning",
+          efficiency: 0.27,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "Power Down",
+          color: "danger",
+          efficiency: 0,
+          __typename: "ReactorEfficiency",
+        },
+        {
+          label: "External Power",
+          color: "success",
+          efficiency: null,
+          __typename: "ReactorEfficiency",
+        },
+      ],
+      alphaLevel: 23,
+      alphaTarget: 23,
+      betaLevel: 3,
+      betaTarget: 3,
+      __typename: "Reactor",
+    },
+  ],
+  /*
+     query StealthField($simulatorId: ID!) {
+    stealthField(simulatorId: $simulatorId) {
+        id
+    name
+    state
+    charge
+    displayName
+    activated
+    quadrants {
+      fore
+      aft
+      port
+      starboard
+      __typename
+    }
+    power {
+      power
+      powerLevels
+      __typename
+    }
+    damage {
+      damaged
+      report
+      __typename
+    }
+    __typename
+    }
+  }
+*/
+  stealthField: [
+    {
+      id: "940fb530-60b2-477d-9291-3422770ef6e3",
+      name: "Stealth Field",
+      state: false,
+      charge: false,
+      displayName: "Stealth Field",
+      activated: true,
+      quadrants: {
+        fore: 0,
+        aft: 0,
+        port: 0,
+        starboard: 0,
+        __typename: "StealthQuad",
+      },
+      power: {
+        power: 0,
+        powerLevels: [0, 15],
+        __typename: "Power",
+      },
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
+      __typename: "StealthField",
+    },
+  ],
+  /*
+  query Shields($simulatorId: ID!) {
+  shields(simulatorId: $simulatorId) {
+    id
+    name
+    displayName
+    state
+    position
+    frequency
+    integrity
+    simulatorId
+    damage {
+      damaged
+      report
+      __typename
+    }
+    power {
+      power
+      powerLevels
+      __typename
+    }
+    __typename
+  }
+}
+*/
+  shields: [
+    {
+      id: "541f172e-cc73-4eae-9e26-abd624ce482e",
+      name: "Fore",
+      displayName: "Fore Shields",
+      state: false,
+      position: 1,
+      frequency: 260.5,
+      integrity: 1,
+      simulatorId: "e0b50c95-092b-4010-a08f-89fbdea782df",
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
+      power: {
+        power: 7,
+        powerLevels: [7],
+        __typename: "Power",
+      },
+      __typename: "Shield",
+    },
+    {
+      id: "bb1a104e-73ec-4ddc-87b5-928b318f0158",
+      name: "Aft",
+      displayName: "Aft Shields",
+      state: false,
+      position: 2,
+      frequency: 260.5,
+      integrity: 1,
+      simulatorId: "e0b50c95-092b-4010-a08f-89fbdea782df",
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
+      power: {
+        power: 7,
+        powerLevels: [7],
+        __typename: "Power",
+      },
+      __typename: "Shield",
+    },
+    {
+      id: "f99c6860-c37f-4963-add4-8c9b92467638",
+      name: "Port",
+      displayName: "Port Shields",
+      state: false,
+      position: 3,
+      frequency: 260.5,
+      integrity: 1,
+      simulatorId: "e0b50c95-092b-4010-a08f-89fbdea782df",
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
+      power: {
+        power: 7,
+        powerLevels: [7],
+        __typename: "Power",
+      },
+      __typename: "Shield",
+    },
+    {
+      id: "b3c16b03-dedf-46f8-87e9-cc1759e66f4b",
+      name: "Starboard",
+      displayName: "Starboard Shields",
+      state: false,
+      position: 4,
+      frequency: 260.5,
+      integrity: 1,
+      simulatorId: "e0b50c95-092b-4010-a08f-89fbdea782df",
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
+      power: {
+        power: 7,
+        powerLevels: [7],
+        __typename: "Power",
+      },
+      __typename: "Shield",
+    },
+  ],
 };

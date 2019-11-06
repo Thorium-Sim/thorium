@@ -3,7 +3,8 @@ import {Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-const DEST_SUB = gql`
+
+export const STATUS_DEST_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {
     navigationUpdate(simulatorId: $simulatorId) {
       id
@@ -40,7 +41,7 @@ class Destination extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: DEST_SUB,
+              document: STATUS_DEST_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -62,7 +63,7 @@ class Destination extends Component {
     );
   }
 }
-const DEST_QUERY = gql`
+export const STATUS_DEST_QUERY = gql`
   query Navigation($simulatorId: ID) {
     navigation(simulatorId: $simulatorId) {
       id
@@ -84,7 +85,7 @@ const DEST_QUERY = gql`
   }
 `;
 
-export default graphql(DEST_QUERY, {
+export default graphql(STATUS_DEST_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

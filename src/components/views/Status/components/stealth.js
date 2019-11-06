@@ -5,7 +5,7 @@ import shieldStyle, {shieldColor} from "../../ShieldControl/shieldStyle";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import StealthAnimation from "../../StealthField/stealthAnimation";
 
-const SUB = gql`
+export const STATUS_STEALTH_SUB = gql`
   subscription StealthUpdate($simulatorId: ID) {
     stealthFieldUpdate(simulatorId: $simulatorId) {
       id
@@ -16,7 +16,7 @@ const SUB = gql`
   }
 `;
 
-const SHIELD_SUB = gql`
+export const STATUS_STEALTH_SHIELD_SUB = gql`
   subscription ShieldSub($simulatorId: ID) {
     shieldsUpdate(simulatorId: $simulatorId) {
       id
@@ -43,7 +43,7 @@ class Stealth extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: STATUS_STEALTH_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -58,7 +58,7 @@ class Stealth extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SHIELD_SUB,
+              document: STATUS_STEALTH_SHIELD_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
               },
@@ -101,7 +101,7 @@ class Stealth extends Component {
   }
 }
 
-const QUERY = gql`
+export const STATUS_STEALTH_QUERY = gql`
   query Stealth($simulatorId: ID) {
     stealthField(simulatorId: $simulatorId) {
       id
@@ -119,7 +119,7 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY, {
+export default graphql(STATUS_STEALTH_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

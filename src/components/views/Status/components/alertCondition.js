@@ -14,6 +14,22 @@ const fragment = gql`
     alertLevelLock
   }
 `;
+export const STATUS_ALERT_QUERY = gql`
+  query simulators($simulatorId: ID) {
+    simulators(id: $simulatorId) {
+      ...AlertConditionData
+    }
+  }
+  ${fragment}
+`;
+export const STATUS_ALERT_SUB = gql`
+  subscription SimulatorsSub($simulatorId: ID) {
+    simulatorsUpdate(simulatorId: $simulatorId) {
+      ...AlertConditionData
+    }
+  }
+  ${fragment}
+`;
 
 // const AlertMessage = ({ number }) => {
 //   switch (number) {
@@ -93,31 +109,14 @@ const AlertCondition = ({simulator, client}) => {
     });
   };
   return (
-    <Query
-      query={gql`
-        query simulators($id: ID) {
-          simulators(id: $id) {
-            ...AlertConditionData
-          }
-        }
-        ${fragment}
-      `}
-      variables={{id: simulator.id}}
-    >
+    <Query query={STATUS_ALERT_QUERY} variables={{simulatorId: simulator.id}}>
       {({loading, data, subscribeToMore}) => (
         <div className="alert-condition">
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({
-                document: gql`
-                  subscription SimulatorsSub($id: ID) {
-                    simulatorsUpdate(simulatorId: $id) {
-                      ...AlertConditionData
-                    }
-                  }
-                  ${fragment}
-                `,
-                variables: {id: simulator.id},
+                document: STATUS_ALERT_SUB,
+                variables: {simulatorId: simulator.id},
                 updateQuery: (previousResult, {subscriptionData}) => {
                   return Object.assign({}, previousResult, {
                     simulators: subscriptionData.data.simulatorsUpdate,

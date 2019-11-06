@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import {graphql} from "react-apollo";
 import Dots from "./dots";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-const SUB = gql`
+export const STATUS_COOLANT_SUB = gql`
   subscription Coolant($simulatorId: ID!) {
     coolantUpdate(simulatorId: $simulatorId) {
       id
@@ -23,7 +23,7 @@ class Coolant extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: STATUS_COOLANT_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -39,7 +39,7 @@ class Coolant extends Component {
     );
   }
 }
-const QUERY = gql`
+export const STATUS_COOLANT_QUERY = gql`
   query Coolant($simulatorId: ID!) {
     coolant(simulatorId: $simulatorId) {
       id
@@ -48,7 +48,7 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY, {
+export default graphql(STATUS_COOLANT_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

@@ -137,6 +137,7 @@ const creditList = [
     header: "Patreon Supporters",
     content: (
       <ul>
+        <li>Isaac Baker</li>
         <li>Manuel</li>
         <li>bashNinja</li>
       </ul>

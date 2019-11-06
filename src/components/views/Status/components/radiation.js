@@ -5,7 +5,7 @@ import Dot from "./dots";
 import {useQuery} from "@apollo/react-hooks";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
-const SUB = gql`
+export const STATUS_RADIATION_SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -16,7 +16,7 @@ const SUB = gql`
   }
 `;
 
-const QUERY = gql`
+export const STATUS_RADIATION_QUERY = gql`
   query Ship($simulatorId: ID) {
     simulators(id: $simulatorId) {
       id
@@ -28,7 +28,7 @@ const QUERY = gql`
 `;
 
 const Radiation = ({simulator}) => {
-  const {loading, data, subscribeToMore} = useQuery(QUERY, {
+  const {loading, data, subscribeToMore} = useQuery(STATUS_RADIATION_QUERY, {
     variables: {simulatorId: simulator.id},
   });
   const config = React.useMemo(
@@ -41,7 +41,7 @@ const Radiation = ({simulator}) => {
     }),
     [simulator.id],
   );
-  useSubscribeToMore(subscribeToMore, SUB, config);
+  useSubscribeToMore(subscribeToMore, STATUS_RADIATION_SUB, config);
   if (loading || !data) return null;
   const {simulators} = data;
   const {radiation} = simulators[0].ship;

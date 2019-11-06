@@ -3,7 +3,7 @@ import {Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-const SUB = gql`
+export const STATUS_TARGETING_SUB = gql`
   subscription TargetUpdate($simulatorId: ID) {
     targetingUpdate(simulatorId: $simulatorId) {
       id
@@ -28,7 +28,7 @@ class Targeted extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: STATUS_TARGETING_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -44,7 +44,7 @@ class Targeted extends Component {
     );
   }
 }
-const QUERY = gql`
+export const STATUS_TARGETING_QUERY = gql`
   query Target($simulatorId: ID) {
     targeting(simulatorId: $simulatorId) {
       id
@@ -58,7 +58,7 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY, {
+export default graphql(STATUS_TARGETING_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

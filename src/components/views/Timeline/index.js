@@ -36,7 +36,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const TIMELINE_QUERY = gql`
   query Timeline($simulatorId: ID) {
     missions(aux: false) {
       id
@@ -49,7 +49,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const TIMELINE_SUB = gql`
   subscription TimelineUpdate($simulatorId: ID!) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       ...TimelineData
@@ -63,7 +63,10 @@ class TimelineData extends Component {
   render() {
     const {simulator, clients} = this.props;
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={TIMELINE_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
           if (loading || !data) return null;
           const {simulators, missions} = data;
@@ -72,7 +75,7 @@ class TimelineData extends Component {
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: TIMELINE_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

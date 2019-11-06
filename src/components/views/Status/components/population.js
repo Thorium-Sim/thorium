@@ -4,13 +4,13 @@ import gql from "graphql-tag.macro";
 import {useQuery} from "@apollo/react-hooks";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
-const POP_SUB = gql`
+export const STATUS_POP_SUB = gql`
   subscription Population($simulatorId: ID) {
     crewCountUpdate(simulatorId: $simulatorId, killed: false)
   }
 `;
 
-const SIM_SUB = gql`
+export const STATUS_SIM_SUB = gql`
   subscription ShipUpdate($simulatorId: ID) {
     simulatorsUpdate(simulatorId: $simulatorId) {
       id
@@ -21,7 +21,7 @@ const SIM_SUB = gql`
     }
   }
 `;
-const POP_QUERY = gql`
+export const STATUS_POP_QUERY = gql`
   query Population($simulatorId: ID!) {
     crewCount(simulatorId: $simulatorId, killed: false)
     simulators(id: $simulatorId) {
@@ -35,7 +35,7 @@ const POP_QUERY = gql`
 `;
 
 const Population = ({simulator}) => {
-  const {loading, data, subscribeToMore} = useQuery(POP_QUERY, {
+  const {loading, data, subscribeToMore} = useQuery(STATUS_POP_QUERY, {
     variables: {simulatorId: simulator.id},
   });
   const simConfig = React.useMemo(
@@ -48,7 +48,7 @@ const Population = ({simulator}) => {
     }),
     [simulator.id],
   );
-  useSubscribeToMore(subscribeToMore, SIM_SUB, simConfig);
+  useSubscribeToMore(subscribeToMore, STATUS_SIM_SUB, simConfig);
   const popConfig = React.useMemo(
     () => ({
       variables: {simulatorId: simulator.id},
@@ -59,7 +59,7 @@ const Population = ({simulator}) => {
     }),
     [simulator.id],
   );
-  useSubscribeToMore(subscribeToMore, POP_SUB, popConfig);
+  useSubscribeToMore(subscribeToMore, STATUS_POP_SUB, popConfig);
   if (loading || !data) return null;
   const {simulators, crewCount = 0} = data;
   const {ship} = simulators[0];

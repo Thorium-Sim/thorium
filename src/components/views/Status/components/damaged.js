@@ -3,7 +3,7 @@ import {Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-const SUB = gql`
+export const STATUS_DAMAGE_SUB = gql`
   subscription DamagedSub($simulatorId: ID) {
     systemsUpdate(
       simulatorId: $simulatorId
@@ -29,7 +29,7 @@ class Damage extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: STATUS_DAMAGE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -51,7 +51,7 @@ class Damage extends Component {
   }
 }
 
-const QUERY = gql`
+export const STATUS_DAMAGE_QUERY = gql`
   query Damaged($simulatorId: ID) {
     systems(simulatorId: $simulatorId, extra: true, damageWhich: "default") {
       id
@@ -65,7 +65,7 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY, {
+export default graphql(STATUS_DAMAGE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

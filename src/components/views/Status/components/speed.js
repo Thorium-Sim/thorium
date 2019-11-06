@@ -4,7 +4,7 @@ import {graphql} from "react-apollo";
 import {Label} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
-const SPEEDCHANGE_SUB = gql`
+export const STATUS_ENGINE_SUB = gql`
   subscription SpeedChanged($simulatorId: ID) {
     engineUpdate(simulatorId: $simulatorId) {
       id
@@ -38,7 +38,7 @@ class EngineCoreView extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SPEEDCHANGE_SUB,
+              document: STATUS_ENGINE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -64,7 +64,7 @@ class EngineCoreView extends Component {
   }
 }
 
-const ENGINE_QUERY = gql`
+export const STATUS_ENGINE_QUERY = gql`
   query getEngines($simulatorId: ID!) {
     engines(simulatorId: $simulatorId) {
       id
@@ -83,7 +83,7 @@ const ENGINE_QUERY = gql`
   }
 `;
 
-export default graphql(ENGINE_QUERY, {
+export default graphql(STATUS_ENGINE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

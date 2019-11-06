@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import {graphql} from "react-apollo";
 import Dots from "./dots";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-const SUB = gql`
+export const STATUS_DILITHIUM_SUB = gql`
   subscription DilithiumStress($simulatorId: ID!) {
     reactorUpdate(simulatorId: $simulatorId) {
       id
@@ -50,7 +50,7 @@ class DilithiumStress extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: STATUS_DILITHIUM_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -66,7 +66,7 @@ class DilithiumStress extends Component {
     );
   }
 }
-const QUERY = gql`
+export const STATUS_DILITHIUM_QUERY = gql`
   query DilithiumStress($simulatorId: ID!) {
     reactors(simulatorId: $simulatorId) {
       id
@@ -80,7 +80,7 @@ const QUERY = gql`
   }
 `;
 
-export default graphql(QUERY, {
+export default graphql(STATUS_DILITHIUM_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},
