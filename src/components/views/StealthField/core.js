@@ -7,7 +7,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
-const STEALTH_SUB = gql`
+export const STEALTH_CORE_SUB = gql`
   subscription StealthFieldUpdate($simulatorId: ID!) {
     stealthFieldUpdate(simulatorId: $simulatorId) {
       id
@@ -150,7 +150,7 @@ class StealthFieldCore extends Component {
   }
 }
 
-const STEALTH_QUERY = gql`
+export const STEALTH_CORE_QUERY = gql`
   query StealthField($simulatorId: ID!) {
     stealthField(simulatorId: $simulatorId) {
       id
@@ -168,7 +168,7 @@ const STEALTH_QUERY = gql`
   }
 `;
 
-const SYSTEMS_QUERY = gql`
+export const STEALTH_SYSTEMS_CORE_QUERY = gql`
   query Systems($simulatorId: ID!) {
     systems(simulatorId: $simulatorId) {
       id
@@ -183,20 +183,21 @@ const SYSTEMS_QUERY = gql`
 const StealthFieldData = props => {
   return (
     <Query
-      query={STEALTH_QUERY}
+      query={STEALTH_CORE_QUERY}
       variables={{
         simulatorId: props.simulator.id,
       }}
     >
-      {({loading, data, subscribeToMore}) => {
-        if (loading || !data.stealthField) return null;
+      {({loading, data, error, subscribeToMore}) => {
+        console.log(error);
+        if (loading || !data) return null;
         const stealthField = data.stealthField[0];
         if (!stealthField) return <p>No Stealth Field Systems</p>;
         return (
           <SubscriptionHelper
             subscribe={() =>
               subscribeToMore({
-                document: STEALTH_SUB,
+                document: STEALTH_CORE_SUB,
                 variables: {
                   simulatorId: props.simulator.id,
                 },
@@ -209,7 +210,7 @@ const StealthFieldData = props => {
             }
           >
             <Query
-              query={SYSTEMS_QUERY}
+              query={STEALTH_SYSTEMS_CORE_QUERY}
               variables={{
                 simulatorId: props.simulator.id,
               }}

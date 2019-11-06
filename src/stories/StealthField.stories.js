@@ -4,17 +4,17 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/StealthField/index.js";
 import CoreComponent from "../components/views/StealthField/core.js";
-
+import StealthFieldMock from "../mocks/cards/StealthField.mock";
 export default {
-  title: "Cards|StealthField",
+  title: "Cards|Operations/StealthField",
 };
 export const StealthField = () => (
-  <StorybookWrapper>
-    <Component {...baseProps} />
+  <StorybookWrapper mocks={StealthFieldMock}>
+    <Component {...baseProps} test />
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={StealthFieldMock}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );

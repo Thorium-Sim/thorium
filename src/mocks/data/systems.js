@@ -2844,10 +2844,11 @@ query Reactors($simulatorId: ID!) {
     {
       id: "940fb530-60b2-477d-9291-3422770ef6e3",
       name: "Stealth Field",
-      state: false,
-      charge: false,
+      state: true,
+      charge: true,
       displayName: "Stealth Field",
       activated: true,
+      stealthFactor: 0,
       quadrants: {
         fore: 0,
         aft: 0,
@@ -2898,10 +2899,12 @@ query Reactors($simulatorId: ID!) {
       id: "541f172e-cc73-4eae-9e26-abd624ce482e",
       name: "Fore",
       displayName: "Fore Shields",
+      type: "Shields",
       state: false,
       position: 1,
       frequency: 260.5,
       integrity: 1,
+      stealthFactor: 0.4,
       simulatorId: "e0b50c95-092b-4010-a08f-89fbdea782df",
       damage: {
         damaged: false,
@@ -2919,10 +2922,13 @@ query Reactors($simulatorId: ID!) {
       id: "bb1a104e-73ec-4ddc-87b5-928b318f0158",
       name: "Aft",
       displayName: "Aft Shields",
+      type: "Shields",
+
       state: false,
       position: 2,
       frequency: 260.5,
       integrity: 1,
+      stealthFactor: 0.4,
       simulatorId: "e0b50c95-092b-4010-a08f-89fbdea782df",
       damage: {
         damaged: false,
@@ -2940,10 +2946,13 @@ query Reactors($simulatorId: ID!) {
       id: "f99c6860-c37f-4963-add4-8c9b92467638",
       name: "Port",
       displayName: "Port Shields",
+      type: "Shields",
+
       state: false,
       position: 3,
       frequency: 260.5,
       integrity: 1,
+      stealthFactor: 0.4,
       simulatorId: "e0b50c95-092b-4010-a08f-89fbdea782df",
       damage: {
         damaged: false,
@@ -2961,10 +2970,13 @@ query Reactors($simulatorId: ID!) {
       id: "b3c16b03-dedf-46f8-87e9-cc1759e66f4b",
       name: "Starboard",
       displayName: "Starboard Shields",
+      type: "Shields",
+
       state: false,
       position: 4,
       frequency: 260.5,
       integrity: 1,
+      stealthFactor: 0.4,
       simulatorId: "e0b50c95-092b-4010-a08f-89fbdea782df",
       damage: {
         damaged: false,
@@ -2977,6 +2989,87 @@ query Reactors($simulatorId: ID!) {
         __typename: "Power",
       },
       __typename: "Shield",
+    },
+  ],
+  /*
+  query SubspaceField($simulatorId: ID!) {
+  subspaceField(simulatorId: $simulatorId) {
+    id
+    name
+    displayName
+    totalPower
+    fore {
+      required
+      value
+      __typename
+    }
+    aft {
+      required
+      value
+      __typename
+    }
+    port {
+      required
+      value
+      __typename
+    }
+    starboard {
+      required
+      value
+      __typename
+    }
+    ventral {
+      required
+      value
+      __typename
+    }
+    dorsal {
+      required
+      value
+      __typename
+    }
+    __typename
+  }
+}
+
+*/
+  subspaceField: [
+    {
+      id: "4dd0bb47-3a4d-4691-8710-1f92b654db30",
+      name: "Subspace Field",
+      displayName: null,
+      totalPower: 300,
+      fore: {
+        required: 50,
+        value: 0,
+        __typename: "SubspaceFieldSector",
+      },
+      aft: {
+        required: 50,
+        value: 0,
+        __typename: "SubspaceFieldSector",
+      },
+      port: {
+        required: 50,
+        value: 0,
+        __typename: "SubspaceFieldSector",
+      },
+      starboard: {
+        required: 50,
+        value: 0,
+        __typename: "SubspaceFieldSector",
+      },
+      ventral: {
+        required: 50,
+        value: 0,
+        __typename: "SubspaceFieldSector",
+      },
+      dorsal: {
+        required: 50,
+        value: 0,
+        __typename: "SubspaceFieldSector",
+      },
+      __typename: "SubspaceField",
     },
   ],
 };

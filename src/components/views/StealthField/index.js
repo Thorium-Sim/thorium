@@ -29,7 +29,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const STEALTH_QUERY = gql`
   query StealthField($simulatorId: ID!) {
     stealthField(simulatorId: $simulatorId) {
       ...StealthData
@@ -44,8 +44,8 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SYSTEMS_QUERY = gql`
-  query Sytems($simulatorId: ID!) {
+export const STEALTH_SYSTEMS_QUERY = gql`
+  query Systems($simulatorId: ID!) {
     systems(simulatorId: $simulatorId) {
       id
       name
@@ -55,7 +55,7 @@ const SYSTEMS_QUERY = gql`
     }
   }
 `;
-const SUBSCRIPTION = gql`
+export const STEALTH_SUB = gql`
   subscription StealthFieldUpdate($simulatorId: ID!) {
     stealthFieldUpdate(simulatorId: $simulatorId) {
       ...StealthData
@@ -70,28 +70,33 @@ class StealthFieldData extends Component {
     this.getSystems();
   }
   getSystems = () => {
-    const {client} = this.props;
-    client.query({
-      query: SYSTEMS_QUERY,
-      variables: {simulatorId: this.props.simulator.id},
-    });
-    this.timeout = setTimeout(this.getSystems, 1000);
+    const {client, test} = this.props;
+    if (!test) {
+      client.query({
+        query: STEALTH_SYSTEMS_QUERY,
+        variables: {simulatorId: this.props.simulator.id},
+      });
+      this.timeout = setTimeout(this.getSystems, 1000);
+    }
   };
   componentWillUnmount() {
     clearTimeout(this.timeout);
   }
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={STEALTH_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {stealthField, systems} = data;
-          if (loading || !stealthField) return null;
           if (!stealthField[0]) return <div>No Stealth Field</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: STEALTH_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

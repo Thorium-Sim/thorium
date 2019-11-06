@@ -218,7 +218,7 @@ export default [
     },
     result: {
       data: {
-        systems: Object.values(systems).flat(),
+        systems: Object.values(systems).reduce((acc, next) => acc.concat(next)),
       },
     },
   },
@@ -229,7 +229,9 @@ export default [
     },
     result: {
       data: {
-        systemsUpdate: Object.values(systems).flat(),
+        systemsUpdate: Object.values(systems).reduce((acc, next) =>
+          acc.concat(next),
+        ),
       },
     },
   },

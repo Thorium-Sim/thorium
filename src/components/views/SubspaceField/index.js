@@ -38,7 +38,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const SUBSPACE_FIELD_QUERY = gql`
   query SubspaceField($simulatorId: ID!) {
     subspaceField(simulatorId: $simulatorId) {
       ...SubspaceFieldData
@@ -46,7 +46,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const SUBSPACE_FIELD_SUB = gql`
   subscription SubspaceFieldUpdate($simulatorId: ID!) {
     subspaceFieldUpdate(simulatorId: $simulatorId) {
       ...SubspaceFieldData
@@ -59,16 +59,19 @@ class SubspaceFieldData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={SUBSPACE_FIELD_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {subspaceField} = data;
-          if (loading || !subspaceField) return null;
           if (!subspaceField[0]) return <div>No Subspace Field</div>;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: SUBSPACE_FIELD_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {
