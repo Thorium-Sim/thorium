@@ -103,70 +103,39 @@ class ThreeView extends Component {
   };
   componentDidMount() {
     const {assets} = this.props.simulator;
-    const query = gql`
-      query GetAsset($assetKey: String!, $textureAsset: String!) {
-        asset(assetKey: $assetKey) {
-          assetKey
-          url
-        }
-        textureAsset: asset(assetKey: $textureAsset) {
-          assetKey
-          url
-        }
-      }
-    `;
-    const variables = {
-      assetKey: assets.mesh,
-      textureAsset: assets.texture,
-      simulatorId: this.props.simulatorId,
-    };
-    this.props.client
-      .query({
-        query,
-        variables,
-      })
-      .then(res => {
-        const meshSrc = (res.data.asset.url || "").replace(
-          /http(s|):\/\/.*:[0-9]{4}/gi,
-          "",
-        );
-        // const texSrc = (res.data.textureAsset.url || "").replace(
-        //   /http(s|):\/\/.*:[0-9]{4}/gi,
-        //   ""
-        // );
-        const objLoader = new window.THREE.OBJLoader();
-        //const texture = new THREE.TextureLoader().load(texSrc);
-        // const material = new THREE.MeshBasicMaterial({ map: texture });
-        const color = 0x71bbe9;
-        const material = new THREE.MeshPhongMaterial({
-          color,
-          polygonOffset: true,
-          polygonOffsetFactor: 1, // positive value pushes polygon further away
-          polygonOffsetUnits: 1,
-          opacity: 0.3,
-          transparent: true,
-        });
-        const wireMat = new THREE.LineBasicMaterial({
-          color,
-          linewidth: 4,
-          visible: true,
-          opacity: 0.7,
-          // transparent: true
-        });
+    const meshSrc = `/assets${assets.mesh}`;
+    // const texSrc = `/assets${assets.texture}`
+    const objLoader = new window.THREE.OBJLoader();
+    //const texture = new THREE.TextureLoader().load(texSrc);
+    // const material = new THREE.MeshBasicMaterial({ map: texture });
+    const color = 0x71bbe9;
+    const material = new THREE.MeshPhongMaterial({
+      color,
+      polygonOffset: true,
+      polygonOffsetFactor: 1, // positive value pushes polygon further away
+      polygonOffsetUnits: 1,
+      opacity: 0.3,
+      transparent: true,
+    });
+    const wireMat = new THREE.LineBasicMaterial({
+      color,
+      linewidth: 4,
+      visible: true,
+      opacity: 0.7,
+      // transparent: true
+    });
 
-        this.animate();
-        objLoader.load(meshSrc, obj => {
-          obj.scale.set(0.2, 0.2, 0.2);
-          obj.children.forEach(child => {
-            child.material = material;
-            const geo = new THREE.EdgesGeometry(child.geometry); // or WireframeGeometry
-            const wireframeMesh = new THREE.LineSegments(geo, wireMat);
-            wireframeMesh.scale.set(0.2, 0.2, 0.2);
-            this.objectGroup.add(wireframeMesh);
-          });
-          this.objectGroup.add(obj);
-        });
+    objLoader.load(meshSrc, obj => {
+      obj.scale.set(0.2, 0.2, 0.2);
+      obj.children.forEach(child => {
+        child.material = material;
+        const geo = new THREE.EdgesGeometry(child.geometry); // or WireframeGeometry
+        const wireframeMesh = new THREE.LineSegments(geo, wireMat);
+        wireframeMesh.scale.set(0.2, 0.2, 0.2);
+        this.objectGroup.add(wireframeMesh);
       });
+      this.objectGroup.add(obj);
+    });
     document
       .getElementById("thrustersMount")
       .appendChild(this.renderer.domElement);

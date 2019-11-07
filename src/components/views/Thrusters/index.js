@@ -32,7 +32,7 @@ const trainingSteps = [
   },
 ];
 
-const ROTATION_CHANGE_SUB = gql`
+export const ROTATION_CHANGE_SUB = gql`
   subscription RotationChanged($simulatorId: ID!) {
     rotationChange(simulatorId: $simulatorId) {
       id
@@ -69,7 +69,7 @@ const ROTATION_CHANGE_SUB = gql`
   }
 `;
 
-const THRUSTER_SUB = gql`
+export const THRUSTER_SUB = gql`
   subscription ThrusterUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, type: "Thrusters") {
       id
@@ -613,7 +613,7 @@ gamepadLoop(){
   }
 }
 
-const THRUSTER_QUERY = gql`
+export const THRUSTER_QUERY = gql`
   query Thrusters($simulatorId: ID) {
     thrusters(simulatorId: $simulatorId) {
       id

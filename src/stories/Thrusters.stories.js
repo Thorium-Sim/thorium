@@ -4,17 +4,18 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/Thrusters/index.js";
 import CoreComponent from "../components/views/Thrusters/core.js";
+import ThrustersMock from "mocks/cards/Thrusters.mock.js";
 
 export default {
-  title: "Cards|Thrusters",
+  title: "Cards|Navigation/Thrusters",
 };
 export const Thrusters = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={ThrustersMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={ThrustersMock}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );

@@ -23,7 +23,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const THX_CORE_QUERY = gql`
   query THX($simulatorId: ID!) {
     thx(simulatorId: $simulatorId) {
       ...THXData
@@ -31,7 +31,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const THX_CORE_SUB = gql`
   subscription THXUpdate($simulatorId: ID!) {
     thxUpdate(simulatorId: $simulatorId) {
       ...THXData
@@ -144,16 +144,16 @@ const THXCore = ({simulator, activated, name, clients, id}) => (
 );
 
 const THXData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query query={THX_CORE_QUERY} variables={{simulatorId: props.simulator.id}}>
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {thx} = data;
-      if (loading || !thx) return null;
       if (!thx[0]) return <div>No THX</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: THX_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

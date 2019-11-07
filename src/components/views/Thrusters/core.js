@@ -14,7 +14,7 @@ import {
   FaArrowRight,
 } from "react-icons/fa";
 
-const ROTATION_CHANGE_SUB = gql`
+export const ROTATION_CHANGE_CORE_SUB = gql`
   subscription RotationChanged($simulatorId: ID) {
     rotationChange(simulatorId: $simulatorId) {
       id
@@ -89,7 +89,7 @@ class ThrusterCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: ROTATION_CHANGE_SUB,
+              document: ROTATION_CHANGE_CORE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -330,7 +330,7 @@ const ThrusterArrow = ({icon: Icon, value}) => {
   );
 };
 
-const THRUSTER_QUERY = gql`
+export const THRUSTER_CORE_QUERY = gql`
   query Thrusters($simulatorId: ID) {
     thrusters(simulatorId: $simulatorId) {
       id
@@ -369,7 +369,7 @@ const THRUSTER_QUERY = gql`
   }
 `;
 
-export default graphql(THRUSTER_QUERY, {
+export default graphql(THRUSTER_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

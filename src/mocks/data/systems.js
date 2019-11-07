@@ -3072,4 +3072,131 @@ query Reactors($simulatorId: ID!) {
       __typename: "SubspaceField",
     },
   ],
+  /*  query Thrusters($simulatorId: ID) {
+  thrusters(simulatorId: $simulatorId) {
+    id
+    direction {
+      x
+      y
+      z
+      __typename
+    }
+    rotation {
+      yaw
+      pitch
+      roll
+      __typename
+    }
+    rotationDelta {
+      yaw
+      pitch
+      roll
+      __typename
+    }
+    rotationRequired {
+      yaw
+      pitch
+      roll
+      __typename
+    }
+    manualThrusters
+    rotationSpeed
+    movementSpeed
+    damage {
+      damaged
+      report
+      __typename
+    }
+    power {
+      power
+      powerLevels
+      __typename
+    }
+    __typename
+  }
+}
+*/
+  thrusters: [
+    {
+      id: "1473b111-a829-468b-96d5-3e5cad801a61",
+      direction: {
+        x: 0,
+        y: 0,
+        z: 0,
+        __typename: "Coordinates",
+      },
+      rotation: {
+        yaw: 0,
+        pitch: 0,
+        roll: 0,
+        __typename: "Rotation",
+      },
+      rotationDelta: {
+        yaw: 0,
+        pitch: 0,
+        roll: 0,
+        __typename: "Rotation",
+      },
+      rotationRequired: {
+        yaw: 0,
+        pitch: 0,
+        roll: 0,
+        __typename: "Rotation",
+      },
+      manualThrusters: false,
+      rotationSpeed: 3,
+      movementSpeed: 5,
+      damage: {
+        damaged: false,
+        report: null,
+        __typename: "Damage",
+      },
+      power: {
+        power: 5,
+        powerLevels: [5],
+        __typename: "Power",
+      },
+      __typename: "Thruster",
+    },
+  ],
+  /*  query THX($simulatorId: ID!) {
+    thx(simulatorId: $simulatorId) {
+    id
+    name
+    clients {
+      id
+      lock
+      charge
+      station {
+        name
+        __typename
+      }
+      executive
+      __typename
+    }
+    activated
+    __typename
+  }
+} */
+  thx: [
+    {
+      id: "4326ba64-66e2-4ef2-a2b3-3b5e38a472de",
+      name: "THX-1138",
+      clients: [
+        {
+          id: "prove-during-special",
+          lock: false,
+          charge: 0,
+          station: {
+            name: "Engineering",
+            __typename: "Station",
+          },
+          executive: false,
+          __typename: "ThxClient",
+        },
+      ],
+      activated: false,
+      __typename: "Thx",
+    },
+  ],
 };

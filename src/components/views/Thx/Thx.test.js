@@ -5,7 +5,9 @@ import baseProps from "../../../stories/helpers/baseProps.js";
 import Component from "./index.js";
 
 it("should render", async () => {
-  const {container, getByText} = render(<Component {...baseProps} />, {});
+  const {container, getByText} = render(<Component {...baseProps} />, {
+    mocks: ThxMock,
+  });
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();
   expect(container.innerHTML).toBeTruthy();
