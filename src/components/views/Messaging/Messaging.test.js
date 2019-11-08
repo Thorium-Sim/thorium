@@ -10,7 +10,11 @@ import Component, {
 
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {
-    queries: [MESSAGING_QUERY, MESSAGING_SUB, MESSAGING_TEAMS_SUB],
+    queries: [
+      [MESSAGING_QUERY, [], {simulatorId: "test", station: "Test Station"}],
+      [MESSAGING_SUB, [], {simulatorId: "test", station: "Test Station"}],
+      MESSAGING_TEAMS_SUB,
+    ],
   });
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();

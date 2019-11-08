@@ -1,6 +1,7 @@
 import {TIMELINE_QUERY, TIMELINE_SUB} from "components/views/Timeline";
 import simulators from "../data/simulators";
 import missions from "../data/missions";
+import IntrospectionMock from "./Introspection.mock";
 export default [
   {
     request: {
@@ -25,4 +26,5 @@ export default [
       },
     },
   },
+  ...IntrospectionMock,
 ];

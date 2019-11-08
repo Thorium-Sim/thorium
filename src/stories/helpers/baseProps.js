@@ -1,4 +1,5 @@
 export default {
+  flightId: "test",
   flight: {
     id: "test",
     name: "deep-mysterious-herd",

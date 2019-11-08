@@ -5,12 +5,15 @@ import baseProps from "../../../stories/helpers/baseProps.js";
 import Core, {OFFICER_LOG_CORE_QUERY, OFFICER_LOG_CORE_SUB} from "./core.js";
 
 it("should render", async () => {
-  const {container, getByText} = render(<Core {...baseProps} />, {
-    queries: [
-      [OFFICER_LOG_CORE_QUERY, [], {clientId: "test", flightId: "test"}],
-      [OFFICER_LOG_CORE_SUB, [], {clientId: "test", flightId: "test"}],
-    ],
-  });
+  const {container, getByText} = render(
+    <Core {...baseProps} flightId="test" />,
+    {
+      queries: [
+        [OFFICER_LOG_CORE_QUERY, [], {clientId: "test", flightId: "test"}],
+        [OFFICER_LOG_CORE_SUB, [], {clientId: "test", flightId: "test"}],
+      ],
+    },
+  );
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();
   expect(container.innerHTML).toBeTruthy();

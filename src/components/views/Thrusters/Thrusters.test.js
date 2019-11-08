@@ -6,6 +6,7 @@ import Component from "./index.js";
 import ThrustersMock from "mocks/cards/Thrusters.mock";
 
 it("should render", async () => {
+  navigator.getGamepads = () => [];
   const {container, getByText} = render(<Component {...baseProps} />, {
     mocks: ThrustersMock,
   });

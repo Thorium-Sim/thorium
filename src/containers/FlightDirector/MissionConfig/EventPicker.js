@@ -11,13 +11,6 @@ export const MacroConfigQuery = gql`
         fields {
           name
           description
-          isDeprecated
-          deprecationReason
-          args {
-            name
-            description
-            defaultValue
-          }
         }
       }
     }

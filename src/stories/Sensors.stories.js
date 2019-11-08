@@ -14,7 +14,7 @@ export const Sensors = () => (
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={SensorsMock}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );

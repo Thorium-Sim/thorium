@@ -2,10 +2,12 @@ import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
 import baseProps from "../../../stories/helpers/baseProps.js";
-import Component from "./index.js";
+import Component, {SELF_DESTRUCT_QUERY, SELF_DESTRUCT_SUB} from "./index.js";
 
 it("should render", async () => {
-  const {container, getByText} = render(<Component {...baseProps} />, {});
+  const {container, getByText} = render(<Component {...baseProps} />, {
+    queries: [SELF_DESTRUCT_QUERY, SELF_DESTRUCT_SUB],
+  });
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();
   expect(container.innerHTML).toBeTruthy();
