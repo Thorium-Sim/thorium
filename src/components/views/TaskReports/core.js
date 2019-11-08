@@ -27,7 +27,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const TASK_REPORTS_CORE_QUERY = gql`
   query TaskReport($simulatorId: ID!) {
     taskReport(simulatorId: $simulatorId) {
       ...TaskReportCoreData
@@ -47,7 +47,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const TASK_REPORTS_CORE_SUB = gql`
   subscription TaskReportUpdate($simulatorId: ID!) {
     taskReportUpdate(simulatorId: $simulatorId) {
       ...TaskReportCoreData
@@ -415,15 +415,18 @@ class TaskReportCore extends Component {
 }
 
 const TaskReportData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={TASK_REPORTS_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {taskReport, systems, exocomps} = data;
-      if (loading || !taskReport || !systems || !exocomps) return null;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: TASK_REPORTS_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

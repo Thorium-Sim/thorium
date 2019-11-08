@@ -6,7 +6,7 @@ import ConfigureTask from "./ConfigureTask";
 import ConfigureMacro from "./ConfigureMacro";
 import "./style.scss";
 
-const QUERY = gql`
+export const TASK_DEFINITION_QUERY = gql`
   query TaskDefinitions($simulatorId: ID) {
     taskDefinitions(simulatorId: $simulatorId) {
       id
@@ -157,7 +157,10 @@ class TasksCore extends Component {
 }
 
 const TaskCreator = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={TASK_DEFINITION_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
       if (loading || !data) return null;
       const {taskDefinitions} = data;

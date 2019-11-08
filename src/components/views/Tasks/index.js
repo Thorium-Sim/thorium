@@ -19,7 +19,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const TASK_QUERY = gql`
   query Tasks($simulatorId: ID!, $station: String) {
     tasks(simulatorId: $simulatorId, station: $station) {
       ...TaskData
@@ -27,7 +27,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const TASK_SUB = gql`
   subscription TasksUpdate($simulatorId: ID!, $station: String) {
     tasksUpdate(simulatorId: $simulatorId, station: $station) {
       ...TaskData
@@ -41,7 +41,7 @@ class TasksData extends Component {
   render() {
     return (
       <Query
-        query={QUERY}
+        query={TASK_QUERY}
         variables={{
           simulatorId: this.props.simulator.id,
           station: this.props.station.executive
@@ -50,13 +50,13 @@ class TasksData extends Component {
         }}
       >
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {tasks} = data;
-          if (loading || !tasks) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: TASK_SUB,
                   variables: {
                     simulatorId: this.props.simulator.id,
                     station: this.props.station.executive

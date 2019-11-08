@@ -43,7 +43,7 @@ const fragments = {
   `,
 };
 
-const QUERY = gql`
+export const TASK_CORE_QUERY = gql`
   query Tasks($simulatorId: ID!) {
     tasks(simulatorId: $simulatorId) {
       ...TaskCoreData
@@ -55,7 +55,7 @@ const QUERY = gql`
   ${fragments.taskFragment}
   ${fragments.taskTemplateFragment}
 `;
-const SUBSCRIPTION = gql`
+export const TASK_CORE_SUB = gql`
   subscription TasksUpdate($simulatorId: ID!) {
     tasksUpdate(simulatorId: $simulatorId) {
       ...TaskCoreData
@@ -64,7 +64,7 @@ const SUBSCRIPTION = gql`
   ${fragments.taskFragment}
 `;
 
-const TEMPLATE_SUB = gql`
+export const TASK_TEMPLATE_SUB = gql`
   subscription TaskTemplatesUpdate {
     taskTemplatesUpdate {
       ...TaskTemplateCoreData
@@ -108,7 +108,10 @@ class TasksCore extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={TASK_CORE_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
           if (loading || !data) return null;
           const {tasks, taskTemplates} = data;
@@ -116,7 +119,7 @@ class TasksCore extends Component {
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: TASK_CORE_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {
@@ -129,7 +132,7 @@ class TasksCore extends Component {
               <SubscriptionHelper
                 subscribe={() =>
                   subscribeToMore({
-                    document: TEMPLATE_SUB,
+                    document: TASK_TEMPLATE_SUB,
                     updateQuery: (previousResult, {subscriptionData}) => {
                       return Object.assign({}, previousResult, {
                         taskTemplates:

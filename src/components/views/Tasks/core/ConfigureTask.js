@@ -191,7 +191,7 @@ const ConfigureTask = ({
                 }}
               >
                 {({loading, data, error}) =>
-                  loading ? (
+                  loading || !data ? (
                     <p>Loading instructions...</p>
                   ) : error ? (
                     <p>
