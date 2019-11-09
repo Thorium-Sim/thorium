@@ -149,7 +149,6 @@ const ReactorControl = ({simulator, client, clientObj}) => {
   const [measureRef, dimensions] = useMeasure();
   if (loading || !data) return null;
   const {reactors, simulators, systems} = data;
-  console.log(data);
   const reactor = reactors.find(r => r.model === "reactor");
   const battery = reactors.find(r => r.model === "battery");
   const charge = battery && battery.batteryChargeLevel;

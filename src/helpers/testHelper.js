@@ -10,7 +10,6 @@ window.thorium = window.thorium || {
 class ErrorBoundary extends React.Component {
   state = {};
   componentDidCatch(error) {
-    console.log(error);
     this.setState({
       error,
     });

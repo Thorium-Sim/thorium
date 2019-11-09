@@ -39,6 +39,10 @@ be breaking changes, this release will be a version 3.0.
       {system}{Operation} format, like phasersFire
 - [ ] Add proper mutation responses to all requests, to make it easier to
       transition to MST-GQL
+- [ ] Convert all `SYSTEMUpdate` subscriptions to instead be just `SYSTEM` and
+      match the name of the query exactly. This makes it much easier to use
+      useQuery and useSubscription together without having to use
+      useSubscribeToMore (which is a messy API)
 - [ ] Simplify so it's only running one flight at a time.
 - [ ] Partial TypeScript definitions, especially for the server
 - [ ] Upgrade all components to be React StrictMode compatible.

@@ -3,6 +3,12 @@ import {Container, Row, Col, Button} from "helpers/reactstrap";
 import {Mutation, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Bars from "../TractorBeam/bars";
+
+export const DECON_OFFSET_MUTATION = gql`
+  mutation DeconOffset($id: ID!, $offset: Float!) {
+    updateDeconOffset(id: $id, offset: $offset)
+  }
+`;
 class DeconProgram extends Component {
   state = {
     mStream: Math.round(Math.random() * 100),
@@ -46,17 +52,12 @@ class DeconProgram extends Component {
     this.timeout = setTimeout(this.idealStreamChange, 300);
   };
   sendUpdate = () => {
-    const mutation = gql`
-      mutation DeconOffset($id: ID!, $offset: Float!) {
-        updateDeconOffset(id: $id, offset: $offset)
-      }
-    `;
     const variables = {
       id: this.props.id,
       offset: this.calcStressLevel(),
     };
     this.props.client.mutate({
-      mutation,
+      mutation: DECON_OFFSET_MUTATION,
       variables,
     });
     this.timeout2 = setTimeout(this.sendUpdate, 1000 * 5);

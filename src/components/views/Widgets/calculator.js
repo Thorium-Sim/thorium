@@ -104,7 +104,6 @@ export default class Calculator extends React.Component {
             result /= valsToCalc[i].val;
             break;
           default:
-            console.log("Something went wrong...");
         }
       }
     }
@@ -157,7 +156,6 @@ class Operations extends React.Component {
         this.props._calcResult(oper);
         break;
       default:
-        console.log("Something went wrong...");
     }
   }
   render() {
@@ -191,7 +189,6 @@ class Functions extends React.Component {
         this.props._insDecimal();
         break;
       default:
-        console.log("Something went wrong...");
     }
   }
   render() {

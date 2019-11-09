@@ -148,6 +148,8 @@
 export default [
   {
     id: "07ffd617-d70a-4c8d-8e1d-99bd863b78c2",
+    simulatorId: "test",
+    domain: "external",
     name: "External Sensors",
     displayName: "External Sensors",
     scanResults: "",
@@ -3798,6 +3800,8 @@ export default [
     id: "5fc83be4-1160-43c4-a4bb-85e339130301",
     name: "Internal Sensors",
     displayName: "Internal Sensors",
+    simulatorId: "test",
+    domain: "internal",
     scanResults: "",
     scanRequest: "",
     processedData: "",

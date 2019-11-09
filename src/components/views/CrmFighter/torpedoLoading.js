@@ -34,9 +34,11 @@ function LoadedTorpedo() {
 }
 
 const TorpedoLoading = ({id, clientId, torpedoCount, torpedoLoaded}) => {
+  let torpCount = torpedoCount - (torpedoLoaded ? 1 : 0);
+  if (torpCount < 0) torpCount = 0;
   const [torpedos, dispatch] = useReducer(
     reducer,
-    Array(torpedoCount - (torpedoLoaded ? 1 : 0))
+    Array(torpCount)
       .fill(0)
       .map(() => ({id: uuid.v4()})),
   );

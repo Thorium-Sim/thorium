@@ -104,7 +104,6 @@ class DamageControlData extends Component {
         }}
       >
         {({loading, data, error, subscribeToMore}) => {
-          console.log(error);
           if (loading || !data) return null;
           const {systems, simulators, taskReport} = data;
           const [simulator] = simulators;

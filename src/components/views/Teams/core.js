@@ -6,13 +6,13 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
-const CREW_SUB = gql`
+export const TEAMS_CREW_CORE_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {
     crewCountUpdate(simulatorId: $simulatorId, position: $teamType)
   }
 `;
 
-const TEAMS_SUB = gql`
+export const TEAMS_CORE_SUB = gql`
   subscription TeamsUpdate($simulatorId: ID, $teamType: String) {
     teamsUpdate(simulatorId: $simulatorId, type: $teamType) {
       id
@@ -78,7 +78,7 @@ class Teams extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: CREW_SUB,
+              document: TEAMS_CREW_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
                 teamType: this.props.teamType || "damage",
@@ -94,7 +94,7 @@ class Teams extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: TEAMS_SUB,
+              document: TEAMS_CORE_SUB,
               variables: {
                 simulatorId: this.props.simulator.id,
                 teamType: this.props.teamType || "damage",
@@ -187,8 +187,8 @@ class Teams extends Component {
   }
 }
 
-const TEAMS_QUERY = gql`
-  query Teams($simulatorId: ID!, $simId: ID!, $teamType: String!) {
+export const TEAMS_CORE_QUERY = gql`
+  query Teams($simulatorId: ID!, $teamType: String!) {
     crewCount(simulatorId: $simulatorId, position: $teamType)
     teams(simulatorId: $simulatorId, type: $teamType) {
       id
@@ -219,7 +219,7 @@ const TEAMS_QUERY = gql`
         }
       }
     }
-    decks(simulatorId: $simId) {
+    decks(simulatorId: $simulatorId) {
       id
       number
       rooms {
@@ -229,7 +229,7 @@ const TEAMS_QUERY = gql`
     }
   }
 `;
-export default graphql(TEAMS_QUERY, {
+export default graphql(TEAMS_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

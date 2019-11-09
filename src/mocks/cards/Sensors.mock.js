@@ -5,6 +5,10 @@ import {
 } from "../../components/views/Sensors/GridDom";
 import sensors from "../data/sensors";
 import sensorContacts from "../data/sensorContacts";
+import {
+  SENSOR_CORE_QUERY,
+  SENSOR_CORE_SUB,
+} from "components/views/Sensors/core";
 export default [
   {
     request: {
@@ -47,6 +51,29 @@ export default [
     result: {
       data: {
         sensorContactUpdate: sensorContacts,
+      },
+    },
+  },
+  {
+    request: {
+      query: SENSOR_CORE_QUERY,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {
+        sensors,
+        probes: {id: "test", __typename: "Probes"},
+      },
+    },
+  },
+  {
+    request: {
+      query: SENSOR_CORE_SUB,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {
+        sensorsUpdate: sensors,
       },
     },
   },

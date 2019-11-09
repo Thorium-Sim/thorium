@@ -97,7 +97,7 @@ const fragment = gql`
     template
   }
 `;
-const TACTICALMAP_SUB = gql`
+export const TACTICALMAP_SUB = gql`
   subscription TacticalMapUpdate($id: ID!) {
     tacticalMapUpdate(id: $id) {
       ...TacticalMapData
@@ -106,7 +106,7 @@ const TACTICALMAP_SUB = gql`
   ${fragment}
 `;
 
-const TACTICALMAP_QUERY = gql`
+export const TACTICALMAP_QUERY = gql`
   query TacticalMap($id: ID!) {
     tacticalMap(id: $id) {
       ...TacticalMapData
@@ -237,8 +237,8 @@ class TacticalMapCore extends Component {
           variables={{id: tacticalMapId}}
           skip={!tacticalMapId}
         >
-          {({loading, data = {}, subscribeToMore}) => {
-            if (loading) return null;
+          {({loading, data, error, subscribeToMore}) => {
+            if (loading || !data) return null;
             const {tacticalMap} = data;
             return (
               <SubscriptionHelper

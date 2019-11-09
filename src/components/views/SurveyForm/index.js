@@ -12,7 +12,7 @@ import Form from "./form";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 
-const SUB = gql`
+export const SURVEY_FORM_SUB = gql`
   subscription SurveyFormsUpdate($simulatorId: ID) {
     surveyformUpdate(simulatorId: $simulatorId, active: true) {
       id
@@ -96,7 +96,7 @@ class SurveyForm extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SUB,
+              document: SURVEY_FORM_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -120,7 +120,7 @@ class SurveyForm extends Component {
   }
 }
 
-const QUERY = gql`
+export const SURVEY_FORM_QUERY = gql`
   query SurveyForms($simulatorId: ID!) {
     surveyform(simulatorId: $simulatorId, active: true) {
       id
@@ -144,7 +144,7 @@ const QUERY = gql`
     }
   }
 `;
-export default graphql(QUERY, {
+export default graphql(SURVEY_FORM_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {

@@ -4,17 +4,18 @@ import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/SurveyForm/index.js";
 import CoreComponent from "../components/views/SurveyForm/core.js";
+import SurveyFormMock from "mocks/cards/SurveyForm.mock.js";
 
 export default {
-  title: "Cards|SurveyForm",
+  title: "Cards|Crew/SurveyForm",
 };
 export const SurveyForm = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={SurveyFormMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );
 export const Core = () => (
-  <StorybookWrapperCore>
+  <StorybookWrapperCore mocks={SurveyFormMock}>
     <CoreComponent {...baseProps} />
   </StorybookWrapperCore>
 );

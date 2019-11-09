@@ -25,7 +25,6 @@ export const OFFICER_LOG_CORE_SUB = gql`
 `;
 
 const OfficerLogCore = props => {
-  console.log("PROPS!!!!!", props);
   const {flightId} = props;
   const {loading, data, subscribeToMore} = useQuery(OFFICER_LOG_CORE_QUERY, {
     variables: {flightId},

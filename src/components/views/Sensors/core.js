@@ -8,7 +8,7 @@ import {subscribe} from "helpers/pubsub";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {FaSyncAlt} from "react-icons/fa";
 
-const SENSOR_SUB = gql`
+export const SENSOR_CORE_SUB = gql`
   subscription SensorsChanged($simulatorId: ID) {
     sensorsUpdate(simulatorId: $simulatorId) {
       id
@@ -210,7 +210,7 @@ class SensorsCore extends Component {
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
-              document: SENSOR_SUB,
+              document: SENSOR_CORE_SUB,
               variables: {simulatorId: this.props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {
@@ -411,7 +411,7 @@ class SensorsCore extends Component {
   }
 }
 
-const SENSOR_QUERY = gql`
+export const SENSOR_CORE_QUERY = gql`
   query GetSensors($simulatorId: ID!) {
     sensors(simulatorId: $simulatorId) {
       id
@@ -443,7 +443,7 @@ const SENSOR_QUERY = gql`
   }
 `;
 
-export default graphql(SENSOR_QUERY, {
+export default graphql(SENSOR_CORE_QUERY, {
   options: ownProps => ({
     fetchPolicy: "cache-and-network",
     variables: {simulatorId: ownProps.simulator.id},

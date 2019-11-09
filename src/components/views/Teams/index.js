@@ -17,7 +17,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
 
-const CREW_SUB = gql`
+export const CREW_SUB = gql`
   subscription CrewUpdate($simulatorId: ID, $teamType: String!) {
     crewUpdate(simulatorId: $simulatorId, position: $teamType, killed: false) {
       id
@@ -27,7 +27,7 @@ const CREW_SUB = gql`
   }
 `;
 
-const TEAM_SUB = gql`
+export const TEAM_SUB = gql`
   subscription TeamsUpdate($simulatorId: ID, $teamType: String!) {
     teamsUpdate(simulatorId: $simulatorId, type: $teamType) {
       id
@@ -177,10 +177,8 @@ class Teams extends Component {
     );
   };
   render() {
-    const {
-      data: {loading, teams, crew, decks},
-      teamType = "damage",
-    } = this.props;
+    const {data, teamType = "damage"} = this.props;
+    const {loading, teams, crew, decks} = data;
     if (loading || !teams || !crew || !decks) return null;
     const {selectedTeam} = this.state;
     if (!teams) return null;
@@ -286,8 +284,8 @@ class Teams extends Component {
   }
 }
 
-const TEAMS_QUERY = gql`
-  query Teams($simulatorId: ID, $simId: ID!, $teamType: String!) {
+export const TEAMS_QUERY = gql`
+  query Teams($simulatorId: ID!, $teamType: String!) {
     crew(simulatorId: $simulatorId, position: $teamType, killed: false) {
       id
       name
@@ -318,7 +316,7 @@ const TEAMS_QUERY = gql`
         position
       }
     }
-    decks(simulatorId: $simId) {
+    decks(simulatorId: $simulatorId) {
       id
       number
       rooms {
@@ -334,7 +332,6 @@ export default graphql(TEAMS_QUERY, {
     variables: {
       teamType: ownProps.teamType || "damage",
       simulatorId: ownProps.simulator.id,
-      simId: ownProps.simulator.id,
     },
   }),
 })(withApollo(Teams));

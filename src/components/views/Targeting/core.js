@@ -151,7 +151,6 @@ class TargetingCore extends Component {
     });
   };
   render() {
-    console.log(this.props.data);
     if (this.props.data.loading || !this.props.data.targeting) return null;
     const targeting = this.props.data.targeting[0];
     if (!targeting) return <p>No Targeting Systems</p>;

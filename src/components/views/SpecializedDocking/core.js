@@ -30,7 +30,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const SPECIALIZED_DOCKING_CORE_QUERY = gql`
   query Docking($simulatorId: ID!) {
     docking(simulatorId: $simulatorId, type: specialized) {
       ...SpecializedDockingCoreData
@@ -38,7 +38,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const SPECIALIZED_DOCKING_CORE_SUB = gql`
   subscription DockingUpdate($simulatorId: ID!) {
     dockingUpdate(simulatorId: $simulatorId, type: specialized) {
       ...SpecializedDockingCoreData
@@ -142,16 +142,19 @@ const SpecializedDockingCore = ({docking}) => {
 };
 
 const SpecializedSpecializedDockingCoreData = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulator.id}}>
+  <Query
+    query={SPECIALIZED_DOCKING_CORE_QUERY}
+    variables={{simulatorId: props.simulator.id}}
+  >
     {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
       const {docking} = data;
-      if (loading || !docking) return null;
       if (!docking[0]) return <div>No Specialized Ports</div>;
       return (
         <SubscriptionHelper
           subscribe={() =>
             subscribeToMore({
-              document: SUBSCRIPTION,
+              document: SPECIALIZED_DOCKING_CORE_SUB,
               variables: {simulatorId: props.simulator.id},
               updateQuery: (previousResult, {subscriptionData}) => {
                 return Object.assign({}, previousResult, {

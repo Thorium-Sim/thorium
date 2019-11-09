@@ -185,7 +185,6 @@ class Transporters extends Component {
     });
   }
   render() {
-    console.log(this.props.data);
     // Assume that there is only one transporter
     if (this.props.data.loading || !this.props.data.transporters) return null;
     const transporter = this.props.data.transporters[0] || {};

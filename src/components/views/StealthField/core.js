@@ -189,7 +189,6 @@ const StealthFieldData = props => {
       }}
     >
       {({loading, data, error, subscribeToMore}) => {
-        console.log(error);
         if (loading || !data) return null;
         const stealthField = data.stealthField[0];
         if (!stealthField) return <p>No Stealth Field Systems</p>;

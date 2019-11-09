@@ -92,7 +92,6 @@ class CoolantControl extends Component {
     if (this.props.data.loading || !this.props.data.coolant) return null;
     const coolant = this.props.data.coolant[0];
     const {systemCoolant} = this.props.data;
-    console.log(coolant);
     return (
       <Container fluid className="card-coolant">
         <SubscriptionHelper

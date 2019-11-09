@@ -3,12 +3,13 @@ import StorybookWrapper from "./helpers/storybookWrapper.js";
 
 import baseProps from "./helpers/baseProps.js";
 import Component from "../components/views/TacticalMap/index.js";
+import TacticalMapMock from "mocks/cards/TacticalMap.mock.js";
 
 export default {
-  title: "Cards|TacticalMap",
+  title: "Cards|Viewscreen/TacticalMap",
 };
 export const TacticalMap = () => (
-  <StorybookWrapper>
+  <StorybookWrapper mocks={TacticalMapMock}>
     <Component {...baseProps} />
   </StorybookWrapper>
 );
