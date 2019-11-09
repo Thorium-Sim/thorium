@@ -38,8 +38,8 @@ class TriggerData extends Component {
     return (
       <Query query={QUERY}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {triggers} = data;
-          if (loading || !triggers) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>

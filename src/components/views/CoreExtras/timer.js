@@ -162,7 +162,7 @@ class Timer extends Component {
   render() {
     const {timer, stopped} = this.state;
     return (
-      <div style={{display: "flex"}}>
+      <div className="core-timer" style={{display: "flex"}}>
         <div
           style={{
             color: "black",

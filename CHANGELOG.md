@@ -1,4 +1,4 @@
-# [2.0.0-beta1]
+# [2.0.0-beta1](2019-11-9)
 
 - **Server:** Change the server to run in a windowed app instead of the command
   line

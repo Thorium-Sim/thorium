@@ -121,7 +121,7 @@ export default class MissionPicker extends Component {
                       }
                     `}
                   >
-                    {({loading, data: externalData}) => (
+                    {({loading, data}) => (
                       <div
                         style={{
                           height: "100%",
@@ -133,14 +133,16 @@ export default class MissionPicker extends Component {
                           flexDirection: "column",
                         }}
                       >
-                        {(loading || !externalData) && (
+                        {(loading || !data) && (
                           <Rings color="#08f" width={100} height={100} />
                         )}
-                        {externalData.externals &&
-                        externalData.externals.missions.filter(
+                        {data &&
+                        data.externalData &&
+                        data.externalData.externals &&
+                        data.externalData.externals.missions.filter(
                           s => !data.missions.find(m => s.title === m.name),
                         ).length > 0 ? (
-                          externalData.externals.missions
+                          data.externalData.externals.missions
                             .filter(
                               s => !data.missions.find(m => s.title === m.name),
                             )

@@ -26,3 +26,11 @@
     width: 100%;
   }
 }
+.widget-item {
+  outline: none;
+  & > svg {
+    outline: none;
+    width: 1.25em;
+    height: 1.25em;
+  }
+}

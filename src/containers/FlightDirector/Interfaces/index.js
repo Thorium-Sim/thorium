@@ -58,8 +58,8 @@ class InterfacesData extends Component {
     return (
       <Query query={QUERY}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {interfaces} = data;
-          if (loading || !interfaces) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -75,8 +75,8 @@ class InterfacesData extends Component {
             >
               <Query query={DEVICE_QUERY}>
                 {({loading, data}) => {
+                  if (loading || !data) return null;
                   const {interfaceDevices} = data;
-                  if (loading || !interfaceDevices) return null;
 
                   return (
                     <InterfacesControl

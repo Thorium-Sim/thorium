@@ -44,8 +44,8 @@ const MacrosData = props => {
   return (
     <Query query={QUERY}>
       {({loading, data, subscribeToMore}) => {
+        if (loading || !data) return null;
         const {macroButtons} = data;
-        if (loading || !macroButtons) return null;
         return (
           <SubscriptionHelper
             subscribe={() =>

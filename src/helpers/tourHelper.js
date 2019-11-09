@@ -55,7 +55,7 @@ const TourHelper = ({
           badgeContent={(current, total) => {
             return (
               <div className="tour-speaker" onClick={() => speak(current)}>
-                <FaVolumeUp size="2em" /> Speak This
+                <FaVolumeUp size="1em" /> Speak This
               </div>
             );
           }}

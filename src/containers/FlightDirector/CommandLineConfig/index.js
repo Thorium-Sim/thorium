@@ -38,8 +38,8 @@ class CommandLineData extends Component {
     return (
       <Query query={QUERY}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {commandLine} = data;
-          if (loading || !commandLine) return null;
           return (
             <SubscriptionHelper
               subscribe={() =>

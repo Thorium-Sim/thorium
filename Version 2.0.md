@@ -8,7 +8,7 @@ Some of this stuff might be part of future refactors.
 
 Some goals for this refactor:
 
-- [ ] Add more tests, particularly on the client side
+- [x] Add more tests, particularly on the client side
 - [x] Add storybook pages for custom components and cards.
 - [x] Provide more client data in the GraphQL context, like simulator ID,
       station, etc. This makes it so notifications can be selectively sent

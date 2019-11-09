@@ -48,7 +48,7 @@
     "typecheck": "tsc --noEmit",
     "stylelint": "stylelint ./src",
     "bump": "node ./scripts/bumpVersion.js",
-    "deploy": "npm-run-all build dist:electron sentry-upload",
+    "deploy": "npm-run-all build dist:electron sentry:upload",
     "format": "prettier --write \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "format:different": "prettier --list-different \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "validate": "CI=true npm-run-all --parallel test:coverage typecheck format:different",

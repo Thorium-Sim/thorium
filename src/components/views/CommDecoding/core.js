@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {ListGroup, ListGroupItem, Button} from "helpers/reactstrap";
 import {InputField} from "../../generic/core";
-import DecodingCore from "../CommDecoding/core";
+import DecodingCore from "./decodingCore";
 import {DateTime} from "luxon";
 
 import "./style.scss";

@@ -237,8 +237,8 @@ class TacticalMapCore extends Component {
           variables={{id: tacticalMapId}}
           skip={!tacticalMapId}
         >
-          {({loading, data, error, subscribeToMore}) => {
-            if (loading || !data) return null;
+          {({loading, data = {}, subscribeToMore}) => {
+            if (loading) return null;
             const {tacticalMap} = data;
             return (
               <SubscriptionHelper
