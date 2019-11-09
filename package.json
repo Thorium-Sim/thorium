@@ -27,17 +27,18 @@
     "start:server": "nodemon ./server/index.js -e js,graphql --ignore snapshots/ --exec babel-node",
     "watch:electron": "wait-on http://localhost:3000 && electron .",
     "start:electron": "BROWSER=none npm-run-all --parallel -l start:client watch:server watch:electron",
-    "build": "NODE_ENV=production npm-run-all build:client build:server build:env build:electron",
+    "build": "NODE_ENV=production npm-run-all build:client build:server build:env",
     "build:client": "react-scripts --max_old_space_size=4096 build",
     "build:server": "parcel build server/index.js --out-dir build/server --target node --no-source-maps",
     "build:env": "node ./scripts/build-env.js",
     "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
     "build:electron": "electron-builder",
+    "dist:electron": "electron-builder -mwl -p always",
     "pack:electron": "electron-builder --dir",
     "test": "is-ci test:coverage test:watch",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "sentry-upload": "node ./scripts/sentryFiles.js",
+    "sentry:upload": "node ./scripts/sentryFiles.js",
     "translate": "babel-node scripts/manageTranslations.js",
     "plop": "plop",
     "semantic-release": "semantic-release",
@@ -46,6 +47,8 @@
     "lint": "jest --config test/jest.eslint.js",
     "typecheck": "tsc --noEmit",
     "stylelint": "stylelint ./src",
+    "bump": "node ./scripts/bumpVersion.js",
+    "deploy": "npm-run-all build dist:electron sentry-upload",
     "format": "prettier --write \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "format:different": "prettier --list-different \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "validate": "CI=true npm-run-all --parallel test:coverage typecheck format:different",
@@ -129,32 +132,12 @@
     }
   },
   "release": {
-    "branch": "master",
+    "branch": "2.0",
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
-      [
-        "@semantic-release/github",
-        {
-          "assets": [
-            {
-              "path": "zips/thorium-linux.zip",
-              "label": "Thorium Linux"
-            },
-            {
-              "path": "zips/thorium-macos.zip",
-              "label": "Thorium macOS"
-            },
-            {
-              "path": "zips/thorium-win.exe.zip",
-              "label": "Thorium Windows"
-            }
-          ],
-          "successComment": false
-        }
-      ],
       [
         "@semantic-release/exec",
         {
@@ -212,6 +195,7 @@
     "@blueprintjs/icons": "^3.11.0",
     "@jagi/jest-transform-graphql": "^1.0.2",
     "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/exec": "^3.3.8",
     "@semantic-release/git": "^7.0.8",
     "@semantic-release/github": "^5.2.10",
     "@sentry/browser": "^5.7.1",
