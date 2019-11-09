@@ -79,7 +79,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "jest --findRelatedTests"
+      "jest --projects ./test/jest.eslint.js --findRelatedTests"
     ],
     "*.{css,scss}": [
       "stylelint"
