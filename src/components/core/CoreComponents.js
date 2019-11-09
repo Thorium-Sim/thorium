@@ -125,7 +125,7 @@ class CoreComponents extends Component {
           className={!editable ? "non-editing" : ""}
           style={{
             display: simulator ? "block" : "none",
-            height: "calc(100vh - 26px)",
+            height: "calc(100vh - 24px)",
             width: `calc(100% - ${sidebar ? 24 : 0}px)`,
             backgroundColor: "#333",
           }}

@@ -19,12 +19,14 @@ class Next extends Component {
           <CoreError>
             <Cores.ActionsCore {...props} />
           </CoreError>
-          <CoreError>
-            <Cores.ExtrasCore {...props} />
-          </CoreError>
-          <CoreError>
-            <Cores.AlertConditionCore {...props} />
-          </CoreError>
+          <div className="core-extra-grid">
+            <CoreError>
+              <Cores.ExtrasCore {...props} />
+            </CoreError>
+            <CoreError>
+              <Cores.AlertConditionCore {...props} />
+            </CoreError>
+          </div>
         </div>
         <CoreError>
           <div className="lighting-container">

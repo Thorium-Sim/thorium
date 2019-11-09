@@ -12,6 +12,7 @@ import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import ColorPicker from "helpers/colorPicker";
+import "./style.scss";
 
 const fragment = gql`
   fragment LightingData on Simulator {
@@ -261,8 +262,7 @@ const LightingCore = ({simulator: {lighting, id}}) => {
             </Col>
           </Row>
           <Row>
-            <Col sm={12}>
-              <div>Presets</div>
+            <Col sm={8}>
               <ButtonGroup>
                 <Button
                   color="secondary"
@@ -329,6 +329,7 @@ const LightingCore = ({simulator: {lighting, id}}) => {
                 </Button>
                 <Button
                   color="dark"
+                  className="black-as-night"
                   size="sm"
                   active={color === "black"}
                   onClick={e =>
@@ -347,6 +348,8 @@ const LightingCore = ({simulator: {lighting, id}}) => {
                   Blackout
                 </Button>
               </ButtonGroup>
+            </Col>
+            <Col sm={4}>
               Shake:
               <ButtonGroup>
                 <Button
