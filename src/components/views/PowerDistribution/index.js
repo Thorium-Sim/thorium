@@ -6,15 +6,7 @@ import Tour from "helpers/tourHelper";
 import "./style.scss";
 import AnimatedNumber from "react-animated-number";
 import PowerLine from "../JumpDrive/powerLine";
-import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {useQuery} from "@apollo/react-hooks";
-/* TODO
-
-Some improvements:
-- Make it so you can just click on a box or a yellow line to set the power level
-- Make it so the names show up better (add a display name to the system class)
-- Change the types of the systems to make it easier to sort the systems by name.
-*/
+import {useQuery, useSubscription} from "@apollo/react-hooks";
 
 const mutation = gql`
   mutation ChangePower($id: ID!, $level: Int!) {
@@ -53,45 +45,24 @@ export const REACTOR_SUB = gql`
 `;
 
 const PowerDistribution = ({client, simulator, clientObj}) => {
-  const {loading, data, subscribeToMore} = useQuery(SYSTEMS_QUERY, {
+  const {loading, data} = useQuery(SYSTEMS_QUERY, {
     variables: {
       simulatorId: simulator.id,
     },
   });
-  const reactorConfig = React.useMemo(
-    () => ({
-      variables: {
-        simulatorId: simulator.id,
-      },
-      updateQuery: (previousResult, {subscriptionData}) => {
-        return Object.assign({}, previousResult, {
-          reactors: subscriptionData.data.reactorUpdate,
-        });
-      },
-    }),
-    [simulator.id],
-  );
-  useSubscribeToMore(subscribeToMore, REACTOR_SUB, reactorConfig);
-  const systemsConfig = React.useMemo(
-    () => ({
-      variables: {
-        simulatorId: simulator.id,
-      },
-      updateQuery: (previousResult, {subscriptionData}) => {
-        return Object.assign({}, previousResult, {
-          systems: subscriptionData.data.systemsUpdate,
-        });
-      },
-    }),
-    [simulator.id],
-  );
-  useSubscribeToMore(subscribeToMore, SYSTEMS_SUB, systemsConfig);
+  const {data: reactorSub = {}} = useSubscription(REACTOR_SUB, {
+    variables: {simulatorId: simulator.id},
+  });
+  const {data: systemsSub = {}} = useSubscription(SYSTEMS_SUB, {
+    variables: {simulatorId: simulator.id},
+  });
 
-  if (loading || !data.reactors) return null;
+  if (loading || !data) return null;
   // Get the batteries, get just the first one.
-  const systems = data.systems;
-  const battery = data.reactors.find(r => r.model === "battery");
-  const reactor = data.reactors.find(r => r.model === "reactor");
+  const systems = systemsSub.systemsUpdate || data.systems;
+  const reactors = reactorSub.reactorUpdate || data.reactors;
+  const battery = reactors.find(r => r.model === "battery");
+  const reactor = reactors.find(r => r.model === "reactor");
   const charge = battery && battery.batteryChargeLevel;
 
   const trainingSteps = hasBattery =>
