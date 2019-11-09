@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/Thorium-Sim/thorium/compare/1.22.0...1.22.1) (2019-11-09)
+
+
+### Bug Fixes
+
+* **Updater:** Disables auto-update in anticipation of Thorium 2.0. No other functional changes. ([6248a57](https://github.com/Thorium-Sim/thorium/commit/6248a57))
+
 # [1.22.0](https://github.com/Thorium-Sim/thorium/compare/1.21.0...1.22.0) (2019-10-14)
 
 
