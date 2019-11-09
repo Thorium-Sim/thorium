@@ -25,7 +25,7 @@ class IssueTracker extends Component {
         $body: String!
         $person: String!
         $type: String!
-        $priority: Int
+        $priority: String!
       ) {
         addIssue(
           title: $title
@@ -54,7 +54,7 @@ ${this.state.reproduce}`
     };
     this.props.client.mutate({
       mutation,
-      variables: {...variables, priority: Number(variables.priority)},
+      variables,
     });
     this.setState({});
     this.props.close && this.props.close();
@@ -81,15 +81,17 @@ ${this.state.reproduce}`
           `,
           variables: {data: base64, filename, ext},
         })
-        .then(({data: {addIssueUpload}}) =>
-          this.setState(({body}) => {
-            return {
-              body: `${body || ""}
+        .then(({data: {addIssueUpload}}) => {
+          if (addIssueUpload) {
+            this.setState(({body}) => {
+              return {
+                body: `${body || ""}
           
 ![${filename}](${addIssueUpload})`,
-            };
-          }),
-        )
+              };
+            });
+          }
+        })
         .catch(err => console.error(err))
         .finally(() => {
           this.setState({uploading: false});
@@ -173,9 +175,9 @@ ${this.state.reproduce}`
                 <option disabled value="select">
                   Select a Priority
                 </option>
-                <option value="3">High</option>
-                <option value="2">Medium</option>
-                <option value="1">Low</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
               </select>
             </div>
             {this.state.uploading ? (

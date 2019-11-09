@@ -4,8 +4,9 @@ import fs from "fs";
 import cors from "cors";
 import path from "path";
 import chalk from "chalk";
-import uploadAsset from "../helpers/uploadAsset";
+import bodyParser from "body-parser";
 
+import uploadAsset from "../helpers/uploadAsset";
 import exportMission from "../imports/missions/export";
 import importMission from "../imports/missions/import";
 import exportSimulator from "../imports/simulators/export";
@@ -59,6 +60,7 @@ export default () => {
   });
 
   const server = express();
+  server.use(bodyParser.json({limit: "20mb"}));
 
   server.on("error", err => {
     if (err.code === "EADDRINUSE") {

@@ -5,6 +5,7 @@ import GraphQLClient from "../helpers/graphqlClient";
 import request from "request";
 import fetch from "node-fetch";
 import uuid from "uuid";
+import titleCase from "title-case";
 const mutationHelper = require("../helpers/mutationHelper").default;
 
 const issuesUrl =
@@ -12,6 +13,7 @@ const issuesUrl =
 
 let spaceEdventuresData = null;
 let spaceEdventuresTimeout = 0;
+const version = require("../../package.json").version;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -90,7 +92,7 @@ const schema = gql`
       title: String!
       body: String!
       person: String!
-      priority: Int
+      priority: String!
       type: String!
     ): String
     addIssueUpload(data: String!, filename: String!, ext: String!): String
@@ -161,9 +163,9 @@ const resolver = {
         `
           ### Requested By: ${person}
     
-          ### Priority: ${priority}
+          ### Priority: ${titleCase(priority)}
     
-          ### Version: ${require("../../package.json").version}
+          ### Version: ${version}
         `
           .replace(/^\s+/gm, "")
           .replace(/\s+$/m, "\n\n") + body;
@@ -171,7 +173,11 @@ const resolver = {
       var postOptions = {
         title,
         body: postBody,
-        type,
+        labels: [
+          version.includes("beta") && "beta",
+          `priority/${priority}`,
+          type,
+        ].filter(Boolean),
       };
       request.post(
         {url: issuesUrl, body: postOptions, json: true},
@@ -199,6 +205,7 @@ const resolver = {
       })
         .then(res => res.json())
         .then(res => {
+          if (!res.content || !res.content.html_url) return null;
           return res.content.html_url + "?raw=true";
         })
         .catch(err => console.error(err));

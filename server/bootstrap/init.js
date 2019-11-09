@@ -7,8 +7,10 @@ import ProgressBar from "progress";
 import importAssets from "../imports/asset/import";
 import "../helpers/sentry";
 
-require("dotenv").config({debug: true, path: `${__dirname}/../.env`});
-
+require("dotenv").config({
+  debug: process.env.NODE_ENV === "development",
+  path: `${__dirname}/../../.env`,
+});
 const warn = console.warn;
 console.warn = message => {
   if (
