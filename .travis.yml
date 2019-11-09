@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - 10
+  - 12
 dist: trusty
 sudo: false
 
@@ -23,18 +23,18 @@ jobs:
   include:
     - stage: test
       install:
-        - npm install
+        - yarn
       script:
         - npm run validate
         - yarn danger ci
     - stage: env
       install:
-        - npm install
+        - yarn
       script:
         - npm run build
     - stage: deploy
       install:
-        - npm install
+        - yarn
       script:
         - echo "Deploying to Github"
       deploy:
