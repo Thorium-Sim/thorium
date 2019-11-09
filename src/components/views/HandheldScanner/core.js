@@ -32,7 +32,7 @@ export const HANDHELD_SCANNER_SUBSCRIPTION = gql`
   ${fragment}
 `;
 
-const ScannerData = (props) => {
+const ScannerData = props => {
   const {simulator} = props;
   return (
     <Query

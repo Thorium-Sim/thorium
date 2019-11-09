@@ -41,8 +41,9 @@ Created with ❤ by [Alex Anderson](http://ralexanderson.com) and
 
 ## A note about support
 
-Thorium is a "community support" project. I encourage everyone to use it
-and continue to submit issues and bug reports. As maintainer, here's what I will continue to do:
+Thorium is a self-organized "community support" project. I encourage everyone to
+use it and continue to submit issues and bug reports. As maintainer, here's what
+I will continue to do:
 
 - Review issues
 - Review pull requests and provide feedback
