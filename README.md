@@ -16,62 +16,21 @@ sure what it is or how to work with Thorium? Guides are in the
 [docs website](https://thoriumsim.com/docs/overview.html). Thorium accepts
 [donations](https://thoriumsim.com/en/donate.html).
 
-## A note about support
+## What is Thorium?
 
-Thorium is a "community support" project. While I encourage everyone to use it and continue to submit issues and bug reports, I won't be actively maintaining the project as I have in the past. Here's what I will continue to do:
+Thorium is a guided narrative multiplayer cooperative real-time spaceship bridge
+simulator. Let's unpack all that vocabulary
 
-* Review issues
-* Review pull requests and provide feedback
-* Merge pull requests
-* Create new builds/releases
-* Encourage and assist other developers
-
-I will not:
-
-* Actively build new features (usually -- some exceptions)
-* Actively fix bugs (usually -- some exceptions)
-* Guarantee a response or turnaround time
-* Give support over phone or in person (except through service contract agreements)
-
-Fortunately, you can get help from the excellent people on [Thorium's Discord Server](https://discord.gg/UvxTQZz).
-
-If you need better support for your Thorium simulator, I more than happy to contract with you to do so. Fill out the [Thorium Service Request Form](https://thoriumsim.com/service/) to start that process. 
-
-If you want to learn to contribute to Thorium, check out the [development video series](https://www.youtube.com/watch?v=iEU6NcOKhyE&list=PLvw0SNT6wHt9au1-6yCOh7QHj-p5ir0l6) for how to get started.
-
-Hope this helps! ~[Alex](https://github.com/alexanderson1993)
-
-## What is Thorium
-
-Thorium is a simulator controls platform which eventually hopes to encapsulate
-the following features (and maybe more):
-
-- Multiple simulators in the same framework
-
-- Multiple stations and cards
-
-- Arbitrary card assignments that can update in realtime
-
-- Realtime data sharing across devices
-
-- Federated architecture for supporting satellite devices (e.g. lighting
-  control, Arduino panels, etc.)
-
-- Lighting Control
-
-- Sound Control
-
-- Video Control
-
-- 3D Rendering
-
-- Physics Simulations
-
-- Pre-recorded macros
-
-- Timelines
-
-And more. The above merely scratches the surface.
+- **Narrative**: Thorium prioritizes storytelling and narrative over action and
+  spectacle.
+- **Guided**: The narrative is lead by a Flight Director, who works to help
+  players feel connected to the story.
+- **Multiplayer**: Thorium is intended to be played by multiple players.
+- **Cooperative**: Players are intended to work together to win the game.
+- **Spaceship**: The gameplay of Thorium takes place in space.
+- **Bridge Simulator**: Players each run an individual station that runs a small
+  part of the entire ship.
+- **Real-time**: The action in Thorium is immediate and non-stop.
 
 Thorium is flexible enough to provide a system for creating an integrated,
 distributed, fault-tolerant show-control system that can power lights, sound,
@@ -79,6 +38,32 @@ video, and take input and provide output to a wide variety of devices.
 
 Created with ❤ by [Alex Anderson](http://ralexanderson.com) and
 [Fyreworks](https://fyreworks.us).
+
+## A note about support
+
+Thorium is a "community support" project. I encourage everyone to use it
+and continue to submit issues and bug reports. As maintainer, here's what I will continue to do:
+
+- Review issues
+- Review pull requests and provide feedback
+- Merge pull requests
+- Create new builds/releases
+- Encourage and assist other developers
+- Focus my efforts on long-term projects and keeping the codebase modern.
+
+Fortunately, you can get help from the excellent people on
+[Thorium's Discord Server](https://discord.gg/UvxTQZz).
+
+If you need better support for your Thorium simulator, I more than happy to
+contract with you to do so. Fill out the
+[Thorium Service Request Form](https://thoriumsim.com/service/) to start that
+process.
+
+If you want to learn to contribute to Thorium, check out the
+[development video series](https://www.youtube.com/watch?v=iEU6NcOKhyE&list=PLvw0SNT6wHt9au1-6yCOh7QHj-p5ir0l6)
+for some ideas for how to get started.
+
+Hope this helps! ~[Alex](https://github.com/alexanderson1993)
 
 ## Guiding Principles
 
@@ -144,22 +129,15 @@ Builds the app for production and bundles it into a packaged terminal app.
 
 ## Deploying
 
-If you have access to upload to the S3 bucket Thorium builds are stored in, you
-can run the `npm run deploy` command, which builds, bundles, and upload Thorium
-in one go. To use this command, you must have your AWS credentials configured in
-the `~/.aws/credentials` file, like so:
-
-```
-[default]
-aws_access_key_id = **Your key here**
-aws_secret_access_key = **Your secret here**
-```
-
-Automatic release notes are currently being developed.
+Thorium releases are automatically deployed when changes are merged into Master.
 
 ## Migrating
 
-Thorium does not use a traditional database; instead, it stores information in a json file. To migrate your Thorium instance to another computer, simply copy the `snapshot.json` and `snapshot-restore.json` files along with any `assets` you may be using and drop them in the new thorium directory. Startup the Thorium app and you'll be on your way.
+Thorium does not use a traditional database; instead, it stores information in a
+json file. To migrate your Thorium instance to another computer, simply copy the
+`snapshot.json` and `snapshot-restore.json` files along with any `assets` you
+may be using and drop them in the new thorium directory. Startup the Thorium app
+and you'll be on your way.
 
 ## Translations
 
@@ -170,23 +148,6 @@ the `package.json` file. Also be sure to add the locale data to the
 
 Translations are done with `react-intl`. A good example of how this can be used
 is the `/src/containers/FilghtDirector/Welcome.js` file.
-
-## Open-source Assets
-
-When Thorium is started for the first time, in either development or production
-mode, it will automatically download assets from a remote server. These assets
-are regularly updated with content from the community.
-
-You can download open-source licensed assets to be used with Thorium
-[here](https://drive.google.com/open?id=0B-UK2-Zf7K9ycUJScHJlWW92MjQ).
-
-### Contributing your own assets
-
-Interested in contributing your own images, movies, sounds, and more to this
-repository? [File an Issue](https://github.com/Thorium-Sim/thorium/issues/new)_
-and we'll give you access.
-
-To contribute missions, simulators, and documentation, create an account [here](https://thoriumsim.com/admin/) and add your records in. Missions and simulators will need to be self-hosted. This can be easily achieved with a public Google Drive link.
 
 ## Contributors
 

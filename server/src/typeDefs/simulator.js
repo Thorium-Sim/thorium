@@ -46,6 +46,7 @@ const schema = gql`
     hasPrinter: Boolean
     hasLegs: Boolean
     spaceEdventuresId: String
+    flipped: Boolean
   }
 
   extend type Query {
@@ -94,6 +95,10 @@ const schema = gql`
     Macro: Station: Unhide Card
     """
     unhideSimulatorCard(simulatorId: ID!, cardName: String!): String
+    """
+    Macro: Simulator: Flip Simulator
+    """
+    flipSimulator(simulatorId: ID!, flip: Boolean!): String
 
     changeSimulatorExocomps(simulatorId: ID!, exocomps: Int!): String
     changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String

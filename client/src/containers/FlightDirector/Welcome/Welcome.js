@@ -8,7 +8,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./welcome.scss";
 import QuoteOfTheDay from "./QuoteOfTheDay";
 import TrackerPopup from "./TrackerPopup";
-import AutoUpdate from "./AutoUpdate";
+// import AutoUpdate from "./AutoUpdate";
 import NewFlight from "./NewFlight";
 import { useQuery } from "@apollo/react-hooks";
 
@@ -82,7 +82,7 @@ const Welcome = ({ training, stopTraining }) => {
   const { loading, data, subscribeToMore } = useQuery(FLIGHTS_QUERY);
   if (loading || !data.flights) return null;
   const { flights, thorium } = data;
-  const { autoUpdate, askedToTrack } = thorium;
+  const { /*autoUpdate,*/ askedToTrack } = thorium;
   return (
     <Container className="WelcomeView">
       <SubscriptionHelper
@@ -113,7 +113,7 @@ const Welcome = ({ training, stopTraining }) => {
           </h6>
           <QuoteOfTheDay />
           <TrackerPopup askedToTrack={askedToTrack} />
-          <AutoUpdate autoUpdate={autoUpdate} />
+          {/* <AutoUpdate autoUpdate={autoUpdate} /> */}
         </Col>
       </Row>
       <Row className="content-row">

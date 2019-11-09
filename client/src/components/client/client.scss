@@ -65,6 +65,10 @@
     text-transform: uppercase;
   }
 }
+.client-flipped {
+  transform: scaleX(-1);
+}
+
 @keyframes credits-scroll {
   from {
     transform: translateY(calc(100vh - 325px));

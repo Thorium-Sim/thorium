@@ -5,7 +5,7 @@ import { InputField, OutputField } from "../../generic/core";
 import { Input, Button } from "helpers/reactstrap";
 import LayoutList from "../../layouts/list";
 import debounce from "helpers/debounce";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useSubscribeToMore } from "helpers/hooks/useQueryAndSubscribe";
 
 const layouts = LayoutList;
@@ -20,6 +20,7 @@ const fragment = gql`
     verifyStep
     bridgeOfficerMessaging
     triggersPaused
+    flipped
     ship {
       bridgeCrew
       extraPeople
@@ -206,6 +207,12 @@ const ShipCore = ({ simulator, client }) => {
     });
   };
 
+  const [flipSimulator] = useMutation(gql`
+    mutation FlipSimulator($simulatorId: ID!, $flip: Boolean!) {
+      flipSimulator(simulatorId: $simulatorId, flip: $flip)
+    }
+  `);
+
   const { loading, data, subscribeToMore } = useQuery(SHIP_CORE_QUERY, {
     variables: { simulatorId: simulator.id }
   });
@@ -242,7 +249,8 @@ const ShipCore = ({ simulator, client }) => {
     verifyStep,
     bridgeOfficerMessaging,
     triggersPaused,
-    ship
+    ship,
+    flipped
   } = data.simulators[0];
   const { crewCount } = data;
   const { bridgeCrew, extraPeople, radiation } = ship;
@@ -327,6 +335,25 @@ const ShipCore = ({ simulator, client }) => {
             onChange={setBridgeOfficerMessaging}
           />
           Bridge Officer Messaging
+        </label>
+      </div>
+      <div>
+        <label>
+          <Input
+            style={{
+              marginLeft: "10px",
+              marginRight: "10px",
+              position: "relative"
+            }}
+            type="checkbox"
+            checked={flipped}
+            onChange={() =>
+              flipSimulator({
+                variables: { simulatorId: simulator.id, flip: !flipped }
+              })
+            }
+          />
+          Flip Screens Horizontally
         </label>
       </div>
       <div style={{ display: "flex" }}>
