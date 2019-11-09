@@ -1,3 +1,16 @@
+# [2.0.0-beta1]
+
+- **Server:** Change the server to run in a windowed app instead of the command
+  line
+- **Core:** Refactored the core. Removed MainCore, AuxCore, JrCore, and
+  MessagingCore
+- **Core:** Remove redundant Long Range Comm cores.
+- **Core:** Lighting Core is now always available.
+- **Development:** Added automated tests to make sure bugs aren’t reintroduced
+- **Development:** Added developer tools to speed up and simplify card
+  development
+- **Credits:** Add Patreon supporters to the credits.
+
 # [1.22.0](https://github.com/Thorium-Sim/thorium/compare/1.21.0...1.22.0) (2019-10-14)
 
 ### Bug Fixes
