@@ -1,12 +1,13 @@
-const powerOff = require("power-off");
+const powerOff = require("./shutdown");
 const sleepMode = require("sleep-mode");
+const restart = require("./restart");
 const freakout = require("./freakout");
 const electron = require("electron");
 
 const {app, ipcMain} = electron;
 
 module.exports = () => {
-  ipcMain.on("synchronous-message", function(event, message) {
+  ipcMain.on("remoteMessage", function(event, message) {
     if (message) {
       switch (message.action) {
         case "freak":
@@ -23,6 +24,11 @@ module.exports = () => {
           });
           break;
         case "restart":
+          restart(function(err) {
+            if (err) {
+              throw new Error("Can't run restart");
+            }
+          });
           break;
         case "sleep":
           sleepMode(function(err) {
@@ -33,6 +39,7 @@ module.exports = () => {
           break;
         case "quit":
           app.quit();
+          process.exit();
           break;
         default:
           break;

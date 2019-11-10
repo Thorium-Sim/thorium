@@ -1,6 +1,6 @@
 var os = require("os");
 var ifaces = os.networkInterfaces();
-var ipAddress = "localhost";
+var mac = "00:00:00:00:00:00";
 Object.keys(ifaces).forEach(function(ifname) {
   var alias = 0;
 
@@ -12,13 +12,13 @@ Object.keys(ifaces).forEach(function(ifname) {
 
     if (alias >= 1) {
       // this single interface has multiple ipv4 addresses
-      ipAddress = iface.address;
+      mac = iface.mac;
     } else {
       // this interface has only one ipv4 adress
-      ipAddress = iface.address;
+      mac = iface.mac;
     }
     ++alias;
   });
 });
 
-module.exports = ipAddress;
+module.exports = mac;

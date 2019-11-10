@@ -1,3 +1,17 @@
+## [1.22.1](https://github.com/Thorium-Sim/thorium/compare/1.22.0...1.22.1) (2019-11-09)
+
+### Bug Fixes
+
+- **Icons:** Makes the icons for widgets and elsewhere smaller and more
+  performant.
+  ([7e9a53f](https://github.com/Thorium-Sim/thorium/commit/7e9a53fed8e013e4a5e8ad2cea675c7127532acb))
+- **Issue Tracker:** Improvements to the issue submitter.
+  ([8acca8d](https://github.com/Thorium-Sim/thorium/commit/8acca8d40c9a351e196c005a347ef41eb2035a86))
+- **Lighting:** Improves the layout and format of the Lighting core and Next
+  core in general. Closes
+  [#2582](https://github.com/Thorium-Sim/thorium/issues/2582)
+  ([cda389c](https://github.com/Thorium-Sim/thorium/commit/cda389ce622a44fd76909ffb1355d45de41824aa))
+
 # [2.0.0-beta1](2019-11-9)
 
 - **Server:** Change the server to run in a windowed app instead of the command

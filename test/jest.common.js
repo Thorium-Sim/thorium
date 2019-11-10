@@ -14,6 +14,8 @@ module.exports = {
     "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
+  testPathIgnorePatterns: ["/node_modules/", "<rootDir>/packages/"],
+  watchPathIgnorePatterns: ["/node_modules/", "<rootDir>/packages/"],
   modulePaths: ["./src", "./server"],
   moduleNameMapper: {
     "^react-native$": "react-native-web",

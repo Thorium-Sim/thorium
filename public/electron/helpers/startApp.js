@@ -1,64 +1,39 @@
-const {app, BrowserWindow, ipcMain} = require("electron");
 const {autoUpdater} = require("electron-updater");
+const {app, BrowserWindow, ipcMain} = require("electron");
 
-const path = require("path");
-const url = require("url");
+// Make the kiosk work better on slightly older computers
+app.commandLine.appendSwitch("ignore-gpu-blacklist", "true");
+
 const loadPage = require("./loadPage");
-const startBonjour = require("./bonjour");
+const {bonjour} = require("./bonjour");
 const settings = require("electron-settings");
 const {setMenubar} = require("./setMenubar");
-const bootstrap = require("./bootstrap");
-const hotkeys = require("./hotkeys");
-let mainWindow;
-let browser;
+const {checkWindow, addWindow} = require("./multiWindow");
 
 module.exports = () => {
   function startServer() {
     console.log("Starting server - main");
     // Stop the bonjour browser
-    browser && browser.stop();
-
-    // Change to the server page
-    mainWindow.loadURL(
-      url.format({
-        pathname: path.join(__dirname, "../server.html"),
-        protocol: "file:",
-        slashes: true,
-      }),
-    );
-    ipcMain.on("openBrowser", function() {
-      var ipaddress = require("./ipaddress");
-      var openBrowser = require("react-dev-utils/openBrowser");
-      console.log(`http://${ipaddress}:1337`);
-      openBrowser(`http://${ipaddress}:1337`);
-    });
-    hotkeys(mainWindow);
-
-    // Capture console messages
-    const old_console_log = global.console.log;
-    global.console.log = function log() {
-      old_console_log(...arguments);
-      mainWindow.webContents.send("info", arguments[0]);
-    };
-
-    // Start the Thorium server
-    bootstrap().then(() =>
-      setTimeout(() => console.log("Thorium Started"), 1000),
-    );
+    bonjour.stop();
+    addWindow({server: true});
   }
   app.on("ready", function() {
-    try {
-      autoUpdater.checkForUpdatesAndNotify();
-    } catch (err) {
-      console.error(err);
-    }
-    ipcMain.on("loadPage", function(evt, {url, auto}) {
+    checkWindow();
+    autoUpdater.checkForUpdatesAndNotify();
+    addWindow({main: true});
+    ipcMain.on("getWindowCount", event => {
+      event.returnValue = BrowserWindow.getAllWindows().filter(b => {
+        return b.isVisible();
+      }).length;
+    });
+    ipcMain.on("loadPage", function(evt, data) {
+      const {url: loadUrl, auto, kiosk} = data;
       if (auto) {
-        settings.set("autostart", url);
+        settings.set("autostart", loadUrl);
       }
-      loadPage(url, mainWindow).catch(() => {
+      loadPage(loadUrl, kiosk).catch(() => {
         settings.set("autostart", null);
-        browser = startBonjour(mainWindow);
+        bonjour.start();
       });
     });
 
@@ -68,45 +43,18 @@ module.exports = () => {
       }
       startServer();
     });
-    mainWindow = new BrowserWindow({
-      backgroundColor: "#2e2c29",
-      width: 800,
-      height: 600,
-      kiosk: false,
-      webPreferences: {
-        sandbox: false,
-        nodeIntegration: false,
-        preload: path.resolve(__dirname + "/../preload.js"),
-      },
-    });
-    mainWindow.on("closed", function() {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
-      browser && browser.stop();
-      mainWindow = null;
-    });
-    mainWindow.loadURL(
-      url.format({
-        pathname: path.join(__dirname, "../index.html"),
-        protocol: "file:",
-        slashes: true,
-      }),
-    );
-    if (settings.get("autostart") === "server") {
-      startServer();
-    } else if (settings.get("autostart")) {
+    if (settings.get("autostart")) {
       // Check to see if the page will work.
-      const url = settings.get("autostart");
+      const loadUrl = settings.get("autostart");
       // Do a fetch
-      loadPage(url, mainWindow).catch(() => {
+      loadPage(loadUrl, true).catch(() => {
         settings.set("autostart", null);
-        browser = startBonjour(mainWindow);
+        bonjour.start();
       });
     } else {
-      browser = startBonjour(mainWindow);
+      bonjour.start();
     }
-    setMenubar(mainWindow);
+    setMenubar();
     app.on("window-all-closed", function() {
       // On OS X it is common for applications and their menu bar
       // to stay active until the user quits explicitly with Cmd + Q
@@ -114,5 +62,3 @@ module.exports = () => {
     });
   });
 };
-
-module.mainWindow = mainWindow;

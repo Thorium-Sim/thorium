@@ -9,7 +9,7 @@ module.exports = function bootstrap() {
     : "server/build/server/index.js";
   const child = require("child_process").fork(
     path.join(app.getAppPath(), childPath),
-    {env: {FORK: 1}},
+    {env: {FORK: 1}, silent: true},
   );
 
   app.on("before-quit", () => {

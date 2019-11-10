@@ -11,3 +11,4 @@ server/build
 .cache
 locales
 src/models
+packages

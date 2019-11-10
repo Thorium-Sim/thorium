@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.0.0-beta1",
+  "version": "1.22.1",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -128,6 +128,10 @@
       "icon": "./public/icon.icns"
     },
     "win": {
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     }
   },

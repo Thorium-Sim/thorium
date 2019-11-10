@@ -1,7 +1,10 @@
 const triggerWindow = require("./triggerWindow");
 const http = require("http");
 const {clearMenubar, setMenubar} = require("./setMenubar");
-module.exports = function loadPage(uri, mainWindow) {
+const {windows} = require("./multiWindow");
+const {setLoadedUrl} = require("./loadedUrl");
+
+module.exports = function loadPage(uri, kiosk) {
   return new Promise((resolve, reject) => {
     const url = uri
       .replace("https://", "")
@@ -9,20 +12,20 @@ module.exports = function loadPage(uri, mainWindow) {
       .replace("/client", "");
     http
       .get(`http://${url}/client`, res => {
-        if (res.statusCode !== 200) {
-          setMenubar(mainWindow);
-          return reject();
-        } else {
+        setLoadedUrl(`http://${url}/client`);
+        windows.forEach(mainWindow => {
           mainWindow && mainWindow.loadURL(`http://${url}/client`);
-          triggerWindow(mainWindow);
+          triggerWindow(mainWindow, kiosk);
+        });
+        if (kiosk) {
           clearMenubar();
-          return resolve();
         }
+        return resolve();
       })
       .on("error", e => {
         // It failed. Go back to the main screen.
         console.error(`Got error: ${e.message}`);
-        setMenubar(mainWindow);
+        setMenubar();
         return reject();
       });
   });
