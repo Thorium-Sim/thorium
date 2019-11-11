@@ -90,7 +90,7 @@ function setMenubar() {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
   windows.forEach(w => {
     w.setMenuBarVisibility(true);
-    w.setAutoHideMenuBar(false);
+    w.autoHideMenuBar = false;
   });
 }
 

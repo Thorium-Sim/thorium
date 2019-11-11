@@ -14,6 +14,7 @@ module.exports = () => {
   function startServer() {
     console.log("Starting server - main");
     // Stop the bonjour browser
+
     bonjour.stop();
     addWindow({server: true});
   }

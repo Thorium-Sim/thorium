@@ -24,6 +24,7 @@ module.exports.windows = windows;
 
 let serverOpen = false;
 let browserCount = 0;
+let serverWindow = null;
 function addWindow({main, x, y, loadedUrl, server}) {
   browserCount++;
   const config = {
@@ -40,23 +41,16 @@ function addWindow({main, x, y, loadedUrl, server}) {
   if (server) {
     if (serverOpen) return;
     serverOpen = true;
-    const window = new BrowserWindow(config);
-    window.uniqueId = uuid.v4();
-    window.browserCount = browserCount;
+    config.webPreferences.preload = path.resolve(__dirname + "/preload.js");
+    serverWindow = new BrowserWindow(config);
 
-    window.on("closed", function() {
-      // Dereference the window object, usually you would store windows
-      // in an array if your app supports multi windows, this is the time
-      // when you should delete the corresponding element.
-
-      windows = windows.filter(w => w.uniqueId !== window.uniqueId);
-      if (windows.length === 0) {
-        bonjour.stop();
-      }
-    });
+    // Close all the other windows.
+    bonjour.stop();
+    windows.forEach(w => w.close());
+    windows = [];
 
     // Change to the server page
-    window.loadURL(
+    serverWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, "../server.html"),
         protocol: "file:",
@@ -74,22 +68,21 @@ function addWindow({main, x, y, loadedUrl, server}) {
     const old_console_log = global.console.log;
     global.console.log = function log() {
       old_console_log(...arguments);
-      window.webContents.send("info", arguments[0]);
+      serverWindow.webContents.send("info", arguments[0]);
     };
 
     // Start the Thorium server
-    bootstrap().then(() =>
+    bootstrap(serverWindow).then(() =>
       setTimeout(() => console.log("Thorium Started"), 1000),
     );
-    windows.push(window);
     return;
   } else {
     if (main) {
       config.webPreferences.preload = path.resolve(__dirname + "/preload.js");
     } else {
-      config.webPreferences.preload = path.resolve(
-        __dirname + "/externalPreload.js",
-      );
+      config.webPreferences.preload = `file:/${path.resolve(
+        `${__dirname}/externalPreload.js`,
+      )}`;
     }
     const window = new BrowserWindow(config);
     window.uniqueId = uuid.v4();
@@ -104,6 +97,16 @@ function addWindow({main, x, y, loadedUrl, server}) {
         bonjour.stop();
       }
     });
+    console.log(
+      url.format({
+        pathname: path.join(
+          __dirname,
+          main ? "../index.html" : "../external.html",
+        ),
+        protocol: "file:",
+        slashes: true,
+      }),
+    );
     window.loadURL(
       loadedUrl
         ? loadedUrl
@@ -116,8 +119,8 @@ function addWindow({main, x, y, loadedUrl, server}) {
             slashes: true,
           }),
     );
+    windows.push(window);
   }
-  windows.push(window);
 }
 
 module.exports.addWindow = addWindow;

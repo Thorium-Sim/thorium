@@ -59,6 +59,12 @@ window.loadPage = function loadPage(url) {
   ipcRenderer.send("loadPage", {url, auto, kiosk});
   return;
 };
+window.startServer = function startServer() {
+  let auto = false;
+  if (document.getElementById("remember-server").checked) auto = true;
+  ipcRenderer.send("startServer", auto);
+  return;
+};
 window.openBrowser = function openBrowser() {
   ipcRenderer.send("openBrowser");
   return;
@@ -70,7 +76,7 @@ window.serverAddress = function serverAddress() {
   let url = document
     .getElementById("server-address")
     .value.replace("/client", "");
-  if (url.indexOf(":") === -1) url = url + ":1337";
+  if (url.indexOf(":") === -1) url = url + ":4444";
   let auto = false;
   if (document.getElementById("remember-client").checked) auto = true;
   ipcRenderer.send("loadPage", {url, auto});
@@ -82,6 +88,7 @@ ipcRenderer.on("updateReady", function() {
 });
 ipcRenderer.on("info", function(event, data) {
   const output = document.getElementById("console");
+  console.log("got info", data);
   if (output) {
     output.innerText = `${data}\n${output.innerText}`;
   }
