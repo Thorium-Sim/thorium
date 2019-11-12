@@ -40,7 +40,7 @@ const wsLink = ApolloLink.from([
   new WebSocketLink({
     uri:
       process.env.NODE_ENV === "production"
-        ? `ws://${window.location.origin}/graphql`
+        ? `ws://${window.location.host}/graphql`
         : `ws://${hostname}:${parseInt(window.location.port || 3000, 10) +
             1}/graphql`,
     options: {
