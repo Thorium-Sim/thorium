@@ -16,7 +16,7 @@
   },
   "license": "Apache-2.0",
   "main": "./public/electron.js",
-  "homepage": "./",
+  "homepage": "/",
   "languages": [
     "es",
     "fr",

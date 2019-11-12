@@ -5,6 +5,7 @@ import cors from "cors";
 import path from "path";
 import chalk from "chalk";
 import bodyParser from "body-parser";
+import os from "os";
 
 import uploadAsset from "../helpers/uploadAsset";
 import exportMission from "../imports/missions/export";
@@ -53,10 +54,12 @@ const imports = {
   importSurvey,
   importCoreLayout,
 };
+
+const tmpDir = os.tmpdir();
+const folder = `${tmpDir}${path.sep}`;
 export default () => {
-  let appDir = "./";
   const upload = multer({
-    dest: appDir + "temp",
+    dest: folder,
   });
 
   const server = express();
