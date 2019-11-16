@@ -386,7 +386,7 @@ export const Widgets = {
     widget: SensorsWidget,
     icon: FaCircleNotch,
     name: "Sensors",
-    size: "lg",
+    size: "xl",
     color: "#6FEDC5",
   },
   commandLine: {

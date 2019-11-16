@@ -20,7 +20,10 @@
     cursor: move;
   }
   &.widget-lg {
-    width: 1000px;
+    width: 800px;
+  }
+  &.widget-xl {
+    width: 800px;
   }
   .widget-container {
     width: 100%;
