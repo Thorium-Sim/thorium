@@ -92,6 +92,7 @@ export default class Probes extends System {
       },
       "createSensorContacts",
     );
+    this.training = true;
   }
   addProcessedData(data) {
     this.processedData = data;

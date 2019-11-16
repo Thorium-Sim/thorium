@@ -97,6 +97,15 @@ App.on("probeQuery", ({id, probeId, query}) => {
     "addCoreFeed",
   );
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  if (sys.training) {
+    setTimeout(() => {
+      App.handleEvent(
+        {id, probeId, response: "None Detected (Training Mode)"},
+        "probeQueryResponse",
+        {clientId: "training", simulatorId: sys.simulatorId},
+      );
+    }, 5000);
+  }
 });
 App.on("probeQueryResponse", ({id, probeId, response}) => {
   const sys = App.systems.find(s => s.id === id);
