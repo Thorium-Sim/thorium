@@ -204,7 +204,7 @@ export default class MediaPlayer extends Component {
     let {position} = this.state;
     const {width} = contentRect.bounds;
     position = {
-      x: position.x === 0 ? window.innerWidth / 2 - width / Math.E : position.x,
+      x: position.x === 0 ? window.innerWidth / 2 - width : position.x,
       y: position.y === 0 ? 100 : position.y,
     };
     this.setState({dimensions: contentRect.bounds, position});
