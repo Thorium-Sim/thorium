@@ -330,9 +330,13 @@ class Decoding extends Component {
             >
               {sys.messages
                 .filter(m => !m.deleted)
+                .reverse()
                 .map(m => (
                   <ListGroupItem
                     key={m.id}
+                    className={
+                      m.a === m.ra && m.f === m.rf ? "message-decoded" : null
+                    }
                     onClick={this._selectMessage.bind(this, m)}
                     active={m.id === this.state.selectedMessage}
                   >

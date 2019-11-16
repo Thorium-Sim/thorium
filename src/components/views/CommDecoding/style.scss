@@ -23,6 +23,7 @@ $alertp: #4d1980;
     line-height: 2;
     color: white;
   }
+
   .card {
     list-style: none;
     li {
@@ -89,6 +90,16 @@ $alertp: #4d1980;
   .frequency-slider {
     .rangeslider__fill {
       background-color: #922110;
+    }
+  }
+  .list-group {
+    .list-group-item {
+      &.message-decoded {
+        background-color: rgba(0, 255, 0, 0.1);
+      }
+      &.message-decoded.active {
+        background-color: rgba(100, 255, 100, 0.1);
+      }
     }
   }
 }
