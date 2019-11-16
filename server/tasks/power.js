@@ -70,13 +70,13 @@ export default [
         {simulator, system},
       );
     },
-    verify({simulator, requiredValues}) {
+    verify({simulator, requiredValues: {system}}) {
       if (!simulator) return false;
-      const system = App.systems.find(
+      const sys = App.systems.find(
         s => s.id === system || s.name === system || s.displayName === system,
       );
-      if (!system) return false;
-      return system.power.power === 0;
+      if (!sys) return false;
+      return sys.power.power === 0;
     },
   },
   {
@@ -145,14 +145,14 @@ export default [
         {simulator, system},
       );
     },
-    verify({simulator, requiredValues}) {
+    verify({simulator, requiredValues: {system}}) {
       if (!simulator) return false;
-      const system = App.systems.find(
+      const sys = App.systems.find(
         s => s.id === system || s.name === system || s.displayName === system,
       );
-      if (!system) return false;
-      const powerLevel = system.power.powerLevels[0];
-      return system.power.power >= powerLevel;
+      if (!sys) return false;
+      const powerLevel = sys.power.powerLevels[0];
+      return sys.power.power >= powerLevel;
     },
   },
   {
@@ -226,13 +226,13 @@ export default [
         {simulator, system},
       );
     },
-    verify({simulator, requiredValues}) {
+    verify({simulator, requiredValues: {system, power}}) {
       if (!simulator) return false;
-      const system = App.systems.find(
+      const sys = App.systems.find(
         s => s.id === system || s.name === system || s.displayName === system,
       );
-      if (!system) return false;
-      return system.power.power === requiredValues.power;
+      if (!sys) return false;
+      return sys.power.power === power;
     },
   },
 ];

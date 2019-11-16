@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.0.0",
+  "version": "2.0.0-beta1",
   "publishConfig": {
     "tag": "beta"
   },
@@ -16,7 +16,7 @@
   },
   "license": "Apache-2.0",
   "main": "./public/electron.js",
-  "homepage": "./",
+  "homepage": "/",
   "languages": [
     "es",
     "fr",
@@ -35,7 +35,7 @@
     "build:server": "parcel build server/index.js --out-dir build/server --target node --no-source-maps",
     "build:env": "node ./scripts/build-env.js",
     "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
-    "build:electron": "electron-builder",
+    "build:electron": "electron-builder -mwl",
     "dist:electron": "electron-builder -mwl -p always",
     "pack:electron": "electron-builder --dir",
     "test": "is-ci test:coverage test:watch",
@@ -128,7 +128,8 @@
     ],
     "mac": {
       "category": "public.app-category.entertainment",
-      "icon": "./public/icon.icns"
+      "icon": "./public/icon.icns",
+      "identity": false
     },
     "win": {
       "target": [
