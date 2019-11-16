@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {Mutation} from "react-apollo";
+import {Mutation, useApolloClient} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "reactour";
 import IntlProvider from "./intl";
@@ -9,12 +9,8 @@ import {FaVolumeUp} from "react-icons/fa";
 
 const synth = window.speechSynthesis;
 
-const TourHelper = ({
-  client = {},
-  steps,
-  training: propsTraining,
-  onRequestClose,
-}) => {
+const TourHelper = ({steps, training: propsTraining, onRequestClose}) => {
+  const client = useApolloClient();
   const speak = stepNum => {
     synth && synth.cancel();
     const step = steps[stepNum - 1];

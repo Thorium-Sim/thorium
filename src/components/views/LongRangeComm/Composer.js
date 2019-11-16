@@ -1,111 +1,109 @@
-import React, {Component} from "react";
-import {withApollo} from "react-apollo";
+import React from "react";
+import {useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button, Row, Col, Container, Input} from "helpers/reactstrap";
+import useFlightSessionStorage from "helpers/hooks/useFlightSessionStorage";
 
-class MessageComposer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      message: "",
-      to: "",
-    };
+const SEND_MESSAGE = gql`
+  mutation SendLRMessage($id: ID, $message: String!, $sender: String) {
+    sendLongRangeMessage(
+      simulatorId: $id
+      crew: false
+      message: $message
+      decoded: true
+      sender: $sender
+    )
   }
-  updateTo(e) {
-    this.setState({
-      to: e.target.value,
-    });
-  }
-  updateMessage(e) {
-    this.setState({
-      message: e.target.value,
-    });
-  }
-  sendMessage = () => {
-    const mutation = gql`
-      mutation SendLRMessage($id: ID, $message: String!, $sender: String) {
-        sendLongRangeMessage(
-          simulatorId: $id
-          crew: false
-          message: $message
-          decoded: true
-          sender: $sender
-        )
-      }
-    `;
-    const variables = {
-      id: this.props.simulator.id,
-      message: `To: ${this.state.to}
-${this.state.message}`,
-      sender: this.props.station.name,
-    };
-    this.props.client.mutate({
-      mutation,
-      variables,
-    });
-    this.setState({
-      to: "",
-      message: "",
-    });
-    this.props.cancel && this.props.cancel();
+`;
+const MessageComposer = ({
+  cancel,
+  simulator,
+  station,
+  flight: {id: flightId},
+}) => {
+  const [message, setMessage] = useFlightSessionStorage(
+    flightId,
+    "composerMessage",
+    "",
+  );
+  const [to, setTo] = useFlightSessionStorage(flightId, "composerTo", "");
+
+  const updateTo = e => {
+    setTo(e.target.value);
   };
-  render() {
-    const {cancel} = this.props;
-    return (
-      <Container fluid>
-        <Row>
-          <Col sm={2}>
-            <h2>To:</h2>
-          </Col>
-          <Col sm={10}>
-            <Input value={this.state.to} onChange={this.updateTo.bind(this)} />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12}>
-            <Input
-              type="textarea"
-              style={{
-                width: "100%",
-                height: "20vw",
-                resize: "none",
-              }}
-              value={this.state.message}
-              onChange={this.updateMessage.bind(this)}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={{size: 6}}>
-            {cancel ? (
-              <Button color="danger" onClick={cancel} block>
-                Cancel
-              </Button>
-            ) : (
-              <Button
-                color="danger"
-                onClick={() => this.setState({to: "", message: ""})}
-                block
-              >
-                Clear
-              </Button>
-            )}
-          </Col>
-          <Col sm={6}>
+  const updateMessage = e => {
+    setMessage(e.target.value);
+  };
+  const [sendMessageMutation] = useMutation(SEND_MESSAGE, {
+    variables: {
+      id: simulator.id,
+      message: `To: ${to}
+${message}`,
+      sender: station.name,
+    },
+  });
+  const sendMessage = () => {
+    sendMessageMutation();
+    setTo("");
+    setMessage("");
+    cancel && cancel();
+  };
+  return (
+    <Container fluid>
+      <Row>
+        <Col sm={2}>
+          <h2>To:</h2>
+        </Col>
+        <Col sm={10}>
+          <Input data-testid="composer-to" value={to} onChange={updateTo} />
+        </Col>
+      </Row>
+      <Row>
+        <Col sm={12}>
+          <Input
+            data-testid="composer-message"
+            type="textarea"
+            style={{
+              width: "100%",
+              height: "20vw",
+              resize: "none",
+            }}
+            value={message}
+            onChange={updateMessage}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col sm={{size: 6}}>
+          {cancel ? (
+            <Button color="danger" onClick={cancel} block>
+              Cancel
+            </Button>
+          ) : (
             <Button
-              onClick={this.sendMessage}
-              disabled={
-                this.state.message.length === 0 || this.state.to.length === 0
-              }
+              color="danger"
+              onClick={() => {
+                setTo("");
+                setMessage("");
+              }}
               block
             >
-              Queue for Sending
+              Clear
             </Button>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
+          )}
+        </Col>
+        <Col sm={6}>
+          <Button
+            onClick={sendMessage}
+            disabled={message.length === 0 || to.length === 0}
+            block
+          >
+            Queue for Sending
+          </Button>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
-export default withApollo(MessageComposer);
+export default MessageComposer;
