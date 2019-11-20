@@ -102,7 +102,7 @@ const Records = ({recordSnippets, simulator, station, clientObj}) => {
   }
   return (
     <Container className="card-records">
-      <Row>
+      <Row className="main-container">
         <Col sm={3} className="record-category">
           <h3>Filter By Category</h3>
           <ListGroup className="record-categories">
