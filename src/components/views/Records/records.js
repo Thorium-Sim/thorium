@@ -244,7 +244,7 @@ ${selectedSnippet.records
                     setName("Untitled Snippet");
                   }}
                 >
-                  Save Selected As Snippet
+                  Save As Snippet
                 </Button>
               )}
             </Col>
@@ -258,7 +258,7 @@ ${selectedSnippet.records
                   setName("");
                 }}
               >
-                Send Selected As Message
+                Send As Message
               </Button>
             </Col>
             <Col sm={2}>
