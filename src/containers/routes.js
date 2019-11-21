@@ -2,13 +2,14 @@ import React, {Component} from "react";
 import {createBrowserHistory} from "history";
 import PropTypes from "prop-types";
 import {Router, Route, Switch, Link} from "react-router-dom";
-import CardContainer from "../components/client/Card";
-import Client from "../components/client";
 import {FlightDirector} from "./FlightDirector";
-import Config from "./config";
-import Releases from "./FlightDirector/releases";
 import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
+
+const CardContainer = React.lazy(() => import("../components/client/Card"));
+const Client = React.lazy(() => import("../components/client"));
+const Config = React.lazy(() => import("./config"));
+const Releases = React.lazy(() => import("./FlightDirector/releases"));
 
 const history = createBrowserHistory();
 

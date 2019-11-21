@@ -24,7 +24,9 @@ class CoreError extends Component {
           </Button>
         </div>
       );
-    return this.props.children;
+    return (
+      <React.Suspense fallback={null}>{this.props.children}</React.Suspense>
+    );
   }
 }
 export default CoreError;

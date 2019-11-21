@@ -170,31 +170,33 @@ export const Widget = ({
             transform: `translate(${position.x}px, ${position.y}px)`,
           }}
         >
-          <div
-            className="widget-name"
-            onMouseDown={mouseDown}
-            onTouchStart={mouseDown}
-          >
-            {widget.name}
-            {widget.training && (
-              <FaQuestionCircle
-                className="pull-right"
-                onClick={() => setTraining(true)}
+          <React.Suspense fallback={null}>
+            <div
+              className="widget-name"
+              onMouseDown={mouseDown}
+              onTouchStart={mouseDown}
+            >
+              {widget.name}
+              {widget.training && (
+                <FaQuestionCircle
+                  className="pull-right"
+                  onClick={() => setTraining(true)}
+                />
+              )}
+            </div>
+            <div className="widget-container">
+              <Comp
+                toggle={toggleModal}
+                simulator={simulator}
+                station={station}
+                clientObj={clientObj}
+                flight={flight}
               />
-            )}
-          </div>
-          <div className="widget-container">
-            <Comp
-              toggle={toggleModal}
-              simulator={simulator}
-              station={station}
-              clientObj={clientObj}
-              flight={flight}
-            />
-          </div>
-          <Button onClick={toggleModal} style={{width: "200px"}}>
-            Close
-          </Button>
+            </div>
+            <Button onClick={toggleModal} style={{width: "200px"}}>
+              Close
+            </Button>
+          </React.Suspense>
         </div>
       )}
       <Tour
