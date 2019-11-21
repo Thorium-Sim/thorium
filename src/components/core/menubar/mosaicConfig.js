@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Query, withApollo} from "react-apollo";
+import React from "react";
+import {Query, withApollo, useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {
   Modal,
@@ -22,79 +22,71 @@ const CORE_LAYOUTS = gql`
   }
 `;
 
-class MosaicConfig extends Component {
-  state = {coreLayouts: this.props.coreLayouts};
-  onSortEnd = ({oldIndex, newIndex}) => {
-    const {coreLayouts} = this.state;
-    const variables = {
-      id: coreLayouts[oldIndex].id,
-      order: newIndex,
-    };
-    const mutation = gql`
-      mutation ReorderCoreLayouts($id: ID!, $order: Int!) {
-        reorderCoreLayouts(id: $id, order: $order)
-      }
-    `;
-    this.props.client.mutate({
-      mutation,
-      variables,
-      refetchQueries: [{query: CORE_LAYOUTS}],
-    });
-  };
-  remove = id => {
-    const {coreLayouts} = this.state;
-    const layout = coreLayouts.find(l => l.id === id);
-    if (
-      window.confirm(
-        `Are you sure you want to delete the '${layout.name}' layout?`,
-      )
-    ) {
-      this.props.client.mutate({
-        mutation: gql`
-          mutation RemoveCoreLayout($id: ID!) {
-            removeCoreLayout(id: $id)
-          }
-        `,
-        variables: {id: id},
-        refetchQueries: [{query: CORE_LAYOUTS}],
-      });
+function move(array, old_index, new_index) {
+  if (new_index >= array.length) {
+    var k = new_index - array.length;
+    while (k-- + 1) {
+      array.push(undefined);
     }
-  };
-  select = id => {
-    this.setState({selected: id});
-  };
-  render() {
-    const {modal, toggle} = this.props;
-    const {coreLayouts} = this.props;
-    return (
-      <Modal isOpen={modal} toggle={toggle} size="lg">
-        <ModalHeader toggle={toggle}>
-          <div>Dynamic Layouts Config</div>
-          <small>Configure the order of the dynamic layouts.</small>
-        </ModalHeader>
-
-        <ModalBody>
-          <Row>
-            <Col sm={4}>
-              <SortableList
-                items={coreLayouts}
-                onSortEnd={this.onSortEnd}
-                selected={this.state.selected}
-                select={this.select}
-                remove={this.remove}
-              />
-            </Col>
-          </Row>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={toggle}>
-            Close
-          </Button>
-        </ModalFooter>
-      </Modal>
-    );
   }
+  array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+  return array; // for testing purposes
 }
+
+const REORDER_CORE_LAYOUTS = gql`
+  mutation Reorder($layouts: [ID!]!) {
+    reorderCoreLayouts(layouts: $layouts)
+  }
+`;
+const MosaicConfig = ({coreLayouts: coreLayoutsProps, modal, toggle}) => {
+  const [coreLayouts, setCoreLayouts] = React.useState(coreLayoutsProps);
+  const [selected, setSelected] = React.useState(null);
+  const [reorder] = useMutation(REORDER_CORE_LAYOUTS, {
+    variables: {layouts: coreLayouts.map(m => m.id)},
+  });
+  const onSortEnd = ({oldIndex, newIndex}) => {
+    setCoreLayouts(s => move(s.concat(), oldIndex, newIndex));
+  };
+  const remove = id => {
+    setCoreLayouts(s => s.filter(c => c.id !== id));
+  };
+  const select = id => {
+    setSelected(id);
+  };
+  const close = () => {
+    reorder();
+    toggle();
+  };
+
+  return (
+    <Modal isOpen={modal} toggle={toggle} size="lg">
+      <ModalHeader toggle={toggle}>
+        <div>Dynamic Layouts Config</div>
+        <small>Configure the order of the dynamic layouts.</small>
+      </ModalHeader>
+
+      <ModalBody>
+        <Row>
+          <Col sm={4}>
+            <SortableList
+              items={coreLayouts}
+              onSortEnd={onSortEnd}
+              selected={selected}
+              select={select}
+              remove={remove}
+              distance={10}
+            />
+          </Col>
+        </Row>
+      </ModalBody>
+      <ModalFooter>
+        <Button color="primary" onClick={close}>
+          Save & Close
+        </Button>
+      </ModalFooter>
+    </Modal>
+  );
+};
 
 const MosaicConfigData = props => {
   return (
