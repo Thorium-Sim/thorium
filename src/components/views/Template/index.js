@@ -1,8 +1,6 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import Template from "./template";
-import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {useQuery} from "@apollo/react-hooks";
+import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import "./style.scss";
 
 const fragment = gql`
@@ -11,7 +9,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const TEMPLATE_QUERY = gql`
   query Template($simulatorId: ID!) {
     _template(simulatorId: $simulatorId) {
       ...TemplateData
@@ -19,7 +17,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const TEMPLATE_SUB = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     _templateUpdate(simulatorId: $simulatorId) {
       ...TemplateData
@@ -28,25 +26,16 @@ const SUBSCRIPTION = gql`
   ${fragment}
 `;
 
-const TemplateData = props => {
+const Template = props => {
   const {simulator} = props;
-  const {loading, data = {}, subscribeToMore} = useQuery(QUERY, {
-    variables: {simulatorId: simulator.id},
-  });
-  const subConfig = React.useMemo(
-    () => ({
-      variables: {simulatorId: simulator.id},
-      updateQuery: (previousResult, {subscriptionData}) => ({
-        ...previousResult,
-        template: subscriptionData.data.templateUpdate,
-      }),
-    }),
-    [simulator.id],
+  const {loading, data} = useQueryAndSubscription(
+    {query: TEMPLATE_QUERY, variables: {simulatorId: simulator.id}},
+    {query: TEMPLATE_SUB, variables: {simulatorId: simulator.id}},
   );
-  useSubscribeToMore(subscribeToMore, SUBSCRIPTION, subConfig);
+
+  if (loading || !data) return null;
   const {template} = data;
-  if (loading || !template) return null;
-  if (!template[0]) return <div>No Template</div>;
-  return <Template {...props} {...template[0]} />;
+  if (!template) return <div>No Template</div>;
+  return <div className="card-template">Template Card</div>;
 };
-export default TemplateData;
+export default Template;

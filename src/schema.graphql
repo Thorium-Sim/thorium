@@ -1313,7 +1313,7 @@ type Mutation {
   updateCoreLayout(layout: CoreLayoutInput): String
   addCoreLayout(layout: CoreLayoutInput): String
   removeCoreLayout(id: ID): String
-  reorderCoreLayouts(id: ID!, order: Int!): String
+  reorderCoreLayouts(layouts: [ID!]!): String
   addCrewmember(crew: CrewInput): String
   removeCrewmember(id: ID): String
   updateCrewmember(crew: CrewInput): String
@@ -2367,8 +2367,7 @@ type Mutation {
   addCrewToTeam(teamId: ID!, crewId: ID!): String
   removeCrewFromTeam(teamId: ID!, crewId: ID!): String
   removeTeam(teamId: ID!): String
-  toggleAutoUpdate(autoUpdate: Boolean!): String
-  triggerAutoUpdate: String
+  _template: String
   setTrackingPreference(pref: Boolean!): String
   importTaskTemplates: String
   setSpaceEdventuresToken(token: String!): SpaceEdventuresCenter
@@ -2409,7 +2408,7 @@ type Mutation {
     title: String!
     body: String!
     person: String!
-    priority: Int
+    priority: String!
     type: String!
   ): String
   addIssueUpload(data: String!, filename: String!, ext: String!): String
@@ -2985,6 +2984,7 @@ type Query {
   teams(simulatorId: ID, type: String, cleared: Boolean): [Team]
   damagePositions: [String]
   exocompParts: [String]
+  _template(simulatorId: ID!): Template
   thorium: Thorium
   thrusters(simulatorId: ID): [Thruster]
   thruster(id: ID!): Thruster
@@ -3758,6 +3758,7 @@ type Subscription {
   tasksUpdate(simulatorId: ID!, station: String, definitions: [String!]): [Task]
   taskTemplatesUpdate: [TaskTemplate]
   teamsUpdate(simulatorId: ID, type: String, cleared: Boolean): [Team]
+  _templateUpdate(simulatorId: ID): Template
   thoriumUpdate: Thorium
   clockSync: String
   rotationChange(simulatorId: ID): Thruster
@@ -4136,6 +4137,10 @@ input TeamInput {
   officers: [ID]
 }
 
+type Template {
+  id: ID
+}
+
 enum TERMINAL_STATUS {
   F
   O
@@ -4145,7 +4150,6 @@ enum TERMINAL_STATUS {
 
 type Thorium {
   thoriumId: String
-  autoUpdate: Boolean
   doTrack: Boolean
   askedToTrack: Boolean
   addedTaskTemplates: Boolean
