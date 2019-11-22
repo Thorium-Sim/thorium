@@ -2,6 +2,7 @@ import React from "react";
 import {Row, Col} from "helpers/reactstrap";
 import useMeasure from "helpers/hooks/useMeasure";
 import useSoundEffect from "helpers/hooks/useSoundEffect";
+import "../JumpDrive/style.scss";
 
 function calcBorderColor(i, power, powerLevels) {
   const color = i >= power ? "transparent" : "#0b0";

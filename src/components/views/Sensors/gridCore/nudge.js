@@ -50,6 +50,14 @@ export default class Nudge extends Component {
 
     return (
       <div className="nudge">
+        <div className="buttons">
+          <FaUndo onClick={() => this.nudgeContacts({yaw: -1})} />
+          <FaArrowUp onClick={() => this.nudgeContacts({x: 0, y: -1})} />
+          <FaRedo onClick={() => this.nudgeContacts({yaw: 1})} />
+          <FaArrowLeft onClick={() => this.nudgeContacts({x: -1, y: 0})} />
+          <FaArrowDown onClick={() => this.nudgeContacts({x: 0, y: 1})} />
+          <FaArrowRight onClick={() => this.nudgeContacts({x: 1, y: 0})} />
+        </div>
         <small>Nudge Distance</small>
         <Input
           type="select"
@@ -70,14 +78,6 @@ export default class Nudge extends Component {
             </option>
           ))}
         </Input>
-        <div className="buttons">
-          <FaUndo onClick={() => this.nudgeContacts({yaw: -1})} />
-          <FaArrowUp onClick={() => this.nudgeContacts({x: 0, y: -1})} />
-          <FaRedo onClick={() => this.nudgeContacts({yaw: 1})} />
-          <FaArrowLeft onClick={() => this.nudgeContacts({x: -1, y: 0})} />
-          <FaArrowDown onClick={() => this.nudgeContacts({x: 0, y: 1})} />
-          <FaArrowRight onClick={() => this.nudgeContacts({x: 1, y: 0})} />
-        </div>
       </div>
     );
   }

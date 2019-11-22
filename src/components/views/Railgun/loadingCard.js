@@ -46,8 +46,8 @@ class RailgunLoadingData extends Component {
     return (
       <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
         {({loading, data, subscribeToMore}) => {
+          if (loading || !data) return null;
           const {railgun} = data;
-          if (loading || !railgun) return null;
           if (!railgun[0]) return <div>No Railgun</div>;
           return (
             <SubscriptionHelper

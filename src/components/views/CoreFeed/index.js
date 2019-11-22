@@ -118,69 +118,71 @@ class CoreFeed extends Component {
           </Button>
         </ButtonGroup>
         <p>Click on core feed notification for contextual component.</p>
-        {coreFeed.length ? (
-          coreFeed
-            .filter(this.coreFeedFilter)
-            .filter((c, i) => (i < 50 ? true : false))
-            .map(c => {
-              if (components[c.id] && c.component && Cores[c.component]) {
-                const CoreComponent = Cores[c.component];
+        <div className="coreFeed-items">
+          {coreFeed.length ? (
+            coreFeed
+              .filter(this.coreFeedFilter)
+              .filter((c, i) => (i < 50 ? true : false))
+              .map(c => {
+                if (components[c.id] && c.component && Cores[c.component]) {
+                  const CoreComponent = Cores[c.component];
+                  return (
+                    <div
+                      key={`${c.id}-component`}
+                      className="core-feed-component"
+                    >
+                      {c.component.replace("Core", "")}
+                      <CoreComponent {...this.props} />
+                      <div style={{display: "flex"}}>
+                        <Button
+                          color="warning"
+                          style={{flex: 1}}
+                          size="sm"
+                          onClick={() => this.collapseCoreFeed(c.id)}
+                        >
+                          Collapse
+                        </Button>{" "}
+                        <Button
+                          color="info"
+                          style={{flex: 1}}
+                          size="sm"
+                          onClick={() => this.ignoreCoreFeed(c.id)}
+                        >
+                          Ignore
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                }
                 return (
-                  <div
-                    key={`${c.id}-component`}
-                    className="core-feed-component"
-                  >
-                    {c.component.replace("Core", "")}
-                    <CoreComponent {...this.props} />
-                    <div style={{display: "flex"}}>
-                      <Button
-                        color="warning"
-                        style={{flex: 1}}
-                        size="sm"
-                        onClick={() => this.collapseCoreFeed(c.id)}
-                      >
-                        Collapse
-                      </Button>{" "}
-                      <Button
-                        color="info"
-                        style={{flex: 1}}
-                        size="sm"
-                        onClick={() => this.ignoreCoreFeed(c.id)}
-                      >
-                        Ignore
-                      </Button>
+                  <div key={`${c.id}-alert`}>
+                    <div
+                      className={`alert alert-${c.color} alert-dismissible`}
+                      onClick={() => this.showComponent(c.id)}
+                    >
+                      <strong className="alert-heading">
+                        {DateTime.fromJSDate(
+                          new Date(parseInt(c.timestamp)),
+                        ).toFormat("h:mm:ssa")}{" "}
+                        - {c.title}
+                      </strong>
+                      {c.body && <p>{c.body}</p>}
+                      <FaTimes
+                        className="pull-right"
+                        onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          this.ignoreCoreFeed(c.id);
+                        }}
+                      />
                     </div>
                   </div>
                 );
-              }
-              return (
-                <div key={`${c.id}-alert`}>
-                  <div
-                    className={`alert alert-${c.color} alert-dismissible`}
-                    onClick={() => this.showComponent(c.id)}
-                  >
-                    <strong className="alert-heading">
-                      {DateTime.fromJSDate(
-                        new Date(parseInt(c.timestamp)),
-                      ).toFormat("h:mm:ssa")}{" "}
-                      - {c.title}
-                    </strong>
-                    {c.body && <p>{c.body}</p>}
-                    <FaTimes
-                      className="pull-right"
-                      onClick={e => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        this.ignoreCoreFeed(c.id);
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })
-        ) : (
-          <p>No feed items...</p>
-        )}
+              })
+          ) : (
+            <p>No feed items...</p>
+          )}
+        </div>
         <CoreFeedConfig modal={config} toggle={this.toggle} />
       </div>
     );

@@ -1,3 +1,11 @@
+.macro-commUpdateSignals {
+  display: flex;
+  flex-direction: column;
+  .core-shortRangeSignals {
+    height: 20px;
+    flex: 1;
+  }
+}
 .core-shortRangeSignals {
   position: relative;
   height: 100%;

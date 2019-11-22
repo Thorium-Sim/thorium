@@ -86,6 +86,13 @@
   }
   .sensors-extras {
     flex: 1;
+    overflow-y: auto;
+    hr {
+      border-top-color: rgba(255, 255, 255, 0.1);
+      margin-top: 0.1rem;
+      margin-bottom: 0.1rem;
+      padding: 0.2rem 0;
+    }
   }
 
   .contact-scroll {
@@ -136,17 +143,22 @@
   }
   .nudge {
     width: 100%;
+    small {
+      display: block;
+      float: left;
+    }
     select {
       width: 60%;
-      float: left;
     }
     .buttons {
       width: 40%;
-      float: left;
+      float: right;
+      display: grid;
+      margin-top: 0.5rem;
+      grid-template-columns: 1fr 1fr 1fr;
       span {
         text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
         text-align: center;
-        width: 33%;
         &.up {
           width: 100%;
         }

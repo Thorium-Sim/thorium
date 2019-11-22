@@ -17,7 +17,6 @@ const mutation = gql`
 export const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, power: true) {
-      name
       displayName
       type
       id
@@ -242,7 +241,6 @@ const Battery = ({level = 1}) => {
 export const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
     systems(simulatorId: $simulatorId, power: true) {
-      name
       displayName
       type
       id
