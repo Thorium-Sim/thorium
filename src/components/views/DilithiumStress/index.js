@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import DilithiumStress from "./dilithiumStress";
 import "./style.scss";
-
+import "../TractorBeam/style.scss";
 const fragment = gql`
   fragment DilithiumData on Reactor {
     id

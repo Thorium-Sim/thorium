@@ -62,23 +62,33 @@
     right: 50%;
     pointer-events: none;
   }
-  .reaction {
-    height: 100%;
+  .reaction-animation {
+    height: 540px;
+    width: 700px;
     pointer-events: none;
-    right: -14%;
+    right: 15%;
+    top: 9%;
     left: unset;
+    background-image: url("./frames.png");
+    background-position: 0px 0px;
+    position: absolute;
+    animation: dilithium-stress 1s steps(20) infinite;
   }
   .matter-label {
     font-size: 3vw;
+    width: 400px;
+
     position: absolute;
     left: 15%;
-    top: 15%;
+    top: 20%;
   }
   .antimatter-label {
     font-size: 3vw;
+    width: 400px;
+
     position: absolute;
     left: 15%;
-    bottom: 15%;
+    bottom: 10%;
   }
   .stress-label {
     font-size: 3vw;
@@ -99,11 +109,20 @@
   }
   .matter {
     transform: rotate(180deg);
-    top: -1%;
+    top: 6%;
   }
   .plasma {
-    left: -37%;
+    left: -30%;
     transform: rotate(90deg);
-    top: 52%;
+    top: 55%;
+  }
+}
+
+@keyframes dilithium-stress {
+  from {
+    background-position: 0px;
+  }
+  to {
+    background-position: 14000px;
   }
 }
