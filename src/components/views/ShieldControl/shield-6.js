@@ -77,7 +77,7 @@ export default ({shields, startLoop, state, _toggleShields, simulator}) => {
             </Col>
           </Row>
         </Col>
-        <Col sm={{size: 5, offset: 1}} className="flex-column">
+        <Col sm={{size: 6, offset: 1}} className="flex-column">
           <Row className="flex-max auto-scroll">
             {shields.map(s => {
               return (
