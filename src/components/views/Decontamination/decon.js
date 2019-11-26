@@ -16,6 +16,7 @@ import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import {DeckDropdown, RoomDropdown} from "helpers/shipStructure";
+import "../TractorBeam/style.scss";
 
 const programs = {
   "Life Form": "Used for decontaminating life forms.",
