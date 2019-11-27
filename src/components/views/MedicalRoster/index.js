@@ -1,8 +1,7 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import Roster from "./roster";
-import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery, useSubscription} from "@apollo/react-hooks";
 
 const fragment = gql`
   fragment CrewData on Crew {
@@ -54,38 +53,21 @@ export const MEDICAL_ROSTER_CREW_SUB = gql`
 
 const MedicalRoster = props => {
   const {simulator} = props;
-  const {loading, data, subscribeToMore} = useQuery(MEDICAL_ROSTER_QUERY, {
+  const {loading, data} = useQuery(MEDICAL_ROSTER_QUERY, {
     variables: {simulatorId: simulator.id},
   });
-  const sickbaySubConfig = React.useMemo(
-    () => ({
-      variables: {simulatorId: simulator.id},
-      updateQuery: (previousResult, {subscriptionData}) => {
-        return Object.assign({}, previousResult, {
-          sickbay: subscriptionData.data.sickbayUpdate,
-        });
-      },
-    }),
-    [simulator.id],
-  );
-  const crewSubConfig = React.useMemo(
-    () => ({
-      variables: {simulatorId: simulator.id},
-      updateQuery: (previousResult, {subscriptionData}) => {
-        return Object.assign({}, previousResult, {
-          crew: subscriptionData.data.crewUpdate,
-        });
-      },
-    }),
-    [simulator.id],
-  );
-  useSubscribeToMore(subscribeToMore, MEDICAL_ROSTER_QUERY, sickbaySubConfig);
-  useSubscribeToMore(subscribeToMore, MEDICAL_ROSTER_CREW_SUB, crewSubConfig);
+  const {data: sickbaySubData} = useSubscription(MEDICAL_ROSTER_SUB, {
+    variables: {simulatorId: simulator.id},
+  });
+  const {data: crewSubData} = useSubscription(MEDICAL_ROSTER_CREW_SUB, {
+    variables: {simulatorId: simulator.id},
+  });
 
   if (loading || !data) return null;
-  const {sickbay, crew} = data;
+  const sickbay = sickbaySubData ? sickbaySubData.sickbayUpdate : data.sickbay;
+  const crew = crewSubData ? crewSubData.crewUpdate : data.crew;
 
-  if (!sickbay[0]) return <div>No sickbay</div>;
+  if (!sickbay) return <div>No sickbay</div>;
   return <Roster {...props} {...sickbay[0]} crew={crew} />;
 };
 export default MedicalRoster;

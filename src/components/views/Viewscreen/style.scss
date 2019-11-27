@@ -42,6 +42,7 @@
   flex-direction: column;
   .lower {
     flex: 1;
+    height: 100%;
     display: flex;
     & > div {
       flex: 1;

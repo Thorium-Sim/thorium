@@ -5,6 +5,7 @@ import ClassicMission from "./classicMission";
 import MissionSelector from "./missionSelector";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
 
+import "./style.scss";
 const Timeline = props => {
   const {
     id,

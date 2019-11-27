@@ -81,7 +81,7 @@ App.on(
         App.handleEvent(
           {
             simulatorId: system.simulatorId,
-            contents: `Long Range Message sent by ${sender}`,
+            contents: `Long Range Message received from ${sender}`,
             category: "Communication",
           },
           "recordsCreate",

@@ -22,7 +22,7 @@ const schema = gql`
     updateCoreLayout(layout: CoreLayoutInput): String
     addCoreLayout(layout: CoreLayoutInput): String
     removeCoreLayout(id: ID): String
-    reorderCoreLayouts(id: ID!, order: Int!): String
+    reorderCoreLayouts(layouts: [ID!]!): String
   }
   extend type Subscription {
     coreLayoutChange: [CoreLayout]

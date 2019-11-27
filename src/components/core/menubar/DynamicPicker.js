@@ -35,7 +35,10 @@ const DELETE_CORE_LAYOUT = gql`
 const DynamicPicker = ({onChange, mosaic}) => {
   const [layout, setLayout] = React.useState("nothing");
   const [modal, setModal] = React.useState(false);
-  const {loading, data} = useQueryAndSubscription([CORE_LAYOUTS], [SUB]);
+  const {loading, data} = useQueryAndSubscription(
+    {query: CORE_LAYOUTS},
+    {query: SUB},
+  );
   const [addCoreLayout] = useMutation(ADD_CORE_LAYOUT);
   const [deleteCoreLayout] = useMutation(DELETE_CORE_LAYOUT);
   const fileRef = React.useRef();

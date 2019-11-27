@@ -22,7 +22,7 @@ class BattleCore extends Component {
     action({
       variables: {
         id: sensors.id,
-        speed: e.target.value,
+        speed: parseFloat(e.target.value),
       },
     });
   };

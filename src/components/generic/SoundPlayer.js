@@ -73,8 +73,12 @@ export function playSound(opts) {
   if (!asset || asset === "/assetsundefined") return;
   try {
     fetch(asset)
-      .then(res => res.arrayBuffer())
+      .then(res => {
+        if (!res.ok) return false;
+        res.arrayBuffer();
+      })
       .then(arrayBuffer => {
+        if (!arrayBuffer) return;
         window.audioContext.destination.channelCount =
           window.audioContext.destination.maxChannelCount;
         // Connect the sound source to the volume control.

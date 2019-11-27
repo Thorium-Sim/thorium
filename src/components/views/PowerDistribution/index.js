@@ -17,10 +17,9 @@ const mutation = gql`
 export const SYSTEMS_SUB = gql`
   subscription SystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, power: true) {
-      name
+      id
       displayName
       type
-      id
       power {
         power
         powerLevels
@@ -50,17 +49,17 @@ const PowerDistribution = ({client, simulator, clientObj}) => {
       simulatorId: simulator.id,
     },
   });
-  const {data: reactorSub = {}} = useSubscription(REACTOR_SUB, {
+  const {data: reactorSub} = useSubscription(REACTOR_SUB, {
     variables: {simulatorId: simulator.id},
   });
-  const {data: systemsSub = {}} = useSubscription(SYSTEMS_SUB, {
+  const {data: systemsSub} = useSubscription(SYSTEMS_SUB, {
     variables: {simulatorId: simulator.id},
   });
 
   if (loading || !data) return null;
+  const systems = systemsSub ? systemsSub.systemsUpdate : data.systems;
+  const reactors = reactorSub ? reactorSub.reactorUpdate : data.reactors;
   // Get the batteries, get just the first one.
-  const systems = systemsSub.systemsUpdate || data.systems;
-  const reactors = reactorSub.reactorUpdate || data.reactors;
   const battery = reactors.find(r => r.model === "battery");
   const reactor = reactors.find(r => r.model === "reactor");
   const charge = battery && battery.batteryChargeLevel;
@@ -172,6 +171,9 @@ const Systems = React.memo(
     const prevDisplayName = prevProps.systems.map(p => p.displayName);
     const nextDisplayName = nextProps.systems.map(p => p.displayName);
     if (prevDisplayName.join(",") !== nextDisplayName.join(",")) return false;
+    const prevDamage = prevProps.systems.map(p => p.damage.damaged);
+    const nextDamage = nextProps.systems.map(p => p.damage.damaged);
+    if (prevDamage.join(",") !== nextDamage.join(",")) return false;
     return true;
   },
 );
@@ -242,10 +244,9 @@ const Battery = ({level = 1}) => {
 export const SYSTEMS_QUERY = gql`
   query Systems($simulatorId: ID) {
     systems(simulatorId: $simulatorId, power: true) {
-      name
+      id
       displayName
       type
-      id
       power {
         power
         powerLevels

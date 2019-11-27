@@ -10,16 +10,18 @@ import "./app.scss";
 import "./fonts.scss";
 
 const ApolloApp = () => (
-  <ApolloProvider client={client}>
-    <ApolloHooksProvider client={client}>
-      <IntlProvider>
-        <ErrorBoundary>
-          <Routes />
-          <EasterEgg />
-        </ErrorBoundary>
-      </IntlProvider>
-    </ApolloHooksProvider>
-  </ApolloProvider>
+  <React.Suspense fallback="Loading...">
+    <ApolloProvider client={client}>
+      <ApolloHooksProvider client={client}>
+        <IntlProvider>
+          <ErrorBoundary>
+            <Routes />
+            <EasterEgg />
+          </ErrorBoundary>
+        </IntlProvider>
+      </ApolloHooksProvider>
+    </ApolloProvider>
+  </React.Suspense>
 );
 
 export default ApolloApp;

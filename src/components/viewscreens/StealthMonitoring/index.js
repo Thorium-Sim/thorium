@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import StealthField from "./stealthField";
 import "./style.scss";
-
+import "../../views/StealthField/style.scss";
 const fragment = gql`
   fragment StealthViewscreenData on StealthField {
     id

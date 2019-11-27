@@ -1,5 +1,4 @@
 import React from "react";
-import "./style.scss";
 import Soviet from "./soviet";
 import Movie from "./movie";
 

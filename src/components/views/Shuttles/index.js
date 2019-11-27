@@ -233,7 +233,7 @@ class ShuttleBay extends Component {
                     this.updateShuttle(id, "direction", "departing")
                   }
                 >
-                  Prepare for departure
+                  Prepare to Depart
                 </Button>
               )}
               {direction === "departing" && docked && (
@@ -245,7 +245,7 @@ class ShuttleBay extends Component {
                     this.updateShuttle(id, "direction", "unspecified")
                   }
                 >
-                  Abort departure sequence
+                  Abort Departure
                 </Button>
               )}
               <div className="docking-icon-wrapper">
