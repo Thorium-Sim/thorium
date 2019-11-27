@@ -21,7 +21,7 @@ ${
 }
 ${
   core
-    ? `import StorybookWrapperCore from "./helpers/storybookWrapperCore.js";`
+    ? `import StorybookWrapperCore from "stories/helpers/storybookWrapperCore.js";`
     : ""
 }
 import baseProps from './helpers/baseProps.js';
