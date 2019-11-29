@@ -4,8 +4,8 @@
 import React, {Component} from "react";
 import CardFrame from "./cardFrame";
 import Widgets from "../LayoutOdyssey/widgets";
-import TransitionGroup from "react-addons-transition-group";
-import renderCards from "../cardRenderer";
+
+import CardHolder from "../cardRenderer";
 import CardSwitcher from "./cardSwitcher";
 import "./style.scss";
 
@@ -38,7 +38,7 @@ class LayoutEpsilon extends Component {
       <div className={`epsilon-frame ${alertClass}`}>
         <CardFrame {...this.props} />
         <div className="card-area">
-          <TransitionGroup>{renderCards(this.props)}</TransitionGroup>
+          <CardHolder {...this.props} />
         </div>
         <CardSwitcher
           cards={station.cards}

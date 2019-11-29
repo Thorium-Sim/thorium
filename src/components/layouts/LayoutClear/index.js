@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import TransitionGroup from "react-addons-transition-group";
+
 import {withApollo} from "react-apollo";
 import CardFrame from "./cardFrame";
 import Widgets from "../LayoutOdyssey/widgets";
 import CardSwitcher from "../LayoutLine/cardSwitcher";
-import renderCards from "../cardRenderer";
+import CardHolder from "../cardRenderer";
 import "./style.scss";
 
 class LayoutClear extends Component {
@@ -45,7 +45,7 @@ class LayoutClear extends Component {
           />
         )}
         <CardFrame {...this.props}>
-          <TransitionGroup>{renderCards(this.props)}</TransitionGroup>
+          <CardHolder {...this.props} />
         </CardFrame>
         <Widgets
           clientObj={clientObj}

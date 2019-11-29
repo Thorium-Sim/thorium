@@ -1,10 +1,9 @@
 import React, {Component} from "react";
-import TransitionGroup from "react-addons-transition-group";
 import CardFrame from "./frame";
 import Widgets from "../LayoutOdyssey/widgets";
 import {withApollo} from "react-apollo";
 import CardSwitcher from "../LayoutCorners/CardSwitcher";
-import renderCards from "../cardRenderer";
+import CardHolder from "../cardRenderer";
 import "./layout.scss";
 
 class LayoutGlass extends Component {
@@ -36,7 +35,7 @@ class LayoutGlass extends Component {
     let alertClass = `alertColor${simulator.alertlevel || 5}`;
     return (
       <div className={`layout-glass ${alertClass}`}>
-        <TransitionGroup>{renderCards(this.props)}</TransitionGroup>
+        <CardHolder {...this.props} />
 
         <div className="frame-text">
           <h1 className="simulator-name">{simulator.name}</h1>

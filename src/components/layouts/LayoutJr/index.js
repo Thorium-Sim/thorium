@@ -1,5 +1,5 @@
 import React, {Fragment} from "react";
-import renderCards from "../cardRenderer";
+import CardHolder from "../cardRenderer";
 import "./style.scss";
 
 export default props => {
@@ -8,7 +8,7 @@ export default props => {
   return (
     <Fragment>
       <div className={`layout-jr card-area ${alertClass}`}>
-        {renderCards(props)}
+        <CardHolder {...props} />
       </div>
       <div id="jr-frame" className={alertClass}>
         <div className="title-bar" />

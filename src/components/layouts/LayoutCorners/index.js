@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from "react";
-import TransitionGroup from "react-addons-transition-group";
+
 import {withApollo} from "react-apollo";
 import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
-import renderCards from "../cardRenderer";
+import CardHolder from "../cardRenderer";
 import Settings from "./settings";
 
 import "./layout.scss";
@@ -37,7 +37,7 @@ class LayoutCorners extends Component {
     return (
       <Fragment>
         <div className={`layout-corners card-area ${alertClass}`}>
-          <TransitionGroup>{renderCards(this.props)}</TransitionGroup>
+          <CardHolder {...this.props} />
         </div>
         <div id="curve-frame" className={alertClass}>
           <div className="frame-color">

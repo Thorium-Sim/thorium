@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import CardFrame from "./frame";
 import Widgets from "./widgets";
 import {withApollo} from "react-apollo";
-import renderCards from "../cardRenderer";
+import CardHolder from "../cardRenderer";
 import "./layout.scss";
 
 class LayoutOdyssey extends Component {
@@ -42,7 +42,7 @@ class LayoutOdyssey extends Component {
     return (
       <div id="layout-odyssey" className={alertClass}>
         <div className={`perspectiveContainer`}>
-          {renderCards(this.props)}
+          <CardHolder {...this.props} />
           <div className="frame-text">
             <h1 className="simulator-name">{simulator.name}</h1>
             <h2 className="station-name">{stationName}</h2>

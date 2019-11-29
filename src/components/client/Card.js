@@ -32,53 +32,7 @@ const Blackout = () => {
 };
 
 const CardRenderer = props => {
-  const {simulator, station, flight, client, card, changeCard} = props.test
-    ? {
-        simulator: {
-          id: "test",
-          name: "Test",
-          alertLevel: "5",
-          layout: "LayoutShipStation",
-          assets: {
-            mesh: "/Simulator/default/mesh.obj",
-            texture: "/Simulator/default/texture.jpg",
-            side: "/Simulator/default/side.png",
-            top: "/Simulator/default/top.png",
-            logo: "/Simulator/default/logo.svg",
-          },
-        },
-        assets: {
-          mesh: "/Simulator/default/mesh.obj",
-          texture: "/Simulator/default/texture.jpg",
-          side: "/Simulator/default/side.png",
-          top: "/Simulator/default/top.png",
-          logo: "/Simulator/default/logo.svg",
-        },
-        station: {
-          name: "Test",
-          widgets: [
-            "keyboard",
-            "composer",
-            "objectives",
-            "calculator",
-            "remote",
-            "messages",
-            "officerLog",
-            "damageReport",
-          ],
-          cards: [
-            {
-              id: "test",
-              name: "Test",
-              component: props.component || "Navigation",
-            },
-          ],
-        },
-        flight: {id: "test"},
-        client: {loginState: "login", loginName: "Test", id: "test"},
-        card: "Test",
-      }
-    : props;
+  const {simulator, station, flight, client, card, changeCard} = props;
   const layoutName =
     client.layout || station.layout || simulator.layout || "LayoutCorners";
 
