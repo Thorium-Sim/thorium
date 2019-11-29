@@ -46,7 +46,7 @@
       }
 
       .console {
-        height: 35vh;
+        height: 50vh;
         border: solid 1px rgba(255, 255, 255, 0.5);
         overflow-y: auto;
         flex: 3;
@@ -88,21 +88,22 @@
         text-transform: none;
         margin: 0;
         font-family: inherit;
+        margin-bottom: 1rem;
       }
     </style>
   </head>
 
   <body>
     <div class="main">
-      <iframe src="http://localhost:4444/status"></iframe>
-      <div class="bottom-section">
-        <pre id="console" class="console"></pre>
-        <div class="buttons">
-          <button id="open-in-browser" onclick="openBrowser()">
-            Open in Browser
-          </button>
-          <div id="ipAddress"></div>
-        </div>
+      <pre id="console" class="console"></pre>
+      <div class="buttons">
+        <button id="open-in-browser" onclick="openBrowser()">
+          Open in Browser
+        </button>
+        <button id="open-server-stats" onclick="openStats()">
+          Open Server Stats
+        </button>
+        <div id="ipAddress"></div>
       </div>
     </div>
     <script>

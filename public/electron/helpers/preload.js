@@ -1,5 +1,6 @@
 const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
+const shell = require("electron").shell;
 const ipAddress = require("./ipaddress");
 const mac = require("./macaddress");
 
@@ -68,6 +69,9 @@ window.startServer = function startServer() {
 window.openBrowser = function openBrowser() {
   ipcRenderer.send("openBrowser");
   return;
+};
+window.openStats = function openStats() {
+  shell.openExternal("http://localhost:4444/status");
 };
 window.getServers = function() {
   ipcRenderer.send("getServers");

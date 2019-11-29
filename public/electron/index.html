@@ -97,6 +97,9 @@
         border-radius: 5px;
         padding: 5px 10px;
       }
+      .spacer {
+        margin: 1rem 0;
+      }
     </style>
   </head>
 
@@ -380,14 +383,18 @@
         <div id="servers" class="hidden">
           <h4>Select a server:</h4>
           <div id="serverList"></div>
-          <label>
-            <input type="checkbox" id="remember-client" /> Auto-connect to
-            server on Open</label
-          >
-          <label>
-            <input type="checkbox" id="start-kiosked" /> Start client in Kiosk
-            mode</label
-          >
+          <div class="spacer">
+            <label>
+              <input type="checkbox" id="remember-client" /> Auto-connect to
+              server on Open</label
+            >
+          </div>
+          <div class="spacer">
+            <label>
+              <input type="checkbox" id="start-kiosked" /> Start client in Kiosk
+              mode</label
+            >
+          </div>
           <div>
             <small
               >Make sure your server is on before starting the client.</small
