@@ -95,6 +95,11 @@ const schema = gql`
     """
     unhideSimulatorCard(simulatorId: ID!, cardName: String!): String
 
+    toggleSimulatorCardHidden(
+      simulatorId: ID!
+      cardName: String!
+      toggle: Boolean!
+    ): String
     changeSimulatorExocomps(simulatorId: ID!, exocomps: Int!): String
     changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String
     changeSimulatorExtraPeople(simulatorId: ID!, crew: Int!): String

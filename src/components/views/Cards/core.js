@@ -1,7 +1,7 @@
 import React from "react";
 import {Table} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Query} from "react-apollo";
+import {Query, useMutation} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const fragment = gql`
@@ -34,7 +34,20 @@ export const CARDS_CORE_SUB = gql`
   ${fragment}
 `;
 
-const CardsCore = ({cards}) => {
+const CardsCore = ({simulator, cards}) => {
+  const [toggleHidden] = useMutation(gql`
+    mutation ToggleSimulatorCardHidden(
+      $simulatorId: ID!
+      $cardName: String!
+      $toggle: Boolean!
+    ) {
+      toggleSimulatorCardHidden(
+        simulatorId: $simulatorId
+        cardName: $cardName
+        toggle: $toggle
+      )
+    }
+  `);
   return (
     <Table size="sm">
       <thead>
@@ -48,7 +61,19 @@ const CardsCore = ({cards}) => {
           <tr key={`${c.station}-${c.name}`}>
             <td>{c.name}</td>
             <td>
-              <input type="checkbox" checked={c.hidden} />
+              <input
+                type="checkbox"
+                checked={c.hidden}
+                onChange={e =>
+                  toggleHidden({
+                    variables: {
+                      simulatorId: simulator.id,
+                      cardName: c.name,
+                      toggle: e.target.checked,
+                    },
+                  })
+                }
+              />
             </td>
           </tr>
         ))}

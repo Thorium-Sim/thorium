@@ -406,14 +406,16 @@ App.on("setSimulatorSpaceEdventuresId", ({simulatorId, spaceEdventuresId}) => {
   sim.setSpaceEdventuresId(spaceEdventuresId);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+const cardTimeouts = {};
 App.on("hideSimulatorCard", ({simulatorId, cardName, delay}) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   if (!sim) return;
   sim.hideCard(cardName);
   if (!isNaN(parseInt(delay, 10))) {
-    setTimeout(() => {
+    cardTimeouts[`${simulatorId}-${cardName}`] = setTimeout(() => {
       sim.unhideCard(cardName);
       pubsub.publish("simulatorsUpdate", App.simulators);
+      delete cardTimeouts[`${simulatorId}-${cardName}`];
     }, parseInt(delay, 10));
   }
   pubsub.publish("simulatorsUpdate", App.simulators);
@@ -422,6 +424,20 @@ App.on("unhideSimulatorCard", ({simulatorId, cardName}) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   if (!sim) return sim;
   sim.unhideCard(cardName);
+
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
+App.on("toggleSimulatorCardHidden", ({simulatorId, cardName, toggle}) => {
+  const sim = App.simulators.find(s => s.id === simulatorId);
+  if (!sim) return sim;
+
+  clearTimeout(cardTimeouts[`${simulatorId}-${cardName}`]);
+  delete cardTimeouts[`${simulatorId}-${cardName}`];
+  if (toggle) {
+    sim.hideCard(cardName);
+  } else {
+    sim.unhideCard(cardName);
+  }
 
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
