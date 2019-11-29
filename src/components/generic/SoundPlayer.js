@@ -8,7 +8,14 @@ if (!window.audioContext) {
 
   if (AudioContext) window.audioContext = new AudioContext();
 }
+let resumed = false;
 
+document.body.onmousemove = () => {
+  if (!resumed) {
+    window.audioContext.resume();
+    resumed = true;
+  }
+};
 function copyToChannel(destination, source, channelNumber) {
   try {
     const nowBuffering = destination.getChannelData(channelNumber);
@@ -75,7 +82,7 @@ export function playSound(opts) {
     fetch(asset)
       .then(res => {
         if (!res.ok) return false;
-        res.arrayBuffer();
+        return res.arrayBuffer();
       })
       .then(arrayBuffer => {
         if (!arrayBuffer) return;

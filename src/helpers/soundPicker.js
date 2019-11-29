@@ -74,7 +74,12 @@ const SoundSubMenu = props => {
             .concat()
             .sort(nameSort)
             .map(c => (
-              <SoundSubMenu {...props} label={null} fullPath={c.fullPath} />
+              <SoundSubMenu
+                {...props}
+                key={c.id}
+                label={null}
+                fullPath={c.fullPath}
+              />
             ))
             .concat(
               objects
