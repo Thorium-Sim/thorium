@@ -10,6 +10,10 @@ import {
   RAILGUN_CORE_QUERY,
   RAILGUN_CORE_SUB,
 } from "components/views/Railgun/core";
+import {
+  RAILGUN_LOADING_QUERY,
+  RAILGUN_LOADING_SUB,
+} from "components/views/Railgun/loadingCard";
 
 export default [
   {
@@ -57,6 +61,26 @@ export default [
   {
     request: {
       query: RAILGUN_CORE_SUB,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {railgunUpdate: systems.railgun},
+    },
+  },
+  {
+    request: {
+      query: RAILGUN_LOADING_QUERY,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {
+        railgun: systems.railgun,
+      },
+    },
+  },
+  {
+    request: {
+      query: RAILGUN_LOADING_SUB,
       variables: {simulatorId: "test"},
     },
     result: {

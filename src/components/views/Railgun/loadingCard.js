@@ -23,7 +23,7 @@ const fragment = gql`
   }
 `;
 
-const QUERY = gql`
+export const RAILGUN_LOADING_QUERY = gql`
   query Railgun($simulatorId: ID!) {
     railgun(simulatorId: $simulatorId) {
       ...RailgunLoadingData
@@ -31,7 +31,7 @@ const QUERY = gql`
   }
   ${fragment}
 `;
-const SUBSCRIPTION = gql`
+export const RAILGUN_LOADING_SUB = gql`
   subscription RailgunUpdate($simulatorId: ID!) {
     railgunUpdate(simulatorId: $simulatorId) {
       ...RailgunLoadingData
@@ -44,7 +44,10 @@ class RailgunLoadingData extends Component {
   state = {};
   render() {
     return (
-      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+      <Query
+        query={RAILGUN_LOADING_QUERY}
+        variables={{simulatorId: this.props.simulator.id}}
+      >
         {({loading, data, subscribeToMore}) => {
           if (loading || !data) return null;
           const {railgun} = data;
@@ -53,7 +56,7 @@ class RailgunLoadingData extends Component {
             <SubscriptionHelper
               subscribe={() =>
                 subscribeToMore({
-                  document: SUBSCRIPTION,
+                  document: RAILGUN_LOADING_SUB,
                   variables: {simulatorId: this.props.simulator.id},
                   updateQuery: (previousResult, {subscriptionData}) => {
                     return Object.assign({}, previousResult, {

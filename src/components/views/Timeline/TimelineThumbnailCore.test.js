@@ -6,11 +6,13 @@ import Component from "./thumbnailData.js";
 import TimelineMock from "mocks/cards/Timeline.mock";
 
 it("should render", async () => {
-  const {container, getByText} = render(<Component {...baseProps} />, {
+  const {container, getByText, debug} = render(<Component {...baseProps} />, {
     mocks: TimelineMock,
   });
+  debug();
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();
+  console.log(container.innerHTML);
   expect(container.innerHTML).toBeTruthy();
   expect(container.innerHTML).not.toBe("Error");
 });
