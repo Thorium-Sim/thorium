@@ -5,6 +5,8 @@ import {Container, Row, Col, Button, Input} from "helpers/reactstrap";
 import {TypingField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {FaSyncAlt} from "react-icons/fa";
+import "./style.scss";
+
 const SYSTEMS_SUB = gql`
   subscription DamagedSystemsUpdate($simulatorId: ID) {
     systemsUpdate(simulatorId: $simulatorId, extra: true) {
