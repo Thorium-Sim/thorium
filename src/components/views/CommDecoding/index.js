@@ -11,7 +11,6 @@ import {
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
-import Measure from "react-measure";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import Tour from "helpers/tourHelper";
@@ -243,28 +242,16 @@ class Decoding extends Component {
         <Row>
           <Col sm={8} className="flex-column">
             <Card style={{padding: 0}} className="flex-max">
-              <Measure
-                bounds
-                onResize={contentRect => {
-                  this.setState({dimensions: contentRect.bounds});
-                }}
-              >
-                {({measureRef}) => (
-                  <div ref={measureRef}>
-                    {this.state.dimensions && selectedMessage && (
-                      <DecodingCanvas
-                        dimensions={this.state.dimensions}
-                        decodeProgress={this.state.decodeProgress}
-                        ra={selectedMessage.ra}
-                        rf={selectedMessage.rf}
-                        message={selectedMessage.message}
-                        a={this.state.a}
-                        f={this.state.f}
-                      />
-                    )}
-                  </div>
-                )}
-              </Measure>
+              {selectedMessage && (
+                <DecodingCanvas
+                  decodeProgress={this.state.decodeProgress}
+                  ra={selectedMessage.ra}
+                  rf={selectedMessage.rf}
+                  message={selectedMessage.message}
+                  a={this.state.a}
+                  f={this.state.f}
+                />
+              )}
             </Card>
             <div>
               <Col sm={{size: 4, offset: 8}}>

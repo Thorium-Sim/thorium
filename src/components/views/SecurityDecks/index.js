@@ -32,11 +32,11 @@ const trainingSteps = [
       "This is the list of the decks on your ship. Click a deck to access it.",
   },
   {
-    selector: ".doors",
+    selector: ".doors-button",
     content: "Use this button to open and close the bulkhead doors.",
   },
   {
-    selector: ".evac",
+    selector: ".evac-button",
     content:
       "Use this button to evacuate the deck or sound the all-clear. Make sure the bulkhead doors are open before evacuating - otherwise your crew will be stuck on the deck!",
   },
@@ -285,7 +285,7 @@ class SecurityDecks extends Component {
           <Row>
             <Col sm={6}>
               <Button
-                className="doors"
+                className="doors-button"
                 color="warning"
                 block
                 size="lg"
@@ -297,7 +297,7 @@ class SecurityDecks extends Component {
             </Col>
             <Col sm={6}>
               <Button
-                className="evac"
+                className="evac-button"
                 color="warning"
                 block
                 size="lg"

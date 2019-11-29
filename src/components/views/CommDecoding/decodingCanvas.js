@@ -1,5 +1,6 @@
-import React, {Component} from "react";
-
+import React from "react";
+import useMeasure from "helpers/hooks/useMeasure";
+import useAnimationFrame from "helpers/hooks/useAnimationFrame";
 const height = 250;
 const sinPoints = ({a, f, p, animate, width}) => {
   let sinWidth = width * 2 * 2;
@@ -29,51 +30,41 @@ const decodePoints = ({message, decodeProgress, ra, rf, width}) => {
     });
 };
 
-export default class DecodingCanvas extends Component {
-  constructor(props) {
-    const width = props.dimensions.width;
-    super(props);
-    this.state = {
-      p: (width / 2) * -1,
-    };
-    this.looping = true;
-  }
-  componentDidMount() {
-    this.looping = true;
-    this.frame = requestAnimationFrame(this.loop.bind(this));
-  }
-  componentWillUnmount() {
-    this.looping = false;
-    cancelAnimationFrame(this.frame);
-  }
-  loop() {
-    if (!this.looping) return;
-    const width = this.props.dimensions.width;
-    const newP = this.state.p + 20;
-    if (newP < width * 2) {
-      this.setState({p: newP});
-    } else {
-      this.setState({
-        p: (width / 2) * -1,
+export default function DecodingCanvas({
+  ra,
+  rf,
+  f,
+  a,
+  message,
+  decodeProgress,
+}) {
+  const [ref, dimensions] = useMeasure();
+  const width = dimensions.width || 1;
+  const [p, setP] = React.useState((width / 2) * -1);
+  const loop = React.useCallback(
+    function loop() {
+      setP(p => {
+        const newP = p + 20;
+        console.log(newP, width * 2);
+        if (newP < width * 2) {
+          return newP;
+        }
+        return (width / 2) * -1;
       });
-    }
-    // Next frame
-    this.frame = requestAnimationFrame(this.loop.bind(this));
-  }
-  render() {
-    const {p} = this.state;
-    const {ra, rf, f, a, message, decodeProgress, dimensions} = this.props;
-    return (
-      <svg
-        key={"decoding-line"}
-        style={{height: height, width: dimensions.width}}
-      >
+    },
+    [width],
+  );
+  useAnimationFrame(loop);
+
+  return (
+    <div ref={ref}>
+      <svg key={"decoding-line"} style={{height: height, width: "100%"}}>
         <path
           d={sinPoints({
             f,
             a,
             message,
-            width: dimensions.width,
+            width,
           }).reduce(
             (prev, next, index) =>
               prev + `${index % 2 === 0 ? "L" : ""} ${next}`,
@@ -94,14 +85,14 @@ export default class DecodingCanvas extends Component {
                   ra,
                   message,
                   decodeProgress,
-                  width: dimensions.width,
+                  width,
                 })
               : sinPoints({
                   f: rf,
                   a: ra,
                   p: p,
                   animate: true,
-                  width: dimensions.width,
+                  width,
                 })
             ).reduce(
               (prev, next, index) =>
@@ -111,6 +102,6 @@ export default class DecodingCanvas extends Component {
           />
         )}
       </svg>
-    );
-  }
+    </div>
+  );
 }
