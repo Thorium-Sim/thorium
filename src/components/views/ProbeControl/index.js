@@ -17,7 +17,7 @@ import {
   NavLink*/,
 } from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import {withApollo, Query} from "react-apollo";
+import {withApollo, Query, useMutation} from "react-apollo";
 import Tour from "helpers/tourHelper";
 
 import "./style.scss";
@@ -157,6 +157,7 @@ class ProbeControl extends Component {
                 </Col>
                 <Col sm={9}>
                   <ProbeControlWrapper
+                    key={selectedProbe}
                     {...(probes.probes.find(p => p.id === selectedProbe) || {})}
                     probeId={probes.id}
                     client={this.props.client}
@@ -199,130 +200,127 @@ export const PROBES_QUERY = gql`
 
 export default withApollo(ProbeControl);
 
-class ProbeControlWrapper extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {activeTab: "1", queryText: props.queryText};
-  }
-  toggle = tab => {
-    if (this.state.activeTab === tab) return;
-    this.setState({activeTab: tab});
-  };
-  queryProbe = () => {
-    const mutation = gql`
+const ProbeControlWrapper = ({
+  probeId,
+  id,
+  name,
+  equipment = [],
+  response,
+  querying,
+  type,
+  query,
+}) => {
+  // const [activeTab, setActiveTab] = React.useState("1");
+  const [queryText, setQueryText] = React.useState(query);
+  const [queryProbe] = useMutation(
+    gql`
       mutation ProbeQuery($id: ID!, $probeId: ID!, $query: String!) {
         probeQuery(id: $id, probeId: $probeId, query: $query)
       }
-    `;
-    if (!this.state.queryText) return;
-    const variables = {
-      id: this.props.probeId,
-      probeId: this.props.id,
-      query: this.state.queryText,
-    };
-    this.props.client.mutate({
-      mutation,
-      variables,
-    });
-  };
-  cancelQuery = () => {
-    const mutation = gql`
+    `,
+    {
+      variables: {
+        id: probeId,
+        probeId: id,
+        query: queryText,
+      },
+    },
+  );
+  const [cancelQuery] = useMutation(
+    gql`
       mutation ProbeQuery($id: ID!, $probeId: ID!, $query: String) {
         probeQuery(id: $id, probeId: $probeId, query: $query)
       }
-    `;
-    const variables = {
-      id: this.props.probeId,
-      probeId: this.props.id,
-      query: "",
-    };
-    this.props.client.mutate({
-      mutation,
-      variables,
-    });
-  };
-  render() {
-    const {name, equipment = [], response, querying, type} = this.props;
-    const {queryText} = this.state;
-    let probeImage = null;
-    try {
-      probeImage = require(`../ProbeConstruction/probes/${type}.svg`);
-    } catch {
-      //Nothing
-    }
-    return (
-      <Container>
-        <h1>{name}</h1>
-        <Row>
-          <Col sm={4}>
-            <h3>Equipment</h3>
-            <Card className="equipment">
-              <CardBody>
-                {equipment.map(e => (
-                  <p key={e.id}>{e.name}</p>
-                ))}
-              </CardBody>
-            </Card>
-          </Col>
-          <Col sm={8}>
-            <h3>Query</h3>
-            <Row className="query-box">
-              <Col sm={9}>
-                {querying ? (
-                  <p className="querying">Querying...</p>
-                ) : (
-                  <Input
-                    disabled={!name}
-                    size="lg"
-                    type="text"
-                    value={queryText}
-                    onChange={evt =>
-                      this.setState({queryText: evt.target.value})
-                    }
-                  />
-                )}
-              </Col>
-              <Col sm={3}>
-                {querying ? (
-                  <Button
-                    disabled={!name}
-                    size="lg"
-                    color="danger"
-                    onClick={this.cancelQuery}
-                  >
-                    Cancel
-                  </Button>
-                ) : (
-                  <Button
-                    disabled={!name}
-                    size="lg"
-                    color="primary"
-                    onClick={this.queryProbe}
-                  >
-                    Query
-                  </Button>
-                )}
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12}>
-                <pre className="results">{response}</pre>
-                {type && (
-                  <img
-                    alt="probe"
-                    draggable={false}
-                    style={{
-                      width: "200px",
-                      transform: "rotate(90deg) translate(-150px, -250px)",
-                    }}
-                    src={probeImage}
-                  />
-                )}
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Container>
-    );
+    `,
+    {
+      variables: {
+        id: probeId,
+        probeId: id,
+        query: "",
+      },
+    },
+  );
+
+  // const toggle = tab => {
+  //   if (activeTab === tab) return;
+  //  setActiveTab(tab);
+  // };
+
+  let probeImage = null;
+  try {
+    probeImage = require(`../ProbeConstruction/probes/${type}.svg`);
+  } catch {
+    //Nothing
   }
-}
+  return (
+    <Container>
+      <h1>{name}</h1>
+      <Row>
+        <Col sm={4}>
+          <h3>Equipment</h3>
+          <Card className="equipment">
+            <CardBody>
+              {equipment.map(e => (
+                <p key={e.id}>{e.name}</p>
+              ))}
+            </CardBody>
+          </Card>
+        </Col>
+        <Col sm={8}>
+          <h3>Query</h3>
+          <Row className="query-box">
+            <Col sm={9}>
+              <Input
+                readOnly={querying}
+                disabled={!name}
+                size="lg"
+                type="text"
+                value={queryText}
+                onChange={evt => setQueryText(evt.target.value)}
+              />
+            </Col>
+            <Col sm={3}>
+              {querying ? (
+                <Button
+                  disabled={!name}
+                  size="lg"
+                  color="danger"
+                  onClick={cancelQuery}
+                >
+                  Cancel
+                </Button>
+              ) : (
+                <Button
+                  disabled={!name}
+                  size="lg"
+                  color="primary"
+                  onClick={queryProbe}
+                >
+                  Query
+                </Button>
+              )}
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={12}>
+              <pre className="results">
+                {querying ? "Querying..." : response}
+              </pre>
+              {type && (
+                <img
+                  alt="probe"
+                  draggable={false}
+                  style={{
+                    width: "200px",
+                    transform: "rotate(90deg) translate(-150px, -250px)",
+                  }}
+                  src={probeImage}
+                />
+              )}
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </Container>
+  );
+};

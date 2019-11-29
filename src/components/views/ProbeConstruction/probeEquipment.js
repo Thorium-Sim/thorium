@@ -214,7 +214,7 @@ const ProbeEquipment = ({
                   </Row>
                 </CardBody>
                 <CardBody className="equipmentList">
-                  {equipment.map(e => (
+                  {savedEquipment.map(e => (
                     <Row
                       key={e.id}
                       onClick={() => {
@@ -256,7 +256,11 @@ const ProbeEquipment = ({
           <p>
             <strong>Space Remaining: {type.size - used}</strong>
           </p>
-          <Button block color="primary" onClick={() => prepareProbe(equipment)}>
+          <Button
+            block
+            color="primary"
+            onClick={() => prepareProbe(savedEquipment)}
+          >
             Prepare Probe
           </Button>
           <Button block color="danger" onClick={cancelProbe}>

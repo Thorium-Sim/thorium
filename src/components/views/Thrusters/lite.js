@@ -241,7 +241,6 @@ gamepadLoop(){
   */
   onDragHandler(handlerName, which) {
     return (e, {node}) => {
-      const self = this;
       const newPosition = {top: 0, left: 0};
       // Get new XY
       const parentRect = node.offsetParent.getBoundingClientRect();
