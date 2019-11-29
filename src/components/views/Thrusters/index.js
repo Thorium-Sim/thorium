@@ -355,14 +355,8 @@ gamepadLoop(){
               this.props.directionUpdate({id: id, direction: direction});
             }
           }, 100);
-          window.TweenMax.fromTo(this.state[which], 0.1, this.state[which], {
-            left: 0,
-            top: 0,
-            onUpdate: function() {
-              obj.which = {left: this.target.left, top: this.target.top};
-              self.setState(obj);
-            },
-          });
+          this.setState({[which]: {left: 0, top: 0}});
+
           break;
         default:
           throw new Error(
