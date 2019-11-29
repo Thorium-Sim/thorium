@@ -155,6 +155,7 @@ const Systems = React.memo(
               boxWidthRatio={6}
               label={sys.displayName}
               labelClass={`${sys.damage.damaged ? "text-danger" : ""} ${
+                !sys.damage.damaged &&
                 !sys.power.powerLevels.find(p => p <= sys.power.power)
                   ? "text-dark"
                   : ""
