@@ -100,6 +100,9 @@ export default class Probes extends System {
   destroyProbe(probeId) {
     this.probes = this.probes.filter(p => p.id !== probeId);
   }
+  destroyAllProbes() {
+    this.probes = [];
+  }
   launchProbe(probe) {
     // Decriment the equipment and probe types apropriately.
     // Do some checking first

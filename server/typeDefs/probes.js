@@ -118,6 +118,7 @@ const schema = gql`
   }
   extend type Mutation {
     destroyProbe(id: ID!, probeId: ID!): String
+    destroyAllProbes(id: ID!): String
     launchProbe(id: ID!, probe: ProbeInput!): String
     fireProbe(id: ID!, probeId: ID!): String
     updateProbeType(id: ID!, probeType: ProbeTypeInput!): String

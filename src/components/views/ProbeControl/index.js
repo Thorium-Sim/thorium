@@ -63,6 +63,7 @@ export const PROBES_SUB = gql`
         query
         querying
         response
+        launched
         equipment {
           id
           name
@@ -188,6 +189,7 @@ export const PROBES_QUERY = gql`
         query
         querying
         response
+        launched
         equipment {
           id
           name
@@ -209,6 +211,7 @@ const ProbeControlWrapper = ({
   querying,
   type,
   query,
+  launched,
 }) => {
   // const [activeTab, setActiveTab] = React.useState("1");
   const [queryText, setQueryText] = React.useState(query);
@@ -241,6 +244,7 @@ const ProbeControlWrapper = ({
     },
   );
 
+  if (!id) return null;
   // const toggle = tab => {
   //   if (activeTab === tab) return;
   //  setActiveTab(tab);
@@ -267,58 +271,66 @@ const ProbeControlWrapper = ({
           </Card>
         </Col>
         <Col sm={8}>
-          <h3>Query</h3>
-          <Row className="query-box">
-            <Col sm={9}>
-              <Input
-                readOnly={querying}
-                disabled={!name}
-                size="lg"
-                type="text"
-                value={queryText}
-                onChange={evt => setQueryText(evt.target.value)}
-              />
-            </Col>
-            <Col sm={3}>
-              {querying ? (
-                <Button
-                  disabled={!name}
-                  size="lg"
-                  color="danger"
-                  onClick={cancelQuery}
-                >
-                  Cancel
-                </Button>
-              ) : (
-                <Button
-                  disabled={!name}
-                  size="lg"
-                  color="primary"
-                  onClick={queryProbe}
-                >
-                  Query
-                </Button>
-              )}
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={12}>
-              <pre className="results">
-                {querying ? "Querying..." : response}
-              </pre>
-              {type && (
-                <img
-                  alt="probe"
-                  draggable={false}
-                  style={{
-                    width: "200px",
-                    transform: "rotate(90deg) translate(-150px, -250px)",
-                  }}
-                  src={probeImage}
-                />
-              )}
-            </Col>
-          </Row>
+          {launched ? (
+            <>
+              <h3>Query</h3>
+              <Row className="query-box">
+                <Col sm={9}>
+                  <Input
+                    readOnly={querying}
+                    disabled={!name}
+                    size="lg"
+                    type="text"
+                    value={queryText}
+                    onChange={evt => setQueryText(evt.target.value)}
+                  />
+                </Col>
+                <Col sm={3}>
+                  {querying ? (
+                    <Button
+                      disabled={!name}
+                      size="lg"
+                      color="danger"
+                      onClick={cancelQuery}
+                    >
+                      Cancel
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={!name}
+                      size="lg"
+                      color="primary"
+                      onClick={queryProbe}
+                    >
+                      Query
+                    </Button>
+                  )}
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={12}>
+                  <pre className="results">
+                    {querying ? "Querying..." : response}
+                  </pre>
+                  {type && (
+                    <img
+                      alt="probe"
+                      draggable={false}
+                      style={{
+                        width: "200px",
+                        transform: "rotate(90deg) translate(-150px, -250px)",
+                      }}
+                      src={probeImage}
+                    />
+                  )}
+                </Col>
+              </Row>
+            </>
+          ) : (
+            <>
+              <h3>Probe Not Launched</h3>
+            </>
+          )}
         </Col>
       </Row>
     </Container>

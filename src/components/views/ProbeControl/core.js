@@ -87,6 +87,44 @@ class ProbeControl extends Component {
       }
     }
   };
+  destroyAllProbes = () => {
+    if (window.confirm(`Are you sure you want to destroy ALL probes?`)) {
+      this.setState({selectedProbe: null});
+      const mutation = gql`
+        mutation DestroyAllProbe($id: ID!) {
+          destroyAllProbes(id: $id)
+        }
+      `;
+      const variables = {
+        id: this.props.data.probes[0].id,
+      };
+      this.props.client.mutate({
+        mutation,
+        variables,
+      });
+    }
+  };
+  launchProbe = () => {
+    const probes = this.props.data.probes[0];
+    const {selectedProbe} = this.state;
+    const probeObj = probes.probes.find(p => p.id === selectedProbe);
+
+    const mutation = gql`
+      mutation LaunchProbe($id: ID!, $probeId: ID!) {
+        fireProbe(id: $id, probeId: $probeId)
+      }
+    `;
+    if (probeObj) {
+      const variables = {
+        id: this.props.data.probes[0].id,
+        probeId: probeObj.id,
+      };
+      this.props.client.mutate({
+        mutation,
+        variables,
+      });
+    }
+  };
   response = () => {
     const variables = {
       id: this.props.data.probes[0].id,
@@ -161,14 +199,14 @@ class ProbeControl extends Component {
             })
           }
         />
-        <Row>
-          <Col sm={3}>
+        <div className="flex-row flex-max">
+          <div className="probe-left">
             <div className="scroll probelist">
               {probes.probes.map(p => (
                 <p
                   key={p.id}
                   className={`probe ${p.querying ? "querying" : ""}
-                  ${p.id === selectedProbe ? "selected" : ""} ${
+              ${p.id === selectedProbe ? "selected" : ""} ${
                     !p.launched ? "text-danger" : ""
                   }`}
                   onClick={() => this.setState({selectedProbe: p.id})}
@@ -178,97 +216,111 @@ class ProbeControl extends Component {
                 </p>
               ))}
             </div>
-          </Col>
-          {probe && (
-            <Col sm={3}>
-              <p>
-                <strong>{titleCase(probe.type)}</strong>
-              </p>
-              {this.renderEquipment()}
-              {probe.type === "science" && this.renderScience(probe)}
-            </Col>
-          )}
-          {probe && (
-            <Col sm={6}>
-              <div
-                style={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <OutputField
-                  style={{flex: 1, whiteSpace: "pre-wrap"}}
-                  alert={probe.querying}
-                >
-                  {probe.query}
-                </OutputField>
-                <TypingField
-                  style={{flex: 3, textAlign: "left"}}
-                  controlled
-                  value={this.state.responseString}
-                  onChange={evt =>
-                    this.setState({responseString: evt.target.value})
-                  }
-                />
-                <div>
-                  <Button size="sm" onClick={this.response}>
-                    Send Response
-                  </Button>
-                  <ScanPresets
-                    onChange={e => this.setState({responseString: e})}
-                  />
-                  <Button size="sm" color="danger" onClick={this.destroyProbe}>
-                    Destroy
-                  </Button>
-                </div>
-              </div>
-            </Col>
-          )}
-        </Row>
-        <Row>
-          <Col sm={12}>
-            <p>
-              <strong>Types</strong>
-            </p>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-between",
-              }}
-            >
-              <Mutation
-                mutation={gql`
-                  mutation SetProbeCount($id: ID!, $type: ID!, $count: Int!) {
-                    updateProbeType(
-                      id: $id
-                      probeType: {id: $type, count: $count}
-                    )
-                  }
-                `}
-              >
-                {action =>
-                  probes.types.map(t => (
-                    <div key={t.id}>
-                      {t.name}{" "}
-                      <InputField
-                        prompt={`What do you want to set the ${t.name} probe count to?`}
-                        onClick={count =>
-                          action({
-                            variables: {id: probes.id, type: t.id, count},
-                          })
-                        }
-                      >
-                        {t.count}
-                      </InputField>
-                    </div>
-                  ))
-                }
-              </Mutation>
+            <Button size="sm" color="danger" onClick={this.destroyAllProbes}>
+              Destroy All Probes
+            </Button>
+          </div>
+          <>
+            <div className="probeEquipment">
+              {probe && (
+                <>
+                  <p>
+                    <strong>{titleCase(probe.type)}</strong>
+                  </p>
+                  {this.renderEquipment()}
+                  {probe.type === "science" && this.renderScience(probe)}
+                </>
+              )}
             </div>
-          </Col>
-        </Row>
+            <div className="probeQuery">
+              {probe && (
+                <>
+                  <OutputField
+                    style={{flex: 1, whiteSpace: "pre-wrap"}}
+                    alert={probe.querying}
+                  >
+                    {probe.query}
+                  </OutputField>
+                  <TypingField
+                    style={{flex: 3, textAlign: "left"}}
+                    controlled
+                    value={this.state.responseString}
+                    onChange={evt =>
+                      this.setState({responseString: evt.target.value})
+                    }
+                  />
+                  <div>
+                    <Button size="sm" onClick={this.response}>
+                      Send Response
+                    </Button>
+                    <ScanPresets
+                      onChange={e => this.setState({responseString: e})}
+                    />
+                    {probe.launched ? (
+                      <Button
+                        size="sm"
+                        color="danger"
+                        onClick={this.destroyProbe}
+                      >
+                        Destroy
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        color="warning"
+                        onClick={this.launchProbe}
+                      >
+                        Launch
+                      </Button>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </>
+          )}
+        </div>
+        <div>
+          <p>
+            <strong>Types</strong>
+          </p>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
+            <Mutation
+              mutation={gql`
+                mutation SetProbeCount($id: ID!, $type: ID!, $count: Int!) {
+                  updateProbeType(
+                    id: $id
+                    probeType: {id: $type, count: $count}
+                  )
+                }
+              `}
+            >
+              {action =>
+                probes.types.map(t => (
+                  <div key={t.id}>
+                    {t.name}{" "}
+                    <InputField
+                      prompt={`What do you want to set the ${t.name} probe count to?`}
+                      onClick={count =>
+                        action({
+                          variables: {id: probes.id, type: t.id, count},
+                        })
+                      }
+                    >
+                      {t.count}
+                    </InputField>
+                  </div>
+                ))
+              }
+            </Mutation>
+          </div>
+        </div>
       </Container>
     );
   }

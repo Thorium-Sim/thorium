@@ -8,6 +8,11 @@ App.on("destroyProbe", ({id, probeId}) => {
   sys.destroyProbe(probeId);
   pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
 });
+App.on("destroyAllProbes", ({id}) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.destroyAllProbes();
+  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+});
 App.on("launchProbe", ({id, probe}) => {
   const sys = App.systems.find(s => s.id === id);
   if (!sys.torpedo) {

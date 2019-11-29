@@ -43,11 +43,19 @@
 }
 
 .probe-control-core {
-  .row {
-    min-height: 200px;
-    height: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .flex-row {
+    display: flex;
+  }
+  .probe-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
   .probelist {
+    flex: 1;
     background-color: #eee;
     color: #333;
     padding: 2px;
@@ -58,5 +66,14 @@
     p.querying {
       color: red;
     }
+  }
+  .probeEquipment {
+    flex: 1;
+  }
+  .probeQuery {
+    flex: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
