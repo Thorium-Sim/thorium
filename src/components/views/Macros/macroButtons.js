@@ -57,11 +57,11 @@ const MacroButtons = ({simulator: {id: simulatorId}}) => {
     [],
   );
   useSubscribeToMore(subscribeToMore, SUBSCRIPTION, buttonsConfig);
-  const {macroButtons} = data;
   const [selectedConfig, setSelectedConfig] = useLocalStorage(
     "thorium_macroButtonConfig",
     "",
   );
+  const {macroButtons} = data || {};
   React.useEffect(() => {
     if (macroButtons && selectedConfig) {
       if (!macroButtons.find(m => m.id === selectedConfig)) {
@@ -69,7 +69,8 @@ const MacroButtons = ({simulator: {id: simulatorId}}) => {
       }
     }
   }, [macroButtons, selectedConfig, setSelectedConfig]);
-  if (loading || !macroButtons) return null;
+  if (loading || !data) return null;
+
   const config = macroButtons.find(m => m.id === selectedConfig);
   const categories = config
     ? config.buttons.reduce((acc, b) => {
