@@ -607,7 +607,7 @@ body {
     .frame-5 {
       right: 533px;
       height: 40px;
-      left: 533px;
+      left: 542px;
       background-repeat: repeat-x;
       background-image: url(./images/slice8.png);
     }
@@ -718,8 +718,14 @@ body {
       left: 163px;
       top: 28px;
       background-color: #c27a32 !important;
-      -webkit-clip-path: polygon(0 0, 350px 0, 324px 52px, 312px 59px, 0 60px);
-      clip-path: polygon(0 0, 350px 0, 324px 52px, 312px 59px, 0 60px);
+      clip-path: polygon(
+        0 0,
+        350px 0,
+        327px 46px,
+        319px 55px,
+        308px 59px,
+        0 60px
+      );
     }
     .part-2 {
       width: 105px;
