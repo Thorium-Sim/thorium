@@ -10,6 +10,12 @@ export class Record {
     this.category = params.category || "Manual";
     this.modified = params.modified || false;
   }
+  update({contents, timestamp, category, modified}) {
+    if (contents) this.contents = contents;
+    if (timestamp) this.timestamp = timestamp;
+    if (category) this.category = category;
+    if (modified || modified === false) this.modified = modified;
+  }
 }
 export class RecordSnippet {
   constructor(params) {
@@ -21,6 +27,10 @@ export class RecordSnippet {
     this.type = params.type || "normal";
     this.launched = params.launched || false;
     this.records = params.records || [];
+    this.templateRecords = params.templateRecords || [];
+  }
+  rename(name) {
+    this.name = name;
   }
   addRecords(ids) {
     this.records = this.records
@@ -29,5 +39,16 @@ export class RecordSnippet {
   }
   removeRecord(id) {
     this.records = this.records.filter(r => r !== id);
+  }
+  addTemplate(record) {
+    this.templateRecords.push(record);
+  }
+  updateTemplate(id, data) {
+    const record = this.templateRecords.find(r => r.id === id);
+
+    if (record) record.update(data);
+  }
+  removeTemplate(id) {
+    this.templateRecords = this.templateRecords.filter(r => r.id !== id);
   }
 }

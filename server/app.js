@@ -64,6 +64,7 @@ class Events extends EventEmitter {
     this.interfaceDevices = [];
     this.macros = [];
     this.macroButtonConfigs = [];
+    this.recordTemplates = [];
     this.autoUpdate = true;
     this.migrations = {assets: true};
     this.thoriumId = randomWords(5).join("-");

@@ -21,6 +21,7 @@ const schema = gql`
     type: RecordSnippetType
     launched: Boolean
     records: [RecordEntry]
+    templateRecords: [RecordEntry]
   }
   enum RecordSnippetType {
     normal
@@ -28,6 +29,7 @@ const schema = gql`
   }
   extend type Query {
     recordSnippets(simulatorId: ID!): [RecordSnippet]
+    recordTemplates: [RecordSnippet]
   }
   extend type Mutation {
     recordsCreate(
@@ -53,9 +55,32 @@ const schema = gql`
       recordId: ID!
     ): String
     recordsDeleteRecord(simulatorId: ID!, recordId: ID!): String
+    recordTemplateCreateSnippet(name: String!): String
+    # With record templates, when the template is instantiated during a mission, the time of instantiation
+    # will replace the most recent record timestamp in the snippet. The rest of the snippets will be offset
+    # from that time, giving the illusion that what happened in the timestamp was recent.
+    recordTemplateAddToSnippet(
+      snippetId: ID!
+      contents: String!
+      timestamp: String
+      category: String = "manual"
+      modified: Boolean
+    ): String
+    recordTemplateDeleteSnippet(snippetId: ID!): String
+    recordTemplateRename(snippetId: ID!, name: String!): String
+    recordTemplateUpdateRecord(
+      snippetId: ID!
+      recordId: ID
+      contents: String
+      timestamp: String
+      category: String = "manual"
+      modified: Boolean
+    ): String
+    recordTemplateRemoveFromSnippet(snippetId: ID!, recordId: ID!): String
   }
   extend type Subscription {
     recordSnippetsUpdate(simulatorId: ID): [RecordSnippet]
+    recordTemplatesUpdate: [RecordSnippet]
   }
 `;
 
@@ -82,6 +107,9 @@ const resolver = {
       };
       return sim.recordSnippets.concat(currentSnippet);
     },
+    recordTemplates() {
+      return App.recordTemplates;
+    },
   },
   Mutation: mutationHelper(schema),
   Subscription: {
@@ -102,6 +130,12 @@ const resolver = {
           return true;
         },
       ),
+    },
+    recordTemplatesUpdate: {
+      resolve() {
+        return App.recordTemplates;
+      },
+      subscribe: () => pubsub.asyncIterator("recordTemplatesUpdate"),
     },
   },
 };

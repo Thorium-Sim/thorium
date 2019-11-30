@@ -22,6 +22,7 @@ import {
   Interfaces,
   Macros,
   MacroButtons,
+  Records,
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -186,6 +187,10 @@ class Config extends Component {
           <Route
             path="/config/interfaces"
             render={props => <Interfaces {...props} history={history} />}
+          />
+          <Route
+            path="/config/records"
+            render={props => <Records {...props} history={history} />}
           />
           <Route path="/config/debug" component={DebugList} />
         </div>
