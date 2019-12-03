@@ -31,6 +31,6 @@ export default class Railgun extends HeatMixin(System) {
       return;
     }
     this.ammo = this.ammo - 1;
-    this.heat += 0.1;
+    this.heat = Math.min(1, this.heat + 0.08);
   }
 }

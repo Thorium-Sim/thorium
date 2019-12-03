@@ -28,7 +28,6 @@ class VideoViewscreenCore extends Component {
   render() {
     const {viewscreens, simulator, flightId} = this.props;
     const {viewscreen, data, component} = this.state;
-    const viewscreenObj = viewscreens.find(v => v.id === viewscreen);
     return (
       <div className="core-viewscreen">
         <div className="upper">

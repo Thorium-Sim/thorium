@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import ReactDOM from "react-dom";
 import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {FormattedMessage} from "react-intl";
@@ -106,9 +105,11 @@ class Railgun extends Component {
   };
   mouseMove = e => {
     const locations = this.locations;
-    const {left, top, width} = ReactDOM.findDOMNode(this)
-      .querySelector(".sensors-holder")
-      .getBoundingClientRect();
+    const {
+      left,
+      top,
+      width,
+    } = this.sensorGridRef.current.getBoundingClientRect();
     const location = {
       x: ((e.clientX - left - width / 2) / width) * 2,
       y: ((e.clientY - top - width / 2) / width) * 2,
@@ -122,14 +123,15 @@ class Railgun extends Component {
       .map(l => l.id);
     this.currentContact = distances[0];
     this.mouse = {
-      x: e.clientX - 5,
-      y: e.clientY - 5,
+      x: e.clientX - left + 10,
+      y: e.clientY - top - 5,
     };
   };
   loop = () => {
     this.looping = setTimeout(this.loop, 300);
     this.triggerFire();
   };
+  sensorGridRef = React.createRef();
   render() {
     const {mouse} = this.state;
     const {contacts, simulator, damage, power} = this.props;
@@ -151,23 +153,28 @@ class Railgun extends Component {
         )}
         <Row>
           <Col sm={6}>
-            <SensorGrid
-              renderLines={() => (
-                <svg
-                  viewBox="0 0 8 8"
-                  style={{width: "30px", position: "absolute"}}
-                >
-                  <path
-                    d="M7.68,3.84c-2.119,0 -3.84,-1.721 -3.84,-3.84c0,2.119 -1.721,3.84 -3.84,3.84c2.119,0 3.84,1.721 3.84,3.84c0,-2.119 1.721,-3.84 3.84,-3.84Z"
-                    fill="#ebebeb"
-                  />
-                </svg>
-              )}
-              contacts={contacts}
-              gridMouseDown={damaged ? () => {} : this.mouseDown}
-              // Don't set state - we don't need a re-render
-              locationChange={locations => (this.locations = locations)}
-            />
+            <div
+              ref={this.sensorGridRef}
+              style={{width: "100%", height: "100%"}}
+            >
+              <SensorGrid
+                renderLines={() => (
+                  <svg
+                    viewBox="0 0 8 8"
+                    style={{width: "30px", position: "absolute"}}
+                  >
+                    <path
+                      d="M7.68,3.84c-2.119,0 -3.84,-1.721 -3.84,-3.84c0,2.119 -1.721,3.84 -3.84,3.84c2.119,0 3.84,1.721 3.84,3.84c0,-2.119 1.721,-3.84 3.84,-3.84Z"
+                      fill="#ebebeb"
+                    />
+                  </svg>
+                )}
+                contacts={contacts}
+                gridMouseDown={damaged ? () => {} : this.mouseDown}
+                // Don't set state - we don't need a re-render
+                locationChange={locations => (this.locations = locations)}
+              />
+            </div>
           </Col>
           <Col sm={6}>
             <RailgunLoader {...this.props} mainScreen hasLoader={hasLoader} />
