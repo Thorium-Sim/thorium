@@ -1,9 +1,7 @@
 import manageTranslations from "react-intl-translations-manager";
 import * as fs from "fs";
 import path from "path";
-import { sync as globSync } from "glob";
-import { sync as mkdirpSync } from "mkdirp";
-import { transformFile } from "@babel/core";
+import {transformFile} from "@babel/core";
 import ProgressBar from "progress";
 
 const regex = /\.(js|jsx)$/i;
@@ -39,8 +37,8 @@ const bar = new ProgressBar(
     total: files.length,
     complete: "=",
     incomplete: " ",
-    width: 20
-  }
+    width: 20,
+  },
 );
 
 files
@@ -52,7 +50,7 @@ files
             file,
             {
               presets: ["env", "react", "stage-0"],
-              plugins: ["react-intl"]
+              plugins: ["react-intl"],
             },
             function(err, result) {
               bar.tick(1);
@@ -61,8 +59,8 @@ files
                 console.log("Failed to process file:", file);
                 return resolve();
               }
-              const { metadata } = result;
-              const { messages } = metadata["react-intl"];
+              const {metadata} = result;
+              const {messages} = metadata["react-intl"];
               if (messages.length === 0) return resolve();
               const filename = file
                 .replace("./client/src", "./client/src/translations/src")
@@ -72,14 +70,14 @@ files
                 if (err) return reject(err);
                 return resolve();
               });
-            }
-          )
+            },
+          ),
         ).catch(err => {
           console.error("Error processing file:", file);
           console.error(err);
-        })
+        }),
       ),
-    Promise.resolve([])
+    Promise.resolve([]),
   )
   .then(res => {
     const filePattern = "./client/src/translations/**/*.json";
@@ -91,7 +89,7 @@ files
       messagesDirectory: "client/src/translations",
       translationsDirectory: "client/src/locales",
       singleMessagesFile: true,
-      languages // any language you need
+      languages, // any language you need
     });
   })
 

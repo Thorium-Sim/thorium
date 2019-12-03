@@ -1,0 +1,49 @@
+.card-records {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .row.main-container {
+    flex: 1;
+    height: 100%;
+  }
+  .record-list,
+  .record-category {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    .list-group {
+      overflow-y: auto;
+      flex: 1;
+    }
+    .list-group-item {
+      cursor: pointer;
+    }
+  }
+}
+
+.records-core {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  height: 100%;
+  .records {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .record-list {
+    overflow-y: scroll;
+    flex: 1;
+  }
+  p.selected {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+  }
+  .actions {
+    display: flex;
+  }
+}

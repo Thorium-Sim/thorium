@@ -6,3 +6,9 @@
 **/TweenMax.min.js
 **/plopfile.js
 **/config/**
+build
+server/build
+.cache
+locales
+src/models
+packages

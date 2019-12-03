@@ -9,6 +9,9 @@ coverage
 # production
 build
 zips
+dist
+packages
+.cache
 
 # misc
 .DS_Store

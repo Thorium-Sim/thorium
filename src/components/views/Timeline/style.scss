@@ -1,0 +1,99 @@
+.core-timeline {
+  display: flex;
+  flex-direction: column;
+  padding: 0 4px;
+  max-height: calc(100vh - 23px);
+  .btn-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .btn {
+      flex: 1;
+    }
+  }
+  pre {
+    white-space: pre-line;
+    color: white;
+  }
+  .timeline-list {
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    margin-top: 10px;
+    padding: 10px 0;
+    display: block;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .timeline-item {
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    * {
+      user-select: text;
+    }
+  }
+  .mission-step-description {
+    white-space: pre-wrap;
+  }
+  .list-group-item.active {
+    & > div {
+      background-color: #dc3545 !important;
+    }
+    border-color: #b62a38 !important;
+  }
+  .expand-toggle {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    &.expanded {
+      transform: rotate(90deg);
+    }
+  }
+}
+.timeline-thumbnail {
+  width: calc(100% - 10px);
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & > * {
+    padding: 5px;
+  }
+  cursor: pointer;
+  img,
+  video {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+.current-step {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.form-check-input {
+  position: relative;
+  margin: 0;
+}
+.core-auxtimeline {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  .auxtimeline-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .list-group {
+      flex: 1;
+      overflow-y: auto;
+    }
+  }
+  .timeline-info {
+    flex: 2;
+    overflow-y: auto;
+    padding: 0 5px;
+    overflow-x: hidden;
+  }
+}

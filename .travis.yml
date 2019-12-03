@@ -1,12 +1,14 @@
 language: node_js
 node_js:
-  - 10
+  - 12
 dist: trusty
 sudo: false
 
 branches:
   only:
     - master
+    - develop
+    - 2.0
 
 stages:
   - test
@@ -15,27 +17,24 @@ stages:
     if: branch = master
 
 env:
-  - TEST_SUITE=client
-  - TEST_SUITE=server
-
-install:
-  - npm install
-  - npm install --prefix $TEST_SUITE
-script:
-  - npm run test-$TEST_SUITE -- --forceExit
+  - SKIP_PREFLIGHT_CHECK=true
 
 jobs:
   include:
+    - stage: test
+      install:
+        - yarn
+      script:
+        - npm run validate
+        - yarn danger ci
     - stage: env
       install:
-        - npm install
+        - yarn
       script:
-        - npm run mk-build && npm run build-env && cat ./build/.env
+        - npm run build
     - stage: deploy
       install:
-        - npm install
-        - npm install --prefix client
-        - npm install --prefix server
+        - yarn
       script:
         - echo "Deploying to Github"
       deploy:

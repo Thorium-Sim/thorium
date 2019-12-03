@@ -1,0 +1,6 @@
+{
+  "extends": ["eslint:recommended", "react-app", "eslint-config-prettier"],
+  "rules": {
+    "no-console": "off"
+  }
+}

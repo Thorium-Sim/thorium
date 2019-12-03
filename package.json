@@ -1,6 +1,9 @@
 {
   "name": "thorium",
-  "version": "1.22.0",
+  "version": "2.0.0-beta6",
+  "publishConfig": {
+    "tag": "beta"
+  },
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -12,190 +15,138 @@
     "url": "https://github.com/Thorium-Sim/thorium/issues"
   },
   "license": "Apache-2.0",
-  "homepage": "https://thoriumsim.com",
+  "main": "./public/electron.js",
+  "homepage": "/",
+  "languages": [
+    "es",
+    "fr",
+    "it",
+    "nl",
+    "de"
+  ],
   "scripts": {
-    "start": "npm-run-all --parallel start-server start-client",
-    "start-server": "npm start --prefix server",
-    "start-client": "npm start --prefix client",
-    "postinstall": "npm-run-all --parallel install-server install-client",
-    "install-server": "npm install --prefix server",
-    "install-client": "npm install --prefix client",
-    "test": "npm-run-all --parallel test-client test-server",
-    "test-server": "npm t --prefix server",
-    "test-client": "npm t --prefix client",
-    "build": "NODE_ENV=production npm-run-all build-js build-server mk-build copy-files build-env pkg",
-    "build-js": "npm run build --prefix client",
-    "build-server": "npm run build --prefix server",
-    "build-env": "node ./scripts/build-env.js",
-    "mk-build": "mkdir -p build",
-    "copy-files": "npm-run-all  copy-server copy-client copy-package",
-    "copy-server": "cp -R ./server/build/. build",
-    "copy-client": "cp -R ./client/build/. build",
-    "copy-package": "cp package.json build/package.json",
-    "pkg": "NODE_ENV=production  pkg build/package.json",
-    "zip": "mkdir -p zips && zip -r zips/thorium-macos.zip thorium-macos && zip -r zips/thorium-win.exe.zip thorium-win.exe && zip -r zips/thorium-linux.zip thorium-linux",
-    "bump": "node ./scripts/bumpVersion.js",
-    "sentry-upload": "node ./scripts/sentryFiles.js",
-    "cloc": "cloc . --exclude-dir=node_modules,config,scripts,build-server,snapshots,coverage,build --exclude-ext=css,json",
+    "start": "npm-run-all --parallel start:client start:server",
+    "start:client": "react-scripts start",
+    "start:server": "nodemon ./server/index.js -e js,graphql --ignore snapshots/ --exec babel-node",
+    "watch:electron": "wait-on http://localhost:3000 && electron .",
+    "start:electron": "BROWSER=none npm-run-all --parallel -l start:client watch:server watch:electron",
+    "build": "NODE_ENV=production npm-run-all build:client build:server build:env",
+    "build:client": "react-scripts --max_old_space_size=4096 build",
+    "build:server": "parcel build server/index.js --out-dir build/server --target node --no-source-maps",
+    "build:env": "node ./scripts/build-env.js",
+    "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
+    "build:electron": "electron-builder -mwl",
+    "dist:electron": "electron-builder -mwl -p always",
+    "pack:electron": "electron-builder -mwl",
+    "test": "is-ci test:coverage test:watch",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "sentry:upload": "node ./scripts/sentryFiles.js",
     "translate": "babel-node scripts/manageTranslations.js",
-    "add-contributor": "all-contributors add",
-    "generate-contributor": "all-contributors generate",
     "plop": "plop",
     "semantic-release": "semantic-release",
     "commit": "git-cz",
-    "deploy": "npm-run-all build zip sentry-upload"
+    "eject": "react-scripts eject",
+    "lint": "jest --config test/jest.eslint.js",
+    "typecheck": "tsc --noEmit",
+    "stylelint": "stylelint ./src",
+    "bump": "node ./scripts/bumpVersion.js",
+    "deploy": "npm-run-all build dist:electron sentry:upload",
+    "format": "prettier --write \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
+    "format:different": "prettier --list-different \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
+    "validate": "CI=true npm-run-all --parallel test:coverage typecheck format:different",
+    "lint-staged-validate": "lint-staged",
+    "storybook": "start-storybook -p 9009 -s public,./",
+    "build:storybook": "build-storybook -s public",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
-  "dependencies": {
-    "@babel/polyfill": "^7.2.5",
-    "@semantic-release/exec": "^3.3.2",
-    "@sentry/node": "^4.6.3",
-    "apollo-cache-hermes": "^0.8.8",
-    "apollo-server": "^2.4.6",
-    "apollo-server-express": "^2.4.6",
-    "appdirectory": "^0.1.0",
-    "bonjour": "^3.5.0",
-    "cors": "^2.8.5",
-    "express": "^4.16.4",
-    "express-status-monitor": "^1.2.3",
-    "fuse.js": "^3.4.5",
-    "googleapis": "^40.0.0",
-    "graphql": "^14.1.1",
-    "graphql-server-express": "^1.4.0",
-    "graphql-subscriptions": "^1.0.0",
-    "graphql-tools": "^4.0.4",
-    "graphql-type-json": "^0.2.1",
-    "graphqurl": "^0.3.2",
-    "heap-api": "^1.0.1",
-    "luxon": "^1.11.3",
-    "multer": "^1.4.1",
-    "ncp": "^2.0.0",
-    "node-fetch": "^2.3.0",
-    "random-words": "^1.1.0",
-    "react-dev-utils": "^7.0.3",
-    "simplex-noise": "^2.4.0",
-    "styled-components": "^4.2.0",
-    "subscriptions-transport-ws": "^0.9.15",
-    "three": "^0.101.1",
-    "unzip": "^0.1.11",
-    "yauzl": "^2.10.0",
-    "yazl": "^2.5.1"
+  "proxy": "http://localhost:3001",
+  "nodemonConfig": {
+    "watch": [
+      "server/"
+    ],
+    "ignore": [
+      ".git",
+      "./src/*",
+      "./public/*",
+      "./.config/*",
+      "./types/*"
+    ]
   },
-  "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
-    "@babel/preset-stage-3": "^7.0.0",
-    "@semantic-release/changelog": "^3.0.2",
-    "@semantic-release/git": "^7.0.8",
-    "@semantic-release/github": "^5.2.10",
-    "all-contributors-cli": "^6.1.2",
-    "babel-eslint": "^10.0.1",
-    "babel-plugin-react-intl": "^3.0.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "commitizen": "^3.1.1",
-    "cz-conventional-changelog": "^2.1.0",
-    "dotenv": "^6.2.0",
-    "eslint": "^5.14.1",
-    "eslint-config-react-app": "^3.0.7",
-    "eslint-plugin-flowtype": "^3.4.2",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4",
-    "eslint-plugin-react-hooks": "^1.2.0",
-    "glob": "^7.1.3",
-    "husky": "^2.2.0",
-    "inquirer-file-path": "^1.0.1",
-    "inquirer-recursive": "0.0.6",
-    "is-ci": "^2.0.0",
-    "lint-staged": "^8.1.4",
-    "mkdirp": "^0.5.1",
-    "npm-run-all": "^4.1.5",
-    "pkg": "^4.3.7",
-    "plop": "^2.2.1",
-    "prettier": "^1.16.4",
-    "progress": "^2.0.3",
-    "react-intl-translations-manager": "^5.0.3",
-    "s3": "^4.4.0",
-    "semantic-release": "^15.13.12",
-    "sentry-files": "^1.0.1",
-    "start-server-and-test": "^1.7.11"
+  "browserslist": [
+    "maintained node versions",
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm-run-all --parallel lint-staged-validate typecheck"
+    }
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,jsx,ts,tsx}": [
+      "jest --projects ./test/jest.eslint.js --findRelatedTests"
+    ],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
+    "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write",
       "git add"
     ]
-  },
-  "bin": "./server.js",
-  "pkg": {
-    "scripts": [
-      "typeDefs/**/*",
-      "crew/**/*"
-    ],
-    "assets": [
-      "assets/**/*",
-      "snapshot.json",
-      "index.html",
-      "css/**/*",
-      "fonts/**/*",
-      "js/**/*",
-      "static/**/*",
-      "cardIcons/**/*",
-      "systems/**/*",
-      "viewscreen/**/*",
-      "helpers/mutationHelper.js",
-      "sciences.ogg",
-      "favicon.ico",
-      ".env"
-    ]
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "plugins": [
-      "react-hooks"
-    ],
-    "rules": {
-      "jsx-a11y/href-no-hash": "off",
-      "react-hooks/rules-of-hooks": "error"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "build": {
+    "appId": "us.fyreworks.thorium",
+    "productName": "Thorium",
+    "asar": false,
+    "directories": {
+      "output": "./packages"
+    },
+    "publish": {
+      "provider": "github"
+    },
+    "files": [
+      "electron/**/*",
+      "node_modules/**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/node_modules/{typescript,@babel,eslint}/**",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    ],
+    "mac": {
+      "category": "public.app-category.entertainment",
+      "icon": "./public/icon.icns",
+      "identity": false
+    },
+    "win": {
+      "target": [
+        "zip",
+        "portable"
+      ],
+      "icon": "./public/icon.ico"
+    }
+  },
   "release": {
-    "branch": "master",
+    "branch": "2.0",
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/changelog",
-      [
-        "@semantic-release/github",
-        {
-          "assets": [
-            {
-              "path": "zips/thorium-linux.zip",
-              "label": "Thorium Linux"
-            },
-            {
-              "path": "zips/thorium-macos.zip",
-              "label": "Thorium macOS"
-            },
-            {
-              "path": "zips/thorium-win.exe.zip",
-              "label": "Thorium Windows"
-            }
-          ],
-          "successComment": false
-        }
-      ],
       [
         "@semantic-release/exec",
         {
@@ -207,13 +158,164 @@
         {
           "assets": [
             "CHANGELOG.md",
-            "package.json",
-            "client/package.json",
-            "server/package.json"
+            "package.json"
           ],
           "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
         }
       ]
     ]
+  },
+  "babelMacros": {
+    "styledComponents": {}
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.6.0",
+    "@sentry/node": "^5.7.1",
+    "apollo-server-express": "^2.9.6",
+    "bonjour": "^3.5.0",
+    "chalk": "^3.0.0",
+    "change-case": "^3.1.0",
+    "codegen.macro": "^3.0.0",
+    "core-js": "^3.3.6",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "electron-is-dev": "^1.1.0",
+    "electron-settings": "^3.2.0",
+    "electron-updater": "^4.2.0",
+    "express": "^4.17.1",
+    "express-status-monitor": "^1.2.7",
+    "fuse.js": "^3.4.5",
+    "googleapis": "^44.0.0",
+    "graphql": "^14.5.8",
+    "graphql-type-json": "^0.3.0",
+    "lodash.flowright": "^3.5.0",
+    "luxon": "^1.19.3",
+    "mkdirp": "^0.5.1",
+    "multer": "^1.4.2",
+    "ncp": "^2.0.0",
+    "node-fetch": "^2.6.0",
+    "papaparse": "^5.1.0",
+    "power-off": "^1.1.2",
+    "prando": "^5.1.1",
+    "preval.macro": "^3.0.0",
+    "progress": "^2.0.3",
+    "random-words": "^1.1.0",
+    "react-dev-utils": "^9.1.0",
+    "request": "^2.88.0",
+    "simplex-noise": "^2.4.0",
+    "sleep-mode": "^1.1.0",
+    "subscriptions-transport-ws": "^0.9.16",
+    "three": "^0.110.0",
+    "title-case": "^2.1.1",
+    "uuid": "^3.3.3",
+    "yauzl": "^2.10.0",
+    "yazl": "^2.5.1"
+  },
+  "devDependencies": {
+    "@apollo/react-hooks": "^3.1.3",
+    "@apollo/react-testing": "^3.1.3",
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-typescript": "^7.6.0",
+    "@blueprintjs/core": "^3.19.1",
+    "@blueprintjs/icons": "^3.11.0",
+    "@jagi/jest-transform-graphql": "^1.0.2",
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/exec": "^3.3.8",
+    "@semantic-release/git": "^7.0.8",
+    "@semantic-release/github": "^5.2.10",
+    "@sentry/browser": "^5.7.1",
+    "@storybook/addon-actions": "^5.2.4",
+    "@storybook/addon-links": "^5.2.4",
+    "@storybook/addons": "^5.2.4",
+    "@storybook/react": "^5.2.4",
+    "@testing-library/jest-dom": "^4.1.2",
+    "@testing-library/react": "^9.3.1",
+    "@tweenjs/tween.js": "^18.3.1",
+    "acorn-jsx": "^5.1.0",
+    "acorn-loose": "^7.0.0",
+    "apollo-cache-hermes": "^0.8.9",
+    "apollo-cache-inmemory": "^1.6.3",
+    "apollo-client": "^2.6.4",
+    "apollo-link": "^1.2.13",
+    "apollo-link-context": "^1.0.19",
+    "apollo-link-error": "^1.1.12",
+    "apollo-link-http": "^1.5.16",
+    "apollo-link-ws": "^1.0.19",
+    "apollo-utilities": "^1.3.2",
+    "babel-jest": "^24.9.0",
+    "babel-plugin-import-glob": "^2.0.0",
+    "babel-plugin-transform-node-env-inline": "^0.4.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-react-app": "^9.0.2",
+    "bodymovin": "^4.13.0",
+    "bootstrap": "^4.3.1",
+    "canvas": "^2.6.0",
+    "centered-pan-zoom": "^2.0.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "danger": "^9.2.2",
+    "electron": "^7.0.1",
+    "electron-builder": "^22.1.0",
+    "eslint-config-prettier": "^6.4.0",
+    "get-graphql-schema": "^2.1.2",
+    "graphql-tag.macro": "^2.0.1",
+    "history": "^4.10.1",
+    "husky": "^2.2.0",
+    "is-ci": "^2.0.0",
+    "jest-runner-eslint": "^0.7.5",
+    "jest-transform-graphql": "^2.1.0",
+    "jest-watch-select-projects": "^1.0.0",
+    "keycode": "^2.2.0",
+    "lint-staged": "^8.1.4",
+    "match-sorter": "^4.0.2",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.4",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^1.16.4",
+    "rc-menu": "^8.0.0-alpha.1",
+    "react": "^16.10.2",
+    "react-animated-number": "^0.4.4",
+    "react-apollo": "^3.1.3",
+    "react-color": "^2.17.3",
+    "react-dom": "^16.10.2",
+    "react-draggable": "^4.0.3",
+    "react-icons": "^3.7.0",
+    "react-intl": "^3.3.2",
+    "react-intl-translations-manager": "^5.0.3",
+    "react-konami": "^0.6.2",
+    "react-measure": "^2.3.0",
+    "react-media-player": "^0.7.9",
+    "react-mosaic-component": "^3.2.0",
+    "react-promise-suspense": "^0.3.1",
+    "react-qrcode-hook": "^1.1.0",
+    "react-rangeslider": "^2.2.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.2.0",
+    "react-sortable-hoc": "^1.10.1",
+    "react-table": "^6.10.3",
+    "react-transition-group": "^4.3.0",
+    "react-typing": "^1.0.0",
+    "reactour": "^1.15.3",
+    "reactstrap": "^7.0.0",
+    "semantic-release": "^15.13.12",
+    "sentry-files": "^1.0.1",
+    "showdown": "^1.9.0",
+    "sine-waves": "^0.3.0",
+    "source-map-explorer": "^2.1.1",
+    "styled-components": "^4.4.0",
+    "stylelint": "^11.1.1",
+    "stylelint-config-recommended": "^3.0.0",
+    "stylelint-config-recommended-scss": "^4.0.0",
+    "stylelint-scss": "^3.12.0",
+    "svg-to-jsx": "^1.0.2",
+    "three-obj-loader": "^1.1.3",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.6.4",
+    "wait-on": "^3.3.0"
   }
 }
