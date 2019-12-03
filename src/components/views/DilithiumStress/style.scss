@@ -1,8 +1,13 @@
 .card-dilithium-stress {
   display: flex;
   flex-direction: column;
-  height: 50%;
+  height: 100%;
   justify-content: space-between;
+  .bars-holder {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
   .dilithium-effects {
     width: 70vh;
     height: 70vh;
@@ -38,13 +43,13 @@
 
   .aBar {
     position: absolute;
-    top: 61%;
-    left: 10%;
+    bottom: 1%;
+    left: 5%;
   }
   .mBar {
     position: absolute;
-    top: 5%;
-    left: 10%;
+    top: 1%;
+    left: 5%;
   }
   .bar-holder {
     width: 20vw;
@@ -66,7 +71,7 @@
     height: 540px;
     width: 700px;
     pointer-events: none;
-    right: 15%;
+    right: 5%;
     top: 9%;
     left: unset;
     background-image: url("./frames.png");
@@ -105,16 +110,18 @@
     position: absolute;
   }
   .antimatter {
-    bottom: -1%;
+    bottom: -4%;
+    left: 52%;
   }
   .matter {
     transform: rotate(180deg);
-    top: 6%;
+    top: -4%;
+    left: 52%;
   }
   .plasma {
-    left: -30%;
+    left: -1%;
     transform: rotate(90deg);
-    top: 55%;
+    top: 52%;
   }
 }
 
