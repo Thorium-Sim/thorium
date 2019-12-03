@@ -28,6 +28,7 @@ class VideoViewscreenCore extends Component {
   render() {
     const {viewscreens, simulator, flightId} = this.props;
     const {viewscreen, data, component} = this.state;
+    const viewscreenObj = viewscreens.find(v => v.id === viewscreen);
     return (
       <div className="core-viewscreen">
         <div className="upper">
@@ -119,9 +120,7 @@ class VideoViewscreenCore extends Component {
                     onChange={e =>
                       action({
                         variables: {
-                          id:
-                            viewscreen &&
-                            viewscreens.find(v => v.id === viewscreen).id,
+                          id: viewscreenObj && viewscreenObj.id,
                           overlay: e.target.checked,
                         },
                       })
