@@ -489,7 +489,9 @@ class Scanning extends Component {
               block
               disabled={selectedScan}
               onClick={() => this._setSelectedScan(s)}
-              className={this.state.selectedScanType === s ? "active" : ""}
+              className={`${
+                this.state.selectedScanType === s ? "active" : ""
+              } ${scanning ? "is-disabled" : ""}`}
             >
               {s}
             </Button>
