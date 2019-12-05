@@ -106,6 +106,7 @@ export default [
     currentTimelineStep: 1,
     executedTimelineSteps: [],
     missionConfigs: {},
+    flipped: false,
     stationSet: {
       id: "b0a875f6-0e01-4b51-a423-9241bc197f89",
       __typename: "StationSet",
