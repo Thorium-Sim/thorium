@@ -272,6 +272,7 @@
     "keycode": "^2.2.0",
     "lint-staged": "^8.1.4",
     "match-sorter": "^4.0.2",
+    "midimessage": "^1.0.5",
     "node-sass": "^4.12.0",
     "nodemon": "^1.19.4",
     "npm-run-all": "^4.1.5",

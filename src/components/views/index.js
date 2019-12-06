@@ -210,6 +210,7 @@ const LightingCore = React.lazy(() => import("./Lighting"));
 const MacroButtonsCore = React.lazy(() => import("./Macros/macroButtons"));
 const OfficerLogCore = React.lazy(() => import("./OfficerLog/core"));
 const RecordsCore = React.lazy(() => import("./Records/core"));
+const MIDICore = React.lazy(() => import("./Midi"));
 
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
@@ -499,6 +500,7 @@ export const Cores = {
   MacroButtonsCore,
   OfficerLogCore,
   RecordsCore,
+  MIDICore,
 };
 
 export default Views;
