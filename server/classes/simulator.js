@@ -236,6 +236,7 @@ export default class Simulator {
   set alertlevel(level) {
     this.alertLevel = level;
   }
+
   trainingMode(tf) {
     this.training = tf;
   }
@@ -413,7 +414,7 @@ export default class Simulator {
         (lowerCase(camelCase(card.name)) === name ||
           lowerCase(camelCase(card.component)) === name)
       ) {
-        card.hide();
+        card.hidden = true;
       }
     });
   }
@@ -428,7 +429,7 @@ export default class Simulator {
         (lowerCase(camelCase(card.name)) === name ||
           lowerCase(camelCase(card.component)) === name)
       ) {
-        card.unhide();
+        card.hidden = false;
       }
     });
   }
