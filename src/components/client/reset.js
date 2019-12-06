@@ -2,6 +2,7 @@ import {Component} from "react";
 import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
 import playSound from "../generic/SoundPlayer";
+import {publish} from "helpers/pubsub";
 
 const CACHE_INVALID_SUB = gql`
   subscription ClearCache($client: ID!) {
@@ -34,6 +35,7 @@ class ResetCache extends Component {
               return;
             this.props.playSound({url: "/sciences.ogg"});
             this.props.reset && this.props.reset();
+            publish("widgetClose");
           }
         },
         error(err) {
