@@ -6,7 +6,8 @@ import {Tooltip} from "helpers/reactstrap";
 
 import {Widget} from "../LayoutCorners/Widgets";
 import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
-
+import {FaQuestionCircle, FaSignOutAlt} from "react-icons/fa";
+import {kebabCase} from "change-case";
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
     widgetNotify(simulatorId: $simulatorId, station: $station)
@@ -126,7 +127,7 @@ class WidgetsContainer extends Component {
               );
             })}
         <StaticWidget
-          icon={"question-circle"}
+          icon={FaQuestionCircle}
           name="Training"
           className="help"
           color="#3363AA"
@@ -134,7 +135,7 @@ class WidgetsContainer extends Component {
           touch={touch}
         />
         <StaticWidget
-          icon={"sign-out"}
+          icon={FaSignOutAlt}
           name="Logout"
           color="#999"
           onClick={this.logout}
@@ -172,14 +173,14 @@ const StaticWidget = ({
           playEffect("buttonClick");
           onClick(e);
         }}
-        id={`widget-${icon}`}
+        id={`widget-${kebabCase(name)}`}
         style={{color: color || "rgb(200,150,255)"}}
       />
       {!touch && (
         <Tooltip
           placement="bottom"
           isOpen={tooltipOpen}
-          target={`widget-${icon}`}
+          target={`widget-${kebabCase(name)}`}
           toggle={toggle}
           delay={{show: 0, hide: 20}}
         >
