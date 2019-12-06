@@ -1,0 +1,14 @@
+.midi-container {
+  height: calc(100vh - 66px);
+  .midi-row {
+    height: 100%;
+    display: flex;
+  }
+  .midi-list {
+    flex: 1;
+    margin-right: 1rem;
+  }
+  .midi-board {
+    flex: 1;
+  }
+}
