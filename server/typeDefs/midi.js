@@ -18,8 +18,23 @@ const schema = gql`
     key: Int
     controllerNumber: Int
     channelModeMessage: ChannelModeMessageType
-    component: String
-    variables: JSON
+    actionMode: MidiActionMode
+    config: JSON
+  }
+  input MidiControlInput {
+    channel: Int
+    messageType: MidiMessageType
+    key: Int
+    controllerNumber: Int
+    channelModeMessage: ChannelModeMessageType
+    actionMode: MidiActionMode
+    config: JSON
+  }
+  enum MidiActionMode {
+    macro
+    momentaryMacro
+    toggle
+    valueAssignment
   }
   enum MidiMessageType {
     noteoff
@@ -48,6 +63,17 @@ const schema = gql`
     midiSetCreate(name: String!, deviceName: String!): MidiSet
     midiSetRename(id: ID!, name: String!): MidiSet
     midiSetRemove(id: ID!): Boolean
+    midiSetControl(id: ID!, control: MidiControlInput!): MidiSet
+
+    """
+    Macro: MIDI: Activate a MIDI Set
+    """
+    simulatorAddMidiSet(simulatorId: ID!, midiSet: ID!): Simulator
+
+    """
+    Macro: MIDI: Deactivate a MIDI Set
+    """
+    simulatorRemoveMidiSet(simulatorId: ID!, midiSet: ID!): Simulator
   }
   extend type Subscription {
     midiSets(simulatorId: ID): [MidiSet]
@@ -60,9 +86,10 @@ const resolver = {
       if (simulatorId) {
         const simulator = App.simulators.find(s => s.id === simulatorId);
 
-        return simulator.midiSets.map(id =>
-          App.midiSets.find(m => m.id === id).filter(Boolean),
-        );
+        const output = simulator.midiSets
+          .map(id => App.midiSets.find(m => m.id === id))
+          .filter(Boolean);
+        return output;
       } else {
         return App.midiSets;
       }
@@ -71,7 +98,12 @@ const resolver = {
   Mutation: mutationHelper(schema),
   Subscription: {
     midiSets: {
-      resolve(rootQuery) {
+      resolve(rootQuery, {simulatorId}) {
+        if (simulatorId) {
+          const simulator = App.simulators.find(s => s.id === simulatorId);
+
+          return rootQuery.filter(({id}) => simulator.midiSets.includes(id));
+        }
         return rootQuery;
       },
       subscribe: () => pubsub.asyncIterator("midiSets"),

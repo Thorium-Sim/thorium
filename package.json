@@ -220,6 +220,8 @@
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@babel/preset-typescript": "^7.6.0",
     "@blueprintjs/core": "^3.19.1",
     "@blueprintjs/icons": "^3.11.0",

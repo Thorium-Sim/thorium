@@ -21,6 +21,7 @@ const properties = [
   "Triggers",
   "Interfaces",
   "Keyboards",
+  "Midi",
 ];
 export default ({selectProperty, selectedProperty}) => {
   return (

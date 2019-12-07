@@ -17,3 +17,4 @@ export {default as Interfaces} from "./Interfaces";
 export {default as Missions} from "./Missions";
 export {default as Macros} from "./Macros";
 export {default as Keyboards} from "./Keyboards";
+export {default as Midi} from "./Midi";

@@ -4,13 +4,17 @@ import uuid from "uuid";
 export class MidiControl {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
-    this.channel = params.channel || 0;
-    this.messageType = params.messageType || "controlchange";
-    this.key = params.key || null;
-    this.controllerNumber = params.controllerNumber || null;
-    this.channelModeMessage = params.channelModeMessage || null;
-    this.component = params.component || null;
-    this.variables = params.variables || {};
+    this.channel = params.channel ?? null;
+    this.messageType = params.messageType ?? null;
+    this.key = params.key ?? null;
+    this.controllerNumber = params.controllerNumber ?? null;
+    this.channelModeMessage = params.channelModeMessage ?? null;
+    this.actionMode = params.actionMode || "macro";
+    this.config = params.config || {};
+  }
+  update({actionMode, config}) {
+    this.actionMode = actionMode;
+    this.config = config;
   }
 }
 export class MidiSet {
@@ -23,8 +27,22 @@ export class MidiSet {
     params.controls &&
       params.controls.forEach(c => this.controls.push(new MidiControl(c)));
   }
-
   rename(name) {
     this.name = name;
+  }
+  setControl({id, ...control}) {
+    const ctrl = this.controls.find(
+      c =>
+        c.channel === control.channel &&
+        c.messageType === control.messageType &&
+        c.key === control.key &&
+        c.controllerNumber === control.controllerNumber &&
+        c.channelModeMessage === control.channelModeMessage,
+    );
+    if (!ctrl) {
+      this.controls.push(new MidiControl(control));
+    } else {
+      ctrl.update(control);
+    }
   }
 }

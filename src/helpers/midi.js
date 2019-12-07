@@ -131,11 +131,12 @@ export const MidiProvider = ({
       }
       Object.values(subscribers.current).forEach(({address, sub}) => {
         if (
-          (targetName === inputName || targetName === address.name) &&
-          address.channel === message.channel &&
-          address.messageType === message.messageType &&
-          address.key === message.key &&
-          address.controllerNumber === message.controllerNumber
+          address.all ||
+          ((targetName === inputName || targetName === address.name) &&
+            address.channel === message.channel &&
+            address.messageType === message.messageType &&
+            address.key === message.key &&
+            address.controllerNumber === message.controllerNumber)
         ) {
           sub(transformMidiMessage(message));
         }
@@ -174,12 +175,12 @@ export const MidiProvider = ({
 
   const value = React.useMemo(() => {
     const addSubscriber = (
-      {channel, messageType, key, controllerNumber, name},
+      {all, channel, messageType, key, controllerNumber, name},
       sub,
     ) => {
       const id = uuid.v4();
       subscribers.current[id] = {
-        address: {channel, messageType, key, controllerNumber, name},
+        address: {all, channel, messageType, key, controllerNumber, name},
         sub,
       };
       return () => {

@@ -36,6 +36,7 @@ export function addAspects(template, sim, data = App) {
       aspect === "softwarePanels" ||
       aspect === "commandLines" ||
       aspect === "triggers" ||
+      aspect === "midiSets" ||
       aspect === "interfaces"
     )
       return;
