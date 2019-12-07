@@ -14,7 +14,17 @@
     cursor: pointer;
     color: #cdd7db;
   }
-
+  .training-playRate {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    padding: 1px 5px;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+  time {
+    font-variant-numeric: tabular-nums;
+  }
   .media {
     display: block;
   }

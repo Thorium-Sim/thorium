@@ -29,6 +29,7 @@ import exportSurvey from "../imports/surveys/export";
 import importSurvey from "../imports/surveys/import";
 import exportCoreLayout from "../imports/coreLayout/export";
 import importCoreLayout from "../imports/coreLayout/import";
+import errorhandler from "errorhandler";
 
 const exports = {
   exportMission: exportMission,
@@ -63,6 +64,7 @@ export default () => {
   });
 
   const server = express();
+  server.use(errorhandler({log: true}));
   server.use(bodyParser.json({limit: "20mb"}));
 
   server.on("error", err => {
@@ -74,6 +76,7 @@ export default () => {
       );
       process.exit(0);
     }
+    console.log(err);
   });
 
   server.use(require("express-status-monitor")({}));

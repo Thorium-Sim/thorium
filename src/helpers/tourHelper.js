@@ -1,16 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import {Mutation, useApolloClient} from "react-apollo";
+import {useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "reactour";
 import IntlProvider from "./intl";
 import "./tourHelper.scss";
 import {FaVolumeUp} from "react-icons/fa";
+import {ClientContext} from "components/client/client";
 
 const synth = window.speechSynthesis;
 
+const SET_CLIENT_TRAINING = gql`
+  mutation ClientSetTraining($id: ID!, $training: Boolean!) {
+    clientSetTraining(client: $id, training: $training)
+  }
+`;
+
 const TourHelper = ({steps, training: propsTraining, onRequestClose}) => {
-  const client = useApolloClient();
+  const {client = {}} = React.useContext(ClientContext);
+
   const speak = stepNum => {
     synth && synth.cancel();
     const step = steps[stepNum - 1];
@@ -25,39 +33,36 @@ const TourHelper = ({steps, training: propsTraining, onRequestClose}) => {
       100,
     );
   };
-  let {training, id} = client;
-  if (!training) training = propsTraining;
+  let {id} = client;
+  let training = propsTraining ?? client.training;
 
+  const [setClientTraining] = useMutation(SET_CLIENT_TRAINING, {
+    variables: {id, training: false},
+  });
+
+  if (!steps) return null;
   return (
-    <Mutation
-      mutation={gql`
-        mutation ClientSetTraining($id: ID!, $training: Boolean!) {
-          clientSetTraining(client: $id, training: $training)
+    <Tour
+      steps={steps}
+      isOpen={training || false}
+      onAfterOpen={target => {
+        const node = document.getElementById("___reactour");
+        if (node) {
+          node.style.transform = "translateZ(-10px)";
         }
-      `}
-      variables={{
-        id,
-        training: false,
       }}
-    >
-      {action => (
-        <Tour
-          steps={steps}
-          isOpen={training || false}
-          onRequestClose={() => {
-            synth && synth.cancel();
-            onRequestClose ? onRequestClose() : action();
-          }}
-          badgeContent={(current, total) => {
-            return (
-              <div className="tour-speaker" onClick={() => speak(current)}>
-                <FaVolumeUp size="1em" /> Speak This
-              </div>
-            );
-          }}
-        />
-      )}
-    </Mutation>
+      onRequestClose={() => {
+        synth && synth.cancel();
+        onRequestClose ? onRequestClose() : setClientTraining();
+      }}
+      badgeContent={(current, total) => {
+        return (
+          <div className="tour-speaker" onClick={() => speak(current)}>
+            <FaVolumeUp size="1em" /> Speak This
+          </div>
+        );
+      }}
+    />
   );
 };
 export default TourHelper;

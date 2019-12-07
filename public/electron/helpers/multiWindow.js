@@ -57,12 +57,6 @@ function addWindow({main, x, y, loadedUrl, server}) {
         slashes: true,
       }),
     );
-    ipcMain.on("openBrowser", function() {
-      var ipaddress = require("./ipaddress");
-      var openBrowser = require("react-dev-utils/openBrowser");
-      console.log(`http://${ipaddress}:4444`);
-      openBrowser(`http://${ipaddress}:4444`);
-    });
 
     // Capture console messages
     const old_console_log = global.console.log;

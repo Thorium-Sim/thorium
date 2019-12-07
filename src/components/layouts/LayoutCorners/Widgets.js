@@ -118,6 +118,13 @@ export const Widget = ({
   const [training, setTraining] = React.useState(false);
   const [position, measureRef, mouseDown] = useWindowMove();
   const playEffect = useSoundEffect();
+
+  React.useEffect(() => {
+    return subscribe("widgetClose", () => {
+      setModal(false);
+    });
+  }, []);
+
   React.useEffect(() => {
     const widgetOpenSub = subscribe("widgetOpen", widgetName => {
       if (widgetName === wkey) {

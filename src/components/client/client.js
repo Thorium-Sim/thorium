@@ -1,10 +1,11 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import SoundController from "./soundController";
 import Caching from "./caching";
 import CardContainer from "./Card";
 import Credits from "./credits";
 
 const excludedStations = ["Sound", "Blackout", "Viewscreen", "Keyboard"];
+export const ClientContext = React.createContext({});
 
 class Client extends Component {
   componentDidMount() {
@@ -72,7 +73,7 @@ class Client extends Component {
       updateClientId,
     } = this.props;
     return (
-      <Fragment>
+      <ClientContext.Provider value={this.props}>
         <SoundController clientId={clientId} />
         <Caching client={client} />
         {flight && simulator && station ? (
@@ -92,7 +93,7 @@ class Client extends Component {
             updateClientId={updateClientId}
           />
         )}
-      </Fragment>
+      </ClientContext.Provider>
     );
   }
 }

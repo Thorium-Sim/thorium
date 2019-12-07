@@ -19,6 +19,7 @@ const fragments = {
       hasPrinter
       hasLegs
       panels
+      flipped
       assets {
         mesh
         texture

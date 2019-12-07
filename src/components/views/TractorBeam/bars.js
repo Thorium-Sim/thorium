@@ -37,7 +37,7 @@ class Bars extends Component {
   mouseMove = e => {
     const {max = 0} = this.props;
     const pageY =
-      e.pageY || (e.touches && e.touches[0] && e.touches[0].pageY) || 0;
+      e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
     const {height, top} = this.state;
     this.setState({
       level: Math.max(Math.min((pageY - top) / height, 1), max),

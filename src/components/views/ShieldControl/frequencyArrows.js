@@ -29,6 +29,8 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
   const [direction, setDirection] = React.useState(null);
   const [disabled, setDisabled] = React.useState(false);
   const [frequency, setFrequency] = React.useState(shields.frequency);
+  const mouseDowned = React.useRef(false);
+  const tempDirection = React.useRef(null);
 
   const [frequencyDelay, setFrequencyDelay] = React.useState(150);
 
@@ -80,10 +82,33 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
 
   const handleDirection = dir => () => {
     if (disabled) return;
-    setFrequencyDelay(150);
-    setDirection(dir);
-    setDisabled(true);
+    mouseDowned.current = true;
+    tempDirection.current = dir;
+    setTimeout(() => {
+      if (mouseDowned.current === true) {
+        setFrequencyDelay(150);
+        setDirection(dir);
+        setDisabled(true);
+        mouseDowned.current = false;
+      }
+    }, 150);
   };
+
+  const handleMouseUp = () => {
+    if (mouseDowned.current) {
+      mouseDowned.current = false;
+      const frequencyAdder = tempDirection.current === "down" ? -0.1 : 0.1;
+      const newFreq = frequency + frequencyAdder;
+      const variables = {
+        id: shields.id,
+        freq: newFreq,
+      };
+      updateFrequency({
+        variables,
+      }).then(() => setDirection(null));
+    }
+  };
+
   return (
     <>
       <Flex>
@@ -105,6 +130,8 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
           size="2em"
           onMouseDown={handleDirection("down")}
           onTouchStart={handleDirection("down")}
+          onMouseUp={handleMouseUp}
+          onTouchEnd={handleMouseUp}
         />
         <Grow>
           <h2 className="text-center">
@@ -115,6 +142,8 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
           size="2em"
           onMouseDown={handleDirection("up")}
           onTouchStart={handleDirection("up")}
+          onMouseUp={handleMouseUp}
+          onTouchEnd={handleMouseUp}
         />
       </Flex>
     </>

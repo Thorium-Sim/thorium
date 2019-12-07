@@ -176,7 +176,7 @@ export default class Simulator {
       params.ambiance.forEach(a => this.ambiance.push(new Ambiance(a)));
 
     this.crackedClients = params.crackedClients || {};
-
+    this.flipped = params.flipped || false;
     // Set up the teams
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
@@ -236,6 +236,7 @@ export default class Simulator {
   set alertlevel(level) {
     this.alertLevel = level;
   }
+
   trainingMode(tf) {
     this.training = tf;
   }
@@ -413,7 +414,7 @@ export default class Simulator {
         (lowerCase(camelCase(card.name)) === name ||
           lowerCase(camelCase(card.component)) === name)
       ) {
-        card.hide();
+        card.hidden = true;
       }
     });
   }
@@ -428,7 +429,7 @@ export default class Simulator {
         (lowerCase(camelCase(card.name)) === name ||
           lowerCase(camelCase(card.component)) === name)
       ) {
-        card.unhide();
+        card.hidden = false;
       }
     });
   }
@@ -457,6 +458,9 @@ export default class Simulator {
   }
   uncrackClient(clientId) {
     this.crackedClients[clientId] = false;
+  }
+  flip(flip) {
+    this.flipped = flip;
   }
 
   // Records

@@ -179,7 +179,7 @@ export default class CardFrame extends Component {
   render() {
     const {
       station: {training: stationTraining},
-      simulator: {caps, training: simTraining},
+      simulator: {caps, flipped, training: simTraining},
       client,
     } = this.props;
     const {visible} = this.state;
@@ -187,8 +187,8 @@ export default class CardFrame extends Component {
     return (
       <div
         className={`client-container ${caps ? "all-caps" : ""} ${
-          visible ? "visible" : ""
-        }`}
+          flipped ? "client-flipped" : ""
+        } ${visible ? "visible" : ""}`}
       >
         <ActionsMixin {...this.props} changeCard={this.changeCard} />
         {client.cracked && <div className="cracked-screen" />}

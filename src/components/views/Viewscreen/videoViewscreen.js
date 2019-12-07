@@ -119,9 +119,7 @@ class VideoViewscreenCore extends Component {
                     onChange={e =>
                       action({
                         variables: {
-                          id:
-                            viewscreen &&
-                            viewscreens.find(v => v.id === viewscreen).id,
+                          id: viewscreenObj && viewscreenObj.id,
                           overlay: e.target.checked,
                         },
                       })

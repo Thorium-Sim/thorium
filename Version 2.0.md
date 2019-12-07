@@ -37,14 +37,8 @@ be breaking changes, this release will be a version 3.0.
       things.
 - [ ] Redesign the GraphQL schema, especially so mutations are in
       {system}{Operation} format, like phasersFire
-- [ ] Add proper mutation responses to all requests, to make it easier to
-      transition to MST-GQL
-- [ ] Convert all `SYSTEMUpdate` subscriptions to instead be just `SYSTEM` and
-      match the name of the query exactly. This makes it much easier to use
-      useQuery and useSubscription together without having to use
-      useSubscribeToMore (which is a messy API)
-- [ ] Simplify so it's only running one flight at a time.
-- [ ] Partial TypeScript definitions, especially for the server
+- [ ] Add proper mutation responses to all requests.
+- [ ] Partial TypeScript definitions, especially for the server and for things commonly used in the client, like the simulator object passed down with context.
 - [ ] Upgrade all components to be React StrictMode compatible.
 - [ ] Make it so systems are stored on the simulator object instead of being
       stored on the main App storage.
@@ -64,7 +58,7 @@ be breaking changes, this release will be a version 3.0.
       flight directors.
 - [ ] Fix a bunch of Sentry errors.
 - [ ] Remove references to Apollo's `graphql` HOC and the `<Query>` and
-      `<Mutation>` components (especially if we switch to MST-GQL)
+      `<Mutation>` components. Just use Apollo hooks.
 - [ ] Make it possible to have Reactour trainings auto-advance based on actions
       which the crew members perform. Maybe see if they can be integrated
       together, so training for one card moves into the next, or even has a
@@ -76,9 +70,7 @@ be breaking changes, this release will be a version 3.0.
 
 A few maybes?
 
-- Experiment with switching from Apollo GraphQL to MST-GQL.
-- If not MST-GQL (because Apollo GraphQL does a lot of great stuff for us), then
-  use https://graphql-code-generator.com/, explore simplifying the subscription
+- Use https://graphql-code-generator.com/, explore simplifying the subscription
   update process to remove boilerplate, and create a babel macro that generates
   GraphQL AST, like this: https://gqless.netlify.com
 - Use CSS-in-JS

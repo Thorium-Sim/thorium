@@ -6,14 +6,16 @@ import Bars from "../TractorBeam/bars";
 import Platform from "./platform";
 import Tour from "helpers/tourHelper";
 
-const Animation = ({style = {}}) => {
+const Animation = ({style = {}, children}) => {
   return (
     <div
       alt="Reaction"
       className="reaction-animation"
       draggable={false}
       style={style}
-    />
+    >
+      {children}
+    </div>
   );
 };
 class DilithiumStress extends Component {
@@ -158,10 +160,11 @@ class DilithiumStress extends Component {
         </Mutation>
         <img alt="Dilithium" src={require("./dilithiumCrystal.svg")} />
         <div className="dilithium-effects">
-          <Animation />
-          <Platform className="antimatter" />
-          <Platform className="matter" color="#4953DF" />
-          <Platform className="plasma" color="#51AE41" />
+          <Animation>
+            <Platform className="antimatter" />
+            <Platform className="matter" color="#4953DF" />
+            <Platform className="plasma" color="#51AE41" />
+          </Animation>
         </div>
         <Tour steps={this.trainingSteps()} client={clientObj} />
       </Container>

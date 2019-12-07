@@ -313,6 +313,7 @@ export default {
     hasPrinter: true,
     hasLegs: false,
     panels: [],
+    flipped: false,
     assets: {
       mesh: "/Simulator/default/mesh.obj",
       texture: "/Simulator/default/texture.jpg",

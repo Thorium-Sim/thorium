@@ -67,7 +67,7 @@ const ProbeEquipment = ({
   };
 
   const type = probes.types.find(p => p.id === selectedProbeType);
-  const used = equipment.reduce((prev, next) => {
+  const used = savedEquipment.reduce((prev, next) => {
     return prev + next.count * next.size;
   }, 0);
 

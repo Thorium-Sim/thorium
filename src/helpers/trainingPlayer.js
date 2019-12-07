@@ -5,8 +5,9 @@ import "./trainingPlayer.scss";
 import Measure from "react-measure";
 import {subscribe} from "helpers/pubsub";
 import {FaRegTimesCircle} from "react-icons/fa";
+import debounce from "./debounce";
 
-const {CurrentTime, SeekBar, Duration, Volume} = controls;
+const {CurrentTime, Duration, Volume} = controls;
 
 class MuteUnmuteComp extends Component {
   _handleMuteUnmute = () => {
@@ -100,47 +101,139 @@ class PlayPauseComp extends Component {
 
 const PlayPause = withMediaProps(PlayPauseComp);
 
+const debouceSeekTo = debounce((media, value, shouldPlay) => {
+  media.seekTo(+value);
+  if (shouldPlay) {
+    media.play();
+  }
+}, 250);
+
+const SeekBarComp = React.memo(
+  ({media, className, style}) => {
+    const isPlayingOnMouseDown = React.useRef(false);
+    const onChangeUsed = React.useRef(false);
+    const [seekValue, setSeekValue] = React.useState(media.currentTime);
+    const {duration, currentTime} = media;
+
+    const _handleMouseDown = () => {
+      isPlayingOnMouseDown.current = media.isPlaying;
+      media.pause();
+    };
+    React.useEffect(() => {
+      setSeekValue(currentTime);
+    }, [currentTime]);
+
+    const _handleMouseUp = ({target: {value}}) => {
+      // seek on mouseUp as well because of this bug in <= IE11
+      // https://github.com/facebook/react/issues/554
+      const shouldPlay = isPlayingOnMouseDown.current;
+      if (!onChangeUsed.current) {
+        setSeekValue(+value);
+        // only play if media was playing prior to mouseDown
+        debouceSeekTo(media, value, shouldPlay);
+        return;
+      }
+    };
+
+    const _handleChange = ({target: {value}}) => {
+      setSeekValue(+value);
+      debouceSeekTo(media, value, true);
+      onChangeUsed.current = true;
+    };
+
+    return (
+      <input
+        type="range"
+        step="any"
+        max={duration.toFixed(4)}
+        value={seekValue}
+        onMouseDown={_handleMouseDown}
+        onMouseUp={_handleMouseUp}
+        onChange={_handleChange}
+        className={className}
+        style={{
+          backgroundSize: (seekValue * 100) / duration + "% 100%",
+          ...style,
+        }}
+      />
+    );
+  },
+  (prevProps, nextProps) => {
+    if (
+      prevProps.media.currentTime !== nextProps.media.currentTime ||
+      prevProps.media.duration !== nextProps.media.duration
+    ) {
+      return false;
+    }
+    return true;
+  },
+);
+
+const SeekBar = withMediaProps(SeekBarComp);
+
+const PlayRate = ({playRate, setPlayRate}) => {
+  const playRates = [0.5, 1, 1.25, 1.5, 1.75, 2];
+  return (
+    <span
+      className="training-playRate"
+      onClick={() => {
+        setPlayRate(playRate => {
+          const playRatesIndex = playRates.indexOf(+playRate);
+          return playRates[(playRatesIndex + 1) % playRates.length];
+        });
+      }}
+    >
+      {String(playRate) === "0.5" ? "½" : playRate}×
+    </span>
+  );
+};
 const invalidTags = ["INPUT", "circle", "svg"];
 
-class MediaPlayerObject extends Component {
-  componentDidMount() {
-    this.sub = subscribe("toggleTraining", () => {
-      this.props.playPause();
-    });
-  }
-  componentWillUnmount() {
-    this.sub && this.sub();
-  }
-  render() {
-    const {isMovie, src, playPause, close} = this.props;
-    return (
-      <div className="media">
-        <div
-          className="media-player"
-          style={{display: isMovie ? "block" : "none"}}
-        >
-          <Player src={src} onClick={() => playPause()} />
-        </div>
-        <div className="media-controls">
-          <PlayPause className="media-control media-control--play-pause" />
-          <CurrentTime className="media-control media-control--current-time" />
-          <SeekBar className="media-control media-control--volume-range" />
-          <Duration className="media-control media-control--duration" />
-          <MuteUnmute className="media-control media-control--mute-unmute" />
-          <Volume className="media-control media-control--volume" />
+const MediaPlayerObject = ({isMovie, src, playPause, close}) => {
+  const [playRate, setPlayRate] = React.useState(1);
+  const videoRef = React.useRef();
 
-          {close && (
-            <FaRegTimesCircle
-              size="2em"
-              style={{cursor: "pointer"}}
-              onClick={close}
-            />
-          )}
-        </div>
+  React.useEffect(() => {
+    return subscribe("toggleTraining", () => {
+      playPause();
+    });
+  }, [playPause]);
+
+  React.useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.instance.playbackRate = +playRate;
+    }
+  }, [playRate]);
+
+  return (
+    <div className="media">
+      <div
+        className="media-player"
+        style={{display: isMovie ? "block" : "none"}}
+      >
+        <Player src={src} ref={videoRef} onClick={() => playPause()} />
       </div>
-    );
-  }
-}
+      <div className="media-controls">
+        <PlayPause className="media-control media-control--play-pause" />
+        <CurrentTime className="media-control media-control--current-time" />
+        <SeekBar className="media-control media-control--volume-range" />
+        <Duration className="media-control media-control--duration" />
+        <PlayRate playRate={playRate} setPlayRate={setPlayRate} />
+        <MuteUnmute className="media-control media-control--mute-unmute" />
+        <Volume className="media-control media-control--volume" />
+
+        {close && (
+          <FaRegTimesCircle
+            size="2em"
+            style={{cursor: "pointer"}}
+            onClick={close}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
 export default class MediaPlayer extends Component {
   state = {
     position: {x: 0, y: 0},
