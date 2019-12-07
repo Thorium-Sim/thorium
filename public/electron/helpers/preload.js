@@ -67,7 +67,7 @@ window.startServer = function startServer() {
   return;
 };
 window.openBrowser = function openBrowser() {
-  ipcRenderer.send("openBrowser");
+  shell.openExternal("http://localhost:4444");
   return;
 };
 window.openStats = function openStats() {
