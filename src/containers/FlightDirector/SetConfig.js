@@ -412,7 +412,7 @@ class SetConfig extends Component {
                   variables={{id: selectedSimulator}}
                 >
                   {({loading, data}) => {
-                    if (!data.simulators) return null;
+                    if (!data) return null;
                     const interfaces = data.simulators[0].interfaces
                       .map(i => data.interfaces.find(ii => ii.id === i))
                       .filter(Boolean);

@@ -9,6 +9,19 @@
     margin-right: 1rem;
   }
   .midi-board {
+    flex: 2;
+  }
+  .midi-config {
     flex: 1;
+  }
+  svg {
+    pointer-events: none;
+    [id] {
+      cursor: pointer;
+      pointer-events: all;
+      &:hover {
+        fill: orange;
+      }
+    }
   }
 }

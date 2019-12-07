@@ -1,12 +1,8 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
+// import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import "./style.scss";
-import {
-  AlertConditionSlider,
-  AlertConditionButton,
-} from "./controls/alertCondition";
-import {MidiProvider, useMidi} from "helpers/midi";
+import {MidiProvider} from "helpers/midi";
 
 const fragment = gql`
   fragment TemplateData on Template {
@@ -45,7 +41,7 @@ const MidiCore = props => {
     <MidiProvider>
       <div className="card-template">
         MIDI Control
-        <AlertConditionSlider simulator={props.simulator} />
+        {/* <AlertConditionSlider simulator={props.simulator} />
         <AlertConditionButton
           simulator={props.simulator}
           level={"1"}
@@ -75,7 +71,7 @@ const MidiCore = props => {
           simulator={props.simulator}
           level={"p"}
           controllerNumber={78}
-        />
+        /> */}
       </div>
     </MidiProvider>
   );

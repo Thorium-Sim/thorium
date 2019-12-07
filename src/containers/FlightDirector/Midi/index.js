@@ -4,7 +4,20 @@ import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import {Container, ListGroup, ListGroupItem, Button} from "reactstrap";
 import "./style.scss";
 import {useMutation} from "react-apollo";
-import {stardate} from "components/views/OfficerLog";
+import styled from "styled-components";
+import BCF from "./boardLayouts/bcf2000";
+import XTouchMini from "./boardLayouts/xtouchmini";
+
+const boards = {
+  bcf2000: BCF,
+  xtouchmini: XTouchMini,
+};
+
+const buttonActions = ["macro", "momentaryMacro", "toggle", "listCycle"];
+
+const rotorActions = ["valueAssignment", "listCycle"];
+
+const sliderActions = ["valueAssignment"];
 
 const fragment = gql`
   fragment MidiSetData on MidiSet {
@@ -64,12 +77,25 @@ const RENAME_MIDI_SET = gql`
   ${fragment}
 `;
 
+const BoardWrapper = styled.div`
+  #${({selected}) => selected || "nothing"} {
+    fill: goldenrod;
+    stroke: darkorange;
+  }
+`;
+
+const devices = {
+  bcf2000: "BCF2000",
+  xtouchmini: "X-Touch Mini",
+};
+
 const Midi = () => {
   const {data, loading} = useQueryAndSubscription(
     {query: QUERY},
     {query: SUBSCRIPTION},
   );
   const [selectedMidiSet, setSelectedMidiSet] = React.useState(null);
+  const [selectedComponent, setSelectedComponent] = React.useState(null);
 
   const [addMidiSet] = useMutation(ADD_MIDI_SET);
   const [removeMidiSet] = useMutation(REMOVE_MIDI_SET, {
@@ -80,7 +106,7 @@ const Midi = () => {
   const {midiSets} = data;
 
   const midiSet = midiSets.find(r => r.id === selectedMidiSet);
-
+  const BoardComponent = boards[midiSet?.deviceName];
   return (
     <Container className="midi-container" fluid>
       <h3>MIDI Sets</h3>
@@ -91,9 +117,13 @@ const Midi = () => {
               <ListGroupItem
                 key={r.id}
                 active={r.id === selectedMidiSet}
-                onClick={() => setSelectedMidiSet(r.id)}
+                onClick={() => {
+                  setSelectedMidiSet(r.id);
+                  setSelectedComponent(null);
+                }}
               >
-                {r.name}
+                <div>{r.name}</div>
+                <small>{devices[r.deviceName]}</small>
               </ListGroupItem>
             ))}
           </ListGroup>
@@ -112,8 +142,11 @@ const Midi = () => {
             <option value="select" disabled>
               Add MIDI Set
             </option>
-            <option value="bcf2000">BCF2000</option>
-            <option value="xtouchmini">X-Touch Mini</option>
+            {Object.entries(devices).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </select>
           {selectedMidiSet && (
             <>
@@ -153,8 +186,19 @@ const Midi = () => {
               </Button>
             </>
           )}
+          <small>
+            Don't see a MIDI board model here that you want? File a bug report
+            to get in touch.
+          </small>
         </div>
-        <div className="midi-board"></div>
+        <div className="midi-board">
+          {midiSet && (
+            <BoardWrapper selected={selectedComponent}>
+              <BoardComponent setSelectedComponent={setSelectedComponent} />
+            </BoardWrapper>
+          )}
+        </div>
+        <div className="midi-config"></div>
       </div>
     </Container>
   );
