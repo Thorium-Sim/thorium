@@ -1,13 +1,9 @@
 import React from "react";
 import titleCase from "title-case";
-import {ListGroup, ListGroupItem} from "reactstrap";
-import {FaBan} from "react-icons/fa";
-import EventPicker from "../MissionConfig/EventPicker";
-import EventName from "../MissionConfig/EventName";
 import gql from "graphql-tag.macro";
 import {useMutation} from "react-apollo";
-import uuid from "uuid";
 import MacroConfig from "components/views/Macros/macroConfig";
+import MacroList from "./MacroList";
 
 const midiFragment = gql`
   fragment MidiSetData on MidiSet {
@@ -33,62 +29,6 @@ const actions = {
   rotorActions: ["valueAssignment"],
 
   sliderActions: ["valueAssignment"],
-};
-
-const MacroList = ({
-  type,
-  actions = [],
-  setMidiControl,
-  selectedAction,
-  setSelectedAction,
-}) => {
-  function addAction(e) {
-    const {value: event} = e.target;
-    setMidiControl(({config}) => {
-      const macroKey = type === "down" ? "macros" : "upMacros";
-      const macros = config[macroKey] || [];
-      return {
-        config: {...config, [macroKey]: macros.concat({id: uuid.v4(), event})},
-      };
-    });
-  }
-  function removeAction(id) {
-    setMidiControl(({config}) => {
-      const macroKey = type === "down" ? "macros" : "upMacros";
-      const macros = config[macroKey] || [];
-      return {config: {...config, [macroKey]: macros.filter(m => m.id !== id)}};
-    });
-  }
-  return (
-    <>
-      <h4>{type === "up" ? "Button Down Macros" : "Button Up Macros"}</h4>
-      <ListGroup className="scroll">
-        {actions.map(e => {
-          return (
-            <ListGroupItem
-              active={e.id === selectedAction}
-              key={e.id}
-              onClick={() => setSelectedAction(e.id)}
-            >
-              <EventName id={e.event} label={e.event} />{" "}
-              <FaBan
-                className="text-danger pull-right"
-                onClick={evt => {
-                  evt.preventDefault();
-                  evt.stopPropagation();
-                  removeAction(e.id);
-                }}
-              />
-            </ListGroupItem>
-          );
-        })}
-      </ListGroup>
-      <EventPicker
-        className={"btn btn-sm btn-success btn-block"}
-        handleChange={e => addAction(e)}
-      />
-    </>
-  );
 };
 
 const SET_MIDI_CONTROL = gql`
@@ -204,6 +144,24 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
                 selectedAction={selectedAction}
                 setSelectedAction={setSelectedAction}
               ></MacroList>
+            )}
+            {actionMode === "valueAssignment" && (
+              <select
+                className="btn btn-success btn-block"
+                value={config.valueAssignmentComponent || "nothing"}
+                onChange={e => {
+                  setMidiControl({
+                    actionMode: "valueAssignment",
+                    config: {valueAssignmentComponent: e.target.value},
+                  });
+                }}
+              >
+                <option value="nothing" disabled>
+                  Choose an Update Value
+                </option>
+                <option value="Radiation">Ship Radiation</option>
+                <option value="LightingIntensity">Lighting Intensity</option>
+              </select>
             )}
           </>
         ) : null}

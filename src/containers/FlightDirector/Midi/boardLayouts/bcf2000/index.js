@@ -2,8 +2,6 @@ import React from "react";
 import {ReactComponent as Bcf} from "./bcf2000.svg";
 import {useMidi} from "helpers/midi";
 import styled from "styled-components";
-import titleCase from "title-case";
-import {Input} from "reactstrap";
 
 // const MessageTester = ({setSelectedComponent, selectedComponent}) => {
 //   const [messageValues, setMessageValues] = React.useState({});

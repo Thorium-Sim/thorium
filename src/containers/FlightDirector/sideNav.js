@@ -34,7 +34,6 @@ import {
   FaMousePointer,
   FaTimes,
   FaBars,
-  FaFolderOpen,
   FaSlidersH,
 } from "react-icons/fa";
 

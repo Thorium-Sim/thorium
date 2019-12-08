@@ -150,7 +150,7 @@ export const MidiProvider = ({
           console.log("Found device", i.name, which);
           deviceNames.push(i.name);
         }
-        i.onmidimessage = throttle(handleMidiMessage, 30);
+        i.onmidimessage = throttle(handleMidiMessage, 1000 / 10);
         devices.push(i);
       });
       return devices;
