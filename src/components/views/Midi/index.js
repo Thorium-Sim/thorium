@@ -87,37 +87,6 @@ const MidiCore = props => {
             <MidiSet key={m.id} {...m} simulatorId={simulator.id} />
           ))}
         </ul>
-        {/* <AlertConditionSlider simulator={props.simulator} />
-        <AlertConditionButton
-          simulator={props.simulator}
-          level={"1"}
-          controllerNumber={73}
-        />
-        <AlertConditionButton
-          simulator={props.simulator}
-          level={"2"}
-          controllerNumber={74}
-        />
-        <AlertConditionButton
-          simulator={props.simulator}
-          level={"3"}
-          controllerNumber={75}
-        />
-        <AlertConditionButton
-          simulator={props.simulator}
-          level={"4"}
-          controllerNumber={76}
-        />
-        <AlertConditionButton
-          simulator={props.simulator}
-          level={"5"}
-          controllerNumber={77}
-        />
-        <AlertConditionButton
-          simulator={props.simulator}
-          level={"p"}
-          controllerNumber={78}
-        /> */}
       </div>
     </MidiProvider>
   );
