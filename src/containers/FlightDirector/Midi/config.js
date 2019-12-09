@@ -160,7 +160,7 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
                   Choose an Update Value
                 </option>
                 <option value="Radiation">Ship Radiation</option>
-                <option value="LightingIntensity">Lighting Intensity</option>
+                {/* <option value="LightingIntensity">Lighting Intensity</option> */}
               </select>
             )}
           </>

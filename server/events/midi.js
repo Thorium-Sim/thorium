@@ -36,7 +36,7 @@ App.on("simulatorAddMidiSet", ({simulatorId, midiSet, cb}) => {
   pubsub.publish("midiSets", App.midiSets);
   pubsub.publish("simulatorsUpdate", App.simulators);
 
-  cb(simulator);
+  cb && cb(simulator);
 });
 App.on("simulatorRemoveMidiSet", ({simulatorId, midiSet, cb}) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
@@ -44,5 +44,5 @@ App.on("simulatorRemoveMidiSet", ({simulatorId, midiSet, cb}) => {
   pubsub.publish("midiSets", App.midiSets);
   pubsub.publish("simulatorsUpdate", App.simulators);
 
-  cb(simulator);
+  cb && cb(simulator);
 });
