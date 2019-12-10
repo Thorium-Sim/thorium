@@ -6,12 +6,18 @@ import {titleCase} from "change-case";
 App.on("destroyProbe", ({id, probeId}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.destroyProbe(probeId);
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 App.on("destroyAllProbes", ({id}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.destroyAllProbes();
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 App.on("launchProbe", ({id, probe}) => {
   const sys = App.systems.find(s => s.id === id);
@@ -37,7 +43,10 @@ App.on("launchProbe", ({id, probe}) => {
     );
   }
   sys.launchProbe(probe);
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 App.on("fireProbe", ({id, probeId}) => {
   const sys = App.systems.find(s => s.id === id);
@@ -72,12 +81,18 @@ App.on("fireProbe", ({id, probeId}) => {
 App.on("updateProbeType", ({id, probeType}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.updateProbeType(probeType);
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 App.on("updateProbeEquipment", ({id, probeEquipment}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.updateProbeEquipment(probeEquipment);
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 App.on("probeQuery", ({id, probeId, query}) => {
   const sys = App.systems.find(s => s.id === id);
@@ -101,7 +116,10 @@ App.on("probeQuery", ({id, probeId, query}) => {
     },
     "addCoreFeed",
   );
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
   if (sys.training) {
     setTimeout(() => {
       App.handleEvent(
@@ -130,7 +148,10 @@ App.on("probeQueryResponse", ({id, probeId, response}) => {
       color: "info",
     });
   });
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 App.on("probeProcessedData", ({id, simulatorId, data = "", flash}) => {
   const sys = App.systems.find(
@@ -174,19 +195,28 @@ App.on("probeProcessedData", ({id, simulatorId, data = "", flash}) => {
       relevantCards: ["ProbeNetwork"],
     });
   });
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 
 App.on("setProbeTorpedo", ({id, torpedo}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.setTorpedo(torpedo);
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 
 App.on("setProbeCharge", ({id, probeId, charge}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.setProbeCharge(probeId, charge);
-  pubsub.publish("probesUpdate", App.systems.filter(s => s.type === "Probes"));
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
 });
 
 export function getProbeConfig(probes, probe) {

@@ -34,6 +34,7 @@ import {
   FaMousePointer,
   FaTimes,
   FaBars,
+  FaSlidersH,
 } from "react-icons/fa";
 
 import IssueTracker from "../../components/admin/IssueTracker";
@@ -121,6 +122,16 @@ const makeLinks = () => {
       name: "Interfaces Config",
       icon: FaClone,
       link: "/config/interfaces",
+    },
+    // {
+    //   name: "Records Config",
+    //   icon: FaFolderOpen,
+    //   link: "/config/records",
+    // },
+    {
+      name: "MIDI Config",
+      icon: FaSlidersH,
+      link: "/config/midi",
     },
     {
       name: "Settings",

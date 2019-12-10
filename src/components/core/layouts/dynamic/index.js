@@ -33,9 +33,11 @@ const UpdateSelect = ({id, path, mosaic}) => {
         .sort()
         .map(s => {
           return mosaicComponents(mosaic).indexOf(s) > -1 ? (
-            <option key={s} value={s} disabled>{`${s}${" - ✅"}`}</option>
+            <option key={s} value={s} disabled>{`${titleCase(
+              s,
+            )}${" - ✅"}`}</option>
           ) : (
-            <option key={s} value={s}>{`${s}`}</option>
+            <option key={s} value={s}>{`${titleCase(s)}`}</option>
           );
         })}
     </select>

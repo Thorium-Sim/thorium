@@ -58,6 +58,18 @@ type Card {
   hidden: Boolean
 }
 
+enum ChannelModeMessageType {
+  allsoundoff
+  resetallcontrollers
+  localcontroloff
+  localcontrolon
+  allnotesoff
+  omnimodeoff
+  omnimodeon
+  monomodeon
+  polymodeon
+}
+
 type Chart {
   id: ID
   admitTime: String
@@ -1124,6 +1136,51 @@ input MessageInput {
   content: String
 }
 
+enum MidiActionMode {
+  macro
+  momentaryMacro
+  toggle
+  valueAssignment
+}
+
+type MidiControl {
+  id: ID
+  channel: Int
+  messageType: MidiMessageType
+  key: Int
+  controllerNumber: Int
+  channelModeMessage: ChannelModeMessageType
+  actionMode: MidiActionMode
+  config: JSON
+}
+
+input MidiControlInput {
+  channel: Int
+  messageType: MidiMessageType
+  key: Int
+  controllerNumber: Int
+  channelModeMessage: ChannelModeMessageType
+  actionMode: MidiActionMode
+  config: JSON
+}
+
+enum MidiMessageType {
+  noteoff
+  noteon
+  keypressure
+  controlchange
+  programchange
+  channelpressure
+  pitchbendchange
+}
+
+type MidiSet {
+  id: ID
+  name: String
+  deviceName: String
+  controls: [MidiControl]
+}
+
 type Mission {
   id: ID
   name: String
@@ -1625,6 +1682,20 @@ type Mutation {
   Macro: Messaging: Send an inter-ship message
   """
   sendMessage(message: MessageInput!): String
+  midiSetCreate(name: String!, deviceName: String!): MidiSet
+  midiSetRename(id: ID!, name: String!): MidiSet
+  midiSetRemove(id: ID!): Boolean
+  midiSetControl(id: ID!, control: MidiControlInput!): MidiSet
+
+  """
+  Macro: MIDI: Activate a MIDI Set
+  """
+  simulatorAddMidiSet(simulatorId: ID!, midiSet: ID!): Simulator
+
+  """
+  Macro: MIDI: Deactivate a MIDI Set
+  """
+  simulatorRemoveMidiSet(simulatorId: ID!, midiSet: ID!): Simulator
   createMission(name: String!): String
   removeMission(missionId: ID!): String
   editMission(
@@ -1747,6 +1818,7 @@ type Mutation {
     name: String
   ): String
   destroyProbe(id: ID!, probeId: ID!): String
+  destroyAllProbes(id: ID!): String
   launchProbe(id: ID!, probe: ProbeInput!): String
   fireProbe(id: ID!, probeId: ID!): String
   updateProbeType(id: ID!, probeType: ProbeTypeInput!): String
@@ -1813,6 +1885,25 @@ type Mutation {
     recordId: ID!
   ): String
   recordsDeleteRecord(simulatorId: ID!, recordId: ID!): String
+  recordTemplateCreateSnippet(name: String!): String
+  recordTemplateAddToSnippet(
+    snippetId: ID!
+    contents: String!
+    timestamp: String
+    category: String = "manual"
+    modified: Boolean
+  ): String
+  recordTemplateDeleteSnippet(snippetId: ID!): String
+  recordTemplateRename(snippetId: ID!, name: String!): String
+  recordTemplateUpdateRecord(
+    snippetId: ID!
+    recordId: ID
+    contents: String
+    timestamp: String
+    category: String = "manual"
+    modified: Boolean
+  ): String
+  recordTemplateRemoveFromSnippet(snippetId: ID!, recordId: ID!): String
   addRoom(
     simulatorId: ID!
     deckId: ID
@@ -2070,6 +2161,16 @@ type Mutation {
   Macro: Station: Unhide Card
   """
   unhideSimulatorCard(simulatorId: ID!, cardName: String!): String
+
+  """
+  Macro: Simulator: Flip Simulator
+  """
+  flipSimulator(simulatorId: ID!, flip: Boolean!): String
+  toggleSimulatorCardHidden(
+    simulatorId: ID!
+    cardName: String!
+    toggle: Boolean!
+  ): String
   changeSimulatorExocomps(simulatorId: ID!, exocomps: Int!): String
   changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String
   changeSimulatorExtraPeople(simulatorId: ID!, crew: Int!): String
@@ -2920,6 +3021,7 @@ type Query {
   macros: [Macro]
   macroButtons: [MacroButtonConfig]
   messages(simulatorId: ID!, station: String, group: ID): [Message]
+  midiSets(simulatorId: ID): [MidiSet]
   missions(id: ID, aux: Boolean): [Mission]
   auxTimelines(simulatorId: ID!): [TimelineInstance]
   navigation(simulatorId: ID): [Navigation]
@@ -2935,6 +3037,7 @@ type Query {
   reactors(simulatorId: ID, model: String): [Reactor]
   reactor(id: ID!): Reactor
   recordSnippets(simulatorId: ID!): [RecordSnippet]
+  recordTemplates: [RecordSnippet]
   rooms(simulatorId: ID, deck: ID, name: String, role: RoomRoles): [Room]
   sensors(simulatorId: ID, domain: String): [Sensors]
   sensor(id: ID!): Sensors
@@ -3088,6 +3191,7 @@ type RecordSnippet {
   type: RecordSnippetType
   launched: Boolean
   records: [RecordEntry]
+  templateRecords: [RecordEntry]
 }
 
 enum RecordSnippetType {
@@ -3489,10 +3593,12 @@ type Simulator {
   triggers: [ID]
   triggersPaused: Boolean
   interfaces: [ID]
+  midiSets: [ID]
   bridgeOfficerMessaging: Boolean
   hasPrinter: Boolean
   hasLegs: Boolean
   spaceEdventuresId: String
+  flipped: Boolean
   ambiance: [Ambiance]
   assets: SimulatorAssets
   soundEffects: JSON
@@ -3705,6 +3811,7 @@ type Subscription {
   macroButtonsUpdate: [MacroButtonConfig]
   messageUpdates(simulatorId: ID!, station: String): [Message]
   sendMessage(simulatorId: ID!, station: String): Message
+  midiSets(simulatorId: ID): [MidiSet]
   missionsUpdate(missionId: ID): [Mission]
   auxTimelinesUpdate(simulatorId: ID!): [TimelineInstance]
   navigationUpdate(simulatorId: ID): [Navigation]
@@ -3717,6 +3824,7 @@ type Subscription {
   railgunUpdate(simulatorId: ID): [Railgun]
   reactorUpdate(simulatorId: ID): [Reactor]
   recordSnippetsUpdate(simulatorId: ID): [RecordSnippet]
+  recordTemplatesUpdate: [RecordSnippet]
   roomsUpdate(simulatorId: ID!, role: RoomRoles): [Room]
   sensorsUpdate(simulatorId: ID, domain: String): [Sensors]
   sensorContactUpdate(

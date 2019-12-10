@@ -25,8 +25,8 @@ const Timeline = props => {
 
   const simArgs =
     (mission &&
-      (missionConfigs[mission.id] &&
-        missionConfigs[mission.id][stationSetId])) ||
+      missionConfigs[mission.id] &&
+      missionConfigs[mission.id][stationSetId]) ||
     {};
 
   return (

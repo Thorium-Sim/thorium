@@ -1,0 +1,43 @@
+.midi-container {
+  height: calc(100vh - 66px);
+  .midi-row {
+    height: 100%;
+    display: flex;
+  }
+  .midi-list {
+    flex: 1;
+    margin-right: 1rem;
+  }
+  .midi-board {
+    flex: 1;
+    margin-right: 1rem;
+    svg {
+      pointer-events: none;
+      [id] {
+        cursor: pointer;
+        pointer-events: all;
+        &:hover {
+          fill: orange;
+        }
+      }
+    }
+  }
+  .midi-config {
+    flex: 1;
+    margin-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 100px);
+    .list-group {
+      flex: 1;
+      border: solid 2px rgba(255, 255, 255, 0.5);
+      border-radius: 5px;
+    }
+    h4 {
+      margin-top: 1rem;
+    }
+  }
+  .midi-macro {
+    flex: 1;
+  }
+}

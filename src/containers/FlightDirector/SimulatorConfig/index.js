@@ -21,6 +21,7 @@ const fragment = gql`
     commandLines
     triggers
     interfaces
+    midiSets
     stepDamage
     verifyStep
     hasPrinter

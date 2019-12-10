@@ -1,0 +1,17 @@
+.records-container {
+  height: calc(100vh - 66px);
+  .records-row {
+    height: 100%;
+    display: flex;
+  }
+  .records-list {
+    flex: 1;
+    margin-right: 1rem;
+  }
+  .records {
+    flex: 1;
+  }
+  .records-config {
+    flex: 2;
+  }
+}

@@ -1,6 +1,6 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager.js";
-
+import {Record, RecordSnippet} from "../classes/records";
 function performAction(id, action) {
   const sim = App.simulators.find(s => s.id === id);
   if (sim) {
@@ -35,6 +35,53 @@ App.on("recordsDeleteRecord", ({simulatorId, recordId, cb}) => {
     sim.deleteRecord(recordId);
     cb();
   });
+});
+
+/**
+ * Record Templates
+ */
+App.on("recordTemplateCreateSnippet", ({name}) => {
+  App.recordTemplates.push(new RecordSnippet({name}));
+  pubsub.publish("recordTemplatesUpdate", App.recordTemplates);
+});
+App.on("recordTemplateDeleteSnippet", ({id}) => {
+  App.recordTemplates = App.recordTemplates.filter(r => r.id !== id);
+  pubsub.publish("recordTemplatesUpdate", App.recordTemplates);
+});
+App.on(
+  "recordTemplateAddToSnippet",
+  ({snippetId, contents, timestamp, category, modified}) => {
+    const template = App.recordTemplates.find(r => r.id === snippetId);
+    if (!template) return;
+    template.addTemplate(new Record({contents, timestamp, category, modified}));
+    pubsub.publish("recordTemplatesUpdate", App.recordTemplates);
+  },
+);
+App.on("recordTemplateRename", ({snippetId, name}) => {
+  const template = App.recordTemplates.find(r => r.id === snippetId);
+  if (!template) return;
+  template.rename(name);
+  pubsub.publish("recordTemplatesUpdate", App.recordTemplates);
+});
+App.on(
+  "recordTemplateUpdateRecord",
+  ({snippetId, recordId, contents, timestamp, category, modified}) => {
+    const template = App.recordTemplates.find(r => r.id === snippetId);
+    if (!template) return;
+    template.updateTemplate(recordId, {
+      contents,
+      timestamp,
+      category,
+      modified,
+    });
+    pubsub.publish("recordTemplatesUpdate", App.recordTemplates);
+  },
+);
+App.on("recordTemplateRemoveFromSnippet", ({snippetId, recordId}) => {
+  const template = App.recordTemplates.find(r => r.id === snippetId);
+  if (!template) return;
+  template.removeTemplate(recordId);
+  pubsub.publish("recordTemplatesUpdate", App.recordTemplates);
 });
 
 /**

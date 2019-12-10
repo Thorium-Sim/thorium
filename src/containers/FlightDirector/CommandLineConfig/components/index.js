@@ -8,6 +8,4 @@ export {default as hideSimulatorCard} from "./hideSimulatorCard";
 export {default as unhideSimulatorCard} from "./unhideSimulatorCard";
 export {default as delayedOutput} from "./delayedOutput";
 export {default as flightDirectorResponse} from "./flightDirectorResponse";
-export {
-  default as changeSimulatorAlertLevel,
-} from "./changeSimulatorAlertLevel";
+export {default as changeSimulatorAlertLevel} from "./changeSimulatorAlertLevel";

@@ -5,7 +5,10 @@ import {pubsub} from "../helpers/subscriptionManager.js";
 function action(id, cb) {
   const sys = App.systems.find(s => s.id === id);
   cb(sys);
-  pubsub.publish("railgunUpdate", App.systems.filter(s => s.id === id));
+  pubsub.publish(
+    "railgunUpdate",
+    App.systems.filter(s => s.id === id),
+  );
 }
 App.on("setRailgunAmmo", ({id, ammo}) => {
   action(id, sys => sys.setAmmo(ammo));

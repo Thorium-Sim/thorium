@@ -73,12 +73,21 @@ const sendUpdate = sys => {
       App.systems.filter(s => s.type === "StealthField"),
     );
   if (sys.type === "Railgun")
-    pubsub.publish("railgunUpdate", App.systems.filter(s => s.id === sys.id));
+    pubsub.publish(
+      "railgunUpdate",
+      App.systems.filter(s => s.id === sys.id),
+    );
 
   if (sys.type === "JumpDrive")
-    pubsub.publish("jumpDriveUpdate", App.systems.filter(s => s.id === sys.id));
+    pubsub.publish(
+      "jumpDriveUpdate",
+      App.systems.filter(s => s.id === sys.id),
+    );
   if (sys.type === "Transwarp")
-    pubsub.publish("transwarpUpdate", App.systems.filter(s => s.id === sys.id));
+    pubsub.publish(
+      "transwarpUpdate",
+      App.systems.filter(s => s.id === sys.id),
+    );
 
   if (sys.class === "DockingPort")
     pubsub.publish("dockingUpdate", App.dockingPorts);

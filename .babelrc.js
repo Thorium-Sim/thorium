@@ -18,5 +18,7 @@ module.exports = {
     "import-glob",
     "@babel/plugin-proposal-class-properties",
     "macros",
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-nullish-coalescing-operator",
   ],
 };

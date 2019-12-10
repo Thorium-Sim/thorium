@@ -174,6 +174,7 @@ export default class Simulator {
     this.ambiance = [];
     if (params.ambiance)
       params.ambiance.forEach(a => this.ambiance.push(new Ambiance(a)));
+    this.midiSets = params.midiSets || [];
 
     this.crackedClients = params.crackedClients || {};
     this.flipped = params.flipped || false;

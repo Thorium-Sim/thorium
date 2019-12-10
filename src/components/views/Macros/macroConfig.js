@@ -6,7 +6,8 @@ import * as Macros from "components/macros";
 
 const MacroConfig = ({action, updateAction, client, stations, clients}) => {
   if (!action) return null;
-  const args = JSON.parse(action.args);
+  const args =
+    typeof action.args === "string" ? JSON.parse(action.args) : action.args;
 
   const EventMacro = Macros[action.event];
   return (
@@ -17,7 +18,10 @@ const MacroConfig = ({action, updateAction, client, stations, clients}) => {
             updateArgs={(argName, value) => {
               updateAction({
                 ...action,
-                args: JSON.stringify({...args, [argName]: value}),
+                args:
+                  typeof action.args === "string"
+                    ? JSON.stringify({...args, [argName]: value})
+                    : {...args, [argName]: value},
               });
             }}
             args={args || {}}

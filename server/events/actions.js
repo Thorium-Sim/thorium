@@ -65,9 +65,9 @@ App.on("triggerAction", args => {
         .filter(
           c =>
             (c.simulatorId === args.simulatorId &&
-              (c.station &&
-                args.stationId &&
-                c.station.toLowerCase() === args.stationId.toLowerCase())) ||
+              c.station &&
+              args.stationId &&
+              c.station.toLowerCase() === args.stationId.toLowerCase()) ||
             c.id === args.clientId ||
             c.id === args.stationId,
         )

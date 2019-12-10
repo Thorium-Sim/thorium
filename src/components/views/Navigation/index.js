@@ -197,8 +197,8 @@ class Navigation extends Component {
     }
     if (
       selectedField === "z" &&
-      (enteredCourse[selectedField] !== null &&
-        enteredCourse[selectedField] !== "")
+      enteredCourse[selectedField] !== null &&
+      enteredCourse[selectedField] !== ""
     ) {
       this.inputDestination();
       return;

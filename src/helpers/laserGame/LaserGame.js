@@ -49,11 +49,11 @@ function reducer(state, action) {
 function isHilite(positionCell, x, y, width, objects, movingObject) {
   return (
     positionCell &&
-    (positionCell.x === x &&
-      positionCell.y === y &&
-      !objects[x][y].includes("-Locked") &&
-      !objects[x][y].includes("CheckPoint") &&
-      !objects[x][y].includes("Obstacle")) &&
+    positionCell.x === x &&
+    positionCell.y === y &&
+    !objects[x][y].includes("-Locked") &&
+    !objects[x][y].includes("CheckPoint") &&
+    !objects[x][y].includes("Obstacle") &&
     ((movingObject.includes("Emitter") &&
       (positionCell.x === 0 ||
         positionCell.x === width - 1 ||

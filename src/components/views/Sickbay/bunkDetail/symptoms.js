@@ -72,7 +72,12 @@ const Symptoms = ({
             {titleCase(s)}{" "}
             <FaBan
               className="text-danger"
-              onClick={() => update("symptoms", symptoms.filter(c => c !== s))}
+              onClick={() =>
+                update(
+                  "symptoms",
+                  symptoms.filter(c => c !== s),
+                )
+              }
             />
           </ListGroupItem>
         ))}

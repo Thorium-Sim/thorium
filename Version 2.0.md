@@ -38,7 +38,9 @@ be breaking changes, this release will be a version 3.0.
 - [ ] Redesign the GraphQL schema, especially so mutations are in
       {system}{Operation} format, like phasersFire
 - [ ] Add proper mutation responses to all requests.
-- [ ] Partial TypeScript definitions, especially for the server and for things commonly used in the client, like the simulator object passed down with context.
+- [ ] Partial TypeScript definitions, especially for the server and for things
+      commonly used in the client, like the simulator object passed down with
+      context.
 - [ ] Upgrade all components to be React StrictMode compatible.
 - [ ] Make it so systems are stored on the simulator object instead of being
       stored on the main App storage.

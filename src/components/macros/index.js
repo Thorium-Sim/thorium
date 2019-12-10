@@ -7,9 +7,7 @@ export {default as sendLongRangeMessage} from "./sendLongRangeMessage";
 export {default as processedData} from "./processedData";
 export {default as probeProcessedData} from "./probeProcessedData";
 
-export {
-  default as updateViewscreenComponent,
-} from "./updateViewscreenComponent";
+export {default as updateViewscreenComponent} from "./updateViewscreenComponent";
 export {default as showViewscreenTactical} from "./showViewscreenTactical";
 export {default as navSetPresets} from "./navSetPresets";
 export {default as setViewscreenToAuto} from "./setViewscreenToAuto";
@@ -28,15 +26,11 @@ export {default as completeObjective} from "./completeObjective";
 export {default as syncTimer} from "./syncTimer";
 export {default as playSound} from "./playSound";
 export {default as sendMessage} from "./sendMessage";
-export {
-  default as changeSimulatorAlertLevel,
-} from "./changeSimulatorAlertLevel";
+export {default as changeSimulatorAlertLevel} from "./changeSimulatorAlertLevel";
 export {default as setTargetingClasses} from "./setTargetingClasses";
 export {default as setAlertConditionLock} from "./setAlertConditionLock";
 export {default as addTask} from "./addTask";
-export {
-  default as setLongRangePresetMessages,
-} from "./setLongRangePresetMessages";
+export {default as setLongRangePresetMessages} from "./setLongRangePresetMessages";
 export {default as commUpdateSignals} from "./commUpdateSignals";
 export {
   default as addCommandLineToSimulator,
@@ -48,19 +42,11 @@ export {
   default as removeTriggerFromSimulator,
 } from "./addTriggerToSimulator";
 export {default as fluxSystemPower} from "./fluxSystemPower";
-export {
-  default as assignSpaceEdventuresBadge,
-} from "./assignSpaceEdventuresBadge";
-export {
-  default as assignSpaceEdventuresMission,
-} from "./assignSpaceEdventuresMission";
-export {
-  default as toggleInterfaceObjectHidden,
-} from "./toggleInterfaceObjectHidden";
+export {default as assignSpaceEdventuresBadge} from "./assignSpaceEdventuresBadge";
+export {default as assignSpaceEdventuresMission} from "./assignSpaceEdventuresMission";
+export {default as toggleInterfaceObjectHidden} from "./toggleInterfaceObjectHidden";
 export {default as notify} from "./notify";
-export {
-  default as toggleInterfaceObjectPlaying,
-} from "./toggleInterfaceObjectPlaying";
+export {default as toggleInterfaceObjectPlaying} from "./toggleInterfaceObjectPlaying";
 export {default as triggerMacroAction} from "./triggerMacroAction";
 export {default as hideSimulatorCard} from "./hideSimulatorCard";
 export {default as unhideSimulatorCard} from "./unhideSimulatorCard";
@@ -72,16 +58,12 @@ export {default as renameSimulator} from "./renameSimulator";
 export {default as triggerSurvey} from "./triggerSurvey";
 export {default as shipSetDocking} from "./shipSetDocking";
 export {default as generic} from "./generic";
-export {
-  default as assignSpaceEdventuresFlightType,
-} from "./assignSpaceEdventuresFlightType";
-export {
-  default as setViewscreenPictureInPicture,
-} from "./setViewscreenPictureInPicture";
-export {
-  default as removeViewscreenPictureInPicture,
-} from "./removeViewscreenPictureInPicture";
+export {default as assignSpaceEdventuresFlightType} from "./assignSpaceEdventuresFlightType";
+export {default as setViewscreenPictureInPicture} from "./setViewscreenPictureInPicture";
+export {default as removeViewscreenPictureInPicture} from "./removeViewscreenPictureInPicture";
 export {default as updateSensorGrid} from "./updateSensorGrid";
 export {default as addTacticalMapsToFlight} from "./addTacticalMapsToFlight";
 export {default as reactorChangeEfficiency} from "./reactorChangeEfficiency";
 export {default as shieldFrequencySetAll} from "./shieldFrequencySetAll";
+export {default as simulatorAddMidiSet} from "./simulatorAddMidiSet";
+export {default as simulatorRemoveMidiSet} from "./simulatorRemoveMidiSet";

@@ -42,6 +42,7 @@ const schema = gql`
     triggers: [ID]
     triggersPaused: Boolean
     interfaces: [ID]
+    midiSets: [ID]
     bridgeOfficerMessaging: Boolean
     hasPrinter: Boolean
     hasLegs: Boolean

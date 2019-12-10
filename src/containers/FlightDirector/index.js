@@ -16,3 +16,5 @@ export {default as Triggers} from "./Triggers";
 export {default as Interfaces} from "./Interfaces";
 export {default as Macros} from "./Macros";
 export {default as MacroButtons} from "./MacroButtons";
+export {default as Records} from "./Records";
+export {default as Midi} from "./Midi";

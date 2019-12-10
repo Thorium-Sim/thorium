@@ -14,7 +14,10 @@ const SetTargetingClasses = ({updateArgs = () => {}, args = {}}) => {
         targeting={targeting}
         macro
         removeClass={id =>
-          updateArgs("classInput", args.classInput.filter(c => c.id !== id))
+          updateArgs(
+            "classInput",
+            args.classInput.filter(c => c.id !== id),
+          )
         }
         updateClass={(id, key, value) => {
           updateArgs(

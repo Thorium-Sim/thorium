@@ -312,8 +312,8 @@ class DamageControlCore extends Component {
                         (a.power.power || a.power.power === 0) &&
                         a.power.powerLevels.length
                       ) &&
-                      ((b.power.power || b.power.power === 0) &&
-                        b.power.powerLevels.length)
+                      (b.power.power || b.power.power === 0) &&
+                      b.power.powerLevels.length
                     )
                       return 1;
                     if (
@@ -321,8 +321,8 @@ class DamageControlCore extends Component {
                         (b.power.power || b.power.power === 0) &&
                         b.power.powerLevels.length
                       ) &&
-                      ((a.power.power || a.power.power === 0) &&
-                        a.power.powerLevels.length)
+                      (a.power.power || a.power.power === 0) &&
+                      a.power.powerLevels.length
                     )
                       return -1;
                     if (a.type > b.type) return 1;
