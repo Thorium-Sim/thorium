@@ -101,8 +101,8 @@ export default class Coordinates extends Component {
     }
     if (
       selectedField === "z" &&
-      (enteredTarget[selectedField] !== null &&
-        enteredTarget[selectedField] !== "")
+      enteredTarget[selectedField] !== null &&
+      enteredTarget[selectedField] !== ""
     ) {
       this.inputTarget();
       return;

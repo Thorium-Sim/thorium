@@ -7,7 +7,10 @@ function performAction(id, action) {
   if (sys) {
     action(sys);
   }
-  pubsub.publish("thxUpdate", App.systems.filter(s => s.class === "Thx"));
+  pubsub.publish(
+    "thxUpdate",
+    App.systems.filter(s => s.class === "Thx"),
+  );
 }
 
 App.on("chargeThx", ({id, clientId, charge}) => {

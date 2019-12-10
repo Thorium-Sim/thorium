@@ -204,8 +204,8 @@ export default class PanelCanvas extends Component {
     return (
       <div>
         {draggingCable &&
-          (draggingCable.location.x !== 0 &&
-            draggingCable.location.y !== 0) && (
+          draggingCable.location.x !== 0 &&
+          draggingCable.location.y !== 0 && (
             <div
               className={`ready-cable ${draggingCable.color} dragger`}
               style={{

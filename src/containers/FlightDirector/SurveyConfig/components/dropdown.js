@@ -35,7 +35,11 @@ const Dropdown = ({
     );
   };
   const removeOption = oId => {
-    updateForm(id, "options", options.filter(o => o.id !== oId));
+    updateForm(
+      id,
+      "options",
+      options.filter(o => o.id !== oId),
+    );
   };
   return (
     <div>

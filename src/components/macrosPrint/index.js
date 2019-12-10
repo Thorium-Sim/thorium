@@ -7,9 +7,7 @@ export {default as sendLongRangeMessage} from "./sendLongRangeMessage";
 export {default as processedData} from "./processedData";
 export {default as probeProcessedData} from "./probeProcessedData";
 
-export {
-  default as updateViewscreenComponent,
-} from "./updateViewscreenComponent";
+export {default as updateViewscreenComponent} from "./updateViewscreenComponent";
 export {default as showViewscreenTactical} from "./showViewscreenTactical";
 export {default as navSetPresets} from "./navSetPresets";
 export {default as setViewscreenToAuto} from "./setViewscreenToAuto";
@@ -25,7 +23,5 @@ export {default as setTransporterTargets} from "./setTransporterTargets";
 export {default as navCourseResponse} from "./navCourseResponse";
 export {default as addObjective} from "./addObjective";
 export {default as completeObjective} from "./completeObjective";
-export {
-  default as changeSimulatorAlertLevel,
-} from "./changeSimulatorAlertLevel";
+export {default as changeSimulatorAlertLevel} from "./changeSimulatorAlertLevel";
 export {default as sendMessage} from "./sendMessage";

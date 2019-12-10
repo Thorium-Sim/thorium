@@ -23,11 +23,15 @@ App.on("updateSurveyForm", ({id, form}) => {
 App.on("triggerSurvey", ({simulatorId, id}) => {
   // Duplicate the form with the simualtor id
   const form = new Classes.SurveyForm(
-    Object.assign({}, App.surveyForms.find(s => s.id === id), {
-      simulatorId,
-      id: uuid.v4(),
-      active: true,
-    }),
+    Object.assign(
+      {},
+      App.surveyForms.find(s => s.id === id),
+      {
+        simulatorId,
+        id: uuid.v4(),
+        active: true,
+      },
+    ),
   );
   App.surveyForms.push(form);
   pubsub.publish("surveyformUpdate", App.surveyForms);

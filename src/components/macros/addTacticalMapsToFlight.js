@@ -70,7 +70,10 @@ const TacticalMapConfig = ({tacticalData, args, updateArgs}) => {
                 <FaBan
                   className="text-danger"
                   onClick={() =>
-                    updateArgs("mapIds", args.mapIds.filter(id => id !== t.id))
+                    updateArgs(
+                      "mapIds",
+                      args.mapIds.filter(id => id !== t.id),
+                    )
                   }
                 />
               </li>
