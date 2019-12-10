@@ -120,8 +120,9 @@ class Events extends EventEmitter {
           motu.on("changed", () => {
             App.handleEvent(motu, "motuChange");
           });
-          return m;
+          return motu;
         });
+        return;
       }
       if (snapshot[key] instanceof Array) {
         snapshot[key].forEach(obj => {

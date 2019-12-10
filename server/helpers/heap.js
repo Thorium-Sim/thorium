@@ -41,6 +41,11 @@ const ignoredEvents = [
   "stopPhaserBeams",
   "updateTacticalMapItem",
   "triggerKeyboardAction",
+  "motuAdd",
+  "motuRemove",
+  "motuUpdateChannel",
+  "motuSetSendMute",
+  "motuChange",
 ];
 let uploadBatch = [];
 
