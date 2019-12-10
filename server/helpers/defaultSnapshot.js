@@ -13629,6 +13629,7 @@ export default {
   macroButtonConfigs: [],
   recordTemplates: [],
   midiSets: [],
+  motus: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),
   doTrack: false,
