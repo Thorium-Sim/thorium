@@ -28,7 +28,7 @@ const midiFragment = gql`
     }
   }
 `;
-const MIDI_QUERY = gql`
+export const MIDI_QUERY = gql`
   query MidiSets($simulatorId: ID!) {
     midiSets(simulatorId: $simulatorId) {
       ...MidiSetData
@@ -37,7 +37,7 @@ const MIDI_QUERY = gql`
   ${midiFragment}
 `;
 
-const MIDI_SUBSCRIPTION = gql`
+export const MIDI_SUBSCRIPTION = gql`
   subscription MidiSetsSub($simulatorId: ID!) {
     midiSets(simulatorId: $simulatorId) {
       ...MidiSetData
