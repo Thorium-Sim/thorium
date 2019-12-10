@@ -82,6 +82,12 @@ const schema = gql`
     send: Float
     mute: Boolean
   }
+
+  #Lulz
+  input MotuChannelInput {
+    fader:Float
+    mute:Int
+  }
   enum MotuType {
     chan
     aux
@@ -94,6 +100,16 @@ const schema = gql`
   extend type Mutation {
     motuAdd(address: String!): String
     motuRemove(id: ID!): String
+    
+    """
+    Macro: MOTU: Update Channel
+    """
+    motuUpdateChannel(id:ID!, channelId:ID!, channel:MotuChannelInput!):String
+
+    """
+    Macro: MOTU: (Un)Mute connection from Input to Output
+    """
+    motuSetSendMute(id:ID!, inputId:ID!, outputId:ID!, mute: Boolean!)
   }
   extend type Subscription {
     motus: [Motu]
