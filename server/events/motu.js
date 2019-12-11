@@ -13,7 +13,7 @@ App.on("motuAdd", ({address}) => {
 });
 
 App.on("motuRemove", ({id}) => {
-  App.motus = App.motus.filter(m => m._address !== id);
+  App.motus = App.motus.filter(m => m.address !== id);
   pubsub.publish("motus", App.motus);
 });
 
@@ -24,24 +24,25 @@ App.on("motuChange", motu => {
 });
 
 App.on("motuUpdateChannel", ({id, channelId, channel}) => {
-  const motu = App.motus.find(m => m._address === id);
+  const motu = App.motus.find(m => m.address === id);
 
   const [, chan, type] = channelId.split("-");
 
   let mixer;
   if (type === "aux" || type === "group") {
     mixer = motu.mixerOutputChannels.find(
-      c => c.type === type && c.chan === chan,
+      c => c.type === type && c.chan === parseInt(chan, 10),
     );
   } else if (type === "chan") {
     mixer = motu.mixerInputChannels.find(
-      c => c.type === type && c.chan === chan,
+      c => c.type === type && c.chan === parseInt(chan, 10),
     );
   }
   if (mixer) {
     if (channel.fader || channel.fader === 0)
-      mixer.matrix.fader = channel.fader;
-    if (channel.mute || channel.mute === 0) mixer.matrix.mute = channel.mute;
+      mixer.mix.matrix.fader = channel.fader;
+    if (channel.mute || channel.mute === 0)
+      mixer.mix.matrix.mute = channel.mute;
   }
 
   pubsub.publish("motu", motu);
@@ -49,17 +50,17 @@ App.on("motuUpdateChannel", ({id, channelId, channel}) => {
 });
 
 App.on("motuSetSendMute", ({id, inputId, outputId, mute}) => {
-  const motu = App.motus.find(m => m._address === id);
+  const motu = App.motus.find(m => m.address === id);
 
   const [, chan, type] = inputId.split("-");
   const [, outputChan, outputType] = outputId.split("-");
 
   const mixer = motu.mixerInputChannels.find(
-    c => c.type === type && c.chan === chan,
+    c => c.type === type && c.chan === parseInt(chan),
   );
 
-  if (mixer?.matrix?.[outputType]?.[outputChan]) {
-    mixer.matrix[outputType][outputChan].send = mute ? 0 : 1;
+  if (mixer?.mix?.matrix?.[outputType]?.[outputChan]) {
+    mixer.mix.matrix[outputType][outputChan].send = mute ? 0 : 1;
   }
 
   pubsub.publish("motu", motu);

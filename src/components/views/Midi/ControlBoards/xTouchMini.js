@@ -74,7 +74,13 @@ const Button = ({
   return null;
 };
 
-const Slider = ({simulatorId, componentName, deviceName, channel}) => {
+const Slider = ({
+  simulatorId,
+  componentName,
+  deviceName,
+  channel,
+  config = {},
+}) => {
   const [value, setValue] = React.useState(0);
   const Comp = LiveDataComponents[componentName];
 
@@ -88,12 +94,20 @@ const Slider = ({simulatorId, componentName, deviceName, channel}) => {
     );
   }, [addSubscriber, channel, deviceName, setValue]);
   if (!Comp) return null;
-  return <Comp simulatorId={simulatorId} value={value} setValue={() => {}} />;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      config={config}
+      value={value}
+      setValue={() => {}}
+    />
+  );
 };
 
 const Rotor = ({
   simulatorId,
   componentName,
+  config = {},
   deviceName,
   channel,
   controllerNumber,
@@ -132,7 +146,14 @@ const Rotor = ({
     });
   }, [value, sendOutput, deviceName, controllerNumber]);
   if (!Comp) return null;
-  return <Comp simulatorId={simulatorId} value={value} setValue={setValue} />;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      config={config}
+      value={value}
+      setValue={setValue}
+    />
+  );
 };
 
 const XTouchMini = ({
@@ -171,6 +192,7 @@ const XTouchMini = ({
       <Slider
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         deviceName={deviceName}
         channel={channel}
         messageType={messageType}
@@ -188,6 +210,7 @@ const XTouchMini = ({
       <Rotor
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         deviceName={deviceName}
         channel={channel}
         messageType={messageType}

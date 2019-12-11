@@ -4,6 +4,7 @@ import gql from "graphql-tag.macro";
 import {useMutation} from "react-apollo";
 import MacroConfig from "components/views/Macros/macroConfig";
 import MacroList from "./MacroList";
+import LiveDataComponents from "components/views/Midi/LiveData";
 
 const midiFragment = gql`
   fragment MidiSetData on MidiSet {
@@ -45,6 +46,27 @@ const deviceActionExclusions = {
   "BCF2000 Port 1": ["momentaryMacro"],
 };
 
+const ValueConfig = ({comp, config, setMidiControl}) => {
+  const ConfigComp = LiveDataComponents[comp]?.config;
+  const setComponentConfig = compConfig => {
+    setMidiControl(control => ({
+      ...control,
+      config: {...control.config, componentConfig: compConfig},
+    }));
+  };
+  if (ConfigComp)
+    return (
+      <>
+        <h3>Configure Live Data</h3>
+
+        <ConfigComp
+          config={config.componentConfig || {}}
+          setComponentConfig={setComponentConfig}
+        />
+      </>
+    );
+  return null;
+};
 const BoardConfig = ({selectedComponent, midiSet}) => {
   const [selectedAction, setSelectedAction] = React.useState(null);
   const [setMidiControlMutation] = useMutation(SET_MIDI_CONTROL);
@@ -159,8 +181,15 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
                 <option value="nothing" disabled>
                   Choose an Update Value
                 </option>
-                <option value="Radiation">Ship Radiation</option>
-                {/* <option value="LightingIntensity">Lighting Intensity</option> */}
+                {Object.entries(LiveDataComponents)
+                  .filter(([, comp]) =>
+                    comp?.actionModes?.includes("valueAssignment"),
+                  )
+                  .map(([l]) => (
+                    <option key={l} value={l}>
+                      {titleCase(l)}
+                    </option>
+                  ))}
               </select>
             )}
           </>
@@ -176,6 +205,13 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
               updateAction={updateAction}
             />
           </>
+        )}
+        {config.valueAssignmentComponent && (
+          <ValueConfig
+            comp={config.valueAssignmentComponent}
+            config={config}
+            setMidiControl={setMidiControl}
+          />
         )}
       </div>
     </>

@@ -23,7 +23,6 @@ App.on("midiSetRename", ({id, name, cb}) => {
 App.on("midiSetControl", ({id, control, cb}) => {
   const midiSet = App.midiSets.find(r => r.id === id);
   if (!midiSet) return;
-  console.log(control);
   midiSet.setControl(control);
   pubsub.publish("midiSets", App.midiSets);
   cb(midiSet);

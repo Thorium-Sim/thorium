@@ -40,4 +40,6 @@ const Radiation = ({simulatorId, value, setValue}) => {
   return null;
 };
 
+Radiation.actionModes = ["valueAssignment"];
+
 export default Radiation;

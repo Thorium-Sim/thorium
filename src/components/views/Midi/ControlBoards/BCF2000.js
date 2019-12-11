@@ -10,7 +10,13 @@ const EXECUTE_MACRO = gql`
   }
 `;
 
-function Rotor({simulatorId, componentName, channel, controllerNumber}) {
+function Rotor({
+  simulatorId,
+  componentName,
+  channel,
+  controllerNumber,
+  config = {},
+}) {
   const [value, setValue] = React.useState(0);
   const {addSubscriber, sendOutput} = useMidi();
   const selfTriggeredRef = React.useRef(false);
@@ -47,10 +53,23 @@ function Rotor({simulatorId, componentName, channel, controllerNumber}) {
   }, [value, controllerNumber, sendOutput]);
 
   if (!Comp) return null;
-  return <Comp simulatorId={simulatorId} value={value} setValue={setValue} />;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      value={value}
+      setValue={setValue}
+      config={config}
+    />
+  );
 }
 
-function Slider({simulatorId, componentName, channel, controllerNumber}) {
+function Slider({
+  simulatorId,
+  componentName,
+  channel,
+  controllerNumber,
+  config = {},
+}) {
   const [value, setValue] = React.useState(0);
   const {addSubscriber, sendOutput} = useMidi();
   const selfTriggeredRef = React.useRef(false);
@@ -87,7 +106,14 @@ function Slider({simulatorId, componentName, channel, controllerNumber}) {
   }, [value, controllerNumber, sendOutput]);
 
   if (!Comp) return null;
-  return <Comp simulatorId={simulatorId} value={value} setValue={setValue} />;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      value={value}
+      setValue={setValue}
+      config={config}
+    />
+  );
 }
 
 const Button = ({
@@ -187,6 +213,7 @@ const BCF2000 = ({
       <Slider
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         channel={channel}
         keyVal={key}
         controllerNumber={controllerNumber}
@@ -203,6 +230,7 @@ const BCF2000 = ({
       <Rotor
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         channel={channel}
         keyVal={key}
         controllerNumber={controllerNumber}

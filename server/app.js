@@ -160,7 +160,7 @@ class Events extends EventEmitter {
     ...snapshot
   }) {
     const newFlights = flights.map(({timeouts, ...f}) => f);
-    const newMotus = motus.map(m => m._address);
+    const newMotus = motus.map(m => m.address);
     return {...snapshot, flights: newFlights, motus: newMotus};
   }
   handleEvent(param, eventName, context = {}) {

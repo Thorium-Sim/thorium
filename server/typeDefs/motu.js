@@ -13,6 +13,14 @@ const schema = gql`
     outputs: [MotuOutput]
     sends: [MotuPatch]
   }
+  type MotuChannel {
+    id: ID
+    name: String
+    chan: Int
+    type: MotuType
+    fader: Float
+    mute: Int
+  }
   type MotuInput {
     id: ID
     name: String
@@ -95,6 +103,7 @@ const schema = gql`
   extend type Query {
     motus: [Motu]
     motu(id: ID!): Motu
+    motuChannel(id: ID!, channelId: ID!): MotuChannel
   }
   extend type Mutation {
     motuAdd(address: String!): String
@@ -122,16 +131,17 @@ const schema = gql`
   extend type Subscription {
     motus: [Motu]
     motu(id: ID!): Motu
+    motuChannel(id: ID!, channelId: ID!): MotuChannel
   }
 `;
 
 const resolver = {
   Motu: {
     id(motu) {
-      return motu._address;
+      return motu.address;
     },
     address(motu) {
-      return motu._address;
+      return motu.address;
     },
     offline(motu) {
       return Object.keys(motu._data).length === 0;
@@ -181,12 +191,38 @@ const resolver = {
       return `motu-${output.chan}-${output.type}`;
     },
   },
+  MotuChannel: {
+    id(channel) {
+      return `motu-${channel.chan}-${channel.type}`;
+    },
+    fader(channel) {
+      return channel.mix.matrix.fader;
+    },
+    mute(channel) {
+      return channel.mix.matrix.mute;
+    },
+  },
   Query: {
     motus() {
       return App.motus;
     },
     motu(_, {id}) {
-      return App.motus.find(m => m._address === id);
+      return App.motus.find(m => m.address === id);
+    },
+    motuChannel(_, {id, channelId}) {
+      const motu = App.motus.find(m => m.address === id);
+      const [, chan, type] = channelId.split("-");
+      let channel;
+      if (type === "aux" || type === "group") {
+        channel = motu.mixerOutputChannels.find(
+          c => c.type === type && c.chan === parseInt(chan, 10),
+        );
+      } else if (type === "chan") {
+        channel = motu.mixerInputChannels.find(
+          c => c.type === type && c.chan === parseInt(chan, 10),
+        );
+      }
+      return channel;
     },
   },
   Mutation: mutationHelper(schema),
@@ -198,7 +234,29 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("motu"),
         (rootValue, args) => {
-          return rootValue._address === args.id;
+          return rootValue.address === args.id;
+        },
+      ),
+    },
+    motuChannel: {
+      resolve(rootQuery, {channelId}) {
+        const [, chan, type] = channelId.split("-");
+        let channel;
+        if (type === "aux" || type === "group") {
+          channel = rootQuery.mixerOutputChannels.find(
+            c => c.type === type && c.chan === parseInt(chan, 10),
+          );
+        } else if (type === "chan") {
+          channel = rootQuery.mixerInputChannels.find(
+            c => c.type === type && c.chan === parseInt(chan, 10),
+          );
+        }
+        return channel;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("motu"),
+        (rootValue, args) => {
+          return rootValue.address === args.id;
         },
       ),
     },
