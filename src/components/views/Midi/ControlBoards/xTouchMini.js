@@ -180,8 +180,10 @@ const Toggle = ({
         key: keyVal ?? undefined,
         controllerNumber: controllerNumber ?? undefined,
       },
-      ({value: val}) => {
-        setValue(val);
+      ({value}) => {
+        if (value === 1) {
+          setValue(val => (val === 0 ? 1 : 0));
+        }
       },
     );
   }, [
@@ -201,7 +203,7 @@ const Toggle = ({
       messageType: messageType ?? undefined,
       key: keyVal ?? undefined,
       controllerNumber: controllerNumber ?? undefined,
-      value: value === 0 ? 0 : 1,
+      value: value === 0 ? 0 : 127,
     });
   }, [
     value,
@@ -258,9 +260,10 @@ const XTouchMini = ({
     return (
       <Toggle
         simulatorId={simulatorId}
+        componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         deviceName={deviceName}
         actionMode={actionMode}
-        config={config}
         channel={channel}
         messageType={messageType}
         keyVal={keyVal}

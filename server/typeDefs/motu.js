@@ -104,6 +104,7 @@ const schema = gql`
     motus: [Motu]
     motu(id: ID!): Motu
     motuChannel(id: ID!, channelId: ID!): MotuChannel
+    motuSend(id: ID!, inputId: ID!, outputId: ID!): MotuPatch
   }
   extend type Mutation {
     motuAdd(address: String!): String
@@ -132,6 +133,7 @@ const schema = gql`
     motus: [Motu]
     motu(id: ID!): Motu
     motuChannel(id: ID!, channelId: ID!): MotuChannel
+    motuSend(id: ID!, inputId: ID!, outputId: ID!): MotuPatch
   }
 `;
 
@@ -224,6 +226,24 @@ const resolver = {
       }
       return channel;
     },
+    motuSend(_, {id, inputId, outputId}) {
+      const motu = App.motus.find(m => m.address === id);
+      const [, chan, type] = inputId.split("-");
+      const [, outputChan, outputType] = outputId.split("-");
+
+      const input = motu.mixerInputChannels.find(
+        c => c.type === type && c.chan === parseInt(chan, 10),
+      );
+      const output = motu.mixerOutputChannels.find(
+        c => c.type === outputType && c.chan === parseInt(outputChan, 10),
+      );
+      return {
+        input,
+        output,
+        send: input.mix.matrix[output.type][output.chan].send,
+        mute: input.mix.matrix[output.type][output.chan].send === 0,
+      };
+    },
   },
   Mutation: mutationHelper(schema),
   Subscription: {
@@ -252,6 +272,31 @@ const resolver = {
           );
         }
         return channel;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("motu"),
+        (rootValue, args) => {
+          return rootValue.address === args.id;
+        },
+      ),
+    },
+    motuSend: {
+      resolve(rootQuery, {inputId, outputId}) {
+        const [, chan, type] = inputId.split("-");
+        const [, outputChan, outputType] = outputId.split("-");
+
+        const input = rootQuery.mixerInputChannels.find(
+          c => c.type === type && c.chan === parseInt(chan, 10),
+        );
+        const output = rootQuery.mixerOutputChannels.find(
+          c => c.type === outputType && c.chan === parseInt(outputChan, 10),
+        );
+        return {
+          input,
+          output,
+          send: input.mix.matrix[output.type][output.chan].send,
+          mute: input.mix.matrix[output.type][output.chan].send === 0,
+        };
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("motu"),

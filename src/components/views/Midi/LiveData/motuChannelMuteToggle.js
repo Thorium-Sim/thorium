@@ -78,7 +78,7 @@ const MotuChannelMuteToggle = ({value, setValue, config}) => {
 
   // Send updates when the value changes.
   React.useEffect(() => {
-    if (value !== mute && valueSet.current === false) {
+    if (valueSet.current === false) {
       updateMute();
     }
   }, [mute, updateMute, value]);
