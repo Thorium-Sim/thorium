@@ -167,13 +167,13 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
                 setSelectedAction={setSelectedAction}
               ></MacroList>
             )}
-            {actionMode === "valueAssignment" && (
+            {["valueAssignment", "toggle"].includes(actionMode) && (
               <select
                 className="btn btn-success btn-block"
                 value={config.valueAssignmentComponent || "nothing"}
                 onChange={e => {
                   setMidiControl({
-                    actionMode: "valueAssignment",
+                    actionMode: actionMode || "valueAssignment",
                     config: {valueAssignmentComponent: e.target.value},
                   });
                 }}
@@ -182,9 +182,7 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
                   Choose an Update Value
                 </option>
                 {Object.entries(LiveDataComponents)
-                  .filter(([, comp]) =>
-                    comp?.actionModes?.includes("valueAssignment"),
-                  )
+                  .filter(([, comp]) => comp?.actionModes?.includes(actionMode))
                   .map(([l]) => (
                     <option key={l} value={l}>
                       {titleCase(l)}

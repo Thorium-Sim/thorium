@@ -99,10 +99,12 @@ const Slider = ({
       simulatorId={simulatorId}
       config={config}
       value={value}
-      setValue={() => {}}
+      setValue={noop}
     />
   );
 };
+
+function noop() {}
 
 const Rotor = ({
   simulatorId,
@@ -156,6 +158,71 @@ const Rotor = ({
   );
 };
 
+const Toggle = ({
+  simulatorId,
+  componentName,
+  config = {},
+  deviceName,
+  channel,
+  messageType,
+  keyVal,
+  controllerNumber,
+}) => {
+  const [value, setValue] = React.useState(0);
+  const {addSubscriber, sendOutput} = useMidi();
+  const Comp = LiveDataComponents[componentName];
+  React.useEffect(() => {
+    return addSubscriber(
+      {
+        name: deviceName,
+        channel: channel ?? undefined,
+        messageType: messageType ?? undefined,
+        key: keyVal ?? undefined,
+        controllerNumber: controllerNumber ?? undefined,
+      },
+      ({value: val}) => {
+        setValue(val);
+      },
+    );
+  }, [
+    addSubscriber,
+    channel,
+    setValue,
+    deviceName,
+    controllerNumber,
+    messageType,
+    keyVal,
+  ]);
+
+  React.useEffect(() => {
+    sendOutput({
+      name: deviceName,
+      channel: channel ?? undefined,
+      messageType: messageType ?? undefined,
+      key: keyVal ?? undefined,
+      controllerNumber: controllerNumber ?? undefined,
+      value: value === 0 ? 0 : 1,
+    });
+  }, [
+    value,
+    sendOutput,
+    deviceName,
+    controllerNumber,
+    channel,
+    messageType,
+    keyVal,
+  ]);
+  if (!Comp) return null;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      config={config}
+      value={value}
+      setValue={setValue}
+    />
+  );
+};
+
 const XTouchMini = ({
   simulatorId,
   deviceName,
@@ -172,6 +239,24 @@ const XTouchMini = ({
   ) {
     return (
       <Button
+        simulatorId={simulatorId}
+        deviceName={deviceName}
+        actionMode={actionMode}
+        config={config}
+        channel={channel}
+        messageType={messageType}
+        keyVal={keyVal}
+        controllerNumber={controllerNumber}
+      />
+    );
+  }
+  if (
+    actionMode === "toggle" &&
+    messageType === "noteon" &&
+    config.valueAssignmentComponent
+  ) {
+    return (
+      <Toggle
         simulatorId={simulatorId}
         deviceName={deviceName}
         actionMode={actionMode}

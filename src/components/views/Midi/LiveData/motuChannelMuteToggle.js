@@ -27,7 +27,7 @@ const MOTU_CHANNEL_QUERY = gql`
     motuChannel(id: $id, channelId: $channelId) {
       id
       name
-      fader
+      mute
     }
   }
 `;
@@ -36,17 +36,17 @@ const MOTU_CHANNEL_SUB = gql`
     motuChannel(id: $id, channelId: $channelId) {
       id
       name
-      fader
+      mute
     }
   }
 `;
 
 const SET_MOTU = gql`
-  mutation SetMotu($id: ID!, $channelId: ID!, $fader: Float!) {
-    motuUpdateChannel(id: $id, channelId: $channelId, channel: {fader: $fader})
+  mutation SetMotu($id: ID!, $channelId: ID!, $mute: Int!) {
+    motuUpdateChannel(id: $id, channelId: $channelId, channel: {mute: $mute})
   }
 `;
-const MotuFader = ({value, setValue, config}) => {
+const MotuChannelMuteToggle = ({value, setValue, config}) => {
   const valueSet = React.useRef(false);
   const {data} = useQueryAndSubscription(
     {
@@ -58,10 +58,14 @@ const MotuFader = ({value, setValue, config}) => {
       variables: {id: config.id, channelId: config.channelId},
     },
   );
-  const fader = data?.motuChannel?.fader;
+  const mute = data?.motuChannel?.mute;
 
-  const [updateFader] = useMutation(SET_MOTU, {
-    variables: {id: config.id, channelId: config.channelId, fader: value},
+  const [updateMute] = useMutation(SET_MOTU, {
+    variables: {
+      id: config.id,
+      channelId: config.channelId,
+      mute: parseInt(value, 10),
+    },
   });
   // Update the parent component
   React.useEffect(() => {
@@ -69,20 +73,23 @@ const MotuFader = ({value, setValue, config}) => {
     setTimeout(() => {
       valueSet.current = false;
     }, 200);
-    setValue(fader);
-  }, [fader, setValue]);
+    setValue(mute);
+  }, [mute, setValue]);
 
   // Send updates when the value changes.
   React.useEffect(() => {
-    if (value !== fader && valueSet.current === false) {
-      updateFader();
+    if (value !== mute && valueSet.current === false) {
+      updateMute();
     }
-  }, [fader, updateFader, value]);
+  }, [mute, updateMute, value]);
   return null;
 };
 
-MotuFader.actionModes = ["valueAssignment"];
-MotuFader.config = function ConfigMotuFader({setComponentConfig, config}) {
+MotuChannelMuteToggle.actionModes = ["toggle"];
+MotuChannelMuteToggle.config = function ConfigMotuFader({
+  setComponentConfig,
+  config,
+}) {
   const {loading, data} = useQuery(MOTU_CHANNELS);
   if (loading || !data) return "Loading...";
   const motu = data.motus.find(m => m.id === config.id);
@@ -141,4 +148,4 @@ MotuFader.config = function ConfigMotuFader({setComponentConfig, config}) {
   );
 };
 
-export default MotuFader;
+export default MotuChannelMuteToggle;
