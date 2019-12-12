@@ -194,7 +194,7 @@
     "lodash.flowright": "^3.5.0",
     "luxon": "^1.19.3",
     "mkdirp": "^0.5.1",
-    "motu-control": "1.0.1",
+    "motu-control": "1.0.3",
     "multer": "^1.4.2",
     "ncp": "^2.0.0",
     "node-fetch": "^2.6.0",

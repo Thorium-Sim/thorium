@@ -3,14 +3,16 @@ import {FormGroup, Label, Input, Button} from "helpers/reactstrap";
 import SoundPicker from "helpers/soundPicker";
 import playSoundHOC from "components/generic/SoundPlayer";
 
-function playSound({updateArgs, args, stations, clients, playSound}) {
+function PlaySound({updateArgs, args, stations, clients, playSound}) {
   const sound = args.sound || {};
   const updateSound = (which, val) => {
     updateArgs("sound", {...sound, [which]: val});
   };
-  if (!args.station) {
-    updateArgs("station", "Sound");
-  }
+  React.useEffect(() => {
+    if (!args.station) {
+      updateArgs("station", "Sound");
+    }
+  }, [args, updateArgs]);
   return (
     <div>
       <FormGroup className="macro-PlaySound">
@@ -117,4 +119,4 @@ function playSound({updateArgs, args, stations, clients, playSound}) {
   );
 }
 
-export default playSoundHOC(playSound);
+export default playSoundHOC(PlaySound);

@@ -1,10 +1,12 @@
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
 
-export default function cancelLooping({updateArgs, args, stations, clients}) {
-  if (!args.station) {
-    updateArgs("station", "Sound");
-  }
+export default function CancelLooping({updateArgs, args, stations, clients}) {
+  React.useEffect(() => {
+    if (!args.station) {
+      updateArgs("station", "Sound");
+    }
+  }, [args, updateArgs]);
   return (
     <div>
       <FormGroup className="macro-PlaySound">

@@ -1,41 +1,48 @@
-import React, {Component} from "react";
+import React from "react";
 import {Col, Row} from "helpers/reactstrap";
-import {withApollo} from "react-apollo";
+import {withApollo, useQuery} from "react-apollo";
 import * as Macros from "../../../components/macros";
-class MacroConfig extends Component {
-  _handleChange = e => {
-    this.props.updateMacro("event", e.target.value);
-  };
-  _handleArg = (name, value) => {
-    let {args} = this.props;
+import gql from "graphql-tag.macro";
+
+const CLIENT_QUERY = gql`
+  query Clients {
+    clients {
+      id
+    }
+  }
+`;
+const MacroConfig = props => {
+  const {data, loading} = useQuery(CLIENT_QUERY);
+  if (loading) return null;
+  const _handleArg = (name, value) => {
+    let {args} = props;
     args = JSON.parse(args) || {};
     args[name] = value;
     // Stringify it so it can be sent to the server
-    this.props.updateMacro("args", JSON.stringify(args));
+    props.updateMacro("args", JSON.stringify(args));
   };
-  render() {
-    const {event, client} = this.props;
-    const args = JSON.parse(this.props.args);
-    const EventMacro =
-      Macros[event] ||
-      (() => {
-        return null;
-      });
-    return (
-      <Row>
-        <Col sm="12">
-          {EventMacro && (
-            <EventMacro
-              {...this.props}
-              updateArgs={this._handleArg}
-              args={args || {}}
-              client={client}
-            />
-          )}
-        </Col>
-      </Row>
-    );
-  }
-}
+  const {event, client} = props;
+  const args = JSON.parse(props.args);
+  const EventMacro =
+    Macros[event] ||
+    (() => {
+      return null;
+    });
+  return (
+    <Row>
+      <Col sm="12">
+        {EventMacro && (
+          <EventMacro
+            {...props}
+            updateArgs={_handleArg}
+            args={args || {}}
+            client={client}
+            clients={data.clients}
+          />
+        )}
+      </Col>
+    </Row>
+  );
+};
 
 export default withApollo(MacroConfig);

@@ -13483,10 +13483,10 @@ modify-values@^1.0.0:
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-motu-control@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/motu-control/-/motu-control-1.0.1.tgz#e92488e124e023775a86d367bcac5421d124f265"
-  integrity sha512-1877P29tFsYWpI+PwNzZLEaCzML82hevz+xzE8I9+ND2GDk0kjrlAcoNu86hA3wZ/iHgGFb11tUIUMNKBqC0IA==
+motu-control@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/motu-control/-/motu-control-1.0.3.tgz#b9514887c0ffef64ebd8fed1b77429ebbb913fe5"
+  integrity sha512-HIzIccpaHxrZ3IQpfI/Z3hvi5qcQ25HxCMtl+AF7lRhMm11CQyVocVEoedgegJBxVbb3djos+/ZSDt4cH4Ytqw==
   dependencies:
     eventemitter3 "^4.0.0"
     flat "^5.0.0"

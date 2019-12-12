@@ -53,7 +53,7 @@ const ActionList = ({
   );
 };
 
-const ActionConfig = ({
+export const ActionConfig = ({
   id,
   event,
   delay,
