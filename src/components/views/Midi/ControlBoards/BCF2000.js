@@ -116,6 +116,59 @@ function Slider({
   );
 }
 
+function Toggle({
+  simulatorId,
+  componentName,
+  channel,
+  controllerNumber,
+  config = {},
+}) {
+  const [value, setValue] = React.useState(0);
+  const {addSubscriber, sendOutput} = useMidi();
+  const selfTriggeredRef = React.useRef(false);
+  const Comp = LiveDataComponents[componentName];
+
+  React.useEffect(() => {
+    return addSubscriber(
+      {
+        name: "BCF2000 Port 1",
+        channel,
+        messageType: "controlchange",
+        controllerNumber,
+      },
+      ({value: val}) => {
+        selfTriggeredRef.current = true;
+        setTimeout(() => {
+          selfTriggeredRef.current = false;
+        }, 500);
+        setValue(val === 0 ? 0 : 1);
+      },
+    );
+  }, [addSubscriber, channel, controllerNumber]);
+
+  React.useEffect(() => {
+    if (selfTriggeredRef.current) {
+      return;
+    }
+    sendOutput({
+      name: "BCF2000 Port 1",
+      messageType: "controlchange",
+      controllerNumber,
+      value: value === 0 ? 0 : 1,
+    });
+  }, [value, controllerNumber, sendOutput]);
+
+  if (!Comp) return null;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      value={value}
+      setValue={setValue}
+      config={config}
+    />
+  );
+}
+
 const Button = ({
   simulatorId,
   channel,
@@ -200,6 +253,23 @@ const BCF2000 = ({
         keyVal={key}
         controllerNumber={controllerNumber}
         config={config}
+      />
+    );
+  }
+  if (
+    actionMode === "toggle" &&
+    config.valueAssignmentComponent &&
+    messageType === "controlchange" &&
+    controlId.includes("button")
+  ) {
+    return (
+      <Slider
+        simulatorId={simulatorId}
+        componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
+        channel={channel}
+        keyVal={key}
+        controllerNumber={controllerNumber}
       />
     );
   }
