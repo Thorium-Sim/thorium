@@ -36,7 +36,7 @@
     "build:env": "node ./scripts/build-env.js",
     "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
     "build:electron": "electron-builder -mwl",
-    "dist:electron": "./scripts/distElectron.sh",
+    "dist:electron": "electron-builder -mwl -p always",
     "pack:electron": "electron-builder -mwl",
     "test": "is-ci test:coverage test:watch",
     "test:watch": "jest --watch",

@@ -1,7 +1,4 @@
-os:
-  - linux
-  - osx
-
+os: osx
 osx_image: xcode10.2
 language: node_js
 node_js: "12"
@@ -19,22 +16,21 @@ cache:
 
 stages:
   - test
-  - env
+  - environment
   - name: deploy
     if: branch = develop
-
-env:
-  - SKIP_PREFLIGHT_CHECK=true
 
 jobs:
   include:
     - stage: test
+      env: SKIP_PREFLIGHT_CHECK=true
       install:
         - yarn
       script:
         - npm run validate
         - yarn danger ci
-    - stage: env
+    - stage: environment
+      env: SKIP_PREFLIGHT_CHECK=true
       install:
         - yarn
       script:
@@ -43,6 +39,7 @@ jobs:
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+        - SKIP_PREFLIGHT_CHECK=true
       install:
         - yarn
       script:
