@@ -45,8 +45,9 @@ jobs:
       script:
         - echo "Deploying to Github"
       before_deploy:
-        - if [ "$TRAVIS_OS_NAME" = osx ]; then chmod +x add-osx-cert.sh; fi
-        - if [ "$TRAVIS_OS_NAME" = osx ]; then ./add-osx-cert.sh; fi
+        - if [ "$TRAVIS_OS_NAME" = osx ]; then chmod +x scripts/add-osx-cert.sh;
+          fi
+        - if [ "$TRAVIS_OS_NAME" = osx ]; then ./scripts/add-osx-cert.sh; fi
       before_cache:
         - rm -rf $HOME/.cache/electron-builder/wine
       deploy:
