@@ -19,7 +19,7 @@ const LightingIntensity = ({simulatorId, value, setValue}) => {
   const intensity = data?.simulators?.[0].lighting.intensity;
 
   const [updateLighting] = useMutation(UPDATE_LIGHTING, {
-    variables: {id: simulatorId, radiation: value},
+    variables: {id: simulatorId, intensity: value},
   });
 
   // Update the parent component
@@ -27,7 +27,7 @@ const LightingIntensity = ({simulatorId, value, setValue}) => {
     valueSet.current = true;
     setTimeout(() => {
       valueSet.current = false;
-    }, 200);
+    }, 1000 / 30);
     setValue(intensity);
   }, [intensity, setValue]);
 

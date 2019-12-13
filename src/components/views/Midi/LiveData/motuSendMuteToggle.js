@@ -87,7 +87,7 @@ const MotuSendMuteToggle = ({value, setValue, config}) => {
     valueSet.current = true;
     setTimeout(() => {
       valueSet.current = false;
-    }, 200);
+    }, 1000 / 10);
     setValue(mute ? 1 : 0);
   }, [mute, setValue]);
 

@@ -27,7 +27,7 @@ const Radiation = ({simulatorId, value, setValue}) => {
     radiationSet.current = true;
     setTimeout(() => {
       radiationSet.current = false;
-    }, 200);
+    }, 1000 / 10);
     setValue(radiation);
   }, [radiation, setValue]);
 

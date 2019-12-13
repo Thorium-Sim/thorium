@@ -68,7 +68,7 @@ const MotuFader = ({value, setValue, config}) => {
     valueSet.current = true;
     setTimeout(() => {
       valueSet.current = false;
-    }, 200);
+    }, 1000 / 10);
     setValue(fader);
   }, [fader, setValue]);
 

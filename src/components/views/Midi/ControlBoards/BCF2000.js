@@ -150,11 +150,12 @@ function Toggle({
     if (selfTriggeredRef.current) {
       return;
     }
+
     sendOutput({
       name: "BCF2000 Port 1",
       messageType: "controlchange",
       controllerNumber,
-      value: value === 0 ? 0 : 1,
+      value: value === 0 ? 0 : 127,
     });
   }, [value, controllerNumber, sendOutput]);
 
@@ -263,7 +264,7 @@ const BCF2000 = ({
     controlId.includes("button")
   ) {
     return (
-      <Slider
+      <Toggle
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
         config={config.componentConfig}
