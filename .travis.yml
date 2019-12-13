@@ -43,7 +43,7 @@ jobs:
       install:
         - yarn
       script:
-        - echo "Deploying to Github"
+        - ls
       before_deploy:
         - if [ "$TRAVIS_OS_NAME" = osx ]; then chmod +x scripts/add-osx-cert.sh;
           fi
@@ -52,7 +52,7 @@ jobs:
         - rm -rf $HOME/.cache/electron-builder/wine
       deploy:
         provider: script
-        cleanup: false
+        skip_cleanup: true
         script: npx semantic-release
         on:
           branch: develop
