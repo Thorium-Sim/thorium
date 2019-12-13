@@ -53,3 +53,5 @@ jobs:
         provider: script
         cleanup: false
         script: npx semantic-release
+        on:
+          branches: develop
