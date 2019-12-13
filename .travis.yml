@@ -28,7 +28,7 @@ stages:
   - test
   - env
   - name: deploy
-    if: branch = master
+    if: branch = develop
 
 env:
   - SKIP_PREFLIGHT_CHECK=true
