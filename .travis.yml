@@ -1,19 +1,10 @@
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode10.2
-      language: node_js
-      node_js: "12"
-      env:
-        - ELECTRON_CACHE=$HOME/.cache/electron
-        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+os:
+  - linux
+  - osx
 
-    - os: linux
-      services: docker
-      node_js:
-        - 12
-      dist: trusty
-      sudo: false
+osx_image: xcode10.2
+language: node_js
+node_js: "12"
 
 branches:
   only:
@@ -35,16 +26,20 @@ stages:
 
 env:
   - SKIP_PREFLIGHT_CHECK=true
+  - ELECTRON_CACHE=$HOME/.cache/electron
+  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
 jobs:
   include:
     - stage: test
+      os: osx
       install:
         - yarn
       script:
         - npm run validate
         - yarn danger ci
     - stage: env
+      os: osx
       install:
         - yarn
       script:
@@ -57,10 +52,9 @@ jobs:
       before_deploy:
         - if [ "$TRAVIS_OS_NAME" = osx ]; then chmod +x add-osx-cert.sh; fi
         - if [ "$TRAVIS_OS_NAME" = osx ]; then ./add-osx-cert.sh; fi
+      before_cache:
+        - rm -rf $HOME/.cache/electron-builder/wine
       deploy:
         provider: script
-        skip_cleanup: true
-        script:
-          - npx semantic-release
-        before_cache:
-          - rm -rf $HOME/.cache/electron-builder/wine
+        cleanup: false
+        script: npx semantic-release
