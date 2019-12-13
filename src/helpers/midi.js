@@ -202,6 +202,8 @@ export const MidiProvider = ({
       const command = messageTypeValues[messageType];
       const note = key || controllerNumber;
       if (!command || !note) return;
+      if (!value && value !== 0) return;
+      if (value > 127) return;
       output.send([command, note, value]);
     };
     return {...midiIO, addSubscriber, sendOutput};

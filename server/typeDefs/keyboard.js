@@ -39,6 +39,7 @@ const schema = gql`
     args: String
     delay: Int
     noCancelOnReset: Boolean
+    needsConfig: Boolean
   }
   extend type Query {
     keyboard: [Keyboard]

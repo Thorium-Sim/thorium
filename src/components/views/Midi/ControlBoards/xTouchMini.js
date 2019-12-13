@@ -74,7 +74,13 @@ const Button = ({
   return null;
 };
 
-const Slider = ({simulatorId, componentName, deviceName, channel}) => {
+const Slider = ({
+  simulatorId,
+  componentName,
+  deviceName,
+  channel,
+  config = {},
+}) => {
   const [value, setValue] = React.useState(0);
   const Comp = LiveDataComponents[componentName];
 
@@ -88,12 +94,22 @@ const Slider = ({simulatorId, componentName, deviceName, channel}) => {
     );
   }, [addSubscriber, channel, deviceName, setValue]);
   if (!Comp) return null;
-  return <Comp simulatorId={simulatorId} value={value} setValue={() => {}} />;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      config={config}
+      value={value}
+      setValue={noop}
+    />
+  );
 };
+
+function noop() {}
 
 const Rotor = ({
   simulatorId,
   componentName,
+  config = {},
   deviceName,
   channel,
   controllerNumber,
@@ -132,7 +148,81 @@ const Rotor = ({
     });
   }, [value, sendOutput, deviceName, controllerNumber]);
   if (!Comp) return null;
-  return <Comp simulatorId={simulatorId} value={value} setValue={setValue} />;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      config={config}
+      value={value}
+      setValue={setValue}
+    />
+  );
+};
+
+const Toggle = ({
+  simulatorId,
+  componentName,
+  config = {},
+  deviceName,
+  channel,
+  messageType,
+  keyVal,
+  controllerNumber,
+}) => {
+  const [value, setValue] = React.useState(0);
+  const {addSubscriber, sendOutput} = useMidi();
+  const Comp = LiveDataComponents[componentName];
+  React.useEffect(() => {
+    return addSubscriber(
+      {
+        name: deviceName,
+        channel: channel ?? undefined,
+        messageType: messageType ?? undefined,
+        key: keyVal ?? undefined,
+        controllerNumber: controllerNumber ?? undefined,
+      },
+      ({value}) => {
+        if (value === 1) {
+          setValue(val => (val === 0 ? 1 : 0));
+        }
+      },
+    );
+  }, [
+    addSubscriber,
+    channel,
+    setValue,
+    deviceName,
+    controllerNumber,
+    messageType,
+    keyVal,
+  ]);
+
+  React.useEffect(() => {
+    sendOutput({
+      name: deviceName,
+      channel: channel ?? undefined,
+      messageType: messageType ?? undefined,
+      key: keyVal ?? undefined,
+      controllerNumber: controllerNumber ?? undefined,
+      value: value === 0 ? 0 : 127,
+    });
+  }, [
+    value,
+    sendOutput,
+    deviceName,
+    controllerNumber,
+    channel,
+    messageType,
+    keyVal,
+  ]);
+  if (!Comp) return null;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      config={config}
+      value={value}
+      setValue={setValue}
+    />
+  );
 };
 
 const XTouchMini = ({
@@ -163,6 +253,25 @@ const XTouchMini = ({
     );
   }
   if (
+    actionMode === "toggle" &&
+    messageType === "noteon" &&
+    config.valueAssignmentComponent
+  ) {
+    return (
+      <Toggle
+        simulatorId={simulatorId}
+        componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
+        deviceName={deviceName}
+        actionMode={actionMode}
+        channel={channel}
+        messageType={messageType}
+        keyVal={keyVal}
+        controllerNumber={controllerNumber}
+      />
+    );
+  }
+  if (
     actionMode === "valueAssignment" &&
     config.valueAssignmentComponent &&
     messageType === "pitchbendchange"
@@ -171,6 +280,7 @@ const XTouchMini = ({
       <Slider
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         deviceName={deviceName}
         channel={channel}
         messageType={messageType}
@@ -188,6 +298,7 @@ const XTouchMini = ({
       <Rotor
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         deviceName={deviceName}
         channel={channel}
         messageType={messageType}

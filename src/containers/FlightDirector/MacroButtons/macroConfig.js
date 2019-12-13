@@ -6,20 +6,17 @@ import {
   ListGroup,
   ListGroupItem,
   Button,
-  Card,
-  CardBody,
-  FormGroup,
   Label,
   Input,
 } from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import EventName from "../MissionConfig/EventName";
-import MacroWrapper from "../MissionConfig/MacroConfig";
 import EventPicker from "../MissionConfig/EventPicker";
 import uuid from "uuid";
 import {titleCase} from "change-case";
 import {FaBan} from "react-icons/fa";
+import {ActionConfig} from "../Macros/macroConfig";
 
 const colors = [
   "primary",
@@ -130,49 +127,6 @@ const ActionList = ({
   );
 };
 
-const ActionConfig = ({
-  id,
-  event,
-  delay,
-  noCancelOnReset,
-  args,
-  updateAction,
-}) => {
-  return (
-    <Fragment>
-      <EventName id={event} />{" "}
-      <Card className="scroll" style={{overflowY: "auto", maxHeight: "75vh"}}>
-        <CardBody>
-          <FormGroup>
-            <Label>Item Delay (in milliseconds)</Label>
-            <Input
-              type="number"
-              defaultValue={delay}
-              onBlur={e => updateAction("delay", parseInt(e.target.value))}
-            />
-          </FormGroup>
-          <FormGroup style={{marginLeft: "5ch"}}>
-            <Label>
-              <Input
-                type="checkbox"
-                defaultChecked={noCancelOnReset}
-                onBlur={e => updateAction("noCancelOnReset", e.target.value)}
-              />
-              Don't Cancel Delay on Flight Reset
-            </Label>
-          </FormGroup>
-          <MacroWrapper
-            id={id}
-            event={event}
-            delay={delay}
-            args={args}
-            updateMacro={(key, data) => updateAction(key, data)}
-          />
-        </CardBody>
-      </Card>
-    </Fragment>
-  );
-};
 const MacroConfig = ({macros}) => {
   const [selectedMacro, setSelectedMacro] = React.useState(null);
   const [selectedButton, setSelectedButton] = React.useState(null);

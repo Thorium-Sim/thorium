@@ -10,7 +10,13 @@ const EXECUTE_MACRO = gql`
   }
 `;
 
-function Rotor({simulatorId, componentName, channel, controllerNumber}) {
+function Rotor({
+  simulatorId,
+  componentName,
+  channel,
+  controllerNumber,
+  config = {},
+}) {
   const [value, setValue] = React.useState(0);
   const {addSubscriber, sendOutput} = useMidi();
   const selfTriggeredRef = React.useRef(false);
@@ -47,10 +53,23 @@ function Rotor({simulatorId, componentName, channel, controllerNumber}) {
   }, [value, controllerNumber, sendOutput]);
 
   if (!Comp) return null;
-  return <Comp simulatorId={simulatorId} value={value} setValue={setValue} />;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      value={value}
+      setValue={setValue}
+      config={config}
+    />
+  );
 }
 
-function Slider({simulatorId, componentName, channel, controllerNumber}) {
+function Slider({
+  simulatorId,
+  componentName,
+  channel,
+  controllerNumber,
+  config = {},
+}) {
   const [value, setValue] = React.useState(0);
   const {addSubscriber, sendOutput} = useMidi();
   const selfTriggeredRef = React.useRef(false);
@@ -87,7 +106,68 @@ function Slider({simulatorId, componentName, channel, controllerNumber}) {
   }, [value, controllerNumber, sendOutput]);
 
   if (!Comp) return null;
-  return <Comp simulatorId={simulatorId} value={value} setValue={setValue} />;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      value={value}
+      setValue={setValue}
+      config={config}
+    />
+  );
+}
+
+function Toggle({
+  simulatorId,
+  componentName,
+  channel,
+  controllerNumber,
+  config = {},
+}) {
+  const [value, setValue] = React.useState(0);
+  const {addSubscriber, sendOutput} = useMidi();
+  const selfTriggeredRef = React.useRef(false);
+  const Comp = LiveDataComponents[componentName];
+
+  React.useEffect(() => {
+    return addSubscriber(
+      {
+        name: "BCF2000 Port 1",
+        channel,
+        messageType: "controlchange",
+        controllerNumber,
+      },
+      ({value: val}) => {
+        selfTriggeredRef.current = true;
+        setTimeout(() => {
+          selfTriggeredRef.current = false;
+        }, 500);
+        setValue(val === 0 ? 0 : 1);
+      },
+    );
+  }, [addSubscriber, channel, controllerNumber]);
+
+  React.useEffect(() => {
+    if (selfTriggeredRef.current) {
+      return;
+    }
+
+    sendOutput({
+      name: "BCF2000 Port 1",
+      messageType: "controlchange",
+      controllerNumber,
+      value: value === 0 ? 0 : 127,
+    });
+  }, [value, controllerNumber, sendOutput]);
+
+  if (!Comp) return null;
+  return (
+    <Comp
+      simulatorId={simulatorId}
+      value={value}
+      setValue={setValue}
+      config={config}
+    />
+  );
 }
 
 const Button = ({
@@ -178,6 +258,23 @@ const BCF2000 = ({
     );
   }
   if (
+    actionMode === "toggle" &&
+    config.valueAssignmentComponent &&
+    messageType === "controlchange" &&
+    controlId.includes("button")
+  ) {
+    return (
+      <Toggle
+        simulatorId={simulatorId}
+        componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
+        channel={channel}
+        keyVal={key}
+        controllerNumber={controllerNumber}
+      />
+    );
+  }
+  if (
     actionMode === "valueAssignment" &&
     config.valueAssignmentComponent &&
     messageType === "controlchange" &&
@@ -187,6 +284,7 @@ const BCF2000 = ({
       <Slider
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         channel={channel}
         keyVal={key}
         controllerNumber={controllerNumber}
@@ -203,6 +301,7 @@ const BCF2000 = ({
       <Rotor
         simulatorId={simulatorId}
         componentName={config.valueAssignmentComponent}
+        config={config.componentConfig}
         channel={channel}
         keyVal={key}
         controllerNumber={controllerNumber}

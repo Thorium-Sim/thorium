@@ -6,6 +6,7 @@ import paths from "./helpers/paths";
 import Store from "./helpers/data-store";
 import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
+import Motu from "motu-control";
 
 let snapshotDir = "./snapshots/";
 
@@ -66,6 +67,7 @@ class Events extends EventEmitter {
     this.macroButtonConfigs = [];
     this.recordTemplates = [];
     this.midiSets = [];
+    this.motus = [];
     this.autoUpdate = true;
     this.migrations = {assets: true};
     this.thoriumId = randomWords(5).join("-");
@@ -112,6 +114,16 @@ class Events extends EventEmitter {
       ) {
         this[key] = snapshot[key];
       }
+      if (key === "motus" && snapshot.motus) {
+        this.motus = snapshot.motus.map(m => {
+          const motu = new Motu(m);
+          motu.on("changed", () => {
+            App.handleEvent(motu, "motuChange");
+          });
+          return motu;
+        });
+        return;
+      }
       if (snapshot[key] instanceof Array) {
         snapshot[key].forEach(obj => {
           if (Object.keys(obj).length !== 0) {
@@ -144,10 +156,12 @@ class Events extends EventEmitter {
     domain,
     events,
     flights,
+    motus,
     ...snapshot
   }) {
     const newFlights = flights.map(({timeouts, ...f}) => f);
-    return {...snapshot, flights: newFlights};
+    const newMotus = motus.map(m => m.address);
+    return {...snapshot, flights: newFlights, motus: newMotus};
   }
   handleEvent(param, eventName, context = {}) {
     const {clientId} = context;
