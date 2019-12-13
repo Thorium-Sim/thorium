@@ -22,19 +22,19 @@ stages:
 
 jobs:
   include:
-    - stage: test
-      env: SKIP_PREFLIGHT_CHECK=true
-      install:
-        - yarn
-      script:
-        - npm run validate
-        - yarn danger ci
-    - stage: environment
-      env: SKIP_PREFLIGHT_CHECK=true
-      install:
-        - yarn
-      script:
-        - npm run build
+    # - stage: test
+    #   env: SKIP_PREFLIGHT_CHECK=true
+    #   install:
+    #     - yarn
+    #   script:
+    #     - npm run validate
+    #     - yarn danger ci
+    # - stage: environment
+    #   env: SKIP_PREFLIGHT_CHECK=true
+    #   install:
+    #     - yarn
+    #   script:
+    #     - npm run build
     - stage: deploy
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
