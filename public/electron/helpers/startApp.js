@@ -13,7 +13,7 @@ const {checkWindow, addWindow} = require("./multiWindow");
 module.exports = () => {
   function startServer() {
     console.log("Starting server - main");
-    // Stop the bonjour browser
+    // Stop the bonjour  browser
 
     bonjour.stop();
     addWindow({server: true});

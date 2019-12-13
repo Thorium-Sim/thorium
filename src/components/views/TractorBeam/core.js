@@ -23,7 +23,6 @@ class TractorBeamCore extends Component {
   state = {
     stress: 0,
   };
-
   targetLabel = label => {
     const tractorBeam = this.props.data.tractorBeam[0];
     const mutation = gql`
