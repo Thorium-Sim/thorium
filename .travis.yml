@@ -53,6 +53,6 @@ jobs:
       deploy:
         provider: script
         skip_cleanup: true
-        script: npx semantic-release
+        script: travis_wait npx semantic-release
         on:
           branch: develop
