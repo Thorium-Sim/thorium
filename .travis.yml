@@ -25,25 +25,24 @@ stages:
 
 env:
   - SKIP_PREFLIGHT_CHECK=true
-  - ELECTRON_CACHE=$HOME/.cache/electron
-  - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
 jobs:
   include:
     - stage: test
-      os: osx
       install:
         - yarn
       script:
         - npm run validate
         - yarn danger ci
     - stage: env
-      os: osx
       install:
         - yarn
       script:
         - npm run build
     - stage: deploy
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
       install:
         - yarn
       script:
