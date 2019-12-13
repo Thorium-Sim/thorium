@@ -43,7 +43,6 @@ kiosks
 
 snapshot-*
 *.provisionprofile
-entitlements.*
 
 # Cypress
 cypress/videos

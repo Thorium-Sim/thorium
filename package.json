@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.0.0-beta8",
+  "version": "2.0.0-beta9",
   "publishConfig": {
     "tag": "beta"
   },
@@ -36,7 +36,7 @@
     "build:env": "node ./scripts/build-env.js",
     "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
     "build:electron": "electron-builder -mwl",
-    "dist:electron": "electron-builder -mwl -p always",
+    "dist:electron": "./scripts/distElectron.sh",
     "pack:electron": "electron-builder -mwl",
     "test": "is-ci test:coverage test:watch",
     "test:watch": "jest --watch",
@@ -130,7 +130,10 @@
     "mac": {
       "category": "public.app-category.entertainment",
       "icon": "./public/icon.icns",
-      "identity": false
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "public/entitlements.mac.plist",
+      "entitlementsInherit": "public/entitlements.mac.plist"
     },
     "win": {
       "target": [
@@ -138,10 +141,11 @@
         "portable"
       ],
       "icon": "./public/icon.ico"
-    }
+    },
+    "afterSign": "scripts/notarize.js"
   },
   "release": {
-    "branch": "2.0",
+    "branch": "master",
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",

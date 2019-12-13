@@ -1,14 +1,28 @@
-language: node_js
-node_js:
-  - 12
-dist: trusty
-sudo: false
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10.2
+      language: node_js
+      node_js: "12"
+      env:
+        - ELECTRON_CACHE=$HOME/.cache/electron
+        - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
+    - os: linux
+      services: docker
+      language: generic
 
 branches:
   only:
     - master
     - develop
     - 2.0
+
+cache:
+  directories:
+    - node_modules
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
 
 stages:
   - test
@@ -37,8 +51,13 @@ jobs:
         - yarn
       script:
         - echo "Deploying to Github"
+      before_deploy:
+        - if [ "$TRAVIS_OS_NAME" = osx ]; then chmod +x add-osx-cert.sh; fi
+        - if [ "$TRAVIS_OS_NAME" = osx ]; then ./add-osx-cert.sh; fi
       deploy:
         provider: script
         skip_cleanup: true
         script:
           - npx semantic-release
+        before_cache:
+          - rm -rf $HOME/.cache/electron-builder/wine
