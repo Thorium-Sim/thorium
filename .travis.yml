@@ -41,11 +41,12 @@ jobs:
         - if [ "$TRAVIS_OS_NAME" = osx ]; then chmod +x scripts/add-osx-cert.sh;
           fi
         - if [ "$TRAVIS_OS_NAME" = osx ]; then ./scripts/add-osx-cert.sh; fi
+        - chmox +x scripts/deploy.sh
       before_cache:
         - rm -rf $HOME/.cache/electron-builder/wine
       deploy:
         provider: script
         skip_cleanup: true
-        script: travis_wait npx semantic-release
+        script: ./scripts/deploy.sh
         on:
           branch: develop
