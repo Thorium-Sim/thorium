@@ -142,7 +142,7 @@
     "afterSign": "scripts/notarize.js"
   },
   "release": {
-    "branch": "develop",
+    "branch": "master",
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",

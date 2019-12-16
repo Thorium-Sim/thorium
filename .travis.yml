@@ -17,17 +17,17 @@ cache:
 stages:
   - test
   - name: deploy
-    # if: branch = develop
+    if: branch = master
 
 jobs:
   include:
-    # - stage: test
-    #   env: SKIP_PREFLIGHT_CHECK=true
-    #   install:
-    #     - yarn
-    #   script:
-    #     - npm run validate
-    #     - yarn danger ci
+    - stage: test
+      env: SKIP_PREFLIGHT_CHECK=true
+      install:
+        - yarn
+      script:
+        - npm run validate
+        - yarn danger ci
     - stage: deploy
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
@@ -49,4 +49,4 @@ jobs:
         skip_cleanup: true
         script: ./scripts/deploy.sh
         on:
-          branch: develop
+          branch: master
