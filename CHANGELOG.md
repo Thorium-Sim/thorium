@@ -1,7 +1,19 @@
-# [2.0.0](https://github.com/Thorium-Sim/thorium/compare/1.22.0...2.0.0) (2019-11-10)
+# [2.0.0](https://github.com/Thorium-Sim/thorium/compare/1.22.0...2.0.0) (2019-12-14)
 
 ### Bug Fixes
 
+- **CardCore:** Fixes an issue where card core doesn't hide or show cards when
+  you check the checkbox.
+  ([da2ad5d](https://github.com/Thorium-Sim/thorium/commit/da2ad5d89657be31e3e82541d2835eebd6355df2))
+- **Cards:** Fixes an issue where hiding a card causes a server crash. Closes
+  [#2639](https://github.com/Thorium-Sim/thorium/issues/2639)
+  ([f35a8a0](https://github.com/Thorium-Sim/thorium/commit/f35a8a0cb3f207b42435b5c99b637f811b3742f7))
+- **Dynamic Core:** Fixes a bug with reordering Dynamic Core layouts. Closes
+  [#2597](https://github.com/Thorium-Sim/thorium/issues/2597)
+  ([eb12b5e](https://github.com/Thorium-Sim/thorium/commit/eb12b5e3a49b17a7b0ac25f1d9c6daa449d74f24))
+- **EpsilonLayout:** Fixes strange card hiliting in the card switcher. Closes
+  [#2596](https://github.com/Thorium-Sim/thorium/issues/2596)
+  ([deab98a](https://github.com/Thorium-Sim/thorium/commit/deab98a721d21f69afde52dbcab5f415d5fa33db))
 - **Icons:** Makes the icons for widgets and elsewhere smaller and more
   performant.
   ([7e9a53f](https://github.com/Thorium-Sim/thorium/commit/7e9a53fed8e013e4a5e8ad2cea675c7127532acb))
@@ -11,65 +23,84 @@
   core in general. Closes
   [#2582](https://github.com/Thorium-Sim/thorium/issues/2582)
   ([cda389c](https://github.com/Thorium-Sim/thorium/commit/cda389ce622a44fd76909ffb1355d45de41824aa))
+- **Power Distribution:** If a system is damaged and the power is removed, it
+  will show as red instead of black.
+  ([a7f08fe](https://github.com/Thorium-Sim/thorium/commit/a7f08fe193cbbc8fc4e958d612f849977c6f3a62))
+- **Probes:** When adding equipment to a probe, it now shows the correct space
+  used total. Closes [#2630](https://github.com/Thorium-Sim/thorium/issues/2630)
+  ([5678c34](https://github.com/Thorium-Sim/thorium/commit/5678c34f1b130ab512aeae9a003119c1a04e5399))
+- **Records:** Fixes scrollbars on the records core and card. Closes
+  [#2598](https://github.com/Thorium-Sim/thorium/issues/2598)
+  ([341eb32](https://github.com/Thorium-Sim/thorium/commit/341eb32a68eafff09fb0f5935b49504ea57620d4))
+- **Scanning:** It's now not possible to change the scan type while a scan is in
+  progress. Closes [#2633](https://github.com/Thorium-Sim/thorium/issues/2633)
+  ([a62c2e8](https://github.com/Thorium-Sim/thorium/commit/a62c2e8968dd59dbb69c58dfb0f1d91381218142))
+- **Shields:** Short clicking on the shield frequency buttons now makes them go
+  down or up. Closes [#2629](https://github.com/Thorium-Sim/thorium/issues/2629)
+  ([ee72960](https://github.com/Thorium-Sim/thorium/commit/ee7296053559dfaf10797ca13802fee8c8838861))
+- **Sound Player:** Fixes an issue where UI sound effects not being present
+  causes lag in the UI.
+  ([a3daa85](https://github.com/Thorium-Sim/thorium/commit/a3daa853abf542814e955bbfdaffdfcb416fb8cc))
+- **Targeting:** FIxes a minor issue where very large targets overflow out of
+  the targeting grid.
+  ([b28657f](https://github.com/Thorium-Sim/thorium/commit/b28657f5fa94be18a26b18eee00ba53f69941ae9))
+- **Updater:** Disables auto-update in anticipation of Thorium 2.0. No other
+  functional changes.
+  ([6248a57](https://github.com/Thorium-Sim/thorium/commit/6248a57a290450f0567c4216f6f35c066261ccd4))
+- **Viewscreen Core:** Makes the viewscreen core scroll better.
+  ([9430215](https://github.com/Thorium-Sim/thorium/commit/9430215e16cf5271bad8c6b6820eceb8427e0ec9))
+- **Widgets:** All widgets now close when the flight is reset. Closes
+  [#2635](https://github.com/Thorium-Sim/thorium/issues/2635)
+  ([fb961c4](https://github.com/Thorium-Sim/thorium/commit/fb961c48e0b021c02e958e487d3759b5c7c14e1b))
+- **Widgets:** Puts the training and logout widgets back. Closes
+  [#2634](https://github.com/Thorium-Sim/thorium/issues/2634)
+  ([508d35a](https://github.com/Thorium-Sim/thorium/commit/508d35adef749a650c50a0914e4010b007fcd760))
 
 ### Features
 
+- **Decoding:** Changes the background color of Long Range messages that have
+  been decoded. Also reverses the order of messages as they come in so newer
+  messages are on top. Closes
+  [#2613](https://github.com/Thorium-Sim/thorium/issues/2613)
+  ([eae24d8](https://github.com/Thorium-Sim/thorium/commit/eae24d863a9a4966f08469ad7da9e2c06418c2da))
 - **Electron:** Updates the electron packaging.
   ([992d1cf](https://github.com/Thorium-Sim/thorium/commit/992d1cf2ea9ac897bbfe72b367f6e03cf2cd2911))
+- **Messaging:** Adds persistent fields to the messaging and composer widgets.
+  The text entered in will be persisted if the widget is closed and opened
+  again. Closes [#2612](https://github.com/Thorium-Sim/thorium/issues/2612)
+  ([2df756c](https://github.com/Thorium-Sim/thorium/commit/2df756c695dc06932660bbd6f8f646a34312c1c6))
+- **MIDI:** Add MIDI board capabilities to Thorium. Currently, you can use the
+  MIDI board to trigger macros when buttons are pressed, while sliders and
+  rotors can be used to change radiation. More capabilities for buttons,
+  sliders, and rotors will be added in the future. This implements this RFC:
+  https://docs.google.com/document/d/1lxpsKVEGDl-Ft9VEFJXrBXDHxTzf0pvufXkH9I2Qw8A/edit
+  ([5875941](https://github.com/Thorium-Sim/thorium/commit/58759412c1e6fa5909517c23ec488e5761fc635c))
+- **MOTU:** Add support for MOTU digital audio mixers. Thorium is able to update
+  mixer faders (volume) and mute and unmute individual input and output
+  channels, as well as toggle which inputs are connected to which outputs. This
+  is all done thorugh Macros, and must be manually configured. In other words,
+  unless your Space Center has a MOTU device, you can ignore this.
+  ([4200835](https://github.com/Thorium-Sim/thorium/commit/420083557b055fa296a2fa627a05ab9780171393))
+- **Probes:** Add a training mode message to probe queries. Closes
+  [#2614](https://github.com/Thorium-Sim/thorium/issues/2614)
+  ([992fdbe](https://github.com/Thorium-Sim/thorium/commit/992fdbe9dce508b0f9ceb63fada236053aada195))
+- **Probes:** Adds a button to core that can manually launch probes in a
+  torpedo-launched probe simulator. Also adds a button that destroys all
+  launched probes. Closes
+  [#2587](https://github.com/Thorium-Sim/thorium/issues/2587)
+  ([67c72aa](https://github.com/Thorium-Sim/thorium/commit/67c72aa2098f95a150922ab0161ea1a07a1a3e5d))
+- **Training:** Improvements to the training player, including adding the
+  ability to change the play rate. Apologies for younger crew members who erupt
+  into giggles when they hear your voice speaking at half speed. Closes
+  [#2640](https://github.com/Thorium-Sim/thorium/issues/2640)
+  ([4fd4254](https://github.com/Thorium-Sim/thorium/commit/4fd4254ef77a75b934d2009c146e50621ad1eaa2))
+- **Widgets:** Improves the sizing of some widgets, including messaging. Closes
+  [#2611](https://github.com/Thorium-Sim/thorium/issues/2611)
+  ([7d352fc](https://github.com/Thorium-Sim/thorium/commit/7d352fc4ba9d46f7d4f385d875b9bdbb56bac6db))
 
 ### BREAKING CHANGES
 
 - **Electron:** Electron
-
-# [2.0.0](https://github.com/Thorium-Sim/thorium/compare/1.22.0...2.0.0) (2019-11-10)
-
-### Bug Fixes
-
-- **Icons:** Makes the icons for widgets and elsewhere smaller and more
-  performant.
-  ([7e9a53f](https://github.com/Thorium-Sim/thorium/commit/7e9a53fed8e013e4a5e8ad2cea675c7127532acb))
-- **Issue Tracker:** Improvements to the issue submitter.
-  ([8acca8d](https://github.com/Thorium-Sim/thorium/commit/8acca8d40c9a351e196c005a347ef41eb2035a86))
-- **Lighting:** Improves the layout and format of the Lighting core and Next
-  core in general. Closes
-  [#2582](https://github.com/Thorium-Sim/thorium/issues/2582)
-  ([cda389c](https://github.com/Thorium-Sim/thorium/commit/cda389ce622a44fd76909ffb1355d45de41824aa))
-
-### Features
-
-- **Electron:** Updates the electron packaging.
-  ([992d1cf](https://github.com/Thorium-Sim/thorium/commit/992d1cf2ea9ac897bbfe72b367f6e03cf2cd2911))
-
-### BREAKING CHANGES
-
-- **Electron:** Electron
-
-## [1.22.1](https://github.com/Thorium-Sim/thorium/compare/1.22.0...1.22.1) (2019-11-09)
-
-### Bug Fixes
-
-- **Icons:** Makes the icons for widgets and elsewhere smaller and more
-  performant.
-  ([7e9a53f](https://github.com/Thorium-Sim/thorium/commit/7e9a53fed8e013e4a5e8ad2cea675c7127532acb))
-- **Issue Tracker:** Improvements to the issue submitter.
-  ([8acca8d](https://github.com/Thorium-Sim/thorium/commit/8acca8d40c9a351e196c005a347ef41eb2035a86))
-- **Lighting:** Improves the layout and format of the Lighting core and Next
-  core in general. Closes
-  [#2582](https://github.com/Thorium-Sim/thorium/issues/2582)
-  ([cda389c](https://github.com/Thorium-Sim/thorium/commit/cda389ce622a44fd76909ffb1355d45de41824aa))
-
-# [2.0.0-beta1](2019-11-9)
-
-- **Server:** Change the server to run in a windowed app instead of the command
-  line
-- **Core:** Refactored the core. Removed MainCore, AuxCore, JrCore, and
-  MessagingCore
-- **Core:** Remove redundant Long Range Comm cores.
-- **Core:** Lighting Core is now always available.
-- **Development:** Added automated tests to make sure bugs aren’t reintroduced
-- **Development:** Added developer tools to speed up and simplify card
-  development
-- **Credits:** Add Patreon supporters to the credits.
 
 # [1.22.0](https://github.com/Thorium-Sim/thorium/compare/1.21.0...1.22.0) (2019-10-14)
 

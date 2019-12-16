@@ -1,9 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.0.0-beta9",
-  "publishConfig": {
-    "tag": "beta"
-  },
+  "version": "2.0.0",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -269,6 +266,7 @@
     "danger": "^9.2.2",
     "electron": "^7.0.1",
     "electron-builder": "^22.1.0",
+    "electron-notarize": "^0.2.1",
     "eslint-config-prettier": "^6.4.0",
     "get-graphql-schema": "^2.1.2",
     "graphql-tag.macro": "^2.0.1",
