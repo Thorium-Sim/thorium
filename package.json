@@ -127,6 +127,7 @@
     "mac": {
       "category": "public.app-category.entertainment",
       "icon": "./public/icon.icns",
+      "identity": false,
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "public/entitlements.mac.plist",
@@ -138,8 +139,7 @@
         "portable"
       ],
       "icon": "./public/icon.ico"
-    },
-    "afterSign": "scripts/notarize.js"
+    }
   },
   "release": {
     "branch": "master",
