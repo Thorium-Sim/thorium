@@ -7,6 +7,7 @@ import IntlProvider from "./intl";
 import "./tourHelper.scss";
 import {FaVolumeUp} from "react-icons/fa";
 import {ClientContext} from "components/client/client";
+import {isMedia} from "../components/client/Card";
 
 const synth = window.speechSynthesis;
 
@@ -17,7 +18,9 @@ const SET_CLIENT_TRAINING = gql`
 `;
 
 const TourHelper = ({steps, training: propsTraining, onRequestClose}) => {
-  const {client = {}} = React.useContext(ClientContext);
+  const {client = {}, station = {}, simulator = {}} = React.useContext(
+    ClientContext,
+  );
 
   const speak = stepNum => {
     synth && synth.cancel();
@@ -40,6 +43,9 @@ const TourHelper = ({steps, training: propsTraining, onRequestClose}) => {
     variables: {id, training: false},
   });
 
+  // If we are in training mode and the station has audio or video training, don't show the tour.
+  if (station.training && isMedia(station.training) && simulator.training)
+    return null;
   if (!steps) return null;
   return (
     <Tour

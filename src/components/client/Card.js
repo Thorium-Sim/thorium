@@ -77,7 +77,7 @@ const CardRenderer = props => {
   );
 };
 
-function isMedia(src = "") {
+export function isMedia(src = "") {
   const extensions = [
     ".wav",
     ".mp4",
