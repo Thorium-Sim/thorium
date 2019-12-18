@@ -27,13 +27,13 @@ const MOVE_CONTACT = gql`
   }
 `;
 const noOp = () => {};
-
+const noOpArray = [];
 const GridCore = ({
   simulator,
   lite = false,
   defaultSensors = {},
   updateContacts = noOp,
-  contacts = [],
+  contacts = noOpArray,
   ultraLite,
   flightId,
 }) => {
@@ -108,6 +108,7 @@ const GridCore = ({
     },
     [contacts, updateContacts],
   );
+
   const [dragStart, addingContact] = useDragStart(
     sensors,
     dimensions,
