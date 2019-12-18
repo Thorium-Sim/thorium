@@ -1,7 +1,6 @@
 import {gql} from "apollo-server-express";
-import merge from "lodash/merge";
 import codegen from "codegen.macro";
-
+import merge from "./helpers/merge.js";
 // These codegen blocks dynamically import all of the tyepdef files
 // from the typeDef folder.
 codegen`

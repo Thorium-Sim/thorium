@@ -79,7 +79,7 @@ export default () => {
     console.log(err);
   });
 
-  server.use(require("express-status-monitor")({}));
+  // server.use(require("express-status-monitor")({}));
 
   server.use("*", cors());
 
