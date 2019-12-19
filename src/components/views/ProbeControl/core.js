@@ -278,7 +278,6 @@ class ProbeControl extends Component {
               )}
             </div>
           </>
-          )}
         </div>
         <div>
           <p>
