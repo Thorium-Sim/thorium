@@ -31,7 +31,7 @@ class ActionPreview extends Component {
       steps,
     } = this.props;
     return (
-      <div className="timeline-item">
+      <div className={`timeline-item`}>
         {edit ? (
           <Button
             size="sm"
@@ -57,45 +57,47 @@ class ActionPreview extends Component {
           )
         )}
         {values[id] && <p className={"text-danger"}>Edited</p>}
-        <div>
-          <Label>
-            Delay
-            {simple ? (
-              `: ${delay}ms`
-            ) : (
-              <Input
-                bsSize="sm"
-                defaultValue={delay}
-                type="number"
-                min="0"
-                onChange={e =>
-                  updateDelay({...delay, [id]: parseInt(e.target.value)})
-                }
-              />
-            )}
-          </Label>
+        <div className={edit ? "timeline-edit-mode" : "timeline-no-edit-mode"}>
+          <div>
+            <Label>
+              Delay
+              {simple ? (
+                `: ${delay}ms`
+              ) : (
+                <Input
+                  bsSize="sm"
+                  defaultValue={delay}
+                  type="number"
+                  min="0"
+                  onChange={e =>
+                    updateDelay({...delay, [id]: parseInt(e.target.value)})
+                  }
+                />
+              )}
+            </Label>
+          </div>
+          {Macros[event] &&
+            (() => {
+              const MacroPreview = edit
+                ? Macros[event]
+                : MacrosPrint[event] || Macros[event];
+              if (typeof args === "string") {
+                args = JSON.parse(args);
+              }
+              return (
+                <MacroPreview
+                  key={this.state.previewKey}
+                  simulatorId={simulatorId}
+                  args={{...args, ...simArgs[id], ...values[id]}}
+                  updateArgs={edit ? this.setArg : () => {}}
+                  lite
+                  stations={stations}
+                  clients={clients}
+                  steps={steps}
+                />
+              );
+            })()}
         </div>
-        {Macros[event] &&
-          (() => {
-            const MacroPreview = edit
-              ? Macros[event]
-              : MacrosPrint[event] || Macros[event];
-            if (typeof args === "string") {
-              args = JSON.parse(args);
-            }
-            return (
-              <MacroPreview
-                key={this.state.previewKey}
-                simulatorId={simulatorId}
-                args={{...args, ...simArgs[id], ...values[id]}}
-                updateArgs={edit ? this.setArg : () => {}}
-                lite
-                stations={stations}
-                clients={clients}
-                steps={steps}
-              />
-            );
-          })()}
       </div>
     );
   }
