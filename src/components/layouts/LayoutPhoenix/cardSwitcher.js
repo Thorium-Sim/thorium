@@ -22,7 +22,9 @@ class CardSwitcher extends Component {
             {(cards || []).map(c => (
               <div
                 key={`card-${c.name}`}
-                className="navigation-card"
+                className={`navigation-card ${
+                  c.assigned || c.newStation ? "text-warning" : ""
+                }`}
                 onClick={() => {
                   this.setState({shown: false});
                   changeCard(c.name);

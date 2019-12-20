@@ -3,7 +3,31 @@ import Views from "components/views";
 import {Transition} from "react-transition-group";
 import {Button} from "helpers/reactstrap";
 import ErrorBoundary from "helpers/errorBoundary";
+import gql from "graphql-tag.macro";
+import {useMutation} from "react-apollo";
 
+const UNASSIGN_CARD = gql`
+  mutation UnassignCard($simulatorId: ID!, $cardName: String!) {
+    stationUnassignCard(simulatorId: $simulatorId, cardName: $cardName)
+  }
+`;
+const CardAssigned = ({cardName, simulatorId}) => {
+  const [unassign] = useMutation(UNASSIGN_CARD, {
+    variables: {simulatorId, cardName},
+  });
+  return (
+    <div className={"card-error"}>
+      <p className="offline-title text-warning">Screen Unavailable</p>
+      <p className="offline-message" style={{fontSize: "40px"}}>
+        This screen has been assigned to another station and is not currently
+        available. Click the button below to restore control.
+      </p>
+      <Button block color="primary" size="lg" onClick={unassign}>
+        Restore {cardName} Screen
+      </Button>
+    </div>
+  );
+};
 const CardWrapper = ({card}) => {
   return (
     <React.Suspense fallback={null}>
@@ -31,7 +55,14 @@ const CardWrapper = ({card}) => {
           </div>
         }
       >
-        <card.component {...card.props} />
+        {card.assigned ? (
+          <CardAssigned
+            cardName={card.name}
+            simulatorId={card.props.simulator.id}
+          />
+        ) : (
+          <card.component {...card.props} />
+        )}
       </ErrorBoundary>
     </React.Suspense>
   );

@@ -269,7 +269,7 @@ export default class Simulator {
   addStationAssignedCard(station, card) {
     const stationCards = this.stationAssignedCards[station];
     this.stationAssignedCards[station] = stationCards
-      ? stationCards.push(card)
+      ? stationCards.concat(card)
       : [card];
   }
   removeStationAssignedCard(cardName) {
