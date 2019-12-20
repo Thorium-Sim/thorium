@@ -177,6 +177,8 @@ export default class Simulator {
     this.midiSets = params.midiSets || [];
 
     this.crackedClients = params.crackedClients || {};
+    this.clientCards = params.clientCards || {};
+
     this.flipped = params.flipped || false;
     // Set up the teams
     if (params.teams) {
@@ -255,6 +257,9 @@ export default class Simulator {
   }
   setLayout(layout) {
     this.layout = layout;
+  }
+  setClientCard(client, cardName) {
+    this.clientCards[client] = cardName;
   }
   setTimelineStep(step, timelineId) {
     if (timelineId) {

@@ -26,6 +26,10 @@ const fragments = {
       station {
         name
       }
+      currentCard {
+        name
+        component
+      }
       loginName
       loginState
       offlineState

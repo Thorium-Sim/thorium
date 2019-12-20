@@ -96,6 +96,13 @@ App.on("clientSetStation", ({client, stationName, cb}) => {
   }
   cb && cb();
 });
+App.on("clientSetCard", ({id, card}) => {
+  const clientObj = App.clients.find(c => c.id === id);
+  const {simulatorId} = clientObj;
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.setClientCard(id, card);
+  pubsub.publish("clientChanged", App.clients);
+});
 App.on("clientLogin", ({client, loginName}) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.login(loginName);
