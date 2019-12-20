@@ -141,7 +141,7 @@ class DamageReportCore extends Component {
     const name = sysName || prompt("What is the name of the system?");
     const systems = this.props.data.systems;
     if (systems.find(s => s.name === name)) {
-      this.breakSystem(systems.find(s => s.name === name).id);
+      this.breakSystem(systems.find(s => s.name === name).id, which);
       return;
     }
     const mutation = gql`
@@ -166,14 +166,15 @@ class DamageReportCore extends Component {
       variables,
     });
   };
-  breakSystem = sys => {
+  breakSystem = (sys, which) => {
     const variables = {
       systemId: sys,
+      which,
     };
     // Break it
     const mutation = gql`
-      mutation DamageSystem($systemId: ID!) {
-        damageSystem(systemId: $systemId)
+      mutation DamageSystem($systemId: ID!, $which: String) {
+        damageSystem(systemId: $systemId, which: $which)
       }
     `;
     this.props.client.mutate({
