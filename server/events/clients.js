@@ -179,7 +179,8 @@ App.on("setClientHypercard", ({clientId, simulatorId, component}) => {
 });
 App.on(
   "playSound",
-  ({sound, type, station, simulatorId, clientId, clients}) => {
+  ({sound: inputSound, type, station, simulatorId, clientId, clients}) => {
+    const sound = {...inputSound};
     if (type === "random") {
       // Get a random sound from that folder.
       const soundExts = ["m4a", "wav", "mp3", "ogg", "aiff", "aif"];
@@ -187,6 +188,7 @@ App.on(
       if (process.env.NODE_ENV === "production") {
         assetDir = paths.userData + "/assets";
       }
+
       const sounds = fs
         .readdirSync(assetDir + sound.asset)
         .filter(
