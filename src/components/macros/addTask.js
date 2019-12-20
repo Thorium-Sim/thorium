@@ -1,10 +1,11 @@
 import React, {Fragment, Component} from "react";
-import {Query} from "react-apollo";
+import {Query, useQuery} from "react-apollo";
 import {Badge, ListGroup, ListGroupItem, Input} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import ValueInput from "../views/Tasks/core/ValueInput";
 import ConfigureMacro from "../views/Tasks/core/ConfigureMacro";
 import {ConfigureMacro as ConfigMacro} from "containers/FlightDirector/TaskTemplates/taskConfig.js";
+import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 /*
 input TaskInput {
   simulatorId: ID
@@ -300,21 +301,21 @@ class TasksCore extends Component {
   }
 }
 
-const TaskCreator = props => (
-  <Query query={QUERY} variables={{simulatorId: props.simulatorId}}>
-    {({loading, data, subscribeToMore}) => {
-      const {taskDefinitions, taskTemplates} = data;
-      if (loading || !taskDefinitions) return null;
-      return (
-        <TasksCore
-          {...props}
-          taskDefinitions={taskDefinitions}
-          taskTemplates={taskTemplates}
-        />
-      );
-    }}
-  </Query>
-);
+const TaskCreator = props => {
+  const {loading, data} = useQuery(QUERY, {
+    variables: {simulatorId: props.simulatorId},
+  });
+  if (loading || !data) return null;
+  const {taskDefinitions, taskTemplates} = data;
+
+  return (
+    <TasksCore
+      {...props}
+      taskDefinitions={taskDefinitions}
+      taskTemplates={taskTemplates}
+    />
+  );
+};
 
 export default TaskCreator;
 
