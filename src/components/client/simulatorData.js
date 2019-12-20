@@ -42,6 +42,8 @@ const fragments = {
           name
           component
           hidden
+          assigned
+          newStation
         }
       }
     }

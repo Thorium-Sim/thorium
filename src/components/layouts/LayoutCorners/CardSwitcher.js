@@ -4,6 +4,7 @@ import "./cardSwitcher.scss";
 
 class CardSwitcher extends Component {
   render() {
+    console.log(this.props.cards);
     return (
       <div
         className={`card-icon-container card-switcher ${

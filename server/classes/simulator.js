@@ -177,7 +177,12 @@ export default class Simulator {
     this.midiSets = params.midiSets || [];
 
     this.crackedClients = params.crackedClients || {};
+    // The name of the current card which each
+    // station is on.
     this.clientCards = params.clientCards || {};
+
+    // Cards assigned to another station from a different station.
+    this.stationAssignedCards = params.stationAssignedCards || {};
 
     this.flipped = params.flipped || false;
     // Set up the teams
@@ -261,6 +266,25 @@ export default class Simulator {
   setClientCard(client, cardName) {
     this.clientCards[client] = cardName;
   }
+  addStationAssignedCard(station, card) {
+    const stationCards = this.stationAssignedCards[station];
+    this.stationAssignedCards[station] = stationCards
+      ? stationCards.push(card)
+      : [card];
+  }
+  removeStationAssignedCard(cardName) {
+    const stationEntry = Object.entries(
+      this.stationAssignedCards,
+    ).find(([key, value]) => value.find(c => c.name === cardName));
+    const station = stationEntry?.[0];
+    if (!station) return;
+
+    const stationCards = this.stationAssignedCards[station];
+    this.stationAssignedCards[station] = stationCards
+      ? stationCards.filter(c => c.name !== cardName)
+      : [];
+  }
+
   setTimelineStep(step, timelineId) {
     if (timelineId) {
       this.setAuxTimelineStep(timelineId, step);

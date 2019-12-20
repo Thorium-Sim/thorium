@@ -117,15 +117,15 @@ const CardFrame = props => {
   } = props;
   const cardChanged = React.useRef(false);
   const [visible, setVisible] = React.useState(false);
+  const cardName = client?.currentCard?.name;
   React.useEffect(() => {
     setTimeout(() => setVisible(true), 500);
   }, []);
   const [changeCardMutation] = useMutation(CHANGE_CARD_MUTATION);
-
   const changeCard = React.useCallback(
     name => {
       const card = cards.find(c => c.name === name) ? name : cards?.[0]?.name;
-      if (cardChanged.current || client.currentCard.name === card) return;
+      if (cardChanged.current || cardName === card) return;
       cardChanged.current = true;
       setTimeout(() => (cardChanged.current = false), 500);
       if (soundEffects?.cardChange) {
@@ -135,13 +135,7 @@ const CardFrame = props => {
       }
       changeCardMutation({variables: {id: client.id, card: name}});
     },
-    [
-      cards,
-      changeCardMutation,
-      client.currentCard.name,
-      client.id,
-      soundEffects,
-    ],
+    [cards, changeCardMutation, cardName, client.id, soundEffects],
   );
 
   React.useEffect(() => {
@@ -174,7 +168,6 @@ const CardFrame = props => {
       training: false,
     },
   });
-  console.log(client);
   return (
     <div
       className={`client-container ${caps ? "all-caps" : ""} ${

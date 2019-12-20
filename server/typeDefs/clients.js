@@ -289,10 +289,25 @@ const resolver = {
       const simulator = App.simulators.find(s => s.id === client.simulatorId);
       if (!simulator) return null;
       const station = StationResolver(client);
-      const card = station?.cards
+
+      // Get any assigned cards
+      const {stationAssignedCards = {}} = simulator;
+      const assignedCardList = Object.values(stationAssignedCards)
+        .reduce((acc, next) => acc.concat(next), [])
+        .map(c => c.name)
+        .filter(Boolean);
+
+      const concatCards = stationAssignedCards[station.name] || [];
+      let cards = station.cards
+        .map(c => ({...c, assigned: assignedCardList.includes(c.name)}))
+        .concat(concatCards.map(c => ({...c, newStation: true})))
+        .filter(Boolean);
+
+      const card = cards
         .filter(c => !c.hidden)
         .find(c => c.name === simulator.clientCards[client.id]);
-      return card || station?.cards[0];
+
+      return card || cards[0];
     },
   },
   Keypad: {
