@@ -38,6 +38,11 @@ const quotes = [
   "And the world will fall with ignorance...",
   "You don't know I'm not crazy.",
   "If you cannot do great things, do small things in a great way.",
+  "This is the way. I have spoken.",
+  "Suffering exists. It has a cause. It has an end. And there is a noble path to ending it.",
+  "We are what they grow beyond. That is the true burden of all masters.",
+  "We grow small trying to be great.",
+  "The whole point of getting things done is knowing what to leave undone.",
 ];
 
 const QuoteOfTheDay = () => {
