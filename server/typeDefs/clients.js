@@ -289,6 +289,7 @@ const resolver = {
       const simulator = App.simulators.find(s => s.id === client.simulatorId);
       if (!simulator) return null;
       const station = StationResolver(client);
+      if (!station) return null;
 
       // Get any assigned cards
       const {stationAssignedCards = {}} = simulator;

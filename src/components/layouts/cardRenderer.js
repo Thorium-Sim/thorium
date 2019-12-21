@@ -90,7 +90,7 @@ function renderCards(props) {
     Views[clientObj.hypercard]
   ) {
     const Comp = Views[clientObj.hypercard];
-    return <CardWrapper card={{component: Comp, props}} />;
+    return [{name: "Hypercard", component: Comp, in: true, props}];
   }
   function getCompName(name) {
     if (name.indexOf("interface-id:") > -1) {

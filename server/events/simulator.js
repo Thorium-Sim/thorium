@@ -458,6 +458,7 @@ App.on("stationAssignCard", ({simulatorId, assignedToStation, cardName}) => {
 
   simulator.addStationAssignedCard(assignedToStation, card);
   pubsub.publish("simulatorsUpdate", App.simulators);
+  pubsub.publish("clientChanged", App.clients);
 });
 App.on("stationUnassignCard", ({simulatorId, cardName}) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);

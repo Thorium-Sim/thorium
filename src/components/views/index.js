@@ -113,6 +113,7 @@ const SpaceEdventuresToken = React.lazy(() => import("./SpaceEdventuresToken"));
 const Crm = React.lazy(() => import("./Crm"));
 const CrmFighter = React.lazy(() => import("./CrmFighter"));
 const Records = React.lazy(() => import("./Records"));
+const StationControl = React.lazy(() => import("./StationControl"));
 
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
@@ -203,7 +204,7 @@ const SpaceEdventuresTokenCore = React.lazy(() =>
   import("./SpaceEdventuresToken/core"),
 );
 const CrmCore = React.lazy(() => import("./Crm/core"));
-const CardsCore = React.lazy(() => import("./Cards/core"));
+const CardsCore = React.lazy(() => import("./StationControl/core"));
 const CommandLineCore = React.lazy(() => import("./CommandLine/core"));
 const AuxTimelineCore = React.lazy(() => import("./Timeline/auxTimelineData"));
 const LightingCore = React.lazy(() => import("./Lighting"));
@@ -313,6 +314,7 @@ const Views = {
   Crm,
   CrmFighter,
   Records,
+  StationControl,
 };
 
 export const Widgets = {
