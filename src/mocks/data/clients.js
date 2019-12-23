@@ -18,6 +18,11 @@ export default [
       description: null,
       __typename: "Station",
     },
+    currentCard: {
+      name: "Test",
+      component: "TestCard",
+      __typename: "Card",
+    },
     __typename: "Client",
   },
   {
@@ -38,6 +43,11 @@ export default [
       name: "Operations",
       description: "",
       __typename: "Station",
+    },
+    currentCard: {
+      name: "Test",
+      component: "TestCard",
+      __typename: "Card",
     },
     __typename: "Client",
   },
