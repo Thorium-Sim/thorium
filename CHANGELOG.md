@@ -1,3 +1,74 @@
+# [2.1.0](https://github.com/Thorium-Sim/thorium/compare/v2.0.0...2.1.0) (2019-12-23)
+
+### Bug Fixes
+
+- **Cargo:** Improves the cargo core so specialized docking ports appear in the
+  list when the ship is present and disappear when the ship is gone. Closes
+  [#2667](https://github.com/Thorium-Sim/thorium/issues/2667)
+  ([b8d4f43](https://github.com/Thorium-Sim/thorium/commit/b8d4f43a3eeb09bb501b3af572fec2af3913921d))
+- **Crew Inventory:** Fixes an issue where inventory can be duplicated. Closes
+  [#2668](https://github.com/Thorium-Sim/thorium/issues/2668)
+  ([948eb13](https://github.com/Thorium-Sim/thorium/commit/948eb13aba9ecc7c6ddc442ffa0353d5c51a2936))
+- **Macros:** Fixes an issue where setting long range message presets without
+  any presets causes the server to crash. Closes
+  [#2641](https://github.com/Thorium-Sim/thorium/issues/2641)
+  ([077dd63](https://github.com/Thorium-Sim/thorium/commit/077dd636cc06f45cbc0ede477a29b2e34b8f6417))
+- **Probes:** Removes extra text from the probe control core. Closes
+  [#2652](https://github.com/Thorium-Sim/thorium/issues/2652)
+  ([ed476bd](https://github.com/Thorium-Sim/thorium/commit/ed476bd4226aebee753b46f5614a387ffda4cf1f))
+- **Reactor:** Warn of Unbalanced Power checkbox should now stay unchecked.
+  Fixes [#2651](https://github.com/Thorium-Sim/thorium/issues/2651)
+  ([f5413dd](https://github.com/Thorium-Sim/thorium/commit/f5413ddec9185c3c08619a8cc4f514fd3ebb7997))
+- **Reports:** Fixes an issue where adding an R&D or Engineering report for an
+  exsiting system actually breaks that system. Closes
+  [#2594](https://github.com/Thorium-Sim/thorium/issues/2594)
+  ([e8dbb23](https://github.com/Thorium-Sim/thorium/commit/e8dbb23a5485508f3f85d8d181c7d5e09b9ff672))
+- **Roster:** Makes the search bars for the roster more visible. Closes
+  [#2665](https://github.com/Thorium-Sim/thorium/issues/2665)
+  ([db2e7fc](https://github.com/Thorium-Sim/thorium/commit/db2e7fc04a1bfc56ebb1a3a4c2aa0b8cee5c3c04))
+- **Sensors:** Fixes an issue where you can't put two planets down at once.
+  Closes [#2659](https://github.com/Thorium-Sim/thorium/issues/2659)
+  ([9c835b2](https://github.com/Thorium-Sim/thorium/commit/9c835b2384e60812844cdc9aa4db3db2c760d100))
+- **Sidebar:** Fixes an issue on the core sidebar where it sometimes reverts.
+  Closes [#2576](https://github.com/Thorium-Sim/thorium/issues/2576)
+  ([8de9817](https://github.com/Thorium-Sim/thorium/commit/8de981788decc8d781833574b690e73a1e56035f))
+- **Sounds:** Fixes an issue where playing a random sound from a folder doesn't
+  work for triggers, interfaces, command lines, etc. Closes
+  [#2647](https://github.com/Thorium-Sim/thorium/issues/2647)
+  ([2e24827](https://github.com/Thorium-Sim/thorium/commit/2e24827bd131cfc15c29cb314af265c4db06d453))
+- **Tasks:** Fixes an issue with the "Add Task" macro. Closes
+  [#2650](https://github.com/Thorium-Sim/thorium/issues/2650)
+  ([f198dbb](https://github.com/Thorium-Sim/thorium/commit/f198dbbd1b28d39d184a7090e7a6039bcce31834))
+- **Timeline:** Makes it more obvious that timeline items need to have the Edit
+  button pushed before you can edit them. Closes
+  [#2658](https://github.com/Thorium-Sim/thorium/issues/2658)
+  ([2b44c89](https://github.com/Thorium-Sim/thorium/commit/2b44c89d87d58593ec48a388d1dd16b802a6a0ba))
+- **Torpedos:** Changing torpedo counts on the torpedo core can now be cancelled
+  without zeroing out. Closes
+  [#2643](https://github.com/Thorium-Sim/thorium/issues/2643)
+  ([bd76ed6](https://github.com/Thorium-Sim/thorium/commit/bd76ed68b7ba5d0fd48af334fd70b5e89d075bed))
+- **Training:** If there is audio or video training assigned, it no longer shows
+  the on-screen text training. Closes
+  [#2660](https://github.com/Thorium-Sim/thorium/issues/2660)
+  ([013a197](https://github.com/Thorium-Sim/thorium/commit/013a1977612d459c957775f2e13bc3921134df3d))
+- **Training:** Widgets now are a layer below the training player so they don't
+  show up when the training player is over them. Closes
+  [#2666](https://github.com/Thorium-Sim/thorium/issues/2666)
+  ([669b4ac](https://github.com/Thorium-Sim/thorium/commit/669b4acbfd01f59cd8fcb454e0ca89e2a47f3ac4))
+- **Training Mode:** Automatic Training mode responding now persists if the
+  server is restarted or shut down for some reason. Closes
+  [#2645](https://github.com/Thorium-Sim/thorium/issues/2645)
+  ([f9182ad](https://github.com/Thorium-Sim/thorium/commit/f9182ade42f4abe4d410b08bde5f1476bbbb70e4))
+
+### Features
+
+- **Station Control:** Adds a new card with the ability to transfer control of a
+  card from one station to another. This can allow other crew members to help
+  another crew member occupied on one of their screens. Adds a column to the
+  "Clients" core to show what card each client is currently on. Closes
+  [#2662](https://github.com/Thorium-Sim/thorium/issues/2662)
+  ([6c23f61](https://github.com/Thorium-Sim/thorium/commit/6c23f61ba6ad2b85b5de4cfd3fb866a9cd462623))
+
 # [2.0.0](https://github.com/Thorium-Sim/thorium/compare/1.22.0...2.0.0) (2019-12-14)
 
 ### Bug Fixes
