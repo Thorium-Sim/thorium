@@ -4,8 +4,7 @@ import {withApollo} from "react-apollo";
 import {TypingField, InputField} from "../../generic/core";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import "./style.scss";
-import {useQuery} from "@apollo/react-hooks";
-import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
+import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 
 export const CORE_INVENTORY_SUB = gql`
   subscription InventoryUpdate($simulatorId: ID!) {
@@ -38,24 +37,7 @@ export const CORE_INVENTORY_LOG_SUB = gql`
 `;
 
 export const INVENTORY_CORE_QUERY = gql`
-  query InventoryQ($simulatorId: ID!) {
-    simulators(id: $simulatorId) {
-      id
-      ship {
-        inventoryLogs {
-          timestamp
-          log
-        }
-      }
-    }
-    decks(simulatorId: $simulatorId) {
-      id
-      number
-      rooms {
-        id
-        name
-      }
-    }
+  query Simulators($simulatorId: ID!) {
     inventory(simulatorId: $simulatorId) {
       id
       name
@@ -65,6 +47,43 @@ export const INVENTORY_CORE_QUERY = gql`
           id
         }
         count
+      }
+    }
+  }
+`;
+export const INVENTORY_CORE_SIMULATORS_QUERY = gql`
+  query Simulators($simulatorId: ID!) {
+    simulators(id: $simulatorId) {
+      id
+      ship {
+        inventoryLogs {
+          timestamp
+          log
+        }
+      }
+    }
+  }
+`;
+export const INVENTORY_CORE_DECKS_QUERY = gql`
+  query InventoryQ($simulatorId: ID!) {
+    decks(simulatorId: $simulatorId) {
+      id
+      number
+      rooms {
+        id
+        name
+      }
+    }
+  }
+`;
+export const INVENTORY_CORE_DECKS_SUB = gql`
+  subscription InventoryQ($simulatorId: ID!) {
+    decksUpdate(simulatorId: $simulatorId) {
+      id
+      number
+      rooms {
+        id
+        name
       }
     }
   }
@@ -106,34 +125,25 @@ function reducer(state, {deck, room, which, value}) {
 const CargoControlCore = ({simulator, client}) => {
   const [findInventory, setFindInventory] = React.useState(null);
   const [{deck, room}, dispatch] = React.useReducer(reducer, {});
-  const {loading, data, subscribeToMore} = useQuery(INVENTORY_CORE_QUERY, {
-    variables: {simulatorId: simulator.id},
-  });
-  const logConfig = React.useMemo(
-    () => ({
-      variables: {simulatorId: simulator.id},
-      updateQuery: (previousResult, {subscriptionData}) => ({
-        ...previousResult,
-        simulators: subscriptionData.data.simulatorsUpdate,
-      }),
-    }),
-    [simulator.id],
+  const {loading, data} = useQueryAndSubscription(
+    {query: INVENTORY_CORE_QUERY, variables: {simulatorId: simulator.id}},
+    {query: CORE_INVENTORY_SUB, variables: {simulatorId: simulator.id}},
   );
-  useSubscribeToMore(subscribeToMore, CORE_INVENTORY_LOG_SUB, logConfig);
-  const inventoryConfig = React.useMemo(
-    () => ({
+  const {loading: simLoading, data: simData} = useQueryAndSubscription(
+    {
+      query: INVENTORY_CORE_SIMULATORS_QUERY,
       variables: {simulatorId: simulator.id},
-      updateQuery: (previousResult, {subscriptionData}) => {
-        return Object.assign({}, previousResult, {
-          inventory: subscriptionData.data.inventoryUpdate,
-        });
-      },
-    }),
-    [simulator.id],
+    },
+    {query: CORE_INVENTORY_LOG_SUB, variables: {simulatorId: simulator.id}},
   );
-  useSubscribeToMore(subscribeToMore, CORE_INVENTORY_SUB, inventoryConfig);
-  if (loading || !data) return null;
-  const {simulators, decks, inventory} = data;
+  const {loading: decksLoading, data: decksData} = useQueryAndSubscription(
+    {query: INVENTORY_CORE_DECKS_QUERY, variables: {simulatorId: simulator.id}},
+    {query: INVENTORY_CORE_DECKS_SUB, variables: {simulatorId: simulator.id}},
+  );
+
+  if (loading || simLoading || decksLoading || !data || !simData || !decksData)
+    return null;
+  const {simulators, decks, inventory} = {...data, ...simData, ...decksData};
   const {ship} = simulators[0];
 
   const findInv = e => {
@@ -255,11 +265,18 @@ const CargoControlCore = ({simulator, client}) => {
             <option disabled value="select">
               Select Deck
             </option>
-            {decks.map(d => (
-              <option key={d.id} value={d.id}>
-                Deck {d.number}
-              </option>
-            ))}
+            {decks
+              .concat()
+              .sort((a, b) => {
+                if (a.number > b.number) return 1;
+                if (a.number < b.number) return -1;
+                return 0;
+              })
+              .map(d => (
+                <option key={d.id} value={d.id}>
+                  Deck {d.number}
+                </option>
+              ))}
           </select>
           <select
             style={{height: "24px"}}

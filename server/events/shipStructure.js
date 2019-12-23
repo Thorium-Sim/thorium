@@ -238,6 +238,7 @@ App.on("addInventory", ({inventory}) => {
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
   pubsub.publish("crewCountUpdate", App.crew);
+  pubsub.publish("dockingUpdate", App.dockingPorts);
 });
 App.on("removeInventory", ({id}) => {
   App.inventory = App.inventory.filter(i => i.id !== id);
