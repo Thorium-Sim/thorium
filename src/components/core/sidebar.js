@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import "./sidebar.scss";
 import {Cores} from "components/views";
 import {subscribe} from "helpers/pubsub";
