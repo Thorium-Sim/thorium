@@ -14,6 +14,9 @@ const fragment = gql`
     station {
       name
     }
+    currentCard {
+      name
+    }
     loginName
     hypercard
   }
@@ -110,6 +113,7 @@ const ClientCore = ({clients, simulator}) => (
         <tr>
           <th>Station</th>
           <th>Name</th>
+          <th>Card</th>
           <th>Client</th>
           <th>Hypercard</th>
         </tr>
@@ -127,6 +131,7 @@ const ClientCore = ({clients, simulator}) => (
             <tr key={c.id}>
               <td>{c.station.name}</td>
               <td>{c.loginName}</td>
+              <td>{c.currentCard.name}</td>
               <td>{c.id}</td>
               <td>
                 {" "}

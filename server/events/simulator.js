@@ -447,3 +447,22 @@ App.on("flipSimulator", ({simulatorId, flip}) => {
 
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
+App.on("stationAssignCard", ({simulatorId, assignedToStation, cardName}) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  const card = simulator.stations
+    .reduce((acc, next) => acc.concat(next.cards), [])
+    .find(c => c.name === cardName);
+
+  // Remove it so it isn't double-assigned
+  simulator.removeStationAssignedCard(cardName);
+
+  simulator.addStationAssignedCard(assignedToStation, card);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+  pubsub.publish("clientChanged", App.clients);
+});
+App.on("stationUnassignCard", ({simulatorId, cardName}) => {
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.removeStationAssignedCard(cardName);
+  pubsub.publish("simulatorsUpdate", App.simulators);
+  pubsub.publish("clientChanged", App.clients);
+});

@@ -45,7 +45,6 @@ export default function DecodingCanvas({
     function loop() {
       setP(p => {
         const newP = p + 20;
-        console.log(newP, width * 2);
         if (newP < width * 2) {
           return newP;
         }

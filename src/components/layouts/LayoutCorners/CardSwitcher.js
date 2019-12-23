@@ -17,6 +17,7 @@ class CardSwitcher extends Component {
               cardNum={index}
               name={card.name}
               component={card.component}
+              assigned={card.assigned || card.newStation}
               {...this.props}
             />
           );
@@ -51,7 +52,11 @@ const CardButton = props => {
           src={`/cardIcons/${cardName}.svg`}
           draggable="false"
         />
-        <div className="card-icon-background" />
+        <div
+          className={`card-icon-background ${
+            props.assigned ? "card-icon-assigned" : ""
+          }`}
+        />
       </div>
     </div>
   );

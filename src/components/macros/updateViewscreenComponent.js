@@ -57,7 +57,6 @@ export default ({updateArgs, args, clients, steps = []}) => {
       );
     }, [])
     .reduce((acc, next) => acc.concat(next), []);
-  console.log(clients);
   return (
     <FormGroup className="macro-template">
       <div>

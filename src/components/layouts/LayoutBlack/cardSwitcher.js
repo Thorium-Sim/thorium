@@ -15,7 +15,7 @@ class CardButton extends Component {
     });
   };
   render() {
-    const {component, changeCard, currentCard, name} = this.props;
+    const {component, changeCard, currentCard, name, assigned} = this.props;
     const cardName = component.match(intregex)
       ? "Interface"
       : component.match(spregex)
@@ -28,7 +28,9 @@ class CardButton extends Component {
           onClick={() => changeCard(name)}
           alt="Card"
           ref={this.card}
-          className={`card-icon ${name === currentCard ? "active" : ""}`}
+          className={`card-icon ${name === currentCard ? "active" : ""} ${
+            assigned ? "card-icon-assigned" : ""
+          }`}
           src={`/cardIcons/${cardName}.svg`}
           draggable="false"
         />
@@ -59,6 +61,7 @@ const CardSwitcher = ({cards, changeCard, currentCard}) => {
             changeCard={changeCard}
             currentCard={currentCard}
             component={card.component}
+            assigned={card.assigned || card.newStation}
           />
         ))}
       </div>

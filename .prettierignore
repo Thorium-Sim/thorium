@@ -6,3 +6,5 @@ dist
 locales
 coverage
 packages
+tempServer
+temp

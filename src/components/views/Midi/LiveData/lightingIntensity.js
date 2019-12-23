@@ -27,7 +27,7 @@ const LightingIntensity = ({simulatorId, value, setValue}) => {
     valueSet.current = true;
     setTimeout(() => {
       valueSet.current = false;
-    }, 1000 / 30);
+    }, 1000 / 10);
     setValue(intensity);
   }, [intensity, setValue]);
 

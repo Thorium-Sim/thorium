@@ -41,7 +41,7 @@ const CardSwitcher = ({cards, cardName, changeCard, hyperCard}) => {
                 key={`card-${c.name}`}
                 className={`navigation-card ${
                   currentCard.component === cardName ? " active" : ""
-                }`}
+                } ${c.assigned || c.newStation ? "text-warning" : ""}`}
                 onClick={() => {
                   setShown(false);
                   changeCard(c.name);

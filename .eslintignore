@@ -12,3 +12,5 @@ server/build
 locales
 src/models
 packages
+tempServer
+temp

@@ -29,6 +29,16 @@ const schema = gql`
     name: String
     component: String
     hidden: Boolean
+    # Whether this card is assigned to another station
+    assigned: Boolean
+
+    # Whether this card is assigned to a station
+    # it doesn't belong to
+    newStation: Boolean
+  }
+  input CardInput {
+    name: String
+    component: String
   }
   extend type Simulator {
     stationSets: [StationSet]
@@ -120,9 +130,28 @@ const resolver = {
     },
   },
   Station: {
-    cards(station, {showHidden}) {
-      if (showHidden) return station.cards;
-      return station.cards.filter(c => !c.hidden);
+    cards(station, {showHidden}, context) {
+      let simulator = context.simulator;
+      if (!simulator) {
+        const clientObj = App.clients.find(c => c.id === context.clientId);
+        simulator = App.simulators.find(s => s.id === clientObj?.simulatorId);
+        context.simulator = simulator;
+      }
+      const {stationAssignedCards = {}} = simulator || {};
+
+      const assignedCardList = Object.values(stationAssignedCards)
+        .reduce((acc, next) => acc.concat(next), [])
+        .map(c => c.name)
+        .filter(Boolean);
+      const concatCards = stationAssignedCards[station.name] || [];
+      let cards = station.cards
+        .map(c => ({...c, assigned: assignedCardList.includes(c.name)}))
+        .concat(concatCards.map(c => ({...c, newStation: true})))
+        .filter(Boolean);
+
+      // Indicate cards assigned to other stations
+      if (showHidden) return cards;
+      return cards.filter(c => !c.hidden);
     },
   },
   Query: {

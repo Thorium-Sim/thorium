@@ -39,9 +39,8 @@ const TorpedoInventory = ({id, inventory, refetchQueries = []}) => {
                 <InputField
                   prompt="What is the new value for photon torpedos?"
                   onClick={count =>
-                    console.log(count) ||
-                    ((parseInt(count, 10) || parseInt(count, 10) === 0) &&
-                      updateCount({variables: {id, type: "photon", count}}))
+                    (parseInt(count, 10) || parseInt(count, 10) === 0) &&
+                    updateCount({variables: {id, type: "photon", count}})
                   }
                 >
                   {types.photon}

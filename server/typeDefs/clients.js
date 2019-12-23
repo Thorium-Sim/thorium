@@ -26,6 +26,8 @@ const schema = gql`
     cracked: Boolean
     commandLineOutput: [String]
     commandLineFeedback: [CommandLineFeedback]
+    currentCard: Card
+
     # Space EdVentures
     token: String
     email: String
@@ -176,6 +178,7 @@ const schema = gql`
     ): String
     setClientOverlay(id: ID!, overlay: Boolean!): String
     clientCrack(id: ID!, crack: Boolean!): String
+    clientSetCard(id: ID!, card: String!): String
 
     setKeypadCode(id: ID!, code: [Int]): String
     setKeypadEnteredCode(id: ID!, code: [Int!]): String
@@ -281,6 +284,31 @@ const resolver = {
     },
     mobile(client) {
       return Boolean(client.mobile);
+    },
+    currentCard(client) {
+      const simulator = App.simulators.find(s => s.id === client.simulatorId);
+      if (!simulator) return null;
+      const station = StationResolver(client);
+      if (!station) return null;
+
+      // Get any assigned cards
+      const {stationAssignedCards = {}} = simulator;
+      const assignedCardList = Object.values(stationAssignedCards)
+        .reduce((acc, next) => acc.concat(next), [])
+        .map(c => c.name)
+        .filter(Boolean);
+
+      const concatCards = stationAssignedCards[station.name] || [];
+      let cards = station.cards
+        .map(c => ({...c, assigned: assignedCardList.includes(c.name)}))
+        .concat(concatCards.map(c => ({...c, newStation: true})))
+        .filter(Boolean);
+
+      const card = cards
+        .filter(c => !c.hidden)
+        .find(c => c.name === simulator.clientCards[client.id]);
+
+      return card || cards[0];
     },
   },
   Keypad: {
