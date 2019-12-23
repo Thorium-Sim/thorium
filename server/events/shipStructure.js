@@ -261,6 +261,7 @@ App.on("updateInventoryMetadata", ({id, metadata}) => {
 });
 App.on("updateCrewInventory", ({crewId, inventory, roomId}) => {
   inventory.forEach(e => {
+    if (e.count === 0) return;
     const inv = App.inventory.find(i => i.id === e.inventory);
     inv.moveToCrew(roomId, crewId, e.count);
   });
