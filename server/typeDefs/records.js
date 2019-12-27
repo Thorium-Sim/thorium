@@ -26,9 +26,10 @@ const schema = gql`
   enum RecordSnippetType {
     normal
     buoy
+    external
   }
   extend type Query {
-    recordSnippets(simulatorId: ID!): [RecordSnippet]
+    recordSnippets(simulatorId: ID!, visible: Boolean): [RecordSnippet]
     recordTemplates: [RecordSnippet]
   }
   extend type Mutation {
@@ -55,6 +56,13 @@ const schema = gql`
       recordId: ID!
     ): String
     recordsDeleteRecord(simulatorId: ID!, recordId: ID!): String
+
+    recordsGenerateRecords(
+      simulatorId: ID!
+      name: String!
+      count: Int
+    ): RecordSnippet
+
     recordTemplateCreateSnippet(name: String!): String
     # With record templates, when the template is instantiated during a mission, the time of instantiation
     # will replace the most recent record timestamp in the snippet. The rest of the snippets will be offset
@@ -79,7 +87,7 @@ const schema = gql`
     recordTemplateRemoveFromSnippet(snippetId: ID!, recordId: ID!): String
   }
   extend type Subscription {
-    recordSnippetsUpdate(simulatorId: ID): [RecordSnippet]
+    recordSnippetsUpdate(simulatorId: ID, visible: Boolean): [RecordSnippet]
     recordTemplatesUpdate: [RecordSnippet]
   }
 `;
@@ -95,7 +103,7 @@ const resolver = {
     },
   },
   Query: {
-    recordSnippets(_rootQuery, {simulatorId}) {
+    recordSnippets(_rootQuery, {simulatorId, visible}) {
       const sim = App.simulators.find(s => s.id === simulatorId);
       if (!sim) return [];
       const currentSnippet = {
@@ -103,9 +111,12 @@ const resolver = {
         simulatorId: sim.id,
         name: "All Records",
         type: "normal",
-        records: sim.records.map(r => r.id),
+        visible: true,
+        records: sim.records.filter(r => r.snippetId === null).map(r => r.id),
       };
-      return sim.recordSnippets.concat(currentSnippet);
+      return sim.recordSnippets
+        .concat(currentSnippet)
+        .filter(c => (visible ? true : c.visible));
     },
     recordTemplates() {
       return App.recordTemplates;
@@ -114,20 +125,25 @@ const resolver = {
   Mutation: mutationHelper(schema),
   Subscription: {
     recordSnippetsUpdate: {
-      resolve(simulator) {
+      resolve(simulator, {visible}) {
         const currentSnippet = {
           id: `current-${simulator.id}`,
           simulatorId: simulator.id,
           name: "All Records",
           type: "normal",
-          records: simulator.records.map(r => r.id),
+          visible: true,
+          records: simulator.records
+            .filter(r => r.snippetId === null)
+            .map(r => r.id),
         };
-        return simulator.recordSnippets.concat(currentSnippet);
+        return simulator.recordSnippets
+          .concat(currentSnippet)
+          .filter(c => (visible ? true : c.visible));
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("recordSnippetsUpdate"),
-        (rootValue, args) => {
-          return true;
+        (rootValue, {simulatorId}) => {
+          return rootValue.id === simulatorId;
         },
       ),
     },

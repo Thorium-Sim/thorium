@@ -36,6 +36,13 @@ App.on("recordsDeleteRecord", ({simulatorId, recordId, cb}) => {
     cb();
   });
 });
+App.on("recordsGenerateRecords", ({simulatorId, name, count, cb}) => {
+  performAction(simulatorId, sim => {
+    const snippet = RecordSnippet.generateSnippets(sim, name, count);
+    sim.recordSnippets.push(snippet);
+    cb(snippet);
+  });
+});
 
 /**
  * Record Templates
