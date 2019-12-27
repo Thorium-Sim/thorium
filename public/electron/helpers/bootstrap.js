@@ -26,17 +26,19 @@ module.exports = function bootstrap(serverWindow) {
       serverWindow.webContents.send("info", data);
     });
     child.on("close", function(code) {
-      if (restartCount < 10) {
+      if (serverWindow && restartCount < 10) {
         serverWindow.webContents.send(
           "info",
           `Server process closed. Restarting...`,
         );
         startServer();
       } else {
-        serverWindow.webContents.send(
-          "info",
-          `Server process closed. Too many restarts. Closing Thorium Server.`,
-        );
+        if (serverWindow) {
+          serverWindow.webContents.send(
+            "info",
+            `Server process closed. Too many restarts. Closing Thorium Server.`,
+          );
+        }
         app.quit();
       }
       restartCount++;
