@@ -8,6 +8,7 @@ import "../TractorBeam/style.scss";
 const fragment = gql`
   fragment DilithiumData on Reactor {
     id
+    model
     alphaLevel
     betaLevel
     alphaTarget
@@ -44,6 +45,7 @@ class DilithiumStressData extends Component {
           if (loading || !data) return null;
           const {reactors} = data;
           if (!reactors[0]) return <div>No Reactor</div>;
+          const Reactor = reactors.find(r => r.model === "reactor");
           return (
             <SubscriptionHelper
               subscribe={() =>
@@ -58,7 +60,7 @@ class DilithiumStressData extends Component {
                 })
               }
             >
-              <DilithiumStress {...this.props} {...reactors[0]} />
+              <DilithiumStress {...this.props} {...Reactor} />
             </SubscriptionHelper>
           );
         }}
