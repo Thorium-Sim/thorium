@@ -28,7 +28,25 @@ export default [
       variables: {simulatorId: "test"},
     },
     result: {
-      data: {},
+      data: {inventoryUpdate: []},
+    },
+  },
+  {
+    request: {
+      query: INVENTORY_SUB,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {inventoryUpdate: []},
+    },
+  },
+  {
+    request: {
+      query: INVENTORY_SUB,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {inventoryUpdate: []},
     },
   },
   {
