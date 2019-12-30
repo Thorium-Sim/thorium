@@ -206,7 +206,9 @@ App.on(
 App.on("createSensorContact", ({id, contact}) => {
   const system = App.systems.find(sys => sys.id === id);
   if (!system) return;
+  console.log("Creating contact", system.contacts.length);
   system.createContact(contact);
+  console.log(system.contacts.length);
   pubsub.publish("sensorContactUpdate", system);
 });
 App.on("createSensorContacts", ({id, contacts}) => {
