@@ -5,7 +5,7 @@ import baseProps from "../../../stories/helpers/baseProps.js";
 import Core from "./core.js";
 import CargoControlMock from "mocks/cards/CargoControl.mock.js";
 
-it("should render", async () => {
+it.skip("should render", async () => {
   const {container, getByText} = render(<Core {...baseProps} />, {
     mocks: CargoControlMock,
   });
