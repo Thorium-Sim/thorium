@@ -1,132 +1,128 @@
-import React, {Component} from "react";
+import React from "react";
 import Arrow from "./arrow";
-import Measure from "react-measure";
+import useMeasure from "helpers/hooks/useMeasure";
+import "./style.scss";
+const noOp = () => {};
+const Bars = ({
+  color,
+  simulator,
+  arrow,
+  flop,
+  className,
+  label,
+  active = true,
+  noLevel,
+  level: propsLevel,
+  max = 0,
+  mouseMove: mouseMoveProp = noOp,
+  mouseUp: mouseUpProp = noOp,
+}) => {
+  const [height, setHeight] = React.useState(0);
+  const [top, setTop] = React.useState(0);
+  const [level, setLevel] = React.useState(propsLevel);
+  const [dragging, setDragging] = React.useState(false);
 
-class Bars extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      height: 0,
-      top: 0,
-      mouseY: 0,
-      level: props.level,
+  React.useEffect(() => {
+    setLevel(propsLevel);
+  }, [propsLevel]);
+
+  const mouseDown = (dimensions, evt) => {
+    setHeight(dimensions.height);
+    setTop(dimensions.top);
+    setDragging(true);
+  };
+
+  React.useEffect(() => {
+    const mouseMove = e => {
+      const pageY =
+        e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
+      setLevel(Math.max(Math.min((pageY - top) / height, 1), max));
+      mouseMoveProp(Math.max(Math.min((pageY - top) / height, 1), max));
     };
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.level !== this.props.level) {
-      this.setState({
-        level: this.props.level,
-      });
+    if (dragging) {
+      document.addEventListener("mousemove", mouseMove);
+      document.addEventListener("touchmove", mouseMove);
+    } else {
+      document.removeEventListener("mousemove", mouseMove);
+      document.removeEventListener("touchmove", mouseMove);
     }
-  }
-  mouseDown = (dimensions, evt) => {
-    this.setState(
-      {
-        height: dimensions.height,
-        top: dimensions.top,
-        mouseY: evt.nativeEvent.pageY,
-      },
-      () => {
-        document.addEventListener("mousemove", this.mouseMove);
-        document.addEventListener("touchmove", this.mouseMove);
-        document.addEventListener("mouseup", this.mouseUp);
-        document.addEventListener("touchend", this.mouseUp);
-      },
-    );
-  };
-  mouseMove = e => {
-    const {max = 0} = this.props;
-    const pageY =
-      e.clientY || (e.touches && e.touches[0] && e.touches[0].clientY) || 0;
-    const {height, top} = this.state;
-    this.setState({
-      level: Math.max(Math.min((pageY - top) / height, 1), max),
-    });
-    this.props.mouseMove &&
-      this.props.mouseMove(Math.max(Math.min((pageY - top) / height, 1), max));
-  };
-  mouseUp = e => {
-    document.removeEventListener("mousemove", this.mouseMove);
-    document.removeEventListener("touchmove", this.mouseMove);
-    document.removeEventListener("mouseup", this.mouseUp);
-    document.removeEventListener("touchend", this.mouseUp);
+    return () => {
+      document.removeEventListener("mousemove", mouseMove);
+      document.removeEventListener("touchmove", mouseMove);
+    };
+  }, [dragging, height, max, mouseMoveProp, top]);
 
-    // mutate to update
-    this.props.mouseUp && this.props.mouseUp(this.state.level);
-  };
-  render() {
-    const {
-      color,
-      simulator,
-      arrow,
-      flop,
-      className,
-      label,
-      active = true,
-      noLevel,
-    } = this.props;
-    const {level} = this.state;
-    return (
-      <div className={`bar-container ${className} ${active ? "shown" : ""}`}>
-        {arrow && (
-          <Measure
-            bounds
-            onResize={contentRect => {
-              this.setState({dimensions: contentRect.bounds});
-            }}
-          >
-            {({measureRef}) => (
-              <div
-                ref={measureRef}
-                className={`arrow-container ${flop ? "flop" : ""}`}
-              >
-                {this.state.dimensions && (
-                  <Arrow
-                    dimensions={this.state.dimensions}
-                    alertLevel={simulator.alertLevel}
-                    level={level}
-                    mouseDown={this.mouseDown}
-                    flop={flop}
-                  />
-                )}
-              </div>
-            )}
-          </Measure>
-        )}
+  React.useEffect(() => {
+    const mouseUp = e => {
+      setDragging(false);
+      mouseUpProp(level);
+    };
+    if (dragging) {
+      document.addEventListener("mouseup", mouseUp);
+      document.addEventListener("touchend", mouseUp);
+    } else {
+      document.removeEventListener("mouseup", mouseUp);
+      document.removeEventListener("touchend", mouseUp);
+    }
+    return () => {
+      document.removeEventListener("mouseup", mouseUp);
+      document.removeEventListener("touchend", mouseUp);
+    };
+  }, [dragging, level, mouseUpProp]);
 
-        {!noLevel && (
-          <p className="barLabel">
-            {label && label + ": "}
-            {Math.round(Math.abs(level - 1) * 100) + "%"}
-          </p>
-        )}
-
-        <div className="bar-holder">
-          {Array(40)
-            .fill(0)
-            .map((_, index, array) => {
-              return (
-                <div
-                  key={`tractor-bars-${index}`}
-                  className="bar"
-                  style={{
-                    opacity: index / array.length >= level ? 1 : 0.3,
-                    backgroundColor: color || null,
-                    width:
-                      (array.length / (index + 2)) * (100 / array.length) + "%",
-                    marginLeft: flop
-                      ? Math.abs(
-                          (array.length / (index + 2)) * (100 / array.length) -
-                            100,
-                        ) + "%"
-                      : 0,
-                  }}
-                />
-              );
-            })}
+  const [measureRef, dimensions] = useMeasure();
+  return (
+    <div className={`bar-container ${className} ${active ? "shown" : ""}`}>
+      {arrow && (
+        <div
+          ref={measureRef}
+          className={`arrow-container ${flop ? "flop" : ""}`}
+        >
+          {dimensions && (
+            <Arrow
+              dimensions={dimensions}
+              alertLevel={simulator.alertLevel}
+              level={level}
+              mouseDown={mouseDown}
+              flop={flop}
+            />
+          )}
         </div>
+      )}
+
+      {!noLevel && (
+        <p className="barLabel">
+          {label && label + ": "}
+          {Math.round(Math.abs(level - 1) * 100) + "%"}
+        </p>
+      )}
+
+      <div className="bar-holder">
+        {Array(40)
+          .fill(0)
+          .map((_, index, array) => {
+            return (
+              <div
+                key={`tractor-bars-${index}`}
+                className="bar"
+                style={{
+                  opacity: index / array.length >= level ? 1 : 0.3,
+                  backgroundColor: color || null,
+                  width:
+                    (array.length / (index + 2)) * (100 / array.length) + "%",
+                  marginLeft: flop
+                    ? Math.abs(
+                        (array.length / (index + 2)) * (100 / array.length) -
+                          100,
+                      ) + "%"
+                    : 0,
+                }}
+              />
+            );
+          })}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
 export default Bars;
