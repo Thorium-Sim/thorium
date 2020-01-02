@@ -19,6 +19,7 @@ const schema = gql`
     sensorContactId: ID
     name: String
     type: RecordSnippetType
+    visible: Boolean
     launched: Boolean
     records: [RecordEntry]
     templateRecords: [RecordEntry]
@@ -33,6 +34,9 @@ const schema = gql`
     recordTemplates: [RecordSnippet]
   }
   extend type Mutation {
+    """
+    Macro: Records: Create Ship Record
+    """
     recordsCreate(
       simulatorId: ID!
       contents: String!
@@ -57,11 +61,30 @@ const schema = gql`
     ): String
     recordsDeleteRecord(simulatorId: ID!, recordId: ID!): String
 
+    """
+    Macro: Records: Generate Records Snippet
+    """
     recordsGenerateRecords(
       simulatorId: ID!
       name: String!
       count: Int
+      visible: Boolean
     ): RecordSnippet
+
+    """
+    Macro: Records: Add Record to Snippet
+    """
+    recordsCreateOnSnippet(
+      simulatorId: ID!
+      snippetId: ID
+      snippetName: String
+      contents: String!
+      timestamp: String
+      category: String = "manual"
+    ): RecordSnippet
+
+    recordsShowSnippet(simulatorId: ID!, snippetId: ID!): RecordSnippet
+    recordsHideSnippet(simulatorId: ID!, snippetId: ID!): RecordSnippet
 
     recordTemplateCreateSnippet(name: String!): String
     # With record templates, when the template is instantiated during a mission, the time of instantiation

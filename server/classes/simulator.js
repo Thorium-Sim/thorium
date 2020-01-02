@@ -510,6 +510,16 @@ export default class Simulator {
     const snippet = this.recordSnippets.find(s => s.id === snippetId);
     snippet.removeRecord(recordId);
   }
+  showSnippet(snippetId) {
+    const snippet = this.recordSnippets.find(s => s.id === snippetId);
+    snippet.visible = true;
+    return snippet;
+  }
+  hideSnippet(snippetId) {
+    const snippet = this.recordSnippets.find(s => s.id === snippetId);
+    snippet.visible = false;
+    return snippet;
+  }
   deleteRecord(recordId) {
     this.records = this.records.filter(r => r.id !== recordId);
   }

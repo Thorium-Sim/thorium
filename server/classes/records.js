@@ -236,12 +236,12 @@ export class RecordSnippet {
       });
     }
   }
-  static generateSnippets(simulator, name, count = 30) {
+  static generateSnippets(simulator, name, count = 30, visible) {
     const Snippet = new RecordSnippet({
       simulatorId: simulator.id,
       name,
       type: "external",
-      visible: false,
+      visible,
     });
     const availableTypes = [
       "probeLaunched",

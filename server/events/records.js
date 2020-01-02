@@ -36,14 +36,23 @@ App.on("recordsDeleteRecord", ({simulatorId, recordId, cb}) => {
     cb();
   });
 });
-App.on("recordsGenerateRecords", ({simulatorId, name, count, cb}) => {
+App.on("recordsGenerateRecords", ({simulatorId, name, count, visible, cb}) => {
   performAction(simulatorId, sim => {
-    const snippet = RecordSnippet.generateSnippets(sim, name, count);
+    const snippet = RecordSnippet.generateSnippets(sim, name, count, visible);
     sim.recordSnippets.push(snippet);
     cb(snippet);
   });
 });
-
+App.on("recordsShowSnippet", ({simulatorId, snippetId, cb}) => {
+  performAction(simulatorId, sim => {
+    cb(sim.showSnippet(snippetId));
+  });
+});
+App.on("recordsHideSnippet", ({simulatorId, snippetId, cb}) => {
+  performAction(simulatorId, sim => {
+    cb(sim.hideSnippet(snippetId));
+  });
+});
 /**
  * Record Templates
  */
