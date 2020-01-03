@@ -495,7 +495,51 @@ export default class Simulator {
 
   // Records
   createRecord(record) {
-    this.records.push(new Record(record));
+    const r = new Record(record);
+    this.records.push(r);
+    return r;
+  }
+  createRecordOnSnippet({
+    snippetId,
+    snippetName = "",
+    contents,
+    timestamp = 0,
+    category,
+  }) {
+    const snippet = this.recordSnippets.find(
+      s =>
+        s.id === snippetId ||
+        s.name.toLowerCase() === snippetName.toLowerCase(),
+    );
+
+    if (!snippet) return null;
+
+    function isValidDate(d) {
+      return d instanceof Date && !isNaN(d);
+    }
+
+    // Get the latest record in this snippet and
+    // add the timestamp value to it.
+    const ts = snippet.records
+      .map(r => this.records.find(({id}) => id === r))
+      .reduce((acc, record) => {
+        const d = new Date(record.timestamp);
+        if (!isValidDate(d)) return acc;
+        if (acc > d) return acc;
+        return d;
+      }, 0);
+
+    const record = this.createRecord({
+      contents,
+      timestamp: new Date(
+        new Date(ts).getTime() + Number(timestamp),
+      ).toISOString(),
+      category,
+      snippetId: snippet.id,
+    });
+    this.addRecordToSnippet(snippet.id, [record.id]);
+
+    return snippet;
   }
   createRecordSnippet(snippet) {
     const s = new RecordSnippet({...snippet, simulatorId: this.id});
