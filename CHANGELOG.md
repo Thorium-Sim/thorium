@@ -1,3 +1,33 @@
+# [2.2.0](https://github.com/Thorium-Sim/thorium/compare/v2.1.0...2.2.0) (2020-01-03)
+
+### Bug Fixes
+
+- **Dilithium Stress:** Properly synchronizes the core and station stress
+  levels. Closes [#2674](https://github.com/Thorium-Sim/thorium/issues/2674)
+  ([0ff5f0e](https://github.com/Thorium-Sim/thorium/commit/0ff5f0e3064bb0861219b00dc7808b119289e324))
+- **Electron:** Fixes an issue where an indecipherable error appears when the
+  server is shut down. Closes
+  [#2672](https://github.com/Thorium-Sim/thorium/issues/2672)
+  ([84259ea](https://github.com/Thorium-Sim/thorium/commit/84259eac48c6470acec7bca4143820c905cb8b0a))
+- **Sensors:** Fixes the creation of duplicate sensor contacts when dragging one
+  to the screen. Closes
+  [#2675](https://github.com/Thorium-Sim/thorium/issues/2675)
+  ([dd78047](https://github.com/Thorium-Sim/thorium/commit/dd7804765a0c9fa6be3f94252936b99088b54539))
+- **Space EdVentures:** Properly restores the connection to Space EdVentures.
+  This might require re-inputting the Space EdVentures API token into your
+  Thorium settings. Closes
+  [#2676](https://github.com/Thorium-Sim/thorium/issues/2676)
+  ([2e9f18d](https://github.com/Thorium-Sim/thorium/commit/2e9f18dde9536e45f69b9ab89d10e710d67edce3))
+
+### Features
+
+- **Records:** Adds additional capabilities to records. Adds the ability to
+  create auto-generated external records snippets. This can be used for records
+  logs, or inspecting the logs of other ships. Also adds macros for adding
+  snippets to the ship or to existing snippets. Refs
+  [#2663](https://github.com/Thorium-Sim/thorium/issues/2663)
+  ([6400f9b](https://github.com/Thorium-Sim/thorium/commit/6400f9b26e24bd233109b9bb628f538958f0aa4b))
+
 # [2.1.0](https://github.com/Thorium-Sim/thorium/compare/v2.0.0...2.1.0) (2019-12-23)
 
 ### Bug Fixes
