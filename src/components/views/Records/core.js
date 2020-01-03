@@ -4,8 +4,9 @@ import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 import {useQuery, useMutation} from "@apollo/react-hooks";
 import {titleCase} from "change-case";
 import {DateTime} from "luxon";
-import {Button} from "reactstrap";
+import {Button, ButtonGroup} from "reactstrap";
 import "./style.scss";
+import useFlightLocalStorage from "helpers/hooks/useFlightLocalStorage";
 
 const fragment = gql`
   fragment RecordData on RecordSnippet {
@@ -13,6 +14,7 @@ const fragment = gql`
     name
     type
     launched
+    visible
     records {
       id
       contents
@@ -25,7 +27,7 @@ const fragment = gql`
 
 export const RECORDS_CORE_QUERY = gql`
   query Records($simulatorId: ID!) {
-    recordSnippets(simulatorId: $simulatorId) {
+    recordSnippets(simulatorId: $simulatorId, visible: true) {
       ...RecordData
     }
   }
@@ -33,7 +35,7 @@ export const RECORDS_CORE_QUERY = gql`
 `;
 export const RECORDS_CORE_SUB = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
-    recordSnippetsUpdate(simulatorId: $simulatorId) {
+    recordSnippetsUpdate(simulatorId: $simulatorId, visible: true) {
       ...RecordData
     }
   }
@@ -60,15 +62,52 @@ const DELETE_RECORD = gql`
   }
 `;
 
-const RecordsCore = ({recordSnippets, simulator}) => {
-  const [selected, setSelected] = React.useState(`current-${simulator.id}`);
-  const selectedSnippet = recordSnippets.find(s => s.id === selected) || {
-    records: [],
-  };
+const GENERATE_RECORDS = gql`
+  mutation Generate($simulatorId: ID!, $name: String!) {
+    recordsGenerateRecords(simulatorId: $simulatorId, name: $name) {
+      id
+    }
+  }
+`;
+
+const SHOW_RECORDS = gql`
+  mutation Show($simulatorId: ID!, $snippetId: ID!) {
+    recordsShowSnippet(simulatorId: $simulatorId, snippetId: $snippetId) {
+      id
+    }
+  }
+`;
+const HIDE_RECORDS = gql`
+  mutation Show($simulatorId: ID!, $snippetId: ID!) {
+    recordsHideSnippet(simulatorId: $simulatorId, snippetId: $snippetId) {
+      id
+    }
+  }
+`;
+
+const RecordsCore = ({recordSnippets, simulator, flight: {id: flightId}}) => {
+  const [intExt, setIntExt] = useFlightLocalStorage(
+    flightId,
+    "selected-records-intExt",
+    `internal`,
+  );
+  const [selected, setSelected] = useFlightLocalStorage(
+    flightId,
+    "selected-records-snippet",
+    `current-${simulator.id}`,
+  );
+  const selectedSnippet = recordSnippets.find(s => s.id === selected);
   const [selectedRecord, setSelectedRecord] = React.useState(null);
   const [createRecord] = useMutation(CREATE_RECORD);
   const [deleteRecord] = useMutation(DELETE_RECORD, {
     variables: {simulatorId: simulator.id, recordId: selectedRecord},
+  });
+  const [generateSnippet] = useMutation(GENERATE_RECORDS);
+  const [showSnippet] = useMutation(SHOW_RECORDS, {
+    variables: {simulatorId: simulator.id, snippetId: selectedSnippet?.id},
+  });
+  const [hideSnippet] = useMutation(HIDE_RECORDS, {
+    variables: {simulatorId: simulator.id, snippetId: selectedSnippet?.id},
   });
 
   function addRecord(e) {
@@ -87,35 +126,82 @@ const RecordsCore = ({recordSnippets, simulator}) => {
 
   return (
     <div className="records-core">
-      <div className="records">
-        <select value={selected} onChange={e => setSelected(e.target.value)}>
-          {recordSnippets.map(s => (
+      <ButtonGroup>
+        <Button
+          size="sm"
+          color="primary"
+          active={intExt === "internal"}
+          onClick={() => {
+            setIntExt("internal");
+            setSelected(`current-${simulator.id}`);
+            setSelectedRecord(null);
+          }}
+        >
+          Ship Records
+        </Button>
+        <Button
+          size="sm"
+          active={intExt === "external"}
+          onClick={() => {
+            setIntExt("external");
+            setSelected(
+              recordSnippets.filter(s => s.type === "external")[0]?.id,
+            );
+            setSelectedRecord(null);
+          }}
+        >
+          External Records
+        </Button>
+      </ButtonGroup>
+      <select value={selected} onChange={e => setSelected(e.target.value)}>
+        {recordSnippets
+          .filter(
+            s =>
+              (s.type === "normal" && intExt === "internal") ||
+              (s.type === "external" && intExt === "external"),
+          )
+          .map(s => (
             <option key={s.id} value={s.id}>
               {s.name}
             </option>
           ))}
-        </select>
-        <div className="record-list">
-          {selectedSnippet.records
-            .concat()
-            .sort((a, b) => {
-              if (a.timestamp > b.timestamp) return -1;
-              if (a.timestamp < b.timestamp) return 1;
-              return 0;
-            })
-            .map(r => (
-              <p
-                key={r.id}
-                className={selectedRecord === r.id ? "selected" : ""}
-                onClick={() => setSelectedRecord(r.id)}
-              >
-                {new DateTime.fromISO(r.timestamp).toLocaleString(
-                  DateTime.TIME_SIMPLE,
-                )}{" "}
-                - {titleCase(r.category)}: {r.contents}
-              </p>
-            ))}
-        </div>
+      </select>
+      {intExt === "external" && (
+        <label>
+          Visible to crew:{" "}
+          <input
+            type="checkbox"
+            checked={selectedSnippet?.visible}
+            onClick={e => {
+              if (e.target.checked) {
+                showSnippet();
+              } else {
+                hideSnippet();
+              }
+            }}
+          />
+        </label>
+      )}
+      <div className="record-list">
+        {selectedSnippet?.records
+          .concat()
+          .sort((a, b) => {
+            if (a.timestamp > b.timestamp) return -1;
+            if (a.timestamp < b.timestamp) return 1;
+            return 0;
+          })
+          .map(r => (
+            <p
+              key={r.id}
+              className={selectedRecord === r.id ? "selected" : ""}
+              onClick={() => setSelectedRecord(r.id)}
+            >
+              {new DateTime.fromISO(r.timestamp).toLocaleString(
+                DateTime.TIME_SIMPLE,
+              )}{" "}
+              - {titleCase(r.category)}: {r.contents}
+            </p>
+          ))}
       </div>
       <div className="actions">
         <select
@@ -150,6 +236,26 @@ const RecordsCore = ({recordSnippets, simulator}) => {
         >
           Delete
         </Button>
+        {intExt === "external" && (
+          <Button
+            color="success"
+            size="sm"
+            onClick={() => {
+              const name = window.prompt(
+                'What is the name of the external snippet? (eg. "USS Paxton Ship Logs" or "USS Seward Records Log")',
+              );
+              if (!name) return;
+              generateSnippet({
+                variables: {simulatorId: simulator.id, name},
+              }).then(res => {
+                const id = res?.data?.recordsGenerateRecords?.id;
+                setSelected(id);
+              });
+            }}
+          >
+            Generate External Snippet
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -9,6 +9,8 @@ function performAction(id, action) {
   pubsub.publish("recordSnippetsUpdate", sim);
 }
 
+const noOp = () => {};
+
 App.on("recordsCreate", ({simulatorId, contents, timestamp, category}) => {
   performAction(simulatorId, sim =>
     sim.createRecord({contents, timestamp, category}),
@@ -36,6 +38,50 @@ App.on("recordsDeleteRecord", ({simulatorId, recordId, cb}) => {
     cb();
   });
 });
+App.on(
+  "recordsGenerateRecords",
+  ({simulatorId, name, count, visible, cb = noOp}) => {
+    performAction(simulatorId, sim => {
+      const snippet = RecordSnippet.generateSnippets(sim, name, count, visible);
+      sim.recordSnippets.push(snippet);
+      cb(snippet);
+    });
+  },
+);
+App.on("recordsShowSnippet", ({simulatorId, snippetId, cb = noOp}) => {
+  performAction(simulatorId, sim => {
+    cb(sim.showSnippet(snippetId));
+  });
+});
+App.on("recordsHideSnippet", ({simulatorId, snippetId, cb = noOp}) => {
+  performAction(simulatorId, sim => {
+    cb(sim.hideSnippet(snippetId));
+  });
+});
+App.on(
+  "recordsCreateOnSnippet",
+  ({
+    simulatorId,
+    snippetId,
+    snippetName,
+    contents,
+    timestamp,
+    category,
+    cb = noOp,
+  }) => {
+    performAction(simulatorId, sim => {
+      cb(
+        sim.createRecordOnSnippet({
+          snippetId,
+          snippetName,
+          contents,
+          timestamp,
+          category,
+        }),
+      );
+    });
+  },
+);
 
 /**
  * Record Templates
