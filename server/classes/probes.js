@@ -32,6 +32,8 @@ export default class Probes extends System {
     params.types.forEach(p => this.types.push(new ProbeType(p, this.id)));
     params.equipment.forEach(e => this.equipment.push(new ProbeEquipment(e)));
 
+    this.training = params.training || false;
+
     // Create the systems based on the equipment added to the probe
   }
   get stealthFactor() {

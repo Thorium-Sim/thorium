@@ -47,6 +47,7 @@ App.on("updateDockingPort", ({port = {}, cb, ...rest}) => {
     return tf;
   });
   dockingPort.updateDockingPort(port);
+  pubsub.publish("decksUpdate", App.decks);
   pubsub.publish("dockingUpdate", App.dockingPorts);
   if (!whichEvent(port)) return cb();
   pubsub.publish("notify", {

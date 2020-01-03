@@ -174,7 +174,6 @@ class CoreComponents extends Component {
 
         {simulator && (
           <Alerts
-            ref="alert-widget"
             disabled={!notifications}
             speech={speech}
             simulator={{id: this.state.simulator}}

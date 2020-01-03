@@ -1,8 +1,8 @@
+import simulators from "../data/simulators";
 import {
   CARDS_CORE_QUERY,
   CARDS_CORE_SUB,
-} from "../../components/views/Cards/core";
-import simulators from "../data/simulators";
+} from "components/views/StationControl/core";
 
 export default [
   {

@@ -12,7 +12,6 @@ it("should render", async () => {
   debug();
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();
-  console.log(container.innerHTML);
   expect(container.innerHTML).toBeTruthy();
   expect(container.innerHTML).not.toBe("Error");
 });

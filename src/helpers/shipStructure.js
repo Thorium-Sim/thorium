@@ -39,7 +39,7 @@ export const DeckDropdown = ({
           >{`All Decks`}</DropdownItem>
         )}
         {decks
-          .concat()
+          ?.concat()
           .sort((a, b) => {
             if (a.number < b.number) return -1;
             if (b.number < a.number) return 1;

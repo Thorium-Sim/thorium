@@ -238,6 +238,7 @@ App.on("addInventory", ({inventory}) => {
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("crewUpdate", App.crew);
   pubsub.publish("crewCountUpdate", App.crew);
+  pubsub.publish("dockingUpdate", App.dockingPorts);
 });
 App.on("removeInventory", ({id}) => {
   App.inventory = App.inventory.filter(i => i.id !== id);
@@ -260,6 +261,7 @@ App.on("updateInventoryMetadata", ({id, metadata}) => {
 });
 App.on("updateCrewInventory", ({crewId, inventory, roomId}) => {
   inventory.forEach(e => {
+    if (e.count === 0) return;
     const inv = App.inventory.find(i => i.id === e.inventory);
     inv.moveToCrew(roomId, crewId, e.count);
   });

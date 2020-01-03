@@ -261,7 +261,7 @@ App.on("removeInterceptionSignal", ({id, simulatorId}) => {
   );
 });
 
-App.on("setLongRangePresetMessages", ({id, simulatorId, messages}) => {
+App.on("setLongRangePresetMessages", ({id, simulatorId, messages = []}) => {
   const system = App.systems.find(
     sys =>
       sys.id === id ||

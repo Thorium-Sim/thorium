@@ -26,7 +26,7 @@ const DeckSelect = props => {
       {({loading, data}) => {
         if (loading) return <p>Loading...</p>;
         let deck = null;
-        const room = data.decks.reduce((prev, next) => {
+        const room = data?.decks?.reduce((prev, next) => {
           if (prev) return prev;
           if (deck) return prev;
           if (next.id === value) {
@@ -50,7 +50,7 @@ const DeckSelect = props => {
             <DeckDropdown
               allDecks
               selectedDeck={deck}
-              decks={data.decks}
+              decks={data?.decks}
               size="sm"
               setSelected={a => onChange(a.deck)}
             />
@@ -59,7 +59,7 @@ const DeckSelect = props => {
                 selectedDeck={deck}
                 selectedRoom={room}
                 size="sm"
-                decks={data.decks}
+                decks={data?.decks}
                 disabled={!deck}
                 setSelected={a => onChange(a.room)}
               />

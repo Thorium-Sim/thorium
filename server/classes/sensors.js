@@ -77,6 +77,8 @@ export default class Sensors extends System {
     this.movement = params.movement || {x: 0, y: 0, z: 0};
     this.thrusterMovement = params.thrusterMovement || {x: 0, y: 0, z: 0};
     this.segments = newlyCreated ? [] : [...(params.segments || [])];
+
+    this.training = params.training || false;
   }
 
   get stealthFactor() {

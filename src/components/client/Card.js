@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import Layouts from "../layouts";
 import Keyboard from "components/views/Keyboard";
 import InterfaceCard from "components/views/Interfaces";
@@ -8,7 +8,7 @@ import SoundPlayer from "./soundPlayer";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
 import {subscribe, publish} from "../../helpers/pubsub";
-import {Mutation} from "react-apollo";
+import {useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {playSound} from "../generic/SoundPlayer";
 import {randomFromList} from "helpers/randomFromList";
@@ -77,7 +77,7 @@ const CardRenderer = props => {
   );
 };
 
-function isMedia(src = "") {
+export function isMedia(src = "") {
   const extensions = [
     ".wav",
     ".mp4",
@@ -94,164 +94,121 @@ function isMedia(src = "") {
   ];
   return extensions.find(e => src.toLowerCase().indexOf(e) > -1);
 }
-export default class CardFrame extends Component {
-  constructor(props) {
-    super(props);
-    if (props.test) {
-      this.state = {
-        card: "Test",
-      };
-    } else {
-      this.state = {
-        card: this.props.station.cards && this.props.station.cards[0].name,
-      };
-    }
-  }
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({visible: true});
-    }, 500);
-    this.cardChangeRequestSubscription = subscribe(
-      "cardChangeRequest",
-      payload => {
-        // Searching in order of priority, find a matching card by component (card
-        // names may have been changed to protect the innocent) then change to that card's name.
-        let found = false;
-        for (let i = 0; i < payload.changeToCard.length; i++) {
-          let matchingCard = this.props.station.cards.find(
-            c => c.component === payload.changeToCard[i],
-          );
-          if (matchingCard) {
-            this.changeCard(matchingCard.name);
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          const widgetName = payload.changeToCard.find(c =>
-            this.props.station.widgets.includes(c),
-          );
-          if (widgetName) {
-            publish("widgetOpen", widgetName);
-          }
-        }
-      },
-    );
-  }
-  componentWillUnmount() {
-    // Unsubscribe
-    this.cardChangeRequestSubscription();
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.station.name !== this.props.station.name) {
-      this.setState({
-        card:
-          this.props.station.cards &&
-          this.props.station.cards[0] &&
-          this.props.station.cards[0].name,
-      });
-    }
-  }
-  changeCard = name => {
-    const card = this.props.station.cards.find(c => c.name === name)
-      ? name
-      : this.props.station.cards &&
-        this.props.station.cards[0] &&
-        this.props.station.cards[0].name;
-    if (this.cardChanged || this.state.card === card) return;
-    this.cardChanged = true;
-    setTimeout(() => (this.cardChanged = false), 500);
-    if (
-      this.props.simulator &&
-      this.props.simulator.soundEffects &&
-      this.props.simulator.soundEffects.cardChange
-    ) {
-      playSound({
-        url: `/assets${randomFromList(
-          this.props.simulator.soundEffects.cardChange,
-        )}`,
-      });
-    }
-    this.setState({
-      card,
-    });
-  };
-  render() {
-    const {
-      station: {training: stationTraining},
-      simulator: {caps, flipped, training: simTraining},
-      client,
-    } = this.props;
-    const {visible} = this.state;
 
-    return (
-      <div
-        className={`client-container ${caps ? "all-caps" : ""} ${
-          flipped ? "client-flipped" : ""
-        } ${visible ? "visible" : ""}`}
-      >
-        <ActionsMixin {...this.props} changeCard={this.changeCard} />
-        {client.cracked && <div className="cracked-screen" />}
-        <CardRenderer
-          {...this.props}
-          card={this.state.card}
-          changeCard={this.changeCard}
-          client={{
-            ...client,
-            training:
-              simTraining && stationTraining && isMedia(stationTraining)
-                ? false
-                : client.training,
-          }}
-        />
-        {this.props.client && (
-          <Reset
-            station={this.props.station}
-            clientId={this.props.client.id}
-            reset={() =>
-              this.setState({
-                card:
-                  this.props.station.cards &&
-                  this.props.station.cards[0] &&
-                  this.props.station.cards[0].name,
-              })
-            }
-          />
-        )}
-        {simTraining &&
-          stationTraining &&
-          client.training &&
-          isMedia(stationTraining) && (
-            <Mutation
-              mutation={gql`
-                mutation ClientSetTraining($id: ID!, $training: Boolean!) {
-                  clientSetTraining(client: $id, training: $training)
-                }
-              `}
-              variables={{
-                id: client.id,
-                training: false,
-              }}
-            >
-              {action => (
-                <TrainingPlayer
-                  src={`/assets${stationTraining}`}
-                  close={action}
-                />
-              )}
-            </Mutation>
-          )}
-        {client.offlineState !== "blackout" && (
-          <Alerts
-            key={`alerts-${
-              this.props.simulator ? this.props.simulator.id : "simulator"
-            }-${this.props.station ? this.props.station.name : "station"}`}
-            ref="alert-widget"
-            simulator={this.props.simulator}
-            station={this.props.station}
-          />
-        )}
-      </div>
-    );
+const SET_TRAINING_MUTATION = gql`
+  mutation ClientSetTraining($id: ID!, $training: Boolean!) {
+    clientSetTraining(client: $id, training: $training)
   }
-}
+`;
+
+const CHANGE_CARD_MUTATION = gql`
+  mutation SetCard($id: ID!, $card: String!) {
+    clientSetCard(id: $id, card: $card)
+  }
+`;
+
+const CardFrame = props => {
+  const {
+    station: {cards, widgets, training: stationTraining},
+    station,
+    simulator,
+    simulator: {soundEffects, caps, flipped, training: simTraining},
+    client,
+  } = props;
+  const cardChanged = React.useRef(false);
+  const [visible, setVisible] = React.useState(false);
+  const cardName = client?.currentCard?.name;
+  React.useEffect(() => {
+    setTimeout(() => setVisible(true), 500);
+  }, []);
+  const [changeCardMutation] = useMutation(CHANGE_CARD_MUTATION);
+  const changeCard = React.useCallback(
+    name => {
+      const card = cards.find(c => c.name === name) ? name : cards?.[0]?.name;
+      if (cardChanged.current || cardName === card) return;
+      cardChanged.current = true;
+      setTimeout(() => (cardChanged.current = false), 500);
+      if (soundEffects?.cardChange) {
+        playSound({
+          url: `/assets${randomFromList(soundEffects.cardChange)}`,
+        });
+      }
+      changeCardMutation({variables: {id: client.id, card: name}});
+    },
+    [cards, changeCardMutation, cardName, client.id, soundEffects],
+  );
+
+  React.useEffect(() => {
+    return subscribe("cardChangeRequest", payload => {
+      // Searching in order of priority, find a matching card by component (card
+      // names may have been changed to protect the innocent) then change to that card's name.
+      let found = false;
+      for (let i = 0; i < payload.changeToCard.length; i++) {
+        let matchingCard = cards.find(
+          c => c.component === payload.changeToCard[i],
+        );
+        if (matchingCard) {
+          changeCard(matchingCard.name);
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        const widgetName = payload.changeToCard.find(c => widgets.includes(c));
+        if (widgetName) {
+          publish("widgetOpen", widgetName);
+        }
+      }
+    });
+  }, [cards, changeCard, widgets]);
+
+  const [stopTraining] = useMutation(SET_TRAINING_MUTATION, {
+    variables: {
+      id: client.id,
+      training: false,
+    },
+  });
+  return (
+    <div
+      className={`client-container ${caps ? "all-caps" : ""} ${
+        flipped ? "client-flipped" : ""
+      } ${visible ? "visible" : ""}`}
+    >
+      <ActionsMixin {...props} changeCard={changeCard} />
+      {client.cracked && <div className="cracked-screen" />}
+      <CardRenderer
+        {...props}
+        card={client.currentCard.name}
+        changeCard={changeCard}
+        client={{
+          ...client,
+          training:
+            simTraining && stationTraining && isMedia(stationTraining)
+              ? false
+              : client.training,
+        }}
+      />
+      {client && <Reset station={station} clientId={client.id} />}
+      {simTraining &&
+        stationTraining &&
+        client.training &&
+        isMedia(stationTraining) && (
+          <TrainingPlayer
+            src={`/assets${stationTraining}`}
+            close={stopTraining}
+          />
+        )}
+      {client.offlineState !== "blackout" && (
+        <Alerts
+          key={`alerts-${simulator ? simulator.id : "simulator"}-${
+            station ? station.name : "station"
+          }`}
+          simulator={simulator}
+          station={station}
+        />
+      )}
+    </div>
+  );
+};
+
+export default CardFrame;

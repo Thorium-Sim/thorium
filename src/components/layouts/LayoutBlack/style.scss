@@ -28,7 +28,21 @@ $alertp: #7a24cf;
       box-sizing: content-box;
       transition: background-color 0.2s ease, border-color 0.2s ease;
     }
+    img.card-icon-assigned.card-icon-assigned {
+      background-color: gold;
+      border: solid 2px gold;
+
+      &:hover {
+        background-color: darken(gold, 20%);
+        border: solid 2px darken(gold, 20%);
+      }
+      &.active {
+        background-color: lighten(gold, 20%);
+        border: solid 2px lighten(gold, 20%);
+      }
+    }
   }
+
   @mixin cardSwitcherColors($color) {
     .card-switcher {
       img {
@@ -63,7 +77,6 @@ $alertp: #7a24cf;
   &.alertColorp {
     @include cardSwitcherColors($alertp);
   }
-
   .card-frame {
     width: 100vw;
     height: 100vh;

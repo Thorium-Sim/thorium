@@ -15,6 +15,8 @@ export default class Transporters extends System {
     // One of 'Inactive', 'Scanning', 'Targeting', 'Charging'
     this.state = params.state || "Inactive";
     this.stealthCompromised = false;
+
+    this.training = params.training || false;
   }
   get stealthFactor() {
     if (this.state === "Scanning") return 0.6;

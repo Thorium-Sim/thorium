@@ -18,6 +18,19 @@ const graphqlUrl =
     ? "/graphql"
     : `http://${hostname}:${parseInt(window.location.port || 3000, 10) +
         1}/graphql`;
+
+const webSocketLink = new WebSocketLink({
+  uri:
+    process.env.NODE_ENV === "production"
+      ? `ws://${window.location.host}/graphql`
+      : `ws://${hostname}:${parseInt(window.location.port || 3000, 10) +
+          1}/graphql`,
+  options: {
+    reconnect: true,
+    connectionParams: () => getClientId().then(clientId => ({clientId})),
+  },
+});
+
 const wsLink = ApolloLink.from([
   onError(args => {
     const {response, graphQLErrors, networkError} = args;
@@ -37,16 +50,7 @@ const wsLink = ApolloLink.from([
     }
     if (response) response.errors = null;
   }),
-  new WebSocketLink({
-    uri:
-      process.env.NODE_ENV === "production"
-        ? `ws://${window.location.host}/graphql`
-        : `ws://${hostname}:${parseInt(window.location.port || 3000, 10) +
-            1}/graphql`,
-    options: {
-      reconnect: true,
-    },
-  }),
+  webSocketLink,
 ]);
 
 const headersMiddleware = setContext((operation, {headers}) => {

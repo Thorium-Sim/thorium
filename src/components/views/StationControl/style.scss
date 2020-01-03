@@ -1,0 +1,17 @@
+.card-stationControl {
+  // Stuff goes here
+  height: 100%;
+  display: block;
+  .row {
+    height: 100%;
+  }
+  .col-sm-4 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .list-group {
+    flex: 1;
+    overflow-y: auto;
+  }
+}

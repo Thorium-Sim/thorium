@@ -23,7 +23,15 @@
     overflow-y: auto;
     flex: 1;
   }
-
+  .timeline-no-edit-mode {
+    button,
+    label,
+    input {
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
   .timeline-item {
     border: solid 1px rgba(255, 255, 255, 0.5);
     * {

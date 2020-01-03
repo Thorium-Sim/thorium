@@ -84,8 +84,14 @@
       background: #bbb;
       border-radius: 50%;
     }
+    .card-icon-assigned {
+      background: gold;
+    }
     .active .card-icon-background {
       background: #fff;
+    }
+    .active .card-icon-assigned {
+      background: lighten(gold, 10%);
     }
     .card-icon-color {
       position: absolute;

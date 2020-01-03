@@ -96,6 +96,13 @@ App.on("clientSetStation", ({client, stationName, cb}) => {
   }
   cb && cb();
 });
+App.on("clientSetCard", ({id, card}) => {
+  const clientObj = App.clients.find(c => c.id === id);
+  const {simulatorId} = clientObj;
+  const simulator = App.simulators.find(s => s.id === simulatorId);
+  simulator.setClientCard(id, card);
+  pubsub.publish("clientChanged", App.clients);
+});
 App.on("clientLogin", ({client, loginName}) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.login(loginName);
@@ -179,7 +186,8 @@ App.on("setClientHypercard", ({clientId, simulatorId, component}) => {
 });
 App.on(
   "playSound",
-  ({sound, type, station, simulatorId, clientId, clients}) => {
+  ({sound: inputSound, type, station, simulatorId, clientId, clients}) => {
+    const sound = {...inputSound};
     if (type === "random") {
       // Get a random sound from that folder.
       const soundExts = ["m4a", "wav", "mp3", "ogg", "aiff", "aif"];
@@ -187,6 +195,7 @@ App.on(
       if (process.env.NODE_ENV === "production") {
         assetDir = paths.userData + "/assets";
       }
+
       const sounds = fs
         .readdirSync(assetDir + sound.asset)
         .filter(

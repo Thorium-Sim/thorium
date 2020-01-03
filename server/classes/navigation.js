@@ -22,6 +22,8 @@ export default class Navigation extends System {
     this.scanning = params.scanning || false;
     this.presets = params.presets || [];
     this.thrusters = params.thrusters || false;
+
+    this.training = params.training || false;
   }
   trainingMode() {
     this.training = true;

@@ -96,6 +96,14 @@ const schema = gql`
     Macro: Station: Unhide Card
     """
     unhideSimulatorCard(simulatorId: ID!, cardName: String!): String
+
+    stationAssignCard(
+      simulatorId: ID!
+      assignedToStation: String!
+      cardName: String!
+    ): String
+    stationUnassignCard(simulatorId: ID!, cardName: String!): String
+
     """
     Macro: Simulator: Flip Simulator
     """
