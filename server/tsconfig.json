@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": false,
-    "outDir": "build",
+    "outDir": "../tempServer",
     "baseUrl": ".",
     "paths": {
       "*": ["../node_modules/*", "../types/*"],

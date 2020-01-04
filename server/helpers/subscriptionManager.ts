@@ -1,7 +1,9 @@
 import {PubSub} from "apollo-server-express";
+import EventEmitter from "events";
 
-const pubsub = new PubSub();
+const ee = new EventEmitter();
+ee.setMaxListeners(250);
 
-pubsub.ee.setMaxListeners(250);
+const pubsub = new PubSub({eventEmitter: ee});
 
 export {pubsub};

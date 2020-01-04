@@ -17,7 +17,7 @@ via the outputs on the component in the configuration.
 import App from "../app";
 import * as triggers from "../triggers";
 
-export default function handleTrigger(eventName, args) {
+export default function handleTrigger(eventName, args, context) {
   const processedArgs = triggers[eventName] ? triggers[eventName](args) : args;
   if (!processedArgs || !processedArgs.simulatorId) return;
   const triggerActions = App.triggerGroups

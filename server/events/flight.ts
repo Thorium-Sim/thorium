@@ -241,7 +241,7 @@ App.on("startFlight", ({id = uuid.v4(), name, simulators, flightType, cb}) => {
     const sim = new Classes.Simulator(template, true);
     sim.template = false;
     sim.templateId = s.simulatorId;
-    sim.mission = s.missionId;
+    sim.mission = s.mission;
     sim.executedTimelineSteps = [];
     const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
     sim.stations = stationSet.stations.map(s => new Classes.Station(s));
@@ -295,6 +295,10 @@ App.on("deleteFlight", ({flightId, cb}) => {
   cb();
 });
 
+interface CacheClearIdentifier {
+  id: string;
+  connected?: boolean;
+}
 App.on("resetFlight", ({flightId, simulatorId, full, cb}) => {
   const flight = App.flights.find(
     f => f.id === flightId || f.simulators.indexOf(simulatorId) > -1,
@@ -312,7 +316,7 @@ App.on("resetFlight", ({flightId, simulatorId, full, cb}) => {
   App.tacticalMaps = App.tacticalMaps.filter(t => t.flightId !== flightId);
 
   // Create new simulators, then delete the old ones
-  flight.simulators.forEach(simId => {
+  flight.simulators.forEach((simId: string) => {
     const sim = App.simulators.find(s => s.id === simId);
     const viewscreens = App.viewscreens.filter(s => s.simulatorId === sim.id);
     const tempId = sim.templateId;
@@ -334,7 +338,9 @@ App.on("resetFlight", ({flightId, simulatorId, full, cb}) => {
 
     // Remove all of the systems, inventory, crew, etc.
     aspectList.forEach(aspect => {
-      App[aspect] = App[aspect].filter(a => a.simulatorId !== simId);
+      App[aspect] = App[aspect].filter(
+        (a: {simulatorId: string}) => a.simulatorId !== simId,
+      );
     });
 
     App.simulators = App.simulators.filter(s => s.id !== simId);
@@ -348,7 +354,7 @@ App.on("resetFlight", ({flightId, simulatorId, full, cb}) => {
     const newSim = new Classes.Simulator(template, true);
     newSim.template = false;
     newSim.templateId = tempId;
-    newSim.mission = sim.missionId;
+    newSim.mission = sim.mission;
     newSim.stations = sim.stations;
     newSim.executedTimelineSteps = [];
 
@@ -383,12 +389,11 @@ App.on("resetFlight", ({flightId, simulatorId, full, cb}) => {
     pubsub.publish("interfaceUpdate", App.interfaces);
     pubsub.publish("clientChanged", App.clients);
 
-    pubsub.publish(
-      "clearCache",
-      App.clients
-        .filter(c => c.flightId === flightId)
-        .concat(App.flights.filter(f => f.id === flightId)),
-    );
+    const cacheIdentifiers: CacheClearIdentifier[] = []
+      .concat(App.clients.filter(c => c.flightId === flightId))
+      .concat(App.flights.filter(f => f.id === flightId));
+
+    pubsub.publish("clearCache", cacheIdentifiers);
     pubsub.publish("simulatorsUpdate", App.simulators);
   });
   cb && cb();

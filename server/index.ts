@@ -14,7 +14,7 @@ Promise.resolve()
   .then(() => init())
   .then(() => broadcast(SERVER_PORT))
   .then(() => express())
-  .then(server => clientServer(server, SERVER_PORT))
+  .then(server => clientServer(server))
   .then(server => apollo(server, SERVER_PORT))
   .then(() => {
     App.init();

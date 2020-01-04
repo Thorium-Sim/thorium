@@ -70,7 +70,7 @@ class Store {
    * //=> {a: 'b'}
    * ```
    * @name .set
-   * @param {string} `key`
+   * @param {any} `key`
    * @param {any} `val` The value to save to `key`. Must be a valid JSON type: String, Number, Array or Object.
    * @return {object} `Store` for chaining
    * @api public

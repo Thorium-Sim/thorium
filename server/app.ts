@@ -66,7 +66,7 @@ class Events extends EventEmitter {
   macros: ClassesImport.Macro[] = [];
   macroButtonConfigs: ClassesImport.MacroButtonConfig[] = [];
   recordTemplates: any[] = [];
-  midiSets: ClassesImport.MidiSet = [];
+  midiSets: ClassesImport.MidiSet[] = [];
   motus: Motu[] = [];
   autoUpdate = true;
   migrations: any = {assets: true};
@@ -149,7 +149,7 @@ class Events extends EventEmitter {
   snapshot() {
     this.snapshotVersion = this.version;
     const snap = this.trimSnapshot({...this});
-    store.set(snap);
+    store.set(snap, null);
   }
   trimSnapshot({
     eventsToEmit = null,
