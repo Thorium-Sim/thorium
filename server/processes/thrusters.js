@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 
 function getMovementDirection(direction, movement) {
   if (movement === "up") return Math.abs(direction.z < 0 ? direction.z : 0);

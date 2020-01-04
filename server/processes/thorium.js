@@ -1,5 +1,5 @@
 // Regularly send a clock sync message
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 
 function clockSync() {
   pubsub.publish("clockSync");

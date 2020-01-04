@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import {MidiSet} from "../classes/midi";
 
 App.on("midiSetCreate", ({name, deviceName, cb}) => {

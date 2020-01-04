@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 
 App.on("rotationUpdate", ({id, rotation, on, cb}) => {
   const sys = App.systems.find(s => s.id === id);

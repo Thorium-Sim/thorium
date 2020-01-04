@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 
 App.on("updateEnvironment", ({deckID, environment}) => {
   const deck = App.decks.find(d => d.id === deckID);

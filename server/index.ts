@@ -3,7 +3,7 @@ import init from "./bootstrap/init";
 import express from "./bootstrap/express";
 import apollo from "./bootstrap/apollo";
 import broadcast from "./bootstrap/broadcast";
-import clientServer from "./bootstrap/client-server.js";
+import clientServer from "./bootstrap/client-server";
 import postMigration from "./bootstrap/postmigration";
 import cleanUp from "./bootstrap/cleanup";
 import App from "./app";

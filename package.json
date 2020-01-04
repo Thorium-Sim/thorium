@@ -22,10 +22,10 @@
     "de"
   ],
   "scripts": {
-    "start": "npm-run-all --parallel start:client start:server",
+    "start": "npm-run-all --parallel start:client watch:ts start:server",
     "postinstall": "patch-package",
     "start:client": "react-scripts start",
-    "start:server": "nodemon ./server/index.js -e js,graphql --ignore snapshots/ --exec babel-node",
+    "start:server": "nodemon",
     "watch:electron": "wait-on http://localhost:3000 && electron .",
     "start:electron": "BROWSER=none npm-run-all --parallel -l start:client watch:server watch:electron",
     "build": "NODE_ENV=production npm-run-all build:client build:server build:ncc build:env copy-package",
@@ -263,6 +263,11 @@
     "@testing-library/jest-dom": "^4.1.2",
     "@testing-library/react": "^9.3.1",
     "@tweenjs/tween.js": "^18.3.1",
+    "@types/errorhandler": "^0.0.32",
+    "@types/mkdirp": "^0.5.2",
+    "@types/multer": "^1.3.10",
+    "@types/uuid": "^3.4.6",
+    "@types/yauzl": "^2.9.1",
     "@zeit/ncc": "^0.20.5",
     "acorn-jsx": "^5.1.0",
     "acorn-loose": "^7.0.0",
@@ -346,6 +351,7 @@
     "stylelint-scss": "^3.12.0",
     "svg-to-jsx": "^1.0.2",
     "three-obj-loader": "^1.1.3",
+    "ts-node-dev": "^1.0.0-pre.44",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typescript": "^3.6.4",
     "wait-on": "^3.3.0"

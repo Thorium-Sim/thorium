@@ -1,5 +1,5 @@
-import App from "../app.js";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import App from "../app";
+import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 
 App.on("shipSetDocking", ({simulatorId, clamps, ramps, airlock, legs}) => {

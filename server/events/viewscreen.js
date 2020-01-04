@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 
 App.on("updateViewscreenName", ({id, name}) => {
   const viewscreen = App.viewscreens.find(v => v.id === id);

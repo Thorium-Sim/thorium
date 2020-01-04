@@ -1,7 +1,7 @@
 // Loop through all of the clients and
 // check to see if they are still connected
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 
 const clientPing = () => {

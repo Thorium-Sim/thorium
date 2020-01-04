@@ -2,9 +2,11 @@
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "target": "es6",
-    "noImplicitAny": true,
+    // TODO: Turn this on when we get enough coverage
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": false,

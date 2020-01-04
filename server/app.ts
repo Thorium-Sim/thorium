@@ -1,13 +1,16 @@
 import {EventEmitter} from "events";
 import util from "util";
 import randomWords from "random-words";
-import * as Classes from "./classes";
+import * as ClassesImport from "./classes";
 import paths from "./helpers/paths";
 import Store from "./helpers/data-store";
 import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
 import Motu from "motu-control";
 
+const Classes: {[index: string]: any} = {
+  ...ClassesImport,
+};
 let snapshotDir = "./snapshots/";
 
 if (process.env.NODE_ENV === "production") {
@@ -25,72 +28,69 @@ const store = new Store({
   path: `${snapshotDir}${snapshotName}`,
   debounce: 1000 * 30,
 });
-
 class Events extends EventEmitter {
-  constructor(params) {
-    super(params);
-    this.simulators = [];
-    this.stationSets = [];
-    this.flights = [];
-    this.missions = [];
-    this.systems = [];
-    this.clients = [];
-    this.sets = [];
-    this.decks = [];
-    this.rooms = [];
-    this.crew = [];
-    this.teams = [];
-    this.inventory = [];
-    this.isochips = [];
-    this.dockingPorts = [];
-    this.coreLayouts = [];
-    this.coreFeed = [];
-    this.viewscreens = [];
-    this.messages = [];
-    this.tacticalMaps = [];
-    this.officerLogs = [];
-    this.exocomps = [];
-    this.libraryDatabase = [];
-    this.softwarePanels = [];
-    this.surveyForms = [];
-    this.objectives = [];
-    this.keyboards = [];
-    this.sounds = [];
-    this.taskTemplates = [];
-    this.taskReports = [];
-    this.tasks = [];
-    this.commandLine = [];
-    this.triggerGroups = [];
-    this.interfaces = [];
-    this.interfaceDevices = [];
-    this.macros = [];
-    this.macroButtonConfigs = [];
-    this.recordTemplates = [];
-    this.midiSets = [];
-    this.motus = [];
-    this.autoUpdate = true;
-    this.migrations = {assets: true};
-    this.thoriumId = randomWords(5).join("-");
-    this.doTrack = false;
-    this.askedToTrack = false;
-    this.addedTaskTemplates = false;
-    this.spaceEdventuresToken = null;
-    this.googleSheetsTokens = {};
-    this.events = [];
-    this.replaying = false;
-    this.snapshotVersion = 0;
-    this.version = 0;
-    this.timestamp = Date.now();
-  }
+  simulators: ClassesImport.Simulator[] = [];
+  stationSets: ClassesImport.StationSet[] = [];
+  flights: ClassesImport.Flight[] = [];
+  missions: ClassesImport.Mission[] = [];
+  systems: any[] = [];
+  clients: ClassesImport.Client[] = [];
+  sets: ClassesImport.Set[] = [];
+  decks: ClassesImport.Deck[] = [];
+  rooms: ClassesImport.Room[] = [];
+  crew: ClassesImport.Crew[] = [];
+  teams: ClassesImport.Team[] = [];
+  inventory: ClassesImport.InventoryItem[] = [];
+  isochips: ClassesImport.Isochip[] = [];
+  dockingPorts: ClassesImport.DockingPort[] = [];
+  coreLayouts: ClassesImport.CoreLayout[] = [];
+  coreFeed: ClassesImport.CoreFeed[] = [];
+  viewscreens: ClassesImport.Viewscreen[] = [];
+  messages: ClassesImport.Message[] = [];
+  tacticalMaps: ClassesImport.TacticalMap[] = [];
+  officerLogs: ClassesImport.OfficerLog[] = [];
+  exocomps: ClassesImport.Exocomp[] = [];
+  libraryDatabase: ClassesImport.Library[] = [];
+  softwarePanels: ClassesImport.SoftwarePanel[] = [];
+  surveyForms: ClassesImport.SurveyForm[] = [];
+  objectives: ClassesImport.Objective[] = [];
+  keyboards: ClassesImport.Keyboard[] = [];
+  sounds: any[] = [];
+  taskTemplates: ClassesImport.TaskTemplate[] = [];
+  taskReports: ClassesImport.TaskReport[] = [];
+  tasks: ClassesImport.Task[] = [];
+  commandLine: ClassesImport.CommandLine[] = [];
+  triggerGroups: ClassesImport.Trigger[] = [];
+  interfaces: ClassesImport.Interface[] = [];
+  interfaceDevices: ClassesImport.InterfaceDevice[] = [];
+  macros: ClassesImport.Macro[] = [];
+  macroButtonConfigs: ClassesImport.MacroButtonConfig[] = [];
+  recordTemplates: any[] = [];
+  midiSets: ClassesImport.MidiSet = [];
+  motus: Motu[] = [];
+  autoUpdate = true;
+  migrations: any = {assets: true};
+  thoriumId: string = randomWords(5).join("-");
+  doTrack: boolean = false;
+  askedToTrack: boolean = false;
+  addedTaskTemplates: boolean = false;
+  spaceEdventuresToken?: string = null;
+  googleSheetsTokens: any = {};
+  events: any[] = [];
+  replaying = false;
+  snapshotVersion = 0;
+  version = 0;
+  timestamp: Date = new Date();
+  [index: string]: any;
 
   init() {
     this.merge(store.data);
     if (!this.doTrack) heap.stubbed = true;
     heap.track("thorium-started", this.thoriumId);
   }
-  merge(snapshot) {
+  merge(snapshot: any) {
     // Initialize the snapshot with the object constructors
-    Object.keys(snapshot).forEach(key => {
+    Object.entries(snapshot).forEach(([key, value]) => {
       if (
         key === "events" ||
         key === "snapshotVersion" ||
@@ -104,18 +104,22 @@ class Events extends EventEmitter {
       if (key === "sounds") return;
       if (
         key === "autoUpdate" ||
-        key === "migrations" ||
-        key === "thoriumId" ||
         key === "doTrack" ||
         key === "askedToTrack" ||
-        key === "addedTaskTemplates" ||
+        key === "addedTaskTemplates"
+      ) {
+        this[key] = Boolean(value);
+      }
+      if (
+        key === "migrations" ||
+        key === "thoriumId" ||
         key === "spaceEdventuresToken" ||
         key === "googleSheetsTokens"
       ) {
-        this[key] = snapshot[key];
+        this[key] = value;
       }
       if (key === "motus" && snapshot.motus) {
-        this.motus = snapshot.motus.map(m => {
+        this.motus = snapshot.motus.map((m: any) => {
           const motu = new Motu(m);
           motu.on("changed", () => {
             App.handleEvent(motu, "motuChange");
@@ -125,7 +129,7 @@ class Events extends EventEmitter {
         return;
       }
       if (snapshot[key] instanceof Array) {
-        snapshot[key].forEach(obj => {
+        snapshot[key].forEach((obj: any) => {
           if (Object.keys(obj).length !== 0) {
             try {
               this[key].push(new Classes[obj.class](obj));
@@ -148,22 +152,23 @@ class Events extends EventEmitter {
     store.set(snap);
   }
   trimSnapshot({
-    eventsToEmit,
-    newEvents,
-    replaying,
-    _events,
-    _maxListeners,
-    domain,
-    events,
-    flights,
-    motus,
+    eventsToEmit = null,
+    newEvents = null,
+    replaying = null,
+    _events = null,
+    _maxListeners = null,
+    domain = null,
+    events = null,
+    flights = [],
+    motus = [],
     ...snapshot
-  }) {
+  }: Events) {
     const newFlights = flights.map(({timeouts, ...f}) => f);
     const newMotus = motus.map(m => m.address);
     return {...snapshot, flights: newFlights, motus: newMotus};
   }
-  handleEvent(param, eventName, context = {}) {
+  // TODO: Add a proper context type
+  handleEvent(param: any, eventName: string, context: any = {}) {
     const {clientId} = context;
     this.timestamp = new Date();
     this.version = this.version + 1;
@@ -191,7 +196,7 @@ class Events extends EventEmitter {
     this.emit(eventName, {...param, context});
     process.env.NODE_ENV === "production" && this.snapshot();
   }
-  test(param) {
+  test(param: any) {
     if (param.key) {
       console.log(util.inspect(this[param.key], false, null));
     } else {
