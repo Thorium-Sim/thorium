@@ -4,7 +4,10 @@ import {
   ApolloServerExpressConfig,
 } from "apollo-server-express";
 import vanity from "./vanity";
+import https from "https";
 import http from "http";
+import path from "path";
+import fs from "fs";
 import ipAddress from "../helpers/ipaddress";
 import {typeDefs, resolvers} from "../data";
 import chalk from "chalk";
@@ -38,7 +41,16 @@ export default (app: any, SERVER_PORT: number) => {
   const apollo = new ApolloServer(graphqlOptions);
   apollo.applyMiddleware({app});
 
-  const httpServer = http.createServer(app);
+  let httpServer = http.createServer(app);
+  if (process.env.NODE_ENV === "production") {
+    httpServer = https.createServer(
+      {
+        key: fs.readFileSync(path.resolve(`${__dirname}/../server.key`)),
+        cert: fs.readFileSync(path.resolve(`${__dirname}/../server.cert`)),
+      },
+      app,
+    );
+  }
   apollo.installSubscriptionHandlers(httpServer);
 
   vanity();

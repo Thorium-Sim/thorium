@@ -22,7 +22,7 @@
     "de"
   ],
   "scripts": {
-    "start": "npm-run-all --parallel start:client watch:ts start:server",
+    "start": "npm-run-all --parallel start:client start:server",
     "postinstall": "patch-package",
     "start:client": "react-scripts start",
     "start:server": "nodemon",
