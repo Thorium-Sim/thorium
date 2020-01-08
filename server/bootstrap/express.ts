@@ -31,7 +31,15 @@ import exportCoreLayout from "../imports/coreLayout/export";
 import importCoreLayout from "../imports/coreLayout/import";
 import errorhandler from "errorhandler";
 
-const exports = {
+export interface MulterFile {
+  key: string; // Available using `S3`.
+  path: string; // Available using `DiskStorage`.
+  mimetype: string;
+  originalname: string;
+  size: number;
+}
+
+const exportsHandlers = {
   exportMission: exportMission,
   exportSimulator: exportSimulator,
   exportKeyboard: exportKeyboard,
@@ -43,7 +51,7 @@ const exports = {
   exportCoreLayout,
 };
 
-const imports = {
+const importsHandlers = {
   importSimulator: importSimulator,
   importMission: importMission,
   importKeyboard: importKeyboard,
@@ -67,18 +75,6 @@ export default () => {
   server.use(errorhandler({log: true}));
   server.use(bodyParser.json({limit: "20mb"}));
 
-  server.on("error", err => {
-    if (err.code === "EADDRINUSE") {
-      console.log(
-        chalk.redBright(
-          "There is already a version of Thorium running on this computer. Shutting down...",
-        ),
-      );
-      process.exit(0);
-    }
-    console.log(err);
-  });
-
   // server.use(require("express-status-monitor")({}));
 
   server.use("*", cors());
@@ -94,7 +90,7 @@ export default () => {
   });
 
   // Dynamic object exports
-  Object.entries(exports).forEach(([key, func]) => {
+  Object.entries(exportsHandlers).forEach(([key, func]) => {
     server.get(`/${key}/:id`, (req, res) => {
       func(req.params.id, res);
     });
@@ -107,35 +103,41 @@ export default () => {
     exportLibrary(req.params.simId, req.params.entryId, res);
   });
 
-  Object.entries(imports).forEach(([key, func]) => {
-    server.post(`/${key}`, upload.any(), async (req, res) => {
+  Object.entries(importsHandlers).forEach(([key, func]) => {
+    server.post(
+      `/${key}`,
+      upload.any(),
+      async (req: express.Request & {files: MulterFile[]}, res) => {
+        if (req.files[0]) {
+          func(req.files[0].path, () => {
+            fs.unlink(req.files[0].path, err => {
+              if (err) {
+                res.end("Error");
+              }
+              res.end("Complete");
+            });
+          });
+        }
+      },
+    );
+  });
+  server.post(
+    "/importLibrary/:simId",
+    upload.any(),
+    async (req: express.Request & {files: MulterFile[]}, res) => {
+      const {simId} = req.params;
       if (req.files[0]) {
-        func(req.files[0].path, () => {
+        importLibrary(req.files[0].path, simId, () => {
           fs.unlink(req.files[0].path, err => {
             if (err) {
               res.end("Error");
-              throw new Error(err);
             }
             res.end("Complete");
           });
         });
       }
-    });
-  });
-  server.post("/importLibrary/:simId", upload.any(), async (req, res) => {
-    const {simId} = req.params;
-    if (req.files[0]) {
-      importLibrary(req.files[0].path, simId, () => {
-        fs.unlink(req.files[0].path, err => {
-          if (err) {
-            res.end("Error");
-            throw new Error(err);
-          }
-          res.end("Complete");
-        });
-      });
-    }
-  });
+    },
+  );
 
   if (process.env.NODE_ENV === "production") {
     // If we're in production, the last thing we want is for the server to crash

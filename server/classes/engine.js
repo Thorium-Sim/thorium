@@ -1,7 +1,7 @@
 import App from "../app";
 import {System} from "./generic";
 import HeatMixin from "./generic/heatMixin";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 export default class Engine extends HeatMixin(System) {
   constructor(params = {}) {

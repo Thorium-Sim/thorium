@@ -1,6 +1,6 @@
 import App from "../app";
 import uuid from "uuid";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 
 function action(id, cb) {
   const sys = App.systems.find(s => s.id === id);

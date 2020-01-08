@@ -1,4 +1,4 @@
-var os = require("os");
+import os from "os";
 var ifaces = os.networkInterfaces();
 var ipAddress = "localhost";
 Object.keys(ifaces).forEach(function(ifname) {

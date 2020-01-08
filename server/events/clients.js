@@ -2,7 +2,7 @@ import App from "../app";
 import Client from "../classes/client";
 import Sound from "../classes/sound";
 import Viewscreen from "../classes/viewscreen";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import path from "path";
 import paths from "../helpers/paths";
 import fs from "fs";

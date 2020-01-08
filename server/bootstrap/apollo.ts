@@ -1,4 +1,8 @@
-import {ApolloServer, makeExecutableSchema} from "apollo-server-express";
+import {
+  ApolloServer,
+  makeExecutableSchema,
+  ApolloServerExpressConfig,
+} from "apollo-server-express";
 import vanity from "./vanity";
 import http from "http";
 import ipAddress from "../helpers/ipaddress";
@@ -14,12 +18,11 @@ export const schema = makeExecutableSchema({
     requireResolversForResolveType: false,
   },
 });
-export default (app, SERVER_PORT) => {
-  const graphqlOptions = {
+
+// TODO: Change app to the express type
+export default (app: any, SERVER_PORT: number) => {
+  const graphqlOptions: ApolloServerExpressConfig = {
     schema,
-    resolverValidationOptions: {
-      requireResolversForResolveType: false,
-    },
     engine: {
       apiKey: "service:Thorium:yZHa-qq7-_kVSpmsc9Ka1A",
     },
@@ -40,7 +43,7 @@ export default (app, SERVER_PORT) => {
 
   vanity();
 
-  app.on("error", err => {
+  app.on("error", (err: {code: string}) => {
     if (err.code === "EADDRINUSE") {
       console.log(
         chalk.redBright(
