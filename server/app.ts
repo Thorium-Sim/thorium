@@ -76,6 +76,10 @@ class Events extends EventEmitter {
   addedTaskTemplates: boolean = false;
   spaceEdventuresToken?: string = null;
   googleSheetsTokens: any = {};
+  httpOnly: boolean = false;
+  certLocations: null | {cert: string; key: string} = null;
+  port: number = process.env.NODE_ENV === "production" ? 443 : 3001;
+
   events: any[] = [];
   replaying = false;
   snapshotVersion = 0;
@@ -106,7 +110,8 @@ class Events extends EventEmitter {
         key === "autoUpdate" ||
         key === "doTrack" ||
         key === "askedToTrack" ||
-        key === "addedTaskTemplates"
+        key === "addedTaskTemplates" ||
+        key === "httpOnly"
       ) {
         this[key] = Boolean(value);
       }
@@ -117,6 +122,13 @@ class Events extends EventEmitter {
         key === "googleSheetsTokens"
       ) {
         this[key] = value;
+      }
+      if (key === "port") {
+        if (process.env.NODE_ENV === "production") {
+          this.port = Number(value);
+        } else {
+          this.port = 3001;
+        }
       }
       if (key === "motus" && snapshot.motus) {
         this.motus = snapshot.motus.map((m: any) => {
