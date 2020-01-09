@@ -8,11 +8,11 @@ const needed = [
   "bonjour",
   "electron-is-dev",
   "electron-settings",
-  "electron-updater",
-  "sleep-mode",
   "is-linux",
   "is-osx",
   "is-windows",
+  "electron-dl",
+  "semver",
 ];
 
 function getNeededPackages(pkg) {
@@ -32,5 +32,6 @@ console.log(
   `{${needed
     .reduce((acc, next) => acc.concat(getNeededPackages(next)), [])
     .flat(Infinity)
+    .filter((a, i, arr) => arr.indexOf(a) === i)
     .join(",")}}`,
 );

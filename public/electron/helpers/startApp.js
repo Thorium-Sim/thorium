@@ -1,5 +1,6 @@
 // const {autoUpdater} = require("electron-updater");
 const {app, BrowserWindow, ipcMain} = require("electron");
+const {download} = require("electron-dl");
 
 // Make the kiosk work better on slightly older computers
 app.commandLine.appendSwitch("ignore-gpu-blacklist", "true");
@@ -41,6 +42,15 @@ module.exports = () => {
         settings.set("autostart", "server");
       }
       startServer();
+    });
+    ipcMain.on("downloadAutoUpdate", async (event, {url}) => {
+      const win = BrowserWindow.getFocusedWindow();
+      await download(win, url, {
+        openFolderWhenDone: true,
+        onProgress: ({percent}) =>
+          event.sender.send("download-progress", percent),
+      });
+      event.sender.send("download-complete", {});
     });
     if (settings.get("autostart")) {
       // Check to see if the page will work.

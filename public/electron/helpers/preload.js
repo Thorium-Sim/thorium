@@ -4,7 +4,10 @@ const shell = require("electron").shell;
 const ipAddress = require("./ipaddress");
 const mac = require("./macaddress");
 const settings = require("electron-settings");
-
+const semver = require("semver");
+const isLinux = require("is-linux");
+const isOsx = require("is-osx");
+const isWindows = require("is-windows");
 let port = process.env.PORT || settings.get("port") || 443;
 let httpOnly =
   process.env.HTTP_ONLY || settings.get("httpOnly") === "true" || false;
@@ -93,11 +96,6 @@ window.serverAddress = function serverAddress() {
   if (document.getElementById("remember-client").checked) auto = true;
   ipcRenderer.send("loadPage", {url, auto});
 };
-ipcRenderer.on("updateReady", function() {
-  // changes the text of the button
-  var container = document.getElementById("ready");
-  container.classList.remove("hidden");
-});
 ipcRenderer.on("info", function(event, data) {
   const output = document.getElementById("console");
   if (output) {
@@ -115,10 +113,10 @@ const thorium = {
   mac: mac,
 };
 
-// Network Settings
 document.addEventListener(
   "DOMContentLoaded",
   function() {
+    // Network Settings
     const httpOnlyEl = document.getElementById("http-only");
     httpOnlyEl.checked = httpOnly;
 
@@ -135,6 +133,56 @@ document.addEventListener(
       port = e.target.value;
       thorium.port = e.target.value;
     });
+
+    // Auto Update
+    const autoUpdateEl = document.getElementById("auto-update");
+    const autoUpdateLabel = document.getElementById("auto-update-label");
+    const autoUpdateButton = document.getElementById("auto-update-download");
+    const autoUpdateProgress = document.getElementById("download-progress");
+
+    fetch("https://api.github.com/repos/thorium-sim/thorium/releases")
+      .then(res => res.json())
+      .then(res => {
+        console.log(res[0]);
+        if (
+          semver.gt(res[0].tag_name, require("../../package.json").version) &&
+          semver(res[0].tag_name).prerelease.length === 0
+        ) {
+          autoUpdateLabel.innerText = `Your version of Thorium is outdated. Current version is ${
+            res[0].tag_name
+          }. Your version is ${require("../../package.json").version}`;
+          autoUpdateEl.classList.add("shown");
+
+          const asset = res[0].assets.find(
+            c =>
+              (isLinux && c.name.includes("AppImage")) ||
+              (isWindows && c.name.includes("win.zip")) ||
+              (isOsx && c.name.includes("mac.zip")),
+          );
+          if (!asset) {
+            autoUpdateButton.hidden = true;
+
+            return;
+          }
+          const url = asset.browser_download_url;
+          autoUpdateButton.addEventListener("click", () => {
+            ipcRenderer.send("downloadAutoUpdate", {url});
+            ipcRenderer.on("download-progress", function(e, progress) {
+              autoUpdateProgress.value = progress;
+            });
+            ipcRenderer.on("download-complete", function() {
+              autoUpdateLabel.innerText = `Update Complete!`;
+              autoUpdateProgress.hidden = true;
+            });
+            autoUpdateLabel.innerText = `Update is being downloaded to your downloads folder in the background... Please wait.`;
+            autoUpdateButton.hidden = true;
+            autoUpdateProgress.hidden = false;
+          });
+        }
+      })
+      .catch(() => {
+        //Oh well.
+      });
   },
   false,
 );
