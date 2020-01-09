@@ -13,6 +13,7 @@ import ipAddress from "../helpers/ipaddress";
 import {typeDefs, resolvers} from "../data";
 import chalk from "chalk";
 import url from "url";
+import paths from "../helpers/paths";
 // Load some other stuff
 import "../events";
 import "../processes";
@@ -30,7 +31,6 @@ export default (
   app: express.Application,
   SERVER_PORT: number,
   httpOnly: boolean,
-  certLocations,
 ) => {
   const graphqlOptions: ApolloServerExpressConfig = {
     schema,
@@ -57,26 +57,25 @@ export default (
     // Be sure to default back to the built-in cert if the
     // actual cert doesn't exist
     let key, cert;
-    try {
-      key = fs.readFileSync(
-        certLocations?.key || path.resolve(`${__dirname}/../server.key`),
-      );
+    if (fs.existsSync(`${paths.userData}/server.key`)) {
+      key = fs.readFileSync(`${paths.userData}/server.key`, "utf8");
+      cert = fs.readFileSync(`${paths.userData}/server.cert`, "utf8");
+    } else {
+      key = fs.readFileSync(path.resolve(`${__dirname}/../server.key`), "utf8");
       cert = fs.readFileSync(
-        certLocations?.cert || path.resolve(`${__dirname}/../server.cert`),
+        path.resolve(`${__dirname}/../server.cert`),
+        "utf8",
       );
-    } catch {
-      key = fs.readFileSync(path.resolve(`${__dirname}/../server.key`));
-      cert = fs.readFileSync(path.resolve(`${__dirname}/../server.cert`));
     }
-
     httpServer = https.createServer({key, cert}, app);
 
     // If the port is 443, start a server at 80 to redirect to 443
     if (SERVER_PORT === 443) {
       const insecureServer = http.createServer((req, res) => {
         const pathParts = url.parse(req.url);
+
         res.writeHead(302, {
-          Location: `https://${pathParts.hostname}${pathParts.path}`,
+          Location: `https://${req.headers.host}${pathParts.path}`,
         });
         res.end();
       });
@@ -106,7 +105,7 @@ GraphQL Server running on ${printUrl()}/graphql
     if (err["code"] === "EADDRINUSE") {
       console.log(
         chalk.redBright(
-          "There is already a version of Thorium running on this computer. Changing port...",
+          "There is already a version of Thorium running on this computer. Changing port to 4444",
         ),
       );
       // Fallover to 4444 if someone is already using the specified ports on this computer

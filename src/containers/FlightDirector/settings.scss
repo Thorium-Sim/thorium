@@ -1,0 +1,12 @@
+.fd-settings {
+  height: calc(100vh - 44px);
+  overflow-y: auto;
+  section {
+    margin-bottom: 2rem;
+  }
+  label {
+    input:not([type="checkbox"]) {
+      display: block;
+    }
+  }
+}

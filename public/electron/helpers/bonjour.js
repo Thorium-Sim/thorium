@@ -14,9 +14,12 @@ class Bonjour {
         service.type === "thorium-http" ||
         service.type === "local"
       ) {
+        const isHttps = service.txt.https === "true";
         const ipregex = /[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}/gi;
         const address = service.addresses.find(a => ipregex.test(a));
-        const uri = `http://${address}:${service.port}/client`;
+        const uri = `${isHttps ? "https" : "http"}://${address}:${
+          service.port
+        }/client`;
         servers.push({
           name: service.host,
           url: uri,

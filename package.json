@@ -36,7 +36,7 @@
     "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
     "build:electron": "electron-builder -mwl",
     "dist:electron": "electron-builder -mwl -p always",
-    "pack:electron": "electron-builder -mwl",
+    "pack:electron": "electron-builder -m",
     "build:pkg": "NODE_ENV=production pkg build/package.json",
     "copy-package": "cp package.json build/package.json",
     "test": "is-ci test:coverage test:watch",
@@ -116,7 +116,8 @@
     },
     "files": [
       "electron/**/*",
-      "node_modules/**/*",
+      "!**/node_modules/**/*",
+      "**/node_modules/{uuid,electron,universalify,@electron/get,debug,ms,env-paths,fs-extra,graceful-fs,jsonfile,klaw,path-is-absolute,rimraf,glob,fs.realpath,inflight,once,wrappy,wrappy,inherits,minimatch,brace-expansion,balanced-match,concat-map,once,wrappy,path-is-absolute,got,create-error-class,capture-stack-trace,duplexer3,get-stream,is-redirect,is-retry-allowed,is-stream,lowercase-keys,safe-buffer,timed-out,unzip-response,url-parse-lax,prepend-http,sanitize-filename,truncate-utf8-bytes,utf8-byte-length,sumchecker,debug,ms,@types/node,extract-zip,concat-stream,buffer-from,inherits,readable-stream,core-util-is,inherits,isarray,process-nextick-args,safe-buffer,string_decoder,safe-buffer,util-deprecate,typedarray,debug,ms,mkdirp,minimist,yauzl,fd-slicer,pend,bonjour,array-flatten,deep-equal,is-arguments,is-date-object,is-regex,has,function-bind,object-is,object-keys,regexp.prototype.flags,define-properties,object-keys,dns-equal,dns-txt,buffer-indexof,multicast-dns,dns-packet,ip,safe-buffer,thunky,multicast-dns-service-types,electron-is-dev,electron-settings,clone,jsonfile,electron-updater,@types/semver,builder-util-runtime,debug,ms,sax,fs-extra,graceful-fs,jsonfile,klaw,path-is-absolute,rimraf,glob,fs.realpath,inflight,once,wrappy,wrappy,inherits,minimatch,brace-expansion,balanced-match,concat-map,once,wrappy,path-is-absolute,js-yaml,argparse,sprintf-js,esprima,lazy-val,lodash.isequal,pako,semver,sleep-mode,is-linux,is-osx,is-windows,meow,camelcase-keys,camelcase,map-obj,decamelize,loud-rejection,currently-unhandled,array-find-index,signal-exit,map-obj,minimist,normalize-package-data,hosted-git-info,resolve,semver,validate-npm-package-license,spdx-correct,spdx-expression-parse,spdx-exceptions,spdx-license-ids,spdx-license-ids,spdx-expression-parse,spdx-exceptions,spdx-license-ids,object-assign,read-pkg-up,find-up,locate-path,p-locate,p-limit,p-try,path-exists,pinkie-promise,pinkie,read-pkg,load-json-file,graceful-fs,parse-json,error-ex,is-arrayish,pify,pinkie-promise,pinkie,strip-bom,normalize-package-data,hosted-git-info,resolve,semver,validate-npm-package-license,spdx-correct,spdx-expression-parse,spdx-exceptions,spdx-license-ids,spdx-license-ids,spdx-expression-parse,spdx-exceptions,spdx-license-ids,path-type,graceful-fs,pify,pinkie-promise,pinkie,redent,indent-string,repeating,is-finite,number-is-nan,strip-indent,get-stdin,trim-newlines,is-linux,is-osx,is-windows}/**/*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
       "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
       "!**/node_modules/*.d.ts",

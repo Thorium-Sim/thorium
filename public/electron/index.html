@@ -116,6 +116,19 @@
           <input type="checkbox" id="remember-server" /> Start Server on
           Open</label
         >
+        <h3>Networking Settings <small>(Advanced)</small></h3>
+        <label style="margin-bottom: 1rem;">
+          Port <input type="number" min="80" max="65535" id="port"
+        /></label>
+        <label> <input type="checkbox" id="http-only" /> HTTP Only</label>
+        <p>
+          <small
+            >To change the HTTPS certificate, rename the certificate and key
+            files to <code>server.cert</code> and <code>server.key</code> and
+            place them in the thorium folder in your Documents folder, next to
+            your <code>snapshot.json</code> file.</small
+          >
+        </p>
       </div>
       <div class="client">
         <h2>Client</h2>

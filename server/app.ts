@@ -77,7 +77,6 @@ class Events extends EventEmitter {
   spaceEdventuresToken?: string = null;
   googleSheetsTokens: any = {};
   httpOnly: boolean = false;
-  certLocations: null | {cert: string; key: string} = null;
   port: number = process.env.NODE_ENV === "production" ? 443 : 3001;
 
   events: any[] = [];
@@ -91,6 +90,9 @@ class Events extends EventEmitter {
     this.merge(store.data);
     if (!this.doTrack) heap.stubbed = true;
     heap.track("thorium-started", this.thoriumId);
+    if (process.env.PORT && !isNaN(parseInt(process.env.PORT, 10)))
+      this.port = parseInt(process.env.PORT, 10);
+    if (process.env.HTTP_ONLY === "true") this.httpOnly = true;
   }
   merge(snapshot: any) {
     // Initialize the snapshot with the object constructors

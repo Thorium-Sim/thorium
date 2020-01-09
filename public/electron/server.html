@@ -104,9 +104,20 @@
       </div>
     </div>
     <script>
+      function printUrl() {
+        return `http${window.thorium.httpOnly ? "" : "s"}://${
+          window.thorium.ipAddress
+        }${
+          (window.thorium.port === 443 && !window.thorium.httpOnly) ||
+          (window.thorium.port === 80 && window.thorium.httpOnly)
+            ? ""
+            : `:${window.thorium.port}`
+        }`;
+      }
+
       document.getElementById("ipAddress").innerHTML = `
-<p>Flight Director Address: http://${window.thorium.ipAddress}:4444</p>
-<p>Client Address: http://${window.thorium.ipAddress}:4444/client</p>
+<p>Flight Director Address: ${printUrl()}</p>
+<p>Client Address: ${printUrl()}/client</p>
 `;
     </script>
   </body>

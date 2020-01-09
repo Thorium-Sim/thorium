@@ -11,10 +11,10 @@ import App from "./app";
 Promise.resolve()
   .then(() => init())
   .then(() => App.init())
-  .then(() => broadcast(App.port))
+  .then(() => broadcast(App.port, App.httpOnly))
   .then(() => express())
   .then(server => clientServer(server))
-  .then(server => apollo(server, App.port, App.httpOnly, App.certLocations))
+  .then(server => apollo(server, App.port, App.httpOnly))
   .then(() => postMigration())
   .then(() => cleanUp())
   .catch(err => console.error("Error:", err));

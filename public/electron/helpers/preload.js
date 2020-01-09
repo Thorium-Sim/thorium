@@ -3,6 +3,11 @@ const webFrame = require("electron").webFrame;
 const shell = require("electron").shell;
 const ipAddress = require("./ipaddress");
 const mac = require("./macaddress");
+const settings = require("electron-settings");
+
+let port = process.env.PORT || settings.get("port") || 443;
+let httpOnly =
+  process.env.HTTP_ONLY || settings.get("httpOnly") === "true" || false;
 
 let browserCount = require("electron").remote.getCurrentWindow().browserCount;
 
@@ -66,12 +71,15 @@ window.startServer = function startServer() {
   ipcRenderer.send("startServer", auto);
   return;
 };
+function printUrl() {
+  return `http${httpOnly ? "" : "s"}://localhost${
+    (port === 443 && !httpOnly) || (port === 80 && httpOnly) ? "" : `:${port}`
+  }`;
+}
+
 window.openBrowser = function openBrowser() {
-  shell.openExternal("http://localhost:4444");
+  shell.openExternal(printUrl());
   return;
-};
-window.openStats = function openStats() {
-  shell.openExternal("http://localhost:4444/status");
 };
 window.getServers = function() {
   ipcRenderer.send("getServers");
@@ -80,7 +88,7 @@ window.serverAddress = function serverAddress() {
   let url = document
     .getElementById("server-address")
     .value.replace("/client", "");
-  if (url.indexOf(":") === -1) url = url + ":4444";
+  if (url.indexOf(":") === -1) url = `${url}:${port}`;
   let auto = false;
   if (document.getElementById("remember-client").checked) auto = true;
   ipcRenderer.send("loadPage", {url, auto});
@@ -92,7 +100,6 @@ ipcRenderer.on("updateReady", function() {
 });
 ipcRenderer.on("info", function(event, data) {
   const output = document.getElementById("console");
-  console.log("got info", data);
   if (output) {
     output.innerText = `${data}\n${output.innerText}`;
   }
@@ -103,8 +110,34 @@ const thorium = {
     return ipcRenderer.send("remoteMessage", arg);
   },
   ipAddress: ipAddress,
+  port: port,
+  httpOnly: httpOnly,
   mac: mac,
 };
+
+// Network Settings
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+    const httpOnlyEl = document.getElementById("http-only");
+    httpOnlyEl.checked = httpOnly;
+
+    httpOnlyEl.addEventListener("change", e => {
+      settings.set("httpOnly", String(e.target.checked));
+      httpOnly = e.target.checked;
+      thorium.httpOnly = e.target.checked;
+    });
+    const portEl = document.getElementById("port");
+    portEl.value = port;
+
+    portEl.addEventListener("change", e => {
+      settings.set("port", e.target.value);
+      port = e.target.value;
+      thorium.port = e.target.value;
+    });
+  },
+  false,
+);
 
 ipcRenderer.on("clearUrl", function() {
   localStorage.setItem("thorium_url", "");

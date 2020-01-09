@@ -1,4 +1,4 @@
-const {autoUpdater} = require("electron-updater");
+// const {autoUpdater} = require("electron-updater");
 const {app, BrowserWindow, ipcMain} = require("electron");
 
 // Make the kiosk work better on slightly older computers
@@ -12,15 +12,13 @@ const {checkWindow, addWindow} = require("./multiWindow");
 
 module.exports = () => {
   function startServer() {
-    console.log("Starting server - main");
     // Stop the bonjour  browser
-
     bonjour.stop();
     addWindow({server: true});
   }
   app.on("ready", function() {
     checkWindow();
-    autoUpdater.checkForUpdatesAndNotify();
+    // autoUpdater.checkForUpdatesAndNotify();
     addWindow({main: true});
     ipcMain.on("getWindowCount", event => {
       event.returnValue = BrowserWindow.getAllWindows().filter(b => {
