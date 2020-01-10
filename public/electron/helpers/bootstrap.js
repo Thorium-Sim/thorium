@@ -35,11 +35,15 @@ module.exports = function bootstrap(serverWindow) {
     });
     child.on("close", function(code) {
       if (serverWindow && restartCount < 10) {
-        serverWindow.webContents.send(
-          "info",
-          `Server process closed. Restarting...`,
-        );
-        startServer();
+        try {
+          serverWindow.webContents.send(
+            "info",
+            `Server process closed. Restarting...`,
+          );
+          startServer();
+        } catch {
+          // Do nothing, we're probably shutting down.
+        }
       } else {
         if (serverWindow) {
           serverWindow.webContents.send(

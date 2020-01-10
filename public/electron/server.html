@@ -104,21 +104,20 @@
       </div>
     </div>
     <script>
-      function printUrl() {
-        return `http${window.thorium.httpOnly ? "" : "s"}://${
-          window.thorium.ipAddress
-        }${
-          (window.thorium.port === 443 && !window.thorium.httpOnly) ||
-          (window.thorium.port === 80 && window.thorium.httpOnly)
-            ? ""
-            : `:${window.thorium.port}`
-        }`;
-      }
+      getIpAddress((ipAddress, port, httpOnly) => {
+        function printUrl() {
+          return `http${httpOnly ? "" : "s"}://${ipAddress}${
+            (port === 443 && !httpOnly) || (port === 80 && httpOnly)
+              ? ""
+              : `:${port}`
+          }`;
+        }
 
-      document.getElementById("ipAddress").innerHTML = `
+        document.getElementById("ipAddress").innerHTML = `
 <p>Flight Director Address: ${printUrl()}</p>
 <p>Client Address: ${printUrl()}/client</p>
 `;
+      });
     </script>
   </body>
 </html>

@@ -1,27 +1,23 @@
 const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
-const shell = require("electron").shell;
-const ipAddress = require("./ipaddress");
-const mac = require("./macaddress");
-const settings = require("electron-settings");
-const semver = require("semver");
-const isLinux = require("is-linux");
-const isOsx = require("is-osx");
-const isWindows = require("is-windows");
-let port = process.env.PORT || settings.get("port") || 443;
-let httpOnly =
-  process.env.HTTP_ONLY || settings.get("httpOnly") === "true" || false;
+let port;
+let httpOnly;
 
 let browserCount = require("electron").remote.getCurrentWindow().browserCount;
+
+async function getPortAndHttpOnly() {
+  const results = await ipcRenderer.invoke("get-port");
+  port = results.port;
+  httpOnly = results.httpOnly;
+}
+getPortAndHttpOnly();
 
 const key = "thorium_clientPersistentId";
 let clientId = sessionStorage.getItem(key);
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(0, 0);
 
-setClientId(
-  `${require("os").hostname()}${browserCount > 1 ? ` (${browserCount})` : ""}`,
-);
+setClientId();
 
 function setClient(id) {
   sessionStorage.setItem(key, id);
@@ -29,15 +25,17 @@ function setClient(id) {
   clientId = id;
 }
 
-function setClientId(id) {
-  const clientList = getClientList();
+async function setClientId() {
+  const hostname = await ipcRenderer.invoke("get-hostname");
+  const id = `${hostname}${browserCount > 1 ? ` (${browserCount})` : ""}`;
+  const clientList = getClientList(hostname);
   const clientIndex = clientList.indexOf(clientId);
   setClient(id);
   clientList[clientIndex] = id;
   localStorage.setItem(key, JSON.stringify(clientList));
 }
 
-function getClientList() {
+function getClientList(hostname) {
   let clientList = null;
   try {
     clientList = JSON.parse(localStorage.getItem(key));
@@ -46,7 +44,7 @@ function getClientList() {
     // If it's blank, create a new one
   }
   if (!clientList) {
-    clientList = [localStorage.getItem(key) || require("os").hostname()];
+    clientList = [localStorage.getItem(key) || hostname];
     localStorage.setItem(key, JSON.stringify(clientList));
   }
   return clientList;
@@ -79,11 +77,10 @@ function printUrl() {
     (port === 443 && !httpOnly) || (port === 80 && httpOnly) ? "" : `:${port}`
   }`;
 }
-
-window.openBrowser = function openBrowser() {
-  shell.openExternal(printUrl());
+function openBrowser() {
+  ipcRenderer.send("open-external", printUrl());
   return;
-};
+}
 window.getServers = function() {
   ipcRenderer.send("getServers");
 };
@@ -103,14 +100,15 @@ ipcRenderer.on("info", function(event, data) {
   }
 });
 
+window.getIpAddress = async function(cb) {
+  const ipAddress = await ipcRenderer.invoke("get-ipAddress");
+  cb(ipAddress, port, httpOnly);
+};
+
 const thorium = {
   sendMessage: function(arg) {
     return ipcRenderer.send("remoteMessage", arg);
   },
-  ipAddress: ipAddress,
-  port: port,
-  httpOnly: httpOnly,
-  mac: mac,
 };
 
 document.addEventListener(
@@ -118,71 +116,67 @@ document.addEventListener(
   function() {
     // Network Settings
     const httpOnlyEl = document.getElementById("http-only");
-    httpOnlyEl.checked = httpOnly;
+    if (httpOnlyEl) {
+      httpOnlyEl.checked = httpOnly;
 
-    httpOnlyEl.addEventListener("change", e => {
-      settings.set("httpOnly", String(e.target.checked));
-      httpOnly = e.target.checked;
-      thorium.httpOnly = e.target.checked;
-    });
+      httpOnlyEl.addEventListener("change", e => {
+        ipcRenderer.send("set-httpOnly", e.target.value);
+        httpOnly = e.target.checked;
+        thorium.httpOnly = e.target.checked;
+      });
+    }
     const portEl = document.getElementById("port");
-    portEl.value = port;
+    if (portEl) {
+      portEl.value = port;
 
-    portEl.addEventListener("change", e => {
-      settings.set("port", e.target.value);
-      port = e.target.value;
-      thorium.port = e.target.value;
-    });
-
+      portEl.addEventListener("change", e => {
+        ipcRenderer.send("set-port", e.target.value);
+        port = e.target.value;
+        thorium.port = e.target.value;
+      });
+    }
+    // Server Browser Open
+    const openEl = document.getElementById("open-in-browser");
+    if (openEl) {
+      openEl.addEventListener("click", openBrowser);
+    }
     // Auto Update
     const autoUpdateEl = document.getElementById("auto-update");
     const autoUpdateLabel = document.getElementById("auto-update-label");
     const autoUpdateButton = document.getElementById("auto-update-download");
     const autoUpdateProgress = document.getElementById("download-progress");
-
-    fetch("https://api.github.com/repos/thorium-sim/thorium/releases")
-      .then(res => res.json())
-      .then(res => {
-        console.log(res[0]);
-        if (
-          semver.gt(res[0].tag_name, require("../../package.json").version) &&
-          semver(res[0].tag_name).prerelease.length === 0
-        ) {
-          autoUpdateLabel.innerText = `Your version of Thorium is outdated. Current version is ${
-            res[0].tag_name
-          }. Your version is ${require("../../package.json").version}`;
-          autoUpdateEl.classList.add("shown");
-
-          const asset = res[0].assets.find(
-            c =>
-              (isLinux && c.name.includes("AppImage")) ||
-              (isWindows && c.name.includes("win.zip")) ||
-              (isOsx && c.name.includes("mac.zip")),
+    if (autoUpdateEl) {
+      fetch("https://api.github.com/repos/thorium-sim/thorium/releases")
+        .then(res => res.json())
+        .then(async res => {
+          const {asset, oldVersion, newVersion} = await ipcRenderer.invoke(
+            "get-update-asset",
+            res[0],
           );
-          if (!asset) {
-            autoUpdateButton.hidden = true;
+          if (asset) {
+            autoUpdateLabel.innerText = `Your version of Thorium is outdated. Current version is ${newVersion}. Your version is ${oldVersion}`;
+            autoUpdateEl.classList.add("shown");
 
-            return;
+            const url = asset.browser_download_url;
+            autoUpdateButton.addEventListener("click", () => {
+              ipcRenderer.send("downloadAutoUpdate", {url});
+              ipcRenderer.on("download-progress", function(e, progress) {
+                autoUpdateProgress.value = progress;
+              });
+              ipcRenderer.on("download-complete", function() {
+                autoUpdateLabel.innerText = `Update Complete!`;
+                autoUpdateProgress.hidden = true;
+              });
+              autoUpdateLabel.innerText = `Update is being downloaded to your downloads folder in the background... Please wait.`;
+              autoUpdateButton.hidden = true;
+              autoUpdateProgress.hidden = false;
+            });
           }
-          const url = asset.browser_download_url;
-          autoUpdateButton.addEventListener("click", () => {
-            ipcRenderer.send("downloadAutoUpdate", {url});
-            ipcRenderer.on("download-progress", function(e, progress) {
-              autoUpdateProgress.value = progress;
-            });
-            ipcRenderer.on("download-complete", function() {
-              autoUpdateLabel.innerText = `Update Complete!`;
-              autoUpdateProgress.hidden = true;
-            });
-            autoUpdateLabel.innerText = `Update is being downloaded to your downloads folder in the background... Please wait.`;
-            autoUpdateButton.hidden = true;
-            autoUpdateProgress.hidden = false;
-          });
-        }
-      })
-      .catch(() => {
-        //Oh well.
-      });
+        })
+        .catch(() => {
+          //Oh well.
+        });
+    }
   },
   false,
 );
