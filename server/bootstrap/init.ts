@@ -83,6 +83,7 @@ export default () => {
         const snapshotFile = `${snapshotDir}snapshot${
           process.env.NODE_ENV === "production" ? "" : "-dev"
         }.json`;
+
         if (!fs.existsSync(snapshotFile)) {
           console.log("No snapshot.json found. Creating.");
           fs.writeFileSync(snapshotFile, JSON.stringify(defaultSnapshot));

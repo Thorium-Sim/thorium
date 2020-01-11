@@ -13,9 +13,6 @@ export default function(server: express.Application) {
     server.get("*", function(req, response) {
       response.sendFile(`${assetPath}/index.html`, function(err) {
         if (err) {
-          console.log(assetDir);
-          console.log(assetPath);
-          console.log(err);
           response
             .status(500)
             .end("Error loading client. Please refresh your browser.");

@@ -76,6 +76,9 @@ class Events extends EventEmitter {
   addedTaskTemplates: boolean = false;
   spaceEdventuresToken?: string = null;
   googleSheetsTokens: any = {};
+  httpOnly: boolean = false;
+  port: number = process.env.NODE_ENV === "production" ? 443 : 3001;
+
   events: any[] = [];
   replaying = false;
   snapshotVersion = 0;
@@ -87,6 +90,9 @@ class Events extends EventEmitter {
     this.merge(store.data);
     if (!this.doTrack) heap.stubbed = true;
     heap.track("thorium-started", this.thoriumId);
+    if (process.env.PORT && !isNaN(parseInt(process.env.PORT, 10)))
+      this.port = parseInt(process.env.PORT, 10);
+    if (process.env.HTTP_ONLY === "true") this.httpOnly = true;
   }
   merge(snapshot: any) {
     // Initialize the snapshot with the object constructors
@@ -106,7 +112,8 @@ class Events extends EventEmitter {
         key === "autoUpdate" ||
         key === "doTrack" ||
         key === "askedToTrack" ||
-        key === "addedTaskTemplates"
+        key === "addedTaskTemplates" ||
+        key === "httpOnly"
       ) {
         this[key] = Boolean(value);
       }
@@ -117,6 +124,13 @@ class Events extends EventEmitter {
         key === "googleSheetsTokens"
       ) {
         this[key] = value;
+      }
+      if (key === "port") {
+        if (process.env.NODE_ENV === "production") {
+          this.port = Number(value);
+        } else {
+          this.port = 3001;
+        }
       }
       if (key === "motus" && snapshot.motus) {
         this.motus = snapshot.motus.map((m: any) => {
