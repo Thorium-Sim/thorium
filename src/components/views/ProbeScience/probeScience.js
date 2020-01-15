@@ -205,8 +205,11 @@ class ProbeScience extends Component {
     updateContacts();
   };
   detect = (charge, name) => {
-    this.setState({detectorCharge: charge, detectType: name});
-    this.detectLoop();
+    this.setState(
+      {detectorCharge: charge, detectorScale: 0, detectType: name},
+      () => this.detectLoop(),
+    );
+    console.log(charge, name);
   };
   detectLoop = () => {
     if (this.state.detectorScale <= this.state.detectorCharge + 0.1) {
