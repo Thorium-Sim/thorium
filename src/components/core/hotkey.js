@@ -1,4 +1,4 @@
-import React, {Fragment, Component} from "react";
+import React, {Fragment, Component, Suspense} from "react";
 import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Cores} from "components/views";
@@ -105,7 +105,7 @@ class Hotkey extends Component {
   render() {
     const {showing, viewscreen, viewscreens} = this.state;
     return (
-      <Fragment>
+      <Suspense fallback={null}>
         <div
           className={`hotkey-core core viewscreen ${
             viewscreen ? "showing" : ""
@@ -145,7 +145,7 @@ class Hotkey extends Component {
             </div>
           )}
         </div>
-      </Fragment>
+      </Suspense>
     );
   }
 }
