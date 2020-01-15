@@ -13,8 +13,8 @@ App.on("torpedoAddWarhead", ({id, simulatorId, warhead}) => {
     App.systems.filter(s => s.type === "Torpedo"),
   );
 });
-App.on("torpedoRemoveWarhead", ({id, warheadId}) => {
-  App.systems.find(s => s.id === id).removeWarhead(warheadId);
+App.on("torpedoRemoveWarhead", ({id, warheadId, probeId}) => {
+  App.systems.find(s => s.id === id).removeWarhead(warheadId, probeId);
   pubsub.publish(
     "torpedosUpdate",
     App.systems.filter(s => s.type === "Torpedo"),
