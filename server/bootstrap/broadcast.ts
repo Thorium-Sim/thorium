@@ -5,6 +5,6 @@ export default function(port = 443, httpOnly) {
     name: `Thorium-${require("os").hostname()}`,
     type: "thorium-http",
     port: port,
-    txt: {https: !httpOnly},
+    txt: {https: String(process.env.NODE_ENV === "production" && !httpOnly)},
   });
 }
