@@ -53,6 +53,7 @@ App.on("sensorScanRequest", ({id, request}) => {
 });
 App.on("sensorScanResult", ({id, result}) => {
   const system = App.systems.find(sys => sys.id === id);
+  if (!system) return;
   system.scanResulted(result);
   const simulator = App.simulators.find(s => s.id === system.simulatorId);
   const stations = simulator.stations.filter(s =>
