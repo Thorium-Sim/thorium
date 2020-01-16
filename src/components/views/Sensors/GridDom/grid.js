@@ -258,6 +258,7 @@ class InnerGrid extends Component {
                 ? selectedContacts.indexOf(contact.id) > -1
                 : contact.id === selectedContact
             }
+            crewSelected={core && contact.selected}
             mousedown={(e, contact) =>
               mouseDown &&
               mouseDown(e, contact, contact =>

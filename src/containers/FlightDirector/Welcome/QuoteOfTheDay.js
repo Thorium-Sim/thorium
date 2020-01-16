@@ -44,6 +44,7 @@ const quotes = [
   "We grow small trying to be great.",
   "The whole point of getting things done is knowing what to leave undone.",
   "The days are long, but the years are short.",
+  "I preferred to be called Nobody.",
 ];
 
 const QuoteOfTheDay = () => {

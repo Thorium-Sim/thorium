@@ -83,6 +83,7 @@ const schema = gql`
     destroyed: Boolean
     forceUpdate: Boolean
     targeted: Boolean
+    selected: Boolean
     locked: Boolean
     disabled: Boolean
     hostile: Boolean
@@ -297,6 +298,13 @@ const resolver = {
       const targetedContact = targeting.contacts.find(t => t.targeted === true);
       if (targetedContact && targetedContact.class === id) return true;
       return false;
+    },
+    selected({id, sensorId}) {
+      const sensor = App.systems.find(s => s.id === sensorId);
+      const targeting = App.systems.find(
+        s => s.simulatorId === sensor.simulatorId && s.class === "Targeting",
+      );
+      return id === targeting.targetedSensorContact;
     },
   },
   Query: {

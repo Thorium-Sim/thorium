@@ -132,17 +132,20 @@ App.on(
   "setTargetingCalculatedTarget",
   ({id, coordinates, simulatorId, contactId}) => {
     if (coordinates.z === 0) coordinates.z = Math.random();
-    App.systems
-      .find(
-        s =>
-          s.id === id ||
-          (s.simulatorId === simulatorId && s.type === "Targeting"),
-      )
-      .setCalculatedTarget(coordinates, contactId);
+    const sys = App.systems.find(
+      s =>
+        s.id === id ||
+        (s.simulatorId === simulatorId && s.type === "Targeting"),
+    );
+    sys.setCalculatedTarget(coordinates, contactId);
     pubsub.publish(
       "targetingUpdate",
       App.systems.filter(s => s.type === "Targeting"),
     );
+    const sensors = App.systems.find(
+      s => s.class === "Sensors" && s.simulatorId === sys.simulatorId,
+    );
+    pubsub.publish("sensorContactUpdate", sensors);
   },
 );
 App.on("setTargetingEnteredTarget", ({id, simulatorId, coordinates}) => {
