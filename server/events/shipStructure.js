@@ -303,6 +303,7 @@ App.on("transferCargo", ({inventory, fromRoom, toRoom, cb}) => {
   const location = `From ${fromRoomObj.name}, Deck ${fromDeckObj.number} to ${toRoomObj.name}, Deck ${toDeckObj.number}`;
   const log = `Transfer ${location}
 ${inventory
+  .filter(({count}) => count > 0)
   .map(
     ({id, count}) => `${App.inventory.find(i => i.id === id).name}: ${count}`,
   )
