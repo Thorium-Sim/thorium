@@ -153,6 +153,7 @@ class Navigation extends Component {
     }
     if (key === "." && newValue.indexOf(".") > -1) return;
     newValue += key;
+    newValue = newValue.slice(0, 10);
     this.setState({
       enteredCourse: {...enteredCourse, [selectedField]: newValue},
       selectedField,
