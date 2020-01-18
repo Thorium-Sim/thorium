@@ -243,6 +243,9 @@ App.on("startFlight", ({id = uuid.v4(), name, simulators, flightType, cb}) => {
     sim.templateId = s.simulatorId;
     sim.mission = s.mission;
     sim.executedTimelineSteps = [];
+    sim.clientCards = {};
+    sim.stationAssignedCards = {};
+
     const stationSet = App.stationSets.find(ss => ss.id === s.stationSet);
     sim.stations = stationSet.stations.map(s => new Classes.Station(s));
 
@@ -357,6 +360,8 @@ App.on("resetFlight", ({flightId, simulatorId, full, cb}) => {
     newSim.mission = sim.mission;
     newSim.stations = sim.stations;
     newSim.executedTimelineSteps = [];
+    newSim.clientCards = {};
+    newSim.stationAssignedCards = {};
 
     newSim.stationSet = sim.stationSet;
     const stationSet = App.stationSets.find(s => s.id === newSim.stationSet);
