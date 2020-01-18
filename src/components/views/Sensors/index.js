@@ -298,6 +298,15 @@ class Sensors extends Component {
                       segments={sensors.segments}
                       interference={sensors.interference}
                       mouseDown={this.clickContact(action)}
+                      gridMouseDown={() => {
+                        action({
+                          variables: {
+                            simulatorId: this.props.simulator.id,
+                            coordinates: {x: 0, y: 0, z: 0},
+                            contactId: null,
+                          },
+                        });
+                      }}
                       includeTypes={[
                         "contact",
                         "planet",

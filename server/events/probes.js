@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 import {titleCase} from "change-case";
 
@@ -71,6 +71,16 @@ App.on("fireProbe", ({id, probeId}) => {
       },
       "addCoreFeed",
     );
+
+    const torpedos = App.systems.find(
+      s => s.simulatorId === sys.simulatorId && s.type === "Torpedo",
+    );
+    if (torpedos) {
+      App.handleEvent(
+        {id: torpedos.id, probeId: probe.id},
+        "torpedoRemoveWarhead",
+      );
+    }
     sys.fireProbe(probeId);
     pubsub.publish(
       "probesUpdate",

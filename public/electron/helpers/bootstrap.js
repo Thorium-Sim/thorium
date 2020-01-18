@@ -1,11 +1,13 @@
 const {app} = require("electron");
 const path = require("path");
-
 const isProd = !require("electron-is-dev");
+const settings = require("electron-settings");
 
 let restartCount = 0;
 module.exports = function bootstrap(serverWindow) {
   function startServer() {
+    let port = settings.get("port") || 443;
+    let httpOnly = settings.get("httpOnly") === "true" || false;
     const childPath = isProd
       ? "build/server/index.js"
       : "server/build/server/index.js";
@@ -13,7 +15,13 @@ module.exports = function bootstrap(serverWindow) {
       path.join(app.getAppPath(), childPath),
       [],
       {
-        env: {FORK: 1, ...process.env},
+        env: {
+          FORK: 1,
+          PORT: parseInt(port, 10),
+          HTTP_ONLY: httpOnly,
+          NODE_ENV: "production",
+          ...process.env,
+        },
         silent: true,
         maxBuffer: 1024 * 1024 * 1024,
       },
@@ -27,11 +35,15 @@ module.exports = function bootstrap(serverWindow) {
     });
     child.on("close", function(code) {
       if (serverWindow && restartCount < 10) {
-        serverWindow.webContents.send(
-          "info",
-          `Server process closed. Restarting...`,
-        );
-        startServer();
+        try {
+          serverWindow.webContents.send(
+            "info",
+            `Server process closed. Restarting...`,
+          );
+          startServer();
+        } catch {
+          // Do nothing, we're probably shutting down.
+        }
       } else {
         if (serverWindow) {
           serverWindow.webContents.send(

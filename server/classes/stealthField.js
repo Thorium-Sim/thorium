@@ -1,6 +1,6 @@
 import App from "../app";
 import {System} from "./generic";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 
 export default class StealthField extends System {

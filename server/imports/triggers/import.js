@@ -5,7 +5,7 @@ import fs from "fs";
 import App from "../../app";
 import mkdirp from "mkdirp";
 import * as Classes from "../../classes";
-import {pubsub} from "../../helpers/subscriptionManager.js";
+import {pubsub} from "../../helpers/subscriptionManager";
 
 let assetDir = path.resolve("./");
 

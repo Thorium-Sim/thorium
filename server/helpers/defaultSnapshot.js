@@ -13640,6 +13640,8 @@ export default {
   migrations: {
     assets: true,
   },
+  port: 443,
+  httpOnly: false,
   events: [],
   replaying: false,
   snapshotVersion: 2,

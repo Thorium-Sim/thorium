@@ -155,7 +155,7 @@ const ReactivationCore = React.lazy(() =>
   import("./DamageControl/reactivationCore"),
 );
 const MessagingCore = React.lazy(() => import("./Messaging/core"));
-const LoginNameCore = React.lazy(() => import("./Clients/core"));
+const HypercardAndLoginNameCore = React.lazy(() => import("./Clients/core"));
 const JrNavigationCore = React.lazy(() => import("./JrFlight/navigationCore"));
 const ExtrasCore = React.lazy(() => import("./CoreExtras"));
 const SignalJammerCore = React.lazy(() => import("./SignalJammer/core"));
@@ -475,7 +475,7 @@ export const Cores = {
   ViewscreenCore,
   BattleCore,
   RailgunCore,
-  LoginNameCore,
+  HypercardAndLoginNameCore,
   JumpDriveCore,
   ClientsCore,
   BridgeMapCore,

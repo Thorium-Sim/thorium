@@ -5,6 +5,7 @@ import NavigationScanner from "components/views/Navigation/NavigationScanner";
 import {Container, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
+import "../../views/Navigation/style.scss";
 
 const NAV_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {

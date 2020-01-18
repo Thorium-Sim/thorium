@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 App.on("updateSignalJammer", ({jammer}) => {
   const sys = App.systems.find(s => s.id === jammer.id);

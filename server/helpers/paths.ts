@@ -1,4 +1,4 @@
-const fs = require("fs");
+import fs from "fs";
 
 if (!fs.existsSync(`${require("os").homedir()}/Documents`)) {
   fs.mkdirSync(`${require("os").homedir()}/Documents`);
@@ -8,4 +8,4 @@ const paths = {
   userData: `${require("os").homedir()}/Documents/thorium`,
 };
 
-module.exports = paths;
+export default paths;

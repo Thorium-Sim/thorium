@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import {Record, RecordSnippet} from "../classes/records";
 function performAction(id, action) {
   const sim = App.simulators.find(s => s.id === id);

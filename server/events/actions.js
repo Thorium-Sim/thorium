@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 import {randomFromList} from "../classes/generic/damageReports/constants";
 App.on("triggerAction", args => {

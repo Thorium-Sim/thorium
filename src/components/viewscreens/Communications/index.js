@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import ReactDOM from "react-dom";
 import SineWaves from "sine-waves";
 import {Container, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
@@ -40,11 +39,12 @@ const SHORTRANGE_SUB = gql`
 
 class Communications extends Component {
   state = {comms: []};
+  commSignalRef = React.createRef();
   componentDidMount() {
     const self = this;
     this.waves = new SineWaves({
       // Canvas Element
-      el: ReactDOM.findDOMNode(self).querySelector("#comm-waves"),
+      el: self.commSignalRef.current,
 
       // General speed of entire wave system
       speed: 8,
@@ -156,7 +156,7 @@ class Communications extends Component {
   }
   componentDidUpdate() {
     const {comms} = this.state;
-    this.changeGradient(comms);
+    this.changeGradient(comms.slice(0, 5));
   }
   componentWillUnmount() {
     this.subscription && this.subscription();
@@ -173,10 +173,13 @@ class Communications extends Component {
       gradient.addColorStop(
         (index + 1) / (arr.length + 1),
         tinycolor(comm.color)
-          .setAlpha(comm.connected ? 1 : 0.3)
+          .setAlpha(comm.connected ? 1 : 0.4)
           .toRgbString(),
       );
     });
+    if (comms.length === 0) {
+      gradient.addColorStop(1 / 2, "rgba(255,255,255,0.2)");
+    }
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
     let index = -1;
@@ -205,10 +208,10 @@ class Communications extends Component {
           }
         />
         <Container fluid>
-          <Row className="justify-content-center">
+          <div className="flex justify-content-center">
             {comms.length > 0 ? (
-              comms.map(c => (
-                <Col key={c.id} className="comm-container">
+              comms.slice(0, 5).map(c => (
+                <div key={c.id} className="comm-container">
                   <img alt="comm" src={`/assets${c.image}`} />
                   <h2>
                     {c.name} - {Math.round(c.frequency * 37700 + 37700) / 100}
@@ -221,20 +224,17 @@ class Communications extends Component {
                       ? "Hailing"
                       : "Incoming Call"}
                   </h3>
-                </Col>
+                </div>
               ))
             ) : (
-              <Col>
+              <div>
                 <h1 className="text-center">No Communications Lines Open</h1>
-              </Col>
+              </div>
             )}
-          </Row>
+          </div>
           <Row>
             <Col sm={12}>
-              <canvas
-                id="comm-waves"
-                className={comms.length === 0 ? "hide-comm" : ""}
-              />
+              <canvas ref={this.commSignalRef} id="comm-waves" />
             </Col>
           </Row>
         </Container>

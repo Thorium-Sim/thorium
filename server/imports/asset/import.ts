@@ -8,8 +8,9 @@ let assetDir = path.resolve("./");
 if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData;
 }
+type callback = (arg0: any) => void;
 
-export default function ImportAssets(filepath, cb) {
+export default function ImportAssets(filepath: string, cb: callback) {
   yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
     if (err) throw err;
     importZip.on("close", function() {

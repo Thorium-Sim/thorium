@@ -2,7 +2,7 @@ import App from "../app";
 import {System} from "./generic";
 import heatMixin from "./generic/heatMixin";
 import uuid from "uuid";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 
 const baseQuad = {
   field: {required: 25, value: 0},
