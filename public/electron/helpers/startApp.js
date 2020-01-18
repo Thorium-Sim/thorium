@@ -63,11 +63,20 @@ module.exports = () => {
         bonjour.start();
       });
     });
-
+    ipcMain.handle("getServerAutostart", async () => {
+      return settings.get("autostart") === "server";
+    });
+    ipcMain.on("setServerAutostart", async (evt, auto) => {
+      return settings.set("autostart", auto ? "server" : false);
+    });
+    ipcMain.on("cancelServerAutostart", async () => {
+      settings.set("autostart", false);
+      console.log("relaunching");
+      app.relaunch();
+      app.exit(0);
+      return;
+    });
     ipcMain.on("startServer", function(evt, auto) {
-      if (auto) {
-        settings.set("autostart", "server");
-      }
       startServer();
     });
     ipcMain.on("downloadAutoUpdate", async (event, {url}) => {
@@ -119,11 +128,15 @@ module.exports = () => {
     if (settings.get("autostart")) {
       // Check to see if the page will work.
       const loadUrl = settings.get("autostart");
-      // Do a fetch
-      require("./loadPage")(loadUrl, true).catch(() => {
-        settings.set("autostart", null);
-        bonjour.start();
-      });
+      if (loadUrl === "server") {
+        startServer();
+      } else {
+        // Do a fetch
+        require("./loadPage")(loadUrl, true).catch(() => {
+          settings.set("autostart", null);
+          bonjour.start();
+        });
+      }
     } else {
       bonjour.start();
     }

@@ -50,13 +50,30 @@ function getClientList(hostname) {
   return clientList;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
   if (localStorage.getItem("thorium_startKiosked") !== "false") {
     if (document.getElementById("start-kiosked")) {
       document.getElementById("start-kiosked").checked = true;
     }
   }
+  const autostart = await ipcRenderer.invoke("getServerAutostart");
+  const autostartEl = document.getElementById("remember-server");
+  if (autostartEl) {
+    autostartEl.checked = Boolean(autostart);
+    autostartEl.addEventListener("change", e => {
+      ipcRenderer.send("setServerAutostart", e.target.checked);
+    });
+  }
+  if (autostart) {
+    const cancelAutostartEl = document.getElementById("stop-auto-start");
+    cancelAutostartEl.hidden = false;
+  }
 });
+
+window.cancelAutostart = function cancelAutostart() {
+  console.log("stopping");
+  ipcRenderer.send("cancelServerAutostart");
+};
 
 window.loadPage = function loadPage(url) {
   let auto = false;
@@ -68,7 +85,9 @@ window.loadPage = function loadPage(url) {
 };
 window.startServer = function startServer() {
   let auto = false;
-  if (document.getElementById("remember-server").checked) auto = true;
+  if (document.getElementById("remember-server").checked) {
+    auto = true;
+  }
   ipcRenderer.send("startServer", auto);
   return;
 };
