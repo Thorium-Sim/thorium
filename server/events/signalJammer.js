@@ -24,6 +24,10 @@ App.on("updateSignalJammer", ({jammer}) => {
       },
       "addCoreFeed",
     );
+    pubsub.publish(
+      "sensorsUpdate",
+      App.systems.filter(s => s.type === "Sensors"),
+    );
   }
   pubsub.publish(
     "signalJammersUpdate",
@@ -50,6 +54,14 @@ App.on("signalJammerSignals", ({id, simulatorId, type, signals}) => {
 App.on("fluxSignalJammer", ({id}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.fluxSignals();
+  pubsub.publish(
+    "signalJammersUpdate",
+    App.systems.filter(s => s.type === "SignalJammer"),
+  );
+});
+App.on("setSignalJammerSensorsInterference", ({id, interference}) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setSensorsInterference(interference);
   pubsub.publish(
     "signalJammersUpdate",
     App.systems.filter(s => s.type === "SignalJammer"),

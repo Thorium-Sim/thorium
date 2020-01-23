@@ -272,6 +272,20 @@ const resolver = {
         App.rooms.find(room => room.id === r),
       );
     },
+    interference(rootValue) {
+      const signalJammer = App.systems.find(
+        s =>
+          s.simulatorId === rootValue.simulatorId && s.class === "SignalJammer",
+      );
+      if (
+        !signalJammer ||
+        !signalJammer.addsSensorsInterference ||
+        !signalJammer.active
+      ) {
+        return rootValue.interference;
+      }
+      return Math.max(signalJammer.strength / 2 + 0.15, rootValue.interference);
+    },
     movement(rootValue) {
       return {
         x: rootValue.movement.x + rootValue.thrusterMovement.x,

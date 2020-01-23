@@ -60,7 +60,7 @@ const System = ({id, selected, type, displayName, name, click, added}) => {
   return (
     <Col
       key={id}
-      sm={4}
+      sm={3}
       onClick={click}
       style={{
         backgroundColor: selected ? "rgba(255,255,255,0.4)" : "transparent",
