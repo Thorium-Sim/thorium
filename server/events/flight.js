@@ -2,6 +2,7 @@ import App from "../app.js";
 import {pubsub} from "../helpers/subscriptionManager.js";
 import * as Classes from "../classes";
 import uuid from "uuid";
+import cloneDeep from "lodash.clonedeep";
 import tokenGenerator from "../helpers/tokenGenerator";
 
 export const aspectList = [
@@ -44,7 +45,7 @@ export function addAspects(template, sim, data = App) {
       a => a.simulatorId === template.simulatorId,
     );
     filterAspect.forEach(a => {
-      const newAspect = Object.assign({}, a);
+      const newAspect = cloneDeep(a);
       newAspect.id = null;
       newAspect.simulatorId = sim.id;
       // Rooms need to reference their deck
@@ -132,7 +133,7 @@ export function addAspects(template, sim, data = App) {
         }
       }
       const classItem = new Classes[newAspect.class](
-        Object.assign({}, newAspect),
+        cloneDeep(newAspect),
         true,
       );
       App[aspect].push(classItem);
@@ -229,12 +230,12 @@ export function addAspects(template, sim, data = App) {
     })
     .filter(Boolean);
 }
+
 // Flight
 App.on("startFlight", ({id = uuid.v4(), name, simulators, flightType, cb}) => {
   // Loop through all of the simulators
   const simIds = simulators.map(s => {
-    const template = Object.assign(
-      {},
+    const template = cloneDeep(
       App.simulators.find(sim => sim.id === s.simulatorId),
     );
     template.id = null;
@@ -340,8 +341,7 @@ App.on("resetFlight", ({flightId, simulatorId, full, cb}) => {
     App.simulators = App.simulators.filter(s => s.id !== simId);
 
     // Create new simulators based on the template
-    const template = Object.assign(
-      {},
+    const template = cloneDeep(
       App.simulators.find(tempSim => tempSim.id === tempId),
     );
     template.id = sim.id;

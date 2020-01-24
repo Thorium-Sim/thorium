@@ -23,6 +23,7 @@
   ],
   "scripts": {
     "start": "npm-run-all --parallel start:client start:server",
+    "debug-server": "nodemon --inspect ./server/index.js -e js,graphql --ignore snapshots/ --exec babel-node",
     "postinstall": "patch-package",
     "start:client": "react-scripts start",
     "start:server": "nodemon ./server/index.js -e js,graphql --ignore snapshots/ --exec babel-node",
@@ -212,6 +213,7 @@
     "graphql": "^14.5.8",
     "graphql-type-json": "^0.3.0",
     "lodash": "^4.17.15",
+    "lodash.clonedeep": "^4.5.0",
     "lodash.flowright": "^3.5.0",
     "lodash.merge": "^4.6.2",
     "luxon": "^1.19.3",
