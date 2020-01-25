@@ -95,7 +95,7 @@ module.exports = () => {
       return ipAddress;
     });
     ipcMain.handle("get-hostname", async () => {
-      return require("os").hostname;
+      return require("os").hostname();
     });
     ipcMain.handle("get-port", async () => {
       return {port, httpOnly};
