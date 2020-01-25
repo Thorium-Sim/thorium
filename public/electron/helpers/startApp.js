@@ -3,6 +3,9 @@ const {download} = require("electron-dl");
 const ipAddress = require("./ipaddress");
 const fs = require("fs");
 const path = require("path");
+const semver = require("semver");
+const os = require("os");
+
 // Make the kiosk work better on slightly older computers
 app.commandLine.appendSwitch("ignore-gpu-blacklist", "true");
 const cert = fs.existsSync(
@@ -17,16 +20,9 @@ const cert = fs.existsSync(
 const {bonjour} = require("./bonjour");
 const settings = require("electron-settings");
 const {checkWindow, addWindow} = require("./multiWindow");
-const semver = require("semver");
 const isLinux = require("is-linux");
 const isOsx = require("is-osx");
 const isWindows = require("is-windows");
-
-let port = process.env.PORT || settings.get("port") || 443;
-let httpOnly =
-  process.env.HTTP_ONLY === "true" ||
-  settings.get("httpOnly") === "true" ||
-  false;
 
 module.exports = () => {
   function startServer() {
@@ -36,6 +32,18 @@ module.exports = () => {
   }
   app.enableSandbox();
   app.on("ready", function() {
+    let port =
+      process.env.PORT ||
+      settings.get("port") ||
+      semver.parse(os.release()).major >= 18
+        ? 443
+        : 4444;
+    let httpOnly =
+      process.env.HTTP_ONLY === "true" ||
+      settings.get("httpOnly") === "true" ||
+      settings.get("httpOnly") === true ||
+      false;
+
     app.on(
       "certificate-error",
       (event, webContents, url, error, certificate, callback) => {
@@ -71,7 +79,6 @@ module.exports = () => {
     });
     ipcMain.on("cancelServerAutostart", async () => {
       settings.set("autostart", false);
-      console.log("relaunching");
       app.relaunch();
       app.exit(0);
       return;
