@@ -11,7 +11,7 @@ import {
   CRM_FIGHTER_DATA_SUB,
 } from "components/views/CrmFighter/fighterData.js";
 
-it("should render", async () => {
+it.skip("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {
     queries: [
       CRM_MOVEMENT_QUERY,

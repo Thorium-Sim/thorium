@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
 import {titleCase} from "change-case";
 import uuid from "uuid";
@@ -53,6 +53,7 @@ App.on("sensorScanRequest", ({id, request}) => {
 });
 App.on("sensorScanResult", ({id, result}) => {
   const system = App.systems.find(sys => sys.id === id);
+  if (!system) return;
   system.scanResulted(result);
   const simulator = App.simulators.find(s => s.id === system.simulatorId);
   const stations = simulator.stations.filter(s =>

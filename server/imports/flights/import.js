@@ -2,7 +2,7 @@ import yauzl from "yauzl";
 import uuid from "uuid";
 import App from "../../app";
 import * as Classes from "../../classes";
-import {pubsub} from "../../helpers/subscriptionManager.js";
+import {pubsub} from "../../helpers/subscriptionManager";
 import {aspectList, addAspects} from "../../events/flight";
 
 function streamToString(stream, cb) {

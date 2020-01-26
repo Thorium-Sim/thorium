@@ -142,6 +142,7 @@ export default class SensorContact extends Component {
       rotation = 0,
       targeted,
       selected,
+      crewSelected,
       disabled,
       particles,
       particle,
@@ -375,7 +376,7 @@ export default class SensorContact extends Component {
             )}
           </Measure>
 
-          {!core && this.state.dimensions && selected && (
+          {((!core && selected) || crewSelected) && this.state.dimensions && (
             <ContactSelection
               contactDims={this.state.dimensions}
               width={width}

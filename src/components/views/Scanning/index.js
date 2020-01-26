@@ -437,7 +437,9 @@ class Scanning extends Component {
                   <Button
                     className="begin-scan"
                     size="lg"
-                    disabled={selectedScan}
+                    disabled={
+                      selectedScan || this.state.scanRequest.trim().length === 0
+                    }
                     onClick={
                       history ? this.newScan : this._scanRequest.bind(this)
                     }

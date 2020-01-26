@@ -17,8 +17,8 @@ export default () => {
     s => !s.template && flightSimulators.indexOf(s.id) === -1,
   );
   removeSimulators.forEach(s => {
-    aspectList.forEach(aspect => {
-      App[aspect] = App[aspect].filter(a => a.simulatorId !== s.id);
+    aspectList.forEach((aspect: string) => {
+      App[aspect] = App[aspect].filter((a: any) => a.simulatorId !== s.id);
     });
     App.stationSets = App.stationSets.filter(a => a.simulatorId !== s.id);
   });

@@ -48,8 +48,16 @@ export default class Torpedo extends System {
   addWarhead(warhead) {
     this.inventory.push(new Warhead(warhead));
   }
-  removeWarhead(id) {
-    this.inventory = this.inventory.filter(w => w.id !== id);
+  removeWarhead(id, probeId) {
+    this.inventory = this.inventory.filter(w => {
+      if (id) {
+        return w.id !== id;
+      }
+      if (probeId) {
+        return w.probe !== probeId;
+      }
+      return true;
+    });
   }
   loadWarhead(id) {
     this.loaded = id;

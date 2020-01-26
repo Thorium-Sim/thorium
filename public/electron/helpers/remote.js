@@ -1,5 +1,5 @@
 const powerOff = require("./shutdown");
-const sleepMode = require("sleep-mode");
+const sleepMode = require("./sleep-mode");
 const restart = require("./restart");
 const freakout = require("./freakout");
 const electron = require("electron");

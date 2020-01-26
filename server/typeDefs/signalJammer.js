@@ -16,6 +16,7 @@ const schema = gql`
     damage: Damage
     power: Power
     stealthFactor: Float
+    addsSensorsInterference: Boolean
     active: Boolean
     level: Float
     strength: Float
@@ -45,6 +46,7 @@ const schema = gql`
     """
     signalJammerSignals(id: ID!, type: String!, signals: Int!): String
     fluxSignalJammer(id: ID): String
+    setSignalJammerSensorsInterference(id: ID!, interference: Boolean!): String
   }
   extend type Subscription {
     signalJammersUpdate(simulatorId: ID!): [SignalJammer]

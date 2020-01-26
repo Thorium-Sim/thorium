@@ -13,6 +13,9 @@
       line-height: 1.5;
       margin: 0 30px;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
   .card {
@@ -33,6 +36,7 @@
 }
 
 .cypher-printing {
+  background: white;
   .code-list {
     font-size: 63px;
     max-height: 90vh;
@@ -121,7 +125,7 @@
   .Borg {
     font-family: "Borg";
     line-height: 0;
-    font-size: 120px;
+    font-size: 64px;
   }
   .DwarfSpiritas {
     font-family: "DwarfSpiritas";
@@ -155,6 +159,14 @@
   }
 }
 @media print {
+  body {
+    background-color: white;
+  }
+  .cypher-printing {
+    .Borg {
+      line-height: 2;
+    }
+  }
   .core-container {
     *:not(.printable) {
       visibility: hidden;
@@ -199,6 +211,8 @@
             line-height: 1.5;
             margin: 0 30px;
             text-align: center;
+            display: flex;
+            align-items: center;
           }
         }
         width: 100vw;

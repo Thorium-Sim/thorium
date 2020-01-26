@@ -7,7 +7,7 @@ export default class SensorScans extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scanRequest: props.sensors.scanRequest,
+      scanRequest: props.sensors.scanRequest || "",
     };
   }
   startScan = () => {
@@ -69,7 +69,12 @@ export default class SensorScans extends Component {
                       })
                     }
                   />
-                  <Button color="primary" block onClick={this.startScan}>
+                  <Button
+                    color="primary"
+                    block
+                    disabled={this.state.scanRequest.trim().length === 0}
+                    onClick={this.startScan}
+                  >
                     Begin Scan
                   </Button>
                 </div>

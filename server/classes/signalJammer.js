@@ -24,6 +24,7 @@ export default class SignalJammer extends System {
     this.level = params.level || 0.5;
     this.strength = params.strength || 0.1;
     this.signals = (params.signals || []).map(s => new Signal(s));
+    this.addsSensorsInterference = params.addsSensorsInterference || false;
   }
   get stealthFactor() {
     return this.active ? this.strength : 0.1;
@@ -57,5 +58,8 @@ export default class SignalJammer extends System {
   }
   fluxSignals() {
     this.signals.forEach(s => s.flux());
+  }
+  setSensorsInterference(tf) {
+    this.addsSensorsInterference = tf;
   }
 }

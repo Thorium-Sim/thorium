@@ -9,7 +9,7 @@ import {
 import gql from "graphql-tag";
 import {Mutation} from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
-
+import "./style.scss";
 const ClientInfo = ({
   id,
   simulator,

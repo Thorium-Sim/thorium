@@ -35,7 +35,9 @@ function templateFunc() {
           accelerator: "CmdOrCtrl+Alt+R",
           click: function() {
             windows.forEach(mainWindow => {
-              mainWindow && mainWindow.reload();
+              if (!mainWindow.isDestroyed()) {
+                mainWindow.reload();
+              }
             });
           },
         },
@@ -46,8 +48,10 @@ function templateFunc() {
           click: function() {
             if (windows[0] && windows[0].isKiosk()) {
               windows.forEach(mainWindow => {
-                mainWindow.setKiosk(false);
-                setMenubar();
+                if (!mainWindow.isDestroyed()) {
+                  mainWindow.setKiosk(false);
+                  setMenubar();
+                }
               });
             } else {
               windows.forEach(mainWindow => {
@@ -89,8 +93,10 @@ function setMenubar() {
   const template = templateFunc();
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
   windows.forEach(w => {
-    w.setMenuBarVisibility(true);
-    w.autoHideMenuBar = false;
+    if (!w.isDestroyed()) {
+      w.setMenuBarVisibility(true);
+      w.autoHideMenuBar = false;
+    }
   });
 }
 

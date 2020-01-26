@@ -43,6 +43,9 @@ const quotes = [
   "We are what they grow beyond. That is the true burden of all masters.",
   "We grow small trying to be great.",
   "The whole point of getting things done is knowing what to leave undone.",
+  "The days are long, but the years are short.",
+  "I preferred to be called Nobody.",
+  "He who least needs tomorrow, will most gladly greet tomorrow",
 ];
 
 const QuoteOfTheDay = () => {

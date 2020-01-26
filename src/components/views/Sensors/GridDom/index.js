@@ -38,6 +38,7 @@ const fragment = gql`
     destroyed
     forceUpdate
     targeted
+    selected
     locked
     disabled
     hostile

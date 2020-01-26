@@ -1,6 +1,12 @@
 const {ipcMain} = require("electron");
 const bonjour = require("bonjour")();
 
+function printUrl(address, httpOnly, port) {
+  return `http${httpOnly ? "" : "s"}://${address}${
+    (port === 443 && !httpOnly) || (port === 80 && httpOnly) ? "" : `:${port}`
+  }`;
+}
+
 class Bonjour {
   constructor() {
     this.browser = null;
@@ -14,9 +20,11 @@ class Bonjour {
         service.type === "thorium-http" ||
         service.type === "local"
       ) {
+        const isHttps = service.txt.https === "true";
         const ipregex = /[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}/gi;
         const address = service.addresses.find(a => ipregex.test(a));
-        const uri = `http://${address}:${service.port}/client`;
+
+        const uri = `${printUrl(address, !isHttps, service.port)}/client`;
         servers.push({
           name: service.host,
           url: uri,

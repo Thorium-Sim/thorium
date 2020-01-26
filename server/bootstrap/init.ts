@@ -3,7 +3,6 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 import https from "https";
-import ProgressBar from "progress";
 import importAssets from "../imports/asset/import";
 import "../helpers/sentry";
 
@@ -12,7 +11,7 @@ require("dotenv").config({
   path: `${__dirname}/../../.env`,
 });
 const warn = console.warn;
-console.warn = message => {
+console.warn = (message: string) => {
   if (
     message.indexOf(
       'Pass false into "resolverValidationOptions.requireResolversForResolveType',
@@ -22,23 +21,16 @@ console.warn = message => {
   warn(message);
 };
 
-export const download = function(url, dest, callback) {
+export const download = function(
+  url: string,
+  dest: string,
+  callback: (err: string) => void,
+) {
   const file = fs.createWriteStream(dest);
   https.get(url, function(res) {
-    const bar = new ProgressBar(
-      `Downloading: [:bar] :percent Elapsed: :elapseds ETA: :etas`,
-      {
-        total: parseInt(res.headers["content-length"], 10),
-        complete: "=",
-        incomplete: " ",
-        width: 20,
-      },
-    );
-
     res
       .on("data", function(chunk) {
         file.write(chunk);
-        bar.tick(chunk.length);
       })
       .on("end", function() {
         file.end();
@@ -91,6 +83,7 @@ export default () => {
         const snapshotFile = `${snapshotDir}snapshot${
           process.env.NODE_ENV === "production" ? "" : "-dev"
         }.json`;
+
         if (!fs.existsSync(snapshotFile)) {
           console.log("No snapshot.json found. Creating.");
           fs.writeFileSync(snapshotFile, JSON.stringify(defaultSnapshot));

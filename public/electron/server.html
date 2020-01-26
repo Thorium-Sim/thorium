@@ -17,7 +17,9 @@
         font-family: sans-serif;
         text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
       }
-
+      [hidden] {
+        display: none;
+      }
       h1 {
         font-size: 36px;
       }
@@ -100,14 +102,27 @@
         <button id="open-in-browser" onclick="openBrowser()">
           Open in Browser
         </button>
+        <button id="stop-auto-start" hidden onclick="cancelAutostart()">
+          Stop Automatically Starting Server
+        </button>
         <div id="ipAddress"></div>
       </div>
     </div>
     <script>
-      document.getElementById("ipAddress").innerHTML = `
-<p>Flight Director Address: http://${window.thorium.ipAddress}:4444</p>
-<p>Client Address: http://${window.thorium.ipAddress}:4444/client</p>
+      getIpAddress((ipAddress, port, httpOnly) => {
+        function printUrl() {
+          return `http${httpOnly ? "" : "s"}://${ipAddress}${
+            (port === 443 && !httpOnly) || (port === 80 && httpOnly)
+              ? ""
+              : `:${port}`
+          }`;
+        }
+
+        document.getElementById("ipAddress").innerHTML = `
+<p>Flight Director Address: ${printUrl()}</p>
+<p>Client Address: ${printUrl()}/client</p>
 `;
+      });
     </script>
   </body>
 </html>

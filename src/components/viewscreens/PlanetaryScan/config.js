@@ -1,5 +1,5 @@
 import React, {Fragment, Component} from "react";
-import {Input} from "helpers/reactstrap";
+import {Input, Button} from "helpers/reactstrap";
 import {titleCase} from "change-case";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import ColorPicker from "helpers/colorPicker";
@@ -22,6 +22,19 @@ class PlanetaryScanConfig extends Component {
       return (
         <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
           <strong>Config {titleCase(config)}</strong>
+          {config === "clouds" && (
+            <Button
+              size="sm"
+              onClick={() => {
+                updateData(
+                  JSON.stringify(Object.assign({}, data, {clouds: null})),
+                );
+                this.setState({config: null});
+              }}
+            >
+              Remove Clouds
+            </Button>
+          )}
           <FileExplorer
             simple={simple}
             directory="/3D/Texture/Planets"

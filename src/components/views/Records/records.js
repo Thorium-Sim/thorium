@@ -11,6 +11,7 @@ import {
   DropdownItem,
   Button,
   Input,
+  ButtonGroup,
 } from "reactstrap";
 import gql from "graphql-tag";
 import {useMutation} from "@apollo/react-hooks";
@@ -76,11 +77,70 @@ const trainingSteps = [
       "One you have selected several records, click this button to compose them into a long range message. The message can then be sent by the officer in charge of long range message transmission.",
   },
 ];
+
+const RecordsList = ({
+  selectedSnippet,
+  recordSnippets,
+  simulator,
+  setSelected,
+  recordFilter,
+  selectedRecords,
+  setSelectedRecords,
+}) => {
+  return (
+    <>
+      <UncontrolledDropdown>
+        <DropdownToggle block caret className="snippet-selector">
+          {selectedSnippet?.name || "None Selected"}
+        </DropdownToggle>
+        <DropdownMenu style={{maxHeight: "200px", overflowY: "scroll"}}>
+          {recordSnippets
+            .concat()
+            .sort((a, b) => {
+              if (a.id === `current-${simulator.id}`) return -1;
+              if (b.id === `current-${simulator.id}`) return 1;
+              return 0;
+            })
+            .map(r => (
+              <DropdownItem key={r.id} onClick={() => setSelected(r.id)}>
+                {r.name}
+              </DropdownItem>
+            ))}
+        </DropdownMenu>
+      </UncontrolledDropdown>
+      <ListGroup className="all-records">
+        {selectedSnippet?.records
+          .concat()
+          .filter(r => !recordFilter.includes(r.category))
+          .sort((a, b) => {
+            if (a.timestamp > b.timestamp) return -1;
+            if (a.timestamp < b.timestamp) return 1;
+            return 0;
+          })
+          .map(r => (
+            <ListGroupItem
+              active={selectedRecords.includes(r.id)}
+              onClick={() =>
+                setSelectedRecords(records =>
+                  records.includes(r.id)
+                    ? records.filter(rr => rr !== r.id)
+                    : records.concat(r.id),
+                )
+              }
+            >
+              Logged: {stardate(r.timestamp)}
+              <br />
+              <strong>{r.category}</strong>: {r.contents}
+            </ListGroupItem>
+          ))}
+      </ListGroup>
+    </>
+  );
+};
 const Records = ({recordSnippets, simulator, station, clientObj}) => {
+  const [intExt, setIntExt] = React.useState("internal");
   const [selected, setSelected] = React.useState(`current-${simulator.id}`);
-  const selectedSnippet = recordSnippets.find(s => s.id === selected) || {
-    records: [],
-  };
+  const selectedSnippet = recordSnippets.find(s => s.id === selected);
   const [selectedRecords, setSelectedRecords] = React.useState([]);
   const [name, setName] = React.useState("Untitled Snippet");
   const [naming, setNaming] = React.useState(false);
@@ -118,52 +178,47 @@ const Records = ({recordSnippets, simulator, station, clientObj}) => {
           </ListGroup>
         </Col>
         <Col sm={5} className="record-list">
-          <UncontrolledDropdown>
-            <DropdownToggle block caret className="snippet-selector">
-              {selectedSnippet.name}
-            </DropdownToggle>
-            <DropdownMenu style={{maxHeight: "200px", overflowY: "scroll"}}>
-              {recordSnippets
-                .concat()
-                .sort((a, b) => {
-                  if (a.id === `current-${simulator.id}`) return -1;
-                  if (b.id === `current-${simulator.id}`) return 1;
-                  return 0;
-                })
-                .map(r => (
-                  <DropdownItem key={r.id} onClick={() => setSelected(r.id)}>
-                    {r.name}
-                  </DropdownItem>
-                ))}
-            </DropdownMenu>
-          </UncontrolledDropdown>
-          <ListGroup className="all-records">
-            {selectedSnippet.records
-              .concat()
-              .filter(r => !recordFilter.includes(r.category))
-              .sort((a, b) => {
-                if (a.timestamp > b.timestamp) return -1;
-                if (a.timestamp < b.timestamp) return 1;
-                return 0;
-              })
-              .map(r => (
-                <ListGroupItem
-                  active={selectedRecords.includes(r.id)}
-                  onClick={() =>
-                    setSelectedRecords(records =>
-                      records.includes(r.id)
-                        ? records.filter(rr => rr !== r.id)
-                        : records.concat(r.id),
-                    )
-                  }
-                >
-                  Logged: {stardate(r.timestamp)}
-                  <br />
-                  <strong>{r.category}</strong>: {r.contents}
-                </ListGroupItem>
-              ))}
-          </ListGroup>
+          {recordSnippets.filter(c => c.type === "external").length > 0 ? (
+            <ButtonGroup>
+              <Button
+                active={intExt === "internal"}
+                onClick={() => {
+                  setIntExt("internal");
+                  setSelected(`current-${simulator.id}`);
+                  setSelectedRecords([]);
+                }}
+              >
+                Ship Records
+              </Button>
+              <Button
+                active={intExt === "external"}
+                onClick={() => {
+                  setIntExt("external");
+                  setSelected(null);
+                  setSelectedRecords([]);
+                }}
+              >
+                External Records
+              </Button>
+            </ButtonGroup>
+          ) : (
+            <h3>Ship Records</h3>
+          )}
+          <RecordsList
+            selectedSnippet={selectedSnippet}
+            recordSnippets={recordSnippets.filter(
+              c =>
+                (c.type === "normal" && intExt === "internal") ||
+                (c.type === "external" && intExt === "external"),
+            )}
+            simulator={simulator}
+            setSelected={setSelected}
+            recordFilter={recordFilter}
+            selectedRecords={selectedRecords}
+            setSelectedRecords={setSelectedRecords}
+          />
         </Col>
+        <Col sm={4}></Col>
       </Row>
       <Row>
         {naming || destination ? (
@@ -205,7 +260,7 @@ const Records = ({recordSnippets, simulator, station, clientObj}) => {
                         message: `To: ${name}
 Records Digest:
 
-${selectedSnippet.records
+${selectedSnippet?.records
   .filter(r => selectedRecords.includes(r.id))
   .map(r => `Logged: ${stardate(r.timestamp)} - ${r.category}: ${r.contents}`)
   .join("\n")}`,
@@ -262,7 +317,7 @@ ${selectedSnippet.records
               </Button>
             </Col>
             <Col sm={2}>
-              {selectedSnippet.records.filter(
+              {selectedSnippet?.records.filter(
                 r => !recordFilter.includes(r.category),
               ).length === selectedRecords.length ? (
                 <Button
@@ -280,7 +335,7 @@ ${selectedSnippet.records
                   block
                   onClick={() =>
                     setSelectedRecords(
-                      selectedSnippet.records
+                      selectedSnippet?.records
                         .filter(r => !recordFilter.includes(r.category))
                         .map(r => r.id),
                     )

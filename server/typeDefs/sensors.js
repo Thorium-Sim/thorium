@@ -83,6 +83,7 @@ const schema = gql`
     destroyed: Boolean
     forceUpdate: Boolean
     targeted: Boolean
+    selected: Boolean
     locked: Boolean
     disabled: Boolean
     hostile: Boolean
@@ -271,6 +272,20 @@ const resolver = {
         App.rooms.find(room => room.id === r),
       );
     },
+    interference(rootValue) {
+      const signalJammer = App.systems.find(
+        s =>
+          s.simulatorId === rootValue.simulatorId && s.class === "SignalJammer",
+      );
+      if (
+        !signalJammer ||
+        !signalJammer.addsSensorsInterference ||
+        !signalJammer.active
+      ) {
+        return rootValue.interference;
+      }
+      return Math.max(signalJammer.strength / 2 + 0.15, rootValue.interference);
+    },
     movement(rootValue) {
       return {
         x: rootValue.movement.x + rootValue.thrusterMovement.x,
@@ -297,6 +312,13 @@ const resolver = {
       const targetedContact = targeting.contacts.find(t => t.targeted === true);
       if (targetedContact && targetedContact.class === id) return true;
       return false;
+    },
+    selected({id, sensorId}) {
+      const sensor = App.systems.find(s => s.id === sensorId);
+      const targeting = App.systems.find(
+        s => s.simulatorId === sensor.simulatorId && s.class === "Targeting",
+      );
+      return id === targeting.targetedSensorContact;
     },
   },
   Query: {

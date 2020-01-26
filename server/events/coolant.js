@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 
 App.on("setCoolantTank", ({id, coolant}) => {
   App.systems.find(s => s.id === id).setCoolant(coolant);

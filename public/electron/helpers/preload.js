@@ -1,19 +1,23 @@
 const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
-const shell = require("electron").shell;
-const ipAddress = require("./ipaddress");
-const mac = require("./macaddress");
+let port;
+let httpOnly;
 
 let browserCount = require("electron").remote.getCurrentWindow().browserCount;
+
+async function getPortAndHttpOnly() {
+  const results = await ipcRenderer.invoke("get-port");
+  port = results.port;
+  httpOnly = results.httpOnly;
+}
+getPortAndHttpOnly();
 
 const key = "thorium_clientPersistentId";
 let clientId = sessionStorage.getItem(key);
 webFrame.setVisualZoomLevelLimits(1, 1);
 webFrame.setLayoutZoomLevelLimits(0, 0);
 
-setClientId(
-  `${require("os").hostname()}${browserCount > 1 ? ` (${browserCount})` : ""}`,
-);
+setClientId();
 
 function setClient(id) {
   sessionStorage.setItem(key, id);
@@ -21,15 +25,18 @@ function setClient(id) {
   clientId = id;
 }
 
-function setClientId(id) {
-  const clientList = getClientList();
+async function setClientId() {
+  const hostname = await ipcRenderer.invoke("get-hostname");
+
+  const id = `${hostname}${browserCount > 1 ? ` (${browserCount})` : ""}`;
+  const clientList = getClientList(hostname);
   const clientIndex = clientList.indexOf(clientId);
   setClient(id);
   clientList[clientIndex] = id;
   localStorage.setItem(key, JSON.stringify(clientList));
 }
 
-function getClientList() {
+function getClientList(hostname) {
   let clientList = null;
   try {
     clientList = JSON.parse(localStorage.getItem(key));
@@ -38,19 +45,36 @@ function getClientList() {
     // If it's blank, create a new one
   }
   if (!clientList) {
-    clientList = [localStorage.getItem(key) || require("os").hostname()];
+    clientList = [localStorage.getItem(key) || hostname];
     localStorage.setItem(key, JSON.stringify(clientList));
   }
   return clientList;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
   if (localStorage.getItem("thorium_startKiosked") !== "false") {
     if (document.getElementById("start-kiosked")) {
       document.getElementById("start-kiosked").checked = true;
     }
   }
+  const autostart = await ipcRenderer.invoke("getServerAutostart");
+  const autostartEl = document.getElementById("remember-server");
+  if (autostartEl) {
+    autostartEl.checked = Boolean(autostart);
+    autostartEl.addEventListener("change", e => {
+      ipcRenderer.send("setServerAutostart", e.target.checked);
+    });
+  }
+  if (autostart) {
+    const cancelAutostartEl = document.getElementById("stop-auto-start");
+    cancelAutostartEl.hidden = false;
+  }
 });
+
+window.cancelAutostart = function cancelAutostart() {
+  console.log("stopping");
+  ipcRenderer.send("cancelServerAutostart");
+};
 
 window.loadPage = function loadPage(url) {
   let auto = false;
@@ -62,17 +86,21 @@ window.loadPage = function loadPage(url) {
 };
 window.startServer = function startServer() {
   let auto = false;
-  if (document.getElementById("remember-server").checked) auto = true;
+  if (document.getElementById("remember-server").checked) {
+    auto = true;
+  }
   ipcRenderer.send("startServer", auto);
   return;
 };
-window.openBrowser = function openBrowser() {
-  shell.openExternal("http://localhost:4444");
+function printUrl() {
+  return `http${httpOnly ? "" : "s"}://localhost${
+    (port === 443 && !httpOnly) || (port === 80 && httpOnly) ? "" : `:${port}`
+  }`;
+}
+function openBrowser() {
+  ipcRenderer.send("open-external", printUrl());
   return;
-};
-window.openStats = function openStats() {
-  shell.openExternal("http://localhost:4444/status");
-};
+}
 window.getServers = function() {
   ipcRenderer.send("getServers");
 };
@@ -80,31 +108,109 @@ window.serverAddress = function serverAddress() {
   let url = document
     .getElementById("server-address")
     .value.replace("/client", "");
-  if (url.indexOf(":") === -1) url = url + ":4444";
+  if (url.indexOf(":") === -1) url = `${url}:${port}`;
   let auto = false;
   if (document.getElementById("remember-client").checked) auto = true;
   ipcRenderer.send("loadPage", {url, auto});
 };
-ipcRenderer.on("updateReady", function() {
-  // changes the text of the button
-  var container = document.getElementById("ready");
-  container.classList.remove("hidden");
-});
 ipcRenderer.on("info", function(event, data) {
   const output = document.getElementById("console");
-  console.log("got info", data);
   if (output) {
     output.innerText = `${data}\n${output.innerText}`;
   }
 });
 
+window.getIpAddress = async function(cb) {
+  const ipAddress = await ipcRenderer.invoke("get-ipAddress");
+  cb(ipAddress, port, httpOnly);
+};
+
 const thorium = {
   sendMessage: function(arg) {
     return ipcRenderer.send("remoteMessage", arg);
   },
-  ipAddress: ipAddress,
-  mac: mac,
 };
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+    // Network Settings
+    const httpOnlyEl = document.getElementById("http-only");
+    const portEl = document.getElementById("port");
+    if (httpOnlyEl) {
+      httpOnlyEl.checked = httpOnly;
+
+      httpOnlyEl.addEventListener("change", e => {
+        ipcRenderer.send("set-httpOnly", e.target.checked);
+        httpOnly = e.target.checked;
+        thorium.httpOnly = e.target.checked;
+        if (portEl.value === "443" && httpOnly) {
+          portEl.value = "80";
+          ipcRenderer.send("set-port", 80);
+          port = 80;
+          thorium.port = 80;
+        } else if (portEl.value === "80" && !httpOnly) {
+          portEl.value = "443";
+          ipcRenderer.send("set-port", 443);
+          port = 443;
+          thorium.port = 443;
+        }
+      });
+    }
+    if (portEl) {
+      portEl.value = port;
+
+      portEl.addEventListener("change", e => {
+        ipcRenderer.send("set-port", e.target.value);
+        port = e.target.value;
+        thorium.port = e.target.value;
+      });
+    }
+    // Server Browser Open
+    const openEl = document.getElementById("open-in-browser");
+    if (openEl) {
+      openEl.addEventListener("click", openBrowser);
+    }
+    // Auto Update
+    const autoUpdateEl = document.getElementById("auto-update");
+    const autoUpdateLabel = document.getElementById("auto-update-label");
+    const autoUpdateButton = document.getElementById("auto-update-download");
+    const autoUpdateProgress = document.getElementById("download-progress");
+    if (autoUpdateEl) {
+      fetch("https://api.github.com/repos/thorium-sim/thorium/releases")
+        .then(res => res.json())
+        .then(async res => {
+          const {asset, oldVersion, newVersion} = await ipcRenderer.invoke(
+            "get-update-asset",
+            res[0],
+          );
+          if (asset) {
+            autoUpdateLabel.innerText = `Your version of Thorium is outdated. Current version is ${newVersion}. Your version is ${oldVersion}`;
+            autoUpdateEl.classList.add("shown");
+
+            const url = asset.browser_download_url;
+            autoUpdateButton.addEventListener("click", () => {
+              ipcRenderer.send("downloadAutoUpdate", {url});
+              ipcRenderer.on("download-progress", function(e, progress) {
+                autoUpdateProgress.value = progress;
+              });
+              ipcRenderer.on("download-complete", function() {
+                autoUpdateLabel.innerText = `Update Complete!`;
+                autoUpdateProgress.hidden = true;
+              });
+              autoUpdateLabel.innerText = `Update is being downloaded to your downloads folder in the background... Please wait.`;
+              autoUpdateButton.hidden = true;
+              autoUpdateProgress.hidden = false;
+            });
+          }
+        })
+        .catch(() => {
+          //Oh well.
+        });
+    }
+  },
+  false,
+);
 
 ipcRenderer.on("clearUrl", function() {
   localStorage.setItem("thorium_url", "");

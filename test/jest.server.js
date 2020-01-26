@@ -2,6 +2,7 @@ const path = require("path");
 
 module.exports = {
   ...require("./jest.common.js"),
+  preset: "ts-jest",
   displayName: "server",
   coverageDirectory: path.join(__dirname, "../coverage/server"),
   setupFilesAfterEnv: [require.resolve("./setupServerTests.js")],

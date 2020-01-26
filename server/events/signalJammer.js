@@ -1,5 +1,5 @@
 import App from "../app";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 App.on("updateSignalJammer", ({jammer}) => {
   const sys = App.systems.find(s => s.id === jammer.id);
@@ -23,6 +23,10 @@ App.on("updateSignalJammer", ({jammer}) => {
         color: "info",
       },
       "addCoreFeed",
+    );
+    pubsub.publish(
+      "sensorsUpdate",
+      App.systems.filter(s => s.type === "Sensors"),
     );
   }
   pubsub.publish(
@@ -50,6 +54,14 @@ App.on("signalJammerSignals", ({id, simulatorId, type, signals}) => {
 App.on("fluxSignalJammer", ({id}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.fluxSignals();
+  pubsub.publish(
+    "signalJammersUpdate",
+    App.systems.filter(s => s.type === "SignalJammer"),
+  );
+});
+App.on("setSignalJammerSensorsInterference", ({id, interference}) => {
+  const sys = App.systems.find(s => s.id === id);
+  sys.setSensorsInterference(interference);
   pubsub.publish(
     "signalJammersUpdate",
     App.systems.filter(s => s.type === "SignalJammer"),

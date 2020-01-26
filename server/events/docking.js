@@ -1,5 +1,5 @@
-import App from "../app.js";
-import {pubsub} from "../helpers/subscriptionManager.js";
+import App from "../app";
+import {pubsub} from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
 import {titleCase} from "change-case";
 import uuid from "uuid";
