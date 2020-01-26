@@ -1,3 +1,31 @@
+# [2.4.0](https://github.com/Thorium-Sim/thorium/compare/v2.3.0...2.4.0) (2020-01-25)
+
+### Bug Fixes
+
+- **Client:** Fixes an issue where the client ID shows up as "undefined" when
+  using the kiosk. Closes
+  [#2720](https://github.com/Thorium-Sim/thorium/issues/2720). Closes
+  [#2719](https://github.com/Thorium-Sim/thorium/issues/2719)
+  ([2953a4f](https://github.com/Thorium-Sim/thorium/commit/2953a4f7d943cc1e719b3ba53bac77f36fd3e9e8))
+- **Code Cyphers:** Fixes issues with the Borg font formatting. Closes
+  [#2722](https://github.com/Thorium-Sim/thorium/issues/2722)
+  ([d7335b5](https://github.com/Thorium-Sim/thorium/commit/d7335b5d93aebfb8c15c8add87fe36e5d69da2ab))
+- **Kiosk:** Fixes an issue where starting the server on httpOnly didn't behave
+  correctly. Fixes [#2723](https://github.com/Thorium-Sim/thorium/issues/2723)
+  ([5104cbb](https://github.com/Thorium-Sim/thorium/commit/5104cbbbb96616b7dfd1858a5fd3021881678662))
+- **Planetary Scan Viewscreen:** Adds a button to remove the clouds texture from
+  the planetary scan. Closes
+  [#2721](https://github.com/Thorium-Sim/thorium/issues/2721)
+  ([f640caf](https://github.com/Thorium-Sim/thorium/commit/f640caf6c0b168e94f9c3332eae629dd8db2c9d9))
+
+### Features
+
+- **Signal Jammer:** Adds an option to the signal jammer system to have it add
+  interference to the Sensors grid when the signal jammer is active. The more
+  power is in the signal jammer, the deeper the interference. Closes
+  [#2718](https://github.com/Thorium-Sim/thorium/issues/2718).
+  ([a909bc8](https://github.com/Thorium-Sim/thorium/commit/a909bc857cf315b221dd9b5912490339a0a55cfd))
+
 # [2.3.0](https://github.com/Thorium-Sim/thorium/compare/v2.2.0...2.3.0) (2020-01-18)
 
 ### Bug Fixes
