@@ -1,0 +1,7 @@
+#import "./simulatorDataFragment.graphql"
+
+subscription SimulatorUpdate($simulatorId: ID!) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    ...SimulatorData
+  }
+}

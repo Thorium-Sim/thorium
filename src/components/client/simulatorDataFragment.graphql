@@ -1,0 +1,39 @@
+fragment SimulatorData on Simulator {
+  id
+  name
+  caps
+  alertlevel
+  layout
+  bridgeOfficerMessaging
+  training
+  hasPrinter
+  hasLegs
+  panels
+  flipped
+  assets {
+    mesh
+    texture
+    side
+    top
+    logo
+    bridge
+  }
+  soundEffects
+  stations {
+    name
+    login
+    training
+    ambiance
+    executive
+    layout
+    messageGroups
+    widgets
+    cards {
+      name
+      component
+      hidden
+      assigned
+      newStation
+    }
+  }
+}

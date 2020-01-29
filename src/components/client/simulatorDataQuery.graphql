@@ -1,0 +1,7 @@
+#import "./simulatorDataFragment.graphql"
+
+query Simulator($simulatorId: ID!) {
+  simulators(id: $simulatorId) {
+    ...SimulatorData
+  }
+}

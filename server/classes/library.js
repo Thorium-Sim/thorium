@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import {paramCase} from "change-case";
+
 export default class Library {
   constructor(params) {
     this.id = params.id || uuid.v4();
