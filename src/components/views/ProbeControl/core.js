@@ -4,7 +4,7 @@ import {Container, Button} from "helpers/reactstrap";
 import {OutputField, InputField, TypingField} from "../../generic/core";
 import {graphql, withApollo, Mutation} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {getProbeConfig} from "../ProbeScience/probeScience";
 import "./style.scss";
 import ScanPresets from "../Sensors/ScanPresets";
@@ -160,7 +160,7 @@ class ProbeControl extends Component {
       <div>
         <p>
           <strong>Emitter:</strong>{" "}
-          {config ? titleCase(`${config.name} ${config.type}`) : "Invalid"}
+          {config ? capitalCase(`${config.name} ${config.type}`) : "Invalid"}
         </p>
         <p>
           <strong>Charge:</strong> {probe.charge}
@@ -225,7 +225,7 @@ class ProbeControl extends Component {
               {probe && (
                 <>
                   <p>
-                    <strong>{titleCase(probe.type)}</strong>
+                    <strong>{capitalCase(probe.type)}</strong>
                   </p>
                   {this.renderEquipment()}
                   {probe.type === "science" && this.renderScience(probe)}

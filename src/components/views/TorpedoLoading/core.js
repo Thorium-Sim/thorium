@@ -3,7 +3,7 @@ import {Container, Button, ButtonGroup} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {OutputField} from "../../generic/core";
 import {Query} from "react-apollo";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import TorpedoInventory from "./inventory";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
@@ -31,7 +31,7 @@ const TorpedoView = ({torpedo}) => {
         {(() => {
           if (torpedo.state === "idle") return "No Torpedos Loaded";
 
-          return `${titleCase(
+          return `${capitalCase(
             loaded ? loaded.type : lastLoaded && lastLoaded.type,
           )} Torpedo ${torpedo.state === "loaded" ? "Loaded" : "Fired"}`;
         })()}

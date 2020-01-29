@@ -6,7 +6,7 @@ import {
   DropdownItem,
 } from "helpers/reactstrap";
 import "./style.scss";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 
 const ConvoPicker = ({
   simulator,
@@ -54,7 +54,7 @@ const ConvoPicker = ({
         {messageGroups &&
           messageGroups.map(g => (
             <DropdownItem key={g} onClick={() => setSelectedConversation(g)}>
-              {titleCase(g)}
+              {capitalCase(g)}
             </DropdownItem>
           ))}
         {teams &&

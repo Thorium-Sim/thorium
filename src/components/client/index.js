@@ -126,7 +126,9 @@ class ClientData extends Component {
         variables: {client: clientId},
       })
       .then(() => {
-        window.location.reload();
+        if (typeof window !== "undefined") {
+          window.location.reload();
+        }
       });
   };
   render() {

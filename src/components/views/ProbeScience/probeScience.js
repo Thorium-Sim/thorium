@@ -11,7 +11,7 @@ import {
 import Grid from "../Sensors/GridDom/grid";
 import {FormattedMessage} from "react-intl";
 import Tour from "helpers/tourHelper";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {Mutation, useSubscription} from "react-apollo";
 import gql from "graphql-tag.macro";
 import uuid from "uuid";
@@ -354,7 +354,7 @@ class ProbeScience extends Component {
                     <div>
                       <small>
                         {s.scienceType ? (
-                          titleCase(
+                          capitalCase(
                             `${s.scienceType.name} ${s.scienceType.type}`,
                           )
                         ) : (
@@ -382,7 +382,7 @@ class ProbeScience extends Component {
                   <strong>
                     Type:{" "}
                     {probe.scienceType ? (
-                      titleCase(
+                      capitalCase(
                         `${probe.scienceType.name} ${probe.scienceType.type}`,
                       )
                     ) : (
@@ -443,7 +443,7 @@ class ProbeScience extends Component {
                         values={{
                           probe:
                             probe.scienceType &&
-                            titleCase(probe.scienceType.type),
+                            capitalCase(probe.scienceType.type),
                         }}
                       />
                     </Button>

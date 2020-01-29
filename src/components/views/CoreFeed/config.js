@@ -10,7 +10,7 @@ import {
   Input,
   Label,
 } from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 const components = [
   "AlertConditionCore",
   "CargoCore",
@@ -146,7 +146,7 @@ class CoreFeedConfig extends Component {
                       )
                     }
                   />{" "}
-                  {titleCase(c.replace("Core", ""))}
+                  {capitalCase(c.replace("Core", ""))}
                 </Label>
               </FormGroup>
             ))}

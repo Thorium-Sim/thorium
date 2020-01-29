@@ -9,7 +9,7 @@ import {
 } from "helpers/reactstrap";
 import {Cores} from "../../views";
 import {publish} from "helpers/pubsub";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";
 const defaultSidebar = [
   {
@@ -110,7 +110,7 @@ class NotificationConfig extends Component {
                     .sort()
                     .map(c => (
                       <option value={c} key={c}>
-                        {titleCase(c)}
+                        {capitalCase(c)}
                       </option>
                     ))}
                 </Input>

@@ -1,6 +1,6 @@
 import React from "react";
 import {Card, CardBody, Button} from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import partsImages from "./parts";
 import DamageOverlay from "../helpers/DamageOverlay";
 
@@ -21,7 +21,7 @@ const Exocomp = ({
       <DamageOverlay message="Exocomp Offline" system={{damage, power: {}}} />
       <CardBody>
         <span className="exocomp-title">#{number}</span>
-        <p>Status: {titleCase(state)}</p>
+        <p>Status: {capitalCase(state)}</p>
         <p>Completion: {Math.round(completion * 100)}%</p>
         <p>Destination: {destination && destination.displayName}</p>
         {state === "upgrading" ? (

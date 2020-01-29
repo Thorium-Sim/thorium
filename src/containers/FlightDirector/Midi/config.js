@@ -1,5 +1,5 @@
 import React from "react";
-import titleCase from "title-case";
+import {capitalCase} from "change-case";
 import gql from "graphql-tag.macro";
 import {useMutation} from "react-apollo";
 import MacroConfig from "components/views/Macros/macroConfig";
@@ -126,7 +126,7 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
       <div className="midi-config">
         {selectedComponent ? (
           <>
-            <h3>{titleCase(selectedComponent.id)}</h3>
+            <h3>{capitalCase(selectedComponent.id)}</h3>
             {allowedActions.length > 1 && (
               <select
                 className="btn btn-primary btn-block"
@@ -144,7 +144,7 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
                   .filter(a => !excludedActions.includes(a))
                   .map(a => (
                     <option key={a} value={a}>
-                      {titleCase(a)}
+                      {capitalCase(a)}
                     </option>
                   ))}
               </select>
@@ -185,7 +185,7 @@ const BoardConfig = ({selectedComponent, midiSet}) => {
                   .filter(([, comp]) => comp?.actionModes?.includes(actionMode))
                   .map(([l]) => (
                     <option key={l} value={l}>
-                      {titleCase(l)}
+                      {capitalCase(l)}
                     </option>
                   ))}
               </select>

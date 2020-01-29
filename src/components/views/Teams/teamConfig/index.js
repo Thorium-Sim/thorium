@@ -9,7 +9,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import Priority from "./priority";
 import Location from "./location";
 const TeamConfig = ({
@@ -53,7 +53,7 @@ const TeamConfig = ({
             type="text"
             id="teamName"
             disabled={!team.id}
-            placeholder={`New ${titleCase(teamType)} Team`}
+            placeholder={`New ${capitalCase(teamType)} Team`}
             size="lg"
             value={team.name || null}
           />
@@ -107,7 +107,7 @@ const TeamConfig = ({
                 createTeam(team);
               }}
             >
-              Create {titleCase(teamType)} Team
+              Create {capitalCase(teamType)} Team
             </Button>
             <Button
               block
@@ -141,7 +141,7 @@ const TeamConfig = ({
                 commitTeam(team);
               }}
             >
-              Update {titleCase(teamType)} Team
+              Update {capitalCase(teamType)} Team
             </Button>
             <Button
               block
@@ -153,7 +153,7 @@ const TeamConfig = ({
                 removeTeam(team.id);
               }}
             >
-              Recall {titleCase(teamType)} Team
+              Recall {capitalCase(teamType)} Team
             </Button>
           </div>
         )}

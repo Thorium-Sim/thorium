@@ -14,7 +14,7 @@ import gql from "graphql-tag.macro";
 import EventName from "../MissionConfig/EventName";
 import EventPicker from "../MissionConfig/EventPicker";
 import uuid from "uuid";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";
 import {ActionConfig} from "../Macros/macroConfig";
 
@@ -67,7 +67,7 @@ const ActionList = ({
               <option disabled>Choose a color</option>
               {colors.map(c => (
                 <option key={c} value={c}>
-                  {titleCase(c)}
+                  {capitalCase(c)}
                 </option>
               ))}
             </Input>

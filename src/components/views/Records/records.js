@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import gql from "graphql-tag";
 import {useMutation} from "@apollo/react-hooks";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import Tour from "helpers/tourHelper";
 import {stardate} from "../OfficerLog";
 
@@ -172,7 +172,7 @@ const Records = ({recordSnippets, simulator, station, clientObj}) => {
                 active={!recordFilter.includes(c)}
                 onClick={() => toggleFilter(c)}
               >
-                {titleCase(c)}
+                {capitalCase(c)}
               </ListGroupItem>
             ))}
           </ListGroup>

@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import {FormGroup, Label, Button, Row, Col} from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 const Priority = ({update, team = {}}) => {
   const updatePriority = priority => {
     update(
@@ -65,7 +65,7 @@ const PriorityButton = ({update, color, type, team}) => {
       block
       color={color}
     >
-      {titleCase(type)}
+      {capitalCase(type)}
     </Button>
   );
 };

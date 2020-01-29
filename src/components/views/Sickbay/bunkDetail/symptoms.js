@@ -11,7 +11,7 @@ import {
 } from "helpers/reactstrap";
 import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";
 
 const Symptoms = ({
@@ -53,7 +53,7 @@ const Symptoms = ({
                           )
                         }
                       >
-                        {titleCase(s)}
+                        {capitalCase(s)}
                       </DropdownItem>
                     ))
             }
@@ -69,7 +69,7 @@ const Symptoms = ({
       >
         {symptoms.map(s => (
           <ListGroupItem key={`symptom-${s}`}>
-            {titleCase(s)}{" "}
+            {capitalCase(s)}{" "}
             <FaBan
               className="text-danger"
               onClick={() =>
@@ -87,7 +87,7 @@ const Symptoms = ({
         type="textarea"
         rows={2}
         readOnly
-        value={diagnosis.map(titleCase).join(", ")}
+        value={diagnosis.map(capitalCase).join(", ")}
       />
       <h4>Treatment</h4>
       <Input

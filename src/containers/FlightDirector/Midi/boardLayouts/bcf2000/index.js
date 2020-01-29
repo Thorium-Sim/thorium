@@ -45,7 +45,7 @@ import styled from "styled-components";
 //         if (value || value === 0)
 //           return (
 //             <div>
-//               <label>{titleCase(key)}</label>
+//               <label>{capitalCase(key)}</label>
 //               <Input value={value} readOnly />
 //             </div>
 //           );

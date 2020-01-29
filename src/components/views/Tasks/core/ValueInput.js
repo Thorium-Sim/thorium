@@ -1,6 +1,6 @@
 import React from "react";
 import {Input} from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import DeckSelect from "./inputs/DeckSelect";
 import PartsPicker from "./inputs/PartsPicker";
 import DamageTeamPicker from "./inputs/DamageTeamPicker";
@@ -22,7 +22,7 @@ const ValueInput = ({
         if (type === "text")
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <Input
                 type="text"
                 placeholder={placeholder || definitionValue}
@@ -34,7 +34,7 @@ const ValueInput = ({
         if (type === "textarea")
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <Input
                 type="textarea"
                 rows={3}
@@ -47,7 +47,7 @@ const ValueInput = ({
         if (type === "roomPicker") {
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <DeckSelect
                 simulatorId={simulatorId}
                 value={value || placeholder}
@@ -59,7 +59,7 @@ const ValueInput = ({
         if (type === "deckPicker") {
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <DeckSelect
                 simulatorId={simulatorId}
                 value={value || placeholder}
@@ -72,7 +72,7 @@ const ValueInput = ({
         if (type === "partsPicker") {
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <PartsPicker value={value} onChange={onBlur} />
             </label>
           );
@@ -80,7 +80,7 @@ const ValueInput = ({
         if (type === "damageTeamPicker") {
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <DamageTeamPicker
                 simulatorId={simulatorId}
                 value={value || placeholder}
@@ -92,7 +92,7 @@ const ValueInput = ({
         if (type === "probeEquipment") {
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <ProbeEquipment
                 simulatorId={simulatorId}
                 value={value || placeholder}
@@ -104,7 +104,7 @@ const ValueInput = ({
         if (type === "inventoryInput") {
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <InventoryInput
                 simulatorId={simulatorId}
                 value={value || placeholder}
@@ -116,7 +116,7 @@ const ValueInput = ({
         if (typeof type === "object" && type.length > 0) {
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <Input
                 type="select"
                 value={value || ""}
@@ -135,7 +135,7 @@ const ValueInput = ({
         if (typeof type === "object")
           return (
             <label>
-              {titleCase(label)}
+              {capitalCase(label)}
               <small>{type.placeholder}</small>
               <Input
                 {...type}
@@ -147,7 +147,7 @@ const ValueInput = ({
           );
         return (
           <label>
-            {titleCase(label)}
+            {capitalCase(label)}
             <div>Invalid input type</div>
           </label>
         );

@@ -13,7 +13,7 @@ import {
 } from "helpers/reactstrap";
 import {FaBan} from "react-icons/fa";
 import Views, {Widgets} from "components/views/index";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import ExtraMessageGroups from "./messageGroups";
 import LayoutList from "components/layouts";
 
@@ -59,7 +59,7 @@ const Station = ({stations, simulatorId, station: stationName}) => {
     return cards.indexOf(comp) > -1;
   };
   const addCard = action => e => {
-    let name = prompt("What is the card name?", titleCase(e.target.value));
+    let name = prompt("What is the card name?", capitalCase(e.target.value));
     if (name) {
       const variables = {
         simulatorId,
@@ -450,7 +450,7 @@ const Station = ({stations, simulatorId, station: stationName}) => {
                         />
                       )}
                     </Mutation>{" "}
-                    {titleCase(group)}
+                    {capitalCase(group)}
                   </label>
                 </Col>
               ))}
@@ -512,7 +512,7 @@ const Station = ({stations, simulatorId, station: stationName}) => {
                         />
                       )}
                     </Mutation>{" "}
-                    {titleCase(widget)}
+                    {capitalCase(widget)}
                   </label>
                 </Col>
               ))}

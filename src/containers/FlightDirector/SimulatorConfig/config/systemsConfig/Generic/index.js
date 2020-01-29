@@ -2,7 +2,7 @@ import React, {Fragment, Component} from "react";
 import {Button, ButtonGroup} from "helpers/reactstrap";
 import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import Basic from "./basic";
 import Power from "./power";
 import Locations from "./location";
@@ -77,7 +77,7 @@ class GenericConfig extends Component {
           const {type} = data.system;
           return (
             <div>
-              <h4>{titleCase(type)}</h4>
+              <h4>{capitalCase(type)}</h4>
               <ButtonGroup>
                 <Button
                   size="sm"
