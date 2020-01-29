@@ -8,7 +8,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 
 const ProbeEquipment = ({
   selectedProbeType,
@@ -91,7 +91,7 @@ const ProbeEquipment = ({
                     active={selectedScienceType === s.id}
                     onClick={() => setSelectedScienceType(s.id)}
                   >
-                    {titleCase(`${s.name} ${s.type}`)}
+                    {capitalCase(`${s.name} ${s.type}`)}
                   </ListGroupItem>
                 ))}
             </ListGroup>

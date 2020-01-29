@@ -5,7 +5,7 @@ import {graphql, withApollo, Mutation} from "react-apollo";
 import {Container, Row, Col, Button, Input, Progress} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {Duration} from "luxon";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 
 import "./style.scss";
 import {FaRandom} from "react-icons/fa";
@@ -25,7 +25,7 @@ function parseDepletion(time) {
       .toObject(),
   )
     .filter(t => t[1] !== 0)
-    .map(t => `${t[1]} ${titleCase(t[0])}`)
+    .map(t => `${t[1]} ${capitalCase(t[0])}`)
     .join(", ");
 }
 

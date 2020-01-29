@@ -3,7 +3,7 @@ import {Row, Col, Button, Input, ButtonGroup} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {withApollo, Query} from "react-apollo";
 import SoundPicker from "helpers/soundPicker";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 
 import {randomFromList} from "helpers/randomFromList";
 import "./style.scss";
@@ -332,7 +332,7 @@ class ActionsCore extends Component {
           })
         }
       >
-        {titleCase(this.state.actionName)} {this.state.actionDest}
+        {capitalCase(this.state.actionName)} {this.state.actionDest}
       </Button>
     );
   };

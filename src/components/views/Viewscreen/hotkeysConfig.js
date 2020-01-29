@@ -9,7 +9,7 @@ import {
   Button,
 } from "helpers/reactstrap";
 import * as Components from "../../viewscreens";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import ConfigComponent from "./ConfigComponent";
 
 const components = Object.keys(Components).filter(
@@ -113,7 +113,7 @@ class HotkeysConfig extends Component {
                           .sort()
                           .map(c => (
                             <option value={c} key={c}>
-                              {titleCase(c)}
+                              {capitalCase(c)}
                             </option>
                           ))}
                       </select>

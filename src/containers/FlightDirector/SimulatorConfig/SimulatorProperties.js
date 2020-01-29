@@ -1,6 +1,6 @@
 import React from "react";
 import {Card} from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 const properties = [
   "Simulator",
   "Stations",
@@ -36,7 +36,7 @@ export default ({selectProperty, selectedProperty}) => {
             selectedProperty === p ? "selected" : ""
           }`}
         >
-          {titleCase(p)}
+          {capitalCase(p)}
         </li>
       ))}
     </Card>

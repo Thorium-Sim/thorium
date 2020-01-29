@@ -3,7 +3,7 @@ import App from "../app";
 import {randomFromList} from "../classes/generic/damageReports/constants";
 import {Probes} from "../classes";
 import Fuzz from "fuse.js";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {scienceProbeTypes} from "../classes/probes";
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -261,7 +261,7 @@ export default [
         input: () =>
           scienceProbeTypes.map(p => ({
             value: p.id,
-            label: `${p.name} ${titleCase(p.type)}`,
+            label: `${p.name} ${capitalCase(p.type)}`,
           })),
         value: () => {
           const p = randomFromList(scienceProbeTypes);
@@ -285,7 +285,7 @@ export default [
         );
 
       const probeType = scienceProbeTypes.find(p => p.id === type);
-      const typeLabel = `${probeType.name} ${titleCase(probeType.type)}`;
+      const typeLabel = `${probeType.name} ${capitalCase(probeType.type)}`;
 
       if (station && task.station === station.name)
         return reportReplace(

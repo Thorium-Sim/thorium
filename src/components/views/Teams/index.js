@@ -10,7 +10,7 @@ import {
   Button,
 } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import training from "./training";
 import TeamConfig from "./teamConfig";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -256,7 +256,7 @@ class Teams extends Component {
                 })
               }
             >
-              New {titleCase(teamType)} Team
+              New {capitalCase(teamType)} Team
             </Button>
           </Col>
           <Col sm={{size: 8, offset: 1}} className="damage-team-entry">

@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import {Table, Button} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {OutputField, InputField} from "../../generic/core";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import "./style.scss";
 
 const fragment = gql`
@@ -153,7 +153,7 @@ const JumpDriveCore = ({
       <tbody>
         {["fore", "aft", "port", "starboard"].map(s => (
           <tr key={s}>
-            <td>{titleCase(s)}</td>
+            <td>{capitalCase(s)}</td>
             <td>{sectors[s].level}</td>
             <td
               className={`${sectors[s].offset > 0.5 ? "text-warning" : ""} ${

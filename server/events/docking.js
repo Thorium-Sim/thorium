@@ -1,7 +1,7 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import uuid from "uuid";
 function whichEvent({clamps, compress, doors, docked}) {
   if (compress) {
@@ -55,7 +55,7 @@ App.on("updateDockingPort", ({port = {}, cb, ...rest}) => {
     simulatorId: dockingPort.simulatorId,
     type: "Docking",
     station: "Core",
-    title: `${titleCase(dockingPort.type)} ${dockingPort.name} ${whichEvent(
+    title: `${capitalCase(dockingPort.type)} ${dockingPort.name} ${whichEvent(
       port,
     )}`,
     body: "",
@@ -64,7 +64,7 @@ App.on("updateDockingPort", ({port = {}, cb, ...rest}) => {
   App.handleEvent(
     {
       simulatorId: dockingPort.simulatorId,
-      title: `${titleCase(dockingPort.type)} ${dockingPort.name} Update`,
+      title: `${capitalCase(dockingPort.type)} ${dockingPort.name} Update`,
       component: dockingPort.type === "shuttlebay" ? "ShuttlesCore" : null,
       body: "",
       color: "info",

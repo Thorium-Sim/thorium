@@ -3,7 +3,7 @@ import {Table} from "helpers/reactstrap";
 import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Input} from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import Views from "../index";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
@@ -48,7 +48,7 @@ const HypercardPicker = ({clientId = null, hypercard, simulatorId}) => {
     .sort()
     .map((v, i) => (
       <option key={`${i}-${v}`} value={v}>
-        {titleCase(v)}
+        {capitalCase(v)}
       </option>
     ));
   const hypercardList = Object.keys(Views)
@@ -57,7 +57,7 @@ const HypercardPicker = ({clientId = null, hypercard, simulatorId}) => {
     .sort()
     .map((v, i) => (
       <option key={`${i}-${v}`} value={v}>
-        {titleCase(v)}
+        {capitalCase(v)}
       </option>
     ));
   return (

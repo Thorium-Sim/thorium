@@ -5,7 +5,7 @@ import GraphQLClient from "../helpers/graphqlClient";
 import request from "request";
 import fetch from "node-fetch";
 import uuid from "uuid";
-import titleCase from "title-case";
+import {capitalCase} from "change-case";
 const mutationHelper = require("../helpers/mutationHelper").default;
 
 const issuesUrl =
@@ -163,7 +163,7 @@ const resolver = {
         `
           ### Requested By: ${person}
     
-          ### Priority: ${titleCase(priority)}
+          ### Priority: ${capitalCase(priority)}
     
           ### Version: ${version}
         `
