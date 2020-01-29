@@ -7,7 +7,7 @@ import {Tooltip} from "helpers/reactstrap";
 import {Widget} from "../LayoutCorners/Widgets";
 import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
 import {FaQuestionCircle, FaSignOutAlt} from "react-icons/fa";
-import {kebabCase} from "change-case";
+import {paramCase} from "change-case";
 const WIDGET_NOTIFY = gql`
   subscription WidgetNotify($simulatorId: ID!, $station: String) {
     widgetNotify(simulatorId: $simulatorId, station: $station)
@@ -173,14 +173,14 @@ const StaticWidget = ({
           playEffect("buttonClick");
           onClick(e);
         }}
-        id={`widget-${kebabCase(name)}`}
+        id={`widget-${paramCase(name)}`}
         style={{color: color || "rgb(200,150,255)"}}
       />
       {!touch && (
         <Tooltip
           placement="bottom"
           isOpen={tooltipOpen}
-          target={`widget-${kebabCase(name)}`}
+          target={`widget-${paramCase(name)}`}
           toggle={toggle}
           delay={{show: 0, hide: 20}}
         >
