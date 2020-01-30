@@ -1,4 +1,9 @@
-export default ({room, preamble}, {location, stations}) => {
+import {Station} from "~classes/stationSet";
+
+export default (
+  {room, preamble}: {room: string; preamble: string},
+  {location, stations}: {location: string; stations: Station[]},
+) => {
   // Find the station with the security decks
   const station = stations.find(s =>
     s.cards.find(c => c.component === "SecurityDecks"),

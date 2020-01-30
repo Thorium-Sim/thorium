@@ -1,4 +1,9 @@
-export default ({preamble}, {name, displayName = name, stations}) => {
+import {DamageStepArgs, DamageStepContext} from "~classes/generic";
+
+export default (
+  {preamble}: DamageStepArgs,
+  {name, displayName = name, stations}: DamageStepContext,
+) => {
   // Find the station with the exocomps
   const station = stations.find(s =>
     s.cards.find(c => c.component === "Exocomps"),

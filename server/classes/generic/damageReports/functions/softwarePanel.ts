@@ -1,6 +1,7 @@
 import App from "../../../../app";
 import {randomFromList} from "../constants";
-const allowedComponents = {
+import {DamageStepContext, DamageStepArgs} from "~classes/generic";
+const allowedComponents: {[key: string]: string[]} = {
   CableInput: ["Connect a #COLOR cable from #LABEL to #CABLE2."],
   ToggleSwitch: ["Set #LABEL to the #UPDOWN position."],
   ThreeWaySwitch: ["Set #LABEL to the #UPCENTER position."],
@@ -19,11 +20,19 @@ const allowedComponents = {
 // Parse the message to for random values,
 // such as a cable to plug into or the position a switch should be in
 
-export default ({preamble}, {name, displayName = name, simulatorId}) => {
+interface PanelComponent {
+  label: string;
+  component: string;
+}
+export default (
+  {preamble}: DamageStepArgs,
+  {name, displayName = name, simulatorId}: DamageStepContext,
+) => {
   const panels = App.softwarePanels.filter(s => s.simulatorId === simulatorId);
   const panel = randomFromList(panels);
   const components = panel.components.filter(
-    c => c.label && Object.keys(allowedComponents).indexOf(c.component) > -1,
+    (c: PanelComponent) =>
+      c.label && Object.keys(allowedComponents).indexOf(c.component) > -1,
   );
   if (components.length === 0) return "";
   const count = Math.round(Math.random() * 3) + 2;
@@ -62,8 +71,11 @@ export default ({preamble}, {name, displayName = name, simulatorId}) => {
             "#CABLE2",
             randomFromList(
               panel.components
-                .filter(d => d.label && d.component === "CableOutput")
-                .map(d => d.label),
+                .filter(
+                  (d: PanelComponent) =>
+                    d.label && d.component === "CableOutput",
+                )
+                .map((d: PanelComponent) => d.label),
             ),
           )
       );

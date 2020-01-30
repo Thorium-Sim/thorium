@@ -1,9 +1,16 @@
-import {damagePositions, damageTexts, randomFromList} from "../constants";
+import {damageTexts, randomFromList} from "../constants";
+import {DamageStepArgs, DamageStepContext} from "~classes/generic";
 
 export default (
-  {end, cleanup, name: teamName, orders, room, preamble, type},
-  {damageSteps, name, displayName = name, location, damageTeamCrewCount},
-  index,
+  {end, cleanup, name: teamName, orders, room, preamble, type}: DamageStepArgs,
+  {
+    damageSteps,
+    name,
+    displayName = name,
+    location,
+    damageTeamCrewCount,
+  }: DamageStepContext,
+  index: number,
 ) => {
   if (end) {
     // Find the previous damage team.

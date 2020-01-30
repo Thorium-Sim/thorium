@@ -1,4 +1,9 @@
-export default ({message}, {name, displayName = name}) => {
+import {DamageStepArgs, DamageStepContext} from "~classes/generic";
+
+export default (
+  {message}: DamageStepArgs,
+  {name, displayName = name}: DamageStepContext,
+) => {
   return `Send a message to your damage team:
     
 Message: ${message ||

@@ -1,6 +1,7 @@
 import {partsList, randomFromList} from "./damageReports/constants";
+import {System} from ".";
 
-export default function processReport(report, system) {
+export default function processReport(report: string, system: System) {
   if (system) system.damage.neededReactivationCode = null;
   if (!report) return;
   let returnReport = report;
@@ -97,7 +98,12 @@ export default function processReport(report, system) {
   return returnReport;
 }
 
-function splice(str, start, delCount, newSubStr) {
+function splice(
+  str: string,
+  start: number,
+  delCount: number,
+  newSubStr: string | number,
+) {
   return (
     str.slice(0, start) + newSubStr + str.slice(start + Math.abs(delCount))
   );

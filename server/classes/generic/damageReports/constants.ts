@@ -1,3 +1,5 @@
+import DamageStep from "../damageStep";
+
 export const partsList = [
   "CASM Generator",
   "Coaxial Servo",
@@ -27,7 +29,7 @@ export const partsList = [
   "Subspace Transceiver",
 ];
 
-export const defaultOptionalSteps = [
+export const defaultOptionalSteps: DamageStep[] = [
   {name: "damageTeam", args: {}},
   {name: "remoteAccess", args: {}},
   {name: "damageTeamMessage", args: {}},
@@ -55,7 +57,7 @@ export const damagePositions = [
   "Welder",
 ];
 
-export const damageTexts = {
+export const damageTexts: {[key: string]: any[]} = {
   "Computer Specialist": [
     {
       preamble:
@@ -205,7 +207,7 @@ export const longRangeDestinations = [
   "Starbase 101",
 ];
 
-export function randomFromList(list) {
+export function randomFromList(list: any[]) {
   if (!list) return;
   const length = list.length;
   const index = Math.floor(Math.random() * length);

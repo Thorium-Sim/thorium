@@ -1,6 +1,8 @@
+import {DamageStepArgs, DamageStepContext} from "~classes/generic";
+
 export default (
-  {equipment, query, preamble},
-  {name, stations, displayName = name},
+  {equipment, query, preamble}: DamageStepArgs,
+  {name, stations, displayName = name}: DamageStepContext,
 ) => {
   // Find the station with the probe construction
   const station = stations.find(s =>

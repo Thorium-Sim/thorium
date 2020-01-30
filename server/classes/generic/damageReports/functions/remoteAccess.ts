@@ -1,7 +1,8 @@
 import {randomCode} from "../constants";
+import {DamageStepContext, DamageStepArgs} from "~classes/generic";
 export default (
-  {code = randomCode(), backup = randomCode(), preamble = ""},
-  {stations},
+  {code = randomCode(), backup = randomCode(), preamble = ""}: DamageStepArgs,
+  {stations}: DamageStepContext,
 ) => {
   const station = stations.find(s => s.widgets.indexOf("remote") > -1);
   const officer = station ? station.name : "Remote Access";

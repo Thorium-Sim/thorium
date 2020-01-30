@@ -1,11 +1,21 @@
 import {greekLetters, randomFromList} from "../constants";
+import {Station} from "~classes/stationSet";
 
 export default (
-  {preamble, username, password, level},
-  {name, stations, displayName = name},
+  {
+    preamble,
+    username,
+    password,
+    level,
+  }: {preamble: string; username: string; password: string; level: number},
+  {
+    name,
+    stations,
+    displayName = name,
+  }: {name: string; stations: Station[]; displayName: string},
 ) => {
   // Find the station with the probe construction
-  const station = stations.find(s =>
+  const station = stations.find((s: Station) =>
     s.cards.find(c => c.component === "ComputerCore"),
   );
   const stationName = station ? station.name : "Computer Core";

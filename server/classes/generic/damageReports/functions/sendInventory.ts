@@ -1,8 +1,15 @@
 import App from "../../../../app";
 import {randomFromList} from "../constants";
+import {DamageStepArgs, DamageStepContext} from "~classes/generic";
 export default (
-  {inventory, room, preamble},
-  {location, name, displayName = name, stations, simulatorId},
+  {inventory, room, preamble}: DamageStepArgs,
+  {
+    location,
+    name,
+    displayName = name,
+    stations,
+    simulatorId,
+  }: DamageStepContext,
 ) => {
   // Find the station with the cargo control
   const station = stations.find(s =>

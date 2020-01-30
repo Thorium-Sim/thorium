@@ -1,8 +1,9 @@
 import {randomFromList, greekLetters} from "../constants";
+import {DamageStepArgs, DamageStepContext} from "~classes/generic";
 
 export default (
-  {room, preamble, message},
-  {name, displayName = name, location, stations},
+  {room, preamble, message}: DamageStepArgs,
+  {name, displayName = name, location, stations}: DamageStepContext,
 ) => {
   // Find the station with the internal comm
   const station = stations.find(s =>

@@ -1,6 +1,8 @@
+import {DamageStepArgs, DamageStepContext} from "~classes/generic";
+
 export default (
-  {name: teamName, orders, room, preamble},
-  {name, displayName = name, location, stations},
+  {name: teamName, orders, room, preamble}: DamageStepArgs,
+  {name, displayName = name, location, stations}: DamageStepContext,
 ) => {
   // Find the station with the security teams
   const station = stations.find(s =>

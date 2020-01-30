@@ -5,13 +5,52 @@ import {
   damagePositions,
   randomFromList,
 } from "./damageReports/constants";
-import * as damageStepFunctions from "./damageReports/functions";
+import * as damageReportFunctions from "./damageReports/functions";
 import processReport from "./processReport";
 import DamageStep from "./damageStep";
 import DamageTask from "./damageTask";
+import {Station, Card} from "../StationSet";
+
+const damageStepFunctions: {[key: string]: any} = {...damageReportFunctions};
+
+// TODO: Replace these anys with proper type defintitions
+export interface DamageStepContext extends System {
+  damageSteps: any[];
+  simulator: any;
+  stations: Station[];
+  deck: any;
+  room: any;
+  location: string;
+  crew: any;
+  damageTeamCrew: any;
+  damageTeamCrewCount: any;
+  securityTeamCrew: any;
+}
+export interface DamageStepArgs {
+  preamble: string;
+  name: string;
+  orders: string;
+  inventory: any;
+  room: string;
+  code: string;
+  backup: string;
+  equipment: string;
+  query: string;
+  end: boolean;
+  message: string;
+  destination: string;
+  reactivate: boolean;
+  cleanup: boolean;
+  type: string;
+}
 
 export class Macro {
-  constructor(params) {
+  id: string;
+  event: string;
+  args: string;
+  delay: number;
+  noCancelOnReset: boolean;
+  constructor(params: Macro) {
     this.id = params.id || uuid.v4();
     this.event = params.event || "";
     this.args = params.args || "{}";
@@ -21,7 +60,20 @@ export class Macro {
 }
 
 export class Damage {
-  constructor(params = {}, systemId) {
+  systemId?: string;
+  damaged?: boolean;
+  report?: string | null;
+  reportSteps?: any;
+  requested?: boolean;
+  currentStep?: number;
+  reactivationCode?: string | null;
+  reactivationRequester?: string | null;
+  neededReactivationCode?: string | null;
+  exocompParts?: string[];
+  validate?: boolean;
+  destroyed?: boolean;
+  which?: string;
+  constructor(params: Damage = {}, systemId: string) {
     this.systemId = systemId;
     this.damaged = params.damaged || false;
     this.report = params.report || null;
@@ -37,8 +89,31 @@ export class Damage {
     this.which = params.which || "default";
   }
 }
+interface Power {
+  power: number;
+  powerLevels: number[];
+  defaultLevel: number;
+}
 export class System {
-  constructor(params = {}) {
+  id: string;
+  class: string;
+  type: string;
+  simulatorId: string;
+  name: string | null;
+  storedDisplayName: string;
+  upgradeName: string;
+  upgraded: boolean;
+  upgradeBoard: string | null;
+  upgradeMacros: any[];
+  power: Power;
+  damage: Damage;
+  extra: boolean;
+  locations: string[];
+  requiredDamageSteps: DamageStep[];
+  optionalDamageSteps: DamageStep[];
+  damageTasks: DamageTask[];
+  [key: string]: any;
+  constructor(params: any = {}) {
     this.id = params.id || uuid.v4();
     this.class = "System";
     this.type = "System";
@@ -51,10 +126,12 @@ export class System {
     this.upgradeBoard = params.upgradeBoard || null;
     this.upgradeMacros = [];
     params.upgradeMacros &&
-      params.upgradeMacros.forEach(m => this.upgradeMacros.push(new Macro(m)));
+      params.upgradeMacros.forEach((m: Macro) =>
+        this.upgradeMacros.push(new Macro(m)),
+      );
 
     this.power = params.power
-      ? Object.assign({}, params.power)
+      ? {...params.power}
       : {
           power: 5,
           powerLevels: params.extra ? [] : [5],
@@ -66,19 +143,21 @@ export class System {
     this.requiredDamageSteps = [];
     this.optionalDamageSteps = [];
     params.requiredDamageSteps &&
-      params.requiredDamageSteps.forEach(s =>
+      params.requiredDamageSteps.forEach((s: DamageStep) =>
         this.requiredDamageSteps.push(new DamageStep(s)),
       );
     params.optionalDamageSteps &&
-      params.optionalDamageSteps.forEach(s =>
+      params.optionalDamageSteps.forEach((s: DamageStep) =>
         this.optionalDamageSteps.push(new DamageStep(s)),
       );
     // Task-based damage reports
     this.damageTasks = [];
     params.damageTasks &&
-      params.damageTasks.forEach(s => this.damageTasks.push(new DamageTask(s)));
+      params.damageTasks.forEach((s: DamageTask) =>
+        this.damageTasks.push(new DamageTask(s)),
+      );
   }
-  get stealthFactor() {
+  get stealthFactor(): number | null {
     return null;
   }
   set displayName(value) {
@@ -93,36 +172,44 @@ export class System {
   trainingMode() {
     return;
   }
-  updateName({name, displayName, upgradeName}) {
+  updateName({
+    name,
+    displayName,
+    upgradeName,
+  }: {
+    name: string;
+    displayName: string;
+    upgradeName: string;
+  }) {
     if (name || name === "") this.name = name;
     if (displayName || displayName === "") this.displayName = displayName;
     if (upgradeName || upgradeName === "") this.upgradeName = upgradeName;
   }
-  setUpgradeMacros(macros) {
+  setUpgradeMacros(macros: Macro[]) {
     this.upgradeMacros = macros || [];
   }
-  setUpgradeBoard(board) {
+  setUpgradeBoard(board: string) {
     this.upgradeBoard = board;
   }
   upgrade() {
     this.upgraded = true;
   }
-  updateLocations(locations) {
+  updateLocations(locations: string[]) {
     this.locations = locations || [];
   }
-  setPower(powerLevel) {
+  setPower(powerLevel: number) {
     this.power.power = powerLevel;
   }
-  setPowerLevels(levels) {
+  setPowerLevels(levels: number[]) {
     this.power.powerLevels = levels;
     if (this.power.defaultLevel >= levels.length) {
       this.power.defaultLevel = levels.length - 1;
     }
   }
-  setDefaultPowerLevel(level) {
+  setDefaultPowerLevel(level: number) {
     this.power.defaultLevel = level;
   }
-  break(report, destroyed, which = "default") {
+  break(report: string, destroyed: boolean, which: string = "default") {
     this.damage.damaged = true;
     if (destroyed) this.damage.destroyed = true;
     this.damage.report = processReport(report, this);
@@ -130,16 +217,24 @@ export class System {
     this.damage.currentStep = 0;
     this.damage.which = which;
   }
-  addDamageStep({name, args, type}) {
+  addDamageStep({
+    name,
+    args,
+    type,
+  }: {
+    name: string;
+    args: string;
+    type: string;
+  }) {
     this[`${type}DamageSteps`].push(new DamageStep({name, args}));
   }
-  updateDamageStep({id, name, args}) {
+  updateDamageStep({id, name, args}: {id: string; name: string; args: string}) {
     const step =
       this.requiredDamageSteps.find(s => s.id === id) ||
       this.optionalDamageSteps.find(s => s.id === id);
     step.update({name, args});
   }
-  removeDamageStep(stepId) {
+  removeDamageStep(stepId: string) {
     // Check both required and optional
     this.requiredDamageSteps = this.requiredDamageSteps.filter(
       s => s.id !== stepId,
@@ -173,15 +268,15 @@ export class System {
       .map(c => c.position)
       .filter(c => c.indexOf("Security") > -1);
     const stations = sim.stations;
-    const components = stations.reduce((prev, s) => {
-      return prev.concat(s.cards.map(c => c.component));
+    const components = stations.reduce((prev: string[], s: Station) => {
+      return prev.concat(s.cards.map((c: Card) => c.component));
     }, []);
 
     const widgets = stations
-      .reduce((prev, s) => {
+      .reduce((prev: string[], s: Station) => {
         return prev.concat(s.widgets);
       }, [])
-      .filter((c, i, a) => a.indexOf(c) !== i);
+      .filter((c: string, i: number, a: string[]) => a.indexOf(c) !== i);
     const damageSteps = [];
 
     //
@@ -207,7 +302,7 @@ export class System {
     let optionalSteps = defaultOptionalSteps
       .concat(this.optionalDamageSteps)
       .concat(sim.optionalDamageSteps)
-      .filter(step => {
+      .filter((step: DamageStep) => {
         if (step.name === "damageTeam") {
           const output =
             damageTeamCrew.length > 0 &&
@@ -284,7 +379,7 @@ export class System {
     let stepIteration = 0;
 
     // Start with a damage team, if possible
-    if (optionalSteps.find(s => s.name === "damageTeam")) {
+    if (optionalSteps.find((s: DamageStep) => s.name === "damageTeam")) {
       damageSteps.push({name: "damageTeam", args: {}});
       stepIteration = 1;
     }
@@ -302,7 +397,9 @@ export class System {
           if (optionalSteps[stepIndex].name !== "damageTeam") {
             // We need to remove this optional step from the list so it is not repeated;
             // Keep damage teams so we can get a cleanup team.
-            optionalSteps = optionalSteps.filter((_, i) => i !== stepIndex);
+            optionalSteps = optionalSteps.filter(
+              (_: never, i: number) => i !== stepIndex,
+            );
           }
         } else if (
           optionalSteps[stepIndex].name === "damageTeam" &&
@@ -348,13 +445,13 @@ export class System {
     );
     const randomLocationDeck = randomLocation
       ? App.decks.find(d => d.id === randomLocation.deckId)
-      : {};
+      : {number: null};
     const location = room
       ? `${room.name}, Deck ${deck.number}`
       : deck
       ? `Deck ${deck.number}`
       : randomLocation
-      ? `${randomLocation.name}, Deck ${randomLocationDeck.number}`
+      ? `${randomLocation.name}, Deck ${randomLocationDeck?.number}`
       : "None";
     // First create our context object
     const context = Object.assign(
@@ -388,7 +485,7 @@ ${report}
     return damageReport;
   }
 
-  damageReport(report) {
+  damageReport(report: string) {
     this.damage.report = processReport(report, this);
     this.damage.requested = false;
   }
@@ -404,17 +501,17 @@ ${report}
     this.damage.currentStep = 0;
     this.damage.which = null;
   }
-  updateCurrentStep(step) {
+  updateCurrentStep(step: number) {
     this.damage.currentStep = step;
   }
   requestReport() {
     this.damage.requested = true;
   }
-  reactivationCode(code, station) {
+  reactivationCode(code: string, station: string) {
     this.damage.reactivationCode = code;
     this.damage.reactivationRequester = station;
   }
-  reactivationCodeResponse(response) {
+  reactivationCodeResponse(response: string) {
     this.damage.reactivationCode = null;
     this.damage.reactivationRequester = null;
   }
@@ -423,15 +520,15 @@ ${report}
   // the damage tasks system is already? Look at this!
   // It's much simpler. Why didn't I do it this
   // way in the first place? ~A
-  addDamageTask(task) {
+  addDamageTask(task: DamageTask) {
     if (!task || !task.id || this.damageTasks.find(t => t.id === task.id))
       return;
     this.damageTasks.push(new DamageTask(task));
   }
-  updateDamageTask(task) {
+  updateDamageTask(task: DamageTask) {
     this.damageTasks.find(t => t.id === task.id).update(task);
   }
-  removeDamageTask(id) {
+  removeDamageTask(id: String) {
     this.damageTasks = this.damageTasks.filter(t => t.id !== id);
   }
 }
