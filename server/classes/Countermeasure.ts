@@ -214,7 +214,8 @@ export class Countermeasures extends System {
     params.launched?.forEach(l => this.launched.push(new Countermeasure(l)));
   }
   createCountermeasure(slot: string, name: string) {
-    this.slots[slot] = new Countermeasure({id: uuid.v4(), name});
+    const countermeasure = new Countermeasure({id: uuid.v4(), name});
+    this.slots[slot] = countermeasure;
   }
   removeCountermeasure(slot) {
     if (this.slots[slot]) {
@@ -240,7 +241,9 @@ export class Countermeasures extends System {
     this.slots[slot]?.build();
   }
   addCountermeasureModule(slot, moduleType) {
-    this.slots[slot]?.addModule(moduleType);
+    const countermeasure = this.slots[slot];
+    countermeasure?.addModule(moduleType);
+    return countermeasure;
   }
   removeCountermeasureModule(slot, id) {
     this.slots[slot]?.removeModule(id);

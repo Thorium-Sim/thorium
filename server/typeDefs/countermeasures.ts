@@ -76,7 +76,7 @@ const schema = gql`
       id: ID!
       slot: CountermeasureSlot
       name: String
-    ): ID
+    ): Countermeasure
     countermeasuresRemoveCountermeasure(
       id: ID!
       slot: CountermeasureSlot!
@@ -94,18 +94,18 @@ const schema = gql`
       id: ID!
       slot: CountermeasureSlot!
       moduleType: String!
-    ): ID
+    ): Countermeasure
     countermeasuresRemoveModule(
       id: ID!
       slot: CountermeasureSlot!
       moduleId: ID!
-    ): ID
+    ): String
     countermeasuresConfigureModule(
       id: ID!
       slot: CountermeasureSlot!
       moduleId: ID!
       config: JSON!
-    ): ID
+    ): String
   }
   extend type Subscription {
     countermeasuresUpdate(simulatorId: ID!): Countermeasures
