@@ -26,6 +26,7 @@ export const INVENTORY_SUB = gql`
       roomCount {
         room {
           deck {
+            id
             number
           }
           name
@@ -172,7 +173,16 @@ class CargoControl extends Component {
                           {i.roomCount
                             .filter(r => r.count > 0)
                             .map((r, index) => (
-                              <li key={`loc-${index}`}>
+                              <li
+                                key={`loc-${index}`}
+                                className="pointer-cursor"
+                                onClick={() => {
+                                  this.setState({
+                                    fromDeck: r.room.deck.id,
+                                    fromRoom: r.room.id,
+                                  });
+                                }}
+                              >
                                 {r.room.name}, Deck {r.room.deck.number} (
                                 {r.count})
                               </li>
@@ -479,6 +489,7 @@ export const INVENTORY_QUERY = gql`
       roomCount {
         room {
           deck {
+            id
             number
           }
           name
