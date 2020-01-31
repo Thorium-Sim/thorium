@@ -212,7 +212,7 @@ export class Countermeasures extends System {
     this.launched = [];
     params.launched?.forEach(l => this.launched.push(new Countermeasure(l)));
   }
-  addCountermeasure(slot: string, name: string) {
+  createCountermeasure(slot: string, name: string) {
     this.slots[slot] = new Countermeasure({id: uuid.v4(), name});
   }
   removeCountermeasure(slot) {

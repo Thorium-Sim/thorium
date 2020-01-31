@@ -25,7 +25,13 @@ const resolver = {
     _templateUpdate: {
       resolve(rootQuery) {},
       subscribe: withFilter(
-        () => pubsub.asyncIterator("templateUpdate"),
+        (rootValue, args) => {
+          process.nextTick(() => {
+            const templateData = [];
+            pubsub.publish("templateUpdate", templateData);
+          });
+          return pubsub.asyncIterator("templateUpdate");
+        },
         (rootValue, args) => {
           return true;
         },
