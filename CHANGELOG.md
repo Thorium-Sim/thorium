@@ -1,3 +1,26 @@
+## [2.4.1](https://github.com/Thorium-Sim/thorium/compare/v2.4.0...2.4.1) (2020-02-01)
+
+### Bug Fixes
+
+- **Cargo:** Makes it so clicking the room in the "Find Cargo" list selects that
+  room for transferring cargo. Closes
+  [#2733](https://github.com/Thorium-Sim/thorium/issues/2733)
+  ([0f87c56](https://github.com/Thorium-Sim/thorium/commit/0f87c563992db35597b189eef767b971986c4bc1))
+- **Hotkeys:** Fixes issues with hotkeys crashing the core. Closes
+  [#2729](https://github.com/Thorium-Sim/thorium/issues/2729)
+  ([1f81d2b](https://github.com/Thorium-Sim/thorium/commit/1f81d2b32d443c1f8ab3c617bc33007b069abcef))
+- **Kiosk:** Fix an error when trying to enter the kiosk. Closes
+  [#2727](https://github.com/Thorium-Sim/thorium/issues/2727)
+  ([34ac1be](https://github.com/Thorium-Sim/thorium/commit/34ac1be2aec243ee02684aa2261ee8f6b02d620d))
+- **Kiosk:** Makes it possible to start a Kiosk after the server has been
+  started. Closes [#2728](https://github.com/Thorium-Sim/thorium/issues/2728)
+  ([b8af5f0](https://github.com/Thorium-Sim/thorium/commit/b8af5f0d94a7aa452414b823a9c780f4102d7ba7))
+- **Sidebar:** Fixes the login name core not showing up on the sidebar. You
+  might have to reconfigure your sidebar so it is properly using the "Hypercard
+  And Login Name Core". Closes
+  [#2732](https://github.com/Thorium-Sim/thorium/issues/2732)
+  ([dea1794](https://github.com/Thorium-Sim/thorium/commit/dea1794becb426e95bc569afe03f5c21ebcb25f2))
+
 # [2.4.0](https://github.com/Thorium-Sim/thorium/compare/v2.3.0...2.4.0) (2020-01-25)
 
 ### Bug Fixes
