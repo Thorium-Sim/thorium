@@ -1,12 +1,16 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
-import {Countermeasures} from "../classes";
+import {Countermeasures, Simulator} from "../classes";
+
+let delta = 0;
+let time = Date.now();
 
 function processCountermeasures() {
+  delta = Date.now() - time;
   App.flights
     .filter(f => f.running === true)
     .forEach(f => {
-      f.simulators.forEach(s => {
+      f.simulators.forEach((s: Simulator) => {
         const countermeasures: Countermeasures = App.systems.find(
           sys => sys.simulatorId === s.id && sys.class === "Countermeasures",
         );
@@ -33,8 +37,20 @@ function processCountermeasures() {
           },
         );
         // Reduce power on activated countermeasures
+        countermeasures.launched.forEach(countermeasure => {
+          countermeasure.usePower(delta / (5 * 60 * 1000));
+        });
 
-        // Determine whether a countermeasure should be activated or not
+        // At this point, all countermeasure actions should
+        // be handled by the Flight Director. Someday, we'll
+        // build countermeasures into the universal sandbox
+
+        pubsub.publish("countermeasuresUpdate", countermeasures);
       });
     });
+  setTimeout(() => {
+    processCountermeasures();
+  }, 1000);
 }
+
+processCountermeasures();

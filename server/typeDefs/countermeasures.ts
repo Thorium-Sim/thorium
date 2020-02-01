@@ -1,6 +1,7 @@
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import App from "../app";
+import {moduleTypes} from "../classes/Countermeasure";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -70,6 +71,7 @@ const schema = gql`
 
   extend type Query {
     countermeasures(simulatorId: ID!): Countermeasures
+    countermeasureModuleType: [CountermeasureModule]
   }
   extend type Mutation {
     countermeasuresCreateCountermeasure(
@@ -118,6 +120,9 @@ const resolver = {
       return App.systems.find(
         s => s.simulatorId === simulatorId && s.class === "Countermeasures",
       );
+    },
+    countermeasureModuleType() {
+      return moduleTypes;
     },
   },
   Mutation: mutationHelper(schema),

@@ -130,6 +130,14 @@ export const moduleTypes = [
     configurationOptions: [{type: "Trigger", label: "Trigger"}],
   }),
   new CountermeasureModule({
+    name: "Chaff Deploy",
+    description:
+      "Releases a large amount of debris around the countermeasure. This can be used to block incoming explosive projectiles.",
+    resourceRequirements: {carbon: 3, titanium: 1},
+    powerRequirement: 0.25,
+    configurationOptions: [{type: "Trigger", label: "Trigger"}],
+  }),
+  new CountermeasureModule({
     name: "Proximity Trigger",
     description:
       "Detects when ships approach. Other modules can use this to trigger their activation.",
@@ -303,6 +311,15 @@ class Countermeasure {
     // Countermeasures come with half a unit worth of power by default.
     return this.modules.filter(f => f.name === "Battery Cell").length + 0.5;
   }
+  usePower(amount) {
+    if (!this.active) return;
+    if (this.totalPowerUsed >= this.availablePower) {
+      this.active = false;
+      return;
+    }
+    // Multiply the amount by the power usage
+    this.totalPowerUsed += amount * this.powerUsage;
+  }
   build() {
     this.building = true;
   }
@@ -314,12 +331,16 @@ class Countermeasure {
     }
   }
   removeModule(id) {
-    this.modules = this.modules.filter(m => m.id !== id);
+    if (!this.building) {
+      this.modules = this.modules.filter(m => m.id !== id);
+    }
   }
   configureModule(id, config) {
-    const mod = this.modules.find(m => m.id === id);
-    if (mod) {
-      mod.config = config;
+    if (!this.building) {
+      const mod = this.modules.find(m => m.id === id);
+      if (mod) {
+        mod.config = config;
+      }
     }
   }
   activateModule(id) {

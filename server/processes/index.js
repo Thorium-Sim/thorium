@@ -15,3 +15,4 @@ import "./thorium";
 import "./crew";
 import "./tasks";
 import "./crm";
+import "./countermeasures";
