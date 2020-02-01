@@ -35,9 +35,7 @@ module.exports = () => {
     let port =
       process.env.PORT ||
       settings.get("port") ||
-      semver.parse(os.release()).major >= 18
-        ? 443
-        : 4444;
+      (semver.parse(os.release()).major >= 18 ? 443 : 4444);
     let httpOnly =
       process.env.HTTP_ONLY === "true" ||
       settings.get("httpOnly") === "true" ||
@@ -67,6 +65,7 @@ module.exports = () => {
         settings.set("autostart", loadUrl);
       }
       require("./loadPage")(loadUrl, kiosk).catch(err => {
+        console.log(err);
         settings.set("autostart", null);
         bonjour.start();
       });

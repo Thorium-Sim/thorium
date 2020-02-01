@@ -46,7 +46,11 @@ function templateFunc() {
           label: "Kiosk",
           accelerator: "CmdOrCtrl+Alt+K",
           click: function() {
-            if (windows[0] && windows[0].isKiosk()) {
+            if (
+              windows[0] &&
+              !windows[0].isDestroyed() &&
+              windows[0].isKiosk()
+            ) {
               windows.forEach(mainWindow => {
                 if (!mainWindow.isDestroyed()) {
                   mainWindow.setKiosk(false);
@@ -55,9 +59,11 @@ function templateFunc() {
               });
             } else {
               windows.forEach(mainWindow => {
-                mainWindow.setKiosk(true);
+                if (!mainWindow.isDestroyed()) {
+                  mainWindow.setKiosk(true);
 
-                clearMenubar();
+                  clearMenubar();
+                }
               });
             }
           },

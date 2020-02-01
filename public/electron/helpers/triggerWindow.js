@@ -8,7 +8,8 @@ module.exports = function triggerWindow(mainWindow, kiosk) {
     initHotkeys();
   }
   initRemote();
-
+  mainWindow.focus();
+  mainWindow.webContents.focus();
   mainWindow.on("closed", function() {
     app.quit();
   });

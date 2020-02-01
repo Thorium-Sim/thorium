@@ -8,14 +8,14 @@ const categories = [
       "ExtrasCore",
       "RemoteCore",
       "MessagingCore",
-      "LoginNameCore",
+      "HypercardAndLoginNameCore",
       "CoreFeed",
     ],
     style: {
       gridTemplateRows: "100px 400px",
       gridTemplateColumns: "300px 300px 300px 300px",
       gridTemplateAreas: `"ActionsCore ExtrasCore RemoteCore CoreFeed"
-"MessagingCore LoginNameCore LoginNameCore CoreFeed"`,
+"MessagingCore HypercardAndLoginNameCore HypercardAndLoginNameCore CoreFeed"`,
     },
   },
   {

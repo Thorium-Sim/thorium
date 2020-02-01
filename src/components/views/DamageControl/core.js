@@ -307,6 +307,8 @@ class DamageControlCore extends Component {
                 {this.props.data.systems
                   .concat()
                   .sort((a, b) => {
+                    if (!a || !a.power) return 1;
+                    if (!b || b.power) return -1;
                     if (
                       !(
                         (a.power.power || a.power.power === 0) &&
@@ -342,19 +344,19 @@ class DamageControlCore extends Component {
                         {this.systemName(s)} {this.renderEngineSpeed(s)}
                       </td>
                       <td>
-                        {(s.power.power || s.power.power === 0) && (
+                        {(s.power?.power || s.power?.power === 0) && (
                           <InputField
                             prompt="What is the power?"
                             onClick={this.setPower.bind(this, s)}
                           >
-                            {s.power.power}
+                            {s.power?.power}
                           </InputField>
                         )}
                       </td>
                       <td>/</td>
                       <td>
-                        {(s.power.power || s.power.power === 0) && (
-                          <OutputField>{s.power.powerLevels[0]}</OutputField>
+                        {(s.power?.power || s.power?.power === 0) && (
+                          <OutputField>{s.power?.powerLevels[0]}</OutputField>
                         )}
                       </td>
                       <td>
@@ -377,8 +379,8 @@ class DamageControlCore extends Component {
                         </Mutation>
                       </td>
                       <td>
-                        {s.power.powerLevels &&
-                          s.power.powerLevels.length > 0 && (
+                        {s.power?.powerLevels &&
+                          s.power?.powerLevels.length > 0 && (
                             <Button
                               size="sm"
                               color="warning"
