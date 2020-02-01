@@ -124,7 +124,7 @@ const updateReactor = () => {
           const simId = sim.id;
           let oldLevel = App.systems
             .filter(s => s.simulatorId === simId)
-            .filter(s => s.power.power)
+            .filter(s => s?.power?.power)
             .reduce((prev, sys) => {
               return sys.power.powerLevels.length > 0
                 ? prev + sys.power.power
