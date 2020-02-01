@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag.macro";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 import {useQuery, useMutation} from "@apollo/react-hooks";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {DateTime} from "luxon";
 import {Button, ButtonGroup} from "reactstrap";
 import "./style.scss";
@@ -199,7 +199,7 @@ const RecordsCore = ({recordSnippets, simulator, flight: {id: flightId}}) => {
               {new DateTime.fromISO(r.timestamp).toLocaleString(
                 DateTime.TIME_SIMPLE,
               )}{" "}
-              - {titleCase(r.category)}: {r.contents}
+              - {capitalCase(r.category)}: {r.contents}
             </p>
           ))}
       </div>

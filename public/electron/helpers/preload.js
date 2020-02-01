@@ -72,7 +72,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 });
 
 window.cancelAutostart = function cancelAutostart() {
-  console.log("stopping");
   ipcRenderer.send("cancelServerAutostart");
 };
 
@@ -171,6 +170,18 @@ document.addEventListener(
     if (openEl) {
       openEl.addEventListener("click", openBrowser);
     }
+    const kioskEl = document.getElementById("open-client-window");
+    if (kioskEl) {
+      kioskEl.addEventListener("click", function openClient() {
+        console.log("Opening Client");
+        ipcRenderer.send("loadPage", {
+          url: `${printUrl()}/client`,
+          kiosk: false,
+          auto: false,
+        });
+      });
+    }
+
     // Auto Update
     const autoUpdateEl = document.getElementById("auto-update");
     const autoUpdateLabel = document.getElementById("auto-update-label");

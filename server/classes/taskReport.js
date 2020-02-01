@@ -2,7 +2,7 @@ import App from "../app";
 import uuid from "uuid";
 import Task from "./task";
 import taskDefinitions from "../tasks";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {randomFromList} from "./generic/damageReports/constants";
 
 function fullType(type) {
@@ -10,7 +10,7 @@ function fullType(type) {
     return "Damage";
   if (type === "rnd") return "Research & Development";
   if (type === "engineering") return "Engineering";
-  return titleCase(type);
+  return capitalCase(type);
 }
 
 function colloquialType(type) {

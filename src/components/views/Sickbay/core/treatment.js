@@ -3,7 +3,7 @@ import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button} from "helpers/reactstrap";
 import {TypingField} from "../../../generic/core";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import HashtagDefinition from "helpers/hashtagDefinition";
 
 class Treatment extends Component {
@@ -31,11 +31,11 @@ class Treatment extends Component {
       <Fragment>
         <p>
           <strong>Symptoms:</strong>{" "}
-          {chart.symptoms && chart.symptoms.map(titleCase).join(", ")}
+          {chart.symptoms && chart.symptoms.map(capitalCase).join(", ")}
         </p>
         <p>
           <strong>Diagnosis: </strong>{" "}
-          {chart.diagnosis && chart.diagnosis.map(titleCase).join(", ")}
+          {chart.diagnosis && chart.diagnosis.map(capitalCase).join(", ")}
         </p>
         <p className={chart.treatmentRequest ? "text-danger" : ""}>
           <strong>Treatment: </strong>

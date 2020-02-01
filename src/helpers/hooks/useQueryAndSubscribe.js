@@ -1,5 +1,22 @@
 import React from "react";
 import {useQuery, useSubscription} from "@apollo/react-hooks";
+export * from "@apollo/react-hooks";
+
+export function useQuerySub(QueryDocument, SubscriptionDocument, baseOptions) {
+  const {loading, data: queryData, error} = useQuery(
+    QueryDocument,
+    baseOptions,
+  );
+  const {data: subData} = useSubscription(SubscriptionDocument, baseOptions);
+  const queryName =
+    QueryDocument.definitions[0].selectionSet.selections[0].name.value;
+  const subName =
+    SubscriptionDocument.definitions[0].selectionSet.selections[0].name.value;
+
+  const data = subData ? {[queryName]: subData[subName]} : queryData;
+
+  return {loading, data, error};
+}
 
 export default function useQueryAndSubscription(query, subscription) {
   const {query: queryDocument, ...queryRest} = query;

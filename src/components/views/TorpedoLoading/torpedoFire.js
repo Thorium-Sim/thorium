@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import DamageOverlay from "../helpers/DamageOverlay";
 import {Button} from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 class TorpedoFire extends Component {
   state = {enabled: true};
   fireTorpedo = () => {
@@ -44,7 +44,7 @@ class TorpedoFire extends Component {
         <h4 className="text-center">{torpedo.name}</h4>
         <p>
           Type:{" "}
-          {titleCase(
+          {capitalCase(
             (torpedo.inventory.find(t => t.id === torpedo.loaded) || {}).type,
           ) || "None"}
         </p>

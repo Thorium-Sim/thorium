@@ -1,7 +1,7 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 
 App.on("destroyProbe", ({id, probeId}) => {
   const sys = App.systems.find(s => s.id === id);
@@ -328,14 +328,14 @@ App.on("activateProbeEmitter", ({id, probeId}) => {
       simulatorId: sys.simulatorId,
       type: "Probes",
       station: "Core",
-      title: `Science Probe ${titleCase(scienceProbeType.type)}`,
+      title: `Science Probe ${capitalCase(scienceProbeType.type)}`,
       body: `${scienceProbeType.name} at ${Math.round(probe.charge * 100)}%`,
       color: "info",
     });
     App.handleEvent(
       {
         simulatorId: sys.simulatorId,
-        title: `Science Probe ${titleCase(scienceProbeType.type)}`,
+        title: `Science Probe ${capitalCase(scienceProbeType.type)}`,
         component: "ProbeControlCore",
         body: `${scienceProbeType.name} at ${Math.round(probe.charge * 100)}%`,
         color: "info",

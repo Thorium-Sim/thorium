@@ -7,7 +7,7 @@ import {
   Col,
   Input,
 } from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -101,7 +101,7 @@ const LightingCore = ({simulator: {lighting, id}}) => {
               >
                 {["normal", "fade", "oscillate", "strobe", "shake"].map(s => (
                   <option key={s} value={s}>
-                    {titleCase(s)}
+                    {capitalCase(s)}
                   </option>
                 ))}
               </Input>

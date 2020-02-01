@@ -1,5 +1,5 @@
 import React from "react";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {Button} from "helpers/reactstrap";
 import {MosaicContext} from "react-mosaic-component";
 import categories from "../../categories";
@@ -23,7 +23,7 @@ const Picker = ({components, path}) => {
                   size="sm"
                   onClick={() => update(n)}
                 >
-                  {titleCase(n.replace("Core", ""))}
+                  {capitalCase(n.replace("Core", ""))}
                 </Button>
               </div>
             ))}

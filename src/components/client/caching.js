@@ -10,7 +10,9 @@ const Caching = ({client}) => {
           <link
             key={c}
             rel="preload"
-            href={`${window.location.origin}${c}`}
+            href={`${
+              typeof window === undefined ? "" : window.location.origin
+            }${c}`}
             as="video"
           />
         ))}

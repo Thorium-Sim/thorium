@@ -5,7 +5,7 @@ import gql from "graphql-tag.macro";
 import ops from "./ops";
 import Views, {Widgets} from "components/views/index";
 import ExtraMessageGroups from "./messageGroups";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import TrainingConfig from "./trainingConfig";
 import AmbianceConfig from "./ambianceConfig";
 import LayoutList from "components/layouts";
@@ -117,7 +117,7 @@ const ConfigStation = props => {
       );
       sampleName = int ? int.name : sampleName;
     }
-    let name = prompt("What is the card name?", titleCase(sampleName));
+    let name = prompt("What is the card name?", capitalCase(sampleName));
     const cardComponent = e.target.value;
     if (name) {
       const variables = {
@@ -356,7 +356,7 @@ const ConfigStation = props => {
                     checked={station.messageGroups.indexOf(group) > -1}
                     onChange={evt => toggleStationMessageGroup(evt, group)}
                   />{" "}
-                  {titleCase(group)}
+                  {capitalCase(group)}
                 </label>
               </Col>
             ))}
@@ -376,7 +376,7 @@ const ConfigStation = props => {
                     checked={station.widgets.indexOf(widget) > -1}
                     onChange={evt => toggleStationWidget(evt, widget)}
                   />{" "}
-                  {titleCase(widget)}
+                  {capitalCase(widget)}
                 </label>
               ))}
             </Col>

@@ -15,7 +15,7 @@ export default class Coolant extends System {
     this.transfer = params.transfer || null;
   }
   get power() {
-    return {};
+    return null;
   }
   set power(a) {
     return;

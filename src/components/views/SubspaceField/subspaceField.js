@@ -1,6 +1,6 @@
 import React from "react";
 import ChargeBar from "../StealthField/chargeBar";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
@@ -76,7 +76,7 @@ class SubspaceField extends React.Component {
             >
               {action => (
                 <ChargeBar
-                  label={titleCase(s)}
+                  label={capitalCase(s)}
                   levelColor="cyan"
                   color="#0088ff"
                   levelMultiply={100}

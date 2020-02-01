@@ -20,7 +20,7 @@ const defaultSidebar = [
   },
   {label: "Core Feed", component: "CoreFeed"},
   {label: "Messaging", component: "MessagingCore"},
-  {label: "Login Names", component: "LoginNameCore"},
+  {label: "Login Names", component: "HypercardAndLoginNameCore"},
   {
     label: "Tractor Beam",
     component: "TractorBeamCore",

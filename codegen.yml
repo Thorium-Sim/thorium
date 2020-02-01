@@ -1,0 +1,19 @@
+overwrite: true
+schema: "http://localhost:3001/graphql"
+documents: "src/**/*.graphql"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "fragment-matcher"
+      - "./hooksGenerate.js"
+    config:
+      scalars:
+        DateTime: Date
+        JSON: "{[key: string]: any}"
+      gqlImport: graphql-tag.macro
+      withHOC: false
+      withComponent: false
+      withHooks: true
+      reactApolloVersion: 3

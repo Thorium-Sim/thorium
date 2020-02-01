@@ -9,7 +9,7 @@ import {
 import {Mutation} from "react-apollo";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import gql from "graphql-tag.macro";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 
 class Assets extends Component {
   state = {};
@@ -33,7 +33,7 @@ class Assets extends Component {
                   active={selectedAsset === a}
                   onClick={() => this.setState({selectedAsset: a})}
                 >
-                  {titleCase(a)}
+                  {capitalCase(a)}
                 </ListGroupItem>
               ))}
             </ListGroup>

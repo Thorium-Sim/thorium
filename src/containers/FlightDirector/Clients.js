@@ -3,7 +3,7 @@ import {Col, Row, Container} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo, Mutation} from "react-apollo";
 import {DateTime} from "luxon";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {FaBan} from "react-icons/fa";
 
@@ -181,7 +181,7 @@ const ClientRow = ({
               .filter(c => c !== "Interfaces")
               .map(c => (
                 <option key={`${p.id}-station-${c}`} value={c}>
-                  {titleCase(c)}
+                  {capitalCase(c)}
                 </option>
               ))}
             {p.cards.includes("Interfaces") && (

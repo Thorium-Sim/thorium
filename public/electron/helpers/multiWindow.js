@@ -1,4 +1,4 @@
-const {screen, BrowserWindow, ipcMain} = require("electron");
+const {screen, BrowserWindow} = require("electron");
 const path = require("path");
 const {bonjour} = require("./bonjour");
 const uuid = require("uuid");
@@ -25,6 +25,7 @@ module.exports.windows = windows;
 let serverOpen = false;
 let browserCount = 0;
 let serverWindow = null;
+
 function addWindow({main, x, y, loadedUrl, server}) {
   browserCount++;
   const config = {
@@ -87,21 +88,14 @@ function addWindow({main, x, y, loadedUrl, server}) {
       // in an array if your app supports multi windows, this is the time
       // when you should delete the corresponding element.
 
-      windows = windows.filter(w => w.uniqueId !== window.uniqueId);
+      windows.splice(
+        windows.findIndex(w => w.uniqueId === window.uniqueId),
+        1,
+      );
       if (windows.length === 0) {
         bonjour.stop();
       }
     });
-    console.log(
-      url.format({
-        pathname: path.join(
-          __dirname,
-          main ? "../index.html" : "../external.html",
-        ),
-        protocol: "file:",
-        slashes: true,
-      }),
-    );
     window.loadURL(
       loadedUrl
         ? loadedUrl
@@ -114,6 +108,9 @@ function addWindow({main, x, y, loadedUrl, server}) {
             slashes: true,
           }),
     );
+    window.focus();
+    window.webContents.focus();
+
     windows.push(window);
   }
 }

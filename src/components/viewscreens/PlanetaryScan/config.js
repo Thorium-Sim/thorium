@@ -1,6 +1,6 @@
 import React, {Fragment, Component} from "react";
 import {Input, Button} from "helpers/reactstrap";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import ColorPicker from "helpers/colorPicker";
 
@@ -21,7 +21,7 @@ class PlanetaryScanConfig extends Component {
     if (config) {
       return (
         <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
-          <strong>Config {titleCase(config)}</strong>
+          <strong>Config {capitalCase(config)}</strong>
           {config === "clouds" && (
             <Button
               size="sm"

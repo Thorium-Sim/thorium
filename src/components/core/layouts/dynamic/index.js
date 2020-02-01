@@ -11,7 +11,7 @@ import Picker from "./picker";
 import CoreError from "../coreError";
 import "react-mosaic-component/react-mosaic-component.css";
 import "./dynamic.scss";
-import {titleCase} from "change-case";
+import {capitalCase} from "change-case";
 import {FaCodeBranch, FaWindowMaximize, FaTimes} from "react-icons/fa";
 
 const UpdateSelect = ({id, path, mosaic}) => {
@@ -33,11 +33,11 @@ const UpdateSelect = ({id, path, mosaic}) => {
         .sort()
         .map(s => {
           return mosaicComponents(mosaic).indexOf(s) > -1 ? (
-            <option key={s} value={s} disabled>{`${titleCase(
+            <option key={s} value={s} disabled>{`${capitalCase(
               s,
             )}${" - ✅"}`}</option>
           ) : (
-            <option key={s} value={s}>{`${titleCase(s)}`}</option>
+            <option key={s} value={s}>{`${capitalCase(s)}`}</option>
           );
         })}
     </select>
@@ -112,7 +112,7 @@ const Dynamic = props => {
                   path={path}
                 />
               ) : (
-                titleCase(id)
+                capitalCase(id)
               )
             }
             toolbarControls={[
