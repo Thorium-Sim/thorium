@@ -13,7 +13,7 @@ const schema = gql`
   }
 
   type Simulator {
-    id: ID
+    id: ID!
     name: String
     alertlevel: String
     alertLevelLock: Boolean
@@ -290,7 +290,16 @@ const resolver = {
         return returnVal.length > 0 ? returnVal : null;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("simulatorsUpdate"),
+        (rootValue, {simulatorId, template}) => {
+          process.nextTick(() => {
+            let returnVal = App.simulators;
+            if (simulatorId)
+              returnVal = returnVal.filter(s => s.id === simulatorId);
+            if (template) returnVal = returnVal.filter(s => s.template);
+            pubsub.publish("simulatorsUpdate", returnVal);
+          });
+          pubsub.asyncIterator("simulatorsUpdate");
+        },
         (rootValue, {simulatorId, template}) => {
           let returnVal = rootValue;
           if (!returnVal) return false;

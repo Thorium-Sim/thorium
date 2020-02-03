@@ -7,6 +7,7 @@ import Basic from "./basic";
 import Power from "./power";
 import Locations from "./location";
 import Heat from "./heat";
+import Upgrade from "./upgrade";
 import DamageTasks from "../../Simulator/damageTasks";
 
 export const GENERIC_QUERY = gql`
@@ -109,6 +110,13 @@ class GenericConfig extends Component {
                 </Button>
                 <Button
                   size="sm"
+                  active={selected === "Upgrade"}
+                  onClick={() => this.setState({selected: "Upgrade"})}
+                >
+                  Upgrade
+                </Button>
+                <Button
+                  size="sm"
                   active={selected === "Damage Report"}
                   onClick={() => this.setState({selected: "Damage Report"})}
                 >
@@ -140,6 +148,9 @@ class GenericConfig extends Component {
                 )}
                 {selected === "Heat" && (
                   <Heat {...this.props} {...data.system} />
+                )}
+                {selected === "Upgrade" && (
+                  <Upgrade {...this.props} {...data.system} />
                 )}
                 {selected === "System Specific" && (
                   <Fragment>

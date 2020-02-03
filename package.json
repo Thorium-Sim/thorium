@@ -238,7 +238,7 @@
     "preval.macro": "^3.0.0",
     "progress": "^2.0.3",
     "random-words": "^1.1.0",
-    "react-scripts": "^3.3.0",
+    "react-scripts": "3.3.1",
     "request": "^2.88.0",
     "simplex-noise": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.16",

@@ -1,7 +1,6 @@
 import gql from "graphql-tag.macro";
 import * as ApolloReactCommon from "@apollo/client";
 import * as ApolloReactHooks from "@apollo/client";
-import {useQuerySub} from "../helpers/hooks/useQueryAndSubscribe.js";
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -377,6 +376,90 @@ export type CoreLayoutInput = {
   name?: Maybe<Scalars["String"]>;
   config?: Maybe<Scalars["String"]>;
 };
+
+export type Countermeasure = {
+  __typename?: "Countermeasure";
+  id?: Maybe<Scalars["ID"]>;
+  name?: Maybe<Scalars["String"]>;
+  modules?: Maybe<Array<Maybe<CountermeasureModule>>>;
+  locked?: Maybe<Scalars["Boolean"]>;
+  active?: Maybe<Scalars["Boolean"]>;
+  building?: Maybe<Scalars["Boolean"]>;
+  totalPowerUsed?: Maybe<Scalars["Float"]>;
+  readyToLaunch?: Maybe<Scalars["Boolean"]>;
+  powerUsage?: Maybe<Scalars["Float"]>;
+  availablePower?: Maybe<Scalars["Float"]>;
+};
+
+export type CountermeasureConfigOptions = {
+  __typename?: "CountermeasureConfigOptions";
+  type?: Maybe<Scalars["String"]>;
+  label?: Maybe<Scalars["String"]>;
+};
+
+export type CountermeasureModule = {
+  __typename?: "CountermeasureModule";
+  id?: Maybe<Scalars["ID"]>;
+  name?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
+  powerRequirement?: Maybe<Scalars["Int"]>;
+  resourceRequirements?: Maybe<CountermeasureResources>;
+  configurationOptions?: Maybe<Array<Maybe<CountermeasureConfigOptions>>>;
+  config?: Maybe<Scalars["JSON"]>;
+  buildProgress?: Maybe<Scalars["Float"]>;
+  activated?: Maybe<Scalars["Boolean"]>;
+};
+
+export type CountermeasureResources = {
+  __typename?: "CountermeasureResources";
+  copper?: Maybe<Scalars["Int"]>;
+  titanium?: Maybe<Scalars["Int"]>;
+  carbon?: Maybe<Scalars["Int"]>;
+  plastic?: Maybe<Scalars["Int"]>;
+  plasma?: Maybe<Scalars["Int"]>;
+};
+
+export type Countermeasures = SystemInterface & {
+  __typename?: "Countermeasures";
+  id?: Maybe<Scalars["ID"]>;
+  simulatorId?: Maybe<Scalars["ID"]>;
+  class?: Maybe<Scalars["String"]>;
+  type?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  displayName?: Maybe<Scalars["String"]>;
+  upgradeName?: Maybe<Scalars["String"]>;
+  upgraded?: Maybe<Scalars["Boolean"]>;
+  damage?: Maybe<Damage>;
+  power?: Maybe<Power>;
+  stealthFactor?: Maybe<Scalars["Float"]>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  materials?: Maybe<CountermeasureResources>;
+  slots?: Maybe<CountermeasureSlot>;
+  launched?: Maybe<Array<Maybe<Countermeasure>>>;
+};
+
+export type CountermeasureSlot = {
+  __typename?: "CountermeasureSlot";
+  slot1?: Maybe<Countermeasure>;
+  slot2?: Maybe<Countermeasure>;
+  slot3?: Maybe<Countermeasure>;
+  slot4?: Maybe<Countermeasure>;
+  slot5?: Maybe<Countermeasure>;
+  slot6?: Maybe<Countermeasure>;
+  slot7?: Maybe<Countermeasure>;
+  slot8?: Maybe<Countermeasure>;
+};
+
+export enum CountermeasureSlotEnum {
+  Slot1 = "slot1",
+  Slot2 = "slot2",
+  Slot3 = "slot3",
+  Slot4 = "slot4",
+  Slot5 = "slot5",
+  Slot6 = "slot6",
+  Slot7 = "slot7",
+  Slot8 = "slot8",
+}
 
 export type Crew = {
   __typename?: "Crew";
@@ -2051,6 +2134,14 @@ export type Mutation = {
   removeViewscreenPictureInPicture?: Maybe<Scalars["String"]>;
   updateViewscreenAuto?: Maybe<Scalars["String"]>;
   toggleViewscreenVideo?: Maybe<Scalars["String"]>;
+  countermeasuresCreateCountermeasure?: Maybe<Countermeasure>;
+  countermeasuresRemoveCountermeasure?: Maybe<Scalars["String"]>;
+  countermeasuresLaunchCountermeasure?: Maybe<Scalars["String"]>;
+  countermeasuresLaunchUnlockedCountermeasures?: Maybe<Scalars["String"]>;
+  countermeasuresBuildCountermeasure?: Maybe<Scalars["String"]>;
+  countermeasuresAddModule?: Maybe<Countermeasure>;
+  countermeasuresRemoveModule?: Maybe<Scalars["String"]>;
+  countermeasuresConfigureModule?: Maybe<Scalars["String"]>;
 };
 
 export type MutationTriggerActionArgs = {
@@ -5396,6 +5487,50 @@ export type MutationToggleViewscreenVideoArgs = {
   viewscreenId?: Maybe<Scalars["ID"]>;
 };
 
+export type MutationCountermeasuresCreateCountermeasureArgs = {
+  id: Scalars["ID"];
+  slot?: Maybe<CountermeasureSlotEnum>;
+  name?: Maybe<Scalars["String"]>;
+};
+
+export type MutationCountermeasuresRemoveCountermeasureArgs = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+};
+
+export type MutationCountermeasuresLaunchCountermeasureArgs = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+};
+
+export type MutationCountermeasuresLaunchUnlockedCountermeasuresArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationCountermeasuresBuildCountermeasureArgs = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+};
+
+export type MutationCountermeasuresAddModuleArgs = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+  moduleType: Scalars["String"];
+};
+
+export type MutationCountermeasuresRemoveModuleArgs = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+  moduleId: Scalars["ID"];
+};
+
+export type MutationCountermeasuresConfigureModuleArgs = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+  moduleId: Scalars["ID"];
+  config: Scalars["JSON"];
+};
+
 export type NamedObject = {
   __typename?: "NamedObject";
   id?: Maybe<Scalars["ID"]>;
@@ -5843,6 +5978,8 @@ export type Query = {
   transwarp?: Maybe<Array<Maybe<Transwarp>>>;
   triggers?: Maybe<Array<Maybe<Trigger>>>;
   viewscreens?: Maybe<Array<Maybe<Viewscreen>>>;
+  countermeasures?: Maybe<Countermeasures>;
+  countermeasureModuleType?: Maybe<Array<Maybe<CountermeasureModule>>>;
 };
 
 export type QueryActionsArgs = {
@@ -6268,6 +6405,10 @@ export type QueryTriggersArgs = {
 
 export type QueryViewscreensArgs = {
   simulatorId?: Maybe<Scalars["ID"]>;
+};
+
+export type QueryCountermeasuresArgs = {
+  simulatorId: Scalars["ID"];
 };
 
 export type Railgun = SystemInterface & {
@@ -6764,7 +6905,7 @@ export type SignalJammerInput = {
 
 export type Simulator = {
   __typename?: "Simulator";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   alertlevel?: Maybe<Scalars["String"]>;
   alertLevelLock?: Maybe<Scalars["Boolean"]>;
@@ -7078,6 +7219,7 @@ export type Subscription = {
   triggersUpdate?: Maybe<Array<Maybe<Trigger>>>;
   viewscreensUpdate?: Maybe<Array<Maybe<Viewscreen>>>;
   viewscreenVideoToggle?: Maybe<Scalars["Boolean"]>;
+  countermeasuresUpdate?: Maybe<Countermeasures>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -7479,6 +7621,10 @@ export type SubscriptionViewscreensUpdateArgs = {
 export type SubscriptionViewscreenVideoToggleArgs = {
   simulatorId?: Maybe<Scalars["ID"]>;
   viewscreenId?: Maybe<Scalars["ID"]>;
+};
+
+export type SubscriptionCountermeasuresUpdateArgs = {
+  simulatorId: Scalars["ID"];
 };
 
 export type SubspaceField = SystemInterface & {
@@ -8231,6 +8377,159 @@ export type SimulatorUpdateSubscription = {__typename?: "Subscription"} & {
   >;
 };
 
+export type CountermeasureModuleFragment = {
+  __typename?: "CountermeasureModule";
+} & Pick<
+  CountermeasureModule,
+  "id" | "name" | "config" | "buildProgress" | "activated" | "powerRequirement"
+> & {
+    resourceRequirements: Maybe<
+      {__typename?: "CountermeasureResources"} & Pick<
+        CountermeasureResources,
+        "copper" | "titanium" | "carbon" | "plastic" | "plasma"
+      >
+    >;
+    configurationOptions: Maybe<
+      Array<
+        Maybe<
+          {__typename?: "CountermeasureConfigOptions"} & Pick<
+            CountermeasureConfigOptions,
+            "type" | "label"
+          >
+        >
+      >
+    >;
+  };
+
+export type CountermeasureFragment = {__typename?: "Countermeasure"} & Pick<
+  Countermeasure,
+  | "id"
+  | "name"
+  | "locked"
+  | "active"
+  | "building"
+  | "totalPowerUsed"
+  | "readyToLaunch"
+  | "powerUsage"
+  | "availablePower"
+> & {
+    modules: Maybe<
+      Array<
+        Maybe<
+          {__typename?: "CountermeasureModule"} & CountermeasureModuleFragment
+        >
+      >
+    >;
+  };
+
+export type CountermeasuresSubscriptionVariables = {
+  simulatorId: Scalars["ID"];
+};
+
+export type CountermeasuresSubscription = {__typename?: "Subscription"} & {
+  countermeasuresUpdate: Maybe<
+    {__typename?: "Countermeasures"} & Pick<
+      Countermeasures,
+      "id" | "name" | "displayName"
+    > & {
+        damage: Maybe<{__typename?: "Damage"} & Pick<Damage, "damaged">>;
+        power: Maybe<
+          {__typename?: "Power"} & Pick<Power, "power" | "powerLevels">
+        >;
+        materials: Maybe<
+          {__typename?: "CountermeasureResources"} & Pick<
+            CountermeasureResources,
+            "copper" | "titanium" | "carbon" | "plastic" | "plasma"
+          >
+        >;
+        launched: Maybe<
+          Array<Maybe<{__typename?: "Countermeasure"} & CountermeasureFragment>>
+        >;
+        slots: Maybe<
+          {__typename?: "CountermeasureSlot"} & {
+            slot1: Maybe<
+              {__typename?: "Countermeasure"} & CountermeasureFragment
+            >;
+            slot2: Maybe<
+              {__typename?: "Countermeasure"} & CountermeasureFragment
+            >;
+            slot3: Maybe<
+              {__typename?: "Countermeasure"} & CountermeasureFragment
+            >;
+            slot4: Maybe<
+              {__typename?: "Countermeasure"} & CountermeasureFragment
+            >;
+            slot5: Maybe<
+              {__typename?: "Countermeasure"} & CountermeasureFragment
+            >;
+            slot6: Maybe<
+              {__typename?: "Countermeasure"} & CountermeasureFragment
+            >;
+            slot7: Maybe<
+              {__typename?: "Countermeasure"} & CountermeasureFragment
+            >;
+            slot8: Maybe<
+              {__typename?: "Countermeasure"} & CountermeasureFragment
+            >;
+          }
+        >;
+      }
+  >;
+};
+
+export type CountermeasureModulesQueryVariables = {};
+
+export type CountermeasureModulesQuery = {__typename?: "Query"} & {
+  countermeasureModuleType: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "CountermeasureModule"} & Pick<
+          CountermeasureModule,
+          "id" | "name" | "description" | "powerRequirement"
+        > & {
+            resourceRequirements: Maybe<
+              {__typename?: "CountermeasureResources"} & Pick<
+                CountermeasureResources,
+                "copper" | "titanium" | "carbon" | "plastic" | "plasma"
+              >
+            >;
+            configurationOptions: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "CountermeasureConfigOptions"} & Pick<
+                    CountermeasureConfigOptions,
+                    "type" | "label"
+                  >
+                >
+              >
+            >;
+          }
+      >
+    >
+  >;
+};
+
+export type TemplateFragmentFragment = {__typename?: "Template"} & Pick<
+  Template,
+  "id"
+>;
+
+export type TemplateQueryVariables = {
+  simulatorId: Scalars["ID"];
+};
+
+export type TemplateQuery = {__typename?: "Query"} & {
+  _template: Maybe<{__typename?: "Template"} & TemplateFragmentFragment>;
+};
+
+export type TemplateUpdateSubscriptionVariables = {
+  simulatorId: Scalars["ID"];
+};
+
+export type TemplateUpdateSubscription = {__typename?: "Subscription"} & {
+  _templateUpdate: Maybe<{__typename?: "Template"} & TemplateFragmentFragment>;
+};
+
 export interface IntrospectionResultData {
   __schema: {
     types: {
@@ -8327,6 +8626,9 @@ const result: IntrospectionResultData = {
           {
             name: "Transwarp",
           },
+          {
+            name: "Countermeasures",
+          },
         ],
       },
       {
@@ -8392,6 +8694,49 @@ export const SimulatorDataFragmentDoc = gql`
     }
   }
 `;
+export const CountermeasureModuleFragmentDoc = gql`
+  fragment CountermeasureModule on CountermeasureModule {
+    id
+    name
+    config
+    buildProgress
+    activated
+    powerRequirement
+    resourceRequirements {
+      copper
+      titanium
+      carbon
+      plastic
+      plasma
+    }
+    configurationOptions {
+      type
+      label
+    }
+  }
+`;
+export const CountermeasureFragmentDoc = gql`
+  fragment Countermeasure on Countermeasure {
+    id
+    name
+    modules {
+      ...CountermeasureModule
+    }
+    locked
+    active
+    building
+    totalPowerUsed
+    readyToLaunch
+    powerUsage
+    availablePower
+  }
+  ${CountermeasureModuleFragmentDoc}
+`;
+export const TemplateFragmentFragmentDoc = gql`
+  fragment TemplateFragment on Template {
+    id
+  }
+`;
 export const SimulatorDocument = gql`
   query Simulator($simulatorId: ID!) {
     simulators(id: $simulatorId) {
@@ -8438,14 +8783,6 @@ export function useSimulatorLazyQuery(
     SimulatorDocument,
     baseOptions,
   );
-}
-export function useSimulatorQuerySub(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    SimulatorQuery,
-    SimulatorQueryVariables
-  >,
-) {
-  return useQuerySub(SimulatorDocument, SimulatorUpdateDocument, baseOptions);
 }
 export type SimulatorQueryHookResult = ReturnType<typeof useSimulatorQuery>;
 export type SimulatorLazyQueryHookResult = ReturnType<
@@ -8496,4 +8833,257 @@ export type SimulatorUpdateSubscriptionHookResult = ReturnType<
 >;
 export type SimulatorUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<
   SimulatorUpdateSubscription
+>;
+export const CountermeasuresDocument = gql`
+  subscription Countermeasures($simulatorId: ID!) {
+    countermeasuresUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      displayName
+      damage {
+        damaged
+      }
+      power {
+        power
+        powerLevels
+      }
+      materials {
+        copper
+        titanium
+        carbon
+        plastic
+        plasma
+      }
+      launched {
+        ...Countermeasure
+      }
+      slots {
+        slot1 {
+          ...Countermeasure
+        }
+        slot2 {
+          ...Countermeasure
+        }
+        slot3 {
+          ...Countermeasure
+        }
+        slot4 {
+          ...Countermeasure
+        }
+        slot5 {
+          ...Countermeasure
+        }
+        slot6 {
+          ...Countermeasure
+        }
+        slot7 {
+          ...Countermeasure
+        }
+        slot8 {
+          ...Countermeasure
+        }
+      }
+    }
+  }
+  ${CountermeasureFragmentDoc}
+`;
+
+/**
+ * __useCountermeasuresSubscription__
+ *
+ * To run a query within a React component, call `useCountermeasuresSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCountermeasuresSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountermeasuresSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useCountermeasuresSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    CountermeasuresSubscription,
+    CountermeasuresSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    CountermeasuresSubscription,
+    CountermeasuresSubscriptionVariables
+  >(CountermeasuresDocument, baseOptions);
+}
+export type CountermeasuresSubscriptionHookResult = ReturnType<
+  typeof useCountermeasuresSubscription
+>;
+export type CountermeasuresSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  CountermeasuresSubscription
+>;
+export const CountermeasureModulesDocument = gql`
+  query CountermeasureModules {
+    countermeasureModuleType {
+      id
+      name
+      description
+      powerRequirement
+      resourceRequirements {
+        copper
+        titanium
+        carbon
+        plastic
+        plasma
+      }
+      configurationOptions {
+        type
+        label
+      }
+    }
+  }
+`;
+
+/**
+ * __useCountermeasureModulesQuery__
+ *
+ * To run a query within a React component, call `useCountermeasureModulesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCountermeasureModulesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountermeasureModulesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCountermeasureModulesQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    CountermeasureModulesQuery,
+    CountermeasureModulesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    CountermeasureModulesQuery,
+    CountermeasureModulesQueryVariables
+  >(CountermeasureModulesDocument, baseOptions);
+}
+export function useCountermeasureModulesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    CountermeasureModulesQuery,
+    CountermeasureModulesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    CountermeasureModulesQuery,
+    CountermeasureModulesQueryVariables
+  >(CountermeasureModulesDocument, baseOptions);
+}
+export type CountermeasureModulesQueryHookResult = ReturnType<
+  typeof useCountermeasureModulesQuery
+>;
+export type CountermeasureModulesLazyQueryHookResult = ReturnType<
+  typeof useCountermeasureModulesLazyQuery
+>;
+export type CountermeasureModulesQueryResult = ApolloReactCommon.QueryResult<
+  CountermeasureModulesQuery,
+  CountermeasureModulesQueryVariables
+>;
+export const TemplateDocument = gql`
+  query Template($simulatorId: ID!) {
+    _template(simulatorId: $simulatorId) {
+      ...TemplateFragment
+    }
+  }
+  ${TemplateFragmentFragmentDoc}
+`;
+
+/**
+ * __useTemplateQuery__
+ *
+ * To run a query within a React component, call `useTemplateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTemplateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTemplateQuery({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useTemplateQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    TemplateQuery,
+    TemplateQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<TemplateQuery, TemplateQueryVariables>(
+    TemplateDocument,
+    baseOptions,
+  );
+}
+export function useTemplateLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    TemplateQuery,
+    TemplateQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<TemplateQuery, TemplateQueryVariables>(
+    TemplateDocument,
+    baseOptions,
+  );
+}
+export type TemplateQueryHookResult = ReturnType<typeof useTemplateQuery>;
+export type TemplateLazyQueryHookResult = ReturnType<
+  typeof useTemplateLazyQuery
+>;
+export type TemplateQueryResult = ApolloReactCommon.QueryResult<
+  TemplateQuery,
+  TemplateQueryVariables
+>;
+export const TemplateUpdateDocument = gql`
+  subscription TemplateUpdate($simulatorId: ID!) {
+    _templateUpdate(simulatorId: $simulatorId) {
+      ...TemplateFragment
+    }
+  }
+  ${TemplateFragmentFragmentDoc}
+`;
+
+/**
+ * __useTemplateUpdateSubscription__
+ *
+ * To run a query within a React component, call `useTemplateUpdateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTemplateUpdateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTemplateUpdateSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useTemplateUpdateSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    TemplateUpdateSubscription,
+    TemplateUpdateSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    TemplateUpdateSubscription,
+    TemplateUpdateSubscriptionVariables
+  >(TemplateUpdateDocument, baseOptions);
+}
+export type TemplateUpdateSubscriptionHookResult = ReturnType<
+  typeof useTemplateUpdateSubscription
+>;
+export type TemplateUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  TemplateUpdateSubscription
 >;

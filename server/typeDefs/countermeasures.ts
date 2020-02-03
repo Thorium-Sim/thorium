@@ -58,7 +58,7 @@ const schema = gql`
     buildProgress: Float
     activated: Boolean
   }
-  enum CountermeasureSlot {
+  enum CountermeasureSlotEnum {
     slot1
     slot2
     slot3
@@ -68,6 +68,16 @@ const schema = gql`
     slot7
     slot8
   }
+  type CountermeasureSlot {
+    slot1: Countermeasure
+    slot2: Countermeasure
+    slot3: Countermeasure
+    slot4: Countermeasure
+    slot5: Countermeasure
+    slot6: Countermeasure
+    slot7: Countermeasure
+    slot8: Countermeasure
+  }
 
   extend type Query {
     countermeasures(simulatorId: ID!): Countermeasures
@@ -76,35 +86,35 @@ const schema = gql`
   extend type Mutation {
     countermeasuresCreateCountermeasure(
       id: ID!
-      slot: CountermeasureSlot
+      slot: CountermeasureSlotEnum
       name: String
     ): Countermeasure
     countermeasuresRemoveCountermeasure(
       id: ID!
-      slot: CountermeasureSlot!
+      slot: CountermeasureSlotEnum!
     ): String
     countermeasuresLaunchCountermeasure(
       id: ID!
-      slot: CountermeasureSlot!
+      slot: CountermeasureSlotEnum!
     ): String
     countermeasuresLaunchUnlockedCountermeasures(id: ID!): String
     countermeasuresBuildCountermeasure(
       id: ID!
-      slot: CountermeasureSlot!
+      slot: CountermeasureSlotEnum!
     ): String
     countermeasuresAddModule(
       id: ID!
-      slot: CountermeasureSlot!
+      slot: CountermeasureSlotEnum!
       moduleType: String!
     ): Countermeasure
     countermeasuresRemoveModule(
       id: ID!
-      slot: CountermeasureSlot!
+      slot: CountermeasureSlotEnum!
       moduleId: ID!
     ): String
     countermeasuresConfigureModule(
       id: ID!
-      slot: CountermeasureSlot!
+      slot: CountermeasureSlotEnum!
       moduleId: ID!
       config: JSON!
     ): String

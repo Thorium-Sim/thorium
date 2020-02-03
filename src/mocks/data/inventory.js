@@ -6,6 +6,7 @@ export default [
       {
         room: {
           deck: {
+            id: "a0f71bbf-918e-4f45-9e83-37cec2a1d282",
             number: 13,
             __typename: "Deck",
           },
@@ -19,6 +20,7 @@ export default [
       {
         room: {
           deck: {
+            id: "a0f71bbf-918e-4f45-9e83-37cec2a1d282",
             number: 13,
             __typename: "Deck",
           },
@@ -39,6 +41,7 @@ export default [
       {
         room: {
           deck: {
+            id: "a0f71bbf-918e-4f45-9e83-37cec2a1d282",
             number: 13,
             __typename: "Deck",
           },
