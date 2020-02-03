@@ -1,7 +1,7 @@
 import React from "react";
 import Client from "./client";
 import playSound from "../generic/SoundPlayer";
-import {useSimulatorQuerySub} from "generated/graphql";
+import {useSimulatorUpdateSubscription} from "generated/graphql";
 export const SimulatorContext = React.createContext({});
 
 const SimulatorData = props => {
@@ -9,7 +9,7 @@ const SimulatorData = props => {
     station: {name},
     simulator,
   } = props;
-  const {loading, data} = useSimulatorQuerySub({
+  const {loading, data} = useSimulatorUpdateSubscription({
     variables: {simulatorId: simulator.id},
   });
   if (loading || !data) return null;

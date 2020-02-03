@@ -1,6 +1,6 @@
 import {System} from "./generic";
 import {snakeCase} from "change-case";
-import uuid = require("uuid");
+import uuid from "uuid";
 
 class CountermeasureResources {
   copper?: number;
@@ -183,14 +183,14 @@ class CountermeasureSlots {
   slot8: Countermeasure | null;
   [key: string]: Countermeasure | null;
   constructor(params: CountermeasureSlots) {
-    this.slot1 = params.slot1 ? new Countermeasure(params.slot1) : null;
-    this.slot2 = params.slot2 ? new Countermeasure(params.slot2) : null;
-    this.slot3 = params.slot3 ? new Countermeasure(params.slot3) : null;
-    this.slot4 = params.slot4 ? new Countermeasure(params.slot4) : null;
-    this.slot5 = params.slot5 ? new Countermeasure(params.slot5) : null;
-    this.slot6 = params.slot6 ? new Countermeasure(params.slot6) : null;
-    this.slot7 = params.slot7 ? new Countermeasure(params.slot7) : null;
-    this.slot8 = params.slot8 ? new Countermeasure(params.slot8) : null;
+    this.slot1 = params?.slot1 ? new Countermeasure(params.slot1) : null;
+    this.slot2 = params?.slot2 ? new Countermeasure(params.slot2) : null;
+    this.slot3 = params?.slot3 ? new Countermeasure(params.slot3) : null;
+    this.slot4 = params?.slot4 ? new Countermeasure(params.slot4) : null;
+    this.slot5 = params?.slot5 ? new Countermeasure(params.slot5) : null;
+    this.slot6 = params?.slot6 ? new Countermeasure(params.slot6) : null;
+    this.slot7 = params?.slot7 ? new Countermeasure(params.slot7) : null;
+    this.slot8 = params?.slot8 ? new Countermeasure(params.slot8) : null;
   }
 }
 
