@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -288,7 +288,7 @@
     "acorn-loose": "^7.0.0",
     "apollo-cache-hermes": "^0.8.9",
     "apollo-cache-inmemory": "^1.6.3",
-    "apollo-client": "^2.6.4",
+    "apollo-client": "^2.6.8",
     "apollo-link": "^1.2.13",
     "apollo-link-context": "^1.0.19",
     "apollo-link-error": "^1.1.12",
