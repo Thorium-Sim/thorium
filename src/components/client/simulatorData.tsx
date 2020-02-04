@@ -24,7 +24,6 @@ const SimulatorData = (props: SimulatorDataProps) => {
   const {simulatorsUpdate: simulators} = data;
   if (!simulators?.[0]) return <div>No Simulator</div>;
   const station = simulators?.[0]?.stations?.find(s => s?.name === name);
-  console.log(name);
   return (
     <SimulatorContext.Provider value={simulators[0]}>
       <Client

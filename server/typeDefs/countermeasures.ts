@@ -2,6 +2,7 @@ import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import App from "../app";
 import {moduleTypes} from "../classes/Countermeasure";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -51,7 +52,7 @@ const schema = gql`
     id: ID
     name: String
     description: String
-    powerRequirement: Int
+    powerRequirement: Float
     resourceRequirements: CountermeasureResources
     configurationOptions: [CountermeasureConfigOptions]
     config: JSON
@@ -143,14 +144,15 @@ const resolver = {
       },
       subscribe: withFilter(
         (_rootValue, {simulatorId}) => {
+          const id = uuid.v4();
           process.nextTick(() => {
             const data = App.systems.find(
               s =>
                 s.simulatorId === simulatorId && s.class === "Countermeasures",
             );
-            pubsub.publish("countermeasuresUpdate", data);
+            pubsub.publish(id, data);
           });
-          return pubsub.asyncIterator("countermeasuresUpdate");
+          return pubsub.asyncIterator([id, "countermeasuresUpdate"]);
         },
         (rootValue, args) => {
           return rootValue.simulatorId === args.simulatorId;
