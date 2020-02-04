@@ -132,7 +132,7 @@ const resolver = {
       }
       if (power) {
         returnSystems = returnSystems.filter(
-          s => s.power.power || s.power.power === 0,
+          s => s?.power?.power || s?.power?.power === 0,
         );
       }
       if (heat) {
@@ -167,7 +167,7 @@ const resolver = {
         }
         if (power) {
           returnSystems = returnSystems.filter(
-            s => s.power.power || s.power.power === 0,
+            s => s?.power?.power || s?.power?.power === 0,
           );
         }
         if (heat) {
