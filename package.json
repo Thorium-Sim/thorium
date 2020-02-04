@@ -177,7 +177,8 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "npm run bump ${nextRelease.version} && npm run deploy"
+          "prepareCmd": "npm run bump ${nextRelease.version}",
+          "publishCmd": "npm run deploy"
         }
       ],
       [
