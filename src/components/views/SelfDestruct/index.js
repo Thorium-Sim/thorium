@@ -4,7 +4,7 @@ import {Container, Row, Col, Button, Input} from "helpers/reactstrap";
 import {Duration} from "luxon";
 import {withApollo, Mutation} from "react-apollo";
 import Tour from "helpers/tourHelper";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 import "./style.scss";

@@ -4,7 +4,7 @@ import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
 import {Clamps, Ramps, Doors, Legs} from "./graphics";
 import Tour from "helpers/tourHelper";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 import "./style.scss";

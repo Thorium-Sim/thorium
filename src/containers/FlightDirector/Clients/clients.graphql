@@ -1,0 +1,34 @@
+subscription ClientChanged {
+  clientChanged {
+    id
+    label
+    mobile
+    cards
+    flight {
+      id
+      name
+      date
+      simulators {
+        id
+        name
+      }
+    }
+    simulator {
+      id
+      name
+      alertlevel
+      layout
+      interfaces
+      stations {
+        name
+      }
+    }
+    station {
+      name
+    }
+    loginName
+    loginState
+    training
+    soundPlayer
+  }
+}

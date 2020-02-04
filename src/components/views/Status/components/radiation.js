@@ -2,7 +2,7 @@ import React from "react";
 import {Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import Dot from "./dots";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 export const STATUS_RADIATION_SUB = gql`

@@ -1,10 +1,18 @@
 import React from "react";
 import Client from "./client";
 import playSound from "../generic/SoundPlayer";
-import {useSimulatorUpdateSubscription} from "generated/graphql";
+import {
+  useSimulatorUpdateSubscription,
+  Station,
+  Simulator,
+} from "generated/graphql";
 export const SimulatorContext = React.createContext({});
 
-const SimulatorData = props => {
+interface SimulatorDataProps {
+  station: Station;
+  simulator: Simulator;
+}
+const SimulatorData = (props: SimulatorDataProps) => {
   const {
     station: {name},
     simulator,
@@ -13,9 +21,10 @@ const SimulatorData = props => {
     variables: {simulatorId: simulator.id},
   });
   if (loading || !data) return null;
-  const {simulators} = data;
-  if (!simulators[0]) return <div>No Simulator</div>;
-  const station = simulators[0].stations.find(s => s.name === name);
+  const {simulatorsUpdate: simulators} = data;
+  if (!simulators?.[0]) return <div>No Simulator</div>;
+  const station = simulators?.[0]?.stations?.find(s => s?.name === name);
+  console.log(name);
   return (
     <SimulatorContext.Provider value={simulators[0]}>
       <Client

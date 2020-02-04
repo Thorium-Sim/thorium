@@ -1,0 +1,10 @@
+query ClientsInterfacesAndKeyboards {
+  interfaces {
+    id
+    name
+  }
+  keyboard {
+    id
+    name
+  }
+}

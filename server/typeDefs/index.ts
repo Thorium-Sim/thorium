@@ -50,7 +50,7 @@ import shipTypeDefs from "./ship.js";
 import shortRangeCommTypeDefs from "./shortRangeComm.js";
 import sickbayTypeDefs from "./sickbay.js";
 import signalJammerTypeDefs from "./signalJammer.js";
-import simulatorTypeDefs from "./simulator.js";
+import simulatorTypeDefs from "./simulator";
 import softwarePanelsTypeDefs from "./softwarePanels.js";
 import stationTypeDefs from "./station.js";
 import stealthFieldTypeDefs from "./stealthField.js";

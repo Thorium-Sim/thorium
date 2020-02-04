@@ -1,0 +1,15 @@
+subscription FlightsSub {
+  flightsUpdate {
+    id
+    name
+    date
+    running
+    simulators {
+      id
+      name
+      stations {
+        name
+      }
+    }
+  }
+}

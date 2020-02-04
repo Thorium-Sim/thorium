@@ -5,7 +5,7 @@ import gql from "graphql-tag.macro";
 import "./style.scss";
 import Printable from "helpers/printable";
 import useQrCode from "react-qrcode-hook";
-import {useQuery, useMutation} from "@apollo/react-hooks";
+import {useQuery, useMutation} from "@apollo/client";
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();

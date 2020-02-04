@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {SENSORS_OFFSET, distance3d} from "../constants";
 
 const CREATE_CONTACT = gql`

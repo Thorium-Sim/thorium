@@ -6,7 +6,7 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type Flight {
-    id: ID
+    id: ID!
     name: String
     date: String
     running: Boolean
@@ -54,7 +54,7 @@ const schema = gql`
     clientAddExtra(flightId: ID!, simulatorId: ID!, name: String!): String
   }
   extend type Subscription {
-    flightsUpdate(id: ID): [Flight]
+    flightsUpdate(running: Boolean, id: ID): [Flight]
   }
 `;
 
@@ -93,7 +93,19 @@ const resolver = {
         return payload;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("flightsUpdate"),
+        (rootQuery, {running, id}) => {
+          process.nextTick(() => {
+            let returnRes = App.flights;
+            if (running) {
+              returnRes = returnRes.filter(f => f.running);
+            }
+            if (id) {
+              returnRes = returnRes.filter(f => f.id === id);
+            }
+            pubsub.publish("flightsUpdate", returnRes);
+          });
+          return pubsub.asyncIterator("flightsUpdate");
+        },
         rootValue => {
           return !!rootValue;
         },

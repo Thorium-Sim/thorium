@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import gql from "graphql-tag.macro";
 import MosaicConfig from "./mosaicConfig";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 
 const SUB = gql`

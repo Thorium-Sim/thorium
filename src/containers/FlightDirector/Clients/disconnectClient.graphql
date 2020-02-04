@@ -1,0 +1,3 @@
+mutation DisconnectClient($client: ID!) {
+  clientDisconnect(client: $client)
+}
