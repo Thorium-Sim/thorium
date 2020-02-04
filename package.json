@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -177,7 +177,8 @@
       [
         "@semantic-release/exec",
         {
-          "prepareCmd": "npm run bump ${nextRelease.version} && npm run deploy"
+          "prepareCmd": "npm run bump ${nextRelease.version}",
+          "publishCmd": "npm run deploy"
         }
       ],
       [

@@ -1,3 +1,11 @@
+## [2.4.2](https://github.com/Thorium-Sim/thorium/compare/v2.4.1...2.4.2) (2020-02-04)
+
+### Bug Fixes
+
+- **Server:** Fixes an issue where the server crashes regularly. Closes
+  [#2735](https://github.com/Thorium-Sim/thorium/issues/2735)
+  ([0d3a6e6](https://github.com/Thorium-Sim/thorium/commit/0d3a6e6d570374b46d3348a8953795452ef79aae))
+
 ## [2.4.1](https://github.com/Thorium-Sim/thorium/compare/v2.4.0...2.4.1) (2020-02-01)
 
 ### Bug Fixes
