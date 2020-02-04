@@ -1,7 +1,6 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
-import {StationResolver} from "../helpers/stationResolver";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -298,7 +297,7 @@ const resolver = {
             if (template) returnVal = returnVal.filter(s => s.template);
             pubsub.publish("simulatorsUpdate", returnVal);
           });
-          pubsub.asyncIterator("simulatorsUpdate");
+          return pubsub.asyncIterator("simulatorsUpdate");
         },
         (rootValue, {simulatorId, template}) => {
           let returnVal = rootValue;

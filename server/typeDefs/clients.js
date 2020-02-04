@@ -7,7 +7,7 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type Client {
-    id: ID
+    id: ID!
     label: String
     connected: Boolean
     flight: Flight
@@ -192,7 +192,13 @@ const schema = gql`
     handheldScannerResponse(id: ID!, response: String!): String
   }
   extend type Subscription {
-    clientChanged(client: ID, simulatorId: ID, flightId: ID): [Client]
+    clientChanged(
+      all: Boolean
+      clientId: ID
+      simulatorId: ID
+      stationName: String
+      flightId: ID
+    ): [Client]
     keypadsUpdate(simulatorId: ID!): [Keypad]
     keypadUpdate(client: ID!): Keypad
     scannersUpdate(simulatorId: ID!): [Scanner]
@@ -377,11 +383,11 @@ const resolver = {
   Mutation: mutationHelper(schema),
   Subscription: {
     clientChanged: {
-      resolve(data, {client, simulatorId, flightId}) {
+      resolve(data, {clientId, simulatorId, flightId}) {
         const payload = data.filter(c => c.connected);
         if (!payload) return [];
-        if (client) {
-          return payload.filter(c => c.id === client);
+        if (clientId) {
+          return payload.filter(c => c.id === clientId);
         }
         if (simulatorId) {
           return payload.filter(c => c.simulatorId === simulatorId);
@@ -392,7 +398,28 @@ const resolver = {
         return payload.filter(c => c.connected);
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("clientChanged"),
+        (rootQuery, {clientId, stationName, all, simulatorId, flightId}) => {
+          process.nextTick(() => {
+            let returnVal = App.clients;
+            if (clientId) {
+              returnVal = returnVal.filter(c => c.id === clientId);
+            }
+            if (simulatorId) {
+              returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
+            }
+            if (stationName) {
+              returnVal = returnVal.filter(c => c.station === stationName);
+            }
+            if (flightId) {
+              returnVal = returnVal.filter(c => c.flightId === flightId);
+            }
+            pubsub.publish(
+              "clientChanged",
+              returnVal.filter(c => (all ? true : c.connected)),
+            );
+          });
+          return pubsub.asyncIterator("clientChanged");
+        },
         (data, {client, simulatorId, flightId}) => {
           const payload = data.filter(c => c.connected);
           if (client) {

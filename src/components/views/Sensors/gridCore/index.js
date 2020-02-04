@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {Row, Col, Container} from "helpers/reactstrap";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
 import useMeasure from "helpers/hooks/useMeasure";
 import Grid from "../GridDom";

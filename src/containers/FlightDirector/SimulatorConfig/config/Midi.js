@@ -10,7 +10,7 @@ import {
 import {Query, Mutation} from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
-import {useQuery, useMutation} from "@apollo/react-hooks";
+import {useQuery, useMutation} from "@apollo/client";
 import {FaBan} from "react-icons/fa";
 
 function reducer(state, action) {

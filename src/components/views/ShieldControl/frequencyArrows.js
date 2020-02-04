@@ -3,7 +3,7 @@ import {Button} from "helpers/reactstrap";
 import {FaArrowUp, FaArrowDown} from "react-icons/fa";
 import useInterval from "helpers/hooks/useInterval";
 import gql from "graphql-tag";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import styled from "styled-components";
 
 const Flex = styled.div`

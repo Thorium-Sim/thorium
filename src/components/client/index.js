@@ -53,7 +53,7 @@ const QUERY = gql`
 `;
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($clientId: ID!) {
-    clientChanged(client: $clientId) {
+    clientChanged(clientId: $clientId) {
       ...ClientData
     }
   }
@@ -134,7 +134,6 @@ class ClientData extends Component {
   render() {
     const {clientId, registered} = this.state;
     if (!clientId) return null;
-
     return (
       <Query query={QUERY} variables={{clientId}} skip={!registered}>
         {({loading, data, subscribeToMore}) => {
