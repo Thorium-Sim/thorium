@@ -22,6 +22,7 @@ const Template: React.FC<TemplateProps> = props => {
   if (loading || !data) return null;
   const {countermeasuresUpdate: countermeasures} = data;
   if (!countermeasures) return <div>No Template</div>;
+  console.log(countermeasures, moduleTypes);
   return <div className="card-template">Template Card</div>;
 };
 export default Template;

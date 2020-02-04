@@ -2,6 +2,7 @@ import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import {StationResolver} from "../helpers/stationResolver";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -399,6 +400,8 @@ const resolver = {
       },
       subscribe: withFilter(
         (rootQuery, {clientId, stationName, all, simulatorId, flightId}) => {
+          const id = uuid.v4();
+
           process.nextTick(() => {
             let returnVal = App.clients;
             if (clientId) {
@@ -414,16 +417,16 @@ const resolver = {
               returnVal = returnVal.filter(c => c.flightId === flightId);
             }
             pubsub.publish(
-              "clientChanged",
+              id,
               returnVal.filter(c => (all ? true : c.connected)),
             );
           });
-          return pubsub.asyncIterator("clientChanged");
+          return pubsub.asyncIterator([id, "clientChanged"]);
         },
-        (data, {client, simulatorId, flightId}) => {
+        (data, {clientId, simulatorId, flightId}) => {
           const payload = data.filter(c => c.connected);
-          if (client) {
-            return payload.filter(c => c.id === client).length > 0;
+          if (clientId) {
+            return payload.filter(c => c.id === clientId).length > 0;
           }
           if (simulatorId) {
             return (
