@@ -1,3 +1,10 @@
+## [2.4.3](https://github.com/Thorium-Sim/thorium/compare/v2.4.2...2.4.3) (2020-02-05)
+
+### Bug Fixes
+
+- **Power Distribution:** Fixes an issue where power distribution crashes.
+  ([a9677dc](https://github.com/Thorium-Sim/thorium/commit/a9677dce0d285a201610412a5ee1dcc07ee8c442))
+
 ## [2.4.2](https://github.com/Thorium-Sim/thorium/compare/v2.4.1...2.4.2) (2020-02-04)
 
 ### Bug Fixes
