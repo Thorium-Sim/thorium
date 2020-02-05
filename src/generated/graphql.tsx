@@ -389,6 +389,7 @@ export type Countermeasure = {
   readyToLaunch?: Maybe<Scalars["Boolean"]>;
   powerUsage?: Maybe<Scalars["Float"]>;
   availablePower?: Maybe<Scalars["Float"]>;
+  buildPercentage?: Maybe<Scalars["Float"]>;
 };
 
 export type CountermeasureConfigOptions = {
@@ -402,7 +403,7 @@ export type CountermeasureModule = {
   id?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
-  powerRequirement?: Maybe<Scalars["Int"]>;
+  powerRequirement?: Maybe<Scalars["Float"]>;
   resourceRequirements?: Maybe<CountermeasureResources>;
   configurationOptions?: Maybe<Array<Maybe<CountermeasureConfigOptions>>>;
   config?: Maybe<Scalars["JSON"]>;
@@ -8415,6 +8416,7 @@ export type CountermeasureFragment = {__typename?: "Countermeasure"} & Pick<
   | "readyToLaunch"
   | "powerUsage"
   | "availablePower"
+  | "buildPercentage"
 > & {
     modules: Maybe<
       Array<
@@ -8876,6 +8878,7 @@ export const CountermeasureFragmentDoc = gql`
     readyToLaunch
     powerUsage
     availablePower
+    buildPercentage
   }
   ${CountermeasureModuleFragmentDoc}
 `;

@@ -314,6 +314,15 @@ class Countermeasure {
     // Countermeasures come with half a unit worth of power by default.
     return this.modules.filter(f => f.name === "Battery Cell").length + 0.5;
   }
+  get buildPercentage() {
+    if (this.modules.length === 0) return 0;
+    return (
+      this.modules.reduce(
+        (acc, m) => (m.buildProgress ? m.buildProgress + acc : acc),
+        0,
+      ) / this.modules.length
+    );
+  }
   usePower(amount) {
     if (!this.active) return;
     if (this.totalPowerUsed >= this.availablePower) {

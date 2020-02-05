@@ -31,6 +31,7 @@ fragment Countermeasure on Countermeasure {
   readyToLaunch
   powerUsage
   availablePower
+  buildPercentage
 }
 subscription Countermeasures($simulatorId: ID!) {
   countermeasuresUpdate(simulatorId: $simulatorId) {

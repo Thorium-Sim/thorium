@@ -36,6 +36,7 @@ const schema = gql`
     readyToLaunch: Boolean
     powerUsage: Float
     availablePower: Float
+    buildPercentage: Float
   }
   type CountermeasureResources {
     copper: Int

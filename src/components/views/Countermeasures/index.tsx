@@ -23,7 +23,9 @@ const Center: React.FC<CenterProps> = ({slots, slot, setSlot}) => {
             className={`slot ${key} ${slot === key ? "selected" : ""}`}
             style={{
               ["--end-angle" as any]:
-                typeof value !== "string" && value?.building ? "50%" : "0%",
+                typeof value !== "string" && value?.building
+                  ? `${(value.buildPercentage || 0) * 100}%`
+                  : "0%",
             }}
             onClick={() => setSlot(key)}
           ></div>
