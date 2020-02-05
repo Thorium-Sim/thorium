@@ -19,7 +19,7 @@ import {
   useSetSoundPlayerMutation,
 } from "generated/graphql";
 import {History} from "history";
-import {useApolloClient} from "@apollo/client";
+
 const Keyboards = ({keyboards = []}: {keyboards: Keyboard[]}) => {
   if (keyboards.length === 0) {
     return null;

@@ -208,6 +208,8 @@ export class Countermeasures extends System {
   launched: Countermeasure[];
   constructor(params: DefaultParams = {}) {
     super({displayName: "Countermeasures", name: "Countermeasures", ...params});
+    this.class = "Countermeasures";
+    this.type = "Countermeasures";
     this.materials = new CountermeasureResources(
       params.materials || {
         copper: 30,

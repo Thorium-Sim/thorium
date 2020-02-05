@@ -1,4 +1,77 @@
-.card-template {
-  // Stuff goes here
-  display: block;
+.card-countermeasures {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1.5fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 2rem;
+  grid-template-areas:
+    "none center none2"
+    "none center none2";
+  .center {
+    grid-area: center;
+    position: relative;
+    align-items: center;
+
+    .slot {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: yellow;
+      border-radius: 50%;
+      cursor: pointer;
+      --end-angle: 0%;
+      --radial-color: #0f0;
+      &:before {
+        width: 40px;
+        height: 40px;
+        left: -5px;
+        top: -5px;
+        position: absolute;
+        border-radius: 50%;
+        content: "";
+        z-index: -1;
+        background: conic-gradient(
+          var(--radial-color) 0%,
+          var(--radial-color) var(--end-angle),
+          transparent var(--end-angle),
+          transparent 100%
+        );
+      }
+    }
+    .selected {
+      background-color: goldenrod;
+    }
+    .slot1 {
+      left: calc(50% - 15px);
+      top: 0;
+    }
+    .slot2 {
+      left: calc(90% - 15px);
+      top: calc(18% - 15px);
+    }
+    .slot3 {
+      left: 102%;
+      top: calc(50% - 15px);
+    }
+    .slot4 {
+      left: calc(90% - 15px);
+      top: calc(82% - 15px);
+    }
+    .slot5 {
+      left: calc(50% - 15px);
+      bottom: 0%;
+    }
+    .slot6 {
+      left: calc(10% - 15px);
+      top: calc(82% - 15px);
+    }
+    .slot7 {
+      right: 102%;
+      top: calc(50% - 15px);
+    }
+    .slot8 {
+      left: calc(10% - 15px);
+      top: calc(18% - 15px);
+    }
+  }
 }
