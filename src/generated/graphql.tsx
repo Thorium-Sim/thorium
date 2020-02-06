@@ -379,64 +379,64 @@ export type CoreLayoutInput = {
 
 export type Countermeasure = {
   __typename?: "Countermeasure";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  modules?: Maybe<Array<Maybe<CountermeasureModule>>>;
-  locked?: Maybe<Scalars["Boolean"]>;
-  active?: Maybe<Scalars["Boolean"]>;
-  building?: Maybe<Scalars["Boolean"]>;
-  totalPowerUsed?: Maybe<Scalars["Float"]>;
-  readyToLaunch?: Maybe<Scalars["Boolean"]>;
-  powerUsage?: Maybe<Scalars["Float"]>;
-  availablePower?: Maybe<Scalars["Float"]>;
-  buildPercentage?: Maybe<Scalars["Float"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  modules: Array<CountermeasureModule>;
+  locked: Scalars["Boolean"];
+  active: Scalars["Boolean"];
+  building: Scalars["Boolean"];
+  totalPowerUsed: Scalars["Float"];
+  readyToLaunch: Scalars["Boolean"];
+  powerUsage: Scalars["Float"];
+  availablePower: Scalars["Float"];
+  buildPercentage: Scalars["Float"];
 };
 
 export type CountermeasureConfigOptions = {
   __typename?: "CountermeasureConfigOptions";
-  type?: Maybe<Scalars["String"]>;
-  label?: Maybe<Scalars["String"]>;
+  type: Scalars["String"];
+  label: Scalars["String"];
 };
 
 export type CountermeasureModule = {
   __typename?: "CountermeasureModule";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
-  powerRequirement?: Maybe<Scalars["Float"]>;
-  resourceRequirements?: Maybe<CountermeasureResources>;
-  configurationOptions?: Maybe<Array<Maybe<CountermeasureConfigOptions>>>;
-  config?: Maybe<Scalars["JSON"]>;
-  buildProgress?: Maybe<Scalars["Float"]>;
-  activated?: Maybe<Scalars["Boolean"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  description: Scalars["String"];
+  powerRequirement: Scalars["Float"];
+  resourceRequirements: CountermeasureResources;
+  configurationOptions: Array<Maybe<CountermeasureConfigOptions>>;
+  config: Scalars["JSON"];
+  buildProgress: Scalars["Float"];
+  activated: Scalars["Boolean"];
 };
 
 export type CountermeasureResources = {
   __typename?: "CountermeasureResources";
-  copper?: Maybe<Scalars["Int"]>;
-  titanium?: Maybe<Scalars["Int"]>;
-  carbon?: Maybe<Scalars["Int"]>;
-  plastic?: Maybe<Scalars["Int"]>;
-  plasma?: Maybe<Scalars["Int"]>;
+  copper: Scalars["Int"];
+  titanium: Scalars["Int"];
+  carbon: Scalars["Int"];
+  plastic: Scalars["Int"];
+  plasma: Scalars["Int"];
 };
 
 export type Countermeasures = SystemInterface & {
   __typename?: "Countermeasures";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
   class?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
-  name?: Maybe<Scalars["String"]>;
-  displayName?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
+  displayName: Scalars["String"];
   upgradeName?: Maybe<Scalars["String"]>;
   upgraded?: Maybe<Scalars["Boolean"]>;
-  damage?: Maybe<Damage>;
-  power?: Maybe<Power>;
+  damage: Damage;
+  power: Power;
   stealthFactor?: Maybe<Scalars["Float"]>;
   locations?: Maybe<Array<Maybe<Room>>>;
-  materials?: Maybe<CountermeasureResources>;
-  slots?: Maybe<CountermeasureSlot>;
-  launched?: Maybe<Array<Maybe<Countermeasure>>>;
+  materials: CountermeasureResources;
+  slots: CountermeasureSlot;
+  launched: Array<Countermeasure>;
 };
 
 export type CountermeasureSlot = {
@@ -8387,19 +8387,15 @@ export type CountermeasureModuleFragment = {
   CountermeasureModule,
   "id" | "name" | "config" | "buildProgress" | "activated" | "powerRequirement"
 > & {
-    resourceRequirements: Maybe<
-      {__typename?: "CountermeasureResources"} & Pick<
-        CountermeasureResources,
-        "copper" | "titanium" | "carbon" | "plastic" | "plasma"
-      >
+    resourceRequirements: {__typename?: "CountermeasureResources"} & Pick<
+      CountermeasureResources,
+      "copper" | "titanium" | "carbon" | "plastic" | "plasma"
     >;
-    configurationOptions: Maybe<
-      Array<
-        Maybe<
-          {__typename?: "CountermeasureConfigOptions"} & Pick<
-            CountermeasureConfigOptions,
-            "type" | "label"
-          >
+    configurationOptions: Array<
+      Maybe<
+        {__typename?: "CountermeasureConfigOptions"} & Pick<
+          CountermeasureConfigOptions,
+          "type" | "label"
         >
       >
     >;
@@ -8418,12 +8414,8 @@ export type CountermeasureFragment = {__typename?: "Countermeasure"} & Pick<
   | "availablePower"
   | "buildPercentage"
 > & {
-    modules: Maybe<
-      Array<
-        Maybe<
-          {__typename?: "CountermeasureModule"} & CountermeasureModuleFragment
-        >
-      >
+    modules: Array<
+      {__typename?: "CountermeasureModule"} & CountermeasureModuleFragment
     >;
   };
 
@@ -8437,47 +8429,41 @@ export type CountermeasuresSubscription = {__typename?: "Subscription"} & {
       Countermeasures,
       "id" | "name" | "displayName"
     > & {
-        damage: Maybe<{__typename?: "Damage"} & Pick<Damage, "damaged">>;
-        power: Maybe<
-          {__typename?: "Power"} & Pick<Power, "power" | "powerLevels">
+        damage: {__typename?: "Damage"} & Pick<Damage, "damaged">;
+        power: {__typename?: "Power"} & Pick<Power, "power" | "powerLevels">;
+        materials: {__typename?: "CountermeasureResources"} & Pick<
+          CountermeasureResources,
+          "copper" | "titanium" | "carbon" | "plastic" | "plasma"
         >;
-        materials: Maybe<
-          {__typename?: "CountermeasureResources"} & Pick<
-            CountermeasureResources,
-            "copper" | "titanium" | "carbon" | "plastic" | "plasma"
-          >
+        launched: Array<
+          {__typename?: "Countermeasure"} & CountermeasureFragment
         >;
-        launched: Maybe<
-          Array<Maybe<{__typename?: "Countermeasure"} & CountermeasureFragment>>
-        >;
-        slots: Maybe<
-          {__typename?: "CountermeasureSlot"} & {
-            slot1: Maybe<
-              {__typename?: "Countermeasure"} & CountermeasureFragment
-            >;
-            slot2: Maybe<
-              {__typename?: "Countermeasure"} & CountermeasureFragment
-            >;
-            slot3: Maybe<
-              {__typename?: "Countermeasure"} & CountermeasureFragment
-            >;
-            slot4: Maybe<
-              {__typename?: "Countermeasure"} & CountermeasureFragment
-            >;
-            slot5: Maybe<
-              {__typename?: "Countermeasure"} & CountermeasureFragment
-            >;
-            slot6: Maybe<
-              {__typename?: "Countermeasure"} & CountermeasureFragment
-            >;
-            slot7: Maybe<
-              {__typename?: "Countermeasure"} & CountermeasureFragment
-            >;
-            slot8: Maybe<
-              {__typename?: "Countermeasure"} & CountermeasureFragment
-            >;
-          }
-        >;
+        slots: {__typename?: "CountermeasureSlot"} & {
+          slot1: Maybe<
+            {__typename?: "Countermeasure"} & CountermeasureFragment
+          >;
+          slot2: Maybe<
+            {__typename?: "Countermeasure"} & CountermeasureFragment
+          >;
+          slot3: Maybe<
+            {__typename?: "Countermeasure"} & CountermeasureFragment
+          >;
+          slot4: Maybe<
+            {__typename?: "Countermeasure"} & CountermeasureFragment
+          >;
+          slot5: Maybe<
+            {__typename?: "Countermeasure"} & CountermeasureFragment
+          >;
+          slot6: Maybe<
+            {__typename?: "Countermeasure"} & CountermeasureFragment
+          >;
+          slot7: Maybe<
+            {__typename?: "Countermeasure"} & CountermeasureFragment
+          >;
+          slot8: Maybe<
+            {__typename?: "Countermeasure"} & CountermeasureFragment
+          >;
+        };
       }
   >;
 };
@@ -8492,19 +8478,17 @@ export type CountermeasureModulesQuery = {__typename?: "Query"} & {
           CountermeasureModule,
           "id" | "name" | "description" | "powerRequirement"
         > & {
-            resourceRequirements: Maybe<
-              {__typename?: "CountermeasureResources"} & Pick<
-                CountermeasureResources,
-                "copper" | "titanium" | "carbon" | "plastic" | "plasma"
-              >
+            resourceRequirements: {
+              __typename?: "CountermeasureResources";
+            } & Pick<
+              CountermeasureResources,
+              "copper" | "titanium" | "carbon" | "plastic" | "plasma"
             >;
-            configurationOptions: Maybe<
-              Array<
-                Maybe<
-                  {__typename?: "CountermeasureConfigOptions"} & Pick<
-                    CountermeasureConfigOptions,
-                    "type" | "label"
-                  >
+            configurationOptions: Array<
+              Maybe<
+                {__typename?: "CountermeasureConfigOptions"} & Pick<
+                  CountermeasureConfigOptions,
+                  "type" | "label"
                 >
               >
             >;
@@ -8513,6 +8497,16 @@ export type CountermeasureModulesQuery = {__typename?: "Query"} & {
     >
   >;
 };
+
+export type CountermeasureRemoveModuleMutationVariables = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+  moduleId: Scalars["ID"];
+};
+
+export type CountermeasureRemoveModuleMutation = {
+  __typename?: "Mutation";
+} & Pick<Mutation, "countermeasuresRemoveModule">;
 
 export type TemplateFragmentFragment = {__typename?: "Template"} & Pick<
   Template,
@@ -9139,6 +9133,60 @@ export type CountermeasureModulesLazyQueryHookResult = ReturnType<
 export type CountermeasureModulesQueryResult = ApolloReactCommon.QueryResult<
   CountermeasureModulesQuery,
   CountermeasureModulesQueryVariables
+>;
+export const CountermeasureRemoveModuleDocument = gql`
+  mutation CountermeasureRemoveModule(
+    $id: ID!
+    $slot: CountermeasureSlotEnum!
+    $moduleId: ID!
+  ) {
+    countermeasuresRemoveModule(id: $id, slot: $slot, moduleId: $moduleId)
+  }
+`;
+export type CountermeasureRemoveModuleMutationFn = ApolloReactCommon.MutationFunction<
+  CountermeasureRemoveModuleMutation,
+  CountermeasureRemoveModuleMutationVariables
+>;
+
+/**
+ * __useCountermeasureRemoveModuleMutation__
+ *
+ * To run a mutation, you first call `useCountermeasureRemoveModuleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCountermeasureRemoveModuleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [countermeasureRemoveModuleMutation, { data, loading, error }] = useCountermeasureRemoveModuleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      slot: // value for 'slot'
+ *      moduleId: // value for 'moduleId'
+ *   },
+ * });
+ */
+export function useCountermeasureRemoveModuleMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CountermeasureRemoveModuleMutation,
+    CountermeasureRemoveModuleMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    CountermeasureRemoveModuleMutation,
+    CountermeasureRemoveModuleMutationVariables
+  >(CountermeasureRemoveModuleDocument, baseOptions);
+}
+export type CountermeasureRemoveModuleMutationHookResult = ReturnType<
+  typeof useCountermeasureRemoveModuleMutation
+>;
+export type CountermeasureRemoveModuleMutationResult = ApolloReactCommon.MutationResult<
+  CountermeasureRemoveModuleMutation
+>;
+export type CountermeasureRemoveModuleMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CountermeasureRemoveModuleMutation,
+  CountermeasureRemoveModuleMutationVariables
 >;
 export const TemplateDocument = gql`
   query Template($simulatorId: ID!) {

@@ -2,16 +2,87 @@
   height: 100%;
   display: grid;
   grid-template-columns: 1.5fr 1fr 1.5fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 2rem;
+  grid-template-rows: auto 1fr 1fr;
+  padding: 1rem;
+  gap: 4rem;
   grid-template-areas:
-    "none center none2"
-    "none center none2";
+    "countermeasure center none2"
+    "modules center none2"
+    "materials center none2";
+  .countermeasure-control {
+    grid-area: countermeasure;
+  }
+  .modules {
+    grid-area: modules;
+  }
+
+  .module-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+  .module-card {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-right: 1em;
+    padding: 0.5em 1em;
+  }
+  .materials {
+    grid-area: materials;
+
+    .materials-container {
+      display: flex;
+      justify-content: space-between;
+      height: 100%;
+    }
+    --radial-color: #fff000;
+    --end-angle: 0%;
+    .material {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .radial-dial {
+      position: relative;
+      background: conic-gradient(
+        var(--radial-color) 0%,
+        var(--radial-color) var(--end-angle),
+        transparent var(--end-angle),
+        transparent 100%
+      );
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .radial-dial:before {
+      content: attr(data-value) " ";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+      left: 20%;
+      top: 20%;
+      position: absolute;
+      background-color: #333;
+      border-radius: 50%;
+    }
+  }
   .center {
     grid-area: center;
     position: relative;
-    align-items: center;
+    align-self: center;
 
+    .inner-center {
+      position: relative;
+    }
     .slot {
       position: absolute;
       width: 30px;
@@ -43,35 +114,35 @@
     }
     .slot1 {
       left: calc(50% - 15px);
-      top: 0;
+      bottom: 100%;
     }
     .slot2 {
       left: calc(90% - 15px);
-      top: calc(18% - 15px);
+      top: calc(10% - 15px);
     }
     .slot3 {
-      left: 102%;
+      left: 100%;
       top: calc(50% - 15px);
     }
     .slot4 {
       left: calc(90% - 15px);
-      top: calc(82% - 15px);
+      top: calc(90% - 15px);
     }
     .slot5 {
       left: calc(50% - 15px);
-      bottom: 0%;
+      top: 100%;
     }
     .slot6 {
       left: calc(10% - 15px);
-      top: calc(82% - 15px);
+      top: calc(90% - 15px);
     }
     .slot7 {
-      right: 102%;
+      right: 100%;
       top: calc(50% - 15px);
     }
     .slot8 {
       left: calc(10% - 15px);
-      top: calc(18% - 15px);
+      top: calc(10% - 15px);
     }
   }
 }

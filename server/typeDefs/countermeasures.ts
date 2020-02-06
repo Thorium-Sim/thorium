@@ -8,57 +8,57 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type Countermeasures implements SystemInterface {
-    id: ID
+    id: ID!
     simulatorId: ID
     class: String
     type: String
-    name: String
-    displayName: String
+    name: String!
+    displayName: String!
     upgradeName: String
     upgraded: Boolean
-    damage: Damage
-    power: Power
+    damage: Damage!
+    power: Power!
     stealthFactor: Float
     locations: [Room]
 
-    materials: CountermeasureResources
-    slots: CountermeasureSlot
-    launched: [Countermeasure]
+    materials: CountermeasureResources!
+    slots: CountermeasureSlot!
+    launched: [Countermeasure!]!
   }
   type Countermeasure {
-    id: ID
-    name: String
-    modules: [CountermeasureModule]
-    locked: Boolean
-    active: Boolean
-    building: Boolean
-    totalPowerUsed: Float
-    readyToLaunch: Boolean
-    powerUsage: Float
-    availablePower: Float
-    buildPercentage: Float
+    id: ID!
+    name: String!
+    modules: [CountermeasureModule!]!
+    locked: Boolean!
+    active: Boolean!
+    building: Boolean!
+    totalPowerUsed: Float!
+    readyToLaunch: Boolean!
+    powerUsage: Float!
+    availablePower: Float!
+    buildPercentage: Float!
   }
   type CountermeasureResources {
-    copper: Int
-    titanium: Int
-    carbon: Int
-    plastic: Int
-    plasma: Int
+    copper: Int!
+    titanium: Int!
+    carbon: Int!
+    plastic: Int!
+    plasma: Int!
   }
   type CountermeasureConfigOptions {
-    type: String
-    label: String
+    type: String!
+    label: String!
   }
   type CountermeasureModule {
-    id: ID
-    name: String
-    description: String
-    powerRequirement: Float
-    resourceRequirements: CountermeasureResources
-    configurationOptions: [CountermeasureConfigOptions]
-    config: JSON
-    buildProgress: Float
-    activated: Boolean
+    id: ID!
+    name: String!
+    description: String!
+    powerRequirement: Float!
+    resourceRequirements: CountermeasureResources!
+    configurationOptions: [CountermeasureConfigOptions]!
+    config: JSON!
+    buildProgress: Float!
+    activated: Boolean!
   }
   enum CountermeasureSlotEnum {
     slot1
@@ -88,8 +88,8 @@ const schema = gql`
   extend type Mutation {
     countermeasuresCreateCountermeasure(
       id: ID!
-      slot: CountermeasureSlotEnum
-      name: String
+      slot: CountermeasureSlotEnum!
+      name: String!
     ): Countermeasure
     countermeasuresRemoveCountermeasure(
       id: ID!
