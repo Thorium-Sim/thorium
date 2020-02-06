@@ -141,31 +141,22 @@ const resolver = {
   Subscription: {
     countermeasuresUpdate: {
       resolve(rootQuery) {
-        console.log("resolved");
         return rootQuery;
       },
       subscribe: withFilter(
         (_rootValue, {simulatorId}) => {
           const id = uuid.v4();
           process.nextTick(() => {
-            console.log(
-              "Countermeasures",
-              App.systems.filter(s => s.class === "Countermeasures"),
-            );
             const data = App.systems.find(s => {
               return (
                 s.simulatorId === simulatorId && s.class === "Countermeasures"
               );
             });
-            console.log(data);
             pubsub.publish(id, data);
           });
-          console.log("subscribed");
           return pubsub.asyncIterator([id, "countermeasuresUpdate"]);
         },
         (rootValue, args) => {
-          console.log("filtered");
-          console.log(rootValue, args);
           return rootValue?.simulatorId === args?.simulatorId;
         },
       ),
