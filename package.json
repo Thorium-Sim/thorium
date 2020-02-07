@@ -137,11 +137,7 @@
     "mac": {
       "category": "public.app-category.entertainment",
       "icon": "./public/icon.icns",
-      "identity": false,
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements": "public/entitlements.mac.plist",
-      "entitlementsInherit": "public/entitlements.mac.plist"
+      "hardenedRuntime": true
     },
     "win": {
       "target": [
@@ -149,6 +145,9 @@
         "portable"
       ],
       "icon": "./public/icon.ico"
+    },
+    "linux": {
+      "category": "Utility"
     }
   },
   "bin": "./server/index.js",
