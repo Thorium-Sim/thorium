@@ -8936,6 +8936,14 @@ ejs@^3.0.1:
   resolved "https://registry.yarnpkg.com/ejs/-/ejs-3.0.1.tgz#30c8f6ee9948502cc32e85c37a3f8b39b5a614a5"
   integrity sha512-cuIMtJwxvzumSAkqaaoGY/L6Fc/t6YvoP9/VIaK0V/CyqKLEQ8sqODmYfy/cjXEdZ9+OOL8TecbJu+1RsofGDw==
 
+electron-builder-notarize@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/electron-builder-notarize/-/electron-builder-notarize-1.1.2.tgz#29939591c6edf133aadc8450d975e9ce94a15da3"
+  integrity sha512-IiuG+Wwky4EwekhJ9T5t9m00sFL9EGUrkyr4wqivXxrvtWIGAh2WCUwO6e47l3W8nE/4ng0v+VNJhZEIlCu1xg==
+  dependencies:
+    electron-notarize "^0.2.0"
+    read-pkg-up "^7.0.0"
+
 electron-builder@^22.1.0:
   version "22.2.0"
   resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-22.2.0.tgz#f7244b4c92bb5c7323db88f3fb9a22e0ca6cf8a0"
@@ -8969,7 +8977,7 @@ electron-is-dev@^1.1.0:
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-1.1.0.tgz#b15a2a600bdc48a51a857d460e05f15b19a2522c"
   integrity sha512-Z1qA/1oHNowGtSBIcWk0pcLEqYT/j+13xUw/MYOrBUOL4X7VN0i0KCTf5SqyvMPmW5pSPKbo28wkxMxzZ20YnQ==
 
-electron-notarize@^0.2.1:
+electron-notarize@^0.2.0, electron-notarize@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/electron-notarize/-/electron-notarize-0.2.1.tgz#759e8006decae19134f82996ed910db26d9192cc"
   integrity sha512-oZ6/NhKeXmEKNROiFmRNfytqu3cxqC95sjooG7kBXQVEUSQkZnbiAhxVh5jXngL881G197pbwpeVPJyM7Ikmxw==
@@ -11522,6 +11530,7 @@ html-minifier-terser@^5.0.1:
     clean-css "^4.2.1"
     commander "^4.0.0"
     he "^1.2.0"
+    param-case "^2.1.1"
     relateurl "^0.2.7"
     terser "^4.3.9"
 
@@ -11534,6 +11543,7 @@ html-minifier@^3.5.20:
     clean-css "4.2.x"
     commander "2.17.x"
     he "1.2.x"
+    param-case "2.1.x"
     relateurl "0.2.x"
     uglify-js "3.4.x"
 
