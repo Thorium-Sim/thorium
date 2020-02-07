@@ -1,0 +1,13 @@
+mutation CountermeasuresConfigureModule(
+  $id: ID!
+  $slot: CountermeasureSlotEnum!
+  $moduleId: ID!
+  $config: JSON!
+) {
+  countermeasuresConfigureModule(
+    id: $id
+    slot: $slot
+    moduleId: $moduleId
+    config: $config
+  )
+}

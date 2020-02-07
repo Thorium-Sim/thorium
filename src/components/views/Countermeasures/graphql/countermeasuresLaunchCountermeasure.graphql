@@ -1,0 +1,6 @@
+mutation CountermeasuresLaunchCountermeasure(
+  $id: ID!
+  $slot: CountermeasureSlotEnum!
+) {
+  countermeasuresLaunchCountermeasure(id: $id, slot: $slot)
+}

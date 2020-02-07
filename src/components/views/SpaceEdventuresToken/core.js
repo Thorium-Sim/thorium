@@ -280,7 +280,7 @@ This can only be done once per flight and should only be done when the flight is
                           <td>
                             <Mutation
                               mutation={gql`
-                                mutation RemoveClient(
+                                mutation RemoveSpaceEdVenturesClient(
                                   $flightId: ID!
                                   $clientId: ID!
                                 ) {

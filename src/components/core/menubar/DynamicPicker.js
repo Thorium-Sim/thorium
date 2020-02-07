@@ -14,7 +14,7 @@ const SUB = gql`
   }
 `;
 const CORE_LAYOUTS = gql`
-  query CoreLayouts {
+  query PickerCoreLayouts {
     coreLayouts {
       id
       name

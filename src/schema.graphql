@@ -11,6 +11,7 @@ input ActionInput {
   args: String
   delay: Int
   noCancelOnReset: Boolean
+  needsConfig: Boolean
 }
 
 type Ambiance {
@@ -56,6 +57,13 @@ type Card {
   name: String
   component: String
   hidden: Boolean
+  assigned: Boolean
+  newStation: Boolean
+}
+
+input CardInput {
+  name: String
+  component: String
 }
 
 enum ChannelModeMessageType {
@@ -100,7 +108,7 @@ input ChartInput {
 }
 
 type Client {
-  id: ID
+  id: ID!
   label: String
   connected: Boolean
   flight: Flight
@@ -119,6 +127,7 @@ type Client {
   cracked: Boolean
   commandLineOutput: [String]
   commandLineFeedback: [CommandLineFeedback]
+  currentCard: Card
   token: String
   email: String
   mobile: Boolean
@@ -324,6 +333,85 @@ input CoreLayoutInput {
   id: ID
   name: String
   config: String
+}
+
+type Countermeasure {
+  id: ID!
+  name: String!
+  modules: [CountermeasureModule!]!
+  locked: Boolean!
+  active: Boolean!
+  building: Boolean!
+  totalPowerUsed: Float!
+  readyToLaunch: Boolean!
+  powerUsage: Float!
+  availablePower: Float!
+  buildPercentage: Float!
+}
+
+type CountermeasureConfigOptions {
+  type: String!
+  label: String!
+}
+
+type CountermeasureModule {
+  id: ID!
+  name: String!
+  description: String!
+  powerRequirement: Float!
+  resourceRequirements: CountermeasureResources!
+  configurationOptions: [CountermeasureConfigOptions]!
+  config: JSON!
+  buildProgress: Float!
+  activated: Boolean!
+}
+
+type CountermeasureResources {
+  copper: Int!
+  titanium: Int!
+  carbon: Int!
+  plastic: Int!
+  plasma: Int!
+}
+
+type Countermeasures implements SystemInterface {
+  id: ID!
+  simulatorId: ID
+  class: String
+  type: String
+  name: String!
+  displayName: String!
+  upgradeName: String
+  upgraded: Boolean
+  damage: Damage!
+  power: Power!
+  stealthFactor: Float
+  locations: [Room]
+  materials: CountermeasureResources!
+  slots: CountermeasureSlot!
+  launched: [Countermeasure!]!
+}
+
+type CountermeasureSlot {
+  slot1: Countermeasure
+  slot2: Countermeasure
+  slot3: Countermeasure
+  slot4: Countermeasure
+  slot5: Countermeasure
+  slot6: Countermeasure
+  slot7: Countermeasure
+  slot8: Countermeasure
+}
+
+enum CountermeasureSlotEnum {
+  slot1
+  slot2
+  slot3
+  slot4
+  slot5
+  slot6
+  slot7
+  slot8
 }
 
 type Crew {
@@ -685,7 +773,7 @@ type ExternalSimulator {
 }
 
 type Flight {
-  id: ID
+  id: ID!
   name: String
   date: String
   running: Boolean
@@ -1190,6 +1278,99 @@ type Mission {
   aux: Boolean
 }
 
+type Motu {
+  id: ID
+  offline: Boolean
+  address: String
+  inputs: [MotuInput]
+  outputs: [MotuOutput]
+  sends: [MotuPatch]
+}
+
+type MotuChannel {
+  id: ID
+  name: String
+  chan: Int
+  type: MotuType
+  fader: Float
+  mute: Int
+}
+
+input MotuChannelInput {
+  fader: Float
+  mute: Int
+}
+
+type MotuComp {
+  enable: Float
+  release: Float
+  makeup: Float
+  trim: Float
+  peak: Float
+  attack: Float
+  ratio: Float
+  threshold: Float
+}
+
+type MotuEQ {
+  enable: Int
+  freq: Float
+  gain: Float
+  bw: Float
+  mode: Int
+}
+
+type MotuGate {
+  release: Float
+  enable: Int
+  attack: Float
+  threshold: Float
+}
+
+type MotuInput {
+  id: ID
+  name: String
+  chan: Int
+  type: MotuType
+  gate: MotuGate
+  comp: MotuComp
+  fader: Float
+  mute: Int
+  pan: Float
+  highshelf: MotuEQ
+  mid1: MotuEQ
+  mid2: MotuEQ
+  lowshelf: MotuEQ
+}
+
+type MotuOutput {
+  id: ID
+  name: String
+  chan: Int
+  type: MotuType
+  prefader: Float
+  fader: Float
+  mute: Int
+  panner: Float
+  highshelf: MotuEQ
+  mid1: MotuEQ
+  mid2: MotuEQ
+  lowshelf: MotuEQ
+}
+
+type MotuPatch {
+  input: MotuInput
+  output: MotuOutput
+  send: Float
+  mute: Boolean
+}
+
+enum MotuType {
+  chan
+  aux
+  group
+}
+
 type Mutation {
   _empty: String
 
@@ -1306,6 +1487,7 @@ type Mutation {
   ): String
   setClientOverlay(id: ID!, overlay: Boolean!): String
   clientCrack(id: ID!, crack: Boolean!): String
+  clientSetCard(id: ID!, card: String!): String
   setKeypadCode(id: ID!, code: [Int]): String
   setKeypadEnteredCode(id: ID!, code: [Int!]): String
   setKeypadHint(id: ID!, hint: Boolean!): String
@@ -1756,6 +1938,18 @@ type Mutation {
   """
   startAuxTimeline(simulatorId: ID!, missionId: ID!): ID
   setAuxTimelineStep(simulatorId: ID!, timelineId: ID!, step: Int!): String
+  motuAdd(address: String!): String
+  motuRemove(id: ID!): String
+
+  """
+  Macro: MOTU: Update Channel
+  """
+  motuUpdateChannel(id: ID!, channelId: ID!, channel: MotuChannelInput!): String
+
+  """
+  Macro: MOTU: (Un)Mute connection from Input to Output
+  """
+  motuSetSendMute(id: ID!, inputId: ID!, outputId: ID!, mute: Boolean!): String
   navCalculateCourse(id: ID!, destination: String!): String
   navCancelCalculation(id: ID!): String
 
@@ -1862,6 +2056,10 @@ type Mutation {
   ): String
   setDilithiumStressRate(id: ID!, rate: Float!): String
   reactorRequireBalance(id: ID!, balance: Boolean!): String
+
+  """
+  Macro: Records: Create Ship Record
+  """
   recordsCreate(
     simulatorId: ID!
     contents: String!
@@ -1885,6 +2083,30 @@ type Mutation {
     recordId: ID!
   ): String
   recordsDeleteRecord(simulatorId: ID!, recordId: ID!): String
+
+  """
+  Macro: Records: Generate Records Snippet
+  """
+  recordsGenerateRecords(
+    simulatorId: ID!
+    name: String!
+    count: Int
+    visible: Boolean
+  ): RecordSnippet
+
+  """
+  Macro: Records: Add Record to Snippet
+  """
+  recordsCreateOnSnippet(
+    simulatorId: ID!
+    snippetId: ID
+    snippetName: String
+    contents: String!
+    timestamp: String
+    category: String = "manual"
+  ): RecordSnippet
+  recordsShowSnippet(simulatorId: ID!, snippetId: ID!): RecordSnippet
+  recordsHideSnippet(simulatorId: ID!, snippetId: ID!): RecordSnippet
   recordTemplateCreateSnippet(name: String!): String
   recordTemplateAddToSnippet(
     snippetId: ID!
@@ -2117,6 +2339,7 @@ type Mutation {
   """
   signalJammerSignals(id: ID!, type: String!, signals: Int!): String
   fluxSignalJammer(id: ID): String
+  setSignalJammerSensorsInterference(id: ID!, interference: Boolean!): String
   createSimulator(name: String!, template: Boolean): String
   removeSimulator(simulatorId: ID!): String
   triggerMacros(simulatorId: ID!, macros: [MacroInput]!): String
@@ -2161,6 +2384,12 @@ type Mutation {
   Macro: Station: Unhide Card
   """
   unhideSimulatorCard(simulatorId: ID!, cardName: String!): String
+  stationAssignCard(
+    simulatorId: ID!
+    assignedToStation: String!
+    cardName: String!
+  ): String
+  stationUnassignCard(simulatorId: ID!, cardName: String!): String
 
   """
   Macro: Simulator: Flip Simulator
@@ -2648,6 +2877,40 @@ type Mutation {
   ): String
   updateViewscreenAuto(id: ID!, auto: Boolean!): String
   toggleViewscreenVideo(simulatorId: ID, viewscreenId: ID): String
+  countermeasuresCreateCountermeasure(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+    name: String!
+  ): Countermeasure
+  countermeasuresRemoveCountermeasure(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+  ): String
+  countermeasuresLaunchCountermeasure(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+  ): String
+  countermeasuresLaunchUnlockedCountermeasures(id: ID!): String
+  countermeasuresBuildCountermeasure(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+  ): String
+  countermeasuresAddModule(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+    moduleType: String!
+  ): Countermeasure
+  countermeasuresRemoveModule(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+    moduleId: ID!
+  ): String
+  countermeasuresConfigureModule(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+    moduleId: ID!
+    config: JSON!
+  ): String
 }
 
 type NamedObject {
@@ -3024,6 +3287,10 @@ type Query {
   midiSets(simulatorId: ID): [MidiSet]
   missions(id: ID, aux: Boolean): [Mission]
   auxTimelines(simulatorId: ID!): [TimelineInstance]
+  motus: [Motu]
+  motu(id: ID!): Motu
+  motuChannel(id: ID!, channelId: ID!): MotuChannel
+  motuSend(id: ID!, inputId: ID!, outputId: ID!): MotuPatch
   navigation(simulatorId: ID): [Navigation]
   navigate(id: ID!): Navigation
   objective(simulatorId: ID): [Objective]
@@ -3036,7 +3303,7 @@ type Query {
   railgun(simulatorId: ID): [Railgun]
   reactors(simulatorId: ID, model: String): [Reactor]
   reactor(id: ID!): Reactor
-  recordSnippets(simulatorId: ID!): [RecordSnippet]
+  recordSnippets(simulatorId: ID!, visible: Boolean): [RecordSnippet]
   recordTemplates: [RecordSnippet]
   rooms(simulatorId: ID, deck: ID, name: String, role: RoomRoles): [Room]
   sensors(simulatorId: ID, domain: String): [Sensors]
@@ -3099,6 +3366,8 @@ type Query {
   transwarp(simulatorId: ID): [Transwarp]
   triggers(simulatorId: ID): [Trigger]
   viewscreens(simulatorId: ID): [Viewscreen]
+  countermeasures(simulatorId: ID!): Countermeasures
+  countermeasureModuleType: [CountermeasureModule]
 }
 
 type Railgun implements SystemInterface {
@@ -3189,6 +3458,7 @@ type RecordSnippet {
   sensorContactId: ID
   name: String
   type: RecordSnippetType
+  visible: Boolean
   launched: Boolean
   records: [RecordEntry]
   templateRecords: [RecordEntry]
@@ -3197,6 +3467,7 @@ type RecordSnippet {
 enum RecordSnippetType {
   normal
   buoy
+  external
 }
 
 type RemoteAccessCode {
@@ -3309,6 +3580,7 @@ type SensorContact {
   destroyed: Boolean
   forceUpdate: Boolean
   targeted: Boolean
+  selected: Boolean
   locked: Boolean
   disabled: Boolean
   hostile: Boolean
@@ -3549,6 +3821,7 @@ type SignalJammer implements SystemInterface {
   damage: Damage
   power: Power
   stealthFactor: Float
+  addsSensorsInterference: Boolean
   active: Boolean
   level: Float
   strength: Float
@@ -3564,7 +3837,7 @@ input SignalJammerInput {
 }
 
 type Simulator {
-  id: ID
+  id: ID!
   name: String
   alertlevel: String
   alertLevelLock: Boolean
@@ -3763,7 +4036,13 @@ type Subscription {
   _empty: String
   actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
   assetFolderChange: [AssetFolder]
-  clientChanged(client: ID, simulatorId: ID, flightId: ID): [Client]
+  clientChanged(
+    all: Boolean
+    clientId: ID
+    simulatorId: ID
+    stationName: String
+    flightId: ID
+  ): [Client]
   keypadsUpdate(simulatorId: ID!): [Keypad]
   keypadUpdate(client: ID!): Keypad
   scannersUpdate(simulatorId: ID!): [Scanner]
@@ -3793,7 +4072,7 @@ type Subscription {
   heatChange(simulatorId: ID): Engine
   engineUpdate(simulatorId: ID): Engine
   exocompsUpdate(simulatorId: ID!): [Exocomp]
-  flightsUpdate(id: ID): [Flight]
+  flightsUpdate(running: Boolean, id: ID): [Flight]
   googleSheetsUpdate(simulatorId: ID): [GoogleSheets]
   interfaceUpdate(simulatorId: ID): [Interface]
   internalCommUpdate(simulatorId: ID): [InternalComm]
@@ -3814,6 +4093,10 @@ type Subscription {
   midiSets(simulatorId: ID): [MidiSet]
   missionsUpdate(missionId: ID): [Mission]
   auxTimelinesUpdate(simulatorId: ID!): [TimelineInstance]
+  motus: [Motu]
+  motu(id: ID!): Motu
+  motuChannel(id: ID!, channelId: ID!): MotuChannel
+  motuSend(id: ID!, inputId: ID!, outputId: ID!): MotuPatch
   navigationUpdate(simulatorId: ID): [Navigation]
   objectiveUpdate(simulatorId: ID): [Objective]
   officerLogsUpdate(clientId: ID, flightId: ID!): [Log]
@@ -3823,7 +4106,7 @@ type Subscription {
   scienceProbeEmitter(simulatorId: ID!): ScienceProbeEvent
   railgunUpdate(simulatorId: ID): [Railgun]
   reactorUpdate(simulatorId: ID): [Reactor]
-  recordSnippetsUpdate(simulatorId: ID): [RecordSnippet]
+  recordSnippetsUpdate(simulatorId: ID, visible: Boolean): [RecordSnippet]
   recordTemplatesUpdate: [RecordSnippet]
   roomsUpdate(simulatorId: ID!, role: RoomRoles): [Room]
   sensorsUpdate(simulatorId: ID, domain: String): [Sensors]
@@ -3878,6 +4161,7 @@ type Subscription {
   triggersUpdate(simulatorId: ID): [Trigger]
   viewscreensUpdate(simulatorId: ID): [Viewscreen]
   viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
+  countermeasuresUpdate(simulatorId: ID!): Countermeasures
 }
 
 type SubspaceField implements SystemInterface {
@@ -4263,6 +4547,8 @@ type Thorium {
   addedTaskTemplates: Boolean
   spaceEdventuresToken: String
   spaceEdventuresCenter: SpaceEdventuresCenter
+  port: Int
+  httpOnly: Boolean
 }
 
 type Thruster implements SystemInterface {
