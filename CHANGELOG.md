@@ -1,3 +1,10 @@
+## [2.4.9](https://github.com/Thorium-Sim/thorium/compare/2.4.8...2.4.9) (2020-02-08)
+
+### Bug Fixes
+
+- **Build:** Enable deploy to Snapcraft
+  ([3f77f3c](https://github.com/Thorium-Sim/thorium/commit/3f77f3c6e6900816e8e6b8ec80f7a8771bbea78f))
+
 ## [2.4.8](https://github.com/Thorium-Sim/thorium/compare/2.4.7...2.4.8) (2020-02-08)
 
 ### Bug Fixes
