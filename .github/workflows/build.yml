@@ -28,7 +28,7 @@ jobs:
         # Import Apple API key for app notarization on macOS
         run: |
           mkdir -p ~/private_keys/
-          echo '${{ secrets.api_key }}' > ~/private_keys/AuthKey_${{ secrets.api_key_id }}.p8
+          echo '${{ secrets.api_key }}' > ~/private_keys/.${{ secrets.api_key_id }}.p8
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
@@ -36,7 +36,7 @@ jobs:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
-          build_script_name: "list"
+          build_script_name: "semantic-release"
           mac_certs: ${{ secrets.mac_cert }}
           mac_certs_password: ${{ secrets.mac_cert_password }}
 
