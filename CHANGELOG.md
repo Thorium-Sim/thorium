@@ -1,3 +1,10 @@
+## [2.4.6](https://github.com/Thorium-Sim/thorium/compare/2.4.5...2.4.6) (2020-02-08)
+
+### Bug Fixes
+
+- **Auth Key:** Auth Key
+  ([58fd975](https://github.com/Thorium-Sim/thorium/commit/58fd9757e8a8348515f0d8fbc7eb0d4d8398304a))
+
 ## [2.4.5](https://github.com/Thorium-Sim/thorium/compare/2.4.4...2.4.5) (2020-02-08)
 
 ### Bug Fixes
