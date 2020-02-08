@@ -35,7 +35,7 @@
     "build:ncc": "ncc build -o build/server -s tempServer/server/index.js",
     "build:env": "node ./scripts/build-env.js",
     "build:copy": "cp package.json build/package.json",
-    "list": "npm run build && ls",
+    "list": "npm run build && ls build",
     "generate:babel": "babel -d tempServer --extensions \".ts,.js\" server",
     "generate:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
     "generate:electron": "electron-builder -mwl",
