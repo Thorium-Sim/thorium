@@ -40,3 +40,4 @@ jobs:
           # To have this workflow trigger the release workflow
           # We need a personal access token.
           GH_TOKEN: ${{ secrets.gh_pat }}
+          GITHUB_TOKEN: ${{ secrets.gh_pat }}
