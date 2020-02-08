@@ -1,3 +1,10 @@
+## [2.4.4](https://github.com/Thorium-Sim/thorium/compare/2.4.3...2.4.4) (2020-02-08)
+
+### Bug Fixes
+
+- **QOTD:** Adds more quotes of the day. Also improves the deploy pipeline.
+  ([44a62e1](https://github.com/Thorium-Sim/thorium/commit/44a62e1cfb45f76c5d79c510afec943992f38437))
+
 ## [2.4.3](https://github.com/Thorium-Sim/thorium/compare/v2.4.2...2.4.3) (2020-02-05)
 
 ### Bug Fixes
