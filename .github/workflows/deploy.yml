@@ -1,8 +1,6 @@
 name: Build/release
 
-on:
-  repository_dispatch:
-    types: [deploy]
+on: repository_dispatch
 
 jobs:
   release:
