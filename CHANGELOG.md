@@ -1,3 +1,20 @@
+## [2.4.4](https://github.com/Thorium-Sim/thorium/compare/2.4.3...2.4.4) (2020-02-08)
+
+### Bug Fixes
+
+- **Build:** Another fix.
+  ([ad2af31](https://github.com/Thorium-Sim/thorium/commit/ad2af3192cdcca92babba65bbc4d24a7a9f5a606))
+- **Build:** Build process fix.
+  ([cf2f24d](https://github.com/Thorium-Sim/thorium/commit/cf2f24d961e69f0f5f3713c528cce51079c20163))
+- **Build:** Fixes the build process.
+  ([ac6d0eb](https://github.com/Thorium-Sim/thorium/commit/ac6d0ebe8766a5e1e0b73a75cd448f0b96af4354))
+- **Build:** More work on getting the build done properly.
+  ([c224615](https://github.com/Thorium-Sim/thorium/commit/c22461558b3f8aa835930f358a542a82f71a4d56))
+- **Build:** Try out a debug session.
+  ([391fa75](https://github.com/Thorium-Sim/thorium/commit/391fa75e4b5d0b22360e40d7531300ce0006a549))
+- **QOTD:** Adds more quotes of the day. Also improves the deploy pipeline.
+  ([44a62e1](https://github.com/Thorium-Sim/thorium/commit/44a62e1cfb45f76c5d79c510afec943992f38437))
+
 ## [2.4.6](https://github.com/Thorium-Sim/thorium/compare/2.4.5...2.4.6) (2020-02-08)
 
 ### Bug Fixes
