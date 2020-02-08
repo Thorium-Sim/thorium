@@ -196,7 +196,7 @@
     "styledComponents": {}
   },
   "dependencies": {
-    "@apollo/client": "^3.0.0-beta.29",
+    "@apollo/client": "^3.0.0-beta.33",
     "@babel/polyfill": "^7.6.0",
     "@sentry/node": "^5.7.1",
     "apollo-server-express": "^2.9.6",
