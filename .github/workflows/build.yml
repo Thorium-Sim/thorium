@@ -35,7 +35,7 @@ jobs:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
-          build_script_name: "semantic-release"
+          build_script_name: "list"
           mac_certs: ${{ secrets.mac_cert }}
           mac_certs_password: ${{ secrets.mac_cert_password }}
 
