@@ -1,3 +1,10 @@
+## [2.4.8](https://github.com/Thorium-Sim/thorium/compare/2.4.7...2.4.8) (2020-02-08)
+
+### Bug Fixes
+
+- **fix:** Semantic Release
+  ([dab6492](https://github.com/Thorium-Sim/thorium/commit/dab6492d5c2e5fc7cf33c796377667b28efa3701))
+
 ## [2.4.7](https://github.com/Thorium-Sim/thorium/compare/2.4.6...2.4.7) (2020-02-08)
 
 ### Bug Fixes
