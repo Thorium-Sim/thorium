@@ -1,3 +1,14 @@
+## [2.4.7](https://github.com/Thorium-Sim/thorium/compare/2.4.6...2.4.7) (2020-02-08)
+
+### Bug Fixes
+
+- **Build:** Be sure to install dependencies.
+  ([b9671d5](https://github.com/Thorium-Sim/thorium/commit/b9671d5318af6723aae3f96aabe1730e70c09db3))
+- **Build:** Corrects the build process.
+  ([561629a](https://github.com/Thorium-Sim/thorium/commit/561629aaba7619f75b77e14093f4bf09ce1a7f59))
+- **Build:** Split the build into two workflows.
+  ([e38e214](https://github.com/Thorium-Sim/thorium/commit/e38e2140e953fa127e7a116d0d9d3fad4673f6f0))
+
 ## [2.4.6](https://github.com/Thorium-Sim/thorium/compare/2.4.5...2.4.6) (2020-02-08)
 
 ### Bug Fixes
