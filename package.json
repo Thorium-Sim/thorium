@@ -109,7 +109,7 @@
   "build": {
     "appId": "us.fyreworks.thorium",
     "productName": "Thorium",
-    "asar": true,
+    "asar": false,
     "directories": {
       "output": "./packages"
     },
