@@ -1,3 +1,12 @@
+## [2.4.6](https://github.com/Thorium-Sim/thorium/compare/2.4.5...2.4.6) (2020-02-08)
+
+### Bug Fixes
+
+- **Build:** Build process fix.
+  ([cf2f24d](https://github.com/Thorium-Sim/thorium/commit/cf2f24d961e69f0f5f3713c528cce51079c20163))
+- **Build:** More work on getting the build done properly.
+  ([c224615](https://github.com/Thorium-Sim/thorium/commit/c22461558b3f8aa835930f358a542a82f71a4d56))
+
 ## [2.4.5](https://github.com/Thorium-Sim/thorium/compare/2.4.4...2.4.5) (2020-02-08)
 
 ### Bug Fixes
