@@ -1,3 +1,10 @@
+## [2.4.13](https://github.com/Thorium-Sim/thorium/compare/2.4.12...2.4.13) (2020-02-08)
+
+### Bug Fixes
+
+- **build:** Another try.
+  ([a3c1df2](https://github.com/Thorium-Sim/thorium/commit/a3c1df2422e1c8b1a645f0f20681b50c4ba73885))
+
 ## [2.4.12](https://github.com/Thorium-Sim/thorium/compare/2.4.11...2.4.12) (2020-02-08)
 
 ### Bug Fixes
