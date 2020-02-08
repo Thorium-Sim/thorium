@@ -6,7 +6,9 @@ on:
       - master
 
 jobs:
-  release:
+  build:
+    name: Build Assets
+    runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
