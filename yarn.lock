@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-5.0.3.tgz#bc5b5532ecafd923a61f2fb097e3b108c0106a3f"
   integrity sha512-GLyWIFBbGvpKPGo55JyRZAo4lVbnBiD52cKlw/0Vt+wnmKvWJkpZvsjVoaIolyBXDeAQKSicRtqFNPem9w0WYA==
 
-"@apollo/client@^3.0.0-beta.29":
-  version "3.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.0.0-beta.29.tgz#2010786da23899a465b82ada14bb335a7e03c45a"
-  integrity sha512-N3YFj0pGzLJpE/eHFHeHE+bIBWcSTRUW7C5K2vCky7FeSFxByY/bKRhXOunAkgrrVWvC39gXgk1SDv2Y78t7iQ==
+"@apollo/client@^3.0.0-beta.33":
+  version "3.0.0-beta.33"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.0.0-beta.33.tgz#1e8187e7e05cf2c6dfc6cc1773b16b7e4b594de1"
+  integrity sha512-aO8N3sH2VmhhBzVKoGxK7pdl81nK71YC16y0JkTEYoBGz0QCMsyRLcfGznX2VDJYbZNm8moLZxm9ZveDebZ4Sg==
   dependencies:
     "@types/zen-observable" "^0.8.0"
     "@wry/equality" "^0.1.9"
@@ -7804,6 +7804,13 @@ create-react-context@^0.3.0:
     gud "^1.0.0"
     warning "^4.0.3"
 
+cross-env@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.0.tgz#5a3b2ddce51ec713ea58f2fb79ce22e65b4f5479"
+  integrity sha512-rV6M9ldNgmwP7bx5u6rZsTbYidzwvrwIYZnT08hSGLcQCcggofgFW+sNe7IhA1SRauPS0QuLbbX+wdNtpqE5CQ==
+  dependencies:
+    cross-spawn "^7.0.1"
+
 cross-fetch@2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-2.2.2.tgz#a47ff4f7fc712daba8f6a695a11c948440d45723"
@@ -7848,7 +7855,7 @@ cross-spawn@^5.0.1:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@^7.0.0:
+cross-spawn@^7.0.0, cross-spawn@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
   integrity sha512-u7v4o84SwFpD32Z8IIcPZ6z1/ie24O6RU3RbtL5Y316l3KuHVPx9ItBgWQ6VlfAFnRnTtMUrsQ9MUUTuEZjogg==
