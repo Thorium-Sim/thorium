@@ -1,3 +1,10 @@
+## [2.4.12](https://github.com/Thorium-Sim/thorium/compare/2.4.11...2.4.12) (2020-02-08)
+
+### Bug Fixes
+
+- **Build:** Try a global repository dispatch.
+  ([0512a39](https://github.com/Thorium-Sim/thorium/commit/0512a39cf78c828dcdef957914a76ff355c6c60b))
+
 ## [2.4.11](https://github.com/Thorium-Sim/thorium/compare/2.4.10...2.4.11) (2020-02-08)
 
 ### Bug Fixes
