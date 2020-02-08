@@ -36,8 +36,8 @@ jobs:
       - name: Semantic Release
         run: |
           npm run semantic-release
-        env:
-          # To have this workflow trigger the release workflow
-          # We need a personal access token.
-          GH_TOKEN: ${{ secrets.gh_pat }}
-          GITHUB_TOKEN: ${{ secrets.gh_pat }}
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.gh_pat }}
+          event-type: deploy
