@@ -1,3 +1,10 @@
+## [2.4.9](https://github.com/Thorium-Sim/thorium/compare/2.4.8...2.4.9) (2020-02-08)
+
+### Bug Fixes
+
+- **Build:** Better function on releases.
+  ([aaafdc4](https://github.com/Thorium-Sim/thorium/commit/aaafdc449054e212302096d13cfeb3e517c418bc))
+
 ## [2.4.8](https://github.com/Thorium-Sim/thorium/compare/2.4.7...2.4.8) (2020-02-08)
 
 ### Bug Fixes
