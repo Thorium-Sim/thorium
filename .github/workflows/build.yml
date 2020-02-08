@@ -36,6 +36,7 @@ jobs:
       - name: Semantic Release
         run: |
           npm run semantic-release
+
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:

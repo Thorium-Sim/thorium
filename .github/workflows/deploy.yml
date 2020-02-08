@@ -44,6 +44,15 @@ jobs:
           API_KEY_ID: ${{ secrets.api_key_id }}
           API_KEY_ISSUER_ID: ${{ secrets.api_key_issuer_id }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENGINE_API_KEY: ${{ secrets.ENGINE_API_KEY }}
+          ERROR_REPORTING_ORGANIZATION:
+            ${{ secrets.ERROR_REPORTING_ORGANIZATION }}
+          ERROR_REPORTING_PROJECT: ${{ secrets.ERROR_REPORTING_PROJECT }}
+          ERROR_REPORTING_API_TOKEN: ${{ secrets.ERROR_REPORTING_API_TOKEN }}
+          GOOGLE_SHEETS_PROJECT_ID: ${{ secrets.GOOGLE_SHEETS_PROJECT_ID }}
+          GOOGLE_SHEETS_SECRET: ${{ secrets.GOOGLE_SHEETS_SECRET }}
+          GOOGLE_SHEETS_CLIENT_ID: ${{ secrets.GOOGLE_SHEETS_CLIENT_ID }}
+          GH_ISSUE_TOKEN: ${{ secrets.GH_ISSUE_TOKEN }}
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v1
-        if: always()
+        if: failure()
