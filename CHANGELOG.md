@@ -1,3 +1,10 @@
+## [2.4.8](https://github.com/Thorium-Sim/thorium/compare/2.4.7...2.4.8) (2020-02-08)
+
+### Bug Fixes
+
+- **Build:** Makes the build trigger the next workflow.
+  ([e49b2fa](https://github.com/Thorium-Sim/thorium/commit/e49b2fa6b1c5a4925ed9cc743fcb9fe94be1bf84))
+
 ## [2.4.7](https://github.com/Thorium-Sim/thorium/compare/2.4.6...2.4.7) (2020-02-08)
 
 ### Bug Fixes
