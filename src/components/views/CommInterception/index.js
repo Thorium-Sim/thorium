@@ -93,7 +93,7 @@ class Interception extends Component {
     }
     return (
       <div className="centered-text">
-        <h1>No active signals.</h1>
+        <h1>No active signals</h1>
       </div>
     );
   }
