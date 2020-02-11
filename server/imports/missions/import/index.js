@@ -26,7 +26,9 @@ const regexPath = /[^\\]*\.(\w+)$/;
 export default function ImportMission(filepath, cb) {
   console.log("Importing mission");
   yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
-    if (err) throw err;
+    if (err) {
+      throw err;
+    }
     importZip.on("close", function() {
       cb(null);
     });
