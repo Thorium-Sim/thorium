@@ -307,80 +307,72 @@ class DamageControlCore extends Component {
                 {this.props.data.systems
                   .concat()
                   .sort((a, b) => {
-                    if (!a || !a.power) return 1;
-                    if (!b || b.power) return -1;
-                    if (
-                      !(
-                        (a.power.power || a.power.power === 0) &&
-                        a.power.powerLevels.length
-                      ) &&
-                      (b.power.power || b.power.power === 0) &&
-                      b.power.powerLevels.length
-                    )
-                      return 1;
-                    if (
-                      !(
-                        (b.power.power || b.power.power === 0) &&
-                        b.power.powerLevels.length
-                      ) &&
-                      (a.power.power || a.power.power === 0) &&
-                      a.power.powerLevels.length
-                    )
-                      return -1;
+                    const hasPowerA =
+                      a.power?.powerLevels.length > 0 &&
+                      (a.power?.power || a.power?.power === 0);
+                    const hasPowerB =
+                      b.power?.powerLevels.length > 0 &&
+                      (b.power?.power || b.power?.power === 0);
+
+                    if (hasPowerA && !hasPowerB) return -1;
+                    if (hasPowerB && !hasPowerA) return 1;
                     if (a.type > b.type) return 1;
                     if (a.type < b.type) return -1;
                     if (a.name > b.name) return 1;
                     if (a.name < b.name) return -1;
                     return 0;
                   })
-                  .map(s => (
-                    <tr key={s.id}>
-                      <td
-                        onClick={e => this.toggleDamage(e, s)}
-                        onContextMenu={e => this.setContext(e, s)}
-                        title={this.systemTitle(s)}
-                        style={this.systemStyle(s)}
-                      >
-                        {this.systemName(s)} {this.renderEngineSpeed(s)}
-                      </td>
-                      <td>
-                        {(s.power?.power || s.power?.power === 0) && (
-                          <InputField
-                            prompt="What is the power?"
-                            onClick={this.setPower.bind(this, s)}
-                          >
-                            {s.power?.power}
-                          </InputField>
-                        )}
-                      </td>
-                      <td>/</td>
-                      <td>
-                        {(s.power?.power || s.power?.power === 0) && (
-                          <OutputField>{s.power?.powerLevels[0]}</OutputField>
-                        )}
-                      </td>
-                      <td>
-                        <Mutation
-                          mutation={gql`
-                            mutation UpgradeSystem($systemId: ID!) {
-                              upgradeSystem(systemId: $systemId)
-                            }
-                          `}
-                          variables={{systemId: s.id}}
+                  .map(s => {
+                    const hasPower =
+                      s.power?.powerLevels.length > 0 &&
+                      (s.power?.power || s.power?.power === 0);
+                    return (
+                      <tr key={s.id}>
+                        <td
+                          onClick={e => this.toggleDamage(e, s)}
+                          onContextMenu={e => this.setContext(e, s)}
+                          title={this.systemTitle(s)}
+                          style={this.systemStyle(s)}
                         >
-                          {action => (
-                            <input
-                              type="checkbox"
-                              checked={s.upgraded}
-                              disabled={s.upgraded}
-                              onClick={action}
-                            />
+                          {this.systemName(s)} {this.renderEngineSpeed(s)}{" "}
+                        </td>
+                        <td>
+                          {hasPower && (
+                            <InputField
+                              prompt="What is the power?"
+                              onClick={this.setPower.bind(this, s)}
+                            >
+                              {s.power?.power}
+                            </InputField>
                           )}
-                        </Mutation>
-                      </td>
-                      <td>
-                        {s.power?.powerLevels &&
-                          s.power?.powerLevels.length > 0 && (
+                        </td>
+                        <td>{hasPower && "/"}</td>
+                        <td>
+                          {hasPower && (
+                            <OutputField>{s.power?.powerLevels[0]}</OutputField>
+                          )}
+                        </td>
+                        <td>
+                          <Mutation
+                            mutation={gql`
+                              mutation UpgradeSystem($systemId: ID!) {
+                                upgradeSystem(systemId: $systemId)
+                              }
+                            `}
+                            variables={{systemId: s.id}}
+                          >
+                            {action => (
+                              <input
+                                type="checkbox"
+                                checked={s.upgraded}
+                                disabled={s.upgraded}
+                                onClick={action}
+                              />
+                            )}
+                          </Mutation>
+                        </td>
+                        <td>
+                          {hasPower && (
                             <Button
                               size="sm"
                               color="warning"
@@ -389,9 +381,10 @@ class DamageControlCore extends Component {
                               onClick={() => action({variables: {id: s.id}})}
                             />
                           )}
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 <tr>
                   <td>Total</td>
                   <td>
