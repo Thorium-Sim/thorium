@@ -2,50 +2,6 @@
 
 ### Bug Fixes
 
-- **Auth Key:** Auth Key
-  ([58fd975](https://github.com/Thorium-Sim/thorium/commit/58fd9757e8a8348515f0d8fbc7eb0d4d8398304a))
-- **build:** Another try.
-  ([a3c1df2](https://github.com/Thorium-Sim/thorium/commit/a3c1df2422e1c8b1a645f0f20681b50c4ba73885))
-- **Build:** Another fix.
-  ([ad2af31](https://github.com/Thorium-Sim/thorium/commit/ad2af3192cdcca92babba65bbc4d24a7a9f5a606))
-- **Build:** Another try
-  ([52d012c](https://github.com/Thorium-Sim/thorium/commit/52d012cb0f7c97bf5c5060358484b60727077465))
-- **Build:** Be sure to install dependencies.
-  ([b9671d5](https://github.com/Thorium-Sim/thorium/commit/b9671d5318af6723aae3f96aabe1730e70c09db3))
-- **Build:** Better function on releases.
-  ([aaafdc4](https://github.com/Thorium-Sim/thorium/commit/aaafdc449054e212302096d13cfeb3e517c418bc))
-- **Build:** Build fix
-  ([84d44b1](https://github.com/Thorium-Sim/thorium/commit/84d44b1a5e061f33da6851f640b78e449f4dfe75))
-- **Build:** Build fix
-  ([6a068f7](https://github.com/Thorium-Sim/thorium/commit/6a068f799bcdc18eabba7b766fb59d9f4031e39e))
-- **Build:** Build process fix.
-  ([cf2f24d](https://github.com/Thorium-Sim/thorium/commit/cf2f24d961e69f0f5f3713c528cce51079c20163))
-- **Build:** Corrects the build process.
-  ([561629a](https://github.com/Thorium-Sim/thorium/commit/561629aaba7619f75b77e14093f4bf09ce1a7f59))
-- **Build:** Enable deploy to Snapcraft
-  ([3f77f3c](https://github.com/Thorium-Sim/thorium/commit/3f77f3c6e6900816e8e6b8ec80f7a8771bbea78f))
-- **Build:** Fixes the build process.
-  ([ac6d0eb](https://github.com/Thorium-Sim/thorium/commit/ac6d0ebe8766a5e1e0b73a75cd448f0b96af4354))
-- **Build:** If Failure.
-  ([4c68be7](https://github.com/Thorium-Sim/thorium/commit/4c68be7858db8630f7dd469678049982d5f75f31))
-- **Build:** Makes the build trigger the next workflow.
-  ([e49b2fa](https://github.com/Thorium-Sim/thorium/commit/e49b2fa6b1c5a4925ed9cc743fcb9fe94be1bf84))
-- **Build:** More fixes
-  ([8ed3acd](https://github.com/Thorium-Sim/thorium/commit/8ed3acd21f4a05ac7f11ee9b978769263b00b7d3))
-- **Build:** More work on getting the build done properly.
-  ([c224615](https://github.com/Thorium-Sim/thorium/commit/c22461558b3f8aa835930f358a542a82f71a4d56))
-- **Build:** Publish script
-  ([72ceb72](https://github.com/Thorium-Sim/thorium/commit/72ceb722c0d835778ca82357e3f66d8c8e399ed4))
-- **Build:** Split the build into two workflows.
-  ([e38e214](https://github.com/Thorium-Sim/thorium/commit/e38e2140e953fa127e7a116d0d9d3fad4673f6f0))
-- **Build:** Testing.
-  ([e019a63](https://github.com/Thorium-Sim/thorium/commit/e019a634d74d2bb142b0228212b5293ad4db253f))
-- **Build:** Try a global repository dispatch.
-  ([0512a39](https://github.com/Thorium-Sim/thorium/commit/0512a39cf78c828dcdef957914a76ff355c6c60b))
-- **Build:** Try out a debug session.
-  ([391fa75](https://github.com/Thorium-Sim/thorium/commit/391fa75e4b5d0b22360e40d7531300ce0006a549))
-- **fix:** Semantic Release
-  ([dab6492](https://github.com/Thorium-Sim/thorium/commit/dab6492d5c2e5fc7cf33c796377667b28efa3701))
 - **Mission Library:** Makes the mission library work again. Closes
   [#2746](https://github.com/Thorium-Sim/thorium/issues/2746)
   ([1ae47c0](https://github.com/Thorium-Sim/thorium/commit/1ae47c075b3af64db87b2bea6c01beaefbcc7b8e))
