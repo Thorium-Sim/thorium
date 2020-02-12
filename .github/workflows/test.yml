@@ -29,7 +29,6 @@ jobs:
 
       - name: Install Dependencies
         run: yarn
-
       - name: Prettier Check
         run: |
           npm run format:different
@@ -37,6 +36,7 @@ jobs:
         run: |
           npm run typecheck
       - name: Test
-        env: SKIP_PREFLIGHT_CHECK=true
+        env:
+          SKIP_PREFLIGHT_CHECK: true
         run: |
           npm run test:coverage
