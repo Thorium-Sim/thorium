@@ -23,14 +23,15 @@ const ACTIONS_SUB = gql`
 const useFlash = () => {
   const [flash, setFlash] = useState(false);
   const timeoutRef = useRef(null);
-  const doFlash = duration => {
+  const doFlash = React.useCallback(duration => {
+    clearTimeout(timeoutRef.current);
     duration = duration || duration === 0 ? duration : 10;
     if (duration <= 0) {
       return setFlash(false);
     }
     setFlash(oldFlash => !oldFlash);
     timeoutRef.current = setTimeout(() => doFlash(duration - 1), 150);
-  };
+  }, []);
   useEffect(() => () => clearTimeout(timeoutRef.current), []);
   return {flash, doFlash};
 };
@@ -38,16 +39,17 @@ const useFlash = () => {
 const useSpark = () => {
   const [sparks, setSparks] = useState([]);
   const timeoutRef = useRef([]);
-  const doSpark = duration => {
+  const doSpark = React.useCallback(duration => {
+    clearTimeout(timeoutRef.current);
     duration = duration || 5000;
     const id = uuid.v4();
-    setSparks([...sparks, id]);
+    setSparks(sparks => [...sparks, id]);
     timeoutRef.current.push(
       setTimeout(() => {
         setSparks(sparks => sparks.filter(s => s !== id));
       }, duration),
     );
-  };
+  }, []);
   useEffect(() => {
     // eslint-disable-next-line
     return () => timeoutRef.current.forEach(ref => clearTimeout(ref));

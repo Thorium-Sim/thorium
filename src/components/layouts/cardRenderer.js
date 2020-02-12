@@ -60,9 +60,9 @@ const CardWrapper = ({card}) => {
             cardName={card.name}
             simulatorId={card.props.simulator.id}
           />
-        ) : (
+        ) : card.component ? (
           <card.component {...card.props} />
-        )}
+        ) : null}
       </ErrorBoundary>
     </React.Suspense>
   );
