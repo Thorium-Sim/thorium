@@ -46,6 +46,14 @@ const quotes = [
   "The days are long, but the years are short.",
   "I preferred to be called Nobody.",
   "He who least needs tomorrow, will most gladly greet tomorrow",
+  /* Banksy */
+  "They say you die twice; Once when you stop breathing and again when someone says your name for the last time.",
+  "There's nothing more dangerous than someone who wants to make the world a better place.",
+  "There are three kinds of people in this world: those who like you, those who hate you, and those who don't care about you.",
+  "I need someone to protect me from all the measures they take in order to protect me.",
+  "If you get tired, learn to rest, not to quit.",
+  "Be positive, patient and persistent.",
+  "This revolution is for display purposes only.",
 ];
 
 const QuoteOfTheDay = () => {

@@ -51,7 +51,7 @@ class ThreeView extends Component {
     });
     this.wireMat = new THREE.LineBasicMaterial({
       color: parseInt(color.replace("#", ""), 16),
-      linewidth: 4,
+      linewidth: 1,
       visible: wireframe ? true : false,
       opacity: 0.7,
     });

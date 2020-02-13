@@ -36,6 +36,7 @@ const schema = gql`
     upgradeMacros: [TimelineItem]
     upgradeBoard: ID
 
+    extra: Boolean
     damage: Damage
     power: Power
     stealthFactor: Float

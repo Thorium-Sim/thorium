@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.4.3",
+  "version": "2.5.1",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -29,19 +29,19 @@
     "start:server": "nodemon",
     "watch:electron": "wait-on http://localhost:3000 && electron .",
     "start:electron": "BROWSER=none npm-run-all --parallel -l start:client watch:server watch:electron",
-    "build": "NODE_ENV=production npm-run-all build:client build:server build:ncc build:env copy-package",
+    "build": "cross-env NODE_ENV=production npm-run-all build:* sentry:upload",
     "build:client": "react-scripts --max_old_space_size=4096 build",
     "build:server": "tsc -p server",
     "build:ncc": "ncc build -o build/server -s tempServer/server/index.js",
     "build:env": "node ./scripts/build-env.js",
-    "build:babel": "babel -d tempServer --extensions \".ts,.js\" server",
-    "build:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
-    "build:apollo": "apollo service:push",
-    "build:electron": "electron-builder -mwl",
+    "build:copy": "cp package.json build/package.json",
+    "generate:babel": "babel -d tempServer --extensions \".ts,.js\" server",
+    "generate:schema": "get-graphql-schema http://localhost:3001/graphql > src/schema.graphql",
+    "generate:electron": "electron-builder -mwl",
+    "generate:apollo": "apollo service:push",
     "dist:electron": "electron-builder -mwl -p always",
     "pack:electron": "electron-builder -m",
-    "build:pkg": "NODE_ENV=production pkg build/package.json",
-    "copy-package": "cp package.json build/package.json",
+    "generate:pkg": "NODE_ENV=production pkg build/package.json",
     "test": "is-ci test:coverage test:watch",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -58,13 +58,11 @@
     "stylelint": "stylelint ./src",
     "bump": "node ./scripts/bumpVersion.js",
     "generate:graphql": "graphql-codegen --config codegen.yml",
-    "deploy": "npm-run-all build dist:electron sentry:upload",
     "format": "prettier --write \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "format:different": "prettier --list-different \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "validate": "CI=true npm-run-all --parallel test:coverage typecheck format:different",
     "lint-staged-validate": "lint-staged",
     "storybook": "start-storybook -p 9009 -s public,./",
-    "build:storybook": "build-storybook -s public",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "proxy": "http://localhost:3001",
@@ -135,14 +133,11 @@
       "!**/{appveyor.yml,.travis.yml,circle.yml}",
       "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
     ],
+    "afterSign": "electron-builder-notarize",
     "mac": {
       "category": "public.app-category.entertainment",
       "icon": "./public/icon.icns",
-      "identity": false,
-      "hardenedRuntime": true,
-      "gatekeeperAssess": false,
-      "entitlements": "public/entitlements.mac.plist",
-      "entitlementsInherit": "public/entitlements.mac.plist"
+      "hardenedRuntime": true
     },
     "win": {
       "target": [
@@ -150,6 +145,9 @@
         "portable"
       ],
       "icon": "./public/icon.ico"
+    },
+    "linux": {
+      "category": "Utility"
     }
   },
   "bin": "./server/index.js",
@@ -179,7 +177,7 @@
         "@semantic-release/exec",
         {
           "prepareCmd": "npm run bump ${nextRelease.version}",
-          "publishCmd": "npm run deploy"
+          "publishCmd": "npm run build"
         }
       ],
       [
@@ -198,7 +196,7 @@
     "styledComponents": {}
   },
   "dependencies": {
-    "@apollo/client": "^3.0.0-beta.29",
+    "@apollo/client": "^3.0.0-beta.33",
     "@apollo/link-context": "^2.0.0-beta.3",
     "@apollo/link-error": "^2.0.0-beta.3",
     "@apollo/link-ws": "^2.0.0-beta.3",
@@ -303,10 +301,12 @@
     "canvas": "^2.6.0",
     "centered-pan-zoom": "^2.0.0",
     "commitizen": "^3.1.1",
+    "cross-env": "^7.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "danger": "^9.2.2",
     "electron": "^7.0.1",
     "electron-builder": "^22.1.0",
+    "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^0.2.1",
     "eslint-config-prettier": "^6.4.0",
     "get-graphql-schema": "^2.1.2",
@@ -370,6 +370,7 @@
     "wait-on": "^3.3.0"
   },
   "resolutions": {
-    "change-case": "^4.1.1"
+    "change-case": "^4.1.1",
+    "param-case": "3.0.3"
   }
 }

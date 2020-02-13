@@ -1,8 +1,3 @@
-const time = Date.now();
-const oldLog = console.log;
-console.log = (...args) => {
-  oldLog(Date.now() - time, ...args);
-};
 // Module to control application life.
 const startApp = require("./electron/helpers/startApp");
 // Module to create native browser window.

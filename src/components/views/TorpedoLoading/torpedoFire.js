@@ -3,6 +3,7 @@ import gql from "graphql-tag.macro";
 import DamageOverlay from "../helpers/DamageOverlay";
 import {Button} from "helpers/reactstrap";
 import {capitalCase} from "change-case";
+
 class TorpedoFire extends Component {
   state = {enabled: true};
   fireTorpedo = () => {
@@ -45,8 +46,9 @@ class TorpedoFire extends Component {
         <p>
           Type:{" "}
           {capitalCase(
-            (torpedo.inventory.find(t => t.id === torpedo.loaded) || {}).type,
-          ) || "None"}
+            (torpedo.inventory.find(t => t.id === torpedo.loaded) || {}).type ||
+              "None",
+          )}
         </p>
         <Button
           block

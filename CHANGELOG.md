@@ -1,3 +1,47 @@
+## [2.5.1](https://github.com/Thorium-Sim/thorium/compare/2.5.0...2.5.1) (2020-02-12)
+
+### Bug Fixes
+
+- **Build Process:** Improves Thorium's automated build process.
+  ([be177c8](https://github.com/Thorium-Sim/thorium/commit/be177c895d9794f43d1031020232129ef789e2f4))
+
+# [2.5.0](https://github.com/Thorium-Sim/thorium/compare/2.4.3...2.5.0) (2020-02-12)
+
+### Bug Fixes
+
+- **Mission Library:** Makes the mission library work again. Closes
+  [#2746](https://github.com/Thorium-Sim/thorium/issues/2746)
+  ([1ae47c0](https://github.com/Thorium-Sim/thorium/commit/1ae47c075b3af64db87b2bea6c01beaefbcc7b8e))
+- **Missions:** Fixes an issue where missions don't properly transfer to the
+  simulator when starting a flight. Closes
+  [#2744](https://github.com/Thorium-Sim/thorium/issues/2744)
+  ([1f9ecd4](https://github.com/Thorium-Sim/thorium/commit/1f9ecd451f3a1c7686dcd14ddb7e5917b86565f9))
+- **Power Flux:** Fixes the power flux buttons on the Systems core. Closes
+  [#2741](https://github.com/Thorium-Sim/thorium/issues/2741)
+  ([912cf0c](https://github.com/Thorium-Sim/thorium/commit/912cf0c38fd3ed1d4cb696cc4a58d4169d75719b))
+- **QOTD:** Adds more quotes of the day. Also improves the deploy pipeline.
+  ([44a62e1](https://github.com/Thorium-Sim/thorium/commit/44a62e1cfb45f76c5d79c510afec943992f38437))
+- **Systems:** Fixes the order of the systems on systems core. Closes
+  [#2747](https://github.com/Thorium-Sim/thorium/issues/2747)
+  ([baec4b6](https://github.com/Thorium-Sim/thorium/commit/baec4b635d3e03281f89e167afdb8a3beb05171b))
+- **Torpedos:** Fixes an issue where the torpedos component crashes the
+  targeting screen. Closes
+  [#2739](https://github.com/Thorium-Sim/thorium/issues/2739)
+  ([fab0bd0](https://github.com/Thorium-Sim/thorium/commit/fab0bd05426d84fa319ac620ac99d97168ffabc7))
+- **Various:** Fixes a number of issues. Closes
+  [#2740](https://github.com/Thorium-Sim/thorium/issues/2740)
+  ([8118584](https://github.com/Thorium-Sim/thorium/commit/8118584e5601dbc6dcad5f757058062398487083))
+- **Viewscreen:** Properly centers items in the viewscreen. Closes
+  [#2742](https://github.com/Thorium-Sim/thorium/issues/2742)
+  ([42856a9](https://github.com/Thorium-Sim/thorium/commit/42856a9ec6d9713441dd4d7d26006757cc53ba89))
+
+### Features
+
+- **Advanced:** Makes it possible to change the Thorium data directory with the
+  THORIUM_PATH environment variable. Intended for advanced users. Closes
+  [#2757](https://github.com/Thorium-Sim/thorium/issues/2757)
+  ([3842f72](https://github.com/Thorium-Sim/thorium/commit/3842f7299b448f41d72c19715ecfe65a4ae23cb7))
+
 ## [2.4.3](https://github.com/Thorium-Sim/thorium/compare/v2.4.2...2.4.3) (2020-02-05)
 
 ### Bug Fixes
