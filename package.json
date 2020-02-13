@@ -119,7 +119,7 @@
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
-      "**/node_modules/{semver,uuid,electron,@electron/get,debug,ms,env-paths,fs-extra,graceful-fs,jsonfile,klaw,path-is-absolute,rimraf,glob,fs.realpath,inflight,once,wrappy,inherits,minimatch,brace-expansion,balanced-match,concat-map,got,create-error-class,capture-stack-trace,duplexer3,get-stream,is-redirect,is-retry-allowed,is-stream,lowercase-keys,safe-buffer,timed-out,unzip-response,url-parse-lax,prepend-http,sanitize-filename,truncate-utf8-bytes,utf8-byte-length,sumchecker,@types/node,extract-zip,concat-stream,buffer-from,readable-stream,core-util-is,isarray,process-nextick-args,string_decoder,util-deprecate,typedarray,mkdirp,minimist,yauzl,fd-slicer,pend,bonjour,array-flatten,deep-equal,is-arguments,is-date-object,is-regex,has,function-bind,object-is,object-keys,regexp.prototype.flags,define-properties,dns-equal,dns-txt,buffer-indexof,multicast-dns,dns-packet,ip,thunky,multicast-dns-service-types,electron-is-dev,electron-settings,clone,is-linux,is-osx,is-windows,electron-dl,ext-name,ext-list,mime-db,sort-keys-length,sort-keys,is-plain-obj,pupa,escape-goat,unused-filename,modify-filename,path-exists,pinkie-promise,pinkie}/**/*",
+      "**/node_modules/{uuid,electron,@electron/get,debug,ms,env-paths,fs-extra,graceful-fs,jsonfile,klaw,path-is-absolute,rimraf,glob,fs.realpath,inflight,once,wrappy,inherits,minimatch,brace-expansion,balanced-match,concat-map,got,create-error-class,capture-stack-trace,duplexer3,get-stream,is-redirect,is-retry-allowed,is-stream,lowercase-keys,safe-buffer,timed-out,unzip-response,url-parse-lax,prepend-http,sanitize-filename,truncate-utf8-bytes,utf8-byte-length,sumchecker,@types/node,extract-zip,concat-stream,buffer-from,readable-stream,core-util-is,isarray,process-nextick-args,string_decoder,util-deprecate,typedarray,mkdirp,minimist,yauzl,fd-slicer,pend,bonjour,array-flatten,deep-equal,is-arguments,is-date-object,is-regex,has,function-bind,object-is,object-keys,regexp.prototype.flags,define-properties,es-abstract,es-to-primitive,is-callable,is-symbol,has-symbols,object-inspect,object.assign,string.prototype.trimleft,string.prototype.trimright,dns-equal,dns-txt,buffer-indexof,multicast-dns,dns-packet,ip,thunky,multicast-dns-service-types,electron-is-dev,electron-settings,clone,is-linux,is-osx,is-windows,semver,electron-updater,@types/semver,builder-util-runtime,sax,js-yaml,argparse,sprintf-js,esprima,lazy-val,lodash.isequal,pako,universalify}/**/*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
       "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
       "!**/node_modules/*.d.ts",
@@ -304,7 +304,7 @@
     "cross-env": "^7.0.0",
     "cz-conventional-changelog": "^2.1.0",
     "danger": "^9.2.2",
-    "electron": "^7.0.1",
+    "electron": "^8.0.0",
     "electron-builder": "^22.1.0",
     "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^0.2.1",

@@ -1,10 +1,10 @@
 const {app, BrowserWindow, ipcMain, shell} = require("electron");
-const {download} = require("electron-dl");
 const ipAddress = require("./ipaddress");
 const fs = require("fs");
 const path = require("path");
 const semver = require("semver");
 const os = require("os");
+const autoUpdateInit = require("./autoUpdate");
 
 // Make the kiosk work better on slightly older computers
 app.commandLine.appendSwitch("ignore-gpu-blacklist", "true");
@@ -20,9 +20,6 @@ const cert = fs.existsSync(
 const {bonjour} = require("./bonjour");
 const settings = require("electron-settings");
 const {checkWindow, addWindow} = require("./multiWindow");
-const isLinux = require("is-linux");
-const isOsx = require("is-osx");
-const isWindows = require("is-windows");
 
 module.exports = () => {
   function startServer() {
@@ -41,6 +38,8 @@ module.exports = () => {
       settings.get("httpOnly") === "true" ||
       settings.get("httpOnly") === true ||
       false;
+
+    autoUpdateInit();
 
     app.on(
       "certificate-error",
@@ -85,15 +84,7 @@ module.exports = () => {
     ipcMain.on("startServer", function(evt, auto) {
       startServer();
     });
-    ipcMain.on("downloadAutoUpdate", async (event, {url}) => {
-      const win = BrowserWindow.getFocusedWindow();
-      await download(win, url, {
-        openFolderWhenDone: true,
-        onProgress: ({percent}) =>
-          event.sender.send("download-progress", percent),
-      });
-      event.sender.send("download-complete", {});
-    });
+
     ipcMain.on("open-external", async (event, url) => {
       shell.openExternal(url);
     });
@@ -113,23 +104,6 @@ module.exports = () => {
     ipcMain.on("set-httpOnly", (event, value) => {
       settings.set("httpOnly", value);
       httpOnly = value;
-    });
-    ipcMain.handle("get-update-asset", (event, release) => {
-      const oldVersion = require("../../../package.json").version;
-      const newVersion = release.tag_name;
-      let asset = null;
-      if (
-        semver.gt(newVersion, oldVersion) &&
-        semver(newVersion).prerelease.length === 0
-      ) {
-        asset = release.assets.find(
-          c =>
-            (isLinux && c.name.includes("AppImage")) ||
-            (isWindows && c.name.includes("win.zip")) ||
-            (isOsx && c.name.includes("mac.zip")),
-        );
-      }
-      return {asset, oldVersion, newVersion};
     });
     if (settings.get("autostart")) {
       // Check to see if the page will work.

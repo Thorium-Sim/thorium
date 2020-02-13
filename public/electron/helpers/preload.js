@@ -188,36 +188,26 @@ document.addEventListener(
     const autoUpdateButton = document.getElementById("auto-update-download");
     const autoUpdateProgress = document.getElementById("download-progress");
     if (autoUpdateEl) {
-      fetch("https://api.github.com/repos/thorium-sim/thorium/releases")
-        .then(res => res.json())
-        .then(async res => {
-          const {asset, oldVersion, newVersion} = await ipcRenderer.invoke(
-            "get-update-asset",
-            res[0],
-          );
-          if (asset) {
-            autoUpdateLabel.innerText = `Your version of Thorium is outdated. Current version is ${newVersion}. Your version is ${oldVersion}`;
-            autoUpdateEl.classList.add("shown");
+      ipcRenderer.send("check-for-updates");
 
-            const url = asset.browser_download_url;
-            autoUpdateButton.addEventListener("click", () => {
-              ipcRenderer.send("downloadAutoUpdate", {url});
-              ipcRenderer.on("download-progress", function(e, progress) {
-                autoUpdateProgress.value = progress;
-              });
-              ipcRenderer.on("download-complete", function() {
-                autoUpdateLabel.innerText = `Update Complete!`;
-                autoUpdateProgress.hidden = true;
-              });
-              autoUpdateLabel.innerText = `Update is being downloaded to your downloads folder in the background... Please wait.`;
-              autoUpdateButton.hidden = true;
-              autoUpdateProgress.hidden = false;
-            });
-          }
-        })
-        .catch(() => {
-          //Oh well.
+      ipcRenderer.on("has-updates", function(e, {oldVersion, newVersion}) {
+        autoUpdateLabel.innerText = `Your version of Thorium is outdated. Current version is ${newVersion}. Your version is ${oldVersion}`;
+        autoUpdateEl.classList.add("shown");
+      });
+
+      autoUpdateButton.addEventListener("click", () => {
+        ipcRenderer.send("downloadAutoUpdate");
+        ipcRenderer.on("download-progress", function(e, progress) {
+          autoUpdateProgress.value = progress;
         });
+        ipcRenderer.on("download-complete", function() {
+          autoUpdateLabel.innerText = `Update Complete! Restart the app to apply the update.`;
+          autoUpdateProgress.hidden = true;
+        });
+        autoUpdateLabel.innerText = `Update is being downloaded. Please wait.`;
+        autoUpdateButton.hidden = true;
+        autoUpdateProgress.hidden = false;
+      });
     }
   },
   false,
