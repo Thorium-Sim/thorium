@@ -1,0 +1,89 @@
+<svg
+  clip-rule="evenodd"
+  fill-rule="evenodd"
+  stroke-linejoin="round"
+  stroke-miterlimit="2"
+  viewBox="0 0 513 513"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+  <linearGradient
+    id="explosive-a"
+    gradientTransform="matrix(0 131 -148.467 0 1031.53 742)"
+    gradientUnits="userSpaceOnUse"
+    x1="0"
+    x2="1"
+    y1="0"
+    y2="0"
+  >
+    <stop offset="0" stop-color="#212121" />
+    <stop offset="1" stop-color="#464646" />
+  </linearGradient>
+  <linearGradient
+    id="explosive-b"
+    gradientTransform="matrix(.00030393 -496.979 496.979 .00030393 300 457.455)"
+    gradientUnits="userSpaceOnUse"
+    x1="0"
+    x2="1"
+    y1="0"
+    y2="0"
+  >
+    <stop offset="0" stop-color="#dac63d" />
+    <stop offset="1" stop-color="#90811c" />
+  </linearGradient>
+  <g transform="translate(.667 -661.5)">
+    <path d="m0 662h512v512h-512z" fill="none" />
+    <path
+      d="m755 742h510v131h-510z"
+      fill="url(#explosive-a)"
+      transform="matrix(.957129 0 0 1.08475 -710.7 -28.9831)"
+    />
+    <ellipse
+      cx="11.9355"
+      cy="846.952525"
+      fill="#272727"
+      rx="11.93225"
+      ry="71.051125"
+      stroke-width="1.08475"
+    />
+    <ellipse
+      cx="500.0715"
+      cy="846.952525"
+      fill="#272727"
+      rx="11.93225"
+      ry="71.051125"
+      stroke-width="1.08475"
+    />
+    <path
+      d="m755 742h510v131h-510z"
+      fill="url(#explosive-a)"
+      transform="matrix(.957129 0 0 1.08475 -710.7 113.119)"
+    />
+    <ellipse
+      cx="11.9355"
+      cy="989.054625"
+      fill="#272727"
+      rx="11.93225"
+      ry="71.051125"
+      stroke-width="1.08475"
+    />
+    <ellipse
+      cx="500.0715"
+      cy="989.054625"
+      fill="#272727"
+      rx="11.93225"
+      ry="71.051125"
+      stroke-width="1.08475"
+    />
+    <g fill="url(#explosive-b)">
+      <path
+        d="m262.5 364.952c23.176 13.381 51.824 13.381 75 0l87.5 151.554c-77.254 44.603-172.746 44.603-250 0zm37.5-114.952c27.596 0 50 22.404 50 50s-22.404 50-50 50-50-22.404-50-50 22.404-50 50-50zm-37.5-14.952c-23.176 13.381-37.5 38.19-37.5 64.952h-175c0-89.206 47.746-171.904 125-216.506zm287.5 64.952h-175c0-26.762-14.324-51.571-37.5-64.952l87.5-151.554c77.254 44.603 125 127.3 125 216.506z"
+        transform="matrix(.173559 0 0 .173559 203.932 791.978)"
+      />
+      <path
+        d="m262.5 364.952c23.176 13.381 51.824 13.381 75 0l87.5 151.554c-77.254 44.603-172.746 44.603-250 0zm37.5-114.952c27.596 0 50 22.404 50 50s-22.404 50-50 50-50-22.404-50-50 22.404-50 50-50zm-37.5-14.952c-23.176 13.381-37.5 38.19-37.5 64.952h-175c0-89.206 47.746-171.904 125-216.506zm287.5 64.952h-175c0-26.762-14.324-51.571-37.5-64.952l87.5-151.554c77.254 44.603 125 127.3 125 216.506z"
+        transform="matrix(.173559 0 0 .173559 203.932 934.08)"
+      />
+    </g>
+  </g>
+</svg>

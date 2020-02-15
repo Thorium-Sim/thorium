@@ -12,10 +12,40 @@ import {
   useCountermeasuresBuildCountermeasureMutation,
   useCountermeasureRemoveCountermeasureMutation,
   useCountermeasuresLaunchCountermeasureMutation,
+  useCountermeasuresAddModuleMutation,
 } from "generated/graphql";
 import {ReactComponent as CenterSVG} from "./countermeasure-center.svg";
 import "./style.scss";
 import {Button, Input, Progress} from "reactstrap";
+
+import {ReactComponent as battery_cell} from "./modules/battery_cell.svg";
+import {ReactComponent as explosive_payload} from "./modules/explosive_payload.svg";
+import {ReactComponent as proximity_trigger} from "./modules/proximity_trigger.svg";
+import {ReactComponent as beacon} from "./modules/beacon.svg";
+import {ReactComponent as heat_coil} from "./modules/heat_coil.svg";
+import {ReactComponent as scan_trigger} from "./modules/scan_trigger.svg";
+import {ReactComponent as chaff_deploy} from "./modules/chaff_deploy.svg";
+import {ReactComponent as ionizer} from "./modules/ionizer.svg";
+import {ReactComponent as sensor_scrambler} from "./modules/sensor_scrambler.svg";
+import {ReactComponent as communications_array} from "./modules/communications_array.svg";
+import {ReactComponent as notifier} from "./modules/notifier.svg";
+import {ReactComponent as transport_inhibitor} from "./modules/transport_inhibitor.svg";
+import {capitalCase} from "change-case";
+
+const moduleImages: {[key: string]: any} = {
+  battery_cell,
+  explosive_payload,
+  proximity_trigger,
+  beacon,
+  heat_coil,
+  scan_trigger,
+  chaff_deploy,
+  ionizer,
+  sensor_scrambler,
+  communications_array,
+  notifier,
+  transport_inhibitor,
+};
 
 interface CenterProps {
   setSlot: (nextState: string) => void;
@@ -32,7 +62,7 @@ const Center: React.FC<CenterProps> = ({slots, slot, setSlot}) => {
           return (
             <div
               key={key}
-              className={`slot ${key} ${
+              className={`slot ${key} ${value?.id ? "exists" : ""} ${
                 slot?.slotId === key ? "selected" : ""
               } ${value?.locked ? "locked" : ""} ${
                 value?.active ? "active" : ""
@@ -111,13 +141,13 @@ const MaterialRadial: React.FC<{
   return (
     <div className="material">
       <div
-        className="radial-dial"
+        className={`radial-dial ${label}`}
         style={{
           ["--end-angle" as any]: `${(count / max) * 100}%`,
         }}
         data-value={count}
       ></div>
-      <div className="label">{label}</div>
+      <div className="label">{capitalCase(label)}</div>
     </div>
   );
 };
@@ -143,7 +173,12 @@ const CreateButton: React.FC<CreateButtonProps> = ({
 
   return settingName ? (
     <div className="countermeasure-name">
-      <Input type="text" value={name} onChange={e => setName(e.target.value)} />
+      <Input
+        type="text"
+        autoFocus
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
       <Button
         color="danger"
         onClick={() => {
@@ -166,9 +201,94 @@ const CreateButton: React.FC<CreateButtonProps> = ({
       </Button>
     </div>
   ) : (
-    <Button block color="success" onClick={() => setSettingName(true)}>
+    <Button
+      block
+      disabled={!slotId}
+      color="success"
+      onClick={() => setSettingName(true)}
+    >
       Create Countermeasure
     </Button>
+  );
+};
+
+interface ModuleConstructionProps {
+  id: string;
+  slot: CountermeasureSlotEnum;
+  cancel: () => void;
+}
+const ModuleConstruction: React.FC<ModuleConstructionProps> = ({
+  id,
+  slot,
+  cancel,
+}) => {
+  const {data: modulesData} = useCountermeasureModulesQuery();
+  const moduleTypes = modulesData?.countermeasureModuleType || [];
+
+  const [selectedModule, setSelectedModule] = React.useState<string | null>(
+    null,
+  );
+  const [addModule] = useCountermeasuresAddModuleMutation({
+    variables: {id, moduleType: selectedModule as string, slot},
+  });
+  return (
+    <div className="module-construction">
+      <h2>Module Construction</h2>
+      <div className="module-selection">
+        {moduleTypes.map(m => {
+          const ImageComponent = moduleImages[m?.id || ""] || (() => null);
+          return (
+            <div
+              key={m.id}
+              className={`module-type-description ${
+                m.id === selectedModule ? "selected" : ""
+              }`}
+              onClick={() => setSelectedModule(m.id)}
+            >
+              <div className="module-type-upper">
+                <div className="module-type-image">
+                  <ImageComponent />
+                </div>
+                <div className="module-type-info">
+                  <h3>{m.name}</h3>
+                  <div>{m.description}</div>
+                </div>
+              </div>
+              <div className="module-type-resource">
+                {m.resourceRequirements &&
+                  Object.entries(m.resourceRequirements).map(([key, value]) => {
+                    if (typeof value !== "number" || value === 0) return null;
+                    return (
+                      <MaterialRadial
+                        key={key}
+                        label={key}
+                        count={value}
+                        max={30}
+                      />
+                    );
+                  })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="buttons">
+        <Button color="danger" onClick={cancel}>
+          Cancel
+        </Button>
+        <div className="spacer"></div>
+        <Button
+          color="success"
+          disabled={!selectedModule}
+          onClick={() => {
+            addModule();
+            cancel();
+          }}
+        >
+          Add Module
+        </Button>
+      </div>
+    </div>
   );
 };
 
@@ -181,8 +301,6 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
   const {loading, data} = useCountermeasuresSubscription({
     variables: {simulatorId: simulator.id},
   });
-  const {data: modulesData} = useCountermeasureModulesQuery();
-  const moduleTypes = modulesData?.countermeasureModuleType || [];
 
   const [buildCountermeasure] = useCountermeasuresBuildCountermeasureMutation();
   const [
@@ -205,88 +323,100 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
     slotId as CountermeasureSlotEnum
   ] as Countermeasure;
   const slot = slotId ? {...selectedSlot, slotId} : null;
-
   return (
     <div className="card-countermeasures">
-      <div className="countermeasure">
-        <h2>Countermeasure</h2>
-        {!slot && (
-          <CreateButton
-            key={slotId || undefined}
-            countermeasureId={countermeasures.id}
-            slotId={slotId as CountermeasureSlotEnum}
-          />
-        )}
-        {slot?.building ? (
-          slot?.buildPercentage < 1 ? (
-            <Progress bar value={slot.buildPercentage * 100}>
-              {slot.buildPercentage * 100}%
-            </Progress>
-          ) : (
-            <Button
-              block
-              color="success"
-              onClick={() =>
-                launchCountermeasure({
-                  variables: {
-                    id: countermeasures.id,
-                    slot: slotId as CountermeasureSlotEnum,
-                  },
-                })
-              }
-            >
-              Deploy Countermeasure
-            </Button>
-          )
-        ) : (
-          <Button
-            block
-            color="warning"
-            disabled={!slotId || slot?.modules.length === 0}
-            onClick={() =>
-              buildCountermeasure({
-                variables: {
-                  id: countermeasures.id,
-                  slot: slotId as CountermeasureSlotEnum,
-                },
-              })
-            }
-          >
-            Build Countermeasure
-          </Button>
-        )}
-        {slot && (
-          <Button
-            block
-            color="danger"
-            onClick={() =>
-              removeCountermeasure({
-                variables: {
-                  id: countermeasures.id,
-                  slot: slotId as CountermeasureSlotEnum,
-                },
-              })
-            }
-          >
-            Remove Countermeasure
-          </Button>
-        )}
-      </div>
-      <div className="modules">
-        <h2>Modules</h2>
-        {Array.from({length: 5}).map((_, i) => (
-          <Module
-            key={`module-${i}`}
-            disabled={Boolean(slot)}
-            countermeasuresId={countermeasures.id}
-            slotId={(slotId as CountermeasureSlotEnum) || null}
-            moduleObject={slot?.modules?.[i] || null}
-            moduleIndex={i}
-            setAddingModule={() => setAddingModule(true)}
-            setSelectedModule={setSelectedModule}
-          />
-        ))}
-      </div>
+      {addingModule ? (
+        <ModuleConstruction
+          id={countermeasures.id}
+          slot={slotId as CountermeasureSlotEnum}
+          cancel={() => setAddingModule(false)}
+        />
+      ) : (
+        <>
+          <div className="countermeasure">
+            <h2>Countermeasure</h2>
+            {!slot?.id && (
+              <CreateButton
+                key={slotId || undefined}
+                countermeasureId={countermeasures.id}
+                slotId={slotId as CountermeasureSlotEnum}
+              />
+            )}
+            {slot?.id &&
+              (slot?.building ? (
+                slot?.buildPercentage < 1 ? (
+                  <Progress bar value={slot.buildPercentage * 100}>
+                    {slot.buildPercentage * 100}%
+                  </Progress>
+                ) : (
+                  <Button
+                    block
+                    color="success"
+                    onClick={() =>
+                      launchCountermeasure({
+                        variables: {
+                          id: countermeasures.id,
+                          slot: slotId as CountermeasureSlotEnum,
+                        },
+                      })
+                    }
+                  >
+                    Deploy Countermeasure
+                  </Button>
+                )
+              ) : (
+                <Button
+                  block
+                  color="warning"
+                  disabled={!slotId || slot?.modules?.length === 0}
+                  onClick={() =>
+                    buildCountermeasure({
+                      variables: {
+                        id: countermeasures.id,
+                        slot: slotId as CountermeasureSlotEnum,
+                      },
+                    })
+                  }
+                >
+                  Build Countermeasure
+                </Button>
+              ))}
+            {slot?.id && (
+              <Button
+                block
+                color="danger"
+                onClick={() =>
+                  removeCountermeasure({
+                    variables: {
+                      id: countermeasures.id,
+                      slot: slotId as CountermeasureSlotEnum,
+                    },
+                  })
+                }
+              >
+                Remove Countermeasure
+              </Button>
+            )}
+          </div>
+          {slot?.id && (
+            <div className="modules">
+              <h2>Modules</h2>
+              {Array.from({length: 5}).map((_, i) => (
+                <Module
+                  key={`module-${i}`}
+                  disabled={!slot}
+                  countermeasuresId={countermeasures.id}
+                  slotId={(slotId as CountermeasureSlotEnum) || null}
+                  moduleObject={slot?.modules?.[i] || null}
+                  moduleIndex={i}
+                  setAddingModule={() => setAddingModule(true)}
+                  setSelectedModule={setSelectedModule}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      )}
       <div className="materials">
         <h2>Materials</h2>
         <div className="materials-container">

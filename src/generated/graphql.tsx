@@ -5980,7 +5980,7 @@ export type Query = {
   triggers?: Maybe<Array<Maybe<Trigger>>>;
   viewscreens?: Maybe<Array<Maybe<Viewscreen>>>;
   countermeasures?: Maybe<Countermeasures>;
-  countermeasureModuleType?: Maybe<Array<Maybe<CountermeasureModule>>>;
+  countermeasureModuleType: Array<CountermeasureModule>;
 };
 
 export type QueryActionsArgs = {
@@ -7683,6 +7683,7 @@ export type System = SystemInterface & {
   upgraded?: Maybe<Scalars["Boolean"]>;
   upgradeMacros?: Maybe<Array<Maybe<TimelineItem>>>;
   upgradeBoard?: Maybe<Scalars["ID"]>;
+  extra?: Maybe<Scalars["Boolean"]>;
   damage?: Maybe<Damage>;
   power?: Maybe<Power>;
   stealthFactor?: Maybe<Scalars["Float"]>;
@@ -8473,30 +8474,24 @@ export type CountermeasuresSubscription = {__typename?: "Subscription"} & {
 export type CountermeasureModulesQueryVariables = {};
 
 export type CountermeasureModulesQuery = {__typename?: "Query"} & {
-  countermeasureModuleType: Maybe<
-    Array<
-      Maybe<
-        {__typename?: "CountermeasureModule"} & Pick<
-          CountermeasureModule,
-          "id" | "name" | "description" | "powerRequirement"
-        > & {
-            resourceRequirements: {
-              __typename?: "CountermeasureResources";
-            } & Pick<
-              CountermeasureResources,
-              "copper" | "titanium" | "carbon" | "plastic" | "plasma"
-            >;
-            configurationOptions: Array<
-              Maybe<
-                {__typename?: "CountermeasureConfigOptions"} & Pick<
-                  CountermeasureConfigOptions,
-                  "type" | "label"
-                >
-              >
-            >;
-          }
-      >
-    >
+  countermeasureModuleType: Array<
+    {__typename?: "CountermeasureModule"} & Pick<
+      CountermeasureModule,
+      "id" | "name" | "description" | "powerRequirement"
+    > & {
+        resourceRequirements: {__typename?: "CountermeasureResources"} & Pick<
+          CountermeasureResources,
+          "copper" | "titanium" | "carbon" | "plastic" | "plasma"
+        >;
+        configurationOptions: Array<
+          Maybe<
+            {__typename?: "CountermeasureConfigOptions"} & Pick<
+              CountermeasureConfigOptions,
+              "type" | "label"
+            >
+          >
+        >;
+      }
   >;
 };
 

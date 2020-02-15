@@ -83,7 +83,7 @@ const schema = gql`
 
   extend type Query {
     countermeasures(simulatorId: ID!): Countermeasures
-    countermeasureModuleType: [CountermeasureModule]
+    countermeasureModuleType: [CountermeasureModule!]!
   }
   extend type Mutation {
     countermeasuresCreateCountermeasure(
