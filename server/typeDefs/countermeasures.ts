@@ -39,11 +39,11 @@ const schema = gql`
     buildPercentage: Float!
   }
   type CountermeasureResources {
-    copper: Int!
-    titanium: Int!
-    carbon: Int!
-    plastic: Int!
-    plasma: Int!
+    copper: Float!
+    titanium: Float!
+    carbon: Float!
+    plastic: Float!
+    plasma: Float!
   }
   type CountermeasureConfigOptions {
     type: String!

@@ -65,8 +65,8 @@ const Center: React.FC<CenterProps> = ({slots, slot, setSlot}) => {
               className={`slot ${key} ${value?.id ? "exists" : ""} ${
                 slot?.slotId === key ? "selected" : ""
               } ${value?.locked ? "locked" : ""} ${
-                value?.active ? "active" : ""
-              }`}
+                value?.building ? "building" : ""
+              } ${value?.active ? "active" : ""}`}
               style={{
                 ["--end-angle" as any]: value?.building
                   ? `${(value.buildPercentage || 0) * 100}%`
@@ -105,6 +105,11 @@ const Module: React.FC<ModuleProps> = ({
     <div className="module-container">
       <div
         className="module-card card"
+        style={{
+          background: `linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.1) ${(moduleObject?.buildProgress ||
+            0) * 100}%, rgba(255,255,255,0) ${(moduleObject?.buildProgress ||
+            0) * 100}%, transparent 100%)`,
+        }}
         onClick={() => setSelectedModule(moduleIndex)}
       >
         {moduleObject ? moduleObject.name : "Empty"}
@@ -112,6 +117,7 @@ const Module: React.FC<ModuleProps> = ({
       {moduleObject ? (
         <Button
           color="danger"
+          disabled={disabled}
           onClick={() =>
             removeModule({
               variables: {
@@ -145,7 +151,7 @@ const MaterialRadial: React.FC<{
         style={{
           ["--end-angle" as any]: `${(count / max) * 100}%`,
         }}
-        data-value={count}
+        data-value={Math.round(count)}
       ></div>
       <div className="label">{capitalCase(label)}</div>
     </div>
@@ -345,9 +351,14 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
             {slot?.id &&
               (slot?.building ? (
                 slot?.buildPercentage < 1 ? (
-                  <Progress bar value={slot.buildPercentage * 100}>
-                    {slot.buildPercentage * 100}%
-                  </Progress>
+                  <div className="build-progress">
+                    <h4>Build Progress</h4>
+                    <div className="progress-bar-container">
+                      <Progress bar value={slot.buildPercentage * 100}>
+                        {Math.round(slot.buildPercentage * 100)}%
+                      </Progress>
+                    </div>
+                  </div>
                 ) : (
                   <Button
                     block
@@ -404,7 +415,7 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
               {Array.from({length: 5}).map((_, i) => (
                 <Module
                   key={`module-${i}`}
-                  disabled={!slot}
+                  disabled={!slot || slot.building || slot.active}
                   countermeasuresId={countermeasures.id}
                   slotId={(slotId as CountermeasureSlotEnum) || null}
                   moduleObject={slot?.modules?.[i] || null}

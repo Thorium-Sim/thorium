@@ -413,11 +413,11 @@ export type CountermeasureModule = {
 
 export type CountermeasureResources = {
   __typename?: "CountermeasureResources";
-  copper: Scalars["Int"];
-  titanium: Scalars["Int"];
-  carbon: Scalars["Int"];
-  plastic: Scalars["Int"];
-  plasma: Scalars["Int"];
+  copper: Scalars["Float"];
+  titanium: Scalars["Float"];
+  carbon: Scalars["Float"];
+  plastic: Scalars["Float"];
+  plasma: Scalars["Float"];
 };
 
 export type Countermeasures = SystemInterface & {

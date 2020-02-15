@@ -1,6 +1,6 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
-import {Countermeasures, Simulator} from "../classes";
+import {Countermeasures} from "../classes";
 
 let delta = 0;
 let time = Date.now();
@@ -10,9 +10,9 @@ function processCountermeasures() {
   App.flights
     .filter(f => f.running === true)
     .forEach(f => {
-      f.simulators.forEach((s: Simulator) => {
+      f.simulators.forEach((id: string) => {
         const countermeasures: Countermeasures = App.systems.find(
-          sys => sys.simulatorId === s.id && sys.class === "Countermeasures",
+          sys => sys.simulatorId === id && sys.class === "Countermeasures",
         );
         if (!countermeasures) return;
 
@@ -20,7 +20,7 @@ function processCountermeasures() {
         Object.entries(countermeasures.slots).forEach(
           ([slot, countermeasure]) => {
             let built = false;
-
+            if (!countermeasure) return;
             // Disqualify it if possible
             if (countermeasure.active || !countermeasure.building) return;
             countermeasure.modules.forEach(mod => {
@@ -44,7 +44,6 @@ function processCountermeasures() {
         // At this point, all countermeasure actions should
         // be handled by the Flight Director. Someday, we'll
         // build countermeasures into the universal sandbox
-
         pubsub.publish("countermeasuresUpdate", countermeasures);
       });
     });

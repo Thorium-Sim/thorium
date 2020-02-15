@@ -195,7 +195,7 @@ class CountermeasureSlots {
 }
 
 interface DefaultParams {
-  materials?: CountermeasureResources;
+  storedMaterials?: CountermeasureResources;
   slots?: CountermeasureSlots;
   launched?: Countermeasure[];
 }
@@ -203,15 +203,15 @@ interface DefaultParams {
 export class Countermeasures extends System {
   type = "Countermeasures";
   class = "Countermeasures";
-  materials: CountermeasureResources;
+  storedMaterials: CountermeasureResources;
   slots: CountermeasureSlots;
   launched: Countermeasure[];
   constructor(params: DefaultParams = {}) {
     super({displayName: "Countermeasures", name: "Countermeasures", ...params});
     this.class = "Countermeasures";
     this.type = "Countermeasures";
-    this.materials = new CountermeasureResources(
-      params.materials || {
+    this.storedMaterials = new CountermeasureResources(
+      params.storedMaterials || {
         copper: 30,
         titanium: 30,
         carbon: 30,
@@ -222,6 +222,34 @@ export class Countermeasures extends System {
     this.slots = new CountermeasureSlots(params.slots);
     this.launched = [];
     params.launched?.forEach(l => this.launched.push(new Countermeasure(l)));
+  }
+
+  get materials() {
+    const usedMaterials = Object.entries(this.slots).reduce(
+      (prev, [, slot]) => {
+        slot?.modules.forEach(mod => {
+          prev.copper +=
+            (mod.resourceRequirements.copper || 0) * mod.buildProgress;
+          prev.carbon +=
+            (mod.resourceRequirements.carbon || 0) * mod.buildProgress;
+          prev.plasma +=
+            (mod.resourceRequirements.plasma || 0) * mod.buildProgress;
+          prev.plastic +=
+            (mod.resourceRequirements.plastic || 0) * mod.buildProgress;
+          prev.titanium +=
+            (mod.resourceRequirements.titanium || 0) * mod.buildProgress;
+        });
+        return prev;
+      },
+      {copper: 0, carbon: 0, plasma: 0, plastic: 0, titanium: 0},
+    );
+    return {
+      copper: this.storedMaterials.copper - usedMaterials.copper,
+      carbon: this.storedMaterials.carbon - usedMaterials.carbon,
+      plasma: this.storedMaterials.plasma - usedMaterials.plasma,
+      plastic: this.storedMaterials.plastic - usedMaterials.plastic,
+      titanium: this.storedMaterials.titanium - usedMaterials.titanium,
+    };
   }
   createCountermeasure(slot: string, name: string) {
     const countermeasure = new Countermeasure({id: uuid.v4(), name});
@@ -234,9 +262,11 @@ export class Countermeasures extends System {
 
       // Remove all of the unused materials from the countermeasure modules
       countermeasure.modules.forEach(m => {
-        const leftoverMaterialValue = 1 - m.buildProgress;
+        const usedMaterialValue = m.buildProgress;
         Object.entries(m.resourceRequirements).forEach(([key, value]) => {
-          this.materials[key] += leftoverMaterialValue * value;
+          this.storedMaterials[key] = Math.round(
+            this.storedMaterials[key] - usedMaterialValue * value,
+          );
         });
       });
     }
@@ -244,7 +274,18 @@ export class Countermeasures extends System {
   launchCountermeasure(slot) {
     if (this.slots[slot]?.readyToLaunch) {
       this.launched.push(this.slots[slot]);
+      // Properly remove the materials that were used.
+      const countermeasure: Countermeasure = this.slots[slot];
+
       this.slots[slot] = null;
+      countermeasure.modules.forEach(m => {
+        const usedMaterialValue = m.buildProgress;
+        Object.entries(m.resourceRequirements).forEach(([key, value]) => {
+          this.storedMaterials[key] = Math.round(
+            this.storedMaterials[key] - usedMaterialValue * value,
+          );
+        });
+      });
     }
   }
   buildCountermeasure(slot) {

@@ -204,6 +204,7 @@
     "@sentry/node": "^5.7.1",
     "@types/luxon": "^1.21.0",
     "@types/reactstrap": "^8.4.1",
+    "@types/styled-components": "^4.4.3",
     "apollo-server-express": "^2.9.6",
     "bonjour": "^3.5.0",
     "chalk": "^3.0.0",
