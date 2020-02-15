@@ -405,7 +405,7 @@ export type CountermeasureModule = {
   description: Scalars["String"];
   powerRequirement: Scalars["Float"];
   resourceRequirements: CountermeasureResources;
-  configurationOptions: Array<Maybe<CountermeasureConfigOptions>>;
+  configurationOptions: Array<CountermeasureConfigOptions>;
   config: Scalars["JSON"];
   buildProgress: Scalars["Float"];
   activated: Scalars["Boolean"];
@@ -8395,11 +8395,9 @@ export type CountermeasureModuleFragment = {
       "copper" | "titanium" | "carbon" | "plastic" | "plasma"
     >;
     configurationOptions: Array<
-      Maybe<
-        {__typename?: "CountermeasureConfigOptions"} & Pick<
-          CountermeasureConfigOptions,
-          "type" | "label"
-        >
+      {__typename?: "CountermeasureConfigOptions"} & Pick<
+        CountermeasureConfigOptions,
+        "type" | "label"
       >
     >;
   };
@@ -8484,11 +8482,9 @@ export type CountermeasureModulesQuery = {__typename?: "Query"} & {
           "copper" | "titanium" | "carbon" | "plastic" | "plasma"
         >;
         configurationOptions: Array<
-          Maybe<
-            {__typename?: "CountermeasureConfigOptions"} & Pick<
-              CountermeasureConfigOptions,
-              "type" | "label"
-            >
+          {__typename?: "CountermeasureConfigOptions"} & Pick<
+            CountermeasureConfigOptions,
+            "type" | "label"
           >
         >;
       }
@@ -8532,11 +8528,9 @@ export type CountermeasuresAddModuleMutation = {__typename?: "Mutation"} & {
                 "copper" | "titanium" | "plasma" | "carbon"
               >;
               configurationOptions: Array<
-                Maybe<
-                  {__typename?: "CountermeasureConfigOptions"} & Pick<
-                    CountermeasureConfigOptions,
-                    "type" | "label"
-                  >
+                {__typename?: "CountermeasureConfigOptions"} & Pick<
+                  CountermeasureConfigOptions,
+                  "type" | "label"
                 >
               >;
             }

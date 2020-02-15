@@ -7,9 +7,9 @@
   column-gap: 4rem;
   row-gap: 2rem;
   grid-template-areas:
-    "countermeasure center none2"
-    "modules center none2"
-    "materials center none2";
+    "countermeasure center config"
+    "modules center config"
+    "materials center all";
   .countermeasure-control {
     grid-area: countermeasure;
   }
@@ -229,5 +229,16 @@
       left: calc(10% - 15px);
       top: calc(10% - 15px);
     }
+  }
+  .configuration {
+    grid-area: config;
+    label,
+    input,
+    textarea {
+      width: 100%;
+    }
+  }
+  .deploy-all {
+    grid-area: all;
   }
 }

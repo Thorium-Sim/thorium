@@ -83,7 +83,7 @@ export const moduleTypes = [
   new CountermeasureModule({
     name: "Explosive Payload",
     description:
-      "When activated, it explodes. Do not activate immediately upon launch.",
+      "When activated, it explodes. Do not activate immediately upon launch. When activated, it will destroy the countermeasure.",
     resourceRequirements: {copper: 2, plasma: 3},
     configurationOptions: [{type: "Trigger", label: "Trigger"}],
   }),
@@ -212,11 +212,11 @@ export class Countermeasures extends System {
     this.type = "Countermeasures";
     this.storedMaterials = new CountermeasureResources(
       params.storedMaterials || {
-        copper: 30,
-        titanium: 30,
-        carbon: 30,
-        plastic: 30,
-        plasma: 30,
+        copper: 99,
+        titanium: 99,
+        carbon: 99,
+        plastic: 99,
+        plasma: 99,
       },
     );
     this.slots = new CountermeasureSlots(params.slots);

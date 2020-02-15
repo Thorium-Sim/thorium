@@ -55,7 +55,7 @@ const schema = gql`
     description: String!
     powerRequirement: Float!
     resourceRequirements: CountermeasureResources!
-    configurationOptions: [CountermeasureConfigOptions]!
+    configurationOptions: [CountermeasureConfigOptions!]!
     config: JSON!
     buildProgress: Float!
     activated: Boolean!
