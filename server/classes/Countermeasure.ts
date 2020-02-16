@@ -251,6 +251,9 @@ export class Countermeasures extends System {
       titanium: this.storedMaterials.titanium - usedMaterials.titanium,
     };
   }
+  setResource(resource, value) {
+    this.storedMaterials[resource] = value;
+  }
   createCountermeasure(slot: string, name: string) {
     const countermeasure = new Countermeasure({id: uuid.v4(), name});
     this.slots[slot] = countermeasure;
@@ -273,6 +276,11 @@ export class Countermeasures extends System {
   }
   launchCountermeasure(slot) {
     if (this.slots[slot]?.readyToLaunch) {
+      // For now, activate all of the modules when launched.
+      // TODO: When the Universal Sandbox is completed,
+      // make them know when and how to activate properly.
+      this.slots[slot].modules.forEach(m => m.activate());
+
       this.launched.push(this.slots[slot]);
       // Properly remove the materials that were used.
       const countermeasure: Countermeasure = this.slots[slot];

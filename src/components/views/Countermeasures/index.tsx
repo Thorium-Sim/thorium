@@ -242,7 +242,7 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
             Object.entries(countermeasures.materials).map(([key, value]) => {
               if (typeof value !== "number") return null;
               return (
-                <MaterialRadial key={key} label={key} count={value} max={30} />
+                <MaterialRadial key={key} label={key} count={value} max={99} />
               );
             })}
         </div>

@@ -2143,6 +2143,7 @@ export type Mutation = {
   countermeasuresAddModule?: Maybe<Countermeasure>;
   countermeasuresRemoveModule?: Maybe<Scalars["String"]>;
   countermeasuresConfigureModule?: Maybe<Scalars["String"]>;
+  countermeasuresSetResource?: Maybe<Scalars["String"]>;
 };
 
 export type MutationTriggerActionArgs = {
@@ -5532,6 +5533,12 @@ export type MutationCountermeasuresConfigureModuleArgs = {
   config: Scalars["JSON"];
 };
 
+export type MutationCountermeasuresSetResourceArgs = {
+  id: Scalars["ID"];
+  resource: Scalars["String"];
+  value: Scalars["Float"];
+};
+
 export type NamedObject = {
   __typename?: "NamedObject";
   id?: Maybe<Scalars["ID"]>;
@@ -8469,6 +8476,44 @@ export type CountermeasuresSubscription = {__typename?: "Subscription"} & {
   >;
 };
 
+export type CountermeasuresCoreSubscriptionVariables = {
+  simulatorId: Scalars["ID"];
+};
+
+export type CountermeasuresCoreSubscription = {__typename?: "Subscription"} & {
+  countermeasuresUpdate: Maybe<
+    {__typename?: "Countermeasures"} & Pick<
+      Countermeasures,
+      "id" | "name" | "displayName"
+    > & {
+        materials: {__typename?: "CountermeasureResources"} & Pick<
+          CountermeasureResources,
+          "copper" | "titanium" | "carbon" | "plastic" | "plasma"
+        >;
+        launched: Array<
+          {__typename?: "Countermeasure"} & Pick<
+            Countermeasure,
+            "id" | "name" | "powerUsage" | "availablePower"
+          > & {
+              modules: Array<
+                {__typename?: "CountermeasureModule"} & Pick<
+                  CountermeasureModule,
+                  "id" | "name" | "config" | "activated"
+                > & {
+                    configurationOptions: Array<
+                      {__typename?: "CountermeasureConfigOptions"} & Pick<
+                        CountermeasureConfigOptions,
+                        "type" | "label"
+                      >
+                    >;
+                  }
+              >;
+            }
+        >;
+      }
+  >;
+};
+
 export type CountermeasureModulesQueryVariables = {};
 
 export type CountermeasureModulesQuery = {__typename?: "Query"} & {
@@ -8500,6 +8545,16 @@ export type CountermeasureRemoveModuleMutationVariables = {
 export type CountermeasureRemoveModuleMutation = {
   __typename?: "Mutation";
 } & Pick<Mutation, "countermeasuresRemoveModule">;
+
+export type CountermeasureSetResourceMutationVariables = {
+  id: Scalars["ID"];
+  resource: Scalars["String"];
+  value: Scalars["Float"];
+};
+
+export type CountermeasureSetResourceMutation = {
+  __typename?: "Mutation";
+} & Pick<Mutation, "countermeasuresSetResource">;
 
 export type CountermeasuresAddModuleMutationVariables = {
   id: Scalars["ID"];
@@ -9166,6 +9221,72 @@ export type CountermeasuresSubscriptionHookResult = ReturnType<
 export type CountermeasuresSubscriptionResult = ApolloReactCommon.SubscriptionResult<
   CountermeasuresSubscription
 >;
+export const CountermeasuresCoreDocument = gql`
+  subscription CountermeasuresCore($simulatorId: ID!) {
+    countermeasuresUpdate(simulatorId: $simulatorId) {
+      id
+      name
+      displayName
+      materials {
+        copper
+        titanium
+        carbon
+        plastic
+        plasma
+      }
+      launched {
+        id
+        name
+        modules {
+          id
+          name
+          config
+          activated
+          configurationOptions {
+            type
+            label
+          }
+        }
+        powerUsage
+        availablePower
+      }
+    }
+  }
+`;
+
+/**
+ * __useCountermeasuresCoreSubscription__
+ *
+ * To run a query within a React component, call `useCountermeasuresCoreSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useCountermeasuresCoreSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCountermeasuresCoreSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useCountermeasuresCoreSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    CountermeasuresCoreSubscription,
+    CountermeasuresCoreSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    CountermeasuresCoreSubscription,
+    CountermeasuresCoreSubscriptionVariables
+  >(CountermeasuresCoreDocument, baseOptions);
+}
+export type CountermeasuresCoreSubscriptionHookResult = ReturnType<
+  typeof useCountermeasuresCoreSubscription
+>;
+export type CountermeasuresCoreSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  CountermeasuresCoreSubscription
+>;
 export const CountermeasureModulesDocument = gql`
   query CountermeasureModules {
     countermeasureModuleType {
@@ -9288,6 +9409,60 @@ export type CountermeasureRemoveModuleMutationResult = ApolloReactCommon.Mutatio
 export type CountermeasureRemoveModuleMutationOptions = ApolloReactCommon.BaseMutationOptions<
   CountermeasureRemoveModuleMutation,
   CountermeasureRemoveModuleMutationVariables
+>;
+export const CountermeasureSetResourceDocument = gql`
+  mutation CountermeasureSetResource(
+    $id: ID!
+    $resource: String!
+    $value: Float!
+  ) {
+    countermeasuresSetResource(id: $id, resource: $resource, value: $value)
+  }
+`;
+export type CountermeasureSetResourceMutationFn = ApolloReactCommon.MutationFunction<
+  CountermeasureSetResourceMutation,
+  CountermeasureSetResourceMutationVariables
+>;
+
+/**
+ * __useCountermeasureSetResourceMutation__
+ *
+ * To run a mutation, you first call `useCountermeasureSetResourceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCountermeasureSetResourceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [countermeasureSetResourceMutation, { data, loading, error }] = useCountermeasureSetResourceMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      resource: // value for 'resource'
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useCountermeasureSetResourceMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CountermeasureSetResourceMutation,
+    CountermeasureSetResourceMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    CountermeasureSetResourceMutation,
+    CountermeasureSetResourceMutationVariables
+  >(CountermeasureSetResourceDocument, baseOptions);
+}
+export type CountermeasureSetResourceMutationHookResult = ReturnType<
+  typeof useCountermeasureSetResourceMutation
+>;
+export type CountermeasureSetResourceMutationResult = ApolloReactCommon.MutationResult<
+  CountermeasureSetResourceMutation
+>;
+export type CountermeasureSetResourceMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CountermeasureSetResourceMutation,
+  CountermeasureSetResourceMutationVariables
 >;
 export const CountermeasuresAddModuleDocument = gql`
   mutation CountermeasuresAddModule(

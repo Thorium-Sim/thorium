@@ -242,3 +242,25 @@
     grid-area: all;
   }
 }
+
+.core-countermeasures {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .countermeasure-list {
+    flex: 1;
+    display: flex;
+  }
+  .list-group {
+    flex: 1;
+    overflow-y: auto;
+  }
+  .countermeasure-info {
+    flex: 2;
+    overflow-y: auto;
+    margin-left: 1rem;
+  }
+  .module-list {
+    margin-left: 1rem;
+  }
+}

@@ -213,7 +213,7 @@ const MacroButtonsCore = React.lazy(() => import("./Macros/macroButtons"));
 const OfficerLogCore = React.lazy(() => import("./OfficerLog/core"));
 const RecordsCore = React.lazy(() => import("./Records/core"));
 const MIDICore = React.lazy(() => import("./Midi"));
-const CountermeasuresCore = React.lazy(() => import("./Countermeasures"));
+const CountermeasuresCore = React.lazy(() => import("./Countermeasures/core"));
 
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));

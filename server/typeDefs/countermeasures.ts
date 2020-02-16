@@ -120,6 +120,11 @@ const schema = gql`
       moduleId: ID!
       config: JSON!
     ): String
+    countermeasuresSetResource(
+      id: ID!
+      resource: String!
+      value: Float!
+    ): String
   }
   extend type Subscription {
     countermeasuresUpdate(simulatorId: ID!): Countermeasures

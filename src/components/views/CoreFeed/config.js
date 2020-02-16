@@ -16,6 +16,7 @@ const components = [
   "CargoCore",
   "CommandLineCore",
   "CommShortRangeCore",
+  "CountermeasuresCore",
   "DamageReportsCore",
   "DamageTeamsCore",
   "DecontaminationCore",
