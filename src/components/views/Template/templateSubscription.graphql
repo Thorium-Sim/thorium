@@ -3,5 +3,6 @@
 subscription TemplateUpdate($simulatorId: ID!) {
   _templateUpdate(simulatorId: $simulatorId) {
     ...TemplateFragment
+    __typename
   }
 }

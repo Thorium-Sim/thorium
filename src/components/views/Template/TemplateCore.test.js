@@ -13,7 +13,16 @@ const TEMPLATE_CORE_QUERY = loader("./templateQuery.graphql");
 // mocks with real mock data.
 it("should render", async () => {
   const {container, getByText} = render(<Core {...baseProps} />, {
-    queries: [TEMPLATE_CORE_SUB, TEMPLATE_CORE_QUERY],
+    mocks: [
+      {
+        request: {query: TEMPLATE_CORE_QUERY, variables: {simulatorId: "test"}},
+        result: {data: {}},
+      },
+      {
+        request: {query: TEMPLATE_CORE_SUB, variables: {simulatorId: "test"}},
+        result: {data: {}},
+      },
+    ],
   });
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();

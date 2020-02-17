@@ -360,18 +360,18 @@ type CountermeasureModule {
   description: String!
   powerRequirement: Float!
   resourceRequirements: CountermeasureResources!
-  configurationOptions: [CountermeasureConfigOptions]!
+  configurationOptions: [CountermeasureConfigOptions!]!
   config: JSON!
   buildProgress: Float!
   activated: Boolean!
 }
 
 type CountermeasureResources {
-  copper: Int!
-  titanium: Int!
-  carbon: Int!
-  plastic: Int!
-  plasma: Int!
+  copper: Float!
+  titanium: Float!
+  carbon: Float!
+  plastic: Float!
+  plasma: Float!
 }
 
 type Countermeasures implements SystemInterface {
@@ -2911,6 +2911,7 @@ type Mutation {
     moduleId: ID!
     config: JSON!
   ): String
+  countermeasuresSetResource(id: ID!, resource: String!, value: Float!): String
 }
 
 type NamedObject {
@@ -3367,7 +3368,7 @@ type Query {
   triggers(simulatorId: ID): [Trigger]
   viewscreens(simulatorId: ID): [Viewscreen]
   countermeasures(simulatorId: ID!): Countermeasures
-  countermeasureModuleType: [CountermeasureModule]
+  countermeasureModuleType: [CountermeasureModule!]!
 }
 
 type Railgun implements SystemInterface {
@@ -4212,6 +4213,7 @@ type System implements SystemInterface {
   upgraded: Boolean
   upgradeMacros: [TimelineItem]
   upgradeBoard: ID
+  extra: Boolean
   damage: Damage
   power: Power
   stealthFactor: Float
