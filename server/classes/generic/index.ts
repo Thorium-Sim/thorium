@@ -9,7 +9,7 @@ import * as damageReportFunctions from "./damageReports/functions";
 import processReport from "./processReport";
 import DamageStep from "./damageStep";
 import DamageTask from "./damageTask";
-import {Station, Card} from "../StationSet";
+import {Station, Card} from "../stationSet";
 
 const damageStepFunctions: {[key: string]: any} = {...damageReportFunctions};
 
