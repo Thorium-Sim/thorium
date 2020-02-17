@@ -396,11 +396,19 @@ class DamageControl extends Component {
               damagedSystem.tasks) && (
               <Button
                 block
-                color="primary"
-                className={codeEntry ? "reactivate-button" : ""}
+                color={codeEntry ? "warning" : "primary"}
                 onClick={reactivationCodeModal ? () => {} : this.toggle}
               >
-                {codeEntry ? codeEntry : "Enter Reactivation Code..."}
+                {codeEntry ? (
+                  <span>
+                    <span className={codeEntry ? "reactivate-button" : ""}>
+                      {codeEntry}
+                    </span>
+                    {reactivationCodeModal ? "" : " - Reactivating"}
+                  </span>
+                ) : (
+                  "Enter Reactivation Code..."
+                )}
               </Button>
             )}
           </Col>
