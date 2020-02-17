@@ -1,6 +1,6 @@
 import React from "react";
-import {useQuery, useSubscription} from "@apollo/react-hooks";
-export * from "@apollo/react-hooks";
+import {useQuery, useSubscription} from "@apollo/client";
+export * from "@apollo/client";
 
 export function useQuerySub(QueryDocument, SubscriptionDocument, baseOptions) {
   const {loading, data: queryData, error} = useQuery(

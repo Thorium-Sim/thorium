@@ -62,7 +62,7 @@ const ops = {
     }
   `,
   updateStationCard: gql`
-    mutation EditCard(
+    mutation EditStationCard(
       $stationSetId: ID!
       $stationName: String!
       $cardName: String!

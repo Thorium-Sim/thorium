@@ -7,6 +7,17 @@ import SimulatorData from "./simulatorData";
 import Credits from "./credits";
 import "./client.scss";
 
+const REGISTER_CLIENT = gql`
+  mutation RegisterClient($client: ID!) {
+    clientConnect(client: $client)
+  }
+`;
+
+const REMOVE_CLIENT = gql`
+  mutation RemoveClient($id: ID!) {
+    clientDisconnect(client: $id)
+  }
+`;
 const fragments = {
   clientData: gql`
     fragment ClientData on Client {
@@ -53,7 +64,7 @@ const QUERY = gql`
 `;
 const SUBSCRIPTION = gql`
   subscription ClientUpdate($clientId: ID!) {
-    clientChanged(client: $clientId) {
+    clientChanged(clientId: $clientId) {
       ...ClientData
     }
   }
@@ -74,11 +85,7 @@ class ClientData extends Component {
       // Register the client for the first time.
       client
         .mutate({
-          mutation: gql`
-            mutation RegisterClient($client: ID!) {
-              clientConnect(client: $client)
-            }
-          `,
+          mutation: REGISTER_CLIENT,
           variables: {client: clientId},
         })
         .then(() => this.setState({registered: true}));
@@ -93,11 +100,7 @@ class ClientData extends Component {
       // Disconnect the client when the browser closes.
       window.onbeforeunload = () => {
         client.mutate({
-          mutation: gql`
-            mutation RemoveClient($id: ID!) {
-              clientDisconnect(client: $id)
-            }
-          `,
+          mutation: REMOVE_CLIENT,
           variables: {id: clientId},
         });
         return null;
@@ -109,20 +112,12 @@ class ClientData extends Component {
     setClientId(clientId);
     this.setState({clientId});
     this.props.client.mutate({
-      mutation: gql`
-        mutation RemoveClient($id: ID!) {
-          clientDisconnect(client: $id)
-        }
-      `,
+      mutation: REMOVE_CLIENT,
       variables: {id: oldClientId},
     });
     this.props.client
       .mutate({
-        mutation: gql`
-          mutation RegisterClient($client: ID!) {
-            clientConnect(client: $client)
-          }
-        `,
+        mutation: REGISTER_CLIENT,
         variables: {client: clientId},
       })
       .then(() => {
@@ -134,7 +129,6 @@ class ClientData extends Component {
   render() {
     const {clientId, registered} = this.state;
     if (!clientId) return null;
-
     return (
       <Query query={QUERY} variables={{clientId}} skip={!registered}>
         {({loading, data, subscribeToMore}) => {

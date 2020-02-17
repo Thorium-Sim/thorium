@@ -1,14 +1,12 @@
-import {ApolloClient} from "apollo-client";
-import {HttpLink} from "apollo-link-http";
-import {ApolloLink, split, from} from "apollo-link";
-import {getMainDefinition} from "apollo-utilities";
-import {onError} from "apollo-link-error";
-import {WebSocketLink} from "apollo-link-ws";
-import {MockLink} from "@apollo/react-testing";
+import {ApolloClient, HttpLink, ApolloLink, split, from} from "@apollo/client";
+import {getMainDefinition} from "@apollo/client/utilities";
+import {onError} from "@apollo/link-error";
+import {WebSocketLink} from "@apollo/link-ws";
+import {MockLink} from "@apollo/client/testing";
+import {setContext} from "@apollo/link-context";
 import {Hermes} from "apollo-cache-hermes";
 import {FLIGHTS_QUERY} from "../containers/FlightDirector/Welcome/Welcome";
 import {getClientId} from "helpers/getClientId";
-import {setContext} from "apollo-link-context";
 
 // import * as Sentry from "@sentry/browser";
 
@@ -49,7 +47,7 @@ const wsLink = ApolloLink.from([
     }
 
     if (networkError) {
-      console.log(`[Network error]: ${networkError}`);
+      console.log(`[Network error]: `, networkError);
       // Sentry.captureException(networkError);
     }
     if (response) response.errors = null;
@@ -73,7 +71,7 @@ const httpLink = ApolloLink.from([
         ),
       );
     }
-    if (networkError) console.log(`[Network error]: ${networkError}`);
+    if (networkError) console.log(`[Network error]:`, networkError);
   }),
   process.env.NODE_ENV === "test"
     ? new MockLink([{request: {query: FLIGHTS_QUERY}}])

@@ -1,0 +1,3 @@
+mutation SetClientSimulator($client: ID!, $id: ID!) {
+  clientSetSimulator(client: $client, simulatorId: $id)
+}

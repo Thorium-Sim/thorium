@@ -17,6 +17,7 @@ export const notifyComponents = [
   "Alert Condition",
   "Cargo",
   "Command Line",
+  "Countermeasures",
   "Damage Reports",
   "Damage Teams",
   "Decontamination",

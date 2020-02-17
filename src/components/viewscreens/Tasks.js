@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {Duration} from "luxon";
 
 const fragment = gql`

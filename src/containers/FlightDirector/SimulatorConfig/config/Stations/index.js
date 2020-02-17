@@ -5,7 +5,7 @@ import {withApollo} from "react-apollo";
 import StationSetPicker from "./StationSetPicker";
 import StationPicker from "./StationPicker";
 import ConfigStation from "./StationConfig";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 const QUERY = gql`
   query Panels {
     softwarePanels {

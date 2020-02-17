@@ -74,7 +74,7 @@ const SUBSCRIPTION = gql`
   ${fragment}
 `;
 const CACHE_INVALID_SUB = gql`
-  subscription ClearCache($flight: ID!) {
+  subscription ClearCoreCache($flight: ID!) {
     clearCache(flight: $flight)
   }
 `;

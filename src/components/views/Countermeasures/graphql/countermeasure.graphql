@@ -1,0 +1,85 @@
+fragment CountermeasureModule on CountermeasureModule {
+  id
+  name
+  config
+  buildProgress
+  activated
+  powerRequirement
+  resourceRequirements {
+    copper
+    titanium
+    carbon
+    plastic
+    plasma
+  }
+  configurationOptions {
+    type
+    label
+  }
+}
+
+fragment Countermeasure on Countermeasure {
+  id
+  name
+  modules {
+    ...CountermeasureModule
+  }
+  locked
+  active
+  building
+  totalPowerUsed
+  readyToLaunch
+  powerUsage
+  availablePower
+  buildPercentage
+}
+subscription Countermeasures($simulatorId: ID!) {
+  countermeasuresUpdate(simulatorId: $simulatorId) {
+    id
+    name
+    displayName
+    damage {
+      damaged
+    }
+    power {
+      power
+      powerLevels
+    }
+    materials {
+      copper
+      titanium
+      carbon
+      plastic
+      plasma
+    }
+    launched {
+      ...Countermeasure
+    }
+    slots {
+      slot1 {
+        ...Countermeasure
+      }
+      slot2 {
+        ...Countermeasure
+      }
+      slot3 {
+        ...Countermeasure
+      }
+      slot4 {
+        ...Countermeasure
+      }
+      slot5 {
+        ...Countermeasure
+      }
+      slot6 {
+        ...Countermeasure
+      }
+      slot7 {
+        ...Countermeasure
+      }
+      slot8 {
+        ...Countermeasure
+      }
+    }
+  }
+}

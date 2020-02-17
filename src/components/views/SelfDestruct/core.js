@@ -5,7 +5,7 @@ import {withApollo} from "react-apollo";
 import {InputField} from "../../generic/core";
 import {Duration} from "luxon";
 import "./style.scss";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 function padDigits(number, digits) {

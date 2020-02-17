@@ -1,0 +1,30 @@
+subscription CountermeasuresCore($simulatorId: ID!) {
+  countermeasuresUpdate(simulatorId: $simulatorId) {
+    id
+    name
+    displayName
+    materials {
+      copper
+      titanium
+      carbon
+      plastic
+      plasma
+    }
+    launched {
+      id
+      name
+      modules {
+        id
+        name
+        config
+        activated
+        configurationOptions {
+          type
+          label
+        }
+      }
+      powerUsage
+      availablePower
+    }
+  }
+}

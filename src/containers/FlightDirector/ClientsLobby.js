@@ -205,7 +205,7 @@ This can only be done once per flight and should only be done when the flight is
                 ) : (
                   <Mutation
                     mutation={gql`
-                      mutation ResumeFlight($flightId: ID!) {
+                      mutation LobbyResumeFlight($flightId: ID!) {
                         resumeFlight(flightId: $flightId)
                       }
                     `}

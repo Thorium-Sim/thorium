@@ -5,7 +5,7 @@ import {InputField, OutputField} from "../../generic/core";
 import {Input, Button} from "helpers/reactstrap";
 import LayoutList from "../../layouts/list";
 import debounce from "helpers/debounce";
-import {useQuery, useMutation} from "@apollo/react-hooks";
+import {useQuery, useMutation} from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 const layouts = LayoutList;
