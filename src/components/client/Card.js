@@ -12,25 +12,22 @@ import {useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {playSound} from "../generic/SoundPlayer";
 import {randomFromList} from "helpers/randomFromList";
-
-const Blackout = () => {
-  return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "fixed",
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        zIndex: 10000,
-        backgroundColor: "black",
-      }}
-    />
-  );
-};
-
+import styled from "styled-components";
+const Blackout = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10000;
+  background-color: black;
+  *,
+  & ~ * {
+    display: none;
+  }
+`;
 const CardRenderer = props => {
   const {simulator, station, flight, client, card, changeCard} = props;
   const layoutName =
