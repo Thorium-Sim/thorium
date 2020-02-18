@@ -350,7 +350,7 @@ class DamageControl extends Component {
                   defaultMessage="Reactivate"
                 />
               </Button>
-            ) : (
+            ) : system?.damage.report ? null : (
               <Mutation
                 mutation={gql`
                   mutation RequestReport($systemId: ID!) {
