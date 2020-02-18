@@ -2,6 +2,7 @@ import React from "react";
 import gql from "graphql-tag.macro";
 import {useMutation} from "@apollo/client";
 import {SENSORS_OFFSET, distance3d} from "../constants";
+import useEventListener from "helpers/hooks/useEventListener";
 
 const CREATE_CONTACT = gql`
   mutation CreateContact($id: ID!, $contact: SensorContactInput!) {
@@ -14,7 +15,7 @@ export function useDragStart({id}, dimensions, addContact) {
   const hasMovingContact = Boolean(movingContact);
   const mover = React.useRef({});
 
-  React.useEffect(() => {
+  const dragMove = React.useCallback(
     function dragMove(evt) {
       const {clientX, clientY} = evt;
       if (!hasMovingContact) return;
@@ -45,11 +46,14 @@ export function useDragStart({id}, dimensions, addContact) {
           ? {...c, location: destination, destination: destination}
           : null;
       });
-    }
+    },
+    [dimensions, hasMovingContact],
+  );
+
+  const dragUp = React.useCallback(
     function dragUp() {
-      document.removeEventListener("mousemove", dragMove);
-      document.removeEventListener("mouseup", dragUp);
-      if (!hasMovingContact) return;
+      if (!hasMovingContact || Object.entries(mover.current).length === 0)
+        return;
 
       setMovingContact(c => {
         const {location, type, size} = c;
@@ -85,15 +89,13 @@ export function useDragStart({id}, dimensions, addContact) {
           },
         },
       });
-    }
+    },
+    [addContact, createContact, hasMovingContact, id],
+  );
 
-    document.addEventListener("mousemove", dragMove);
-    document.addEventListener("mouseup", dragUp);
-    return () => {
-      document.removeEventListener("mousemove", dragMove);
-      document.removeEventListener("mouseup", dragUp);
-    };
-  }, [addContact, createContact, dimensions, hasMovingContact, id]);
+  useEventListener("mousemove", dragMove);
+  useEventListener("mouseup", dragUp);
+
   function dragStart(movingContact) {
     setMovingContact({type: "contact", ...movingContact, location: null});
   }
