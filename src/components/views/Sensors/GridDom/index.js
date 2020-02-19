@@ -1,7 +1,5 @@
-import React, {Component} from "react";
-import {Query} from "react-apollo";
+import React from "react";
 import gql from "graphql-tag.macro";
-import SubscriptionHelper from "helpers/subscriptionHelper";
 import Grid from "./grid";
 import "./style.scss";
 import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
