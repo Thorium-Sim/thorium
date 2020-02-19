@@ -109,7 +109,6 @@ App.on(
         c => c.component === "Sensors" || c.component === "JrSensors",
       ),
     );
-    console.log(stations, flash);
     stations.forEach(s => {
       if (flash) {
         const cardName = s.cards.find(
@@ -541,7 +540,6 @@ App.on("updateSensorGrid", ({simulatorId, contacts, cb}) => {
     system.moveContact({id, destination, speed});
   });
   movingContacts.forEach(contact => system.moveContact(contact));
-  // console.log(movingContacts);
   pubsub.publish("sensorContactUpdate", system);
 });
 

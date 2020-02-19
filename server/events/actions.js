@@ -145,7 +145,6 @@ App.on("triggerAction", args => {
       });
       break;
     default:
-      console.log(args, stations, clients);
       pubsub.publish("actionsUpdate", {...args, stations, clients});
       break;
   }

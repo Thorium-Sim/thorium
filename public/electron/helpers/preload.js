@@ -173,7 +173,6 @@ document.addEventListener(
     const kioskEl = document.getElementById("open-client-window");
     if (kioskEl) {
       kioskEl.addEventListener("click", function openClient() {
-        console.log("Opening Client");
         ipcRenderer.send("loadPage", {
           url: `${printUrl()}/client`,
           kiosk: false,
