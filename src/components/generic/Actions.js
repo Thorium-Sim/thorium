@@ -40,15 +40,13 @@ const useSpark = () => {
   const [sparks, setSparks] = useState([]);
   const timeoutRef = useRef([]);
   const doSpark = React.useCallback(duration => {
-    clearTimeout(timeoutRef.current);
     duration = duration || 5000;
     const id = uuid.v4();
     setSparks(sparks => [...sparks, id]);
-    timeoutRef.current.push(
-      setTimeout(() => {
-        setSparks(sparks => sparks.filter(s => s !== id));
-      }, duration),
-    );
+    const timeout = setTimeout(() => {
+      setSparks(sparks => sparks.filter(s => s !== id));
+    }, duration);
+    timeoutRef.current.push(timeout);
   }, []);
   useEffect(() => {
     // eslint-disable-next-line
