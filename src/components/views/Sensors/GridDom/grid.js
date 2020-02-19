@@ -172,7 +172,13 @@ class InnerGrid extends Component {
           c.destination.y < bounds.y2,
       )
       .map(c => c.id);
-    updateSelectedContacts(contacts.filter(c => selected.indexOf(c.id) > -1));
+    updateSelectedContacts(
+      contacts.filter(
+        c =>
+          this.props.includeTypes.includes(c.type) &&
+          selected.indexOf(c.id) > -1,
+      ),
+    );
   };
   renderLines = () => {
     const {renderLines, rings = 3, lines = 12, aligned = false} = this.props;

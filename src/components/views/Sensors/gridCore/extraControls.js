@@ -203,10 +203,6 @@ const ExtraControls = ({
             checked={askForSpeed}
             onChange={evt => {
               updateAskForSpeed(evt.target.checked);
-              localStorage.setItem(
-                "thorium-core-sensors-askforspeed",
-                evt.target.checked ? "yes" : "no",
-              );
             }}
           />
         </label>

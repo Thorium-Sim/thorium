@@ -1,8 +1,9 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {useMutation} from "@apollo/client";
-import {SENSORS_OFFSET, distance3d} from "../constants";
+import {distance3d, SENSORS_OFFSET} from "../constants";
 import useEventListener from "helpers/hooks/useEventListener";
+import {calculateDestination} from "./useMouseDown";
 
 const CREATE_CONTACT = gql`
   mutation CreateContact($id: ID!, $contact: SensorContactInput!) {
@@ -21,22 +22,24 @@ export function useDragStart({id}, dimensions, addContact) {
       if (!hasMovingContact) return;
       setMovingContact(c => {
         const {width: dimWidth, height: dimHeight} = dimensions;
-        const width = Math.min(dimWidth, dimHeight);
+        const pageOffset = Math.min(dimWidth, dimHeight) - SENSORS_OFFSET;
+        const dimOffset = Math.abs(dimWidth - dimHeight);
+
         const destination = {
-          x:
-            (clientX -
-              dimensions.left +
-              SENSORS_OFFSET / 2 -
-              (width + SENSORS_OFFSET) / 2) /
-              (dimensions.width / 2) -
-            0.08,
-          y:
-            (clientY -
-              dimensions.top +
-              SENSORS_OFFSET / 2 -
-              (width + SENSORS_OFFSET) / 2) /
-              (dimensions.height / 2) -
-            0.08,
+          x: calculateDestination(
+            clientX,
+            dimensions.left,
+            dimWidth,
+            pageOffset,
+            dimWidth > dimHeight ? dimOffset : 0,
+          ),
+          y: calculateDestination(
+            clientY,
+            dimensions.top,
+            dimHeight,
+            pageOffset,
+            dimWidth < dimHeight ? dimOffset : 0,
+          ),
           z: 0,
         };
         mover.current = c

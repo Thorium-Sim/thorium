@@ -1,4 +1,20 @@
 import React from "react";
+import {SENSORS_OFFSET} from "../constants";
+
+export function calculateDestination(
+  clientPos,
+  dimension,
+  length,
+  pageOffset,
+  dimOffset,
+) {
+  const nonRelative = clientPos - dimension - dimOffset / 2;
+  const zeroToOneScale = (nonRelative / length) * (length / pageOffset);
+  const negativeOneToOne = (zeroToOneScale - 1 / 2) * 2;
+  const offset = 0.24;
+
+  return negativeOneToOne - offset;
+}
 
 export function useMouseDown({
   dimensions,
@@ -13,7 +29,7 @@ export function useMouseDown({
   speed,
 }) {
   const downMouseTime = React.useRef(Date.now());
-
+  const immediateDragId = React.useRef();
   React.useLayoutEffect(() => {
     const mouseUp = evt => {
       document.removeEventListener("mousemove", mouseMove);
@@ -39,21 +55,44 @@ export function useMouseDown({
 
     const mouseMove = e => {
       const {width: dimWidth, height: dimHeight} = dimensions;
-      const width = Math.min(dimWidth, dimHeight);
-      const destinationDiff = {
-        x: (e.movementX / width) * 2,
-        y: (e.movementY / width) * 2,
+      const {clientX, clientY} = e;
+      const pageOffset = Math.min(dimWidth, dimHeight) - SENSORS_OFFSET;
+      const dimOffset = Math.abs(dimWidth - dimHeight);
+      const destination = {
+        x: calculateDestination(
+          clientX,
+          dimensions.left,
+          dimWidth,
+          pageOffset,
+          dimWidth > dimHeight ? dimOffset : 0,
+        ),
+        y: calculateDestination(
+          clientY,
+          dimensions.top,
+          dimHeight,
+          pageOffset,
+          dimWidth < dimHeight ? dimOffset : 0,
+        ),
         z: 0,
       };
-      setDraggingContacts(contacts =>
-        contacts.map(c => ({
+      setDraggingContacts(contacts => {
+        const contactDestination = contacts.find(
+          c => c.id === immediateDragId.current,
+        )?.destination;
+        const destinationDiff = {
+          x: destination.x - contactDestination.x,
+          y: destination.y - contactDestination.y,
+          z: destination.z - contactDestination.z,
+        };
+        return contacts.map(c => ({
           ...c,
           destination: {
             x: c.destination.x + destinationDiff.x,
             y: c.destination.y + destinationDiff.y,
+            z: 0,
           },
-        })),
-      );
+        }));
+      });
     };
     if (draggingContacts && draggingContacts.length && !speedAsking) {
       document.addEventListener("mousemove", mouseMove);
@@ -77,7 +116,48 @@ export function useMouseDown({
   ]);
   function mouseDown(e, contact) {
     downMouseTime.current = Date.now();
-    setDraggingContacts(selectedContacts.concat(contact));
+
+    const {width: dimWidth, height: dimHeight} = dimensions;
+    const {clientX, clientY} = e;
+    const pageOffset = Math.min(dimWidth, dimHeight) - SENSORS_OFFSET;
+    const dimOffset = Math.abs(dimWidth - dimHeight);
+
+    const destination = {
+      x: calculateDestination(
+        clientX,
+        dimensions.left,
+        dimWidth,
+        pageOffset,
+        dimWidth > dimHeight ? dimOffset : 0,
+      ),
+      y: calculateDestination(
+        clientY,
+        dimensions.top,
+        dimHeight,
+        pageOffset,
+        dimWidth < dimHeight ? dimOffset : 0,
+      ),
+      z: 0,
+    };
+
+    const contactDestination = contact.destination;
+    const destinationDiff = {
+      x: destination.x - contactDestination.x,
+      y: destination.y - contactDestination.y,
+      z: destination.z - contactDestination.z,
+    };
+
+    setDraggingContacts(
+      selectedContacts.concat(contact).map(c => ({
+        ...c,
+        destination: {
+          x: c.destination.x + destinationDiff.x,
+          y: c.destination.y + destinationDiff.y,
+          z: 0,
+        },
+      })),
+    );
+    immediateDragId.current = contact.id;
   }
   return [mouseDown];
 }
