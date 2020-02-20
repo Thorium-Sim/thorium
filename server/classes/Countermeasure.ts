@@ -390,7 +390,6 @@ class Countermeasure {
       const mod = moduleTypes.find(
         m => m.name === moduleType || m.id === moduleType,
       );
-      console.log(mod);
       if (!mod) return;
       this.modules.push(new CountermeasureModule({...mod, id: uuid.v4()}));
     }

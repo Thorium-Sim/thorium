@@ -147,7 +147,7 @@
 */
 export default [
   {
-    id: "07ffd617-d70a-4c8d-8e1d-99bd863b78c2",
+    id: "test",
     simulatorId: "test",
     domain: "external",
     name: "External Sensors",

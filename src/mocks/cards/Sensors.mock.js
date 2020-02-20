@@ -9,6 +9,11 @@ import {
   SENSOR_CORE_QUERY,
   SENSOR_CORE_SUB,
 } from "components/views/Sensors/core";
+import {
+  JR_SENSOR_QUERY,
+  JR_SENSOR_SUB,
+} from "components/views/JrSensors/index.js";
+
 export default [
   {
     request: {
@@ -24,6 +29,28 @@ export default [
   {
     request: {
       query: SENSOR_SUB,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {
+        sensorsUpdate: sensors,
+      },
+    },
+  },
+  {
+    request: {
+      query: JR_SENSOR_QUERY,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {
+        sensors,
+      },
+    },
+  },
+  {
+    request: {
+      query: JR_SENSOR_SUB,
       variables: {simulatorId: "test"},
     },
     result: {
