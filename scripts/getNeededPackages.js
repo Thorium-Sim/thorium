@@ -11,8 +11,9 @@ const needed = [
   "is-linux",
   "is-osx",
   "is-windows",
-  "electron-dl",
   "semver",
+  "electron-updater",
+  "universalify",
 ];
 
 function getNeededPackages(pkg) {

@@ -1,6 +1,6 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 const fragment = gql`

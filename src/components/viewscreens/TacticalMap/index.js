@@ -3,7 +3,7 @@ import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
 import Preview from "components/views/TacticalMap/preview";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 //import "./style.scss";
 
 const fragment = gql`

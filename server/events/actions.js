@@ -87,6 +87,11 @@ App.on("triggerAction", args => {
   }
   // In some cases, we need to change the client
   switch (args.action) {
+    case "changeCard":
+      clients.forEach(c =>
+        App.handleEvent({id: c, card: args.message}, "clientSetCard"),
+      );
+      break;
     case "online":
       clients.forEach(c =>
         App.handleEvent({client: c, state: null}, "clientOfflineState"),
@@ -145,7 +150,6 @@ App.on("triggerAction", args => {
       });
       break;
     default:
-      console.log(args, stations, clients);
       pubsub.publish("actionsUpdate", {...args, stations, clients});
       break;
   }

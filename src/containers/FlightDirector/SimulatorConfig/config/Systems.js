@@ -16,6 +16,7 @@ import * as Configs from "./systemsConfig";
 const systems = [
   "ComputerCore",
   "Coolant",
+  "Countermeasures",
   "Crm",
   "Engine",
   "InternalComm",

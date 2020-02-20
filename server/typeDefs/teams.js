@@ -4,7 +4,7 @@ import {pubsub} from "../helpers/subscriptionManager";
 import {
   partsList,
   damagePositions,
-} from "../classes/generic/damageReports/constants.js";
+} from "../classes/generic/damageReports/constants";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.

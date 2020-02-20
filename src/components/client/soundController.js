@@ -24,7 +24,7 @@ const CANCEL_SOUNDS = gql`
 `;
 
 const CANCEL_ALL_SOUNDS = gql`
-  subscription CancelSounds($clientId: ID!) {
+  subscription CancelAllSounds($clientId: ID!) {
     cancelAllSounds(clientId: $clientId)
   }
 `;

@@ -1,7 +1,9 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import {useMutation} from "@apollo/react-hooks";
-import {SENSORS_OFFSET, distance3d} from "../constants";
+import {useMutation} from "@apollo/client";
+import {distance3d, SENSORS_OFFSET} from "../constants";
+import useEventListener from "helpers/hooks/useEventListener";
+import {calculateDestination} from "./useMouseDown";
 
 const CREATE_CONTACT = gql`
   mutation CreateContact($id: ID!, $contact: SensorContactInput!) {
@@ -14,28 +16,30 @@ export function useDragStart({id}, dimensions, addContact) {
   const hasMovingContact = Boolean(movingContact);
   const mover = React.useRef({});
 
-  React.useEffect(() => {
+  const dragMove = React.useCallback(
     function dragMove(evt) {
       const {clientX, clientY} = evt;
       if (!hasMovingContact) return;
       setMovingContact(c => {
         const {width: dimWidth, height: dimHeight} = dimensions;
-        const width = Math.min(dimWidth, dimHeight);
+        const pageOffset = Math.min(dimWidth, dimHeight) - SENSORS_OFFSET;
+        const dimOffset = Math.abs(dimWidth - dimHeight);
+
         const destination = {
-          x:
-            (clientX -
-              dimensions.left +
-              SENSORS_OFFSET / 2 -
-              (width + SENSORS_OFFSET) / 2) /
-              (dimensions.width / 2) -
-            0.08,
-          y:
-            (clientY -
-              dimensions.top +
-              SENSORS_OFFSET / 2 -
-              (width + SENSORS_OFFSET) / 2) /
-              (dimensions.height / 2) -
-            0.08,
+          x: calculateDestination(
+            clientX,
+            dimensions.left,
+            dimWidth,
+            pageOffset,
+            dimWidth > dimHeight ? dimOffset : 0,
+          ),
+          y: calculateDestination(
+            clientY,
+            dimensions.top,
+            dimHeight,
+            pageOffset,
+            dimWidth < dimHeight ? dimOffset : 0,
+          ),
           z: 0,
         };
         mover.current = c
@@ -45,11 +49,14 @@ export function useDragStart({id}, dimensions, addContact) {
           ? {...c, location: destination, destination: destination}
           : null;
       });
-    }
+    },
+    [dimensions, hasMovingContact],
+  );
+
+  const dragUp = React.useCallback(
     function dragUp() {
-      document.removeEventListener("mousemove", dragMove);
-      document.removeEventListener("mouseup", dragUp);
-      if (!hasMovingContact) return;
+      if (!hasMovingContact || Object.entries(mover.current).length === 0)
+        return;
 
       setMovingContact(c => {
         const {location, type, size} = c;
@@ -85,15 +92,13 @@ export function useDragStart({id}, dimensions, addContact) {
           },
         },
       });
-    }
+    },
+    [addContact, createContact, hasMovingContact, id],
+  );
 
-    document.addEventListener("mousemove", dragMove);
-    document.addEventListener("mouseup", dragUp);
-    return () => {
-      document.removeEventListener("mousemove", dragMove);
-      document.removeEventListener("mouseup", dragUp);
-    };
-  }, [addContact, createContact, dimensions, hasMovingContact, id]);
+  useEventListener("mousemove", dragMove);
+  useEventListener("mouseup", dragUp);
+
   function dragStart(movingContact) {
     setMovingContact({type: "contact", ...movingContact, location: null});
   }

@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {Button, Input, ButtonGroup} from "helpers/reactstrap";
-import {useMutation, useApolloClient} from "@apollo/react-hooks";
+import {useMutation, useApolloClient} from "@apollo/client";
 import ContactSelect from "./contactSelect";
 import ExtraControls from "./extraControls";
 import ContactsList from "./contactsList";

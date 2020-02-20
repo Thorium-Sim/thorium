@@ -6,7 +6,7 @@ import Tour from "helpers/tourHelper";
 import "./style.scss";
 import AnimatedNumber from "react-animated-number";
 import PowerLine from "../JumpDrive/powerLine";
-import {useQuery, useSubscription} from "@apollo/react-hooks";
+import {useQuery, useSubscription} from "@apollo/client";
 
 const mutation = gql`
   mutation ChangePower($id: ID!, $level: Int!) {

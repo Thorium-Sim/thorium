@@ -1,0 +1,19 @@
+query CountermeasureModules {
+  countermeasureModuleType {
+    id
+    name
+    description
+    powerRequirement
+    resourceRequirements {
+      copper
+      titanium
+      carbon
+      plastic
+      plasma
+    }
+    configurationOptions {
+      type
+      label
+    }
+  }
+}

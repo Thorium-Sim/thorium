@@ -1,0 +1,7 @@
+mutation CountermeasureSetResource(
+  $id: ID!
+  $resource: String!
+  $value: Float!
+) {
+  countermeasuresSetResource(id: $id, resource: $resource, value: $value)
+}

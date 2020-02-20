@@ -1,17 +1,13 @@
 import React, {useEffect, useState, useRef} from "react";
 import uuid from "uuid";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import Spark from "components/views/Actions/spark";
+import {useApolloClient} from "@apollo/client";
 const synth = window.speechSynthesis;
 
 const ACTIONS_SUB = gql`
-  subscription ActionsSub($simulatorId: ID!, $stationId: ID, $clientId: ID) {
-    actionsUpdate(
-      simulatorId: $simulatorId
-      stationId: $stationId
-      clientId: $clientId
-    ) {
+  subscription ActionsSub($simulatorId: ID!, $stationId: ID) {
+    actionsUpdate(simulatorId: $simulatorId, stationId: $stationId) {
       action
       duration
       message
@@ -40,15 +36,13 @@ const useSpark = () => {
   const [sparks, setSparks] = useState([]);
   const timeoutRef = useRef([]);
   const doSpark = React.useCallback(duration => {
-    clearTimeout(timeoutRef.current);
     duration = duration || 5000;
     const id = uuid.v4();
     setSparks(sparks => [...sparks, id]);
-    timeoutRef.current.push(
-      setTimeout(() => {
-        setSparks(sparks => sparks.filter(s => s !== id));
-      }, duration),
-    );
+    const timeout = setTimeout(() => {
+      setSparks(sparks => sparks.filter(s => s !== id));
+    }, duration);
+    timeoutRef.current.push(timeout);
   }, []);
   useEffect(() => {
     // eslint-disable-next-line
@@ -60,16 +54,19 @@ const useSpark = () => {
   };
 };
 
-const ActionsMixin = ({simulator, station, changeCard, client}) => {
+const ActionsMixin = ({simulator, station, changeCard}) => {
   const {flash, doFlash} = useFlash();
   const {doSpark, Sparks} = useSpark();
+  const client = useApolloClient();
+  const {id: simulatorId} = simulator;
+  const {name: stationName} = station;
   useEffect(() => {
     const subscription = client
       .subscribe({
         query: ACTIONS_SUB,
         variables: {
-          simulatorId: simulator.id,
-          stationId: station.name,
+          simulatorId: simulatorId,
+          stationId: stationName,
         },
       })
       .subscribe({
@@ -78,8 +75,6 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
             actionsUpdate: {action, message, voice, duration},
           },
         }) {
-          const voices = synth.getVoices();
-          const words = new SpeechSynthesisUtterance(message);
           switch (action) {
             case "flash":
               return doFlash(duration);
@@ -87,9 +82,12 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
               return doSpark(duration);
             case "reload":
               return window.location.reload();
-            case "speak":
+            case "speak": {
+              const voices = synth.getVoices();
+              const words = new SpeechSynthesisUtterance(message);
               if (voice) words.voice = voices.find(v => v.name === voice);
               return synth.speak(words);
+            }
             case "shutdown":
             case "restart":
             case "sleep":
@@ -97,8 +95,6 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
             case "beep":
             case "freak":
               return window.thorium.sendMessage({action});
-            case "changeCard":
-              return changeCard(message);
             default:
               return;
           }
@@ -108,7 +104,7 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
         },
       });
     return () => subscription.unsubscribe();
-  }, [changeCard, client, doFlash, doSpark, simulator, station]);
+  }, [client, doFlash, doSpark, simulatorId, stationName]);
   return (
     <div className={`actionsContainer ${flash ? "flash" : ""}`}>
       <Sparks />
@@ -116,4 +112,4 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
   );
 };
 
-export default withApollo(ActionsMixin);
+export default ActionsMixin;

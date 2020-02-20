@@ -24,6 +24,8 @@ const schema = gql`
     addedTaskTemplates: Boolean
     spaceEdventuresToken: String
     spaceEdventuresCenter: SpaceEdventuresCenter
+    port: Int
+    httpOnly: Boolean
   }
 
   type SpaceEdventuresCenter {

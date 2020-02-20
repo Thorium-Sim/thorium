@@ -114,6 +114,7 @@ const Crm = React.lazy(() => import("./Crm"));
 const CrmFighter = React.lazy(() => import("./CrmFighter"));
 const Records = React.lazy(() => import("./Records"));
 const StationControl = React.lazy(() => import("./StationControl"));
+const Countermeasures = React.lazy(() => import("./Countermeasures"));
 
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
@@ -212,6 +213,7 @@ const MacroButtonsCore = React.lazy(() => import("./Macros/macroButtons"));
 const OfficerLogCore = React.lazy(() => import("./OfficerLog/core"));
 const RecordsCore = React.lazy(() => import("./Records/core"));
 const MIDICore = React.lazy(() => import("./Midi"));
+const CountermeasuresCore = React.lazy(() => import("./Countermeasures/core"));
 
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
@@ -315,6 +317,7 @@ const Views = {
   CrmFighter,
   Records,
   StationControl,
+  Countermeasures,
 };
 
 export const Widgets = {
@@ -503,6 +506,7 @@ export const Cores = {
   OfficerLogCore,
   RecordsCore,
   MIDICore,
+  CountermeasuresCore,
 };
 
 export default Views;

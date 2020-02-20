@@ -126,12 +126,10 @@ const MissionPicker = ({triggerAlert}) => {
     }
   `);
   const createMission = () => {
-    return () => {
-      let name = prompt("What is the mission name?");
-      if (name) {
-        addMission({variables: {name}, refetchQueries: [{query: QUERY}]});
-      }
-    };
+    let name = prompt("What is the mission name?");
+    if (name) {
+      addMission({variables: {name}, refetchQueries: [{query: QUERY}]});
+    }
   };
   const importMission = evt => {
     if (evt.target.files[0]) {

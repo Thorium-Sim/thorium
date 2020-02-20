@@ -14,7 +14,7 @@ import {
   ButtonGroup,
 } from "reactstrap";
 import gql from "graphql-tag";
-import {useMutation} from "@apollo/react-hooks";
+import {useMutation} from "@apollo/client";
 import {capitalCase} from "change-case";
 import Tour from "helpers/tourHelper";
 import {stardate} from "../OfficerLog";

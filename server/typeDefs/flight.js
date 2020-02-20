@@ -1,12 +1,13 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
   type Flight {
-    id: ID
+    id: ID!
     name: String
     date: String
     running: Boolean
@@ -54,7 +55,7 @@ const schema = gql`
     clientAddExtra(flightId: ID!, simulatorId: ID!, name: String!): String
   }
   extend type Subscription {
-    flightsUpdate(id: ID): [Flight]
+    flightsUpdate(running: Boolean, id: ID): [Flight]
   }
 `;
 
@@ -93,7 +94,20 @@ const resolver = {
         return payload;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("flightsUpdate"),
+        (rootQuery, {running, id}) => {
+          const subId = uuid.v4();
+          process.nextTick(() => {
+            let returnRes = App.flights;
+            if (running) {
+              returnRes = returnRes.filter(f => f.running);
+            }
+            if (id) {
+              returnRes = returnRes.filter(f => f.id === id);
+            }
+            pubsub.publish(subId, returnRes);
+          });
+          return pubsub.asyncIterator([subId, "flightsUpdate"]);
+        },
         rootValue => {
           return !!rootValue;
         },
