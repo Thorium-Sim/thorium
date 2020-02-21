@@ -1,0 +1,9 @@
+mutation CountermeasureCreateCountermeasure(
+  $id: ID!
+  $slot: CountermeasureSlotEnum!
+  $name: String!
+) {
+  countermeasuresCreateCountermeasure(id: $id, slot: $slot, name: $name) {
+    id
+  }
+}

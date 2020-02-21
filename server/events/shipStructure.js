@@ -141,7 +141,27 @@ App.on("updateRoomSvg", ({roomId, svg}) => {
 });
 App.on("roomGas", ({roomId, gas}) => {
   const room = App.rooms.find(r => r.id === roomId);
+  const deck = App.decks.find(d => d.id === room.deckId);
   room.setGas(gas);
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: room.simulatorId,
+    type: "Security Doors",
+    station: "Core",
+    title: `Tranzine Gas ${gas ? "Released" : "Removed"}`,
+    body: `${room.name}, Deck ${deck.number}`,
+    color: "info",
+  });
+  App.handleEvent(
+    {
+      simulatorId: room.simulatorId,
+      title: `Tranzine Gas ${gas ? "Released" : "Removed"}`,
+      body: `${room.name}, Deck ${deck.number}`,
+      component: "SecurityDecksCore",
+      color: "warning",
+    },
+    "addCoreFeed",
+  );
   pubsub.publish("roomsUpdate", App.rooms);
   pubsub.publish("decksUpdate", App.decks);
 });

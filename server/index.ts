@@ -18,3 +18,15 @@ Promise.resolve()
   .then(() => postMigration())
   .then(() => cleanUp())
   .catch(err => console.error("Error:", err));
+
+// If --expose-gc flag is set, handle garbage collection
+// const interval = setInterval(() => {
+//   try {
+//     if (global.gc) {
+//       global.gc();
+//     }
+//   } catch (e) {
+//     // Do nothing, no need to worry about manual garbage collection
+//     clearInterval(interval);
+//   }
+// }, 30 * 1000);

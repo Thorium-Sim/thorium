@@ -1,17 +1,13 @@
 import React, {useEffect, useState, useRef} from "react";
 import uuid from "uuid";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import Spark from "components/views/Actions/spark";
+import {useApolloClient} from "@apollo/client";
 const synth = window.speechSynthesis;
 
 const ACTIONS_SUB = gql`
-  subscription ActionsSub($simulatorId: ID!, $stationId: ID, $clientId: ID) {
-    actionsUpdate(
-      simulatorId: $simulatorId
-      stationId: $stationId
-      clientId: $clientId
-    ) {
+  subscription ActionsSub($simulatorId: ID!, $stationId: ID) {
+    actionsUpdate(simulatorId: $simulatorId, stationId: $stationId) {
       action
       duration
       message
@@ -23,14 +19,15 @@ const ACTIONS_SUB = gql`
 const useFlash = () => {
   const [flash, setFlash] = useState(false);
   const timeoutRef = useRef(null);
-  const doFlash = duration => {
+  const doFlash = React.useCallback(duration => {
+    clearTimeout(timeoutRef.current);
     duration = duration || duration === 0 ? duration : 10;
     if (duration <= 0) {
       return setFlash(false);
     }
     setFlash(oldFlash => !oldFlash);
     timeoutRef.current = setTimeout(() => doFlash(duration - 1), 150);
-  };
+  }, []);
   useEffect(() => () => clearTimeout(timeoutRef.current), []);
   return {flash, doFlash};
 };
@@ -38,16 +35,15 @@ const useFlash = () => {
 const useSpark = () => {
   const [sparks, setSparks] = useState([]);
   const timeoutRef = useRef([]);
-  const doSpark = duration => {
+  const doSpark = React.useCallback(duration => {
     duration = duration || 5000;
     const id = uuid.v4();
-    setSparks([...sparks, id]);
-    timeoutRef.current.push(
-      setTimeout(() => {
-        setSparks(sparks => sparks.filter(s => s !== id));
-      }, duration),
-    );
-  };
+    setSparks(sparks => [...sparks, id]);
+    const timeout = setTimeout(() => {
+      setSparks(sparks => sparks.filter(s => s !== id));
+    }, duration);
+    timeoutRef.current.push(timeout);
+  }, []);
   useEffect(() => {
     // eslint-disable-next-line
     return () => timeoutRef.current.forEach(ref => clearTimeout(ref));
@@ -58,16 +54,19 @@ const useSpark = () => {
   };
 };
 
-const ActionsMixin = ({simulator, station, changeCard, client}) => {
+const ActionsMixin = ({simulator, station, changeCard}) => {
   const {flash, doFlash} = useFlash();
   const {doSpark, Sparks} = useSpark();
+  const client = useApolloClient();
+  const {id: simulatorId} = simulator;
+  const {name: stationName} = station;
   useEffect(() => {
     const subscription = client
       .subscribe({
         query: ACTIONS_SUB,
         variables: {
-          simulatorId: simulator.id,
-          stationId: station.name,
+          simulatorId: simulatorId,
+          stationId: stationName,
         },
       })
       .subscribe({
@@ -76,8 +75,6 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
             actionsUpdate: {action, message, voice, duration},
           },
         }) {
-          const voices = synth.getVoices();
-          const words = new SpeechSynthesisUtterance(message);
           switch (action) {
             case "flash":
               return doFlash(duration);
@@ -85,9 +82,12 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
               return doSpark(duration);
             case "reload":
               return window.location.reload();
-            case "speak":
+            case "speak": {
+              const voices = synth.getVoices();
+              const words = new SpeechSynthesisUtterance(message);
               if (voice) words.voice = voices.find(v => v.name === voice);
               return synth.speak(words);
+            }
             case "shutdown":
             case "restart":
             case "sleep":
@@ -95,8 +95,6 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
             case "beep":
             case "freak":
               return window.thorium.sendMessage({action});
-            case "changeCard":
-              return changeCard(message);
             default:
               return;
           }
@@ -106,7 +104,7 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
         },
       });
     return () => subscription.unsubscribe();
-  }, [changeCard, client, doFlash, doSpark, simulator, station]);
+  }, [client, doFlash, doSpark, simulatorId, stationName]);
   return (
     <div className={`actionsContainer ${flash ? "flash" : ""}`}>
       <Sparks />
@@ -114,4 +112,4 @@ const ActionsMixin = ({simulator, station, changeCard, client}) => {
   );
 };
 
-export default withApollo(ActionsMixin);
+export default ActionsMixin;

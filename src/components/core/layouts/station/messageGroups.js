@@ -33,7 +33,7 @@ class ExtraMessageGroups extends Component {
           },
         ]}
         mutation={gql`
-          mutation MessageGroups(
+          mutation SetSimulatorMessageGroups(
             $simulatorId: ID!
             $station: String!
             $group: String!

@@ -71,7 +71,11 @@ export class Viewscreen extends Component {
     if (!viewscreen) return <div>No Viewscreen</div>;
     if (ViewscreenCards[viewscreen.component]) {
       const ViewscreenComponent = ViewscreenCards[viewscreen.component];
-      return <ViewscreenComponent {...this.props} viewscreen={viewscreen} />;
+      return (
+        <div className="main-viewscreen">
+          <ViewscreenComponent {...this.props} viewscreen={viewscreen} />
+        </div>
+      );
     }
     if (!viewscreen) {
       return <div>No Viewscreen Component for {viewscreen.component}</div>;

@@ -1,3 +1,108 @@
+# [2.6.0](https://github.com/Thorium-Sim/thorium/compare/2.5.2...2.6.0) (2020-02-20)
+
+### Bug Fixes
+
+- **Blackout:** Blackout now properly hides everything, including training
+  windows. Closes [#2762](https://github.com/Thorium-Sim/thorium/issues/2762)
+  ([8cc4364](https://github.com/Thorium-Sim/thorium/commit/8cc4364d395dfe2060e0a756e363e38a877d63d6))
+- **Build:** Another fix to the build process.
+  ([877d6d2](https://github.com/Thorium-Sim/thorium/commit/877d6d2cb9b8d7db224f3a566420c1fd59a21f94))
+- **Damage Reports:** Removes the "Request Report" button when the report is
+  provided. Closes [#2771](https://github.com/Thorium-Sim/thorium/issues/2771)
+  ([b5b9724](https://github.com/Thorium-Sim/thorium/commit/b5b9724542fb1818fa82b3ec0f8625fb47a0fb85))
+- **Flash:** Fixes issues with flash not working when sending processed sensor
+  data or through the timeline. Closes
+  [#2772](https://github.com/Thorium-Sim/thorium/issues/2772). Closes
+  [#2765](https://github.com/Thorium-Sim/thorium/issues/2765).
+  ([10b0049](https://github.com/Thorium-Sim/thorium/commit/10b0049290fa1eabf0a8399f8a78dbfc0f634470))
+- **Messaging:** Makes messages scroll to bottom properly on core. Closes
+  [#2760](https://github.com/Thorium-Sim/thorium/issues/2760)
+  ([b7644d1](https://github.com/Thorium-Sim/thorium/commit/b7644d16b565496c9f9414a63e20fd795f2ed9b8))
+- **Reactivation Codes:** Adds a small message to make it clear that the system
+  is reactivating. Closes
+  [#2763](https://github.com/Thorium-Sim/thorium/issues/2763)
+  ([358814d](https://github.com/Thorium-Sim/thorium/commit/358814dab283b608d11e608518bcafa9e143065a))
+- **Sensor Grid:** Fixes an issue where random contacts appear in the center of
+  the sensor grid, making it impossible for regular contacts to be placed.
+  Closes [#2773](https://github.com/Thorium-Sim/thorium/issues/2773). Closes
+  [#2755](https://github.com/Thorium-Sim/thorium/issues/2755).
+  ([a8a868b](https://github.com/Thorium-Sim/thorium/commit/a8a868ba3682e62e5b225df00b14103f613041e5))
+- **Sensors:** Makes dragged sensor contacts follow the mouse better. Closes
+  [#2214](https://github.com/Thorium-Sim/thorium/issues/2214). Closes
+  [#2407](https://github.com/Thorium-Sim/thorium/issues/2407).
+  ([997422b](https://github.com/Thorium-Sim/thorium/commit/997422b313c44fa55d645ffdbb4b236be52bc4cd))
+- **Server:** Fixes an issue where the server crashes regularly. Closes
+  [#2735](https://github.com/Thorium-Sim/thorium/issues/2735)
+  ([d79c4fc](https://github.com/Thorium-Sim/thorium/commit/d79c4fc02f5f97798cf4378caff52fae79724033))
+- **Spark:** Fixes an issue where Sparking a station never stops sparking.
+  Closes [#2769](https://github.com/Thorium-Sim/thorium/issues/2769)
+  ([f3863f0](https://github.com/Thorium-Sim/thorium/commit/f3863f0a72f311f35c4031beb2089bd3bcca7f32))
+
+### Features
+
+- **Auto-Updater:** Thorium now auto-updates in place at the push of a button,
+  making it far easier to perform upgrades quickly.
+  ([72255de](https://github.com/Thorium-Sim/thorium/commit/72255de24aa45813d4e9366c7f6db5afd4e161c7))
+- **Countermeasures:** Adds a new system and card called Countermeasures.
+  Designed to be prepared beforehand with configured modules to decoy, serve as
+  a mine, or provide a proximity alert. Currently, the actions which the
+  countermeasures perform is not automated - the flight director will have to
+  pay attention to the countermeasures and make sure to give them the
+  appropriate behavior. Closes
+  [#139](https://github.com/Thorium-Sim/thorium/issues/139)
+  ([831389d](https://github.com/Thorium-Sim/thorium/commit/831389db2e379f6c536fca3ba6a6411aa51edae2))
+
+## [2.5.2](https://github.com/Thorium-Sim/thorium/compare/2.5.1...2.5.2) (2020-02-12)
+
+### Bug Fixes
+
+- **Build:** Another fix to the build process.
+  ([259f6ed](https://github.com/Thorium-Sim/thorium/commit/259f6ed78cceb1e97e242f7a50d66b0ce16e5ca6))
+
+## [2.5.1](https://github.com/Thorium-Sim/thorium/compare/2.5.0...2.5.1) (2020-02-12)
+
+### Bug Fixes
+
+- **Build Process:** Improves Thorium's automated build process.
+  ([be177c8](https://github.com/Thorium-Sim/thorium/commit/be177c895d9794f43d1031020232129ef789e2f4))
+
+# [2.5.0](https://github.com/Thorium-Sim/thorium/compare/2.4.3...2.5.0) (2020-02-12)
+
+### Bug Fixes
+
+- **Mission Library:** Makes the mission library work again. Closes
+  [#2746](https://github.com/Thorium-Sim/thorium/issues/2746)
+  ([1ae47c0](https://github.com/Thorium-Sim/thorium/commit/1ae47c075b3af64db87b2bea6c01beaefbcc7b8e))
+- **Missions:** Fixes an issue where missions don't properly transfer to the
+  simulator when starting a flight. Closes
+  [#2744](https://github.com/Thorium-Sim/thorium/issues/2744)
+  ([1f9ecd4](https://github.com/Thorium-Sim/thorium/commit/1f9ecd451f3a1c7686dcd14ddb7e5917b86565f9))
+- **Power Flux:** Fixes the power flux buttons on the Systems core. Closes
+  [#2741](https://github.com/Thorium-Sim/thorium/issues/2741)
+  ([912cf0c](https://github.com/Thorium-Sim/thorium/commit/912cf0c38fd3ed1d4cb696cc4a58d4169d75719b))
+- **QOTD:** Adds more quotes of the day. Also improves the deploy pipeline.
+  ([44a62e1](https://github.com/Thorium-Sim/thorium/commit/44a62e1cfb45f76c5d79c510afec943992f38437))
+- **Systems:** Fixes the order of the systems on systems core. Closes
+  [#2747](https://github.com/Thorium-Sim/thorium/issues/2747)
+  ([baec4b6](https://github.com/Thorium-Sim/thorium/commit/baec4b635d3e03281f89e167afdb8a3beb05171b))
+- **Torpedos:** Fixes an issue where the torpedos component crashes the
+  targeting screen. Closes
+  [#2739](https://github.com/Thorium-Sim/thorium/issues/2739)
+  ([fab0bd0](https://github.com/Thorium-Sim/thorium/commit/fab0bd05426d84fa319ac620ac99d97168ffabc7))
+- **Various:** Fixes a number of issues. Closes
+  [#2740](https://github.com/Thorium-Sim/thorium/issues/2740)
+  ([8118584](https://github.com/Thorium-Sim/thorium/commit/8118584e5601dbc6dcad5f757058062398487083))
+- **Viewscreen:** Properly centers items in the viewscreen. Closes
+  [#2742](https://github.com/Thorium-Sim/thorium/issues/2742)
+  ([42856a9](https://github.com/Thorium-Sim/thorium/commit/42856a9ec6d9713441dd4d7d26006757cc53ba89))
+
+### Features
+
+- **Advanced:** Makes it possible to change the Thorium data directory with the
+  THORIUM_PATH environment variable. Intended for advanced users. Closes
+  [#2757](https://github.com/Thorium-Sim/thorium/issues/2757)
+  ([3842f72](https://github.com/Thorium-Sim/thorium/commit/3842f7299b448f41d72c19715ecfe65a4ae23cb7))
+
 ## [2.4.3](https://github.com/Thorium-Sim/thorium/compare/v2.4.2...2.4.3) (2020-02-05)
 
 ### Bug Fixes

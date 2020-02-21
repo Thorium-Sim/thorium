@@ -540,7 +540,6 @@ App.on("updateSensorGrid", ({simulatorId, contacts, cb}) => {
     system.moveContact({id, destination, speed});
   });
   movingContacts.forEach(contact => system.moveContact(contact));
-  // console.log(movingContacts);
   pubsub.publish("sensorContactUpdate", system);
 });
 

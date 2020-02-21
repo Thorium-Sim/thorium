@@ -1,0 +1,7 @@
+#import "./templateFragment.graphql"
+
+query Template($simulatorId: ID!) {
+  _template(simulatorId: $simulatorId) {
+    ...TemplateFragment
+  }
+}

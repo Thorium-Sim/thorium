@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {Container, Button} from "helpers/reactstrap";
-import {useQuery, useApolloClient} from "@apollo/react-hooks";
+import {useQuery, useApolloClient} from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 export const REMOTE_ACCESS_QUERY = gql`

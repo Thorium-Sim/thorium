@@ -1,0 +1,3 @@
+mutation SetSoundPlayer($id: ID!, $soundPlayer: Boolean!) {
+  clientSetSoundPlayer(client: $id, soundPlayer: $soundPlayer)
+}

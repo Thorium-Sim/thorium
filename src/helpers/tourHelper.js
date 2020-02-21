@@ -17,7 +17,11 @@ const SET_CLIENT_TRAINING = gql`
   }
 `;
 
-const TourHelper = ({steps, training: propsTraining, onRequestClose}) => {
+const TourHelper = ({
+  steps,
+  training: propsTraining = undefined,
+  onRequestClose = null,
+}) => {
   const {client = {}, station = {}, simulator = {}} = React.useContext(
     ClientContext,
   );

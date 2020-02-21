@@ -4,7 +4,7 @@ import {withApollo} from "react-apollo";
 import {Container, Row, Col, Button, Card} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import AnimatedNumber from "react-animated-number";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 import useMeasure from "helpers/hooks/useMeasure";
 

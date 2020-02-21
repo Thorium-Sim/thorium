@@ -17,6 +17,23 @@ import {capitalCase} from "change-case";
 import ExtraMessageGroups from "./messageGroups";
 import LayoutList from "components/layouts";
 
+const EDIT_CARD = gql`
+  mutation EditCard(
+    $simulatorId: ID!
+    $station: String!
+    $cardName: String!
+    $newCardName: String
+    $cardComponent: String
+  ) {
+    editSimulatorStationCard(
+      simulatorId: $simulatorId
+      station: $station
+      cardName: $cardName
+      newCardName: $newCardName
+      cardComponent: $cardComponent
+    )
+  }
+`;
 const Layouts = Object.keys(LayoutList).filter(
   s => s.indexOf("Viewscreen") === -1,
 );
@@ -203,23 +220,7 @@ const Station = ({stations, simulatorId, station: stationName}) => {
                               },
                             },
                           ]}
-                          mutation={gql`
-                            mutation EditCard(
-                              $simulatorId: ID!
-                              $station: String!
-                              $cardName: String!
-                              $newCardName: String
-                              $cardComponent: String
-                            ) {
-                              editSimulatorStationCard(
-                                simulatorId: $simulatorId
-                                station: $station
-                                cardName: $cardName
-                                newCardName: $newCardName
-                                cardComponent: $cardComponent
-                              )
-                            }
-                          `}
+                          mutation={EDIT_CARD}
                         >
                           {action => (
                             <Input
@@ -251,23 +252,7 @@ const Station = ({stations, simulatorId, station: stationName}) => {
                               },
                             },
                           ]}
-                          mutation={gql`
-                            mutation EditCard(
-                              $simulatorId: ID!
-                              $station: String!
-                              $cardName: String!
-                              $newCardName: String
-                              $cardComponent: String
-                            ) {
-                              editSimulatorStationCard(
-                                simulatorId: $simulatorId
-                                station: $station
-                                cardName: $cardName
-                                newCardName: $newCardName
-                                cardComponent: $cardComponent
-                              )
-                            }
-                          `}
+                          mutation={EDIT_CARD}
                         >
                           {action => (
                             <Input
@@ -418,7 +403,7 @@ const Station = ({stations, simulatorId, station: stationName}) => {
                         },
                       ]}
                       mutation={gql`
-                        mutation MessageGroups(
+                        mutation SetMessageGroups(
                           $simulatorId: ID!
                           $station: String!
                           $group: String!

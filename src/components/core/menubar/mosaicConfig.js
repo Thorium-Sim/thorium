@@ -14,7 +14,7 @@ import {
 import SortableList from "helpers/sortableList";
 
 const CORE_LAYOUTS = gql`
-  query CoreLayouts {
+  query MosaicCoreLayouts {
     coreLayouts {
       id
       name

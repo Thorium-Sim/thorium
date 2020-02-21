@@ -2,8 +2,6 @@ import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 import os from "os";
-import https from "https";
-import ProgressBar from "progress";
 import uuid from "uuid";
 import importMission from "../imports/missions/import";
 import importSimulator from "../imports/simulators/import";
@@ -40,31 +38,36 @@ const schema = gql`
 `;
 
 const download = function(url, dest, callback) {
-  const file = fs.createWriteStream(dest);
-  https.get(url, function(res) {
-    const bar = new ProgressBar(
-      `Downloading: [:bar] :percent Elapsed: :elapseds ETA: :etas`,
-      {
-        total: parseInt(res.headers["content-length"], 10),
-        complete: "=",
-        incomplete: " ",
-        width: 20,
-      },
-    );
-
-    res
-      .on("data", function(chunk) {
-        file.write(chunk);
-        bar.tick(chunk.length);
-      })
-      .on("end", function() {
-        file.end();
-        callback(null);
-      })
-      .on("error", function(err) {
-        callback(err.message);
-      });
-  });
+  fetch(url)
+    .then(
+      res =>
+        new Promise((resolve, reject) => {
+          if (res.status !== 200) return reject("Error downloading file.");
+          const file = fs.createWriteStream(dest);
+          res.body.pipe(file);
+          const max = parseInt(res.headers.get("content-length"), 10);
+          let total = 0;
+          console.log("Download Beginning...");
+          res.body.on("data", chunk => {
+            total += chunk.length;
+            if (total % 20 === 0) {
+              console.log(
+                `Download Progress: ${Math.round((total / max) * 100)}%`,
+              );
+            }
+          });
+          file.on("close", () => {
+            console.log("Download Complete");
+            resolve();
+          });
+          file.on("error", reject);
+        }),
+    )
+    .then(() => {
+      console.log("callbacl");
+      callback(null);
+    })
+    .catch(err => callback(err));
 };
 
 const resolver = {
@@ -109,7 +112,7 @@ const resolver = {
       download(url, dest, err => {
         if (err) {
           console.log("There was an error importing a mission:", err);
-          throw new Error("Error importing mission:", err.message);
+          // throw new Error("Error importing mission:", err.message);
         }
         importMission(dest, () => {
           fs.unlink(dest, error => {

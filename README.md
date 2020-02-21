@@ -1,8 +1,10 @@
 ![Thorium](github-banner.png)
 
-[![Build Status](https://travis-ci.org/Thorium-Sim/thorium.svg?branch=master)](https://travis-ci.org/Thorium-Sim/thorium)
+![Test](https://github.com/Thorium-Sim/thorium/workflows/Test/badge.svg?branch=master)
 [![Discord](https://img.shields.io/discord/390968011605147648.svg)](https://discord.gg/UvxTQZz)
 [![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors)
+![Version](https://img.shields.io/github/package-json/v/thorium-sim/thorium)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/thorium-sim/thorium/develop)
 
 # Thorium
 
@@ -101,19 +103,6 @@ principles which should underscore all feature development in the project:
 
 ```sh
 npm install
-npm run start
-```
-
-_Note: If you are on Windows, the dependencies are a little weird. You will have
-to run a few more commands_
-
-```sh
-npm install
-cd server
-npm install
-cd ../client
-npm install
-cd ..
 npm run start
 ```
 

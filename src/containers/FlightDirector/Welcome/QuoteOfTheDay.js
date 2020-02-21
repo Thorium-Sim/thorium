@@ -54,6 +54,8 @@ const quotes = [
   "If you get tired, learn to rest, not to quit.",
   "Be positive, patient and persistent.",
   "This revolution is for display purposes only.",
+  /* Back to regularly scheduled programming */
+  "Nobody knows what their story is until the end.",
 ];
 
 const QuoteOfTheDay = () => {

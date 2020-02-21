@@ -1,0 +1,6 @@
+mutation CountermeasureRemoveCountermeasure(
+  $id: ID!
+  $slot: CountermeasureSlotEnum!
+) {
+  countermeasuresRemoveCountermeasure(id: $id, slot: $slot)
+}

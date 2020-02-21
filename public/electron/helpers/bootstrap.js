@@ -26,6 +26,12 @@ module.exports = function bootstrap(serverWindow) {
           NODE_ENV: "production",
           ...process.env,
         },
+        // execArgv: [
+        //   "--nouse-idle-notification",
+        //   "--expose-gc",
+        //   "--max-new-space-size=2048",
+        //   "--max-old-space-size=8192",
+        // ],
         silent: true,
         maxBuffer: 1024 * 1024 * 1024,
       },

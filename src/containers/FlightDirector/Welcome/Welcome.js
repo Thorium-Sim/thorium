@@ -9,7 +9,7 @@ import "./welcome.scss";
 import QuoteOfTheDay from "./QuoteOfTheDay";
 import TrackerPopup from "./TrackerPopup";
 import NewFlight from "./NewFlight";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 
 export const FLIGHTS_QUERY = gql`
   query Flights {

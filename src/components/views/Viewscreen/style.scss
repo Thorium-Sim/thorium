@@ -49,6 +49,13 @@
     }
   }
 }
+.main-viewscreen {
+  width: 100vw;
+  height: 100vh;
+  & > * {
+    height: 100%;
+  }
+}
 .viewscreen-picture-in-picture {
   overflow: hidden;
   position: absolute;

@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import Roster from "./roster";
-import {useQuery, useSubscription} from "@apollo/react-hooks";
+import {useQuery, useSubscription} from "@apollo/client";
 
 const fragment = gql`
   fragment CrewData on Crew {

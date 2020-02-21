@@ -1,0 +1,4 @@
+fragment TemplateFragment on Template {
+  id
+  __typename
+}

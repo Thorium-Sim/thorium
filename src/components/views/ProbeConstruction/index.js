@@ -10,7 +10,7 @@ import ProbeAction from "./probeAction";
 import ProbeSelector from "./probeSelector";
 import useFlightLocalStorage from "../../../helpers/hooks/useFlightLocalStorage";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {useQuery} from "@apollo/react-hooks";
+import {useQuery} from "@apollo/client";
 import "./style.scss";
 
 const fragment = gql`

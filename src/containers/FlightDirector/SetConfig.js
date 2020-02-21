@@ -90,7 +90,7 @@ class SetConfig extends Component {
       };
     } else {
       mutation = gql`
-        mutation RemoveClient($id: ID!, $client: ID!) {
+        mutation RemoveClientFromSet($id: ID!, $client: ID!) {
           removeClientFromSet(id: $id, clientId: $client)
         }
       `;

@@ -31,7 +31,7 @@ const RunningCheck = ({flight}) =>
     <Fragment>
       <Mutation
         mutation={gql`
-          mutation ResumeFlight($flightId: ID!) {
+          mutation PauseFlight($flightId: ID!) {
             pauseFlight(flightId: $flightId)
           }
         `}

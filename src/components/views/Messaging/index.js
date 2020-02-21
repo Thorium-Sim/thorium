@@ -157,6 +157,10 @@ const Messaging = ({simulator, station, flight: {id: flightId}}) => {
     }
   };
 
+  React.useEffect(() => {
+    setTimeout(scrollElement, 100);
+  }, []);
+
   const {data, loading, subscribeToMore} = useQuery(MESSAGING_QUERY, {
     variables: {simulatorId: simulator.id, station: station.name},
   });
@@ -313,7 +317,7 @@ const Messaging = ({simulator, station, flight: {id: flightId}}) => {
 
 export default Messaging;
 
-function scrollTo(element, to, duration) {
+export function scrollTo(element, to, duration) {
   if (duration <= 0) return;
   let difference = to - element.scrollTop;
   let perTick = (difference / duration) * 10;

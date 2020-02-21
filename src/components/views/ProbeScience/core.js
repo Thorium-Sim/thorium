@@ -7,6 +7,7 @@ import SubscriptionHelper from "helpers/subscriptionHelper";
 import Grid from "../Sensors/GridDom/grid";
 // import SpeedAsker from "../Sensors/gridCore/speedAsker";
 import "./style.scss";
+import {SENSORS_OFFSET} from "../Sensors/gridCore/constants";
 
 const iconSrc = require("./burst.svg");
 function randomFromList(list) {
@@ -16,7 +17,6 @@ function randomFromList(list) {
   return list[index];
 }
 
-const SENSORS_OFFSET = 45;
 function distance3d(coord2, coord1) {
   const {x: x1, y: y1, z: z1} = coord1;
   let {x: x2, y: y2, z: z2} = coord2;

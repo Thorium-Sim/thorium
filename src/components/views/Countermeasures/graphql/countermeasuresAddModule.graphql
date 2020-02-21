@@ -1,0 +1,29 @@
+mutation CountermeasuresAddModule(
+  $id: ID!
+  $slot: CountermeasureSlotEnum!
+  $moduleType: String!
+) {
+  countermeasuresAddModule(id: $id, slot: $slot, moduleType: $moduleType) {
+    id
+    modules {
+      id
+      name
+      description
+      powerRequirement
+      resourceRequirements {
+        copper
+        titanium
+        plasma
+        plasma
+        carbon
+      }
+      configurationOptions {
+        type
+        label
+      }
+      config
+      buildProgress
+      activated
+    }
+  }
+}

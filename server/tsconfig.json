@@ -5,6 +5,8 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "target": "es6",
+    "skipLibCheck": true,
+
     // TODO: Turn this on when we get enough coverage
     "noImplicitAny": false,
     "moduleResolution": "node",
