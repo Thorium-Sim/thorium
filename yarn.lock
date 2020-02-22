@@ -18867,6 +18867,11 @@ ramda@^0.21.0:
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.21.0.tgz#a001abedb3ff61077d4ff1d577d44de77e8d0a35"
   integrity sha1-oAGr7bP/YQd9T/HVd9RN536NCjU=
 
+random-ship-names@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/random-ship-names/-/random-ship-names-1.0.0.tgz#dad221936c0dcd1b7639777207245d68c386960f"
+  integrity sha512-9WQushoQHH6ZtO0NLg6/HFW+VTaU5eZa1yL0XTG3q6lqyNSBWRTtsh3WJ5BYV0MJDA9CrzjDfHK8TbaEZcnEfA==
+
 random-words@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/random-words/-/random-words-1.1.0.tgz#d42f9775d14ef5c58fd255968158303e1daa0a22"

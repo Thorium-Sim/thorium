@@ -1,0 +1,7 @@
+import {paramCase} from "change-case";
+type ClassDef = {new (...args: any[]): any};
+export const componentRegistry: {[key: string]: ClassDef} = {};
+
+export function registerComponent(component) {
+  componentRegistry[paramCase(component.class)] = component;
+}
