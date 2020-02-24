@@ -226,6 +226,7 @@
     "graphql": "^14.5.8",
     "graphql-type-json": "^0.3.0",
     "graphql.macro": "^1.4.2",
+    "immer": "^5.3.6",
     "lodash": "^4.17.15",
     "lodash.clonedeep": "^4.5.0",
     "lodash.flowright": "^3.5.0",

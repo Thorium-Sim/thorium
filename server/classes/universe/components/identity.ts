@@ -3,7 +3,7 @@ import planetNames from "../planetNames";
 import systemNames from "../systemNames";
 import shipNames from "random-ship-names";
 import {registerComponent} from "../component";
-
+import {immerable} from "immer";
 function randomName(type) {
   if (type === "planet") return randomFromList(planetNames);
   if (type === "system") return randomFromList(systemNames);
@@ -11,7 +11,9 @@ function randomName(type) {
   return "Entity";
 }
 
+// TODO: Change type to an enum
 export class Identity {
+  [immerable] = true;
   type: string;
   name: string;
   constructor({type, name}) {

@@ -73,6 +73,8 @@ import transwarpTypeDefs from "./transwarp.js";
 import triggerTypeDefs from "./trigger.js";
 import viewscreenTypeDefs from "./viewscreen.js";
 import countermeasuresTypeDefs from "./countermeasures";
+import universeTypeDefs from "./universe";
+export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
 export const ambiance = ambianceTypeDefs;
@@ -149,3 +151,4 @@ export const transwarp = transwarpTypeDefs;
 export const trigger = triggerTypeDefs;
 export const viewscreen = viewscreenTypeDefs;
 export const countermeasures = countermeasuresTypeDefs;
+export const universe = universeTypeDefs;

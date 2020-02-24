@@ -1,6 +1,6 @@
 import {Coordinates} from "./location";
 import {registerComponent} from "../component";
-
+import {immerable} from "immer";
 enum Behaviors {
   // Hold position is basically the same
   // as doing no behavior, so it is the
@@ -13,6 +13,7 @@ enum Behaviors {
 }
 
 export class Behavior {
+  [immerable] = true;
   behavior: Behaviors;
   targetId?: string;
   // The destination might not be the same as the location of the target.

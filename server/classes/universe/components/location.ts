@@ -1,6 +1,8 @@
 import {registerComponent} from "../component";
+import {immerable} from "immer";
 
 export class Coordinates {
+  [immerable] = true;
   x: number;
   y: number;
   z: number;
@@ -18,6 +20,7 @@ export class Quaternion extends Coordinates {
   }
 }
 export class Location {
+  [immerable] = true;
   position: Coordinates;
   velocity: Coordinates;
   acceleration: Coordinates;
