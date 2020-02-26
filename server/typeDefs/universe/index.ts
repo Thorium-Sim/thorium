@@ -11,7 +11,12 @@ const schema = gql`
     remove
     replace
   }
-  type EntityPatch {
+  interface Patch {
+    op: OperationsEnum
+    path: [JSON]
+    value: JSON
+  }
+  type EntityPatch implements Patch {
     op: OperationsEnum
     path: [JSON]
     value: JSON

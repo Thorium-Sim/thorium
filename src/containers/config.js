@@ -29,6 +29,7 @@ import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
 import {AlertsHolder} from "../components/generic/Alerts";
 import "./config.scss";
+import UniversalSandboxEditor from "./FlightDirector/Universe";
 
 class Config extends Component {
   state = {training: false, alerts: []};
@@ -67,7 +68,7 @@ class Config extends Component {
     return (
       <div className="config-container">
         <SideNav startTraining={() => this.setState({training: true})} />
-        <div>
+        <div style={{height: "100%"}}>
           <Route
             path="/"
             exact
@@ -117,6 +118,17 @@ class Config extends Component {
             exact
             render={props => (
               <SimulatorPicker
+                {...props}
+                triggerAlert={this.trigger}
+                {...this.trainingProps()}
+              />
+            )}
+          />
+          <Route
+            path="/config/sandbox"
+            exact
+            render={props => (
+              <UniversalSandboxEditor
                 {...props}
                 triggerAlert={this.trigger}
                 {...this.trainingProps()}

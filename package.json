@@ -247,13 +247,16 @@
     "random-ship-names": "^1.0.0",
     "random-words": "^1.1.0",
     "react-scripts": "3.3.1",
+    "react-three-fiber": "^4.0.17",
+    "react-use-gesture": "^7.0.4",
     "request": "^2.88.0",
     "simplex-noise": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.16",
-    "three": "^0.110.0",
+    "three": "0.113.2",
     "uuid": "^3.3.3",
     "yauzl": "^2.10.0",
-    "yazl": "^2.5.1"
+    "yazl": "^2.5.1",
+    "zustand": "^2.2.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
