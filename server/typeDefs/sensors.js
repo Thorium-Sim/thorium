@@ -123,6 +123,7 @@ const schema = gql`
     value: String
   }
   input SensorContactInput {
+    sensorId: ID
     id: ID
     name: String
     type: String

@@ -65,7 +65,6 @@ export default (
               const selection = operation.selectionSet
                 .selections[0] as FieldNode;
               const opName = selection.name.value;
-              let timeout = null;
               const parentType = getOperationRootType(schema, operation);
               const fieldDef = getFieldDef(schema, parentType, opName);
               const args = getArgumentValues(
@@ -73,7 +72,39 @@ export default (
                 operation.selectionSet.selections[0] as FieldNode,
                 variables,
               );
+
+              // Figure out the context of the action
+              const {clientId} = context;
+              const client = App.clients.find(c => c.id === clientId);
+              // Handle any triggers before the event so we can capture data that
+              // the event might remove
+              const flight = App.flights.find(
+                f =>
+                  f.id === (client && client.flightId) ||
+                  (args.simulatorId && f.simulators.includes(args.simulatorId)),
+              );
+              const simulator = App.simulators.find(
+                s =>
+                  s.id === (client && client.simulatorId) ||
+                  (args.simulatorId && s.id === args.simulatorId),
+              );
+              // We really want to modify this read-only property
+              // @ts-ignore ts(2540)
+              requestContext.context = {
+                ...context,
+                flight: flight || context.flight,
+                simulator: simulator || context.simulator,
+                client,
+              };
+
+              // If there is a direct mutation resolver, execute that.
+              // This is now the preferred way to execute mutations
+              if (resolvers.Mutation[opName]) {
+                return null;
+              }
               return new Promise(resolve => {
+                // Execute the old legacy event handler system.
+                let timeout = null;
                 App.handleEvent(
                   {
                     ...args,
@@ -83,7 +114,7 @@ export default (
                     },
                   },
                   opName,
-                  context,
+                  requestContext.context,
                 );
                 timeout = setTimeout(() => resolve(), 500);
               });

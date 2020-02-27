@@ -184,28 +184,9 @@ class Events extends EventEmitter {
   }
   // TODO: Add a proper context type
   handleEvent(param: any, eventName: string, context: any = {}) {
-    const {clientId} = context;
     this.timestamp = new Date();
     this.version = this.version + 1;
-    const client = this.clients.find(c => c.id === clientId);
-    // Handle any triggers before the event so we can capture data that
-    // the event might remove
-    const flight = this.flights.find(
-      f =>
-        f.id === (client && client.flightId) ||
-        (param.simulatorId && f.simulators.includes(param.simulatorId)),
-    );
-    const simulator = this.simulators.find(
-      s =>
-        s.id === (client && client.simulatorId) ||
-        (param.simulatorId && s.id === param.simulatorId),
-    );
-    context = {
-      ...context,
-      flight: flight || context.flight,
-      simulator: simulator || context.simulator,
-      client,
-    };
+
     handleTrigger(eventName, param, context);
     heap.track(eventName, this.thoriumId, param, context);
     this.emit(eventName, {...param, context});
