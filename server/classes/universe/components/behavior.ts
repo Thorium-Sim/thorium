@@ -14,6 +14,8 @@ enum Behaviors {
 
 export class Behavior {
   [immerable] = true;
+  static class = "Behavior";
+  class = "Behavior";
   behavior: Behaviors;
   targetId?: string;
   // The destination might not be the same as the location of the target.

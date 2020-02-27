@@ -1,5 +1,6 @@
-import {paramCase} from "change-case";
+import {camelCase} from "change-case";
 import uuid from "uuid";
+import "./components";
 import {componentRegistry} from "./component";
 import {immerable} from "immer";
 
@@ -17,8 +18,8 @@ export class Entity {
 
     // Apply the components
     Object.entries(components).forEach(([key, component]) => {
-      const Comp = componentRegistry[paramCase(component.class)];
-      this[paramCase(component.class)] = new Comp(component);
+      const Comp = componentRegistry[camelCase(component.class)];
+      this[camelCase(component.class)] = new Comp(component);
     });
   }
 }

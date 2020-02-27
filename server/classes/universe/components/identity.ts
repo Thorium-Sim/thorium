@@ -14,6 +14,8 @@ function randomName(type) {
 // TODO: Change type to an enum
 export class Identity {
   [immerable] = true;
+  static class = "Identity";
+  class = "Identity";
   type: string;
   name: string;
   constructor({type, name}) {

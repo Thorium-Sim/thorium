@@ -21,6 +21,8 @@ export class Quaternion extends Coordinates {
 }
 export class Location {
   [immerable] = true;
+  static class = "Location";
+  class = "Location";
   position: Coordinates;
   velocity: Coordinates;
   acceleration: Coordinates;
