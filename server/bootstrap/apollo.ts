@@ -14,9 +14,13 @@ import {typeDefs, resolvers} from "../data";
 import chalk from "chalk";
 import url from "url";
 import paths from "../helpers/paths";
+import App from "../app";
 // Load some other stuff
 import "../events";
 import "../processes";
+import {FieldNode, getOperationRootType} from "graphql";
+import {getArgumentValues} from "graphql/execution/values";
+import {getFieldDef} from "graphql/execution/execute";
 
 export const schema = makeExecutableSchema({
   typeDefs,
@@ -26,7 +30,6 @@ export const schema = makeExecutableSchema({
   },
 });
 
-// TODO: Change app to the express type
 export default (
   app: express.Application,
   SERVER_PORT: number,
@@ -41,6 +44,54 @@ export default (
     introspection: true,
     playground: true,
     uploads: false,
+    plugins: [
+      {
+        requestDidStart() {
+          return {
+            responseForOperation(requestContext) {
+              // This plugin checks to see if a request
+              // coming in is a mutation. If it is, it
+              // hijacks the request and triggers the
+              // event handler for that request in
+              // /server/events. If the event handler doesn't
+              // resolve (by calling the callback function cb)
+              // in 500 milliseconds, it just returns.
+              const {
+                context,
+                request: {variables},
+                operation,
+              } = requestContext;
+              if (operation.operation !== "mutation") return null;
+              const selection = operation.selectionSet
+                .selections[0] as FieldNode;
+              const opName = selection.name.value;
+              let timeout = null;
+              const parentType = getOperationRootType(schema, operation);
+              const fieldDef = getFieldDef(schema, parentType, opName);
+              const args = getArgumentValues(
+                fieldDef,
+                operation.selectionSet.selections[0] as FieldNode,
+                variables,
+              );
+              return new Promise(resolve => {
+                App.handleEvent(
+                  {
+                    ...args,
+                    cb: (a: any) => {
+                      clearTimeout(timeout);
+                      resolve(a);
+                    },
+                  },
+                  opName,
+                  context,
+                );
+                timeout = setTimeout(() => resolve(), 500);
+              });
+            },
+          };
+        },
+      },
+    ],
     context: ({req, connection}) => ({
       clientId: req?.headers.clientid || connection?.context.clientId,
       core: req?.headers.core,

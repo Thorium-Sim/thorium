@@ -9,7 +9,7 @@ import "./style.scss";
 import useFlightLocalStorage from "helpers/hooks/useFlightLocalStorage";
 
 const fragment = gql`
-  fragment RecordData on RecordSnippet {
+  fragment RecordDataCore on RecordSnippet {
     id
     name
     type
@@ -28,7 +28,7 @@ const fragment = gql`
 export const RECORDS_CORE_QUERY = gql`
   query Records($simulatorId: ID!) {
     recordSnippets(simulatorId: $simulatorId, visible: true) {
-      ...RecordData
+      ...RecordDataCore
     }
   }
   ${fragment}
@@ -36,7 +36,7 @@ export const RECORDS_CORE_QUERY = gql`
 export const RECORDS_CORE_SUB = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     recordSnippetsUpdate(simulatorId: $simulatorId, visible: true) {
-      ...RecordData
+      ...RecordDataCore
     }
   }
   ${fragment}

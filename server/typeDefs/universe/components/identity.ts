@@ -9,6 +9,10 @@ const schema = gql`
   extend type Entity {
     identity: IdentityComponent
   }
+  extend type Mutation {
+    entitySetIdentity(id: ID!, name: String, type: String): String
+    entityRemoveIdentity(id: ID!): String
+  }
 `;
 
 const resolver = {};

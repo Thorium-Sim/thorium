@@ -206,6 +206,7 @@
     "@types/reactstrap": "^8.4.1",
     "@types/styled-components": "^4.4.3",
     "apollo-server-express": "^2.9.6",
+    "apollo-server-plugin-base": "^0.6.10",
     "bonjour": "^3.5.0",
     "chalk": "^3.0.0",
     "change-case": "^4.1.1",

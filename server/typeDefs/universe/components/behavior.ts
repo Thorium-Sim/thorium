@@ -18,6 +18,15 @@ const schema = gql`
   extend type Entity {
     behavior: BehaviorComponent
   }
+  extend type Mutation {
+    entitySetBehavior(
+      id: ID!
+      behavior: Behaviors!
+      targetId: ID
+      destination: CoordinatesInput
+    ): String
+    entityRemoveBehavior(id: ID!): String
+  }
 `;
 
 const resolver = {};

@@ -67,6 +67,7 @@ class Events extends EventEmitter {
   macroButtonConfigs: ClassesImport.MacroButtonConfig[] = [];
   recordTemplates: any[] = [];
   midiSets: ClassesImport.MidiSet[] = [];
+  entities: ClassesImport.Entity[] = [];
   motus: Motu[] = [];
   autoUpdate = true;
   migrations: any = {assets: true};
