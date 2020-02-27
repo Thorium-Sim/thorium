@@ -48,6 +48,11 @@ export type AmbianceInput = {
   playbackRate?: Maybe<Scalars["Float"]>;
 };
 
+export type AppearanceComponent = {
+  __typename?: "AppearanceComponent";
+  modelAsset?: Maybe<Scalars["String"]>;
+};
+
 export type Asset = {
   __typename?: "Asset";
   assetKey?: Maybe<Scalars["String"]>;
@@ -71,6 +76,21 @@ export type AssetObject = {
   fullPath?: Maybe<Scalars["String"]>;
   url?: Maybe<Scalars["String"]>;
 };
+
+export type BehaviorComponent = {
+  __typename?: "BehaviorComponent";
+  behavior: Behaviors;
+  targetId?: Maybe<Scalars["ID"]>;
+  destination?: Maybe<Coordinates>;
+};
+
+export enum Behaviors {
+  HoldPosition = "holdPosition",
+  Wander = "wander",
+  Follow = "follow",
+  Avoid = "avoid",
+  Attack = "attack",
+}
 
 export type Card = {
   __typename?: "Card";
@@ -341,15 +361,15 @@ export type CoolantTank = SystemInterface & {
 
 export type Coordinates = {
   __typename?: "Coordinates";
-  x?: Maybe<Scalars["Float"]>;
-  y?: Maybe<Scalars["Float"]>;
-  z?: Maybe<Scalars["Float"]>;
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
 };
 
 export type CoordinatesInput = {
-  x?: Maybe<Scalars["Float"]>;
-  y?: Maybe<Scalars["Float"]>;
-  z?: Maybe<Scalars["Float"]>;
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
 };
 
 export type CoreFeed = {
@@ -759,6 +779,31 @@ export type Engine = SystemInterface & {
   locations?: Maybe<Array<Maybe<Room>>>;
 };
 
+export type EntitiesPatch = Patch & {
+  __typename?: "EntitiesPatch";
+  op?: Maybe<OperationsEnum>;
+  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
+  value?: Maybe<Scalars["JSON"]>;
+  values?: Maybe<Array<Entity>>;
+};
+
+export type Entity = {
+  __typename?: "Entity";
+  id: Scalars["ID"];
+  appearance?: Maybe<AppearanceComponent>;
+  behavior?: Maybe<BehaviorComponent>;
+  identity?: Maybe<IdentityComponent>;
+  location?: Maybe<LocationComponent>;
+};
+
+export type EntityPatch = Patch & {
+  __typename?: "EntityPatch";
+  op?: Maybe<OperationsEnum>;
+  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
+  value?: Maybe<Scalars["JSON"]>;
+  values?: Maybe<Entity>;
+};
+
 export type Environment = {
   __typename?: "Environment";
   id?: Maybe<Scalars["ID"]>;
@@ -941,6 +986,12 @@ export type History = {
   __typename?: "History";
   date?: Maybe<Scalars["String"]>;
   text?: Maybe<Scalars["String"]>;
+};
+
+export type IdentityComponent = {
+  __typename?: "IdentityComponent";
+  name?: Maybe<Scalars["String"]>;
+  type?: Maybe<Scalars["String"]>;
 };
 
 export type Interface = {
@@ -1194,6 +1245,16 @@ export type LightingInput = {
 };
 
 export type Location = Deck | Room;
+
+export type LocationComponent = {
+  __typename?: "LocationComponent";
+  position: Coordinates;
+  velocity: Coordinates;
+  acceleration: Coordinates;
+  rotation: Quaternion;
+  rotationVelocity: Coordinates;
+  rotationAcceleration: Coordinates;
+};
 
 export type Log = {
   __typename?: "Log";
@@ -1487,6 +1548,14 @@ export enum MotuType {
 export type Mutation = {
   __typename?: "Mutation";
   _empty?: Maybe<Scalars["String"]>;
+  entitySetAppearance?: Maybe<Scalars["String"]>;
+  entityRemoveAppearance?: Maybe<Scalars["String"]>;
+  entitySetBehavior?: Maybe<Scalars["String"]>;
+  entityRemoveBehavior?: Maybe<Scalars["String"]>;
+  entitySetIdentity?: Maybe<Scalars["String"]>;
+  entityRemoveIdentity?: Maybe<Scalars["String"]>;
+  entitySetLocation?: Maybe<Scalars["String"]>;
+  entityRemoveLocation?: Maybe<Scalars["String"]>;
   triggerAction?: Maybe<Scalars["String"]>;
   addSimulatorAmbiance?: Maybe<Scalars["String"]>;
   updateSimulatorAmbiance?: Maybe<Scalars["String"]>;
@@ -2144,6 +2213,52 @@ export type Mutation = {
   countermeasuresRemoveModule?: Maybe<Scalars["String"]>;
   countermeasuresConfigureModule?: Maybe<Scalars["String"]>;
   countermeasuresSetResource?: Maybe<Scalars["String"]>;
+  entityCreate: Entity;
+  entityRemove?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntitySetAppearanceArgs = {
+  id: Scalars["ID"];
+  modelAsset?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveAppearanceArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetBehaviorArgs = {
+  id: Scalars["ID"];
+  behavior: Behaviors;
+  targetId?: Maybe<Scalars["ID"]>;
+  destination?: Maybe<CoordinatesInput>;
+};
+
+export type MutationEntityRemoveBehaviorArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetIdentityArgs = {
+  id: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
+  type?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveIdentityArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetLocationArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  position?: Maybe<CoordinatesInput>;
+  velocity?: Maybe<CoordinatesInput>;
+  acceleration?: Maybe<CoordinatesInput>;
+  rotation?: Maybe<QuaternionInput>;
+  rotationVelocity?: Maybe<CoordinatesInput>;
+  rotationAcceleration?: Maybe<CoordinatesInput>;
+};
+
+export type MutationEntityRemoveLocationArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationTriggerActionArgs = {
@@ -5539,6 +5654,14 @@ export type MutationCountermeasuresSetResourceArgs = {
   value: Scalars["Float"];
 };
 
+export type MutationEntityCreateArgs = {
+  flightId: Scalars["ID"];
+};
+
+export type MutationEntityRemoveArgs = {
+  id: Scalars["ID"];
+};
+
 export type NamedObject = {
   __typename?: "NamedObject";
   id?: Maybe<Scalars["ID"]>;
@@ -5640,6 +5763,12 @@ export type ObjectiveInput = {
   crewComplete?: Maybe<Scalars["Boolean"]>;
 };
 
+export enum OperationsEnum {
+  Add = "add",
+  Remove = "remove",
+  Replace = "replace",
+}
+
 export type PainPoint = {
   __typename?: "PainPoint";
   x?: Maybe<Scalars["Float"]>;
@@ -5716,6 +5845,12 @@ export enum ParticleTypes {
   Carbon = "Carbon",
   Radiation = "Radiation",
 }
+
+export type Patch = {
+  op?: Maybe<OperationsEnum>;
+  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
+  value?: Maybe<Scalars["JSON"]>;
+};
 
 export type Phaser = SystemInterface & {
   __typename?: "Phaser";
@@ -5875,6 +6010,21 @@ export type ProbeTypeInput = {
   count?: Maybe<Scalars["Int"]>;
 };
 
+export type Quaternion = {
+  __typename?: "Quaternion";
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
+  w: Scalars["Float"];
+};
+
+export type QuaternionInput = {
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
+  w: Scalars["Float"];
+};
+
 export type Query = {
   __typename?: "Query";
   _empty?: Maybe<Scalars["String"]>;
@@ -5988,6 +6138,8 @@ export type Query = {
   viewscreens?: Maybe<Array<Maybe<Viewscreen>>>;
   countermeasures?: Maybe<Countermeasures>;
   countermeasureModuleType: Array<CountermeasureModule>;
+  entity?: Maybe<Entity>;
+  entities: Array<Maybe<Entity>>;
 };
 
 export type QueryActionsArgs = {
@@ -6419,6 +6571,14 @@ export type QueryCountermeasuresArgs = {
   simulatorId: Scalars["ID"];
 };
 
+export type QueryEntityArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryEntitiesArgs = {
+  flightId: Scalars["ID"];
+};
+
 export type Railgun = SystemInterface & {
   __typename?: "Railgun";
   id?: Maybe<Scalars["ID"]>;
@@ -6652,6 +6812,7 @@ export type SensorContact = {
 };
 
 export type SensorContactInput = {
+  sensorId?: Maybe<Scalars["ID"]>;
   id?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
@@ -7228,6 +7389,8 @@ export type Subscription = {
   viewscreensUpdate?: Maybe<Array<Maybe<Viewscreen>>>;
   viewscreenVideoToggle?: Maybe<Scalars["Boolean"]>;
   countermeasuresUpdate?: Maybe<Countermeasures>;
+  entity?: Maybe<Array<Maybe<EntityPatch>>>;
+  entities?: Maybe<Array<Maybe<EntitiesPatch>>>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -7636,6 +7799,14 @@ export type SubscriptionViewscreenVideoToggleArgs = {
 
 export type SubscriptionCountermeasuresUpdateArgs = {
   simulatorId: Scalars["ID"];
+};
+
+export type SubscriptionEntityArgs = {
+  id?: Maybe<Scalars["ID"]>;
+};
+
+export type SubscriptionEntitiesArgs = {
+  flightId: Scalars["ID"];
 };
 
 export type SubspaceField = SystemInterface & {
@@ -8664,7 +8835,7 @@ export type CountermeasuresRemoveModuleMutation = {
   __typename?: "Mutation";
 } & Pick<Mutation, "countermeasuresRemoveModule">;
 
-export type TemplateFragmentFragment = {__typename?: "Template"} & Pick<
+export type TemplateFragmentFragment = {__typename: "Template"} & Pick<
   Template,
   "id"
 >;
@@ -8682,7 +8853,7 @@ export type TemplateUpdateSubscriptionVariables = {
 };
 
 export type TemplateUpdateSubscription = {__typename?: "Subscription"} & {
-  _templateUpdate: Maybe<{__typename?: "Template"} & TemplateFragmentFragment>;
+  _templateUpdate: Maybe<{__typename: "Template"} & TemplateFragmentFragment>;
 };
 
 export type ClientChangedSubscriptionVariables = {};
@@ -8829,6 +9000,25 @@ export type SetSoundPlayerMutation = {__typename?: "Mutation"} & Pick<
   "clientSetSoundPlayer"
 >;
 
+export type EntityCreateMutationVariables = {
+  flightId: Scalars["ID"];
+  position: CoordinatesInput;
+};
+
+export type EntityCreateMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetLocation"
+> & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
+
+export type EntityRemoveMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type EntityRemoveMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entityRemove"
+>;
+
 export interface IntrospectionResultData {
   __schema: {
     types: {
@@ -8944,6 +9134,18 @@ const result: IntrospectionResultData = {
       },
       {
         kind: "INTERFACE",
+        name: "Patch",
+        possibleTypes: [
+          {
+            name: "EntityPatch",
+          },
+          {
+            name: "EntitiesPatch",
+          },
+        ],
+      },
+      {
+        kind: "INTERFACE",
         name: "HeatInterface",
         possibleTypes: [],
       },
@@ -9035,6 +9237,7 @@ export const CountermeasureFragmentDoc = gql`
 export const TemplateFragmentFragmentDoc = gql`
   fragment TemplateFragment on Template {
     id
+    __typename
   }
 `;
 export const SimulatorDocument = gql`
@@ -9974,6 +10177,7 @@ export const TemplateUpdateDocument = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     _templateUpdate(simulatorId: $simulatorId) {
       ...TemplateFragment
+      __typename
     }
   }
   ${TemplateFragmentFragmentDoc}
@@ -10434,4 +10638,104 @@ export type SetSoundPlayerMutationResult = ApolloReactCommon.MutationResult<
 export type SetSoundPlayerMutationOptions = ApolloReactCommon.BaseMutationOptions<
   SetSoundPlayerMutation,
   SetSoundPlayerMutationVariables
+>;
+export const EntityCreateDocument = gql`
+  mutation EntityCreate($flightId: ID!, $position: CoordinatesInput!) {
+    entityCreate(flightId: $flightId) {
+      id
+    }
+    entitySetLocation(position: $position)
+  }
+`;
+export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
+  EntityCreateMutation,
+  EntityCreateMutationVariables
+>;
+
+/**
+ * __useEntityCreateMutation__
+ *
+ * To run a mutation, you first call `useEntityCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityCreateMutation, { data, loading, error }] = useEntityCreateMutation({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *      position: // value for 'position'
+ *   },
+ * });
+ */
+export function useEntityCreateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityCreateMutation,
+    EntityCreateMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityCreateMutation,
+    EntityCreateMutationVariables
+  >(EntityCreateDocument, baseOptions);
+}
+export type EntityCreateMutationHookResult = ReturnType<
+  typeof useEntityCreateMutation
+>;
+export type EntityCreateMutationResult = ApolloReactCommon.MutationResult<
+  EntityCreateMutation
+>;
+export type EntityCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityCreateMutation,
+  EntityCreateMutationVariables
+>;
+export const EntityRemoveDocument = gql`
+  mutation EntityRemove($id: ID!) {
+    entityRemove(id: $id)
+  }
+`;
+export type EntityRemoveMutationFn = ApolloReactCommon.MutationFunction<
+  EntityRemoveMutation,
+  EntityRemoveMutationVariables
+>;
+
+/**
+ * __useEntityRemoveMutation__
+ *
+ * To run a mutation, you first call `useEntityRemoveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityRemoveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityRemoveMutation, { data, loading, error }] = useEntityRemoveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntityRemoveMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityRemoveMutation,
+    EntityRemoveMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityRemoveMutation,
+    EntityRemoveMutationVariables
+  >(EntityRemoveDocument, baseOptions);
+}
+export type EntityRemoveMutationHookResult = ReturnType<
+  typeof useEntityRemoveMutation
+>;
+export type EntityRemoveMutationResult = ApolloReactCommon.MutationResult<
+  EntityRemoveMutation
+>;
+export type EntityRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityRemoveMutation,
+  EntityRemoveMutationVariables
 >;

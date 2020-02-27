@@ -1,6 +1,13 @@
 import {camelCase} from "change-case";
 import uuid from "uuid";
-import "./components";
+import {
+  Appearance,
+  Behavior,
+  Identity,
+  Location,
+  Scene,
+  SceneChild,
+} from "./components";
 import {componentRegistry} from "./component";
 import {immerable} from "immer";
 
@@ -9,11 +16,21 @@ import {immerable} from "immer";
 // to the components that are asssigned to it
 export class Entity {
   [immerable] = true;
-  id: string;
+  id?: string;
   flightId: string;
+
+  // Possible components
+  appearance?: Appearance;
+  behavior?: Behavior;
+  identity?: Identity;
+  location?: Location;
+  scene?: Scene;
+  sceneChild?: SceneChild;
+
+  static class = "Entity";
   class = "Entity";
-  constructor({id, flightId, ...components}) {
-    this.id = id || uuid.v4();
+  constructor({id = uuid.v4(), flightId, ...components}) {
+    this.id = id;
     this.flightId = flightId || null;
 
     // Apply the components

@@ -64,7 +64,6 @@ const Controls = ({
   setSelecting,
   hasSelected,
   selectedEntity,
-  modifyEntity,
 }: {
   recenter: () => void;
   zoomScale: boolean;
@@ -73,7 +72,6 @@ const Controls = ({
   setSelecting: (val: boolean | StateArg) => void;
   hasSelected: boolean;
   selectedEntity: any;
-  modifyEntity: (entity: any) => void;
 }) => {
   const [paletteExpanded, setPaletteExpanded] = React.useState<boolean>(false);
   React.useEffect(() => {
@@ -91,10 +89,11 @@ const Controls = ({
                 type="text"
                 value={selectedEntity.name || ""}
                 onChange={e => {
-                  modifyEntity({
-                    ...selectedEntity,
-                    name: e.target.value,
-                  });
+                  // TODO: Update so it triggers a mutation
+                  // modifyEntity({
+                  //   ...selectedEntity,
+                  //   name: e.target.value,
+                  // });
                 }}
               />
             </label>
@@ -107,10 +106,11 @@ const Controls = ({
                 step="0.1"
                 value={selectedEntity.scale || 1}
                 onChange={e => {
-                  modifyEntity({
-                    ...selectedEntity,
-                    scale: parseFloat(e.target.value),
-                  });
+                  // TODO: Update so it triggers a mutation
+                  // modifyEntity({
+                  //   ...selectedEntity,
+                  //   scale: parseFloat(e.target.value),
+                  // });
                 }}
               />
             </label>
@@ -120,10 +120,11 @@ const Controls = ({
                 type="color"
                 value={hexToRgb(selectedEntity.color)}
                 onChange={e => {
-                  modifyEntity({
-                    ...selectedEntity,
-                    color: parseInt(e.target.value.replace("#", ""), 16),
-                  });
+                  // TODO: Update so it triggers a mutation
+                  // modifyEntity({
+                  //   ...selectedEntity,
+                  //   color: parseInt(e.target.value.replace("#", ""), 16),
+                  // });
                 }}
               />
             </label>

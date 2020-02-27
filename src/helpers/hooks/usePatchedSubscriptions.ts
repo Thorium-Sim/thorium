@@ -1,6 +1,6 @@
 import React from "react";
 import {SubscriptionClient} from "subscriptions-transport-ws";
-import create from "zustand";
+import create, {UseStore, StoreApi} from "zustand";
 import {applyPatches} from "immer";
 import {websocketUrl} from "helpers/graphqlClient";
 import {
@@ -10,6 +10,8 @@ import {
   OperationDefinitionNode,
   FieldNode,
 } from "graphql";
+import {equal} from "@wry/equality";
+
 const client = new SubscriptionClient(websocketUrl, {
   reconnect: true,
 });
@@ -27,11 +29,32 @@ function validateQuery(queryAST: FieldNode) {
   return true;
 }
 
-function usePatchedSubscriptions<T>(queryAST: DocumentNode) {
+function usePatchedSubscriptions<SubData, VariableDefinition>(
+  queryAST: DocumentNode,
+  variablesInput?: VariableDefinition | undefined,
+): [
+  UseStore<{loading: boolean; data: SubData}>,
+  StoreApi<{loading: boolean; data: SubData}>,
+] {
   const [useStore, api] = React.useMemo(
-    () => create<{[key: string]: T}>(() => ({})),
+    () =>
+      create<{loading: boolean; data: SubData}>(() => ({
+        loading: true,
+        data: ([] as unknown) as SubData,
+      })),
     [],
   );
+
+  const [variables, setVariables] = React.useState<
+    VariableDefinition | undefined
+  >(variablesInput);
+
+  React.useEffect(() => {
+    if (!equal(variables, variablesInput)) {
+      setVariables(variablesInput);
+    }
+  }, [variables, variablesInput]);
+
   React.useEffect(() => {
     const query = print(queryAST);
     const definitions = queryAST.definitions[0] as OperationDefinitionNode;
@@ -46,30 +69,30 @@ function usePatchedSubscriptions<T>(queryAST: DocumentNode) {
       .request({
         query,
         operationName,
+        variables,
       })
       .subscribe({
         next: ({data}) => {
           if (data?.[selectionName][0].values) {
             // We're getting initial data.
             api.setState({
-              [selectionName]: data[selectionName][0].values,
+              loading: false,
+              data: data[selectionName][0].values,
             });
           } else {
             // We're getting a patch, apply the patch with immer.
             const patches = data?.[selectionName];
             api.setState({
-              [selectionName]: applyPatches(
-                api.getState()[selectionName],
-                patches,
-              ),
+              loading: false,
+              data: applyPatches(api.getState().data as SubData, patches),
             });
           }
         },
       });
     return () => unsubscribe.unsubscribe();
-  }, [api, queryAST]);
+  }, [api, queryAST, variables]);
 
-  return useStore;
+  return [useStore, api];
 }
 
 export default usePatchedSubscriptions;

@@ -100,6 +100,18 @@ export default (
               // If there is a direct mutation resolver, execute that.
               // This is now the preferred way to execute mutations
               if (resolvers.Mutation[opName]) {
+                // The whole point of this is so we can still
+                // trigger handle event, so lets do that.
+                App.handleEvent(
+                  {
+                    ...args,
+                    cb: () => {},
+                  },
+                  opName,
+                  requestContext.context,
+                );
+                // Returning null means it executes
+                // the built-in mutation resolver
                 return null;
               }
               return new Promise(resolve => {

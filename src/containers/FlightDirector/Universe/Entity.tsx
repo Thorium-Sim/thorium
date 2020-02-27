@@ -5,8 +5,8 @@ import {useDrag} from "react-use-gesture";
 import * as THREE from "three";
 import {SphereGeometry, BoxBufferGeometry} from "three";
 import SelectionOutline from "./SelectionOutline";
-import {EntityInterface} from ".";
 import {PositionTuple} from "./CanvasApp";
+import {Entity as EntityInterface} from "generated/graphql";
 
 interface EntityProps {
   dragging?: boolean;
@@ -15,7 +15,6 @@ interface EntityProps {
   setSelected?: React.Dispatch<React.SetStateAction<string[]>>;
   selected?: boolean;
   mousePosition?: PositionTuple;
-  setPosition?: (fn: (p: PositionTuple) => PositionTuple) => void;
 }
 
 const Entity: React.FC<EntityProps> = ({
@@ -25,13 +24,15 @@ const Entity: React.FC<EntityProps> = ({
   setSelected,
   selected,
   mousePosition,
-  setPosition,
 }) => {
-  const {id, type, size, color, position = [0, 0, 0], scale = 1} = entity;
+  const {id, location} = entity;
+  const type = "sphere";
+  const size = 1;
+  const color = 0x583798;
+  const scale = 1;
+  const {position: positionCoords} = location || {position: null};
   const [{dragging, zoomScale}, dispatch] = React.useContext(CanvasContext);
-
   const mesh = React.useRef<THREE.Mesh>(new THREE.Mesh());
-  const meshPosition = isDragging ? mousePosition : position;
 
   useFrame(({camera}) => {
     const {zoom} = camera;
@@ -47,7 +48,9 @@ const Entity: React.FC<EntityProps> = ({
   const {zoom} = camera;
   const bind = useDrag(
     ({delta: [dx, dy]}) => {
-      setPosition?.(([x, y, z]) => [x + dx / zoom, y - dy / zoom, z]);
+      // TODO: Set it up so position is stored locally and
+      // a mutation is triggered on mouseUp
+      // setPosition?.(([x, y, z]) => [x + dx / zoom, y - dy / zoom, z]);
     },
     {eventOptions: {pointer: true, passive: false}},
   );
@@ -56,10 +59,16 @@ const Entity: React.FC<EntityProps> = ({
     switch (type) {
       case "sphere":
         return new SphereGeometry(size, 32, 32);
-      case "cube":
-        return new BoxBufferGeometry(2, 2, 2);
+      // case "cube":
+      // default:
+      //   return new BoxBufferGeometry(2, 2, 2);
     }
   }, [type, size]);
+  if (!library && !isDragging && (!location || !positionCoords)) return null;
+  const meshPosition = isDragging
+    ? mousePosition
+    : [positionCoords?.x || 0, positionCoords?.y || 0, positionCoords?.z || 0];
+
   return (
     <>
       <mesh

@@ -8,7 +8,10 @@ import BackPlane from "./BackPlane";
 import Entity from "./Entity";
 import useEventListener from "./useEventListener";
 import DragSelect from "./DragSelect";
-import {EntityInterface} from ".";
+import {
+  Entity as EntityInterface,
+  useEntityCreateMutation,
+} from "generated/graphql";
 interface SceneControlProps {
   recenter: {};
 }
@@ -28,7 +31,6 @@ interface CanvasAppProps {
   dragging: any;
   selecting: boolean;
   entities: EntityInterface[];
-  setEntities: React.Dispatch<React.SetStateAction<EntityInterface[]>>;
 }
 const CanvasApp: React.FC<CanvasAppProps> = ({
   recenter,
@@ -38,32 +40,42 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   dragging,
   selecting,
   entities,
-  setEntities,
 }) => {
+  const [create] = useEntityCreateMutation();
   const mousePosition = use3DMousePosition();
   React.useEffect(() => {
-    function mouseUp() {
+    async function mouseUp() {
       setDragging(false);
       document.removeEventListener("mouseup", mouseUp);
-      const id = uuid.v4();
-      setEntities(e => [...e, {id, ...dragging, position: mousePosition}]);
-
-      setSelected([id]);
+      const {data} = await create({
+        variables: {
+          flightId: "template",
+          position: {
+            x: mousePosition[0],
+            y: mousePosition[1],
+            z: mousePosition[2],
+          },
+        },
+      });
+      if (data?.entityCreate.id) {
+        setSelected([data.entityCreate.id]);
+      }
     }
     if (dragging) {
       document.addEventListener("mouseup", mouseUp);
     }
     return () => document.removeEventListener("mouseup", mouseUp);
-  }, [dragging, setDragging, mousePosition, setEntities, setSelected]);
+  }, [create, dragging, setDragging, mousePosition, setSelected]);
 
   const elementList = ["input", "textarea"];
   useEventListener("keydown", (e: KeyboardEvent) => {
     const target = e.target as HTMLElement;
     if (elementList.includes(target?.tagName)) return;
     if (e.key === "Backspace" && selected) {
-      setEntities((e: EntityInterface[]) =>
-        e.filter(({id}) => !selected.includes(id)),
-      );
+      // TODO: Add mutation to remove entity
+      // setEntities((e: EntityInterface[]) =>
+      //   e.filter(({id}) => !selected.includes(id)),
+      // );
       setSelected([]);
     }
   });
@@ -76,12 +88,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       <pointLight position={[10, 10, -10]} />
 
       {dragging && (
-        <Entity
-          dragging
-          entity={dragging}
-          mousePosition={mousePosition}
-          setPosition={() => {}}
-        />
+        <Entity dragging entity={dragging} mousePosition={mousePosition} />
       )}
       {entities.map(e => (
         <Entity
@@ -89,17 +96,6 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           entity={e}
           selected={selected && selected.includes(e.id)}
           setSelected={setSelected}
-          setPosition={(fn: (p: PositionTuple) => PositionTuple) => {
-            setEntities(entities => {
-              return entities.map(e => {
-                if (!e.position) return e;
-                if (selected && selected.includes(e.id)) {
-                  return {...e, position: fn(e.position)};
-                }
-                return e;
-              });
-            });
-          }}
         />
       ))}
 

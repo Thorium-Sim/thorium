@@ -3,7 +3,9 @@ import {pubsub} from "../../helpers/subscriptionManager";
 import uuid from "uuid";
 import App from "../../app";
 import filterPatches from "../../helpers/filterPatches";
-const mutationHelper = require("../../helpers/mutationHelper").default;
+import {Entity} from "../../classes";
+import produce from "immer";
+
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -35,18 +37,18 @@ const schema = gql`
     # down and what to filter out. This will always
     # be null except for the initial subscription
     # and is only used to know how to filter the patches
-    values: [Entity]
+    values: [Entity!]
   }
   type Entity {
     id: ID!
   }
   extend type Query {
     entity(id: ID!): Entity
-    entities(flightId: ID!): [Entity]
+    entities(flightId: ID!): [Entity]!
   }
   extend type Mutation {
-    entityCreate(flightId: ID!): Entity
-    entityRemove(id: ID!): Entity
+    entityCreate(flightId: ID!): Entity!
+    entityRemove(id: ID!): String
   }
   extend type Subscription {
     entity(id: ID): [EntityPatch]
@@ -54,14 +56,41 @@ const schema = gql`
   }
 `;
 
-const Mutation = {};
-
 const resolver = {
   Query: {},
-  Mutation,
+  Mutation: {
+    entityCreate(rootQuery, {flightId}, context) {
+      const entity = new Entity({flightId});
+      context.entityId = entity.id;
+      App.entities = produce(
+        App.entities,
+        draft => {
+          draft.push(entity);
+        },
+        patches => {
+          pubsub.publish("entities", {flightId, patches});
+        },
+      );
+      return entity;
+    },
+    entityRemove(rootQuery, {id}, context) {
+      const entity = App.entities.find(e => e.id === id);
+      App.entities = produce(
+        App.entities,
+        draft => {
+          draft = draft.filter(e => e.id !== id);
+        },
+        patches => {
+          pubsub.publish("entities", {flightId: entity.flightId, patches});
+        },
+      );
+    },
+  },
   Subscription: {
     entity: {
       resolve(rootQuery, _args, _context, info) {
+        if (rootQuery.patches.length === 1 && rootQuery.patches[0]?.values)
+          return rootQuery.patches;
         return filterPatches(rootQuery.patches, info);
       },
       subscribe: withFilter(
@@ -80,6 +109,8 @@ const resolver = {
     },
     entities: {
       resolve(rootQuery, _args, _context, info) {
+        if (rootQuery.patches.length === 1 && rootQuery.patches[0]?.values)
+          return rootQuery.patches;
         return filterPatches(rootQuery.patches, info);
       },
       subscribe: withFilter(

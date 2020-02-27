@@ -1,4 +1,8 @@
 import {gql} from "apollo-server-express";
+import App from "../../../app";
+import produce from "immer";
+import {Location} from "../../../classes/universe/components";
+import {pubsub} from "../../../helpers/subscriptionManager";
 
 const schema = gql`
   type Quaternion {
@@ -27,7 +31,7 @@ const schema = gql`
   }
   extend type Mutation {
     entitySetLocation(
-      id: ID!
+      id: ID
       position: CoordinatesInput
       velocity: CoordinatesInput
       acceleration: CoordinatesInput
@@ -39,6 +43,33 @@ const schema = gql`
   }
 `;
 
-const resolver = {};
+const resolver = {
+  Mutation: {
+    entitySetLocation(root, {id, ...properties}, context) {
+      const entityId = id || context.entityId;
+      const entityIndex = App.entities.findIndex(e => e.id === entityId);
+      const flightId = App.entities[entityIndex].flightId;
+      App.entities = produce(
+        App.entities,
+        draft => {
+          const entity = draft[entityIndex];
+          if (!entity.location) {
+            entity.location = new Location({...properties});
+          } else {
+            Object.entries(properties).forEach(([key, value]) => {
+              entity.location[key] = value;
+            });
+          }
+        },
+        patches => {
+          pubsub.publish("entities", {flightId, patches});
+        },
+      );
+    },
+    entityRemoveLocation(root, {id}, context) {
+      const entityId = id || context.entityId;
+    },
+  },
+};
 
 export default {schema, resolver};

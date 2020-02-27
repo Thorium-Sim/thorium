@@ -253,7 +253,7 @@
     "request": "^2.88.0",
     "simplex-noise": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.16",
-    "three": "0.113.2",
+    "three": "^0.113.2",
     "uuid": "^3.3.3",
     "yauzl": "^2.10.0",
     "yazl": "^2.5.1",

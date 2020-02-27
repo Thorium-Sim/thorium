@@ -5,11 +5,11 @@ import {CanvasContext, ActionType} from "./CanvasContext";
 import * as THREE from "three";
 import {PlaneBufferGeometry} from "three";
 import {get3DMousePosition} from "./use3DMousePosition";
-import {EntityInterface} from ".";
+import {Entity} from "generated/graphql";
 
 interface DragSelectProps {
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
-  entities: EntityInterface[];
+  entities: Entity[];
   selecting: boolean;
 }
 interface BoxInterface {
@@ -19,6 +19,28 @@ interface BoxInterface {
   height: number;
   startPointX: number;
   startPointY: number;
+}
+
+function selectEntities(
+  entities: Entity[],
+  setSelected: React.Dispatch<React.SetStateAction<string[]>>,
+  pointTopLeftX: number,
+  pointBottomRightX: number,
+  pointBottomRightY: number,
+  pointTopLeftY: number,
+) {
+  const ids = entities
+    .filter(({location}) => {
+      if (!location) return false;
+      return (
+        location.position.x > pointTopLeftX &&
+        location.position.x < pointBottomRightX &&
+        location.position.y < pointBottomRightY &&
+        location.position.y > pointTopLeftY
+      );
+    })
+    .map(e => e.id);
+  setSelected(ids);
 }
 const DragSelect: React.FC<DragSelectProps> = ({
   setSelected,
@@ -79,6 +101,14 @@ const DragSelect: React.FC<DragSelectProps> = ({
         const x = pointTopLeftX + width / 2;
         const y = pointBottomRightY - height / 2;
 
+        selectEntities(
+          entities,
+          setSelected,
+          pointTopLeftX,
+          pointBottomRightX,
+          pointBottomRightY,
+          pointTopLeftY,
+        );
         setBox(box => {
           return {
             x,
@@ -89,19 +119,6 @@ const DragSelect: React.FC<DragSelectProps> = ({
             startPointY: box?.startPointY || 0,
           };
         });
-
-        const ids = entities
-          .filter(({position}) => {
-            if (!position) return false;
-            return (
-              position[0] > pointTopLeftX &&
-              position[0] < pointBottomRightX &&
-              position[1] < pointBottomRightY &&
-              position[1] > pointTopLeftY
-            );
-          })
-          .map(e => e.id);
-        setSelected(ids);
       }
     },
     (document as unknown) as HTMLElement,
@@ -122,18 +139,15 @@ const DragSelect: React.FC<DragSelectProps> = ({
         const pointBottomRightY = Math.max(box.startPointY, position.y);
         const pointTopLeftX = Math.min(box.startPointX, position.x);
         const pointTopLeftY = Math.min(box.startPointY, position.y);
-        const ids = entities
-          .filter(({position}) => {
-            if (!position) return false;
-            return (
-              position[0] > pointTopLeftX &&
-              position[0] < pointBottomRightX &&
-              position[1] < pointBottomRightY &&
-              position[1] > pointTopLeftY
-            );
-          })
-          .map(e => e.id);
-        setSelected(ids);
+
+        selectEntities(
+          entities,
+          setSelected,
+          pointTopLeftX,
+          pointBottomRightX,
+          pointBottomRightY,
+          pointTopLeftY,
+        );
 
         setBox(null);
         dispatch({type: ActionType.dropped});

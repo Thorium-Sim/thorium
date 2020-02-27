@@ -30,12 +30,12 @@ export class Location {
   rotationVelocity: Coordinates;
   rotationAcceleration: Coordinates;
   constructor({
-    position,
-    velocity,
-    acceleration,
-    rotation,
-    rotationVelocity,
-    rotationAcceleration,
+    position = {x: 0, y: 0, z: 0},
+    velocity = {x: 0, y: 0, z: 0},
+    acceleration = {x: 0, y: 0, z: 0},
+    rotation = {x: 0, y: 0, z: 0, w: 0},
+    rotationVelocity = {x: 0, y: 0, z: 0},
+    rotationAcceleration = {x: 0, y: 0, z: 0},
   }) {
     this.position = new Coordinates(position);
     this.velocity = new Coordinates(velocity);

@@ -5,16 +5,30 @@ import CanvasApp from "./CanvasApp";
 import Library from "./Library";
 import "./styles.scss";
 import CanvasContextProvider from "./CanvasContext";
+import usePatchedSubscriptions from "../../../helpers/hooks/usePatchedSubscriptions";
+import {Entity} from "../../../generated/graphql";
+import gql from "graphql-tag.macro";
+import {useApolloClient, ApolloProvider} from "@apollo/client";
 
-export interface EntityInterface {
-  id: string;
-  type: string;
-  size: number;
-  material: string;
-  color: number;
-  position?: [number, number, number];
-  scale: number;
-}
+const sub = gql`
+  subscription Entities($flightId: ID!) {
+    entities(flightId: $flightId) {
+      op
+      path
+      value
+      values {
+        id
+        location {
+          position {
+            x
+            y
+            z
+          }
+        }
+      }
+    }
+  }
+`;
 
 export default function UniversalSandboxEditor() {
   const [recenter, setRecenter] = React.useState<{}>({});
@@ -22,23 +36,28 @@ export default function UniversalSandboxEditor() {
   const [selected, setSelected] = React.useState<string[]>([]);
   const [dragging, setDragging] = React.useState<any>(false);
   const [selecting, setSelecting] = React.useState<boolean>(false);
-  const [entities, setEntities] = React.useState<EntityInterface[]>([]);
-
+  const [useEntityState] = usePatchedSubscriptions<
+    Entity[],
+    {flightId: string}
+  >(sub, {flightId: "template"});
+  const entities = useEntityState(state => state.data) || [];
+  const client = useApolloClient();
   return (
     <div className="universal-sandbox-editor">
       <Canvas id="level-editor">
-        <CanvasContextProvider recenter={recenter} zoomScale={zoomScale}>
-          <CanvasApp
-            recenter={recenter}
-            selected={selected}
-            setSelected={setSelected}
-            setDragging={setDragging}
-            dragging={dragging}
-            selecting={selecting}
-            entities={entities}
-            setEntities={setEntities}
-          />
-        </CanvasContextProvider>
+        <ApolloProvider client={client}>
+          <CanvasContextProvider recenter={recenter} zoomScale={zoomScale}>
+            <CanvasApp
+              recenter={recenter}
+              selected={selected}
+              setSelected={setSelected}
+              setDragging={setDragging}
+              dragging={dragging}
+              selecting={selecting}
+              entities={entities}
+            />
+          </CanvasContextProvider>
+        </ApolloProvider>
       </Canvas>
       <Controls
         recenter={() => setRecenter({})}
@@ -48,16 +67,6 @@ export default function UniversalSandboxEditor() {
         hasSelected={selected && selected.length === 1}
         setSelecting={setSelecting}
         selectedEntity={entities.find(e => selected && e.id === selected[0])}
-        modifyEntity={e => {
-          setEntities(entities =>
-            entities.map(ee => {
-              if (ee.id === e.id) {
-                return e;
-              }
-              return ee;
-            }),
-          );
-        }}
       />
       <Library setDragging={setDragging} dragging={dragging} />
     </div>
