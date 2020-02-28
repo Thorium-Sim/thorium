@@ -2,7 +2,7 @@ import {gql} from "apollo-server-express";
 import App from "../../../app";
 import produce from "immer";
 import {Location} from "../../../classes/universe/components";
-import {pubsub} from "../../../helpers/subscriptionManager";
+import {handlePatches} from "../../../helpers/filterPatches";
 
 const schema = gql`
   type Quaternion {
@@ -61,9 +61,8 @@ const resolver = {
             });
           }
         },
-        patches => {
-          pubsub.publish("entities", {flightId, patches});
-        },
+
+        handlePatches(context, "entities", flightId, "flightId", "entity"),
       );
     },
     entityRemoveLocation(root, {id}, context) {

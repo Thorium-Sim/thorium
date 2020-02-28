@@ -2,7 +2,7 @@ import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../../helpers/subscriptionManager";
 import uuid from "uuid";
 import App from "../../app";
-import filterPatches from "../../helpers/filterPatches";
+import filterPatches, {handlePatches} from "../../helpers/filterPatches";
 import {Entity} from "../../classes";
 import produce from "immer";
 
@@ -48,7 +48,7 @@ const schema = gql`
   }
   extend type Mutation {
     entityCreate(flightId: ID!): Entity!
-    entityRemove(id: ID!): String
+    entityRemove(id: [ID!]!): String
   }
   extend type Subscription {
     entity(id: ID): [EntityPatch]
@@ -67,22 +67,24 @@ const resolver = {
         draft => {
           draft.push(entity);
         },
-        patches => {
-          pubsub.publish("entities", {flightId, patches});
-        },
+        handlePatches(context, "entities", flightId, "flightId"),
       );
       return entity;
     },
-    entityRemove(rootQuery, {id}, context) {
-      const entity = App.entities.find(e => e.id === id);
+    entityRemove(rootQuery, {id: idList}, context) {
+      const entities = App.entities.filter(e => idList.includes(e.id));
+      const flightId = entities[0].flightId;
       App.entities = produce(
         App.entities,
         draft => {
-          draft = draft.filter(e => e.id !== id);
+          entities.forEach(({id}) => {
+            draft.splice(
+              draft.findIndex(e => e.id === id),
+              1,
+            );
+          });
         },
-        patches => {
-          pubsub.publish("entities", {flightId: entity.flightId, patches});
-        },
+        handlePatches(context, "entities", flightId, "flightId", "entity"),
       );
     },
   },

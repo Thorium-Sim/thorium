@@ -11,6 +11,7 @@ import DragSelect from "./DragSelect";
 import {
   Entity as EntityInterface,
   useEntityCreateMutation,
+  useEntityRemoveMutation,
 } from "generated/graphql";
 interface SceneControlProps {
   recenter: {};
@@ -42,6 +43,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   entities,
 }) => {
   const [create] = useEntityCreateMutation();
+  const [remove] = useEntityRemoveMutation();
   const mousePosition = use3DMousePosition();
   React.useEffect(() => {
     async function mouseUp() {
@@ -72,10 +74,8 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     const target = e.target as HTMLElement;
     if (elementList.includes(target?.tagName)) return;
     if (e.key === "Backspace" && selected) {
-      // TODO: Add mutation to remove entity
-      // setEntities((e: EntityInterface[]) =>
-      //   e.filter(({id}) => !selected.includes(id)),
-      // );
+      remove({variables: {id: selected}});
+
       setSelected([]);
     }
   });

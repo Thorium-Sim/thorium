@@ -24,3 +24,29 @@ export default function filterPatches(patches, info) {
     return true;
   });
 }
+
+export function handlePatches(
+  context,
+  publishKey: string,
+  subId: any,
+  subIdKey: string,
+  label?: string,
+) {
+  return function(patches) {
+    if (!context.subscriptionResponses) context.subscriptionResponses = {};
+    if (!context.subscriptionResponses[publishKey]) {
+      context.subscriptionResponses[publishKey] = [
+        {[subIdKey]: subId, patches},
+      ];
+    } else {
+      context.subscriptionResponses[publishKey] = context.subscriptionResponses[
+        publishKey
+      ].map(e => {
+        if (e[subIdKey] === subId) {
+          return {...e, patches: e.patches.concat(patches)};
+        }
+        return e;
+      });
+    }
+  };
+}

@@ -5659,7 +5659,7 @@ export type MutationEntityCreateArgs = {
 };
 
 export type MutationEntityRemoveArgs = {
-  id: Scalars["ID"];
+  id: Array<Scalars["ID"]>;
 };
 
 export type NamedObject = {
@@ -9011,7 +9011,7 @@ export type EntityCreateMutation = {__typename?: "Mutation"} & Pick<
 > & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
 
 export type EntityRemoveMutationVariables = {
-  id: Scalars["ID"];
+  id: Array<Scalars["ID"]>;
 };
 
 export type EntityRemoveMutation = {__typename?: "Mutation"} & Pick<
@@ -10692,7 +10692,7 @@ export type EntityCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityCreateMutationVariables
 >;
 export const EntityRemoveDocument = gql`
-  mutation EntityRemove($id: ID!) {
+  mutation EntityRemove($id: [ID!]!) {
     entityRemove(id: $id)
   }
 `;

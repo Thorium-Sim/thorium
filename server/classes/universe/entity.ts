@@ -35,8 +35,9 @@ export class Entity {
 
     // Apply the components
     Object.entries(components).forEach(([key, component]) => {
+      if (["class", "id", "flightId"].includes(key)) return;
       const Comp = componentRegistry[camelCase(component.class)];
-      this[camelCase(component.class)] = new Comp(component);
+      this[key] = new Comp(component);
     });
   }
 }
