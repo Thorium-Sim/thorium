@@ -122,7 +122,7 @@ const THXCore = ({simulator, activated, name, clients, id}) => (
       </Mutation>
     </ButtonGroup>
     {clients
-      .filter(c => console.log(c) || c.connected)
+      .filter(c => c.connected)
       .map(c => (
         <Row key={`client-${c.id}`}>
           <Col sm={6}>

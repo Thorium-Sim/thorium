@@ -3,7 +3,7 @@
 
 import App from "../../app";
 import yazl from "yazl";
-import {aspectList} from "../../events/flight";
+import {aspectList} from "../../typeDefs/flight";
 
 export default function exportFlight(id, res) {
   const flight = App.flights.find(s => s.id === id);

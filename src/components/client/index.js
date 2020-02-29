@@ -78,7 +78,16 @@ const ClientData = props => {
 
   const clients = subData?.clientChanged || data?.clients;
 
-  if (!clientId || loading || !data || !clients || !clients[0]) {
+  if (
+    !clientId ||
+    loading ||
+    !data ||
+    !clients ||
+    !clients[0] ||
+    !clients[0].flight ||
+    !clients[0].simulator ||
+    !clients[0].station
+  ) {
     return (
       <Credits
         {...props}

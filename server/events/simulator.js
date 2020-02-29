@@ -2,7 +2,7 @@ import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
 import uuid from "uuid";
-
+import {resolvers} from "../data";
 // Simulator
 App.on(
   "createSimulator",
@@ -229,9 +229,11 @@ App.on("triggerMacros", ({simulatorId, macros}) => {
             ...parsedArgs,
             ...simArgs,
             simulatorId,
+            isMacro: true,
           },
           event,
           context,
+          resolvers.Mutation[event],
         );
       }, delay);
       if (!noCancelOnReset) flight.timeouts.push(timeout);

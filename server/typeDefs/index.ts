@@ -16,7 +16,7 @@ import enginesTypeDefs from "./engines.js";
 import environmentTypeDefs from "./environment.js";
 import exocompTypeDefs from "./exocomp.js";
 import externalsTypeDefs from "./externals.js";
-import flightTypeDefs from "./flight.js";
+import flightTypeDefs from "./flight";
 import googleSheetsTypeDefs from "./googleSheets.js";
 import interfacesTypeDefs from "./interfaces.js";
 import internalCommTypeDefs from "./internalComm.js";

@@ -183,12 +183,22 @@ class Events extends EventEmitter {
     return {...snapshot, flights: newFlights, motus: newMotus};
   }
   // TODO: Add a proper context type
-  handleEvent(param: any, eventName: string, context: any = {}) {
+  handleEvent(
+    param: any,
+    eventName: string,
+    context?: any,
+    action?: (a, b, c) => any,
+  ) {
     this.timestamp = new Date();
     this.version = this.version + 1;
-
+    context = context || {};
     handleTrigger(eventName, param, context);
     heap.track(eventName, this.thoriumId, param, context);
+    // If params has isMacro, then we'll want to execute the mutation resolver
+    // It should have been passed by the 'triggerMacro' mutation
+    if (param.isMacro) {
+      action({}, param, context);
+    }
     this.emit(eventName, {...param, context});
     process.env.NODE_ENV === "production" && this.snapshot();
   }
