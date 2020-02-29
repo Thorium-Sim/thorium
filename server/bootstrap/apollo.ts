@@ -26,6 +26,7 @@ export const schema = makeExecutableSchema({
   },
 });
 
+const clientMap = {};
 // TODO: Change app to the express type
 export default (
   app: express.Application,

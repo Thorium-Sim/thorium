@@ -59,6 +59,7 @@ App.on("clientConnect", ({client, label, mobile, cards}) => {
 });
 App.on("clientDisconnect", ({client}) => {
   const clientObj = App.clients.find(c => c.id === client);
+  console.log("Disconnected", client);
   clientObj && clientObj.disconnect();
   pubsub.publish("clientChanged", App.clients);
 });

@@ -12,6 +12,7 @@ const schema = gql`
     lock: Boolean
     station: Station
     executive: Boolean
+    connected: Boolean
   }
 
   type Thx implements SystemInterface {

@@ -27,6 +27,7 @@ const webSocketLink = new WebSocketLink({
           window.location.port || 3000,
           10,
         ) + 1}/graphql`,
+
   options: {
     reconnect: true,
     connectionParams: () => getClientId().then(clientId => ({clientId})),

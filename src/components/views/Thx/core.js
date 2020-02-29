@@ -14,6 +14,7 @@ const fragment = gql`
       id
       lock
       charge
+      connected
       station {
         name
       }
@@ -123,7 +124,7 @@ const THXCore = ({simulator, activated, name, clients, id}) => (
     {clients.map(c => (
       <Row key={`client-${c.id}`}>
         <Col sm={6}>
-          {c.id} ({c.station.name})
+          {c.id} ({c.station.name}) ({console.log(c)})
         </Col>
         <Col sm={6}>
           {c.executive ? (

@@ -2209,7 +2209,6 @@ export type MutationClientDisconnectArgs = {
 
 export type MutationClientPingArgs = {
   client: Scalars["ID"];
-  ping: Scalars["String"];
 };
 
 export type MutationClientSetFlightArgs = {
@@ -7129,6 +7128,7 @@ export type Subscription = {
   actionsUpdate?: Maybe<Action>;
   assetFolderChange?: Maybe<Array<Maybe<AssetFolder>>>;
   clientChanged?: Maybe<Array<Maybe<Client>>>;
+  clientPing?: Maybe<Scalars["Boolean"]>;
   keypadsUpdate?: Maybe<Array<Maybe<Keypad>>>;
   keypadUpdate?: Maybe<Keypad>;
   scannersUpdate?: Maybe<Array<Maybe<Scanner>>>;
@@ -7242,6 +7242,10 @@ export type SubscriptionClientChangedArgs = {
   simulatorId?: Maybe<Scalars["ID"]>;
   stationName?: Maybe<Scalars["String"]>;
   flightId?: Maybe<Scalars["ID"]>;
+};
+
+export type SubscriptionClientPingArgs = {
+  clientId: Scalars["ID"];
 };
 
 export type SubscriptionKeypadsUpdateArgs = {
@@ -8114,6 +8118,7 @@ export type ThxClient = {
   lock?: Maybe<Scalars["Boolean"]>;
   station?: Maybe<Station>;
   executive?: Maybe<Scalars["Boolean"]>;
+  connected?: Maybe<Scalars["Boolean"]>;
 };
 
 export enum Timeline_Item_Config_Type {
@@ -8315,6 +8320,88 @@ export type WarheadInput = {
   type?: Maybe<Scalars["String"]>;
   probe?: Maybe<Scalars["ID"]>;
 };
+
+export type ClientDataFragment = {__typename?: "Client"} & Pick<
+  Client,
+  | "id"
+  | "token"
+  | "email"
+  | "cracked"
+  | "loginName"
+  | "loginState"
+  | "offlineState"
+  | "hypercard"
+  | "movie"
+  | "training"
+  | "caches"
+  | "overlay"
+  | "soundPlayer"
+> & {
+    flight: Maybe<
+      {__typename?: "Flight"} & Pick<Flight, "id" | "name" | "date">
+    >;
+    simulator: Maybe<
+      {__typename?: "Simulator"} & Pick<Simulator, "id" | "name">
+    >;
+    station: Maybe<{__typename?: "Station"} & Pick<Station, "name">>;
+    currentCard: Maybe<
+      {__typename?: "Card"} & Pick<Card, "name" | "component">
+    >;
+  };
+
+export type ClientQueryVariables = {
+  clientId: Scalars["ID"];
+};
+
+export type ClientQuery = {__typename?: "Query"} & {
+  clients: Maybe<Array<Maybe<{__typename?: "Client"} & ClientDataFragment>>>;
+};
+
+export type ClientUpdateSubscriptionVariables = {
+  clientId: Scalars["ID"];
+};
+
+export type ClientUpdateSubscription = {__typename?: "Subscription"} & {
+  clientChanged: Maybe<
+    Array<Maybe<{__typename?: "Client"} & ClientDataFragment>>
+  >;
+};
+
+export type ClientPingMutationVariables = {
+  clientId: Scalars["ID"];
+};
+
+export type ClientPingMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "clientPing"
+>;
+
+export type ClientPingSubSubscriptionVariables = {
+  clientId: Scalars["ID"];
+};
+
+export type ClientPingSubSubscription = {__typename?: "Subscription"} & Pick<
+  Subscription,
+  "clientPing"
+>;
+
+export type RegisterClientMutationVariables = {
+  client: Scalars["ID"];
+};
+
+export type RegisterClientMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "clientConnect"
+>;
+
+export type RemoveClientMutationVariables = {
+  client: Scalars["ID"];
+};
+
+export type RemoveClientMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "clientDisconnect"
+>;
 
 export type SimulatorDataFragment = {__typename?: "Simulator"} & Pick<
   Simulator,
@@ -8664,7 +8751,7 @@ export type CountermeasuresRemoveModuleMutation = {
   __typename?: "Mutation";
 } & Pick<Mutation, "countermeasuresRemoveModule">;
 
-export type TemplateFragmentFragment = {__typename?: "Template"} & Pick<
+export type TemplateFragmentFragment = {__typename: "Template"} & Pick<
   Template,
   "id"
 >;
@@ -8682,7 +8769,7 @@ export type TemplateUpdateSubscriptionVariables = {
 };
 
 export type TemplateUpdateSubscription = {__typename?: "Subscription"} & {
-  _templateUpdate: Maybe<{__typename?: "Template"} & TemplateFragmentFragment>;
+  _templateUpdate: Maybe<{__typename: "Template"} & TemplateFragmentFragment>;
 };
 
 export type ClientChangedSubscriptionVariables = {};
@@ -8952,6 +9039,39 @@ const result: IntrospectionResultData = {
 };
 export default result;
 
+export const ClientDataFragmentDoc = gql`
+  fragment ClientData on Client {
+    id
+    token
+    email
+    cracked
+    flight {
+      id
+      name
+      date
+    }
+    simulator {
+      id
+      name
+    }
+    station {
+      name
+    }
+    currentCard {
+      name
+      component
+    }
+    loginName
+    loginState
+    offlineState
+    hypercard
+    movie
+    training
+    caches
+    overlay
+    soundPlayer
+  }
+`;
 export const SimulatorDataFragmentDoc = gql`
   fragment SimulatorData on Simulator {
     id
@@ -9035,8 +9155,287 @@ export const CountermeasureFragmentDoc = gql`
 export const TemplateFragmentFragmentDoc = gql`
   fragment TemplateFragment on Template {
     id
+    __typename
   }
 `;
+export const ClientDocument = gql`
+  query Client($clientId: ID!) {
+    clients(clientId: $clientId) {
+      ...ClientData
+    }
+  }
+  ${ClientDataFragmentDoc}
+`;
+
+/**
+ * __useClientQuery__
+ *
+ * To run a query within a React component, call `useClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClientQuery({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    ClientQuery,
+    ClientQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<ClientQuery, ClientQueryVariables>(
+    ClientDocument,
+    baseOptions,
+  );
+}
+export function useClientLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    ClientQuery,
+    ClientQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<ClientQuery, ClientQueryVariables>(
+    ClientDocument,
+    baseOptions,
+  );
+}
+export type ClientQueryHookResult = ReturnType<typeof useClientQuery>;
+export type ClientLazyQueryHookResult = ReturnType<typeof useClientLazyQuery>;
+export type ClientQueryResult = ApolloReactCommon.QueryResult<
+  ClientQuery,
+  ClientQueryVariables
+>;
+export const ClientUpdateDocument = gql`
+  subscription ClientUpdate($clientId: ID!) {
+    clientChanged(clientId: $clientId) {
+      ...ClientData
+    }
+  }
+  ${ClientDataFragmentDoc}
+`;
+
+/**
+ * __useClientUpdateSubscription__
+ *
+ * To run a query within a React component, call `useClientUpdateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useClientUpdateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClientUpdateSubscription({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientUpdateSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    ClientUpdateSubscription,
+    ClientUpdateSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    ClientUpdateSubscription,
+    ClientUpdateSubscriptionVariables
+  >(ClientUpdateDocument, baseOptions);
+}
+export type ClientUpdateSubscriptionHookResult = ReturnType<
+  typeof useClientUpdateSubscription
+>;
+export type ClientUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  ClientUpdateSubscription
+>;
+export const ClientPingDocument = gql`
+  mutation ClientPing($clientId: ID!) {
+    clientPing(client: $clientId)
+  }
+`;
+export type ClientPingMutationFn = ApolloReactCommon.MutationFunction<
+  ClientPingMutation,
+  ClientPingMutationVariables
+>;
+
+/**
+ * __useClientPingMutation__
+ *
+ * To run a mutation, you first call `useClientPingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClientPingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [clientPingMutation, { data, loading, error }] = useClientPingMutation({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientPingMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ClientPingMutation,
+    ClientPingMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ClientPingMutation,
+    ClientPingMutationVariables
+  >(ClientPingDocument, baseOptions);
+}
+export type ClientPingMutationHookResult = ReturnType<
+  typeof useClientPingMutation
+>;
+export type ClientPingMutationResult = ApolloReactCommon.MutationResult<
+  ClientPingMutation
+>;
+export type ClientPingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ClientPingMutation,
+  ClientPingMutationVariables
+>;
+export const ClientPingSubDocument = gql`
+  subscription ClientPingSub($clientId: ID!) {
+    clientPing(clientId: $clientId)
+  }
+`;
+
+/**
+ * __useClientPingSubSubscription__
+ *
+ * To run a query within a React component, call `useClientPingSubSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useClientPingSubSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClientPingSubSubscription({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientPingSubSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    ClientPingSubSubscription,
+    ClientPingSubSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    ClientPingSubSubscription,
+    ClientPingSubSubscriptionVariables
+  >(ClientPingSubDocument, baseOptions);
+}
+export type ClientPingSubSubscriptionHookResult = ReturnType<
+  typeof useClientPingSubSubscription
+>;
+export type ClientPingSubSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  ClientPingSubSubscription
+>;
+export const RegisterClientDocument = gql`
+  mutation RegisterClient($client: ID!) {
+    clientConnect(client: $client)
+  }
+`;
+export type RegisterClientMutationFn = ApolloReactCommon.MutationFunction<
+  RegisterClientMutation,
+  RegisterClientMutationVariables
+>;
+
+/**
+ * __useRegisterClientMutation__
+ *
+ * To run a mutation, you first call `useRegisterClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerClientMutation, { data, loading, error }] = useRegisterClientMutation({
+ *   variables: {
+ *      client: // value for 'client'
+ *   },
+ * });
+ */
+export function useRegisterClientMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RegisterClientMutation,
+    RegisterClientMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RegisterClientMutation,
+    RegisterClientMutationVariables
+  >(RegisterClientDocument, baseOptions);
+}
+export type RegisterClientMutationHookResult = ReturnType<
+  typeof useRegisterClientMutation
+>;
+export type RegisterClientMutationResult = ApolloReactCommon.MutationResult<
+  RegisterClientMutation
+>;
+export type RegisterClientMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RegisterClientMutation,
+  RegisterClientMutationVariables
+>;
+export const RemoveClientDocument = gql`
+  mutation RemoveClient($client: ID!) {
+    clientDisconnect(client: $client)
+  }
+`;
+export type RemoveClientMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveClientMutation,
+  RemoveClientMutationVariables
+>;
+
+/**
+ * __useRemoveClientMutation__
+ *
+ * To run a mutation, you first call `useRemoveClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeClientMutation, { data, loading, error }] = useRemoveClientMutation({
+ *   variables: {
+ *      client: // value for 'client'
+ *   },
+ * });
+ */
+export function useRemoveClientMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveClientMutation,
+    RemoveClientMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveClientMutation,
+    RemoveClientMutationVariables
+  >(RemoveClientDocument, baseOptions);
+}
+export type RemoveClientMutationHookResult = ReturnType<
+  typeof useRemoveClientMutation
+>;
+export type RemoveClientMutationResult = ApolloReactCommon.MutationResult<
+  RemoveClientMutation
+>;
+export type RemoveClientMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveClientMutation,
+  RemoveClientMutationVariables
+>;
 export const SimulatorDocument = gql`
   query Simulator($simulatorId: ID!) {
     simulators(id: $simulatorId) {
@@ -9974,6 +10373,7 @@ export const TemplateUpdateDocument = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     _templateUpdate(simulatorId: $simulatorId) {
       ...TemplateFragment
+      __typename
     }
   }
   ${TemplateFragmentFragmentDoc}
