@@ -32,6 +32,10 @@ input AmbianceInput {
   playbackRate: Float
 }
 
+type AppearanceComponent {
+  modelAsset: String
+}
+
 type Asset {
   assetKey: String
   url: String
@@ -51,6 +55,20 @@ type AssetObject {
   folderPath: String
   fullPath: String
   url: String
+}
+
+type BehaviorComponent {
+  behavior: Behaviors!
+  targetId: ID
+  destination: Coordinates
+}
+
+enum Behaviors {
+  holdPosition
+  wander
+  follow
+  avoid
+  attack
 }
 
 type Card {
@@ -301,15 +319,15 @@ type CoolantTank implements SystemInterface {
 }
 
 type Coordinates {
-  x: Float
-  y: Float
-  z: Float
+  x: Float!
+  y: Float!
+  z: Float!
 }
 
 input CoordinatesInput {
-  x: Float
-  y: Float
-  z: Float
+  x: Float!
+  y: Float!
+  z: Float!
 }
 
 type CoreFeed {
@@ -698,6 +716,28 @@ type Engine implements SystemInterface {
   locations: [Room]
 }
 
+type EntitiesPatch implements Patch {
+  op: OperationsEnum
+  path: [JSON]
+  value: JSON
+  values: [Entity!]
+}
+
+type Entity {
+  id: ID!
+  appearance: AppearanceComponent
+  behavior: BehaviorComponent
+  identity: IdentityComponent
+  location: LocationComponent
+}
+
+type EntityPatch implements Patch {
+  op: OperationsEnum
+  path: [JSON]
+  value: JSON
+  values: Entity
+}
+
 type Environment {
   id: ID
   oxygen: Float
@@ -864,6 +904,11 @@ interface HeatInterface {
 type History {
   date: String
   text: String
+}
+
+type IdentityComponent {
+  name: String
+  type: String
 }
 
 type Interface {
@@ -1106,6 +1151,15 @@ input LightingInput {
 }
 
 union Location = Deck | Room
+
+type LocationComponent {
+  position: Coordinates!
+  velocity: Coordinates!
+  acceleration: Coordinates!
+  rotation: Quaternion!
+  rotationVelocity: Coordinates!
+  rotationAcceleration: Coordinates!
+}
 
 type Log {
   id: ID
@@ -1373,6 +1427,27 @@ enum MotuType {
 
 type Mutation {
   _empty: String
+  entitySetAppearance(id: ID!, modelAsset: String): String
+  entityRemoveAppearance(id: ID!): String
+  entitySetBehavior(
+    id: ID!
+    behavior: Behaviors!
+    targetId: ID
+    destination: CoordinatesInput
+  ): String
+  entityRemoveBehavior(id: ID!): String
+  entitySetIdentity(id: ID!, name: String, type: String): String
+  entityRemoveIdentity(id: ID!): String
+  entitySetLocation(
+    id: ID
+    position: CoordinatesInput
+    velocity: CoordinatesInput
+    acceleration: CoordinatesInput
+    rotation: QuaternionInput
+    rotationVelocity: CoordinatesInput
+    rotationAcceleration: CoordinatesInput
+  ): String
+  entityRemoveLocation(id: ID!): String
 
   """
   Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.)
@@ -2912,6 +2987,8 @@ type Mutation {
     config: JSON!
   ): String
   countermeasuresSetResource(id: ID!, resource: String!, value: Float!): String
+  entityCreate(flightId: ID!): Entity
+  entityRemove(id: ID!): String
 }
 
 type NamedObject {
@@ -3009,6 +3086,12 @@ input ObjectiveInput {
   crewComplete: Boolean
 }
 
+enum OperationsEnum {
+  add
+  remove
+  replace
+}
+
 type PainPoint {
   x: Float
   y: Float
@@ -3080,6 +3163,12 @@ enum ParticleTypes {
   Oxygen
   Carbon
   Radiation
+}
+
+interface Patch {
+  op: OperationsEnum
+  path: [JSON]
+  value: JSON
 }
 
 type Phaser implements SystemInterface {
@@ -3228,6 +3317,20 @@ input ProbeTypeInput {
   count: Int
 }
 
+type Quaternion {
+  x: Float!
+  y: Float!
+  z: Float!
+  w: Float!
+}
+
+input QuaternionInput {
+  x: Float!
+  y: Float!
+  z: Float!
+  w: Float!
+}
+
 type Query {
   _empty: String
   actions(stationId: ID, clientId: ID): Action
@@ -3369,6 +3472,8 @@ type Query {
   viewscreens(simulatorId: ID): [Viewscreen]
   countermeasures(simulatorId: ID!): Countermeasures
   countermeasureModuleType: [CountermeasureModule!]!
+  entity(id: ID!): Entity
+  entities(flightId: ID!): [Entity]
 }
 
 type Railgun implements SystemInterface {
@@ -3591,6 +3696,7 @@ type SensorContact {
 }
 
 input SensorContactInput {
+  sensorId: ID
   id: ID
   name: String
   type: String
@@ -4164,6 +4270,8 @@ type Subscription {
   viewscreensUpdate(simulatorId: ID): [Viewscreen]
   viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
   countermeasuresUpdate(simulatorId: ID!): Countermeasures
+  entity(id: ID): [EntityPatch]
+  entities(flightId: ID!): [EntitiesPatch]
 }
 
 type SubspaceField implements SystemInterface {
