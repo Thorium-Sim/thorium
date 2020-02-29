@@ -2,6 +2,8 @@ import * as React from "react";
 import {Canvas} from "react-three-fiber";
 import Entity from "./Entity";
 import {FaPlusCircle} from "react-icons/fa";
+import {ApolloProvider, useApolloClient} from "@apollo/client";
+
 const libraryItems = [
   {
     type: "sphere",
@@ -25,6 +27,7 @@ export default function Library({
   dragging: boolean;
   setDragging: React.Dispatch<any>;
 }) {
+  const client = useApolloClient();
   return (
     <>
       <div className="library-opener">
@@ -39,9 +42,15 @@ export default function Library({
               onMouseDown={() => setDragging(l)}
             >
               <Canvas className="library-mesh" camera={{position: [0, 0, 3]}}>
-                <ambientLight />
-                <pointLight position={[10, 10, 10]} intensity={0.5} />
-                <Entity library entity={{id: "library-entity", ...l}} />
+                <ApolloProvider client={client}>
+                  <ambientLight />
+                  <pointLight position={[10, 10, 10]} intensity={0.5} />
+                  <Entity
+                    index={0}
+                    library
+                    entity={{id: "library-entity", ...l}}
+                  />
+                </ApolloProvider>
               </Canvas>
               {l.type}
             </div>

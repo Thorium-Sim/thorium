@@ -779,6 +779,11 @@ export type Engine = SystemInterface & {
   locations?: Maybe<Array<Maybe<Room>>>;
 };
 
+export type EntitiesLocationInput = {
+  id: Scalars["ID"];
+  position: CoordinatesInput;
+};
+
 export type EntitiesPatch = Patch & {
   __typename?: "EntitiesPatch";
   op?: Maybe<OperationsEnum>;
@@ -1555,6 +1560,7 @@ export type Mutation = {
   entitySetIdentity?: Maybe<Scalars["String"]>;
   entityRemoveIdentity?: Maybe<Scalars["String"]>;
   entitySetLocation?: Maybe<Scalars["String"]>;
+  entitiesSetPosition?: Maybe<Scalars["String"]>;
   entityRemoveLocation?: Maybe<Scalars["String"]>;
   triggerAction?: Maybe<Scalars["String"]>;
   addSimulatorAmbiance?: Maybe<Scalars["String"]>;
@@ -2255,6 +2261,10 @@ export type MutationEntitySetLocationArgs = {
   rotation?: Maybe<QuaternionInput>;
   rotationVelocity?: Maybe<CoordinatesInput>;
   rotationAcceleration?: Maybe<CoordinatesInput>;
+};
+
+export type MutationEntitiesSetPositionArgs = {
+  entities: Array<EntitiesLocationInput>;
 };
 
 export type MutationEntityRemoveLocationArgs = {
@@ -9019,6 +9029,15 @@ export type EntityRemoveMutation = {__typename?: "Mutation"} & Pick<
   "entityRemove"
 >;
 
+export type EntitiesSetPositionMutationVariables = {
+  entities: Array<EntitiesLocationInput>;
+};
+
+export type EntitiesSetPositionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitiesSetPosition"
+>;
+
 export interface IntrospectionResultData {
   __schema: {
     types: {
@@ -10738,4 +10757,52 @@ export type EntityRemoveMutationResult = ApolloReactCommon.MutationResult<
 export type EntityRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityRemoveMutation,
   EntityRemoveMutationVariables
+>;
+export const EntitiesSetPositionDocument = gql`
+  mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
+    entitiesSetPosition(entities: $entities)
+  }
+`;
+export type EntitiesSetPositionMutationFn = ApolloReactCommon.MutationFunction<
+  EntitiesSetPositionMutation,
+  EntitiesSetPositionMutationVariables
+>;
+
+/**
+ * __useEntitiesSetPositionMutation__
+ *
+ * To run a mutation, you first call `useEntitiesSetPositionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitiesSetPositionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitiesSetPositionMutation, { data, loading, error }] = useEntitiesSetPositionMutation({
+ *   variables: {
+ *      entities: // value for 'entities'
+ *   },
+ * });
+ */
+export function useEntitiesSetPositionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitiesSetPositionMutation,
+    EntitiesSetPositionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitiesSetPositionMutation,
+    EntitiesSetPositionMutationVariables
+  >(EntitiesSetPositionDocument, baseOptions);
+}
+export type EntitiesSetPositionMutationHookResult = ReturnType<
+  typeof useEntitiesSetPositionMutation
+>;
+export type EntitiesSetPositionMutationResult = ApolloReactCommon.MutationResult<
+  EntitiesSetPositionMutation
+>;
+export type EntitiesSetPositionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitiesSetPositionMutation,
+  EntitiesSetPositionMutationVariables
 >;

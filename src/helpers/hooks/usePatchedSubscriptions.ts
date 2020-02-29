@@ -73,7 +73,6 @@ function usePatchedSubscriptions<SubData, VariableDefinition>(
       })
       .subscribe({
         next: ({data}) => {
-          console.log(data?.[selectionName]);
           if (data?.[selectionName][0].values) {
             // We're getting initial data.
             api.setState({

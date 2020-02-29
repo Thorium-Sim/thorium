@@ -1,5 +1,5 @@
 import * as React from "react";
-import uuid from "uuid";
+import {useThree} from "react-three-fiber";
 import PanControls from "./PanControlsContainer";
 import Camera from "./Camera";
 import Grid from "./Grid";
@@ -12,7 +12,9 @@ import {
   Entity as EntityInterface,
   useEntityCreateMutation,
   useEntityRemoveMutation,
+  useEntitiesSetPositionMutation,
 } from "generated/graphql";
+
 interface SceneControlProps {
   recenter: {};
 }
@@ -44,6 +46,15 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
 }) => {
   const [create] = useEntityCreateMutation();
   const [remove] = useEntityRemoveMutation();
+  const [setPosition] = useEntitiesSetPositionMutation();
+
+  const [positionOffset, setPositionOffset] = React.useState({
+    x: 0,
+    y: 0,
+    z: 0,
+  });
+  const [selectionsDragged, setSelectionsDragged] = React.useState(false);
+
   const mousePosition = use3DMousePosition();
   React.useEffect(() => {
     async function mouseUp() {
@@ -79,6 +90,47 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       setSelected([]);
     }
   });
+
+  const {
+    camera: {zoom},
+  } = useThree();
+  const onDrag = React.useCallback(
+    (dx, dy) => {
+      setPositionOffset(position => {
+        const {x, y, z} = position;
+        return {x: x + dx / zoom, y: y - dy / zoom, z};
+      });
+    },
+    [zoom],
+  );
+
+  const onDragStop = React.useCallback(() => {
+    const updateEntities = entities
+      .filter(({id}) => selected.includes(id))
+      .map(({id, location}) => {
+        return {
+          id,
+          position: {
+            x: (location?.position.x || 0) + positionOffset.x,
+            y: (location?.position.y || 0) + positionOffset.y,
+            z: (location?.position.z || 0) + positionOffset.z,
+          },
+        };
+      });
+    console.log(updateEntities);
+    setPosition({variables: {entities: updateEntities}}).then(() => {
+      setSelectionsDragged(false);
+      setPositionOffset({x: 0, y: 0, z: 0});
+    });
+  }, [
+    entities,
+    positionOffset.x,
+    positionOffset.y,
+    positionOffset.z,
+    selected,
+    setPosition,
+  ]);
+
   return (
     <>
       <Camera />
@@ -86,19 +138,34 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       <ambientLight />
       <Grid />
       <pointLight position={[10, 10, -10]} />
-
       {dragging && (
-        <Entity dragging entity={dragging} mousePosition={mousePosition} />
-      )}
-      {entities.map(e => (
         <Entity
-          key={e.id}
-          entity={e}
-          selected={selected && selected.includes(e.id)}
-          setSelected={setSelected}
+          index={0}
+          dragging
+          entity={dragging}
+          mousePosition={mousePosition}
         />
-      ))}
+      )}
 
+      {entities.map((e, i) => {
+        const isSelected = selected && selected.includes(e.id);
+        return (
+          <Entity
+            key={e.id}
+            index={i}
+            entity={e}
+            selected={isSelected}
+            setSelected={setSelected}
+            isDraggingMe={isSelected && selectionsDragged}
+            onDragStart={() => setSelectionsDragged(true)}
+            onDrag={onDrag}
+            onDragStop={onDragStop}
+            positionOffset={
+              isSelected && selectionsDragged ? positionOffset : undefined
+            }
+          />
+        );
+      })}
       <BackPlane setSelected={setSelected} />
       <DragSelect
         selecting={selecting}

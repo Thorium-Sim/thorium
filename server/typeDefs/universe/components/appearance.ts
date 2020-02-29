@@ -1,8 +1,16 @@
 import {gql} from "apollo-server-express";
 
 const schema = gql`
+  enum MeshTypeEnum {
+    sphere
+    cube
+    model
+  }
   type AppearanceComponent {
+    meshType: MeshTypeEnum
     modelAsset: String
+    materialMapAsset: String
+    color: String
   }
 
   extend type Entity {

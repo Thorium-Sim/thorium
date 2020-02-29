@@ -29,6 +29,10 @@ const schema = gql`
   extend type Entity {
     location: LocationComponent
   }
+  input EntitiesLocationInput {
+    id: ID!
+    position: CoordinatesInput!
+  }
   extend type Mutation {
     entitySetLocation(
       id: ID
@@ -39,6 +43,7 @@ const schema = gql`
       rotationVelocity: CoordinatesInput
       rotationAcceleration: CoordinatesInput
     ): String
+    entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
     entityRemoveLocation(id: ID!): String
   }
 `;
@@ -60,6 +65,27 @@ const resolver = {
               entity.location[key] = value;
             });
           }
+        },
+
+        handlePatches(context, "entities", flightId, "flightId", "entity"),
+      );
+    },
+    entitiesSetPosition(root, {entities}, context) {
+      const entity = App.entities.find(e => e.id === entities[0].id);
+      const flightId = entity?.flightId;
+      if (!flightId) return;
+      App.entities = produce(
+        App.entities,
+        draft => {
+          entities.forEach(e => {
+            const entityIndex = draft.findIndex(ee => ee.id === e.id);
+            const entity = draft[entityIndex];
+            if (!entity.location) {
+              entity.location = new Location({position: e.position});
+            } else {
+              entity.location.position = e.position;
+            }
+          });
         },
 
         handlePatches(context, "entities", flightId, "flightId", "entity"),
