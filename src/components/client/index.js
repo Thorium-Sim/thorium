@@ -8,13 +8,24 @@ import {
   useRegisterClientMutation,
   useClientQuery,
   useClientUpdateSubscription,
+  useClientPingMutation,
 } from "generated/graphql";
+import gql from "graphql-tag.macro";
+import {useApolloClient} from "@apollo/client";
 
+const ClientPingSub = gql`
+  subscription ClientPingSub($clientId: ID!) {
+    clientPing(clientId: $clientId)
+  }
+`;
 const ClientData = props => {
   const [clientId, setClientId] = React.useState(null);
 
   const [connect] = useRegisterClientMutation();
   const [disconnect] = useDisconnectClientMutation();
+  const [ping] = useClientPingMutation();
+
+  const client = useApolloClient();
 
   React.useEffect(() => {
     if (process.env.NODE_ENV === "production") {
@@ -32,10 +43,21 @@ const ClientData = props => {
     // Register the client for the first time.
     if (clientId) {
       connect({variables: {client: clientId}});
+
+      const observer = client
+        .subscribe({query: ClientPingSub, variables: {clientId}})
+        .subscribe({
+          next() {
+            ping({variables: {clientId}});
+          },
+        });
       // Keep the context menu from opening.
-      return () => disconnect({variables: {client: clientId}});
+      return () => {
+        disconnect({variables: {client: clientId}});
+        observer.unsubscribe();
+      };
     }
-  }, [clientId, connect, disconnect]);
+  }, [client, clientId, connect, disconnect, ping]);
 
   const updateClientId = async clientId => {
     const oldClientId = await getClientId();

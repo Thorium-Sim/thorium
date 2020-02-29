@@ -123,8 +123,10 @@ export default class Client {
     this.connected = true;
     this.mobile = mobile;
     this.cards = cards || [];
+    this.ping = null;
   }
   disconnect() {
+    this.ping = null;
     this.connected = false;
   }
 

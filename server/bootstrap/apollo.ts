@@ -31,7 +31,6 @@ export const schema = makeExecutableSchema({
   },
 });
 
-const clientMap = {};
 // TODO: Change app to the express type
 function responseForOperation(requestContext) {
   // This plugin checks to see if a request

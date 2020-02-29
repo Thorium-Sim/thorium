@@ -1,3 +1,0 @@
-subscription ClientPingSub($clientId: ID!) {
-  clientPing(clientId: $clientId)
-}

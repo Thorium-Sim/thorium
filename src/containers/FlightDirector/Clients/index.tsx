@@ -399,7 +399,6 @@ const Clients = ({
                 </tr>
                 {clients
                   ?.filter(client => {
-                    console.log(client?.flight?.id, flightId);
                     return (
                       client?.flight?.id && client?.flight?.id !== flightId
                     );

@@ -69,11 +69,11 @@ const makeLinks = () => {
       icon: FaUserSecret,
       link: "/config/mission",
     },
-    {
-      name: "Universal Sandbox",
-      icon: FaRegStar,
-      link: "/config/sandbox",
-    },
+    // {
+    //   name: "Universal Sandbox",
+    //   icon: FaRegStar,
+    //   link: "/config/sandbox",
+    // },
     {
       name: "Macros Config",
       icon: FaWindowRestore,
