@@ -1,9 +1,5 @@
 import * as Sentry from "@sentry/browser";
 import {version} from "../../package.json";
-import LogRocket from "logrocket";
-LogRocket.init("etenyh/thorium", {
-  release: version,
-});
 
 const invalidMessages = [
   "ResizeObserver loop limit exceeded",
@@ -18,9 +14,6 @@ if (process.env.NODE_ENV === "production") {
         return null;
       return event;
     },
-  });
-  Sentry.configureScope(scope => {
-    scope.setExtra("sessionURL", LogRocket.sessionURL);
   });
 } else {
   // window.addEventListener("error", function(e) {
