@@ -105,7 +105,7 @@ function responseForOperation(requestContext) {
         ...args,
         cb: (a: any) => {
           clearTimeout(timeout);
-          resolve(a);
+          resolve({data: {[opName]: a}});
         },
       },
       opName,
