@@ -153,6 +153,7 @@ class Transwarp extends Component {
                             })
                           }
                           onChange={value => {
+                            if (!value & (value !== 0)) return;
                             action({
                               variables: {
                                 id,

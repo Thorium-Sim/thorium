@@ -27,8 +27,11 @@
     }
   }
   .power {
-    grid-row: 3/4;
+    grid-row: 3/5;
     grid-column: 3;
+    h1 {
+      font-size: 24px;
+    }
   }
   .activate {
     grid-row: 4;
