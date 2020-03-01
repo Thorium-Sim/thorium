@@ -1,0 +1,31 @@
+fragment ClientData on Client {
+  id
+  token
+  email
+  cracked
+  flight {
+    id
+    name
+    date
+  }
+  simulator {
+    id
+    name
+  }
+  station {
+    name
+  }
+  currentCard {
+    name
+    component
+  }
+  loginName
+  loginState
+  offlineState
+  hypercard
+  movie
+  training
+  caches
+  overlay
+  soundPlayer
+}

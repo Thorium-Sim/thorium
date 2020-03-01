@@ -1,0 +1,7 @@
+#import "./clientDataFragment.graphql"
+
+query Client($clientId: ID!) {
+  clients(clientId: $clientId) {
+    ...ClientData
+  }
+}

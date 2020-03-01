@@ -34,12 +34,12 @@ export default class Thrusters extends System {
     this.thrusting = thrusting;
     this.rotationDelta = rotation;
     clearTimeout(this.resetTimeout);
-    this.resetTimeout = setTimeout(this.reset, 7 * 1000);
+    this.resetTimeout = setTimeout(this.reset, 30 * 1000);
   }
   updateDirection(direction) {
     this.direction = direction;
     clearTimeout(this.resetTimeout);
-    this.resetTimeout = setTimeout(this.reset, 7 * 1000);
+    this.resetTimeout = setTimeout(this.reset, 30 * 1000);
   }
   setRotation(rotation) {
     this.rotation = rotation;

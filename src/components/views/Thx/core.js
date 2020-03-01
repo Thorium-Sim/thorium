@@ -14,6 +14,7 @@ const fragment = gql`
       id
       lock
       charge
+      connected
       station {
         name
       }
@@ -120,26 +121,28 @@ const THXCore = ({simulator, activated, name, clients, id}) => (
         )}
       </Mutation>
     </ButtonGroup>
-    {clients.map(c => (
-      <Row key={`client-${c.id}`}>
-        <Col sm={6}>
-          {c.id} ({c.station.name})
-        </Col>
-        <Col sm={6}>
-          {c.executive ? (
-            "Executive"
-          ) : (
-            <Progress
-              value={c.charge}
-              max={1}
-              color={c.lock ? "danger" : "primary"}
-            >
-              {Math.round(c.charge * 100)}%
-            </Progress>
-          )}
-        </Col>
-      </Row>
-    ))}
+    {clients
+      .filter(c => c.connected)
+      .map(c => (
+        <Row key={`client-${c.id}`}>
+          <Col sm={6}>
+            {c.id} ({c.station.name})
+          </Col>
+          <Col sm={6}>
+            {c.executive ? (
+              "Executive"
+            ) : (
+              <Progress
+                value={c.charge}
+                max={1}
+                color={c.lock ? "danger" : "primary"}
+              >
+                {Math.round(c.charge * 100)}%
+              </Progress>
+            )}
+          </Col>
+        </Row>
+      ))}
   </div>
 );
 

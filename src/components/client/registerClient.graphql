@@ -1,0 +1,3 @@
+mutation RegisterClient($client: ID!) {
+  clientConnect(client: $client)
+}

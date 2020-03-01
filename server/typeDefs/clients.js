@@ -109,7 +109,7 @@ const schema = gql`
       cards: [String]
     ): String
     clientDisconnect(client: ID!): String
-    clientPing(client: ID!, ping: String!): String
+    clientPing(client: ID!): String
     clientSetFlight(client: ID!, flightId: ID!): String
     clientSetSimulator(client: ID!, simulatorId: ID!): String
     clientSetStation(client: ID!, stationName: ID!): String
@@ -200,6 +200,7 @@ const schema = gql`
       stationName: String
       flightId: ID
     ): [Client]
+    clientPing(clientId: ID!): Boolean
     keypadsUpdate(simulatorId: ID!): [Keypad]
     keypadUpdate(client: ID!): Keypad
     scannersUpdate(simulatorId: ID!): [Scanner]
@@ -437,6 +438,15 @@ const resolver = {
             return payload.filter(c => c.flightId === flightId).length > 0;
           }
           return true;
+        },
+      ),
+    },
+    clientPing: {
+      resolve: payload => true,
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("clientPing"),
+        (rootValue, {clientId}) => {
+          return rootValue.id === clientId;
         },
       ),
     },

@@ -93,6 +93,7 @@ export default class Client {
     // If we're logged in with Space EdVentures, don't logout on reset.
     this.isSpaceEdventures = params.isSpaceEdventures || false;
     this.connected = params.connected || false;
+    this.ping = params.ping || null;
     this.offlineState = params.offlineState || null;
     this.movie = params.movie || null;
     this.hypercard = params.hypercard || null;
@@ -115,12 +116,17 @@ export default class Client {
   set label(l) {
     this.clientLabel = l;
   }
+  setPing(ping) {
+    this.ping = ping;
+  }
   connect({mobile, cards}) {
     this.connected = true;
     this.mobile = mobile;
     this.cards = cards || [];
+    this.ping = null;
   }
   disconnect() {
+    this.ping = null;
     this.connected = false;
   }
 

@@ -256,6 +256,8 @@ class DamageControl extends Component {
         }),
       );
 
+    const selectedSystemObj = reportList.find(s => s.id === selectedSystem);
+
     return (
       <Container fluid className="damage-control">
         <Row>
@@ -365,7 +367,9 @@ class DamageControl extends Component {
                   <Button
                     block
                     className="request-report"
-                    disabled={!selectedSystem || damagedSystem.damage.requested}
+                    disabled={
+                      !selectedSystemObj || damagedSystem.damage.requested
+                    }
                     onClick={action}
                     color="primary"
                   >

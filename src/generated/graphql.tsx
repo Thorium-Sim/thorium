@@ -48,6 +48,14 @@ export type AmbianceInput = {
   playbackRate?: Maybe<Scalars["Float"]>;
 };
 
+export type AppearanceComponent = {
+  __typename?: "AppearanceComponent";
+  meshType?: Maybe<MeshTypeEnum>;
+  modelAsset?: Maybe<Scalars["String"]>;
+  materialMapAsset?: Maybe<Scalars["String"]>;
+  color?: Maybe<Scalars["String"]>;
+};
+
 export type Asset = {
   __typename?: "Asset";
   assetKey?: Maybe<Scalars["String"]>;
@@ -71,6 +79,21 @@ export type AssetObject = {
   fullPath?: Maybe<Scalars["String"]>;
   url?: Maybe<Scalars["String"]>;
 };
+
+export type BehaviorComponent = {
+  __typename?: "BehaviorComponent";
+  behavior: Behaviors;
+  targetId?: Maybe<Scalars["ID"]>;
+  destination?: Maybe<Coordinates>;
+};
+
+export enum Behaviors {
+  HoldPosition = "holdPosition",
+  Wander = "wander",
+  Follow = "follow",
+  Avoid = "avoid",
+  Attack = "attack",
+}
 
 export type Card = {
   __typename?: "Card";
@@ -341,15 +364,15 @@ export type CoolantTank = SystemInterface & {
 
 export type Coordinates = {
   __typename?: "Coordinates";
-  x?: Maybe<Scalars["Float"]>;
-  y?: Maybe<Scalars["Float"]>;
-  z?: Maybe<Scalars["Float"]>;
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
 };
 
 export type CoordinatesInput = {
-  x?: Maybe<Scalars["Float"]>;
-  y?: Maybe<Scalars["Float"]>;
-  z?: Maybe<Scalars["Float"]>;
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
 };
 
 export type CoreFeed = {
@@ -759,6 +782,36 @@ export type Engine = SystemInterface & {
   locations?: Maybe<Array<Maybe<Room>>>;
 };
 
+export type EntitiesLocationInput = {
+  id: Scalars["ID"];
+  position: CoordinatesInput;
+};
+
+export type EntitiesPatch = Patch & {
+  __typename?: "EntitiesPatch";
+  op?: Maybe<OperationsEnum>;
+  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
+  value?: Maybe<Scalars["JSON"]>;
+  values?: Maybe<Array<Entity>>;
+};
+
+export type Entity = {
+  __typename?: "Entity";
+  id: Scalars["ID"];
+  appearance?: Maybe<AppearanceComponent>;
+  behavior?: Maybe<BehaviorComponent>;
+  identity?: Maybe<IdentityComponent>;
+  location?: Maybe<LocationComponent>;
+};
+
+export type EntityPatch = Patch & {
+  __typename?: "EntityPatch";
+  op?: Maybe<OperationsEnum>;
+  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
+  value?: Maybe<Scalars["JSON"]>;
+  values?: Maybe<Entity>;
+};
+
 export type Environment = {
   __typename?: "Environment";
   id?: Maybe<Scalars["ID"]>;
@@ -941,6 +994,12 @@ export type History = {
   __typename?: "History";
   date?: Maybe<Scalars["String"]>;
   text?: Maybe<Scalars["String"]>;
+};
+
+export type IdentityComponent = {
+  __typename?: "IdentityComponent";
+  name?: Maybe<Scalars["String"]>;
+  type?: Maybe<Scalars["String"]>;
 };
 
 export type Interface = {
@@ -1195,6 +1254,16 @@ export type LightingInput = {
 
 export type Location = Deck | Room;
 
+export type LocationComponent = {
+  __typename?: "LocationComponent";
+  position: Coordinates;
+  velocity: Coordinates;
+  acceleration: Coordinates;
+  rotation: Quaternion;
+  rotationVelocity: Coordinates;
+  rotationAcceleration: Coordinates;
+};
+
 export type Log = {
   __typename?: "Log";
   id?: Maybe<Scalars["ID"]>;
@@ -1307,6 +1376,12 @@ export type MacroInput = {
   delay?: Maybe<Scalars["Int"]>;
   noCancelOnReset?: Maybe<Scalars["Boolean"]>;
 };
+
+export enum MeshTypeEnum {
+  Sphere = "sphere",
+  Cube = "cube",
+  Model = "model",
+}
 
 export type Message = {
   __typename?: "Message";
@@ -1487,6 +1562,15 @@ export enum MotuType {
 export type Mutation = {
   __typename?: "Mutation";
   _empty?: Maybe<Scalars["String"]>;
+  entitySetAppearance?: Maybe<Scalars["String"]>;
+  entityRemoveAppearance?: Maybe<Scalars["String"]>;
+  entitySetBehavior?: Maybe<Scalars["String"]>;
+  entityRemoveBehavior?: Maybe<Scalars["String"]>;
+  entitySetIdentity?: Maybe<Scalars["String"]>;
+  entityRemoveIdentity?: Maybe<Scalars["String"]>;
+  entitySetLocation?: Maybe<Scalars["String"]>;
+  entitiesSetPosition?: Maybe<Scalars["String"]>;
+  entityRemoveLocation?: Maybe<Scalars["String"]>;
   triggerAction?: Maybe<Scalars["String"]>;
   addSimulatorAmbiance?: Maybe<Scalars["String"]>;
   updateSimulatorAmbiance?: Maybe<Scalars["String"]>;
@@ -2144,6 +2228,56 @@ export type Mutation = {
   countermeasuresRemoveModule?: Maybe<Scalars["String"]>;
   countermeasuresConfigureModule?: Maybe<Scalars["String"]>;
   countermeasuresSetResource?: Maybe<Scalars["String"]>;
+  entityCreate: Entity;
+  entityRemove?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntitySetAppearanceArgs = {
+  id: Scalars["ID"];
+  modelAsset?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveAppearanceArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetBehaviorArgs = {
+  id: Scalars["ID"];
+  behavior: Behaviors;
+  targetId?: Maybe<Scalars["ID"]>;
+  destination?: Maybe<CoordinatesInput>;
+};
+
+export type MutationEntityRemoveBehaviorArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetIdentityArgs = {
+  id: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
+  type?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveIdentityArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetLocationArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  position?: Maybe<CoordinatesInput>;
+  velocity?: Maybe<CoordinatesInput>;
+  acceleration?: Maybe<CoordinatesInput>;
+  rotation?: Maybe<QuaternionInput>;
+  rotationVelocity?: Maybe<CoordinatesInput>;
+  rotationAcceleration?: Maybe<CoordinatesInput>;
+};
+
+export type MutationEntitiesSetPositionArgs = {
+  entities: Array<EntitiesLocationInput>;
+};
+
+export type MutationEntityRemoveLocationArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationTriggerActionArgs = {
@@ -2209,7 +2343,6 @@ export type MutationClientDisconnectArgs = {
 
 export type MutationClientPingArgs = {
   client: Scalars["ID"];
-  ping: Scalars["String"];
 };
 
 export type MutationClientSetFlightArgs = {
@@ -5539,6 +5672,14 @@ export type MutationCountermeasuresSetResourceArgs = {
   value: Scalars["Float"];
 };
 
+export type MutationEntityCreateArgs = {
+  flightId: Scalars["ID"];
+};
+
+export type MutationEntityRemoveArgs = {
+  id: Array<Scalars["ID"]>;
+};
+
 export type NamedObject = {
   __typename?: "NamedObject";
   id?: Maybe<Scalars["ID"]>;
@@ -5640,6 +5781,12 @@ export type ObjectiveInput = {
   crewComplete?: Maybe<Scalars["Boolean"]>;
 };
 
+export enum OperationsEnum {
+  Add = "add",
+  Remove = "remove",
+  Replace = "replace",
+}
+
 export type PainPoint = {
   __typename?: "PainPoint";
   x?: Maybe<Scalars["Float"]>;
@@ -5716,6 +5863,12 @@ export enum ParticleTypes {
   Carbon = "Carbon",
   Radiation = "Radiation",
 }
+
+export type Patch = {
+  op?: Maybe<OperationsEnum>;
+  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
+  value?: Maybe<Scalars["JSON"]>;
+};
 
 export type Phaser = SystemInterface & {
   __typename?: "Phaser";
@@ -5875,6 +6028,21 @@ export type ProbeTypeInput = {
   count?: Maybe<Scalars["Int"]>;
 };
 
+export type Quaternion = {
+  __typename?: "Quaternion";
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
+  w: Scalars["Float"];
+};
+
+export type QuaternionInput = {
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
+  w: Scalars["Float"];
+};
+
 export type Query = {
   __typename?: "Query";
   _empty?: Maybe<Scalars["String"]>;
@@ -5988,6 +6156,8 @@ export type Query = {
   viewscreens?: Maybe<Array<Maybe<Viewscreen>>>;
   countermeasures?: Maybe<Countermeasures>;
   countermeasureModuleType: Array<CountermeasureModule>;
+  entity?: Maybe<Entity>;
+  entities: Array<Maybe<Entity>>;
 };
 
 export type QueryActionsArgs = {
@@ -6419,6 +6589,14 @@ export type QueryCountermeasuresArgs = {
   simulatorId: Scalars["ID"];
 };
 
+export type QueryEntityArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryEntitiesArgs = {
+  flightId: Scalars["ID"];
+};
+
 export type Railgun = SystemInterface & {
   __typename?: "Railgun";
   id?: Maybe<Scalars["ID"]>;
@@ -6652,6 +6830,7 @@ export type SensorContact = {
 };
 
 export type SensorContactInput = {
+  sensorId?: Maybe<Scalars["ID"]>;
   id?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
@@ -7129,6 +7308,7 @@ export type Subscription = {
   actionsUpdate?: Maybe<Action>;
   assetFolderChange?: Maybe<Array<Maybe<AssetFolder>>>;
   clientChanged?: Maybe<Array<Maybe<Client>>>;
+  clientPing?: Maybe<Scalars["Boolean"]>;
   keypadsUpdate?: Maybe<Array<Maybe<Keypad>>>;
   keypadUpdate?: Maybe<Keypad>;
   scannersUpdate?: Maybe<Array<Maybe<Scanner>>>;
@@ -7228,6 +7408,8 @@ export type Subscription = {
   viewscreensUpdate?: Maybe<Array<Maybe<Viewscreen>>>;
   viewscreenVideoToggle?: Maybe<Scalars["Boolean"]>;
   countermeasuresUpdate?: Maybe<Countermeasures>;
+  entity?: Maybe<Array<Maybe<EntityPatch>>>;
+  entities?: Maybe<Array<Maybe<EntitiesPatch>>>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -7242,6 +7424,10 @@ export type SubscriptionClientChangedArgs = {
   simulatorId?: Maybe<Scalars["ID"]>;
   stationName?: Maybe<Scalars["String"]>;
   flightId?: Maybe<Scalars["ID"]>;
+};
+
+export type SubscriptionClientPingArgs = {
+  clientId: Scalars["ID"];
 };
 
 export type SubscriptionKeypadsUpdateArgs = {
@@ -7636,6 +7822,14 @@ export type SubscriptionViewscreenVideoToggleArgs = {
 
 export type SubscriptionCountermeasuresUpdateArgs = {
   simulatorId: Scalars["ID"];
+};
+
+export type SubscriptionEntityArgs = {
+  id?: Maybe<Scalars["ID"]>;
+};
+
+export type SubscriptionEntitiesArgs = {
+  flightId: Scalars["ID"];
 };
 
 export type SubspaceField = SystemInterface & {
@@ -8114,6 +8308,7 @@ export type ThxClient = {
   lock?: Maybe<Scalars["Boolean"]>;
   station?: Maybe<Station>;
   executive?: Maybe<Scalars["Boolean"]>;
+  connected?: Maybe<Scalars["Boolean"]>;
 };
 
 export enum Timeline_Item_Config_Type {
@@ -8315,6 +8510,88 @@ export type WarheadInput = {
   type?: Maybe<Scalars["String"]>;
   probe?: Maybe<Scalars["ID"]>;
 };
+
+export type ClientDataFragment = {__typename?: "Client"} & Pick<
+  Client,
+  | "id"
+  | "token"
+  | "email"
+  | "cracked"
+  | "loginName"
+  | "loginState"
+  | "offlineState"
+  | "hypercard"
+  | "movie"
+  | "training"
+  | "caches"
+  | "overlay"
+  | "soundPlayer"
+> & {
+    flight: Maybe<
+      {__typename?: "Flight"} & Pick<Flight, "id" | "name" | "date">
+    >;
+    simulator: Maybe<
+      {__typename?: "Simulator"} & Pick<Simulator, "id" | "name">
+    >;
+    station: Maybe<{__typename?: "Station"} & Pick<Station, "name">>;
+    currentCard: Maybe<
+      {__typename?: "Card"} & Pick<Card, "name" | "component">
+    >;
+  };
+
+export type ClientQueryVariables = {
+  clientId: Scalars["ID"];
+};
+
+export type ClientQuery = {__typename?: "Query"} & {
+  clients: Maybe<Array<Maybe<{__typename?: "Client"} & ClientDataFragment>>>;
+};
+
+export type ClientUpdateSubscriptionVariables = {
+  clientId: Scalars["ID"];
+};
+
+export type ClientUpdateSubscription = {__typename?: "Subscription"} & {
+  clientChanged: Maybe<
+    Array<Maybe<{__typename?: "Client"} & ClientDataFragment>>
+  >;
+};
+
+export type ClientPingMutationVariables = {
+  clientId: Scalars["ID"];
+};
+
+export type ClientPingMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "clientPing"
+>;
+
+export type ClientPingSubSubscriptionVariables = {
+  clientId: Scalars["ID"];
+};
+
+export type ClientPingSubSubscription = {__typename?: "Subscription"} & Pick<
+  Subscription,
+  "clientPing"
+>;
+
+export type RegisterClientMutationVariables = {
+  client: Scalars["ID"];
+};
+
+export type RegisterClientMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "clientConnect"
+>;
+
+export type RemoveClientMutationVariables = {
+  client: Scalars["ID"];
+};
+
+export type RemoveClientMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "clientDisconnect"
+>;
 
 export type SimulatorDataFragment = {__typename?: "Simulator"} & Pick<
   Simulator,
@@ -8664,7 +8941,7 @@ export type CountermeasuresRemoveModuleMutation = {
   __typename?: "Mutation";
 } & Pick<Mutation, "countermeasuresRemoveModule">;
 
-export type TemplateFragmentFragment = {__typename?: "Template"} & Pick<
+export type TemplateFragmentFragment = {__typename: "Template"} & Pick<
   Template,
   "id"
 >;
@@ -8682,7 +8959,7 @@ export type TemplateUpdateSubscriptionVariables = {
 };
 
 export type TemplateUpdateSubscription = {__typename?: "Subscription"} & {
-  _templateUpdate: Maybe<{__typename?: "Template"} & TemplateFragmentFragment>;
+  _templateUpdate: Maybe<{__typename: "Template"} & TemplateFragmentFragment>;
 };
 
 export type ClientChangedSubscriptionVariables = {};
@@ -8829,6 +9106,34 @@ export type SetSoundPlayerMutation = {__typename?: "Mutation"} & Pick<
   "clientSetSoundPlayer"
 >;
 
+export type EntityCreateMutationVariables = {
+  flightId: Scalars["ID"];
+  position: CoordinatesInput;
+};
+
+export type EntityCreateMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetLocation"
+> & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
+
+export type EntityRemoveMutationVariables = {
+  id: Array<Scalars["ID"]>;
+};
+
+export type EntityRemoveMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entityRemove"
+>;
+
+export type EntitiesSetPositionMutationVariables = {
+  entities: Array<EntitiesLocationInput>;
+};
+
+export type EntitiesSetPositionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitiesSetPosition"
+>;
+
 export interface IntrospectionResultData {
   __schema: {
     types: {
@@ -8944,6 +9249,18 @@ const result: IntrospectionResultData = {
       },
       {
         kind: "INTERFACE",
+        name: "Patch",
+        possibleTypes: [
+          {
+            name: "EntityPatch",
+          },
+          {
+            name: "EntitiesPatch",
+          },
+        ],
+      },
+      {
+        kind: "INTERFACE",
         name: "HeatInterface",
         possibleTypes: [],
       },
@@ -8952,6 +9269,39 @@ const result: IntrospectionResultData = {
 };
 export default result;
 
+export const ClientDataFragmentDoc = gql`
+  fragment ClientData on Client {
+    id
+    token
+    email
+    cracked
+    flight {
+      id
+      name
+      date
+    }
+    simulator {
+      id
+      name
+    }
+    station {
+      name
+    }
+    currentCard {
+      name
+      component
+    }
+    loginName
+    loginState
+    offlineState
+    hypercard
+    movie
+    training
+    caches
+    overlay
+    soundPlayer
+  }
+`;
 export const SimulatorDataFragmentDoc = gql`
   fragment SimulatorData on Simulator {
     id
@@ -9035,8 +9385,287 @@ export const CountermeasureFragmentDoc = gql`
 export const TemplateFragmentFragmentDoc = gql`
   fragment TemplateFragment on Template {
     id
+    __typename
   }
 `;
+export const ClientDocument = gql`
+  query Client($clientId: ID!) {
+    clients(clientId: $clientId) {
+      ...ClientData
+    }
+  }
+  ${ClientDataFragmentDoc}
+`;
+
+/**
+ * __useClientQuery__
+ *
+ * To run a query within a React component, call `useClientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClientQuery({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    ClientQuery,
+    ClientQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<ClientQuery, ClientQueryVariables>(
+    ClientDocument,
+    baseOptions,
+  );
+}
+export function useClientLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    ClientQuery,
+    ClientQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<ClientQuery, ClientQueryVariables>(
+    ClientDocument,
+    baseOptions,
+  );
+}
+export type ClientQueryHookResult = ReturnType<typeof useClientQuery>;
+export type ClientLazyQueryHookResult = ReturnType<typeof useClientLazyQuery>;
+export type ClientQueryResult = ApolloReactCommon.QueryResult<
+  ClientQuery,
+  ClientQueryVariables
+>;
+export const ClientUpdateDocument = gql`
+  subscription ClientUpdate($clientId: ID!) {
+    clientChanged(clientId: $clientId) {
+      ...ClientData
+    }
+  }
+  ${ClientDataFragmentDoc}
+`;
+
+/**
+ * __useClientUpdateSubscription__
+ *
+ * To run a query within a React component, call `useClientUpdateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useClientUpdateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClientUpdateSubscription({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientUpdateSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    ClientUpdateSubscription,
+    ClientUpdateSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    ClientUpdateSubscription,
+    ClientUpdateSubscriptionVariables
+  >(ClientUpdateDocument, baseOptions);
+}
+export type ClientUpdateSubscriptionHookResult = ReturnType<
+  typeof useClientUpdateSubscription
+>;
+export type ClientUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  ClientUpdateSubscription
+>;
+export const ClientPingDocument = gql`
+  mutation ClientPing($clientId: ID!) {
+    clientPing(client: $clientId)
+  }
+`;
+export type ClientPingMutationFn = ApolloReactCommon.MutationFunction<
+  ClientPingMutation,
+  ClientPingMutationVariables
+>;
+
+/**
+ * __useClientPingMutation__
+ *
+ * To run a mutation, you first call `useClientPingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClientPingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [clientPingMutation, { data, loading, error }] = useClientPingMutation({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientPingMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ClientPingMutation,
+    ClientPingMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ClientPingMutation,
+    ClientPingMutationVariables
+  >(ClientPingDocument, baseOptions);
+}
+export type ClientPingMutationHookResult = ReturnType<
+  typeof useClientPingMutation
+>;
+export type ClientPingMutationResult = ApolloReactCommon.MutationResult<
+  ClientPingMutation
+>;
+export type ClientPingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ClientPingMutation,
+  ClientPingMutationVariables
+>;
+export const ClientPingSubDocument = gql`
+  subscription ClientPingSub($clientId: ID!) {
+    clientPing(clientId: $clientId)
+  }
+`;
+
+/**
+ * __useClientPingSubSubscription__
+ *
+ * To run a query within a React component, call `useClientPingSubSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useClientPingSubSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClientPingSubSubscription({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useClientPingSubSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    ClientPingSubSubscription,
+    ClientPingSubSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    ClientPingSubSubscription,
+    ClientPingSubSubscriptionVariables
+  >(ClientPingSubDocument, baseOptions);
+}
+export type ClientPingSubSubscriptionHookResult = ReturnType<
+  typeof useClientPingSubSubscription
+>;
+export type ClientPingSubSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  ClientPingSubSubscription
+>;
+export const RegisterClientDocument = gql`
+  mutation RegisterClient($client: ID!) {
+    clientConnect(client: $client)
+  }
+`;
+export type RegisterClientMutationFn = ApolloReactCommon.MutationFunction<
+  RegisterClientMutation,
+  RegisterClientMutationVariables
+>;
+
+/**
+ * __useRegisterClientMutation__
+ *
+ * To run a mutation, you first call `useRegisterClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerClientMutation, { data, loading, error }] = useRegisterClientMutation({
+ *   variables: {
+ *      client: // value for 'client'
+ *   },
+ * });
+ */
+export function useRegisterClientMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RegisterClientMutation,
+    RegisterClientMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RegisterClientMutation,
+    RegisterClientMutationVariables
+  >(RegisterClientDocument, baseOptions);
+}
+export type RegisterClientMutationHookResult = ReturnType<
+  typeof useRegisterClientMutation
+>;
+export type RegisterClientMutationResult = ApolloReactCommon.MutationResult<
+  RegisterClientMutation
+>;
+export type RegisterClientMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RegisterClientMutation,
+  RegisterClientMutationVariables
+>;
+export const RemoveClientDocument = gql`
+  mutation RemoveClient($client: ID!) {
+    clientDisconnect(client: $client)
+  }
+`;
+export type RemoveClientMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveClientMutation,
+  RemoveClientMutationVariables
+>;
+
+/**
+ * __useRemoveClientMutation__
+ *
+ * To run a mutation, you first call `useRemoveClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeClientMutation, { data, loading, error }] = useRemoveClientMutation({
+ *   variables: {
+ *      client: // value for 'client'
+ *   },
+ * });
+ */
+export function useRemoveClientMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveClientMutation,
+    RemoveClientMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveClientMutation,
+    RemoveClientMutationVariables
+  >(RemoveClientDocument, baseOptions);
+}
+export type RemoveClientMutationHookResult = ReturnType<
+  typeof useRemoveClientMutation
+>;
+export type RemoveClientMutationResult = ApolloReactCommon.MutationResult<
+  RemoveClientMutation
+>;
+export type RemoveClientMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveClientMutation,
+  RemoveClientMutationVariables
+>;
 export const SimulatorDocument = gql`
   query Simulator($simulatorId: ID!) {
     simulators(id: $simulatorId) {
@@ -9974,6 +10603,7 @@ export const TemplateUpdateDocument = gql`
   subscription TemplateUpdate($simulatorId: ID!) {
     _templateUpdate(simulatorId: $simulatorId) {
       ...TemplateFragment
+      __typename
     }
   }
   ${TemplateFragmentFragmentDoc}
@@ -10434,4 +11064,152 @@ export type SetSoundPlayerMutationResult = ApolloReactCommon.MutationResult<
 export type SetSoundPlayerMutationOptions = ApolloReactCommon.BaseMutationOptions<
   SetSoundPlayerMutation,
   SetSoundPlayerMutationVariables
+>;
+export const EntityCreateDocument = gql`
+  mutation EntityCreate($flightId: ID!, $position: CoordinatesInput!) {
+    entityCreate(flightId: $flightId) {
+      id
+    }
+    entitySetLocation(position: $position)
+  }
+`;
+export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
+  EntityCreateMutation,
+  EntityCreateMutationVariables
+>;
+
+/**
+ * __useEntityCreateMutation__
+ *
+ * To run a mutation, you first call `useEntityCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityCreateMutation, { data, loading, error }] = useEntityCreateMutation({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *      position: // value for 'position'
+ *   },
+ * });
+ */
+export function useEntityCreateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityCreateMutation,
+    EntityCreateMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityCreateMutation,
+    EntityCreateMutationVariables
+  >(EntityCreateDocument, baseOptions);
+}
+export type EntityCreateMutationHookResult = ReturnType<
+  typeof useEntityCreateMutation
+>;
+export type EntityCreateMutationResult = ApolloReactCommon.MutationResult<
+  EntityCreateMutation
+>;
+export type EntityCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityCreateMutation,
+  EntityCreateMutationVariables
+>;
+export const EntityRemoveDocument = gql`
+  mutation EntityRemove($id: [ID!]!) {
+    entityRemove(id: $id)
+  }
+`;
+export type EntityRemoveMutationFn = ApolloReactCommon.MutationFunction<
+  EntityRemoveMutation,
+  EntityRemoveMutationVariables
+>;
+
+/**
+ * __useEntityRemoveMutation__
+ *
+ * To run a mutation, you first call `useEntityRemoveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityRemoveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityRemoveMutation, { data, loading, error }] = useEntityRemoveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntityRemoveMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityRemoveMutation,
+    EntityRemoveMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityRemoveMutation,
+    EntityRemoveMutationVariables
+  >(EntityRemoveDocument, baseOptions);
+}
+export type EntityRemoveMutationHookResult = ReturnType<
+  typeof useEntityRemoveMutation
+>;
+export type EntityRemoveMutationResult = ApolloReactCommon.MutationResult<
+  EntityRemoveMutation
+>;
+export type EntityRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityRemoveMutation,
+  EntityRemoveMutationVariables
+>;
+export const EntitiesSetPositionDocument = gql`
+  mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
+    entitiesSetPosition(entities: $entities)
+  }
+`;
+export type EntitiesSetPositionMutationFn = ApolloReactCommon.MutationFunction<
+  EntitiesSetPositionMutation,
+  EntitiesSetPositionMutationVariables
+>;
+
+/**
+ * __useEntitiesSetPositionMutation__
+ *
+ * To run a mutation, you first call `useEntitiesSetPositionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitiesSetPositionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitiesSetPositionMutation, { data, loading, error }] = useEntitiesSetPositionMutation({
+ *   variables: {
+ *      entities: // value for 'entities'
+ *   },
+ * });
+ */
+export function useEntitiesSetPositionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitiesSetPositionMutation,
+    EntitiesSetPositionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitiesSetPositionMutation,
+    EntitiesSetPositionMutationVariables
+  >(EntitiesSetPositionDocument, baseOptions);
+}
+export type EntitiesSetPositionMutationHookResult = ReturnType<
+  typeof useEntitiesSetPositionMutation
+>;
+export type EntitiesSetPositionMutationResult = ApolloReactCommon.MutationResult<
+  EntitiesSetPositionMutation
+>;
+export type EntitiesSetPositionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitiesSetPositionMutation,
+  EntitiesSetPositionMutationVariables
 >;

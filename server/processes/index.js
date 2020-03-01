@@ -16,3 +16,4 @@ import "./crew";
 import "./tasks";
 import "./crm";
 import "./countermeasures";
+import "./clientPing";

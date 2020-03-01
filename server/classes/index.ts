@@ -62,3 +62,4 @@ export {default as GoogleSheets} from "./googleSheets";
 export {RecordSnippet, Record} from "./records";
 export {MidiSet} from "./midi";
 export {Countermeasures} from "./Countermeasure";
+export {Entity} from "./universe/entity";

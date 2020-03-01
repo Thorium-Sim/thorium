@@ -1,6 +1,6 @@
 import App from "../../app";
 import yazl from "yazl";
-import {aspectList} from "../../events/flight";
+import {aspectList} from "../../typedefs/flight";
 import addAsset from "../addAsset";
 
 aspectList.push("stationSets");

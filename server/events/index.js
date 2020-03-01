@@ -4,7 +4,6 @@ import "./engines";
 import "./sensors";
 import "./transporters";
 import "./clients";
-import "./flight";
 import "./simulator";
 import "./stationSet";
 import "./timeline";

@@ -1,31 +1,7 @@
-import App from "../app";
-
 export default function mutationHelper(schema, exceptions = []) {
-  return schema.definitions
-    .find(d => d.name.value === "Mutation")
-    .fields.map(f => f.name.value)
-    .filter(f => exceptions.indexOf(f) === -1)
-    .reduce(
-      (prev, next) => ({
-        ...prev,
-        [next]: (root, args, context) => {
-          let timeout = null;
-          return new Promise(resolve => {
-            App.handleEvent(
-              {
-                ...args,
-                cb: (a, b, c) => {
-                  clearTimeout(timeout);
-                  resolve(a);
-                },
-              },
-              next,
-              context,
-            );
-            timeout = setTimeout(() => resolve(), 500);
-          });
-        },
-      }),
-      {},
-    );
+  // The functionality in this file has moved to the plugins section of the Apollo Server
+  // initialization in /server/bootstrap/apollo.ts
+
+  // This file still exists so I don't have to change a whole bunch of files all at once.
+  return {};
 }

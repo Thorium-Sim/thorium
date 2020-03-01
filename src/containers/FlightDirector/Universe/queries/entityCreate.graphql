@@ -1,0 +1,6 @@
+mutation EntityCreate($flightId: ID!, $position: CoordinatesInput!) {
+  entityCreate(flightId: $flightId) {
+    id
+  }
+  entitySetLocation(position: $position)
+}

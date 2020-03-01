@@ -1,5 +1,5 @@
 import App from "../app";
-import {aspectList} from "../events/flight";
+import {aspectList} from "../typeDefs/flight";
 
 export default () => {
   // Get all of the flights.

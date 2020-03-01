@@ -1,183 +1,112 @@
-import React, {Component} from "react";
-import {Query, withApollo} from "react-apollo";
-import gql from "graphql-tag.macro";
-import SubscriptionHelper from "helpers/subscriptionHelper";
-import {getClientId, setClientId} from "helpers/getClientId";
+import React from "react";
+import {getClientId, setClientId as setId} from "helpers/getClientId";
 import SimulatorData from "./simulatorData";
 import Credits from "./credits";
 import "./client.scss";
+import {
+  useDisconnectClientMutation,
+  useRegisterClientMutation,
+  useClientQuery,
+  useClientUpdateSubscription,
+  useClientPingMutation,
+} from "generated/graphql";
+import gql from "graphql-tag.macro";
+import {useApolloClient} from "@apollo/client";
 
-const REGISTER_CLIENT = gql`
-  mutation RegisterClient($client: ID!) {
-    clientConnect(client: $client)
+const ClientPingSub = gql`
+  subscription ClientPingSub($clientId: ID!) {
+    clientPing(clientId: $clientId)
   }
 `;
+const ClientData = props => {
+  const [clientId, setClientId] = React.useState(null);
 
-const REMOVE_CLIENT = gql`
-  mutation RemoveClient($id: ID!) {
-    clientDisconnect(client: $id)
-  }
-`;
-const fragments = {
-  clientData: gql`
-    fragment ClientData on Client {
-      id
-      token
-      email
-      cracked
-      flight {
-        id
-        name
-        date
-      }
-      simulator {
-        id
-        name
-      }
-      station {
-        name
-      }
-      currentCard {
-        name
-        component
-      }
-      loginName
-      loginState
-      offlineState
-      hypercard
-      movie
-      training
-      caches
-      overlay
-      soundPlayer
-    }
-  `,
-};
+  const [connect] = useRegisterClientMutation();
+  const [disconnect] = useDisconnectClientMutation();
+  const [ping] = useClientPingMutation();
 
-const QUERY = gql`
-  query Client($clientId: ID!) {
-    clients(clientId: $clientId) {
-      ...ClientData
-    }
-  }
-  ${fragments.clientData}
-`;
-const SUBSCRIPTION = gql`
-  subscription ClientUpdate($clientId: ID!) {
-    clientChanged(clientId: $clientId) {
-      ...ClientData
-    }
-  }
-  ${fragments.clientData}
-`;
+  const client = useApolloClient();
 
-class ClientData extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      registered: false,
-    };
-  }
-  componentDidMount() {
-    getClientId().then(clientId => {
-      this.setState({clientId});
-      const {client} = this.props;
-      // Register the client for the first time.
-      client
-        .mutate({
-          mutation: REGISTER_CLIENT,
-          variables: {client: clientId},
-        })
-        .then(() => this.setState({registered: true}));
-      // Keep the context menu from opening.
-      if (process.env.NODE_ENV === "production") {
-        window.oncontextmenu = function(event) {
-          event.preventDefault();
-          event.stopPropagation();
-          return false;
-        };
-      }
-      // Disconnect the client when the browser closes.
-      window.onbeforeunload = () => {
-        client.mutate({
-          mutation: REMOVE_CLIENT,
-          variables: {id: clientId},
-        });
-        return null;
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === "production") {
+      window.oncontextmenu = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
       };
-    });
-  }
-  updateClientId = async clientId => {
+    }
+
+    getClientId().then(res => setClientId(res));
+  }, []);
+
+  React.useEffect(() => {
+    // Register the client for the first time.
+    if (clientId) {
+      connect({variables: {client: clientId}});
+
+      const observer = client
+        .subscribe({query: ClientPingSub, variables: {clientId}})
+        .subscribe({
+          next() {
+            ping({variables: {clientId}});
+          },
+        });
+      // Keep the context menu from opening.
+      return () => {
+        disconnect({variables: {client: clientId}});
+        observer.unsubscribe();
+      };
+    }
+  }, [client, clientId, connect, disconnect, ping]);
+
+  const updateClientId = async clientId => {
     const oldClientId = await getClientId();
     setClientId(clientId);
-    this.setState({clientId});
-    this.props.client.mutate({
-      mutation: REMOVE_CLIENT,
-      variables: {id: oldClientId},
-    });
-    this.props.client
-      .mutate({
-        mutation: REGISTER_CLIENT,
-        variables: {client: clientId},
-      })
-      .then(() => {
-        if (typeof window !== "undefined") {
-          window.location.reload();
-        }
-      });
+    setId(clientId);
+    await disconnect({variables: {client: oldClientId}});
+    await connect({variables: {client: clientId}});
+    if (typeof window !== "undefined") {
+      window.location.reload();
+    }
   };
-  render() {
-    const {clientId, registered} = this.state;
-    if (!clientId) return null;
+
+  const {loading, data} = useClientQuery({
+    variables: {clientId},
+    skip: !clientId,
+  });
+  const {data: subData} = useClientUpdateSubscription({variables: {clientId}});
+
+  const clients = subData?.clientChanged || data?.clients;
+
+  if (
+    !clientId ||
+    loading ||
+    !data ||
+    !clients ||
+    !clients[0] ||
+    !clients[0].flight ||
+    !clients[0].simulator ||
+    !clients[0].station
+  ) {
     return (
-      <Query query={QUERY} variables={{clientId}} skip={!registered}>
-        {({loading, data, subscribeToMore}) => {
-          if (!data)
-            return (
-              <Credits
-                {...this.props}
-                clientId={clientId}
-                updateClientId={this.updateClientId}
-              />
-            );
-          const {clients} = data;
-          if (loading || !clients) return null;
-          return (
-            <SubscriptionHelper
-              subscribe={() =>
-                subscribeToMore({
-                  document: SUBSCRIPTION,
-                  variables: {clientId},
-                  updateQuery: (previousResult, {subscriptionData}) => {
-                    return Object.assign({}, previousResult, {
-                      clients: subscriptionData.data.clientChanged,
-                    });
-                  },
-                })
-              }
-            >
-              {!clients[0] || !clients[0].simulator || !clients[0].station ? (
-                <Credits
-                  {...this.props}
-                  clientId={clientId}
-                  {...clients[0]}
-                  client={clients[0]}
-                  updateClientId={this.updateClientId}
-                />
-              ) : (
-                <SimulatorData
-                  {...this.props}
-                  {...clients[0]}
-                  clientId={clientId}
-                  updateClientId={this.updateClientId}
-                  client={clients[0]}
-                />
-              )}
-            </SubscriptionHelper>
-          );
-        }}
-      </Query>
+      <Credits
+        {...props}
+        clientId={clientId}
+        {...clients?.[0]}
+        client={clients?.[0]}
+        updateClientId={updateClientId}
+      />
     );
   }
-}
-export default withApollo(ClientData);
+
+  return (
+    <SimulatorData
+      {...props}
+      {...clients[0]}
+      clientId={clientId}
+      updateClientId={updateClientId}
+      client={clients[0]}
+    />
+  );
+};
+export default ClientData;

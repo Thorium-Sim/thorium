@@ -1,0 +1,7 @@
+#import "./clientDataFragment.graphql"
+
+subscription ClientUpdate($clientId: ID!) {
+  clientChanged(clientId: $clientId) {
+    ...ClientData
+  }
+}

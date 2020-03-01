@@ -72,14 +72,18 @@ class TractorBeam extends Component {
     const tractorBeam =
       this.props.data.tractorBeam && this.props.data.tractorBeam[0];
     if (!tractorBeam) return <p>No Tractor Beam</p>;
-    const maxPower = tractorBeam.power.powerLevels.length
-      ? (tractorBeam.power.power + 1 - tractorBeam.power.powerLevels[0]) /
-        (tractorBeam.power.powerLevels[
-          tractorBeam.power.powerLevels.length - 1
-        ] -
-          tractorBeam.power.powerLevels[0] +
-          1)
-      : 1;
+    const maxPower = Math.min(
+      1,
+      tractorBeam.power.powerLevels.length
+        ? (tractorBeam.power.power + 1 - tractorBeam.power.powerLevels[0]) /
+            (tractorBeam.power.powerLevels[
+              tractorBeam.power.powerLevels.length - 1
+            ] -
+              tractorBeam.power.powerLevels[0] +
+              1)
+        : 1,
+    );
+    console.log(maxPower);
     const {assets} = this.props.simulator;
     return (
       <Container className="tractor-beam">

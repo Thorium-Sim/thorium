@@ -67,6 +67,7 @@ class Events extends EventEmitter {
   macroButtonConfigs: ClassesImport.MacroButtonConfig[] = [];
   recordTemplates: any[] = [];
   midiSets: ClassesImport.MidiSet[] = [];
+  entities: ClassesImport.Entity[] = [];
   motus: Motu[] = [];
   autoUpdate = true;
   migrations: any = {assets: true};
@@ -182,31 +183,22 @@ class Events extends EventEmitter {
     return {...snapshot, flights: newFlights, motus: newMotus};
   }
   // TODO: Add a proper context type
-  handleEvent(param: any, eventName: string, context: any = {}) {
-    const {clientId} = context;
+  handleEvent(
+    param: any,
+    eventName: string,
+    context?: any,
+    action?: (a, b, c) => any,
+  ) {
     this.timestamp = new Date();
     this.version = this.version + 1;
-    const client = this.clients.find(c => c.id === clientId);
-    // Handle any triggers before the event so we can capture data that
-    // the event might remove
-    const flight = this.flights.find(
-      f =>
-        f.id === (client && client.flightId) ||
-        (param.simulatorId && f.simulators.includes(param.simulatorId)),
-    );
-    const simulator = this.simulators.find(
-      s =>
-        s.id === (client && client.simulatorId) ||
-        (param.simulatorId && s.id === param.simulatorId),
-    );
-    context = {
-      ...context,
-      flight: flight || context.flight,
-      simulator: simulator || context.simulator,
-      client,
-    };
+    context = context || {};
     handleTrigger(eventName, param, context);
     heap.track(eventName, this.thoriumId, param, context);
+    // If params has isMacro, then we'll want to execute the mutation resolver
+    // It should have been passed by the 'triggerMacro' mutation
+    if (param.isMacro) {
+      action?.({}, param, context);
+    }
     this.emit(eventName, {...param, context});
     process.env.NODE_ENV === "production" && this.snapshot();
   }

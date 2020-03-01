@@ -151,7 +151,16 @@ class Thrusters extends Component {
     }, 15);
   }
   componentWillUnmount() {
+    const id = this.props.data.thrusters[0].id;
+    const rotation = {yaw: 0, pitch: 0, roll: 0};
+    const direction = {x: 0, y: 0, z: 0};
     cancelAnimationFrame(this.state.request);
+    this.props.rotationUpdate({
+      id: id,
+      rotation: rotation,
+      on: false,
+    });
+    this.props.directionUpdate({id: id, direction: direction});
   }
 
   /*

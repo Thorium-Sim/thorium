@@ -3,7 +3,7 @@ import uuid from "uuid";
 import App from "../../app";
 import * as Classes from "../../classes";
 import {pubsub} from "../../helpers/subscriptionManager";
-import {aspectList, addAspects} from "../../events/flight";
+import {addAspects} from "../../typeDefs/flight";
 
 function streamToString(stream, cb) {
   const chunks = [];

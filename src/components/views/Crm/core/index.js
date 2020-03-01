@@ -21,6 +21,7 @@ const fragment = gql`
     enemyIcon
     fighterStrength
     enemyStrength
+    attacking
     fighters {
       id
       client {

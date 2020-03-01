@@ -5,6 +5,7 @@ import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import HeatBar from "../EngineControl/heatbar";
+import DamageOverlay from "../helpers/DamageOverlay";
 class Transwarp extends Component {
   state = {};
   trainingSteps = () => {
@@ -77,6 +78,7 @@ class Transwarp extends Component {
       quad3,
       quad4,
       power,
+      damage,
       active,
       heat,
       coolant,
@@ -107,6 +109,10 @@ class Transwarp extends Component {
       (power.power / power.powerLevels[power.powerLevels.length - 1]) * 300;
     return (
       <div className="card-transwarp">
+        <DamageOverlay
+          message={`${displayName} Offline`}
+          system={{power, damage}}
+        />
         {Array(4)
           .fill(0)
           .map((_, i) => (
@@ -153,6 +159,7 @@ class Transwarp extends Component {
                             })
                           }
                           onChange={value => {
+                            if (!value & (value !== 0)) return;
                             action({
                               variables: {
                                 id,

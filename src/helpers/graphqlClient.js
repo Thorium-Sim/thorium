@@ -13,20 +13,20 @@ import {getClientId} from "helpers/getClientId";
 const hostname = window.location.hostname;
 const protocol = window.location.protocol;
 const wsProtocol = protocol === "https:" ? "wss:" : "ws:";
-const graphqlUrl =
+export const graphqlUrl =
   process.env.NODE_ENV === "production"
     ? "/graphql"
     : `${protocol}//${hostname}:${parseInt(window.location.port || 3000, 10) +
         1}/graphql`;
 
+export const websocketUrl =
+  process.env.NODE_ENV === "production"
+    ? `${wsProtocol}//${window.location.host}/graphql`
+    : `${wsProtocol}//${hostname}:${parseInt(window.location.port || 3000, 10) +
+        1}/graphql`;
+
 const webSocketLink = new WebSocketLink({
-  uri:
-    process.env.NODE_ENV === "production"
-      ? `${wsProtocol}//${window.location.host}/graphql`
-      : `${wsProtocol}//${hostname}:${parseInt(
-          window.location.port || 3000,
-          10,
-        ) + 1}/graphql`,
+  uri: websocketUrl,
   options: {
     reconnect: true,
     connectionParams: () => getClientId().then(clientId => ({clientId})),

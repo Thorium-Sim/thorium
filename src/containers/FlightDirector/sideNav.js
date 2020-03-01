@@ -35,6 +35,7 @@ import {
   FaTimes,
   FaBars,
   FaSlidersH,
+  FaRegStar,
 } from "react-icons/fa";
 
 import IssueTracker from "../../components/admin/IssueTracker";
@@ -68,6 +69,11 @@ const makeLinks = () => {
       icon: FaUserSecret,
       link: "/config/mission",
     },
+    // {
+    //   name: "Universal Sandbox",
+    //   icon: FaRegStar,
+    //   link: "/config/sandbox",
+    // },
     {
       name: "Macros Config",
       icon: FaWindowRestore,

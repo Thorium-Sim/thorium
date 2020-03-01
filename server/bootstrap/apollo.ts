@@ -14,9 +14,14 @@ import {typeDefs, resolvers} from "../data";
 import chalk from "chalk";
 import url from "url";
 import paths from "../helpers/paths";
+import App from "../app";
 // Load some other stuff
 import "../events";
 import "../processes";
+import {FieldNode, getOperationRootType} from "graphql";
+import {getArgumentValues} from "graphql/execution/values";
+import {getFieldDef} from "graphql/execution/execute";
+import {pubsub} from "../helpers/subscriptionManager";
 
 export const schema = makeExecutableSchema({
   typeDefs,
@@ -27,6 +32,89 @@ export const schema = makeExecutableSchema({
 });
 
 // TODO: Change app to the express type
+function responseForOperation(requestContext) {
+  // This plugin checks to see if a request
+  // coming in is a mutation. If it is, it
+  // hijacks the request and triggers the
+  // event handler for that request in
+  // /server/events. If the event handler doesn't
+  // resolve (by calling the callback function cb)
+  // in 500 milliseconds, it just returns.
+  const {
+    context,
+    request: {variables},
+    operation,
+  } = requestContext;
+  if (operation.operation !== "mutation") return null;
+  const selection = operation.selectionSet.selections[0] as FieldNode;
+  const opName = selection.name.value;
+  const parentType = getOperationRootType(schema, operation);
+  const fieldDef = getFieldDef(schema, parentType, opName);
+  const args = getArgumentValues(
+    fieldDef,
+    operation.selectionSet.selections[0] as FieldNode,
+    variables,
+  );
+
+  // Figure out the context of the action
+  const {clientId} = context;
+  const client = App.clients.find(c => c.id === clientId);
+  // Handle any triggers before the event so we can capture data that
+  // the event might remove
+  const flight = App.flights.find(
+    f =>
+      f.id === (client && client.flightId) ||
+      (args.simulatorId && f.simulators.includes(args.simulatorId)),
+  );
+  const simulator = App.simulators.find(
+    s =>
+      s.id === (client && client.simulatorId) ||
+      (args.simulatorId && s.id === args.simulatorId),
+  );
+  // We really want to modify this read-only property
+  // @ts-ignore ts(2540)
+  requestContext.context = {
+    ...context,
+    flight: flight || context.flight,
+    simulator: simulator || context.simulator,
+    client,
+  };
+
+  // If there is a direct mutation resolver, execute that.
+  // This is now the preferred way to execute mutations
+  if (resolvers.Mutation[opName]) {
+    // The whole point of this is so we can still
+    // trigger handle event, so lets do that.
+    App.handleEvent(
+      {
+        ...args,
+        cb: () => {},
+      },
+      opName,
+      requestContext.context,
+    );
+    // Returning null means it executes
+    // the built-in mutation resolver
+    return null;
+  }
+  return new Promise(resolve => {
+    // Execute the old legacy event handler system.
+    let timeout = null;
+    App.handleEvent(
+      {
+        ...args,
+        cb: (a: any) => {
+          clearTimeout(timeout);
+          resolve({data: {[opName]: a}});
+        },
+      },
+      opName,
+      requestContext.context,
+    );
+    timeout = setTimeout(() => resolve(), 500);
+  });
+}
+
 export default (
   app: express.Application,
   SERVER_PORT: number,
@@ -41,6 +129,37 @@ export default (
     introspection: true,
     playground: true,
     uploads: false,
+    plugins: [
+      {
+        requestDidStart() {
+          return {
+            responseForOperation,
+            parsingDidStart(requestContext) {
+              requestContext.context.subscriptionResponses = {};
+            },
+            willSendResponse(requestContext) {
+              if (requestContext.operation.operation === "mutation") {
+                // If we have any patch subscriptions, send them at the end of the entire operation.
+                const {context} = requestContext;
+                if (context.subscriptionResponses) {
+                  Object.entries(context.subscriptionResponses).forEach(
+                    ([key, value]) => {
+                      if (Array.isArray(value)) {
+                        value.forEach(v => {
+                          pubsub.publish(key, v);
+                        });
+                      } else {
+                        pubsub.publish(key, value);
+                      }
+                    },
+                  );
+                }
+              }
+            },
+          };
+        },
+      },
+    ],
     context: ({req, connection}) => ({
       clientId: req?.headers.clientid || connection?.context.clientId,
       core: req?.headers.core,

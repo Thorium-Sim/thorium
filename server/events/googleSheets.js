@@ -1,9 +1,6 @@
 import App from "../app";
 import {google} from "googleapis";
 
-import {pubsub} from "../helpers/subscriptionManager";
-import * as Classes from "../classes";
-
 const SCOPES = [
   "https://www.googleapis.com/auth/spreadsheets",
   "https://www.googleapis.com/auth/drive.metadata.readonly",

@@ -1,0 +1,3 @@
+mutation EntityRemove($id: [ID!]!) {
+  entityRemove(id: $id)
+}
