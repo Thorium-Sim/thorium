@@ -3187,6 +3187,7 @@ query Reactors($simulatorId: ID!) {
           id: "prove-during-special",
           lock: false,
           charge: 0,
+          connected: true,
           station: {
             name: "Engineering",
             __typename: "Station",
