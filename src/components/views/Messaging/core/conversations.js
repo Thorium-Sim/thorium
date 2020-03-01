@@ -52,6 +52,7 @@ const Conversations = ({messages, simulator}) => {
   const [messageInput, setMessageInput] = React.useState(null);
   const messageHolder = React.useRef();
   const previousMessages = usePrevious(messages);
+
   React.useEffect(() => {
     const stationNames = simulator.stations.map(s => s.name);
     const messageList = Object.values(reduceMessages(messages, stationNames));
@@ -68,8 +69,8 @@ const Conversations = ({messages, simulator}) => {
     const alertMessages = list
       .map(m => m.id)
       .reduce((prev, next) => ({...prev, [next]: true}), {});
-    setAlert(a => ({...alert, ...alertMessages}));
-  }, [alert, messages, previousMessages, selectedConvo, simulator.stations]);
+    setAlert(a => ({...a, ...alertMessages}));
+  }, [messages, previousMessages, selectedConvo, simulator.stations]);
 
   const scrollElement = () => {
     const el = messageHolder.current;
