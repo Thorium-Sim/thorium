@@ -197,7 +197,7 @@ class Events extends EventEmitter {
     // If params has isMacro, then we'll want to execute the mutation resolver
     // It should have been passed by the 'triggerMacro' mutation
     if (param.isMacro) {
-      action({}, param, context);
+      action?.({}, param, context);
     }
     this.emit(eventName, {...param, context});
     process.env.NODE_ENV === "production" && this.snapshot();

@@ -6,9 +6,9 @@ import uuid from "uuid";
 
 const clientPing = () => {
   App.clients.forEach(c => {
-    if (c.ping) {
-      c.disconnect();
-    }
+    // if (c.ping) {
+    //   c.disconnect();
+    // }
     if (c.connected) {
       const ping = uuid.v4();
       c.setPing(ping);

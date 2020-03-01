@@ -229,8 +229,8 @@ class DamageControlCore extends Component {
     const engine = engines.find(e => e.id === system.id);
     const speedIndex =
       system.power.powerLevels.filter(p => p <= system.power.power).length - 1;
-    const maxSpeed = engine.speeds[speedIndex]
-      ? engine.speeds[speedIndex].number
+    const maxSpeed = engine?.speeds[speedIndex]
+      ? engine?.speeds[speedIndex].number
       : 0;
     return `(${maxSpeed})`;
   };
