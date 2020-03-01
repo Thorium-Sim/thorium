@@ -1,3 +1,41 @@
+## [2.6.1](https://github.com/Thorium-Sim/thorium/compare/2.6.0...2.6.1) (2020-03-01)
+
+### Bug Fixes
+
+- **CRM:** CRM Core now properly shows attacking status. Closes
+  [#2804](https://github.com/Thorium-Sim/thorium/issues/2804)
+  ([1704e11](https://github.com/Thorium-Sim/thorium/commit/1704e1141e3b5eaee725efad03010d71df0e1592))
+- **Damage Reports:** Fixes an issue where damage reports can be requested after
+  they have been fixed. Fixes
+  [#2783](https://github.com/Thorium-Sim/thorium/issues/2783)
+  ([8093cec](https://github.com/Thorium-Sim/thorium/commit/8093cecf807e7ef532307e0e592e65ec5a237355))
+- **Messaging Core:** Fixes an issue where messaging core gets frozen. Closes
+  [#2782](https://github.com/Thorium-Sim/thorium/issues/2782). Fixes
+  [#2787](https://github.com/Thorium-Sim/thorium/issues/2787). Fixes
+  [#2788](https://github.com/Thorium-Sim/thorium/issues/2788).
+  ([c100fc5](https://github.com/Thorium-Sim/thorium/commit/c100fc509648a4f1ff2ccd74bd8a64934ab6beba))
+- **Sensors:** Makes it so sensor contacts move based on the initial click
+  location, making a more pleasant sensor contact movement experience. Closes
+  [#2785](https://github.com/Thorium-Sim/thorium/issues/2785)
+  ([f8cba4d](https://github.com/Thorium-Sim/thorium/commit/f8cba4d6f3351e86a8949d9c72cd605638d2ec92))
+- **Targeting:** Fixes the styling of the targeting macro. Closes
+  [#2781](https://github.com/Thorium-Sim/thorium/issues/2781)
+  ([4ed4381](https://github.com/Thorium-Sim/thorium/commit/4ed43814a76a19f354bca68e44c2dcea1412015a))
+- **Thrusters:** Improves the thrusters timeout. Closes
+  [#2784](https://github.com/Thorium-Sim/thorium/issues/2784)
+  ([47e3167](https://github.com/Thorium-Sim/thorium/commit/47e31670fbf139c1e1edbdefe6180c900d2fbe6c))
+- **THX:** Makes it so clients that are not connected don't appear on the THX
+  screen. Closes [#2802](https://github.com/Thorium-Sim/thorium/issues/2802)
+  ([9d4671e](https://github.com/Thorium-Sim/thorium/commit/9d4671ecfb929e9acd84bb8dd273a13650b32c3f))
+- **Tractor Beam:** Fixes an issue where the tractor beam power whacks out.
+  ([874ced1](https://github.com/Thorium-Sim/thorium/commit/874ced1f2a03d4eb3c4bcb56c92b33836808dc35))
+- **Transwarp:** Add a damage/insufficient power overlay to Transwarp. Closes
+  [#2792](https://github.com/Thorium-Sim/thorium/issues/2792)
+  ([a803fd6](https://github.com/Thorium-Sim/thorium/commit/a803fd644501734823ec0a512a091842c3c66ec0))
+- **Transwarp:** Imrpoves the layout of the transwarp card on small screen
+  sizes. Fixes [#2790](https://github.com/Thorium-Sim/thorium/issues/2790)
+  ([53e696f](https://github.com/Thorium-Sim/thorium/commit/53e696f3cf47feec37a7898985e551ab6bc1ef85))
+
 # [2.6.0](https://github.com/Thorium-Sim/thorium/compare/2.5.2...2.6.0) (2020-02-20)
 
 ### Bug Fixes
