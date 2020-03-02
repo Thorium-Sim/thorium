@@ -38,10 +38,13 @@ module.exports = function bootstrap(serverWindow) {
     );
 
     child.stdout.on("data", function(data) {
-      serverWindow.webContents.send("info", data);
+      const message = data.toString();
+      serverWindow.webContents.send("info", message);
     });
     child.stderr.on("data", function(data) {
-      serverWindow.webContents.send("info", data);
+      const error = data.toString();
+      if (error.includes("DeprecationWarning: Buffer()")) return;
+      serverWindow.webContents.send("info", error);
     });
     child.on("close", function(code) {
       if (serverWindow && restartCount < 10) {
