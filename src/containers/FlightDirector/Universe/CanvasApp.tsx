@@ -68,6 +68,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
             y: mousePosition[1],
             z: mousePosition[2],
           },
+          name: `New Entity ${entities.length + 1}`,
         },
       });
       if (data?.entityCreate.id) {
@@ -83,7 +84,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   const elementList = ["input", "textarea"];
   useEventListener("keydown", (e: KeyboardEvent) => {
     const target = e.target as HTMLElement;
-    if (elementList.includes(target?.tagName)) return;
+    if (elementList.includes(target?.tagName.toLowerCase())) return;
     if (e.key === "Backspace" && selected) {
       remove({variables: {id: selected}});
 
@@ -117,7 +118,6 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           },
         };
       });
-    console.log(updateEntities);
     setPosition({variables: {entities: updateEntities}}).then(() => {
       setSelectionsDragged(false);
       setPositionOffset({x: 0, y: 0, z: 0});
@@ -150,20 +150,22 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       {entities.map((e, i) => {
         const isSelected = selected && selected.includes(e.id);
         return (
-          <Entity
-            key={e.id}
-            index={i}
-            entity={e}
-            selected={isSelected}
-            setSelected={setSelected}
-            isDraggingMe={isSelected && selectionsDragged}
-            onDragStart={() => setSelectionsDragged(true)}
-            onDrag={onDrag}
-            onDragStop={onDragStop}
-            positionOffset={
-              isSelected && selectionsDragged ? positionOffset : undefined
-            }
-          />
+          <React.Suspense fallback={null}>
+            <Entity
+              key={e.id}
+              index={i}
+              entity={e}
+              selected={isSelected}
+              setSelected={setSelected}
+              isDraggingMe={isSelected && selectionsDragged}
+              onDragStart={() => setSelectionsDragged(true)}
+              onDrag={onDrag}
+              onDragStop={onDragStop}
+              positionOffset={
+                isSelected && selectionsDragged ? positionOffset : undefined
+              }
+            />
+          </React.Suspense>
         );
       })}
       <BackPlane setSelected={setSelected} />

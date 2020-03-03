@@ -18,6 +18,9 @@ const sub = gql`
       value
       values {
         id
+        identity {
+          name
+        }
         location {
           position {
             x

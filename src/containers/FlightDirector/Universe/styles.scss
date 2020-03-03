@@ -151,4 +151,13 @@
     color: #fff;
     background-color: #222;
   }
+  #level-editor {
+    div {
+      pointer-events: none;
+    }
+    .object-label {
+      transform: translate(-50%, 50%);
+      pointer-events: none;
+    }
+  }
 }

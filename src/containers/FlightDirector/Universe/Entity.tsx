@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useFrame} from "react-three-fiber";
+import {useFrame, useLoader, PointerEvent, Dom} from "react-three-fiber";
 import {CanvasContext, ActionType} from "./CanvasContext";
 import {useDrag} from "react-use-gesture";
 import * as THREE from "three";
@@ -7,6 +7,9 @@ import {SphereGeometry} from "three";
 import SelectionOutline from "./SelectionOutline";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
+
+const starSprite = require("./star-sprite.svg") as string;
+const circleSprite = require("./circle.svg") as string;
 
 interface EntityProps {
   index: number;
@@ -39,8 +42,8 @@ const Entity: React.FC<EntityProps> = ({
   onDragStop = noop,
 }) => {
   const {id, location} = entity;
-  const type = "sphere";
   const size = 1;
+  const type: string = "sprite";
   const color = [0x583798, 0x981232, 0x083798, 0x98f232][index];
   const scale = 1;
   const {position: positionCoords} = location || {position: null};
@@ -56,13 +59,17 @@ const Entity: React.FC<EntityProps> = ({
 
   useFrame(({camera}) => {
     const {zoom} = camera;
-    const zoomedScale = (1 / zoom) * 20 * scale;
-    if (zoomScale) {
+    let zoomedScale = (1 / zoom) * 20 * scale;
+    if (zoomScale || type === "sprite") {
+      zoomedScale *= 2;
       mesh.current.scale.set(zoomedScale, zoomedScale, zoomedScale);
     } else {
       mesh.current.scale.set(scale, scale, scale);
     }
   });
+
+  const spriteTexture = useLoader(THREE.TextureLoader, starSprite);
+  const circleTexture = useLoader(THREE.TextureLoader, circleSprite);
 
   const bind = useDrag(
     ({delta: [dx, dy]}) => {
@@ -71,10 +78,49 @@ const Entity: React.FC<EntityProps> = ({
     {eventOptions: {pointer: true, passive: false}},
   );
   const dragFunctions = bind();
+  const modifiedDragFunctions = {
+    onPointerMove: (e: PointerEvent) =>
+      dragFunctions.onPointerMove?.(
+        (e as unknown) as React.PointerEvent<Element>,
+      ),
+    onPointerDown: (e: PointerEvent) => {
+      if (library) return;
+      e.stopPropagation();
+      setSelected?.(selected => {
+        if (e.shiftKey) {
+          if (selected.includes(id)) {
+            return selected.filter(s => s !== id);
+          }
+          return [...selected, id];
+        }
+        if (!selected || !selected.includes(id)) {
+          return [id];
+        }
+        return selected;
+      });
+      if (dragging) return;
+      onDragStart();
+      dispatch({type: ActionType.dragging});
+      dragFunctions?.onPointerDown?.(
+        (e as unknown) as React.PointerEvent<Element>,
+      );
+    },
+    onPointerUp: (e: PointerEvent) => {
+      dispatch({type: ActionType.dropped});
+      if (isDraggingMe) {
+        onDragStop();
+      }
+      dragFunctions?.onPointerUp?.(
+        (e as unknown) as React.PointerEvent<Element>,
+      );
+    },
+  };
   let geometry = React.useMemo(() => {
     switch (type) {
       case "sphere":
         return new SphereGeometry(size, 32, 32);
+      default:
+        break;
       // case "cube":
       // default:
       //   return new BoxBufferGeometry(2, 2, 2);
@@ -89,42 +135,34 @@ const Entity: React.FC<EntityProps> = ({
         (position?.z || 0) + positionOffset.z,
       ];
 
+  if (type === "sprite") {
+    return (
+      <group ref={mesh} position={meshPosition}>
+        <sprite {...modifiedDragFunctions}>
+          <spriteMaterial color={color} map={spriteTexture} attach="material" />
+        </sprite>
+        {selected && (
+          <sprite>
+            <spriteMaterial
+              color={0xff8800}
+              map={circleTexture}
+              attach="material"
+            />
+          </sprite>
+        )}
+        <Dom>
+          <p className="object-label">{entity.identity?.name}</p>
+        </Dom>
+      </group>
+    );
+  }
   return (
     <>
       <mesh
         geometry={geometry}
         position={meshPosition}
         ref={mesh}
-        onPointerMove={e =>
-          dragFunctions.onPointerMove?.(e as React.PointerEvent<Element>)
-        }
-        onPointerDown={e => {
-          if (library) return;
-          e.stopPropagation();
-          setSelected?.(selected => {
-            if (e.shiftKey) {
-              if (selected.includes(id)) {
-                return selected.filter(s => s !== id);
-              }
-              return [...selected, id];
-            }
-            if (!selected || !selected.includes(id)) {
-              return [id];
-            }
-            return selected;
-          });
-          if (dragging) return;
-          onDragStart();
-          dispatch({type: ActionType.dragging});
-          dragFunctions?.onPointerDown?.(e as React.PointerEvent<Element>);
-        }}
-        onPointerUp={e => {
-          dispatch({type: ActionType.dropped});
-          if (isDraggingMe) {
-            onDragStop();
-          }
-          dragFunctions?.onPointerUp?.(e as React.PointerEvent<Element>);
-        }}
+        {...modifiedDragFunctions}
       >
         <meshStandardMaterial attach="material" color={color} />
       </mesh>

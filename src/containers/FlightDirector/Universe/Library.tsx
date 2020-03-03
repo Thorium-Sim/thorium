@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {Suspense} from "react";
 import {Canvas} from "react-three-fiber";
 import Entity from "./Entity";
 import {FaPlusCircle} from "react-icons/fa";
@@ -11,6 +11,12 @@ const libraryItems = [
     scale: 1,
     material: "standard",
     color: 0x0088ff,
+  },
+  {
+    type: "sprite",
+    material: "sprite",
+    map: require("./star-sprite.svg"),
+    color: 0xffffff,
   },
   // {
   //   type: "cube",
@@ -45,11 +51,13 @@ export default function Library({
                 <ApolloProvider client={client}>
                   <ambientLight />
                   <pointLight position={[10, 10, 10]} intensity={0.5} />
-                  <Entity
-                    index={0}
-                    library
-                    entity={{id: "library-entity", ...l}}
-                  />
+                  <Suspense fallback={null}>
+                    <Entity
+                      index={0}
+                      library
+                      entity={{id: "library-entity", ...l}}
+                    />
+                  </Suspense>
                 </ApolloProvider>
               </Canvas>
               {l.type}

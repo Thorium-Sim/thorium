@@ -50,7 +50,10 @@ export type AmbianceInput = {
 
 export type AppearanceComponent = {
   __typename?: "AppearanceComponent";
+  meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
+  materialMapAsset?: Maybe<Scalars["String"]>;
+  color?: Maybe<Scalars["String"]>;
 };
 
 export type Asset = {
@@ -1374,6 +1377,12 @@ export type MacroInput = {
   noCancelOnReset?: Maybe<Scalars["Boolean"]>;
 };
 
+export enum MeshTypeEnum {
+  Sphere = "sphere",
+  Cube = "cube",
+  Model = "model",
+}
+
 export type Message = {
   __typename?: "Message";
   id?: Maybe<Scalars["ID"]>;
@@ -2244,7 +2253,7 @@ export type MutationEntityRemoveBehaviorArgs = {
 };
 
 export type MutationEntitySetIdentityArgs = {
-  id: Scalars["ID"];
+  id?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
 };
@@ -9013,11 +9022,12 @@ export type SetSoundPlayerMutation = {__typename?: "Mutation"} & Pick<
 export type EntityCreateMutationVariables = {
   flightId: Scalars["ID"];
   position: CoordinatesInput;
+  name: Scalars["String"];
 };
 
 export type EntityCreateMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
-  "entitySetLocation"
+  "entitySetLocation" | "entitySetIdentity"
 > & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
 
 export type EntityRemoveMutationVariables = {
@@ -9027,6 +9037,16 @@ export type EntityRemoveMutationVariables = {
 export type EntityRemoveMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entityRemove"
+>;
+
+export type EntitySetIdentityMutationVariables = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type EntitySetIdentityMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetIdentity"
 >;
 
 export type EntitiesSetPositionMutationVariables = {
@@ -10659,11 +10679,16 @@ export type SetSoundPlayerMutationOptions = ApolloReactCommon.BaseMutationOption
   SetSoundPlayerMutationVariables
 >;
 export const EntityCreateDocument = gql`
-  mutation EntityCreate($flightId: ID!, $position: CoordinatesInput!) {
+  mutation EntityCreate(
+    $flightId: ID!
+    $position: CoordinatesInput!
+    $name: String!
+  ) {
     entityCreate(flightId: $flightId) {
       id
     }
     entitySetLocation(position: $position)
+    entitySetIdentity(name: $name)
   }
 `;
 export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
@@ -10686,6 +10711,7 @@ export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
  *   variables: {
  *      flightId: // value for 'flightId'
  *      position: // value for 'position'
+ *      name: // value for 'name'
  *   },
  * });
  */
@@ -10757,6 +10783,55 @@ export type EntityRemoveMutationResult = ApolloReactCommon.MutationResult<
 export type EntityRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityRemoveMutation,
   EntityRemoveMutationVariables
+>;
+export const EntitySetIdentityDocument = gql`
+  mutation EntitySetIdentity($id: ID!, $name: String!) {
+    entitySetIdentity(id: $id, name: $name)
+  }
+`;
+export type EntitySetIdentityMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetIdentityMutation,
+  EntitySetIdentityMutationVariables
+>;
+
+/**
+ * __useEntitySetIdentityMutation__
+ *
+ * To run a mutation, you first call `useEntitySetIdentityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetIdentityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetIdentityMutation, { data, loading, error }] = useEntitySetIdentityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useEntitySetIdentityMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetIdentityMutation,
+    EntitySetIdentityMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetIdentityMutation,
+    EntitySetIdentityMutationVariables
+  >(EntitySetIdentityDocument, baseOptions);
+}
+export type EntitySetIdentityMutationHookResult = ReturnType<
+  typeof useEntitySetIdentityMutation
+>;
+export type EntitySetIdentityMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetIdentityMutation
+>;
+export type EntitySetIdentityMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetIdentityMutation,
+  EntitySetIdentityMutationVariables
 >;
 export const EntitiesSetPositionDocument = gql`
   mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
