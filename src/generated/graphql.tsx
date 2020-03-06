@@ -10,6 +10,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   JSON: {[key: string]: any};
+  BigInt: any;
 };
 
 export type Action = {
@@ -54,6 +55,7 @@ export type AppearanceComponent = {
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
   color?: Maybe<Scalars["String"]>;
+  scale?: Maybe<Scalars["Float"]>;
 };
 
 export type Asset = {
@@ -84,7 +86,7 @@ export type BehaviorComponent = {
   __typename?: "BehaviorComponent";
   behavior: Behaviors;
   targetId?: Maybe<Scalars["ID"]>;
-  destination?: Maybe<Coordinates>;
+  destination?: Maybe<EntityCoordinates>;
 };
 
 export enum Behaviors {
@@ -364,15 +366,15 @@ export type CoolantTank = SystemInterface & {
 
 export type Coordinates = {
   __typename?: "Coordinates";
-  x: Scalars["Float"];
-  y: Scalars["Float"];
-  z: Scalars["Float"];
+  x?: Maybe<Scalars["Float"]>;
+  y?: Maybe<Scalars["Float"]>;
+  z?: Maybe<Scalars["Float"]>;
 };
 
 export type CoordinatesInput = {
-  x: Scalars["Float"];
-  y: Scalars["Float"];
-  z: Scalars["Float"];
+  x?: Maybe<Scalars["Float"]>;
+  y?: Maybe<Scalars["Float"]>;
+  z?: Maybe<Scalars["Float"]>;
 };
 
 export type CoreFeed = {
@@ -784,7 +786,7 @@ export type Engine = SystemInterface & {
 
 export type EntitiesLocationInput = {
   id: Scalars["ID"];
-  position: CoordinatesInput;
+  position: EntityCoordinatesInput;
 };
 
 export type EntitiesPatch = Patch & {
@@ -802,6 +804,19 @@ export type Entity = {
   behavior?: Maybe<BehaviorComponent>;
   identity?: Maybe<IdentityComponent>;
   location?: Maybe<LocationComponent>;
+};
+
+export type EntityCoordinates = {
+  __typename?: "EntityCoordinates";
+  x: Scalars["BigInt"];
+  y: Scalars["BigInt"];
+  z: Scalars["BigInt"];
+};
+
+export type EntityCoordinatesInput = {
+  x: Scalars["BigInt"];
+  y: Scalars["BigInt"];
+  z: Scalars["BigInt"];
 };
 
 export type EntityPatch = Patch & {
@@ -1256,12 +1271,12 @@ export type Location = Deck | Room;
 
 export type LocationComponent = {
   __typename?: "LocationComponent";
-  position: Coordinates;
-  velocity: Coordinates;
-  acceleration: Coordinates;
+  position: EntityCoordinates;
+  velocity: EntityCoordinates;
+  acceleration: EntityCoordinates;
   rotation: Quaternion;
-  rotationVelocity: Coordinates;
-  rotationAcceleration: Coordinates;
+  rotationVelocity: EntityCoordinates;
+  rotationAcceleration: EntityCoordinates;
 };
 
 export type Log = {
@@ -1381,6 +1396,7 @@ export enum MeshTypeEnum {
   Sphere = "sphere",
   Cube = "cube",
   Model = "model",
+  Sprite = "sprite",
 }
 
 export type Message = {
@@ -2233,8 +2249,12 @@ export type Mutation = {
 };
 
 export type MutationEntitySetAppearanceArgs = {
-  id: Scalars["ID"];
+  id?: Maybe<Scalars["ID"]>;
+  color?: Maybe<Scalars["String"]>;
+  meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
+  materialMapAsset?: Maybe<Scalars["String"]>;
+  scale?: Maybe<Scalars["Float"]>;
 };
 
 export type MutationEntityRemoveAppearanceArgs = {
@@ -2245,7 +2265,7 @@ export type MutationEntitySetBehaviorArgs = {
   id: Scalars["ID"];
   behavior: Behaviors;
   targetId?: Maybe<Scalars["ID"]>;
-  destination?: Maybe<CoordinatesInput>;
+  destination?: Maybe<EntityCoordinatesInput>;
 };
 
 export type MutationEntityRemoveBehaviorArgs = {
@@ -2253,7 +2273,7 @@ export type MutationEntityRemoveBehaviorArgs = {
 };
 
 export type MutationEntitySetIdentityArgs = {
-  id: Scalars["ID"];
+  id?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
 };
@@ -2264,12 +2284,12 @@ export type MutationEntityRemoveIdentityArgs = {
 
 export type MutationEntitySetLocationArgs = {
   id?: Maybe<Scalars["ID"]>;
-  position?: Maybe<CoordinatesInput>;
-  velocity?: Maybe<CoordinatesInput>;
-  acceleration?: Maybe<CoordinatesInput>;
+  position?: Maybe<EntityCoordinatesInput>;
+  velocity?: Maybe<EntityCoordinatesInput>;
+  acceleration?: Maybe<EntityCoordinatesInput>;
   rotation?: Maybe<QuaternionInput>;
-  rotationVelocity?: Maybe<CoordinatesInput>;
-  rotationAcceleration?: Maybe<CoordinatesInput>;
+  rotationVelocity?: Maybe<EntityCoordinatesInput>;
+  rotationAcceleration?: Maybe<EntityCoordinatesInput>;
 };
 
 export type MutationEntitiesSetPositionArgs = {
@@ -8566,15 +8586,6 @@ export type ClientPingMutation = {__typename?: "Mutation"} & Pick<
   "clientPing"
 >;
 
-export type ClientPingSubSubscriptionVariables = {
-  clientId: Scalars["ID"];
-};
-
-export type ClientPingSubSubscription = {__typename?: "Subscription"} & Pick<
-  Subscription,
-  "clientPing"
->;
-
 export type RegisterClientMutationVariables = {
   client: Scalars["ID"];
 };
@@ -9108,12 +9119,16 @@ export type SetSoundPlayerMutation = {__typename?: "Mutation"} & Pick<
 
 export type EntityCreateMutationVariables = {
   flightId: Scalars["ID"];
-  position: CoordinatesInput;
+  position: EntityCoordinatesInput;
+  name: Scalars["String"];
+  color?: Maybe<Scalars["String"]>;
+  meshType: MeshTypeEnum;
+  materialMapAsset?: Maybe<Scalars["String"]>;
 };
 
 export type EntityCreateMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
-  "entitySetLocation"
+  "entitySetLocation" | "entitySetIdentity" | "entitySetAppearance"
 > & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
 
 export type EntityRemoveMutationVariables = {
@@ -9123,6 +9138,30 @@ export type EntityRemoveMutationVariables = {
 export type EntityRemoveMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entityRemove"
+>;
+
+export type EntitySetAppearanceMutationVariables = {
+  id: Scalars["ID"];
+  color?: Maybe<Scalars["String"]>;
+  meshType?: Maybe<MeshTypeEnum>;
+  modelAsset?: Maybe<Scalars["String"]>;
+  materialMapAsset?: Maybe<Scalars["String"]>;
+  scale?: Maybe<Scalars["Float"]>;
+};
+
+export type EntitySetAppearanceMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetAppearance"
+>;
+
+export type EntitySetIdentityMutationVariables = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type EntitySetIdentityMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetIdentity"
 >;
 
 export type EntitiesSetPositionMutationVariables = {
@@ -9530,45 +9569,6 @@ export type ClientPingMutationResult = ApolloReactCommon.MutationResult<
 export type ClientPingMutationOptions = ApolloReactCommon.BaseMutationOptions<
   ClientPingMutation,
   ClientPingMutationVariables
->;
-export const ClientPingSubDocument = gql`
-  subscription ClientPingSub($clientId: ID!) {
-    clientPing(clientId: $clientId)
-  }
-`;
-
-/**
- * __useClientPingSubSubscription__
- *
- * To run a query within a React component, call `useClientPingSubSubscription` and pass it any options that fit your needs.
- * When your component renders, `useClientPingSubSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useClientPingSubSubscription({
- *   variables: {
- *      clientId: // value for 'clientId'
- *   },
- * });
- */
-export function useClientPingSubSubscription(
-  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
-    ClientPingSubSubscription,
-    ClientPingSubSubscriptionVariables
-  >,
-) {
-  return ApolloReactHooks.useSubscription<
-    ClientPingSubSubscription,
-    ClientPingSubSubscriptionVariables
-  >(ClientPingSubDocument, baseOptions);
-}
-export type ClientPingSubSubscriptionHookResult = ReturnType<
-  typeof useClientPingSubSubscription
->;
-export type ClientPingSubSubscriptionResult = ApolloReactCommon.SubscriptionResult<
-  ClientPingSubSubscription
 >;
 export const RegisterClientDocument = gql`
   mutation RegisterClient($client: ID!) {
@@ -11066,11 +11066,24 @@ export type SetSoundPlayerMutationOptions = ApolloReactCommon.BaseMutationOption
   SetSoundPlayerMutationVariables
 >;
 export const EntityCreateDocument = gql`
-  mutation EntityCreate($flightId: ID!, $position: CoordinatesInput!) {
+  mutation EntityCreate(
+    $flightId: ID!
+    $position: EntityCoordinatesInput!
+    $name: String!
+    $color: String
+    $meshType: MeshTypeEnum!
+    $materialMapAsset: String
+  ) {
     entityCreate(flightId: $flightId) {
       id
     }
     entitySetLocation(position: $position)
+    entitySetIdentity(name: $name)
+    entitySetAppearance(
+      color: $color
+      meshType: $meshType
+      materialMapAsset: $materialMapAsset
+    )
   }
 `;
 export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
@@ -11093,6 +11106,10 @@ export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
  *   variables: {
  *      flightId: // value for 'flightId'
  *      position: // value for 'position'
+ *      name: // value for 'name'
+ *      color: // value for 'color'
+ *      meshType: // value for 'meshType'
+ *      materialMapAsset: // value for 'materialMapAsset'
  *   },
  * });
  */
@@ -11164,6 +11181,122 @@ export type EntityRemoveMutationResult = ApolloReactCommon.MutationResult<
 export type EntityRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityRemoveMutation,
   EntityRemoveMutationVariables
+>;
+export const EntitySetAppearanceDocument = gql`
+  mutation EntitySetAppearance(
+    $id: ID!
+    $color: String
+    $meshType: MeshTypeEnum
+    $modelAsset: String
+    $materialMapAsset: String
+    $scale: Float
+  ) {
+    entitySetAppearance(
+      id: $id
+      color: $color
+      meshType: $meshType
+      modelAsset: $modelAsset
+      materialMapAsset: $materialMapAsset
+      scale: $scale
+    )
+  }
+`;
+export type EntitySetAppearanceMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetAppearanceMutation,
+  EntitySetAppearanceMutationVariables
+>;
+
+/**
+ * __useEntitySetAppearanceMutation__
+ *
+ * To run a mutation, you first call `useEntitySetAppearanceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetAppearanceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetAppearanceMutation, { data, loading, error }] = useEntitySetAppearanceMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      color: // value for 'color'
+ *      meshType: // value for 'meshType'
+ *      modelAsset: // value for 'modelAsset'
+ *      materialMapAsset: // value for 'materialMapAsset'
+ *      scale: // value for 'scale'
+ *   },
+ * });
+ */
+export function useEntitySetAppearanceMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetAppearanceMutation,
+    EntitySetAppearanceMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetAppearanceMutation,
+    EntitySetAppearanceMutationVariables
+  >(EntitySetAppearanceDocument, baseOptions);
+}
+export type EntitySetAppearanceMutationHookResult = ReturnType<
+  typeof useEntitySetAppearanceMutation
+>;
+export type EntitySetAppearanceMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetAppearanceMutation
+>;
+export type EntitySetAppearanceMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetAppearanceMutation,
+  EntitySetAppearanceMutationVariables
+>;
+export const EntitySetIdentityDocument = gql`
+  mutation EntitySetIdentity($id: ID!, $name: String!) {
+    entitySetIdentity(id: $id, name: $name)
+  }
+`;
+export type EntitySetIdentityMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetIdentityMutation,
+  EntitySetIdentityMutationVariables
+>;
+
+/**
+ * __useEntitySetIdentityMutation__
+ *
+ * To run a mutation, you first call `useEntitySetIdentityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetIdentityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetIdentityMutation, { data, loading, error }] = useEntitySetIdentityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useEntitySetIdentityMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetIdentityMutation,
+    EntitySetIdentityMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetIdentityMutation,
+    EntitySetIdentityMutationVariables
+  >(EntitySetIdentityDocument, baseOptions);
+}
+export type EntitySetIdentityMutationHookResult = ReturnType<
+  typeof useEntitySetIdentityMutation
+>;
+export type EntitySetIdentityMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetIdentityMutation
+>;
+export type EntitySetIdentityMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetIdentityMutation,
+  EntitySetIdentityMutationVariables
 >;
 export const EntitiesSetPositionDocument = gql`
   mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
