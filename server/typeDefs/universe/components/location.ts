@@ -29,11 +29,11 @@ const schema = gql`
   }
   type LocationComponent {
     position: EntityCoordinates!
-    velocity: Coordinates!
-    acceleration: Coordinates!
+    velocity: EntityCoordinates!
+    acceleration: EntityCoordinates!
     rotation: Quaternion!
-    rotationVelocity: Coordinates!
-    rotationAcceleration: Coordinates!
+    rotationVelocity: EntityCoordinates!
+    rotationAcceleration: EntityCoordinates!
   }
 
   extend type Entity {
@@ -47,11 +47,11 @@ const schema = gql`
     entitySetLocation(
       id: ID
       position: EntityCoordinatesInput
-      velocity: CoordinatesInput
-      acceleration: CoordinatesInput
+      velocity: EntityCoordinatesInput
+      acceleration: EntityCoordinatesInput
       rotation: QuaternionInput
-      rotationVelocity: CoordinatesInput
-      rotationAcceleration: CoordinatesInput
+      rotationVelocity: EntityCoordinatesInput
+      rotationAcceleration: EntityCoordinatesInput
     ): String
     entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
     entityRemoveLocation(id: ID!): String

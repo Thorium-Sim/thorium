@@ -26,14 +26,14 @@ const schema = gql`
     movementSpeed: Float
   }
   type Coordinates {
-    x: Float!
-    y: Float!
-    z: Float!
+    x: Float
+    y: Float
+    z: Float
   }
   input CoordinatesInput {
-    x: Float!
-    y: Float!
-    z: Float!
+    x: Float
+    y: Float
+    z: Float
   }
   type Rotation {
     yaw: Float
