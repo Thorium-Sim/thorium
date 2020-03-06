@@ -81,7 +81,10 @@ const Entity: React.FC<EntityProps> = ({
     }
   }, [type, size]);
   if (!library && !isDragging && (!location || !position)) return null;
-  const meshPosition = isDragging
+  const meshPosition:
+    | THREE.Vector3
+    | [number, number, number]
+    | undefined = isDragging
     ? mousePosition
     : [
         (position?.x || 0) + positionOffset.x,
