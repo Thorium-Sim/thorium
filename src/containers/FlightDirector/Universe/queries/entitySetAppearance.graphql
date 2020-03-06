@@ -1,0 +1,15 @@
+mutation EntitySetAppearance(
+  $id: ID!
+  $color: String
+  $meshType: MeshTypeEnum
+  $modelAsset: String
+  $materialMapAsset: String
+) {
+  entitySetAppearance(
+    id: $id
+    color: $color
+    meshType: $meshType
+    modelAsset: $modelAsset
+    materialMapAsset: $materialMapAsset
+  )
+}

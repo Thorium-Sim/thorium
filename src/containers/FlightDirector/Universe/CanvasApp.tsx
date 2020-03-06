@@ -13,6 +13,7 @@ import {
   useEntityCreateMutation,
   useEntityRemoveMutation,
   useEntitiesSetPositionMutation,
+  Entity as EntityType,
 } from "generated/graphql";
 
 interface SceneControlProps {
@@ -31,7 +32,7 @@ interface CanvasAppProps {
   selected: string[];
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
   setDragging: React.Dispatch<React.SetStateAction<any>>;
-  dragging: any;
+  dragging: EntityType | undefined;
   selecting: boolean;
   entities: EntityInterface[];
 }
@@ -58,17 +59,20 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   const mousePosition = use3DMousePosition();
   React.useEffect(() => {
     async function mouseUp() {
-      setDragging(false);
+      setDragging(undefined);
       document.removeEventListener("mouseup", mouseUp);
+      if (!dragging?.appearance?.meshType) return;
       const {data} = await create({
         variables: {
           flightId: "template",
           position: {
-            x: mousePosition[0],
-            y: mousePosition[1],
-            z: mousePosition[2],
+            x: Math.round(mousePosition[0]),
+            y: Math.round(mousePosition[1]),
+            z: Math.round(mousePosition[2]),
           },
           name: `New Entity ${entities.length + 1}`,
+          meshType: dragging.appearance.meshType,
+          color: dragging.appearance.color,
         },
       });
       if (data?.entityCreate.id) {
@@ -79,7 +83,14 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       document.addEventListener("mouseup", mouseUp);
     }
     return () => document.removeEventListener("mouseup", mouseUp);
-  }, [create, dragging, setDragging, mousePosition, setSelected]);
+  }, [
+    create,
+    dragging,
+    setDragging,
+    mousePosition,
+    setSelected,
+    entities.length,
+  ]);
 
   const elementList = ["input", "textarea"];
   useEventListener("keydown", (e: KeyboardEvent) => {
@@ -94,6 +105,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
 
   const {
     camera: {zoom},
+    scene,
   } = useThree();
   const onDrag = React.useCallback(
     (dx, dy) => {
@@ -112,9 +124,9 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
         return {
           id,
           position: {
-            x: (location?.position.x || 0) + positionOffset.x,
-            y: (location?.position.y || 0) + positionOffset.y,
-            z: (location?.position.z || 0) + positionOffset.z,
+            x: Math.round((location?.position.x || 0) + positionOffset.x),
+            y: Math.round((location?.position.y || 0) + positionOffset.y),
+            z: Math.round((location?.position.z || 0) + positionOffset.z),
           },
         };
       });
@@ -130,7 +142,10 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     selected,
     setPosition,
   ]);
-
+  const selectedMeshes = React.useMemo(
+    () => scene.children.filter(({uuid}) => selected.includes(uuid)),
+    [scene, selected],
+  );
   return (
     <>
       <Camera />

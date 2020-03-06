@@ -17,8 +17,18 @@ const schema = gql`
     z: Float!
     w: Float!
   }
+  type EntityCoordinates {
+    x: Int!
+    y: Int!
+    z: Int!
+  }
+  input EntityCoordinatesInput {
+    x: Int!
+    y: Int!
+    z: Int!
+  }
   type LocationComponent {
-    position: Coordinates!
+    position: EntityCoordinates!
     velocity: Coordinates!
     acceleration: Coordinates!
     rotation: Quaternion!
@@ -36,7 +46,7 @@ const schema = gql`
   extend type Mutation {
     entitySetLocation(
       id: ID
-      position: CoordinatesInput
+      position: EntityCoordinatesInput
       velocity: CoordinatesInput
       acceleration: CoordinatesInput
       rotation: QuaternionInput

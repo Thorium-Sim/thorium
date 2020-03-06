@@ -21,6 +21,11 @@ const sub = gql`
         identity {
           name
         }
+        appearance {
+          color
+          meshType
+          materialMapAsset
+        }
         location {
           position {
             x
@@ -35,9 +40,9 @@ const sub = gql`
 
 export default function UniversalSandboxEditor() {
   const [recenter, setRecenter] = React.useState<{}>({});
-  const [zoomScale, setZoomScale] = React.useState(false);
+  const [zoomScale, setZoomScale] = React.useState(true);
   const [selected, setSelected] = React.useState<string[]>([]);
-  const [dragging, setDragging] = React.useState<any>(false);
+  const [dragging, setDragging] = React.useState<Entity | undefined>();
   const [selecting, setSelecting] = React.useState<boolean>(false);
   const [useEntityState] = usePatchedSubscriptions<
     Entity[],
@@ -71,7 +76,7 @@ export default function UniversalSandboxEditor() {
         setSelecting={setSelecting}
         selectedEntity={entities.find(e => selected && e.id === selected[0])}
       />
-      <Library setDragging={setDragging} dragging={dragging} />
+      <Library setDragging={setDragging} dragging={Boolean(dragging)} />
     </div>
   );
 }

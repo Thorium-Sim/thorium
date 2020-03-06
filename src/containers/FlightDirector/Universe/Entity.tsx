@@ -3,10 +3,15 @@ import {useFrame, useLoader, PointerEvent, Dom} from "react-three-fiber";
 import {CanvasContext, ActionType} from "./CanvasContext";
 import {useDrag} from "react-use-gesture";
 import * as THREE from "three";
-import {SphereGeometry} from "three";
-import SelectionOutline from "./SelectionOutline";
+import {
+  SphereGeometry,
+  BoxBufferGeometry,
+  Color,
+  TorusKnotBufferGeometry,
+} from "three";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
+import SelectionOutline from "./SelectionOutline";
 
 const starSprite = require("./star-sprite.svg") as string;
 const circleSprite = require("./circle.svg") as string;
@@ -41,11 +46,10 @@ const Entity: React.FC<EntityProps> = ({
   onDrag = noop,
   onDragStop = noop,
 }) => {
-  const {id, location} = entity;
+  const {id, location, appearance} = entity;
   const size = 1;
-  const type: string = "sprite";
-  const color = [0x583798, 0x981232, 0x083798, 0x98f232][index];
   const scale = 1;
+  const {meshType, color, modelAsset, materialMapAsset} = appearance || {};
   const {position: positionCoords} = location || {position: null};
   const [{dragging, zoomScale}, dispatch] = React.useContext(CanvasContext);
   const mesh = React.useRef<THREE.Mesh>(new THREE.Mesh());
@@ -60,7 +64,7 @@ const Entity: React.FC<EntityProps> = ({
   useFrame(({camera}) => {
     const {zoom} = camera;
     let zoomedScale = (1 / zoom) * 20 * scale;
-    if (zoomScale || type === "sprite") {
+    if (zoomScale || (meshType === "sprite" && !library)) {
       zoomedScale *= 2;
       mesh.current.scale.set(zoomedScale, zoomedScale, zoomedScale);
     } else {
@@ -116,30 +120,35 @@ const Entity: React.FC<EntityProps> = ({
     },
   };
   let geometry = React.useMemo(() => {
-    switch (type) {
+    switch (meshType) {
       case "sphere":
         return new SphereGeometry(size, 32, 32);
+      case "cube":
+        return new BoxBufferGeometry(size, size, size);
       default:
         break;
       // case "cube":
       // default:
-      //   return new BoxBufferGeometry(2, 2, 2);
     }
-  }, [type, size]);
+  }, [meshType, size]);
   if (!library && !isDragging && (!location || !position)) return null;
   const meshPosition = isDragging
     ? mousePosition
-    : [
+    : ([
         (position?.x || 0) + positionOffset.x,
         (position?.y || 0) + positionOffset.y,
         (position?.z || 0) + positionOffset.z,
-      ];
+      ] as [number, number, number]);
 
-  if (type === "sprite") {
+  if (meshType === "sprite") {
     return (
       <group ref={mesh} position={meshPosition}>
         <sprite {...modifiedDragFunctions}>
-          <spriteMaterial color={color} map={spriteTexture} attach="material" />
+          <spriteMaterial
+            color={new Color(color || "#fff")}
+            map={spriteTexture}
+            attach="material"
+          />
         </sprite>
         {selected && (
           <sprite>
@@ -159,14 +168,19 @@ const Entity: React.FC<EntityProps> = ({
   return (
     <>
       <mesh
+        uuid={id}
         geometry={geometry}
         position={meshPosition}
         ref={mesh}
         {...modifiedDragFunctions}
       >
-        <meshStandardMaterial attach="material" color={color} />
+        <meshStandardMaterial
+          attach="material"
+          color={new Color(color || "#fff")}
+          side={THREE.FrontSide}
+        />
       </mesh>
-      {selected && <SelectionOutline selected={mesh} geometry={geometry} />}
+      {selected && <SelectionOutline selected={mesh} />}
     </>
   );
 };

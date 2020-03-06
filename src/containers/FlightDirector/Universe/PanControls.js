@@ -500,16 +500,26 @@ const PanControls = function(object, domElement) {
     if (event.altKey || event.ctrlKey) {
       if (event.deltaY < 0) {
         dollyOut(getZoomScale());
-        pan(
-          (event.clientX / scope.domElement.clientWidth - 1 / 2) * -1 * 25,
-          (event.clientY / scope.domElement.clientHeight - 1 / 2) * -1 * 25,
-        );
+        if (
+          scope.object.zoom !== scope.minZoom &&
+          scope.object.zoom !== scope.maxZoom
+        ) {
+          pan(
+            (event.clientX / scope.domElement.clientWidth - 1 / 2) * -1 * 25,
+            (event.clientY / scope.domElement.clientHeight - 1 / 2) * -1 * 25,
+          );
+        }
       } else if (event.deltaY > 0) {
         dollyIn(getZoomScale());
-        pan(
-          (event.clientX / scope.domElement.clientWidth - 1 / 2) * 25,
-          (event.clientY / scope.domElement.clientHeight - 1 / 2) * 25,
-        );
+        if (
+          scope.object.zoom !== scope.minZoom &&
+          scope.object.zoom !== scope.maxZoom
+        ) {
+          pan(
+            (event.clientX / scope.domElement.clientWidth - 1 / 2) * 25,
+            (event.clientY / scope.domElement.clientHeight - 1 / 2) * 25,
+          );
+        }
       }
     } else {
       pan(-event.deltaX, -event.deltaY);

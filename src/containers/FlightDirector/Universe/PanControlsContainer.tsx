@@ -45,7 +45,7 @@ export default function PanControlsContainer({recenter}: {recenter: {}}) {
       args={[camera, gl.domElement]}
       enableRotate={false}
       screenSpacePanning={true}
-      maxZoom={10000}
+      maxZoom={1}
       minZoom={0.00018}
       mouseButtons={{
         MIDDLE: THREE.MOUSE.DOLLY,

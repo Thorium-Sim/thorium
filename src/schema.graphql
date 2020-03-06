@@ -33,7 +33,10 @@ input AmbianceInput {
 }
 
 type AppearanceComponent {
+  meshType: MeshTypeEnum
   modelAsset: String
+  materialMapAsset: String
+  color: String
 }
 
 type Asset {
@@ -716,6 +719,11 @@ type Engine implements SystemInterface {
   locations: [Room]
 }
 
+input EntitiesLocationInput {
+  id: ID!
+  position: CoordinatesInput!
+}
+
 type EntitiesPatch implements Patch {
   op: OperationsEnum
   path: [JSON]
@@ -1261,6 +1269,12 @@ input MacroInput {
   noCancelOnReset: Boolean
 }
 
+enum MeshTypeEnum {
+  sphere
+  cube
+  model
+}
+
 type Message {
   id: ID
   simulatorId: ID
@@ -1427,7 +1441,13 @@ enum MotuType {
 
 type Mutation {
   _empty: String
-  entitySetAppearance(id: ID!, modelAsset: String): String
+  entitySetAppearance(
+    id: ID
+    color: String
+    meshType: MeshTypeEnum
+    modelAsset: String
+    materialMapAsset: String
+  ): String
   entityRemoveAppearance(id: ID!): String
   entitySetBehavior(
     id: ID!
@@ -1436,7 +1456,7 @@ type Mutation {
     destination: CoordinatesInput
   ): String
   entityRemoveBehavior(id: ID!): String
-  entitySetIdentity(id: ID!, name: String, type: String): String
+  entitySetIdentity(id: ID, name: String, type: String): String
   entityRemoveIdentity(id: ID!): String
   entitySetLocation(
     id: ID
@@ -1447,6 +1467,7 @@ type Mutation {
     rotationVelocity: CoordinatesInput
     rotationAcceleration: CoordinatesInput
   ): String
+  entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
   entityRemoveLocation(id: ID!): String
 
   """
@@ -2987,8 +3008,8 @@ type Mutation {
     config: JSON!
   ): String
   countermeasuresSetResource(id: ID!, resource: String!, value: Float!): String
-  entityCreate(flightId: ID!): Entity
-  entityRemove(id: ID!): String
+  entityCreate(flightId: ID!): Entity!
+  entityRemove(id: [ID!]!): String
 }
 
 type NamedObject {
@@ -3473,7 +3494,7 @@ type Query {
   countermeasures(simulatorId: ID!): Countermeasures
   countermeasureModuleType: [CountermeasureModule!]!
   entity(id: ID!): Entity
-  entities(flightId: ID!): [Entity]
+  entities(flightId: ID!): [Entity]!
 }
 
 type Railgun implements SystemInterface {

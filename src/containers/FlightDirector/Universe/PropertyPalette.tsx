@@ -3,6 +3,8 @@ import {
   Entity,
   IdentityComponent,
   useEntitySetIdentityMutation,
+  useEntitySetAppearanceMutation,
+  AppearanceComponent,
 } from "generated/graphql";
 import {Label, Input, Collapse} from "reactstrap";
 import {FaChevronDown, FaChevronRight} from "react-icons/fa";
@@ -20,7 +22,6 @@ const IdentityEdit: React.FC<IdentityEditProps> = ({id, identity}) => {
   const unmountHandler = React.useRef(() => {});
   React.useEffect(() => {
     unmountHandler.current = () => {
-      console.log("unmount handler", id, value);
       setName({
         variables: {id, name: value},
       });
@@ -28,7 +29,6 @@ const IdentityEdit: React.FC<IdentityEditProps> = ({id, identity}) => {
   }, [id, setName, value]);
   React.useEffect(() => {
     return () => {
-      console.log("Unmounting");
       unmountHandler.current();
     };
   }, [id]);
@@ -61,6 +61,63 @@ const IdentityEdit: React.FC<IdentityEditProps> = ({id, identity}) => {
   );
 };
 
+interface AppearanceEditProps {
+  id: string;
+  appearance: AppearanceComponent | null | undefined;
+}
+
+const AppearanceEdit: React.FC<AppearanceEditProps> = ({id, appearance}) => {
+  const [collapse, setCollapse] = React.useState<boolean>(false);
+  const [color, setColor] = React.useState(appearance?.color);
+
+  const [setName] = useEntitySetAppearanceMutation();
+
+  const unmountHandler = React.useRef(() => {});
+  React.useEffect(() => {
+    unmountHandler.current = () => {
+      const variables = {
+        id,
+        ...(appearance?.color !== color ? {color} : null),
+      };
+      setName({
+        variables,
+      });
+    };
+  }, [id, setName, color, appearance]);
+  React.useEffect(() => {
+    return () => {
+      unmountHandler.current();
+    };
+  }, [id]);
+  React.useEffect(() => {
+    setColor(appearance?.color || "");
+  }, [appearance]);
+  return (
+    <>
+      <h3 onClick={() => setCollapse(c => !c)}>
+        {collapse ? <FaChevronDown /> : <FaChevronRight />} Appearance
+      </h3>
+      <Collapse isOpen={collapse} timeout={200}>
+        <Label>
+          Color
+          <Input
+            type="color"
+            value={color || "#ffffff"}
+            onChange={e => {
+              setColor(e.target.value);
+            }}
+            onBlur={() =>
+              setName({
+                variables: {id, color},
+              })
+            }
+          />
+        </Label>
+      </Collapse>
+    </>
+  );
+};
+
 interface PropertyPaletteProps {
   selectedEntity: Entity | undefined;
 }
@@ -69,10 +126,16 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
     <div className="control-palette">
       <h2>Property Palette</h2>
       {selectedEntity && (
-        <IdentityEdit
-          id={selectedEntity.id}
-          identity={selectedEntity.identity}
-        />
+        <>
+          <IdentityEdit
+            id={selectedEntity.id}
+            identity={selectedEntity.identity}
+          />
+          <AppearanceEdit
+            id={selectedEntity.id}
+            appearance={selectedEntity.appearance}
+          />
+        </>
       )}
     </div>
   );
