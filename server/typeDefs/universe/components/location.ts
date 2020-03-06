@@ -18,14 +18,14 @@ const schema = gql`
     w: Float!
   }
   type EntityCoordinates {
-    x: Int!
-    y: Int!
-    z: Int!
+    x: BigInt!
+    y: BigInt!
+    z: BigInt!
   }
   input EntityCoordinatesInput {
-    x: Int!
-    y: Int!
-    z: Int!
+    x: BigInt!
+    y: BigInt!
+    z: BigInt!
   }
   type LocationComponent {
     position: EntityCoordinates!
@@ -41,7 +41,7 @@ const schema = gql`
   }
   input EntitiesLocationInput {
     id: ID!
-    position: CoordinatesInput!
+    position: EntityCoordinatesInput!
   }
   extend type Mutation {
     entitySetLocation(

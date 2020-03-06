@@ -6,12 +6,15 @@ interface CameraProps {}
 const Camera: React.FC<CameraProps> = props => {
   const ref = React.useRef(new OrthographicCamera(0, 0, 0, 0, 0, 0));
   const {setDefaultCamera, gl} = useThree();
-  const frustumSize = 1000000;
+  const frustumSize = 10;
   const {width, height} = gl.domElement;
   const aspect = width / height;
   // Make the camera known to the system
   React.useEffect(() => void setDefaultCamera(ref.current), [setDefaultCamera]);
-  React.useEffect(() => void ref.current.position.set(0, 0, 100000), []);
+  React.useEffect(
+    () => void ref.current.position.set(0, 0, 1 / 0.0000000001),
+    [],
+  );
   // Update it every frame
   useFrame(() => ref.current.updateMatrixWorld());
 
@@ -23,8 +26,8 @@ const Camera: React.FC<CameraProps> = props => {
         (frustumSize * aspect) / 2,
         frustumSize / 2,
         frustumSize / -2,
-        -frustumSize,
-        frustumSize,
+        0,
+        100000000000,
       ]}
       zoom={1}
       {...props}

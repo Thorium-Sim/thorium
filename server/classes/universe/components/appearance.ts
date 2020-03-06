@@ -15,12 +15,14 @@ export class Appearance {
   meshType: MeshTypeEnum;
   modelAsset: string;
   materialMapAsset: string;
+  scale: number;
 
-  constructor({meshType, modelAsset, materialMapAsset, color}) {
+  constructor({meshType, modelAsset, materialMapAsset, color, scale = 1}) {
     this.meshType = meshType;
     this.modelAsset = modelAsset;
     this.materialMapAsset = materialMapAsset;
     this.color = color;
+    this.scale = scale;
   }
 }
 

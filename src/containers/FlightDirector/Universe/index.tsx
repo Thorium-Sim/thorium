@@ -25,6 +25,7 @@ const sub = gql`
           color
           meshType
           materialMapAsset
+          scale
         }
         location {
           position {

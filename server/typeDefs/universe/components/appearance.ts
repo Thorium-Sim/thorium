@@ -16,6 +16,7 @@ const schema = gql`
     modelAsset: String
     materialMapAsset: String
     color: String
+    scale: Float
   }
 
   extend type Entity {
@@ -28,6 +29,7 @@ const schema = gql`
       meshType: MeshTypeEnum
       modelAsset: String
       materialMapAsset: String
+      scale: Float
     ): String
     entityRemoveAppearance(id: ID!): String
   }
@@ -49,6 +51,7 @@ const resolver = {
               modelAsset: properties.modelAsset,
               materialMapAsset: properties.materialMapAsset,
               color: properties.color,
+              scale: properties.scale,
             });
           } else {
             Object.entries(properties).forEach(([key, value]) => {

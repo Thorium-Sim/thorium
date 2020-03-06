@@ -14,6 +14,7 @@ interface PanControlsInterface {
   screenSpacePanning: boolean;
   maxZoom: number;
   minZoom: number;
+  zoomSpeed: number;
   mouseButtons: {MIDDLE: MOUSE; LEFT: MOUSE; RIGHT: MOUSE};
 }
 declare global {
@@ -32,7 +33,7 @@ export default function PanControlsContainer({recenter}: {recenter: {}}) {
   const {camera, gl} = useThree();
   const controls = React.useRef({reset: () => {}, update: () => {}});
   React.useEffect(() => {
-    camera.position.set(0, 0, 100000);
+    camera.position.set(0, 0, 1 / 0.0000000001);
     controls.current.reset();
   }, [recenter, camera]);
   useFrame(state => {
@@ -46,7 +47,8 @@ export default function PanControlsContainer({recenter}: {recenter: {}}) {
       enableRotate={false}
       screenSpacePanning={true}
       maxZoom={1}
-      minZoom={0.00018}
+      minZoom={0.00000001}
+      zoomSpeed={1}
       mouseButtons={{
         MIDDLE: THREE.MOUSE.DOLLY,
         LEFT: THREE.MOUSE.PAN,

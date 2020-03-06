@@ -48,16 +48,6 @@ const TooltipButton: React.FC<TooltipButtonProps> = ({
 };
 type StateArg = (s: boolean) => boolean;
 
-function hexToRgb(bigint: number) {
-  let r = ((bigint >> 16) & 255).toString(16);
-  if (r.length === 1) r = `0${r}`;
-  let g = ((bigint >> 8) & 255).toString(16);
-  if (g.length === 1) g = `0${g}`;
-  let b = (bigint & 255).toString(16);
-  if (b.length === 1) b = `0${b}`;
-
-  return `#${r}${g}${b}`;
-}
 const Controls = ({
   recenter,
   zoomScale,

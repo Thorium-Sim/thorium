@@ -3,12 +3,7 @@ import {useFrame, useLoader, PointerEvent, Dom} from "react-three-fiber";
 import {CanvasContext, ActionType} from "./CanvasContext";
 import {useDrag} from "react-use-gesture";
 import * as THREE from "three";
-import {
-  SphereGeometry,
-  BoxBufferGeometry,
-  Color,
-  TorusKnotBufferGeometry,
-} from "three";
+import {SphereGeometry, BoxBufferGeometry, Color} from "three";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
 import SelectionOutline from "./SelectionOutline";
@@ -48,8 +43,8 @@ const Entity: React.FC<EntityProps> = ({
 }) => {
   const {id, location, appearance} = entity;
   const size = 1;
-  const scale = 1;
   const {meshType, color, modelAsset, materialMapAsset} = appearance || {};
+  const scale = appearance?.scale || 1;
   const {position: positionCoords} = location || {position: null};
   const [{dragging, zoomScale}, dispatch] = React.useContext(CanvasContext);
   const mesh = React.useRef<THREE.Mesh>(new THREE.Mesh());
@@ -63,7 +58,7 @@ const Entity: React.FC<EntityProps> = ({
 
   useFrame(({camera}) => {
     const {zoom} = camera;
-    let zoomedScale = (1 / zoom) * 20 * scale;
+    let zoomedScale = (1 / zoom) * 20;
     if (zoomScale || (meshType === "sprite" && !library)) {
       zoomedScale *= 2;
       mesh.current.scale.set(zoomedScale, zoomedScale, zoomedScale);
@@ -179,6 +174,13 @@ const Entity: React.FC<EntityProps> = ({
           color={new Color(color || "#fff")}
           side={THREE.FrontSide}
         />
+        <Dom>
+          <p className="object-label">
+            {entity.location?.position
+              ? Object.values(entity.location?.position).join(", ")
+              : ""}
+          </p>
+        </Dom>
       </mesh>
       {selected && <SelectionOutline selected={mesh} />}
     </>

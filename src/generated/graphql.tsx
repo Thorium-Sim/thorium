@@ -10,6 +10,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   JSON: {[key: string]: any};
+  BigInt: any;
 };
 
 export type Action = {
@@ -54,6 +55,7 @@ export type AppearanceComponent = {
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
   color?: Maybe<Scalars["String"]>;
+  scale?: Maybe<Scalars["Float"]>;
 };
 
 export type Asset = {
@@ -806,15 +808,15 @@ export type Entity = {
 
 export type EntityCoordinates = {
   __typename?: "EntityCoordinates";
-  x: Scalars["Int"];
-  y: Scalars["Int"];
-  z: Scalars["Int"];
+  x: Scalars["BigInt"];
+  y: Scalars["BigInt"];
+  z: Scalars["BigInt"];
 };
 
 export type EntityCoordinatesInput = {
-  x: Scalars["Int"];
-  y: Scalars["Int"];
-  z: Scalars["Int"];
+  x: Scalars["BigInt"];
+  y: Scalars["BigInt"];
+  z: Scalars["BigInt"];
 };
 
 export type EntityPatch = Patch & {
@@ -2252,6 +2254,7 @@ export type MutationEntitySetAppearanceArgs = {
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  scale?: Maybe<Scalars["Float"]>;
 };
 
 export type MutationEntityRemoveAppearanceArgs = {
@@ -9065,6 +9068,7 @@ export type EntitySetAppearanceMutationVariables = {
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  scale?: Maybe<Scalars["Float"]>;
 };
 
 export type EntitySetAppearanceMutation = {__typename?: "Mutation"} & Pick<
@@ -10835,6 +10839,7 @@ export const EntitySetAppearanceDocument = gql`
     $meshType: MeshTypeEnum
     $modelAsset: String
     $materialMapAsset: String
+    $scale: Float
   ) {
     entitySetAppearance(
       id: $id
@@ -10842,6 +10847,7 @@ export const EntitySetAppearanceDocument = gql`
       meshType: $meshType
       modelAsset: $modelAsset
       materialMapAsset: $materialMapAsset
+      scale: $scale
     )
   }
 `;
@@ -10868,6 +10874,7 @@ export type EntitySetAppearanceMutationFn = ApolloReactCommon.MutationFunction<
  *      meshType: // value for 'meshType'
  *      modelAsset: // value for 'modelAsset'
  *      materialMapAsset: // value for 'materialMapAsset'
+ *      scale: // value for 'scale'
  *   },
  * });
  */

@@ -225,6 +225,7 @@
     "fuse.js": "^3.4.5",
     "googleapis": "^44.0.0",
     "graphql": "^14.5.8",
+    "graphql-bigint": "^1.0.0",
     "graphql-type-json": "^0.3.0",
     "graphql.macro": "^1.4.2",
     "immer": "^5.3.6",

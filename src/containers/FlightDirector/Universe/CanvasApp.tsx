@@ -36,6 +36,12 @@ interface CanvasAppProps {
   selecting: boolean;
   entities: EntityInterface[];
 }
+function setNumberBounds(num: number) {
+  return Math.max(
+    -Number.MAX_SAFE_INTEGER,
+    Math.min(Number.MAX_SAFE_INTEGER, Math.round(num)),
+  );
+}
 const CanvasApp: React.FC<CanvasAppProps> = ({
   recenter,
   selected,
@@ -105,7 +111,6 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
 
   const {
     camera: {zoom},
-    scene,
   } = useThree();
   const onDrag = React.useCallback(
     (dx, dy) => {
@@ -124,9 +129,9 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
         return {
           id,
           position: {
-            x: Math.round((location?.position.x || 0) + positionOffset.x),
-            y: Math.round((location?.position.y || 0) + positionOffset.y),
-            z: Math.round((location?.position.z || 0) + positionOffset.z),
+            x: setNumberBounds((location?.position.x || 0) + positionOffset.x),
+            y: setNumberBounds((location?.position.y || 0) + positionOffset.y),
+            z: setNumberBounds((location?.position.z || 0) + positionOffset.z),
           },
         };
       });
@@ -142,10 +147,6 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     selected,
     setPosition,
   ]);
-  const selectedMeshes = React.useMemo(
-    () => scene.children.filter(({uuid}) => selected.includes(uuid)),
-    [scene, selected],
-  );
   return (
     <>
       <Camera />
