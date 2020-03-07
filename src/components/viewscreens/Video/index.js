@@ -67,7 +67,7 @@ class VideoConfig extends Component {
     const {core} = this.props;
     const data = JSON.parse(this.props.viewscreen.data);
     const videoEnd = () => {
-      if (!data.advance) return;
+      if (core || !data.advance) return;
       const variables = {
         simulatorId: this.props.simulator.id,
       };
@@ -81,7 +81,7 @@ class VideoConfig extends Component {
         variables,
       });
     };
-
+    console.log(this.props);
     return (
       <div className={`viewscreen-video ${data.overlay ? "overlay" : ""}`}>
         <video
