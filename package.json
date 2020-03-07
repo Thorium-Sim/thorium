@@ -233,7 +233,6 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.flowright": "^3.5.0",
     "lodash.merge": "^4.6.2",
-    "logrocket": "^1.0.6",
     "luxon": "^1.19.3",
     "mkdirp": "^0.5.1",
     "motu-control": "1.0.4",

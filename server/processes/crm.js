@@ -89,10 +89,10 @@ function crmContactMove() {
             };
 
             // Check collisions
-            if (t.destroyed) return;
+            if (t?.destroyed) return;
             const collisions = allFighters.filter(f => {
               return (
-                !f.destroyed &&
+                !f?.destroyed &&
                 t.fighterId !== f.id &&
                 distance3d(f.position, t.position) < 5
               );
@@ -110,7 +110,7 @@ function crmContactMove() {
               f.hit(t.strength * crm[strengthKey]);
               pubsub.publish("crmFighterUpdate", f);
 
-              if (f.destroyed) {
+              if (f?.destroyed) {
                 triggerUpdate = true;
                 // Get the fighter that fired it
                 fragFighter.frags += 1;
@@ -128,14 +128,14 @@ function crmContactMove() {
 
               if (f.phaserLevel > 0) {
                 const t = allFighters.find(e => e.id === f.phaserTarget);
-                if (!t.destroyed && distance3d(f.position, t.position) < 150) {
+                if (!t?.destroyed && distance3d(f.position, t.position) < 150) {
                   const strengthKey =
                     f.type === "fighter" ? "fighterStrength" : "enemyStrength";
                   t.hit(f.phaserStrength * crm[strengthKey]);
                   if (tick % 10 === 0) {
                     pubsub.publish("crmFighterUpdate", t);
                   }
-                  if (t.destroyed) {
+                  if (t?.destroyed) {
                     f.frags += 1;
                     triggerUpdate = true;
                   }
@@ -172,7 +172,7 @@ function crmEnemyDogfight() {
             if (e.shieldRaise === false && e.shield > 0) {
               e.setShield(true);
             }
-            if (!crm.attacking || e.destroyed) return;
+            if (!crm.attacking || e?.destroyed) return;
             // Enemies can perform four actions
             // 1. Charge Phasers
             // 2. Load a torpedo
@@ -190,7 +190,7 @@ function crmEnemyDogfight() {
               actions.push("loadTorpedo");
             const targets = crm.fighters.filter(
               f =>
-                !f.destroyed &&
+                !f?.destroyed &&
                 !f.docked &&
                 distance3d(e.position, f.position) < 100,
             );
