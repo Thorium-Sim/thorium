@@ -37,6 +37,7 @@ const schema = gql`
     powerUsage: Float!
     availablePower: Float!
     buildPercentage: Float!
+    note: String!
   }
   type CountermeasureResources {
     copper: Float!
@@ -99,6 +100,14 @@ const schema = gql`
       id: ID!
       slot: CountermeasureSlotEnum!
     ): String
+    countermeasuresActivateCountermeasure(
+      id: ID!
+      slot: CountermeasureSlotEnum!
+    ): String
+    countermeasuresDeactivateCountermeasure(
+      id: ID!
+      slot: CountermeasureSlotEnum!
+    ): String
     countermeasuresLaunchUnlockedCountermeasures(id: ID!): String
     countermeasuresBuildCountermeasure(
       id: ID!
@@ -124,6 +133,11 @@ const schema = gql`
       id: ID!
       resource: String!
       value: Float!
+    ): String
+    countermeasuresSetFDNote(
+      id: ID!
+      countermeasureId: ID!
+      note: String!
     ): String
   }
   extend type Subscription {

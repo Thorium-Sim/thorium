@@ -415,6 +415,7 @@ export type Countermeasure = {
   powerUsage: Scalars["Float"];
   availablePower: Scalars["Float"];
   buildPercentage: Scalars["Float"];
+  note: Scalars["String"];
 };
 
 export type CountermeasureConfigOptions = {
@@ -2238,12 +2239,15 @@ export type Mutation = {
   countermeasuresCreateCountermeasure?: Maybe<Countermeasure>;
   countermeasuresRemoveCountermeasure?: Maybe<Scalars["String"]>;
   countermeasuresLaunchCountermeasure?: Maybe<Scalars["String"]>;
+  countermeasuresActivateCountermeasure?: Maybe<Scalars["String"]>;
+  countermeasuresDeactivateCountermeasure?: Maybe<Scalars["String"]>;
   countermeasuresLaunchUnlockedCountermeasures?: Maybe<Scalars["String"]>;
   countermeasuresBuildCountermeasure?: Maybe<Scalars["String"]>;
   countermeasuresAddModule?: Maybe<Countermeasure>;
   countermeasuresRemoveModule?: Maybe<Scalars["String"]>;
   countermeasuresConfigureModule?: Maybe<Scalars["String"]>;
   countermeasuresSetResource?: Maybe<Scalars["String"]>;
+  countermeasuresSetFDNote?: Maybe<Scalars["String"]>;
   entityCreate: Entity;
   entityRemove?: Maybe<Scalars["String"]>;
 };
@@ -5658,6 +5662,16 @@ export type MutationCountermeasuresLaunchCountermeasureArgs = {
   slot: CountermeasureSlotEnum;
 };
 
+export type MutationCountermeasuresActivateCountermeasureArgs = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+};
+
+export type MutationCountermeasuresDeactivateCountermeasureArgs = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+};
+
 export type MutationCountermeasuresLaunchUnlockedCountermeasuresArgs = {
   id: Scalars["ID"];
 };
@@ -5690,6 +5704,12 @@ export type MutationCountermeasuresSetResourceArgs = {
   id: Scalars["ID"];
   resource: Scalars["String"];
   value: Scalars["Float"];
+};
+
+export type MutationCountermeasuresSetFdNoteArgs = {
+  id: Scalars["ID"];
+  countermeasureId: Scalars["ID"];
+  note: Scalars["String"];
 };
 
 export type MutationEntityCreateArgs = {
@@ -8078,6 +8098,7 @@ export type TargetClassInput = {
   speed?: Maybe<Scalars["Float"]>;
   quadrant?: Maybe<Scalars["Int"]>;
   moving?: Maybe<Scalars["Boolean"]>;
+  clickToTarget?: Maybe<Scalars["Boolean"]>;
 };
 
 export type Targeting = SystemInterface & {
@@ -8114,6 +8135,7 @@ export type TargetingClass = {
   speed?: Maybe<Scalars["Float"]>;
   quadrant?: Maybe<Scalars["Int"]>;
   moving?: Maybe<Scalars["Boolean"]>;
+  clickToTarget?: Maybe<Scalars["Boolean"]>;
 };
 
 export type TargetingContact = {
@@ -8130,6 +8152,7 @@ export type TargetingContact = {
   quadrant?: Maybe<Scalars["Int"]>;
   destroyed?: Maybe<Scalars["Boolean"]>;
   moving?: Maybe<Scalars["Boolean"]>;
+  clickToTarget?: Maybe<Scalars["Boolean"]>;
 };
 
 export type Task = {
@@ -8709,6 +8732,7 @@ export type CountermeasureFragment = {__typename?: "Countermeasure"} & Pick<
   | "powerUsage"
   | "availablePower"
   | "buildPercentage"
+  | "note"
 > & {
     modules: Array<
       {__typename?: "CountermeasureModule"} & CountermeasureModuleFragment
@@ -8844,6 +8868,15 @@ export type CountermeasureSetResourceMutation = {
   __typename?: "Mutation";
 } & Pick<Mutation, "countermeasuresSetResource">;
 
+export type CountermeasuresActivateCountermeasureMutationVariables = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+};
+
+export type CountermeasuresActivateCountermeasureMutation = {
+  __typename?: "Mutation";
+} & Pick<Mutation, "countermeasuresActivateCountermeasure">;
+
 export type CountermeasuresAddModuleMutationVariables = {
   id: Scalars["ID"];
   slot: CountermeasureSlotEnum;
@@ -8916,6 +8949,15 @@ export type CountermeasureCreateCountermeasureMutation = {
   >;
 };
 
+export type CountermeasuresDeactivateCountermeasureMutationVariables = {
+  id: Scalars["ID"];
+  slot: CountermeasureSlotEnum;
+};
+
+export type CountermeasuresDeactivateCountermeasureMutation = {
+  __typename?: "Mutation";
+} & Pick<Mutation, "countermeasuresDeactivateCountermeasure">;
+
 export type CountermeasuresLaunchCountermeasureMutationVariables = {
   id: Scalars["ID"];
   slot: CountermeasureSlotEnum;
@@ -8951,6 +8993,17 @@ export type CountermeasuresRemoveModuleMutationVariables = {
 export type CountermeasuresRemoveModuleMutation = {
   __typename?: "Mutation";
 } & Pick<Mutation, "countermeasuresRemoveModule">;
+
+export type CountermeasuresSetFdNoteMutationVariables = {
+  id: Scalars["ID"];
+  countermeasureId: Scalars["ID"];
+  note: Scalars["String"];
+};
+
+export type CountermeasuresSetFdNoteMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "countermeasuresSetFDNote"
+>;
 
 export type TemplateFragmentFragment = {__typename: "Template"} & Pick<
   Template,
@@ -9418,6 +9471,7 @@ export const CountermeasureFragmentDoc = gql`
     powerUsage
     availablePower
     buildPercentage
+    note
   }
   ${CountermeasureModuleFragmentDoc}
 `;
@@ -10093,6 +10147,58 @@ export type CountermeasureSetResourceMutationOptions = ApolloReactCommon.BaseMut
   CountermeasureSetResourceMutation,
   CountermeasureSetResourceMutationVariables
 >;
+export const CountermeasuresActivateCountermeasureDocument = gql`
+  mutation CountermeasuresActivateCountermeasure(
+    $id: ID!
+    $slot: CountermeasureSlotEnum!
+  ) {
+    countermeasuresActivateCountermeasure(id: $id, slot: $slot)
+  }
+`;
+export type CountermeasuresActivateCountermeasureMutationFn = ApolloReactCommon.MutationFunction<
+  CountermeasuresActivateCountermeasureMutation,
+  CountermeasuresActivateCountermeasureMutationVariables
+>;
+
+/**
+ * __useCountermeasuresActivateCountermeasureMutation__
+ *
+ * To run a mutation, you first call `useCountermeasuresActivateCountermeasureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCountermeasuresActivateCountermeasureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [countermeasuresActivateCountermeasureMutation, { data, loading, error }] = useCountermeasuresActivateCountermeasureMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      slot: // value for 'slot'
+ *   },
+ * });
+ */
+export function useCountermeasuresActivateCountermeasureMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CountermeasuresActivateCountermeasureMutation,
+    CountermeasuresActivateCountermeasureMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    CountermeasuresActivateCountermeasureMutation,
+    CountermeasuresActivateCountermeasureMutationVariables
+  >(CountermeasuresActivateCountermeasureDocument, baseOptions);
+}
+export type CountermeasuresActivateCountermeasureMutationHookResult = ReturnType<
+  typeof useCountermeasuresActivateCountermeasureMutation
+>;
+export type CountermeasuresActivateCountermeasureMutationResult = ApolloReactCommon.MutationResult<
+  CountermeasuresActivateCountermeasureMutation
+>;
+export type CountermeasuresActivateCountermeasureMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CountermeasuresActivateCountermeasureMutation,
+  CountermeasuresActivateCountermeasureMutationVariables
+>;
 export const CountermeasuresAddModuleDocument = gql`
   mutation CountermeasuresAddModule(
     $id: ID!
@@ -10338,6 +10444,58 @@ export type CountermeasureCreateCountermeasureMutationOptions = ApolloReactCommo
   CountermeasureCreateCountermeasureMutation,
   CountermeasureCreateCountermeasureMutationVariables
 >;
+export const CountermeasuresDeactivateCountermeasureDocument = gql`
+  mutation CountermeasuresDeactivateCountermeasure(
+    $id: ID!
+    $slot: CountermeasureSlotEnum!
+  ) {
+    countermeasuresDeactivateCountermeasure(id: $id, slot: $slot)
+  }
+`;
+export type CountermeasuresDeactivateCountermeasureMutationFn = ApolloReactCommon.MutationFunction<
+  CountermeasuresDeactivateCountermeasureMutation,
+  CountermeasuresDeactivateCountermeasureMutationVariables
+>;
+
+/**
+ * __useCountermeasuresDeactivateCountermeasureMutation__
+ *
+ * To run a mutation, you first call `useCountermeasuresDeactivateCountermeasureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCountermeasuresDeactivateCountermeasureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [countermeasuresDeactivateCountermeasureMutation, { data, loading, error }] = useCountermeasuresDeactivateCountermeasureMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      slot: // value for 'slot'
+ *   },
+ * });
+ */
+export function useCountermeasuresDeactivateCountermeasureMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CountermeasuresDeactivateCountermeasureMutation,
+    CountermeasuresDeactivateCountermeasureMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    CountermeasuresDeactivateCountermeasureMutation,
+    CountermeasuresDeactivateCountermeasureMutationVariables
+  >(CountermeasuresDeactivateCountermeasureDocument, baseOptions);
+}
+export type CountermeasuresDeactivateCountermeasureMutationHookResult = ReturnType<
+  typeof useCountermeasuresDeactivateCountermeasureMutation
+>;
+export type CountermeasuresDeactivateCountermeasureMutationResult = ApolloReactCommon.MutationResult<
+  CountermeasuresDeactivateCountermeasureMutation
+>;
+export type CountermeasuresDeactivateCountermeasureMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CountermeasuresDeactivateCountermeasureMutation,
+  CountermeasuresDeactivateCountermeasureMutationVariables
+>;
 export const CountermeasuresLaunchCountermeasureDocument = gql`
   mutation CountermeasuresLaunchCountermeasure(
     $id: ID!
@@ -10543,6 +10701,64 @@ export type CountermeasuresRemoveModuleMutationResult = ApolloReactCommon.Mutati
 export type CountermeasuresRemoveModuleMutationOptions = ApolloReactCommon.BaseMutationOptions<
   CountermeasuresRemoveModuleMutation,
   CountermeasuresRemoveModuleMutationVariables
+>;
+export const CountermeasuresSetFdNoteDocument = gql`
+  mutation CountermeasuresSetFDNote(
+    $id: ID!
+    $countermeasureId: ID!
+    $note: String!
+  ) {
+    countermeasuresSetFDNote(
+      id: $id
+      countermeasureId: $countermeasureId
+      note: $note
+    )
+  }
+`;
+export type CountermeasuresSetFdNoteMutationFn = ApolloReactCommon.MutationFunction<
+  CountermeasuresSetFdNoteMutation,
+  CountermeasuresSetFdNoteMutationVariables
+>;
+
+/**
+ * __useCountermeasuresSetFdNoteMutation__
+ *
+ * To run a mutation, you first call `useCountermeasuresSetFdNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCountermeasuresSetFdNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [countermeasuresSetFdNoteMutation, { data, loading, error }] = useCountermeasuresSetFdNoteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      countermeasureId: // value for 'countermeasureId'
+ *      note: // value for 'note'
+ *   },
+ * });
+ */
+export function useCountermeasuresSetFdNoteMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CountermeasuresSetFdNoteMutation,
+    CountermeasuresSetFdNoteMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    CountermeasuresSetFdNoteMutation,
+    CountermeasuresSetFdNoteMutationVariables
+  >(CountermeasuresSetFdNoteDocument, baseOptions);
+}
+export type CountermeasuresSetFdNoteMutationHookResult = ReturnType<
+  typeof useCountermeasuresSetFdNoteMutation
+>;
+export type CountermeasuresSetFdNoteMutationResult = ApolloReactCommon.MutationResult<
+  CountermeasuresSetFdNoteMutation
+>;
+export type CountermeasuresSetFdNoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CountermeasuresSetFdNoteMutation,
+  CountermeasuresSetFdNoteMutationVariables
 >;
 export const TemplateDocument = gql`
   query Template($simulatorId: ID!) {

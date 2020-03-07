@@ -58,42 +58,52 @@ const ModuleConstruction: React.FC<ModuleConstructionProps> = ({
     <div className="module-construction">
       <h2>Module Construction</h2>
       <div className="module-selection">
-        {moduleTypes.map(m => {
-          const ImageComponent = moduleImages[m?.id || ""] || (() => null);
-          return (
-            <div
-              key={m.id}
-              className={`module-type-description ${
-                m.id === selectedModule ? "selected" : ""
-              }`}
-              onClick={() => setSelectedModule(m.id)}
-            >
-              <div className="module-type-upper">
-                <div className="module-type-image">
-                  <ImageComponent />
-                </div>
-                <div className="module-type-info">
+        {moduleTypes
+          .concat()
+          .sort((a, b) => {
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+          })
+          .map(m => {
+            const ImageComponent = moduleImages[m?.id || ""] || (() => null);
+            return (
+              <div
+                key={m.id}
+                className={`module-type-description ${
+                  m.id === selectedModule ? "selected" : ""
+                }`}
+                onClick={() => setSelectedModule(m.id)}
+              >
+                <div className="module-type-upper">
                   <h3>{m.name}</h3>
-                  <div>{m.description}</div>
+                  <div className="module-type-info">
+                    <div className="module-type-image">
+                      <ImageComponent />
+                    </div>
+                    <div>{m.description}</div>
+                  </div>
+                </div>
+                <div className="module-type-resource">
+                  {m.resourceRequirements &&
+                    Object.entries(m.resourceRequirements).map(
+                      ([key, value]) => {
+                        if (typeof value !== "number" || value === 0)
+                          return null;
+                        return (
+                          <MaterialRadial
+                            key={key}
+                            label={key}
+                            count={value}
+                            max={30}
+                          />
+                        );
+                      },
+                    )}
                 </div>
               </div>
-              <div className="module-type-resource">
-                {m.resourceRequirements &&
-                  Object.entries(m.resourceRequirements).map(([key, value]) => {
-                    if (typeof value !== "number" || value === 0) return null;
-                    return (
-                      <MaterialRadial
-                        key={key}
-                        label={key}
-                        count={value}
-                        max={30}
-                      />
-                    );
-                  })}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
       <div className="buttons">
         <Button color="danger" onClick={cancel}>

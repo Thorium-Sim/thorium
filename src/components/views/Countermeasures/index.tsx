@@ -9,6 +9,8 @@ import {
   useCountermeasureRemoveCountermeasureMutation,
   useCountermeasuresLaunchCountermeasureMutation,
   useCountermeasuresLaunchUnlockedCountermeasuresMutation,
+  useCountermeasuresActivateCountermeasureMutation,
+  useCountermeasuresDeactivateCountermeasureMutation,
 } from "generated/graphql";
 import {Button, Progress} from "reactstrap";
 import "./style.scss";
@@ -117,6 +119,9 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
     removeCountermeasure,
   ] = useCountermeasureRemoveCountermeasureMutation();
   const [deployAll] = useCountermeasuresLaunchUnlockedCountermeasuresMutation();
+  const [activate] = useCountermeasuresActivateCountermeasureMutation();
+  const [deactivate] = useCountermeasuresDeactivateCountermeasureMutation();
+
   const [slotId, setSlotId] = React.useState<string | null>(null);
   const [selectedModule, setSelectedModule] = React.useState<number | null>(
     null,
@@ -157,7 +162,6 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
               (slot?.building ? (
                 slot?.buildPercentage < 1 ? (
                   <div className="build-progress">
-                    <h4>Build Progress</h4>
                     <div className="progress-bar-container">
                       <Progress bar value={slot.buildPercentage * 100}>
                         {Math.round(slot.buildPercentage * 100)}%
@@ -187,14 +191,16 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
                   className="build-countermeasure"
                   color="warning"
                   disabled={!slotId || slot?.modules?.length === 0}
-                  onClick={() =>
+                  onClick={() => {
+                    setSelectedModule(null);
+                    setAddingModule(false);
                     buildCountermeasure({
                       variables: {
                         id: countermeasures.id,
                         slot: slotId as CountermeasureSlotEnum,
                       },
-                    })
-                  }
+                    });
+                  }}
                 >
                   Build Countermeasure
                 </Button>
@@ -276,6 +282,39 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
         >
           Deploy All Built Countermeasures
         </Button>
+        {slot &&
+          slot.buildPercentage === 1 &&
+          (slot.active ? (
+            <Button
+              color="danger"
+              block
+              onClick={() =>
+                deactivate({
+                  variables: {
+                    id: countermeasures.id,
+                    slot: slotId as CountermeasureSlotEnum,
+                  },
+                })
+              }
+            >
+              Deactivate Selected Countermeasure
+            </Button>
+          ) : (
+            <Button
+              color="warning"
+              block
+              onClick={() =>
+                activate({
+                  variables: {
+                    id: countermeasures.id,
+                    slot: slotId as CountermeasureSlotEnum,
+                  },
+                })
+              }
+            >
+              Activate Selected Countermeasure
+            </Button>
+          ))}
       </div>
       <TourHelper steps={trainingSteps} />
     </div>

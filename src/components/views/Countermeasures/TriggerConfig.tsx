@@ -32,6 +32,7 @@ const TriggerConfig: React.FC<TriggerConfigProps> = ({
           setConfig(e.target.value);
         }}
       >
+        <option>Manual</option>
         <option>Immediate</option>
         <option>Timer</option>
         <option>Remote Access Code</option>
