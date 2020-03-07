@@ -1988,6 +1988,7 @@ export default {
           picture: "/Sensor Contacts/Pictures/Default.png",
           quadrant: 1,
           moving: true,
+          clickToTarget: false,
           __typename: "TargetingClass",
         },
       ],
@@ -2005,6 +2006,7 @@ export default {
           targeted: false,
           destroyed: false,
           moving: true,
+          clickToTarget: false,
           __typename: "TargetingContact",
         },
         {
@@ -2020,6 +2022,7 @@ export default {
           targeted: false,
           destroyed: false,
           moving: true,
+          clickToTarget: false,
           __typename: "TargetingContact",
         },
       ],
