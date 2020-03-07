@@ -82,6 +82,7 @@ class TargetingContact extends Component {
       picture,
       name,
       moving,
+      clickToTarget,
       targetingId,
       contacts,
       macro,
@@ -162,7 +163,7 @@ class TargetingContact extends Component {
                   onClick={() => this.setState({pictureEdit: true})}
                 />
               </Col>
-              <Col sm={4}>
+              <Col sm={3}>
                 <InputField
                   style={{
                     lineHeight: "16px",
@@ -196,6 +197,23 @@ class TargetingContact extends Component {
                           variables: {
                             id: targetingId,
                             classInput: {id, moving: e.target.checked},
+                          },
+                        })
+                  }
+                />
+              </Col>
+              <Col sm={1}>
+                <input
+                  type="checkbox"
+                  checked={!moving || clickToTarget}
+                  disabled={!moving}
+                  onChange={e =>
+                    updateClass
+                      ? updateClass(id, "clickToTarget", e.target.checked)
+                      : action({
+                          variables: {
+                            id: targetingId,
+                            classInput: {id, clickToTarget: e.target.checked},
                           },
                         })
                   }

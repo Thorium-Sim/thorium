@@ -44,6 +44,7 @@ const fragment = gql`
       picture
       quadrant
       moving
+      clickToTarget
     }
   }
 `;

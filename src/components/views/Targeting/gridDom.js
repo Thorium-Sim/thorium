@@ -41,6 +41,7 @@ class TargetingGridDom extends Component {
           targeted: t.targeted,
           destroyed: t.destroyed,
           moving: t.moving,
+          clickToTarget: t.clickToTarget,
           name: t.name,
         });
       } else {
@@ -57,6 +58,7 @@ class TargetingGridDom extends Component {
           targeted: t.targeted,
           destroyed: t.destroyed,
           moving: t.moving,
+          clickToTarget: t.clickToTarget,
         });
       }
     });
@@ -168,7 +170,7 @@ class TargetingGridDom extends Component {
     const {targets} = this.state;
     targets.forEach(t => {
       if (t.id === id) {
-        if (t.moving) {
+        if (t.moving && !t.clickToTarget) {
           t.hover += 1;
           if (t.hover >= 100) {
             this.props.targetContact(t.id);
