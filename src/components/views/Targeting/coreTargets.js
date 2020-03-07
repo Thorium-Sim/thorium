@@ -42,8 +42,11 @@ const Targets = ({
         <Col sm={4}>Count</Col>
         <Col sm={1}>Icon</Col>
         <Col sm={1}>Pic</Col>
-        <Col sm={4}>Label</Col>
+        <Col sm={3}>Label</Col>
         <Col sm={1}>Moving</Col>
+        <Col sm={1} title="Click to target this contact">
+          Click
+        </Col>
         <Col sm={1} />
       </Row>
       <div className="targets-container">

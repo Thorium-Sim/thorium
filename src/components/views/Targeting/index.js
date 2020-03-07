@@ -80,6 +80,7 @@ export const TARGETING_QUERY = gql`
         targeted
         destroyed
         moving
+        clickToTarget
       }
     }
     phasers(simulatorId: $simulatorId) {
@@ -151,6 +152,7 @@ export const TARGETING_SUB = gql`
         targeted
         destroyed
         moving
+        clickToTarget
       }
     }
   }
@@ -182,6 +184,18 @@ export const TARGETING_PHASERS_SUB = gql`
     }
   }
 `;
+
+export function targetingMessage(targeting) {
+  const clickMoving = targeting.contacts.find(c => c.clickToTarget && c.moving);
+  const follow = targeting.contacts.find(c => c.moving && !c.clickToTarget);
+  const stationary = targeting.contacts.find(c => !c.moving);
+
+  return `${clickMoving ? "Click" : ""}${clickMoving && follow ? " or " : ""}${
+    follow ? "Follow a contact with your mouse" : ""
+  }${clickMoving || follow ? " to target. " : ""}${
+    stationary ? "Click non-moving contacts to target." : ""
+  }`;
+}
 
 class Targeting extends Component {
   constructor(props) {
@@ -443,10 +457,7 @@ class Targeting extends Component {
                     </div>
                   )}
                 </Measure>
-                <small>
-                  Follow a contact with your mouse to target. Click to target
-                  stationary contacts.
-                </small>
+                <small>{targetingMessage(targeting)}</small>
               </div>
             )}
           </Col>

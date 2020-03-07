@@ -36,7 +36,7 @@ export default function use3DMousePosition(initVal: PositionTuple = [0, 0, 0]) {
     );
 
     const {x, y, z} = pos;
-    setPosition([x, y, z]);
+    setPosition([Math.round(x), Math.round(y), Math.round(z)]);
   });
   return position;
 }

@@ -12,7 +12,6 @@ import {
   Input,
   Label,
 } from "helpers/reactstrap";
-import {paramCase} from "change-case";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import {cypherMap} from "components/views/CodeCyphers";
@@ -269,7 +268,7 @@ class Library extends Component {
                       <Label>Slug</Label>
                       <Input
                         type="text"
-                        value={paramCase(entry.title)}
+                        value={entry?.title?.toLowerCase()}
                         readOnly
                       />
                     </FormGroup>

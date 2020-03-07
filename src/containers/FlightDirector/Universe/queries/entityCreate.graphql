@@ -1,6 +1,19 @@
-mutation EntityCreate($flightId: ID!, $position: CoordinatesInput!) {
+mutation EntityCreate(
+  $flightId: ID!
+  $position: EntityCoordinatesInput!
+  $name: String!
+  $color: String
+  $meshType: MeshTypeEnum!
+  $materialMapAsset: String
+) {
   entityCreate(flightId: $flightId) {
     id
   }
   entitySetLocation(position: $position)
+  entitySetIdentity(name: $name)
+  entitySetAppearance(
+    color: $color
+    meshType: $meshType
+    materialMapAsset: $materialMapAsset
+  )
 }

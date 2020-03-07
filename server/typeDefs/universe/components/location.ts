@@ -17,13 +17,23 @@ const schema = gql`
     z: Float!
     w: Float!
   }
+  type EntityCoordinates {
+    x: BigInt!
+    y: BigInt!
+    z: BigInt!
+  }
+  input EntityCoordinatesInput {
+    x: BigInt!
+    y: BigInt!
+    z: BigInt!
+  }
   type LocationComponent {
-    position: Coordinates!
-    velocity: Coordinates!
-    acceleration: Coordinates!
+    position: EntityCoordinates!
+    velocity: EntityCoordinates!
+    acceleration: EntityCoordinates!
     rotation: Quaternion!
-    rotationVelocity: Coordinates!
-    rotationAcceleration: Coordinates!
+    rotationVelocity: EntityCoordinates!
+    rotationAcceleration: EntityCoordinates!
   }
 
   extend type Entity {
@@ -31,17 +41,17 @@ const schema = gql`
   }
   input EntitiesLocationInput {
     id: ID!
-    position: CoordinatesInput!
+    position: EntityCoordinatesInput!
   }
   extend type Mutation {
     entitySetLocation(
       id: ID
-      position: CoordinatesInput
-      velocity: CoordinatesInput
-      acceleration: CoordinatesInput
+      position: EntityCoordinatesInput
+      velocity: EntityCoordinatesInput
+      acceleration: EntityCoordinatesInput
       rotation: QuaternionInput
-      rotationVelocity: CoordinatesInput
-      rotationAcceleration: CoordinatesInput
+      rotationVelocity: EntityCoordinatesInput
+      rotationAcceleration: EntityCoordinatesInput
     ): String
     entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
     entityRemoveLocation(id: ID!): String

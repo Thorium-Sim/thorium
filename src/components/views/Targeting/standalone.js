@@ -12,6 +12,7 @@ import DamageOverlay from "../helpers/DamageOverlay";
 import TargetControls from "./targetControls";
 import Coordinates from "./coordinates";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import {targetingMessage} from ".";
 
 const trainingSteps = [
   {
@@ -80,6 +81,7 @@ const TARGETING_QUERY = gql`
         targeted
         destroyed
         moving
+        clickToTarget
       }
     }
     phasers(simulatorId: $simulatorId) {
@@ -150,6 +152,7 @@ const TARGETING_SUB = gql`
         targeted
         destroyed
         moving
+        clickToTarget
       }
     }
   }
@@ -417,10 +420,7 @@ class Targeting extends Component {
                     </div>
                   )}
                 </Measure>
-                <small>
-                  Follow a contact with your mouse to target. Click to target
-                  stationary contacts.
-                </small>
+                <small>{targetingMessage(targeting)}</small>
               </div>
             )}
           </Col>

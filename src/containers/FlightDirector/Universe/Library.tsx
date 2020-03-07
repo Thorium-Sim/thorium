@@ -1,16 +1,29 @@
-import * as React from "react";
+import React, {Suspense} from "react";
 import {Canvas} from "react-three-fiber";
 import Entity from "./Entity";
 import {FaPlusCircle} from "react-icons/fa";
 import {ApolloProvider, useApolloClient} from "@apollo/client";
+import {MeshTypeEnum} from "generated/graphql";
 
 const libraryItems = [
   {
-    type: "sphere",
-    size: 1,
-    scale: 1,
-    material: "standard",
-    color: 0x0088ff,
+    appearance: {
+      meshType: MeshTypeEnum.Sphere,
+      color: "#0088ff",
+    },
+  },
+  {
+    appearance: {
+      meshType: MeshTypeEnum.Cube,
+      color: "#88ff00",
+    },
+  },
+  {
+    appearance: {
+      meshType: MeshTypeEnum.Sprite,
+      materialMapAsset: require("./star-sprite.svg"),
+      color: "#ffffff",
+    },
   },
   // {
   //   type: "cube",
@@ -37,7 +50,7 @@ export default function Library({
         <div className="library-inner">
           {libraryItems.map(l => (
             <div
-              key={l.type}
+              key={l.appearance.meshType}
               className="library-item"
               onMouseDown={() => setDragging(l)}
             >
@@ -45,14 +58,16 @@ export default function Library({
                 <ApolloProvider client={client}>
                   <ambientLight />
                   <pointLight position={[10, 10, 10]} intensity={0.5} />
-                  <Entity
-                    index={0}
-                    library
-                    entity={{id: "library-entity", ...l}}
-                  />
+                  <Suspense fallback={null}>
+                    <Entity
+                      index={0}
+                      library
+                      entity={{id: "library-entity", ...l}}
+                    />
+                  </Suspense>
                 </ApolloProvider>
               </Canvas>
-              {l.type}
+              {l.appearance.meshType}
             </div>
           ))}
         </div>

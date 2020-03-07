@@ -12,7 +12,7 @@ const schema = gql`
   type BehaviorComponent {
     behavior: Behaviors!
     targetId: ID
-    destination: Coordinates
+    destination: EntityCoordinates
   }
 
   extend type Entity {
@@ -23,7 +23,7 @@ const schema = gql`
       id: ID!
       behavior: Behaviors!
       targetId: ID
-      destination: CoordinatesInput
+      destination: EntityCoordinatesInput
     ): String
     entityRemoveBehavior(id: ID!): String
   }

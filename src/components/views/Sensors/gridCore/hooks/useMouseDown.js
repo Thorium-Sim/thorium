@@ -116,8 +116,7 @@ export function useMouseDown({
     speed,
     speedAsking,
     triggerUpdate,
-    offset.x,
-    offset.y,
+    offset,
   ]);
   function mouseDown(e, contact) {
     downMouseTime.current = Date.now();

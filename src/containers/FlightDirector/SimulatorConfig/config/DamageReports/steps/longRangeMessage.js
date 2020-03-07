@@ -65,7 +65,12 @@ export default class GenericConfig extends Component {
           type="text"
           value={this.state.destination || ""}
           onChange={evt => this.setState({destination: evt.target.value})}
-          onBlur={evt => this.update(evt, "destination")}
+          onBlur={evt =>
+            this.update(
+              {target: {value: this.state.destination}},
+              "destination",
+            )
+          }
         />
         <Label>Message</Label>
         <Input

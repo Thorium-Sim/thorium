@@ -48,6 +48,7 @@ const schema = gql`
     speed: Float
     quadrant: Int
     moving: Boolean
+    clickToTarget: Boolean
   }
 
   input TargetClassInput {
@@ -59,6 +60,7 @@ const schema = gql`
     speed: Float
     quadrant: Int
     moving: Boolean
+    clickToTarget: Boolean
   }
 
   type TargetingContact {
@@ -74,6 +76,7 @@ const schema = gql`
     quadrant: Int
     destroyed: Boolean
     moving: Boolean
+    clickToTarget: Boolean
   }
   extend type Query {
     targeting(id: ID, simulatorId: ID): [Targeting]
@@ -176,6 +179,9 @@ const resolver = {
     },
     moving(rootValue) {
       return getClassValue({...rootValue, key: "moving"});
+    },
+    clickToTarget(rootValue) {
+      return getClassValue({...rootValue, key: "clickToTarget"});
     },
   },
   Query: {

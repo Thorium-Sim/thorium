@@ -1,0 +1,11 @@
+mutation CountermeasuresSetFDNote(
+  $id: ID!
+  $countermeasureId: ID!
+  $note: String!
+) {
+  countermeasuresSetFDNote(
+    id: $id
+    countermeasureId: $countermeasureId
+    note: $note
+  )
+}

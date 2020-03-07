@@ -52,6 +52,22 @@ App.on("countermeasuresLaunchCountermeasure", ({id, slot}) => {
     sys.launchCountermeasure(slot);
   });
 });
+App.on("countermeasuresActivateCountermeasure", ({id, slot}) => {
+  performAction(id, sys => {
+    sys.setSlotActivation(slot, true);
+  });
+});
+App.on("countermeasuresDeactivateCountermeasure", ({id, slot}) => {
+  performAction(id, sys => {
+    sys.setSlotActivation(slot, false);
+  });
+});
+App.on("countermeasuresSetFDNote", ({id, countermeasureId, note}) => {
+  performAction(id, sys => {
+    sys.setFDNote(countermeasureId, note);
+  });
+});
+
 App.on("countermeasuresLaunchUnlockedCountermeasures", ({id}) => {
   performAction(id, sys => {
     let count = 0;

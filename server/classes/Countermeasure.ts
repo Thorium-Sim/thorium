@@ -265,7 +265,8 @@ export class Countermeasures extends System {
 
       // Remove all of the unused materials from the countermeasure modules
       countermeasure.modules.forEach(m => {
-        const usedMaterialValue = m.buildProgress;
+        // Half the build progress so at least some materials are recycled.
+        const usedMaterialValue = m.buildProgress * 0.5;
         Object.entries(m.resourceRequirements).forEach(([key, value]) => {
           this.storedMaterials[key] = Math.round(
             this.storedMaterials[key] - usedMaterialValue * value,
@@ -310,6 +311,15 @@ export class Countermeasures extends System {
   configureCountermeasureModule(slot, id, config) {
     this.slots[slot]?.configureModule(id, config);
   }
+  setSlotActivation(slot, active) {
+    this.slots[slot]?.setActive(active);
+  }
+  setFDNote(id, note) {
+    const cm =
+      this.launched.find(l => l.id === id) ||
+      Object.values(this.slots).find(s => s?.id === id);
+    cm?.setNote(note);
+  }
 }
 
 interface CountermeasureParams {
@@ -320,6 +330,7 @@ interface CountermeasureParams {
   active?: boolean;
   building?: boolean;
   totalPowerUsed?: number;
+  note?: string;
 }
 class Countermeasure {
   id: string;
@@ -329,6 +340,7 @@ class Countermeasure {
   active: boolean;
   building: boolean;
   totalPowerUsed: number;
+  note: string;
   constructor(params: CountermeasureParams) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Countermeasure";
@@ -340,6 +352,7 @@ class Countermeasure {
     this.active = params.active || false;
     this.building = params.building || false;
     this.totalPowerUsed = params.totalPowerUsed || 0;
+    this.note = params.note || "";
   }
 
   get readyToLaunch() {
@@ -384,7 +397,9 @@ class Countermeasure {
   build() {
     this.building = true;
   }
-
+  setActive(tf) {
+    this.active = tf;
+  }
   addModule(moduleType) {
     if (!this.building) {
       const mod = moduleTypes.find(
@@ -409,5 +424,8 @@ class Countermeasure {
   }
   activateModule(id) {
     this.modules.find(m => m.id === id)?.activate();
+  }
+  setNote(note) {
+    this.note = note;
   }
 }

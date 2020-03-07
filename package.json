@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.6.1",
+  "version": "2.6.2-beta1",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -225,6 +225,7 @@
     "fuse.js": "^3.4.5",
     "googleapis": "^44.0.0",
     "graphql": "^14.5.8",
+    "graphql-bigint": "^1.0.0",
     "graphql-type-json": "^0.3.0",
     "graphql.macro": "^1.4.2",
     "immer": "^5.3.6",
@@ -232,7 +233,6 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.flowright": "^3.5.0",
     "lodash.merge": "^4.6.2",
-    "logrocket": "^1.0.6",
     "luxon": "^1.19.3",
     "mkdirp": "^0.5.1",
     "motu-control": "1.0.4",

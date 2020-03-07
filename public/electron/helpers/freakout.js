@@ -1,5 +1,4 @@
 // var robot = require("robotjs");
-// //console.log(process.version);
 // module.exports = function() {
 //   var screenSize = robot.getScreenSize();
 //   var height = screenSize.height;

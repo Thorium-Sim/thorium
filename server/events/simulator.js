@@ -239,7 +239,6 @@ App.on("triggerMacros", ({simulatorId, macros}) => {
       if (!noCancelOnReset) flight.timeouts.push(timeout);
     },
   );
-  pubsub.publish("simulatorsUpdate", App.simulators);
 });
 
 App.on("autoAdvance", ({simulatorId, prev}) => {

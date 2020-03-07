@@ -6,14 +6,26 @@ class TargetClass {
     this.id = params.id || uuid.v4();
     this.systemId = systemId || params.systemId || "";
     this.name = params.name || "Target";
-    this.size = params.size || 1;
+    this.size = params.size ?? 1;
     this.icon = params.icon || "/Sensor Contacts/Icons/Default.svg";
     this.picture = params.picture || "/Sensor Contacts/Pictures/Default.png";
-    this.speed = params.speed || 1;
-    this.moving = params.moving || true;
+    this.speed = params.speed ?? 1;
+    this.moving = params.moving ?? true;
+    this.clickToTarget = params.clickToTarget || false;
     this.quadrant = params.quadrant || 1;
   }
-  update({name, size, system, icon, picture, speed, quadrant, moving, count}) {
+  update({
+    name,
+    size,
+    system,
+    icon,
+    picture,
+    speed,
+    quadrant,
+    moving,
+    clickToTarget,
+    count,
+  }) {
     if (name) this.name = name;
     if (size) this.size = size;
     if (system) this.system = system;
@@ -21,6 +33,8 @@ class TargetClass {
     if (picture) this.picture = picture;
     if (speed) this.speed = speed;
     if (moving || moving === false) this.moving = moving;
+    if (clickToTarget || clickToTarget === false)
+      this.clickToTarget = clickToTarget;
     if (quadrant) this.quadrant = quadrant;
   }
 }

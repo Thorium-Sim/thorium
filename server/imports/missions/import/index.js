@@ -27,7 +27,8 @@ export default function ImportMission(filepath, cb) {
   console.log("Importing mission");
   yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
     if (err) {
-      throw err;
+      //Eat the error
+      return;
     }
     importZip.on("close", function() {
       cb(null);
