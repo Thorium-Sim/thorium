@@ -53,9 +53,26 @@ const schema = gql`
   extend type Subscription {
     entity(id: ID): [EntityPatch]
     entities(flightId: ID!): [EntitiesPatch]
+    parentStages(flightId: ID!): [EntitiesPatch]
+    stageChildren(parentId: ID!): [EntitiesPatch]
   }
 `;
 
+function resolve(rootQuery, _args, _context, info) {
+  // TODO: Make this clean out replace object keys that are not included as well.
+  if (rootQuery.patches.length === 1 && rootQuery.patches[0]?.values) {
+    return rootQuery.patches;
+  }
+  return filterPatches(rootQuery.patches, info);
+}
+
+function handleInitialSubResponse(fn: (id: string) => void) {
+  const id = uuid.v4();
+  process.nextTick(() => {
+    fn(id);
+  });
+  return id;
+}
 const resolver = {
   Query: {},
   Mutation: {
@@ -67,7 +84,11 @@ const resolver = {
         draft => {
           draft.push(entity);
         },
-        handlePatches(context, "entities", flightId, "flightId"),
+        handlePatches({
+          context,
+          publishKey: "entities",
+          subFilterValues: {flightId},
+        }),
       );
       return entity;
     },
@@ -84,21 +105,20 @@ const resolver = {
             );
           });
         },
-        handlePatches(context, "entities", flightId, "flightId", "entity"),
+        handlePatches({
+          context,
+          publishKey: "entities",
+          subFilterValues: {flightId},
+        }),
       );
     },
   },
   Subscription: {
     entity: {
-      resolve(rootQuery, _args, _context, info) {
-        if (rootQuery.patches.length === 1 && rootQuery.patches[0]?.values)
-          return rootQuery.patches;
-        return filterPatches(rootQuery.patches, info);
-      },
+      resolve,
       subscribe: withFilter(
         (rootValue, args) => {
-          const id = uuid.v4();
-          process.nextTick(() => {
+          const id = handleInitialSubResponse(id => {
             const entity = App.entities.find(e => e.id === args.id);
             pubsub.publish(id, {id: entity.id, patches: [{values: entity}]});
           });
@@ -110,15 +130,10 @@ const resolver = {
       ),
     },
     entities: {
-      resolve(rootQuery, _args, _context, info) {
-        if (rootQuery.patches.length === 1 && rootQuery.patches[0]?.values)
-          return rootQuery.patches;
-        return filterPatches(rootQuery.patches, info);
-      },
+      resolve,
       subscribe: withFilter(
         (rootValue, args) => {
-          const id = uuid.v4();
-          process.nextTick(() => {
+          const id = handleInitialSubResponse(id => {
             const entities = App.entities.filter(
               e => e.flightId === args.flightId,
             );
@@ -130,8 +145,48 @@ const resolver = {
           return pubsub.asyncIterator([id, "entities"]);
         },
         (rootValue, args) => {
+          return rootValue.flightId === args.flightId;
+        },
+      ),
+    },
+    parentStages: {
+      resolve,
+      subscribe: withFilter(
+        (rootValue, args) => {
+          const id = handleInitialSubResponse(id => {
+            const entities = App.entities.filter(
+              e => e.flightId === args.flightId && !e.stageChild,
+            );
+            pubsub.publish(id, {
+              flightId: args.flightId,
+              patches: [{values: entities}],
+            });
+          });
+          return pubsub.asyncIterator([id, "entities"]);
+        },
+        (rootValue, args) => {
           // Add filters once they get added to the schema
           return rootValue.flightId === args.flightId;
+        },
+      ),
+    },
+    stageChildren: {
+      resolve,
+      subscribe: withFilter(
+        (rootValue, args) => {
+          const id = handleInitialSubResponse(id => {
+            const entities = App.entities.filter(
+              e => e?.stageChild?.parentId === args.parentId,
+            );
+            pubsub.publish(id, {
+              parentIds: [args.parentId],
+              patches: [{values: entities}],
+            });
+          });
+          return pubsub.asyncIterator([id, "entities"]);
+        },
+        (rootValue, args) => {
+          return rootValue.parentIds.includes(args.parentId);
         },
       ),
     },

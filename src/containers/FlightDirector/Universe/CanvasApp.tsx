@@ -35,6 +35,7 @@ interface CanvasAppProps {
   dragging: EntityType | undefined;
   selecting: boolean;
   entities: EntityInterface[];
+  lighting: boolean;
 }
 function setNumberBounds(num: number) {
   return Math.max(
@@ -50,6 +51,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   dragging,
   selecting,
   entities,
+  lighting,
 }) => {
   const [create] = useEntityCreateMutation();
   const [remove] = useEntityRemoveMutation();
@@ -151,9 +153,8 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     <>
       <Camera />
       <SceneControl recenter={recenter} />
-      <ambientLight />
       <Grid />
-      <pointLight position={[10, 10, -10]} />
+      <ambientLight intensity={lighting ? 0.2 : 1} />
       {dragging && (
         <Entity
           index={0}

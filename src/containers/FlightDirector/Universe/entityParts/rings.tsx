@@ -1,0 +1,38 @@
+import React from "react";
+import {useLoader} from "react-three-fiber";
+import * as THREE from "three";
+
+interface RingsProps {
+  ringMapAsset: string;
+}
+
+const Rings: React.FC<RingsProps> = ({ringMapAsset}) => {
+  const rings = useLoader(THREE.TextureLoader, ringMapAsset);
+  const geo = React.useMemo(() => {
+    const geometry = new THREE.RingBufferGeometry(1.5, 3, 32);
+    const pos = geometry.attributes.position as THREE.BufferAttribute;
+    const v3 = new THREE.Vector3();
+    for (let i = 0; i < pos.count; i++) {
+      v3.fromBufferAttribute(pos, i);
+      geometry.attributes.uv.setXY(i, v3.length() < 2 ? 0 : 1, 1);
+    }
+    return geometry;
+  }, []);
+  return (
+    <mesh
+      rotation={[(2.5 * Math.PI) / 4, Math.PI / 4, 0]}
+      scale={[0.7, 0.7, 0.7]}
+      geometry={geo}
+    >
+      <meshBasicMaterial
+        map={rings}
+        color={0xffffff}
+        side={THREE.DoubleSide}
+        transparent
+        attach="material"
+      />
+    </mesh>
+  );
+};
+
+export default Rings;

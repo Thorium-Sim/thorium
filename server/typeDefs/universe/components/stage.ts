@@ -1,27 +1,33 @@
 import {gql} from "apollo-server-express";
 import App from "../../../app";
 import produce from "immer";
-import {Identity} from "../../../classes/universe/components";
+import {Stage} from "../../../classes/universe/components";
 import {handlePatches} from "../../../helpers/filterPatches";
 
 const schema = gql`
-  type IdentityComponent {
-    name: String
-    type: String
+  type StageComponent {
+    scaleLabel: String
+    scaleLabelShort: String
+    skyboxAsset: String
   }
 
   extend type Entity {
-    identity: IdentityComponent
+    stage: StageComponent
   }
   extend type Mutation {
-    entitySetIdentity(id: ID, name: String, type: String): String
-    entityRemoveIdentity(id: ID!): String
+    entitySetStage(
+      id: ID
+      scaleLabel: String
+      scaleLabelShort: String
+      skyboxAsset: String
+    ): String
+    entityRemoveStage(id: ID!): String
   }
 `;
 
 const resolver = {
   Mutation: {
-    entitySetIdentity(rootQuery, {id, ...properties}, context) {
+    entitySetStage(rootQuery, {id, ...properties}, context) {
       const entityId = id || context.entityId;
       const entityIndex = App.entities.findIndex(e => e.id === entityId);
       const flightId = App.entities[entityIndex].flightId;
@@ -29,14 +35,15 @@ const resolver = {
         App.entities,
         draft => {
           const entity = draft[entityIndex];
-          if (!entity.identity) {
-            entity.identity = new Identity({
-              name: properties.name,
-              type: properties.type,
+          if (!entity.stage) {
+            entity.stage = new Stage({
+              scaleLabel: properties.scaleLabel,
+              scaleLabelShort: properties.scaleLabelShort,
+              skyboxAsset: properties.skyboxAsset,
             });
           } else {
             Object.entries(properties).forEach(([key, value]) => {
-              entity.identity[key] = value;
+              entity.stage[key] = value;
             });
           }
         },

@@ -25,24 +25,39 @@ export default function filterPatches(patches, info) {
   });
 }
 
-export function handlePatches(
+export function handlePatches({
   context,
-  publishKey: string,
-  subId: any,
-  subIdKey: string,
-  label?: string,
-) {
+  publishKey,
+  subFilterValues,
+}: {
+  context: any;
+  publishKey: string;
+  subFilterValues: {[key: string]: any};
+}) {
+  // Context is GraphQL Context.
+  // Publish key is the GraphQL subscription that is being published.
+  // subFilterValues is the values that are passed in along with the patches
+  // which can be used in the subscription filter function to filter out
+  // unnecessary subscription calls.
   return function(patches) {
     if (!context.subscriptionResponses) context.subscriptionResponses = {};
     if (!context.subscriptionResponses[publishKey]) {
       context.subscriptionResponses[publishKey] = [
-        {[subIdKey]: subId, patches},
+        {...subFilterValues, patches},
       ];
     } else {
       context.subscriptionResponses[publishKey] = context.subscriptionResponses[
         publishKey
       ].map(e => {
-        if (e[subIdKey] === subId) {
+        const includesSubFilterValues = Object.entries(subFilterValues).reduce(
+          (prev, [key, value]) => {
+            if (!prev) return false;
+            if (e[key] !== value) return false;
+            return true;
+          },
+          true,
+        );
+        if (includesSubFilterValues) {
           return {...e, patches: e.patches.concat(patches)};
         }
         return e;

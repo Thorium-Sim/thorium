@@ -25,13 +25,6 @@ const libraryItems = [
       color: "#ffffff",
     },
   },
-  // {
-  //   type: "cube",
-  //   size: 1,
-  //   scale: 1,
-  //   material: "standard",
-  //   color: 0x882200,
-  // },
 ];
 export default function Library({
   dragging = false,

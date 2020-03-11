@@ -5,6 +5,7 @@ import {
   MdZoomOutMap,
   MdChevronRight,
   MdChevronLeft,
+  MdLightbulbOutline,
 } from "react-icons/md";
 import {Tooltip} from "reactstrap";
 import uuid from "uuid";
@@ -56,6 +57,8 @@ const Controls = ({
   setSelecting,
   hasSelected,
   selectedEntity,
+  lighting,
+  setLighting,
 }: {
   recenter: () => void;
   zoomScale: boolean;
@@ -64,6 +67,8 @@ const Controls = ({
   setSelecting: (val: boolean | StateArg) => void;
   hasSelected: boolean;
   selectedEntity: Entity | undefined;
+  lighting: boolean;
+  setLighting: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [paletteExpanded, setPaletteExpanded] = React.useState<boolean>(false);
   React.useEffect(() => {
@@ -100,6 +105,13 @@ const Controls = ({
             tooltipContent="Drag to Select"
           >
             <MdSelectAll />
+          </TooltipButton>
+          <TooltipButton
+            className={lighting ? "selected" : ""}
+            onClick={() => setLighting((s: boolean) => !s)}
+            tooltipContent="Use Scene Lighting"
+          >
+            <MdLightbulbOutline />
           </TooltipButton>
         </div>
       </div>

@@ -1,27 +1,33 @@
 import {gql} from "apollo-server-express";
 import App from "../../../app";
 import produce from "immer";
-import {Identity} from "../../../classes/universe/components";
+import {Light} from "../../../classes/universe/components";
 import {handlePatches} from "../../../helpers/filterPatches";
 
 const schema = gql`
-  type IdentityComponent {
-    name: String
-    type: String
+  type LightComponent {
+    intensity: Float
+    decay: Float
+    color: String
   }
 
   extend type Entity {
-    identity: IdentityComponent
+    light: LightComponent
   }
   extend type Mutation {
-    entitySetIdentity(id: ID, name: String, type: String): String
-    entityRemoveIdentity(id: ID!): String
+    entitySetLight(
+      id: ID
+      intensity: Float
+      decay: Float
+      color: String
+    ): String
+    entityRemoveLight(id: ID!): String
   }
 `;
 
 const resolver = {
   Mutation: {
-    entitySetIdentity(rootQuery, {id, ...properties}, context) {
+    entitySetLight(rootQuery, {id, ...properties}, context) {
       const entityId = id || context.entityId;
       const entityIndex = App.entities.findIndex(e => e.id === entityId);
       const flightId = App.entities[entityIndex].flightId;
@@ -29,14 +35,15 @@ const resolver = {
         App.entities,
         draft => {
           const entity = draft[entityIndex];
-          if (!entity.identity) {
-            entity.identity = new Identity({
-              name: properties.name,
-              type: properties.type,
+          if (!entity.light) {
+            entity.light = new Light({
+              intensity: properties.intensity,
+              decay: properties.decay,
+              color: properties.color,
             });
           } else {
             Object.entries(properties).forEach(([key, value]) => {
-              entity.identity[key] = value;
+              entity.light[key] = value;
             });
           }
         },

@@ -122,6 +122,9 @@
     border-radius: 100%;
     left: calc(50% - 8px);
     top: 4px;
+    svg {
+      vertical-align: unset !important;
+    }
   }
   .library-inner {
     min-height: min-content;

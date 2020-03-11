@@ -1,27 +1,26 @@
 import {gql} from "apollo-server-express";
 import App from "../../../app";
 import produce from "immer";
-import {Identity} from "../../../classes/universe/components";
+import {StageChild} from "../../../classes/universe/components";
 import {handlePatches} from "../../../helpers/filterPatches";
 
 const schema = gql`
-  type IdentityComponent {
-    name: String
-    type: String
+  type StageChildComponent {
+    parentId: ID!
   }
 
   extend type Entity {
-    identity: IdentityComponent
+    stageChild: StageChildComponent
   }
   extend type Mutation {
-    entitySetIdentity(id: ID, name: String, type: String): String
-    entityRemoveIdentity(id: ID!): String
+    entitySetStageChild(id: ID, parentId: ID!): String
+    entityRemoveStageChild(id: ID!): String
   }
 `;
 
 const resolver = {
   Mutation: {
-    entitySetIdentity(rootQuery, {id, ...properties}, context) {
+    entitySetStageChild(rootQuery, {id, parentId}, context) {
       const entityId = id || context.entityId;
       const entityIndex = App.entities.findIndex(e => e.id === entityId);
       const flightId = App.entities[entityIndex].flightId;
@@ -29,15 +28,12 @@ const resolver = {
         App.entities,
         draft => {
           const entity = draft[entityIndex];
-          if (!entity.identity) {
-            entity.identity = new Identity({
-              name: properties.name,
-              type: properties.type,
+          if (!entity.stageChild) {
+            entity.stageChild = new StageChild({
+              parentId: parentId,
             });
           } else {
-            Object.entries(properties).forEach(([key, value]) => {
-              entity.identity[key] = value;
-            });
+            entity.stageChild.parentId = parentId;
           }
         },
 

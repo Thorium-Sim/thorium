@@ -77,7 +77,11 @@ const resolver = {
           }
         },
 
-        handlePatches(context, "entities", flightId, "flightId", "entity"),
+        handlePatches({
+          context,
+          publishKey: "entities",
+          subFilterValues: {flightId: flightId},
+        }),
       );
     },
     entitiesSetPosition(root, {entities}, context) {
@@ -98,7 +102,11 @@ const resolver = {
           });
         },
 
-        handlePatches(context, "entities", flightId, "flightId", "entity"),
+        handlePatches({
+          context,
+          publishKey: "entities",
+          subFilterValues: {flightId: flightId},
+        }),
       );
     },
     entityRemoveLocation(root, {id}, context) {

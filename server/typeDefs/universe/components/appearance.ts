@@ -10,11 +10,17 @@ const schema = gql`
     cube
     model
     sprite
+    planet
+    star
   }
   type AppearanceComponent {
     meshType: MeshTypeEnum
     modelAsset: String
     materialMapAsset: String
+    ringMapAsset: String
+    cloudMapAsset: String
+    emissiveColor: String
+    emissiveIntensity: Float
     color: String
     scale: Float
   }
@@ -29,6 +35,10 @@ const schema = gql`
       meshType: MeshTypeEnum
       modelAsset: String
       materialMapAsset: String
+      ringMapAsset: String
+      cloudMapAsset: String
+      emissiveColor: String
+      emissiveIntensity: Float
       scale: Float
     ): String
     entityRemoveAppearance(id: ID!): String
@@ -50,6 +60,10 @@ const resolver = {
               meshType: properties.meshType,
               modelAsset: properties.modelAsset,
               materialMapAsset: properties.materialMapAsset,
+              ringMapAsset: properties.ringMapAsset,
+              cloudMapAsset: properties.cloudMapAsset,
+              emissiveColor: properties.emissiveColor,
+              emissiveIntensity: properties.emissiveIntensity,
               color: properties.color,
               scale: properties.scale,
             });
@@ -60,7 +74,11 @@ const resolver = {
           }
         },
 
-        handlePatches(context, "entities", flightId, "flightId", "entity"),
+        handlePatches({
+          context,
+          publishKey: "entities",
+          subFilterValues: {flightId: flightId},
+        }),
       );
     },
   },

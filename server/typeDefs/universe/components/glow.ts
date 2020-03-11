@@ -1,27 +1,32 @@
 import {gql} from "apollo-server-express";
 import App from "../../../app";
 import produce from "immer";
-import {Identity} from "../../../classes/universe/components";
+import {Glow} from "../../../classes/universe/components";
 import {handlePatches} from "../../../helpers/filterPatches";
 
 const schema = gql`
-  type IdentityComponent {
-    name: String
-    type: String
+  enum GlowModeEnum {
+    glow
+    halo
+    shell
+  }
+  type GlowComponent {
+    glowMode: GlowModeEnum
+    color: String
   }
 
   extend type Entity {
-    identity: IdentityComponent
+    glow: GlowComponent
   }
   extend type Mutation {
-    entitySetIdentity(id: ID, name: String, type: String): String
-    entityRemoveIdentity(id: ID!): String
+    entitySetGlow(id: ID, glowMode: GlowModeEnum, color: String): String
+    entityRemoveGlow(id: ID!): String
   }
 `;
 
 const resolver = {
   Mutation: {
-    entitySetIdentity(rootQuery, {id, ...properties}, context) {
+    entitySetGlow(rootQuery, {id, ...properties}, context) {
       const entityId = id || context.entityId;
       const entityIndex = App.entities.findIndex(e => e.id === entityId);
       const flightId = App.entities[entityIndex].flightId;
@@ -29,14 +34,14 @@ const resolver = {
         App.entities,
         draft => {
           const entity = draft[entityIndex];
-          if (!entity.identity) {
-            entity.identity = new Identity({
-              name: properties.name,
-              type: properties.type,
+          if (!entity.glow) {
+            entity.glow = new Glow({
+              glowMode: properties.glowMode,
+              color: properties.color,
             });
           } else {
             Object.entries(properties).forEach(([key, value]) => {
-              entity.identity[key] = value;
+              entity.glow[key] = value;
             });
           }
         },
