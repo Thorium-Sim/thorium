@@ -1,8 +1,5 @@
 import {gql} from "apollo-server-express";
-import App from "../../../app";
-import produce from "immer";
-import {Light} from "../../../classes/universe/components";
-import {handlePatches} from "../../../helpers/filterPatches";
+import {setComponent} from "../setComponentHelper";
 
 const schema = gql`
   type LightComponent {
@@ -27,34 +24,7 @@ const schema = gql`
 
 const resolver = {
   Mutation: {
-    entitySetLight(rootQuery, {id, ...properties}, context) {
-      const entityId = id || context.entityId;
-      const entityIndex = App.entities.findIndex(e => e.id === entityId);
-      const flightId = App.entities[entityIndex].flightId;
-      App.entities = produce(
-        App.entities,
-        draft => {
-          const entity = draft[entityIndex];
-          if (!entity.light) {
-            entity.light = new Light({
-              intensity: properties.intensity,
-              decay: properties.decay,
-              color: properties.color,
-            });
-          } else {
-            Object.entries(properties).forEach(([key, value]) => {
-              entity.light[key] = value;
-            });
-          }
-        },
-
-        handlePatches({
-          context,
-          publishKey: "entities",
-          subFilterValues: {flightId: flightId},
-        }),
-      );
-    },
+    entitySetLight: setComponent("light"),
   },
 };
 

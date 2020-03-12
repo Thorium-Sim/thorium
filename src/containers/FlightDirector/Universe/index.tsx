@@ -27,7 +27,18 @@ const sub = gql`
           materialMapAsset
           ringMapAsset
           cloudMapAsset
+          emissiveColor
+          emissiveIntensity
           scale
+        }
+        light {
+          intensity
+          decay
+          color
+        }
+        glow {
+          glowMode
+          color
         }
         location {
           position {

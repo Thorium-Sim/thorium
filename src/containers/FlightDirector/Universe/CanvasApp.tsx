@@ -15,6 +15,7 @@ import {
   useEntitiesSetPositionMutation,
   Entity as EntityType,
 } from "generated/graphql";
+import Nebula from "./Nebula";
 
 interface SceneControlProps {
   recenter: {};
@@ -81,6 +82,16 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           name: `New Entity ${entities.length + 1}`,
           meshType: dragging.appearance.meshType,
           color: dragging.appearance.color,
+          emissiveColor: dragging.appearance.emissiveColor,
+          emissiveIntensity: dragging.appearance.emissiveIntensity,
+          materialMapAsset: dragging.appearance.materialMapAsset,
+          ringMapAsset: dragging.appearance.ringMapAsset,
+          cloudMapAsset: dragging.appearance.cloudMapAsset,
+          glowColor: dragging.glow?.color,
+          glowMode: dragging.glow?.glowMode,
+          lightColor: dragging.light?.color,
+          lightDecay: dragging.light?.decay,
+          lightIntensity: dragging.light?.intensity,
         },
       });
       if (data?.entityCreate.id) {
@@ -154,7 +165,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       <Camera />
       <SceneControl recenter={recenter} />
       <Grid />
-      <ambientLight intensity={lighting ? 0.2 : 1} />
+      <ambientLight intensity={lighting ? 0.4 : 1} />
       {dragging && (
         <Entity
           index={0}
@@ -191,6 +202,9 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
         setSelected={setSelected}
         entities={entities}
       />
+      {/* <React.Suspense fallback={null}>
+        <Nebula />
+      </React.Suspense> */}
     </>
   );
 };

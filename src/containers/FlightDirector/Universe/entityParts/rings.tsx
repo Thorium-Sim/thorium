@@ -8,6 +8,7 @@ interface RingsProps {
 
 const Rings: React.FC<RingsProps> = ({ringMapAsset}) => {
   const rings = useLoader(THREE.TextureLoader, ringMapAsset);
+  console.log(rings, ringMapAsset);
   const geo = React.useMemo(() => {
     const geometry = new THREE.RingBufferGeometry(1.5, 3, 32);
     const pos = geometry.attributes.position as THREE.BufferAttribute;
@@ -24,11 +25,12 @@ const Rings: React.FC<RingsProps> = ({ringMapAsset}) => {
       scale={[0.7, 0.7, 0.7]}
       geometry={geo}
     >
-      <meshBasicMaterial
+      <meshPhongMaterial
         map={rings}
         color={0xffffff}
         side={THREE.DoubleSide}
         transparent
+        opacity={0.8}
         attach="material"
       />
     </mesh>

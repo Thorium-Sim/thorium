@@ -2,6 +2,7 @@ import React from "react";
 import * as THREE from "three";
 import {IUniform} from "three";
 import {useFrame, useThree} from "react-three-fiber";
+import {GlowModeEnum} from "generated/graphql";
 
 const vertexShader = `
 uniform vec3 viewVector;
@@ -26,18 +27,33 @@ void main()
 }`;
 
 interface GlowProps {
-  position: [number, number, number];
+  position?: [number, number, number];
+  glowMode?: GlowModeEnum;
+  color?: string;
 }
 
-const Glow: React.FC<GlowProps> = ({position}) => {
+const glowModeTable = {
+  glow: {c: 0.05, p: 4.5},
+  halo: {c: 0.6, p: 6},
+  shell: {c: 1, p: 2},
+};
+
+const Glow: React.FC<GlowProps> = ({
+  glowMode = GlowModeEnum.Glow,
+  color = "#ffffff",
+  position,
+}) => {
   const shader = React.useRef(new THREE.ShaderMaterial());
   const {camera} = useThree();
   useFrame(({camera}) => {
-    shader.current.uniforms.viewVector.value = new THREE.Vector3().subVectors(
-      camera.position,
-      new THREE.Vector3(...position),
-    );
+    if (position) {
+      shader.current.uniforms.viewVector.value = new THREE.Vector3().subVectors(
+        camera.position,
+        new THREE.Vector3(...position),
+      );
+    }
   });
+  const {c, p} = glowModeTable[glowMode];
 
   return (
     <mesh scale={[1.1, 1.1, 1.1]}>
@@ -45,9 +61,9 @@ const Glow: React.FC<GlowProps> = ({position}) => {
       <shaderMaterial
         ref={shader}
         uniforms={{
-          c: {type: "f", value: 0.6} as IUniform,
-          p: {type: "f", value: 6} as IUniform,
-          glowColor: {type: "c", value: new THREE.Color(0xff8800)} as IUniform,
+          c: {type: "f", value: c} as IUniform,
+          p: {type: "f", value: p} as IUniform,
+          glowColor: {type: "c", value: new THREE.Color(color)} as IUniform,
           viewVector: {type: "v3", value: camera.position} as IUniform,
         }}
         vertexShader={vertexShader}

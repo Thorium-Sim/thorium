@@ -11513,6 +11513,11 @@ gitlab@^10.0.1:
     query-string "^6.8.2"
     universal-url "^2.0.0"
 
+gl-matrix@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/gl-matrix/-/gl-matrix-3.2.1.tgz#2d8e35125bf854f49abded8a0c8350b1a4907a26"
+  integrity sha512-YYVO8jUSf6+SakL4AJmx9Jc7zAZhkJQ+WhdtX3VQe5PJdCOX6/ybY4x1vk+h94ePnjRn6uml68+QxTAJneUpvA==
+
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -15153,11 +15158,6 @@ loglevel@^1.6.6:
   version "1.6.7"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.7.tgz#b3e034233188c68b889f5b862415306f565e2c56"
   integrity sha512-cY2eLFrQSAfVPhCgH1s7JI73tMbg9YC3v3+ZHVW67sBS7UxWzNEk/ZBbSfLykBWHp33dqqtOv82gjhKEi81T/A==
-
-logrocket@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/logrocket/-/logrocket-1.0.6.tgz#6f12511ad69ba3ca2032295f278ef350230e2902"
-  integrity sha512-uIi0F+s44AtuJocUAW019SYKsPnnV/IB3IRsL0LFYY4fAfjGQjpcpxXt80yPpkBQkoHW1h5wHYoixs8ZU1MPZg==
 
 long@^4.0.0:
   version "4.0.0"
@@ -20707,6 +20707,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rng@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/rng/-/rng-0.2.2.tgz#df43e80d9bc82ad4430bcfef03f49c717e8b2e8c"
+  integrity sha1-30PoDZvIKtRDC8/vA/SccX6LLow=
 
 roarr@^2.15.2:
   version "2.15.2"

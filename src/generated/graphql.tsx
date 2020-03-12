@@ -54,6 +54,10 @@ export type AppearanceComponent = {
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
   color?: Maybe<Scalars["String"]>;
   scale?: Maybe<Scalars["Float"]>;
 };
@@ -805,6 +809,10 @@ export type Entity = {
   behavior?: Maybe<BehaviorComponent>;
   identity?: Maybe<IdentityComponent>;
   location?: Maybe<LocationComponent>;
+  stage?: Maybe<StageComponent>;
+  stageChild?: Maybe<StageChildComponent>;
+  light?: Maybe<LightComponent>;
+  glow?: Maybe<GlowComponent>;
 };
 
 export type EntityCoordinates = {
@@ -975,6 +983,18 @@ export type FormResultsInput = {
   client?: Maybe<Scalars["String"]>;
   form?: Maybe<Array<Maybe<FormFieldsInput>>>;
 };
+
+export type GlowComponent = {
+  __typename?: "GlowComponent";
+  glowMode?: Maybe<GlowModeEnum>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export enum GlowModeEnum {
+  Glow = "glow",
+  Halo = "halo",
+  Shell = "shell",
+}
 
 export type GoogleSheet = {
   __typename?: "GoogleSheet";
@@ -1241,6 +1261,13 @@ export type LibraryInput = {
   font?: Maybe<Scalars["String"]>;
 };
 
+export type LightComponent = {
+  __typename?: "LightComponent";
+  intensity?: Maybe<Scalars["Float"]>;
+  decay?: Maybe<Scalars["Float"]>;
+  color?: Maybe<Scalars["String"]>;
+};
+
 export type Lighting = {
   __typename?: "Lighting";
   intensity?: Maybe<Scalars["Float"]>;
@@ -1398,6 +1425,8 @@ export enum MeshTypeEnum {
   Cube = "cube",
   Model = "model",
   Sprite = "sprite",
+  Planet = "planet",
+  Star = "star",
 }
 
 export type Message = {
@@ -1588,6 +1617,14 @@ export type Mutation = {
   entitySetLocation?: Maybe<Scalars["String"]>;
   entitiesSetPosition?: Maybe<Scalars["String"]>;
   entityRemoveLocation?: Maybe<Scalars["String"]>;
+  entitySetStage?: Maybe<Scalars["String"]>;
+  entityRemoveStage?: Maybe<Scalars["String"]>;
+  entitySetStageChild?: Maybe<Scalars["String"]>;
+  entityRemoveStageChild?: Maybe<Scalars["String"]>;
+  entitySetLight?: Maybe<Scalars["String"]>;
+  entityRemoveLight?: Maybe<Scalars["String"]>;
+  entitySetGlow?: Maybe<Scalars["String"]>;
+  entityRemoveGlow?: Maybe<Scalars["String"]>;
   triggerAction?: Maybe<Scalars["String"]>;
   addSimulatorAmbiance?: Maybe<Scalars["String"]>;
   updateSimulatorAmbiance?: Maybe<Scalars["String"]>;
@@ -2258,6 +2295,10 @@ export type MutationEntitySetAppearanceArgs = {
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
   scale?: Maybe<Scalars["Float"]>;
 };
 
@@ -2301,6 +2342,47 @@ export type MutationEntitiesSetPositionArgs = {
 };
 
 export type MutationEntityRemoveLocationArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetStageArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  scaleLabel?: Maybe<Scalars["String"]>;
+  scaleLabelShort?: Maybe<Scalars["String"]>;
+  skyboxAsset?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveStageArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetStageChildArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  parentId: Scalars["ID"];
+};
+
+export type MutationEntityRemoveStageChildArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetLightArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  intensity?: Maybe<Scalars["Float"]>;
+  decay?: Maybe<Scalars["Float"]>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveLightArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetGlowArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  glowMode?: Maybe<GlowModeEnum>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveGlowArgs = {
   id: Scalars["ID"];
 };
 
@@ -7274,6 +7356,18 @@ export type SpeedInput = {
   optimal?: Maybe<Scalars["Boolean"]>;
 };
 
+export type StageChildComponent = {
+  __typename?: "StageChildComponent";
+  parentId: Scalars["ID"];
+};
+
+export type StageComponent = {
+  __typename?: "StageComponent";
+  scaleLabel?: Maybe<Scalars["String"]>;
+  scaleLabelShort?: Maybe<Scalars["String"]>;
+  skyboxAsset?: Maybe<Scalars["String"]>;
+};
+
 export type Station = {
   __typename?: "Station";
   name?: Maybe<Scalars["String"]>;
@@ -7450,6 +7544,8 @@ export type Subscription = {
   countermeasuresUpdate?: Maybe<Countermeasures>;
   entity?: Maybe<Array<Maybe<EntityPatch>>>;
   entities?: Maybe<Array<Maybe<EntitiesPatch>>>;
+  parentStages?: Maybe<Array<Maybe<EntitiesPatch>>>;
+  stageChildren?: Maybe<Array<Maybe<EntitiesPatch>>>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -7870,6 +7966,14 @@ export type SubscriptionEntityArgs = {
 
 export type SubscriptionEntitiesArgs = {
   flightId: Scalars["ID"];
+};
+
+export type SubscriptionParentStagesArgs = {
+  flightId: Scalars["ID"];
+};
+
+export type SubscriptionStageChildrenArgs = {
+  parentId: Scalars["ID"];
 };
 
 export type SubspaceField = SystemInterface & {
@@ -9177,11 +9281,24 @@ export type EntityCreateMutationVariables = {
   color?: Maybe<Scalars["String"]>;
   meshType: MeshTypeEnum;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
+  glowMode?: Maybe<GlowModeEnum>;
+  glowColor?: Maybe<Scalars["String"]>;
+  lightIntensity?: Maybe<Scalars["Float"]>;
+  lightDecay?: Maybe<Scalars["Float"]>;
+  lightColor?: Maybe<Scalars["String"]>;
 };
 
 export type EntityCreateMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
-  "entitySetLocation" | "entitySetIdentity" | "entitySetAppearance"
+  | "entitySetLocation"
+  | "entitySetIdentity"
+  | "entitySetAppearance"
+  | "entitySetGlow"
+  | "entitySetLight"
 > & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
 
 export type EntityRemoveMutationVariables = {
@@ -11289,6 +11406,15 @@ export const EntityCreateDocument = gql`
     $color: String
     $meshType: MeshTypeEnum!
     $materialMapAsset: String
+    $ringMapAsset: String
+    $cloudMapAsset: String
+    $emissiveColor: String
+    $emissiveIntensity: Float
+    $glowMode: GlowModeEnum
+    $glowColor: String
+    $lightIntensity: Float
+    $lightDecay: Float
+    $lightColor: String
   ) {
     entityCreate(flightId: $flightId) {
       id
@@ -11299,6 +11425,16 @@ export const EntityCreateDocument = gql`
       color: $color
       meshType: $meshType
       materialMapAsset: $materialMapAsset
+      ringMapAsset: $ringMapAsset
+      cloudMapAsset: $cloudMapAsset
+      emissiveColor: $emissiveColor
+      emissiveIntensity: $emissiveIntensity
+    )
+    entitySetGlow(glowMode: $glowMode, color: $glowColor)
+    entitySetLight(
+      intensity: $lightIntensity
+      color: $lightColor
+      decay: $lightDecay
     )
   }
 `;
@@ -11326,6 +11462,15 @@ export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
  *      color: // value for 'color'
  *      meshType: // value for 'meshType'
  *      materialMapAsset: // value for 'materialMapAsset'
+ *      ringMapAsset: // value for 'ringMapAsset'
+ *      cloudMapAsset: // value for 'cloudMapAsset'
+ *      emissiveColor: // value for 'emissiveColor'
+ *      emissiveIntensity: // value for 'emissiveIntensity'
+ *      glowMode: // value for 'glowMode'
+ *      glowColor: // value for 'glowColor'
+ *      lightIntensity: // value for 'lightIntensity'
+ *      lightDecay: // value for 'lightDecay'
+ *      lightColor: // value for 'lightColor'
  *   },
  * });
  */

@@ -7,7 +7,9 @@ interface CloudsProps {
 }
 
 const Clouds: React.FC<CloudsProps> = ({cloudMapAsset}) => {
+  console.log(cloudMapAsset);
   const clouds = useLoader(THREE.TextureLoader, cloudMapAsset);
+  console.log(clouds);
   const meshRef = React.useRef<THREE.Mesh>(null);
 
   return (

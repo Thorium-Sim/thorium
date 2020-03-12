@@ -7,6 +7,10 @@ import {SphereGeometry, BoxBufferGeometry, Color} from "three";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
 import SelectionOutline from "./SelectionOutline";
+import Glow from "./entityParts/glow";
+import Light from "./entityParts/light";
+import Rings from "./entityParts/rings";
+import Clouds from "./entityParts/clouds";
 
 const starSprite = require("./star-sprite.svg") as string;
 const circleSprite = require("./circle.svg") as string;
@@ -41,15 +45,28 @@ const Entity: React.FC<EntityProps> = ({
   onDrag = noop,
   onDragStop = noop,
 }) => {
-  const {id, location, appearance} = entity;
+  const {id, location, appearance, glow, light} = entity;
   const size = 1;
-  const {meshType, color, modelAsset, materialMapAsset} = appearance || {};
+  const {
+    meshType,
+    color,
+    materialMapAsset,
+    cloudMapAsset,
+    ringMapAsset,
+    emissiveColor,
+    emissiveIntensity,
+  } = appearance || {};
   const scale = appearance?.scale || 1;
   const {position: positionCoords} = location || {position: null};
   const [{dragging, zoomScale}, dispatch] = React.useContext(CanvasContext);
   const mesh = React.useRef<THREE.Mesh>(new THREE.Mesh());
   const [position, setPosition] = React.useState(positionCoords);
 
+  const mapTexture = useLoader(
+    THREE.TextureLoader,
+    materialMapAsset ||
+      "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAP////////////////////////////////////////////////////////////////////////////////////8B///////////////////////////////////////////////////////////////////////////////////////AABEIAAEAAQMBIgACEQEDEQH/xABLAAEBAAAAAAAAAAAAAAAAAAAAAxABAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AoAD/2Q==",
+  );
   React.useEffect(() => {
     if (!isDraggingMe) {
       setPosition(positionCoords);
@@ -165,26 +182,41 @@ const Entity: React.FC<EntityProps> = ({
   }
   return (
     <>
-      <mesh
-        uuid={id}
-        geometry={geometry}
-        position={meshPosition}
-        ref={mesh}
-        {...modifiedDragFunctions}
-      >
-        <meshStandardMaterial
-          attach="material"
-          color={new Color(color || "#fff")}
-          side={THREE.FrontSide}
-        />
-        <Dom>
-          <p className="object-label">
-            {entity.location?.position
-              ? Object.values(entity.location?.position).join(", ")
-              : ""}
-          </p>
-        </Dom>
-      </mesh>
+      <group ref={mesh} position={meshPosition}>
+        <mesh uuid={id} geometry={geometry} {...modifiedDragFunctions}>
+          <meshStandardMaterial
+            attach="material"
+            map={materialMapAsset ? mapTexture : undefined}
+            color={color ? new Color(color) : undefined}
+            emissive={emissiveColor ? new Color(emissiveColor) : undefined}
+            emissiveIntensity={emissiveIntensity || 0}
+            side={THREE.FrontSide}
+          />
+          {/* <Dom>
+            <p className="object-label">
+              {entity.location?.position
+                ? Object.values(entity.location?.position).join(", ")
+                : ""}
+            </p>
+          </Dom> */}
+        </mesh>
+        {glow && (
+          <Glow
+            position={meshPosition}
+            color={glow.color ?? undefined}
+            glowMode={glow.glowMode ?? undefined}
+          />
+        )}
+        {light && (
+          <Light
+            intensity={light.intensity ?? undefined}
+            decay={light.decay ?? undefined}
+            color={light.color ?? undefined}
+          />
+        )}
+        {ringMapAsset && <Rings ringMapAsset={ringMapAsset} />}
+        {cloudMapAsset && <Clouds cloudMapAsset={cloudMapAsset} />}
+      </group>
       {selected && <SelectionOutline selected={mesh} />}
     </>
   );
