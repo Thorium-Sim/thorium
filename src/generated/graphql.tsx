@@ -9280,6 +9280,7 @@ export type EntityCreateMutationVariables = {
   name: Scalars["String"];
   color?: Maybe<Scalars["String"]>;
   meshType: MeshTypeEnum;
+  modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
   ringMapAsset?: Maybe<Scalars["String"]>;
   cloudMapAsset?: Maybe<Scalars["String"]>;
@@ -11405,6 +11406,7 @@ export const EntityCreateDocument = gql`
     $name: String!
     $color: String
     $meshType: MeshTypeEnum!
+    $modelAsset: String
     $materialMapAsset: String
     $ringMapAsset: String
     $cloudMapAsset: String
@@ -11424,6 +11426,7 @@ export const EntityCreateDocument = gql`
     entitySetAppearance(
       color: $color
       meshType: $meshType
+      modelAsset: $modelAsset
       materialMapAsset: $materialMapAsset
       ringMapAsset: $ringMapAsset
       cloudMapAsset: $cloudMapAsset
@@ -11461,6 +11464,7 @@ export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
  *      name: // value for 'name'
  *      color: // value for 'color'
  *      meshType: // value for 'meshType'
+ *      modelAsset: // value for 'modelAsset'
  *      materialMapAsset: // value for 'materialMapAsset'
  *      ringMapAsset: // value for 'ringMapAsset'
  *      cloudMapAsset: // value for 'cloudMapAsset'

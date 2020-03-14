@@ -14,6 +14,7 @@ import {
   useEntityRemoveMutation,
   useEntitiesSetPositionMutation,
   Entity as EntityType,
+  MeshTypeEnum,
 } from "generated/graphql";
 import Nebula from "./Nebula";
 
@@ -84,6 +85,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           color: dragging.appearance.color,
           emissiveColor: dragging.appearance.emissiveColor,
           emissiveIntensity: dragging.appearance.emissiveIntensity,
+          modelAsset: dragging.appearance.modelAsset,
           materialMapAsset: dragging.appearance.materialMapAsset,
           ringMapAsset: dragging.appearance.ringMapAsset,
           cloudMapAsset: dragging.appearance.cloudMapAsset,
@@ -167,21 +169,14 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       <Grid />
       <ambientLight intensity={lighting ? 0.4 : 1} />
       {dragging && (
-        <Entity
-          index={0}
-          dragging
-          entity={dragging}
-          mousePosition={mousePosition}
-        />
+        <Entity dragging entity={dragging} mousePosition={mousePosition} />
       )}
 
       {entities.map((e, i) => {
         const isSelected = selected && selected.includes(e.id);
         return (
-          <React.Suspense fallback={null}>
+          <React.Suspense key={e.id} fallback={null}>
             <Entity
-              key={e.id}
-              index={i}
               entity={e}
               selected={isSelected}
               setSelected={setSelected}

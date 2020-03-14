@@ -4,6 +4,7 @@ mutation EntityCreate(
   $name: String!
   $color: String
   $meshType: MeshTypeEnum!
+  $modelAsset: String
   $materialMapAsset: String
   $ringMapAsset: String
   $cloudMapAsset: String
@@ -23,6 +24,7 @@ mutation EntityCreate(
   entitySetAppearance(
     color: $color
     meshType: $meshType
+    modelAsset: $modelAsset
     materialMapAsset: $materialMapAsset
     ringMapAsset: $ringMapAsset
     cloudMapAsset: $cloudMapAsset

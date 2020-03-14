@@ -11,6 +11,7 @@ import {
 } from "generated/graphql";
 import {Label, Input, Collapse} from "reactstrap";
 import {FaChevronDown, FaChevronRight} from "react-icons/fa";
+import {throttle} from "helpers/debounce";
 
 interface LocationEditProps {
   id: string;
@@ -18,28 +19,9 @@ interface LocationEditProps {
 }
 const LocationEdit: React.FC<LocationEditProps> = ({id, location}) => {
   const [collapse, setCollapse] = React.useState<boolean>(false);
-  const [position, setPosition] = React.useState<EntityCoordinates>(
-    location.position || "",
-  );
 
   const [setEntityPosition] = useEntitiesSetPositionMutation();
 
-  const unmountHandler = React.useRef(() => {});
-  React.useEffect(() => {
-    unmountHandler.current = () => {
-      setEntityPosition({
-        variables: {entities: [{id, position}]},
-      });
-    };
-  }, [id, position, setEntityPosition]);
-  React.useEffect(() => {
-    return () => {
-      unmountHandler.current();
-    };
-  }, [id]);
-  React.useEffect(() => {
-    setPosition(location.position || "");
-  }, [location.position]);
   return (
     <>
       <h3 onClick={() => setCollapse(c => !c)}>
@@ -53,16 +35,15 @@ const LocationEdit: React.FC<LocationEditProps> = ({id, location}) => {
             type="text"
             inputmode="numeric"
             pattern="[0-9]*"
-            value={position.x}
+            value={location.position.x}
             onChange={e => {
-              const value = e.target.value;
-              setPosition(p => ({...p, x: parseInt(value, 10)}));
-            }}
-            onBlur={() =>
+              const value = parseInt(e.target.value, 10);
               setEntityPosition({
-                variables: {entities: [{id, position}]},
-              })
-            }
+                variables: {
+                  entities: [{id, position: {...location.position, x: value}}],
+                },
+              });
+            }}
           />
         </Label>
         <Label>
@@ -71,16 +52,15 @@ const LocationEdit: React.FC<LocationEditProps> = ({id, location}) => {
             type="text"
             inputmode="numeric"
             pattern="[0-9]*"
-            value={position.y}
+            value={location.position.y}
             onChange={e => {
-              const value = e.target.value;
-              setPosition(p => ({...p, y: parseInt(value, 10)}));
-            }}
-            onBlur={() =>
+              const value = parseInt(e.target.value, 10);
               setEntityPosition({
-                variables: {entities: [{id, position}]},
-              })
-            }
+                variables: {
+                  entities: [{id, position: {...location.position, y: value}}],
+                },
+              });
+            }}
           />
         </Label>
         <Label>
@@ -89,16 +69,15 @@ const LocationEdit: React.FC<LocationEditProps> = ({id, location}) => {
             type="text"
             inputmode="numeric"
             pattern="[0-9]*"
-            value={position.z}
+            value={location.position.z}
             onChange={e => {
-              const value = e.target.value;
-              setPosition(p => ({...p, z: parseInt(value, 10)}));
-            }}
-            onBlur={() =>
+              const value = parseInt(e.target.value, 10);
               setEntityPosition({
-                variables: {entities: [{id, position}]},
-              })
-            }
+                variables: {
+                  entities: [{id, position: {...location.position, z: value}}],
+                },
+              });
+            }}
           />
         </Label>
       </Collapse>
@@ -112,26 +91,9 @@ interface IdentityEditProps {
 }
 const IdentityEdit: React.FC<IdentityEditProps> = ({id, identity}) => {
   const [collapse, setCollapse] = React.useState<boolean>(false);
-  const [value, setValue] = React.useState<string>(identity?.name || "");
 
   const [setName] = useEntitySetIdentityMutation();
 
-  const unmountHandler = React.useRef(() => {});
-  React.useEffect(() => {
-    unmountHandler.current = () => {
-      setName({
-        variables: {id, name: value},
-      });
-    };
-  }, [id, setName, value]);
-  React.useEffect(() => {
-    return () => {
-      unmountHandler.current();
-    };
-  }, [id]);
-  React.useEffect(() => {
-    setValue(identity?.name || "");
-  }, [identity]);
   return (
     <>
       <h3 onClick={() => setCollapse(c => !c)}>
@@ -142,15 +104,12 @@ const IdentityEdit: React.FC<IdentityEditProps> = ({id, identity}) => {
           Name
           <Input
             type="text"
-            value={value}
+            value={identity.name || ""}
             onChange={e => {
-              setValue(e.target.value);
-            }}
-            onBlur={() =>
               setName({
-                variables: {id, name: value},
-              })
-            }
+                variables: {id, name: e.target.value},
+              });
+            }}
           />
         </Label>
       </Collapse>
@@ -185,28 +144,17 @@ const AppearanceEdit: React.FC<AppearanceEditProps> = ({id, appearance}) => {
   const [color, setColor] = React.useState(appearance?.color);
   const [scale, setScale] = React.useState(appearance?.scale);
 
-  const [setAppearance] = useEntitySetAppearanceMutation();
-
-  const unmountHandler = React.useRef(() => {});
-  React.useEffect(() => {
-    unmountHandler.current = () => {
-      const variables = {
-        id,
-        ...(appearance?.color !== color ? {color} : null),
-      };
-      setAppearance({
-        variables,
-      });
-    };
-  }, [id, setAppearance, color, appearance]);
-  React.useEffect(() => {
-    return () => {
-      unmountHandler.current();
-    };
-  }, [id]);
   React.useEffect(() => {
     setColor(appearance?.color || "");
+    setScale(appearance?.scale);
   }, [appearance]);
+
+  const [setAppearance] = useEntitySetAppearanceMutation();
+  const throttleSetAppearance = React.useCallback(
+    throttle(setAppearance, 250),
+    [],
+  );
+
   return (
     <>
       <h3 onClick={() => setCollapse(c => !c)}>
@@ -220,12 +168,10 @@ const AppearanceEdit: React.FC<AppearanceEditProps> = ({id, appearance}) => {
             value={color || "#ffffff"}
             onChange={e => {
               setColor(e.target.value);
+              throttleSetAppearance({
+                variables: {id, color: e.target.value},
+              });
             }}
-            onBlur={() =>
-              setAppearance({
-                variables: {id, color},
-              })
-            }
           />
         </Label>
         <Label>
@@ -239,12 +185,10 @@ const AppearanceEdit: React.FC<AppearanceEditProps> = ({id, appearance}) => {
             step={0.01}
             onChange={e => {
               setScale(logslider(parseFloat(e.target.value)));
+              throttleSetAppearance({
+                variables: {id, scale: logslider(parseFloat(e.target.value))},
+              });
             }}
-            onMouseUp={() =>
-              setAppearance({
-                variables: {id, scale},
-              })
-            }
           />
         </Label>
       </Collapse>

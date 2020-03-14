@@ -10,6 +10,33 @@ type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 const libraryItems: PartialBy<EntityT, "id">[] = [
   {
     identity: {
+      name: "Ship 1",
+    },
+    appearance: {
+      meshType: MeshTypeEnum.Model,
+      modelAsset: "/assets/3D/Model/AstraBattleship.glb",
+    },
+  },
+  {
+    identity: {
+      name: "Ship 2",
+    },
+    appearance: {
+      meshType: MeshTypeEnum.Model,
+      modelAsset: "/assets/3D/Model/AlotechCargoI.glb",
+    },
+  },
+  {
+    identity: {
+      name: "Ship 3",
+    },
+    appearance: {
+      meshType: MeshTypeEnum.Model,
+      modelAsset: "/assets/3D/Model/AlotechBattleship.glb",
+    },
+  },
+  {
+    identity: {
       name: "Star",
     },
     appearance: {
@@ -78,13 +105,6 @@ const libraryItems: PartialBy<EntityT, "id">[] = [
       color: "#88ff00",
     },
   },
-  {
-    appearance: {
-      meshType: MeshTypeEnum.Sprite,
-      materialMapAsset: require("./star-sprite.svg"),
-      color: "#ffffff",
-    },
-  },
 ];
 export default function Library({
   dragging = false,
@@ -95,7 +115,7 @@ export default function Library({
 }) {
   const client = useApolloClient();
   return (
-    <>
+    <div>
       <div className="library-opener">
         <FaPlusCircle />
       </div>
@@ -109,14 +129,10 @@ export default function Library({
             >
               <Canvas className="library-mesh" camera={{position: [0, 0, 3]}}>
                 <ApolloProvider client={client}>
-                  <ambientLight />
+                  <ambientLight intensity={1} />
                   <pointLight position={[10, 10, 10]} intensity={0.5} />
                   <Suspense fallback={null}>
-                    <Entity
-                      index={0}
-                      library
-                      entity={{id: "library-entity", ...l}}
-                    />
+                    <Entity library entity={{id: "library-entity", ...l}} />
                   </Suspense>
                 </ApolloProvider>
               </Canvas>
@@ -125,6 +141,6 @@ export default function Library({
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 }

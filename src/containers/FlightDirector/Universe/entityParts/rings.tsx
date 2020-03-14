@@ -8,7 +8,6 @@ interface RingsProps {
 
 const Rings: React.FC<RingsProps> = ({ringMapAsset}) => {
   const rings = useLoader(THREE.TextureLoader, ringMapAsset);
-  console.log(rings, ringMapAsset);
   const geo = React.useMemo(() => {
     const geometry = new THREE.RingBufferGeometry(1.5, 3, 32);
     const pos = geometry.attributes.position as THREE.BufferAttribute;

@@ -1,9 +1,10 @@
 import * as React from "react";
-import {useFrame, useLoader, PointerEvent, Dom} from "react-three-fiber";
+import {useFrame, useLoader, PointerEvent} from "react-three-fiber";
 import {CanvasContext, ActionType} from "./CanvasContext";
 import {useDrag} from "react-use-gesture";
 import * as THREE from "three";
 import {SphereGeometry, BoxBufferGeometry, Color} from "three";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
 import SelectionOutline from "./SelectionOutline";
@@ -11,12 +12,139 @@ import Glow from "./entityParts/glow";
 import Light from "./entityParts/light";
 import Rings from "./entityParts/rings";
 import Clouds from "./entityParts/clouds";
+import {MeshTypeEnum} from "generated/graphql";
 
-const starSprite = require("./star-sprite.svg") as string;
-const circleSprite = require("./circle.svg") as string;
+function useEntityDrag(
+  onDrag: (dx: number, dy: number) => void,
+  onDragStart: () => void,
+  onDragStop: () => void,
+  isDraggingMe: boolean,
+  id: string,
+  library?: boolean,
+  setSelected?: React.Dispatch<React.SetStateAction<string[]>>,
+) {
+  const [{dragging}, dispatch] = React.useContext(CanvasContext);
 
+  const bind = useDrag(
+    ({delta: [dx, dy]}) => {
+      onDrag(dx, dy);
+    },
+    {eventOptions: {pointer: true, passive: false}},
+  );
+  const dragFunctions = bind();
+  const modifiedDragFunctions = React.useMemo(
+    () => ({
+      onPointerMove: (e: PointerEvent) =>
+        dragFunctions.onPointerMove?.(
+          (e as unknown) as React.PointerEvent<Element>,
+        ),
+      onPointerDown: (e: PointerEvent) => {
+        if (library) return;
+        e.stopPropagation();
+        setSelected?.(selected => {
+          if (e.shiftKey) {
+            if (selected.includes(id)) {
+              return selected.filter(s => s !== id);
+            }
+            return [...selected, id];
+          }
+          if (!selected || !selected.includes(id)) {
+            return [id];
+          }
+          return selected;
+        });
+        if (dragging) return;
+        onDragStart();
+        dispatch({type: ActionType.dragging});
+        dragFunctions?.onPointerDown?.(
+          (e as unknown) as React.PointerEvent<Element>,
+        );
+      },
+      onPointerUp: (e: PointerEvent) => {
+        dispatch({type: ActionType.dropped});
+        if (isDraggingMe) {
+          onDragStop();
+        }
+        dragFunctions?.onPointerUp?.(
+          (e as unknown) as React.PointerEvent<Element>,
+        );
+      },
+    }),
+    [
+      dispatch,
+      dragFunctions,
+      dragging,
+      id,
+      isDraggingMe,
+      library,
+      onDragStart,
+      onDragStop,
+      setSelected,
+    ],
+  );
+  return modifiedDragFunctions;
+}
+
+interface EntityMaterialProps {
+  materialMapAsset?: string;
+  color?: string;
+  emissiveColor?: string;
+  emissiveIntensity?: number;
+}
+
+const whiteImage =
+  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAP////////////////////////////////////////////////////////////////////////////////////8B///////////////////////////////////////////////////////////////////////////////////////AABEIAAEAAQMBIgACEQEDEQH/xABLAAEBAAAAAAAAAAAAAAAAAAAAAxABAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AoAD/2Q==";
+const EntityMaterial: React.FC<EntityMaterialProps> = ({
+  materialMapAsset = whiteImage,
+  color,
+  emissiveColor,
+  emissiveIntensity,
+}) => {
+  const mapTexture = useLoader(THREE.TextureLoader, materialMapAsset);
+
+  return (
+    <meshStandardMaterial
+      attach="material"
+      map={materialMapAsset ? mapTexture : undefined}
+      color={color ? new Color(color) : undefined}
+      emissive={emissiveColor ? new Color(emissiveColor) : undefined}
+      emissiveIntensity={emissiveIntensity || 0}
+      side={THREE.FrontSide}
+    />
+  );
+};
+
+interface ModelAssetProps {
+  modelAsset: string;
+  scale?: number;
+}
+const ModelAsset: React.FC<ModelAssetProps> = React.memo(
+  ({scale, modelAsset}) => {
+    const model: any = useLoader(GLTFLoader, modelAsset || whiteImage);
+    const scene = React.useMemo(() => {
+      const scene = model.scene.clone(true);
+      if (scene.materials) {
+        Object.values(scene.materials).forEach((v: any) => {
+          v.emissiveMap = v.map;
+          v.emissiveIntensity = 2;
+          v.emissive = new THREE.Color(0xffffff);
+          v.side = THREE.FrontSide;
+        });
+      }
+
+      return scene;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [modelAsset]);
+
+    scale = (scale || 1) * 2;
+    return (
+      <>
+        <primitive scale={[scale, scale, scale]} object={scene} />
+      </>
+    );
+  },
+);
 interface EntityProps {
-  index: number;
   dragging?: boolean;
   library?: boolean;
   entity: EntityInterface;
@@ -32,7 +160,6 @@ interface EntityProps {
 const noop = () => {};
 
 const Entity: React.FC<EntityProps> = ({
-  index = 0,
   dragging: isDragging,
   library,
   entity,
@@ -47,26 +174,13 @@ const Entity: React.FC<EntityProps> = ({
 }) => {
   const {id, location, appearance, glow, light} = entity;
   const size = 1;
-  const {
-    meshType,
-    color,
-    materialMapAsset,
-    cloudMapAsset,
-    ringMapAsset,
-    emissiveColor,
-    emissiveIntensity,
-  } = appearance || {};
+  const {meshType, cloudMapAsset, ringMapAsset} = appearance || {};
   const scale = appearance?.scale || 1;
   const {position: positionCoords} = location || {position: null};
-  const [{dragging, zoomScale}, dispatch] = React.useContext(CanvasContext);
+  const [{zoomScale}] = React.useContext(CanvasContext);
   const mesh = React.useRef<THREE.Mesh>(new THREE.Mesh());
   const [position, setPosition] = React.useState(positionCoords);
 
-  const mapTexture = useLoader(
-    THREE.TextureLoader,
-    materialMapAsset ||
-      "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAP////////////////////////////////////////////////////////////////////////////////////8B///////////////////////////////////////////////////////////////////////////////////////AABEIAAEAAQMBIgACEQEDEQH/xABLAAEBAAAAAAAAAAAAAAAAAAAAAxABAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AoAD/2Q==",
-  );
   React.useEffect(() => {
     if (!isDraggingMe) {
       setPosition(positionCoords);
@@ -84,53 +198,6 @@ const Entity: React.FC<EntityProps> = ({
     }
   });
 
-  const spriteTexture = useLoader(THREE.TextureLoader, starSprite);
-  const circleTexture = useLoader(THREE.TextureLoader, circleSprite);
-
-  const bind = useDrag(
-    ({delta: [dx, dy]}) => {
-      onDrag(dx, dy);
-    },
-    {eventOptions: {pointer: true, passive: false}},
-  );
-  const dragFunctions = bind();
-  const modifiedDragFunctions = {
-    onPointerMove: (e: PointerEvent) =>
-      dragFunctions.onPointerMove?.(
-        (e as unknown) as React.PointerEvent<Element>,
-      ),
-    onPointerDown: (e: PointerEvent) => {
-      if (library) return;
-      e.stopPropagation();
-      setSelected?.(selected => {
-        if (e.shiftKey) {
-          if (selected.includes(id)) {
-            return selected.filter(s => s !== id);
-          }
-          return [...selected, id];
-        }
-        if (!selected || !selected.includes(id)) {
-          return [id];
-        }
-        return selected;
-      });
-      if (dragging) return;
-      onDragStart();
-      dispatch({type: ActionType.dragging});
-      dragFunctions?.onPointerDown?.(
-        (e as unknown) as React.PointerEvent<Element>,
-      );
-    },
-    onPointerUp: (e: PointerEvent) => {
-      dispatch({type: ActionType.dropped});
-      if (isDraggingMe) {
-        onDragStop();
-      }
-      dragFunctions?.onPointerUp?.(
-        (e as unknown) as React.PointerEvent<Element>,
-      );
-    },
-  };
   let geometry = React.useMemo(() => {
     switch (meshType) {
       case "sphere":
@@ -139,10 +206,19 @@ const Entity: React.FC<EntityProps> = ({
         return new BoxBufferGeometry(size, size, size);
       default:
         break;
-      // case "cube":
-      // default:
     }
   }, [meshType, size]);
+
+  const dragFunctions = useEntityDrag(
+    onDrag,
+    onDragStart,
+    onDragStop,
+    isDraggingMe,
+    id,
+    library,
+    setSelected,
+  );
+
   if (!library && !isDragging && (!location || !position)) return null;
   const meshPosition:
     | THREE.Vector3
@@ -155,50 +231,28 @@ const Entity: React.FC<EntityProps> = ({
         (position?.z || 0) + positionOffset.z,
       ] as [number, number, number]);
 
-  if (meshType === "sprite") {
+  if (meshType === MeshTypeEnum.Model && appearance?.modelAsset) {
     return (
-      <group ref={mesh} position={meshPosition}>
-        <sprite {...modifiedDragFunctions}>
-          <spriteMaterial
-            color={new Color(color || "#fff")}
-            map={spriteTexture}
-            attach="material"
-          />
-        </sprite>
-        {selected && (
-          <sprite>
-            <spriteMaterial
-              color={0xff8800}
-              map={circleTexture}
-              attach="material"
-            />
-          </sprite>
-        )}
-        <Dom>
-          <p className="object-label">{entity.identity?.name}</p>
-        </Dom>
-      </group>
+      <>
+        <group ref={mesh} position={meshPosition} {...dragFunctions}>
+          <ModelAsset modelAsset={appearance.modelAsset} scale={scale} />
+        </group>
+        {selected && <SelectionOutline selected={mesh} />}
+      </>
     );
   }
+  if (!geometry) return null;
+
   return (
     <>
       <group ref={mesh} position={meshPosition}>
-        <mesh uuid={id} geometry={geometry} {...modifiedDragFunctions}>
-          <meshStandardMaterial
-            attach="material"
-            map={materialMapAsset ? mapTexture : undefined}
-            color={color ? new Color(color) : undefined}
-            emissive={emissiveColor ? new Color(emissiveColor) : undefined}
-            emissiveIntensity={emissiveIntensity || 0}
-            side={THREE.FrontSide}
+        <mesh uuid={id} geometry={geometry} {...dragFunctions}>
+          <EntityMaterial
+            materialMapAsset={appearance?.materialMapAsset ?? undefined}
+            emissiveColor={appearance?.emissiveColor ?? undefined}
+            emissiveIntensity={appearance?.emissiveIntensity ?? undefined}
+            color={appearance?.color ?? undefined}
           />
-          {/* <Dom>
-            <p className="object-label">
-              {entity.location?.position
-                ? Object.values(entity.location?.position).join(", ")
-                : ""}
-            </p>
-          </Dom> */}
         </mesh>
         {glow && (
           <Glow

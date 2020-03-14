@@ -24,6 +24,7 @@ const sub = gql`
         appearance {
           color
           meshType
+          modelAsset
           materialMapAsset
           ringMapAsset
           cloudMapAsset
@@ -64,10 +65,11 @@ export default function UniversalSandboxEditor() {
     {flightId: string}
   >(sub, {flightId: "template"});
   const entities = useEntityState(state => state.data) || [];
+  console.log(entities);
   const client = useApolloClient();
   return (
     <div className="universal-sandbox-editor">
-      <Canvas id="level-editor">
+      <Canvas id="level-editor" sRGB={true}>
         <ApolloProvider client={client}>
           <CanvasContextProvider recenter={recenter} zoomScale={zoomScale}>
             <CanvasApp
