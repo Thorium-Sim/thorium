@@ -134,28 +134,6 @@ export default (
         requestDidStart() {
           return {
             responseForOperation,
-            parsingDidStart(requestContext) {
-              requestContext.context.subscriptionResponses = {};
-            },
-            willSendResponse(requestContext) {
-              if (requestContext.operation.operation === "mutation") {
-                // If we have any patch subscriptions, send them at the end of the entire operation.
-                const {context} = requestContext;
-                if (context.subscriptionResponses) {
-                  Object.entries(context.subscriptionResponses).forEach(
-                    ([key, value]) => {
-                      if (Array.isArray(value)) {
-                        value.forEach(v => {
-                          pubsub.publish(key, v);
-                        });
-                      } else {
-                        pubsub.publish(key, value);
-                      }
-                    },
-                  );
-                }
-              }
-            },
           };
         },
       },

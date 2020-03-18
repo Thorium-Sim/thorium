@@ -14,38 +14,33 @@ import OrbitControlsContainer from "./OrbitControlsContainer";
 
 const sub = gql`
   subscription TemplateEntities {
-    templateEntities {
-      op
-      path
-      value
-      values {
-        id
-        identity {
-          name
-        }
-        template {
-          category
-        }
-        appearance {
-          color
-          meshType
-          modelAsset
-          materialMapAsset
-          ringMapAsset
-          cloudMapAsset
-          emissiveColor
-          emissiveIntensity
-          scale
-        }
-        light {
-          intensity
-          decay
-          color
-        }
-        glow {
-          glowMode
-          color
-        }
+    entities(flightId: "template", template: true) {
+      id
+      identity {
+        name
+      }
+      template {
+        category
+      }
+      appearance {
+        color
+        meshType
+        modelAsset
+        materialMapAsset
+        ringMapAsset
+        cloudMapAsset
+        emissiveColor
+        emissiveIntensity
+        scale
+      }
+      light {
+        intensity
+        decay
+        color
+      }
+      glow {
+        glowMode
+        color
       }
     }
   }

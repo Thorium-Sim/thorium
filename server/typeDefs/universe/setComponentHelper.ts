@@ -1,8 +1,8 @@
 import App from "../../app";
 import produce from "immer";
 import * as components from "../../classes/universe/components";
-import {handlePatches} from "../../helpers/filterPatches";
 import {pascalCase} from "change-case";
+import {pubsub} from "../../helpers/subscriptionManager";
 
 export function setComponent<C>(componentProperty) {
   const ComponentClass = components[pascalCase(componentProperty)] as C &
@@ -21,26 +21,22 @@ export function setComponent<C>(componentProperty) {
       // to be added.
       return;
     }
-    App.entities = produce(
-      App.entities,
-      draft => {
-        const entity = draft[entityIndex];
-        if (!entity[componentProperty]) {
-          entity[componentProperty] = new ComponentClass({
-            ...properties,
-          });
-        } else {
-          Object.entries(properties).forEach(([key, value]) => {
-            entity[componentProperty][key] = value;
-          });
-        }
-      },
-
-      handlePatches({
-        context,
-        publishKeys: ["entities", "templateEntities"],
-        subFilterValues: {flightId: flightId, template},
-      }),
-    );
+    App.entities = produce(App.entities, draft => {
+      const entity = draft[entityIndex];
+      if (!entity[componentProperty]) {
+        entity[componentProperty] = new ComponentClass({
+          ...properties,
+        });
+      } else {
+        Object.entries(properties).forEach(([key, value]) => {
+          entity[componentProperty][key] = value;
+        });
+      }
+    });
+    pubsub.publish("entities", {
+      flightId,
+      template: template ?? null,
+      entities: App.entities,
+    });
   };
 }

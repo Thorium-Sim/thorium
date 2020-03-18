@@ -13,40 +13,35 @@ import {useApolloClient, ApolloProvider} from "@apollo/client";
 const sub = gql`
   subscription Entities($flightId: ID!) {
     entities(flightId: $flightId) {
-      op
-      path
-      value
-      values {
-        id
-        identity {
-          name
-        }
-        appearance {
-          color
-          meshType
-          modelAsset
-          materialMapAsset
-          ringMapAsset
-          cloudMapAsset
-          emissiveColor
-          emissiveIntensity
-          scale
-        }
-        light {
-          intensity
-          decay
-          color
-        }
-        glow {
-          glowMode
-          color
-        }
-        location {
-          position {
-            x
-            y
-            z
-          }
+      id
+      identity {
+        name
+      }
+      appearance {
+        color
+        meshType
+        modelAsset
+        materialMapAsset
+        ringMapAsset
+        cloudMapAsset
+        emissiveColor
+        emissiveIntensity
+        scale
+      }
+      light {
+        intensity
+        decay
+        color
+      }
+      glow {
+        glowMode
+        color
+      }
+      location {
+        position {
+          x
+          y
+          z
         }
       }
     }
@@ -65,7 +60,6 @@ export default function UniversalSandboxEditor() {
     {flightId: string}
   >(sub, {flightId: "template"});
   const entities = useEntityState(state => state.data) || [];
-  console.log(entities);
   const client = useApolloClient();
   return (
     <div className="universal-sandbox-editor">

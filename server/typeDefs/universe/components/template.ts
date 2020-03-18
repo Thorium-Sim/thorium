@@ -1,11 +1,5 @@
-import {gql, withFilter} from "apollo-server-express";
-import {pubsub} from "../../../helpers/subscriptionManager";
-import App from "../../../app";
+import {gql} from "apollo-server-express";
 import {setComponent} from "../setComponentHelper";
-import {
-  patchResolve,
-  handleInitialSubResponse,
-} from "../../../helpers/filterPatches";
 
 const schema = gql`
   type TemplateComponent {
@@ -15,9 +9,6 @@ const schema = gql`
   extend type Entity {
     template: TemplateComponent
   }
-  extend type Subscription {
-    templateEntities: [EntitiesPatch]
-  }
   extend type Mutation {
     entitySetTemplate(id: ID, category: String!): String
   }
@@ -26,26 +17,6 @@ const schema = gql`
 const resolver = {
   Mutation: {
     entitySetTemplate: setComponent("template"),
-  },
-  Subscription: {
-    templateEntities: {
-      resolve: patchResolve,
-      subscribe: withFilter(
-        () => {
-          const id = handleInitialSubResponse(id => {
-            const entities = App.entities.filter(e => Boolean(e.template));
-            pubsub.publish(id, {
-              template: true,
-              patches: [{values: entities}],
-            });
-          });
-          return pubsub.asyncIterator([id, "templateEntities"]);
-        },
-        rootValue => {
-          return rootValue.template;
-        },
-      ),
-    },
   },
 };
 

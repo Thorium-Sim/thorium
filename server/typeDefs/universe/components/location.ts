@@ -2,8 +2,8 @@ import {gql} from "apollo-server-express";
 import App from "../../../app";
 import produce from "immer";
 import {Location} from "../../../classes/universe/components";
-import {handlePatches} from "../../../helpers/filterPatches";
 import {setComponent} from "../setComponentHelper";
+import {pubsub} from "../../../helpers/subscriptionManager";
 
 const schema = gql`
   type Quaternion {
@@ -67,26 +67,23 @@ const resolver = {
       const flightId = entity?.flightId;
       if (!flightId) return;
 
-      App.entities = produce(
-        App.entities,
-        draft => {
-          entities.forEach(e => {
-            const entityIndex = draft.findIndex(ee => ee.id === e.id);
-            const entity = draft[entityIndex];
-            if (!entity.location) {
-              entity.location = new Location({position: e.position});
-            } else {
-              entity.location.position = e.position;
-            }
-          });
-        },
+      App.entities = produce(App.entities, draft => {
+        entities.forEach(e => {
+          const entityIndex = draft.findIndex(ee => ee.id === e.id);
+          const entity = draft[entityIndex];
+          if (!entity.location) {
+            entity.location = new Location({position: e.position});
+          } else {
+            entity.location.position = e.position;
+          }
+        });
+      });
 
-        handlePatches({
-          context,
-          publishKeys: ["entities"],
-          subFilterValues: {flightId: flightId},
-        }),
-      );
+      pubsub.publish("entities", {
+        flightId,
+        template: false,
+        entities: App.entities,
+      });
     },
     entityRemoveLocation(root, {id}, context) {
       const entityId = id || context.entityId;
