@@ -1,10 +1,14 @@
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../../helpers/subscriptionManager";
-import uuid from "uuid";
 import App from "../../app";
-import filterPatches, {handlePatches} from "../../helpers/filterPatches";
+import {
+  handlePatches,
+  patchResolve,
+  handleInitialSubResponse,
+} from "../../helpers/filterPatches";
 import {Entity} from "../../classes";
 import produce from "immer";
+import {Template} from "../../classes/universe/components";
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -47,7 +51,7 @@ const schema = gql`
     entities(flightId: ID!): [Entity]!
   }
   extend type Mutation {
-    entityCreate(flightId: ID!): Entity!
+    entityCreate(flightId: ID!, template: Boolean): Entity!
     entityRemove(id: [ID!]!): String
   }
   extend type Subscription {
@@ -58,26 +62,14 @@ const schema = gql`
   }
 `;
 
-function resolve(rootQuery, _args, _context, info) {
-  // TODO: Make this clean out replace object keys that are not included as well.
-  if (rootQuery.patches.length === 1 && rootQuery.patches[0]?.values) {
-    return rootQuery.patches;
-  }
-  return filterPatches(rootQuery.patches, info);
-}
-
-function handleInitialSubResponse(fn: (id: string) => void) {
-  const id = uuid.v4();
-  process.nextTick(() => {
-    fn(id);
-  });
-  return id;
-}
 const resolver = {
   Query: {},
   Mutation: {
-    entityCreate(rootQuery, {flightId}, context) {
+    entityCreate(rootQuery, {flightId, template}, context) {
       const entity = new Entity({flightId});
+      if (template) {
+        entity.template = new Template({category: "generic"});
+      }
       context.entityId = entity.id;
       App.entities = produce(
         App.entities,
@@ -86,8 +78,8 @@ const resolver = {
         },
         handlePatches({
           context,
-          publishKey: "entities",
-          subFilterValues: {flightId},
+          publishKeys: ["entities", "templateEntities"],
+          subFilterValues: {flightId, template},
         }),
       );
       return entity;
@@ -95,6 +87,7 @@ const resolver = {
     entityRemove(rootQuery, {id: idList}, context) {
       const entities = App.entities.filter(e => idList.includes(e.id));
       const flightId = entities[0].flightId;
+      const template = Boolean(entities.find(t => t.template));
       App.entities = produce(
         App.entities,
         draft => {
@@ -107,15 +100,15 @@ const resolver = {
         },
         handlePatches({
           context,
-          publishKey: "entities",
-          subFilterValues: {flightId},
+          publishKeys: ["entities", "templateEntities"],
+          subFilterValues: {flightId, template},
         }),
       );
     },
   },
   Subscription: {
     entity: {
-      resolve,
+      resolve: patchResolve,
       subscribe: withFilter(
         (rootValue, args) => {
           const id = handleInitialSubResponse(id => {
@@ -130,12 +123,12 @@ const resolver = {
       ),
     },
     entities: {
-      resolve,
+      resolve: patchResolve,
       subscribe: withFilter(
         (rootValue, args) => {
           const id = handleInitialSubResponse(id => {
             const entities = App.entities.filter(
-              e => e.flightId === args.flightId,
+              e => e.flightId === args.flightId && !e.template,
             );
             pubsub.publish(id, {
               flightId: args.flightId,
@@ -150,12 +143,12 @@ const resolver = {
       ),
     },
     parentStages: {
-      resolve,
+      resolve: patchResolve,
       subscribe: withFilter(
         (rootValue, args) => {
           const id = handleInitialSubResponse(id => {
             const entities = App.entities.filter(
-              e => e.flightId === args.flightId && !e.stageChild,
+              e => e.flightId === args.flightId && !e.stageChild && !e.template,
             );
             pubsub.publish(id, {
               flightId: args.flightId,
@@ -171,7 +164,7 @@ const resolver = {
       ),
     },
     stageChildren: {
-      resolve,
+      resolve: patchResolve,
       subscribe: withFilter(
         (rootValue, args) => {
           const id = handleInitialSubResponse(id => {

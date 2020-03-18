@@ -1,0 +1,14 @@
+subscription AssetFolders {
+  assetFolderChange {
+    name
+    fullPath
+    id
+    folderPath
+    objects {
+      id
+      name
+      fullPath
+      url
+    }
+  }
+}

@@ -68,7 +68,7 @@ const Nebula = () => {
       m => new THREE.MeshBasicMaterial({map: m, side: THREE.BackSide}),
     );
     return mats;
-  }, []);
+  }, [starsImage]);
 
   const geo = React.useRef();
 

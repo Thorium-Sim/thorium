@@ -1,9 +1,12 @@
 import * as React from "react";
 import {useFrame, useThree} from "react-three-fiber";
 import {OrthographicCamera} from "three";
+import PanControls from "./PanControlsContainer";
 
-interface CameraProps {}
-const Camera: React.FC<CameraProps> = props => {
+interface CameraProps {
+  recenter: any;
+}
+const Camera: React.FC<CameraProps> = ({recenter}) => {
   const ref = React.useRef(new OrthographicCamera(0, 0, 0, 0, 0, 0));
   const {setDefaultCamera, gl} = useThree();
   const frustumSize = 10;
@@ -19,19 +22,21 @@ const Camera: React.FC<CameraProps> = props => {
   useFrame(() => ref.current.updateMatrixWorld());
 
   return (
-    <orthographicCamera
-      ref={ref}
-      args={[
-        (frustumSize * aspect) / -2,
-        (frustumSize * aspect) / 2,
-        frustumSize / 2,
-        frustumSize / -2,
-        0,
-        100000000000,
-      ]}
-      zoom={1}
-      {...props}
-    />
+    <>
+      <PanControls recenter={recenter} />
+      <orthographicCamera
+        ref={ref}
+        args={[
+          (frustumSize * aspect) / -2,
+          (frustumSize * aspect) / 2,
+          frustumSize / 2,
+          frustumSize / -2,
+          0,
+          100000000000,
+        ]}
+        zoom={1}
+      />
+    </>
   );
 };
 

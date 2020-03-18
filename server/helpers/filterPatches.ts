@@ -1,3 +1,5 @@
+import uuid from "uuid";
+
 export default function filterPatches(patches, info) {
   // We'll collect the information about the subscription
   // from the info argument and use that to determine
@@ -27,11 +29,11 @@ export default function filterPatches(patches, info) {
 
 export function handlePatches({
   context,
-  publishKey,
+  publishKeys = ["entities"],
   subFilterValues,
 }: {
   context: any;
-  publishKey: string;
+  publishKeys: string[];
   subFilterValues: {[key: string]: any};
 }) {
   // Context is GraphQL Context.
@@ -41,27 +43,44 @@ export function handlePatches({
   // unnecessary subscription calls.
   return function(patches) {
     if (!context.subscriptionResponses) context.subscriptionResponses = {};
-    if (!context.subscriptionResponses[publishKey]) {
-      context.subscriptionResponses[publishKey] = [
-        {...subFilterValues, patches},
-      ];
-    } else {
-      context.subscriptionResponses[publishKey] = context.subscriptionResponses[
-        publishKey
-      ].map(e => {
-        const includesSubFilterValues = Object.entries(subFilterValues).reduce(
-          (prev, [key, value]) => {
+    publishKeys.forEach(publishKey => {
+      if (!context.subscriptionResponses[publishKey]) {
+        context.subscriptionResponses[publishKey] = [
+          {...subFilterValues, patches},
+        ];
+      } else {
+        context.subscriptionResponses[
+          publishKey
+        ] = context.subscriptionResponses[publishKey].map(e => {
+          const includesSubFilterValues = Object.entries(
+            subFilterValues,
+          ).reduce((prev, [key, value]) => {
             if (!prev) return false;
             if (e[key] !== value) return false;
             return true;
-          },
-          true,
-        );
-        if (includesSubFilterValues) {
-          return {...e, patches: e.patches.concat(patches)};
-        }
-        return e;
-      });
-    }
+          }, true);
+          if (includesSubFilterValues) {
+            return {...e, patches: e.patches.concat(patches)};
+          }
+          return e;
+        });
+      }
+    });
   };
+}
+
+export function patchResolve(rootQuery, _args, _context, info) {
+  // TODO: Make this clean out replace object keys that are not included as well.
+  if (rootQuery.patches.length === 1 && rootQuery.patches[0]?.values) {
+    return rootQuery.patches;
+  }
+  return filterPatches(rootQuery.patches, info);
+}
+
+export function handleInitialSubResponse(fn: (id: string) => void) {
+  const id = uuid.v4();
+  process.nextTick(() => {
+    fn(id);
+  });
+  return id;
 }

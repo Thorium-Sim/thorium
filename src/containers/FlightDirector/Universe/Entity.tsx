@@ -100,7 +100,10 @@ const EntityMaterial: React.FC<EntityMaterialProps> = ({
   emissiveColor,
   emissiveIntensity,
 }) => {
-  const mapTexture = useLoader(THREE.TextureLoader, materialMapAsset);
+  const mapTexture = useLoader(
+    THREE.TextureLoader,
+    `/assets${materialMapAsset}`,
+  );
 
   return (
     <meshStandardMaterial
@@ -120,7 +123,10 @@ interface ModelAssetProps {
 }
 const ModelAsset: React.FC<ModelAssetProps> = React.memo(
   ({scale, modelAsset}) => {
-    const model: any = useLoader(GLTFLoader, modelAsset || whiteImage);
+    const model: any = useLoader(
+      GLTFLoader,
+      modelAsset ? `/assets${modelAsset}` : whiteImage,
+    );
     const scene = React.useMemo(() => {
       const scene = model.scene.clone(true);
       if (scene.materials) {
@@ -175,7 +181,7 @@ const Entity: React.FC<EntityProps> = ({
   const {id, location, appearance, glow, light} = entity;
   const size = 1;
   const {meshType, cloudMapAsset, ringMapAsset} = appearance || {};
-  const scale = appearance?.scale || 1;
+  const scale = library ? 1 : appearance?.scale || 1;
   const {position: positionCoords} = location || {position: null};
   const [{zoomScale}] = React.useContext(CanvasContext);
   const mesh = React.useRef<THREE.Mesh>(new THREE.Mesh());
@@ -192,9 +198,9 @@ const Entity: React.FC<EntityProps> = ({
     let zoomedScale = (1 / zoom) * 20;
     if (zoomScale || (meshType === "sprite" && !library)) {
       zoomedScale *= 2;
-      mesh.current.scale.set(zoomedScale, zoomedScale, zoomedScale);
+      mesh.current?.scale.set(zoomedScale, zoomedScale, zoomedScale);
     } else {
-      mesh.current.scale.set(scale, scale, scale);
+      mesh.current?.scale.set(scale, scale, scale);
     }
   });
 

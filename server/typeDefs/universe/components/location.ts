@@ -83,7 +83,7 @@ const resolver = {
 
         handlePatches({
           context,
-          publishKey: "entities",
+          publishKeys: ["entities"],
           subFilterValues: {flightId: flightId},
         }),
       );

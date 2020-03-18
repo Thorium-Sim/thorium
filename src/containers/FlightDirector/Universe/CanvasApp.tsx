@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useThree} from "react-three-fiber";
-import PanControls from "./PanControlsContainer";
-import Camera from "./Camera";
+import OrthoCamera from "./OrthoCamera";
+import PerspectiveCamera from "./PerspectiveCamera";
 import Grid from "./Grid";
 import use3DMousePosition from "./use3DMousePosition";
 import BackPlane from "./BackPlane";
@@ -14,20 +14,8 @@ import {
   useEntityRemoveMutation,
   useEntitiesSetPositionMutation,
   Entity as EntityType,
-  MeshTypeEnum,
 } from "generated/graphql";
-import Nebula from "./Nebula";
 
-interface SceneControlProps {
-  recenter: {};
-}
-const SceneControl: React.FC<SceneControlProps> = ({recenter}) => {
-  return (
-    <>
-      <PanControls recenter={recenter} />
-    </>
-  );
-};
 export type PositionTuple = [number, number, number];
 interface CanvasAppProps {
   recenter: {};
@@ -164,8 +152,8 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   ]);
   return (
     <>
-      <Camera />
-      <SceneControl recenter={recenter} />
+      {/* <PerspectiveCamera recenter={recenter} /> */}
+      <OrthoCamera recenter={recenter} />
       <Grid />
       <ambientLight intensity={lighting ? 0.4 : 1} />
       {dragging && (

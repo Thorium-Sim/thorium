@@ -6,3 +6,4 @@ export {Stage} from "./stage";
 export {StageChild} from "./stageChild";
 export {Light} from "./light";
 export {Glow} from "./glow";
+export {Template} from "./template";

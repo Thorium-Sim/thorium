@@ -64,26 +64,26 @@ export type AppearanceComponent = {
 
 export type Asset = {
   __typename?: "Asset";
-  assetKey?: Maybe<Scalars["String"]>;
-  url?: Maybe<Scalars["String"]>;
+  assetKey: Scalars["String"];
+  url: Scalars["String"];
 };
 
 export type AssetFolder = {
   __typename?: "AssetFolder";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  folderPath?: Maybe<Scalars["String"]>;
-  fullPath?: Maybe<Scalars["String"]>;
-  objects?: Maybe<Array<Maybe<AssetObject>>>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  folderPath: Scalars["String"];
+  fullPath: Scalars["String"];
+  objects: Array<AssetObject>;
 };
 
 export type AssetObject = {
   __typename?: "AssetObject";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  folderPath?: Maybe<Scalars["String"]>;
-  fullPath?: Maybe<Scalars["String"]>;
-  url?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  folderPath: Scalars["String"];
+  fullPath: Scalars["String"];
+  url: Scalars["String"];
 };
 
 export type BehaviorComponent = {
@@ -813,6 +813,7 @@ export type Entity = {
   stageChild?: Maybe<StageChildComponent>;
   light?: Maybe<LightComponent>;
   glow?: Maybe<GlowComponent>;
+  template?: Maybe<TemplateComponent>;
 };
 
 export type EntityCoordinates = {
@@ -1625,6 +1626,7 @@ export type Mutation = {
   entityRemoveLight?: Maybe<Scalars["String"]>;
   entitySetGlow?: Maybe<Scalars["String"]>;
   entityRemoveGlow?: Maybe<Scalars["String"]>;
+  entitySetTemplate?: Maybe<Scalars["String"]>;
   triggerAction?: Maybe<Scalars["String"]>;
   addSimulatorAmbiance?: Maybe<Scalars["String"]>;
   updateSimulatorAmbiance?: Maybe<Scalars["String"]>;
@@ -2384,6 +2386,11 @@ export type MutationEntitySetGlowArgs = {
 
 export type MutationEntityRemoveGlowArgs = {
   id: Scalars["ID"];
+};
+
+export type MutationEntitySetTemplateArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  category: Scalars["String"];
 };
 
 export type MutationTriggerActionArgs = {
@@ -5796,6 +5803,7 @@ export type MutationCountermeasuresSetFdNoteArgs = {
 
 export type MutationEntityCreateArgs = {
   flightId: Scalars["ID"];
+  template?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MutationEntityRemoveArgs = {
@@ -7439,8 +7447,9 @@ export type StringCoordinatesInput = {
 export type Subscription = {
   __typename?: "Subscription";
   _empty?: Maybe<Scalars["String"]>;
+  templateEntities?: Maybe<Array<Maybe<EntitiesPatch>>>;
   actionsUpdate?: Maybe<Action>;
-  assetFolderChange?: Maybe<Array<Maybe<AssetFolder>>>;
+  assetFolderChange: Array<AssetFolder>;
   clientChanged?: Maybe<Array<Maybe<Client>>>;
   clientPing?: Maybe<Scalars["Boolean"]>;
   keypadsUpdate?: Maybe<Array<Maybe<Keypad>>>;
@@ -8369,6 +8378,11 @@ export type Template = {
   id?: Maybe<Scalars["ID"]>;
 };
 
+export type TemplateComponent = {
+  __typename?: "TemplateComponent";
+  category?: Maybe<Scalars["String"]>;
+};
+
 export enum Terminal_Status {
   F = "F",
   O = "O",
@@ -9109,6 +9123,53 @@ export type CountermeasuresSetFdNoteMutation = {__typename?: "Mutation"} & Pick<
   "countermeasuresSetFDNote"
 >;
 
+export type AssetFoldersSubscriptionVariables = {};
+
+export type AssetFoldersSubscription = {__typename?: "Subscription"} & {
+  assetFolderChange: Array<
+    {__typename?: "AssetFolder"} & Pick<
+      AssetFolder,
+      "name" | "fullPath" | "id" | "folderPath"
+    > & {
+        objects: Array<
+          {__typename?: "AssetObject"} & Pick<
+            AssetObject,
+            "id" | "name" | "fullPath" | "url"
+          >
+        >;
+      }
+  >;
+};
+
+export type AssetsAddFolderMutationVariables = {
+  name: Scalars["String"];
+  fullPath: Scalars["String"];
+  folderPath: Scalars["String"];
+};
+
+export type AssetsAddFolderMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addAssetFolder"
+>;
+
+export type AssetsRemoveObjectMutationVariables = {
+  fullPath: Scalars["String"];
+};
+
+export type AssetsRemoveObjectMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeAssetObject"
+>;
+
+export type AssetsRemoveFolderMutationVariables = {
+  fullPath: Scalars["String"];
+};
+
+export type AssetsRemoveFolderMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeAssetFolder"
+>;
+
 export type TemplateFragmentFragment = {__typename: "Template"} & Pick<
   Template,
   "id"
@@ -9274,6 +9335,15 @@ export type SetSoundPlayerMutation = {__typename?: "Mutation"} & Pick<
   "clientSetSoundPlayer"
 >;
 
+export type EntityCreateTemplateMutationVariables = {
+  name: Scalars["String"];
+};
+
+export type EntityCreateTemplateMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetTemplate" | "entitySetIdentity" | "entitySetAppearance"
+> & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
+
 export type EntityCreateMutationVariables = {
   flightId: Scalars["ID"];
   position: EntityCoordinatesInput;
@@ -9342,6 +9412,16 @@ export type EntitiesSetPositionMutationVariables = {
 export type EntitiesSetPositionMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entitiesSetPosition"
+>;
+
+export type EntitySetTemplateMutationVariables = {
+  id?: Maybe<Scalars["ID"]>;
+  category: Scalars["String"];
+};
+
+export type EntitySetTemplateMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetTemplate"
 >;
 
 export interface IntrospectionResultData {
@@ -9462,10 +9542,10 @@ const result: IntrospectionResultData = {
         name: "Patch",
         possibleTypes: [
           {
-            name: "EntityPatch",
+            name: "EntitiesPatch",
           },
           {
-            name: "EntitiesPatch",
+            name: "EntityPatch",
           },
         ],
       },
@@ -10878,6 +10958,205 @@ export type CountermeasuresSetFdNoteMutationOptions = ApolloReactCommon.BaseMuta
   CountermeasuresSetFdNoteMutation,
   CountermeasuresSetFdNoteMutationVariables
 >;
+export const AssetFoldersDocument = gql`
+  subscription AssetFolders {
+    assetFolderChange {
+      name
+      fullPath
+      id
+      folderPath
+      objects {
+        id
+        name
+        fullPath
+        url
+      }
+    }
+  }
+`;
+
+/**
+ * __useAssetFoldersSubscription__
+ *
+ * To run a query within a React component, call `useAssetFoldersSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useAssetFoldersSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAssetFoldersSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAssetFoldersSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    AssetFoldersSubscription,
+    AssetFoldersSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    AssetFoldersSubscription,
+    AssetFoldersSubscriptionVariables
+  >(AssetFoldersDocument, baseOptions);
+}
+export type AssetFoldersSubscriptionHookResult = ReturnType<
+  typeof useAssetFoldersSubscription
+>;
+export type AssetFoldersSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  AssetFoldersSubscription
+>;
+export const AssetsAddFolderDocument = gql`
+  mutation AssetsAddFolder(
+    $name: String!
+    $fullPath: String!
+    $folderPath: String!
+  ) {
+    addAssetFolder(name: $name, fullPath: $fullPath, folderPath: $folderPath)
+  }
+`;
+export type AssetsAddFolderMutationFn = ApolloReactCommon.MutationFunction<
+  AssetsAddFolderMutation,
+  AssetsAddFolderMutationVariables
+>;
+
+/**
+ * __useAssetsAddFolderMutation__
+ *
+ * To run a mutation, you first call `useAssetsAddFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssetsAddFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assetsAddFolderMutation, { data, loading, error }] = useAssetsAddFolderMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      fullPath: // value for 'fullPath'
+ *      folderPath: // value for 'folderPath'
+ *   },
+ * });
+ */
+export function useAssetsAddFolderMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AssetsAddFolderMutation,
+    AssetsAddFolderMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AssetsAddFolderMutation,
+    AssetsAddFolderMutationVariables
+  >(AssetsAddFolderDocument, baseOptions);
+}
+export type AssetsAddFolderMutationHookResult = ReturnType<
+  typeof useAssetsAddFolderMutation
+>;
+export type AssetsAddFolderMutationResult = ApolloReactCommon.MutationResult<
+  AssetsAddFolderMutation
+>;
+export type AssetsAddFolderMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AssetsAddFolderMutation,
+  AssetsAddFolderMutationVariables
+>;
+export const AssetsRemoveObjectDocument = gql`
+  mutation AssetsRemoveObject($fullPath: String!) {
+    removeAssetObject(fullPath: $fullPath)
+  }
+`;
+export type AssetsRemoveObjectMutationFn = ApolloReactCommon.MutationFunction<
+  AssetsRemoveObjectMutation,
+  AssetsRemoveObjectMutationVariables
+>;
+
+/**
+ * __useAssetsRemoveObjectMutation__
+ *
+ * To run a mutation, you first call `useAssetsRemoveObjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssetsRemoveObjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assetsRemoveObjectMutation, { data, loading, error }] = useAssetsRemoveObjectMutation({
+ *   variables: {
+ *      fullPath: // value for 'fullPath'
+ *   },
+ * });
+ */
+export function useAssetsRemoveObjectMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AssetsRemoveObjectMutation,
+    AssetsRemoveObjectMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AssetsRemoveObjectMutation,
+    AssetsRemoveObjectMutationVariables
+  >(AssetsRemoveObjectDocument, baseOptions);
+}
+export type AssetsRemoveObjectMutationHookResult = ReturnType<
+  typeof useAssetsRemoveObjectMutation
+>;
+export type AssetsRemoveObjectMutationResult = ApolloReactCommon.MutationResult<
+  AssetsRemoveObjectMutation
+>;
+export type AssetsRemoveObjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AssetsRemoveObjectMutation,
+  AssetsRemoveObjectMutationVariables
+>;
+export const AssetsRemoveFolderDocument = gql`
+  mutation AssetsRemoveFolder($fullPath: String!) {
+    removeAssetFolder(fullPath: $fullPath)
+  }
+`;
+export type AssetsRemoveFolderMutationFn = ApolloReactCommon.MutationFunction<
+  AssetsRemoveFolderMutation,
+  AssetsRemoveFolderMutationVariables
+>;
+
+/**
+ * __useAssetsRemoveFolderMutation__
+ *
+ * To run a mutation, you first call `useAssetsRemoveFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssetsRemoveFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assetsRemoveFolderMutation, { data, loading, error }] = useAssetsRemoveFolderMutation({
+ *   variables: {
+ *      fullPath: // value for 'fullPath'
+ *   },
+ * });
+ */
+export function useAssetsRemoveFolderMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AssetsRemoveFolderMutation,
+    AssetsRemoveFolderMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AssetsRemoveFolderMutation,
+    AssetsRemoveFolderMutationVariables
+  >(AssetsRemoveFolderDocument, baseOptions);
+}
+export type AssetsRemoveFolderMutationHookResult = ReturnType<
+  typeof useAssetsRemoveFolderMutation
+>;
+export type AssetsRemoveFolderMutationResult = ApolloReactCommon.MutationResult<
+  AssetsRemoveFolderMutation
+>;
+export type AssetsRemoveFolderMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AssetsRemoveFolderMutation,
+  AssetsRemoveFolderMutationVariables
+>;
 export const TemplateDocument = gql`
   query Template($simulatorId: ID!) {
     _template(simulatorId: $simulatorId) {
@@ -11399,6 +11678,59 @@ export type SetSoundPlayerMutationOptions = ApolloReactCommon.BaseMutationOption
   SetSoundPlayerMutation,
   SetSoundPlayerMutationVariables
 >;
+export const EntityCreateTemplateDocument = gql`
+  mutation EntityCreateTemplate($name: String!) {
+    entityCreate(flightId: "template", template: true) {
+      id
+    }
+    entitySetTemplate(category: "generic")
+    entitySetIdentity(name: $name)
+    entitySetAppearance(meshType: cube, color: "#0088ff")
+  }
+`;
+export type EntityCreateTemplateMutationFn = ApolloReactCommon.MutationFunction<
+  EntityCreateTemplateMutation,
+  EntityCreateTemplateMutationVariables
+>;
+
+/**
+ * __useEntityCreateTemplateMutation__
+ *
+ * To run a mutation, you first call `useEntityCreateTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityCreateTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityCreateTemplateMutation, { data, loading, error }] = useEntityCreateTemplateMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useEntityCreateTemplateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityCreateTemplateMutation,
+    EntityCreateTemplateMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityCreateTemplateMutation,
+    EntityCreateTemplateMutationVariables
+  >(EntityCreateTemplateDocument, baseOptions);
+}
+export type EntityCreateTemplateMutationHookResult = ReturnType<
+  typeof useEntityCreateTemplateMutation
+>;
+export type EntityCreateTemplateMutationResult = ApolloReactCommon.MutationResult<
+  EntityCreateTemplateMutation
+>;
+export type EntityCreateTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityCreateTemplateMutation,
+  EntityCreateTemplateMutationVariables
+>;
 export const EntityCreateDocument = gql`
   mutation EntityCreate(
     $flightId: ID!
@@ -11710,4 +12042,53 @@ export type EntitiesSetPositionMutationResult = ApolloReactCommon.MutationResult
 export type EntitiesSetPositionMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntitiesSetPositionMutation,
   EntitiesSetPositionMutationVariables
+>;
+export const EntitySetTemplateDocument = gql`
+  mutation EntitySetTemplate($id: ID, $category: String!) {
+    entitySetTemplate(id: $id, category: $category)
+  }
+`;
+export type EntitySetTemplateMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetTemplateMutation,
+  EntitySetTemplateMutationVariables
+>;
+
+/**
+ * __useEntitySetTemplateMutation__
+ *
+ * To run a mutation, you first call `useEntitySetTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetTemplateMutation, { data, loading, error }] = useEntitySetTemplateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useEntitySetTemplateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetTemplateMutation,
+    EntitySetTemplateMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetTemplateMutation,
+    EntitySetTemplateMutationVariables
+  >(EntitySetTemplateDocument, baseOptions);
+}
+export type EntitySetTemplateMutationHookResult = ReturnType<
+  typeof useEntitySetTemplateMutation
+>;
+export type EntitySetTemplateMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetTemplateMutation
+>;
+export type EntitySetTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetTemplateMutation,
+  EntitySetTemplateMutationVariables
 >;

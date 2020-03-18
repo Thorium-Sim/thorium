@@ -9,6 +9,7 @@ import {
   StageChild,
   Glow,
   Light,
+  Template,
 } from "./components";
 import {componentRegistry} from "./component";
 import {immerable} from "immer";
@@ -30,6 +31,7 @@ export class Entity {
   stageChild?: StageChild;
   glow?: Glow;
   light?: Light;
+  template?: Template;
 
   static class = "Entity";
   class = "Entity";

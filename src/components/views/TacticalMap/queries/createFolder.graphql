@@ -1,0 +1,7 @@
+mutation AssetsAddFolder(
+  $name: String!
+  $fullPath: String!
+  $folderPath: String!
+) {
+  addAssetFolder(name: $name, fullPath: $fullPath, folderPath: $folderPath)
+}

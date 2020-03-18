@@ -203,6 +203,8 @@
     "@babel/polyfill": "^7.6.0",
     "@sentry/node": "^5.7.1",
     "@types/luxon": "^1.21.0",
+    "@types/match-sorter": "^4.0.0",
+    "@types/react-measure": "^2.0.6",
     "@types/reactstrap": "^8.4.1",
     "@types/styled-components": "^4.4.3",
     "apollo-server-express": "^2.9.6",
