@@ -19,3 +19,4 @@ export * from "./systems";
 export * from "./teams";
 export * from "./battle";
 export * from "./engines";
+export * from "./internalComm";

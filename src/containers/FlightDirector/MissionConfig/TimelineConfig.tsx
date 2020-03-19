@@ -145,7 +145,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
   };
 
   const addTimelineItem = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (!selectedTimelineStep || !selectedTimelineItem) return;
+    if (!selectedTimelineStep) return;
     const variables = {
       timelineStepId: selectedTimelineStep,
       missionId: object.id,
