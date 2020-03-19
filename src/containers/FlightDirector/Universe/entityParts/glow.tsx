@@ -45,15 +45,19 @@ const Glow: React.FC<GlowProps> = ({
 }) => {
   const shader = React.useRef(new THREE.ShaderMaterial());
   const {camera} = useThree();
+  const {c, p} = glowModeTable[glowMode];
+
   useFrame(({camera}) => {
     if (position) {
       shader.current.uniforms.viewVector.value = new THREE.Vector3().subVectors(
         camera.position,
         new THREE.Vector3(...position),
       );
+      shader.current.uniforms.c.value = c;
+      shader.current.uniforms.p.value = p;
+      shader.current.uniforms.glowColor.value = new THREE.Color(color);
     }
   });
-  const {c, p} = glowModeTable[glowMode];
 
   return (
     <mesh scale={[1.1, 1.1, 1.1]}>

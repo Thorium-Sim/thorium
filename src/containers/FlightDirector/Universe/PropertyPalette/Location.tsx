@@ -26,7 +26,7 @@ const Location: React.FC<LocationEditProps> = ({id, location}) => {
           X
           <Input
             type="text"
-            inputmode="numeric"
+            inputMode="numeric"
             pattern="[0-9]*"
             value={location.position.x}
             onChange={e => {
@@ -43,7 +43,7 @@ const Location: React.FC<LocationEditProps> = ({id, location}) => {
           Y
           <Input
             type="text"
-            inputmode="numeric"
+            inputMode="numeric"
             pattern="[0-9]*"
             value={location.position.y}
             onChange={e => {
@@ -60,7 +60,7 @@ const Location: React.FC<LocationEditProps> = ({id, location}) => {
           Z
           <Input
             type="text"
-            inputmode="numeric"
+            inputMode="numeric"
             pattern="[0-9]*"
             value={location.position.z}
             onChange={e => {

@@ -40,3 +40,23 @@ export function setComponent<C>(componentProperty) {
     });
   };
 }
+
+export function removeComponent(componentProperty) {
+  return function mutationHandler(rootQuery, {id}, context) {
+    const entityId = id || context.entityId;
+    if (!entityId && entityId !== 0) return;
+    const entityIndex = App.entities.findIndex(e => e.id === entityId);
+    const flightId = App.entities[entityIndex].flightId;
+    const template = Boolean(App.entities[entityIndex].template);
+    if (entityIndex === -1) return;
+    App.entities = produce(App.entities, draft => {
+      const entity = draft[entityIndex];
+      entity[componentProperty] = null;
+    });
+    pubsub.publish("entities", {
+      flightId,
+      template: template ?? null,
+      entities: App.entities,
+    });
+  };
+}

@@ -1,5 +1,5 @@
 import {gql} from "apollo-server-express";
-import {setComponent} from "../setComponentHelper";
+import {setComponent, removeComponent} from "../setComponentHelper";
 
 const schema = gql`
   type LightComponent {
@@ -25,6 +25,7 @@ const schema = gql`
 const resolver = {
   Mutation: {
     entitySetLight: setComponent("light"),
+    entityRemoveLight: removeComponent("light"),
   },
 };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import * as THREE from "three";
 import nebulaGenerator from "./generateNebulaMap";
-const radius = 100000;
+const radius = 10000000000;
 
 const imageCache = {};
 
@@ -65,13 +65,18 @@ const Nebula = () => {
 
     const tx = maps.map(m => new THREE.CanvasTexture(m));
     const mats = tx.map(
-      m => new THREE.MeshBasicMaterial({map: m, side: THREE.BackSide}),
+      m =>
+        new THREE.MeshBasicMaterial({
+          map: m,
+          side: THREE.BackSide,
+          color: new THREE.Color("#333"),
+        }),
     );
     return mats;
   }, [starsImage]);
 
   const geo = React.useRef();
-
+  return null;
   return (
     <mesh scale={[radius, radius, radius]} material={mats}>
       <boxGeometry ref={geo} args={[1, 1, 1]} attach="geometry" />

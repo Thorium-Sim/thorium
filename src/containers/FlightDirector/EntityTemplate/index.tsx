@@ -84,8 +84,11 @@ const EntityTemplate: React.FC = () => {
             Create Template
           </Button>
         </Col>
-        <Col sm={3}>
-          <PropertyPalette selectedEntity={entity} />
+        <Col
+          sm={3}
+          style={{height: "100%", overflowY: "auto", paddingBottom: "2rem"}}
+        >
+          <PropertyPalette key={entity?.id} selectedEntity={entity} />
         </Col>
         <Col sm={6} style={{height: "100%"}}>
           <h2>Preview</h2>
@@ -94,7 +97,7 @@ const EntityTemplate: React.FC = () => {
               <ambientLight intensity={1} />
               <pointLight position={[10, 10, 10]} intensity={0.5} />
               <React.Suspense fallback={null}>
-                <Entity library entity={{...entity}} />
+                <Entity key={entity.id} library entity={{...entity}} />
               </React.Suspense>
               <OrbitControlsContainer />
             </Canvas>

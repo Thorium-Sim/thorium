@@ -1,15 +1,17 @@
 import React from "react";
 import {useLoader} from "react-three-fiber";
 import * as THREE from "three";
+import {whiteImage} from "../whiteImage";
 
 interface CloudsProps {
   cloudMapAsset: string;
 }
 
 const Clouds: React.FC<CloudsProps> = ({cloudMapAsset}) => {
-  console.log(cloudMapAsset);
-  const clouds = useLoader(THREE.TextureLoader, cloudMapAsset);
-  console.log(clouds);
+  const clouds = useLoader(
+    THREE.TextureLoader,
+    cloudMapAsset ? `/assets${cloudMapAsset}` : whiteImage,
+  );
   const meshRef = React.useRef<THREE.Mesh>(null);
 
   return (

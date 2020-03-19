@@ -13,6 +13,7 @@ import Light from "./entityParts/light";
 import Rings from "./entityParts/rings";
 import Clouds from "./entityParts/clouds";
 import {MeshTypeEnum} from "generated/graphql";
+import {whiteImage} from "./whiteImage";
 
 function useEntityDrag(
   onDrag: (dx: number, dy: number) => void,
@@ -92,22 +93,20 @@ interface EntityMaterialProps {
   emissiveIntensity?: number;
 }
 
-const whiteImage =
-  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAP////////////////////////////////////////////////////////////////////////////////////8B///////////////////////////////////////////////////////////////////////////////////////AABEIAAEAAQMBIgACEQEDEQH/xABLAAEBAAAAAAAAAAAAAAAAAAAAAxABAAAAAAAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAABEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AoAD/2Q==";
 const EntityMaterial: React.FC<EntityMaterialProps> = ({
-  materialMapAsset = whiteImage,
+  materialMapAsset,
   color,
   emissiveColor,
   emissiveIntensity,
 }) => {
   const mapTexture = useLoader(
     THREE.TextureLoader,
-    `/assets${materialMapAsset}`,
+    materialMapAsset ? `/assets${materialMapAsset}` : whiteImage,
   );
-
   return (
     <meshStandardMaterial
       attach="material"
+      key={materialMapAsset}
       map={materialMapAsset ? mapTexture : undefined}
       color={color ? new Color(color) : undefined}
       emissive={emissiveColor ? new Color(emissiveColor) : undefined}

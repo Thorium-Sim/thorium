@@ -1,13 +1,17 @@
 import React from "react";
 import {useLoader} from "react-three-fiber";
 import * as THREE from "three";
+import {whiteImage} from "../whiteImage";
 
 interface RingsProps {
   ringMapAsset: string;
 }
 
 const Rings: React.FC<RingsProps> = ({ringMapAsset}) => {
-  const rings = useLoader(THREE.TextureLoader, ringMapAsset);
+  const rings = useLoader(
+    THREE.TextureLoader,
+    ringMapAsset ? `/assets${ringMapAsset}` : whiteImage,
+  );
   const geo = React.useMemo(() => {
     const geometry = new THREE.RingBufferGeometry(1.5, 3, 32);
     const pos = geometry.attributes.position as THREE.BufferAttribute;

@@ -6,6 +6,7 @@ import {
   MdChevronRight,
   MdChevronLeft,
   MdLightbulbOutline,
+  MdCamera,
 } from "react-icons/md";
 import {Tooltip} from "reactstrap";
 import uuid from "uuid";
@@ -59,6 +60,8 @@ const Controls = ({
   selectedEntity,
   lighting,
   setLighting,
+  camera,
+  setCamera,
 }: {
   recenter: () => void;
   zoomScale: boolean;
@@ -69,6 +72,8 @@ const Controls = ({
   selectedEntity: Entity | undefined;
   lighting: boolean;
   setLighting: React.Dispatch<React.SetStateAction<boolean>>;
+  camera: boolean;
+  setCamera: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [paletteExpanded, setPaletteExpanded] = React.useState<boolean>(false);
   React.useEffect(() => {
@@ -112,6 +117,13 @@ const Controls = ({
             tooltipContent="Use Scene Lighting"
           >
             <MdLightbulbOutline />
+          </TooltipButton>
+          <TooltipButton
+            className={camera ? "selected" : ""}
+            onClick={() => setCamera((s: boolean) => !s)}
+            tooltipContent="Use Simulation Camera"
+          >
+            <MdCamera />
           </TooltipButton>
         </div>
       </div>

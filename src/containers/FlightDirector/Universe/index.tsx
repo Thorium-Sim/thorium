@@ -55,6 +55,7 @@ export default function UniversalSandboxEditor() {
   const [dragging, setDragging] = React.useState<Entity | undefined>();
   const [selecting, setSelecting] = React.useState<boolean>(false);
   const [lighting, setLighting] = React.useState<boolean>(false);
+  const [camera, setCamera] = React.useState<boolean>(false);
   const [useEntityState] = usePatchedSubscriptions<
     Entity[],
     {flightId: string}
@@ -63,7 +64,11 @@ export default function UniversalSandboxEditor() {
   const client = useApolloClient();
   return (
     <div className="universal-sandbox-editor">
-      <Canvas id="level-editor" sRGB={true}>
+      <Canvas
+        id="level-editor"
+        sRGB={true}
+        gl={{antialias: true, logarithmicDepthBuffer: true}}
+      >
         <ApolloProvider client={client}>
           <CanvasContextProvider recenter={recenter} zoomScale={zoomScale}>
             <CanvasApp
@@ -75,6 +80,7 @@ export default function UniversalSandboxEditor() {
               selecting={selecting}
               entities={entities}
               lighting={lighting}
+              camera={camera}
             />
           </CanvasContextProvider>
         </ApolloProvider>
@@ -89,6 +95,8 @@ export default function UniversalSandboxEditor() {
         selectedEntity={entities.find(e => selected && e.id === selected[0])}
         lighting={lighting}
         setLighting={setLighting}
+        camera={camera}
+        setCamera={setCamera}
       />
       <Library setDragging={setDragging} dragging={Boolean(dragging)} />
     </div>

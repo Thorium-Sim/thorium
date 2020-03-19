@@ -1,5 +1,5 @@
 import {gql} from "apollo-server-express";
-import {setComponent} from "../setComponentHelper";
+import {setComponent, removeComponent} from "../setComponentHelper";
 
 const schema = gql`
   enum GlowModeEnum {
@@ -24,6 +24,7 @@ const schema = gql`
 const resolver = {
   Mutation: {
     entitySetGlow: setComponent("glow"),
+    entityRemoveGlow: removeComponent("glow"),
   },
 };
 

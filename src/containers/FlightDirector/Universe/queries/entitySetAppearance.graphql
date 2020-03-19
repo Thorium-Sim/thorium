@@ -4,6 +4,10 @@ mutation EntitySetAppearance(
   $meshType: MeshTypeEnum
   $modelAsset: String
   $materialMapAsset: String
+  $cloudMapAsset: String
+  $ringMapAsset: String
+  $emissiveColor: String
+  $emissiveIntensity: Float
   $scale: Float
 ) {
   entitySetAppearance(
@@ -12,6 +16,10 @@ mutation EntitySetAppearance(
     meshType: $meshType
     modelAsset: $modelAsset
     materialMapAsset: $materialMapAsset
+    cloudMapAsset: $cloudMapAsset
+    ringMapAsset: $ringMapAsset
+    emissiveColor: $emissiveColor
+    emissiveIntensity: $emissiveIntensity
     scale: $scale
   )
 }

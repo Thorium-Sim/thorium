@@ -15,6 +15,8 @@ import {
   useEntitiesSetPositionMutation,
   Entity as EntityType,
 } from "generated/graphql";
+import Nebula from "./Nebula";
+import Stars from "./Stars";
 
 export type PositionTuple = [number, number, number];
 interface CanvasAppProps {
@@ -26,6 +28,7 @@ interface CanvasAppProps {
   selecting: boolean;
   entities: EntityInterface[];
   lighting: boolean;
+  camera: boolean;
 }
 function setNumberBounds(num: number) {
   return Math.max(
@@ -42,6 +45,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   selecting,
   entities,
   lighting,
+  camera: perspectiveCamera,
 }) => {
   const [create] = useEntityCreateMutation();
   const [remove] = useEntityRemoveMutation();
@@ -152,13 +156,29 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   ]);
   return (
     <>
-      {/* <PerspectiveCamera recenter={recenter} /> */}
-      <OrthoCamera recenter={recenter} />
-      <Grid />
-      <ambientLight intensity={lighting ? 0.4 : 1} />
-      {dragging && (
-        <Entity dragging entity={dragging} mousePosition={mousePosition} />
+      {perspectiveCamera ? (
+        <>
+          <React.Suspense fallback={null}>
+            <Nebula />
+          </React.Suspense>
+          <PerspectiveCamera recenter={recenter} />
+        </>
+      ) : (
+        <>
+          <Grid />
+          <OrthoCamera recenter={recenter} />
+          {dragging && (
+            <Entity dragging entity={dragging} mousePosition={mousePosition} />
+          )}
+          <BackPlane setSelected={setSelected} />
+          <DragSelect
+            selecting={selecting}
+            setSelected={setSelected}
+            entities={entities}
+          />
+        </>
       )}
+      <ambientLight intensity={lighting ? 0.1 : 1} />
 
       {entities.map((e, i) => {
         const isSelected = selected && selected.includes(e.id);
@@ -179,15 +199,6 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           </React.Suspense>
         );
       })}
-      <BackPlane setSelected={setSelected} />
-      <DragSelect
-        selecting={selecting}
-        setSelected={setSelected}
-        entities={entities}
-      />
-      {/* <React.Suspense fallback={null}>
-        <Nebula />
-      </React.Suspense> */}
     </>
   );
 };

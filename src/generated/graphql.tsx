@@ -794,14 +794,6 @@ export type EntitiesLocationInput = {
   position: EntityCoordinatesInput;
 };
 
-export type EntitiesPatch = Patch & {
-  __typename?: "EntitiesPatch";
-  op?: Maybe<OperationsEnum>;
-  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
-  value?: Maybe<Scalars["JSON"]>;
-  values?: Maybe<Array<Entity>>;
-};
-
 export type Entity = {
   __typename?: "Entity";
   id: Scalars["ID"];
@@ -827,14 +819,6 @@ export type EntityCoordinatesInput = {
   x: Scalars["BigInt"];
   y: Scalars["BigInt"];
   z: Scalars["BigInt"];
-};
-
-export type EntityPatch = Patch & {
-  __typename?: "EntityPatch";
-  op?: Maybe<OperationsEnum>;
-  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
-  value?: Maybe<Scalars["JSON"]>;
-  values?: Maybe<Entity>;
 };
 
 export type Environment = {
@@ -5911,12 +5895,6 @@ export type ObjectiveInput = {
   crewComplete?: Maybe<Scalars["Boolean"]>;
 };
 
-export enum OperationsEnum {
-  Add = "add",
-  Remove = "remove",
-  Replace = "replace",
-}
-
 export type PainPoint = {
   __typename?: "PainPoint";
   x?: Maybe<Scalars["Float"]>;
@@ -5993,12 +5971,6 @@ export enum ParticleTypes {
   Carbon = "Carbon",
   Radiation = "Radiation",
 }
-
-export type Patch = {
-  op?: Maybe<OperationsEnum>;
-  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
-  value?: Maybe<Scalars["JSON"]>;
-};
 
 export type Phaser = SystemInterface & {
   __typename?: "Phaser";
@@ -7447,7 +7419,6 @@ export type StringCoordinatesInput = {
 export type Subscription = {
   __typename?: "Subscription";
   _empty?: Maybe<Scalars["String"]>;
-  templateEntities?: Maybe<Array<Maybe<EntitiesPatch>>>;
   actionsUpdate?: Maybe<Action>;
   assetFolderChange: Array<AssetFolder>;
   clientChanged?: Maybe<Array<Maybe<Client>>>;
@@ -7551,10 +7522,8 @@ export type Subscription = {
   viewscreensUpdate?: Maybe<Array<Maybe<Viewscreen>>>;
   viewscreenVideoToggle?: Maybe<Scalars["Boolean"]>;
   countermeasuresUpdate?: Maybe<Countermeasures>;
-  entity?: Maybe<Array<Maybe<EntityPatch>>>;
-  entities?: Maybe<Array<Maybe<EntitiesPatch>>>;
-  parentStages?: Maybe<Array<Maybe<EntitiesPatch>>>;
-  stageChildren?: Maybe<Array<Maybe<EntitiesPatch>>>;
+  entity?: Maybe<Entity>;
+  entities?: Maybe<Array<Maybe<Entity>>>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -7975,14 +7944,7 @@ export type SubscriptionEntityArgs = {
 
 export type SubscriptionEntitiesArgs = {
   flightId: Scalars["ID"];
-};
-
-export type SubscriptionParentStagesArgs = {
-  flightId: Scalars["ID"];
-};
-
-export type SubscriptionStageChildrenArgs = {
-  parentId: Scalars["ID"];
+  template?: Maybe<Scalars["Boolean"]>;
 };
 
 export type SubspaceField = SystemInterface & {
@@ -9381,18 +9343,51 @@ export type EntityRemoveMutation = {__typename?: "Mutation"} & Pick<
   "entityRemove"
 >;
 
+export type EntityRemoveGlowMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type EntityRemoveGlowMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entityRemoveGlow"
+>;
+
+export type EntityRemoveLightMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type EntityRemoveLightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entityRemoveLight"
+>;
+
 export type EntitySetAppearanceMutationVariables = {
   id: Scalars["ID"];
   color?: Maybe<Scalars["String"]>;
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
   scale?: Maybe<Scalars["Float"]>;
 };
 
 export type EntitySetAppearanceMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entitySetAppearance"
+>;
+
+export type EntitySetGlowMutationVariables = {
+  id: Scalars["ID"];
+  glowMode?: Maybe<GlowModeEnum>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export type EntitySetGlowMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetGlow"
 >;
 
 export type EntitySetIdentityMutationVariables = {
@@ -9403,6 +9398,18 @@ export type EntitySetIdentityMutationVariables = {
 export type EntitySetIdentityMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entitySetIdentity"
+>;
+
+export type EntitySetLightMutationVariables = {
+  id: Scalars["ID"];
+  color?: Maybe<Scalars["String"]>;
+  intensity?: Maybe<Scalars["Float"]>;
+  decay?: Maybe<Scalars["Float"]>;
+};
+
+export type EntitySetLightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetLight"
 >;
 
 export type EntitiesSetPositionMutationVariables = {
@@ -9534,18 +9541,6 @@ const result: IntrospectionResultData = {
           },
           {
             name: "Room",
-          },
-        ],
-      },
-      {
-        kind: "INTERFACE",
-        name: "Patch",
-        possibleTypes: [
-          {
-            name: "EntitiesPatch",
-          },
-          {
-            name: "EntityPatch",
           },
         ],
       },
@@ -11879,6 +11874,102 @@ export type EntityRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityRemoveMutation,
   EntityRemoveMutationVariables
 >;
+export const EntityRemoveGlowDocument = gql`
+  mutation EntityRemoveGlow($id: ID!) {
+    entityRemoveGlow(id: $id)
+  }
+`;
+export type EntityRemoveGlowMutationFn = ApolloReactCommon.MutationFunction<
+  EntityRemoveGlowMutation,
+  EntityRemoveGlowMutationVariables
+>;
+
+/**
+ * __useEntityRemoveGlowMutation__
+ *
+ * To run a mutation, you first call `useEntityRemoveGlowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityRemoveGlowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityRemoveGlowMutation, { data, loading, error }] = useEntityRemoveGlowMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntityRemoveGlowMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityRemoveGlowMutation,
+    EntityRemoveGlowMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityRemoveGlowMutation,
+    EntityRemoveGlowMutationVariables
+  >(EntityRemoveGlowDocument, baseOptions);
+}
+export type EntityRemoveGlowMutationHookResult = ReturnType<
+  typeof useEntityRemoveGlowMutation
+>;
+export type EntityRemoveGlowMutationResult = ApolloReactCommon.MutationResult<
+  EntityRemoveGlowMutation
+>;
+export type EntityRemoveGlowMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityRemoveGlowMutation,
+  EntityRemoveGlowMutationVariables
+>;
+export const EntityRemoveLightDocument = gql`
+  mutation EntityRemoveLight($id: ID!) {
+    entityRemoveLight(id: $id)
+  }
+`;
+export type EntityRemoveLightMutationFn = ApolloReactCommon.MutationFunction<
+  EntityRemoveLightMutation,
+  EntityRemoveLightMutationVariables
+>;
+
+/**
+ * __useEntityRemoveLightMutation__
+ *
+ * To run a mutation, you first call `useEntityRemoveLightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityRemoveLightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityRemoveLightMutation, { data, loading, error }] = useEntityRemoveLightMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntityRemoveLightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityRemoveLightMutation,
+    EntityRemoveLightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityRemoveLightMutation,
+    EntityRemoveLightMutationVariables
+  >(EntityRemoveLightDocument, baseOptions);
+}
+export type EntityRemoveLightMutationHookResult = ReturnType<
+  typeof useEntityRemoveLightMutation
+>;
+export type EntityRemoveLightMutationResult = ApolloReactCommon.MutationResult<
+  EntityRemoveLightMutation
+>;
+export type EntityRemoveLightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityRemoveLightMutation,
+  EntityRemoveLightMutationVariables
+>;
 export const EntitySetAppearanceDocument = gql`
   mutation EntitySetAppearance(
     $id: ID!
@@ -11886,6 +11977,10 @@ export const EntitySetAppearanceDocument = gql`
     $meshType: MeshTypeEnum
     $modelAsset: String
     $materialMapAsset: String
+    $cloudMapAsset: String
+    $ringMapAsset: String
+    $emissiveColor: String
+    $emissiveIntensity: Float
     $scale: Float
   ) {
     entitySetAppearance(
@@ -11894,6 +11989,10 @@ export const EntitySetAppearanceDocument = gql`
       meshType: $meshType
       modelAsset: $modelAsset
       materialMapAsset: $materialMapAsset
+      cloudMapAsset: $cloudMapAsset
+      ringMapAsset: $ringMapAsset
+      emissiveColor: $emissiveColor
+      emissiveIntensity: $emissiveIntensity
       scale: $scale
     )
   }
@@ -11921,6 +12020,10 @@ export type EntitySetAppearanceMutationFn = ApolloReactCommon.MutationFunction<
  *      meshType: // value for 'meshType'
  *      modelAsset: // value for 'modelAsset'
  *      materialMapAsset: // value for 'materialMapAsset'
+ *      cloudMapAsset: // value for 'cloudMapAsset'
+ *      ringMapAsset: // value for 'ringMapAsset'
+ *      emissiveColor: // value for 'emissiveColor'
+ *      emissiveIntensity: // value for 'emissiveIntensity'
  *      scale: // value for 'scale'
  *   },
  * });
@@ -11945,6 +12048,56 @@ export type EntitySetAppearanceMutationResult = ApolloReactCommon.MutationResult
 export type EntitySetAppearanceMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntitySetAppearanceMutation,
   EntitySetAppearanceMutationVariables
+>;
+export const EntitySetGlowDocument = gql`
+  mutation EntitySetGlow($id: ID!, $glowMode: GlowModeEnum, $color: String) {
+    entitySetGlow(id: $id, glowMode: $glowMode, color: $color)
+  }
+`;
+export type EntitySetGlowMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetGlowMutation,
+  EntitySetGlowMutationVariables
+>;
+
+/**
+ * __useEntitySetGlowMutation__
+ *
+ * To run a mutation, you first call `useEntitySetGlowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetGlowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetGlowMutation, { data, loading, error }] = useEntitySetGlowMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      glowMode: // value for 'glowMode'
+ *      color: // value for 'color'
+ *   },
+ * });
+ */
+export function useEntitySetGlowMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetGlowMutation,
+    EntitySetGlowMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetGlowMutation,
+    EntitySetGlowMutationVariables
+  >(EntitySetGlowDocument, baseOptions);
+}
+export type EntitySetGlowMutationHookResult = ReturnType<
+  typeof useEntitySetGlowMutation
+>;
+export type EntitySetGlowMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetGlowMutation
+>;
+export type EntitySetGlowMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetGlowMutation,
+  EntitySetGlowMutationVariables
 >;
 export const EntitySetIdentityDocument = gql`
   mutation EntitySetIdentity($id: ID!, $name: String!) {
@@ -11994,6 +12147,62 @@ export type EntitySetIdentityMutationResult = ApolloReactCommon.MutationResult<
 export type EntitySetIdentityMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntitySetIdentityMutation,
   EntitySetIdentityMutationVariables
+>;
+export const EntitySetLightDocument = gql`
+  mutation EntitySetLight(
+    $id: ID!
+    $color: String
+    $intensity: Float
+    $decay: Float
+  ) {
+    entitySetLight(id: $id, color: $color, intensity: $intensity, decay: $decay)
+  }
+`;
+export type EntitySetLightMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetLightMutation,
+  EntitySetLightMutationVariables
+>;
+
+/**
+ * __useEntitySetLightMutation__
+ *
+ * To run a mutation, you first call `useEntitySetLightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetLightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetLightMutation, { data, loading, error }] = useEntitySetLightMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      color: // value for 'color'
+ *      intensity: // value for 'intensity'
+ *      decay: // value for 'decay'
+ *   },
+ * });
+ */
+export function useEntitySetLightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetLightMutation,
+    EntitySetLightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetLightMutation,
+    EntitySetLightMutationVariables
+  >(EntitySetLightDocument, baseOptions);
+}
+export type EntitySetLightMutationHookResult = ReturnType<
+  typeof useEntitySetLightMutation
+>;
+export type EntitySetLightMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetLightMutation
+>;
+export type EntitySetLightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetLightMutation,
+  EntitySetLightMutationVariables
 >;
 export const EntitiesSetPositionDocument = gql`
   mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
