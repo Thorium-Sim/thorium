@@ -3,7 +3,7 @@ import {useFrame, useLoader, PointerEvent} from "react-three-fiber";
 import {CanvasContext, ActionType} from "./CanvasContext";
 import {useDrag} from "react-use-gesture";
 import * as THREE from "three";
-import {SphereGeometry, BoxBufferGeometry, Color} from "three";
+import {SphereGeometry, BoxBufferGeometry, Color, Scene, Mesh} from "three";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
@@ -127,13 +127,17 @@ const ModelAsset: React.FC<ModelAssetProps> = React.memo(
       modelAsset ? `/assets${modelAsset}` : whiteImage,
     );
     const scene = React.useMemo(() => {
-      const scene = model.scene.clone(true);
-      if (scene.materials) {
-        Object.values(scene.materials).forEach((v: any) => {
-          v.emissiveMap = v.map;
-          v.emissiveIntensity = 2;
-          v.emissive = new THREE.Color(0xffffff);
-          v.side = THREE.FrontSide;
+      const scene: Scene = model.scene.clone(true);
+      console.log(scene);
+      if (scene.traverse) {
+        scene.traverse(function(object) {
+          if (object instanceof Mesh) {
+            const material = object.material as any;
+            material.emissiveMap = material.map;
+            material.emissiveIntensity = 2;
+            material.emissive = new THREE.Color(0xffffff);
+            material.side = THREE.FrontSide;
+          }
         });
       }
 

@@ -21,6 +21,7 @@ import {
   AssetFolder,
 } from "generated/graphql";
 import useDimensions from "helpers/hooks/useDimensions";
+import GLTFPreview from "./GLTFPreview";
 
 interface AssetFolderI {
   id: string;
@@ -359,10 +360,31 @@ const AssetObject: React.FC<{
 }> = ({object, removeObject}) => {
   const ext1 = object.url.match(/\..*$/gi);
   const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : "";
+  const [preview, setPreview] = React.useState(false);
   if (ext === "obj") {
     return (
       <div>
         <ObjPreview src={object.url} />
+        <p>
+          {object.name}{" "}
+          {removeObject && (
+            <FaBan
+              className="text-danger"
+              onClick={e => removeObject(object.fullPath, e)}
+            />
+          )}
+        </p>
+      </div>
+    );
+  }
+  if (["glb", "gltf"].includes(ext)) {
+    return (
+      <div>
+        {preview ? (
+          <GLTFPreview src={object.url} />
+        ) : (
+          <p onClick={() => setPreview(true)}>Click to Preview</p>
+        )}
         <p>
           {object.name}{" "}
           {removeObject && (
