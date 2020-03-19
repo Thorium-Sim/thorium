@@ -1,3 +1,36 @@
+# [2.7.0](https://github.com/Thorium-Sim/thorium/compare/v2.6.1...2.7.0) (2020-03-07)
+
+### Bug Fixes
+
+- **Countermeasures:** A number of fixes to countermeasures. Adds ability to
+  activate countermeasures before they are launched. Sorts available module
+  list. Built modules can be removed and the resources are recycled for half of
+  their original value. Add a field for flight directors to add notes to
+  countermeasures so they know how they responded to them. Countermeasures that
+  have not been built are now visible to the flight director. Fixes
+  [#2817](https://github.com/Thorium-Sim/thorium/issues/2817)
+  ([5de3de5](https://github.com/Thorium-Sim/thorium/commit/5de3de534a7cf5107b44325806f930d70d70693a))
+- **Damage Report Config:** Fixes an issue where Long Range Message damage
+  report configurations don't accept destination values. Closes
+  [#2826](https://github.com/Thorium-Sim/thorium/issues/2826)
+  ([fdc8964](https://github.com/Thorium-Sim/thorium/commit/fdc8964a313e198237a08e1f249af08af881e42a))
+- **Library:** Fixes an issue where new library entries cannot be added. Closes
+  [#2795](https://github.com/Thorium-Sim/thorium/issues/2795)
+  ([58e5569](https://github.com/Thorium-Sim/thorium/commit/58e5569636587fe3d0c49dcb006c0040aab36f3c))
+- **Sensors:** Fixes an issue where sensors core doesn't load at all. Closes
+  [#2813](https://github.com/Thorium-Sim/thorium/issues/2813)
+  ([ab918bd](https://github.com/Thorium-Sim/thorium/commit/ab918bd88ba87a6de535d47e151fdf1c666b4949))
+- **Viewscreen:** Fixes an issue where having the viewscreen core layout open
+  causes videos to auto-next multiple times.
+  ([230d302](https://github.com/Thorium-Sim/thorium/commit/230d302cd648fcedfe246bdd55a26c0c88c538fa))
+
+### Features
+
+- **Targeting:** Add an extra option to make it possible to target contacts that
+  are moving by clicking on them. Closes
+  [#2822](https://github.com/Thorium-Sim/thorium/issues/2822)
+  ([3a74c51](https://github.com/Thorium-Sim/thorium/commit/3a74c51af6f3ece1732d728a22cd25d1a65b27d8))
+
 ## [2.6.1](https://github.com/Thorium-Sim/thorium/compare/2.6.0...2.6.1) (2020-03-02)
 
 ### Bug Fixes
