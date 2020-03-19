@@ -358,7 +358,7 @@ const AssetObject: React.FC<{
   object: AssetObjectI;
   removeObject?: Function;
 }> = ({object, removeObject}) => {
-  const ext1 = object.url.match(/\..*$/gi);
+  const ext1 = object.url.match(/\..{3,4}$/gi);
   const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : "";
   const [preview, setPreview] = React.useState(false);
   if (ext === "obj") {
