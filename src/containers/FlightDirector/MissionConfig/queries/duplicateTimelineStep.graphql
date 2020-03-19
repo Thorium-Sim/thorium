@@ -1,0 +1,3 @@
+mutation TimelineDuplicateStep($missionId: ID!, $timelineStepId: ID!) {
+  duplicateTimelineStep(missionId: $missionId, timelineStepId: $timelineStepId)
+}

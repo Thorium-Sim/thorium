@@ -40,7 +40,7 @@ export const EventList = ({children}) => (
   </Query>
 );
 
-const EventPicker = ({event, handleChange, className}) => {
+const EventPicker = ({event = "nothing", handleChange, className}) => {
   return (
     <EventList>
       {events => (

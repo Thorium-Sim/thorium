@@ -34,6 +34,10 @@ export class TimelineObject {
     const timelineStep = this.timeline.find(t => t.id === timelineStepId);
     this.timeline.push(new TimelineStep(null, timelineStep));
   }
+  duplicateTimelineItem(timelineStepId, timelineItemId) {
+    const timelineStep = this.timeline.find(t => t.id === timelineStepId);
+    return timelineStep.duplicateItem(timelineItemId);
+  }
   reorderTimelineStep(timelineStepId, newOrder) {
     function move(array, old_index, new_index) {
       if (new_index >= array.length) {
@@ -103,6 +107,14 @@ export class TimelineStep {
   updateTimelineItem(id, timelineItem) {
     const timelineItemInst = this.timelineItems.find(t => t.id === id);
     timelineItemInst.update(timelineItem);
+  }
+  duplicateItem(timelineItemId) {
+    const timelineItemInst = this.timelineItems.find(
+      t => t.id === timelineItemId,
+    );
+    const id = uuid.v4();
+    this.timelineItems.push(new TimelineItem(id, {...timelineItemInst}));
+    return id;
   }
 }
 

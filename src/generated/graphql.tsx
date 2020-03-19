@@ -1866,6 +1866,7 @@ export type Mutation = {
   removeTimelineStepItem?: Maybe<Scalars["String"]>;
   updateTimelineStepItem?: Maybe<Scalars["String"]>;
   duplicateTimelineStep?: Maybe<Scalars["String"]>;
+  timelineDuplicateItem?: Maybe<Scalars["String"]>;
   startAuxTimeline?: Maybe<Scalars["ID"]>;
   setAuxTimelineStep?: Maybe<Scalars["String"]>;
   motuAdd?: Maybe<Scalars["String"]>;
@@ -3680,6 +3681,12 @@ export type MutationUpdateTimelineStepItemArgs = {
 export type MutationDuplicateTimelineStepArgs = {
   missionId: Scalars["ID"];
   timelineStepId: Scalars["ID"];
+};
+
+export type MutationTimelineDuplicateItemArgs = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+  timelineItemId: Scalars["ID"];
 };
 
 export type MutationStartAuxTimelineArgs = {
@@ -9306,6 +9313,109 @@ export type EntityCreateTemplateMutation = {__typename?: "Mutation"} & Pick<
   "entitySetTemplate" | "entitySetIdentity" | "entitySetAppearance"
 > & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
 
+export type TimelineAddItemMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  missionId?: Maybe<Scalars["ID"]>;
+  timelineStepId: Scalars["ID"];
+  timelineItem: TimelineItemInput;
+};
+
+export type TimelineAddItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addTimelineItemToTimelineStep"
+>;
+
+export type TimelineAddStepMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  missionId?: Maybe<Scalars["ID"]>;
+  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+};
+
+export type TimelineAddStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addTimelineStep"
+>;
+
+export type TimelineDuplicateItemMutationVariables = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+  timelineItemId: Scalars["ID"];
+};
+
+export type TimelineDuplicateItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "timelineDuplicateItem"
+>;
+
+export type TimelineDuplicateStepMutationVariables = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+};
+
+export type TimelineDuplicateStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "duplicateTimelineStep"
+>;
+
+export type TimelineRemoveItemMutationVariables = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+  timelineItemId: Scalars["ID"];
+};
+
+export type TimelineRemoveItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeTimelineStepItem"
+>;
+
+export type TimelineRemoveStepMutationVariables = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+};
+
+export type TimelineRemoveStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeTimelineStep"
+>;
+
+export type TimelineReorderStepMutationVariables = {
+  missionId?: Maybe<Scalars["ID"]>;
+  timelineStepId: Scalars["ID"];
+  order: Scalars["Int"];
+};
+
+export type TimelineReorderStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "reorderTimelineStep"
+>;
+
+export type TimelineUpdateItemMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  missionId?: Maybe<Scalars["ID"]>;
+  timelineStepId: Scalars["ID"];
+  timelineItemId: Scalars["ID"];
+  timelineItem: TimelineItemInput;
+};
+
+export type TimelineUpdateItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "updateTimelineStepItem"
+>;
+
+export type TimelineUpdateStepMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  missionId?: Maybe<Scalars["ID"]>;
+  timelineStepId: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
+};
+
+export type TimelineUpdateStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "updateTimelineStep"
+>;
+
 export type EntityCreateMutationVariables = {
   flightId: Scalars["ID"];
   position: EntityCoordinatesInput;
@@ -11725,6 +11835,531 @@ export type EntityCreateTemplateMutationResult = ApolloReactCommon.MutationResul
 export type EntityCreateTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityCreateTemplateMutation,
   EntityCreateTemplateMutationVariables
+>;
+export const TimelineAddItemDocument = gql`
+  mutation TimelineAddItem(
+    $simulatorId: ID
+    $missionId: ID
+    $timelineStepId: ID!
+    $timelineItem: TimelineItemInput!
+  ) {
+    addTimelineItemToTimelineStep(
+      simulatorId: $simulatorId
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      timelineItem: $timelineItem
+    )
+  }
+`;
+export type TimelineAddItemMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineAddItemMutation,
+  TimelineAddItemMutationVariables
+>;
+
+/**
+ * __useTimelineAddItemMutation__
+ *
+ * To run a mutation, you first call `useTimelineAddItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineAddItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineAddItemMutation, { data, loading, error }] = useTimelineAddItemMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      timelineItem: // value for 'timelineItem'
+ *   },
+ * });
+ */
+export function useTimelineAddItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineAddItemMutation,
+    TimelineAddItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineAddItemMutation,
+    TimelineAddItemMutationVariables
+  >(TimelineAddItemDocument, baseOptions);
+}
+export type TimelineAddItemMutationHookResult = ReturnType<
+  typeof useTimelineAddItemMutation
+>;
+export type TimelineAddItemMutationResult = ApolloReactCommon.MutationResult<
+  TimelineAddItemMutation
+>;
+export type TimelineAddItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineAddItemMutation,
+  TimelineAddItemMutationVariables
+>;
+export const TimelineAddStepDocument = gql`
+  mutation TimelineAddStep(
+    $simulatorId: ID
+    $missionId: ID
+    $name: String!
+    $description: String
+  ) {
+    addTimelineStep(
+      simulatorId: $simulatorId
+      missionId: $missionId
+      name: $name
+      description: $description
+    )
+  }
+`;
+export type TimelineAddStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineAddStepMutation,
+  TimelineAddStepMutationVariables
+>;
+
+/**
+ * __useTimelineAddStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineAddStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineAddStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineAddStepMutation, { data, loading, error }] = useTimelineAddStepMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useTimelineAddStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineAddStepMutation,
+    TimelineAddStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineAddStepMutation,
+    TimelineAddStepMutationVariables
+  >(TimelineAddStepDocument, baseOptions);
+}
+export type TimelineAddStepMutationHookResult = ReturnType<
+  typeof useTimelineAddStepMutation
+>;
+export type TimelineAddStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineAddStepMutation
+>;
+export type TimelineAddStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineAddStepMutation,
+  TimelineAddStepMutationVariables
+>;
+export const TimelineDuplicateItemDocument = gql`
+  mutation TimelineDuplicateItem(
+    $missionId: ID!
+    $timelineStepId: ID!
+    $timelineItemId: ID!
+  ) {
+    timelineDuplicateItem(
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      timelineItemId: $timelineItemId
+    )
+  }
+`;
+export type TimelineDuplicateItemMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineDuplicateItemMutation,
+  TimelineDuplicateItemMutationVariables
+>;
+
+/**
+ * __useTimelineDuplicateItemMutation__
+ *
+ * To run a mutation, you first call `useTimelineDuplicateItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineDuplicateItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineDuplicateItemMutation, { data, loading, error }] = useTimelineDuplicateItemMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      timelineItemId: // value for 'timelineItemId'
+ *   },
+ * });
+ */
+export function useTimelineDuplicateItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineDuplicateItemMutation,
+    TimelineDuplicateItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineDuplicateItemMutation,
+    TimelineDuplicateItemMutationVariables
+  >(TimelineDuplicateItemDocument, baseOptions);
+}
+export type TimelineDuplicateItemMutationHookResult = ReturnType<
+  typeof useTimelineDuplicateItemMutation
+>;
+export type TimelineDuplicateItemMutationResult = ApolloReactCommon.MutationResult<
+  TimelineDuplicateItemMutation
+>;
+export type TimelineDuplicateItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineDuplicateItemMutation,
+  TimelineDuplicateItemMutationVariables
+>;
+export const TimelineDuplicateStepDocument = gql`
+  mutation TimelineDuplicateStep($missionId: ID!, $timelineStepId: ID!) {
+    duplicateTimelineStep(
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+    )
+  }
+`;
+export type TimelineDuplicateStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineDuplicateStepMutation,
+  TimelineDuplicateStepMutationVariables
+>;
+
+/**
+ * __useTimelineDuplicateStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineDuplicateStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineDuplicateStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineDuplicateStepMutation, { data, loading, error }] = useTimelineDuplicateStepMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *   },
+ * });
+ */
+export function useTimelineDuplicateStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineDuplicateStepMutation,
+    TimelineDuplicateStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineDuplicateStepMutation,
+    TimelineDuplicateStepMutationVariables
+  >(TimelineDuplicateStepDocument, baseOptions);
+}
+export type TimelineDuplicateStepMutationHookResult = ReturnType<
+  typeof useTimelineDuplicateStepMutation
+>;
+export type TimelineDuplicateStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineDuplicateStepMutation
+>;
+export type TimelineDuplicateStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineDuplicateStepMutation,
+  TimelineDuplicateStepMutationVariables
+>;
+export const TimelineRemoveItemDocument = gql`
+  mutation TimelineRemoveItem(
+    $missionId: ID!
+    $timelineStepId: ID!
+    $timelineItemId: ID!
+  ) {
+    removeTimelineStepItem(
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      timelineItemId: $timelineItemId
+    )
+  }
+`;
+export type TimelineRemoveItemMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineRemoveItemMutation,
+  TimelineRemoveItemMutationVariables
+>;
+
+/**
+ * __useTimelineRemoveItemMutation__
+ *
+ * To run a mutation, you first call `useTimelineRemoveItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineRemoveItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineRemoveItemMutation, { data, loading, error }] = useTimelineRemoveItemMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      timelineItemId: // value for 'timelineItemId'
+ *   },
+ * });
+ */
+export function useTimelineRemoveItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineRemoveItemMutation,
+    TimelineRemoveItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineRemoveItemMutation,
+    TimelineRemoveItemMutationVariables
+  >(TimelineRemoveItemDocument, baseOptions);
+}
+export type TimelineRemoveItemMutationHookResult = ReturnType<
+  typeof useTimelineRemoveItemMutation
+>;
+export type TimelineRemoveItemMutationResult = ApolloReactCommon.MutationResult<
+  TimelineRemoveItemMutation
+>;
+export type TimelineRemoveItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineRemoveItemMutation,
+  TimelineRemoveItemMutationVariables
+>;
+export const TimelineRemoveStepDocument = gql`
+  mutation TimelineRemoveStep($missionId: ID!, $timelineStepId: ID!) {
+    removeTimelineStep(missionId: $missionId, timelineStepId: $timelineStepId)
+  }
+`;
+export type TimelineRemoveStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineRemoveStepMutation,
+  TimelineRemoveStepMutationVariables
+>;
+
+/**
+ * __useTimelineRemoveStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineRemoveStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineRemoveStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineRemoveStepMutation, { data, loading, error }] = useTimelineRemoveStepMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *   },
+ * });
+ */
+export function useTimelineRemoveStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineRemoveStepMutation,
+    TimelineRemoveStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineRemoveStepMutation,
+    TimelineRemoveStepMutationVariables
+  >(TimelineRemoveStepDocument, baseOptions);
+}
+export type TimelineRemoveStepMutationHookResult = ReturnType<
+  typeof useTimelineRemoveStepMutation
+>;
+export type TimelineRemoveStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineRemoveStepMutation
+>;
+export type TimelineRemoveStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineRemoveStepMutation,
+  TimelineRemoveStepMutationVariables
+>;
+export const TimelineReorderStepDocument = gql`
+  mutation TimelineReorderStep(
+    $missionId: ID
+    $timelineStepId: ID!
+    $order: Int!
+  ) {
+    reorderTimelineStep(
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      order: $order
+    )
+  }
+`;
+export type TimelineReorderStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineReorderStepMutation,
+  TimelineReorderStepMutationVariables
+>;
+
+/**
+ * __useTimelineReorderStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineReorderStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineReorderStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineReorderStepMutation, { data, loading, error }] = useTimelineReorderStepMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      order: // value for 'order'
+ *   },
+ * });
+ */
+export function useTimelineReorderStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineReorderStepMutation,
+    TimelineReorderStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineReorderStepMutation,
+    TimelineReorderStepMutationVariables
+  >(TimelineReorderStepDocument, baseOptions);
+}
+export type TimelineReorderStepMutationHookResult = ReturnType<
+  typeof useTimelineReorderStepMutation
+>;
+export type TimelineReorderStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineReorderStepMutation
+>;
+export type TimelineReorderStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineReorderStepMutation,
+  TimelineReorderStepMutationVariables
+>;
+export const TimelineUpdateItemDocument = gql`
+  mutation TimelineUpdateItem(
+    $simulatorId: ID
+    $missionId: ID
+    $timelineStepId: ID!
+    $timelineItemId: ID!
+    $timelineItem: TimelineItemInput!
+  ) {
+    updateTimelineStepItem(
+      simulatorId: $simulatorId
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      timelineItemId: $timelineItemId
+      updateTimelineItem: $timelineItem
+    )
+  }
+`;
+export type TimelineUpdateItemMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineUpdateItemMutation,
+  TimelineUpdateItemMutationVariables
+>;
+
+/**
+ * __useTimelineUpdateItemMutation__
+ *
+ * To run a mutation, you first call `useTimelineUpdateItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineUpdateItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineUpdateItemMutation, { data, loading, error }] = useTimelineUpdateItemMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      timelineItemId: // value for 'timelineItemId'
+ *      timelineItem: // value for 'timelineItem'
+ *   },
+ * });
+ */
+export function useTimelineUpdateItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineUpdateItemMutation,
+    TimelineUpdateItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineUpdateItemMutation,
+    TimelineUpdateItemMutationVariables
+  >(TimelineUpdateItemDocument, baseOptions);
+}
+export type TimelineUpdateItemMutationHookResult = ReturnType<
+  typeof useTimelineUpdateItemMutation
+>;
+export type TimelineUpdateItemMutationResult = ApolloReactCommon.MutationResult<
+  TimelineUpdateItemMutation
+>;
+export type TimelineUpdateItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineUpdateItemMutation,
+  TimelineUpdateItemMutationVariables
+>;
+export const TimelineUpdateStepDocument = gql`
+  mutation TimelineUpdateStep(
+    $simulatorId: ID
+    $missionId: ID
+    $timelineStepId: ID!
+    $name: String
+    $description: String
+  ) {
+    updateTimelineStep(
+      simulatorId: $simulatorId
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      name: $name
+      description: $description
+    )
+  }
+`;
+export type TimelineUpdateStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineUpdateStepMutation,
+  TimelineUpdateStepMutationVariables
+>;
+
+/**
+ * __useTimelineUpdateStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineUpdateStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineUpdateStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineUpdateStepMutation, { data, loading, error }] = useTimelineUpdateStepMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useTimelineUpdateStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineUpdateStepMutation,
+    TimelineUpdateStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineUpdateStepMutation,
+    TimelineUpdateStepMutationVariables
+  >(TimelineUpdateStepDocument, baseOptions);
+}
+export type TimelineUpdateStepMutationHookResult = ReturnType<
+  typeof useTimelineUpdateStepMutation
+>;
+export type TimelineUpdateStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineUpdateStepMutation
+>;
+export type TimelineUpdateStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineUpdateStepMutation,
+  TimelineUpdateStepMutationVariables
 >;
 export const EntityCreateDocument = gql`
   mutation EntityCreate(
