@@ -1,4 +1,5 @@
 import {gql} from "apollo-server-express";
+import {setComponent} from "../setComponentHelper";
 
 const schema = gql`
   enum Behaviors {
@@ -29,6 +30,10 @@ const schema = gql`
   }
 `;
 
-const resolver = {};
+const resolver = {
+  Mutation: {
+    entitySetBehavior: setComponent("behavior"),
+  },
+};
 
 export default {schema, resolver};

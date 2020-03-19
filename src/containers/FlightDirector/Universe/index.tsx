@@ -13,26 +13,35 @@ import {useApolloClient, ApolloProvider} from "@apollo/client";
 const sub = gql`
   subscription Entities($flightId: ID!) {
     entities(flightId: $flightId) {
-      op
-      path
-      value
-      values {
-        id
-        identity {
-          name
-        }
-        appearance {
-          color
-          meshType
-          materialMapAsset
-          scale
-        }
-        location {
-          position {
-            x
-            y
-            z
-          }
+      id
+      identity {
+        name
+      }
+      appearance {
+        color
+        meshType
+        modelAsset
+        materialMapAsset
+        ringMapAsset
+        cloudMapAsset
+        emissiveColor
+        emissiveIntensity
+        scale
+      }
+      light {
+        intensity
+        decay
+        color
+      }
+      glow {
+        glowMode
+        color
+      }
+      location {
+        position {
+          x
+          y
+          z
         }
       }
     }
@@ -45,6 +54,8 @@ export default function UniversalSandboxEditor() {
   const [selected, setSelected] = React.useState<string[]>([]);
   const [dragging, setDragging] = React.useState<Entity | undefined>();
   const [selecting, setSelecting] = React.useState<boolean>(false);
+  const [lighting, setLighting] = React.useState<boolean>(false);
+  const [camera, setCamera] = React.useState<boolean>(false);
   const [useEntityState] = usePatchedSubscriptions<
     Entity[],
     {flightId: string}
@@ -53,7 +64,11 @@ export default function UniversalSandboxEditor() {
   const client = useApolloClient();
   return (
     <div className="universal-sandbox-editor">
-      <Canvas id="level-editor">
+      <Canvas
+        id="level-editor"
+        sRGB={true}
+        gl={{antialias: true, logarithmicDepthBuffer: true}}
+      >
         <ApolloProvider client={client}>
           <CanvasContextProvider recenter={recenter} zoomScale={zoomScale}>
             <CanvasApp
@@ -64,6 +79,8 @@ export default function UniversalSandboxEditor() {
               dragging={dragging}
               selecting={selecting}
               entities={entities}
+              lighting={lighting}
+              camera={camera}
             />
           </CanvasContextProvider>
         </ApolloProvider>
@@ -76,6 +93,10 @@ export default function UniversalSandboxEditor() {
         hasSelected={selected && selected.length === 1}
         setSelecting={setSelecting}
         selectedEntity={entities.find(e => selected && e.id === selected[0])}
+        lighting={lighting}
+        setLighting={setLighting}
+        camera={camera}
+        setCamera={setCamera}
       />
       <Library setDragging={setDragging} dragging={Boolean(dragging)} />
     </div>

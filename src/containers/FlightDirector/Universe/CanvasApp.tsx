@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useThree} from "react-three-fiber";
-import PanControls from "./PanControlsContainer";
-import Camera from "./Camera";
+import OrthoCamera from "./OrthoCamera";
+import PerspectiveCamera from "./PerspectiveCamera";
 import Grid from "./Grid";
 import use3DMousePosition from "./use3DMousePosition";
 import BackPlane from "./BackPlane";
@@ -15,17 +15,9 @@ import {
   useEntitiesSetPositionMutation,
   Entity as EntityType,
 } from "generated/graphql";
+import Nebula from "./Nebula";
+import Stars from "./Stars";
 
-interface SceneControlProps {
-  recenter: {};
-}
-const SceneControl: React.FC<SceneControlProps> = ({recenter}) => {
-  return (
-    <>
-      <PanControls recenter={recenter} />
-    </>
-  );
-};
 export type PositionTuple = [number, number, number];
 interface CanvasAppProps {
   recenter: {};
@@ -35,6 +27,8 @@ interface CanvasAppProps {
   dragging: EntityType | undefined;
   selecting: boolean;
   entities: EntityInterface[];
+  lighting: boolean;
+  camera: boolean;
 }
 function setNumberBounds(num: number) {
   return Math.max(
@@ -50,6 +44,8 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   dragging,
   selecting,
   entities,
+  lighting,
+  camera: perspectiveCamera,
 }) => {
   const [create] = useEntityCreateMutation();
   const [remove] = useEntityRemoveMutation();
@@ -79,6 +75,17 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           name: `New Entity ${entities.length + 1}`,
           meshType: dragging.appearance.meshType,
           color: dragging.appearance.color,
+          emissiveColor: dragging.appearance.emissiveColor,
+          emissiveIntensity: dragging.appearance.emissiveIntensity,
+          modelAsset: dragging.appearance.modelAsset,
+          materialMapAsset: dragging.appearance.materialMapAsset,
+          ringMapAsset: dragging.appearance.ringMapAsset,
+          cloudMapAsset: dragging.appearance.cloudMapAsset,
+          glowColor: dragging.glow?.color,
+          glowMode: dragging.glow?.glowMode,
+          lightColor: dragging.light?.color,
+          lightDecay: dragging.light?.decay,
+          lightIntensity: dragging.light?.intensity,
         },
       });
       if (data?.entityCreate.id) {
@@ -149,27 +156,35 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   ]);
   return (
     <>
-      <Camera />
-      <SceneControl recenter={recenter} />
-      <ambientLight />
-      <Grid />
-      <pointLight position={[10, 10, -10]} />
-      {dragging && (
-        <Entity
-          index={0}
-          dragging
-          entity={dragging}
-          mousePosition={mousePosition}
-        />
+      {perspectiveCamera ? (
+        <>
+          <React.Suspense fallback={null}>
+            <Nebula />
+          </React.Suspense>
+          <PerspectiveCamera recenter={recenter} />
+        </>
+      ) : (
+        <>
+          <Grid />
+          <OrthoCamera recenter={recenter} />
+          {dragging && (
+            <Entity dragging entity={dragging} mousePosition={mousePosition} />
+          )}
+          <BackPlane setSelected={setSelected} />
+          <DragSelect
+            selecting={selecting}
+            setSelected={setSelected}
+            entities={entities}
+          />
+        </>
       )}
+      <ambientLight intensity={lighting ? 0.1 : 1} />
 
       {entities.map((e, i) => {
         const isSelected = selected && selected.includes(e.id);
         return (
-          <React.Suspense fallback={null}>
+          <React.Suspense key={e.id} fallback={null}>
             <Entity
-              key={e.id}
-              index={i}
               entity={e}
               selected={isSelected}
               setSelected={setSelected}
@@ -184,12 +199,6 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           </React.Suspense>
         );
       })}
-      <BackPlane setSelected={setSelected} />
-      <DragSelect
-        selecting={selecting}
-        setSelected={setSelected}
-        entities={entities}
-      />
     </>
   );
 };

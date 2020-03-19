@@ -1,0 +1,3 @@
+mutation EntitySetTemplate($id: ID, $category: String!) {
+  entitySetTemplate(id: $id, category: $category)
+}

@@ -1,0 +1,3 @@
+mutation EntityRemoveLight($id: ID!) {
+  entityRemoveLight(id: $id)
+}

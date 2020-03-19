@@ -1,7 +1,18 @@
 import {useState, useCallback, useLayoutEffect} from "react";
+interface Bounds {
+  width: number;
+  height: number;
+  top: number;
+  left: number;
+  x: number;
+  y: number;
+  right: number;
+  bottom: number;
+}
+type NodeSetter = (node: HTMLDivElement | any) => void;
 
 export default function useDimensions() {
-  const [dimensions, setDimensions] = useState({
+  const [dimensions, setDimensions] = useState<Bounds>({
     width: 0,
     height: 0,
     top: 0,
@@ -11,9 +22,9 @@ export default function useDimensions() {
     right: 0,
     bottom: 0,
   });
-  const [node, setNode] = useState(null);
+  const [node, setNode] = useState<HTMLDivElement | null>(null);
 
-  const ref = useCallback(node => {
+  const ref = useCallback((node: HTMLDivElement | any) => {
     setNode(node);
   }, []);
 
@@ -21,7 +32,7 @@ export default function useDimensions() {
     if (node) {
       const measure = () =>
         window.requestAnimationFrame(() => {
-          const rect = node.getBoundingClientRect();
+          const rect = node?.getBoundingClientRect();
 
           setDimensions({
             width: rect.width,
@@ -37,6 +48,10 @@ export default function useDimensions() {
       measure();
     }
   }, [node]);
-
-  return [ref, dimensions, node];
+  const output: [NodeSetter, Bounds, HTMLDivElement | any] = [
+    ref,
+    dimensions,
+    node,
+  ];
+  return output;
 }

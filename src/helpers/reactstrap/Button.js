@@ -5,7 +5,7 @@ import useSoundEffect from "../hooks/useSoundEffect";
 const Button = ({
   onMouseDown = () => {},
   onMouseOver = () => {},
-  silent,
+  silent = false,
   ...props
 }) => {
   const playEffect = useSoundEffect();

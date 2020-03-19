@@ -1,14 +1,14 @@
 import {registerComponent} from "../component";
 import {immerable} from "immer";
 
-export class SceneChild {
+export class StageChild {
   [immerable] = true;
   parentId: string;
-  static class = "SceneChild";
-  class = "SceneChild";
+  static class = "StageChild";
+  class = "StageChild";
   constructor({parentId}) {
     this.parentId = parentId;
   }
 }
 
-registerComponent(SceneChild);
+registerComponent(StageChild);
