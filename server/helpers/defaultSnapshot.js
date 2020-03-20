@@ -13641,7 +13641,7 @@ export default {
   migrations: {
     assets: true,
   },
-  port: 443,
+  port: 4444,
   httpOnly: false,
   events: [],
   replaying: false,

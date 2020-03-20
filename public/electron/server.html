@@ -124,6 +124,11 @@
         document.getElementById("ipAddress").innerHTML = `
 <p>Flight Director Address: ${printUrl()}</p>
 <p>Client Address: ${printUrl()}/client</p>
+${
+  !httpOnly
+    ? "<p>If you experience certificate errors after opening in Chrome, type <code>thisisunsafe</code> into the browser window.</p>"
+    : ""
+}
 `;
       });
     </script>
