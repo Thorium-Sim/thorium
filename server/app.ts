@@ -94,7 +94,6 @@ class Events extends EventEmitter {
     if (process.env.PORT && !isNaN(parseInt(process.env.PORT, 10)))
       this.port = parseInt(process.env.PORT, 10);
     this.httpOnly = process.env.HTTP_ONLY === "true";
-    console.log("APP", process.env.HTTP_ONLY, this.httpOnly);
   }
   merge(snapshot: any) {
     // Initialize the snapshot with the object constructors

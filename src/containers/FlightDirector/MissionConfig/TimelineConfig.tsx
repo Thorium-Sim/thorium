@@ -160,7 +160,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
 
   const removeTimelineItem = (timelineItemId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!selectedTimelineStep || !selectedTimelineItem) return;
+    if (!selectedTimelineStep) return;
     if (window.confirm("Are you sure you want to remove this timeline item?")) {
       if (timelineItemId === selectedTimelineItem) {
         setSelectedTimelineItemAction(null);

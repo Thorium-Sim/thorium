@@ -179,7 +179,6 @@ export default (
       insecureServer.listen(80);
     }
   }
-  console.log(httpOnly, isHttps);
   apollo.installSubscriptionHandlers(httpServer);
 
   vanity();
