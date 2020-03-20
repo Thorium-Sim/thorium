@@ -45,7 +45,8 @@ function reduceMessages(messages, stationNames) {
   }, {});
 }
 
-const Conversations = ({messages, simulator}) => {
+const Conversations = props => {
+  const {messages, simulator} = props;
   const [alert, setAlert] = React.useState({});
   const [newMessage, setNewMessage] = React.useState(null);
   const [selectedConvo, setSelectedConvo] = React.useState(null);
@@ -219,7 +220,7 @@ const Conversations = ({messages, simulator}) => {
       </Container>
       {newMessage && (
         <GroupManager
-          {...this.props}
+          {...props}
           cancel={() => setNewMessage(false)}
           startConvo={(sender, destination) => {
             setSelectedConvo({sender, destination, id: "new"});
