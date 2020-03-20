@@ -47,7 +47,6 @@ class FileExplorer extends Component {
       removeFolder,
     } = this.props;
     let {currentDirectory, dimensions} = this.state;
-    console.log(currentDirectory, assetFolders);
     if (!assetFolders.find(a => a.fullPath === currentDirectory)) {
       currentDirectory = "/";
     }

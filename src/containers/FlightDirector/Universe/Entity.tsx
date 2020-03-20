@@ -128,7 +128,6 @@ const ModelAsset: React.FC<ModelAssetProps> = React.memo(
     );
     const scene = React.useMemo(() => {
       const scene: Scene = model.scene.clone(true);
-      console.log(scene);
       if (scene.traverse) {
         scene.traverse(function(object) {
           if (object instanceof Mesh) {

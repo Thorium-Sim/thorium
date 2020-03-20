@@ -63,7 +63,6 @@ class TimelineData extends Component {
         variables={{simulatorId: this.props.simulator.id}}
       >
         {({loading, data, error, subscribeToMore}) => {
-          console.log(error);
           if (loading || !data) return "Loading...";
           const {simulators, missions} = data;
           if (!simulators[0]) return <div>No Timeline</div>;

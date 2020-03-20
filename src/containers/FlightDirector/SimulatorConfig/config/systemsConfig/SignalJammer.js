@@ -19,7 +19,6 @@ const SIGNAL_JAMMER_MUTATION = gql`
 `;
 
 const SignalJammer = props => {
-  console.log(props);
   const {id, simulatorId} = props;
   const {data} = useQuery(SIGNAL_JAMMER_QUERY, {variables: {simulatorId}});
   const [setSensorsInterference] = useMutation(SIGNAL_JAMMER_MUTATION, {

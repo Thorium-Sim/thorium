@@ -209,7 +209,6 @@ class ProbeScience extends Component {
       {detectorCharge: charge, detectorScale: 0, detectType: name},
       () => this.detectLoop(),
     );
-    console.log(charge, name);
   };
   detectLoop = () => {
     if (this.state.detectorScale <= this.state.detectorCharge + 0.1) {

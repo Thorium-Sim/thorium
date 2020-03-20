@@ -13,7 +13,6 @@ const SceneBackground = () => {
   return null;
 };
 const GLTFPreview: React.FC<{src: string}> = ({src}) => {
-  console.log(src);
   return (
     <Canvas
       // gl={{alpha: false}}
