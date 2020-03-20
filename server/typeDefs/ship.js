@@ -92,6 +92,11 @@ const schema = gql`
       body: String
       color: NotifyColors
     ): String
+
+    """
+    Macro: Actions: Print PDF Asset
+    """
+    printPdf(asset: String!): String
   }
 
   extend type Subscription {

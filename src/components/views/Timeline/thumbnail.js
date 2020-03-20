@@ -4,6 +4,7 @@ import allowedMacros from "./allowedMacros";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {VideoPreview} from "../TacticalMap/fileExplorer";
+import triggerLocalMacros from "helpers/triggerLocalMacros";
 
 const StepRender = ({args, event}) => {
   const stepArgs = JSON.parse(args) || {};
@@ -61,23 +62,25 @@ const Mission = ({
   const runMacro = t => {
     if (!t) return;
     const stepIndex = filteredTimeline.find(i => i.id === t.id).index;
+    const macros = t.timelineItems
+      .filter(a => allowedMacros.indexOf(a.event) > -1)
+      .map(tt => {
+        const args =
+          typeof tt.args === "string"
+            ? JSON.stringify({...JSON.parse(tt.args)})
+            : JSON.stringify({...tt.args});
+        return {
+          stepId: tt.id,
+          event: tt.event,
+          args,
+          delay: tt.delay,
+        };
+      });
     const variables = {
       simulatorId,
-      macros: t.timelineItems
-        .filter(a => allowedMacros.indexOf(a.event) > -1)
-        .map(tt => {
-          const args =
-            typeof tt.args === "string"
-              ? JSON.stringify({...JSON.parse(tt.args)})
-              : JSON.stringify({...tt.args});
-          return {
-            stepId: tt.id,
-            event: tt.event,
-            args,
-            delay: tt.delay,
-          };
-        }),
+      macros,
     };
+    triggerLocalMacros(macros);
     triggerMacros({variables});
     updateTimelineStep &&
       updateTimelineStep({

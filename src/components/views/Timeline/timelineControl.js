@@ -4,6 +4,7 @@ import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import StepModal from "./stepModal";
 import {FaArrowLeft, FaStepForward, FaPlay, FaArrowRight} from "react-icons/fa";
+import triggerLocalMacros from "helpers/triggerLocalMacros";
 
 class TimelineControl extends Component {
   state = {};
@@ -20,26 +21,28 @@ class TimelineControl extends Component {
     const currentStep = timeline[currentTimelineStep];
     if (!currentStep) return;
 
+    const macros = currentStep.timelineItems
+      .filter(t => actions[t.id])
+      .map(t => {
+        const itemValues = values[t.id] || {};
+        const args =
+          typeof t.args === "string"
+            ? JSON.stringify({...JSON.parse(t.args), ...itemValues})
+            : JSON.stringify({...t.args, ...itemValues});
+        const stepDelay = delay[t.id];
+
+        return {
+          stepId: t.id,
+          event: t.event,
+          args,
+          delay: stepDelay || stepDelay === 0 ? stepDelay : t.delay,
+        };
+      });
     const variables = {
       simulatorId,
-      macros: currentStep.timelineItems
-        .filter(t => actions[t.id])
-        .map(t => {
-          const itemValues = values[t.id] || {};
-          const args =
-            typeof t.args === "string"
-              ? JSON.stringify({...JSON.parse(t.args), ...itemValues})
-              : JSON.stringify({...t.args, ...itemValues});
-          const stepDelay = delay[t.id];
-
-          return {
-            stepId: t.id,
-            event: t.event,
-            args,
-            delay: stepDelay || stepDelay === 0 ? stepDelay : t.delay,
-          };
-        }),
+      macros,
     };
+    triggerLocalMacros(macros);
     triggerMacro({variables});
     updateTimelineStep &&
       updateTimelineStep({

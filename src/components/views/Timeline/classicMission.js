@@ -6,6 +6,7 @@ import allowedMacros from "./allowedMacros";
 import {FaCaretRight} from "react-icons/fa";
 import TimelineItem from "./timelineItem";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
+import triggerLocalMacros from "helpers/triggerLocalMacros";
 
 const TimelineStep = ({
   t,
@@ -25,25 +26,27 @@ const TimelineStep = ({
   const runMacro = t => {
     if (!t) return;
     const stepIndex = timeline.findIndex(i => i.id === t.id);
+    const macros = t.timelineItems
+      .filter(a =>
+        onlyExecuteViewscreen ? allowedMacros.indexOf(a.event) > -1 : true,
+      )
+      .map(tt => {
+        const args =
+          typeof tt.args === "string"
+            ? JSON.stringify({...JSON.parse(tt.args)})
+            : JSON.stringify({...tt.args});
+        return {
+          stepId: tt.id,
+          event: tt.event,
+          args,
+          delay: tt.delay,
+        };
+      });
     const variables = {
       simulatorId,
-      macros: t.timelineItems
-        .filter(a =>
-          onlyExecuteViewscreen ? allowedMacros.indexOf(a.event) > -1 : true,
-        )
-        .map(tt => {
-          const args =
-            typeof tt.args === "string"
-              ? JSON.stringify({...JSON.parse(tt.args)})
-              : JSON.stringify({...tt.args});
-          return {
-            stepId: tt.id,
-            event: tt.event,
-            args,
-            delay: tt.delay,
-          };
-        }),
+      macros,
     };
+    triggerLocalMacros(macros);
     triggerMacros({variables});
     updateTimelineStep &&
       updateTimelineStep({

@@ -7,7 +7,7 @@ import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import uuid from "uuid";
 import MacroConfig from "./macroConfig";
 import {FaBan} from "react-icons/fa";
-
+import triggerLocalMacros from "helpers/triggerLocalMacros";
 class MacrosCore extends Component {
   state = {actions: []};
   render() {
@@ -143,6 +143,7 @@ class MacrosCore extends Component {
                 size="sm"
                 onClick={() => {
                   triggerMacros();
+                  triggerLocalMacros(actions);
                   this.setState({actions: []});
                 }}
               >
