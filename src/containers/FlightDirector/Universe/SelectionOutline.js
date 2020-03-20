@@ -1,31 +1,11 @@
 import React from "react";
 
 import * as THREE from "three";
-import {Line2} from "three/examples/jsm/lines/Line2";
-import {LineGeometry} from "three/examples/jsm/lines/LineGeometry";
-import {LineMaterial} from "three/examples/jsm/lines/LineMaterial";
+import {Line2, LineGeometry, LineMaterial} from "./Lines";
 import {extend, useFrame} from "react-three-fiber";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {ReactThreeFiber} from "react-three-fiber/three-types";
 extend({Line2, LineGeometry, LineMaterial});
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      lineMaterial: ReactThreeFiber.Object3DNode<
-        LineMaterial,
-        typeof LineMaterial
-      >;
-      line2: ReactThreeFiber.Object3DNode<Line2, typeof Line2>;
-      lineGeometry: ReactThreeFiber.Object3DNode<
-        LineGeometry,
-        typeof LineGeometry
-      >;
-    }
-  }
-}
-
-export default function SelectionOutline({selected}: {selected: any}) {
+export default function SelectionOutline({selected}) {
   const line = React.useRef(new Line2());
   const geometry = React.useMemo(() => {
     var positions = [

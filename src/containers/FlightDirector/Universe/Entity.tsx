@@ -4,7 +4,7 @@ import {CanvasContext, ActionType} from "./CanvasContext";
 import {useDrag} from "react-use-gesture";
 import * as THREE from "three";
 import {SphereGeometry, BoxBufferGeometry, Color, Scene, Mesh} from "three";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import GLTFLoader from "./GLTFLoader";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
 import SelectionOutline from "./SelectionOutline";
@@ -123,6 +123,7 @@ interface ModelAssetProps {
 const ModelAsset: React.FC<ModelAssetProps> = React.memo(
   ({scale, modelAsset}) => {
     const model: any = useLoader(
+      // @ts-ignore ts(2345)
       GLTFLoader,
       modelAsset ? `/assets${modelAsset}` : whiteImage,
     );
