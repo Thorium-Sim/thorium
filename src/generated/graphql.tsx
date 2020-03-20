@@ -1834,6 +1834,8 @@ export type Mutation = {
   addMacro?: Maybe<Scalars["ID"]>;
   removeMacro?: Maybe<Scalars["String"]>;
   renameMacro?: Maybe<Scalars["String"]>;
+  duplicateMacro?: Maybe<Scalars["String"]>;
+  duplicateMacroAction?: Maybe<Scalars["String"]>;
   updateMacroActions?: Maybe<Scalars["String"]>;
   triggerMacroAction?: Maybe<Scalars["String"]>;
   addMacroButtonConfig?: Maybe<Scalars["ID"]>;
@@ -2014,6 +2016,7 @@ export type Mutation = {
   setSelfDestructCode?: Maybe<Scalars["String"]>;
   setSelfDestructAuto?: Maybe<Scalars["String"]>;
   notify?: Maybe<Scalars["String"]>;
+  printPdf?: Maybe<Scalars["String"]>;
   commAddSignal?: Maybe<Scalars["String"]>;
   commUpdateSignal?: Maybe<Scalars["String"]>;
   commUpdateSignals?: Maybe<Scalars["String"]>;
@@ -3505,6 +3508,15 @@ export type MutationRenameMacroArgs = {
   name: Scalars["String"];
 };
 
+export type MutationDuplicateMacroArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationDuplicateMacroActionArgs = {
+  id: Scalars["ID"];
+  actionId: Scalars["ID"];
+};
+
 export type MutationUpdateMacroActionsArgs = {
   id: Scalars["ID"];
   actions?: Maybe<Array<Maybe<ActionInput>>>;
@@ -4461,6 +4473,10 @@ export type MutationNotifyArgs = {
   title: Scalars["String"];
   body?: Maybe<Scalars["String"]>;
   color?: Maybe<NotifyColors>;
+};
+
+export type MutationPrintPdfArgs = {
+  asset: Scalars["String"];
 };
 
 export type MutationCommAddSignalArgs = {
@@ -9313,6 +9329,25 @@ export type EntityCreateTemplateMutation = {__typename?: "Mutation"} & Pick<
   "entitySetTemplate" | "entitySetIdentity" | "entitySetAppearance"
 > & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
 
+export type MacroDuplicateMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type MacroDuplicateMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "duplicateMacro"
+>;
+
+export type MacroDuplicateActionMutationVariables = {
+  id: Scalars["ID"];
+  actionId: Scalars["ID"];
+};
+
+export type MacroDuplicateActionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "duplicateMacroAction"
+>;
+
 export type TimelineAddItemMutationVariables = {
   simulatorId?: Maybe<Scalars["ID"]>;
   missionId?: Maybe<Scalars["ID"]>;
@@ -11835,6 +11870,103 @@ export type EntityCreateTemplateMutationResult = ApolloReactCommon.MutationResul
 export type EntityCreateTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityCreateTemplateMutation,
   EntityCreateTemplateMutationVariables
+>;
+export const MacroDuplicateDocument = gql`
+  mutation MacroDuplicate($id: ID!) {
+    duplicateMacro(id: $id)
+  }
+`;
+export type MacroDuplicateMutationFn = ApolloReactCommon.MutationFunction<
+  MacroDuplicateMutation,
+  MacroDuplicateMutationVariables
+>;
+
+/**
+ * __useMacroDuplicateMutation__
+ *
+ * To run a mutation, you first call `useMacroDuplicateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMacroDuplicateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [macroDuplicateMutation, { data, loading, error }] = useMacroDuplicateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useMacroDuplicateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    MacroDuplicateMutation,
+    MacroDuplicateMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    MacroDuplicateMutation,
+    MacroDuplicateMutationVariables
+  >(MacroDuplicateDocument, baseOptions);
+}
+export type MacroDuplicateMutationHookResult = ReturnType<
+  typeof useMacroDuplicateMutation
+>;
+export type MacroDuplicateMutationResult = ApolloReactCommon.MutationResult<
+  MacroDuplicateMutation
+>;
+export type MacroDuplicateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  MacroDuplicateMutation,
+  MacroDuplicateMutationVariables
+>;
+export const MacroDuplicateActionDocument = gql`
+  mutation MacroDuplicateAction($id: ID!, $actionId: ID!) {
+    duplicateMacroAction(id: $id, actionId: $actionId)
+  }
+`;
+export type MacroDuplicateActionMutationFn = ApolloReactCommon.MutationFunction<
+  MacroDuplicateActionMutation,
+  MacroDuplicateActionMutationVariables
+>;
+
+/**
+ * __useMacroDuplicateActionMutation__
+ *
+ * To run a mutation, you first call `useMacroDuplicateActionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMacroDuplicateActionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [macroDuplicateActionMutation, { data, loading, error }] = useMacroDuplicateActionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      actionId: // value for 'actionId'
+ *   },
+ * });
+ */
+export function useMacroDuplicateActionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    MacroDuplicateActionMutation,
+    MacroDuplicateActionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    MacroDuplicateActionMutation,
+    MacroDuplicateActionMutationVariables
+  >(MacroDuplicateActionDocument, baseOptions);
+}
+export type MacroDuplicateActionMutationHookResult = ReturnType<
+  typeof useMacroDuplicateActionMutation
+>;
+export type MacroDuplicateActionMutationResult = ApolloReactCommon.MutationResult<
+  MacroDuplicateActionMutation
+>;
+export type MacroDuplicateActionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  MacroDuplicateActionMutation,
+  MacroDuplicateActionMutationVariables
 >;
 export const TimelineAddItemDocument = gql`
   mutation TimelineAddItem(

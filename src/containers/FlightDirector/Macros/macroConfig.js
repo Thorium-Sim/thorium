@@ -19,6 +19,10 @@ import MacroWrapper from "../MissionConfig/MacroConfig";
 import EventPicker from "../MissionConfig/EventPicker";
 import uuid from "uuid";
 import {FaBan} from "react-icons/fa";
+import {
+  useMacroDuplicateMutation,
+  useMacroDuplicateActionMutation,
+} from "generated/graphql";
 const ActionList = ({
   id,
   selectedAction,
@@ -27,6 +31,7 @@ const ActionList = ({
   addAction,
   removeAction,
 }) => {
+  const [duplicateActionMutation] = useMacroDuplicateActionMutation();
   return (
     <Fragment>
       <h3>Actions</h3>
@@ -49,6 +54,20 @@ const ActionList = ({
         className={"btn btn-sm btn-success"}
         handleChange={e => addAction(e.target.value)}
       />
+      <Button
+        color="info"
+        size="sm"
+        onClick={async () => {
+          if (!selectedAction) return;
+
+          const data = await duplicateActionMutation({
+            variables: {id, actionId: selectedAction},
+          });
+          setSelectedAction(data.data.duplicateMacroAction);
+        }}
+      >
+        Duplicate
+      </Button>
     </Fragment>
   );
 };
@@ -101,6 +120,8 @@ const MacroConfig = ({macros}) => {
   const [selectedAction, setSelectedAction] = React.useState(null);
   const macro = macros.find(m => m.id === selectedMacro);
   const actionObj = macro && macro.actions.find(a => a.id === selectedAction);
+
+  const [duplicateMutation] = useMacroDuplicateMutation();
   return (
     <Container
       style={{
@@ -181,6 +202,20 @@ const MacroConfig = ({macros}) => {
                   </Button>
                 )}
               </Mutation>
+              <Button
+                color="info"
+                size="sm"
+                block
+                onClick={async () => {
+                  const data = await duplicateMutation({
+                    variables: {id: macro.id},
+                  });
+                  setSelectedAction(null);
+                  setSelectedMacro(data.data.duplicateMacro);
+                }}
+              >
+                Duplicate Macro
+              </Button>
               <Mutation
                 mutation={gql`
                   mutation RenameMacro($id: ID!, $name: String!) {

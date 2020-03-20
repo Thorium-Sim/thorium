@@ -28,6 +28,13 @@ export default class Macro {
   setActions(actions) {
     this.actions = actions;
   }
+  duplicateAction(actionId) {
+    const action = this.actions.find(a => a.id === actionId);
+    if (!action) return;
+    const newAction = new Action({...action, id: undefined});
+    this.actions.push(newAction);
+    return newAction.id;
+  }
 }
 
 class MacroButton extends Macro {

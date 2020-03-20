@@ -28,6 +28,25 @@ App.on("removeMacro", ({id}) => {
 App.on("renameMacro", ({id, name}) => {
   performAction(id, m => m.rename(name));
 });
+App.on("duplicateMacro", ({id, cb}) => {
+  const macro = App.macros.find(s => s.id === id);
+  if (!macro) return;
+  const newMacro = new Classes.Macro({
+    ...macro,
+    id: undefined,
+    name: `${macro.name} - Copy`,
+  });
+  App.macros.push(newMacro);
+  pubsub.publish("macrosUpdate", App.macros);
+
+  cb(newMacro.id);
+});
+App.on("duplicateMacroAction", ({id, actionId, cb}) => {
+  performAction(id, m => {
+    const updateId = m.duplicateAction(actionId);
+    cb(updateId);
+  });
+});
 App.on("updateMacroActions", ({id, actions}) => {
   performAction(id, m => m.setActions(actions));
 });
