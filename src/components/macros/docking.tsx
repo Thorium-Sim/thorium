@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 const FormWrapper = styled.div`
   label {
+    display: block;
     margin-left: 2rem;
   }
 `;
@@ -39,7 +40,6 @@ const UpdateDockingPort: React.FC<MacroConfigProps> = ({
     );
   }
   const simPort = data?.docking?.find(d => d?.id === port.id) || {};
-  console.log(simPort, port);
   return (
     <FormWrapper key={port.id || Math.random()}>
       <FormGroup>

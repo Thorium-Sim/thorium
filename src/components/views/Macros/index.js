@@ -100,6 +100,7 @@ class MacrosCore extends Component {
                   Don't Cancel Delay on Flight Reset
                 </label>
                 <MacroConfig
+                  simulatorId={simulator.id}
                   key={action.id}
                   action={action}
                   stations={simulator.stations}

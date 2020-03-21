@@ -1,5 +1,6 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
+import {randomFromList} from "../classes/generic/damageReports/constants";
 
 function performAction(id, action) {
   const sys = App.systems.find(s => s.id === id);
@@ -18,6 +19,50 @@ App.on("addComputerCoreUser", ({id, user, cb}) => {
     cb(newUser);
   });
 });
+
+const hackerNames = [
+  "PLA Unit 61398",
+  "Poodle Corp",
+  "Cyber Caliphate",
+  "Armada Collective",
+  "Fancy Bear",
+  "Flying Kitten",
+  "Putter Panda",
+  "Guccifer 2.0",
+  "Phineas Fisher",
+  "GammaGroupPR",
+  "Lizard Squad",
+  "LulzSec",
+  "The Shadow Brokers",
+  "The Laughing Man",
+  "Toxic Fiber",
+  "Phreak",
+  "Gray Blade",
+  "Cyber Hybrid",
+  "Private Omicron",
+  "Null Shadow",
+  "Toxic Proxy",
+  "Phillip Q. Nibley",
+];
+
+App.on(
+  "computerCoreAddHacker",
+  ({id, simulatorId, level = Math.round(Math.random() * 9 + 1), cb}) => {
+    const computerCore = App.systems.find(
+      s => s.class === "ComputerCore" && s.simulatorId === simulatorId,
+    );
+    if (!computerCore) return;
+    computerCore.addUser({
+      name: randomFromList(hackerNames),
+      level,
+      hacker: true,
+    });
+    pubsub.publish(
+      "computerCoreUpdate",
+      App.systems.filter(s => s.class === "ComputerCore"),
+    );
+  },
+);
 
 App.on(
   "updateComputerCoreUser",
