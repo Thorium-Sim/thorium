@@ -20,6 +20,7 @@ const Camera: React.FC<CameraProps> = ({recenter}) => {
   // Make the camera known to the system
   React.useEffect(() => void setDefaultCamera(ref.current), [setDefaultCamera]);
   React.useEffect(() => {
+    ref.current.up.set(0, 0, 1);
     ref.current.position.set(1000, 1000, 1000);
     ref.current.lookAt(0, 0, 0);
   }, []);

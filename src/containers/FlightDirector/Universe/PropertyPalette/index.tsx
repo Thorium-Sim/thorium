@@ -67,14 +67,18 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
               location={selectedEntity.location}
             />
           )}
-          <Glow
-            id={selectedEntity.id}
-            glow={selectedEntity.glow || undefined}
-          />
-          <Light
-            id={selectedEntity.id}
-            light={selectedEntity.light || undefined}
-          />
+          {selectedEntity.appearance?.meshType === "sphere" && (
+            <Glow
+              id={selectedEntity.id}
+              glow={selectedEntity.glow || undefined}
+            />
+          )}
+          {selectedEntity.appearance?.meshType === "sphere" && (
+            <Light
+              id={selectedEntity.id}
+              light={selectedEntity.light || undefined}
+            />
+          )}
         </>
       )}
     </div>

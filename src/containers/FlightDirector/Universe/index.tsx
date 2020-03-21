@@ -9,6 +9,7 @@ import usePatchedSubscriptions from "../../../helpers/hooks/usePatchedSubscripti
 import {Entity} from "../../../generated/graphql";
 import gql from "graphql-tag.macro";
 import {useApolloClient, ApolloProvider} from "@apollo/client";
+import PropertyPalette from "./PropertyPalette";
 
 const sub = gql`
   subscription Entities($flightId: ID!) {
@@ -43,6 +44,12 @@ const sub = gql`
           y
           z
         }
+        rotation {
+          x
+          y
+          z
+          w
+        }
       }
     }
   }
@@ -50,7 +57,7 @@ const sub = gql`
 
 export default function UniversalSandboxEditor() {
   const [recenter, setRecenter] = React.useState<{}>({});
-  const [zoomScale, setZoomScale] = React.useState(true);
+  const [zoomScale, setZoomScale] = React.useState(false);
   const [selected, setSelected] = React.useState<string[]>([]);
   const [dragging, setDragging] = React.useState<Entity | undefined>();
   const [selecting, setSelecting] = React.useState<boolean>(false);
@@ -64,40 +71,45 @@ export default function UniversalSandboxEditor() {
   const client = useApolloClient();
   return (
     <div className="universal-sandbox-editor">
-      <Canvas
-        id="level-editor"
-        sRGB={true}
-        gl={{antialias: true, logarithmicDepthBuffer: true}}
-      >
-        <ApolloProvider client={client}>
-          <CanvasContextProvider recenter={recenter} zoomScale={zoomScale}>
-            <CanvasApp
-              recenter={recenter}
-              selected={selected}
-              setSelected={setSelected}
-              setDragging={setDragging}
-              dragging={dragging}
-              selecting={selecting}
-              entities={entities}
-              lighting={lighting}
-              camera={camera}
-            />
-          </CanvasContextProvider>
-        </ApolloProvider>
-      </Canvas>
-      <Controls
-        recenter={() => setRecenter({})}
-        zoomScale={zoomScale}
-        setZoomScale={setZoomScale}
-        selecting={selecting}
-        hasSelected={selected && selected.length === 1}
-        setSelecting={setSelecting}
+      <PropertyPalette
         selectedEntity={entities.find(e => selected && e.id === selected[0])}
-        lighting={lighting}
-        setLighting={setLighting}
-        camera={camera}
-        setCamera={setCamera}
       />
+      <div className="level-editor-container">
+        <Canvas
+          id="level-editor"
+          sRGB={true}
+          gl={{antialias: true, logarithmicDepthBuffer: true}}
+        >
+          <ApolloProvider client={client}>
+            <CanvasContextProvider recenter={recenter} zoomScale={zoomScale}>
+              <CanvasApp
+                recenter={recenter}
+                selected={selected}
+                setSelected={setSelected}
+                setDragging={setDragging}
+                dragging={dragging}
+                selecting={selecting}
+                entities={entities}
+                lighting={lighting}
+                camera={camera}
+              />
+            </CanvasContextProvider>
+          </ApolloProvider>
+        </Canvas>
+        <Controls
+          recenter={() => setRecenter({})}
+          zoomScale={zoomScale}
+          setZoomScale={setZoomScale}
+          selecting={selecting}
+          hasSelected={selected && selected.length === 1}
+          setSelecting={setSelecting}
+          lighting={lighting}
+          setLighting={setLighting}
+          camera={camera}
+          setCamera={setCamera}
+        />
+      </div>
+
       <Library setDragging={setDragging} dragging={Boolean(dragging)} />
     </div>
   );

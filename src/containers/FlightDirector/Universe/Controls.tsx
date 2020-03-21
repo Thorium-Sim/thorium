@@ -3,15 +3,11 @@ import {
   MdSelectAll,
   MdCenterFocusStrong,
   MdZoomOutMap,
-  MdChevronRight,
-  MdChevronLeft,
   MdLightbulbOutline,
   MdCamera,
 } from "react-icons/md";
 import {Tooltip} from "reactstrap";
 import uuid from "uuid";
-import PropertyPalette from "./PropertyPalette";
-import {Entity} from "generated/graphql";
 
 interface TooltipButtonProps {
   tooltipContent: React.ReactNode;
@@ -57,7 +53,6 @@ const Controls = ({
   selecting,
   setSelecting,
   hasSelected,
-  selectedEntity,
   lighting,
   setLighting,
   camera,
@@ -69,30 +64,14 @@ const Controls = ({
   selecting: boolean;
   setSelecting: (val: boolean | StateArg) => void;
   hasSelected: boolean;
-  selectedEntity: Entity | undefined;
   lighting: boolean;
   setLighting: React.Dispatch<React.SetStateAction<boolean>>;
   camera: boolean;
   setCamera: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [paletteExpanded, setPaletteExpanded] = React.useState<boolean>(false);
-  React.useEffect(() => {
-    if (!hasSelected) setPaletteExpanded(false);
-  }, [hasSelected]);
   return (
-    <div className={`controls-section ${paletteExpanded ? "expanded" : ""}`}>
-      <PropertyPalette selectedEntity={selectedEntity} />
+    <div className={`controls-section`}>
       <div className="view-controls">
-        <div>
-          <TooltipButton
-            disabled={!hasSelected}
-            className={paletteExpanded ? "selected" : ""}
-            onClick={() => setPaletteExpanded((s: boolean) => !s)}
-            tooltipContent="Property Palette"
-          >
-            {paletteExpanded ? <MdChevronLeft /> : <MdChevronRight />}
-          </TooltipButton>
-        </div>
         <div>
           <TooltipButton onClick={recenter} tooltipContent="Recenter Canvas">
             <MdCenterFocusStrong />

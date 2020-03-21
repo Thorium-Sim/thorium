@@ -1666,6 +1666,7 @@ export type Mutation = {
   addCommandLineOutput?: Maybe<Scalars["String"]>;
   handleCommandLineFeedback?: Maybe<Scalars["String"]>;
   addComputerCoreUser?: Maybe<ComputerCoreUser>;
+  computerCoreAddHacker?: Maybe<Scalars["String"]>;
   updateComputerCoreUser?: Maybe<Scalars["String"]>;
   removeComputerCoreUser?: Maybe<Scalars["String"]>;
   restoreComputerCoreFile?: Maybe<Scalars["String"]>;
@@ -2670,6 +2671,12 @@ export type MutationHandleCommandLineFeedbackArgs = {
 export type MutationAddComputerCoreUserArgs = {
   id: Scalars["ID"];
   user?: Maybe<ComputerCoreUserInput>;
+};
+
+export type MutationComputerCoreAddHackerArgs = {
+  id: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
+  level?: Maybe<Scalars["Int"]>;
 };
 
 export type MutationUpdateComputerCoreUserArgs = {
@@ -4183,6 +4190,7 @@ export type MutationSensorScanRequestArgs = {
 
 export type MutationSensorScanResultArgs = {
   id: Scalars["ID"];
+  domain?: Maybe<Scalars["String"]>;
   result: Scalars["String"];
 };
 
@@ -9490,6 +9498,15 @@ export type TimelineUpdateStepMutation = {__typename?: "Mutation"} & Pick<
   "updateTimelineStep"
 >;
 
+export type EntitiesSetPositionMutationVariables = {
+  entities: Array<EntitiesLocationInput>;
+};
+
+export type EntitiesSetPositionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitiesSetPosition"
+>;
+
 export type EntityCreateMutationVariables = {
   flightId: Scalars["ID"];
   position: EntityCoordinatesInput;
@@ -9596,13 +9613,19 @@ export type EntitySetLightMutation = {__typename?: "Mutation"} & Pick<
   "entitySetLight"
 >;
 
-export type EntitiesSetPositionMutationVariables = {
-  entities: Array<EntitiesLocationInput>;
+export type EntitySetLocationMutationVariables = {
+  id: Scalars["ID"];
+  position?: Maybe<EntityCoordinatesInput>;
+  velocity?: Maybe<EntityCoordinatesInput>;
+  acceleration?: Maybe<EntityCoordinatesInput>;
+  rotation?: Maybe<QuaternionInput>;
+  rotationVelocity?: Maybe<EntityCoordinatesInput>;
+  rotationAcceleration?: Maybe<EntityCoordinatesInput>;
 };
 
-export type EntitiesSetPositionMutation = {__typename?: "Mutation"} & Pick<
+export type EntitySetLocationMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
-  "entitiesSetPosition"
+  "entitySetLocation"
 >;
 
 export type EntitySetTemplateMutationVariables = {
@@ -12606,6 +12629,54 @@ export type TimelineUpdateStepMutationOptions = ApolloReactCommon.BaseMutationOp
   TimelineUpdateStepMutation,
   TimelineUpdateStepMutationVariables
 >;
+export const EntitiesSetPositionDocument = gql`
+  mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
+    entitiesSetPosition(entities: $entities)
+  }
+`;
+export type EntitiesSetPositionMutationFn = ApolloReactCommon.MutationFunction<
+  EntitiesSetPositionMutation,
+  EntitiesSetPositionMutationVariables
+>;
+
+/**
+ * __useEntitiesSetPositionMutation__
+ *
+ * To run a mutation, you first call `useEntitiesSetPositionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitiesSetPositionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitiesSetPositionMutation, { data, loading, error }] = useEntitiesSetPositionMutation({
+ *   variables: {
+ *      entities: // value for 'entities'
+ *   },
+ * });
+ */
+export function useEntitiesSetPositionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitiesSetPositionMutation,
+    EntitiesSetPositionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitiesSetPositionMutation,
+    EntitiesSetPositionMutationVariables
+  >(EntitiesSetPositionDocument, baseOptions);
+}
+export type EntitiesSetPositionMutationHookResult = ReturnType<
+  typeof useEntitiesSetPositionMutation
+>;
+export type EntitiesSetPositionMutationResult = ApolloReactCommon.MutationResult<
+  EntitiesSetPositionMutation
+>;
+export type EntitiesSetPositionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitiesSetPositionMutation,
+  EntitiesSetPositionMutationVariables
+>;
 export const EntityCreateDocument = gql`
   mutation EntityCreate(
     $flightId: ID!
@@ -13084,53 +13155,75 @@ export type EntitySetLightMutationOptions = ApolloReactCommon.BaseMutationOption
   EntitySetLightMutation,
   EntitySetLightMutationVariables
 >;
-export const EntitiesSetPositionDocument = gql`
-  mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
-    entitiesSetPosition(entities: $entities)
+export const EntitySetLocationDocument = gql`
+  mutation EntitySetLocation(
+    $id: ID!
+    $position: EntityCoordinatesInput
+    $velocity: EntityCoordinatesInput
+    $acceleration: EntityCoordinatesInput
+    $rotation: QuaternionInput
+    $rotationVelocity: EntityCoordinatesInput
+    $rotationAcceleration: EntityCoordinatesInput
+  ) {
+    entitySetLocation(
+      id: $id
+      position: $position
+      velocity: $velocity
+      acceleration: $acceleration
+      rotation: $rotation
+      rotationVelocity: $rotationVelocity
+      rotationAcceleration: $rotationAcceleration
+    )
   }
 `;
-export type EntitiesSetPositionMutationFn = ApolloReactCommon.MutationFunction<
-  EntitiesSetPositionMutation,
-  EntitiesSetPositionMutationVariables
+export type EntitySetLocationMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetLocationMutation,
+  EntitySetLocationMutationVariables
 >;
 
 /**
- * __useEntitiesSetPositionMutation__
+ * __useEntitySetLocationMutation__
  *
- * To run a mutation, you first call `useEntitiesSetPositionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useEntitiesSetPositionMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useEntitySetLocationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetLocationMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [entitiesSetPositionMutation, { data, loading, error }] = useEntitiesSetPositionMutation({
+ * const [entitySetLocationMutation, { data, loading, error }] = useEntitySetLocationMutation({
  *   variables: {
- *      entities: // value for 'entities'
+ *      id: // value for 'id'
+ *      position: // value for 'position'
+ *      velocity: // value for 'velocity'
+ *      acceleration: // value for 'acceleration'
+ *      rotation: // value for 'rotation'
+ *      rotationVelocity: // value for 'rotationVelocity'
+ *      rotationAcceleration: // value for 'rotationAcceleration'
  *   },
  * });
  */
-export function useEntitiesSetPositionMutation(
+export function useEntitySetLocationMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    EntitiesSetPositionMutation,
-    EntitiesSetPositionMutationVariables
+    EntitySetLocationMutation,
+    EntitySetLocationMutationVariables
   >,
 ) {
   return ApolloReactHooks.useMutation<
-    EntitiesSetPositionMutation,
-    EntitiesSetPositionMutationVariables
-  >(EntitiesSetPositionDocument, baseOptions);
+    EntitySetLocationMutation,
+    EntitySetLocationMutationVariables
+  >(EntitySetLocationDocument, baseOptions);
 }
-export type EntitiesSetPositionMutationHookResult = ReturnType<
-  typeof useEntitiesSetPositionMutation
+export type EntitySetLocationMutationHookResult = ReturnType<
+  typeof useEntitySetLocationMutation
 >;
-export type EntitiesSetPositionMutationResult = ApolloReactCommon.MutationResult<
-  EntitiesSetPositionMutation
+export type EntitySetLocationMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetLocationMutation
 >;
-export type EntitiesSetPositionMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  EntitiesSetPositionMutation,
-  EntitiesSetPositionMutationVariables
+export type EntitySetLocationMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetLocationMutation,
+  EntitySetLocationMutationVariables
 >;
 export const EntitySetTemplateDocument = gql`
   mutation EntitySetTemplate($id: ID, $category: String!) {

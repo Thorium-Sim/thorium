@@ -4,8 +4,9 @@ import {
   AppearanceComponent,
   MeshTypeEnum,
 } from "generated/graphql";
-import {Label, Input, Button} from "reactstrap";
+import {Label, Input, Button, Collapse} from "reactstrap";
 import {throttle} from "helpers/debounce";
+import {FaChevronDown, FaChevronRight} from "react-icons/fa";
 
 interface AppearanceEditProps {
   id: string;
@@ -76,6 +77,8 @@ const Appearance: React.FC<AppearanceEditProps> = ({
   appearance,
   setAsset,
 }) => {
+  const [collapse, setCollapse] = React.useState<boolean>(false);
+
   const [color, setColor] = React.useState(appearance?.color);
   const [emissiveColor, setEmissiveColor] = React.useState(
     appearance?.emissiveColor,
@@ -98,156 +101,160 @@ const Appearance: React.FC<AppearanceEditProps> = ({
   if (!appearance.meshType) return null;
   return (
     <>
-      <h3>Appearance</h3>
-      <Label>
-        Mesh Type
-        <Input
-          type="select"
-          value={appearance.meshType as string}
-          onChange={e =>
-            setAppearance({
-              variables: {id, meshType: e.target.value as MeshTypeEnum},
-            })
-          }
-        >
-          {Object.entries(MeshTypeEnum).map(([key, value]) => (
-            <option key={key} value={value}>
-              {key}
-            </option>
-          ))}
-        </Input>
-      </Label>
-      {appearance.meshType !== "model" && (
+      <h3 onClick={() => setCollapse(c => !c)}>
+        {collapse ? <FaChevronDown /> : <FaChevronRight />} Appearance
+      </h3>
+      <Collapse isOpen={collapse} timeout={100}>
         <Label>
-          Color
+          Mesh Type
           <Input
-            type="color"
-            value={color || "#ffffff"}
+            type="select"
+            value={appearance.meshType as string}
+            onChange={e =>
+              setAppearance({
+                variables: {id, meshType: e.target.value as MeshTypeEnum},
+              })
+            }
+          >
+            {Object.entries(MeshTypeEnum).map(([key, value]) => (
+              <option key={key} value={value}>
+                {key}
+              </option>
+            ))}
+          </Input>
+        </Label>
+        {appearance.meshType !== "model" && (
+          <Label>
+            Color
+            <Input
+              type="color"
+              value={color || "#ffffff"}
+              onChange={e => {
+                setColor(e.target.value);
+                throttleSetAppearance({
+                  variables: {id, color: e.target.value},
+                });
+              }}
+            />
+          </Label>
+        )}
+        <Label>
+          Scale ({Math.round(scale || 1)})
+          <Input
+            style={{width: "100%"}}
+            type="text"
+            value={scale ?? 1}
+            min={1}
+            max={695500000}
+            step={0.01}
             onChange={e => {
-              setColor(e.target.value);
+              setScale(parseFloat(e.target.value));
               throttleSetAppearance({
-                variables: {id, color: e.target.value},
+                variables: {id, scale: parseFloat(e.target.value)},
+              });
+            }}
+          />
+          <Input
+            style={{width: "100%"}}
+            type="range"
+            value={logPosition(scale ?? 1)}
+            min={1}
+            max={100}
+            step={0.01}
+            onChange={e => {
+              setScale(logSlider(parseFloat(e.target.value)));
+              throttleSetAppearance({
+                variables: {id, scale: logSlider(parseFloat(e.target.value))},
               });
             }}
           />
         </Label>
-      )}
-      <Label>
-        Scale ({Math.round(scale || 1)})
-        <Input
-          style={{width: "100%"}}
-          type="text"
-          value={scale ?? 1}
-          min={1}
-          max={695500000}
-          step={0.01}
-          onChange={e => {
-            setScale(parseFloat(e.target.value));
-            throttleSetAppearance({
-              variables: {id, scale: parseFloat(e.target.value)},
-            });
-          }}
-        />
-        <Input
-          style={{width: "100%"}}
-          type="range"
-          value={logPosition(scale ?? 1)}
-          min={1}
-          max={100}
-          step={0.01}
-          onChange={e => {
-            setScale(logSlider(parseFloat(e.target.value)));
-            throttleSetAppearance({
-              variables: {id, scale: logSlider(parseFloat(e.target.value))},
-            });
-          }}
-        />
-      </Label>
-      {[MeshTypeEnum.Sphere, MeshTypeEnum.Cube].includes(
-        appearance.meshType,
-      ) && (
-        <>
-          <AssetButton
-            id={id}
-            assetKey="materialMapAsset"
-            asset={appearance.materialMapAsset || undefined}
-            assetName="Map Asset"
-            assetDir="/3D/Texture/Planets"
-            setAsset={setAsset}
-            setAppearance={setAppearance}
-          />
-          <AssetButton
-            id={id}
-            assetKey="cloudMapAsset"
-            asset={appearance.cloudMapAsset || undefined}
-            assetName="Cloud Asset"
-            assetDir="/3D/Texture/Planets/Clouds"
-            setAsset={setAsset}
-            setAppearance={setAppearance}
-          />
-          <AssetButton
-            id={id}
-            assetKey="ringMapAsset"
-            asset={appearance.ringMapAsset || undefined}
-            assetName="Ring Asset"
-            assetDir="/3D/Texture/Planets/Rings"
-            setAsset={setAsset}
-            setAppearance={setAppearance}
-          />
+        {[MeshTypeEnum.Sphere, MeshTypeEnum.Cube].includes(
+          appearance.meshType,
+        ) && (
+          <>
+            <AssetButton
+              id={id}
+              assetKey="materialMapAsset"
+              asset={appearance.materialMapAsset || undefined}
+              assetName="Map Asset"
+              assetDir="/3D/Texture/Planets"
+              setAsset={setAsset}
+              setAppearance={setAppearance}
+            />
+            <AssetButton
+              id={id}
+              assetKey="cloudMapAsset"
+              asset={appearance.cloudMapAsset || undefined}
+              assetName="Cloud Asset"
+              assetDir="/3D/Texture/Planets/Clouds"
+              setAsset={setAsset}
+              setAppearance={setAppearance}
+            />
+            <AssetButton
+              id={id}
+              assetKey="ringMapAsset"
+              asset={appearance.ringMapAsset || undefined}
+              assetName="Ring Asset"
+              assetDir="/3D/Texture/Planets/Rings"
+              setAsset={setAsset}
+              setAppearance={setAppearance}
+            />
 
+            <Label>
+              Emissive Color
+              <Input
+                type="color"
+                value={emissiveColor || "#ffffff"}
+                onChange={e => {
+                  setEmissiveColor(e.target.value);
+                  throttleSetAppearance({
+                    variables: {id, emissiveColor: e.target.value},
+                  });
+                }}
+              />
+            </Label>
+            <Label>
+              Emissive Intensity
+              <Input
+                type="range"
+                min={0}
+                max={2}
+                step={0.1}
+                value={emissiveIntensity || 0}
+                onChange={e => {
+                  setEmissiveIntensity(parseFloat(e.target.value));
+                  throttleSetAppearance({
+                    variables: {
+                      id,
+                      emissiveIntensity: parseFloat(e.target.value),
+                    },
+                  });
+                }}
+              />
+            </Label>
+          </>
+        )}
+        {appearance.meshType === "model" && (
           <Label>
-            Emissive Color
-            <Input
-              type="color"
-              value={emissiveColor || "#ffffff"}
-              onChange={e => {
-                setEmissiveColor(e.target.value);
-                throttleSetAppearance({
-                  variables: {id, emissiveColor: e.target.value},
-                });
-              }}
-            />
+            <div>Model Asset: {appearance.modelAsset || "Not Set"}</div>
+            <Button
+              size="sm"
+              onClick={() =>
+                setAsset(
+                  "Model Asset",
+                  "/3D/Model",
+                  appearance.modelAsset || "",
+                  (value: string) =>
+                    setAppearance({variables: {id, modelAsset: value}}),
+                )
+              }
+            >
+              Change Model Asset
+            </Button>{" "}
           </Label>
-          <Label>
-            Emissive Intensity
-            <Input
-              type="range"
-              min={0}
-              max={2}
-              step={0.1}
-              value={emissiveIntensity || 0}
-              onChange={e => {
-                setEmissiveIntensity(parseFloat(e.target.value));
-                throttleSetAppearance({
-                  variables: {
-                    id,
-                    emissiveIntensity: parseFloat(e.target.value),
-                  },
-                });
-              }}
-            />
-          </Label>
-        </>
-      )}
-      {appearance.meshType === "model" && (
-        <Label>
-          <div>Model Asset: {appearance.modelAsset || "Not Set"}</div>
-          <Button
-            size="sm"
-            onClick={() =>
-              setAsset(
-                "Model Asset",
-                "/3D/Model",
-                appearance.modelAsset || "",
-                (value: string) =>
-                  setAppearance({variables: {id, modelAsset: value}}),
-              )
-            }
-          >
-            Change Model Asset
-          </Button>{" "}
-        </Label>
-      )}
+        )}
+      </Collapse>
     </>
   );
 };

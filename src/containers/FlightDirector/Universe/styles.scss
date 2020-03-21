@@ -3,12 +3,9 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
   canvas {
     height: 100%;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
   }
   .controls-section {
     position: absolute;
@@ -130,6 +127,10 @@
     color: #fff;
     background-color: #222;
   }
+  .level-editor-container {
+    flex: 4;
+    position: relative;
+  }
   #level-editor {
     div {
       pointer-events: none;
@@ -155,6 +156,7 @@
   }
 }
 .control-palette {
+  flex: 1;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
