@@ -72,3 +72,4 @@ export {default as printPdf} from "./printPdf";
 export * from "./records";
 export * from "./docking";
 export * from "./computerCore";
+export * from "./sensors";

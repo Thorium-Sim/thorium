@@ -51,8 +51,14 @@ App.on("sensorScanRequest", ({id, request}) => {
     }, 5000);
   }
 });
-App.on("sensorScanResult", ({id, result}) => {
-  const system = App.systems.find(sys => sys.id === id);
+App.on("sensorScanResult", ({id, simulatorId, domain = "external", result}) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId &&
+        sys.domain === domain &&
+        sys.class === "Sensors"),
+  );
   if (!system) return;
   system.scanResulted(result);
   const simulator = App.simulators.find(s => s.id === system.simulatorId);
