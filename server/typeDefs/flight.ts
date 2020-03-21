@@ -47,6 +47,7 @@ export function addAspects(template, sim, data = App) {
     );
     filterAspect.forEach(a => {
       const newAspect = cloneDeep(a);
+      newAspect.templateId = newAspect.id;
       newAspect.id = null;
       newAspect.simulatorId = sim.id;
       // Rooms need to reference their deck

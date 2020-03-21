@@ -199,7 +199,7 @@ class Events extends EventEmitter {
     if (param.isMacro) {
       action?.({}, param, context);
     }
-    this.emit(eventName, {...param, context});
+    this.emit(eventName, {cb: () => {}, ...param, context});
     process.env.NODE_ENV === "production" && this.snapshot();
   }
   test(param: any) {

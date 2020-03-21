@@ -70,3 +70,4 @@ export {default as simulatorRemoveMidiSet} from "./simulatorRemoveMidiSet";
 export {motuSetSendMute, motuUpdateChannel} from "./motu";
 export {default as printPdf} from "./printPdf";
 export * from "./records";
+export * from "./docking";

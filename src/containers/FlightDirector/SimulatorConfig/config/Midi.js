@@ -218,6 +218,7 @@ const App = ({selectedSimulator: simulator}) => {
                       {action => (
                         <EventMacro
                           key={selectedAction}
+                          simulatorId={simulator.id}
                           stations={stationSet.stations}
                           clients={data && data.clients}
                           updateArgs={(key, value) => {

@@ -750,7 +750,6 @@ export type DockingPort = {
 
 export type DockingPortInput = {
   id?: Maybe<Scalars["ID"]>;
-  simulatorId?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
   shipName?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
@@ -8805,6 +8804,46 @@ export type SimulatorUpdateSubscription = {__typename?: "Subscription"} & {
   >;
 };
 
+export type DockingShuttleConfigQueryVariables = {
+  simulatorId: Scalars["ID"];
+};
+
+export type DockingShuttleConfigQuery = {__typename?: "Query"} & {
+  docking: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "DockingPort"} & Pick<
+          DockingPort,
+          | "id"
+          | "name"
+          | "type"
+          | "image"
+          | "shipName"
+          | "clamps"
+          | "compress"
+          | "doors"
+          | "docked"
+          | "direction"
+        >
+      >
+    >
+  >;
+  assetFolders: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "AssetFolder"} & Pick<AssetFolder, "id" | "name"> & {
+            objects: Array<
+              {__typename?: "AssetObject"} & Pick<
+                AssetObject,
+                "id" | "name" | "fullPath"
+              >
+            >;
+          }
+      >
+    >
+  >;
+};
+
 export type CountermeasureModuleFragment = {
   __typename?: "CountermeasureModule";
 } & Pick<
@@ -10154,6 +10193,80 @@ export type SimulatorUpdateSubscriptionHookResult = ReturnType<
 >;
 export type SimulatorUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<
   SimulatorUpdateSubscription
+>;
+export const DockingShuttleConfigDocument = gql`
+  query DockingShuttleConfig($simulatorId: ID!) {
+    docking(simulatorId: $simulatorId) {
+      id
+      name
+      type
+      image
+      shipName
+      clamps
+      compress
+      doors
+      docked
+      direction
+    }
+    assetFolders(names: ["Docking Images"]) {
+      id
+      name
+      objects {
+        id
+        name
+        fullPath
+      }
+    }
+  }
+`;
+
+/**
+ * __useDockingShuttleConfigQuery__
+ *
+ * To run a query within a React component, call `useDockingShuttleConfigQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDockingShuttleConfigQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDockingShuttleConfigQuery({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useDockingShuttleConfigQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    DockingShuttleConfigQuery,
+    DockingShuttleConfigQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    DockingShuttleConfigQuery,
+    DockingShuttleConfigQueryVariables
+  >(DockingShuttleConfigDocument, baseOptions);
+}
+export function useDockingShuttleConfigLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    DockingShuttleConfigQuery,
+    DockingShuttleConfigQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    DockingShuttleConfigQuery,
+    DockingShuttleConfigQueryVariables
+  >(DockingShuttleConfigDocument, baseOptions);
+}
+export type DockingShuttleConfigQueryHookResult = ReturnType<
+  typeof useDockingShuttleConfigQuery
+>;
+export type DockingShuttleConfigLazyQueryHookResult = ReturnType<
+  typeof useDockingShuttleConfigLazyQuery
+>;
+export type DockingShuttleConfigQueryResult = ApolloReactCommon.QueryResult<
+  DockingShuttleConfigQuery,
+  DockingShuttleConfigQueryVariables
 >;
 export const CountermeasuresDocument = gql`
   subscription Countermeasures($simulatorId: ID!) {

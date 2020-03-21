@@ -214,6 +214,7 @@ const App = ({
                     >
                       {action => (
                         <EventMacro
+                          simulatorId={simulator.id}
                           stations={stationSet.stations}
                           clients={data && data.clients}
                           updateArgs={(key, value) => {
