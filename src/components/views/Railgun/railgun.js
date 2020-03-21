@@ -118,7 +118,8 @@ class Railgun extends Component {
       .filter(
         l =>
           !l.destroyed &&
-          distance(l.position.x, l.position.y, location.x, location.y) <= 0.05,
+          distance(l.position.x, l.position.y + 0.05, location.x, location.y) <=
+            0.05,
       )
       .map(l => l.id);
     this.currentContact = distances[0];

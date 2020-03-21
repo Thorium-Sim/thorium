@@ -14,24 +14,24 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type Asset {
-    assetKey: String
-    url: String
+    assetKey: String!
+    url: String!
   }
 
   type AssetObject {
-    id: ID
-    name: String
-    folderPath: String
-    fullPath: String
-    url: String
+    id: ID!
+    name: String!
+    folderPath: String!
+    fullPath: String!
+    url: String!
   }
 
   type AssetFolder {
-    id: ID
-    name: String
-    folderPath: String
-    fullPath: String
-    objects: [AssetObject]
+    id: ID!
+    name: String!
+    folderPath: String!
+    fullPath: String!
+    objects: [AssetObject!]!
   }
 
   input RemoteAsset {
@@ -77,7 +77,7 @@ const schema = gql`
     downloadRemoteAssets(folderPath: String!, files: [RemoteAsset!]!): String
   }
   extend type Subscription {
-    assetFolderChange: [AssetFolder]
+    assetFolderChange: [AssetFolder!]!
   }
 `;
 
@@ -127,7 +127,14 @@ const resolver = {
       resolve(rootValue) {
         return rootValue;
       },
-      subscribe: () => pubsub.asyncIterator("assetFolderChange"),
+      subscribe: rootValue => {
+        const id = uuid.v4();
+        process.nextTick(() => {
+          const returnVal = getFolders(assetDir);
+          pubsub.publish(id, returnVal);
+        });
+        return pubsub.asyncIterator([id, "assetFolderChange"]);
+      },
     },
   },
   AssetFolder: {

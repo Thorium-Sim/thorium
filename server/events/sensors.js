@@ -51,8 +51,14 @@ App.on("sensorScanRequest", ({id, request}) => {
     }, 5000);
   }
 });
-App.on("sensorScanResult", ({id, result}) => {
-  const system = App.systems.find(sys => sys.id === id);
+App.on("sensorScanResult", ({id, simulatorId, domain = "external", result}) => {
+  const system = App.systems.find(
+    sys =>
+      sys.id === id ||
+      (sys.simulatorId === simulatorId &&
+        sys.domain === domain &&
+        sys.class === "Sensors"),
+  );
   if (!system) return;
   system.scanResulted(result);
   const simulator = App.simulators.find(s => s.id === system.simulatorId);
@@ -220,7 +226,7 @@ App.on("createSensorContacts", ({id, contacts}) => {
 });
 App.on("moveSensorContact", ({id, contact}) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.moveContact(contact);
+  if (system?.moveContact) system.moveContact(contact);
   pubsub.publish("sensorContactUpdate", system);
 });
 App.on("updateSensorContactLocation", ({id, contact, cb}) => {
@@ -232,6 +238,7 @@ App.on("updateSensorContactLocation", ({id, contact, cb}) => {
 App.on("removeSensorContact", ({id, contact, cb}) => {
   const system = App.systems.find(sys => sys.id === id);
   const classId = contact.id;
+  if (!system) return;
   system.removeContact(contact);
 
   // Get rid of any targeting classes
@@ -248,7 +255,7 @@ App.on("removeSensorContact", ({id, contact, cb}) => {
 });
 App.on("removeAllSensorContacts", ({id, type}) => {
   const system = App.systems.find(sys => sys.id === id);
-
+  if (!system) return;
   let removeContacts = [];
   if (type) {
     removeContacts = system.contacts.filter(c => type.indexOf(c.type) > -1);
@@ -497,6 +504,7 @@ App.on("setAutoMovement", ({id, movement}) => {
 });
 App.on("updateSensorContacts", ({id, contacts, cb}) => {
   const system = App.systems.find(sys => sys.id === id);
+  if (!system) return;
   contacts.forEach(contact => {
     if (contact.destination) {
       system.moveContact(contact);
@@ -535,8 +543,8 @@ App.on("updateSensorGrid", ({simulatorId, contacts, cb}) => {
     );
   });
   newContacts.forEach(contact => {
-    const {destination, speed, ...rest} = contact;
-    const id = system.createContact(rest);
+    const {destination, speed = 0.4, ...rest} = contact;
+    const id = system.createContact({destination, speed, ...rest});
     system.moveContact({id, destination, speed});
   });
   movingContacts.forEach(contact => system.moveContact(contact));

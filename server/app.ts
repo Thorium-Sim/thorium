@@ -78,7 +78,7 @@ class Events extends EventEmitter {
   spaceEdventuresToken?: string = null;
   googleSheetsTokens: any = {};
   httpOnly: boolean = false;
-  port: number = process.env.NODE_ENV === "production" ? 443 : 3001;
+  port: number = process.env.NODE_ENV === "production" ? 4444 : 3001;
 
   events: any[] = [];
   replaying = false;
@@ -93,7 +93,7 @@ class Events extends EventEmitter {
     heap.track("thorium-started", this.thoriumId);
     if (process.env.PORT && !isNaN(parseInt(process.env.PORT, 10)))
       this.port = parseInt(process.env.PORT, 10);
-    if (process.env.HTTP_ONLY === "true") this.httpOnly = true;
+    this.httpOnly = process.env.HTTP_ONLY === "true";
   }
   merge(snapshot: any) {
     // Initialize the snapshot with the object constructors
@@ -199,7 +199,7 @@ class Events extends EventEmitter {
     if (param.isMacro) {
       action?.({}, param, context);
     }
-    this.emit(eventName, {...param, context});
+    this.emit(eventName, {cb: () => {}, ...param, context});
     process.env.NODE_ENV === "production" && this.snapshot();
   }
   test(param: any) {

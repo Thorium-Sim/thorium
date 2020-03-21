@@ -4,7 +4,17 @@ mutation EntityCreate(
   $name: String!
   $color: String
   $meshType: MeshTypeEnum!
+  $modelAsset: String
   $materialMapAsset: String
+  $ringMapAsset: String
+  $cloudMapAsset: String
+  $emissiveColor: String
+  $emissiveIntensity: Float
+  $glowMode: GlowModeEnum
+  $glowColor: String
+  $lightIntensity: Float
+  $lightDecay: Float
+  $lightColor: String
 ) {
   entityCreate(flightId: $flightId) {
     id
@@ -14,6 +24,17 @@ mutation EntityCreate(
   entitySetAppearance(
     color: $color
     meshType: $meshType
+    modelAsset: $modelAsset
     materialMapAsset: $materialMapAsset
+    ringMapAsset: $ringMapAsset
+    cloudMapAsset: $cloudMapAsset
+    emissiveColor: $emissiveColor
+    emissiveIntensity: $emissiveIntensity
+  )
+  entitySetGlow(glowMode: $glowMode, color: $glowColor)
+  entitySetLight(
+    intensity: $lightIntensity
+    color: $lightColor
+    decay: $lightDecay
   )
 }

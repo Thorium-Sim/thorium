@@ -54,32 +54,36 @@ export type AppearanceComponent = {
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
   color?: Maybe<Scalars["String"]>;
   scale?: Maybe<Scalars["Float"]>;
 };
 
 export type Asset = {
   __typename?: "Asset";
-  assetKey?: Maybe<Scalars["String"]>;
-  url?: Maybe<Scalars["String"]>;
+  assetKey: Scalars["String"];
+  url: Scalars["String"];
 };
 
 export type AssetFolder = {
   __typename?: "AssetFolder";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  folderPath?: Maybe<Scalars["String"]>;
-  fullPath?: Maybe<Scalars["String"]>;
-  objects?: Maybe<Array<Maybe<AssetObject>>>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  folderPath: Scalars["String"];
+  fullPath: Scalars["String"];
+  objects: Array<AssetObject>;
 };
 
 export type AssetObject = {
   __typename?: "AssetObject";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  folderPath?: Maybe<Scalars["String"]>;
-  fullPath?: Maybe<Scalars["String"]>;
-  url?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  folderPath: Scalars["String"];
+  fullPath: Scalars["String"];
+  url: Scalars["String"];
 };
 
 export type BehaviorComponent = {
@@ -746,7 +750,6 @@ export type DockingPort = {
 
 export type DockingPortInput = {
   id?: Maybe<Scalars["ID"]>;
-  simulatorId?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
   shipName?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
@@ -790,14 +793,6 @@ export type EntitiesLocationInput = {
   position: EntityCoordinatesInput;
 };
 
-export type EntitiesPatch = Patch & {
-  __typename?: "EntitiesPatch";
-  op?: Maybe<OperationsEnum>;
-  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
-  value?: Maybe<Scalars["JSON"]>;
-  values?: Maybe<Array<Entity>>;
-};
-
 export type Entity = {
   __typename?: "Entity";
   id: Scalars["ID"];
@@ -805,6 +800,11 @@ export type Entity = {
   behavior?: Maybe<BehaviorComponent>;
   identity?: Maybe<IdentityComponent>;
   location?: Maybe<LocationComponent>;
+  stage?: Maybe<StageComponent>;
+  stageChild?: Maybe<StageChildComponent>;
+  light?: Maybe<LightComponent>;
+  glow?: Maybe<GlowComponent>;
+  template?: Maybe<TemplateComponent>;
 };
 
 export type EntityCoordinates = {
@@ -818,14 +818,6 @@ export type EntityCoordinatesInput = {
   x: Scalars["BigInt"];
   y: Scalars["BigInt"];
   z: Scalars["BigInt"];
-};
-
-export type EntityPatch = Patch & {
-  __typename?: "EntityPatch";
-  op?: Maybe<OperationsEnum>;
-  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
-  value?: Maybe<Scalars["JSON"]>;
-  values?: Maybe<Entity>;
 };
 
 export type Environment = {
@@ -975,6 +967,18 @@ export type FormResultsInput = {
   client?: Maybe<Scalars["String"]>;
   form?: Maybe<Array<Maybe<FormFieldsInput>>>;
 };
+
+export type GlowComponent = {
+  __typename?: "GlowComponent";
+  glowMode?: Maybe<GlowModeEnum>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export enum GlowModeEnum {
+  Glow = "glow",
+  Halo = "halo",
+  Shell = "shell",
+}
 
 export type GoogleSheet = {
   __typename?: "GoogleSheet";
@@ -1241,6 +1245,13 @@ export type LibraryInput = {
   font?: Maybe<Scalars["String"]>;
 };
 
+export type LightComponent = {
+  __typename?: "LightComponent";
+  intensity?: Maybe<Scalars["Float"]>;
+  decay?: Maybe<Scalars["Float"]>;
+  color?: Maybe<Scalars["String"]>;
+};
+
 export type Lighting = {
   __typename?: "Lighting";
   intensity?: Maybe<Scalars["Float"]>;
@@ -1398,6 +1409,8 @@ export enum MeshTypeEnum {
   Cube = "cube",
   Model = "model",
   Sprite = "sprite",
+  Planet = "planet",
+  Star = "star",
 }
 
 export type Message = {
@@ -1588,6 +1601,15 @@ export type Mutation = {
   entitySetLocation?: Maybe<Scalars["String"]>;
   entitiesSetPosition?: Maybe<Scalars["String"]>;
   entityRemoveLocation?: Maybe<Scalars["String"]>;
+  entitySetStage?: Maybe<Scalars["String"]>;
+  entityRemoveStage?: Maybe<Scalars["String"]>;
+  entitySetStageChild?: Maybe<Scalars["String"]>;
+  entityRemoveStageChild?: Maybe<Scalars["String"]>;
+  entitySetLight?: Maybe<Scalars["String"]>;
+  entityRemoveLight?: Maybe<Scalars["String"]>;
+  entitySetGlow?: Maybe<Scalars["String"]>;
+  entityRemoveGlow?: Maybe<Scalars["String"]>;
+  entitySetTemplate?: Maybe<Scalars["String"]>;
   triggerAction?: Maybe<Scalars["String"]>;
   addSimulatorAmbiance?: Maybe<Scalars["String"]>;
   updateSimulatorAmbiance?: Maybe<Scalars["String"]>;
@@ -1811,6 +1833,8 @@ export type Mutation = {
   addMacro?: Maybe<Scalars["ID"]>;
   removeMacro?: Maybe<Scalars["String"]>;
   renameMacro?: Maybe<Scalars["String"]>;
+  duplicateMacro?: Maybe<Scalars["String"]>;
+  duplicateMacroAction?: Maybe<Scalars["String"]>;
   updateMacroActions?: Maybe<Scalars["String"]>;
   triggerMacroAction?: Maybe<Scalars["String"]>;
   addMacroButtonConfig?: Maybe<Scalars["ID"]>;
@@ -1843,6 +1867,7 @@ export type Mutation = {
   removeTimelineStepItem?: Maybe<Scalars["String"]>;
   updateTimelineStepItem?: Maybe<Scalars["String"]>;
   duplicateTimelineStep?: Maybe<Scalars["String"]>;
+  timelineDuplicateItem?: Maybe<Scalars["String"]>;
   startAuxTimeline?: Maybe<Scalars["ID"]>;
   setAuxTimelineStep?: Maybe<Scalars["String"]>;
   motuAdd?: Maybe<Scalars["String"]>;
@@ -1990,6 +2015,7 @@ export type Mutation = {
   setSelfDestructCode?: Maybe<Scalars["String"]>;
   setSelfDestructAuto?: Maybe<Scalars["String"]>;
   notify?: Maybe<Scalars["String"]>;
+  printPdf?: Maybe<Scalars["String"]>;
   commAddSignal?: Maybe<Scalars["String"]>;
   commUpdateSignal?: Maybe<Scalars["String"]>;
   commUpdateSignals?: Maybe<Scalars["String"]>;
@@ -2258,6 +2284,10 @@ export type MutationEntitySetAppearanceArgs = {
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
   scale?: Maybe<Scalars["Float"]>;
 };
 
@@ -2302,6 +2332,52 @@ export type MutationEntitiesSetPositionArgs = {
 
 export type MutationEntityRemoveLocationArgs = {
   id: Scalars["ID"];
+};
+
+export type MutationEntitySetStageArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  scaleLabel?: Maybe<Scalars["String"]>;
+  scaleLabelShort?: Maybe<Scalars["String"]>;
+  skyboxAsset?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveStageArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetStageChildArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  parentId: Scalars["ID"];
+};
+
+export type MutationEntityRemoveStageChildArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetLightArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  intensity?: Maybe<Scalars["Float"]>;
+  decay?: Maybe<Scalars["Float"]>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveLightArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetGlowArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  glowMode?: Maybe<GlowModeEnum>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveGlowArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetTemplateArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  category: Scalars["String"];
 };
 
 export type MutationTriggerActionArgs = {
@@ -3431,6 +3507,15 @@ export type MutationRenameMacroArgs = {
   name: Scalars["String"];
 };
 
+export type MutationDuplicateMacroArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationDuplicateMacroActionArgs = {
+  id: Scalars["ID"];
+  actionId: Scalars["ID"];
+};
+
 export type MutationUpdateMacroActionsArgs = {
   id: Scalars["ID"];
   actions?: Maybe<Array<Maybe<ActionInput>>>;
@@ -3607,6 +3692,12 @@ export type MutationUpdateTimelineStepItemArgs = {
 export type MutationDuplicateTimelineStepArgs = {
   missionId: Scalars["ID"];
   timelineStepId: Scalars["ID"];
+};
+
+export type MutationTimelineDuplicateItemArgs = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+  timelineItemId: Scalars["ID"];
 };
 
 export type MutationStartAuxTimelineArgs = {
@@ -4381,6 +4472,10 @@ export type MutationNotifyArgs = {
   title: Scalars["String"];
   body?: Maybe<Scalars["String"]>;
   color?: Maybe<NotifyColors>;
+};
+
+export type MutationPrintPdfArgs = {
+  asset: Scalars["String"];
 };
 
 export type MutationCommAddSignalArgs = {
@@ -5714,6 +5809,7 @@ export type MutationCountermeasuresSetFdNoteArgs = {
 
 export type MutationEntityCreateArgs = {
   flightId: Scalars["ID"];
+  template?: Maybe<Scalars["Boolean"]>;
 };
 
 export type MutationEntityRemoveArgs = {
@@ -5821,12 +5917,6 @@ export type ObjectiveInput = {
   crewComplete?: Maybe<Scalars["Boolean"]>;
 };
 
-export enum OperationsEnum {
-  Add = "add",
-  Remove = "remove",
-  Replace = "replace",
-}
-
 export type PainPoint = {
   __typename?: "PainPoint";
   x?: Maybe<Scalars["Float"]>;
@@ -5903,12 +5993,6 @@ export enum ParticleTypes {
   Carbon = "Carbon",
   Radiation = "Radiation",
 }
-
-export type Patch = {
-  op?: Maybe<OperationsEnum>;
-  path?: Maybe<Array<Maybe<Scalars["JSON"]>>>;
-  value?: Maybe<Scalars["JSON"]>;
-};
 
 export type Phaser = SystemInterface & {
   __typename?: "Phaser";
@@ -7274,6 +7358,18 @@ export type SpeedInput = {
   optimal?: Maybe<Scalars["Boolean"]>;
 };
 
+export type StageChildComponent = {
+  __typename?: "StageChildComponent";
+  parentId: Scalars["ID"];
+};
+
+export type StageComponent = {
+  __typename?: "StageComponent";
+  scaleLabel?: Maybe<Scalars["String"]>;
+  scaleLabelShort?: Maybe<Scalars["String"]>;
+  skyboxAsset?: Maybe<Scalars["String"]>;
+};
+
 export type Station = {
   __typename?: "Station";
   name?: Maybe<Scalars["String"]>;
@@ -7346,7 +7442,7 @@ export type Subscription = {
   __typename?: "Subscription";
   _empty?: Maybe<Scalars["String"]>;
   actionsUpdate?: Maybe<Action>;
-  assetFolderChange?: Maybe<Array<Maybe<AssetFolder>>>;
+  assetFolderChange: Array<AssetFolder>;
   clientChanged?: Maybe<Array<Maybe<Client>>>;
   clientPing?: Maybe<Scalars["Boolean"]>;
   keypadsUpdate?: Maybe<Array<Maybe<Keypad>>>;
@@ -7448,8 +7544,8 @@ export type Subscription = {
   viewscreensUpdate?: Maybe<Array<Maybe<Viewscreen>>>;
   viewscreenVideoToggle?: Maybe<Scalars["Boolean"]>;
   countermeasuresUpdate?: Maybe<Countermeasures>;
-  entity?: Maybe<Array<Maybe<EntityPatch>>>;
-  entities?: Maybe<Array<Maybe<EntitiesPatch>>>;
+  entity?: Maybe<Entity>;
+  entities?: Maybe<Array<Maybe<Entity>>>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -7870,6 +7966,7 @@ export type SubscriptionEntityArgs = {
 
 export type SubscriptionEntitiesArgs = {
   flightId: Scalars["ID"];
+  template?: Maybe<Scalars["Boolean"]>;
 };
 
 export type SubspaceField = SystemInterface & {
@@ -8263,6 +8360,11 @@ export type TeamInput = {
 export type Template = {
   __typename?: "Template";
   id?: Maybe<Scalars["ID"]>;
+};
+
+export type TemplateComponent = {
+  __typename?: "TemplateComponent";
+  category?: Maybe<Scalars["String"]>;
 };
 
 export enum Terminal_Status {
@@ -8702,6 +8804,46 @@ export type SimulatorUpdateSubscription = {__typename?: "Subscription"} & {
   >;
 };
 
+export type DockingShuttleConfigQueryVariables = {
+  simulatorId: Scalars["ID"];
+};
+
+export type DockingShuttleConfigQuery = {__typename?: "Query"} & {
+  docking: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "DockingPort"} & Pick<
+          DockingPort,
+          | "id"
+          | "name"
+          | "type"
+          | "image"
+          | "shipName"
+          | "clamps"
+          | "compress"
+          | "doors"
+          | "docked"
+          | "direction"
+        >
+      >
+    >
+  >;
+  assetFolders: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "AssetFolder"} & Pick<AssetFolder, "id" | "name"> & {
+            objects: Array<
+              {__typename?: "AssetObject"} & Pick<
+                AssetObject,
+                "id" | "name" | "fullPath"
+              >
+            >;
+          }
+      >
+    >
+  >;
+};
+
 export type CountermeasureModuleFragment = {
   __typename?: "CountermeasureModule";
 } & Pick<
@@ -9005,6 +9147,53 @@ export type CountermeasuresSetFdNoteMutation = {__typename?: "Mutation"} & Pick<
   "countermeasuresSetFDNote"
 >;
 
+export type AssetFoldersSubscriptionVariables = {};
+
+export type AssetFoldersSubscription = {__typename?: "Subscription"} & {
+  assetFolderChange: Array<
+    {__typename?: "AssetFolder"} & Pick<
+      AssetFolder,
+      "name" | "fullPath" | "id" | "folderPath"
+    > & {
+        objects: Array<
+          {__typename?: "AssetObject"} & Pick<
+            AssetObject,
+            "id" | "name" | "fullPath" | "url"
+          >
+        >;
+      }
+  >;
+};
+
+export type AssetsAddFolderMutationVariables = {
+  name: Scalars["String"];
+  fullPath: Scalars["String"];
+  folderPath: Scalars["String"];
+};
+
+export type AssetsAddFolderMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addAssetFolder"
+>;
+
+export type AssetsRemoveObjectMutationVariables = {
+  fullPath: Scalars["String"];
+};
+
+export type AssetsRemoveObjectMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeAssetObject"
+>;
+
+export type AssetsRemoveFolderMutationVariables = {
+  fullPath: Scalars["String"];
+};
+
+export type AssetsRemoveFolderMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeAssetFolder"
+>;
+
 export type TemplateFragmentFragment = {__typename: "Template"} & Pick<
   Template,
   "id"
@@ -9170,18 +9359,163 @@ export type SetSoundPlayerMutation = {__typename?: "Mutation"} & Pick<
   "clientSetSoundPlayer"
 >;
 
+export type EntityCreateTemplateMutationVariables = {
+  name: Scalars["String"];
+};
+
+export type EntityCreateTemplateMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetTemplate" | "entitySetIdentity" | "entitySetAppearance"
+> & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
+
+export type MacroDuplicateMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type MacroDuplicateMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "duplicateMacro"
+>;
+
+export type MacroDuplicateActionMutationVariables = {
+  id: Scalars["ID"];
+  actionId: Scalars["ID"];
+};
+
+export type MacroDuplicateActionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "duplicateMacroAction"
+>;
+
+export type TimelineAddItemMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  missionId?: Maybe<Scalars["ID"]>;
+  timelineStepId: Scalars["ID"];
+  timelineItem: TimelineItemInput;
+};
+
+export type TimelineAddItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addTimelineItemToTimelineStep"
+>;
+
+export type TimelineAddStepMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  missionId?: Maybe<Scalars["ID"]>;
+  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+};
+
+export type TimelineAddStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addTimelineStep"
+>;
+
+export type TimelineDuplicateItemMutationVariables = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+  timelineItemId: Scalars["ID"];
+};
+
+export type TimelineDuplicateItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "timelineDuplicateItem"
+>;
+
+export type TimelineDuplicateStepMutationVariables = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+};
+
+export type TimelineDuplicateStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "duplicateTimelineStep"
+>;
+
+export type TimelineRemoveItemMutationVariables = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+  timelineItemId: Scalars["ID"];
+};
+
+export type TimelineRemoveItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeTimelineStepItem"
+>;
+
+export type TimelineRemoveStepMutationVariables = {
+  missionId: Scalars["ID"];
+  timelineStepId: Scalars["ID"];
+};
+
+export type TimelineRemoveStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeTimelineStep"
+>;
+
+export type TimelineReorderStepMutationVariables = {
+  missionId?: Maybe<Scalars["ID"]>;
+  timelineStepId: Scalars["ID"];
+  order: Scalars["Int"];
+};
+
+export type TimelineReorderStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "reorderTimelineStep"
+>;
+
+export type TimelineUpdateItemMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  missionId?: Maybe<Scalars["ID"]>;
+  timelineStepId: Scalars["ID"];
+  timelineItemId: Scalars["ID"];
+  timelineItem: TimelineItemInput;
+};
+
+export type TimelineUpdateItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "updateTimelineStepItem"
+>;
+
+export type TimelineUpdateStepMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  missionId?: Maybe<Scalars["ID"]>;
+  timelineStepId: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
+};
+
+export type TimelineUpdateStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "updateTimelineStep"
+>;
+
 export type EntityCreateMutationVariables = {
   flightId: Scalars["ID"];
   position: EntityCoordinatesInput;
   name: Scalars["String"];
   color?: Maybe<Scalars["String"]>;
   meshType: MeshTypeEnum;
+  modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
+  glowMode?: Maybe<GlowModeEnum>;
+  glowColor?: Maybe<Scalars["String"]>;
+  lightIntensity?: Maybe<Scalars["Float"]>;
+  lightDecay?: Maybe<Scalars["Float"]>;
+  lightColor?: Maybe<Scalars["String"]>;
 };
 
 export type EntityCreateMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
-  "entitySetLocation" | "entitySetIdentity" | "entitySetAppearance"
+  | "entitySetLocation"
+  | "entitySetIdentity"
+  | "entitySetAppearance"
+  | "entitySetGlow"
+  | "entitySetLight"
 > & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
 
 export type EntityRemoveMutationVariables = {
@@ -9193,18 +9527,51 @@ export type EntityRemoveMutation = {__typename?: "Mutation"} & Pick<
   "entityRemove"
 >;
 
+export type EntityRemoveGlowMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type EntityRemoveGlowMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entityRemoveGlow"
+>;
+
+export type EntityRemoveLightMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type EntityRemoveLightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entityRemoveLight"
+>;
+
 export type EntitySetAppearanceMutationVariables = {
   id: Scalars["ID"];
   color?: Maybe<Scalars["String"]>;
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars["String"]>;
   materialMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
   scale?: Maybe<Scalars["Float"]>;
 };
 
 export type EntitySetAppearanceMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entitySetAppearance"
+>;
+
+export type EntitySetGlowMutationVariables = {
+  id: Scalars["ID"];
+  glowMode?: Maybe<GlowModeEnum>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export type EntitySetGlowMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetGlow"
 >;
 
 export type EntitySetIdentityMutationVariables = {
@@ -9217,6 +9584,18 @@ export type EntitySetIdentityMutation = {__typename?: "Mutation"} & Pick<
   "entitySetIdentity"
 >;
 
+export type EntitySetLightMutationVariables = {
+  id: Scalars["ID"];
+  color?: Maybe<Scalars["String"]>;
+  intensity?: Maybe<Scalars["Float"]>;
+  decay?: Maybe<Scalars["Float"]>;
+};
+
+export type EntitySetLightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetLight"
+>;
+
 export type EntitiesSetPositionMutationVariables = {
   entities: Array<EntitiesLocationInput>;
 };
@@ -9224,6 +9603,16 @@ export type EntitiesSetPositionMutationVariables = {
 export type EntitiesSetPositionMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entitiesSetPosition"
+>;
+
+export type EntitySetTemplateMutationVariables = {
+  id?: Maybe<Scalars["ID"]>;
+  category: Scalars["String"];
+};
+
+export type EntitySetTemplateMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetTemplate"
 >;
 
 export interface IntrospectionResultData {
@@ -9336,18 +9725,6 @@ const result: IntrospectionResultData = {
           },
           {
             name: "Room",
-          },
-        ],
-      },
-      {
-        kind: "INTERFACE",
-        name: "Patch",
-        possibleTypes: [
-          {
-            name: "EntityPatch",
-          },
-          {
-            name: "EntitiesPatch",
           },
         ],
       },
@@ -9816,6 +10193,80 @@ export type SimulatorUpdateSubscriptionHookResult = ReturnType<
 >;
 export type SimulatorUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<
   SimulatorUpdateSubscription
+>;
+export const DockingShuttleConfigDocument = gql`
+  query DockingShuttleConfig($simulatorId: ID!) {
+    docking(simulatorId: $simulatorId) {
+      id
+      name
+      type
+      image
+      shipName
+      clamps
+      compress
+      doors
+      docked
+      direction
+    }
+    assetFolders(names: ["Docking Images"]) {
+      id
+      name
+      objects {
+        id
+        name
+        fullPath
+      }
+    }
+  }
+`;
+
+/**
+ * __useDockingShuttleConfigQuery__
+ *
+ * To run a query within a React component, call `useDockingShuttleConfigQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDockingShuttleConfigQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDockingShuttleConfigQuery({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useDockingShuttleConfigQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    DockingShuttleConfigQuery,
+    DockingShuttleConfigQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    DockingShuttleConfigQuery,
+    DockingShuttleConfigQueryVariables
+  >(DockingShuttleConfigDocument, baseOptions);
+}
+export function useDockingShuttleConfigLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    DockingShuttleConfigQuery,
+    DockingShuttleConfigQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    DockingShuttleConfigQuery,
+    DockingShuttleConfigQueryVariables
+  >(DockingShuttleConfigDocument, baseOptions);
+}
+export type DockingShuttleConfigQueryHookResult = ReturnType<
+  typeof useDockingShuttleConfigQuery
+>;
+export type DockingShuttleConfigLazyQueryHookResult = ReturnType<
+  typeof useDockingShuttleConfigLazyQuery
+>;
+export type DockingShuttleConfigQueryResult = ApolloReactCommon.QueryResult<
+  DockingShuttleConfigQuery,
+  DockingShuttleConfigQueryVariables
 >;
 export const CountermeasuresDocument = gql`
   subscription Countermeasures($simulatorId: ID!) {
@@ -10760,6 +11211,205 @@ export type CountermeasuresSetFdNoteMutationOptions = ApolloReactCommon.BaseMuta
   CountermeasuresSetFdNoteMutation,
   CountermeasuresSetFdNoteMutationVariables
 >;
+export const AssetFoldersDocument = gql`
+  subscription AssetFolders {
+    assetFolderChange {
+      name
+      fullPath
+      id
+      folderPath
+      objects {
+        id
+        name
+        fullPath
+        url
+      }
+    }
+  }
+`;
+
+/**
+ * __useAssetFoldersSubscription__
+ *
+ * To run a query within a React component, call `useAssetFoldersSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useAssetFoldersSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAssetFoldersSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAssetFoldersSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    AssetFoldersSubscription,
+    AssetFoldersSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    AssetFoldersSubscription,
+    AssetFoldersSubscriptionVariables
+  >(AssetFoldersDocument, baseOptions);
+}
+export type AssetFoldersSubscriptionHookResult = ReturnType<
+  typeof useAssetFoldersSubscription
+>;
+export type AssetFoldersSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  AssetFoldersSubscription
+>;
+export const AssetsAddFolderDocument = gql`
+  mutation AssetsAddFolder(
+    $name: String!
+    $fullPath: String!
+    $folderPath: String!
+  ) {
+    addAssetFolder(name: $name, fullPath: $fullPath, folderPath: $folderPath)
+  }
+`;
+export type AssetsAddFolderMutationFn = ApolloReactCommon.MutationFunction<
+  AssetsAddFolderMutation,
+  AssetsAddFolderMutationVariables
+>;
+
+/**
+ * __useAssetsAddFolderMutation__
+ *
+ * To run a mutation, you first call `useAssetsAddFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssetsAddFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assetsAddFolderMutation, { data, loading, error }] = useAssetsAddFolderMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      fullPath: // value for 'fullPath'
+ *      folderPath: // value for 'folderPath'
+ *   },
+ * });
+ */
+export function useAssetsAddFolderMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AssetsAddFolderMutation,
+    AssetsAddFolderMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AssetsAddFolderMutation,
+    AssetsAddFolderMutationVariables
+  >(AssetsAddFolderDocument, baseOptions);
+}
+export type AssetsAddFolderMutationHookResult = ReturnType<
+  typeof useAssetsAddFolderMutation
+>;
+export type AssetsAddFolderMutationResult = ApolloReactCommon.MutationResult<
+  AssetsAddFolderMutation
+>;
+export type AssetsAddFolderMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AssetsAddFolderMutation,
+  AssetsAddFolderMutationVariables
+>;
+export const AssetsRemoveObjectDocument = gql`
+  mutation AssetsRemoveObject($fullPath: String!) {
+    removeAssetObject(fullPath: $fullPath)
+  }
+`;
+export type AssetsRemoveObjectMutationFn = ApolloReactCommon.MutationFunction<
+  AssetsRemoveObjectMutation,
+  AssetsRemoveObjectMutationVariables
+>;
+
+/**
+ * __useAssetsRemoveObjectMutation__
+ *
+ * To run a mutation, you first call `useAssetsRemoveObjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssetsRemoveObjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assetsRemoveObjectMutation, { data, loading, error }] = useAssetsRemoveObjectMutation({
+ *   variables: {
+ *      fullPath: // value for 'fullPath'
+ *   },
+ * });
+ */
+export function useAssetsRemoveObjectMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AssetsRemoveObjectMutation,
+    AssetsRemoveObjectMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AssetsRemoveObjectMutation,
+    AssetsRemoveObjectMutationVariables
+  >(AssetsRemoveObjectDocument, baseOptions);
+}
+export type AssetsRemoveObjectMutationHookResult = ReturnType<
+  typeof useAssetsRemoveObjectMutation
+>;
+export type AssetsRemoveObjectMutationResult = ApolloReactCommon.MutationResult<
+  AssetsRemoveObjectMutation
+>;
+export type AssetsRemoveObjectMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AssetsRemoveObjectMutation,
+  AssetsRemoveObjectMutationVariables
+>;
+export const AssetsRemoveFolderDocument = gql`
+  mutation AssetsRemoveFolder($fullPath: String!) {
+    removeAssetFolder(fullPath: $fullPath)
+  }
+`;
+export type AssetsRemoveFolderMutationFn = ApolloReactCommon.MutationFunction<
+  AssetsRemoveFolderMutation,
+  AssetsRemoveFolderMutationVariables
+>;
+
+/**
+ * __useAssetsRemoveFolderMutation__
+ *
+ * To run a mutation, you first call `useAssetsRemoveFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAssetsRemoveFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [assetsRemoveFolderMutation, { data, loading, error }] = useAssetsRemoveFolderMutation({
+ *   variables: {
+ *      fullPath: // value for 'fullPath'
+ *   },
+ * });
+ */
+export function useAssetsRemoveFolderMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AssetsRemoveFolderMutation,
+    AssetsRemoveFolderMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AssetsRemoveFolderMutation,
+    AssetsRemoveFolderMutationVariables
+  >(AssetsRemoveFolderDocument, baseOptions);
+}
+export type AssetsRemoveFolderMutationHookResult = ReturnType<
+  typeof useAssetsRemoveFolderMutation
+>;
+export type AssetsRemoveFolderMutationResult = ApolloReactCommon.MutationResult<
+  AssetsRemoveFolderMutation
+>;
+export type AssetsRemoveFolderMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AssetsRemoveFolderMutation,
+  AssetsRemoveFolderMutationVariables
+>;
 export const TemplateDocument = gql`
   query Template($simulatorId: ID!) {
     _template(simulatorId: $simulatorId) {
@@ -11281,6 +11931,681 @@ export type SetSoundPlayerMutationOptions = ApolloReactCommon.BaseMutationOption
   SetSoundPlayerMutation,
   SetSoundPlayerMutationVariables
 >;
+export const EntityCreateTemplateDocument = gql`
+  mutation EntityCreateTemplate($name: String!) {
+    entityCreate(flightId: "template", template: true) {
+      id
+    }
+    entitySetTemplate(category: "generic")
+    entitySetIdentity(name: $name)
+    entitySetAppearance(meshType: cube, color: "#0088ff")
+  }
+`;
+export type EntityCreateTemplateMutationFn = ApolloReactCommon.MutationFunction<
+  EntityCreateTemplateMutation,
+  EntityCreateTemplateMutationVariables
+>;
+
+/**
+ * __useEntityCreateTemplateMutation__
+ *
+ * To run a mutation, you first call `useEntityCreateTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityCreateTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityCreateTemplateMutation, { data, loading, error }] = useEntityCreateTemplateMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useEntityCreateTemplateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityCreateTemplateMutation,
+    EntityCreateTemplateMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityCreateTemplateMutation,
+    EntityCreateTemplateMutationVariables
+  >(EntityCreateTemplateDocument, baseOptions);
+}
+export type EntityCreateTemplateMutationHookResult = ReturnType<
+  typeof useEntityCreateTemplateMutation
+>;
+export type EntityCreateTemplateMutationResult = ApolloReactCommon.MutationResult<
+  EntityCreateTemplateMutation
+>;
+export type EntityCreateTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityCreateTemplateMutation,
+  EntityCreateTemplateMutationVariables
+>;
+export const MacroDuplicateDocument = gql`
+  mutation MacroDuplicate($id: ID!) {
+    duplicateMacro(id: $id)
+  }
+`;
+export type MacroDuplicateMutationFn = ApolloReactCommon.MutationFunction<
+  MacroDuplicateMutation,
+  MacroDuplicateMutationVariables
+>;
+
+/**
+ * __useMacroDuplicateMutation__
+ *
+ * To run a mutation, you first call `useMacroDuplicateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMacroDuplicateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [macroDuplicateMutation, { data, loading, error }] = useMacroDuplicateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useMacroDuplicateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    MacroDuplicateMutation,
+    MacroDuplicateMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    MacroDuplicateMutation,
+    MacroDuplicateMutationVariables
+  >(MacroDuplicateDocument, baseOptions);
+}
+export type MacroDuplicateMutationHookResult = ReturnType<
+  typeof useMacroDuplicateMutation
+>;
+export type MacroDuplicateMutationResult = ApolloReactCommon.MutationResult<
+  MacroDuplicateMutation
+>;
+export type MacroDuplicateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  MacroDuplicateMutation,
+  MacroDuplicateMutationVariables
+>;
+export const MacroDuplicateActionDocument = gql`
+  mutation MacroDuplicateAction($id: ID!, $actionId: ID!) {
+    duplicateMacroAction(id: $id, actionId: $actionId)
+  }
+`;
+export type MacroDuplicateActionMutationFn = ApolloReactCommon.MutationFunction<
+  MacroDuplicateActionMutation,
+  MacroDuplicateActionMutationVariables
+>;
+
+/**
+ * __useMacroDuplicateActionMutation__
+ *
+ * To run a mutation, you first call `useMacroDuplicateActionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMacroDuplicateActionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [macroDuplicateActionMutation, { data, loading, error }] = useMacroDuplicateActionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      actionId: // value for 'actionId'
+ *   },
+ * });
+ */
+export function useMacroDuplicateActionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    MacroDuplicateActionMutation,
+    MacroDuplicateActionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    MacroDuplicateActionMutation,
+    MacroDuplicateActionMutationVariables
+  >(MacroDuplicateActionDocument, baseOptions);
+}
+export type MacroDuplicateActionMutationHookResult = ReturnType<
+  typeof useMacroDuplicateActionMutation
+>;
+export type MacroDuplicateActionMutationResult = ApolloReactCommon.MutationResult<
+  MacroDuplicateActionMutation
+>;
+export type MacroDuplicateActionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  MacroDuplicateActionMutation,
+  MacroDuplicateActionMutationVariables
+>;
+export const TimelineAddItemDocument = gql`
+  mutation TimelineAddItem(
+    $simulatorId: ID
+    $missionId: ID
+    $timelineStepId: ID!
+    $timelineItem: TimelineItemInput!
+  ) {
+    addTimelineItemToTimelineStep(
+      simulatorId: $simulatorId
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      timelineItem: $timelineItem
+    )
+  }
+`;
+export type TimelineAddItemMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineAddItemMutation,
+  TimelineAddItemMutationVariables
+>;
+
+/**
+ * __useTimelineAddItemMutation__
+ *
+ * To run a mutation, you first call `useTimelineAddItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineAddItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineAddItemMutation, { data, loading, error }] = useTimelineAddItemMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      timelineItem: // value for 'timelineItem'
+ *   },
+ * });
+ */
+export function useTimelineAddItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineAddItemMutation,
+    TimelineAddItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineAddItemMutation,
+    TimelineAddItemMutationVariables
+  >(TimelineAddItemDocument, baseOptions);
+}
+export type TimelineAddItemMutationHookResult = ReturnType<
+  typeof useTimelineAddItemMutation
+>;
+export type TimelineAddItemMutationResult = ApolloReactCommon.MutationResult<
+  TimelineAddItemMutation
+>;
+export type TimelineAddItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineAddItemMutation,
+  TimelineAddItemMutationVariables
+>;
+export const TimelineAddStepDocument = gql`
+  mutation TimelineAddStep(
+    $simulatorId: ID
+    $missionId: ID
+    $name: String!
+    $description: String
+  ) {
+    addTimelineStep(
+      simulatorId: $simulatorId
+      missionId: $missionId
+      name: $name
+      description: $description
+    )
+  }
+`;
+export type TimelineAddStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineAddStepMutation,
+  TimelineAddStepMutationVariables
+>;
+
+/**
+ * __useTimelineAddStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineAddStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineAddStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineAddStepMutation, { data, loading, error }] = useTimelineAddStepMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useTimelineAddStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineAddStepMutation,
+    TimelineAddStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineAddStepMutation,
+    TimelineAddStepMutationVariables
+  >(TimelineAddStepDocument, baseOptions);
+}
+export type TimelineAddStepMutationHookResult = ReturnType<
+  typeof useTimelineAddStepMutation
+>;
+export type TimelineAddStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineAddStepMutation
+>;
+export type TimelineAddStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineAddStepMutation,
+  TimelineAddStepMutationVariables
+>;
+export const TimelineDuplicateItemDocument = gql`
+  mutation TimelineDuplicateItem(
+    $missionId: ID!
+    $timelineStepId: ID!
+    $timelineItemId: ID!
+  ) {
+    timelineDuplicateItem(
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      timelineItemId: $timelineItemId
+    )
+  }
+`;
+export type TimelineDuplicateItemMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineDuplicateItemMutation,
+  TimelineDuplicateItemMutationVariables
+>;
+
+/**
+ * __useTimelineDuplicateItemMutation__
+ *
+ * To run a mutation, you first call `useTimelineDuplicateItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineDuplicateItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineDuplicateItemMutation, { data, loading, error }] = useTimelineDuplicateItemMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      timelineItemId: // value for 'timelineItemId'
+ *   },
+ * });
+ */
+export function useTimelineDuplicateItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineDuplicateItemMutation,
+    TimelineDuplicateItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineDuplicateItemMutation,
+    TimelineDuplicateItemMutationVariables
+  >(TimelineDuplicateItemDocument, baseOptions);
+}
+export type TimelineDuplicateItemMutationHookResult = ReturnType<
+  typeof useTimelineDuplicateItemMutation
+>;
+export type TimelineDuplicateItemMutationResult = ApolloReactCommon.MutationResult<
+  TimelineDuplicateItemMutation
+>;
+export type TimelineDuplicateItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineDuplicateItemMutation,
+  TimelineDuplicateItemMutationVariables
+>;
+export const TimelineDuplicateStepDocument = gql`
+  mutation TimelineDuplicateStep($missionId: ID!, $timelineStepId: ID!) {
+    duplicateTimelineStep(
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+    )
+  }
+`;
+export type TimelineDuplicateStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineDuplicateStepMutation,
+  TimelineDuplicateStepMutationVariables
+>;
+
+/**
+ * __useTimelineDuplicateStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineDuplicateStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineDuplicateStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineDuplicateStepMutation, { data, loading, error }] = useTimelineDuplicateStepMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *   },
+ * });
+ */
+export function useTimelineDuplicateStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineDuplicateStepMutation,
+    TimelineDuplicateStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineDuplicateStepMutation,
+    TimelineDuplicateStepMutationVariables
+  >(TimelineDuplicateStepDocument, baseOptions);
+}
+export type TimelineDuplicateStepMutationHookResult = ReturnType<
+  typeof useTimelineDuplicateStepMutation
+>;
+export type TimelineDuplicateStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineDuplicateStepMutation
+>;
+export type TimelineDuplicateStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineDuplicateStepMutation,
+  TimelineDuplicateStepMutationVariables
+>;
+export const TimelineRemoveItemDocument = gql`
+  mutation TimelineRemoveItem(
+    $missionId: ID!
+    $timelineStepId: ID!
+    $timelineItemId: ID!
+  ) {
+    removeTimelineStepItem(
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      timelineItemId: $timelineItemId
+    )
+  }
+`;
+export type TimelineRemoveItemMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineRemoveItemMutation,
+  TimelineRemoveItemMutationVariables
+>;
+
+/**
+ * __useTimelineRemoveItemMutation__
+ *
+ * To run a mutation, you first call `useTimelineRemoveItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineRemoveItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineRemoveItemMutation, { data, loading, error }] = useTimelineRemoveItemMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      timelineItemId: // value for 'timelineItemId'
+ *   },
+ * });
+ */
+export function useTimelineRemoveItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineRemoveItemMutation,
+    TimelineRemoveItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineRemoveItemMutation,
+    TimelineRemoveItemMutationVariables
+  >(TimelineRemoveItemDocument, baseOptions);
+}
+export type TimelineRemoveItemMutationHookResult = ReturnType<
+  typeof useTimelineRemoveItemMutation
+>;
+export type TimelineRemoveItemMutationResult = ApolloReactCommon.MutationResult<
+  TimelineRemoveItemMutation
+>;
+export type TimelineRemoveItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineRemoveItemMutation,
+  TimelineRemoveItemMutationVariables
+>;
+export const TimelineRemoveStepDocument = gql`
+  mutation TimelineRemoveStep($missionId: ID!, $timelineStepId: ID!) {
+    removeTimelineStep(missionId: $missionId, timelineStepId: $timelineStepId)
+  }
+`;
+export type TimelineRemoveStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineRemoveStepMutation,
+  TimelineRemoveStepMutationVariables
+>;
+
+/**
+ * __useTimelineRemoveStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineRemoveStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineRemoveStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineRemoveStepMutation, { data, loading, error }] = useTimelineRemoveStepMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *   },
+ * });
+ */
+export function useTimelineRemoveStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineRemoveStepMutation,
+    TimelineRemoveStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineRemoveStepMutation,
+    TimelineRemoveStepMutationVariables
+  >(TimelineRemoveStepDocument, baseOptions);
+}
+export type TimelineRemoveStepMutationHookResult = ReturnType<
+  typeof useTimelineRemoveStepMutation
+>;
+export type TimelineRemoveStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineRemoveStepMutation
+>;
+export type TimelineRemoveStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineRemoveStepMutation,
+  TimelineRemoveStepMutationVariables
+>;
+export const TimelineReorderStepDocument = gql`
+  mutation TimelineReorderStep(
+    $missionId: ID
+    $timelineStepId: ID!
+    $order: Int!
+  ) {
+    reorderTimelineStep(
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      order: $order
+    )
+  }
+`;
+export type TimelineReorderStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineReorderStepMutation,
+  TimelineReorderStepMutationVariables
+>;
+
+/**
+ * __useTimelineReorderStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineReorderStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineReorderStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineReorderStepMutation, { data, loading, error }] = useTimelineReorderStepMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      order: // value for 'order'
+ *   },
+ * });
+ */
+export function useTimelineReorderStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineReorderStepMutation,
+    TimelineReorderStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineReorderStepMutation,
+    TimelineReorderStepMutationVariables
+  >(TimelineReorderStepDocument, baseOptions);
+}
+export type TimelineReorderStepMutationHookResult = ReturnType<
+  typeof useTimelineReorderStepMutation
+>;
+export type TimelineReorderStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineReorderStepMutation
+>;
+export type TimelineReorderStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineReorderStepMutation,
+  TimelineReorderStepMutationVariables
+>;
+export const TimelineUpdateItemDocument = gql`
+  mutation TimelineUpdateItem(
+    $simulatorId: ID
+    $missionId: ID
+    $timelineStepId: ID!
+    $timelineItemId: ID!
+    $timelineItem: TimelineItemInput!
+  ) {
+    updateTimelineStepItem(
+      simulatorId: $simulatorId
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      timelineItemId: $timelineItemId
+      updateTimelineItem: $timelineItem
+    )
+  }
+`;
+export type TimelineUpdateItemMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineUpdateItemMutation,
+  TimelineUpdateItemMutationVariables
+>;
+
+/**
+ * __useTimelineUpdateItemMutation__
+ *
+ * To run a mutation, you first call `useTimelineUpdateItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineUpdateItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineUpdateItemMutation, { data, loading, error }] = useTimelineUpdateItemMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      timelineItemId: // value for 'timelineItemId'
+ *      timelineItem: // value for 'timelineItem'
+ *   },
+ * });
+ */
+export function useTimelineUpdateItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineUpdateItemMutation,
+    TimelineUpdateItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineUpdateItemMutation,
+    TimelineUpdateItemMutationVariables
+  >(TimelineUpdateItemDocument, baseOptions);
+}
+export type TimelineUpdateItemMutationHookResult = ReturnType<
+  typeof useTimelineUpdateItemMutation
+>;
+export type TimelineUpdateItemMutationResult = ApolloReactCommon.MutationResult<
+  TimelineUpdateItemMutation
+>;
+export type TimelineUpdateItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineUpdateItemMutation,
+  TimelineUpdateItemMutationVariables
+>;
+export const TimelineUpdateStepDocument = gql`
+  mutation TimelineUpdateStep(
+    $simulatorId: ID
+    $missionId: ID
+    $timelineStepId: ID!
+    $name: String
+    $description: String
+  ) {
+    updateTimelineStep(
+      simulatorId: $simulatorId
+      missionId: $missionId
+      timelineStepId: $timelineStepId
+      name: $name
+      description: $description
+    )
+  }
+`;
+export type TimelineUpdateStepMutationFn = ApolloReactCommon.MutationFunction<
+  TimelineUpdateStepMutation,
+  TimelineUpdateStepMutationVariables
+>;
+
+/**
+ * __useTimelineUpdateStepMutation__
+ *
+ * To run a mutation, you first call `useTimelineUpdateStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTimelineUpdateStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [timelineUpdateStepMutation, { data, loading, error }] = useTimelineUpdateStepMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *      timelineStepId: // value for 'timelineStepId'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useTimelineUpdateStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TimelineUpdateStepMutation,
+    TimelineUpdateStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TimelineUpdateStepMutation,
+    TimelineUpdateStepMutationVariables
+  >(TimelineUpdateStepDocument, baseOptions);
+}
+export type TimelineUpdateStepMutationHookResult = ReturnType<
+  typeof useTimelineUpdateStepMutation
+>;
+export type TimelineUpdateStepMutationResult = ApolloReactCommon.MutationResult<
+  TimelineUpdateStepMutation
+>;
+export type TimelineUpdateStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TimelineUpdateStepMutation,
+  TimelineUpdateStepMutationVariables
+>;
 export const EntityCreateDocument = gql`
   mutation EntityCreate(
     $flightId: ID!
@@ -11288,7 +12613,17 @@ export const EntityCreateDocument = gql`
     $name: String!
     $color: String
     $meshType: MeshTypeEnum!
+    $modelAsset: String
     $materialMapAsset: String
+    $ringMapAsset: String
+    $cloudMapAsset: String
+    $emissiveColor: String
+    $emissiveIntensity: Float
+    $glowMode: GlowModeEnum
+    $glowColor: String
+    $lightIntensity: Float
+    $lightDecay: Float
+    $lightColor: String
   ) {
     entityCreate(flightId: $flightId) {
       id
@@ -11298,7 +12633,18 @@ export const EntityCreateDocument = gql`
     entitySetAppearance(
       color: $color
       meshType: $meshType
+      modelAsset: $modelAsset
       materialMapAsset: $materialMapAsset
+      ringMapAsset: $ringMapAsset
+      cloudMapAsset: $cloudMapAsset
+      emissiveColor: $emissiveColor
+      emissiveIntensity: $emissiveIntensity
+    )
+    entitySetGlow(glowMode: $glowMode, color: $glowColor)
+    entitySetLight(
+      intensity: $lightIntensity
+      color: $lightColor
+      decay: $lightDecay
     )
   }
 `;
@@ -11325,7 +12671,17 @@ export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
  *      name: // value for 'name'
  *      color: // value for 'color'
  *      meshType: // value for 'meshType'
+ *      modelAsset: // value for 'modelAsset'
  *      materialMapAsset: // value for 'materialMapAsset'
+ *      ringMapAsset: // value for 'ringMapAsset'
+ *      cloudMapAsset: // value for 'cloudMapAsset'
+ *      emissiveColor: // value for 'emissiveColor'
+ *      emissiveIntensity: // value for 'emissiveIntensity'
+ *      glowMode: // value for 'glowMode'
+ *      glowColor: // value for 'glowColor'
+ *      lightIntensity: // value for 'lightIntensity'
+ *      lightDecay: // value for 'lightDecay'
+ *      lightColor: // value for 'lightColor'
  *   },
  * });
  */
@@ -11398,6 +12754,102 @@ export type EntityRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityRemoveMutation,
   EntityRemoveMutationVariables
 >;
+export const EntityRemoveGlowDocument = gql`
+  mutation EntityRemoveGlow($id: ID!) {
+    entityRemoveGlow(id: $id)
+  }
+`;
+export type EntityRemoveGlowMutationFn = ApolloReactCommon.MutationFunction<
+  EntityRemoveGlowMutation,
+  EntityRemoveGlowMutationVariables
+>;
+
+/**
+ * __useEntityRemoveGlowMutation__
+ *
+ * To run a mutation, you first call `useEntityRemoveGlowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityRemoveGlowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityRemoveGlowMutation, { data, loading, error }] = useEntityRemoveGlowMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntityRemoveGlowMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityRemoveGlowMutation,
+    EntityRemoveGlowMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityRemoveGlowMutation,
+    EntityRemoveGlowMutationVariables
+  >(EntityRemoveGlowDocument, baseOptions);
+}
+export type EntityRemoveGlowMutationHookResult = ReturnType<
+  typeof useEntityRemoveGlowMutation
+>;
+export type EntityRemoveGlowMutationResult = ApolloReactCommon.MutationResult<
+  EntityRemoveGlowMutation
+>;
+export type EntityRemoveGlowMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityRemoveGlowMutation,
+  EntityRemoveGlowMutationVariables
+>;
+export const EntityRemoveLightDocument = gql`
+  mutation EntityRemoveLight($id: ID!) {
+    entityRemoveLight(id: $id)
+  }
+`;
+export type EntityRemoveLightMutationFn = ApolloReactCommon.MutationFunction<
+  EntityRemoveLightMutation,
+  EntityRemoveLightMutationVariables
+>;
+
+/**
+ * __useEntityRemoveLightMutation__
+ *
+ * To run a mutation, you first call `useEntityRemoveLightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityRemoveLightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityRemoveLightMutation, { data, loading, error }] = useEntityRemoveLightMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntityRemoveLightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityRemoveLightMutation,
+    EntityRemoveLightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityRemoveLightMutation,
+    EntityRemoveLightMutationVariables
+  >(EntityRemoveLightDocument, baseOptions);
+}
+export type EntityRemoveLightMutationHookResult = ReturnType<
+  typeof useEntityRemoveLightMutation
+>;
+export type EntityRemoveLightMutationResult = ApolloReactCommon.MutationResult<
+  EntityRemoveLightMutation
+>;
+export type EntityRemoveLightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityRemoveLightMutation,
+  EntityRemoveLightMutationVariables
+>;
 export const EntitySetAppearanceDocument = gql`
   mutation EntitySetAppearance(
     $id: ID!
@@ -11405,6 +12857,10 @@ export const EntitySetAppearanceDocument = gql`
     $meshType: MeshTypeEnum
     $modelAsset: String
     $materialMapAsset: String
+    $cloudMapAsset: String
+    $ringMapAsset: String
+    $emissiveColor: String
+    $emissiveIntensity: Float
     $scale: Float
   ) {
     entitySetAppearance(
@@ -11413,6 +12869,10 @@ export const EntitySetAppearanceDocument = gql`
       meshType: $meshType
       modelAsset: $modelAsset
       materialMapAsset: $materialMapAsset
+      cloudMapAsset: $cloudMapAsset
+      ringMapAsset: $ringMapAsset
+      emissiveColor: $emissiveColor
+      emissiveIntensity: $emissiveIntensity
       scale: $scale
     )
   }
@@ -11440,6 +12900,10 @@ export type EntitySetAppearanceMutationFn = ApolloReactCommon.MutationFunction<
  *      meshType: // value for 'meshType'
  *      modelAsset: // value for 'modelAsset'
  *      materialMapAsset: // value for 'materialMapAsset'
+ *      cloudMapAsset: // value for 'cloudMapAsset'
+ *      ringMapAsset: // value for 'ringMapAsset'
+ *      emissiveColor: // value for 'emissiveColor'
+ *      emissiveIntensity: // value for 'emissiveIntensity'
  *      scale: // value for 'scale'
  *   },
  * });
@@ -11464,6 +12928,56 @@ export type EntitySetAppearanceMutationResult = ApolloReactCommon.MutationResult
 export type EntitySetAppearanceMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntitySetAppearanceMutation,
   EntitySetAppearanceMutationVariables
+>;
+export const EntitySetGlowDocument = gql`
+  mutation EntitySetGlow($id: ID!, $glowMode: GlowModeEnum, $color: String) {
+    entitySetGlow(id: $id, glowMode: $glowMode, color: $color)
+  }
+`;
+export type EntitySetGlowMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetGlowMutation,
+  EntitySetGlowMutationVariables
+>;
+
+/**
+ * __useEntitySetGlowMutation__
+ *
+ * To run a mutation, you first call `useEntitySetGlowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetGlowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetGlowMutation, { data, loading, error }] = useEntitySetGlowMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      glowMode: // value for 'glowMode'
+ *      color: // value for 'color'
+ *   },
+ * });
+ */
+export function useEntitySetGlowMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetGlowMutation,
+    EntitySetGlowMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetGlowMutation,
+    EntitySetGlowMutationVariables
+  >(EntitySetGlowDocument, baseOptions);
+}
+export type EntitySetGlowMutationHookResult = ReturnType<
+  typeof useEntitySetGlowMutation
+>;
+export type EntitySetGlowMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetGlowMutation
+>;
+export type EntitySetGlowMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetGlowMutation,
+  EntitySetGlowMutationVariables
 >;
 export const EntitySetIdentityDocument = gql`
   mutation EntitySetIdentity($id: ID!, $name: String!) {
@@ -11514,6 +13028,62 @@ export type EntitySetIdentityMutationOptions = ApolloReactCommon.BaseMutationOpt
   EntitySetIdentityMutation,
   EntitySetIdentityMutationVariables
 >;
+export const EntitySetLightDocument = gql`
+  mutation EntitySetLight(
+    $id: ID!
+    $color: String
+    $intensity: Float
+    $decay: Float
+  ) {
+    entitySetLight(id: $id, color: $color, intensity: $intensity, decay: $decay)
+  }
+`;
+export type EntitySetLightMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetLightMutation,
+  EntitySetLightMutationVariables
+>;
+
+/**
+ * __useEntitySetLightMutation__
+ *
+ * To run a mutation, you first call `useEntitySetLightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetLightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetLightMutation, { data, loading, error }] = useEntitySetLightMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      color: // value for 'color'
+ *      intensity: // value for 'intensity'
+ *      decay: // value for 'decay'
+ *   },
+ * });
+ */
+export function useEntitySetLightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetLightMutation,
+    EntitySetLightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetLightMutation,
+    EntitySetLightMutationVariables
+  >(EntitySetLightDocument, baseOptions);
+}
+export type EntitySetLightMutationHookResult = ReturnType<
+  typeof useEntitySetLightMutation
+>;
+export type EntitySetLightMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetLightMutation
+>;
+export type EntitySetLightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetLightMutation,
+  EntitySetLightMutationVariables
+>;
 export const EntitiesSetPositionDocument = gql`
   mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
     entitiesSetPosition(entities: $entities)
@@ -11561,4 +13131,53 @@ export type EntitiesSetPositionMutationResult = ApolloReactCommon.MutationResult
 export type EntitiesSetPositionMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntitiesSetPositionMutation,
   EntitiesSetPositionMutationVariables
+>;
+export const EntitySetTemplateDocument = gql`
+  mutation EntitySetTemplate($id: ID, $category: String!) {
+    entitySetTemplate(id: $id, category: $category)
+  }
+`;
+export type EntitySetTemplateMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetTemplateMutation,
+  EntitySetTemplateMutationVariables
+>;
+
+/**
+ * __useEntitySetTemplateMutation__
+ *
+ * To run a mutation, you first call `useEntitySetTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetTemplateMutation, { data, loading, error }] = useEntitySetTemplateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useEntitySetTemplateMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetTemplateMutation,
+    EntitySetTemplateMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetTemplateMutation,
+    EntitySetTemplateMutationVariables
+  >(EntitySetTemplateDocument, baseOptions);
+}
+export type EntitySetTemplateMutationHookResult = ReturnType<
+  typeof useEntitySetTemplateMutation
+>;
+export type EntitySetTemplateMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetTemplateMutation
+>;
+export type EntitySetTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetTemplateMutation,
+  EntitySetTemplateMutationVariables
 >;

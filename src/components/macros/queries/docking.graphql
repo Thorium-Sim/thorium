@@ -1,0 +1,23 @@
+query DockingShuttleConfig($simulatorId: ID!) {
+  docking(simulatorId: $simulatorId) {
+    id
+    name
+    type
+    image
+    shipName
+    clamps
+    compress
+    doors
+    docked
+    direction
+  }
+  assetFolders(names: ["Docking Images"]) {
+    id
+    name
+    objects {
+      id
+      name
+      fullPath
+    }
+  }
+}

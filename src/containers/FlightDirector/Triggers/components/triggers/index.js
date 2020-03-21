@@ -1,5 +1,5 @@
 export {default as torpedoFire} from "./torpedoFire";
-export {default as generic} from "./generic";
+export * from "./generic";
 export {default as firePhaserBeam} from "./firePhaserBeam";
 export {default as completeTransport} from "./completeTransport";
 export {default as directionUpdate} from "./directionUpdate";
@@ -19,3 +19,5 @@ export * from "./systems";
 export * from "./teams";
 export * from "./battle";
 export * from "./engines";
+export * from "./internalComm";
+export * from "./jumpDrive";

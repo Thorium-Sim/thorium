@@ -131,6 +131,7 @@
       height: 5%;
       position: absolute;
       transform: translate(-100%, 0);
+      object-fit: contain;
     }
     .sensors-border-holder,
     .sensors-planet-holder,

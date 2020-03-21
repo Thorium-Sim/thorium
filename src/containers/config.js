@@ -30,6 +30,7 @@ import SimulatorPicker from "./simulatorPicker";
 import {AlertsHolder} from "../components/generic/Alerts";
 import "./config.scss";
 import UniversalSandboxEditor from "./FlightDirector/Universe";
+import EntityTemplate from "./FlightDirector/EntityTemplate";
 
 class Config extends Component {
   state = {training: false, alerts: []};
@@ -129,6 +130,17 @@ class Config extends Component {
             exact
             render={props => (
               <UniversalSandboxEditor
+                {...props}
+                triggerAlert={this.trigger}
+                {...this.trainingProps()}
+              />
+            )}
+          />
+          <Route
+            path="/config/entityTemplates"
+            exact
+            render={props => (
+              <EntityTemplate
                 {...props}
                 triggerAlert={this.trigger}
                 {...this.trainingProps()}

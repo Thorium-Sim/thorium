@@ -29,10 +29,7 @@ module.exports = () => {
   }
   app.enableSandbox();
   app.on("ready", function() {
-    let port =
-      process.env.PORT ||
-      settings.get("port") ||
-      (semver.parse(os.release()).major >= 18 ? 443 : 4444);
+    let port = process.env.PORT || settings.get("port") || 4444;
     let httpOnly =
       process.env.HTTP_ONLY === "true" ||
       settings.get("httpOnly") === "true" ||

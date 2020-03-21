@@ -1,0 +1,3 @@
+mutation EntitySetGlow($id: ID!, $glowMode: GlowModeEnum, $color: String) {
+  entitySetGlow(id: $id, glowMode: $glowMode, color: $color)
+}

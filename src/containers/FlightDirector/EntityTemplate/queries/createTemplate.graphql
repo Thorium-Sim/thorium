@@ -1,0 +1,8 @@
+mutation EntityCreateTemplate($name: String!) {
+  entityCreate(flightId: "template", template: true) {
+    id
+  }
+  entitySetTemplate(category: "generic")
+  entitySetIdentity(name: $name)
+  entitySetAppearance(meshType: cube, color: "#0088ff")
+}

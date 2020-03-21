@@ -1,0 +1,3 @@
+mutation TimelineRemoveStep($missionId: ID!, $timelineStepId: ID!) {
+  removeTimelineStep(missionId: $missionId, timelineStepId: $timelineStepId)
+}

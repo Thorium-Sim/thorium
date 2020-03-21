@@ -30,6 +30,8 @@ const schema = gql`
     addMacro(name: String!): ID
     removeMacro(id: ID!): String
     renameMacro(id: ID!, name: String!): String
+    duplicateMacro(id: ID!): String
+    duplicateMacroAction(id: ID!, actionId: ID!): String
     updateMacroActions(id: ID!, actions: [ActionInput]): String
     """
     Macro: Macros: Trigger Macro

@@ -1,0 +1,11 @@
+mutation TimelineDuplicateItem(
+  $missionId: ID!
+  $timelineStepId: ID!
+  $timelineItemId: ID!
+) {
+  timelineDuplicateItem(
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItemId: $timelineItemId
+  )
+}

@@ -45,10 +45,43 @@ function reduceMessages(messages, stationNames) {
   }, {});
 }
 
-const Conversations = ({messages, simulator}) => {
-  const [alert, setAlert] = React.useState({});
+function alertReducer(state, action) {
+  switch (action.type) {
+    case "select":
+      return {alert: state.alert, selectedConvo: action.selectedConvo};
+    case "messageAlert": {
+      const list = action.messageList.filter(
+        m =>
+          action.stationNames.indexOf(m.destination) > -1 &&
+          m.sender !== (state.selectedConvo && state.selectedConvo.sender) &&
+          !action.oldMessageList.find(o => o.id === m.id),
+      );
+      if (list.length === 0) return state;
+      const alertMessages = list
+        .map(m => m.id)
+        .reduce((prev, next) => ({...prev, [next]: true}), {});
+      return {
+        selectedConvo: state.selectedConvo,
+        alert: {...state.alert, ...alertMessages},
+      };
+    }
+    case "setAlert":
+      return {
+        selectedConvo: action.selectedConvo || state.selectedConvo,
+        alert: {...state.alert, [action.id]: action.value},
+      };
+    default:
+      return state;
+  }
+}
+const Conversations = props => {
+  const {messages, simulator} = props;
+  const [{alert, selectedConvo}, dispatch] = React.useReducer(alertReducer, {
+    alert: {},
+    selectedConvo: null,
+  });
+
   const [newMessage, setNewMessage] = React.useState(null);
-  const [selectedConvo, setSelectedConvo] = React.useState(null);
   const [messageInput, setMessageInput] = React.useState(null);
   const messageHolder = React.useRef();
   const previousMessages = usePrevious(messages);
@@ -59,18 +92,8 @@ const Conversations = ({messages, simulator}) => {
     const oldMessageList = Object.values(
       reduceMessages(previousMessages, stationNames),
     );
-    const list = messageList.filter(
-      m =>
-        stationNames.indexOf(m.destination) > -1 &&
-        m.sender !== (selectedConvo && selectedConvo.sender) &&
-        !oldMessageList.find(o => o.id === m.id),
-    );
-    if (list.length === 0) return;
-    const alertMessages = list
-      .map(m => m.id)
-      .reduce((prev, next) => ({...prev, [next]: true}), {});
-    setAlert(a => ({...a, ...alertMessages}));
-  }, [messages, previousMessages, selectedConvo, simulator.stations]);
+    dispatch({type: "messageAlert", messageList, oldMessageList, stationNames});
+  }, [messages, previousMessages, simulator.stations]);
 
   const scrollElement = () => {
     const el = messageHolder.current;
@@ -110,11 +133,19 @@ const Conversations = ({messages, simulator}) => {
               {messageList.map(m => (
                 <ListGroupItem
                   key={m.id}
-                  active={selectedConvo && m.sender === selectedConvo.sender}
-                  className={`${alert[m.id] ? "alerted" : ""}`}
+                  active={m.sender === selectedConvo?.sender}
+                  className={`${
+                    alert[m.id] && m.sender !== selectedConvo?.sender
+                      ? "alerted"
+                      : ""
+                  }`}
                   onClick={() => {
-                    setSelectedConvo(m);
-                    setAlert(a => ({...a, [m.id]: false}));
+                    dispatch({
+                      type: "setAlert",
+                      selectedConvo: m,
+                      id: m.id,
+                      value: false,
+                    });
                   }}
                 >
                   <p>
@@ -200,7 +231,11 @@ const Conversations = ({messages, simulator}) => {
                     value={messageInput || ""}
                     onFocus={() =>
                       selectedConvo &&
-                      setAlert(a => ({...a, [selectedConvo.id]: false}))
+                      dispatch({
+                        type: "setAlert",
+                        id: selectedConvo.id,
+                        value: false,
+                      })
                     }
                     onChange={evt => setMessageInput(evt.target.value)}
                   />
@@ -219,10 +254,13 @@ const Conversations = ({messages, simulator}) => {
       </Container>
       {newMessage && (
         <GroupManager
-          {...this.props}
+          {...props}
           cancel={() => setNewMessage(false)}
           startConvo={(sender, destination) => {
-            setSelectedConvo({sender, destination, id: "new"});
+            dispatch({
+              type: "select",
+              selectedConvo: {sender, destination, id: "new"},
+            });
             setNewMessage(false);
           }}
         />

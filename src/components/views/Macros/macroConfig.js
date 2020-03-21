@@ -4,7 +4,14 @@ import {withApollo} from "react-apollo";
 
 import * as Macros from "components/macros";
 
-const MacroConfig = ({action, updateAction, client, stations, clients}) => {
+const MacroConfig = ({
+  simulatorId,
+  action,
+  updateAction,
+  client,
+  stations,
+  clients,
+}) => {
   if (!action) return null;
   const args =
     typeof action.args === "string" ? JSON.parse(action.args) : action.args;
@@ -15,6 +22,7 @@ const MacroConfig = ({action, updateAction, client, stations, clients}) => {
       <Col sm="12">
         {EventMacro ? (
           <EventMacro
+            simulatorId={simulatorId}
             updateArgs={(argName, value) => {
               updateAction({
                 ...action,

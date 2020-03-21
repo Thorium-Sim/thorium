@@ -181,6 +181,7 @@ const MissionConfig = ({missions, simulator}) => {
                     >
                       {action => (
                         <EventMacro
+                          simulatorId={simulator.id}
                           stations={stationSet.stations}
                           clients={data && data.clients}
                           updateArgs={(key, value) => {

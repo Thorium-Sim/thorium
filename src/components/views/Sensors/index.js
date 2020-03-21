@@ -213,6 +213,7 @@ class Sensors extends Component {
     const {pingMode} = sensors;
     const pings = false;
     const {hoverContact, ping, pingTime, weaponsRange} = this.state;
+    const {viewscreen} = this.props;
     return (
       <div className="cardSensors">
         <SubscriptionHelper
@@ -230,25 +231,26 @@ class Sensors extends Component {
         />
         <div>
           <Row>
-            {needScans && (
-              <Col sm={3}>
-                <DamageOverlay
-                  message="External Sensors Offline"
-                  system={sensors}
-                />
-                <SensorScans sensors={sensors} client={this.props.client} />
-                {pings && (
-                  <PingControl
-                    selectPing={this.selectPing}
-                    pingMode={pingMode}
-                    ping={ping}
-                    triggerPing={this.triggerPing}
+            <Col sm={3}>
+              {!viewscreen && needScans && (
+                <>
+                  <DamageOverlay
+                    message="External Sensors Offline"
+                    system={sensors}
                   />
-                )}
-                <Button onClick={this.showWeaponsRange.bind(this)} block>
-                  Show Weapons Range
-                </Button>
-                {/*<Row>
+                  <SensorScans sensors={sensors} client={this.props.client} />
+                  {pings && (
+                    <PingControl
+                      selectPing={this.selectPing}
+                      pingMode={pingMode}
+                      ping={ping}
+                      triggerPing={this.triggerPing}
+                    />
+                  )}
+                  <Button onClick={this.showWeaponsRange.bind(this)} block>
+                    Show Weapons Range
+                  </Button>
+                  {/*<Row>
                   <Col className="col-sm-12">
                   <h4>Contact Coordinates</h4>
                   </Col>
@@ -261,8 +263,9 @@ class Sensors extends Component {
                   </Col>
                   </Row>
                 */}
-              </Col>
-            )}
+                </>
+              )}
+            </Col>
             <Col
               sm={{size: 6, offset: !needScans ? 1 : 0}}
               className="arrayContainer"
@@ -330,59 +333,66 @@ class Sensors extends Component {
               />
             </Col>
             <Col sm={{size: 3, offset: !needScans ? 1 : 0}} className="data">
-              <Row className="contact-info">
-                <Col className="col-sm-12">
-                  <h3>Contact Information</h3>
-                </Col>
-                <Col className="col-sm-12">
-                  <div className="card contactPictureContainer">
-                    {hoverContact.picture && (
-                      <div
-                        className="contactPicture"
-                        style={{
-                          backgroundSize: "contain",
-                          backgroundPosition: "center",
-                          backgroundRepeat: "no-repeat",
-                          backgroundColor: "black",
-                          backgroundImage: `url('/assets${hoverContact.picture}')`,
-                        }}
-                      />
-                    )}
-                  </div>
-                </Col>
-                <Col className="col-sm-12 contactNameContainer">
-                  <div className="card contactName">{hoverContact.name}</div>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="col-sm-12">
-                  <h3>Processed Data</h3>
-                </Col>
-                <Col className="col-sm-12">
-                  <Card className="processedData">
-                    <CardBody>
-                      <pre>
-                        <Typing keyDelay={20} key={sensors.processedData}>
-                          {sensors.processedData}
-                        </Typing>
-                      </pre>
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>
-              {pings && !needScans && (
-                <PingControl
-                  selectPing={this.selectPing}
-                  pingMode={pingMode}
-                  ping={ping}
-                  triggerPing={this.triggerPing}
-                />
-              )}
-              {!needScans && (
-                <Button onClick={this.showWeaponsRange} block>
-                  Show Weapons Range
-                </Button>
-              )}
+              {!viewscreen ? (
+                <>
+                  <Row className="contact-info">
+                    <Col className="col-sm-12">
+                      <h3>Contact Information</h3>
+                    </Col>
+                    <Col className="col-sm-12">
+                      <div className="card contactPictureContainer">
+                        {hoverContact.picture && (
+                          <div
+                            className="contactPicture"
+                            style={{
+                              backgroundSize: "contain",
+                              backgroundPosition: "center",
+                              backgroundRepeat: "no-repeat",
+                              backgroundColor: "black",
+                              backgroundImage: `url('/assets${hoverContact.picture}')`,
+                            }}
+                          />
+                        )}
+                      </div>
+                    </Col>
+                    <Col className="col-sm-12 contactNameContainer">
+                      <div className="card contactName">
+                        {hoverContact.name}
+                      </div>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col className="col-sm-12">
+                      <h3>Processed Data</h3>
+                    </Col>
+                    <Col className="col-sm-12">
+                      <Card className="processedData">
+                        <CardBody>
+                          <pre>
+                            <Typing keyDelay={20} key={sensors.processedData}>
+                              {sensors.processedData}
+                            </Typing>
+                          </pre>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  </Row>
+                  {pings && !needScans && (
+                    <PingControl
+                      selectPing={this.selectPing}
+                      pingMode={pingMode}
+                      ping={ping}
+                      triggerPing={this.triggerPing}
+                    />
+                  )}
+                  {!needScans && (
+                    <Button onClick={this.showWeaponsRange} block>
+                      Show Weapons Range
+                    </Button>
+                  )}
+                </>
+              ) : null}
             </Col>
           </Row>
         </div>

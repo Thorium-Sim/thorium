@@ -83,7 +83,6 @@ class TractorBeam extends Component {
               1)
         : 1,
     );
-    console.log(maxPower);
     const {assets} = this.props.simulator;
     return (
       <Container className="tractor-beam">

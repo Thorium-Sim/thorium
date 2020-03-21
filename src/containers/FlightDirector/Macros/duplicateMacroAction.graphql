@@ -1,0 +1,3 @@
+mutation MacroDuplicateAction($id: ID!, $actionId: ID!) {
+  duplicateMacroAction(id: $id, actionId: $actionId)
+}

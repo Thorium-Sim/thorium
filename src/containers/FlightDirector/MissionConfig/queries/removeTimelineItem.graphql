@@ -1,0 +1,11 @@
+mutation TimelineRemoveItem(
+  $missionId: ID!
+  $timelineStepId: ID!
+  $timelineItemId: ID!
+) {
+  removeTimelineStepItem(
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItemId: $timelineItemId
+  )
+}

@@ -6,7 +6,7 @@ const settings = require("electron-settings");
 let restartCount = 0;
 module.exports = function bootstrap(serverWindow) {
   function startServer() {
-    let port = settings.get("port") || 443;
+    let port = settings.get("port") || 4444;
     let httpOnly =
       settings.get("httpOnly") === "true" ||
       settings.get("httpOnly") === true ||

@@ -25,7 +25,6 @@ const schema = gql`
 
   input DockingPortInput {
     id: ID
-    simulatorId: ID
     name: String
     shipName: String
     type: String
@@ -55,7 +54,15 @@ const schema = gql`
   }
   extend type Mutation {
     createDockingPort(port: DockingPortInput!): String
-    updateDockingPort(port: DockingPortInput!): String
+    """
+    Macro: Docking: Update Docking Port/Shuttlebay
+    """
+    updateDockingPort(
+      """
+      Dynamic: Docking
+      """
+      port: DockingPortInput!
+    ): String
     removeDockingPort(port: ID!): String
   }
   extend type Subscription {

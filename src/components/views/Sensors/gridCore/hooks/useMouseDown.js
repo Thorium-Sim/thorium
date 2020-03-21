@@ -152,7 +152,6 @@ export function useMouseDown({
       z: destination.z - contactDestination.z,
     };
     setOffset(destinationDiff);
-    console.log(destinationDiff);
     setDraggingContacts(selectedContacts.concat(contact));
     immediateDragId.current = contact.id;
   }

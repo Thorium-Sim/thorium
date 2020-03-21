@@ -1,0 +1,15 @@
+mutation TimelineUpdateStep(
+  $simulatorId: ID
+  $missionId: ID
+  $timelineStepId: ID!
+  $name: String
+  $description: String
+) {
+  updateTimelineStep(
+    simulatorId: $simulatorId
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    name: $name
+    description: $description
+  )
+}

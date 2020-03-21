@@ -68,4 +68,8 @@ export {default as shieldFrequencySetAll} from "./shieldFrequencySetAll";
 export {default as simulatorAddMidiSet} from "./simulatorAddMidiSet";
 export {default as simulatorRemoveMidiSet} from "./simulatorRemoveMidiSet";
 export {motuSetSendMute, motuUpdateChannel} from "./motu";
+export {default as printPdf} from "./printPdf";
 export * from "./records";
+export * from "./docking";
+export * from "./computerCore";
+export * from "./sensors";

@@ -5,8 +5,11 @@ import {
   Behavior,
   Identity,
   Location,
-  Scene,
-  SceneChild,
+  Stage,
+  StageChild,
+  Glow,
+  Light,
+  Template,
 } from "./components";
 import {componentRegistry} from "./component";
 import {immerable} from "immer";
@@ -24,8 +27,11 @@ export class Entity {
   behavior?: Behavior;
   identity?: Identity;
   location?: Location;
-  scene?: Scene;
-  sceneChild?: SceneChild;
+  stage?: Stage;
+  stageChild?: StageChild;
+  glow?: Glow;
+  light?: Light;
+  template?: Template;
 
   static class = "Entity";
   class = "Entity";

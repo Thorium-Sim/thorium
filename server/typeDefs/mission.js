@@ -118,6 +118,11 @@ const schema = gql`
       updateTimelineItem: TimelineItemInput!
     ): String
     duplicateTimelineStep(missionId: ID!, timelineStepId: ID!): String
+    timelineDuplicateItem(
+      missionId: ID!
+      timelineStepId: ID!
+      timelineItemId: ID!
+    ): String
 
     # Aux Timelines
     """
@@ -183,9 +188,8 @@ const resolver = {
     needsConfig({event}) {
       const {schema} = require("../bootstrap/apollo");
       const field = schema.getMutationType().getFields()[event];
-
       return Boolean(
-        field.args.find(a => a.description.indexOf("Dynamic") > -1),
+        field?.args?.find(a => a.description.indexOf("Dynamic") > -1),
       );
     },
   },
@@ -195,7 +199,7 @@ const resolver = {
       const field = schema.getMutationType().getFields()[event];
 
       return Boolean(
-        field.args.find(a => a.description.indexOf("Dynamic") > -1),
+        field?.args?.find(a => a.description.indexOf("Dynamic") > -1),
       );
     },
   },

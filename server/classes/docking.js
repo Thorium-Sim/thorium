@@ -4,7 +4,7 @@ export default class DockingPort extends System {
   constructor(params = {}) {
     super(params);
     this.class = "DockingPort";
-
+    this.templateId = params.templateId || null;
     // Type can be 'dockingport', 'shuttlebay', or 'specialized'
     this.type = params.type || "shuttlebay";
     if (this.type === "shuttlebay") {

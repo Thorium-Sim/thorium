@@ -164,7 +164,10 @@ const schema = gql`
   }
   extend type Mutation {
     sensorScanRequest(id: ID!, request: String!): String
-    sensorScanResult(id: ID!, result: String!): String
+    """
+    Macro: Sensors: Send Scan Result
+    """
+    sensorScanResult(id: ID!, domain: String, result: String!): String
 
     """
     Macro: Sensors: Processed Data

@@ -31,21 +31,22 @@ App.on("createDockingPort", ({port, cb}) => {
   pubsub.publish("dockingUpdate", App.dockingPorts);
   cb();
 });
-App.on("updateDockingPort", ({port = {}, cb, ...rest}) => {
-  const dockingPort = App.dockingPorts.find(d => {
-    if (port.id) {
-      return d.id === port.id;
-    }
-
-    let tf = true;
-    if (port.simulatorId) {
-      tf = port.simulatorId === d.simulatorId;
-    }
-    if (port.type) {
-      tf = tf && port.type === d.type;
-    }
-    return tf;
+App.on("updateDockingPort", ({port, simulatorId, cb, ...rest}) => {
+  if (!port) return;
+  let dockingPort = App.dockingPorts.find(d => {
+    return d.id === port.id;
   });
+  if (!dockingPort) return;
+  if (simulatorId && dockingPort.simulatorId !== simulatorId) {
+    // We're referencing a template simulator. We need to get
+    // the docking port with that template ID
+    let realDockingPort = App.dockingPorts.find(
+      d => d.templateId === port.id && d.simulatorId === simulatorId,
+    );
+    if (realDockingPort) {
+      dockingPort = realDockingPort;
+    }
+  }
   dockingPort.updateDockingPort(port);
   pubsub.publish("decksUpdate", App.decks);
   pubsub.publish("dockingUpdate", App.dockingPorts);

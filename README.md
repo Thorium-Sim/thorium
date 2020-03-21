@@ -101,9 +101,13 @@ principles which should underscore all feature development in the project:
 
 ## Getting Started
 
+Install Yarn from https://yarnpkg.com
+
+then
+
 ```sh
-npm install
-npm run start
+yarn install
+yarn start
 ```
 
 Then open [the app](http://localhost:3000) or
@@ -111,8 +115,8 @@ Then open [the app](http://localhost:3000) or
 
 ## Building the App
 
-```
-npm run build
+```sh
+yarn build
 ```
 
 Builds the app for production and bundles it into a packaged terminal app.

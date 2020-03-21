@@ -1,0 +1,3 @@
+mutation MacroDuplicate($id: ID!) {
+  duplicateMacro(id: $id)
+}

@@ -11,4 +11,5 @@ module.exports = {
     "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}",
     "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
   ],
+  transformIgnorePatterns: ["node_modules/three"],
 };

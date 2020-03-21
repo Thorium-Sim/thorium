@@ -1,0 +1,15 @@
+mutation TimelineUpdateItem(
+  $simulatorId: ID
+  $missionId: ID
+  $timelineStepId: ID!
+  $timelineItemId: ID!
+  $timelineItem: TimelineItemInput!
+) {
+  updateTimelineStepItem(
+    simulatorId: $simulatorId
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItemId: $timelineItemId
+    updateTimelineItem: $timelineItem
+  )
+}

@@ -14,6 +14,8 @@ import {
 } from "helpers/reactstrap";
 
 export const notifyComponents = [
+  "Core Reminder",
+  "AuxCore Reminder",
   "Alert Condition",
   "Cargo",
   "Command Line",

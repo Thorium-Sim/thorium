@@ -81,7 +81,6 @@ class VideoConfig extends Component {
         variables,
       });
     };
-    console.log(this.props);
     return (
       <div className={`viewscreen-video ${data.overlay ? "overlay" : ""}`}>
         <video

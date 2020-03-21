@@ -1,5 +1,7 @@
 import uuid from "uuid";
 import {camelCase} from "change-case";
+import Fuzz from "fuse.js";
+
 export default class Trigger {
   constructor(params) {
     this.id = params.id || uuid.v4();
@@ -93,6 +95,11 @@ export default class Trigger {
                 // Do a loose check
                 if (checkValues[checkKey] == checkValue) {
                   return prev.concat(processConnections(o));
+                } else {
+                  const matcher = new Fuzz([checkValue], {threshold: 0.2});
+                  if (matcher.search(checkValues[checkKey]).length > 0) {
+                    return prev.concat(processConnections(o));
+                  }
                 }
                 return prev;
               }

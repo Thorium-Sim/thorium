@@ -61,6 +61,10 @@ const schema = gql`
   }
   extend type Mutation {
     addComputerCoreUser(id: ID!, user: ComputerCoreUserInput): ComputerCoreUser
+    """
+    Macro: Computer Core: Add Hacker
+    """
+    computerCoreAddHacker(id: ID!, name: String, level: Int): String
     updateComputerCoreUser(
       id: ID!
       userId: ID!

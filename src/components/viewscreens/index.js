@@ -38,6 +38,7 @@ export {default as LowPower} from "./LowPower";
 export {default as Picture} from "./Picture";
 export {default as Objectives} from "./Objectives";
 export {default as Tasks} from "./Tasks";
+export {default as Sensors} from "./Sensors";
 
 export {default as InformationConfig} from "./Information/config";
 export {default as InternalSensorsConfig} from "./InternalSensors/config";

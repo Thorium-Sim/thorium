@@ -1,0 +1,3 @@
+mutation AssetsRemoveObject($fullPath: String!) {
+  removeAssetObject(fullPath: $fullPath)
+}
