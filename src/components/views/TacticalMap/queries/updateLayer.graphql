@@ -1,0 +1,3 @@
+mutation UpdateLayer($mapId: ID!, $layer: TacticalLayerInput!) {
+  updateTacticalMapLayer(mapId: $mapId, layer: $layer)
+}

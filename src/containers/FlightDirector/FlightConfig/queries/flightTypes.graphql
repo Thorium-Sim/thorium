@@ -1,0 +1,14 @@
+query FlightTypes {
+  thorium {
+    spaceEdventuresCenter {
+      id
+      name
+      flightTypes {
+        id
+        name
+        classHours
+        flightHours
+      }
+    }
+  }
+}

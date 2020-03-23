@@ -1,0 +1,19 @@
+query FlightSetup {
+  simulators(template: true) {
+    id
+    name
+    spaceEdventuresId
+    stationSets {
+      id
+      name
+      stations {
+        name
+      }
+    }
+  }
+  missions(aux: false) {
+    id
+    name
+    description
+  }
+}

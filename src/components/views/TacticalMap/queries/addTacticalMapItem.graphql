@@ -1,0 +1,7 @@
+mutation AddTacticalItem(
+  $mapId: ID!
+  $layerId: ID!
+  $item: TacticalItemInput!
+) {
+  addTacticalMapItem(mapId: $mapId, layerId: $layerId, item: $item)
+}

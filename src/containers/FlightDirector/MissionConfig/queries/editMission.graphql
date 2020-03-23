@@ -1,0 +1,13 @@
+mutation EditMission(
+  $missionId: ID!
+  $name: String
+  $description: String
+  $aux: Boolean
+) {
+  editMission(
+    missionId: $missionId
+    name: $name
+    description: $description
+    aux: $aux
+  )
+}

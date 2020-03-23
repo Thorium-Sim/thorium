@@ -1,0 +1,7 @@
+mutation StartFlight(
+  $name: String!
+  $simulators: [SimulatorInput!]!
+  $flightType: String
+) {
+  startFlight(name: $name, simulators: $simulators, flightType: $flightType)
+}

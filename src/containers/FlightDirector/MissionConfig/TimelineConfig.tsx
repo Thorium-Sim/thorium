@@ -22,8 +22,9 @@ import {
   useTimelineAddItemMutation,
   useTimelineRemoveItemMutation,
   useTimelineDuplicateItemMutation,
+  Mission,
+  TimelineStep,
 } from "generated/graphql";
-import {MissionI, TimelineStep} from "./TimelineTypes";
 import TimelineStepButtons from "./TimelineStepButtons";
 const sortableElement = SortableElement;
 const sortableContainer = SortableContainer;
@@ -79,14 +80,14 @@ const SortableList = sortableContainer(
 );
 
 interface TimelineConfigProps {
-  object: MissionI;
+  mission: Mission;
   removeMission: () => void;
-  updateMission: () => void;
-  exportMissionScript: (mission: MissionI) => void;
+  updateMission: (type: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+  exportMissionScript: (mission: Mission) => void;
 }
 
 const TimelineConfig: React.FC<TimelineConfigProps> = ({
-  object,
+  mission,
   removeMission,
   updateMission,
   exportMissionScript,
@@ -115,7 +116,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
     const variables = {
       timelineStepId: selectedTimelineStep,
       timelineItemId: selectedTimelineItem,
-      missionId: object.id,
+      missionId: mission.id,
       timelineItem: {[type]: value},
     };
 
@@ -125,7 +126,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
     if (!selectedTimelineStep || !selectedTimelineItem) return;
     const variables = {
       timelineStepId: selectedTimelineStep,
-      missionId: object.id,
+      missionId: mission.id,
       [type]: e.target.value,
     };
     updateStepMutation({variables});
@@ -135,7 +136,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
     const variables = {
       timelineStepId: selectedTimelineStep,
       timelineItemId: selectedTimelineItem,
-      missionId: object.id,
+      missionId: mission.id,
       timelineItem: {
         [type]: value,
         args: JSON.stringify({}),
@@ -148,7 +149,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
     if (!selectedTimelineStep) return;
     const variables = {
       timelineStepId: selectedTimelineStep,
-      missionId: object.id,
+      missionId: mission.id,
       timelineItem: {
         name: e.target.value,
         type: "event",
@@ -161,6 +162,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
   const removeTimelineItem = (timelineItemId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (!selectedTimelineStep) return;
+    if (!mission.id) return;
     if (window.confirm("Are you sure you want to remove this timeline item?")) {
       if (timelineItemId === selectedTimelineItem) {
         setSelectedTimelineItemAction(null);
@@ -169,7 +171,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
       const variables = {
         timelineStepId: selectedTimelineStep,
         timelineItemId: timelineItemId,
-        missionId: object.id,
+        missionId: mission.id,
       };
       removeItemMutation({variables});
     }
@@ -183,19 +185,21 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
     newIndex: number;
   }) => {
     if (oldIndex === newIndex) {
-      setSelectedTimelineStep(object.timeline[oldIndex].id);
+      setSelectedTimelineStep(mission.timeline[oldIndex].id);
     } else {
       const variables = {
-        timelineStepId: object.timeline[oldIndex].id,
+        timelineStepId: mission.timeline[oldIndex].id,
         order: newIndex,
-        missionId: object.id,
+        missionId: mission.id,
       };
 
       reorderStepMutation({variables});
     }
   };
 
-  const selectedStep = object.timeline.find(e => e.id === selectedTimelineStep);
+  const selectedStep = mission.timeline.find(
+    e => e.id === selectedTimelineStep,
+  );
   return (
     <Row>
       <Col sm="3">
@@ -208,14 +212,14 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
             Mission Information
           </div>
           <SortableList
-            items={object.timeline}
+            items={mission.timeline}
             onSortEnd={onSortEnd}
             selectedTimelineStep={selectedTimelineStep}
             setSelectedTimelineStep={setSelectedTimelineStep}
           />
         </Card>
         <TimelineStepButtons
-          mission={object}
+          mission={mission}
           setSelectedTimelineStep={setSelectedTimelineStep}
           selectedTimelineStep={selectedTimelineStep}
           removeMission={removeMission}
@@ -224,7 +228,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
       </Col>
       {selectedTimelineStep === "mission" && (
         <Col sm={6}>
-          <MissionConfig mission={object} updateMission={updateMission} />
+          <MissionConfig mission={mission} updateMission={updateMission} />
         </Col>
       )}
       {selectedTimelineStep &&
@@ -271,7 +275,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
                 onClick={async () => {
                   const res = await duplicateItemMutation({
                     variables: {
-                      missionId: object.id,
+                      missionId: mission.id,
                       timelineStepId: selectedTimelineStep,
                       timelineItemId: selectedTimelineItem,
                     },
@@ -294,7 +298,9 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
         )}
       {(() => {
         if (selectedTimelineItem === "step") {
-          const step = object.timeline.find(e => e.id === selectedTimelineStep);
+          const step = mission.timeline.find(
+            e => e.id === selectedTimelineStep,
+          );
           if (!step) return null;
           return (
             <Col sm="6">
@@ -313,7 +319,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
                   type="textarea"
                   rows={8}
                   key={step.id}
-                  defaultValue={step.description}
+                  defaultValue={step.description || ""}
                   placeholder="Here is where you would explain what is going on during this part of the mission. This serves as your script, explaining what actions should be taken and where the story goes next."
                   onChange={e => updateStep("description", e)}
                 />
@@ -321,7 +327,9 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
             </Col>
           );
         } else if (selectedTimelineItem) {
-          const step = object.timeline.find(e => e.id === selectedTimelineStep);
+          const step = mission.timeline.find(
+            e => e.id === selectedTimelineStep,
+          );
           if (!step) return null;
           const item = step.timelineItems.find(
             t => t.id === selectedTimelineItem,
@@ -339,7 +347,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
                     <Label>Item Delay (in milliseconds)</Label>
                     <Input
                       type="number"
-                      defaultValue={item.delay}
+                      defaultValue={item.delay || 0}
                       onBlur={e =>
                         updateItem("delay", parseInt(e.target.value))
                       }
@@ -349,7 +357,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
                     <Label>
                       <Input
                         type="checkbox"
-                        defaultChecked={item.noCancelOnReset}
+                        defaultChecked={Boolean(item.noCancelOnReset)}
                         onBlur={e =>
                           updateItem("noCancelOnReset", e.target.checked)
                         }
@@ -360,7 +368,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
                   <MacroWrapper
                     id={item.id}
                     delay={item.delay}
-                    steps={object.timeline}
+                    steps={mission.timeline}
                     currentStep={selectedTimelineStep}
                     event={item.event}
                     args={item.args}

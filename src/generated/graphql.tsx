@@ -1005,11 +1005,6 @@ export type GoogleSpreadsheet = {
   sheets?: Maybe<Array<Maybe<GoogleSheet>>>;
 };
 
-export type HeatInterface = {
-  heat?: Maybe<Scalars["Float"]>;
-  coolant?: Maybe<Scalars["Float"]>;
-};
-
 export type History = {
   __typename?: "History";
   date?: Maybe<Scalars["String"]>;
@@ -1480,10 +1475,10 @@ export type MidiSet = {
 
 export type Mission = {
   __typename?: "Mission";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
-  timeline?: Maybe<Array<Maybe<TimelineStep>>>;
+  timeline: Array<TimelineStep>;
   simulators?: Maybe<Array<Maybe<Simulator>>>;
   aux?: Maybe<Scalars["Boolean"]>;
 };
@@ -1666,6 +1661,7 @@ export type Mutation = {
   addCommandLineOutput?: Maybe<Scalars["String"]>;
   handleCommandLineFeedback?: Maybe<Scalars["String"]>;
   addComputerCoreUser?: Maybe<ComputerCoreUser>;
+  computerCoreAddHacker?: Maybe<Scalars["String"]>;
   updateComputerCoreUser?: Maybe<Scalars["String"]>;
   removeComputerCoreUser?: Maybe<Scalars["String"]>;
   restoreComputerCoreFile?: Maybe<Scalars["String"]>;
@@ -2670,6 +2666,12 @@ export type MutationHandleCommandLineFeedbackArgs = {
 export type MutationAddComputerCoreUserArgs = {
   id: Scalars["ID"];
   user?: Maybe<ComputerCoreUserInput>;
+};
+
+export type MutationComputerCoreAddHackerArgs = {
+  id: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
+  level?: Maybe<Scalars["Int"]>;
 };
 
 export type MutationUpdateComputerCoreUserArgs = {
@@ -4183,6 +4185,7 @@ export type MutationSensorScanRequestArgs = {
 
 export type MutationSensorScanResultArgs = {
   id: Scalars["ID"];
+  domain?: Maybe<Scalars["String"]>;
   result: Scalars["String"];
 };
 
@@ -6197,7 +6200,7 @@ export type Query = {
   engine?: Maybe<Engine>;
   exocomps?: Maybe<Array<Maybe<Exocomp>>>;
   externals?: Maybe<Externals>;
-  flights?: Maybe<Array<Maybe<Flight>>>;
+  flights: Array<Flight>;
   events?: Maybe<Array<Maybe<Scalars["String"]>>>;
   googleSheets?: Maybe<Scalars["String"]>;
   googleSheetsGetSpreadsheet?: Maybe<GoogleSpreadsheet>;
@@ -6214,7 +6217,7 @@ export type Query = {
   macroButtons?: Maybe<Array<Maybe<MacroButtonConfig>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
   midiSets?: Maybe<Array<Maybe<MidiSet>>>;
-  missions?: Maybe<Array<Maybe<Mission>>>;
+  missions: Array<Mission>;
   auxTimelines?: Maybe<Array<Maybe<TimelineInstance>>>;
   motus?: Maybe<Array<Maybe<Motu>>>;
   motu?: Maybe<Motu>;
@@ -6245,7 +6248,7 @@ export type Query = {
   sickbaySingle?: Maybe<Sickbay>;
   symptoms?: Maybe<Array<Maybe<Scalars["String"]>>>;
   signalJammers?: Maybe<Array<Maybe<SignalJammer>>>;
-  simulators?: Maybe<Array<Maybe<Simulator>>>;
+  simulators: Array<Simulator>;
   softwarePanels?: Maybe<Array<Maybe<SoftwarePanel>>>;
   stations?: Maybe<Array<Maybe<StationSet>>>;
   station?: Maybe<Station>;
@@ -7489,7 +7492,7 @@ export type Subscription = {
   messageUpdates?: Maybe<Array<Maybe<Message>>>;
   sendMessage?: Maybe<Message>;
   midiSets?: Maybe<Array<Maybe<MidiSet>>>;
-  missionsUpdate?: Maybe<Array<Maybe<Mission>>>;
+  missionsUpdate: Array<Mission>;
   auxTimelinesUpdate?: Maybe<Array<Maybe<TimelineInstance>>>;
   motus?: Maybe<Array<Maybe<Motu>>>;
   motu?: Maybe<Motu>;
@@ -8471,10 +8474,10 @@ export type TimelineInstance = {
 
 export type TimelineItem = {
   __typename?: "TimelineItem";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
-  event?: Maybe<Scalars["String"]>;
+  event: Scalars["String"];
   needsConfig?: Maybe<Scalars["Boolean"]>;
   args?: Maybe<Scalars["String"]>;
   delay?: Maybe<Scalars["Int"]>;
@@ -8494,10 +8497,10 @@ export type TimelineItemInput = {
 export type TimelineStep = {
   __typename?: "TimelineStep";
   id: Scalars["ID"];
-  name?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   order?: Maybe<Scalars["Int"]>;
-  timelineItems?: Maybe<Array<Maybe<TimelineItem>>>;
+  timelineItems: Array<TimelineItem>;
 };
 
 export type Timer = {
@@ -8672,14 +8675,14 @@ export type ClientDataFragment = {__typename?: "Client"} & Pick<
   | "overlay"
   | "soundPlayer"
 > & {
-    flight: Maybe<
+    flight?: Maybe<
       {__typename?: "Flight"} & Pick<Flight, "id" | "name" | "date">
     >;
-    simulator: Maybe<
+    simulator?: Maybe<
       {__typename?: "Simulator"} & Pick<Simulator, "id" | "name">
     >;
-    station: Maybe<{__typename?: "Station"} & Pick<Station, "name">>;
-    currentCard: Maybe<
+    station?: Maybe<{__typename?: "Station"} & Pick<Station, "name">>;
+    currentCard?: Maybe<
       {__typename?: "Card"} & Pick<Card, "name" | "component">
     >;
   };
@@ -8689,7 +8692,7 @@ export type ClientQueryVariables = {
 };
 
 export type ClientQuery = {__typename?: "Query"} & {
-  clients: Maybe<Array<Maybe<{__typename?: "Client"} & ClientDataFragment>>>;
+  clients?: Maybe<Array<Maybe<{__typename?: "Client"} & ClientDataFragment>>>;
 };
 
 export type ClientUpdateSubscriptionVariables = {
@@ -8697,7 +8700,7 @@ export type ClientUpdateSubscriptionVariables = {
 };
 
 export type ClientUpdateSubscription = {__typename?: "Subscription"} & {
-  clientChanged: Maybe<
+  clientChanged?: Maybe<
     Array<Maybe<{__typename?: "Client"} & ClientDataFragment>>
   >;
 };
@@ -8744,13 +8747,13 @@ export type SimulatorDataFragment = {__typename?: "Simulator"} & Pick<
   | "flipped"
   | "soundEffects"
 > & {
-    assets: Maybe<
+    assets?: Maybe<
       {__typename?: "SimulatorAssets"} & Pick<
         SimulatorAssets,
         "mesh" | "texture" | "side" | "top" | "logo" | "bridge"
       >
     >;
-    stations: Maybe<
+    stations?: Maybe<
       Array<
         Maybe<
           {__typename?: "Station"} & Pick<
@@ -8764,7 +8767,7 @@ export type SimulatorDataFragment = {__typename?: "Simulator"} & Pick<
             | "messageGroups"
             | "widgets"
           > & {
-              cards: Maybe<
+              cards?: Maybe<
                 Array<
                   Maybe<
                     {__typename?: "Card"} & Pick<
@@ -8789,9 +8792,7 @@ export type SimulatorQueryVariables = {
 };
 
 export type SimulatorQuery = {__typename?: "Query"} & {
-  simulators: Maybe<
-    Array<Maybe<{__typename?: "Simulator"} & SimulatorDataFragment>>
-  >;
+  simulators: Array<{__typename?: "Simulator"} & SimulatorDataFragment>;
 };
 
 export type SimulatorUpdateSubscriptionVariables = {
@@ -8799,7 +8800,7 @@ export type SimulatorUpdateSubscriptionVariables = {
 };
 
 export type SimulatorUpdateSubscription = {__typename?: "Subscription"} & {
-  simulatorsUpdate: Maybe<
+  simulatorsUpdate?: Maybe<
     Array<Maybe<{__typename?: "Simulator"} & SimulatorDataFragment>>
   >;
 };
@@ -8809,7 +8810,7 @@ export type DockingShuttleConfigQueryVariables = {
 };
 
 export type DockingShuttleConfigQuery = {__typename?: "Query"} & {
-  docking: Maybe<
+  docking?: Maybe<
     Array<
       Maybe<
         {__typename?: "DockingPort"} & Pick<
@@ -8828,7 +8829,7 @@ export type DockingShuttleConfigQuery = {__typename?: "Query"} & {
       >
     >
   >;
-  assetFolders: Maybe<
+  assetFolders?: Maybe<
     Array<
       Maybe<
         {__typename?: "AssetFolder"} & Pick<AssetFolder, "id" | "name"> & {
@@ -8843,6 +8844,16 @@ export type DockingShuttleConfigQuery = {__typename?: "Query"} & {
     >
   >;
 };
+
+export type RemoteAssetLoadMutationVariables = {
+  folderPath: Scalars["String"];
+  files: Array<RemoteAsset>;
+};
+
+export type RemoteAssetLoadMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "downloadRemoteAssets"
+>;
 
 export type CountermeasureModuleFragment = {
   __typename?: "CountermeasureModule";
@@ -8886,7 +8897,7 @@ export type CountermeasuresSubscriptionVariables = {
 };
 
 export type CountermeasuresSubscription = {__typename?: "Subscription"} & {
-  countermeasuresUpdate: Maybe<
+  countermeasuresUpdate?: Maybe<
     {__typename?: "Countermeasures"} & Pick<
       Countermeasures,
       "id" | "name" | "displayName"
@@ -8901,28 +8912,28 @@ export type CountermeasuresSubscription = {__typename?: "Subscription"} & {
           {__typename?: "Countermeasure"} & CountermeasureFragment
         >;
         slots: {__typename?: "CountermeasureSlot"} & {
-          slot1: Maybe<
+          slot1?: Maybe<
             {__typename?: "Countermeasure"} & CountermeasureFragment
           >;
-          slot2: Maybe<
+          slot2?: Maybe<
             {__typename?: "Countermeasure"} & CountermeasureFragment
           >;
-          slot3: Maybe<
+          slot3?: Maybe<
             {__typename?: "Countermeasure"} & CountermeasureFragment
           >;
-          slot4: Maybe<
+          slot4?: Maybe<
             {__typename?: "Countermeasure"} & CountermeasureFragment
           >;
-          slot5: Maybe<
+          slot5?: Maybe<
             {__typename?: "Countermeasure"} & CountermeasureFragment
           >;
-          slot6: Maybe<
+          slot6?: Maybe<
             {__typename?: "Countermeasure"} & CountermeasureFragment
           >;
-          slot7: Maybe<
+          slot7?: Maybe<
             {__typename?: "Countermeasure"} & CountermeasureFragment
           >;
-          slot8: Maybe<
+          slot8?: Maybe<
             {__typename?: "Countermeasure"} & CountermeasureFragment
           >;
         };
@@ -8935,7 +8946,7 @@ export type CountermeasuresCoreSubscriptionVariables = {
 };
 
 export type CountermeasuresCoreSubscription = {__typename?: "Subscription"} & {
-  countermeasuresUpdate: Maybe<
+  countermeasuresUpdate?: Maybe<
     {__typename?: "Countermeasures"} & Pick<
       Countermeasures,
       "id" | "name" | "displayName"
@@ -9026,7 +9037,7 @@ export type CountermeasuresAddModuleMutationVariables = {
 };
 
 export type CountermeasuresAddModuleMutation = {__typename?: "Mutation"} & {
-  countermeasuresAddModule: Maybe<
+  countermeasuresAddModule?: Maybe<
     {__typename?: "Countermeasure"} & Pick<Countermeasure, "id"> & {
         modules: Array<
           {__typename?: "CountermeasureModule"} & Pick<
@@ -9086,7 +9097,7 @@ export type CountermeasureCreateCountermeasureMutationVariables = {
 export type CountermeasureCreateCountermeasureMutation = {
   __typename?: "Mutation";
 } & {
-  countermeasuresCreateCountermeasure: Maybe<
+  countermeasuresCreateCountermeasure?: Maybe<
     {__typename?: "Countermeasure"} & Pick<Countermeasure, "id">
   >;
 };
@@ -9147,6 +9158,27 @@ export type CountermeasuresSetFdNoteMutation = {__typename?: "Mutation"} & Pick<
   "countermeasuresSetFDNote"
 >;
 
+export type NewLayerMutationVariables = {
+  mapId: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type NewLayerMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addTacticalMapLayer"
+>;
+
+export type AddTacticalItemMutationVariables = {
+  mapId: Scalars["ID"];
+  layerId: Scalars["ID"];
+  item: TacticalItemInput;
+};
+
+export type AddTacticalItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addTacticalMapItem"
+>;
+
 export type AssetFoldersSubscriptionVariables = {};
 
 export type AssetFoldersSubscription = {__typename?: "Subscription"} & {
@@ -9176,6 +9208,35 @@ export type AssetsAddFolderMutation = {__typename?: "Mutation"} & Pick<
   "addAssetFolder"
 >;
 
+export type DuplicateTacticalMutationVariables = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type DuplicateTacticalMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "duplicateTacticalMap"
+>;
+
+export type FreezeTacticalMapMutationVariables = {
+  id: Scalars["ID"];
+  freeze: Scalars["Boolean"];
+};
+
+export type FreezeTacticalMapMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "freezeTacticalMap"
+>;
+
+export type NewTacticalMutationVariables = {
+  name: Scalars["String"];
+};
+
+export type NewTacticalMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "newTacticalMap"
+>;
+
 export type AssetsRemoveObjectMutationVariables = {
   fullPath: Scalars["String"];
 };
@@ -9194,6 +9255,235 @@ export type AssetsRemoveFolderMutation = {__typename?: "Mutation"} & Pick<
   "removeAssetFolder"
 >;
 
+export type RemoveLayerMutationVariables = {
+  mapId: Scalars["ID"];
+  layerId: Scalars["ID"];
+};
+
+export type RemoveLayerMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeTacticalMapLayer"
+>;
+
+export type RemoveMapMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type RemoveMapMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeTacticalMap"
+>;
+
+export type RemoveTacticalItemMutationVariables = {
+  mapId: Scalars["ID"];
+  layerId: Scalars["ID"];
+  itemId: Scalars["ID"];
+};
+
+export type RemoveTacticalItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeTacticalMapItem"
+>;
+
+export type RemoveTacticalPathMutationVariables = {
+  mapId: Scalars["ID"];
+  layerId: Scalars["ID"];
+  pathId: Scalars["ID"];
+};
+
+export type RemoveTacticalPathMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeTacticalMapPath"
+>;
+
+export type ReorderTacticalLayerMutationVariables = {
+  mapId: Scalars["ID"];
+  layer: Scalars["ID"];
+  order: Scalars["Int"];
+};
+
+export type ReorderTacticalLayerMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "reorderTacticalMapLayer"
+>;
+
+export type TacticalMapUpdateSubscriptionVariables = {
+  id: Scalars["ID"];
+};
+
+export type TacticalMapUpdateSubscription = {__typename?: "Subscription"} & {
+  tacticalMapUpdate?: Maybe<
+    {__typename?: "TacticalMap"} & Pick<
+      TacticalMap,
+      "id" | "name" | "interval" | "frozen" | "template"
+    > & {
+        flight?: Maybe<{__typename?: "Flight"} & Pick<Flight, "id">>;
+        layers?: Maybe<
+          Array<
+            Maybe<
+              {__typename?: "TacticalLayer"} & Pick<
+                TacticalLayer,
+                | "id"
+                | "name"
+                | "type"
+                | "image"
+                | "color"
+                | "labels"
+                | "gridCols"
+                | "gridRows"
+                | "advance"
+                | "asset"
+                | "autoplay"
+                | "loop"
+                | "playbackSpeed"
+                | "opacity"
+              > & {
+                  items?: Maybe<
+                    Array<
+                      Maybe<
+                        {__typename?: "TacticalItem"} & Pick<
+                          TacticalItem,
+                          | "id"
+                          | "layerId"
+                          | "font"
+                          | "label"
+                          | "fontSize"
+                          | "fontColor"
+                          | "icon"
+                          | "size"
+                          | "speed"
+                          | "rotation"
+                          | "opacity"
+                          | "flash"
+                          | "ijkl"
+                          | "wasd"
+                          | "thrusters"
+                          | "rotationMatch"
+                        > & {
+                            velocity?: Maybe<
+                              {__typename?: "Coordinates"} & Pick<
+                                Coordinates,
+                                "x" | "y"
+                              >
+                            >;
+                            location?: Maybe<
+                              {__typename?: "Coordinates"} & Pick<
+                                Coordinates,
+                                "x" | "y"
+                              >
+                            >;
+                            destination?: Maybe<
+                              {__typename?: "Coordinates"} & Pick<
+                                Coordinates,
+                                "x" | "y"
+                              >
+                            >;
+                            thrusterControls?: Maybe<
+                              {__typename?: "ThrusterControls"} & Pick<
+                                ThrusterControls,
+                                | "rotation"
+                                | "reversed"
+                                | "matchRotation"
+                                | "up"
+                                | "down"
+                                | "left"
+                                | "right"
+                              >
+                            >;
+                          }
+                      >
+                    >
+                  >;
+                  paths?: Maybe<
+                    Array<
+                      Maybe<
+                        {__typename?: "TacticalPath"} & Pick<
+                          TacticalPath,
+                          "id" | "layerId" | "color" | "width" | "arrow"
+                        > & {
+                            start?: Maybe<
+                              {__typename?: "Coordinates"} & Pick<
+                                Coordinates,
+                                "x" | "y"
+                              >
+                            >;
+                            end?: Maybe<
+                              {__typename?: "Coordinates"} & Pick<
+                                Coordinates,
+                                "x" | "y"
+                              >
+                            >;
+                            c1?: Maybe<
+                              {__typename?: "Coordinates"} & Pick<
+                                Coordinates,
+                                "x" | "y"
+                              >
+                            >;
+                            c2?: Maybe<
+                              {__typename?: "Coordinates"} & Pick<
+                                Coordinates,
+                                "x" | "y"
+                              >
+                            >;
+                          }
+                      >
+                    >
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+};
+
+export type TacticalMapListSubscriptionVariables = {};
+
+export type TacticalMapListSubscription = {__typename?: "Subscription"} & {
+  tacticalMapsUpdate?: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "TacticalMap"} & Pick<
+          TacticalMap,
+          "id" | "name" | "template"
+        > & {flight?: Maybe<{__typename?: "Flight"} & Pick<Flight, "id">>}
+      >
+    >
+  >;
+};
+
+export type UpdateLayerMutationVariables = {
+  mapId: Scalars["ID"];
+  layer: TacticalLayerInput;
+};
+
+export type UpdateLayerMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "updateTacticalMapLayer"
+>;
+
+export type UpdateTacticalItemMutationVariables = {
+  mapId: Scalars["ID"];
+  layerId: Scalars["ID"];
+  item: TacticalItemInput;
+};
+
+export type UpdateTacticalItemMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "updateTacticalMapItem"
+>;
+
+export type UpdateTacticalPathMutationVariables = {
+  mapId: Scalars["ID"];
+  layerId: Scalars["ID"];
+  path: TacticalPathInput;
+};
+
+export type UpdateTacticalPathMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "updateTacticalMapPath"
+>;
+
 export type TemplateFragmentFragment = {__typename: "Template"} & Pick<
   Template,
   "id"
@@ -9204,7 +9494,7 @@ export type TemplateQueryVariables = {
 };
 
 export type TemplateQuery = {__typename?: "Query"} & {
-  _template: Maybe<{__typename?: "Template"} & TemplateFragmentFragment>;
+  _template?: Maybe<{__typename?: "Template"} & TemplateFragmentFragment>;
 };
 
 export type TemplateUpdateSubscriptionVariables = {
@@ -9212,13 +9502,13 @@ export type TemplateUpdateSubscriptionVariables = {
 };
 
 export type TemplateUpdateSubscription = {__typename?: "Subscription"} & {
-  _templateUpdate: Maybe<{__typename: "Template"} & TemplateFragmentFragment>;
+  _templateUpdate?: Maybe<{__typename: "Template"} & TemplateFragmentFragment>;
 };
 
 export type ClientChangedSubscriptionVariables = {};
 
 export type ClientChangedSubscription = {__typename?: "Subscription"} & {
-  clientChanged: Maybe<
+  clientChanged?: Maybe<
     Array<
       Maybe<
         {__typename?: "Client"} & Pick<
@@ -9232,9 +9522,9 @@ export type ClientChangedSubscription = {__typename?: "Subscription"} & {
           | "training"
           | "soundPlayer"
         > & {
-            flight: Maybe<
+            flight?: Maybe<
               {__typename?: "Flight"} & Pick<Flight, "id" | "name" | "date"> & {
-                  simulators: Maybe<
+                  simulators?: Maybe<
                     Array<
                       Maybe<
                         {__typename?: "Simulator"} & Pick<
@@ -9246,19 +9536,19 @@ export type ClientChangedSubscription = {__typename?: "Subscription"} & {
                   >;
                 }
             >;
-            simulator: Maybe<
+            simulator?: Maybe<
               {__typename?: "Simulator"} & Pick<
                 Simulator,
                 "id" | "name" | "alertlevel" | "layout" | "interfaces"
               > & {
-                  stations: Maybe<
+                  stations?: Maybe<
                     Array<
                       Maybe<{__typename?: "Station"} & Pick<Station, "name">>
                     >
                   >;
                 }
             >;
-            station: Maybe<{__typename?: "Station"} & Pick<Station, "name">>;
+            station?: Maybe<{__typename?: "Station"} & Pick<Station, "name">>;
           }
       >
     >
@@ -9277,21 +9567,21 @@ export type DisconnectClientMutation = {__typename?: "Mutation"} & Pick<
 export type FlightsSubSubscriptionVariables = {};
 
 export type FlightsSubSubscription = {__typename?: "Subscription"} & {
-  flightsUpdate: Maybe<
+  flightsUpdate?: Maybe<
     Array<
       Maybe<
         {__typename?: "Flight"} & Pick<
           Flight,
           "id" | "name" | "date" | "running"
         > & {
-            simulators: Maybe<
+            simulators?: Maybe<
               Array<
                 Maybe<
                   {__typename?: "Simulator"} & Pick<
                     Simulator,
                     "id" | "name"
                   > & {
-                      stations: Maybe<
+                      stations?: Maybe<
                         Array<
                           Maybe<
                             {__typename?: "Station"} & Pick<Station, "name">
@@ -9311,10 +9601,10 @@ export type FlightsSubSubscription = {__typename?: "Subscription"} & {
 export type ClientsInterfacesAndKeyboardsQueryVariables = {};
 
 export type ClientsInterfacesAndKeyboardsQuery = {__typename?: "Query"} & {
-  interfaces: Maybe<
+  interfaces?: Maybe<
     Array<Maybe<{__typename?: "Interface"} & Pick<Interface, "id" | "name">>>
   >;
-  keyboard: Maybe<
+  keyboard?: Maybe<
     Array<Maybe<{__typename?: "Keyboard"} & Pick<Keyboard, "id" | "name">>>
   >;
 };
@@ -9359,6 +9649,137 @@ export type SetSoundPlayerMutation = {__typename?: "Mutation"} & Pick<
   "clientSetSoundPlayer"
 >;
 
+export type ApplyClientSetMutationVariables = {
+  id: Scalars["ID"];
+  flightId: Scalars["ID"];
+  simulatorId: Scalars["ID"];
+  templateId: Scalars["ID"];
+  stationSetId: Scalars["ID"];
+};
+
+export type ApplyClientSetMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "applyClientSet"
+>;
+
+export type DeleteFlightMutationVariables = {
+  flightId: Scalars["ID"];
+};
+
+export type DeleteFlightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "deleteFlight"
+>;
+
+export type FlightQueryVariables = {};
+
+export type FlightQuery = {__typename?: "Query"} & {
+  flights: Array<
+    {__typename?: "Flight"} & Pick<
+      Flight,
+      "id" | "name" | "flightType" | "transmitted" | "running"
+    >
+  >;
+};
+
+export type PauseFlightMutationVariables = {
+  flightId: Scalars["ID"];
+};
+
+export type PauseFlightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "pauseFlight"
+>;
+
+export type ResetFlightMutationVariables = {
+  flightId: Scalars["ID"];
+};
+
+export type ResetFlightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "resetFlight"
+>;
+
+export type LobbyResumeFlightMutationVariables = {
+  flightId: Scalars["ID"];
+};
+
+export type LobbyResumeFlightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "resumeFlight"
+>;
+
+export type SetsPickerQueryVariables = {
+  flightId?: Maybe<Scalars["ID"]>;
+};
+
+export type SetsPickerQuery = {__typename?: "Query"} & {
+  flights: Array<
+    {__typename?: "Flight"} & Pick<Flight, "id" | "name"> & {
+        simulators?: Maybe<
+          Array<
+            Maybe<
+              {__typename?: "Simulator"} & Pick<
+                Simulator,
+                "id" | "templateId" | "name"
+              > & {
+                  stationSet?: Maybe<
+                    {__typename?: "StationSet"} & Pick<
+                      StationSet,
+                      "id" | "name"
+                    >
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+  sets?: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "Set"} & Pick<Set, "id" | "name"> & {
+            clients?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "SetClient"} & Pick<
+                    SetClient,
+                    "id" | "station"
+                  > & {
+                      client?: Maybe<
+                        {__typename?: "Client"} & Pick<Client, "id">
+                      >;
+                      simulator?: Maybe<
+                        {__typename?: "Simulator"} & Pick<
+                          Simulator,
+                          "id" | "name"
+                        >
+                      >;
+                      stationSet?: Maybe<
+                        {__typename?: "StationSet"} & Pick<
+                          StationSet,
+                          "id" | "name"
+                        >
+                      >;
+                    }
+                >
+              >
+            >;
+          }
+      >
+    >
+  >;
+};
+
+export type TransmitFlightMutationVariables = {
+  flightId: Scalars["ID"];
+};
+
+export type TransmitFlightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "assignSpaceEdventuresFlightRecord"
+>;
+
 export type EntityCreateTemplateMutationVariables = {
   name: Scalars["String"];
 };
@@ -9367,6 +9788,71 @@ export type EntityCreateTemplateMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entitySetTemplate" | "entitySetIdentity" | "entitySetAppearance"
 > & {entityCreate: {__typename?: "Entity"} & Pick<Entity, "id">};
+
+export type FlightSetupQueryVariables = {};
+
+export type FlightSetupQuery = {__typename?: "Query"} & {
+  simulators: Array<
+    {__typename?: "Simulator"} & Pick<
+      Simulator,
+      "id" | "name" | "spaceEdventuresId"
+    > & {
+        stationSets?: Maybe<
+          Array<
+            Maybe<
+              {__typename?: "StationSet"} & Pick<StationSet, "id" | "name"> & {
+                  stations?: Maybe<
+                    Array<
+                      Maybe<{__typename?: "Station"} & Pick<Station, "name">>
+                    >
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+  missions: Array<
+    {__typename?: "Mission"} & Pick<Mission, "id" | "name" | "description">
+  >;
+};
+
+export type FlightTypesQueryVariables = {};
+
+export type FlightTypesQuery = {__typename?: "Query"} & {
+  thorium?: Maybe<
+    {__typename?: "Thorium"} & {
+      spaceEdventuresCenter?: Maybe<
+        {__typename?: "SpaceEdventuresCenter"} & Pick<
+          SpaceEdventuresCenter,
+          "id" | "name"
+        > & {
+            flightTypes?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "FlightType"} & Pick<
+                    FlightType,
+                    "id" | "name" | "classHours" | "flightHours"
+                  >
+                >
+              >
+            >;
+          }
+      >;
+    }
+  >;
+};
+
+export type StartFlightMutationVariables = {
+  name: Scalars["String"];
+  simulators: Array<SimulatorInput>;
+  flightType?: Maybe<Scalars["String"]>;
+};
+
+export type StartFlightMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "startFlight"
+>;
 
 export type MacroDuplicateMutationVariables = {
   id: Scalars["ID"];
@@ -9432,6 +9918,61 @@ export type TimelineDuplicateStepMutation = {__typename?: "Mutation"} & Pick<
   "duplicateTimelineStep"
 >;
 
+export type EditMissionMutationVariables = {
+  missionId: Scalars["ID"];
+  name?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
+  aux?: Maybe<Scalars["Boolean"]>;
+};
+
+export type EditMissionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "editMission"
+>;
+
+export type MissionSubscriptionSubscriptionVariables = {
+  missionId: Scalars["ID"];
+};
+
+export type MissionSubscriptionSubscription = {__typename?: "Subscription"} & {
+  missionsUpdate: Array<
+    {__typename?: "Mission"} & Pick<
+      Mission,
+      "id" | "name" | "description" | "aux"
+    > & {
+        timeline: Array<
+          {__typename?: "TimelineStep"} & Pick<
+            TimelineStep,
+            "id" | "name" | "description" | "order"
+          > & {
+              timelineItems: Array<
+                {__typename?: "TimelineItem"} & Pick<
+                  TimelineItem,
+                  | "id"
+                  | "name"
+                  | "type"
+                  | "event"
+                  | "args"
+                  | "delay"
+                  | "needsConfig"
+                  | "noCancelOnReset"
+                >
+              >;
+            }
+        >;
+      }
+  >;
+};
+
+export type RemoveMissionMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type RemoveMissionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeMission"
+>;
+
 export type TimelineRemoveItemMutationVariables = {
   missionId: Scalars["ID"];
   timelineStepId: Scalars["ID"];
@@ -9489,6 +10030,338 @@ export type TimelineUpdateStepMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "updateTimelineStep"
 >;
+
+export type RemoveSimulatorMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type RemoveSimulatorMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeSimulator"
+>;
+
+export type SimulatorsConfigSubscriptionVariables = {};
+
+export type SimulatorsConfigSubscription = {__typename?: "Subscription"} & {
+  simulatorsUpdate?: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "Simulator"} & Pick<
+          Simulator,
+          | "id"
+          | "name"
+          | "alertlevel"
+          | "layout"
+          | "caps"
+          | "exocomps"
+          | "panels"
+          | "missionConfigs"
+          | "commandLines"
+          | "triggers"
+          | "interfaces"
+          | "midiSets"
+          | "stepDamage"
+          | "verifyStep"
+          | "hasPrinter"
+          | "hasLegs"
+          | "bridgeOfficerMessaging"
+          | "spaceEdventuresId"
+          | "soundEffects"
+        > & {
+            requiredDamageSteps?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "DamageStep"} & Pick<
+                    DamageStep,
+                    "id" | "name"
+                  > & {
+                      args?: Maybe<
+                        {__typename?: "DamageStepArgs"} & Pick<
+                          DamageStepArgs,
+                          | "end"
+                          | "cleanup"
+                          | "name"
+                          | "orders"
+                          | "room"
+                          | "preamble"
+                          | "type"
+                          | "message"
+                          | "code"
+                          | "inventory"
+                          | "destination"
+                          | "equipment"
+                          | "query"
+                          | "reactivate"
+                        >
+                      >;
+                    }
+                >
+              >
+            >;
+            optionalDamageSteps?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "DamageStep"} & Pick<
+                    DamageStep,
+                    "id" | "name"
+                  > & {
+                      args?: Maybe<
+                        {__typename?: "DamageStepArgs"} & Pick<
+                          DamageStepArgs,
+                          | "end"
+                          | "cleanup"
+                          | "name"
+                          | "orders"
+                          | "room"
+                          | "preamble"
+                          | "type"
+                          | "message"
+                          | "code"
+                          | "inventory"
+                          | "destination"
+                          | "equipment"
+                          | "query"
+                          | "reactivate"
+                        >
+                      >;
+                    }
+                >
+              >
+            >;
+            damageTasks?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "DamageTask"} & Pick<
+                    DamageTask,
+                    "id" | "required"
+                  > & {
+                      taskTemplate?: Maybe<
+                        {__typename?: "TaskTemplate"} & Pick<
+                          TaskTemplate,
+                          "id" | "name" | "definition" | "reportTypes"
+                        >
+                      >;
+                      nextSteps?: Maybe<
+                        Array<
+                          Maybe<
+                            {__typename?: "TaskTemplate"} & Pick<
+                              TaskTemplate,
+                              "id" | "name" | "definition"
+                            >
+                          >
+                        >
+                      >;
+                    }
+                >
+              >
+            >;
+            assets?: Maybe<
+              {__typename?: "SimulatorAssets"} & Pick<
+                SimulatorAssets,
+                "mesh" | "texture" | "side" | "top" | "logo" | "bridge"
+              >
+            >;
+            systems?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "System"} & Pick<
+                    System,
+                    "id" | "type" | "name" | "displayName" | "upgradeName"
+                  > & {
+                      upgradeMacros?: Maybe<
+                        Array<
+                          Maybe<
+                            {__typename?: "TimelineItem"} & Pick<
+                              TimelineItem,
+                              "id" | "event" | "args" | "delay"
+                            >
+                          >
+                        >
+                      >;
+                      requiredDamageSteps?: Maybe<
+                        Array<
+                          Maybe<
+                            {__typename?: "DamageStep"} & Pick<
+                              DamageStep,
+                              "id" | "name"
+                            > & {
+                                args?: Maybe<
+                                  {__typename?: "DamageStepArgs"} & Pick<
+                                    DamageStepArgs,
+                                    | "end"
+                                    | "cleanup"
+                                    | "name"
+                                    | "orders"
+                                    | "room"
+                                    | "preamble"
+                                    | "type"
+                                    | "message"
+                                    | "code"
+                                    | "inventory"
+                                    | "destination"
+                                    | "equipment"
+                                    | "query"
+                                    | "reactivate"
+                                  >
+                                >;
+                              }
+                          >
+                        >
+                      >;
+                      optionalDamageSteps?: Maybe<
+                        Array<
+                          Maybe<
+                            {__typename?: "DamageStep"} & Pick<
+                              DamageStep,
+                              "id" | "name"
+                            > & {
+                                args?: Maybe<
+                                  {__typename?: "DamageStepArgs"} & Pick<
+                                    DamageStepArgs,
+                                    | "end"
+                                    | "cleanup"
+                                    | "name"
+                                    | "orders"
+                                    | "room"
+                                    | "preamble"
+                                    | "type"
+                                    | "message"
+                                    | "code"
+                                    | "inventory"
+                                    | "destination"
+                                    | "equipment"
+                                    | "query"
+                                    | "reactivate"
+                                  >
+                                >;
+                              }
+                          >
+                        >
+                      >;
+                      damageTasks?: Maybe<
+                        Array<
+                          Maybe<
+                            {__typename?: "DamageTask"} & Pick<
+                              DamageTask,
+                              "id" | "required"
+                            > & {
+                                taskTemplate?: Maybe<
+                                  {__typename?: "TaskTemplate"} & Pick<
+                                    TaskTemplate,
+                                    "id" | "name" | "definition" | "reportTypes"
+                                  >
+                                >;
+                                nextSteps?: Maybe<
+                                  Array<
+                                    Maybe<
+                                      {__typename?: "TaskTemplate"} & Pick<
+                                        TaskTemplate,
+                                        "id" | "name" | "definition"
+                                      >
+                                    >
+                                  >
+                                >;
+                              }
+                          >
+                        >
+                      >;
+                    }
+                >
+              >
+            >;
+            stationSets?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "StationSet"} & Pick<
+                    StationSet,
+                    "id" | "name" | "crewCount"
+                  > & {
+                      stations?: Maybe<
+                        Array<
+                          Maybe<
+                            {__typename?: "Station"} & Pick<
+                              Station,
+                              | "name"
+                              | "description"
+                              | "training"
+                              | "ambiance"
+                              | "login"
+                              | "executive"
+                              | "messageGroups"
+                              | "layout"
+                              | "widgets"
+                            > & {
+                                cards?: Maybe<
+                                  Array<
+                                    Maybe<
+                                      {__typename?: "Card"} & Pick<
+                                        Card,
+                                        "name" | "component"
+                                      >
+                                    >
+                                  >
+                                >;
+                              }
+                          >
+                        >
+                      >;
+                    }
+                >
+              >
+            >;
+          }
+      >
+    >
+  >;
+};
+
+export type StationSetConfigSubscriptionVariables = {};
+
+export type StationSetConfigSubscription = {__typename?: "Subscription"} & {
+  stationSetUpdate?: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "StationSet"} & Pick<
+          StationSet,
+          "id" | "name" | "crewCount"
+        > & {
+            simulator?: Maybe<
+              {__typename?: "Simulator"} & Pick<Simulator, "id">
+            >;
+            stations?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "Station"} & Pick<
+                    Station,
+                    | "name"
+                    | "description"
+                    | "training"
+                    | "ambiance"
+                    | "login"
+                    | "messageGroups"
+                    | "executive"
+                    | "widgets"
+                    | "layout"
+                  > & {
+                      cards?: Maybe<
+                        Array<
+                          Maybe<
+                            {__typename?: "Card"} & Pick<
+                              Card,
+                              "name" | "component"
+                            >
+                          >
+                        >
+                      >;
+                    }
+                >
+              >
+            >;
+          }
+      >
+    >
+  >;
+};
 
 export type EntityCreateMutationVariables = {
   flightId: Scalars["ID"];
@@ -9727,11 +10600,6 @@ const result: IntrospectionResultData = {
             name: "Room",
           },
         ],
-      },
-      {
-        kind: "INTERFACE",
-        name: "HeatInterface",
-        possibleTypes: [],
       },
     ],
   },
@@ -10267,6 +11135,55 @@ export type DockingShuttleConfigLazyQueryHookResult = ReturnType<
 export type DockingShuttleConfigQueryResult = ApolloReactCommon.QueryResult<
   DockingShuttleConfigQuery,
   DockingShuttleConfigQueryVariables
+>;
+export const RemoteAssetLoadDocument = gql`
+  mutation RemoteAssetLoad($folderPath: String!, $files: [RemoteAsset!]!) {
+    downloadRemoteAssets(folderPath: $folderPath, files: $files)
+  }
+`;
+export type RemoteAssetLoadMutationFn = ApolloReactCommon.MutationFunction<
+  RemoteAssetLoadMutation,
+  RemoteAssetLoadMutationVariables
+>;
+
+/**
+ * __useRemoteAssetLoadMutation__
+ *
+ * To run a mutation, you first call `useRemoteAssetLoadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoteAssetLoadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [remoteAssetLoadMutation, { data, loading, error }] = useRemoteAssetLoadMutation({
+ *   variables: {
+ *      folderPath: // value for 'folderPath'
+ *      files: // value for 'files'
+ *   },
+ * });
+ */
+export function useRemoteAssetLoadMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoteAssetLoadMutation,
+    RemoteAssetLoadMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoteAssetLoadMutation,
+    RemoteAssetLoadMutationVariables
+  >(RemoteAssetLoadDocument, baseOptions);
+}
+export type RemoteAssetLoadMutationHookResult = ReturnType<
+  typeof useRemoteAssetLoadMutation
+>;
+export type RemoteAssetLoadMutationResult = ApolloReactCommon.MutationResult<
+  RemoteAssetLoadMutation
+>;
+export type RemoteAssetLoadMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoteAssetLoadMutation,
+  RemoteAssetLoadMutationVariables
 >;
 export const CountermeasuresDocument = gql`
   subscription Countermeasures($simulatorId: ID!) {
@@ -11211,6 +12128,107 @@ export type CountermeasuresSetFdNoteMutationOptions = ApolloReactCommon.BaseMuta
   CountermeasuresSetFdNoteMutation,
   CountermeasuresSetFdNoteMutationVariables
 >;
+export const NewLayerDocument = gql`
+  mutation NewLayer($mapId: ID!, $name: String!) {
+    addTacticalMapLayer(mapId: $mapId, name: $name)
+  }
+`;
+export type NewLayerMutationFn = ApolloReactCommon.MutationFunction<
+  NewLayerMutation,
+  NewLayerMutationVariables
+>;
+
+/**
+ * __useNewLayerMutation__
+ *
+ * To run a mutation, you first call `useNewLayerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useNewLayerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [newLayerMutation, { data, loading, error }] = useNewLayerMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useNewLayerMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    NewLayerMutation,
+    NewLayerMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    NewLayerMutation,
+    NewLayerMutationVariables
+  >(NewLayerDocument, baseOptions);
+}
+export type NewLayerMutationHookResult = ReturnType<typeof useNewLayerMutation>;
+export type NewLayerMutationResult = ApolloReactCommon.MutationResult<
+  NewLayerMutation
+>;
+export type NewLayerMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  NewLayerMutation,
+  NewLayerMutationVariables
+>;
+export const AddTacticalItemDocument = gql`
+  mutation AddTacticalItem(
+    $mapId: ID!
+    $layerId: ID!
+    $item: TacticalItemInput!
+  ) {
+    addTacticalMapItem(mapId: $mapId, layerId: $layerId, item: $item)
+  }
+`;
+export type AddTacticalItemMutationFn = ApolloReactCommon.MutationFunction<
+  AddTacticalItemMutation,
+  AddTacticalItemMutationVariables
+>;
+
+/**
+ * __useAddTacticalItemMutation__
+ *
+ * To run a mutation, you first call `useAddTacticalItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTacticalItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTacticalItemMutation, { data, loading, error }] = useAddTacticalItemMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      layerId: // value for 'layerId'
+ *      item: // value for 'item'
+ *   },
+ * });
+ */
+export function useAddTacticalItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AddTacticalItemMutation,
+    AddTacticalItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AddTacticalItemMutation,
+    AddTacticalItemMutationVariables
+  >(AddTacticalItemDocument, baseOptions);
+}
+export type AddTacticalItemMutationHookResult = ReturnType<
+  typeof useAddTacticalItemMutation
+>;
+export type AddTacticalItemMutationResult = ApolloReactCommon.MutationResult<
+  AddTacticalItemMutation
+>;
+export type AddTacticalItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AddTacticalItemMutation,
+  AddTacticalItemMutationVariables
+>;
 export const AssetFoldersDocument = gql`
   subscription AssetFolders {
     assetFolderChange {
@@ -11314,6 +12332,152 @@ export type AssetsAddFolderMutationOptions = ApolloReactCommon.BaseMutationOptio
   AssetsAddFolderMutation,
   AssetsAddFolderMutationVariables
 >;
+export const DuplicateTacticalDocument = gql`
+  mutation DuplicateTactical($id: ID!, $name: String!) {
+    duplicateTacticalMap(id: $id, name: $name)
+  }
+`;
+export type DuplicateTacticalMutationFn = ApolloReactCommon.MutationFunction<
+  DuplicateTacticalMutation,
+  DuplicateTacticalMutationVariables
+>;
+
+/**
+ * __useDuplicateTacticalMutation__
+ *
+ * To run a mutation, you first call `useDuplicateTacticalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDuplicateTacticalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [duplicateTacticalMutation, { data, loading, error }] = useDuplicateTacticalMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDuplicateTacticalMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    DuplicateTacticalMutation,
+    DuplicateTacticalMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    DuplicateTacticalMutation,
+    DuplicateTacticalMutationVariables
+  >(DuplicateTacticalDocument, baseOptions);
+}
+export type DuplicateTacticalMutationHookResult = ReturnType<
+  typeof useDuplicateTacticalMutation
+>;
+export type DuplicateTacticalMutationResult = ApolloReactCommon.MutationResult<
+  DuplicateTacticalMutation
+>;
+export type DuplicateTacticalMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DuplicateTacticalMutation,
+  DuplicateTacticalMutationVariables
+>;
+export const FreezeTacticalMapDocument = gql`
+  mutation FreezeTacticalMap($id: ID!, $freeze: Boolean!) {
+    freezeTacticalMap(id: $id, freeze: $freeze)
+  }
+`;
+export type FreezeTacticalMapMutationFn = ApolloReactCommon.MutationFunction<
+  FreezeTacticalMapMutation,
+  FreezeTacticalMapMutationVariables
+>;
+
+/**
+ * __useFreezeTacticalMapMutation__
+ *
+ * To run a mutation, you first call `useFreezeTacticalMapMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFreezeTacticalMapMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [freezeTacticalMapMutation, { data, loading, error }] = useFreezeTacticalMapMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      freeze: // value for 'freeze'
+ *   },
+ * });
+ */
+export function useFreezeTacticalMapMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    FreezeTacticalMapMutation,
+    FreezeTacticalMapMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    FreezeTacticalMapMutation,
+    FreezeTacticalMapMutationVariables
+  >(FreezeTacticalMapDocument, baseOptions);
+}
+export type FreezeTacticalMapMutationHookResult = ReturnType<
+  typeof useFreezeTacticalMapMutation
+>;
+export type FreezeTacticalMapMutationResult = ApolloReactCommon.MutationResult<
+  FreezeTacticalMapMutation
+>;
+export type FreezeTacticalMapMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  FreezeTacticalMapMutation,
+  FreezeTacticalMapMutationVariables
+>;
+export const NewTacticalDocument = gql`
+  mutation NewTactical($name: String!) {
+    newTacticalMap(name: $name)
+  }
+`;
+export type NewTacticalMutationFn = ApolloReactCommon.MutationFunction<
+  NewTacticalMutation,
+  NewTacticalMutationVariables
+>;
+
+/**
+ * __useNewTacticalMutation__
+ *
+ * To run a mutation, you first call `useNewTacticalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useNewTacticalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [newTacticalMutation, { data, loading, error }] = useNewTacticalMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useNewTacticalMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    NewTacticalMutation,
+    NewTacticalMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    NewTacticalMutation,
+    NewTacticalMutationVariables
+  >(NewTacticalDocument, baseOptions);
+}
+export type NewTacticalMutationHookResult = ReturnType<
+  typeof useNewTacticalMutation
+>;
+export type NewTacticalMutationResult = ApolloReactCommon.MutationResult<
+  NewTacticalMutation
+>;
+export type NewTacticalMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  NewTacticalMutation,
+  NewTacticalMutationVariables
+>;
 export const AssetsRemoveObjectDocument = gql`
   mutation AssetsRemoveObject($fullPath: String!) {
     removeAssetObject(fullPath: $fullPath)
@@ -11409,6 +12573,581 @@ export type AssetsRemoveFolderMutationResult = ApolloReactCommon.MutationResult<
 export type AssetsRemoveFolderMutationOptions = ApolloReactCommon.BaseMutationOptions<
   AssetsRemoveFolderMutation,
   AssetsRemoveFolderMutationVariables
+>;
+export const RemoveLayerDocument = gql`
+  mutation RemoveLayer($mapId: ID!, $layerId: ID!) {
+    removeTacticalMapLayer(mapId: $mapId, layerId: $layerId)
+  }
+`;
+export type RemoveLayerMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveLayerMutation,
+  RemoveLayerMutationVariables
+>;
+
+/**
+ * __useRemoveLayerMutation__
+ *
+ * To run a mutation, you first call `useRemoveLayerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveLayerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeLayerMutation, { data, loading, error }] = useRemoveLayerMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      layerId: // value for 'layerId'
+ *   },
+ * });
+ */
+export function useRemoveLayerMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveLayerMutation,
+    RemoveLayerMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveLayerMutation,
+    RemoveLayerMutationVariables
+  >(RemoveLayerDocument, baseOptions);
+}
+export type RemoveLayerMutationHookResult = ReturnType<
+  typeof useRemoveLayerMutation
+>;
+export type RemoveLayerMutationResult = ApolloReactCommon.MutationResult<
+  RemoveLayerMutation
+>;
+export type RemoveLayerMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveLayerMutation,
+  RemoveLayerMutationVariables
+>;
+export const RemoveMapDocument = gql`
+  mutation RemoveMap($id: ID!) {
+    removeTacticalMap(id: $id)
+  }
+`;
+export type RemoveMapMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveMapMutation,
+  RemoveMapMutationVariables
+>;
+
+/**
+ * __useRemoveMapMutation__
+ *
+ * To run a mutation, you first call `useRemoveMapMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveMapMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeMapMutation, { data, loading, error }] = useRemoveMapMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveMapMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveMapMutation,
+    RemoveMapMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveMapMutation,
+    RemoveMapMutationVariables
+  >(RemoveMapDocument, baseOptions);
+}
+export type RemoveMapMutationHookResult = ReturnType<
+  typeof useRemoveMapMutation
+>;
+export type RemoveMapMutationResult = ApolloReactCommon.MutationResult<
+  RemoveMapMutation
+>;
+export type RemoveMapMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveMapMutation,
+  RemoveMapMutationVariables
+>;
+export const RemoveTacticalItemDocument = gql`
+  mutation RemoveTacticalItem($mapId: ID!, $layerId: ID!, $itemId: ID!) {
+    removeTacticalMapItem(mapId: $mapId, layerId: $layerId, itemId: $itemId)
+  }
+`;
+export type RemoveTacticalItemMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveTacticalItemMutation,
+  RemoveTacticalItemMutationVariables
+>;
+
+/**
+ * __useRemoveTacticalItemMutation__
+ *
+ * To run a mutation, you first call `useRemoveTacticalItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveTacticalItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeTacticalItemMutation, { data, loading, error }] = useRemoveTacticalItemMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      layerId: // value for 'layerId'
+ *      itemId: // value for 'itemId'
+ *   },
+ * });
+ */
+export function useRemoveTacticalItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveTacticalItemMutation,
+    RemoveTacticalItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveTacticalItemMutation,
+    RemoveTacticalItemMutationVariables
+  >(RemoveTacticalItemDocument, baseOptions);
+}
+export type RemoveTacticalItemMutationHookResult = ReturnType<
+  typeof useRemoveTacticalItemMutation
+>;
+export type RemoveTacticalItemMutationResult = ApolloReactCommon.MutationResult<
+  RemoveTacticalItemMutation
+>;
+export type RemoveTacticalItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveTacticalItemMutation,
+  RemoveTacticalItemMutationVariables
+>;
+export const RemoveTacticalPathDocument = gql`
+  mutation RemoveTacticalPath($mapId: ID!, $layerId: ID!, $pathId: ID!) {
+    removeTacticalMapPath(mapId: $mapId, layerId: $layerId, pathId: $pathId)
+  }
+`;
+export type RemoveTacticalPathMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveTacticalPathMutation,
+  RemoveTacticalPathMutationVariables
+>;
+
+/**
+ * __useRemoveTacticalPathMutation__
+ *
+ * To run a mutation, you first call `useRemoveTacticalPathMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveTacticalPathMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeTacticalPathMutation, { data, loading, error }] = useRemoveTacticalPathMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      layerId: // value for 'layerId'
+ *      pathId: // value for 'pathId'
+ *   },
+ * });
+ */
+export function useRemoveTacticalPathMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveTacticalPathMutation,
+    RemoveTacticalPathMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveTacticalPathMutation,
+    RemoveTacticalPathMutationVariables
+  >(RemoveTacticalPathDocument, baseOptions);
+}
+export type RemoveTacticalPathMutationHookResult = ReturnType<
+  typeof useRemoveTacticalPathMutation
+>;
+export type RemoveTacticalPathMutationResult = ApolloReactCommon.MutationResult<
+  RemoveTacticalPathMutation
+>;
+export type RemoveTacticalPathMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveTacticalPathMutation,
+  RemoveTacticalPathMutationVariables
+>;
+export const ReorderTacticalLayerDocument = gql`
+  mutation ReorderTacticalLayer($mapId: ID!, $layer: ID!, $order: Int!) {
+    reorderTacticalMapLayer(mapId: $mapId, layer: $layer, order: $order)
+  }
+`;
+export type ReorderTacticalLayerMutationFn = ApolloReactCommon.MutationFunction<
+  ReorderTacticalLayerMutation,
+  ReorderTacticalLayerMutationVariables
+>;
+
+/**
+ * __useReorderTacticalLayerMutation__
+ *
+ * To run a mutation, you first call `useReorderTacticalLayerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReorderTacticalLayerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reorderTacticalLayerMutation, { data, loading, error }] = useReorderTacticalLayerMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      layer: // value for 'layer'
+ *      order: // value for 'order'
+ *   },
+ * });
+ */
+export function useReorderTacticalLayerMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ReorderTacticalLayerMutation,
+    ReorderTacticalLayerMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ReorderTacticalLayerMutation,
+    ReorderTacticalLayerMutationVariables
+  >(ReorderTacticalLayerDocument, baseOptions);
+}
+export type ReorderTacticalLayerMutationHookResult = ReturnType<
+  typeof useReorderTacticalLayerMutation
+>;
+export type ReorderTacticalLayerMutationResult = ApolloReactCommon.MutationResult<
+  ReorderTacticalLayerMutation
+>;
+export type ReorderTacticalLayerMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ReorderTacticalLayerMutation,
+  ReorderTacticalLayerMutationVariables
+>;
+export const TacticalMapUpdateDocument = gql`
+  subscription TacticalMapUpdate($id: ID!) {
+    tacticalMapUpdate(id: $id) {
+      id
+      name
+      flight {
+        id
+      }
+      interval
+      layers {
+        id
+        name
+        type
+        items {
+          id
+          layerId
+          font
+          label
+          fontSize
+          fontColor
+          icon
+          size
+          speed
+          velocity {
+            x
+            y
+          }
+          location {
+            x
+            y
+          }
+          destination {
+            x
+            y
+          }
+          rotation
+          opacity
+          flash
+          ijkl
+          wasd
+          thrusters
+          rotationMatch
+          thrusterControls {
+            rotation
+            reversed
+            matchRotation
+            up
+            down
+            left
+            right
+          }
+        }
+        paths {
+          id
+          layerId
+          start {
+            x
+            y
+          }
+          end {
+            x
+            y
+          }
+          c1 {
+            x
+            y
+          }
+          c2 {
+            x
+            y
+          }
+          color
+          width
+          arrow
+        }
+        image
+        color
+        labels
+        gridCols
+        gridRows
+        advance
+        asset
+        autoplay
+        loop
+        playbackSpeed
+        opacity
+      }
+      frozen
+      template
+    }
+  }
+`;
+
+/**
+ * __useTacticalMapUpdateSubscription__
+ *
+ * To run a query within a React component, call `useTacticalMapUpdateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTacticalMapUpdateSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTacticalMapUpdateSubscription({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useTacticalMapUpdateSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    TacticalMapUpdateSubscription,
+    TacticalMapUpdateSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    TacticalMapUpdateSubscription,
+    TacticalMapUpdateSubscriptionVariables
+  >(TacticalMapUpdateDocument, baseOptions);
+}
+export type TacticalMapUpdateSubscriptionHookResult = ReturnType<
+  typeof useTacticalMapUpdateSubscription
+>;
+export type TacticalMapUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  TacticalMapUpdateSubscription
+>;
+export const TacticalMapListDocument = gql`
+  subscription TacticalMapList {
+    tacticalMapsUpdate {
+      id
+      name
+      flight {
+        id
+      }
+      template
+    }
+  }
+`;
+
+/**
+ * __useTacticalMapListSubscription__
+ *
+ * To run a query within a React component, call `useTacticalMapListSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTacticalMapListSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTacticalMapListSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTacticalMapListSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    TacticalMapListSubscription,
+    TacticalMapListSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    TacticalMapListSubscription,
+    TacticalMapListSubscriptionVariables
+  >(TacticalMapListDocument, baseOptions);
+}
+export type TacticalMapListSubscriptionHookResult = ReturnType<
+  typeof useTacticalMapListSubscription
+>;
+export type TacticalMapListSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  TacticalMapListSubscription
+>;
+export const UpdateLayerDocument = gql`
+  mutation UpdateLayer($mapId: ID!, $layer: TacticalLayerInput!) {
+    updateTacticalMapLayer(mapId: $mapId, layer: $layer)
+  }
+`;
+export type UpdateLayerMutationFn = ApolloReactCommon.MutationFunction<
+  UpdateLayerMutation,
+  UpdateLayerMutationVariables
+>;
+
+/**
+ * __useUpdateLayerMutation__
+ *
+ * To run a mutation, you first call `useUpdateLayerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLayerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLayerMutation, { data, loading, error }] = useUpdateLayerMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      layer: // value for 'layer'
+ *   },
+ * });
+ */
+export function useUpdateLayerMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UpdateLayerMutation,
+    UpdateLayerMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    UpdateLayerMutation,
+    UpdateLayerMutationVariables
+  >(UpdateLayerDocument, baseOptions);
+}
+export type UpdateLayerMutationHookResult = ReturnType<
+  typeof useUpdateLayerMutation
+>;
+export type UpdateLayerMutationResult = ApolloReactCommon.MutationResult<
+  UpdateLayerMutation
+>;
+export type UpdateLayerMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateLayerMutation,
+  UpdateLayerMutationVariables
+>;
+export const UpdateTacticalItemDocument = gql`
+  mutation UpdateTacticalItem(
+    $mapId: ID!
+    $layerId: ID!
+    $item: TacticalItemInput!
+  ) {
+    updateTacticalMapItem(mapId: $mapId, layerId: $layerId, item: $item)
+  }
+`;
+export type UpdateTacticalItemMutationFn = ApolloReactCommon.MutationFunction<
+  UpdateTacticalItemMutation,
+  UpdateTacticalItemMutationVariables
+>;
+
+/**
+ * __useUpdateTacticalItemMutation__
+ *
+ * To run a mutation, you first call `useUpdateTacticalItemMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTacticalItemMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTacticalItemMutation, { data, loading, error }] = useUpdateTacticalItemMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      layerId: // value for 'layerId'
+ *      item: // value for 'item'
+ *   },
+ * });
+ */
+export function useUpdateTacticalItemMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UpdateTacticalItemMutation,
+    UpdateTacticalItemMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    UpdateTacticalItemMutation,
+    UpdateTacticalItemMutationVariables
+  >(UpdateTacticalItemDocument, baseOptions);
+}
+export type UpdateTacticalItemMutationHookResult = ReturnType<
+  typeof useUpdateTacticalItemMutation
+>;
+export type UpdateTacticalItemMutationResult = ApolloReactCommon.MutationResult<
+  UpdateTacticalItemMutation
+>;
+export type UpdateTacticalItemMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateTacticalItemMutation,
+  UpdateTacticalItemMutationVariables
+>;
+export const UpdateTacticalPathDocument = gql`
+  mutation UpdateTacticalPath(
+    $mapId: ID!
+    $layerId: ID!
+    $path: TacticalPathInput!
+  ) {
+    updateTacticalMapPath(mapId: $mapId, layerId: $layerId, path: $path)
+  }
+`;
+export type UpdateTacticalPathMutationFn = ApolloReactCommon.MutationFunction<
+  UpdateTacticalPathMutation,
+  UpdateTacticalPathMutationVariables
+>;
+
+/**
+ * __useUpdateTacticalPathMutation__
+ *
+ * To run a mutation, you first call `useUpdateTacticalPathMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTacticalPathMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTacticalPathMutation, { data, loading, error }] = useUpdateTacticalPathMutation({
+ *   variables: {
+ *      mapId: // value for 'mapId'
+ *      layerId: // value for 'layerId'
+ *      path: // value for 'path'
+ *   },
+ * });
+ */
+export function useUpdateTacticalPathMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UpdateTacticalPathMutation,
+    UpdateTacticalPathMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    UpdateTacticalPathMutation,
+    UpdateTacticalPathMutationVariables
+  >(UpdateTacticalPathDocument, baseOptions);
+}
+export type UpdateTacticalPathMutationHookResult = ReturnType<
+  typeof useUpdateTacticalPathMutation
+>;
+export type UpdateTacticalPathMutationResult = ApolloReactCommon.MutationResult<
+  UpdateTacticalPathMutation
+>;
+export type UpdateTacticalPathMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateTacticalPathMutation,
+  UpdateTacticalPathMutationVariables
 >;
 export const TemplateDocument = gql`
   query Template($simulatorId: ID!) {
@@ -11931,6 +13670,448 @@ export type SetSoundPlayerMutationOptions = ApolloReactCommon.BaseMutationOption
   SetSoundPlayerMutation,
   SetSoundPlayerMutationVariables
 >;
+export const ApplyClientSetDocument = gql`
+  mutation ApplyClientSet(
+    $id: ID!
+    $flightId: ID!
+    $simulatorId: ID!
+    $templateId: ID!
+    $stationSetId: ID!
+  ) {
+    applyClientSet(
+      id: $id
+      flightId: $flightId
+      simulatorId: $simulatorId
+      templateId: $templateId
+      stationSetId: $stationSetId
+    )
+  }
+`;
+export type ApplyClientSetMutationFn = ApolloReactCommon.MutationFunction<
+  ApplyClientSetMutation,
+  ApplyClientSetMutationVariables
+>;
+
+/**
+ * __useApplyClientSetMutation__
+ *
+ * To run a mutation, you first call `useApplyClientSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useApplyClientSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [applyClientSetMutation, { data, loading, error }] = useApplyClientSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      flightId: // value for 'flightId'
+ *      simulatorId: // value for 'simulatorId'
+ *      templateId: // value for 'templateId'
+ *      stationSetId: // value for 'stationSetId'
+ *   },
+ * });
+ */
+export function useApplyClientSetMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ApplyClientSetMutation,
+    ApplyClientSetMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ApplyClientSetMutation,
+    ApplyClientSetMutationVariables
+  >(ApplyClientSetDocument, baseOptions);
+}
+export type ApplyClientSetMutationHookResult = ReturnType<
+  typeof useApplyClientSetMutation
+>;
+export type ApplyClientSetMutationResult = ApolloReactCommon.MutationResult<
+  ApplyClientSetMutation
+>;
+export type ApplyClientSetMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ApplyClientSetMutation,
+  ApplyClientSetMutationVariables
+>;
+export const DeleteFlightDocument = gql`
+  mutation DeleteFlight($flightId: ID!) {
+    deleteFlight(flightId: $flightId)
+  }
+`;
+export type DeleteFlightMutationFn = ApolloReactCommon.MutationFunction<
+  DeleteFlightMutation,
+  DeleteFlightMutationVariables
+>;
+
+/**
+ * __useDeleteFlightMutation__
+ *
+ * To run a mutation, you first call `useDeleteFlightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFlightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFlightMutation, { data, loading, error }] = useDeleteFlightMutation({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *   },
+ * });
+ */
+export function useDeleteFlightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    DeleteFlightMutation,
+    DeleteFlightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    DeleteFlightMutation,
+    DeleteFlightMutationVariables
+  >(DeleteFlightDocument, baseOptions);
+}
+export type DeleteFlightMutationHookResult = ReturnType<
+  typeof useDeleteFlightMutation
+>;
+export type DeleteFlightMutationResult = ApolloReactCommon.MutationResult<
+  DeleteFlightMutation
+>;
+export type DeleteFlightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DeleteFlightMutation,
+  DeleteFlightMutationVariables
+>;
+export const FlightDocument = gql`
+  query Flight {
+    flights {
+      id
+      name
+      flightType
+      transmitted
+      running
+    }
+  }
+`;
+
+/**
+ * __useFlightQuery__
+ *
+ * To run a query within a React component, call `useFlightQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFlightQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFlightQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFlightQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    FlightQuery,
+    FlightQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<FlightQuery, FlightQueryVariables>(
+    FlightDocument,
+    baseOptions,
+  );
+}
+export function useFlightLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    FlightQuery,
+    FlightQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<FlightQuery, FlightQueryVariables>(
+    FlightDocument,
+    baseOptions,
+  );
+}
+export type FlightQueryHookResult = ReturnType<typeof useFlightQuery>;
+export type FlightLazyQueryHookResult = ReturnType<typeof useFlightLazyQuery>;
+export type FlightQueryResult = ApolloReactCommon.QueryResult<
+  FlightQuery,
+  FlightQueryVariables
+>;
+export const PauseFlightDocument = gql`
+  mutation PauseFlight($flightId: ID!) {
+    pauseFlight(flightId: $flightId)
+  }
+`;
+export type PauseFlightMutationFn = ApolloReactCommon.MutationFunction<
+  PauseFlightMutation,
+  PauseFlightMutationVariables
+>;
+
+/**
+ * __usePauseFlightMutation__
+ *
+ * To run a mutation, you first call `usePauseFlightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePauseFlightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [pauseFlightMutation, { data, loading, error }] = usePauseFlightMutation({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *   },
+ * });
+ */
+export function usePauseFlightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    PauseFlightMutation,
+    PauseFlightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    PauseFlightMutation,
+    PauseFlightMutationVariables
+  >(PauseFlightDocument, baseOptions);
+}
+export type PauseFlightMutationHookResult = ReturnType<
+  typeof usePauseFlightMutation
+>;
+export type PauseFlightMutationResult = ApolloReactCommon.MutationResult<
+  PauseFlightMutation
+>;
+export type PauseFlightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  PauseFlightMutation,
+  PauseFlightMutationVariables
+>;
+export const ResetFlightDocument = gql`
+  mutation ResetFlight($flightId: ID!) {
+    resetFlight(flightId: $flightId, full: true)
+  }
+`;
+export type ResetFlightMutationFn = ApolloReactCommon.MutationFunction<
+  ResetFlightMutation,
+  ResetFlightMutationVariables
+>;
+
+/**
+ * __useResetFlightMutation__
+ *
+ * To run a mutation, you first call `useResetFlightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResetFlightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resetFlightMutation, { data, loading, error }] = useResetFlightMutation({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *   },
+ * });
+ */
+export function useResetFlightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ResetFlightMutation,
+    ResetFlightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ResetFlightMutation,
+    ResetFlightMutationVariables
+  >(ResetFlightDocument, baseOptions);
+}
+export type ResetFlightMutationHookResult = ReturnType<
+  typeof useResetFlightMutation
+>;
+export type ResetFlightMutationResult = ApolloReactCommon.MutationResult<
+  ResetFlightMutation
+>;
+export type ResetFlightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ResetFlightMutation,
+  ResetFlightMutationVariables
+>;
+export const LobbyResumeFlightDocument = gql`
+  mutation LobbyResumeFlight($flightId: ID!) {
+    resumeFlight(flightId: $flightId)
+  }
+`;
+export type LobbyResumeFlightMutationFn = ApolloReactCommon.MutationFunction<
+  LobbyResumeFlightMutation,
+  LobbyResumeFlightMutationVariables
+>;
+
+/**
+ * __useLobbyResumeFlightMutation__
+ *
+ * To run a mutation, you first call `useLobbyResumeFlightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLobbyResumeFlightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [lobbyResumeFlightMutation, { data, loading, error }] = useLobbyResumeFlightMutation({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *   },
+ * });
+ */
+export function useLobbyResumeFlightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    LobbyResumeFlightMutation,
+    LobbyResumeFlightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    LobbyResumeFlightMutation,
+    LobbyResumeFlightMutationVariables
+  >(LobbyResumeFlightDocument, baseOptions);
+}
+export type LobbyResumeFlightMutationHookResult = ReturnType<
+  typeof useLobbyResumeFlightMutation
+>;
+export type LobbyResumeFlightMutationResult = ApolloReactCommon.MutationResult<
+  LobbyResumeFlightMutation
+>;
+export type LobbyResumeFlightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  LobbyResumeFlightMutation,
+  LobbyResumeFlightMutationVariables
+>;
+export const SetsPickerDocument = gql`
+  query SetsPicker($flightId: ID) {
+    flights(id: $flightId) {
+      id
+      name
+      simulators {
+        id
+        templateId
+        name
+        stationSet {
+          id
+          name
+        }
+      }
+    }
+    sets {
+      id
+      name
+      clients {
+        id
+        client {
+          id
+        }
+        simulator {
+          id
+          name
+        }
+        stationSet {
+          id
+          name
+        }
+        station
+      }
+    }
+  }
+`;
+
+/**
+ * __useSetsPickerQuery__
+ *
+ * To run a query within a React component, call `useSetsPickerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSetsPickerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSetsPickerQuery({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *   },
+ * });
+ */
+export function useSetsPickerQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    SetsPickerQuery,
+    SetsPickerQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<SetsPickerQuery, SetsPickerQueryVariables>(
+    SetsPickerDocument,
+    baseOptions,
+  );
+}
+export function useSetsPickerLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    SetsPickerQuery,
+    SetsPickerQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    SetsPickerQuery,
+    SetsPickerQueryVariables
+  >(SetsPickerDocument, baseOptions);
+}
+export type SetsPickerQueryHookResult = ReturnType<typeof useSetsPickerQuery>;
+export type SetsPickerLazyQueryHookResult = ReturnType<
+  typeof useSetsPickerLazyQuery
+>;
+export type SetsPickerQueryResult = ApolloReactCommon.QueryResult<
+  SetsPickerQuery,
+  SetsPickerQueryVariables
+>;
+export const TransmitFlightDocument = gql`
+  mutation TransmitFlight($flightId: ID!) {
+    assignSpaceEdventuresFlightRecord(flightId: $flightId)
+  }
+`;
+export type TransmitFlightMutationFn = ApolloReactCommon.MutationFunction<
+  TransmitFlightMutation,
+  TransmitFlightMutationVariables
+>;
+
+/**
+ * __useTransmitFlightMutation__
+ *
+ * To run a mutation, you first call `useTransmitFlightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTransmitFlightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [transmitFlightMutation, { data, loading, error }] = useTransmitFlightMutation({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *   },
+ * });
+ */
+export function useTransmitFlightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    TransmitFlightMutation,
+    TransmitFlightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    TransmitFlightMutation,
+    TransmitFlightMutationVariables
+  >(TransmitFlightDocument, baseOptions);
+}
+export type TransmitFlightMutationHookResult = ReturnType<
+  typeof useTransmitFlightMutation
+>;
+export type TransmitFlightMutationResult = ApolloReactCommon.MutationResult<
+  TransmitFlightMutation
+>;
+export type TransmitFlightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  TransmitFlightMutation,
+  TransmitFlightMutationVariables
+>;
 export const EntityCreateTemplateDocument = gql`
   mutation EntityCreateTemplate($name: String!) {
     entityCreate(flightId: "template", template: true) {
@@ -11983,6 +14164,189 @@ export type EntityCreateTemplateMutationResult = ApolloReactCommon.MutationResul
 export type EntityCreateTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityCreateTemplateMutation,
   EntityCreateTemplateMutationVariables
+>;
+export const FlightSetupDocument = gql`
+  query FlightSetup {
+    simulators(template: true) {
+      id
+      name
+      spaceEdventuresId
+      stationSets {
+        id
+        name
+        stations {
+          name
+        }
+      }
+    }
+    missions(aux: false) {
+      id
+      name
+      description
+    }
+  }
+`;
+
+/**
+ * __useFlightSetupQuery__
+ *
+ * To run a query within a React component, call `useFlightSetupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFlightSetupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFlightSetupQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFlightSetupQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    FlightSetupQuery,
+    FlightSetupQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<FlightSetupQuery, FlightSetupQueryVariables>(
+    FlightSetupDocument,
+    baseOptions,
+  );
+}
+export function useFlightSetupLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    FlightSetupQuery,
+    FlightSetupQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    FlightSetupQuery,
+    FlightSetupQueryVariables
+  >(FlightSetupDocument, baseOptions);
+}
+export type FlightSetupQueryHookResult = ReturnType<typeof useFlightSetupQuery>;
+export type FlightSetupLazyQueryHookResult = ReturnType<
+  typeof useFlightSetupLazyQuery
+>;
+export type FlightSetupQueryResult = ApolloReactCommon.QueryResult<
+  FlightSetupQuery,
+  FlightSetupQueryVariables
+>;
+export const FlightTypesDocument = gql`
+  query FlightTypes {
+    thorium {
+      spaceEdventuresCenter {
+        id
+        name
+        flightTypes {
+          id
+          name
+          classHours
+          flightHours
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useFlightTypesQuery__
+ *
+ * To run a query within a React component, call `useFlightTypesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFlightTypesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFlightTypesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFlightTypesQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    FlightTypesQuery,
+    FlightTypesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<FlightTypesQuery, FlightTypesQueryVariables>(
+    FlightTypesDocument,
+    baseOptions,
+  );
+}
+export function useFlightTypesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    FlightTypesQuery,
+    FlightTypesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    FlightTypesQuery,
+    FlightTypesQueryVariables
+  >(FlightTypesDocument, baseOptions);
+}
+export type FlightTypesQueryHookResult = ReturnType<typeof useFlightTypesQuery>;
+export type FlightTypesLazyQueryHookResult = ReturnType<
+  typeof useFlightTypesLazyQuery
+>;
+export type FlightTypesQueryResult = ApolloReactCommon.QueryResult<
+  FlightTypesQuery,
+  FlightTypesQueryVariables
+>;
+export const StartFlightDocument = gql`
+  mutation StartFlight(
+    $name: String!
+    $simulators: [SimulatorInput!]!
+    $flightType: String
+  ) {
+    startFlight(name: $name, simulators: $simulators, flightType: $flightType)
+  }
+`;
+export type StartFlightMutationFn = ApolloReactCommon.MutationFunction<
+  StartFlightMutation,
+  StartFlightMutationVariables
+>;
+
+/**
+ * __useStartFlightMutation__
+ *
+ * To run a mutation, you first call `useStartFlightMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartFlightMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startFlightMutation, { data, loading, error }] = useStartFlightMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      simulators: // value for 'simulators'
+ *      flightType: // value for 'flightType'
+ *   },
+ * });
+ */
+export function useStartFlightMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    StartFlightMutation,
+    StartFlightMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    StartFlightMutation,
+    StartFlightMutationVariables
+  >(StartFlightDocument, baseOptions);
+}
+export type StartFlightMutationHookResult = ReturnType<
+  typeof useStartFlightMutation
+>;
+export type StartFlightMutationResult = ApolloReactCommon.MutationResult<
+  StartFlightMutation
+>;
+export type StartFlightMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  StartFlightMutation,
+  StartFlightMutationVariables
 >;
 export const MacroDuplicateDocument = gql`
   mutation MacroDuplicate($id: ID!) {
@@ -12313,6 +14677,175 @@ export type TimelineDuplicateStepMutationOptions = ApolloReactCommon.BaseMutatio
   TimelineDuplicateStepMutation,
   TimelineDuplicateStepMutationVariables
 >;
+export const EditMissionDocument = gql`
+  mutation EditMission(
+    $missionId: ID!
+    $name: String
+    $description: String
+    $aux: Boolean
+  ) {
+    editMission(
+      missionId: $missionId
+      name: $name
+      description: $description
+      aux: $aux
+    )
+  }
+`;
+export type EditMissionMutationFn = ApolloReactCommon.MutationFunction<
+  EditMissionMutation,
+  EditMissionMutationVariables
+>;
+
+/**
+ * __useEditMissionMutation__
+ *
+ * To run a mutation, you first call `useEditMissionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditMissionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editMissionMutation, { data, loading, error }] = useEditMissionMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *      aux: // value for 'aux'
+ *   },
+ * });
+ */
+export function useEditMissionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EditMissionMutation,
+    EditMissionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EditMissionMutation,
+    EditMissionMutationVariables
+  >(EditMissionDocument, baseOptions);
+}
+export type EditMissionMutationHookResult = ReturnType<
+  typeof useEditMissionMutation
+>;
+export type EditMissionMutationResult = ApolloReactCommon.MutationResult<
+  EditMissionMutation
+>;
+export type EditMissionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EditMissionMutation,
+  EditMissionMutationVariables
+>;
+export const MissionSubscriptionDocument = gql`
+  subscription MissionSubscription($missionId: ID!) {
+    missionsUpdate(missionId: $missionId) {
+      id
+      name
+      description
+      aux
+      timeline {
+        id
+        name
+        description
+        order
+        timelineItems {
+          id
+          name
+          type
+          event
+          args
+          delay
+          needsConfig
+          noCancelOnReset
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useMissionSubscriptionSubscription__
+ *
+ * To run a query within a React component, call `useMissionSubscriptionSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useMissionSubscriptionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMissionSubscriptionSubscription({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *   },
+ * });
+ */
+export function useMissionSubscriptionSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    MissionSubscriptionSubscription,
+    MissionSubscriptionSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    MissionSubscriptionSubscription,
+    MissionSubscriptionSubscriptionVariables
+  >(MissionSubscriptionDocument, baseOptions);
+}
+export type MissionSubscriptionSubscriptionHookResult = ReturnType<
+  typeof useMissionSubscriptionSubscription
+>;
+export type MissionSubscriptionSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  MissionSubscriptionSubscription
+>;
+export const RemoveMissionDocument = gql`
+  mutation RemoveMission($id: ID!) {
+    removeMission(missionId: $id)
+  }
+`;
+export type RemoveMissionMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveMissionMutation,
+  RemoveMissionMutationVariables
+>;
+
+/**
+ * __useRemoveMissionMutation__
+ *
+ * To run a mutation, you first call `useRemoveMissionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveMissionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeMissionMutation, { data, loading, error }] = useRemoveMissionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveMissionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveMissionMutation,
+    RemoveMissionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveMissionMutation,
+    RemoveMissionMutationVariables
+  >(RemoveMissionDocument, baseOptions);
+}
+export type RemoveMissionMutationHookResult = ReturnType<
+  typeof useRemoveMissionMutation
+>;
+export type RemoveMissionMutationResult = ApolloReactCommon.MutationResult<
+  RemoveMissionMutation
+>;
+export type RemoveMissionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveMissionMutation,
+  RemoveMissionMutationVariables
+>;
 export const TimelineRemoveItemDocument = gql`
   mutation TimelineRemoveItem(
     $missionId: ID!
@@ -12605,6 +15138,323 @@ export type TimelineUpdateStepMutationResult = ApolloReactCommon.MutationResult<
 export type TimelineUpdateStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
   TimelineUpdateStepMutation,
   TimelineUpdateStepMutationVariables
+>;
+export const RemoveSimulatorDocument = gql`
+  mutation RemoveSimulator($id: ID!) {
+    removeSimulator(simulatorId: $id)
+  }
+`;
+export type RemoveSimulatorMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveSimulatorMutation,
+  RemoveSimulatorMutationVariables
+>;
+
+/**
+ * __useRemoveSimulatorMutation__
+ *
+ * To run a mutation, you first call `useRemoveSimulatorMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveSimulatorMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeSimulatorMutation, { data, loading, error }] = useRemoveSimulatorMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveSimulatorMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveSimulatorMutation,
+    RemoveSimulatorMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveSimulatorMutation,
+    RemoveSimulatorMutationVariables
+  >(RemoveSimulatorDocument, baseOptions);
+}
+export type RemoveSimulatorMutationHookResult = ReturnType<
+  typeof useRemoveSimulatorMutation
+>;
+export type RemoveSimulatorMutationResult = ApolloReactCommon.MutationResult<
+  RemoveSimulatorMutation
+>;
+export type RemoveSimulatorMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveSimulatorMutation,
+  RemoveSimulatorMutationVariables
+>;
+export const SimulatorsConfigDocument = gql`
+  subscription SimulatorsConfig {
+    simulatorsUpdate(template: true) {
+      id
+      name
+      alertlevel
+      layout
+      caps
+      exocomps
+      panels
+      missionConfigs
+      commandLines
+      triggers
+      interfaces
+      midiSets
+      stepDamage
+      verifyStep
+      hasPrinter
+      hasLegs
+      bridgeOfficerMessaging
+      spaceEdventuresId
+      requiredDamageSteps {
+        id
+        name
+        args {
+          end
+          cleanup
+          name
+          orders
+          room
+          preamble
+          type
+          message
+          code
+          inventory
+          destination
+          equipment
+          query
+          reactivate
+        }
+      }
+      optionalDamageSteps {
+        id
+        name
+        args {
+          end
+          cleanup
+          name
+          orders
+          room
+          preamble
+          type
+          message
+          code
+          inventory
+          destination
+          equipment
+          query
+          reactivate
+        }
+      }
+      damageTasks {
+        id
+        taskTemplate {
+          id
+          name
+          definition
+          reportTypes
+        }
+        required
+        nextSteps {
+          id
+          name
+          definition
+        }
+      }
+      assets {
+        mesh
+        texture
+        side
+        top
+        logo
+        bridge
+      }
+      soundEffects
+      systems {
+        id
+        type
+        name
+        displayName
+        upgradeName
+        upgradeMacros {
+          id
+          event
+          args
+          delay
+        }
+        requiredDamageSteps {
+          id
+          name
+          args {
+            end
+            cleanup
+            name
+            orders
+            room
+            preamble
+            type
+            message
+            code
+            inventory
+            destination
+            equipment
+            query
+            reactivate
+          }
+        }
+        optionalDamageSteps {
+          id
+          name
+          args {
+            end
+            cleanup
+            name
+            orders
+            room
+            preamble
+            type
+            message
+            code
+            inventory
+            destination
+            equipment
+            query
+            reactivate
+          }
+        }
+        damageTasks {
+          id
+          taskTemplate {
+            id
+            name
+            definition
+            reportTypes
+          }
+          required
+          nextSteps {
+            id
+            name
+            definition
+          }
+        }
+      }
+      stationSets {
+        id
+        name
+        crewCount
+        stations {
+          name
+          description
+          training
+          ambiance
+          login
+          executive
+          messageGroups
+          layout
+          widgets
+          cards {
+            name
+            component
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useSimulatorsConfigSubscription__
+ *
+ * To run a query within a React component, call `useSimulatorsConfigSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useSimulatorsConfigSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSimulatorsConfigSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSimulatorsConfigSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    SimulatorsConfigSubscription,
+    SimulatorsConfigSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    SimulatorsConfigSubscription,
+    SimulatorsConfigSubscriptionVariables
+  >(SimulatorsConfigDocument, baseOptions);
+}
+export type SimulatorsConfigSubscriptionHookResult = ReturnType<
+  typeof useSimulatorsConfigSubscription
+>;
+export type SimulatorsConfigSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  SimulatorsConfigSubscription
+>;
+export const StationSetConfigDocument = gql`
+  subscription StationSetConfig {
+    stationSetUpdate {
+      id
+      name
+      crewCount
+      simulator {
+        id
+      }
+      stations {
+        name
+        description
+        training
+        ambiance
+        login
+        messageGroups
+        executive
+        widgets
+        layout
+        cards {
+          name
+          component
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useStationSetConfigSubscription__
+ *
+ * To run a query within a React component, call `useStationSetConfigSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useStationSetConfigSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStationSetConfigSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStationSetConfigSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    StationSetConfigSubscription,
+    StationSetConfigSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    StationSetConfigSubscription,
+    StationSetConfigSubscriptionVariables
+  >(StationSetConfigDocument, baseOptions);
+}
+export type StationSetConfigSubscriptionHookResult = ReturnType<
+  typeof useStationSetConfigSubscription
+>;
+export type StationSetConfigSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  StationSetConfigSubscription
 >;
 export const EntityCreateDocument = gql`
   mutation EntityCreate(

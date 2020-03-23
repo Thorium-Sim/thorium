@@ -1,0 +1,3 @@
+mutation TransmitFlight($flightId: ID!) {
+  assignSpaceEdventuresFlightRecord(flightId: $flightId)
+}

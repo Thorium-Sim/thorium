@@ -18,7 +18,7 @@ import {
   Interface,
   useSetSoundPlayerMutation,
 } from "generated/graphql";
-import {History} from "history";
+import {useHistory, useParams} from "react-router-dom";
 
 const Keyboards = ({keyboards = []}: {keyboards: Keyboard[]}) => {
   if (keyboards.length === 0) {
@@ -249,86 +249,80 @@ const ClientRow = ({
   );
 };
 
-// const trainingSteps = [
-//   {
-//     selector: ".client-table",
-//     content: (
-//       <span>
-//         This is the client table. All currently connected clients appear here.
-//         Clients that are either unassigned or assigned to this flight appear at
-//         the top. Clients assigned to another flight appear at the bottom. Be
-//         careful not to change clients assigned to other flights. That might
-//         cause problems for whoever is using that client.
-//       </span>
-//     ),
-//   },
-//   {
-//     selector: ".remove-client",
-//     content: (
-//       <span>
-//         Click this button to remove a client. The client will always come back
-//         if it reconnects. To reconnect a client, just reopen the client or
-//         navigate the web browser to the client page.
-//       </span>
-//     ),
-//   },
-//   {
-//     selector: ".flight-picker",
-//     content: (
-//       <span>
-//         Choose the flight you want to assign this client to with this dropdown.
-//         If the flight only has one simulator, the simulator dropdown will
-//         automatically be filled.
-//       </span>
-//     ),
-//   },
-//   {
-//     selector: ".sim-picker",
-//     content: (
-//       <span>
-//         Choose the simulator you want to assign this client to with this
-//         dropdown.
-//       </span>
-//     ),
-//   },
-//   {
-//     selector: ".station-picker",
-//     content: (
-//       <span>
-//         Choose the station you want to assign this client to with this dropdown.
-//         It is populated with the stations in the current station set of the
-//         selected simulator. It also has some special stations:{" "}
-//         <ul>
-//           <li>
-//             <strong>Viewscreen</strong> creates a viewscreen for this simulator.
-//           </li>
-//           <li>
-//             <strong>Sound</strong> turns the station into a dedicated sound
-//             player.
-//           </li>
-//           <li>
-//             <strong>Blackout</strong> blacks out the station - useful for when
-//             you don't want a client to be used during a flight.
-//           </li>
-//           <li>
-//             <strong>Keyboards</strong> make the station's keyboard activate
-//             keyboard macros.
-//           </li>
-//         </ul>
-//       </span>
-//     ),
-//   },
-// ];
-
-const Clients = ({
-  match: {
-    params: {flightId},
+export const trainingSteps = [
+  {
+    selector: ".client-table",
+    content: (
+      <span>
+        This is the client table. All currently connected clients appear here.
+        Clients that are either unassigned or assigned to this flight appear at
+        the top. Clients assigned to another flight appear at the bottom. Be
+        careful not to change clients assigned to other flights. That might
+        cause problems for whoever is using that client.
+      </span>
+    ),
   },
-  history,
-}: {
-  match: {params: {flightId: string}};
-  history: History;
-}) => {
+  {
+    selector: ".remove-client",
+    content: (
+      <span>
+        Click this button to remove a client. The client will always come back
+        if it reconnects. To reconnect a client, just reopen the client or
+        navigate the web browser to the client page.
+      </span>
+    ),
+  },
+  {
+    selector: ".flight-picker",
+    content: (
+      <span>
+        Choose the flight you want to assign this client to with this dropdown.
+        If the flight only has one simulator, the simulator dropdown will
+        automatically be filled.
+      </span>
+    ),
+  },
+  {
+    selector: ".sim-picker",
+    content: (
+      <span>
+        Choose the simulator you want to assign this client to with this
+        dropdown.
+      </span>
+    ),
+  },
+  {
+    selector: ".station-picker",
+    content: (
+      <span>
+        Choose the station you want to assign this client to with this dropdown.
+        It is populated with the stations in the current station set of the
+        selected simulator. It also has some special stations:{" "}
+        <ul>
+          <li>
+            <strong>Viewscreen</strong> creates a viewscreen for this simulator.
+          </li>
+          <li>
+            <strong>Sound</strong> turns the station into a dedicated sound
+            player.
+          </li>
+          <li>
+            <strong>Blackout</strong> blacks out the station - useful for when
+            you don't want a client to be used during a flight.
+          </li>
+          <li>
+            <strong>Keyboards</strong> make the station's keyboard activate
+            keyboard macros.
+          </li>
+        </ul>
+      </span>
+    ),
+  },
+];
+
+const Clients = () => {
+  const history = useHistory();
+  const {flightId} = useParams();
   const {data, loading} = useClientChangedSubscription();
   const {
     data: flightsData,
@@ -345,7 +339,14 @@ const Clients = ({
     keyboard: Keyboard[];
     interfaces: Interface[];
   };
-  if (loading || flightsLoading || !data || !flightsData || keyboardLoading)
+  if (
+    !flightId ||
+    loading ||
+    flightsLoading ||
+    !data ||
+    !flightsData ||
+    keyboardLoading
+  )
     return null;
   if (flights.map(f => f?.id).indexOf(flightId) === -1) {
     history.push("/");

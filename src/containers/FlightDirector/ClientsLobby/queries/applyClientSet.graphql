@@ -1,0 +1,15 @@
+mutation ApplyClientSet(
+  $id: ID!
+  $flightId: ID!
+  $simulatorId: ID!
+  $templateId: ID!
+  $stationSetId: ID!
+) {
+  applyClientSet(
+    id: $id
+    flightId: $flightId
+    simulatorId: $simulatorId
+    templateId: $templateId
+    stationSetId: $stationSetId
+  )
+}

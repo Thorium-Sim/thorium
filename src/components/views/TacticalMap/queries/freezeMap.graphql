@@ -1,0 +1,3 @@
+mutation FreezeTacticalMap($id: ID!, $freeze: Boolean!) {
+  freezeTacticalMap(id: $id, freeze: $freeze)
+}

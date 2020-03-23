@@ -99,7 +99,7 @@ const Midi = () => {
     variables: {id: selectedMidiSet},
   });
   const [renameMidiSet] = useMutation(RENAME_MIDI_SET);
-  if (loading || !data) return "Loading...";
+  if (loading || !data) return <p>Loading...</p>;
   const {midiSets} = data;
 
   const midiSet = midiSets.find(r => r.id === selectedMidiSet);

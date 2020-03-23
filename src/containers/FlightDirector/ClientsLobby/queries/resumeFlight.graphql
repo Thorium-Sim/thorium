@@ -1,0 +1,3 @@
+mutation LobbyResumeFlight($flightId: ID!) {
+  resumeFlight(flightId: $flightId)
+}

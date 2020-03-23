@@ -1,12 +1,10 @@
 import React from "react";
 import Core from "../../components/core";
+import {useParams, useHistory} from "react-router-dom";
 
-const FlightDirector = ({
-  history,
-  match: {
-    params: {flightId},
-  },
-}) => {
+const FlightDirector = () => {
+  const {flightId} = useParams();
+  const {history} = useHistory();
   return <Core flightId={flightId} history={history} />;
 };
 

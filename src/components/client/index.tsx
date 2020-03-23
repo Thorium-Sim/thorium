@@ -18,8 +18,8 @@ const ClientPingSub = gql`
     clientPing(clientId: $clientId)
   }
 `;
-const ClientData = props => {
-  const [clientId, setClientId] = React.useState(null);
+const ClientData = () => {
+  const [clientId, setClientId] = React.useState<string | null>(null);
 
   const [connect] = useRegisterClientMutation();
   const [disconnect] = useDisconnectClientMutation();
@@ -29,7 +29,7 @@ const ClientData = props => {
 
   React.useEffect(() => {
     if (process.env.NODE_ENV === "production") {
-      window.oncontextmenu = function(event) {
+      window.oncontextmenu = function(event: MouseEvent) {
         event.preventDefault();
         event.stopPropagation();
         return false;
@@ -59,7 +59,7 @@ const ClientData = props => {
     }
   }, [client, clientId, connect, disconnect, ping]);
 
-  const updateClientId = async clientId => {
+  const updateClientId = async (clientId: string) => {
     const oldClientId = await getClientId();
     setClientId(clientId);
     setId(clientId);
@@ -71,10 +71,13 @@ const ClientData = props => {
   };
 
   const {loading, data} = useClientQuery({
-    variables: {clientId},
+    variables: {clientId: clientId || ""},
     skip: !clientId,
   });
-  const {data: subData} = useClientUpdateSubscription({variables: {clientId}});
+  const {data: subData} = useClientUpdateSubscription({
+    variables: {clientId: clientId || ""},
+    skip: !clientId,
+  });
 
   const clients = subData?.clientChanged || data?.clients;
 
@@ -90,7 +93,6 @@ const ClientData = props => {
   ) {
     return (
       <Credits
-        {...props}
         clientId={clientId}
         {...clients?.[0]}
         client={clients?.[0]}
@@ -101,7 +103,6 @@ const ClientData = props => {
 
   return (
     <SimulatorData
-      {...props}
       {...clients[0]}
       clientId={clientId}
       updateClientId={updateClientId}

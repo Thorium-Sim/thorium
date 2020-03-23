@@ -1,6 +1,8 @@
-interface RandomWords {
-  (count: number): string[];
-}
+declare module "random-words" {
+  interface RandomWords {
+    (count: number): string[];
+  }
 
-declare const randomWords: RandomWords;
-export = randomWords;
+  declare const randomWords: RandomWords;
+  export = randomWords;
+}

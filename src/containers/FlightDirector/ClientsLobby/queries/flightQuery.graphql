@@ -1,0 +1,9 @@
+query Flight {
+  flights {
+    id
+    name
+    flightType
+    transmitted
+    running
+  }
+}
