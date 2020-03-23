@@ -4,8 +4,8 @@ import SetsPicker, {trainingSteps as setsTraining} from "./SetsPicker";
 import {Link, useParams} from "react-router-dom";
 import {Container, Button, ButtonGroup} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import {useHistory} from "react-router-dom";
-import {TrainingContext} from "containers/config";
+import {useNavigate} from "react-router-dom";
+import {TrainingContext} from "containers/TrainingContextProvider";
 import {
   useFlightQuery,
   FlightDocument,
@@ -69,7 +69,7 @@ const trainingSteps = [
 
 const ClientLobby: React.FC = () => {
   const {flightId = ""} = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const {training, stopTraining} = React.useContext(TrainingContext);
 
@@ -120,7 +120,7 @@ It will permenantly erase all simulators running in this flight.`,
           return;
       }
       deleteFlightMutation().then(() => {
-        history.push(`/`);
+        navigate(`/`);
       });
     }
   };
@@ -189,7 +189,7 @@ This can only be done once per flight and should only be done when the flight is
           )}
         </ButtonGroup>
         <h5 className="text-right">
-          <Link to={`/config/flight/${flightId}/core`} className="move-on">
+          <Link to={`/flight/${flightId}/core`} className="move-on">
             Go to Core
           </Link>
         </h5>

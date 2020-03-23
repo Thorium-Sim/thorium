@@ -2,7 +2,7 @@ import React from "react";
 import {Container, Button} from "helpers/reactstrap";
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";
-import {useParams, useHistory} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import {
   Mission,
   useRemoveMissionMutation,
@@ -23,7 +23,7 @@ const MissionsConfig: React.FC = () => {
   const [printingMission, setPrintingMission] = React.useState<Mission | null>(
     null,
   );
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [removeMissionMutation] = useRemoveMissionMutation();
   const [editMissionMutation] = useEditMissionMutation();
@@ -36,7 +36,7 @@ const MissionsConfig: React.FC = () => {
     if (mission?.id) {
       if (window.confirm("Are you sure you want to delete that mission?")) {
         removeMissionMutation({variables: {id: mission.id}});
-        history.push("/config/mission");
+        navigate("/config/mission");
       }
     }
   };

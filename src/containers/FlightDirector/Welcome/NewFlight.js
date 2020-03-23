@@ -11,24 +11,20 @@ import {
 import {Link} from "react-router-dom";
 
 const QueryResult = ({loading, data}) =>
-  !loading &&
-  data.thorium &&
-  data.thorium.spaceEdventuresCenter &&
-  data.thorium.spaceEdventuresCenter.flightTypes &&
-  data.thorium.spaceEdventuresCenter.flightTypes.length > 0 ? (
+  !loading && data?.thorium?.spaceEdventuresCenter?.flightTypes?.length > 0 ? (
     <Dropdown>
       <DropdownToggle caret size="lg" block color="success">
         New Flight
       </DropdownToggle>
       <DropdownMenu>
-        <DropdownItem tag={Link} to="/config/flight">
+        <DropdownItem tag={Link} to="/flight">
           Unspecified Flight Type
         </DropdownItem>
         <DropdownItem divider />
         {data.thorium.spaceEdventuresCenter.flightTypes.map(f => (
           <DropdownItem
             tag={Link}
-            to={`/config/flight?flightType=${f.id}`}
+            to={`/flight?flightType=${f.id}`}
             key={f.id}
             value={f.id}
           >
@@ -38,7 +34,7 @@ const QueryResult = ({loading, data}) =>
       </DropdownMenu>
     </Dropdown>
   ) : (
-    <Button tag={Link} to="/config/flight" color="success" block size="lg">
+    <Button tag={Link} to="/flight" color="success" block size="lg">
       New Flight
     </Button>
   );

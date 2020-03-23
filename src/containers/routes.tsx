@@ -1,13 +1,17 @@
 import React, {Component} from "react";
 import {createBrowserHistory} from "history";
-import {Router, Route, Switch, Link} from "react-router-dom";
-import {FlightDirector} from "./FlightDirector";
+import {Router, Route, Routes, Link, useLocation} from "react-router-dom";
 import gql from "graphql-tag.macro";
 import {useApolloClient} from "@apollo/client";
+import "./config.scss";
+import TrainingContextProvider from "./TrainingContextProvider";
+import SideNav from "./FlightDirector/sideNav";
+import {FlightDirector, ClientsLobby, FlightConfig} from "./FlightDirector";
 
 const Client = React.lazy(() => import("../components/client"));
 const Config = React.lazy(() => import("./config"));
 const Releases = React.lazy(() => import("./FlightDirector/releases"));
+const Welcome = React.lazy(() => import("./FlightDirector/Welcome/Welcome"));
 
 const history = createBrowserHistory();
 
@@ -33,6 +37,26 @@ declare global {
   }
 }
 
+const FlightDirectorContainer: React.FC = () => {
+  return (
+    <TrainingContextProvider>
+      <div className="config-container">
+        <SideNav />
+
+        <Routes>
+          <Route path="/" element={<Welcome />} />
+          <Route path="flight/:flightId/core" element={<FlightDirector />} />
+          <Route path="flight" element={<FlightConfig />} />
+          <Route path="flight/:flightId" element={<ClientsLobby />} />
+          <Route path="config/*" element={<Config />} />
+          <Route path="releases" element={<Releases />} />
+          <Route path="*" element={<NoMatch />} />
+        </Routes>
+      </div>
+    </TrainingContextProvider>
+  );
+};
+
 const App: React.FC = () => {
   const client = useApolloClient();
   React.useEffect(() => {
@@ -55,20 +79,11 @@ const App: React.FC = () => {
 
   return (
     <Router history={history}>
-      <Switch>
-        <Route exact path="/" children={<Config />} />
-        <Route path="/releases" exact children={<Releases />} />
+      <Routes>
+        <Route path="client" element={<Client />} />
 
-        <Route path="/client" children={<Client />} />
-        <Route
-          path="/config/flight/:flightId/core"
-          children={<FlightDirector />}
-        />
-        <Route path="/config/:comp" children={<Config />} />
-        <Route path="/config/flight" children={<Config />} />
-
-        <Route path="*" children={<NoMatch />} />
-      </Switch>
+        <Route path="/*" element={<FlightDirectorContainer />} />
+      </Routes>
     </Router>
   );
 };

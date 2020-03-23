@@ -42,7 +42,7 @@ import IssueTracker from "../../components/admin/IssueTracker";
 import "./sideNav.scss";
 import {IconType} from "react-icons/lib/cjs";
 import {useApolloClient} from "@apollo/client";
-import {TrainingContext} from "containers/config";
+import {TrainingContext} from "containers/TrainingContextProvider";
 
 interface NavLinkI {
   link?: string;

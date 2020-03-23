@@ -10,7 +10,7 @@ import QuoteOfTheDay from "./QuoteOfTheDay";
 import TrackerPopup from "./TrackerPopup";
 import NewFlight from "./NewFlight";
 import {useQuery} from "@apollo/client";
-import {TrainingContext} from "containers/config";
+import {TrainingContext} from "containers/TrainingContextProvider";
 
 export const FLIGHTS_QUERY = gql`
   query Flights {
@@ -117,7 +117,7 @@ const Welcome = () => {
             <CardBody>
               {flights.map(f => (
                 <Link
-                  to={`/config/flight/${f.id}`}
+                  to={`/flight/${f.id}`}
                   key={f.id}
                   className="flight-picker"
                 >

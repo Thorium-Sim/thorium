@@ -18,7 +18,7 @@ import {
   Interface,
   useSetSoundPlayerMutation,
 } from "generated/graphql";
-import {useHistory, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const Keyboards = ({keyboards = []}: {keyboards: Keyboard[]}) => {
   if (keyboards.length === 0) {
@@ -321,7 +321,7 @@ export const trainingSteps = [
 ];
 
 const Clients = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const {flightId} = useParams();
   const {data, loading} = useClientChangedSubscription();
   const {
@@ -349,7 +349,7 @@ const Clients = () => {
   )
     return null;
   if (flights.map(f => f?.id).indexOf(flightId) === -1) {
-    history.push("/");
+    navigate("/");
     return null;
   }
   return (

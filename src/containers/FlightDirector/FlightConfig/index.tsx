@@ -1,5 +1,5 @@
 import React, {Fragment} from "react";
-import {Link, useHistory, useLocation} from "react-router-dom";
+import {Link, useNavigate, useLocation} from "react-router-dom";
 import {
   Col,
   Row,
@@ -19,7 +19,7 @@ import {
   useFlightTypesQuery,
 } from "generated/graphql";
 import "./flightConfig.scss";
-import {TrainingContext} from "containers/config";
+import {TrainingContext} from "containers/TrainingContextProvider";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -137,7 +137,7 @@ const FlightConfig: React.FC = () => {
     [],
   );
   const query = useQuery();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const flightType = query.get("flightType");
   const {data, loading} = useFlightSetupQuery();
@@ -161,7 +161,7 @@ const FlightConfig: React.FC = () => {
   };
   const startFlight = () => {
     startFlightMutation().then(({data}) => {
-      history.push(`/config/flight/${data?.startFlight}`);
+      navigate(`/flight/${data?.startFlight}`);
     });
   };
   if (loading) return null;

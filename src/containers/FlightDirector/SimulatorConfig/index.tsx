@@ -10,7 +10,7 @@ import {
   Simulator,
 } from "generated/graphql";
 import "./SimulatorConfig.scss";
-import {useParams, useHistory} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 
 const SimulatorConfig = () => {
   const [selectedProperty, setSelectedProperty] = React.useState<string | null>(
@@ -22,7 +22,7 @@ const SimulatorConfig = () => {
   const {data: stationData} = useStationSetConfigSubscription();
 
   const {simulatorId} = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const selectProperty = (prop: string) => {
     setSelectedProperty(prop);
@@ -31,7 +31,7 @@ const SimulatorConfig = () => {
     if (simulatorId) {
       if (window.confirm("Are you sure you want to delete that simulator?")) {
         removeSimMutation({variables: {id: simulatorId}});
-        history.push("/config/simulator");
+        navigate("/config/simulator");
         setSelectedProperty(null);
       }
     }
@@ -48,7 +48,6 @@ const SimulatorConfig = () => {
   const simulatorStationsSets = stationData?.stationSetUpdate?.filter(
     s => s?.simulator?.id === simulatorId,
   );
-  console.log(simulatorId, selectedSimulator, Comp);
   return (
     <Container fluid className="simulator-config">
       <h4>Simulator Config </h4>

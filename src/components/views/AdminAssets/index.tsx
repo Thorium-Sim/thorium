@@ -4,7 +4,7 @@ import {Row, Col, FormGroup, Label, Button, FormText} from "helpers/reactstrap";
 
 import Tour from "helpers/tourHelper";
 import RemoteFiles from "./remoteFiles";
-import {TrainingContext} from "containers/config";
+import {TrainingContext} from "containers/TrainingContextProvider";
 import {useRemoteAssetLoadMutation} from "generated/graphql";
 
 interface FileI {
