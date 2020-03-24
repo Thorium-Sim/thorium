@@ -1,18 +1,18 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Component from "./index.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Component from "./index";
 
 import {
   JR_NAVIGATION_QUERY,
   JR_NAVIGATION_SUB,
-} from "components/views/JrFlight/navigation.js";
-import {JR_THRUSTER_QUERY} from "components/views/JrFlight/thrusters.js";
+} from "components/views/JrFlight/navigation";
+import {JR_THRUSTER_QUERY} from "components/views/JrFlight/thrusters";
 import {
   JR_SPEEDCHANGE_SUB,
   JR_ENGINE_QUERY,
-} from "components/views/JrFlight/engines.js";
+} from "components/views/JrFlight/engines";
 
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {

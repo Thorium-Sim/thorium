@@ -1,0 +1,13 @@
+mutation ToggleStationWidget(
+  $stationSetID: ID!
+  $stationName: String!
+  $widget: String!
+  $state: Boolean!
+) {
+  toggleStationWidgets(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    widget: $widget
+    state: $state
+  )
+}

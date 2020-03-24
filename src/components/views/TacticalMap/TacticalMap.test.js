@@ -1,8 +1,8 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Component from "./index.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Component from "./index";
 
 // Skipping because of something weird involving the subscription.
 // Refactor to use hooks, then try again.

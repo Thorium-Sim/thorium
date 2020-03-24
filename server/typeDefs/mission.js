@@ -1,15 +1,16 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
   type Mission {
-    id: ID
+    id: ID!
     name: String
     description: String
-    timeline: [TimelineStep]
+    timeline: [TimelineStep!]!
     simulators: [Simulator]
     aux: Boolean
   }
@@ -22,17 +23,17 @@ const schema = gql`
   }
   type TimelineStep {
     id: ID!
-    name: String
+    name: String!
     description: String
     order: Int
-    timelineItems: [TimelineItem]
+    timelineItems: [TimelineItem!]!
   }
 
   type TimelineItem {
-    id: ID
+    id: ID!
     name: String
     type: String
-    event: String
+    event: String!
     needsConfig: Boolean
     args: String
     delay: Int
@@ -60,7 +61,7 @@ const schema = gql`
     executedTimelineSteps: [ID]
   }
   extend type Query {
-    missions(id: ID, aux: Boolean): [Mission]
+    missions(id: ID, aux: Boolean): [Mission!]!
     auxTimelines(simulatorId: ID!): [TimelineInstance]
   }
   extend type Mutation {
@@ -132,7 +133,7 @@ const schema = gql`
     setAuxTimelineStep(simulatorId: ID!, timelineId: ID!, step: Int!): String
   }
   extend type Subscription {
-    missionsUpdate(missionId: ID): [Mission]
+    missionsUpdate(missionId: ID): [Mission!]!
     auxTimelinesUpdate(simulatorId: ID!): [TimelineInstance]
   }
 `;
@@ -226,7 +227,16 @@ const resolver = {
         return rootValue;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("missionsUpdate"),
+        (rootValue, {missionId}) => {
+          const id = uuid.v4();
+          process.nextTick(() => {
+            let returnVal = App.missions;
+            if (missionId)
+              returnVal = returnVal.filter(s => s.id === missionId);
+            pubsub.publish(id, returnVal);
+          });
+          return pubsub.asyncIterator([id, "missionsUpdate"]);
+        },
         (rootValue, {missionId}) => {
           if (missionId) {
             return !!rootValue.find(m => m.id === missionId);

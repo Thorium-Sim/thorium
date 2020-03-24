@@ -1,0 +1,3 @@
+mutation AddStation($id: ID!, $name: String!) {
+  addStationToStationSet(stationSetID: $id, stationName: $name)
+}

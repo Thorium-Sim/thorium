@@ -19,7 +19,7 @@ export const graphqlUrl =
     : `${protocol}//${hostname}:${parseInt(window.location.port || 3000, 10) +
         1}/graphql`;
 
-export const websocketUrl =
+const websocketUrl =
   process.env.NODE_ENV === "production"
     ? `${wsProtocol}//${window.location.host}/graphql`
     : `${wsProtocol}//${hostname}:${parseInt(window.location.port || 3000, 10) +

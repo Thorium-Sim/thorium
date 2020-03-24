@@ -1,0 +1,3 @@
+mutation RemoveSimulator($id: ID!) {
+  removeSimulator(simulatorId: $id)
+}

@@ -31,7 +31,7 @@ interface AssetFolderI {
   name: string;
 }
 
-interface AssetObjectI {
+export interface AssetObjectI {
   id: string;
   fullPath: string;
   url: string;

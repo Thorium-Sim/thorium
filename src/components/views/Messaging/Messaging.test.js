@@ -6,12 +6,12 @@ import {
   fireEvent,
 } from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
+import baseProps from "../../../stories/helpers/baseProps";
 import Component, {
   MESSAGING_QUERY,
   MESSAGING_SUB,
   MESSAGING_TEAMS_SUB,
-} from "./index.js";
+} from "./index";
 
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {
@@ -28,7 +28,7 @@ it("should render", async () => {
 });
 
 it("should persist messages, even when unmounted", async () => {
-  // Patch for popper.js
+  // Patch for popper
   global.document.createRange = () => ({
     setStart: () => {},
     setEnd: () => {},

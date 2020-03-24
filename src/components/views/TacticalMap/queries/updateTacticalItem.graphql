@@ -1,0 +1,7 @@
+mutation UpdateTacticalItem(
+  $mapId: ID!
+  $layerId: ID!
+  $item: TacticalItemInput!
+) {
+  updateTacticalMapItem(mapId: $mapId, layerId: $layerId, item: $item)
+}

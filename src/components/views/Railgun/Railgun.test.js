@@ -1,10 +1,10 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Component from "./index.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Component from "./index";
 import RailgunLoading from "./loadingCard";
-import RailgunMock from "mocks/cards/Railgun.mock.js";
+import RailgunMock from "mocks/cards/Railgun.mock";
 
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {

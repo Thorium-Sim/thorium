@@ -1,8 +1,8 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Core from "./core.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Core from "./core";
 import TeamsMock from "mocks/cards/Teams.mock";
 
 // Skipping because the union type on location is complicated.
