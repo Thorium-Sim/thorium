@@ -1,8 +1,8 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Component from "./thumbnailData.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Component from "./thumbnailData";
 import TimelineMock from "mocks/cards/Timeline.mock";
 
 it("should render", async () => {

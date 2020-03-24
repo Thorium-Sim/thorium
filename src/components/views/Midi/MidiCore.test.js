@@ -1,8 +1,8 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Core from "./index.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Core from "./index";
 
 // While it is possible to use the queries API to generate
 // fake mock data, it is much better to use actual mock

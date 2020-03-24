@@ -1,7 +1,7 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
+import baseProps from "../../../stories/helpers/baseProps";
 import Core from "./core";
 import {loader} from "graphql.macro";
 const TEMPLATE_CORE_SUB = loader("./templateSubscription.graphql");

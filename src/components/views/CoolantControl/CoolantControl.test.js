@@ -1,12 +1,12 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
+import baseProps from "../../../stories/helpers/baseProps";
 import Component, {
   COOLANT_QUERY,
   COOLANT_SUB,
   COOLANT_SYSTEM_SUB,
-} from "./index.js";
+} from "./index";
 
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {

@@ -1,12 +1,12 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
+import baseProps from "../../../stories/helpers/baseProps";
 import Component, {
   DAMAGE_REPORT_QUERY,
   DAMAGE_SYSTEMS_SUB,
   DAMAGE_TASK_REPORT_SUB,
-} from "./index.js";
+} from "./index";
 
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {
