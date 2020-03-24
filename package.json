@@ -60,7 +60,7 @@
     "generate:graphql": "graphql-codegen --config codegen.yml",
     "format": "prettier --write \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "format:different": "prettier --list-different \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
-    "validate": "CI=true npm-run-all --parallel test:coverage typecheck format:different",
+    "validate": "CI=true npm-run-all --parallel test:plain typecheck format:different",
     "lint-staged-validate": "lint-staged",
     "storybook": "start-storybook -p 9009 -s public,./",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
