@@ -26,6 +26,8 @@ import {
   TimelineStep,
 } from "generated/graphql";
 import TimelineStepButtons from "./TimelineStepButtons";
+import {useParams} from "react-router";
+import {useNavigate} from "react-router-dom";
 const sortableElement = SortableElement;
 const sortableContainer = SortableContainer;
 
@@ -92,12 +94,20 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
   updateMission,
   exportMissionScript,
 }) => {
-  const [selectedTimelineStep, setSelectedTimelineStepAction] = React.useState<
-    string | null
-  >(null);
-  const [selectedTimelineItem, setSelectedTimelineItemAction] = React.useState<
-    string | null
-  >(null);
+  const {
+    missionId = "",
+    timelineStep: selectedTimelineStep = "",
+    timelineAction: selectedTimelineItem = "",
+  } = useParams();
+  const navigate = useNavigate();
+  function setSelectedTimelineStepAction(stepId: string | null) {
+    navigate(`/config/mission/${missionId}/${stepId || ""}`);
+  }
+  function setSelectedTimelineItemAction(itemId: string | null) {
+    navigate(
+      `/config/mission/${missionId}/${selectedTimelineStep}/${itemId || ""}`,
+    );
+  }
 
   const [updateItemMutation] = useTimelineUpdateItemMutation();
   const [updateStepMutation] = useTimelineUpdateStepMutation();
@@ -108,7 +118,6 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
 
   const setSelectedTimelineStep = (stepId: string | null) => {
     setSelectedTimelineStepAction(stepId);
-    setSelectedTimelineItemAction(null);
   };
 
   const updateMacro = (type: string, value: any) => {

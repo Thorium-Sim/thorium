@@ -1,0 +1,17 @@
+mutation UpdateStationCard(
+  $stationSetId: ID!
+  $stationName: String!
+  $cardName: String!
+  $name: String
+  $component: String
+  $icon: String
+) {
+  editCardInStationSet(
+    stationSetID: $stationSetId
+    stationName: $stationName
+    cardName: $cardName
+    newCardName: $name
+    cardComponent: $component
+    cardIcon: $icon
+  )
+}

@@ -76,8 +76,11 @@ const Config = () => {
           />
           <Route path="sandbox" element={<UniversalSandboxEditor />} />
           <Route path="entityTemplates" element={<EntityTemplate />} />
-          <Route path="mission/:missionId" element={<MissionConfig />} />
-          <Route path="simulator/:simulatorId" element={<SimulatorConfig />} />
+          <Route path="mission/:missionId/*" element={<MissionConfig />} />
+          <Route
+            path="simulator/:simulatorId/*"
+            element={<SimulatorConfig />}
+          />
           <Route
             path="tacticals"
             element={

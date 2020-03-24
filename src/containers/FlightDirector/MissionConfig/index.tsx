@@ -2,7 +2,7 @@ import React from "react";
 import {Container, Button} from "helpers/reactstrap";
 import TimelineConfig from "./TimelineConfig";
 import PrintMission from "./PrintMission";
-import {useParams, useNavigate} from "react-router-dom";
+import {useParams, useNavigate, Link, Route, Routes} from "react-router-dom";
 import {
   Mission,
   useRemoveMissionMutation,
@@ -14,7 +14,6 @@ import "./style.scss";
 
 const MissionsConfig: React.FC = () => {
   const {missionId = ""} = useParams();
-
   const {data} = useMissionSubscriptionSubscription({
     variables: {missionId},
     skip: !missionId,
@@ -65,6 +64,7 @@ const MissionsConfig: React.FC = () => {
   if (!mission) return null;
   return (
     <Container fluid className="missionConfig">
+      <Link to="/config/mission">{"<-"} Back to Missions</Link>
       <h4>
         Missions Config{" "}
         <Button color="danger" size="sm" onClick={removeMission}>
@@ -85,4 +85,17 @@ const MissionsConfig: React.FC = () => {
   );
 };
 
-export default MissionsConfig;
+const MissionsConfigRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<MissionsConfig />} />
+      <Route path=":timelineStep" element={<MissionsConfig />} />
+      <Route
+        path=":timelineStep/:timelineAction"
+        element={<MissionsConfig />}
+      />
+    </Routes>
+  );
+};
+
+export default MissionsConfigRoutes;

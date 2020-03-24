@@ -10031,6 +10031,199 @@ export type TimelineUpdateStepMutation = {__typename?: "Mutation"} & Pick<
   "updateTimelineStep"
 >;
 
+export type AddCardMutationVariables = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  cardName: Scalars["String"];
+  cardComponent: Scalars["String"];
+  cardIcon?: Maybe<Scalars["String"]>;
+};
+
+export type AddCardMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addCardToStation"
+>;
+
+export type AddStationMutationVariables = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type AddStationMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "addStationToStationSet"
+>;
+
+export type PanelsAndInterfacesQueryVariables = {};
+
+export type PanelsAndInterfacesQuery = {__typename?: "Query"} & {
+  softwarePanels?: Maybe<
+    Array<
+      Maybe<{__typename?: "SoftwarePanel"} & Pick<SoftwarePanel, "id" | "name">>
+    >
+  >;
+  interfaces?: Maybe<
+    Array<Maybe<{__typename?: "Interface"} & Pick<Interface, "id" | "name">>>
+  >;
+};
+
+export type RemoveCardMutationVariables = {
+  id: Scalars["ID"];
+  stationName: Scalars["String"];
+  cardName: Scalars["String"];
+};
+
+export type RemoveCardMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeCardFromStation"
+>;
+
+export type RemoveStationMutationVariables = {
+  id: Scalars["ID"];
+  stationName: Scalars["String"];
+};
+
+export type RemoveStationMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "removeStationFromStationSet"
+>;
+
+export type RenameStationMutationVariables = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  newName: Scalars["String"];
+};
+
+export type RenameStationMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "editStationInStationSet"
+>;
+
+export type ReorderStationWidgetsMutationVariables = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  widget: Scalars["String"];
+  order: Scalars["Int"];
+};
+
+export type ReorderStationWidgetsMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "reorderStationWidgets"
+>;
+
+export type SetAmbianceMutationVariables = {
+  stationSetID: Scalars["ID"];
+  stationName: Scalars["String"];
+  ambiance?: Maybe<Scalars["String"]>;
+};
+
+export type SetAmbianceMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setStationAmbiance"
+>;
+
+export type SetStationCrewCountMutationVariables = {
+  stationSetId: Scalars["ID"];
+  crewCount: Scalars["Int"];
+};
+
+export type SetStationCrewCountMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setStationSetCrewCount"
+>;
+
+export type SetStationDescriptionMutationVariables = {
+  stationSetID: Scalars["ID"];
+  stationName: Scalars["String"];
+  description: Scalars["String"];
+};
+
+export type SetStationDescriptionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setStationDescription"
+>;
+
+export type SetStationLayoutMutationVariables = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  layout: Scalars["String"];
+};
+
+export type SetStationLayoutMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setStationLayout"
+>;
+
+export type StationSetTrainingMutationVariables = {
+  stationSetID: Scalars["ID"];
+  stationName: Scalars["String"];
+  training: Scalars["String"];
+};
+
+export type StationSetTrainingMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setStationTraining"
+>;
+
+export type ToggleStationMessageGroupMutationVariables = {
+  stationSetId: Scalars["ID"];
+  station: Scalars["String"];
+  group: Scalars["String"];
+  state: Scalars["Boolean"];
+};
+
+export type ToggleStationMessageGroupMutation = {
+  __typename?: "Mutation";
+} & Pick<Mutation, "toggleStationMessageGroup">;
+
+export type ToggleStationExecMutationVariables = {
+  stationSetID: Scalars["ID"];
+  stationName: Scalars["String"];
+  exec: Scalars["Boolean"];
+};
+
+export type ToggleStationExecMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setStationExecutive"
+>;
+
+export type ToggleStationLoginMutationVariables = {
+  stationSetID: Scalars["ID"];
+  stationName: Scalars["String"];
+  login: Scalars["Boolean"];
+};
+
+export type ToggleStationLoginMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setStationLogin"
+>;
+
+export type ToggleStationWidgetMutationVariables = {
+  stationSetID: Scalars["ID"];
+  stationName: Scalars["String"];
+  widget: Scalars["String"];
+  state: Scalars["Boolean"];
+};
+
+export type ToggleStationWidgetMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "toggleStationWidgets"
+>;
+
+export type UpdateStationCardMutationVariables = {
+  stationSetId: Scalars["ID"];
+  stationName: Scalars["String"];
+  cardName: Scalars["String"];
+  name?: Maybe<Scalars["String"]>;
+  component?: Maybe<Scalars["String"]>;
+  icon?: Maybe<Scalars["String"]>;
+};
+
+export type UpdateStationCardMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "editCardInStationSet"
+>;
+
 export type RemoveSimulatorMutationVariables = {
   id: Scalars["ID"];
 };
@@ -15138,6 +15331,973 @@ export type TimelineUpdateStepMutationResult = ApolloReactCommon.MutationResult<
 export type TimelineUpdateStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
   TimelineUpdateStepMutation,
   TimelineUpdateStepMutationVariables
+>;
+export const AddCardDocument = gql`
+  mutation AddCard(
+    $id: ID!
+    $name: String!
+    $cardName: String!
+    $cardComponent: String!
+    $cardIcon: String
+  ) {
+    addCardToStation(
+      stationSetID: $id
+      stationName: $name
+      cardName: $cardName
+      cardComponent: $cardComponent
+      cardIcon: $cardIcon
+    )
+  }
+`;
+export type AddCardMutationFn = ApolloReactCommon.MutationFunction<
+  AddCardMutation,
+  AddCardMutationVariables
+>;
+
+/**
+ * __useAddCardMutation__
+ *
+ * To run a mutation, you first call `useAddCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addCardMutation, { data, loading, error }] = useAddCardMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      cardName: // value for 'cardName'
+ *      cardComponent: // value for 'cardComponent'
+ *      cardIcon: // value for 'cardIcon'
+ *   },
+ * });
+ */
+export function useAddCardMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AddCardMutation,
+    AddCardMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AddCardMutation,
+    AddCardMutationVariables
+  >(AddCardDocument, baseOptions);
+}
+export type AddCardMutationHookResult = ReturnType<typeof useAddCardMutation>;
+export type AddCardMutationResult = ApolloReactCommon.MutationResult<
+  AddCardMutation
+>;
+export type AddCardMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AddCardMutation,
+  AddCardMutationVariables
+>;
+export const AddStationDocument = gql`
+  mutation AddStation($id: ID!, $name: String!) {
+    addStationToStationSet(stationSetID: $id, stationName: $name)
+  }
+`;
+export type AddStationMutationFn = ApolloReactCommon.MutationFunction<
+  AddStationMutation,
+  AddStationMutationVariables
+>;
+
+/**
+ * __useAddStationMutation__
+ *
+ * To run a mutation, you first call `useAddStationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddStationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addStationMutation, { data, loading, error }] = useAddStationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useAddStationMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AddStationMutation,
+    AddStationMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AddStationMutation,
+    AddStationMutationVariables
+  >(AddStationDocument, baseOptions);
+}
+export type AddStationMutationHookResult = ReturnType<
+  typeof useAddStationMutation
+>;
+export type AddStationMutationResult = ApolloReactCommon.MutationResult<
+  AddStationMutation
+>;
+export type AddStationMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AddStationMutation,
+  AddStationMutationVariables
+>;
+export const PanelsAndInterfacesDocument = gql`
+  query PanelsAndInterfaces {
+    softwarePanels {
+      id
+      name
+    }
+    interfaces {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __usePanelsAndInterfacesQuery__
+ *
+ * To run a query within a React component, call `usePanelsAndInterfacesQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePanelsAndInterfacesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePanelsAndInterfacesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePanelsAndInterfacesQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    PanelsAndInterfacesQuery,
+    PanelsAndInterfacesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    PanelsAndInterfacesQuery,
+    PanelsAndInterfacesQueryVariables
+  >(PanelsAndInterfacesDocument, baseOptions);
+}
+export function usePanelsAndInterfacesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    PanelsAndInterfacesQuery,
+    PanelsAndInterfacesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    PanelsAndInterfacesQuery,
+    PanelsAndInterfacesQueryVariables
+  >(PanelsAndInterfacesDocument, baseOptions);
+}
+export type PanelsAndInterfacesQueryHookResult = ReturnType<
+  typeof usePanelsAndInterfacesQuery
+>;
+export type PanelsAndInterfacesLazyQueryHookResult = ReturnType<
+  typeof usePanelsAndInterfacesLazyQuery
+>;
+export type PanelsAndInterfacesQueryResult = ApolloReactCommon.QueryResult<
+  PanelsAndInterfacesQuery,
+  PanelsAndInterfacesQueryVariables
+>;
+export const RemoveCardDocument = gql`
+  mutation RemoveCard($id: ID!, $stationName: String!, $cardName: String!) {
+    removeCardFromStation(
+      stationSetID: $id
+      stationName: $stationName
+      cardName: $cardName
+    )
+  }
+`;
+export type RemoveCardMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveCardMutation,
+  RemoveCardMutationVariables
+>;
+
+/**
+ * __useRemoveCardMutation__
+ *
+ * To run a mutation, you first call `useRemoveCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeCardMutation, { data, loading, error }] = useRemoveCardMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stationName: // value for 'stationName'
+ *      cardName: // value for 'cardName'
+ *   },
+ * });
+ */
+export function useRemoveCardMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveCardMutation,
+    RemoveCardMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveCardMutation,
+    RemoveCardMutationVariables
+  >(RemoveCardDocument, baseOptions);
+}
+export type RemoveCardMutationHookResult = ReturnType<
+  typeof useRemoveCardMutation
+>;
+export type RemoveCardMutationResult = ApolloReactCommon.MutationResult<
+  RemoveCardMutation
+>;
+export type RemoveCardMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveCardMutation,
+  RemoveCardMutationVariables
+>;
+export const RemoveStationDocument = gql`
+  mutation RemoveStation($id: ID!, $stationName: String!) {
+    removeStationFromStationSet(stationSetID: $id, stationName: $stationName)
+  }
+`;
+export type RemoveStationMutationFn = ApolloReactCommon.MutationFunction<
+  RemoveStationMutation,
+  RemoveStationMutationVariables
+>;
+
+/**
+ * __useRemoveStationMutation__
+ *
+ * To run a mutation, you first call `useRemoveStationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveStationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeStationMutation, { data, loading, error }] = useRemoveStationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stationName: // value for 'stationName'
+ *   },
+ * });
+ */
+export function useRemoveStationMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RemoveStationMutation,
+    RemoveStationMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RemoveStationMutation,
+    RemoveStationMutationVariables
+  >(RemoveStationDocument, baseOptions);
+}
+export type RemoveStationMutationHookResult = ReturnType<
+  typeof useRemoveStationMutation
+>;
+export type RemoveStationMutationResult = ApolloReactCommon.MutationResult<
+  RemoveStationMutation
+>;
+export type RemoveStationMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RemoveStationMutation,
+  RemoveStationMutationVariables
+>;
+export const RenameStationDocument = gql`
+  mutation RenameStation($id: ID!, $name: String!, $newName: String!) {
+    editStationInStationSet(
+      stationSetID: $id
+      stationName: $name
+      newStationName: $newName
+    )
+  }
+`;
+export type RenameStationMutationFn = ApolloReactCommon.MutationFunction<
+  RenameStationMutation,
+  RenameStationMutationVariables
+>;
+
+/**
+ * __useRenameStationMutation__
+ *
+ * To run a mutation, you first call `useRenameStationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameStationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameStationMutation, { data, loading, error }] = useRenameStationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      newName: // value for 'newName'
+ *   },
+ * });
+ */
+export function useRenameStationMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    RenameStationMutation,
+    RenameStationMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    RenameStationMutation,
+    RenameStationMutationVariables
+  >(RenameStationDocument, baseOptions);
+}
+export type RenameStationMutationHookResult = ReturnType<
+  typeof useRenameStationMutation
+>;
+export type RenameStationMutationResult = ApolloReactCommon.MutationResult<
+  RenameStationMutation
+>;
+export type RenameStationMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RenameStationMutation,
+  RenameStationMutationVariables
+>;
+export const ReorderStationWidgetsDocument = gql`
+  mutation ReorderStationWidgets(
+    $id: ID!
+    $name: String!
+    $widget: String!
+    $order: Int!
+  ) {
+    reorderStationWidgets(
+      stationSetId: $id
+      stationName: $name
+      widget: $widget
+      order: $order
+    )
+  }
+`;
+export type ReorderStationWidgetsMutationFn = ApolloReactCommon.MutationFunction<
+  ReorderStationWidgetsMutation,
+  ReorderStationWidgetsMutationVariables
+>;
+
+/**
+ * __useReorderStationWidgetsMutation__
+ *
+ * To run a mutation, you first call `useReorderStationWidgetsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReorderStationWidgetsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reorderStationWidgetsMutation, { data, loading, error }] = useReorderStationWidgetsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      widget: // value for 'widget'
+ *      order: // value for 'order'
+ *   },
+ * });
+ */
+export function useReorderStationWidgetsMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ReorderStationWidgetsMutation,
+    ReorderStationWidgetsMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ReorderStationWidgetsMutation,
+    ReorderStationWidgetsMutationVariables
+  >(ReorderStationWidgetsDocument, baseOptions);
+}
+export type ReorderStationWidgetsMutationHookResult = ReturnType<
+  typeof useReorderStationWidgetsMutation
+>;
+export type ReorderStationWidgetsMutationResult = ApolloReactCommon.MutationResult<
+  ReorderStationWidgetsMutation
+>;
+export type ReorderStationWidgetsMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ReorderStationWidgetsMutation,
+  ReorderStationWidgetsMutationVariables
+>;
+export const SetAmbianceDocument = gql`
+  mutation SetAmbiance(
+    $stationSetID: ID!
+    $stationName: String!
+    $ambiance: String
+  ) {
+    setStationAmbiance(
+      stationSetID: $stationSetID
+      stationName: $stationName
+      ambiance: $ambiance
+    )
+  }
+`;
+export type SetAmbianceMutationFn = ApolloReactCommon.MutationFunction<
+  SetAmbianceMutation,
+  SetAmbianceMutationVariables
+>;
+
+/**
+ * __useSetAmbianceMutation__
+ *
+ * To run a mutation, you first call `useSetAmbianceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetAmbianceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setAmbianceMutation, { data, loading, error }] = useSetAmbianceMutation({
+ *   variables: {
+ *      stationSetID: // value for 'stationSetID'
+ *      stationName: // value for 'stationName'
+ *      ambiance: // value for 'ambiance'
+ *   },
+ * });
+ */
+export function useSetAmbianceMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetAmbianceMutation,
+    SetAmbianceMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SetAmbianceMutation,
+    SetAmbianceMutationVariables
+  >(SetAmbianceDocument, baseOptions);
+}
+export type SetAmbianceMutationHookResult = ReturnType<
+  typeof useSetAmbianceMutation
+>;
+export type SetAmbianceMutationResult = ApolloReactCommon.MutationResult<
+  SetAmbianceMutation
+>;
+export type SetAmbianceMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetAmbianceMutation,
+  SetAmbianceMutationVariables
+>;
+export const SetStationCrewCountDocument = gql`
+  mutation SetStationCrewCount($stationSetId: ID!, $crewCount: Int!) {
+    setStationSetCrewCount(stationSetID: $stationSetId, crewCount: $crewCount)
+  }
+`;
+export type SetStationCrewCountMutationFn = ApolloReactCommon.MutationFunction<
+  SetStationCrewCountMutation,
+  SetStationCrewCountMutationVariables
+>;
+
+/**
+ * __useSetStationCrewCountMutation__
+ *
+ * To run a mutation, you first call `useSetStationCrewCountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetStationCrewCountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setStationCrewCountMutation, { data, loading, error }] = useSetStationCrewCountMutation({
+ *   variables: {
+ *      stationSetId: // value for 'stationSetId'
+ *      crewCount: // value for 'crewCount'
+ *   },
+ * });
+ */
+export function useSetStationCrewCountMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetStationCrewCountMutation,
+    SetStationCrewCountMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SetStationCrewCountMutation,
+    SetStationCrewCountMutationVariables
+  >(SetStationCrewCountDocument, baseOptions);
+}
+export type SetStationCrewCountMutationHookResult = ReturnType<
+  typeof useSetStationCrewCountMutation
+>;
+export type SetStationCrewCountMutationResult = ApolloReactCommon.MutationResult<
+  SetStationCrewCountMutation
+>;
+export type SetStationCrewCountMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetStationCrewCountMutation,
+  SetStationCrewCountMutationVariables
+>;
+export const SetStationDescriptionDocument = gql`
+  mutation SetStationDescription(
+    $stationSetID: ID!
+    $stationName: String!
+    $description: String!
+  ) {
+    setStationDescription(
+      stationSetID: $stationSetID
+      stationName: $stationName
+      description: $description
+    )
+  }
+`;
+export type SetStationDescriptionMutationFn = ApolloReactCommon.MutationFunction<
+  SetStationDescriptionMutation,
+  SetStationDescriptionMutationVariables
+>;
+
+/**
+ * __useSetStationDescriptionMutation__
+ *
+ * To run a mutation, you first call `useSetStationDescriptionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetStationDescriptionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setStationDescriptionMutation, { data, loading, error }] = useSetStationDescriptionMutation({
+ *   variables: {
+ *      stationSetID: // value for 'stationSetID'
+ *      stationName: // value for 'stationName'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useSetStationDescriptionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetStationDescriptionMutation,
+    SetStationDescriptionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SetStationDescriptionMutation,
+    SetStationDescriptionMutationVariables
+  >(SetStationDescriptionDocument, baseOptions);
+}
+export type SetStationDescriptionMutationHookResult = ReturnType<
+  typeof useSetStationDescriptionMutation
+>;
+export type SetStationDescriptionMutationResult = ApolloReactCommon.MutationResult<
+  SetStationDescriptionMutation
+>;
+export type SetStationDescriptionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetStationDescriptionMutation,
+  SetStationDescriptionMutationVariables
+>;
+export const SetStationLayoutDocument = gql`
+  mutation SetStationLayout($id: ID!, $name: String!, $layout: String!) {
+    setStationLayout(stationSetID: $id, stationName: $name, layout: $layout)
+  }
+`;
+export type SetStationLayoutMutationFn = ApolloReactCommon.MutationFunction<
+  SetStationLayoutMutation,
+  SetStationLayoutMutationVariables
+>;
+
+/**
+ * __useSetStationLayoutMutation__
+ *
+ * To run a mutation, you first call `useSetStationLayoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetStationLayoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setStationLayoutMutation, { data, loading, error }] = useSetStationLayoutMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      layout: // value for 'layout'
+ *   },
+ * });
+ */
+export function useSetStationLayoutMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetStationLayoutMutation,
+    SetStationLayoutMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SetStationLayoutMutation,
+    SetStationLayoutMutationVariables
+  >(SetStationLayoutDocument, baseOptions);
+}
+export type SetStationLayoutMutationHookResult = ReturnType<
+  typeof useSetStationLayoutMutation
+>;
+export type SetStationLayoutMutationResult = ApolloReactCommon.MutationResult<
+  SetStationLayoutMutation
+>;
+export type SetStationLayoutMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetStationLayoutMutation,
+  SetStationLayoutMutationVariables
+>;
+export const StationSetTrainingDocument = gql`
+  mutation StationSetTraining(
+    $stationSetID: ID!
+    $stationName: String!
+    $training: String!
+  ) {
+    setStationTraining(
+      stationSetID: $stationSetID
+      stationName: $stationName
+      training: $training
+    )
+  }
+`;
+export type StationSetTrainingMutationFn = ApolloReactCommon.MutationFunction<
+  StationSetTrainingMutation,
+  StationSetTrainingMutationVariables
+>;
+
+/**
+ * __useStationSetTrainingMutation__
+ *
+ * To run a mutation, you first call `useStationSetTrainingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStationSetTrainingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [stationSetTrainingMutation, { data, loading, error }] = useStationSetTrainingMutation({
+ *   variables: {
+ *      stationSetID: // value for 'stationSetID'
+ *      stationName: // value for 'stationName'
+ *      training: // value for 'training'
+ *   },
+ * });
+ */
+export function useStationSetTrainingMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    StationSetTrainingMutation,
+    StationSetTrainingMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    StationSetTrainingMutation,
+    StationSetTrainingMutationVariables
+  >(StationSetTrainingDocument, baseOptions);
+}
+export type StationSetTrainingMutationHookResult = ReturnType<
+  typeof useStationSetTrainingMutation
+>;
+export type StationSetTrainingMutationResult = ApolloReactCommon.MutationResult<
+  StationSetTrainingMutation
+>;
+export type StationSetTrainingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  StationSetTrainingMutation,
+  StationSetTrainingMutationVariables
+>;
+export const ToggleStationMessageGroupDocument = gql`
+  mutation ToggleStationMessageGroup(
+    $stationSetId: ID!
+    $station: String!
+    $group: String!
+    $state: Boolean!
+  ) {
+    toggleStationMessageGroup(
+      stationSetId: $stationSetId
+      station: $station
+      group: $group
+      state: $state
+    )
+  }
+`;
+export type ToggleStationMessageGroupMutationFn = ApolloReactCommon.MutationFunction<
+  ToggleStationMessageGroupMutation,
+  ToggleStationMessageGroupMutationVariables
+>;
+
+/**
+ * __useToggleStationMessageGroupMutation__
+ *
+ * To run a mutation, you first call `useToggleStationMessageGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleStationMessageGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleStationMessageGroupMutation, { data, loading, error }] = useToggleStationMessageGroupMutation({
+ *   variables: {
+ *      stationSetId: // value for 'stationSetId'
+ *      station: // value for 'station'
+ *      group: // value for 'group'
+ *      state: // value for 'state'
+ *   },
+ * });
+ */
+export function useToggleStationMessageGroupMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ToggleStationMessageGroupMutation,
+    ToggleStationMessageGroupMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ToggleStationMessageGroupMutation,
+    ToggleStationMessageGroupMutationVariables
+  >(ToggleStationMessageGroupDocument, baseOptions);
+}
+export type ToggleStationMessageGroupMutationHookResult = ReturnType<
+  typeof useToggleStationMessageGroupMutation
+>;
+export type ToggleStationMessageGroupMutationResult = ApolloReactCommon.MutationResult<
+  ToggleStationMessageGroupMutation
+>;
+export type ToggleStationMessageGroupMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ToggleStationMessageGroupMutation,
+  ToggleStationMessageGroupMutationVariables
+>;
+export const ToggleStationExecDocument = gql`
+  mutation ToggleStationExec(
+    $stationSetID: ID!
+    $stationName: String!
+    $exec: Boolean!
+  ) {
+    setStationExecutive(
+      stationSetID: $stationSetID
+      stationName: $stationName
+      exec: $exec
+    )
+  }
+`;
+export type ToggleStationExecMutationFn = ApolloReactCommon.MutationFunction<
+  ToggleStationExecMutation,
+  ToggleStationExecMutationVariables
+>;
+
+/**
+ * __useToggleStationExecMutation__
+ *
+ * To run a mutation, you first call `useToggleStationExecMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleStationExecMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleStationExecMutation, { data, loading, error }] = useToggleStationExecMutation({
+ *   variables: {
+ *      stationSetID: // value for 'stationSetID'
+ *      stationName: // value for 'stationName'
+ *      exec: // value for 'exec'
+ *   },
+ * });
+ */
+export function useToggleStationExecMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ToggleStationExecMutation,
+    ToggleStationExecMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ToggleStationExecMutation,
+    ToggleStationExecMutationVariables
+  >(ToggleStationExecDocument, baseOptions);
+}
+export type ToggleStationExecMutationHookResult = ReturnType<
+  typeof useToggleStationExecMutation
+>;
+export type ToggleStationExecMutationResult = ApolloReactCommon.MutationResult<
+  ToggleStationExecMutation
+>;
+export type ToggleStationExecMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ToggleStationExecMutation,
+  ToggleStationExecMutationVariables
+>;
+export const ToggleStationLoginDocument = gql`
+  mutation ToggleStationLogin(
+    $stationSetID: ID!
+    $stationName: String!
+    $login: Boolean!
+  ) {
+    setStationLogin(
+      stationSetID: $stationSetID
+      stationName: $stationName
+      login: $login
+    )
+  }
+`;
+export type ToggleStationLoginMutationFn = ApolloReactCommon.MutationFunction<
+  ToggleStationLoginMutation,
+  ToggleStationLoginMutationVariables
+>;
+
+/**
+ * __useToggleStationLoginMutation__
+ *
+ * To run a mutation, you first call `useToggleStationLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleStationLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleStationLoginMutation, { data, loading, error }] = useToggleStationLoginMutation({
+ *   variables: {
+ *      stationSetID: // value for 'stationSetID'
+ *      stationName: // value for 'stationName'
+ *      login: // value for 'login'
+ *   },
+ * });
+ */
+export function useToggleStationLoginMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ToggleStationLoginMutation,
+    ToggleStationLoginMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ToggleStationLoginMutation,
+    ToggleStationLoginMutationVariables
+  >(ToggleStationLoginDocument, baseOptions);
+}
+export type ToggleStationLoginMutationHookResult = ReturnType<
+  typeof useToggleStationLoginMutation
+>;
+export type ToggleStationLoginMutationResult = ApolloReactCommon.MutationResult<
+  ToggleStationLoginMutation
+>;
+export type ToggleStationLoginMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ToggleStationLoginMutation,
+  ToggleStationLoginMutationVariables
+>;
+export const ToggleStationWidgetDocument = gql`
+  mutation ToggleStationWidget(
+    $stationSetID: ID!
+    $stationName: String!
+    $widget: String!
+    $state: Boolean!
+  ) {
+    toggleStationWidgets(
+      stationSetID: $stationSetID
+      stationName: $stationName
+      widget: $widget
+      state: $state
+    )
+  }
+`;
+export type ToggleStationWidgetMutationFn = ApolloReactCommon.MutationFunction<
+  ToggleStationWidgetMutation,
+  ToggleStationWidgetMutationVariables
+>;
+
+/**
+ * __useToggleStationWidgetMutation__
+ *
+ * To run a mutation, you first call `useToggleStationWidgetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleStationWidgetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleStationWidgetMutation, { data, loading, error }] = useToggleStationWidgetMutation({
+ *   variables: {
+ *      stationSetID: // value for 'stationSetID'
+ *      stationName: // value for 'stationName'
+ *      widget: // value for 'widget'
+ *      state: // value for 'state'
+ *   },
+ * });
+ */
+export function useToggleStationWidgetMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ToggleStationWidgetMutation,
+    ToggleStationWidgetMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ToggleStationWidgetMutation,
+    ToggleStationWidgetMutationVariables
+  >(ToggleStationWidgetDocument, baseOptions);
+}
+export type ToggleStationWidgetMutationHookResult = ReturnType<
+  typeof useToggleStationWidgetMutation
+>;
+export type ToggleStationWidgetMutationResult = ApolloReactCommon.MutationResult<
+  ToggleStationWidgetMutation
+>;
+export type ToggleStationWidgetMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ToggleStationWidgetMutation,
+  ToggleStationWidgetMutationVariables
+>;
+export const UpdateStationCardDocument = gql`
+  mutation UpdateStationCard(
+    $stationSetId: ID!
+    $stationName: String!
+    $cardName: String!
+    $name: String
+    $component: String
+    $icon: String
+  ) {
+    editCardInStationSet(
+      stationSetID: $stationSetId
+      stationName: $stationName
+      cardName: $cardName
+      newCardName: $name
+      cardComponent: $component
+      cardIcon: $icon
+    )
+  }
+`;
+export type UpdateStationCardMutationFn = ApolloReactCommon.MutationFunction<
+  UpdateStationCardMutation,
+  UpdateStationCardMutationVariables
+>;
+
+/**
+ * __useUpdateStationCardMutation__
+ *
+ * To run a mutation, you first call `useUpdateStationCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateStationCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateStationCardMutation, { data, loading, error }] = useUpdateStationCardMutation({
+ *   variables: {
+ *      stationSetId: // value for 'stationSetId'
+ *      stationName: // value for 'stationName'
+ *      cardName: // value for 'cardName'
+ *      name: // value for 'name'
+ *      component: // value for 'component'
+ *      icon: // value for 'icon'
+ *   },
+ * });
+ */
+export function useUpdateStationCardMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UpdateStationCardMutation,
+    UpdateStationCardMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    UpdateStationCardMutation,
+    UpdateStationCardMutationVariables
+  >(UpdateStationCardDocument, baseOptions);
+}
+export type UpdateStationCardMutationHookResult = ReturnType<
+  typeof useUpdateStationCardMutation
+>;
+export type UpdateStationCardMutationResult = ApolloReactCommon.MutationResult<
+  UpdateStationCardMutation
+>;
+export type UpdateStationCardMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateStationCardMutation,
+  UpdateStationCardMutationVariables
 >;
 export const RemoveSimulatorDocument = gql`
   mutation RemoveSimulator($id: ID!) {

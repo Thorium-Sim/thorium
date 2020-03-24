@@ -1,0 +1,11 @@
+mutation StationSetTraining(
+  $stationSetID: ID!
+  $stationName: String!
+  $training: String!
+) {
+  setStationTraining(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    training: $training
+  )
+}

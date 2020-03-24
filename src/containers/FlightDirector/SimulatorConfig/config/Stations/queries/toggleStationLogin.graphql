@@ -1,0 +1,11 @@
+mutation ToggleStationLogin(
+  $stationSetID: ID!
+  $stationName: String!
+  $login: Boolean!
+) {
+  setStationLogin(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    login: $login
+  )
+}

@@ -10,19 +10,18 @@ import {
   Simulator,
 } from "generated/graphql";
 import "./SimulatorConfig.scss";
-import {useParams, useNavigate} from "react-router-dom";
+import {useParams, useNavigate, Route, Routes} from "react-router-dom";
 
 const SimulatorConfig = () => {
-  const [selectedProperty, setSelectedProperty] = React.useState<string | null>(
-    null,
-  );
+  const {selectedProperty, simulatorId} = useParams();
+  const navigate = useNavigate();
 
+  function setSelectedProperty(prop: string) {
+    navigate(`/config/simulator/${simulatorId}/${prop}`);
+  }
   const [removeSimMutation] = useRemoveSimulatorMutation();
   const {data} = useSimulatorsConfigSubscription();
   const {data: stationData} = useStationSetConfigSubscription();
-
-  const {simulatorId} = useParams();
-  const navigate = useNavigate();
 
   const selectProperty = (prop: string) => {
     setSelectedProperty(prop);
@@ -32,7 +31,6 @@ const SimulatorConfig = () => {
       if (window.confirm("Are you sure you want to delete that simulator?")) {
         removeSimMutation({variables: {id: simulatorId}});
         navigate("/config/simulator");
-        setSelectedProperty(null);
       }
     }
   };
@@ -85,4 +83,21 @@ const SimulatorConfig = () => {
   );
 };
 
-export default SimulatorConfig;
+const SimulatorConfigRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<SimulatorConfig />} />
+      <Route path=":selectedProperty" element={<SimulatorConfig />} />
+      <Route path=":selectedProperty/:subPath1" element={<SimulatorConfig />} />
+      <Route
+        path=":selectedProperty/:subPath1/:subPath2"
+        element={<SimulatorConfig />}
+      />
+      <Route
+        path=":selectedProperty/:subPath1/:subPath2/:subPath3"
+        element={<SimulatorConfig />}
+      />
+    </Routes>
+  );
+};
+export default SimulatorConfigRoutes;
