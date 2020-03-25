@@ -67,7 +67,6 @@ const resolver = {
     // I'm not handling these as events
     // Seems a little overkill.
     createSet(rootValue, args, context) {
-      console.log(context);
       App.sets.push(new Set(args));
       pubsub.publish("setsUpdate", App.sets);
     },
