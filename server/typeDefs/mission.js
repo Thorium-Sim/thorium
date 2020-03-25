@@ -2,6 +2,8 @@ import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
+import {missionRequirements} from "../helpers/missionRequirements";
+import {Mission} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -10,9 +12,12 @@ const schema = gql`
     id: ID!
     name: String
     description: String
+    category: String
     timeline: [TimelineStep!]!
     simulators: [Simulator]
     aux: Boolean
+    extraRequirements: SimulatorCapabilities
+    requirements(all: Boolean): SimulatorCapabilities
   }
   input MacroInput {
     stepId: ID
@@ -20,6 +25,10 @@ const schema = gql`
     args: String
     delay: Int
     noCancelOnReset: Boolean
+  }
+  input RequirementInput {
+    cards: [String]
+    systems: [String]
   }
   type TimelineStep {
     id: ID!
@@ -71,6 +80,7 @@ const schema = gql`
       missionId: ID!
       name: String
       description: String
+      category: String
       aux: Boolean
       simulators: [ID]
     ): String
@@ -131,6 +141,10 @@ const schema = gql`
     """
     startAuxTimeline(simulatorId: ID!, missionId: ID!): ID
     setAuxTimelineStep(simulatorId: ID!, timelineId: ID!, step: Int!): String
+    missionSetExtraRequirements(
+      missionId: ID!
+      requirements: RequirementInput!
+    ): String
   }
   extend type Subscription {
     missionsUpdate(missionId: ID): [Mission!]!
@@ -178,6 +192,24 @@ const resolver = {
         ? rootValue
         : App.missions.find(m => m.id === rootValue);
       return mission.timeline;
+    },
+    requirements(rootValue, {all}) {
+      const mission = rootValue.timeline
+        ? rootValue
+        : App.missions.find(m => m.id === rootValue);
+      const reqs = missionRequirements(mission);
+      if (!all) {
+        return reqs;
+      }
+      return {
+        ...reqs,
+        cards: reqs.cards
+          .concat(mission.extraRequirements.cards)
+          .filter((a, i, arr) => arr.indexOf(a) === i),
+        systems: reqs.systems
+          .concat(mission.extraRequirements.systems)
+          .filter((a, i, arr) => arr.indexOf(a) === i),
+      };
     },
   },
   TimelineInstance: {

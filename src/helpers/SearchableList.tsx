@@ -8,16 +8,19 @@ interface SearchableListProps {
   items: ListItem[];
   selectedItem: string | null;
   setSelectedItem: React.Dispatch<React.SetStateAction<string | null>>;
+  renderItem?: (item: ListItem) => JSX.Element;
 }
 interface ListItem {
   id: string;
   label: string;
   category?: string | null;
+  [key: string]: any;
 }
 const SearchableList: React.FC<SearchableListProps> = ({
   items,
   selectedItem,
   setSelectedItem,
+  renderItem,
 }) => {
   const [search, setSearch] = React.useState<string>("");
   const filteredObjects = React.useMemo(
@@ -61,7 +64,7 @@ const SearchableList: React.FC<SearchableListProps> = ({
                   active={c.id === selectedItem}
                   onClick={() => setSelectedItem(c.id)}
                 >
-                  {c.label}
+                  {renderItem ? renderItem(c) : c.label}
                 </ListGroupItem>
               ))}
             </React.Fragment>

@@ -128,6 +128,9 @@ const schema = gql`
 
     """
     Macro: Probes: Probe Processed Data
+    Requires:
+     - Cards:ProbeNetwork
+     - Systems:Probes
     """
     probeProcessedData(id: ID!, data: String, flash: Boolean): String
     setProbeTorpedo(id: ID!, torpedo: Boolean!): String

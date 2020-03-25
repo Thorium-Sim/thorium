@@ -33,6 +33,8 @@ const schema = gql`
     ): String
     """
     Macro: Messaging: Send an inter-ship message
+    Requires:
+     - Cards:Messages
     """
     sendMessage(message: MessageInput!): String
   }

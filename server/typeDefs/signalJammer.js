@@ -43,6 +43,9 @@ const schema = gql`
     updateSignalJammer(jammer: SignalJammerInput!): String
     """
     Macro: Signal Jammer: Set Signal
+    Requires:
+     - Cards:SignalJammer
+     - Systems:SignalJammer
     """
     signalJammerSignals(id: ID!, type: String!, signals: Int!): String
     fluxSignalJammer(id: ID): String

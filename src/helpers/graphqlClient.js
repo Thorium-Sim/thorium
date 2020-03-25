@@ -62,6 +62,22 @@ const headersMiddleware = setContext((operation, {headers}) => {
   }));
 });
 
+const mutationMiddleware = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  if (operation.query.definitions[0].operation === "mutation") {
+    const args = operation.variables;
+    const event =
+      operation?.query?.definitions?.[0]?.selectionSet?.selections?.[0]?.name
+        ?.value;
+
+    if (event) {
+      console.log(args, event);
+    }
+  }
+
+  return forward(operation);
+});
+
 const httpLink = ApolloLink.from([
   onError(({graphQLErrors, networkError}) => {
     if (graphQLErrors) {
@@ -73,6 +89,7 @@ const httpLink = ApolloLink.from([
     }
     if (networkError) console.log(`[Network error]:`, networkError);
   }),
+  mutationMiddleware,
   process.env.NODE_ENV === "test"
     ? new MockLink([{request: {query: FLIGHTS_QUERY}}])
     : new HttpLink({

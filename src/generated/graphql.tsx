@@ -1478,9 +1478,16 @@ export type Mission = {
   id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+  category?: Maybe<Scalars["String"]>;
   timeline: Array<TimelineStep>;
   simulators?: Maybe<Array<Maybe<Simulator>>>;
   aux?: Maybe<Scalars["Boolean"]>;
+  extraRequirements?: Maybe<SimulatorCapabilities>;
+  requirements?: Maybe<SimulatorCapabilities>;
+};
+
+export type MissionRequirementsArgs = {
+  all?: Maybe<Scalars["Boolean"]>;
 };
 
 export type Motu = {
@@ -1866,6 +1873,7 @@ export type Mutation = {
   timelineDuplicateItem?: Maybe<Scalars["String"]>;
   startAuxTimeline?: Maybe<Scalars["ID"]>;
   setAuxTimelineStep?: Maybe<Scalars["String"]>;
+  missionSetExtraRequirements?: Maybe<Scalars["String"]>;
   motuAdd?: Maybe<Scalars["String"]>;
   motuRemove?: Maybe<Scalars["String"]>;
   motuUpdateChannel?: Maybe<Scalars["String"]>;
@@ -3633,6 +3641,7 @@ export type MutationEditMissionArgs = {
   missionId: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+  category?: Maybe<Scalars["String"]>;
   aux?: Maybe<Scalars["Boolean"]>;
   simulators?: Maybe<Array<Maybe<Scalars["ID"]>>>;
 };
@@ -3711,6 +3720,11 @@ export type MutationSetAuxTimelineStepArgs = {
   simulatorId: Scalars["ID"];
   timelineId: Scalars["ID"];
   step: Scalars["Int"];
+};
+
+export type MutationMissionSetExtraRequirementsArgs = {
+  missionId: Scalars["ID"];
+  requirements: RequirementInput;
 };
 
 export type MutationMotuAddArgs = {
@@ -6258,6 +6272,7 @@ export type Query = {
   surveyform?: Maybe<Array<Maybe<SurveyForm>>>;
   systems?: Maybe<Array<Maybe<System>>>;
   system?: Maybe<System>;
+  allSystems: Array<Scalars["String"]>;
   tacticalMaps?: Maybe<Array<Maybe<TacticalMap>>>;
   tacticalMap?: Maybe<TacticalMap>;
   targeting?: Maybe<Array<Maybe<Targeting>>>;
@@ -6843,6 +6858,11 @@ export type RemoteAsset = {
   name?: Maybe<Scalars["String"]>;
 };
 
+export type RequirementInput = {
+  cards?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  systems?: Maybe<Array<Maybe<Scalars["String"]>>>;
+};
+
 export type Room = {
   __typename?: "Room";
   id?: Maybe<Scalars["ID"]>;
@@ -7254,6 +7274,7 @@ export type Simulator = {
   hasLegs?: Maybe<Scalars["Boolean"]>;
   spaceEdventuresId?: Maybe<Scalars["String"]>;
   flipped?: Maybe<Scalars["Boolean"]>;
+  capabilities?: Maybe<SimulatorCapabilities>;
   ambiance?: Maybe<Array<Maybe<Ambiance>>>;
   assets?: Maybe<SimulatorAssets>;
   soundEffects?: Maybe<Scalars["JSON"]>;
@@ -7280,6 +7301,14 @@ export type SimulatorAssetsInput = {
   top?: Maybe<Scalars["String"]>;
   logo?: Maybe<Scalars["String"]>;
   bridge?: Maybe<Scalars["String"]>;
+};
+
+export type SimulatorCapabilities = {
+  __typename?: "SimulatorCapabilities";
+  systems: Array<Scalars["String"]>;
+  cards: Array<Scalars["String"]>;
+  spaceEdventures?: Maybe<Scalars["Boolean"]>;
+  docking?: Maybe<Scalars["Boolean"]>;
 };
 
 export type SimulatorInput = {
@@ -9803,17 +9832,49 @@ export type FlightSetupQuery = {__typename?: "Query"} & {
               {__typename?: "StationSet"} & Pick<StationSet, "id" | "name"> & {
                   stations?: Maybe<
                     Array<
-                      Maybe<{__typename?: "Station"} & Pick<Station, "name">>
+                      Maybe<
+                        {__typename?: "Station"} & Pick<
+                          Station,
+                          "name" | "widgets"
+                        > & {
+                            cards?: Maybe<
+                              Array<
+                                Maybe<
+                                  {__typename?: "Card"} & Pick<
+                                    Card,
+                                    "name" | "component"
+                                  >
+                                >
+                              >
+                            >;
+                          }
+                      >
                     >
                   >;
                 }
             >
           >
         >;
+        capabilities?: Maybe<
+          {__typename?: "SimulatorCapabilities"} & Pick<
+            SimulatorCapabilities,
+            "systems" | "docking"
+          >
+        >;
       }
   >;
   missions: Array<
-    {__typename?: "Mission"} & Pick<Mission, "id" | "name" | "description">
+    {__typename?: "Mission"} & Pick<
+      Mission,
+      "id" | "name" | "description" | "category"
+    > & {
+        requirements?: Maybe<
+          {__typename?: "SimulatorCapabilities"} & Pick<
+            SimulatorCapabilities,
+            "cards" | "systems" | "spaceEdventures" | "docking"
+          >
+        >;
+      }
   >;
 };
 
@@ -9922,6 +9983,7 @@ export type EditMissionMutationVariables = {
   missionId: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+  category?: Maybe<Scalars["String"]>;
   aux?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -9938,8 +10000,20 @@ export type MissionSubscriptionSubscription = {__typename?: "Subscription"} & {
   missionsUpdate: Array<
     {__typename?: "Mission"} & Pick<
       Mission,
-      "id" | "name" | "description" | "aux"
+      "id" | "name" | "description" | "category" | "aux"
     > & {
+        extraRequirements?: Maybe<
+          {__typename?: "SimulatorCapabilities"} & Pick<
+            SimulatorCapabilities,
+            "systems" | "cards"
+          >
+        >;
+        requirements?: Maybe<
+          {__typename?: "SimulatorCapabilities"} & Pick<
+            SimulatorCapabilities,
+            "systems" | "cards" | "spaceEdventures" | "docking"
+          >
+        >;
         timeline: Array<
           {__typename?: "TimelineStep"} & Pick<
             TimelineStep,
@@ -10003,6 +10077,16 @@ export type TimelineReorderStepMutationVariables = {
 export type TimelineReorderStepMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "reorderTimelineStep"
+>;
+
+export type MissionSetRequirementsMutationVariables = {
+  missionId: Scalars["ID"];
+  requirements: RequirementInput;
+};
+
+export type MissionSetRequirementsMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "missionSetExtraRequirements"
 >;
 
 export type TimelineUpdateItemMutationVariables = {
@@ -14369,13 +14453,29 @@ export const FlightSetupDocument = gql`
         name
         stations {
           name
+          cards {
+            name
+            component
+          }
+          widgets
         }
+      }
+      capabilities {
+        systems
+        docking
       }
     }
     missions(aux: false) {
       id
       name
       description
+      category
+      requirements(all: true) {
+        cards
+        systems
+        spaceEdventures
+        docking
+      }
     }
   }
 `;
@@ -14875,12 +14975,14 @@ export const EditMissionDocument = gql`
     $missionId: ID!
     $name: String
     $description: String
+    $category: String
     $aux: Boolean
   ) {
     editMission(
       missionId: $missionId
       name: $name
       description: $description
+      category: $category
       aux: $aux
     )
   }
@@ -14906,6 +15008,7 @@ export type EditMissionMutationFn = ApolloReactCommon.MutationFunction<
  *      missionId: // value for 'missionId'
  *      name: // value for 'name'
  *      description: // value for 'description'
+ *      category: // value for 'category'
  *      aux: // value for 'aux'
  *   },
  * });
@@ -14937,7 +15040,18 @@ export const MissionSubscriptionDocument = gql`
       id
       name
       description
+      category
       aux
+      extraRequirements {
+        systems
+        cards
+      }
+      requirements {
+        systems
+        cards
+        spaceEdventures
+        docking
+      }
       timeline {
         id
         name
@@ -15203,6 +15317,61 @@ export type TimelineReorderStepMutationResult = ApolloReactCommon.MutationResult
 export type TimelineReorderStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
   TimelineReorderStepMutation,
   TimelineReorderStepMutationVariables
+>;
+export const MissionSetRequirementsDocument = gql`
+  mutation MissionSetRequirements(
+    $missionId: ID!
+    $requirements: RequirementInput!
+  ) {
+    missionSetExtraRequirements(
+      missionId: $missionId
+      requirements: $requirements
+    )
+  }
+`;
+export type MissionSetRequirementsMutationFn = ApolloReactCommon.MutationFunction<
+  MissionSetRequirementsMutation,
+  MissionSetRequirementsMutationVariables
+>;
+
+/**
+ * __useMissionSetRequirementsMutation__
+ *
+ * To run a mutation, you first call `useMissionSetRequirementsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMissionSetRequirementsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [missionSetRequirementsMutation, { data, loading, error }] = useMissionSetRequirementsMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      requirements: // value for 'requirements'
+ *   },
+ * });
+ */
+export function useMissionSetRequirementsMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    MissionSetRequirementsMutation,
+    MissionSetRequirementsMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    MissionSetRequirementsMutation,
+    MissionSetRequirementsMutationVariables
+  >(MissionSetRequirementsDocument, baseOptions);
+}
+export type MissionSetRequirementsMutationHookResult = ReturnType<
+  typeof useMissionSetRequirementsMutation
+>;
+export type MissionSetRequirementsMutationResult = ApolloReactCommon.MutationResult<
+  MissionSetRequirementsMutation
+>;
+export type MissionSetRequirementsMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  MissionSetRequirementsMutation,
+  MissionSetRequirementsMutationVariables
 >;
 export const TimelineUpdateItemDocument = gql`
   mutation TimelineUpdateItem(

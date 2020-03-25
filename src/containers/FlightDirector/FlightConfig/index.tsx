@@ -17,9 +17,12 @@ import {
   useStartFlightMutation,
   useFlightSetupQuery,
   useFlightTypesQuery,
+  SimulatorCapabilities,
+  Mission,
 } from "generated/graphql";
 import "./flightConfig.scss";
 import {TrainingContext} from "containers/TrainingContextProvider";
+import SearchableList from "helpers/SearchableList";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -117,6 +120,51 @@ const trainingSteps = [
   },
 ];
 
+function checkMissionRequirements(
+  mission: Mission,
+  caps: SimulatorCapabilities,
+) {
+  const requirements: any = {};
+  if (mission.requirements?.docking && !caps.docking)
+    requirements.docking = true;
+  const cardReqs =
+    mission.requirements?.cards.reduce((prev: string[], next) => {
+      const cardReqs = next.split(" or ");
+      if (cardReqs.find(c => caps.cards.includes(c))) return prev;
+      return prev.concat(next);
+    }, []) || [];
+  if (cardReqs.length > 0) requirements.cards = cardReqs;
+
+  const systemReqs =
+    mission.requirements?.systems.reduce((prev: string[], next) => {
+      if (caps.systems.includes(next)) return prev;
+      return prev.concat(next);
+    }, []) || [];
+  if (systemReqs.length > 0) requirements.systems = systemReqs;
+  return requirements;
+}
+
+function sortMissions(
+  missions: Mission[],
+  simulatorCapabilities: SimulatorCapabilities,
+) {
+  return missions.map(m => {
+    const requirements: any = checkMissionRequirements(
+      m,
+      simulatorCapabilities,
+    );
+    return {
+      id: m.id,
+      label: m.name || "",
+      category:
+        Object.keys(requirements).length === 0
+          ? m.category
+          : "Missing Requirements",
+      requirements,
+    };
+  });
+}
+
 interface FlightConfigItem {
   simulatorId: string;
   stationSet: string;
@@ -169,6 +217,28 @@ const FlightConfig: React.FC = () => {
   const missions = data?.missions;
   if (!simulators || !missions) return null;
   const selectedSimObj = simulators.find(s => s.id === selectedSimulator);
+
+  const simulatorCapabilities = {
+    ...selectedSimObj?.capabilities,
+    cards: selectedSimObj?.stationSets
+      ?.find(s => s?.id === selectedStation)
+      ?.stations?.flatMap(s =>
+        (s?.cards?.flatMap(c => c?.component) || []).concat(
+          s?.widgets
+            ?.map(w => {
+              if (w === "messages") return "Messages";
+              if (w === "damageReport") return "DamageControl";
+              if (w === "engineeringReport") return "EngineeringReports";
+              if (w === "rndReport") return "RnDReports";
+              if (w === "officerLog") return "OfficerLog";
+              if (w === "commandLine") return "CommandLine";
+              return w;
+            })
+            .filter(Boolean),
+        ),
+      ),
+    spaceEdventures: Boolean(flightType),
+  } as SimulatorCapabilities;
 
   return (
     <Container className="flight-config">
@@ -249,19 +319,60 @@ const FlightConfig: React.FC = () => {
         </Col>
         <Col sm={3} className="mission-pick">
           {selectedStation && (
-            <div>
+            <>
               <h5>Pick a mission</h5>
-              <Card style={{overflowY: "auto", maxHeight: "50vh"}}>
-                {missions.map(m => (
-                  <TooltipList
-                    onClick={() => setSelectedMission(m?.id || null)}
-                    selected={m?.id === selectedMission}
-                    key={m?.id || ""}
-                    id={m?.id || ""}
-                    content={m?.name || ""}
-                  />
-                ))}
-              </Card>
+              <SearchableList
+                items={sortMissions(
+                  missions as Mission[],
+                  simulatorCapabilities,
+                )}
+                selectedItem={selectedMission}
+                setSelectedItem={setSelectedMission}
+                renderItem={item => {
+                  return (
+                    <>
+                      <div>{item.label}</div>
+                      {Object.keys(item.requirements).length > 0 ? (
+                        <>
+                          <p>
+                            <strong>Missing Items</strong>
+                          </p>
+                          <ul>
+                            {item.requirements.spaceEdventures ? (
+                              <li>Space EdVentures</li>
+                            ) : null}
+                            {item.requirements.docking ? (
+                              <li>Docking Ports/Shuttles</li>
+                            ) : null}
+                            {item.requirements.cards ? (
+                              <li>
+                                Cards:{" "}
+                                <ul>
+                                  {item.requirements.cards.map((c: string) => (
+                                    <li key={c}>{c}</li>
+                                  ))}
+                                </ul>
+                              </li>
+                            ) : null}
+                            {item.requirements.systems ? (
+                              <li>
+                                Systems:{" "}
+                                <ul>
+                                  {item.requirements.systems.map(
+                                    (c: string) => (
+                                      <li key={c}>{c}</li>
+                                    ),
+                                  )}
+                                </ul>
+                              </li>
+                            ) : null}
+                          </ul>
+                        </>
+                      ) : null}
+                    </>
+                  );
+                }}
+              />
               {selectedMission ? (
                 <Button size="sm" block color="info" onClick={addToFlight}>
                   Continue
@@ -271,7 +382,7 @@ const FlightConfig: React.FC = () => {
                   Skip
                 </Button>
               )}
-            </div>
+            </>
           )}
         </Col>
         <Col sm={3} className="current-config">

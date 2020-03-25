@@ -35,10 +35,16 @@ const schema = gql`
     shieldFrequencySet(id: ID!, frequency: Float): String
     """
     Macro: Shields: Set all shield frequencies
+    Requires:
+     - Cards:ShieldControl
+     - Systems:Shield
     """
     shieldFrequencySetAll(simulatorId: ID!, frequency: Float!): String
     """
     Macro: Shields: Hit all shields
+    Requires:
+     - Cards:ShieldControl
+     - Systems:Shield
     """
     hitShields(id: ID, simulatorId: ID): String
     restoreShields(simulatorId: ID): String

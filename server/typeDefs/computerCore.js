@@ -63,6 +63,9 @@ const schema = gql`
     addComputerCoreUser(id: ID!, user: ComputerCoreUserInput): ComputerCoreUser
     """
     Macro: Computer Core: Add Hacker
+    Requires:
+      - Cards:ComputerCore
+      - Systems:ComputerCore
     """
     computerCoreAddHacker(id: ID!, name: String, level: Int): String
     updateComputerCoreUser(

@@ -26,10 +26,22 @@ export const EventList = ({children}) => (
         .filter(mutation => {
           return mutation.description.substr(0, 5) === "Macro";
         })
-        .map(type => ({
-          ...type,
-          description: type.description.replace("Macro: ", ""),
-        }))
+        .map(type => {
+          const description = type.description
+            .replace("Macro: ", "")
+            .split("\n")[0]
+            .trim();
+          const requirements = type.description
+            .split("Requires:")[1]
+            ?.split("-")
+            .map(s => s.trim())
+            .filter(Boolean);
+          return {
+            ...type,
+            description,
+            requirements,
+          };
+        })
         .sort((a, b) => {
           if (a.description > b.description) return 1;
           if (a.description < b.description) return -1;

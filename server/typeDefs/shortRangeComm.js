@@ -119,6 +119,9 @@ const schema = gql`
 
     """
     Macro: Short Range: Set Signals
+    Requires:
+     - Cards:CommShortRange
+     - Systems:ShortRangeComm
     """
     commUpdateSignals(id: ID!, signals: [CommSignalInput]!): String
     commRemoveSignal(id: ID!, signalId: ID!): String
@@ -133,6 +136,9 @@ const schema = gql`
 
     """
     Macro: Short Range: Add Signal
+    Requires:
+     - Cards:CommShortRange
+     - Systems:ShortRangeComm
     """
     addShortRangeComm(
       simulatorId: ID!
@@ -142,6 +148,9 @@ const schema = gql`
 
     """
     Macro: Short Range: Remove Signal
+    Requires:
+     - Cards:CommShortRange
+     - Systems:ShortRangeComm
     """
     removeShortRangeComm(
       simulatorId: ID!
