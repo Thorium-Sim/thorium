@@ -38,10 +38,12 @@ declare global {
 }
 
 const FlightDirectorContainer: React.FC = () => {
+  const location = useLocation();
+  const isCore = location.pathname.includes("/core");
   return (
     <TrainingContextProvider>
       <div className="config-container">
-        <SideNav />
+        {!isCore && <SideNav />}
 
         <Routes>
           <Route path="/" element={<Welcome />} />

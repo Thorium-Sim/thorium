@@ -198,9 +198,7 @@ const TranswarpCore = React.lazy(() => import("./Transwarp/core"));
 const SpecializedDockingCore = React.lazy(() =>
   import("./SpecializedDocking/core"),
 );
-const TimelineThumbnailCore = React.lazy(() =>
-  import("./Timeline/thumbnailData"),
-);
+const TimelineThumbnailCore = React.lazy(() => import("./Timeline"));
 const SpaceEdventuresTokenCore = React.lazy(() =>
   import("./SpaceEdventuresToken/core"),
 );

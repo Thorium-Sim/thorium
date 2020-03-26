@@ -58,6 +58,7 @@ const MissionConfig: React.FC<MissionConfigProps> = ({
         <Label>Mission Description</Label>
         <Input
           type="textarea"
+          rows={5}
           defaultValue={mission?.description || ""}
           name="text"
           onChange={e => updateMission("description", e)}

@@ -165,7 +165,9 @@ const MissionPicker = ({triggerAlert}) => {
               aux: m.aux,
             }))}
             selectedItem={null}
-            setSelectedItem={item => navigate(`/config/mission/${item}`)}
+            setSelectedItem={item =>
+              navigate(`/config/mission/${item}/mission`)
+            }
             renderItem={item => (
               <span className={item.aux ? "text-warning" : ""}>
                 {item.label}

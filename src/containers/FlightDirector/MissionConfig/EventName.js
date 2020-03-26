@@ -9,7 +9,9 @@ const EventName = ({id, label, client}) => {
     if (!memo[id]) memo[id] = client.query({query: MacroConfigQuery});
     memo[id].then(({data}) => {
       const item = data.__schema.mutationType.fields.find(f => f.name === id);
-      const name = item ? item.description.replace("Macro: ", "") : id;
+      const name = item
+        ? item.description.replace("Macro: ", "").split("\n")[0]
+        : id;
       setOutput(name);
     });
   }, [client, id]);

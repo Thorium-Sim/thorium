@@ -1,7 +1,29 @@
 import React, {Fragment} from "react";
 import TimelineItem from "./timelineItem";
+import {
+  TimelineStep as TimelineStepI,
+  Station,
+  Client,
+} from "generated/graphql";
 
-const TimelineStep = ({
+interface TimelineStepProps {
+  simulatorId: string;
+  actions: {[key: string]: boolean};
+  timeline: TimelineStepI[];
+  executedTimelineSteps: string[];
+  currentTimelineStep: number;
+  checkAction: (step: string) => void;
+  showDescription: boolean;
+  values: {[key: string]: any};
+  updateValues: (v: {[key: string]: any}) => void;
+  delay: {[key: string]: number};
+  updateDelay: React.Dispatch<React.SetStateAction<{[key: string]: number}>>;
+  stations: Station[];
+  clients: Client[];
+  simArgs: any;
+}
+
+const TimelineStep: React.FC<TimelineStepProps> = ({
   simulatorId,
   actions,
   timeline,
@@ -16,7 +38,6 @@ const TimelineStep = ({
   stations,
   clients,
   simArgs,
-  steps,
 }) => {
   const currentStep = timeline[currentTimelineStep];
 
@@ -28,7 +49,11 @@ const TimelineStep = ({
         <ul className="timeline-list">
           {currentStep.timelineItems.map(i => (
             <TimelineItem
-              {...i}
+              // {...i}
+              id={i.id}
+              event={i.event}
+              name={i.name || ""}
+              args={i.args || "{}"}
               steps={timeline}
               simulatorId={simulatorId}
               showDescription={showDescription}
@@ -38,6 +63,8 @@ const TimelineStep = ({
               key={i.id}
               values={values}
               updateValues={updateValues}
+              delay={delay}
+              itemDelay={i.delay || 0}
               updateDelay={updateDelay}
               stations={stations}
               clients={clients}

@@ -22,13 +22,13 @@ const schema = gql`
     caps: Boolean
     template: Boolean
     templateId: ID
-    systems: [System]
-    stations: [Station]
+    systems: [System!]
+    stations: [Station!]
     mission: Mission
     missionConfigs: JSON
     currentTimelineStep: Int
-    executedTimelineSteps: [ID]
-    timelines: [TimelineInstance]
+    executedTimelineSteps: [ID!]
+    timelines: [TimelineInstance!]
     decks: [Deck]
     rooms: [Room]
     ship: Ship

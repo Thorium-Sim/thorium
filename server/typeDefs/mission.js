@@ -147,7 +147,7 @@ const schema = gql`
     ): String
   }
   extend type Subscription {
-    missionsUpdate(missionId: ID): [Mission!]!
+    missionsUpdate(missionId: ID, aux: Boolean): [Mission!]!
     auxTimelinesUpdate(simulatorId: ID!): [TimelineInstance]
   }
 `;
@@ -252,19 +252,23 @@ const resolver = {
   Mutation: mutationHelper(schema),
   Subscription: {
     missionsUpdate: {
-      resolve: (rootValue, {missionId}) => {
+      resolve: (rootValue, {missionId, aux}) => {
         if (missionId) {
           return rootValue.filter(m => m.id === missionId);
+        }
+        if (aux) {
+          return rootValue.filter(m => (aux ? m.aux : !m.aux));
         }
         return rootValue;
       },
       subscribe: withFilter(
-        (rootValue, {missionId}) => {
+        (rootValue, {missionId, aux}) => {
           const id = uuid.v4();
           process.nextTick(() => {
             let returnVal = App.missions;
             if (missionId)
               returnVal = returnVal.filter(s => s.id === missionId);
+            if (aux) returnVal = returnVal.filter(m => (aux ? m.aux : !m.aux));
             pubsub.publish(id, returnVal);
           });
           return pubsub.asyncIterator([id, "missionsUpdate"]);

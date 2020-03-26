@@ -106,7 +106,7 @@ export default class Mission {
   }
   addTimelineStepItem(timelineStepId, timelineItemId, timelineItem) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
-    timeline.addTimelineItem(timelineItemId, timelineItem);
+    return timeline.addTimelineItem(timelineItemId, timelineItem);
   }
   removeTimelineStepItem(timelineStepId, timelineItemId) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
@@ -147,9 +147,9 @@ export class TimelineStep {
     if (description || description === "") this.description = description;
   }
   addTimelineItem(id, {name, type, event, args, delay}) {
-    this.timelineItems.push(
-      new TimelineItem(id, {name, type, event, args, delay}),
-    );
+    const item = new TimelineItem(id, {name, type, event, args, delay});
+    this.timelineItems.push(item);
+    return item.id;
   }
   removeTimelineItem(id) {
     this.timelineItems = this.timelineItems.filter(t => t.id !== id);

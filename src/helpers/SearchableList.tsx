@@ -45,7 +45,12 @@ const SearchableList: React.FC<SearchableListProps> = ({
         placeholder="Search"
         onChange={e => setSearch(e.target.value)}
       />
-      <ListGroup>
+      <ListGroup
+        style={{
+          height: "100%",
+          overflowY: "auto",
+        }}
+      >
         {Object.entries(sortedIntoCategories)
           .concat()
           .sort(([a], [b]) => {
