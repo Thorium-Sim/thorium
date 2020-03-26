@@ -1,0 +1,17 @@
+name: discord message
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    on:
+      release:
+        types: [published]
+    steps:
+      - name: send custom message with args
+        uses: appleboy/discord-action@master
+        with:
+          webhook_id: ${{ secrets.discord_webook_id }}
+          webhook_token: ${{ secrets.discord_webhook_secret }}
+          message: Version ${{ GITHUB_REF }} has just been published!.
+          color: "#663399"
