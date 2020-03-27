@@ -1,3 +1,92 @@
+# [2.8.0](https://github.com/Thorium-Sim/thorium/compare/2.7.0...2.8.0) (2020-03-21)
+
+### Bug Fixes
+
+- **Assets:** Fixes an issue where asset previews don't appear. Closes
+  [#2855](https://github.com/Thorium-Sim/thorium/issues/2855)
+  ([8d0a769](https://github.com/Thorium-Sim/thorium/commit/8d0a7693cbd7ae0b444e130daebff4559c16a3ff))
+- **Kiosk:** Fixes an issue where the server doesn't properly start up when
+  first using Thorium. Closes
+  [#2837](https://github.com/Thorium-Sim/thorium/issues/2837)
+  ([f1a86dc](https://github.com/Thorium-Sim/thorium/commit/f1a86dc53b503a8bd36181a7b1115a2aa81177f6))
+- **Messaging:** Fixes an issue where messaging core doesn't allow new
+  conversations to be started. Closes
+  [#2838](https://github.com/Thorium-Sim/thorium/issues/2838)
+  ([25feee4](https://github.com/Thorium-Sim/thorium/commit/25feee48bb6195be5bf2824c5c259fd918eb063a))
+- **Messaging:** The new message alert for messaging shouldn't appear for the
+  top item incorrectly. Closes
+  [#2832](https://github.com/Thorium-Sim/thorium/issues/2832)
+  ([1a0d2c5](https://github.com/Thorium-Sim/thorium/commit/1a0d2c5f7fddd178525acab647fdb99b81d9f6d2))
+- **Probes:** Makes it possible to set the probe count to 0 from the probes
+  core. Closes [#2840](https://github.com/Thorium-Sim/thorium/issues/2840)
+  ([30c3fd7](https://github.com/Thorium-Sim/thorium/commit/30c3fd7b635a44c16243f367a59d578c7681ceb9))
+- **Railgun:** Tune the click radius of the railgun to make it more accurate.
+  ([63fb21d](https://github.com/Thorium-Sim/thorium/commit/63fb21dda636f98eb33be5558b7c29be90303131))
+- **Sensors:** Improves the Update Sensor Grid macro, fixing a few problems with
+  it. Closes [#2829](https://github.com/Thorium-Sim/thorium/issues/2829). Closes
+  [#2834](https://github.com/Thorium-Sim/thorium/issues/2834). Closes
+  [#2839](https://github.com/Thorium-Sim/thorium/issues/2839)
+  ([5585f4d](https://github.com/Thorium-Sim/thorium/commit/5585f4d336f98f982a2364bffff55af93ad09b85))
+- **Sensors:** Non-square sensor contacts should now appear correctly on the
+  grid. Note that square images are still preferred and will behave more
+  appropriately. Fixes
+  [#2865](https://github.com/Thorium-Sim/thorium/issues/2865)
+  ([696dd5e](https://github.com/Thorium-Sim/thorium/commit/696dd5e9a847d0582dbe56e15ea896ed19ee9054))
+
+### Features
+
+- **Alert Condition:** Adds trigger for changing the alert condition. Closes
+  [#2843](https://github.com/Thorium-Sim/thorium/issues/2843)
+  ([430f95c](https://github.com/Thorium-Sim/thorium/commit/430f95cfeb77ed8224f592ca99d88aca741663d1))
+- **Computer Core:** Add a timeline action for creating new hackers. Closes
+  [#2861](https://github.com/Thorium-Sim/thorium/issues/2861)
+  ([2f6bc15](https://github.com/Thorium-Sim/thorium/commit/2f6bc155325f6ee83b0ad152b7bb81ba206e916e))
+- **Docking:** Add a timeline action for updating the status of shuttles and
+  docking ports. It must be added to missions/triggers/etc and then configured
+  on each simulator config. Closes
+  [#2862](https://github.com/Thorium-Sim/thorium/issues/2862)
+  ([93f8fcc](https://github.com/Thorium-Sim/thorium/commit/93f8fcc18d785834e2d4916ec521d8767fc7cf3b))
+- **Internal Comm:** Adds a trigger for internal comm, including a switch option
+  for whether all decks are being called. Closes
+  [#2846](https://github.com/Thorium-Sim/thorium/issues/2846)
+  ([4729b11](https://github.com/Thorium-Sim/thorium/commit/4729b11b204f69bb43d5fd370b8c3b4f6a63189f))
+- **Jump Drive:** Adds triggers for jump drive activation/deactivation and ring
+  extension/retraction. Closes
+  [#2844](https://github.com/Thorium-Sim/thorium/issues/2844)
+  ([13fc356](https://github.com/Thorium-Sim/thorium/commit/13fc356142026a6c35631c6e296c072c60469328))
+- **Macros:** Add buttons to duplicate macros and the actions in the macros.
+  Closes [#2868](https://github.com/Thorium-Sim/thorium/issues/2868)
+  ([4b8a526](https://github.com/Thorium-Sim/thorium/commit/4b8a5262fba81d766a13ea4d23f51a1c1db8351b))
+- **Notifications:** Adds a 'Core Reminder' and 'AuxCore Reminder' notification
+  type in the "Send Notification" macro which can be added to any timeline
+  action to provide reminders to core or auxcore. Closes
+  [#2831](https://github.com/Thorium-Sim/thorium/issues/2831)
+  ([b75dd0d](https://github.com/Thorium-Sim/thorium/commit/b75dd0dd6c98709d16f62ba6b197f38b8740fe23))
+- **Sensors:** Adds a timeline action for responding to sensor scans. You can
+  use this with triggers to automatically respond to sensor requests based on
+  what they requested using fuzzy matching. Closes
+  [#2859](https://github.com/Thorium-Sim/thorium/issues/2859)
+  ([13a3477](https://github.com/Thorium-Sim/thorium/commit/13a3477cc5b7b9cc85a2a2639baf1df548f7e24a))
+- **Timeline:** Adds a "Duplicate Item" button to the mission timeline config.
+  Closes [#2857](https://github.com/Thorium-Sim/thorium/issues/2857)
+  ([7ea8941](https://github.com/Thorium-Sim/thorium/commit/7ea89418b1cc45270d10cedfe34849c85f0fef3e))
+- **Timeline:** Adds a special new timeline action which allows you to print
+  PDFs from your timeline. PDFs must be uploaded as assets to be usable. Note
+  that the computer that runs the timeline action will see a print dialog and
+  must be connected to a printer for it to work correctly. Don't use this
+  timeline action on crew computers. It also must be initiated from the timeline
+  or macros core; it won't do anything if you execute it from a trigger. Closes
+  [#2852](https://github.com/Thorium-Sim/thorium/issues/2852)
+  ([aaa8985](https://github.com/Thorium-Sim/thorium/commit/aaa8985d6601588d98e5c800863c17e2fa37f64e))
+- **Triggers:** Adds fuzzy text matching to trigger switches. This gives greater
+  flexibility when performing matches on your triggers that deal with text, like
+  sensor scan answers. Refs
+  [#2859](https://github.com/Thorium-Sim/thorium/issues/2859)
+  ([5431033](https://github.com/Thorium-Sim/thorium/commit/54310337aa289cbf758b801e7ef99057ed3fe19c))
+- **Viewscreen:** Add the Sensors Grid as a viewscreen card. Closes
+  [#2864](https://github.com/Thorium-Sim/thorium/issues/2864)
+  ([3d83765](https://github.com/Thorium-Sim/thorium/commit/3d83765236a77027efd35def831491bd7c0d02c4))
+
 # [2.7.0](https://github.com/Thorium-Sim/thorium/compare/v2.6.1...2.7.0) (2020-03-07)
 
 ### Bug Fixes
