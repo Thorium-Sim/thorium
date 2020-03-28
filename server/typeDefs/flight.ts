@@ -255,7 +255,7 @@ const schema = gql`
     email: String
   }
   extend type Query {
-    flights(running: Boolean, id: ID): [Flight]
+    flights(running: Boolean, id: ID): [Flight!]!
     events: [String]
   }
   extend type Mutation {

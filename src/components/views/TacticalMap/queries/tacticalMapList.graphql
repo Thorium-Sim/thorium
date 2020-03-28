@@ -1,0 +1,10 @@
+subscription TacticalMapList {
+  tacticalMapsUpdate {
+    id
+    name
+    flight {
+      id
+    }
+    template
+  }
+}

@@ -1,12 +1,12 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
+import baseProps from "../../../stories/helpers/baseProps";
 import Component, {
   MEDICAL_ROSTER_CREW_SUB,
   MEDICAL_ROSTER_QUERY,
   MEDICAL_ROSTER_SUB,
-} from "./index.js";
+} from "./index";
 
 it.skip(
   "should render",

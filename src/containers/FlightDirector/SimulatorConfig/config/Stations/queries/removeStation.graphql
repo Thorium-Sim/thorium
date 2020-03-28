@@ -1,0 +1,3 @@
+mutation RemoveStation($id: ID!, $stationName: String!) {
+  removeStationFromStationSet(stationSetID: $id, stationName: $stationName)
+}

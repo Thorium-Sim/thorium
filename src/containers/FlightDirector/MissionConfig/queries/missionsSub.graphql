@@ -1,0 +1,24 @@
+subscription MissionSubscription($missionId: ID!) {
+  missionsUpdate(missionId: $missionId) {
+    id
+    name
+    description
+    aux
+    timeline {
+      id
+      name
+      description
+      order
+      timelineItems {
+        id
+        name
+        type
+        event
+        args
+        delay
+        needsConfig
+        noCancelOnReset
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+mutation RenameStation($id: ID!, $name: String!, $newName: String!) {
+  editStationInStationSet(
+    stationSetID: $id
+    stationName: $name
+    newStationName: $newName
+  )
+}

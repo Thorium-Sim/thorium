@@ -1,6 +1,7 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -285,7 +286,16 @@ const resolver = {
         return returnRes;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("tacticalMapsUpdate"),
+        (rootValue, {flightId}) => {
+          const subId = uuid.v4();
+          process.nextTick(() => {
+            let returnVal = App.tacticalMaps.filter(
+              t => t.flightId === flightId,
+            );
+            pubsub.publish(subId, returnVal);
+          });
+          return pubsub.asyncIterator([subId, "tacticalMapsUpdate"]);
+        },
         (rootValue, {flightId}) => {
           if (flightId) {
             return rootValue.filter(s => s.flightId === flightId).length > 0;
@@ -299,7 +309,14 @@ const resolver = {
         return rootValue;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("tacticalMapUpdate"),
+        (rootValue, {id}) => {
+          const subId = uuid.v4();
+          process.nextTick(() => {
+            let returnVal = App.tacticalMaps.find(t => t.id === id);
+            pubsub.publish(subId, returnVal);
+          });
+          return pubsub.asyncIterator([subId, "tacticalMapUpdate"]);
+        },
         (rootValue, {id, lowInterval}) => {
           if (lowInterval && Date.now() % 20 > 0) return false;
           return id === rootValue.id;

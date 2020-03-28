@@ -68,7 +68,7 @@ const Records = () => {
     variables: {id: selectedTemplate},
   });
   const [renameTemplate] = useMutation(RENAME_TEMPLATE);
-  if (loading || !data) return "Loading...";
+  if (loading || !data) return <p>Loading...</p>;
   const {recordTemplates} = data;
 
   const templateObj = recordTemplates.find(r => r.id === selectedTemplate);

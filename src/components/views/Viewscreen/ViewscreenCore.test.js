@@ -1,8 +1,8 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Core, {VIEWSCREEN_CORE_QUERY, VIEWSCREEN_CORE_SUB} from "./core.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Core, {VIEWSCREEN_CORE_QUERY, VIEWSCREEN_CORE_SUB} from "./core";
 import {assetsMocks} from "mocks/cards/Assets.mock";
 
 it("should render", async () => {

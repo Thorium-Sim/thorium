@@ -1,0 +1,3 @@
+mutation PauseFlight($flightId: ID!) {
+  pauseFlight(flightId: $flightId)
+}

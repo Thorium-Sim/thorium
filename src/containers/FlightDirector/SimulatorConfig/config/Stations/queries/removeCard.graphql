@@ -1,0 +1,7 @@
+mutation RemoveCard($id: ID!, $stationName: String!, $cardName: String!) {
+  removeCardFromStation(
+    stationSetID: $id
+    stationName: $stationName
+    cardName: $cardName
+  )
+}

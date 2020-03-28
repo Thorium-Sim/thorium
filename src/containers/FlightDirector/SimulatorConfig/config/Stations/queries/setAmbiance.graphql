@@ -1,0 +1,11 @@
+mutation SetAmbiance(
+  $stationSetID: ID!
+  $stationName: String!
+  $ambiance: String
+) {
+  setStationAmbiance(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    ambiance: $ambiance
+  )
+}

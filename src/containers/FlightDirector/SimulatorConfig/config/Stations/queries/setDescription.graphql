@@ -1,0 +1,11 @@
+mutation SetStationDescription(
+  $stationSetID: ID!
+  $stationName: String!
+  $description: String!
+) {
+  setStationDescription(
+    stationSetID: $stationSetID
+    stationName: $stationName
+    description: $description
+  )
+}

@@ -1,0 +1,3 @@
+mutation RemoveTacticalItem($mapId: ID!, $layerId: ID!, $itemId: ID!) {
+  removeTacticalMapItem(mapId: $mapId, layerId: $layerId, itemId: $itemId)
+}

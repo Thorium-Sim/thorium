@@ -1,0 +1,3 @@
+mutation DeleteFlight($flightId: ID!) {
+  deleteFlight(flightId: $flightId)
+}

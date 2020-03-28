@@ -1,0 +1,3 @@
+mutation SetStationLayout($id: ID!, $name: String!, $layout: String!) {
+  setStationLayout(stationSetID: $id, stationName: $name, layout: $layout)
+}

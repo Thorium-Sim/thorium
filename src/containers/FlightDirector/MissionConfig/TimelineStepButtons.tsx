@@ -5,15 +5,15 @@ import {
   useTimelineReorderStepMutation,
   useTimelineRemoveStepMutation,
   useTimelineDuplicateStepMutation,
+  Mission,
 } from "generated/graphql";
-import {MissionI} from "./TimelineTypes";
 
 interface TimelineStepButtonsProps {
-  mission: MissionI;
+  mission: Mission;
   setSelectedTimelineStep: (v: string | null) => void;
   selectedTimelineStep: string | null;
   removeMission: () => void;
-  exportMissionScript: (mission: MissionI) => void;
+  exportMissionScript: (mission: Mission) => void;
 }
 const TimelineStepButtons: React.FC<TimelineStepButtonsProps> = ({
   mission,

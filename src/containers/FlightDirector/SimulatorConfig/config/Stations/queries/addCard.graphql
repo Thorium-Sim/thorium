@@ -1,0 +1,15 @@
+mutation AddCard(
+  $id: ID!
+  $name: String!
+  $cardName: String!
+  $cardComponent: String!
+  $cardIcon: String
+) {
+  addCardToStation(
+    stationSetID: $id
+    stationName: $name
+    cardName: $cardName
+    cardComponent: $cardComponent
+    cardIcon: $cardIcon
+  )
+}

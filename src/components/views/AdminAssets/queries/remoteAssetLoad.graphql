@@ -1,0 +1,3 @@
+mutation RemoteAssetLoad($folderPath: String!, $files: [RemoteAsset!]!) {
+  downloadRemoteAssets(folderPath: $folderPath, files: $files)
+}

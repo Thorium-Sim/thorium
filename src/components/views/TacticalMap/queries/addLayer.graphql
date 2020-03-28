@@ -1,0 +1,3 @@
+mutation NewLayer($mapId: ID!, $name: String!) {
+  addTacticalMapLayer(mapId: $mapId, name: $name)
+}

@@ -1,0 +1,90 @@
+subscription TacticalMapUpdate($id: ID!) {
+  tacticalMapUpdate(id: $id) {
+    id
+    name
+    flight {
+      id
+    }
+    interval
+    layers {
+      id
+      name
+      type
+      items {
+        id
+        layerId
+        font
+        label
+        fontSize
+        fontColor
+        icon
+        size
+        speed
+        velocity {
+          x
+          y
+        }
+        location {
+          x
+          y
+        }
+        destination {
+          x
+          y
+        }
+        rotation
+        opacity
+        flash
+        ijkl
+        wasd
+        thrusters
+        rotationMatch
+        thrusterControls {
+          rotation
+          reversed
+          matchRotation
+          up
+          down
+          left
+          right
+        }
+      }
+      paths {
+        id
+        layerId
+        start {
+          x
+          y
+        }
+        end {
+          x
+          y
+        }
+        c1 {
+          x
+          y
+        }
+        c2 {
+          x
+          y
+        }
+        color
+        width
+        arrow
+      }
+      image
+      color
+      labels
+      gridCols
+      gridRows
+      advance
+      asset
+      autoplay
+      loop
+      playbackSpeed
+      opacity
+    }
+    frozen
+    template
+  }
+}

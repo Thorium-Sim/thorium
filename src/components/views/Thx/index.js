@@ -6,7 +6,7 @@ import Thx from "./thx";
 import "./style.scss";
 
 const fragment = gql`
-  fragment THXData on Thx {
+  fragment THXDeviceData on Thx {
     id
     name
     clients {
@@ -25,7 +25,7 @@ const fragment = gql`
 export const THX_QUERY = gql`
   query Thx($simulatorId: ID!) {
     thx(simulatorId: $simulatorId) {
-      ...THXData
+      ...THXDeviceData
     }
   }
   ${fragment}
@@ -33,7 +33,7 @@ export const THX_QUERY = gql`
 export const THX_SUB = gql`
   subscription ThxUpdate($simulatorId: ID!) {
     thxUpdate(simulatorId: $simulatorId) {
-      ...THXData
+      ...THXDeviceData
     }
   }
   ${fragment}

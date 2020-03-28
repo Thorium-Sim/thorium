@@ -1,0 +1,10 @@
+query PanelsAndInterfaces {
+  softwarePanels {
+    id
+    name
+  }
+  interfaces {
+    id
+    name
+  }
+}

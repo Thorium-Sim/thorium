@@ -1,0 +1,3 @@
+mutation DuplicateTactical($id: ID!, $name: String!) {
+  duplicateTacticalMap(id: $id, name: $name)
+}
