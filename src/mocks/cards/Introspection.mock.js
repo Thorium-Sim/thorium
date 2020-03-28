@@ -1,9 +1,9 @@
-import {MacroConfigQuery} from "containers/FlightDirector/MissionConfig/EventPicker";
+import {IntrospectionQueryDocument} from "generated/graphql";
 import introspection from "../data/introspection";
 export default [
   {
     request: {
-      query: MacroConfigQuery,
+      query: IntrospectionQueryDocument,
     },
     result: {
       data: introspection,

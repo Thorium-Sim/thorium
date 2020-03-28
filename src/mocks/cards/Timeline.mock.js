@@ -1,23 +1,24 @@
-import {TIMELINE_QUERY, TIMELINE_SUB} from "components/views/Timeline";
+import {
+  TimelineMissionDocument,
+  TimelineSimulatorDocument,
+} from "generated/graphql";
 import simulators from "../data/simulators";
 import missions from "../data/missions";
 import IntrospectionMock from "./Introspection.mock";
 export default [
   {
     request: {
-      query: TIMELINE_QUERY,
-      variables: {simulatorId: "test"},
+      query: TimelineMissionDocument,
     },
     result: {
       data: {
-        missions,
-        simulators,
+        missionsUpdate: missions,
       },
     },
   },
   {
     request: {
-      query: TIMELINE_SUB,
+      query: TimelineSimulatorDocument,
       variables: {simulatorId: "test"},
     },
     result: {
