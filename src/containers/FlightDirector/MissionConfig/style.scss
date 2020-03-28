@@ -17,6 +17,32 @@
   .magic-child {
     margin: 0 20px;
   }
+  .requirements {
+    display: flex;
+    .cards {
+      flex: 1;
+    }
+    .systems {
+      flex: 1;
+    }
+    .other {
+      flex: 1;
+    }
+  }
+}
+.recording-pulse {
+  animation: record-pulse;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes record-pulse {
+  from {
+    background-color: #dc3545;
+  }
+  to {
+    background-color: #6d2130;
+  }
 }
 
 .sensors-contact-army-picture {

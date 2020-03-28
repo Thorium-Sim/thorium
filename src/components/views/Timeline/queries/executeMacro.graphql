@@ -1,0 +1,3 @@
+mutation ExecuteMacros($simulatorId: ID!, $macros: [MacroInput]!) {
+  triggerMacros(simulatorId: $simulatorId, macros: $macros)
+}

@@ -104,12 +104,18 @@ const schema = gql`
     ): String
     """
     Macro: Targeting: Clear Targeting Classes
+    Requires:
+     - Cards:Targeting, TargetingStandalone
+     - Systems:Targeting
     """
     clearAllTargetingContacts(id: ID!): String
     setTargetingRange(id: ID!, range: Float!): String
 
     """
     Macro: Targeting: Set Targeting Classes
+    Requires:
+     - Cards:Targeting, TargetingStandalone
+     - Systems:Targeting
     """
     setTargetingClasses(id: ID!, classInput: [TargetClassInput]!): String
   }

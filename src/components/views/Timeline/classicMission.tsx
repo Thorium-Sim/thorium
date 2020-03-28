@@ -1,29 +1,48 @@
 import React from "react";
 import {ListGroup, ListGroupItem} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
-import gql from "graphql-tag.macro";
 import allowedMacros from "./allowedMacros";
 import {FaCaretRight} from "react-icons/fa";
 import TimelineItem from "./timelineItem";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
 import triggerLocalMacros from "helpers/triggerLocalMacros";
+import {
+  TimelineStep as TimelineStepI,
+  Station,
+  Client,
+  useSetSimulatorTimelineStepMutation,
+  useExecuteMacrosMutation,
+} from "generated/graphql";
 
-const TimelineStep = ({
+interface TimelineStepProps {
+  t?: TimelineStepI;
+  index: number;
+  timeline: TimelineStepI[];
+  onlyExecuteViewscreen: boolean;
+  simulatorId: string;
+  currentTimelineStep: number;
+  executedTimelineSteps: string[];
+  stations: Station[];
+  clients: Client[];
+  simArgs: any;
+  auxTimelineId?: string;
+}
+const TimelineStep: React.FC<TimelineStepProps> = ({
   t,
   index,
   timeline,
   simulatorId,
   currentTimelineStep,
-  updateTimelineStep,
-  triggerMacros,
   executedTimelineSteps,
   stations,
   clients,
   simArgs,
   onlyExecuteViewscreen,
 }) => {
+  const [setTimelineStep] = useSetSimulatorTimelineStepMutation();
+  const [triggerMacros] = useExecuteMacrosMutation();
+
   const [expanded, setExpanded] = React.useState(false);
-  const runMacro = t => {
+  const runMacro = (t: TimelineStepI) => {
     if (!t) return;
     const stepIndex = timeline.findIndex(i => i.id === t.id);
     const macros = t.timelineItems
@@ -31,15 +50,16 @@ const TimelineStep = ({
         onlyExecuteViewscreen ? allowedMacros.indexOf(a.event) > -1 : true,
       )
       .map(tt => {
-        const args =
-          typeof tt.args === "string"
-            ? JSON.stringify({...JSON.parse(tt.args)})
-            : JSON.stringify({...tt.args});
+        const args = !tt.args
+          ? "{}"
+          : typeof tt.args === "string"
+          ? JSON.stringify({...JSON.parse(tt.args)})
+          : JSON.stringify({...(tt.args as Object)});
         return {
           stepId: tt.id,
           event: tt.event,
           args,
-          delay: tt.delay,
+          delay: tt.delay || 0,
         };
       });
     const variables = {
@@ -48,13 +68,12 @@ const TimelineStep = ({
     };
     triggerLocalMacros(macros);
     triggerMacros({variables});
-    updateTimelineStep &&
-      updateTimelineStep({
-        variables: {
-          simulatorId,
-          step: stepIndex + 1,
-        },
-      });
+    setTimelineStep({
+      variables: {
+        simulatorId,
+        step: stepIndex + 1,
+      },
+    });
   };
 
   const updateValues = () => {};
@@ -64,7 +83,16 @@ const TimelineStep = ({
   const values = {};
   return (
     <ListGroupItem active={index === currentTimelineStep - 1}>
-      <div onClick={() => runMacro(t)}>
+      <div
+        onClick={() => t && runMacro(t)}
+        style={{
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          width: "calc(100% - 1px)",
+          maxWidth: "285px",
+        }}
+      >
         <FaCaretRight
           onClick={e => {
             e.preventDefault();
@@ -74,12 +102,12 @@ const TimelineStep = ({
           className={`expand-toggle ${expanded ? "expanded" : ""}`}
         />{" "}
         <strong>
-          {index + 1}: {t.name}
+          {index + 1}: {t?.name}
         </strong>
       </div>
       {expanded && (
         <ul className="timeline-list">
-          {t.timelineItems
+          {t?.timelineItems
             .filter(a =>
               onlyExecuteViewscreen
                 ? allowedMacros.indexOf(a.event) > -1
@@ -87,7 +115,14 @@ const TimelineStep = ({
             )
             .map(i => (
               <TimelineItem
-                {...i}
+                id={i.id}
+                name={i.name || ""}
+                event={i.event}
+                args={i.args || "{}"}
+                showDescription={false}
+                steps={timeline}
+                itemDelay={i.delay || 0}
+                delay={{}}
                 simple
                 simulatorId={simulatorId}
                 actions={actions}
@@ -108,8 +143,17 @@ const TimelineStep = ({
   );
 };
 
-const ClassicMission = ({
-  name,
+interface ClassicMissionProps {
+  simulatorId: string;
+  executedTimelineSteps: string[];
+  currentTimelineStep: number;
+  timeline: TimelineStepI[];
+  auxTimelineId?: string;
+  stations: Station[];
+  clients: Client[];
+  simArgs: any;
+}
+const ClassicMission: React.FC<ClassicMissionProps> = ({
   simulatorId,
   executedTimelineSteps,
   currentTimelineStep,
@@ -123,9 +167,9 @@ const ClassicMission = ({
     "thorium_coreOnlyExecuteViewscreen",
     false,
   );
+
   return (
     <>
-      <h5>{name}</h5>
       <label>
         <input
           type="checkbox"
@@ -134,46 +178,25 @@ const ClassicMission = ({
         />{" "}
         Only Execute Viewscreen Actions
       </label>
-      <Mutation
-        mutation={gql`
-          mutation UpdateTimelineStep($simulatorId: ID!, $step: Int!) {
-            setSimulatorTimelineStep(simulatorId: $simulatorId, step: $step)
-          }
-        `}
-      >
-        {updateTimelineStep => (
-          <Mutation
-            mutation={gql`
-              mutation ExecuteMacro($simulatorId: ID!, $macros: [MacroInput]!) {
-                triggerMacros(simulatorId: $simulatorId, macros: $macros)
-              }
-            `}
-          >
-            {triggerMacros => (
-              <ListGroup style={{overflowY: "auto", paddingBottom: "20px"}}>
-                {timeline.map((t, i) => (
-                  <TimelineStep
-                    key={t.id}
-                    t={t}
-                    index={i}
-                    timeline={timeline}
-                    onlyExecuteViewscreen={onlyExecuteViewscreen}
-                    simulatorId={simulatorId}
-                    currentTimelineStep={currentTimelineStep}
-                    updateTimelineStep={updateTimelineStep}
-                    triggerMacros={triggerMacros}
-                    executedTimelineSteps={executedTimelineSteps}
-                    auxTimelineId={auxTimelineId}
-                    stations={stations}
-                    clients={clients}
-                    simArgs={simArgs}
-                  />
-                ))}
-              </ListGroup>
-            )}
-          </Mutation>
-        )}
-      </Mutation>
+
+      <ListGroup className="classic-timeline">
+        {timeline.map((t, i) => (
+          <TimelineStep
+            key={t.id}
+            t={t}
+            index={i}
+            timeline={timeline}
+            onlyExecuteViewscreen={onlyExecuteViewscreen}
+            simulatorId={simulatorId}
+            currentTimelineStep={currentTimelineStep}
+            executedTimelineSteps={executedTimelineSteps}
+            auxTimelineId={auxTimelineId}
+            stations={stations}
+            clients={clients}
+            simArgs={simArgs}
+          />
+        ))}
+      </ListGroup>
     </>
   );
 };

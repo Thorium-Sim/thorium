@@ -281,6 +281,8 @@ const schema = gql`
     # Space EdVentures
     """
     Macro: Space EdVentures: Add Extra Crew Member
+    Requires:
+      - Space EdVentures
     """
     clientAddExtra(flightId: ID!, simulatorId: ID!, name: String!): String
   }

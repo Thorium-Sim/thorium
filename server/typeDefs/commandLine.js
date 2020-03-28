@@ -38,10 +38,14 @@ const schema = gql`
     executeCommandLine(simulatorId: ID!, command: String!, arg: String): String
     """
     Macro: Command Line: Add command line
+    Requires:
+      - Cards:Command Line
     """
     addCommandLineToSimulator(simulatorId: ID!, commandLine: ID!): String
     """
     Macro: Command Line: Remove command line
+    Requires:
+      - Cards:Command Line
     """
     removeCommandLineFromSimulator(simulatorId: ID!, commandLine: ID!): String
     addCommandLineOutput(

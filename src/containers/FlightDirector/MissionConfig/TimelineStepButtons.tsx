@@ -7,13 +7,17 @@ import {
   useTimelineDuplicateStepMutation,
   Mission,
 } from "generated/graphql";
+import {GiBanana} from "react-icons/gi";
 
 interface TimelineStepButtonsProps {
   mission: Mission;
   setSelectedTimelineStep: (v: string | null) => void;
   selectedTimelineStep: string | null;
-  removeMission: () => void;
-  exportMissionScript: (mission: Mission) => void;
+  removeMission?: () => void;
+  exportMissionScript?: (mission: Mission) => void;
+  simple?: boolean;
+  watchMe?: boolean;
+  setWatchMe?: Function;
 }
 const TimelineStepButtons: React.FC<TimelineStepButtonsProps> = ({
   mission,
@@ -21,6 +25,9 @@ const TimelineStepButtons: React.FC<TimelineStepButtonsProps> = ({
   selectedTimelineStep,
   exportMissionScript,
   removeMission,
+  simple,
+  watchMe,
+  setWatchMe,
 }) => {
   const [addStepMutation] = useTimelineAddStepMutation();
   const [removeStepMutation] = useTimelineRemoveStepMutation();
@@ -35,12 +42,11 @@ const TimelineStepButtons: React.FC<TimelineStepButtonsProps> = ({
       name,
       missionId: mission.id,
     };
-
     const res = await addStepMutation({variables});
 
     if (!res) return;
     const stepId = res.data?.addTimelineStep;
-    if (!inserted && stepId) {
+    if (inserted !== true && stepId) {
       setSelectedTimelineStep(stepId);
     }
     return stepId;
@@ -103,30 +109,44 @@ const TimelineStepButtons: React.FC<TimelineStepButtonsProps> = ({
             >
               Remove
             </Button>
+            {setWatchMe && (
+              <Button
+                title="Watch Me Mode"
+                color={watchMe ? "danger" : "dark"}
+                size="sm"
+                className={`${watchMe ? "recording-pulse" : ""} text-warning`}
+                onClick={() => setWatchMe(!watchMe)}
+              >
+                <GiBanana />
+              </Button>
+            )}
           </>
         )}
       </ButtonGroup>
-
-      <Button
-        tag="a"
-        size="sm"
-        href={`/exportMission/${mission.id}`}
-        block
-        color="info"
-      >
-        Export Mission
-      </Button>
-      <Button
-        color="warning"
-        size="sm"
-        block
-        onClick={() => exportMissionScript(mission)}
-      >
-        Export Mission Script
-      </Button>
-      <Button block onClick={removeMission} size="sm" color="danger">
-        Remove Mission
-      </Button>
+      {!simple && (
+        <>
+          <Button
+            tag="a"
+            size="sm"
+            href={`/exportMission/${mission.id}`}
+            block
+            color="info"
+          >
+            Export Mission
+          </Button>
+          <Button
+            color="warning"
+            size="sm"
+            block
+            onClick={() => exportMissionScript?.(mission)}
+          >
+            Export Mission Script
+          </Button>
+          <Button block onClick={removeMission} size="sm" color="danger">
+            Remove Mission
+          </Button>
+        </>
+      )}
     </>
   );
 };

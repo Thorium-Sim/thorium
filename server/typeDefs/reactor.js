@@ -66,6 +66,9 @@ const schema = gql`
     reactorChangeOutput(id: ID!, output: Int!): String
     """
     Macro: Reactor: Change Reactor Efficiency
+    Requires:
+     - Cards:ReactorControl
+     - Systems:Reactor
     """
     reactorChangeEfficiency(id: ID!, efficiency: Float): String
     reactorBatteryChargeLevel(id: ID!, level: Float!): String

@@ -8,12 +8,28 @@ query FlightSetup {
       name
       stations {
         name
+        cards {
+          name
+          component
+        }
+        widgets
       }
+    }
+    capabilities {
+      systems
+      docking
     }
   }
   missions(aux: false) {
     id
     name
     description
+    category
+    requirements(all: true) {
+      cards
+      systems
+      spaceEdventures
+      docking
+    }
   }
 }

@@ -38,12 +38,16 @@ const schema = gql`
   extend type Mutation {
     """
     Macro: Library: Add Entry
+    Requires:
+      - Cards:Library
     """
     addLibraryEntry(entry: LibraryInput!): String
     updateLibraryEntry(entry: LibraryInput!): String
 
     """
     Macro: Library: Remove Entry
+    Requires:
+      - Cards:Library
     """
     removeLibraryEntry(entry: ID, slug: String): String
     importLibraryEntry(

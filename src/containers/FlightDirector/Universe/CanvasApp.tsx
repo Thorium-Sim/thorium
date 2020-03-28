@@ -16,7 +16,6 @@ import {
   Entity as EntityType,
 } from "generated/graphql";
 import Nebula from "./Nebula";
-import Stars from "./Stars";
 
 export type PositionTuple = [number, number, number];
 interface CanvasAppProps {

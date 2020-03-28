@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from "react";
+import React, {Fragment} from "react";
 import {Card, Button, ButtonGroup} from "helpers/reactstrap";
-import ops, {mutationKeys} from "./ops";
+import ops from "./ops";
 import {useApolloClient} from "@apollo/client";
 import {Simulator} from "generated/graphql";
 import {useParams} from "react-router";

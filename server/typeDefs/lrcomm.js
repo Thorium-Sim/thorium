@@ -59,6 +59,9 @@ const schema = gql`
   extend type Mutation {
     """
     Macro: Long Range: Send Long Range Message
+    Requires:
+      - Cards:CommDecoding
+      - Systems:LongRangeComm
     """
     sendLongRangeMessage(
       id: ID
@@ -84,16 +87,25 @@ const schema = gql`
 
     """
     Macro: Interception: Add Interception Signal
+    Requires:
+      - Cards:Interception
+      - Systems:LongRangeComm
     """
     addInterceptionSignal(id: ID!): String
 
     """
     Macro: Interception: Remove Interception Signal
+    Requires:
+      - Cards:Interception
+      - Systems:LongRangeComm
     """
     removeInterceptionSignal(id: ID!): String
     setInterceptionDifficulty(id: ID!, difficulty: Int!): String
     """
     Macro: Long Range: Set preset messages
+    Requires:
+      - Cards:CommDecoding
+      - Systems:LongRangeComm
     """
     setLongRangePresetMessages(
       id: ID

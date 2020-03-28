@@ -1478,9 +1478,16 @@ export type Mission = {
   id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+  category?: Maybe<Scalars["String"]>;
   timeline: Array<TimelineStep>;
   simulators?: Maybe<Array<Maybe<Simulator>>>;
   aux?: Maybe<Scalars["Boolean"]>;
+  extraRequirements?: Maybe<SimulatorCapabilities>;
+  requirements?: Maybe<SimulatorCapabilities>;
+};
+
+export type MissionRequirementsArgs = {
+  all?: Maybe<Scalars["Boolean"]>;
 };
 
 export type Motu = {
@@ -1866,6 +1873,7 @@ export type Mutation = {
   timelineDuplicateItem?: Maybe<Scalars["String"]>;
   startAuxTimeline?: Maybe<Scalars["ID"]>;
   setAuxTimelineStep?: Maybe<Scalars["String"]>;
+  missionSetExtraRequirements?: Maybe<Scalars["String"]>;
   motuAdd?: Maybe<Scalars["String"]>;
   motuRemove?: Maybe<Scalars["String"]>;
   motuUpdateChannel?: Maybe<Scalars["String"]>;
@@ -3633,6 +3641,7 @@ export type MutationEditMissionArgs = {
   missionId: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+  category?: Maybe<Scalars["String"]>;
   aux?: Maybe<Scalars["Boolean"]>;
   simulators?: Maybe<Array<Maybe<Scalars["ID"]>>>;
 };
@@ -3711,6 +3720,11 @@ export type MutationSetAuxTimelineStepArgs = {
   simulatorId: Scalars["ID"];
   timelineId: Scalars["ID"];
   step: Scalars["Int"];
+};
+
+export type MutationMissionSetExtraRequirementsArgs = {
+  missionId: Scalars["ID"];
+  requirements: RequirementInput;
 };
 
 export type MutationMotuAddArgs = {
@@ -6258,6 +6272,7 @@ export type Query = {
   surveyform?: Maybe<Array<Maybe<SurveyForm>>>;
   systems?: Maybe<Array<Maybe<System>>>;
   system?: Maybe<System>;
+  allSystems: Array<Scalars["String"]>;
   tacticalMaps?: Maybe<Array<Maybe<TacticalMap>>>;
   tacticalMap?: Maybe<TacticalMap>;
   targeting?: Maybe<Array<Maybe<Targeting>>>;
@@ -6843,6 +6858,11 @@ export type RemoteAsset = {
   name?: Maybe<Scalars["String"]>;
 };
 
+export type RequirementInput = {
+  cards?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  systems?: Maybe<Array<Maybe<Scalars["String"]>>>;
+};
+
 export type Room = {
   __typename?: "Room";
   id?: Maybe<Scalars["ID"]>;
@@ -7227,13 +7247,13 @@ export type Simulator = {
   caps?: Maybe<Scalars["Boolean"]>;
   template?: Maybe<Scalars["Boolean"]>;
   templateId?: Maybe<Scalars["ID"]>;
-  systems?: Maybe<Array<Maybe<System>>>;
-  stations?: Maybe<Array<Maybe<Station>>>;
+  systems?: Maybe<Array<System>>;
+  stations?: Maybe<Array<Station>>;
   mission?: Maybe<Mission>;
   missionConfigs?: Maybe<Scalars["JSON"]>;
   currentTimelineStep?: Maybe<Scalars["Int"]>;
-  executedTimelineSteps?: Maybe<Array<Maybe<Scalars["ID"]>>>;
-  timelines?: Maybe<Array<Maybe<TimelineInstance>>>;
+  executedTimelineSteps?: Maybe<Array<Scalars["ID"]>>;
+  timelines?: Maybe<Array<TimelineInstance>>;
   decks?: Maybe<Array<Maybe<Deck>>>;
   rooms?: Maybe<Array<Maybe<Room>>>;
   ship?: Maybe<Ship>;
@@ -7254,6 +7274,7 @@ export type Simulator = {
   hasLegs?: Maybe<Scalars["Boolean"]>;
   spaceEdventuresId?: Maybe<Scalars["String"]>;
   flipped?: Maybe<Scalars["Boolean"]>;
+  capabilities?: Maybe<SimulatorCapabilities>;
   ambiance?: Maybe<Array<Maybe<Ambiance>>>;
   assets?: Maybe<SimulatorAssets>;
   soundEffects?: Maybe<Scalars["JSON"]>;
@@ -7280,6 +7301,14 @@ export type SimulatorAssetsInput = {
   top?: Maybe<Scalars["String"]>;
   logo?: Maybe<Scalars["String"]>;
   bridge?: Maybe<Scalars["String"]>;
+};
+
+export type SimulatorCapabilities = {
+  __typename?: "SimulatorCapabilities";
+  systems: Array<Scalars["String"]>;
+  cards: Array<Scalars["String"]>;
+  spaceEdventures?: Maybe<Scalars["Boolean"]>;
+  docking?: Maybe<Scalars["Boolean"]>;
 };
 
 export type SimulatorInput = {
@@ -7745,6 +7774,7 @@ export type SubscriptionMidiSetsArgs = {
 
 export type SubscriptionMissionsUpdateArgs = {
   missionId?: Maybe<Scalars["ID"]>;
+  aux?: Maybe<Scalars["Boolean"]>;
 };
 
 export type SubscriptionAuxTimelinesUpdateArgs = {
@@ -8659,6 +8689,198 @@ export type WarheadInput = {
   probe?: Maybe<Scalars["ID"]>;
 };
 
+/**
+ * A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
+ *
+ * In some cases, you need to provide options to alter GraphQL's execution behavior
+ * in ways field arguments will not suffice, such as conditionally including or
+ * skipping a field. Directives provide this by describing additional information
+ * to the executor.
+ */
+export type __Directive = {
+  __typename?: "__Directive";
+  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+  locations: Array<__DirectiveLocation>;
+  args: Array<__InputValue>;
+};
+
+/**
+ * A Directive can be adjacent to many parts of the GraphQL language, a
+ * __DirectiveLocation describes one such possible adjacencies.
+ */
+export enum __DirectiveLocation {
+  /** Location adjacent to a query operation. */
+  Query = "QUERY",
+  /** Location adjacent to a mutation operation. */
+  Mutation = "MUTATION",
+  /** Location adjacent to a subscription operation. */
+  Subscription = "SUBSCRIPTION",
+  /** Location adjacent to a field. */
+  Field = "FIELD",
+  /** Location adjacent to a fragment definition. */
+  FragmentDefinition = "FRAGMENT_DEFINITION",
+  /** Location adjacent to a fragment spread. */
+  FragmentSpread = "FRAGMENT_SPREAD",
+  /** Location adjacent to an inline fragment. */
+  InlineFragment = "INLINE_FRAGMENT",
+  /** Location adjacent to a variable definition. */
+  VariableDefinition = "VARIABLE_DEFINITION",
+  /** Location adjacent to a schema definition. */
+  Schema = "SCHEMA",
+  /** Location adjacent to a scalar definition. */
+  Scalar = "SCALAR",
+  /** Location adjacent to an object type definition. */
+  Object = "OBJECT",
+  /** Location adjacent to a field definition. */
+  FieldDefinition = "FIELD_DEFINITION",
+  /** Location adjacent to an argument definition. */
+  ArgumentDefinition = "ARGUMENT_DEFINITION",
+  /** Location adjacent to an interface definition. */
+  Interface = "INTERFACE",
+  /** Location adjacent to a union definition. */
+  Union = "UNION",
+  /** Location adjacent to an enum definition. */
+  Enum = "ENUM",
+  /** Location adjacent to an enum value definition. */
+  EnumValue = "ENUM_VALUE",
+  /** Location adjacent to an input object type definition. */
+  InputObject = "INPUT_OBJECT",
+  /** Location adjacent to an input object field definition. */
+  InputFieldDefinition = "INPUT_FIELD_DEFINITION",
+}
+
+/**
+ * One possible value for a given Enum. Enum values are unique values, not a
+ * placeholder for a string or numeric value. However an Enum value is returned in
+ * a JSON response as a string.
+ */
+export type __EnumValue = {
+  __typename?: "__EnumValue";
+  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+  isDeprecated: Scalars["Boolean"];
+  deprecationReason?: Maybe<Scalars["String"]>;
+};
+
+/**
+ * Object and Interface types are described by a list of Fields, each of which has
+ * a name, potentially a list of arguments, and a return type.
+ */
+export type __Field = {
+  __typename?: "__Field";
+  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+  args: Array<__InputValue>;
+  type: __Type;
+  isDeprecated: Scalars["Boolean"];
+  deprecationReason?: Maybe<Scalars["String"]>;
+};
+
+/**
+ * Arguments provided to Fields or Directives and the input fields of an
+ * InputObject are represented as Input Values which describe their type and
+ * optionally a default value.
+ */
+export type __InputValue = {
+  __typename?: "__InputValue";
+  name: Scalars["String"];
+  description?: Maybe<Scalars["String"]>;
+  type: __Type;
+  /** A GraphQL-formatted string representing the default value for this input value. */
+  defaultValue?: Maybe<Scalars["String"]>;
+};
+
+/**
+ * A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all
+ * available types and directives on the server, as well as the entry points for
+ * query, mutation, and subscription operations.
+ */
+export type __Schema = {
+  __typename?: "__Schema";
+  /** A list of all types supported by this server. */
+  types: Array<__Type>;
+  /** The type that query operations will be rooted at. */
+  queryType: __Type;
+  /** If this server supports mutation, the type that mutation operations will be rooted at. */
+  mutationType?: Maybe<__Type>;
+  /** If this server support subscription, the type that subscription operations will be rooted at. */
+  subscriptionType?: Maybe<__Type>;
+  /** A list of all directives supported by this server. */
+  directives: Array<__Directive>;
+};
+
+/**
+ * The fundamental unit of any GraphQL Schema is the type. There are many kinds of
+ * types in GraphQL as represented by the `__TypeKind` enum.
+ *
+ * Depending on the kind of a type, certain fields describe information about that
+ * type. Scalar types provide no information beyond a name and description, while
+ * Enum types provide their values. Object and Interface types provide the fields
+ * they describe. Abstract types, Union and Interface, provide the Object types
+ * possible at runtime. List and NonNull types compose other types.
+ */
+export type __Type = {
+  __typename?: "__Type";
+  kind: __TypeKind;
+  name?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
+  fields?: Maybe<Array<__Field>>;
+  interfaces?: Maybe<Array<__Type>>;
+  possibleTypes?: Maybe<Array<__Type>>;
+  enumValues?: Maybe<Array<__EnumValue>>;
+  inputFields?: Maybe<Array<__InputValue>>;
+  ofType?: Maybe<__Type>;
+};
+
+/**
+ * The fundamental unit of any GraphQL Schema is the type. There are many kinds of
+ * types in GraphQL as represented by the `__TypeKind` enum.
+ *
+ * Depending on the kind of a type, certain fields describe information about that
+ * type. Scalar types provide no information beyond a name and description, while
+ * Enum types provide their values. Object and Interface types provide the fields
+ * they describe. Abstract types, Union and Interface, provide the Object types
+ * possible at runtime. List and NonNull types compose other types.
+ */
+export type __TypeFieldsArgs = {
+  includeDeprecated?: Maybe<Scalars["Boolean"]>;
+};
+
+/**
+ * The fundamental unit of any GraphQL Schema is the type. There are many kinds of
+ * types in GraphQL as represented by the `__TypeKind` enum.
+ *
+ * Depending on the kind of a type, certain fields describe information about that
+ * type. Scalar types provide no information beyond a name and description, while
+ * Enum types provide their values. Object and Interface types provide the fields
+ * they describe. Abstract types, Union and Interface, provide the Object types
+ * possible at runtime. List and NonNull types compose other types.
+ */
+export type __TypeEnumValuesArgs = {
+  includeDeprecated?: Maybe<Scalars["Boolean"]>;
+};
+
+/** An enum describing what kind of type a given `__Type` is. */
+export enum __TypeKind {
+  /** Indicates this type is a scalar. */
+  Scalar = "SCALAR",
+  /** Indicates this type is an object. `fields` and `interfaces` are valid fields. */
+  Object = "OBJECT",
+  /** Indicates this type is an interface. `fields` and `possibleTypes` are valid fields. */
+  Interface = "INTERFACE",
+  /** Indicates this type is a union. `possibleTypes` is a valid field. */
+  Union = "UNION",
+  /** Indicates this type is an enum. `enumValues` is a valid field. */
+  Enum = "ENUM",
+  /** Indicates this type is an input object. `inputFields` is a valid field. */
+  InputObject = "INPUT_OBJECT",
+  /** Indicates this type is a list. `ofType` is a valid field. */
+  List = "LIST",
+  /** Indicates this type is a non-null. `ofType` is a valid field. */
+  NonNull = "NON_NULL",
+}
+
 export type ClientDataFragment = {__typename?: "Client"} & Pick<
   Client,
   | "id"
@@ -8755,34 +8977,28 @@ export type SimulatorDataFragment = {__typename?: "Simulator"} & Pick<
     >;
     stations?: Maybe<
       Array<
-        Maybe<
-          {__typename?: "Station"} & Pick<
-            Station,
-            | "name"
-            | "login"
-            | "training"
-            | "ambiance"
-            | "executive"
-            | "layout"
-            | "messageGroups"
-            | "widgets"
-          > & {
-              cards?: Maybe<
-                Array<
-                  Maybe<
-                    {__typename?: "Card"} & Pick<
-                      Card,
-                      | "name"
-                      | "component"
-                      | "hidden"
-                      | "assigned"
-                      | "newStation"
-                    >
+        {__typename?: "Station"} & Pick<
+          Station,
+          | "name"
+          | "login"
+          | "training"
+          | "ambiance"
+          | "executive"
+          | "layout"
+          | "messageGroups"
+          | "widgets"
+        > & {
+            cards?: Maybe<
+              Array<
+                Maybe<
+                  {__typename?: "Card"} & Pick<
+                    Card,
+                    "name" | "component" | "hidden" | "assigned" | "newStation"
                   >
                 >
-              >;
-            }
-        >
+              >
+            >;
+          }
       >
     >;
   };
@@ -9505,6 +9721,96 @@ export type TemplateUpdateSubscription = {__typename?: "Subscription"} & {
   _templateUpdate?: Maybe<{__typename: "Template"} & TemplateFragmentFragment>;
 };
 
+export type AddMissionMutationVariables = {
+  name: Scalars["String"];
+};
+
+export type AddMissionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "createMission"
+>;
+
+export type ExecuteMacrosMutationVariables = {
+  simulatorId: Scalars["ID"];
+  macros: Array<Maybe<MacroInput>>;
+};
+
+export type ExecuteMacrosMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "triggerMacros"
+>;
+
+export type SetSimulatorMissionMutationVariables = {
+  simulatorId: Scalars["ID"];
+  missionId: Scalars["ID"];
+};
+
+export type SetSimulatorMissionMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setSimulatorMission"
+>;
+
+export type SetSimulatorTimelineStepMutationVariables = {
+  simulatorId: Scalars["ID"];
+  auxTimelineId?: Maybe<Scalars["ID"]>;
+  step: Scalars["Int"];
+};
+
+export type SetSimulatorTimelineStepMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setSimulatorTimelineStep"
+>;
+
+export type TimelineSimulatorSubscriptionVariables = {
+  simulatorId: Scalars["ID"];
+};
+
+export type TimelineSimulatorSubscription = {__typename?: "Subscription"} & {
+  simulatorsUpdate?: Maybe<
+    Array<
+      Maybe<
+        {__typename?: "Simulator"} & Pick<
+          Simulator,
+          | "id"
+          | "currentTimelineStep"
+          | "executedTimelineSteps"
+          | "missionConfigs"
+        > & {
+            stationSet?: Maybe<
+              {__typename?: "StationSet"} & Pick<StationSet, "id">
+            >;
+            mission?: Maybe<{__typename?: "Mission"} & Pick<Mission, "id">>;
+          }
+      >
+    >
+  >;
+};
+
+export type TimelineMissionSubscriptionVariables = {};
+
+export type TimelineMissionSubscription = {__typename?: "Subscription"} & {
+  missionsUpdate: Array<
+    {__typename?: "Mission"} & Pick<
+      Mission,
+      "id" | "name" | "description" | "category"
+    > & {
+        timeline: Array<
+          {__typename?: "TimelineStep"} & Pick<
+            TimelineStep,
+            "id" | "name" | "order" | "description"
+          > & {
+              timelineItems: Array<
+                {__typename?: "TimelineItem"} & Pick<
+                  TimelineItem,
+                  "id" | "name" | "type" | "args" | "event" | "delay"
+                >
+              >;
+            }
+        >;
+      }
+  >;
+};
+
 export type ClientChangedSubscriptionVariables = {};
 
 export type ClientChangedSubscription = {__typename?: "Subscription"} & {
@@ -9542,9 +9848,7 @@ export type ClientChangedSubscription = {__typename?: "Subscription"} & {
                 "id" | "name" | "alertlevel" | "layout" | "interfaces"
               > & {
                   stations?: Maybe<
-                    Array<
-                      Maybe<{__typename?: "Station"} & Pick<Station, "name">>
-                    >
+                    Array<{__typename?: "Station"} & Pick<Station, "name">>
                   >;
                 }
             >;
@@ -9582,11 +9886,7 @@ export type FlightsSubSubscription = {__typename?: "Subscription"} & {
                     "id" | "name"
                   > & {
                       stations?: Maybe<
-                        Array<
-                          Maybe<
-                            {__typename?: "Station"} & Pick<Station, "name">
-                          >
-                        >
+                        Array<{__typename?: "Station"} & Pick<Station, "name">>
                       >;
                     }
                 >
@@ -9803,17 +10103,49 @@ export type FlightSetupQuery = {__typename?: "Query"} & {
               {__typename?: "StationSet"} & Pick<StationSet, "id" | "name"> & {
                   stations?: Maybe<
                     Array<
-                      Maybe<{__typename?: "Station"} & Pick<Station, "name">>
+                      Maybe<
+                        {__typename?: "Station"} & Pick<
+                          Station,
+                          "name" | "widgets"
+                        > & {
+                            cards?: Maybe<
+                              Array<
+                                Maybe<
+                                  {__typename?: "Card"} & Pick<
+                                    Card,
+                                    "name" | "component"
+                                  >
+                                >
+                              >
+                            >;
+                          }
+                      >
                     >
                   >;
                 }
             >
           >
         >;
+        capabilities?: Maybe<
+          {__typename?: "SimulatorCapabilities"} & Pick<
+            SimulatorCapabilities,
+            "systems" | "docking"
+          >
+        >;
       }
   >;
   missions: Array<
-    {__typename?: "Mission"} & Pick<Mission, "id" | "name" | "description">
+    {__typename?: "Mission"} & Pick<
+      Mission,
+      "id" | "name" | "description" | "category"
+    > & {
+        requirements?: Maybe<
+          {__typename?: "SimulatorCapabilities"} & Pick<
+            SimulatorCapabilities,
+            "cards" | "systems" | "spaceEdventures" | "docking"
+          >
+        >;
+      }
   >;
 };
 
@@ -9922,6 +10254,7 @@ export type EditMissionMutationVariables = {
   missionId: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
+  category?: Maybe<Scalars["String"]>;
   aux?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -9929,6 +10262,22 @@ export type EditMissionMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "editMission"
 >;
+
+export type IntrospectionQueryQueryVariables = {};
+
+export type IntrospectionQueryQuery = {__typename?: "Query"} & {
+  __schema: {__typename?: "__Schema"} & {
+    mutationType?: Maybe<
+      {__typename?: "__Type"} & Pick<__Type, "name" | "description"> & {
+          fields?: Maybe<
+            Array<
+              {__typename?: "__Field"} & Pick<__Field, "name" | "description">
+            >
+          >;
+        }
+    >;
+  };
+};
 
 export type MissionSubscriptionSubscriptionVariables = {
   missionId: Scalars["ID"];
@@ -9938,8 +10287,20 @@ export type MissionSubscriptionSubscription = {__typename?: "Subscription"} & {
   missionsUpdate: Array<
     {__typename?: "Mission"} & Pick<
       Mission,
-      "id" | "name" | "description" | "aux"
+      "id" | "name" | "description" | "category" | "aux"
     > & {
+        extraRequirements?: Maybe<
+          {__typename?: "SimulatorCapabilities"} & Pick<
+            SimulatorCapabilities,
+            "systems" | "cards"
+          >
+        >;
+        requirements?: Maybe<
+          {__typename?: "SimulatorCapabilities"} & Pick<
+            SimulatorCapabilities,
+            "systems" | "cards" | "spaceEdventures" | "docking"
+          >
+        >;
         timeline: Array<
           {__typename?: "TimelineStep"} & Pick<
             TimelineStep,
@@ -10003,6 +10364,16 @@ export type TimelineReorderStepMutationVariables = {
 export type TimelineReorderStepMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "reorderTimelineStep"
+>;
+
+export type MissionSetRequirementsMutationVariables = {
+  missionId: Scalars["ID"];
+  requirements: RequirementInput;
+};
+
+export type MissionSetRequirementsMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "missionSetExtraRequirements"
 >;
 
 export type TimelineUpdateItemMutationVariables = {
@@ -10356,110 +10727,108 @@ export type SimulatorsConfigSubscription = {__typename?: "Subscription"} & {
             >;
             systems?: Maybe<
               Array<
-                Maybe<
-                  {__typename?: "System"} & Pick<
-                    System,
-                    "id" | "type" | "name" | "displayName" | "upgradeName"
-                  > & {
-                      upgradeMacros?: Maybe<
-                        Array<
-                          Maybe<
-                            {__typename?: "TimelineItem"} & Pick<
-                              TimelineItem,
-                              "id" | "event" | "args" | "delay"
-                            >
+                {__typename?: "System"} & Pick<
+                  System,
+                  "id" | "type" | "name" | "displayName" | "upgradeName"
+                > & {
+                    upgradeMacros?: Maybe<
+                      Array<
+                        Maybe<
+                          {__typename?: "TimelineItem"} & Pick<
+                            TimelineItem,
+                            "id" | "event" | "args" | "delay"
                           >
                         >
-                      >;
-                      requiredDamageSteps?: Maybe<
-                        Array<
-                          Maybe<
-                            {__typename?: "DamageStep"} & Pick<
-                              DamageStep,
-                              "id" | "name"
-                            > & {
-                                args?: Maybe<
-                                  {__typename?: "DamageStepArgs"} & Pick<
-                                    DamageStepArgs,
-                                    | "end"
-                                    | "cleanup"
-                                    | "name"
-                                    | "orders"
-                                    | "room"
-                                    | "preamble"
-                                    | "type"
-                                    | "message"
-                                    | "code"
-                                    | "inventory"
-                                    | "destination"
-                                    | "equipment"
-                                    | "query"
-                                    | "reactivate"
-                                  >
-                                >;
-                              }
-                          >
+                      >
+                    >;
+                    requiredDamageSteps?: Maybe<
+                      Array<
+                        Maybe<
+                          {__typename?: "DamageStep"} & Pick<
+                            DamageStep,
+                            "id" | "name"
+                          > & {
+                              args?: Maybe<
+                                {__typename?: "DamageStepArgs"} & Pick<
+                                  DamageStepArgs,
+                                  | "end"
+                                  | "cleanup"
+                                  | "name"
+                                  | "orders"
+                                  | "room"
+                                  | "preamble"
+                                  | "type"
+                                  | "message"
+                                  | "code"
+                                  | "inventory"
+                                  | "destination"
+                                  | "equipment"
+                                  | "query"
+                                  | "reactivate"
+                                >
+                              >;
+                            }
                         >
-                      >;
-                      optionalDamageSteps?: Maybe<
-                        Array<
-                          Maybe<
-                            {__typename?: "DamageStep"} & Pick<
-                              DamageStep,
-                              "id" | "name"
-                            > & {
-                                args?: Maybe<
-                                  {__typename?: "DamageStepArgs"} & Pick<
-                                    DamageStepArgs,
-                                    | "end"
-                                    | "cleanup"
-                                    | "name"
-                                    | "orders"
-                                    | "room"
-                                    | "preamble"
-                                    | "type"
-                                    | "message"
-                                    | "code"
-                                    | "inventory"
-                                    | "destination"
-                                    | "equipment"
-                                    | "query"
-                                    | "reactivate"
-                                  >
-                                >;
-                              }
-                          >
+                      >
+                    >;
+                    optionalDamageSteps?: Maybe<
+                      Array<
+                        Maybe<
+                          {__typename?: "DamageStep"} & Pick<
+                            DamageStep,
+                            "id" | "name"
+                          > & {
+                              args?: Maybe<
+                                {__typename?: "DamageStepArgs"} & Pick<
+                                  DamageStepArgs,
+                                  | "end"
+                                  | "cleanup"
+                                  | "name"
+                                  | "orders"
+                                  | "room"
+                                  | "preamble"
+                                  | "type"
+                                  | "message"
+                                  | "code"
+                                  | "inventory"
+                                  | "destination"
+                                  | "equipment"
+                                  | "query"
+                                  | "reactivate"
+                                >
+                              >;
+                            }
                         >
-                      >;
-                      damageTasks?: Maybe<
-                        Array<
-                          Maybe<
-                            {__typename?: "DamageTask"} & Pick<
-                              DamageTask,
-                              "id" | "required"
-                            > & {
-                                taskTemplate?: Maybe<
-                                  {__typename?: "TaskTemplate"} & Pick<
-                                    TaskTemplate,
-                                    "id" | "name" | "definition" | "reportTypes"
-                                  >
-                                >;
-                                nextSteps?: Maybe<
-                                  Array<
-                                    Maybe<
-                                      {__typename?: "TaskTemplate"} & Pick<
-                                        TaskTemplate,
-                                        "id" | "name" | "definition"
-                                      >
+                      >
+                    >;
+                    damageTasks?: Maybe<
+                      Array<
+                        Maybe<
+                          {__typename?: "DamageTask"} & Pick<
+                            DamageTask,
+                            "id" | "required"
+                          > & {
+                              taskTemplate?: Maybe<
+                                {__typename?: "TaskTemplate"} & Pick<
+                                  TaskTemplate,
+                                  "id" | "name" | "definition" | "reportTypes"
+                                >
+                              >;
+                              nextSteps?: Maybe<
+                                Array<
+                                  Maybe<
+                                    {__typename?: "TaskTemplate"} & Pick<
+                                      TaskTemplate,
+                                      "id" | "name" | "definition"
                                     >
                                   >
-                                >;
-                              }
-                          >
+                                >
+                              >;
+                            }
                         >
-                      >;
-                    }
-                >
+                      >
+                    >;
+                  }
               >
             >;
             stationSets?: Maybe<
@@ -13440,6 +13809,317 @@ export type TemplateUpdateSubscriptionHookResult = ReturnType<
 export type TemplateUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<
   TemplateUpdateSubscription
 >;
+export const AddMissionDocument = gql`
+  mutation AddMission($name: String!) {
+    createMission(name: $name)
+  }
+`;
+export type AddMissionMutationFn = ApolloReactCommon.MutationFunction<
+  AddMissionMutation,
+  AddMissionMutationVariables
+>;
+
+/**
+ * __useAddMissionMutation__
+ *
+ * To run a mutation, you first call `useAddMissionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddMissionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addMissionMutation, { data, loading, error }] = useAddMissionMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useAddMissionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    AddMissionMutation,
+    AddMissionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    AddMissionMutation,
+    AddMissionMutationVariables
+  >(AddMissionDocument, baseOptions);
+}
+export type AddMissionMutationHookResult = ReturnType<
+  typeof useAddMissionMutation
+>;
+export type AddMissionMutationResult = ApolloReactCommon.MutationResult<
+  AddMissionMutation
+>;
+export type AddMissionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AddMissionMutation,
+  AddMissionMutationVariables
+>;
+export const ExecuteMacrosDocument = gql`
+  mutation ExecuteMacros($simulatorId: ID!, $macros: [MacroInput]!) {
+    triggerMacros(simulatorId: $simulatorId, macros: $macros)
+  }
+`;
+export type ExecuteMacrosMutationFn = ApolloReactCommon.MutationFunction<
+  ExecuteMacrosMutation,
+  ExecuteMacrosMutationVariables
+>;
+
+/**
+ * __useExecuteMacrosMutation__
+ *
+ * To run a mutation, you first call `useExecuteMacrosMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExecuteMacrosMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [executeMacrosMutation, { data, loading, error }] = useExecuteMacrosMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      macros: // value for 'macros'
+ *   },
+ * });
+ */
+export function useExecuteMacrosMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ExecuteMacrosMutation,
+    ExecuteMacrosMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    ExecuteMacrosMutation,
+    ExecuteMacrosMutationVariables
+  >(ExecuteMacrosDocument, baseOptions);
+}
+export type ExecuteMacrosMutationHookResult = ReturnType<
+  typeof useExecuteMacrosMutation
+>;
+export type ExecuteMacrosMutationResult = ApolloReactCommon.MutationResult<
+  ExecuteMacrosMutation
+>;
+export type ExecuteMacrosMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ExecuteMacrosMutation,
+  ExecuteMacrosMutationVariables
+>;
+export const SetSimulatorMissionDocument = gql`
+  mutation SetSimulatorMission($simulatorId: ID!, $missionId: ID!) {
+    setSimulatorMission(simulatorId: $simulatorId, missionId: $missionId)
+  }
+`;
+export type SetSimulatorMissionMutationFn = ApolloReactCommon.MutationFunction<
+  SetSimulatorMissionMutation,
+  SetSimulatorMissionMutationVariables
+>;
+
+/**
+ * __useSetSimulatorMissionMutation__
+ *
+ * To run a mutation, you first call `useSetSimulatorMissionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetSimulatorMissionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setSimulatorMissionMutation, { data, loading, error }] = useSetSimulatorMissionMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      missionId: // value for 'missionId'
+ *   },
+ * });
+ */
+export function useSetSimulatorMissionMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetSimulatorMissionMutation,
+    SetSimulatorMissionMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SetSimulatorMissionMutation,
+    SetSimulatorMissionMutationVariables
+  >(SetSimulatorMissionDocument, baseOptions);
+}
+export type SetSimulatorMissionMutationHookResult = ReturnType<
+  typeof useSetSimulatorMissionMutation
+>;
+export type SetSimulatorMissionMutationResult = ApolloReactCommon.MutationResult<
+  SetSimulatorMissionMutation
+>;
+export type SetSimulatorMissionMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetSimulatorMissionMutation,
+  SetSimulatorMissionMutationVariables
+>;
+export const SetSimulatorTimelineStepDocument = gql`
+  mutation SetSimulatorTimelineStep(
+    $simulatorId: ID!
+    $auxTimelineId: ID
+    $step: Int!
+  ) {
+    setSimulatorTimelineStep(
+      simulatorId: $simulatorId
+      timelineId: $auxTimelineId
+      step: $step
+    )
+  }
+`;
+export type SetSimulatorTimelineStepMutationFn = ApolloReactCommon.MutationFunction<
+  SetSimulatorTimelineStepMutation,
+  SetSimulatorTimelineStepMutationVariables
+>;
+
+/**
+ * __useSetSimulatorTimelineStepMutation__
+ *
+ * To run a mutation, you first call `useSetSimulatorTimelineStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetSimulatorTimelineStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setSimulatorTimelineStepMutation, { data, loading, error }] = useSetSimulatorTimelineStepMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      auxTimelineId: // value for 'auxTimelineId'
+ *      step: // value for 'step'
+ *   },
+ * });
+ */
+export function useSetSimulatorTimelineStepMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetSimulatorTimelineStepMutation,
+    SetSimulatorTimelineStepMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SetSimulatorTimelineStepMutation,
+    SetSimulatorTimelineStepMutationVariables
+  >(SetSimulatorTimelineStepDocument, baseOptions);
+}
+export type SetSimulatorTimelineStepMutationHookResult = ReturnType<
+  typeof useSetSimulatorTimelineStepMutation
+>;
+export type SetSimulatorTimelineStepMutationResult = ApolloReactCommon.MutationResult<
+  SetSimulatorTimelineStepMutation
+>;
+export type SetSimulatorTimelineStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetSimulatorTimelineStepMutation,
+  SetSimulatorTimelineStepMutationVariables
+>;
+export const TimelineSimulatorDocument = gql`
+  subscription TimelineSimulator($simulatorId: ID!) {
+    simulatorsUpdate(simulatorId: $simulatorId) {
+      id
+      currentTimelineStep
+      executedTimelineSteps
+      missionConfigs
+      stationSet {
+        id
+      }
+      mission {
+        id
+      }
+    }
+  }
+`;
+
+/**
+ * __useTimelineSimulatorSubscription__
+ *
+ * To run a query within a React component, call `useTimelineSimulatorSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTimelineSimulatorSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTimelineSimulatorSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useTimelineSimulatorSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    TimelineSimulatorSubscription,
+    TimelineSimulatorSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    TimelineSimulatorSubscription,
+    TimelineSimulatorSubscriptionVariables
+  >(TimelineSimulatorDocument, baseOptions);
+}
+export type TimelineSimulatorSubscriptionHookResult = ReturnType<
+  typeof useTimelineSimulatorSubscription
+>;
+export type TimelineSimulatorSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  TimelineSimulatorSubscription
+>;
+export const TimelineMissionDocument = gql`
+  subscription TimelineMission {
+    missionsUpdate {
+      id
+      name
+      description
+      category
+      timeline {
+        id
+        name
+        order
+        description
+        timelineItems {
+          id
+          name
+          type
+          args
+          event
+          delay
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useTimelineMissionSubscription__
+ *
+ * To run a query within a React component, call `useTimelineMissionSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTimelineMissionSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTimelineMissionSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTimelineMissionSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    TimelineMissionSubscription,
+    TimelineMissionSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    TimelineMissionSubscription,
+    TimelineMissionSubscriptionVariables
+  >(TimelineMissionDocument, baseOptions);
+}
+export type TimelineMissionSubscriptionHookResult = ReturnType<
+  typeof useTimelineMissionSubscription
+>;
+export type TimelineMissionSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  TimelineMissionSubscription
+>;
 export const ClientChangedDocument = gql`
   subscription ClientChanged {
     clientChanged {
@@ -14369,13 +15049,29 @@ export const FlightSetupDocument = gql`
         name
         stations {
           name
+          cards {
+            name
+            component
+          }
+          widgets
         }
+      }
+      capabilities {
+        systems
+        docking
       }
     }
     missions(aux: false) {
       id
       name
       description
+      category
+      requirements(all: true) {
+        cards
+        systems
+        spaceEdventures
+        docking
+      }
     }
   }
 `;
@@ -14875,12 +15571,14 @@ export const EditMissionDocument = gql`
     $missionId: ID!
     $name: String
     $description: String
+    $category: String
     $aux: Boolean
   ) {
     editMission(
       missionId: $missionId
       name: $name
       description: $description
+      category: $category
       aux: $aux
     )
   }
@@ -14906,6 +15604,7 @@ export type EditMissionMutationFn = ApolloReactCommon.MutationFunction<
  *      missionId: // value for 'missionId'
  *      name: // value for 'name'
  *      description: // value for 'description'
+ *      category: // value for 'category'
  *      aux: // value for 'aux'
  *   },
  * });
@@ -14931,13 +15630,86 @@ export type EditMissionMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EditMissionMutation,
   EditMissionMutationVariables
 >;
+export const IntrospectionQueryDocument = gql`
+  query IntrospectionQuery {
+    __schema {
+      mutationType {
+        name
+        description
+        fields {
+          name
+          description
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useIntrospectionQueryQuery__
+ *
+ * To run a query within a React component, call `useIntrospectionQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIntrospectionQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIntrospectionQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIntrospectionQueryQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    IntrospectionQueryQuery,
+    IntrospectionQueryQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    IntrospectionQueryQuery,
+    IntrospectionQueryQueryVariables
+  >(IntrospectionQueryDocument, baseOptions);
+}
+export function useIntrospectionQueryLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    IntrospectionQueryQuery,
+    IntrospectionQueryQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    IntrospectionQueryQuery,
+    IntrospectionQueryQueryVariables
+  >(IntrospectionQueryDocument, baseOptions);
+}
+export type IntrospectionQueryQueryHookResult = ReturnType<
+  typeof useIntrospectionQueryQuery
+>;
+export type IntrospectionQueryLazyQueryHookResult = ReturnType<
+  typeof useIntrospectionQueryLazyQuery
+>;
+export type IntrospectionQueryQueryResult = ApolloReactCommon.QueryResult<
+  IntrospectionQueryQuery,
+  IntrospectionQueryQueryVariables
+>;
 export const MissionSubscriptionDocument = gql`
   subscription MissionSubscription($missionId: ID!) {
     missionsUpdate(missionId: $missionId) {
       id
       name
       description
+      category
       aux
+      extraRequirements {
+        systems
+        cards
+      }
+      requirements {
+        systems
+        cards
+        spaceEdventures
+        docking
+      }
       timeline {
         id
         name
@@ -15203,6 +15975,61 @@ export type TimelineReorderStepMutationResult = ApolloReactCommon.MutationResult
 export type TimelineReorderStepMutationOptions = ApolloReactCommon.BaseMutationOptions<
   TimelineReorderStepMutation,
   TimelineReorderStepMutationVariables
+>;
+export const MissionSetRequirementsDocument = gql`
+  mutation MissionSetRequirements(
+    $missionId: ID!
+    $requirements: RequirementInput!
+  ) {
+    missionSetExtraRequirements(
+      missionId: $missionId
+      requirements: $requirements
+    )
+  }
+`;
+export type MissionSetRequirementsMutationFn = ApolloReactCommon.MutationFunction<
+  MissionSetRequirementsMutation,
+  MissionSetRequirementsMutationVariables
+>;
+
+/**
+ * __useMissionSetRequirementsMutation__
+ *
+ * To run a mutation, you first call `useMissionSetRequirementsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMissionSetRequirementsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [missionSetRequirementsMutation, { data, loading, error }] = useMissionSetRequirementsMutation({
+ *   variables: {
+ *      missionId: // value for 'missionId'
+ *      requirements: // value for 'requirements'
+ *   },
+ * });
+ */
+export function useMissionSetRequirementsMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    MissionSetRequirementsMutation,
+    MissionSetRequirementsMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    MissionSetRequirementsMutation,
+    MissionSetRequirementsMutationVariables
+  >(MissionSetRequirementsDocument, baseOptions);
+}
+export type MissionSetRequirementsMutationHookResult = ReturnType<
+  typeof useMissionSetRequirementsMutation
+>;
+export type MissionSetRequirementsMutationResult = ApolloReactCommon.MutationResult<
+  MissionSetRequirementsMutation
+>;
+export type MissionSetRequirementsMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  MissionSetRequirementsMutation,
+  MissionSetRequirementsMutationVariables
 >;
 export const TimelineUpdateItemDocument = gql`
   mutation TimelineUpdateItem(

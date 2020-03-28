@@ -3,7 +3,18 @@ subscription MissionSubscription($missionId: ID!) {
     id
     name
     description
+    category
     aux
+    extraRequirements {
+      systems
+      cards
+    }
+    requirements {
+      systems
+      cards
+      spaceEdventures
+      docking
+    }
     timeline {
       id
       name
