@@ -177,10 +177,10 @@ export const TimelineMacroConfig: React.FC<{
 };
 
 export const TimelineActionAdd: React.FC<{
-  selectedTimelineItem: string;
+  selectedTimelineItem?: string;
   selectedTimelineStep: string;
   mission: Mission;
-  setSelectedTimelineItemAction: (itemId: string | null) => void;
+  setSelectedTimelineItemAction?: (itemId: string | null) => void;
 }> = ({
   selectedTimelineItem,
   selectedTimelineStep,
@@ -204,7 +204,7 @@ export const TimelineActionAdd: React.FC<{
     addItemMutation({variables}).then(
       res =>
         res.data?.addTimelineItemToTimelineStep &&
-        setSelectedTimelineItemAction(res.data.addTimelineItemToTimelineStep),
+        setSelectedTimelineItemAction?.(res.data.addTimelineItemToTimelineStep),
     );
   };
   return (
@@ -222,7 +222,7 @@ export const TimelineActionAdd: React.FC<{
                 timelineItemId: selectedTimelineItem,
               },
             });
-            setSelectedTimelineItemAction(
+            setSelectedTimelineItemAction?.(
               res.data?.timelineDuplicateItem || null,
             );
           }}

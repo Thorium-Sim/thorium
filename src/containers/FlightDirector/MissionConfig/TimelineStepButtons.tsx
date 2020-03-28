@@ -7,6 +7,7 @@ import {
   useTimelineDuplicateStepMutation,
   Mission,
 } from "generated/graphql";
+import {GiBanana} from "react-icons/gi";
 
 interface TimelineStepButtonsProps {
   mission: Mission;
@@ -15,6 +16,8 @@ interface TimelineStepButtonsProps {
   removeMission?: () => void;
   exportMissionScript?: (mission: Mission) => void;
   simple?: boolean;
+  watchMe?: boolean;
+  setWatchMe?: Function;
 }
 const TimelineStepButtons: React.FC<TimelineStepButtonsProps> = ({
   mission,
@@ -23,6 +26,8 @@ const TimelineStepButtons: React.FC<TimelineStepButtonsProps> = ({
   exportMissionScript,
   removeMission,
   simple,
+  watchMe,
+  setWatchMe,
 }) => {
   const [addStepMutation] = useTimelineAddStepMutation();
   const [removeStepMutation] = useTimelineRemoveStepMutation();
@@ -104,6 +109,17 @@ const TimelineStepButtons: React.FC<TimelineStepButtonsProps> = ({
             >
               Remove
             </Button>
+            {setWatchMe && (
+              <Button
+                title="Watch Me Mode"
+                color={watchMe ? "danger" : "dark"}
+                size="sm"
+                className={`${watchMe ? "recording-pulse" : ""} text-warning`}
+                onClick={() => setWatchMe(!watchMe)}
+              >
+                <GiBanana />
+              </Button>
+            )}
           </>
         )}
       </ButtonGroup>

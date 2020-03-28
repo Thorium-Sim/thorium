@@ -76,7 +76,6 @@ const Nebula = () => {
   }, [starsImage]);
 
   const geo = React.useRef();
-  return null;
   return (
     <mesh scale={[radius, radius, radius]} material={mats}>
       <boxGeometry ref={geo} args={[1, 1, 1]} attach="geometry" />

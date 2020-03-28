@@ -7,15 +7,22 @@ import {
   TimelineStep,
   useTimelineUpdateStepMutation,
   useTimelineRemoveItemMutation,
+  useTimelineAddItemMutation,
 } from "generated/graphql";
 import TimelineStepButtons from "containers/FlightDirector/MissionConfig/TimelineStepButtons";
 import MissionConfig from "containers/FlightDirector/MissionConfig/MissionConfig";
 import StepPicker from "./StepPicker";
 import {ListGroup, ListGroupItem, FormGroup, Input, Label} from "reactstrap";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
-import {TimelineMacroConfig} from "containers/FlightDirector/MissionConfig/TimelineConfig";
+import {
+  TimelineMacroConfig,
+  TimelineActionAdd,
+} from "containers/FlightDirector/MissionConfig/TimelineConfig";
 import {FaBan} from "react-icons/fa";
 import {Link} from "react-router-dom";
+import {subscribe} from "helpers/pubsub";
+import {capitalCase} from "change-case";
+import {useEventNames} from "containers/FlightDirector/MissionConfig/EventPicker";
 
 interface TimelineActionListProps {
   missionId: string;
@@ -52,18 +59,18 @@ const TimelineActionList: React.FC<TimelineActionListProps> = ({
     e.stopPropagation();
     if (!step.id) return;
     if (!missionId) return;
-    if (window.confirm("Are you sure you want to remove this timeline item?")) {
-      if (timelineItemId === selectedAction) {
-        setSelectedAction(null);
-      }
-
-      const variables = {
-        timelineStepId: step.id,
-        timelineItemId: timelineItemId,
-        missionId,
-      };
-      removeItemMutation({variables});
+    // if (window.confirm("Are you sure you want to remove this timeline item?")) {
+    if (timelineItemId === selectedAction) {
+      setSelectedAction(null);
     }
+
+    const variables = {
+      timelineStepId: step.id,
+      timelineItemId: timelineItemId,
+      missionId,
+    };
+    removeItemMutation({variables});
+    // }
   };
 
   return (
@@ -109,7 +116,7 @@ const TimelineActionList: React.FC<TimelineActionListProps> = ({
         >
           <div className="timeline-action-name">
             <strong>
-              <EventName id={t.event} />
+              <EventName id={t.event} label={capitalCase(t.event)} />
             </strong>
             <FaBan
               className="text-danger"
@@ -133,6 +140,20 @@ const TimelineActionList: React.FC<TimelineActionListProps> = ({
   );
 };
 
+const processArgs: {[key: string]: Function} = {
+  sendMessage: (args: {message: any}) => defaultProcessArgs(args.message),
+};
+function defaultProcessArgs(args: any) {
+  // Transpose the regular ID to be a tag.
+  if (args.id) {
+    args.tags = args.tags ? args.tags.concat(args.id) : [args.id];
+  }
+  // Remove simulatorId and regular ID
+  delete args.simulatorId;
+  delete args.id;
+  return args;
+}
+
 interface BuildProps {
   simulatorId: string;
   currentTimelineStep: number;
@@ -152,9 +173,46 @@ const Build: React.FC<BuildProps> = ({
       mission.timeline[0]?.id ||
       "mission",
   );
+  const [watchMe, setWatchMe] = React.useState(false);
 
   const currentStep = mission.timeline.find(t => t.id === selectedStep);
   const [editMissionMutation] = useEditMissionMutation();
+  const [addItemMutation] = useTimelineAddItemMutation();
+
+  const macroEvents = useEventNames();
+  const includedEvents = macroEvents.map(m => m.name);
+
+  React.useEffect(() => {
+    const addTimelineItem = (event: string, args: any) => {
+      if (!selectedStep) return;
+      const variables = {
+        timelineStepId: selectedStep,
+        missionId: mission.id,
+        timelineItem: {
+          name: event,
+          type: "event",
+          event: event,
+          args: typeof args === "string" ? args : JSON.stringify(args),
+        },
+      };
+      addItemMutation({variables});
+    };
+
+    let sub: Function | undefined;
+    if (watchMe) {
+      sub = subscribe(
+        "mutation-event",
+        ({event, args}: {event: string; args: any}) => {
+          if (!includedEvents.includes(event)) return;
+          const processedArgs = (processArgs[event] || defaultProcessArgs)({
+            ...args,
+          });
+          addTimelineItem(event, processedArgs);
+        },
+      );
+    }
+    return () => sub?.();
+  }, [addItemMutation, mission.id, selectedStep, watchMe, includedEvents]);
 
   const updateMission = (
     type: string,
@@ -183,6 +241,12 @@ const Build: React.FC<BuildProps> = ({
           selectedStep === "mission" ? "mission" : currentStep?.id || "mission"
         }
         simple
+        watchMe={watchMe}
+        setWatchMe={setWatchMe}
+      />
+      <TimelineActionAdd
+        mission={mission}
+        selectedTimelineStep={selectedStep}
       />
       {selectedStep === "mission" || !currentStep ? (
         <MissionConfig mission={mission} updateMission={updateMission} />

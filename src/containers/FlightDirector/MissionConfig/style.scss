@@ -30,6 +30,20 @@
     }
   }
 }
+.recording-pulse {
+  animation: record-pulse;
+  animation-duration: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes record-pulse {
+  from {
+    background-color: #dc3545;
+  }
+  to {
+    background-color: #6d2130;
+  }
+}
 
 .sensors-contact-army-picture {
   display: block;
