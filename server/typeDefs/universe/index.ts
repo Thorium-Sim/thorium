@@ -11,6 +11,7 @@ import {Template} from "../../classes/universe/components";
 const schema = gql`
   type Entity {
     id: ID!
+    interval: Int
   }
   extend type Query {
     entity(id: ID!): Entity

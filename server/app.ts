@@ -7,6 +7,8 @@ import Store from "./helpers/data-store";
 import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
 import Motu from "motu-control";
+import {setAutoFreeze} from "immer";
+setAutoFreeze(false);
 
 const Classes: {[index: string]: any} = {
   ...ClassesImport,

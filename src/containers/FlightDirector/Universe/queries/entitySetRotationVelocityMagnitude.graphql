@@ -1,0 +1,9 @@
+mutation EntitySetRotationVelocityMagnitude(
+  $id: ID!
+  $rotationVelocity: CoordinatesInput!
+) {
+  entitySetRotationVelocityMagnitude(
+    id: $id
+    rotationVelocity: $rotationVelocity
+  )
+}

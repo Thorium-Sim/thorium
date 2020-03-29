@@ -1,0 +1,3 @@
+mutation EntitySetVelocityMagnitude($id: ID!, $velocity: CoordinatesInput!) {
+  entitySetVelocityMagnitude(id: $id, velocity: $velocity)
+}

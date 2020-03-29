@@ -21,7 +21,7 @@ export class Entity {
   [immerable] = true;
   id?: string;
   flightId: string;
-
+  interval?: number;
   // Possible components
   appearance?: Appearance;
   behavior?: Behavior;
@@ -35,10 +35,10 @@ export class Entity {
 
   static class = "Entity";
   class = "Entity";
-  constructor({id = uuid.v4(), flightId, ...components}) {
+  constructor({id = uuid.v4(), flightId, interval = 1, ...components}) {
     this.id = id;
     this.flightId = flightId || null;
-
+    this.interval = interval;
     // Apply the components
     Object.entries(components).forEach(([key, component]) => {
       if (["class", "id", "flightId"].includes(key)) return;

@@ -55,6 +55,11 @@ const schema = gql`
       rotationAcceleration: EntityCoordinatesInput
     ): String
     entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
+    entitySetRotationVelocityMagnitude(
+      id: ID!
+      rotationVelocity: CoordinatesInput!
+    ): String
+    # entitySetVelocityMagnitude(id: ID!, velocity: CoordinatesInput!): String
     entityRemoveLocation(id: ID!): String
   }
 `;
@@ -85,6 +90,32 @@ const resolver = {
         entities: App.entities,
       });
     },
+    entitySetRotationVelocityMagnitude(root, {id, rotationVelocity}) {
+      const entityIndex = App.entities.findIndex(e => e.id === id);
+      if (entityIndex === -1) return;
+
+      const entity = App.entities[entityIndex];
+      const flightId = entity?.flightId;
+      if (!flightId) return;
+
+      entity.location.rotationVelocity.x = rotationVelocity.x;
+      entity.location.rotationVelocity.y = rotationVelocity.y;
+      entity.location.rotationVelocity.z = rotationVelocity.z;
+      // No need to publish
+    },
+    // entitySetAccelerationMagnitude(root, {id, velocity}) {
+    //   const entityIndex = App.entities.findIndex(e => e.id === id);
+    //   if (entityIndex === -1) return;
+
+    //   const entity = App.entities[entityIndex];
+    //   const flightId = entity?.flightId;
+    //   if (!flightId) return;
+
+    //   entity.location.velocity.x = velocity.x;
+    //   entity.location.velocity.y = velocity.y;
+    //   entity.location.velocity.z = velocity.z;
+    //   // No need to publish
+    // },
     entityRemoveLocation(root, {id}, context) {
       const entityId = id || context.entityId;
     },

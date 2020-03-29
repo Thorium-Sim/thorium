@@ -1,14 +1,7 @@
 import * as React from "react";
-import {useFrame, extend, ReactThreeFiber, useThree} from "react-three-fiber";
+import {useFrame} from "react-three-fiber";
 import {CanvasContext} from "./CanvasContext";
-import {
-  SphereGeometry,
-  BoxBufferGeometry,
-  Mesh,
-  Euler,
-  Quaternion,
-  Vector3,
-} from "three";
+import {SphereGeometry, BoxBufferGeometry, Mesh, Vector3} from "three";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
 import SelectionOutline from "./SelectionOutline";
@@ -20,6 +13,7 @@ import {MeshTypeEnum} from "generated/graphql";
 import useEntityDrag from "./useEntityDrag";
 import EntityMaterial from "./EntityMaterial";
 import EntityModel from "./EntityModel";
+import useClientSystems from "./useClientSystems";
 
 interface EntityProps {
   dragging?: boolean;
@@ -96,17 +90,7 @@ const Entity: React.FC<EntityProps> = ({
     setSelected,
   );
 
-  const locRotation = location?.rotation;
-  const rotation = React.useMemo(() => {
-    return new Euler().setFromQuaternion(
-      new Quaternion(
-        locRotation?.x,
-        locRotation?.y,
-        locRotation?.z,
-        locRotation?.w,
-      ),
-    );
-  }, [locRotation]);
+  useClientSystems(entity, mesh);
 
   if (!library && !isDragging && (!location || !position)) return null;
   const meshPosition:
@@ -123,12 +107,7 @@ const Entity: React.FC<EntityProps> = ({
   if (meshType === MeshTypeEnum.Model && appearance?.modelAsset) {
     return (
       <>
-        <group
-          ref={mesh}
-          position={meshPosition}
-          rotation={rotation}
-          {...dragFunctions}
-        >
+        <group ref={mesh} position={meshPosition} {...dragFunctions}>
           <EntityModel modelAsset={appearance.modelAsset} scale={scale} />
         </group>
         {selected && <SelectionOutline selected={mesh} />}

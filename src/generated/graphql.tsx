@@ -796,6 +796,7 @@ export type EntitiesLocationInput = {
 export type Entity = {
   __typename?: "Entity";
   id: Scalars["ID"];
+  interval?: Maybe<Scalars["Int"]>;
   appearance?: Maybe<AppearanceComponent>;
   behavior?: Maybe<BehaviorComponent>;
   identity?: Maybe<IdentityComponent>;
@@ -1595,6 +1596,8 @@ export type Mutation = {
   entityRemoveIdentity?: Maybe<Scalars["String"]>;
   entitySetLocation?: Maybe<Scalars["String"]>;
   entitiesSetPosition?: Maybe<Scalars["String"]>;
+  entitySetRotationVelocityMagnitude?: Maybe<Scalars["String"]>;
+  entitySetVelocityMagnitude?: Maybe<Scalars["String"]>;
   entityRemoveLocation?: Maybe<Scalars["String"]>;
   entitySetStage?: Maybe<Scalars["String"]>;
   entityRemoveStage?: Maybe<Scalars["String"]>;
@@ -2324,6 +2327,16 @@ export type MutationEntitySetLocationArgs = {
 
 export type MutationEntitiesSetPositionArgs = {
   entities: Array<EntitiesLocationInput>;
+};
+
+export type MutationEntitySetRotationVelocityMagnitudeArgs = {
+  id: Scalars["ID"];
+  rotationVelocity: CoordinatesInput;
+};
+
+export type MutationEntitySetVelocityMagnitudeArgs = {
+  id: Scalars["ID"];
+  velocity: CoordinatesInput;
 };
 
 export type MutationEntityRemoveLocationArgs = {
@@ -10686,6 +10699,15 @@ export type EntitySetLocationMutation = {__typename?: "Mutation"} & Pick<
   "entitySetLocation"
 >;
 
+export type EntitySetRotationVelocityMagnitudeMutationVariables = {
+  id: Scalars["ID"];
+  rotationVelocity: CoordinatesInput;
+};
+
+export type EntitySetRotationVelocityMagnitudeMutation = {
+  __typename?: "Mutation";
+} & Pick<Mutation, "entitySetRotationVelocityMagnitude">;
+
 export type EntitySetTemplateMutationVariables = {
   id?: Maybe<Scalars["ID"]>;
   category: Scalars["String"];
@@ -10695,6 +10717,15 @@ export type EntitySetTemplateMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entitySetTemplate"
 >;
+
+export type EntitySetVelocityMagnitudeMutationVariables = {
+  id: Scalars["ID"];
+  velocity: CoordinatesInput;
+};
+
+export type EntitySetVelocityMagnitudeMutation = {
+  __typename?: "Mutation";
+} & Pick<Mutation, "entitySetVelocityMagnitude">;
 
 export interface IntrospectionResultData {
   __schema: {
@@ -17227,6 +17258,61 @@ export type EntitySetLocationMutationOptions = ApolloReactCommon.BaseMutationOpt
   EntitySetLocationMutation,
   EntitySetLocationMutationVariables
 >;
+export const EntitySetRotationVelocityMagnitudeDocument = gql`
+  mutation EntitySetRotationVelocityMagnitude(
+    $id: ID!
+    $rotationVelocity: CoordinatesInput!
+  ) {
+    entitySetRotationVelocityMagnitude(
+      id: $id
+      rotationVelocity: $rotationVelocity
+    )
+  }
+`;
+export type EntitySetRotationVelocityMagnitudeMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetRotationVelocityMagnitudeMutation,
+  EntitySetRotationVelocityMagnitudeMutationVariables
+>;
+
+/**
+ * __useEntitySetRotationVelocityMagnitudeMutation__
+ *
+ * To run a mutation, you first call `useEntitySetRotationVelocityMagnitudeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetRotationVelocityMagnitudeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetRotationVelocityMagnitudeMutation, { data, loading, error }] = useEntitySetRotationVelocityMagnitudeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      rotationVelocity: // value for 'rotationVelocity'
+ *   },
+ * });
+ */
+export function useEntitySetRotationVelocityMagnitudeMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetRotationVelocityMagnitudeMutation,
+    EntitySetRotationVelocityMagnitudeMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetRotationVelocityMagnitudeMutation,
+    EntitySetRotationVelocityMagnitudeMutationVariables
+  >(EntitySetRotationVelocityMagnitudeDocument, baseOptions);
+}
+export type EntitySetRotationVelocityMagnitudeMutationHookResult = ReturnType<
+  typeof useEntitySetRotationVelocityMagnitudeMutation
+>;
+export type EntitySetRotationVelocityMagnitudeMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetRotationVelocityMagnitudeMutation
+>;
+export type EntitySetRotationVelocityMagnitudeMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetRotationVelocityMagnitudeMutation,
+  EntitySetRotationVelocityMagnitudeMutationVariables
+>;
 export const EntitySetTemplateDocument = gql`
   mutation EntitySetTemplate($id: ID, $category: String!) {
     entitySetTemplate(id: $id, category: $category)
@@ -17275,4 +17361,53 @@ export type EntitySetTemplateMutationResult = ApolloReactCommon.MutationResult<
 export type EntitySetTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntitySetTemplateMutation,
   EntitySetTemplateMutationVariables
+>;
+export const EntitySetVelocityMagnitudeDocument = gql`
+  mutation EntitySetVelocityMagnitude($id: ID!, $velocity: CoordinatesInput!) {
+    entitySetVelocityMagnitude(id: $id, velocity: $velocity)
+  }
+`;
+export type EntitySetVelocityMagnitudeMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetVelocityMagnitudeMutation,
+  EntitySetVelocityMagnitudeMutationVariables
+>;
+
+/**
+ * __useEntitySetVelocityMagnitudeMutation__
+ *
+ * To run a mutation, you first call `useEntitySetVelocityMagnitudeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetVelocityMagnitudeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetVelocityMagnitudeMutation, { data, loading, error }] = useEntitySetVelocityMagnitudeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      velocity: // value for 'velocity'
+ *   },
+ * });
+ */
+export function useEntitySetVelocityMagnitudeMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetVelocityMagnitudeMutation,
+    EntitySetVelocityMagnitudeMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetVelocityMagnitudeMutation,
+    EntitySetVelocityMagnitudeMutationVariables
+  >(EntitySetVelocityMagnitudeDocument, baseOptions);
+}
+export type EntitySetVelocityMagnitudeMutationHookResult = ReturnType<
+  typeof useEntitySetVelocityMagnitudeMutation
+>;
+export type EntitySetVelocityMagnitudeMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetVelocityMagnitudeMutation
+>;
+export type EntitySetVelocityMagnitudeMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetVelocityMagnitudeMutation,
+  EntitySetVelocityMagnitudeMutationVariables
 >;
