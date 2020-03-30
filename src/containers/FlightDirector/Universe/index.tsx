@@ -65,27 +65,27 @@ const sub = gql`
 function useJoystick() {
   const entityId = "daa36db8-76e9-4645-b4b7-b9ee741552bb";
   const [setRotationVelocity] = useEntitySetRotationVelocityMagnitudeMutation();
-  const [setVelocity] = useEntitySetVelocityMagnitudeMutation();
+  // const [setVelocity] = useEntitySetVelocityMagnitudeMutation();
   const throttleSetRotation = React.useCallback(
     throttle(setRotationVelocity, 100),
     [],
   );
-  const throttleSetVelocity = React.useCallback(throttle(setVelocity, 100), []);
+  // const throttleSetVelocity = React.useCallback(throttle(setVelocity, 100), []);
   const axes = useGamepadAxis([0, 1, 5, 2]) as number[];
   const y = axes[0];
   const x = axes[1];
   const z = axes[2] * -1;
-  const forwardSpeed = (axes[3] + 1) / 2;
+  // const forwardSpeed = (axes[3] + 1) / 2;
   React.useEffect(() => {
     throttleSetRotation({
       variables: {id: entityId, rotationVelocity: {x, y, z}},
     });
   }, [x, y, z, throttleSetRotation]);
-  React.useEffect(() => {
-    throttleSetVelocity({
-      variables: {id: entityId, velocity: {x: forwardSpeed, y: 0, z: 0}},
-    });
-  }, [forwardSpeed, throttleSetVelocity]);
+  // React.useEffect(() => {
+  //   throttleSetVelocity({
+  //     variables: {id: entityId, velocity: {x: forwardSpeed, y: 0, z: 0}},
+  //   });
+  // }, [forwardSpeed, throttleSetVelocity]);
 }
 export default function UniversalSandboxEditor() {
   const [recenter, setRecenter] = React.useState<{}>({});

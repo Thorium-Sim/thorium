@@ -1,7 +1,7 @@
 import React from "react";
 import * as THREE from "three";
 import nebulaGenerator from "./generateNebulaMap";
-const radius = 10000000000;
+const radius = 1490000000000;
 
 const imageCache = {};
 
