@@ -19,5 +19,5 @@ export const stageChild = stageChildTypedef;
 export const light = lightTypedef;
 export const glow = glowTypedef;
 export const templateEntity = templateTypedef;
-export const engines = enginesTypedef;
-export const thrusters = thrustersTypedef;
+export const enginesEntity = enginesTypedef;
+export const thrustersEntity = thrustersTypedef;

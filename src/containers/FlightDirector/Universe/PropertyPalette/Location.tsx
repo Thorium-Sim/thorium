@@ -6,8 +6,8 @@ import {
 } from "generated/graphql";
 import {Label, Input, Collapse, Button, ButtonGroup} from "reactstrap";
 import {FaChevronDown, FaChevronRight} from "react-icons/fa";
-import {Euler, Quaternion, Vector3} from "three";
-import {throttle} from "helpers/debounce";
+import {Quaternion, Vector3} from "three";
+// import {throttle} from "helpers/debounce";
 
 interface LocationEditProps {
   id: string;
@@ -35,34 +35,35 @@ const NumberInput: React.FC<{
     </Label>
   );
 };
-const RangeInput: React.FC<{
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  setValue: (v: number) => void;
-  mouseUp?: () => void;
-}> = ({label, value, min, max, step, setValue, mouseUp}) => {
-  return (
-    <Label>
-      {label}
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        // label="Yaw"
-        value={value}
-        onChange={e => {
-          const v = parseFloat(e.target.value);
-          setValue(v);
-        }}
-        onMouseUp={mouseUp}
-      />
-    </Label>
-  );
-};
+
+// const RangeInput: React.FC<{
+//   label: string;
+//   value: number;
+//   min: number;
+//   max: number;
+//   step: number;
+//   setValue: (v: number) => void;
+//   mouseUp?: () => void;
+// }> = ({label, value, min, max, step, setValue, mouseUp}) => {
+//   return (
+//     <Label>
+//       {label}
+//       <input
+//         type="range"
+//         min={min}
+//         max={max}
+//         step={step}
+//         // label="Yaw"
+//         value={value}
+//         onChange={e => {
+//           const v = parseFloat(e.target.value);
+//           setValue(v);
+//         }}
+//         onMouseUp={mouseUp}
+//       />
+//     </Label>
+//   );
+// };
 
 const Location: React.FC<LocationEditProps> = ({id, location}) => {
   const [collapse, setCollapse] = React.useState<boolean>(false);

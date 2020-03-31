@@ -1,0 +1,3 @@
+mutation EntityRemoveEngine($id: ID!, $type: EntityEngineEnum!) {
+  entityRemoveEngine(id: $id, type: $type)
+}

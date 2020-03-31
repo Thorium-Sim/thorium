@@ -19,14 +19,14 @@ const schema = gql`
     w: Float!
   }
   type EntityCoordinates {
-    x: BigInt!
-    y: BigInt!
-    z: BigInt!
+    x: Float!
+    y: Float!
+    z: Float!
   }
   input EntityCoordinatesInput {
-    x: BigInt!
-    y: BigInt!
-    z: BigInt!
+    x: Float!
+    y: Float!
+    z: Float!
   }
   type LocationComponent {
     position: EntityCoordinates!

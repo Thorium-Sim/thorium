@@ -1,14 +1,13 @@
 import {registerComponent} from "../component";
 import {immerable} from "immer";
 
-const c = 1.998e8;
-
 export class EnginesImpulse {
   [immerable] = true;
   static class = "EnginesImpulse";
   class = "EnginesImpulse";
   maxSpeed: number;
   currentSpeed: number;
+  velocity: number;
   heat: number;
   heatRate: number;
   coolant: number;
@@ -16,6 +15,7 @@ export class EnginesImpulse {
   constructor({
     maxSpeed = 1.25,
     currentSpeed = 0,
+    velocity = 0,
     heat = 0,
     heatRate = 0,
     coolant = 0,
@@ -23,14 +23,11 @@ export class EnginesImpulse {
   }) {
     this.maxSpeed = maxSpeed;
     this.currentSpeed = currentSpeed;
+    this.velocity = velocity;
     this.heat = heat;
     this.heatRate = heatRate;
     this.coolant = coolant;
     this.cooling = cooling;
-  }
-  get speed() {
-    // Converts impulse value to meters per second.
-    return this.currentSpeed * c;
   }
 }
 

@@ -1,0 +1,15 @@
+mutation EntitySetThrusters(
+  $id: ID!
+  $rotationSpeed: Float
+  $movementSpeed: Float
+  $direction: CoordinatesInput
+  $rotationDelta: CoordinatesInput
+) {
+  entitySetThrusters(
+    id: $id
+    rotationSpeed: $rotationSpeed
+    movementSpeed: $movementSpeed
+    direction: $direction
+    rotationDelta: $rotationDelta
+  )
+}

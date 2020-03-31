@@ -4,7 +4,7 @@ import * as components from "../../classes/universe/components";
 import {pascalCase} from "change-case";
 import {pubsub} from "../../helpers/subscriptionManager";
 
-export function setComponent<C>(componentProperty) {
+export function setComponent<C>(componentProperty, publish = true) {
   const ComponentClass = components[pascalCase(componentProperty)] as C &
     (new (p) => C);
   type keys = keyof C;
@@ -33,11 +33,13 @@ export function setComponent<C>(componentProperty) {
         });
       }
     });
-    pubsub.publish("entities", {
-      flightId,
-      template: template ?? null,
-      entities: App.entities,
-    });
+    if (publish) {
+      pubsub.publish("entities", {
+        flightId,
+        template: template ?? null,
+        entities: App.entities,
+      });
+    }
   };
 }
 

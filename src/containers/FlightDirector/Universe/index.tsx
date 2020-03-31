@@ -8,14 +8,14 @@ import CanvasContextProvider from "./CanvasContext";
 import usePatchedSubscriptions from "../../../helpers/hooks/usePatchedSubscriptions";
 import {
   Entity,
-  useEntitySetRotationVelocityMagnitudeMutation,
-  useEntitySetVelocityMagnitudeMutation,
+  useEntitySetThrustersMutation,
+  useEntitySetEngineMutation,
 } from "../../../generated/graphql";
 import gql from "graphql-tag.macro";
 import {useApolloClient, ApolloProvider} from "@apollo/client";
 import PropertyPalette from "./PropertyPalette";
 import {throttle} from "helpers/debounce";
-import {useGamepadAxis} from "helpers/hooks/useGamepad";
+import {useGamepadAxis, useGamepadButton} from "helpers/hooks/useGamepad";
 
 const sub = gql`
   subscription Entities($flightId: ID!) {
@@ -58,34 +58,63 @@ const sub = gql`
           w
         }
       }
+      enginesWarp {
+        maxSpeed
+        currentSpeed
+      }
+      enginesImpulse {
+        maxSpeed
+        currentSpeed
+      }
+      thrusters {
+        rotationSpeed
+        movementSpeed
+      }
     }
   }
 `;
 
 function useJoystick() {
   const entityId = "daa36db8-76e9-4645-b4b7-b9ee741552bb";
-  const [setRotationVelocity] = useEntitySetRotationVelocityMagnitudeMutation();
-  // const [setVelocity] = useEntitySetVelocityMagnitudeMutation();
-  const throttleSetRotation = React.useCallback(
-    throttle(setRotationVelocity, 100),
+  const [setThrusterVelocity] = useEntitySetThrustersMutation();
+  const [setEngine] = useEntitySetEngineMutation();
+  const throttleSetThrusters = React.useCallback(
+    throttle(setThrusterVelocity, 100),
     [],
   );
-  // const throttleSetVelocity = React.useCallback(throttle(setVelocity, 100), []);
+  const throttleSetEngine = React.useCallback(throttle(setEngine, 100), []);
+
+  const [up, right, down, left] = useGamepadButton([
+    15,
+    16,
+    17,
+    18,
+  ]) as boolean[];
   const axes = useGamepadAxis([0, 1, 5, 2]) as number[];
   const y = axes[0];
   const x = axes[1];
   const z = axes[2] * -1;
-  // const forwardSpeed = (axes[3] + 1) / 2;
+  const forwardSpeed = Math.abs(axes[3] - 1) / 2;
+
   React.useEffect(() => {
-    throttleSetRotation({
-      variables: {id: entityId, rotationVelocity: {x, y, z}},
+    throttleSetThrusters({
+      variables: {id: entityId, rotationDelta: {x, y, z}},
     });
-  }, [x, y, z, throttleSetRotation]);
-  // React.useEffect(() => {
-  //   throttleSetVelocity({
-  //     variables: {id: entityId, velocity: {x: forwardSpeed, y: 0, z: 0}},
-  //   });
-  // }, [forwardSpeed, throttleSetVelocity]);
+  }, [x, y, z, throttleSetThrusters]);
+
+  React.useEffect(() => {
+    const direction = {
+      x: right ? 1 : left ? -1 : 0,
+      y: 0,
+      z: up ? 1 : down ? -1 : 0,
+    };
+    setThrusterVelocity({variables: {id: entityId, direction}});
+  }, [down, left, right, setThrusterVelocity, up]);
+  React.useEffect(() => {
+    throttleSetEngine({
+      variables: {id: entityId, type: "impulse", currentSpeed: forwardSpeed},
+    });
+  }, [forwardSpeed, throttleSetEngine]);
 }
 export default function UniversalSandboxEditor() {
   const [recenter, setRecenter] = React.useState<{}>({});

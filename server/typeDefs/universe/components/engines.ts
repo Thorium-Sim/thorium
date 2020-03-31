@@ -32,7 +32,7 @@ const schema = gql`
       coolant: Float
       cooling: Boolean
     ): String
-    entityRemoveEngine(id: ID!): String
+    entityRemoveEngine(id: ID!, type: EntityEngineEnum!): String
   }
 `;
 
@@ -44,6 +44,7 @@ const resolver = {
       const componentProperty = `engines${
         type === "impulse" ? "Impulse" : "Warp"
       }`;
+      const otherEngine = `engines${type === "impulse" ? "Warp" : "Impulse"}`;
       const entityId = id || context.entityId;
       if (!entityId && entityId !== 0) return;
       const entityIndex = App.entities.findIndex(e => e.id === entityId);
@@ -59,9 +60,34 @@ const resolver = {
           });
         } else {
           Object.entries(properties).forEach(([key, value]) => {
-            entity[componentProperty][key] = value;
+            if (key === "currentSpeed" && value > 0) {
+              // Change the other engine to be 0
+              entity[otherEngine][key] = 0;
+            }
+            entity[componentProperty][key] =
+              value * entity[componentProperty].maxSpeed;
           });
         }
+      });
+      pubsub.publish("entities", {
+        flightId,
+        template: template ?? null,
+        entities: App.entities,
+      });
+    },
+    entityRemoveEngine: (rootQuery, {id, type}, context) => {
+      const componentProperty = `engines${
+        type === "impulse" ? "Impulse" : "Warp"
+      }`;
+      const entityId = id || context.entityId;
+      if (!entityId && entityId !== 0) return;
+      const entityIndex = App.entities.findIndex(e => e.id === entityId);
+      const flightId = App.entities[entityIndex].flightId;
+      const template = Boolean(App.entities[entityIndex].template);
+      if (entityIndex === -1) return;
+      App.entities = produce(App.entities, draft => {
+        const entity = draft[entityIndex];
+        entity[componentProperty] = null;
       });
       pubsub.publish("entities", {
         flightId,

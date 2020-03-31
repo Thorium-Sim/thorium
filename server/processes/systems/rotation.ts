@@ -13,9 +13,12 @@ export function rotation(entity: Entity, delta: number) {
   // Use THREEJS to do some quaternion magic.
   const angleQuaternion = new Quaternion().setFromEuler(
     new Euler(
-      rotationVelocity.x * deltaS,
-      rotationVelocity.y * deltaS,
-      rotationVelocity.z * deltaS,
+      (rotationVelocity.x + (entity.thrusters?.rotationVelocity.x || 0)) *
+        deltaS,
+      (rotationVelocity.y + (entity.thrusters?.rotationVelocity.y || 0)) *
+        deltaS,
+      (rotationVelocity.z + (entity.thrusters?.rotationVelocity.z || 0)) *
+        deltaS,
     ),
   );
 

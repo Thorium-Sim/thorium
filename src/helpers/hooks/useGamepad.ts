@@ -33,15 +33,32 @@ export function useGamepadAxis(index: number | number[]) {
   }, 1000 / 30);
   return value;
 }
-export function useGamepadButton(index: number) {
+
+export function useGamepadButton(index: number | number[]) {
   const gamepads = navigator.getGamepads();
   const [value, setValue] = React.useState(
-    gamepads[0] ? gamepads[0].buttons[index].pressed : false,
+    Array.isArray(index)
+      ? index.map(i => (gamepads[0] ? gamepads[0].buttons[i].pressed : false))
+      : gamepads[0]
+      ? gamepads[0].buttons[index].pressed
+      : false,
   );
   useInterval(() => {
     const gamepads = navigator.getGamepads();
-    const newVal = gamepads[0] ? gamepads[0].buttons[index].pressed : false;
-    if (value !== newVal) setValue(newVal);
+    if (Array.isArray(index)) {
+      let shouldSetValue = false;
+      const output = index.map(i => {
+        const newVal = gamepads[0] ? gamepads[0].buttons[i].pressed : false;
+        if (value !== newVal) shouldSetValue = true;
+        return newVal;
+      });
+      if (shouldSetValue) {
+        setValue(output);
+      }
+    } else {
+      const newVal = gamepads[0] ? gamepads[0].buttons[index].pressed : false;
+      if (value !== newVal) setValue(newVal);
+    }
   }, 1000 / 30);
   return value;
 }

@@ -8,6 +8,7 @@ import Glow from "./Glow";
 import "../styles.scss";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import Light from "./Light";
+import Systems from "./Systems";
 
 interface PropertyPaletteProps {
   selectedEntity: Entity | undefined;
@@ -79,6 +80,12 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
               light={selectedEntity.light || undefined}
             />
           )}
+          <Systems
+            id={selectedEntity.id}
+            enginesImpulse={selectedEntity.enginesImpulse || undefined}
+            enginesWarp={selectedEntity.enginesWarp || undefined}
+            thrusters={selectedEntity.thrusters || undefined}
+          />
         </>
       )}
     </div>

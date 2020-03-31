@@ -1,5 +1,5 @@
 import {gql} from "apollo-server-express";
-import {setComponent} from "../setComponentHelper";
+import {setComponent, removeComponent} from "../setComponentHelper";
 
 const schema = gql`
   type ThrustersComponent {
@@ -26,7 +26,8 @@ const schema = gql`
 
 const resolver = {
   Mutation: {
-    entitySetBehavior: setComponent("thrusters"),
+    entitySetThrusters: setComponent("thrusters", false),
+    entityRemoveThrusters: removeComponent("thrusters"),
   },
 };
 

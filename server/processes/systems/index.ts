@@ -2,6 +2,10 @@ import produce from "immer";
 import App from "../../app";
 import {rotation} from "./rotation";
 import {pubsub} from "../../helpers/subscriptionManager";
+import {reset} from "./reset";
+import {thrusters} from "./thrusters";
+import {movement} from "./movement";
+import {engines} from "./engines";
 
 // Systems execute on every entity at a specific interval. Lets grab all the entities and loop over them.
 const interval = 1000 / 10;
@@ -11,8 +15,15 @@ function processSystems(delta) {
     for (let entity of draft) {
       let edited = false;
       if (entity.template) continue;
-      edited = edited || rotation(entity, delta);
+      // These systems run in a specific order to make sure
+      // dependencies line up correctly.
+      thrusters(entity, delta);
+      engines(entity, delta);
 
+      edited = rotation(entity, delta) || edited;
+      edited = movement(entity, delta) || edited;
+
+      reset(entity);
       // Update the interval based on the draft;
       entity.interval = delta;
 
