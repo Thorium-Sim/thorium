@@ -6,10 +6,11 @@ export enum ActionType {
 }
 export const CanvasContext = React.createContext<
   [CanvasContextState, React.Dispatch<CanvasContextAction>]
->([{dragging: false, zoomScale: false}, () => {}]);
+>([{dragging: false, camera: false, zoomScale: false}, () => {}]);
 
 interface CanvasContextState {
   dragging: boolean;
+  camera: boolean;
   zoomScale: boolean;
 }
 interface CanvasContextAction {
@@ -35,10 +36,11 @@ type ReducerSignature = (
 interface CanvasContextProps {
   zoomScale: boolean;
   recenter: any;
-  children: React.ReactNode;
+  camera: boolean;
 }
 const CanvasContextProvider: React.FC<CanvasContextProps> = ({
   recenter,
+  camera,
   zoomScale,
   children,
 }) => {
@@ -46,6 +48,7 @@ const CanvasContextProvider: React.FC<CanvasContextProps> = ({
     canvasContextReducer,
     {
       dragging: false,
+      camera: false,
       zoomScale: false,
     },
   );
@@ -53,8 +56,8 @@ const CanvasContextProvider: React.FC<CanvasContextProps> = ({
     CanvasContextState,
     React.Dispatch<CanvasContextAction>,
   ] = React.useMemo(() => {
-    return [{...state, zoomScale}, dispatch];
-  }, [state, zoomScale]);
+    return [{...state, camera, zoomScale}, dispatch];
+  }, [state, camera, zoomScale]);
 
   return (
     <CanvasContext.Provider value={value}>{children}</CanvasContext.Provider>

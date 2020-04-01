@@ -6,7 +6,7 @@ import OrbitControlsContainer from "../EntityTemplate/OrbitControlsContainer";
 interface CameraProps {
   recenter: any;
 }
-const NEAR = 1e-6;
+const NEAR = 5;
 const FAR = 1e27;
 const Camera: React.FC<CameraProps> = ({recenter}) => {
   // 1 micrometer to 100 billion light years in one scene, with 1 unit = 1 meter?  preposterous!  and yet...
@@ -26,10 +26,10 @@ const Camera: React.FC<CameraProps> = ({recenter}) => {
   }, []);
   // Update it every frame
   useFrame(() => ref.current.updateMatrixWorld());
-
+  window.thorium.camera = ref;
   return (
     <>
-      <OrbitControlsContainer />
+      {/* <OrbitControlsContainer /> */}
       <perspectiveCamera ref={ref} args={[fov, aspect, NEAR, FAR]} />
     </>
   );

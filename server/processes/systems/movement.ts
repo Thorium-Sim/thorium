@@ -24,7 +24,8 @@ export function movement(entity: Entity, delta: number) {
   }
   if (entity.enginesWarp || entity.enginesImpulse) {
     const forwardSpeed =
-      entity.enginesWarp.velocity + entity.enginesImpulse.velocity;
+      entity.enginesWarp.velocity * deltaS +
+      entity.enginesImpulse.velocity * deltaS;
     o.translateY(forwardSpeed);
   }
 

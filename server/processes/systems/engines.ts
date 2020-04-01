@@ -8,11 +8,12 @@ export function engines(entity: Entity, delta: number) {
     return false;
 
   // Impulse engine speed is logarithmic.
+  //
   const minP = 0;
   const maxP = entity.enginesImpulse.maxSpeed;
 
   const minV = 1;
-  const maxV = Math.log(entity.enginesImpulse.maxSpeed * c);
+  const maxV = Math.log((entity.enginesImpulse.maxSpeed * c) / 10);
 
   // calculate adjustment factor
   const logScale = (maxV - minV) / (maxP - minP);
@@ -25,15 +26,30 @@ export function engines(entity: Entity, delta: number) {
       (logSlider(entity.enginesImpulse.currentSpeed) - Math.E) * 1000,
     ) / 1000;
 
-  let impulseAcceleration = (logSpeed / 5) * deltaS;
+  let impulseAcceleration =
+    (entity.enginesImpulse.velocity + entity.enginesImpulse.currentSpeed) *
+    deltaS;
   if (
     entity.enginesImpulse.currentSpeed === 0 &&
     entity.enginesImpulse.velocity > 0
-  )
-    impulseAcceleration = -1 * entity.enginesImpulse.maxSpeed * c * deltaS;
+  ) {
+    impulseAcceleration =
+      -1 * (entity.enginesImpulse.velocity * 2 + 1000) * deltaS;
+  }
+
+  const maxSpeed =
+    logSpeed < entity.enginesImpulse.velocity
+      ? entity.enginesImpulse.velocity
+      : logSpeed;
   entity.enginesImpulse.velocity = Math.min(
+    maxSpeed,
+    Math.max(0, entity.enginesImpulse.velocity + impulseAcceleration),
+  );
+  console.log(
+    entity.enginesImpulse.currentSpeed,
     logSpeed,
-    Math.max(0, entity.enginesImpulse.velocity + impulseAcceleration * c),
+    impulseAcceleration,
+    entity.enginesImpulse.velocity,
   );
 
   // let warpAcceleration = (entity.enginesWarp.speed / 5) * deltaS;

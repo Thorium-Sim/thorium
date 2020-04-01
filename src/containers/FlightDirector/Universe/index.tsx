@@ -83,38 +83,34 @@ function useJoystick() {
     [],
   );
   const throttleSetEngine = React.useCallback(throttle(setEngine, 100), []);
-
-  const [up, right, down, left] = useGamepadButton([
-    15,
-    16,
-    17,
-    18,
-  ]) as boolean[];
-  const axes = useGamepadAxis([0, 1, 5, 2]) as number[];
-  const y = axes[0];
-  const x = axes[1];
-  const z = axes[2] * -1;
-  const forwardSpeed = Math.abs(axes[3] - 1) / 2;
-
-  React.useEffect(() => {
-    throttleSetThrusters({
-      variables: {id: entityId, rotationDelta: {x, y, z}},
-    });
-  }, [x, y, z, throttleSetThrusters]);
-
-  React.useEffect(() => {
-    const direction = {
-      x: right ? 1 : left ? -1 : 0,
-      y: 0,
-      z: up ? 1 : down ? -1 : 0,
-    };
-    setThrusterVelocity({variables: {id: entityId, direction}});
-  }, [down, left, right, setThrusterVelocity, up]);
-  React.useEffect(() => {
-    throttleSetEngine({
-      variables: {id: entityId, type: "impulse", currentSpeed: forwardSpeed},
-    });
-  }, [forwardSpeed, throttleSetEngine]);
+  const buttonCallback = React.useCallback(
+    ([up, right, down, left]) => {
+      const direction = {
+        x: right ? 1 : left ? -1 : 0,
+        y: 0,
+        z: up ? 1 : down ? -1 : 0,
+      };
+      setThrusterVelocity({variables: {id: entityId, direction}});
+    },
+    [setThrusterVelocity],
+  );
+  const axisCallback = React.useCallback(
+    axes => {
+      const z = axes[0] * -1;
+      const x = axes[1];
+      const y = axes[2];
+      const forwardSpeed = axes[3] === null ? 0 : Math.abs(axes[3] - 1) / 2;
+      throttleSetThrusters({
+        variables: {id: entityId, rotationDelta: {x, y, z}},
+      });
+      throttleSetEngine({
+        variables: {id: entityId, type: "impulse", currentSpeed: forwardSpeed},
+      });
+    },
+    [throttleSetEngine, throttleSetThrusters],
+  );
+  useGamepadButton([15, 16, 17, 18], buttonCallback);
+  useGamepadAxis([0, 1, 5, 2], axisCallback);
 }
 export default function UniversalSandboxEditor() {
   const [recenter, setRecenter] = React.useState<{}>({});
@@ -143,7 +139,11 @@ export default function UniversalSandboxEditor() {
           gl={{antialias: true, logarithmicDepthBuffer: true}}
         >
           <ApolloProvider client={client}>
-            <CanvasContextProvider recenter={recenter} zoomScale={zoomScale}>
+            <CanvasContextProvider
+              camera={camera}
+              recenter={recenter}
+              zoomScale={zoomScale}
+            >
               <CanvasApp
                 recenter={recenter}
                 selected={selected}
@@ -153,7 +153,6 @@ export default function UniversalSandboxEditor() {
                 selecting={selecting}
                 entities={entities}
                 lighting={lighting}
-                camera={camera}
               />
             </CanvasContextProvider>
           </ApolloProvider>
