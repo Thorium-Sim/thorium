@@ -17,6 +17,8 @@ import {
 } from "generated/graphql";
 import Nebula from "./Nebula";
 import {CanvasContext} from "./CanvasContext";
+import Fuzz from "./fuzz";
+import {StoreApi} from "zustand";
 
 export type PositionTuple = [number, number, number];
 interface CanvasAppProps {
@@ -28,6 +30,10 @@ interface CanvasAppProps {
   selecting: boolean;
   entities: EntityInterface[];
   lighting: boolean;
+  storeApi: StoreApi<{
+    loading: boolean;
+    data: EntityInterface[];
+  }>;
 }
 function setNumberBounds(num: number) {
   return Math.max(
@@ -44,6 +50,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   selecting,
   entities,
   lighting,
+  storeApi,
 }) => {
   const [create] = useEntityCreateMutation();
   const [remove] = useEntityRemoveMutation();
@@ -158,6 +165,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
         <>
           <React.Suspense fallback={null}>
             <Nebula />
+            <Fuzz storeApi={storeApi} />
           </React.Suspense>
           <PerspectiveCamera recenter={recenter} />
         </>

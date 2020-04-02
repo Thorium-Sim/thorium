@@ -119,8 +119,8 @@ export default function UniversalSandboxEditor() {
   const [dragging, setDragging] = React.useState<Entity | undefined>();
   const [selecting, setSelecting] = React.useState<boolean>(false);
   const [lighting, setLighting] = React.useState<boolean>(false);
-  const [camera, setCamera] = React.useState<boolean>(false);
-  const [useEntityState] = usePatchedSubscriptions<
+  const [camera, setCamera] = React.useState<boolean>(true);
+  const [useEntityState, storeApi] = usePatchedSubscriptions<
     Entity[],
     {flightId: string}
   >(sub, {flightId: "template"});
@@ -153,6 +153,7 @@ export default function UniversalSandboxEditor() {
                 selecting={selecting}
                 entities={entities}
                 lighting={lighting}
+                storeApi={storeApi}
               />
             </CanvasContextProvider>
           </ApolloProvider>

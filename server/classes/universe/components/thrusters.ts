@@ -15,7 +15,7 @@ export class Thrusters {
   constructor({
     direction = {x: 0, y: 0, z: 0},
     rotationDelta = {x: 0, y: 0, z: 0},
-    rotationSpeed = 3,
+    rotationSpeed = 0.5,
     movementSpeed = 3,
     velocity = {x: 0, y: 0, z: 0},
     rotationVelocity = {x: 0, y: 0, z: 0},
