@@ -8,6 +8,8 @@ import {
 } from "react-icons/md";
 import {Tooltip} from "reactstrap";
 import uuid from "uuid";
+import {FaRuler} from "react-icons/fa";
+import {MeasurementAction} from "./measurementReducer";
 
 interface TooltipButtonProps {
   tooltipContent: React.ReactNode;
@@ -57,6 +59,10 @@ const Controls = ({
   setLighting,
   camera,
   setCamera,
+  measuring,
+  measured,
+  speed,
+  setMeasuring,
 }: {
   recenter: () => void;
   zoomScale: boolean;
@@ -68,6 +74,10 @@ const Controls = ({
   setLighting: React.Dispatch<React.SetStateAction<boolean>>;
   camera: boolean;
   setCamera: React.Dispatch<React.SetStateAction<boolean>>;
+  measuring: boolean;
+  measured: boolean;
+  speed: number;
+  setMeasuring: React.Dispatch<MeasurementAction>;
 }) => {
   return (
     <div className={`controls-section`}>
@@ -104,7 +114,36 @@ const Controls = ({
           >
             <MdCamera />
           </TooltipButton>
+          <TooltipButton
+            className={`${measuring ? "active" : ""} ${
+              measured ? "selected" : ""
+            }`}
+            onClick={() =>
+              setMeasuring(measuring ? {type: "cancel"} : {type: "start"})
+            }
+            tooltipContent="Measure with engine speed"
+          >
+            <FaRuler />
+          </TooltipButton>
         </div>
+      </div>
+      <div className="specific-controls">
+        {measuring ? (
+          <select
+            value={speed}
+            onChange={e =>
+              setMeasuring({type: "speed", speed: parseFloat(e.target.value)})
+            }
+          >
+            <option value={64}>1/4 Impulse</option>
+            <option value={1655}>1/2 Impulse</option>
+            <option value={40944}>3/4 Impulse</option>
+            <option value={1011258}>Full Impulse</option>
+            <option value={24974997}>Destructive Impulse</option>
+            <hr />
+            <option>Warp 1</option>
+          </select>
+        ) : null}
       </div>
     </div>
   );

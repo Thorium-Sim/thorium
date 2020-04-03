@@ -16,6 +16,7 @@ import {useApolloClient, ApolloProvider} from "@apollo/client";
 import PropertyPalette from "./PropertyPalette";
 import {throttle} from "helpers/debounce";
 import {useGamepadAxis, useGamepadButton} from "helpers/hooks/useGamepad";
+import reducer, {MeasurementReducerSignature} from "./measurementReducer";
 
 const sub = gql`
   subscription Entities($flightId: ID!) {
@@ -112,6 +113,7 @@ function useJoystick() {
   useGamepadButton([15, 16, 17, 18], buttonCallback);
   useGamepadAxis([0, 1, 5, 2], axisCallback);
 }
+
 export default function UniversalSandboxEditor() {
   const [recenter, setRecenter] = React.useState<{}>({});
   const [zoomScale, setZoomScale] = React.useState(false);
@@ -119,7 +121,16 @@ export default function UniversalSandboxEditor() {
   const [dragging, setDragging] = React.useState<Entity | undefined>();
   const [selecting, setSelecting] = React.useState<boolean>(false);
   const [lighting, setLighting] = React.useState<boolean>(false);
-  const [camera, setCamera] = React.useState<boolean>(true);
+  const [camera, setCamera] = React.useState<boolean>(false);
+  const [{measuring, measured, speed, position}, dispatch] = React.useReducer<
+    MeasurementReducerSignature
+  >(reducer, {
+    measuring: false,
+    measured: false,
+    speed: 0,
+    position: [0, 0, 0],
+  });
+
   const [useEntityState, storeApi] = usePatchedSubscriptions<
     Entity[],
     {flightId: string}
@@ -154,6 +165,10 @@ export default function UniversalSandboxEditor() {
                 entities={entities}
                 lighting={lighting}
                 storeApi={storeApi}
+                setMeasurement={dispatch}
+                measurement={
+                  measuring ? {measuring, measured, speed, position} : null
+                }
               />
             </CanvasContextProvider>
           </ApolloProvider>
@@ -169,6 +184,10 @@ export default function UniversalSandboxEditor() {
           setLighting={setLighting}
           camera={camera}
           setCamera={setCamera}
+          measuring={measuring}
+          measured={measured}
+          speed={speed}
+          setMeasuring={dispatch}
         />
       </div>
 

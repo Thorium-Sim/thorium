@@ -19,8 +19,35 @@ import Nebula from "./Nebula";
 import {CanvasContext} from "./CanvasContext";
 import Fuzz from "./fuzz";
 import {StoreApi} from "zustand";
+import {MeasurementAction} from "./measurementReducer";
 
 export type PositionTuple = [number, number, number];
+
+const c = 1.998e8;
+
+const MeasureCircles: React.FC<{
+  speed: number;
+  position: [number, number, number];
+}> = ({speed, position}) => {
+  return (
+    <>
+      {Array.from({length: 10}).map((_, i) => {
+        const radius = speed * 60 * (i + 1);
+        return (
+          <mesh position={position} key={`radius-${i}`}>
+            <circleBufferGeometry args={[radius, 32]} attach="geometry" />
+            <meshBasicMaterial
+              color={0x0088ff}
+              attach="material"
+              transparent
+              opacity={0.2}
+            />
+          </mesh>
+        );
+      })}
+    </>
+  );
+};
 interface CanvasAppProps {
   recenter: {};
   selected: string[];
@@ -34,6 +61,13 @@ interface CanvasAppProps {
     loading: boolean;
     data: EntityInterface[];
   }>;
+  setMeasurement: React.Dispatch<MeasurementAction>;
+  measurement: {
+    measuring: boolean;
+    measured: boolean;
+    speed: number;
+    position: [number, number, number];
+  } | null;
 }
 function setNumberBounds(num: number) {
   return Math.max(
@@ -51,6 +85,8 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   entities,
   lighting,
   storeApi,
+  setMeasurement,
+  measurement,
 }) => {
   const [create] = useEntityCreateMutation();
   const [remove] = useEntityRemoveMutation();
@@ -176,7 +212,13 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           {dragging && (
             <Entity dragging entity={dragging} mousePosition={mousePosition} />
           )}
-          <BackPlane setSelected={setSelected} />
+          <BackPlane
+            setSelected={() =>
+              measurement?.measuring && !measurement.measured
+                ? setMeasurement({type: "position", position: mousePosition})
+                : setSelected([])
+            }
+          />
           <DragSelect
             selecting={selecting}
             setSelected={setSelected}
@@ -184,6 +226,12 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           />
         </>
       )}
+      {measurement?.measured ? (
+        <MeasureCircles
+          speed={measurement.speed}
+          position={measurement.position}
+        />
+      ) : null}
       <ambientLight intensity={lighting ? 0.1 : 1} />
 
       {entities.map((e, i) => {

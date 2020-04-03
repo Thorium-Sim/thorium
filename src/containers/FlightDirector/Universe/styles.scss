@@ -11,19 +11,13 @@
     position: absolute;
     left: 0;
     top: 0;
-    display: flex;
-    transition: transform 0.2s ease;
-    transform: translateX(calc(-100% + 36px));
-  }
-  .controls-section.expanded {
-    z-index: 10;
-    transform: translateX(0);
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    margin: 12px 0 0 12px;
+    gap: 12px;
   }
 
   .view-controls {
-    position: relative;
-    left: 12px;
-    top: 12px;
     display: flex;
     flex-direction: column;
   }
@@ -53,6 +47,9 @@
   button:hover {
     background-color: #424242;
   }
+  button.active {
+    background-color: #c28056;
+  }
   button.selected,
   button:active {
     background-color: #5680c2;
@@ -60,6 +57,13 @@
   button:disabled {
     background-color: #111;
     color: #777;
+  }
+  select {
+    background-color: #424242;
+    color: white;
+    border: none;
+    font-size: 18px;
+    height: 30px;
   }
   .library {
     height: 120px;
