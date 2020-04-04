@@ -135,11 +135,11 @@ const Controls = ({
               setMeasuring({type: "speed", speed: parseFloat(e.target.value)})
             }
           >
-            <option value={64}>1/4 Impulse</option>
-            <option value={1655}>1/2 Impulse</option>
-            <option value={40944}>3/4 Impulse</option>
-            <option value={1011258}>Full Impulse</option>
-            <option value={24974997}>Destructive Impulse</option>
+            <option value={28}>1/4 Impulse</option>
+            <option value={344}>1/2 Impulse</option>
+            <option value={3913}>3/4 Impulse</option>
+            <option value={44224}>Full Impulse</option>
+            <option value={499497}>Destructive Impulse</option>
             <hr />
             <option>Warp 1</option>
           </select>

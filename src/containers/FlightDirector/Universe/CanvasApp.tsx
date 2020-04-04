@@ -23,8 +23,6 @@ import {MeasurementAction} from "./measurementReducer";
 
 export type PositionTuple = [number, number, number];
 
-const c = 1.998e8;
-
 const MeasureCircles: React.FC<{
   speed: number;
   position: [number, number, number];

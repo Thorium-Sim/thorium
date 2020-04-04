@@ -13,7 +13,7 @@ export function engines(entity: Entity, delta: number) {
   const maxP = entity.enginesImpulse.maxSpeed;
 
   const minV = 1;
-  const maxV = Math.log((entity.enginesImpulse.maxSpeed * c) / 10);
+  const maxV = Math.log((entity.enginesImpulse.maxSpeed * c) / 500);
 
   // calculate adjustment factor
   const logScale = (maxV - minV) / (maxP - minP);
@@ -35,6 +35,8 @@ export function engines(entity: Entity, delta: number) {
   ) {
     impulseAcceleration =
       -1 * (entity.enginesImpulse.velocity * 2 + 1000) * deltaS;
+  } else if (logSpeed < entity.enginesImpulse.velocity) {
+    impulseAcceleration = ((-1 * entity.enginesImpulse.velocity) / 2) * deltaS;
   }
 
   const maxSpeed =
@@ -45,7 +47,10 @@ export function engines(entity: Entity, delta: number) {
     maxSpeed,
     Math.max(0, entity.enginesImpulse.velocity + impulseAcceleration),
   );
-
+  console.log(
+    entity.enginesImpulse.currentSpeed,
+    entity.enginesImpulse.velocity,
+  );
   // let warpAcceleration = (entity.enginesWarp.speed / 5) * deltaS;
   // if (entity.enginesWarp.speed === 0 && entity.enginesWarp.velocity > 0)
   //   warpAcceleration = ((-1 * entity.enginesWarp.maxSpeed) / 5) * deltaS;
