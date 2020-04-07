@@ -823,15 +823,15 @@ export type Entity = {
 
 export type EntityCoordinates = {
   __typename?: "EntityCoordinates";
-  x: Scalars["BigInt"];
-  y: Scalars["BigInt"];
-  z: Scalars["BigInt"];
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
 };
 
 export type EntityCoordinatesInput = {
-  x: Scalars["BigInt"];
-  y: Scalars["BigInt"];
-  z: Scalars["BigInt"];
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+  z: Scalars["Float"];
 };
 
 export enum EntityEngineEnum {
@@ -2363,7 +2363,7 @@ export type MutationEntitySetStageArgs = {
   id?: Maybe<Scalars["ID"]>;
   scaleLabel?: Maybe<Scalars["String"]>;
   scaleLabelShort?: Maybe<Scalars["String"]>;
-  skyboxAsset?: Maybe<Scalars["String"]>;
+  skyboxKey?: Maybe<Scalars["String"]>;
 };
 
 export type MutationEntityRemoveStageArgs = {
@@ -7427,7 +7427,7 @@ export type StageComponent = {
   __typename?: "StageComponent";
   scaleLabel?: Maybe<Scalars["String"]>;
   scaleLabelShort?: Maybe<Scalars["String"]>;
-  skyboxAsset?: Maybe<Scalars["String"]>;
+  skyboxKey?: Maybe<Scalars["String"]>;
 };
 
 export type Station = {
@@ -8026,6 +8026,7 @@ export type SubscriptionEntityArgs = {
 
 export type SubscriptionEntitiesArgs = {
   flightId: Scalars["ID"];
+  stageId?: Maybe<Scalars["ID"]>;
   template?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -10803,6 +10804,18 @@ export type EntitySetRotationVelocityMagnitudeMutationVariables = {
 export type EntitySetRotationVelocityMagnitudeMutation = {
   __typename?: "Mutation";
 } & Pick<Mutation, "entitySetRotationVelocityMagnitude">;
+
+export type EntitySetStageMutationVariables = {
+  id: Scalars["ID"];
+  scaleLabel?: Maybe<Scalars["String"]>;
+  scaleLabelShort?: Maybe<Scalars["String"]>;
+  skyboxKey?: Maybe<Scalars["String"]>;
+};
+
+export type EntitySetStageMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entitySetStage"
+>;
 
 export type EntitySetTemplateMutationVariables = {
   id?: Maybe<Scalars["ID"]>;
@@ -17621,6 +17634,67 @@ export type EntitySetRotationVelocityMagnitudeMutationResult = ApolloReactCommon
 export type EntitySetRotationVelocityMagnitudeMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntitySetRotationVelocityMagnitudeMutation,
   EntitySetRotationVelocityMagnitudeMutationVariables
+>;
+export const EntitySetStageDocument = gql`
+  mutation EntitySetStage(
+    $id: ID!
+    $scaleLabel: String
+    $scaleLabelShort: String
+    $skyboxKey: String
+  ) {
+    entitySetStage(
+      id: $id
+      scaleLabel: $scaleLabel
+      scaleLabelShort: $scaleLabelShort
+      skyboxKey: $skyboxKey
+    )
+  }
+`;
+export type EntitySetStageMutationFn = ApolloReactCommon.MutationFunction<
+  EntitySetStageMutation,
+  EntitySetStageMutationVariables
+>;
+
+/**
+ * __useEntitySetStageMutation__
+ *
+ * To run a mutation, you first call `useEntitySetStageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntitySetStageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entitySetStageMutation, { data, loading, error }] = useEntitySetStageMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      scaleLabel: // value for 'scaleLabel'
+ *      scaleLabelShort: // value for 'scaleLabelShort'
+ *      skyboxKey: // value for 'skyboxKey'
+ *   },
+ * });
+ */
+export function useEntitySetStageMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntitySetStageMutation,
+    EntitySetStageMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntitySetStageMutation,
+    EntitySetStageMutationVariables
+  >(EntitySetStageDocument, baseOptions);
+}
+export type EntitySetStageMutationHookResult = ReturnType<
+  typeof useEntitySetStageMutation
+>;
+export type EntitySetStageMutationResult = ApolloReactCommon.MutationResult<
+  EntitySetStageMutation
+>;
+export type EntitySetStageMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntitySetStageMutation,
+  EntitySetStageMutationVariables
 >;
 export const EntitySetTemplateDocument = gql`
   mutation EntitySetTemplate($id: ID, $category: String!) {

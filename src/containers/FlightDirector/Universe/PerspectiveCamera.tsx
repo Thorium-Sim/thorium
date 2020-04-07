@@ -29,7 +29,7 @@ const Camera: React.FC<CameraProps> = ({recenter}) => {
   window.thorium.camera = ref;
   return (
     <>
-      {/* <OrbitControlsContainer /> */}
+      <OrbitControlsContainer />
       <perspectiveCamera ref={ref} args={[fov, aspect, NEAR, FAR]} />
     </>
   );

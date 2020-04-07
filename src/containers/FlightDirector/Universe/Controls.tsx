@@ -63,6 +63,7 @@ const Controls = ({
   measured,
   speed,
   setMeasuring,
+  timeInSeconds,
 }: {
   recenter: () => void;
   zoomScale: boolean;
@@ -77,6 +78,7 @@ const Controls = ({
   measuring: boolean;
   measured: boolean;
   speed: number;
+  timeInSeconds: number;
   setMeasuring: React.Dispatch<MeasurementAction>;
 }) => {
   return (
@@ -129,20 +131,41 @@ const Controls = ({
       </div>
       <div className="specific-controls">
         {measuring ? (
-          <select
-            value={speed}
-            onChange={e =>
-              setMeasuring({type: "speed", speed: parseFloat(e.target.value)})
-            }
-          >
-            <option value={28}>1/4 Impulse</option>
-            <option value={344}>1/2 Impulse</option>
-            <option value={3913}>3/4 Impulse</option>
-            <option value={44224}>Full Impulse</option>
-            <option value={499497}>Destructive Impulse</option>
-            <hr />
-            <option>Warp 1</option>
-          </select>
+          <>
+            <select
+              value={speed}
+              onChange={e =>
+                setMeasuring({type: "speed", speed: parseFloat(e.target.value)})
+              }
+            >
+              <option value={28}>1/4 Impulse</option>
+              <option value={344}>1/2 Impulse</option>
+              <option value={3913}>3/4 Impulse</option>
+              <option value={44224}>Full Impulse</option>
+              <option value={499497}>Destructive Impulse</option>
+              <hr />
+              <option>Warp 1</option>
+            </select>
+            <div>
+              <input
+                type="range"
+                min={60}
+                max={600}
+                step={15}
+                value={timeInSeconds}
+                onChange={e =>
+                  setMeasuring({
+                    type: "time",
+                    timeInSeconds: parseFloat(e.target.value),
+                  })
+                }
+              />
+              <p>
+                {Math.trunc(timeInSeconds / 60)} Min
+                {timeInSeconds % 60 > 0 ? `, ${timeInSeconds % 60} Sec` : ""}
+              </p>
+            </div>
+          </>
         ) : null}
       </div>
     </div>

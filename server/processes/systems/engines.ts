@@ -47,10 +47,7 @@ export function engines(entity: Entity, delta: number) {
     maxSpeed,
     Math.max(0, entity.enginesImpulse.velocity + impulseAcceleration),
   );
-  console.log(
-    entity.enginesImpulse.currentSpeed,
-    entity.enginesImpulse.velocity,
-  );
+
   // let warpAcceleration = (entity.enginesWarp.speed / 5) * deltaS;
   // if (entity.enginesWarp.speed === 0 && entity.enginesWarp.velocity > 0)
   //   warpAcceleration = ((-1 * entity.enginesWarp.maxSpeed) / 5) * deltaS;

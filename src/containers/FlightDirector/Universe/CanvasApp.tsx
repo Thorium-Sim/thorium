@@ -25,28 +25,23 @@ export type PositionTuple = [number, number, number];
 
 const MeasureCircles: React.FC<{
   speed: number;
+  time: number;
   position: [number, number, number];
-}> = ({speed, position}) => {
+}> = ({speed, time, position}) => {
   return (
-    <>
-      {Array.from({length: 10}).map((_, i) => {
-        const radius = speed * 60 * (i + 1);
-        return (
-          <mesh position={position} key={`radius-${i}`}>
-            <circleBufferGeometry args={[radius, 32]} attach="geometry" />
-            <meshBasicMaterial
-              color={0x0088ff}
-              attach="material"
-              transparent
-              opacity={0.2}
-            />
-          </mesh>
-        );
-      })}
-    </>
+    <mesh position={position}>
+      <circleBufferGeometry args={[speed * time, 32]} attach="geometry" />
+      <meshBasicMaterial
+        color={0x0088ff}
+        attach="material"
+        transparent
+        opacity={0.2}
+      />
+    </mesh>
   );
 };
 interface CanvasAppProps {
+  stage?: EntityInterface;
   recenter: {};
   selected: string[];
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
@@ -64,6 +59,7 @@ interface CanvasAppProps {
     measuring: boolean;
     measured: boolean;
     speed: number;
+    timeInSeconds: number;
     position: [number, number, number];
   } | null;
 }
@@ -74,6 +70,7 @@ function setNumberBounds(num: number) {
   );
 }
 const CanvasApp: React.FC<CanvasAppProps> = ({
+  stage,
   recenter,
   selected,
   setSelected,
@@ -198,7 +195,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       {perspectiveCamera ? (
         <>
           <React.Suspense fallback={null}>
-            <Nebula />
+            <Nebula skyboxKey={stage?.stage?.skyboxKey ?? "c"} />
             <Fuzz storeApi={storeApi} />
           </React.Suspense>
           <PerspectiveCamera recenter={recenter} />
@@ -227,6 +224,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       {measurement?.measured ? (
         <MeasureCircles
           speed={measurement.speed}
+          time={measurement.timeInSeconds}
           position={measurement.position}
         />
       ) : null}

@@ -1,7 +1,7 @@
 import {gql} from "apollo-server-express";
 import merge from "./helpers/merge.js";
 import * as schema from "./typeDefs/index";
-console.log(Object.keys(schema));
+
 const MainSchema = gql`
   # A type for all of the system-wide settings.
 

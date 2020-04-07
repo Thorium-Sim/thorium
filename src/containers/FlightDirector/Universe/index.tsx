@@ -19,12 +19,20 @@ import {useGamepadAxis, useGamepadButton} from "helpers/hooks/useGamepad";
 import reducer, {MeasurementReducerSignature} from "./measurementReducer";
 
 const sub = gql`
-  subscription Entities($flightId: ID!) {
-    entities(flightId: $flightId) {
+  subscription Entities($flightId: ID!, $stageId: ID!) {
+    entities(flightId: $flightId, stageId: $stageId, template: false) {
       id
       interval
       identity {
         name
+      }
+      stage {
+        scaleLabel
+        scaleLabelShort
+        skyboxKey
+      }
+      stageChild {
+        parentId
       }
       appearance {
         color
@@ -122,26 +130,34 @@ export default function UniversalSandboxEditor() {
   const [selecting, setSelecting] = React.useState<boolean>(false);
   const [lighting, setLighting] = React.useState<boolean>(false);
   const [camera, setCamera] = React.useState<boolean>(false);
-  const [{measuring, measured, speed, position}, dispatch] = React.useReducer<
-    MeasurementReducerSignature
-  >(reducer, {
+  const [
+    {measuring, measured, speed, timeInSeconds, position},
+    dispatch,
+  ] = React.useReducer<MeasurementReducerSignature>(reducer, {
     measuring: false,
     measured: false,
-    speed: 0,
+    speed: 28,
     position: [0, 0, 0],
+    timeInSeconds: 60,
   });
+  const [currentStage, setCurrentStage] = React.useState<string>("root-stage");
 
   const [useEntityState, storeApi] = usePatchedSubscriptions<
     Entity[],
-    {flightId: string}
-  >(sub, {flightId: "template"});
+    {flightId: string; stageId: string}
+  >(sub, {flightId: "template", stageId: currentStage});
   const entities = useEntityState(state => state.data) || [];
-  useJoystick();
+  // useJoystick();
+  const stage = entities.find(e => e.id === currentStage);
+  console.log(stage?.stage?.skyboxKey);
   const client = useApolloClient();
   return (
     <div className="universal-sandbox-editor">
       <PropertyPalette
-        selectedEntity={entities.find(e => selected && e.id === selected[0])}
+        selectedEntity={
+          entities.find(e => selected && e.id === selected[0]) ||
+          entities.find(e => e.id === currentStage)
+        }
       />
       <div className="level-editor-container">
         <Canvas
@@ -156,6 +172,7 @@ export default function UniversalSandboxEditor() {
               zoomScale={zoomScale}
             >
               <CanvasApp
+                stage={stage}
                 recenter={recenter}
                 selected={selected}
                 setSelected={setSelected}
@@ -167,7 +184,9 @@ export default function UniversalSandboxEditor() {
                 storeApi={storeApi}
                 setMeasurement={dispatch}
                 measurement={
-                  measuring ? {measuring, measured, speed, position} : null
+                  measuring
+                    ? {measuring, measured, speed, position, timeInSeconds}
+                    : null
                 }
               />
             </CanvasContextProvider>
@@ -187,6 +206,7 @@ export default function UniversalSandboxEditor() {
           measuring={measuring}
           measured={measured}
           speed={speed}
+          timeInSeconds={timeInSeconds}
           setMeasuring={dispatch}
         />
       </div>

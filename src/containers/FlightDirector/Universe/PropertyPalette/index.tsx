@@ -9,7 +9,7 @@ import "../styles.scss";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import Light from "./Light";
 import Systems from "./Systems";
-
+import Stage from "./Stage";
 interface PropertyPaletteProps {
   selectedEntity: Entity | undefined;
 }
@@ -47,6 +47,9 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
               identity={selectedEntity.identity}
             />
           )}
+          {selectedEntity.stage && (
+            <Stage id={selectedEntity.id} stage={selectedEntity.stage} />
+          )}
           {selectedEntity.template && (
             <Template
               id={selectedEntity.id}
@@ -80,12 +83,14 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
               light={selectedEntity.light || undefined}
             />
           )}
-          <Systems
-            id={selectedEntity.id}
-            enginesImpulse={selectedEntity.enginesImpulse || undefined}
-            enginesWarp={selectedEntity.enginesWarp || undefined}
-            thrusters={selectedEntity.thrusters || undefined}
-          />
+          {selectedEntity.stageChild && (
+            <Systems
+              id={selectedEntity.id}
+              enginesImpulse={selectedEntity.enginesImpulse || undefined}
+              enginesWarp={selectedEntity.enginesWarp || undefined}
+              thrusters={selectedEntity.thrusters || undefined}
+            />
+          )}
         </>
       )}
     </div>

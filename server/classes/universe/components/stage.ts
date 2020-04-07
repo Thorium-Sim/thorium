@@ -7,11 +7,11 @@ export class Stage {
   class = "Stage";
   scaleLabel: string;
   scaleLabelShort: string;
-  skyboxAsset: string;
-  constructor({scaleLabel, scaleLabelShort, skyboxAsset}) {
+  skyboxKey: string;
+  constructor({scaleLabel, scaleLabelShort, skyboxKey}) {
     this.scaleLabel = scaleLabel || "Meter";
     this.scaleLabelShort = scaleLabelShort || "M";
-    this.skyboxAsset = skyboxAsset || "";
+    this.skyboxKey = skyboxKey || "";
   }
 }
 

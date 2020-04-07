@@ -1,6 +1,9 @@
 // Migrations that should happen after App is instantiated
 import App from "../app";
 import {InterfaceDevice} from "../classes/interface";
+import {Entity} from "../classes";
+import * as components from "../classes/universe/components";
+
 export default () => {
   return new Promise(done => {
     if (App.interfaceDevices.length === 0) {
@@ -48,6 +51,22 @@ export default () => {
           height: 731,
         }),
       ];
+    }
+    if (App.entities.filter(e => !e.template).length === 0) {
+      const entity = new Entity({
+        id: "root-stage",
+        flightId: "template",
+      });
+      entity.stage = new components.Stage({
+        scaleLabel: "Meters",
+        scaleLabelShort: "M",
+        skyboxKey: "Alex",
+      });
+      entity.identity = new components.Identity({
+        name: "Base Universe",
+        type: "root",
+      });
+      App.entities.push(entity);
     }
     done();
   });

@@ -5,7 +5,7 @@ const schema = gql`
   type StageComponent {
     scaleLabel: String
     scaleLabelShort: String
-    skyboxAsset: String
+    skyboxKey: String
   }
 
   extend type Entity {
@@ -16,7 +16,7 @@ const schema = gql`
       id: ID
       scaleLabel: String
       scaleLabelShort: String
-      skyboxAsset: String
+      skyboxKey: String
     ): String
     entityRemoveStage(id: ID!): String
   }

@@ -13,6 +13,9 @@ export function setComponent<C>(componentProperty, publish = true) {
     if (!entityId && entityId !== 0) return;
     const entityIndex = App.entities.findIndex(e => e.id === entityId);
     const flightId = App.entities[entityIndex].flightId;
+    const stageId =
+      App.entities[entityIndex]?.stageChild?.parentId ||
+      (App.entities[entityIndex].stage && App.entities[entityIndex].id);
     const template = Boolean(App.entities[entityIndex].template);
     if (entityIndex === -1) return;
     if (Object.keys(properties).length === 0 && !id) {
@@ -36,6 +39,7 @@ export function setComponent<C>(componentProperty, publish = true) {
     if (publish) {
       pubsub.publish("entities", {
         flightId,
+        stageId,
         template: template ?? null,
         entities: App.entities,
       });

@@ -10,7 +10,7 @@ import {engines} from "./engines";
 // Systems execute on every entity at a specific interval. Lets grab all the entities and loop over them.
 const interval = 1000 / 10;
 function processSystems(delta) {
-  const flightIds = [];
+  const flightIds: {[key: string]: string[]} = {};
   App.entities = produce(App.entities, draft => {
     for (let entity of draft) {
       let edited = false;
@@ -27,19 +27,28 @@ function processSystems(delta) {
       // Update the interval based on the draft;
       entity.interval = delta;
 
-      if (edited) flightIds.push(entity.flightId);
+      if (edited) {
+        flightIds[entity.flightId] = flightIds[entity.flightId] || [];
+        if (entity.stageChild?.parentId) {
+          flightIds[entity.flightId].push(entity.stageChild.parentId);
+        }
+      }
     }
   });
 
-  flightIds
-    .filter((a, i, arr) => arr.indexOf(a) === i)
-    .forEach(flightId => {
+  Object.entries(flightIds).forEach(([flightId, stageIds]) => {
+    const noDuplicateStageIds = stageIds.filter(
+      (a, i, arr) => Boolean(a) && arr.indexOf(a) === i,
+    );
+    noDuplicateStageIds.forEach(stageId => {
       pubsub.publish("entities", {
         flightId,
+        stageId,
         template: false,
         entities: App.entities,
       });
     });
+  });
 
   // Trigger the next processing
   const time = Date.now();
