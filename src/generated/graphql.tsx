@@ -10679,6 +10679,7 @@ export type EntityCreateMutationVariables = {
   flightId: Scalars["ID"];
   position: EntityCoordinatesInput;
   name: Scalars["String"];
+  stageParentId: Scalars["ID"];
   color?: Maybe<Scalars["String"]>;
   meshType: MeshTypeEnum;
   modelAsset?: Maybe<Scalars["String"]>;
@@ -10696,6 +10697,7 @@ export type EntityCreateMutationVariables = {
 
 export type EntityCreateMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
+  | "entitySetStageChild"
   | "entitySetLocation"
   | "entitySetIdentity"
   | "entitySetAppearance"
@@ -17037,6 +17039,7 @@ export const EntityCreateDocument = gql`
     $flightId: ID!
     $position: EntityCoordinatesInput!
     $name: String!
+    $stageParentId: ID!
     $color: String
     $meshType: MeshTypeEnum!
     $modelAsset: String
@@ -17054,6 +17057,7 @@ export const EntityCreateDocument = gql`
     entityCreate(flightId: $flightId) {
       id
     }
+    entitySetStageChild(parentId: $stageParentId)
     entitySetLocation(position: $position)
     entitySetIdentity(name: $name)
     entitySetAppearance(
@@ -17095,6 +17099,7 @@ export type EntityCreateMutationFn = ApolloReactCommon.MutationFunction<
  *      flightId: // value for 'flightId'
  *      position: // value for 'position'
  *      name: // value for 'name'
+ *      stageParentId: // value for 'stageParentId'
  *      color: // value for 'color'
  *      meshType: // value for 'meshType'
  *      modelAsset: // value for 'modelAsset'

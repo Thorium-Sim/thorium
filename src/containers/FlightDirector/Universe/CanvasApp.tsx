@@ -103,6 +103,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       const {data} = await create({
         variables: {
           flightId: "template",
+          stageParentId: stage?.id || "",
           position: {
             x: Math.round(mousePosition[0]),
             y: Math.round(mousePosition[1]),

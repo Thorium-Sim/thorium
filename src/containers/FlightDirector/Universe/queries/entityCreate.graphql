@@ -2,6 +2,7 @@ mutation EntityCreate(
   $flightId: ID!
   $position: EntityCoordinatesInput!
   $name: String!
+  $stageParentId: ID!
   $color: String
   $meshType: MeshTypeEnum!
   $modelAsset: String
@@ -19,6 +20,7 @@ mutation EntityCreate(
   entityCreate(flightId: $flightId) {
     id
   }
+  entitySetStageChild(parentId: $stageParentId)
   entitySetLocation(position: $position)
   entitySetIdentity(name: $name)
   entitySetAppearance(
