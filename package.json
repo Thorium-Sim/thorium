@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.9.0",
+  "version": "2.8.0",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -67,7 +67,9 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -91,7 +93,9 @@
     "*.{js,jsx,ts,tsx}": [
       "jest --projects ./test/jest.eslint.js --findRelatedTests"
     ],
-    "*.{css,scss}": ["stylelint"],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write",
       "git add"
@@ -109,7 +113,9 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": { "provider": "github" },
+    "publish": {
+      "provider": "github"
+    },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -134,10 +140,15 @@
       "hardenedRuntime": true
     },
     "win": {
-      "target": ["zip", "portable"],
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     },
-    "linux": { "category": "Utility" }
+    "linux": {
+      "category": "Utility"
+    }
   },
   "bin": "./server/index.js",
   "pkg": {
