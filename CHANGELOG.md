@@ -1,3 +1,13 @@
+# [2.9.0](https://github.com/Thorium-Sim/thorium/compare/2.8.0...2.9.0) (2020-04-08)
+
+
+### Features
+
+* **Missions:** Added simulator capability checking to make sure you don't run a mission on a simulator that doesn't have the necessary cards and systems. Closes [#2873](https://github.com/Thorium-Sim/thorium/issues/2873) ([13b0426](https://github.com/Thorium-Sim/thorium/commit/13b0426be1479c4c253cdc5002d799158a184b35))
+* **Missions:** Make all mission lists sortable. Also add category option to missions. ([b6ba86c](https://github.com/Thorium-Sim/thorium/commit/b6ba86c9ab6da3a992bd01db8f3c1ec3080eeb94))
+* **Timeline:** Add "Build" timeline mode which allows you to create timelines from the core. Also a 'Recording Button' (it looks like a banana) in the build mode that tracks actions you perform in the core and turns them into the corresponding timeline macros. Click the banana to start recording, click again to stop recording. ([3df3d55](https://github.com/Thorium-Sim/thorium/commit/3df3d558a1c332d334ae9bed3f3e10712075cc67))
+* **Timeline:** Refactor the timeline core to support all three timeline modes - Standard, Classic, and Thumbnail. ([fcda057](https://github.com/Thorium-Sim/thorium/commit/fcda057e816bcc9942de1fc479935f149b6fd931))
+
 # [2.8.0](https://github.com/Thorium-Sim/thorium/compare/2.7.0...2.8.0) (2020-03-21)
 
 ### Bug Fixes
