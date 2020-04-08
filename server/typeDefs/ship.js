@@ -57,6 +57,9 @@ const schema = gql`
     shipDockingChange(simulatorId: ID!, which: String!, state: Boolean!): String
     """
     Macro: Docking: Set docking state
+    Requires:
+     - Cards:DockingPorts, SpecializedDocking, Shuttles
+     - Docking
     """
     shipSetDocking(
       simulatorId: ID!

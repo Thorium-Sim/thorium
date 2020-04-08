@@ -5,7 +5,7 @@ import useSoundEffect from "../hooks/useSoundEffect";
 const ListGroupItem = ({
   onClick = () => {},
   onMouseOver = () => {},
-  silent,
+  silent = false,
   ...props
 }) => {
   const playEffect = useSoundEffect();

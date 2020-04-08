@@ -1,6 +1,5 @@
 import React from "react";
 import {Input, Label} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import Views from "components/views/index";
 import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";

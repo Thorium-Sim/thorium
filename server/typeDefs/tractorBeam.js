@@ -37,10 +37,16 @@ const schema = gql`
 
     """
     Macro: Tractor Beam: Add Target
+    Requires:
+     - Cards:TractorBeam
+     - Systems:TractorBeam
     """
     addTractorTarget(id: ID!, label: String): String
     """
     Macro: Tractor Beam: Remove Target
+    Requires:
+     - Cards:TractorBeam
+     - Systems:TractorBeam
     """
     removeTractorTarget(id: ID!): String
   }

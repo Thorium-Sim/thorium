@@ -1,6 +1,7 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import * as Classes from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -59,6 +60,7 @@ const schema = gql`
       damageWhich: String
     ): [System]
     system(id: ID!): System
+    allSystems: [String!]!
   }
   extend type Mutation {
     addSystemToSimulator(
@@ -114,6 +116,9 @@ const resolver = {
       const sys = App.systems.find(s => s.id === id);
       if (!sys) return App.dockingPorts.find(s => s.id === id);
       return sys;
+    },
+    allSystems() {
+      return Object.keys(Classes);
     },
     systems(
       rootValue,

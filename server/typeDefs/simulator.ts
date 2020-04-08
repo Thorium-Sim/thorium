@@ -2,6 +2,7 @@ import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
+import {Simulator, Station} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -21,13 +22,13 @@ const schema = gql`
     caps: Boolean
     template: Boolean
     templateId: ID
-    systems: [System]
-    stations: [Station]
+    systems: [System!]
+    stations: [Station!]
     mission: Mission
     missionConfigs: JSON
     currentTimelineStep: Int
-    executedTimelineSteps: [ID]
-    timelines: [TimelineInstance]
+    executedTimelineSteps: [ID!]
+    timelines: [TimelineInstance!]
     decks: [Deck]
     rooms: [Room]
     ship: Ship
@@ -48,6 +49,14 @@ const schema = gql`
     hasLegs: Boolean
     spaceEdventuresId: String
     flipped: Boolean
+    capabilities: SimulatorCapabilities
+  }
+
+  type SimulatorCapabilities {
+    systems: [String!]!
+    cards: [String!]!
+    spaceEdventures: Boolean
+    docking: Boolean
   }
 
   extend type Query {
@@ -268,6 +277,36 @@ const resolver = {
       return {
         ...rootValue.lighting,
         color: rootValue.lighting.color || colorFunc(rootValue.alertLevel),
+      };
+    },
+    capabilities(sim: Simulator) {
+      const flight = App.flights.find(s => s.simulators.includes(sim.id));
+      const cards = sim.stations
+        .flatMap((s: Station) =>
+          s.cards
+            .flatMap(c => c.component)
+            .concat(
+              s.widgets.map(w => {
+                if (w === "Messaging") return "Messages";
+                if (w === "Damage Report") return "DamageControl";
+                if (w === "Engineering Report") return "EngineeringReports";
+                if (w === "R&D Report") return "RnDReports";
+                if (w === "Officer Log") return "OfficerLog";
+                if (w === "Command Line") return "CommandLine";
+              }),
+            ),
+        )
+        .filter((c, i, arr) => arr.indexOf(c) === i);
+      const systems = App.systems
+        .filter(s => s.simulatorId === sim.id)
+        .map(s => s.class)
+        .filter((c, i, arr) => arr.indexOf(c) === i);
+      const docking = App.dockingPorts.find(d => d.simulatorId === sim.id);
+      return {
+        cards,
+        systems,
+        spaceEdventures: Boolean(flight?.flightType),
+        docking: Boolean(docking),
       };
     },
   },

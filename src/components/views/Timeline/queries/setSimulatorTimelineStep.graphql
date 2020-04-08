@@ -1,0 +1,11 @@
+mutation SetSimulatorTimelineStep(
+  $simulatorId: ID!
+  $auxTimelineId: ID
+  $step: Int!
+) {
+  setSimulatorTimelineStep(
+    simulatorId: $simulatorId
+    timelineId: $auxTimelineId
+    step: $step
+  )
+}

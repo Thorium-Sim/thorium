@@ -36,34 +36,39 @@ type AppearanceComponent {
   meshType: MeshTypeEnum
   modelAsset: String
   materialMapAsset: String
+  ringMapAsset: String
+  cloudMapAsset: String
+  emissiveColor: String
+  emissiveIntensity: Float
   color: String
+  scale: Float
 }
 
 type Asset {
-  assetKey: String
-  url: String
+  assetKey: String!
+  url: String!
 }
 
 type AssetFolder {
-  id: ID
-  name: String
-  folderPath: String
-  fullPath: String
-  objects: [AssetObject]
+  id: ID!
+  name: String!
+  folderPath: String!
+  fullPath: String!
+  objects: [AssetObject!]!
 }
 
 type AssetObject {
-  id: ID
-  name: String
-  folderPath: String
-  fullPath: String
-  url: String
+  id: ID!
+  name: String!
+  folderPath: String!
+  fullPath: String!
+  url: String!
 }
 
 type BehaviorComponent {
   behavior: Behaviors!
   targetId: ID
-  destination: Coordinates
+  destination: EntityCoordinates
 }
 
 enum Behaviors {
@@ -73,6 +78,12 @@ enum Behaviors {
   avoid
   attack
 }
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+BigInt can represent values between -(2^53) + 1 and 2^53 - 1.
+"""
+scalar BigInt
 
 type Card {
   name: String
@@ -322,15 +333,15 @@ type CoolantTank implements SystemInterface {
 }
 
 type Coordinates {
-  x: Float!
-  y: Float!
-  z: Float!
+  x: Float
+  y: Float
+  z: Float
 }
 
 input CoordinatesInput {
-  x: Float!
-  y: Float!
-  z: Float!
+  x: Float
+  y: Float
+  z: Float
 }
 
 type CoreFeed {
@@ -368,6 +379,7 @@ type Countermeasure {
   powerUsage: Float!
   availablePower: Float!
   buildPercentage: Float!
+  note: String!
 }
 
 type CountermeasureConfigOptions {
@@ -681,7 +693,6 @@ type DockingPort {
 
 input DockingPortInput {
   id: ID
-  simulatorId: ID
   name: String
   shipName: String
   type: String
@@ -721,14 +732,7 @@ type Engine implements SystemInterface {
 
 input EntitiesLocationInput {
   id: ID!
-  position: CoordinatesInput!
-}
-
-type EntitiesPatch implements Patch {
-  op: OperationsEnum
-  path: [JSON]
-  value: JSON
-  values: [Entity!]
+  position: EntityCoordinatesInput!
 }
 
 type Entity {
@@ -737,13 +741,23 @@ type Entity {
   behavior: BehaviorComponent
   identity: IdentityComponent
   location: LocationComponent
+  stage: StageComponent
+  stageChild: StageChildComponent
+  light: LightComponent
+  glow: GlowComponent
+  template: TemplateComponent
 }
 
-type EntityPatch implements Patch {
-  op: OperationsEnum
-  path: [JSON]
-  value: JSON
-  values: Entity
+type EntityCoordinates {
+  x: BigInt!
+  y: BigInt!
+  z: BigInt!
+}
+
+input EntityCoordinatesInput {
+  x: BigInt!
+  y: BigInt!
+  z: BigInt!
 }
 
 type Environment {
@@ -881,6 +895,17 @@ type FormResults {
 input FormResultsInput {
   client: String
   form: [FormFieldsInput]
+}
+
+type GlowComponent {
+  glowMode: GlowModeEnum
+  color: String
+}
+
+enum GlowModeEnum {
+  glow
+  halo
+  shell
 }
 
 type GoogleSheet {
@@ -1132,6 +1157,12 @@ input LibraryInput {
   font: String
 }
 
+type LightComponent {
+  intensity: Float
+  decay: Float
+  color: String
+}
+
 type Lighting {
   intensity: Float
   action: LIGHTING_ACTION
@@ -1161,12 +1192,12 @@ input LightingInput {
 union Location = Deck | Room
 
 type LocationComponent {
-  position: Coordinates!
-  velocity: Coordinates!
-  acceleration: Coordinates!
+  position: EntityCoordinates!
+  velocity: EntityCoordinates!
+  acceleration: EntityCoordinates!
   rotation: Quaternion!
-  rotationVelocity: Coordinates!
-  rotationAcceleration: Coordinates!
+  rotationVelocity: EntityCoordinates!
+  rotationAcceleration: EntityCoordinates!
 }
 
 type Log {
@@ -1273,6 +1304,9 @@ enum MeshTypeEnum {
   sphere
   cube
   model
+  sprite
+  planet
+  star
 }
 
 type Message {
@@ -1338,12 +1372,15 @@ type MidiSet {
 }
 
 type Mission {
-  id: ID
+  id: ID!
   name: String
   description: String
-  timeline: [TimelineStep]
+  category: String
+  timeline: [TimelineStep!]!
   simulators: [Simulator]
   aux: Boolean
+  extraRequirements: SimulatorCapabilities
+  requirements(all: Boolean): SimulatorCapabilities
 }
 
 type Motu {
@@ -1447,28 +1484,47 @@ type Mutation {
     meshType: MeshTypeEnum
     modelAsset: String
     materialMapAsset: String
+    ringMapAsset: String
+    cloudMapAsset: String
+    emissiveColor: String
+    emissiveIntensity: Float
+    scale: Float
   ): String
   entityRemoveAppearance(id: ID!): String
   entitySetBehavior(
     id: ID!
     behavior: Behaviors!
     targetId: ID
-    destination: CoordinatesInput
+    destination: EntityCoordinatesInput
   ): String
   entityRemoveBehavior(id: ID!): String
   entitySetIdentity(id: ID, name: String, type: String): String
   entityRemoveIdentity(id: ID!): String
   entitySetLocation(
     id: ID
-    position: CoordinatesInput
-    velocity: CoordinatesInput
-    acceleration: CoordinatesInput
+    position: EntityCoordinatesInput
+    velocity: EntityCoordinatesInput
+    acceleration: EntityCoordinatesInput
     rotation: QuaternionInput
-    rotationVelocity: CoordinatesInput
-    rotationAcceleration: CoordinatesInput
+    rotationVelocity: EntityCoordinatesInput
+    rotationAcceleration: EntityCoordinatesInput
   ): String
   entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
   entityRemoveLocation(id: ID!): String
+  entitySetStage(
+    id: ID
+    scaleLabel: String
+    scaleLabelShort: String
+    skyboxAsset: String
+  ): String
+  entityRemoveStage(id: ID!): String
+  entitySetStageChild(id: ID, parentId: ID!): String
+  entityRemoveStageChild(id: ID!): String
+  entitySetLight(id: ID, intensity: Float, decay: Float, color: String): String
+  entityRemoveLight(id: ID!): String
+  entitySetGlow(id: ID, glowMode: GlowModeEnum, color: String): String
+  entityRemoveGlow(id: ID!): String
+  entitySetTemplate(id: ID, category: String!): String
 
   """
   Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.)
@@ -1608,11 +1664,15 @@ type Mutation {
 
   """
   Macro: Command Line: Add command line
+  Requires:
+    - Cards:Command Line
   """
   addCommandLineToSimulator(simulatorId: ID!, commandLine: ID!): String
 
   """
   Macro: Command Line: Remove command line
+  Requires:
+    - Cards:Command Line
   """
   removeCommandLineFromSimulator(simulatorId: ID!, commandLine: ID!): String
   addCommandLineOutput(simulatorId: ID!, clientId: ID!, output: String!): String
@@ -1624,6 +1684,14 @@ type Mutation {
     isApproved: Boolean!
   ): String
   addComputerCoreUser(id: ID!, user: ComputerCoreUserInput): ComputerCoreUser
+
+  """
+  Macro: Computer Core: Add Hacker
+  Requires:
+    - Cards:ComputerCore
+    - Systems:ComputerCore
+  """
+  computerCoreAddHacker(id: ID!, name: String, level: Int): String
   updateComputerCoreUser(
     id: ID!
     userId: ID!
@@ -1732,7 +1800,16 @@ type Mutation {
   deckEvac(deckId: ID!, evac: Boolean): String
   updateHallwaySvg(deckId: ID!, svg: String): String
   createDockingPort(port: DockingPortInput!): String
-  updateDockingPort(port: DockingPortInput!): String
+
+  """
+  Macro: Docking: Update Docking Port/Shuttlebay
+  """
+  updateDockingPort(
+    """
+    Dynamic: Docking
+    """
+    port: DockingPortInput!
+  ): String
   removeDockingPort(port: ID!): String
   addSpeed(id: ID, name: String, speed: [SpeedInput]!): String
   setSpeed(id: ID!, speed: Int!, on: Boolean): String
@@ -1776,6 +1853,8 @@ type Mutation {
 
   """
   Macro: Space EdVentures: Add Extra Crew Member
+  Requires:
+    - Space EdVentures
   """
   clientAddExtra(flightId: ID!, simulatorId: ID!, name: String!): String
   googleSheetsAuthorize: String
@@ -1804,11 +1883,15 @@ type Mutation {
 
   """
   Macro: Interfaces: Set Object Hidden
+  Requires:
+    - Cards:Interface
   """
   toggleInterfaceObjectHidden(id: ID!, objectId: ID!, hidden: Boolean!): String
 
   """
   Macro: Interfaces: Toggle Video playing
+  Requires:
+    - Cards:Interface
   """
   toggleInterfaceObjectPlaying(id: ID!, objectId: ID!): String
   internalCommConnectOutgoing(id: ID!): String
@@ -1872,18 +1955,25 @@ type Mutation {
 
   """
   Macro: Library: Add Entry
+  Requires:
+    - Cards:Library
   """
   addLibraryEntry(entry: LibraryInput!): String
   updateLibraryEntry(entry: LibraryInput!): String
 
   """
   Macro: Library: Remove Entry
+  Requires:
+    - Cards:Library
   """
   removeLibraryEntry(entry: ID, slug: String): String
   importLibraryEntry(simulatorId: ID!, entries: String!): String
 
   """
   Macro: Long Range: Send Long Range Message
+  Requires:
+    - Cards:CommDecoding
+    - Systems:LongRangeComm
   """
   sendLongRangeMessage(
     id: ID
@@ -1909,17 +1999,26 @@ type Mutation {
 
   """
   Macro: Interception: Add Interception Signal
+  Requires:
+    - Cards:Interception
+    - Systems:LongRangeComm
   """
   addInterceptionSignal(id: ID!): String
 
   """
   Macro: Interception: Remove Interception Signal
+  Requires:
+    - Cards:Interception
+    - Systems:LongRangeComm
   """
   removeInterceptionSignal(id: ID!): String
   setInterceptionDifficulty(id: ID!, difficulty: Int!): String
 
   """
   Macro: Long Range: Set preset messages
+  Requires:
+    - Cards:CommDecoding
+    - Systems:LongRangeComm
   """
   setLongRangePresetMessages(
     id: ID
@@ -1929,6 +2028,8 @@ type Mutation {
   addMacro(name: String!): ID
   removeMacro(id: ID!): String
   renameMacro(id: ID!, name: String!): String
+  duplicateMacro(id: ID!): String
+  duplicateMacroAction(id: ID!, actionId: ID!): String
   updateMacroActions(id: ID!, actions: [ActionInput]): String
 
   """
@@ -1958,6 +2059,8 @@ type Mutation {
 
   """
   Macro: Messaging: Send an inter-ship message
+  Requires:
+   - Cards:Messages
   """
   sendMessage(message: MessageInput!): String
   midiSetCreate(name: String!, deviceName: String!): MidiSet
@@ -1980,6 +2083,7 @@ type Mutation {
     missionId: ID!
     name: String
     description: String
+    category: String
     aux: Boolean
     simulators: [ID]
   ): String
@@ -2028,12 +2132,21 @@ type Mutation {
     updateTimelineItem: TimelineItemInput!
   ): String
   duplicateTimelineStep(missionId: ID!, timelineStepId: ID!): String
+  timelineDuplicateItem(
+    missionId: ID!
+    timelineStepId: ID!
+    timelineItemId: ID!
+  ): String
 
   """
   Macro: Timelines: Start Aux Timeline
   """
   startAuxTimeline(simulatorId: ID!, missionId: ID!): ID
   setAuxTimelineStep(simulatorId: ID!, timelineId: ID!, step: Int!): String
+  missionSetExtraRequirements(
+    missionId: ID!
+    requirements: RequirementInput!
+  ): String
   motuAdd(address: String!): String
   motuRemove(id: ID!): String
 
@@ -2051,6 +2164,9 @@ type Mutation {
 
   """
   Macro: Navigation: Send Course
+  Requires:
+   - Cards:Navigation
+   - Systems:Navigation
   """
   navCourseResponse(id: ID!, x: String, y: String, z: String): String
   navCourseEntry(id: ID!, x: String, y: String, z: String): String
@@ -2062,6 +2178,9 @@ type Mutation {
 
   """
   Macro: Navigation: Course Preset
+  Requires:
+   - Cards:Navigation
+   - Systems:Navigation
   """
   navSetPresets(id: ID, presets: NavPresetInput): String
 
@@ -2118,6 +2237,9 @@ type Mutation {
 
   """
   Macro: Probes: Probe Processed Data
+  Requires:
+   - Cards:ProbeNetwork
+   - Systems:Probes
   """
   probeProcessedData(id: ID!, data: String, flash: Boolean): String
   setProbeTorpedo(id: ID!, torpedo: Boolean!): String
@@ -2134,6 +2256,9 @@ type Mutation {
 
   """
   Macro: Reactor: Change Reactor Efficiency
+  Requires:
+   - Cards:ReactorControl
+   - Systems:Reactor
   """
   reactorChangeEfficiency(id: ID!, efficiency: Float): String
   reactorBatteryChargeLevel(id: ID!, level: Float!): String
@@ -2240,10 +2365,20 @@ type Mutation {
   snapshot: String
   test(key: String): String
   sensorScanRequest(id: ID!, request: String!): String
-  sensorScanResult(id: ID!, result: String!): String
 
   """
-  Macro: Sensors: Processed Data
+  Macro: Sensors: Send Scan Result
+  Requires:
+   - Cards:SecurityScans, SensorScans, Sensors, JrSensors
+   - Systems:Sensors
+  """
+  sensorScanResult(id: ID!, domain: String, result: String!): String
+
+  """
+  Macro: Sensors: Send Scan Result
+  Requires:
+   - Cards:Sensors, JrSensors
+   - Systems:Sensors
   """
   processedData(
     id: ID
@@ -2256,6 +2391,9 @@ type Mutation {
 
   """
   Macro: Sensors: Scan Answers
+  Requires:
+   - Cards:SecurityScans, SensorScans, Sensors, JrSensors
+   - Systems:Sensors
   """
   setPresetAnswers(
     simulatorId: ID!
@@ -2276,6 +2414,9 @@ type Mutation {
 
   """
   Macro: Sensors: Set Army Sensor Contacts
+  Requires:
+   - Cards:Sensors, JrSensors
+   - Systems:Sensors
   """
   setArmyContacts(
     simulatorId: ID!
@@ -2307,6 +2448,9 @@ type Mutation {
 
   """
   Macro: Sensors: Update Sensor Grid
+  Requires:
+   - Cards:Sensors, JrSensors
+   - Systems:Sensors
   """
   updateSensorGrid(simulatorId: ID!, contacts: [SensorContactInput]!): String
   destroySensorContact(id: ID!, contact: ID, contacts: [ID]): String
@@ -2333,11 +2477,17 @@ type Mutation {
 
   """
   Macro: Shields: Set all shield frequencies
+  Requires:
+   - Cards:ShieldControl
+   - Systems:Shield
   """
   shieldFrequencySetAll(simulatorId: ID!, frequency: Float!): String
 
   """
   Macro: Shields: Hit all shields
+  Requires:
+   - Cards:ShieldControl
+   - Systems:Shield
   """
   hitShields(id: ID, simulatorId: ID): String
   restoreShields(simulatorId: ID): String
@@ -2345,6 +2495,9 @@ type Mutation {
 
   """
   Macro: Docking: Set docking state
+  Requires:
+   - Cards:DockingPorts, SpecializedDocking, Shuttles
+   - Docking
   """
   shipSetDocking(
     simulatorId: ID!
@@ -2378,11 +2531,19 @@ type Mutation {
     body: String
     color: NotifyColors
   ): String
+
+  """
+  Macro: Actions: Print PDF Asset
+  """
+  printPdf(asset: String!): String
   commAddSignal(id: ID!, commSignalInput: CommSignalInput!): String
   commUpdateSignal(id: ID!, commSignalInput: CommSignalInput!): String
 
   """
   Macro: Short Range: Set Signals
+  Requires:
+   - Cards:CommShortRange
+   - Systems:ShortRangeComm
   """
   commUpdateSignals(id: ID!, signals: [CommSignalInput]!): String
   commRemoveSignal(id: ID!, signalId: ID!): String
@@ -2397,6 +2558,9 @@ type Mutation {
 
   """
   Macro: Short Range: Add Signal
+  Requires:
+   - Cards:CommShortRange
+   - Systems:ShortRangeComm
   """
   addShortRangeComm(
     simulatorId: ID!
@@ -2406,6 +2570,9 @@ type Mutation {
 
   """
   Macro: Short Range: Remove Signal
+  Requires:
+   - Cards:CommShortRange
+   - Systems:ShortRangeComm
   """
   removeShortRangeComm(
     simulatorId: ID!
@@ -2432,6 +2599,9 @@ type Mutation {
 
   """
   Macro: Signal Jammer: Set Signal
+  Requires:
+   - Cards:SignalJammer
+   - Systems:SignalJammer
   """
   signalJammerSignals(id: ID!, type: String!, signals: Int!): String
   fluxSignalJammer(id: ID): String
@@ -2752,12 +2922,18 @@ type Mutation {
 
   """
   Macro: Targeting: Clear Targeting Classes
+  Requires:
+   - Cards:Targeting, TargetingStandalone
+   - Systems:Targeting
   """
   clearAllTargetingContacts(id: ID!): String
   setTargetingRange(id: ID!, range: Float!): String
 
   """
   Macro: Targeting: Set Targeting Classes
+  Requires:
+   - Cards:Targeting, TargetingStandalone
+   - Systems:Targeting
   """
   setTargetingClasses(id: ID!, classInput: [TargetClassInput]!): String
   generateTaskReport(
@@ -2775,6 +2951,8 @@ type Mutation {
 
   """
   Macro: Tasks: Add Task
+  Requires:
+   - Cards:Tasks, EngineeringReports, RnDReports, DamageControl, DamageStepControl
   """
   addTask(taskInput: TaskInput!): String
   verifyTask(taskId: ID!, dismiss: Boolean): String
@@ -2800,6 +2978,8 @@ type Mutation {
 
   """
   Macro: Space EdVentures: Assign Space EdVentures Badge
+  Requires:
+    - Space EdVentures
   """
   assignSpaceEdventuresBadge(
     """
@@ -2811,16 +2991,22 @@ type Mutation {
 
   """
   Macro: Space EdVentures: Assign Space EdVentures Mission
+  Requires:
+    - Space EdVentures
   """
   assignSpaceEdventuresMission(station: String, badgeId: ID!): String
 
   """
   Macro: Space EdVentures: Change Flight Type
+  Requires:
+    - Space EdVentures
   """
   assignSpaceEdventuresFlightType(flightId: ID!, flightType: ID!): String
 
   """
   Macro: Space EdVentures: Transmit to Space EdVentures
+  Requires:
+    - Space EdVentures
   """
   assignSpaceEdventuresFlightRecord(flightId: ID!): String
   getSpaceEdventuresLogin(token: String!): String
@@ -2865,11 +3051,17 @@ type Mutation {
 
   """
   Macro: Tractor Beam: Add Target
+  Requires:
+   - Cards:TractorBeam
+   - Systems:TractorBeam
   """
   addTractorTarget(id: ID!, label: String): String
 
   """
   Macro: Tractor Beam: Remove Target
+  Requires:
+   - Cards:TractorBeam
+   - Systems:TractorBeam
   """
   removeTractorTarget(id: ID!): String
   setTransportDestination(transporter: ID!, destination: String!): String
@@ -2882,6 +3074,9 @@ type Mutation {
 
   """
   Macro: Transporters: Set Target Count
+  Requires:
+   - Cards:Transporters
+   - Systems:Transporters
   """
   setTransporterTargets(transporter: ID!, targets: Int!): String
   setTransporterChargeSpeed(id: ID!, chargeSpeed: Float!): String
@@ -2986,6 +3181,14 @@ type Mutation {
     id: ID!
     slot: CountermeasureSlotEnum!
   ): String
+  countermeasuresActivateCountermeasure(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+  ): String
+  countermeasuresDeactivateCountermeasure(
+    id: ID!
+    slot: CountermeasureSlotEnum!
+  ): String
   countermeasuresLaunchUnlockedCountermeasures(id: ID!): String
   countermeasuresBuildCountermeasure(
     id: ID!
@@ -3008,7 +3211,12 @@ type Mutation {
     config: JSON!
   ): String
   countermeasuresSetResource(id: ID!, resource: String!, value: Float!): String
-  entityCreate(flightId: ID!): Entity!
+  countermeasuresSetFDNote(
+    id: ID!
+    countermeasureId: ID!
+    note: String!
+  ): String
+  entityCreate(flightId: ID!, template: Boolean): Entity!
   entityRemove(id: [ID!]!): String
 }
 
@@ -3107,12 +3315,6 @@ input ObjectiveInput {
   crewComplete: Boolean
 }
 
-enum OperationsEnum {
-  add
-  remove
-  replace
-}
-
 type PainPoint {
   x: Float
   y: Float
@@ -3184,12 +3386,6 @@ enum ParticleTypes {
   Oxygen
   Carbon
   Radiation
-}
-
-interface Patch {
-  op: OperationsEnum
-  path: [JSON]
-  value: JSON
 }
 
 type Phaser implements SystemInterface {
@@ -3387,7 +3583,7 @@ type Query {
   engine(id: ID!): Engine
   exocomps(simulatorId: ID): [Exocomp]
   externals: Externals
-  flights(running: Boolean, id: ID): [Flight]
+  flights(running: Boolean, id: ID): [Flight!]!
   events: [String]
   googleSheets: String
   googleSheetsGetSpreadsheet(spreadsheetId: ID!): GoogleSpreadsheet
@@ -3410,7 +3606,7 @@ type Query {
   macroButtons: [MacroButtonConfig]
   messages(simulatorId: ID!, station: String, group: ID): [Message]
   midiSets(simulatorId: ID): [MidiSet]
-  missions(id: ID, aux: Boolean): [Mission]
+  missions(id: ID, aux: Boolean): [Mission!]!
   auxTimelines(simulatorId: ID!): [TimelineInstance]
   motus: [Motu]
   motu(id: ID!): Motu
@@ -3446,7 +3642,7 @@ type Query {
   sickbaySingle(id: ID): Sickbay
   symptoms: [String]
   signalJammers(simulatorId: ID!): [SignalJammer]
-  simulators(template: Boolean, id: ID): [Simulator]
+  simulators(template: Boolean, id: ID): [Simulator!]!
   softwarePanels(simulatorId: ID): [SoftwarePanel]
   stations: [StationSet]
   station(simulatorId: ID!, station: String!): Station
@@ -3463,6 +3659,7 @@ type Query {
     damageWhich: String
   ): [System]
   system(id: ID!): System
+  allSystems: [String!]!
   tacticalMaps(flightId: ID): [TacticalMap]
   tacticalMap(id: ID!): TacticalMap
   targeting(id: ID, simulatorId: ID): [Targeting]
@@ -3608,6 +3805,11 @@ type RemoteAccessCode {
 input RemoteAsset {
   url: String
   name: String
+}
+
+input RequirementInput {
+  cards: [String]
+  systems: [String]
 }
 
 type Room {
@@ -3973,13 +4175,13 @@ type Simulator {
   caps: Boolean
   template: Boolean
   templateId: ID
-  systems: [System]
-  stations: [Station]
+  systems: [System!]
+  stations: [Station!]
   mission: Mission
   missionConfigs: JSON
   currentTimelineStep: Int
-  executedTimelineSteps: [ID]
-  timelines: [TimelineInstance]
+  executedTimelineSteps: [ID!]
+  timelines: [TimelineInstance!]
   decks: [Deck]
   rooms: [Room]
   ship: Ship
@@ -4000,6 +4202,7 @@ type Simulator {
   hasLegs: Boolean
   spaceEdventuresId: String
   flipped: Boolean
+  capabilities: SimulatorCapabilities
   ambiance: [Ambiance]
   assets: SimulatorAssets
   soundEffects: JSON
@@ -4025,6 +4228,13 @@ input SimulatorAssetsInput {
   top: String
   logo: String
   bridge: String
+}
+
+type SimulatorCapabilities {
+  systems: [String!]!
+  cards: [String!]!
+  spaceEdventures: Boolean
+  docking: Boolean
 }
 
 input SimulatorInput {
@@ -4101,6 +4311,16 @@ input SpeedInput {
   optimal: Boolean
 }
 
+type StageChildComponent {
+  parentId: ID!
+}
+
+type StageComponent {
+  scaleLabel: String
+  scaleLabelShort: String
+  skyboxAsset: String
+}
+
 type Station {
   name: String
   description: String
@@ -4163,7 +4383,7 @@ input StringCoordinatesInput {
 type Subscription {
   _empty: String
   actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
-  assetFolderChange: [AssetFolder]
+  assetFolderChange: [AssetFolder!]!
   clientChanged(
     all: Boolean
     clientId: ID
@@ -4220,7 +4440,7 @@ type Subscription {
   messageUpdates(simulatorId: ID!, station: String): [Message]
   sendMessage(simulatorId: ID!, station: String): Message
   midiSets(simulatorId: ID): [MidiSet]
-  missionsUpdate(missionId: ID): [Mission]
+  missionsUpdate(missionId: ID, aux: Boolean): [Mission!]!
   auxTimelinesUpdate(simulatorId: ID!): [TimelineInstance]
   motus: [Motu]
   motu(id: ID!): Motu
@@ -4291,8 +4511,8 @@ type Subscription {
   viewscreensUpdate(simulatorId: ID): [Viewscreen]
   viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
   countermeasuresUpdate(simulatorId: ID!): Countermeasures
-  entity(id: ID): [EntityPatch]
-  entities(flightId: ID!): [EntitiesPatch]
+  entity(id: ID): Entity
+  entities(flightId: ID!, template: Boolean): [Entity]
 }
 
 type SubspaceField implements SystemInterface {
@@ -4512,6 +4732,7 @@ input TargetClassInput {
   speed: Float
   quadrant: Int
   moving: Boolean
+  clickToTarget: Boolean
 }
 
 type Targeting implements SystemInterface {
@@ -4546,6 +4767,7 @@ type TargetingClass {
   speed: Float
   quadrant: Int
   moving: Boolean
+  clickToTarget: Boolean
 }
 
 type TargetingContact {
@@ -4561,6 +4783,7 @@ type TargetingContact {
   quadrant: Int
   destroyed: Boolean
   moving: Boolean
+  clickToTarget: Boolean
 }
 
 type Task {
@@ -4665,6 +4888,10 @@ type Template {
   id: ID
 }
 
+type TemplateComponent {
+  category: String
+}
+
 enum TERMINAL_STATUS {
   F
   O
@@ -4762,10 +4989,10 @@ type TimelineInstance {
 }
 
 type TimelineItem {
-  id: ID
+  id: ID!
   name: String
   type: String
-  event: String
+  event: String!
   needsConfig: Boolean
   args: String
   delay: Int
@@ -4784,10 +5011,10 @@ input TimelineItemInput {
 
 type TimelineStep {
   id: ID!
-  name: String
+  name: String!
   description: String
   order: Int
-  timelineItems: [TimelineItem]
+  timelineItems: [TimelineItem!]!
 }
 
 type Timer {

@@ -5,17 +5,16 @@ import {
   Col,
   Card,
   CardBody,
-  ListGroup,
-  ListGroupItem,
   Label,
   Input,
   Button,
 } from "helpers/reactstrap";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useQuery, useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Rings} from "../helpers/loaders";
 import {DateTime} from "luxon";
+import SearchableList from "helpers/SearchableList";
 
 const QUERY = gql`
   query SideNav {
@@ -23,6 +22,7 @@ const QUERY = gql`
       id
       name
       aux
+      category
     }
   }
 `;
@@ -120,6 +120,7 @@ const MissionLibrary = ({missions, triggerAlert}) => {
 
 const MissionPicker = ({triggerAlert}) => {
   const [loadingMission, setLoadingMission] = React.useState(false);
+  const navigate = useNavigate();
   const [addMission] = useMutation(gql`
     mutation AddMission($name: String!) {
       createMission(name: $name)
@@ -152,21 +153,25 @@ const MissionPicker = ({triggerAlert}) => {
   return loading ? null : (
     <Container>
       <Row>
-        <Col sm={4}>
+        <Col sm={4} style={{maxHeight: "70vh"}}>
           <h2>Missions</h2>
-
-          <ListGroup style={{overflowY: "auto", maxHeight: "80vh"}}>
-            {data?.missions.map(m => (
-              <ListGroupItem
-                key={m.id}
-                tag={Link}
-                to={`/config/mission/${m.id}`}
-                className={m.aux ? "text-warning" : ""}
-              >
-                {m.name}
-              </ListGroupItem>
-            ))}
-          </ListGroup>
+          <SearchableList
+            items={data?.missions.map(m => ({
+              id: m.id,
+              label: m.name,
+              category: m.category,
+              aux: m.aux,
+            }))}
+            selectedItem={null}
+            setSelectedItem={item =>
+              navigate(`/config/mission/${item}/mission`)
+            }
+            renderItem={item => (
+              <span className={item.aux ? "text-warning" : ""}>
+                {item.label}
+              </span>
+            )}
+          />
 
           <Label>
             <Button size="sm" block color="success" onClick={createMission}>

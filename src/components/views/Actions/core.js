@@ -377,62 +377,59 @@ class ActionsCore extends Component {
             value={actionName}
             ref="actionName"
           >
-            <optgroup>
-              <option value="flash">Flash</option>
-              <option value="spark">Spark</option>
-              <option value="freak">Freak</option>
-              <option value="sound">Sound</option>
-              <option value="movie">Movie</option>
-              <option value="beep">Beep</option>
-              <option value="speak">Speak</option>
-              <option value="message">Message</option>
-              {!bridgeMap && <option value="changeCard">Change Card</option>}
-            </optgroup>
-            <optgroup>
-              <option value="blackout">Blackout</option>
-            </optgroup>
-            <optgroup>
-              <option value="online">Online</option>
-              <option value="offline">Offline</option>
-              <option value="power">Power Loss</option>
-              <option value="lockdown">Lockdown</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="soviet">Soviet</option>
-              <option value="crack">Crack</option>
-              <option value="uncrack">Un-Crack</option>
-            </optgroup>
+            <option value="flash">Flash</option>
+            <option value="spark">Spark</option>
+            <option value="freak">Freak</option>
+            <option value="sound">Sound</option>
+            <option value="movie">Movie</option>
+            <option value="beep">Beep</option>
+            <option value="speak">Speak</option>
+            <option value="message">Message</option>
+            {!bridgeMap && <option value="changeCard">Change Card</option>}
+            <hr />
+
+            <option value="blackout">Blackout</option>
+            <hr />
+
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+            <option value="power">Power Loss</option>
+            <option value="lockdown">Lockdown</option>
+            <option value="maintenance">Maintenance</option>
+            <option value="soviet">Soviet</option>
+            <option value="crack">Crack</option>
+            <option value="uncrack">Un-Crack</option>
+            <hr />
             {flight.flightType && (
-              <optgroup>
+              <>
                 <option value="spaceEdventuresToken">
                   Space EdVentures Token
                 </option>
-              </optgroup>
+
+                <hr />
+              </>
             )}
-            <optgroup>
-              <option value="reload">Reload Browser</option>
-              <option value="shutdown">Shutdown</option>
-              <option value="restart">Restart</option>
-              <option value="sleep">Sleep</option>
-              <option value="quit">Quit</option>
-            </optgroup>
+            <option value="reload">Reload Browser</option>
+            <option value="shutdown">Shutdown</option>
+            <option value="restart">Restart</option>
+            <option value="sleep">Sleep</option>
+            <option value="quit">Quit</option>
           </select>
           {!bridgeMap && (
             <select onChange={this.handleDestChange} ref="actionDest">
-              <optgroup>
-                <option value="all">All Stations</option>
-                <option value="bridge">Bridge Stations</option>
-                <option value="random">Random Station</option>
-              </optgroup>
-              <optgroup>
-                {this.props.simulator.stations.map(s => (
-                  <option key={s.name} value={s.name}>
-                    {s.name}
-                  </option>
-                ))}
-              </optgroup>
-              <optgroup>
-                <option value="Viewscreen">Viewscreen</option>
-              </optgroup>
+              <option value="all">All Stations</option>
+              <option value="bridge">Bridge Stations</option>
+              <option value="random">Random Station</option>
+              <hr />
+
+              {this.props.simulator.stations.map(s => (
+                <option key={s.name} value={s.name}>
+                  {s.name}
+                </option>
+              ))}
+              <hr />
+
+              <option value="Viewscreen">Viewscreen</option>
             </select>
           )}
         </div>

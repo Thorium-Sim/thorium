@@ -1,0 +1,14 @@
+subscription TimelineSimulator($simulatorId: ID!) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    id
+    currentTimelineStep
+    executedTimelineSteps
+    missionConfigs
+    stationSet {
+      id
+    }
+    mission {
+      id
+    }
+  }
+}

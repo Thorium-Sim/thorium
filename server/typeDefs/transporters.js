@@ -51,6 +51,9 @@ const schema = gql`
     completeTransport(transporter: ID!, target: ID!): String
     """
     Macro: Transporters: Set Target Count
+    Requires:
+     - Cards:Transporters
+     - Systems:Transporters
     """
     setTransporterTargets(transporter: ID!, targets: Int!): String
     setTransporterChargeSpeed(id: ID!, chargeSpeed: Float!): String

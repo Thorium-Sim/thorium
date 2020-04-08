@@ -1,12 +1,14 @@
 import React from "react";
-import MissionSelector from "./missionSelector";
 import allowedMacros from "./allowedMacros";
-import {Mutation} from "react-apollo";
-import gql from "graphql-tag.macro";
 import {VideoPreview} from "../TacticalMap/fileExplorer";
 import triggerLocalMacros from "helpers/triggerLocalMacros";
+import {
+  TimelineStep,
+  useSetSimulatorTimelineStepMutation,
+  useExecuteMacrosMutation,
+} from "generated/graphql";
 
-const StepRender = ({args, event}) => {
+const StepRender: React.FC<{args: string; event: string}> = ({args, event}) => {
   const stepArgs = JSON.parse(args) || {};
   if (event === "updateViewscreenComponent") {
     if (stepArgs.component === "Video") {
@@ -47,33 +49,44 @@ const StepRender = ({args, event}) => {
   }
   return null;
 };
-const Mission = ({
+
+interface MissionProps {
+  timeline: TimelineStep[];
+  simulatorId: string;
+  currentTimelineStep: number;
+}
+
+const TimelineThumbnailCore: React.FC<MissionProps> = ({
   timeline,
-  id: simulatorId,
+  simulatorId,
   currentTimelineStep,
-  triggerMacros,
-  updateTimelineStep,
 }) => {
+  const [setTimelineStep] = useSetSimulatorTimelineStepMutation();
+  const [triggerMacros] = useExecuteMacrosMutation();
+
   const filteredTimeline = timeline
     .map((t, i) => ({...t, index: i}))
     .filter(step =>
       step.timelineItems.find(i => allowedMacros.indexOf(i.event) > -1),
     );
-  const runMacro = t => {
+  const runMacro = (t: TimelineStep) => {
     if (!t) return;
-    const stepIndex = filteredTimeline.find(i => i.id === t.id).index;
+    const stepIndex = filteredTimeline.find(i => i.id === t.id)?.index ?? null;
+    if (stepIndex === null) return;
+
     const macros = t.timelineItems
       .filter(a => allowedMacros.indexOf(a.event) > -1)
       .map(tt => {
-        const args =
-          typeof tt.args === "string"
-            ? JSON.stringify({...JSON.parse(tt.args)})
-            : JSON.stringify({...tt.args});
+        const args = !tt.args
+          ? "{}"
+          : typeof tt.args === "string"
+          ? JSON.stringify({...JSON.parse(tt.args)})
+          : JSON.stringify({...(tt.args as Object)});
         return {
           stepId: tt.id,
           event: tt.event,
           args,
-          delay: tt.delay,
+          delay: tt.delay || 0,
         };
       });
     const variables = {
@@ -82,13 +95,12 @@ const Mission = ({
     };
     triggerLocalMacros(macros);
     triggerMacros({variables});
-    updateTimelineStep &&
-      updateTimelineStep({
-        variables: {
-          simulatorId,
-          step: stepIndex + 1,
-        },
-      });
+    setTimelineStep({
+      variables: {
+        simulatorId,
+        step: stepIndex + 1,
+      },
+    });
   };
   if (filteredTimeline.length === 0)
     return <div>No viewscreen timeline actions.</div>;
@@ -106,7 +118,7 @@ const Mission = ({
             onClick={() => runMacro(t)}
           >
             {t.timelineItems.map(i => (
-              <StepRender key={i.id} {...i} />
+              <StepRender key={i.id} event={i.event} args={i.args || "{}"} />
             ))}
             <p>
               {stepIndex + 1}: {t.name}
@@ -114,52 +126,6 @@ const Mission = ({
           </div>
         );
       })}
-    </div>
-  );
-};
-const TimelineThumbnailCore = ({
-  id,
-  currentTimelineStep,
-  mission,
-  missions,
-}) => {
-  return (
-    <div>
-      <MissionSelector simulatorId={id} mission={mission} missions={missions} />
-      {!mission ? (
-        <p>Simulator has no mission assigned.</p>
-      ) : (
-        <Mutation
-          mutation={gql`
-            mutation UpdateTimelineStep($simulatorId: ID!, $step: Int!) {
-              setSimulatorTimelineStep(simulatorId: $simulatorId, step: $step)
-            }
-          `}
-        >
-          {updateTimelineStep => (
-            <Mutation
-              mutation={gql`
-                mutation ExecuteMacro(
-                  $simulatorId: ID!
-                  $macros: [MacroInput]!
-                ) {
-                  triggerMacros(simulatorId: $simulatorId, macros: $macros)
-                }
-              `}
-            >
-              {triggerMacros => (
-                <Mission
-                  {...mission}
-                  id={id}
-                  currentTimelineStep={currentTimelineStep}
-                  triggerMacros={triggerMacros}
-                  updateTimelineStep={updateTimelineStep}
-                />
-              )}
-            </Mutation>
-          )}
-        </Mutation>
-      )}
     </div>
   );
 };

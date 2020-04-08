@@ -1,10 +1,8 @@
-import React, {Component, Fragment} from "react";
+import React from "react";
 import {Label, Input, Button} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
-import gql from "graphql-tag.macro";
 import {FaBan} from "react-icons/fa";
 import {useParams} from "react-router";
-import {useToggleStationMessageGroupMutation, Station} from "generated/graphql";
+import {useToggleStationMessageGroupMutation} from "generated/graphql";
 import Maybe from "graphql/tsutils/Maybe";
 const defaultGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
 

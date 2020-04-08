@@ -9,7 +9,7 @@ export {default as Transporters} from "./transporters";
 export {default as SensorContact} from "./sensorContact";
 export {StationSet, Station, Card} from "./stationSet";
 export {default as Flight} from "./flight.js";
-export {default as Mission} from "./mission.js";
+export {default as Mission} from "./mission";
 export {Deck, Room, InventoryItem} from "./shipStructure";
 export {default as LongRangeComm} from "./longRangeComm";
 export {default as InternalComm} from "./internalComm";

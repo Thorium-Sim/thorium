@@ -1,8 +1,43 @@
 import uuid from "uuid";
 
-export class TimelineObject {
-  constructor(params) {
+interface MissionParams {
+  id?: string;
+  name?: string;
+  description?: string;
+  category?: string;
+  aux?: boolean;
+  simulators?: string[];
+  timeline?: TimelineStep[];
+  extraRequirements?: Requirements;
+}
+
+interface Requirements {
+  cards: string[];
+  systems: string[];
+}
+export default class Mission {
+  class: "Mission";
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  aux: boolean;
+  simulators: string[];
+  timeline: TimelineStep[];
+  extraRequirements: Requirements;
+  constructor(params: MissionParams = {}) {
+    this.class = "Mission";
+    this.id = params.id || uuid.v4();
+    this.name = params.name || "Mission";
+    this.description = params.description || "";
+    this.category = params.category || "";
+    this.aux = params.aux || false;
+    this.simulators = params.simulators || [];
     this.timeline = [];
+    this.extraRequirements = params.extraRequirements || {
+      cards: [],
+      systems: [],
+    };
     if (params.timeline) {
       params.timeline.forEach(t => {
         this.timeline.push(new TimelineStep(t.id, t));
@@ -16,7 +51,13 @@ export class TimelineObject {
       });
     }
   }
-
+  update({name, description, aux, category, simulators}) {
+    if (name || name === "") this.name = name;
+    if (description || description === "") this.description = description;
+    if (category || category === "") this.category = category;
+    if (aux || aux === false) this.aux = aux;
+    if (simulators) this.simulators = simulators;
+  }
   addTimelineStep({name, description, order, timelineStepId, timelineItems}) {
     this.timeline.push(
       new TimelineStep(timelineStepId, {
@@ -65,7 +106,7 @@ export class TimelineObject {
   }
   addTimelineStepItem(timelineStepId, timelineItemId, timelineItem) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
-    timeline.addTimelineItem(timelineItemId, timelineItem);
+    return timeline.addTimelineItem(timelineItemId, timelineItem);
   }
   removeTimelineStepItem(timelineStepId, timelineItemId) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
@@ -75,9 +116,18 @@ export class TimelineObject {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
     timeline.updateTimelineItem(timelineItemId, timelineItem);
   }
+  updateExtraRequirements(requirements: Requirements) {
+    this.extraRequirements = requirements;
+  }
 }
 
 export class TimelineStep {
+  id: string;
+  class: "TimelineStep";
+  name: string;
+  description: string;
+  order: number;
+  timelineItems: TimelineItem[];
   constructor(timelineStepId, params) {
     this.id = timelineStepId || uuid.v4();
     this.class = "TimelineStep";
@@ -97,9 +147,9 @@ export class TimelineStep {
     if (description || description === "") this.description = description;
   }
   addTimelineItem(id, {name, type, event, args, delay}) {
-    this.timelineItems.push(
-      new TimelineItem(id, {name, type, event, args, delay}),
-    );
+    const item = new TimelineItem(id, {name, type, event, args, delay});
+    this.timelineItems.push(item);
+    return item.id;
   }
   removeTimelineItem(id) {
     this.timelineItems = this.timelineItems.filter(t => t.id !== id);
@@ -118,8 +168,25 @@ export class TimelineStep {
   }
 }
 
+interface TimelineItemParams {
+  id?: string;
+  name?: string;
+  type?: string;
+  event?: string;
+  args?: string;
+  delay?: number;
+  noCancelOnReset?: boolean;
+}
+
 export class TimelineItem {
-  constructor(timelineItemId, params = {}) {
+  id: string;
+  name: string;
+  type: string;
+  event: string;
+  args: string;
+  delay: number;
+  noCancelOnReset: boolean;
+  constructor(timelineItemId, params: TimelineItemParams = {}) {
     this.id = timelineItemId || uuid.v4();
     this.name = params.name || "Item";
     this.type = params.type || null;

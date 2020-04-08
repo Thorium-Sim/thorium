@@ -46,9 +46,12 @@ export default ({updateArgs, args, stations, clients}) => {
                   ))}
                 </Input>
               ) : loading ? (
-                "Loading..."
+                <p>Loading...</p>
               ) : (
-                "Not connected to a SpaceEdVentures.com Center. Cannot get badges."
+                <p>
+                  Not connected to a SpaceEdVentures.com Center. Cannot get
+                  badges.
+                </p>
               )}
             </div>
           </Label>

@@ -34,7 +34,7 @@ import {
   FaTimes,
   FaBars,
   FaSlidersH,
-  FaRegStar,
+  // FaRegStar,
 } from "react-icons/fa";
 
 import IssueTracker from "../../components/admin/IssueTracker";

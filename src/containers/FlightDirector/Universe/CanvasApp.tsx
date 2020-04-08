@@ -140,6 +140,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     mousePosition,
     setSelected,
     entities.length,
+    stage,
   ]);
 
   const elementList = ["input", "textarea"];
