@@ -112,34 +112,33 @@ export default ({updateArgs, args, noStations, stations, clients}) => {
           <option disabled value="nothing">
             Pick an action
           </option>
-          <optgroup>
-            <option value="flash">Flash</option>
-            <option value="spark">Spark</option>
-            <option value="sound">Sound</option>
-            <option value="movie">Movie</option>
-            <option value="beep">Beep</option>
-            <option value="speak">Speak</option>
-            <option value="message">Message</option>
-          </optgroup>
-          <optgroup>
-            <option value="blackout">Blackout</option>
-          </optgroup>
-          <optgroup>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-            <option value="power">Power Loss</option>
-            <option value="lockdown">Lockdown</option>
-            <option value="maintenance">Maintenance</option>
-            <option value="soviet">Soviet</option>
-            <option value="crack">Crack</option>
-            <option value="uncrack">Un-Crack</option>
-          </optgroup>
-          <optgroup>
-            <option value="reload">Reload Browser</option>
-            <option value="spaceEdventuresToken">
-              Space EdVentures Token Screen
-            </option>
-          </optgroup>
+          <hr />
+          <option value="flash">Flash</option>
+          <option value="spark">Spark</option>
+          <option value="sound">Sound</option>
+          <option value="movie">Movie</option>
+          <option value="beep">Beep</option>
+          <option value="speak">Speak</option>
+          <option value="message">Message</option>
+          <hr />
+
+          <option value="blackout">Blackout</option>
+          <hr />
+
+          <option value="online">Online</option>
+          <option value="offline">Offline</option>
+          <option value="power">Power Loss</option>
+          <option value="lockdown">Lockdown</option>
+          <option value="maintenance">Maintenance</option>
+          <option value="soviet">Soviet</option>
+          <option value="crack">Crack</option>
+          <option value="uncrack">Un-Crack</option>
+          <hr />
+
+          <option value="reload">Reload Browser</option>
+          <option value="spaceEdventuresToken">
+            Space EdVentures Token Screen
+          </option>
         </Input>
         {noStations || (
           <Input

@@ -1,0 +1,22 @@
+subscription TimelineMission {
+  missionsUpdate {
+    id
+    name
+    description
+    category
+    timeline {
+      id
+      name
+      order
+      description
+      timelineItems {
+        id
+        name
+        type
+        args
+        event
+        delay
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+mutation EntitySetLocation(
+  $id: ID!
+  $position: EntityCoordinatesInput
+  $velocity: EntityCoordinatesInput
+  $acceleration: EntityCoordinatesInput
+  $rotation: QuaternionInput
+  $rotationVelocity: EntityCoordinatesInput
+  $rotationAcceleration: EntityCoordinatesInput
+) {
+  entitySetLocation(
+    id: $id
+    position: $position
+    velocity: $velocity
+    acceleration: $acceleration
+    rotation: $rotation
+    rotationVelocity: $rotationVelocity
+    rotationAcceleration: $rotationAcceleration
+  )
+}

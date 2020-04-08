@@ -7,3 +7,7 @@ export {StageChild} from "./stageChild";
 export {Light} from "./light";
 export {Glow} from "./glow";
 export {Template} from "./template";
+export {Simulator} from "./simulator";
+export {EnginesImpulse} from "./enginesImpulse";
+export {EnginesWarp} from "./enginesWarp";
+export {Thrusters} from "./thrusters";

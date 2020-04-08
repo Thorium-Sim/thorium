@@ -3,6 +3,7 @@
   flex-direction: column;
   padding: 0 4px;
   max-height: calc(100vh - 23px);
+  height: 100%;
   .btn-group {
     width: 100%;
     display: flex;
@@ -41,11 +42,15 @@
   .mission-step-description {
     white-space: pre-wrap;
   }
-  .list-group-item.active {
-    & > div {
-      background-color: #dc3545 !important;
+  .classic-timeline {
+    overflow-y: auto;
+    padding-bottom: 150px;
+    .list-group-item.active {
+      & > div {
+        background-color: #dc3545 !important;
+      }
+      border-color: #b62a38 !important;
     }
-    border-color: #b62a38 !important;
   }
   .expand-toggle {
     cursor: pointer;
@@ -54,6 +59,27 @@
       transform: rotate(90deg);
     }
   }
+  .mission-builder {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 0px;
+    .list-group {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .card-body {
+      padding: 0;
+    }
+    .timeline-action-name {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+.thumbnail-list {
+  overflow-y: auto;
+  padding-bottom: 150px;
 }
 .timeline-thumbnail {
   width: calc(100% - 10px);

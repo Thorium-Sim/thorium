@@ -7,7 +7,14 @@ import {setContext} from "@apollo/link-context";
 import {Hermes} from "apollo-cache-hermes";
 import {FLIGHTS_QUERY} from "../containers/FlightDirector/Welcome/Welcome";
 import {getClientId} from "helpers/getClientId";
+import {publish} from "./pubsub";
+import {getArgumentValues} from "graphql/execution/values";
+import {buildASTSchema, getOperationRootType} from "graphql";
+import {loader} from "graphql.macro";
+import {getFieldDef} from "graphql/execution/execute";
 
+const schemaAST = loader("../schema.graphql");
+const schema = buildASTSchema(schemaAST);
 // import * as Sentry from "@sentry/browser";
 
 const hostname = window.location.hostname;
@@ -19,7 +26,7 @@ export const graphqlUrl =
     : `${protocol}//${hostname}:${parseInt(window.location.port || 3000, 10) +
         1}/graphql`;
 
-export const websocketUrl =
+const websocketUrl =
   process.env.NODE_ENV === "production"
     ? `${wsProtocol}//${window.location.host}/graphql`
     : `${wsProtocol}//${hostname}:${parseInt(window.location.port || 3000, 10) +
@@ -62,6 +69,36 @@ const headersMiddleware = setContext((operation, {headers}) => {
   }));
 });
 
+const mutationMiddleware = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  if (operation.query.definitions[0].operation === "mutation" && schema) {
+    const event =
+      operation?.query?.definitions?.[0]?.selectionSet?.selections?.[0]?.name
+        ?.value;
+    const variables = Object.keys(operation.variables).reduce((acc, key) => {
+      const _acc = acc;
+      if (operation.variables[key] !== undefined)
+        _acc[key] = operation.variables[key];
+      return _acc;
+    }, {});
+    const opDef = operation?.query.definitions?.[0];
+    const parentType = getOperationRootType(schema, opDef);
+    const fieldDef = getFieldDef(schema, parentType, event);
+
+    const args = getArgumentValues(
+      fieldDef,
+      opDef.selectionSet.selections[0],
+      variables,
+    );
+
+    if (event) {
+      publish("mutation-event", {event, args});
+    }
+  }
+
+  return forward(operation);
+});
+
 const httpLink = ApolloLink.from([
   onError(({graphQLErrors, networkError}) => {
     if (graphQLErrors) {
@@ -73,6 +110,7 @@ const httpLink = ApolloLink.from([
     }
     if (networkError) console.log(`[Network error]:`, networkError);
   }),
+  mutationMiddleware,
   process.env.NODE_ENV === "test"
     ? new MockLink([{request: {query: FLIGHTS_QUERY}}])
     : new HttpLink({
@@ -129,4 +167,8 @@ const client = new ApolloClient({
   },
 });
 
+// Gotta nab the schema up there.
+if (!schema) {
+  client.query();
+}
 export default client;

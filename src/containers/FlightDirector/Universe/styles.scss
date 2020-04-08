@@ -3,30 +3,22 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
   canvas {
     height: 100%;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
+    background-color: black;
   }
   .controls-section {
     position: absolute;
     left: 0;
     top: 0;
-    display: flex;
-    transition: transform 0.2s ease;
-    transform: translateX(calc(-100% + 36px));
-  }
-  .controls-section.expanded {
-    z-index: 10;
-    transform: translateX(0);
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    margin: 12px 0 0 12px;
+    gap: 12px;
   }
 
   .view-controls {
-    position: relative;
-    left: 12px;
-    top: 12px;
     display: flex;
     flex-direction: column;
   }
@@ -56,6 +48,9 @@
   button:hover {
     background-color: #424242;
   }
+  button.active {
+    background-color: #c28056;
+  }
   button.selected,
   button:active {
     background-color: #5680c2;
@@ -63,6 +58,13 @@
   button:disabled {
     background-color: #111;
     color: #777;
+  }
+  select {
+    background-color: #424242;
+    color: white;
+    border: none;
+    font-size: 18px;
+    height: 30px;
   }
   .library {
     height: 120px;
@@ -130,6 +132,10 @@
     color: #fff;
     background-color: #222;
   }
+  .level-editor-container {
+    flex: 4;
+    position: relative;
+  }
   #level-editor {
     div {
       pointer-events: none;
@@ -155,6 +161,7 @@
   }
 }
 .control-palette {
+  flex: 1;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

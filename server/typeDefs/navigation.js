@@ -56,6 +56,9 @@ const schema = gql`
 
     """
     Macro: Navigation: Send Course
+    Requires:
+     - Cards:Navigation
+     - Systems:Navigation
     """
     navCourseResponse(id: ID!, x: String, y: String, z: String): String
     navCourseEntry(id: ID!, x: String, y: String, z: String): String
@@ -67,6 +70,9 @@ const schema = gql`
 
     """
     Macro: Navigation: Course Preset
+    Requires:
+     - Cards:Navigation
+     - Systems:Navigation
     """
     navSetPresets(id: ID, presets: NavPresetInput): String
   }

@@ -27,7 +27,12 @@ export default function BackPlane({
       onPointerUp={e => {}}
     >
       <planeBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" color={0x000000} />
+      <meshStandardMaterial
+        attach="material"
+        color={0x000000}
+        transparent
+        opacity={0}
+      />
     </mesh>
   );
 }

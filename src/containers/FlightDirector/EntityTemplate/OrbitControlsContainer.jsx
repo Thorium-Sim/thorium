@@ -19,7 +19,7 @@ export default function OrbitControlsContainer() {
     <orbitControls
       ref={controls}
       args={[camera, gl.domElement]}
-      // enableZoom={false}
+      enableZoom={false}
       enablePan={false}
     />
   );

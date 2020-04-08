@@ -68,11 +68,17 @@ App.on(
     timelineStepId,
     timelineItemId = uuid.v4(),
     timelineItem,
+    cb,
   }) => {
     const object = getTimelineObject(simulatorId, missionId);
-    object.addTimelineStepItem(timelineStepId, timelineItemId, timelineItem);
+    const id = object.addTimelineStepItem(
+      timelineStepId,
+      timelineItemId,
+      timelineItem,
+    );
     pubsub.publish("missionsUpdate", App.missions);
     pubsub.publish("simulatorsUpdate", App.simulators);
+    cb && cb(id);
   },
 );
 App.on(

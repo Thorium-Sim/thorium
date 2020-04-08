@@ -6,9 +6,9 @@ import {
   fireEvent,
 } from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Component from "./index.js";
-import CommDecodingMock from "mocks/cards/CommDecoding.mock.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Component from "./index";
+import CommDecodingMock from "mocks/cards/CommDecoding.mock";
 import Composer from "./Composer";
 
 it("should render", async () => {

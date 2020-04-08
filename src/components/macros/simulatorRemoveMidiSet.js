@@ -13,7 +13,7 @@ const MIDI_SETS = gql`
 `;
 export default ({updateArgs, args: {midiSet}}) => {
   const {loading, data} = useQuery(MIDI_SETS);
-  if (loading) return "Loading MIDI Sets...";
+  if (loading) return <p>Loading MIDI Sets...</p>;
   return (
     <FormGroup className="macro-removeMidiSet">
       <Label>MIDI Set </Label>

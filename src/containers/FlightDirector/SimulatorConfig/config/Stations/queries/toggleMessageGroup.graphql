@@ -1,0 +1,13 @@
+mutation ToggleStationMessageGroup(
+  $stationSetId: ID!
+  $station: String!
+  $group: String!
+  $state: Boolean!
+) {
+  toggleStationMessageGroup(
+    stationSetId: $stationSetId
+    station: $station
+    group: $group
+    state: $state
+  )
+}

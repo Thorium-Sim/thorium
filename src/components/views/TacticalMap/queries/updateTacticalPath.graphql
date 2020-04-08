@@ -1,0 +1,7 @@
+mutation UpdateTacticalPath(
+  $mapId: ID!
+  $layerId: ID!
+  $path: TacticalPathInput!
+) {
+  updateTacticalMapPath(mapId: $mapId, layerId: $layerId, path: $path)
+}

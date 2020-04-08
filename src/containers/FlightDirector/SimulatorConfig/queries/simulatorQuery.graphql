@@ -1,0 +1,174 @@
+subscription SimulatorsConfig {
+  simulatorsUpdate(template: true) {
+    id
+    name
+    alertlevel
+    layout
+    caps
+    exocomps
+    panels
+    missionConfigs
+    commandLines
+    triggers
+    interfaces
+    midiSets
+    stepDamage
+    verifyStep
+    hasPrinter
+    hasLegs
+    bridgeOfficerMessaging
+    spaceEdventuresId
+    requiredDamageSteps {
+      id
+      name
+      args {
+        end
+        cleanup
+        name
+        orders
+        room
+        preamble
+        type
+        message
+        code
+        inventory
+        destination
+        equipment
+        query
+        reactivate
+      }
+    }
+    optionalDamageSteps {
+      id
+      name
+      args {
+        end
+        cleanup
+        name
+        orders
+        room
+        preamble
+        type
+        message
+        code
+        inventory
+        destination
+        equipment
+        query
+        reactivate
+      }
+    }
+    damageTasks {
+      id
+      taskTemplate {
+        id
+        name
+        definition
+        reportTypes
+      }
+      required
+      nextSteps {
+        id
+        name
+        definition
+      }
+    }
+    assets {
+      mesh
+      texture
+      side
+      top
+      logo
+      bridge
+    }
+    soundEffects
+    systems {
+      id
+      type
+      name
+      displayName
+      upgradeName
+      upgradeMacros {
+        id
+        event
+        args
+        delay
+      }
+      requiredDamageSteps {
+        id
+        name
+        args {
+          end
+          cleanup
+          name
+          orders
+          room
+          preamble
+          type
+          message
+          code
+          inventory
+          destination
+          equipment
+          query
+          reactivate
+        }
+      }
+      optionalDamageSteps {
+        id
+        name
+        args {
+          end
+          cleanup
+          name
+          orders
+          room
+          preamble
+          type
+          message
+          code
+          inventory
+          destination
+          equipment
+          query
+          reactivate
+        }
+      }
+      damageTasks {
+        id
+        taskTemplate {
+          id
+          name
+          definition
+          reportTypes
+        }
+        required
+        nextSteps {
+          id
+          name
+          definition
+        }
+      }
+    }
+    stationSets {
+      id
+      name
+      crewCount
+      stations {
+        name
+        description
+        training
+        ambiance
+        login
+        executive
+        messageGroups
+        layout
+        widgets
+        cards {
+          name
+          component
+        }
+      }
+    }
+  }
+}

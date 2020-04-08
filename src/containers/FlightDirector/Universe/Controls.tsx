@@ -3,15 +3,13 @@ import {
   MdSelectAll,
   MdCenterFocusStrong,
   MdZoomOutMap,
-  MdChevronRight,
-  MdChevronLeft,
   MdLightbulbOutline,
   MdCamera,
 } from "react-icons/md";
 import {Tooltip} from "reactstrap";
 import uuid from "uuid";
-import PropertyPalette from "./PropertyPalette";
-import {Entity} from "generated/graphql";
+import {FaRuler} from "react-icons/fa";
+import {MeasurementAction} from "./measurementReducer";
 
 interface TooltipButtonProps {
   tooltipContent: React.ReactNode;
@@ -57,11 +55,15 @@ const Controls = ({
   selecting,
   setSelecting,
   hasSelected,
-  selectedEntity,
   lighting,
   setLighting,
   camera,
   setCamera,
+  measuring,
+  measured,
+  speed,
+  setMeasuring,
+  timeInSeconds,
 }: {
   recenter: () => void;
   zoomScale: boolean;
@@ -69,30 +71,19 @@ const Controls = ({
   selecting: boolean;
   setSelecting: (val: boolean | StateArg) => void;
   hasSelected: boolean;
-  selectedEntity: Entity | undefined;
   lighting: boolean;
   setLighting: React.Dispatch<React.SetStateAction<boolean>>;
   camera: boolean;
   setCamera: React.Dispatch<React.SetStateAction<boolean>>;
+  measuring: boolean;
+  measured: boolean;
+  speed: number;
+  timeInSeconds: number;
+  setMeasuring: React.Dispatch<MeasurementAction>;
 }) => {
-  const [paletteExpanded, setPaletteExpanded] = React.useState<boolean>(false);
-  React.useEffect(() => {
-    if (!hasSelected) setPaletteExpanded(false);
-  }, [hasSelected]);
   return (
-    <div className={`controls-section ${paletteExpanded ? "expanded" : ""}`}>
-      <PropertyPalette selectedEntity={selectedEntity} />
+    <div className={`controls-section`}>
       <div className="view-controls">
-        <div>
-          <TooltipButton
-            disabled={!hasSelected}
-            className={paletteExpanded ? "selected" : ""}
-            onClick={() => setPaletteExpanded((s: boolean) => !s)}
-            tooltipContent="Property Palette"
-          >
-            {paletteExpanded ? <MdChevronLeft /> : <MdChevronRight />}
-          </TooltipButton>
-        </div>
         <div>
           <TooltipButton onClick={recenter} tooltipContent="Recenter Canvas">
             <MdCenterFocusStrong />
@@ -125,7 +116,57 @@ const Controls = ({
           >
             <MdCamera />
           </TooltipButton>
+          <TooltipButton
+            className={`${measuring ? "active" : ""} ${
+              measured ? "selected" : ""
+            }`}
+            onClick={() =>
+              setMeasuring(measuring ? {type: "cancel"} : {type: "start"})
+            }
+            tooltipContent="Measure with engine speed"
+          >
+            <FaRuler />
+          </TooltipButton>
         </div>
+      </div>
+      <div className="specific-controls">
+        {measuring ? (
+          <>
+            <select
+              value={speed}
+              onChange={e =>
+                setMeasuring({type: "speed", speed: parseFloat(e.target.value)})
+              }
+            >
+              <option value={28}>1/4 Impulse</option>
+              <option value={344}>1/2 Impulse</option>
+              <option value={3913}>3/4 Impulse</option>
+              <option value={44224}>Full Impulse</option>
+              <option value={499497}>Destructive Impulse</option>
+              <hr />
+              <option>Warp 1</option>
+            </select>
+            <div>
+              <input
+                type="range"
+                min={60}
+                max={600}
+                step={15}
+                value={timeInSeconds}
+                onChange={e =>
+                  setMeasuring({
+                    type: "time",
+                    timeInSeconds: parseFloat(e.target.value),
+                  })
+                }
+              />
+              <p>
+                {Math.trunc(timeInSeconds / 60)} Min
+                {timeInSeconds % 60 > 0 ? `, ${timeInSeconds % 60} Sec` : ""}
+              </p>
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );

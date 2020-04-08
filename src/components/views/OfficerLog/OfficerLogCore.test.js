@@ -1,8 +1,8 @@
 import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
-import baseProps from "../../../stories/helpers/baseProps.js";
-import Core, {OFFICER_LOG_CORE_QUERY, OFFICER_LOG_CORE_SUB} from "./core.js";
+import baseProps from "../../../stories/helpers/baseProps";
+import Core, {OFFICER_LOG_CORE_QUERY, OFFICER_LOG_CORE_SUB} from "./core";
 
 // Skipping because of a weird subscription/query issue.
 it.skip("should render", async () => {

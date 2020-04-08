@@ -1,0 +1,3 @@
+mutation ResetFlight($flightId: ID!) {
+  resetFlight(flightId: $flightId, full: true)
+}

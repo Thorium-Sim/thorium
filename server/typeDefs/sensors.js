@@ -166,11 +166,17 @@ const schema = gql`
     sensorScanRequest(id: ID!, request: String!): String
     """
     Macro: Sensors: Send Scan Result
+    Requires:
+     - Cards:SecurityScans, SensorScans, Sensors, JrSensors
+     - Systems:Sensors
     """
     sensorScanResult(id: ID!, domain: String, result: String!): String
 
     """
-    Macro: Sensors: Processed Data
+    Macro: Sensors: Send Scan Result
+    Requires:
+     - Cards:Sensors, JrSensors
+     - Systems:Sensors
     """
     processedData(
       id: ID
@@ -184,6 +190,9 @@ const schema = gql`
 
     """
     Macro: Sensors: Scan Answers
+    Requires:
+     - Cards:SecurityScans, SensorScans, Sensors, JrSensors
+     - Systems:Sensors
     """
     setPresetAnswers(
       simulatorId: ID!
@@ -206,6 +215,9 @@ const schema = gql`
 
     """
     Macro: Sensors: Set Army Sensor Contacts
+    Requires:
+     - Cards:Sensors, JrSensors
+     - Systems:Sensors
     """
     setArmyContacts(
       simulatorId: ID!
@@ -242,6 +254,9 @@ const schema = gql`
     updateSensorContacts(id: ID!, contacts: [SensorContactInput]!): String
     """
     Macro: Sensors: Update Sensor Grid
+    Requires:
+     - Cards:Sensors, JrSensors
+     - Systems:Sensors
     """
     updateSensorGrid(simulatorId: ID!, contacts: [SensorContactInput]!): String
 

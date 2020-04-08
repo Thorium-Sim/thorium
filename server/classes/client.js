@@ -196,7 +196,7 @@ export default class Client {
   setOverlay(overlay) {
     this.overlay = overlay;
   }
-  reset(hardReset) {
+  reset(hardReset = false) {
     this.setTraining(false);
     if (!this.isSpaceEdventures) {
       this.logout();

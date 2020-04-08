@@ -59,6 +59,8 @@ const schema = gql`
 
     """
     Macro: Space EdVentures: Assign Space EdVentures Badge
+    Requires:
+      - Space EdVentures
     """
     assignSpaceEdventuresBadge(
       """
@@ -70,16 +72,22 @@ const schema = gql`
 
     """
     Macro: Space EdVentures: Assign Space EdVentures Mission
+    Requires:
+      - Space EdVentures
     """
     assignSpaceEdventuresMission(station: String, badgeId: ID!): String
 
     """
     Macro: Space EdVentures: Change Flight Type
+    Requires:
+      - Space EdVentures
     """
     assignSpaceEdventuresFlightType(flightId: ID!, flightType: ID!): String
 
     """
     Macro: Space EdVentures: Transmit to Space EdVentures
+    Requires:
+      - Space EdVentures
     """
     assignSpaceEdventuresFlightRecord(flightId: ID!): String
     getSpaceEdventuresLogin(token: String!): String

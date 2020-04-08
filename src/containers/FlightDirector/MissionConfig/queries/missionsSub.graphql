@@ -1,0 +1,35 @@
+subscription MissionSubscription($missionId: ID!) {
+  missionsUpdate(missionId: $missionId) {
+    id
+    name
+    description
+    category
+    aux
+    extraRequirements {
+      systems
+      cards
+    }
+    requirements {
+      systems
+      cards
+      spaceEdventures
+      docking
+    }
+    timeline {
+      id
+      name
+      description
+      order
+      timelineItems {
+        id
+        name
+        type
+        event
+        args
+        delay
+        needsConfig
+        noCancelOnReset
+      }
+    }
+  }
+}

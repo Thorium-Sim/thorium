@@ -1,6 +1,7 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -173,7 +174,13 @@ const resolver = {
       resolve(rootValue) {
         return rootValue;
       },
-      subscribe: () => pubsub.asyncIterator("stationSetUpdate"),
+      subscribe: () => {
+        const id = uuid.v4();
+        process.nextTick(() => {
+          pubsub.publish(id, App.stationSets);
+        });
+        return pubsub.asyncIterator([id, "simulatorsUpdate"]);
+      },
     },
   },
 };

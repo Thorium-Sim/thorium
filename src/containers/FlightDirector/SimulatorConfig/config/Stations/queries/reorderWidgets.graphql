@@ -1,0 +1,13 @@
+mutation ReorderStationWidgets(
+  $id: ID!
+  $name: String!
+  $widget: String!
+  $order: Int!
+) {
+  reorderStationWidgets(
+    stationSetId: $id
+    stationName: $name
+    widget: $widget
+    order: $order
+  )
+}

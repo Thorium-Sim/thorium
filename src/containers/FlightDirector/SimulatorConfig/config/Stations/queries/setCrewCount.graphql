@@ -1,0 +1,3 @@
+mutation SetStationCrewCount($stationSetId: ID!, $crewCount: Int!) {
+  setStationSetCrewCount(stationSetID: $stationSetId, crewCount: $crewCount)
+}

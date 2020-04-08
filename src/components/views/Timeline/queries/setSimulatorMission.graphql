@@ -1,0 +1,3 @@
+mutation SetSimulatorMission($simulatorId: ID!, $missionId: ID!) {
+  setSimulatorMission(simulatorId: $simulatorId, missionId: $missionId)
+}

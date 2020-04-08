@@ -1,0 +1,9 @@
+mutation MissionSetRequirements(
+  $missionId: ID!
+  $requirements: RequirementInput!
+) {
+  missionSetExtraRequirements(
+    missionId: $missionId
+    requirements: $requirements
+  )
+}

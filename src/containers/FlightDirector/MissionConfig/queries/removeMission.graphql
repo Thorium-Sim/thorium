@@ -1,0 +1,3 @@
+mutation RemoveMission($id: ID!) {
+  removeMission(missionId: $id)
+}

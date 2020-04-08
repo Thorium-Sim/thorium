@@ -1,0 +1,3 @@
+mutation RemoveMap($id: ID!) {
+  removeTacticalMap(id: $id)
+}

@@ -1,10 +1,11 @@
-import React, {Component} from "react";
+import React from "react";
 import {Button, ButtonGroup} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {withApollo} from "react-apollo";
 import Misc from "./misc";
 import Basic from "./basic";
 import Damage from "./damage";
+import {useNavigate, useParams} from "react-router-dom";
 
 const ops = {
   name: gql`
@@ -63,9 +64,16 @@ const ops = {
     }
   `,
 };
-class SimulatorConfigView extends Component {
-  state = {selected: "default"};
-  _handleChange = e => {
+const SimulatorConfigView = ({selectedSimulator}) => {
+  const {subPath1: selected = ""} = useParams();
+  const navigate = useNavigate();
+  function select(prop) {
+    if (!prop) {
+      navigate("../");
+    }
+    navigate(`${selected ? "../" : ""}${prop}`);
+  }
+  const handleChange = e => {
     const variables = {
       id: this.props.selectedSimulator.id,
       value: e.target.value === "on" ? e.target.checked : e.target.value,
@@ -76,54 +84,51 @@ class SimulatorConfigView extends Component {
       variables,
     });
   };
-  render() {
-    const {selected} = this.state;
-    return (
-      <div>
-        <ButtonGroup>
-          <Button
-            size="sm"
-            active={selected === "default"}
-            onClick={() => this.setState({selected: "default"})}
-          >
-            Basic
-          </Button>
-          <Button
-            size="sm"
-            active={selected === "misc"}
-            onClick={() => this.setState({selected: "misc"})}
-          >
-            Misc.
-          </Button>
-          <Button
-            size="sm"
-            active={selected === "damage"}
-            onClick={() => this.setState({selected: "damage"})}
-          >
-            Damage Reports
-          </Button>
-        </ButtonGroup>
-        {selected === "default" && (
-          <Basic
-            selectedSimulator={this.props.selectedSimulator}
-            handleChange={this._handleChange}
-          />
-        )}
-        {selected === "damage" && (
-          <Damage
-            selectedSimulator={this.props.selectedSimulator}
-            handleChange={this._handleChange}
-          />
-        )}
-        {selected === "misc" && (
-          <Misc
-            selectedSimulator={this.props.selectedSimulator}
-            handleChange={this._handleChange}
-          />
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <ButtonGroup>
+        <Button
+          size="sm"
+          active={selected === "default" || selected === ""}
+          onClick={() => select("default")}
+        >
+          Basic
+        </Button>
+        <Button
+          size="sm"
+          active={selected === "misc"}
+          onClick={() => select("misc")}
+        >
+          Misc.
+        </Button>
+        <Button
+          size="sm"
+          active={selected === "damage"}
+          onClick={() => select("damage")}
+        >
+          Damage Reports
+        </Button>
+      </ButtonGroup>
+      {(selected === "default" || selected === "") && (
+        <Basic
+          selectedSimulator={selectedSimulator}
+          handleChange={handleChange}
+        />
+      )}
+      {selected === "damage" && (
+        <Damage
+          selectedSimulator={selectedSimulator}
+          handleChange={handleChange}
+        />
+      )}
+      {selected === "misc" && (
+        <Misc
+          selectedSimulator={selectedSimulator}
+          handleChange={handleChange}
+        />
+      )}
+    </div>
+  );
+};
 
 export default withApollo(SimulatorConfigView);

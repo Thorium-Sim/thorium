@@ -16,10 +16,32 @@ import {
   Entity as EntityType,
 } from "generated/graphql";
 import Nebula from "./Nebula";
-import Stars from "./Stars";
+import {CanvasContext} from "./CanvasContext";
+import Fuzz from "./fuzz";
+import {StoreApi} from "zustand";
+import {MeasurementAction} from "./measurementReducer";
 
 export type PositionTuple = [number, number, number];
+
+const MeasureCircles: React.FC<{
+  speed: number;
+  time: number;
+  position: [number, number, number];
+}> = ({speed, time, position}) => {
+  return (
+    <mesh position={position}>
+      <circleBufferGeometry args={[speed * time, 32]} attach="geometry" />
+      <meshBasicMaterial
+        color={0x0088ff}
+        attach="material"
+        transparent
+        opacity={0.2}
+      />
+    </mesh>
+  );
+};
 interface CanvasAppProps {
+  stage?: EntityInterface;
   recenter: {};
   selected: string[];
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
@@ -28,7 +50,18 @@ interface CanvasAppProps {
   selecting: boolean;
   entities: EntityInterface[];
   lighting: boolean;
-  camera: boolean;
+  storeApi: StoreApi<{
+    loading: boolean;
+    data: EntityInterface[];
+  }>;
+  setMeasurement: React.Dispatch<MeasurementAction>;
+  measurement: {
+    measuring: boolean;
+    measured: boolean;
+    speed: number;
+    timeInSeconds: number;
+    position: [number, number, number];
+  } | null;
 }
 function setNumberBounds(num: number) {
   return Math.max(
@@ -37,6 +70,7 @@ function setNumberBounds(num: number) {
   );
 }
 const CanvasApp: React.FC<CanvasAppProps> = ({
+  stage,
   recenter,
   selected,
   setSelected,
@@ -45,12 +79,14 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   selecting,
   entities,
   lighting,
-  camera: perspectiveCamera,
+  storeApi,
+  setMeasurement,
+  measurement,
 }) => {
   const [create] = useEntityCreateMutation();
   const [remove] = useEntityRemoveMutation();
   const [setPosition] = useEntitiesSetPositionMutation();
-
+  const [{camera: perspectiveCamera}] = React.useContext(CanvasContext);
   const [positionOffset, setPositionOffset] = React.useState({
     x: 0,
     y: 0,
@@ -67,6 +103,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       const {data} = await create({
         variables: {
           flightId: "template",
+          stageParentId: stage?.id || "",
           position: {
             x: Math.round(mousePosition[0]),
             y: Math.round(mousePosition[1]),
@@ -103,6 +140,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     mousePosition,
     setSelected,
     entities.length,
+    stage,
   ]);
 
   const elementList = ["input", "textarea"];
@@ -159,7 +197,8 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       {perspectiveCamera ? (
         <>
           <React.Suspense fallback={null}>
-            <Nebula />
+            <Nebula skyboxKey={stage?.stage?.skyboxKey ?? "c"} />
+            <Fuzz storeApi={storeApi} />
           </React.Suspense>
           <PerspectiveCamera recenter={recenter} />
         </>
@@ -170,7 +209,13 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           {dragging && (
             <Entity dragging entity={dragging} mousePosition={mousePosition} />
           )}
-          <BackPlane setSelected={setSelected} />
+          <BackPlane
+            setSelected={() =>
+              measurement?.measuring && !measurement.measured
+                ? setMeasurement({type: "position", position: mousePosition})
+                : setSelected([])
+            }
+          />
           <DragSelect
             selecting={selecting}
             setSelected={setSelected}
@@ -178,6 +223,13 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           />
         </>
       )}
+      {measurement?.measured ? (
+        <MeasureCircles
+          speed={measurement.speed}
+          time={measurement.timeInSeconds}
+          position={measurement.position}
+        />
+      ) : null}
       <ambientLight intensity={lighting ? 0.1 : 1} />
 
       {entities.map((e, i) => {

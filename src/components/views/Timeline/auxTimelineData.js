@@ -27,16 +27,18 @@ const fragment = gql`
     }
   }
 `;
-const QUERY = gql`query AuxTimelines($simulatorId:ID!) {
-  missions(aux:true) {
-    id
-    name
-  }
-  auxTimelines(simulatorId:$simulatorId) {
-  ...AuxTimelineData
+const QUERY = gql`
+  query AuxTimelines($simulatorId: ID!) {
+    missions(aux: true) {
+      id
+      name
+    }
+    auxTimelines(simulatorId: $simulatorId) {
+      ...AuxTimelineData
+    }
   }
   ${fragment}
-}`;
+`;
 
 const SUBSCRIPTION = gql`
   subscription TimelineUpdate($simulatorId: ID!) {

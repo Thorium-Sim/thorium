@@ -1,7 +1,6 @@
 import React from "react";
 import {SubscriptionClient} from "subscriptions-transport-ws";
 import create, {UseStore, StoreApi} from "zustand";
-import {websocketUrl} from "helpers/graphqlClient";
 import {
   separateOperations,
   print,
@@ -10,6 +9,18 @@ import {
   FieldNode,
 } from "graphql";
 import {equal} from "@wry/equality";
+
+const hostname = window.location.hostname;
+const protocol = window.location.protocol;
+const wsProtocol = protocol === "https:" ? "wss:" : "ws:";
+
+const websocketUrl =
+  process.env.NODE_ENV === "production"
+    ? `${wsProtocol}//${window.location.host}/graphql`
+    : `${wsProtocol}//${hostname}:${parseInt(
+        window.location.port || "3000",
+        10,
+      ) + 1}/graphql`;
 
 const client = new SubscriptionClient(websocketUrl, {
   reconnect: true,

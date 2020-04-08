@@ -12,5 +12,24 @@ module.exports = async ({config, mode}) => {
     exclude: /node_modules/,
     loader: "graphql-tag/loader",
   });
+
+  const fileLoaderRule = config.module.rules.find(rule =>
+    rule.test.test(".svg"),
+  );
+  fileLoaderRule.exclude = path.resolve(__dirname, "../src/**/*.svg");
+
+  config.module.rules.push({
+    test: /\.svg$/,
+    include: path.resolve(__dirname, "../src/**/*.svg"),
+    use: [
+      {
+        loader: "@svgr/webpack",
+        options: {
+          icon: true,
+        },
+      },
+    ],
+  });
+
   return config;
 };

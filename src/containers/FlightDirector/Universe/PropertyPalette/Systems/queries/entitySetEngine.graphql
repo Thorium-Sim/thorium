@@ -1,0 +1,13 @@
+mutation EntitySetEngine(
+  $id: ID!
+  $type: EntityEngineEnum!
+  $maxSpeed: Float
+  $currentSpeed: Float
+) {
+  entitySetEngine(
+    id: $id
+    type: $type
+    maxSpeed: $maxSpeed
+    currentSpeed: $currentSpeed
+  )
+}

@@ -12,7 +12,3 @@ export interface TimelineStep {
   description: string;
   timelineItems: TimelineItem[];
 }
-export interface MissionI {
-  id: string;
-  timeline: TimelineStep[];
-}

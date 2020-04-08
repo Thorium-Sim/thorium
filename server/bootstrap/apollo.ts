@@ -18,10 +18,9 @@ import App from "../app";
 // Load some other stuff
 import "../events";
 import "../processes";
-import {FieldNode, getOperationRootType} from "graphql";
+import {FieldNode, getOperationRootType, printSchema} from "graphql";
 import {getArgumentValues} from "graphql/execution/values";
 import {getFieldDef} from "graphql/execution/execute";
-import {pubsub} from "../helpers/subscriptionManager";
 
 export const schema = makeExecutableSchema({
   typeDefs,
@@ -30,6 +29,13 @@ export const schema = makeExecutableSchema({
     requireResolversForResolveType: false,
   },
 });
+if (process.env.NODE_ENV === "development" && !process.env.CI) {
+  // Automatically generate the GraphQL schema and write it to file
+  // but only in development.
+  const schemaOutput = printSchema(schema);
+
+  fs.writeFileSync("./src/schema.graphql", schemaOutput);
+}
 
 // TODO: Change app to the express type
 function responseForOperation(requestContext) {

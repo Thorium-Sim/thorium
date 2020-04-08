@@ -49,6 +49,8 @@ const schema = gql`
     triggerInterfaceObject(id: ID!, objectId: ID!): String
     """
     Macro: Interfaces: Set Object Hidden
+    Requires:
+      - Cards:Interface
     """
     toggleInterfaceObjectHidden(
       id: ID!
@@ -57,6 +59,8 @@ const schema = gql`
     ): String
     """
     Macro: Interfaces: Toggle Video playing
+    Requires:
+      - Cards:Interface
     """
     toggleInterfaceObjectPlaying(id: ID!, objectId: ID!): String
   }

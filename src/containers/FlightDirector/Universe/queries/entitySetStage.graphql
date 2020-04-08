@@ -1,0 +1,13 @@
+mutation EntitySetStage(
+  $id: ID!
+  $scaleLabel: String
+  $scaleLabelShort: String
+  $skyboxKey: String
+) {
+  entitySetStage(
+    id: $id
+    scaleLabel: $scaleLabel
+    scaleLabelShort: $scaleLabelShort
+    skyboxKey: $skyboxKey
+  )
+}

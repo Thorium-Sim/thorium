@@ -255,7 +255,7 @@ const schema = gql`
     email: String
   }
   extend type Query {
-    flights(running: Boolean, id: ID): [Flight]
+    flights(running: Boolean, id: ID): [Flight!]!
     events: [String]
   }
   extend type Mutation {
@@ -281,6 +281,8 @@ const schema = gql`
     # Space EdVentures
     """
     Macro: Space EdVentures: Add Extra Crew Member
+    Requires:
+      - Space EdVentures
     """
     clientAddExtra(flightId: ID!, simulatorId: ID!, name: String!): String
   }

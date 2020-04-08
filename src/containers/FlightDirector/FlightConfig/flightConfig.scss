@@ -1,0 +1,10 @@
+.flight-config {
+  .selected {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  .mission-pick {
+    max-height: 50vh;
+    display: flex;
+    flex-direction: column;
+  }
+}

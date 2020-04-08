@@ -4,15 +4,22 @@ import Identity from "./Identity";
 import Appearance from "./Appearance";
 import Location from "./Location";
 import Template from "./Template";
-import Glow from "./Glow";
+// import Glow from "./Glow";
 import "../styles.scss";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import Light from "./Light";
-
+import Systems from "./Systems";
+import Stage from "./Stage";
 interface PropertyPaletteProps {
   selectedEntity: Entity | undefined;
+  setCurrentStage?: React.Dispatch<React.SetStateAction<string>>;
+  setSelected?: React.Dispatch<React.SetStateAction<string[]>>;
 }
-const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
+const PropertyPalette: React.FC<PropertyPaletteProps> = ({
+  selectedEntity,
+  setCurrentStage,
+  setSelected,
+}) => {
   const [getAsset, setGetAsset] = React.useState<{
     label: string;
     current: string;
@@ -21,7 +28,7 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
   } | null>(null);
   if (getAsset) {
     return (
-      <>
+      <div>
         <h3>Select asset for {getAsset.label}</h3>
         <FileExplorer
           simple
@@ -32,7 +39,7 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
             setGetAsset(null);
           }}
         />
-      </>
+      </div>
     );
   }
   return (
@@ -44,6 +51,15 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
             <Identity
               id={selectedEntity.id}
               identity={selectedEntity.identity}
+            />
+          )}
+          {!selectedEntity.template && (
+            <Stage
+              id={selectedEntity.id}
+              stage={selectedEntity.stage || undefined}
+              stageChild={selectedEntity.stageChild || undefined}
+              setCurrentStage={setCurrentStage}
+              setSelected={setSelected}
             />
           )}
           {selectedEntity.template && (
@@ -67,14 +83,26 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({selectedEntity}) => {
               location={selectedEntity.location}
             />
           )}
-          <Glow
-            id={selectedEntity.id}
-            glow={selectedEntity.glow || undefined}
-          />
-          <Light
-            id={selectedEntity.id}
-            light={selectedEntity.light || undefined}
-          />
+          {/* {selectedEntity.appearance?.meshType === "sphere" && (
+            <Glow
+              id={selectedEntity.id}
+              glow={selectedEntity.glow || undefined}
+            />
+          )} */}
+          {selectedEntity.appearance?.meshType === "sphere" && (
+            <Light
+              id={selectedEntity.id}
+              light={selectedEntity.light || undefined}
+            />
+          )}
+          {selectedEntity.stageChild && (
+            <Systems
+              id={selectedEntity.id}
+              enginesImpulse={selectedEntity.enginesImpulse || undefined}
+              enginesWarp={selectedEntity.enginesWarp || undefined}
+              thrusters={selectedEntity.thrusters || undefined}
+            />
+          )}
         </>
       )}
     </div>

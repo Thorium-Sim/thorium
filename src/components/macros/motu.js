@@ -22,7 +22,7 @@ const MOTU_CHANNELS = gql`
 `;
 const MotuUpdateChannel = ({updateArgs, args}) => {
   const {loading, data} = useQuery(MOTU_CHANNELS);
-  if (loading || !data) return "Loading...";
+  if (loading || !data) return <p>Loading...</p>;
   const motu = data.motus.find(m => m.id === args.id);
   return (
     <FormGroup className="macro-template">
@@ -115,7 +115,7 @@ const MotuUpdateChannel = ({updateArgs, args}) => {
 };
 export const MotuSetSendMute = ({updateArgs, args}) => {
   const {loading, data} = useQuery(MOTU_CHANNELS);
-  if (loading || !data) return "Loading...";
+  if (loading || !data) return <p>Loading...</p>;
   const motu = data.motus.find(m => m.id === args.id);
 
   return (

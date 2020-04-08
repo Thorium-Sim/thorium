@@ -16,7 +16,7 @@ export class Quaternion extends Coordinates {
   w: number;
   constructor({w, ...rest} = {x: null, y: null, z: null, w: null}) {
     super(rest);
-    this.w = w ?? 0;
+    this.w = w ?? 1;
   }
 }
 export class Location {
@@ -33,7 +33,7 @@ export class Location {
     position = {x: 0, y: 0, z: 0},
     velocity = {x: 0, y: 0, z: 0},
     acceleration = {x: 0, y: 0, z: 0},
-    rotation = {x: 0, y: 0, z: 0, w: 0},
+    rotation = {x: 0, y: 0, z: 0, w: 1},
     rotationVelocity = {x: 0, y: 0, z: 0},
     rotationAcceleration = {x: 0, y: 0, z: 0},
   }) {

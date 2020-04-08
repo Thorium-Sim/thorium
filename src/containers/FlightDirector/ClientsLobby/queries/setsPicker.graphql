@@ -1,0 +1,34 @@
+query SetsPicker($flightId: ID) {
+  flights(id: $flightId) {
+    id
+    name
+    simulators {
+      id
+      templateId
+      name
+      stationSet {
+        id
+        name
+      }
+    }
+  }
+  sets {
+    id
+    name
+    clients {
+      id
+      client {
+        id
+      }
+      simulator {
+        id
+        name
+      }
+      stationSet {
+        id
+        name
+      }
+      station
+    }
+  }
+}

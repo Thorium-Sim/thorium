@@ -106,7 +106,7 @@ const CLIENT_SUB = gql`
 class CoreData extends Component {
   state = {};
   render() {
-    const {flightId, history} = this.props;
+    const {flightId, navigate} = this.props;
     return (
       <Query query={QUERY} variables={{id: flightId}}>
         {({loading, data = {}, subscribeToMore}) => {
@@ -117,7 +117,7 @@ class CoreData extends Component {
             (flights.map(f => f.id).indexOf(flightId) === -1 &&
               flightId !== "c")
           ) {
-            history.push("/");
+            navigate("/");
             return null;
           }
           const flight = flightId ? flights.find(f => f.id === flightId) : {};

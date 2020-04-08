@@ -11,6 +11,7 @@ import {Template} from "../../classes/universe/components";
 const schema = gql`
   type Entity {
     id: ID!
+    interval: Int
   }
   extend type Query {
     entity(id: ID!): Entity
@@ -22,7 +23,7 @@ const schema = gql`
   }
   extend type Subscription {
     entity(id: ID): Entity
-    entities(flightId: ID!, template: Boolean): [Entity]
+    entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
   }
 `;
 
@@ -47,6 +48,9 @@ const resolver = {
     entityRemove(rootQuery, {id: idList}, context) {
       const entities = App.entities.filter(e => idList.includes(e.id));
       const flightId = entities[0].flightId;
+      const stageIds = entities
+        .map(e => e.stageChild?.parentId || (e.stage && e.id))
+        .filter((a, i, arr) => Boolean(a) && arr.indexOf(a) === i);
       const template = Boolean(entities.find(t => t.template));
       App.entities = produce(App.entities, draft => {
         entities.forEach(({id}) => {
@@ -56,11 +60,22 @@ const resolver = {
           );
         });
       });
-      pubsub.publish("entities", {
-        flightId,
-        template,
-        entities: App.entities,
-      });
+      if (stageIds.length > 0) {
+        stageIds.forEach(s => {
+          pubsub.publish("entities", {
+            flightId,
+            template,
+            stageId: s,
+            entities: App.entities,
+          });
+        });
+      } else {
+        pubsub.publish("entities", {
+          flightId,
+          template,
+          entities: App.entities,
+        });
+      }
     },
   },
   Subscription: {
@@ -82,11 +97,19 @@ const resolver = {
       ),
     },
     entities: {
-      resolve(rootValue: {entities: Entity[]}, {flightId, template}) {
+      resolve(rootValue: {entities: Entity[]}, {flightId, template, stageId}) {
         let entities = rootValue.entities.filter(e => {
           if (flightId && e.flightId !== flightId) return false;
           if (template === true && !e.template) return false;
           if (template === false && e.template) return false;
+          if (
+            stageId &&
+            e.stageChild?.parentId !== stageId &&
+            e.stage &&
+            stageId !== e.id
+          ) {
+            return false;
+          }
           return true;
         });
         return entities;
@@ -96,15 +119,20 @@ const resolver = {
           const id = handleInitialSubResponse(id => {
             pubsub.publish(id, {
               flightId: args.flightId,
+              stageId: args.stageId,
               entities: App.entities,
             });
           });
           return pubsub.asyncIterator([id, "entities"]);
         },
-        (rootValue, {flightId, template}) => {
+        (rootValue, {flightId, template, stageId}) => {
           if (flightId && flightId !== rootValue.flightId) return false;
           if (template === false && rootValue.template) return false;
           if (template === true && rootValue.template === false) return false;
+          if (stageId && rootValue.stageId !== stageId) {
+            return false;
+          }
+
           return true;
         },
       ),

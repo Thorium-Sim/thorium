@@ -7,6 +7,8 @@ import stageChildTypedef from "./stageChild";
 import lightTypedef from "./light";
 import glowTypedef from "./glow";
 import templateTypedef from "./template";
+import enginesTypedef from "./engines";
+import thrustersTypedef from "./thrusters";
 
 export const appearance = appearanceTypedef;
 export const behavior = behaviorTypedef;
@@ -17,3 +19,5 @@ export const stageChild = stageChildTypedef;
 export const light = lightTypedef;
 export const glow = glowTypedef;
 export const templateEntity = templateTypedef;
+export const enginesEntity = enginesTypedef;
+export const thrustersEntity = thrustersTypedef;

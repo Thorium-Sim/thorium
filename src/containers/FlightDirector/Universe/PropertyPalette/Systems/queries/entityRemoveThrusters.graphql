@@ -1,0 +1,3 @@
+mutation EntityRemoveThrusters($id: ID!) {
+  entityRemoveThrusters(id: $id)
+}
