@@ -384,7 +384,8 @@
     "ts-node-dev": "^1.0.0-pre.44",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typescript": "^3.6.4",
-    "wait-on": "^3.3.0"
+    "wait-on": "^3.3.0",
+    "webgl-mock-threejs": "^0.0.1"
   },
   "resolutions": {
     "change-case": "^4.1.1",

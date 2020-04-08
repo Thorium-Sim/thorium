@@ -730,6 +730,15 @@ type Engine implements SystemInterface {
   locations: [Room]
 }
 
+type EngineComponent {
+  maxSpeed: Float
+  currentSpeed: Float
+  heat: Float
+  heatRate: Float
+  coolant: Float
+  cooling: Boolean
+}
+
 input EntitiesLocationInput {
   id: ID!
   position: EntityCoordinatesInput!
@@ -737,6 +746,7 @@ input EntitiesLocationInput {
 
 type Entity {
   id: ID!
+  interval: Int
   appearance: AppearanceComponent
   behavior: BehaviorComponent
   identity: IdentityComponent
@@ -746,18 +756,26 @@ type Entity {
   light: LightComponent
   glow: GlowComponent
   template: TemplateComponent
+  enginesWarp: EngineComponent
+  enginesImpulse: EngineComponent
+  thrusters: ThrustersComponent
 }
 
 type EntityCoordinates {
-  x: BigInt!
-  y: BigInt!
-  z: BigInt!
+  x: Float!
+  y: Float!
+  z: Float!
 }
 
 input EntityCoordinatesInput {
-  x: BigInt!
-  y: BigInt!
-  z: BigInt!
+  x: Float!
+  y: Float!
+  z: Float!
+}
+
+enum EntityEngineEnum {
+  warp
+  impulse
 }
 
 type Environment {
@@ -1510,12 +1528,16 @@ type Mutation {
     rotationAcceleration: EntityCoordinatesInput
   ): String
   entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
+  entitySetRotationVelocityMagnitude(
+    id: ID!
+    rotationVelocity: CoordinatesInput!
+  ): String
   entityRemoveLocation(id: ID!): String
   entitySetStage(
     id: ID
     scaleLabel: String
     scaleLabelShort: String
-    skyboxAsset: String
+    skyboxKey: String
   ): String
   entityRemoveStage(id: ID!): String
   entitySetStageChild(id: ID, parentId: ID!): String
@@ -1525,6 +1547,25 @@ type Mutation {
   entitySetGlow(id: ID, glowMode: GlowModeEnum, color: String): String
   entityRemoveGlow(id: ID!): String
   entitySetTemplate(id: ID, category: String!): String
+  entitySetEngine(
+    id: ID
+    type: EntityEngineEnum!
+    maxSpeed: Float
+    currentSpeed: Float
+    heat: Float
+    heatRate: Float
+    coolant: Float
+    cooling: Boolean
+  ): String
+  entityRemoveEngine(id: ID!, type: EntityEngineEnum!): String
+  entitySetThrusters(
+    id: ID!
+    direction: CoordinatesInput
+    rotationDelta: CoordinatesInput
+    rotationSpeed: Float
+    movementSpeed: Float
+  ): String
+  entityRemoveThrusters(id: ID!): String
 
   """
   Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.)
@@ -4313,12 +4354,13 @@ input SpeedInput {
 
 type StageChildComponent {
   parentId: ID!
+  parent: Entity
 }
 
 type StageComponent {
   scaleLabel: String
   scaleLabelShort: String
-  skyboxAsset: String
+  skyboxKey: String
 }
 
 type Station {
@@ -4512,7 +4554,7 @@ type Subscription {
   viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
   countermeasuresUpdate(simulatorId: ID!): Countermeasures
   entity(id: ID): Entity
-  entities(flightId: ID!, template: Boolean): [Entity]
+  entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
 }
 
 type SubspaceField implements SystemInterface {
@@ -4949,6 +4991,13 @@ input ThrusterControlsInput {
   down: String
   left: String
   right: String
+}
+
+type ThrustersComponent {
+  direction: Coordinates
+  rotationDelta: Coordinates
+  rotationSpeed: Float
+  movementSpeed: Float
 }
 
 type Thx implements SystemInterface {

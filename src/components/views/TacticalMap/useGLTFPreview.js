@@ -7,22 +7,23 @@ import {
   Vector3,
   Group,
   sRGBEncoding,
-  Color,
 } from "three";
-import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import GLTFLoader from "containers/FlightDirector/Universe/GLTFLoader";
 
 const width = 200;
 const height = 200;
 
 const cache = {};
-
-const renderer = new WebGLRenderer({alpha: true});
-renderer.setSize(width, height);
-
-renderer.outputEncoding = sRGBEncoding;
-renderer.setPixelRatio(window.devicePixelRatio);
+let renderer;
+if (process.env.JEST_WORKER_ID === undefined) {
+  renderer = new WebGLRenderer({alpha: true});
+  renderer.setSize(width, height);
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.setPixelRatio(window.devicePixelRatio);
+}
 
 export default function useGLTFPreview(assetPath) {
+  if (process.env.JEST_WORKER_ID !== undefined) return "";
   if (cache[assetPath] && cache[assetPath].then) throw cache[assetPath];
   if (!cache[assetPath]) {
     const promise = new Promise(resolve => {
