@@ -6,7 +6,6 @@
 **/TweenMax.min.js
 **/plopfile.js
 **/config/**
-GLTFLoader.js
 build
 server/build
 .cache

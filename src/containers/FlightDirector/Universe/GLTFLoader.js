@@ -517,14 +517,14 @@ var GLTFLoader = (function() {
     var attributeTypeMap = {};
 
     for (var attributeName in gltfAttributeMap) {
-      var threeAttributeName =
+      const threeAttributeName =
         ATTRIBUTES[attributeName] || attributeName.toLowerCase();
 
       threeAttributeMap[threeAttributeName] = gltfAttributeMap[attributeName];
     }
 
     for (attributeName in primitive.attributes) {
-      var threeAttributeName =
+      const threeAttributeName =
         ATTRIBUTES[attributeName] || attributeName.toLowerCase();
 
       if (gltfAttributeMap[attributeName] !== undefined) {
@@ -1133,7 +1133,7 @@ var GLTFLoader = (function() {
 
     // Host Relative URL
     if (/^https?:\/\//i.test(path) && /^\//.test(url)) {
-      path = path.replace(/(^https?:\/\/[^\/]+).*/i, "$1");
+      path = path.replace(/(^https?:\/\/[^/]+).*/i, "$1");
     }
 
     // Absolute URL http://,https://,//
@@ -1208,8 +1208,8 @@ var GLTFLoader = (function() {
     var hasMorphPosition = false;
     var hasMorphNormal = false;
 
-    for (var i = 0, il = targets.length; i < il; i++) {
-      var target = targets[i];
+    for (let i = 0, il = targets.length; i < il; i++) {
+      let target = targets[i];
 
       if (target.POSITION !== undefined) hasMorphPosition = true;
       if (target.NORMAL !== undefined) hasMorphNormal = true;
@@ -1222,11 +1222,11 @@ var GLTFLoader = (function() {
     var pendingPositionAccessors = [];
     var pendingNormalAccessors = [];
 
-    for (var i = 0, il = targets.length; i < il; i++) {
-      var target = targets[i];
+    for (let i = 0, il = targets.length; i < il; i++) {
+      let target = targets[i];
 
       if (hasMorphPosition) {
-        var pendingAccessor =
+        let pendingAccessor =
           target.POSITION !== undefined
             ? parser.getDependency("accessor", target.POSITION)
             : geometry.attributes.position;
@@ -1235,7 +1235,7 @@ var GLTFLoader = (function() {
       }
 
       if (hasMorphNormal) {
-        var pendingAccessor =
+        let pendingAccessor =
           target.NORMAL !== undefined
             ? parser.getDependency("accessor", target.NORMAL)
             : geometry.attributes.normal;
@@ -1279,7 +1279,7 @@ var GLTFLoader = (function() {
       if (mesh.morphTargetInfluences.length === targetNames.length) {
         mesh.morphTargetDictionary = {};
 
-        for (var i = 0, il = targetNames.length; i < il; i++) {
+        for (let i = 0, il = targetNames.length; i < il; i++) {
           mesh.morphTargetDictionary[targetNames[i]] = i;
         }
       } else {
@@ -1872,6 +1872,8 @@ var GLTFLoader = (function() {
           case "roughnessMap":
             texture.format = RGBFormat;
             break;
+          default:
+            break;
         }
       }
 
@@ -1879,8 +1881,8 @@ var GLTFLoader = (function() {
       // However, we will copy UV set 0 to UV set 1 on demand for aoMap
       if (
         mapDef.texCoord !== undefined &&
-        mapDef.texCoord != 0 &&
-        !(mapName === "aoMap" && mapDef.texCoord == 1)
+        Number(mapDef.texCoord) !== 0 &&
+        !(mapName === "aoMap" && Number(mapDef.texCoord) === 1)
       ) {
         console.warn(
           "THREE.GLTFLoader: Custom UV set " +
@@ -1919,7 +1921,6 @@ var GLTFLoader = (function() {
   GLTFParser.prototype.assignFinalMaterial = function(mesh) {
     var geometry = mesh.geometry;
     var material = mesh.material;
-    var extensions = this.extensions;
 
     var useVertexTangents = geometry.attributes.tangent !== undefined;
     var useVertexColors = geometry.attributes.color !== undefined;
@@ -1930,7 +1931,7 @@ var GLTFLoader = (function() {
       useMorphTargets && geometry.morphAttributes.normal !== undefined;
 
     if (mesh.isPoints) {
-      var cacheKey = "PointsMaterial:" + material.uuid;
+      let cacheKey = "PointsMaterial:" + material.uuid;
 
       var pointsMaterial = this.cache.get(cacheKey);
 
@@ -1946,7 +1947,7 @@ var GLTFLoader = (function() {
 
       material = pointsMaterial;
     } else if (mesh.isLine) {
-      var cacheKey = "LineBasicMaterial:" + material.uuid;
+      let cacheKey = "LineBasicMaterial:" + material.uuid;
 
       var lineMaterial = this.cache.get(cacheKey);
 
@@ -2219,10 +2220,10 @@ var GLTFLoader = (function() {
     var box = new Box3();
 
     if (attributes.POSITION !== undefined) {
-      var accessor = parser.json.accessors[attributes.POSITION];
+      let accessor = parser.json.accessors[attributes.POSITION];
 
-      var min = accessor.min;
-      var max = accessor.max;
+      let min = accessor.min;
+      let max = accessor.max;
 
       // glTF requires 'min' and 'max', but VRM (which extends glTF) currently ignores that requirement.
 
@@ -2251,9 +2252,9 @@ var GLTFLoader = (function() {
         var target = targets[i];
 
         if (target.POSITION !== undefined) {
-          var accessor = parser.json.accessors[target.POSITION];
-          var min = accessor.min;
-          var max = accessor.max;
+          let accessor = parser.json.accessors[target.POSITION];
+          let min = accessor.min;
+          let max = accessor.max;
 
           // glTF requires 'min' and 'max', but VRM (which extends glTF) currently ignores that requirement.
 
@@ -2354,7 +2355,7 @@ var GLTFLoader = (function() {
       var position = geometry.getAttribute("position");
 
       if (position !== undefined) {
-        for (var i = 0; i < position.count; i++) {
+        for (let i = 0; i < position.count; i++) {
           indices.push(i);
         }
 
@@ -2376,7 +2377,7 @@ var GLTFLoader = (function() {
     if (drawMode === TriangleFanDrawMode) {
       // gl.TRIANGLE_FAN
 
-      for (var i = 1; i <= numberOfTriangles; i++) {
+      for (let i = 1; i <= numberOfTriangles; i++) {
         newIndices.push(index.getX(0));
         newIndices.push(index.getX(i));
         newIndices.push(index.getX(i + 1));
@@ -2503,7 +2504,7 @@ var GLTFLoader = (function() {
 
       var meshes = [];
 
-      for (var i = 0, il = geometries.length; i < il; i++) {
+      for (let i = 0, il = geometries.length; i < il; i++) {
         var geometry = geometries[i];
         var primitive = primitives[i];
 
@@ -2580,7 +2581,7 @@ var GLTFLoader = (function() {
 
       var group = new Group();
 
-      for (var i = 0, il = meshes.length; i < il; i++) {
+      for (let i = 0, il = meshes.length; i < il; i++) {
         group.add(meshes[i]);
       }
 
@@ -2740,15 +2741,16 @@ var GLTFLoader = (function() {
             ? INTERPOLATION[sampler.interpolation]
             : InterpolateLinear;
 
-        var targetNames = [];
-
+        const targetNames = [];
+        // eslint-disable-next-line no-inner-declarations
+        function includeTargetNames(object) {
+          if (object.isMesh === true && object.morphTargetInfluences) {
+            targetNames.push(object.name ? object.name : object.uuid);
+          }
+        }
         if (PATH_PROPERTIES[target.path] === PATH_PROPERTIES.weights) {
           // Node may be a Group (glTF mesh with several primitives) or a Mesh.
-          node.traverse(function(object) {
-            if (object.isMesh === true && object.morphTargetInfluences) {
-              targetNames.push(object.name ? object.name : object.uuid);
-            }
-          });
+          node.traverse(includeTargetNames);
         } else {
           targetNames.push(targetName);
         }
@@ -2762,7 +2764,7 @@ var GLTFLoader = (function() {
             scale = 1 / 127;
           } else if (outputArray.constructor === Uint8Array) {
             scale = 1 / 255;
-          } else if (outputArray.constructor == Int16Array) {
+          } else if (outputArray.constructor === Int16Array) {
             scale = 1 / 32767;
           } else if (outputArray.constructor === Uint16Array) {
             scale = 1 / 65535;
@@ -2774,14 +2776,14 @@ var GLTFLoader = (function() {
 
           var scaled = new Float32Array(outputArray.length);
 
-          for (var j = 0, jl = outputArray.length; j < jl; j++) {
+          for (let j = 0, jl = outputArray.length; j < jl; j++) {
             scaled[j] = outputArray[j] * scale;
           }
 
           outputArray = scaled;
         }
 
-        for (var j = 0, jl = targetNames.length; j < jl; j++) {
+        for (let j = 0, jl = targetNames.length; j < jl; j++) {
           var track = new TypedKeyframeTrack(
             targetNames[j] + "." + PATH_PROPERTIES[target.path],
             inputAccessor.array,
