@@ -1,0 +1,3 @@
+mutation EntityRemoveStage($id: ID!) {
+  entityRemoveStage(id: $id)
+}

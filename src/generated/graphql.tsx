@@ -7421,6 +7421,7 @@ export type SpeedInput = {
 export type StageChildComponent = {
   __typename?: "StageChildComponent";
   parentId: Scalars["ID"];
+  parent?: Maybe<Entity>;
 };
 
 export type StageComponent = {
@@ -10730,6 +10731,15 @@ export type EntityRemoveLightMutationVariables = {
 export type EntityRemoveLightMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "entityRemoveLight"
+>;
+
+export type EntityRemoveStageMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type EntityRemoveStageMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "entityRemoveStage"
 >;
 
 export type EntitySetAppearanceMutationVariables = {
@@ -17280,6 +17290,54 @@ export type EntityRemoveLightMutationResult = ApolloReactCommon.MutationResult<
 export type EntityRemoveLightMutationOptions = ApolloReactCommon.BaseMutationOptions<
   EntityRemoveLightMutation,
   EntityRemoveLightMutationVariables
+>;
+export const EntityRemoveStageDocument = gql`
+  mutation EntityRemoveStage($id: ID!) {
+    entityRemoveStage(id: $id)
+  }
+`;
+export type EntityRemoveStageMutationFn = ApolloReactCommon.MutationFunction<
+  EntityRemoveStageMutation,
+  EntityRemoveStageMutationVariables
+>;
+
+/**
+ * __useEntityRemoveStageMutation__
+ *
+ * To run a mutation, you first call `useEntityRemoveStageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEntityRemoveStageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [entityRemoveStageMutation, { data, loading, error }] = useEntityRemoveStageMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEntityRemoveStageMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    EntityRemoveStageMutation,
+    EntityRemoveStageMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    EntityRemoveStageMutation,
+    EntityRemoveStageMutationVariables
+  >(EntityRemoveStageDocument, baseOptions);
+}
+export type EntityRemoveStageMutationHookResult = ReturnType<
+  typeof useEntityRemoveStageMutation
+>;
+export type EntityRemoveStageMutationResult = ApolloReactCommon.MutationResult<
+  EntityRemoveStageMutation
+>;
+export type EntityRemoveStageMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  EntityRemoveStageMutation,
+  EntityRemoveStageMutationVariables
 >;
 export const EntitySetAppearanceDocument = gql`
   mutation EntitySetAppearance(

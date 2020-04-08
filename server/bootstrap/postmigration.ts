@@ -58,9 +58,9 @@ export default () => {
         flightId: "template",
       });
       entity.stage = new components.Stage({
-        scaleLabel: "Meters",
-        scaleLabelShort: "M",
-        skyboxKey: "Alex",
+        scaleLabel: "Kilometers",
+        scaleLabelShort: "KM",
+        skyboxKey: "Star background",
       });
       entity.identity = new components.Identity({
         name: "Base Universe",

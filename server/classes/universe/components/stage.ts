@@ -9,9 +9,9 @@ export class Stage {
   scaleLabelShort: string;
   skyboxKey: string;
   constructor({scaleLabel, scaleLabelShort, skyboxKey}) {
-    this.scaleLabel = scaleLabel || "Meter";
-    this.scaleLabelShort = scaleLabelShort || "M";
-    this.skyboxKey = skyboxKey || "";
+    this.scaleLabel = scaleLabel || "Meters";
+    this.scaleLabelShort = scaleLabelShort || "Meter";
+    this.skyboxKey = skyboxKey || "Star background";
   }
 }
 

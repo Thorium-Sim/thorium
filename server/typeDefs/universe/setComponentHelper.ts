@@ -53,6 +53,9 @@ export function removeComponent(componentProperty) {
     if (!entityId && entityId !== 0) return;
     const entityIndex = App.entities.findIndex(e => e.id === entityId);
     const flightId = App.entities[entityIndex].flightId;
+    const stageId =
+      App.entities[entityIndex]?.stageChild?.parentId ||
+      (App.entities[entityIndex].stage && App.entities[entityIndex].id);
     const template = Boolean(App.entities[entityIndex].template);
     if (entityIndex === -1) return;
     App.entities = produce(App.entities, draft => {
@@ -61,6 +64,7 @@ export function removeComponent(componentProperty) {
     });
     pubsub.publish("entities", {
       flightId,
+      stageId,
       template: template ?? null,
       entities: App.entities,
     });

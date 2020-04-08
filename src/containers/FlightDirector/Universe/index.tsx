@@ -6,16 +6,10 @@ import Library from "./Library";
 import "./styles.scss";
 import CanvasContextProvider from "./CanvasContext";
 import usePatchedSubscriptions from "../../../helpers/hooks/usePatchedSubscriptions";
-import {
-  Entity,
-  useEntitySetThrustersMutation,
-  useEntitySetEngineMutation,
-} from "../../../generated/graphql";
+import {Entity} from "../../../generated/graphql";
 import gql from "graphql-tag.macro";
 import {useApolloClient, ApolloProvider} from "@apollo/client";
 import PropertyPalette from "./PropertyPalette";
-import {throttle} from "helpers/debounce";
-import {useGamepadAxis, useGamepadButton} from "helpers/hooks/useGamepad";
 import reducer, {MeasurementReducerSignature} from "./measurementReducer";
 
 const sub = gql`
@@ -33,6 +27,12 @@ const sub = gql`
       }
       stageChild {
         parentId
+        parent {
+          id
+          identity {
+            name
+          }
+        }
       }
       appearance {
         color
@@ -83,45 +83,6 @@ const sub = gql`
   }
 `;
 
-function useJoystick() {
-  const entityId = "daa36db8-76e9-4645-b4b7-b9ee741552bb";
-  const [setThrusterVelocity] = useEntitySetThrustersMutation();
-  const [setEngine] = useEntitySetEngineMutation();
-  const throttleSetThrusters = React.useCallback(
-    throttle(setThrusterVelocity, 100),
-    [],
-  );
-  const throttleSetEngine = React.useCallback(throttle(setEngine, 100), []);
-  const buttonCallback = React.useCallback(
-    ([up, right, down, left]) => {
-      const direction = {
-        x: right ? 1 : left ? -1 : 0,
-        y: 0,
-        z: up ? 1 : down ? -1 : 0,
-      };
-      setThrusterVelocity({variables: {id: entityId, direction}});
-    },
-    [setThrusterVelocity],
-  );
-  const axisCallback = React.useCallback(
-    axes => {
-      const z = axes[0] * -1;
-      const x = axes[1];
-      const y = axes[2];
-      const forwardSpeed = axes[3] === null ? 0 : Math.abs(axes[3] - 1) / 2;
-      throttleSetThrusters({
-        variables: {id: entityId, rotationDelta: {x, y, z}},
-      });
-      throttleSetEngine({
-        variables: {id: entityId, type: "impulse", currentSpeed: forwardSpeed},
-      });
-    },
-    [throttleSetEngine, throttleSetThrusters],
-  );
-  useGamepadButton([15, 16, 17, 18], buttonCallback);
-  useGamepadAxis([0, 1, 5, 2], axisCallback);
-}
-
 export default function UniversalSandboxEditor() {
   const [recenter, setRecenter] = React.useState<{}>({});
   const [zoomScale, setZoomScale] = React.useState(false);
@@ -149,7 +110,6 @@ export default function UniversalSandboxEditor() {
   const entities = useEntityState(state => state.data) || [];
   // useJoystick();
   const stage = entities.find(e => e.id === currentStage);
-  console.log(stage?.stage?.skyboxKey);
   const client = useApolloClient();
   return (
     <div className="universal-sandbox-editor">
@@ -158,6 +118,8 @@ export default function UniversalSandboxEditor() {
           entities.find(e => selected && e.id === selected[0]) ||
           entities.find(e => e.id === currentStage)
         }
+        setCurrentStage={setCurrentStage}
+        setSelected={setSelected}
       />
       <div className="level-editor-container">
         <Canvas

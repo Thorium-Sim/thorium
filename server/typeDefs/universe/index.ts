@@ -102,15 +102,6 @@ const resolver = {
           if (flightId && e.flightId !== flightId) return false;
           if (template === true && !e.template) return false;
           if (template === false && e.template) return false;
-          console.log(
-            e.stage,
-            e.id,
-            stageId,
-            stageId &&
-              e.stageChild?.parentId !== stageId &&
-              e.stage &&
-              stageId !== e.id,
-          );
           if (
             stageId &&
             e.stageChild?.parentId !== stageId &&

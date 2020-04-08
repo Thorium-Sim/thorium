@@ -228,7 +228,6 @@ const SideNav = () => {
         <SideNavLink
           icon={FaTimes}
           name="Close"
-          link="#"
           onClick={() => {
             setOpen(false);
           }}
@@ -261,7 +260,7 @@ export const SideNavLink: React.FC<NavLinkI> = ({
   return (
     <NavItem>
       <NavLink
-        tag={Link}
+        tag={link ? Link : "span"}
         to={link ? link : "#"}
         onClick={onClick ? e => onClick(e, client) : undefined}
       >

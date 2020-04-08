@@ -22,6 +22,7 @@ import {
 } from "generated/graphql";
 import useDimensions from "helpers/hooks/useDimensions";
 import GLTFPreview from "./GLTFPreview";
+import useOnScreen from "helpers/hooks/useOnScreen";
 
 interface AssetFolderI {
   id: string;
@@ -301,10 +302,19 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
                         folder.fullPath === currentDirectory,
                     )
                     ?.objects.map((object: AssetObjectI) => {
+                      const ext1 = object.url.match(/\..{3,4}$/gi);
+                      const ext = ext1
+                        ? ext1[0].replace(".", "").toLowerCase()
+                        : "";
                       return (
                         <div
                           style={{
-                            maxWidth: (dimensions?.width || 0) * widthFactor,
+                            width: "30%",
+                            maxWidth:
+                              (dimensions?.width || 0) *
+                              (["glb", "gltf"].includes(ext)
+                                ? 0.33
+                                : widthFactor),
                           }}
                           key={object.id}
                           onClick={evt => onClick?.(evt, object)}
@@ -360,10 +370,13 @@ const AssetObject: React.FC<{
 }> = ({object, removeObject}) => {
   const ext1 = object.url.match(/\..{3,4}$/gi);
   const ext = ext1 ? ext1[0].replace(".", "").toLowerCase() : "";
-  const [preview, setPreview] = React.useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  const preview = useOnScreen(ref, "-100px");
+
   if (ext === "obj") {
     return (
-      <div>
+      <div ref={ref}>
         <ObjPreview src={object.url} />
         <p>
           {object.name}{" "}
@@ -379,12 +392,10 @@ const AssetObject: React.FC<{
   }
   if (["glb", "gltf"].includes(ext)) {
     return (
-      <div>
-        {preview ? (
-          <GLTFPreview src={object.url} />
-        ) : (
-          <p onClick={() => setPreview(true)}>Click to Preview</p>
-        )}
+      <div ref={ref}>
+        <div style={{height: "300px", width: "100%"}}>
+          {preview && <GLTFPreview src={object.url} />}
+        </div>
         <p>
           {object.name}{" "}
           {removeObject && (
@@ -399,7 +410,7 @@ const AssetObject: React.FC<{
   }
   if (["mov", "mp4", "ogv", "webm", "m4v"].indexOf(ext) > -1) {
     return (
-      <div>
+      <div ref={ref}>
         <VideoPreview src={object.url} />
         <p>
           {object.name}{" "}
@@ -415,7 +426,7 @@ const AssetObject: React.FC<{
   }
   if (["m4a", "wav", "mp3", "ogg", "aiff", "aif"].indexOf(ext) > -1) {
     return (
-      <div>
+      <div ref={ref}>
         <FaFileAudio size="3em" />
         <p>
           {object.name}{" "}
@@ -431,7 +442,7 @@ const AssetObject: React.FC<{
     );
   }
   return (
-    <div>
+    <div ref={ref}>
       <img alt="object" draggable="false" src={object.url} />
       <p>
         {object.name}{" "}

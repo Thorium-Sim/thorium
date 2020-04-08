@@ -33,7 +33,6 @@ interface Textures {
 }
 const Nebula = React.memo<{skyboxKey: string}>(function Nebula({skyboxKey}) {
   const starsImage = useImage(require("./stars.jpg"));
-  console.log(skyboxKey);
   const mats = React.useMemo(() => {
     const textures = nebulaGenerator(skyboxKey || "c") as Textures;
     const maps: HTMLCanvasElement[] = [];
