@@ -5,7 +5,7 @@ import {SphereGeometry, BoxBufferGeometry, Mesh, Vector3} from "three";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
 import SelectionOutline from "./SelectionOutline";
-import Glow from "./entityParts/glow";
+// import Glow from "./entityParts/glow";
 import Light from "./entityParts/light";
 import Rings from "./entityParts/rings";
 import Clouds from "./entityParts/clouds";
@@ -43,7 +43,7 @@ const Entity: React.FC<EntityProps> = ({
   onDrag = noop,
   onDragStop = noop,
 }) => {
-  const {id, location, appearance, glow, light} = entity;
+  const {id, location, appearance, light} = entity;
   const size = 1;
   const {meshType, cloudMapAsset, ringMapAsset} = appearance || {};
   const scale = library ? 1 : appearance?.scale || 1;
@@ -89,8 +89,7 @@ const Entity: React.FC<EntityProps> = ({
     library,
     setSelected,
   );
-
-  useClientSystems(entity, mesh);
+  useClientSystems(entity, mesh, positionOffset);
 
   if (!library && !isDragging && (!location || !position)) return null;
   const meshPosition:
@@ -127,13 +126,6 @@ const Entity: React.FC<EntityProps> = ({
             color={appearance?.color ?? undefined}
           />
         </mesh>
-        {glow && (
-          <Glow
-            position={meshPosition}
-            color={glow.color ?? undefined}
-            glowMode={glow.glowMode ?? undefined}
-          />
-        )}
         {light && (
           <Light
             intensity={light.intensity ?? undefined}

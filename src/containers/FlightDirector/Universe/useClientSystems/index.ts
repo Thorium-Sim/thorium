@@ -2,7 +2,6 @@ import React from "react";
 import {Entity} from "generated/graphql";
 import {Mesh, Quaternion, Vector3} from "three";
 import {useFrame} from "react-three-fiber";
-import usePrevious from "helpers/hooks/usePrevious";
 import {CanvasContext} from "../CanvasContext";
 
 const q = new Quaternion();
@@ -10,11 +9,31 @@ const q2 = new Quaternion();
 const v = new Vector3();
 const v2 = new Vector3();
 
+function useEntityPrevious(value: Entity) {
+  // The ref object is a generic container whose current property is mutable ...
+  // ... and can hold any value, similar to an instance property on a class
+  const ref = React.useRef([value]);
+
+  // Store current value in ref
+  React.useEffect(() => {
+    ref.current.unshift(value);
+    ref.current = ref.current.slice(0, 2);
+  }, [value]); // Only re-run if value changes
+
+  // Return regular value (happens before update in useEffect above)
+  if (value.reset) {
+    console.log("Resetting value");
+    return value;
+  }
+  return ref.current[1] || ref.current[0];
+}
+
 export default function useClientSystems(
   entity: Entity,
   mesh: React.MutableRefObject<Mesh>,
+  positionOffset: {x: number; y: number; z: number},
 ) {
-  const previousEntity = usePrevious(entity);
+  const previousEntity = useEntityPrevious(entity);
   const [{camera: perspectiveCamera}] = React.useContext(CanvasContext);
 
   const time = React.useRef(0);
@@ -37,11 +56,16 @@ export default function useClientSystems(
     // Interpolate the position
     const position = entity.location?.position;
     const oldPosition = previousEntity.location?.position;
-    if (position && oldPosition) {
+
+    if (!entity.reset && position && oldPosition) {
       v.set(position.x, position.y, position.z);
       v2.set(oldPosition.x, oldPosition.y, oldPosition.z);
       v2.lerp(v, t);
-      mesh.current.position.set(v2.x, v2.y, v2.z);
+      mesh.current.position.set(
+        v2.x + positionOffset.x,
+        v2.y + positionOffset.y,
+        v2.z + positionOffset.z,
+      );
     }
 
     // Set the camera to the position/rotation of the entity

@@ -53,6 +53,7 @@ interface CanvasAppProps {
   storeApi: StoreApi<{
     loading: boolean;
     data: EntityInterface[];
+    tick: number;
   }>;
   setMeasurement: React.Dispatch<MeasurementAction>;
   measurement: {
@@ -92,7 +93,13 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     y: 0,
     z: 0,
   });
+
   const [selectionsDragged, setSelectionsDragged] = React.useState(false);
+  const selectionsDraggedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    selectionsDraggedRef.current = selectionsDragged;
+  }, [selectionsDragged]);
 
   const mousePosition = use3DMousePosition();
   React.useEffect(() => {
@@ -157,6 +164,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   const {
     camera: {zoom},
   } = useThree();
+
   const onDrag = React.useCallback(
     (dx, dy) => {
       setPositionOffset(position => {
@@ -180,9 +188,24 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           },
         };
       });
+
+    // Reset the entity linear interpolation
+    storeApi.setState(s => ({
+      ...s,
+      data: s.data.map(e => {
+        const u = updateEntities.find(({id}) => id === e.id);
+        if (u && e.location) {
+          return {
+            ...e,
+            reset: true,
+            location: {...e.location, position: u.position},
+          };
+        }
+        return e;
+      }),
+    }));
     setPosition({variables: {entities: updateEntities}}).then(() => {
       setSelectionsDragged(false);
-      setPositionOffset({x: 0, y: 0, z: 0});
     });
   }, [
     entities,
@@ -191,7 +214,21 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     positionOffset.z,
     selected,
     setPosition,
+    storeApi,
   ]);
+
+  React.useEffect(() => {
+    const unSub = storeApi.subscribe(
+      tick => {
+        if (!selectionsDraggedRef.current) {
+          setPositionOffset({x: 0, y: 0, z: 0});
+        }
+      },
+      state => state.tick,
+    );
+    return () => unSub();
+  }, [storeApi]);
+
   return (
     <>
       {perspectiveCamera ? (
@@ -245,7 +282,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
               onDrag={onDrag}
               onDragStop={onDragStop}
               positionOffset={
-                isSelected && selectionsDragged ? positionOffset : undefined
+                selected.includes(e.id) ? positionOffset : undefined
               }
             />
           </React.Suspense>

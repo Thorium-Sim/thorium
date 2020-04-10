@@ -747,6 +747,7 @@ input EntitiesLocationInput {
 type Entity {
   id: ID!
   interval: Int
+  reset: Boolean
   appearance: AppearanceComponent
   behavior: BehaviorComponent
   identity: IdentityComponent

@@ -807,6 +807,7 @@ export type Entity = {
   __typename?: "Entity";
   id: Scalars["ID"];
   interval?: Maybe<Scalars["Int"]>;
+  reset?: Maybe<Scalars["Boolean"]>;
   appearance?: Maybe<AppearanceComponent>;
   behavior?: Maybe<BehaviorComponent>;
   identity?: Maybe<IdentityComponent>;

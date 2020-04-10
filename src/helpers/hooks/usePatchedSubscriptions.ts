@@ -30,14 +30,15 @@ function usePatchedSubscriptions<SubData, VariableDefinition>(
   queryAST: DocumentNode,
   variablesInput?: VariableDefinition | undefined,
 ): [
-  UseStore<{loading: boolean; data: SubData}>,
-  StoreApi<{loading: boolean; data: SubData}>,
+  UseStore<{loading: boolean; data: SubData; tick: number}>,
+  StoreApi<{loading: boolean; data: SubData; tick: number}>,
 ] {
   const [useStore, api] = React.useMemo(
     () =>
-      create<{loading: boolean; data: SubData}>(() => ({
+      create<{loading: boolean; data: SubData; tick: number}>(() => ({
         loading: true,
         data: ([] as unknown) as SubData,
+        tick: 0,
       })),
     [],
   );
@@ -66,7 +67,11 @@ function usePatchedSubscriptions<SubData, VariableDefinition>(
       })
       .subscribe({
         next: ({data}) => {
-          api.setState({loading: false, data: data?.[selectionName] || []});
+          api.setState(s => ({
+            loading: false,
+            data: data?.[selectionName] || [],
+            tick: s.tick + 1,
+          }));
         },
       });
     return () => unsubscribe.unsubscribe();

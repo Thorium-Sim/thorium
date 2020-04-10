@@ -12,6 +12,8 @@ const schema = gql`
   type Entity {
     id: ID!
     interval: Int
+    # This property exists for client side type definitions
+    reset: Boolean
   }
   extend type Query {
     entity(id: ID!): Entity
