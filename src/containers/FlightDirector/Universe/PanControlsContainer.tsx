@@ -5,7 +5,7 @@ import {ReactThreeFiber, extend, useFrame, useThree} from "react-three-fiber";
 import PanControls from "./PanControls";
 import {CanvasContext} from "./CanvasContext";
 import {Camera, Renderer, MOUSE} from "three";
-import {StoreApi, StateListener} from "zustand";
+import {StoreApi} from "zustand";
 import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
 import {Entity} from "generated/graphql";
 import {distance3d} from "components/views/Sensors/gridCore/constants";

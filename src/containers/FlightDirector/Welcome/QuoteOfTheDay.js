@@ -60,6 +60,8 @@ const quotes = [
   "This spaceship doesn't come with an insurance plan.",
   "There is some good news. There’s some cake left!",
   "In case you were wondering, I am, by definition, the best version of myself.",
+  "I'm not crazy, I'm just colorful.",
+  "What we do in life, echoes in eternity.",
 ];
 
 const QuoteOfTheDay = () => {
