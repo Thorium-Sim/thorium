@@ -12,6 +12,7 @@ import {
 import {capitalCase} from "change-case";
 import Priority from "./priority";
 import Location from "./location";
+import SearchableList from "helpers/SearchableList";
 const TeamConfig = ({
   selectedTeam,
   decks,
@@ -162,24 +163,17 @@ const TeamConfig = ({
         <Label for="teamName" size="lg">
           Available Officers
         </Label>
-        <ListGroup className="crew-list">
-          {crew
+        <SearchableList
+          items={crew
             .filter(c => assignedOfficers.indexOf(c.id) === -1)
-            .map(c => (
-              <ListGroupItem
-                className="officer"
-                key={c.id}
-                onClick={() => {
-                  if (team) {
-                    assignOfficer(c);
-                  }
-                }}
-              >
-                <p>{c.name}</p>
-                <small>{c.position}</small>
-              </ListGroupItem>
-            ))}
-        </ListGroup>
+            .map(c => ({id: c.id, label: c.name, category: c.position}))}
+          setSelectedItem={c => {
+            if (team) {
+              assignOfficer(c);
+            }
+          }}
+        ></SearchableList>
+
         <Label for="teamName" size="lg">
           Assigned Officers
         </Label>

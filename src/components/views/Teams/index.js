@@ -135,9 +135,11 @@ class Teams extends Component {
       variables,
     });
   };
-  assignOfficer = officer => {
+  assignOfficer = crewId => {
     const {selectedTeam} = this.state;
-
+    const {data} = this.props;
+    const {crew} = data;
+    const officer = crew.find(c => c.id === crewId);
     selectedTeam &&
       selectedTeam.id &&
       this.setState({
