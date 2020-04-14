@@ -104,12 +104,9 @@ const resolver = {
           if (flightId && e.flightId !== flightId) return false;
           if (template === true && !e.template) return false;
           if (template === false && e.template) return false;
-          if (
-            stageId &&
-            e.stageChild?.parentId !== stageId &&
-            e.stage &&
-            stageId !== e.id
-          ) {
+          const isNotStageChild = stageId && e.stageChild?.parentId !== stageId;
+          const isNotParentStage = !e.stage || stageId !== e.id;
+          if (isNotStageChild && isNotParentStage) {
             return false;
           }
           return true;
@@ -134,7 +131,6 @@ const resolver = {
           if (stageId && rootValue.stageId !== stageId) {
             return false;
           }
-
           return true;
         },
       ),

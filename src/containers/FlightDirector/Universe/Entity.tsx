@@ -19,7 +19,7 @@ interface EntityProps {
   dragging?: boolean;
   library?: boolean;
   entity: EntityInterface;
-  setSelected?: React.Dispatch<React.SetStateAction<string[]>>;
+  stage?: EntityInterface;
   selected?: boolean;
   mousePosition?: PositionTuple;
   isDraggingMe?: boolean;
@@ -34,7 +34,7 @@ const Entity: React.FC<EntityProps> = ({
   dragging: isDragging,
   library,
   entity,
-  setSelected,
+  stage,
   selected,
   mousePosition,
   isDraggingMe = false,
@@ -87,9 +87,8 @@ const Entity: React.FC<EntityProps> = ({
     isDraggingMe,
     id,
     library,
-    setSelected,
   );
-  useClientSystems(entity, mesh, positionOffset);
+  useClientSystems(entity, mesh, positionOffset, stage);
 
   if (!library && !isDragging && (!location || !position)) return null;
   const meshPosition:

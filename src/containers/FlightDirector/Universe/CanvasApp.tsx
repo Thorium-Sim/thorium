@@ -19,7 +19,7 @@ import Nebula from "./Nebula";
 import {CanvasContext} from "./CanvasContext";
 import Fuzz from "./fuzz";
 import {StoreApi} from "zustand";
-import {MeasurementAction} from "./measurementReducer";
+import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
 
 export type PositionTuple = [number, number, number];
 
@@ -42,27 +42,10 @@ const MeasureCircles: React.FC<{
 };
 interface CanvasAppProps {
   stage?: EntityInterface;
-  recenter: {};
-  selected: string[];
-  setSelected: React.Dispatch<React.SetStateAction<string[]>>;
   setDragging: React.Dispatch<React.SetStateAction<any>>;
   dragging: EntityType | undefined;
-  selecting: boolean;
   entities: EntityInterface[];
-  lighting: boolean;
-  storeApi: StoreApi<{
-    loading: boolean;
-    data: EntityInterface[];
-    tick: number;
-  }>;
-  setMeasurement: React.Dispatch<MeasurementAction>;
-  measurement: {
-    measuring: boolean;
-    measured: boolean;
-    speed: number;
-    timeInSeconds: number;
-    position: [number, number, number];
-  } | null;
+  storeApi: StoreApi<PatchData<EntityInterface[]>>;
 }
 function setNumberBounds(num: number) {
   return Math.max(
@@ -72,22 +55,31 @@ function setNumberBounds(num: number) {
 }
 const CanvasApp: React.FC<CanvasAppProps> = ({
   stage,
-  recenter,
-  selected,
-  setSelected,
   setDragging,
   dragging,
-  selecting,
   entities,
-  lighting,
   storeApi,
-  setMeasurement,
-  measurement,
 }) => {
+  const [
+    {
+      dragging: dragSelecting,
+      camera: perspectiveCamera,
+      selected,
+      recenter,
+      measured,
+      measuring,
+      // selecting,
+      speed,
+      timeInSeconds,
+      position,
+      lighting,
+    },
+    dispatch,
+  ] = React.useContext(CanvasContext);
+
   const [create] = useEntityCreateMutation();
   const [remove] = useEntityRemoveMutation();
   const [setPosition] = useEntitiesSetPositionMutation();
-  const [{camera: perspectiveCamera}] = React.useContext(CanvasContext);
   const [positionOffset, setPositionOffset] = React.useState({
     x: 0,
     y: 0,
@@ -102,6 +94,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   }, [selectionsDragged]);
 
   const mousePosition = use3DMousePosition();
+
   React.useEffect(() => {
     async function mouseUp() {
       setDragging(undefined);
@@ -112,9 +105,9 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           flightId: "template",
           stageParentId: stage?.id || "",
           position: {
-            x: Math.round(mousePosition[0]),
-            y: Math.round(mousePosition[1]),
-            z: Math.round(mousePosition[2]),
+            x: Math.round(mousePosition.current[0]),
+            y: Math.round(mousePosition.current[1]),
+            z: Math.round(mousePosition.current[2]),
           },
           name: `New Entity ${entities.length + 1}`,
           meshType: dragging.appearance.meshType,
@@ -133,7 +126,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
         },
       });
       if (data?.entityCreate.id) {
-        setSelected([data.entityCreate.id]);
+        dispatch({type: "selected", selected: [data.entityCreate.id]});
       }
     }
     if (dragging) {
@@ -145,9 +138,9 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     dragging,
     setDragging,
     mousePosition,
-    setSelected,
     entities.length,
     stage,
+    dispatch,
   ]);
 
   const elementList = ["input", "textarea"];
@@ -157,7 +150,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     if (e.key === "Backspace" && selected) {
       remove({variables: {id: selected}});
 
-      setSelected([]);
+      dispatch({type: "selected", selected: []});
     }
   });
 
@@ -205,6 +198,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       }),
     }));
     setPosition({variables: {entities: updateEntities}}).then(() => {
+      setPositionOffset({x: 0, y: 0, z: 0});
       setSelectionsDragged(false);
     });
   }, [
@@ -217,18 +211,6 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     storeApi,
   ]);
 
-  React.useEffect(() => {
-    const unSub = storeApi.subscribe(
-      tick => {
-        if (!selectionsDraggedRef.current) {
-          setPositionOffset({x: 0, y: 0, z: 0});
-        }
-      },
-      state => state.tick,
-    );
-    return () => unSub();
-  }, [storeApi]);
-
   return (
     <>
       {perspectiveCamera ? (
@@ -237,34 +219,34 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
             <Nebula skyboxKey={stage?.stage?.skyboxKey ?? "c"} />
             <Fuzz storeApi={storeApi} />
           </React.Suspense>
-          <PerspectiveCamera recenter={recenter} />
+          <PerspectiveCamera />
         </>
       ) : (
         <>
           <Grid />
-          <OrthoCamera recenter={recenter} />
+          <OrthoCamera recenter={recenter} storeApi={storeApi} stage={stage} />
           {dragging && (
-            <Entity dragging entity={dragging} mousePosition={mousePosition} />
+            <Entity
+              dragging
+              entity={dragging}
+              mousePosition={mousePosition.current}
+            />
           )}
           <BackPlane
             setSelected={() =>
-              measurement?.measuring && !measurement.measured
-                ? setMeasurement({type: "position", position: mousePosition})
-                : setSelected([])
+              measuring && !measured
+                ? dispatch({type: "position", position: mousePosition.current})
+                : dispatch({type: "selected", selected: []})
             }
           />
-          <DragSelect
-            selecting={selecting}
-            setSelected={setSelected}
-            entities={entities}
-          />
+          {/* <DragSelect selecting={selecting} entities={entities} /> */}
         </>
       )}
-      {measurement?.measured ? (
+      {measured ? (
         <MeasureCircles
-          speed={measurement.speed}
-          time={measurement.timeInSeconds}
-          position={measurement.position}
+          speed={speed}
+          time={timeInSeconds}
+          position={position}
         />
       ) : null}
       <ambientLight intensity={lighting ? 0.1 : 1} />
@@ -275,14 +257,16 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           <React.Suspense key={e.id} fallback={null}>
             <Entity
               entity={e}
+              stage={stage}
               selected={isSelected}
-              setSelected={setSelected}
               isDraggingMe={isSelected && selectionsDragged}
               onDragStart={() => setSelectionsDragged(true)}
               onDrag={onDrag}
               onDragStop={onDragStop}
               positionOffset={
-                selected.includes(e.id) ? positionOffset : undefined
+                !dragSelecting && selected.includes(e.id)
+                  ? positionOffset
+                  : undefined
               }
             />
           </React.Suspense>

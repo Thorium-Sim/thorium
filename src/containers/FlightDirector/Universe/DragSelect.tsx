@@ -1,14 +1,13 @@
 import React from "react";
 import {useThree} from "react-three-fiber";
 import useEventListener from "./useEventListener";
-import {CanvasContext, ActionType} from "./CanvasContext";
+import {CanvasContext} from "./CanvasContext";
 import * as THREE from "three";
 import {PlaneBufferGeometry} from "three";
 import {get3DMousePosition} from "./use3DMousePosition";
 import {Entity} from "generated/graphql";
 
 interface DragSelectProps {
-  setSelected: React.Dispatch<React.SetStateAction<string[]>>;
   entities: Entity[];
   selecting: boolean;
 }
@@ -42,15 +41,18 @@ function selectEntities(
     .map(e => e.id);
   setSelected(ids);
 }
-const DragSelect: React.FC<DragSelectProps> = ({
-  setSelected,
-  entities,
-  selecting,
-}) => {
+const DragSelect: React.FC<DragSelectProps> = ({entities, selecting}) => {
   const [{dragging}, dispatch] = React.useContext(CanvasContext);
   const {camera, gl: renderer, viewport} = useThree();
   const [box, setBox] = React.useState<BoxInterface | null>(null);
   const {left, top} = renderer.domElement.getBoundingClientRect();
+
+  const setSelected = React.useCallback(
+    selected => {
+      dispatch({type: "selected", selected});
+    },
+    [dispatch],
+  );
 
   useEventListener(
     "mousedown",
@@ -58,7 +60,7 @@ const DragSelect: React.FC<DragSelectProps> = ({
       const target = event.target as HTMLElement;
       if (target?.parentElement?.id !== "level-editor") return;
       if (dragging || !selecting) return;
-      dispatch({type: ActionType.dragging});
+      dispatch({type: "dragging"});
       const position = get3DMousePosition(
         event.clientX - left,
         event.clientY - top,
@@ -150,7 +152,7 @@ const DragSelect: React.FC<DragSelectProps> = ({
         );
 
         setBox(null);
-        dispatch({type: ActionType.dropped});
+        dispatch({type: "dropped"});
       }
     },
     (document as unknown) as HTMLElement,

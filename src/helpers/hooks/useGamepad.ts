@@ -1,7 +1,11 @@
 import React from "react";
 import useInterval from "./useInterval";
 
-export function useGamepadAxis(index: number[], callback: Function) {
+export function useGamepadAxis(
+  id: string,
+  index: number[],
+  callback: Function,
+) {
   const savedCallback = React.useRef<Function>();
 
   // Remember the latest callback.
@@ -11,7 +15,10 @@ export function useGamepadAxis(index: number[], callback: Function) {
 
   const value = React.useRef<(number | null)[]>([]);
   useInterval(() => {
-    const gamepads = navigator.getGamepads();
+    const gamepads = Array.from(navigator.getGamepads());
+    const gamepad = gamepads.find(g => g?.id === id);
+    if (!gamepad) return;
+
     let shouldSetValue = false;
     const output = index.map((i, index) => {
       const newVal = gamepads[0]
@@ -28,7 +35,11 @@ export function useGamepadAxis(index: number[], callback: Function) {
   return value;
 }
 
-export function useGamepadButton(index: number[], callback: Function) {
+export function useGamepadButton(
+  id: string,
+  index: number[],
+  callback: Function,
+) {
   const savedCallback = React.useRef<Function>();
 
   // Remember the latest callback.
@@ -38,7 +49,10 @@ export function useGamepadButton(index: number[], callback: Function) {
 
   const value = React.useRef<boolean[]>([]);
   useInterval(() => {
-    const gamepads = navigator.getGamepads();
+    const gamepads = Array.from(navigator.getGamepads());
+    const gamepad = gamepads.find(g => g?.id === id);
+    if (!gamepad) return;
+
     let shouldSetValue = false;
     const output = index.map((i, index) => {
       const newVal = gamepads[0] ? gamepads[0].buttons[i].pressed : false;
@@ -53,7 +67,11 @@ export function useGamepadButton(index: number[], callback: Function) {
   return value;
 }
 
-export function useGamepadButtonPress(index: number, callback: Function) {
+export function useGamepadButtonPress(
+  id: string,
+  index: number,
+  callback: Function,
+) {
   const savedCallback = React.useRef<Function>();
 
   // Remember the latest callback.
@@ -61,7 +79,7 @@ export function useGamepadButtonPress(index: number, callback: Function) {
     savedCallback.current = callback;
   }, [callback]);
 
-  useGamepadButton([index], ([value]: [boolean]) => {
+  useGamepadButton(id, [index], ([value]: [boolean]) => {
     if (value && savedCallback.current) savedCallback.current(index);
   });
 }

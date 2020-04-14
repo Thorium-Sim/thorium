@@ -88,7 +88,11 @@ const EntityTemplate: React.FC = () => {
           sm={3}
           style={{height: "100%", overflowY: "auto", paddingBottom: "2rem"}}
         >
-          <PropertyPalette key={entity?.id} selectedEntity={entity} />
+          <PropertyPalette
+            key={entity?.id}
+            selectedEntity={entity}
+            useEntityState={useEntityState}
+          />
         </Col>
         <Col sm={6} style={{height: "100%"}}>
           <h2>Preview</h2>

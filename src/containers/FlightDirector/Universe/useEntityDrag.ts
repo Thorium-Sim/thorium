@@ -1,6 +1,6 @@
 import * as React from "react";
 import {PointerEvent} from "react-three-fiber";
-import {CanvasContext, ActionType} from "./CanvasContext";
+import {CanvasContext} from "./CanvasContext";
 import {useDrag} from "react-use-gesture";
 
 export default function useEntityDrag(
@@ -10,7 +10,6 @@ export default function useEntityDrag(
   isDraggingMe: boolean,
   id: string,
   library?: boolean,
-  setSelected?: React.Dispatch<React.SetStateAction<string[]>>,
 ) {
   const [{dragging}, dispatch] = React.useContext(CanvasContext);
 
@@ -30,27 +29,16 @@ export default function useEntityDrag(
       onPointerDown: (e: PointerEvent) => {
         if (library) return;
         e.stopPropagation();
-        setSelected?.(selected => {
-          if (e.shiftKey) {
-            if (selected.includes(id)) {
-              return selected.filter(s => s !== id);
-            }
-            return [...selected, id];
-          }
-          if (!selected || !selected.includes(id)) {
-            return [id];
-          }
-          return selected;
-        });
+        dispatch({type: "entityPointerDown", id, shiftKey: e.shiftKey});
         if (dragging) return;
         onDragStart();
-        dispatch({type: ActionType.dragging});
+        dispatch({type: "dragging"});
         dragFunctions?.onPointerDown?.(
           (e as unknown) as React.PointerEvent<Element>,
         );
       },
       onPointerUp: (e: PointerEvent) => {
-        dispatch({type: ActionType.dropped});
+        dispatch({type: "dropped"});
         if (isDraggingMe) {
           onDragStop();
         }
@@ -68,7 +56,6 @@ export default function useEntityDrag(
       library,
       onDragStart,
       onDragStop,
-      setSelected,
     ],
   );
   return modifiedDragFunctions;

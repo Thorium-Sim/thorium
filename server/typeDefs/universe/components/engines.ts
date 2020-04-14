@@ -60,7 +60,7 @@ const resolver = {
           });
         } else {
           Object.entries(properties).forEach(([key, value]) => {
-            if (key === "currentSpeed" && value > 0) {
+            if (key === "currentSpeed" && value > 0 && entity[otherEngine]) {
               // Change the other engine to be 0
               entity[otherEngine][key] = 0;
             }

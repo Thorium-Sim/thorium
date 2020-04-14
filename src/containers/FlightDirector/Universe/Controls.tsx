@@ -9,7 +9,7 @@ import {
 import {Tooltip} from "reactstrap";
 import uuid from "uuid";
 import {FaRuler} from "react-icons/fa";
-import {MeasurementAction} from "./measurementReducer";
+import {CanvasContext} from "./CanvasContext";
 
 interface TooltipButtonProps {
   tooltipContent: React.ReactNode;
@@ -48,70 +48,54 @@ const TooltipButton: React.FC<TooltipButtonProps> = ({
 };
 type StateArg = (s: boolean) => boolean;
 
-const Controls = ({
-  recenter,
-  zoomScale,
-  setZoomScale,
-  selecting,
-  setSelecting,
-  hasSelected,
-  lighting,
-  setLighting,
-  camera,
-  setCamera,
-  measuring,
-  measured,
-  speed,
-  setMeasuring,
-  timeInSeconds,
-}: {
-  recenter: () => void;
-  zoomScale: boolean;
-  setZoomScale: (val: boolean | StateArg) => void;
-  selecting: boolean;
-  setSelecting: (val: boolean | StateArg) => void;
-  hasSelected: boolean;
-  lighting: boolean;
-  setLighting: React.Dispatch<React.SetStateAction<boolean>>;
-  camera: boolean;
-  setCamera: React.Dispatch<React.SetStateAction<boolean>>;
-  measuring: boolean;
-  measured: boolean;
-  speed: number;
-  timeInSeconds: number;
-  setMeasuring: React.Dispatch<MeasurementAction>;
-}) => {
+const Controls = () => {
+  const [
+    {
+      zoomScale,
+      selecting,
+      lighting,
+      camera,
+      measuring,
+      measured,
+      speed,
+      timeInSeconds,
+    },
+    dispatch,
+  ] = React.useContext(CanvasContext);
   return (
     <div className={`controls-section`}>
       <div className="view-controls">
         <div>
-          <TooltipButton onClick={recenter} tooltipContent="Recenter Canvas">
+          <TooltipButton
+            onClick={() => dispatch({type: "recenter"})}
+            tooltipContent="Recenter Canvas"
+          >
             <MdCenterFocusStrong />
           </TooltipButton>
           <TooltipButton
             className={zoomScale ? "selected" : ""}
-            onClick={() => setZoomScale((s: boolean) => !s)}
+            onClick={() => dispatch({type: "zoomScale", tf: !zoomScale})}
             tooltipContent="Scale Objects with Zoom"
           >
             <MdZoomOutMap />
           </TooltipButton>
           <TooltipButton
             className={selecting ? "selected" : ""}
-            onClick={() => setSelecting((s: boolean) => !s)}
+            onClick={() => dispatch({type: "selecting", tf: !selecting})}
             tooltipContent="Drag to Select"
           >
             <MdSelectAll />
           </TooltipButton>
           <TooltipButton
             className={lighting ? "selected" : ""}
-            onClick={() => setLighting((s: boolean) => !s)}
+            onClick={() => dispatch({type: "lighting", tf: !lighting})}
             tooltipContent="Use Scene Lighting"
           >
             <MdLightbulbOutline />
           </TooltipButton>
           <TooltipButton
             className={camera ? "selected" : ""}
-            onClick={() => setCamera((s: boolean) => !s)}
+            onClick={() => dispatch({type: "camera", tf: !camera})}
             tooltipContent="Use Simulation Camera"
           >
             <MdCamera />
@@ -120,9 +104,7 @@ const Controls = ({
             className={`${measuring ? "active" : ""} ${
               measured ? "selected" : ""
             }`}
-            onClick={() =>
-              setMeasuring(measuring ? {type: "cancel"} : {type: "start"})
-            }
+            onClick={() => dispatch({type: "measure"})}
             tooltipContent="Measure with engine speed"
           >
             <FaRuler />
@@ -135,7 +117,7 @@ const Controls = ({
             <select
               value={speed}
               onChange={e =>
-                setMeasuring({type: "speed", speed: parseFloat(e.target.value)})
+                dispatch({type: "speed", speed: parseFloat(e.target.value)})
               }
             >
               <option value={28}>1/4 Impulse</option>
@@ -154,7 +136,7 @@ const Controls = ({
                 step={15}
                 value={timeInSeconds}
                 onChange={e =>
-                  setMeasuring({
+                  dispatch({
                     type: "time",
                     timeInSeconds: parseFloat(e.target.value),
                   })

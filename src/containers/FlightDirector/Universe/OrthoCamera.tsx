@@ -2,11 +2,16 @@ import * as React from "react";
 import {useFrame, useThree} from "react-three-fiber";
 import {OrthographicCamera} from "three";
 import PanControls from "./PanControlsContainer";
+import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
+import {StoreApi} from "zustand";
+import {Entity} from "generated/graphql";
 
 interface CameraProps {
   recenter: any;
+  storeApi: StoreApi<PatchData<Entity[]>>;
+  stage?: Entity;
 }
-const Camera: React.FC<CameraProps> = ({recenter}) => {
+const Camera: React.FC<CameraProps> = ({recenter, storeApi, stage}) => {
   const ref = React.useRef(new OrthographicCamera(0, 0, 0, 0, 0, 0));
   const {setDefaultCamera, gl} = useThree();
   const frustumSize = 10;
@@ -23,7 +28,7 @@ const Camera: React.FC<CameraProps> = ({recenter}) => {
 
   return (
     <>
-      <PanControls recenter={recenter} />
+      <PanControls recenter={recenter} storeApi={storeApi} stage={stage} />
       <orthographicCamera
         ref={ref}
         args={[

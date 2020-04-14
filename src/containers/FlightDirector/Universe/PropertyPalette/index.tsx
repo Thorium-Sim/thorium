@@ -10,16 +10,36 @@ import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import Light from "./Light";
 import Systems from "./Systems";
 import Stage from "./Stage";
+import {Button} from "reactstrap";
+import {UseStore} from "zustand";
+import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
+import {CanvasContext} from "../CanvasContext";
+
 interface PropertyPaletteProps {
-  selectedEntity: Entity | undefined;
+  selectedEntity?: Entity;
+  useEntityState: UseStore<PatchData<Entity[]>>;
+  currentStage?: string;
   setCurrentStage?: React.Dispatch<React.SetStateAction<string>>;
-  setSelected?: React.Dispatch<React.SetStateAction<string[]>>;
+  controllingEntityId?: string | null;
+  setControllingEntityId?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 const PropertyPalette: React.FC<PropertyPaletteProps> = ({
-  selectedEntity,
+  selectedEntity: realSelectedEntity,
+  useEntityState,
+  currentStage,
   setCurrentStage,
-  setSelected,
+  controllingEntityId,
+  setControllingEntityId,
 }) => {
+  const [{selected}] = React.useContext(CanvasContext);
+
+  const selectedEntity =
+    useEntityState(
+      ({data: entities}) =>
+        entities.find(e => selected && e.id === selected[0]) ||
+        entities.find(e => e.id === currentStage),
+    ) || realSelectedEntity;
+
   const [getAsset, setGetAsset] = React.useState<{
     label: string;
     current: string;
@@ -53,13 +73,25 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({
               identity={selectedEntity.identity}
             />
           )}
+          {setControllingEntityId && currentStage !== selectedEntity.id && (
+            <Button
+              active={controllingEntityId === selectedEntity.id}
+              onClick={() =>
+                setControllingEntityId(e =>
+                  e === selectedEntity.id ? null : selectedEntity.id,
+                )
+              }
+            >
+              Control Entity
+            </Button>
+          )}
           {!selectedEntity.template && (
             <Stage
               id={selectedEntity.id}
               stage={selectedEntity.stage || undefined}
               stageChild={selectedEntity.stageChild || undefined}
+              currentStage={currentStage || ""}
               setCurrentStage={setCurrentStage}
-              setSelected={setSelected}
             />
           )}
           {selectedEntity.template && (

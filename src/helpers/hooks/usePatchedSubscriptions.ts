@@ -26,16 +26,19 @@ const client = new SubscriptionClient(websocketUrl, {
   reconnect: true,
 });
 
+export type PatchData<SubData> = {
+  loading: boolean;
+  data: SubData;
+  tick: number;
+};
+
 function usePatchedSubscriptions<SubData, VariableDefinition>(
   queryAST: DocumentNode,
   variablesInput?: VariableDefinition | undefined,
-): [
-  UseStore<{loading: boolean; data: SubData; tick: number}>,
-  StoreApi<{loading: boolean; data: SubData; tick: number}>,
-] {
+): [UseStore<PatchData<SubData>>, StoreApi<PatchData<SubData>>] {
   const [useStore, api] = React.useMemo(
     () =>
-      create<{loading: boolean; data: SubData; tick: number}>(() => ({
+      create<PatchData<SubData>>(() => ({
         loading: true,
         data: ([] as unknown) as SubData,
         tick: 0,

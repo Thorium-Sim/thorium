@@ -22,7 +22,6 @@ function useEntityPrevious(value: Entity) {
 
   // Return regular value (happens before update in useEffect above)
   if (value.reset) {
-    console.log("Resetting value");
     return value;
   }
   return ref.current[1] || ref.current[0];
@@ -32,6 +31,7 @@ export default function useClientSystems(
   entity: Entity,
   mesh: React.MutableRefObject<Mesh>,
   positionOffset: {x: number; y: number; z: number},
+  stage?: Entity,
 ) {
   const previousEntity = useEntityPrevious(entity);
   const [{camera: perspectiveCamera}] = React.useContext(CanvasContext);
@@ -42,6 +42,12 @@ export default function useClientSystems(
   }, [entity]);
   useFrame(({camera}, delta) => {
     if (!mesh.current || !entity.interval) return;
+    if (entity.id === stage?.id) {
+      // Put the object in the middle of the stage
+      // if we are in its stage.
+      mesh.current.position.set(0, 0, 0);
+      return;
+    }
     time.current += (delta * 1000) / entity.interval;
     const t = Math.min(time.current, 1);
     // Interpolate the Rotation

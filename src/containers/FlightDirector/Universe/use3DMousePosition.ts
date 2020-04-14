@@ -22,10 +22,11 @@ export function get3DMousePosition(
 }
 
 export default function use3DMousePosition(initVal: PositionTuple = [0, 0, 0]) {
-  const [position, setPosition] = React.useState<PositionTuple>(initVal);
-  const {gl, camera, viewport} = useThree();
+  // const [position, setPosition] = React.useState<PositionTuple>(initVal);
+  const position = React.useRef<PositionTuple>(initVal);
+  const {size, camera, viewport} = useThree();
   const {width, height} = viewport;
-  const {left, top} = gl.domElement.getBoundingClientRect();
+  const {left, top} = size;
   useEventListener("mousemove", (e: MouseEvent) => {
     const pos = get3DMousePosition(
       e.clientX - left,
@@ -36,7 +37,7 @@ export default function use3DMousePosition(initVal: PositionTuple = [0, 0, 0]) {
     );
 
     const {x, y, z} = pos;
-    setPosition([Math.round(x), Math.round(y), Math.round(z)]);
+    position.current = [Math.round(x), Math.round(y), Math.round(z)];
   });
   return position;
 }

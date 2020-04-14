@@ -8,24 +8,25 @@ import {
 import {Label, Input, Collapse, Button} from "reactstrap";
 import {FaChevronDown, FaChevronRight} from "react-icons/fa";
 import debounce from "helpers/debounce";
+import {CanvasContext} from "../CanvasContext";
 
 interface StageEditProps {
   id: string;
   stage?: StageComponent;
   stageChild?: StageChildComponent;
+  currentStage: string;
   setCurrentStage?: React.Dispatch<React.SetStateAction<string>>;
-  setSelected?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const Stage: React.FC<StageEditProps> = ({
   id,
   stage,
   stageChild,
+  currentStage,
   setCurrentStage,
-  setSelected,
 }) => {
   const [collapse, setCollapse] = React.useState<boolean>(false);
-
+  const [, dispatch] = React.useContext(CanvasContext);
   const [setStage] = useEntitySetStageMutation();
   const [removeStage] = useEntityRemoveStageMutation();
 
@@ -77,9 +78,17 @@ const Stage: React.FC<StageEditProps> = ({
         )}
         {stage && (
           <>
-            <Button size="sm" onClick={() => setCurrentStage?.(id)}>
-              Enter Stage
-            </Button>
+            {currentStage !== id && (
+              <Button
+                size="sm"
+                onClick={() => {
+                  setCurrentStage?.(id);
+                  dispatch({type: "recenter"});
+                }}
+              >
+                Enter Stage
+              </Button>
+            )}
             <Label>
               Scale Label
               <Input

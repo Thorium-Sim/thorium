@@ -56,6 +56,10 @@ const quotes = [
   "This revolution is for display purposes only.",
   /* Back to regularly scheduled programming */
   "Nobody knows what their story is until the end.",
+  "Love isn't a triangle. It's a five dimensional blob.",
+  "This spaceship doesn't come with an insurance plan.",
+  "There is some good news. There’s some cake left!",
+  "In case you were wondering, I am, by definition, the best version of myself.",
 ];
 
 const QuoteOfTheDay = () => {

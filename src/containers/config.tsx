@@ -75,6 +75,7 @@ const Config = () => {
             element={<SimulatorPicker triggerAlert={trigger} />}
           />
           <Route path="sandbox" element={<UniversalSandboxEditor />} />
+          <Route path="sandbox/:stageId" element={<UniversalSandboxEditor />} />
           <Route path="entityTemplates" element={<EntityTemplate />} />
           <Route path="mission/:missionId/*" element={<MissionConfig />} />
           <Route
