@@ -1116,14 +1116,15 @@ type JumpDriveSectors {
 }
 
 type Keyboard {
-  id: ID
+  id: ID!
   name: String
   keys: [KeyboardKey]
 }
 
 type KeyboardKey {
-  id: ID
+  id: ID!
   key: String
+  keyCode: String
   meta: [String]
   actions: [MacroAction]
 }
@@ -1131,6 +1132,7 @@ type KeyboardKey {
 input KeyboardKeyInput {
   id: ID
   key: String
+  keyCode: String
   meta: [String]
   actions: [ActionInput]
 }
@@ -1992,6 +1994,7 @@ type Mutation {
     simulatorId: ID!
     id: ID!
     key: String!
+    keyCode: String!
     meta: [String]!
   ): String
 

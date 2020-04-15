@@ -11,7 +11,7 @@ class Keyboard extends Component {
     super(props);
     this.keydown = e => {
       e.preventDefault();
-      const {keyCode, shiftKey, metaKey, altKey, ctrlKey} = e;
+      const {keyCode, code, shiftKey, metaKey, altKey, ctrlKey} = e;
       const key = keycode(keyCode);
       const meta = [];
       if (shiftKey) meta.push("shift");
@@ -23,12 +23,14 @@ class Keyboard extends Component {
           $simulatorId: ID!
           $id: ID!
           $key: String!
+          $keyCode: String!
           $meta: [String]!
         ) {
           triggerKeyboardAction(
             simulatorId: $simulatorId
             id: $id
             key: $key
+            keyCode: $keyCode
             meta: $meta
           )
         }
@@ -36,7 +38,8 @@ class Keyboard extends Component {
       const variables = {
         simulatorId: props.simulator.id,
         id: props.keyboard,
-        key,
+        key: key || "",
+        keyCode: code,
         meta,
       };
       props.client.mutate({

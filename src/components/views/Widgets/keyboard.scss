@@ -27,6 +27,9 @@ $keycap-height: 100%;
   //resize: both;
   overflow: hidden;
   pointer-events: none;
+  &.keyboard-ex {
+    grid-template-columns: repeat(90, 1fr);
+  }
   /* See keycap sizing: https://deskthority.net/wiki/Keycap_size_by_keyboard */
   /* Standard 1u key */
   .key {
@@ -52,7 +55,8 @@ $keycap-height: 100%;
     font-weight: bold;
     text-transform: uppercase;
     color: $text-color;
-    white-space: nowrap;
+    white-space: pre-line;
+    text-align: center;
     &:hover {
       box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
     }
@@ -75,6 +79,12 @@ $keycap-height: 100%;
     height: $keycap-height / 2;
   }
   /* Keycap sizes */
+  .size-quarterU {
+    grid-column: span 1;
+  }
+  .size-halfU {
+    grid-column: span 2;
+  }
   /* 1.25u key */
   .size-1-25u {
     grid-column: span 5;
@@ -109,14 +119,24 @@ $keycap-height: 100%;
   .size-2-75u {
     grid-column: span 11;
   }
+  .size-3u {
+    grid-column: span 12;
+  }
+  .size-4u {
+    grid-column: span 16;
+  }
 
   /* 6.25u space key */
   .size-6-25u {
-    grid-column: span 25;
+    grid-column: span 23;
   }
 
   .size-7-25u {
-    grid-column: span 30;
+    grid-column: span 28;
+  }
+
+  .size-tall {
+    grid-row: span 2;
   }
 
   /* Keycap variations */

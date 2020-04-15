@@ -6,14 +6,15 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type Keyboard {
-    id: ID
+    id: ID!
     name: String
     keys: [KeyboardKey]
   }
 
   type KeyboardKey {
-    id: ID
+    id: ID!
     key: String
+    keyCode: String
     meta: [String]
     actions: [MacroAction]
   }
@@ -21,6 +22,7 @@ const schema = gql`
   input KeyboardKeyInput {
     id: ID
     key: String
+    keyCode: String
     meta: [String]
     actions: [ActionInput]
   }
@@ -53,6 +55,7 @@ const schema = gql`
       simulatorId: ID!
       id: ID!
       key: String!
+      keyCode: String!
       meta: [String]!
     ): String
   }

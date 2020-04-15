@@ -20,6 +20,7 @@ const KEYBOARD_QUERY = gql`
       keys {
         id
         key
+        keyCode
         meta
         actions {
           id
@@ -39,6 +40,7 @@ const KEYBOARD_SUB = gql`
       keys {
         id
         key
+        keyCode
         meta
         actions {
           id
