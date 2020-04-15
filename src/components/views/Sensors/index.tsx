@@ -59,6 +59,23 @@ const trainingSteps = [
   },
 ];
 
+function usePing() {
+  const [pinging, setPinging] = React.useState({});
+  const [pinged, setPinged] = React.useState(false);
+  function doPing() {
+    setPinged(false);
+    setPinging({});
+  }
+  React.useEffect(() => {
+    setPinged(true);
+    const timeout = setTimeout(() => {
+      setPinged(false);
+    }, 1000 * 5);
+    return () => clearTimeout(timeout);
+  }, [pinging]);
+
+  return {doPing, pinged};
+}
 function calculateTime(milliseconds: number) {
   if (milliseconds < 1000) return "Just now";
   return (
@@ -166,10 +183,11 @@ const Sensors: React.FC<SensorsProps> = ({
     picture: "",
   });
   const [weaponsRange, setWeaponsRange] = React.useState<number | null>(null);
-  const [ping, setPing] = React.useState<boolean>(false);
   const [pingTime, setPingTime] = React.useState<number | null>(null);
 
   const [measureRef, dimensions] = useDimensions();
+
+  const {doPing, pinged} = usePing();
 
   const client = useApolloClient();
   const [setCalculatedTarget] = useSetCalculatedTargetMutation();
@@ -271,7 +289,7 @@ const Sensors: React.FC<SensorsProps> = ({
                   damaged={sensors.damage?.damaged}
                   hoverContact={setHoverContact}
                   movement={sensors.movement}
-                  ping={ping}
+                  ping={pinged}
                   pings={pings}
                   pingTime={pingTime}
                   simulatorId={simulator.id}
@@ -314,7 +332,7 @@ const Sensors: React.FC<SensorsProps> = ({
               <RightSensorsSidebar
                 needScans={needScans}
                 pingMode={pingMode || undefined}
-                ping={ping}
+                ping={pinged}
                 pings={Boolean(pings)}
                 sensors={sensors}
                 hoverContact={hoverContact}
