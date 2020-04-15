@@ -14,7 +14,10 @@ export const JR_SENSOR_SUB = gql`
     sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
       id
       simulatorId
-      processedData
+      processedData {
+        value
+        time
+      }
       segments {
         ring
         line
@@ -129,7 +132,10 @@ export const JR_SENSOR_QUERY = gql`
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
       simulatorId
-      processedData
+      processedData {
+        value
+        sensors
+      }
       segments {
         ring
         line

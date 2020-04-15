@@ -1,0 +1,3 @@
+mutation SensorsSetHistory($id: ID!, $history: Boolean!) {
+  setSensorsHistory(id: $id, history: $history)
+}

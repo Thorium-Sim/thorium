@@ -150,6 +150,26 @@ App.on(
     });
   },
 );
+App.on(
+  "removeProcessedData",
+  ({id, simulatorId, domain = "external", time}) => {
+    let system: Classes.Sensors;
+    if (id) {
+      system = App.systems.find(sys => sys.id === id);
+    }
+    if (simulatorId && domain) {
+      system = App.systems.find(
+        sys => sys.simulatorId === simulatorId && sys.domain === domain,
+      );
+    }
+    system && system.removeProcessedData(time);
+    pubsub.publish(
+      "sensorsUpdate",
+      App.systems.filter(s => s.type === "Sensors"),
+    );
+  },
+);
+
 App.on("sensorScanCancel", ({id}) => {
   const system = App.systems.find(sys => sys.id === id);
   system.scanCanceled();

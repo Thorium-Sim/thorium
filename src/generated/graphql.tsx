@@ -1990,6 +1990,7 @@ export type Mutation = {
   sensorScanRequest?: Maybe<Scalars["String"]>;
   sensorScanResult?: Maybe<Scalars["String"]>;
   processedData?: Maybe<Scalars["String"]>;
+  removeProcessedData?: Maybe<Scalars["String"]>;
   sensorScanCancel?: Maybe<Scalars["String"]>;
   setPresetAnswers?: Maybe<Scalars["String"]>;
   createSensorContact?: Maybe<Scalars["String"]>;
@@ -4269,6 +4270,13 @@ export type MutationProcessedDataArgs = {
   flash?: Maybe<Scalars["Boolean"]>;
 };
 
+export type MutationRemoveProcessedDataArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  simulatorId?: Maybe<Scalars["ID"]>;
+  domain?: Maybe<Scalars["String"]>;
+  time: Scalars["String"];
+};
+
 export type MutationSensorScanCancelArgs = {
   id: Scalars["ID"];
 };
@@ -6128,8 +6136,8 @@ export type Power = {
 
 export type PresetAnswer = {
   __typename?: "PresetAnswer";
-  label?: Maybe<Scalars["String"]>;
-  value?: Maybe<Scalars["String"]>;
+  label: Scalars["String"];
+  value: Scalars["String"];
 };
 
 export type PresetAnswerInput = {
@@ -6146,7 +6154,7 @@ export enum Priorities {
 
 export type Probe = {
   __typename?: "Probe";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["ID"]>;
   launched?: Maybe<Scalars["Boolean"]>;
@@ -6187,7 +6195,7 @@ export type ProbeInput = {
 
 export type Probes = SystemInterface & {
   __typename?: "Probes";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
   type?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
@@ -6225,6 +6233,12 @@ export type ProbeTypeInput = {
   name?: Maybe<Scalars["String"]>;
   size?: Maybe<Scalars["Float"]>;
   count?: Maybe<Scalars["Int"]>;
+};
+
+export type ProcessedData = {
+  __typename?: "ProcessedData";
+  value: Scalars["String"];
+  time: Scalars["String"];
 };
 
 export type Quaternion = {
@@ -6302,7 +6316,7 @@ export type Query = {
   shipLogs?: Maybe<Array<Maybe<Log>>>;
   phasers?: Maybe<Array<Maybe<Phaser>>>;
   phaser?: Maybe<Phaser>;
-  probes?: Maybe<Array<Maybe<Probes>>>;
+  probes: Array<Probes>;
   probe?: Maybe<Probes>;
   railgun?: Maybe<Array<Maybe<Railgun>>>;
   reactors?: Maybe<Array<Maybe<Reactor>>>;
@@ -6310,7 +6324,7 @@ export type Query = {
   recordSnippets?: Maybe<Array<Maybe<RecordSnippet>>>;
   recordTemplates?: Maybe<Array<Maybe<RecordSnippet>>>;
   rooms?: Maybe<Array<Maybe<Room>>>;
-  sensors?: Maybe<Array<Maybe<Sensors>>>;
+  sensors: Array<Sensors>;
   sensor?: Maybe<Sensors>;
   sensorContacts?: Maybe<Array<Maybe<SensorContact>>>;
   sets?: Maybe<Array<Maybe<Set>>>;
@@ -7005,7 +7019,7 @@ export type ScienceType = {
 
 export type SensorContact = {
   __typename?: "SensorContact";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   type?: Maybe<Scalars["String"]>;
   size?: Maybe<Scalars["Float"]>;
@@ -7060,7 +7074,7 @@ export type SensorContactInput = {
 
 export type Sensors = SystemInterface & {
   __typename?: "Sensors";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
   type?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
@@ -7068,13 +7082,13 @@ export type Sensors = SystemInterface & {
   upgradeName?: Maybe<Scalars["String"]>;
   upgraded?: Maybe<Scalars["Boolean"]>;
   stealthFactor?: Maybe<Scalars["Float"]>;
-  domain?: Maybe<Scalars["String"]>;
+  domain: Scalars["String"];
   pings?: Maybe<Scalars["Boolean"]>;
   timeSincePing?: Maybe<Scalars["Int"]>;
   pingMode?: Maybe<Ping_Modes>;
   scanResults?: Maybe<Scalars["String"]>;
   scanRequest?: Maybe<Scalars["String"]>;
-  processedData?: Maybe<Scalars["String"]>;
+  processedData?: Maybe<Array<ProcessedData>>;
   presetAnswers?: Maybe<Array<Maybe<PresetAnswer>>>;
   scanning?: Maybe<Scalars["Boolean"]>;
   power?: Maybe<Power>;
@@ -7097,7 +7111,7 @@ export type Sensors = SystemInterface & {
 
 export type SensorScan = {
   __typename?: "SensorScan";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   timestamp?: Maybe<Scalars["String"]>;
   mode?: Maybe<Scalars["String"]>;
   location?: Maybe<Scalars["String"]>;
@@ -7591,15 +7605,15 @@ export type Subscription = {
   officerLogsUpdate?: Maybe<Array<Maybe<Log>>>;
   shipLogsUpdate?: Maybe<Array<Maybe<Log>>>;
   phasersUpdate?: Maybe<Array<Maybe<Phaser>>>;
-  probesUpdate?: Maybe<Array<Maybe<Probes>>>;
+  probesUpdate: Array<Probes>;
   scienceProbeEmitter?: Maybe<ScienceProbeEvent>;
   railgunUpdate?: Maybe<Array<Maybe<Railgun>>>;
   reactorUpdate?: Maybe<Array<Maybe<Reactor>>>;
   recordSnippetsUpdate?: Maybe<Array<Maybe<RecordSnippet>>>;
   recordTemplatesUpdate?: Maybe<Array<Maybe<RecordSnippet>>>;
   roomsUpdate?: Maybe<Array<Maybe<Room>>>;
-  sensorsUpdate?: Maybe<Array<Maybe<Sensors>>>;
-  sensorContactUpdate?: Maybe<Array<Maybe<SensorContact>>>;
+  sensorsUpdate: Array<Sensors>;
+  sensorContactUpdate: Array<SensorContact>;
   sensorsPing?: Maybe<Scalars["String"]>;
   setsUpdate?: Maybe<Array<Maybe<Set>>>;
   shieldsUpdate?: Maybe<Array<Maybe<Shield>>>;
@@ -9441,6 +9455,189 @@ export type CountermeasuresSetFdNoteMutation = {__typename?: "Mutation"} & Pick<
   Mutation,
   "countermeasuresSetFDNote"
 >;
+
+export type SensorsProbeDataMutationVariables = {
+  id: Scalars["ID"];
+  data: Scalars["String"];
+  flash?: Maybe<Scalars["Boolean"]>;
+};
+
+export type SensorsProbeDataMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "probeProcessedData"
+>;
+
+export type SensorsProcessedDataMutationVariables = {
+  id?: Maybe<Scalars["ID"]>;
+  data: Scalars["String"];
+  flash?: Maybe<Scalars["Boolean"]>;
+};
+
+export type SensorsProcessedDataMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "processedData"
+>;
+
+export type SensorsRemoveProcessedDataMutationVariables = {
+  id: Scalars["ID"];
+  time: Scalars["String"];
+};
+
+export type SensorsRemoveProcessedDataMutation = {
+  __typename?: "Mutation";
+} & Pick<Mutation, "removeProcessedData">;
+
+export type SensorsSendPingMutationVariables = {
+  id: Scalars["ID"];
+};
+
+export type SensorsSendPingMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "pingSensors"
+>;
+
+export type SensorScanResponseMutationVariables = {
+  id: Scalars["ID"];
+  scan: SensorScanInput;
+};
+
+export type SensorScanResponseMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "updateSensorScan"
+>;
+
+export type SensorScanResultMutationVariables = {
+  id: Scalars["ID"];
+  result: Scalars["String"];
+};
+
+export type SensorScanResultMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "sensorScanResult"
+>;
+
+export type SensorsProbesQueryVariables = {
+  simulatorId: Scalars["ID"];
+};
+
+export type SensorsProbesQuery = {__typename?: "Query"} & {
+  probes: Array<{__typename?: "Probes"} & Pick<Probes, "id">>;
+};
+
+export type SensorsSubscriptionVariables = {
+  simulatorId: Scalars["ID"];
+  domain?: Maybe<Scalars["String"]>;
+};
+
+export type SensorsSubscription = {__typename?: "Subscription"} & {
+  sensorsUpdate: Array<
+    {__typename?: "Sensors"} & Pick<
+      Sensors,
+      | "id"
+      | "scanResults"
+      | "scanRequest"
+      | "scanning"
+      | "pingMode"
+      | "domain"
+      | "interference"
+      | "history"
+    > & {
+        processedData?: Maybe<
+          Array<
+            {__typename?: "ProcessedData"} & Pick<
+              ProcessedData,
+              "value" | "time"
+            >
+          >
+        >;
+        movement?: Maybe<
+          {__typename?: "Coordinates"} & Pick<Coordinates, "x" | "y" | "z">
+        >;
+        segments?: Maybe<
+          Array<
+            Maybe<
+              {__typename?: "SensorsSegment"} & Pick<
+                SensorsSegment,
+                "ring" | "line" | "state"
+              >
+            >
+          >
+        >;
+        presetAnswers?: Maybe<
+          Array<
+            Maybe<
+              {__typename?: "PresetAnswer"} & Pick<
+                PresetAnswer,
+                "label" | "value"
+              >
+            >
+          >
+        >;
+        scans?: Maybe<
+          Array<
+            Maybe<
+              {__typename?: "SensorScan"} & Pick<
+                SensorScan,
+                | "id"
+                | "request"
+                | "mode"
+                | "location"
+                | "response"
+                | "scanning"
+                | "timestamp"
+                | "cancelled"
+              >
+            >
+          >
+        >;
+        damage?: Maybe<{__typename?: "Damage"} & Pick<Damage, "damaged">>;
+        power?: Maybe<
+          {__typename?: "Power"} & Pick<Power, "power" | "powerLevels">
+        >;
+      }
+  >;
+};
+
+export type SetCalculatedTargetMutationVariables = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+  coordinates: CoordinatesInput;
+  contactId?: Maybe<Scalars["ID"]>;
+};
+
+export type SetCalculatedTargetMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setTargetingCalculatedTarget"
+>;
+
+export type SensorsSetHistoryMutationVariables = {
+  id: Scalars["ID"];
+  history: Scalars["Boolean"];
+};
+
+export type SensorsSetHistoryMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setSensorsHistory"
+>;
+
+export type SensorsSetPingModeMutationVariables = {
+  id: Scalars["ID"];
+  mode?: Maybe<Ping_Modes>;
+};
+
+export type SensorsSetPingModeMutation = {__typename?: "Mutation"} & Pick<
+  Mutation,
+  "setSensorPingMode"
+>;
+
+export type TargetingRangeQueryVariables = {
+  id: Scalars["ID"];
+};
+
+export type TargetingRangeQuery = {__typename?: "Query"} & {
+  targeting?: Maybe<
+    Array<Maybe<{__typename?: "Targeting"} & Pick<Targeting, "id" | "range">>>
+  >;
+};
 
 export type NewLayerMutationVariables = {
   mapId: Scalars["ID"];
@@ -12848,6 +13045,654 @@ export type CountermeasuresSetFdNoteMutationResult = ApolloReactCommon.MutationR
 export type CountermeasuresSetFdNoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
   CountermeasuresSetFdNoteMutation,
   CountermeasuresSetFdNoteMutationVariables
+>;
+export const SensorsProbeDataDocument = gql`
+  mutation SensorsProbeData($id: ID!, $data: String!, $flash: Boolean) {
+    probeProcessedData(id: $id, data: $data, flash: $flash)
+  }
+`;
+export type SensorsProbeDataMutationFn = ApolloReactCommon.MutationFunction<
+  SensorsProbeDataMutation,
+  SensorsProbeDataMutationVariables
+>;
+
+/**
+ * __useSensorsProbeDataMutation__
+ *
+ * To run a mutation, you first call `useSensorsProbeDataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSensorsProbeDataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sensorsProbeDataMutation, { data, loading, error }] = useSensorsProbeDataMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *      flash: // value for 'flash'
+ *   },
+ * });
+ */
+export function useSensorsProbeDataMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SensorsProbeDataMutation,
+    SensorsProbeDataMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SensorsProbeDataMutation,
+    SensorsProbeDataMutationVariables
+  >(SensorsProbeDataDocument, baseOptions);
+}
+export type SensorsProbeDataMutationHookResult = ReturnType<
+  typeof useSensorsProbeDataMutation
+>;
+export type SensorsProbeDataMutationResult = ApolloReactCommon.MutationResult<
+  SensorsProbeDataMutation
+>;
+export type SensorsProbeDataMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SensorsProbeDataMutation,
+  SensorsProbeDataMutationVariables
+>;
+export const SensorsProcessedDataDocument = gql`
+  mutation SensorsProcessedData($id: ID, $data: String!, $flash: Boolean) {
+    processedData(id: $id, data: $data, flash: $flash)
+  }
+`;
+export type SensorsProcessedDataMutationFn = ApolloReactCommon.MutationFunction<
+  SensorsProcessedDataMutation,
+  SensorsProcessedDataMutationVariables
+>;
+
+/**
+ * __useSensorsProcessedDataMutation__
+ *
+ * To run a mutation, you first call `useSensorsProcessedDataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSensorsProcessedDataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sensorsProcessedDataMutation, { data, loading, error }] = useSensorsProcessedDataMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *      flash: // value for 'flash'
+ *   },
+ * });
+ */
+export function useSensorsProcessedDataMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SensorsProcessedDataMutation,
+    SensorsProcessedDataMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SensorsProcessedDataMutation,
+    SensorsProcessedDataMutationVariables
+  >(SensorsProcessedDataDocument, baseOptions);
+}
+export type SensorsProcessedDataMutationHookResult = ReturnType<
+  typeof useSensorsProcessedDataMutation
+>;
+export type SensorsProcessedDataMutationResult = ApolloReactCommon.MutationResult<
+  SensorsProcessedDataMutation
+>;
+export type SensorsProcessedDataMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SensorsProcessedDataMutation,
+  SensorsProcessedDataMutationVariables
+>;
+export const SensorsRemoveProcessedDataDocument = gql`
+  mutation SensorsRemoveProcessedData($id: ID!, $time: String!) {
+    removeProcessedData(id: $id, time: $time)
+  }
+`;
+export type SensorsRemoveProcessedDataMutationFn = ApolloReactCommon.MutationFunction<
+  SensorsRemoveProcessedDataMutation,
+  SensorsRemoveProcessedDataMutationVariables
+>;
+
+/**
+ * __useSensorsRemoveProcessedDataMutation__
+ *
+ * To run a mutation, you first call `useSensorsRemoveProcessedDataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSensorsRemoveProcessedDataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sensorsRemoveProcessedDataMutation, { data, loading, error }] = useSensorsRemoveProcessedDataMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      time: // value for 'time'
+ *   },
+ * });
+ */
+export function useSensorsRemoveProcessedDataMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SensorsRemoveProcessedDataMutation,
+    SensorsRemoveProcessedDataMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SensorsRemoveProcessedDataMutation,
+    SensorsRemoveProcessedDataMutationVariables
+  >(SensorsRemoveProcessedDataDocument, baseOptions);
+}
+export type SensorsRemoveProcessedDataMutationHookResult = ReturnType<
+  typeof useSensorsRemoveProcessedDataMutation
+>;
+export type SensorsRemoveProcessedDataMutationResult = ApolloReactCommon.MutationResult<
+  SensorsRemoveProcessedDataMutation
+>;
+export type SensorsRemoveProcessedDataMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SensorsRemoveProcessedDataMutation,
+  SensorsRemoveProcessedDataMutationVariables
+>;
+export const SensorsSendPingDocument = gql`
+  mutation SensorsSendPing($id: ID!) {
+    pingSensors(id: $id)
+  }
+`;
+export type SensorsSendPingMutationFn = ApolloReactCommon.MutationFunction<
+  SensorsSendPingMutation,
+  SensorsSendPingMutationVariables
+>;
+
+/**
+ * __useSensorsSendPingMutation__
+ *
+ * To run a mutation, you first call `useSensorsSendPingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSensorsSendPingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sensorsSendPingMutation, { data, loading, error }] = useSensorsSendPingMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSensorsSendPingMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SensorsSendPingMutation,
+    SensorsSendPingMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SensorsSendPingMutation,
+    SensorsSendPingMutationVariables
+  >(SensorsSendPingDocument, baseOptions);
+}
+export type SensorsSendPingMutationHookResult = ReturnType<
+  typeof useSensorsSendPingMutation
+>;
+export type SensorsSendPingMutationResult = ApolloReactCommon.MutationResult<
+  SensorsSendPingMutation
+>;
+export type SensorsSendPingMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SensorsSendPingMutation,
+  SensorsSendPingMutationVariables
+>;
+export const SensorScanResponseDocument = gql`
+  mutation SensorScanResponse($id: ID!, $scan: SensorScanInput!) {
+    updateSensorScan(id: $id, scan: $scan)
+  }
+`;
+export type SensorScanResponseMutationFn = ApolloReactCommon.MutationFunction<
+  SensorScanResponseMutation,
+  SensorScanResponseMutationVariables
+>;
+
+/**
+ * __useSensorScanResponseMutation__
+ *
+ * To run a mutation, you first call `useSensorScanResponseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSensorScanResponseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sensorScanResponseMutation, { data, loading, error }] = useSensorScanResponseMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      scan: // value for 'scan'
+ *   },
+ * });
+ */
+export function useSensorScanResponseMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SensorScanResponseMutation,
+    SensorScanResponseMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SensorScanResponseMutation,
+    SensorScanResponseMutationVariables
+  >(SensorScanResponseDocument, baseOptions);
+}
+export type SensorScanResponseMutationHookResult = ReturnType<
+  typeof useSensorScanResponseMutation
+>;
+export type SensorScanResponseMutationResult = ApolloReactCommon.MutationResult<
+  SensorScanResponseMutation
+>;
+export type SensorScanResponseMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SensorScanResponseMutation,
+  SensorScanResponseMutationVariables
+>;
+export const SensorScanResultDocument = gql`
+  mutation SensorScanResult($id: ID!, $result: String!) {
+    sensorScanResult(id: $id, result: $result)
+  }
+`;
+export type SensorScanResultMutationFn = ApolloReactCommon.MutationFunction<
+  SensorScanResultMutation,
+  SensorScanResultMutationVariables
+>;
+
+/**
+ * __useSensorScanResultMutation__
+ *
+ * To run a mutation, you first call `useSensorScanResultMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSensorScanResultMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sensorScanResultMutation, { data, loading, error }] = useSensorScanResultMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      result: // value for 'result'
+ *   },
+ * });
+ */
+export function useSensorScanResultMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SensorScanResultMutation,
+    SensorScanResultMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SensorScanResultMutation,
+    SensorScanResultMutationVariables
+  >(SensorScanResultDocument, baseOptions);
+}
+export type SensorScanResultMutationHookResult = ReturnType<
+  typeof useSensorScanResultMutation
+>;
+export type SensorScanResultMutationResult = ApolloReactCommon.MutationResult<
+  SensorScanResultMutation
+>;
+export type SensorScanResultMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SensorScanResultMutation,
+  SensorScanResultMutationVariables
+>;
+export const SensorsProbesDocument = gql`
+  query SensorsProbes($simulatorId: ID!) {
+    probes(simulatorId: $simulatorId) {
+      id
+    }
+  }
+`;
+
+/**
+ * __useSensorsProbesQuery__
+ *
+ * To run a query within a React component, call `useSensorsProbesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSensorsProbesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSensorsProbesQuery({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useSensorsProbesQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    SensorsProbesQuery,
+    SensorsProbesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    SensorsProbesQuery,
+    SensorsProbesQueryVariables
+  >(SensorsProbesDocument, baseOptions);
+}
+export function useSensorsProbesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    SensorsProbesQuery,
+    SensorsProbesQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    SensorsProbesQuery,
+    SensorsProbesQueryVariables
+  >(SensorsProbesDocument, baseOptions);
+}
+export type SensorsProbesQueryHookResult = ReturnType<
+  typeof useSensorsProbesQuery
+>;
+export type SensorsProbesLazyQueryHookResult = ReturnType<
+  typeof useSensorsProbesLazyQuery
+>;
+export type SensorsProbesQueryResult = ApolloReactCommon.QueryResult<
+  SensorsProbesQuery,
+  SensorsProbesQueryVariables
+>;
+export const SensorsDocument = gql`
+  subscription Sensors($simulatorId: ID!, $domain: String) {
+    sensorsUpdate(simulatorId: $simulatorId, domain: $domain) {
+      id
+      scanResults
+      scanRequest
+      scanning
+      pingMode
+      domain
+      processedData {
+        value
+        time
+      }
+      interference
+      movement {
+        x
+        y
+        z
+      }
+      segments {
+        ring
+        line
+        state
+      }
+      presetAnswers {
+        label
+        value
+      }
+      history
+      scans {
+        id
+        request
+        mode
+        location
+        response
+        scanning
+        timestamp
+        cancelled
+      }
+      damage {
+        damaged
+      }
+      power {
+        power
+        powerLevels
+      }
+    }
+  }
+`;
+
+/**
+ * __useSensorsSubscription__
+ *
+ * To run a query within a React component, call `useSensorsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useSensorsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSensorsSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      domain: // value for 'domain'
+ *   },
+ * });
+ */
+export function useSensorsSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    SensorsSubscription,
+    SensorsSubscriptionVariables
+  >,
+) {
+  return ApolloReactHooks.useSubscription<
+    SensorsSubscription,
+    SensorsSubscriptionVariables
+  >(SensorsDocument, baseOptions);
+}
+export type SensorsSubscriptionHookResult = ReturnType<
+  typeof useSensorsSubscription
+>;
+export type SensorsSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  SensorsSubscription
+>;
+export const SetCalculatedTargetDocument = gql`
+  mutation SetCalculatedTarget(
+    $simulatorId: ID
+    $coordinates: CoordinatesInput!
+    $contactId: ID
+  ) {
+    setTargetingCalculatedTarget(
+      simulatorId: $simulatorId
+      coordinates: $coordinates
+      contactId: $contactId
+    )
+  }
+`;
+export type SetCalculatedTargetMutationFn = ApolloReactCommon.MutationFunction<
+  SetCalculatedTargetMutation,
+  SetCalculatedTargetMutationVariables
+>;
+
+/**
+ * __useSetCalculatedTargetMutation__
+ *
+ * To run a mutation, you first call `useSetCalculatedTargetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetCalculatedTargetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setCalculatedTargetMutation, { data, loading, error }] = useSetCalculatedTargetMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      coordinates: // value for 'coordinates'
+ *      contactId: // value for 'contactId'
+ *   },
+ * });
+ */
+export function useSetCalculatedTargetMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SetCalculatedTargetMutation,
+    SetCalculatedTargetMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SetCalculatedTargetMutation,
+    SetCalculatedTargetMutationVariables
+  >(SetCalculatedTargetDocument, baseOptions);
+}
+export type SetCalculatedTargetMutationHookResult = ReturnType<
+  typeof useSetCalculatedTargetMutation
+>;
+export type SetCalculatedTargetMutationResult = ApolloReactCommon.MutationResult<
+  SetCalculatedTargetMutation
+>;
+export type SetCalculatedTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SetCalculatedTargetMutation,
+  SetCalculatedTargetMutationVariables
+>;
+export const SensorsSetHistoryDocument = gql`
+  mutation SensorsSetHistory($id: ID!, $history: Boolean!) {
+    setSensorsHistory(id: $id, history: $history)
+  }
+`;
+export type SensorsSetHistoryMutationFn = ApolloReactCommon.MutationFunction<
+  SensorsSetHistoryMutation,
+  SensorsSetHistoryMutationVariables
+>;
+
+/**
+ * __useSensorsSetHistoryMutation__
+ *
+ * To run a mutation, you first call `useSensorsSetHistoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSensorsSetHistoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sensorsSetHistoryMutation, { data, loading, error }] = useSensorsSetHistoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      history: // value for 'history'
+ *   },
+ * });
+ */
+export function useSensorsSetHistoryMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SensorsSetHistoryMutation,
+    SensorsSetHistoryMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SensorsSetHistoryMutation,
+    SensorsSetHistoryMutationVariables
+  >(SensorsSetHistoryDocument, baseOptions);
+}
+export type SensorsSetHistoryMutationHookResult = ReturnType<
+  typeof useSensorsSetHistoryMutation
+>;
+export type SensorsSetHistoryMutationResult = ApolloReactCommon.MutationResult<
+  SensorsSetHistoryMutation
+>;
+export type SensorsSetHistoryMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SensorsSetHistoryMutation,
+  SensorsSetHistoryMutationVariables
+>;
+export const SensorsSetPingModeDocument = gql`
+  mutation SensorsSetPingMode($id: ID!, $mode: PING_MODES) {
+    setSensorPingMode(id: $id, mode: $mode)
+  }
+`;
+export type SensorsSetPingModeMutationFn = ApolloReactCommon.MutationFunction<
+  SensorsSetPingModeMutation,
+  SensorsSetPingModeMutationVariables
+>;
+
+/**
+ * __useSensorsSetPingModeMutation__
+ *
+ * To run a mutation, you first call `useSensorsSetPingModeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSensorsSetPingModeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sensorsSetPingModeMutation, { data, loading, error }] = useSensorsSetPingModeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      mode: // value for 'mode'
+ *   },
+ * });
+ */
+export function useSensorsSetPingModeMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    SensorsSetPingModeMutation,
+    SensorsSetPingModeMutationVariables
+  >,
+) {
+  return ApolloReactHooks.useMutation<
+    SensorsSetPingModeMutation,
+    SensorsSetPingModeMutationVariables
+  >(SensorsSetPingModeDocument, baseOptions);
+}
+export type SensorsSetPingModeMutationHookResult = ReturnType<
+  typeof useSensorsSetPingModeMutation
+>;
+export type SensorsSetPingModeMutationResult = ApolloReactCommon.MutationResult<
+  SensorsSetPingModeMutation
+>;
+export type SensorsSetPingModeMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  SensorsSetPingModeMutation,
+  SensorsSetPingModeMutationVariables
+>;
+export const TargetingRangeDocument = gql`
+  query TargetingRange($id: ID!) {
+    targeting(simulatorId: $id) {
+      id
+      range
+    }
+  }
+`;
+
+/**
+ * __useTargetingRangeQuery__
+ *
+ * To run a query within a React component, call `useTargetingRangeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTargetingRangeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTargetingRangeQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useTargetingRangeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    TargetingRangeQuery,
+    TargetingRangeQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useQuery<
+    TargetingRangeQuery,
+    TargetingRangeQueryVariables
+  >(TargetingRangeDocument, baseOptions);
+}
+export function useTargetingRangeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    TargetingRangeQuery,
+    TargetingRangeQueryVariables
+  >,
+) {
+  return ApolloReactHooks.useLazyQuery<
+    TargetingRangeQuery,
+    TargetingRangeQueryVariables
+  >(TargetingRangeDocument, baseOptions);
+}
+export type TargetingRangeQueryHookResult = ReturnType<
+  typeof useTargetingRangeQuery
+>;
+export type TargetingRangeLazyQueryHookResult = ReturnType<
+  typeof useTargetingRangeLazyQuery
+>;
+export type TargetingRangeQueryResult = ApolloReactCommon.QueryResult<
+  TargetingRangeQuery,
+  TargetingRangeQueryVariables
 >;
 export const NewLayerDocument = gql`
   mutation NewLayer($mapId: ID!, $name: String!) {

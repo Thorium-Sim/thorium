@@ -1,12 +1,17 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
+  type ProcessedData {
+    value: String!
+    time: String!
+  }
   type Sensors implements SystemInterface {
-    id: ID
+    id: ID!
     simulatorId: ID
     type: String
     name: String
@@ -14,13 +19,13 @@ const schema = gql`
     upgradeName: String
     upgraded: Boolean
     stealthFactor: Float
-    domain: String
+    domain: String!
     pings: Boolean
     timeSincePing: Int
     pingMode: PING_MODES
     scanResults: String
     scanRequest: String
-    processedData: String
+    processedData: [ProcessedData!]
     presetAnswers: [PresetAnswer]
     scanning: Boolean
     power: Power
@@ -43,7 +48,7 @@ const schema = gql`
     missPercent: Float
   }
   type SensorScan {
-    id: ID
+    id: ID!
     timestamp: String
     mode: String
     location: String
@@ -63,7 +68,7 @@ const schema = gql`
     cancelled: Boolean
   }
   type SensorContact {
-    id: ID
+    id: ID!
     name: String
     type: String
     size: Float
@@ -115,8 +120,8 @@ const schema = gql`
     state: Boolean
   }
   type PresetAnswer {
-    label: String
-    value: String
+    label: String!
+    value: String!
   }
   input PresetAnswerInput {
     label: String
@@ -153,7 +158,7 @@ const schema = gql`
   }
 
   extend type Query {
-    sensors(simulatorId: ID, domain: String): [Sensors]
+    sensors(simulatorId: ID, domain: String): [Sensors!]!
     sensor(id: ID!): Sensors
     sensorContacts(
       simulatorId: ID
@@ -173,7 +178,7 @@ const schema = gql`
     sensorScanResult(id: ID!, domain: String, result: String!): String
 
     """
-    Macro: Sensors: Send Scan Result
+    Macro: Sensors: Processed Data
     Requires:
      - Cards:Sensors, JrSensors
      - Systems:Sensors
@@ -184,6 +189,12 @@ const schema = gql`
       domain: String
       data: String!
       flash: Boolean
+    ): String
+    removeProcessedData(
+      id: ID
+      simulatorId: ID
+      domain: String
+      time: String!
     ): String
 
     sensorScanCancel(id: ID!): String
@@ -273,13 +284,13 @@ const schema = gql`
     setSensorsMissPercent(id: ID!, miss: Float!): String
   }
   extend type Subscription {
-    sensorsUpdate(simulatorId: ID, domain: String): [Sensors]
+    sensorsUpdate(simulatorId: ID, domain: String): [Sensors!]!
     sensorContactUpdate(
       simulatorId: ID
       sensorId: ID
       hostile: Boolean
       type: String
-    ): [SensorContact]
+    ): [SensorContact!]!
     sensorsPing(sensorId: ID): String
   }
 `;
@@ -392,7 +403,17 @@ const resolver = {
         return returnRes;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("sensorsUpdate"),
+        (rootValue, {simulatorId, domain}) => {
+          const id = uuid.v4();
+          process.nextTick(() => {
+            let returnVal = App.systems.filter(s => s.class === "Sensors");
+            if (simulatorId)
+              returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+            if (domain) returnVal = returnVal.filter(s => s.domain === domain);
+            pubsub.publish(id, returnVal);
+          });
+          return pubsub.asyncIterator([id, "sensorsUpdate"]);
+        },
         rootValue => !!(rootValue && rootValue.length),
       ),
     },

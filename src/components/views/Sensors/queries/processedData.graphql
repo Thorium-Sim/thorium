@@ -1,0 +1,3 @@
+mutation SensorsProcessedData($id: ID, $data: String!, $flash: Boolean) {
+  processedData(id: $id, data: $data, flash: $flash)
+}

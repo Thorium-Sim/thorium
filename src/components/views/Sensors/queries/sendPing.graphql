@@ -1,0 +1,3 @@
+mutation SensorsSendPing($id: ID!) {
+  pingSensors(id: $id)
+}

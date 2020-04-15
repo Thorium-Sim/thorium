@@ -7,7 +7,7 @@ function randomFromList(list) {
   return list[index];
 }
 
-const ScanPresets = ({onChange = () => {}, domain, ...props}) => {
+const ScanPresets = ({onChange = v => {}, domain, ...props}) => {
   const handleChange = React.useCallback(
     evt => {
       let dataField = evt.target.value;

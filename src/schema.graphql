@@ -2417,7 +2417,7 @@ type Mutation {
   sensorScanResult(id: ID!, domain: String, result: String!): String
 
   """
-  Macro: Sensors: Send Scan Result
+  Macro: Sensors: Processed Data
   Requires:
    - Cards:Sensors, JrSensors
    - Systems:Sensors
@@ -2428,6 +2428,12 @@ type Mutation {
     domain: String
     data: String!
     flash: Boolean
+  ): String
+  removeProcessedData(
+    id: ID
+    simulatorId: ID
+    domain: String
+    time: String!
   ): String
   sensorScanCancel(id: ID!): String
 
@@ -3485,8 +3491,8 @@ type Power {
 }
 
 type PresetAnswer {
-  label: String
-  value: String
+  label: String!
+  value: String!
 }
 
 input PresetAnswerInput {
@@ -3502,7 +3508,7 @@ enum PRIORITIES {
 }
 
 type Probe {
-  id: ID
+  id: ID!
   name: String
   type: ID
   launched: Boolean
@@ -3541,7 +3547,7 @@ input ProbeInput {
 }
 
 type Probes implements SystemInterface {
-  id: ID
+  id: ID!
   simulatorId: ID
   type: String
   name: String
@@ -3574,6 +3580,11 @@ input ProbeTypeInput {
   name: String
   size: Float
   count: Int
+}
+
+type ProcessedData {
+  value: String!
+  time: String!
 }
 
 type Quaternion {
@@ -3661,7 +3672,7 @@ type Query {
   shipLogs(simulatorId: ID!): [Log]
   phasers(simulatorId: ID): [Phaser]
   phaser(id: ID!): Phaser
-  probes(simulatorId: ID!): [Probes]
+  probes(simulatorId: ID!): [Probes!]!
   probe(id: ID!): Probes
   railgun(simulatorId: ID): [Railgun]
   reactors(simulatorId: ID, model: String): [Reactor]
@@ -3669,7 +3680,7 @@ type Query {
   recordSnippets(simulatorId: ID!, visible: Boolean): [RecordSnippet]
   recordTemplates: [RecordSnippet]
   rooms(simulatorId: ID, deck: ID, name: String, role: RoomRoles): [Room]
-  sensors(simulatorId: ID, domain: String): [Sensors]
+  sensors(simulatorId: ID, domain: String): [Sensors!]!
   sensor(id: ID!): Sensors
   sensorContacts(
     simulatorId: ID
@@ -3931,7 +3942,7 @@ type ScienceType {
 }
 
 type SensorContact {
-  id: ID
+  id: ID!
   name: String
   type: String
   size: Float
@@ -3985,7 +3996,7 @@ input SensorContactInput {
 }
 
 type Sensors implements SystemInterface {
-  id: ID
+  id: ID!
   simulatorId: ID
   type: String
   name: String
@@ -3993,13 +4004,13 @@ type Sensors implements SystemInterface {
   upgradeName: String
   upgraded: Boolean
   stealthFactor: Float
-  domain: String
+  domain: String!
   pings: Boolean
   timeSincePing: Int
   pingMode: PING_MODES
   scanResults: String
   scanRequest: String
-  processedData: String
+  processedData: [ProcessedData!]
   presetAnswers: [PresetAnswer]
   scanning: Boolean
   power: Power
@@ -4021,7 +4032,7 @@ type Sensors implements SystemInterface {
 }
 
 type SensorScan {
-  id: ID
+  id: ID!
   timestamp: String
   mode: String
   location: String
@@ -4494,20 +4505,20 @@ type Subscription {
   officerLogsUpdate(clientId: ID, flightId: ID!): [Log]
   shipLogsUpdate(simulatorId: ID!): [Log]
   phasersUpdate(simulatorId: ID): [Phaser]
-  probesUpdate(simulatorId: ID!): [Probes]
+  probesUpdate(simulatorId: ID!): [Probes!]!
   scienceProbeEmitter(simulatorId: ID!): ScienceProbeEvent
   railgunUpdate(simulatorId: ID): [Railgun]
   reactorUpdate(simulatorId: ID): [Reactor]
   recordSnippetsUpdate(simulatorId: ID, visible: Boolean): [RecordSnippet]
   recordTemplatesUpdate: [RecordSnippet]
   roomsUpdate(simulatorId: ID!, role: RoomRoles): [Room]
-  sensorsUpdate(simulatorId: ID, domain: String): [Sensors]
+  sensorsUpdate(simulatorId: ID, domain: String): [Sensors!]!
   sensorContactUpdate(
     simulatorId: ID
     sensorId: ID
     hostile: Boolean
     type: String
-  ): [SensorContact]
+  ): [SensorContact!]!
   sensorsPing(sensorId: ID): String
   setsUpdate: [Set]
   shieldsUpdate(simulatorId: ID): [Shield]

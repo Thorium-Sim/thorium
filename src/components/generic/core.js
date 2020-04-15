@@ -39,12 +39,12 @@ export const InputField = ({
 
 export const OutputField = ({
   style = {},
-  children,
-  alert,
-  onClick,
-  onDoubleClick,
-  title,
-  id,
+  children = null,
+  alert = false,
+  onClick = undefined,
+  onDoubleClick = undefined,
+  title = undefined,
+  id = undefined,
 }) => {
   const compStyle = Object.assign(
     {
@@ -78,16 +78,16 @@ export const OutputField = ({
 
 export const TypingField = ({
   style = {},
-  onChange,
-  className,
-  onBlur,
-  value,
-  rows,
-  input,
-  controlled,
-  placeholder,
-  alert,
-  onDoubleClick,
+  onChange = null,
+  className = "",
+  onBlur = null,
+  value = undefined,
+  rows = undefined,
+  input = undefined,
+  controlled = false,
+  placeholder = "",
+  alert = false,
+  onDoubleClick = null,
 }) => {
   const compStyle = Object.assign(
     {

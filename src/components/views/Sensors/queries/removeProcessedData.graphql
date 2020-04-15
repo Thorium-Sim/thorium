@@ -1,0 +1,3 @@
+mutation SensorsRemoveProcessedData($id: ID!, $time: String!) {
+  removeProcessedData(id: $id, time: $time)
+}

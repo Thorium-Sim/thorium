@@ -6,7 +6,7 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type Probes implements SystemInterface {
-    id: ID
+    id: ID!
     simulatorId: ID
     type: String
     name: String
@@ -26,7 +26,7 @@ const schema = gql`
   }
 
   type Probe {
-    id: ID
+    id: ID!
     name: String
     type: ID
     #Whether the probe is launched by tactical or not
@@ -113,7 +113,7 @@ const schema = gql`
     detector
   }
   extend type Query {
-    probes(simulatorId: ID!): [Probes]
+    probes(simulatorId: ID!): [Probes!]!
     probe(id: ID!): Probes
   }
   extend type Mutation {
@@ -138,7 +138,7 @@ const schema = gql`
     activateProbeEmitter(id: ID!, probeId: ID!): String
   }
   extend type Subscription {
-    probesUpdate(simulatorId: ID!): [Probes]
+    probesUpdate(simulatorId: ID!): [Probes!]!
     scienceProbeEmitter(simulatorId: ID!): ScienceProbeEvent
   }
 `;

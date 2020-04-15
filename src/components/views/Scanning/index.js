@@ -18,7 +18,6 @@ export const SENSOR_SUB = gql`
       simulatorId
       scanResults
       scanRequest
-      processedData
       scanning
       history
       scans {

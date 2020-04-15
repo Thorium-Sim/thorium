@@ -293,6 +293,7 @@ const resolver = {
                 if (w === "R&D Report") return "RnDReports";
                 if (w === "Officer Log") return "OfficerLog";
                 if (w === "Command Line") return "CommandLine";
+                return w;
               }),
             ),
         )

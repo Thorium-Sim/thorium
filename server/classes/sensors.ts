@@ -2,6 +2,14 @@ import uuid from "uuid";
 import {System} from "./generic";
 import SensorContact from "./sensorContact";
 class Scan {
+  id: string;
+  timestamp: string;
+  mode: string;
+  location: string;
+  request: string;
+  response: string;
+  scanning: boolean;
+  cancelled: boolean;
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.timestamp = params.timestamp || new Date().toString();
@@ -24,11 +32,54 @@ class Scan {
     }
   }
 }
+
+class ProcessedData {
+  time: string;
+  value: string;
+  constructor({time, value}: {time?: string; value: string}) {
+    if (!time) {
+      this.time = new Date().toString();
+    }
+    this.value = value;
+  }
+}
 export default class Sensors extends System {
-  constructor(params, newlyCreated) {
+  type: "Sensors";
+  class: "Sensors";
+  domain: "internal" | "external";
+  name: string;
+  pings: boolean;
+  pingMode: string;
+  timeSincePing: number;
+
+  scanResults: string;
+  scanRequest: string;
+  processedData: ProcessedData[];
+  presetAnswers: any[];
+  scanning: boolean;
+  autoTarget: boolean;
+  history: boolean;
+  scans: Scan[];
+
+  defaultSpeed: number;
+  defaultHitpoints: number;
+  missPercent: number;
+
+  contacts: SensorContact[];
+  armyContacts: SensorContact[];
+  frozen: boolean;
+  autoThrusters: boolean;
+  interference: number;
+  movement: {x: number; y: number; z: number};
+  thrusterMovement: {x: number; y: number; z: number};
+  segments: any[];
+
+  training: boolean;
+
+  constructor(params, newlyCreated = false) {
     super(params);
-    this.type = "Sensors";
     this.class = "Sensors";
+    this.type = "Sensors";
     this.domain = params.domain || "external";
     if (this.domain === "external") {
       this.name = "External Sensors";
@@ -43,7 +94,14 @@ export default class Sensors extends System {
     this.timeSincePing = params.timeSincePing || 0;
     this.scanResults = params.scanResults || "";
     this.scanRequest = params.scanRequest || "";
-    this.processedData = params.processedData || "";
+    if (Array.isArray(params.processedData)) {
+      this.processedData = params.processedData;
+    } else {
+      this.processedData = [
+        params.processedData &&
+          new ProcessedData({value: params.processedData}),
+      ].filter(Boolean);
+    }
     this.presetAnswers = params.presetAnswers || [];
     this.scanning = params.scanning || false;
     this.autoTarget = params.autoTarget || false;
@@ -114,7 +172,7 @@ export default class Sensors extends System {
     this.scans.find(s => s.id === scan.id).update(scan);
   }
   cancelScan(id) {
-    this.scans.find(s => s.id === id).update({cancelled: true});
+    this.scans.find(s => s.id === id).update({response: "", cancelled: true});
   }
 
   scanRequested(request) {
@@ -128,8 +186,11 @@ export default class Sensors extends System {
     this.scanning = false;
     this.scanResults = result;
   }
-  processedDatad(data) {
-    this.processedData = data;
+  processedDatad(data: string) {
+    this.processedData.push(new ProcessedData({value: data}));
+  }
+  removeProcessedData(time: string) {
+    this.processedData = this.processedData.filter(d => d.time !== time);
   }
   setPresetAnswers(presetAnswers) {
     this.presetAnswers = presetAnswers;
