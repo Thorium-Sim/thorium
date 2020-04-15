@@ -42,6 +42,7 @@ thorium-*
 Thorium.zip
 kiosks
 tempServer
+src/schema.graphql
 
 snapshot-*
 *.provisionprofile
