@@ -1196,15 +1196,16 @@ export type JumpDriveSectors = {
 
 export type Keyboard = {
   __typename?: "Keyboard";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   keys?: Maybe<Array<Maybe<KeyboardKey>>>;
 };
 
 export type KeyboardKey = {
   __typename?: "KeyboardKey";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   key?: Maybe<Scalars["String"]>;
+  keyCode?: Maybe<Scalars["String"]>;
   meta?: Maybe<Array<Maybe<Scalars["String"]>>>;
   actions?: Maybe<Array<Maybe<MacroAction>>>;
 };
@@ -1212,6 +1213,7 @@ export type KeyboardKey = {
 export type KeyboardKeyInput = {
   id?: Maybe<Scalars["ID"]>;
   key?: Maybe<Scalars["String"]>;
+  keyCode?: Maybe<Scalars["String"]>;
   meta?: Maybe<Array<Maybe<Scalars["String"]>>>;
   actions?: Maybe<Array<Maybe<ActionInput>>>;
 };
@@ -3477,6 +3479,7 @@ export type MutationTriggerKeyboardActionArgs = {
   simulatorId: Scalars["ID"];
   id: Scalars["ID"];
   key: Scalars["String"];
+  keyCode: Scalars["String"];
   meta: Array<Maybe<Scalars["String"]>>;
 };
 
@@ -9537,6 +9540,7 @@ export type SensorsSubscription = {__typename?: "Subscription"} & {
       | "scanResults"
       | "scanRequest"
       | "scanning"
+      | "pings"
       | "pingMode"
       | "domain"
       | "interference"
@@ -13404,6 +13408,7 @@ export const SensorsDocument = gql`
       scanResults
       scanRequest
       scanning
+      pings
       pingMode
       domain
       processedData {

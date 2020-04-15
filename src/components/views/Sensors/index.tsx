@@ -98,7 +98,7 @@ export const ProcessedData: React.FC<{sensors: SensorsI; core?: boolean}> = ({
   return (
     <>
       <Col className="col-sm-12">
-        <h3>Processed Data</h3>
+        <label>Processed Data</label>
       </Col>
       <Col className="col-sm-12">
         <Card className="processedData">
@@ -144,6 +144,10 @@ export const ProcessedData: React.FC<{sensors: SensorsI; core?: boolean}> = ({
   );
 };
 
+interface HoverContact {
+  name: string;
+  picture: string;
+}
 interface SensorsProps {
   simulator: Simulator;
   station: Station;
@@ -157,10 +161,10 @@ const Sensors: React.FC<SensorsProps> = ({
   station,
   viewscreen,
 }) => {
-  const [hoverContact, setHoverContact] = React.useState<{
-    name: string;
-    picture: string;
-  }>({name: "", picture: ""});
+  const [hoverContact, setHoverContact] = React.useState<HoverContact>({
+    name: "",
+    picture: "",
+  });
   const [weaponsRange, setWeaponsRange] = React.useState<number | null>(null);
   const [ping, setPing] = React.useState<boolean>(false);
   const [pingTime, setPingTime] = React.useState<number | null>(null);
@@ -168,7 +172,6 @@ const Sensors: React.FC<SensorsProps> = ({
   const [measureRef, dimensions] = useDimensions();
 
   const client = useApolloClient();
-  const [sendPing] = useSensorsSendPingMutation();
   const [setCalculatedTarget] = useSetCalculatedTargetMutation();
 
   const {loading, data} = useSensorsSubscription({
@@ -193,10 +196,6 @@ const Sensors: React.FC<SensorsProps> = ({
     setTimeout(() => {
       setWeaponsRange(null);
     }, 1000);
-  };
-
-  const triggerPing = () => {
-    sendPing({variables: {id: sensors.id}});
   };
 
   const clickContact = (
@@ -224,32 +223,25 @@ const Sensors: React.FC<SensorsProps> = ({
 
   const needScans =
     !widget && !station?.cards?.find(c => c?.component === "SensorScans");
-  const {pingMode} = sensors;
-  const pings = false;
+  const {pingMode, pings} = sensors;
   return (
     <div className="cardSensors">
       <div>
         <Row>
-          <Col sm={3}>
-            {!viewscreen && needScans && (
-              <>
-                <DamageOverlay
-                  message="External Sensors Offline"
-                  system={sensors}
-                />
-                <SensorScans sensors={sensors} client={client} />
-                {pings && pingMode && (
-                  <PingControl
-                    sensorsId={sensors.id}
-                    pingMode={pingMode}
-                    ping={ping}
-                    triggerPing={triggerPing}
+          {needScans && (
+            <Col sm={3}>
+              {!viewscreen && (
+                <>
+                  <DamageOverlay
+                    message="External Sensors Offline"
+                    system={sensors}
                   />
-                )}
-                <Button onClick={showWeaponsRange} block>
-                  Show Weapons Range
-                </Button>
-                {/*<Row>
+                  <SensorScans sensors={sensors} client={client} />
+
+                  <Button onClick={showWeaponsRange} block>
+                    Show Weapons Range
+                  </Button>
+                  {/*<Row>
                   <Col className="col-sm-12">
                   <h4>Contact Coordinates</h4>
                   </Col>
@@ -262,9 +254,10 @@ const Sensors: React.FC<SensorsProps> = ({
                   </Col>
                   </Row>
                 */}
-              </>
-            )}
-          </Col>
+                </>
+              )}
+            </Col>
+          )}
           <Col
             sm={{size: 6, offset: !needScans ? 1 : 0}}
             className="arrayContainer"
@@ -317,51 +310,17 @@ const Sensors: React.FC<SensorsProps> = ({
             />
           </Col>
           <Col sm={{size: 3, offset: !needScans ? 1 : 0}} className="data">
-            {!viewscreen ? (
-              <>
-                <Row className="contact-info">
-                  <Col className="col-sm-12">
-                    <h3>Contact Information</h3>
-                  </Col>
-                  <Col className="col-sm-12">
-                    <div className="card contactPictureContainer">
-                      {hoverContact.picture && (
-                        <div
-                          className="contactPicture"
-                          style={{
-                            backgroundSize: "contain",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundColor: "black",
-                            backgroundImage: `url('/assets${hoverContact.picture}')`,
-                          }}
-                        />
-                      )}
-                    </div>
-                  </Col>
-                  <Col className="col-sm-12 contactNameContainer">
-                    <div className="card contactName">{hoverContact.name}</div>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <ProcessedData sensors={sensors} />
-                </Row>
-                {pings && !needScans && pingMode && (
-                  <PingControl
-                    sensorsId={sensors.id}
-                    pingMode={pingMode}
-                    ping={ping}
-                    triggerPing={triggerPing}
-                  />
-                )}
-                {!needScans && (
-                  <Button onClick={showWeaponsRange} block>
-                    Show Weapons Range
-                  </Button>
-                )}
-              </>
-            ) : null}
+            {!viewscreen && (
+              <RightSensorsSidebar
+                needScans={needScans}
+                pingMode={pingMode || undefined}
+                ping={ping}
+                pings={Boolean(pings)}
+                sensors={sensors}
+                hoverContact={hoverContact}
+                showWeaponsRange={showWeaponsRange}
+              />
+            )}
           </Col>
         </Row>
       </div>
@@ -370,12 +329,92 @@ const Sensors: React.FC<SensorsProps> = ({
   );
 };
 
+const RightSensorsSidebar: React.FC<{
+  needScans: boolean;
+  pingMode?: Ping_Modes;
+  ping: boolean;
+  pings?: boolean;
+  sensors: SensorsI;
+  hoverContact: HoverContact;
+  showWeaponsRange: () => {};
+}> = ({
+  pings,
+  needScans,
+  pingMode,
+  ping,
+  sensors,
+  hoverContact,
+  showWeaponsRange,
+}) => {
+  const [whichControl, setWhichControl] = React.useState<"info" | "options">(
+    "info",
+  );
+  return (
+    <>
+      {pings && (
+        <div className="sensor-control-buttons">
+          <Button
+            active={whichControl === "info"}
+            onClick={() => setWhichControl("info")}
+          >
+            Contact Info
+          </Button>
+          <Button
+            active={whichControl === "options"}
+            onClick={() => setWhichControl("options")}
+          >
+            Sensor Options
+          </Button>
+        </div>
+      )}
+
+      {whichControl === "options" && pings && pingMode && (
+        <PingControl sensorsId={sensors.id} pingMode={pingMode} ping={ping} />
+      )}
+      {whichControl === "info" && (
+        <Row className="contact-info">
+          <Col className="col-sm-12">
+            <label>Contact Information</label>
+          </Col>
+          <Col className="col-sm-12">
+            <div className="card contactPictureContainer">
+              {hoverContact.picture && (
+                <div
+                  className="contactPicture"
+                  style={{
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundColor: "black",
+                    backgroundImage: `url('/assets${hoverContact.picture}')`,
+                  }}
+                />
+              )}
+            </div>
+          </Col>
+          <Col className="col-sm-12 contactNameContainer">
+            <div className="card contactName">{hoverContact.name}</div>
+          </Col>
+        </Row>
+      )}
+
+      <Row>
+        <ProcessedData sensors={sensors} />
+      </Row>
+      {!needScans && (
+        <Button onClick={showWeaponsRange} block>
+          Show Weapons Range
+        </Button>
+      )}
+    </>
+  );
+};
+
 const PingControl: React.FC<{
   pingMode: Ping_Modes;
   ping: boolean;
   sensorsId: string;
-  triggerPing: () => void;
-}> = ({sensorsId, pingMode, ping, triggerPing}) => {
+}> = ({sensorsId, pingMode, ping}) => {
   const [setPingMode] = useSensorsSetPingModeMutation();
   const selectPing = (which: Ping_Modes) => {
     setPingMode({
@@ -385,8 +424,13 @@ const PingControl: React.FC<{
       },
     });
   };
+  const [sendPing] = useSensorsSendPingMutation();
+
+  const triggerPing = () => {
+    sendPing({variables: {id: sensorsId}});
+  };
   return (
-    <Row>
+    <Row className="ping-control">
       <Col sm="12">
         <label>Sensor Options:</label>
       </Col>

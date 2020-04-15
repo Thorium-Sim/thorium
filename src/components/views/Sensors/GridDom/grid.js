@@ -293,7 +293,7 @@ class InnerGrid extends Component {
       gridMouseDown,
       range,
     } = this.props;
-
+    console.log(ping);
     const {width: dimWidth, height: dimHeight} = dimensions;
     const width = Math.min(dimWidth, dimHeight);
     const gridStyle = {
