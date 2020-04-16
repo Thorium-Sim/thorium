@@ -1,4 +1,5 @@
 export interface MacroConfigProps {
+  id?: string;
   simulatorId?: string;
   stations?: any[];
   clients?: any[];

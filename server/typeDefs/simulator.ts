@@ -133,6 +133,9 @@ const schema = gql`
       step: Int!
     ): String
 
+    """
+    Macro: Timeline: Change Timeline Mission or Step
+    """
     setSimulatorMission(simulatorId: ID!, missionId: ID!, stepId: ID): String
     setSimulatorMissionConfig(
       simulatorId: ID!

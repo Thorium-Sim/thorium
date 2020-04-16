@@ -6,7 +6,9 @@ import {
   TimelineStep,
   useSetSimulatorTimelineStepMutation,
   useExecuteMacrosMutation,
+  Mission,
 } from "generated/graphql";
+import MissionBranchButton from "./missionBranchButton";
 
 const StepRender: React.FC<{args: string; event: string}> = ({args, event}) => {
   const stepArgs = JSON.parse(args) || {};
@@ -54,12 +56,14 @@ interface MissionProps {
   timeline: TimelineStep[];
   simulatorId: string;
   currentTimelineStep: number;
+  missions: Mission[];
 }
 
 const TimelineThumbnailCore: React.FC<MissionProps> = ({
   timeline,
   simulatorId,
   currentTimelineStep,
+  missions,
 }) => {
   const [setTimelineStep] = useSetSimulatorTimelineStepMutation();
   const [triggerMacros] = useExecuteMacrosMutation();
@@ -120,6 +124,25 @@ const TimelineThumbnailCore: React.FC<MissionProps> = ({
             {t.timelineItems.map(i => (
               <StepRender key={i.id} event={i.event} args={i.args || "{}"} />
             ))}
+            {t?.timelineItems.find(m => m.event === "setSimulatorMission") && (
+              <>
+                <p>
+                  <strong>Click a button to change timelines</strong>
+                </p>
+                {t?.timelineItems
+                  .filter(m => m.event === "setSimulatorMission")
+                  .map(
+                    ({args}) =>
+                      args && (
+                        <MissionBranchButton
+                          simulatorId={simulatorId}
+                          missions={missions || []}
+                          args={args}
+                        />
+                      ),
+                  )}
+              </>
+            )}
             <p>
               {stepIndex + 1}: {t.name}
             </p>

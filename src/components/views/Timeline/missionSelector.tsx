@@ -39,7 +39,7 @@ const MissionSelector: React.FC<MissionSelectorProps> = ({
     <div style={{display: "flex"}}>
       <select
         style={{flex: 1, height: "24px", fontSize: "16px", maxWidth: "210px"}}
-        className="btn-primary"
+        className="btn-secondary"
         value={mission ? mission.id : "nothing"}
         onChange={e => {
           if (e.target.value === "create-new") {

@@ -5,7 +5,14 @@ import {Button, Input, Label} from "helpers/reactstrap";
 import allowedMacros from "./allowedMacros";
 import EventName from "../../../containers/FlightDirector/MissionConfig/EventName";
 import {FaArrowDown, FaArrowRight} from "react-icons/fa";
-import {TimelineStep, Station, Client} from "generated/graphql";
+import {
+  TimelineStep,
+  Station,
+  Client,
+  Mission,
+  useSetSimulatorMissionMutation,
+} from "generated/graphql";
+import MissionBranchButton from "./missionBranchButton";
 
 interface ActionPreviewProps {
   id: string;
@@ -138,6 +145,8 @@ interface TimelineItemProps {
   clients: Client[];
   simArgs: any;
   simple?: boolean;
+  missions?: Mission[];
+  index?: number;
 }
 const TimelineItem: React.FC<TimelineItemProps> = ({
   id,
@@ -159,9 +168,18 @@ const TimelineItem: React.FC<TimelineItemProps> = ({
   simple,
   steps,
   showDescription,
+  missions,
 }) => {
   const [expanded, setExpanded] = React.useState<boolean>(showDescription);
-
+  if (event === "setSimulatorMission") {
+    return (
+      <MissionBranchButton
+        simulatorId={simulatorId}
+        missions={missions || []}
+        args={args}
+      />
+    );
+  }
   return (
     <li>
       {!simple && (

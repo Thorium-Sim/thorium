@@ -1,11 +1,11 @@
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
-import {paramCase} from "change-case";
+import {} from "change-case";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import {cypherMap} from "components/views/CodeCyphers";
 import {FaBan} from "react-icons/fa";
 
-export default ({updateArgs, args: {entry = {}}, client}) => {
+export default ({updateArgs, args: {entry = {}}}) => {
   return (
     <FormGroup className="macro-addLibraryEntry">
       <Label>Title</Label>
@@ -19,13 +19,6 @@ export default ({updateArgs, args: {entry = {}}, client}) => {
           )
         }
       />
-      <Label>
-        Slug{" "}
-        <small>
-          Use this identifier to remove the entry with another macro.
-        </small>
-      </Label>
-      <Input type="text" value={paramCase(entry.title)} readOnly />
       <Label>
         Type <small>What stations does this entry show up on?</small>
       </Label>

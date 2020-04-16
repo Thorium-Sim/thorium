@@ -11,7 +11,10 @@ import {
   Client,
   useSetSimulatorTimelineStepMutation,
   useExecuteMacrosMutation,
+  Mission,
 } from "generated/graphql";
+import {excludedTimelineActions} from "./timelineControl";
+import MissionBranchButton from "./missionBranchButton";
 
 interface TimelineStepProps {
   t?: TimelineStepI;
@@ -25,6 +28,7 @@ interface TimelineStepProps {
   clients: Client[];
   simArgs: any;
   auxTimelineId?: string;
+  missions: Mission[];
 }
 const TimelineStep: React.FC<TimelineStepProps> = ({
   t,
@@ -37,6 +41,7 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
   clients,
   simArgs,
   onlyExecuteViewscreen,
+  missions,
 }) => {
   const [setTimelineStep] = useSetSimulatorTimelineStepMutation();
   const [triggerMacros] = useExecuteMacrosMutation();
@@ -105,13 +110,32 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
           {index + 1}: {t?.name}
         </strong>
       </div>
+      {t?.timelineItems.find(m => m.event === "setSimulatorMission") && (
+        <>
+          <p>
+            <strong>Click a button to change timelines</strong>
+          </p>
+          {t?.timelineItems
+            .filter(m => m.event === "setSimulatorMission")
+            .map(
+              ({args}) =>
+                args && (
+                  <MissionBranchButton
+                    simulatorId={simulatorId}
+                    missions={missions || []}
+                    args={args}
+                  />
+                ),
+            )}
+        </>
+      )}
       {expanded && (
         <ul className="timeline-list">
           {t?.timelineItems
             .filter(a =>
               onlyExecuteViewscreen
                 ? allowedMacros.indexOf(a.event) > -1
-                : true,
+                : true && !excludedTimelineActions.includes(a.event),
             )
             .map(i => (
               <TimelineItem
@@ -152,6 +176,7 @@ interface ClassicMissionProps {
   stations: Station[];
   clients: Client[];
   simArgs: any;
+  missions: Mission[];
 }
 const ClassicMission: React.FC<ClassicMissionProps> = ({
   simulatorId,
@@ -162,6 +187,7 @@ const ClassicMission: React.FC<ClassicMissionProps> = ({
   stations,
   clients,
   simArgs,
+  missions,
 }) => {
   const [onlyExecuteViewscreen, setOnlyExecuteViewscreen] = useLocalStorage(
     "thorium_coreOnlyExecuteViewscreen",
@@ -194,6 +220,7 @@ const ClassicMission: React.FC<ClassicMissionProps> = ({
             stations={stations}
             clients={clients}
             simArgs={simArgs}
+            missions={missions}
           />
         ))}
       </ListGroup>

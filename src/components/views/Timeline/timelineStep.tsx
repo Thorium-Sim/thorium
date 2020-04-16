@@ -4,6 +4,7 @@ import {
   TimelineStep as TimelineStepI,
   Station,
   Client,
+  Mission,
 } from "generated/graphql";
 
 interface TimelineStepProps {
@@ -21,6 +22,7 @@ interface TimelineStepProps {
   stations: Station[];
   clients: Client[];
   simArgs: any;
+  missions: Mission[];
 }
 
 const TimelineStep: React.FC<TimelineStepProps> = ({
@@ -38,6 +40,7 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
   stations,
   clients,
   simArgs,
+  missions,
 }) => {
   const currentStep = timeline[currentTimelineStep];
 
@@ -46,31 +49,47 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
       <Fragment>
         <h5>{currentStep.name}</h5>
         <p className="mission-step-description">{currentStep.description}</p>
+        {currentStep.timelineItems.find(
+          m => m.event === "setSimulatorMission",
+        ) && (
+          <p>
+            <strong>Click a button to change timelines</strong>
+          </p>
+        )}
         <ul className="timeline-list">
-          {currentStep.timelineItems.map(i => (
-            <TimelineItem
-              // {...i}
-              id={i.id}
-              event={i.event}
-              name={i.name || ""}
-              args={i.args || "{}"}
-              steps={timeline}
-              simulatorId={simulatorId}
-              showDescription={showDescription}
-              actions={actions}
-              checkAction={checkAction}
-              executedTimelineSteps={executedTimelineSteps}
-              key={i.id}
-              values={values}
-              updateValues={updateValues}
-              delay={delay}
-              itemDelay={i.delay || 0}
-              updateDelay={updateDelay}
-              stations={stations}
-              clients={clients}
-              simArgs={simArgs}
-            />
-          ))}
+          {currentStep.timelineItems
+            .sort((a, b) => {
+              return a.event === "setSimulatorMission" &&
+                b.event !== "setSimulatorMission"
+                ? -1
+                : 1;
+            })
+            .map((i, index) => (
+              <TimelineItem
+                // {...i}
+                id={i.id}
+                index={index}
+                event={i.event}
+                name={i.name || ""}
+                args={i.args || "{}"}
+                steps={timeline}
+                simulatorId={simulatorId}
+                showDescription={showDescription}
+                actions={actions}
+                checkAction={checkAction}
+                executedTimelineSteps={executedTimelineSteps}
+                key={i.id}
+                values={values}
+                updateValues={updateValues}
+                delay={delay}
+                itemDelay={i.delay || 0}
+                updateDelay={updateDelay}
+                stations={stations}
+                clients={clients}
+                simArgs={simArgs}
+                missions={missions}
+              />
+            ))}
         </ul>
       </Fragment>
     );
