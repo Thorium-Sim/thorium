@@ -112,6 +112,7 @@ export class System {
   requiredDamageSteps: DamageStep[];
   optionalDamageSteps: DamageStep[];
   damageTasks: DamageTask[];
+  stealthCompromised: boolean;
   [key: string]: any;
   constructor(params: any = {}) {
     this.id = params.id || uuid.v4();
@@ -129,6 +130,7 @@ export class System {
       params.upgradeMacros.forEach((m: Macro) =>
         this.upgradeMacros.push(new Macro(m)),
       );
+    this.stealthCompromised = false;
 
     this.power = params.power
       ? {...params.power}
@@ -158,6 +160,7 @@ export class System {
       );
   }
   get stealthFactor(): number | null {
+    if (this.stealthCompromised) return 0.8;
     return null;
   }
   set displayName(value) {

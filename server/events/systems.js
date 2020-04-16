@@ -12,11 +12,13 @@ const sendUpdate = sys => {
       "shieldsUpdate",
       App.systems.filter(sys => sys.type === "Shield"),
     );
-  if (sys.type === "Sensors")
+  if (sys.type === "Sensors") {
+    console.log("Sensors Systems");
     pubsub.publish(
       "sensorsUpdate",
       App.systems.filter(s => s.type === "Sensors"),
     );
+  }
   if (sys.type === "LongRangeComm")
     pubsub.publish(
       "longRangeCommunicationsUpdate",

@@ -66,8 +66,8 @@ export function usePing(sensorsId?: string) {
   const mountedRef = React.useRef(false);
 
   const client = useApolloClient();
-
   React.useEffect(() => {
+    console.log("Running effect");
     function doPing() {
       setPinged(false);
       setPinging({});
@@ -93,6 +93,7 @@ export function usePing(sensorsId?: string) {
   }, [sensorsId, client]);
   React.useEffect(() => {
     if (mountedRef.current) {
+      console.log("setting pinged");
       setPinged(true);
       const timeout = setTimeout(() => {
         setPinged(false);
@@ -207,6 +208,7 @@ const Sensors: React.FC<SensorsProps> = ({
   station,
   viewscreen,
 }) => {
+  console.log("rendering");
   const [hoverContact, setHoverContact] = React.useState<HoverContact>({
     name: "",
     picture: "",
@@ -221,7 +223,50 @@ const Sensors: React.FC<SensorsProps> = ({
   const {loading, data} = useSensorsSubscription({
     variables: {simulatorId: simulator.id, domain: "external"},
   });
+
   const pinged = usePing(data?.sensorsUpdate?.[0].id);
+
+  const gridMouseDown = React.useCallback(() => {
+    // setCalculatedTarget
+    setCalculatedTarget({
+      variables: {
+        simulatorId: simulator.id,
+        coordinates: {x: 0, y: 0, z: 0},
+        contactId: null,
+      },
+    });
+  }, [setCalculatedTarget, simulator.id]);
+  const includeTypes = React.useMemo(
+    () => ["contact", "planet", "border", "ping", "projectile"],
+    [],
+  );
+
+  const clickContact = React.useCallback(
+    (
+      e: MouseEvent,
+      contact: SensorContact,
+      selectContact: (contact: SensorContact | string) => void,
+    ) => {
+      e.preventDefault();
+      e.stopPropagation();
+      selectContact(contact);
+      if (!contact.location) return;
+      const {x, y, z} = contact.location;
+      setCalculatedTarget({
+        variables: {
+          simulatorId: simulator.id,
+          coordinates: {
+            x: Math.abs(x || 0),
+            y: Math.abs(y || 0),
+            z: Math.abs(z || 0),
+          },
+          contactId: contact.id,
+        },
+      });
+    },
+    [setCalculatedTarget, simulator.id],
+  );
+
   if (loading || !data) return <p>Loading...</p>;
 
   const sensors = data.sensorsUpdate?.[0];
@@ -241,29 +286,6 @@ const Sensors: React.FC<SensorsProps> = ({
     setTimeout(() => {
       setWeaponsRange(null);
     }, 1000);
-  };
-
-  const clickContact = (
-    e: MouseEvent,
-    contact: SensorContact,
-    selectContact: (contact: SensorContact | string) => void,
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-    selectContact(contact);
-    if (!contact.location) return;
-    const {x, y, z} = contact.location;
-    setCalculatedTarget({
-      variables: {
-        simulatorId: simulator.id,
-        coordinates: {
-          x: Math.abs(x || 0),
-          y: Math.abs(y || 0),
-          z: Math.abs(z || 0),
-        },
-        contactId: contact.id,
-      },
-    });
   };
 
   const needScans =
@@ -322,23 +344,8 @@ const Sensors: React.FC<SensorsProps> = ({
                   segments={sensors.segments}
                   interference={sensors.interference}
                   mouseDown={clickContact}
-                  gridMouseDown={() => {
-                    // setCalculatedTarget
-                    setCalculatedTarget({
-                      variables: {
-                        simulatorId: simulator.id,
-                        coordinates: {x: 0, y: 0, z: 0},
-                        contactId: null,
-                      },
-                    });
-                  }}
-                  includeTypes={[
-                    "contact",
-                    "planet",
-                    "border",
-                    "ping",
-                    "projectile",
-                  ]}
+                  gridMouseDown={gridMouseDown}
+                  includeTypes={includeTypes}
                   range={
                     weaponsRange && {
                       size: weaponsRange,
@@ -380,7 +387,7 @@ const RightSensorsSidebar: React.FC<{
   pings?: boolean;
   sensors: SensorsI;
   hoverContact: HoverContact;
-  showWeaponsRange: () => {};
+  showWeaponsRange: () => void;
 }> = ({
   pings,
   needScans,
