@@ -133,7 +133,7 @@ const schema = gql`
       step: Int!
     ): String
 
-    setSimulatorMission(simulatorId: ID!, missionId: ID!): String
+    setSimulatorMission(simulatorId: ID!, missionId: ID!, stepId: ID): String
     setSimulatorMissionConfig(
       simulatorId: ID!
       missionId: ID!

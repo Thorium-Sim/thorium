@@ -127,13 +127,13 @@ export class Station {
   setAmbiance(ambiance: string) {
     this.ambiance = ambiance;
   }
-  addCard(card: Card) {
+  addCard(card: CardParams) {
     this.cards.push(new Card(card));
   }
   removeCard(cardName: string) {
     this.cards = this.cards.filter((c: Card) => c.name !== cardName);
   }
-  updateCard(cardName: string, cardUpdate: Card) {
+  updateCard(cardName: string, cardUpdate: CardParams) {
     const card = this.cards.find((c: Card) => c.name === cardName);
     card.update(cardUpdate);
   }
@@ -179,20 +179,26 @@ export class Station {
   }
 }
 
+export interface CardParams {
+  name: string;
+  icon?: string | null;
+  component: string;
+  hidden?: boolean;
+}
 export class Card {
   name: string;
   icon: string | null;
   component: string;
   class: string;
   hidden: boolean;
-  constructor(params: Card) {
+  constructor(params: CardParams) {
     this.name = params.name || "Card";
     this.icon = params.icon || null;
     this.component = params.component || "Login";
     this.class = "Card";
     this.hidden = false;
   }
-  update({name, icon, component}: Card) {
+  update({name, icon, component}: CardParams) {
     if (name) this.name = name;
     if (icon) this.icon = icon;
     if (component) this.component = component;

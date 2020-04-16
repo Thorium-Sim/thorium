@@ -3,136 +3,121 @@ import App from "../app";
 import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 import DamageTask from "./generic/damageTask";
-import {Station} from "./stationSet";
-import {lowerCase, camelCase} from "change-case";
+import {Station, StationSet, Card} from "./stationSet";
+import {noCase, camelCase} from "change-case";
 import {Record, RecordSnippet} from "./records";
-class Ambiance {
-  constructor(params = {}) {
-    this.id = params.id || uuid.v4();
-    this.class = "Ambiance";
-    this.name = params.name || "Ambiance";
-    this.asset = params.asset || "/Sounds/ambiance.ogg";
-    this.volume = params.volume || 1;
-    this.channel = params.channel || [0, 1];
-    this.playbackRate = params.playbackRate || 1;
-  }
-  update({name, asset, volume, channel, playbackRate}) {
-    if (name) this.name = name;
-    if (asset || asset === "") this.asset = asset;
-    if (volume || volume === 0) this.volume = volume;
-    if (channel || channel === 0) this.channel = channel;
-    if (playbackRate || playbackRate === 0) this.playbackRate = playbackRate;
-  }
+import Assets from "./simulatorAssets";
+import SoundEffects from "./simulatorSoundEffects";
+import TimelineInstance from "./timelineInstance";
+import Ship from "./ship";
+import Ambiance, {AmbianceParams} from "./ambiance";
+import Lighting, {LightingParams} from "./lighting";
+import RemoteAccess from "./remoteAccess";
+
+interface SimulatorParams {
+  id?: string;
+  name?: string;
+  layout?: string;
+  caps?: boolean;
+  hasLegs?: boolean;
+  alertLevel?: "1" | "2" | "3" | "4" | "5" | "p";
+  alertLevelLock?: boolean;
+  template?: boolean;
+  templateId?: string | null;
+  class?: "Simulator";
+  assets?: Assets;
+  soundEffects?: SoundEffects;
+  stationSet?: string;
+  stations?: Station[];
+  exocomps?: number;
+  mission?: string;
+  currentTimelineStep?: number;
+  executedTimelineSteps?: string[];
+  timelines?: TimelineInstance[];
+  missionConfigs?: any;
+  bridgeOfficerMessaging?: boolean;
+  teams?: Team[];
+  training?: boolean;
+  ship?: Ship;
+  panels?: string[];
+  commandLines?: string[];
+  triggers?: string[];
+  triggersPaused?: boolean;
+  interfaces?: string[];
+  lighting?: Lighting;
+  ambiance?: Ambiance[];
+  midiSets?: string[];
+  crackedClients?: {[key: string]: boolean};
+  clientCards?: {[key: string]: string};
+  stationAssignedCards?: {[key: string]: Card[]};
+  flipped?: boolean;
+  hasPrinter?: boolean;
+  stepDamage?: boolean;
+  verifyStep?: boolean;
+  requiredDamageSteps?: DamageStep[];
+  optionalDamageSteps?: DamageStep[];
+  damageTasks?: DamageTask[];
+  commandLineOutputs?: any;
+  commandLineFeedback?: any;
+  records?: Record[];
+  recordSnippets?: RecordSnippet[];
+  spaceEdventuresId?: string | null;
 }
-class Lighting {
-  constructor(params = {}) {
-    this.class = "Lighting";
-    this.intensity = params.intensity || 0;
-
-    // One of 'normal', 'fade', 'shake', 'strobe', 'oscillate'
-    this.action = params.action || "normal";
-    this.actionStrength = params.actionStrength || 1;
-    this.transitionDuration = params.transitionDuration || 1000;
-
-    // If it's null, use the alert color
-    this.useAlertColor = params.useAlertColor === false ? false : true;
-    this.color = params.color || null;
-  }
-  update({intensity, action, actionStrength, transitionDuration, color}) {
-    if (intensity || intensity === 0) this.intensity = intensity;
-    if (action) this.action = action;
-    if (actionStrength || actionStrength === 0)
-      this.actionStrength = actionStrength;
-    if (transitionDuration || transitionDuration === 0)
-      this.transitionDuration = transitionDuration;
-    if (color || color === null) {
-      this.color = color;
-      this.useAlertColor = color === null;
-    }
-  }
-}
-
-class RemoteAccess {
-  constructor(params = {}) {
-    this.id = params.id || uuid.v4();
-    this.code = params.code || "";
-    this.state = params.state || "sent";
-    this.station = params.station || "";
-    this.timestamp = params.timestamp || new Date().toISOString();
-  }
-}
-// A separate object for vestigial parts of the ship
-class Ship {
-  constructor(params = {}, newlyCreated) {
-    this.clamps = params.clamps || false; // Detached
-    this.ramps = params.ramps || false; // Retracted
-    this.airlock = params.airlock || false; // Closed
-    this.legs = params.legs || false; //Retracted
-    this.bridgeCrew = params.bridgeCrew || 14;
-    this.extraPeople = params.extraPeople || 0;
-    this.radiation = params.radiation || 0.1;
-    this.speed = params.speed || 0;
-    this.selfDestructTime = params.selfDestructTime || null;
-    this.selfDestructCode = params.selfDestructCode || null;
-    this.selfDestructAuto = params.selfDestructAuto || false; // Automatically black out stations when self destructed
-    this.remoteAccessCodes = [];
-    this.extraSystems = [];
-    const codes = params.remoteAccessCodes || [];
-    codes.forEach(c => this.remoteAccessCodes.push(new RemoteAccess(c)));
-
-    // Inventory Logs
-    this.inventoryLogs = newlyCreated
-      ? []
-      : params.inventoryLogs
-      ? params.inventoryLogs.concat()
-      : [];
-  }
-}
-
-class Assets {
-  constructor(params = {}) {
-    this.mesh = params.mesh || "/Simulator/default/mesh.obj";
-    this.texture = params.texture || "/Simulator/default/texture.jpg";
-    this.side = params.side || "/Simulator/default/side.png";
-    this.top = params.top || "/Simulator/default/top.png";
-    this.logo = params.logo || "/Simulator/default/logo.svg";
-    this.bridge = params.bridge || "/Simulator/default/bridge.svg";
-  }
-}
-
-class SoundEffects {
-  constructor(params = {}) {
-    this.buttonClick = params.buttonClick || [];
-    this.buttonHover = params.buttonHover || [];
-    this.cardChange = params.cardChange || [];
-    this.notification = params.notification || [];
-    this.login = params.login || [];
-    this.buttonClickVolume = params.buttonClickVolume || 1;
-    this.buttonHoverVolume = params.buttonHoverVolume || 1;
-    this.cardChangeVolume = params.cardChangeVolume || 1;
-    this.notificationVolume = params.notificationVolume || 1;
-    this.loginVolume = params.loginVolume || 1;
-  }
-}
-
-class TimelineInstance {
-  constructor(params = {}) {
-    this.id = uuid.v4();
-    this.missionId = params.missionId || null;
-    this.currentTimelineStep = params.currentTimelineStep || 0;
-    this.executedTimelineSteps = params.executedTimelineSteps || [];
-  }
-  setTimelineStep(step) {
-    this.currentTimelineStep = step;
-  }
-}
-
 export default class Simulator {
-  constructor(params = {}, newlyCreated) {
+  id: string;
+  name: string;
+  layout: string;
+  caps: boolean;
+  hasLegs: boolean;
+  alertLevel: "1" | "2" | "3" | "4" | "5" | "p";
+  alertLevelLock: boolean;
+  template: boolean;
+  templateId: string | null;
+  class: "Simulator";
+  assets: Assets;
+  soundEffects: SoundEffects;
+  stationSet: string;
+  stations: Station[];
+  exocomps: number;
+  mission: string;
+  currentTimelineStep: number;
+  executedTimelineSteps: string[];
+  timelines: TimelineInstance[];
+  missionConfigs: any;
+  bridgeOfficerMessaging: boolean;
+  teams: Team[];
+  training: boolean;
+  ship: Ship;
+  panels: string[];
+  commandLines: string[];
+  triggers: string[];
+  triggersPaused: boolean;
+  interfaces: string[];
+  lighting: Lighting;
+  ambiance: Ambiance[];
+  midiSets: string[];
+  crackedClients: {[key: string]: boolean};
+  clientCards: {[key: string]: string};
+  stationAssignedCards: {[key: string]: Card[]};
+  flipped: boolean;
+  hasPrinter: boolean;
+  stepDamage: boolean;
+  verifyStep: boolean;
+  requiredDamageSteps: DamageStep[];
+  optionalDamageSteps: DamageStep[];
+  damageTasks: DamageTask[];
+  commandLineOutputs: {[key: string]: string[]};
+  commandLineFeedback: any;
+  records: Record[];
+  recordSnippets: RecordSnippet[];
+  spaceEdventuresId: string | null;
+
+  constructor(params: SimulatorParams = {}, newlyCreated: boolean = false) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutCorners";
     this.caps = params.caps || false;
+    // TODO: Move this property to the ship class
     this.hasLegs = params.hasLegs || false;
     this.alertLevel = params.alertLevel || "5";
     this.alertLevelLock = params.alertLevelLock || false;
@@ -152,12 +137,11 @@ export default class Simulator {
     this.timelines = [];
     params.timelines &&
       params.timelines.forEach(t =>
-        this.timelines.push(new TimelineInstance(t, this.id)),
+        this.timelines.push(new TimelineInstance(t)),
       );
     this.missionConfigs = params.missionConfigs || {};
 
-    this.bridgeOfficerMessaging =
-      params.bridgeOfficerMessaging === false ? false : true;
+    this.bridgeOfficerMessaging = params.bridgeOfficerMessaging ?? true;
     this.teams = [];
     this.training = params.training || false;
     this.ship = new Ship({...params.ship}, newlyCreated);
@@ -189,10 +173,10 @@ export default class Simulator {
     if (params.teams) {
       params.teams.forEach(t => this.teams.push(new Team(t)));
     }
-    this.hasPrinter = params.hasPrinter === false ? false : true;
+    this.hasPrinter = params.hasPrinter ?? true;
 
     // Damage reports
-    this.stepDamage = params.stepDamage === false ? false : true;
+    this.stepDamage = params.stepDamage ?? true;
     this.verifyStep = params.verifyStep || false;
     this.requiredDamageSteps = [];
     this.optionalDamageSteps = [];
@@ -245,34 +229,34 @@ export default class Simulator {
     this.alertLevel = level;
   }
 
-  trainingMode(tf) {
+  trainingMode(tf: boolean) {
     this.training = tf;
   }
-  rename(name) {
+  rename(name: string) {
     this.name = name;
   }
-  setAlertLevel(alertlevel = "5") {
+  setAlertLevel(alertlevel: "1" | "2" | "3" | "4" | "5" | "p" = "5") {
     if (["5", "4", "3", "2", "1", "p"].indexOf(alertlevel) === -1) {
       return;
     }
     this.alertlevel = alertlevel;
   }
-  setAlertLevelLock(lock) {
+  setAlertLevelLock(lock: boolean) {
     this.alertLevelLock = lock;
   }
-  setLayout(layout) {
+  setLayout(layout: string) {
     this.layout = layout;
   }
-  setClientCard(client, cardName) {
+  setClientCard(client: string, cardName: string) {
     this.clientCards[client] = cardName;
   }
-  addStationAssignedCard(station, card) {
+  addStationAssignedCard(station: string, card: Card) {
     const stationCards = this.stationAssignedCards[station];
     this.stationAssignedCards[station] = stationCards
       ? stationCards.concat(card)
       : [card];
   }
-  removeStationAssignedCard(cardName) {
+  removeStationAssignedCard(cardName: string) {
     const stationEntry = Object.entries(
       this.stationAssignedCards,
     ).find(([key, value]) => value.find(c => c.name === cardName));
@@ -285,29 +269,34 @@ export default class Simulator {
       : [];
   }
 
-  setTimelineStep(step, timelineId) {
+  setTimelineStep(step: number, timelineId: string = null) {
     if (timelineId) {
       this.setAuxTimelineStep(timelineId, step);
     } else {
       this.currentTimelineStep = step;
     }
   }
-  executeTimelineStep(stepId) {
+  executeTimelineStep(stepId: string) {
     this.executedTimelineSteps.push(stepId);
     this.executedTimelineSteps = this.executedTimelineSteps.filter(
       (a, i, arr) => arr.indexOf(a) === i,
     );
   }
-  addAuxTimeline(missionId) {
-    const timeline = new TimelineInstance({missionId}, this.id);
+  addAuxTimeline(missionId: string) {
+    const timeline = new TimelineInstance({missionId});
     this.timelines.push(timeline);
     return timeline.id;
   }
-  setAuxTimelineStep(timelineId, step) {
+  setAuxTimelineStep(timelineId: string, step: number) {
     const timeline = this.timelines.find(t => t.id === timelineId);
     timeline && timeline.setTimelineStep(step);
   }
-  setMissionConfig(missionId, stationSetId, actionId, args) {
+  setMissionConfig(
+    missionId: string,
+    stationSetId: string,
+    actionId: string,
+    args: any,
+  ) {
     this.missionConfigs[missionId] = this.missionConfigs[missionId] || {};
     this.missionConfigs[missionId][stationSetId] =
       this.missionConfigs[missionId][stationSetId] || {};
@@ -316,98 +305,98 @@ export default class Simulator {
       ...args,
     };
   }
-  updateLighting(lighting) {
+  updateLighting(lighting: LightingParams) {
     this.lighting.update(lighting);
   }
-  updateAmbiance(ambiance) {
+  updateAmbiance(ambiance: Ambiance) {
     this.ambiance.find(a => a.id === ambiance.id).update(ambiance);
   }
-  addAmbiance(ambiance) {
+  addAmbiance(ambiance: AmbianceParams) {
     this.ambiance.push(new Ambiance(ambiance));
   }
-  removeAmbiance(id) {
+  removeAmbiance(id: string) {
     this.ambiance = this.ambiance.filter(a => a.id !== id);
   }
 
   // Ship
-  clamps(tf) {
+  clamps(tf: boolean) {
     this.ship.clamps = tf;
   }
-  ramps(tf) {
+  ramps(tf: boolean) {
     this.ship.ramps = tf;
   }
-  airlock(tf) {
+  airlock(tf: boolean) {
     this.ship.airlock = tf;
   }
-  legs(tf) {
+  legs(tf: boolean) {
     this.ship.legs = tf;
   }
-  bridgeCrew(num) {
+  bridgeCrew(num: number) {
     this.ship.bridgeCrew = num;
   }
-  extraPeople(num) {
+  extraPeople(num: number) {
     this.ship.extraPeople = num;
   }
-  radiation(num) {
+  radiation(num: number) {
     this.ship.radiation = num;
   }
-  speed(num) {
+  speed(num: number) {
     this.ship.speed = num;
   }
-  sendCode(code, station) {
+  sendCode(code: string, station: string) {
     this.ship.remoteAccessCodes.push(new RemoteAccess({code, station}));
   }
-  updateCode(codeId, state) {
+  updateCode(codeId: string, state: "Denied" | "Accepted" | "sent") {
     this.ship.remoteAccessCodes.find(c => c.id === codeId).state = state;
   }
-  setSelfDestructTime(time) {
+  setSelfDestructTime(time: number) {
     this.ship.selfDestructTime = time;
   }
-  setSelfDestructCode(code) {
+  setSelfDestructCode(code: string) {
     this.ship.selfDestructCode = code;
   }
-  setSelfDestructAuto(tf) {
+  setSelfDestructAuto(tf: boolean) {
     this.ship.selfDestructAuto = tf;
   }
-  updatePanels(panels) {
+  updatePanels(panels: string[]) {
     this.panels = panels || [];
   }
-  updateCommandLines(commandLines) {
+  updateCommandLines(commandLines: string[]) {
     this.commandLines = commandLines || [];
   }
-  updateTriggers(triggers) {
+  updateTriggers(triggers: string[]) {
     this.triggers = triggers || [];
   }
-  setTriggersPaused(paused) {
+  setTriggersPaused(paused: boolean) {
     this.triggersPaused = paused;
   }
-  updateInterfaces(interfaces) {
+  updateInterfaces(interfaces: string[]) {
     this.interfaces = interfaces || [];
   }
-  setAssets(assets) {
+  setAssets(assets: Assets) {
     this.assets = new Assets(assets);
   }
-  setSoundEffects(effects) {
+  setSoundEffects(effects: SoundEffects) {
     this.soundEffects = new SoundEffects(effects);
   }
-  setHasPrinter(hasPrinter) {
+  setHasPrinter(hasPrinter: boolean) {
     this.hasPrinter = hasPrinter;
   }
-  setHasLegs(hasLegs) {
+  setHasLegs(hasLegs: boolean) {
     this.hasLegs = hasLegs;
   }
 
   // Damage Steps
-  addDamageStep({name, args, type}) {
+  addDamageStep({name, args, type}: {name: string; args: any; type: string}) {
     this[`${type}DamageSteps`].push(new DamageStep({name, args}));
   }
-  updateDamageStep({id, name, args}) {
+  updateDamageStep({id, name, args}: {name: string; args: any; id: string}) {
     const step =
       this.requiredDamageSteps.find(s => s.id === id) ||
       this.optionalDamageSteps.find(s => s.id === id);
     step.update({name, args});
   }
-  removeDamageStep(stepId) {
+  removeDamageStep(stepId: string) {
     // Check both required and optional
     this.requiredDamageSteps = this.requiredDamageSteps.filter(
       s => s.id !== stepId,
@@ -422,79 +411,79 @@ export default class Simulator {
   // the damage tasks system is already? Look at this!
   // It's much simpler. Why didn't I do it this
   // way in the first place? ~A
-  addDamageTask(task) {
+  addDamageTask(task: DamageTask) {
     if (!task || !task.id || this.damageTasks.find(t => t.id === task.id))
       return;
     this.damageTasks.push(new DamageTask(task));
   }
-  updateDamageTask(task) {
+  updateDamageTask(task: DamageTask) {
     this.damageTasks.find(t => t.id === task.id).update(task);
   }
-  removeDamageTask(id) {
+  removeDamageTask(id: string) {
     this.damageTasks = this.damageTasks.filter(t => t.id !== id);
   }
-  hideCard(cardName) {
-    const name = lowerCase(camelCase(cardName));
+  hideCard(cardName: string) {
+    const name = noCase(camelCase(cardName));
     const cards = this.stations
       ? this.stations.reduce((acc, s) => acc.concat(s.cards), [])
       : [];
     cards.forEach(card => {
       if (
         card &&
-        (lowerCase(camelCase(card.name)) === name ||
-          lowerCase(camelCase(card.component)) === name)
+        (noCase(camelCase(card.name)) === name ||
+          noCase(camelCase(card.component)) === name)
       ) {
         card.hidden = true;
       }
     });
   }
-  unhideCard(cardName) {
-    const name = lowerCase(camelCase(cardName));
+  unhideCard(cardName: string) {
+    const name = noCase(camelCase(cardName));
     const cards = this.stations
       ? this.stations.reduce((acc, s) => acc.concat(s.cards), [])
       : [];
     cards.forEach(card => {
       if (
         card &&
-        (lowerCase(camelCase(card.name)) === name ||
-          lowerCase(camelCase(card.component)) === name)
+        (noCase(camelCase(card.name)) === name ||
+          noCase(camelCase(card.component)) === name)
       ) {
         card.hidden = false;
       }
     });
   }
   // Command Line
-  addCommandLineOutput(clientId, line) {
+  addCommandLineOutput(clientId: string, line: string) {
     if (!this.commandLineOutputs[clientId])
       this.commandLineOutputs[clientId] = [];
     this.commandLineOutputs[clientId].push(line);
   }
-  addCommandLineFeedback(clientId, feedback) {
+  addCommandLineFeedback(clientId: string, feedback: any) {
     if (!this.commandLineFeedback[clientId])
       this.commandLineFeedback[clientId] = [];
     this.commandLineFeedback[clientId].push(feedback);
   }
-  removeCommandLineFeedback(clientId, id) {
+  removeCommandLineFeedback(clientId: string, id: string) {
     this.commandLineFeedback[clientId] = this.commandLineFeedback[
       clientId
     ].filter(c => c.id !== id);
   }
-  clearCommandLine(clientId) {
+  clearCommandLine(clientId: string) {
     this.commandLineOutputs[clientId] = [];
   }
 
-  crackClient(clientId) {
+  crackClient(clientId: string) {
     this.crackedClients[clientId] = true;
   }
-  uncrackClient(clientId) {
+  uncrackClient(clientId: string) {
     this.crackedClients[clientId] = false;
   }
-  flip(flip) {
+  flip(flip: boolean) {
     this.flipped = flip;
   }
 
   // Records
-  createRecord(record) {
+  createRecord(record: Record) {
     const r = new Record(record);
     this.records.push(r);
     return r;
@@ -514,8 +503,8 @@ export default class Simulator {
 
     if (!snippet) return null;
 
-    function isValidDate(d) {
-      return d instanceof Date && !isNaN(d);
+    function isValidDate(d: unknown): d is Date {
+      return d instanceof Date && !isNaN(Number(d));
     }
 
     // Get the latest record in this snippet and
@@ -529,7 +518,7 @@ export default class Simulator {
         return d;
       }, 0);
 
-    const record = this.createRecord({
+    const record = new Record({
       contents,
       timestamp: new Date(
         new Date(ts).getTime() + Number(timestamp),
@@ -537,38 +526,39 @@ export default class Simulator {
       category,
       snippetId: snippet.id,
     });
+    this.records.push(record);
     this.addRecordToSnippet(snippet.id, [record.id]);
 
     return snippet;
   }
-  createRecordSnippet(snippet) {
+  createRecordSnippet(snippet: RecordSnippet) {
     const s = new RecordSnippet({...snippet, simulatorId: this.id});
     this.recordSnippets.push(s);
     return s.id;
   }
-  addRecordToSnippet(snippetId, recordIds) {
+  addRecordToSnippet(snippetId: string, recordIds: string[]) {
     const snippet = this.recordSnippets.find(s => s.id === snippetId);
     snippet.addRecords(recordIds);
   }
-  removeRecordFromSnippet(snippetId, recordId) {
+  removeRecordFromSnippet(snippetId: string, recordId: string) {
     const snippet = this.recordSnippets.find(s => s.id === snippetId);
     snippet.removeRecord(recordId);
   }
-  showSnippet(snippetId) {
+  showSnippet(snippetId: string) {
     const snippet = this.recordSnippets.find(s => s.id === snippetId);
     snippet.visible = true;
     return snippet;
   }
-  hideSnippet(snippetId) {
+  hideSnippet(snippetId: string) {
     const snippet = this.recordSnippets.find(s => s.id === snippetId);
     snippet.visible = false;
     return snippet;
   }
-  deleteRecord(recordId) {
+  deleteRecord(recordId: string) {
     this.records = this.records.filter(r => r.id !== recordId);
   }
 
-  setSpaceEdventuresId(id) {
+  setSpaceEdventuresId(id: string) {
     this.spaceEdventuresId = id;
   }
 }

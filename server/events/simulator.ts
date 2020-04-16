@@ -4,25 +4,20 @@ import * as Classes from "../classes";
 import uuid from "uuid";
 import {resolvers} from "../data";
 // Simulator
-App.on(
-  "createSimulator",
-  ({id = uuid.v4(), name, template, flightId, timeline, stationSet}) => {
-    const simulator = new Classes.Simulator({
-      id,
-      name,
-      template,
-      timeline,
-      launch: true,
-    });
-    if (flightId) {
-      const flight = App.flights.find(f => f.id === flightId);
-      flight.addSimulator(simulator, stationSet);
-    }
-    App.simulators.push(simulator);
-    // Initialize the simulator.
-    pubsub.publish("simulatorsUpdate", App.simulators);
-  },
-);
+App.on("createSimulator", ({id = uuid.v4(), name, template, flightId}) => {
+  const simulator = new Classes.Simulator({
+    id,
+    name,
+    template,
+  });
+  if (flightId) {
+    const flight = App.flights.find(f => f.id === flightId);
+    flight.addSimulator(simulator);
+  }
+  App.simulators.push(simulator);
+  // Initialize the simulator.
+  pubsub.publish("simulatorsUpdate", App.simulators);
+});
 App.on("removeSimulator", ({simulatorId}) => {
   App.simulators = App.simulators.filter(s => s.id !== simulatorId);
   pubsub.publish("simulatorsUpdate", App.simulators);
@@ -150,10 +145,12 @@ App.on("removeSimulatorDamageTask", ({simulatorId, taskId}) => {
   sim.removeDamageTask(taskId);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
-App.on("setSimulatorMission", ({simulatorId, missionId}) => {
+App.on("setSimulatorMission", ({simulatorId, missionId, stepId}) => {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   simulator.mission = missionId;
-  simulator.setTimelineStep(0);
+  const mission = App.missions.find(s => s.id === missionId);
+  const stepIndex = mission?.timeline.findIndex(s => s.id === stepId);
+  simulator.setTimelineStep(stepIndex > 0 ? stepIndex : 0);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
 App.on(

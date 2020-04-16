@@ -2723,7 +2723,7 @@ type Mutation {
   changeSimulatorExtraPeople(simulatorId: ID!, crew: Int!): String
   changeSimulatorRadiation(simulatorId: ID!, radiation: Float!): String
   setSimulatorTimelineStep(simulatorId: ID!, timelineId: ID, step: Int!): String
-  setSimulatorMission(simulatorId: ID!, missionId: ID!): String
+  setSimulatorMission(simulatorId: ID!, missionId: ID!, stepId: ID): String
   setSimulatorMissionConfig(
     simulatorId: ID!
     missionId: ID!
