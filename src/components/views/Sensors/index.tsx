@@ -67,7 +67,6 @@ export function usePing(sensorsId?: string) {
 
   const client = useApolloClient();
   React.useEffect(() => {
-    console.log("Running effect");
     function doPing() {
       setPinged(false);
       setPinging({});
