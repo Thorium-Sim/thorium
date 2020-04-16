@@ -3,7 +3,7 @@ import App from "../app";
 import Team from "./teams";
 import DamageStep from "./generic/damageStep";
 import DamageTask from "./generic/damageTask";
-import {Station, StationSet, Card} from "./stationSet";
+import {Station, Card} from "./stationSet";
 import {noCase, camelCase} from "change-case";
 import {Record, RecordSnippet} from "./records";
 import Assets from "./simulatorAssets";

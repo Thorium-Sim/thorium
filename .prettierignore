@@ -1,4 +1,5 @@
 src/models/*
+src/schema.graphql
 server/build
 .cache
 build
