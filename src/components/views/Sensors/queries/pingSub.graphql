@@ -1,0 +1,3 @@
+subscription SensorsPingSub($sensorsId: ID!) {
+  sensorsPing(sensorId: $sensorsId)
+}

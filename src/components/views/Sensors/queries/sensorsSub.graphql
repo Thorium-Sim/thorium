@@ -4,7 +4,9 @@ subscription Sensors($simulatorId: ID!, $domain: String) {
     scanResults
     scanRequest
     scanning
+    pings
     pingMode
+    timeSincePing
     domain
     processedData {
       value

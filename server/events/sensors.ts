@@ -420,8 +420,19 @@ App.on("setSensorPingMode", ({id, mode}) => {
 });
 App.on("pingSensors", ({id}) => {
   const system = App.systems.find(sys => sys.id === id);
-  system.timeSincePing = 0;
+  system.sonarPing();
   pubsub.publish("sensorsPing", id);
+});
+App.on("sensorsSetHasPing", ({id, ping, cb}) => {
+  const system = App.systems.find(sys => sys.id === id);
+
+  system.pings = ping;
+
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors"),
+  );
+  cb && cb();
 });
 
 App.on("setSensorsHistory", ({id, history}) => {

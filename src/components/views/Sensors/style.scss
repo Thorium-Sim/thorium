@@ -91,6 +91,13 @@
       color: red;
     }
   }
+  .sensor-control-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  .ping-control {
+    margin-bottom: 6px;
+  }
 }
 
 .sensor-core {

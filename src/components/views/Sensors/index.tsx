@@ -18,6 +18,7 @@ import {
   Ping_Modes,
   Sensors as SensorsI,
   useSensorsRemoveProcessedDataMutation,
+  SensorsPingSubDocument,
 } from "generated/graphql";
 import {useApolloClient} from "@apollo/client";
 import useDimensions from "helpers/hooks/useDimensions";
@@ -59,6 +60,52 @@ const trainingSteps = [
   },
 ];
 
+export function usePing(sensorsId?: string) {
+  const [pinging, setPinging] = React.useState({});
+  const [pinged, setPinged] = React.useState(false);
+  const mountedRef = React.useRef(false);
+
+  const client = useApolloClient();
+  React.useEffect(() => {
+    console.log("Running effect");
+    function doPing() {
+      setPinged(false);
+      setPinging({});
+    }
+    if (!sensorsId) return;
+    const subscription = client
+      .subscribe({
+        query: SensorsPingSubDocument,
+        variables: {
+          sensorsId,
+        },
+      })
+      .subscribe({
+        next() {
+          doPing();
+        },
+        error(err) {
+          console.error("err", err);
+        },
+      });
+
+    return () => subscription.unsubscribe();
+  }, [sensorsId, client]);
+  React.useEffect(() => {
+    if (mountedRef.current) {
+      console.log("setting pinged");
+      setPinged(true);
+      const timeout = setTimeout(() => {
+        setPinged(false);
+      }, 1000 * 6.5);
+      return () => clearTimeout(timeout);
+    }
+    mountedRef.current = true;
+  }, [pinging]);
+
+  return pinged;
+}
+
 function calculateTime(milliseconds: number) {
   if (milliseconds < 1000) return "Just now";
   return (
@@ -98,7 +145,7 @@ export const ProcessedData: React.FC<{sensors: SensorsI; core?: boolean}> = ({
   return (
     <>
       <Col className="col-sm-12">
-        <h3>Processed Data</h3>
+        <label>Processed Data</label>
       </Col>
       <Col className="col-sm-12">
         <Card className="processedData">
@@ -144,6 +191,10 @@ export const ProcessedData: React.FC<{sensors: SensorsI; core?: boolean}> = ({
   );
 };
 
+interface HoverContact {
+  name: string;
+  picture: string;
+}
 interface SensorsProps {
   simulator: Simulator;
   station: Station;
@@ -157,23 +208,65 @@ const Sensors: React.FC<SensorsProps> = ({
   station,
   viewscreen,
 }) => {
-  const [hoverContact, setHoverContact] = React.useState<{
-    name: string;
-    picture: string;
-  }>({name: "", picture: ""});
+  console.log("rendering");
+  const [hoverContact, setHoverContact] = React.useState<HoverContact>({
+    name: "",
+    picture: "",
+  });
   const [weaponsRange, setWeaponsRange] = React.useState<number | null>(null);
-  const [ping, setPing] = React.useState<boolean>(false);
-  const [pingTime, setPingTime] = React.useState<number | null>(null);
 
   const [measureRef, dimensions] = useDimensions();
 
   const client = useApolloClient();
-  const [sendPing] = useSensorsSendPingMutation();
   const [setCalculatedTarget] = useSetCalculatedTargetMutation();
 
   const {loading, data} = useSensorsSubscription({
     variables: {simulatorId: simulator.id, domain: "external"},
   });
+
+  const pinged = usePing(data?.sensorsUpdate?.[0].id);
+
+  const gridMouseDown = React.useCallback(() => {
+    // setCalculatedTarget
+    setCalculatedTarget({
+      variables: {
+        simulatorId: simulator.id,
+        coordinates: {x: 0, y: 0, z: 0},
+        contactId: null,
+      },
+    });
+  }, [setCalculatedTarget, simulator.id]);
+  const includeTypes = React.useMemo(
+    () => ["contact", "planet", "border", "ping", "projectile"],
+    [],
+  );
+
+  const clickContact = React.useCallback(
+    (
+      e: MouseEvent,
+      contact: SensorContact,
+      selectContact: (contact: SensorContact | string) => void,
+    ) => {
+      e.preventDefault();
+      e.stopPropagation();
+      selectContact(contact);
+      if (!contact.location) return;
+      const {x, y, z} = contact.location;
+      setCalculatedTarget({
+        variables: {
+          simulatorId: simulator.id,
+          coordinates: {
+            x: Math.abs(x || 0),
+            y: Math.abs(y || 0),
+            z: Math.abs(z || 0),
+          },
+          contactId: contact.id,
+        },
+      });
+    },
+    [setCalculatedTarget, simulator.id],
+  );
+
   if (loading || !data) return <p>Loading...</p>;
 
   const sensors = data.sensorsUpdate?.[0];
@@ -195,61 +288,27 @@ const Sensors: React.FC<SensorsProps> = ({
     }, 1000);
   };
 
-  const triggerPing = () => {
-    sendPing({variables: {id: sensors.id}});
-  };
-
-  const clickContact = (
-    e: MouseEvent,
-    contact: SensorContact,
-    selectContact: (contact: SensorContact | string) => void,
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-    selectContact(contact);
-    if (!contact.location) return;
-    const {x, y, z} = contact.location;
-    setCalculatedTarget({
-      variables: {
-        simulatorId: simulator.id,
-        coordinates: {
-          x: Math.abs(x || 0),
-          y: Math.abs(y || 0),
-          z: Math.abs(z || 0),
-        },
-        contactId: contact.id,
-      },
-    });
-  };
-
   const needScans =
     !widget && !station?.cards?.find(c => c?.component === "SensorScans");
-  const {pingMode} = sensors;
-  const pings = false;
+  const {pingMode, pings} = sensors;
   return (
     <div className="cardSensors">
       <div>
         <Row>
-          <Col sm={3}>
-            {!viewscreen && needScans && (
-              <>
-                <DamageOverlay
-                  message="External Sensors Offline"
-                  system={sensors}
-                />
-                <SensorScans sensors={sensors} client={client} />
-                {pings && pingMode && (
-                  <PingControl
-                    sensorsId={sensors.id}
-                    pingMode={pingMode}
-                    ping={ping}
-                    triggerPing={triggerPing}
+          {needScans && (
+            <Col sm={3}>
+              {!viewscreen && (
+                <>
+                  <DamageOverlay
+                    message="External Sensors Offline"
+                    system={sensors}
                   />
-                )}
-                <Button onClick={showWeaponsRange} block>
-                  Show Weapons Range
-                </Button>
-                {/*<Row>
+                  <SensorScans sensors={sensors} client={client} />
+
+                  <Button onClick={showWeaponsRange} block>
+                    Show Weapons Range
+                  </Button>
+                  {/*<Row>
                   <Col className="col-sm-12">
                   <h4>Contact Coordinates</h4>
                   </Col>
@@ -262,9 +321,10 @@ const Sensors: React.FC<SensorsProps> = ({
                   </Col>
                   </Row>
                 */}
-              </>
-            )}
-          </Col>
+                </>
+              )}
+            </Col>
+          )}
           <Col
             sm={{size: 6, offset: !needScans ? 1 : 0}}
             className="arrayContainer"
@@ -278,30 +338,14 @@ const Sensors: React.FC<SensorsProps> = ({
                   damaged={sensors.damage?.damaged}
                   hoverContact={setHoverContact}
                   movement={sensors.movement}
-                  ping={ping}
+                  ping={pinged}
                   pings={pings}
-                  pingTime={pingTime}
                   simulatorId={simulator.id}
                   segments={sensors.segments}
                   interference={sensors.interference}
                   mouseDown={clickContact}
-                  gridMouseDown={() => {
-                    // setCalculatedTarget
-                    setCalculatedTarget({
-                      variables: {
-                        simulatorId: simulator.id,
-                        coordinates: {x: 0, y: 0, z: 0},
-                        contactId: null,
-                      },
-                    });
-                  }}
-                  includeTypes={[
-                    "contact",
-                    "planet",
-                    "border",
-                    "ping",
-                    "projectile",
-                  ]}
+                  gridMouseDown={gridMouseDown}
+                  includeTypes={includeTypes}
                   range={
                     weaponsRange && {
                       size: weaponsRange,
@@ -317,51 +361,17 @@ const Sensors: React.FC<SensorsProps> = ({
             />
           </Col>
           <Col sm={{size: 3, offset: !needScans ? 1 : 0}} className="data">
-            {!viewscreen ? (
-              <>
-                <Row className="contact-info">
-                  <Col className="col-sm-12">
-                    <h3>Contact Information</h3>
-                  </Col>
-                  <Col className="col-sm-12">
-                    <div className="card contactPictureContainer">
-                      {hoverContact.picture && (
-                        <div
-                          className="contactPicture"
-                          style={{
-                            backgroundSize: "contain",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundColor: "black",
-                            backgroundImage: `url('/assets${hoverContact.picture}')`,
-                          }}
-                        />
-                      )}
-                    </div>
-                  </Col>
-                  <Col className="col-sm-12 contactNameContainer">
-                    <div className="card contactName">{hoverContact.name}</div>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <ProcessedData sensors={sensors} />
-                </Row>
-                {pings && !needScans && pingMode && (
-                  <PingControl
-                    sensorsId={sensors.id}
-                    pingMode={pingMode}
-                    ping={ping}
-                    triggerPing={triggerPing}
-                  />
-                )}
-                {!needScans && (
-                  <Button onClick={showWeaponsRange} block>
-                    Show Weapons Range
-                  </Button>
-                )}
-              </>
-            ) : null}
+            {!viewscreen && (
+              <RightSensorsSidebar
+                needScans={needScans}
+                pingMode={pingMode || undefined}
+                ping={pinged}
+                pings={Boolean(pings)}
+                sensors={sensors}
+                hoverContact={hoverContact}
+                showWeaponsRange={showWeaponsRange}
+              />
+            )}
           </Col>
         </Row>
       </div>
@@ -370,12 +380,92 @@ const Sensors: React.FC<SensorsProps> = ({
   );
 };
 
+const RightSensorsSidebar: React.FC<{
+  needScans: boolean;
+  pingMode?: Ping_Modes;
+  ping: boolean;
+  pings?: boolean;
+  sensors: SensorsI;
+  hoverContact: HoverContact;
+  showWeaponsRange: () => void;
+}> = ({
+  pings,
+  needScans,
+  pingMode,
+  ping,
+  sensors,
+  hoverContact,
+  showWeaponsRange,
+}) => {
+  const [whichControl, setWhichControl] = React.useState<"info" | "options">(
+    "info",
+  );
+  return (
+    <>
+      {pings && (
+        <div className="sensor-control-buttons">
+          <Button
+            active={whichControl === "info"}
+            onClick={() => setWhichControl("info")}
+          >
+            Contacts
+          </Button>
+          <Button
+            active={whichControl === "options"}
+            onClick={() => setWhichControl("options")}
+          >
+            Options
+          </Button>
+        </div>
+      )}
+
+      {whichControl === "options" && pings && pingMode && (
+        <PingControl sensorsId={sensors.id} pingMode={pingMode} ping={ping} />
+      )}
+      {(whichControl === "info" || !pings) && (
+        <Row className="contact-info">
+          <Col className="col-sm-12">
+            <label>Contact Information</label>
+          </Col>
+          <Col className="col-sm-12">
+            <div className="card contactPictureContainer">
+              {hoverContact.picture && (
+                <div
+                  className="contactPicture"
+                  style={{
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundColor: "black",
+                    backgroundImage: `url('/assets${hoverContact.picture}')`,
+                  }}
+                />
+              )}
+            </div>
+          </Col>
+          <Col className="col-sm-12 contactNameContainer">
+            <div className="card contactName">{hoverContact.name}</div>
+          </Col>
+        </Row>
+      )}
+
+      <Row>
+        <ProcessedData sensors={sensors} />
+      </Row>
+      {!needScans && (
+        <Button onClick={showWeaponsRange} block>
+          Show Weapons Range
+        </Button>
+      )}
+    </>
+  );
+};
+
 const PingControl: React.FC<{
   pingMode: Ping_Modes;
   ping: boolean;
   sensorsId: string;
-  triggerPing: () => void;
-}> = ({sensorsId, pingMode, ping, triggerPing}) => {
+}> = ({sensorsId, pingMode, ping}) => {
   const [setPingMode] = useSensorsSetPingModeMutation();
   const selectPing = (which: Ping_Modes) => {
     setPingMode({
@@ -385,8 +475,13 @@ const PingControl: React.FC<{
       },
     });
   };
+  const [sendPing] = useSensorsSendPingMutation();
+
+  const triggerPing = () => {
+    sendPing({variables: {id: sensorsId}});
+  };
   return (
-    <Row>
+    <Row className="ping-control">
       <Col sm="12">
         <label>Sensor Options:</label>
       </Col>

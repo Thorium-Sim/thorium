@@ -10,6 +10,7 @@ const fragment = gql`
     autoTarget
     autoThrusters
     interference
+    pings
     movement {
       x
       y

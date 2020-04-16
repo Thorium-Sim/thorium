@@ -1,0 +1,3 @@
+mutation SensorsSetPings($id: ID!, $ping: Boolean!) {
+  sensorsSetHasPing(id: $id, ping: $ping)
+}

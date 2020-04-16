@@ -245,6 +245,7 @@ const schema = gql`
       speed: Float!
       yaw: Float
     ): String
+    sensorsSetHasPing(id: ID!, ping: Boolean!): String
     setSensorPingMode(id: ID!, mode: PING_MODES): String
     pingSensors(id: ID!): String
     animateSensorContacact: String
@@ -444,7 +445,13 @@ const resolver = {
       resolve(root, args) {
         return root;
       },
-      subscribe: () => pubsub.asyncIterator("sensorsPing"),
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("sensorsPing"),
+        (rootValue, {sensorId}) => {
+          if (rootValue !== sensorId) return false;
+          return true;
+        },
+      ),
     },
   },
 };

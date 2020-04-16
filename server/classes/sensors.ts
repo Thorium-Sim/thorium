@@ -89,7 +89,7 @@ export default class Sensors extends System {
     if (params.name) {
       this.name = params.name;
     }
-    this.pings = params.pings || true;
+    this.pings = params.pings ?? true;
     this.pingMode = params.pingMode || "manual";
     this.timeSincePing = params.timeSincePing || 0;
     this.scanResults = params.scanResults || "";
@@ -136,10 +136,12 @@ export default class Sensors extends System {
     this.thrusterMovement = params.thrusterMovement || {x: 0, y: 0, z: 0};
     this.segments = newlyCreated ? [] : [...(params.segments || [])];
 
+    this.stealthCompromised = false;
     this.training = params.training || false;
   }
 
   get stealthFactor() {
+    if (this.stealthCompromised) return 1;
     if (this.history) {
       return Math.min(
         0.9,
@@ -337,5 +339,9 @@ export default class Sensors extends System {
   }
   setMissPercent(miss) {
     this.missPercent = miss;
+  }
+  sonarPing() {
+    this.stealthCompromised = true;
+    setTimeout(() => (this.stealthCompromised = false), 5 * 1000);
   }
 }

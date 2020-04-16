@@ -77,6 +77,7 @@ const updateThrusters = () => {
           sensors.thrusterMovement.z !== update.z
         ) {
           sensors.thrusterMovement = update;
+          console.log("Sensors Thrusters");
           pubsub.publish(
             "sensorsUpdate",
             App.systems.filter(s => s.type === "Sensors"),
