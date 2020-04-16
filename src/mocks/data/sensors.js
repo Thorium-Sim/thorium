@@ -154,7 +154,7 @@ export default [
     displayName: "External Sensors",
     scanResults: "",
     scanRequest: "",
-    processedData: "",
+    processedData: [],
     presetAnswers: [],
     scanning: false,
     power: {
