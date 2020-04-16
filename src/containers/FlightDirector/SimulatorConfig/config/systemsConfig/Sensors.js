@@ -2,23 +2,28 @@ import React, {Fragment} from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import {Query, Mutation} from "react-apollo";
+import {useSensorsSetPingsMutation} from "generated/graphql";
 const SENSORS_QUERY = gql`
   query Sensors($id: ID!) {
     sensor(id: $id) {
       id
       history
       autoTarget
+      pings
     }
   }
 `;
 const Sensors = props => {
   const {id} = props;
+  const [setPing] = useSensorsSetPingsMutation({
+    refetchQueries: [{query: SENSORS_QUERY, variables: {id}}],
+  });
   return (
     <GenericSystemConfig {...props}>
       <Query query={SENSORS_QUERY} variables={{id}}>
         {({data, loading}) => {
           if (loading) return null;
-          const {history, autoTarget} = data.sensor;
+          const {history, autoTarget, pings} = data.sensor;
           return (
             <Fragment>
               <label>
@@ -50,6 +55,7 @@ const Sensors = props => {
                       toggleSensorsAutoTarget(id: $id, target: $target)
                     }
                   `}
+                  refetchQueries={[{query: SENSORS_QUERY, variables: {id}}]}
                 >
                   {action => (
                     <input
@@ -61,6 +67,18 @@ const Sensors = props => {
                     />
                   )}
                 </Mutation>
+              </label>
+              <label>
+                Use Sonar Ping{" "}
+                <input
+                  type="checkbox"
+                  checked={pings}
+                  onClick={e => {
+                    setPing({
+                      variables: {id, ping: e.target.checked},
+                    });
+                  }}
+                />
               </label>
             </Fragment>
           );

@@ -7,6 +7,7 @@ import gql from "graphql-tag.macro";
 import {TypingField} from "../../../generic/core";
 import Nudge from "./nudge";
 import useFlightLocalStorage from "helpers/hooks/useFlightLocalStorage";
+import {useSensorsSetPingsMutation} from "generated/graphql";
 
 function useOnClickOutside(ref, handler) {
   useEffect(
@@ -145,6 +146,7 @@ const ExtraControls = ({
     "core_sensors_pingSize",
     1,
   );
+  const [setPing] = useSensorsSetPingsMutation();
 
   const autoTarget = e => {
     const mutation = gql`
@@ -213,6 +215,18 @@ const ExtraControls = ({
           type="checkbox"
           checked={sensors.autoTarget}
           onChange={autoTarget}
+        />
+      </label>
+      <label>
+        Use Sonar Ping{" "}
+        <input
+          type="checkbox"
+          checked={sensors.pings}
+          onClick={e => {
+            setPing({
+              variables: {id: sensors.id, ping: e.target.checked},
+            });
+          }}
         />
       </label>
       <label>

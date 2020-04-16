@@ -18,6 +18,7 @@ import {
   Ping_Modes,
   Sensors as SensorsI,
   useSensorsRemoveProcessedDataMutation,
+  SensorsPingSubDocument,
 } from "generated/graphql";
 import {useApolloClient} from "@apollo/client";
 import useDimensions from "helpers/hooks/useDimensions";
@@ -59,23 +60,51 @@ const trainingSteps = [
   },
 ];
 
-function usePing() {
+export function usePing(sensorsId?: string) {
   const [pinging, setPinging] = React.useState({});
   const [pinged, setPinged] = React.useState(false);
-  function doPing() {
-    setPinged(false);
-    setPinging({});
-  }
+  const mountedRef = React.useRef(false);
+
+  const client = useApolloClient();
+
   React.useEffect(() => {
-    setPinged(true);
-    const timeout = setTimeout(() => {
+    function doPing() {
       setPinged(false);
-    }, 1000 * 5);
-    return () => clearTimeout(timeout);
+      setPinging({});
+    }
+    if (!sensorsId) return;
+    const subscription = client
+      .subscribe({
+        query: SensorsPingSubDocument,
+        variables: {
+          sensorsId,
+        },
+      })
+      .subscribe({
+        next() {
+          doPing();
+        },
+        error(err) {
+          console.error("err", err);
+        },
+      });
+
+    return () => subscription.unsubscribe();
+  }, [sensorsId, client]);
+  React.useEffect(() => {
+    if (mountedRef.current) {
+      setPinged(true);
+      const timeout = setTimeout(() => {
+        setPinged(false);
+      }, 1000 * 6.5);
+      return () => clearTimeout(timeout);
+    }
+    mountedRef.current = true;
   }, [pinging]);
 
-  return {doPing, pinged};
+  return pinged;
 }
+
 function calculateTime(milliseconds: number) {
   if (milliseconds < 1000) return "Just now";
   return (
@@ -183,11 +212,8 @@ const Sensors: React.FC<SensorsProps> = ({
     picture: "",
   });
   const [weaponsRange, setWeaponsRange] = React.useState<number | null>(null);
-  const [pingTime, setPingTime] = React.useState<number | null>(null);
 
   const [measureRef, dimensions] = useDimensions();
-
-  const {doPing, pinged} = usePing();
 
   const client = useApolloClient();
   const [setCalculatedTarget] = useSetCalculatedTargetMutation();
@@ -195,6 +221,7 @@ const Sensors: React.FC<SensorsProps> = ({
   const {loading, data} = useSensorsSubscription({
     variables: {simulatorId: simulator.id, domain: "external"},
   });
+  const pinged = usePing(data?.sensorsUpdate?.[0].id);
   if (loading || !data) return <p>Loading...</p>;
 
   const sensors = data.sensorsUpdate?.[0];
@@ -291,7 +318,6 @@ const Sensors: React.FC<SensorsProps> = ({
                   movement={sensors.movement}
                   ping={pinged}
                   pings={pings}
-                  pingTime={pingTime}
                   simulatorId={simulator.id}
                   segments={sensors.segments}
                   interference={sensors.interference}
@@ -375,13 +401,13 @@ const RightSensorsSidebar: React.FC<{
             active={whichControl === "info"}
             onClick={() => setWhichControl("info")}
           >
-            Contact Info
+            Contacts
           </Button>
           <Button
             active={whichControl === "options"}
             onClick={() => setWhichControl("options")}
           >
-            Sensor Options
+            Options
           </Button>
         </div>
       )}
@@ -389,7 +415,7 @@ const RightSensorsSidebar: React.FC<{
       {whichControl === "options" && pings && pingMode && (
         <PingControl sensorsId={sensors.id} pingMode={pingMode} ping={ping} />
       )}
-      {whichControl === "info" && (
+      {(whichControl === "info" || !pings) && (
         <Row className="contact-info">
           <Col className="col-sm-12">
             <label>Contact Information</label>

@@ -423,6 +423,17 @@ App.on("pingSensors", ({id}) => {
   system.timeSincePing = 0;
   pubsub.publish("sensorsPing", id);
 });
+App.on("sensorsSetHasPing", ({id, ping, cb}) => {
+  const system = App.systems.find(sys => sys.id === id);
+
+  system.pings = ping;
+
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors"),
+  );
+  cb && cb();
+});
 
 App.on("setSensorsHistory", ({id, history}) => {
   const system = App.systems.find(sys => sys.id === id);

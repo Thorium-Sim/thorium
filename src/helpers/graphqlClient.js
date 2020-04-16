@@ -90,7 +90,6 @@ const mutationMiddleware = new ApolloLink((operation, forward) => {
       opDef.selectionSet.selections[0],
       variables,
     );
-
     if (event) {
       publish("mutation-event", {event, args});
     }
