@@ -79,8 +79,7 @@ const resolver = {
       return App.inventory
         .filter(i => Object.keys(i.roomCount).indexOf(port.id) > -1)
         .map(i => {
-          i.count = i.roomCount[port.id];
-          return i;
+          return {...i, count: i.roomCount[port.id]};
         });
     },
   },

@@ -2,6 +2,7 @@ import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import taskDefinitions from "../tasks";
+import {ValueDef} from "../classes/task";
 const mutationHelper = require("../helpers/mutationHelper").default;
 
 // We define a schema that encompasses all of the types
@@ -123,7 +124,15 @@ const resolver = {
       const simulator = App.simulators.find(s => s.id === simulatorId);
       return stations ? stations({simulator}) : simulator.stations;
     },
-    valuesInput({name, values, simulatorId}) {
+    valuesInput({
+      name,
+      values,
+      simulatorId,
+    }: {
+      name: string;
+      values: ValueDef;
+      simulatorId: string;
+    }) {
       try {
         const simulator = App.simulators.find(s => s.id === simulatorId);
         return Object.entries(values).reduce((prev, [key, value]) => {
@@ -136,7 +145,15 @@ const resolver = {
         return {};
       }
     },
-    valuesValue({name, values, simulatorId}) {
+    valuesValue({
+      name,
+      values,
+      simulatorId,
+    }: {
+      name: string;
+      values: ValueDef;
+      simulatorId: string;
+    }) {
       try {
         const simulator = App.simulators.find(s => s.id === simulatorId);
         return Object.entries(values).reduce((prev, [key, value]) => {

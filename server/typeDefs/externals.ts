@@ -97,7 +97,7 @@ const resolver = {
       download(url, dest, err => {
         if (err) {
           console.log("There was an error importing a simulator:", err);
-          throw new Error("Error importing simulator:", err.message);
+          throw new Error(`Error importing simulator: ${err.message}`);
         }
         importSimulator(dest, () => {
           fs.unlink(dest, error => {

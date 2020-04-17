@@ -3,6 +3,7 @@ import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import {StationResolver} from "../helpers/stationResolver";
 import uuid from "uuid";
+import {Client, Card} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -293,7 +294,7 @@ const resolver = {
     mobile(client) {
       return Boolean(client.mobile);
     },
-    currentCard(client) {
+    currentCard(client: Client) {
       const simulator = App.simulators.find(s => s.id === client.simulatorId);
       if (!simulator) return null;
       const station = StationResolver(client);
@@ -308,8 +309,8 @@ const resolver = {
 
       const concatCards = stationAssignedCards[station.name] || [];
       let cards = station.cards
-        .map(c => ({...c, assigned: assignedCardList.includes(c.name)}))
-        .concat(concatCards.map(c => ({...c, newStation: true})))
+        .map(c => new Card({...c, assigned: assignedCardList.includes(c.name)}))
+        .concat(concatCards.map(c => new Card({...c, newStation: true})))
         .filter(Boolean);
 
       const card = cards

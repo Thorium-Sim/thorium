@@ -188,14 +188,17 @@ export class Card {
   name: string;
   icon: string | null;
   component: string;
-  class: string;
+  class: "Card" = "Card";
   hidden: boolean;
+  newStation?: boolean;
+  assigned?: boolean;
   constructor(params: Partial<Card>) {
     this.name = params.name || "Card";
     this.icon = params.icon || null;
     this.component = params.component || "Login";
-    this.class = "Card";
     this.hidden = false;
+    this.newStation = params.newStation || false;
+    this.assigned = params.assigned || false;
   }
   update({name, icon, component}: Partial<Card>) {
     if (name) this.name = name;

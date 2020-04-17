@@ -188,7 +188,7 @@ const resolver = {
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator("systemsUpdate"),
-        rootValue => !!(rootValue && rootValue.length) > 0,
+        rootValue => rootValue?.length > 0,
       ),
     },
   },

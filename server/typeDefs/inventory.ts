@@ -2,6 +2,7 @@ import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import escapeRegex from "escape-string-regexp";
+import {Room} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 
 // We define a schema that encompasses all of the types
@@ -128,10 +129,13 @@ const resolver = {
       const rooms = App.rooms.concat(
         App.dockingPorts
           .filter(d => d.deckId && d.docked)
-          .map(d => ({
-            ...d,
-            name: `${d.shipName || d.name} Loading`,
-          })),
+          .map(
+            d =>
+              new Room({
+                ...d,
+                name: `${d.shipName || d.name} Loading`,
+              }),
+          ),
       );
       return Object.keys(inventory.roomCount).map(r => ({
         room:
@@ -165,12 +169,16 @@ const resolver = {
           .concat(
             App.dockingPorts
               .filter(d => d.deckId && d.docked)
-              .map(d => ({
-                ...d,
-                name: `${d.shipName || d.name} Loading`,
-              })),
+              .map(
+                d =>
+                  new Room({
+                    ...d,
+                    name: `${d.shipName || d.name} Loading`,
+                  }),
+              ),
           )
-          .filter(r => r.deckId === deck);
+          .filter(r => r.deckId === deck)
+          .map(r => r.id);
         inventory = inventory.map(i => {
           Object.keys(i.roomCount)
             .filter(r => rooms.indexOf(r) === -1)

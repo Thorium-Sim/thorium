@@ -1,4 +1,5 @@
 import App from "../app";
+import {Card} from "../classes";
 
 export const StationResolver = rootValue => {
   if (
@@ -8,10 +9,10 @@ export const StationResolver = rootValue => {
     return {
       name: rootValue.station,
       cards: [
-        {
+        new Card({
           name: "Keyboard",
           component: "Keyboard",
-        },
+        }),
       ],
     };
   }
@@ -19,10 +20,10 @@ export const StationResolver = rootValue => {
     return {
       name: "Sound",
       cards: [
-        {
+        new Card({
           name: "SoundPlayer",
           component: "SoundPlayer",
-        },
+        }),
       ],
     };
   }
@@ -43,37 +44,39 @@ export const StationResolver = rootValue => {
         return {
           name: `interface-id:${iface.id}`,
           cards: [
-            {
+            new Card({
               name: "Interface",
               component: `interface-id:${iface.id}`,
-            },
+            }),
           ],
         };
       }
     }
     const station = simulator.stations.find(s => s.name === rootValue.station);
-    if (station)
+    if (station) {
+      const cards = station.cards.map(c => {
+        if (c.component.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+          const iface = interfaces.find(
+            i => i.templateId === c.component.replace("interface-id:", ""),
+          );
+          return new Card({...c, component: `interface-id:${iface.id}`});
+        }
+        return c;
+      });
       return {
         ...station,
-        cards: station.cards.map(c => {
-          if (c.component.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
-            const iface = interfaces.find(
-              i => i.templateId === c.component.replace("interface-id:", ""),
-            );
-            return {...c, component: `interface-id:${iface.id}`};
-          }
-          return c;
-        }),
+        cards,
       };
+    }
     // Fallback for Viewscreen, Blackout, and Mobile
     if (rootValue.station) {
       return {
         name: rootValue.station,
         cards: [
-          {
+          new Card({
             name: rootValue.station,
             component: rootValue.station,
-          },
+          }),
         ],
       };
     }

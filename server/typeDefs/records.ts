@@ -1,6 +1,7 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import {RecordSnippet} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -129,14 +130,14 @@ const resolver = {
     recordSnippets(_rootQuery, {simulatorId, visible}) {
       const sim = App.simulators.find(s => s.id === simulatorId);
       if (!sim) return [];
-      const currentSnippet = {
+      const currentSnippet = new RecordSnippet({
         id: `current-${simulatorId}`,
         simulatorId: sim.id,
         name: "All Records",
         type: "normal",
         visible: true,
         records: sim.records.filter(r => r.snippetId === null).map(r => r.id),
-      };
+      });
       return sim.recordSnippets
         .concat(currentSnippet)
         .filter(c => (visible ? true : c.visible));

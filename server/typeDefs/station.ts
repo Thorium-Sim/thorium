@@ -1,7 +1,8 @@
 import App from "../app";
-import {gql, withFilter} from "apollo-server-express";
+import {gql} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
+import {Simulator} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -132,7 +133,7 @@ const resolver = {
   },
   Station: {
     cards(station, {showHidden}, context) {
-      let simulator = context.simulator;
+      let simulator: Simulator = context.simulator;
       if (!simulator) {
         const clientObj = App.clients.find(c => c.id === context.clientId);
         simulator = App.simulators.find(s => s.id === clientObj?.simulatorId);

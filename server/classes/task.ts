@@ -2,9 +2,58 @@ import uuid from "uuid";
 import App from "../app";
 import taskDefinitions from "../tasks";
 import {randomFromList} from "./generic/damageReports/constants";
+import Simulator from "./simulator";
+import {Station} from "./stationSet";
+
+export type ValueDef = {
+  [key: string]: {
+    input: ({
+      simulator,
+      stations,
+    }: {
+      simulator?: Simulator;
+      stations?: Station[];
+    }) => any;
+    value: ({
+      simulator,
+      stations,
+    }: {
+      simulator?: Simulator;
+      stations?: Station[];
+    }) => any;
+  };
+};
+interface TaskDefinition {
+  name: string;
+  class: string;
+  active: ({simulator}: {simulator: Simulator}) => boolean;
+  stations: ({simulator}: {simulator: Simulator}) => Station[];
+  values: ValueDef;
+  instructions: ({
+    simulator,
+    requiredValues,
+    task,
+  }: {
+    simulator: Simulator;
+    requiredValues: {[key: string]: any};
+    task: any;
+  }) => string;
+  verify: ({
+    simulator,
+    requiredValues,
+  }: {
+    simulator: Simulator;
+    requiredValues: {[key: string]: any};
+  }) => boolean;
+}
 
 export class Macro {
-  constructor(params) {
+  id: string;
+  event: string;
+  args: string;
+  delay: number;
+  noCancelOnReset: boolean;
+  constructor(params: Partial<Macro>) {
     this.id = params.id || uuid.v4();
     this.event = params.event || "";
     this.args = params.args || "{}";
@@ -13,7 +62,25 @@ export class Macro {
   }
 }
 export default class Task {
-  constructor(params = {}) {
+  id: string;
+  class: "Task" = "Task";
+  definition: string;
+  simulatorId: string;
+  station: string;
+  taskTemplate: string;
+  systemId: string;
+  deck: string;
+  room: string;
+  values: any;
+  verified: boolean;
+  dismissed: boolean;
+  verifyRequested: boolean;
+  startTime: Date;
+  endTime: Date;
+  timeElapsedInMS: number;
+  macros: Macro[];
+  assigned: boolean | string;
+  constructor(params: Partial<Task> = {}) {
     // The check to see if the task is relevant was already handled
     // before this task was instantiated
 
@@ -27,9 +94,9 @@ export default class Task {
     // The values from the task template are stamped onto the task when it is created.
 
     // Get the random values provided by the task definition
-    const definitionObject = taskDefinitions.find(
+    const definitionObject: TaskDefinition = taskDefinitions.find(
       t => t.name === this.definition,
-    );
+    ) as TaskDefinition;
 
     this.simulatorId = params.simulatorId || "";
     const simulator = App.simulators.find(s => s.id === this.simulatorId);
@@ -52,7 +119,7 @@ export default class Task {
     this.deck = params.deck || "";
     this.room = params.room || "";
 
-    const defintionValues = definitionObject.values
+    const definitionValues = definitionObject.values
       ? Object.entries(definitionObject.values).reduce((prev, [key, value]) => {
           prev[key] = value.value({simulator, stations: simulator.stations});
           return prev;
@@ -71,7 +138,7 @@ export default class Task {
       setValues = params.values || {};
     }
 
-    this.values = {...defintionValues, ...setValues};
+    this.values = {...definitionValues, ...setValues};
 
     // Task parameters
     this.verified = params.verified || false;

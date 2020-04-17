@@ -1,6 +1,7 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import {Room} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -65,8 +66,7 @@ const resolver = {
       return App.inventory
         .filter(i => Object.keys(i.roomCount).indexOf(room.id) > -1)
         .map(i => {
-          i.count = i.roomCount[room.id];
-          return i;
+          return {...i, count: i.roomCount[room.id]};
         });
     },
     systems(room) {
@@ -79,10 +79,13 @@ const resolver = {
       let rooms = App.rooms.concat(
         App.dockingPorts
           .filter(d => d.deckId && d.docked)
-          .map(d => ({
-            ...d,
-            name: `${d.shipName || d.name} Loading`,
-          })),
+          .map(
+            d =>
+              new Room({
+                ...d,
+                name: `${d.shipName || d.name} Loading`,
+              }),
+          ),
       );
       if (simulatorId) {
         rooms = rooms.filter(r => r.simulatorId === simulatorId);

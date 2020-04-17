@@ -1,6 +1,7 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import {Crew} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -58,7 +59,12 @@ const schema = gql`
   }
 `;
 
-function getCrew(simulatorId, position, killed, crew) {
+function getCrew(
+  simulatorId: string,
+  position: string,
+  killed: boolean,
+  crew?: Crew[],
+) {
   let returnVal = crew || App.crew.concat();
   if (simulatorId) {
     returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
@@ -111,8 +117,7 @@ const resolver = {
       return App.inventory
         .filter(i => Object.keys(i.crewCount).indexOf(crew.id) > -1)
         .map(i => {
-          i.count = i.crewCount[crew.id];
-          return i;
+          return {...i, count: i.crewCount[crew.id]};
         });
     },
   },

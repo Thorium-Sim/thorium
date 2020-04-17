@@ -18,7 +18,7 @@ const resolver = {
   BigInt: BigInt,
   Mutation: {
     snapshot() {
-      App.snapshot(true);
+      App.snapshot();
     },
     test(root, args, context) {
       App.test(args);
