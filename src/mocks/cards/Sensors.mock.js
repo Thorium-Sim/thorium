@@ -36,6 +36,17 @@ export default [
   },
   {
     request: {
+      query: SensorsDocument,
+      variables: {simulatorId: "test"},
+    },
+    result: {
+      data: {
+        sensorsUpdate: sensors,
+      },
+    },
+  },
+  {
+    request: {
       query: SensorsPingSubDocument,
       variables: {sensorsId: "test"},
     },
