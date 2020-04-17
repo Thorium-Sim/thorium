@@ -1,12 +1,3 @@
-export interface LightingParams {
-  intensity?: number;
-  action?: "normal" | "fade" | "shake" | "strobe" | "oscillate";
-  actionStrength?: number;
-  transitionDuration?: number;
-  useAlertColor?: boolean;
-  color?: string | null;
-}
-
 export default class Lighting {
   class: "Lighting";
   intensity: number;
@@ -15,7 +6,7 @@ export default class Lighting {
   transitionDuration: number;
   useAlertColor: boolean;
   color: string | null;
-  constructor(params: LightingParams = {}) {
+  constructor(params: Partial<Lighting> = {}) {
     this.class = "Lighting";
     this.intensity = params.intensity || 0;
 
@@ -33,7 +24,7 @@ export default class Lighting {
     actionStrength,
     transitionDuration,
     color,
-  }: LightingParams) {
+  }: Partial<Lighting>) {
     if (intensity || intensity === 0) this.intensity = intensity;
     if (action) this.action = action;
     if (actionStrength || actionStrength === 0)

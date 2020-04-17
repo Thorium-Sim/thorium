@@ -8,10 +8,17 @@ export class Stage {
   scaleLabel: string;
   scaleLabelShort: string;
   skyboxKey: string;
-  constructor({scaleLabel, scaleLabelShort, skyboxKey}) {
+  rootStage: boolean;
+  constructor({
+    scaleLabel,
+    scaleLabelShort,
+    skyboxKey,
+    rootStage,
+  }: Partial<Stage>) {
     this.scaleLabel = scaleLabel || "Meters";
     this.scaleLabelShort = scaleLabelShort || "Meter";
     this.skyboxKey = skyboxKey || "Star background";
+    this.rootStage = rootStage || false;
   }
 }
 

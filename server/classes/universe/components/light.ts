@@ -8,7 +8,7 @@ export class Light {
   intensity: number;
   decay: number;
   color: string;
-  constructor({intensity, decay, color}) {
+  constructor({intensity, decay, color}: Partial<Light>) {
     this.intensity = intensity ?? 1;
     this.decay = decay ?? 1;
     this.color = color || "#ffffff";

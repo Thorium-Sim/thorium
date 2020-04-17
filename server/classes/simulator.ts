@@ -10,59 +10,10 @@ import Assets from "./simulatorAssets";
 import SoundEffects from "./simulatorSoundEffects";
 import TimelineInstance from "./timelineInstance";
 import Ship from "./ship";
-import Ambiance, {AmbianceParams} from "./ambiance";
-import Lighting, {LightingParams} from "./lighting";
+import Ambiance from "./ambiance";
+import Lighting from "./lighting";
 import RemoteAccess from "./remoteAccess";
 
-interface SimulatorParams {
-  id?: string;
-  name?: string;
-  layout?: string;
-  caps?: boolean;
-  hasLegs?: boolean;
-  alertLevel?: "1" | "2" | "3" | "4" | "5" | "p";
-  alertLevelLock?: boolean;
-  template?: boolean;
-  templateId?: string | null;
-  class?: "Simulator";
-  assets?: Assets;
-  soundEffects?: SoundEffects;
-  stationSet?: string;
-  stations?: Station[];
-  exocomps?: number;
-  mission?: string;
-  currentTimelineStep?: number;
-  executedTimelineSteps?: string[];
-  timelines?: TimelineInstance[];
-  missionConfigs?: any;
-  bridgeOfficerMessaging?: boolean;
-  teams?: Team[];
-  training?: boolean;
-  ship?: Ship;
-  panels?: string[];
-  commandLines?: string[];
-  triggers?: string[];
-  triggersPaused?: boolean;
-  interfaces?: string[];
-  lighting?: Lighting;
-  ambiance?: Ambiance[];
-  midiSets?: string[];
-  crackedClients?: {[key: string]: boolean};
-  clientCards?: {[key: string]: string};
-  stationAssignedCards?: {[key: string]: Card[]};
-  flipped?: boolean;
-  hasPrinter?: boolean;
-  stepDamage?: boolean;
-  verifyStep?: boolean;
-  requiredDamageSteps?: DamageStep[];
-  optionalDamageSteps?: DamageStep[];
-  damageTasks?: DamageTask[];
-  commandLineOutputs?: any;
-  commandLineFeedback?: any;
-  records?: Record[];
-  recordSnippets?: RecordSnippet[];
-  spaceEdventuresId?: string | null;
-}
 export default class Simulator {
   id: string;
   name: string;
@@ -112,7 +63,7 @@ export default class Simulator {
   recordSnippets: RecordSnippet[];
   spaceEdventuresId: string | null;
 
-  constructor(params: SimulatorParams = {}, newlyCreated: boolean = false) {
+  constructor(params: Partial<Simulator> = {}, newlyCreated: boolean = false) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Simulator";
     this.layout = params.layout || "LayoutCorners";
@@ -305,13 +256,13 @@ export default class Simulator {
       ...args,
     };
   }
-  updateLighting(lighting: LightingParams) {
+  updateLighting(lighting: Partial<Lighting>) {
     this.lighting.update(lighting);
   }
   updateAmbiance(ambiance: Ambiance) {
     this.ambiance.find(a => a.id === ambiance.id).update(ambiance);
   }
-  addAmbiance(ambiance: AmbianceParams) {
+  addAmbiance(ambiance: Partial<Ambiance>) {
     this.ambiance.push(new Ambiance(ambiance));
   }
   removeAmbiance(id: string) {

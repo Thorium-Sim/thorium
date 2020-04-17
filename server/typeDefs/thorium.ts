@@ -1,12 +1,14 @@
 import App from "../app";
-import {gql} from "apollo-server-express";
+import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import GraphQLClient from "../helpers/graphqlClient";
 import request from "request";
 import fetch from "node-fetch";
 import uuid from "uuid";
 import {capitalCase} from "change-case";
-const mutationHelper = require("../helpers/mutationHelper").default;
+
+import heap from "../helpers/heap";
+import tokenGenerator from "../helpers/tokenGenerator";
 
 const issuesUrl =
   "https://12usj3vwf1.execute-api.us-east-1.amazonaws.com/prod/issueTracker";
@@ -98,6 +100,8 @@ const schema = gql`
     """
     generic(simulatorId: ID!, key: String!): String
 
+    clockSync(clientId: ID!): String
+
     addIssue(
       title: String!
       body: String!
@@ -109,9 +113,27 @@ const schema = gql`
   }
   extend type Subscription {
     thoriumUpdate: Thorium
-    clockSync: String
+    clockSync(clientId: ID!): String
   }
 `;
+
+const badgeAssign = ({
+  badgeId,
+  station,
+  context: {simulator, flight, clientId},
+}) => {
+  const clients = App.clients.filter(c => {
+    if (clientId) return c.id === clientId;
+    if (station)
+      return (
+        c.simulatorId === simulator.id &&
+        (c.station === station || c.id === station)
+      );
+    return c.flightId === flight.id;
+  });
+  const badges = clients.map(c => ({clientId: c.id, badgeId}));
+  flight.addBadges(badges);
+};
 
 const resolver = {
   Thorium: {
@@ -119,7 +141,7 @@ const resolver = {
       // Simple timeout based caching
       if (
         !spaceEdventuresData ||
-        spaceEdventuresTimeout + 1000 * 60 * 5 < new Date()
+        spaceEdventuresTimeout + 1000 * 60 * 5 < Number(new Date())
       ) {
         spaceEdventuresTimeout = Date.now();
         return GraphQLClient.query({
@@ -166,7 +188,116 @@ const resolver = {
     },
   },
   Mutation: {
-    ...mutationHelper(schema, ["addIssue", "addIssueUpload"]),
+    setTrackingPreference: ({pref}) => {
+      App.doTrack = pref;
+      App.askedToTrack = true;
+      heap.stubbed = !pref;
+    },
+
+    importTaskTemplates: () => {
+      if (App.addedTaskTemplates) return;
+      App.addedTaskTemplates = true;
+      const templates = require("../helpers/baseTaskTemplates.js")();
+      App.taskTemplates = App.taskTemplates.concat(templates);
+      pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
+    },
+
+    setSpaceEdventuresToken: async ({token}) => {
+      // Check the token first
+      const {
+        data: {center},
+      } = await GraphQLClient.query({
+        query: `query {
+          center {
+            id
+            name
+          }
+        }`,
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      if (center) {
+        App.spaceEdventuresToken = token;
+        return center;
+      }
+    },
+
+    assignSpaceEdventuresFlightRecord: ({simulatorId, flightId}) => {
+      const flight = App.flights.find(
+        f => f.id === flightId || f.simulators.includes(simulatorId),
+      );
+      flight.submitSpaceEdventure();
+    },
+
+    assignSpaceEdventuresFlightType: ({flightId, simulatorId, flightType}) => {
+      const flight = App.flights.find(
+        f => f.id === flightId || f.simulators.includes(simulatorId),
+      );
+      if (!flight) return;
+      flight.setFlightType(flightType);
+      pubsub.publish("flightsUpdate", App.flights);
+    },
+
+    removeSpaceEdventuresClient: ({flightId, clientId}) => {
+      const flight = App.flights.find(f => f.id === flightId);
+      if (!flight) return;
+      flight.removeClient(clientId);
+      pubsub.publish("flightsUpdate", App.flights);
+    },
+    assignSpaceEdventuresBadge: badgeAssign,
+    assignSpaceEdventuresMission: badgeAssign,
+    getSpaceEdventuresLogin: async ({token, context}) => {
+      async function doLogin() {
+        let res: any = {};
+        try {
+          res = await GraphQLClient.query({
+            query: `query GetUser($token:String!) {
+          user:userByToken(token:$token) {
+            id
+            profile {
+              name
+              displayName
+              rank {
+                name
+              }
+            }
+          }
+        }    
+        `,
+            variables: {token},
+          });
+        } catch (err) {
+          return err.message.replace("GraphQL error:", "Error:");
+        }
+        const {
+          data: {user},
+        } = res;
+        const clientId = context.clientId;
+        if (user) {
+          const client = App.clients.find(c => c.id === clientId);
+          client.login(
+            user.profile.displayName ||
+              user.profile.name ||
+              user.profile.rank.name,
+            true,
+          );
+          const flight = App.flights.find(f => f.id === client.flightId);
+          if (flight) {
+            flight.addSpaceEdventuresUser(client.id, user.id);
+            flight.loginClient({
+              id: client.id,
+              token: tokenGenerator(),
+              simulatorId: client.simulatorId,
+              name: client.station,
+            });
+          }
+        }
+        pubsub.publish("clientChanged", App.clients);
+      }
+      return doLogin();
+    },
+
     addIssue(rootValue, {title, body, person, priority, type}) {
       // Create our body
       var postBody =
@@ -194,7 +325,7 @@ const resolver = {
         function() {},
       );
     },
-    addIssueUpload(rootValue, {data, filename, ext}) {
+    async addIssueUpload(rootValue, {data, filename, ext}) {
       const uploadPath = `uploads/${filename}-${uuid.v4()}.${ext}`;
       const url =
         "https://api.github.com/repos/thorium-sim/issue-uploads/contents/" +
@@ -220,6 +351,9 @@ const resolver = {
         })
         .catch(err => console.error(err));
     },
+    clockSync(rootValue, {clientId}) {
+      pubsub.publish("clockSync", {clientId});
+    },
   },
   Subscription: {
     thoriumUpdate: {
@@ -232,7 +366,10 @@ const resolver = {
       resolve() {
         return new Date();
       },
-      subscribe: () => pubsub.asyncIterator("clockSync"),
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("clockSync"),
+        (rootValue, {clientId}) => rootValue.clientId === clientId,
+      ),
     },
   },
 };

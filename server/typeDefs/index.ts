@@ -63,7 +63,7 @@ import taskReportTypeDefs from "./taskReport.js";
 import tasksTypeDefs from "./tasks.js";
 import teamsTypeDefs from "./teams.js";
 import templateTypeDefs from "./template";
-import thoriumTypeDefs from "./thorium.js";
+import thoriumTypeDefs from "./thorium";
 import thrustersTypeDefs from "./thrusters.js";
 import thxTypeDefs from "./thx.js";
 import torpedosTypeDefs from "./torpedos.js";

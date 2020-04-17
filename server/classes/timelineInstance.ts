@@ -5,13 +5,7 @@ export default class TimelineInstance {
   missionId: string;
   currentTimelineStep: number;
   executedTimelineSteps: string[];
-  constructor(
-    params: {
-      missionId?: string;
-      currentTimelineStep?: number;
-      executedTimelineSteps?: string[];
-    } = {},
-  ) {
+  constructor(params: Partial<TimelineInstance> = {}) {
     this.id = uuid.v4();
     this.missionId = params.missionId || null;
     this.currentTimelineStep = params.currentTimelineStep || 0;

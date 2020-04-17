@@ -2492,6 +2492,7 @@ type Mutation {
 
   """Macro: Generic: Do a generic thing. Use for triggers."""
   generic(simulatorId: ID!, key: String!): String
+  clockSync(clientId: ID!): String
   addIssue(title: String!, body: String!, person: String!, priority: String!, type: String!): String
   addIssueUpload(data: String!, filename: String!, ext: String!): String
   rotationUpdate(id: ID!, rotation: RotationInput, on: Boolean): String
@@ -3854,7 +3855,7 @@ type Subscription {
   teamsUpdate(simulatorId: ID, type: String, cleared: Boolean): [Team]
   _templateUpdate(simulatorId: ID): Template
   thoriumUpdate: Thorium
-  clockSync: String
+  clockSync(clientId: ID!): String
   rotationChange(simulatorId: ID): Thruster
   thxUpdate(simulatorId: ID): [Thx]
   torpedosUpdate(simulatorId: ID): [Torpedo]

@@ -54,13 +54,13 @@ export default () => {
     }
     if (App.entities.filter(e => !e.template).length === 0) {
       const entity = new Entity({
-        id: "root-stage",
         flightId: "template",
       });
       entity.stage = new components.Stage({
         scaleLabel: "Kilometers",
         scaleLabelShort: "KM",
         skyboxKey: "Star background",
+        rootStage: true,
       });
       entity.identity = new components.Identity({
         name: "Base Universe",

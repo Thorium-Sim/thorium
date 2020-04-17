@@ -1,24 +1,5 @@
 import RemoteAccess from "./remoteAccess";
 
-interface ShipParams {
-  clamps?: boolean;
-  ramps?: boolean;
-  airlock?: boolean;
-  legs?: boolean;
-  bridgeCrew?: number;
-  extraPeople?: number;
-  radiation?: number;
-  speed?: number;
-  selfDestructTime?: number | null;
-  selfDestructCode?: string | null;
-  selfDestructAuto?: boolean;
-  remoteAccessCodes?: RemoteAccess[];
-  extraSystems?: [];
-  inventoryLogs?: {
-    timestamp: Date;
-    log: string;
-  }[];
-}
 // A separate object for vestigial parts of the ship
 export default class Ship {
   clamps: boolean;
@@ -38,7 +19,7 @@ export default class Ship {
     timestamp: Date;
     log: string;
   }[];
-  constructor(params: ShipParams = {}, newlyCreated: boolean = false) {
+  constructor(params: Partial<Ship> = {}, newlyCreated: boolean = false) {
     this.clamps = params.clamps || false; // Detached
     this.ramps = params.ramps || false; // Retracted
     this.airlock = params.airlock || false; // Closed

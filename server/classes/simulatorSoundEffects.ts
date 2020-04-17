@@ -1,15 +1,3 @@
-interface SoundEffectsParams {
-  buttonClick?: string[];
-  buttonHover?: string[];
-  cardChange?: string[];
-  notification?: string[];
-  login?: string[];
-  buttonClickVolume?: number;
-  buttonHoverVolume?: number;
-  cardChangeVolume?: number;
-  notificationVolume?: number;
-  loginVolume?: number;
-}
 export default class SoundEffects {
   buttonClick: string[];
   buttonHover: string[];
@@ -21,7 +9,7 @@ export default class SoundEffects {
   cardChangeVolume: number;
   notificationVolume: number;
   loginVolume: number;
-  constructor(params: SoundEffectsParams = {}) {
+  constructor(params: Partial<SoundEffects> = {}) {
     this.buttonClick = params.buttonClick || [];
     this.buttonHover = params.buttonHover || [];
     this.cardChange = params.cardChange || [];

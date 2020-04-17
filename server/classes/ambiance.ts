@@ -1,14 +1,5 @@
 import uuid from "uuid";
 
-export interface AmbianceParams {
-  id?: string;
-  class?: "Ambiance";
-  name?: string;
-  asset?: string;
-  volume?: number;
-  channel?: number[] | number;
-  playbackRate?: number;
-}
 export default class Ambiance {
   id: string;
   class: "Ambiance";
@@ -17,7 +8,7 @@ export default class Ambiance {
   volume: number;
   channel: number[] | number;
   playbackRate: number;
-  constructor(params: AmbianceParams = {}) {
+  constructor(params: Partial<Ambiance> = {}) {
     this.id = params.id || uuid.v4();
     this.class = "Ambiance";
     this.name = params.name || "Ambiance";
@@ -26,7 +17,7 @@ export default class Ambiance {
     this.channel = params.channel || [0, 1];
     this.playbackRate = params.playbackRate || 1;
   }
-  update({name, asset, volume, channel, playbackRate}: AmbianceParams) {
+  update({name, asset, volume, channel, playbackRate}: Partial<Ambiance>) {
     if (name) this.name = name;
     if (asset || asset === "") this.asset = asset;
     if (volume || volume === 0) this.volume = volume;

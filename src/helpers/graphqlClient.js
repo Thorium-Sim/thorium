@@ -84,14 +84,17 @@ const mutationMiddleware = new ApolloLink((operation, forward) => {
     const opDef = operation?.query.definitions?.[0];
     const parentType = getOperationRootType(schema, opDef);
     const fieldDef = getFieldDef(schema, parentType, event);
-
-    const args = getArgumentValues(
-      fieldDef,
-      opDef.selectionSet.selections[0],
-      variables,
-    );
-    if (event) {
-      publish("mutation-event", {event, args});
+    try {
+      const args = getArgumentValues(
+        fieldDef,
+        opDef.selectionSet.selections[0],
+        variables,
+      );
+      if (event) {
+        publish("mutation-event", {event, args});
+      }
+    } catch {
+      // Swallow the error
     }
   }
 

@@ -24,6 +24,7 @@ import {immerable} from "immer";
 export class Entity {
   [immerable] = true;
   id?: string;
+  templateId: string;
   flightId: string;
   interval?: number;
   // Possible components
@@ -43,9 +44,16 @@ export class Entity {
 
   static class = "Entity";
   class = "Entity";
-  constructor({id = uuid.v4(), flightId, interval = 1, ...components}) {
+  constructor({
+    id = uuid.v4(),
+    templateId = id,
+    flightId,
+    interval = 1,
+    ...components
+  }) {
     this.id = id;
     this.flightId = flightId || null;
+    this.templateId = templateId;
     this.interval = interval;
     // Apply the components
     Object.entries(components).forEach(([key, component]) => {

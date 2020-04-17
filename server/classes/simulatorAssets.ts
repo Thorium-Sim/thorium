@@ -1,12 +1,3 @@
-interface AssetsParams {
-  mesh?: string;
-  texture?: string;
-  side?: string;
-  top?: string;
-  logo?: string;
-  bridge?: string;
-}
-
 export default class Assets {
   mesh: string;
   texture: string;
@@ -14,7 +5,7 @@ export default class Assets {
   top: string;
   logo: string;
   bridge: string;
-  constructor(params: AssetsParams = {}) {
+  constructor(params: Partial<Assets> = {}) {
     this.mesh = params.mesh || "/Simulator/default/mesh.obj";
     this.texture = params.texture || "/Simulator/default/texture.jpg";
     this.side = params.side || "/Simulator/default/side.png";

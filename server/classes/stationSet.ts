@@ -7,7 +7,13 @@ export class StationSet {
   simulatorId: string;
   crewCount: number;
   stations: Station[];
-  constructor({id, name, simulatorId, crewCount, stations = []}: StationSet) {
+  constructor({
+    id,
+    name,
+    simulatorId,
+    crewCount,
+    stations = [],
+  }: Partial<StationSet>) {
     this.class = "StationSet";
     this.id = id || uuid.v4();
     this.simulatorId = simulatorId || null;
@@ -99,7 +105,7 @@ export class Station {
     training,
     ambiance,
     layout,
-  }: Station) {
+  }: Partial<Station>) {
     this.class = "Station";
     this.name = name || "Station";
     this.description = description || "";
@@ -127,13 +133,13 @@ export class Station {
   setAmbiance(ambiance: string) {
     this.ambiance = ambiance;
   }
-  addCard(card: CardParams) {
+  addCard(card: Partial<Card>) {
     this.cards.push(new Card(card));
   }
   removeCard(cardName: string) {
     this.cards = this.cards.filter((c: Card) => c.name !== cardName);
   }
-  updateCard(cardName: string, cardUpdate: CardParams) {
+  updateCard(cardName: string, cardUpdate: Partial<Card>) {
     const card = this.cards.find((c: Card) => c.name === cardName);
     card.update(cardUpdate);
   }
@@ -178,27 +184,20 @@ export class Station {
     this.widgets = move(this.widgets, this.widgets.indexOf(widget), order);
   }
 }
-
-export interface CardParams {
-  name: string;
-  icon?: string | null;
-  component: string;
-  hidden?: boolean;
-}
 export class Card {
   name: string;
   icon: string | null;
   component: string;
   class: string;
   hidden: boolean;
-  constructor(params: CardParams) {
+  constructor(params: Partial<Card>) {
     this.name = params.name || "Card";
     this.icon = params.icon || null;
     this.component = params.component || "Login";
     this.class = "Card";
     this.hidden = false;
   }
-  update({name, icon, component}: CardParams) {
+  update({name, icon, component}: Partial<Card>) {
     if (name) this.name = name;
     if (icon) this.icon = icon;
     if (component) this.component = component;

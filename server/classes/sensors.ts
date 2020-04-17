@@ -10,7 +10,7 @@ class Scan {
   response: string;
   scanning: boolean;
   cancelled: boolean;
-  constructor(params) {
+  constructor(params: Partial<Scan>) {
     this.id = params.id || uuid.v4();
     this.timestamp = params.timestamp || new Date().toString();
     this.mode = params.mode || "Standard";
@@ -76,7 +76,7 @@ export default class Sensors extends System {
 
   training: boolean;
 
-  constructor(params, newlyCreated = false) {
+  constructor(params: Partial<Sensors>, newlyCreated = false) {
     super(params);
     this.class = "Sensors";
     this.type = "Sensors";
