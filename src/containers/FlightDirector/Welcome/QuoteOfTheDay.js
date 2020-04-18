@@ -62,6 +62,7 @@ const quotes = [
   "In case you were wondering, I am, by definition, the best version of myself.",
   "I'm not crazy, I'm just colorful.",
   "What we do in life, echoes in eternity.",
+  "Institutions have a future … but people have no future. People have only hope.",
 ];
 
 const QuoteOfTheDay = () => {
