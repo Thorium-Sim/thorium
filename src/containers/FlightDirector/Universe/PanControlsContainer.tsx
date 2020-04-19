@@ -35,17 +35,16 @@ declare global {
 export default function PanControlsContainer({
   recenter,
   storeApi,
-  stage,
+  stageId,
 }: {
   recenter: {};
   storeApi: StoreApi<PatchData<Entity[]>>;
-  stage?: Entity;
+  stageId?: string;
 }) {
   const [context, dispatch] = React.useContext(CanvasContext);
   const {camera, gl, size} = useThree();
   const maxSize = Math.max(size.width, size.height);
   const controls = React.useRef({reset: () => {}, update: () => {}, zoom0: 0});
-  const stageId = stage?.id;
   React.useEffect(() => {
     camera.position.set(0, 0, 1 / 0.0000000001);
     const radius = storeApi.getState().data.reduce((prev, next) => {

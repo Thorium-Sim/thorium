@@ -101,7 +101,7 @@ const EntityTemplate: React.FC = () => {
               <ambientLight intensity={1} />
               <pointLight position={[10, 10, 10]} intensity={0.5} />
               <React.Suspense fallback={null}>
-                <Entity key={entity.id} library entity={{...entity}} />
+                {/* <Entity key={entity.id} library entity={{...entity}} /> */}
               </React.Suspense>
               <OrbitControlsContainer />
             </Canvas>

@@ -20,18 +20,16 @@ interface PropertyPaletteProps {
   useEntityState: UseStore<PatchData<Entity[]>>;
   currentStage?: string;
   setCurrentStage?: React.Dispatch<React.SetStateAction<string>>;
-  controllingEntityId?: string | null;
-  setControllingEntityId?: React.Dispatch<React.SetStateAction<string | null>>;
 }
 const PropertyPalette: React.FC<PropertyPaletteProps> = ({
   selectedEntity: realSelectedEntity,
   useEntityState,
   currentStage,
   setCurrentStage,
-  controllingEntityId,
-  setControllingEntityId,
 }) => {
-  const [{selected}] = React.useContext(CanvasContext);
+  const [{selected, controllingEntityId}, dispatch] = React.useContext(
+    CanvasContext,
+  );
 
   const selectedEntity =
     useEntityState(
@@ -73,13 +71,17 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({
               identity={selectedEntity.identity}
             />
           )}
-          {setControllingEntityId && currentStage !== selectedEntity.id && (
+          {setCurrentStage && currentStage !== selectedEntity.id && (
             <Button
               active={controllingEntityId === selectedEntity.id}
               onClick={() =>
-                setControllingEntityId(e =>
-                  e === selectedEntity.id ? null : selectedEntity.id,
-                )
+                dispatch({
+                  type: "controllingEntity",
+                  id:
+                    controllingEntityId === selectedEntity.id
+                      ? ""
+                      : selectedEntity.id,
+                })
               }
             >
               Control Entity

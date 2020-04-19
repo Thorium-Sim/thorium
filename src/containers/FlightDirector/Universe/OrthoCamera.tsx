@@ -9,9 +9,9 @@ import {Entity} from "generated/graphql";
 interface CameraProps {
   recenter: any;
   storeApi: StoreApi<PatchData<Entity[]>>;
-  stage?: Entity;
+  stageId?: string;
 }
-const Camera: React.FC<CameraProps> = ({recenter, storeApi, stage}) => {
+const Camera: React.FC<CameraProps> = ({recenter, storeApi, stageId}) => {
   const ref = React.useRef(new OrthographicCamera(0, 0, 0, 0, 0, 0));
   const {setDefaultCamera, gl} = useThree();
   const frustumSize = 10;
@@ -28,7 +28,7 @@ const Camera: React.FC<CameraProps> = ({recenter, storeApi, stage}) => {
 
   return (
     <>
-      <PanControls recenter={recenter} storeApi={storeApi} stage={stage} />
+      <PanControls recenter={recenter} storeApi={storeApi} stageId={stageId} />
       <orthographicCamera
         ref={ref}
         args={[

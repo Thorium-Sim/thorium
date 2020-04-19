@@ -41,10 +41,10 @@ const MeasureCircles: React.FC<{
   );
 };
 interface CanvasAppProps {
-  stage?: EntityInterface;
+  stageId?: string;
   setDragging: React.Dispatch<React.SetStateAction<any>>;
   dragging: EntityType | undefined;
-  entities: EntityInterface[];
+  entityCount: number;
   storeApi: StoreApi<PatchData<EntityInterface[]>>;
 }
 function setNumberBounds(num: number) {
@@ -54,10 +54,10 @@ function setNumberBounds(num: number) {
   );
 }
 const CanvasApp: React.FC<CanvasAppProps> = ({
-  stage,
+  stageId,
   setDragging,
   dragging,
-  entities,
+  entityCount,
   storeApi,
 }) => {
   const [
@@ -103,13 +103,13 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       const {data} = await create({
         variables: {
           flightId: "template",
-          stageParentId: stage?.id || "",
+          stageParentId: stageId || "",
           position: {
             x: Math.round(mousePosition.current[0]),
             y: Math.round(mousePosition.current[1]),
             z: Math.round(mousePosition.current[2]),
           },
-          name: `New Entity ${entities.length + 1}`,
+          name: `New Entity ${entityCount + 1}`,
           meshType: dragging.appearance.meshType,
           color: dragging.appearance.color,
           emissiveColor: dragging.appearance.emissiveColor,
@@ -138,9 +138,9 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     dragging,
     setDragging,
     mousePosition,
-    entities.length,
-    stage,
     dispatch,
+    stageId,
+    entityCount,
   ]);
 
   const elementList = ["input", "textarea"];
@@ -169,6 +169,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
   );
 
   const onDragStop = React.useCallback(() => {
+    const entities = storeApi.getState().data;
     const updateEntities = entities
       .filter(({id}) => selected.includes(id))
       .map(({id, location}) => {
@@ -202,7 +203,6 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       setSelectionsDragged(false);
     });
   }, [
-    entities,
     positionOffset.x,
     positionOffset.y,
     positionOffset.z,
@@ -211,12 +211,17 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
     storeApi,
   ]);
 
+  const onDragStart = React.useCallback(() => setSelectionsDragged(true), []);
+
+  const skyboxKey = storeApi.getState().data.find(e => e.id === stageId)?.stage
+    ?.skyboxKey;
+
   return (
     <>
       {perspectiveCamera ? (
         <>
           <React.Suspense fallback={null}>
-            <Nebula skyboxKey={stage?.stage?.skyboxKey ?? "c"} />
+            <Nebula skyboxKey={skyboxKey ?? "c"} />
             <Fuzz storeApi={storeApi} />
           </React.Suspense>
           <PerspectiveCamera />
@@ -224,14 +229,18 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       ) : (
         <>
           <Grid />
-          <OrthoCamera recenter={recenter} storeApi={storeApi} stage={stage} />
-          {dragging && (
+          <OrthoCamera
+            recenter={recenter}
+            storeApi={storeApi}
+            stageId={stageId}
+          />
+          {/* {dragging && (
             <Entity
               dragging
               entity={dragging}
               mousePosition={mousePosition.current}
             />
-          )}
+          )} */}
           <BackPlane
             setSelected={() =>
               measuring && !measured
@@ -251,23 +260,18 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
       ) : null}
       <ambientLight intensity={lighting ? 0.1 : 1} />
 
-      {entities.map((e, i) => {
-        const isSelected = selected && selected.includes(e.id);
+      {Array.from({length: entityCount}).map((_, i) => {
         return (
-          <React.Suspense key={e.id} fallback={null}>
+          <React.Suspense key={`entity-${i}`} fallback={null}>
             <Entity
-              entity={e}
-              stage={stage}
-              selected={isSelected}
-              isDraggingMe={isSelected && selectionsDragged}
-              onDragStart={() => setSelectionsDragged(true)}
+              entityIndex={i}
+              stageId={stageId}
+              selectedEntityIds={selected}
+              isDraggingMe={selectionsDragged}
+              onDragStart={onDragStart}
               onDrag={onDrag}
               onDragStop={onDragStop}
-              positionOffset={
-                !dragSelecting && selected.includes(e.id)
-                  ? positionOffset
-                  : undefined
-              }
+              storeApi={storeApi}
             />
           </React.Suspense>
         );

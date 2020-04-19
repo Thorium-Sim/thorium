@@ -7,10 +7,8 @@ import usePatchedSubscriptions from "../../../helpers/hooks/usePatchedSubscripti
 import {Entity} from "../../../generated/graphql";
 import gql from "graphql-tag.macro";
 import PropertyPalette from "./PropertyPalette";
-import Joysticks from "./Joysticks";
 import {useParams} from "react-router";
 import {useNavigate} from "react-router-dom";
-import useLocalStorage from "helpers/hooks/useLocalStorage";
 import CanvasWrapper from "./CanvasWrapper";
 
 const sub = gql`
@@ -95,10 +93,6 @@ export default function UniversalSandboxEditor() {
     },
     [navigate],
   );
-  const [controllingEntityId, setControllingEntityId] = useLocalStorage(
-    "sandbox-controlling-id",
-    false,
-  );
   const [useEntityState, storeApi] = usePatchedSubscriptions<
     Entity[],
     {flightId: string; stageId: string}
@@ -107,15 +101,10 @@ export default function UniversalSandboxEditor() {
   return (
     <CanvasContextProvider>
       <div className="universal-sandbox-editor">
-        {controllingEntityId && (
-          <Joysticks controllingEntityId={controllingEntityId} />
-        )}
         <PropertyPalette
           useEntityState={useEntityState}
           currentStage={currentStage}
           setCurrentStage={setCurrentStage}
-          controllingEntityId={controllingEntityId}
-          setControllingEntityId={setControllingEntityId}
         />
         <div className="level-editor-container">
           <CanvasWrapper

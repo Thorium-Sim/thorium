@@ -14,36 +14,43 @@ import useEntityDrag from "./useEntityDrag";
 import EntityMaterial from "./EntityMaterial";
 import EntityModel from "./EntityModel";
 import useClientSystems from "./useClientSystems";
+import {StoreApi} from "zustand";
+import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
 
 interface EntityProps {
   dragging?: boolean;
   library?: boolean;
-  entity: EntityInterface;
-  stage?: EntityInterface;
-  selected?: boolean;
+  entityIndex: number;
+  stageId?: string;
+  selectedEntityIds?: string[];
   mousePosition?: PositionTuple;
   isDraggingMe?: boolean;
   positionOffset?: {x: number; y: number; z: number};
   onDragStart?: () => void;
   onDrag?: (dx: number, dy: number) => void;
   onDragStop?: () => void;
+  storeApi: StoreApi<PatchData<EntityInterface[]>>;
 }
 const noop = () => {};
 
 const Entity: React.FC<EntityProps> = ({
   dragging: isDragging,
   library,
-  entity,
-  stage,
-  selected,
+  entityIndex,
+  stageId,
+  selectedEntityIds = [],
   mousePosition,
   isDraggingMe = false,
   positionOffset = {x: 0, y: 0, z: 0},
   onDragStart = noop,
   onDrag = noop,
   onDragStop = noop,
+  storeApi,
 }) => {
-  const {id, location, appearance, light} = entity;
+  const {id, location, appearance, light} = storeApi.getState().data[
+    entityIndex
+  ];
+  const selected = selectedEntityIds.includes(id);
   const size = 1;
   const {meshType, cloudMapAsset, ringMapAsset} = appearance || {};
   const scale = library ? 1 : appearance?.scale || 1;
@@ -88,7 +95,8 @@ const Entity: React.FC<EntityProps> = ({
     id,
     library,
   );
-  useClientSystems(entity, mesh, positionOffset, stage);
+
+  useClientSystems(storeApi, id, mesh, positionOffset, stageId);
 
   if (!library && !isDragging && (!location || !position)) return null;
   const meshPosition:

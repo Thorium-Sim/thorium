@@ -74,7 +74,7 @@ export default function Library({
                   <ambientLight intensity={1} />
                   <pointLight position={[10, 10, 10]} intensity={0.5} />
                   <Suspense fallback={null}>
-                    <Entity library entity={l} />
+                    {/* <Entity library entity={l} /> */}
                   </Suspense>
                 </ApolloProvider>
               </Canvas>

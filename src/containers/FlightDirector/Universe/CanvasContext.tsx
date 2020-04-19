@@ -13,7 +13,8 @@ export type ActionType =
   | "measure"
   | "speed"
   | "position"
-  | "time";
+  | "time"
+  | "controllingEntity";
 
 interface CanvasContextState {
   dragging: boolean;
@@ -29,6 +30,7 @@ interface CanvasContextState {
   speed: number;
   timeInSeconds: number;
   position: [number, number, number];
+  controllingEntityId: string;
 }
 interface CanvasContextAction {
   type: ActionType;
@@ -53,6 +55,7 @@ const canvasContextDefault: CanvasContextState = {
   speed: 28,
   timeInSeconds: 60,
   position: [0, 0, 0],
+  controllingEntityId: localStorage.getItem("sandbox-controlling-id") || "",
 };
 
 const canvasContextReducer = (
@@ -109,6 +112,10 @@ const canvasContextReducer = (
     case "time":
       if (!action.timeInSeconds) return state;
       return {...state, timeInSeconds: action.timeInSeconds};
+    case "controllingEntity":
+      if (!action.id) return state;
+      localStorage.setItem("sandbox-controlling-id", action.id);
+      return {...state, controllingEntityId: action.id};
     default:
       return state;
   }
@@ -128,7 +135,6 @@ const CanvasContextProvider: React.FC = ({children}) => {
     canvasContextReducer,
     canvasContextDefault,
   );
-
   return (
     <CanvasContext.Provider value={value}>{children}</CanvasContext.Provider>
   );

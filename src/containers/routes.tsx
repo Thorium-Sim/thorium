@@ -66,7 +66,7 @@ const CLOCK_SYNC_MUTATION = gql`
   }
 `;
 
-const App: React.FC = () => {
+function useClockSync() {
   const client = useApolloClient();
   const [clientId, setClientId] = React.useState("");
   const sentTime = React.useRef(0);
@@ -103,15 +103,25 @@ const App: React.FC = () => {
 
     return () => unsubscribe.unsubscribe();
   }, [client, clientId]);
+}
 
+const ClockSync = React.memo(() => {
+  useClockSync();
+  return null;
+});
+
+const App: React.FC = () => {
   return (
-    <Router history={history}>
-      <Routes>
-        <Route path="client" element={<Client />} />
+    <>
+      <ClockSync />
+      <Router history={history}>
+        <Routes>
+          <Route path="client" element={<Client />} />
 
-        <Route path="/*" element={<FlightDirectorContainer />} />
-      </Routes>
-    </Router>
+          <Route path="/*" element={<FlightDirectorContainer />} />
+        </Routes>
+      </Router>
+    </>
   );
 };
 
