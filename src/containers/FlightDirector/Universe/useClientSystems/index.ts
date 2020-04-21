@@ -5,6 +5,7 @@ import {useFrame} from "react-three-fiber";
 import {CanvasContext} from "../CanvasContext";
 import {StoreApi} from "zustand";
 import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
+import {PositionTuple} from "../CanvasApp";
 
 const q = new Quaternion();
 const q2 = new Quaternion();
@@ -15,14 +16,16 @@ export default function useClientSystems(
   storeApi: StoreApi<PatchData<Entity[]>>,
   entityId: string,
   mesh: React.MutableRefObject<Mesh>,
-  positionOffset: {x: number; y: number; z: number},
+  isDragging: boolean,
+  mousePosition: React.MutableRefObject<PositionTuple>,
   stageId?: string,
 ) {
   const currentEntity = React.useRef<Entity>();
   const previousEntity = React.useRef<Entity>();
-  const [{camera: perspectiveCamera, controllingEntityId}] = React.useContext(
-    CanvasContext,
-  );
+  const [
+    {camera: perspectiveCamera, controllingEntityId, selected},
+  ] = React.useContext(CanvasContext);
+  const isSelected = selected.includes(entityId);
 
   const time = React.useRef(0);
   React.useEffect(() => {
@@ -34,7 +37,13 @@ export default function useClientSystems(
     });
     return () => unSub();
   }, [entityId, storeApi]);
+
   useFrame(({camera}, delta) => {
+    if (isDragging) {
+      mesh.current.position.set(...mousePosition.current);
+      return;
+    }
+
     if (
       !mesh.current ||
       !currentEntity.current?.interval ||
@@ -66,11 +75,11 @@ export default function useClientSystems(
       v.set(position.x, position.y, position.z);
       v2.set(oldPosition.x, oldPosition.y, oldPosition.z);
       v2.lerp(v, t);
-      mesh.current.position.set(
-        v2.x + positionOffset.x,
-        v2.y + positionOffset.y,
-        v2.z + positionOffset.z,
-      );
+      if (isSelected) {
+        mesh.current.position.set(v2.x, v2.y, v2.z);
+      } else {
+        mesh.current.position.set(v2.x, v2.y, v2.z);
+      }
     }
 
     // Set the camera to the position/rotation of the entity

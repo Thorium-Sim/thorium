@@ -10,7 +10,7 @@ import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import Light from "./Light";
 import Systems from "./Systems";
 import Stage from "./Stage";
-import {Button} from "reactstrap";
+import {Button, Label, Input} from "reactstrap";
 import {UseStore} from "zustand";
 import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
 import {CanvasContext} from "../CanvasContext";
@@ -71,21 +71,34 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({
               identity={selectedEntity.identity}
             />
           )}
-          {setCurrentStage && currentStage !== selectedEntity.id && (
+          {currentStage !== selectedEntity.id && selectedEntity.stage && (
             <Button
-              active={controllingEntityId === selectedEntity.id}
-              onClick={() =>
-                dispatch({
-                  type: "controllingEntity",
-                  id:
-                    controllingEntityId === selectedEntity.id
-                      ? ""
-                      : selectedEntity.id,
-                })
-              }
+              size="sm"
+              onClick={() => {
+                setCurrentStage?.(selectedEntity.id);
+                dispatch({type: "recenter"});
+              }}
             >
-              Control Entity
+              Enter Stage
             </Button>
+          )}
+          {setCurrentStage && currentStage !== selectedEntity.id && (
+            <Label>
+              <Input
+                type="checkbox"
+                active={controllingEntityId === selectedEntity.id}
+                onClick={() =>
+                  dispatch({
+                    type: "controllingEntity",
+                    id:
+                      controllingEntityId === selectedEntity.id
+                        ? ""
+                        : selectedEntity.id,
+                  })
+                }
+              />
+              Control Entity
+            </Label>
           )}
           {!selectedEntity.template && (
             <Stage

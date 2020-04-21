@@ -26,7 +26,6 @@ const Stage: React.FC<StageEditProps> = ({
   setCurrentStage,
 }) => {
   const [collapse, setCollapse] = React.useState<boolean>(false);
-  const [, dispatch] = React.useContext(CanvasContext);
   const [setStage] = useEntitySetStageMutation();
   const [removeStage] = useEntityRemoveStageMutation();
 
@@ -78,17 +77,6 @@ const Stage: React.FC<StageEditProps> = ({
         )}
         {stage && (
           <>
-            {currentStage !== id && (
-              <Button
-                size="sm"
-                onClick={() => {
-                  setCurrentStage?.(id);
-                  dispatch({type: "recenter"});
-                }}
-              >
-                Enter Stage
-              </Button>
-            )}
             <Label>
               Scale Label
               <Input

@@ -234,13 +234,15 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
             storeApi={storeApi}
             stageId={stageId}
           />
-          {/* {dragging && (
+          {dragging && (
             <Entity
               dragging
               entity={dragging}
-              mousePosition={mousePosition.current}
+              mousePosition={mousePosition}
+              entityIndex={-1}
+              storeApi={storeApi}
             />
-          )} */}
+          )}
           <BackPlane
             setSelected={() =>
               measuring && !measured
@@ -267,6 +269,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
               entityIndex={i}
               stageId={stageId}
               selectedEntityIds={selected}
+              mousePosition={mousePosition}
               isDraggingMe={selectionsDragged}
               onDragStart={onDragStart}
               onDrag={onDrag}

@@ -11,6 +11,7 @@ import PropertyPalette from "../Universe/PropertyPalette";
 import {Canvas} from "react-three-fiber";
 import Entity from "../Universe/Entity";
 import OrbitControlsContainer from "./OrbitControlsContainer";
+import {PositionTuple} from "../Universe/CanvasApp";
 
 const sub = gql`
   subscription TemplateEntities {
@@ -50,11 +51,13 @@ const EntityTemplate: React.FC = () => {
   const [create] = useEntityCreateTemplateMutation();
   const [selectedItem, setSelectedItem] = React.useState<string | null>(null);
 
-  const [useEntityState] = usePatchedSubscriptions<
+  const [useEntityState, storeApi] = usePatchedSubscriptions<
     EntityType[],
     {flightId: string}
   >(sub);
   const entities = useEntityState(state => state.data) || [];
+  const mousePosition = React.useRef<PositionTuple>([0, 0, 0]);
+
   const entity = entities.find(e => e.id === selectedItem);
   return (
     <Container fluid style={{height: "100%"}}>
@@ -101,7 +104,14 @@ const EntityTemplate: React.FC = () => {
               <ambientLight intensity={1} />
               <pointLight position={[10, 10, 10]} intensity={0.5} />
               <React.Suspense fallback={null}>
-                {/* <Entity key={entity.id} library entity={{...entity}} /> */}
+                <Entity
+                  key={entity.id}
+                  library
+                  mousePosition={mousePosition}
+                  entity={{...entity}}
+                  entityIndex={-1}
+                  storeApi={storeApi}
+                />
               </React.Suspense>
               <OrbitControlsContainer />
             </Canvas>

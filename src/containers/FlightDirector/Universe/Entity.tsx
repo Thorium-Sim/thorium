@@ -20,10 +20,11 @@ import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
 interface EntityProps {
   dragging?: boolean;
   library?: boolean;
+  entity?: EntityInterface;
   entityIndex: number;
   stageId?: string;
   selectedEntityIds?: string[];
-  mousePosition?: PositionTuple;
+  mousePosition: React.MutableRefObject<PositionTuple>;
   isDraggingMe?: boolean;
   positionOffset?: {x: number; y: number; z: number};
   onDragStart?: () => void;
@@ -33,9 +34,14 @@ interface EntityProps {
 }
 const noop = () => {};
 
+function useRerender() {
+  const [, setState] = React.useState({});
+  return React.useCallback(() => setState({}), []);
+}
 const Entity: React.FC<EntityProps> = ({
   dragging: isDragging,
   library,
+  entity,
   entityIndex,
   stageId,
   selectedEntityIds = [],
@@ -47,9 +53,37 @@ const Entity: React.FC<EntityProps> = ({
   onDragStop = noop,
   storeApi,
 }) => {
-  const {id, location, appearance, light} = storeApi.getState().data[
-    entityIndex
-  ];
+  const rerender = useRerender();
+
+  const {id, location, appearance, light} =
+    entity || storeApi.getState().data[entityIndex];
+  React.useEffect(() => {
+    // Poor man's React.memo
+    const unsub1 = storeApi.subscribe(
+      () => rerender(),
+      store => ({
+        appearance: store.data[entityIndex]?.appearance,
+        light: store.data[entityIndex]?.light,
+      }),
+      (oldObj, newObj) =>
+        oldObj?.appearance?.meshType === newObj?.appearance?.meshType &&
+        oldObj?.appearance?.cloudMapAsset ===
+          newObj?.appearance?.cloudMapAsset &&
+        oldObj?.appearance?.ringMapAsset === newObj?.appearance?.ringMapAsset &&
+        oldObj?.appearance?.scale === newObj?.appearance?.scale &&
+        oldObj.appearance?.materialMapAsset ===
+          newObj?.appearance?.materialMapAsset &&
+        oldObj.appearance?.emissiveColor ===
+          newObj?.appearance?.emissiveColor &&
+        oldObj.appearance?.emissiveIntensity ===
+          newObj?.appearance?.emissiveIntensity &&
+        oldObj.appearance?.color === newObj?.appearance?.color &&
+        oldObj?.light?.intensity === newObj?.light?.intensity &&
+        oldObj?.light?.decay === newObj?.light?.decay &&
+        oldObj?.light?.color === newObj?.light?.color,
+    );
+    return () => unsub1();
+  }, [entityIndex, rerender, storeApi]);
   const selected = selectedEntityIds.includes(id);
   const size = 1;
   const {meshType, cloudMapAsset, ringMapAsset} = appearance || {};
@@ -96,14 +130,21 @@ const Entity: React.FC<EntityProps> = ({
     library,
   );
 
-  useClientSystems(storeApi, id, mesh, positionOffset, stageId);
+  useClientSystems(
+    storeApi,
+    id,
+    mesh,
+    Boolean(isDragging),
+    mousePosition,
+    stageId,
+  );
 
   if (!library && !isDragging && (!location || !position)) return null;
   const meshPosition:
     | Vector3
     | [number, number, number]
     | undefined = isDragging
-    ? mousePosition
+    ? mousePosition?.current
     : ([
         (position?.x || 0) + positionOffset.x,
         (position?.y || 0) + positionOffset.y,
