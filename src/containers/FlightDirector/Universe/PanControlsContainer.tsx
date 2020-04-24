@@ -63,15 +63,15 @@ export default function PanControlsContainer({
     const storeData = storeApi.getState().data;
     const storeKeys = [
       storeData.length,
-      storeData[0].id,
-      storeData[storeData.length - 1].id,
+      storeData[0]?.id,
+      storeData[storeData.length - 1]?.id,
     ];
     const unSub = storeApi.subscribe((store: PatchData<Entity[]> | null) => {
       if (!store) return;
       if (
         storeKeys[0] !== store.data.length ||
-        storeKeys[1] !== store.data[0].id ||
-        storeKeys[2] !== store.data[store.data.length - 1].id
+        storeKeys[1] !== store.data[0]?.id ||
+        storeKeys[2] !== store.data[store.data.length - 1]?.id
       ) {
         unSub();
         dispatch({type: "recenter"});

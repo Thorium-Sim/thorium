@@ -63,6 +63,9 @@ const quotes = [
   "I'm not crazy, I'm just colorful.",
   "What we do in life, echoes in eternity.",
   "Institutions have a future … but people have no future. People have only hope.",
+  "Destroying an empire to win a war is no victory. And ending a battle to save an empire is no defeat.",
+  "Great people do not seek power; they have power thrust upon them.",
+  "I am not afraid. I will not hide my face behind stone and mortar. I will stand before the wind and make it respect me.",
 ];
 
 const QuoteOfTheDay = () => {

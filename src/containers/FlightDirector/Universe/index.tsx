@@ -96,7 +96,7 @@ export default function UniversalSandboxEditor() {
   const [useEntityState, storeApi] = usePatchedSubscriptions<
     Entity[],
     {flightId: string; stageId: string}
-  >(sub, {flightId: "template", stageId: currentStage});
+  >(sub, {flightId: "cool flight", stageId: currentStage});
 
   return (
     <CanvasContextProvider>

@@ -2622,6 +2622,9 @@ type Mutation {
   countermeasuresSetFDNote(id: ID!, countermeasureId: ID!, note: String!): String
   entityCreate(flightId: ID!, template: Boolean): Entity!
   entityRemove(id: [ID!]!): String
+
+  """Macro: Sandbox: Set Base Universe for Flight"""
+  flightSetBaseUniverse(flightId: ID, procGenKey: String): String
 }
 
 type NamedObject {

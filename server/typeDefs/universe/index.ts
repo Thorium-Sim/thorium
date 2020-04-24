@@ -5,6 +5,7 @@ import {handleInitialSubResponse} from "../../helpers/handleInitialSubResponse";
 import {Entity} from "../../classes";
 import produce from "immer";
 import {Template} from "../../classes/universe/components";
+import generateUniverse from "./generateUniverse";
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -22,6 +23,11 @@ const schema = gql`
   extend type Mutation {
     entityCreate(flightId: ID!, template: Boolean): Entity!
     entityRemove(id: [ID!]!): String
+
+    """
+    Macro: Sandbox: Set Base Universe for Flight
+    """
+    flightSetBaseUniverse(flightId: ID, procGenKey: String): String
   }
   extend type Subscription {
     entity(id: ID): Entity
@@ -78,6 +84,18 @@ const resolver = {
           entities: App.entities,
         });
       }
+    },
+    flightSetBaseUniverse(
+      rootQuery,
+      {
+        flightId,
+        procGenKey = "thorium",
+      }: {flightId?: string; procGenKey?: string},
+      context,
+    ) {
+      const universe = generateUniverse(flightId, procGenKey);
+      // console.log(universe);
+      App.entities = App.entities.concat(universe);
     },
   },
   Subscription: {
