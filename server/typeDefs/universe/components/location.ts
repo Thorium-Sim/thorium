@@ -29,6 +29,7 @@ const schema = gql`
     z: Float!
   }
   type LocationComponent {
+    inert: Boolean!
     position: EntityCoordinates!
     velocity: EntityCoordinates!
     acceleration: EntityCoordinates!

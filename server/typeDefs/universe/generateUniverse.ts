@@ -26,12 +26,14 @@ export default function generateUniverse(flightId, procGenKey) {
   // Generate the root stage first.
   const rootStage = new Entity({
     flightId,
+    id: rng.nextString(),
     identity: new Identity({name: "Base Universe", type: ""}),
     stage: new Stage({
       rootStage: true,
       scaleLabel: "Milli-Lightyears",
       scaleLabelShort: "M LY",
       skyboxKey: rng.nextString(),
+      childrenAsSprites: true,
     }),
   });
 
@@ -39,7 +41,7 @@ export default function generateUniverse(flightId, procGenKey) {
 
   // Generate all of the star systems
   // http://www.astronomytrek.com/list-of-different-star-types/
-  Array.from({length: 100}).forEach(() => {
+  Array.from({length: 512}).forEach(() => {
     const systemEntity = generateStarSystem(
       rng,
       flightId,
@@ -210,6 +212,7 @@ function generateStarSystem(
       emissiveIntensity: 1,
     }),
     location: new Location({
+      inert: true,
       position: randomOnPlane(
         starRng,
         500000000,

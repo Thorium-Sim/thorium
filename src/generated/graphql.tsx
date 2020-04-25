@@ -1302,6 +1302,7 @@ export type Location = Deck | Room;
 
 export type LocationComponent = {
    __typename?: 'LocationComponent',
+  inert: Scalars['Boolean'],
   position: EntityCoordinates,
   velocity: EntityCoordinates,
   acceleration: EntityCoordinates,
@@ -2243,6 +2244,7 @@ export type Mutation = {
   getSpaceEdventuresLogin?: Maybe<Scalars['String']>,
   removeSpaceEdventuresClient?: Maybe<Scalars['String']>,
   generic?: Maybe<Scalars['String']>,
+  clockSync?: Maybe<Scalars['String']>,
   addIssue?: Maybe<Scalars['String']>,
   addIssueUpload?: Maybe<Scalars['String']>,
   rotationUpdate?: Maybe<Scalars['String']>,
@@ -2313,6 +2315,7 @@ export type Mutation = {
   countermeasuresSetFDNote?: Maybe<Scalars['String']>,
   entityCreate: Entity,
   entityRemove?: Maybe<Scalars['String']>,
+  flightSetBaseUniverse?: Maybe<Scalars['String']>,
 };
 
 
@@ -6168,6 +6171,11 @@ export type MutationGenericArgs = {
 };
 
 
+export type MutationClockSyncArgs = {
+  clientId: Scalars['ID']
+};
+
+
 export type MutationAddIssueArgs = {
   title: Scalars['String'],
   body: Scalars['String'],
@@ -6597,6 +6605,12 @@ export type MutationEntityCreateArgs = {
 
 export type MutationEntityRemoveArgs = {
   id: Array<Scalars['ID']>
+};
+
+
+export type MutationFlightSetBaseUniverseArgs = {
+  flightId?: Maybe<Scalars['ID']>,
+  procGenKey?: Maybe<Scalars['String']>
 };
 
 export type NamedObject = {
@@ -7604,7 +7618,8 @@ export type QueryEntityArgs = {
 
 
 export type QueryEntitiesArgs = {
-  flightId: Scalars['ID']
+  flightId: Scalars['ID'],
+  inert?: Maybe<Scalars['Boolean']>
 };
 
 export type Railgun = SystemInterface & {
@@ -8269,6 +8284,7 @@ export type StageComponent = {
   scaleLabel?: Maybe<Scalars['String']>,
   scaleLabelShort?: Maybe<Scalars['String']>,
   skyboxKey?: Maybe<Scalars['String']>,
+  childrenAsSprites?: Maybe<Scalars['Boolean']>,
 };
 
 export type Station = {
@@ -8901,6 +8917,11 @@ export type SubscriptionTeamsUpdateArgs = {
 
 export type Subscription_TemplateUpdateArgs = {
   simulatorId?: Maybe<Scalars['ID']>
+};
+
+
+export type SubscriptionClockSyncArgs = {
+  clientId: Scalars['ID']
 };
 
 

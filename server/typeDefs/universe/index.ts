@@ -18,7 +18,7 @@ const schema = gql`
   }
   extend type Query {
     entity(id: ID!): Entity
-    entities(flightId: ID!): [Entity]!
+    entities(flightId: ID!, inert: Boolean): [Entity]!
   }
   extend type Mutation {
     entityCreate(flightId: ID!, template: Boolean): Entity!
@@ -36,7 +36,17 @@ const schema = gql`
 `;
 
 const resolver = {
-  Query: {},
+  Query: {
+    entities(rootQuery, {flightId, inert}, context) {
+      let entities = App.entities.filter(e => {
+        if (flightId && e.flightId !== flightId) return false;
+        if ((inert || inert === false) && e?.location?.inert !== inert)
+          return false;
+        return true;
+      });
+      return entities;
+    },
+  },
   Mutation: {
     entityCreate(rootQuery, {flightId, template}, context) {
       const entity = new Entity({flightId});

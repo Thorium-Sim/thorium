@@ -16,6 +16,7 @@ import EntityModel from "./EntityModel";
 import useClientSystems from "./useClientSystems";
 import {StoreApi} from "zustand";
 import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
+import EntitySprite from "./EntitySprite";
 
 interface EntityProps {
   dragging?: boolean;
@@ -57,6 +58,9 @@ const Entity: React.FC<EntityProps> = ({
 
   const {id, location, appearance, light} =
     entity || storeApi.getState().data[entityIndex];
+
+  const stage = storeApi.getState().data.find(s => s.id === stageId);
+
   React.useEffect(() => {
     // Poor man's React.memo
     const unsub1 = storeApi.subscribe(
@@ -150,6 +154,16 @@ const Entity: React.FC<EntityProps> = ({
         (position?.y || 0) + positionOffset.y,
         (position?.z || 0) + positionOffset.z,
       ] as [number, number, number]);
+
+  if (stage?.stage?.childrenAsSprites) {
+    return (
+      <EntitySprite
+        appearance={appearance || undefined}
+        position={meshPosition}
+        ref={mesh}
+      />
+    );
+  }
 
   if (meshType === MeshTypeEnum.Model && appearance?.modelAsset) {
     return (

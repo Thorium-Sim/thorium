@@ -56,6 +56,9 @@ export default function useClientSystems(
       mesh.current.position.set(0, 0, 0);
       return;
     }
+    if (currentEntity.current?.location?.inert) {
+      return;
+    }
     time.current += (delta * 1000) / currentEntity.current.interval;
     const t = Math.min(time.current, 1);
     // Interpolate the Rotation

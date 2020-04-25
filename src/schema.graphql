@@ -1213,6 +1213,7 @@ input LightingInput {
 union Location = Deck | Room
 
 type LocationComponent {
+  inert: Boolean!
   position: EntityCoordinates!
   velocity: EntityCoordinates!
   acceleration: EntityCoordinates!
@@ -3074,7 +3075,7 @@ type Query {
   countermeasures(simulatorId: ID!): Countermeasures
   countermeasureModuleType: [CountermeasureModule!]!
   entity(id: ID!): Entity
-  entities(flightId: ID!): [Entity]!
+  entities(flightId: ID!, inert: Boolean): [Entity]!
 }
 
 type Railgun implements SystemInterface {
@@ -3703,6 +3704,7 @@ type StageComponent {
   scaleLabel: String
   scaleLabelShort: String
   skyboxKey: String
+  childrenAsSprites: Boolean
 }
 
 type Station {

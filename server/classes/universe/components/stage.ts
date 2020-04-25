@@ -9,16 +9,19 @@ export class Stage {
   scaleLabelShort: string;
   skyboxKey: string;
   rootStage: boolean;
+  childrenAsSprites: boolean;
   constructor({
     scaleLabel,
     scaleLabelShort,
     skyboxKey,
     rootStage,
+    childrenAsSprites,
   }: Partial<Stage>) {
     this.scaleLabel = scaleLabel || "Meters";
     this.scaleLabelShort = scaleLabelShort || "Meter";
     this.skyboxKey = skyboxKey || "Star background";
     this.rootStage = rootStage || false;
+    this.childrenAsSprites = childrenAsSprites || false;
   }
 }
 
