@@ -11,12 +11,14 @@ import Joysticks from "./Joysticks";
 
 interface CanvasWrapperProps {
   useEntityState: UseStore<PatchData<Entity[]>>;
+  staticEntities: Entity[];
   storeApi: StoreApi<PatchData<Entity[]>>;
   dragging?: Entity;
   setDragging: React.Dispatch<React.SetStateAction<Entity | undefined>>;
 }
 const CanvasWrapper: React.FC<CanvasWrapperProps> = ({
   useEntityState,
+  staticEntities,
   storeApi,
   dragging,
   setDragging,
@@ -26,7 +28,6 @@ const CanvasWrapper: React.FC<CanvasWrapperProps> = ({
   const entityCount = useEntityState(state => state.data.length) || 0;
 
   const {stageId = "root-stage"} = useParams();
-
   return (
     <>
       {value[0].controllingEntityId && (
@@ -47,6 +48,7 @@ const CanvasWrapper: React.FC<CanvasWrapperProps> = ({
               setDragging={setDragging}
               dragging={dragging}
               entityCount={entityCount}
+              staticEntities={staticEntities}
               storeApi={storeApi}
             />
           </ApolloProvider>

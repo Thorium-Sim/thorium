@@ -127,11 +127,16 @@ const resolver = {
       ),
     },
     entities: {
-      resolve(rootValue: {entities: Entity[]}, {flightId, template, stageId}) {
+      resolve(
+        rootValue: {entities: Entity[]},
+        {flightId, template, stageId, inert = false},
+      ) {
         let entities = rootValue.entities.filter(e => {
           if (flightId && e.flightId !== flightId) return false;
           if (template === true && !e.template) return false;
           if (template === false && e.template) return false;
+          if (!inert && e?.location?.inert) return false;
+
           const isNotStageChild = stageId && e.stageChild?.parentId !== stageId;
           const isNotParentStage = !e.stage || stageId !== e.id;
           if (isNotStageChild && isNotParentStage) {

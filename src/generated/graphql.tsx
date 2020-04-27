@@ -11817,6 +11817,70 @@ export type EntityCreateMutation = (
   ) }
 );
 
+export type EntityDataFragment = (
+  { __typename?: 'Entity' }
+  & Pick<Entity, 'id' | 'interval'>
+  & { identity?: Maybe<(
+    { __typename?: 'IdentityComponent' }
+    & Pick<IdentityComponent, 'name'>
+  )>, stage?: Maybe<(
+    { __typename?: 'StageComponent' }
+    & Pick<StageComponent, 'scaleLabel' | 'scaleLabelShort' | 'skyboxKey' | 'childrenAsSprites'>
+  )>, stageChild?: Maybe<(
+    { __typename?: 'StageChildComponent' }
+    & Pick<StageChildComponent, 'parentId'>
+    & { parent?: Maybe<(
+      { __typename?: 'Entity' }
+      & Pick<Entity, 'id'>
+      & { identity?: Maybe<(
+        { __typename?: 'IdentityComponent' }
+        & Pick<IdentityComponent, 'name'>
+      )> }
+    )> }
+  )>, appearance?: Maybe<(
+    { __typename?: 'AppearanceComponent' }
+    & Pick<AppearanceComponent, 'color' | 'meshType' | 'modelAsset' | 'materialMapAsset' | 'ringMapAsset' | 'cloudMapAsset' | 'emissiveColor' | 'emissiveIntensity' | 'scale'>
+  )>, light?: Maybe<(
+    { __typename?: 'LightComponent' }
+    & Pick<LightComponent, 'intensity' | 'decay' | 'color'>
+  )>, glow?: Maybe<(
+    { __typename?: 'GlowComponent' }
+    & Pick<GlowComponent, 'glowMode' | 'color'>
+  )>, location?: Maybe<(
+    { __typename?: 'LocationComponent' }
+    & Pick<LocationComponent, 'inert'>
+    & { position: (
+      { __typename?: 'EntityCoordinates' }
+      & Pick<EntityCoordinates, 'x' | 'y' | 'z'>
+    ), rotation: (
+      { __typename?: 'Quaternion' }
+      & Pick<Quaternion, 'x' | 'y' | 'z' | 'w'>
+    ) }
+  )>, enginesWarp?: Maybe<(
+    { __typename?: 'EngineComponent' }
+    & Pick<EngineComponent, 'maxSpeed' | 'currentSpeed'>
+  )>, enginesImpulse?: Maybe<(
+    { __typename?: 'EngineComponent' }
+    & Pick<EngineComponent, 'maxSpeed' | 'currentSpeed'>
+  )>, thrusters?: Maybe<(
+    { __typename?: 'ThrustersComponent' }
+    & Pick<ThrustersComponent, 'rotationSpeed' | 'movementSpeed'>
+  )> }
+);
+
+export type EntitiesQueryVariables = {
+  flightId: Scalars['ID'];
+};
+
+
+export type EntitiesQuery = (
+  { __typename?: 'Query' }
+  & { entities: Array<Maybe<(
+    { __typename?: 'Entity' }
+    & EntityDataFragment
+  )>> }
+);
+
 export type EntityRemoveMutationVariables = {
   id: Array<Scalars['ID']>;
 };
@@ -12199,6 +12263,76 @@ export const TemplateFragmentFragmentDoc = gql`
     fragment TemplateFragment on Template {
   id
   __typename
+}
+    `;
+export const EntityDataFragmentDoc = gql`
+    fragment EntityData on Entity {
+  id
+  interval
+  identity {
+    name
+  }
+  stage {
+    scaleLabel
+    scaleLabelShort
+    skyboxKey
+    childrenAsSprites
+  }
+  stageChild {
+    parentId
+    parent {
+      id
+      identity {
+        name
+      }
+    }
+  }
+  appearance {
+    color
+    meshType
+    modelAsset
+    materialMapAsset
+    ringMapAsset
+    cloudMapAsset
+    emissiveColor
+    emissiveIntensity
+    scale
+  }
+  light {
+    intensity
+    decay
+    color
+  }
+  glow {
+    glowMode
+    color
+  }
+  location {
+    inert
+    position {
+      x
+      y
+      z
+    }
+    rotation {
+      x
+      y
+      z
+      w
+    }
+  }
+  enginesWarp {
+    maxSpeed
+    currentSpeed
+  }
+  enginesImpulse {
+    maxSpeed
+    currentSpeed
+  }
+  thrusters {
+    rotationSpeed
+    movementSpeed
+  }
 }
     `;
 export const ClientDocument = gql`
@@ -16902,6 +17036,39 @@ export function useEntityCreateMutation(baseOptions?: ApolloReactHooks.MutationH
 export type EntityCreateMutationHookResult = ReturnType<typeof useEntityCreateMutation>;
 export type EntityCreateMutationResult = ApolloReactCommon.MutationResult<EntityCreateMutation>;
 export type EntityCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<EntityCreateMutation, EntityCreateMutationVariables>;
+export const EntitiesDocument = gql`
+    query Entities($flightId: ID!) {
+  entities(flightId: $flightId, inert: true) {
+    ...EntityData
+  }
+}
+    ${EntityDataFragmentDoc}`;
+
+/**
+ * __useEntitiesQuery__
+ *
+ * To run a query within a React component, call `useEntitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEntitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEntitiesQuery({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *   },
+ * });
+ */
+export function useEntitiesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<EntitiesQuery, EntitiesQueryVariables>) {
+        return ApolloReactHooks.useQuery<EntitiesQuery, EntitiesQueryVariables>(EntitiesDocument, baseOptions);
+      }
+export function useEntitiesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<EntitiesQuery, EntitiesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<EntitiesQuery, EntitiesQueryVariables>(EntitiesDocument, baseOptions);
+        }
+export type EntitiesQueryHookResult = ReturnType<typeof useEntitiesQuery>;
+export type EntitiesLazyQueryHookResult = ReturnType<typeof useEntitiesLazyQuery>;
+export type EntitiesQueryResult = ApolloReactCommon.QueryResult<EntitiesQuery, EntitiesQueryVariables>;
 export const EntityRemoveDocument = gql`
     mutation EntityRemove($id: [ID!]!) {
   entityRemove(id: $id)

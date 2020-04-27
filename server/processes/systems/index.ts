@@ -8,7 +8,7 @@ import {movement} from "./movement";
 import {engines} from "./engines";
 
 // Systems execute on every entity at a specific interval. Lets grab all the entities and loop over them.
-const interval = 1000 / 0.1;
+const interval = 1000 / 10;
 function processSystems(delta) {
   const flightIds: {[key: string]: string[]} = {};
   App.entities = produce(App.entities, draft => {
