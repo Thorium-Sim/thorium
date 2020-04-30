@@ -661,6 +661,79 @@ input DirectionInput {
   z: Float
 }
 
+enum DMXChannelProperty {
+  red
+  green
+  blue
+  amber
+  white
+  uv
+  intensity
+  strobe
+  generic
+  nothing
+}
+
+type DMXConfig {
+  id: ID!
+  name: String!
+  config: JSON!
+}
+
+type DMXDevice {
+  id: ID!
+  class: String!
+  name: String!
+  channels: [DMXChannelProperty!]!
+}
+
+type DMXFixture {
+  id: ID!
+  class: String!
+  name: String!
+  DMXDeviceId: String!
+  DMXDevice: DMXDevice!
+  simulatorId: String!
+  channel: Int!
+  mode: DMXFixtureMode!
+  tags: [String!]!
+  passiveChannels: DMXPassiveChannels!
+}
+
+enum DMXFixtureMode {
+  active
+  passive
+}
+
+type DMXPassiveChannels {
+  amber: Float
+  white: Float
+  uv: Float
+  intensity: Float
+  strobe: Float
+  generic: Float
+  nothing: Float
+  color: String
+}
+
+input DMXPassiveChannelsInput {
+  amber: Float
+  white: Float
+  uv: Float
+  intensity: Float
+  strobe: Float
+  generic: Float
+  nothing: Float
+  color: String
+}
+
+type DMXSet {
+  id: ID!
+  name: String!
+  fixtureIds: [String!]!
+  fixtures: [DMXFixture!]!
+}
+
 enum DOCKING_DIRECTION {
   unspecified
   arriving
@@ -2626,6 +2699,31 @@ type Mutation {
 
   """Macro: Sandbox: Set Base Universe for Flight"""
   flightSetBaseUniverse(flightId: ID, procGenKey: String): String
+  dmxDeviceCreate(name: String!): String
+  dmxDeviceRemove(id: ID!): String
+  dmxDeviceSetName(id: ID!, name: String!): String
+  dmxDeviceSetChannels(id: ID!, channels: [DMXChannelProperty!]!): String
+  dmxSetCreate(name: String!): String
+  dmxSetRemove(id: ID!): String
+  dmxSetSetName(id: ID!, name: String!): String
+  dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
+  dmxFixtureRemove(DMXSetId: ID!, id: ID!): String
+  dmxFixtureSetName(id: ID!, name: String!): String
+  dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: String!): String
+  dmxFixtureSetChannel(id: ID!, channel: Int!): String
+
+  """Macro: DMX: Set Fixture Mode"""
+  dmxFixtureSetMode(id: ID, simulatorId: ID, tag: [String], mode: DMXFixtureMode!): String
+
+  """Macro: DMX: Set Fixture Tags"""
+  dmxFixtureSetTags(id: ID, simulatorId: ID, tag: [String], newTags: [String!]!): String
+
+  """Macro: DMX: Set Fixture Passive Channels"""
+  dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tag: [String], passiveChannels: DMXPassiveChannelsInput!): String
+  dmxConfigCreate(name: String!): String
+  dmxConfigRemove(id: ID!): String
+  dmxConfigSetName(id: ID!, name: String!): String
+  dmxConfigSetConfig(id: ID!, config: JSON!): String
 }
 
 type NamedObject {
@@ -3076,6 +3174,11 @@ type Query {
   countermeasureModuleType: [CountermeasureModule!]!
   entity(id: ID!): Entity
   entities(flightId: ID!, inert: Boolean): [Entity]!
+  dmxDevices: [DMXDevice!]!
+  dmxSets: [DMXSet!]!
+  dmxFixtures(simulatorId: ID): [DMXFixture!]!
+  dmxConfig(id: ID!): DMXConfig
+  dmxConfigs: [DMXConfig!]!
 }
 
 type Railgun implements SystemInterface {
@@ -3873,6 +3976,10 @@ type Subscription {
   countermeasuresUpdate(simulatorId: ID!): Countermeasures
   entity(id: ID): Entity
   entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
+  dmxSets: [DMXSet!]!
+  dmxDevices: [DMXDevice!]!
+  dmxFixtures(simulatorId: ID): [DMXFixture!]!
+  dmxConfigs: [DMXConfig!]!
 }
 
 type SubspaceField implements SystemInterface {

@@ -74,6 +74,7 @@ import triggerTypeDefs from "./trigger";
 import viewscreenTypeDefs from "./viewscreen";
 import countermeasuresTypeDefs from "./countermeasures";
 import universeTypeDefs from "./universe";
+import dmxTypeDefs from "./dmx";
 export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
@@ -152,3 +153,4 @@ export const trigger = triggerTypeDefs;
 export const viewscreen = viewscreenTypeDefs;
 export const countermeasures = countermeasuresTypeDefs;
 export const universe = universeTypeDefs;
+export const dmx = dmxTypeDefs;

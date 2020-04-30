@@ -66,6 +66,7 @@ const quotes = [
   "Destroying an empire to win a war is no victory. And ending a battle to save an empire is no defeat.",
   "Great people do not seek power; they have power thrust upon them.",
   "I am not afraid. I will not hide my face behind stone and mortar. I will stand before the wind and make it respect me.",
+  "What are the tools you use to create memories?",
 ];
 
 const QuoteOfTheDay = () => {
