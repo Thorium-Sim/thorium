@@ -1,0 +1,3 @@
+mutation DMXConfigRemove($id: ID!) {
+  dmxConfigRemove(id: $id)
+}

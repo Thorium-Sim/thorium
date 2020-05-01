@@ -1,0 +1,7 @@
+subscription DMXDevices {
+  dmxDevices {
+    id
+    name
+    channels
+  }
+}

@@ -1,0 +1,3 @@
+mutation DMXConfigSetName($id: ID!, $name: String!) {
+  dmxConfigSetName(id: $id, name: $name)
+}

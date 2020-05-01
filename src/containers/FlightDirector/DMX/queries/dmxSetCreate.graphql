@@ -1,0 +1,3 @@
+mutation DMXSetCreate($name: String!) {
+  dmxSetCreate(name: $name)
+}

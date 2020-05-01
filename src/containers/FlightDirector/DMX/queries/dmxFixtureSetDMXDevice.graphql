@@ -1,0 +1,3 @@
+mutation DMXFixtureSetDMXDevice($id: ID!, $deviceId: ID!) {
+  dmxFixtureSetDMXDevice(id: $id, DMXDeviceID: $deviceId)
+}

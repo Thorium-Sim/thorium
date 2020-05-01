@@ -2216,6 +2216,7 @@ type Mutation {
   removeClientFromSet(id: ID!, clientId: ID!): String
   updateSetClient(id: ID!, client: SetClientInput!): String
   renameSet(id: ID!, name: String!): String
+  setSetDMXSetId(id: ID!, dmxSetId: ID!): String
   shieldRaised(id: ID!): String
   shieldLowered(id: ID!): String
   shieldIntegritySet(id: ID!, integrity: Float): String
@@ -2709,7 +2710,7 @@ type Mutation {
   dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
   dmxFixtureRemove(DMXSetId: ID!, id: ID!): String
   dmxFixtureSetName(id: ID!, name: String!): String
-  dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: String!): String
+  dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: ID!): String
   dmxFixtureSetChannel(id: ID!, channel: Int!): String
 
   """Macro: DMX: Set Fixture Mode"""
@@ -2717,6 +2718,12 @@ type Mutation {
 
   """Macro: DMX: Set Fixture Tags"""
   dmxFixtureSetTags(id: ID, simulatorId: ID, tag: [String], newTags: [String!]!): String
+
+  """Macro: DMX: Add Fixture Tag"""
+  dmxFixtureAddTag(id: ID, simulatorId: ID, tag: [String], newTag: String!): String
+
+  """Macro: DMX: Remove Fixture Tag"""
+  dmxFixtureRemoveTag(id: ID, simulatorId: ID, tag: [String], removeTag: String!): String
 
   """Macro: DMX: Set Fixture Passive Channels"""
   dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tag: [String], passiveChannels: DMXPassiveChannelsInput!): String
@@ -3494,9 +3501,10 @@ type SensorsSegment {
 }
 
 type Set {
-  id: ID
-  name: String
-  clients: [SetClient]
+  id: ID!
+  name: String!
+  clients: [SetClient!]!
+  dmxSetId: ID
 }
 
 type SetClient {

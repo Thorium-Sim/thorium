@@ -1,0 +1,3 @@
+mutation DMXFixtureSetTags($id: ID!, $newTags: [String!]!) {
+  dmxFixtureSetTags(id: $id, newTags: $newTags)
+}

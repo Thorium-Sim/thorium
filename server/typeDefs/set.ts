@@ -6,9 +6,10 @@ import Set from "../classes/set";
 // necessary for the functionality in this file.
 const schema = gql`
   type Set {
-    id: ID
-    name: String
-    clients: [SetClient]
+    id: ID!
+    name: String!
+    clients: [SetClient!]!
+    dmxSetId: ID
   }
 
   type SetClient {
@@ -40,6 +41,7 @@ const schema = gql`
     removeClientFromSet(id: ID!, clientId: ID!): String
     updateSetClient(id: ID!, client: SetClientInput!): String
     renameSet(id: ID!, name: String!): String
+    setSetDMXSetId(id: ID!, dmxSetId: ID!): String
   }
   extend type Subscription {
     setsUpdate: [Set]
@@ -88,6 +90,10 @@ const resolver = {
     },
     renameSet(root, {id, name}, context) {
       App.sets.find(s => s.id === id).rename(name);
+      pubsub.publish("setsUpdate", App.sets);
+    },
+    setSetDMXSetId(root, {id, dmxSetId}) {
+      App.sets.find(s => s.id === id)?.setDmxSetId(dmxSetId);
       pubsub.publish("setsUpdate", App.sets);
     },
   },

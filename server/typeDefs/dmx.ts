@@ -91,7 +91,7 @@ const schema = gql`
     dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
     dmxFixtureRemove(DMXSetId: ID!, id: ID!): String
     dmxFixtureSetName(id: ID!, name: String!): String
-    dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: String!): String
+    dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: ID!): String
     dmxFixtureSetChannel(id: ID!, channel: Int!): String
     """
     Macro: DMX: Set Fixture Mode
@@ -110,6 +110,24 @@ const schema = gql`
       simulatorId: ID
       tag: [String]
       newTags: [String!]!
+    ): String
+    """
+    Macro: DMX: Add Fixture Tag
+    """
+    dmxFixtureAddTag(
+      id: ID
+      simulatorId: ID
+      tag: [String]
+      newTag: String!
+    ): String
+    """
+    Macro: DMX: Remove Fixture Tag
+    """
+    dmxFixtureRemoveTag(
+      id: ID
+      simulatorId: ID
+      tag: [String]
+      removeTag: String!
     ): String
     """
     Macro: DMX: Set Fixture Passive Channels
@@ -152,6 +170,7 @@ function getFixture(id: string, simulatorId: string, tags: string[]) {
     return true;
   });
 }
+
 const resolver = {
   Query: {
     dmxDevices() {
@@ -194,7 +213,7 @@ const resolver = {
     dmxSetCreate(rootValue, {name}) {
       const set = new DMXSet({name});
       App.dmxSets.push(set);
-      pubsub.publish("dmxDevices", App.dmxSets);
+      pubsub.publish("dmxSets", App.dmxSets);
       return set.id;
     },
     dmxSetRemove(rootValue, {id}) {
@@ -205,12 +224,12 @@ const resolver = {
         resolver.Mutation.dmxFixtureRemove({}, {DMXSetId: null, id: f.id}),
       );
 
-      pubsub.publish("dmxDevices", App.dmxSets);
+      pubsub.publish("dmxSets", App.dmxSets);
     },
     dmxSetSetName(rootValue, {id, name}) {
       const set = App.dmxSets.find(f => f.id === id);
       set.setName(name);
-      pubsub.publish("dmxDevices", App.dmxSets);
+      pubsub.publish("dmxSets", App.dmxSets);
     },
     dmxFixtureCreate(rootValue, {DMXSetId, name, DMXDeviceId}) {
       const set = App.dmxSets.find(f => f.id === DMXSetId);
@@ -244,9 +263,9 @@ const resolver = {
         fixtures: App.dmxFixtures.filter(f => f.simulatorId === null),
       });
     },
-    dmxFixtureSetDMXDevice(rootValue, {id, DMXDeviceId}) {
+    dmxFixtureSetDMXDevice(rootValue, {id, DMXDeviceID}) {
       const fixture = App.dmxFixtures.find(f => f.id === id);
-      fixture.setDMXDevice(DMXDeviceId);
+      fixture.setDMXDevice(DMXDeviceID);
       pubsub.publish("dmxSets", App.dmxSets);
       pubsub.publish("dmxFixtures", {
         simulatorId: null,
@@ -266,18 +285,24 @@ const resolver = {
       const fixture = getFixture(id, simulatorId, tags);
       if (!fixture) return;
       fixture.setMode(mode);
+      pubsub.publish("dmxSets", App.dmxSets);
       pubsub.publish("dmxFixtures", {
         simulatorId: fixture.simulatorId,
-        fixtures: App.dmxFixtures.filter(f => f.simulatorId === null),
+        fixtures: App.dmxFixtures.filter(
+          f => f.simulatorId === fixture.simulatorId,
+        ),
       });
     },
     dmxFixtureSetTags(rootValue, {id, simulatorId, tags, newTags}) {
       const fixture = getFixture(id, simulatorId, tags);
       if (!fixture) return;
       fixture.setTags(newTags);
+      pubsub.publish("dmxSets", App.dmxSets);
       pubsub.publish("dmxFixtures", {
         simulatorId: fixture.simulatorId,
-        fixtures: App.dmxFixtures.filter(f => f.simulatorId === null),
+        fixtures: App.dmxFixtures.filter(
+          f => f.simulatorId === fixture.simulatorId,
+        ),
       });
     },
     dmxFixtureSetPassiveChannels(
@@ -292,7 +317,33 @@ const resolver = {
       fixture.setMode("passive");
       pubsub.publish("dmxFixtures", {
         simulatorId: fixture.simulatorId,
-        fixtures: App.dmxFixtures.filter(f => f.simulatorId === null),
+        fixtures: App.dmxFixtures.filter(
+          f => f.simulatorId === fixture.simulatorId,
+        ),
+      });
+    },
+    dmxFixtureAddTag(rootValue, {id, simulatorId, tags, newTag}) {
+      const fixture = getFixture(id, simulatorId, tags);
+      if (!fixture) return;
+      fixture.setTags(fixture.tags.concat(newTag));
+      pubsub.publish("dmxSets", App.dmxSets);
+      pubsub.publish("dmxFixtures", {
+        simulatorId: fixture.simulatorId,
+        fixtures: App.dmxFixtures.filter(
+          f => f.simulatorId === fixture.simulatorId,
+        ),
+      });
+    },
+    dmxFixtureRemoveTag(rootValue, {id, simulatorId, tags, removeTag}) {
+      const fixture = getFixture(id, simulatorId, tags);
+      if (!fixture) return;
+      fixture.setTags(fixture.tags.filter(t => t !== removeTag));
+      pubsub.publish("dmxSets", App.dmxSets);
+      pubsub.publish("dmxFixtures", {
+        simulatorId: fixture.simulatorId,
+        fixtures: App.dmxFixtures.filter(
+          f => f.simulatorId === fixture.simulatorId,
+        ),
       });
     },
     dmxConfigCreate(rootValue, {name}) {

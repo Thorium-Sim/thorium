@@ -1,0 +1,6 @@
+mutation DMXFixtureSetPassiveChannels(
+  $id: ID!
+  $passiveChannels: DMXPassiveChannelsInput!
+) {
+  dmxFixtureSetPassiveChannels(id: $id, passiveChannels: $passiveChannels)
+}

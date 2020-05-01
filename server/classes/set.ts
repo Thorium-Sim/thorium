@@ -2,29 +2,45 @@
 import uuid from "uuid";
 
 export default class Set {
-  constructor(params = {}) {
+  id: string;
+  class: "Set" = "Set";
+  name: string;
+  clients: SetClient[];
+  dmxSetId: string | null;
+  constructor(params: Partial<Set> = {}) {
     this.id = params.id || uuid.v4();
-    this.class = "Set";
     this.name = params.name || "Default Set";
     this.clients = params.clients || [];
+    this.dmxSetId = params.dmxSetId || null;
   }
-  addClient(client) {
+  addClient(client: SetClient) {
     this.clients.push(new SetClient(client));
   }
-  removeClient(id) {
+  removeClient(id: string) {
     this.clients = this.clients.filter(c => c.id !== id);
   }
-  rename(name) {
+  rename(name: string) {
     this.name = name;
   }
-  updateClient(setClientInput) {
+  updateClient(setClientInput: SetClient) {
     this.clients.find(c => c.id === setClientInput.id).update(setClientInput);
+  }
+  setDmxSetId(dmxSetId: string) {
+    this.dmxSetId = dmxSetId;
   }
 }
 
 // The default configuration for a set
 class SetClient {
-  constructor(params = {}) {
+  id: string;
+  class: "SetClient" = "SetClient";
+  clientId: string | null;
+  simulatorId: string | null;
+  stationSet: string | null;
+  station: string | null;
+  secondary: boolean;
+  soundPlayer: boolean;
+  constructor(params: Partial<SetClient> = {}) {
     this.id = params.id || uuid.v4();
     this.clientId = params.clientId || null;
     this.simulatorId = params.simulatorId || null;
@@ -33,7 +49,14 @@ class SetClient {
     this.secondary = params.secondary || false;
     this.soundPlayer = params.soundPlayer || false;
   }
-  update({clientId, simulatorId, stationSet, station, secondary, soundPlayer}) {
+  update({
+    clientId,
+    simulatorId,
+    stationSet,
+    station,
+    secondary,
+    soundPlayer,
+  }: Partial<SetClient>) {
     if (clientId) this.clientId = clientId;
     if (simulatorId) this.simulatorId = simulatorId;
     if (stationSet) this.stationSet = stationSet;

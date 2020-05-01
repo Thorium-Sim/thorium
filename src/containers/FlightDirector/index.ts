@@ -18,3 +18,4 @@ export {default as Macros} from "./Macros";
 export {default as MacroButtons} from "./MacroButtons";
 export {default as Records} from "./Records";
 export {default as Midi} from "./Midi";
+export {default as DMX} from "./DMX";

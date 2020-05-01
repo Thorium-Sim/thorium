@@ -1,0 +1,3 @@
+mutation DMXDeviceSetName($id: ID!, $name: String!) {
+  dmxDeviceSetName(id: $id, name: $name)
+}

@@ -1,0 +1,23 @@
+subscription DMXFixtures($simulatorId: ID) {
+  dmxFixtures(simulatorId: $simulatorId) {
+    id
+    name
+    DMXDevice {
+      id
+      name
+    }
+    channel
+    mode
+    tags
+    passiveChannels {
+      amber
+      white
+      uv
+      intensity
+      strobe
+      generic
+      nothing
+      color
+    }
+  }
+}

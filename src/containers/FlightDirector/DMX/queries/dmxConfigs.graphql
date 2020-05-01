@@ -1,0 +1,7 @@
+subscription DMXConfigs {
+  dmxConfigs {
+    id
+    name
+    config
+  }
+}

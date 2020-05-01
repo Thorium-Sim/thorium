@@ -20,6 +20,7 @@ import {
   MacroButtons,
   Records,
   Midi,
+  DMX,
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
@@ -103,6 +104,7 @@ const Config = () => {
           <Route path="interfaces" element={<Interfaces />} />
           <Route path="records" element={<Records />} />
           <Route path="midi" element={<Midi />} />
+          <Route path="dmx/*" element={<DMX />} />
           <Route path="debug" element={<DebugList />} />
         </Routes>
       </div>
