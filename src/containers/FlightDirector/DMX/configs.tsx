@@ -68,7 +68,8 @@ const DMXConfigs: React.FC = () => {
       .reduce((prev: string[], next) => {
         return prev.concat(next.tags);
       }, [])
-      .filter((a, i, arr) => arr.indexOf(a) === i) || [];
+      .filter((a, i, arr) => a !== "no-effects" && arr.indexOf(a) === i)
+      .sort() || [];
 
   return (
     <div css={tw`h-full`}>

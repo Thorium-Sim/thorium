@@ -119,9 +119,10 @@ export default class Client {
   setPing(ping) {
     this.ping = ping;
   }
-  connect({mobile, cards}) {
+  connect({mobile, label, cards}) {
     this.connected = true;
     this.mobile = mobile;
+    this.label = label;
     this.cards = cards || [];
     this.ping = null;
   }

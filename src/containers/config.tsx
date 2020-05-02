@@ -92,6 +92,16 @@ const Config = () => {
             }
           />
           <Route path="sets" element={<SetConfig />} />
+          <Route path="sets/:setId" element={<SetConfig />} />
+          <Route path="sets/:setId/:simulatorId" element={<SetConfig />} />
+          <Route
+            path="sets/:setId/:simulatorId/:stationSetId"
+            element={<SetConfig />}
+          />
+          <Route
+            path="sets/:setId/:simulatorId/:stationSetId/:station"
+            element={<SetConfig />}
+          />
           <Route path="panels" element={<SoftwarePanels />} />
           <Route path="survey" element={<SurveyForms />} />
           <Route path="keyboard" element={<Keyboards />} />

@@ -1,0 +1,3 @@
+mutation AddSet($name: String!) {
+  createSet(name: $name)
+}

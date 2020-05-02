@@ -1,7 +1,15 @@
 export default class Lighting {
   class: "Lighting";
   intensity: number;
-  action: "normal" | "fade" | "shake" | "strobe" | "oscillate";
+  action:
+    | "normal"
+    | "darken"
+    | "blackout"
+    | "work"
+    | "fade"
+    | "shake"
+    | "strobe"
+    | "oscillate";
   actionStrength: number;
   transitionDuration: number;
   useAlertColor: boolean;

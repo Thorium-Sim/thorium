@@ -8,6 +8,8 @@ import paths from "../helpers/paths";
 import fs from "fs";
 import uuid from "uuid";
 import tokenGenerator from "../helpers/tokenGenerator";
+import {DMXFixture} from "../classes";
+
 function randomFromList(list) {
   if (!list) return;
   const length = list.length;
@@ -41,7 +43,7 @@ function performScannerAction(id, action) {
 App.on("clientConnect", ({client, label, mobile, cards}) => {
   const clientObj = App.clients.find(c => c.id === client);
   if (clientObj) {
-    // There is a client alread in the database
+    // There is a client already in the database
     // Just make sure it is connected
     clientObj.connect({mobile, label, cards});
   } else {
@@ -194,7 +196,7 @@ App.on(
     const sound = {...inputSound};
     if (type === "random") {
       // Get a random sound from that folder.
-      const soundExts = ["m4a", "wav", "mp3", "ogg", "aiff", "aif"];
+      const soundExtensions = ["m4a", "wav", "mp3", "ogg", "aiff", "aif"];
       let assetDir = path.resolve("./assets/");
       if (process.env.NODE_ENV === "production") {
         assetDir = paths.userData + "/assets";
@@ -206,7 +208,7 @@ App.on(
           f =>
             fs.lstatSync(assetDir + sound.asset + "/" + f).isFile() &&
             f[0] !== "." &&
-            soundExts.find(s => f.indexOf(`.${s}`) > -1),
+            soundExtensions.find(s => f.indexOf(`.${s}`) > -1),
         )
         .map(f => `${sound.asset}/${f}`);
       if (sounds.length > -1) {
@@ -335,6 +337,21 @@ App.on(
           }
         }
       });
+
+    // Clear out all of the DMX fixtures, replace with new ones
+    App.dmxFixtures.filter(f => f.simulatorId !== simulatorId);
+    const dmxSet = App.dmxSets.find(s => s.id === set.dmxSetId);
+    if (dmxSet) {
+      dmxSet.fixtures.forEach(f => {
+        const fixture = new DMXFixture({...f, id: null, simulatorId});
+        App.dmxFixtures.push(fixture);
+      });
+    }
+
+    pubsub.publish("dmxFixtures", {
+      simulatorId,
+      fixtures: App.dmxFixtures.filter(f => f.simulatorId === simulatorId),
+    });
     pubsub.publish("viewscreensUpdate", App.viewscreens);
     pubsub.publish("clientChanged", App.clients);
   },

@@ -1361,6 +1361,9 @@ export type Lighting = {
 
 export enum Lighting_Action {
   Normal = 'normal',
+  Darken = 'darken',
+  Blackout = 'blackout',
+  Work = 'work',
   Fade = 'fade',
   Shake = 'shake',
   Strobe = 'strobe',
@@ -11932,6 +11935,144 @@ export type TimelineUpdateStepMutation = (
   & Pick<Mutation, 'updateTimelineStep'>
 );
 
+export type AddClientMutationVariables = {
+  id: Scalars['ID'];
+  client: SetClientInput;
+};
+
+
+export type AddClientMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addClientToSet'>
+);
+
+export type AddSetMutationVariables = {
+  name: Scalars['String'];
+};
+
+
+export type AddSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createSet'>
+);
+
+export type RemoveClientFromSetMutationVariables = {
+  id: Scalars['ID'];
+  client: Scalars['ID'];
+};
+
+
+export type RemoveClientFromSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeClientFromSet'>
+);
+
+export type RemoveSetMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type RemoveSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeSet'>
+);
+
+export type RenameSetMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type RenameSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'renameSet'>
+);
+
+export type SetKeyboardAndInterfaceQueryVariables = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+export type SetKeyboardAndInterfaceQuery = (
+  { __typename?: 'Query' }
+  & { simulators: Array<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'interfaces'>
+  )>, interfaces?: Maybe<Array<Maybe<(
+    { __typename?: 'Interface' }
+    & Pick<Interface, 'id' | 'name'>
+  )>>>, keyboard?: Maybe<Array<Maybe<(
+    { __typename?: 'Keyboard' }
+    & Pick<Keyboard, 'id' | 'name'>
+  )>>> }
+);
+
+export type SetSetDmxSetMutationVariables = {
+  id: Scalars['ID'];
+  dmxSetId: Scalars['ID'];
+};
+
+
+export type SetSetDmxSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setSetDMXSetId'>
+);
+
+export type SetsQueryVariables = {};
+
+
+export type SetsQuery = (
+  { __typename?: 'Query' }
+  & { simulators: Array<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'id' | 'name' | 'layout'>
+    & { systems?: Maybe<Array<(
+      { __typename?: 'System' }
+      & Pick<System, 'id' | 'type'>
+    )>>, stationSets?: Maybe<Array<Maybe<(
+      { __typename?: 'StationSet' }
+      & Pick<StationSet, 'id' | 'name'>
+      & { stations?: Maybe<Array<Maybe<(
+        { __typename?: 'Station' }
+        & Pick<Station, 'name'>
+      )>>> }
+    )>>> }
+  )>, sets?: Maybe<Array<Maybe<(
+    { __typename?: 'Set' }
+    & Pick<Set, 'id' | 'name' | 'dmxSetId'>
+    & { clients: Array<(
+      { __typename?: 'SetClient' }
+      & Pick<SetClient, 'id' | 'station' | 'secondary' | 'soundPlayer'>
+      & { client?: Maybe<(
+        { __typename?: 'Client' }
+        & Pick<Client, 'id'>
+      )>, simulator?: Maybe<(
+        { __typename?: 'Simulator' }
+        & Pick<Simulator, 'id' | 'name'>
+      )>, stationSet?: Maybe<(
+        { __typename?: 'StationSet' }
+        & Pick<StationSet, 'id' | 'name'>
+      )> }
+    )> }
+  )>>>, clients?: Maybe<Array<Maybe<(
+    { __typename?: 'Client' }
+    & Pick<Client, 'id' | 'cards' | 'mobile'>
+  )>>> }
+);
+
+export type UpdateSetClientMutationVariables = {
+  id: Scalars['ID'];
+  clientId: Scalars['ID'];
+  secondary?: Maybe<Scalars['Boolean']>;
+  soundPlayer?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type UpdateSetClientMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateSetClient'>
+);
+
 export type AddCardMutationVariables = {
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -17268,6 +17409,336 @@ export function useTimelineUpdateStepMutation(baseOptions?: ApolloReactHooks.Mut
 export type TimelineUpdateStepMutationHookResult = ReturnType<typeof useTimelineUpdateStepMutation>;
 export type TimelineUpdateStepMutationResult = ApolloReactCommon.MutationResult<TimelineUpdateStepMutation>;
 export type TimelineUpdateStepMutationOptions = ApolloReactCommon.BaseMutationOptions<TimelineUpdateStepMutation, TimelineUpdateStepMutationVariables>;
+export const AddClientDocument = gql`
+    mutation AddClient($id: ID!, $client: SetClientInput!) {
+  addClientToSet(id: $id, client: $client)
+}
+    `;
+export type AddClientMutationFn = ApolloReactCommon.MutationFunction<AddClientMutation, AddClientMutationVariables>;
+
+/**
+ * __useAddClientMutation__
+ *
+ * To run a mutation, you first call `useAddClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addClientMutation, { data, loading, error }] = useAddClientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      client: // value for 'client'
+ *   },
+ * });
+ */
+export function useAddClientMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddClientMutation, AddClientMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddClientMutation, AddClientMutationVariables>(AddClientDocument, baseOptions);
+      }
+export type AddClientMutationHookResult = ReturnType<typeof useAddClientMutation>;
+export type AddClientMutationResult = ApolloReactCommon.MutationResult<AddClientMutation>;
+export type AddClientMutationOptions = ApolloReactCommon.BaseMutationOptions<AddClientMutation, AddClientMutationVariables>;
+export const AddSetDocument = gql`
+    mutation AddSet($name: String!) {
+  createSet(name: $name)
+}
+    `;
+export type AddSetMutationFn = ApolloReactCommon.MutationFunction<AddSetMutation, AddSetMutationVariables>;
+
+/**
+ * __useAddSetMutation__
+ *
+ * To run a mutation, you first call `useAddSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addSetMutation, { data, loading, error }] = useAddSetMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useAddSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddSetMutation, AddSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddSetMutation, AddSetMutationVariables>(AddSetDocument, baseOptions);
+      }
+export type AddSetMutationHookResult = ReturnType<typeof useAddSetMutation>;
+export type AddSetMutationResult = ApolloReactCommon.MutationResult<AddSetMutation>;
+export type AddSetMutationOptions = ApolloReactCommon.BaseMutationOptions<AddSetMutation, AddSetMutationVariables>;
+export const RemoveClientFromSetDocument = gql`
+    mutation RemoveClientFromSet($id: ID!, $client: ID!) {
+  removeClientFromSet(id: $id, clientId: $client)
+}
+    `;
+export type RemoveClientFromSetMutationFn = ApolloReactCommon.MutationFunction<RemoveClientFromSetMutation, RemoveClientFromSetMutationVariables>;
+
+/**
+ * __useRemoveClientFromSetMutation__
+ *
+ * To run a mutation, you first call `useRemoveClientFromSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveClientFromSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeClientFromSetMutation, { data, loading, error }] = useRemoveClientFromSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      client: // value for 'client'
+ *   },
+ * });
+ */
+export function useRemoveClientFromSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveClientFromSetMutation, RemoveClientFromSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveClientFromSetMutation, RemoveClientFromSetMutationVariables>(RemoveClientFromSetDocument, baseOptions);
+      }
+export type RemoveClientFromSetMutationHookResult = ReturnType<typeof useRemoveClientFromSetMutation>;
+export type RemoveClientFromSetMutationResult = ApolloReactCommon.MutationResult<RemoveClientFromSetMutation>;
+export type RemoveClientFromSetMutationOptions = ApolloReactCommon.BaseMutationOptions<RemoveClientFromSetMutation, RemoveClientFromSetMutationVariables>;
+export const RemoveSetDocument = gql`
+    mutation RemoveSet($id: ID!) {
+  removeSet(id: $id)
+}
+    `;
+export type RemoveSetMutationFn = ApolloReactCommon.MutationFunction<RemoveSetMutation, RemoveSetMutationVariables>;
+
+/**
+ * __useRemoveSetMutation__
+ *
+ * To run a mutation, you first call `useRemoveSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeSetMutation, { data, loading, error }] = useRemoveSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveSetMutation, RemoveSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveSetMutation, RemoveSetMutationVariables>(RemoveSetDocument, baseOptions);
+      }
+export type RemoveSetMutationHookResult = ReturnType<typeof useRemoveSetMutation>;
+export type RemoveSetMutationResult = ApolloReactCommon.MutationResult<RemoveSetMutation>;
+export type RemoveSetMutationOptions = ApolloReactCommon.BaseMutationOptions<RemoveSetMutation, RemoveSetMutationVariables>;
+export const RenameSetDocument = gql`
+    mutation RenameSet($id: ID!, $name: String!) {
+  renameSet(id: $id, name: $name)
+}
+    `;
+export type RenameSetMutationFn = ApolloReactCommon.MutationFunction<RenameSetMutation, RenameSetMutationVariables>;
+
+/**
+ * __useRenameSetMutation__
+ *
+ * To run a mutation, you first call `useRenameSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameSetMutation, { data, loading, error }] = useRenameSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useRenameSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RenameSetMutation, RenameSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<RenameSetMutation, RenameSetMutationVariables>(RenameSetDocument, baseOptions);
+      }
+export type RenameSetMutationHookResult = ReturnType<typeof useRenameSetMutation>;
+export type RenameSetMutationResult = ApolloReactCommon.MutationResult<RenameSetMutation>;
+export type RenameSetMutationOptions = ApolloReactCommon.BaseMutationOptions<RenameSetMutation, RenameSetMutationVariables>;
+export const SetKeyboardAndInterfaceDocument = gql`
+    query SetKeyboardAndInterface($id: ID) {
+  simulators(id: $id) {
+    interfaces
+  }
+  interfaces {
+    id
+    name
+  }
+  keyboard {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useSetKeyboardAndInterfaceQuery__
+ *
+ * To run a query within a React component, call `useSetKeyboardAndInterfaceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSetKeyboardAndInterfaceQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSetKeyboardAndInterfaceQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSetKeyboardAndInterfaceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>) {
+        return ApolloReactHooks.useQuery<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>(SetKeyboardAndInterfaceDocument, baseOptions);
+      }
+export function useSetKeyboardAndInterfaceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>(SetKeyboardAndInterfaceDocument, baseOptions);
+        }
+export type SetKeyboardAndInterfaceQueryHookResult = ReturnType<typeof useSetKeyboardAndInterfaceQuery>;
+export type SetKeyboardAndInterfaceLazyQueryHookResult = ReturnType<typeof useSetKeyboardAndInterfaceLazyQuery>;
+export type SetKeyboardAndInterfaceQueryResult = ApolloReactCommon.QueryResult<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>;
+export const SetSetDmxSetDocument = gql`
+    mutation SetSetDMXSet($id: ID!, $dmxSetId: ID!) {
+  setSetDMXSetId(id: $id, dmxSetId: $dmxSetId)
+}
+    `;
+export type SetSetDmxSetMutationFn = ApolloReactCommon.MutationFunction<SetSetDmxSetMutation, SetSetDmxSetMutationVariables>;
+
+/**
+ * __useSetSetDmxSetMutation__
+ *
+ * To run a mutation, you first call `useSetSetDmxSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetSetDmxSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setSetDmxSetMutation, { data, loading, error }] = useSetSetDmxSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      dmxSetId: // value for 'dmxSetId'
+ *   },
+ * });
+ */
+export function useSetSetDmxSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetSetDmxSetMutation, SetSetDmxSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetSetDmxSetMutation, SetSetDmxSetMutationVariables>(SetSetDmxSetDocument, baseOptions);
+      }
+export type SetSetDmxSetMutationHookResult = ReturnType<typeof useSetSetDmxSetMutation>;
+export type SetSetDmxSetMutationResult = ApolloReactCommon.MutationResult<SetSetDmxSetMutation>;
+export type SetSetDmxSetMutationOptions = ApolloReactCommon.BaseMutationOptions<SetSetDmxSetMutation, SetSetDmxSetMutationVariables>;
+export const SetsDocument = gql`
+    query Sets {
+  simulators(template: true) {
+    id
+    name
+    layout
+    systems {
+      id
+      type
+    }
+    stationSets {
+      id
+      name
+      stations {
+        name
+      }
+    }
+  }
+  sets {
+    id
+    name
+    clients {
+      id
+      client {
+        id
+      }
+      simulator {
+        id
+        name
+      }
+      stationSet {
+        id
+        name
+      }
+      station
+      secondary
+      soundPlayer
+    }
+    dmxSetId
+  }
+  clients {
+    id
+    cards
+    mobile
+  }
+}
+    `;
+
+/**
+ * __useSetsQuery__
+ *
+ * To run a query within a React component, call `useSetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSetsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSetsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SetsQuery, SetsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SetsQuery, SetsQueryVariables>(SetsDocument, baseOptions);
+      }
+export function useSetsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SetsQuery, SetsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SetsQuery, SetsQueryVariables>(SetsDocument, baseOptions);
+        }
+export type SetsQueryHookResult = ReturnType<typeof useSetsQuery>;
+export type SetsLazyQueryHookResult = ReturnType<typeof useSetsLazyQuery>;
+export type SetsQueryResult = ApolloReactCommon.QueryResult<SetsQuery, SetsQueryVariables>;
+export const UpdateSetClientDocument = gql`
+    mutation UpdateSetClient($id: ID!, $clientId: ID!, $secondary: Boolean, $soundPlayer: Boolean) {
+  updateSetClient(id: $id, client: {id: $clientId, secondary: $secondary, soundPlayer: $soundPlayer})
+}
+    `;
+export type UpdateSetClientMutationFn = ApolloReactCommon.MutationFunction<UpdateSetClientMutation, UpdateSetClientMutationVariables>;
+
+/**
+ * __useUpdateSetClientMutation__
+ *
+ * To run a mutation, you first call `useUpdateSetClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSetClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSetClientMutation, { data, loading, error }] = useUpdateSetClientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      clientId: // value for 'clientId'
+ *      secondary: // value for 'secondary'
+ *      soundPlayer: // value for 'soundPlayer'
+ *   },
+ * });
+ */
+export function useUpdateSetClientMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateSetClientMutation, UpdateSetClientMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateSetClientMutation, UpdateSetClientMutationVariables>(UpdateSetClientDocument, baseOptions);
+      }
+export type UpdateSetClientMutationHookResult = ReturnType<typeof useUpdateSetClientMutation>;
+export type UpdateSetClientMutationResult = ApolloReactCommon.MutationResult<UpdateSetClientMutation>;
+export type UpdateSetClientMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateSetClientMutation, UpdateSetClientMutationVariables>;
 export const AddCardDocument = gql`
     mutation AddCard($id: ID!, $name: String!, $cardName: String!, $cardComponent: String!, $cardIcon: String) {
   addCardToStation(stationSetID: $id, stationName: $name, cardName: $cardName, cardComponent: $cardComponent, cardIcon: $cardIcon)

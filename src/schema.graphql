@@ -1268,6 +1268,9 @@ type Lighting {
 
 enum LIGHTING_ACTION {
   normal
+  darken
+  blackout
+  work
   fade
   shake
   strobe

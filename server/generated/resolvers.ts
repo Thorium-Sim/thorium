@@ -1366,6 +1366,9 @@ export type Lighting = {
 
 export enum Lighting_Action {
   Normal = "normal",
+  Darken = "darken",
+  Blackout = "blackout",
+  Work = "work",
   Fade = "fade",
   Shake = "shake",
   Strobe = "strobe",

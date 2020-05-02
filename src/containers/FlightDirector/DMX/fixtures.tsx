@@ -60,7 +60,7 @@ const DMXFixtures: React.FC<{
   return (
     <React.Fragment>
       <div css={tw`flex flex-col`}>
-        <h3>Devices</h3>
+        <h3>Fixtures</h3>
         <SearchableList
           items={dmxFixtures?.map(d => ({id: d.id, label: d.name})) || []}
           selectedItem={fixtureId || null}
@@ -319,14 +319,27 @@ const DMXFixtures: React.FC<{
                     variables: {
                       id: selectedFixture.id,
                       newTags: selectedFixture.tags
-                        .concat("work")
+                        .concat("no-effects")
                         .filter((a, i, arr) => arr.indexOf(a) === i),
                     },
                   })
                 }
               >
-                Add Work Lights Tag
+                Add No Effects Tag
               </Button>
+              <div>
+                <small>
+                  No Effects makes it so the light is not affected by effects
+                  like shake, strobe, and oscillate.
+                </small>
+              </div>
+              <div>
+                <small>
+                  Tag priority is based on alphanumeric order. Tags with numbers
+                  in front of them (such as "2-spooky") have higher priority
+                  than tags with just words.
+                </small>
+              </div>
             </label>
           </React.Fragment>
         )}

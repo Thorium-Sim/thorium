@@ -22,8 +22,6 @@ const fragment = gql`
       action
       actionStrength
       transitionDuration
-      useAlertColor
-      color
     }
   }
 `;
@@ -45,14 +43,7 @@ export const LIGHTING_SUB = gql`
 `;
 
 const LightingCore = ({simulator: {lighting, id}}) => {
-  const {
-    intensity,
-    action,
-    actionStrength,
-    transitionDuration,
-    useAlertColor,
-    color,
-  } = lighting;
+  const {intensity, action, actionStrength, transitionDuration} = lighting;
   const [transitionDurationLabel, setTransitionDurationLabel] = React.useState(
     transitionDuration,
   );
@@ -87,9 +78,7 @@ const LightingCore = ({simulator: {lighting, id}}) => {
               <div>Mode</div>
               <Input
                 type="select"
-                bsSize="sm"
                 value={action}
-                style={{height: "18px"}}
                 onChange={e =>
                   update({
                     variables: {
@@ -99,45 +88,16 @@ const LightingCore = ({simulator: {lighting, id}}) => {
                   })
                 }
               >
-                {["normal", "fade", "oscillate", "strobe", "shake"].map(s => (
-                  <option key={s} value={s}>
-                    {capitalCase(s)}
-                  </option>
-                ))}
+                <option value="normal">Normal</option>
+                <option value="darken">Darken</option>
+                <option value="blackout">Blackout</option>
+                <option value="work">Work</option>
+                <hr />
+                <option value="fade">Fade</option>
+                <option value="oscillate">Oscillate</option>
+                <option value="strobe">Strobe</option>
+                <option value="shake">Shake</option>
               </Input>
-              <label>
-                Alert Color{" "}
-                <Input
-                  type="checkbox"
-                  checked={useAlertColor}
-                  style={{position: "relative", margin: 0}}
-                  onChange={e =>
-                    update({
-                      variables: {
-                        id,
-                        lighting: {
-                          color: e.target.checked ? null : "blue",
-                        },
-                      },
-                    })
-                  }
-                />
-              </label>
-              <div style={{float: "right"}}>
-                <ColorPicker
-                  color={color || "#000"}
-                  onChangeComplete={finalColor =>
-                    update({
-                      variables: {
-                        id,
-                        lighting: {
-                          color: finalColor.hex,
-                        },
-                      },
-                    })
-                  }
-                />
-              </div>
             </Col>
             <Col sm={4}>
               <div>Effect Strength</div>
@@ -265,18 +225,15 @@ const LightingCore = ({simulator: {lighting, id}}) => {
             <Col sm={8}>
               <ButtonGroup>
                 <Button
-                  color="secondary"
+                  color="info"
                   size="sm"
-                  active={
-                    intensity === 1 && action === "normal" && color === null
-                  }
+                  active={intensity === 1 && action === "normal"}
                   onClick={e =>
                     update({
                       variables: {
                         id,
                         lighting: {
                           action: "normal",
-                          color: null,
                           intensity: 1,
                         },
                       },
@@ -286,59 +243,35 @@ const LightingCore = ({simulator: {lighting, id}}) => {
                   Normal
                 </Button>
                 <Button
-                  color="primary"
+                  color="secondary"
                   size="sm"
-                  active={
-                    intensity === 1 && action === "normal" && color === "blue"
-                  }
+                  active={intensity === 1 && action === "darken"}
                   onClick={e =>
                     update({
                       variables: {
                         id,
                         lighting: {
-                          action: "normal",
-                          color: "blue",
+                          action: "darken",
                           intensity: 1,
                         },
                       },
                     })
                   }
                 >
-                  Blue
+                  Darken
                 </Button>
-                <Button
-                  color="danger"
-                  size="sm"
-                  active={
-                    intensity === 1 && action === "normal" && color === "red"
-                  }
-                  onClick={e =>
-                    update({
-                      variables: {
-                        id,
-                        lighting: {
-                          action: "normal",
-                          color: "red",
-                          intensity: 1,
-                        },
-                      },
-                    })
-                  }
-                >
-                  Red
-                </Button>
+
                 <Button
                   color="dark"
                   className="black-as-night"
                   size="sm"
-                  active={color === "black"}
+                  active={action === "blackout"}
                   onClick={e =>
                     update({
                       variables: {
                         id,
                         lighting: {
-                          action: "normal",
-                          color: "black",
+                          action: "blackout",
                           intensity: 1,
                         },
                       },
@@ -346,6 +279,24 @@ const LightingCore = ({simulator: {lighting, id}}) => {
                   }
                 >
                   Blackout
+                </Button>
+                <Button
+                  color="light"
+                  size="sm"
+                  active={action === "work"}
+                  onClick={e =>
+                    update({
+                      variables: {
+                        id,
+                        lighting: {
+                          action: "work",
+                          intensity: 1,
+                        },
+                      },
+                    })
+                  }
+                >
+                  Work
                 </Button>
               </ButtonGroup>
             </Col>

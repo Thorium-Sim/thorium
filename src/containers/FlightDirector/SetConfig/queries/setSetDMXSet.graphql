@@ -1,0 +1,3 @@
+mutation SetSetDMXSet($id: ID!, $dmxSetId: ID!) {
+  setSetDMXSetId(id: $id, dmxSetId: $dmxSetId)
+}

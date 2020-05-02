@@ -23,6 +23,9 @@ const schema = gql`
 
   enum LIGHTING_ACTION {
     normal
+    darken
+    blackout
+    work
     fade
     shake
     strobe
