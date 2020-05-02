@@ -218,12 +218,15 @@ const FlightConfig: React.FC = () => {
   if (!simulators || !missions) return null;
   const selectedSimObj = simulators.find(s => s.id === selectedSimulator);
 
+  function isString(str: unknown): str is string {
+    return typeof str === "string";
+  }
   const simulatorCapabilities = {
     ...selectedSimObj?.capabilities,
     cards: selectedSimObj?.stationSets
       ?.find(s => s?.id === selectedStation)
-      ?.stations?.flatMap(s =>
-        (s?.cards?.flatMap(c => c?.component) || []).concat(
+      ?.stations?.flatMap(s => {
+        const widgetCapabilities =
           s?.widgets
             ?.map(w => {
               if (w === "messages") return "Messages";
@@ -234,9 +237,12 @@ const FlightConfig: React.FC = () => {
               if (w === "commandLine") return "CommandLine";
               return w;
             })
-            .filter(Boolean),
-        ),
-      ),
+            .filter(isString) || [];
+
+        return (s?.cards?.flatMap(c => c?.component) || []).concat(
+          widgetCapabilities,
+        );
+      }),
     spaceEdventures: Boolean(flightType),
   } as SimulatorCapabilities;
 

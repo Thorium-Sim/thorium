@@ -6,17 +6,18 @@ declare global {
     readonly usb: USB;
   }
 }
+async function noop() {}
 
 interface DMXDevice {
   ready: boolean;
   close: () => Promise<void>;
   update: (channels: number[]) => Promise<USBOutTransferResult | void>;
+  activate: () => void;
 }
 async function setUpLightingDevice(): Promise<DMXDevice> {
   const lightingDevice = await navigator.usb.requestDevice({
     filters: [{vendorId: 1027, productId: 24577}],
   });
-  console.log(lightingDevice);
   await lightingDevice.open();
   await lightingDevice.claimInterface(0);
 
@@ -59,12 +60,12 @@ async function setUpLightingDevice(): Promise<DMXDevice> {
 
   return {
     ready: true,
+    activate: noop,
     close: () => lightingDevice.close(),
     update: (channels: number[]) => {
       // Make sure we're sending 512 channels
-      const output: number[] = [];
       for (let i = 0; i < 512; i++) {
-        output[i] = channels[i] || 0;
+        universe[i] = Math.round(channels[i]) || 0;
       }
       // Send the message
       return lightingDevice.transferOut(
@@ -75,24 +76,31 @@ async function setUpLightingDevice(): Promise<DMXDevice> {
   };
 }
 
-async function noop() {}
+export function useUSBDMX(autoActivate?: boolean): DMXDevice {
+  const activated = React.useRef(false);
 
-export function useUSBDMX(): DMXDevice {
+  const activate = React.useCallback(() => {
+    if (!activated.current) {
+      setUpLightingDevice().then(res => {
+        activated.current = true;
+        setLightingDevice(res);
+      });
+    }
+  }, []);
   const [lightingDevice, setLightingDevice] = React.useState<DMXDevice>({
     close: noop,
     update: noop,
     ready: false,
+    activate,
   });
 
   React.useEffect(() => {
-    let internalLightingDevice: DMXDevice;
-    setUpLightingDevice().then(res => {
-      internalLightingDevice = res;
-      setLightingDevice(res);
-    });
+    if (autoActivate) {
+      activate();
+    }
     return () => {
-      internalLightingDevice?.close();
+      lightingDevice?.close();
     };
-  }, []);
+  }, [lightingDevice, autoActivate, activate]);
   return lightingDevice;
 }

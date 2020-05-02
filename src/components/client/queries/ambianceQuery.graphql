@@ -1,0 +1,13 @@
+query Ambiance($id: ID!) {
+  simulators(id: $id) {
+    id
+    ambiance {
+      id
+      name
+      asset
+      volume
+      channel
+      playbackRate
+    }
+  }
+}

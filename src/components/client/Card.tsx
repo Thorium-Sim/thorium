@@ -5,6 +5,7 @@ import InterfaceCard from "components/views/Interfaces";
 import ActionsMixin from "../generic/Actions";
 import Alerts from "../generic/Alerts";
 import SoundPlayer from "./soundPlayer";
+import Lighting from "./lighting";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
 import {subscribe, publish} from "../../helpers/pubsub";
@@ -13,6 +14,8 @@ import gql from "graphql-tag.macro";
 import {playSound} from "../generic/SoundPlayer";
 import {randomFromList} from "helpers/randomFromList";
 import styled from "styled-components";
+import {Simulator, Station, Flight, Client} from "generated/graphql";
+
 const Blackout = styled.div`
   width: 100vw;
   height: 100vh;
@@ -28,39 +31,50 @@ const Blackout = styled.div`
     display: none;
   }
 `;
-const CardRenderer = props => {
-  const {simulator, station, flight, client, card, changeCard} = props;
-  const layoutName =
-    client.layout || station.layout || simulator.layout || "LayoutCorners";
 
-  let LayoutComponent = Layouts[layoutName] || Layouts.LayoutCorners;
+interface CardFrameProps {
+  simulator: Simulator;
+  station: Station;
+  flight: Flight;
+  client: Client;
+}
+const CardRenderer: React.FC<CardFrameProps & {
+  changeCard: (name: any) => void;
+  card: string;
+}> = props => {
+  const {simulator, station, flight, client, card, changeCard} = props;
+  const layoutName = station.layout || simulator.layout || "LayoutCorners";
+
+  let LayoutComponent = (Layouts[layoutName] ||
+    Layouts.LayoutCorners) as React.ElementType;
   if (station.name === "Viewscreen") {
     LayoutComponent = Layouts[layoutName + "Viewscreen"] || LayoutComponent;
   }
   if (client.offlineState === "blackout" || station.name === "Blackout") {
-    return (
-      <Blackout clientObj={client} station={station} simulator={simulator} />
-    );
+    return <Blackout />;
   }
-  if (station.name.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+  if (station?.name?.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
     return (
       <Keyboard
-        keyboard={station.name.replace("keyboard:", "")}
+        keyboard={station?.name?.replace("keyboard:", "")}
         simulator={simulator}
         clientObj={client}
       />
     );
   }
-  if (station.name.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
+  if (station?.name?.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
     return (
       <InterfaceCard
-        interfaceId={station.name.replace("interface-id:", "")}
+        interfaceId={station?.name?.replace("interface-id:", "")}
         simulator={simulator}
       />
     );
   }
   if (station.name === "Sound") {
-    return <SoundPlayer clientObj={client} simulator={simulator} />;
+    return <SoundPlayer clientId={client.id} simulator={simulator} />;
+  }
+  if (station.name === "Lighting") {
+    return <Lighting simulator={simulator} />;
   }
   return (
     <LayoutComponent
@@ -104,7 +118,7 @@ const CHANGE_CARD_MUTATION = gql`
   }
 `;
 
-const CardFrame = props => {
+const CardFrame: React.FC<CardFrameProps> = props => {
   const {
     station: {cards, widgets, training: stationTraining},
     station,
@@ -121,7 +135,7 @@ const CardFrame = props => {
   const [changeCardMutation] = useMutation(CHANGE_CARD_MUTATION);
   const changeCard = React.useCallback(
     name => {
-      const card = cards.find(c => c.name === name) ? name : cards?.[0]?.name;
+      const card = cards?.find(c => c.name === name) ? name : cards?.[0]?.name;
       if (cardChanged.current || cardName === card) return;
       cardChanged.current = true;
       setTimeout(() => (cardChanged.current = false), 500);
@@ -136,27 +150,32 @@ const CardFrame = props => {
   );
 
   React.useEffect(() => {
-    return subscribe("cardChangeRequest", payload => {
-      // Searching in order of priority, find a matching card by component (card
-      // names may have been changed to protect the innocent) then change to that card's name.
-      let found = false;
-      for (let i = 0; i < payload.changeToCard.length; i++) {
-        let matchingCard = cards.find(
-          c => c.component === payload.changeToCard[i],
-        );
-        if (matchingCard) {
-          changeCard(matchingCard.name);
-          found = true;
-          break;
+    return subscribe(
+      "cardChangeRequest",
+      (payload: {changeToCard: string[]}) => {
+        // Searching in order of priority, find a matching card by component (card
+        // names may have been changed to protect the innocent) then change to that card's name.
+        let found = false;
+        for (let i = 0; i < payload.changeToCard.length; i++) {
+          let matchingCard = cards.find(
+            c => c.component === payload.changeToCard[i],
+          );
+          if (matchingCard) {
+            changeCard(matchingCard.name);
+            found = true;
+            break;
+          }
         }
-      }
-      if (!found) {
-        const widgetName = payload.changeToCard.find(c => widgets.includes(c));
-        if (widgetName) {
-          publish("widgetOpen", widgetName);
+        if (!found) {
+          const widgetName = payload.changeToCard.find(c =>
+            widgets?.includes(c),
+          );
+          if (widgetName) {
+            publish("widgetOpen", widgetName);
+          }
         }
-      }
-    });
+      },
+    );
   }, [cards, changeCard, widgets]);
 
   const [stopTraining] = useMutation(SET_TRAINING_MUTATION, {
@@ -175,7 +194,7 @@ const CardFrame = props => {
       {client.cracked && <div className="cracked-screen" />}
       <CardRenderer
         {...props}
-        card={client.currentCard.name}
+        card={client?.currentCard?.name || ""}
         changeCard={changeCard}
         client={{
           ...client,

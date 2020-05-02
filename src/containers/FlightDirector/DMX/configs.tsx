@@ -141,7 +141,7 @@ const DMXConfigs: React.FC = () => {
                   return (
                     <details key={key} css={tw`ml-4`}>
                       <summary>Alert Condition {key}</summary>
-                      {allTags.map(t => (
+                      {["darken"].concat(allTags).map(t => (
                         <details
                           key={`config-${key}-${t}`}
                           css={tw`ml-4 block`}
@@ -213,6 +213,13 @@ const DMXConfigs: React.FC = () => {
                     </details>
                   );
                 })}
+              </div>
+              <div>
+                <small>
+                  <Badge>Darken</Badge> is an alternate kind of blackout which
+                  keeps some lights on most of the lights are off for extra
+                  safety.
+                </small>
               </div>
             </React.Fragment>
           )}

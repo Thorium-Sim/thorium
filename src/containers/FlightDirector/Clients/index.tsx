@@ -26,7 +26,7 @@ const Keyboards = ({keyboards = []}: {keyboards: Keyboard[]}) => {
   }
   return (
     <Fragment>
-      <option disabled>──────────</option>
+      <hr />
       <optgroup label="Keyboards">
         {keyboards.map(k => (
           <option key={k?.id || "keyboard"} value={`keyboard:${k.id}`}>
@@ -53,7 +53,7 @@ const Interfaces = ({
   }
   return (
     <Fragment>
-      <option disabled>──────────</option>
+      <hr />
       <optgroup label="Interfaces">
         {simInterfaces?.map(i => (
           <option key={i?.id || "interface"} value={`interface-id:${i?.id}`}>
@@ -215,14 +215,11 @@ const ClientRow = ({
             )}
             {client.simulator && (
               <Fragment>
-                <option disabled>──────────</option>
+                <hr />
                 <option value={"Viewscreen"}>Viewscreen</option>
                 <option value={"Sound"}>Sound</option>
                 <option value={"Blackout"}>Blackout</option>
-                {(client.id.toLowerCase().indexOf("ecs") > -1 ||
-                  (client?.label?.toLowerCase().indexOf("ecs") || -1) > -1) && (
-                  <option value={"Lighting"}>Lighting</option>
-                )}
+                <option value={"Lighting"}>Lighting</option>
                 <Keyboards keyboards={keyboards} />
                 <Interfaces client={client} interfaces={interfaces} />
               </Fragment>

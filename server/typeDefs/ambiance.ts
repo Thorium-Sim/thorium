@@ -4,12 +4,12 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type Ambiance {
-    id: ID
-    name: String
-    asset: String
-    volume: Float
-    channel: [Int]
-    playbackRate: Float
+    id: ID!
+    name: String!
+    asset: String!
+    volume: Float!
+    channel: [Int!]!
+    playbackRate: Float!
   }
   input AmbianceInput {
     id: ID
@@ -21,7 +21,7 @@ const schema = gql`
   }
 
   extend type Simulator {
-    ambiance: [Ambiance]
+    ambiance: [Ambiance!]
   }
   extend type Station {
     ambiance: String

@@ -22,7 +22,7 @@ import LayoutEpsilonViewscreen from "./LayoutEpsilon/viewscreen";
 import LayoutBlackViewscreen from "./LayoutBlack/viewscreen";
 import LayoutClearViewscreen from "./LayoutClear/viewscreen";
 
-const Layouts = {
+const Layouts: {[name: string]: React.ElementType} = {
   LayoutCorners,
   LayoutGlass,
   LayoutJr,

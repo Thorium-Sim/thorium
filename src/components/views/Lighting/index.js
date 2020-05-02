@@ -7,11 +7,9 @@ import {
   Col,
   Input,
 } from "helpers/reactstrap";
-import {capitalCase} from "change-case";
 import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import ColorPicker from "helpers/colorPicker";
 import "./style.scss";
 
 const fragment = gql`
@@ -22,6 +20,9 @@ const fragment = gql`
       action
       actionStrength
       transitionDuration
+      dmxConfig {
+        id
+      }
     }
   }
 `;
@@ -29,6 +30,10 @@ export const LIGHTING_QUERY = gql`
   query Lighting($simulatorId: ID!) {
     simulators(id: $simulatorId) {
       ...LightingData
+    }
+    dmxConfigs {
+      id
+      name
     }
   }
   ${fragment}
@@ -42,8 +47,14 @@ export const LIGHTING_SUB = gql`
   ${fragment}
 `;
 
-const LightingCore = ({simulator: {lighting, id}}) => {
-  const {intensity, action, actionStrength, transitionDuration} = lighting;
+const LightingCore = ({simulator: {lighting, id}, dmxConfigs}) => {
+  const {
+    intensity,
+    action,
+    actionStrength,
+    transitionDuration,
+    dmxConfig,
+  } = lighting;
   const [transitionDurationLabel, setTransitionDurationLabel] = React.useState(
     transitionDuration,
   );
@@ -97,6 +108,25 @@ const LightingCore = ({simulator: {lighting, id}}) => {
                 <option value="oscillate">Oscillate</option>
                 <option value="strobe">Strobe</option>
                 <option value="shake">Shake</option>
+              </Input>
+              <Input
+                type="select"
+                value={dmxConfig?.id || ""}
+                onChange={e =>
+                  update({
+                    variables: {
+                      id,
+                      lighting: {dmxConfig: e.target.value},
+                    },
+                  })
+                }
+              >
+                <option value={""}>Default</option>
+                {dmxConfigs.map(d => (
+                  <option key={d.id} value={d.id}>
+                    {d.name}
+                  </option>
+                ))}
               </Input>
             </Col>
             <Col sm={4}>
@@ -343,12 +373,12 @@ const LightingCore = ({simulator: {lighting, id}}) => {
     </Mutation>
   );
 };
-const LightingCoreData = ({clients, simulator: {id}}) => {
+const LightingCoreData = ({simulator: {id}}) => {
   return (
     <Query query={LIGHTING_QUERY} variables={{simulatorId: id}}>
       {({loading, data, error, subscribeToMore}) => {
         if (loading || !data) return null;
-        const {simulators} = data;
+        const {simulators, dmxConfigs} = data;
         const [simulator] = simulators;
         if (!simulator) return "No Simulator";
         return (
@@ -365,7 +395,7 @@ const LightingCoreData = ({clients, simulator: {id}}) => {
               })
             }
           >
-            <LightingCore simulator={simulator} />
+            <LightingCore simulator={simulator} dmxConfigs={dmxConfigs} />
           </SubscriptionHelper>
         );
       }}

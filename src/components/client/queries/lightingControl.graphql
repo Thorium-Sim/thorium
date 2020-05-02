@@ -1,0 +1,16 @@
+subscription LightingControl($simulatorId: ID!) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    id
+    lighting {
+      intensity
+      action
+      actionStrength
+      transitionDuration
+      dmxConfig {
+        id
+        config
+      }
+    }
+    alertlevel
+  }
+}

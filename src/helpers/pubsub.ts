@@ -12,7 +12,7 @@ export function subscribe(topic: string, fn: Function) {
   };
 }
 
-export function publish(topic: string, args: any) {
+export function publish(topic: string, args?: any) {
   if (!topics[topic]) return;
   Object.values(topics[topic]).forEach(fn => {
     if (fn) fn(args);

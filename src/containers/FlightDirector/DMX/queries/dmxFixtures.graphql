@@ -5,6 +5,7 @@ subscription DMXFixtures($simulatorId: ID) {
     DMXDevice {
       id
       name
+      channels
     }
     channel
     mode

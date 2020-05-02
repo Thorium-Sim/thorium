@@ -1,7 +1,7 @@
-import React, {Fragment, Component} from "react";
+import React, {Fragment} from "react";
 import gql from "graphql-tag.macro";
 import {Subscription} from "react-apollo";
-import playSound from "../generic/SoundPlayer";
+import {useSounds} from "../generic/SoundPlayer";
 
 const SOUND_SUB = gql`
   subscription SoundSub($clientId: ID!) {
@@ -35,45 +35,41 @@ const STOP_LOOPING = gql`
   }
 `;
 
-class SoundController extends Component {
-  shouldComponentUpdate(prevProps) {
-    if (prevProps.clientId !== this.props.clientId) return true;
-    return false;
-  }
-  render() {
-    const {clientId} = this.props;
+const SoundController = React.memo<{clientId: string}>(
+  ({clientId}) => {
+    const {playSound, stopLooping, removeSound, removeAllSounds} = useSounds();
     return (
       <Fragment>
         <Subscription subscription={SOUND_SUB} variables={{clientId}}>
-          {({data = {}}) => {
-            const {soundSub} = data;
-            if (soundSub) this.props.playSound(soundSub);
+          {({data}: {data?: any}) => {
+            if (data?.soundSub) playSound(data?.soundSub);
             return null;
           }}
         </Subscription>
         <Subscription subscription={STOP_LOOPING} variables={{clientId}}>
-          {({data = {}}) => {
-            const {cancelLoopingSounds} = data;
-            if (cancelLoopingSounds) this.props.stopLooping();
+          {({data}: {data?: any}) => {
+            if (data?.cancelLoopingSounds) stopLooping();
             return null;
           }}
         </Subscription>
         <Subscription subscription={CANCEL_SOUNDS} variables={{clientId}}>
-          {({data = {}}) => {
-            const {cancelSound} = data;
-            if (cancelSound) this.props.removeSound(cancelSound);
+          {({data}: {data?: any}) => {
+            if (data?.cancelSound) removeSound(data?.cancelSound);
             return null;
           }}
         </Subscription>
         <Subscription subscription={CANCEL_ALL_SOUNDS} variables={{clientId}}>
-          {({data}) => {
-            this.props.removeAllSounds();
+          {() => {
+            removeAllSounds();
             return null;
           }}
         </Subscription>
       </Fragment>
     );
-  }
-}
+  },
+  (prevProps: {clientId: string}, nextProps: {clientId: string}) => {
+    return prevProps.clientId === nextProps.clientId;
+  },
+);
 
-export default playSound(SoundController);
+export default SoundController;

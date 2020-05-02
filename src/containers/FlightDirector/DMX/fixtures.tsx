@@ -329,6 +329,12 @@ const DMXFixtures: React.FC<{
               </Button>
               <div>
                 <small>
+                  Leave fields blank to allow other tag values to be used in
+                  their place.
+                </small>
+              </div>
+              <div>
+                <small>
                   No Effects makes it so the light is not affected by effects
                   like shake, strobe, and oscillate.
                 </small>

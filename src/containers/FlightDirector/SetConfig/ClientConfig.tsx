@@ -130,26 +130,23 @@ const ClientConfig: React.FC = () => {
                         />
                         {s.id}
                       </label>
-                      {selectedStation === "Viewscreen" &&
-                        getCurrentClient(s.id).id && (
-                          <label>
-                            <Input
-                              checked={Boolean(
-                                getCurrentClient(s.id).secondary,
-                              )}
-                              onChange={e =>
-                                updateSecondary(
-                                  e,
-                                  getCurrentClient(s.id).id || "",
-                                )
-                              }
-                              type="checkbox"
-                            />
-                            <small>Secondary Viewscreen</small>
-                          </label>
-                        )}
+                      {stationId === "Viewscreen" && getCurrentClient(s.id).id && (
+                        <label>
+                          <Input
+                            checked={Boolean(getCurrentClient(s.id).secondary)}
+                            onChange={e =>
+                              updateSecondary(
+                                e,
+                                getCurrentClient(s.id).id || "",
+                              )
+                            }
+                            type="checkbox"
+                          />
+                          <small>Secondary Viewscreen</small>
+                        </label>
+                      )}
                       {stationId &&
-                        (selectedStation === "Viewscreen" ||
+                        (stationId === "Viewscreen" ||
                           stationId.indexOf("keyboard") > -1) &&
                         getCurrentClient(s.id).id && (
                           <label>

@@ -1,16 +1,19 @@
 import React from "react";
 import Client from "./client";
-import playSound from "../generic/SoundPlayer";
 import {
   useSimulatorUpdateSubscription,
   Station,
   Simulator,
+  Flight,
+  Client as ClientInterface,
 } from "generated/graphql";
 export const SimulatorContext = React.createContext({});
 
 interface SimulatorDataProps {
-  station: Station;
-  simulator: Simulator;
+  station: Pick<Station, "name">;
+  simulator: Pick<Simulator, "id" | "name">;
+  client: ClientInterface;
+  flight: Flight;
 }
 const SimulatorData = (props: SimulatorDataProps) => {
   const {station: stationObj, simulator} = props;
@@ -23,14 +26,16 @@ const SimulatorData = (props: SimulatorDataProps) => {
   const station = simulators?.[0]?.stations?.find(
     s => s?.name === stationObj?.name,
   );
+  const defaultStation = {name: props.station.name, cards: []};
   return (
     <SimulatorContext.Provider value={simulators[0]}>
       <Client
-        {...props}
         simulator={simulators[0]}
-        station={station || props.station}
+        station={station || defaultStation}
+        client={props.client}
+        flight={props.flight}
       />
     </SimulatorContext.Provider>
   );
 };
-export default playSound(SimulatorData);
+export default SimulatorData;

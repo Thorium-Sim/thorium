@@ -39,12 +39,12 @@ export type ActionInput = {
 
 export type Ambiance = {
   __typename?: "Ambiance";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  asset?: Maybe<Scalars["String"]>;
-  volume?: Maybe<Scalars["Float"]>;
-  channel?: Maybe<Array<Maybe<Scalars["Int"]>>>;
-  playbackRate?: Maybe<Scalars["Float"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  asset: Scalars["String"];
+  volume: Scalars["Float"];
+  channel: Array<Scalars["Int"]>;
+  playbackRate: Scalars["Float"];
 };
 
 export type AmbianceInput = {
@@ -110,8 +110,8 @@ export enum Behaviors {
 
 export type Card = {
   __typename?: "Card";
-  name?: Maybe<Scalars["String"]>;
-  component?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
+  component: Scalars["String"];
   hidden?: Maybe<Scalars["Boolean"]>;
   assigned?: Maybe<Scalars["Boolean"]>;
   newStation?: Maybe<Scalars["Boolean"]>;
@@ -1356,12 +1356,13 @@ export type LightComponent = {
 
 export type Lighting = {
   __typename?: "Lighting";
-  intensity?: Maybe<Scalars["Float"]>;
-  action?: Maybe<Lighting_Action>;
-  actionStrength?: Maybe<Scalars["Float"]>;
-  transitionDuration?: Maybe<Scalars["Int"]>;
+  intensity: Scalars["Float"];
+  action: Lighting_Action;
+  actionStrength: Scalars["Float"];
+  transitionDuration: Scalars["Int"];
   useAlertColor?: Maybe<Scalars["Boolean"]>;
   color?: Maybe<Scalars["String"]>;
+  dmxConfig?: Maybe<DmxConfig>;
 };
 
 export enum Lighting_Action {
@@ -1382,6 +1383,7 @@ export type LightingInput = {
   transitionDuration?: Maybe<Scalars["Int"]>;
   useAlertColor?: Maybe<Scalars["Boolean"]>;
   color?: Maybe<Scalars["String"]>;
+  dmxConfig?: Maybe<Scalars["String"]>;
 };
 
 export type Location = Deck | Room;
@@ -7609,7 +7611,7 @@ export type Simulator = {
   spaceEdventuresId?: Maybe<Scalars["String"]>;
   flipped?: Maybe<Scalars["Boolean"]>;
   capabilities?: Maybe<SimulatorCapabilities>;
-  ambiance?: Maybe<Array<Maybe<Ambiance>>>;
+  ambiance?: Maybe<Array<Ambiance>>;
   assets?: Maybe<SimulatorAssets>;
   soundEffects?: Maybe<Scalars["JSON"]>;
   damageTasks?: Maybe<Array<Maybe<DamageTask>>>;
@@ -7740,7 +7742,7 @@ export type StageComponent = {
 
 export type Station = {
   __typename?: "Station";
-  name?: Maybe<Scalars["String"]>;
+  name: Scalars["String"];
   description?: Maybe<Scalars["String"]>;
   training?: Maybe<Scalars["String"]>;
   login?: Maybe<Scalars["Boolean"]>;
@@ -7748,7 +7750,7 @@ export type Station = {
   messageGroups?: Maybe<Array<Maybe<Scalars["String"]>>>;
   layout?: Maybe<Scalars["String"]>;
   widgets?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  cards?: Maybe<Array<Maybe<Card>>>;
+  cards: Array<Card>;
   ambiance?: Maybe<Scalars["String"]>;
 };
 
@@ -7758,11 +7760,11 @@ export type StationCardsArgs = {
 
 export type StationSet = {
   __typename?: "StationSet";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
   simulator?: Maybe<Simulator>;
   crewCount?: Maybe<Scalars["Int"]>;
-  stations?: Maybe<Array<Maybe<Station>>>;
+  stations: Array<Station>;
 };
 
 export type StealthField = SystemInterface & {
@@ -9433,6 +9435,7 @@ export type ResolversTypes = ResolversObject<{
   SimulatorAssets: ResolverTypeWrapper<SimulatorAssets>;
   Lighting: ResolverTypeWrapper<Lighting>;
   LIGHTING_ACTION: Lighting_Action;
+  DMXConfig: ResolverTypeWrapper<DmxConfig>;
   StationSet: ResolverTypeWrapper<StationSet>;
   SpaceEdventuresClient: ResolverTypeWrapper<SpaceEdventuresClient>;
   CommandLineFeedback: ResolverTypeWrapper<CommandLineFeedback>;
@@ -9615,7 +9618,6 @@ export type ResolversTypes = ResolversObject<{
   DMXFixture: ResolverTypeWrapper<DmxFixture>;
   DMXFixtureMode: DmxFixtureMode;
   DMXPassiveChannels: ResolverTypeWrapper<DmxPassiveChannels>;
-  DMXConfig: ResolverTypeWrapper<DmxConfig>;
   Mutation: ResolverTypeWrapper<{}>;
   EntityCoordinatesInput: EntityCoordinatesInput;
   QuaternionInput: QuaternionInput;
@@ -9802,6 +9804,7 @@ export type ResolversParentTypes = ResolversObject<{
   SimulatorAssets: SimulatorAssets;
   Lighting: Lighting;
   LIGHTING_ACTION: Lighting_Action;
+  DMXConfig: DmxConfig;
   StationSet: StationSet;
   SpaceEdventuresClient: SpaceEdventuresClient;
   CommandLineFeedback: CommandLineFeedback;
@@ -9984,7 +9987,6 @@ export type ResolversParentTypes = ResolversObject<{
   DMXFixture: DmxFixture;
   DMXFixtureMode: DmxFixtureMode;
   DMXPassiveChannels: DmxPassiveChannels;
-  DMXConfig: DmxConfig;
   Mutation: {};
   EntityCoordinatesInput: EntityCoordinatesInput;
   QuaternionInput: QuaternionInput;
@@ -10100,20 +10102,12 @@ export type AmbianceResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Ambiance"] = ResolversParentTypes["Ambiance"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  asset?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  volume?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
-  channel?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Int"]>>>,
-    ParentType,
-    ContextType
-  >;
-  playbackRate?: Resolver<
-    Maybe<ResolversTypes["Float"]>,
-    ParentType,
-    ContextType
-  >;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  asset?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  volume?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  channel?: Resolver<Array<ResolversTypes["Int"]>, ParentType, ContextType>;
+  playbackRate?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -10221,12 +10215,8 @@ export type CardResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Card"] = ResolversParentTypes["Card"]
 > = ResolversObject<{
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  component?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  component?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   hidden?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   assigned?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
@@ -12253,28 +12243,21 @@ export type LightingResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Lighting"] = ResolversParentTypes["Lighting"]
 > = ResolversObject<{
-  intensity?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
-  action?: Resolver<
-    Maybe<ResolversTypes["LIGHTING_ACTION"]>,
-    ParentType,
-    ContextType
-  >;
-  actionStrength?: Resolver<
-    Maybe<ResolversTypes["Float"]>,
-    ParentType,
-    ContextType
-  >;
-  transitionDuration?: Resolver<
-    Maybe<ResolversTypes["Int"]>,
-    ParentType,
-    ContextType
-  >;
+  intensity?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  action?: Resolver<ResolversTypes["LIGHTING_ACTION"], ParentType, ContextType>;
+  actionStrength?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  transitionDuration?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   useAlertColor?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
     ContextType
   >;
   color?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  dmxConfig?: Resolver<
+    Maybe<ResolversTypes["DMXConfig"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -19656,7 +19639,7 @@ export type SimulatorResolvers<
     ContextType
   >;
   ambiance?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Ambiance"]>>>,
+    Maybe<Array<ResolversTypes["Ambiance"]>>,
     ParentType,
     ContextType
   >;
@@ -19864,7 +19847,7 @@ export type StationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Station"] = ResolversParentTypes["Station"]
 > = ResolversObject<{
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   description?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -19889,7 +19872,7 @@ export type StationResolvers<
     ContextType
   >;
   cards?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Card"]>>>,
+    Array<ResolversTypes["Card"]>,
     ParentType,
     ContextType,
     RequireFields<StationCardsArgs, never>
@@ -19902,8 +19885,8 @@ export type StationSetResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["StationSet"] = ResolversParentTypes["StationSet"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   simulator?: Resolver<
     Maybe<ResolversTypes["Simulator"]>,
     ParentType,
@@ -19911,7 +19894,7 @@ export type StationSetResolvers<
   >;
   crewCount?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   stations?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Station"]>>>,
+    Array<ResolversTypes["Station"]>,
     ParentType,
     ContextType
   >;

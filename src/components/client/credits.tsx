@@ -1,6 +1,9 @@
-import React, {Component, useState} from "react";
+/** @jsx jsx */
+import {jsx, keyframes} from "@emotion/core";
+import tw from "twin.macro";
+import css from "@emotion/css/macro";
+import React, {useState} from "react";
 import {
-  Container,
   Button,
   Modal,
   ModalHeader,
@@ -11,7 +14,12 @@ import {
 } from "helpers/reactstrap";
 import "./credits.scss";
 
-const ClientNameModal = ({clientId, modal, toggle, changeClientId}) => {
+const ClientNameModal: React.FC<{
+  clientId: string;
+  modal: boolean;
+  toggle: () => void;
+  changeClientId: (id: string) => void;
+}> = ({clientId, modal, toggle, changeClientId}) => {
   const [name, setName] = useState(clientId);
   return (
     <Modal isOpen={modal} toggle={toggle} size="large">
@@ -230,112 +238,84 @@ const creditList = [
   },
 ];
 
-class Credits extends Component {
-  state = {debug: false, scroll: 0};
-  componentDidMount() {
-    fetch("https://api.github.com/repos/thorium-sim/thorium-kiosk/releases")
-      .then(res => res.json())
-      .then(res => {
-        if (this.unmounted) return;
-        const release = res[0];
-        if (!release) return;
-        const mac = release.assets.find(a => a.name.indexOf("mac.zip") > -1)
-          .browser_download_url;
-        const win = release.assets.find(a => a.name.indexOf(".exe") > -1)
-          .browser_download_url;
-        const linux = release.assets.find(a => a.name.indexOf("AppImage") > -1)
-          .browser_download_url;
-        this.setState({mac, win, linux});
-      });
-  }
-  componentWillUnmount() {
-    this.unmounted = true;
-  }
-  toggleDebug = () => {
-    this.setState({
-      debug: !this.state.debug,
-    });
-  };
-  changeClientId = newClientId => {
-    if (newClientId) {
-      this.props.updateClientId(newClientId);
-    }
-  };
-  render() {
-    const {clientId, flight = {}, simulator = {}, station = {}} = this.props;
-    const {mac, win, linux} = this.state;
-    if (this.refs.scroll) {
-      this.refs.scroll.scrollTop = this.state.scroll;
-    }
-    return (
-      <div className="credit-bg">
-        <Container>
-          <img
-            alt="Logo"
-            src={require("./logo.png")}
-            draggable="false"
-            onClick={this.toggleDebug}
-          />
-          <h1>Thorium</h1>
-
-          {this.state.debug ? (
-            <div className="debug">
-              <h4>
-                <Button
-                  color="info"
-                  onClick={() => this.setState({showModal: true})}
-                >
-                  Client ID: {clientId}
-                </Button>
-              </h4>
-              <h5>Flight: {flight ? flight.name : "Not Assigned"}</h5>
-              <h5>Simulator: {simulator ? simulator.name : "Not Assigned"}</h5>
-              <h5>Station: {station ? station.name : "Not Assigned"}</h5>
-              {mac && (
-                <React.Fragment>
-                  <h5>Download the client app: </h5>
-                  <ul style={{listStyle: "none", margin: 0, padding: 0}}>
-                    <li>
-                      <a download="Thorium.zip" href={mac}>
-                        Mac
-                      </a>
-                    </li>
-                    <li>
-                      <a download="Thorium.zip" href={win}>
-                        Windows
-                      </a>
-                    </li>
-                    <li>
-                      <a download="Thorium.zip" href={linux}>
-                        Linux
-                      </a>
-                    </li>
-                  </ul>
-                </React.Fragment>
-              )}
-            </div>
-          ) : (
-            <div ref="scroll" className="scroll">
-              <div className="scroller">
-                {creditList.map(c => (
-                  <div key={c.header} className="creditSection">
-                    <h3>{c.header}</h3>
-                    <h4>{c.content}</h4>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </Container>
-        <ClientNameModal
-          clientId={clientId}
-          changeClientId={this.changeClientId}
-          modal={this.state.showModal}
-          toggle={() => this.setState({showModal: false})}
-        />
-      </div>
-    );
-  }
+const scrollKeyframes = keyframes`
+from {
+transform :translateY(0);
 }
+to {
+  transform:translateY(calc(-100% - 100vh));
+}`;
+const Credits: React.FC<{
+  clientId: string;
+  flightName?: string;
+  simulatorName?: string;
+  stationName?: string;
+  updateClientId: (id: string) => void;
+}> = ({updateClientId, clientId, flightName, simulatorName, stationName}) => {
+  const scroll = React.useRef<HTMLDivElement>(null);
+  const [showModal, setShowModal] = React.useState(false);
+
+  return (
+    <div
+      className="credit-bg"
+      css={tw`h-full overflow-y-hidden text-center text-white grid grid-cols-2 items-center`}
+    >
+      <div>
+        <img
+          css={[
+            tw`w-1/4`,
+            css`
+              filter: drop-shadow(16px 16px 20px black);
+            `,
+          ]}
+          alt="Logo"
+          src={require("./logo.png")}
+          draggable="false"
+        />
+        <h1>Thorium</h1>
+
+        <div className="debug">
+          <h4>
+            <Button color="info" onClick={() => setShowModal(true)}>
+              Client ID: {clientId}
+            </Button>
+          </h4>
+          <h5>Flight: {flightName ?? "Not Assigned"}</h5>
+          <h5>Simulator: {simulatorName ?? "Not Assigned"}</h5>
+          <h5>Station: {stationName ?? "Not Assigned"}</h5>
+        </div>
+      </div>
+      <div css={tw`relative`}>
+        <div
+          ref={scroll}
+          css={[
+            tw`absolute`,
+            css`
+              top: 100%;
+              animation: ${scrollKeyframes} 80s linear infinite;
+              li {
+                list-style: none;
+                padding: 0;
+              }
+            `,
+          ]}
+        >
+          {creditList.map(c => (
+            <div key={c.header} css={tw`mt-24`}>
+              <h3>{c.header}</h3>
+              <h4>{c.content}</h4>
+            </div>
+          ))}
+        </div>
+      </div>
+      <ClientNameModal
+        clientId={clientId}
+        changeClientId={(id: string) => id && updateClientId(id)}
+        modal={showModal}
+        toggle={() => setShowModal(false)}
+      />
+    </div>
+  );
+};
 
 export default Credits;

@@ -5,12 +5,13 @@ import {pubsub} from "../helpers/subscriptionManager";
 // necessary for the functionality in this file.
 const schema = gql`
   type Lighting {
-    intensity: Float
-    action: LIGHTING_ACTION
-    actionStrength: Float
-    transitionDuration: Int
+    intensity: Float!
+    action: LIGHTING_ACTION!
+    actionStrength: Float!
+    transitionDuration: Int!
     useAlertColor: Boolean
     color: String
+    dmxConfig: DMXConfig
   }
   input LightingInput {
     intensity: Float
@@ -19,6 +20,7 @@ const schema = gql`
     transitionDuration: Int
     useAlertColor: Boolean
     color: String
+    dmxConfig: String
   }
 
   enum LIGHTING_ACTION {
@@ -40,6 +42,11 @@ const schema = gql`
 const resolver = {
   Query: {},
   Mutation: {},
+  Lighting: {
+    dmxConfig(rootValue) {
+      return App.dmxConfigs.find(d => d.id === rootValue.dmxConfig);
+    },
+  },
 };
 
 export default {schema, resolver};

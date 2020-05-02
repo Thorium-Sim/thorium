@@ -32,12 +32,12 @@ export type ActionInput = {
 
 export type Ambiance = {
    __typename?: 'Ambiance',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
-  asset?: Maybe<Scalars['String']>,
-  volume?: Maybe<Scalars['Float']>,
-  channel?: Maybe<Array<Maybe<Scalars['Int']>>>,
-  playbackRate?: Maybe<Scalars['Float']>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  asset: Scalars['String'],
+  volume: Scalars['Float'],
+  channel: Array<Scalars['Int']>,
+  playbackRate: Scalars['Float'],
 };
 
 export type AmbianceInput = {
@@ -104,8 +104,8 @@ export enum Behaviors {
 
 export type Card = {
    __typename?: 'Card',
-  name?: Maybe<Scalars['String']>,
-  component?: Maybe<Scalars['String']>,
+  name: Scalars['String'],
+  component: Scalars['String'],
   hidden?: Maybe<Scalars['Boolean']>,
   assigned?: Maybe<Scalars['Boolean']>,
   newStation?: Maybe<Scalars['Boolean']>,
@@ -1351,12 +1351,13 @@ export type LightComponent = {
 
 export type Lighting = {
    __typename?: 'Lighting',
-  intensity?: Maybe<Scalars['Float']>,
-  action?: Maybe<Lighting_Action>,
-  actionStrength?: Maybe<Scalars['Float']>,
-  transitionDuration?: Maybe<Scalars['Int']>,
+  intensity: Scalars['Float'],
+  action: Lighting_Action,
+  actionStrength: Scalars['Float'],
+  transitionDuration: Scalars['Int'],
   useAlertColor?: Maybe<Scalars['Boolean']>,
   color?: Maybe<Scalars['String']>,
+  dmxConfig?: Maybe<DmxConfig>,
 };
 
 export enum Lighting_Action {
@@ -1377,6 +1378,7 @@ export type LightingInput = {
   transitionDuration?: Maybe<Scalars['Int']>,
   useAlertColor?: Maybe<Scalars['Boolean']>,
   color?: Maybe<Scalars['String']>,
+  dmxConfig?: Maybe<Scalars['String']>,
 };
 
 export type Location = Deck | Room;
@@ -8414,7 +8416,7 @@ export type Simulator = {
   spaceEdventuresId?: Maybe<Scalars['String']>,
   flipped?: Maybe<Scalars['Boolean']>,
   capabilities?: Maybe<SimulatorCapabilities>,
-  ambiance?: Maybe<Array<Maybe<Ambiance>>>,
+  ambiance?: Maybe<Array<Ambiance>>,
   assets?: Maybe<SimulatorAssets>,
   soundEffects?: Maybe<Scalars['JSON']>,
   damageTasks?: Maybe<Array<Maybe<DamageTask>>>,
@@ -8545,7 +8547,7 @@ export type StageComponent = {
 
 export type Station = {
    __typename?: 'Station',
-  name?: Maybe<Scalars['String']>,
+  name: Scalars['String'],
   description?: Maybe<Scalars['String']>,
   training?: Maybe<Scalars['String']>,
   login?: Maybe<Scalars['Boolean']>,
@@ -8553,7 +8555,7 @@ export type Station = {
   messageGroups?: Maybe<Array<Maybe<Scalars['String']>>>,
   layout?: Maybe<Scalars['String']>,
   widgets?: Maybe<Array<Maybe<Scalars['String']>>>,
-  cards?: Maybe<Array<Maybe<Card>>>,
+  cards: Array<Card>,
   ambiance?: Maybe<Scalars['String']>,
 };
 
@@ -8564,11 +8566,11 @@ export type StationCardsArgs = {
 
 export type StationSet = {
    __typename?: 'StationSet',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
   simulator?: Maybe<Simulator>,
   crewCount?: Maybe<Scalars['Int']>,
-  stations?: Maybe<Array<Maybe<Station>>>,
+  stations: Array<Station>,
 };
 
 export type StealthField = SystemInterface & {
@@ -10141,6 +10143,23 @@ export enum __TypeKind {
   NonNull = 'NON_NULL'
 }
 
+export type AmbianceQueryVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type AmbianceQuery = (
+  { __typename?: 'Query' }
+  & { simulators: Array<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'id'>
+    & { ambiance?: Maybe<Array<(
+      { __typename?: 'Ambiance' }
+      & Pick<Ambiance, 'id' | 'name' | 'asset' | 'volume' | 'channel' | 'playbackRate'>
+    )>> }
+  )> }
+);
+
 export type ClientDataFragment = (
   { __typename?: 'Client' }
   & Pick<Client, 'id' | 'token' | 'email' | 'cracked' | 'loginName' | 'loginState' | 'offlineState' | 'hypercard' | 'movie' | 'training' | 'caches' | 'overlay' | 'soundPlayer'>
@@ -10195,6 +10214,27 @@ export type ClientPingMutation = (
   & Pick<Mutation, 'clientPing'>
 );
 
+export type LightingControlSubscriptionVariables = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type LightingControlSubscription = (
+  { __typename?: 'Subscription' }
+  & { simulatorsUpdate?: Maybe<Array<Maybe<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'id' | 'alertlevel'>
+    & { lighting?: Maybe<(
+      { __typename?: 'Lighting' }
+      & Pick<Lighting, 'intensity' | 'action' | 'actionStrength' | 'transitionDuration'>
+      & { dmxConfig?: Maybe<(
+        { __typename?: 'DMXConfig' }
+        & Pick<DmxConfig, 'id' | 'config'>
+      )> }
+    )> }
+  )>>> }
+);
+
 export type RegisterClientMutationVariables = {
   client: Scalars['ID'];
 };
@@ -10224,10 +10264,10 @@ export type SimulatorDataFragment = (
   )>, stations?: Maybe<Array<(
     { __typename?: 'Station' }
     & Pick<Station, 'name' | 'login' | 'training' | 'ambiance' | 'executive' | 'layout' | 'messageGroups' | 'widgets'>
-    & { cards?: Maybe<Array<Maybe<(
+    & { cards: Array<(
       { __typename?: 'Card' }
       & Pick<Card, 'name' | 'component' | 'hidden' | 'assigned' | 'newStation'>
-    )>>> }
+    )> }
   )>> }
 );
 
@@ -11576,7 +11616,7 @@ export type DmxFixturesSubscription = (
     & Pick<DmxFixture, 'id' | 'name' | 'channel' | 'mode' | 'tags'>
     & { DMXDevice: (
       { __typename?: 'DMXDevice' }
-      & Pick<DmxDevice, 'id' | 'name'>
+      & Pick<DmxDevice, 'id' | 'name' | 'channels'>
     ), passiveChannels: (
       { __typename?: 'DMXPassiveChannels' }
       & Pick<DmxPassiveChannels, 'amber' | 'white' | 'uv' | 'intensity' | 'strobe' | 'generic' | 'nothing' | 'color'>
@@ -11670,14 +11710,14 @@ export type FlightSetupQuery = (
     & { stationSets?: Maybe<Array<Maybe<(
       { __typename?: 'StationSet' }
       & Pick<StationSet, 'id' | 'name'>
-      & { stations?: Maybe<Array<Maybe<(
+      & { stations: Array<(
         { __typename?: 'Station' }
         & Pick<Station, 'name' | 'widgets'>
-        & { cards?: Maybe<Array<Maybe<(
+        & { cards: Array<(
           { __typename?: 'Card' }
           & Pick<Card, 'name' | 'component'>
-        )>>> }
-      )>>> }
+        )> }
+      )> }
     )>>>, capabilities?: Maybe<(
       { __typename?: 'SimulatorCapabilities' }
       & Pick<SimulatorCapabilities, 'systems' | 'docking'>
@@ -12032,10 +12072,10 @@ export type SetsQuery = (
     )>>, stationSets?: Maybe<Array<Maybe<(
       { __typename?: 'StationSet' }
       & Pick<StationSet, 'id' | 'name'>
-      & { stations?: Maybe<Array<Maybe<(
+      & { stations: Array<(
         { __typename?: 'Station' }
         & Pick<Station, 'name'>
-      )>>> }
+      )> }
     )>>> }
   )>, sets?: Maybe<Array<Maybe<(
     { __typename?: 'Set' }
@@ -12374,14 +12414,14 @@ export type SimulatorsConfigSubscription = (
     )>>, stationSets?: Maybe<Array<Maybe<(
       { __typename?: 'StationSet' }
       & Pick<StationSet, 'id' | 'name' | 'crewCount'>
-      & { stations?: Maybe<Array<Maybe<(
+      & { stations: Array<(
         { __typename?: 'Station' }
         & Pick<Station, 'name' | 'description' | 'training' | 'ambiance' | 'login' | 'executive' | 'messageGroups' | 'layout' | 'widgets'>
-        & { cards?: Maybe<Array<Maybe<(
+        & { cards: Array<(
           { __typename?: 'Card' }
           & Pick<Card, 'name' | 'component'>
-        )>>> }
-      )>>> }
+        )> }
+      )> }
     )>>> }
   )>>> }
 );
@@ -12397,14 +12437,14 @@ export type StationSetConfigSubscription = (
     & { simulator?: Maybe<(
       { __typename?: 'Simulator' }
       & Pick<Simulator, 'id'>
-    )>, stations?: Maybe<Array<Maybe<(
+    )>, stations: Array<(
       { __typename?: 'Station' }
       & Pick<Station, 'name' | 'description' | 'training' | 'ambiance' | 'login' | 'messageGroups' | 'executive' | 'widgets' | 'layout'>
-      & { cards?: Maybe<Array<Maybe<(
+      & { cards: Array<(
         { __typename?: 'Card' }
         & Pick<Card, 'name' | 'component'>
-      )>>> }
-    )>>> }
+      )> }
+    )> }
   )>>> }
 );
 
@@ -13014,6 +13054,47 @@ export const EntityDataFragmentDoc = gql`
   }
 }
     `;
+export const AmbianceDocument = gql`
+    query Ambiance($id: ID!) {
+  simulators(id: $id) {
+    id
+    ambiance {
+      id
+      name
+      asset
+      volume
+      channel
+      playbackRate
+    }
+  }
+}
+    `;
+
+/**
+ * __useAmbianceQuery__
+ *
+ * To run a query within a React component, call `useAmbianceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAmbianceQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAmbianceQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAmbianceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AmbianceQuery, AmbianceQueryVariables>) {
+        return ApolloReactHooks.useQuery<AmbianceQuery, AmbianceQueryVariables>(AmbianceDocument, baseOptions);
+      }
+export function useAmbianceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AmbianceQuery, AmbianceQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AmbianceQuery, AmbianceQueryVariables>(AmbianceDocument, baseOptions);
+        }
+export type AmbianceQueryHookResult = ReturnType<typeof useAmbianceQuery>;
+export type AmbianceLazyQueryHookResult = ReturnType<typeof useAmbianceLazyQuery>;
+export type AmbianceQueryResult = ApolloReactCommon.QueryResult<AmbianceQuery, AmbianceQueryVariables>;
 export const ClientDocument = gql`
     query Client($clientId: ID!) {
   clients(clientId: $clientId) {
@@ -13106,6 +13187,46 @@ export function useClientPingMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type ClientPingMutationHookResult = ReturnType<typeof useClientPingMutation>;
 export type ClientPingMutationResult = ApolloReactCommon.MutationResult<ClientPingMutation>;
 export type ClientPingMutationOptions = ApolloReactCommon.BaseMutationOptions<ClientPingMutation, ClientPingMutationVariables>;
+export const LightingControlDocument = gql`
+    subscription LightingControl($simulatorId: ID!) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    id
+    lighting {
+      intensity
+      action
+      actionStrength
+      transitionDuration
+      dmxConfig {
+        id
+        config
+      }
+    }
+    alertlevel
+  }
+}
+    `;
+
+/**
+ * __useLightingControlSubscription__
+ *
+ * To run a query within a React component, call `useLightingControlSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useLightingControlSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLightingControlSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useLightingControlSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<LightingControlSubscription, LightingControlSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<LightingControlSubscription, LightingControlSubscriptionVariables>(LightingControlDocument, baseOptions);
+      }
+export type LightingControlSubscriptionHookResult = ReturnType<typeof useLightingControlSubscription>;
+export type LightingControlSubscriptionResult = ApolloReactCommon.SubscriptionResult<LightingControlSubscription>;
 export const RegisterClientDocument = gql`
     mutation RegisterClient($client: ID!) {
   clientConnect(client: $client)
@@ -16488,6 +16609,7 @@ export const DmxFixturesDocument = gql`
     DMXDevice {
       id
       name
+      channels
     }
     channel
     mode
