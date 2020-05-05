@@ -128,6 +128,15 @@ const thorium = {
   sendMessage: function(arg) {
     return ipcRenderer.send("remoteMessage", arg);
   },
+  getDMXDeviceList: function() {
+    return ipcRenderer.invoke("get-usbDevices");
+  },
+  activateDMX: function(config) {
+    return ipcRenderer.send("activate-dmx", config);
+  },
+  sendDMXValue: function(universe) {
+    return ipcRenderer.send("send-dmx-value", universe);
+  },
 };
 
 document.addEventListener(

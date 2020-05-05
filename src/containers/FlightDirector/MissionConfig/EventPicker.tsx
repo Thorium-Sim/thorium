@@ -69,6 +69,19 @@ const EventPicker: React.FC<EventPickerProps> = ({
   className,
 }) => {
   const events = useEventNames();
+  const eventOptions = events.reduce(
+    (prev: {[key: string]: typeof events}, next) => {
+      const category = next.description.split(":")[0];
+      const type = {
+        ...next,
+        description:
+          next.description.split(":")[1] || next.description.split(":")[0],
+      };
+      prev[category] = prev[category] ? prev[category].concat(type) : [type];
+      return prev;
+    },
+    {},
+  );
   return (
     <select
       style={{width: "100%"}}
@@ -78,13 +91,17 @@ const EventPicker: React.FC<EventPickerProps> = ({
       className={className || `c-select form-control`}
     >
       <option>Select an event</option>
-      {events.map(type => {
-        return (
-          <option key={type.name} value={type.name}>
-            {type.description}
-          </option>
-        );
-      })}
+      {Object.entries(eventOptions).map(([key, value]) => (
+        <optgroup key={key} label={key}>
+          {value.map(type => {
+            return (
+              <option key={type.name} value={type.name}>
+                {type.description}
+              </option>
+            );
+          })}
+        </optgroup>
+      ))}
     </select>
   );
 };

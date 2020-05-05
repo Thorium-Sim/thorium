@@ -1269,7 +1269,6 @@ type Lighting {
 
 enum LIGHTING_ACTION {
   normal
-  darken
   blackout
   work
   fade
@@ -1915,6 +1914,22 @@ type Mutation {
   """
   removeLibraryEntry(entry: ID, slug: String): String
   importLibraryEntry(simulatorId: ID!, entries: String!): String
+  updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
+
+  """Macro: DMX: Set Simulator DMX Config"""
+  dmxSetSimulatorConfig(simulatorId: ID!, dmxConfigId: ID!): String
+
+  """Macro: Lighting: Set Intensity"""
+  lightingSetIntensity(simulatorId: ID!, intensity: Float!): String
+
+  """Macro: Lighting: Shake Lights"""
+  lightingShakeLights(simulatorId: ID!, strength: Float, duration: Float): String
+
+  """Macro: Lighting: Fade Lights"""
+  lightingFadeLights(simulatorId: ID!, duration: Float!, endIntensity: Float!, startIntensity: Float): String
+
+  """Macro: Lighting: Set Effect"""
+  lightingSetEffect(simulatorId: ID!, duration: Float, strength: Float, effect: LIGHTING_ACTION!): String
 
   """
   Macro: Long Range: Send Long Range Message
@@ -2387,7 +2402,6 @@ type Mutation {
   setBridgeMessaging(id: ID!, messaging: Boolean!): String
   setSimulatorAssets(id: ID!, assets: SimulatorAssetsInput!): String
   setSimulatorSoundEffects(id: ID!, soundEffects: JSON!): String
-  updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
   setSimulatorHasPrinter(simulatorId: ID!, hasPrinter: Boolean!): String
   setSimulatorHasLegs(simulatorId: ID!, hasLegs: Boolean!): String
   setSimulatorSpaceEdventuresId(simulatorId: ID!, spaceEdventuresId: String!): String
@@ -2717,21 +2731,22 @@ type Mutation {
   dmxFixtureSetName(id: ID!, name: String!): String
   dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: ID!): String
   dmxFixtureSetChannel(id: ID!, channel: Int!): String
-
-  """Macro: DMX: Set Fixture Mode"""
   dmxFixtureSetMode(id: ID, simulatorId: ID, tag: [String], mode: DMXFixtureMode!): String
 
+  """Macro: DMX: Set Fixture To Active Mode"""
+  dmxFixtureSetActive(id: ID, simulatorId: ID, tags: [String]): String
+
   """Macro: DMX: Set Fixture Tags"""
-  dmxFixtureSetTags(id: ID, simulatorId: ID, tag: [String], newTags: [String!]!): String
+  dmxFixtureSetTags(id: ID, simulatorId: ID, tags: [String], newTags: [String!]!): String
 
   """Macro: DMX: Add Fixture Tag"""
-  dmxFixtureAddTag(id: ID, simulatorId: ID, tag: [String], newTag: String!): String
+  dmxFixtureAddTag(id: ID, simulatorId: ID, tags: [String], newTag: String!): String
 
   """Macro: DMX: Remove Fixture Tag"""
-  dmxFixtureRemoveTag(id: ID, simulatorId: ID, tag: [String], removeTag: String!): String
+  dmxFixtureRemoveTag(id: ID, simulatorId: ID, tags: [String], removeTag: String!): String
 
   """Macro: DMX: Set Fixture Passive Channels"""
-  dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tag: [String], passiveChannels: DMXPassiveChannelsInput!): String
+  dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tags: [String], passiveChannels: DMXPassiveChannelsInput!): String
   dmxConfigCreate(name: String!): String
   dmxConfigRemove(id: ID!): String
   dmxConfigSetName(id: ID!, name: String!): String

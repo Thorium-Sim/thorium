@@ -1367,7 +1367,6 @@ export type Lighting = {
 
 export enum Lighting_Action {
   Normal = "normal",
-  Darken = "darken",
   Blackout = "blackout",
   Work = "work",
   Fade = "fade",
@@ -1939,6 +1938,12 @@ export type Mutation = {
   updateLibraryEntry?: Maybe<Scalars["String"]>;
   removeLibraryEntry?: Maybe<Scalars["String"]>;
   importLibraryEntry?: Maybe<Scalars["String"]>;
+  updateSimulatorLighting?: Maybe<Scalars["String"]>;
+  dmxSetSimulatorConfig?: Maybe<Scalars["String"]>;
+  lightingSetIntensity?: Maybe<Scalars["String"]>;
+  lightingShakeLights?: Maybe<Scalars["String"]>;
+  lightingFadeLights?: Maybe<Scalars["String"]>;
+  lightingSetEffect?: Maybe<Scalars["String"]>;
   sendLongRangeMessage?: Maybe<Scalars["String"]>;
   longRangeMessageSend?: Maybe<Scalars["String"]>;
   deleteLongRangeMessage?: Maybe<Scalars["String"]>;
@@ -2208,7 +2213,6 @@ export type Mutation = {
   setBridgeMessaging?: Maybe<Scalars["String"]>;
   setSimulatorAssets?: Maybe<Scalars["String"]>;
   setSimulatorSoundEffects?: Maybe<Scalars["String"]>;
-  updateSimulatorLighting?: Maybe<Scalars["String"]>;
   setSimulatorHasPrinter?: Maybe<Scalars["String"]>;
   setSimulatorHasLegs?: Maybe<Scalars["String"]>;
   setSimulatorSpaceEdventuresId?: Maybe<Scalars["String"]>;
@@ -2416,6 +2420,7 @@ export type Mutation = {
   dmxFixtureSetDMXDevice?: Maybe<Scalars["String"]>;
   dmxFixtureSetChannel?: Maybe<Scalars["String"]>;
   dmxFixtureSetMode?: Maybe<Scalars["String"]>;
+  dmxFixtureSetActive?: Maybe<Scalars["String"]>;
   dmxFixtureSetTags?: Maybe<Scalars["String"]>;
   dmxFixtureAddTag?: Maybe<Scalars["String"]>;
   dmxFixtureRemoveTag?: Maybe<Scalars["String"]>;
@@ -3615,6 +3620,41 @@ export type MutationRemoveLibraryEntryArgs = {
 export type MutationImportLibraryEntryArgs = {
   simulatorId: Scalars["ID"];
   entries: Scalars["String"];
+};
+
+export type MutationUpdateSimulatorLightingArgs = {
+  id: Scalars["ID"];
+  lighting: LightingInput;
+};
+
+export type MutationDmxSetSimulatorConfigArgs = {
+  simulatorId: Scalars["ID"];
+  dmxConfigId: Scalars["ID"];
+};
+
+export type MutationLightingSetIntensityArgs = {
+  simulatorId: Scalars["ID"];
+  intensity: Scalars["Float"];
+};
+
+export type MutationLightingShakeLightsArgs = {
+  simulatorId: Scalars["ID"];
+  strength?: Maybe<Scalars["Float"]>;
+  duration?: Maybe<Scalars["Float"]>;
+};
+
+export type MutationLightingFadeLightsArgs = {
+  simulatorId: Scalars["ID"];
+  duration: Scalars["Float"];
+  endIntensity: Scalars["Float"];
+  startIntensity?: Maybe<Scalars["Float"]>;
+};
+
+export type MutationLightingSetEffectArgs = {
+  simulatorId: Scalars["ID"];
+  duration?: Maybe<Scalars["Float"]>;
+  strength?: Maybe<Scalars["Float"]>;
+  effect: Lighting_Action;
 };
 
 export type MutationSendLongRangeMessageArgs = {
@@ -5036,11 +5076,6 @@ export type MutationSetSimulatorSoundEffectsArgs = {
   soundEffects: Scalars["JSON"];
 };
 
-export type MutationUpdateSimulatorLightingArgs = {
-  id: Scalars["ID"];
-  lighting: LightingInput;
-};
-
 export type MutationSetSimulatorHasPrinterArgs = {
   simulatorId: Scalars["ID"];
   hasPrinter: Scalars["Boolean"];
@@ -6102,31 +6137,37 @@ export type MutationDmxFixtureSetModeArgs = {
   mode: DmxFixtureMode;
 };
 
+export type MutationDmxFixtureSetActiveArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  simulatorId?: Maybe<Scalars["ID"]>;
+  tags?: Maybe<Array<Maybe<Scalars["String"]>>>;
+};
+
 export type MutationDmxFixtureSetTagsArgs = {
   id?: Maybe<Scalars["ID"]>;
   simulatorId?: Maybe<Scalars["ID"]>;
-  tag?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  tags?: Maybe<Array<Maybe<Scalars["String"]>>>;
   newTags: Array<Scalars["String"]>;
 };
 
 export type MutationDmxFixtureAddTagArgs = {
   id?: Maybe<Scalars["ID"]>;
   simulatorId?: Maybe<Scalars["ID"]>;
-  tag?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  tags?: Maybe<Array<Maybe<Scalars["String"]>>>;
   newTag: Scalars["String"];
 };
 
 export type MutationDmxFixtureRemoveTagArgs = {
   id?: Maybe<Scalars["ID"]>;
   simulatorId?: Maybe<Scalars["ID"]>;
-  tag?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  tags?: Maybe<Array<Maybe<Scalars["String"]>>>;
   removeTag: Scalars["String"];
 };
 
 export type MutationDmxFixtureSetPassiveChannelsArgs = {
   id?: Maybe<Scalars["ID"]>;
   simulatorId?: Maybe<Scalars["ID"]>;
-  tag?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  tags?: Maybe<Array<Maybe<Scalars["String"]>>>;
   passiveChannels: DmxPassiveChannelsInput;
 };
 
@@ -9650,6 +9691,7 @@ export type ResolversTypes = ResolversObject<{
   KeyboardKeyInput: KeyboardKeyInput;
   ActionInput: ActionInput;
   LibraryInput: LibraryInput;
+  LightingInput: LightingInput;
   LongRangeCommInput: LongRangeCommInput;
   PresetAnswerInput: PresetAnswerInput;
   MessageInput: MessageInput;
@@ -9678,7 +9720,6 @@ export type ResolversTypes = ResolversObject<{
   SignalJammerInput: SignalJammerInput;
   MacroInput: MacroInput;
   SimulatorAssetsInput: SimulatorAssetsInput;
-  LightingInput: LightingInput;
   SoftwarePanelInput: SoftwarePanelInput;
   PanelCableInput: PanelCableInput;
   PanelComponentInput: PanelComponentInput;
@@ -10019,6 +10060,7 @@ export type ResolversParentTypes = ResolversObject<{
   KeyboardKeyInput: KeyboardKeyInput;
   ActionInput: ActionInput;
   LibraryInput: LibraryInput;
+  LightingInput: LightingInput;
   LongRangeCommInput: LongRangeCommInput;
   PresetAnswerInput: PresetAnswerInput;
   MessageInput: MessageInput;
@@ -10047,7 +10089,6 @@ export type ResolversParentTypes = ResolversObject<{
   SignalJammerInput: SignalJammerInput;
   MacroInput: MacroInput;
   SimulatorAssetsInput: SimulatorAssetsInput;
-  LightingInput: LightingInput;
   SoftwarePanelInput: SoftwarePanelInput;
   PanelCableInput: PanelCableInput;
   PanelComponentInput: PanelComponentInput;
@@ -14195,6 +14236,48 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationImportLibraryEntryArgs, "simulatorId" | "entries">
   >;
+  updateSimulatorLighting?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateSimulatorLightingArgs, "id" | "lighting">
+  >;
+  dmxSetSimulatorConfig?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationDmxSetSimulatorConfigArgs,
+      "simulatorId" | "dmxConfigId"
+    >
+  >;
+  lightingSetIntensity?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationLightingSetIntensityArgs, "simulatorId" | "intensity">
+  >;
+  lightingShakeLights?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationLightingShakeLightsArgs, "simulatorId">
+  >;
+  lightingFadeLights?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationLightingFadeLightsArgs,
+      "simulatorId" | "duration" | "endIntensity"
+    >
+  >;
+  lightingSetEffect?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationLightingSetEffectArgs, "simulatorId" | "effect">
+  >;
   sendLongRangeMessage?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -15926,12 +16009,6 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationSetSimulatorSoundEffectsArgs, "id" | "soundEffects">
   >;
-  updateSimulatorLighting?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationUpdateSimulatorLightingArgs, "id" | "lighting">
-  >;
   setSimulatorHasPrinter?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -17317,6 +17394,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDmxFixtureSetModeArgs, "mode">
+  >;
+  dmxFixtureSetActive?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationDmxFixtureSetActiveArgs, never>
   >;
   dmxFixtureSetTags?: Resolver<
     Maybe<ResolversTypes["String"]>,

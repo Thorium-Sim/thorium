@@ -16,7 +16,7 @@ interface DMXDevice {
 }
 async function setUpLightingDevice(): Promise<DMXDevice> {
   const lightingDevice = await navigator.usb.requestDevice({
-    filters: [{vendorId: 1027, productId: 24577}],
+    filters: [{vendorId: 0x403, productId: 0x6001}],
   });
   await lightingDevice.open();
   await lightingDevice.claimInterface(0);

@@ -1362,7 +1362,6 @@ export type Lighting = {
 
 export enum Lighting_Action {
   Normal = 'normal',
-  Darken = 'darken',
   Blackout = 'blackout',
   Work = 'work',
   Fade = 'fade',
@@ -1936,6 +1935,12 @@ export type Mutation = {
   updateLibraryEntry?: Maybe<Scalars['String']>,
   removeLibraryEntry?: Maybe<Scalars['String']>,
   importLibraryEntry?: Maybe<Scalars['String']>,
+  updateSimulatorLighting?: Maybe<Scalars['String']>,
+  dmxSetSimulatorConfig?: Maybe<Scalars['String']>,
+  lightingSetIntensity?: Maybe<Scalars['String']>,
+  lightingShakeLights?: Maybe<Scalars['String']>,
+  lightingFadeLights?: Maybe<Scalars['String']>,
+  lightingSetEffect?: Maybe<Scalars['String']>,
   sendLongRangeMessage?: Maybe<Scalars['String']>,
   longRangeMessageSend?: Maybe<Scalars['String']>,
   deleteLongRangeMessage?: Maybe<Scalars['String']>,
@@ -2205,7 +2210,6 @@ export type Mutation = {
   setBridgeMessaging?: Maybe<Scalars['String']>,
   setSimulatorAssets?: Maybe<Scalars['String']>,
   setSimulatorSoundEffects?: Maybe<Scalars['String']>,
-  updateSimulatorLighting?: Maybe<Scalars['String']>,
   setSimulatorHasPrinter?: Maybe<Scalars['String']>,
   setSimulatorHasLegs?: Maybe<Scalars['String']>,
   setSimulatorSpaceEdventuresId?: Maybe<Scalars['String']>,
@@ -2413,6 +2417,7 @@ export type Mutation = {
   dmxFixtureSetDMXDevice?: Maybe<Scalars['String']>,
   dmxFixtureSetChannel?: Maybe<Scalars['String']>,
   dmxFixtureSetMode?: Maybe<Scalars['String']>,
+  dmxFixtureSetActive?: Maybe<Scalars['String']>,
   dmxFixtureSetTags?: Maybe<Scalars['String']>,
   dmxFixtureAddTag?: Maybe<Scalars['String']>,
   dmxFixtureRemoveTag?: Maybe<Scalars['String']>,
@@ -3842,6 +3847,47 @@ export type MutationRemoveLibraryEntryArgs = {
 export type MutationImportLibraryEntryArgs = {
   simulatorId: Scalars['ID'],
   entries: Scalars['String']
+};
+
+
+export type MutationUpdateSimulatorLightingArgs = {
+  id: Scalars['ID'],
+  lighting: LightingInput
+};
+
+
+export type MutationDmxSetSimulatorConfigArgs = {
+  simulatorId: Scalars['ID'],
+  dmxConfigId: Scalars['ID']
+};
+
+
+export type MutationLightingSetIntensityArgs = {
+  simulatorId: Scalars['ID'],
+  intensity: Scalars['Float']
+};
+
+
+export type MutationLightingShakeLightsArgs = {
+  simulatorId: Scalars['ID'],
+  strength?: Maybe<Scalars['Float']>,
+  duration?: Maybe<Scalars['Float']>
+};
+
+
+export type MutationLightingFadeLightsArgs = {
+  simulatorId: Scalars['ID'],
+  duration: Scalars['Float'],
+  endIntensity: Scalars['Float'],
+  startIntensity?: Maybe<Scalars['Float']>
+};
+
+
+export type MutationLightingSetEffectArgs = {
+  simulatorId: Scalars['ID'],
+  duration?: Maybe<Scalars['Float']>,
+  strength?: Maybe<Scalars['Float']>,
+  effect: Lighting_Action
 };
 
 
@@ -5531,12 +5577,6 @@ export type MutationSetSimulatorSoundEffectsArgs = {
 };
 
 
-export type MutationUpdateSimulatorLightingArgs = {
-  id: Scalars['ID'],
-  lighting: LightingInput
-};
-
-
 export type MutationSetSimulatorHasPrinterArgs = {
   simulatorId: Scalars['ID'],
   hasPrinter: Scalars['Boolean']
@@ -6802,10 +6842,17 @@ export type MutationDmxFixtureSetModeArgs = {
 };
 
 
+export type MutationDmxFixtureSetActiveArgs = {
+  id?: Maybe<Scalars['ID']>,
+  simulatorId?: Maybe<Scalars['ID']>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>
+};
+
+
 export type MutationDmxFixtureSetTagsArgs = {
   id?: Maybe<Scalars['ID']>,
   simulatorId?: Maybe<Scalars['ID']>,
-  tag?: Maybe<Array<Maybe<Scalars['String']>>>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
   newTags: Array<Scalars['String']>
 };
 
@@ -6813,7 +6860,7 @@ export type MutationDmxFixtureSetTagsArgs = {
 export type MutationDmxFixtureAddTagArgs = {
   id?: Maybe<Scalars['ID']>,
   simulatorId?: Maybe<Scalars['ID']>,
-  tag?: Maybe<Array<Maybe<Scalars['String']>>>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
   newTag: Scalars['String']
 };
 
@@ -6821,7 +6868,7 @@ export type MutationDmxFixtureAddTagArgs = {
 export type MutationDmxFixtureRemoveTagArgs = {
   id?: Maybe<Scalars['ID']>,
   simulatorId?: Maybe<Scalars['ID']>,
-  tag?: Maybe<Array<Maybe<Scalars['String']>>>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
   removeTag: Scalars['String']
 };
 
@@ -6829,7 +6876,7 @@ export type MutationDmxFixtureRemoveTagArgs = {
 export type MutationDmxFixtureSetPassiveChannelsArgs = {
   id?: Maybe<Scalars['ID']>,
   simulatorId?: Maybe<Scalars['ID']>,
-  tag?: Maybe<Array<Maybe<Scalars['String']>>>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
   passiveChannels: DmxPassiveChannelsInput
 };
 
@@ -10297,6 +10344,17 @@ export type SimulatorUpdateSubscription = (
   )>>> }
 );
 
+export type MacroDmxConfigsQueryVariables = {};
+
+
+export type MacroDmxConfigsQuery = (
+  { __typename?: 'Query' }
+  & { dmxConfigs: Array<(
+    { __typename?: 'DMXConfig' }
+    & Pick<DmxConfig, 'id' | 'name'>
+  )> }
+);
+
 export type DockingShuttleConfigQueryVariables = {
   simulatorId: Scalars['ID'];
 };
@@ -13349,6 +13407,39 @@ export function useSimulatorUpdateSubscription(baseOptions?: ApolloReactHooks.Su
       }
 export type SimulatorUpdateSubscriptionHookResult = ReturnType<typeof useSimulatorUpdateSubscription>;
 export type SimulatorUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<SimulatorUpdateSubscription>;
+export const MacroDmxConfigsDocument = gql`
+    query MacroDMXConfigs {
+  dmxConfigs {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useMacroDmxConfigsQuery__
+ *
+ * To run a query within a React component, call `useMacroDmxConfigsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMacroDmxConfigsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMacroDmxConfigsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMacroDmxConfigsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>) {
+        return ApolloReactHooks.useQuery<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>(MacroDmxConfigsDocument, baseOptions);
+      }
+export function useMacroDmxConfigsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>(MacroDmxConfigsDocument, baseOptions);
+        }
+export type MacroDmxConfigsQueryHookResult = ReturnType<typeof useMacroDmxConfigsQuery>;
+export type MacroDmxConfigsLazyQueryHookResult = ReturnType<typeof useMacroDmxConfigsLazyQuery>;
+export type MacroDmxConfigsQueryResult = ApolloReactCommon.QueryResult<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>;
 export const DockingShuttleConfigDocument = gql`
     query DockingShuttleConfig($simulatorId: ID!) {
   docking(simulatorId: $simulatorId) {

@@ -29,7 +29,7 @@ export type DMXChannelProperty =
 
 type ChannelConfig = Partial<
   {
-    [key in DMXChannelProperty]: number | string;
+    [key in DMXChannelProperty]: number | string | null;
   }
 >;
 
@@ -48,6 +48,47 @@ const DMXProperties: DMXChannelProperty[] = [
   "strobe",
   "generic",
 ];
+
+export const DMXPropertiesEditor: React.FC<{
+  channels: ChannelConfig;
+  updateValue: (prop: DMXChannelProperty, value: string) => void;
+}> = ({channels = {}, updateValue}) => {
+  return (
+    <div
+      css={css`
+        display: flex;
+        flex-wrap: wrap;
+      `}
+    >
+      {DMXProperties.map((prop: DMXChannelProperty) => (
+        <label key={`config-${prop}`} css={tw`block ml-4`}>
+          {prop}
+          {prop === "color" ? (
+            <div>
+              <ColorPicker
+                color={channels[prop]}
+                onChangeComplete={color => {
+                  updateValue(prop, color);
+                }}
+              />
+            </div>
+          ) : (
+            <Input
+              type="number"
+              min={0}
+              max={1}
+              step={0.01}
+              defaultValue={channels[prop] || ""}
+              onChange={e => {
+                updateValue(prop, e.target.value);
+              }}
+            />
+          )}
+        </label>
+      ))}
+    </div>
+  );
+};
 const DMXConfigs: React.FC = () => {
   const {configId} = useParams();
   const navigate = useNavigate();
@@ -140,8 +181,11 @@ const DMXConfigs: React.FC = () => {
                 {DMXConfigKeys.map(key => {
                   return (
                     <details key={key} css={tw`ml-4`}>
-                      <summary>Alert Condition {key}</summary>
-                      {["darken"].concat(allTags).map(t => (
+                      <summary>
+                        Alert Condition {key}
+                        {key === "p" && " (Stealth/Cloaking)"}
+                      </summary>
+                      {allTags.map(t => (
                         <details
                           key={`config-${key}-${t}`}
                           css={tw`ml-4 block`}
@@ -149,77 +193,32 @@ const DMXConfigs: React.FC = () => {
                           <summary>
                             <Badge>{t}</Badge>
                           </summary>
-                          {DMXProperties.map((prop: DMXChannelProperty) => (
-                            <label
-                              key={`config-${key}-${t}-${prop}`}
-                              css={tw`block ml-4`}
-                            >
-                              {prop}
-                              {prop === "color" ? (
-                                <div>
-                                  <ColorPicker
-                                    color={
-                                      selectedConfigSettings[key]?.[t]?.[prop]
-                                    }
-                                    onChangeComplete={color => {
-                                      setConfig({
-                                        variables: {
-                                          id: selectedConfig.id,
-                                          config: produce(
-                                            selectedConfigSettings,
-                                            draft => {
-                                              draft[key] = draft[key] || {};
-                                              draft[key][t] =
-                                                draft[key][t] || {};
-                                              draft[key][t][prop] = color;
-                                            },
-                                          ),
-                                        },
-                                      });
-                                    }}
-                                  />
-                                </div>
-                              ) : (
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  max={1}
-                                  step={0.01}
-                                  defaultValue={
-                                    selectedConfigSettings[key]?.[t]?.[prop]
-                                  }
-                                  onChange={e => {
-                                    setConfig({
-                                      variables: {
-                                        id: selectedConfig.id,
-                                        config: produce(
-                                          selectedConfigSettings,
-                                          draft => {
-                                            draft[key] = draft[key] || {};
-                                            draft[key][t] = draft[key][t] || {};
-                                            draft[key][t][prop] =
-                                              e.target.value;
-                                          },
-                                        ),
-                                      },
-                                    });
-                                  }}
-                                />
-                              )}
-                            </label>
-                          ))}
+                          <DMXPropertiesEditor
+                            channels={selectedConfigSettings[key]?.[t]}
+                            updateValue={(
+                              prop: DMXChannelProperty,
+                              value: string,
+                            ) => {
+                              setConfig({
+                                variables: {
+                                  id: selectedConfig.id,
+                                  config: produce(
+                                    selectedConfigSettings,
+                                    draft => {
+                                      draft[key] = draft[key] || {};
+                                      draft[key][t] = draft[key][t] || {};
+                                      draft[key][t][prop] = value;
+                                    },
+                                  ),
+                                },
+                              });
+                            }}
+                          />
                         </details>
                       ))}
                     </details>
                   );
                 })}
-              </div>
-              <div>
-                <small>
-                  <Badge>Darken</Badge> is an alternate kind of blackout which
-                  keeps some lights on most of the lights are off for extra
-                  safety.
-                </small>
               </div>
             </React.Fragment>
           )}

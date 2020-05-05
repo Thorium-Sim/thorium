@@ -93,22 +93,25 @@ const schema = gql`
     dmxFixtureSetName(id: ID!, name: String!): String
     dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: ID!): String
     dmxFixtureSetChannel(id: ID!, channel: Int!): String
-    """
-    Macro: DMX: Set Fixture Mode
-    """
+
     dmxFixtureSetMode(
       id: ID
       simulatorId: ID
       tag: [String]
       mode: DMXFixtureMode!
     ): String
+
+    """
+    Macro: DMX: Set Fixture To Active Mode
+    """
+    dmxFixtureSetActive(id: ID, simulatorId: ID, tags: [String]): String
     """
     Macro: DMX: Set Fixture Tags
     """
     dmxFixtureSetTags(
       id: ID
       simulatorId: ID
-      tag: [String]
+      tags: [String]
       newTags: [String!]!
     ): String
     """
@@ -117,7 +120,7 @@ const schema = gql`
     dmxFixtureAddTag(
       id: ID
       simulatorId: ID
-      tag: [String]
+      tags: [String]
       newTag: String!
     ): String
     """
@@ -126,7 +129,7 @@ const schema = gql`
     dmxFixtureRemoveTag(
       id: ID
       simulatorId: ID
-      tag: [String]
+      tags: [String]
       removeTag: String!
     ): String
     """
@@ -135,7 +138,7 @@ const schema = gql`
     dmxFixtureSetPassiveChannels(
       id: ID
       simulatorId: ID
-      tag: [String]
+      tags: [String]
       passiveChannels: DMXPassiveChannelsInput!
     ): String
 
@@ -152,8 +155,8 @@ const schema = gql`
   }
 `;
 
-function getFixture(id: string, simulatorId: string, tags: string[]) {
-  return App.dmxFixtures.find(f => {
+function getFixtures(id: string, simulatorId: string, tags: string[]) {
+  return App.dmxFixtures.filter(f => {
     if (id) return f.id === id;
     if (!simulatorId || !tags) return false;
     if (f.simulatorId !== simulatorId) return false;
@@ -282,68 +285,88 @@ const resolver = {
       });
     },
     dmxFixtureSetMode(rootValue, {id, simulatorId, tags, mode}) {
-      const fixture = getFixture(id, simulatorId, tags);
-      if (!fixture) return;
-      fixture.setMode(mode);
+      const fixture = getFixtures(id, simulatorId, tags);
+      if (fixture.length === 0) return;
+      const simId = fixture[0].simulatorId;
+      fixture.forEach(f => {
+        f.setMode(mode);
+      });
       pubsub.publish("dmxSets", App.dmxSets);
       pubsub.publish("dmxFixtures", {
-        simulatorId: fixture.simulatorId,
-        fixtures: App.dmxFixtures.filter(
-          f => f.simulatorId === fixture.simulatorId,
-        ),
+        simulatorId: simId,
+        fixtures: App.dmxFixtures.filter(f => f.simulatorId === simId),
+      });
+    },
+    dmxFixtureSetActive(rootValue, {id, simulatorId, tags}) {
+      const fixture = getFixtures(id, simulatorId, tags);
+      if (fixture.length === 0) return;
+      const simId = fixture[0].simulatorId;
+      fixture.forEach(f => {
+        f.setMode("active");
+      });
+      pubsub.publish("dmxSets", App.dmxSets);
+      pubsub.publish("dmxFixtures", {
+        simulatorId: simId,
+        fixtures: App.dmxFixtures.filter(f => f.simulatorId === simId),
       });
     },
     dmxFixtureSetTags(rootValue, {id, simulatorId, tags, newTags}) {
-      const fixture = getFixture(id, simulatorId, tags);
-      if (!fixture) return;
-      fixture.setTags(newTags);
+      const fixture = getFixtures(id, simulatorId, tags);
+      if (fixture.length === 0) return;
+      const simId = fixture[0].simulatorId;
+      fixture.forEach(f => {
+        f.setTags(newTags);
+      });
       pubsub.publish("dmxSets", App.dmxSets);
       pubsub.publish("dmxFixtures", {
-        simulatorId: fixture.simulatorId,
-        fixtures: App.dmxFixtures.filter(
-          f => f.simulatorId === fixture.simulatorId,
-        ),
+        simulatorId: simId,
+        fixtures: App.dmxFixtures.filter(f => f.simulatorId === simId),
+      });
+    },
+    dmxFixtureAddTag(rootValue, {id, simulatorId, tags, newTag}) {
+      const fixture = getFixtures(id, simulatorId, tags);
+      if (fixture.length === 0) return;
+      const simId = fixture[0].simulatorId;
+      fixture.forEach(f => {
+        f.setTags(
+          f.tags.concat(newTag).filter((a, i, arr) => arr.indexOf(a) === i),
+        );
+      });
+      pubsub.publish("dmxSets", App.dmxSets);
+      pubsub.publish("dmxFixtures", {
+        simulatorId: simId,
+        fixtures: App.dmxFixtures.filter(f => f.simulatorId === simId),
+      });
+    },
+    dmxFixtureRemoveTag(rootValue, {id, simulatorId, tags, removeTag}) {
+      const fixture = getFixtures(id, simulatorId, tags);
+      if (fixture.length === 0) return;
+      const simId = fixture[0].simulatorId;
+      fixture.forEach(f => {
+        f.setTags(f.tags.filter(t => t !== removeTag));
+      });
+      pubsub.publish("dmxSets", App.dmxSets);
+      pubsub.publish("dmxFixtures", {
+        simulatorId: simId,
+        fixtures: App.dmxFixtures.filter(f => f.simulatorId === simId),
       });
     },
     dmxFixtureSetPassiveChannels(
       rootValue,
       {id, simulatorId, tags, passiveChannels},
     ) {
-      const fixture = getFixture(id, simulatorId, tags);
-      if (!fixture) return;
-      fixture.setPassiveChannels(passiveChannels);
-      // Automatically set the channel to passive when
-      // setting passive channels
-      fixture.setMode("passive");
-      pubsub.publish("dmxFixtures", {
-        simulatorId: fixture.simulatorId,
-        fixtures: App.dmxFixtures.filter(
-          f => f.simulatorId === fixture.simulatorId,
-        ),
+      const fixture = getFixtures(id, simulatorId, tags);
+      if (fixture.length === 0) return;
+      const simId = fixture[0].simulatorId;
+      fixture.forEach(f => {
+        f.setPassiveChannels(passiveChannels);
+        // Automatically set the channel to passive when
+        // setting passive channels
+        f.setMode("passive");
       });
-    },
-    dmxFixtureAddTag(rootValue, {id, simulatorId, tags, newTag}) {
-      const fixture = getFixture(id, simulatorId, tags);
-      if (!fixture) return;
-      fixture.setTags(fixture.tags.concat(newTag));
-      pubsub.publish("dmxSets", App.dmxSets);
       pubsub.publish("dmxFixtures", {
-        simulatorId: fixture.simulatorId,
-        fixtures: App.dmxFixtures.filter(
-          f => f.simulatorId === fixture.simulatorId,
-        ),
-      });
-    },
-    dmxFixtureRemoveTag(rootValue, {id, simulatorId, tags, removeTag}) {
-      const fixture = getFixture(id, simulatorId, tags);
-      if (!fixture) return;
-      fixture.setTags(fixture.tags.filter(t => t !== removeTag));
-      pubsub.publish("dmxSets", App.dmxSets);
-      pubsub.publish("dmxFixtures", {
-        simulatorId: fixture.simulatorId,
-        fixtures: App.dmxFixtures.filter(
-          f => f.simulatorId === fixture.simulatorId,
-        ),
+        simulatorId: simId,
+        fixtures: App.dmxFixtures.filter(f => f.simulatorId === simId),
       });
     },
     dmxConfigCreate(rootValue, {name}) {

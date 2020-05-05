@@ -100,7 +100,6 @@ const LightingCore = ({simulator: {lighting, id}, dmxConfigs}) => {
                 }
               >
                 <option value="normal">Normal</option>
-                <option value="darken">Darken</option>
                 <option value="blackout">Blackout</option>
                 <option value="work">Work</option>
                 <hr />
@@ -275,14 +274,13 @@ const LightingCore = ({simulator: {lighting, id}, dmxConfigs}) => {
                 <Button
                   color="secondary"
                   size="sm"
-                  active={intensity === 1 && action === "darken"}
+                  active={intensity === 0.3}
                   onClick={e =>
                     update({
                       variables: {
                         id,
                         lighting: {
-                          action: "darken",
-                          intensity: 1,
+                          intensity: 0.3,
                         },
                       },
                     })

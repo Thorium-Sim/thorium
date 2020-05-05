@@ -12,7 +12,6 @@ import {
   Input,
   Label,
 } from "helpers/reactstrap";
-import "./credits.scss";
 
 const ClientNameModal: React.FC<{
   clientId: string;

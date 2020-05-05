@@ -3,7 +3,6 @@ export default class Lighting {
   intensity: number;
   action:
     | "normal"
-    | "darken"
     | "blackout"
     | "work"
     | "fade"

@@ -44,7 +44,6 @@ export interface Lighting {
   intensity: number;
   action:
     | "normal"
-    | "darken"
     | "blackout"
     | "work"
     | "fade"

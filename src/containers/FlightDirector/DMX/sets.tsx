@@ -10,7 +10,7 @@ import {
   useDmxSetsSubscription,
 } from "generated/graphql";
 import SearchableList from "helpers/SearchableList";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, Link} from "react-router-dom";
 import {Button} from "reactstrap";
 import DMXFixtures from "./fixtures";
 
@@ -81,6 +81,10 @@ const DMXSets: React.FC = () => {
         </div>
         {selectedSet && <DMXFixtures dmxFixtures={selectedSet.fixtures} />}
       </div>
+      <small>
+        Don't forget to assign your lighting set to a{" "}
+        <Link to="/config/sets">set configuration.</Link>
+      </small>
     </div>
   );
 };

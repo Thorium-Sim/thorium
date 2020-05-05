@@ -31,6 +31,93 @@ const Tag: React.FC<{tag: string; onClick: () => void}> = ({tag, onClick}) => {
     </Badge>
   );
 };
+export const TagInput: React.FC<{
+  tags: string[];
+  onRemove: (t: string) => void;
+  onAdd: (t: string) => void;
+}> = ({tags = [], onRemove, onAdd}) => {
+  const [tagInput, setTagInput] = React.useState("");
+
+  return (
+    <div
+      css={css`
+        background-color: rgba(0, 0, 0, 0.7);
+        border: solid 1px rgba(255, 255, 255, 0.2);
+        color: white;
+        width: 100%;
+        min-height: calc(1.5em + 0.75rem + 2px);
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        * {
+          margin-left: 0.25rem;
+          margin-right: 0.25rem;
+        }
+        &:focus-within {
+          outline: 0;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+      `}
+    >
+      {tags.map(t => (
+        <Tag tag={t} onClick={() => onRemove(t)} />
+      ))}
+
+      <input
+        css={css`
+          flex: 1;
+          height: 100%;
+          padding: 0;
+          margin: 0;
+          outline: 0;
+          border: none !important;
+          background: transparent !important;
+          min-width: 300px;
+        `}
+        value={tagInput}
+        onChange={e => setTagInput(e.target.value)}
+        onBlur={() => {
+          if (tagInput) {
+            onAdd(tagInput);
+            setTagInput("");
+          }
+        }}
+        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+          if (
+            e.key === "," ||
+            e.key === "." ||
+            e.key === " " ||
+            e.key === "Enter"
+          ) {
+            e.preventDefault();
+            if (tagInput) {
+              onAdd(tagInput);
+              setTagInput("");
+            }
+          }
+          if (e.key === "Tab") {
+            if (tagInput) {
+              onAdd(tagInput);
+              setTagInput("");
+            }
+          }
+          if (
+            (e.key === "Backspace" || e.key === "Delete") &&
+            tagInput === ""
+          ) {
+            e.preventDefault();
+            onRemove(tags[tags.length - 1]);
+          }
+        }}
+      />
+    </div>
+  );
+};
 const DMXFixtures: React.FC<{
   dmxFixtures: Omit<
     DmxFixture,
@@ -51,9 +138,7 @@ const DMXFixtures: React.FC<{
   const selectedFixture = dmxFixtures.find(d => d.id === fixtureId);
 
   const [channelError, setChannelError] = React.useState(false);
-  const [tagInput, setTagInput] = React.useState("");
   React.useEffect(() => {
-    setTagInput("");
     setChannelError(false);
   }, [fixtureId]);
 
@@ -192,93 +277,28 @@ const DMXFixtures: React.FC<{
             </label>
             <label>
               Tags
-              <div
-                css={css`
-                  background-color: rgba(0, 0, 0, 0.7);
-                  border: solid 1px rgba(255, 255, 255, 0.2);
-                  color: white;
-                  width: 100%;
-                  min-height: calc(1.5em + 0.75rem + 2px);
-                  padding: 0.375rem 0.75rem;
-                  font-size: 1rem;
-                  font-weight: 400;
-                  line-height: 1.5;
-                  border-radius: 0.25rem;
-                  display: flex;
-                  flex-wrap: wrap;
-                  align-items: center;
-                  * {
-                    margin-left: 0.25rem;
-                    margin-right: 0.25rem;
-                  }
-                  &:focus-within {
-                    outline: 0;
-                    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-                  }
-                `}
-              >
-                {selectedFixture.tags.map(t => (
-                  <Tag
-                    tag={t}
-                    onClick={() =>
-                      setTags({
-                        variables: {
-                          id: selectedFixture.id,
-                          newTags: selectedFixture.tags.filter(
-                            tag => tag !== t,
-                          ),
-                        },
-                      })
-                    }
-                  />
-                ))}
-
-                <input
-                  css={css`
-                    flex: 1;
-                    height: 100%;
-                    padding: 0;
-                    margin: 0;
-                    outline: 0;
-                    border: none !important;
-                    background: transparent !important;
-                    min-width: 300px;
-                  `}
-                  value={tagInput}
-                  onChange={e => setTagInput(e.target.value)}
-                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                    if (
-                      e.key === "," ||
-                      e.key === "." ||
-                      e.key === " " ||
-                      e.key === "Enter"
-                    ) {
-                      e.preventDefault();
-                      setTags({
-                        variables: {
-                          id: selectedFixture.id,
-                          newTags: selectedFixture.tags
-                            .concat(tagInput)
-                            .filter((a, i, arr) => arr.indexOf(a) === i),
-                        },
-                      });
-                      setTagInput("");
-                    }
-                    if (
-                      (e.key === "Backspace" || e.key === "Delete") &&
-                      tagInput === ""
-                    ) {
-                      e.preventDefault();
-                      setTags({
-                        variables: {
-                          id: selectedFixture.id,
-                          newTags: selectedFixture.tags.slice(0, -1),
-                        },
-                      });
-                    }
-                  }}
-                />
-              </div>
+              <TagInput
+                key={fixtureId}
+                tags={selectedFixture.tags}
+                onRemove={t =>
+                  setTags({
+                    variables: {
+                      id: selectedFixture.id,
+                      newTags: selectedFixture.tags.filter(tag => tag !== t),
+                    },
+                  })
+                }
+                onAdd={t =>
+                  setTags({
+                    variables: {
+                      id: selectedFixture.id,
+                      newTags: selectedFixture.tags
+                        .concat(t)
+                        .filter((a, i, arr) => arr.indexOf(a) === i),
+                    },
+                  })
+                }
+              />
               <Button
                 size="sm"
                 color="success"
