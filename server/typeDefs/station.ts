@@ -8,15 +8,15 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type StationSet {
-    id: ID
-    name: String
+    id: ID!
+    name: String!
     simulator: Simulator
     crewCount: Int
-    stations: [Station]
+    stations: [Station!]!
   }
 
   type Station {
-    name: String
+    name: String!
     description: String
     training: String
     login: Boolean
@@ -24,12 +24,12 @@ const schema = gql`
     messageGroups: [String]
     layout: String
     widgets: [String]
-    cards(showHidden: Boolean): [Card]
+    cards(showHidden: Boolean): [Card!]!
   }
 
   type Card {
-    name: String
-    component: String
+    name: String!
+    component: String!
     hidden: Boolean
     # Whether this card is assigned to another station
     assigned: Boolean

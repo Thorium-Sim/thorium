@@ -1,0 +1,3 @@
+mutation RemoveSet($id: ID!) {
+  removeSet(id: $id)
+}

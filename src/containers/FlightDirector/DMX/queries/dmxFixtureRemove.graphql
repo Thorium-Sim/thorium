@@ -1,0 +1,3 @@
+mutation DMXFixtureRemove($id: ID!, $dmxSetId: ID!) {
+  dmxFixtureRemove(id: $id, DMXSetId: $dmxSetId)
+}

@@ -1,0 +1,68 @@
+fragment EntityData on Entity {
+  id
+  interval
+  identity {
+    name
+  }
+  stage {
+    scaleLabel
+    scaleLabelShort
+    skyboxKey
+    childrenAsSprites
+  }
+  stageChild {
+    parentId
+    parent {
+      id
+      identity {
+        name
+      }
+    }
+  }
+  appearance {
+    color
+    meshType
+    modelAsset
+    materialMapAsset
+    ringMapAsset
+    cloudMapAsset
+    emissiveColor
+    emissiveIntensity
+    scale
+  }
+  light {
+    intensity
+    decay
+    color
+  }
+  glow {
+    glowMode
+    color
+  }
+  location {
+    inert
+    position {
+      x
+      y
+      z
+    }
+    rotation {
+      x
+      y
+      z
+      w
+    }
+  }
+  enginesWarp {
+    maxSpeed
+    currentSpeed
+  }
+  enginesImpulse {
+    maxSpeed
+    currentSpeed
+  }
+  thrusters {
+    rotationSpeed
+    movementSpeed
+  }
+}

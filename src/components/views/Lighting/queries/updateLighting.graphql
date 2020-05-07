@@ -1,0 +1,3 @@
+mutation UpdateLighting($id: ID!, $lighting: LightingInput!) {
+  updateSimulatorLighting(id: $id, lighting: $lighting)
+}

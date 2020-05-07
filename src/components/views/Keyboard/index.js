@@ -5,6 +5,7 @@ import gql from "graphql-tag.macro";
 import SoundPlayer from "../../client/soundPlayer";
 
 import "./style.scss";
+import {ClientLighting} from "components/client/lighting";
 
 class Keyboard extends Component {
   constructor(props) {
@@ -65,6 +66,10 @@ class Keyboard extends Component {
             <SoundPlayer {...this.props} invisible />
           </div>
         )}
+        <ClientLighting
+          simulator={this.props.simulator}
+          clientId={this.props.clientObj.id}
+        />
       </div>
     );
   }

@@ -1,7 +1,6 @@
 const powerOff = require("./shutdown");
 const sleepMode = require("./sleep-mode");
 const restart = require("./restart");
-const freakout = require("./freakout");
 const electron = require("electron");
 
 const {app, ipcMain} = electron;
@@ -10,9 +9,6 @@ module.exports = () => {
   ipcMain.on("remoteMessage", function(event, message) {
     if (message) {
       switch (message.action) {
-        case "freak":
-          freakout();
-          break;
         case "beep":
           process.stdout.write("\x07");
           break;

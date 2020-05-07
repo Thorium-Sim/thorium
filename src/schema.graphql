@@ -15,12 +15,12 @@ input ActionInput {
 }
 
 type Ambiance {
-  id: ID
-  name: String
-  asset: String
-  volume: Float
-  channel: [Int]
-  playbackRate: Float
+  id: ID!
+  name: String!
+  asset: String!
+  volume: Float!
+  channel: [Int!]!
+  playbackRate: Float!
 }
 
 input AmbianceInput {
@@ -86,8 +86,8 @@ BigInt can represent values between -(2^53) + 1 and 2^53 - 1.
 scalar BigInt
 
 type Card {
-  name: String
-  component: String
+  name: String!
+  component: String!
   hidden: Boolean
   assigned: Boolean
   newStation: Boolean
@@ -661,6 +661,81 @@ input DirectionInput {
   z: Float
 }
 
+enum DMXChannelProperty {
+  red
+  green
+  blue
+  amber
+  white
+  uv
+  intensity
+  strobe
+  generic
+  nothing
+}
+
+type DMXConfig {
+  id: ID!
+  name: String!
+  config: JSON!
+  actionStrength: Float!
+}
+
+type DMXDevice {
+  id: ID!
+  class: String!
+  name: String!
+  channels: [DMXChannelProperty!]!
+}
+
+type DMXFixture {
+  id: ID!
+  class: String!
+  name: String!
+  clientId: String
+  DMXDeviceId: String!
+  DMXDevice: DMXDevice!
+  simulatorId: String!
+  channel: Int!
+  mode: DMXFixtureMode!
+  tags: [String!]!
+  passiveChannels: DMXPassiveChannels!
+}
+
+enum DMXFixtureMode {
+  active
+  passive
+}
+
+type DMXPassiveChannels {
+  amber: Float
+  white: Float
+  uv: Float
+  intensity: Float
+  strobe: Float
+  generic: Float
+  nothing: Float
+  color: String
+}
+
+input DMXPassiveChannelsInput {
+  amber: Float
+  white: Float
+  uv: Float
+  intensity: Float
+  strobe: Float
+  generic: Float
+  nothing: Float
+  color: String
+}
+
+type DMXSet {
+  id: ID!
+  name: String!
+  fixtureIds: [String!]!
+  fixtures: [DMXFixture!]!
+}
+
 enum DOCKING_DIRECTION {
   unspecified
   arriving
@@ -1185,16 +1260,20 @@ type LightComponent {
 }
 
 type Lighting {
-  intensity: Float
-  action: LIGHTING_ACTION
-  actionStrength: Float
-  transitionDuration: Int
+  intensity: Float!
+  action: LIGHTING_ACTION!
+  actionStrength: Float!
+  transitionDuration: Int!
   useAlertColor: Boolean
   color: String
+  dmxConfig: DMXConfig
 }
 
 enum LIGHTING_ACTION {
   normal
+  darken
+  blackout
+  work
   fade
   shake
   strobe
@@ -1208,6 +1287,7 @@ input LightingInput {
   transitionDuration: Int
   useAlertColor: Boolean
   color: String
+  dmxConfig: String
 }
 
 union Location = Deck | Room
@@ -1563,6 +1643,7 @@ type Mutation {
   clientMovieState(client: ID!, movie: String!): String
   clientSetTraining(client: ID!, training: Boolean!): String
   clientSetSoundPlayer(client: ID!, soundPlayer: Boolean!): String
+  clientActivateLights(clientId: ID!, dmxSetId: ID!): String
   clientAddCache(client: ID, simulatorId: ID, viewscreen: Boolean, cacheItem: String!): String
   clientRemoveCache(client: ID!, cacheItem: String!): String
   setClientHypercard(clientId: ID, simulatorId: ID, component: String): String
@@ -1837,6 +1918,22 @@ type Mutation {
   """
   removeLibraryEntry(entry: ID, slug: String): String
   importLibraryEntry(simulatorId: ID!, entries: String!): String
+  updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
+
+  """Macro: DMX: Set Simulator DMX Config"""
+  dmxSetSimulatorConfig(simulatorId: ID!, dmxConfigId: ID!): String
+
+  """Macro: Lighting: Set Intensity"""
+  lightingSetIntensity(simulatorId: ID!, intensity: Float!): String
+
+  """Macro: Lighting: Shake Lights"""
+  lightingShakeLights(simulatorId: ID!, strength: Float, duration: Float): String
+
+  """Macro: Lighting: Fade Lights"""
+  lightingFadeLights(simulatorId: ID!, duration: Float!, endIntensity: Float!, startIntensity: Float): String
+
+  """Macro: Lighting: Set Effect"""
+  lightingSetEffect(simulatorId: ID!, duration: Float, strength: Float, effect: LIGHTING_ACTION!): String
 
   """
   Macro: Long Range: Send Long Range Message
@@ -2308,7 +2405,6 @@ type Mutation {
   setBridgeMessaging(id: ID!, messaging: Boolean!): String
   setSimulatorAssets(id: ID!, assets: SimulatorAssetsInput!): String
   setSimulatorSoundEffects(id: ID!, soundEffects: JSON!): String
-  updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
   setSimulatorHasPrinter(simulatorId: ID!, hasPrinter: Boolean!): String
   setSimulatorHasLegs(simulatorId: ID!, hasLegs: Boolean!): String
   setSimulatorSpaceEdventuresId(simulatorId: ID!, spaceEdventuresId: String!): String
@@ -2626,6 +2722,41 @@ type Mutation {
 
   """Macro: Sandbox: Set Base Universe for Flight"""
   flightSetBaseUniverse(flightId: ID, procGenKey: String): String
+  dmxDeviceCreate(name: String!): String
+  dmxDeviceRemove(id: ID!): String
+  dmxDeviceSetName(id: ID!, name: String!): String
+  dmxDeviceSetChannels(id: ID!, channels: [DMXChannelProperty!]!): String
+  dmxSetCreate(name: String!): String
+  dmxSetRemove(id: ID!): String
+  dmxSetDuplicate(id: ID!, name: String!): String
+  dmxSetSetName(id: ID!, name: String!): String
+  dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
+  dmxFixtureRemove(DMXSetId: ID!, id: ID!): String
+  dmxFixtureSetName(id: ID!, name: String!): String
+  dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: ID!): String
+  dmxFixtureSetChannel(id: ID!, channel: Int!): String
+  dmxFixtureSetMode(id: ID, simulatorId: ID, tag: [String], mode: DMXFixtureMode!): String
+
+  """Macro: DMX: Set Fixture To Active Mode"""
+  dmxFixtureSetActive(id: ID, simulatorId: ID, tags: [String]): String
+
+  """Macro: DMX: Set Fixture Tags"""
+  dmxFixtureSetTags(id: ID, simulatorId: ID, tags: [String], newTags: [String!]!): String
+
+  """Macro: DMX: Add Fixture Tag"""
+  dmxFixtureAddTag(id: ID, simulatorId: ID, tags: [String], newTag: String!): String
+
+  """Macro: DMX: Remove Fixture Tag"""
+  dmxFixtureRemoveTag(id: ID, simulatorId: ID, tags: [String], removeTag: String!): String
+
+  """Macro: DMX: Set Fixture Passive Channels"""
+  dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tags: [String], passiveChannels: DMXPassiveChannelsInput!): String
+  dmxConfigCreate(name: String!): String
+  dmxConfigRemove(id: ID!): String
+  dmxConfigDuplicate(id: ID!, name: String!): String
+  dmxConfigSetName(id: ID!, name: String!): String
+  dmxConfigSetConfig(id: ID!, config: JSON!): String
+  dmxConfigSetActionStrength(id: ID!, actionStrength: Float!): String
 }
 
 type NamedObject {
@@ -3076,6 +3207,11 @@ type Query {
   countermeasureModuleType: [CountermeasureModule!]!
   entity(id: ID!): Entity
   entities(flightId: ID!, inert: Boolean): [Entity]!
+  dmxDevices: [DMXDevice!]!
+  dmxSets: [DMXSet!]!
+  dmxFixtures(simulatorId: ID): [DMXFixture!]!
+  dmxConfig(id: ID!): DMXConfig
+  dmxConfigs: [DMXConfig!]!
 }
 
 type Railgun implements SystemInterface {
@@ -3391,9 +3527,9 @@ type SensorsSegment {
 }
 
 type Set {
-  id: ID
-  name: String
-  clients: [SetClient]
+  id: ID!
+  name: String!
+  clients: [SetClient!]!
 }
 
 type SetClient {
@@ -3587,7 +3723,7 @@ type Simulator {
   spaceEdventuresId: String
   flipped: Boolean
   capabilities: SimulatorCapabilities
-  ambiance: [Ambiance]
+  ambiance: [Ambiance!]
   assets: SimulatorAssets
   soundEffects: JSON
   damageTasks: [DamageTask]
@@ -3708,7 +3844,7 @@ type StageComponent {
 }
 
 type Station {
-  name: String
+  name: String!
   description: String
   training: String
   login: Boolean
@@ -3716,16 +3852,16 @@ type Station {
   messageGroups: [String]
   layout: String
   widgets: [String]
-  cards(showHidden: Boolean): [Card]
+  cards(showHidden: Boolean): [Card!]!
   ambiance: String
 }
 
 type StationSet {
-  id: ID
-  name: String
+  id: ID!
+  name: String!
   simulator: Simulator
   crewCount: Int
-  stations: [Station]
+  stations: [Station!]!
 }
 
 type StealthField implements SystemInterface {
@@ -3873,6 +4009,10 @@ type Subscription {
   countermeasuresUpdate(simulatorId: ID!): Countermeasures
   entity(id: ID): Entity
   entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
+  dmxSets: [DMXSet!]!
+  dmxDevices: [DMXDevice!]!
+  dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
+  dmxConfigs: [DMXConfig!]!
 }
 
 type SubspaceField implements SystemInterface {

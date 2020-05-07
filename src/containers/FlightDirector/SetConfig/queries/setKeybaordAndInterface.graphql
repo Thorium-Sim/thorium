@@ -1,0 +1,17 @@
+query SetKeyboardAndInterface($id: ID) {
+  simulators(id: $id) {
+    interfaces
+  }
+  interfaces {
+    id
+    name
+  }
+  keyboard {
+    id
+    name
+  }
+  dmxSets {
+    id
+    name
+  }
+}

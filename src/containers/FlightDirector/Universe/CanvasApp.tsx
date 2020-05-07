@@ -40,24 +40,26 @@ const MeasureCircles: React.FC<{
     </mesh>
   );
 };
-interface CanvasAppProps {
-  stageId?: string;
-  setDragging: React.Dispatch<React.SetStateAction<any>>;
-  dragging: EntityType | undefined;
-  entityCount: number;
-  storeApi: StoreApi<PatchData<EntityInterface[]>>;
-}
 function setNumberBounds(num: number) {
   return Math.max(
     -Number.MAX_SAFE_INTEGER,
     Math.min(Number.MAX_SAFE_INTEGER, Math.round(num)),
   );
 }
+interface CanvasAppProps {
+  stageId?: string;
+  setDragging: React.Dispatch<React.SetStateAction<any>>;
+  staticEntities: EntityType[];
+  dragging: EntityType | undefined;
+  entityCount: number;
+  storeApi: StoreApi<PatchData<EntityInterface[]>>;
+}
 const CanvasApp: React.FC<CanvasAppProps> = ({
   stageId,
   setDragging,
   dragging,
   entityCount,
+  staticEntities,
   storeApi,
 }) => {
   const [
@@ -279,6 +281,22 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
           </React.Suspense>
         );
       })}
+      {staticEntities.map(e => (
+        <React.Suspense key={`entity-${e.id}`} fallback={null}>
+          <Entity
+            entityIndex={-1}
+            entity={e}
+            stageId={stageId}
+            selectedEntityIds={selected}
+            mousePosition={mousePosition}
+            isDraggingMe={selectionsDragged}
+            onDragStart={onDragStart}
+            onDrag={onDrag}
+            onDragStop={onDragStop}
+            storeApi={storeApi}
+          />
+        </React.Suspense>
+      ))}
     </>
   );
 };

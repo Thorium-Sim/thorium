@@ -1,21 +1,17 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {useMutation} from "react-apollo";
-import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
-import {LIGHTING_QUERY, LIGHTING_SUB} from "components/views/Lighting";
+import {useLightingControlSubscription} from "generated/graphql";
 
 const UPDATE_LIGHTING = gql`
   mutation UpdateLighting($id: ID!, $intensity: Float!) {
-    updateSimulatorLighting(id: $id, lighting: {intensity: $intensity})
+    lightingSetIntensity(simulatorId: $id, intensity: $intensity)
   }
 `;
 
 const LightingIntensity = ({simulatorId, value, setValue}) => {
   const valueSet = React.useRef(false);
-  const {data} = useQueryAndSubscription(
-    {query: LIGHTING_QUERY, variables: {simulatorId}},
-    {query: LIGHTING_SUB, variables: {simulatorId}},
-  );
+  const {data} = useLightingControlSubscription({variables: {simulatorId}});
   const intensity = data?.simulators?.[0].lighting.intensity;
 
   const [updateLighting] = useMutation(UPDATE_LIGHTING, {

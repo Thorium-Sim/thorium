@@ -2,7 +2,7 @@ import React from "react";
 import {Container, Row, Col, Card} from "helpers/reactstrap";
 import {useSetsPickerQuery, useApplyClientSetMutation} from "generated/graphql";
 
-import "../setConfig.scss";
+import "../SetConfig/setConfig.scss";
 import {useParams} from "react-router-dom";
 
 export const trainingSteps = [

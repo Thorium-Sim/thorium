@@ -1,0 +1,3 @@
+mutation RenameSet($id: ID!, $name: String!) {
+  renameSet(id: $id, name: $name)
+}

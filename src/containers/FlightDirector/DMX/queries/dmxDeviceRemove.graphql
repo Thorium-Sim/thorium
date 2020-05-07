@@ -1,0 +1,3 @@
+mutation DMXDeviceRemove($id: ID!) {
+  dmxDeviceRemove(id: $id)
+}

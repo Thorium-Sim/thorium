@@ -1,0 +1,44 @@
+query Sets {
+  simulators(template: true) {
+    id
+    name
+    layout
+    systems {
+      id
+      type
+    }
+    stationSets {
+      id
+      name
+      stations {
+        name
+      }
+    }
+  }
+  sets {
+    id
+    name
+    clients {
+      id
+      client {
+        id
+      }
+      simulator {
+        id
+        name
+      }
+      stationSet {
+        id
+        name
+      }
+      station
+      secondary
+      soundPlayer
+    }
+  }
+  clients {
+    id
+    cards
+    mobile
+  }
+}

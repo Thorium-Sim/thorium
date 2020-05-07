@@ -1,0 +1,11 @@
+mutation UpdateSetClient(
+  $id: ID!
+  $clientId: ID!
+  $secondary: Boolean
+  $soundPlayer: Boolean
+) {
+  updateSetClient(
+    id: $id
+    client: {id: $clientId, secondary: $secondary, soundPlayer: $soundPlayer}
+  )
+}

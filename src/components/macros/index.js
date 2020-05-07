@@ -74,3 +74,5 @@ export * from "./docking";
 export * from "./computerCore";
 export * from "./sensors";
 export * from "./timeline";
+export * from "./dmx";
+export * from "./lighting";

@@ -1,0 +1,3 @@
+mutation DMXDeviceSetChannels($id: ID!, $channels: [DMXChannelProperty!]!) {
+  dmxDeviceSetChannels(id: $id, channels: $channels)
+}

@@ -19,6 +19,7 @@ import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
 import EntitySprite from "./EntitySprite";
 
 interface EntityProps {
+  static?: boolean;
   dragging?: boolean;
   library?: boolean;
   entity?: EntityInterface;
@@ -55,7 +56,6 @@ const Entity: React.FC<EntityProps> = ({
   storeApi,
 }) => {
   const rerender = useRerender();
-
   const {id, location, appearance, light} =
     entity || storeApi.getState().data[entityIndex];
 
@@ -88,6 +88,7 @@ const Entity: React.FC<EntityProps> = ({
     );
     return () => unsub1();
   }, [entityIndex, rerender, storeApi]);
+
   const selected = selectedEntityIds.includes(id);
   const size = 1;
   const {meshType, cloudMapAsset, ringMapAsset} = appearance || {};
@@ -157,14 +158,11 @@ const Entity: React.FC<EntityProps> = ({
 
   if (stage?.stage?.childrenAsSprites) {
     return (
-      <EntitySprite
-        appearance={appearance || undefined}
-        position={meshPosition}
-        ref={mesh}
-      />
+      <group position={meshPosition} ref={mesh} {...dragFunctions}>
+        <EntitySprite appearance={appearance || undefined} />
+      </group>
     );
   }
-
   if (meshType === MeshTypeEnum.Model && appearance?.modelAsset) {
     return (
       <>

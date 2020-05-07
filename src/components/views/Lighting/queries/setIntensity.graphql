@@ -1,0 +1,3 @@
+mutation LightingSetIntensity($simulatorId: ID!, $intensity: Float!) {
+  lightingSetIntensity(simulatorId: $simulatorId, intensity: $intensity)
+}

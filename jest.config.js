@@ -16,9 +16,5 @@ module.exports = {
     "!**/__tests__/**",
     "!**/build/**",
   ],
-  projects: [
-    "./test/jest.client.js",
-    "./test/jest.server.js",
-    "./test/jest.eslint.js",
-  ],
+  projects: ["./test/jest.client.js", "./test/jest.server.js"],
 };

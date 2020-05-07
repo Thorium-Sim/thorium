@@ -116,10 +116,10 @@ const Location: React.FC<LocationEditProps> = ({id, location}) => {
     (key, value) => {
       return () => {
         clearInterval(interval.current);
-        interval.current = setInterval(
+        interval.current = (setInterval(
           () => setRotation.current?.(key, value),
           100,
-        );
+        ) as unknown) as number;
         document.addEventListener("mouseup", clear);
       };
     },

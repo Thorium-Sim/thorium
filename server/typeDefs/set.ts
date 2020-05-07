@@ -6,9 +6,9 @@ import Set from "../classes/set";
 // necessary for the functionality in this file.
 const schema = gql`
   type Set {
-    id: ID
-    name: String
-    clients: [SetClient]
+    id: ID!
+    name: String!
+    clients: [SetClient!]!
   }
 
   type SetClient {

@@ -14,6 +14,9 @@ const needed = [
   "semver",
   "electron-updater",
   "universalify",
+  "usb-detection",
+  "dmx",
+  "e131",
 ];
 
 function getNeededPackages(pkg) {

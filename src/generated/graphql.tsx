@@ -32,12 +32,12 @@ export type ActionInput = {
 
 export type Ambiance = {
    __typename?: 'Ambiance',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
-  asset?: Maybe<Scalars['String']>,
-  volume?: Maybe<Scalars['Float']>,
-  channel?: Maybe<Array<Maybe<Scalars['Int']>>>,
-  playbackRate?: Maybe<Scalars['Float']>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  asset: Scalars['String'],
+  volume: Scalars['Float'],
+  channel: Array<Scalars['Int']>,
+  playbackRate: Scalars['Float'],
 };
 
 export type AmbianceInput = {
@@ -104,8 +104,8 @@ export enum Behaviors {
 
 export type Card = {
    __typename?: 'Card',
-  name?: Maybe<Scalars['String']>,
-  component?: Maybe<Scalars['String']>,
+  name: Scalars['String'],
+  component: Scalars['String'],
   hidden?: Maybe<Scalars['Boolean']>,
   assigned?: Maybe<Scalars['Boolean']>,
   newStation?: Maybe<Scalars['Boolean']>,
@@ -718,6 +718,86 @@ export type DirectionInput = {
   z?: Maybe<Scalars['Float']>,
 };
 
+export enum DmxChannelProperty {
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+  Amber = 'amber',
+  White = 'white',
+  Uv = 'uv',
+  Intensity = 'intensity',
+  Strobe = 'strobe',
+  Generic = 'generic',
+  Nothing = 'nothing'
+}
+
+export type DmxConfig = {
+   __typename?: 'DMXConfig',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  config: Scalars['JSON'],
+  actionStrength: Scalars['Float'],
+};
+
+export type DmxDevice = {
+   __typename?: 'DMXDevice',
+  id: Scalars['ID'],
+  class: Scalars['String'],
+  name: Scalars['String'],
+  channels: Array<DmxChannelProperty>,
+};
+
+export type DmxFixture = {
+   __typename?: 'DMXFixture',
+  id: Scalars['ID'],
+  class: Scalars['String'],
+  name: Scalars['String'],
+  clientId?: Maybe<Scalars['String']>,
+  DMXDeviceId: Scalars['String'],
+  DMXDevice: DmxDevice,
+  simulatorId: Scalars['String'],
+  channel: Scalars['Int'],
+  mode: DmxFixtureMode,
+  tags: Array<Scalars['String']>,
+  passiveChannels: DmxPassiveChannels,
+};
+
+export enum DmxFixtureMode {
+  Active = 'active',
+  Passive = 'passive'
+}
+
+export type DmxPassiveChannels = {
+   __typename?: 'DMXPassiveChannels',
+  amber?: Maybe<Scalars['Float']>,
+  white?: Maybe<Scalars['Float']>,
+  uv?: Maybe<Scalars['Float']>,
+  intensity?: Maybe<Scalars['Float']>,
+  strobe?: Maybe<Scalars['Float']>,
+  generic?: Maybe<Scalars['Float']>,
+  nothing?: Maybe<Scalars['Float']>,
+  color?: Maybe<Scalars['String']>,
+};
+
+export type DmxPassiveChannelsInput = {
+  amber?: Maybe<Scalars['Float']>,
+  white?: Maybe<Scalars['Float']>,
+  uv?: Maybe<Scalars['Float']>,
+  intensity?: Maybe<Scalars['Float']>,
+  strobe?: Maybe<Scalars['Float']>,
+  generic?: Maybe<Scalars['Float']>,
+  nothing?: Maybe<Scalars['Float']>,
+  color?: Maybe<Scalars['String']>,
+};
+
+export type DmxSet = {
+   __typename?: 'DMXSet',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  fixtureIds: Array<Scalars['String']>,
+  fixtures: Array<DmxFixture>,
+};
+
 export enum Docking_Direction {
   Unspecified = 'unspecified',
   Arriving = 'arriving',
@@ -1273,16 +1353,20 @@ export type LightComponent = {
 
 export type Lighting = {
    __typename?: 'Lighting',
-  intensity?: Maybe<Scalars['Float']>,
-  action?: Maybe<Lighting_Action>,
-  actionStrength?: Maybe<Scalars['Float']>,
-  transitionDuration?: Maybe<Scalars['Int']>,
+  intensity: Scalars['Float'],
+  action: Lighting_Action,
+  actionStrength: Scalars['Float'],
+  transitionDuration: Scalars['Int'],
   useAlertColor?: Maybe<Scalars['Boolean']>,
   color?: Maybe<Scalars['String']>,
+  dmxConfig?: Maybe<DmxConfig>,
 };
 
 export enum Lighting_Action {
   Normal = 'normal',
+  Darken = 'darken',
+  Blackout = 'blackout',
+  Work = 'work',
   Fade = 'fade',
   Shake = 'shake',
   Strobe = 'strobe',
@@ -1296,6 +1380,7 @@ export type LightingInput = {
   transitionDuration?: Maybe<Scalars['Int']>,
   useAlertColor?: Maybe<Scalars['Boolean']>,
   color?: Maybe<Scalars['String']>,
+  dmxConfig?: Maybe<Scalars['String']>,
 };
 
 export type Location = Deck | Room;
@@ -1670,6 +1755,7 @@ export type Mutation = {
   clientMovieState?: Maybe<Scalars['String']>,
   clientSetTraining?: Maybe<Scalars['String']>,
   clientSetSoundPlayer?: Maybe<Scalars['String']>,
+  clientActivateLights?: Maybe<Scalars['String']>,
   clientAddCache?: Maybe<Scalars['String']>,
   clientRemoveCache?: Maybe<Scalars['String']>,
   setClientHypercard?: Maybe<Scalars['String']>,
@@ -1853,6 +1939,12 @@ export type Mutation = {
   updateLibraryEntry?: Maybe<Scalars['String']>,
   removeLibraryEntry?: Maybe<Scalars['String']>,
   importLibraryEntry?: Maybe<Scalars['String']>,
+  updateSimulatorLighting?: Maybe<Scalars['String']>,
+  dmxSetSimulatorConfig?: Maybe<Scalars['String']>,
+  lightingSetIntensity?: Maybe<Scalars['String']>,
+  lightingShakeLights?: Maybe<Scalars['String']>,
+  lightingFadeLights?: Maybe<Scalars['String']>,
+  lightingSetEffect?: Maybe<Scalars['String']>,
   sendLongRangeMessage?: Maybe<Scalars['String']>,
   longRangeMessageSend?: Maybe<Scalars['String']>,
   deleteLongRangeMessage?: Maybe<Scalars['String']>,
@@ -2121,7 +2213,6 @@ export type Mutation = {
   setBridgeMessaging?: Maybe<Scalars['String']>,
   setSimulatorAssets?: Maybe<Scalars['String']>,
   setSimulatorSoundEffects?: Maybe<Scalars['String']>,
-  updateSimulatorLighting?: Maybe<Scalars['String']>,
   setSimulatorHasPrinter?: Maybe<Scalars['String']>,
   setSimulatorHasLegs?: Maybe<Scalars['String']>,
   setSimulatorSpaceEdventuresId?: Maybe<Scalars['String']>,
@@ -2316,6 +2407,31 @@ export type Mutation = {
   entityCreate: Entity,
   entityRemove?: Maybe<Scalars['String']>,
   flightSetBaseUniverse?: Maybe<Scalars['String']>,
+  dmxDeviceCreate?: Maybe<Scalars['String']>,
+  dmxDeviceRemove?: Maybe<Scalars['String']>,
+  dmxDeviceSetName?: Maybe<Scalars['String']>,
+  dmxDeviceSetChannels?: Maybe<Scalars['String']>,
+  dmxSetCreate?: Maybe<Scalars['String']>,
+  dmxSetRemove?: Maybe<Scalars['String']>,
+  dmxSetDuplicate?: Maybe<Scalars['String']>,
+  dmxSetSetName?: Maybe<Scalars['String']>,
+  dmxFixtureCreate?: Maybe<Scalars['String']>,
+  dmxFixtureRemove?: Maybe<Scalars['String']>,
+  dmxFixtureSetName?: Maybe<Scalars['String']>,
+  dmxFixtureSetDMXDevice?: Maybe<Scalars['String']>,
+  dmxFixtureSetChannel?: Maybe<Scalars['String']>,
+  dmxFixtureSetMode?: Maybe<Scalars['String']>,
+  dmxFixtureSetActive?: Maybe<Scalars['String']>,
+  dmxFixtureSetTags?: Maybe<Scalars['String']>,
+  dmxFixtureAddTag?: Maybe<Scalars['String']>,
+  dmxFixtureRemoveTag?: Maybe<Scalars['String']>,
+  dmxFixtureSetPassiveChannels?: Maybe<Scalars['String']>,
+  dmxConfigCreate?: Maybe<Scalars['String']>,
+  dmxConfigRemove?: Maybe<Scalars['String']>,
+  dmxConfigDuplicate?: Maybe<Scalars['String']>,
+  dmxConfigSetName?: Maybe<Scalars['String']>,
+  dmxConfigSetConfig?: Maybe<Scalars['String']>,
+  dmxConfigSetActionStrength?: Maybe<Scalars['String']>,
 };
 
 
@@ -2630,6 +2746,12 @@ export type MutationClientSetTrainingArgs = {
 export type MutationClientSetSoundPlayerArgs = {
   client: Scalars['ID'],
   soundPlayer: Scalars['Boolean']
+};
+
+
+export type MutationClientActivateLightsArgs = {
+  clientId: Scalars['ID'],
+  dmxSetId: Scalars['ID']
 };
 
 
@@ -3737,6 +3859,47 @@ export type MutationRemoveLibraryEntryArgs = {
 export type MutationImportLibraryEntryArgs = {
   simulatorId: Scalars['ID'],
   entries: Scalars['String']
+};
+
+
+export type MutationUpdateSimulatorLightingArgs = {
+  id: Scalars['ID'],
+  lighting: LightingInput
+};
+
+
+export type MutationDmxSetSimulatorConfigArgs = {
+  simulatorId: Scalars['ID'],
+  dmxConfigId: Scalars['ID']
+};
+
+
+export type MutationLightingSetIntensityArgs = {
+  simulatorId: Scalars['ID'],
+  intensity: Scalars['Float']
+};
+
+
+export type MutationLightingShakeLightsArgs = {
+  simulatorId: Scalars['ID'],
+  strength?: Maybe<Scalars['Float']>,
+  duration?: Maybe<Scalars['Float']>
+};
+
+
+export type MutationLightingFadeLightsArgs = {
+  simulatorId: Scalars['ID'],
+  duration: Scalars['Float'],
+  endIntensity: Scalars['Float'],
+  startIntensity?: Maybe<Scalars['Float']>
+};
+
+
+export type MutationLightingSetEffectArgs = {
+  simulatorId: Scalars['ID'],
+  duration?: Maybe<Scalars['Float']>,
+  strength?: Maybe<Scalars['Float']>,
+  effect: Lighting_Action
 };
 
 
@@ -5420,12 +5583,6 @@ export type MutationSetSimulatorSoundEffectsArgs = {
 };
 
 
-export type MutationUpdateSimulatorLightingArgs = {
-  id: Scalars['ID'],
-  lighting: LightingInput
-};
-
-
 export type MutationSetSimulatorHasPrinterArgs = {
   simulatorId: Scalars['ID'],
   hasPrinter: Scalars['Boolean']
@@ -6613,6 +6770,162 @@ export type MutationFlightSetBaseUniverseArgs = {
   procGenKey?: Maybe<Scalars['String']>
 };
 
+
+export type MutationDmxDeviceCreateArgs = {
+  name: Scalars['String']
+};
+
+
+export type MutationDmxDeviceRemoveArgs = {
+  id: Scalars['ID']
+};
+
+
+export type MutationDmxDeviceSetNameArgs = {
+  id: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationDmxDeviceSetChannelsArgs = {
+  id: Scalars['ID'],
+  channels: Array<DmxChannelProperty>
+};
+
+
+export type MutationDmxSetCreateArgs = {
+  name: Scalars['String']
+};
+
+
+export type MutationDmxSetRemoveArgs = {
+  id: Scalars['ID']
+};
+
+
+export type MutationDmxSetDuplicateArgs = {
+  id: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationDmxSetSetNameArgs = {
+  id: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationDmxFixtureCreateArgs = {
+  DMXSetId: Scalars['ID'],
+  name: Scalars['String'],
+  DMXDeviceId: Scalars['ID']
+};
+
+
+export type MutationDmxFixtureRemoveArgs = {
+  DMXSetId: Scalars['ID'],
+  id: Scalars['ID']
+};
+
+
+export type MutationDmxFixtureSetNameArgs = {
+  id: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationDmxFixtureSetDmxDeviceArgs = {
+  id: Scalars['ID'],
+  DMXDeviceID: Scalars['ID']
+};
+
+
+export type MutationDmxFixtureSetChannelArgs = {
+  id: Scalars['ID'],
+  channel: Scalars['Int']
+};
+
+
+export type MutationDmxFixtureSetModeArgs = {
+  id?: Maybe<Scalars['ID']>,
+  simulatorId?: Maybe<Scalars['ID']>,
+  tag?: Maybe<Array<Maybe<Scalars['String']>>>,
+  mode: DmxFixtureMode
+};
+
+
+export type MutationDmxFixtureSetActiveArgs = {
+  id?: Maybe<Scalars['ID']>,
+  simulatorId?: Maybe<Scalars['ID']>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>
+};
+
+
+export type MutationDmxFixtureSetTagsArgs = {
+  id?: Maybe<Scalars['ID']>,
+  simulatorId?: Maybe<Scalars['ID']>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
+  newTags: Array<Scalars['String']>
+};
+
+
+export type MutationDmxFixtureAddTagArgs = {
+  id?: Maybe<Scalars['ID']>,
+  simulatorId?: Maybe<Scalars['ID']>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
+  newTag: Scalars['String']
+};
+
+
+export type MutationDmxFixtureRemoveTagArgs = {
+  id?: Maybe<Scalars['ID']>,
+  simulatorId?: Maybe<Scalars['ID']>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
+  removeTag: Scalars['String']
+};
+
+
+export type MutationDmxFixtureSetPassiveChannelsArgs = {
+  id?: Maybe<Scalars['ID']>,
+  simulatorId?: Maybe<Scalars['ID']>,
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>,
+  passiveChannels: DmxPassiveChannelsInput
+};
+
+
+export type MutationDmxConfigCreateArgs = {
+  name: Scalars['String']
+};
+
+
+export type MutationDmxConfigRemoveArgs = {
+  id: Scalars['ID']
+};
+
+
+export type MutationDmxConfigDuplicateArgs = {
+  id: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationDmxConfigSetNameArgs = {
+  id: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationDmxConfigSetConfigArgs = {
+  id: Scalars['ID'],
+  config: Scalars['JSON']
+};
+
+
+export type MutationDmxConfigSetActionStrengthArgs = {
+  id: Scalars['ID'],
+  actionStrength: Scalars['Float']
+};
+
 export type NamedObject = {
    __typename?: 'NamedObject',
   id?: Maybe<Scalars['ID']>,
@@ -7087,6 +7400,11 @@ export type Query = {
   countermeasureModuleType: Array<CountermeasureModule>,
   entity?: Maybe<Entity>,
   entities: Array<Maybe<Entity>>,
+  dmxDevices: Array<DmxDevice>,
+  dmxSets: Array<DmxSet>,
+  dmxFixtures: Array<DmxFixture>,
+  dmxConfig?: Maybe<DmxConfig>,
+  dmxConfigs: Array<DmxConfig>,
 };
 
 
@@ -7622,6 +7940,16 @@ export type QueryEntitiesArgs = {
   inert?: Maybe<Scalars['Boolean']>
 };
 
+
+export type QueryDmxFixturesArgs = {
+  simulatorId?: Maybe<Scalars['ID']>
+};
+
+
+export type QueryDmxConfigArgs = {
+  id: Scalars['ID']
+};
+
 export type Railgun = SystemInterface & {
    __typename?: 'Railgun',
   id?: Maybe<Scalars['ID']>,
@@ -7952,9 +8280,9 @@ export type SensorsSegment = {
 
 export type Set = {
    __typename?: 'Set',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
-  clients?: Maybe<Array<Maybe<SetClient>>>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  clients: Array<SetClient>,
 };
 
 export type SetClient = {
@@ -8158,7 +8486,7 @@ export type Simulator = {
   spaceEdventuresId?: Maybe<Scalars['String']>,
   flipped?: Maybe<Scalars['Boolean']>,
   capabilities?: Maybe<SimulatorCapabilities>,
-  ambiance?: Maybe<Array<Maybe<Ambiance>>>,
+  ambiance?: Maybe<Array<Ambiance>>,
   assets?: Maybe<SimulatorAssets>,
   soundEffects?: Maybe<Scalars['JSON']>,
   damageTasks?: Maybe<Array<Maybe<DamageTask>>>,
@@ -8289,7 +8617,7 @@ export type StageComponent = {
 
 export type Station = {
    __typename?: 'Station',
-  name?: Maybe<Scalars['String']>,
+  name: Scalars['String'],
   description?: Maybe<Scalars['String']>,
   training?: Maybe<Scalars['String']>,
   login?: Maybe<Scalars['Boolean']>,
@@ -8297,7 +8625,7 @@ export type Station = {
   messageGroups?: Maybe<Array<Maybe<Scalars['String']>>>,
   layout?: Maybe<Scalars['String']>,
   widgets?: Maybe<Array<Maybe<Scalars['String']>>>,
-  cards?: Maybe<Array<Maybe<Card>>>,
+  cards: Array<Card>,
   ambiance?: Maybe<Scalars['String']>,
 };
 
@@ -8308,11 +8636,11 @@ export type StationCardsArgs = {
 
 export type StationSet = {
    __typename?: 'StationSet',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
   simulator?: Maybe<Simulator>,
   crewCount?: Maybe<Scalars['Int']>,
-  stations?: Maybe<Array<Maybe<Station>>>,
+  stations: Array<Station>,
 };
 
 export type StealthField = SystemInterface & {
@@ -8464,6 +8792,10 @@ export type Subscription = {
   countermeasuresUpdate?: Maybe<Countermeasures>,
   entity?: Maybe<Entity>,
   entities?: Maybe<Array<Maybe<Entity>>>,
+  dmxSets: Array<DmxSet>,
+  dmxDevices: Array<DmxDevice>,
+  dmxFixtures: Array<DmxFixture>,
+  dmxConfigs: Array<DmxConfig>,
 };
 
 
@@ -8985,6 +9317,12 @@ export type SubscriptionEntitiesArgs = {
   flightId: Scalars['ID'],
   stageId?: Maybe<Scalars['ID']>,
   template?: Maybe<Scalars['Boolean']>
+};
+
+
+export type SubscriptionDmxFixturesArgs = {
+  simulatorId?: Maybe<Scalars['ID']>,
+  clientId?: Maybe<Scalars['ID']>
 };
 
 export type SubspaceField = SystemInterface & {
@@ -9876,6 +10214,34 @@ export enum __TypeKind {
   NonNull = 'NON_NULL'
 }
 
+export type ActivateLightingMutationVariables = {
+  clientId: Scalars['ID'];
+  dmxSetId: Scalars['ID'];
+};
+
+
+export type ActivateLightingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'clientActivateLights'>
+);
+
+export type AmbianceQueryVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type AmbianceQuery = (
+  { __typename?: 'Query' }
+  & { simulators: Array<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'id'>
+    & { ambiance?: Maybe<Array<(
+      { __typename?: 'Ambiance' }
+      & Pick<Ambiance, 'id' | 'name' | 'asset' | 'volume' | 'channel' | 'playbackRate'>
+    )>> }
+  )> }
+);
+
 export type ClientDataFragment = (
   { __typename?: 'Client' }
   & Pick<Client, 'id' | 'token' | 'email' | 'cracked' | 'loginName' | 'loginState' | 'offlineState' | 'hypercard' | 'movie' | 'training' | 'caches' | 'overlay' | 'soundPlayer'>
@@ -9930,6 +10296,27 @@ export type ClientPingMutation = (
   & Pick<Mutation, 'clientPing'>
 );
 
+export type LightingControlSubscriptionVariables = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type LightingControlSubscription = (
+  { __typename?: 'Subscription' }
+  & { simulatorsUpdate?: Maybe<Array<Maybe<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'id' | 'alertlevel'>
+    & { lighting?: Maybe<(
+      { __typename?: 'Lighting' }
+      & Pick<Lighting, 'intensity' | 'action' | 'actionStrength' | 'transitionDuration'>
+      & { dmxConfig?: Maybe<(
+        { __typename?: 'DMXConfig' }
+        & Pick<DmxConfig, 'id' | 'config' | 'actionStrength'>
+      )> }
+    )> }
+  )>>> }
+);
+
 export type RegisterClientMutationVariables = {
   client: Scalars['ID'];
 };
@@ -9959,10 +10346,10 @@ export type SimulatorDataFragment = (
   )>, stations?: Maybe<Array<(
     { __typename?: 'Station' }
     & Pick<Station, 'name' | 'login' | 'training' | 'ambiance' | 'executive' | 'layout' | 'messageGroups' | 'widgets'>
-    & { cards?: Maybe<Array<Maybe<(
+    & { cards: Array<(
       { __typename?: 'Card' }
       & Pick<Card, 'name' | 'component' | 'hidden' | 'assigned' | 'newStation'>
-    )>>> }
+    )> }
   )>> }
 );
 
@@ -9990,6 +10377,17 @@ export type SimulatorUpdateSubscription = (
     { __typename?: 'Simulator' }
     & SimulatorDataFragment
   )>>> }
+);
+
+export type MacroDmxConfigsQueryVariables = {};
+
+
+export type MacroDmxConfigsQuery = (
+  { __typename?: 'Query' }
+  & { dmxConfigs: Array<(
+    { __typename?: 'DMXConfig' }
+    & Pick<DmxConfig, 'id' | 'name'>
+  )> }
 );
 
 export type DockingShuttleConfigQueryVariables = {
@@ -10323,6 +10721,51 @@ export type CountermeasuresSetFdNoteMutationVariables = {
 export type CountermeasuresSetFdNoteMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'countermeasuresSetFDNote'>
+);
+
+export type LightingSetEffectMutationVariables = {
+  simulatorId: Scalars['ID'];
+  effect: Lighting_Action;
+  duration: Scalars['Float'];
+};
+
+
+export type LightingSetEffectMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'lightingSetEffect'>
+);
+
+export type LightingSetIntensityMutationVariables = {
+  simulatorId: Scalars['ID'];
+  intensity: Scalars['Float'];
+};
+
+
+export type LightingSetIntensityMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'lightingSetIntensity'>
+);
+
+export type ShakeLightsMutationVariables = {
+  simulatorId: Scalars['ID'];
+  duration: Scalars['Float'];
+};
+
+
+export type ShakeLightsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'lightingShakeLights'>
+);
+
+export type UpdateLightingMutationVariables = {
+  id: Scalars['ID'];
+  lighting: LightingInput;
+};
+
+
+export type UpdateLightingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateSimulatorLighting'>
 );
 
 export type SensorsPingSubSubscriptionVariables = {
@@ -10944,7 +11387,10 @@ export type ClientsInterfacesAndKeyboardsQuery = (
   )>>>, keyboard?: Maybe<Array<Maybe<(
     { __typename?: 'Keyboard' }
     & Pick<Keyboard, 'id' | 'name'>
-  )>>> }
+  )>>>, dmxSets: Array<(
+    { __typename?: 'DMXSet' }
+    & Pick<DmxSet, 'id' | 'name'>
+  )> }
 );
 
 export type SetClientFlightMutationVariables = {
@@ -11077,7 +11523,7 @@ export type SetsPickerQuery = (
   )>, sets?: Maybe<Array<Maybe<(
     { __typename?: 'Set' }
     & Pick<Set, 'id' | 'name'>
-    & { clients?: Maybe<Array<Maybe<(
+    & { clients: Array<(
       { __typename?: 'SetClient' }
       & Pick<SetClient, 'id' | 'station'>
       & { client?: Maybe<(
@@ -11090,7 +11536,7 @@ export type SetsPickerQuery = (
         { __typename?: 'StationSet' }
         & Pick<StationSet, 'id' | 'name'>
       )> }
-    )>>> }
+    )> }
   )>>> }
 );
 
@@ -11102,6 +11548,316 @@ export type TransmitFlightMutationVariables = {
 export type TransmitFlightMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'assignSpaceEdventuresFlightRecord'>
+);
+
+export type DmxConfigCreateMutationVariables = {
+  name: Scalars['String'];
+};
+
+
+export type DmxConfigCreateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxConfigCreate'>
+);
+
+export type DmxConfigDuplicateMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type DmxConfigDuplicateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxConfigDuplicate'>
+);
+
+export type DmxConfigRemoveMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type DmxConfigRemoveMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxConfigRemove'>
+);
+
+export type DmxConfigSetActionStrengthMutationVariables = {
+  id: Scalars['ID'];
+  actionStrength: Scalars['Float'];
+};
+
+
+export type DmxConfigSetActionStrengthMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxConfigSetActionStrength'>
+);
+
+export type DmxConfigSetConfigMutationVariables = {
+  id: Scalars['ID'];
+  config: Scalars['JSON'];
+};
+
+
+export type DmxConfigSetConfigMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxConfigSetConfig'>
+);
+
+export type DmxConfigSetNameMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type DmxConfigSetNameMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxConfigSetName'>
+);
+
+export type DmxConfigsSubscriptionVariables = {};
+
+
+export type DmxConfigsSubscription = (
+  { __typename?: 'Subscription' }
+  & { dmxConfigs: Array<(
+    { __typename?: 'DMXConfig' }
+    & Pick<DmxConfig, 'id' | 'name' | 'config' | 'actionStrength'>
+  )> }
+);
+
+export type DmxDeviceCreateMutationVariables = {
+  name: Scalars['String'];
+};
+
+
+export type DmxDeviceCreateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxDeviceCreate'>
+);
+
+export type DmxDeviceRemoveMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type DmxDeviceRemoveMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxDeviceRemove'>
+);
+
+export type DmxDeviceSetChannelsMutationVariables = {
+  id: Scalars['ID'];
+  channels: Array<DmxChannelProperty>;
+};
+
+
+export type DmxDeviceSetChannelsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxDeviceSetChannels'>
+);
+
+export type DmxDeviceSetNameMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type DmxDeviceSetNameMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxDeviceSetName'>
+);
+
+export type DmxDevicesSubscriptionVariables = {};
+
+
+export type DmxDevicesSubscription = (
+  { __typename?: 'Subscription' }
+  & { dmxDevices: Array<(
+    { __typename?: 'DMXDevice' }
+    & Pick<DmxDevice, 'id' | 'name' | 'channels'>
+  )> }
+);
+
+export type DmxFixtureCreateMutationVariables = {
+  name: Scalars['String'];
+  dmxSetId: Scalars['ID'];
+  dmxDeviceId: Scalars['ID'];
+};
+
+
+export type DmxFixtureCreateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxFixtureCreate'>
+);
+
+export type DmxFixtureRemoveMutationVariables = {
+  id: Scalars['ID'];
+  dmxSetId: Scalars['ID'];
+};
+
+
+export type DmxFixtureRemoveMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxFixtureRemove'>
+);
+
+export type DmxFixtureSetChannelMutationVariables = {
+  id: Scalars['ID'];
+  channel: Scalars['Int'];
+};
+
+
+export type DmxFixtureSetChannelMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxFixtureSetChannel'>
+);
+
+export type DmxFixtureSetDmxDeviceMutationVariables = {
+  id: Scalars['ID'];
+  deviceId: Scalars['ID'];
+};
+
+
+export type DmxFixtureSetDmxDeviceMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxFixtureSetDMXDevice'>
+);
+
+export type DmxFixtureSetModeMutationVariables = {
+  id: Scalars['ID'];
+  mode: DmxFixtureMode;
+};
+
+
+export type DmxFixtureSetModeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxFixtureSetMode'>
+);
+
+export type DmxFixtureSetNameMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type DmxFixtureSetNameMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxFixtureSetName'>
+);
+
+export type DmxFixtureSetPassiveChannelsMutationVariables = {
+  id: Scalars['ID'];
+  passiveChannels: DmxPassiveChannelsInput;
+};
+
+
+export type DmxFixtureSetPassiveChannelsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxFixtureSetPassiveChannels'>
+);
+
+export type DmxFixtureSetTagsMutationVariables = {
+  id: Scalars['ID'];
+  newTags: Array<Scalars['String']>;
+};
+
+
+export type DmxFixtureSetTagsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxFixtureSetTags'>
+);
+
+export type DmxFixturesSubscriptionVariables = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  clientId?: Maybe<Scalars['ID']>;
+};
+
+
+export type DmxFixturesSubscription = (
+  { __typename?: 'Subscription' }
+  & { dmxFixtures: Array<(
+    { __typename?: 'DMXFixture' }
+    & Pick<DmxFixture, 'id' | 'name' | 'channel' | 'mode' | 'tags'>
+    & { DMXDevice: (
+      { __typename?: 'DMXDevice' }
+      & Pick<DmxDevice, 'id' | 'name' | 'channels'>
+    ), passiveChannels: (
+      { __typename?: 'DMXPassiveChannels' }
+      & Pick<DmxPassiveChannels, 'amber' | 'white' | 'uv' | 'intensity' | 'strobe' | 'generic' | 'nothing' | 'color'>
+    ) }
+  )> }
+);
+
+export type DmxFixtureTagsQueryVariables = {};
+
+
+export type DmxFixtureTagsQuery = (
+  { __typename?: 'Query' }
+  & { dmxFixtures: Array<(
+    { __typename?: 'DMXFixture' }
+    & Pick<DmxFixture, 'id' | 'tags'>
+  )> }
+);
+
+export type DmxSetCreateMutationVariables = {
+  name: Scalars['String'];
+};
+
+
+export type DmxSetCreateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxSetCreate'>
+);
+
+export type DmxSetDuplicateMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type DmxSetDuplicateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxSetDuplicate'>
+);
+
+export type DmxSetRemoveMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type DmxSetRemoveMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxSetRemove'>
+);
+
+export type DmxSetSetNameMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type DmxSetSetNameMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'dmxSetSetName'>
+);
+
+export type DmxSetsSubscriptionVariables = {};
+
+
+export type DmxSetsSubscription = (
+  { __typename?: 'Subscription' }
+  & { dmxSets: Array<(
+    { __typename?: 'DMXSet' }
+    & Pick<DmxSet, 'id' | 'name'>
+    & { fixtures: Array<(
+      { __typename?: 'DMXFixture' }
+      & Pick<DmxFixture, 'id' | 'name' | 'channel' | 'mode' | 'tags'>
+      & { DMXDevice: (
+        { __typename?: 'DMXDevice' }
+        & Pick<DmxDevice, 'id' | 'name' | 'class' | 'channels'>
+      ) }
+    )> }
+  )> }
 );
 
 export type EntityCreateTemplateMutationVariables = {
@@ -11129,14 +11885,14 @@ export type FlightSetupQuery = (
     & { stationSets?: Maybe<Array<Maybe<(
       { __typename?: 'StationSet' }
       & Pick<StationSet, 'id' | 'name'>
-      & { stations?: Maybe<Array<Maybe<(
+      & { stations: Array<(
         { __typename?: 'Station' }
         & Pick<Station, 'name' | 'widgets'>
-        & { cards?: Maybe<Array<Maybe<(
+        & { cards: Array<(
           { __typename?: 'Card' }
           & Pick<Card, 'name' | 'component'>
-        )>>> }
-      )>>> }
+        )> }
+      )> }
     )>>>, capabilities?: Maybe<(
       { __typename?: 'SimulatorCapabilities' }
       & Pick<SimulatorCapabilities, 'systems' | 'docking'>
@@ -11392,6 +12148,136 @@ export type TimelineUpdateStepMutationVariables = {
 export type TimelineUpdateStepMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'updateTimelineStep'>
+);
+
+export type AddClientMutationVariables = {
+  id: Scalars['ID'];
+  client: SetClientInput;
+};
+
+
+export type AddClientMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addClientToSet'>
+);
+
+export type AddSetMutationVariables = {
+  name: Scalars['String'];
+};
+
+
+export type AddSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createSet'>
+);
+
+export type RemoveClientFromSetMutationVariables = {
+  id: Scalars['ID'];
+  client: Scalars['ID'];
+};
+
+
+export type RemoveClientFromSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeClientFromSet'>
+);
+
+export type RemoveSetMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type RemoveSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeSet'>
+);
+
+export type RenameSetMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type RenameSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'renameSet'>
+);
+
+export type SetKeyboardAndInterfaceQueryVariables = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+
+export type SetKeyboardAndInterfaceQuery = (
+  { __typename?: 'Query' }
+  & { simulators: Array<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'interfaces'>
+  )>, interfaces?: Maybe<Array<Maybe<(
+    { __typename?: 'Interface' }
+    & Pick<Interface, 'id' | 'name'>
+  )>>>, keyboard?: Maybe<Array<Maybe<(
+    { __typename?: 'Keyboard' }
+    & Pick<Keyboard, 'id' | 'name'>
+  )>>>, dmxSets: Array<(
+    { __typename?: 'DMXSet' }
+    & Pick<DmxSet, 'id' | 'name'>
+  )> }
+);
+
+export type SetsQueryVariables = {};
+
+
+export type SetsQuery = (
+  { __typename?: 'Query' }
+  & { simulators: Array<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'id' | 'name' | 'layout'>
+    & { systems?: Maybe<Array<(
+      { __typename?: 'System' }
+      & Pick<System, 'id' | 'type'>
+    )>>, stationSets?: Maybe<Array<Maybe<(
+      { __typename?: 'StationSet' }
+      & Pick<StationSet, 'id' | 'name'>
+      & { stations: Array<(
+        { __typename?: 'Station' }
+        & Pick<Station, 'name'>
+      )> }
+    )>>> }
+  )>, sets?: Maybe<Array<Maybe<(
+    { __typename?: 'Set' }
+    & Pick<Set, 'id' | 'name'>
+    & { clients: Array<(
+      { __typename?: 'SetClient' }
+      & Pick<SetClient, 'id' | 'station' | 'secondary' | 'soundPlayer'>
+      & { client?: Maybe<(
+        { __typename?: 'Client' }
+        & Pick<Client, 'id'>
+      )>, simulator?: Maybe<(
+        { __typename?: 'Simulator' }
+        & Pick<Simulator, 'id' | 'name'>
+      )>, stationSet?: Maybe<(
+        { __typename?: 'StationSet' }
+        & Pick<StationSet, 'id' | 'name'>
+      )> }
+    )> }
+  )>>>, clients?: Maybe<Array<Maybe<(
+    { __typename?: 'Client' }
+    & Pick<Client, 'id' | 'cards' | 'mobile'>
+  )>>> }
+);
+
+export type UpdateSetClientMutationVariables = {
+  id: Scalars['ID'];
+  clientId: Scalars['ID'];
+  secondary?: Maybe<Scalars['Boolean']>;
+  soundPlayer?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type UpdateSetClientMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateSetClient'>
 );
 
 export type AddCardMutationVariables = {
@@ -11695,14 +12581,14 @@ export type SimulatorsConfigSubscription = (
     )>>, stationSets?: Maybe<Array<Maybe<(
       { __typename?: 'StationSet' }
       & Pick<StationSet, 'id' | 'name' | 'crewCount'>
-      & { stations?: Maybe<Array<Maybe<(
+      & { stations: Array<(
         { __typename?: 'Station' }
         & Pick<Station, 'name' | 'description' | 'training' | 'ambiance' | 'login' | 'executive' | 'messageGroups' | 'layout' | 'widgets'>
-        & { cards?: Maybe<Array<Maybe<(
+        & { cards: Array<(
           { __typename?: 'Card' }
           & Pick<Card, 'name' | 'component'>
-        )>>> }
-      )>>> }
+        )> }
+      )> }
     )>>> }
   )>>> }
 );
@@ -11718,14 +12604,14 @@ export type StationSetConfigSubscription = (
     & { simulator?: Maybe<(
       { __typename?: 'Simulator' }
       & Pick<Simulator, 'id'>
-    )>, stations?: Maybe<Array<Maybe<(
+    )>, stations: Array<(
       { __typename?: 'Station' }
       & Pick<Station, 'name' | 'description' | 'training' | 'ambiance' | 'login' | 'messageGroups' | 'executive' | 'widgets' | 'layout'>
-      & { cards?: Maybe<Array<Maybe<(
+      & { cards: Array<(
         { __typename?: 'Card' }
         & Pick<Card, 'name' | 'component'>
-      )>>> }
-    )>>> }
+      )> }
+    )> }
   )>>> }
 );
 
@@ -11815,6 +12701,70 @@ export type EntityCreateMutation = (
     { __typename?: 'Entity' }
     & Pick<Entity, 'id'>
   ) }
+);
+
+export type EntityDataFragment = (
+  { __typename?: 'Entity' }
+  & Pick<Entity, 'id' | 'interval'>
+  & { identity?: Maybe<(
+    { __typename?: 'IdentityComponent' }
+    & Pick<IdentityComponent, 'name'>
+  )>, stage?: Maybe<(
+    { __typename?: 'StageComponent' }
+    & Pick<StageComponent, 'scaleLabel' | 'scaleLabelShort' | 'skyboxKey' | 'childrenAsSprites'>
+  )>, stageChild?: Maybe<(
+    { __typename?: 'StageChildComponent' }
+    & Pick<StageChildComponent, 'parentId'>
+    & { parent?: Maybe<(
+      { __typename?: 'Entity' }
+      & Pick<Entity, 'id'>
+      & { identity?: Maybe<(
+        { __typename?: 'IdentityComponent' }
+        & Pick<IdentityComponent, 'name'>
+      )> }
+    )> }
+  )>, appearance?: Maybe<(
+    { __typename?: 'AppearanceComponent' }
+    & Pick<AppearanceComponent, 'color' | 'meshType' | 'modelAsset' | 'materialMapAsset' | 'ringMapAsset' | 'cloudMapAsset' | 'emissiveColor' | 'emissiveIntensity' | 'scale'>
+  )>, light?: Maybe<(
+    { __typename?: 'LightComponent' }
+    & Pick<LightComponent, 'intensity' | 'decay' | 'color'>
+  )>, glow?: Maybe<(
+    { __typename?: 'GlowComponent' }
+    & Pick<GlowComponent, 'glowMode' | 'color'>
+  )>, location?: Maybe<(
+    { __typename?: 'LocationComponent' }
+    & Pick<LocationComponent, 'inert'>
+    & { position: (
+      { __typename?: 'EntityCoordinates' }
+      & Pick<EntityCoordinates, 'x' | 'y' | 'z'>
+    ), rotation: (
+      { __typename?: 'Quaternion' }
+      & Pick<Quaternion, 'x' | 'y' | 'z' | 'w'>
+    ) }
+  )>, enginesWarp?: Maybe<(
+    { __typename?: 'EngineComponent' }
+    & Pick<EngineComponent, 'maxSpeed' | 'currentSpeed'>
+  )>, enginesImpulse?: Maybe<(
+    { __typename?: 'EngineComponent' }
+    & Pick<EngineComponent, 'maxSpeed' | 'currentSpeed'>
+  )>, thrusters?: Maybe<(
+    { __typename?: 'ThrustersComponent' }
+    & Pick<ThrustersComponent, 'rotationSpeed' | 'movementSpeed'>
+  )> }
+);
+
+export type EntitiesQueryVariables = {
+  flightId: Scalars['ID'];
+};
+
+
+export type EntitiesQuery = (
+  { __typename?: 'Query' }
+  & { entities: Array<Maybe<(
+    { __typename?: 'Entity' }
+    & EntityDataFragment
+  )>> }
 );
 
 export type EntityRemoveMutationVariables = {
@@ -12201,6 +13151,148 @@ export const TemplateFragmentFragmentDoc = gql`
   __typename
 }
     `;
+export const EntityDataFragmentDoc = gql`
+    fragment EntityData on Entity {
+  id
+  interval
+  identity {
+    name
+  }
+  stage {
+    scaleLabel
+    scaleLabelShort
+    skyboxKey
+    childrenAsSprites
+  }
+  stageChild {
+    parentId
+    parent {
+      id
+      identity {
+        name
+      }
+    }
+  }
+  appearance {
+    color
+    meshType
+    modelAsset
+    materialMapAsset
+    ringMapAsset
+    cloudMapAsset
+    emissiveColor
+    emissiveIntensity
+    scale
+  }
+  light {
+    intensity
+    decay
+    color
+  }
+  glow {
+    glowMode
+    color
+  }
+  location {
+    inert
+    position {
+      x
+      y
+      z
+    }
+    rotation {
+      x
+      y
+      z
+      w
+    }
+  }
+  enginesWarp {
+    maxSpeed
+    currentSpeed
+  }
+  enginesImpulse {
+    maxSpeed
+    currentSpeed
+  }
+  thrusters {
+    rotationSpeed
+    movementSpeed
+  }
+}
+    `;
+export const ActivateLightingDocument = gql`
+    mutation ActivateLighting($clientId: ID!, $dmxSetId: ID!) {
+  clientActivateLights(clientId: $clientId, dmxSetId: $dmxSetId)
+}
+    `;
+export type ActivateLightingMutationFn = ApolloReactCommon.MutationFunction<ActivateLightingMutation, ActivateLightingMutationVariables>;
+
+/**
+ * __useActivateLightingMutation__
+ *
+ * To run a mutation, you first call `useActivateLightingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useActivateLightingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [activateLightingMutation, { data, loading, error }] = useActivateLightingMutation({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *      dmxSetId: // value for 'dmxSetId'
+ *   },
+ * });
+ */
+export function useActivateLightingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ActivateLightingMutation, ActivateLightingMutationVariables>) {
+        return ApolloReactHooks.useMutation<ActivateLightingMutation, ActivateLightingMutationVariables>(ActivateLightingDocument, baseOptions);
+      }
+export type ActivateLightingMutationHookResult = ReturnType<typeof useActivateLightingMutation>;
+export type ActivateLightingMutationResult = ApolloReactCommon.MutationResult<ActivateLightingMutation>;
+export type ActivateLightingMutationOptions = ApolloReactCommon.BaseMutationOptions<ActivateLightingMutation, ActivateLightingMutationVariables>;
+export const AmbianceDocument = gql`
+    query Ambiance($id: ID!) {
+  simulators(id: $id) {
+    id
+    ambiance {
+      id
+      name
+      asset
+      volume
+      channel
+      playbackRate
+    }
+  }
+}
+    `;
+
+/**
+ * __useAmbianceQuery__
+ *
+ * To run a query within a React component, call `useAmbianceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAmbianceQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAmbianceQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAmbianceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AmbianceQuery, AmbianceQueryVariables>) {
+        return ApolloReactHooks.useQuery<AmbianceQuery, AmbianceQueryVariables>(AmbianceDocument, baseOptions);
+      }
+export function useAmbianceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AmbianceQuery, AmbianceQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AmbianceQuery, AmbianceQueryVariables>(AmbianceDocument, baseOptions);
+        }
+export type AmbianceQueryHookResult = ReturnType<typeof useAmbianceQuery>;
+export type AmbianceLazyQueryHookResult = ReturnType<typeof useAmbianceLazyQuery>;
+export type AmbianceQueryResult = ApolloReactCommon.QueryResult<AmbianceQuery, AmbianceQueryVariables>;
 export const ClientDocument = gql`
     query Client($clientId: ID!) {
   clients(clientId: $clientId) {
@@ -12293,6 +13385,50 @@ export function useClientPingMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type ClientPingMutationHookResult = ReturnType<typeof useClientPingMutation>;
 export type ClientPingMutationResult = ApolloReactCommon.MutationResult<ClientPingMutation>;
 export type ClientPingMutationOptions = ApolloReactCommon.BaseMutationOptions<ClientPingMutation, ClientPingMutationVariables>;
+export const LightingControlDocument = gql`
+ subscription LightingControl($simulatorId: ID!) {
+        simulatorsUpdate(simulatorId: $simulatorId) {
+          id
+          lighting {
+            intensity
+            action
+            actionStrength
+            transitionDuration
+            dmxConfig {
+              id
+              config
+              actionStrength
+              __typename
+            }
+            __typename
+          }
+          alertlevel
+          __typename
+        }
+      }
+    `;
+
+/**
+ * __useLightingControlSubscription__
+ *
+ * To run a query within a React component, call `useLightingControlSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useLightingControlSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLightingControlSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useLightingControlSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<LightingControlSubscription, LightingControlSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<LightingControlSubscription, LightingControlSubscriptionVariables>(LightingControlDocument, baseOptions);
+      }
+export type LightingControlSubscriptionHookResult = ReturnType<typeof useLightingControlSubscription>;
+export type LightingControlSubscriptionResult = ApolloReactCommon.SubscriptionResult<LightingControlSubscription>;
 export const RegisterClientDocument = gql`
     mutation RegisterClient($client: ID!) {
   clientConnect(client: $client)
@@ -12415,6 +13551,39 @@ export function useSimulatorUpdateSubscription(baseOptions?: ApolloReactHooks.Su
       }
 export type SimulatorUpdateSubscriptionHookResult = ReturnType<typeof useSimulatorUpdateSubscription>;
 export type SimulatorUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<SimulatorUpdateSubscription>;
+export const MacroDmxConfigsDocument = gql`
+    query MacroDMXConfigs {
+  dmxConfigs {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useMacroDmxConfigsQuery__
+ *
+ * To run a query within a React component, call `useMacroDmxConfigsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMacroDmxConfigsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMacroDmxConfigsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMacroDmxConfigsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>) {
+        return ApolloReactHooks.useQuery<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>(MacroDmxConfigsDocument, baseOptions);
+      }
+export function useMacroDmxConfigsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>(MacroDmxConfigsDocument, baseOptions);
+        }
+export type MacroDmxConfigsQueryHookResult = ReturnType<typeof useMacroDmxConfigsQuery>;
+export type MacroDmxConfigsLazyQueryHookResult = ReturnType<typeof useMacroDmxConfigsLazyQuery>;
+export type MacroDmxConfigsQueryResult = ApolloReactCommon.QueryResult<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>;
 export const DockingShuttleConfigDocument = gql`
     query DockingShuttleConfig($simulatorId: ID!) {
   docking(simulatorId: $simulatorId) {
@@ -13143,6 +14312,131 @@ export function useCountermeasuresSetFdNoteMutation(baseOptions?: ApolloReactHoo
 export type CountermeasuresSetFdNoteMutationHookResult = ReturnType<typeof useCountermeasuresSetFdNoteMutation>;
 export type CountermeasuresSetFdNoteMutationResult = ApolloReactCommon.MutationResult<CountermeasuresSetFdNoteMutation>;
 export type CountermeasuresSetFdNoteMutationOptions = ApolloReactCommon.BaseMutationOptions<CountermeasuresSetFdNoteMutation, CountermeasuresSetFdNoteMutationVariables>;
+export const LightingSetEffectDocument = gql`
+    mutation LightingSetEffect($simulatorId: ID!, $effect: LIGHTING_ACTION!, $duration: Float!) {
+  lightingSetEffect(simulatorId: $simulatorId, effect: $effect, duration: $duration)
+}
+    `;
+export type LightingSetEffectMutationFn = ApolloReactCommon.MutationFunction<LightingSetEffectMutation, LightingSetEffectMutationVariables>;
+
+/**
+ * __useLightingSetEffectMutation__
+ *
+ * To run a mutation, you first call `useLightingSetEffectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLightingSetEffectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [lightingSetEffectMutation, { data, loading, error }] = useLightingSetEffectMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      effect: // value for 'effect'
+ *      duration: // value for 'duration'
+ *   },
+ * });
+ */
+export function useLightingSetEffectMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LightingSetEffectMutation, LightingSetEffectMutationVariables>) {
+        return ApolloReactHooks.useMutation<LightingSetEffectMutation, LightingSetEffectMutationVariables>(LightingSetEffectDocument, baseOptions);
+      }
+export type LightingSetEffectMutationHookResult = ReturnType<typeof useLightingSetEffectMutation>;
+export type LightingSetEffectMutationResult = ApolloReactCommon.MutationResult<LightingSetEffectMutation>;
+export type LightingSetEffectMutationOptions = ApolloReactCommon.BaseMutationOptions<LightingSetEffectMutation, LightingSetEffectMutationVariables>;
+export const LightingSetIntensityDocument = gql`
+    mutation LightingSetIntensity($simulatorId: ID!, $intensity: Float!) {
+  lightingSetIntensity(simulatorId: $simulatorId, intensity: $intensity)
+}
+    `;
+export type LightingSetIntensityMutationFn = ApolloReactCommon.MutationFunction<LightingSetIntensityMutation, LightingSetIntensityMutationVariables>;
+
+/**
+ * __useLightingSetIntensityMutation__
+ *
+ * To run a mutation, you first call `useLightingSetIntensityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLightingSetIntensityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [lightingSetIntensityMutation, { data, loading, error }] = useLightingSetIntensityMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      intensity: // value for 'intensity'
+ *   },
+ * });
+ */
+export function useLightingSetIntensityMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LightingSetIntensityMutation, LightingSetIntensityMutationVariables>) {
+        return ApolloReactHooks.useMutation<LightingSetIntensityMutation, LightingSetIntensityMutationVariables>(LightingSetIntensityDocument, baseOptions);
+      }
+export type LightingSetIntensityMutationHookResult = ReturnType<typeof useLightingSetIntensityMutation>;
+export type LightingSetIntensityMutationResult = ApolloReactCommon.MutationResult<LightingSetIntensityMutation>;
+export type LightingSetIntensityMutationOptions = ApolloReactCommon.BaseMutationOptions<LightingSetIntensityMutation, LightingSetIntensityMutationVariables>;
+export const ShakeLightsDocument = gql`
+    mutation ShakeLights($simulatorId: ID!, $duration: Float!) {
+  lightingShakeLights(simulatorId: $simulatorId, duration: $duration)
+}
+    `;
+export type ShakeLightsMutationFn = ApolloReactCommon.MutationFunction<ShakeLightsMutation, ShakeLightsMutationVariables>;
+
+/**
+ * __useShakeLightsMutation__
+ *
+ * To run a mutation, you first call `useShakeLightsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useShakeLightsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [shakeLightsMutation, { data, loading, error }] = useShakeLightsMutation({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      duration: // value for 'duration'
+ *   },
+ * });
+ */
+export function useShakeLightsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ShakeLightsMutation, ShakeLightsMutationVariables>) {
+        return ApolloReactHooks.useMutation<ShakeLightsMutation, ShakeLightsMutationVariables>(ShakeLightsDocument, baseOptions);
+      }
+export type ShakeLightsMutationHookResult = ReturnType<typeof useShakeLightsMutation>;
+export type ShakeLightsMutationResult = ApolloReactCommon.MutationResult<ShakeLightsMutation>;
+export type ShakeLightsMutationOptions = ApolloReactCommon.BaseMutationOptions<ShakeLightsMutation, ShakeLightsMutationVariables>;
+export const UpdateLightingDocument = gql`
+    mutation UpdateLighting($id: ID!, $lighting: LightingInput!) {
+  updateSimulatorLighting(id: $id, lighting: $lighting)
+}
+    `;
+export type UpdateLightingMutationFn = ApolloReactCommon.MutationFunction<UpdateLightingMutation, UpdateLightingMutationVariables>;
+
+/**
+ * __useUpdateLightingMutation__
+ *
+ * To run a mutation, you first call `useUpdateLightingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLightingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLightingMutation, { data, loading, error }] = useUpdateLightingMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      lighting: // value for 'lighting'
+ *   },
+ * });
+ */
+export function useUpdateLightingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateLightingMutation, UpdateLightingMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateLightingMutation, UpdateLightingMutationVariables>(UpdateLightingDocument, baseOptions);
+      }
+export type UpdateLightingMutationHookResult = ReturnType<typeof useUpdateLightingMutation>;
+export type UpdateLightingMutationResult = ApolloReactCommon.MutationResult<UpdateLightingMutation>;
+export type UpdateLightingMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateLightingMutation, UpdateLightingMutationVariables>;
 export const SensorsPingSubDocument = gql`
     subscription SensorsPingSub($sensorsId: ID!) {
   sensorsPing(sensorId: $sensorsId)
@@ -14681,6 +15975,10 @@ export const ClientsInterfacesAndKeyboardsDocument = gql`
     id
     name
   }
+  dmxSets {
+    id
+    name
+  }
 }
     `;
 
@@ -15114,6 +16412,869 @@ export function useTransmitFlightMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type TransmitFlightMutationHookResult = ReturnType<typeof useTransmitFlightMutation>;
 export type TransmitFlightMutationResult = ApolloReactCommon.MutationResult<TransmitFlightMutation>;
 export type TransmitFlightMutationOptions = ApolloReactCommon.BaseMutationOptions<TransmitFlightMutation, TransmitFlightMutationVariables>;
+export const DmxConfigCreateDocument = gql`
+    mutation DMXConfigCreate($name: String!) {
+  dmxConfigCreate(name: $name)
+}
+    `;
+export type DmxConfigCreateMutationFn = ApolloReactCommon.MutationFunction<DmxConfigCreateMutation, DmxConfigCreateMutationVariables>;
+
+/**
+ * __useDmxConfigCreateMutation__
+ *
+ * To run a mutation, you first call `useDmxConfigCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxConfigCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxConfigCreateMutation, { data, loading, error }] = useDmxConfigCreateMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxConfigCreateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxConfigCreateMutation, DmxConfigCreateMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxConfigCreateMutation, DmxConfigCreateMutationVariables>(DmxConfigCreateDocument, baseOptions);
+      }
+export type DmxConfigCreateMutationHookResult = ReturnType<typeof useDmxConfigCreateMutation>;
+export type DmxConfigCreateMutationResult = ApolloReactCommon.MutationResult<DmxConfigCreateMutation>;
+export type DmxConfigCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxConfigCreateMutation, DmxConfigCreateMutationVariables>;
+export const DmxConfigDuplicateDocument = gql`
+    mutation DMXConfigDuplicate($id: ID!, $name: String!) {
+  dmxConfigDuplicate(id: $id, name: $name)
+}
+    `;
+export type DmxConfigDuplicateMutationFn = ApolloReactCommon.MutationFunction<DmxConfigDuplicateMutation, DmxConfigDuplicateMutationVariables>;
+
+/**
+ * __useDmxConfigDuplicateMutation__
+ *
+ * To run a mutation, you first call `useDmxConfigDuplicateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxConfigDuplicateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxConfigDuplicateMutation, { data, loading, error }] = useDmxConfigDuplicateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxConfigDuplicateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxConfigDuplicateMutation, DmxConfigDuplicateMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxConfigDuplicateMutation, DmxConfigDuplicateMutationVariables>(DmxConfigDuplicateDocument, baseOptions);
+      }
+export type DmxConfigDuplicateMutationHookResult = ReturnType<typeof useDmxConfigDuplicateMutation>;
+export type DmxConfigDuplicateMutationResult = ApolloReactCommon.MutationResult<DmxConfigDuplicateMutation>;
+export type DmxConfigDuplicateMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxConfigDuplicateMutation, DmxConfigDuplicateMutationVariables>;
+export const DmxConfigRemoveDocument = gql`
+    mutation DMXConfigRemove($id: ID!) {
+  dmxConfigRemove(id: $id)
+}
+    `;
+export type DmxConfigRemoveMutationFn = ApolloReactCommon.MutationFunction<DmxConfigRemoveMutation, DmxConfigRemoveMutationVariables>;
+
+/**
+ * __useDmxConfigRemoveMutation__
+ *
+ * To run a mutation, you first call `useDmxConfigRemoveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxConfigRemoveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxConfigRemoveMutation, { data, loading, error }] = useDmxConfigRemoveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDmxConfigRemoveMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxConfigRemoveMutation, DmxConfigRemoveMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxConfigRemoveMutation, DmxConfigRemoveMutationVariables>(DmxConfigRemoveDocument, baseOptions);
+      }
+export type DmxConfigRemoveMutationHookResult = ReturnType<typeof useDmxConfigRemoveMutation>;
+export type DmxConfigRemoveMutationResult = ApolloReactCommon.MutationResult<DmxConfigRemoveMutation>;
+export type DmxConfigRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxConfigRemoveMutation, DmxConfigRemoveMutationVariables>;
+export const DmxConfigSetActionStrengthDocument = gql`
+    mutation DMXConfigSetActionStrength($id: ID!, $actionStrength: Float!) {
+  dmxConfigSetActionStrength(id: $id, actionStrength: $actionStrength)
+}
+    `;
+export type DmxConfigSetActionStrengthMutationFn = ApolloReactCommon.MutationFunction<DmxConfigSetActionStrengthMutation, DmxConfigSetActionStrengthMutationVariables>;
+
+/**
+ * __useDmxConfigSetActionStrengthMutation__
+ *
+ * To run a mutation, you first call `useDmxConfigSetActionStrengthMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxConfigSetActionStrengthMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxConfigSetActionStrengthMutation, { data, loading, error }] = useDmxConfigSetActionStrengthMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      actionStrength: // value for 'actionStrength'
+ *   },
+ * });
+ */
+export function useDmxConfigSetActionStrengthMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxConfigSetActionStrengthMutation, DmxConfigSetActionStrengthMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxConfigSetActionStrengthMutation, DmxConfigSetActionStrengthMutationVariables>(DmxConfigSetActionStrengthDocument, baseOptions);
+      }
+export type DmxConfigSetActionStrengthMutationHookResult = ReturnType<typeof useDmxConfigSetActionStrengthMutation>;
+export type DmxConfigSetActionStrengthMutationResult = ApolloReactCommon.MutationResult<DmxConfigSetActionStrengthMutation>;
+export type DmxConfigSetActionStrengthMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxConfigSetActionStrengthMutation, DmxConfigSetActionStrengthMutationVariables>;
+export const DmxConfigSetConfigDocument = gql`
+    mutation DMXConfigSetConfig($id: ID!, $config: JSON!) {
+  dmxConfigSetConfig(id: $id, config: $config)
+}
+    `;
+export type DmxConfigSetConfigMutationFn = ApolloReactCommon.MutationFunction<DmxConfigSetConfigMutation, DmxConfigSetConfigMutationVariables>;
+
+/**
+ * __useDmxConfigSetConfigMutation__
+ *
+ * To run a mutation, you first call `useDmxConfigSetConfigMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxConfigSetConfigMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxConfigSetConfigMutation, { data, loading, error }] = useDmxConfigSetConfigMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      config: // value for 'config'
+ *   },
+ * });
+ */
+export function useDmxConfigSetConfigMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxConfigSetConfigMutation, DmxConfigSetConfigMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxConfigSetConfigMutation, DmxConfigSetConfigMutationVariables>(DmxConfigSetConfigDocument, baseOptions);
+      }
+export type DmxConfigSetConfigMutationHookResult = ReturnType<typeof useDmxConfigSetConfigMutation>;
+export type DmxConfigSetConfigMutationResult = ApolloReactCommon.MutationResult<DmxConfigSetConfigMutation>;
+export type DmxConfigSetConfigMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxConfigSetConfigMutation, DmxConfigSetConfigMutationVariables>;
+export const DmxConfigSetNameDocument = gql`
+    mutation DMXConfigSetName($id: ID!, $name: String!) {
+  dmxConfigSetName(id: $id, name: $name)
+}
+    `;
+export type DmxConfigSetNameMutationFn = ApolloReactCommon.MutationFunction<DmxConfigSetNameMutation, DmxConfigSetNameMutationVariables>;
+
+/**
+ * __useDmxConfigSetNameMutation__
+ *
+ * To run a mutation, you first call `useDmxConfigSetNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxConfigSetNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxConfigSetNameMutation, { data, loading, error }] = useDmxConfigSetNameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxConfigSetNameMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxConfigSetNameMutation, DmxConfigSetNameMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxConfigSetNameMutation, DmxConfigSetNameMutationVariables>(DmxConfigSetNameDocument, baseOptions);
+      }
+export type DmxConfigSetNameMutationHookResult = ReturnType<typeof useDmxConfigSetNameMutation>;
+export type DmxConfigSetNameMutationResult = ApolloReactCommon.MutationResult<DmxConfigSetNameMutation>;
+export type DmxConfigSetNameMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxConfigSetNameMutation, DmxConfigSetNameMutationVariables>;
+export const DmxConfigsDocument = gql`
+    subscription DMXConfigs {
+  dmxConfigs {
+    id
+    name
+    config
+    actionStrength
+    __typename
+  }
+}
+    `;
+
+/**
+ * __useDmxConfigsSubscription__
+ *
+ * To run a query within a React component, call `useDmxConfigsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useDmxConfigsSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDmxConfigsSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDmxConfigsSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<DmxConfigsSubscription, DmxConfigsSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<DmxConfigsSubscription, DmxConfigsSubscriptionVariables>(DmxConfigsDocument, baseOptions);
+      }
+export type DmxConfigsSubscriptionHookResult = ReturnType<typeof useDmxConfigsSubscription>;
+export type DmxConfigsSubscriptionResult = ApolloReactCommon.SubscriptionResult<DmxConfigsSubscription>;
+export const DmxDeviceCreateDocument = gql`
+    mutation DMXDeviceCreate($name: String!) {
+  dmxDeviceCreate(name: $name)
+}
+    `;
+export type DmxDeviceCreateMutationFn = ApolloReactCommon.MutationFunction<DmxDeviceCreateMutation, DmxDeviceCreateMutationVariables>;
+
+/**
+ * __useDmxDeviceCreateMutation__
+ *
+ * To run a mutation, you first call `useDmxDeviceCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxDeviceCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxDeviceCreateMutation, { data, loading, error }] = useDmxDeviceCreateMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxDeviceCreateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxDeviceCreateMutation, DmxDeviceCreateMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxDeviceCreateMutation, DmxDeviceCreateMutationVariables>(DmxDeviceCreateDocument, baseOptions);
+      }
+export type DmxDeviceCreateMutationHookResult = ReturnType<typeof useDmxDeviceCreateMutation>;
+export type DmxDeviceCreateMutationResult = ApolloReactCommon.MutationResult<DmxDeviceCreateMutation>;
+export type DmxDeviceCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxDeviceCreateMutation, DmxDeviceCreateMutationVariables>;
+export const DmxDeviceRemoveDocument = gql`
+    mutation DMXDeviceRemove($id: ID!) {
+  dmxDeviceRemove(id: $id)
+}
+    `;
+export type DmxDeviceRemoveMutationFn = ApolloReactCommon.MutationFunction<DmxDeviceRemoveMutation, DmxDeviceRemoveMutationVariables>;
+
+/**
+ * __useDmxDeviceRemoveMutation__
+ *
+ * To run a mutation, you first call `useDmxDeviceRemoveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxDeviceRemoveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxDeviceRemoveMutation, { data, loading, error }] = useDmxDeviceRemoveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDmxDeviceRemoveMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxDeviceRemoveMutation, DmxDeviceRemoveMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxDeviceRemoveMutation, DmxDeviceRemoveMutationVariables>(DmxDeviceRemoveDocument, baseOptions);
+      }
+export type DmxDeviceRemoveMutationHookResult = ReturnType<typeof useDmxDeviceRemoveMutation>;
+export type DmxDeviceRemoveMutationResult = ApolloReactCommon.MutationResult<DmxDeviceRemoveMutation>;
+export type DmxDeviceRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxDeviceRemoveMutation, DmxDeviceRemoveMutationVariables>;
+export const DmxDeviceSetChannelsDocument = gql`
+    mutation DMXDeviceSetChannels($id: ID!, $channels: [DMXChannelProperty!]!) {
+  dmxDeviceSetChannels(id: $id, channels: $channels)
+}
+    `;
+export type DmxDeviceSetChannelsMutationFn = ApolloReactCommon.MutationFunction<DmxDeviceSetChannelsMutation, DmxDeviceSetChannelsMutationVariables>;
+
+/**
+ * __useDmxDeviceSetChannelsMutation__
+ *
+ * To run a mutation, you first call `useDmxDeviceSetChannelsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxDeviceSetChannelsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxDeviceSetChannelsMutation, { data, loading, error }] = useDmxDeviceSetChannelsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      channels: // value for 'channels'
+ *   },
+ * });
+ */
+export function useDmxDeviceSetChannelsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxDeviceSetChannelsMutation, DmxDeviceSetChannelsMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxDeviceSetChannelsMutation, DmxDeviceSetChannelsMutationVariables>(DmxDeviceSetChannelsDocument, baseOptions);
+      }
+export type DmxDeviceSetChannelsMutationHookResult = ReturnType<typeof useDmxDeviceSetChannelsMutation>;
+export type DmxDeviceSetChannelsMutationResult = ApolloReactCommon.MutationResult<DmxDeviceSetChannelsMutation>;
+export type DmxDeviceSetChannelsMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxDeviceSetChannelsMutation, DmxDeviceSetChannelsMutationVariables>;
+export const DmxDeviceSetNameDocument = gql`
+    mutation DMXDeviceSetName($id: ID!, $name: String!) {
+  dmxDeviceSetName(id: $id, name: $name)
+}
+    `;
+export type DmxDeviceSetNameMutationFn = ApolloReactCommon.MutationFunction<DmxDeviceSetNameMutation, DmxDeviceSetNameMutationVariables>;
+
+/**
+ * __useDmxDeviceSetNameMutation__
+ *
+ * To run a mutation, you first call `useDmxDeviceSetNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxDeviceSetNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxDeviceSetNameMutation, { data, loading, error }] = useDmxDeviceSetNameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxDeviceSetNameMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxDeviceSetNameMutation, DmxDeviceSetNameMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxDeviceSetNameMutation, DmxDeviceSetNameMutationVariables>(DmxDeviceSetNameDocument, baseOptions);
+      }
+export type DmxDeviceSetNameMutationHookResult = ReturnType<typeof useDmxDeviceSetNameMutation>;
+export type DmxDeviceSetNameMutationResult = ApolloReactCommon.MutationResult<DmxDeviceSetNameMutation>;
+export type DmxDeviceSetNameMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxDeviceSetNameMutation, DmxDeviceSetNameMutationVariables>;
+export const DmxDevicesDocument = gql`
+    subscription DMXDevices {
+  dmxDevices {
+    id
+    name
+    channels
+  }
+}
+    `;
+
+/**
+ * __useDmxDevicesSubscription__
+ *
+ * To run a query within a React component, call `useDmxDevicesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useDmxDevicesSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDmxDevicesSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDmxDevicesSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<DmxDevicesSubscription, DmxDevicesSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<DmxDevicesSubscription, DmxDevicesSubscriptionVariables>(DmxDevicesDocument, baseOptions);
+      }
+export type DmxDevicesSubscriptionHookResult = ReturnType<typeof useDmxDevicesSubscription>;
+export type DmxDevicesSubscriptionResult = ApolloReactCommon.SubscriptionResult<DmxDevicesSubscription>;
+export const DmxFixtureCreateDocument = gql`
+    mutation DMXFixtureCreate($name: String!, $dmxSetId: ID!, $dmxDeviceId: ID!) {
+  dmxFixtureCreate(name: $name, DMXSetId: $dmxSetId, DMXDeviceId: $dmxDeviceId)
+}
+    `;
+export type DmxFixtureCreateMutationFn = ApolloReactCommon.MutationFunction<DmxFixtureCreateMutation, DmxFixtureCreateMutationVariables>;
+
+/**
+ * __useDmxFixtureCreateMutation__
+ *
+ * To run a mutation, you first call `useDmxFixtureCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxFixtureCreateMutation, { data, loading, error }] = useDmxFixtureCreateMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      dmxSetId: // value for 'dmxSetId'
+ *      dmxDeviceId: // value for 'dmxDeviceId'
+ *   },
+ * });
+ */
+export function useDmxFixtureCreateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxFixtureCreateMutation, DmxFixtureCreateMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxFixtureCreateMutation, DmxFixtureCreateMutationVariables>(DmxFixtureCreateDocument, baseOptions);
+      }
+export type DmxFixtureCreateMutationHookResult = ReturnType<typeof useDmxFixtureCreateMutation>;
+export type DmxFixtureCreateMutationResult = ApolloReactCommon.MutationResult<DmxFixtureCreateMutation>;
+export type DmxFixtureCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxFixtureCreateMutation, DmxFixtureCreateMutationVariables>;
+export const DmxFixtureRemoveDocument = gql`
+    mutation DMXFixtureRemove($id: ID!, $dmxSetId: ID!) {
+  dmxFixtureRemove(id: $id, DMXSetId: $dmxSetId)
+}
+    `;
+export type DmxFixtureRemoveMutationFn = ApolloReactCommon.MutationFunction<DmxFixtureRemoveMutation, DmxFixtureRemoveMutationVariables>;
+
+/**
+ * __useDmxFixtureRemoveMutation__
+ *
+ * To run a mutation, you first call `useDmxFixtureRemoveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureRemoveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxFixtureRemoveMutation, { data, loading, error }] = useDmxFixtureRemoveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      dmxSetId: // value for 'dmxSetId'
+ *   },
+ * });
+ */
+export function useDmxFixtureRemoveMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxFixtureRemoveMutation, DmxFixtureRemoveMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxFixtureRemoveMutation, DmxFixtureRemoveMutationVariables>(DmxFixtureRemoveDocument, baseOptions);
+      }
+export type DmxFixtureRemoveMutationHookResult = ReturnType<typeof useDmxFixtureRemoveMutation>;
+export type DmxFixtureRemoveMutationResult = ApolloReactCommon.MutationResult<DmxFixtureRemoveMutation>;
+export type DmxFixtureRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxFixtureRemoveMutation, DmxFixtureRemoveMutationVariables>;
+export const DmxFixtureSetChannelDocument = gql`
+    mutation DMXFixtureSetChannel($id: ID!, $channel: Int!) {
+  dmxFixtureSetChannel(id: $id, channel: $channel)
+}
+    `;
+export type DmxFixtureSetChannelMutationFn = ApolloReactCommon.MutationFunction<DmxFixtureSetChannelMutation, DmxFixtureSetChannelMutationVariables>;
+
+/**
+ * __useDmxFixtureSetChannelMutation__
+ *
+ * To run a mutation, you first call `useDmxFixtureSetChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureSetChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxFixtureSetChannelMutation, { data, loading, error }] = useDmxFixtureSetChannelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      channel: // value for 'channel'
+ *   },
+ * });
+ */
+export function useDmxFixtureSetChannelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxFixtureSetChannelMutation, DmxFixtureSetChannelMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxFixtureSetChannelMutation, DmxFixtureSetChannelMutationVariables>(DmxFixtureSetChannelDocument, baseOptions);
+      }
+export type DmxFixtureSetChannelMutationHookResult = ReturnType<typeof useDmxFixtureSetChannelMutation>;
+export type DmxFixtureSetChannelMutationResult = ApolloReactCommon.MutationResult<DmxFixtureSetChannelMutation>;
+export type DmxFixtureSetChannelMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxFixtureSetChannelMutation, DmxFixtureSetChannelMutationVariables>;
+export const DmxFixtureSetDmxDeviceDocument = gql`
+    mutation DMXFixtureSetDMXDevice($id: ID!, $deviceId: ID!) {
+  dmxFixtureSetDMXDevice(id: $id, DMXDeviceID: $deviceId)
+}
+    `;
+export type DmxFixtureSetDmxDeviceMutationFn = ApolloReactCommon.MutationFunction<DmxFixtureSetDmxDeviceMutation, DmxFixtureSetDmxDeviceMutationVariables>;
+
+/**
+ * __useDmxFixtureSetDmxDeviceMutation__
+ *
+ * To run a mutation, you first call `useDmxFixtureSetDmxDeviceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureSetDmxDeviceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxFixtureSetDmxDeviceMutation, { data, loading, error }] = useDmxFixtureSetDmxDeviceMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      deviceId: // value for 'deviceId'
+ *   },
+ * });
+ */
+export function useDmxFixtureSetDmxDeviceMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxFixtureSetDmxDeviceMutation, DmxFixtureSetDmxDeviceMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxFixtureSetDmxDeviceMutation, DmxFixtureSetDmxDeviceMutationVariables>(DmxFixtureSetDmxDeviceDocument, baseOptions);
+      }
+export type DmxFixtureSetDmxDeviceMutationHookResult = ReturnType<typeof useDmxFixtureSetDmxDeviceMutation>;
+export type DmxFixtureSetDmxDeviceMutationResult = ApolloReactCommon.MutationResult<DmxFixtureSetDmxDeviceMutation>;
+export type DmxFixtureSetDmxDeviceMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxFixtureSetDmxDeviceMutation, DmxFixtureSetDmxDeviceMutationVariables>;
+export const DmxFixtureSetModeDocument = gql`
+    mutation DMXFixtureSetMode($id: ID!, $mode: DMXFixtureMode!) {
+  dmxFixtureSetMode(id: $id, mode: $mode)
+}
+    `;
+export type DmxFixtureSetModeMutationFn = ApolloReactCommon.MutationFunction<DmxFixtureSetModeMutation, DmxFixtureSetModeMutationVariables>;
+
+/**
+ * __useDmxFixtureSetModeMutation__
+ *
+ * To run a mutation, you first call `useDmxFixtureSetModeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureSetModeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxFixtureSetModeMutation, { data, loading, error }] = useDmxFixtureSetModeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      mode: // value for 'mode'
+ *   },
+ * });
+ */
+export function useDmxFixtureSetModeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxFixtureSetModeMutation, DmxFixtureSetModeMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxFixtureSetModeMutation, DmxFixtureSetModeMutationVariables>(DmxFixtureSetModeDocument, baseOptions);
+      }
+export type DmxFixtureSetModeMutationHookResult = ReturnType<typeof useDmxFixtureSetModeMutation>;
+export type DmxFixtureSetModeMutationResult = ApolloReactCommon.MutationResult<DmxFixtureSetModeMutation>;
+export type DmxFixtureSetModeMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxFixtureSetModeMutation, DmxFixtureSetModeMutationVariables>;
+export const DmxFixtureSetNameDocument = gql`
+    mutation DMXFixtureSetName($id: ID!, $name: String!) {
+  dmxFixtureSetName(id: $id, name: $name)
+}
+    `;
+export type DmxFixtureSetNameMutationFn = ApolloReactCommon.MutationFunction<DmxFixtureSetNameMutation, DmxFixtureSetNameMutationVariables>;
+
+/**
+ * __useDmxFixtureSetNameMutation__
+ *
+ * To run a mutation, you first call `useDmxFixtureSetNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureSetNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxFixtureSetNameMutation, { data, loading, error }] = useDmxFixtureSetNameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxFixtureSetNameMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxFixtureSetNameMutation, DmxFixtureSetNameMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxFixtureSetNameMutation, DmxFixtureSetNameMutationVariables>(DmxFixtureSetNameDocument, baseOptions);
+      }
+export type DmxFixtureSetNameMutationHookResult = ReturnType<typeof useDmxFixtureSetNameMutation>;
+export type DmxFixtureSetNameMutationResult = ApolloReactCommon.MutationResult<DmxFixtureSetNameMutation>;
+export type DmxFixtureSetNameMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxFixtureSetNameMutation, DmxFixtureSetNameMutationVariables>;
+export const DmxFixtureSetPassiveChannelsDocument = gql`
+    mutation DMXFixtureSetPassiveChannels($id: ID!, $passiveChannels: DMXPassiveChannelsInput!) {
+  dmxFixtureSetPassiveChannels(id: $id, passiveChannels: $passiveChannels)
+}
+    `;
+export type DmxFixtureSetPassiveChannelsMutationFn = ApolloReactCommon.MutationFunction<DmxFixtureSetPassiveChannelsMutation, DmxFixtureSetPassiveChannelsMutationVariables>;
+
+/**
+ * __useDmxFixtureSetPassiveChannelsMutation__
+ *
+ * To run a mutation, you first call `useDmxFixtureSetPassiveChannelsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureSetPassiveChannelsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxFixtureSetPassiveChannelsMutation, { data, loading, error }] = useDmxFixtureSetPassiveChannelsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      passiveChannels: // value for 'passiveChannels'
+ *   },
+ * });
+ */
+export function useDmxFixtureSetPassiveChannelsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxFixtureSetPassiveChannelsMutation, DmxFixtureSetPassiveChannelsMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxFixtureSetPassiveChannelsMutation, DmxFixtureSetPassiveChannelsMutationVariables>(DmxFixtureSetPassiveChannelsDocument, baseOptions);
+      }
+export type DmxFixtureSetPassiveChannelsMutationHookResult = ReturnType<typeof useDmxFixtureSetPassiveChannelsMutation>;
+export type DmxFixtureSetPassiveChannelsMutationResult = ApolloReactCommon.MutationResult<DmxFixtureSetPassiveChannelsMutation>;
+export type DmxFixtureSetPassiveChannelsMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxFixtureSetPassiveChannelsMutation, DmxFixtureSetPassiveChannelsMutationVariables>;
+export const DmxFixtureSetTagsDocument = gql`
+    mutation DMXFixtureSetTags($id: ID!, $newTags: [String!]!) {
+  dmxFixtureSetTags(id: $id, newTags: $newTags)
+}
+    `;
+export type DmxFixtureSetTagsMutationFn = ApolloReactCommon.MutationFunction<DmxFixtureSetTagsMutation, DmxFixtureSetTagsMutationVariables>;
+
+/**
+ * __useDmxFixtureSetTagsMutation__
+ *
+ * To run a mutation, you first call `useDmxFixtureSetTagsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureSetTagsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxFixtureSetTagsMutation, { data, loading, error }] = useDmxFixtureSetTagsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      newTags: // value for 'newTags'
+ *   },
+ * });
+ */
+export function useDmxFixtureSetTagsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxFixtureSetTagsMutation, DmxFixtureSetTagsMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxFixtureSetTagsMutation, DmxFixtureSetTagsMutationVariables>(DmxFixtureSetTagsDocument, baseOptions);
+      }
+export type DmxFixtureSetTagsMutationHookResult = ReturnType<typeof useDmxFixtureSetTagsMutation>;
+export type DmxFixtureSetTagsMutationResult = ApolloReactCommon.MutationResult<DmxFixtureSetTagsMutation>;
+export type DmxFixtureSetTagsMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxFixtureSetTagsMutation, DmxFixtureSetTagsMutationVariables>;
+export const DmxFixturesDocument = gql`
+    subscription DMXFixtures($simulatorId: ID, $clientId: ID) {
+  dmxFixtures(simulatorId: $simulatorId, clientId: $clientId) {
+    id
+    name
+    DMXDevice {
+      id
+      name
+      channels
+    }
+    channel
+    mode
+    tags
+    passiveChannels {
+      amber
+      white
+      uv
+      intensity
+      strobe
+      generic
+      nothing
+      color
+    }
+  }
+}
+    `;
+
+/**
+ * __useDmxFixturesSubscription__
+ *
+ * To run a query within a React component, call `useDmxFixturesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixturesSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDmxFixturesSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useDmxFixturesSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<DmxFixturesSubscription, DmxFixturesSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<DmxFixturesSubscription, DmxFixturesSubscriptionVariables>(DmxFixturesDocument, baseOptions);
+      }
+export type DmxFixturesSubscriptionHookResult = ReturnType<typeof useDmxFixturesSubscription>;
+export type DmxFixturesSubscriptionResult = ApolloReactCommon.SubscriptionResult<DmxFixturesSubscription>;
+export const DmxFixtureTagsDocument = gql`
+    query DMXFixtureTags {
+  dmxFixtures {
+    id
+    tags
+  }
+}
+    `;
+
+/**
+ * __useDmxFixtureTagsQuery__
+ *
+ * To run a query within a React component, call `useDmxFixtureTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDmxFixtureTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDmxFixtureTagsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDmxFixtureTagsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>) {
+        return ApolloReactHooks.useQuery<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>(DmxFixtureTagsDocument, baseOptions);
+      }
+export function useDmxFixtureTagsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>(DmxFixtureTagsDocument, baseOptions);
+        }
+export type DmxFixtureTagsQueryHookResult = ReturnType<typeof useDmxFixtureTagsQuery>;
+export type DmxFixtureTagsLazyQueryHookResult = ReturnType<typeof useDmxFixtureTagsLazyQuery>;
+export type DmxFixtureTagsQueryResult = ApolloReactCommon.QueryResult<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>;
+export const DmxSetCreateDocument = gql`
+    mutation DMXSetCreate($name: String!) {
+  dmxSetCreate(name: $name)
+}
+    `;
+export type DmxSetCreateMutationFn = ApolloReactCommon.MutationFunction<DmxSetCreateMutation, DmxSetCreateMutationVariables>;
+
+/**
+ * __useDmxSetCreateMutation__
+ *
+ * To run a mutation, you first call `useDmxSetCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxSetCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxSetCreateMutation, { data, loading, error }] = useDmxSetCreateMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxSetCreateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxSetCreateMutation, DmxSetCreateMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxSetCreateMutation, DmxSetCreateMutationVariables>(DmxSetCreateDocument, baseOptions);
+      }
+export type DmxSetCreateMutationHookResult = ReturnType<typeof useDmxSetCreateMutation>;
+export type DmxSetCreateMutationResult = ApolloReactCommon.MutationResult<DmxSetCreateMutation>;
+export type DmxSetCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxSetCreateMutation, DmxSetCreateMutationVariables>;
+export const DmxSetDuplicateDocument = gql`
+    mutation DMXSetDuplicate($id: ID!, $name: String!) {
+  dmxSetDuplicate(id: $id, name: $name)
+}
+    `;
+export type DmxSetDuplicateMutationFn = ApolloReactCommon.MutationFunction<DmxSetDuplicateMutation, DmxSetDuplicateMutationVariables>;
+
+/**
+ * __useDmxSetDuplicateMutation__
+ *
+ * To run a mutation, you first call `useDmxSetDuplicateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxSetDuplicateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxSetDuplicateMutation, { data, loading, error }] = useDmxSetDuplicateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxSetDuplicateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxSetDuplicateMutation, DmxSetDuplicateMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxSetDuplicateMutation, DmxSetDuplicateMutationVariables>(DmxSetDuplicateDocument, baseOptions);
+      }
+export type DmxSetDuplicateMutationHookResult = ReturnType<typeof useDmxSetDuplicateMutation>;
+export type DmxSetDuplicateMutationResult = ApolloReactCommon.MutationResult<DmxSetDuplicateMutation>;
+export type DmxSetDuplicateMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxSetDuplicateMutation, DmxSetDuplicateMutationVariables>;
+export const DmxSetRemoveDocument = gql`
+    mutation DMXSetRemove($id: ID!) {
+  dmxSetRemove(id: $id)
+}
+    `;
+export type DmxSetRemoveMutationFn = ApolloReactCommon.MutationFunction<DmxSetRemoveMutation, DmxSetRemoveMutationVariables>;
+
+/**
+ * __useDmxSetRemoveMutation__
+ *
+ * To run a mutation, you first call `useDmxSetRemoveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxSetRemoveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxSetRemoveMutation, { data, loading, error }] = useDmxSetRemoveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDmxSetRemoveMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxSetRemoveMutation, DmxSetRemoveMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxSetRemoveMutation, DmxSetRemoveMutationVariables>(DmxSetRemoveDocument, baseOptions);
+      }
+export type DmxSetRemoveMutationHookResult = ReturnType<typeof useDmxSetRemoveMutation>;
+export type DmxSetRemoveMutationResult = ApolloReactCommon.MutationResult<DmxSetRemoveMutation>;
+export type DmxSetRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxSetRemoveMutation, DmxSetRemoveMutationVariables>;
+export const DmxSetSetNameDocument = gql`
+    mutation DMXSetSetName($id: ID!, $name: String!) {
+  dmxSetSetName(id: $id, name: $name)
+}
+    `;
+export type DmxSetSetNameMutationFn = ApolloReactCommon.MutationFunction<DmxSetSetNameMutation, DmxSetSetNameMutationVariables>;
+
+/**
+ * __useDmxSetSetNameMutation__
+ *
+ * To run a mutation, you first call `useDmxSetSetNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDmxSetSetNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [dmxSetSetNameMutation, { data, loading, error }] = useDmxSetSetNameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useDmxSetSetNameMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DmxSetSetNameMutation, DmxSetSetNameMutationVariables>) {
+        return ApolloReactHooks.useMutation<DmxSetSetNameMutation, DmxSetSetNameMutationVariables>(DmxSetSetNameDocument, baseOptions);
+      }
+export type DmxSetSetNameMutationHookResult = ReturnType<typeof useDmxSetSetNameMutation>;
+export type DmxSetSetNameMutationResult = ApolloReactCommon.MutationResult<DmxSetSetNameMutation>;
+export type DmxSetSetNameMutationOptions = ApolloReactCommon.BaseMutationOptions<DmxSetSetNameMutation, DmxSetSetNameMutationVariables>;
+export const DmxSetsDocument = gql`
+    subscription DMXSets {
+  dmxSets {
+    id
+    name
+    fixtures {
+      id
+      name
+      DMXDevice {
+        id
+        name
+        class
+        channels
+      }
+      channel
+      mode
+      tags
+    }
+  }
+}
+    `;
+
+/**
+ * __useDmxSetsSubscription__
+ *
+ * To run a query within a React component, call `useDmxSetsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useDmxSetsSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDmxSetsSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDmxSetsSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<DmxSetsSubscription, DmxSetsSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<DmxSetsSubscription, DmxSetsSubscriptionVariables>(DmxSetsDocument, baseOptions);
+      }
+export type DmxSetsSubscriptionHookResult = ReturnType<typeof useDmxSetsSubscription>;
+export type DmxSetsSubscriptionResult = ApolloReactCommon.SubscriptionResult<DmxSetsSubscription>;
 export const EntityCreateTemplateDocument = gql`
     mutation EntityCreateTemplate($name: String!) {
   entityCreate(flightId: "template", template: true) {
@@ -15830,6 +17991,308 @@ export function useTimelineUpdateStepMutation(baseOptions?: ApolloReactHooks.Mut
 export type TimelineUpdateStepMutationHookResult = ReturnType<typeof useTimelineUpdateStepMutation>;
 export type TimelineUpdateStepMutationResult = ApolloReactCommon.MutationResult<TimelineUpdateStepMutation>;
 export type TimelineUpdateStepMutationOptions = ApolloReactCommon.BaseMutationOptions<TimelineUpdateStepMutation, TimelineUpdateStepMutationVariables>;
+export const AddClientDocument = gql`
+    mutation AddClient($id: ID!, $client: SetClientInput!) {
+  addClientToSet(id: $id, client: $client)
+}
+    `;
+export type AddClientMutationFn = ApolloReactCommon.MutationFunction<AddClientMutation, AddClientMutationVariables>;
+
+/**
+ * __useAddClientMutation__
+ *
+ * To run a mutation, you first call `useAddClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addClientMutation, { data, loading, error }] = useAddClientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      client: // value for 'client'
+ *   },
+ * });
+ */
+export function useAddClientMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddClientMutation, AddClientMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddClientMutation, AddClientMutationVariables>(AddClientDocument, baseOptions);
+      }
+export type AddClientMutationHookResult = ReturnType<typeof useAddClientMutation>;
+export type AddClientMutationResult = ApolloReactCommon.MutationResult<AddClientMutation>;
+export type AddClientMutationOptions = ApolloReactCommon.BaseMutationOptions<AddClientMutation, AddClientMutationVariables>;
+export const AddSetDocument = gql`
+    mutation AddSet($name: String!) {
+  createSet(name: $name)
+}
+    `;
+export type AddSetMutationFn = ApolloReactCommon.MutationFunction<AddSetMutation, AddSetMutationVariables>;
+
+/**
+ * __useAddSetMutation__
+ *
+ * To run a mutation, you first call `useAddSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addSetMutation, { data, loading, error }] = useAddSetMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useAddSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddSetMutation, AddSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddSetMutation, AddSetMutationVariables>(AddSetDocument, baseOptions);
+      }
+export type AddSetMutationHookResult = ReturnType<typeof useAddSetMutation>;
+export type AddSetMutationResult = ApolloReactCommon.MutationResult<AddSetMutation>;
+export type AddSetMutationOptions = ApolloReactCommon.BaseMutationOptions<AddSetMutation, AddSetMutationVariables>;
+export const RemoveClientFromSetDocument = gql`
+    mutation RemoveClientFromSet($id: ID!, $client: ID!) {
+  removeClientFromSet(id: $id, clientId: $client)
+}
+    `;
+export type RemoveClientFromSetMutationFn = ApolloReactCommon.MutationFunction<RemoveClientFromSetMutation, RemoveClientFromSetMutationVariables>;
+
+/**
+ * __useRemoveClientFromSetMutation__
+ *
+ * To run a mutation, you first call `useRemoveClientFromSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveClientFromSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeClientFromSetMutation, { data, loading, error }] = useRemoveClientFromSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      client: // value for 'client'
+ *   },
+ * });
+ */
+export function useRemoveClientFromSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveClientFromSetMutation, RemoveClientFromSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveClientFromSetMutation, RemoveClientFromSetMutationVariables>(RemoveClientFromSetDocument, baseOptions);
+      }
+export type RemoveClientFromSetMutationHookResult = ReturnType<typeof useRemoveClientFromSetMutation>;
+export type RemoveClientFromSetMutationResult = ApolloReactCommon.MutationResult<RemoveClientFromSetMutation>;
+export type RemoveClientFromSetMutationOptions = ApolloReactCommon.BaseMutationOptions<RemoveClientFromSetMutation, RemoveClientFromSetMutationVariables>;
+export const RemoveSetDocument = gql`
+    mutation RemoveSet($id: ID!) {
+  removeSet(id: $id)
+}
+    `;
+export type RemoveSetMutationFn = ApolloReactCommon.MutationFunction<RemoveSetMutation, RemoveSetMutationVariables>;
+
+/**
+ * __useRemoveSetMutation__
+ *
+ * To run a mutation, you first call `useRemoveSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeSetMutation, { data, loading, error }] = useRemoveSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveSetMutation, RemoveSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveSetMutation, RemoveSetMutationVariables>(RemoveSetDocument, baseOptions);
+      }
+export type RemoveSetMutationHookResult = ReturnType<typeof useRemoveSetMutation>;
+export type RemoveSetMutationResult = ApolloReactCommon.MutationResult<RemoveSetMutation>;
+export type RemoveSetMutationOptions = ApolloReactCommon.BaseMutationOptions<RemoveSetMutation, RemoveSetMutationVariables>;
+export const RenameSetDocument = gql`
+    mutation RenameSet($id: ID!, $name: String!) {
+  renameSet(id: $id, name: $name)
+}
+    `;
+export type RenameSetMutationFn = ApolloReactCommon.MutationFunction<RenameSetMutation, RenameSetMutationVariables>;
+
+/**
+ * __useRenameSetMutation__
+ *
+ * To run a mutation, you first call `useRenameSetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameSetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameSetMutation, { data, loading, error }] = useRenameSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useRenameSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RenameSetMutation, RenameSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<RenameSetMutation, RenameSetMutationVariables>(RenameSetDocument, baseOptions);
+      }
+export type RenameSetMutationHookResult = ReturnType<typeof useRenameSetMutation>;
+export type RenameSetMutationResult = ApolloReactCommon.MutationResult<RenameSetMutation>;
+export type RenameSetMutationOptions = ApolloReactCommon.BaseMutationOptions<RenameSetMutation, RenameSetMutationVariables>;
+export const SetKeyboardAndInterfaceDocument = gql`
+    query SetKeyboardAndInterface($id: ID) {
+  simulators(id: $id) {
+    interfaces
+  }
+  interfaces {
+    id
+    name
+  }
+  keyboard {
+    id
+    name
+  }
+  dmxSets {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useSetKeyboardAndInterfaceQuery__
+ *
+ * To run a query within a React component, call `useSetKeyboardAndInterfaceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSetKeyboardAndInterfaceQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSetKeyboardAndInterfaceQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSetKeyboardAndInterfaceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>) {
+        return ApolloReactHooks.useQuery<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>(SetKeyboardAndInterfaceDocument, baseOptions);
+      }
+export function useSetKeyboardAndInterfaceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>(SetKeyboardAndInterfaceDocument, baseOptions);
+        }
+export type SetKeyboardAndInterfaceQueryHookResult = ReturnType<typeof useSetKeyboardAndInterfaceQuery>;
+export type SetKeyboardAndInterfaceLazyQueryHookResult = ReturnType<typeof useSetKeyboardAndInterfaceLazyQuery>;
+export type SetKeyboardAndInterfaceQueryResult = ApolloReactCommon.QueryResult<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>;
+export const SetsDocument = gql`
+    query Sets {
+  simulators(template: true) {
+    id
+    name
+    layout
+    systems {
+      id
+      type
+    }
+    stationSets {
+      id
+      name
+      stations {
+        name
+      }
+    }
+  }
+  sets {
+    id
+    name
+    clients {
+      id
+      client {
+        id
+      }
+      simulator {
+        id
+        name
+      }
+      stationSet {
+        id
+        name
+      }
+      station
+      secondary
+      soundPlayer
+    }
+  }
+  clients {
+    id
+    cards
+    mobile
+  }
+}
+    `;
+
+/**
+ * __useSetsQuery__
+ *
+ * To run a query within a React component, call `useSetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSetsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSetsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SetsQuery, SetsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SetsQuery, SetsQueryVariables>(SetsDocument, baseOptions);
+      }
+export function useSetsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SetsQuery, SetsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SetsQuery, SetsQueryVariables>(SetsDocument, baseOptions);
+        }
+export type SetsQueryHookResult = ReturnType<typeof useSetsQuery>;
+export type SetsLazyQueryHookResult = ReturnType<typeof useSetsLazyQuery>;
+export type SetsQueryResult = ApolloReactCommon.QueryResult<SetsQuery, SetsQueryVariables>;
+export const UpdateSetClientDocument = gql`
+    mutation UpdateSetClient($id: ID!, $clientId: ID!, $secondary: Boolean, $soundPlayer: Boolean) {
+  updateSetClient(id: $id, client: {id: $clientId, secondary: $secondary, soundPlayer: $soundPlayer})
+}
+    `;
+export type UpdateSetClientMutationFn = ApolloReactCommon.MutationFunction<UpdateSetClientMutation, UpdateSetClientMutationVariables>;
+
+/**
+ * __useUpdateSetClientMutation__
+ *
+ * To run a mutation, you first call `useUpdateSetClientMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSetClientMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSetClientMutation, { data, loading, error }] = useUpdateSetClientMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      clientId: // value for 'clientId'
+ *      secondary: // value for 'secondary'
+ *      soundPlayer: // value for 'soundPlayer'
+ *   },
+ * });
+ */
+export function useUpdateSetClientMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateSetClientMutation, UpdateSetClientMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateSetClientMutation, UpdateSetClientMutationVariables>(UpdateSetClientDocument, baseOptions);
+      }
+export type UpdateSetClientMutationHookResult = ReturnType<typeof useUpdateSetClientMutation>;
+export type UpdateSetClientMutationResult = ApolloReactCommon.MutationResult<UpdateSetClientMutation>;
+export type UpdateSetClientMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateSetClientMutation, UpdateSetClientMutationVariables>;
 export const AddCardDocument = gql`
     mutation AddCard($id: ID!, $name: String!, $cardName: String!, $cardComponent: String!, $cardIcon: String) {
   addCardToStation(stationSetID: $id, stationName: $name, cardName: $cardName, cardComponent: $cardComponent, cardIcon: $cardIcon)
@@ -16902,6 +19365,39 @@ export function useEntityCreateMutation(baseOptions?: ApolloReactHooks.MutationH
 export type EntityCreateMutationHookResult = ReturnType<typeof useEntityCreateMutation>;
 export type EntityCreateMutationResult = ApolloReactCommon.MutationResult<EntityCreateMutation>;
 export type EntityCreateMutationOptions = ApolloReactCommon.BaseMutationOptions<EntityCreateMutation, EntityCreateMutationVariables>;
+export const EntitiesDocument = gql`
+    query Entities($flightId: ID!) {
+  entities(flightId: $flightId, inert: true) {
+    ...EntityData
+  }
+}
+    ${EntityDataFragmentDoc}`;
+
+/**
+ * __useEntitiesQuery__
+ *
+ * To run a query within a React component, call `useEntitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useEntitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useEntitiesQuery({
+ *   variables: {
+ *      flightId: // value for 'flightId'
+ *   },
+ * });
+ */
+export function useEntitiesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<EntitiesQuery, EntitiesQueryVariables>) {
+        return ApolloReactHooks.useQuery<EntitiesQuery, EntitiesQueryVariables>(EntitiesDocument, baseOptions);
+      }
+export function useEntitiesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<EntitiesQuery, EntitiesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<EntitiesQuery, EntitiesQueryVariables>(EntitiesDocument, baseOptions);
+        }
+export type EntitiesQueryHookResult = ReturnType<typeof useEntitiesQuery>;
+export type EntitiesLazyQueryHookResult = ReturnType<typeof useEntitiesLazyQuery>;
+export type EntitiesQueryResult = ApolloReactCommon.QueryResult<EntitiesQuery, EntitiesQueryVariables>;
 export const EntityRemoveDocument = gql`
     mutation EntityRemove($id: [ID!]!) {
   entityRemove(id: $id)

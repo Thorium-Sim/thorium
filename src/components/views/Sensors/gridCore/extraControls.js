@@ -1,99 +1,12 @@
-import React, {useState, useEffect, useRef} from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import {Col, Row} from "helpers/reactstrap";
-import {ChromePicker} from "react-color";
 import tinycolor from "tinycolor2";
 import gql from "graphql-tag.macro";
 import {TypingField} from "../../../generic/core";
 import Nudge from "./nudge";
 import useFlightLocalStorage from "helpers/hooks/useFlightLocalStorage";
 import {useSensorsSetPingsMutation} from "generated/graphql";
-
-function useOnClickOutside(ref, handler) {
-  useEffect(
-    () => {
-      const listener = event => {
-        // Do nothing if clicking ref's element or descendent elements
-        if (!ref.current || ref.current.contains(event.target)) {
-          return;
-        }
-
-        handler(event);
-      };
-
-      document.addEventListener("mousedown", listener);
-      document.addEventListener("touchstart", listener);
-
-      return () => {
-        document.removeEventListener("mousedown", listener);
-        document.removeEventListener("touchstart", listener);
-      };
-    },
-    // Add ref and handler to effect dependencies
-    // It's worth noting that because passed in handler is a new ...
-    // ... function on every render that will cause this effect ...
-    // ... callback/cleanup to run every render. It's not a big deal ...
-    // ... but to optimize you can wrap handler in useCallback before ...
-    // ... passing it into this hook.
-    [ref, handler],
-  );
-}
-
-export const ColorPicker = ({color, onChangeComplete}) => {
-  const ref = useRef();
-
-  const [isOpen, setIsOpen] = useState(false);
-  useOnClickOutside(ref, () => setIsOpen(false));
-  return (
-    <>
-      <div
-        style={{
-          padding: "5px",
-          background: "#fff",
-          borderRadius: "1px",
-          boxShadow: "0 0 0 1px rgba(0,0,0,.1)",
-          display: "inline-block",
-          cursor: "pointer",
-        }}
-        onClick={e => setIsOpen({x: e.clientX, y: e.clientY})}
-      >
-        <div
-          style={{
-            width: "36px",
-            height: "14px",
-            borderRadius: "2px",
-            background: color.a
-              ? `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
-              : color,
-          }}
-        />
-      </div>
-      {isOpen &&
-        ReactDOM.createPortal(
-          <div
-            ref={ref}
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              transform: `translate(${isOpen.x}px, ${isOpen.y - 40}px)`,
-              zIndex: 1,
-            }}
-          >
-            <ChromePicker
-              color={color}
-              onChangeComplete={color =>
-                onChangeComplete(
-                  `rgba(${color.rgb.r},${color.rgb.g},${color.rgb.b},${color.rgb.a})`,
-                )
-              }
-            />
-          </div>,
-          document.body,
-        )}
-    </>
-  );
-};
+import ColorPicker from "helpers/colorPicker";
 
 const ExtraControls = ({
   flightId,

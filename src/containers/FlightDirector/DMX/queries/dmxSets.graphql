@@ -1,0 +1,19 @@
+subscription DMXSets {
+  dmxSets {
+    id
+    name
+    fixtures {
+      id
+      name
+      DMXDevice {
+        id
+        name
+        class
+        channels
+      }
+      channel
+      mode
+      tags
+    }
+  }
+}

@@ -1,0 +1,3 @@
+mutation RemoveClientFromSet($id: ID!, $client: ID!) {
+  removeClientFromSet(id: $id, clientId: $client)
+}

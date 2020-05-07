@@ -95,24 +95,6 @@ p.offline-message {
     padding: 50px;
     text-align: center;
     color: white;
-    .scroll {
-      height: calc(100vh - 323px);
-      overflow: hidden;
-      .scroller {
-        animation-name: credits-scroll;
-        animation-duration: 80s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-      }
-      .creditSection {
-        margin-top: 40px;
-      }
-    }
-    img {
-      width: 20%;
-      -webkit-filter: drop-shadow(16px 16px 20px black);
-      filter: drop-shadow(16px 16px 20px black);
-    }
     h1,
     h2,
     h3,
@@ -135,14 +117,6 @@ p.offline-message {
 }
 .client-flipped {
   transform: scaleX(-1);
-}
-@keyframes credits-scroll {
-  from {
-    transform: translateY(calc(100vh - 325px));
-  }
-  to {
-    transform: translateY(-105%);
-  }
 }
 
 .card-transition {
