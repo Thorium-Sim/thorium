@@ -100,7 +100,7 @@ const DMXSets: React.FC = () => {
               </Button>
               <Button
                 tag="a"
-                href={`/exportDmxSet/${selectedSet.id}`}
+                href={`/exportDmxSets/${selectedSet.id}`}
                 color="secondary"
                 block
                 size="sm"
@@ -120,7 +120,7 @@ const DMXSets: React.FC = () => {
                   Array.from(evt.target.files).forEach((f, index) =>
                     data.append(`files[${index}]`, f),
                   );
-                  fetch(`/importDmxSet`, {
+                  fetch(`/importDmxSets`, {
                     method: "POST",
                     body: data,
                   }).then(() => {
