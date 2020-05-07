@@ -379,7 +379,6 @@ class ActionsCore extends Component {
           >
             <option value="flash">Flash</option>
             <option value="spark">Spark</option>
-            <option value="freak">Freak</option>
             <option value="sound">Sound</option>
             <option value="movie">Movie</option>
             <option value="beep">Beep</option>

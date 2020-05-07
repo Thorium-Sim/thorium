@@ -15,7 +15,6 @@ const needed = [
   "electron-updater",
   "universalify",
   "usb-detection",
-  "robotjs",
   "dmx",
   "e131",
 ];
