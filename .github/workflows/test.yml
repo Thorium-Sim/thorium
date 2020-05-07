@@ -35,6 +35,9 @@ jobs:
       - name: TypeScript Check
         run: |
           npm run typecheck
+      - name: ESLint
+        run: |
+          npm run lint
       - name: Test
         env:
           SKIP_PREFLIGHT_CHECK: true

@@ -11,6 +11,7 @@ const DEFAULT_MOCKS = [
   //{URL: "http://graphql-mocked-url.com"},
   // {DateTime: null},
   {
+    JSON: {},
     Damage: {
       damaged: false,
     },

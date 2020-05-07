@@ -2,5 +2,14 @@
   "extends": ["eslint:recommended", "react-app", "eslint-config-prettier"],
   "rules": {
     "no-console": "off"
-  }
+  },
+  "ignorePatterns": [
+    "/node_modules/",
+    "/coverage/",
+    "/build/",
+    "/server/build/",
+    "/.cache/",
+    "/locales/",
+    "/src/models/"
+  ]
 }

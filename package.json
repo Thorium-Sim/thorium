@@ -51,7 +51,7 @@
     "semantic-release": "semantic-release",
     "commit": "git-cz",
     "eject": "react-scripts eject",
-    "lint": "jest --config test/jest.eslint.js",
+    "lint": "eslint .",
     "typecheck": "npm-run-all --parallel typecheck:client typecheck:server",
     "typecheck:client": "tsc --noEmit",
     "typecheck:server": "tsc --noEmit -p server",

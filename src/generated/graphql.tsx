@@ -13386,23 +13386,26 @@ export type ClientPingMutationHookResult = ReturnType<typeof useClientPingMutati
 export type ClientPingMutationResult = ApolloReactCommon.MutationResult<ClientPingMutation>;
 export type ClientPingMutationOptions = ApolloReactCommon.BaseMutationOptions<ClientPingMutation, ClientPingMutationVariables>;
 export const LightingControlDocument = gql`
-    subscription LightingControl($simulatorId: ID!) {
-  simulatorsUpdate(simulatorId: $simulatorId) {
-    id
-    lighting {
-      intensity
-      action
-      actionStrength
-      transitionDuration
-      dmxConfig {
-        id
-        config
-        actionStrength
+ subscription LightingControl($simulatorId: ID!) {
+        simulatorsUpdate(simulatorId: $simulatorId) {
+          id
+          lighting {
+            intensity
+            action
+            actionStrength
+            transitionDuration
+            dmxConfig {
+              id
+              config
+              actionStrength
+              __typename
+            }
+            __typename
+          }
+          alertlevel
+          __typename
+        }
       }
-    }
-    alertlevel
-  }
-}
     `;
 
 /**
@@ -16600,6 +16603,7 @@ export const DmxConfigsDocument = gql`
     name
     config
     actionStrength
+    __typename
   }
 }
     `;
