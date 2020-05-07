@@ -1,0 +1,3 @@
+mutation DMXConfigSetActionStrength($id: ID!, $actionStrength: Float!) {
+  dmxConfigSetActionStrength(id: $id, actionStrength: $actionStrength)
+}

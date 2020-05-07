@@ -169,7 +169,7 @@ const Surveys = ({client}) => {
     Array.from(evt.target.files).forEach((f, index) =>
       data.append(`files[${index}]`, f),
     );
-    fetch(`/importSurvey`, {
+    fetch(`/importSurveyForms`, {
       method: "POST",
       body: data,
     }).then(() => {
@@ -230,7 +230,7 @@ const Surveys = ({client}) => {
               <Button
                 size="sm"
                 tag="a"
-                href={`/exportSurvey/${selectedForm}`}
+                href={`/exportSurveyForms/${selectedForm}`}
                 block
                 color="info"
               >

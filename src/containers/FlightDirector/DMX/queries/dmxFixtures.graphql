@@ -1,5 +1,5 @@
-subscription DMXFixtures($simulatorId: ID) {
-  dmxFixtures(simulatorId: $simulatorId) {
+subscription DMXFixtures($simulatorId: ID, $clientId: ID) {
+  dmxFixtures(simulatorId: $simulatorId, clientId: $clientId) {
     id
     name
     DMXDevice {

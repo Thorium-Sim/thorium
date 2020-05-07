@@ -84,6 +84,7 @@ App.on("clientSetSimulator", ({client, simulatorId, cb}) => {
 App.on("clientSetStation", ({client, stationName, cb}) => {
   const clientObj = App.clients.find(c => c.id === client);
   clientObj.setStation(stationName);
+  const simulatorId = clientObj.simulatorId;
   pubsub.publish("clientChanged", App.clients);
   // If the station name is 'Viewscreen', check for or create a viewscreen for the client
   if (
@@ -95,12 +96,69 @@ App.on("clientSetStation", ({client, stationName, cb}) => {
     App.viewscreens.push(
       new Viewscreen({
         id: clientObj.id,
-        simulatorId: clientObj.simulatorId,
+        simulatorId,
       }),
     );
     pubsub.publish("viewscreensUpdate", App.viewscreens);
   }
+  // Clear out any old DMX fixtures, regardless of what the new station is
+  App.dmxFixtures = App.dmxFixtures.filter(
+    f => !(f.simulatorId === simulatorId && f.clientId === client),
+  );
+
+  // If the station name includes "dmxSet", it's a lighting station. Create the necessary fixtures
+  if (stationName.includes("dmxSet:")) {
+    const dmxSet = App.dmxSets.find(
+      s => s.id === stationName.replace("dmxSet:", ""),
+    );
+    if (dmxSet) {
+      dmxSet.fixtures.forEach(f => {
+        const fixture = new DMXFixture({
+          ...f,
+          id: null,
+          simulatorId,
+          clientId: client,
+        });
+        App.dmxFixtures.push(fixture);
+      });
+    }
+
+    pubsub.publish("dmxFixtures", {
+      simulatorId,
+      fixtures: App.dmxFixtures.filter(f => f.simulatorId === simulatorId),
+    });
+  }
+
   cb && cb();
+});
+App.on("clientActivateLights", ({clientId, dmxSetId}) => {
+  const client = App.clients.find(c => c.id === clientId);
+  if (!client) return;
+  if (!client.simulatorId) return;
+  const simulatorId = client.simulatorId;
+
+  // Clear out any old DMX fixtures, regardless of what the new station is
+  App.dmxFixtures = App.dmxFixtures.filter(
+    f => !(f.simulatorId === simulatorId && f.clientId === clientId),
+  );
+
+  const dmxSet = App.dmxSets.find(s => s.id === dmxSetId);
+  if (dmxSet) {
+    dmxSet.fixtures.forEach(f => {
+      const fixture = new DMXFixture({
+        ...f,
+        id: null,
+        simulatorId,
+        clientId: clientId,
+      });
+      App.dmxFixtures.push(fixture);
+    });
+  }
+
+  pubsub.publish("dmxFixtures", {
+    simulatorId,
+    fixtures: App.dmxFixtures.filter(f => f.simulatorId === simulatorId),
+  });
 });
 App.on("clientSetCard", ({id, card}) => {
   const clientObj = App.clients.find(c => c.id === id);
@@ -338,20 +396,6 @@ App.on(
         }
       });
 
-    // Clear out all of the DMX fixtures, replace with new ones
-    App.dmxFixtures.filter(f => f.simulatorId !== simulatorId);
-    const dmxSet = App.dmxSets.find(s => s.id === set.dmxSetId);
-    if (dmxSet) {
-      dmxSet.fixtures.forEach(f => {
-        const fixture = new DMXFixture({...f, id: null, simulatorId});
-        App.dmxFixtures.push(fixture);
-      });
-    }
-
-    pubsub.publish("dmxFixtures", {
-      simulatorId,
-      fixtures: App.dmxFixtures.filter(f => f.simulatorId === simulatorId),
-    });
     pubsub.publish("viewscreensUpdate", App.viewscreens);
     pubsub.publish("clientChanged", App.clients);
   },

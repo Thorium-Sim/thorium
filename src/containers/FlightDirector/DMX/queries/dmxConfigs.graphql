@@ -3,5 +3,6 @@ subscription DMXConfigs {
     id
     name
     config
+    actionStrength
   }
 }

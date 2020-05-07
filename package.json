@@ -164,6 +164,7 @@
       "js/**/*",
       "static/**/*",
       "cardIcons/**/*",
+      "workers/**/*",
       "systems/**/*",
       "viewscreen/**/*",
       "sciences.ogg",
@@ -221,6 +222,7 @@
     "chalk": "^3.0.0",
     "change-case": "^4.1.1",
     "codegen.macro": "^3.0.0",
+    "comlink": "^4.3.0",
     "core-js": "^3.3.6",
     "cors": "^2.8.5",
     "dmx": "^0.2.4",
@@ -317,6 +319,7 @@
     "@types/uuid": "^3.4.6",
     "@types/w3c-web-usb": "^1.0.4",
     "@types/yauzl": "^2.9.1",
+    "@types/yazl": "^2.4.2",
     "@zeit/ncc": "^0.20.5",
     "acorn-jsx": "^5.1.0",
     "acorn-loose": "^7.0.0",
@@ -403,7 +406,8 @@
     "typescript": "^3.6.4",
     "typescript-plugin-tw-template": "^2.0.1",
     "wait-on": "^3.3.0",
-    "webgl-mock-threejs": "^0.0.1"
+    "webgl-mock-threejs": "^0.0.1",
+    "worker-loader": "^2.0.0"
   },
   "resolutions": {
     "change-case": "^4.1.1",

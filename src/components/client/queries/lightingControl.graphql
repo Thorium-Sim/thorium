@@ -9,6 +9,7 @@ subscription LightingControl($simulatorId: ID!) {
       dmxConfig {
         id
         config
+        actionStrength
       }
     }
     alertlevel

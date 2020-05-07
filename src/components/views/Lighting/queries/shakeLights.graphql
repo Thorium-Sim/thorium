@@ -1,0 +1,3 @@
+mutation ShakeLights($simulatorId: ID!, $duration: Float!) {
+  lightingShakeLights(simulatorId: $simulatorId, duration: $duration)
+}

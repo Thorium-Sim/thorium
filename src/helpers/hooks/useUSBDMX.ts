@@ -12,7 +12,7 @@ interface DMXDevice {
   ready: boolean;
   close: () => Promise<void>;
   update: (channels: number[]) => Promise<USBOutTransferResult | void>;
-  activate: () => void;
+  activate: () => Promise<void>;
 }
 async function setUpLightingDevice(): Promise<DMXDevice> {
   const lightingDevice = await navigator.usb.requestDevice({
@@ -68,10 +68,13 @@ async function setUpLightingDevice(): Promise<DMXDevice> {
         universe[i] = Math.round(channels[i]) || 0;
       }
       // Send the message
-      return lightingDevice.transferOut(
-        2,
-        Uint8Array.from([...header, ...universe, ENTTEC_PRO_END_OF_MSG]),
-      );
+      if (lightingDevice.opened) {
+        return lightingDevice.transferOut(
+          2,
+          Uint8Array.from([...header, ...universe, ENTTEC_PRO_END_OF_MSG]),
+        );
+      }
+      return Promise.resolve();
     },
   };
 }
@@ -81,11 +84,12 @@ export function useUSBDMX(autoActivate?: boolean): DMXDevice {
 
   const activate = React.useCallback(() => {
     if (!activated.current) {
-      setUpLightingDevice().then(res => {
+      return setUpLightingDevice().then(res => {
         activated.current = true;
         setLightingDevice(res);
       });
     }
+    return Promise.resolve();
   }, []);
   const [lightingDevice, setLightingDevice] = React.useState<DMXDevice>({
     close: noop,

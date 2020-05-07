@@ -10,4 +10,8 @@ query SetKeyboardAndInterface($id: ID) {
     id
     name
   }
+  dmxSets {
+    id
+    name
+  }
 }

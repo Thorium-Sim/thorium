@@ -74,6 +74,7 @@ const quotes = [
   "And then there's a big coup in the zoo.",
   "Man can't turn his back on what he came from. Besides, black is slimming.",
   "It's not a joke; I'm a legit snack!",
+  "Words are the threads that weave the tapestries of life.",
 ];
 
 const QuoteOfTheDay = () => {

@@ -51,6 +51,7 @@ const schema = gql`
     id: ID!
     class: String!
     name: String!
+    clientId: String
     DMXDeviceId: String!
     DMXDevice: DMXDevice!
     simulatorId: String!
@@ -70,6 +71,7 @@ const schema = gql`
     id: ID!
     name: String!
     config: JSON!
+    actionStrength: Float!
   }
   extend type Query {
     dmxDevices: [DMXDevice!]!
@@ -86,6 +88,7 @@ const schema = gql`
 
     dmxSetCreate(name: String!): String
     dmxSetRemove(id: ID!): String
+    dmxSetDuplicate(id: ID!, name: String!): String
     dmxSetSetName(id: ID!, name: String!): String
 
     dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
@@ -144,13 +147,15 @@ const schema = gql`
 
     dmxConfigCreate(name: String!): String
     dmxConfigRemove(id: ID!): String
+    dmxConfigDuplicate(id: ID!, name: String!): String
     dmxConfigSetName(id: ID!, name: String!): String
     dmxConfigSetConfig(id: ID!, config: JSON!): String
+    dmxConfigSetActionStrength(id: ID!, actionStrength: Float!): String
   }
   extend type Subscription {
     dmxSets: [DMXSet!]!
     dmxDevices: [DMXDevice!]!
-    dmxFixtures(simulatorId: ID): [DMXFixture!]!
+    dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
     dmxConfigs: [DMXConfig!]!
   }
 `;
@@ -221,13 +226,27 @@ const resolver = {
     },
     dmxSetRemove(rootValue, {id}) {
       const set = App.dmxSets.find(f => f.id === id);
-      App.dmxSets = App.dmxSets.filter(f => f.id === id);
+      App.dmxSets = App.dmxSets.filter(f => f.id !== id);
       // Also remove all the fixtures for that set
       set?.fixtures?.forEach(f =>
         resolver.Mutation.dmxFixtureRemove({}, {DMXSetId: null, id: f.id}),
       );
 
       pubsub.publish("dmxSets", App.dmxSets);
+    },
+    dmxSetDuplicate(rootValue, {id, name}) {
+      const {id: setId, ...set} = App.dmxSets.find(f => f.id === id);
+      // Duplicate all of the fixtures in the set
+      const newFixtures = set.fixtureIds.map(fId => {
+        const {id: _, ...f} = App.dmxFixtures.find(f => fId === f.id);
+        const fixture = new DMXFixture(f);
+        App.dmxFixtures.push(fixture);
+        return fixture.id;
+      });
+      const newSet = new DMXSet({...set, name, fixtureIds: newFixtures});
+      App.dmxSets.push(newSet);
+      pubsub.publish("dmxSets", App.dmxSets);
+      return newSet.id;
     },
     dmxSetSetName(rootValue, {id, name}) {
       const set = App.dmxSets.find(f => f.id === id);
@@ -377,8 +396,17 @@ const resolver = {
       return config.id;
     },
     dmxConfigRemove(rootValue, {id}) {
-      App.dmxConfigs = App.dmxConfigs.filter(f => f.id === id);
+      App.dmxConfigs = App.dmxConfigs.filter(f => f.id !== id);
       pubsub.publish("dmxConfigs", App.dmxConfigs);
+    },
+    dmxConfigDuplicate(rootValue, {id, name}) {
+      const {id: configId, ...configuration} = App.dmxConfigs.find(
+        f => f.id === id,
+      );
+      const newConfig = new DMXConfig({...configuration, name});
+      App.dmxConfigs.push(newConfig);
+      pubsub.publish("dmxConfigs", App.dmxConfigs);
+      return newConfig.id;
     },
     dmxConfigSetName(rootValue, {id, name}) {
       const config = App.dmxConfigs.find(f => f.id === id);
@@ -388,6 +416,11 @@ const resolver = {
     dmxConfigSetConfig(rootValue, {id, config}) {
       const configObj = App.dmxConfigs.find(f => f.id === id);
       configObj?.setConfig(config);
+      pubsub.publish("dmxConfigs", App.dmxConfigs);
+    },
+    dmxConfigSetActionStrength(rootValue, {id, actionStrength}) {
+      const configObj = App.dmxConfigs.find(f => f.id === id);
+      configObj?.setActionStrength(actionStrength);
       pubsub.publish("dmxConfigs", App.dmxConfigs);
     },
   },
@@ -421,7 +454,9 @@ const resolver = {
       },
     },
     dmxFixtures: {
-      resolve(rootValue) {
+      resolve(rootValue: {fixtures: DMXFixture[]}, {clientId}) {
+        if (clientId)
+          return rootValue.fixtures.filter(c => c.clientId === clientId);
         return rootValue.fixtures;
       },
       subscribe: withFilter(

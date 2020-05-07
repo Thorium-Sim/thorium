@@ -4,6 +4,7 @@ import {useSounds} from "../generic/SoundPlayer";
 import Reset from "./reset";
 import {useApolloClient} from "@apollo/client";
 import {AmbianceDocument, Ambiance, Simulator} from "generated/graphql";
+import {ClientLighting} from "./lighting";
 
 const SoundPlayer: React.FC<{
   simulator: Simulator;
@@ -53,6 +54,7 @@ const SoundPlayer: React.FC<{
         }}
       />
       <FormattedMessage id="sound-player" defaultMessage="Sound Player" />
+      <ClientLighting simulator={simulator} clientId={clientId} />
     </div>
   );
 };

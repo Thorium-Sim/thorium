@@ -34,6 +34,7 @@ const SetStationPicker = () => {
       )
       .filter(Boolean) || [];
   const keyboards = interfaceData?.keyboard || [];
+  const dmxSets = interfaceData?.dmxSets || [];
   const mobileScreens = clients
     .reduce((prev: string[], next) => {
       if (!next?.cards) return prev;
@@ -100,18 +101,6 @@ const SetStationPicker = () => {
           >
             Blackout
           </li>
-          <li
-            className={`list-group-item ${
-              stationId === `Lighting` ? "selected" : ""
-            }`}
-            onClick={() =>
-              navigate(
-                `/config/sets/${setId}/${simulatorId}/${stationSetId}/Lighting`,
-              )
-            }
-          >
-            Lighting
-          </li>
           {keyboards.length > 0 && (
             <>
               <li className={`list-group-item disabled`}>Keyboards</li>
@@ -144,6 +133,26 @@ const SetStationPicker = () => {
                   onClick={() =>
                     navigate(
                       `/config/sets/${setId}/${simulatorId}/${stationSetId}/interface-id:${k?.id}`,
+                    )
+                  }
+                >
+                  {k?.name}
+                </li>
+              ))}
+            </>
+          )}
+          {dmxSets.length > 0 && (
+            <>
+              <li className={`list-group-item disabled`}>Lighting</li>
+              {dmxSets.map(k => (
+                <li
+                  key={k?.id || ""}
+                  className={`list-group-item ${
+                    stationId === `dmxSet:${k?.id}` ? "selected" : ""
+                  }`}
+                  onClick={() =>
+                    navigate(
+                      `/config/sets/${setId}/${simulatorId}/${stationSetId}/dmxSet:${k?.id}`,
                     )
                   }
                 >

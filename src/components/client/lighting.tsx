@@ -4,19 +4,57 @@ import tw from "twin.macro";
 import React from "react";
 import {
   Simulator,
-  useLightingControlSubscription,
-  useDmxFixturesSubscription,
+  useDmxSetsSubscription,
+  useActivateLightingMutation,
 } from "generated/graphql";
 import LightingCore from "components/views/Lighting";
-import {useUSBDMX} from "helpers/hooks/useUSBDMX";
-import generateDMXUniverse, {
-  ConfigObj,
-  AlertLevels,
-} from "helpers/generateDMXUniverse";
-import useInterval from "helpers/hooks/useInterval";
+
 import {Button, Input} from "reactstrap";
 import AlertConditionCore from "components/views/AlertCondition/core";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
+import useDMXConfiguration from "./useDMXConfiguration";
+
+export const ClientLighting: React.FC<{
+  simulator: Simulator;
+  clientId: string;
+}> = ({simulator, clientId}) => {
+  const [dmxSetId, setDmxSetId] = useLocalStorage("dmx_client_set_id", null);
+  const [activate] = useActivateLightingMutation();
+  const {data} = useDmxSetsSubscription();
+
+  React.useEffect(() => {
+    activate({variables: {clientId, dmxSetId}});
+  }, [activate, clientId, dmxSetId]);
+
+  if (!data?.dmxSets || data?.dmxSets.length === 0) {
+    return null;
+  }
+  const dmxSets = data.dmxSets;
+  return (
+    <div>
+      <label>Lighting Sets</label>
+      <Input
+        type="select"
+        value={dmxSetId || ""}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setDmxSetId(e.target.value)
+        }
+      >
+        <option value="" disabled>
+          Choose One
+        </option>
+        {dmxSets.map(d => (
+          <option key={d.id} value={d.id}>
+            {d.name}
+          </option>
+        ))}
+      </Input>
+      {dmxSetId && (
+        <Lighting simulator={simulator} clientId={clientId} outsideRendered />
+      )}
+    </div>
+  );
+};
 
 interface DMXDevice {
   locationId: number;
@@ -29,57 +67,13 @@ interface DMXDevice {
 }
 const Lighting: React.FC<{
   simulator: Simulator;
-}> = ({simulator}) => {
-  const dmx = useUSBDMX();
-  const {data} = useLightingControlSubscription({
-    variables: {simulatorId: simulator.id},
-  });
-  const {data: fixtureData} = useDmxFixturesSubscription({
-    variables: {simulatorId: simulator.id},
-  });
-
-  const alertLevel = data?.simulatorsUpdate?.[0]?.alertlevel;
-  const lightingData = data?.simulatorsUpdate?.[0]?.lighting;
-  const lighting = lightingData && {
-    ...lightingData,
-    dmxConfig: lightingData?.dmxConfig?.config as ConfigObj,
-  };
-  const fixtures = fixtureData?.dmxFixtures.map(f => ({
-    ...f,
-    deviceChannels: f.DMXDevice?.channels || [],
-  }));
-
-  const actionChangeTime = React.useRef<number>(Date.now());
-  const intensityHistory = React.useRef<number[]>([lighting?.intensity || 0]);
-  const lightingAction = lighting?.action;
-  const lightingIntensity = lighting?.intensity;
-  React.useEffect(() => {
-    actionChangeTime.current = Date.now();
-    if (typeof lightingIntensity === "number") {
-      intensityHistory.current.unshift(lightingIntensity);
-      intensityHistory.current = intensityHistory.current.slice(0, 2);
-    }
-  }, [lightingAction, lightingIntensity]);
-
-  const [activated, setActivated] = React.useState(false);
-
-  useInterval(() => {
-    if (alertLevel && lighting && fixtures && (dmx.ready || activated)) {
-      const universe = generateDMXUniverse(
-        fixtures,
-        lighting,
-        alertLevel as AlertLevels,
-        actionChangeTime.current,
-        intensityHistory.current[1] || intensityHistory.current[0],
-      );
-      if (activated) {
-        window.thorium.sendDMXValue?.(universe);
-      }
-      if (dmx.ready) {
-        dmx.update(universe);
-      }
-    }
-  }, 1000 / 20);
+  clientId: string;
+  outsideRendered?: boolean;
+}> = ({simulator, clientId, outsideRendered}) => {
+  const {activate, activated, reset, hasFixtures} = useDMXConfiguration(
+    simulator,
+    clientId,
+  );
 
   // DMX Controller config
   const [dmxDriver, setDMXDriver] = useLocalStorage(
@@ -92,6 +86,10 @@ const Lighting: React.FC<{
   );
   const [dmxDevice, setDmxDevice] = useLocalStorage("dmx_device", "");
   const [dmxUniverse, setDmxUniverse] = useLocalStorage("dmx_universe", 1);
+  const [autoActivate, setAutoActivate] = useLocalStorage(
+    "dmx_autoActivate",
+    false,
+  );
   const [dmxDeviceList, setDMXDeviceList] = React.useState<DMXDevice[]>([]);
   React.useEffect(() => {
     window.thorium.getDMXDeviceList?.().then((res: DMXDevice[]) => {
@@ -103,28 +101,49 @@ const Lighting: React.FC<{
     });
   }, [setDmxDevice]);
 
-  function activate() {
-    if (!window.thorium.getDMXDeviceList) {
-      return dmx.activate();
-    } else {
-      const device = `/dev/cu.usbserial-${dmxDevice}`;
-      const config = {
-        device,
-        ipAddress,
-        dmxDriver,
-        dmxUniverse,
-      };
-      window.thorium.activateDMX?.(config);
-      setActivated(true);
+  React.useEffect(() => {
+    if (autoActivate && !activated && hasFixtures) {
+      activate({dmxDevice, ipAddress, dmxDriver, dmxUniverse});
     }
-  }
+  }, [
+    activate,
+    autoActivate,
+    activated,
+    hasFixtures,
+    dmxDevice,
+    ipAddress,
+    dmxDriver,
+    dmxUniverse,
+  ]);
+
   return (
-    <div css={tw`text-white flex justify-center items-center h-screen`}>
-      <div css={tw`max-w-full w-3/5 flex flex-col justify-center`}>
-        {dmx.ready ? (
+    <div
+      css={
+        outsideRendered
+          ? undefined
+          : tw`text-white flex justify-center items-center h-screen`
+      }
+    >
+      <div css={tw`max-w-full text-xl flex flex-col justify-center`}>
+        {activated ? (
           <React.Fragment>
             <LightingCore simulator={simulator} />
             <AlertConditionCore simulator={simulator} />
+            <Button
+              color="danger"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Are you sure you want to reset your lighting client? This will stop your lights from working until you activate them again.",
+                  )
+                ) {
+                  reset();
+                  setAutoActivate(false);
+                }
+              }}
+            >
+              Reset Lighting Client
+            </Button>
           </React.Fragment>
         ) : (
           <React.Fragment>
@@ -193,9 +212,24 @@ const Lighting: React.FC<{
                 )}
               </div>
             )}
-            <Button color="success" onClick={activate}>
+            <Button
+              color="success"
+              onClick={() =>
+                activate({dmxDevice, ipAddress, dmxDriver, dmxUniverse})
+              }
+            >
               Activate Lighting
             </Button>
+            {window.thorium.getDMXDeviceList && (
+              <label>
+                <input
+                  type="checkbox"
+                  checked={autoActivate}
+                  onChange={e => setAutoActivate(e.target.checked)}
+                />{" "}
+                Auto-Activate
+              </label>
+            )}
           </React.Fragment>
         )}
       </div>

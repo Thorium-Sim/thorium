@@ -7,4 +7,8 @@ query ClientsInterfacesAndKeyboards {
     id
     name
   }
+  dmxSets {
+    id
+    name
+  }
 }

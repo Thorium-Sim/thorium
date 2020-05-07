@@ -183,6 +183,7 @@ const DMXFixtures: React.FC<{
         {setId && selectedFixture && (
           <Button
             block
+            size="sm"
             color="danger"
             onClick={() => {
               remove({variables: {dmxSetId: setId, id: selectedFixture.id}});

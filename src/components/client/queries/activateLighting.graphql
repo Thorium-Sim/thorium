@@ -1,0 +1,3 @@
+mutation ActivateLighting($clientId: ID!, $dmxSetId: ID!) {
+  clientActivateLights(clientId: $clientId, dmxSetId: $dmxSetId)
+}

@@ -742,6 +742,7 @@ export type DmxConfig = {
   id: Scalars["ID"];
   name: Scalars["String"];
   config: Scalars["JSON"];
+  actionStrength: Scalars["Float"];
 };
 
 export type DmxDevice = {
@@ -757,6 +758,7 @@ export type DmxFixture = {
   id: Scalars["ID"];
   class: Scalars["String"];
   name: Scalars["String"];
+  clientId?: Maybe<Scalars["String"]>;
   DMXDeviceId: Scalars["String"];
   DMXDevice: DmxDevice;
   simulatorId: Scalars["String"];
@@ -1367,6 +1369,7 @@ export type Lighting = {
 
 export enum Lighting_Action {
   Normal = "normal",
+  Darken = "darken",
   Blackout = "blackout",
   Work = "work",
   Fade = "fade",
@@ -1755,6 +1758,7 @@ export type Mutation = {
   clientMovieState?: Maybe<Scalars["String"]>;
   clientSetTraining?: Maybe<Scalars["String"]>;
   clientSetSoundPlayer?: Maybe<Scalars["String"]>;
+  clientActivateLights?: Maybe<Scalars["String"]>;
   clientAddCache?: Maybe<Scalars["String"]>;
   clientRemoveCache?: Maybe<Scalars["String"]>;
   setClientHypercard?: Maybe<Scalars["String"]>;
@@ -2129,7 +2133,6 @@ export type Mutation = {
   removeClientFromSet?: Maybe<Scalars["String"]>;
   updateSetClient?: Maybe<Scalars["String"]>;
   renameSet?: Maybe<Scalars["String"]>;
-  setSetDMXSetId?: Maybe<Scalars["String"]>;
   shieldRaised?: Maybe<Scalars["String"]>;
   shieldLowered?: Maybe<Scalars["String"]>;
   shieldIntegritySet?: Maybe<Scalars["String"]>;
@@ -2413,6 +2416,7 @@ export type Mutation = {
   dmxDeviceSetChannels?: Maybe<Scalars["String"]>;
   dmxSetCreate?: Maybe<Scalars["String"]>;
   dmxSetRemove?: Maybe<Scalars["String"]>;
+  dmxSetDuplicate?: Maybe<Scalars["String"]>;
   dmxSetSetName?: Maybe<Scalars["String"]>;
   dmxFixtureCreate?: Maybe<Scalars["String"]>;
   dmxFixtureRemove?: Maybe<Scalars["String"]>;
@@ -2427,8 +2431,10 @@ export type Mutation = {
   dmxFixtureSetPassiveChannels?: Maybe<Scalars["String"]>;
   dmxConfigCreate?: Maybe<Scalars["String"]>;
   dmxConfigRemove?: Maybe<Scalars["String"]>;
+  dmxConfigDuplicate?: Maybe<Scalars["String"]>;
   dmxConfigSetName?: Maybe<Scalars["String"]>;
   dmxConfigSetConfig?: Maybe<Scalars["String"]>;
+  dmxConfigSetActionStrength?: Maybe<Scalars["String"]>;
 };
 
 export type MutationEntitySetAppearanceArgs = {
@@ -2694,6 +2700,11 @@ export type MutationClientSetTrainingArgs = {
 export type MutationClientSetSoundPlayerArgs = {
   client: Scalars["ID"];
   soundPlayer: Scalars["Boolean"];
+};
+
+export type MutationClientActivateLightsArgs = {
+  clientId: Scalars["ID"];
+  dmxSetId: Scalars["ID"];
 };
 
 export type MutationClientAddCacheArgs = {
@@ -4639,11 +4650,6 @@ export type MutationRenameSetArgs = {
   name: Scalars["String"];
 };
 
-export type MutationSetSetDmxSetIdArgs = {
-  id: Scalars["ID"];
-  dmxSetId: Scalars["ID"];
-};
-
 export type MutationShieldRaisedArgs = {
   id: Scalars["ID"];
 };
@@ -6099,6 +6105,11 @@ export type MutationDmxSetRemoveArgs = {
   id: Scalars["ID"];
 };
 
+export type MutationDmxSetDuplicateArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
 export type MutationDmxSetSetNameArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
@@ -6179,6 +6190,11 @@ export type MutationDmxConfigRemoveArgs = {
   id: Scalars["ID"];
 };
 
+export type MutationDmxConfigDuplicateArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
 export type MutationDmxConfigSetNameArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
@@ -6187,6 +6203,11 @@ export type MutationDmxConfigSetNameArgs = {
 export type MutationDmxConfigSetConfigArgs = {
   id: Scalars["ID"];
   config: Scalars["JSON"];
+};
+
+export type MutationDmxConfigSetActionStrengthArgs = {
+  id: Scalars["ID"];
+  actionStrength: Scalars["Float"];
 };
 
 export type NamedObject = {
@@ -7448,7 +7469,6 @@ export type Set = {
   id: Scalars["ID"];
   name: Scalars["String"];
   clients: Array<SetClient>;
-  dmxSetId?: Maybe<Scalars["ID"]>;
 };
 
 export type SetClient = {
@@ -8392,6 +8412,7 @@ export type SubscriptionEntitiesArgs = {
 
 export type SubscriptionDmxFixturesArgs = {
   simulatorId?: Maybe<Scalars["ID"]>;
+  clientId?: Maybe<Scalars["ID"]>;
 };
 
 export type SubspaceField = SystemInterface & {
@@ -11338,6 +11359,7 @@ export type DmxConfigResolvers<
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   config?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
+  actionStrength?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -11363,6 +11385,7 @@ export type DmxFixtureResolvers<
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   class?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  clientId?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   DMXDeviceId?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   DMXDevice?: Resolver<ResolversTypes["DMXDevice"], ParentType, ContextType>;
   simulatorId?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
@@ -13082,6 +13105,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationClientSetSoundPlayerArgs, "client" | "soundPlayer">
+  >;
+  clientActivateLights?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationClientActivateLightsArgs, "clientId" | "dmxSetId">
   >;
   clientAddCache?: Resolver<
     Maybe<ResolversTypes["String"]>,
@@ -15454,12 +15483,6 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRenameSetArgs, "id" | "name">
   >;
-  setSetDMXSetId?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationSetSetDmxSetIdArgs, "id" | "dmxSetId">
-  >;
   shieldRaised?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -17350,6 +17373,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDmxSetRemoveArgs, "id">
   >;
+  dmxSetDuplicate?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationDmxSetDuplicateArgs, "id" | "name">
+  >;
   dmxSetSetName?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -17437,6 +17466,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDmxConfigRemoveArgs, "id">
   >;
+  dmxConfigDuplicate?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationDmxConfigDuplicateArgs, "id" | "name">
+  >;
   dmxConfigSetName?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -17448,6 +17483,15 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDmxConfigSetConfigArgs, "id" | "config">
+  >;
+  dmxConfigSetActionStrength?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationDmxConfigSetActionStrengthArgs,
+      "id" | "actionStrength"
+    >
   >;
 }>;
 
@@ -19220,7 +19264,6 @@ export type SetResolvers<
     ParentType,
     ContextType
   >;
-  dmxSetId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 

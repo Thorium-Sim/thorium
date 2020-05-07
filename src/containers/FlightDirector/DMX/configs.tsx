@@ -10,6 +10,8 @@ import {
   useDmxConfigRemoveMutation,
   useDmxConfigSetNameMutation,
   useDmxConfigCreateMutation,
+  useDmxConfigSetActionStrengthMutation,
+  useDmxConfigDuplicateMutation,
 } from "generated/graphql";
 import SearchableList from "helpers/SearchableList";
 import {useNavigate, useParams} from "react-router-dom";
@@ -38,7 +40,7 @@ type DMXAlertConfig = {[tag: string]: ChannelConfig};
 interface DMXConfigSetting {
   [key: string]: DMXAlertConfig;
 }
-const DMXConfigKeys = ["1", "2", "3", "4", "5", "p"];
+const DMXConfigKeys = ["1", "2", "3", "4", "5", "p", "darken"];
 const DMXProperties: DMXChannelProperty[] = [
   "color",
   "amber",
@@ -98,7 +100,8 @@ const DMXConfigs: React.FC = () => {
   const [setName] = useDmxConfigSetNameMutation();
   const [setConfig] = useDmxConfigSetConfigMutation();
   const [remove] = useDmxConfigRemoveMutation();
-
+  const [duplicate] = useDmxConfigDuplicateMutation();
+  const [setActionStrength] = useDmxConfigSetActionStrengthMutation();
   const selectedConfig = data?.dmxConfigs.find(d => d.id === configId);
   const selectedConfigSettings = selectedConfig?.config as
     | DMXConfigSetting
@@ -133,9 +136,10 @@ const DMXConfigs: React.FC = () => {
           ></SearchableList>
           <Button
             block
+            size="sm"
             color="success"
             onClick={() => {
-              const name = prompt("What is the name of this DMX Device?");
+              const name = prompt("What is the name of this DMX Config?");
               if (!name) return;
               create({variables: {name}}).then(res =>
                 navigate(
@@ -147,17 +151,74 @@ const DMXConfigs: React.FC = () => {
             Create DMX Config
           </Button>
           {selectedConfig && (
-            <Button
-              block
-              color="danger"
-              onClick={() => {
-                remove({variables: {id: selectedConfig.id}});
-                navigate(`/config/dmx/configs`);
-              }}
-            >
-              Remove DMX Config
-            </Button>
+            <React.Fragment>
+              <Button
+                block
+                size="sm"
+                color="info"
+                onClick={() => {
+                  const name = prompt(
+                    "What is the name of the new DMX Config?",
+                  );
+                  if (!name || name === selectedConfig.name) return;
+                  duplicate({variables: {id: selectedConfig.id, name}}).then(
+                    res => {
+                      navigate(
+                        `/config/dmx/configs/${res.data?.dmxConfigDuplicate ||
+                          ""}`,
+                      );
+                    },
+                  );
+                }}
+              >
+                Duplicate DMX Config
+              </Button>
+              <Button
+                block
+                size="sm"
+                color="danger"
+                onClick={() => {
+                  remove({variables: {id: selectedConfig.id}});
+                  navigate(`/config/dmx/configs`);
+                }}
+              >
+                Remove DMX Config
+              </Button>
+              <Button
+                tag="a"
+                href={`/exportDmxConfigs/${selectedConfig.id}`}
+                color="secondary"
+                block
+                size="sm"
+              >
+                Export DMX Config
+              </Button>
+            </React.Fragment>
           )}
+
+          <label css={tw`mt-2`}>
+            <div className="btn btn-sm btn-info btn-block">
+              Import DMX Config
+            </div>
+            <input
+              hidden
+              type="file"
+              onChange={evt => {
+                if (evt?.target?.files?.[0]) {
+                  const data = new FormData();
+                  Array.from(evt.target.files).forEach((f, index) =>
+                    data.append(`files[${index}]`, f),
+                  );
+                  fetch(`/importDmxConfigs`, {
+                    method: "POST",
+                    body: data,
+                  }).then(() => {
+                    window.location.reload();
+                  });
+                }
+              }}
+            />
+          </label>
         </div>
         <div css={tw`flex flex-col col-span-2 overflow-y-hidden`}>
           {selectedConfig && selectedConfigSettings && (
@@ -175,6 +236,30 @@ const DMXConfigs: React.FC = () => {
                     })
                   }
                 />
+              </label>
+              <label>
+                Action Strength ({selectedConfig?.actionStrength})
+                <Input
+                  key={selectedConfig?.id}
+                  type="range"
+                  min={0.1}
+                  max={1}
+                  step={0.1}
+                  defaultValue={selectedConfig?.actionStrength}
+                  onChange={e =>
+                    selectedConfig &&
+                    setActionStrength({
+                      variables: {
+                        id: selectedConfig.id,
+                        actionStrength: parseFloat(e.target.value),
+                      },
+                    })
+                  }
+                />
+                <small>
+                  Decrease the strength of lighting effects, like shake or
+                  oscillate, to create configs for light-sensitive crew members.
+                </small>
               </label>
               <label>Alert Conditions</label>
               <div css={tw`overflow-y-auto flex-grow`}>

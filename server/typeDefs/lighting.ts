@@ -1,6 +1,7 @@
 import App from "../app";
 import {gql} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import handleTrigger from "../helpers/handleTrigger";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -25,6 +26,7 @@ const schema = gql`
 
   enum LIGHTING_ACTION {
     normal
+    darken
     blackout
     work
     fade
@@ -80,10 +82,17 @@ const lightingTimeouts = {};
 const resolver = {
   Query: {},
   Mutation: {
-    updateSimulatorLighting(rootValue, {id, lighting}) {
+    updateSimulatorLighting(rootValue, {id, lighting}, context) {
       const sim = App.simulators.find(s => s.id === id);
       sim.updateLighting(lighting);
       pubsub.publish("simulatorsUpdate", App.simulators);
+      if (lighting.action) {
+        handleTrigger(
+          "lightingSetEffect",
+          {effect: lighting.action, simulatorId: id},
+          context,
+        );
+      }
       if (
         (lighting.action === "shake" && lighting.transitionDuration) ||
         (lighting.action === "fade" &&
@@ -96,6 +105,11 @@ const resolver = {
           lighting.transitionDuration || sim.lighting.transitionDuration;
         lightingTimeouts[id] = setTimeout(() => {
           sim.updateLighting({action: "normal"});
+          handleTrigger(
+            "lightingSetEffect",
+            {effect: "normal", simulatorId: id},
+            context,
+          );
           pubsub.publish("simulatorsUpdate", App.simulators);
         }, duration);
       }
@@ -110,7 +124,7 @@ const resolver = {
       sim.updateLighting({intensity});
       pubsub.publish("simulatorsUpdate", App.simulators);
     },
-    lightingShakeLights(rootValue, {simulatorId, strength, duration}) {
+    lightingShakeLights(rootValue, {simulatorId, strength, duration}, context) {
       console.log(simulatorId, strength, duration);
       const sim = App.simulators.find(s => s.id === simulatorId);
       sim.updateLighting({
@@ -125,6 +139,11 @@ const resolver = {
         clearTimeout(lightingTimeouts[simulatorId]);
         lightingTimeouts[simulatorId] = setTimeout(() => {
           sim.updateLighting({action: "normal"});
+          handleTrigger(
+            "lightingSetEffect",
+            {effect: "normal", simulatorId},
+            context,
+          );
           pubsub.publish("simulatorsUpdate", App.simulators);
         }, duration);
       }
@@ -132,6 +151,7 @@ const resolver = {
     lightingFadeLights(
       rootValue,
       {simulatorId, duration, endIntensity, startIntensity},
+      context,
     ) {
       const sim = App.simulators.find(s => s.id === simulatorId);
       if (startIntensity || startIntensity === 0) {
@@ -149,6 +169,11 @@ const resolver = {
 
       lightingTimeouts[simulatorId] = setTimeout(() => {
         sim.updateLighting({action: "normal"});
+        handleTrigger(
+          "lightingSetEffect",
+          {effect: "normal", simulatorId},
+          context,
+        );
         pubsub.publish("simulatorsUpdate", App.simulators);
       }, duration);
     },

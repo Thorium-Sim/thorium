@@ -35,7 +35,6 @@ query Sets {
       secondary
       soundPlayer
     }
-    dmxSetId
   }
   clients {
     id

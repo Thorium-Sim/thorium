@@ -1,4 +1,5 @@
 import color from "tinycolor2";
+import defaultLightingConfig from "./defaultLightingConfig";
 
 export type DMXChannelProperty =
   | "red"
@@ -10,6 +11,7 @@ export type DMXChannelProperty =
   | "intensity"
   | "strobe"
   | "generic"
+  | "actionStrength"
   | "nothing";
 
 export type ChannelProperties =
@@ -36,14 +38,16 @@ export type ConfigObj = {
   "4": {[tag: string]: ChannelConfig};
   "5": {[tag: string]: ChannelConfig};
   p: {[tag: string]: ChannelConfig};
+  darken: {[tag: string]: ChannelConfig};
 };
 
-export type AlertLevels = "1" | "2" | "3" | "4" | "5" | "p";
+export type AlertLevels = "1" | "2" | "3" | "4" | "5" | "p" | "darken";
 
 export interface Lighting {
   intensity: number;
   action:
     | "normal"
+    | "darken"
     | "blackout"
     | "work"
     | "fade"
@@ -112,7 +116,11 @@ export default function generateUniverse(
   // Total Blackout
   if (lighting.action === "blackout") return universe;
 
-  const channelConfigs = lighting?.dmxConfig?.[alertLevel];
+  const channelConfigs =
+    lighting?.dmxConfig?.[
+      lighting.action === "darken" ? "darken" : alertLevel
+    ] ||
+    defaultLightingConfig[lighting.action === "darken" ? "darken" : alertLevel];
 
   fixtures.forEach(fixture => {
     if (fixture.mode === "passive") {
@@ -178,7 +186,7 @@ export default function generateUniverse(
               } else if (["amber", "white", "uv"].includes(key)) {
                 prev[key as ChannelProperties] = Number(value) * colorMultiply;
               } else {
-                prev[key as ChannelProperties] = value;
+                prev[key as ChannelProperties] = Number(value) || 0;
               }
             }
           });

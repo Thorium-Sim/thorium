@@ -3,6 +3,7 @@ import {MacroConfigProps} from "helpers/genericTypes";
 import styled from "@emotion/styled/macro";
 import {useMacroDmxConfigsQuery} from "generated/graphql";
 import {Input, Button, ButtonGroup} from "reactstrap";
+import {LightingOptions} from "components/views/Lighting";
 
 const FormWrapper = styled.div`
   label {
@@ -193,14 +194,7 @@ const LightingSetEffect: React.FC<MacroConfigProps> = ({
           value={args.effect}
           onChange={e => updateArgs("effect", e.target.value)}
         >
-          <option value="normal">Normal</option>
-          <option value="blackout">Blackout</option>
-          <option value="work">Work</option>
-          <hr />
-          <option value="fade">Fade</option>
-          <option value="oscillate">Oscillate</option>
-          <option value="strobe">Strobe</option>
-          <option value="shake">Shake</option>
+          <LightingOptions />
         </Input>
       </label>
       <label>

@@ -125,7 +125,7 @@ const schema = gql`
     clientMovieState(client: ID!, movie: String!): String
     clientSetTraining(client: ID!, training: Boolean!): String
     clientSetSoundPlayer(client: ID!, soundPlayer: Boolean!): String
-
+    clientActivateLights(clientId: ID!, dmxSetId: ID!): String
     clientAddCache(
       client: ID
       simulatorId: ID

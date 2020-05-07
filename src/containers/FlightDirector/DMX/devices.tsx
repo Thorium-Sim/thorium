@@ -47,6 +47,7 @@ const DMXDevices: React.FC = () => {
           ></SearchableList>
           <Button
             block
+            size="sm"
             color="success"
             onClick={() => {
               const name = prompt("What is the name of this DMX Device?");
@@ -63,6 +64,7 @@ const DMXDevices: React.FC = () => {
           {selectedDevice && (
             <Button
               block
+              size="sm"
               color="danger"
               onClick={() => {
                 remove({variables: {id: selectedDevice.id}});
@@ -95,7 +97,7 @@ const DMXDevices: React.FC = () => {
               <div css={tw`flex flex-col flex-grow overflow-y-auto`}>
                 {selectedDevice?.channels.map((c, i) => (
                   <div css={tw`flex items-center`}>
-                    {i}:
+                    {i + 1}:
                     <Input
                       type="select"
                       value={c}

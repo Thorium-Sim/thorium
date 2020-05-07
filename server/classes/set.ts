@@ -6,12 +6,10 @@ export default class Set {
   class: "Set" = "Set";
   name: string;
   clients: SetClient[];
-  dmxSetId: string | null;
   constructor(params: Partial<Set> = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Default Set";
     this.clients = params.clients || [];
-    this.dmxSetId = params.dmxSetId || null;
   }
   addClient(client: SetClient) {
     this.clients.push(new SetClient(client));
@@ -24,9 +22,6 @@ export default class Set {
   }
   updateClient(setClientInput: SetClient) {
     this.clients.find(c => c.id === setClientInput.id).update(setClientInput);
-  }
-  setDmxSetId(dmxSetId: string) {
-    this.dmxSetId = dmxSetId;
   }
 }
 

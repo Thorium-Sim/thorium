@@ -6,8 +6,6 @@ import {
   useAddSetMutation,
   useRenameSetMutation,
   useRemoveSetMutation,
-  useSetSetDmxSetMutation,
-  useDmxSetsSubscription,
 } from "generated/graphql";
 import {useParams, useNavigate} from "react-router-dom";
 import SetStationPicker from "./SetStationPicker";
@@ -20,8 +18,6 @@ const SetConfig: React.FC = () => {
   const [createSetMutation] = useAddSetMutation();
   const [renameSetMutation] = useRenameSetMutation();
   const [removeSetMutation] = useRemoveSetMutation();
-  const [setDMXSet] = useSetSetDmxSetMutation();
-  const {data: dmxData} = useDmxSetsSubscription();
 
   const {setId, simulatorId, stationSetId, station} = useParams();
 
@@ -122,28 +118,6 @@ const SetConfig: React.FC = () => {
                   </li>
                 ))}
               </Card>
-              <h5>DMX Set</h5>
-              <Input
-                type="select"
-                value={selectedSet?.dmxSetId || ""}
-                onChange={e =>
-                  setId &&
-                  setDMXSet({
-                    variables: {
-                      id: setId,
-                      dmxSetId: e.target.value,
-                    },
-                    refetchQueries: [{query: SetsDocument}],
-                  })
-                }
-              >
-                <option value="">None Selected</option>
-                {dmxData?.dmxSets.map(d => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
-              </Input>
             </>
           )}
         </Col>

@@ -80,7 +80,7 @@ function useClockSync() {
   useInterval(() => {
     if (clientId) {
       sentTime.current = Date.now();
-      clockSync();
+      clockSync().catch(() => {});
     }
   }, 5000);
   React.useEffect(() => {

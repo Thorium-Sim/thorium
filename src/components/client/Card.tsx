@@ -70,11 +70,11 @@ const CardRenderer: React.FC<CardFrameProps & {
       />
     );
   }
+  if (station.name.includes("dmxSet:")) {
+    return <Lighting clientId={client.id} simulator={simulator} />;
+  }
   if (station.name === "Sound") {
     return <SoundPlayer clientId={client.id} simulator={simulator} />;
-  }
-  if (station.name === "Lighting") {
-    return <Lighting simulator={simulator} />;
   }
   return (
     <LayoutComponent

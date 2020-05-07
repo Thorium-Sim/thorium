@@ -14,6 +14,7 @@ export default class DMXFixture {
   name: string;
   DMXDeviceId: string;
   simulatorId: string | null;
+  clientId: string | null;
   channel: number;
   mode: "active" | "passive";
   tags: ("main" | "accent" | "work" | "no effects" | string)[];
@@ -23,6 +24,7 @@ export default class DMXFixture {
     this.name = params.name || "DMX Fixture";
     this.DMXDeviceId = params.DMXDeviceId;
     this.simulatorId = params.simulatorId || null;
+    this.clientId = params.clientId || null;
     this.channel = params.channel || 0;
     this.mode = params.mode || "active";
     this.tags = params.tags || ["main"];

@@ -678,6 +678,7 @@ type DMXConfig {
   id: ID!
   name: String!
   config: JSON!
+  actionStrength: Float!
 }
 
 type DMXDevice {
@@ -691,6 +692,7 @@ type DMXFixture {
   id: ID!
   class: String!
   name: String!
+  clientId: String
   DMXDeviceId: String!
   DMXDevice: DMXDevice!
   simulatorId: String!
@@ -1269,6 +1271,7 @@ type Lighting {
 
 enum LIGHTING_ACTION {
   normal
+  darken
   blackout
   work
   fade
@@ -1640,6 +1643,7 @@ type Mutation {
   clientMovieState(client: ID!, movie: String!): String
   clientSetTraining(client: ID!, training: Boolean!): String
   clientSetSoundPlayer(client: ID!, soundPlayer: Boolean!): String
+  clientActivateLights(clientId: ID!, dmxSetId: ID!): String
   clientAddCache(client: ID, simulatorId: ID, viewscreen: Boolean, cacheItem: String!): String
   clientRemoveCache(client: ID!, cacheItem: String!): String
   setClientHypercard(clientId: ID, simulatorId: ID, component: String): String
@@ -2236,7 +2240,6 @@ type Mutation {
   removeClientFromSet(id: ID!, clientId: ID!): String
   updateSetClient(id: ID!, client: SetClientInput!): String
   renameSet(id: ID!, name: String!): String
-  setSetDMXSetId(id: ID!, dmxSetId: ID!): String
   shieldRaised(id: ID!): String
   shieldLowered(id: ID!): String
   shieldIntegritySet(id: ID!, integrity: Float): String
@@ -2725,6 +2728,7 @@ type Mutation {
   dmxDeviceSetChannels(id: ID!, channels: [DMXChannelProperty!]!): String
   dmxSetCreate(name: String!): String
   dmxSetRemove(id: ID!): String
+  dmxSetDuplicate(id: ID!, name: String!): String
   dmxSetSetName(id: ID!, name: String!): String
   dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
   dmxFixtureRemove(DMXSetId: ID!, id: ID!): String
@@ -2749,8 +2753,10 @@ type Mutation {
   dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tags: [String], passiveChannels: DMXPassiveChannelsInput!): String
   dmxConfigCreate(name: String!): String
   dmxConfigRemove(id: ID!): String
+  dmxConfigDuplicate(id: ID!, name: String!): String
   dmxConfigSetName(id: ID!, name: String!): String
   dmxConfigSetConfig(id: ID!, config: JSON!): String
+  dmxConfigSetActionStrength(id: ID!, actionStrength: Float!): String
 }
 
 type NamedObject {
@@ -3524,7 +3530,6 @@ type Set {
   id: ID!
   name: String!
   clients: [SetClient!]!
-  dmxSetId: ID
 }
 
 type SetClient {
@@ -4006,7 +4011,7 @@ type Subscription {
   entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
   dmxSets: [DMXSet!]!
   dmxDevices: [DMXDevice!]!
-  dmxFixtures(simulatorId: ID): [DMXFixture!]!
+  dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
   dmxConfigs: [DMXConfig!]!
 }
 
