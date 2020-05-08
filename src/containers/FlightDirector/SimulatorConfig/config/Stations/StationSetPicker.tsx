@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import {Card, Button, ButtonGroup} from "helpers/reactstrap";
 import ops from "./ops";
 import {useApolloClient} from "@apollo/client";
-import {Simulator} from "generated/graphql";
+import {Simulator, useStationSetDuplicateMutation} from "generated/graphql";
 import {useParams} from "react-router";
 import {useNavigate} from "react-router-dom";
 
@@ -56,6 +56,7 @@ const SimulatorConfigView: React.FC<SimulatorConfigProps> = ({sim}) => {
       variables,
     });
   };
+  const [duplicate] = useStationSetDuplicateMutation();
   const {stationSets} = sim;
   return (
     <Fragment>
@@ -77,16 +78,64 @@ const SimulatorConfigView: React.FC<SimulatorConfigProps> = ({sim}) => {
       <Button onClick={createStationSet} size="sm" block color="success">
         Add
       </Button>
+      <label>
+        <div className="btn btn-sm btn-info btn-block">Import Station Set</div>
+        <input
+          hidden
+          type="file"
+          onChange={evt => {
+            if (evt?.target?.files?.[0]) {
+              const data = new FormData();
+              Array.from(evt.target.files).forEach((f, index) =>
+                data.append(`files[${index}]`, f),
+              );
+              fetch(`/importStationSets`, {
+                method: "POST",
+                body: data,
+              }).then(() => {
+                window.location.reload();
+              });
+            }
+          }}
+        />
+      </label>
       <ButtonGroup>
         {selectedStationSet && (
-          <Button onClick={renameStationSet} size="sm" color="warning">
-            Rename
-          </Button>
-        )}
-        {selectedStationSet && (
-          <Button onClick={removeStationSet} size="sm" color="danger">
-            Remove
-          </Button>
+          <>
+            <Button onClick={renameStationSet} size="sm" color="warning">
+              Rename
+            </Button>
+
+            <Button onClick={removeStationSet} size="sm" color="danger">
+              Remove
+            </Button>
+
+            <Button
+              onClick={() => {
+                const name = prompt("What is the name of the new station set?");
+                if (!name) return;
+                duplicate({
+                  variables: {stationSetID: selectedStationSet, name},
+                }).then(res => {
+                  setStationSet(res.data?.duplicateStationSet || "");
+                });
+              }}
+              size="sm"
+              color="info"
+            >
+              Duplicate
+            </Button>
+
+            <Button
+              tag="a"
+              href={`/exportStationSets/${selectedStationSet}`}
+              color="secondary"
+              block
+              size="sm"
+            >
+              Export
+            </Button>
+          </>
         )}
       </ButtonGroup>
     </Fragment>

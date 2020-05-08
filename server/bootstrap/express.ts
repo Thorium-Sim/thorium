@@ -326,5 +326,7 @@ export default () => {
   } else {
     server.use("/assets/", express.static(path.resolve("./assets")));
   }
+  // console.log(server._router.stack.map(r => r.route?.path).filter(Boolean));
+
   return server;
 };

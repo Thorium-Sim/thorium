@@ -54,6 +54,7 @@ const schema = gql`
     createStationSet(name: String!, simulatorId: ID!): String
     removeStationSet(stationSetID: ID!): String
     renameStationSet(stationSetID: ID!, name: String!): String
+    duplicateStationSet(stationSetID: ID!, name: String!): String
     setStationSetCrewCount(stationSetID: ID!, crewCount: Int!): String
     addStationToStationSet(stationSetID: ID!, stationName: String!): String
     removeStationFromStationSet(stationSetID: ID!, stationName: String!): String
@@ -180,7 +181,7 @@ const resolver = {
         process.nextTick(() => {
           pubsub.publish(id, App.stationSets);
         });
-        return pubsub.asyncIterator([id, "simulatorsUpdate"]);
+        return pubsub.asyncIterator([id, "stationSetUpdate"]);
       },
     },
   },

@@ -25,6 +25,13 @@ App.on("renameStationSet", ({stationSetID, name}) => {
   stationSet.rename(name);
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
+App.on("duplicateStationSet", ({stationSetID, name, cb}) => {
+  const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
+  const newStationSet = new Classes.StationSet({...stationSet, name, id: null});
+  App.stationSets.push(newStationSet);
+  pubsub.publish("stationSetUpdate", App.stationSets);
+  cb && cb(newStationSet.id);
+});
 App.on("setStationSetCrewCount", ({stationSetID, crewCount}) => {
   const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
   stationSet.setCrewCount(crewCount);

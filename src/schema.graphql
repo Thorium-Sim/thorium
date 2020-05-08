@@ -2422,6 +2422,7 @@ type Mutation {
   createStationSet(name: String!, simulatorId: ID!): String
   removeStationSet(stationSetID: ID!): String
   renameStationSet(stationSetID: ID!, name: String!): String
+  duplicateStationSet(stationSetID: ID!, name: String!): String
   setStationSetCrewCount(stationSetID: ID!, crewCount: Int!): String
   addStationToStationSet(stationSetID: ID!, stationName: String!): String
   removeStationFromStationSet(stationSetID: ID!, stationName: String!): String

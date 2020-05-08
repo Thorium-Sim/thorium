@@ -2233,6 +2233,7 @@ export type Mutation = {
   createStationSet?: Maybe<Scalars["String"]>;
   removeStationSet?: Maybe<Scalars["String"]>;
   renameStationSet?: Maybe<Scalars["String"]>;
+  duplicateStationSet?: Maybe<Scalars["String"]>;
   setStationSetCrewCount?: Maybe<Scalars["String"]>;
   addStationToStationSet?: Maybe<Scalars["String"]>;
   removeStationFromStationSet?: Maybe<Scalars["String"]>;
@@ -5172,6 +5173,11 @@ export type MutationRemoveStationSetArgs = {
 };
 
 export type MutationRenameStationSetArgs = {
+  stationSetID: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type MutationDuplicateStationSetArgs = {
   stationSetID: Scalars["ID"];
   name: Scalars["String"];
 };
@@ -16163,6 +16169,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationRenameStationSetArgs, "stationSetID" | "name">
+  >;
+  duplicateStationSet?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationDuplicateStationSetArgs, "stationSetID" | "name">
   >;
   setStationSetCrewCount?: Resolver<
     Maybe<ResolversTypes["String"]>,

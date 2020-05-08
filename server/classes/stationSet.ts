@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import App from "../app";
 
 export class StationSet {
   id: string;
@@ -23,6 +24,17 @@ export class StationSet {
     stations.forEach(station => {
       this.addStation(station);
     });
+  }
+  static exportable = "stationSets";
+  serialize({addData}) {
+    const filename = `${this.name}.stationSet`;
+    const data = {...this};
+    addData("stationSets", data);
+    return filename;
+  }
+  static import(data: StationSet) {
+    const stationSet = new StationSet({...data, id: null});
+    App.stationSets.push(stationSet);
   }
   rename(name: string) {
     this.name = name;
@@ -121,6 +133,7 @@ export class Station {
       this.addCard(card);
     });
   }
+
   rename(name: string) {
     this.name = name;
   }

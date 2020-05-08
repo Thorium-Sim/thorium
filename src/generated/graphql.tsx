@@ -2230,6 +2230,7 @@ export type Mutation = {
   createStationSet?: Maybe<Scalars['String']>,
   removeStationSet?: Maybe<Scalars['String']>,
   renameStationSet?: Maybe<Scalars['String']>,
+  duplicateStationSet?: Maybe<Scalars['String']>,
   setStationSetCrewCount?: Maybe<Scalars['String']>,
   addStationToStationSet?: Maybe<Scalars['String']>,
   removeStationFromStationSet?: Maybe<Scalars['String']>,
@@ -5689,6 +5690,12 @@ export type MutationRemoveStationSetArgs = {
 
 
 export type MutationRenameStationSetArgs = {
+  stationSetID: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationDuplicateStationSetArgs = {
   stationSetID: Scalars['ID'],
   name: Scalars['String']
 };
@@ -12305,6 +12312,17 @@ export type AddStationMutation = (
   & Pick<Mutation, 'addStationToStationSet'>
 );
 
+export type StationSetDuplicateMutationVariables = {
+  stationSetID: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type StationSetDuplicateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'duplicateStationSet'>
+);
+
 export type PanelsAndInterfacesQueryVariables = {};
 
 
@@ -13386,26 +13404,23 @@ export type ClientPingMutationHookResult = ReturnType<typeof useClientPingMutati
 export type ClientPingMutationResult = ApolloReactCommon.MutationResult<ClientPingMutation>;
 export type ClientPingMutationOptions = ApolloReactCommon.BaseMutationOptions<ClientPingMutation, ClientPingMutationVariables>;
 export const LightingControlDocument = gql`
- subscription LightingControl($simulatorId: ID!) {
-        simulatorsUpdate(simulatorId: $simulatorId) {
-          id
-          lighting {
-            intensity
-            action
-            actionStrength
-            transitionDuration
-            dmxConfig {
-              id
-              config
-              actionStrength
-              __typename
-            }
-            __typename
-          }
-          alertlevel
-          __typename
-        }
+    subscription LightingControl($simulatorId: ID!) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    id
+    lighting {
+      intensity
+      action
+      actionStrength
+      transitionDuration
+      dmxConfig {
+        id
+        config
+        actionStrength
       }
+    }
+    alertlevel
+  }
+}
     `;
 
 /**
@@ -16603,7 +16618,6 @@ export const DmxConfigsDocument = gql`
     name
     config
     actionStrength
-    __typename
   }
 }
     `;
@@ -18358,6 +18372,37 @@ export function useAddStationMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type AddStationMutationHookResult = ReturnType<typeof useAddStationMutation>;
 export type AddStationMutationResult = ApolloReactCommon.MutationResult<AddStationMutation>;
 export type AddStationMutationOptions = ApolloReactCommon.BaseMutationOptions<AddStationMutation, AddStationMutationVariables>;
+export const StationSetDuplicateDocument = gql`
+    mutation StationSetDuplicate($stationSetID: ID!, $name: String!) {
+  duplicateStationSet(stationSetID: $stationSetID, name: $name)
+}
+    `;
+export type StationSetDuplicateMutationFn = ApolloReactCommon.MutationFunction<StationSetDuplicateMutation, StationSetDuplicateMutationVariables>;
+
+/**
+ * __useStationSetDuplicateMutation__
+ *
+ * To run a mutation, you first call `useStationSetDuplicateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStationSetDuplicateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [stationSetDuplicateMutation, { data, loading, error }] = useStationSetDuplicateMutation({
+ *   variables: {
+ *      stationSetID: // value for 'stationSetID'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useStationSetDuplicateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StationSetDuplicateMutation, StationSetDuplicateMutationVariables>) {
+        return ApolloReactHooks.useMutation<StationSetDuplicateMutation, StationSetDuplicateMutationVariables>(StationSetDuplicateDocument, baseOptions);
+      }
+export type StationSetDuplicateMutationHookResult = ReturnType<typeof useStationSetDuplicateMutation>;
+export type StationSetDuplicateMutationResult = ApolloReactCommon.MutationResult<StationSetDuplicateMutation>;
+export type StationSetDuplicateMutationOptions = ApolloReactCommon.BaseMutationOptions<StationSetDuplicateMutation, StationSetDuplicateMutationVariables>;
 export const PanelsAndInterfacesDocument = gql`
     query PanelsAndInterfaces {
   softwarePanels {
