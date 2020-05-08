@@ -7984,7 +7984,7 @@ export type RangeInput = {
 
 export type Reactor = SystemInterface & {
    __typename?: 'Reactor',
-  id?: Maybe<Scalars['ID']>,
+  id: Scalars['ID'],
   simulatorId?: Maybe<Scalars['ID']>,
   type?: Maybe<Scalars['String']>,
   name?: Maybe<Scalars['String']>,
@@ -8002,7 +8002,7 @@ export type Reactor = SystemInterface & {
   externalPower?: Maybe<Scalars['Boolean']>,
   powerOutput?: Maybe<Scalars['Int']>,
   efficiency?: Maybe<Scalars['Float']>,
-  efficiencies?: Maybe<Array<Maybe<ReactorEfficiency>>>,
+  efficiencies?: Maybe<Array<ReactorEfficiency>>,
   batteryChargeLevel?: Maybe<Scalars['Float']>,
   batteryChargeRate?: Maybe<Scalars['Float']>,
   depletion?: Maybe<Scalars['Float']>,
@@ -8022,15 +8022,15 @@ export enum Reactor_Models {
 
 export type ReactorEfficiency = {
    __typename?: 'ReactorEfficiency',
-  label?: Maybe<Scalars['String']>,
-  color?: Maybe<Scalars['String']>,
-  efficiency?: Maybe<Scalars['Float']>,
+  label: Scalars['String'],
+  color: Scalars['String'],
+  efficiency: Scalars['Float'],
 };
 
 export type ReactorEfficiencyInput = {
-  label?: Maybe<Scalars['String']>,
-  color?: Maybe<Scalars['String']>,
-  efficiency?: Maybe<Scalars['Float']>,
+  label: Scalars['String'],
+  color: Scalars['String'],
+  efficiency: Scalars['Float'],
 };
 
 export type RecordEntry = {
@@ -8756,7 +8756,7 @@ export type Subscription = {
   probesUpdate: Array<Probes>,
   scienceProbeEmitter?: Maybe<ScienceProbeEvent>,
   railgunUpdate?: Maybe<Array<Maybe<Railgun>>>,
-  reactorUpdate?: Maybe<Array<Maybe<Reactor>>>,
+  reactorUpdate: Array<Reactor>,
   recordSnippetsUpdate?: Maybe<Array<Maybe<RecordSnippet>>>,
   recordTemplatesUpdate?: Maybe<Array<Maybe<RecordSnippet>>>,
   roomsUpdate?: Maybe<Array<Maybe<Room>>>,
@@ -8776,7 +8776,7 @@ export type Subscription = {
   stealthFieldUpdate?: Maybe<Array<Maybe<StealthField>>>,
   subspaceFieldUpdate?: Maybe<Array<Maybe<SubspaceField>>>,
   surveyformUpdate?: Maybe<Array<Maybe<SurveyForm>>>,
-  systemsUpdate?: Maybe<Array<Maybe<System>>>,
+  systemsUpdate: Array<System>,
   tacticalMapsUpdate?: Maybe<Array<Maybe<TacticalMap>>>,
   tacticalMapUpdate?: Maybe<TacticalMap>,
   targetingUpdate?: Maybe<Array<Maybe<Targeting>>>,
@@ -10773,6 +10773,158 @@ export type UpdateLightingMutationVariables = {
 export type UpdateLightingMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'updateSimulatorLighting'>
+);
+
+export type BatteryChargeLevelMutationVariables = {
+  id: Scalars['ID'];
+  e: Scalars['Float'];
+};
+
+
+export type BatteryChargeLevelMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reactorBatteryChargeLevel'>
+);
+
+export type BatteryChargeRateMutationVariables = {
+  id: Scalars['ID'];
+  e: Scalars['Float'];
+};
+
+
+export type BatteryChargeRateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reactorBatteryChargeRate'>
+);
+
+export type SetDilithiumRateMutationVariables = {
+  id: Scalars['ID'];
+  rate: Scalars['Float'];
+};
+
+
+export type SetDilithiumRateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setDilithiumStressRate'>
+);
+
+export type ReactorDockingSubscriptionVariables = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type ReactorDockingSubscription = (
+  { __typename?: 'Subscription' }
+  & { simulatorsUpdate?: Maybe<Array<Maybe<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'id'>
+    & { ship?: Maybe<(
+      { __typename?: 'Ship' }
+      & Pick<Ship, 'clamps' | 'ramps' | 'airlock' | 'legs'>
+    )> }
+  )>>> }
+);
+
+export type FluxDilithiumMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type FluxDilithiumMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'fluxDilithiumStress'>
+);
+
+export type ReactorPowerSubscriptionVariables = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type ReactorPowerSubscription = (
+  { __typename?: 'Subscription' }
+  & { systemsUpdate: Array<(
+    { __typename?: 'System' }
+    & Pick<System, 'id' | 'name'>
+    & { power?: Maybe<(
+      { __typename?: 'Power' }
+      & Pick<Power, 'power'>
+    )> }
+  )> }
+);
+
+export type ReactorCoolMutationVariables = {
+  id: Scalars['ID'];
+  state?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type ReactorCoolMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'engineCool'>
+);
+
+export type ReactorHeatMutationVariables = {
+  id: Scalars['ID'];
+  heat?: Maybe<Scalars['Float']>;
+};
+
+
+export type ReactorHeatMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addHeat'>
+);
+
+export type ReactorSetHeatRateMutationVariables = {
+  id: Scalars['ID'];
+  rate: Scalars['Float'];
+};
+
+
+export type ReactorSetHeatRateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setHeatRate'>
+);
+
+export type ReactorPowerLevelMutationVariables = {
+  id: Scalars['ID'];
+  e: Scalars['Int'];
+};
+
+
+export type ReactorPowerLevelMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reactorChangeOutput'>
+);
+
+export type ReactorsSubscriptionVariables = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type ReactorsSubscription = (
+  { __typename?: 'Subscription' }
+  & { reactorUpdate: Array<(
+    { __typename?: 'Reactor' }
+    & Pick<Reactor, 'id' | 'type' | 'name' | 'heat' | 'heatRate' | 'model' | 'coolant' | 'ejected' | 'externalPower' | 'efficiency' | 'displayName' | 'powerOutput' | 'batteryChargeRate' | 'batteryChargeLevel' | 'depletion' | 'alphaLevel' | 'betaLevel' | 'alphaTarget' | 'betaTarget' | 'dilithiumRate'>
+    & { damage?: Maybe<(
+      { __typename?: 'Damage' }
+      & Pick<Damage, 'damaged'>
+    )>, efficiencies?: Maybe<Array<(
+      { __typename?: 'ReactorEfficiency' }
+      & Pick<ReactorEfficiency, 'label' | 'color' | 'efficiency'>
+    )>> }
+  )> }
+);
+
+export type ReactorSetEfficiencyMutationVariables = {
+  id: Scalars['ID'];
+  e?: Maybe<Scalars['Float']>;
+};
+
+
+export type ReactorSetEfficiencyMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reactorChangeEfficiency'>
 );
 
 export type SensorsPingSubSubscriptionVariables = {
@@ -14452,6 +14604,408 @@ export function useUpdateLightingMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type UpdateLightingMutationHookResult = ReturnType<typeof useUpdateLightingMutation>;
 export type UpdateLightingMutationResult = ApolloReactCommon.MutationResult<UpdateLightingMutation>;
 export type UpdateLightingMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateLightingMutation, UpdateLightingMutationVariables>;
+export const BatteryChargeLevelDocument = gql`
+    mutation BatteryChargeLevel($id: ID!, $e: Float!) {
+  reactorBatteryChargeLevel(id: $id, level: $e)
+}
+    `;
+export type BatteryChargeLevelMutationFn = ApolloReactCommon.MutationFunction<BatteryChargeLevelMutation, BatteryChargeLevelMutationVariables>;
+
+/**
+ * __useBatteryChargeLevelMutation__
+ *
+ * To run a mutation, you first call `useBatteryChargeLevelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBatteryChargeLevelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [batteryChargeLevelMutation, { data, loading, error }] = useBatteryChargeLevelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      e: // value for 'e'
+ *   },
+ * });
+ */
+export function useBatteryChargeLevelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<BatteryChargeLevelMutation, BatteryChargeLevelMutationVariables>) {
+        return ApolloReactHooks.useMutation<BatteryChargeLevelMutation, BatteryChargeLevelMutationVariables>(BatteryChargeLevelDocument, baseOptions);
+      }
+export type BatteryChargeLevelMutationHookResult = ReturnType<typeof useBatteryChargeLevelMutation>;
+export type BatteryChargeLevelMutationResult = ApolloReactCommon.MutationResult<BatteryChargeLevelMutation>;
+export type BatteryChargeLevelMutationOptions = ApolloReactCommon.BaseMutationOptions<BatteryChargeLevelMutation, BatteryChargeLevelMutationVariables>;
+export const BatteryChargeRateDocument = gql`
+    mutation BatteryChargeRate($id: ID!, $e: Float!) {
+  reactorBatteryChargeRate(id: $id, rate: $e)
+}
+    `;
+export type BatteryChargeRateMutationFn = ApolloReactCommon.MutationFunction<BatteryChargeRateMutation, BatteryChargeRateMutationVariables>;
+
+/**
+ * __useBatteryChargeRateMutation__
+ *
+ * To run a mutation, you first call `useBatteryChargeRateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBatteryChargeRateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [batteryChargeRateMutation, { data, loading, error }] = useBatteryChargeRateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      e: // value for 'e'
+ *   },
+ * });
+ */
+export function useBatteryChargeRateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<BatteryChargeRateMutation, BatteryChargeRateMutationVariables>) {
+        return ApolloReactHooks.useMutation<BatteryChargeRateMutation, BatteryChargeRateMutationVariables>(BatteryChargeRateDocument, baseOptions);
+      }
+export type BatteryChargeRateMutationHookResult = ReturnType<typeof useBatteryChargeRateMutation>;
+export type BatteryChargeRateMutationResult = ApolloReactCommon.MutationResult<BatteryChargeRateMutation>;
+export type BatteryChargeRateMutationOptions = ApolloReactCommon.BaseMutationOptions<BatteryChargeRateMutation, BatteryChargeRateMutationVariables>;
+export const SetDilithiumRateDocument = gql`
+    mutation SetDilithiumRate($id: ID!, $rate: Float!) {
+  setDilithiumStressRate(id: $id, rate: $rate)
+}
+    `;
+export type SetDilithiumRateMutationFn = ApolloReactCommon.MutationFunction<SetDilithiumRateMutation, SetDilithiumRateMutationVariables>;
+
+/**
+ * __useSetDilithiumRateMutation__
+ *
+ * To run a mutation, you first call `useSetDilithiumRateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetDilithiumRateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setDilithiumRateMutation, { data, loading, error }] = useSetDilithiumRateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      rate: // value for 'rate'
+ *   },
+ * });
+ */
+export function useSetDilithiumRateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetDilithiumRateMutation, SetDilithiumRateMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetDilithiumRateMutation, SetDilithiumRateMutationVariables>(SetDilithiumRateDocument, baseOptions);
+      }
+export type SetDilithiumRateMutationHookResult = ReturnType<typeof useSetDilithiumRateMutation>;
+export type SetDilithiumRateMutationResult = ApolloReactCommon.MutationResult<SetDilithiumRateMutation>;
+export type SetDilithiumRateMutationOptions = ApolloReactCommon.BaseMutationOptions<SetDilithiumRateMutation, SetDilithiumRateMutationVariables>;
+export const ReactorDockingDocument = gql`
+    subscription ReactorDocking($simulatorId: ID) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    id
+    ship {
+      clamps
+      ramps
+      airlock
+      legs
+    }
+  }
+}
+    `;
+
+/**
+ * __useReactorDockingSubscription__
+ *
+ * To run a query within a React component, call `useReactorDockingSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useReactorDockingSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReactorDockingSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useReactorDockingSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<ReactorDockingSubscription, ReactorDockingSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<ReactorDockingSubscription, ReactorDockingSubscriptionVariables>(ReactorDockingDocument, baseOptions);
+      }
+export type ReactorDockingSubscriptionHookResult = ReturnType<typeof useReactorDockingSubscription>;
+export type ReactorDockingSubscriptionResult = ApolloReactCommon.SubscriptionResult<ReactorDockingSubscription>;
+export const FluxDilithiumDocument = gql`
+    mutation FluxDilithium($id: ID!) {
+  fluxDilithiumStress(id: $id)
+}
+    `;
+export type FluxDilithiumMutationFn = ApolloReactCommon.MutationFunction<FluxDilithiumMutation, FluxDilithiumMutationVariables>;
+
+/**
+ * __useFluxDilithiumMutation__
+ *
+ * To run a mutation, you first call `useFluxDilithiumMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFluxDilithiumMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [fluxDilithiumMutation, { data, loading, error }] = useFluxDilithiumMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFluxDilithiumMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<FluxDilithiumMutation, FluxDilithiumMutationVariables>) {
+        return ApolloReactHooks.useMutation<FluxDilithiumMutation, FluxDilithiumMutationVariables>(FluxDilithiumDocument, baseOptions);
+      }
+export type FluxDilithiumMutationHookResult = ReturnType<typeof useFluxDilithiumMutation>;
+export type FluxDilithiumMutationResult = ApolloReactCommon.MutationResult<FluxDilithiumMutation>;
+export type FluxDilithiumMutationOptions = ApolloReactCommon.BaseMutationOptions<FluxDilithiumMutation, FluxDilithiumMutationVariables>;
+export const ReactorPowerDocument = gql`
+    subscription ReactorPower($simulatorId: ID) {
+  systemsUpdate(simulatorId: $simulatorId, power: true) {
+    id
+    name
+    power {
+      power
+    }
+  }
+}
+    `;
+
+/**
+ * __useReactorPowerSubscription__
+ *
+ * To run a query within a React component, call `useReactorPowerSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useReactorPowerSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReactorPowerSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useReactorPowerSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<ReactorPowerSubscription, ReactorPowerSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<ReactorPowerSubscription, ReactorPowerSubscriptionVariables>(ReactorPowerDocument, baseOptions);
+      }
+export type ReactorPowerSubscriptionHookResult = ReturnType<typeof useReactorPowerSubscription>;
+export type ReactorPowerSubscriptionResult = ApolloReactCommon.SubscriptionResult<ReactorPowerSubscription>;
+export const ReactorCoolDocument = gql`
+    mutation ReactorCool($id: ID!, $state: Boolean) {
+  engineCool(id: $id, state: $state)
+}
+    `;
+export type ReactorCoolMutationFn = ApolloReactCommon.MutationFunction<ReactorCoolMutation, ReactorCoolMutationVariables>;
+
+/**
+ * __useReactorCoolMutation__
+ *
+ * To run a mutation, you first call `useReactorCoolMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorCoolMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorCoolMutation, { data, loading, error }] = useReactorCoolMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      state: // value for 'state'
+ *   },
+ * });
+ */
+export function useReactorCoolMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorCoolMutation, ReactorCoolMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorCoolMutation, ReactorCoolMutationVariables>(ReactorCoolDocument, baseOptions);
+      }
+export type ReactorCoolMutationHookResult = ReturnType<typeof useReactorCoolMutation>;
+export type ReactorCoolMutationResult = ApolloReactCommon.MutationResult<ReactorCoolMutation>;
+export type ReactorCoolMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorCoolMutation, ReactorCoolMutationVariables>;
+export const ReactorHeatDocument = gql`
+    mutation ReactorHeat($id: ID!, $heat: Float) {
+  addHeat(id: $id, heat: $heat)
+}
+    `;
+export type ReactorHeatMutationFn = ApolloReactCommon.MutationFunction<ReactorHeatMutation, ReactorHeatMutationVariables>;
+
+/**
+ * __useReactorHeatMutation__
+ *
+ * To run a mutation, you first call `useReactorHeatMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorHeatMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorHeatMutation, { data, loading, error }] = useReactorHeatMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      heat: // value for 'heat'
+ *   },
+ * });
+ */
+export function useReactorHeatMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorHeatMutation, ReactorHeatMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorHeatMutation, ReactorHeatMutationVariables>(ReactorHeatDocument, baseOptions);
+      }
+export type ReactorHeatMutationHookResult = ReturnType<typeof useReactorHeatMutation>;
+export type ReactorHeatMutationResult = ApolloReactCommon.MutationResult<ReactorHeatMutation>;
+export type ReactorHeatMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorHeatMutation, ReactorHeatMutationVariables>;
+export const ReactorSetHeatRateDocument = gql`
+    mutation ReactorSetHeatRate($id: ID!, $rate: Float!) {
+  setHeatRate(id: $id, rate: $rate)
+}
+    `;
+export type ReactorSetHeatRateMutationFn = ApolloReactCommon.MutationFunction<ReactorSetHeatRateMutation, ReactorSetHeatRateMutationVariables>;
+
+/**
+ * __useReactorSetHeatRateMutation__
+ *
+ * To run a mutation, you first call `useReactorSetHeatRateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorSetHeatRateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorSetHeatRateMutation, { data, loading, error }] = useReactorSetHeatRateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      rate: // value for 'rate'
+ *   },
+ * });
+ */
+export function useReactorSetHeatRateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorSetHeatRateMutation, ReactorSetHeatRateMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorSetHeatRateMutation, ReactorSetHeatRateMutationVariables>(ReactorSetHeatRateDocument, baseOptions);
+      }
+export type ReactorSetHeatRateMutationHookResult = ReturnType<typeof useReactorSetHeatRateMutation>;
+export type ReactorSetHeatRateMutationResult = ApolloReactCommon.MutationResult<ReactorSetHeatRateMutation>;
+export type ReactorSetHeatRateMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorSetHeatRateMutation, ReactorSetHeatRateMutationVariables>;
+export const ReactorPowerLevelDocument = gql`
+    mutation ReactorPowerLevel($id: ID!, $e: Int!) {
+  reactorChangeOutput(id: $id, output: $e)
+}
+    `;
+export type ReactorPowerLevelMutationFn = ApolloReactCommon.MutationFunction<ReactorPowerLevelMutation, ReactorPowerLevelMutationVariables>;
+
+/**
+ * __useReactorPowerLevelMutation__
+ *
+ * To run a mutation, you first call `useReactorPowerLevelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorPowerLevelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorPowerLevelMutation, { data, loading, error }] = useReactorPowerLevelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      e: // value for 'e'
+ *   },
+ * });
+ */
+export function useReactorPowerLevelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorPowerLevelMutation, ReactorPowerLevelMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorPowerLevelMutation, ReactorPowerLevelMutationVariables>(ReactorPowerLevelDocument, baseOptions);
+      }
+export type ReactorPowerLevelMutationHookResult = ReturnType<typeof useReactorPowerLevelMutation>;
+export type ReactorPowerLevelMutationResult = ApolloReactCommon.MutationResult<ReactorPowerLevelMutation>;
+export type ReactorPowerLevelMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorPowerLevelMutation, ReactorPowerLevelMutationVariables>;
+export const ReactorsDocument = gql`
+    subscription Reactors($simulatorId: ID!) {
+  reactorUpdate(simulatorId: $simulatorId) {
+    id
+    type
+    name
+    heat
+    heatRate
+    model
+    coolant
+    damage {
+      damaged
+    }
+    ejected
+    externalPower
+    efficiency
+    efficiencies {
+      label
+      color
+      efficiency
+    }
+    displayName
+    powerOutput
+    batteryChargeRate
+    batteryChargeLevel
+    depletion
+    alphaLevel
+    betaLevel
+    alphaTarget
+    betaTarget
+    dilithiumRate
+  }
+}
+    `;
+
+/**
+ * __useReactorsSubscription__
+ *
+ * To run a query within a React component, call `useReactorsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useReactorsSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReactorsSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useReactorsSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<ReactorsSubscription, ReactorsSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<ReactorsSubscription, ReactorsSubscriptionVariables>(ReactorsDocument, baseOptions);
+      }
+export type ReactorsSubscriptionHookResult = ReturnType<typeof useReactorsSubscription>;
+export type ReactorsSubscriptionResult = ApolloReactCommon.SubscriptionResult<ReactorsSubscription>;
+export const ReactorSetEfficiencyDocument = gql`
+    mutation ReactorSetEfficiency($id: ID!, $e: Float) {
+  reactorChangeEfficiency(id: $id, efficiency: $e)
+}
+    `;
+export type ReactorSetEfficiencyMutationFn = ApolloReactCommon.MutationFunction<ReactorSetEfficiencyMutation, ReactorSetEfficiencyMutationVariables>;
+
+/**
+ * __useReactorSetEfficiencyMutation__
+ *
+ * To run a mutation, you first call `useReactorSetEfficiencyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorSetEfficiencyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorSetEfficiencyMutation, { data, loading, error }] = useReactorSetEfficiencyMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      e: // value for 'e'
+ *   },
+ * });
+ */
+export function useReactorSetEfficiencyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorSetEfficiencyMutation, ReactorSetEfficiencyMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorSetEfficiencyMutation, ReactorSetEfficiencyMutationVariables>(ReactorSetEfficiencyDocument, baseOptions);
+      }
+export type ReactorSetEfficiencyMutationHookResult = ReturnType<typeof useReactorSetEfficiencyMutation>;
+export type ReactorSetEfficiencyMutationResult = ApolloReactCommon.MutationResult<ReactorSetEfficiencyMutation>;
+export type ReactorSetEfficiencyMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorSetEfficiencyMutation, ReactorSetEfficiencyMutationVariables>;
 export const SensorsPingSubDocument = gql`
     subscription SensorsPingSub($sensorsId: ID!) {
   sensorsPing(sensorId: $sensorsId)

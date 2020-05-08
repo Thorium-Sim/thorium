@@ -1,10 +1,16 @@
 import React from "react";
 
-export const InputField = ({
+export const InputField: React.FC<{
+  promptValue?: string | number;
+  prompt: string;
+  alert?: boolean;
+  onClick: (value: string | number) => void;
+  [key: string]: any;
+}> = ({
   children,
-  promptValue,
+  promptValue = "",
   prompt: inputPrompt,
-  alert,
+  alert = false,
   onClick: propsOnClick,
   ...props
 }) => {
@@ -25,10 +31,17 @@ export const InputField = ({
     style.borderColor = "#a00";
   }
   const onClick = () => {
-    const value = prompt(inputPrompt, promptValue || children || "");
+    const childrenValue =
+      typeof children === "string" || typeof children === "number"
+        ? children
+        : null;
+    const value = prompt(
+      inputPrompt,
+      String(promptValue || childrenValue || ""),
+    );
     if (value === null) return; //props.onClick(null);
     const parseValue = isNaN(Number(value)) ? value : Number(value);
-    propsOnClick(parseValue);
+    propsOnClick(String(parseValue));
   };
   return (
     <div className="input-field" {...props} onClick={onClick} style={style}>
@@ -37,14 +50,23 @@ export const InputField = ({
   );
 };
 
-export const OutputField = ({
+export const OutputField: React.FC<{
+  style?: {
+    [key: string]: any;
+  };
+  alert?: boolean;
+  onClick?: () => void;
+  onDoubleClick?: () => void;
+  title?: string;
+  id?: string;
+}> = ({
   style = {},
   children = null,
-  alert = false,
-  onClick = undefined,
-  onDoubleClick = undefined,
-  title = undefined,
-  id = undefined,
+  alert,
+  onClick,
+  onDoubleClick,
+  title,
+  id,
 }) => {
   const compStyle = Object.assign(
     {
@@ -76,18 +98,36 @@ export const OutputField = ({
   );
 };
 
-export const TypingField = ({
+export const TypingField: React.FC<{
+  style?: {[key: string]: any};
+  onChange?: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
+  className?: string;
+  onBlur?: (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
+  value?: any;
+  rows?: number;
+  input?: boolean;
+  controlled?: boolean;
+  placeholder?: string;
+  alert?: boolean;
+  onDoubleClick?: (
+    event: React.MouseEvent<HTMLInputElement | HTMLTextAreaElement, MouseEvent>,
+  ) => void;
+}> = ({
   style = {},
-  onChange = null,
+  onChange,
   className = "",
-  onBlur = null,
+  onBlur,
   value = undefined,
   rows = undefined,
   input = undefined,
   controlled = false,
   placeholder = "",
   alert = false,
-  onDoubleClick = null,
+  onDoubleClick,
 }) => {
   const compStyle = Object.assign(
     {
@@ -135,7 +175,6 @@ export const TypingField = ({
   if (controlled) {
     return (
       <textarea
-        type="text"
         placeholder={placeholder}
         className={`typing-field ${className}`}
         rows={rows}
@@ -148,7 +187,6 @@ export const TypingField = ({
   }
   return (
     <textarea
-      type="text"
       className={`typing-field ${className}`}
       rows={rows}
       onChange={onChange}

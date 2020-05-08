@@ -1,7 +1,17 @@
 import {useState, useCallback, useLayoutEffect} from "react";
 
-function getDimensionObject(node) {
-  const rect = node.getBoundingClientRect();
+interface Dimensions {
+  width: number;
+  height: number;
+  top: number;
+  left: number;
+  x: number;
+  y: number;
+  right: number;
+  bottom: number;
+}
+function getDimensionObject<T>(node: T): Dimensions {
+  const rect = ((node as unknown) as HTMLElement).getBoundingClientRect();
 
   if (rect.toJSON) {
     return rect.toJSON();
@@ -19,9 +29,22 @@ function getDimensionObject(node) {
   }
 }
 
-function useDimensions() {
-  const [dimensions, setDimensions] = useState({});
-  const [node, setNode] = useState(null);
+function useDimensions<Element = HTMLElement>(): [
+  (node: Element) => void,
+  Dimensions,
+  Element | undefined,
+] {
+  const [dimensions, setDimensions] = useState<Dimensions>({
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0,
+    x: 0,
+    y: 0,
+    right: 0,
+    bottom: 0,
+  });
+  const [node, setNode] = useState<Element>();
 
   const ref = useCallback(node => {
     setNode(node);
@@ -31,7 +54,7 @@ function useDimensions() {
     if (node) {
       const measure = () =>
         window.requestAnimationFrame(() =>
-          setDimensions(getDimensionObject(node)),
+          setDimensions(getDimensionObject<Element>(node)),
         );
       measure();
 

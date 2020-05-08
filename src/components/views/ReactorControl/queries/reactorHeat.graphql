@@ -1,0 +1,3 @@
+mutation ReactorHeat($id: ID!, $heat: Float) {
+  addHeat(id: $id, heat: $heat)
+}

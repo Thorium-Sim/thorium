@@ -1,0 +1,3 @@
+mutation ReactorSetEfficiency($id: ID!, $e: Float) {
+  reactorChangeEfficiency(id: $id, efficiency: $e)
+}

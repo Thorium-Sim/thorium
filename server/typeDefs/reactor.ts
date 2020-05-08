@@ -1,12 +1,13 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
   type Reactor implements SystemInterface {
-    id: ID
+    id: ID!
     simulatorId: ID
     type: String
     name: String
@@ -25,7 +26,7 @@ const schema = gql`
     externalPower: Boolean
     powerOutput: Int
     efficiency: Float
-    efficiencies: [ReactorEfficiency]
+    efficiencies: [ReactorEfficiency!]
     batteryChargeLevel: Float
     batteryChargeRate: Float
     depletion: Float
@@ -46,15 +47,15 @@ const schema = gql`
   }
 
   type ReactorEfficiency {
-    label: String
-    color: String
-    efficiency: Float
+    label: String!
+    color: String!
+    efficiency: Float!
   }
 
   input ReactorEfficiencyInput {
-    label: String
-    color: String
-    efficiency: Float
+    label: String!
+    color: String!
+    efficiency: Float!
   }
   extend type Query {
     reactors(simulatorId: ID, model: String): [Reactor]
@@ -89,7 +90,7 @@ const schema = gql`
     reactorRequireBalance(id: ID!, balance: Boolean!): String
   }
   extend type Subscription {
-    reactorUpdate(simulatorId: ID): [Reactor]
+    reactorUpdate(simulatorId: ID): [Reactor!]!
   }
 `;
 
@@ -126,7 +127,16 @@ const resolver = {
         return returnRes;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("reactorUpdate"),
+        (rootValue, {simulatorId}) => {
+          const id = uuid.v4();
+          process.nextTick(() => {
+            let returnVal = App.systems.filter(s => s.class === "Reactor");
+            if (simulatorId)
+              returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+            pubsub.publish(id, returnVal);
+          });
+          return pubsub.asyncIterator([id, "reactorUpdate"]);
+        },
         rootValue => !!(rootValue && rootValue.length),
       ),
     },

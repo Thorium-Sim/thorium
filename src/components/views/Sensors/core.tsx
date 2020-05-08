@@ -273,9 +273,9 @@ const SensorsCore: React.FC<SensorsCoreProps> = ({simulator}) => {
             <TypingField
               style={{flexGrow: 6, minHeight: "44px"}}
               controlled
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setDataField(e.target.value)
-              }
+              onChange={(
+                e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+              ) => setDataField(e.target.value)}
               value={dataField}
             />
           </Col>

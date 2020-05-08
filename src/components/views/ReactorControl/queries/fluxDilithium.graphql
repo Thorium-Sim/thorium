@@ -1,0 +1,3 @@
+mutation FluxDilithium($id: ID!) {
+  fluxDilithiumStress(id: $id)
+}

@@ -32,7 +32,7 @@ async function setUpLightingDevice(): Promise<DMXDevice> {
     request: 0x22,
     // Yes
     value: 0x01,
-    // Interface #2
+    // Interface #0
     index: 0x00,
   });
 

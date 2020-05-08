@@ -3240,7 +3240,7 @@ input RangeInput {
 }
 
 type Reactor implements SystemInterface {
-  id: ID
+  id: ID!
   simulatorId: ID
   type: String
   name: String
@@ -3258,7 +3258,7 @@ type Reactor implements SystemInterface {
   externalPower: Boolean
   powerOutput: Int
   efficiency: Float
-  efficiencies: [ReactorEfficiency]
+  efficiencies: [ReactorEfficiency!]
   batteryChargeLevel: Float
   batteryChargeRate: Float
   depletion: Float
@@ -3277,15 +3277,15 @@ enum REACTOR_MODELS {
 }
 
 type ReactorEfficiency {
-  label: String
-  color: String
-  efficiency: Float
+  label: String!
+  color: String!
+  efficiency: Float!
 }
 
 input ReactorEfficiencyInput {
-  label: String
-  color: String
-  efficiency: Float
+  label: String!
+  color: String!
+  efficiency: Float!
 }
 
 type RecordEntry {
@@ -3967,7 +3967,7 @@ type Subscription {
   probesUpdate(simulatorId: ID!): [Probes!]!
   scienceProbeEmitter(simulatorId: ID!): ScienceProbeEvent
   railgunUpdate(simulatorId: ID): [Railgun]
-  reactorUpdate(simulatorId: ID): [Reactor]
+  reactorUpdate(simulatorId: ID): [Reactor!]!
   recordSnippetsUpdate(simulatorId: ID, visible: Boolean): [RecordSnippet]
   recordTemplatesUpdate: [RecordSnippet]
   roomsUpdate(simulatorId: ID!, role: RoomRoles): [Room]
@@ -3987,7 +3987,7 @@ type Subscription {
   stealthFieldUpdate(simulatorId: ID): [StealthField]
   subspaceFieldUpdate(simulatorId: ID): [SubspaceField]
   surveyformUpdate(simulatorId: ID, active: Boolean): [SurveyForm]
-  systemsUpdate(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean, damageWhich: String): [System]
+  systemsUpdate(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean, damageWhich: String): [System!]!
   tacticalMapsUpdate(flightId: ID): [TacticalMap]
   tacticalMapUpdate(id: ID!, lowInterval: Boolean): TacticalMap
   targetingUpdate(simulatorId: ID): [Targeting]

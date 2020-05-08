@@ -1,0 +1,3 @@
+mutation SetDilithiumRate($id: ID!, $rate: Float!) {
+  setDilithiumStressRate(id: $id, rate: $rate)
+}

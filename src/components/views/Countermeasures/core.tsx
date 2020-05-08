@@ -156,12 +156,12 @@ const CountermeasuresCore: React.FC<CountermeasuresCoreProps> = props => {
               alert={value === 0}
               prompt={`What is the new ${key} amount?`}
               promptValue={value}
-              onClick={(e: string) =>
+              onClick={(e: React.ReactText) =>
                 setMaterialLevel({
                   variables: {
                     id: countermeasures.id,
                     resource: key,
-                    value: parseInt(e, 10),
+                    value: parseInt(String(e), 10),
                   },
                 })
               }

@@ -1,0 +1,3 @@
+mutation ReactorSetHeatRate($id: ID!, $rate: Float!) {
+  setHeatRate(id: $id, rate: $rate)
+}

@@ -1,0 +1,3 @@
+mutation BatteryChargeRate($id: ID!, $e: Float!) {
+  reactorBatteryChargeRate(id: $id, rate: $e)
+}

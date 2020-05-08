@@ -7169,7 +7169,7 @@ export type RangeInput = {
 
 export type Reactor = SystemInterface & {
   __typename?: "Reactor";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
   type?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
@@ -7187,7 +7187,7 @@ export type Reactor = SystemInterface & {
   externalPower?: Maybe<Scalars["Boolean"]>;
   powerOutput?: Maybe<Scalars["Int"]>;
   efficiency?: Maybe<Scalars["Float"]>;
-  efficiencies?: Maybe<Array<Maybe<ReactorEfficiency>>>;
+  efficiencies?: Maybe<Array<ReactorEfficiency>>;
   batteryChargeLevel?: Maybe<Scalars["Float"]>;
   batteryChargeRate?: Maybe<Scalars["Float"]>;
   depletion?: Maybe<Scalars["Float"]>;
@@ -7207,15 +7207,15 @@ export enum Reactor_Models {
 
 export type ReactorEfficiency = {
   __typename?: "ReactorEfficiency";
-  label?: Maybe<Scalars["String"]>;
-  color?: Maybe<Scalars["String"]>;
-  efficiency?: Maybe<Scalars["Float"]>;
+  label: Scalars["String"];
+  color: Scalars["String"];
+  efficiency: Scalars["Float"];
 };
 
 export type ReactorEfficiencyInput = {
-  label?: Maybe<Scalars["String"]>;
-  color?: Maybe<Scalars["String"]>;
-  efficiency?: Maybe<Scalars["Float"]>;
+  label: Scalars["String"];
+  color: Scalars["String"];
+  efficiency: Scalars["Float"];
 };
 
 export type RecordEntry = {
@@ -7940,7 +7940,7 @@ export type Subscription = {
   probesUpdate: Array<Probes>;
   scienceProbeEmitter?: Maybe<ScienceProbeEvent>;
   railgunUpdate?: Maybe<Array<Maybe<Railgun>>>;
-  reactorUpdate?: Maybe<Array<Maybe<Reactor>>>;
+  reactorUpdate: Array<Reactor>;
   recordSnippetsUpdate?: Maybe<Array<Maybe<RecordSnippet>>>;
   recordTemplatesUpdate?: Maybe<Array<Maybe<RecordSnippet>>>;
   roomsUpdate?: Maybe<Array<Maybe<Room>>>;
@@ -7960,7 +7960,7 @@ export type Subscription = {
   stealthFieldUpdate?: Maybe<Array<Maybe<StealthField>>>;
   subspaceFieldUpdate?: Maybe<Array<Maybe<SubspaceField>>>;
   surveyformUpdate?: Maybe<Array<Maybe<SurveyForm>>>;
-  systemsUpdate?: Maybe<Array<Maybe<System>>>;
+  systemsUpdate: Array<System>;
   tacticalMapsUpdate?: Maybe<Array<Maybe<TacticalMap>>>;
   tacticalMapUpdate?: Maybe<TacticalMap>;
   targetingUpdate?: Maybe<Array<Maybe<Targeting>>>;
@@ -18725,7 +18725,7 @@ export type ReactorResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Reactor"] = ResolversParentTypes["Reactor"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   simulatorId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
@@ -18772,7 +18772,7 @@ export type ReactorResolvers<
     ContextType
   >;
   efficiencies?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["ReactorEfficiency"]>>>,
+    Maybe<Array<ResolversTypes["ReactorEfficiency"]>>,
     ParentType,
     ContextType
   >;
@@ -18825,13 +18825,9 @@ export type ReactorEfficiencyResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["ReactorEfficiency"] = ResolversParentTypes["ReactorEfficiency"]
 > = ResolversObject<{
-  label?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  color?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  efficiency?: Resolver<
-    Maybe<ResolversTypes["Float"]>,
-    ParentType,
-    ContextType
-  >;
+  label?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  color?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  efficiency?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -20554,7 +20550,7 @@ export type SubscriptionResolvers<
     RequireFields<SubscriptionRailgunUpdateArgs, never>
   >;
   reactorUpdate?: SubscriptionResolver<
-    Maybe<Array<Maybe<ResolversTypes["Reactor"]>>>,
+    Array<ResolversTypes["Reactor"]>,
     "reactorUpdate",
     ParentType,
     ContextType,
@@ -20691,7 +20687,7 @@ export type SubscriptionResolvers<
     RequireFields<SubscriptionSurveyformUpdateArgs, never>
   >;
   systemsUpdate?: SubscriptionResolver<
-    Maybe<Array<Maybe<ResolversTypes["System"]>>>,
+    Array<ResolversTypes["System"]>,
     "systemsUpdate",
     ParentType,
     ContextType,

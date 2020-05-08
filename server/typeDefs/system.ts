@@ -2,6 +2,7 @@ import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -96,7 +97,7 @@ const schema = gql`
       heat: Boolean
       extra: Boolean
       damageWhich: String
-    ): [System]
+    ): [System!]!
   }
 `;
 
@@ -187,7 +188,14 @@ const resolver = {
         return returnSystems;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("systemsUpdate"),
+        (rootValue, {simulatorId, template}) => {
+          const id = uuid.v4();
+          process.nextTick(() => {
+            let returnVal = App.systems;
+            pubsub.publish(id, returnVal);
+          });
+          return pubsub.asyncIterator([id, "systemsUpdate"]);
+        },
         rootValue => rootValue?.length > 0,
       ),
     },
