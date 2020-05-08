@@ -127,39 +127,43 @@ const TaskConfig = ({
           ))
         }
       </Mutation>
-      <Mutation
-        mutation={gql`
-          mutation SetTaskMacro($id: ID!, $macros: [TimelineItemInput]!) {
-            setTaskTemplateMacros(id: $id, macros: $macros)
-          }
-        `}
-      >
-        {action => (
-          <ConfigureMacro
-            action={action}
-            id={id}
-            macros={macros}
-            client={client}
-          />
-        )}
-      </Mutation>
-      <Mutation
-        mutation={gql`
-          mutation SetTaskMacro($id: ID!, $macros: [TimelineItemInput]!) {
-            setTaskTemplatePreMacros(id: $id, macros: $macros)
-          }
-        `}
-      >
-        {action => (
-          <ConfigureMacro
-            pre
-            action={action}
-            id={id}
-            macros={preMacros}
-            client={client}
-          />
-        )}
-      </Mutation>
+      <details>
+        <summary>Macros</summary>
+
+        <Mutation
+          mutation={gql`
+            mutation SetTaskMacro($id: ID!, $macros: [TimelineItemInput]!) {
+              setTaskTemplateMacros(id: $id, macros: $macros)
+            }
+          `}
+        >
+          {action => (
+            <ConfigureMacro
+              action={action}
+              id={id}
+              macros={macros}
+              client={client}
+            />
+          )}
+        </Mutation>
+        <Mutation
+          mutation={gql`
+            mutation SetTaskMacro($id: ID!, $macros: [TimelineItemInput]!) {
+              setTaskTemplatePreMacros(id: $id, macros: $macros)
+            }
+          `}
+        >
+          {action => (
+            <ConfigureMacro
+              pre
+              action={action}
+              id={id}
+              macros={preMacros}
+              client={client}
+            />
+          )}
+        </Mutation>
+      </details>
     </div>
   );
 };
@@ -184,6 +188,16 @@ export const ConfigureMacro = ({
       <div className="macro-config">
         <div style={{flex: 1}}>
           <label>Macro Config</label>
+          <label>
+            Delay
+            <Input
+              type="number"
+              value={configureMacro.delay}
+              onChange={e =>
+                update({...configureMacro, delay: parseInt(e.target.value, 10)})
+              }
+            ></Input>
+          </label>
           <MacroConfig
             action={configureMacro}
             updateAction={update}

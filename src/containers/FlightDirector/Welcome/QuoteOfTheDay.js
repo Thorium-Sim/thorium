@@ -75,6 +75,9 @@ const quotes = [
   "Man can't turn his back on what he came from. Besides, black is slimming.",
   "It's not a joke; I'm a legit snack!",
   "Words are the threads that weave the tapestries of life.",
+  "Salutations of the seasons be upon you.",
+  "Little victories, my friends. Little victories.",
+  "It is what we can’t see that fuels our imagination.",
 ];
 
 const QuoteOfTheDay = () => {
