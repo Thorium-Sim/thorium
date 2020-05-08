@@ -129,9 +129,18 @@ export default () => {
       server.get(
         `/export${pascalCase(exportObj.exportable)}/:id`,
         (req, res) => {
-          const id = req.params.id;
-          const obj = App?.[exportObj.exportable]?.find(o => o.id === id);
-          if (!obj || !obj.serialize) res.end(`No ${classKey}`);
+          const id = req.params.id.split(",");
+          const objects = App?.[exportObj.exportable]?.filter(o =>
+            id.includes(o.id),
+          );
+          if (objects.length === 0) {
+            res.end(`No ${classKey}`);
+            return;
+          }
+          if (!objects[0]?.serialize) {
+            res.end(`Cannot export ${classKey}`);
+            return;
+          }
           const zipfile = new yazl.ZipFile();
           function addAsset(fileName) {
             let key = fileName;
@@ -176,7 +185,10 @@ export default () => {
           function addData(key: string, data: any) {
             allData[key] = allData[key] ? allData[key].concat(data) : [data];
           }
-          const exportName = obj.serialize({addData, addAsset});
+          let exportName;
+          objects.forEach(obj => {
+            exportName = obj.serialize({addData, addAsset});
+          });
           const buff = Buffer.from(JSON.stringify(allData));
           zipfile.addBuffer(buff, `${exportObj.exportable}/data.json`, {
             mtime: new Date(),

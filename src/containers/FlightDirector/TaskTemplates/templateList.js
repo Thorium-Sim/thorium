@@ -13,6 +13,11 @@ const TemplateList = ({
     <ListGroup style={{flex: 1, overflowY: "auto", maxHeight: "70vh"}}>
       {taskTemplates
         .filter(t => t.definition === selectedDef)
+        .sort((a, b) => {
+          if (a.name > b.name) return 1;
+          if (a.name < b.name) return -1;
+          return 0;
+        })
         .map(t => (
           <ListGroupItem
             key={t.id}

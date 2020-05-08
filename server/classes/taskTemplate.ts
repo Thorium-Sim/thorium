@@ -1,8 +1,18 @@
 import uuid from "uuid";
 import taskDefinitions from "../tasks";
+import App from "../app";
 
+type ReportTypes = ("default" | "rnd" | "engineering")[];
 export default class TaskTemplate {
-  constructor(params = {}) {
+  id: string;
+  class: "TaskTemplate" = "TaskTemplate";
+  name: string;
+  values: {[key: string]: any};
+  definition: string;
+  reportTypes: ReportTypes;
+  macros: any[];
+  preMacros: any[];
+  constructor(params: Partial<TaskTemplate> = {}) {
     this.id = params.id || uuid.v4();
     this.class = "TaskTemplate";
     this.name = params.name || "Task Template";
@@ -12,7 +22,18 @@ export default class TaskTemplate {
     this.macros = params.macros || [];
     this.preMacros = params.preMacros || [];
   }
-  rename(name) {
+  static exportable = "taskTemplates";
+  serialize({addData}) {
+    const filename = `${this.definition}.taskTemplate`;
+    const data = {...this};
+    addData("taskTemplates", data);
+    return filename;
+  }
+  static import(data: TaskTemplate) {
+    const taskTemplate = new TaskTemplate({...data, id: null});
+    App.taskTemplates.push(taskTemplate);
+  }
+  rename(name: string) {
     this.name = name;
   }
   possibleValues({simulator}) {
@@ -25,19 +46,19 @@ export default class TaskTemplate {
       return prev;
     }, {});
   }
-  setValue(key, value) {
+  setValue(key: string, value: any) {
     this.values[key] = value;
   }
-  setValues(values) {
+  setValues(values: any) {
     this.values = values;
   }
-  setReportTypes(reportTypes) {
+  setReportTypes(reportTypes: ReportTypes) {
     this.reportTypes = reportTypes || [];
   }
-  setMacros(macros) {
+  setMacros(macros: any[]) {
     this.macros = macros || [];
   }
-  setPreMacros(macros) {
+  setPreMacros(macros: any[]) {
     this.preMacros = macros || [];
   }
 }
