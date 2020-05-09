@@ -14,3 +14,4 @@ export {default as Targeting} from "./Targeting";
 export {default as ComputerCore} from "./ComputerCore";
 export {default as Crm} from "./CRM";
 export {default as SignalJammer} from "./SignalJammer";
+export {default as TractorBeam} from "./TractorBeam";

@@ -2371,6 +2371,7 @@ export type Mutation = {
   setTractorBeamStress?: Maybe<Scalars["String"]>;
   setTractorBeamScanning?: Maybe<Scalars["String"]>;
   setTractorBeamTargetLabel?: Maybe<Scalars["String"]>;
+  setTractorBeamCount?: Maybe<Scalars["String"]>;
   addTractorTarget?: Maybe<Scalars["String"]>;
   removeTractorTarget?: Maybe<Scalars["String"]>;
   setTransportDestination?: Maybe<Scalars["String"]>;
@@ -5849,41 +5850,54 @@ export type MutationTorpedoFireArgs = {
 
 export type MutationSetTractorBeamStateArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   state: Scalars["Boolean"];
 };
 
 export type MutationSetTractorBeamTargetArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   target: Scalars["Boolean"];
 };
 
 export type MutationSetTractorBeamStrengthArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   strength: Scalars["Float"];
 };
 
 export type MutationSetTractorBeamStressArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   stress: Scalars["Float"];
 };
 
 export type MutationSetTractorBeamScanningArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   scanning: Scalars["Boolean"];
 };
 
 export type MutationSetTractorBeamTargetLabelArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   label: Scalars["String"];
+};
+
+export type MutationSetTractorBeamCountArgs = {
+  id: Scalars["ID"];
+  beams: Scalars["Int"];
 };
 
 export type MutationAddTractorTargetArgs = {
   id: Scalars["ID"];
+  beamId: Scalars["ID"];
   label?: Maybe<Scalars["String"]>;
 };
 
 export type MutationRemoveTractorTargetArgs = {
   id: Scalars["ID"];
+  beamId: Scalars["ID"];
 };
 
 export type MutationSetTransportDestinationArgs = {
@@ -9027,23 +9041,29 @@ export type Torpedo = SystemInterface & {
 
 export type TractorBeam = SystemInterface & {
   __typename?: "TractorBeam";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
   type?: Maybe<Scalars["String"]>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  name?: Maybe<Scalars["String"]>;
-  displayName?: Maybe<Scalars["String"]>;
+  power: Power;
+  damage: Damage;
+  name: Scalars["String"];
+  displayName: Scalars["String"];
   upgradeName?: Maybe<Scalars["String"]>;
   upgraded?: Maybe<Scalars["Boolean"]>;
   stealthFactor?: Maybe<Scalars["Float"]>;
   locations?: Maybe<Array<Maybe<Room>>>;
-  state?: Maybe<Scalars["Boolean"]>;
-  target?: Maybe<Scalars["Boolean"]>;
-  targetLabel?: Maybe<Scalars["String"]>;
-  strength?: Maybe<Scalars["Float"]>;
-  stress?: Maybe<Scalars["Float"]>;
-  scanning?: Maybe<Scalars["Boolean"]>;
+  beams: Array<TractorBeamBeam>;
+};
+
+export type TractorBeamBeam = {
+  __typename?: "TractorBeamBeam";
+  id: Scalars["ID"];
+  state: Scalars["Boolean"];
+  target: Scalars["Boolean"];
+  targetLabel: Scalars["String"];
+  strength: Scalars["Float"];
+  stress: Scalars["Float"];
+  scanning: Scalars["Boolean"];
 };
 
 export type Transporter = SystemInterface & {
@@ -9689,6 +9709,7 @@ export type ResolversTypes = ResolversObject<{
   Torpedo: ResolverTypeWrapper<Torpedo>;
   Warhead: ResolverTypeWrapper<Warhead>;
   TractorBeam: ResolverTypeWrapper<TractorBeam>;
+  TractorBeamBeam: ResolverTypeWrapper<TractorBeamBeam>;
   Transporter: ResolverTypeWrapper<Transporter>;
   TransporterTarget: ResolverTypeWrapper<TransporterTarget>;
   Transwarp: ResolverTypeWrapper<Transwarp>;
@@ -10058,6 +10079,7 @@ export type ResolversParentTypes = ResolversObject<{
   Torpedo: Torpedo;
   Warhead: Warhead;
   TractorBeam: TractorBeam;
+  TractorBeamBeam: TractorBeamBeam;
   Transporter: Transporter;
   TransporterTarget: TransporterTarget;
   Transwarp: Transwarp;
@@ -17076,49 +17098,64 @@ export type MutationResolvers<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamStateArgs, "id" | "state">
+    RequireFields<MutationSetTractorBeamStateArgs, "id" | "beam" | "state">
   >;
   setTractorBeamTarget?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamTargetArgs, "id" | "target">
+    RequireFields<MutationSetTractorBeamTargetArgs, "id" | "beam" | "target">
   >;
   setTractorBeamStrength?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamStrengthArgs, "id" | "strength">
+    RequireFields<
+      MutationSetTractorBeamStrengthArgs,
+      "id" | "beam" | "strength"
+    >
   >;
   setTractorBeamStress?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamStressArgs, "id" | "stress">
+    RequireFields<MutationSetTractorBeamStressArgs, "id" | "beam" | "stress">
   >;
   setTractorBeamScanning?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamScanningArgs, "id" | "scanning">
+    RequireFields<
+      MutationSetTractorBeamScanningArgs,
+      "id" | "beam" | "scanning"
+    >
   >;
   setTractorBeamTargetLabel?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamTargetLabelArgs, "id" | "label">
+    RequireFields<
+      MutationSetTractorBeamTargetLabelArgs,
+      "id" | "beam" | "label"
+    >
+  >;
+  setTractorBeamCount?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSetTractorBeamCountArgs, "id" | "beams">
   >;
   addTractorTarget?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationAddTractorTargetArgs, "id">
+    RequireFields<MutationAddTractorTargetArgs, "id" | "beamId">
   >;
   removeTractorTarget?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationRemoveTractorTargetArgs, "id">
+    RequireFields<MutationRemoveTractorTargetArgs, "id" | "beamId">
   >;
   setTransportDestination?: Resolver<
     Maybe<ResolversTypes["String"]>,
@@ -22077,17 +22114,13 @@ export type TractorBeamResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TractorBeam"] = ResolversParentTypes["TractorBeam"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   simulatorId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  power?: Resolver<Maybe<ResolversTypes["Power"]>, ParentType, ContextType>;
-  damage?: Resolver<Maybe<ResolversTypes["Damage"]>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  displayName?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  power?: Resolver<ResolversTypes["Power"], ParentType, ContextType>;
+  damage?: Resolver<ResolversTypes["Damage"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   upgradeName?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -22108,20 +22141,25 @@ export type TractorBeamResolvers<
     ParentType,
     ContextType
   >;
-  state?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
-  target?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
-  targetLabel?: Resolver<
-    Maybe<ResolversTypes["String"]>,
+  beams?: Resolver<
+    Array<ResolversTypes["TractorBeamBeam"]>,
     ParentType,
     ContextType
   >;
-  strength?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
-  stress?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
-  scanning?: Resolver<
-    Maybe<ResolversTypes["Boolean"]>,
-    ParentType,
-    ContextType
-  >;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type TractorBeamBeamResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["TractorBeamBeam"] = ResolversParentTypes["TractorBeamBeam"]
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  state?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  target?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  targetLabel?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  strength?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  stress?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  scanning?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -22574,6 +22612,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Timer?: TimerResolvers<ContextType>;
   Torpedo?: TorpedoResolvers<ContextType>;
   TractorBeam?: TractorBeamResolvers<ContextType>;
+  TractorBeamBeam?: TractorBeamBeamResolvers<ContextType>;
   Transporter?: TransporterResolvers<ContextType>;
   TransporterTarget?: TransporterTargetResolvers<ContextType>;
   Transwarp?: TranswarpResolvers<ContextType>;

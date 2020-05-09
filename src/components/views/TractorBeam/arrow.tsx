@@ -1,23 +1,20 @@
 import React from "react";
 
-const Arrow = ({
-  alertLevel,
-  level = 1,
-  mouseDown = () => {},
-  dimensions,
-  flop,
-  connected,
-}) => {
+const Arrow: React.FC<{
+  alertLevel: string;
+  level?: number;
+  flop?: boolean;
+  connected?: boolean;
+}> = ({alertLevel, level = 1, flop, connected, ...props}) => {
   return (
     <div
-      onMouseDown={mouseDown.bind(this, dimensions)}
-      onTouchStart={mouseDown.bind(this, dimensions)}
       style={{
         height: "100%",
         transform: `translateY(calc(${level * 100}% - 10px)) ${
           flop ? "" : "scaleX(-1)"
         }`,
       }}
+      {...props}
     >
       <svg
         version="1.1"

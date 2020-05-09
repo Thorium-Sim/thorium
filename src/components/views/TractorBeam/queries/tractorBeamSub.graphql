@@ -1,0 +1,24 @@
+subscription TractorBeamUpdate($simulatorId: ID!) {
+  tractorBeamUpdate(simulatorId: $simulatorId) {
+    id
+    name
+    displayName
+    beams {
+      id
+      state
+      target
+      targetLabel
+      strength
+      stress
+      scanning
+    }
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
+  }
+}
