@@ -2,7 +2,7 @@
 import React from "react";
 import {css, jsx} from "@emotion/core";
 import gql from "graphql-tag.macro";
-import {Row, Col, Container, Card} from "helpers/reactstrap";
+import {Container, Card} from "helpers/reactstrap";
 import {withApollo} from "react-apollo";
 import Tour from "helpers/tourHelper";
 import "./style.scss";
