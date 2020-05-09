@@ -80,6 +80,8 @@ export default class Sensors extends System {
     super(params);
     this.class = "Sensors";
     this.type = "Sensors";
+    this.wing = params.wing || "right";
+
     this.domain = params.domain || "external";
     if (this.domain === "external") {
       this.name = "External Sensors";

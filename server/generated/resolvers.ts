@@ -2063,6 +2063,10 @@ export type Mutation = {
   setReactorEffciciencies?: Maybe<Scalars["String"]>;
   setDilithiumStressRate?: Maybe<Scalars["String"]>;
   reactorRequireBalance?: Maybe<Scalars["String"]>;
+  reactorSetHasWings?: Maybe<Scalars["String"]>;
+  reactorSetWingPower?: Maybe<Scalars["String"]>;
+  reactorRequestWingPower?: Maybe<Scalars["String"]>;
+  reactorAckWingRequest?: Maybe<Scalars["String"]>;
   recordsCreate?: Maybe<Scalars["String"]>;
   recordsCreateSnippet?: Maybe<Scalars["String"]>;
   recordsAddToSnippet?: Maybe<Scalars["String"]>;
@@ -2272,6 +2276,7 @@ export type Mutation = {
   updateSystemUpgradeBoard?: Maybe<Scalars["String"]>;
   upgradeSystem?: Maybe<Scalars["String"]>;
   updateSystemRooms?: Maybe<Scalars["String"]>;
+  systemSetWing?: Maybe<Scalars["String"]>;
   newTacticalMap?: Maybe<Scalars["String"]>;
   updateTacticalMap?: Maybe<Scalars["String"]>;
   freezeTacticalMap?: Maybe<Scalars["String"]>;
@@ -4279,6 +4284,29 @@ export type MutationReactorRequireBalanceArgs = {
   balance: Scalars["Boolean"];
 };
 
+export type MutationReactorSetHasWingsArgs = {
+  id: Scalars["ID"];
+  hasWings: Scalars["Boolean"];
+};
+
+export type MutationReactorSetWingPowerArgs = {
+  id: Scalars["ID"];
+  wing: Scalars["String"];
+  power: Scalars["Int"];
+};
+
+export type MutationReactorRequestWingPowerArgs = {
+  id: Scalars["ID"];
+  wing: Scalars["String"];
+  power: Scalars["Int"];
+};
+
+export type MutationReactorAckWingRequestArgs = {
+  id: Scalars["ID"];
+  wing: Scalars["String"];
+  ack: Scalars["Boolean"];
+};
+
 export type MutationRecordsCreateArgs = {
   simulatorId: Scalars["ID"];
   contents: Scalars["String"];
@@ -5389,6 +5417,11 @@ export type MutationUpgradeSystemArgs = {
 export type MutationUpdateSystemRoomsArgs = {
   systemId: Scalars["ID"];
   locations?: Maybe<Array<Maybe<Scalars["ID"]>>>;
+};
+
+export type MutationSystemSetWingArgs = {
+  systemId: Scalars["ID"];
+  wing: Scalars["String"];
 };
 
 export type MutationNewTacticalMapArgs = {
@@ -7191,6 +7224,13 @@ export type Reactor = SystemInterface & {
   batteryChargeLevel?: Maybe<Scalars["Float"]>;
   batteryChargeRate?: Maybe<Scalars["Float"]>;
   depletion?: Maybe<Scalars["Float"]>;
+  hasWings?: Maybe<Scalars["Boolean"]>;
+  leftWingPower?: Maybe<Scalars["Int"]>;
+  leftWingRequest?: Maybe<Scalars["Int"]>;
+  leftWingRequested?: Maybe<Scalars["Boolean"]>;
+  rightWingPower?: Maybe<Scalars["Int"]>;
+  rightWingRequest?: Maybe<Scalars["Int"]>;
+  rightWingRequested?: Maybe<Scalars["Boolean"]>;
   alphaLevel?: Maybe<Scalars["Float"]>;
   betaLevel?: Maybe<Scalars["Float"]>;
   alphaTarget?: Maybe<Scalars["Float"]>;
@@ -7209,7 +7249,7 @@ export type ReactorEfficiency = {
   __typename?: "ReactorEfficiency";
   label: Scalars["String"];
   color: Scalars["String"];
-  efficiency: Scalars["Float"];
+  efficiency?: Maybe<Scalars["Float"]>;
 };
 
 export type ReactorEfficiencyInput = {
@@ -8470,6 +8510,7 @@ export type System = SystemInterface & {
   name?: Maybe<Scalars["String"]>;
   displayName?: Maybe<Scalars["String"]>;
   upgradeName?: Maybe<Scalars["String"]>;
+  wing?: Maybe<Scalars["String"]>;
   upgraded?: Maybe<Scalars["Boolean"]>;
   upgradeMacros?: Maybe<Array<Maybe<TimelineItem>>>;
   upgradeBoard?: Maybe<Scalars["ID"]>;
@@ -15039,6 +15080,30 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationReactorRequireBalanceArgs, "id" | "balance">
   >;
+  reactorSetHasWings?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationReactorSetHasWingsArgs, "id" | "hasWings">
+  >;
+  reactorSetWingPower?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationReactorSetWingPowerArgs, "id" | "wing" | "power">
+  >;
+  reactorRequestWingPower?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationReactorRequestWingPowerArgs, "id" | "wing" | "power">
+  >;
+  reactorAckWingRequest?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationReactorAckWingRequestArgs, "id" | "wing" | "ack">
+  >;
   recordsCreate?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -16448,6 +16513,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationUpdateSystemRoomsArgs, "systemId">
+  >;
+  systemSetWing?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSystemSetWingArgs, "systemId" | "wing">
   >;
   newTacticalMap?: Resolver<
     Maybe<ResolversTypes["String"]>,
@@ -18787,6 +18858,41 @@ export type ReactorResolvers<
     ContextType
   >;
   depletion?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
+  hasWings?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  leftWingPower?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType
+  >;
+  leftWingRequest?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType
+  >;
+  leftWingRequested?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  rightWingPower?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType
+  >;
+  rightWingRequest?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType
+  >;
+  rightWingRequested?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
   alphaLevel?: Resolver<
     Maybe<ResolversTypes["Float"]>,
     ParentType,
@@ -18827,7 +18933,11 @@ export type ReactorEfficiencyResolvers<
 > = ResolversObject<{
   label?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   color?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  efficiency?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  efficiency?: Resolver<
+    Maybe<ResolversTypes["Float"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -21004,6 +21114,7 @@ export type SystemResolvers<
     ParentType,
     ContextType
   >;
+  wing?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   upgraded?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,

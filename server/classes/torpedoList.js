@@ -6,6 +6,8 @@ export default class Torpedo extends System {
     super(params);
     this.class = "Torpedo";
     this.type = "Torpedo";
+    this.wing = params.wing || "left";
+
     this.name = params.name || "Torpedo";
     this.loaded = params.loaded || null;
     this.state = params.state || "idle";

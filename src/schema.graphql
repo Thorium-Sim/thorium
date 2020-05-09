@@ -2129,6 +2129,10 @@ type Mutation {
   setReactorEffciciencies(id: ID!, efficiencies: [ReactorEfficiencyInput]!): String
   setDilithiumStressRate(id: ID!, rate: Float!): String
   reactorRequireBalance(id: ID!, balance: Boolean!): String
+  reactorSetHasWings(id: ID!, hasWings: Boolean!): String
+  reactorSetWingPower(id: ID!, wing: String!, power: Int!): String
+  reactorRequestWingPower(id: ID!, wing: String!, power: Int!): String
+  reactorAckWingRequest(id: ID!, wing: String!, ack: Boolean!): String
 
   """Macro: Records: Create Ship Record"""
   recordsCreate(simulatorId: ID!, contents: String!, timestamp: String, category: String = "manual"): String
@@ -2463,6 +2467,7 @@ type Mutation {
   updateSystemUpgradeBoard(systemId: ID!, upgradeBoard: ID): String
   upgradeSystem(systemId: ID!): String
   updateSystemRooms(systemId: ID!, locations: [ID]): String
+  systemSetWing(systemId: ID!, wing: String!): String
   newTacticalMap(name: String!, flightId: ID): String
   updateTacticalMap(id: ID!): String
   freezeTacticalMap(id: ID!, freeze: Boolean!): String
@@ -3262,6 +3267,13 @@ type Reactor implements SystemInterface {
   batteryChargeLevel: Float
   batteryChargeRate: Float
   depletion: Float
+  hasWings: Boolean
+  leftWingPower: Int
+  leftWingRequest: Int
+  leftWingRequested: Boolean
+  rightWingPower: Int
+  rightWingRequest: Int
+  rightWingRequested: Boolean
   alphaLevel: Float
   betaLevel: Float
   alphaTarget: Float
@@ -3279,7 +3291,7 @@ enum REACTOR_MODELS {
 type ReactorEfficiency {
   label: String!
   color: String!
-  efficiency: Float!
+  efficiency: Float
 }
 
 input ReactorEfficiencyInput {
@@ -4061,6 +4073,7 @@ type System implements SystemInterface {
   name: String
   displayName: String
   upgradeName: String
+  wing: String
   upgraded: Boolean
   upgradeMacros: [TimelineItem]
   upgradeBoard: ID

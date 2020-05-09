@@ -34,6 +34,7 @@ const schema = gql`
     name: String
     displayName: String
     upgradeName: String
+    wing: String
     upgraded: Boolean
     upgradeMacros: [TimelineItem]
     upgradeBoard: ID
@@ -88,6 +89,7 @@ const schema = gql`
 
     upgradeSystem(systemId: ID!): String
     updateSystemRooms(systemId: ID!, locations: [ID]): String
+    systemSetWing(systemId: ID!, wing: String!): String
   }
   extend type Subscription {
     systemsUpdate(

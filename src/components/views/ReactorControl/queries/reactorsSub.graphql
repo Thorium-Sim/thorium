@@ -28,5 +28,13 @@ subscription Reactors($simulatorId: ID!) {
     alphaTarget
     betaTarget
     dilithiumRate
+
+    hasWings
+    leftWingPower
+    leftWingRequest
+    leftWingRequested
+    rightWingPower
+    rightWingRequest
+    rightWingRequested
   }
 }

@@ -16,6 +16,7 @@ export const GENERIC_QUERY = gql`
       id
       name
       displayName
+      wing
       upgradeName
       upgradeBoard
       upgradeMacros {

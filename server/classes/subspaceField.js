@@ -7,6 +7,8 @@ export default class SubspaceField extends System {
     super(params);
     this.class = "SubspaceField";
     this.type = "SubspaceField";
+    this.wing = params.wing || "right";
+
     this.name = params.name || "Subspace Field";
     this.power = params.power || {
       power: 0,

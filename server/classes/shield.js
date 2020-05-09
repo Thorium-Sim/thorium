@@ -12,6 +12,7 @@ export default class Shield extends System {
     });
     this.class = "Shield";
     this.type = "Shield";
+    this.wing = params.wing || "left";
 
     // One of '0,1,2,3,4,5,6'
     this.position = params.position || 0;

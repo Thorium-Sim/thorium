@@ -168,6 +168,12 @@ App.on("upgradeSystem", ({systemId}) => {
     sendUpdate(sys);
   }
 });
+App.on("systemSetWing", ({systemId, wing}) => {
+  let sys = App.systems.find(s => s.id === systemId);
+  if (!sys) return;
+  sys.setWing(wing);
+  sendUpdate(sys);
+});
 App.on("damageSystem", ({systemId, report, destroyed, which = "default"}) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
@@ -541,7 +547,7 @@ App.on("fluxSystemPower", ({id, simulatorId, all, type, name}) => {
     const index = Math.floor(Math.random() * length);
     return list[index];
   }
-  function fluxPower(sys, all) {
+  function fluxPower(sys, all?: boolean) {
     const level = Math.round(
       (1 + Math.random()) * (Math.random() > 0.5 ? -1 : 1),
     );

@@ -5,6 +5,8 @@ export default class TractorBeam extends System {
     super(params);
     this.class = "TractorBeam";
     this.type = "TractorBeam";
+    this.wing = params.wing || "right";
+
     this.name = params.name || "Tractor Beam";
     this.state = params.state || false;
     this.target = params.target || false;

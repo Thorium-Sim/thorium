@@ -1,7 +1,13 @@
 import {System} from "./generic";
 import HeatMixin from "./generic/heatMixin";
 
-const efficiencies = [
+interface Efficiency {
+  label: string;
+  color: string;
+  efficiency?: number | null;
+}
+
+const efficiencies: Efficiency[] = [
   {
     label: "Overload",
     color: "danger",
@@ -44,9 +50,35 @@ const efficiencies = [
 ];
 
 export default class Reactor extends HeatMixin(System) {
-  constructor(params = {}) {
+  class: "Reactor" = "Reactor";
+  type: "Reactor" = "Reactor";
+  name: string;
+  ejected: boolean;
+  model: "battery" | "reactor";
+  powerOutput: number;
+  efficiency: number;
+  efficiencies: Efficiency[];
+  externalPower: boolean;
+  batteryChargeLevel: number;
+  batteryChargeRate: number;
+  depletion: number;
+  requireBalance: boolean;
+  hasWings: boolean;
+  leftWingPower: number;
+  leftWingRequest: number;
+  leftWingRequested: boolean;
+  rightWingPower: number;
+  rightWingRequest: number;
+  rightWingRequested: boolean;
+
+  alphaLevel: number;
+  betaLevel: number;
+  alphaTarget: number;
+  betaTarget: number;
+  alerted: boolean;
+  dilithiumRate: number;
+  constructor(params: Partial<Reactor> = {}) {
     super(params);
-    this.class = "Reactor";
     this.type = "Reactor";
     this.name = params.name || "Reactor";
     this.ejected = params.ejected || false;
@@ -66,6 +98,15 @@ export default class Reactor extends HeatMixin(System) {
 
     this.requireBalance = params.requireBalance ?? true;
 
+    // Left and right wing power
+    this.hasWings = params.hasWings || false;
+    this.leftWingPower = params.leftWingPower || 60;
+    this.leftWingRequest = params.leftWingRequest || 60;
+    this.leftWingRequested = params.leftWingRequested || false;
+    this.rightWingPower = params.rightWingPower || 60;
+    this.rightWingRequest = params.rightWingRequest || 60;
+    this.rightWingRequested = params.rightWingRequested || false;
+
     // For Dilithium Stress
     const alpha = Math.round(Math.random() * 100);
     const beta = Math.round(Math.random() * 100);
@@ -84,31 +125,31 @@ export default class Reactor extends HeatMixin(System) {
   eject(tf = true) {
     this.ejected = tf;
   }
-  changeModel(model) {
+  changeModel(model: "battery" | "reactor") {
     this.model = model;
   }
-  changeOutput(output) {
+  changeOutput(output: number) {
     this.powerOutput = output;
   }
-  updateEfficiencies(e) {
+  updateEfficiencies(e: Efficiency[]) {
     this.efficiencies = e;
   }
-  changeEfficiency(efficiency) {
+  changeEfficiency(efficiency: number | string) {
     if (efficiency === "-1" || (!efficiency && efficiency !== 0)) {
       this.externalPower = true;
       this.efficiency = 1.5;
     } else {
       this.externalPower = false;
-      this.efficiency = efficiency;
+      this.efficiency = Number(efficiency);
     }
   }
-  changeBatteryChargeLevel(level) {
+  changeBatteryChargeLevel(level: number) {
     this.batteryChargeLevel = Math.min(1, Math.max(0, level));
   }
-  changeBatteryChargeRate(rate) {
+  changeBatteryChargeRate(rate: number) {
     this.batteryChargeRate = rate;
   }
-  setDepletion(value) {
+  setDepletion(value: number) {
     this.depletion = value;
   }
   updateDilithiumStress({alphaLevel, betaLevel, alphaTarget, betaTarget}) {
@@ -117,10 +158,46 @@ export default class Reactor extends HeatMixin(System) {
     if (alphaTarget || alphaTarget === 0) this.alphaTarget = alphaTarget;
     if (betaTarget || betaTarget === 0) this.betaTarget = betaTarget;
   }
-  setDilithiumRate(rate) {
+  setDilithiumRate(rate: number) {
     this.dilithiumRate = rate;
   }
-  setRequireBalance(tf) {
+  setRequireBalance(tf: boolean) {
     this.requireBalance = tf;
+  }
+  setHasWings(tf: boolean) {
+    this.hasWings = tf;
+  }
+  requestWingPower(wing: "left" | "right", power: number) {
+    if (wing === "left") {
+      this.leftWingRequest = power;
+      this.leftWingRequested = true;
+    } else {
+      this.rightWingRequest = power;
+      this.rightWingRequested = true;
+    }
+  }
+  setWingPower(wing: "left" | "right", power: number) {
+    if (wing === "left") {
+      this.leftWingPower = power;
+    } else {
+      this.rightWingPower = power;
+    }
+  }
+  ackWingRequest(wing: "left" | "right", ack: boolean) {
+    if (ack) {
+      if (wing === "left") {
+        this.leftWingPower = this.leftWingRequest;
+        this.leftWingRequested = false;
+      } else {
+        this.rightWingPower = this.rightWingRequest;
+        this.rightWingRequested = false;
+      }
+    } else {
+      if (wing === "left") {
+        this.leftWingRequested = false;
+      } else {
+        this.rightWingRequested = false;
+      }
+    }
   }
 }

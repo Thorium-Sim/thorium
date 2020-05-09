@@ -1,0 +1,3 @@
+mutation SystemSetWing($systemId: ID!, $wing: String!) {
+  systemSetWing(systemId: $systemId, wing: $wing)
+}

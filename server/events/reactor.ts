@@ -1,6 +1,7 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
+import {Reactor} from "../classes";
 
 App.on("reactorEject", ({id, tf = true}) => {
   const system = App.systems.find(sys => sys.id === id);
@@ -139,6 +140,43 @@ App.on("setDilithiumStressRate", ({id, rate}) => {
 App.on("reactorRequireBalance", ({id, balance, cb}) => {
   const system = App.systems.find(sys => sys.id === id);
   system.setRequireBalance(balance);
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor"),
+  );
+  cb && cb();
+});
+
+App.on("reactorSetHasWings", ({id, hasWings, cb}) => {
+  const system: Reactor = App.systems.find(sys => sys.id === id);
+  system.setHasWings(hasWings);
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor"),
+  );
+  cb && cb();
+});
+App.on("reactorSetWingPower", ({id, wing, power, cb}) => {
+  const system: Reactor = App.systems.find(sys => sys.id === id);
+  system.setWingPower(wing, power);
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor"),
+  );
+  cb && cb();
+});
+App.on("reactorRequestWingPower", ({id, wing, power, cb}) => {
+  const system: Reactor = App.systems.find(sys => sys.id === id);
+  system.requestWingPower(wing, power);
+  pubsub.publish(
+    "reactorUpdate",
+    App.systems.filter(s => s.type === "Reactor"),
+  );
+  cb && cb();
+});
+App.on("reactorAckWingRequest", ({id, wing, ack, cb}) => {
+  const system: Reactor = App.systems.find(sys => sys.id === id);
+  system.ackWingRequest(wing, ack);
   pubsub.publish(
     "reactorUpdate",
     App.systems.filter(s => s.type === "Reactor"),

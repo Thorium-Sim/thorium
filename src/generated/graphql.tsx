@@ -2060,6 +2060,10 @@ export type Mutation = {
   setReactorEffciciencies?: Maybe<Scalars['String']>,
   setDilithiumStressRate?: Maybe<Scalars['String']>,
   reactorRequireBalance?: Maybe<Scalars['String']>,
+  reactorSetHasWings?: Maybe<Scalars['String']>,
+  reactorSetWingPower?: Maybe<Scalars['String']>,
+  reactorRequestWingPower?: Maybe<Scalars['String']>,
+  reactorAckWingRequest?: Maybe<Scalars['String']>,
   recordsCreate?: Maybe<Scalars['String']>,
   recordsCreateSnippet?: Maybe<Scalars['String']>,
   recordsAddToSnippet?: Maybe<Scalars['String']>,
@@ -2269,6 +2273,7 @@ export type Mutation = {
   updateSystemUpgradeBoard?: Maybe<Scalars['String']>,
   upgradeSystem?: Maybe<Scalars['String']>,
   updateSystemRooms?: Maybe<Scalars['String']>,
+  systemSetWing?: Maybe<Scalars['String']>,
   newTacticalMap?: Maybe<Scalars['String']>,
   updateTacticalMap?: Maybe<Scalars['String']>,
   freezeTacticalMap?: Maybe<Scalars['String']>,
@@ -4629,6 +4634,33 @@ export type MutationReactorRequireBalanceArgs = {
 };
 
 
+export type MutationReactorSetHasWingsArgs = {
+  id: Scalars['ID'],
+  hasWings: Scalars['Boolean']
+};
+
+
+export type MutationReactorSetWingPowerArgs = {
+  id: Scalars['ID'],
+  wing: Scalars['String'],
+  power: Scalars['Int']
+};
+
+
+export type MutationReactorRequestWingPowerArgs = {
+  id: Scalars['ID'],
+  wing: Scalars['String'],
+  power: Scalars['Int']
+};
+
+
+export type MutationReactorAckWingRequestArgs = {
+  id: Scalars['ID'],
+  wing: Scalars['String'],
+  ack: Scalars['Boolean']
+};
+
+
 export type MutationRecordsCreateArgs = {
   simulatorId: Scalars['ID'],
   contents: Scalars['String'],
@@ -5945,6 +5977,12 @@ export type MutationUpgradeSystemArgs = {
 export type MutationUpdateSystemRoomsArgs = {
   systemId: Scalars['ID'],
   locations?: Maybe<Array<Maybe<Scalars['ID']>>>
+};
+
+
+export type MutationSystemSetWingArgs = {
+  systemId: Scalars['ID'],
+  wing: Scalars['String']
 };
 
 
@@ -8006,6 +8044,13 @@ export type Reactor = SystemInterface & {
   batteryChargeLevel?: Maybe<Scalars['Float']>,
   batteryChargeRate?: Maybe<Scalars['Float']>,
   depletion?: Maybe<Scalars['Float']>,
+  hasWings?: Maybe<Scalars['Boolean']>,
+  leftWingPower?: Maybe<Scalars['Int']>,
+  leftWingRequest?: Maybe<Scalars['Int']>,
+  leftWingRequested?: Maybe<Scalars['Boolean']>,
+  rightWingPower?: Maybe<Scalars['Int']>,
+  rightWingRequest?: Maybe<Scalars['Int']>,
+  rightWingRequested?: Maybe<Scalars['Boolean']>,
   alphaLevel?: Maybe<Scalars['Float']>,
   betaLevel?: Maybe<Scalars['Float']>,
   alphaTarget?: Maybe<Scalars['Float']>,
@@ -8024,7 +8069,7 @@ export type ReactorEfficiency = {
    __typename?: 'ReactorEfficiency',
   label: Scalars['String'],
   color: Scalars['String'],
-  efficiency: Scalars['Float'],
+  efficiency?: Maybe<Scalars['Float']>,
 };
 
 export type ReactorEfficiencyInput = {
@@ -9381,6 +9426,7 @@ export type System = SystemInterface & {
   name?: Maybe<Scalars['String']>,
   displayName?: Maybe<Scalars['String']>,
   upgradeName?: Maybe<Scalars['String']>,
+  wing?: Maybe<Scalars['String']>,
   upgraded?: Maybe<Scalars['Boolean']>,
   upgradeMacros?: Maybe<Array<Maybe<TimelineItem>>>,
   upgradeBoard?: Maybe<Scalars['ID']>,
@@ -10730,6 +10776,44 @@ export type CountermeasuresSetFdNoteMutation = (
   & Pick<Mutation, 'countermeasuresSetFDNote'>
 );
 
+export type SystemsCoreEnginesQueryVariables = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type SystemsCoreEnginesQuery = (
+  { __typename?: 'Query' }
+  & { engines?: Maybe<Array<Maybe<(
+    { __typename?: 'Engine' }
+    & Pick<Engine, 'id'>
+    & { speeds?: Maybe<Array<Maybe<(
+      { __typename?: 'Speed' }
+      & Pick<Speed, 'number'>
+    )>>> }
+  )>>> }
+);
+
+export type SystemChangePowerMutationVariables = {
+  systemId: Scalars['ID'];
+  power: Scalars['Int'];
+};
+
+
+export type SystemChangePowerMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'changePower'>
+);
+
+export type SystemUpgradeMutationVariables = {
+  systemId: Scalars['ID'];
+};
+
+
+export type SystemUpgradeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'upgradeSystem'>
+);
+
 export type LightingSetEffectMutationVariables = {
   simulatorId: Scalars['ID'];
   effect: Lighting_Action;
@@ -10773,6 +10857,18 @@ export type UpdateLightingMutationVariables = {
 export type UpdateLightingMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'updateSimulatorLighting'>
+);
+
+export type ReactorAckWingPowerMutationVariables = {
+  id: Scalars['ID'];
+  wing: Scalars['String'];
+  ack: Scalars['Boolean'];
+};
+
+
+export type ReactorAckWingPowerMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reactorAckWingRequest'>
 );
 
 export type BatteryChargeLevelMutationVariables = {
@@ -10905,7 +11001,7 @@ export type ReactorsSubscription = (
   { __typename?: 'Subscription' }
   & { reactorUpdate: Array<(
     { __typename?: 'Reactor' }
-    & Pick<Reactor, 'id' | 'type' | 'name' | 'heat' | 'heatRate' | 'model' | 'coolant' | 'ejected' | 'externalPower' | 'efficiency' | 'displayName' | 'powerOutput' | 'batteryChargeRate' | 'batteryChargeLevel' | 'depletion' | 'alphaLevel' | 'betaLevel' | 'alphaTarget' | 'betaTarget' | 'dilithiumRate'>
+    & Pick<Reactor, 'id' | 'type' | 'name' | 'heat' | 'heatRate' | 'model' | 'coolant' | 'ejected' | 'externalPower' | 'efficiency' | 'displayName' | 'powerOutput' | 'batteryChargeRate' | 'batteryChargeLevel' | 'depletion' | 'alphaLevel' | 'betaLevel' | 'alphaTarget' | 'betaTarget' | 'dilithiumRate' | 'hasWings' | 'leftWingPower' | 'leftWingRequest' | 'leftWingRequested' | 'rightWingPower' | 'rightWingRequest' | 'rightWingRequested'>
     & { damage?: Maybe<(
       { __typename?: 'Damage' }
       & Pick<Damage, 'damaged'>
@@ -10914,6 +11010,18 @@ export type ReactorsSubscription = (
       & Pick<ReactorEfficiency, 'label' | 'color' | 'efficiency'>
     )>> }
   )> }
+);
+
+export type ReactorRequestWingPowerMutationVariables = {
+  id: Scalars['ID'];
+  wing: Scalars['String'];
+  power: Scalars['Int'];
+};
+
+
+export type ReactorRequestWingPowerMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reactorRequestWingPower'>
 );
 
 export type ReactorSetEfficiencyMutationVariables = {
@@ -10925,6 +11033,18 @@ export type ReactorSetEfficiencyMutationVariables = {
 export type ReactorSetEfficiencyMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'reactorChangeEfficiency'>
+);
+
+export type ReactorSetWingPowerMutationVariables = {
+  id: Scalars['ID'];
+  wing: Scalars['String'];
+  power: Scalars['Int'];
+};
+
+
+export type ReactorSetWingPowerMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reactorSetWingPower'>
 );
 
 export type SensorsPingSubSubscriptionVariables = {
@@ -12661,6 +12781,17 @@ export type UpdateStationCardMutation = (
   & Pick<Mutation, 'editCardInStationSet'>
 );
 
+export type SystemSetWingMutationVariables = {
+  systemId: Scalars['ID'];
+  wing: Scalars['String'];
+};
+
+
+export type SystemSetWingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'systemSetWing'>
+);
+
 export type SensorsSetPingsMutationVariables = {
   id: Scalars['ID'];
   ping: Scalars['Boolean'];
@@ -12670,6 +12801,17 @@ export type SensorsSetPingsMutationVariables = {
 export type SensorsSetPingsMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'sensorsSetHasPing'>
+);
+
+export type ReactorSetWingsMutationVariables = {
+  id: Scalars['ID'];
+  hasWings: Scalars['Boolean'];
+};
+
+
+export type ReactorSetWingsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reactorSetHasWings'>
 );
 
 export type RemoveSimulatorMutationVariables = {
@@ -14479,6 +14621,103 @@ export function useCountermeasuresSetFdNoteMutation(baseOptions?: ApolloReactHoo
 export type CountermeasuresSetFdNoteMutationHookResult = ReturnType<typeof useCountermeasuresSetFdNoteMutation>;
 export type CountermeasuresSetFdNoteMutationResult = ApolloReactCommon.MutationResult<CountermeasuresSetFdNoteMutation>;
 export type CountermeasuresSetFdNoteMutationOptions = ApolloReactCommon.BaseMutationOptions<CountermeasuresSetFdNoteMutation, CountermeasuresSetFdNoteMutationVariables>;
+export const SystemsCoreEnginesDocument = gql`
+    query SystemsCoreEngines($simulatorId: ID!) {
+  engines(simulatorId: $simulatorId) {
+    id
+    speeds {
+      number
+    }
+  }
+}
+    `;
+
+/**
+ * __useSystemsCoreEnginesQuery__
+ *
+ * To run a query within a React component, call `useSystemsCoreEnginesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSystemsCoreEnginesQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSystemsCoreEnginesQuery({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useSystemsCoreEnginesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>) {
+        return ApolloReactHooks.useQuery<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>(SystemsCoreEnginesDocument, baseOptions);
+      }
+export function useSystemsCoreEnginesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>(SystemsCoreEnginesDocument, baseOptions);
+        }
+export type SystemsCoreEnginesQueryHookResult = ReturnType<typeof useSystemsCoreEnginesQuery>;
+export type SystemsCoreEnginesLazyQueryHookResult = ReturnType<typeof useSystemsCoreEnginesLazyQuery>;
+export type SystemsCoreEnginesQueryResult = ApolloReactCommon.QueryResult<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>;
+export const SystemChangePowerDocument = gql`
+    mutation SystemChangePower($systemId: ID!, $power: Int!) {
+  changePower(systemId: $systemId, power: $power)
+}
+    `;
+export type SystemChangePowerMutationFn = ApolloReactCommon.MutationFunction<SystemChangePowerMutation, SystemChangePowerMutationVariables>;
+
+/**
+ * __useSystemChangePowerMutation__
+ *
+ * To run a mutation, you first call `useSystemChangePowerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSystemChangePowerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [systemChangePowerMutation, { data, loading, error }] = useSystemChangePowerMutation({
+ *   variables: {
+ *      systemId: // value for 'systemId'
+ *      power: // value for 'power'
+ *   },
+ * });
+ */
+export function useSystemChangePowerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SystemChangePowerMutation, SystemChangePowerMutationVariables>) {
+        return ApolloReactHooks.useMutation<SystemChangePowerMutation, SystemChangePowerMutationVariables>(SystemChangePowerDocument, baseOptions);
+      }
+export type SystemChangePowerMutationHookResult = ReturnType<typeof useSystemChangePowerMutation>;
+export type SystemChangePowerMutationResult = ApolloReactCommon.MutationResult<SystemChangePowerMutation>;
+export type SystemChangePowerMutationOptions = ApolloReactCommon.BaseMutationOptions<SystemChangePowerMutation, SystemChangePowerMutationVariables>;
+export const SystemUpgradeDocument = gql`
+    mutation SystemUpgrade($systemId: ID!) {
+  upgradeSystem(systemId: $systemId)
+}
+    `;
+export type SystemUpgradeMutationFn = ApolloReactCommon.MutationFunction<SystemUpgradeMutation, SystemUpgradeMutationVariables>;
+
+/**
+ * __useSystemUpgradeMutation__
+ *
+ * To run a mutation, you first call `useSystemUpgradeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSystemUpgradeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [systemUpgradeMutation, { data, loading, error }] = useSystemUpgradeMutation({
+ *   variables: {
+ *      systemId: // value for 'systemId'
+ *   },
+ * });
+ */
+export function useSystemUpgradeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SystemUpgradeMutation, SystemUpgradeMutationVariables>) {
+        return ApolloReactHooks.useMutation<SystemUpgradeMutation, SystemUpgradeMutationVariables>(SystemUpgradeDocument, baseOptions);
+      }
+export type SystemUpgradeMutationHookResult = ReturnType<typeof useSystemUpgradeMutation>;
+export type SystemUpgradeMutationResult = ApolloReactCommon.MutationResult<SystemUpgradeMutation>;
+export type SystemUpgradeMutationOptions = ApolloReactCommon.BaseMutationOptions<SystemUpgradeMutation, SystemUpgradeMutationVariables>;
 export const LightingSetEffectDocument = gql`
     mutation LightingSetEffect($simulatorId: ID!, $effect: LIGHTING_ACTION!, $duration: Float!) {
   lightingSetEffect(simulatorId: $simulatorId, effect: $effect, duration: $duration)
@@ -14604,6 +14843,38 @@ export function useUpdateLightingMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type UpdateLightingMutationHookResult = ReturnType<typeof useUpdateLightingMutation>;
 export type UpdateLightingMutationResult = ApolloReactCommon.MutationResult<UpdateLightingMutation>;
 export type UpdateLightingMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateLightingMutation, UpdateLightingMutationVariables>;
+export const ReactorAckWingPowerDocument = gql`
+    mutation ReactorAckWingPower($id: ID!, $wing: String!, $ack: Boolean!) {
+  reactorAckWingRequest(id: $id, wing: $wing, ack: $ack)
+}
+    `;
+export type ReactorAckWingPowerMutationFn = ApolloReactCommon.MutationFunction<ReactorAckWingPowerMutation, ReactorAckWingPowerMutationVariables>;
+
+/**
+ * __useReactorAckWingPowerMutation__
+ *
+ * To run a mutation, you first call `useReactorAckWingPowerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorAckWingPowerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorAckWingPowerMutation, { data, loading, error }] = useReactorAckWingPowerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      wing: // value for 'wing'
+ *      ack: // value for 'ack'
+ *   },
+ * });
+ */
+export function useReactorAckWingPowerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorAckWingPowerMutation, ReactorAckWingPowerMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorAckWingPowerMutation, ReactorAckWingPowerMutationVariables>(ReactorAckWingPowerDocument, baseOptions);
+      }
+export type ReactorAckWingPowerMutationHookResult = ReturnType<typeof useReactorAckWingPowerMutation>;
+export type ReactorAckWingPowerMutationResult = ApolloReactCommon.MutationResult<ReactorAckWingPowerMutation>;
+export type ReactorAckWingPowerMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorAckWingPowerMutation, ReactorAckWingPowerMutationVariables>;
 export const BatteryChargeLevelDocument = gql`
     mutation BatteryChargeLevel($id: ID!, $e: Float!) {
   reactorBatteryChargeLevel(id: $id, level: $e)
@@ -14950,6 +15221,13 @@ export const ReactorsDocument = gql`
     alphaTarget
     betaTarget
     dilithiumRate
+    hasWings
+    leftWingPower
+    leftWingRequest
+    leftWingRequested
+    rightWingPower
+    rightWingRequest
+    rightWingRequested
   }
 }
     `;
@@ -14975,6 +15253,38 @@ export function useReactorsSubscription(baseOptions?: ApolloReactHooks.Subscript
       }
 export type ReactorsSubscriptionHookResult = ReturnType<typeof useReactorsSubscription>;
 export type ReactorsSubscriptionResult = ApolloReactCommon.SubscriptionResult<ReactorsSubscription>;
+export const ReactorRequestWingPowerDocument = gql`
+    mutation ReactorRequestWingPower($id: ID!, $wing: String!, $power: Int!) {
+  reactorRequestWingPower(id: $id, wing: $wing, power: $power)
+}
+    `;
+export type ReactorRequestWingPowerMutationFn = ApolloReactCommon.MutationFunction<ReactorRequestWingPowerMutation, ReactorRequestWingPowerMutationVariables>;
+
+/**
+ * __useReactorRequestWingPowerMutation__
+ *
+ * To run a mutation, you first call `useReactorRequestWingPowerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorRequestWingPowerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorRequestWingPowerMutation, { data, loading, error }] = useReactorRequestWingPowerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      wing: // value for 'wing'
+ *      power: // value for 'power'
+ *   },
+ * });
+ */
+export function useReactorRequestWingPowerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorRequestWingPowerMutation, ReactorRequestWingPowerMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorRequestWingPowerMutation, ReactorRequestWingPowerMutationVariables>(ReactorRequestWingPowerDocument, baseOptions);
+      }
+export type ReactorRequestWingPowerMutationHookResult = ReturnType<typeof useReactorRequestWingPowerMutation>;
+export type ReactorRequestWingPowerMutationResult = ApolloReactCommon.MutationResult<ReactorRequestWingPowerMutation>;
+export type ReactorRequestWingPowerMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorRequestWingPowerMutation, ReactorRequestWingPowerMutationVariables>;
 export const ReactorSetEfficiencyDocument = gql`
     mutation ReactorSetEfficiency($id: ID!, $e: Float) {
   reactorChangeEfficiency(id: $id, efficiency: $e)
@@ -15006,6 +15316,38 @@ export function useReactorSetEfficiencyMutation(baseOptions?: ApolloReactHooks.M
 export type ReactorSetEfficiencyMutationHookResult = ReturnType<typeof useReactorSetEfficiencyMutation>;
 export type ReactorSetEfficiencyMutationResult = ApolloReactCommon.MutationResult<ReactorSetEfficiencyMutation>;
 export type ReactorSetEfficiencyMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorSetEfficiencyMutation, ReactorSetEfficiencyMutationVariables>;
+export const ReactorSetWingPowerDocument = gql`
+    mutation ReactorSetWingPower($id: ID!, $wing: String!, $power: Int!) {
+  reactorSetWingPower(id: $id, wing: $wing, power: $power)
+}
+    `;
+export type ReactorSetWingPowerMutationFn = ApolloReactCommon.MutationFunction<ReactorSetWingPowerMutation, ReactorSetWingPowerMutationVariables>;
+
+/**
+ * __useReactorSetWingPowerMutation__
+ *
+ * To run a mutation, you first call `useReactorSetWingPowerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorSetWingPowerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorSetWingPowerMutation, { data, loading, error }] = useReactorSetWingPowerMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      wing: // value for 'wing'
+ *      power: // value for 'power'
+ *   },
+ * });
+ */
+export function useReactorSetWingPowerMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorSetWingPowerMutation, ReactorSetWingPowerMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorSetWingPowerMutation, ReactorSetWingPowerMutationVariables>(ReactorSetWingPowerDocument, baseOptions);
+      }
+export type ReactorSetWingPowerMutationHookResult = ReturnType<typeof useReactorSetWingPowerMutation>;
+export type ReactorSetWingPowerMutationResult = ApolloReactCommon.MutationResult<ReactorSetWingPowerMutation>;
+export type ReactorSetWingPowerMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorSetWingPowerMutation, ReactorSetWingPowerMutationVariables>;
 export const SensorsPingSubDocument = gql`
     subscription SensorsPingSub($sensorsId: ID!) {
   sensorsPing(sensorId: $sensorsId)
@@ -19446,6 +19788,37 @@ export function useUpdateStationCardMutation(baseOptions?: ApolloReactHooks.Muta
 export type UpdateStationCardMutationHookResult = ReturnType<typeof useUpdateStationCardMutation>;
 export type UpdateStationCardMutationResult = ApolloReactCommon.MutationResult<UpdateStationCardMutation>;
 export type UpdateStationCardMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateStationCardMutation, UpdateStationCardMutationVariables>;
+export const SystemSetWingDocument = gql`
+    mutation SystemSetWing($systemId: ID!, $wing: String!) {
+  systemSetWing(systemId: $systemId, wing: $wing)
+}
+    `;
+export type SystemSetWingMutationFn = ApolloReactCommon.MutationFunction<SystemSetWingMutation, SystemSetWingMutationVariables>;
+
+/**
+ * __useSystemSetWingMutation__
+ *
+ * To run a mutation, you first call `useSystemSetWingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSystemSetWingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [systemSetWingMutation, { data, loading, error }] = useSystemSetWingMutation({
+ *   variables: {
+ *      systemId: // value for 'systemId'
+ *      wing: // value for 'wing'
+ *   },
+ * });
+ */
+export function useSystemSetWingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SystemSetWingMutation, SystemSetWingMutationVariables>) {
+        return ApolloReactHooks.useMutation<SystemSetWingMutation, SystemSetWingMutationVariables>(SystemSetWingDocument, baseOptions);
+      }
+export type SystemSetWingMutationHookResult = ReturnType<typeof useSystemSetWingMutation>;
+export type SystemSetWingMutationResult = ApolloReactCommon.MutationResult<SystemSetWingMutation>;
+export type SystemSetWingMutationOptions = ApolloReactCommon.BaseMutationOptions<SystemSetWingMutation, SystemSetWingMutationVariables>;
 export const SensorsSetPingsDocument = gql`
     mutation SensorsSetPings($id: ID!, $ping: Boolean!) {
   sensorsSetHasPing(id: $id, ping: $ping)
@@ -19477,6 +19850,37 @@ export function useSensorsSetPingsMutation(baseOptions?: ApolloReactHooks.Mutati
 export type SensorsSetPingsMutationHookResult = ReturnType<typeof useSensorsSetPingsMutation>;
 export type SensorsSetPingsMutationResult = ApolloReactCommon.MutationResult<SensorsSetPingsMutation>;
 export type SensorsSetPingsMutationOptions = ApolloReactCommon.BaseMutationOptions<SensorsSetPingsMutation, SensorsSetPingsMutationVariables>;
+export const ReactorSetWingsDocument = gql`
+    mutation ReactorSetWings($id: ID!, $hasWings: Boolean!) {
+  reactorSetHasWings(id: $id, hasWings: $hasWings)
+}
+    `;
+export type ReactorSetWingsMutationFn = ApolloReactCommon.MutationFunction<ReactorSetWingsMutation, ReactorSetWingsMutationVariables>;
+
+/**
+ * __useReactorSetWingsMutation__
+ *
+ * To run a mutation, you first call `useReactorSetWingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useReactorSetWingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [reactorSetWingsMutation, { data, loading, error }] = useReactorSetWingsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      hasWings: // value for 'hasWings'
+ *   },
+ * });
+ */
+export function useReactorSetWingsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ReactorSetWingsMutation, ReactorSetWingsMutationVariables>) {
+        return ApolloReactHooks.useMutation<ReactorSetWingsMutation, ReactorSetWingsMutationVariables>(ReactorSetWingsDocument, baseOptions);
+      }
+export type ReactorSetWingsMutationHookResult = ReturnType<typeof useReactorSetWingsMutation>;
+export type ReactorSetWingsMutationResult = ApolloReactCommon.MutationResult<ReactorSetWingsMutation>;
+export type ReactorSetWingsMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorSetWingsMutation, ReactorSetWingsMutationVariables>;
 export const RemoveSimulatorDocument = gql`
     mutation RemoveSimulator($id: ID!) {
   removeSimulator(simulatorId: $id)

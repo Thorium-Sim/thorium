@@ -1,4 +1,6 @@
+/** @jsx jsx */
 import React from "react";
+import {css, jsx} from "@emotion/core";
 import gql from "graphql-tag.macro";
 import {Row, Col, Container, Card} from "helpers/reactstrap";
 import {withApollo} from "react-apollo";
@@ -7,6 +9,11 @@ import "./style.scss";
 import AnimatedNumber from "react-animated-number";
 import PowerLine from "../JumpDrive/powerLine";
 import {useQuery, useSubscription} from "@apollo/client";
+import {capitalCase} from "change-case";
+import {FaArrowDown, FaArrowUp} from "react-icons/fa";
+import {useMouseIncrement} from "../ShieldControl/frequencyArrows";
+import {Button} from "reactstrap";
+import {useReactorRequestWingPowerMutation} from "generated/graphql";
 
 const mutation = gql`
   mutation ChangePower($id: ID!, $level: Int!) {
@@ -20,6 +27,7 @@ export const SYSTEMS_SUB = gql`
       id
       displayName
       type
+      wing
       power {
         power
         powerLevels
@@ -39,11 +47,18 @@ export const REACTOR_SUB = gql`
       batteryChargeLevel
       efficiency
       powerOutput
+      hasWings
+      leftWingPower
+      leftWingRequest
+      leftWingRequested
+      rightWingPower
+      rightWingRequest
+      rightWingRequested
     }
   }
 `;
 
-const PowerDistribution = ({client, simulator, clientObj}) => {
+const PowerDistribution = ({client, simulator, clientObj, wing = null}) => {
   const {loading, data} = useQuery(SYSTEMS_QUERY, {
     variables: {
       simulatorId: simulator.id,
@@ -57,14 +72,17 @@ const PowerDistribution = ({client, simulator, clientObj}) => {
   });
 
   if (loading || !data) return null;
-  const systems = systemsSub ? systemsSub.systemsUpdate : data.systems;
+  const systems = (systemsSub
+    ? systemsSub.systemsUpdate
+    : data.systems
+  ).filter(s => (wing ? s.wing === wing : true));
   const reactors = reactorSub ? reactorSub.reactorUpdate : data.reactors;
   // Get the batteries, get just the first one.
   const battery = reactors.find(r => r.model === "battery");
   const reactor = reactors.find(r => r.model === "reactor");
   const charge = battery && battery.batteryChargeLevel;
 
-  const trainingSteps = hasBattery =>
+  const trainingSteps = (hasBattery, wings) =>
     [
       {
         selector: ".nothing",
@@ -86,31 +104,66 @@ const PowerDistribution = ({client, simulator, clientObj}) => {
         content:
           "These are the ship’s batteries, if it has any. They show how much power is remaining in the batteries. If you use more power than is being outputted by your reactor, power will draw from the batteries. If they run out of power, you will have to balance your power, and the batteries will need to be recharged. You can recharge batteries from your reactor by using less power than the current reactor output. Don’t let these run out in the middle of space. That would be...problematic.",
       },
+      wings && {
+        selector: ".wing-request",
+        content:
+          "You can request more or less power from the main reactor here. Click the up and down arrow to change the power number, and then click the 'Request' button to send off the request. If it is accepted, your power level available will change. Only request as much power as you need and no more; if the reactor is put under undue strain, it could explode.",
+      },
     ].filter(Boolean);
   return (
-    <Container fluid={!!battery} className="powerLevels">
-      <Row className="powerlevel-row">
-        <Col lg="12" xl={battery ? 8 : 12} className="powerlevel-containers">
-          <Power systems={systems} client={client} reactor={reactor} />
-        </Col>
-        {battery && (
-          <Col sm="4" className="battery-holder">
-            <Card>
-              <div className="battery-container">
-                <Battery
-                  level={Math.min(1, Math.max(0, (charge - 0.75) * 4))}
-                />
-                <Battery level={Math.min(1, Math.max(0, (charge - 0.5) * 4))} />
-                <Battery
-                  level={Math.min(1, Math.max(0, (charge - 0.25) * 4))}
-                />
-                <Battery level={Math.min(1, Math.max(0, charge * 4))} />
-              </div>
-            </Card>
-          </Col>
-        )}
-      </Row>
-      <Tour steps={trainingSteps(battery)} client={clientObj} />
+    <Container
+      fluid
+      className="powerLevels"
+      css={css`
+        display: grid;
+        grid-template-columns: 1fr 450px;
+        grid-template-rows: 1fr 1fr;
+        gap: 2em;
+      `}
+    >
+      <Power
+        systems={systems}
+        client={client}
+        battery={battery}
+        reactor={reactor}
+        wing={wing}
+      />
+      {battery && (
+        <div
+          className="battery-holder"
+          css={[
+            css`
+              grid-column: 2;
+            `,
+          ]}
+        >
+          <Card
+            css={css`
+              height: 100%;
+            `}
+          >
+            <div
+              className="battery-container"
+              css={css`
+                flex: 1;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1em;
+                padding: 1em;
+              `}
+            >
+              <Battery level={Math.min(1, Math.max(0, (charge - 0.75) * 4))} />
+              <Battery level={Math.min(1, Math.max(0, (charge - 0.5) * 4))} />
+              <Battery level={Math.min(1, Math.max(0, (charge - 0.25) * 4))} />
+              <Battery level={Math.min(1, Math.max(0, charge * 4))} />
+            </div>
+          </Card>
+        </div>
+      )}
+      <Tour
+        steps={trainingSteps(battery, Boolean(reactor.hasWings && wing))}
+        client={clientObj}
+      />
     </Container>
   );
 };
@@ -128,7 +181,16 @@ const Systems = React.memo(
       });
     };
     return (
-      <div className="systems-holder">
+      <div
+        className="systems-holder powerlevel-containers"
+        css={[
+          css`
+            align-self: center;
+            grid-column: 1;
+            grid-row: 1/3;
+          `,
+        ]}
+      >
         {systems
           .slice(0)
           .sort((a, b) => {
@@ -178,33 +240,138 @@ const Systems = React.memo(
     return true;
   },
 );
-const Summary = ({reactor, powerTotal}) => {
+const Summary = ({battery, reactor, powerTotal, wing}) => {
+  const wingPower =
+    reactor?.hasWings && wing ? reactor?.[`${wing}WingPower`] : 0;
+  const reactorPower = Math.round(reactor.efficiency * reactor.powerOutput);
   return (
-    <div className="totalPowerText">
+    <div
+      className="totalPowerText"
+      css={[
+        css`
+          grid-column: 2;
+          grid-row: 1/3;
+          align-self: center;
+        `,
+        battery &&
+          css`
+            grid-row: 2;
+          `,
+      ]}
+    >
       {reactor && (
         <h4>
           Total Power Available:{" "}
-          {Math.round(reactor.efficiency * reactor.powerOutput)}
+          {reactor.hasWings && wing ? wingPower : reactorPower}
         </h4>
       )}
       <h4>Total Power Used: {powerTotal}</h4>
       {reactor && (
         <h4
           className={` ${
-            Math.round(reactor.efficiency * reactor.powerOutput) - powerTotal <
+            (reactor?.hasWings && wing ? wingPower : reactorPower) -
+              powerTotal <
             0
               ? "text-danger"
               : ""
           }`}
         >
           Remaining Power:{" "}
-          {Math.round(reactor.efficiency * reactor.powerOutput) - powerTotal}
+          {(reactor?.hasWings && wing ? wingPower : reactorPower) - powerTotal}
         </h4>
+      )}
+      {reactor?.hasWings && wing && (
+        <React.Fragment>
+          <hr
+            css={css`
+              border-color: rgba(255, 255, 255, 0.5);
+            `}
+          />
+          <PowerRequest reactor={reactor} wing={wing} />
+        </React.Fragment>
       )}
     </div>
   );
 };
-const Power = ({systems, client, reactor}) => {
+
+const PowerRequest = ({reactor, wing}) => {
+  const [req, setReq] = React.useState(reactor[`${wing}WingRequest`]);
+  const {handleDirection, handleMouseUp, value} = useMouseIncrement({
+    value: req,
+    onSet: value => {
+      if (!reactor[`${wing}WingRequested`]) {
+        setReq(value);
+      }
+    },
+    increment: 1,
+    min: 0,
+    delayDec: 2,
+    max: 200,
+  });
+  const [request] = useReactorRequestWingPowerMutation();
+
+  return (
+    <div
+      className="wing-request"
+      css={css`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      `}
+    >
+      <h3
+        css={css`
+          text-align: center;
+        `}
+      >
+        {capitalCase(wing)} Wing Power Request
+      </h3>
+      <div
+        css={css`
+          width: 50%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        `}
+      >
+        <FaArrowDown
+          size="2em"
+          onMouseDown={handleDirection("down")}
+          onTouchStart={handleDirection("down")}
+          onMouseUp={handleMouseUp}
+          onTouchEnd={handleMouseUp}
+        />
+        <div
+          css={css`
+            flex: 1;
+          `}
+        >
+          <h2 className="text-center">{value}</h2>
+        </div>
+        <FaArrowUp
+          size="2em"
+          onMouseDown={handleDirection("up")}
+          onTouchStart={handleDirection("up")}
+          onMouseUp={handleMouseUp}
+          onTouchEnd={handleMouseUp}
+        />
+      </div>
+      <Button
+        color="info"
+        disabled={reactor[`${wing}WingRequested`]}
+        css={css`
+          margin: 0 auto;
+          margin-top: 1rem;
+        `}
+        onClick={() => request({variables: {id: reactor.id, wing, power: req}})}
+      >
+        {reactor[`${wing}WingRequested`] ? "Requested" : "Request"} {req} Power
+      </Button>
+    </div>
+  );
+};
+
+const Power = ({systems, client, battery, reactor, wing}) => {
   const [powerAdjust, setPowerAdjust] = React.useState(0);
 
   const powerTotal =
@@ -218,20 +385,25 @@ const Power = ({systems, client, reactor}) => {
   }, [systems]);
 
   return (
-    <>
+    <React.Fragment>
       <Systems
         systems={systems}
         setPowerAdjust={setPowerAdjust}
         client={client}
       />
-      <Summary reactor={reactor} powerTotal={powerTotal} />
-    </>
+      <Summary
+        reactor={reactor}
+        battery={battery}
+        powerTotal={powerTotal}
+        wing={wing}
+      />
+    </React.Fragment>
   );
 };
 const Battery = ({level = 1}) => {
   return (
     <div className="battery">
-      <div className="battery-bar" style={{height: `${level * 100}%`}} />
+      <div className="battery-bar" css={{height: `${level * 100}%`}} />
       <div className="battery-level">
         <AnimatedNumber
           value={level}
@@ -247,6 +419,7 @@ export const SYSTEMS_QUERY = gql`
     systems(simulatorId: $simulatorId, power: true) {
       id
       displayName
+      wing
       type
       power {
         power
@@ -262,8 +435,16 @@ export const SYSTEMS_QUERY = gql`
       batteryChargeLevel
       efficiency
       powerOutput
+      hasWings
+      leftWingPower
+      leftWingRequest
+      leftWingRequested
+      rightWingPower
+      rightWingRequest
+      rightWingRequested
     }
   }
 `;
 
-export default withApollo(PowerDistribution);
+const WrappedPowerDistribution = withApollo(PowerDistribution);
+export default WrappedPowerDistribution;

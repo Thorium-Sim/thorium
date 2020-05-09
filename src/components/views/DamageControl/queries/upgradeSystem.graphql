@@ -1,0 +1,3 @@
+mutation SystemUpgrade($systemId: ID!) {
+  upgradeSystem(systemId: $systemId)
+}

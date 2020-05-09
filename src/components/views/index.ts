@@ -34,6 +34,12 @@ const CommInternal = React.lazy(() => import("./CommInternal"));
 const Docking = React.lazy(() => import("./Docking"));
 const CommShortRange = React.lazy(() => import("./CommShortRange"));
 const PowerDistribution = React.lazy(() => import("./PowerDistribution"));
+const PowerDistributionLeftWing = React.lazy(() =>
+  import("./PowerDistribution/leftWing"),
+);
+const PowerDistributionRightWing = React.lazy(() =>
+  import("./PowerDistribution/rightWing"),
+);
 const DamageControl = React.lazy(() => import("./DamageControl"));
 const Targeting = React.lazy(() => import("./Targeting"));
 const PhaserCharging = React.lazy(() => import("./PhaserCharging"));
@@ -316,6 +322,8 @@ const Views = {
   Records,
   StationControl,
   Countermeasures,
+  PowerDistributionLeftWing,
+  PowerDistributionRightWing,
 };
 
 export const Widgets = {

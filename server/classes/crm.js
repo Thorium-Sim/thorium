@@ -156,6 +156,7 @@ export default class Crm extends System {
     super({name: "Crm", displayName: "CRM-114", ...params});
     this.class = "Crm";
     this.type = "Crm";
+    this.wing = params.wing || "left";
 
     this.password = params.password || "";
     this.activated = params.activated || false;

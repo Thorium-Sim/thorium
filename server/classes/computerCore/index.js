@@ -81,6 +81,8 @@ export default class ComputerCore extends System {
     this.id = params.id || uuid.v4();
     this.class = "ComputerCore";
     this.type = "ComputerCore";
+    this.wing = params.wing || "left";
+
     this.simulatorId = params.simulatorId || null;
     this.users = []; // Hackers create virii
     this.virii = []; // Virii corrupt files
