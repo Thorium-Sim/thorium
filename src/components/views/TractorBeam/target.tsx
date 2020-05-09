@@ -1,14 +1,18 @@
 import React from "react";
 
-export default ({shown, label}) => {
+const Target: React.FC<{
+  shown: boolean;
+  className?: string;
+  label?: string;
+}> = ({shown, className, label = ""}) => {
   return (
-    <div className={`target ${shown ? "shown" : ""}`}>
+    <div className={`${className} target ${shown ? "shown" : ""}`}>
       <svg
         style={{
           fillRule: "evenodd",
           clipRule: "evenodd",
           strokeLinejoin: "round",
-          strokeMiterlimit: "1.41421",
+          strokeMiterlimit: 1.41421,
         }}
         version="1.1"
         viewBox="0 0 45 45"
@@ -25,3 +29,5 @@ export default ({shown, label}) => {
     </div>
   );
 };
+
+export default Target;

@@ -2,7 +2,7 @@
 import React from "react";
 import {css, jsx} from "@emotion/core";
 import gql from "graphql-tag.macro";
-import {Row, Col, Container, Card} from "helpers/reactstrap";
+import {Container, Card} from "helpers/reactstrap";
 import {withApollo} from "react-apollo";
 import Tour from "helpers/tourHelper";
 import "./style.scss";
@@ -161,7 +161,7 @@ const PowerDistribution = ({client, simulator, clientObj, wing = null}) => {
         </div>
       )}
       <Tour
-        steps={trainingSteps(battery, Boolean(reactor.hasWings && wing))}
+        steps={trainingSteps(battery, Boolean(reactor?.hasWings && wing))}
         client={clientObj}
       />
     </Container>
@@ -243,7 +243,8 @@ const Systems = React.memo(
 const Summary = ({battery, reactor, powerTotal, wing}) => {
   const wingPower =
     reactor?.hasWings && wing ? reactor?.[`${wing}WingPower`] : 0;
-  const reactorPower = Math.round(reactor.efficiency * reactor.powerOutput);
+  const reactorPower =
+    Math.round(reactor?.efficiency * reactor?.powerOutput) || 0;
   return (
     <div
       className="totalPowerText"

@@ -1,0 +1,3 @@
+mutation TractorBeamStrength($id: ID!, $beam: ID!, $strength: Float!) {
+  setTractorBeamStrength(id: $id, beam: $beam, strength: $strength)
+}

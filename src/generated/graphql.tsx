@@ -2368,6 +2368,7 @@ export type Mutation = {
   setTractorBeamStress?: Maybe<Scalars['String']>,
   setTractorBeamScanning?: Maybe<Scalars['String']>,
   setTractorBeamTargetLabel?: Maybe<Scalars['String']>,
+  setTractorBeamCount?: Maybe<Scalars['String']>,
   addTractorTarget?: Maybe<Scalars['String']>,
   removeTractorTarget?: Maybe<Scalars['String']>,
   setTransportDestination?: Maybe<Scalars['String']>,
@@ -6496,48 +6497,62 @@ export type MutationTorpedoFireArgs = {
 
 export type MutationSetTractorBeamStateArgs = {
   id: Scalars['ID'],
+  beam: Scalars['ID'],
   state: Scalars['Boolean']
 };
 
 
 export type MutationSetTractorBeamTargetArgs = {
   id: Scalars['ID'],
+  beam: Scalars['ID'],
   target: Scalars['Boolean']
 };
 
 
 export type MutationSetTractorBeamStrengthArgs = {
   id: Scalars['ID'],
+  beam: Scalars['ID'],
   strength: Scalars['Float']
 };
 
 
 export type MutationSetTractorBeamStressArgs = {
   id: Scalars['ID'],
+  beam: Scalars['ID'],
   stress: Scalars['Float']
 };
 
 
 export type MutationSetTractorBeamScanningArgs = {
   id: Scalars['ID'],
+  beam: Scalars['ID'],
   scanning: Scalars['Boolean']
 };
 
 
 export type MutationSetTractorBeamTargetLabelArgs = {
   id: Scalars['ID'],
+  beam: Scalars['ID'],
   label: Scalars['String']
+};
+
+
+export type MutationSetTractorBeamCountArgs = {
+  id: Scalars['ID'],
+  beams: Scalars['Int']
 };
 
 
 export type MutationAddTractorTargetArgs = {
   id: Scalars['ID'],
+  beamId: Scalars['ID'],
   label?: Maybe<Scalars['String']>
 };
 
 
 export type MutationRemoveTractorTargetArgs = {
-  id: Scalars['ID']
+  id: Scalars['ID'],
+  beamId: Scalars['ID']
 };
 
 
@@ -9943,23 +9958,29 @@ export type Torpedo = SystemInterface & {
 
 export type TractorBeam = SystemInterface & {
    __typename?: 'TractorBeam',
-  id?: Maybe<Scalars['ID']>,
+  id: Scalars['ID'],
   simulatorId?: Maybe<Scalars['ID']>,
   type?: Maybe<Scalars['String']>,
-  power?: Maybe<Power>,
-  damage?: Maybe<Damage>,
-  name?: Maybe<Scalars['String']>,
-  displayName?: Maybe<Scalars['String']>,
+  power: Power,
+  damage: Damage,
+  name: Scalars['String'],
+  displayName: Scalars['String'],
   upgradeName?: Maybe<Scalars['String']>,
   upgraded?: Maybe<Scalars['Boolean']>,
   stealthFactor?: Maybe<Scalars['Float']>,
   locations?: Maybe<Array<Maybe<Room>>>,
-  state?: Maybe<Scalars['Boolean']>,
-  target?: Maybe<Scalars['Boolean']>,
-  targetLabel?: Maybe<Scalars['String']>,
-  strength?: Maybe<Scalars['Float']>,
-  stress?: Maybe<Scalars['Float']>,
-  scanning?: Maybe<Scalars['Boolean']>,
+  beams: Array<TractorBeamBeam>,
+};
+
+export type TractorBeamBeam = {
+   __typename?: 'TractorBeamBeam',
+  id: Scalars['ID'],
+  state: Scalars['Boolean'],
+  target: Scalars['Boolean'],
+  targetLabel: Scalars['String'],
+  strength: Scalars['Float'],
+  stress: Scalars['Float'],
+  scanning: Scalars['Boolean'],
 };
 
 export type Transporter = SystemInterface & {
@@ -11597,6 +11618,89 @@ export type TimelineMissionSubscription = (
   )> }
 );
 
+export type TractorBeamTargetLabelMutationVariables = {
+  id: Scalars['ID'];
+  beam: Scalars['ID'];
+  label: Scalars['String'];
+};
+
+
+export type TractorBeamTargetLabelMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTractorBeamTargetLabel'>
+);
+
+export type TractorBeamStateMutationVariables = {
+  id: Scalars['ID'];
+  beam: Scalars['ID'];
+  state: Scalars['Boolean'];
+};
+
+
+export type TractorBeamStateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTractorBeamState'>
+);
+
+export type TractorBeamStrengthMutationVariables = {
+  id: Scalars['ID'];
+  beam: Scalars['ID'];
+  strength: Scalars['Float'];
+};
+
+
+export type TractorBeamStrengthMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTractorBeamStrength'>
+);
+
+export type TractorBeamStressMutationVariables = {
+  id: Scalars['ID'];
+  beam: Scalars['ID'];
+  stress: Scalars['Float'];
+};
+
+
+export type TractorBeamStressMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTractorBeamStress'>
+);
+
+export type TractorBeamUpdateSubscriptionVariables = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type TractorBeamUpdateSubscription = (
+  { __typename?: 'Subscription' }
+  & { tractorBeamUpdate?: Maybe<Array<Maybe<(
+    { __typename?: 'TractorBeam' }
+    & Pick<TractorBeam, 'id' | 'name' | 'displayName'>
+    & { beams: Array<(
+      { __typename?: 'TractorBeamBeam' }
+      & Pick<TractorBeamBeam, 'id' | 'state' | 'target' | 'targetLabel' | 'strength' | 'stress' | 'scanning'>
+    )>, damage: (
+      { __typename?: 'Damage' }
+      & Pick<Damage, 'damaged' | 'report'>
+    ), power: (
+      { __typename?: 'Power' }
+      & Pick<Power, 'power' | 'powerLevels'>
+    ) }
+  )>>> }
+);
+
+export type TractorBeamTargetMutationVariables = {
+  id: Scalars['ID'];
+  beam: Scalars['ID'];
+  state: Scalars['Boolean'];
+};
+
+
+export type TractorBeamTargetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTractorBeamTarget'>
+);
+
 export type ClientChangedSubscriptionVariables = {};
 
 
@@ -12812,6 +12916,17 @@ export type ReactorSetWingsMutationVariables = {
 export type ReactorSetWingsMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'reactorSetHasWings'>
+);
+
+export type TractorBeamSetCountMutationVariables = {
+  id: Scalars['ID'];
+  beams: Scalars['Int'];
+};
+
+
+export type TractorBeamSetCountMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTractorBeamCount'>
 );
 
 export type RemoveSimulatorMutationVariables = {
@@ -16751,6 +16866,214 @@ export function useTimelineMissionSubscription(baseOptions?: ApolloReactHooks.Su
       }
 export type TimelineMissionSubscriptionHookResult = ReturnType<typeof useTimelineMissionSubscription>;
 export type TimelineMissionSubscriptionResult = ApolloReactCommon.SubscriptionResult<TimelineMissionSubscription>;
+export const TractorBeamTargetLabelDocument = gql`
+    mutation TractorBeamTargetLabel($id: ID!, $beam: ID!, $label: String!) {
+  setTractorBeamTargetLabel(id: $id, beam: $beam, label: $label)
+}
+    `;
+export type TractorBeamTargetLabelMutationFn = ApolloReactCommon.MutationFunction<TractorBeamTargetLabelMutation, TractorBeamTargetLabelMutationVariables>;
+
+/**
+ * __useTractorBeamTargetLabelMutation__
+ *
+ * To run a mutation, you first call `useTractorBeamTargetLabelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTractorBeamTargetLabelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tractorBeamTargetLabelMutation, { data, loading, error }] = useTractorBeamTargetLabelMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      beam: // value for 'beam'
+ *      label: // value for 'label'
+ *   },
+ * });
+ */
+export function useTractorBeamTargetLabelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TractorBeamTargetLabelMutation, TractorBeamTargetLabelMutationVariables>) {
+        return ApolloReactHooks.useMutation<TractorBeamTargetLabelMutation, TractorBeamTargetLabelMutationVariables>(TractorBeamTargetLabelDocument, baseOptions);
+      }
+export type TractorBeamTargetLabelMutationHookResult = ReturnType<typeof useTractorBeamTargetLabelMutation>;
+export type TractorBeamTargetLabelMutationResult = ApolloReactCommon.MutationResult<TractorBeamTargetLabelMutation>;
+export type TractorBeamTargetLabelMutationOptions = ApolloReactCommon.BaseMutationOptions<TractorBeamTargetLabelMutation, TractorBeamTargetLabelMutationVariables>;
+export const TractorBeamStateDocument = gql`
+    mutation TractorBeamState($id: ID!, $beam: ID!, $state: Boolean!) {
+  setTractorBeamState(id: $id, beam: $beam, state: $state)
+}
+    `;
+export type TractorBeamStateMutationFn = ApolloReactCommon.MutationFunction<TractorBeamStateMutation, TractorBeamStateMutationVariables>;
+
+/**
+ * __useTractorBeamStateMutation__
+ *
+ * To run a mutation, you first call `useTractorBeamStateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTractorBeamStateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tractorBeamStateMutation, { data, loading, error }] = useTractorBeamStateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      beam: // value for 'beam'
+ *      state: // value for 'state'
+ *   },
+ * });
+ */
+export function useTractorBeamStateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TractorBeamStateMutation, TractorBeamStateMutationVariables>) {
+        return ApolloReactHooks.useMutation<TractorBeamStateMutation, TractorBeamStateMutationVariables>(TractorBeamStateDocument, baseOptions);
+      }
+export type TractorBeamStateMutationHookResult = ReturnType<typeof useTractorBeamStateMutation>;
+export type TractorBeamStateMutationResult = ApolloReactCommon.MutationResult<TractorBeamStateMutation>;
+export type TractorBeamStateMutationOptions = ApolloReactCommon.BaseMutationOptions<TractorBeamStateMutation, TractorBeamStateMutationVariables>;
+export const TractorBeamStrengthDocument = gql`
+    mutation TractorBeamStrength($id: ID!, $beam: ID!, $strength: Float!) {
+  setTractorBeamStrength(id: $id, beam: $beam, strength: $strength)
+}
+    `;
+export type TractorBeamStrengthMutationFn = ApolloReactCommon.MutationFunction<TractorBeamStrengthMutation, TractorBeamStrengthMutationVariables>;
+
+/**
+ * __useTractorBeamStrengthMutation__
+ *
+ * To run a mutation, you first call `useTractorBeamStrengthMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTractorBeamStrengthMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tractorBeamStrengthMutation, { data, loading, error }] = useTractorBeamStrengthMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      beam: // value for 'beam'
+ *      strength: // value for 'strength'
+ *   },
+ * });
+ */
+export function useTractorBeamStrengthMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TractorBeamStrengthMutation, TractorBeamStrengthMutationVariables>) {
+        return ApolloReactHooks.useMutation<TractorBeamStrengthMutation, TractorBeamStrengthMutationVariables>(TractorBeamStrengthDocument, baseOptions);
+      }
+export type TractorBeamStrengthMutationHookResult = ReturnType<typeof useTractorBeamStrengthMutation>;
+export type TractorBeamStrengthMutationResult = ApolloReactCommon.MutationResult<TractorBeamStrengthMutation>;
+export type TractorBeamStrengthMutationOptions = ApolloReactCommon.BaseMutationOptions<TractorBeamStrengthMutation, TractorBeamStrengthMutationVariables>;
+export const TractorBeamStressDocument = gql`
+    mutation TractorBeamStress($id: ID!, $beam: ID!, $stress: Float!) {
+  setTractorBeamStress(id: $id, beam: $beam, stress: $stress)
+}
+    `;
+export type TractorBeamStressMutationFn = ApolloReactCommon.MutationFunction<TractorBeamStressMutation, TractorBeamStressMutationVariables>;
+
+/**
+ * __useTractorBeamStressMutation__
+ *
+ * To run a mutation, you first call `useTractorBeamStressMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTractorBeamStressMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tractorBeamStressMutation, { data, loading, error }] = useTractorBeamStressMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      beam: // value for 'beam'
+ *      stress: // value for 'stress'
+ *   },
+ * });
+ */
+export function useTractorBeamStressMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TractorBeamStressMutation, TractorBeamStressMutationVariables>) {
+        return ApolloReactHooks.useMutation<TractorBeamStressMutation, TractorBeamStressMutationVariables>(TractorBeamStressDocument, baseOptions);
+      }
+export type TractorBeamStressMutationHookResult = ReturnType<typeof useTractorBeamStressMutation>;
+export type TractorBeamStressMutationResult = ApolloReactCommon.MutationResult<TractorBeamStressMutation>;
+export type TractorBeamStressMutationOptions = ApolloReactCommon.BaseMutationOptions<TractorBeamStressMutation, TractorBeamStressMutationVariables>;
+export const TractorBeamUpdateDocument = gql`
+    subscription TractorBeamUpdate($simulatorId: ID!) {
+  tractorBeamUpdate(simulatorId: $simulatorId) {
+    id
+    name
+    displayName
+    beams {
+      id
+      state
+      target
+      targetLabel
+      strength
+      stress
+      scanning
+    }
+    damage {
+      damaged
+      report
+    }
+    power {
+      power
+      powerLevels
+    }
+  }
+}
+    `;
+
+/**
+ * __useTractorBeamUpdateSubscription__
+ *
+ * To run a query within a React component, call `useTractorBeamUpdateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTractorBeamUpdateSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTractorBeamUpdateSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useTractorBeamUpdateSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<TractorBeamUpdateSubscription, TractorBeamUpdateSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<TractorBeamUpdateSubscription, TractorBeamUpdateSubscriptionVariables>(TractorBeamUpdateDocument, baseOptions);
+      }
+export type TractorBeamUpdateSubscriptionHookResult = ReturnType<typeof useTractorBeamUpdateSubscription>;
+export type TractorBeamUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<TractorBeamUpdateSubscription>;
+export const TractorBeamTargetDocument = gql`
+    mutation TractorBeamTarget($id: ID!, $beam: ID!, $state: Boolean!) {
+  setTractorBeamTarget(id: $id, beam: $beam, target: $state)
+}
+    `;
+export type TractorBeamTargetMutationFn = ApolloReactCommon.MutationFunction<TractorBeamTargetMutation, TractorBeamTargetMutationVariables>;
+
+/**
+ * __useTractorBeamTargetMutation__
+ *
+ * To run a mutation, you first call `useTractorBeamTargetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTractorBeamTargetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tractorBeamTargetMutation, { data, loading, error }] = useTractorBeamTargetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      beam: // value for 'beam'
+ *      state: // value for 'state'
+ *   },
+ * });
+ */
+export function useTractorBeamTargetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TractorBeamTargetMutation, TractorBeamTargetMutationVariables>) {
+        return ApolloReactHooks.useMutation<TractorBeamTargetMutation, TractorBeamTargetMutationVariables>(TractorBeamTargetDocument, baseOptions);
+      }
+export type TractorBeamTargetMutationHookResult = ReturnType<typeof useTractorBeamTargetMutation>;
+export type TractorBeamTargetMutationResult = ApolloReactCommon.MutationResult<TractorBeamTargetMutation>;
+export type TractorBeamTargetMutationOptions = ApolloReactCommon.BaseMutationOptions<TractorBeamTargetMutation, TractorBeamTargetMutationVariables>;
 export const ClientChangedDocument = gql`
     subscription ClientChanged {
   clientChanged {
@@ -19881,6 +20204,37 @@ export function useReactorSetWingsMutation(baseOptions?: ApolloReactHooks.Mutati
 export type ReactorSetWingsMutationHookResult = ReturnType<typeof useReactorSetWingsMutation>;
 export type ReactorSetWingsMutationResult = ApolloReactCommon.MutationResult<ReactorSetWingsMutation>;
 export type ReactorSetWingsMutationOptions = ApolloReactCommon.BaseMutationOptions<ReactorSetWingsMutation, ReactorSetWingsMutationVariables>;
+export const TractorBeamSetCountDocument = gql`
+    mutation TractorBeamSetCount($id: ID!, $beams: Int!) {
+  setTractorBeamCount(id: $id, beams: $beams)
+}
+    `;
+export type TractorBeamSetCountMutationFn = ApolloReactCommon.MutationFunction<TractorBeamSetCountMutation, TractorBeamSetCountMutationVariables>;
+
+/**
+ * __useTractorBeamSetCountMutation__
+ *
+ * To run a mutation, you first call `useTractorBeamSetCountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTractorBeamSetCountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tractorBeamSetCountMutation, { data, loading, error }] = useTractorBeamSetCountMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      beams: // value for 'beams'
+ *   },
+ * });
+ */
+export function useTractorBeamSetCountMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TractorBeamSetCountMutation, TractorBeamSetCountMutationVariables>) {
+        return ApolloReactHooks.useMutation<TractorBeamSetCountMutation, TractorBeamSetCountMutationVariables>(TractorBeamSetCountDocument, baseOptions);
+      }
+export type TractorBeamSetCountMutationHookResult = ReturnType<typeof useTractorBeamSetCountMutation>;
+export type TractorBeamSetCountMutationResult = ApolloReactCommon.MutationResult<TractorBeamSetCountMutation>;
+export type TractorBeamSetCountMutationOptions = ApolloReactCommon.BaseMutationOptions<TractorBeamSetCountMutation, TractorBeamSetCountMutationVariables>;
 export const RemoveSimulatorDocument = gql`
     mutation RemoveSimulator($id: ID!) {
   removeSimulator(simulatorId: $id)
