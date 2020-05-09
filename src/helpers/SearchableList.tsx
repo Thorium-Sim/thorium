@@ -3,6 +3,7 @@ import React from "react";
 import {Input, ListGroup, ListGroupItem} from "reactstrap";
 import {capitalCase} from "change-case";
 import matchSorter from "match-sorter";
+import "./SearchableList.scss";
 
 interface SearchableListProps {
   items: ListItem[];
@@ -45,12 +46,7 @@ const SearchableList: React.FC<SearchableListProps> = ({
         placeholder="Search"
         onChange={e => setSearch(e.target.value)}
       />
-      <ListGroup
-        style={{
-          height: "100%",
-          overflowY: "auto",
-        }}
-      >
+      <ListGroup className="searchable-list">
         {Object.entries(sortedIntoCategories)
           .concat()
           .sort(([a], [b]) => {

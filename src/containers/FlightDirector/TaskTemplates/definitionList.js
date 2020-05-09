@@ -1,5 +1,8 @@
-import React, {Fragment} from "react";
-import {ListGroupItem, ListGroup, Badge} from "helpers/reactstrap";
+/** @jsx jsx*/
+import {css, jsx} from "@emotion/core";
+import React from "react";
+import {Badge} from "helpers/reactstrap";
+import SearchableList from "helpers/SearchableList";
 
 const DefinitionList = ({
   taskDefinitions,
@@ -19,47 +22,44 @@ const DefinitionList = ({
       return prev;
     }, {});
   return (
-    <Fragment>
+    <React.Fragment>
       <h3>Definitions</h3>
-      <ListGroup style={{maxHeight: "100%", height: "80vh", overflowY: "auto"}}>
-        {Object.entries(definitionGroups).map(([key, value]) => (
-          <Fragment key={key}>
-            <ListGroupItem
-              style={{
-                paddingBottom: 0,
-                paddingLeft: "10px",
-                borderTop: "rgba(255,255,255,0.5) solid 1px",
-              }}
-            >
-              <strong>{key}</strong>
-            </ListGroupItem>
-            {value.map(v => (
-              <ListGroupItem
-                key={v.name}
-                active={v.name === selectedDef}
-                onClick={() => setSelectedDef(v.name)}
-              >
-                {v.name}{" "}
-                <Badge title="Templates Available">
-                  {taskTemplates.filter(t => t.definition === v.name).length}
+      <div
+        css={css`
+          height: 80vh;
+        `}
+      >
+        <SearchableList
+          items={Object.entries(definitionGroups).reduce(
+            (prev, [key, next]) =>
+              prev.concat(
+                next.map(({name}) => ({id: name, label: name, category: key})),
+              ),
+            [],
+          )}
+          selectedItem={selectedDef}
+          setSelectedItem={id => setSelectedDef(id)}
+          renderItem={item => (
+            <React.Fragment>
+              {item.label}{" "}
+              <Badge title="Templates Available">
+                {taskTemplates.filter(t => t.definition === item.id).length}
+              </Badge>
+              {taskTemplates.filter(t => t.definition === item.id && t.assigned)
+                .length > 0 && (
+                <Badge color="warning" title="Templates Assigned">
+                  {
+                    taskTemplates.filter(
+                      t => t.definition === item.id && t.assigned,
+                    ).length
+                  }
                 </Badge>
-                {taskTemplates.filter(
-                  t => t.definition === v.name && t.assigned,
-                ).length > 0 && (
-                  <Badge color="warning" title="Templates Assigned">
-                    {
-                      taskTemplates.filter(
-                        t => t.definition === v.name && t.assigned,
-                      ).length
-                    }
-                  </Badge>
-                )}
-              </ListGroupItem>
-            ))}
-          </Fragment>
-        ))}
-      </ListGroup>
-    </Fragment>
+              )}
+            </React.Fragment>
+          )}
+        />
+      </div>
+    </React.Fragment>
   );
 };
 export default DefinitionList;

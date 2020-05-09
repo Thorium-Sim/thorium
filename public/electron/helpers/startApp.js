@@ -2,9 +2,9 @@ const {app, BrowserWindow, ipcMain, shell} = require("electron");
 const ipAddress = require("./ipaddress");
 const fs = require("fs");
 const path = require("path");
-const semver = require("semver");
-const os = require("os");
 const autoUpdateInit = require("./autoUpdate");
+const usbDetect = require("usb-detection");
+const dmx = require("./dmx");
 
 // Make the kiosk work better on slightly older computers
 app.commandLine.appendSwitch("ignore-gpu-blacklist", "true");
@@ -87,6 +87,15 @@ module.exports = () => {
     });
     ipcMain.handle("get-ipAddress", async () => {
       return ipAddress;
+    });
+    ipcMain.handle("get-usbDevices", async () => {
+      return usbDetect.find(0x403, 0x6001);
+    });
+    ipcMain.on("activate-dmx", (event, config) => {
+      dmx.activate(config);
+    });
+    ipcMain.on("send-dmx-value", (event, universe) => {
+      dmx.sendData(universe);
     });
     ipcMain.handle("get-hostname", async () => {
       return require("os").hostname();

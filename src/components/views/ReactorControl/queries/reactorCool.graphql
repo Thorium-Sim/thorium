@@ -1,0 +1,3 @@
+mutation ReactorCool($id: ID!, $state: Boolean) {
+  engineCool(id: $id, state: $state)
+}

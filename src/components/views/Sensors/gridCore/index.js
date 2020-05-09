@@ -16,6 +16,7 @@ import "./gridCore.scss";
 import {useMouseDown} from "./hooks/useMouseDown";
 import {checkContactPosition} from "./hooks/checkContactPosition";
 import uuid from "uuid";
+import {usePing} from "..";
 const DELETE_CONTACT = gql`
   mutation DeleteContact($id: ID!, $contact: SensorContactInput!) {
     removeSensorContact(id: $id, contact: $contact)
@@ -38,6 +39,7 @@ const GridCore = ({
   flightId,
 }) => {
   const sensors = useSensorsData(simulator.id) || defaultSensors;
+  const pinged = usePing(sensors?.id);
   const [deleteContact] = useMutation(DELETE_CONTACT);
   const [moveContact] = useMutation(MOVE_CONTACT);
   const [measureRef, dimensions, node] = useMeasure();
@@ -183,6 +185,8 @@ const GridCore = ({
                 "ping",
                 "projectile",
               ]}
+              ping={pinged}
+              pings={sensors.pings}
               showLabels={showLabels}
               movement={sensors.movement}
               speeds={speeds}

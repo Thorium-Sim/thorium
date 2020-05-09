@@ -10,6 +10,8 @@ export default class ShortRangeComm extends System {
     });
     this.type = "ShortRangeComm";
     this.class = "ShortRangeComm";
+    this.wing = params.wing || "right";
+
     this.frequency = params.frequency || 0.5;
     this.amplitude = params.amplitude || 0.5;
     this.state = params.state || "idle";

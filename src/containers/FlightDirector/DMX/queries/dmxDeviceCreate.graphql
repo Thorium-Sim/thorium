@@ -1,0 +1,3 @@
+mutation DMXDeviceCreate($name: String!) {
+  dmxDeviceCreate(name: $name)
+}

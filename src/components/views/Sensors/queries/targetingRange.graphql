@@ -1,0 +1,6 @@
+query TargetingRange($id: ID!) {
+  targeting(simulatorId: $id) {
+    id
+    range
+  }
+}

@@ -47,7 +47,7 @@ const AssetButton: React.FC<{
 }> = ({id, asset, assetName, assetDir, assetKey, setAsset, setAppearance}) => {
   return (
     <Label>
-      Map Asset: {asset || "Not Set"}
+      {assetName}: {asset || "Not Set"}
       <div>
         <Button
           size="sm"

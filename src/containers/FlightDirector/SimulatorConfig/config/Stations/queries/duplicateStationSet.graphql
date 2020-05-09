@@ -1,0 +1,3 @@
+mutation StationSetDuplicate($stationSetID: ID!, $name: String!) {
+  duplicateStationSet(stationSetID: $stationSetID, name: $name)
+}

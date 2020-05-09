@@ -17,6 +17,7 @@ import {
   ClientsInterfacesAndKeyboardsQueryHookResult,
   Interface,
   useSetSoundPlayerMutation,
+  DmxSet,
 } from "generated/graphql";
 import {useNavigate, useParams} from "react-router-dom";
 
@@ -26,10 +27,27 @@ const Keyboards = ({keyboards = []}: {keyboards: Keyboard[]}) => {
   }
   return (
     <Fragment>
-      <option disabled>──────────</option>
+      <hr />
       <optgroup label="Keyboards">
         {keyboards.map(k => (
           <option key={k?.id || "keyboard"} value={`keyboard:${k.id}`}>
+            {k.name}
+          </option>
+        ))}
+      </optgroup>
+    </Fragment>
+  );
+};
+const DMXSets = ({dmxSets = []}: {dmxSets: Pick<DmxSet, "id" | "name">[]}) => {
+  if (dmxSets.length === 0) {
+    return null;
+  }
+  return (
+    <Fragment>
+      <hr />
+      <optgroup label="Lighting">
+        {dmxSets.map(k => (
+          <option key={k?.id || "dmxSet"} value={`dmxSet:${k.id}`}>
             {k.name}
           </option>
         ))}
@@ -53,7 +71,7 @@ const Interfaces = ({
   }
   return (
     <Fragment>
-      <option disabled>──────────</option>
+      <hr />
       <optgroup label="Interfaces">
         {simInterfaces?.map(i => (
           <option key={i?.id || "interface"} value={`interface-id:${i?.id}`}>
@@ -72,6 +90,7 @@ interface ClientRowProps {
   flightId: string;
   interfaces: Interface[];
   keyboards: Keyboard[];
+  dmxSets: Pick<DmxSet, "id" | "name">[];
 }
 const ClientRow = ({
   client,
@@ -80,6 +99,7 @@ const ClientRow = ({
   flightId,
   interfaces,
   keyboards,
+  dmxSets,
 }: ClientRowProps) => {
   const [setClientFlight] = useSetClientFlightMutation();
   const [setClientSimulator] = useSetClientSimulatorMutation();
@@ -215,16 +235,13 @@ const ClientRow = ({
             )}
             {client.simulator && (
               <Fragment>
-                <option disabled>──────────</option>
+                <hr />
                 <option value={"Viewscreen"}>Viewscreen</option>
                 <option value={"Sound"}>Sound</option>
                 <option value={"Blackout"}>Blackout</option>
-                {(client.id.toLowerCase().indexOf("ecs") > -1 ||
-                  (client?.label?.toLowerCase().indexOf("ecs") || -1) > -1) && (
-                  <option value={"Lighting"}>Lighting</option>
-                )}
                 <Keyboards keyboards={keyboards} />
                 <Interfaces client={client} interfaces={interfaces} />
+                <DMXSets dmxSets={dmxSets} />
               </Fragment>
             )}
           </select>
@@ -329,15 +346,16 @@ const Clients = () => {
     loading: flightsLoading,
   } = useFlightsSubSubscription();
   const {
-    data: keyboardInterfaceData = {keyboard: [], interfaces: []},
+    data: keyboardInterfaceData = {keyboard: [], interfaces: [], dmxSets: []},
     loading: keyboardLoading,
   }: ClientsInterfacesAndKeyboardsQueryHookResult = useClientsInterfacesAndKeyboardsQuery();
 
   const clients = (data?.clientChanged || []) as Client[];
   const flights = (flightsData?.flightsUpdate || []) as Flight[];
-  const {keyboard, interfaces} = keyboardInterfaceData as {
+  const {keyboard, interfaces, dmxSets} = keyboardInterfaceData as {
     keyboard: Keyboard[];
     interfaces: Interface[];
+    dmxSets: DmxSet[];
   };
   if (
     !flightId ||
@@ -390,6 +408,7 @@ const Clients = () => {
                           flights={flights}
                           interfaces={interfaces}
                           keyboards={keyboard}
+                          dmxSets={dmxSets}
                         />
                       ),
                   )}
@@ -415,6 +434,7 @@ const Clients = () => {
                           flights={flights}
                           interfaces={interfaces}
                           keyboards={keyboard}
+                          dmxSets={dmxSets}
                         />
                       ),
                   )}

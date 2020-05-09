@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import App from "../app";
 
 export class StationSet {
   id: string;
@@ -7,7 +8,13 @@ export class StationSet {
   simulatorId: string;
   crewCount: number;
   stations: Station[];
-  constructor({id, name, simulatorId, crewCount, stations = []}: StationSet) {
+  constructor({
+    id,
+    name,
+    simulatorId,
+    crewCount,
+    stations = [],
+  }: Partial<StationSet>) {
     this.class = "StationSet";
     this.id = id || uuid.v4();
     this.simulatorId = simulatorId || null;
@@ -17,6 +24,17 @@ export class StationSet {
     stations.forEach(station => {
       this.addStation(station);
     });
+  }
+  static exportable = "stationSets";
+  serialize({addData}) {
+    const filename = `${this.name}.stationSet`;
+    const data = {...this};
+    addData("stationSets", data);
+    return filename;
+  }
+  static import(data: StationSet) {
+    const stationSet = new StationSet({...data, id: null});
+    App.stationSets.push(stationSet);
   }
   rename(name: string) {
     this.name = name;
@@ -99,7 +117,7 @@ export class Station {
     training,
     ambiance,
     layout,
-  }: Station) {
+  }: Partial<Station>) {
     this.class = "Station";
     this.name = name || "Station";
     this.description = description || "";
@@ -115,6 +133,7 @@ export class Station {
       this.addCard(card);
     });
   }
+
   rename(name: string) {
     this.name = name;
   }
@@ -127,13 +146,13 @@ export class Station {
   setAmbiance(ambiance: string) {
     this.ambiance = ambiance;
   }
-  addCard(card: Card) {
+  addCard(card: Partial<Card>) {
     this.cards.push(new Card(card));
   }
   removeCard(cardName: string) {
     this.cards = this.cards.filter((c: Card) => c.name !== cardName);
   }
-  updateCard(cardName: string, cardUpdate: Card) {
+  updateCard(cardName: string, cardUpdate: Partial<Card>) {
     const card = this.cards.find((c: Card) => c.name === cardName);
     card.update(cardUpdate);
   }
@@ -178,21 +197,23 @@ export class Station {
     this.widgets = move(this.widgets, this.widgets.indexOf(widget), order);
   }
 }
-
 export class Card {
   name: string;
   icon: string | null;
   component: string;
-  class: string;
+  class: "Card" = "Card";
   hidden: boolean;
-  constructor(params: Card) {
+  newStation?: boolean;
+  assigned?: boolean;
+  constructor(params: Partial<Card>) {
     this.name = params.name || "Card";
     this.icon = params.icon || null;
     this.component = params.component || "Login";
-    this.class = "Card";
     this.hidden = false;
+    this.newStation = params.newStation || false;
+    this.assigned = params.assigned || false;
   }
-  update({name, icon, component}: Card) {
+  update({name, icon, component}: Partial<Card>) {
     if (name) this.name = name;
     if (icon) this.icon = icon;
     if (component) this.component = component;

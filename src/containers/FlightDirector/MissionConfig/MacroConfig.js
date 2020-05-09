@@ -3,6 +3,7 @@ import {Col, Row} from "helpers/reactstrap";
 import {withApollo, useQuery} from "react-apollo";
 import * as Macros from "../../../components/macros";
 import gql from "graphql-tag.macro";
+import ErrorBoundary from "helpers/errorBoundary";
 
 const CLIENT_QUERY = gql`
   query Clients {
@@ -32,13 +33,15 @@ const MacroConfig = props => {
     <Row>
       <Col sm="12">
         {EventMacro && (
-          <EventMacro
-            {...props}
-            updateArgs={_handleArg}
-            args={args || {}}
-            client={client}
-            clients={data.clients}
-          />
+          <ErrorBoundary render={<p>Error in macro</p>}>
+            <EventMacro
+              {...props}
+              updateArgs={_handleArg}
+              args={args || {}}
+              client={client}
+              clients={data.clients}
+            />
+          </ErrorBoundary>
         )}
       </Col>
     </Row>

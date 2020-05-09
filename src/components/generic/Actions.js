@@ -93,7 +93,6 @@ const ActionsMixin = ({simulator, station, changeCard}) => {
             case "sleep":
             case "quit":
             case "beep":
-            case "freak":
               return window.thorium.sendMessage({action});
             default:
               return;

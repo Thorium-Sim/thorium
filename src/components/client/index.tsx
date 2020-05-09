@@ -70,7 +70,7 @@ const ClientData = () => {
     }
   };
 
-  const {loading, data} = useClientQuery({
+  const {data} = useClientQuery({
     variables: {clientId: clientId || ""},
     skip: !clientId,
   });
@@ -83,19 +83,16 @@ const ClientData = () => {
 
   if (
     !clientId ||
-    loading ||
-    !data ||
-    !clients ||
-    !clients[0] ||
-    !clients[0].flight ||
-    !clients[0].simulator ||
-    !clients[0].station
+    !clients?.[0]?.flight ||
+    !clients?.[0].simulator ||
+    !clients?.[0].station
   ) {
     return (
       <Credits
-        clientId={clientId}
-        {...clients?.[0]}
-        client={clients?.[0]}
+        clientId={clientId || ""}
+        flightName={clients?.[0]?.flight?.name || undefined}
+        simulatorName={clients?.[0]?.simulator?.name || undefined}
+        stationName={clients?.[0]?.station?.name}
         updateClientId={updateClientId}
       />
     );
@@ -103,9 +100,9 @@ const ClientData = () => {
 
   return (
     <SimulatorData
-      {...clients[0]}
-      clientId={clientId}
-      updateClientId={updateClientId}
+      simulator={clients[0].simulator}
+      station={clients[0].station}
+      flight={clients[0].flight}
       client={clients[0]}
     />
   );

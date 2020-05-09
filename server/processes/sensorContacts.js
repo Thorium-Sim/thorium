@@ -4,7 +4,7 @@ import uuid from "uuid";
 
 const interval = 1000 / 30; // 1/30 of a second
 const pingInterval = 100;
-const updateInterval = 1000;
+// const updateInterval = 1000;
 function distance3d(coord2, coord1) {
   const {x: x1, y: y1, z: z1} = coord1;
   let {x: x2, y: y2, z: z2} = coord2;
@@ -131,6 +131,7 @@ const moveSensorContactTimed = () => {
 
             return c;
           }
+          return c;
         })
         .filter(Boolean);
       sensors.contacts.forEach(c => {
@@ -205,71 +206,83 @@ const moveSensorContactTimed = () => {
   setTimeout(moveSensorContactTimed, interval);
 };
 
-const updateSensors = () => {
-  App.systems.forEach(sys => {
-    if (sys.type === "Sensors") {
-      const sensors = sys;
-      pubsub.publish("sensorContactUpdate", sensors);
-    }
-  });
-  setTimeout(updateSensors, updateInterval);
-};
+// const updateSensors = () => {
+//   App.systems.forEach(sys => {
+//     if (sys.type === "Sensors") {
+//       const sensors = sys;
+//       pubsub.publish("sensorContactUpdate", sensors);
+//     }
+//   });
+//   setTimeout(updateSensors, updateInterval);
+// };
 
 const activePingInterval = 6500;
 const passivePingInterval = 15000;
 const pingSensors = () => {
-  App.systems.forEach(sys => {
-    if (sys.type === "Sensors" && sys.pings === true) {
-      const sensors = sys;
-      // Increment the timeSincePing
-      sensors.timeSincePing = sensors.timeSincePing + pingInterval;
-      if (
-        (sensors.pingMode === "active" &&
-          sensors.timeSincePing >= activePingInterval) ||
-        (sensors.pingMode === "passive" &&
-          sensors.timeSincePing >= passivePingInterval)
-      ) {
-        App.handleEvent({id: sensors.id}, "pingSensors", {});
-      }
-      if (sensors.timeSincePing > passivePingInterval * 2) {
-        sensors.timeSincePing = passivePingInterval;
-      }
-    }
+  App.flights.forEach(f => {
+    f.simulators
+      .map(s => App.simulators.find(sim => sim.id === s))
+      .forEach(s => {
+        App.systems.forEach(sys => {
+          if (
+            sys.simulatorId === s.id &&
+            sys.type === "Sensors" &&
+            sys.pings === true &&
+            sys.domain === "external"
+          ) {
+            const sensors = sys;
+            // Increment the timeSincePing
+            sensors.timeSincePing = sensors.timeSincePing + pingInterval;
+            if (
+              (sensors.pingMode === "active" &&
+                sensors.timeSincePing >= activePingInterval) ||
+              (sensors.pingMode === "passive" &&
+                sensors.timeSincePing >= passivePingInterval)
+            ) {
+              sensors.timeSincePing = 0;
+              App.handleEvent({id: sensors.id}, "pingSensors", {});
+            }
+            if (sensors.timeSincePing > passivePingInterval * 2) {
+              sensors.timeSincePing = passivePingInterval;
+            }
+          }
+        });
+      });
   });
   setTimeout(pingSensors, pingInterval);
 };
-const sensorsAutoThrusters = () => {
-  App.systems.forEach(sys => {
-    if (sys.type === "Sensors" && sys.autoThrusters === true) {
-      const sensors = sys;
-      const thrusters = App.systems.find(
-        s => s.class === "Thrusters" && s.simulatorId === sensors.simulatorId,
-      );
-      if (thrusters) {
-        sensors.nudgeContacts(
-          {
-            x: thrusters.direction.x / -50,
-            y: thrusters.direction.z / 50,
-            z: thrusters.direction.y / 50,
-          },
-          0.3,
-          0,
-        );
-        pubsub.publish(
-          "sensorContactUpdate",
-          Object.assign({}, sensors, {
-            contacts: sensors.contacts.map(c =>
-              Object.assign({}, c, {forceUpdate: true}),
-            ),
-          }),
-        );
-        // Reset the force update after a second.
-        setTimeout(() => pubsub.publish("sensorContactUpdate", sensors), 500);
-      }
-    }
-  });
-  setTimeout(sensorsAutoThrusters, 500);
-};
+// const sensorsAutoThrusters = () => {
+//   App.systems.forEach(sys => {
+//     if (sys.type === "Sensors" && sys.autoThrusters === true) {
+//       const sensors = sys;
+//       const thrusters = App.systems.find(
+//         s => s.class === "Thrusters" && s.simulatorId === sensors.simulatorId,
+//       );
+//       if (thrusters) {
+//         sensors.nudgeContacts(
+//           {
+//             x: thrusters.direction.x / -50,
+//             y: thrusters.direction.z / 50,
+//             z: thrusters.direction.y / 50,
+//           },
+//           0.3,
+//           0,
+//         );
+//         pubsub.publish(
+//           "sensorContactUpdate",
+//           Object.assign({}, sensors, {
+//             contacts: sensors.contacts.map(c =>
+//               Object.assign({}, c, {forceUpdate: true}),
+//             ),
+//           }),
+//         );
+//         // Reset the force update after a second.
+//         setTimeout(() => pubsub.publish("sensorContactUpdate", sensors), 500);
+//       }
+//     }
+//   });
+//   setTimeout(sensorsAutoThrusters, 500);
+// };
 //sensorsAutoThrusters();
 moveSensorContactTimed();
 pingSensors();

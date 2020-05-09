@@ -5,13 +5,14 @@ import gql from "graphql-tag.macro";
 import SoundPlayer from "../../client/soundPlayer";
 
 import "./style.scss";
+import {ClientLighting} from "components/client/lighting";
 
 class Keyboard extends Component {
   constructor(props) {
     super(props);
     this.keydown = e => {
       e.preventDefault();
-      const {keyCode, shiftKey, metaKey, altKey, ctrlKey} = e;
+      const {keyCode, code, shiftKey, metaKey, altKey, ctrlKey} = e;
       const key = keycode(keyCode);
       const meta = [];
       if (shiftKey) meta.push("shift");
@@ -23,12 +24,14 @@ class Keyboard extends Component {
           $simulatorId: ID!
           $id: ID!
           $key: String!
+          $keyCode: String!
           $meta: [String]!
         ) {
           triggerKeyboardAction(
             simulatorId: $simulatorId
             id: $id
             key: $key
+            keyCode: $keyCode
             meta: $meta
           )
         }
@@ -36,7 +39,8 @@ class Keyboard extends Component {
       const variables = {
         simulatorId: props.simulator.id,
         id: props.keyboard,
-        key,
+        key: key || "",
+        keyCode: code,
         meta,
       };
       props.client.mutate({
@@ -62,6 +66,10 @@ class Keyboard extends Component {
             <SoundPlayer {...this.props} invisible />
           </div>
         )}
+        <ClientLighting
+          simulator={this.props.simulator}
+          clientId={this.props.clientObj.id}
+        />
       </div>
     );
   }

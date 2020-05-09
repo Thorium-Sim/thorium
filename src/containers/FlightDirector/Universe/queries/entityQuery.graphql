@@ -1,0 +1,7 @@
+#import "./entityFragment.graphql"
+
+query Entities($flightId: ID!) {
+  entities(flightId: $flightId, inert: true) {
+    ...EntityData
+  }
+}

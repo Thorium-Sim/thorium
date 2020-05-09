@@ -71,6 +71,10 @@ class Events extends EventEmitter {
   midiSets: ClassesImport.MidiSet[] = [];
   entities: ClassesImport.Entity[] = [];
   motus: Motu[] = [];
+  dmxDevices: ClassesImport.DMXDevice[] = [];
+  dmxFixtures: ClassesImport.DMXFixture[] = [];
+  dmxConfigs: ClassesImport.DMXConfig[] = [];
+  dmxSets: ClassesImport.DMXSet[] = [];
   autoUpdate = true;
   migrations: any = {assets: true};
   thoriumId: string = randomWords(5).join("-");

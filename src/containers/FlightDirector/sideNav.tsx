@@ -34,6 +34,7 @@ import {
   FaTimes,
   FaBars,
   FaSlidersH,
+  FaLightbulb,
   // FaRegStar,
 } from "react-icons/fa";
 
@@ -116,6 +117,11 @@ const links: (NavLinkI | null)[] = [
     name: "Survey Form Config",
     icon: FaFileAlt,
     link: "/config/survey",
+  },
+  {
+    name: "DMX Config",
+    icon: FaLightbulb,
+    link: "/config/dmx",
   },
   {
     name: "Keyboard Config",

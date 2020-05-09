@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.scss";
 
-const DamageOverlay = ({message = "", system, style}) => {
+const DamageOverlay = ({message = "", system, style = null}) => {
   let reason = null;
   if (!system) return null;
   if (

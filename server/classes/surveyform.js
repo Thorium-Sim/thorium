@@ -4,6 +4,7 @@ import App from "../app";
 import {DateTime} from "luxon";
 
 export default class SurveyForm {
+  static exportable = "surveyForms";
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.class = "SurveyForm";
@@ -15,6 +16,21 @@ export default class SurveyForm {
     this.googleSpreadsheet = params.googleSpreadsheet || null;
     this.googleSpreadsheetName = params.googleSpreadsheetName || null;
     this.googleSheet = params.googleSheet || null;
+  }
+  serialize({addData}) {
+    const {
+      googleSpreadsheet,
+      googleSpreadsheetName,
+      googleSheet,
+      ...data
+    } = this;
+    const filename = `${this.title}.survey`;
+    addData("surveyForms", data);
+    return filename;
+  }
+  static import(data) {
+    const surveyForm = new SurveyForm({...data, id: null});
+    App.surveyForms.push(surveyForm);
   }
   updateForm(form) {
     if (Array.isArray(form)) {

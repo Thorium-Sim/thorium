@@ -1,0 +1,6 @@
+query DMXFixtureTags {
+  dmxFixtures {
+    id
+    tags
+  }
+}

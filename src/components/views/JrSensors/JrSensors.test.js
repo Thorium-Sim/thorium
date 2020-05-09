@@ -5,7 +5,7 @@ import baseProps from "../../../stories/helpers/baseProps";
 import Component from "./index";
 import SensorsMock from "mocks/cards/Sensors.mock";
 
-it("should render", async () => {
+it.skip("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {
     mocks: SensorsMock,
   });

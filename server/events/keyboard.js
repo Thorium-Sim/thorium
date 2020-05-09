@@ -23,16 +23,23 @@ App.on("updateKeyboardKey", ({id, key}) => {
   pubsub.publish("keyboardUpdate", App.keyboards);
 });
 
-App.on("triggerKeyboardAction", ({simulatorId, id, key, meta}) => {
+App.on("triggerKeyboardAction", ({simulatorId, id, key, keyCode, meta}) => {
   const keyboard = App.keyboards.find(k => k.id === id);
   if (!keyboard) return;
   if (key === "enter") key = "return";
   if (key === "backspace") key = "delete";
-  const keyObj = keyboard.keys.find(
+  let keyObj = keyboard.keys.find(
     k =>
-      k.key.toLowerCase() === key.toLowerCase() &&
+      k.keyCode === keyCode &&
       JSON.stringify(meta.sort()) === JSON.stringify(k.meta.sort()),
   );
+  if (!keyObj) {
+    keyObj = keyboard.keys.find(
+      k =>
+        k.key.toLowerCase() === key.toLowerCase() &&
+        JSON.stringify(meta.sort()) === JSON.stringify(k.meta.sort()),
+    );
+  }
   if (keyObj) {
     App.handleEvent({simulatorId, macros: keyObj.actions}, "triggerMacros");
   }

@@ -1,0 +1,3 @@
+mutation SensorScanResponse($id: ID!, $scan: SensorScanInput!) {
+  updateSensorScan(id: $id, scan: $scan)
+}

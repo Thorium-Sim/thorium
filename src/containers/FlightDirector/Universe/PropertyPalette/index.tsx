@@ -10,16 +10,34 @@ import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import Light from "./Light";
 import Systems from "./Systems";
 import Stage from "./Stage";
+import {Button, Label, Input} from "reactstrap";
+import {UseStore} from "zustand";
+import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
+import {CanvasContext} from "../CanvasContext";
+
 interface PropertyPaletteProps {
-  selectedEntity: Entity | undefined;
+  selectedEntity?: Entity;
+  useEntityState: UseStore<PatchData<Entity[]>>;
+  currentStage?: string;
   setCurrentStage?: React.Dispatch<React.SetStateAction<string>>;
-  setSelected?: React.Dispatch<React.SetStateAction<string[]>>;
 }
 const PropertyPalette: React.FC<PropertyPaletteProps> = ({
-  selectedEntity,
+  selectedEntity: realSelectedEntity,
+  useEntityState,
+  currentStage,
   setCurrentStage,
-  setSelected,
 }) => {
+  const [{selected, controllingEntityId}, dispatch] = React.useContext(
+    CanvasContext,
+  );
+
+  const selectedEntity =
+    useEntityState(
+      ({data: entities}) =>
+        entities.find(e => selected && e.id === selected[0]) ||
+        entities.find(e => e.id === currentStage),
+    ) || realSelectedEntity;
+
   const [getAsset, setGetAsset] = React.useState<{
     label: string;
     current: string;
@@ -53,13 +71,42 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({
               identity={selectedEntity.identity}
             />
           )}
+          {currentStage !== selectedEntity.id && selectedEntity.stage && (
+            <Button
+              size="sm"
+              onClick={() => {
+                setCurrentStage?.(selectedEntity.id);
+                dispatch({type: "recenter"});
+              }}
+            >
+              Enter Stage
+            </Button>
+          )}
+          {setCurrentStage && currentStage !== selectedEntity.id && (
+            <Label>
+              <Input
+                type="checkbox"
+                active={controllingEntityId === selectedEntity.id}
+                onClick={() =>
+                  dispatch({
+                    type: "controllingEntity",
+                    id:
+                      controllingEntityId === selectedEntity.id
+                        ? ""
+                        : selectedEntity.id,
+                  })
+                }
+              />
+              Control Entity
+            </Label>
+          )}
           {!selectedEntity.template && (
             <Stage
               id={selectedEntity.id}
               stage={selectedEntity.stage || undefined}
               stageChild={selectedEntity.stageChild || undefined}
+              currentStage={currentStage || ""}
               setCurrentStage={setCurrentStage}
-              setSelected={setSelected}
             />
           )}
           {selectedEntity.template && (

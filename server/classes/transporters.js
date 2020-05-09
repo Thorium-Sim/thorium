@@ -6,6 +6,8 @@ export default class Transporters extends System {
     super(params);
     this.type = "Transporters";
     this.class = "Transporters";
+    this.wing = params.wing || "right";
+
     this.name = params.name || "Transporters";
     this.targets = params.targets || [];
     this.requestedTarget = params.requestedTarget || null;

@@ -1,0 +1,3 @@
+mutation DMXFixtureSetChannel($id: ID!, $channel: Int!) {
+  dmxFixtureSetChannel(id: $id, channel: $channel)
+}

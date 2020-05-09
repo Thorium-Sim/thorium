@@ -1,0 +1,11 @@
+mutation SetCalculatedTarget(
+  $simulatorId: ID
+  $coordinates: CoordinatesInput!
+  $contactId: ID
+) {
+  setTargetingCalculatedTarget(
+    simulatorId: $simulatorId
+    coordinates: $coordinates
+    contactId: $contactId
+  )
+}

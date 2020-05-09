@@ -1,0 +1,3 @@
+mutation TractorBeamStress($id: ID!, $beam: ID!, $stress: Float!) {
+  setTractorBeamStress(id: $id, beam: $beam, stress: $stress)
+}

@@ -1,0 +1,11 @@
+mutation LightingSetEffect(
+  $simulatorId: ID!
+  $effect: LIGHTING_ACTION!
+  $duration: Float!
+) {
+  lightingSetEffect(
+    simulatorId: $simulatorId
+    effect: $effect
+    duration: $duration
+  )
+}

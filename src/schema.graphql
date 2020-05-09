@@ -15,12 +15,12 @@ input ActionInput {
 }
 
 type Ambiance {
-  id: ID
-  name: String
-  asset: String
-  volume: Float
-  channel: [Int]
-  playbackRate: Float
+  id: ID!
+  name: String!
+  asset: String!
+  volume: Float!
+  channel: [Int!]!
+  playbackRate: Float!
 }
 
 input AmbianceInput {
@@ -81,13 +81,13 @@ enum Behaviors {
 
 """
 The `BigInt` scalar type represents non-fractional signed whole numeric values.
-BigInt can represent values between -(2^53) + 1 and 2^53 - 1.
+BigInt can represent values between -(2^53) + 1 and 2^53 - 1. 
 """
 scalar BigInt
 
 type Card {
-  name: String
-  component: String
+  name: String!
+  component: String!
   hidden: Boolean
   assigned: Boolean
   newStation: Boolean
@@ -661,6 +661,81 @@ input DirectionInput {
   z: Float
 }
 
+enum DMXChannelProperty {
+  red
+  green
+  blue
+  amber
+  white
+  uv
+  intensity
+  strobe
+  generic
+  nothing
+}
+
+type DMXConfig {
+  id: ID!
+  name: String!
+  config: JSON!
+  actionStrength: Float!
+}
+
+type DMXDevice {
+  id: ID!
+  class: String!
+  name: String!
+  channels: [DMXChannelProperty!]!
+}
+
+type DMXFixture {
+  id: ID!
+  class: String!
+  name: String!
+  clientId: String
+  DMXDeviceId: String!
+  DMXDevice: DMXDevice!
+  simulatorId: String!
+  channel: Int!
+  mode: DMXFixtureMode!
+  tags: [String!]!
+  passiveChannels: DMXPassiveChannels!
+}
+
+enum DMXFixtureMode {
+  active
+  passive
+}
+
+type DMXPassiveChannels {
+  amber: Float
+  white: Float
+  uv: Float
+  intensity: Float
+  strobe: Float
+  generic: Float
+  nothing: Float
+  color: String
+}
+
+input DMXPassiveChannelsInput {
+  amber: Float
+  white: Float
+  uv: Float
+  intensity: Float
+  strobe: Float
+  generic: Float
+  nothing: Float
+  color: String
+}
+
+type DMXSet {
+  id: ID!
+  name: String!
+  fixtureIds: [String!]!
+  fixtures: [DMXFixture!]!
+}
+
 enum DOCKING_DIRECTION {
   unspecified
   arriving
@@ -747,6 +822,7 @@ input EntitiesLocationInput {
 type Entity {
   id: ID!
   interval: Int
+  reset: Boolean
   appearance: AppearanceComponent
   behavior: BehaviorComponent
   identity: IdentityComponent
@@ -1115,14 +1191,15 @@ type JumpDriveSectors {
 }
 
 type Keyboard {
-  id: ID
+  id: ID!
   name: String
   keys: [KeyboardKey]
 }
 
 type KeyboardKey {
-  id: ID
+  id: ID!
   key: String
+  keyCode: String
   meta: [String]
   actions: [MacroAction]
 }
@@ -1130,6 +1207,7 @@ type KeyboardKey {
 input KeyboardKeyInput {
   id: ID
   key: String
+  keyCode: String
   meta: [String]
   actions: [ActionInput]
 }
@@ -1182,16 +1260,20 @@ type LightComponent {
 }
 
 type Lighting {
-  intensity: Float
-  action: LIGHTING_ACTION
-  actionStrength: Float
-  transitionDuration: Int
+  intensity: Float!
+  action: LIGHTING_ACTION!
+  actionStrength: Float!
+  transitionDuration: Int!
   useAlertColor: Boolean
   color: String
+  dmxConfig: DMXConfig
 }
 
 enum LIGHTING_ACTION {
   normal
+  darken
+  blackout
+  work
   fade
   shake
   strobe
@@ -1205,11 +1287,13 @@ input LightingInput {
   transitionDuration: Int
   useAlertColor: Boolean
   color: String
+  dmxConfig: String
 }
 
 union Location = Deck | Room
 
 type LocationComponent {
+  inert: Boolean!
   position: EntityCoordinates!
   velocity: EntityCoordinates!
   acceleration: EntityCoordinates!
@@ -1496,49 +1580,17 @@ enum MotuType {
 
 type Mutation {
   _empty: String
-  entitySetAppearance(
-    id: ID
-    color: String
-    meshType: MeshTypeEnum
-    modelAsset: String
-    materialMapAsset: String
-    ringMapAsset: String
-    cloudMapAsset: String
-    emissiveColor: String
-    emissiveIntensity: Float
-    scale: Float
-  ): String
+  entitySetAppearance(id: ID, color: String, meshType: MeshTypeEnum, modelAsset: String, materialMapAsset: String, ringMapAsset: String, cloudMapAsset: String, emissiveColor: String, emissiveIntensity: Float, scale: Float): String
   entityRemoveAppearance(id: ID!): String
-  entitySetBehavior(
-    id: ID!
-    behavior: Behaviors!
-    targetId: ID
-    destination: EntityCoordinatesInput
-  ): String
+  entitySetBehavior(id: ID!, behavior: Behaviors!, targetId: ID, destination: EntityCoordinatesInput): String
   entityRemoveBehavior(id: ID!): String
   entitySetIdentity(id: ID, name: String, type: String): String
   entityRemoveIdentity(id: ID!): String
-  entitySetLocation(
-    id: ID
-    position: EntityCoordinatesInput
-    velocity: EntityCoordinatesInput
-    acceleration: EntityCoordinatesInput
-    rotation: QuaternionInput
-    rotationVelocity: EntityCoordinatesInput
-    rotationAcceleration: EntityCoordinatesInput
-  ): String
+  entitySetLocation(id: ID, position: EntityCoordinatesInput, velocity: EntityCoordinatesInput, acceleration: EntityCoordinatesInput, rotation: QuaternionInput, rotationVelocity: EntityCoordinatesInput, rotationAcceleration: EntityCoordinatesInput): String
   entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
-  entitySetRotationVelocityMagnitude(
-    id: ID!
-    rotationVelocity: CoordinatesInput!
-  ): String
+  entitySetRotationVelocityMagnitude(id: ID!, rotationVelocity: CoordinatesInput!): String
   entityRemoveLocation(id: ID!): String
-  entitySetStage(
-    id: ID
-    scaleLabel: String
-    scaleLabelShort: String
-    skyboxKey: String
-  ): String
+  entitySetStage(id: ID, scaleLabel: String, scaleLabelShort: String, skyboxKey: String): String
   entityRemoveStage(id: ID!): String
   entitySetStageChild(id: ID, parentId: ID!): String
   entityRemoveStageChild(id: ID!): String
@@ -1547,64 +1599,34 @@ type Mutation {
   entitySetGlow(id: ID, glowMode: GlowModeEnum, color: String): String
   entityRemoveGlow(id: ID!): String
   entitySetTemplate(id: ID, category: String!): String
-  entitySetEngine(
-    id: ID
-    type: EntityEngineEnum!
-    maxSpeed: Float
-    currentSpeed: Float
-    heat: Float
-    heatRate: Float
-    coolant: Float
-    cooling: Boolean
-  ): String
+  entitySetEngine(id: ID, type: EntityEngineEnum!, maxSpeed: Float, currentSpeed: Float, heat: Float, heatRate: Float, coolant: Float, cooling: Boolean): String
   entityRemoveEngine(id: ID!, type: EntityEngineEnum!): String
-  entitySetThrusters(
-    id: ID!
-    direction: CoordinatesInput
-    rotationDelta: CoordinatesInput
-    rotationSpeed: Float
-    movementSpeed: Float
-  ): String
+  entitySetThrusters(id: ID!, direction: CoordinatesInput, rotationDelta: CoordinatesInput, rotationSpeed: Float, movementSpeed: Float): String
   entityRemoveThrusters(id: ID!): String
 
-  """
-  Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.)
-  """
+  """Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.)"""
   triggerAction(
     action: String!
     message: String
     voice: String
     simulatorId: ID!
 
-    """
-    Dynamic: Station
-    """
+    """Dynamic: Station"""
     stationId: String
 
-    """
-    Dynamic: Client
-    """
+    """Dynamic: Client"""
     clientId: ID
     duration: Float
   ): String
   addSimulatorAmbiance(id: ID!, name: String!): String
   updateSimulatorAmbiance(id: ID!, ambiance: AmbianceInput!): String
   removeSimulatorAmbiance(id: ID!, ambianceId: ID!): String
-  setStationAmbiance(
-    stationSetID: ID!
-    stationName: String!
-    ambiance: String
-  ): String
+  setStationAmbiance(stationSetID: ID!, stationName: String!, ambiance: String): String
   addAssetFolder(name: String!, folderPath: String!, fullPath: String!): String
   removeAssetFolder(fullPath: String!): String
   removeAssetObject(fullPath: String!): String
   downloadRemoteAssets(folderPath: String!, files: [RemoteAsset!]!): String
-  clientConnect(
-    client: ID!
-    label: String
-    mobile: Boolean
-    cards: [String]
-  ): String
+  clientConnect(client: ID!, label: String, mobile: Boolean, cards: [String]): String
   clientDisconnect(client: ID!): String
   clientPing(client: ID!): String
   clientSetFlight(client: ID!, flightId: ID!): String
@@ -1621,63 +1643,39 @@ type Mutation {
   clientMovieState(client: ID!, movie: String!): String
   clientSetTraining(client: ID!, training: Boolean!): String
   clientSetSoundPlayer(client: ID!, soundPlayer: Boolean!): String
-  clientAddCache(
-    client: ID
-    simulatorId: ID
-    viewscreen: Boolean
-    cacheItem: String!
-  ): String
+  clientActivateLights(clientId: ID!, dmxSetId: ID!): String
+  clientAddCache(client: ID, simulatorId: ID, viewscreen: Boolean, cacheItem: String!): String
   clientRemoveCache(client: ID!, cacheItem: String!): String
   setClientHypercard(clientId: ID, simulatorId: ID, component: String): String
 
-  """
-  Macro: Sounds: Play a sound
-  """
+  """Macro: Sounds: Play a sound"""
   playSound(
     sound: SoundInput!
 
-    """
-    Dynamic: Station
-    """
+    """Dynamic: Station"""
     station: String
     simulatorId: ID
 
-    """
-    Dynamic: Client
-    """
+    """Dynamic: Client"""
     clientId: String
   ): String
 
-  """
-  Macro: Sounds: Cancel All Sounds
-  """
+  """Macro: Sounds: Cancel All Sounds"""
   stopAllSounds(
     simulatorId: ID!
 
-    """
-    Dynamic: Station
-    """
+    """Dynamic: Station"""
     station: String
   ): String
 
-  """
-  Macro: Sounds: Stop Looping All Sounds
-  """
+  """Macro: Sounds: Stop Looping All Sounds"""
   cancelLoopingSounds(
     simulatorId: ID!
 
-    """
-    Dynamic: Station
-    """
+    """Dynamic: Station"""
     station: String
   ): String
-  applyClientSet(
-    id: ID!
-    flightId: ID!
-    simulatorId: ID!
-    templateId: ID!
-    stationSetId: ID!
-  ): String
+  applyClientSet(id: ID!, flightId: ID!, simulatorId: ID!, templateId: ID!, stationSetId: ID!): String
   setClientOverlay(id: ID!, overlay: Boolean!): String
   clientCrack(id: ID!, crack: Boolean!): String
   clientSetCard(id: ID!, card: String!): String
@@ -1694,13 +1692,7 @@ type Mutation {
   addCommandLine(name: String!): String
   renameCommandLine(id: ID!, name: String!): String
   removeCommandLine(id: ID!): String
-  updateCommandLine(
-    id: ID!
-    components: JSON
-    connections: JSON
-    values: JSON
-    config: JSON
-  ): String
+  updateCommandLine(id: ID!, components: JSON, connections: JSON, values: JSON, config: JSON): String
   executeCommandLine(simulatorId: ID!, command: String!, arg: String): String
 
   """
@@ -1717,13 +1709,7 @@ type Mutation {
   """
   removeCommandLineFromSimulator(simulatorId: ID!, commandLine: ID!): String
   addCommandLineOutput(simulatorId: ID!, clientId: ID!, output: String!): String
-  handleCommandLineFeedback(
-    simulatorId: ID!
-    clientId: ID!
-    feedbackId: ID!
-    ignore: Boolean
-    isApproved: Boolean!
-  ): String
+  handleCommandLineFeedback(simulatorId: ID!, clientId: ID!, feedbackId: ID!, ignore: Boolean, isApproved: Boolean!): String
   addComputerCoreUser(id: ID!, user: ComputerCoreUserInput): ComputerCoreUser
 
   """
@@ -1733,14 +1719,7 @@ type Mutation {
     - Systems:ComputerCore
   """
   computerCoreAddHacker(id: ID!, name: String, level: Int): String
-  updateComputerCoreUser(
-    id: ID!
-    userId: ID!
-    name: String
-    level: Int
-    password: String
-    hacker: Boolean
-  ): String
+  updateComputerCoreUser(id: ID!, userId: ID!, name: String, level: Int, password: String, hacker: Boolean): String
   removeComputerCoreUser(id: ID!, userId: ID!): String
   restoreComputerCoreFile(id: ID!, fileId: ID, all: Boolean, level: Int): String
   deleteComputerCoreVirus(id: ID!, virusId: ID!): String
@@ -1750,9 +1729,7 @@ type Mutation {
   transferCoolant(coolantId: ID!, systemId: ID, which: String): String
   ignoreCoreFeed(id: ID): String
 
-  """
-  Macro: Core: Set a timer on core (requires sync time enabled)
-  """
+  """Macro: Core: Set a timer on core (requires sync time enabled)"""
   syncTimer(time: String, active: Boolean, simulatorId: ID!): String
   updateCoreLayout(layout: CoreLayoutInput): String
   addCoreLayout(layout: CoreLayoutInput): String
@@ -1767,11 +1744,7 @@ type Mutation {
   crmSetActivated(id: ID!, state: Boolean!): String
   crmSetPassword(id: ID!, password: String!): String
   crmAddEnemy(id: ID!): String
-  crmSetAcceleration(
-    id: ID!
-    clientId: ID!
-    acceleration: CoordinatesInput!
-  ): String
+  crmSetAcceleration(id: ID!, clientId: ID!, acceleration: CoordinatesInput!): String
   crmSetPhaserCharge(id: ID!, clientId: ID!, phaser: Float!): String
   crmSetShieldState(id: ID!, clientId: ID!, shield: Boolean!): String
   crmLoadTorpedo(id: ID!, clientId: ID!): String
@@ -1790,12 +1763,7 @@ type Mutation {
   crmRestoreFighters(id: ID!): String
   crmSetFighterStrength(id: ID!, strength: Float!): String
   crmSetEnemyStrength(id: ID!, strength: Float!): String
-  damageSystem(
-    systemId: ID!
-    report: String
-    destroyed: Boolean
-    which: String
-  ): String
+  damageSystem(systemId: ID!, report: String, destroyed: Boolean, which: String): String
   damageReport(systemId: ID!, report: String!): String
   updateCurrentDamageStep(systemId: ID!, step: Int!): String
   repairSystem(systemId: ID!): String
@@ -1810,14 +1778,10 @@ type Mutation {
   removeSystemDamageTask(systemId: ID!, taskId: ID!): String
   updateSystemDamageTask(systemId: ID!, task: DamageTaskInput!): String
 
-  """
-  Macro: Damage Control: Break system
-  """
+  """Macro: Damage Control: Break system"""
   breakSystem(simulatorId: ID!, type: String!, name: String): String
 
-  """
-  Macro: Damage Control: Fix system
-  """
+  """Macro: Damage Control: Fix system"""
   fixSystem(simulatorId: ID!, type: String!, name: String): String
   setDamageStepValidation(id: ID!, validation: Boolean!): String
   validateDamageStep(id: ID!): String
@@ -1827,13 +1791,7 @@ type Mutation {
   addSimulatorDamageTask(simulatorId: ID!, task: DamageTaskInput!): String
   removeSimulatorDamageTask(simulatorId: ID!, taskId: ID!): String
   updateSimulatorDamageTask(simulatorId: ID!, task: DamageTaskInput!): String
-  addDeck(
-    simulatorId: ID!
-    number: Int!
-    svgPath: String
-    doors: Boolean
-    evac: Boolean
-  ): String
+  addDeck(simulatorId: ID!, number: Int!, svgPath: String, doors: Boolean, evac: Boolean): String
   removeDeck(deckId: ID!): String
   addDecksBulk(simulatorId: ID!, decks: String!): String
   updateDeckSvg(deckId: ID!, svg: String!): String
@@ -1842,13 +1800,9 @@ type Mutation {
   updateHallwaySvg(deckId: ID!, svg: String): String
   createDockingPort(port: DockingPortInput!): String
 
-  """
-  Macro: Docking: Update Docking Port/Shuttlebay
-  """
+  """Macro: Docking: Update Docking Port/Shuttlebay"""
   updateDockingPort(
-    """
-    Dynamic: Docking
-    """
+    """Dynamic: Docking"""
     port: DockingPortInput!
   ): String
   removeDockingPort(port: ID!): String
@@ -1870,26 +1824,16 @@ type Mutation {
   updateExocompDifficulty(exocomp: ID!, difficulty: Float!): String
   importSimulatorFromUrl(url: String!): String
   importMissionFromUrl(url: String!): String
-  startFlight(
-    name: String
-    simulators: [SimulatorInput!]!
-    flightType: String
-  ): String
+  startFlight(name: String, simulators: [SimulatorInput!]!, flightType: String): String
 
-  """
-  Macro: Flight: Reset Flight
-  """
+  """Macro: Flight: Reset Flight"""
   resetFlight(flightId: ID!, full: Boolean): String
   deleteFlight(flightId: ID!): String
 
-  """
-  Macro: Flight: Pause Flight
-  """
+  """Macro: Flight: Pause Flight"""
   pauseFlight(flightId: ID!): String
 
-  """
-  Macro: Flight: Resume Flight
-  """
+  """Macro: Flight: Resume Flight"""
   resumeFlight(flightId: ID!): String
 
   """
@@ -1906,14 +1850,7 @@ type Mutation {
   addInterface(name: String!): String
   renameInterface(id: ID!, name: String!): String
   removeInterface(id: ID!): String
-  updateInterface(
-    id: ID!
-    deviceType: ID
-    components: JSON
-    connections: JSON
-    values: JSON
-    config: JSON
-  ): String
+  updateInterface(id: ID!, deviceType: ID, components: JSON, connections: JSON, values: JSON, config: JSON): String
   addInterfaceToSimulator(simulatorId: ID!, interfaceId: ID!): String
   removeInterfaceFromSimulator(simulatorId: ID!, interfaceId: ID!): String
   addInterfaceDevice(name: String!, width: Int!, height: Int!): String
@@ -1943,37 +1880,14 @@ type Mutation {
   internalCommCallOutgoing(id: ID!, outgoing: String): String
   addInventory(inventory: InventoryItemInput): String
   removeInventory(id: ID): String
-  moveInventory(
-    id: ID!
-    fromRoom: ID!
-    toRoom: ID!
-    count: Int!
-    toSimulator: ID
-  ): String
+  moveInventory(id: ID!, fromRoom: ID!, toRoom: ID!, count: Int!, toSimulator: ID): String
   updateInventoryCount(id: ID!, room: ID!, count: Int!): String
   updateInventoryMetadata(id: ID, metadata: InventoryMetadataInput): String
-  updateCrewInventory(
-    crewId: ID!
-    inventory: [InventoryCount]!
-    roomId: ID
-  ): String
-  removeCrewInventory(
-    crewId: ID!
-    inventory: [InventoryCount]!
-    roomId: ID!
-  ): String
-  transferCargo(
-    inventory: [InventoryCountInput]
-    fromRoom: ID!
-    toRoom: ID!
-  ): String
+  updateCrewInventory(crewId: ID!, inventory: [InventoryCount]!, roomId: ID): String
+  removeCrewInventory(crewId: ID!, inventory: [InventoryCount]!, roomId: ID!): String
+  transferCargo(inventory: [InventoryCountInput], fromRoom: ID!, toRoom: ID!): String
   insertIsochip(id: ID, simulatorId: ID, slot: Int, chip: Int): Isochip
-  updateIsochip(
-    id: ID
-    simulatorId: ID
-    slot: Int
-    isochip: IsochipInput
-  ): Isochip
+  updateIsochip(id: ID, simulatorId: ID, slot: Int, isochip: IsochipInput): Isochip
   batchIsochipUpdate(simulatorId: ID, chips: [IsochipInput]): [Isochip]
   setJumpdriveActivated(id: ID!, activated: Boolean!): String
   setJumpdriveEnvs(id: ID!, envs: Float!): String
@@ -1987,12 +1901,7 @@ type Mutation {
   removeKeyboard(id: ID!): String
   renameKeyboard(id: ID!, name: String!): String
   updateKeyboardKey(id: ID!, key: KeyboardKeyInput!): String
-  triggerKeyboardAction(
-    simulatorId: ID!
-    id: ID!
-    key: String!
-    meta: [String]!
-  ): String
+  triggerKeyboardAction(simulatorId: ID!, id: ID!, key: String!, keyCode: String!, meta: [String]!): String
 
   """
   Macro: Library: Add Entry
@@ -2009,6 +1918,22 @@ type Mutation {
   """
   removeLibraryEntry(entry: ID, slug: String): String
   importLibraryEntry(simulatorId: ID!, entries: String!): String
+  updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
+
+  """Macro: DMX: Set Simulator DMX Config"""
+  dmxSetSimulatorConfig(simulatorId: ID!, dmxConfigId: ID!): String
+
+  """Macro: Lighting: Set Intensity"""
+  lightingSetIntensity(simulatorId: ID!, intensity: Float!): String
+
+  """Macro: Lighting: Shake Lights"""
+  lightingShakeLights(simulatorId: ID!, strength: Float, duration: Float): String
+
+  """Macro: Lighting: Fade Lights"""
+  lightingFadeLights(simulatorId: ID!, duration: Float!, endIntensity: Float!, startIntensity: Float): String
+
+  """Macro: Lighting: Set Effect"""
+  lightingSetEffect(simulatorId: ID!, duration: Float, strength: Float, effect: LIGHTING_ACTION!): String
 
   """
   Macro: Long Range: Send Long Range Message
@@ -2016,23 +1941,10 @@ type Mutation {
     - Cards:CommDecoding
     - Systems:LongRangeComm
   """
-  sendLongRangeMessage(
-    id: ID
-    simulatorId: ID
-    message: String!
-    crew: Boolean
-    sender: String
-    decoded: Boolean
-  ): String
+  sendLongRangeMessage(id: ID, simulatorId: ID, message: String!, crew: Boolean, sender: String, decoded: Boolean): String
   longRangeMessageSend(id: ID, message: ID!): String
   deleteLongRangeMessage(id: ID!, message: ID!): String
-  updateLongRangeDecodedMessage(
-    id: ID!
-    messageId: ID!
-    decodedMessage: String
-    a: Int
-    f: Int
-  ): String
+  updateLongRangeDecodedMessage(id: ID!, messageId: ID!, decodedMessage: String, a: Int, f: Int): String
   updateLongRangeComm(longRangeComm: LongRangeCommInput!): String
   approveLongRangeMessage(id: ID!, message: ID!): String
   encryptLongRangeMessage(id: ID!, message: ID!): String
@@ -2061,11 +1973,7 @@ type Mutation {
     - Cards:CommDecoding
     - Systems:LongRangeComm
   """
-  setLongRangePresetMessages(
-    id: ID
-    simulatorId: ID
-    messages: [PresetAnswerInput]
-  ): String
+  setLongRangePresetMessages(id: ID, simulatorId: ID, messages: [PresetAnswerInput]): String
   addMacro(name: String!): ID
   removeMacro(id: ID!): String
   renameMacro(id: ID!, name: String!): String
@@ -2073,9 +1981,7 @@ type Mutation {
   duplicateMacroAction(id: ID!, actionId: ID!): String
   updateMacroActions(id: ID!, actions: [ActionInput]): String
 
-  """
-  Macro: Macros: Trigger Macro
-  """
+  """Macro: Macros: Trigger Macro"""
   triggerMacroAction(simulatorId: ID!, macroId: ID!): String
   addMacroButtonConfig(name: String!): ID
   removeMacroButtonConfig(id: ID!): String
@@ -2085,18 +1991,9 @@ type Mutation {
   renameMacroButton(configId: ID!, id: ID!, name: String!): String
   setMacroButtonCategory(configId: ID!, id: ID!, category: String!): String
   setMacroButtonColor(configId: ID!, id: ID!, color: NotifyColors!): String
-  updateMacroButtonActions(
-    configId: ID!
-    id: ID!
-    actions: [ActionInput]
-  ): String
+  updateMacroButtonActions(configId: ID!, id: ID!, actions: [ActionInput]): String
   triggerMacroButton(simulatorId: ID!, configId: ID!, buttonId: ID!): String
-  toggleStationMessageGroup(
-    stationSetId: ID!
-    station: String!
-    group: String!
-    state: Boolean!
-  ): String
+  toggleStationMessageGroup(stationSetId: ID!, station: String!, group: String!, state: Boolean!): String
 
   """
   Macro: Messaging: Send an inter-ship message
@@ -2109,96 +2006,36 @@ type Mutation {
   midiSetRemove(id: ID!): Boolean
   midiSetControl(id: ID!, control: MidiControlInput!): MidiSet
 
-  """
-  Macro: MIDI: Activate a MIDI Set
-  """
+  """Macro: MIDI: Activate a MIDI Set"""
   simulatorAddMidiSet(simulatorId: ID!, midiSet: ID!): Simulator
 
-  """
-  Macro: MIDI: Deactivate a MIDI Set
-  """
+  """Macro: MIDI: Deactivate a MIDI Set"""
   simulatorRemoveMidiSet(simulatorId: ID!, midiSet: ID!): Simulator
   createMission(name: String!): String
   removeMission(missionId: ID!): String
-  editMission(
-    missionId: ID!
-    name: String
-    description: String
-    category: String
-    aux: Boolean
-    simulators: [ID]
-  ): String
+  editMission(missionId: ID!, name: String, description: String, category: String, aux: Boolean, simulators: [ID]): String
   importMission(jsonString: String!): String
-  addTimelineStep(
-    simulatorId: ID
-    missionId: ID
-    name: String!
-    description: String
-  ): ID
-  removeTimelineStep(
-    simulatorId: ID
-    missionId: ID
-    timelineStepId: ID!
-  ): String
-  reorderTimelineStep(
-    simulatorId: ID
-    missionId: ID
-    timelineStepId: ID!
-    order: Int!
-  ): String
-  updateTimelineStep(
-    simulatorId: ID
-    missionId: ID
-    timelineStepId: ID!
-    name: String
-    description: String
-  ): String
-  addTimelineItemToTimelineStep(
-    simulatorId: ID
-    missionId: ID
-    timelineStepId: ID!
-    timelineItem: TimelineItemInput!
-  ): String
-  removeTimelineStepItem(
-    simulatorId: ID
-    missionId: ID
-    timelineStepId: ID!
-    timelineItemId: ID!
-  ): String
-  updateTimelineStepItem(
-    simulatorId: ID
-    missionId: ID
-    timelineStepId: ID!
-    timelineItemId: ID!
-    updateTimelineItem: TimelineItemInput!
-  ): String
+  addTimelineStep(simulatorId: ID, missionId: ID, name: String!, description: String): ID
+  removeTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!): String
+  reorderTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, order: Int!): String
+  updateTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, name: String, description: String): String
+  addTimelineItemToTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItem: TimelineItemInput!): String
+  removeTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!): String
+  updateTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!, updateTimelineItem: TimelineItemInput!): String
   duplicateTimelineStep(missionId: ID!, timelineStepId: ID!): String
-  timelineDuplicateItem(
-    missionId: ID!
-    timelineStepId: ID!
-    timelineItemId: ID!
-  ): String
+  timelineDuplicateItem(missionId: ID!, timelineStepId: ID!, timelineItemId: ID!): String
 
-  """
-  Macro: Timelines: Start Aux Timeline
-  """
+  """Macro: Timelines: Start Aux Timeline"""
   startAuxTimeline(simulatorId: ID!, missionId: ID!): ID
   setAuxTimelineStep(simulatorId: ID!, timelineId: ID!, step: Int!): String
-  missionSetExtraRequirements(
-    missionId: ID!
-    requirements: RequirementInput!
-  ): String
+  missionSetExtraRequirements(missionId: ID!, requirements: RequirementInput!): String
   motuAdd(address: String!): String
   motuRemove(id: ID!): String
 
-  """
-  Macro: MOTU: Update Channel
-  """
+  """Macro: MOTU: Update Channel"""
   motuUpdateChannel(id: ID!, channelId: ID!, channel: MotuChannelInput!): String
 
-  """
-  Macro: MOTU: (Un)Mute connection from Input to Output
-  """
+  """Macro: MOTU: (Un)Mute connection from Input to Output"""
   motuSetSendMute(id: ID!, inputId: ID!, outputId: ID!, mute: Boolean!): String
   navCalculateCourse(id: ID!, destination: String!): String
   navCancelCalculation(id: ID!): String
@@ -2225,20 +2062,11 @@ type Mutation {
   """
   navSetPresets(id: ID, presets: NavPresetInput): String
 
-  """
-  Macro: Objective: Add Objective
-  """
+  """Macro: Objective: Add Objective"""
   addObjective(objective: ObjectiveInput!): String
 
-  """
-  Macro: Objective: Complete Objective
-  """
-  completeObjective(
-    id: ID!
-    title: String
-    state: Boolean
-    cancel: Boolean
-  ): String
+  """Macro: Objective: Complete Objective"""
+  completeObjective(id: ID!, title: String, state: Boolean, cancel: Boolean): String
   objectiveSetCrewComplete(id: ID!, crewComplete: Boolean!): String
   addLog(log: LogInput): String
   chargePhaserBeam(id: ID!, beamId: ID!): String
@@ -2257,16 +2085,8 @@ type Mutation {
   changeSystemPowerLevels(systemId: ID!, powerLevels: [Int]!): String
   changeSystemDefaultPowerLevel(id: ID!, level: Int!): String
 
-  """
-  Macro: Systems: Flux Power
-  """
-  fluxSystemPower(
-    id: ID
-    all: Boolean
-    simulatorId: ID
-    type: String
-    name: String
-  ): String
+  """Macro: Systems: Flux Power"""
+  fluxSystemPower(id: ID, all: Boolean, simulatorId: ID, type: String, name: String): String
   destroyProbe(id: ID!, probeId: ID!): String
   destroyAllProbes(id: ID!): String
   launchProbe(id: ID!, probe: ProbeInput!): String
@@ -2304,97 +2124,37 @@ type Mutation {
   reactorChangeEfficiency(id: ID!, efficiency: Float): String
   reactorBatteryChargeLevel(id: ID!, level: Float!): String
   reactorBatteryChargeRate(id: ID!, rate: Float!): String
-  updateDilithiumStress(
-    id: ID!
-    alphaLevel: Float
-    betaLevel: Float
-    alphaTarget: Float
-    betaTarget: Float
-  ): String
+  updateDilithiumStress(id: ID!, alphaLevel: Float, betaLevel: Float, alphaTarget: Float, betaTarget: Float): String
   fluxDilithiumStress(id: ID!): String
-  setReactorEffciciencies(
-    id: ID!
-    efficiencies: [ReactorEfficiencyInput]!
-  ): String
+  setReactorEffciciencies(id: ID!, efficiencies: [ReactorEfficiencyInput]!): String
   setDilithiumStressRate(id: ID!, rate: Float!): String
   reactorRequireBalance(id: ID!, balance: Boolean!): String
+  reactorSetHasWings(id: ID!, hasWings: Boolean!): String
+  reactorSetWingPower(id: ID!, wing: String!, power: Int!): String
+  reactorRequestWingPower(id: ID!, wing: String!, power: Int!): String
+  reactorAckWingRequest(id: ID!, wing: String!, ack: Boolean!): String
 
-  """
-  Macro: Records: Create Ship Record
-  """
-  recordsCreate(
-    simulatorId: ID!
-    contents: String!
-    timestamp: String
-    category: String = "manual"
-  ): String
-  recordsCreateSnippet(
-    simulatorId: ID!
-    recordIds: [ID!]!
-    name: String!
-    type: RecordSnippetType = normal
-  ): String
-  recordsAddToSnippet(
-    simulatorId: ID!
-    snippetId: ID!
-    recordIds: [ID!]!
-  ): String
-  recordsRemoveFromSnippet(
-    simulatorId: ID!
-    snippetId: ID!
-    recordId: ID!
-  ): String
+  """Macro: Records: Create Ship Record"""
+  recordsCreate(simulatorId: ID!, contents: String!, timestamp: String, category: String = "manual"): String
+  recordsCreateSnippet(simulatorId: ID!, recordIds: [ID!]!, name: String!, type: RecordSnippetType = normal): String
+  recordsAddToSnippet(simulatorId: ID!, snippetId: ID!, recordIds: [ID!]!): String
+  recordsRemoveFromSnippet(simulatorId: ID!, snippetId: ID!, recordId: ID!): String
   recordsDeleteRecord(simulatorId: ID!, recordId: ID!): String
 
-  """
-  Macro: Records: Generate Records Snippet
-  """
-  recordsGenerateRecords(
-    simulatorId: ID!
-    name: String!
-    count: Int
-    visible: Boolean
-  ): RecordSnippet
+  """Macro: Records: Generate Records Snippet"""
+  recordsGenerateRecords(simulatorId: ID!, name: String!, count: Int, visible: Boolean): RecordSnippet
 
-  """
-  Macro: Records: Add Record to Snippet
-  """
-  recordsCreateOnSnippet(
-    simulatorId: ID!
-    snippetId: ID
-    snippetName: String
-    contents: String!
-    timestamp: String
-    category: String = "manual"
-  ): RecordSnippet
+  """Macro: Records: Add Record to Snippet"""
+  recordsCreateOnSnippet(simulatorId: ID!, snippetId: ID, snippetName: String, contents: String!, timestamp: String, category: String = "manual"): RecordSnippet
   recordsShowSnippet(simulatorId: ID!, snippetId: ID!): RecordSnippet
   recordsHideSnippet(simulatorId: ID!, snippetId: ID!): RecordSnippet
   recordTemplateCreateSnippet(name: String!): String
-  recordTemplateAddToSnippet(
-    snippetId: ID!
-    contents: String!
-    timestamp: String
-    category: String = "manual"
-    modified: Boolean
-  ): String
+  recordTemplateAddToSnippet(snippetId: ID!, contents: String!, timestamp: String, category: String = "manual", modified: Boolean): String
   recordTemplateDeleteSnippet(snippetId: ID!): String
   recordTemplateRename(snippetId: ID!, name: String!): String
-  recordTemplateUpdateRecord(
-    snippetId: ID!
-    recordId: ID
-    contents: String
-    timestamp: String
-    category: String = "manual"
-    modified: Boolean
-  ): String
+  recordTemplateUpdateRecord(snippetId: ID!, recordId: ID, contents: String, timestamp: String, category: String = "manual", modified: Boolean): String
   recordTemplateRemoveFromSnippet(snippetId: ID!, recordId: ID!): String
-  addRoom(
-    simulatorId: ID!
-    deckId: ID
-    deckNumber: Int
-    name: String!
-    svgPath: String
-  ): String
+  addRoom(simulatorId: ID!, deckId: ID, deckNumber: Int, name: String!, svgPath: String): String
   removeRoom(roomId: ID!): String
   addRoomsBulk(simulatorId: ID!, rooms: String!): String
   renameRoom(roomId: ID!, name: String!): String
@@ -2416,18 +2176,13 @@ type Mutation {
   sensorScanResult(id: ID!, domain: String, result: String!): String
 
   """
-  Macro: Sensors: Send Scan Result
+  Macro: Sensors: Processed Data
   Requires:
    - Cards:Sensors, JrSensors
    - Systems:Sensors
   """
-  processedData(
-    id: ID
-    simulatorId: ID
-    domain: String
-    data: String!
-    flash: Boolean
-  ): String
+  processedData(id: ID, simulatorId: ID, domain: String, data: String!, flash: Boolean): String
+  removeProcessedData(id: ID, simulatorId: ID, domain: String, time: String!): String
   sensorScanCancel(id: ID!): String
 
   """
@@ -2436,22 +2191,14 @@ type Mutation {
    - Cards:SecurityScans, SensorScans, Sensors, JrSensors
    - Systems:Sensors
   """
-  setPresetAnswers(
-    simulatorId: ID!
-    domain: String!
-    presetAnswers: [PresetAnswerInput]!
-  ): String
+  setPresetAnswers(simulatorId: ID!, domain: String!, presetAnswers: [PresetAnswerInput]!): String
   createSensorContact(id: ID!, contact: SensorContactInput!): String
   createSensorContacts(id: ID!, contacts: [SensorContactInput!]!): String
   moveSensorContact(id: ID!, contact: SensorContactInput!): String
   removeSensorContact(id: ID!, contact: SensorContactInput!): String
   removeAllSensorContacts(id: ID!, type: [String]): String
   stopAllSensorContacts(id: ID!): String
-  updateSensorContact(
-    id: ID
-    simulatorId: ID
-    contact: SensorContactInput!
-  ): String
+  updateSensorContact(id: ID, simulatorId: ID, contact: SensorContactInput!): String
 
   """
   Macro: Sensors: Set Army Sensor Contacts
@@ -2459,20 +2206,12 @@ type Mutation {
    - Cards:Sensors, JrSensors
    - Systems:Sensors
   """
-  setArmyContacts(
-    simulatorId: ID!
-    domain: String!
-    armyContacts: [SensorContactInput]!
-  ): String
+  setArmyContacts(simulatorId: ID!, domain: String!, armyContacts: [SensorContactInput]!): String
   createSensorArmyContact(id: ID!, contact: SensorContactInput!): String
   removeSensorArmyContact(id: ID!, contact: ID!): String
   updateSensorArmyContact(id: ID!, contact: SensorContactInput!): String
-  nudgeSensorContacts(
-    id: ID!
-    amount: CoordinatesInput
-    speed: Float!
-    yaw: Float
-  ): String
+  nudgeSensorContacts(id: ID!, amount: CoordinatesInput, speed: Float!, yaw: Float): String
+  sensorsSetHasPing(id: ID!, ping: Boolean!): String
   setSensorPingMode(id: ID!, mode: PING_MODES): String
   pingSensors(id: ID!): String
   animateSensorContacact: String
@@ -2495,13 +2234,7 @@ type Mutation {
   """
   updateSensorGrid(simulatorId: ID!, contacts: [SensorContactInput]!): String
   destroySensorContact(id: ID!, contact: ID, contacts: [ID]): String
-  sensorsFireProjectile(
-    simulatorId: ID!
-    contactId: ID!
-    speed: Float!
-    hitpoints: Int!
-    miss: Boolean
-  ): String
+  sensorsFireProjectile(simulatorId: ID!, contactId: ID!, speed: Float!, hitpoints: Int!, miss: Boolean): String
   setSensorsDefaultHitpoints(id: ID, simulatorId: ID, hp: Int!): String
   setSensorsDefaultSpeed(id: ID, simulatorId: ID, speed: Float!): String
   setSensorsMissPercent(id: ID!, miss: Float!): String
@@ -2540,42 +2273,26 @@ type Mutation {
    - Cards:DockingPorts, SpecializedDocking, Shuttles
    - Docking
   """
-  shipSetDocking(
-    simulatorId: ID!
-    clamps: Boolean
-    ramps: Boolean
-    airlock: Boolean
-    legs: Boolean
-  ): String
-  remoteAccessSendCode(
-    simulatorId: ID!
-    code: String!
-    station: String!
-  ): String
+  shipSetDocking(simulatorId: ID!, clamps: Boolean, ramps: Boolean, airlock: Boolean, legs: Boolean): String
+  remoteAccessSendCode(simulatorId: ID!, code: String!, station: String!): String
   remoteAccessUpdateCode(simulatorId: ID!, codeId: ID!, state: String!): String
   setSelfDestructTime(simulatorId: ID!, time: Float): String
   setSelfDestructCode(simulatorId: ID!, code: String): String
   setSelfDestructAuto(simulatorId: ID!, auto: Boolean): String
 
-  """
-  Macro: Actions: Send Notification
-  """
+  """Macro: Actions: Send Notification"""
   notify(
     simulatorId: ID!
     type: String
 
-    """
-    Dynamic: Station
-    """
+    """Dynamic: Station"""
     station: String
     title: String!
     body: String
     color: NotifyColors
   ): String
 
-  """
-  Macro: Actions: Print PDF Asset
-  """
+  """Macro: Actions: Print PDF Asset"""
   printPdf(asset: String!): String
   commAddSignal(id: ID!, commSignalInput: CommSignalInput!): String
   commUpdateSignal(id: ID!, commSignalInput: CommSignalInput!): String
@@ -2603,11 +2320,7 @@ type Mutation {
    - Cards:CommShortRange
    - Systems:ShortRangeComm
   """
-  addShortRangeComm(
-    simulatorId: ID!
-    frequency: Float
-    signalName: String
-  ): String
+  addShortRangeComm(simulatorId: ID!, frequency: Float, signalName: String): String
 
   """
   Macro: Short Range: Remove Signal
@@ -2615,11 +2328,7 @@ type Mutation {
    - Cards:CommShortRange
    - Systems:ShortRangeComm
   """
-  removeShortRangeComm(
-    simulatorId: ID!
-    frequency: Float
-    signalName: String
-  ): String
+  removeShortRangeComm(simulatorId: ID!, frequency: Float, signalName: String): String
   muteShortRangeComm(id: ID!, arrowId: ID!, mute: Boolean!): String
   setSickbayBunks(id: ID!, count: Int): String
   addSickbayCrew(id: ID!, crew: CrewInput!): String
@@ -2651,75 +2360,45 @@ type Mutation {
   removeSimulator(simulatorId: ID!): String
   triggerMacros(simulatorId: ID!, macros: [MacroInput]!): String
 
-  """
-  Macro: Timeline: Auto-Advance Timeline Step (Use with Delay)
-  """
+  """Macro: Timeline: Auto-Advance Timeline Step (Use with Delay)"""
   autoAdvance(simulatorId: ID!, prev: Boolean, limited: Boolean): String
 
-  """
-  Macro: Flight: Start Training Mode
-  """
+  """Macro: Flight: Start Training Mode"""
   trainingMode(simulatorId: ID!): String
 
-  """
-  Macro: Simulator: Set Alert Condition Lock
-  """
+  """Macro: Simulator: Set Alert Condition Lock"""
   setAlertConditionLock(simulatorId: ID!, lock: Boolean!): String
 
-  """
-  Macro: Simulator: Rename Simulator
-  """
+  """Macro: Simulator: Rename Simulator"""
   renameSimulator(simulatorId: ID!, name: String!): String
 
-  """
-  Macro: Simulator: Change Simulator Layout
-  """
+  """Macro: Simulator: Change Simulator Layout"""
   changeSimulatorLayout(simulatorId: ID!, layout: String!): String
   changeSimulatorCaps(simulatorId: ID!, caps: Boolean!): String
 
-  """
-  Macro: Simulator: Change Alert Level
-  """
+  """Macro: Simulator: Change Alert Level"""
   changeSimulatorAlertLevel(simulatorId: ID!, alertLevel: String!): String
 
-  """
-  Macro: Station: Hide Card
-  """
+  """Macro: Station: Hide Card"""
   hideSimulatorCard(simulatorId: ID!, cardName: String!, delay: Int): String
 
-  """
-  Macro: Station: Unhide Card
-  """
+  """Macro: Station: Unhide Card"""
   unhideSimulatorCard(simulatorId: ID!, cardName: String!): String
-  stationAssignCard(
-    simulatorId: ID!
-    assignedToStation: String!
-    cardName: String!
-  ): String
+  stationAssignCard(simulatorId: ID!, assignedToStation: String!, cardName: String!): String
   stationUnassignCard(simulatorId: ID!, cardName: String!): String
 
-  """
-  Macro: Simulator: Flip Simulator
-  """
+  """Macro: Simulator: Flip Simulator"""
   flipSimulator(simulatorId: ID!, flip: Boolean!): String
-  toggleSimulatorCardHidden(
-    simulatorId: ID!
-    cardName: String!
-    toggle: Boolean!
-  ): String
+  toggleSimulatorCardHidden(simulatorId: ID!, cardName: String!, toggle: Boolean!): String
   changeSimulatorExocomps(simulatorId: ID!, exocomps: Int!): String
   changeSimulatorBridgeCrew(simulatorId: ID!, crew: Int!): String
   changeSimulatorExtraPeople(simulatorId: ID!, crew: Int!): String
   changeSimulatorRadiation(simulatorId: ID!, radiation: Float!): String
   setSimulatorTimelineStep(simulatorId: ID!, timelineId: ID, step: Int!): String
-  setSimulatorMission(simulatorId: ID!, missionId: ID!): String
-  setSimulatorMissionConfig(
-    simulatorId: ID!
-    missionId: ID!
-    stationSetId: ID!
-    actionId: ID!
-    args: JSON!
-  ): String
+
+  """Macro: Timeline: Change Timeline Mission or Step"""
+  setSimulatorMission(simulatorId: ID!, missionId: ID!, stepId: ID): String
+  setSimulatorMissionConfig(simulatorId: ID!, missionId: ID!, stationSetId: ID!, actionId: ID!, args: JSON!): String
   updateSimulatorPanels(simulatorId: ID!, panels: [ID]!): String
   updateSimulatorCommandLines(simulatorId: ID!, commandLines: [ID]!): String
   updateSimulatorTriggers(simulatorId: ID!, triggers: [ID]!): String
@@ -2730,129 +2409,38 @@ type Mutation {
   setBridgeMessaging(id: ID!, messaging: Boolean!): String
   setSimulatorAssets(id: ID!, assets: SimulatorAssetsInput!): String
   setSimulatorSoundEffects(id: ID!, soundEffects: JSON!): String
-  updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
   setSimulatorHasPrinter(simulatorId: ID!, hasPrinter: Boolean!): String
   setSimulatorHasLegs(simulatorId: ID!, hasLegs: Boolean!): String
-  setSimulatorSpaceEdventuresId(
-    simulatorId: ID!
-    spaceEdventuresId: String!
-  ): String
-  addSimulatorStationCard(
-    simulatorId: ID!
-    station: String!
-    cardName: String!
-    cardComponent: String!
-  ): String
-  removeSimulatorStationCard(
-    simulatorId: ID!
-    station: String!
-    cardName: String!
-  ): String
-  editSimulatorStationCard(
-    simulatorId: ID!
-    station: String!
-    cardName: String!
-    newCardName: String
-    cardComponent: String
-  ): String
-  setSimulatorStationMessageGroup(
-    simulatorId: ID!
-    station: String!
-    group: String!
-    state: Boolean!
-  ): String
-  setSimulatorStationLogin(
-    simulatorId: ID!
-    station: String!
-    login: Boolean!
-  ): String
-  setSimulatorStationLayout(
-    simulatorId: ID!
-    station: String!
-    layout: String!
-  ): String
-  setSimulatorStationExecutive(
-    simulatorId: ID!
-    station: String!
-    exec: Boolean!
-  ): String
-  setSimulatorStationWidget(
-    simulatorId: ID!
-    station: String!
-    widget: String!
-    state: Boolean!
-  ): String
+  setSimulatorSpaceEdventuresId(simulatorId: ID!, spaceEdventuresId: String!): String
+  addSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!, cardComponent: String!): String
+  removeSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!): String
+  editSimulatorStationCard(simulatorId: ID!, station: String!, cardName: String!, newCardName: String, cardComponent: String): String
+  setSimulatorStationMessageGroup(simulatorId: ID!, station: String!, group: String!, state: Boolean!): String
+  setSimulatorStationLogin(simulatorId: ID!, station: String!, login: Boolean!): String
+  setSimulatorStationLayout(simulatorId: ID!, station: String!, layout: String!): String
+  setSimulatorStationExecutive(simulatorId: ID!, station: String!, exec: Boolean!): String
+  setSimulatorStationWidget(simulatorId: ID!, station: String!, widget: String!, state: Boolean!): String
   createSoftwarePanel(panel: SoftwarePanelInput!): String
   updateSoftwarePanel(panel: SoftwarePanelInput!): String
   removeSoftwarePanel(panel: ID!): String
   createStationSet(name: String!, simulatorId: ID!): String
   removeStationSet(stationSetID: ID!): String
   renameStationSet(stationSetID: ID!, name: String!): String
+  duplicateStationSet(stationSetID: ID!, name: String!): String
   setStationSetCrewCount(stationSetID: ID!, crewCount: Int!): String
   addStationToStationSet(stationSetID: ID!, stationName: String!): String
   removeStationFromStationSet(stationSetID: ID!, stationName: String!): String
-  editStationInStationSet(
-    stationSetID: ID!
-    stationName: String!
-    newStationName: String!
-  ): String
-  addCardToStation(
-    stationSetID: ID!
-    stationName: String!
-    cardName: String!
-    cardComponent: String!
-    cardIcon: String
-  ): String
-  removeCardFromStation(
-    stationSetID: ID!
-    stationName: String!
-    cardName: String!
-  ): String
-  editCardInStationSet(
-    stationSetID: ID!
-    stationName: String!
-    cardName: String!
-    newCardName: String
-    cardComponent: String
-    cardIcon: String
-  ): String
-  setStationLogin(
-    stationSetID: ID!
-    stationName: String!
-    login: Boolean!
-  ): String
-  setStationLayout(
-    stationSetID: ID!
-    stationName: String!
-    layout: String!
-  ): String
-  setStationExecutive(
-    stationSetID: ID!
-    stationName: String!
-    exec: Boolean!
-  ): String
-  toggleStationWidgets(
-    stationSetID: ID!
-    stationName: String!
-    widget: String!
-    state: Boolean!
-  ): String
-  setStationDescription(
-    stationSetID: ID!
-    stationName: String!
-    description: String!
-  ): String
-  setStationTraining(
-    stationSetID: ID!
-    stationName: String!
-    training: String
-  ): String
-  reorderStationWidgets(
-    stationSetId: ID!
-    stationName: String!
-    widget: String!
-    order: Int!
-  ): String
+  editStationInStationSet(stationSetID: ID!, stationName: String!, newStationName: String!): String
+  addCardToStation(stationSetID: ID!, stationName: String!, cardName: String!, cardComponent: String!, cardIcon: String): String
+  removeCardFromStation(stationSetID: ID!, stationName: String!, cardName: String!): String
+  editCardInStationSet(stationSetID: ID!, stationName: String!, cardName: String!, newCardName: String, cardComponent: String, cardIcon: String): String
+  setStationLogin(stationSetID: ID!, stationName: String!, login: Boolean!): String
+  setStationLayout(stationSetID: ID!, stationName: String!, layout: String!): String
+  setStationExecutive(stationSetID: ID!, stationName: String!, exec: Boolean!): String
+  toggleStationWidgets(stationSetID: ID!, stationName: String!, widget: String!, state: Boolean!): String
+  setStationDescription(stationSetID: ID!, stationName: String!, description: String!): String
+  setStationTraining(stationSetID: ID!, stationName: String!, training: String): String
+  reorderStationWidgets(stationSetId: ID!, stationName: String!, widget: String!, order: Int!): String
   setStealthActivated(id: ID, state: Boolean): String
   setStealthCharge(id: ID, state: Boolean): String
   activateStealth(id: ID): String
@@ -2865,39 +2453,21 @@ type Mutation {
   setSubspaceFieldSectorValue(id: ID, which: String!, value: Int!): String
   createSurveyForm(name: String!): String
   removeSurveyForm(id: ID!): String
-  setSurveyFormGoogleSheet(
-    id: ID!
-    spreadsheetId: ID
-    spreadsheetName: String
-    sheetId: ID
-  ): String
+  setSurveyFormGoogleSheet(id: ID!, spreadsheetId: ID, spreadsheetName: String, sheetId: ID): String
   updateSurveyForm(id: ID!, form: [FormFieldsInput]!): String
 
-  """
-  Macro: Surveys: Trigger Survey
-  """
+  """Macro: Surveys: Trigger Survey"""
   triggerSurvey(simulatorId: ID!, id: ID!): String
   surveyFormResponse(id: ID!, response: FormResultsInput): String
   endSurvey(id: ID!): String
-  addSystemToSimulator(
-    simulatorId: ID!
-    className: String!
-    params: String!
-  ): String
+  addSystemToSimulator(simulatorId: ID!, className: String!, params: String!): String
   removeSystemFromSimulator(systemId: ID, simulatorId: ID, type: String): String
-  updateSystemName(
-    systemId: ID!
-    name: String
-    displayName: String
-    upgradeName: String
-  ): String
-  updateSystemUpgradeMacros(
-    systemId: ID!
-    upgradeMacros: [TimelineItemInput]
-  ): String
+  updateSystemName(systemId: ID!, name: String, displayName: String, upgradeName: String): String
+  updateSystemUpgradeMacros(systemId: ID!, upgradeMacros: [TimelineItemInput]): String
   updateSystemUpgradeBoard(systemId: ID!, upgradeBoard: ID): String
   upgradeSystem(systemId: ID!): String
   updateSystemRooms(systemId: ID!, locations: [ID]): String
+  systemSetWing(systemId: ID!, wing: String!): String
   newTacticalMap(name: String!, flightId: ID): String
   updateTacticalMap(id: ID!): String
   freezeTacticalMap(id: ID!, freeze: Boolean!): String
@@ -2909,36 +2479,22 @@ type Mutation {
   reorderTacticalMapLayer(mapId: ID!, layer: ID!, order: Int!): String
   removeTacticalMapLayer(mapId: ID!, layerId: ID!): String
   addTacticalMapItem(mapId: ID!, layerId: ID!, item: TacticalItemInput!): String
-  updateTacticalMapItem(
-    mapId: ID!
-    layerId: ID!
-    item: TacticalItemInput!
-  ): String
+  updateTacticalMapItem(mapId: ID!, layerId: ID!, item: TacticalItemInput!): String
   removeTacticalMapItem(mapId: ID!, layerId: ID!, itemId: ID!): String
   addTacticalMapPath(mapId: ID!, layerId: ID!, path: TacticalPathInput!): String
-  updateTacticalMapPath(
-    mapId: ID!
-    layerId: ID!
-    path: TacticalPathInput!
-  ): String
+  updateTacticalMapPath(mapId: ID!, layerId: ID!, path: TacticalPathInput!): String
   removeTacticalMapPath(mapId: ID!, layerId: ID!, pathId: ID!): String
 
-  """
-  Macro: Viewscreen: Show Tactical Map
-  """
+  """Macro: Viewscreen: Show Tactical Map"""
   showViewscreenTactical(
     mapId: ID!
     secondary: Boolean
 
-    """
-    Dynamic: Client
-    """
+    """Dynamic: Client"""
     viewscreenId: ID
   ): String
 
-  """
-  Macro: Tactical Map: Add Tactical Maps to Flight
-  """
+  """Macro: Tactical Map: Add Tactical Maps to Flight"""
   addTacticalMapsToFlight(mapIds: [ID!]!): String
   createTargetingContact(id: ID!, targetClass: ID!): String
   targetTargetingContact(id: ID!, targetId: ID!): String
@@ -2950,16 +2506,8 @@ type Mutation {
   updateTargetClass(id: ID!, classInput: TargetClassInput!): String
   setTargetClassCount(id: ID!, classId: ID!, count: Int!): String
   setCoordinateTargeting(id: ID!, which: Boolean!): String
-  setTargetingCalculatedTarget(
-    id: ID
-    simulatorId: ID
-    coordinates: CoordinatesInput
-    contactId: ID
-  ): String
-  setTargetingEnteredTarget(
-    id: ID!
-    coordinates: StringCoordinatesInput
-  ): String
+  setTargetingCalculatedTarget(id: ID, simulatorId: ID, coordinates: CoordinatesInput, contactId: ID): String
+  setTargetingEnteredTarget(id: ID!, coordinates: StringCoordinatesInput): String
 
   """
   Macro: Targeting: Clear Targeting Classes
@@ -2977,13 +2525,7 @@ type Mutation {
    - Systems:Targeting
   """
   setTargetingClasses(id: ID!, classInput: [TargetClassInput]!): String
-  generateTaskReport(
-    simulatorId: ID!
-    systemId: ID
-    name: String
-    type: String!
-    stepCount: Int
-  ): String
+  generateTaskReport(simulatorId: ID!, systemId: ID, name: String, type: String!, stepCount: Int): String
   clearTaskReport(id: ID!): String
   completeTaskReport(id: ID!): String
   verifyTaskReportStep(id: ID!, stepId: ID!): String
@@ -3023,9 +2565,7 @@ type Mutation {
     - Space EdVentures
   """
   assignSpaceEdventuresBadge(
-    """
-    Dynamic: Station
-    """
+    """Dynamic: Station"""
     station: String
     badgeId: ID!
   ): String
@@ -3053,17 +2593,10 @@ type Mutation {
   getSpaceEdventuresLogin(token: String!): String
   removeSpaceEdventuresClient(flightId: ID!, clientId: ID!): String
 
-  """
-  Macro: Generic: Do a generic thing. Use for triggers.
-  """
+  """Macro: Generic: Do a generic thing. Use for triggers."""
   generic(simulatorId: ID!, key: String!): String
-  addIssue(
-    title: String!
-    body: String!
-    person: String!
-    priority: String!
-    type: String!
-  ): String
+  clockSync(clientId: ID!): String
+  addIssue(title: String!, body: String!, person: String!, priority: String!, type: String!): String
   addIssueUpload(data: String!, filename: String!, ext: String!): String
   rotationUpdate(id: ID!, rotation: RotationInput, on: Boolean): String
   rotationSet(id: ID!, rotation: RotationInput): String
@@ -3083,12 +2616,13 @@ type Mutation {
   torpedoSetWarheadCount(id: ID!, warheadType: String!, count: Int!): String
   torpedoUnload(id: ID!): String
   torpedoFire(id: ID!): String
-  setTractorBeamState(id: ID!, state: Boolean!): String
-  setTractorBeamTarget(id: ID!, target: Boolean!): String
-  setTractorBeamStrength(id: ID!, strength: Float!): String
-  setTractorBeamStress(id: ID!, stress: Float!): String
-  setTractorBeamScanning(id: ID!, scanning: Boolean!): String
-  setTractorBeamTargetLabel(id: ID!, label: String!): String
+  setTractorBeamState(id: ID!, beam: ID!, state: Boolean!): String
+  setTractorBeamTarget(id: ID!, beam: ID!, target: Boolean!): String
+  setTractorBeamStrength(id: ID!, beam: ID!, strength: Float!): String
+  setTractorBeamStress(id: ID!, beam: ID!, stress: Float!): String
+  setTractorBeamScanning(id: ID!, beam: ID!, scanning: Boolean!): String
+  setTractorBeamTargetLabel(id: ID!, beam: ID!, label: String!): String
+  setTractorBeamCount(id: ID!, beams: Int!): String
 
   """
   Macro: Tractor Beam: Add Target
@@ -3096,7 +2630,7 @@ type Mutation {
    - Cards:TractorBeam
    - Systems:TractorBeam
   """
-  addTractorTarget(id: ID!, label: String): String
+  addTractorTarget(id: ID!, beamId: ID!, label: String): String
 
   """
   Macro: Tractor Beam: Remove Target
@@ -3104,7 +2638,7 @@ type Mutation {
    - Cards:TractorBeam
    - Systems:TractorBeam
   """
-  removeTractorTarget(id: ID!): String
+  removeTractorTarget(id: ID!, beamId: ID!): String
   setTransportDestination(transporter: ID!, destination: String!): String
   setTransportTarget(transporter: ID!, target: String!): String
   beginTransportScan(transporter: ID!): String
@@ -3124,42 +2658,23 @@ type Mutation {
   setTranswarpActive(id: ID!, active: Boolean!): String
   fluxTranswarp(id: ID!, quad: String, field: String): String
   normalTranswarp(id: ID!, quad: String, field: String): String
-  setTranswarpSectorValue(
-    id: ID!
-    quad: String!
-    field: String!
-    value: Int!
-  ): String
+  setTranswarpSectorValue(id: ID!, quad: String!, field: String!, value: Int!): String
   addTrigger(name: String!): String
   renameTrigger(id: ID!, name: String!): String
   removeTrigger(id: ID!): String
-  updateTrigger(
-    id: ID!
-    components: JSON
-    connections: JSON
-    values: JSON
-    config: JSON
-  ): String
+  updateTrigger(id: ID!, components: JSON, connections: JSON, values: JSON, config: JSON): String
 
-  """
-  Macro: Triggers: Add trigger to simulator
-  """
+  """Macro: Triggers: Add trigger to simulator"""
   addTriggerToSimulator(simulatorId: ID!, trigger: ID!): String
 
-  """
-  Macro: Triggers: Remove trigger from simulator
-  """
+  """Macro: Triggers: Remove trigger from simulator"""
   removeTriggerFromSimulator(simulatorId: ID!, trigger: ID!): String
   updateViewscreenName(id: ID!, name: String!): String
   updateViewscreenSecondary(id: ID!, secondary: Boolean!): String
 
-  """
-  Macro: Viewscreen: Change Viewscreen Card
-  """
+  """Macro: Viewscreen: Change Viewscreen Card"""
   updateViewscreenComponent(
-    """
-    Dynamic: Client
-    """
+    """Dynamic: Client"""
     id: ID
     simulatorId: ID
     component: String!
@@ -3168,25 +2683,17 @@ type Mutation {
   ): String
   updateViewscreenData(id: ID!, data: String!): String
 
-  """
-  Macro: Viewscreen: Set Viewscreen to Auto
-  """
+  """Macro: Viewscreen: Set Viewscreen to Auto"""
   setViewscreenToAuto(
-    """
-    Dynamic: Client
-    """
+    """Dynamic: Client"""
     id: ID
     simulatorId: ID
     secondary: Boolean
   ): String
 
-  """
-  Macro: Viewscreen: Set Viewscreen Picture-in-Picture
-  """
+  """Macro: Viewscreen: Set Viewscreen Picture-in-Picture"""
   setViewscreenPictureInPicture(
-    """
-    Dynamic: Client
-    """
+    """Dynamic: Client"""
     id: ID
     simulatorId: ID
     secondary: Boolean
@@ -3196,69 +2703,67 @@ type Mutation {
     position: PIP_POSITION
   ): String
 
-  """
-  Macro: Viewscreen: Remove Viewscreen Picture-in-Picture
-  """
+  """Macro: Viewscreen: Remove Viewscreen Picture-in-Picture"""
   removeViewscreenPictureInPicture(
-    """
-    Dynamic: Client
-    """
+    """Dynamic: Client"""
     id: ID
     simulatorId: ID
     secondary: Boolean
   ): String
   updateViewscreenAuto(id: ID!, auto: Boolean!): String
   toggleViewscreenVideo(simulatorId: ID, viewscreenId: ID): String
-  countermeasuresCreateCountermeasure(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-    name: String!
-  ): Countermeasure
-  countermeasuresRemoveCountermeasure(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-  ): String
-  countermeasuresLaunchCountermeasure(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-  ): String
-  countermeasuresActivateCountermeasure(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-  ): String
-  countermeasuresDeactivateCountermeasure(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-  ): String
+  countermeasuresCreateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!, name: String!): Countermeasure
+  countermeasuresRemoveCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresLaunchCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresActivateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresDeactivateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
   countermeasuresLaunchUnlockedCountermeasures(id: ID!): String
-  countermeasuresBuildCountermeasure(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-  ): String
-  countermeasuresAddModule(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-    moduleType: String!
-  ): Countermeasure
-  countermeasuresRemoveModule(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-    moduleId: ID!
-  ): String
-  countermeasuresConfigureModule(
-    id: ID!
-    slot: CountermeasureSlotEnum!
-    moduleId: ID!
-    config: JSON!
-  ): String
+  countermeasuresBuildCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresAddModule(id: ID!, slot: CountermeasureSlotEnum!, moduleType: String!): Countermeasure
+  countermeasuresRemoveModule(id: ID!, slot: CountermeasureSlotEnum!, moduleId: ID!): String
+  countermeasuresConfigureModule(id: ID!, slot: CountermeasureSlotEnum!, moduleId: ID!, config: JSON!): String
   countermeasuresSetResource(id: ID!, resource: String!, value: Float!): String
-  countermeasuresSetFDNote(
-    id: ID!
-    countermeasureId: ID!
-    note: String!
-  ): String
+  countermeasuresSetFDNote(id: ID!, countermeasureId: ID!, note: String!): String
   entityCreate(flightId: ID!, template: Boolean): Entity!
   entityRemove(id: [ID!]!): String
+
+  """Macro: Sandbox: Set Base Universe for Flight"""
+  flightSetBaseUniverse(flightId: ID, procGenKey: String): String
+  dmxDeviceCreate(name: String!): String
+  dmxDeviceRemove(id: ID!): String
+  dmxDeviceSetName(id: ID!, name: String!): String
+  dmxDeviceSetChannels(id: ID!, channels: [DMXChannelProperty!]!): String
+  dmxSetCreate(name: String!): String
+  dmxSetRemove(id: ID!): String
+  dmxSetDuplicate(id: ID!, name: String!): String
+  dmxSetSetName(id: ID!, name: String!): String
+  dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
+  dmxFixtureRemove(DMXSetId: ID!, id: ID!): String
+  dmxFixtureSetName(id: ID!, name: String!): String
+  dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: ID!): String
+  dmxFixtureSetChannel(id: ID!, channel: Int!): String
+  dmxFixtureSetMode(id: ID, simulatorId: ID, tag: [String], mode: DMXFixtureMode!): String
+
+  """Macro: DMX: Set Fixture To Active Mode"""
+  dmxFixtureSetActive(id: ID, simulatorId: ID, tags: [String]): String
+
+  """Macro: DMX: Set Fixture Tags"""
+  dmxFixtureSetTags(id: ID, simulatorId: ID, tags: [String], newTags: [String!]!): String
+
+  """Macro: DMX: Add Fixture Tag"""
+  dmxFixtureAddTag(id: ID, simulatorId: ID, tags: [String], newTag: String!): String
+
+  """Macro: DMX: Remove Fixture Tag"""
+  dmxFixtureRemoveTag(id: ID, simulatorId: ID, tags: [String], removeTag: String!): String
+
+  """Macro: DMX: Set Fixture Passive Channels"""
+  dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tags: [String], passiveChannels: DMXPassiveChannelsInput!): String
+  dmxConfigCreate(name: String!): String
+  dmxConfigRemove(id: ID!): String
+  dmxConfigDuplicate(id: ID!, name: String!): String
+  dmxConfigSetName(id: ID!, name: String!): String
+  dmxConfigSetConfig(id: ID!, config: JSON!): String
+  dmxConfigSetActionStrength(id: ID!, actionStrength: Float!): String
 }
 
 type NamedObject {
@@ -3484,8 +2989,8 @@ type Power {
 }
 
 type PresetAnswer {
-  label: String
-  value: String
+  label: String!
+  value: String!
 }
 
 input PresetAnswerInput {
@@ -3501,7 +3006,7 @@ enum PRIORITIES {
 }
 
 type Probe {
-  id: ID
+  id: ID!
   name: String
   type: ID
   launched: Boolean
@@ -3540,7 +3045,7 @@ input ProbeInput {
 }
 
 type Probes implements SystemInterface {
-  id: ID
+  id: ID!
   simulatorId: ID
   type: String
   name: String
@@ -3575,6 +3080,11 @@ input ProbeTypeInput {
   count: Int
 }
 
+type ProcessedData {
+  value: String!
+  time: String!
+}
+
 type Quaternion {
   x: Float!
   y: Float!
@@ -3595,13 +3105,7 @@ type Query {
   asset(assetKey: String!): Asset
   assets(assetKeys: [String!]!): [Asset]
   assetFolders(name: String, names: [String]): [AssetFolder]
-  clients(
-    all: Boolean
-    clientId: ID
-    simulatorId: ID
-    stationName: String
-    flightId: ID
-  ): [Client]
+  clients(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
   keypad(client: ID!): Keypad
   keypads(simulatorId: ID!): [Keypad]
   scanner(client: ID!): Scanner
@@ -3631,13 +3135,7 @@ type Query {
   interfaces(simulatorId: ID): [Interface]
   interfaceDevices: [InterfaceDevice]
   internalComm(simulatorId: ID!): [InternalComm]
-  inventory(
-    simulatorId: ID
-    id: ID
-    name: String
-    deck: ID
-    room: ID
-  ): [InventoryItem]
+  inventory(simulatorId: ID, id: ID, name: String, deck: ID, room: ID): [InventoryItem]
   isochips(simulatorId: ID): [Isochip]
   jumpDrive(simulatorId: ID): [JumpDrive]
   keyboard: [Keyboard]
@@ -3660,7 +3158,7 @@ type Query {
   shipLogs(simulatorId: ID!): [Log]
   phasers(simulatorId: ID): [Phaser]
   phaser(id: ID!): Phaser
-  probes(simulatorId: ID!): [Probes]
+  probes(simulatorId: ID!): [Probes!]!
   probe(id: ID!): Probes
   railgun(simulatorId: ID): [Railgun]
   reactors(simulatorId: ID, model: String): [Reactor]
@@ -3668,14 +3166,9 @@ type Query {
   recordSnippets(simulatorId: ID!, visible: Boolean): [RecordSnippet]
   recordTemplates: [RecordSnippet]
   rooms(simulatorId: ID, deck: ID, name: String, role: RoomRoles): [Room]
-  sensors(simulatorId: ID, domain: String): [Sensors]
+  sensors(simulatorId: ID, domain: String): [Sensors!]!
   sensor(id: ID!): Sensors
-  sensorContacts(
-    simulatorId: ID
-    sensorsId: ID
-    hostile: Boolean
-    type: String
-  ): [SensorContact]
+  sensorContacts(simulatorId: ID, sensorsId: ID, hostile: Boolean, type: String): [SensorContact]
   sets: [Set]
   shields(simulatorId: ID): [Shield]
   shortRangeComm(simulatorId: ID!): [ShortRangeComm]
@@ -3691,14 +3184,7 @@ type Query {
   stealth(id: ID!): StealthField
   subspaceField(simulatorId: ID): [SubspaceField]
   surveyform(simulatorId: ID, active: Boolean): [SurveyForm]
-  systems(
-    simulatorId: ID
-    type: String
-    power: Boolean
-    heat: Boolean
-    extra: Boolean
-    damageWhich: String
-  ): [System]
+  systems(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean, damageWhich: String): [System]
   system(id: ID!): System
   allSystems: [String!]!
   tacticalMaps(flightId: ID): [TacticalMap]
@@ -3708,12 +3194,7 @@ type Query {
   tasks(simulatorId: ID!, station: String, definitions: [String!]): [Task]
   taskTemplates: [TaskTemplate]
   taskDefinitions(simulatorId: ID): [TaskDefinition]
-  taskInstructions(
-    simulatorId: ID
-    definition: String!
-    requiredValues: JSON!
-    task: TaskInput
-  ): String
+  taskInstructions(simulatorId: ID, definition: String!, requiredValues: JSON!, task: TaskInput): String
   teams(simulatorId: ID, type: String, cleared: Boolean): [Team]
   damagePositions: [String]
   exocompParts: [String]
@@ -3732,7 +3213,12 @@ type Query {
   countermeasures(simulatorId: ID!): Countermeasures
   countermeasureModuleType: [CountermeasureModule!]!
   entity(id: ID!): Entity
-  entities(flightId: ID!): [Entity]!
+  entities(flightId: ID!, inert: Boolean): [Entity]!
+  dmxDevices: [DMXDevice!]!
+  dmxSets: [DMXSet!]!
+  dmxFixtures(simulatorId: ID): [DMXFixture!]!
+  dmxConfig(id: ID!): DMXConfig
+  dmxConfigs: [DMXConfig!]!
 }
 
 type Railgun implements SystemInterface {
@@ -3760,7 +3246,7 @@ input RangeInput {
 }
 
 type Reactor implements SystemInterface {
-  id: ID
+  id: ID!
   simulatorId: ID
   type: String
   name: String
@@ -3778,10 +3264,17 @@ type Reactor implements SystemInterface {
   externalPower: Boolean
   powerOutput: Int
   efficiency: Float
-  efficiencies: [ReactorEfficiency]
+  efficiencies: [ReactorEfficiency!]
   batteryChargeLevel: Float
   batteryChargeRate: Float
   depletion: Float
+  hasWings: Boolean
+  leftWingPower: Int
+  leftWingRequest: Int
+  leftWingRequested: Boolean
+  rightWingPower: Int
+  rightWingRequest: Int
+  rightWingRequested: Boolean
   alphaLevel: Float
   betaLevel: Float
   alphaTarget: Float
@@ -3797,15 +3290,15 @@ enum REACTOR_MODELS {
 }
 
 type ReactorEfficiency {
-  label: String
-  color: String
+  label: String!
+  color: String!
   efficiency: Float
 }
 
 input ReactorEfficiencyInput {
-  label: String
-  color: String
-  efficiency: Float
+  label: String!
+  color: String!
+  efficiency: Float!
 }
 
 type RecordEntry {
@@ -3930,7 +3423,7 @@ type ScienceType {
 }
 
 type SensorContact {
-  id: ID
+  id: ID!
   name: String
   type: String
   size: Float
@@ -3984,7 +3477,7 @@ input SensorContactInput {
 }
 
 type Sensors implements SystemInterface {
-  id: ID
+  id: ID!
   simulatorId: ID
   type: String
   name: String
@@ -3992,13 +3485,13 @@ type Sensors implements SystemInterface {
   upgradeName: String
   upgraded: Boolean
   stealthFactor: Float
-  domain: String
+  domain: String!
   pings: Boolean
   timeSincePing: Int
   pingMode: PING_MODES
   scanResults: String
   scanRequest: String
-  processedData: String
+  processedData: [ProcessedData!]
   presetAnswers: [PresetAnswer]
   scanning: Boolean
   power: Power
@@ -4020,7 +3513,7 @@ type Sensors implements SystemInterface {
 }
 
 type SensorScan {
-  id: ID
+  id: ID!
   timestamp: String
   mode: String
   location: String
@@ -4048,9 +3541,9 @@ type SensorsSegment {
 }
 
 type Set {
-  id: ID
-  name: String
-  clients: [SetClient]
+  id: ID!
+  name: String!
+  clients: [SetClient!]!
 }
 
 type SetClient {
@@ -4244,7 +3737,7 @@ type Simulator {
   spaceEdventuresId: String
   flipped: Boolean
   capabilities: SimulatorCapabilities
-  ambiance: [Ambiance]
+  ambiance: [Ambiance!]
   assets: SimulatorAssets
   soundEffects: JSON
   damageTasks: [DamageTask]
@@ -4361,10 +3854,11 @@ type StageComponent {
   scaleLabel: String
   scaleLabelShort: String
   skyboxKey: String
+  childrenAsSprites: Boolean
 }
 
 type Station {
-  name: String
+  name: String!
   description: String
   training: String
   login: Boolean
@@ -4372,16 +3866,16 @@ type Station {
   messageGroups: [String]
   layout: String
   widgets: [String]
-  cards(showHidden: Boolean): [Card]
+  cards(showHidden: Boolean): [Card!]!
   ambiance: String
 }
 
 type StationSet {
-  id: ID
-  name: String
+  id: ID!
+  name: String!
   simulator: Simulator
   crewCount: Int
-  stations: [Station]
+  stations: [Station!]!
 }
 
 type StealthField implements SystemInterface {
@@ -4426,13 +3920,7 @@ type Subscription {
   _empty: String
   actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
   assetFolderChange: [AssetFolder!]!
-  clientChanged(
-    all: Boolean
-    clientId: ID
-    simulatorId: ID
-    stationName: String
-    flightId: ID
-  ): [Client]
+  clientChanged(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
   clientPing(clientId: ID!): Boolean
   keypadsUpdate(simulatorId: ID!): [Keypad]
   keypadUpdate(client: ID!): Keypad
@@ -4471,11 +3959,7 @@ type Subscription {
   isochipsUpdate(simulatorId: ID): [Isochip]
   jumpDriveUpdate(simulatorId: ID): [JumpDrive]
   keyboardUpdate: [Keyboard]
-  libraryEntriesUpdate(
-    simulatorId: ID
-    type: String
-    all: Boolean
-  ): [LibraryEntry]
+  libraryEntriesUpdate(simulatorId: ID, type: String, all: Boolean): [LibraryEntry]
   longRangeCommunicationsUpdate(simulatorId: ID): [LRCommunications]
   macrosUpdate: [Macro]
   macroButtonsUpdate: [MacroButtonConfig]
@@ -4493,20 +3977,15 @@ type Subscription {
   officerLogsUpdate(clientId: ID, flightId: ID!): [Log]
   shipLogsUpdate(simulatorId: ID!): [Log]
   phasersUpdate(simulatorId: ID): [Phaser]
-  probesUpdate(simulatorId: ID!): [Probes]
+  probesUpdate(simulatorId: ID!): [Probes!]!
   scienceProbeEmitter(simulatorId: ID!): ScienceProbeEvent
   railgunUpdate(simulatorId: ID): [Railgun]
-  reactorUpdate(simulatorId: ID): [Reactor]
+  reactorUpdate(simulatorId: ID): [Reactor!]!
   recordSnippetsUpdate(simulatorId: ID, visible: Boolean): [RecordSnippet]
   recordTemplatesUpdate: [RecordSnippet]
   roomsUpdate(simulatorId: ID!, role: RoomRoles): [Room]
-  sensorsUpdate(simulatorId: ID, domain: String): [Sensors]
-  sensorContactUpdate(
-    simulatorId: ID
-    sensorId: ID
-    hostile: Boolean
-    type: String
-  ): [SensorContact]
+  sensorsUpdate(simulatorId: ID, domain: String): [Sensors!]!
+  sensorContactUpdate(simulatorId: ID, sensorId: ID, hostile: Boolean, type: String): [SensorContact!]!
   sensorsPing(sensorId: ID): String
   setsUpdate: [Set]
   shieldsUpdate(simulatorId: ID): [Shield]
@@ -4521,28 +4000,17 @@ type Subscription {
   stealthFieldUpdate(simulatorId: ID): [StealthField]
   subspaceFieldUpdate(simulatorId: ID): [SubspaceField]
   surveyformUpdate(simulatorId: ID, active: Boolean): [SurveyForm]
-  systemsUpdate(
-    simulatorId: ID
-    type: String
-    power: Boolean
-    heat: Boolean
-    extra: Boolean
-    damageWhich: String
-  ): [System]
+  systemsUpdate(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean, damageWhich: String): [System!]!
   tacticalMapsUpdate(flightId: ID): [TacticalMap]
   tacticalMapUpdate(id: ID!, lowInterval: Boolean): TacticalMap
   targetingUpdate(simulatorId: ID): [Targeting]
-  taskReportUpdate(
-    simulatorId: ID
-    type: String
-    cleared: Boolean
-  ): [TaskReport]
+  taskReportUpdate(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
   tasksUpdate(simulatorId: ID!, station: String, definitions: [String!]): [Task]
   taskTemplatesUpdate: [TaskTemplate]
   teamsUpdate(simulatorId: ID, type: String, cleared: Boolean): [Team]
   _templateUpdate(simulatorId: ID): Template
   thoriumUpdate: Thorium
-  clockSync: String
+  clockSync(clientId: ID!): String
   rotationChange(simulatorId: ID): Thruster
   thxUpdate(simulatorId: ID): [Thx]
   torpedosUpdate(simulatorId: ID): [Torpedo]
@@ -4555,6 +4023,10 @@ type Subscription {
   countermeasuresUpdate(simulatorId: ID!): Countermeasures
   entity(id: ID): Entity
   entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
+  dmxSets: [DMXSet!]!
+  dmxDevices: [DMXDevice!]!
+  dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
+  dmxConfigs: [DMXConfig!]!
 }
 
 type SubspaceField implements SystemInterface {
@@ -4602,6 +4074,7 @@ type System implements SystemInterface {
   name: String
   displayName: String
   upgradeName: String
+  wing: String
   upgraded: Boolean
   upgradeMacros: [TimelineItem]
   upgradeBoard: ID
@@ -5089,23 +4562,28 @@ type Torpedo implements SystemInterface {
 }
 
 type TractorBeam implements SystemInterface {
-  id: ID
+  id: ID!
   simulatorId: ID
   type: String
-  power: Power
-  damage: Damage
-  name: String
-  displayName: String
+  power: Power!
+  damage: Damage!
+  name: String!
+  displayName: String!
   upgradeName: String
   upgraded: Boolean
   stealthFactor: Float
   locations: [Room]
-  state: Boolean
-  target: Boolean
-  targetLabel: String
-  strength: Float
-  stress: Float
-  scanning: Boolean
+  beams: [TractorBeamBeam!]!
+}
+
+type TractorBeamBeam {
+  id: ID!
+  state: Boolean!
+  target: Boolean!
+  targetLabel: String!
+  strength: Float!
+  stress: Float!
+  scanning: Boolean!
 }
 
 type Transporter implements SystemInterface {

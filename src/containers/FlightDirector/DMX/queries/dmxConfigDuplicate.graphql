@@ -1,0 +1,3 @@
+mutation DMXConfigDuplicate($id: ID!, $name: String!) {
+  dmxConfigDuplicate(id: $id, name: $name)
+}

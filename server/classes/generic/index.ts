@@ -112,6 +112,8 @@ export class System {
   requiredDamageSteps: DamageStep[];
   optionalDamageSteps: DamageStep[];
   damageTasks: DamageTask[];
+  wing: "left" | "right";
+  stealthCompromised: boolean;
   [key: string]: any;
   constructor(params: any = {}) {
     this.id = params.id || uuid.v4();
@@ -119,6 +121,7 @@ export class System {
     this.type = "System";
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
+    this.wing = params.wing || "left";
     this.storedDisplayName =
       params.storedDisplayName || params.displayName || params.name;
     this.upgradeName = params.upgradeName || this.storedDisplayName;
@@ -129,6 +132,7 @@ export class System {
       params.upgradeMacros.forEach((m: Macro) =>
         this.upgradeMacros.push(new Macro(m)),
       );
+    this.stealthCompromised = false;
 
     this.power = params.power
       ? {...params.power}
@@ -158,6 +162,7 @@ export class System {
       );
   }
   get stealthFactor(): number | null {
+    if (this.stealthCompromised) return 0.8;
     return null;
   }
   set displayName(value) {
@@ -171,6 +176,9 @@ export class System {
   }
   trainingMode() {
     return;
+  }
+  setWing(wing) {
+    this.wing = wing;
   }
   updateName({
     name,

@@ -1,7 +1,7 @@
 import {registerComponent} from "../component";
 import {immerable} from "immer";
 
-enum MeshTypeEnum {
+export enum MeshTypeEnum {
   sphere = "sphere",
   cube = "cube",
   model = "model",
@@ -31,7 +31,7 @@ export class Appearance {
     cloudMapAsset,
     emissiveColor,
     emissiveIntensity,
-  }) {
+  }: Partial<Appearance>) {
     this.meshType = meshType;
     this.modelAsset = modelAsset;
     this.materialMapAsset = materialMapAsset;

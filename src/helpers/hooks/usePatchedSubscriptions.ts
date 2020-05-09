@@ -26,18 +26,22 @@ const client = new SubscriptionClient(websocketUrl, {
   reconnect: true,
 });
 
+export type PatchData<SubData> = {
+  loading: boolean;
+  data: SubData;
+  tick: number;
+};
+
 function usePatchedSubscriptions<SubData, VariableDefinition>(
   queryAST: DocumentNode,
   variablesInput?: VariableDefinition | undefined,
-): [
-  UseStore<{loading: boolean; data: SubData}>,
-  StoreApi<{loading: boolean; data: SubData}>,
-] {
+): [UseStore<PatchData<SubData>>, StoreApi<PatchData<SubData>>] {
   const [useStore, api] = React.useMemo(
     () =>
-      create<{loading: boolean; data: SubData}>(() => ({
+      create<PatchData<SubData>>(() => ({
         loading: true,
         data: ([] as unknown) as SubData,
+        tick: 0,
       })),
     [],
   );
@@ -66,7 +70,11 @@ function usePatchedSubscriptions<SubData, VariableDefinition>(
       })
       .subscribe({
         next: ({data}) => {
-          api.setState({loading: false, data: data?.[selectionName] || []});
+          api.setState(s => ({
+            loading: false,
+            data: data?.[selectionName] || [],
+            tick: s.tick + 1,
+          }));
         },
       });
     return () => unsubscribe.unsubscribe();

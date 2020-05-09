@@ -12,12 +12,12 @@ export function setComponent<C>(componentProperty, publish = true) {
     const entityId = id || context.entityId;
     if (!entityId && entityId !== 0) return;
     const entityIndex = App.entities.findIndex(e => e.id === entityId);
+    if (entityIndex === -1) return;
     const flightId = App.entities[entityIndex].flightId;
     const stageId =
       App.entities[entityIndex]?.stageChild?.parentId ||
       (App.entities[entityIndex].stage && App.entities[entityIndex].id);
     const template = Boolean(App.entities[entityIndex].template);
-    if (entityIndex === -1) return;
     if (Object.keys(properties).length === 0 && !id) {
       // No properties are being added, and the ID isn't
       // explicitly set; this component wasn't intended
@@ -52,12 +52,12 @@ export function removeComponent(componentProperty) {
     const entityId = id || context.entityId;
     if (!entityId && entityId !== 0) return;
     const entityIndex = App.entities.findIndex(e => e.id === entityId);
+    if (entityIndex === -1) return;
     const flightId = App.entities[entityIndex].flightId;
     const stageId =
       App.entities[entityIndex]?.stageChild?.parentId ||
       (App.entities[entityIndex].stage && App.entities[entityIndex].id);
     const template = Boolean(App.entities[entityIndex].template);
-    if (entityIndex === -1) return;
     App.entities = produce(App.entities, draft => {
       const entity = draft[entityIndex];
       entity[componentProperty] = null;

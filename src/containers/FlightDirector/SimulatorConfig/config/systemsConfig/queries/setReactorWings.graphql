@@ -1,0 +1,3 @@
+mutation ReactorSetWings($id: ID!, $hasWings: Boolean!) {
+  reactorSetHasWings(id: $id, hasWings: $hasWings)
+}

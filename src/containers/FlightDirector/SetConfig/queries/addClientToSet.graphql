@@ -1,0 +1,3 @@
+mutation AddClient($id: ID!, $client: SetClientInput!) {
+  addClientToSet(id: $id, client: $client)
+}

@@ -23,6 +23,11 @@ export class Location {
   [immerable] = true;
   static class = "Location";
   class = "Location";
+
+  // Inert locations aren't updated every frame
+  // and don't interpolate between frames.
+  // Planets and stars are inert.
+  inert: boolean;
   position: Coordinates;
   velocity: Coordinates;
   acceleration: Coordinates;
@@ -30,6 +35,7 @@ export class Location {
   rotationVelocity: Coordinates;
   rotationAcceleration: Coordinates;
   constructor({
+    inert = false,
     position = {x: 0, y: 0, z: 0},
     velocity = {x: 0, y: 0, z: 0},
     acceleration = {x: 0, y: 0, z: 0},
@@ -37,6 +43,7 @@ export class Location {
     rotationVelocity = {x: 0, y: 0, z: 0},
     rotationAcceleration = {x: 0, y: 0, z: 0},
   }) {
+    this.inert = inert;
     this.position = new Coordinates(position);
     this.velocity = new Coordinates(velocity);
     this.acceleration = new Coordinates(acceleration);

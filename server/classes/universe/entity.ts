@@ -17,6 +17,7 @@ import {
 } from "./components";
 import {componentRegistry} from "./component";
 import {immerable} from "immer";
+import {Physical} from "./components/physical";
 
 // An entity is an object that exists within the
 // sandbox space. It's properties will correspond
@@ -24,9 +25,11 @@ import {immerable} from "immer";
 export class Entity {
   [immerable] = true;
   id?: string;
+  templateId?: string;
   flightId: string;
   interval?: number;
   // Possible components
+  physical?: Physical;
   appearance?: Appearance;
   behavior?: Behavior;
   identity?: Identity;
@@ -43,9 +46,16 @@ export class Entity {
 
   static class = "Entity";
   class = "Entity";
-  constructor({id = uuid.v4(), flightId, interval = 1, ...components}) {
+  constructor({
+    id = uuid.v4(),
+    templateId = id,
+    flightId,
+    interval = 1,
+    ...components
+  }: Partial<Entity>) {
     this.id = id;
     this.flightId = flightId || null;
+    this.templateId = templateId;
     this.interval = interval;
     // Apply the components
     Object.entries(components).forEach(([key, component]) => {

@@ -17,8 +17,6 @@
     color: white;
   }
   .timeline-list {
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    margin-top: 10px;
     padding: 10px 0;
     display: block;
     overflow-y: auto;
@@ -41,6 +39,7 @@
   }
   .mission-step-description {
     white-space: pre-wrap;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   }
   .classic-timeline {
     overflow-y: auto;

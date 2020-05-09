@@ -7,6 +7,7 @@ import {
   TimelineStep as TimelineStepI,
   Station,
   Client,
+  Mission as MissionI,
 } from "generated/graphql";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
 
@@ -19,6 +20,7 @@ interface MissionProps {
   executedTimelineSteps: string[];
   currentTimelineStep: number;
   timeline: TimelineStepI[];
+  missions: MissionI[];
 }
 
 const Mission: React.FC<MissionProps> = ({
@@ -30,6 +32,7 @@ const Mission: React.FC<MissionProps> = ({
   timeline,
   currentTimelineStep,
   executedTimelineSteps,
+  missions,
 }) => {
   const currentStep = timeline[currentTimelineStep];
 
@@ -113,6 +116,7 @@ const Mission: React.FC<MissionProps> = ({
         stations={stations}
         clients={clients}
         simArgs={simArgs}
+        missions={missions}
       />
     </>
   );

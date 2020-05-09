@@ -1,0 +1,3 @@
+mutation ReactorSetWingPower($id: ID!, $wing: String!, $power: Int!) {
+  reactorSetWingPower(id: $id, wing: $wing, power: $power)
+}

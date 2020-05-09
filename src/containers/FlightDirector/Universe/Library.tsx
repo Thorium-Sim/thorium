@@ -6,6 +6,8 @@ import {ApolloProvider, useApolloClient} from "@apollo/client";
 import {Entity as EntityT} from "generated/graphql";
 import usePatchedSubscriptions from "helpers/hooks/usePatchedSubscriptions";
 import gql from "graphql-tag.macro";
+import GLTFPreview from "components/views/TacticalMap/GLTFPreview";
+import {PositionTuple} from "./CanvasApp";
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 const sub = gql`
@@ -49,12 +51,12 @@ export default function Library({
   dragging: boolean;
   setDragging: React.Dispatch<any>;
 }) {
-  const [useEntityState] = usePatchedSubscriptions<
+  const [useEntityState, storeApi] = usePatchedSubscriptions<
     EntityT[],
     {flightId: string}
   >(sub, {flightId: "template"});
   const libraryItems = useEntityState(state => state.data) || [];
-
+  const mousePosition = React.useRef<PositionTuple>([0, 0, 0]);
   const client = useApolloClient();
   return (
     <div>
@@ -74,7 +76,13 @@ export default function Library({
                   <ambientLight intensity={1} />
                   <pointLight position={[10, 10, 10]} intensity={0.5} />
                   <Suspense fallback={null}>
-                    <Entity library entity={l} />
+                    <Entity
+                      library
+                      entity={l}
+                      mousePosition={mousePosition}
+                      storeApi={storeApi}
+                      entityIndex={-1}
+                    />
                   </Suspense>
                 </ApolloProvider>
               </Canvas>

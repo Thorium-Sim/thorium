@@ -5,6 +5,7 @@ import {handleInitialSubResponse} from "../../helpers/handleInitialSubResponse";
 import {Entity} from "../../classes";
 import produce from "immer";
 import {Template} from "../../classes/universe/components";
+import generateUniverse from "./generateUniverse";
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -12,14 +13,21 @@ const schema = gql`
   type Entity {
     id: ID!
     interval: Int
+    # This property exists for client side type definitions
+    reset: Boolean
   }
   extend type Query {
     entity(id: ID!): Entity
-    entities(flightId: ID!): [Entity]!
+    entities(flightId: ID!, inert: Boolean): [Entity]!
   }
   extend type Mutation {
     entityCreate(flightId: ID!, template: Boolean): Entity!
     entityRemove(id: [ID!]!): String
+
+    """
+    Macro: Sandbox: Set Base Universe for Flight
+    """
+    flightSetBaseUniverse(flightId: ID, procGenKey: String): String
   }
   extend type Subscription {
     entity(id: ID): Entity
@@ -28,7 +36,17 @@ const schema = gql`
 `;
 
 const resolver = {
-  Query: {},
+  Query: {
+    entities(rootQuery, {flightId, inert}, context) {
+      let entities = App.entities.filter(e => {
+        if (flightId && e.flightId !== flightId) return false;
+        if ((inert || inert === false) && e?.location?.inert !== inert)
+          return false;
+        return true;
+      });
+      return entities;
+    },
+  },
   Mutation: {
     entityCreate(rootQuery, {flightId, template}, context) {
       const entity = new Entity({flightId});
@@ -77,6 +95,18 @@ const resolver = {
         });
       }
     },
+    flightSetBaseUniverse(
+      rootQuery,
+      {
+        flightId,
+        procGenKey = "thorium",
+      }: {flightId?: string; procGenKey?: string},
+      context,
+    ) {
+      const universe = generateUniverse(flightId, procGenKey);
+      // console.log(universe);
+      App.entities = App.entities.concat(universe);
+    },
   },
   Subscription: {
     entity: {
@@ -97,17 +127,19 @@ const resolver = {
       ),
     },
     entities: {
-      resolve(rootValue: {entities: Entity[]}, {flightId, template, stageId}) {
+      resolve(
+        rootValue: {entities: Entity[]},
+        {flightId, template, stageId, inert = false},
+      ) {
         let entities = rootValue.entities.filter(e => {
           if (flightId && e.flightId !== flightId) return false;
           if (template === true && !e.template) return false;
           if (template === false && e.template) return false;
-          if (
-            stageId &&
-            e.stageChild?.parentId !== stageId &&
-            e.stage &&
-            stageId !== e.id
-          ) {
+          if (!inert && e?.location?.inert) return false;
+
+          const isNotStageChild = stageId && e.stageChild?.parentId !== stageId;
+          const isNotParentStage = !e.stage || stageId !== e.id;
+          if (isNotStageChild && isNotParentStage) {
             return false;
           }
           return true;
@@ -132,7 +164,6 @@ const resolver = {
           if (stageId && rootValue.stageId !== stageId) {
             return false;
           }
-
           return true;
         },
       ),

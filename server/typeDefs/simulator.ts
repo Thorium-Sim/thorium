@@ -133,7 +133,10 @@ const schema = gql`
       step: Int!
     ): String
 
-    setSimulatorMission(simulatorId: ID!, missionId: ID!): String
+    """
+    Macro: Timeline: Change Timeline Mission or Step
+    """
+    setSimulatorMission(simulatorId: ID!, missionId: ID!, stepId: ID): String
     setSimulatorMissionConfig(
       simulatorId: ID!
       missionId: ID!
@@ -152,7 +155,6 @@ const schema = gql`
     setBridgeMessaging(id: ID!, messaging: Boolean!): String
     setSimulatorAssets(id: ID!, assets: SimulatorAssetsInput!): String
     setSimulatorSoundEffects(id: ID!, soundEffects: JSON!): String
-    updateSimulatorLighting(id: ID!, lighting: LightingInput!): String
     setSimulatorHasPrinter(simulatorId: ID!, hasPrinter: Boolean!): String
     setSimulatorHasLegs(simulatorId: ID!, hasLegs: Boolean!): String
 
@@ -293,6 +295,7 @@ const resolver = {
                 if (w === "R&D Report") return "RnDReports";
                 if (w === "Officer Log") return "OfficerLog";
                 if (w === "Command Line") return "CommandLine";
+                return w;
               }),
             ),
         )

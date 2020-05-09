@@ -13,6 +13,7 @@ import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import gql from "graphql-tag.macro";
 import ValueInput from "./ValueInput";
 import {FaBan} from "react-icons/fa";
+import SearchableList from "helpers/SearchableList";
 
 const ConfigureTask = ({
   definitionGroups,
@@ -31,39 +32,46 @@ const ConfigureTask = ({
   updatePreMacros,
   configureMacro,
 }) => (
-  <div style={{display: "flex", flex: 1, height: "100%"}}>
+  <div style={{display: "flex", flex: 1, height: "calc(100% - 20px)"}}>
     <div
       style={{
         flex: 3,
         height: "100%",
         overflowY: "auto",
-        paddingBottom: "30px",
       }}
     >
       Definitions
-      <ListGroup>
-        {Object.entries(definitionGroups).map(([key, value]) => (
-          <Fragment key={key}>
-            <ListGroupItem>
-              <strong>{key}</strong>
-            </ListGroupItem>
-            {value.map(v => (
-              <ListGroupItem
-                key={v.name}
-                active={v.name === selectedDefinition}
-                onClick={() => updateSelectedDefinition(v.name)}
-              >
-                {v.name}{" "}
-                <Badge>
-                  {taskTemplates.filter(t => t.definition === v.name).length}
-                </Badge>
-              </ListGroupItem>
-            ))}
-          </Fragment>
-        ))}
-      </ListGroup>
+      <SearchableList
+        items={Object.entries(definitionGroups).reduce(
+          (prev, [key, next]) =>
+            prev.concat(
+              next.map(({name}) => ({id: name, label: name, category: key})),
+            ),
+          [],
+        )}
+        selectedItem={selectedDefinition}
+        setSelectedItem={id => updateSelectedDefinition(id)}
+        renderItem={item => (
+          <React.Fragment>
+            {item.label}{" "}
+            <Badge title="Templates Available">
+              {taskTemplates.filter(t => t.definition === item.id).length}
+            </Badge>
+            {taskTemplates.filter(t => t.definition === item.id && t.assigned)
+              .length > 0 && (
+              <Badge color="warning" title="Templates Assigned">
+                {
+                  taskTemplates.filter(
+                    t => t.definition === item.id && t.assigned,
+                  ).length
+                }
+              </Badge>
+            )}
+          </React.Fragment>
+        )}
+      />
     </div>
-    <div style={{flex: 7}}>
+    <div style={{flex: 7, overflowY: "auto"}}>
       {definition && (
         <Fragment>
           {!definition.active && (
@@ -78,11 +86,9 @@ const ConfigureTask = ({
             style={{
               display: "flex",
               flexDirection: "column",
-              overflowY: "auto",
-              height: "calc(100% - 34px)",
+              height: "100%",
               overflowX: "hidden",
               padding: "0 10px",
-              paddingBottom: "30px",
             }}
           >
             <div>

@@ -1,0 +1,3 @@
+mutation DMXConfigSetConfig($id: ID!, $config: JSON!) {
+  dmxConfigSetConfig(id: $id, config: $config)
+}

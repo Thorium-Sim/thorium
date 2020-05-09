@@ -1,16 +1,5 @@
 import uuid from "uuid";
 
-interface MissionParams {
-  id?: string;
-  name?: string;
-  description?: string;
-  category?: string;
-  aux?: boolean;
-  simulators?: string[];
-  timeline?: TimelineStep[];
-  extraRequirements?: Requirements;
-}
-
 interface Requirements {
   cards: string[];
   systems: string[];
@@ -25,7 +14,7 @@ export default class Mission {
   simulators: string[];
   timeline: TimelineStep[];
   extraRequirements: Requirements;
-  constructor(params: MissionParams = {}) {
+  constructor(params: Partial<Mission> = {}) {
     this.class = "Mission";
     this.id = params.id || uuid.v4();
     this.name = params.name || "Mission";

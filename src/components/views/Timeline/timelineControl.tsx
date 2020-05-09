@@ -25,6 +25,8 @@ interface TimelineControl {
   auxTimelineId?: string;
 }
 
+export const excludedTimelineActions = ["setSimulatorMission"];
+
 const TimelineControl: React.FC<TimelineControl> = ({
   actions,
   simulatorId,
@@ -43,7 +45,7 @@ const TimelineControl: React.FC<TimelineControl> = ({
     if (!currentStep) return;
 
     const macros = currentStep.timelineItems
-      .filter(t => actions[t.id])
+      .filter(t => actions[t.id] && !excludedTimelineActions.includes(t.event))
       .map(t => {
         const args = !t.args
           ? "{}"

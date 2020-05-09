@@ -32,6 +32,12 @@
   .processedData {
     overflow-y: scroll;
     height: 100%;
+    hr {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    small {
+      color: #ddd;
+    }
   }
   pre {
     white-space: pre-wrap;
@@ -85,6 +91,13 @@
       color: red;
     }
   }
+  .sensor-control-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  .ping-control {
+    margin-bottom: 6px;
+  }
 }
 
 .sensor-core {
@@ -94,6 +107,27 @@
   .scan-list {
     max-height: 100%;
     overflow-y: scroll;
+  }
+  .scan-input-field {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: calc(100% - 40px);
+  }
+  .processedData {
+    overflow-y: scroll;
+    height: 100%;
+    pre {
+      color: #fff;
+      margin: 0;
+    }
+    hr {
+      border-color: rgba(255, 255, 255, 0.2);
+      margin: 0.25rem 0;
+    }
+    small {
+      color: #ddd;
+    }
   }
 }
 .sensors-extras {

@@ -41,7 +41,8 @@ class ThreeView extends Component {
     objLoader.load(objURL, obj => {
       this.reactor = new THREE.Object3D();
       this.reactor.copy(obj);
-      this.reactor.scale.set(0.02, 0.02, 0.02);
+      this.reactor.scale.set(0.025, 0.025, 0.025);
+      this.reactor.position.set(0, -0.5, 0);
       this.reactor.children[0].material = material;
       this.scene.add(this.reactor);
       this.animate();

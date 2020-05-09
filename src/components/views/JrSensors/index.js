@@ -14,7 +14,10 @@ export const JR_SENSOR_SUB = gql`
     sensorsUpdate(simulatorId: $simulatorId, domain: "external") {
       id
       simulatorId
-      processedData
+      processedData {
+        value
+        time
+      }
       segments {
         ring
         line
@@ -38,7 +41,7 @@ class Sensors extends Component {
   render() {
     const {hoverContact} = this.state;
     const {data} = this.props;
-    if (data.loading) return null;
+    if (data.loading || !data) return null;
     const sensors = data.sensors[0];
     return (
       <Container style={{height: "90vh"}} className="jr-sensors">
@@ -129,7 +132,10 @@ export const JR_SENSOR_QUERY = gql`
     sensors(simulatorId: $simulatorId, domain: "external") {
       id
       simulatorId
-      processedData
+      processedData {
+        value
+        time
+      }
       segments {
         ring
         line

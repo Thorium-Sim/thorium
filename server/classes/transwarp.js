@@ -61,6 +61,8 @@ export default class Transwarp extends heatMixin(System) {
     super(params);
     this.class = "Transwarp";
     this.type = "Transwarp";
+    this.wing = params.wing || "left";
+
     this.name = params.name || "Transwarp";
 
     this.quad1 = params.quad1 || {

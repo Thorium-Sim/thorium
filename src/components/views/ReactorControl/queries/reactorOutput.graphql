@@ -1,0 +1,3 @@
+mutation ReactorPowerLevel($id: ID!, $e: Int!) {
+  reactorChangeOutput(id: $id, output: $e)
+}

@@ -1,0 +1,9 @@
+subscription ReactorPower($simulatorId: ID) {
+  systemsUpdate(simulatorId: $simulatorId, power: true) {
+    id
+    name
+    power {
+      power
+    }
+  }
+}

@@ -4,8 +4,10 @@ import {Mutation} from "react-apollo";
 import {GENERIC_QUERY} from "./index";
 import gql from "graphql-tag.macro";
 import {FaPlusCircle, FaMinusCircle} from "react-icons/fa";
+import {useSystemSetWingMutation} from "generated/graphql";
 
-const Power = ({id, simulatorId, power, powerRender}) => {
+const Power = ({id, simulatorId, wing, power, powerRender}) => {
+  const [setWing] = useSystemSetWingMutation();
   return (
     <FormGroup>
       <Label>
@@ -25,7 +27,7 @@ const Power = ({id, simulatorId, power, powerRender}) => {
             <FaPlusCircle
               onClick={() => {
                 const lastLevel =
-                  power.powerLevels[power.powerLevels.length - 1] || 4;
+                  power?.powerLevels[power?.powerLevels?.length - 1] || 4;
                 const levels = power.powerLevels.concat(lastLevel + 1);
                 action({variables: {id, levels}});
               }}
@@ -34,15 +36,15 @@ const Power = ({id, simulatorId, power, powerRender}) => {
 
             <FaMinusCircle
               onClick={() => {
-                const levels = power.powerLevels.concat();
+                const levels = power?.powerLevels.concat();
                 levels.pop();
                 action({variables: {id, levels}});
               }}
               className="text-danger"
             />
 
-            {power.powerLevels &&
-              power.powerLevels.map((p, i) => (
+            {power?.powerLevels &&
+              power?.powerLevels?.map((p, i) => (
                 <div
                   key={`system-power-${i}`}
                   style={{display: "inline-flex", flexDirection: "column"}}
@@ -57,7 +59,7 @@ const Power = ({id, simulatorId, power, powerRender}) => {
                     name="power"
                     defaultValue={p || ""}
                     onChange={e => {
-                      const levels = power.powerLevels.concat();
+                      const levels = power?.powerLevels?.concat() || [];
                       levels[i] = parseInt(e.target.value, 10);
                       action({variables: {id, levels}});
                     }}
@@ -104,6 +106,21 @@ const Power = ({id, simulatorId, power, powerRender}) => {
           </div>
         )}
       </Mutation>
+      <div style={{marginLeft: "30px"}}>
+        <Label>
+          Ship Wing (Only applies if reactor is using wing distribution)
+          <Input
+            type="select"
+            defaultValue={wing}
+            onChange={e =>
+              setWing({variables: {systemId: id, wing: e.target.value}})
+            }
+          >
+            <option value={"left"}>Left Wing</option>
+            <option value={"right"}>Right Wing</option>
+          </Input>
+        </Label>
+      </div>
     </FormGroup>
   );
 };

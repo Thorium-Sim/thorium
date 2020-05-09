@@ -1,0 +1,3 @@
+mutation TractorBeamTargetLabel($id: ID!, $beam: ID!, $label: String!) {
+  setTractorBeamTargetLabel(id: $id, beam: $beam, label: $label)
+}

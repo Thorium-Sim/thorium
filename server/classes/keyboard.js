@@ -14,7 +14,12 @@ class Key {
   constructor(params) {
     this.id = params.id || uuid.v4();
     this.class = "Key";
+
+    // This is kept around for legacy support
     this.key = params.key || "";
+
+    // Keycode is the better value
+    this.keyCode = params.keyCode || "";
     this.meta = params.meta || [];
     this.actions = [];
     params.actions &&
@@ -49,7 +54,7 @@ export default class Keyboard {
     const k = this.keys.find(
       y =>
         y.id === key.id ||
-        (y.key === key.key &&
+        ((y.keyCode === key.keyCode || y.key === key.key) &&
           JSON.stringify(y.meta.sort()) === JSON.stringify(key.meta.sort())),
     );
     if (k) k.update(key);

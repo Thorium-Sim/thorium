@@ -11,3 +11,4 @@ export {Simulator} from "./simulator";
 export {EnginesImpulse} from "./enginesImpulse";
 export {EnginesWarp} from "./enginesWarp";
 export {Thrusters} from "./thrusters";
+export {Physical} from "./physical";

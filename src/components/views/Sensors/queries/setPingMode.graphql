@@ -1,0 +1,3 @@
+mutation SensorsSetPingMode($id: ID!, $mode: PING_MODES) {
+  setSensorPingMode(id: $id, mode: $mode)
+}

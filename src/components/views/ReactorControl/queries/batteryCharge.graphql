@@ -1,0 +1,3 @@
+mutation BatteryChargeLevel($id: ID!, $e: Float!) {
+  reactorBatteryChargeLevel(id: $id, level: $e)
+}

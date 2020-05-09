@@ -45,6 +45,14 @@
 }
 .core #sensorGrid .grid {
   overflow: visible;
+  &.can-ping .sensor-contacts-holder {
+    mask-image: none;
+    pointer-events: all;
+    .sensors-border,
+    .sensors-planet {
+      pointer-events: all;
+    }
+  }
 }
 #sensorGrid {
   position: absolute;
@@ -74,42 +82,65 @@
     align-items: center;
     border-radius: 50%;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.6);
 
     //Ping Stuff
-    // background: radial-gradient(
-    //   ellipse at center,
-    //   rgba(30, 87, 153, 0) 0%,
-    //   rgba(31, 91, 158, 0) 21%,
-    //   rgba(41, 137, 216, 0.24) 50%,
-    //   rgba(34, 107, 178, 0.8) 61%,
-    //   rgba(30, 88, 154, 0) 70%
-    // );
-    // background-color: rgba(0, 0, 0, 0.6);
-    // background-position: center;
-    // background-repeat: no-repeat;
-    // background-size: 0%;
-    // transition: background-size 0s linear;
-    // &.ping {
-    //   transition: background-size 10s ease;
-    //   background-size: 600%;
-    // }
-    /*.ping-ring {
+    background: radial-gradient(
+      ellipse at center,
+      rgba(30, 87, 153, 0) 0%,
+      rgba(31, 91, 158, 0) 21%,
+      rgba(41, 137, 216, 0.24) 50%,
+      rgba(34, 107, 178, 0.8) 61%,
+      rgba(30, 88, 154, 0) 70%
+    );
+    background-color: rgba(0, 0, 0, 0.6);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 0% 0%;
+    transition: all 0s linear;
+    &.can-ping.ping {
+      transition: all 10s ease;
+      background-size: 600% 600%;
+    }
+    .sensor-contacts-holder {
       width: 100%;
       height: 100%;
-      border: solid 4px rgba(0,128,255,0.7);
-      border-radius: 50%;
       position: absolute;
-      transition: transform 0s ease-out;
-      transform: scale(0);
-      box-shadow: 0px 0px 10px rgba(0,128,255,0.7), inset 0px 0px 20px 10px rgba(0,128,255,0.7);
-      opacity: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      overflow: hidden;
+      animation-name: none;
+      animation-iteration-count: infinite;
+      animation-play-state: paused;
+      animation-duration: 6.5s;
+      animation-timing-function: cubic-bezier(1, 0, 0, 1);
     }
-    &.ping .ping-ring {
-      transition: transform 2s ease-out, opacity 3s linear;
-      transform: scale(1.01);
-      opacity: 0;
-    }*/
+    &.can-ping .sensor-contacts-holder {
+      mask-image: radial-gradient(
+        transparent 0%,
+        black 0.1%,
+        black 10%,
+        rgba(0, 0, 0, 0) 20%
+      );
+      mask-size: 1% 1%;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      pointer-events: none;
+      .sensors-border,
+      .sensors-planet {
+        pointer-events: none;
+      }
+    }
+    &.can-ping.ping .sensor-contacts-holder {
+      animation-name: sensors-ping-mask;
+      animation-play-state: running;
+      pointer-events: all;
+      .sensors-border,
+      .sensors-planet {
+        pointer-events: all;
+      }
+    }
     .ring {
       z-index: 11;
       pointer-events: none;
@@ -279,5 +310,19 @@
   .grid-segments {
     pointer-events: auto;
     z-index: 0;
+  }
+}
+@keyframes sensors-ping-mask {
+  0% {
+    mask-size: 1% 1%;
+  }
+  40% {
+    mask-size: 2000% 2000%;
+  }
+  60% {
+    mask-size: 2000% 2000%;
+  }
+  100% {
+    mask-size: 2000000% 2000000%;
   }
 }

@@ -1,4 +1,6 @@
 src/models/*
+src/schema.graphql
+src/generated/graphql.tsx
 server/build
 .cache
 build

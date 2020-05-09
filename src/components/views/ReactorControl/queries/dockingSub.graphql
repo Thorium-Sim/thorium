@@ -1,0 +1,11 @@
+subscription ReactorDocking($simulatorId: ID) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    id
+    ship {
+      clamps
+      ramps
+      airlock
+      legs
+    }
+  }
+}

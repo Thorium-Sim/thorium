@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Row, Col, FormGroup, Input, Label} from "helpers/reactstrap";
-import {ColorPicker} from "../../../components/views/Sensors/gridCore/extraControls";
+import ColorPicker from "helpers/colorPicker";
 
 class Config extends Component {
   constructor(props) {

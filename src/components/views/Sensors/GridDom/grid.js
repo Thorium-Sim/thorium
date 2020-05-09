@@ -286,6 +286,7 @@ class InnerGrid extends Component {
       dimensions,
       damaged,
       ping,
+      pings,
       interference = 0,
       selectedContacts,
       segments,
@@ -293,7 +294,6 @@ class InnerGrid extends Component {
       gridMouseDown,
       range,
     } = this.props;
-
     const {width: dimWidth, height: dimHeight} = dimensions;
     const width = Math.min(dimWidth, dimHeight);
     const gridStyle = {
@@ -312,7 +312,9 @@ class InnerGrid extends Component {
           gridMouseDown && gridMouseDown(e);
         }}
       >
-        <div className={`grid ${ping ? "ping" : ""}`}>
+        <div
+          className={`grid ${ping ? "ping" : ""} ${pings ? "can-ping" : ""}`}
+        >
           {damaged && <div className="damaged-sensors" />}
           {interference > 0 && (
             <Interference width={width} interference={interference} />
@@ -328,7 +330,7 @@ class InnerGrid extends Component {
           )}{" "}
           {this.renderLines()}
           <div className="ping-ring" />
-          {this.renderContacts()}
+          <div className="sensor-contacts-holder">{this.renderContacts()}</div>
           {range && (
             <div
               className="sensor-range"

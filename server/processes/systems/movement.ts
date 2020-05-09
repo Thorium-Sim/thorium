@@ -17,15 +17,15 @@ export function movement(entity: Entity, delta: number) {
   );
   o.position.set(position.x, position.y, position.z);
 
-  if (entity.thrusters) {
+  if (entity.thrusters?.velocity) {
     o.translateX(entity.thrusters.velocity.x);
     o.translateY(entity.thrusters.velocity.y);
     o.translateZ(entity.thrusters.velocity.z);
   }
-  if (entity.enginesWarp || entity.enginesImpulse) {
+  if (entity.enginesWarp?.velocity || entity.enginesImpulse?.velocity) {
     const forwardSpeed =
-      entity.enginesWarp.velocity * deltaS +
-      entity.enginesImpulse.velocity * deltaS;
+      (entity.enginesWarp?.velocity || 0) * deltaS +
+      (entity.enginesImpulse?.velocity || 0) * deltaS;
     o.translateY(forwardSpeed);
   }
 

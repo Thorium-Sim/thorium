@@ -1,0 +1,40 @@
+subscription Reactors($simulatorId: ID!) {
+  reactorUpdate(simulatorId: $simulatorId) {
+    id
+    type
+    name
+    heat
+    heatRate
+    model
+    coolant
+    damage {
+      damaged
+    }
+    ejected
+    externalPower
+    efficiency
+    efficiencies {
+      label
+      color
+      efficiency
+    }
+    displayName
+    powerOutput
+    batteryChargeRate
+    batteryChargeLevel
+    depletion
+    alphaLevel
+    betaLevel
+    alphaTarget
+    betaTarget
+    dilithiumRate
+
+    hasWings
+    leftWingPower
+    leftWingRequest
+    leftWingRequested
+    rightWingPower
+    rightWingRequest
+    rightWingRequested
+  }
+}

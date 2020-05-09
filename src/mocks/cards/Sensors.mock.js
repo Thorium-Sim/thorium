@@ -1,14 +1,10 @@
-import {SENSOR_QUERY, SENSOR_SUB} from "../../components/views/Sensors";
 import {
   SENSOR_GRID_QUERY,
   SENSOR_GRID_SUB,
 } from "../../components/views/Sensors/GridDom";
 import sensors from "../data/sensors";
 import sensorContacts from "../data/sensorContacts";
-import {
-  SENSOR_CORE_QUERY,
-  SENSOR_CORE_SUB,
-} from "components/views/Sensors/core";
+import {SensorsDocument, SensorsPingSubDocument} from "generated/graphql";
 import {
   JR_SENSOR_QUERY,
   JR_SENSOR_SUB,
@@ -17,23 +13,46 @@ import {
 export default [
   {
     request: {
-      query: SENSOR_QUERY,
-      variables: {simulatorId: "test"},
+      query: SensorsDocument,
+      variables: {simulatorId: "test", domain: "external"},
     },
     result: {
       data: {
-        sensors,
+        sensorsUpdate: sensors,
+      },
+    },
+  },
+
+  {
+    request: {
+      query: SensorsDocument,
+      variables: {simulatorId: "test", domain: "external"},
+    },
+    result: {
+      data: {
+        sensorsUpdate: sensors,
       },
     },
   },
   {
     request: {
-      query: SENSOR_SUB,
+      query: SensorsDocument,
       variables: {simulatorId: "test"},
     },
     result: {
       data: {
         sensorsUpdate: sensors,
+      },
+    },
+  },
+  {
+    request: {
+      query: SensorsPingSubDocument,
+      variables: {sensorsId: "test"},
+    },
+    result: {
+      data: {
+        sensorsPing: "",
       },
     },
   },
@@ -78,29 +97,6 @@ export default [
     result: {
       data: {
         sensorContactUpdate: sensorContacts,
-      },
-    },
-  },
-  {
-    request: {
-      query: SENSOR_CORE_QUERY,
-      variables: {simulatorId: "test"},
-    },
-    result: {
-      data: {
-        sensors,
-        probes: {id: "test", __typename: "Probes"},
-      },
-    },
-  },
-  {
-    request: {
-      query: SENSOR_CORE_SUB,
-      variables: {simulatorId: "test"},
-    },
-    result: {
-      data: {
-        sensorsUpdate: sensors,
       },
     },
   },

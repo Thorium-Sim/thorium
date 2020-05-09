@@ -60,7 +60,7 @@ export default class SensorContact {
     this.autoFire = params.autoFire || false;
     this.miss = params.miss || false;
   }
-  move(coordinates, speed, stop) {
+  move(coordinates, speed, stop = false) {
     this.speed = stop ? 0 : speed;
     this.destination = coordinates;
     this.location = this.position;

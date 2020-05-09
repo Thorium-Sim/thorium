@@ -1,0 +1,3 @@
+mutation SensorScanResult($id: ID!, $result: String!) {
+  sensorScanResult(id: $id, result: $result)
+}

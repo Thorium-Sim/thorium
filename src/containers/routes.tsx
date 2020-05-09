@@ -2,11 +2,13 @@ import React, {Component} from "react";
 import {createBrowserHistory} from "history";
 import {Router, Route, Routes, Link, useLocation} from "react-router-dom";
 import gql from "graphql-tag.macro";
-import {useApolloClient} from "@apollo/client";
+import {useApolloClient, useMutation} from "@apollo/client";
 import "./config.scss";
 import TrainingContextProvider from "./TrainingContextProvider";
 import SideNav from "./FlightDirector/sideNav";
 import {FlightDirector, ClientsLobby, FlightConfig} from "./FlightDirector";
+import {getClientId} from "helpers/getClientId";
+import useInterval from "helpers/hooks/useInterval";
 
 const Client = React.lazy(() => import("../components/client"));
 const Config = React.lazy(() => import("./config"));
@@ -24,12 +26,6 @@ class NoMatch extends Component {
     );
   }
 }
-
-const CLOCK_SYNC = gql`
-  subscription ClockSync {
-    clockSync
-  }
-`;
 
 declare global {
   interface Window {
@@ -59,17 +55,46 @@ const FlightDirectorContainer: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
+const CLOCK_SYNC = gql`
+  subscription ClockSync($clientId: ID!) {
+    clockSync(clientId: $clientId)
+  }
+`;
+const CLOCK_SYNC_MUTATION = gql`
+  mutation SendClockPing($clientId: ID!) {
+    clockSync(clientId: $clientId)
+  }
+`;
+
+function useClockSync() {
   const client = useApolloClient();
+  const [clientId, setClientId] = React.useState("");
+  const sentTime = React.useRef(0);
+
+  const [clockSync] = useMutation(CLOCK_SYNC_MUTATION, {variables: {clientId}});
+
   React.useEffect(() => {
+    getClientId().then(res => setClientId(res));
+  }, []);
+
+  useInterval(() => {
+    if (clientId) {
+      sentTime.current = Date.now();
+      clockSync().catch(() => {});
+    }
+  }, 5000);
+  React.useEffect(() => {
+    if (!clientId) return;
     const unsubscribe = client
       .subscribe({
         query: CLOCK_SYNC,
+        variables: {clientId},
       })
       .subscribe({
         next: ({data: {clockSync}}) => {
           // This magic number is the round-trip offset. Could be better, but this works for now.
-          window.thorium.clockSync = parseInt(clockSync, 10) - Date.now() + 400;
+          window.thorium.clockSync = parseInt(clockSync, 10) - sentTime.current;
+          window.thorium.roundTrip = Date.now() - sentTime.current;
         },
         error(err) {
           console.error("Error resetting cache", err);
@@ -77,16 +102,26 @@ const App: React.FC = () => {
       });
 
     return () => unsubscribe.unsubscribe();
-  }, [client]);
+  }, [client, clientId]);
+}
 
+const ClockSync = React.memo(() => {
+  useClockSync();
+  return null;
+});
+
+const App: React.FC = () => {
   return (
-    <Router history={history}>
-      <Routes>
-        <Route path="client" element={<Client />} />
+    <>
+      <ClockSync />
+      <Router history={history}>
+        <Routes>
+          <Route path="client" element={<Client />} />
 
-        <Route path="/*" element={<FlightDirectorContainer />} />
-      </Routes>
-    </Router>
+          <Route path="/*" element={<FlightDirectorContainer />} />
+        </Routes>
+      </Router>
+    </>
   );
 };
 

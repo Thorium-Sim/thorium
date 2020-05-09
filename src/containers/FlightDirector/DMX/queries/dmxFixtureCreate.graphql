@@ -1,0 +1,3 @@
+mutation DMXFixtureCreate($name: String!, $dmxSetId: ID!, $dmxDeviceId: ID!) {
+  dmxFixtureCreate(name: $name, DMXSetId: $dmxSetId, DMXDeviceId: $dmxDeviceId)
+}

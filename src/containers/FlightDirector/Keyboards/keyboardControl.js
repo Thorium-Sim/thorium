@@ -22,6 +22,7 @@ const Key = ({
   char,
   selected,
   handleClick,
+  keyCode,
 }) => {
   return (
     <div
@@ -30,7 +31,7 @@ const Key = ({
       } ${enter ? "enter" : ""} ${short ? "short" : ""} ${
         blank ? "blank" : ""
       } ${selected ? "selected" : ""}`}
-      onClick={() => handleClick(name)}
+      onClick={() => handleClick(name, keyCode)}
     >
       {label || (shifting ? shift : char) || name}
     </div>
@@ -41,10 +42,14 @@ const UPDATE_KEY = gql`
   mutation UpdateKey(
     $id: ID!
     $key: String!
+    $keyCode: String!
     $meta: [String]!
     $actions: [ActionInput]!
   ) {
-    updateKeyboardKey(id: $id, key: {key: $key, meta: $meta, actions: $actions})
+    updateKeyboardKey(
+      id: $id
+      key: {key: $key, keyCode: $keyCode, meta: $meta, actions: $actions}
+    )
   }
 `;
 
@@ -56,7 +61,7 @@ class KeyboardControl extends Component {
   handleMeta = (which, key) => {
     const {meta} = this.state;
 
-    if (key.indexOf(which) > -1) {
+    if (key?.indexOf(which) > -1) {
       if (meta.indexOf(which) > -1) {
         this.setState({meta: meta.filter(m => m !== which)});
       } else {
@@ -65,26 +70,29 @@ class KeyboardControl extends Component {
       return true;
     }
   };
-  handleClick = key => {
-    const {selectedKey} = this.state;
+  handleClick = (key, keyCode) => {
+    const {selectedKey, selectedKeyCode} = this.state;
     const tf =
       this.handleMeta("command", key) ||
       this.handleMeta("shift", key) ||
       this.handleMeta("option", key) ||
       this.handleMeta("control", key);
     if (!tf) {
-      this.setState({selectedKey: selectedKey === key ? null : key});
+      this.setState({
+        selectedKey: selectedKey === key ? null : key,
+        selectedKeyCode: selectedKeyCode === keyCode ? null : keyCode,
+      });
     }
   };
   getKey = () => {
     const {
       keyboard: {keys: keyboardKeys},
     } = this.props;
-    const {selectedKey, meta} = this.state;
+    const {selectedKey, selectedKeyCode, meta} = this.state;
     const key =
       keyboardKeys.find(
         k =>
-          k.key === selectedKey &&
+          (k.keyCode === selectedKeyCode || k.key === selectedKey) &&
           JSON.stringify(k.meta.sort()) === JSON.stringify(meta.sort()),
       ) || {};
     return key;
@@ -93,14 +101,15 @@ class KeyboardControl extends Component {
     const {
       keyboard: {id},
     } = this.props;
-    const {selectedKey, meta} = this.state;
+    const {selectedKey, selectedKeyCode, meta} = this.state;
     const key = this.getKey();
     const {actions = []} = key;
     const event = e.target.value;
     updateKey({
       variables: {
         id,
-        key: selectedKey,
+        key: selectedKey || selectedKeyCode,
+        keyCode: selectedKeyCode,
         meta,
         actions: actions.map(({__typename, ...rest}) => rest).concat({event}),
       },
@@ -110,13 +119,14 @@ class KeyboardControl extends Component {
     const {
       keyboard: {id},
     } = this.props;
-    const {selectedKey, meta} = this.state;
+    const {selectedKey, selectedKeyCode, meta} = this.state;
     const key = this.getKey();
     const {actions = []} = key;
     updateKey({
       variables: {
         id,
-        key: selectedKey,
+        key: selectedKey || selectedKeyCode,
+        keyCode: selectedKeyCode,
         meta,
         actions: actions
           .map(({__typename, ...rest}) => rest)
@@ -128,13 +138,14 @@ class KeyboardControl extends Component {
     const {
       keyboard: {id},
     } = this.props;
-    const {selectedKey, meta} = this.state;
+    const {selectedKey, selectedKeyCode, meta} = this.state;
     const key = this.getKey();
     const {actions = []} = key;
     updateKey({
       variables: {
         id,
-        key: selectedKey,
+        key: selectedKey || selectedKeyCode,
+        keyCode: selectedKeyCode,
         meta,
         actions: actions
           .map(a => {
@@ -148,33 +159,36 @@ class KeyboardControl extends Component {
     });
   };
   render() {
-    const {selectedKey, meta, selectedAction} = this.state;
+    const {selectedKey, selectedKeyCode, meta, selectedAction} = this.state;
     const selectedKeyObj = this.getKey();
     return (
       <Fragment>
         <Row>
           <Col sm={12}>
             {" "}
-            <div className="keyboard">
-              {keys.map(k => (
+            <div className="keyboard keyboard-ex">
+              {keys.map((k, i) => (
                 <Key
-                  key={k.name}
+                  key={k.keyCode || k.name || i}
                   {...k}
                   handleClick={this.handleClick}
                   selected={
-                    k.name === selectedKey ||
-                    meta.indexOf(k.name.slice(1, Infinity)) > -1
+                    k.keyCode === selectedKeyCode ||
+                    meta.indexOf(k.name?.slice(1, Infinity)) > -1
                   }
+                  showEx
                 />
               ))}
             </div>
           </Col>
         </Row>
-        {selectedKey && (
+        {selectedKeyCode && (
           <Mutation mutation={UPDATE_KEY}>
             {updateKey => (
               <Fragment>
-                <h4>Selected Key: {meta.concat(selectedKey).join(" + ")}</h4>
+                <h4>
+                  Selected Key: {meta.concat(selectedKeyCode).join(" + ")}
+                </h4>
 
                 <Row>
                   <Col sm={6}>

@@ -20,12 +20,7 @@ interface TimelineProps {
 }
 
 const Timeline: React.FC<TimelineProps> = ({
-  simulator: {
-    id: simulatorId,
-
-    stations,
-  },
-  simulator,
+  simulator: {id: simulatorId, stations},
   clients,
 }) => {
   const {data} = useTimelineMissionSubscription();
@@ -77,6 +72,7 @@ const Timeline: React.FC<TimelineProps> = ({
           stations={stations || []}
           clients={clients}
           simArgs={simArgs}
+          missions={data?.missionsUpdate || []}
         />
       ) : timelineMode === "classic" ? (
         <ClassicMission
@@ -87,12 +83,14 @@ const Timeline: React.FC<TimelineProps> = ({
           stations={stations || []}
           clients={clients}
           simArgs={simArgs}
+          missions={data?.missionsUpdate || []}
         />
       ) : timelineMode === "thumbnail" ? (
         <Thumbnail
           simulatorId={simulatorId}
           currentTimelineStep={currentTimelineStep || 0}
           timeline={mission.timeline}
+          missions={data?.missionsUpdate || []}
         />
       ) : timelineMode === "build" ? (
         <Build

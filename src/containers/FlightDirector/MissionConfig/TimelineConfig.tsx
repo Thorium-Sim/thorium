@@ -232,9 +232,9 @@ export const TimelineActionAdd: React.FC<{
       )}
       <EventPicker
         className={"btn btn-sm btn-success"}
-        handleChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          addTimelineItem(e)
-        }
+        handleChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+          addTimelineItem(e);
+        }}
       />
     </>
   );
@@ -397,8 +397,8 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
             <TimelineActionAdd
               mission={mission}
               selectedTimelineItem={selectedTimelineItem}
-              selectedTimelineStep={selectedTimelineItem}
-              setSelectedTimelineItemAction={setSelectedTimelineStepAction}
+              selectedTimelineStep={selectedTimelineStep}
+              setSelectedTimelineItemAction={setSelectedTimelineItemAction}
             />
           </Col>
         )}

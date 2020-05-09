@@ -3,16 +3,17 @@
 
   .batteries {
     margin-bottom: 50px;
+    height: 100%;
   }
   .battery-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 100%;
     .battery {
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      height: 40vh;
       width: 100%;
       margin: 15px;
       margin-bottom: 25px;

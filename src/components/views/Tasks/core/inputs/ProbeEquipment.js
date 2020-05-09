@@ -17,6 +17,10 @@ const PROBES_QUERY = gql`
   }
 `;
 const ProbeEquipment = ({simulatorId, onChange, value}) => {
+  const sensorArrayCount = Object.keys(value).reduce(
+    (prev, next) => (next.includes("Sensors Array") ? prev + 1 : prev),
+    0,
+  );
   return (
     <Query query={PROBES_QUERY} variables={{simulatorId}} skip={!simulatorId}>
       {({loading, data}) =>
@@ -73,7 +77,9 @@ const ProbeEquipment = ({simulatorId, onChange, value}) => {
                   ...value,
                   [data
                     ? randomFromList(data.probes[0].equipment.map(e => e.id))
-                    : "Sensors Array"]: Math.ceil(Math.random() + 1),
+                    : `Sensors Array${
+                        sensorArrayCount > 0 ? ` (${sensorArrayCount})` : ""
+                      }`]: Math.ceil(Math.random() + 1),
                 })
               }
             >

@@ -6,7 +6,7 @@ import {
 import {throttle} from "helpers/debounce";
 import {useGamepadAxis, useGamepadButton} from "helpers/hooks/useGamepad";
 
-export default function useJoystick(controllingEntityId: string) {
+export default function useJoystick(id: string, controllingEntityId: string) {
   const [setThrusterVelocity] = useEntitySetThrustersMutation();
   const [setEngine] = useEntitySetEngineMutation();
   const throttleSetThrusters = React.useCallback(
@@ -44,6 +44,6 @@ export default function useJoystick(controllingEntityId: string) {
     },
     [throttleSetEngine, throttleSetThrusters, controllingEntityId],
   );
-  useGamepadButton([15, 16, 17, 18], buttonCallback);
-  useGamepadAxis([0, 1, 5, 2], axisCallback);
+  useGamepadButton(id, [15, 16, 17, 18], buttonCallback);
+  useGamepadAxis(id, [0, 1, 5, 2], axisCallback);
 }

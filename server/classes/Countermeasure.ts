@@ -17,19 +17,6 @@ class CountermeasureResources {
     this.plasma = plasma;
   }
 }
-
-interface CountermeasureModuleParams {
-  id?: string;
-  name: string;
-  description: string;
-  powerRequirement?: number;
-  resourceRequirements: CountermeasureResources;
-  configurationOptions?: {type: string; label: string}[];
-  config?: any;
-  buildProgress?: number;
-  activated?: boolean;
-}
-
 class CountermeasureModule {
   id?: string;
   name: string;
@@ -50,7 +37,7 @@ class CountermeasureModule {
     config = {},
     buildProgress = 0,
     activated = false,
-  }: CountermeasureModuleParams) {
+  }: Partial<CountermeasureModule>) {
     this.id = id || snakeCase(name);
     this.name = name;
     this.description = description;
@@ -194,22 +181,18 @@ class CountermeasureSlots {
   }
 }
 
-interface DefaultParams {
-  storedMaterials?: CountermeasureResources;
-  slots?: CountermeasureSlots;
-  launched?: Countermeasure[];
-}
-
 export class Countermeasures extends System {
   type = "Countermeasures";
   class = "Countermeasures";
   storedMaterials: CountermeasureResources;
   slots: CountermeasureSlots;
   launched: Countermeasure[];
-  constructor(params: DefaultParams = {}) {
+  constructor(params: Partial<Countermeasures> = {}) {
     super({displayName: "Countermeasures", name: "Countermeasures", ...params});
     this.class = "Countermeasures";
     this.type = "Countermeasures";
+    this.wing = params.wing || "left";
+
     this.storedMaterials = new CountermeasureResources(
       params.storedMaterials || {
         copper: 99,
@@ -322,16 +305,6 @@ export class Countermeasures extends System {
   }
 }
 
-interface CountermeasureParams {
-  id: string;
-  name: string;
-  modules?: CountermeasureModule[];
-  locked?: boolean;
-  active?: boolean;
-  building?: boolean;
-  totalPowerUsed?: number;
-  note?: string;
-}
 class Countermeasure {
   id: string;
   name: string;
@@ -341,7 +314,7 @@ class Countermeasure {
   building: boolean;
   totalPowerUsed: number;
   note: string;
-  constructor(params: CountermeasureParams) {
+  constructor(params: Partial<Countermeasure>) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Countermeasure";
     this.modules = [];

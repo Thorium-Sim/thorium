@@ -26,10 +26,12 @@ const NumberInput: React.FC<{
         type="text"
         inputMode="numeric"
         pattern="[0-9]*"
-        value={value}
+        defaultValue={value}
         onChange={e => {
           const v = parseFloat(e.target.value);
-          setValue(v);
+          if (!isNaN(v)) {
+            setValue(v);
+          }
         }}
       />
     </Label>
@@ -114,10 +116,10 @@ const Location: React.FC<LocationEditProps> = ({id, location}) => {
     (key, value) => {
       return () => {
         clearInterval(interval.current);
-        interval.current = setInterval(
+        interval.current = (setInterval(
           () => setRotation.current?.(key, value),
           100,
-        );
+        ) as unknown) as number;
         document.addEventListener("mouseup", clear);
       };
     },
@@ -138,6 +140,7 @@ const Location: React.FC<LocationEditProps> = ({id, location}) => {
       <Collapse isOpen={collapse} timeout={100}>
         <h4>Position</h4>
         <NumberInput
+          key={`${id}-X`}
           label="X"
           value={location.position.x}
           setValue={v =>
@@ -149,6 +152,7 @@ const Location: React.FC<LocationEditProps> = ({id, location}) => {
           }
         />
         <NumberInput
+          key={`${id}-Y`}
           label="Y"
           value={location.position.y}
           setValue={v =>
@@ -160,6 +164,7 @@ const Location: React.FC<LocationEditProps> = ({id, location}) => {
           }
         />
         <NumberInput
+          key={`${id}-Z`}
           label="Z"
           value={location.position.z}
           setValue={v =>

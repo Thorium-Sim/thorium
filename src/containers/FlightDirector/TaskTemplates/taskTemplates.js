@@ -44,13 +44,22 @@ class TaskTemplates extends Component {
           return (
             <Container fluid className="task-templates">
               <Row>
-                <Col sm={3}>
-                  <DefinitionList
-                    taskDefinitions={taskDefinitions}
-                    taskTemplates={taskTemplates}
-                    selectedDef={selectedDef}
-                    setSelectedDef={v => this.setState({selectedDef: v})}
-                  />
+                <Col
+                  sm={3}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    maxHeight: "80vh",
+                  }}
+                >
+                  <div style={{flex: 1}}>
+                    <DefinitionList
+                      taskDefinitions={taskDefinitions}
+                      taskTemplates={taskTemplates}
+                      selectedDef={selectedDef}
+                      setSelectedDef={v => this.setState({selectedDef: v})}
+                    />
+                  </div>
                   <Query query={THORIUM_QUERY}>
                     {({data}) =>
                       data &&
@@ -76,6 +85,40 @@ class TaskTemplates extends Component {
                       ) : null
                     }
                   </Query>
+                  <Button
+                    tag="a"
+                    href={`/exportTaskTemplates/${taskTemplates
+                      .map(t => t.id)
+                      .join(",")}`}
+                    color="secondary"
+                    block
+                    size="sm"
+                  >
+                    Export All Templates
+                  </Button>
+                  <label>
+                    <div className="btn btn-sm btn-info btn-block">
+                      Import Task Templates
+                    </div>
+                    <input
+                      hidden
+                      type="file"
+                      onChange={evt => {
+                        if (evt?.target?.files?.[0]) {
+                          const data = new FormData();
+                          Array.from(evt.target.files).forEach((f, index) =>
+                            data.append(`files[${index}]`, f),
+                          );
+                          fetch(`/importTaskTemplates`, {
+                            method: "POST",
+                            body: data,
+                          }).then(() => {
+                            window.location.reload();
+                          });
+                        }
+                      }}
+                    />
+                  </label>
                 </Col>
                 <Col sm={4} style={{display: "flex", flexDirection: "column"}}>
                   <TemplateList
@@ -87,29 +130,44 @@ class TaskTemplates extends Component {
                     }
                   />
                   {selectedDef !== "nothing" && (
-                    <Mutation
-                      mutation={gql`
-                        mutation AddTaskTemplate($definition: String!) {
-                          addTaskTemplate(definition: $definition)
-                        }
-                      `}
-                      variables={{definition: selectedDef}}
-                    >
-                      {action => (
-                        <Button
-                          color="success"
-                          onClick={() =>
-                            action().then(({data: {addTaskTemplate}}) =>
-                              this.setState({
-                                selectedTemplate: addTaskTemplate,
-                              }),
-                            )
+                    <>
+                      <Mutation
+                        mutation={gql`
+                          mutation AddTaskTemplate($definition: String!) {
+                            addTaskTemplate(definition: $definition)
                           }
-                        >
-                          Add Template
-                        </Button>
-                      )}
-                    </Mutation>
+                        `}
+                        variables={{definition: selectedDef}}
+                      >
+                        {action => (
+                          <Button
+                            color="success"
+                            onClick={() =>
+                              action().then(({data: {addTaskTemplate}}) =>
+                                this.setState({
+                                  selectedTemplate: addTaskTemplate,
+                                }),
+                              )
+                            }
+                          >
+                            Add Template
+                          </Button>
+                        )}
+                      </Mutation>
+
+                      <Button
+                        tag="a"
+                        href={`/exportTaskTemplates/${taskTemplates
+                          .filter(t => t.definition === selectedDef)
+                          .map(t => t.id)
+                          .join(",")}`}
+                        color="secondary"
+                        block
+                        size="sm"
+                      >
+                        Export Templates
+                      </Button>
+                    </>
                   )}
                   {taskTemplate && (
                     <Mutation

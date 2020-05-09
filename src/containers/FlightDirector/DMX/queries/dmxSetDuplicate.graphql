@@ -1,0 +1,3 @@
+mutation DMXSetDuplicate($id: ID!, $name: String!) {
+  dmxSetDuplicate(id: $id, name: $name)
+}

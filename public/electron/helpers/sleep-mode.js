@@ -1,5 +1,3 @@
-"use strict";
-
 var isLinux = require("is-linux"),
   isOsx = require("is-osx"),
   isWindows = require("is-windows"),

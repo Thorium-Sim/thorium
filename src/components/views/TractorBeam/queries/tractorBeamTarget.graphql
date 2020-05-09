@@ -1,0 +1,3 @@
+mutation TractorBeamTarget($id: ID!, $beam: ID!, $state: Boolean!) {
+  setTractorBeamTarget(id: $id, beam: $beam, target: $state)
+}

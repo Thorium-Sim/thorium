@@ -5,7 +5,7 @@ import {SphereGeometry, BoxBufferGeometry, Mesh, Vector3} from "three";
 import {PositionTuple} from "./CanvasApp";
 import {Entity as EntityInterface} from "generated/graphql";
 import SelectionOutline from "./SelectionOutline";
-import Glow from "./entityParts/glow";
+// import Glow from "./entityParts/glow";
 import Light from "./entityParts/light";
 import Rings from "./entityParts/rings";
 import Clouds from "./entityParts/clouds";
@@ -14,36 +14,82 @@ import useEntityDrag from "./useEntityDrag";
 import EntityMaterial from "./EntityMaterial";
 import EntityModel from "./EntityModel";
 import useClientSystems from "./useClientSystems";
+import {StoreApi} from "zustand";
+import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
+import EntitySprite from "./EntitySprite";
 
 interface EntityProps {
+  static?: boolean;
   dragging?: boolean;
   library?: boolean;
-  entity: EntityInterface;
-  setSelected?: React.Dispatch<React.SetStateAction<string[]>>;
-  selected?: boolean;
-  mousePosition?: PositionTuple;
+  entity?: EntityInterface;
+  entityIndex: number;
+  stageId?: string;
+  selectedEntityIds?: string[];
+  mousePosition: React.MutableRefObject<PositionTuple>;
   isDraggingMe?: boolean;
   positionOffset?: {x: number; y: number; z: number};
   onDragStart?: () => void;
   onDrag?: (dx: number, dy: number) => void;
   onDragStop?: () => void;
+  storeApi: StoreApi<PatchData<EntityInterface[]>>;
 }
 const noop = () => {};
 
+function useRerender() {
+  const [, setState] = React.useState({});
+  return React.useCallback(() => setState({}), []);
+}
 const Entity: React.FC<EntityProps> = ({
   dragging: isDragging,
   library,
   entity,
-  setSelected,
-  selected,
+  entityIndex,
+  stageId,
+  selectedEntityIds = [],
   mousePosition,
   isDraggingMe = false,
   positionOffset = {x: 0, y: 0, z: 0},
   onDragStart = noop,
   onDrag = noop,
   onDragStop = noop,
+  storeApi,
 }) => {
-  const {id, location, appearance, glow, light} = entity;
+  const rerender = useRerender();
+  const {id, location, appearance, light} =
+    entity || storeApi.getState().data[entityIndex];
+
+  const stage = storeApi.getState().data.find(s => s.id === stageId);
+
+  React.useEffect(() => {
+    // Poor man's React.memo
+    const unsub1 = storeApi.subscribe(
+      () => rerender(),
+      store => ({
+        appearance: store.data[entityIndex]?.appearance,
+        light: store.data[entityIndex]?.light,
+      }),
+      (oldObj, newObj) =>
+        oldObj?.appearance?.meshType === newObj?.appearance?.meshType &&
+        oldObj?.appearance?.cloudMapAsset ===
+          newObj?.appearance?.cloudMapAsset &&
+        oldObj?.appearance?.ringMapAsset === newObj?.appearance?.ringMapAsset &&
+        oldObj?.appearance?.scale === newObj?.appearance?.scale &&
+        oldObj.appearance?.materialMapAsset ===
+          newObj?.appearance?.materialMapAsset &&
+        oldObj.appearance?.emissiveColor ===
+          newObj?.appearance?.emissiveColor &&
+        oldObj.appearance?.emissiveIntensity ===
+          newObj?.appearance?.emissiveIntensity &&
+        oldObj.appearance?.color === newObj?.appearance?.color &&
+        oldObj?.light?.intensity === newObj?.light?.intensity &&
+        oldObj?.light?.decay === newObj?.light?.decay &&
+        oldObj?.light?.color === newObj?.light?.color,
+    );
+    return () => unsub1();
+  }, [entityIndex, rerender, storeApi]);
+
+  const selected = selectedEntityIds.includes(id);
   const size = 1;
   const {meshType, cloudMapAsset, ringMapAsset} = appearance || {};
   const scale = library ? 1 : appearance?.scale || 1;
@@ -87,23 +133,36 @@ const Entity: React.FC<EntityProps> = ({
     isDraggingMe,
     id,
     library,
-    setSelected,
   );
 
-  useClientSystems(entity, mesh);
+  useClientSystems(
+    storeApi,
+    id,
+    mesh,
+    Boolean(isDragging),
+    mousePosition,
+    stageId,
+  );
 
   if (!library && !isDragging && (!location || !position)) return null;
   const meshPosition:
     | Vector3
     | [number, number, number]
     | undefined = isDragging
-    ? mousePosition
+    ? mousePosition?.current
     : ([
         (position?.x || 0) + positionOffset.x,
         (position?.y || 0) + positionOffset.y,
         (position?.z || 0) + positionOffset.z,
       ] as [number, number, number]);
 
+  if (stage?.stage?.childrenAsSprites) {
+    return (
+      <group position={meshPosition} ref={mesh} {...dragFunctions}>
+        <EntitySprite appearance={appearance || undefined} />
+      </group>
+    );
+  }
   if (meshType === MeshTypeEnum.Model && appearance?.modelAsset) {
     return (
       <>
@@ -127,13 +186,6 @@ const Entity: React.FC<EntityProps> = ({
             color={appearance?.color ?? undefined}
           />
         </mesh>
-        {glow && (
-          <Glow
-            position={meshPosition}
-            color={glow.color ?? undefined}
-            glowMode={glow.glowMode ?? undefined}
-          />
-        )}
         {light && (
           <Light
             intensity={light.intensity ?? undefined}

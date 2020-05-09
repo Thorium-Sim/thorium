@@ -63,3 +63,7 @@ export {RecordSnippet, Record} from "./records";
 export {MidiSet} from "./midi";
 export {Countermeasures} from "./Countermeasure";
 export {Entity} from "./universe/entity";
+export {default as DMXConfig} from "./DMX/DMXConfig";
+export {default as DMXDevice} from "./DMX/DMXDevice";
+export {default as DMXFixture} from "./DMX/DMXFixture";
+export {default as DMXSet} from "./DMX/DMXSet";

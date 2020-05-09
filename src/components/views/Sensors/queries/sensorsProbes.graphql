@@ -1,0 +1,5 @@
+query SensorsProbes($simulatorId: ID!) {
+  probes(simulatorId: $simulatorId) {
+    id
+  }
+}

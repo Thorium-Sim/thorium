@@ -1,0 +1,50 @@
+subscription Sensors($simulatorId: ID!, $domain: String) {
+  sensorsUpdate(simulatorId: $simulatorId, domain: $domain) {
+    id
+    scanResults
+    scanRequest
+    scanning
+    pings
+    pingMode
+    timeSincePing
+    domain
+    processedData {
+      value
+      time
+    }
+    interference
+    movement {
+      x
+      y
+      z
+    }
+    segments {
+      ring
+      line
+      state
+    }
+    presetAnswers {
+      label
+      value
+    }
+    history
+    scans {
+      id
+      request
+      mode
+      location
+      response
+      scanning
+      timestamp
+      cancelled
+    }
+    damage {
+      damaged
+    }
+
+    power {
+      power
+      powerLevels
+    }
+  }
+}

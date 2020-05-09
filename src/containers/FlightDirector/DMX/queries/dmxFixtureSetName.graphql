@@ -1,0 +1,3 @@
+mutation DMXFixtureSetName($id: ID!, $name: String!) {
+  dmxFixtureSetName(id: $id, name: $name)
+}

@@ -48,9 +48,9 @@ const resolver = {
       const entityId = id || context.entityId;
       if (!entityId && entityId !== 0) return;
       const entityIndex = App.entities.findIndex(e => e.id === entityId);
-      const flightId = App.entities[entityIndex].flightId;
-      const template = Boolean(App.entities[entityIndex].template);
       if (entityIndex === -1) return;
+      const flightId = App.entities[entityIndex]?.flightId;
+      const template = Boolean(App.entities[entityIndex].template);
 
       App.entities = produce(App.entities, draft => {
         const entity = draft[entityIndex];
@@ -60,7 +60,7 @@ const resolver = {
           });
         } else {
           Object.entries(properties).forEach(([key, value]) => {
-            if (key === "currentSpeed" && value > 0) {
+            if (key === "currentSpeed" && value > 0 && entity[otherEngine]) {
               // Change the other engine to be 0
               entity[otherEngine][key] = 0;
             }
@@ -82,9 +82,9 @@ const resolver = {
       const entityId = id || context.entityId;
       if (!entityId && entityId !== 0) return;
       const entityIndex = App.entities.findIndex(e => e.id === entityId);
+      if (entityIndex === -1) return;
       const flightId = App.entities[entityIndex].flightId;
       const template = Boolean(App.entities[entityIndex].template);
-      if (entityIndex === -1) return;
       App.entities = produce(App.entities, draft => {
         const entity = draft[entityIndex];
         entity[componentProperty] = null;
