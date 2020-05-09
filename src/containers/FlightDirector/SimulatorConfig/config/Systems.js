@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, {Component} from "react";
+import {Component} from "react";
 import {jsx, css} from "@emotion/core";
 import {
   Container,
@@ -8,7 +8,6 @@ import {
   Card,
   CardBody,
   Button,
-  ButtonGroup,
   Input,
 } from "helpers/reactstrap";
 import {capitalCase, camelCase} from "change-case";
@@ -186,7 +185,7 @@ class SystemsConfig extends Component {
   }
   render() {
     const {id} = this.props.selectedSimulator;
-    const {addSystem, selectedSystem, selectedType} = this.state;
+    const {selectedSystem, selectedType} = this.state;
     const SystemConfig = selectedType
       ? Configs[selectedType] || Configs.Generic
       : () => null;

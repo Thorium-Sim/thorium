@@ -15,7 +15,7 @@ expect.extend({
 describe("Isochip", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const i = Isochip();
+      Isochip();
     }).toThrow(/Class constructor Isochip cannot be invoked without 'new'/);
   });
 

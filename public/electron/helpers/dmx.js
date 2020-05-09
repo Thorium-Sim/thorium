@@ -8,8 +8,8 @@ class DMXController {
       ? 1
       : parseInt(universe, 10);
     // Clear out the universe stuff
-    const a = this?.universe?.stop?.();
-    const b = this?.universe?.close?.(() => {});
+    if (this?.universe?.stop) this.universe.stop();
+    if (this?.universe?.close) this.universe.close(() => {});
     this.universe = null;
     this.packet = null;
     this.slots = null;

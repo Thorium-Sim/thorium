@@ -6,7 +6,6 @@ import {ApolloProvider, useApolloClient} from "@apollo/client";
 import {Entity as EntityT} from "generated/graphql";
 import usePatchedSubscriptions from "helpers/hooks/usePatchedSubscriptions";
 import gql from "graphql-tag.macro";
-import GLTFPreview from "components/views/TacticalMap/GLTFPreview";
 import {PositionTuple} from "./CanvasApp";
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 

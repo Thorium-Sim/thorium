@@ -3,7 +3,7 @@ import CoreFeed from "../../classes/coreFeed";
 describe("CoreFeed", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const c = CoreFeed();
+      CoreFeed();
     }).toThrow(/Class constructor CoreFeed cannot be invoked without 'new'/);
   });
 

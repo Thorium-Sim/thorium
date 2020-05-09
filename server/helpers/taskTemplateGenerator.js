@@ -91,22 +91,22 @@ const damageTexts = {
   ],
 };
 
-const template = {
-  id: "eb730ff7-d60b-4c29-82ff-ae445a5e0b55",
-  name: "Computer Specialist Team",
-  values: {
-    preamble:
-      "The computer systems which run the #SYSTEMNAME system are malfunctioning.",
-    orders:
-      "Diagnose and repair the malfunctions to the #SYSTEMNAME systems computers.",
-    teamName: "#SYSTEMNAME Repairs",
-    officers: {
-      "Computer Specialist": 2,
-    },
-  },
-  definition: "Send Damage Team",
-  reportTypes: ["default", "rnd", "engineering"],
-};
+// const template = {
+//   id: "eb730ff7-d60b-4c29-82ff-ae445a5e0b55",
+//   name: "Computer Specialist Team",
+//   values: {
+//     preamble:
+//       "The computer systems which run the #SYSTEMNAME system are malfunctioning.",
+//     orders:
+//       "Diagnose and repair the malfunctions to the #SYSTEMNAME systems computers.",
+//     teamName: "#SYSTEMNAME Repairs",
+//     officers: {
+//       "Computer Specialist": 2,
+//     },
+//   },
+//   definition: "Send Damage Team",
+//   reportTypes: ["default", "rnd", "engineering"],
+// };
 
 const report = Object.entries(damageTexts).map(([key, value]) => ({
   id: uuid.v4(),

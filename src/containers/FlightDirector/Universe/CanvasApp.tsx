@@ -7,7 +7,7 @@ import use3DMousePosition from "./use3DMousePosition";
 import BackPlane from "./BackPlane";
 import Entity from "./Entity";
 import useEventListener from "./useEventListener";
-import DragSelect from "./DragSelect";
+// import DragSelect from "./DragSelect";
 import {
   Entity as EntityInterface,
   useEntityCreateMutation,
@@ -64,7 +64,7 @@ const CanvasApp: React.FC<CanvasAppProps> = ({
 }) => {
   const [
     {
-      dragging: dragSelecting,
+      // dragging: dragSelecting,
       camera: perspectiveCamera,
       selected,
       recenter,

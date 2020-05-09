@@ -17,6 +17,7 @@ const updateVelocity = () => {
           .forEach(sys => {
             const maxSpeed = sys.speeds.reduce((prev, next) => {
               if (next.velocity > prev) return next.velocity;
+              return prev;
             }, 0);
             const sim = App.simulators.find(
               simu => simu.id === sys.simulatorId,

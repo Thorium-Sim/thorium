@@ -5,7 +5,7 @@ import Coolant from "../../classes/coolant";
 describe("Coolant", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const c = Coolant();
+      Coolant();
     }).toThrow(/Class constructor Coolant cannot be invoked without 'new'/);
   });
 

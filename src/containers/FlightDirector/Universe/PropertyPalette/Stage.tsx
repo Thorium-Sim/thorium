@@ -8,7 +8,6 @@ import {
 import {Label, Input, Collapse, Button} from "reactstrap";
 import {FaChevronDown, FaChevronRight} from "react-icons/fa";
 import debounce from "helpers/debounce";
-import {CanvasContext} from "../CanvasContext";
 
 interface StageEditProps {
   id: string;

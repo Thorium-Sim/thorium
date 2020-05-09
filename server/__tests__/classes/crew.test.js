@@ -22,7 +22,7 @@ const chart0 = {
 describe("Crew", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const c = Crew();
+      Crew();
     }).toThrow(/Class constructor Crew cannot be invoked without 'new'/);
   });
 

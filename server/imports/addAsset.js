@@ -1,5 +1,5 @@
 import path from "path";
-import fs, {existsSync} from "fs";
+import fs from "fs";
 import paths from "../helpers/paths";
 
 let assetDir = path.resolve("./");

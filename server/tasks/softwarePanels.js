@@ -1,7 +1,6 @@
 import reportReplace from "../helpers/reportReplacer";
 import App from "../app";
 import {randomFromList} from "../classes/generic/damageReports/constants";
-import {Probes} from "../classes";
 
 const allowedComponents = {
   CableInput: ["Connect a #COLOR cable from #LABEL to #CABLE2."],

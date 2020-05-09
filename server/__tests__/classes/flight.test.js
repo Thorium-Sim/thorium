@@ -4,7 +4,7 @@ import Simulator from "../../classes/simulator";
 describe("Flight", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const c = Flight();
+      Flight();
     }).toThrow(/Class constructor Flight cannot be invoked without 'new'/);
   });
 

@@ -4,11 +4,11 @@ import heatMixin from "./generic/heatMixin";
 import uuid from "uuid";
 import {pubsub} from "../helpers/subscriptionManager";
 
-const baseQuad = {
-  field: {required: 25, value: 0},
-  core: {required: 25, value: 0},
-  warp: {required: 25, value: 0},
-};
+// const baseQuad = {
+//   field: {required: 25, value: 0},
+//   core: {required: 25, value: 0},
+//   warp: {required: 25, value: 0},
+// };
 
 function notifyActive(tf, simulatorId) {
   if (tf) {

@@ -148,7 +148,6 @@ const updateThrusters = () => {
                 }
                 // Movement
                 const distance = 0.01;
-                const ratio = 16 / 9;
                 const movement = {
                   x:
                     (getMovementDirection(
