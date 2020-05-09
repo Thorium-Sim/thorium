@@ -2,11 +2,11 @@ import React from "react";
 import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
 import baseProps from "../../../stories/helpers/baseProps";
-import Component, {TRACTORBEAM_QUERY, TRACTORBEAM_SUB} from "./index";
-
+import Component from "./index";
+import {TractorBeamUpdateDocument} from "generated/graphql";
 it("should render", async () => {
   const {container, getByText} = render(<Component {...baseProps} />, {
-    queries: [TRACTORBEAM_QUERY, TRACTORBEAM_SUB],
+    queries: [TractorBeamUpdateDocument],
   });
   await waitForElementToBeRemoved(() => getByText("Loading..."));
   await wait();
