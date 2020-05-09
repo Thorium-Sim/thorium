@@ -169,6 +169,7 @@ class DamageControlCore extends Component {
     });
     const wingedSystems = systems.reduce(
       (prev, next) => {
+        if (!["left", "right"].includes(next.wing)) return prev;
         prev[next.wing].push(next);
         prev[`${next.wing}Power`] += next?.power?.power || 0;
         return prev;
