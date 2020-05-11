@@ -9,13 +9,13 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // necessary for the functionality in this file.
 const schema = gql`
   type Task {
-    id: ID
+    id: ID!
     simulatorId: ID
     station: String
     systemId: ID
     deck: Deck
     room: Room
-    definition: String
+    definition: String!
     verified: Boolean
     verifyRequested: Boolean
     dismissed: Boolean

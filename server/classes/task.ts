@@ -80,10 +80,11 @@ export default class Task {
   timeElapsedInMS: number;
   macros: Macro[];
   assigned: boolean | string;
-  constructor(params: Partial<Task> = {}) {
+  advance: (id: string) => void;
+  constructor(params: Partial<Task> = {}, advance: () => void = () => {}) {
     // The check to see if the task is relevant was already handled
     // before this task was instantiated
-
+    this.advance = advance;
     this.id = params.id || uuid.v4();
     this.class = "Task";
 
@@ -178,6 +179,13 @@ export default class Task {
       const task = App.tasks.find(t => t.id === this.assigned);
       if (task) task.verify(dismiss);
     }
+
+    // Advance any task flow in the simulator.
+    // It operates on the current state of tasks,
+    // so we can trigger any task flow to advance
+    // whenever we want and it will only advance when
+    // it needs to.
+    App.handleEvent({simulatorId: this.simulatorId}, "taskFlowAdvance");
   }
   dismiss() {
     this.dismissed = true;

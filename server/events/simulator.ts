@@ -226,11 +226,9 @@ App.on("triggerMacros", ({simulatorId, macros}) => {
             ...parsedArgs,
             ...simArgs,
             simulatorId,
-            isMacro: true,
           },
           event,
           context,
-          resolvers.Mutation[event],
         );
       }, delay);
       if (!noCancelOnReset) flight.timeouts.push(timeout);

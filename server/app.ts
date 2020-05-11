@@ -8,6 +8,7 @@ import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
 import Motu from "motu-control";
 import {setAutoFreeze} from "immer";
+
 setAutoFreeze(false);
 
 const Classes: {[index: string]: any} = {
@@ -61,6 +62,7 @@ class Events extends EventEmitter {
   taskTemplates: ClassesImport.TaskTemplate[] = [];
   taskReports: ClassesImport.TaskReport[] = [];
   tasks: ClassesImport.Task[] = [];
+  taskFlows: ClassesImport.TaskFlow[] = [];
   commandLine: ClassesImport.CommandLine[] = [];
   triggerGroups: ClassesImport.Trigger[] = [];
   interfaces: ClassesImport.Interface[] = [];
@@ -87,6 +89,7 @@ class Events extends EventEmitter {
   port: number = process.env.NODE_ENV === "production" ? 4444 : 3001;
 
   events: any[] = [];
+  mutations: {[key: string]: Function} = {};
   replaying = false;
   snapshotVersion = 0;
   version = 0;
@@ -188,25 +191,26 @@ class Events extends EventEmitter {
     const newMotus = motus.map(m => m.address);
     return {...snapshot, flights: newFlights, motus: newMotus};
   }
+  setMutations = (resolvers: {[key: string]: Function}) => {
+    this.mutations = resolvers;
+  };
   // TODO: Add a proper context type
-  handleEvent(
-    param: any,
-    eventName: string,
-    context?: any,
-    action?: (a, b, c) => any,
-  ) {
+  handleEvent(param: any, eventName: string, context?: any) {
     this.timestamp = new Date();
     this.version = this.version + 1;
     context = context || {};
     handleTrigger(eventName, param, context);
     heap.track(eventName, this.thoriumId, param, context);
-    // If params has isMacro, then we'll want to execute the mutation resolver
-    // It should have been passed by the 'triggerMacro' mutation
-    if (param.isMacro) {
-      action?.({}, param, context);
-    }
-    this.emit(eventName, {cb: () => {}, ...param, context});
     process.env.NODE_ENV === "production" && this.snapshot();
+
+    // If this is not a mutation but there isn't an event handler
+    // we'll need to call the appropriate mutation resolver
+    // for things like macros and internal calls to events
+    if (!context.isMutation && !Object.keys(this._events).includes(eventName)) {
+      this.mutations[eventName]?.({}, param, context);
+    } else {
+      this.emit(eventName, {cb: () => {}, ...param, context});
+    }
   }
   test(param: any) {
     if (param.key) {
