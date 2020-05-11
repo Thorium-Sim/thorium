@@ -308,7 +308,11 @@ class ProbeControl extends Component {
                       prompt={`What do you want to set the ${t.name} probe count to?`}
                       onClick={count =>
                         action({
-                          variables: {id: probes.id, type: t.id, count},
+                          variables: {
+                            id: probes.id,
+                            type: t.id,
+                            count: parseInt(count, 10),
+                          },
                         })
                       }
                     >

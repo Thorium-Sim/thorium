@@ -40,7 +40,13 @@ const TorpedoInventory = ({id, inventory, refetchQueries = []}) => {
                   prompt="What is the new value for photon torpedos?"
                   onClick={count =>
                     (parseInt(count, 10) || parseInt(count, 10) === 0) &&
-                    updateCount({variables: {id, type: "photon", count}})
+                    updateCount({
+                      variables: {
+                        id,
+                        type: "photon",
+                        count: parseInt(count, 10),
+                      },
+                    })
                   }
                 >
                   {types.photon}
@@ -52,7 +58,13 @@ const TorpedoInventory = ({id, inventory, refetchQueries = []}) => {
                   prompt="What is the new value for quantum torpedos?"
                   onClick={count =>
                     (parseInt(count, 10) || parseInt(count, 10) === 0) &&
-                    updateCount({variables: {id, type: "quantum", count}})
+                    updateCount({
+                      variables: {
+                        id,
+                        type: "quantum",
+                        count: parseInt(count, 10),
+                      },
+                    })
                   }
                 >
                   {types.quantum}
@@ -109,7 +121,13 @@ const TorpedoInventory = ({id, inventory, refetchQueries = []}) => {
                         prompt={`What is the new value for ${t} torpedos?`}
                         onClick={count =>
                           (parseInt(count, 10) || parseInt(count, 10) === 0) &&
-                          updateCount({variables: {id, type: t, count}})
+                          updateCount({
+                            variables: {
+                              id,
+                              type: t,
+                              count: parseInt(count, 10),
+                            },
+                          })
                         }
                       >
                         {types[t]}

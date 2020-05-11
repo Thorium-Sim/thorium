@@ -109,7 +109,7 @@ const ShipCore = ({simulator, client}) => {
     `;
     const variables = {
       simulatorId: simulator.id,
-      crew,
+      crew: parseInt(crew, 10),
     };
     client.mutate({
       mutation,
@@ -124,7 +124,7 @@ const ShipCore = ({simulator, client}) => {
     `;
     const variables = {
       simulatorId: simulator.id,
-      crew,
+      crew: parseInt(crew, 10),
     };
     client.mutate({
       mutation,

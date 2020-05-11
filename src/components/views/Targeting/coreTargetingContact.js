@@ -43,7 +43,11 @@ const TargetCount = ({targetingId, id, contactCount}) => (
             prompt={"How many targets?"}
             onClick={count =>
               action({
-                variables: {id: targetingId, classId: id, count},
+                variables: {
+                  id: targetingId,
+                  classId: id,
+                  count: parseInt(count, 10),
+                },
               })
             }
           >
