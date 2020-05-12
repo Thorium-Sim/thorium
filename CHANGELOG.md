@@ -1,3 +1,10 @@
+## [2.10.1](https://github.com/Thorium-Sim/thorium/compare/2.10.0...2.10.1) (2020-05-12)
+
+
+### Bug Fixes
+
+* **Core:** Fixes an issue where certain core inputs don't work or cause Thorium to crash. Closes [#2935](https://github.com/Thorium-Sim/thorium/issues/2935) ([69ebb5c](https://github.com/Thorium-Sim/thorium/commit/69ebb5ce2bc5a44a9d57d8b29ec9129b15b65747))
+
 # [2.10.0](https://github.com/Thorium-Sim/thorium/compare/2.9.0...2.10.0) (2020-05-09)
 
 ### Bug Fixes
