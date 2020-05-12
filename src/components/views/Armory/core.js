@@ -175,7 +175,9 @@ const CrewCargo = ({simulatorId, crew: {id, name, inventory}}) => {
                   minWidth: "20px",
                 }}
                 prompt={`What is the new quantity of ${i.name}?`}
-                onClick={val => updateInventoryQuantity(update, i.id, val)}
+                onClick={val =>
+                  updateInventoryQuantity(update, i.id, parseInt(val, 10))
+                }
               >
                 {i.count}
               </InputField>

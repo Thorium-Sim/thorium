@@ -53,7 +53,7 @@ class TransporterCore extends Component {
       `,
       variables: {
         transporter: transporter.id,
-        targets: result,
+        targets: parseInt(result, 10),
       },
     });
   };

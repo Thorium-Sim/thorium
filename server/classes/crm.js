@@ -232,7 +232,8 @@ export default class Crm extends System {
   setEnemyIcon(image) {
     this.enemyIcon = image;
   }
-  setEnemyCount(count) {
+  setEnemyCount(inputCount) {
+    const count = parseInt(inputCount, 10);
     if (count < 0) return;
     if (this.enemyCount > count) {
       // Remove enemies, starting with destroyed enemies
