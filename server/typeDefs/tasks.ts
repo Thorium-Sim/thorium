@@ -3,6 +3,7 @@ import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import taskDefinitions from "../tasks";
 import {ValueDef} from "../classes/task";
+import uuid from "uuid";
 const mutationHelper = require("../helpers/mutationHelper").default;
 
 // We define a schema that encompasses all of the types
@@ -24,7 +25,7 @@ const schema = gql`
     startTime: String
     endTime: String
     timeElapsedInMS: Int
-    macros: [TimelineItem]
+    macros: [MacroAction]
     assigned: Boolean
   }
 
@@ -33,33 +34,33 @@ const schema = gql`
     definition: String
     values: JSON
     station: String
-    macros: [TimelineItemInput]
-    preMacros: [TimelineItemInput]
+    macros: [ActionInput]
+    preMacros: [ActionInput]
   }
 
   type TaskTemplate {
-    id: ID
-    name: String
-    values: JSON
-    definition: String
-    reportTypes: [String]
-    macros: [TimelineItem]
-    preMacros: [TimelineItem]
+    id: ID!
+    name: String!
+    values: JSON!
+    definition: String!
+    reportTypes: [String!]!
+    macros: [MacroAction!]!
+    preMacros: [MacroAction!]!
   }
 
   type TaskDefinition {
-    id: ID
-    name: String
-    class: String
+    id: ID!
+    name: String!
+    class: String!
     stations: [Station]
-    active: Boolean
-    valuesInput: JSON
-    valuesValue: JSON
+    active: Boolean!
+    valuesInput: JSON!
+    valuesValue: JSON!
   }
   extend type Query {
     tasks(simulatorId: ID!, station: String, definitions: [String!]): [Task]
-    taskTemplates: [TaskTemplate]
-    taskDefinitions(simulatorId: ID): [TaskDefinition]
+    taskTemplates: [TaskTemplate!]!
+    taskDefinitions(simulatorId: ID): [TaskDefinition!]!
     taskInstructions(
       simulatorId: ID
       definition: String!
@@ -83,8 +84,8 @@ const schema = gql`
     renameTaskTemplate(id: ID!, name: String!): String
     setTaskTemplateValues(id: ID!, values: JSON!): String
     setTaskTemplateReportTypes(id: ID!, reportTypes: [String]!): String
-    setTaskTemplateMacros(id: ID!, macros: [TimelineItemInput]!): String
-    setTaskTemplatePreMacros(id: ID!, macros: [TimelineItemInput]!): String
+    setTaskTemplateMacros(id: ID!, macros: [ActionInput]!): String
+    setTaskTemplatePreMacros(id: ID!, macros: [ActionInput]!): String
   }
   extend type Subscription {
     tasksUpdate(
@@ -92,7 +93,7 @@ const schema = gql`
       station: String
       definitions: [String!]
     ): [Task]
-    taskTemplatesUpdate: [TaskTemplate]
+    taskTemplatesUpdate: [TaskTemplate!]!
   }
 `;
 
@@ -214,10 +215,15 @@ const resolver = {
       resolve(rootValue) {
         return rootValue;
       },
-      subscribe: withFilter(
-        () => pubsub.asyncIterator("taskTemplatesUpdate"),
-        () => true,
-      ),
+      subscribe: () => {
+        const id = uuid.v4();
+        process.nextTick(() => {
+          let returnVal = App.taskTemplates;
+
+          pubsub.publish(id, returnVal);
+        });
+        return pubsub.asyncIterator([id, "taskTemplatesUpdate"]);
+      },
     },
   },
 };

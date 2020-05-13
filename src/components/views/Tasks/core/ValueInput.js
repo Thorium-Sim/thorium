@@ -10,11 +10,11 @@ import InventoryInput from "./inputs/InventoryInput";
 const ValueInput = ({
   label,
   type,
-  placeholder,
+  placeholder = "",
   value,
   definitionValue,
   onBlur,
-  simulatorId,
+  simulatorId = "null",
 }) => {
   return (
     <div>

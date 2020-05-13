@@ -36,6 +36,9 @@ completed:Boolean!;
     taskFlowStepRemoveTask(id:ID!, stepId:ID!, taskId:ID!):String
     taskFlowStepEditTask(id:ID!, stepId:ID!, taskId:ID!, task:TaskInput!):String
     taskFlowStepSetCompleteAll(id:ID!, stepId:ID!, completeAll:Boolean!):String
+    """
+    Macro: Tasks: Activate Task Flow
+    """
     taskFlowActivate(id:ID!, simulatorId:ID!):String
   }
   extend type Subscription {
@@ -60,15 +63,94 @@ const resolver = {
       });
       return taskFlow.id;
     },
-    taskFlowRemove(_, {id}) {},
-    taskFlowRename(_, {id, name}) {},
-    taskFlowAddStep(_, {id, name}) {},
-    taskFlowRemoveStep(_, {id, stepId}) {},
-    taskFlowRenameStep(_, {id, stepId, name}) {},
-    taskFlowStepAddTask(_, {id, stepId, task}) {},
-    taskFlowStepRemoveTask(_, {id, stepId, taskId}) {},
-    taskFlowStepEditTask(_, {id, stepId, taskId, task}) {},
-    taskFlowStepSetCompleteAll(_, {id, stepId, completeAll}) {},
+    taskFlowRemove(_, {id}) {
+      App.taskFlows = App.taskFlows.filter(t => t.id !== id);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowRename(_, {id, name}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.setName(name);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowAddStep(_, {id, name}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.addStep(name);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowRemoveStep(_, {id, stepId}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.removeStep(stepId);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowRenameStep(_, {id, stepId, name}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.renameStep(stepId, name);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowStepAddTask(_, {id, stepId, task}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.addTask(stepId, task);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowStepRemoveTask(_, {id, stepId, taskId}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.removeTask(stepId, taskId);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowStepEditTask(_, {id, stepId, taskId, task}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.editTask(stepId, taskId, task);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowStepSetCompleteAll(_, {id, stepId, completeAll}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.setCompleteAll(stepId, completeAll);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowActivate(_, {id, simulatorId}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+
+      const newFlow = new TaskFlow({
+        ...flow,
+        currentStep: -1,
+        id: null,
+        simulatorId,
+      });
+      // Trigger the flows to be created.
+      newFlow.advance();
+      App.taskFlows.push(newFlow);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
   },
   Subscription: {
     taskFlows: {

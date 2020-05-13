@@ -1,0 +1,3 @@
+mutation SetTaskTemplateValues($id: ID!, $values: JSON!) {
+  setTaskTemplateValues(id: $id, values: $values)
+}

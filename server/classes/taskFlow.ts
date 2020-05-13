@@ -61,10 +61,14 @@ export class TaskFlow {
     this.currentStep = params.currentStep || 0;
     this.steps = params.steps ? params.steps.map(s => new TaskFlowStep(s)) : [];
   }
+
   get completed() {
     return this.currentStep >= this.steps.length - 1;
   }
   advance() {
+    // Don't advance flows that don't have a simulator id
+    if (!this.simulatorId) return;
+
     // Check if all of the tasks have been completed.
     const currentStep = this.steps[this.currentStep];
 

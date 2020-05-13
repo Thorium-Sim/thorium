@@ -1478,11 +1478,11 @@ export type Macro = {
 
 export type MacroAction = {
    __typename?: 'MacroAction',
-  id?: Maybe<Scalars['ID']>,
-  event?: Maybe<Scalars['String']>,
-  args?: Maybe<Scalars['String']>,
+  id: Scalars['ID'],
+  event: Scalars['String'],
+  args: Scalars['String'],
   delay?: Maybe<Scalars['Int']>,
-  needsConfig?: Maybe<Scalars['String']>,
+  needsConfig?: Maybe<Scalars['Boolean']>,
   noCancelOnReset?: Maybe<Scalars['Boolean']>,
 };
 
@@ -6287,13 +6287,13 @@ export type MutationSetTaskTemplateReportTypesArgs = {
 
 export type MutationSetTaskTemplateMacrosArgs = {
   id: Scalars['ID'],
-  macros: Array<Maybe<TimelineItemInput>>
+  macros: Array<Maybe<ActionInput>>
 };
 
 
 export type MutationSetTaskTemplatePreMacrosArgs = {
   id: Scalars['ID'],
-  macros: Array<Maybe<TimelineItemInput>>
+  macros: Array<Maybe<ActionInput>>
 };
 
 
@@ -7438,8 +7438,8 @@ export type Query = {
   targeting?: Maybe<Array<Maybe<Targeting>>>,
   taskReport?: Maybe<Array<Maybe<TaskReport>>>,
   tasks?: Maybe<Array<Maybe<Task>>>,
-  taskTemplates?: Maybe<Array<Maybe<TaskTemplate>>>,
-  taskDefinitions?: Maybe<Array<Maybe<TaskDefinition>>>,
+  taskTemplates: Array<TaskTemplate>,
+  taskDefinitions: Array<TaskDefinition>,
   taskInstructions?: Maybe<Scalars['String']>,
   teams?: Maybe<Array<Maybe<Team>>>,
   damagePositions?: Maybe<Array<Maybe<Scalars['String']>>>,
@@ -8842,7 +8842,7 @@ export type Subscription = {
   targetingUpdate?: Maybe<Array<Maybe<Targeting>>>,
   taskReportUpdate?: Maybe<Array<Maybe<TaskReport>>>,
   tasksUpdate?: Maybe<Array<Maybe<Task>>>,
-  taskTemplatesUpdate?: Maybe<Array<Maybe<TaskTemplate>>>,
+  taskTemplatesUpdate: Array<TaskTemplate>,
   teamsUpdate?: Maybe<Array<Maybe<Team>>>,
   _templateUpdate?: Maybe<Template>,
   thoriumUpdate?: Maybe<Thorium>,
@@ -9678,13 +9678,13 @@ export type TargetingContact = {
 
 export type Task = {
    __typename?: 'Task',
-  id?: Maybe<Scalars['ID']>,
+  id: Scalars['ID'],
   simulatorId?: Maybe<Scalars['ID']>,
   station?: Maybe<Scalars['String']>,
   systemId?: Maybe<Scalars['ID']>,
   deck?: Maybe<Deck>,
   room?: Maybe<Room>,
-  definition?: Maybe<Scalars['String']>,
+  definition: Scalars['String'],
   verified?: Maybe<Scalars['Boolean']>,
   verifyRequested?: Maybe<Scalars['Boolean']>,
   dismissed?: Maybe<Scalars['Boolean']>,
@@ -9693,19 +9693,19 @@ export type Task = {
   startTime?: Maybe<Scalars['String']>,
   endTime?: Maybe<Scalars['String']>,
   timeElapsedInMS?: Maybe<Scalars['Int']>,
-  macros?: Maybe<Array<Maybe<TimelineItem>>>,
+  macros?: Maybe<Array<Maybe<MacroAction>>>,
   assigned?: Maybe<Scalars['Boolean']>,
 };
 
 export type TaskDefinition = {
    __typename?: 'TaskDefinition',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
-  class?: Maybe<Scalars['String']>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  class: Scalars['String'],
   stations?: Maybe<Array<Maybe<Station>>>,
-  active?: Maybe<Scalars['Boolean']>,
-  valuesInput?: Maybe<Scalars['JSON']>,
-  valuesValue?: Maybe<Scalars['JSON']>,
+  active: Scalars['Boolean'],
+  valuesInput: Scalars['JSON'],
+  valuesValue: Scalars['JSON'],
 };
 
 export type TaskInput = {
@@ -9713,8 +9713,8 @@ export type TaskInput = {
   definition?: Maybe<Scalars['String']>,
   values?: Maybe<Scalars['JSON']>,
   station?: Maybe<Scalars['String']>,
-  macros?: Maybe<Array<Maybe<TimelineItemInput>>>,
-  preMacros?: Maybe<Array<Maybe<TimelineItemInput>>>,
+  macros?: Maybe<Array<Maybe<ActionInput>>>,
+  preMacros?: Maybe<Array<Maybe<ActionInput>>>,
 };
 
 export type TaskReport = {
@@ -9730,13 +9730,13 @@ export type TaskReport = {
 
 export type TaskTemplate = {
    __typename?: 'TaskTemplate',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
-  values?: Maybe<Scalars['JSON']>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  values: Scalars['JSON'],
   definition?: Maybe<Scalars['String']>,
-  reportTypes?: Maybe<Array<Maybe<Scalars['String']>>>,
-  macros?: Maybe<Array<Maybe<TimelineItem>>>,
-  preMacros?: Maybe<Array<Maybe<TimelineItem>>>,
+  reportTypes: Array<Scalars['String']>,
+  macros: Array<MacroAction>,
+  preMacros: Array<MacroAction>,
 };
 
 export type Team = {
@@ -13040,6 +13040,129 @@ export type StationSetConfigSubscription = (
       )> }
     )> }
   )>>> }
+);
+
+export type AddTaskTemplateMutationVariables = {
+  definition: Scalars['String'];
+};
+
+
+export type AddTaskTemplateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addTaskTemplate'>
+);
+
+export type ImportTemplatesMutationVariables = {};
+
+
+export type ImportTemplatesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'importTaskTemplates'>
+);
+
+export type RemoveTaskTemplateMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type RemoveTaskTemplateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeTaskTemplate'>
+);
+
+export type RenameTaskTemplateMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type RenameTaskTemplateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'renameTaskTemplate'>
+);
+
+export type SetTaskMacroMutationVariables = {
+  id: Scalars['ID'];
+  macros: Array<ActionInput>;
+};
+
+
+export type SetTaskMacroMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTaskTemplateMacros'>
+);
+
+export type SetTaskPreMacroMutationVariables = {
+  id: Scalars['ID'];
+  macros: Array<ActionInput>;
+};
+
+
+export type SetTaskPreMacroMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTaskTemplatePreMacros'>
+);
+
+export type SetTaskTemplateReportTypesMutationVariables = {
+  id: Scalars['ID'];
+  reportTypes: Array<Maybe<Scalars['String']>>;
+};
+
+
+export type SetTaskTemplateReportTypesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTaskTemplateReportTypes'>
+);
+
+export type SetTaskTemplateValuesMutationVariables = {
+  id: Scalars['ID'];
+  values: Scalars['JSON'];
+};
+
+
+export type SetTaskTemplateValuesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTaskTemplateValues'>
+);
+
+export type TaskDefinitionsQueryVariables = {};
+
+
+export type TaskDefinitionsQuery = (
+  { __typename?: 'Query' }
+  & { taskDefinitions: Array<(
+    { __typename?: 'TaskDefinition' }
+    & Pick<TaskDefinition, 'id' | 'class' | 'name' | 'valuesInput' | 'valuesValue' | 'active'>
+    & { stations?: Maybe<Array<Maybe<(
+      { __typename?: 'Station' }
+      & Pick<Station, 'name'>
+      & { cards: Array<(
+        { __typename?: 'Card' }
+        & Pick<Card, 'name' | 'component'>
+      )> }
+    )>>> }
+  )>, thorium?: Maybe<(
+    { __typename?: 'Thorium' }
+    & Pick<Thorium, 'addedTaskTemplates'>
+  )> }
+);
+
+export type TaskTemplatesSubscriptionVariables = {};
+
+
+export type TaskTemplatesSubscription = (
+  { __typename?: 'Subscription' }
+  & { taskTemplatesUpdate: Array<(
+    { __typename?: 'TaskTemplate' }
+    & Pick<TaskTemplate, 'id' | 'name' | 'definition' | 'values' | 'reportTypes'>
+    & { macros: Array<(
+      { __typename?: 'MacroAction' }
+      & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay'>
+    )>, preMacros: Array<(
+      { __typename?: 'MacroAction' }
+      & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay'>
+    )> }
+  )> }
 );
 
 export type EntityRemoveEngineMutationVariables = {
@@ -20510,6 +20633,341 @@ export function useStationSetConfigSubscription(baseOptions?: ApolloReactHooks.S
       }
 export type StationSetConfigSubscriptionHookResult = ReturnType<typeof useStationSetConfigSubscription>;
 export type StationSetConfigSubscriptionResult = ApolloReactCommon.SubscriptionResult<StationSetConfigSubscription>;
+export const AddTaskTemplateDocument = gql`
+    mutation AddTaskTemplate($definition: String!) {
+  addTaskTemplate(definition: $definition)
+}
+    `;
+export type AddTaskTemplateMutationFn = ApolloReactCommon.MutationFunction<AddTaskTemplateMutation, AddTaskTemplateMutationVariables>;
+
+/**
+ * __useAddTaskTemplateMutation__
+ *
+ * To run a mutation, you first call `useAddTaskTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTaskTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTaskTemplateMutation, { data, loading, error }] = useAddTaskTemplateMutation({
+ *   variables: {
+ *      definition: // value for 'definition'
+ *   },
+ * });
+ */
+export function useAddTaskTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddTaskTemplateMutation, AddTaskTemplateMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddTaskTemplateMutation, AddTaskTemplateMutationVariables>(AddTaskTemplateDocument, baseOptions);
+      }
+export type AddTaskTemplateMutationHookResult = ReturnType<typeof useAddTaskTemplateMutation>;
+export type AddTaskTemplateMutationResult = ApolloReactCommon.MutationResult<AddTaskTemplateMutation>;
+export type AddTaskTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<AddTaskTemplateMutation, AddTaskTemplateMutationVariables>;
+export const ImportTemplatesDocument = gql`
+    mutation ImportTemplates {
+  importTaskTemplates
+}
+    `;
+export type ImportTemplatesMutationFn = ApolloReactCommon.MutationFunction<ImportTemplatesMutation, ImportTemplatesMutationVariables>;
+
+/**
+ * __useImportTemplatesMutation__
+ *
+ * To run a mutation, you first call `useImportTemplatesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportTemplatesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [importTemplatesMutation, { data, loading, error }] = useImportTemplatesMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useImportTemplatesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ImportTemplatesMutation, ImportTemplatesMutationVariables>) {
+        return ApolloReactHooks.useMutation<ImportTemplatesMutation, ImportTemplatesMutationVariables>(ImportTemplatesDocument, baseOptions);
+      }
+export type ImportTemplatesMutationHookResult = ReturnType<typeof useImportTemplatesMutation>;
+export type ImportTemplatesMutationResult = ApolloReactCommon.MutationResult<ImportTemplatesMutation>;
+export type ImportTemplatesMutationOptions = ApolloReactCommon.BaseMutationOptions<ImportTemplatesMutation, ImportTemplatesMutationVariables>;
+export const RemoveTaskTemplateDocument = gql`
+    mutation RemoveTaskTemplate($id: ID!) {
+  removeTaskTemplate(id: $id)
+}
+    `;
+export type RemoveTaskTemplateMutationFn = ApolloReactCommon.MutationFunction<RemoveTaskTemplateMutation, RemoveTaskTemplateMutationVariables>;
+
+/**
+ * __useRemoveTaskTemplateMutation__
+ *
+ * To run a mutation, you first call `useRemoveTaskTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveTaskTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeTaskTemplateMutation, { data, loading, error }] = useRemoveTaskTemplateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveTaskTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveTaskTemplateMutation, RemoveTaskTemplateMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveTaskTemplateMutation, RemoveTaskTemplateMutationVariables>(RemoveTaskTemplateDocument, baseOptions);
+      }
+export type RemoveTaskTemplateMutationHookResult = ReturnType<typeof useRemoveTaskTemplateMutation>;
+export type RemoveTaskTemplateMutationResult = ApolloReactCommon.MutationResult<RemoveTaskTemplateMutation>;
+export type RemoveTaskTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<RemoveTaskTemplateMutation, RemoveTaskTemplateMutationVariables>;
+export const RenameTaskTemplateDocument = gql`
+    mutation RenameTaskTemplate($id: ID!, $name: String!) {
+  renameTaskTemplate(id: $id, name: $name)
+}
+    `;
+export type RenameTaskTemplateMutationFn = ApolloReactCommon.MutationFunction<RenameTaskTemplateMutation, RenameTaskTemplateMutationVariables>;
+
+/**
+ * __useRenameTaskTemplateMutation__
+ *
+ * To run a mutation, you first call `useRenameTaskTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameTaskTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameTaskTemplateMutation, { data, loading, error }] = useRenameTaskTemplateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useRenameTaskTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RenameTaskTemplateMutation, RenameTaskTemplateMutationVariables>) {
+        return ApolloReactHooks.useMutation<RenameTaskTemplateMutation, RenameTaskTemplateMutationVariables>(RenameTaskTemplateDocument, baseOptions);
+      }
+export type RenameTaskTemplateMutationHookResult = ReturnType<typeof useRenameTaskTemplateMutation>;
+export type RenameTaskTemplateMutationResult = ApolloReactCommon.MutationResult<RenameTaskTemplateMutation>;
+export type RenameTaskTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<RenameTaskTemplateMutation, RenameTaskTemplateMutationVariables>;
+export const SetTaskMacroDocument = gql`
+    mutation SetTaskMacro($id: ID!, $macros: [ActionInput!]!) {
+  setTaskTemplateMacros(id: $id, macros: $macros)
+}
+    `;
+export type SetTaskMacroMutationFn = ApolloReactCommon.MutationFunction<SetTaskMacroMutation, SetTaskMacroMutationVariables>;
+
+/**
+ * __useSetTaskMacroMutation__
+ *
+ * To run a mutation, you first call `useSetTaskMacroMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTaskMacroMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTaskMacroMutation, { data, loading, error }] = useSetTaskMacroMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      macros: // value for 'macros'
+ *   },
+ * });
+ */
+export function useSetTaskMacroMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetTaskMacroMutation, SetTaskMacroMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetTaskMacroMutation, SetTaskMacroMutationVariables>(SetTaskMacroDocument, baseOptions);
+      }
+export type SetTaskMacroMutationHookResult = ReturnType<typeof useSetTaskMacroMutation>;
+export type SetTaskMacroMutationResult = ApolloReactCommon.MutationResult<SetTaskMacroMutation>;
+export type SetTaskMacroMutationOptions = ApolloReactCommon.BaseMutationOptions<SetTaskMacroMutation, SetTaskMacroMutationVariables>;
+export const SetTaskPreMacroDocument = gql`
+    mutation SetTaskPreMacro($id: ID!, $macros: [ActionInput!]!) {
+  setTaskTemplatePreMacros(id: $id, macros: $macros)
+}
+    `;
+export type SetTaskPreMacroMutationFn = ApolloReactCommon.MutationFunction<SetTaskPreMacroMutation, SetTaskPreMacroMutationVariables>;
+
+/**
+ * __useSetTaskPreMacroMutation__
+ *
+ * To run a mutation, you first call `useSetTaskPreMacroMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTaskPreMacroMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTaskPreMacroMutation, { data, loading, error }] = useSetTaskPreMacroMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      macros: // value for 'macros'
+ *   },
+ * });
+ */
+export function useSetTaskPreMacroMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetTaskPreMacroMutation, SetTaskPreMacroMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetTaskPreMacroMutation, SetTaskPreMacroMutationVariables>(SetTaskPreMacroDocument, baseOptions);
+      }
+export type SetTaskPreMacroMutationHookResult = ReturnType<typeof useSetTaskPreMacroMutation>;
+export type SetTaskPreMacroMutationResult = ApolloReactCommon.MutationResult<SetTaskPreMacroMutation>;
+export type SetTaskPreMacroMutationOptions = ApolloReactCommon.BaseMutationOptions<SetTaskPreMacroMutation, SetTaskPreMacroMutationVariables>;
+export const SetTaskTemplateReportTypesDocument = gql`
+    mutation SetTaskTemplateReportTypes($id: ID!, $reportTypes: [String]!) {
+  setTaskTemplateReportTypes(id: $id, reportTypes: $reportTypes)
+}
+    `;
+export type SetTaskTemplateReportTypesMutationFn = ApolloReactCommon.MutationFunction<SetTaskTemplateReportTypesMutation, SetTaskTemplateReportTypesMutationVariables>;
+
+/**
+ * __useSetTaskTemplateReportTypesMutation__
+ *
+ * To run a mutation, you first call `useSetTaskTemplateReportTypesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTaskTemplateReportTypesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTaskTemplateReportTypesMutation, { data, loading, error }] = useSetTaskTemplateReportTypesMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      reportTypes: // value for 'reportTypes'
+ *   },
+ * });
+ */
+export function useSetTaskTemplateReportTypesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetTaskTemplateReportTypesMutation, SetTaskTemplateReportTypesMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetTaskTemplateReportTypesMutation, SetTaskTemplateReportTypesMutationVariables>(SetTaskTemplateReportTypesDocument, baseOptions);
+      }
+export type SetTaskTemplateReportTypesMutationHookResult = ReturnType<typeof useSetTaskTemplateReportTypesMutation>;
+export type SetTaskTemplateReportTypesMutationResult = ApolloReactCommon.MutationResult<SetTaskTemplateReportTypesMutation>;
+export type SetTaskTemplateReportTypesMutationOptions = ApolloReactCommon.BaseMutationOptions<SetTaskTemplateReportTypesMutation, SetTaskTemplateReportTypesMutationVariables>;
+export const SetTaskTemplateValuesDocument = gql`
+    mutation SetTaskTemplateValues($id: ID!, $values: JSON!) {
+  setTaskTemplateValues(id: $id, values: $values)
+}
+    `;
+export type SetTaskTemplateValuesMutationFn = ApolloReactCommon.MutationFunction<SetTaskTemplateValuesMutation, SetTaskTemplateValuesMutationVariables>;
+
+/**
+ * __useSetTaskTemplateValuesMutation__
+ *
+ * To run a mutation, you first call `useSetTaskTemplateValuesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTaskTemplateValuesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTaskTemplateValuesMutation, { data, loading, error }] = useSetTaskTemplateValuesMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      values: // value for 'values'
+ *   },
+ * });
+ */
+export function useSetTaskTemplateValuesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetTaskTemplateValuesMutation, SetTaskTemplateValuesMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetTaskTemplateValuesMutation, SetTaskTemplateValuesMutationVariables>(SetTaskTemplateValuesDocument, baseOptions);
+      }
+export type SetTaskTemplateValuesMutationHookResult = ReturnType<typeof useSetTaskTemplateValuesMutation>;
+export type SetTaskTemplateValuesMutationResult = ApolloReactCommon.MutationResult<SetTaskTemplateValuesMutation>;
+export type SetTaskTemplateValuesMutationOptions = ApolloReactCommon.BaseMutationOptions<SetTaskTemplateValuesMutation, SetTaskTemplateValuesMutationVariables>;
+export const TaskDefinitionsDocument = gql`
+    query TaskDefinitions {
+  taskDefinitions {
+    id
+    class
+    name
+    stations {
+      name
+      cards {
+        name
+        component
+      }
+    }
+    valuesInput
+    valuesValue
+    active
+  }
+  thorium {
+    addedTaskTemplates
+  }
+}
+    `;
+
+/**
+ * __useTaskDefinitionsQuery__
+ *
+ * To run a query within a React component, call `useTaskDefinitionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTaskDefinitionsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskDefinitionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTaskDefinitionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>) {
+        return ApolloReactHooks.useQuery<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>(TaskDefinitionsDocument, baseOptions);
+      }
+export function useTaskDefinitionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>(TaskDefinitionsDocument, baseOptions);
+        }
+export type TaskDefinitionsQueryHookResult = ReturnType<typeof useTaskDefinitionsQuery>;
+export type TaskDefinitionsLazyQueryHookResult = ReturnType<typeof useTaskDefinitionsLazyQuery>;
+export type TaskDefinitionsQueryResult = ApolloReactCommon.QueryResult<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>;
+export const TaskTemplatesDocument = gql`
+    subscription TaskTemplates {
+  taskTemplatesUpdate {
+    id
+    name
+    definition
+    values
+    reportTypes
+    macros {
+      id
+      event
+      args
+      delay
+    }
+    preMacros {
+      id
+      event
+      args
+      delay
+    }
+  }
+}
+    `;
+
+/**
+ * __useTaskTemplatesSubscription__
+ *
+ * To run a query within a React component, call `useTaskTemplatesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTaskTemplatesSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskTemplatesSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTaskTemplatesSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<TaskTemplatesSubscription, TaskTemplatesSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<TaskTemplatesSubscription, TaskTemplatesSubscriptionVariables>(TaskTemplatesDocument, baseOptions);
+      }
+export type TaskTemplatesSubscriptionHookResult = ReturnType<typeof useTaskTemplatesSubscription>;
+export type TaskTemplatesSubscriptionResult = ApolloReactCommon.SubscriptionResult<TaskTemplatesSubscription>;
 export const EntityRemoveEngineDocument = gql`
     mutation EntityRemoveEngine($id: ID!, $type: EntityEngineEnum!) {
   entityRemoveEngine(id: $id, type: $type)

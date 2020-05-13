@@ -1482,11 +1482,11 @@ export type Macro = {
 
 export type MacroAction = {
   __typename?: "MacroAction";
-  id?: Maybe<Scalars["ID"]>;
-  event?: Maybe<Scalars["String"]>;
-  args?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  event: Scalars["String"];
+  args: Scalars["String"];
   delay?: Maybe<Scalars["Int"]>;
-  needsConfig?: Maybe<Scalars["String"]>;
+  needsConfig?: Maybe<Scalars["Boolean"]>;
   noCancelOnReset?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -5676,12 +5676,12 @@ export type MutationSetTaskTemplateReportTypesArgs = {
 
 export type MutationSetTaskTemplateMacrosArgs = {
   id: Scalars["ID"];
-  macros: Array<Maybe<TimelineItemInput>>;
+  macros: Array<Maybe<ActionInput>>;
 };
 
 export type MutationSetTaskTemplatePreMacrosArgs = {
   id: Scalars["ID"];
-  macros: Array<Maybe<TimelineItemInput>>;
+  macros: Array<Maybe<ActionInput>>;
 };
 
 export type MutationCreateTeamArgs = {
@@ -6714,8 +6714,8 @@ export type Query = {
   targeting?: Maybe<Array<Maybe<Targeting>>>;
   taskReport?: Maybe<Array<Maybe<TaskReport>>>;
   tasks?: Maybe<Array<Maybe<Task>>>;
-  taskTemplates?: Maybe<Array<Maybe<TaskTemplate>>>;
-  taskDefinitions?: Maybe<Array<Maybe<TaskDefinition>>>;
+  taskTemplates: Array<TaskTemplate>;
+  taskDefinitions: Array<TaskDefinition>;
   taskInstructions?: Maybe<Scalars["String"]>;
   teams?: Maybe<Array<Maybe<Team>>>;
   damagePositions?: Maybe<Array<Maybe<Scalars["String"]>>>;
@@ -8020,7 +8020,7 @@ export type Subscription = {
   targetingUpdate?: Maybe<Array<Maybe<Targeting>>>;
   taskReportUpdate?: Maybe<Array<Maybe<TaskReport>>>;
   tasksUpdate?: Maybe<Array<Maybe<Task>>>;
-  taskTemplatesUpdate?: Maybe<Array<Maybe<TaskTemplate>>>;
+  taskTemplatesUpdate: Array<TaskTemplate>;
   teamsUpdate?: Maybe<Array<Maybe<Team>>>;
   _templateUpdate?: Maybe<Template>;
   thoriumUpdate?: Maybe<Thorium>;
@@ -8761,13 +8761,13 @@ export type TargetingContact = {
 
 export type Task = {
   __typename?: "Task";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
   station?: Maybe<Scalars["String"]>;
   systemId?: Maybe<Scalars["ID"]>;
   deck?: Maybe<Deck>;
   room?: Maybe<Room>;
-  definition?: Maybe<Scalars["String"]>;
+  definition: Scalars["String"];
   verified?: Maybe<Scalars["Boolean"]>;
   verifyRequested?: Maybe<Scalars["Boolean"]>;
   dismissed?: Maybe<Scalars["Boolean"]>;
@@ -8776,19 +8776,19 @@ export type Task = {
   startTime?: Maybe<Scalars["String"]>;
   endTime?: Maybe<Scalars["String"]>;
   timeElapsedInMS?: Maybe<Scalars["Int"]>;
-  macros?: Maybe<Array<Maybe<TimelineItem>>>;
+  macros?: Maybe<Array<Maybe<MacroAction>>>;
   assigned?: Maybe<Scalars["Boolean"]>;
 };
 
 export type TaskDefinition = {
   __typename?: "TaskDefinition";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  class?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  class: Scalars["String"];
   stations?: Maybe<Array<Maybe<Station>>>;
-  active?: Maybe<Scalars["Boolean"]>;
-  valuesInput?: Maybe<Scalars["JSON"]>;
-  valuesValue?: Maybe<Scalars["JSON"]>;
+  active: Scalars["Boolean"];
+  valuesInput: Scalars["JSON"];
+  valuesValue: Scalars["JSON"];
 };
 
 export type TaskInput = {
@@ -8796,8 +8796,8 @@ export type TaskInput = {
   definition?: Maybe<Scalars["String"]>;
   values?: Maybe<Scalars["JSON"]>;
   station?: Maybe<Scalars["String"]>;
-  macros?: Maybe<Array<Maybe<TimelineItemInput>>>;
-  preMacros?: Maybe<Array<Maybe<TimelineItemInput>>>;
+  macros?: Maybe<Array<Maybe<ActionInput>>>;
+  preMacros?: Maybe<Array<Maybe<ActionInput>>>;
 };
 
 export type TaskReport = {
@@ -8813,13 +8813,13 @@ export type TaskReport = {
 
 export type TaskTemplate = {
   __typename?: "TaskTemplate";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  values?: Maybe<Scalars["JSON"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  values: Scalars["JSON"];
   definition?: Maybe<Scalars["String"]>;
-  reportTypes?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  macros?: Maybe<Array<Maybe<TimelineItem>>>;
-  preMacros?: Maybe<Array<Maybe<TimelineItem>>>;
+  reportTypes: Array<Scalars["String"]>;
+  macros: Array<MacroAction>;
+  preMacros: Array<MacroAction>;
 };
 
 export type Team = {
@@ -9551,6 +9551,7 @@ export type ResolversTypes = ResolversObject<{
   DamageTask: ResolverTypeWrapper<DamageTask>;
   TaskTemplate: ResolverTypeWrapper<TaskTemplate>;
   JSON: ResolverTypeWrapper<Scalars["JSON"]>;
+  MacroAction: ResolverTypeWrapper<MacroAction>;
   Station: ResolverTypeWrapper<Station>;
   Card: ResolverTypeWrapper<Card>;
   Mission: ResolverTypeWrapper<Mission>;
@@ -9607,7 +9608,6 @@ export type ResolversTypes = ResolversObject<{
   JumpDriveSector: ResolverTypeWrapper<JumpDriveSector>;
   Keyboard: ResolverTypeWrapper<Keyboard>;
   KeyboardKey: ResolverTypeWrapper<KeyboardKey>;
-  MacroAction: ResolverTypeWrapper<MacroAction>;
   LibraryEntry: ResolverTypeWrapper<LibraryEntry>;
   LRCommunications: ResolverTypeWrapper<LrCommunications>;
   LRMessage: ResolverTypeWrapper<LrMessage>;
@@ -9696,7 +9696,7 @@ export type ResolversTypes = ResolversObject<{
   Task: ResolverTypeWrapper<Task>;
   TaskDefinition: ResolverTypeWrapper<TaskDefinition>;
   TaskInput: TaskInput;
-  TimelineItemInput: TimelineItemInput;
+  ActionInput: ActionInput;
   Template: ResolverTypeWrapper<Template>;
   Thorium: ResolverTypeWrapper<Thorium>;
   SpaceEdventuresCenter: ResolverTypeWrapper<SpaceEdventuresCenter>;
@@ -9778,13 +9778,13 @@ export type ResolversTypes = ResolversObject<{
   InventoryCountInput: InventoryCountInput;
   IsochipInput: IsochipInput;
   KeyboardKeyInput: KeyboardKeyInput;
-  ActionInput: ActionInput;
   LibraryInput: LibraryInput;
   LightingInput: LightingInput;
   LongRangeCommInput: LongRangeCommInput;
   PresetAnswerInput: PresetAnswerInput;
   MessageInput: MessageInput;
   MidiControlInput: MidiControlInput;
+  TimelineItemInput: TimelineItemInput;
   RequirementInput: RequirementInput;
   MotuChannelInput: MotuChannelInput;
   NavPresetInput: NavPresetInput;
@@ -9921,6 +9921,7 @@ export type ResolversParentTypes = ResolversObject<{
   DamageTask: DamageTask;
   TaskTemplate: TaskTemplate;
   JSON: Scalars["JSON"];
+  MacroAction: MacroAction;
   Station: Station;
   Card: Card;
   Mission: Mission;
@@ -9977,7 +9978,6 @@ export type ResolversParentTypes = ResolversObject<{
   JumpDriveSector: JumpDriveSector;
   Keyboard: Keyboard;
   KeyboardKey: KeyboardKey;
-  MacroAction: MacroAction;
   LibraryEntry: LibraryEntry;
   LRCommunications: LrCommunications;
   LRMessage: LrMessage;
@@ -10066,7 +10066,7 @@ export type ResolversParentTypes = ResolversObject<{
   Task: Task;
   TaskDefinition: TaskDefinition;
   TaskInput: TaskInput;
-  TimelineItemInput: TimelineItemInput;
+  ActionInput: ActionInput;
   Template: Template;
   Thorium: Thorium;
   SpaceEdventuresCenter: SpaceEdventuresCenter;
@@ -10148,13 +10148,13 @@ export type ResolversParentTypes = ResolversObject<{
   InventoryCountInput: InventoryCountInput;
   IsochipInput: IsochipInput;
   KeyboardKeyInput: KeyboardKeyInput;
-  ActionInput: ActionInput;
   LibraryInput: LibraryInput;
   LightingInput: LightingInput;
   LongRangeCommInput: LongRangeCommInput;
   PresetAnswerInput: PresetAnswerInput;
   MessageInput: MessageInput;
   MidiControlInput: MidiControlInput;
+  TimelineItemInput: TimelineItemInput;
   RequirementInput: RequirementInput;
   MotuChannelInput: MotuChannelInput;
   NavPresetInput: NavPresetInput;
@@ -12570,12 +12570,12 @@ export type MacroActionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["MacroAction"] = ResolversParentTypes["MacroAction"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  event?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  args?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  event?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  args?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   delay?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   needsConfig?: Resolver<
-    Maybe<ResolversTypes["String"]>,
+    Maybe<ResolversTypes["Boolean"]>,
     ParentType,
     ContextType
   >;
@@ -18635,12 +18635,12 @@ export type QueryResolvers<
     RequireFields<QueryTasksArgs, "simulatorId">
   >;
   taskTemplates?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TaskTemplate"]>>>,
+    Array<ResolversTypes["TaskTemplate"]>,
     ParentType,
     ContextType
   >;
   taskDefinitions?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TaskDefinition"]>>>,
+    Array<ResolversTypes["TaskDefinition"]>,
     ParentType,
     ContextType,
     RequireFields<QueryTaskDefinitionsArgs, never>
@@ -20876,7 +20876,7 @@ export type SubscriptionResolvers<
     RequireFields<SubscriptionTasksUpdateArgs, "simulatorId">
   >;
   taskTemplatesUpdate?: SubscriptionResolver<
-    Maybe<Array<Maybe<ResolversTypes["TaskTemplate"]>>>,
+    Array<ResolversTypes["TaskTemplate"]>,
     "taskTemplatesUpdate",
     ParentType,
     ContextType
@@ -21572,17 +21572,13 @@ export type TaskResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Task"] = ResolversParentTypes["Task"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   simulatorId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   station?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   systemId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   deck?: Resolver<Maybe<ResolversTypes["Deck"]>, ParentType, ContextType>;
   room?: Resolver<Maybe<ResolversTypes["Room"]>, ParentType, ContextType>;
-  definition?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  definition?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   verified?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
@@ -21616,7 +21612,7 @@ export type TaskResolvers<
     ContextType
   >;
   macros?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TimelineItem"]>>>,
+    Maybe<Array<Maybe<ResolversTypes["MacroAction"]>>>,
     ParentType,
     ContextType
   >;
@@ -21632,25 +21628,17 @@ export type TaskDefinitionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TaskDefinition"] = ResolversParentTypes["TaskDefinition"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  class?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  class?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   stations?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["Station"]>>>,
     ParentType,
     ContextType
   >;
-  active?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
-  valuesInput?: Resolver<
-    Maybe<ResolversTypes["JSON"]>,
-    ParentType,
-    ContextType
-  >;
-  valuesValue?: Resolver<
-    Maybe<ResolversTypes["JSON"]>,
-    ParentType,
-    ContextType
-  >;
+  active?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  valuesInput?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
+  valuesValue?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -21676,26 +21664,26 @@ export type TaskTemplateResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TaskTemplate"] = ResolversParentTypes["TaskTemplate"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  values?: Resolver<Maybe<ResolversTypes["JSON"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  values?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
   definition?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType
   >;
   reportTypes?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["String"]>>>,
+    Array<ResolversTypes["String"]>,
     ParentType,
     ContextType
   >;
   macros?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TimelineItem"]>>>,
+    Array<ResolversTypes["MacroAction"]>,
     ParentType,
     ContextType
   >;
   preMacros?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TimelineItem"]>>>,
+    Array<ResolversTypes["MacroAction"]>,
     ParentType,
     ContextType
   >;

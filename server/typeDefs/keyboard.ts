@@ -27,11 +27,11 @@ const schema = gql`
     actions: [ActionInput]
   }
   type MacroAction {
-    id: ID
-    event: String
-    args: String
+    id: ID!
+    event: String!
+    args: String!
     delay: Int
-    needsConfig: String
+    needsConfig: Boolean
     noCancelOnReset: Boolean
   }
 

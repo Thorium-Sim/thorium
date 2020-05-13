@@ -1,6 +1,11 @@
 import React, {Component} from "react";
-import {createBrowserHistory} from "history";
-import {Router, Route, Routes, Link, useLocation} from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import gql from "graphql-tag.macro";
 import {useApolloClient, useMutation} from "@apollo/client";
 import "./config.scss";
@@ -14,8 +19,6 @@ const Client = React.lazy(() => import("../components/client"));
 const Config = React.lazy(() => import("./config"));
 const Releases = React.lazy(() => import("./FlightDirector/releases"));
 const Welcome = React.lazy(() => import("./FlightDirector/Welcome/Welcome"));
-
-const history = createBrowserHistory();
 
 class NoMatch extends Component {
   render() {
@@ -114,7 +117,7 @@ const App: React.FC = () => {
   return (
     <>
       <ClockSync />
-      <Router history={history}>
+      <Router>
         <Routes>
           <Route path="client" element={<Client />} />
 
