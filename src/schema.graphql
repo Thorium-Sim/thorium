@@ -2764,6 +2764,19 @@ type Mutation {
   dmxConfigSetName(id: ID!, name: String!): String
   dmxConfigSetConfig(id: ID!, config: JSON!): String
   dmxConfigSetActionStrength(id: ID!, actionStrength: Float!): String
+  taskFlowAdd(name: String!): String
+  taskFlowRemove(id: ID!): String
+  taskFlowRename(id: ID!, name: String!): String
+  taskFlowAddStep(id: ID!, name: String!): String
+  taskFlowRemoveStep(id: ID!, stepId: ID!): String
+  taskFlowRenameStep(id: ID!, stepId: ID!, name: String!): String
+  taskFlowStepAddTask(id: ID!, stepId: ID!, task: TaskInput!): String
+  taskFlowStepRemoveTask(id: ID!, stepId: ID!, taskId: ID!): String
+  taskFlowStepEditTask(id: ID!, stepId: ID!, taskId: ID!, task: TaskInput!): String
+  taskFlowStepSetCompleteAll(id: ID!, stepId: ID!, completeAll: Boolean!): String
+
+  """Macro: Tasks: Activate Task Flow"""
+  taskFlowActivate(id: ID!, simulatorId: ID!): String
 }
 
 type NamedObject {
@@ -3219,6 +3232,7 @@ type Query {
   dmxFixtures(simulatorId: ID): [DMXFixture!]!
   dmxConfig(id: ID!): DMXConfig
   dmxConfigs: [DMXConfig!]!
+  taskFlows(simulatorId: ID): [TaskFlow!]!
 }
 
 type Railgun implements SystemInterface {
@@ -4027,6 +4041,7 @@ type Subscription {
   dmxDevices: [DMXDevice!]!
   dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
   dmxConfigs: [DMXConfig!]!
+  taskFlows(simulatorId: ID): [TaskFlow!]!
 }
 
 type SubspaceField implements SystemInterface {
@@ -4318,6 +4333,7 @@ type Task {
   endTime: String
   timeElapsedInMS: Int
   macros: [MacroAction]
+  preMacros: [MacroAction!]!
   assigned: Boolean
 }
 
@@ -4329,6 +4345,23 @@ type TaskDefinition {
   active: Boolean!
   valuesInput: JSON!
   valuesValue: JSON!
+}
+
+type TaskFlow {
+  id: ID!
+  name: String!
+  currentStep: Int!
+  steps: [TaskFlowStep!]!
+  completed: Boolean!
+}
+
+type TaskFlowStep {
+  id: ID!
+  name: String!
+  tasks: [Task!]!
+  activeTasks: [Task!]!
+  completeAll: Boolean!
+  completed: Boolean!
 }
 
 input TaskInput {

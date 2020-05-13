@@ -1,0 +1,3 @@
+mutation TaskFlowStepAddTask($id: ID!, $stepId: ID!, $task: TaskInput!) {
+  taskFlowStepAddTask(id: $id, stepId: $stepId, task: $task)
+}

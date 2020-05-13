@@ -1,0 +1,3 @@
+mutation TaskFlowAdd($name: String!) {
+  taskFlowAdd(name: $name)
+}

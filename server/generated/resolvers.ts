@@ -2442,6 +2442,17 @@ export type Mutation = {
   dmxConfigSetName?: Maybe<Scalars["String"]>;
   dmxConfigSetConfig?: Maybe<Scalars["String"]>;
   dmxConfigSetActionStrength?: Maybe<Scalars["String"]>;
+  taskFlowAdd?: Maybe<Scalars["String"]>;
+  taskFlowRemove?: Maybe<Scalars["String"]>;
+  taskFlowRename?: Maybe<Scalars["String"]>;
+  taskFlowAddStep?: Maybe<Scalars["String"]>;
+  taskFlowRemoveStep?: Maybe<Scalars["String"]>;
+  taskFlowRenameStep?: Maybe<Scalars["String"]>;
+  taskFlowStepAddTask?: Maybe<Scalars["String"]>;
+  taskFlowStepRemoveTask?: Maybe<Scalars["String"]>;
+  taskFlowStepEditTask?: Maybe<Scalars["String"]>;
+  taskFlowStepSetCompleteAll?: Maybe<Scalars["String"]>;
+  taskFlowActivate?: Maybe<Scalars["String"]>;
 };
 
 export type MutationEntitySetAppearanceArgs = {
@@ -6263,6 +6274,65 @@ export type MutationDmxConfigSetActionStrengthArgs = {
   actionStrength: Scalars["Float"];
 };
 
+export type MutationTaskFlowAddArgs = {
+  name: Scalars["String"];
+};
+
+export type MutationTaskFlowRemoveArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationTaskFlowRenameArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type MutationTaskFlowAddStepArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type MutationTaskFlowRemoveStepArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+};
+
+export type MutationTaskFlowRenameStepArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type MutationTaskFlowStepAddTaskArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  task: TaskInput;
+};
+
+export type MutationTaskFlowStepRemoveTaskArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  taskId: Scalars["ID"];
+};
+
+export type MutationTaskFlowStepEditTaskArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  taskId: Scalars["ID"];
+  task: TaskInput;
+};
+
+export type MutationTaskFlowStepSetCompleteAllArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  completeAll: Scalars["Boolean"];
+};
+
+export type MutationTaskFlowActivateArgs = {
+  id: Scalars["ID"];
+  simulatorId: Scalars["ID"];
+};
+
 export type NamedObject = {
   __typename?: "NamedObject";
   id?: Maybe<Scalars["ID"]>;
@@ -6741,6 +6811,7 @@ export type Query = {
   dmxFixtures: Array<DmxFixture>;
   dmxConfig?: Maybe<DmxConfig>;
   dmxConfigs: Array<DmxConfig>;
+  taskFlows: Array<TaskFlow>;
 };
 
 export type QueryActionsArgs = {
@@ -7187,6 +7258,10 @@ export type QueryDmxFixturesArgs = {
 
 export type QueryDmxConfigArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryTaskFlowsArgs = {
+  simulatorId?: Maybe<Scalars["ID"]>;
 };
 
 export type Railgun = SystemInterface & {
@@ -8041,6 +8116,7 @@ export type Subscription = {
   dmxDevices: Array<DmxDevice>;
   dmxFixtures: Array<DmxFixture>;
   dmxConfigs: Array<DmxConfig>;
+  taskFlows: Array<TaskFlow>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -8475,6 +8551,10 @@ export type SubscriptionDmxFixturesArgs = {
   clientId?: Maybe<Scalars["ID"]>;
 };
 
+export type SubscriptionTaskFlowsArgs = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+};
+
 export type SubspaceField = SystemInterface & {
   __typename?: "SubspaceField";
   id?: Maybe<Scalars["ID"]>;
@@ -8777,6 +8857,7 @@ export type Task = {
   endTime?: Maybe<Scalars["String"]>;
   timeElapsedInMS?: Maybe<Scalars["Int"]>;
   macros?: Maybe<Array<Maybe<MacroAction>>>;
+  preMacros: Array<MacroAction>;
   assigned?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -8789,6 +8870,25 @@ export type TaskDefinition = {
   active: Scalars["Boolean"];
   valuesInput: Scalars["JSON"];
   valuesValue: Scalars["JSON"];
+};
+
+export type TaskFlow = {
+  __typename?: "TaskFlow";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  currentStep: Scalars["Int"];
+  steps: Array<TaskFlowStep>;
+  completed: Scalars["Boolean"];
+};
+
+export type TaskFlowStep = {
+  __typename?: "TaskFlowStep";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  tasks: Array<Task>;
+  activeTasks: Array<Task>;
+  completeAll: Scalars["Boolean"];
+  completed: Scalars["Boolean"];
 };
 
 export type TaskInput = {
@@ -8816,7 +8916,7 @@ export type TaskTemplate = {
   id: Scalars["ID"];
   name: Scalars["String"];
   values: Scalars["JSON"];
-  definition?: Maybe<Scalars["String"]>;
+  definition: Scalars["String"];
   reportTypes: Array<Scalars["String"]>;
   macros: Array<MacroAction>;
   preMacros: Array<MacroAction>;
@@ -9748,6 +9848,8 @@ export type ResolversTypes = ResolversObject<{
   DMXFixture: ResolverTypeWrapper<DmxFixture>;
   DMXFixtureMode: DmxFixtureMode;
   DMXPassiveChannels: ResolverTypeWrapper<DmxPassiveChannels>;
+  TaskFlow: ResolverTypeWrapper<TaskFlow>;
+  TaskFlowStep: ResolverTypeWrapper<TaskFlowStep>;
   Mutation: ResolverTypeWrapper<{}>;
   EntityCoordinatesInput: EntityCoordinatesInput;
   QuaternionInput: QuaternionInput;
@@ -10118,6 +10220,8 @@ export type ResolversParentTypes = ResolversObject<{
   DMXFixture: DmxFixture;
   DMXFixtureMode: DmxFixtureMode;
   DMXPassiveChannels: DmxPassiveChannels;
+  TaskFlow: TaskFlow;
+  TaskFlowStep: TaskFlowStep;
   Mutation: {};
   EntityCoordinatesInput: EntityCoordinatesInput;
   QuaternionInput: QuaternionInput;
@@ -17613,6 +17717,81 @@ export type MutationResolvers<
       "id" | "actionStrength"
     >
   >;
+  taskFlowAdd?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowAddArgs, "name">
+  >;
+  taskFlowRemove?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowRemoveArgs, "id">
+  >;
+  taskFlowRename?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowRenameArgs, "id" | "name">
+  >;
+  taskFlowAddStep?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowAddStepArgs, "id" | "name">
+  >;
+  taskFlowRemoveStep?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowRemoveStepArgs, "id" | "stepId">
+  >;
+  taskFlowRenameStep?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowRenameStepArgs, "id" | "stepId" | "name">
+  >;
+  taskFlowStepAddTask?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowStepAddTaskArgs, "id" | "stepId" | "task">
+  >;
+  taskFlowStepRemoveTask?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationTaskFlowStepRemoveTaskArgs,
+      "id" | "stepId" | "taskId"
+    >
+  >;
+  taskFlowStepEditTask?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationTaskFlowStepEditTaskArgs,
+      "id" | "stepId" | "taskId" | "task"
+    >
+  >;
+  taskFlowStepSetCompleteAll?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationTaskFlowStepSetCompleteAllArgs,
+      "id" | "stepId" | "completeAll"
+    >
+  >;
+  taskFlowActivate?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowActivateArgs, "id" | "simulatorId">
+  >;
 }>;
 
 export type NamedObjectResolvers<
@@ -18779,6 +18958,12 @@ export type QueryResolvers<
     Array<ResolversTypes["DMXConfig"]>,
     ParentType,
     ContextType
+  >;
+  taskFlows?: Resolver<
+    Array<ResolversTypes["TaskFlow"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryTaskFlowsArgs, never>
   >;
 }>;
 
@@ -21017,6 +21202,13 @@ export type SubscriptionResolvers<
     ParentType,
     ContextType
   >;
+  taskFlows?: SubscriptionResolver<
+    Array<ResolversTypes["TaskFlow"]>,
+    "taskFlows",
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionTaskFlowsArgs, never>
+  >;
 }>;
 
 export type SubspaceFieldResolvers<
@@ -21616,6 +21808,11 @@ export type TaskResolvers<
     ParentType,
     ContextType
   >;
+  preMacros?: Resolver<
+    Array<ResolversTypes["MacroAction"]>,
+    ParentType,
+    ContextType
+  >;
   assigned?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
@@ -21639,6 +21836,39 @@ export type TaskDefinitionResolvers<
   active?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   valuesInput?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
   valuesValue?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type TaskFlowResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["TaskFlow"] = ResolversParentTypes["TaskFlow"]
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  currentStep?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  steps?: Resolver<
+    Array<ResolversTypes["TaskFlowStep"]>,
+    ParentType,
+    ContextType
+  >;
+  completed?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type TaskFlowStepResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["TaskFlowStep"] = ResolversParentTypes["TaskFlowStep"]
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  tasks?: Resolver<Array<ResolversTypes["Task"]>, ParentType, ContextType>;
+  activeTasks?: Resolver<
+    Array<ResolversTypes["Task"]>,
+    ParentType,
+    ContextType
+  >;
+  completeAll?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  completed?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -21667,11 +21897,7 @@ export type TaskTemplateResolvers<
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   values?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
-  definition?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  definition?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   reportTypes?: Resolver<
     Array<ResolversTypes["String"]>,
     ParentType,
@@ -22581,6 +22807,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   TargetingContact?: TargetingContactResolvers<ContextType>;
   Task?: TaskResolvers<ContextType>;
   TaskDefinition?: TaskDefinitionResolvers<ContextType>;
+  TaskFlow?: TaskFlowResolvers<ContextType>;
+  TaskFlowStep?: TaskFlowStepResolvers<ContextType>;
   TaskReport?: TaskReportResolvers<ContextType>;
   TaskTemplate?: TaskTemplateResolvers<ContextType>;
   Team?: TeamResolvers<ContextType>;

@@ -80,11 +80,9 @@ export default class Task {
   timeElapsedInMS: number;
   macros: Macro[];
   assigned: boolean | string;
-  advance: (id: string) => void;
-  constructor(params: Partial<Task> = {}, advance: () => void = () => {}) {
+  constructor(params: Partial<Task> = {}) {
     // The check to see if the task is relevant was already handled
     // before this task was instantiated
-    this.advance = advance;
     this.id = params.id || uuid.v4();
     this.class = "Task";
 

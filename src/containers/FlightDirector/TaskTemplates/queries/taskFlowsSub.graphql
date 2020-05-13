@@ -1,0 +1,29 @@
+subscription TaskFlowsConfig {
+  taskFlows {
+    id
+    name
+    steps {
+      id
+      name
+      tasks {
+        id
+        station
+        definition
+        values
+        macros {
+          id
+          event
+          args
+          delay
+        }
+        preMacros {
+          id
+          event
+          args
+          delay
+        }
+      }
+      completeAll
+    }
+  }
+}
