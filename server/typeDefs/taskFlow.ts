@@ -18,6 +18,7 @@ const schema = gql`
   type TaskFlow {
     id: ID!
     name: String!
+    category: String!
     currentStep: Int!
     steps: [TaskFlowStep!]!
     completed: Boolean!
@@ -29,9 +30,11 @@ const schema = gql`
     taskFlowAdd(name: String!): String
     taskFlowRemove(id: ID!): String
     taskFlowRename(id: ID!, name: String!): String
+    taskFlowSetCategory(id: ID!, category: String!): String
     taskFlowAddStep(id: ID!, name: String!): String
     taskFlowRemoveStep(id: ID!, stepId: ID!): String
     taskFlowRenameStep(id: ID!, stepId: ID!, name: String!): String
+    taskFlowReorderStep(id: ID!, stepId: ID!, order: Int!): String
     taskFlowStepAddTask(id: ID!, stepId: ID!, task: TaskInput!): String
     taskFlowStepRemoveTask(id: ID!, stepId: ID!, taskId: ID!): String
     taskFlowStepEditTask(
@@ -87,13 +90,22 @@ const resolver = {
         taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
       });
     },
-    taskFlowAddStep(_, {id, name}) {
+    taskFlowSetCategory(_, {id, category}) {
       const flow = App.taskFlows.find(d => d.id === id);
-      flow.addStep(name);
+      flow.setCategory(category);
       pubsub.publish("taskFlows", {
         simulatorId: null,
         taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
       });
+    },
+    taskFlowAddStep(_, {id, name}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      const step = flow.addStep(name);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+      return step.id;
     },
     taskFlowRemoveStep(_, {id, stepId}) {
       const flow = App.taskFlows.find(d => d.id === id);
@@ -111,13 +123,22 @@ const resolver = {
         taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
       });
     },
-    taskFlowStepAddTask(_, {id, stepId, task}) {
+    taskFlowReorderStep(_, {id, stepId, order}) {
       const flow = App.taskFlows.find(d => d.id === id);
-      flow.addTask(stepId, task);
+      flow.reorderStep(stepId, order);
       pubsub.publish("taskFlows", {
         simulatorId: null,
         taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
       });
+    },
+    taskFlowStepAddTask(_, {id, stepId, task}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      const taskObj = flow.addTask(stepId, task);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+      return taskObj?.id;
     },
     taskFlowStepRemoveTask(_, {id, stepId, taskId}) {
       const flow = App.taskFlows.find(d => d.id === id);
@@ -167,7 +188,7 @@ const resolver = {
         return rootQuery.taskFlows;
       },
       subscribe: withFilter(
-        (rootValue, {simulatorId}) => {
+        (rootValue, {simulatorId = null}) => {
           const id = uuid.v4();
           process.nextTick(() => {
             const data = {

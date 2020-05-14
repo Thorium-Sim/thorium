@@ -2,6 +2,7 @@ subscription TaskFlowsConfig {
   taskFlows {
     id
     name
+    category
     steps {
       id
       name

@@ -2442,9 +2442,11 @@ export type Mutation = {
   taskFlowAdd?: Maybe<Scalars['String']>,
   taskFlowRemove?: Maybe<Scalars['String']>,
   taskFlowRename?: Maybe<Scalars['String']>,
+  taskFlowSetCategory?: Maybe<Scalars['String']>,
   taskFlowAddStep?: Maybe<Scalars['String']>,
   taskFlowRemoveStep?: Maybe<Scalars['String']>,
   taskFlowRenameStep?: Maybe<Scalars['String']>,
+  taskFlowReorderStep?: Maybe<Scalars['String']>,
   taskFlowStepAddTask?: Maybe<Scalars['String']>,
   taskFlowStepRemoveTask?: Maybe<Scalars['String']>,
   taskFlowStepEditTask?: Maybe<Scalars['String']>,
@@ -7014,6 +7016,12 @@ export type MutationTaskFlowRenameArgs = {
 };
 
 
+export type MutationTaskFlowSetCategoryArgs = {
+  id: Scalars['ID'],
+  category: Scalars['String']
+};
+
+
 export type MutationTaskFlowAddStepArgs = {
   id: Scalars['ID'],
   name: Scalars['String']
@@ -7030,6 +7038,13 @@ export type MutationTaskFlowRenameStepArgs = {
   id: Scalars['ID'],
   stepId: Scalars['ID'],
   name: Scalars['String']
+};
+
+
+export type MutationTaskFlowReorderStepArgs = {
+  id: Scalars['ID'],
+  stepId: Scalars['ID'],
+  order: Scalars['Int']
 };
 
 
@@ -9806,6 +9821,7 @@ export type TaskFlow = {
    __typename?: 'TaskFlow',
   id: Scalars['ID'],
   name: Scalars['String'],
+  category: Scalars['String'],
   currentStep: Scalars['Int'],
   steps: Array<TaskFlowStep>,
   completed: Scalars['Boolean'],
@@ -13325,6 +13341,29 @@ export type TaskFlowRenameStepMutation = (
   & Pick<Mutation, 'taskFlowRenameStep'>
 );
 
+export type TaskFlowReorderStepMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  order: Scalars['Int'];
+};
+
+
+export type TaskFlowReorderStepMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowReorderStep'>
+);
+
+export type TaskFlowSetCategoryMutationVariables = {
+  id: Scalars['ID'];
+  category: Scalars['String'];
+};
+
+
+export type TaskFlowSetCategoryMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowSetCategory'>
+);
+
 export type TaskFlowStepAddTaskMutationVariables = {
   id: Scalars['ID'];
   stepId: Scalars['ID'];
@@ -13381,7 +13420,7 @@ export type TaskFlowsConfigSubscription = (
   { __typename?: 'Subscription' }
   & { taskFlows: Array<(
     { __typename?: 'TaskFlow' }
-    & Pick<TaskFlow, 'id' | 'name'>
+    & Pick<TaskFlow, 'id' | 'name' | 'category'>
     & { steps: Array<(
       { __typename?: 'TaskFlowStep' }
       & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll'>
@@ -21362,6 +21401,69 @@ export function useTaskFlowRenameStepMutation(baseOptions?: ApolloReactHooks.Mut
 export type TaskFlowRenameStepMutationHookResult = ReturnType<typeof useTaskFlowRenameStepMutation>;
 export type TaskFlowRenameStepMutationResult = ApolloReactCommon.MutationResult<TaskFlowRenameStepMutation>;
 export type TaskFlowRenameStepMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowRenameStepMutation, TaskFlowRenameStepMutationVariables>;
+export const TaskFlowReorderStepDocument = gql`
+    mutation TaskFlowReorderStep($id: ID!, $stepId: ID!, $order: Int!) {
+  taskFlowReorderStep(id: $id, stepId: $stepId, order: $order)
+}
+    `;
+export type TaskFlowReorderStepMutationFn = ApolloReactCommon.MutationFunction<TaskFlowReorderStepMutation, TaskFlowReorderStepMutationVariables>;
+
+/**
+ * __useTaskFlowReorderStepMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowReorderStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowReorderStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowReorderStepMutation, { data, loading, error }] = useTaskFlowReorderStepMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stepId: // value for 'stepId'
+ *      order: // value for 'order'
+ *   },
+ * });
+ */
+export function useTaskFlowReorderStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowReorderStepMutation, TaskFlowReorderStepMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowReorderStepMutation, TaskFlowReorderStepMutationVariables>(TaskFlowReorderStepDocument, baseOptions);
+      }
+export type TaskFlowReorderStepMutationHookResult = ReturnType<typeof useTaskFlowReorderStepMutation>;
+export type TaskFlowReorderStepMutationResult = ApolloReactCommon.MutationResult<TaskFlowReorderStepMutation>;
+export type TaskFlowReorderStepMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowReorderStepMutation, TaskFlowReorderStepMutationVariables>;
+export const TaskFlowSetCategoryDocument = gql`
+    mutation TaskFlowSetCategory($id: ID!, $category: String!) {
+  taskFlowSetCategory(id: $id, category: $category)
+}
+    `;
+export type TaskFlowSetCategoryMutationFn = ApolloReactCommon.MutationFunction<TaskFlowSetCategoryMutation, TaskFlowSetCategoryMutationVariables>;
+
+/**
+ * __useTaskFlowSetCategoryMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowSetCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowSetCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowSetCategoryMutation, { data, loading, error }] = useTaskFlowSetCategoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useTaskFlowSetCategoryMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowSetCategoryMutation, TaskFlowSetCategoryMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowSetCategoryMutation, TaskFlowSetCategoryMutationVariables>(TaskFlowSetCategoryDocument, baseOptions);
+      }
+export type TaskFlowSetCategoryMutationHookResult = ReturnType<typeof useTaskFlowSetCategoryMutation>;
+export type TaskFlowSetCategoryMutationResult = ApolloReactCommon.MutationResult<TaskFlowSetCategoryMutation>;
+export type TaskFlowSetCategoryMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowSetCategoryMutation, TaskFlowSetCategoryMutationVariables>;
 export const TaskFlowStepAddTaskDocument = gql`
     mutation TaskFlowStepAddTask($id: ID!, $stepId: ID!, $task: TaskInput!) {
   taskFlowStepAddTask(id: $id, stepId: $stepId, task: $task)
@@ -21496,6 +21598,7 @@ export const TaskFlowsConfigDocument = gql`
   taskFlows {
     id
     name
+    category
     steps {
       id
       name

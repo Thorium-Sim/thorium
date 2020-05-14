@@ -1,0 +1,3 @@
+mutation TaskFlowSetCategory($id: ID!, $category: String!) {
+  taskFlowSetCategory(id: $id, category: $category)
+}

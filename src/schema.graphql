@@ -2767,9 +2767,11 @@ type Mutation {
   taskFlowAdd(name: String!): String
   taskFlowRemove(id: ID!): String
   taskFlowRename(id: ID!, name: String!): String
+  taskFlowSetCategory(id: ID!, category: String!): String
   taskFlowAddStep(id: ID!, name: String!): String
   taskFlowRemoveStep(id: ID!, stepId: ID!): String
   taskFlowRenameStep(id: ID!, stepId: ID!, name: String!): String
+  taskFlowReorderStep(id: ID!, stepId: ID!, order: Int!): String
   taskFlowStepAddTask(id: ID!, stepId: ID!, task: TaskInput!): String
   taskFlowStepRemoveTask(id: ID!, stepId: ID!, taskId: ID!): String
   taskFlowStepEditTask(id: ID!, stepId: ID!, taskId: ID!, task: TaskInput!): String
@@ -4350,6 +4352,7 @@ type TaskDefinition {
 type TaskFlow {
   id: ID!
   name: String!
+  category: String!
   currentStep: Int!
   steps: [TaskFlowStep!]!
   completed: Boolean!

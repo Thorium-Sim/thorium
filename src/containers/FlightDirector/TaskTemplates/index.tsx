@@ -1,16 +1,28 @@
-import React from "react";
+/** @jsx jsx */
+import {jsx, css} from "@emotion/core";
 import {Container, Row, Col, ListGroup, ListGroupItem} from "reactstrap";
 import {useNavigate, Routes, Route, useLocation} from "react-router-dom";
 import TaskTemplates from "./taskTemplates";
 import TaskFlows from "./taskFlows";
 import TaskDefinitions from "./taskDefinitions";
 import TaskConfig from "./taskConfig";
+import FlowConfig from "./flowConfig";
+import StepConfig from "./flowStepConfig";
+import FlowTaskConfig from "./flowTaskConfig";
 const TaskTemplatesData = () => {
   const navigate = useNavigate();
   const location = useLocation();
   return (
     <Container fluid className="task-templates">
-      <Row>
+      <Row
+        css={css`
+          height: 90vh;
+
+          .col {
+            height: 100%;
+          }
+        `}
+      >
         <Col sm={2}>
           <h1>Tasks</h1>
           <ListGroup>
@@ -34,7 +46,13 @@ const TaskTemplatesData = () => {
               <Route path=":selectedTemplate" element={<TaskConfig />} />
             </Route>
           </Route>
-          <Route path="taskFlows" element={<TaskFlows />} />
+          <Route path="taskFlows" element={<TaskFlows />}>
+            <Route path=":flowId" element={<FlowConfig />}>
+              <Route path=":stepId" element={<StepConfig />}>
+                <Route path=":taskId" element={<FlowTaskConfig />} />
+              </Route>
+            </Route>
+          </Route>
         </Routes>
       </Row>
     </Container>

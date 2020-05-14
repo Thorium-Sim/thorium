@@ -2445,9 +2445,11 @@ export type Mutation = {
   taskFlowAdd?: Maybe<Scalars["String"]>;
   taskFlowRemove?: Maybe<Scalars["String"]>;
   taskFlowRename?: Maybe<Scalars["String"]>;
+  taskFlowSetCategory?: Maybe<Scalars["String"]>;
   taskFlowAddStep?: Maybe<Scalars["String"]>;
   taskFlowRemoveStep?: Maybe<Scalars["String"]>;
   taskFlowRenameStep?: Maybe<Scalars["String"]>;
+  taskFlowReorderStep?: Maybe<Scalars["String"]>;
   taskFlowStepAddTask?: Maybe<Scalars["String"]>;
   taskFlowStepRemoveTask?: Maybe<Scalars["String"]>;
   taskFlowStepEditTask?: Maybe<Scalars["String"]>;
@@ -6287,6 +6289,11 @@ export type MutationTaskFlowRenameArgs = {
   name: Scalars["String"];
 };
 
+export type MutationTaskFlowSetCategoryArgs = {
+  id: Scalars["ID"];
+  category: Scalars["String"];
+};
+
 export type MutationTaskFlowAddStepArgs = {
   id: Scalars["ID"];
   name: Scalars["String"];
@@ -6301,6 +6308,12 @@ export type MutationTaskFlowRenameStepArgs = {
   id: Scalars["ID"];
   stepId: Scalars["ID"];
   name: Scalars["String"];
+};
+
+export type MutationTaskFlowReorderStepArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  order: Scalars["Int"];
 };
 
 export type MutationTaskFlowStepAddTaskArgs = {
@@ -8876,6 +8889,7 @@ export type TaskFlow = {
   __typename?: "TaskFlow";
   id: Scalars["ID"];
   name: Scalars["String"];
+  category: Scalars["String"];
   currentStep: Scalars["Int"];
   steps: Array<TaskFlowStep>;
   completed: Scalars["Boolean"];
@@ -17735,6 +17749,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationTaskFlowRenameArgs, "id" | "name">
   >;
+  taskFlowSetCategory?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowSetCategoryArgs, "id" | "category">
+  >;
   taskFlowAddStep?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -17752,6 +17772,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationTaskFlowRenameStepArgs, "id" | "stepId" | "name">
+  >;
+  taskFlowReorderStep?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowReorderStepArgs, "id" | "stepId" | "order">
   >;
   taskFlowStepAddTask?: Resolver<
     Maybe<ResolversTypes["String"]>,
@@ -21845,6 +21871,7 @@ export type TaskFlowResolvers<
 > = ResolversObject<{
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  category?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   currentStep?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   steps?: Resolver<
     Array<ResolversTypes["TaskFlowStep"]>,

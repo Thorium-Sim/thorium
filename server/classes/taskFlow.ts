@@ -33,7 +33,9 @@ class TaskFlowStep {
     this.name = name;
   }
   addTask(task: Task) {
-    this.tasks.push(new Task(task));
+    const taskObj = new Task(task);
+    this.tasks.push(taskObj);
+    return taskObj;
   }
   editTask(id: string, task: Task) {
     // Tasks don't edit in place well, so we'll just replace the old one wholesale
@@ -47,17 +49,29 @@ class TaskFlowStep {
     this.completeAll = completeAll;
   }
 }
+function move<T>(array: T[], old_index: number, new_index: number) {
+  if (new_index >= array.length) {
+    var k = new_index - array.length;
+    while (k-- + 1) {
+      array.push(undefined);
+    }
+  }
+  array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+  return array; // for testing purposes
+}
 export class TaskFlow {
   id: string;
   class: "TaskFlow" = "TaskFlow";
   simulatorId: string;
   name: string;
+  category: string;
   currentStep: number;
   steps: TaskFlowStep[];
   constructor(params: Partial<TaskFlow> = {}) {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || "Task Flow";
+    this.category = params.category || "";
     this.currentStep = params.currentStep || 0;
     this.steps = params.steps ? params.steps.map(s => new TaskFlowStep(s)) : [];
   }
@@ -85,8 +99,13 @@ export class TaskFlow {
   setName(name: string) {
     this.name = name;
   }
+  setCategory(category: string) {
+    this.category = category;
+  }
   addStep(name: string) {
-    this.steps.push(new TaskFlowStep({name}));
+    const step = new TaskFlowStep({name});
+    this.steps.push(step);
+    return step;
   }
   removeStep(id: string) {
     this.steps = this.steps.filter(s => s.id !== id);
@@ -94,8 +113,15 @@ export class TaskFlow {
   renameStep(id: string, name: string) {
     this.steps.find(s => s.id === id)?.rename(name);
   }
+  reorderStep(id: string, order: number) {
+    this.steps = move(
+      this.steps,
+      this.steps.findIndex(t => t.id === id),
+      order,
+    );
+  }
   addTask(id: string, task: Task) {
-    this.steps.find(s => s.id === id)?.addTask(task);
+    return this.steps.find(s => s.id === id)?.addTask(task);
   }
   removeTask(id: string, taskId: string) {
     this.steps.find(s => s.id === id)?.removeTask(taskId);
