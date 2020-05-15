@@ -98,7 +98,7 @@ const StepConfig = () => {
               onClick={() => navigate(t.id)}
             >
               <div>{t.definition}</div>
-              <small>{t.station}</small>
+              <small>Station: {t.station}</small>
             </ListGroupItem>
           ))}
         </ListGroup>

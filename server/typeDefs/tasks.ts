@@ -25,7 +25,7 @@ const schema = gql`
     startTime: String
     endTime: String
     timeElapsedInMS: Int
-    macros: [MacroAction]
+    macros: [MacroAction!]
     preMacros: [MacroAction!]!
     assigned: Boolean
   }

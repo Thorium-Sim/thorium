@@ -8869,7 +8869,7 @@ export type Task = {
   startTime?: Maybe<Scalars["String"]>;
   endTime?: Maybe<Scalars["String"]>;
   timeElapsedInMS?: Maybe<Scalars["Int"]>;
-  macros?: Maybe<Array<Maybe<MacroAction>>>;
+  macros?: Maybe<Array<MacroAction>>;
   preMacros: Array<MacroAction>;
   assigned?: Maybe<Scalars["Boolean"]>;
 };
@@ -21830,7 +21830,7 @@ export type TaskResolvers<
     ContextType
   >;
   macros?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["MacroAction"]>>>,
+    Maybe<Array<ResolversTypes["MacroAction"]>>,
     ParentType,
     ContextType
   >;

@@ -8,10 +8,6 @@ import MacroConfig from "../../../components/views/Macros/macroConfig";
 import {FaBan} from "react-icons/fa";
 import {
   MacroAction,
-  SetTaskPreMacroMutation,
-  SetTaskPreMacroMutationVariables,
-  SetTaskMacroMutation,
-  SetTaskMacroMutationVariables,
   useRenameTaskTemplateMutation,
   useSetTaskTemplateReportTypesMutation,
   useSetTaskTemplateValuesMutation,
@@ -20,7 +16,6 @@ import {
   useTaskTemplatesSubscription,
   useTaskDefinitionsQuery,
 } from "generated/graphql";
-import {MutationFunctionOptions} from "@apollo/client";
 import {useParams} from "react-router";
 
 const TaskConfig: React.FC = () => {
@@ -141,18 +136,7 @@ const TaskConfig: React.FC = () => {
 };
 
 export const ConfigureMacro: React.FC<{
-  action: (
-    options?:
-      | MutationFunctionOptions<
-          SetTaskPreMacroMutation,
-          SetTaskPreMacroMutationVariables
-        >
-      | MutationFunctionOptions<
-          SetTaskMacroMutation,
-          SetTaskMacroMutationVariables
-        >
-      | undefined,
-  ) => Promise<any>;
+  action?: (options?: any) => Promise<any>;
   id: string;
   macros: MacroAction[];
   pre?: boolean;
@@ -195,7 +179,7 @@ export const ConfigureMacro: React.FC<{
           block
           color="success"
           onClick={() => {
-            action({
+            action?.({
               variables: {
                 id,
                 macros: macros.map(m =>
@@ -221,7 +205,7 @@ export const ConfigureMacro: React.FC<{
         className={"btn btn-sm btn-success"}
         handleChange={e => {
           const {value: event} = e.target;
-          action({
+          action?.({
             variables: {
               id,
               macros: macros
@@ -257,7 +241,7 @@ export const ConfigureMacro: React.FC<{
           <FaBan
             className="text-danger"
             onClick={() =>
-              action({
+              action?.({
                 variables: {
                   id,
                   macros: macros
