@@ -112,6 +112,7 @@ class Events extends EventEmitter {
         key === "snapshotVersion" ||
         key === "timestamp" ||
         key === "version" ||
+        key === "mutations" ||
         key === "_eventsCount"
       ) {
         return;
