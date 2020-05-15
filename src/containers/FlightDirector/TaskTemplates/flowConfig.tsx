@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx, css} from "@emotion/core";
 import React from "react";
 import {useParams, useMatch, useNavigate, Outlet} from "react-router";
 import {
@@ -26,8 +28,14 @@ const FlowConfig = () => {
   const taskFlow = data?.taskFlows.find(f => f.id === flowId);
   if (!taskFlow) return null;
   return (
-    <>
-      <Col sm={3}>
+    <React.Fragment key={flowId}>
+      <Col
+        sm={2}
+        css={css`
+          display: flex;
+          flex-direction: column;
+        `}
+      >
         <h2>Flow Config</h2>
         <Label>
           Name:
@@ -53,6 +61,10 @@ const FlowConfig = () => {
         </Label>
         <Label>Steps:</Label>
         <SortableList
+          css={css`
+            flex: 1;
+            overflow-y: auto;
+          `}
           distance={20}
           items={taskFlow.steps}
           onSortEnd={({oldIndex, newIndex}) =>
@@ -105,7 +117,7 @@ const FlowConfig = () => {
         <small>Drag to reorder steps</small>
       </Col>
       <Outlet />
-    </>
+    </React.Fragment>
   );
 };
 export default FlowConfig;

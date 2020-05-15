@@ -35,6 +35,7 @@ const SortableList = SortableContainer(
     setSelectedItem,
     selectedItem,
     removeItem,
+    ...props
   }: {
     items: {name: string; id: string}[];
     setSelectedItem: (id: string) => void;
@@ -42,7 +43,7 @@ const SortableList = SortableContainer(
     removeItem?: (id: string) => void;
   }) => {
     return (
-      <ListGroup>
+      <ListGroup {...props}>
         {items.map((item, index) => {
           return (
             <SortableItem

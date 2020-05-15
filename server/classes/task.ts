@@ -79,6 +79,7 @@ export default class Task {
   endTime: Date;
   timeElapsedInMS: number;
   macros: Macro[];
+  preMacros: Macro[];
   assigned: boolean | string;
   constructor(params: Partial<Task> = {}) {
     // The check to see if the task is relevant was already handled
@@ -104,7 +105,7 @@ export default class Task {
       : simulator && simulator.stations;
     this.station =
       params.station === "nothing" || !params.station
-        ? stations.length > 0
+        ? stations?.length > 0
           ? randomFromList(stations).name
           : "None"
         : params.station;
@@ -120,7 +121,10 @@ export default class Task {
 
     const definitionValues = definitionObject.values
       ? Object.entries(definitionObject.values).reduce((prev, [key, value]) => {
-          prev[key] = value.value({simulator, stations: simulator.stations});
+          prev[key] = value.value({
+            simulator,
+            stations: simulator?.stations || [],
+          });
           return prev;
         }, {})
       : {};
@@ -152,6 +156,9 @@ export default class Task {
     // Macros
     this.macros = [];
     params.macros && params.macros.map(m => this.macros.push(new Macro(m)));
+    this.preMacros = [];
+    params.preMacros &&
+      params.preMacros.map(m => this.preMacros.push(new Macro(m)));
 
     // Task Report Assignment
     this.assigned = params.assigned || false;

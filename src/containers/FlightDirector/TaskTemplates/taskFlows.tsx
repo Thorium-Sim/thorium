@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import {jsx, css} from "@emotion/core";
 import React from "react";
 import {
   useTaskFlowsConfigSubscription,
@@ -20,9 +22,17 @@ const TaskFlows: React.FC<{}> = () => {
   const navigate = useNavigate();
 
   return (
-    <>
-      <Col sm={2}>
+    <React.Fragment>
+      <Col
+        sm={2}
+        css={css`
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        `}
+      >
         <h2>Task Flows</h2>
+
         <SearchableList
           items={
             data?.taskFlows.map(f => ({
@@ -100,7 +110,7 @@ const TaskFlows: React.FC<{}> = () => {
         </label>
       </Col>
       <Outlet />
-    </>
+    </React.Fragment>
   );
 };
 
