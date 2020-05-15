@@ -67,7 +67,9 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -91,7 +93,9 @@
     "*.{js,jsx,ts,tsx}": [
       "jest --projects ./test/jest.eslint.js --findRelatedTests"
     ],
-    "*.{css,scss}": ["stylelint"],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write",
       "git add"
@@ -109,7 +113,9 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": { "provider": "github" },
+    "publish": {
+      "provider": "github"
+    },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -138,10 +144,15 @@
       ]
     },
     "win": {
-      "target": ["zip", "portable"],
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     },
-    "linux": { "category": "Utility" }
+    "linux": {
+      "category": "Utility"
+    }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -251,7 +262,7 @@
     "progress": "^2.0.3",
     "random-ship-names": "^1.0.0",
     "random-words": "^1.1.0",
-    "react-router": "^6.0.0-alpha.2",
+    "react-router": "^6.0.0-alpha.4",
     "react-scripts": "^3.4.1",
     "react-three-fiber": "^4.0.17",
     "react-use-gesture": "^7.0.4",
@@ -366,7 +377,7 @@
     "react-promise-suspense": "^0.3.1",
     "react-qrcode-hook": "^1.1.0",
     "react-rangeslider": "^2.2.0",
-    "react-router-dom": "^6.0.0-alpha.2",
+    "react-router-dom": "^6.0.0-alpha.4",
     "react-sortable-hoc": "^1.10.1",
     "react-table": "^6.10.3",
     "react-transition-group": "^4.3.0",

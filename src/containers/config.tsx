@@ -12,7 +12,7 @@ import {
   SurveyForms,
   Keyboards,
   Settings,
-  TaskTemplates,
+  Tasks,
   CommandLineConfig,
   Triggers,
   Interfaces,
@@ -106,7 +106,7 @@ const Config = () => {
           <Route path="survey" element={<SurveyForms />} />
           <Route path="keyboard" element={<Keyboards />} />
           <Route path="settings" element={<Settings />} />
-          <Route path="taskTemplates" element={<TaskTemplates />} />
+          <Route path="tasks/*" element={<Tasks />}></Route>
           <Route path="macros" element={<Macros />} />
           <Route path="macroButtons" element={<MacroButtons />} />
           <Route path="commandLine" element={<CommandLineConfig />} />

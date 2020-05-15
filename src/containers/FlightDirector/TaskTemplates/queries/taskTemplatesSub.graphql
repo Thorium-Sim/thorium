@@ -1,0 +1,21 @@
+subscription TaskTemplates {
+  taskTemplatesUpdate {
+    id
+    name
+    definition
+    values
+    reportTypes
+    macros {
+      id
+      event
+      args
+      delay
+    }
+    preMacros {
+      id
+      event
+      args
+      delay
+    }
+  }
+}

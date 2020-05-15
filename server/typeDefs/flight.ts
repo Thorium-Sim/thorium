@@ -29,6 +29,8 @@ export const aspectList = [
   "interfaces",
   "tasks",
   "taskReports",
+  "dmxFixtures",
+  "taskFlows",
 ];
 
 export function addAspects(template, sim, data = App) {
@@ -39,9 +41,12 @@ export function addAspects(template, sim, data = App) {
       aspect === "commandLines" ||
       aspect === "triggers" ||
       aspect === "midiSets" ||
-      aspect === "interfaces"
-    )
+      aspect === "interfaces" ||
+      aspect === "dmxFixtures" ||
+      aspect === "taskFlows"
+    ) {
       return;
+    }
     const filterAspect = data[aspect].filter(
       a => a.simulatorId === template.simulatorId,
     );
@@ -385,6 +390,7 @@ const resolver = {
         });
         App.simulators = App.simulators.filter(s => s.id !== simId);
       });
+      App.entities = App.entities.filter(e => e.flightId !== flightId);
       App.flights = App.flights.filter(f => f.id !== flightId);
       pubsub.publish("flightsUpdate", App.flights);
       pubsub.publish("clientChanged", App.clients);

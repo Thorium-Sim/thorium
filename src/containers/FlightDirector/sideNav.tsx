@@ -94,9 +94,9 @@ const links: (NavLinkI | null)[] = [
     link: "/config/macroButtons",
   },
   {
-    name: "Task Templates",
+    name: "Tasks",
     icon: FaList,
-    link: "/config/taskTemplates",
+    link: "/config/tasks",
   },
   {
     name: "Tactical Map Config",

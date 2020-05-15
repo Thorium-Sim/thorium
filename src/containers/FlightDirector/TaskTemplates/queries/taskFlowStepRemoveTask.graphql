@@ -1,0 +1,3 @@
+mutation TaskFlowStepRemoveTask($id: ID!, $stepId: ID!, $taskId: ID!) {
+  taskFlowStepRemoveTask(id: $id, stepId: $stepId, taskId: $taskId)
+}

@@ -79,11 +79,11 @@ export default class Task {
   endTime: Date;
   timeElapsedInMS: number;
   macros: Macro[];
+  preMacros: Macro[];
   assigned: boolean | string;
   constructor(params: Partial<Task> = {}) {
     // The check to see if the task is relevant was already handled
     // before this task was instantiated
-
     this.id = params.id || uuid.v4();
     this.class = "Task";
 
@@ -105,7 +105,7 @@ export default class Task {
       : simulator && simulator.stations;
     this.station =
       params.station === "nothing" || !params.station
-        ? stations.length > 0
+        ? stations?.length > 0
           ? randomFromList(stations).name
           : "None"
         : params.station;
@@ -121,7 +121,10 @@ export default class Task {
 
     const definitionValues = definitionObject.values
       ? Object.entries(definitionObject.values).reduce((prev, [key, value]) => {
-          prev[key] = value.value({simulator, stations: simulator.stations});
+          prev[key] = value.value({
+            simulator,
+            stations: simulator?.stations || [],
+          });
           return prev;
         }, {})
       : {};
@@ -153,6 +156,9 @@ export default class Task {
     // Macros
     this.macros = [];
     params.macros && params.macros.map(m => this.macros.push(new Macro(m)));
+    this.preMacros = [];
+    params.preMacros &&
+      params.preMacros.map(m => this.preMacros.push(new Macro(m)));
 
     // Task Report Assignment
     this.assigned = params.assigned || false;
@@ -178,6 +184,13 @@ export default class Task {
       const task = App.tasks.find(t => t.id === this.assigned);
       if (task) task.verify(dismiss);
     }
+
+    // Advance any task flow in the simulator.
+    // It operates on the current state of tasks,
+    // so we can trigger any task flow to advance
+    // whenever we want and it will only advance when
+    // it needs to.
+    App.handleEvent({simulatorId: this.simulatorId}, "taskFlowAdvance");
   }
   dismiss() {
     this.dismissed = true;

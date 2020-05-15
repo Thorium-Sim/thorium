@@ -7,7 +7,7 @@ import "./SearchableList.scss";
 
 interface SearchableListProps {
   items: ListItem[];
-  selectedItem: string | null;
+  selectedItem?: string | null;
   setSelectedItem: React.Dispatch<React.SetStateAction<string | null>>;
   renderItem?: (item: ListItem) => JSX.Element;
 }
