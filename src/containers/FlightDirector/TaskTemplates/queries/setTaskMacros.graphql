@@ -1,0 +1,3 @@
+mutation SetTaskMacro($id: ID!, $macros: [ActionInput!]!) {
+  setTaskTemplateMacros(id: $id, macros: $macros)
+}

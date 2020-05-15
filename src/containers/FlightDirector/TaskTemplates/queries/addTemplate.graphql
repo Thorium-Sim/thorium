@@ -1,0 +1,3 @@
+mutation AddTaskTemplate($definition: String!) {
+  addTaskTemplate(definition: $definition)
+}

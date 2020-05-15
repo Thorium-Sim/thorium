@@ -1,0 +1,3 @@
+mutation SetTaskTemplateReportTypes($id: ID!, $reportTypes: [String]!) {
+  setTaskTemplateReportTypes(id: $id, reportTypes: $reportTypes)
+}

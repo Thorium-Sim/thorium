@@ -1,0 +1,3 @@
+mutation TaskFlowReorderStep($id: ID!, $stepId: ID!, $order: Int!) {
+  taskFlowReorderStep(id: $id, stepId: $stepId, order: $order)
+}
