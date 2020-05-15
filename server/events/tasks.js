@@ -5,7 +5,7 @@ import uuid from "uuid";
 
 App.on("addTask", ({taskInput, simulatorId}) => {
   const input = {simulatorId, ...taskInput};
-  const task = new Classes.Task(input);
+  const task = new Classes.Task({...input, id: null});
   App.tasks.push(task);
   // Execute the pre-macros
   taskInput.preMacros &&

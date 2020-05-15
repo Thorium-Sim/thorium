@@ -13623,6 +13623,7 @@ export default {
   triggerGroups: [],
   taskTemplates: [],
   taskReports: [],
+  taskFlows: [],
   interfaces: [],
   interfaceDevices: [],
   macros: [],

@@ -1,0 +1,20 @@
+query TaskDefinitions {
+  taskDefinitions {
+    id
+    class
+    name
+    stations {
+      name
+      cards {
+        name
+        component
+      }
+    }
+    valuesInput
+    valuesValue
+    active
+  }
+  thorium {
+    addedTaskTemplates
+  }
+}

@@ -1478,11 +1478,11 @@ export type Macro = {
 
 export type MacroAction = {
    __typename?: 'MacroAction',
-  id?: Maybe<Scalars['ID']>,
-  event?: Maybe<Scalars['String']>,
-  args?: Maybe<Scalars['String']>,
+  id: Scalars['ID'],
+  event: Scalars['String'],
+  args: Scalars['String'],
   delay?: Maybe<Scalars['Int']>,
-  needsConfig?: Maybe<Scalars['String']>,
+  needsConfig?: Maybe<Scalars['Boolean']>,
   noCancelOnReset?: Maybe<Scalars['Boolean']>,
 };
 
@@ -2439,6 +2439,19 @@ export type Mutation = {
   dmxConfigSetName?: Maybe<Scalars['String']>,
   dmxConfigSetConfig?: Maybe<Scalars['String']>,
   dmxConfigSetActionStrength?: Maybe<Scalars['String']>,
+  taskFlowAdd?: Maybe<Scalars['String']>,
+  taskFlowRemove?: Maybe<Scalars['String']>,
+  taskFlowRename?: Maybe<Scalars['String']>,
+  taskFlowSetCategory?: Maybe<Scalars['String']>,
+  taskFlowAddStep?: Maybe<Scalars['String']>,
+  taskFlowRemoveStep?: Maybe<Scalars['String']>,
+  taskFlowRenameStep?: Maybe<Scalars['String']>,
+  taskFlowReorderStep?: Maybe<Scalars['String']>,
+  taskFlowStepAddTask?: Maybe<Scalars['String']>,
+  taskFlowStepRemoveTask?: Maybe<Scalars['String']>,
+  taskFlowStepEditTask?: Maybe<Scalars['String']>,
+  taskFlowStepSetCompleteAll?: Maybe<Scalars['String']>,
+  taskFlowActivate?: Maybe<Scalars['String']>,
 };
 
 
@@ -6287,13 +6300,13 @@ export type MutationSetTaskTemplateReportTypesArgs = {
 
 export type MutationSetTaskTemplateMacrosArgs = {
   id: Scalars['ID'],
-  macros: Array<Maybe<TimelineItemInput>>
+  macros: Array<Maybe<ActionInput>>
 };
 
 
 export type MutationSetTaskTemplatePreMacrosArgs = {
   id: Scalars['ID'],
-  macros: Array<Maybe<TimelineItemInput>>
+  macros: Array<Maybe<ActionInput>>
 };
 
 
@@ -6986,6 +6999,89 @@ export type MutationDmxConfigSetActionStrengthArgs = {
   actionStrength: Scalars['Float']
 };
 
+
+export type MutationTaskFlowAddArgs = {
+  name: Scalars['String']
+};
+
+
+export type MutationTaskFlowRemoveArgs = {
+  id: Scalars['ID']
+};
+
+
+export type MutationTaskFlowRenameArgs = {
+  id: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationTaskFlowSetCategoryArgs = {
+  id: Scalars['ID'],
+  category: Scalars['String']
+};
+
+
+export type MutationTaskFlowAddStepArgs = {
+  id: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationTaskFlowRemoveStepArgs = {
+  id: Scalars['ID'],
+  stepId: Scalars['ID']
+};
+
+
+export type MutationTaskFlowRenameStepArgs = {
+  id: Scalars['ID'],
+  stepId: Scalars['ID'],
+  name: Scalars['String']
+};
+
+
+export type MutationTaskFlowReorderStepArgs = {
+  id: Scalars['ID'],
+  stepId: Scalars['ID'],
+  order: Scalars['Int']
+};
+
+
+export type MutationTaskFlowStepAddTaskArgs = {
+  id: Scalars['ID'],
+  stepId: Scalars['ID'],
+  task: TaskInput
+};
+
+
+export type MutationTaskFlowStepRemoveTaskArgs = {
+  id: Scalars['ID'],
+  stepId: Scalars['ID'],
+  taskId: Scalars['ID']
+};
+
+
+export type MutationTaskFlowStepEditTaskArgs = {
+  id: Scalars['ID'],
+  stepId: Scalars['ID'],
+  taskId: Scalars['ID'],
+  task: TaskInput
+};
+
+
+export type MutationTaskFlowStepSetCompleteAllArgs = {
+  id: Scalars['ID'],
+  stepId: Scalars['ID'],
+  completeAll: Scalars['Boolean']
+};
+
+
+export type MutationTaskFlowActivateArgs = {
+  id: Scalars['ID'],
+  simulatorId: Scalars['ID']
+};
+
 export type NamedObject = {
    __typename?: 'NamedObject',
   id?: Maybe<Scalars['ID']>,
@@ -7438,8 +7534,8 @@ export type Query = {
   targeting?: Maybe<Array<Maybe<Targeting>>>,
   taskReport?: Maybe<Array<Maybe<TaskReport>>>,
   tasks?: Maybe<Array<Maybe<Task>>>,
-  taskTemplates?: Maybe<Array<Maybe<TaskTemplate>>>,
-  taskDefinitions?: Maybe<Array<Maybe<TaskDefinition>>>,
+  taskTemplates: Array<TaskTemplate>,
+  taskDefinitions: Array<TaskDefinition>,
   taskInstructions?: Maybe<Scalars['String']>,
   teams?: Maybe<Array<Maybe<Team>>>,
   damagePositions?: Maybe<Array<Maybe<Scalars['String']>>>,
@@ -7465,6 +7561,7 @@ export type Query = {
   dmxFixtures: Array<DmxFixture>,
   dmxConfig?: Maybe<DmxConfig>,
   dmxConfigs: Array<DmxConfig>,
+  taskFlows: Array<TaskFlow>,
 };
 
 
@@ -8008,6 +8105,11 @@ export type QueryDmxFixturesArgs = {
 
 export type QueryDmxConfigArgs = {
   id: Scalars['ID']
+};
+
+
+export type QueryTaskFlowsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>
 };
 
 export type Railgun = SystemInterface & {
@@ -8842,7 +8944,7 @@ export type Subscription = {
   targetingUpdate?: Maybe<Array<Maybe<Targeting>>>,
   taskReportUpdate?: Maybe<Array<Maybe<TaskReport>>>,
   tasksUpdate?: Maybe<Array<Maybe<Task>>>,
-  taskTemplatesUpdate?: Maybe<Array<Maybe<TaskTemplate>>>,
+  taskTemplatesUpdate: Array<TaskTemplate>,
   teamsUpdate?: Maybe<Array<Maybe<Team>>>,
   _templateUpdate?: Maybe<Template>,
   thoriumUpdate?: Maybe<Thorium>,
@@ -8863,6 +8965,7 @@ export type Subscription = {
   dmxDevices: Array<DmxDevice>,
   dmxFixtures: Array<DmxFixture>,
   dmxConfigs: Array<DmxConfig>,
+  taskFlows: Array<TaskFlow>,
 };
 
 
@@ -9392,6 +9495,11 @@ export type SubscriptionDmxFixturesArgs = {
   clientId?: Maybe<Scalars['ID']>
 };
 
+
+export type SubscriptionTaskFlowsArgs = {
+  simulatorId?: Maybe<Scalars['ID']>
+};
+
 export type SubspaceField = SystemInterface & {
    __typename?: 'SubspaceField',
   id?: Maybe<Scalars['ID']>,
@@ -9678,13 +9786,13 @@ export type TargetingContact = {
 
 export type Task = {
    __typename?: 'Task',
-  id?: Maybe<Scalars['ID']>,
+  id: Scalars['ID'],
   simulatorId?: Maybe<Scalars['ID']>,
   station?: Maybe<Scalars['String']>,
   systemId?: Maybe<Scalars['ID']>,
   deck?: Maybe<Deck>,
   room?: Maybe<Room>,
-  definition?: Maybe<Scalars['String']>,
+  definition: Scalars['String'],
   verified?: Maybe<Scalars['Boolean']>,
   verifyRequested?: Maybe<Scalars['Boolean']>,
   dismissed?: Maybe<Scalars['Boolean']>,
@@ -9693,19 +9801,40 @@ export type Task = {
   startTime?: Maybe<Scalars['String']>,
   endTime?: Maybe<Scalars['String']>,
   timeElapsedInMS?: Maybe<Scalars['Int']>,
-  macros?: Maybe<Array<Maybe<TimelineItem>>>,
+  macros?: Maybe<Array<MacroAction>>,
+  preMacros: Array<MacroAction>,
   assigned?: Maybe<Scalars['Boolean']>,
 };
 
 export type TaskDefinition = {
    __typename?: 'TaskDefinition',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
-  class?: Maybe<Scalars['String']>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  class: Scalars['String'],
   stations?: Maybe<Array<Maybe<Station>>>,
-  active?: Maybe<Scalars['Boolean']>,
-  valuesInput?: Maybe<Scalars['JSON']>,
-  valuesValue?: Maybe<Scalars['JSON']>,
+  active: Scalars['Boolean'],
+  valuesInput: Scalars['JSON'],
+  valuesValue: Scalars['JSON'],
+};
+
+export type TaskFlow = {
+   __typename?: 'TaskFlow',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  category: Scalars['String'],
+  currentStep: Scalars['Int'],
+  steps: Array<TaskFlowStep>,
+  completed: Scalars['Boolean'],
+};
+
+export type TaskFlowStep = {
+   __typename?: 'TaskFlowStep',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  tasks: Array<Task>,
+  activeTasks: Array<Task>,
+  completeAll: Scalars['Boolean'],
+  completed: Scalars['Boolean'],
 };
 
 export type TaskInput = {
@@ -9713,8 +9842,8 @@ export type TaskInput = {
   definition?: Maybe<Scalars['String']>,
   values?: Maybe<Scalars['JSON']>,
   station?: Maybe<Scalars['String']>,
-  macros?: Maybe<Array<Maybe<TimelineItemInput>>>,
-  preMacros?: Maybe<Array<Maybe<TimelineItemInput>>>,
+  macros?: Maybe<Array<Maybe<ActionInput>>>,
+  preMacros?: Maybe<Array<Maybe<ActionInput>>>,
 };
 
 export type TaskReport = {
@@ -9730,13 +9859,13 @@ export type TaskReport = {
 
 export type TaskTemplate = {
    __typename?: 'TaskTemplate',
-  id?: Maybe<Scalars['ID']>,
-  name?: Maybe<Scalars['String']>,
-  values?: Maybe<Scalars['JSON']>,
-  definition?: Maybe<Scalars['String']>,
-  reportTypes?: Maybe<Array<Maybe<Scalars['String']>>>,
-  macros?: Maybe<Array<Maybe<TimelineItem>>>,
-  preMacros?: Maybe<Array<Maybe<TimelineItem>>>,
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  values: Scalars['JSON'],
+  definition: Scalars['String'],
+  reportTypes: Array<Scalars['String']>,
+  macros: Array<MacroAction>,
+  preMacros: Array<MacroAction>,
 };
 
 export type Team = {
@@ -13040,6 +13169,292 @@ export type StationSetConfigSubscription = (
       )> }
     )> }
   )>>> }
+);
+
+export type AddTaskTemplateMutationVariables = {
+  definition: Scalars['String'];
+};
+
+
+export type AddTaskTemplateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addTaskTemplate'>
+);
+
+export type ImportTemplatesMutationVariables = {};
+
+
+export type ImportTemplatesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'importTaskTemplates'>
+);
+
+export type RemoveTaskTemplateMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type RemoveTaskTemplateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'removeTaskTemplate'>
+);
+
+export type RenameTaskTemplateMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type RenameTaskTemplateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'renameTaskTemplate'>
+);
+
+export type SetTaskMacroMutationVariables = {
+  id: Scalars['ID'];
+  macros: Array<ActionInput>;
+};
+
+
+export type SetTaskMacroMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTaskTemplateMacros'>
+);
+
+export type SetTaskPreMacroMutationVariables = {
+  id: Scalars['ID'];
+  macros: Array<ActionInput>;
+};
+
+
+export type SetTaskPreMacroMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTaskTemplatePreMacros'>
+);
+
+export type SetTaskTemplateReportTypesMutationVariables = {
+  id: Scalars['ID'];
+  reportTypes: Array<Maybe<Scalars['String']>>;
+};
+
+
+export type SetTaskTemplateReportTypesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTaskTemplateReportTypes'>
+);
+
+export type SetTaskTemplateValuesMutationVariables = {
+  id: Scalars['ID'];
+  values: Scalars['JSON'];
+};
+
+
+export type SetTaskTemplateValuesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setTaskTemplateValues'>
+);
+
+export type TaskDefinitionsQueryVariables = {};
+
+
+export type TaskDefinitionsQuery = (
+  { __typename?: 'Query' }
+  & { taskDefinitions: Array<(
+    { __typename?: 'TaskDefinition' }
+    & Pick<TaskDefinition, 'id' | 'class' | 'name' | 'valuesInput' | 'valuesValue' | 'active'>
+    & { stations?: Maybe<Array<Maybe<(
+      { __typename?: 'Station' }
+      & Pick<Station, 'name'>
+      & { cards: Array<(
+        { __typename?: 'Card' }
+        & Pick<Card, 'name' | 'component'>
+      )> }
+    )>>> }
+  )>, thorium?: Maybe<(
+    { __typename?: 'Thorium' }
+    & Pick<Thorium, 'addedTaskTemplates'>
+  )> }
+);
+
+export type TaskFlowAddMutationVariables = {
+  name: Scalars['String'];
+};
+
+
+export type TaskFlowAddMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowAdd'>
+);
+
+export type TaskFlowAddStepMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type TaskFlowAddStepMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowAddStep'>
+);
+
+export type TaskFlowRemoveMutationVariables = {
+  id: Scalars['ID'];
+};
+
+
+export type TaskFlowRemoveMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowRemove'>
+);
+
+export type TaskFlowRemoveStepMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+};
+
+
+export type TaskFlowRemoveStepMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowRemoveStep'>
+);
+
+export type TaskFlowRenameMutationVariables = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type TaskFlowRenameMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowRename'>
+);
+
+export type TaskFlowRenameStepMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type TaskFlowRenameStepMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowRenameStep'>
+);
+
+export type TaskFlowReorderStepMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  order: Scalars['Int'];
+};
+
+
+export type TaskFlowReorderStepMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowReorderStep'>
+);
+
+export type TaskFlowSetCategoryMutationVariables = {
+  id: Scalars['ID'];
+  category: Scalars['String'];
+};
+
+
+export type TaskFlowSetCategoryMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowSetCategory'>
+);
+
+export type TaskFlowStepAddTaskMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  task: TaskInput;
+};
+
+
+export type TaskFlowStepAddTaskMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowStepAddTask'>
+);
+
+export type TaskFlowStepEditTaskMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  taskId: Scalars['ID'];
+  task: TaskInput;
+};
+
+
+export type TaskFlowStepEditTaskMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowStepEditTask'>
+);
+
+export type TaskFlowStepRemoveTaskMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  taskId: Scalars['ID'];
+};
+
+
+export type TaskFlowStepRemoveTaskMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowStepRemoveTask'>
+);
+
+export type TaskFlowStepCompleteAllMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  completeAll: Scalars['Boolean'];
+};
+
+
+export type TaskFlowStepCompleteAllMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowStepSetCompleteAll'>
+);
+
+export type TaskFlowsConfigSubscriptionVariables = {};
+
+
+export type TaskFlowsConfigSubscription = (
+  { __typename?: 'Subscription' }
+  & { taskFlows: Array<(
+    { __typename?: 'TaskFlow' }
+    & Pick<TaskFlow, 'id' | 'name' | 'category'>
+    & { steps: Array<(
+      { __typename?: 'TaskFlowStep' }
+      & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll'>
+      & { tasks: Array<(
+        { __typename?: 'Task' }
+        & Pick<Task, 'id' | 'station' | 'definition' | 'values'>
+        & { macros?: Maybe<Array<(
+          { __typename?: 'MacroAction' }
+          & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay'>
+        )>>, preMacros: Array<(
+          { __typename?: 'MacroAction' }
+          & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay'>
+        )> }
+      )> }
+    )> }
+  )> }
+);
+
+export type TaskTemplatesSubscriptionVariables = {};
+
+
+export type TaskTemplatesSubscription = (
+  { __typename?: 'Subscription' }
+  & { taskTemplatesUpdate: Array<(
+    { __typename?: 'TaskTemplate' }
+    & Pick<TaskTemplate, 'id' | 'name' | 'definition' | 'values' | 'reportTypes'>
+    & { macros: Array<(
+      { __typename?: 'MacroAction' }
+      & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay'>
+    )>, preMacros: Array<(
+      { __typename?: 'MacroAction' }
+      & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay'>
+    )> }
+  )> }
 );
 
 export type EntityRemoveEngineMutationVariables = {
@@ -20510,6 +20925,771 @@ export function useStationSetConfigSubscription(baseOptions?: ApolloReactHooks.S
       }
 export type StationSetConfigSubscriptionHookResult = ReturnType<typeof useStationSetConfigSubscription>;
 export type StationSetConfigSubscriptionResult = ApolloReactCommon.SubscriptionResult<StationSetConfigSubscription>;
+export const AddTaskTemplateDocument = gql`
+    mutation AddTaskTemplate($definition: String!) {
+  addTaskTemplate(definition: $definition)
+}
+    `;
+export type AddTaskTemplateMutationFn = ApolloReactCommon.MutationFunction<AddTaskTemplateMutation, AddTaskTemplateMutationVariables>;
+
+/**
+ * __useAddTaskTemplateMutation__
+ *
+ * To run a mutation, you first call `useAddTaskTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTaskTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTaskTemplateMutation, { data, loading, error }] = useAddTaskTemplateMutation({
+ *   variables: {
+ *      definition: // value for 'definition'
+ *   },
+ * });
+ */
+export function useAddTaskTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddTaskTemplateMutation, AddTaskTemplateMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddTaskTemplateMutation, AddTaskTemplateMutationVariables>(AddTaskTemplateDocument, baseOptions);
+      }
+export type AddTaskTemplateMutationHookResult = ReturnType<typeof useAddTaskTemplateMutation>;
+export type AddTaskTemplateMutationResult = ApolloReactCommon.MutationResult<AddTaskTemplateMutation>;
+export type AddTaskTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<AddTaskTemplateMutation, AddTaskTemplateMutationVariables>;
+export const ImportTemplatesDocument = gql`
+    mutation ImportTemplates {
+  importTaskTemplates
+}
+    `;
+export type ImportTemplatesMutationFn = ApolloReactCommon.MutationFunction<ImportTemplatesMutation, ImportTemplatesMutationVariables>;
+
+/**
+ * __useImportTemplatesMutation__
+ *
+ * To run a mutation, you first call `useImportTemplatesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportTemplatesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [importTemplatesMutation, { data, loading, error }] = useImportTemplatesMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useImportTemplatesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ImportTemplatesMutation, ImportTemplatesMutationVariables>) {
+        return ApolloReactHooks.useMutation<ImportTemplatesMutation, ImportTemplatesMutationVariables>(ImportTemplatesDocument, baseOptions);
+      }
+export type ImportTemplatesMutationHookResult = ReturnType<typeof useImportTemplatesMutation>;
+export type ImportTemplatesMutationResult = ApolloReactCommon.MutationResult<ImportTemplatesMutation>;
+export type ImportTemplatesMutationOptions = ApolloReactCommon.BaseMutationOptions<ImportTemplatesMutation, ImportTemplatesMutationVariables>;
+export const RemoveTaskTemplateDocument = gql`
+    mutation RemoveTaskTemplate($id: ID!) {
+  removeTaskTemplate(id: $id)
+}
+    `;
+export type RemoveTaskTemplateMutationFn = ApolloReactCommon.MutationFunction<RemoveTaskTemplateMutation, RemoveTaskTemplateMutationVariables>;
+
+/**
+ * __useRemoveTaskTemplateMutation__
+ *
+ * To run a mutation, you first call `useRemoveTaskTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveTaskTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeTaskTemplateMutation, { data, loading, error }] = useRemoveTaskTemplateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveTaskTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveTaskTemplateMutation, RemoveTaskTemplateMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveTaskTemplateMutation, RemoveTaskTemplateMutationVariables>(RemoveTaskTemplateDocument, baseOptions);
+      }
+export type RemoveTaskTemplateMutationHookResult = ReturnType<typeof useRemoveTaskTemplateMutation>;
+export type RemoveTaskTemplateMutationResult = ApolloReactCommon.MutationResult<RemoveTaskTemplateMutation>;
+export type RemoveTaskTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<RemoveTaskTemplateMutation, RemoveTaskTemplateMutationVariables>;
+export const RenameTaskTemplateDocument = gql`
+    mutation RenameTaskTemplate($id: ID!, $name: String!) {
+  renameTaskTemplate(id: $id, name: $name)
+}
+    `;
+export type RenameTaskTemplateMutationFn = ApolloReactCommon.MutationFunction<RenameTaskTemplateMutation, RenameTaskTemplateMutationVariables>;
+
+/**
+ * __useRenameTaskTemplateMutation__
+ *
+ * To run a mutation, you first call `useRenameTaskTemplateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRenameTaskTemplateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [renameTaskTemplateMutation, { data, loading, error }] = useRenameTaskTemplateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useRenameTaskTemplateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RenameTaskTemplateMutation, RenameTaskTemplateMutationVariables>) {
+        return ApolloReactHooks.useMutation<RenameTaskTemplateMutation, RenameTaskTemplateMutationVariables>(RenameTaskTemplateDocument, baseOptions);
+      }
+export type RenameTaskTemplateMutationHookResult = ReturnType<typeof useRenameTaskTemplateMutation>;
+export type RenameTaskTemplateMutationResult = ApolloReactCommon.MutationResult<RenameTaskTemplateMutation>;
+export type RenameTaskTemplateMutationOptions = ApolloReactCommon.BaseMutationOptions<RenameTaskTemplateMutation, RenameTaskTemplateMutationVariables>;
+export const SetTaskMacroDocument = gql`
+    mutation SetTaskMacro($id: ID!, $macros: [ActionInput!]!) {
+  setTaskTemplateMacros(id: $id, macros: $macros)
+}
+    `;
+export type SetTaskMacroMutationFn = ApolloReactCommon.MutationFunction<SetTaskMacroMutation, SetTaskMacroMutationVariables>;
+
+/**
+ * __useSetTaskMacroMutation__
+ *
+ * To run a mutation, you first call `useSetTaskMacroMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTaskMacroMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTaskMacroMutation, { data, loading, error }] = useSetTaskMacroMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      macros: // value for 'macros'
+ *   },
+ * });
+ */
+export function useSetTaskMacroMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetTaskMacroMutation, SetTaskMacroMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetTaskMacroMutation, SetTaskMacroMutationVariables>(SetTaskMacroDocument, baseOptions);
+      }
+export type SetTaskMacroMutationHookResult = ReturnType<typeof useSetTaskMacroMutation>;
+export type SetTaskMacroMutationResult = ApolloReactCommon.MutationResult<SetTaskMacroMutation>;
+export type SetTaskMacroMutationOptions = ApolloReactCommon.BaseMutationOptions<SetTaskMacroMutation, SetTaskMacroMutationVariables>;
+export const SetTaskPreMacroDocument = gql`
+    mutation SetTaskPreMacro($id: ID!, $macros: [ActionInput!]!) {
+  setTaskTemplatePreMacros(id: $id, macros: $macros)
+}
+    `;
+export type SetTaskPreMacroMutationFn = ApolloReactCommon.MutationFunction<SetTaskPreMacroMutation, SetTaskPreMacroMutationVariables>;
+
+/**
+ * __useSetTaskPreMacroMutation__
+ *
+ * To run a mutation, you first call `useSetTaskPreMacroMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTaskPreMacroMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTaskPreMacroMutation, { data, loading, error }] = useSetTaskPreMacroMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      macros: // value for 'macros'
+ *   },
+ * });
+ */
+export function useSetTaskPreMacroMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetTaskPreMacroMutation, SetTaskPreMacroMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetTaskPreMacroMutation, SetTaskPreMacroMutationVariables>(SetTaskPreMacroDocument, baseOptions);
+      }
+export type SetTaskPreMacroMutationHookResult = ReturnType<typeof useSetTaskPreMacroMutation>;
+export type SetTaskPreMacroMutationResult = ApolloReactCommon.MutationResult<SetTaskPreMacroMutation>;
+export type SetTaskPreMacroMutationOptions = ApolloReactCommon.BaseMutationOptions<SetTaskPreMacroMutation, SetTaskPreMacroMutationVariables>;
+export const SetTaskTemplateReportTypesDocument = gql`
+    mutation SetTaskTemplateReportTypes($id: ID!, $reportTypes: [String]!) {
+  setTaskTemplateReportTypes(id: $id, reportTypes: $reportTypes)
+}
+    `;
+export type SetTaskTemplateReportTypesMutationFn = ApolloReactCommon.MutationFunction<SetTaskTemplateReportTypesMutation, SetTaskTemplateReportTypesMutationVariables>;
+
+/**
+ * __useSetTaskTemplateReportTypesMutation__
+ *
+ * To run a mutation, you first call `useSetTaskTemplateReportTypesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTaskTemplateReportTypesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTaskTemplateReportTypesMutation, { data, loading, error }] = useSetTaskTemplateReportTypesMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      reportTypes: // value for 'reportTypes'
+ *   },
+ * });
+ */
+export function useSetTaskTemplateReportTypesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetTaskTemplateReportTypesMutation, SetTaskTemplateReportTypesMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetTaskTemplateReportTypesMutation, SetTaskTemplateReportTypesMutationVariables>(SetTaskTemplateReportTypesDocument, baseOptions);
+      }
+export type SetTaskTemplateReportTypesMutationHookResult = ReturnType<typeof useSetTaskTemplateReportTypesMutation>;
+export type SetTaskTemplateReportTypesMutationResult = ApolloReactCommon.MutationResult<SetTaskTemplateReportTypesMutation>;
+export type SetTaskTemplateReportTypesMutationOptions = ApolloReactCommon.BaseMutationOptions<SetTaskTemplateReportTypesMutation, SetTaskTemplateReportTypesMutationVariables>;
+export const SetTaskTemplateValuesDocument = gql`
+    mutation SetTaskTemplateValues($id: ID!, $values: JSON!) {
+  setTaskTemplateValues(id: $id, values: $values)
+}
+    `;
+export type SetTaskTemplateValuesMutationFn = ApolloReactCommon.MutationFunction<SetTaskTemplateValuesMutation, SetTaskTemplateValuesMutationVariables>;
+
+/**
+ * __useSetTaskTemplateValuesMutation__
+ *
+ * To run a mutation, you first call `useSetTaskTemplateValuesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetTaskTemplateValuesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setTaskTemplateValuesMutation, { data, loading, error }] = useSetTaskTemplateValuesMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      values: // value for 'values'
+ *   },
+ * });
+ */
+export function useSetTaskTemplateValuesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SetTaskTemplateValuesMutation, SetTaskTemplateValuesMutationVariables>) {
+        return ApolloReactHooks.useMutation<SetTaskTemplateValuesMutation, SetTaskTemplateValuesMutationVariables>(SetTaskTemplateValuesDocument, baseOptions);
+      }
+export type SetTaskTemplateValuesMutationHookResult = ReturnType<typeof useSetTaskTemplateValuesMutation>;
+export type SetTaskTemplateValuesMutationResult = ApolloReactCommon.MutationResult<SetTaskTemplateValuesMutation>;
+export type SetTaskTemplateValuesMutationOptions = ApolloReactCommon.BaseMutationOptions<SetTaskTemplateValuesMutation, SetTaskTemplateValuesMutationVariables>;
+export const TaskDefinitionsDocument = gql`
+    query TaskDefinitions {
+  taskDefinitions {
+    id
+    class
+    name
+    stations {
+      name
+      cards {
+        name
+        component
+      }
+    }
+    valuesInput
+    valuesValue
+    active
+  }
+  thorium {
+    addedTaskTemplates
+  }
+}
+    `;
+
+/**
+ * __useTaskDefinitionsQuery__
+ *
+ * To run a query within a React component, call `useTaskDefinitionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTaskDefinitionsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskDefinitionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTaskDefinitionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>) {
+        return ApolloReactHooks.useQuery<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>(TaskDefinitionsDocument, baseOptions);
+      }
+export function useTaskDefinitionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>(TaskDefinitionsDocument, baseOptions);
+        }
+export type TaskDefinitionsQueryHookResult = ReturnType<typeof useTaskDefinitionsQuery>;
+export type TaskDefinitionsLazyQueryHookResult = ReturnType<typeof useTaskDefinitionsLazyQuery>;
+export type TaskDefinitionsQueryResult = ApolloReactCommon.QueryResult<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>;
+export const TaskFlowAddDocument = gql`
+    mutation TaskFlowAdd($name: String!) {
+  taskFlowAdd(name: $name)
+}
+    `;
+export type TaskFlowAddMutationFn = ApolloReactCommon.MutationFunction<TaskFlowAddMutation, TaskFlowAddMutationVariables>;
+
+/**
+ * __useTaskFlowAddMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowAddMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowAddMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowAddMutation, { data, loading, error }] = useTaskFlowAddMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useTaskFlowAddMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowAddMutation, TaskFlowAddMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowAddMutation, TaskFlowAddMutationVariables>(TaskFlowAddDocument, baseOptions);
+      }
+export type TaskFlowAddMutationHookResult = ReturnType<typeof useTaskFlowAddMutation>;
+export type TaskFlowAddMutationResult = ApolloReactCommon.MutationResult<TaskFlowAddMutation>;
+export type TaskFlowAddMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowAddMutation, TaskFlowAddMutationVariables>;
+export const TaskFlowAddStepDocument = gql`
+    mutation TaskFlowAddStep($id: ID!, $name: String!) {
+  taskFlowAddStep(id: $id, name: $name)
+}
+    `;
+export type TaskFlowAddStepMutationFn = ApolloReactCommon.MutationFunction<TaskFlowAddStepMutation, TaskFlowAddStepMutationVariables>;
+
+/**
+ * __useTaskFlowAddStepMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowAddStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowAddStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowAddStepMutation, { data, loading, error }] = useTaskFlowAddStepMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useTaskFlowAddStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowAddStepMutation, TaskFlowAddStepMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowAddStepMutation, TaskFlowAddStepMutationVariables>(TaskFlowAddStepDocument, baseOptions);
+      }
+export type TaskFlowAddStepMutationHookResult = ReturnType<typeof useTaskFlowAddStepMutation>;
+export type TaskFlowAddStepMutationResult = ApolloReactCommon.MutationResult<TaskFlowAddStepMutation>;
+export type TaskFlowAddStepMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowAddStepMutation, TaskFlowAddStepMutationVariables>;
+export const TaskFlowRemoveDocument = gql`
+    mutation TaskFlowRemove($id: ID!) {
+  taskFlowRemove(id: $id)
+}
+    `;
+export type TaskFlowRemoveMutationFn = ApolloReactCommon.MutationFunction<TaskFlowRemoveMutation, TaskFlowRemoveMutationVariables>;
+
+/**
+ * __useTaskFlowRemoveMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowRemoveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowRemoveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowRemoveMutation, { data, loading, error }] = useTaskFlowRemoveMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useTaskFlowRemoveMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowRemoveMutation, TaskFlowRemoveMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowRemoveMutation, TaskFlowRemoveMutationVariables>(TaskFlowRemoveDocument, baseOptions);
+      }
+export type TaskFlowRemoveMutationHookResult = ReturnType<typeof useTaskFlowRemoveMutation>;
+export type TaskFlowRemoveMutationResult = ApolloReactCommon.MutationResult<TaskFlowRemoveMutation>;
+export type TaskFlowRemoveMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowRemoveMutation, TaskFlowRemoveMutationVariables>;
+export const TaskFlowRemoveStepDocument = gql`
+    mutation TaskFlowRemoveStep($id: ID!, $stepId: ID!) {
+  taskFlowRemoveStep(id: $id, stepId: $id)
+}
+    `;
+export type TaskFlowRemoveStepMutationFn = ApolloReactCommon.MutationFunction<TaskFlowRemoveStepMutation, TaskFlowRemoveStepMutationVariables>;
+
+/**
+ * __useTaskFlowRemoveStepMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowRemoveStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowRemoveStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowRemoveStepMutation, { data, loading, error }] = useTaskFlowRemoveStepMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stepId: // value for 'stepId'
+ *   },
+ * });
+ */
+export function useTaskFlowRemoveStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowRemoveStepMutation, TaskFlowRemoveStepMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowRemoveStepMutation, TaskFlowRemoveStepMutationVariables>(TaskFlowRemoveStepDocument, baseOptions);
+      }
+export type TaskFlowRemoveStepMutationHookResult = ReturnType<typeof useTaskFlowRemoveStepMutation>;
+export type TaskFlowRemoveStepMutationResult = ApolloReactCommon.MutationResult<TaskFlowRemoveStepMutation>;
+export type TaskFlowRemoveStepMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowRemoveStepMutation, TaskFlowRemoveStepMutationVariables>;
+export const TaskFlowRenameDocument = gql`
+    mutation TaskFlowRename($id: ID!, $name: String!) {
+  taskFlowRename(id: $id, name: $name)
+}
+    `;
+export type TaskFlowRenameMutationFn = ApolloReactCommon.MutationFunction<TaskFlowRenameMutation, TaskFlowRenameMutationVariables>;
+
+/**
+ * __useTaskFlowRenameMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowRenameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowRenameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowRenameMutation, { data, loading, error }] = useTaskFlowRenameMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useTaskFlowRenameMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowRenameMutation, TaskFlowRenameMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowRenameMutation, TaskFlowRenameMutationVariables>(TaskFlowRenameDocument, baseOptions);
+      }
+export type TaskFlowRenameMutationHookResult = ReturnType<typeof useTaskFlowRenameMutation>;
+export type TaskFlowRenameMutationResult = ApolloReactCommon.MutationResult<TaskFlowRenameMutation>;
+export type TaskFlowRenameMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowRenameMutation, TaskFlowRenameMutationVariables>;
+export const TaskFlowRenameStepDocument = gql`
+    mutation TaskFlowRenameStep($id: ID!, $stepId: ID!, $name: String!) {
+  taskFlowRenameStep(id: $id, stepId: $stepId, name: $name)
+}
+    `;
+export type TaskFlowRenameStepMutationFn = ApolloReactCommon.MutationFunction<TaskFlowRenameStepMutation, TaskFlowRenameStepMutationVariables>;
+
+/**
+ * __useTaskFlowRenameStepMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowRenameStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowRenameStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowRenameStepMutation, { data, loading, error }] = useTaskFlowRenameStepMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stepId: // value for 'stepId'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useTaskFlowRenameStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowRenameStepMutation, TaskFlowRenameStepMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowRenameStepMutation, TaskFlowRenameStepMutationVariables>(TaskFlowRenameStepDocument, baseOptions);
+      }
+export type TaskFlowRenameStepMutationHookResult = ReturnType<typeof useTaskFlowRenameStepMutation>;
+export type TaskFlowRenameStepMutationResult = ApolloReactCommon.MutationResult<TaskFlowRenameStepMutation>;
+export type TaskFlowRenameStepMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowRenameStepMutation, TaskFlowRenameStepMutationVariables>;
+export const TaskFlowReorderStepDocument = gql`
+    mutation TaskFlowReorderStep($id: ID!, $stepId: ID!, $order: Int!) {
+  taskFlowReorderStep(id: $id, stepId: $stepId, order: $order)
+}
+    `;
+export type TaskFlowReorderStepMutationFn = ApolloReactCommon.MutationFunction<TaskFlowReorderStepMutation, TaskFlowReorderStepMutationVariables>;
+
+/**
+ * __useTaskFlowReorderStepMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowReorderStepMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowReorderStepMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowReorderStepMutation, { data, loading, error }] = useTaskFlowReorderStepMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stepId: // value for 'stepId'
+ *      order: // value for 'order'
+ *   },
+ * });
+ */
+export function useTaskFlowReorderStepMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowReorderStepMutation, TaskFlowReorderStepMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowReorderStepMutation, TaskFlowReorderStepMutationVariables>(TaskFlowReorderStepDocument, baseOptions);
+      }
+export type TaskFlowReorderStepMutationHookResult = ReturnType<typeof useTaskFlowReorderStepMutation>;
+export type TaskFlowReorderStepMutationResult = ApolloReactCommon.MutationResult<TaskFlowReorderStepMutation>;
+export type TaskFlowReorderStepMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowReorderStepMutation, TaskFlowReorderStepMutationVariables>;
+export const TaskFlowSetCategoryDocument = gql`
+    mutation TaskFlowSetCategory($id: ID!, $category: String!) {
+  taskFlowSetCategory(id: $id, category: $category)
+}
+    `;
+export type TaskFlowSetCategoryMutationFn = ApolloReactCommon.MutationFunction<TaskFlowSetCategoryMutation, TaskFlowSetCategoryMutationVariables>;
+
+/**
+ * __useTaskFlowSetCategoryMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowSetCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowSetCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowSetCategoryMutation, { data, loading, error }] = useTaskFlowSetCategoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      category: // value for 'category'
+ *   },
+ * });
+ */
+export function useTaskFlowSetCategoryMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowSetCategoryMutation, TaskFlowSetCategoryMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowSetCategoryMutation, TaskFlowSetCategoryMutationVariables>(TaskFlowSetCategoryDocument, baseOptions);
+      }
+export type TaskFlowSetCategoryMutationHookResult = ReturnType<typeof useTaskFlowSetCategoryMutation>;
+export type TaskFlowSetCategoryMutationResult = ApolloReactCommon.MutationResult<TaskFlowSetCategoryMutation>;
+export type TaskFlowSetCategoryMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowSetCategoryMutation, TaskFlowSetCategoryMutationVariables>;
+export const TaskFlowStepAddTaskDocument = gql`
+    mutation TaskFlowStepAddTask($id: ID!, $stepId: ID!, $task: TaskInput!) {
+  taskFlowStepAddTask(id: $id, stepId: $stepId, task: $task)
+}
+    `;
+export type TaskFlowStepAddTaskMutationFn = ApolloReactCommon.MutationFunction<TaskFlowStepAddTaskMutation, TaskFlowStepAddTaskMutationVariables>;
+
+/**
+ * __useTaskFlowStepAddTaskMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowStepAddTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowStepAddTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowStepAddTaskMutation, { data, loading, error }] = useTaskFlowStepAddTaskMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stepId: // value for 'stepId'
+ *      task: // value for 'task'
+ *   },
+ * });
+ */
+export function useTaskFlowStepAddTaskMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowStepAddTaskMutation, TaskFlowStepAddTaskMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowStepAddTaskMutation, TaskFlowStepAddTaskMutationVariables>(TaskFlowStepAddTaskDocument, baseOptions);
+      }
+export type TaskFlowStepAddTaskMutationHookResult = ReturnType<typeof useTaskFlowStepAddTaskMutation>;
+export type TaskFlowStepAddTaskMutationResult = ApolloReactCommon.MutationResult<TaskFlowStepAddTaskMutation>;
+export type TaskFlowStepAddTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowStepAddTaskMutation, TaskFlowStepAddTaskMutationVariables>;
+export const TaskFlowStepEditTaskDocument = gql`
+    mutation TaskFlowStepEditTask($id: ID!, $stepId: ID!, $taskId: ID!, $task: TaskInput!) {
+  taskFlowStepEditTask(id: $id, stepId: $stepId, taskId: $taskId, task: $task)
+}
+    `;
+export type TaskFlowStepEditTaskMutationFn = ApolloReactCommon.MutationFunction<TaskFlowStepEditTaskMutation, TaskFlowStepEditTaskMutationVariables>;
+
+/**
+ * __useTaskFlowStepEditTaskMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowStepEditTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowStepEditTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowStepEditTaskMutation, { data, loading, error }] = useTaskFlowStepEditTaskMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stepId: // value for 'stepId'
+ *      taskId: // value for 'taskId'
+ *      task: // value for 'task'
+ *   },
+ * });
+ */
+export function useTaskFlowStepEditTaskMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowStepEditTaskMutation, TaskFlowStepEditTaskMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowStepEditTaskMutation, TaskFlowStepEditTaskMutationVariables>(TaskFlowStepEditTaskDocument, baseOptions);
+      }
+export type TaskFlowStepEditTaskMutationHookResult = ReturnType<typeof useTaskFlowStepEditTaskMutation>;
+export type TaskFlowStepEditTaskMutationResult = ApolloReactCommon.MutationResult<TaskFlowStepEditTaskMutation>;
+export type TaskFlowStepEditTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowStepEditTaskMutation, TaskFlowStepEditTaskMutationVariables>;
+export const TaskFlowStepRemoveTaskDocument = gql`
+    mutation TaskFlowStepRemoveTask($id: ID!, $stepId: ID!, $taskId: ID!) {
+  taskFlowStepRemoveTask(id: $id, stepId: $stepId, taskId: $taskId)
+}
+    `;
+export type TaskFlowStepRemoveTaskMutationFn = ApolloReactCommon.MutationFunction<TaskFlowStepRemoveTaskMutation, TaskFlowStepRemoveTaskMutationVariables>;
+
+/**
+ * __useTaskFlowStepRemoveTaskMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowStepRemoveTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowStepRemoveTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowStepRemoveTaskMutation, { data, loading, error }] = useTaskFlowStepRemoveTaskMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stepId: // value for 'stepId'
+ *      taskId: // value for 'taskId'
+ *   },
+ * });
+ */
+export function useTaskFlowStepRemoveTaskMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowStepRemoveTaskMutation, TaskFlowStepRemoveTaskMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowStepRemoveTaskMutation, TaskFlowStepRemoveTaskMutationVariables>(TaskFlowStepRemoveTaskDocument, baseOptions);
+      }
+export type TaskFlowStepRemoveTaskMutationHookResult = ReturnType<typeof useTaskFlowStepRemoveTaskMutation>;
+export type TaskFlowStepRemoveTaskMutationResult = ApolloReactCommon.MutationResult<TaskFlowStepRemoveTaskMutation>;
+export type TaskFlowStepRemoveTaskMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowStepRemoveTaskMutation, TaskFlowStepRemoveTaskMutationVariables>;
+export const TaskFlowStepCompleteAllDocument = gql`
+    mutation TaskFlowStepCompleteAll($id: ID!, $stepId: ID!, $completeAll: Boolean!) {
+  taskFlowStepSetCompleteAll(id: $id, stepId: $stepId, completeAll: $completeAll)
+}
+    `;
+export type TaskFlowStepCompleteAllMutationFn = ApolloReactCommon.MutationFunction<TaskFlowStepCompleteAllMutation, TaskFlowStepCompleteAllMutationVariables>;
+
+/**
+ * __useTaskFlowStepCompleteAllMutation__
+ *
+ * To run a mutation, you first call `useTaskFlowStepCompleteAllMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowStepCompleteAllMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [taskFlowStepCompleteAllMutation, { data, loading, error }] = useTaskFlowStepCompleteAllMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      stepId: // value for 'stepId'
+ *      completeAll: // value for 'completeAll'
+ *   },
+ * });
+ */
+export function useTaskFlowStepCompleteAllMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowStepCompleteAllMutation, TaskFlowStepCompleteAllMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowStepCompleteAllMutation, TaskFlowStepCompleteAllMutationVariables>(TaskFlowStepCompleteAllDocument, baseOptions);
+      }
+export type TaskFlowStepCompleteAllMutationHookResult = ReturnType<typeof useTaskFlowStepCompleteAllMutation>;
+export type TaskFlowStepCompleteAllMutationResult = ApolloReactCommon.MutationResult<TaskFlowStepCompleteAllMutation>;
+export type TaskFlowStepCompleteAllMutationOptions = ApolloReactCommon.BaseMutationOptions<TaskFlowStepCompleteAllMutation, TaskFlowStepCompleteAllMutationVariables>;
+export const TaskFlowsConfigDocument = gql`
+    subscription TaskFlowsConfig {
+  taskFlows {
+    id
+    name
+    category
+    steps {
+      id
+      name
+      tasks {
+        id
+        station
+        definition
+        values
+        macros {
+          id
+          event
+          args
+          delay
+        }
+        preMacros {
+          id
+          event
+          args
+          delay
+        }
+      }
+      completeAll
+    }
+  }
+}
+    `;
+
+/**
+ * __useTaskFlowsConfigSubscription__
+ *
+ * To run a query within a React component, call `useTaskFlowsConfigSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowsConfigSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskFlowsConfigSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTaskFlowsConfigSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<TaskFlowsConfigSubscription, TaskFlowsConfigSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<TaskFlowsConfigSubscription, TaskFlowsConfigSubscriptionVariables>(TaskFlowsConfigDocument, baseOptions);
+      }
+export type TaskFlowsConfigSubscriptionHookResult = ReturnType<typeof useTaskFlowsConfigSubscription>;
+export type TaskFlowsConfigSubscriptionResult = ApolloReactCommon.SubscriptionResult<TaskFlowsConfigSubscription>;
+export const TaskTemplatesDocument = gql`
+    subscription TaskTemplates {
+  taskTemplatesUpdate {
+    id
+    name
+    definition
+    values
+    reportTypes
+    macros {
+      id
+      event
+      args
+      delay
+    }
+    preMacros {
+      id
+      event
+      args
+      delay
+    }
+  }
+}
+    `;
+
+/**
+ * __useTaskTemplatesSubscription__
+ *
+ * To run a query within a React component, call `useTaskTemplatesSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTaskTemplatesSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskTemplatesSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTaskTemplatesSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<TaskTemplatesSubscription, TaskTemplatesSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<TaskTemplatesSubscription, TaskTemplatesSubscriptionVariables>(TaskTemplatesDocument, baseOptions);
+      }
+export type TaskTemplatesSubscriptionHookResult = ReturnType<typeof useTaskTemplatesSubscription>;
+export type TaskTemplatesSubscriptionResult = ApolloReactCommon.SubscriptionResult<TaskTemplatesSubscription>;
 export const EntityRemoveEngineDocument = gql`
     mutation EntityRemoveEngine($id: ID!, $type: EntityEngineEnum!) {
   entityRemoveEngine(id: $id, type: $type)

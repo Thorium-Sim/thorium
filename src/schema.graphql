@@ -1372,11 +1372,11 @@ type Macro {
 }
 
 type MacroAction {
-  id: ID
-  event: String
-  args: String
+  id: ID!
+  event: String!
+  args: String!
   delay: Int
-  needsConfig: String
+  needsConfig: Boolean
   noCancelOnReset: Boolean
 }
 
@@ -2547,8 +2547,8 @@ type Mutation {
   renameTaskTemplate(id: ID!, name: String!): String
   setTaskTemplateValues(id: ID!, values: JSON!): String
   setTaskTemplateReportTypes(id: ID!, reportTypes: [String]!): String
-  setTaskTemplateMacros(id: ID!, macros: [TimelineItemInput]!): String
-  setTaskTemplatePreMacros(id: ID!, macros: [TimelineItemInput]!): String
+  setTaskTemplateMacros(id: ID!, macros: [ActionInput]!): String
+  setTaskTemplatePreMacros(id: ID!, macros: [ActionInput]!): String
   createTeam(team: TeamInput!): String
   updateTeam(team: TeamInput!): String
   addCrewToTeam(teamId: ID!, crewId: ID!): String
@@ -2764,6 +2764,21 @@ type Mutation {
   dmxConfigSetName(id: ID!, name: String!): String
   dmxConfigSetConfig(id: ID!, config: JSON!): String
   dmxConfigSetActionStrength(id: ID!, actionStrength: Float!): String
+  taskFlowAdd(name: String!): String
+  taskFlowRemove(id: ID!): String
+  taskFlowRename(id: ID!, name: String!): String
+  taskFlowSetCategory(id: ID!, category: String!): String
+  taskFlowAddStep(id: ID!, name: String!): String
+  taskFlowRemoveStep(id: ID!, stepId: ID!): String
+  taskFlowRenameStep(id: ID!, stepId: ID!, name: String!): String
+  taskFlowReorderStep(id: ID!, stepId: ID!, order: Int!): String
+  taskFlowStepAddTask(id: ID!, stepId: ID!, task: TaskInput!): String
+  taskFlowStepRemoveTask(id: ID!, stepId: ID!, taskId: ID!): String
+  taskFlowStepEditTask(id: ID!, stepId: ID!, taskId: ID!, task: TaskInput!): String
+  taskFlowStepSetCompleteAll(id: ID!, stepId: ID!, completeAll: Boolean!): String
+
+  """Macro: Tasks: Activate Task Flow"""
+  taskFlowActivate(id: ID!, simulatorId: ID!): String
 }
 
 type NamedObject {
@@ -3192,8 +3207,8 @@ type Query {
   targeting(id: ID, simulatorId: ID): [Targeting]
   taskReport(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
   tasks(simulatorId: ID!, station: String, definitions: [String!]): [Task]
-  taskTemplates: [TaskTemplate]
-  taskDefinitions(simulatorId: ID): [TaskDefinition]
+  taskTemplates: [TaskTemplate!]!
+  taskDefinitions(simulatorId: ID): [TaskDefinition!]!
   taskInstructions(simulatorId: ID, definition: String!, requiredValues: JSON!, task: TaskInput): String
   teams(simulatorId: ID, type: String, cleared: Boolean): [Team]
   damagePositions: [String]
@@ -3219,6 +3234,7 @@ type Query {
   dmxFixtures(simulatorId: ID): [DMXFixture!]!
   dmxConfig(id: ID!): DMXConfig
   dmxConfigs: [DMXConfig!]!
+  taskFlows(simulatorId: ID): [TaskFlow!]!
 }
 
 type Railgun implements SystemInterface {
@@ -4006,7 +4022,7 @@ type Subscription {
   targetingUpdate(simulatorId: ID): [Targeting]
   taskReportUpdate(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
   tasksUpdate(simulatorId: ID!, station: String, definitions: [String!]): [Task]
-  taskTemplatesUpdate: [TaskTemplate]
+  taskTemplatesUpdate: [TaskTemplate!]!
   teamsUpdate(simulatorId: ID, type: String, cleared: Boolean): [Team]
   _templateUpdate(simulatorId: ID): Template
   thoriumUpdate: Thorium
@@ -4027,6 +4043,7 @@ type Subscription {
   dmxDevices: [DMXDevice!]!
   dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
   dmxConfigs: [DMXConfig!]!
+  taskFlows(simulatorId: ID): [TaskFlow!]!
 }
 
 type SubspaceField implements SystemInterface {
@@ -4302,13 +4319,13 @@ type TargetingContact {
 }
 
 type Task {
-  id: ID
+  id: ID!
   simulatorId: ID
   station: String
   systemId: ID
   deck: Deck
   room: Room
-  definition: String
+  definition: String!
   verified: Boolean
   verifyRequested: Boolean
   dismissed: Boolean
@@ -4317,18 +4334,37 @@ type Task {
   startTime: String
   endTime: String
   timeElapsedInMS: Int
-  macros: [TimelineItem]
+  macros: [MacroAction!]
+  preMacros: [MacroAction!]!
   assigned: Boolean
 }
 
 type TaskDefinition {
-  id: ID
-  name: String
-  class: String
+  id: ID!
+  name: String!
+  class: String!
   stations: [Station]
-  active: Boolean
-  valuesInput: JSON
-  valuesValue: JSON
+  active: Boolean!
+  valuesInput: JSON!
+  valuesValue: JSON!
+}
+
+type TaskFlow {
+  id: ID!
+  name: String!
+  category: String!
+  currentStep: Int!
+  steps: [TaskFlowStep!]!
+  completed: Boolean!
+}
+
+type TaskFlowStep {
+  id: ID!
+  name: String!
+  tasks: [Task!]!
+  activeTasks: [Task!]!
+  completeAll: Boolean!
+  completed: Boolean!
 }
 
 input TaskInput {
@@ -4336,8 +4372,8 @@ input TaskInput {
   definition: String
   values: JSON
   station: String
-  macros: [TimelineItemInput]
-  preMacros: [TimelineItemInput]
+  macros: [ActionInput]
+  preMacros: [ActionInput]
 }
 
 type TaskReport {
@@ -4351,13 +4387,13 @@ type TaskReport {
 }
 
 type TaskTemplate {
-  id: ID
-  name: String
-  values: JSON
-  definition: String
-  reportTypes: [String]
-  macros: [TimelineItem]
-  preMacros: [TimelineItem]
+  id: ID!
+  name: String!
+  values: JSON!
+  definition: String!
+  reportTypes: [String!]!
+  macros: [MacroAction!]!
+  preMacros: [MacroAction!]!
 }
 
 type Team {

@@ -1,0 +1,3 @@
+mutation TaskFlowRenameStep($id: ID!, $stepId: ID!, $name: String!) {
+  taskFlowRenameStep(id: $id, stepId: $stepId, name: $name)
+}

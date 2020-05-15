@@ -11,7 +11,7 @@ import {
   Row,
 } from "helpers/reactstrap";
 
-import SortableList from "helpers/sortableList";
+import SortableList from "helpers/SortableList";
 
 const CORE_LAYOUTS = gql`
   query MosaicCoreLayouts {
@@ -69,12 +69,12 @@ const MosaicConfig = ({coreLayouts: coreLayoutsProps, modal, toggle}) => {
         <Row>
           <Col sm={4}>
             <SortableList
+              distance={20}
               items={coreLayouts}
               onSortEnd={onSortEnd}
-              selected={selected}
-              select={select}
-              remove={remove}
-              distance={10}
+              selectedItem={selected}
+              setSelectedItem={select}
+              removeItem={remove}
             />
           </Col>
         </Row>

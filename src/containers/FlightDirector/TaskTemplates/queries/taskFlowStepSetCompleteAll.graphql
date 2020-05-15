@@ -1,0 +1,11 @@
+mutation TaskFlowStepCompleteAll(
+  $id: ID!
+  $stepId: ID!
+  $completeAll: Boolean!
+) {
+  taskFlowStepSetCompleteAll(
+    id: $id
+    stepId: $stepId
+    completeAll: $completeAll
+  )
+}

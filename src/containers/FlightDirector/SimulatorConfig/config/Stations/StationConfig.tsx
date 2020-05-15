@@ -6,7 +6,7 @@ import {capitalCase} from "change-case";
 import TrainingConfig from "./trainingConfig";
 import AmbianceConfig from "./ambianceConfig";
 import LayoutList from "components/layouts";
-import SortableList from "helpers/sortableList";
+import SortableList from "helpers/SortableList";
 import {
   Simulator,
   Station,
@@ -25,6 +25,9 @@ const Layouts = Object.keys(LayoutList).filter(
 interface ConfigStationProps {
   simulator: Simulator;
   station: Station;
+}
+function isString(a: unknown): a is string {
+  return typeof a === "string";
 }
 const ConfigStation: React.FC<ConfigStationProps> = ({simulator, station}) => {
   const {subPath1: selectedStationSet} = useParams();
@@ -138,10 +141,15 @@ const ConfigStation: React.FC<ConfigStationProps> = ({simulator, station}) => {
             <Col sm={6}>
               Widget Order
               <SortableList
-                items={station?.widgets?.map(w => ({id: w, name: w}))}
+                distance={10}
+                items={
+                  station?.widgets
+                    ?.filter(isString)
+                    .map(w => ({id: w, name: w})) || []
+                }
                 onSortEnd={onSortEnd}
-                selected={false}
-                select={() => {}}
+                selectedItem={null}
+                setSelectedItem={() => {}}
               />
             </Col>
           </Row>

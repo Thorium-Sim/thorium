@@ -1,0 +1,3 @@
+mutation RenameTaskTemplate($id: ID!, $name: String!) {
+  renameTaskTemplate(id: $id, name: $name)
+}

@@ -14,7 +14,7 @@ Promise.resolve()
   .then(() => broadcast(App.port, App.httpOnly))
   .then(() => express())
   .then(server => clientServer(server))
-  .then(server => apollo(server, App.port, App.httpOnly))
+  .then(server => apollo(server, App.port, App.httpOnly, App.setMutations))
   .then(() => postMigration())
   .then(() => cleanUp())
   .catch(err => console.error("Error:", err));
