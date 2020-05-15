@@ -1,3 +1,10 @@
+## [2.10.2](https://github.com/Thorium-Sim/thorium/compare/2.10.1...2.10.2) (2020-05-15)
+
+
+### Bug Fixes
+
+* **Space EdVentures:** Fixes a regression causing Space EdVentures connection to be broken. ([c847d71](https://github.com/Thorium-Sim/thorium/commit/c847d71a78bdab3900e61b7a7f7f085e80318215))
+
 ## [2.10.1](https://github.com/Thorium-Sim/thorium/compare/2.10.0...2.10.1) (2020-05-12)
 
 
