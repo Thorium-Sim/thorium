@@ -76,6 +76,7 @@ import countermeasuresTypeDefs from "./countermeasures";
 import universeTypeDefs from "./universe";
 import dmxTypeDefs from "./dmx";
 import taskFlowTypeDefs from "./taskFlow";
+import webRTCTypeDefs from "./webRtc";
 export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
@@ -156,3 +157,4 @@ export const countermeasures = countermeasuresTypeDefs;
 export const universe = universeTypeDefs;
 export const dmx = dmxTypeDefs;
 export const taskFlow = taskFlowTypeDefs;
+export const webRTC = webRTCTypeDefs;

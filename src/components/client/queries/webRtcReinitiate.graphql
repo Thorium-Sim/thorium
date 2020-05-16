@@ -1,0 +1,3 @@
+subscription WebRTCReinitiate($simulatorId: ID!) {
+  webRTCreinitiate(simulatorId: $simulatorId)
+}

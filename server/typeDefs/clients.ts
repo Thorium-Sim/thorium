@@ -38,6 +38,9 @@ const schema = gql`
     mobile: Boolean
     cards: [String]
     keypad: Keypad
+
+    # WebRTC
+    webRTCInitiator: Boolean
   }
 
   type CommandLineFeedback {

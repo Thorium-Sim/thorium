@@ -185,6 +185,7 @@ export type Client = {
   mobile?: Maybe<Scalars['Boolean']>,
   cards?: Maybe<Array<Maybe<Scalars['String']>>>,
   keypad?: Maybe<Keypad>,
+  webRTCInitiator?: Maybe<Scalars['Boolean']>,
 };
 
 export type CommandLine = {
@@ -2452,6 +2453,8 @@ export type Mutation = {
   taskFlowStepEditTask?: Maybe<Scalars['String']>,
   taskFlowStepSetCompleteAll?: Maybe<Scalars['String']>,
   taskFlowActivate?: Maybe<Scalars['String']>,
+  webRTCCandidate?: Maybe<Scalars['String']>,
+  webRTCSignal?: Maybe<Scalars['String']>,
 };
 
 
@@ -7082,6 +7085,17 @@ export type MutationTaskFlowActivateArgs = {
   simulatorId: Scalars['ID']
 };
 
+
+export type MutationWebRtcCandidateArgs = {
+  clientId: Scalars['ID']
+};
+
+
+export type MutationWebRtcSignalArgs = {
+  clientId: Scalars['ID'],
+  signal: Scalars['String']
+};
+
 export type NamedObject = {
    __typename?: 'NamedObject',
   id?: Maybe<Scalars['ID']>,
@@ -8966,6 +8980,8 @@ export type Subscription = {
   dmxFixtures: Array<DmxFixture>,
   dmxConfigs: Array<DmxConfig>,
   taskFlows: Array<TaskFlow>,
+  webRTCreinitiate?: Maybe<Scalars['Boolean']>,
+  webRTCSignal?: Maybe<WebRtcSignal>,
 };
 
 
@@ -9498,6 +9514,16 @@ export type SubscriptionDmxFixturesArgs = {
 
 export type SubscriptionTaskFlowsArgs = {
   simulatorId?: Maybe<Scalars['ID']>
+};
+
+
+export type SubscriptionWebRtCreinitiateArgs = {
+  simulatorId: Scalars['ID']
+};
+
+
+export type SubscriptionWebRtcSignalArgs = {
+  clientId: Scalars['ID']
 };
 
 export type SubspaceField = SystemInterface & {
@@ -10223,6 +10249,13 @@ export type WarheadInput = {
   probe?: Maybe<Scalars['ID']>,
 };
 
+export type WebRtcSignal = {
+   __typename?: 'WebRTCSignal',
+  senderClientId: Scalars['ID'],
+  destinationClientId: Scalars['ID'],
+  signal: Scalars['String'],
+};
+
 /** 
  * A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
  * 
@@ -10580,6 +10613,63 @@ export type SimulatorUpdateSubscription = (
     { __typename?: 'Simulator' }
     & SimulatorDataFragment
   )>>> }
+);
+
+export type WebRtcCandidateMutationVariables = {
+  clientId: Scalars['ID'];
+};
+
+
+export type WebRtcCandidateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'webRTCCandidate'>
+);
+
+export type WebRtcClientsSubscriptionVariables = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type WebRtcClientsSubscription = (
+  { __typename?: 'Subscription' }
+  & { clientChanged?: Maybe<Array<Maybe<(
+    { __typename?: 'Client' }
+    & Pick<Client, 'id' | 'webRTCInitiator'>
+  )>>> }
+);
+
+export type WebRtcReinitiateSubscriptionVariables = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type WebRtcReinitiateSubscription = (
+  { __typename?: 'Subscription' }
+  & Pick<Subscription, 'webRTCreinitiate'>
+);
+
+export type WebRtcSignalMutationVariables = {
+  clientId: Scalars['ID'];
+  signal: Scalars['String'];
+};
+
+
+export type WebRtcSignalMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'webRTCSignal'>
+);
+
+export type WebRtcSignalSubSubscriptionVariables = {
+  clientId: Scalars['ID'];
+};
+
+
+export type WebRtcSignalSubSubscription = (
+  { __typename?: 'Subscription' }
+  & { webRTCSignal?: Maybe<(
+    { __typename?: 'WebRTCSignal' }
+    & Pick<WebRtcSignal, 'senderClientId' | 'destinationClientId' | 'signal'>
+  )> }
 );
 
 export type MacroDmxConfigsQueryVariables = {};
@@ -14390,6 +14480,155 @@ export function useSimulatorUpdateSubscription(baseOptions?: ApolloReactHooks.Su
       }
 export type SimulatorUpdateSubscriptionHookResult = ReturnType<typeof useSimulatorUpdateSubscription>;
 export type SimulatorUpdateSubscriptionResult = ApolloReactCommon.SubscriptionResult<SimulatorUpdateSubscription>;
+export const WebRtcCandidateDocument = gql`
+    mutation WebRTCCandidate($clientId: ID!) {
+  webRTCCandidate(clientId: $clientId)
+}
+    `;
+export type WebRtcCandidateMutationFn = ApolloReactCommon.MutationFunction<WebRtcCandidateMutation, WebRtcCandidateMutationVariables>;
+
+/**
+ * __useWebRtcCandidateMutation__
+ *
+ * To run a mutation, you first call `useWebRtcCandidateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useWebRtcCandidateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [webRtcCandidateMutation, { data, loading, error }] = useWebRtcCandidateMutation({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useWebRtcCandidateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<WebRtcCandidateMutation, WebRtcCandidateMutationVariables>) {
+        return ApolloReactHooks.useMutation<WebRtcCandidateMutation, WebRtcCandidateMutationVariables>(WebRtcCandidateDocument, baseOptions);
+      }
+export type WebRtcCandidateMutationHookResult = ReturnType<typeof useWebRtcCandidateMutation>;
+export type WebRtcCandidateMutationResult = ApolloReactCommon.MutationResult<WebRtcCandidateMutation>;
+export type WebRtcCandidateMutationOptions = ApolloReactCommon.BaseMutationOptions<WebRtcCandidateMutation, WebRtcCandidateMutationVariables>;
+export const WebRtcClientsDocument = gql`
+    subscription WebRtcClients($simulatorId: ID!) {
+  clientChanged(simulatorId: $simulatorId) {
+    id
+    webRTCInitiator
+  }
+}
+    `;
+
+/**
+ * __useWebRtcClientsSubscription__
+ *
+ * To run a query within a React component, call `useWebRtcClientsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useWebRtcClientsSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWebRtcClientsSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useWebRtcClientsSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<WebRtcClientsSubscription, WebRtcClientsSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<WebRtcClientsSubscription, WebRtcClientsSubscriptionVariables>(WebRtcClientsDocument, baseOptions);
+      }
+export type WebRtcClientsSubscriptionHookResult = ReturnType<typeof useWebRtcClientsSubscription>;
+export type WebRtcClientsSubscriptionResult = ApolloReactCommon.SubscriptionResult<WebRtcClientsSubscription>;
+export const WebRtcReinitiateDocument = gql`
+    subscription WebRTCReinitiate($simulatorId: ID!) {
+  webRTCreinitiate(simulatorId: $simulatorId)
+}
+    `;
+
+/**
+ * __useWebRtcReinitiateSubscription__
+ *
+ * To run a query within a React component, call `useWebRtcReinitiateSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useWebRtcReinitiateSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWebRtcReinitiateSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useWebRtcReinitiateSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<WebRtcReinitiateSubscription, WebRtcReinitiateSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<WebRtcReinitiateSubscription, WebRtcReinitiateSubscriptionVariables>(WebRtcReinitiateDocument, baseOptions);
+      }
+export type WebRtcReinitiateSubscriptionHookResult = ReturnType<typeof useWebRtcReinitiateSubscription>;
+export type WebRtcReinitiateSubscriptionResult = ApolloReactCommon.SubscriptionResult<WebRtcReinitiateSubscription>;
+export const WebRtcSignalDocument = gql`
+    mutation WebRTCSignal($clientId: ID!, $signal: String!) {
+  webRTCSignal(clientId: $clientId, signal: $signal)
+}
+    `;
+export type WebRtcSignalMutationFn = ApolloReactCommon.MutationFunction<WebRtcSignalMutation, WebRtcSignalMutationVariables>;
+
+/**
+ * __useWebRtcSignalMutation__
+ *
+ * To run a mutation, you first call `useWebRtcSignalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useWebRtcSignalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [webRtcSignalMutation, { data, loading, error }] = useWebRtcSignalMutation({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *      signal: // value for 'signal'
+ *   },
+ * });
+ */
+export function useWebRtcSignalMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<WebRtcSignalMutation, WebRtcSignalMutationVariables>) {
+        return ApolloReactHooks.useMutation<WebRtcSignalMutation, WebRtcSignalMutationVariables>(WebRtcSignalDocument, baseOptions);
+      }
+export type WebRtcSignalMutationHookResult = ReturnType<typeof useWebRtcSignalMutation>;
+export type WebRtcSignalMutationResult = ApolloReactCommon.MutationResult<WebRtcSignalMutation>;
+export type WebRtcSignalMutationOptions = ApolloReactCommon.BaseMutationOptions<WebRtcSignalMutation, WebRtcSignalMutationVariables>;
+export const WebRtcSignalSubDocument = gql`
+    subscription WebRTCSignalSub($clientId: ID!) {
+  webRTCSignal(clientId: $clientId) {
+    senderClientId
+    destinationClientId
+    signal
+  }
+}
+    `;
+
+/**
+ * __useWebRtcSignalSubSubscription__
+ *
+ * To run a query within a React component, call `useWebRtcSignalSubSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useWebRtcSignalSubSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWebRtcSignalSubSubscription({
+ *   variables: {
+ *      clientId: // value for 'clientId'
+ *   },
+ * });
+ */
+export function useWebRtcSignalSubSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<WebRtcSignalSubSubscription, WebRtcSignalSubSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<WebRtcSignalSubSubscription, WebRtcSignalSubSubscriptionVariables>(WebRtcSignalSubDocument, baseOptions);
+      }
+export type WebRtcSignalSubSubscriptionHookResult = ReturnType<typeof useWebRtcSignalSubSubscription>;
+export type WebRtcSignalSubSubscriptionResult = ApolloReactCommon.SubscriptionResult<WebRtcSignalSubSubscription>;
 export const MacroDmxConfigsDocument = gql`
     query MacroDMXConfigs {
   dmxConfigs {

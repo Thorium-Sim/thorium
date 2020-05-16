@@ -1,0 +1,3 @@
+mutation WebRTCCandidate($clientId: ID!) {
+  webRTCCandidate(clientId: $clientId)
+}

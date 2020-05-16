@@ -1,0 +1,3 @@
+mutation WebRTCSignal($clientId: ID!, $signal: String!) {
+  webRTCSignal(clientId: $clientId, signal: $signal)
+}

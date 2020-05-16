@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import App from "../app";
+import {pubsub} from "../helpers/subscriptionManager";
 
 class Keypad {
   constructor(params = {}, clientId, label) {
@@ -109,6 +110,9 @@ export default class Client {
     // Keypad
     this.keypad = new Keypad(params.keypad, this.id, this.label);
     this.scanner = new Scanner(params.scanner, this.id, this.label);
+
+    // WebRTC
+    this.webRTCInitiator = false;
   }
   get label() {
     return this.clientLabel || this.id;
@@ -129,6 +133,10 @@ export default class Client {
   disconnect() {
     this.ping = null;
     this.connected = false;
+    if (this.webRTCInitiator) {
+      pubsub.publish("webRTCreinitiate", {simulatorId: this.simulatorId});
+    }
+    this.webRTCInitiator = false;
   }
 
   setFlight(flightId) {
@@ -211,7 +219,9 @@ export default class Client {
       this.setSoundPlayer(false);
     }
   }
-
+  setIsWebRTCInitiator() {
+    this.webRTCInitiator = true;
+  }
   diagnostic() {}
   lockScreen() {}
   unlockScreen() {}

@@ -1,0 +1,7 @@
+subscription WebRTCSignalSub($clientId: ID!) {
+  webRTCSignal(clientId: $clientId) {
+    senderClientId
+    destinationClientId
+    signal
+  }
+}

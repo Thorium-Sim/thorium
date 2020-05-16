@@ -1,0 +1,6 @@
+subscription WebRtcClients($simulatorId: ID!) {
+  clientChanged(simulatorId: $simulatorId) {
+    id
+    webRTCInitiator
+  }
+}

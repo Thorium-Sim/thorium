@@ -1,16 +1,24 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
-const mutationHelper = require("../helpers/mutationHelper").default;
+
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
-
+  type WebRTCSignal {
+    senderClientId: ID!
+    destinationClientId: ID!
+    signal: String!
+  }
   extend type Mutation {
-   
+    # Request to become the WebRTC Initiator for this simulator.
+    webRTCCandidate(clientId: ID!): String
+    # Send signalling data between the initiator and connected clients
+    webRTCSignal(clientId: ID!, signal: String!): String
   }
   extend type Subscription {
-  
+    webRTCreinitiate(simulatorId: ID!): Boolean
+    webRTCSignal(clientId: ID!): WebRTCSignal
   }
 `;
 
@@ -28,59 +36,66 @@ const schema = gql`
  * signal can be sent and received.
  */
 const resolver = {
-  Query: {
-    viewscreens(rootValue, {simulatorId}) {
-      let viewscreens = App.clients.filter(
-        s => s.station === "Viewscreen" && s.connected,
+  Mutation: {
+    webRTCCandidate(rootValue, {clientId}) {
+      const client = App.clients.find(c => c.id === clientId);
+      if (!client) return;
+      const simulator = App.simulators.find(s => s.id === client.simulatorId);
+      if (!simulator) return;
+      const initiator = App.clients.find(
+        c => c.simulatorId === simulator.id && c.webRTCInitiator,
       );
-      if (simulatorId) {
-        viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
-        return viewscreens.map(v =>
-          App.viewscreens.find(
-            av => av.id === v.id && av.simulatorId === simulatorId,
-          ),
-        );
+      if (!initiator) {
+        client.setIsWebRTCInitiator();
+        pubsub.publish("clientChanged", App.clients);
       }
-      return viewscreens.map(v => App.viewscreens.find(av => av.id === v.id));
+    },
+    webRTCSignal(rootValue, {clientId, signal}, {clientId: contextClientId}) {
+      const contextClient = App.clients.find(c => c.id === contextClientId);
+      const client = App.clients.find(c => c.id === clientId);
+      if (!client || !contextClient) return;
+      if (contextClient.webRTCInitiator) {
+        // The client that sent the request is the initiator; send the request to clientId
+        pubsub.publish("webRTCSignal", {
+          destinationClientId: clientId,
+          senderClientId: contextClient.id,
+          signal,
+        });
+      } else if (clientId === contextClientId) {
+        // The client that sent the request is a peer; send the request to the initiator
+        const initiator = App.clients.find(
+          c => c.simulatorId === client.simulatorId && c.webRTCInitiator,
+        );
+        if (!initiator) return;
+        pubsub.publish("webRTCSignal", {
+          destinationClientId: initiator.id,
+          senderClientId: clientId,
+          signal,
+        });
+      }
     },
   },
-  Mutation: mutationHelper(schema),
   Subscription: {
-    viewscreensUpdate: {
-      resolve(rootValue, {simulatorId}) {
-        let viewscreens = App.clients.filter(
-          s => s.station === "Viewscreen" && s.connected,
-        );
-        if (simulatorId) {
-          viewscreens = viewscreens.filter(v => v.simulatorId === simulatorId);
-          return viewscreens.map(v =>
-            rootValue.find(
-              av => av.id === v.id && av.simulatorId === simulatorId,
-            ),
-          );
-        }
-        return viewscreens.map(v => rootValue.find(av => av.id === v.id));
-      },
-      subscribe: withFilter(
-        () => pubsub.asyncIterator("viewscreensUpdate"),
-        rootValue => !!(rootValue && rootValue.length),
-      ),
-    },
-    viewscreenVideoToggle: {
+    webRTCreinitiate: {
       resolve() {
         return true;
       },
       subscribe: withFilter(
-        () => pubsub.asyncIterator("viewscreenVideoToggle"),
-        (rootValue, {simulatorId, viewscreenId}) => {
-          return (
-            (rootValue.simulatorId &&
-              simulatorId &&
-              rootValue.simulatorId === simulatorId) ||
-            (rootValue.viewscreenId &&
-              viewscreenId &&
-              rootValue.viewscreenId === viewscreenId)
-          );
+        () => pubsub.asyncIterator("webRTCreinitiate"),
+        (rootValue, {simulatorId}) => {
+          return rootValue.simulatorId === simulatorId;
+        },
+      ),
+    },
+    webRTCSignal: {
+      resolve(rootValue) {
+        console.log("Resolve", rootValue);
+        return rootValue;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("webRTCSignal"),
+        (rootValue, {clientId}) => {
+          return rootValue.destinationClientId === clientId;
         },
       ),
     },

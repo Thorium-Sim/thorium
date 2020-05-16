@@ -165,6 +165,7 @@ type Client {
   mobile: Boolean
   cards: [String]
   keypad: Keypad
+  webRTCInitiator: Boolean
 }
 
 type CommandLine {
@@ -2779,6 +2780,8 @@ type Mutation {
 
   """Macro: Tasks: Activate Task Flow"""
   taskFlowActivate(id: ID!, simulatorId: ID!): String
+  webRTCCandidate(clientId: ID!): String
+  webRTCSignal(clientId: ID!, signal: String!): String
 }
 
 type NamedObject {
@@ -4044,6 +4047,8 @@ type Subscription {
   dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
   dmxConfigs: [DMXConfig!]!
   taskFlows(simulatorId: ID): [TaskFlow!]!
+  webRTCreinitiate(simulatorId: ID!): Boolean
+  webRTCSignal(clientId: ID!): WebRTCSignal
 }
 
 type SubspaceField implements SystemInterface {
@@ -4723,4 +4728,10 @@ type Warhead {
 input WarheadInput {
   type: String
   probe: ID
+}
+
+type WebRTCSignal {
+  senderClientId: ID!
+  destinationClientId: ID!
+  signal: String!
 }

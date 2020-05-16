@@ -191,6 +191,7 @@ export type Client = {
   mobile?: Maybe<Scalars["Boolean"]>;
   cards?: Maybe<Array<Maybe<Scalars["String"]>>>;
   keypad?: Maybe<Keypad>;
+  webRTCInitiator?: Maybe<Scalars["Boolean"]>;
 };
 
 export type CommandLine = {
@@ -2455,6 +2456,8 @@ export type Mutation = {
   taskFlowStepEditTask?: Maybe<Scalars["String"]>;
   taskFlowStepSetCompleteAll?: Maybe<Scalars["String"]>;
   taskFlowActivate?: Maybe<Scalars["String"]>;
+  webRTCCandidate?: Maybe<Scalars["String"]>;
+  webRTCSignal?: Maybe<Scalars["String"]>;
 };
 
 export type MutationEntitySetAppearanceArgs = {
@@ -6346,6 +6349,15 @@ export type MutationTaskFlowActivateArgs = {
   simulatorId: Scalars["ID"];
 };
 
+export type MutationWebRtcCandidateArgs = {
+  clientId: Scalars["ID"];
+};
+
+export type MutationWebRtcSignalArgs = {
+  clientId: Scalars["ID"];
+  signal: Scalars["String"];
+};
+
 export type NamedObject = {
   __typename?: "NamedObject";
   id?: Maybe<Scalars["ID"]>;
@@ -8130,6 +8142,8 @@ export type Subscription = {
   dmxFixtures: Array<DmxFixture>;
   dmxConfigs: Array<DmxConfig>;
   taskFlows: Array<TaskFlow>;
+  webRTCreinitiate?: Maybe<Scalars["Boolean"]>;
+  webRTCSignal?: Maybe<WebRtcSignal>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -8566,6 +8580,14 @@ export type SubscriptionDmxFixturesArgs = {
 
 export type SubscriptionTaskFlowsArgs = {
   simulatorId?: Maybe<Scalars["ID"]>;
+};
+
+export type SubscriptionWebRtCreinitiateArgs = {
+  simulatorId: Scalars["ID"];
+};
+
+export type SubscriptionWebRtcSignalArgs = {
+  clientId: Scalars["ID"];
 };
 
 export type SubspaceField = SystemInterface & {
@@ -9291,6 +9313,13 @@ export type WarheadInput = {
   probe?: Maybe<Scalars["ID"]>;
 };
 
+export type WebRtcSignal = {
+  __typename?: "WebRTCSignal";
+  senderClientId: Scalars["ID"];
+  destinationClientId: Scalars["ID"];
+  signal: Scalars["String"];
+};
+
 /**
  * A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
  *
@@ -9950,6 +9979,7 @@ export type ResolversTypes = ResolversObject<{
   GoogleSheets: ResolverTypeWrapper<GoogleSheets>;
   ScienceProbeEvent: ResolverTypeWrapper<ScienceProbeEvent>;
   Notification: ResolverTypeWrapper<Notification>;
+  WebRTCSignal: ResolverTypeWrapper<WebRtcSignal>;
   Coolant: ResolverTypeWrapper<Coolant>;
   CoolantRegulator: ResolverTypeWrapper<CoolantRegulator>;
   TeamCountInput: ResolverTypeWrapper<TeamCountInput>;
@@ -10322,6 +10352,7 @@ export type ResolversParentTypes = ResolversObject<{
   GoogleSheets: GoogleSheets;
   ScienceProbeEvent: ScienceProbeEvent;
   Notification: Notification;
+  WebRTCSignal: WebRtcSignal;
   Coolant: Coolant;
   CoolantRegulator: CoolantRegulator;
   TeamCountInput: TeamCountInput;
@@ -10616,6 +10647,11 @@ export type ClientResolvers<
     ContextType
   >;
   keypad?: Resolver<Maybe<ResolversTypes["Keypad"]>, ParentType, ContextType>;
+  webRTCInitiator?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -17818,6 +17854,18 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationTaskFlowActivateArgs, "id" | "simulatorId">
   >;
+  webRTCCandidate?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationWebRtcCandidateArgs, "clientId">
+  >;
+  webRTCSignal?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationWebRtcSignalArgs, "clientId" | "signal">
+  >;
 }>;
 
 export type NamedObjectResolvers<
@@ -21235,6 +21283,20 @@ export type SubscriptionResolvers<
     ContextType,
     RequireFields<SubscriptionTaskFlowsArgs, never>
   >;
+  webRTCreinitiate?: SubscriptionResolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    "webRTCreinitiate",
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionWebRtCreinitiateArgs, "simulatorId">
+  >;
+  webRTCSignal?: SubscriptionResolver<
+    Maybe<ResolversTypes["WebRTCSignal"]>,
+    "webRTCSignal",
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionWebRtcSignalArgs, "clientId">
+  >;
 }>;
 
 export type SubspaceFieldResolvers<
@@ -22637,6 +22699,16 @@ export type WarheadResolvers<
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
+export type WebRtcSignalResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["WebRTCSignal"] = ResolversParentTypes["WebRTCSignal"]
+> = ResolversObject<{
+  senderClientId?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  destinationClientId?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  signal?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
 export type Resolvers<ContextType = any> = ResolversObject<{
   Action?: ActionResolvers<ContextType>;
   Ambiance?: AmbianceResolvers<ContextType>;
@@ -22864,6 +22936,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Viewscreen?: ViewscreenResolvers<ContextType>;
   ViewscreenPictureInPicture?: ViewscreenPictureInPictureResolvers<ContextType>;
   Warhead?: WarheadResolvers<ContextType>;
+  WebRTCSignal?: WebRtcSignalResolvers<ContextType>;
 }>;
 
 /**
