@@ -2248,6 +2248,7 @@ export type Mutation = {
   toggleStationWidgets?: Maybe<Scalars['String']>,
   setStationDescription?: Maybe<Scalars['String']>,
   setStationTraining?: Maybe<Scalars['String']>,
+  setStationTags?: Maybe<Scalars['String']>,
   reorderStationWidgets?: Maybe<Scalars['String']>,
   setStealthActivated?: Maybe<Scalars['String']>,
   setStealthCharge?: Maybe<Scalars['String']>,
@@ -5841,6 +5842,13 @@ export type MutationSetStationTrainingArgs = {
 };
 
 
+export type MutationSetStationTagsArgs = {
+  stationSetID: Scalars['ID'],
+  stationName: Scalars['String'],
+  tags: Array<Scalars['String']>
+};
+
+
 export type MutationReorderStationWidgetsArgs = {
   stationSetId: Scalars['ID'],
   stationName: Scalars['String'],
@@ -8787,6 +8795,7 @@ export type StageComponent = {
 export type Station = {
    __typename?: 'Station',
   name: Scalars['String'],
+  tags: Array<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   training?: Maybe<Scalars['String']>,
   login?: Maybe<Scalars['Boolean']>,
@@ -9788,6 +9797,7 @@ export type Task = {
    __typename?: 'Task',
   id: Scalars['ID'],
   simulatorId?: Maybe<Scalars['ID']>,
+  stationTags?: Maybe<Array<Scalars['String']>>,
   station?: Maybe<Scalars['String']>,
   systemId?: Maybe<Scalars['ID']>,
   deck?: Maybe<Deck>,
@@ -9841,6 +9851,7 @@ export type TaskInput = {
   simulatorId?: Maybe<Scalars['ID']>,
   definition?: Maybe<Scalars['String']>,
   values?: Maybe<Scalars['JSON']>,
+  stationTags?: Maybe<Array<Scalars['String']>>,
   station?: Maybe<Scalars['String']>,
   macros?: Maybe<Array<Maybe<ActionInput>>>,
   preMacros?: Maybe<Array<Maybe<ActionInput>>>,
@@ -11632,6 +11643,49 @@ export type UpdateTacticalPathMutation = (
   & Pick<Mutation, 'updateTacticalMapPath'>
 );
 
+export type ActivateTaskFlowMutationVariables = {
+  id: Scalars['ID'];
+  simulatorId: Scalars['ID'];
+};
+
+
+export type ActivateTaskFlowMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowActivate'>
+);
+
+export type TaskFlowListSubscriptionVariables = {};
+
+
+export type TaskFlowListSubscription = (
+  { __typename?: 'Subscription' }
+  & { taskFlows: Array<(
+    { __typename?: 'TaskFlow' }
+    & Pick<TaskFlow, 'id' | 'name' | 'category'>
+  )> }
+);
+
+export type TaskFlowSubSubscriptionVariables = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type TaskFlowSubSubscription = (
+  { __typename?: 'Subscription' }
+  & { taskFlows: Array<(
+    { __typename?: 'TaskFlow' }
+    & Pick<TaskFlow, 'id' | 'name' | 'category' | 'currentStep' | 'completed'>
+    & { steps: Array<(
+      { __typename?: 'TaskFlowStep' }
+      & Pick<TaskFlowStep, 'id' | 'name' | 'completed'>
+      & { activeTasks: Array<(
+        { __typename?: 'Task' }
+        & Pick<Task, 'id' | 'station' | 'definition' | 'verified'>
+      )> }
+    )> }
+  )> }
+);
+
 export type TemplateFragmentFragment = (
   { __typename: 'Template' }
   & Pick<Template, 'id'>
@@ -13139,7 +13193,7 @@ export type SimulatorsConfigSubscription = (
       & Pick<StationSet, 'id' | 'name' | 'crewCount'>
       & { stations: Array<(
         { __typename?: 'Station' }
-        & Pick<Station, 'name' | 'description' | 'training' | 'ambiance' | 'login' | 'executive' | 'messageGroups' | 'layout' | 'widgets'>
+        & Pick<Station, 'name' | 'description' | 'tags' | 'training' | 'ambiance' | 'login' | 'executive' | 'messageGroups' | 'layout' | 'widgets'>
         & { cards: Array<(
           { __typename?: 'Card' }
           & Pick<Card, 'name' | 'component'>
@@ -13162,13 +13216,25 @@ export type StationSetConfigSubscription = (
       & Pick<Simulator, 'id'>
     )>, stations: Array<(
       { __typename?: 'Station' }
-      & Pick<Station, 'name' | 'description' | 'training' | 'ambiance' | 'login' | 'messageGroups' | 'executive' | 'widgets' | 'layout'>
+      & Pick<Station, 'name' | 'description' | 'tags' | 'training' | 'ambiance' | 'login' | 'messageGroups' | 'executive' | 'widgets' | 'layout'>
       & { cards: Array<(
         { __typename?: 'Card' }
         & Pick<Card, 'name' | 'component'>
       )> }
     )> }
   )>>> }
+);
+
+export type StationSetTagsMutationVariables = {
+  stationSetId: Scalars['ID'];
+  stationName: Scalars['String'];
+  tags: Array<Scalars['String']>;
+};
+
+
+export type StationSetTagsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'setStationTags'>
 );
 
 export type AddTaskTemplateMutationVariables = {
@@ -13426,7 +13492,7 @@ export type TaskFlowsConfigSubscription = (
       & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll'>
       & { tasks: Array<(
         { __typename?: 'Task' }
-        & Pick<Task, 'id' | 'station' | 'definition' | 'values'>
+        & Pick<Task, 'id' | 'station' | 'stationTags' | 'definition' | 'values'>
         & { macros?: Maybe<Array<(
           { __typename?: 'MacroAction' }
           & Pick<MacroAction, 'id' | 'event' | 'args' | 'delay'>
@@ -17010,6 +17076,111 @@ export function useUpdateTacticalPathMutation(baseOptions?: ApolloReactHooks.Mut
 export type UpdateTacticalPathMutationHookResult = ReturnType<typeof useUpdateTacticalPathMutation>;
 export type UpdateTacticalPathMutationResult = ApolloReactCommon.MutationResult<UpdateTacticalPathMutation>;
 export type UpdateTacticalPathMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTacticalPathMutation, UpdateTacticalPathMutationVariables>;
+export const ActivateTaskFlowDocument = gql`
+    mutation ActivateTaskFlow($id: ID!, $simulatorId: ID!) {
+  taskFlowActivate(id: $id, simulatorId: $simulatorId)
+}
+    `;
+export type ActivateTaskFlowMutationFn = ApolloReactCommon.MutationFunction<ActivateTaskFlowMutation, ActivateTaskFlowMutationVariables>;
+
+/**
+ * __useActivateTaskFlowMutation__
+ *
+ * To run a mutation, you first call `useActivateTaskFlowMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useActivateTaskFlowMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [activateTaskFlowMutation, { data, loading, error }] = useActivateTaskFlowMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useActivateTaskFlowMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ActivateTaskFlowMutation, ActivateTaskFlowMutationVariables>) {
+        return ApolloReactHooks.useMutation<ActivateTaskFlowMutation, ActivateTaskFlowMutationVariables>(ActivateTaskFlowDocument, baseOptions);
+      }
+export type ActivateTaskFlowMutationHookResult = ReturnType<typeof useActivateTaskFlowMutation>;
+export type ActivateTaskFlowMutationResult = ApolloReactCommon.MutationResult<ActivateTaskFlowMutation>;
+export type ActivateTaskFlowMutationOptions = ApolloReactCommon.BaseMutationOptions<ActivateTaskFlowMutation, ActivateTaskFlowMutationVariables>;
+export const TaskFlowListDocument = gql`
+    subscription TaskFlowList {
+  taskFlows {
+    id
+    name
+    category
+  }
+}
+    `;
+
+/**
+ * __useTaskFlowListSubscription__
+ *
+ * To run a query within a React component, call `useTaskFlowListSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowListSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskFlowListSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTaskFlowListSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<TaskFlowListSubscription, TaskFlowListSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<TaskFlowListSubscription, TaskFlowListSubscriptionVariables>(TaskFlowListDocument, baseOptions);
+      }
+export type TaskFlowListSubscriptionHookResult = ReturnType<typeof useTaskFlowListSubscription>;
+export type TaskFlowListSubscriptionResult = ApolloReactCommon.SubscriptionResult<TaskFlowListSubscription>;
+export const TaskFlowSubDocument = gql`
+    subscription TaskFlowSub($simulatorId: ID) {
+  taskFlows(simulatorId: $simulatorId) {
+    id
+    name
+    category
+    currentStep
+    steps {
+      id
+      name
+      activeTasks {
+        id
+        station
+        definition
+        verified
+      }
+      completed
+    }
+    completed
+  }
+}
+    `;
+
+/**
+ * __useTaskFlowSubSubscription__
+ *
+ * To run a query within a React component, call `useTaskFlowSubSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTaskFlowSubSubscription` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskFlowSubSubscription({
+ *   variables: {
+ *      simulatorId: // value for 'simulatorId'
+ *   },
+ * });
+ */
+export function useTaskFlowSubSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<TaskFlowSubSubscription, TaskFlowSubSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<TaskFlowSubSubscription, TaskFlowSubSubscriptionVariables>(TaskFlowSubDocument, baseOptions);
+      }
+export type TaskFlowSubSubscriptionHookResult = ReturnType<typeof useTaskFlowSubSubscription>;
+export type TaskFlowSubSubscriptionResult = ApolloReactCommon.SubscriptionResult<TaskFlowSubSubscription>;
 export const TemplateDocument = gql`
     query Template($simulatorId: ID!) {
   _template(simulatorId: $simulatorId) {
@@ -20840,6 +21011,7 @@ export const SimulatorsConfigDocument = gql`
       stations {
         name
         description
+        tags
         training
         ambiance
         login
@@ -20889,6 +21061,7 @@ export const StationSetConfigDocument = gql`
     stations {
       name
       description
+      tags
       training
       ambiance
       login
@@ -20925,6 +21098,38 @@ export function useStationSetConfigSubscription(baseOptions?: ApolloReactHooks.S
       }
 export type StationSetConfigSubscriptionHookResult = ReturnType<typeof useStationSetConfigSubscription>;
 export type StationSetConfigSubscriptionResult = ApolloReactCommon.SubscriptionResult<StationSetConfigSubscription>;
+export const StationSetTagsDocument = gql`
+    mutation StationSetTags($stationSetId: ID!, $stationName: String!, $tags: [String!]!) {
+  setStationTags(stationSetID: $stationSetId, stationName: $stationName, tags: $tags)
+}
+    `;
+export type StationSetTagsMutationFn = ApolloReactCommon.MutationFunction<StationSetTagsMutation, StationSetTagsMutationVariables>;
+
+/**
+ * __useStationSetTagsMutation__
+ *
+ * To run a mutation, you first call `useStationSetTagsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStationSetTagsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [stationSetTagsMutation, { data, loading, error }] = useStationSetTagsMutation({
+ *   variables: {
+ *      stationSetId: // value for 'stationSetId'
+ *      stationName: // value for 'stationName'
+ *      tags: // value for 'tags'
+ *   },
+ * });
+ */
+export function useStationSetTagsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StationSetTagsMutation, StationSetTagsMutationVariables>) {
+        return ApolloReactHooks.useMutation<StationSetTagsMutation, StationSetTagsMutationVariables>(StationSetTagsDocument, baseOptions);
+      }
+export type StationSetTagsMutationHookResult = ReturnType<typeof useStationSetTagsMutation>;
+export type StationSetTagsMutationResult = ApolloReactCommon.MutationResult<StationSetTagsMutation>;
+export type StationSetTagsMutationOptions = ApolloReactCommon.BaseMutationOptions<StationSetTagsMutation, StationSetTagsMutationVariables>;
 export const AddTaskTemplateDocument = gql`
     mutation AddTaskTemplate($definition: String!) {
   addTaskTemplate(definition: $definition)
@@ -21605,6 +21810,7 @@ export const TaskFlowsConfigDocument = gql`
       tasks {
         id
         station
+        stationTags
         definition
         values
         macros {

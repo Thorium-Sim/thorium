@@ -1,0 +1,11 @@
+mutation StationSetTags(
+  $stationSetId: ID!
+  $stationName: String!
+  $tags: [String!]!
+) {
+  setStationTags(
+    stationSetID: $stationSetId
+    stationName: $stationName
+    tags: $tags
+  )
+}

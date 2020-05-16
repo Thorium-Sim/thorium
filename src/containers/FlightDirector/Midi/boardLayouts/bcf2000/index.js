@@ -23,7 +23,6 @@ import styled from "styled-components";
 //         program,
 //         ...message
 //       }) => {
-//         console.log(message);
 //         setMessageValues({
 //           channel,
 //           messageType,

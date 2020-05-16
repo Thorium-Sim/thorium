@@ -3,10 +3,12 @@ import {pubsub} from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
 import uuid from "uuid";
 
-App.on("addTask", ({taskInput, simulatorId}) => {
-  const input = {simulatorId, ...taskInput};
+App.on("addTask", ({taskInput, simulatorId, cb}) => {
+  let simId = taskInput.simulatorId || simulatorId;
+  const input = {...taskInput, simulatorId: simId};
   const task = new Classes.Task({...input, id: null});
   App.tasks.push(task);
+  cb && cb(task.id);
   // Execute the pre-macros
   taskInput.preMacros &&
     taskInput.preMacros.length > 0 &&

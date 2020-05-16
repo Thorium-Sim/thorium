@@ -34,7 +34,7 @@ const Blackout = styled.div`
 
 interface CardFrameProps {
   simulator: Simulator;
-  station: Station;
+  station: Omit<Station, "tags">;
   flight: Flight;
   client: Client;
 }

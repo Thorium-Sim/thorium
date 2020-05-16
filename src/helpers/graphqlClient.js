@@ -46,7 +46,7 @@ const wsLink = ApolloLink.from([
     if (graphQLErrors) {
       graphQLErrors.forEach(error => {
         const {message, locations, path} = error;
-        console.log(
+        console.error(
           `[Subscription Error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
         );
         // Sentry.captureException(error);
@@ -54,7 +54,7 @@ const wsLink = ApolloLink.from([
     }
 
     if (networkError) {
-      console.log(`[Network error]: `, networkError);
+      console.error(`[Network error]: `, networkError);
       // Sentry.captureException(networkError);
     }
     if (response) response.errors = null;
@@ -105,12 +105,12 @@ const httpLink = ApolloLink.from([
   onError(({graphQLErrors, networkError}) => {
     if (graphQLErrors) {
       graphQLErrors.map(({message, locations, path}) =>
-        console.log(
+        console.error(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
         ),
       );
     }
-    if (networkError) console.log(`[Network error]:`, networkError);
+    if (networkError) console.error(`[Network error]:`, networkError);
   }),
   mutationMiddleware,
   process.env.NODE_ENV === "test"

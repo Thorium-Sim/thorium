@@ -157,6 +157,7 @@ subscription SimulatorsConfig {
       stations {
         name
         description
+        tags
         training
         ambiance
         login

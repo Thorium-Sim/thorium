@@ -25,7 +25,7 @@ const addAsset = (loc, zip, prefix = "mission") => {
       .filter(f => !fs.statSync(folderPath + "/" + f).isDirectory())
       .find(f => f.indexOf(filename) > -1);
     if (!file) {
-      console.log("Couldn't find file:", key);
+      console.error("Couldn't find file:", key);
       return;
     }
     key = path + "/" + file;

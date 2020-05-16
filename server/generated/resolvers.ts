@@ -2251,6 +2251,7 @@ export type Mutation = {
   toggleStationWidgets?: Maybe<Scalars["String"]>;
   setStationDescription?: Maybe<Scalars["String"]>;
   setStationTraining?: Maybe<Scalars["String"]>;
+  setStationTags?: Maybe<Scalars["String"]>;
   reorderStationWidgets?: Maybe<Scalars["String"]>;
   setStealthActivated?: Maybe<Scalars["String"]>;
   setStealthCharge?: Maybe<Scalars["String"]>;
@@ -5305,6 +5306,12 @@ export type MutationSetStationTrainingArgs = {
   training?: Maybe<Scalars["String"]>;
 };
 
+export type MutationSetStationTagsArgs = {
+  stationSetID: Scalars["ID"];
+  stationName: Scalars["String"];
+  tags: Array<Scalars["String"]>;
+};
+
 export type MutationReorderStationWidgetsArgs = {
   stationSetId: Scalars["ID"];
   stationName: Scalars["String"];
@@ -7952,6 +7959,7 @@ export type StageComponent = {
 export type Station = {
   __typename?: "Station";
   name: Scalars["String"];
+  tags: Array<Scalars["String"]>;
   description?: Maybe<Scalars["String"]>;
   training?: Maybe<Scalars["String"]>;
   login?: Maybe<Scalars["Boolean"]>;
@@ -8856,6 +8864,7 @@ export type Task = {
   __typename?: "Task";
   id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
+  stationTags?: Maybe<Array<Scalars["String"]>>;
   station?: Maybe<Scalars["String"]>;
   systemId?: Maybe<Scalars["ID"]>;
   deck?: Maybe<Deck>;
@@ -8909,6 +8918,7 @@ export type TaskInput = {
   simulatorId?: Maybe<Scalars["ID"]>;
   definition?: Maybe<Scalars["String"]>;
   values?: Maybe<Scalars["JSON"]>;
+  stationTags?: Maybe<Array<Scalars["String"]>>;
   station?: Maybe<Scalars["String"]>;
   macros?: Maybe<Array<Maybe<ActionInput>>>;
   preMacros?: Maybe<Array<Maybe<ActionInput>>>;
@@ -16498,6 +16508,15 @@ export type MutationResolvers<
       "stationSetID" | "stationName"
     >
   >;
+  setStationTags?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationSetStationTagsArgs,
+      "stationSetID" | "stationName" | "tags"
+    >
+  >;
   reorderStationWidgets?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -20340,6 +20359,7 @@ export type StationResolvers<
   ParentType extends ResolversParentTypes["Station"] = ResolversParentTypes["Station"]
 > = ResolversObject<{
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  tags?: Resolver<Array<ResolversTypes["String"]>, ParentType, ContextType>;
   description?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -21792,6 +21812,11 @@ export type TaskResolvers<
 > = ResolversObject<{
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   simulatorId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  stationTags?: Resolver<
+    Maybe<Array<ResolversTypes["String"]>>,
+    ParentType,
+    ContextType
+  >;
   station?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   systemId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   deck?: Resolver<Maybe<ResolversTypes["Deck"]>, ParentType, ContextType>;

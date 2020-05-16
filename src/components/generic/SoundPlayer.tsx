@@ -154,10 +154,10 @@ export function playSound(opts: Sound) {
         );
       })
       .catch(err => {
-        console.log("There was an error");
+        console.error("There was an error");
       });
   } catch (err) {
-    console.log("There was an error");
+    console.error("There was an error");
   }
 }
 

@@ -1,0 +1,20 @@
+subscription TaskFlowSub($simulatorId: ID) {
+  taskFlows(simulatorId: $simulatorId) {
+    id
+    name
+    category
+    currentStep
+    steps {
+      id
+      name
+      activeTasks {
+        id
+        station
+        definition
+        verified
+      }
+      completed
+    }
+    completed
+  }
+}

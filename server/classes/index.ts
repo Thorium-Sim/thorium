@@ -27,7 +27,7 @@ export {System} from "./generic";
 
 export {default as Crew} from "./crew";
 export {default as Team} from "./teams";
-export {default as Set} from "./set";
+export {default as Set, SetClient} from "./set";
 export {default as Viewscreen} from "./viewscreen";
 export {default as Message} from "./message";
 export {default as Isochip} from "./isochips";

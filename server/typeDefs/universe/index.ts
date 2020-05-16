@@ -104,7 +104,6 @@ const resolver = {
       context,
     ) {
       const universe = generateUniverse(flightId, procGenKey);
-      // console.log(universe);
       App.entities = App.entities.concat(universe);
     },
   },

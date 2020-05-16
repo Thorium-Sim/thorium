@@ -158,9 +158,7 @@ const ShuttlesCore = React.lazy(() => import("./Shuttles/core"));
 const SecurityDecksCore = React.lazy(() => import("./SecurityDecks/core"));
 const HeatCore = React.lazy(() => import("./Heat/core"));
 const ShipCore = React.lazy(() => import("./Ship/core"));
-const ReactivationCore = React.lazy(() =>
-  import("./DamageControl/reactivationCore"),
-);
+
 const MessagingCore = React.lazy(() => import("./Messaging/core"));
 const HypercardAndLoginNameCore = React.lazy(() => import("./Clients/core"));
 const JrNavigationCore = React.lazy(() => import("./JrFlight/navigationCore"));
@@ -218,6 +216,7 @@ const OfficerLogCore = React.lazy(() => import("./OfficerLog/core"));
 const RecordsCore = React.lazy(() => import("./Records/core"));
 const MIDICore = React.lazy(() => import("./Midi"));
 const CountermeasuresCore = React.lazy(() => import("./Countermeasures/core"));
+const TaskFlowCore = React.lazy(() => import("./Tasks/taskFlowCore"));
 
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
@@ -463,7 +462,6 @@ export const Cores = {
   SecurityDecksCore,
   HeatCore,
   ShipCore,
-  ReactivationCore,
   MessagingCore,
   JrNavigationCore,
   ExtrasCore,
@@ -513,6 +511,7 @@ export const Cores = {
   RecordsCore,
   MIDICore,
   CountermeasuresCore,
+  TaskFlowCore,
 };
 
 export default Views;

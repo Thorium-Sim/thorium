@@ -24,7 +24,7 @@ function streamToString(stream, cb) {
 const regexPath = /[^\\]*\.(\w+)$/;
 
 export default function ImportKeyboard(filepath, cb) {
-  console.log("Importing keyboard");
+  console.info("Importing keyboard");
   yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
     if (err) throw err;
     importZip.on("close", function() {
@@ -34,7 +34,7 @@ export default function ImportKeyboard(filepath, cb) {
 
     importZip.on("entry", function(entry) {
       if (/^keyboard\/assets/.test(entry.fileName)) {
-        console.log("Copying file", entry.fileName);
+        console.info("Copying file", entry.fileName);
         // It's an asset. Load it
         importZip.openReadStream(entry, function(error, readStream) {
           if (error) throw error;

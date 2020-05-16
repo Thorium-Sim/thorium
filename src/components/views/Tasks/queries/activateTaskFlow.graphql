@@ -1,0 +1,3 @@
+mutation ActivateTaskFlow($id: ID!, $simulatorId: ID!) {
+  taskFlowActivate(id: $id, simulatorId: $simulatorId)
+}

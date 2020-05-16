@@ -20,7 +20,7 @@ const excludedStations = [
 export const ClientContext = React.createContext({});
 
 const Client: React.FC<{
-  station: Station;
+  station: Omit<Station, "tags">;
   client: ClientInterface;
   flight: Flight;
   simulator: Simulator;

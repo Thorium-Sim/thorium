@@ -85,15 +85,20 @@ export class TaskFlow {
 
     // Check if all of the tasks have been completed.
     const currentStep = this.steps[this.currentStep];
-
-    if (!currentStep.completed) return;
-
+    if (!currentStep?.completed && this.currentStep !== -1) return;
     // Increment the current step, assign the next task,
     // and then publish the results.
     this.currentStep++;
     const step = this.steps[this.currentStep];
-    step.tasks.forEach(t => {
-      App.handleEvent({simulatorId: this.simulatorId, taskInput: t}, "addTask");
+    step?.tasks.forEach(t => {
+      App.handleEvent(
+        {
+          simulatorId: this.simulatorId,
+          taskInput: t,
+          cb: (task: string) => step.activeTaskIds.push(task),
+        },
+        "addTask",
+      );
     });
   }
   setName(name: string) {

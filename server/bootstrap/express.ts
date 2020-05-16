@@ -332,13 +332,13 @@ export default () => {
     // Print all server errors, but don't terminate the process
     setInterval(function() {}, Math.pow(2, 31) - 1);
     process.on("uncaughtException", err => {
-      console.log(chalk.red(`Caught exception: ${err}\n`));
-      console.log(err);
+      console.error(chalk.red(`Caught exception: ${err}\n`));
+      console.error(err);
     });
   } else {
     server.use("/assets/", express.static(path.resolve("./assets")));
   }
-  // console.log(server._router.stack.map(r => r.route?.path).filter(Boolean));
+  // console.info(server._router.stack.map(r => r.route?.path).filter(Boolean));
 
   return server;
 };

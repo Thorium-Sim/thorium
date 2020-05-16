@@ -77,7 +77,7 @@ const FlowConfig = () => {
             })
           }
           selectedItem={stepId}
-          setSelectedItem={id => Boolean(console.log(id)) || navigate(id)}
+          setSelectedItem={id => navigate(id)}
         ></SortableList>
         <Button
           block

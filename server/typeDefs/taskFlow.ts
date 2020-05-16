@@ -177,8 +177,8 @@ const resolver = {
       newFlow.advance();
       App.taskFlows.push(newFlow);
       pubsub.publish("taskFlows", {
-        simulatorId: null,
-        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+        simulatorId: simulatorId,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === simulatorId),
       });
     },
   },

@@ -19,10 +19,10 @@ function getFiles() {
   }));
 }
 if (!process.env.ERROR_REPORTING_ORGANIZATION) {
-  console.log("No Sentry.io Org Field. Skipping...");
+  console.info("No Sentry.io Org Field. Skipping...");
 } else {
-  console.log("Uploading files to Sentry.io...");
+  console.info("Uploading files to Sentry.io...");
   upload(config)
-    .then(data => console.log("----- SUCCESS ----\n", data))
-    .catch(error => console.log("---- ERROR ----\n", error));
+    .then(data => console.info("----- SUCCESS ----\n", data))
+    .catch(error => console.info("---- ERROR ----\n", error));
 }
