@@ -68,6 +68,8 @@ export default class LongRangeComm extends System {
     });
     this.type = "LongRangeComm";
     this.class = "LongRangeComm";
+    this.wing = params.wing || "right";
+
     this.messages = [];
     this.messageSent = false;
     const messages = params.messages || [];

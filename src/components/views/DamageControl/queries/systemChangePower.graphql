@@ -1,0 +1,3 @@
+mutation SystemChangePower($systemId: ID!, $power: Int!) {
+  changePower(systemId: $systemId, power: $power)
+}

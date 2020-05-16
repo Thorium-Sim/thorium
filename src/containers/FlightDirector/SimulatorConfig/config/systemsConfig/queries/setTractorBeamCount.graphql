@@ -1,0 +1,3 @@
+mutation TractorBeamSetCount($id: ID!, $beams: Int!) {
+  setTractorBeamCount(id: $id, beams: $beams)
+}

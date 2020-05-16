@@ -173,7 +173,7 @@ ${message.message}`}</div>
                   action({
                     variables: {
                       id: id,
-                      num: a,
+                      num: parseInt(a, 10),
                     },
                   });
                 }}

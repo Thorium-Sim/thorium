@@ -3,7 +3,7 @@ import Exocomp from "../../classes/exocomp";
 describe("Exocomp", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const e = Exocomp();
+      Exocomp();
     }).toThrow(/Class constructor Exocomp cannot be invoked without 'new'/);
   });
 

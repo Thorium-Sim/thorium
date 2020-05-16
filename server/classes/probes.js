@@ -8,6 +8,8 @@ export default class Probes extends System {
     super(params);
     this.class = "Probes";
     this.type = "Probes";
+    this.wing = params.wing || "right";
+
     this.name = params.name || "Probe Launcher";
     // Whether probes launching is handled by torpedos (Odyssey, Galileo)
     // Or by the probe launcher itself (Phoenix, Voyager, Magellan)

@@ -4,6 +4,10 @@ import gql from "graphql-tag.macro";
 import {Query, Mutation} from "react-apollo";
 import {Input, FormGroup, Label, Row, Col, Button} from "helpers/reactstrap";
 import {FaBan} from "react-icons/fa";
+import {
+  useReactorSetWingsMutation,
+  useReactorSetWingPowerMutation,
+} from "generated/graphql";
 
 const REACTOR_QUERY = gql`
   query Reactor($id: ID!) {
@@ -18,6 +22,9 @@ const REACTOR_QUERY = gql`
         color
         efficiency
       }
+      hasWings
+      leftWingPower
+      rightWingPower
     }
   }
 `;
@@ -33,6 +40,8 @@ const colors = [
 ];
 const Reactor = props => {
   const {id} = props;
+  const [setWings] = useReactorSetWingsMutation();
+  const [setWingPower] = useReactorSetWingPowerMutation();
   const updateEfficiencies = (action, reactor, i, key) => evt => {
     action({
       variables: {
@@ -66,13 +75,13 @@ const Reactor = props => {
     action({
       variables: {
         id: reactor.id,
-        efficiencies: reactor.efficiencies
-          .map(({__typename, ...e}) => e)
-          .concat({
-            label: "Efficiency",
-            color: "default",
-            efficiency: 0.5,
-          }),
+        efficiencies: (
+          reactor.efficiencies?.map(({__typename, ...e}) => e) || []
+        ).concat({
+          label: "Efficiency",
+          color: "default",
+          efficiency: 0.5,
+        }),
       },
     });
   };
@@ -159,6 +168,56 @@ const Reactor = props => {
                     </Mutation>
                     Warn crew of Unbalanced Power
                   </Label>
+                  <div style={{marginBottom: "20px"}}>
+                    <div>
+                      <Label style={{marginLeft: "30px"}}>
+                        <Input
+                          type="checkbox"
+                          defaultChecked={reactor.hasWings}
+                          onChange={evt =>
+                            setWings({
+                              variables: {id, hasWings: evt.target.checked},
+                            })
+                          }
+                        />{" "}
+                        Split power distribution into left and right wing
+                      </Label>
+                    </div>
+                    <Label>
+                      Left Wing Default Power
+                      <Input
+                        type="text"
+                        defaultValue={reactor.leftWingPower}
+                        onChange={e => {
+                          if (isNaN(parseInt(e.target.value, 10))) return;
+                          setWingPower({
+                            variables: {
+                              id,
+                              wing: "left",
+                              power: parseInt(e.target.value, 10),
+                            },
+                          });
+                        }}
+                      />
+                    </Label>
+                    <Label>
+                      Right Wing Default Power
+                      <Input
+                        type="text"
+                        defaultValue={reactor.rightWingPower}
+                        onChange={e => {
+                          if (isNaN(parseInt(e.target.value, 10))) return;
+                          setWingPower({
+                            variables: {
+                              id,
+                              wing: "right",
+                              power: parseInt(e.target.value, 10),
+                            },
+                          });
+                        }}
+                      />
+                    </Label>
+                  </div>
                   <Mutation
                     mutation={gql`
                       mutation UpdateEfficiencies(
@@ -183,7 +242,7 @@ const Reactor = props => {
                             Efficiency (0 - 1), Blank for external power
                           </Col>
                         </Row>
-                        {reactor.efficiencies.map((e, i) => (
+                        {reactor.efficiencies?.map((e, i) => (
                           <Row key={`${reactor.id}-${i}-${e.label}-${e.color}`}>
                             <Col sm={4}>
                               <Input

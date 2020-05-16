@@ -5,7 +5,7 @@ module.exports = function(app) {
   app.use(
     proxy(
       pathname => {
-        return pathname.match(/^\/[export|import].*/gm);
+        return pathname.match(/^\/(export|import).*/gm);
       },
       {target: "http://localhost:3001"},
     ),

@@ -84,6 +84,7 @@ function responseForOperation(requestContext) {
     flight: flight || context.flight,
     simulator: simulator || context.simulator,
     client,
+    isMutation: true,
   };
 
   // If there is a direct mutation resolver, execute that.
@@ -125,7 +126,10 @@ export default (
   app: express.Application,
   SERVER_PORT: number,
   httpOnly: boolean,
+  setMutations: (r: {[key: string]: Function}) => void,
 ) => {
+  // Apply the mutations to App.js so we don't get circular dependency issues
+  setMutations(resolvers.Mutation);
   const graphqlOptions: ApolloServerExpressConfig = {
     schema,
     engine: {

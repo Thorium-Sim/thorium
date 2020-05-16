@@ -8,6 +8,8 @@ export default class Phasers extends HeatMixin(System) {
     super(params);
     this.class = "Phasers";
     this.type = "Phasers";
+    this.wing = params.wing || "left";
+
     this.name = params.name || "Phaser";
     this.arc = params.arc || 0.5;
     this.beams = [];

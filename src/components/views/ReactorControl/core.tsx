@@ -155,8 +155,10 @@ const ReactorCore: React.FC<{simulator: Simulator}> = ({simulator}) => {
   if (!reactor && !battery) return <p>No Reactor</p>;
   const efficiencies =
     reactor?.efficiencies?.concat().sort((a, b) => {
-      if (a.efficiency > b.efficiency) return -1;
-      if (a.efficiency < b.efficiency) return 1;
+      const aEfficiency = a?.efficiency || 0;
+      const bEfficiency = b?.efficiency || 0;
+      if (aEfficiency > bEfficiency) return -1;
+      if (aEfficiency < bEfficiency) return 1;
       return 0;
     }) || [];
   return (
@@ -187,14 +189,14 @@ const ReactorCore: React.FC<{simulator: Simulator}> = ({simulator}) => {
                   <option
                     key={e.label}
                     value={
-                      e.efficiency || e.efficiency === 0
-                        ? e.efficiency
+                      e?.efficiency || e?.efficiency === 0
+                        ? e?.efficiency
                         : "external"
                     }
                   >
                     {e.label}{" "}
-                    {(e.efficiency || e.efficiency === 0) &&
-                      `- ${e.efficiency * 100}%`}
+                    {(e?.efficiency || e?.efficiency === 0) &&
+                      `- ${e?.efficiency * 100}%`}
                   </option>
                 ))}
                 <option disabled>----------</option>

@@ -25,21 +25,33 @@ const SET_ALL = gql`
     shieldFrequencySetAll(simulatorId: $simulatorId, frequency: $frequency)
   }
 `;
-const FrequencyArrows = ({shields, simulator, noSetAll}) => {
-  const [direction, setDirection] = React.useState(null);
-  const [disabled, setDisabled] = React.useState(false);
-  const [frequency, setFrequency] = React.useState(shields.frequency);
-  const mouseDowned = React.useRef(false);
-  const tempDirection = React.useRef(null);
 
-  const [frequencyDelay, setFrequencyDelay] = React.useState(150);
+export function useMouseIncrement({
+  value: inputValue,
+  onSet,
+  increment = 0.1,
+  delayDec = 7,
+  min = 100,
+  max = 350,
+}) {
+  const [value, setValue] = React.useState(inputValue);
+  const [delay, setDelay] = React.useState(150);
 
-  const [updateFrequency] = useMutation(SET_FREQUENCY);
-  const [setAll] = useMutation(SET_ALL);
+  const callback = React.useRef();
+
+  // Remember the latest callback.
+  React.useEffect(() => {
+    callback.current = onSet;
+  }, [onSet]);
 
   React.useEffect(() => {
-    setFrequency(shields.frequency);
-  }, [shields.frequency]);
+    setValue(inputValue);
+  }, [inputValue]);
+
+  const [direction, setDirection] = React.useState(null);
+  const [disabled, setDisabled] = React.useState(false);
+  const mouseDowned = React.useRef(false);
+  const tempDirection = React.useRef(null);
 
   React.useEffect(() => {
     if (disabled) {
@@ -51,13 +63,7 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
   React.useEffect(() => {
     function reset() {
       setDirection(null);
-      const variables = {
-        id: shields.id,
-        freq: frequency,
-      };
-      updateFrequency({
-        variables,
-      });
+      callback.current(value);
     }
     if (direction) {
       document.addEventListener("mouseup", reset);
@@ -67,18 +73,7 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
       document.removeEventListener("mouseup", reset);
       document.removeEventListener("touchend", reset);
     };
-  }, [direction, frequency, shields.id, updateFrequency]);
-
-  useInterval(
-    () => {
-      const frequencyAdder = direction === "down" ? -0.1 : 0.1;
-      if (frequencyDelay > 5) {
-        setFrequencyDelay(delay => delay - 7);
-      }
-      setFrequency(freq => Math.min(350, Math.max(100, freq + frequencyAdder)));
-    },
-    direction ? frequencyDelay : null,
-  );
+  }, [direction, value]);
 
   const handleDirection = dir => () => {
     if (disabled) return;
@@ -86,7 +81,7 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
     tempDirection.current = dir;
     setTimeout(() => {
       if (mouseDowned.current === true) {
-        setFrequencyDelay(150);
+        setDelay(150);
         setDirection(dir);
         setDisabled(true);
         mouseDowned.current = false;
@@ -94,20 +89,44 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
     }, 150);
   };
 
-  const handleMouseUp = () => {
+  useInterval(
+    () => {
+      const adder = direction === "down" ? -increment : increment;
+      if (delay > 5) {
+        setDelay(delay => delay - delayDec);
+      }
+      setValue(val => Math.min(max, Math.max(min, val + adder)));
+    },
+    direction ? delay : null,
+  );
+
+  const handleMouseUp = async () => {
     if (mouseDowned.current) {
       mouseDowned.current = false;
-      const frequencyAdder = tempDirection.current === "down" ? -0.1 : 0.1;
-      const newFreq = frequency + frequencyAdder;
-      const variables = {
-        id: shields.id,
-        freq: newFreq,
-      };
-      updateFrequency({
-        variables,
-      }).then(() => setDirection(null));
+      const adder = tempDirection.current === "down" ? -increment : increment;
+      const newFreq = value + adder;
+      await callback.current(newFreq);
+      setDirection(null);
     }
   };
+
+  return {handleDirection, handleMouseUp, value};
+}
+const FrequencyArrows = ({shields, simulator, noSetAll}) => {
+  const [updateFrequency] = useMutation(SET_FREQUENCY);
+  const [setAll] = useMutation(SET_ALL);
+  const {handleDirection, handleMouseUp, value} = useMouseIncrement({
+    value: shields.frequency,
+    onSet: value => {
+      const variables = {
+        id: shields.id,
+        freq: value,
+      };
+      return updateFrequency({
+        variables,
+      });
+    },
+  });
 
   return (
     <>
@@ -118,7 +137,7 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
             size="sm"
             color="info"
             onClick={() =>
-              setAll({variables: {frequency, simulatorId: simulator.id}})
+              setAll({variables: {frequency: value, simulatorId: simulator.id}})
             }
           >
             Set All
@@ -135,7 +154,7 @@ const FrequencyArrows = ({shields, simulator, noSetAll}) => {
         />
         <Grow>
           <h2 className="text-center">
-            {`${(Math.round(frequency * 100) / 100).toFixed(1)} MHz`}
+            {`${(Math.round(value * 100) / 100).toFixed(1)} MHz`}
           </h2>
         </Grow>
         <FaArrowUp

@@ -1,0 +1,3 @@
+mutation ReactorAckWingPower($id: ID!, $wing: String!, $ack: Boolean!) {
+  reactorAckWingRequest(id: $id, wing: $wing, ack: $ack)
+}

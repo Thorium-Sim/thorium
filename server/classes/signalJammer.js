@@ -20,6 +20,8 @@ export default class SignalJammer extends System {
     this.name = params.name || "Signal Jammer";
     this.class = "SignalJammer";
     this.type = "SignalJammer";
+    this.wing = params.wing || "right";
+
     this.active = params.active || false;
     this.level = params.level || 0.5;
     this.strength = params.strength || 0.1;

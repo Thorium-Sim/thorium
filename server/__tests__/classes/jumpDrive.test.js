@@ -5,7 +5,7 @@ import JumpDrive from "../../classes/jumpDrive";
 describe("JumpDrive", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const j = JumpDrive();
+      JumpDrive();
     }).toThrow(/Class constructor JumpDrive cannot be invoked without 'new'/);
   });
 

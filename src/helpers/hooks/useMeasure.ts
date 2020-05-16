@@ -1,6 +1,6 @@
 import {useState, useCallback, useLayoutEffect} from "react";
 
-interface Dimensions {
+export interface Dimensions {
   width: number;
   height: number;
   top: number;
@@ -29,7 +29,7 @@ function getDimensionObject<T>(node: T): Dimensions {
   }
 }
 
-function useDimensions<Element = HTMLElement>(): [
+function useMeasure<Element = HTMLElement>(): [
   (node: Element) => void,
   Dimensions,
   Element | undefined,
@@ -71,4 +71,4 @@ function useDimensions<Element = HTMLElement>(): [
   return [ref, dimensions, node];
 }
 
-export default useDimensions;
+export default useMeasure;

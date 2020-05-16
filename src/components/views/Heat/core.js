@@ -155,7 +155,9 @@ class HeatCore extends Component {
                   <InputField
                     prompt={`What do you want to change the heat of ${s.name} to?`}
                     alert={s.heat > 0.9}
-                    onClick={value => this.updateHeat(s.id, value / 100)}
+                    onClick={value =>
+                      this.updateHeat(s.id, parseInt(value, 10) / 100)
+                    }
                   >
                     {Math.round(s.heat * 100)}
                   </InputField>
@@ -163,7 +165,9 @@ class HeatCore extends Component {
                 <td>
                   <InputField
                     prompt={`What do you want to change the rate of ${s.name} to?`}
-                    onClick={value => this.updateRate(s.id, value)}
+                    onClick={value =>
+                      this.updateRate(s.id, parseInt(value, 10))
+                    }
                   >
                     {s.heatRate}
                   </InputField>
@@ -171,7 +175,9 @@ class HeatCore extends Component {
                 <td>
                   <InputField
                     prompt={`What do you want to change the coolant of ${s.name} to?`}
-                    onClick={value => this.updateCoolant(s.id, value / 100)}
+                    onClick={value =>
+                      this.updateCoolant(s.id, parseInt(value, 10) / 100)
+                    }
                   >
                     {Math.round(s.coolant * 100)}
                   </InputField>
@@ -185,7 +191,7 @@ class HeatCore extends Component {
                   <InputField
                     prompt={`What do you want to change the coolant tank to?`}
                     onClick={value =>
-                      this.updateCoolant(coolant.id, value / 100)
+                      this.updateCoolant(coolant.id, parseInt(value) / 100)
                     }
                   >
                     {Math.round(coolant.coolant * 100)}

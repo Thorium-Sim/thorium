@@ -8,6 +8,8 @@ export default class Engine extends HeatMixin(System) {
     super({displayName: params.name + " Engine", ...params});
     this.class = "Engine";
     this.type = "Engine";
+    this.wing = params.wing || "left";
+
     this.on = params.on || false;
     this.speeds = params.speeds || [];
     this.speed = params.speed || -1;

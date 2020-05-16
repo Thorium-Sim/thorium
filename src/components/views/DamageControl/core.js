@@ -4,6 +4,8 @@ import {graphql, withApollo, Mutation} from "react-apollo";
 import {Table, Button} from "helpers/reactstrap";
 import {InputField, OutputField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import SystemRow from "./systemRow";
+import WingPower from "./wingPower";
 
 const fragment = gql`
   fragment PowerData on Reactor {
@@ -13,6 +15,9 @@ const fragment = gql`
     efficiency
     displayName
     powerOutput
+    hasWings
+    leftWingPower
+    rightWingPower
   }
 `;
 export const DAMAGE_REACTOR_CORE_SUB = gql`
@@ -31,6 +36,7 @@ export const DAMAGE_SYSTEMS_CORE_SUB = gql`
       name
       displayName
       upgraded
+      wing
       power {
         power
         powerLevels
@@ -61,104 +67,7 @@ class DamageControlCore extends Component {
       room: null,
     };
   }
-  systemStyle(sys) {
-    const obj = {
-      listStyle: "none",
-      cursor: "pointer",
-    };
-    if (
-      sys.power &&
-      sys.power.powerLevels &&
-      sys.power.powerLevels.length > 0 &&
-      !sys.power.powerLevels.find(p => p <= sys.power.power)
-    ) {
-      obj.color = "#888";
-    }
-    // Overloaded the power levels
-    if (
-      sys.power &&
-      sys.power.powerLevels &&
-      sys.power.powerLevels.length > 0 &&
-      sys.power.powerLevels[sys.power.powerLevels.length - 1] < sys.power.power
-    ) {
-      obj.color = "goldenrod";
-    }
-    if (sys.damage.damaged) {
-      obj.color = "red";
-    }
-    if (sys.damage.taskReportDamage) {
-      obj.color = "orangered";
-    }
-    if (!sys.name) {
-      obj.color = "purple";
-    }
-    if (sys.damage.which === "rnd") {
-      obj.color = "orange";
-    }
-    if (sys.damage.which === "engineering") {
-      obj.color = "rgb(0,128,255)";
-    }
-    if (sys.damage.destroyed) {
-      obj.color = "black";
-      obj.textShadow = "0px 0px 1px rgba(255,255,255,1)";
-    }
-    return obj;
-  }
-  systemTitle(sys) {
-    if (sys.damage.taskReportDamage) {
-      return "Task Report Damage";
-    }
-    if (sys.damage.destroyed) {
-      return "Destroyed";
-    }
-    if (sys.damage.which === "engineering") {
-      return "Engineering";
-    }
-    if (sys.damage.which === "rnd") {
-      return "Research & Development";
-    }
-    if (sys.damage.damaged) {
-      return "Damaged";
-    }
-    // Overloaded the power levels
-    if (
-      sys.power &&
-      sys.power.powerLevels &&
-      sys.power.powerLevels.length > 0 &&
-      sys.power.powerLevels[sys.power.powerLevels.length - 1] < sys.power.power
-    ) {
-      return "Overloaded Power";
-    }
-    if (
-      sys.power &&
-      sys.power.powerLevels &&
-      sys.power.powerLevels.length > 0 &&
-      !sys.power.powerLevels.find(p => p <= sys.power.power)
-    ) {
-      return "Insufficient Power";
-    }
-  }
-  systemName(sys) {
-    if (sys.type === "Shield" && sys.name !== "Shields") {
-      return `${sys.name} Shields`;
-    }
-    return sys.displayName || sys.name;
-  }
-  setPower(system, power) {
-    const mutation = gql`
-      mutation SetPower($systemId: ID!, $power: Int!) {
-        changePower(systemId: $systemId, power: $power)
-      }
-    `;
-    const variables = {
-      systemId: system.id,
-      power,
-    };
-    this.props.client.mutate({
-      mutation,
-      variables,
-    });
-  }
+
   setPowerOutput = output => {
     if ((!output || !parseFloat(output)) && output !== "0") return;
     const reactor = this.props.data.reactors.find(r => r.model === "reactor");
@@ -223,17 +132,7 @@ class DamageControlCore extends Component {
     });
     //this.toggleDamage(e, s, true)
   };
-  renderEngineSpeed = system => {
-    if (system.type !== "Engine") return null;
-    const engines = this.props.data.engines;
-    const engine = engines.find(e => e.id === system.id);
-    const speedIndex =
-      system.power.powerLevels.filter(p => p <= system.power.power).length - 1;
-    const maxSpeed = engine?.speeds[speedIndex]
-      ? engine?.speeds[speedIndex].number
-      : 0;
-    return `(${maxSpeed})`;
-  };
+
   damageOption = (e, option) => {
     const {system} = this.state.context;
     if (option === "destroy") {
@@ -251,6 +150,32 @@ class DamageControlCore extends Component {
     )
       return null;
     const reactor = this.props.data.reactors.find(r => r.model === "reactor");
+
+    const systems = this.props.data.systems.concat().sort((a, b) => {
+      const hasPowerA =
+        a.power?.powerLevels.length > 0 &&
+        (a.power?.power || a.power?.power === 0);
+      const hasPowerB =
+        b.power?.powerLevels.length > 0 &&
+        (b.power?.power || b.power?.power === 0);
+
+      if (hasPowerA && !hasPowerB) return -1;
+      if (hasPowerB && !hasPowerA) return 1;
+      if (a.type > b.type) return 1;
+      if (a.type < b.type) return -1;
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return -1;
+      return 0;
+    });
+    const wingedSystems = systems.reduce(
+      (prev, next) => {
+        if (!["left", "right"].includes(next.wing)) return prev;
+        prev[next.wing].push(next);
+        prev[`${next.wing}Power`] += next?.power?.power || 0;
+        return prev;
+      },
+      {left: [], right: [], leftPower: 0, rightPower: 0},
+    );
     return (
       <Mutation
         mutation={gql`
@@ -304,87 +229,33 @@ class DamageControlCore extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.props.data.systems
-                  .concat()
-                  .sort((a, b) => {
-                    const hasPowerA =
-                      a.power?.powerLevels.length > 0 &&
-                      (a.power?.power || a.power?.power === 0);
-                    const hasPowerB =
-                      b.power?.powerLevels.length > 0 &&
-                      (b.power?.power || b.power?.power === 0);
-
-                    if (hasPowerA && !hasPowerB) return -1;
-                    if (hasPowerB && !hasPowerA) return 1;
-                    if (a.type > b.type) return 1;
-                    if (a.type < b.type) return -1;
-                    if (a.name > b.name) return 1;
-                    if (a.name < b.name) return -1;
-                    return 0;
-                  })
-                  .map(s => {
-                    const hasPower =
-                      s.power?.powerLevels.length > 0 &&
-                      (s.power?.power || s.power?.power === 0);
-                    return (
-                      <tr key={s.id}>
-                        <td
-                          onClick={e => this.toggleDamage(e, s)}
-                          onContextMenu={e => this.setContext(e, s)}
-                          title={this.systemTitle(s)}
-                          style={this.systemStyle(s)}
-                        >
-                          {this.systemName(s)} {this.renderEngineSpeed(s)}{" "}
-                        </td>
-                        <td>
-                          {hasPower && (
-                            <InputField
-                              prompt="What is the power?"
-                              onClick={this.setPower.bind(this, s)}
-                            >
-                              {s.power?.power}
-                            </InputField>
-                          )}
-                        </td>
-                        <td>{hasPower && "/"}</td>
-                        <td>
-                          {hasPower && (
-                            <OutputField>{s.power?.powerLevels[0]}</OutputField>
-                          )}
-                        </td>
-                        <td>
-                          <Mutation
-                            mutation={gql`
-                              mutation UpgradeSystem($systemId: ID!) {
-                                upgradeSystem(systemId: $systemId)
-                              }
-                            `}
-                            variables={{systemId: s.id}}
-                          >
-                            {action => (
-                              <input
-                                type="checkbox"
-                                checked={s.upgraded}
-                                disabled={s.upgraded}
-                                onClick={action}
-                              />
-                            )}
-                          </Mutation>
-                        </td>
-                        <td>
-                          {hasPower && (
-                            <Button
-                              size="sm"
-                              color="warning"
-                              title="Flux"
-                              style={{height: "15px"}}
-                              onClick={() => action({variables: {id: s.id}})}
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
+                {reactor?.hasWings
+                  ? Object.entries(wingedSystems).map(
+                      ([key, value]) =>
+                        ["left", "right"].includes(key) && (
+                          <WingPower
+                            key={key}
+                            wing={key}
+                            value={value}
+                            reactor={reactor}
+                            wingedSystems={wingedSystems}
+                            simulatorId={this.props.simulator.id}
+                            fluxPower={id => action({variables: {id}})}
+                            toggleDamage={this.toggleDamage}
+                            setContext={this.setContext}
+                          />
+                        ),
+                    )
+                  : systems.map(s => (
+                      <SystemRow
+                        key={s.id}
+                        simulatorId={this.props.simulator.id}
+                        fluxPower={id => action({variables: {id}})}
+                        toggleDamage={this.toggleDamage}
+                        s={s}
+                        setContext={this.setContext}
+                      />
+                    ))}
                 <tr>
                   <td>Total</td>
                   <td>
@@ -481,17 +352,12 @@ export const DAMAGE_SYSTEMS_CORE_QUERY = gql`
     reactors(simulatorId: $simulatorId) {
       ...PowerData
     }
-    engines(simulatorId: $simulatorId) {
-      id
-      speeds {
-        number
-      }
-    }
     systems(simulatorId: $simulatorId) {
       id
       name
       displayName
       upgraded
+      wing
       power {
         power
         powerLevels

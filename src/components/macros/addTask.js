@@ -4,7 +4,7 @@ import {Badge, ListGroup, ListGroupItem, Input} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import ValueInput from "../views/Tasks/core/ValueInput";
 import ConfigureMacro from "../views/Tasks/core/ConfigureMacro";
-import {ConfigureMacro as ConfigMacro} from "containers/FlightDirector/TaskTemplates/taskConfig.js";
+import {ConfigureMacro as ConfigMacro} from "containers/FlightDirector/TaskTemplates/taskConfig";
 /*
 input TaskInput {
   simulatorId: ID

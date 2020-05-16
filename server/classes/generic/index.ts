@@ -112,6 +112,7 @@ export class System {
   requiredDamageSteps: DamageStep[];
   optionalDamageSteps: DamageStep[];
   damageTasks: DamageTask[];
+  wing: "left" | "right";
   stealthCompromised: boolean;
   [key: string]: any;
   constructor(params: any = {}) {
@@ -120,6 +121,7 @@ export class System {
     this.type = "System";
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || null;
+    this.wing = params.wing || "left";
     this.storedDisplayName =
       params.storedDisplayName || params.displayName || params.name;
     this.upgradeName = params.upgradeName || this.storedDisplayName;
@@ -174,6 +176,9 @@ export class System {
   }
   trainingMode() {
     return;
+  }
+  setWing(wing) {
+    this.wing = wing;
   }
   updateName({
     name,

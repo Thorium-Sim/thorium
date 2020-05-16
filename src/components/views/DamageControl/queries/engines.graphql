@@ -1,0 +1,8 @@
+query SystemsCoreEngines($simulatorId: ID!) {
+  engines(simulatorId: $simulatorId) {
+    id
+    speeds {
+      number
+    }
+  }
+}

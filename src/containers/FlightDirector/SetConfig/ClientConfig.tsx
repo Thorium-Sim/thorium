@@ -26,9 +26,6 @@ const ClientConfig: React.FC = () => {
   const selectedStationSet = selectedSimulator?.stationSets?.find(
     s => s?.id === stationSetId,
   );
-  const selectedStation = selectedStationSet?.stations?.find(
-    s => s?.name === stationId,
-  );
 
   const getCurrentClient = (clientId: string) => {
     return (

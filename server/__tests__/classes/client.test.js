@@ -3,7 +3,7 @@ import Client from "../../classes/client";
 describe("Client", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const c = Client();
+      Client();
     }).toThrow(/Class constructor Client cannot be invoked without 'new'/);
   });
 
@@ -234,7 +234,6 @@ describe("Keypad", () => {
       expect(c.keypad.codeLength).toBe(8);
       expect(c.keypad.code).toBeKeypadCode(8);
 
-      const c2 = new Client({keypad: {code: [1, 2, 3, 4, 5, 6, 7, 8, 9]}});
       expect(c.keypad.codeLength).toBe(8);
       expect(c.keypad.code).toBeKeypadCode(8);
     });

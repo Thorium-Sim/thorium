@@ -75,6 +75,7 @@ import viewscreenTypeDefs from "./viewscreen";
 import countermeasuresTypeDefs from "./countermeasures";
 import universeTypeDefs from "./universe";
 import dmxTypeDefs from "./dmx";
+import taskFlowTypeDefs from "./taskFlow";
 export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
@@ -154,3 +155,4 @@ export const viewscreen = viewscreenTypeDefs;
 export const countermeasures = countermeasuresTypeDefs;
 export const universe = universeTypeDefs;
 export const dmx = dmxTypeDefs;
+export const taskFlow = taskFlowTypeDefs;

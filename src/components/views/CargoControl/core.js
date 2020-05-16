@@ -325,7 +325,9 @@ const CargoControlCore = ({simulator, client}) => {
                       minWidth: "20px",
                     }}
                     prompt={`What is the new quantity of ${i.name}?`}
-                    onClick={val => updateInventoryQuantity(i, val)}
+                    onClick={val =>
+                      updateInventoryQuantity(i, parseInt(val, 10))
+                    }
                   >
                     {i.count}
                   </InputField>

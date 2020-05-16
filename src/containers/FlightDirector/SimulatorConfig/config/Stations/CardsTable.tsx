@@ -16,15 +16,10 @@ import {
   useSetStationDescriptionMutation,
   Card,
   Station,
+  useReactorsSubscription,
 } from "generated/graphql";
 import {useParams} from "react-router";
 import Maybe from "graphql/tsutils/Maybe";
-
-const viewList = Object.keys(Views)
-  .filter(v => {
-    return v !== "Offline" && v !== "Login" && v !== "Viewscreen";
-  })
-  .sort();
 
 interface CardSelectProps {
   action: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -41,6 +36,9 @@ const CardSelect: React.FC<CardSelectProps> = ({
   interfaces = [],
 }) => {
   const {subPath1: selectedStationSet} = useParams();
+  const {data} = useReactorsSubscription({
+    variables: {simulatorId: simulator.id},
+  });
 
   const inSim = (comp: string) => {
     const stationSet = simulator?.stationSets?.find(
@@ -56,6 +54,15 @@ const CardSelect: React.FC<CardSelectProps> = ({
       }, []) || [];
     return cards.includes(comp);
   };
+
+  const viewList = Object.keys(Views).filter(v => {
+    return v !== "Offline" && v !== "Login" && v !== "Viewscreen";
+  });
+  if (data?.reactorUpdate.find(r => r.model === "reactor")?.hasWings) {
+    viewList.push("PowerDistributionLeftWing");
+    viewList.push("PowerDistributionRightWing");
+  }
+  viewList.sort();
 
   return (
     <select className="c-select form-control" value={value} onChange={action}>

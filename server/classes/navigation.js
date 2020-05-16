@@ -6,6 +6,8 @@ export default class Navigation extends System {
     this.class = "Navigation";
     this.type = "Navigation";
     this.name = params.name || "Navigation";
+    this.wing = params.wing || "right";
+
     this.calculate = params.calculate || true; //Whether the course is calculated or give from Sensors
     this.currentCourse = params.currentCourse || {
       x: null,

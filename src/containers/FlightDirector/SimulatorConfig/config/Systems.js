@@ -1,4 +1,6 @@
-import React, {Component} from "react";
+/** @jsx jsx */
+import {Component} from "react";
+import {jsx, css} from "@emotion/core";
 import {
   Container,
   Row,
@@ -6,7 +8,7 @@ import {
   Card,
   CardBody,
   Button,
-  ButtonGroup,
+  Input,
 } from "helpers/reactstrap";
 import {capitalCase, camelCase} from "change-case";
 import {Query, Mutation} from "react-apollo";
@@ -118,9 +120,8 @@ const reconfigureShields = (num, id) => {
 };
 class SystemsConfig extends Component {
   state = {};
-  addSystem = action => () => {
+  addSystem = (action, addSystem) => {
     const {id} = this.props.selectedSimulator;
-    const {addSystem} = this.state;
     this.setState({addSystem: null});
     if (addSystem.indexOf("Shield") > -1) {
       // Create based on the shield count
@@ -184,20 +185,20 @@ class SystemsConfig extends Component {
   }
   render() {
     const {id} = this.props.selectedSimulator;
-    const {addSystem, selectedSystem, selectedType} = this.state;
+    const {selectedSystem, selectedType} = this.state;
     const SystemConfig = selectedType
       ? Configs[selectedType] || Configs.Generic
       : () => null;
     return (
-      <Container fluid style={{height: "90vh"}}>
+      <Container fluid css={{height: "100%"}}>
         <Query query={SYSTEM_QUERY} variables={{simulatorId: id}}>
           {({data, loading}) => {
             if (loading) return null;
             return (
-              <Row style={{height: "100%"}}>
+              <Row css={{height: "100%"}}>
                 <Col
                   sm={5}
-                  style={{
+                  css={{
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
@@ -205,28 +206,56 @@ class SystemsConfig extends Component {
                   }}
                 >
                   <h6>Available Systems</h6>
-                  <Card
-                    className="systems-container"
-                    style={{height: "40%", overflowY: "auto"}}
+
+                  <div
+                    css={css`
+                      display: flex;
+                      * {
+                        flex: 1;
+                      }
+                    `}
                   >
-                    <CardBody>
-                      <Row>
-                        {systems.map(s => (
-                          <System
-                            key={s}
-                            id={s}
-                            selected={s === addSystem}
-                            added={this.getAdded(s, data.systems)}
-                            name={s}
-                            displayName={capitalCase(s)}
-                            type={s}
-                            click={() => this.setState({addSystem: s})}
-                          />
-                        ))}
-                      </Row>
-                    </CardBody>
-                  </Card>
-                  <ButtonGroup>
+                    <Mutation
+                      mutation={gql`
+                        mutation AddSystemToSimulator(
+                          $id: ID!
+                          $type: String!
+                          $params: String = "{}"
+                        ) {
+                          addSystemToSimulator(
+                            simulatorId: $id
+                            className: $type
+                            params: $params
+                          )
+                        }
+                      `}
+                      refetchQueries={[
+                        {query: SYSTEM_QUERY, variables: {simulatorId: id}},
+                      ]}
+                    >
+                      {action => (
+                        <Input
+                          type="select"
+                          size="sm"
+                          className="btn btn-success"
+                          value={"select"}
+                          onChange={e => this.addSystem(action, e.target.value)}
+                        >
+                          <option value={"select"} disabled>
+                            Add System
+                          </option>
+                          {systems.map(s => (
+                            <option
+                              key={s}
+                              value={s}
+                              disabled={this.getAdded(s, data.systems)}
+                            >
+                              {capitalCase(s)}
+                            </option>
+                          ))}
+                        </Input>
+                      )}
+                    </Mutation>
                     <Mutation
                       mutation={gql`
                         mutation RemoveSystem($id: ID!) {
@@ -248,40 +277,11 @@ class SystemsConfig extends Component {
                         </Button>
                       )}
                     </Mutation>
-                    <Mutation
-                      mutation={gql`
-                        mutation AddSystemToSimulator(
-                          $id: ID!
-                          $type: String!
-                          $params: String = "{}"
-                        ) {
-                          addSystemToSimulator(
-                            simulatorId: $id
-                            className: $type
-                            params: $params
-                          )
-                        }
-                      `}
-                      refetchQueries={[
-                        {query: SYSTEM_QUERY, variables: {simulatorId: id}},
-                      ]}
-                    >
-                      {action => (
-                        <Button
-                          size="sm"
-                          color="success"
-                          disabled={!addSystem}
-                          onClick={this.addSystem(action)}
-                        >
-                          Add System
-                        </Button>
-                      )}
-                    </Mutation>
-                  </ButtonGroup>
+                  </div>
                   <h6>Installed Systems</h6>
                   <Card
                     className="systems-container"
-                    style={{height: "40%", overflowY: "auto"}}
+                    style={{flex: 1, overflowY: "auto"}}
                   >
                     <CardBody>
                       <Row>

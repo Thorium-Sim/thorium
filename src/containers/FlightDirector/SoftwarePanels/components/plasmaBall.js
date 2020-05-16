@@ -126,7 +126,6 @@ class PlasmaBall extends Component {
   render() {
     const {
       level = 0,
-      color = "#00ff00",
       inputs = [],
       onMouseDown,
       id,

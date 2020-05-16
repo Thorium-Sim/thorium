@@ -5,13 +5,7 @@ import {Button, Input, Label} from "helpers/reactstrap";
 import allowedMacros from "./allowedMacros";
 import EventName from "../../../containers/FlightDirector/MissionConfig/EventName";
 import {FaArrowDown, FaArrowRight} from "react-icons/fa";
-import {
-  TimelineStep,
-  Station,
-  Client,
-  Mission,
-  useSetSimulatorMissionMutation,
-} from "generated/graphql";
+import {TimelineStep, Station, Client, Mission} from "generated/graphql";
 import MissionBranchButton from "./missionBranchButton";
 
 interface ActionPreviewProps {

@@ -21,6 +21,7 @@ export default class JumpDrive extends System {
     super({name: "Jump Drive", ...params});
     this.class = "JumpDrive";
     this.type = "JumpDrive";
+    this.wing = params.wing || "right";
 
     this.simulatorId = params.simulatorId || null;
     this.power = params.power || {

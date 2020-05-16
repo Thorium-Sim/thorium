@@ -117,11 +117,11 @@ const schema = gql`
   }
 `;
 
-const badgeAssign = ({
-  badgeId,
-  station,
-  context: {simulator, flight, clientId},
-}) => {
+const badgeAssign = (
+  rootValue,
+  {badgeId, station},
+  {simulator, clientId, flight},
+) => {
   const clients = App.clients.filter(c => {
     if (clientId) return c.id === clientId;
     if (station)
@@ -188,7 +188,7 @@ const resolver = {
     },
   },
   Mutation: {
-    setTrackingPreference: ({pref}) => {
+    setTrackingPreference: (rootValue, {pref}) => {
       App.doTrack = pref;
       App.askedToTrack = true;
       heap.stubbed = !pref;
@@ -202,7 +202,7 @@ const resolver = {
       pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
     },
 
-    setSpaceEdventuresToken: async ({token}) => {
+    setSpaceEdventuresToken: async (rootValue, {token}) => {
       // Check the token first
       const {
         data: {center},
@@ -223,14 +223,17 @@ const resolver = {
       }
     },
 
-    assignSpaceEdventuresFlightRecord: ({simulatorId, flightId}) => {
+    assignSpaceEdventuresFlightRecord: (rootValue, {simulatorId, flightId}) => {
       const flight = App.flights.find(
         f => f.id === flightId || f.simulators.includes(simulatorId),
       );
       flight.submitSpaceEdventure();
     },
 
-    assignSpaceEdventuresFlightType: ({flightId, simulatorId, flightType}) => {
+    assignSpaceEdventuresFlightType: (
+      rootValue,
+      {flightId, simulatorId, flightType},
+    ) => {
       const flight = App.flights.find(
         f => f.id === flightId || f.simulators.includes(simulatorId),
       );
@@ -239,7 +242,7 @@ const resolver = {
       pubsub.publish("flightsUpdate", App.flights);
     },
 
-    removeSpaceEdventuresClient: ({flightId, clientId}) => {
+    removeSpaceEdventuresClient: (rootValue, {flightId, clientId}) => {
       const flight = App.flights.find(f => f.id === flightId);
       if (!flight) return;
       flight.removeClient(clientId);
@@ -247,7 +250,7 @@ const resolver = {
     },
     assignSpaceEdventuresBadge: badgeAssign,
     assignSpaceEdventuresMission: badgeAssign,
-    getSpaceEdventuresLogin: async ({token, context}) => {
+    getSpaceEdventuresLogin: async (rootValue, {token}, context) => {
       async function doLogin() {
         let res: any = {};
         try {

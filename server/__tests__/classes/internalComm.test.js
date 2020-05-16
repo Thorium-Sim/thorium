@@ -4,7 +4,7 @@ import InternalComm from "../../classes/internalComm";
 describe("InternalComm", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const i = InternalComm();
+      InternalComm();
     }).toThrow(
       /Class constructor InternalComm cannot be invoked without 'new'/,
     );

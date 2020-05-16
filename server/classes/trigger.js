@@ -93,6 +93,7 @@ export default class Trigger {
                   comp.id === compId ? comp.values : this.values[compId];
 
                 // Do a loose check
+                // eslint-disable-next-line eqeqeq
                 if (checkValues[checkKey] == checkValue) {
                   return prev.concat(processConnections(o));
                 } else {

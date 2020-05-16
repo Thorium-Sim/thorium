@@ -3,7 +3,7 @@ import CoreLayout from "../../classes/coreLayout";
 describe("CoreLayout", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const c = CoreLayout();
+      CoreLayout();
     }).toThrow(/Class constructor CoreLayout cannot be invoked without 'new'/);
   });
 

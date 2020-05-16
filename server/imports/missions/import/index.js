@@ -50,7 +50,7 @@ export default function ImportMission(filepath, cb) {
               .split("/")
               [filename.split("/").length - 1].indexOf("default") > -1
           ) {
-            const [_, ext] = filename.match(regexPath);
+            const [, ext] = filename.match(regexPath);
             const pathList = filename.split("/");
             filename =
               pathList.slice(0, pathList.length - 1).join("/") + "." + ext;

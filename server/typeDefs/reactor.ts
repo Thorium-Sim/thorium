@@ -30,6 +30,15 @@ const schema = gql`
     batteryChargeLevel: Float
     batteryChargeRate: Float
     depletion: Float
+
+    hasWings: Boolean
+    leftWingPower: Int
+    leftWingRequest: Int
+    leftWingRequested: Boolean
+    rightWingPower: Int
+    rightWingRequest: Int
+    rightWingRequested: Boolean
+
     # For Dilithium Stress
     alphaLevel: Float
     betaLevel: Float
@@ -49,7 +58,7 @@ const schema = gql`
   type ReactorEfficiency {
     label: String!
     color: String!
-    efficiency: Float!
+    efficiency: Float
   }
 
   input ReactorEfficiencyInput {
@@ -88,6 +97,11 @@ const schema = gql`
     ): String
     setDilithiumStressRate(id: ID!, rate: Float!): String
     reactorRequireBalance(id: ID!, balance: Boolean!): String
+
+    reactorSetHasWings(id: ID!, hasWings: Boolean!): String
+    reactorSetWingPower(id: ID!, wing: String!, power: Int!): String
+    reactorRequestWingPower(id: ID!, wing: String!, power: Int!): String
+    reactorAckWingRequest(id: ID!, wing: String!, ack: Boolean!): String
   }
   extend type Subscription {
     reactorUpdate(simulatorId: ID): [Reactor!]!

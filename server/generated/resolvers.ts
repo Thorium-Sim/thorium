@@ -1482,11 +1482,11 @@ export type Macro = {
 
 export type MacroAction = {
   __typename?: "MacroAction";
-  id?: Maybe<Scalars["ID"]>;
-  event?: Maybe<Scalars["String"]>;
-  args?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  event: Scalars["String"];
+  args: Scalars["String"];
   delay?: Maybe<Scalars["Int"]>;
-  needsConfig?: Maybe<Scalars["String"]>;
+  needsConfig?: Maybe<Scalars["Boolean"]>;
   noCancelOnReset?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -2063,6 +2063,10 @@ export type Mutation = {
   setReactorEffciciencies?: Maybe<Scalars["String"]>;
   setDilithiumStressRate?: Maybe<Scalars["String"]>;
   reactorRequireBalance?: Maybe<Scalars["String"]>;
+  reactorSetHasWings?: Maybe<Scalars["String"]>;
+  reactorSetWingPower?: Maybe<Scalars["String"]>;
+  reactorRequestWingPower?: Maybe<Scalars["String"]>;
+  reactorAckWingRequest?: Maybe<Scalars["String"]>;
   recordsCreate?: Maybe<Scalars["String"]>;
   recordsCreateSnippet?: Maybe<Scalars["String"]>;
   recordsAddToSnippet?: Maybe<Scalars["String"]>;
@@ -2272,6 +2276,7 @@ export type Mutation = {
   updateSystemUpgradeBoard?: Maybe<Scalars["String"]>;
   upgradeSystem?: Maybe<Scalars["String"]>;
   updateSystemRooms?: Maybe<Scalars["String"]>;
+  systemSetWing?: Maybe<Scalars["String"]>;
   newTacticalMap?: Maybe<Scalars["String"]>;
   updateTacticalMap?: Maybe<Scalars["String"]>;
   freezeTacticalMap?: Maybe<Scalars["String"]>;
@@ -2366,6 +2371,7 @@ export type Mutation = {
   setTractorBeamStress?: Maybe<Scalars["String"]>;
   setTractorBeamScanning?: Maybe<Scalars["String"]>;
   setTractorBeamTargetLabel?: Maybe<Scalars["String"]>;
+  setTractorBeamCount?: Maybe<Scalars["String"]>;
   addTractorTarget?: Maybe<Scalars["String"]>;
   removeTractorTarget?: Maybe<Scalars["String"]>;
   setTransportDestination?: Maybe<Scalars["String"]>;
@@ -2436,6 +2442,19 @@ export type Mutation = {
   dmxConfigSetName?: Maybe<Scalars["String"]>;
   dmxConfigSetConfig?: Maybe<Scalars["String"]>;
   dmxConfigSetActionStrength?: Maybe<Scalars["String"]>;
+  taskFlowAdd?: Maybe<Scalars["String"]>;
+  taskFlowRemove?: Maybe<Scalars["String"]>;
+  taskFlowRename?: Maybe<Scalars["String"]>;
+  taskFlowSetCategory?: Maybe<Scalars["String"]>;
+  taskFlowAddStep?: Maybe<Scalars["String"]>;
+  taskFlowRemoveStep?: Maybe<Scalars["String"]>;
+  taskFlowRenameStep?: Maybe<Scalars["String"]>;
+  taskFlowReorderStep?: Maybe<Scalars["String"]>;
+  taskFlowStepAddTask?: Maybe<Scalars["String"]>;
+  taskFlowStepRemoveTask?: Maybe<Scalars["String"]>;
+  taskFlowStepEditTask?: Maybe<Scalars["String"]>;
+  taskFlowStepSetCompleteAll?: Maybe<Scalars["String"]>;
+  taskFlowActivate?: Maybe<Scalars["String"]>;
 };
 
 export type MutationEntitySetAppearanceArgs = {
@@ -4279,6 +4298,29 @@ export type MutationReactorRequireBalanceArgs = {
   balance: Scalars["Boolean"];
 };
 
+export type MutationReactorSetHasWingsArgs = {
+  id: Scalars["ID"];
+  hasWings: Scalars["Boolean"];
+};
+
+export type MutationReactorSetWingPowerArgs = {
+  id: Scalars["ID"];
+  wing: Scalars["String"];
+  power: Scalars["Int"];
+};
+
+export type MutationReactorRequestWingPowerArgs = {
+  id: Scalars["ID"];
+  wing: Scalars["String"];
+  power: Scalars["Int"];
+};
+
+export type MutationReactorAckWingRequestArgs = {
+  id: Scalars["ID"];
+  wing: Scalars["String"];
+  ack: Scalars["Boolean"];
+};
+
 export type MutationRecordsCreateArgs = {
   simulatorId: Scalars["ID"];
   contents: Scalars["String"];
@@ -5391,6 +5433,11 @@ export type MutationUpdateSystemRoomsArgs = {
   locations?: Maybe<Array<Maybe<Scalars["ID"]>>>;
 };
 
+export type MutationSystemSetWingArgs = {
+  systemId: Scalars["ID"];
+  wing: Scalars["String"];
+};
+
 export type MutationNewTacticalMapArgs = {
   name: Scalars["String"];
   flightId?: Maybe<Scalars["ID"]>;
@@ -5642,12 +5689,12 @@ export type MutationSetTaskTemplateReportTypesArgs = {
 
 export type MutationSetTaskTemplateMacrosArgs = {
   id: Scalars["ID"];
-  macros: Array<Maybe<TimelineItemInput>>;
+  macros: Array<Maybe<ActionInput>>;
 };
 
 export type MutationSetTaskTemplatePreMacrosArgs = {
   id: Scalars["ID"];
-  macros: Array<Maybe<TimelineItemInput>>;
+  macros: Array<Maybe<ActionInput>>;
 };
 
 export type MutationCreateTeamArgs = {
@@ -5816,41 +5863,54 @@ export type MutationTorpedoFireArgs = {
 
 export type MutationSetTractorBeamStateArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   state: Scalars["Boolean"];
 };
 
 export type MutationSetTractorBeamTargetArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   target: Scalars["Boolean"];
 };
 
 export type MutationSetTractorBeamStrengthArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   strength: Scalars["Float"];
 };
 
 export type MutationSetTractorBeamStressArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   stress: Scalars["Float"];
 };
 
 export type MutationSetTractorBeamScanningArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   scanning: Scalars["Boolean"];
 };
 
 export type MutationSetTractorBeamTargetLabelArgs = {
   id: Scalars["ID"];
+  beam: Scalars["ID"];
   label: Scalars["String"];
+};
+
+export type MutationSetTractorBeamCountArgs = {
+  id: Scalars["ID"];
+  beams: Scalars["Int"];
 };
 
 export type MutationAddTractorTargetArgs = {
   id: Scalars["ID"];
+  beamId: Scalars["ID"];
   label?: Maybe<Scalars["String"]>;
 };
 
 export type MutationRemoveTractorTargetArgs = {
   id: Scalars["ID"];
+  beamId: Scalars["ID"];
 };
 
 export type MutationSetTransportDestinationArgs = {
@@ -6214,6 +6274,76 @@ export type MutationDmxConfigSetConfigArgs = {
 export type MutationDmxConfigSetActionStrengthArgs = {
   id: Scalars["ID"];
   actionStrength: Scalars["Float"];
+};
+
+export type MutationTaskFlowAddArgs = {
+  name: Scalars["String"];
+};
+
+export type MutationTaskFlowRemoveArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationTaskFlowRenameArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type MutationTaskFlowSetCategoryArgs = {
+  id: Scalars["ID"];
+  category: Scalars["String"];
+};
+
+export type MutationTaskFlowAddStepArgs = {
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type MutationTaskFlowRemoveStepArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+};
+
+export type MutationTaskFlowRenameStepArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  name: Scalars["String"];
+};
+
+export type MutationTaskFlowReorderStepArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  order: Scalars["Int"];
+};
+
+export type MutationTaskFlowStepAddTaskArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  task: TaskInput;
+};
+
+export type MutationTaskFlowStepRemoveTaskArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  taskId: Scalars["ID"];
+};
+
+export type MutationTaskFlowStepEditTaskArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  taskId: Scalars["ID"];
+  task: TaskInput;
+};
+
+export type MutationTaskFlowStepSetCompleteAllArgs = {
+  id: Scalars["ID"];
+  stepId: Scalars["ID"];
+  completeAll: Scalars["Boolean"];
+};
+
+export type MutationTaskFlowActivateArgs = {
+  id: Scalars["ID"];
+  simulatorId: Scalars["ID"];
 };
 
 export type NamedObject = {
@@ -6667,8 +6797,8 @@ export type Query = {
   targeting?: Maybe<Array<Maybe<Targeting>>>;
   taskReport?: Maybe<Array<Maybe<TaskReport>>>;
   tasks?: Maybe<Array<Maybe<Task>>>;
-  taskTemplates?: Maybe<Array<Maybe<TaskTemplate>>>;
-  taskDefinitions?: Maybe<Array<Maybe<TaskDefinition>>>;
+  taskTemplates: Array<TaskTemplate>;
+  taskDefinitions: Array<TaskDefinition>;
   taskInstructions?: Maybe<Scalars["String"]>;
   teams?: Maybe<Array<Maybe<Team>>>;
   damagePositions?: Maybe<Array<Maybe<Scalars["String"]>>>;
@@ -6694,6 +6824,7 @@ export type Query = {
   dmxFixtures: Array<DmxFixture>;
   dmxConfig?: Maybe<DmxConfig>;
   dmxConfigs: Array<DmxConfig>;
+  taskFlows: Array<TaskFlow>;
 };
 
 export type QueryActionsArgs = {
@@ -7142,6 +7273,10 @@ export type QueryDmxConfigArgs = {
   id: Scalars["ID"];
 };
 
+export type QueryTaskFlowsArgs = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+};
+
 export type Railgun = SystemInterface & {
   __typename?: "Railgun";
   id?: Maybe<Scalars["ID"]>;
@@ -7191,6 +7326,13 @@ export type Reactor = SystemInterface & {
   batteryChargeLevel?: Maybe<Scalars["Float"]>;
   batteryChargeRate?: Maybe<Scalars["Float"]>;
   depletion?: Maybe<Scalars["Float"]>;
+  hasWings?: Maybe<Scalars["Boolean"]>;
+  leftWingPower?: Maybe<Scalars["Int"]>;
+  leftWingRequest?: Maybe<Scalars["Int"]>;
+  leftWingRequested?: Maybe<Scalars["Boolean"]>;
+  rightWingPower?: Maybe<Scalars["Int"]>;
+  rightWingRequest?: Maybe<Scalars["Int"]>;
+  rightWingRequested?: Maybe<Scalars["Boolean"]>;
   alphaLevel?: Maybe<Scalars["Float"]>;
   betaLevel?: Maybe<Scalars["Float"]>;
   alphaTarget?: Maybe<Scalars["Float"]>;
@@ -7209,7 +7351,7 @@ export type ReactorEfficiency = {
   __typename?: "ReactorEfficiency";
   label: Scalars["String"];
   color: Scalars["String"];
-  efficiency: Scalars["Float"];
+  efficiency?: Maybe<Scalars["Float"]>;
 };
 
 export type ReactorEfficiencyInput = {
@@ -7966,7 +8108,7 @@ export type Subscription = {
   targetingUpdate?: Maybe<Array<Maybe<Targeting>>>;
   taskReportUpdate?: Maybe<Array<Maybe<TaskReport>>>;
   tasksUpdate?: Maybe<Array<Maybe<Task>>>;
-  taskTemplatesUpdate?: Maybe<Array<Maybe<TaskTemplate>>>;
+  taskTemplatesUpdate: Array<TaskTemplate>;
   teamsUpdate?: Maybe<Array<Maybe<Team>>>;
   _templateUpdate?: Maybe<Template>;
   thoriumUpdate?: Maybe<Thorium>;
@@ -7987,6 +8129,7 @@ export type Subscription = {
   dmxDevices: Array<DmxDevice>;
   dmxFixtures: Array<DmxFixture>;
   dmxConfigs: Array<DmxConfig>;
+  taskFlows: Array<TaskFlow>;
 };
 
 export type SubscriptionActionsUpdateArgs = {
@@ -8421,6 +8564,10 @@ export type SubscriptionDmxFixturesArgs = {
   clientId?: Maybe<Scalars["ID"]>;
 };
 
+export type SubscriptionTaskFlowsArgs = {
+  simulatorId?: Maybe<Scalars["ID"]>;
+};
+
 export type SubspaceField = SystemInterface & {
   __typename?: "SubspaceField";
   id?: Maybe<Scalars["ID"]>;
@@ -8470,6 +8617,7 @@ export type System = SystemInterface & {
   name?: Maybe<Scalars["String"]>;
   displayName?: Maybe<Scalars["String"]>;
   upgradeName?: Maybe<Scalars["String"]>;
+  wing?: Maybe<Scalars["String"]>;
   upgraded?: Maybe<Scalars["Boolean"]>;
   upgradeMacros?: Maybe<Array<Maybe<TimelineItem>>>;
   upgradeBoard?: Maybe<Scalars["ID"]>;
@@ -8706,13 +8854,13 @@ export type TargetingContact = {
 
 export type Task = {
   __typename?: "Task";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
   station?: Maybe<Scalars["String"]>;
   systemId?: Maybe<Scalars["ID"]>;
   deck?: Maybe<Deck>;
   room?: Maybe<Room>;
-  definition?: Maybe<Scalars["String"]>;
+  definition: Scalars["String"];
   verified?: Maybe<Scalars["Boolean"]>;
   verifyRequested?: Maybe<Scalars["Boolean"]>;
   dismissed?: Maybe<Scalars["Boolean"]>;
@@ -8721,19 +8869,40 @@ export type Task = {
   startTime?: Maybe<Scalars["String"]>;
   endTime?: Maybe<Scalars["String"]>;
   timeElapsedInMS?: Maybe<Scalars["Int"]>;
-  macros?: Maybe<Array<Maybe<TimelineItem>>>;
+  macros?: Maybe<Array<MacroAction>>;
+  preMacros: Array<MacroAction>;
   assigned?: Maybe<Scalars["Boolean"]>;
 };
 
 export type TaskDefinition = {
   __typename?: "TaskDefinition";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  class?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  class: Scalars["String"];
   stations?: Maybe<Array<Maybe<Station>>>;
-  active?: Maybe<Scalars["Boolean"]>;
-  valuesInput?: Maybe<Scalars["JSON"]>;
-  valuesValue?: Maybe<Scalars["JSON"]>;
+  active: Scalars["Boolean"];
+  valuesInput: Scalars["JSON"];
+  valuesValue: Scalars["JSON"];
+};
+
+export type TaskFlow = {
+  __typename?: "TaskFlow";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  category: Scalars["String"];
+  currentStep: Scalars["Int"];
+  steps: Array<TaskFlowStep>;
+  completed: Scalars["Boolean"];
+};
+
+export type TaskFlowStep = {
+  __typename?: "TaskFlowStep";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  tasks: Array<Task>;
+  activeTasks: Array<Task>;
+  completeAll: Scalars["Boolean"];
+  completed: Scalars["Boolean"];
 };
 
 export type TaskInput = {
@@ -8741,8 +8910,8 @@ export type TaskInput = {
   definition?: Maybe<Scalars["String"]>;
   values?: Maybe<Scalars["JSON"]>;
   station?: Maybe<Scalars["String"]>;
-  macros?: Maybe<Array<Maybe<TimelineItemInput>>>;
-  preMacros?: Maybe<Array<Maybe<TimelineItemInput>>>;
+  macros?: Maybe<Array<Maybe<ActionInput>>>;
+  preMacros?: Maybe<Array<Maybe<ActionInput>>>;
 };
 
 export type TaskReport = {
@@ -8758,13 +8927,13 @@ export type TaskReport = {
 
 export type TaskTemplate = {
   __typename?: "TaskTemplate";
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  values?: Maybe<Scalars["JSON"]>;
-  definition?: Maybe<Scalars["String"]>;
-  reportTypes?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  macros?: Maybe<Array<Maybe<TimelineItem>>>;
-  preMacros?: Maybe<Array<Maybe<TimelineItem>>>;
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  values: Scalars["JSON"];
+  definition: Scalars["String"];
+  reportTypes: Array<Scalars["String"]>;
+  macros: Array<MacroAction>;
+  preMacros: Array<MacroAction>;
 };
 
 export type Team = {
@@ -8986,23 +9155,29 @@ export type Torpedo = SystemInterface & {
 
 export type TractorBeam = SystemInterface & {
   __typename?: "TractorBeam";
-  id?: Maybe<Scalars["ID"]>;
+  id: Scalars["ID"];
   simulatorId?: Maybe<Scalars["ID"]>;
   type?: Maybe<Scalars["String"]>;
-  power?: Maybe<Power>;
-  damage?: Maybe<Damage>;
-  name?: Maybe<Scalars["String"]>;
-  displayName?: Maybe<Scalars["String"]>;
+  power: Power;
+  damage: Damage;
+  name: Scalars["String"];
+  displayName: Scalars["String"];
   upgradeName?: Maybe<Scalars["String"]>;
   upgraded?: Maybe<Scalars["Boolean"]>;
   stealthFactor?: Maybe<Scalars["Float"]>;
   locations?: Maybe<Array<Maybe<Room>>>;
-  state?: Maybe<Scalars["Boolean"]>;
-  target?: Maybe<Scalars["Boolean"]>;
-  targetLabel?: Maybe<Scalars["String"]>;
-  strength?: Maybe<Scalars["Float"]>;
-  stress?: Maybe<Scalars["Float"]>;
-  scanning?: Maybe<Scalars["Boolean"]>;
+  beams: Array<TractorBeamBeam>;
+};
+
+export type TractorBeamBeam = {
+  __typename?: "TractorBeamBeam";
+  id: Scalars["ID"];
+  state: Scalars["Boolean"];
+  target: Scalars["Boolean"];
+  targetLabel: Scalars["String"];
+  strength: Scalars["Float"];
+  stress: Scalars["Float"];
+  scanning: Scalars["Boolean"];
 };
 
 export type Transporter = SystemInterface & {
@@ -9490,6 +9665,7 @@ export type ResolversTypes = ResolversObject<{
   DamageTask: ResolverTypeWrapper<DamageTask>;
   TaskTemplate: ResolverTypeWrapper<TaskTemplate>;
   JSON: ResolverTypeWrapper<Scalars["JSON"]>;
+  MacroAction: ResolverTypeWrapper<MacroAction>;
   Station: ResolverTypeWrapper<Station>;
   Card: ResolverTypeWrapper<Card>;
   Mission: ResolverTypeWrapper<Mission>;
@@ -9546,7 +9722,6 @@ export type ResolversTypes = ResolversObject<{
   JumpDriveSector: ResolverTypeWrapper<JumpDriveSector>;
   Keyboard: ResolverTypeWrapper<Keyboard>;
   KeyboardKey: ResolverTypeWrapper<KeyboardKey>;
-  MacroAction: ResolverTypeWrapper<MacroAction>;
   LibraryEntry: ResolverTypeWrapper<LibraryEntry>;
   LRCommunications: ResolverTypeWrapper<LrCommunications>;
   LRMessage: ResolverTypeWrapper<LrMessage>;
@@ -9635,7 +9810,7 @@ export type ResolversTypes = ResolversObject<{
   Task: ResolverTypeWrapper<Task>;
   TaskDefinition: ResolverTypeWrapper<TaskDefinition>;
   TaskInput: TaskInput;
-  TimelineItemInput: TimelineItemInput;
+  ActionInput: ActionInput;
   Template: ResolverTypeWrapper<Template>;
   Thorium: ResolverTypeWrapper<Thorium>;
   SpaceEdventuresCenter: ResolverTypeWrapper<SpaceEdventuresCenter>;
@@ -9648,6 +9823,7 @@ export type ResolversTypes = ResolversObject<{
   Torpedo: ResolverTypeWrapper<Torpedo>;
   Warhead: ResolverTypeWrapper<Warhead>;
   TractorBeam: ResolverTypeWrapper<TractorBeam>;
+  TractorBeamBeam: ResolverTypeWrapper<TractorBeamBeam>;
   Transporter: ResolverTypeWrapper<Transporter>;
   TransporterTarget: ResolverTypeWrapper<TransporterTarget>;
   Transwarp: ResolverTypeWrapper<Transwarp>;
@@ -9686,6 +9862,8 @@ export type ResolversTypes = ResolversObject<{
   DMXFixture: ResolverTypeWrapper<DmxFixture>;
   DMXFixtureMode: DmxFixtureMode;
   DMXPassiveChannels: ResolverTypeWrapper<DmxPassiveChannels>;
+  TaskFlow: ResolverTypeWrapper<TaskFlow>;
+  TaskFlowStep: ResolverTypeWrapper<TaskFlowStep>;
   Mutation: ResolverTypeWrapper<{}>;
   EntityCoordinatesInput: EntityCoordinatesInput;
   QuaternionInput: QuaternionInput;
@@ -9716,13 +9894,13 @@ export type ResolversTypes = ResolversObject<{
   InventoryCountInput: InventoryCountInput;
   IsochipInput: IsochipInput;
   KeyboardKeyInput: KeyboardKeyInput;
-  ActionInput: ActionInput;
   LibraryInput: LibraryInput;
   LightingInput: LightingInput;
   LongRangeCommInput: LongRangeCommInput;
   PresetAnswerInput: PresetAnswerInput;
   MessageInput: MessageInput;
   MidiControlInput: MidiControlInput;
+  TimelineItemInput: TimelineItemInput;
   RequirementInput: RequirementInput;
   MotuChannelInput: MotuChannelInput;
   NavPresetInput: NavPresetInput;
@@ -9859,6 +10037,7 @@ export type ResolversParentTypes = ResolversObject<{
   DamageTask: DamageTask;
   TaskTemplate: TaskTemplate;
   JSON: Scalars["JSON"];
+  MacroAction: MacroAction;
   Station: Station;
   Card: Card;
   Mission: Mission;
@@ -9915,7 +10094,6 @@ export type ResolversParentTypes = ResolversObject<{
   JumpDriveSector: JumpDriveSector;
   Keyboard: Keyboard;
   KeyboardKey: KeyboardKey;
-  MacroAction: MacroAction;
   LibraryEntry: LibraryEntry;
   LRCommunications: LrCommunications;
   LRMessage: LrMessage;
@@ -10004,7 +10182,7 @@ export type ResolversParentTypes = ResolversObject<{
   Task: Task;
   TaskDefinition: TaskDefinition;
   TaskInput: TaskInput;
-  TimelineItemInput: TimelineItemInput;
+  ActionInput: ActionInput;
   Template: Template;
   Thorium: Thorium;
   SpaceEdventuresCenter: SpaceEdventuresCenter;
@@ -10017,6 +10195,7 @@ export type ResolversParentTypes = ResolversObject<{
   Torpedo: Torpedo;
   Warhead: Warhead;
   TractorBeam: TractorBeam;
+  TractorBeamBeam: TractorBeamBeam;
   Transporter: Transporter;
   TransporterTarget: TransporterTarget;
   Transwarp: Transwarp;
@@ -10055,6 +10234,8 @@ export type ResolversParentTypes = ResolversObject<{
   DMXFixture: DmxFixture;
   DMXFixtureMode: DmxFixtureMode;
   DMXPassiveChannels: DmxPassiveChannels;
+  TaskFlow: TaskFlow;
+  TaskFlowStep: TaskFlowStep;
   Mutation: {};
   EntityCoordinatesInput: EntityCoordinatesInput;
   QuaternionInput: QuaternionInput;
@@ -10085,13 +10266,13 @@ export type ResolversParentTypes = ResolversObject<{
   InventoryCountInput: InventoryCountInput;
   IsochipInput: IsochipInput;
   KeyboardKeyInput: KeyboardKeyInput;
-  ActionInput: ActionInput;
   LibraryInput: LibraryInput;
   LightingInput: LightingInput;
   LongRangeCommInput: LongRangeCommInput;
   PresetAnswerInput: PresetAnswerInput;
   MessageInput: MessageInput;
   MidiControlInput: MidiControlInput;
+  TimelineItemInput: TimelineItemInput;
   RequirementInput: RequirementInput;
   MotuChannelInput: MotuChannelInput;
   NavPresetInput: NavPresetInput;
@@ -12507,12 +12688,12 @@ export type MacroActionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["MacroAction"] = ResolversParentTypes["MacroAction"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  event?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  args?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  event?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  args?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   delay?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   needsConfig?: Resolver<
-    Maybe<ResolversTypes["String"]>,
+    Maybe<ResolversTypes["Boolean"]>,
     ParentType,
     ContextType
   >;
@@ -15039,6 +15220,30 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationReactorRequireBalanceArgs, "id" | "balance">
   >;
+  reactorSetHasWings?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationReactorSetHasWingsArgs, "id" | "hasWings">
+  >;
+  reactorSetWingPower?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationReactorSetWingPowerArgs, "id" | "wing" | "power">
+  >;
+  reactorRequestWingPower?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationReactorRequestWingPowerArgs, "id" | "wing" | "power">
+  >;
+  reactorAckWingRequest?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationReactorAckWingRequestArgs, "id" | "wing" | "ack">
+  >;
   recordsCreate?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -16449,6 +16654,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationUpdateSystemRoomsArgs, "systemId">
   >;
+  systemSetWing?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSystemSetWingArgs, "systemId" | "wing">
+  >;
   newTacticalMap?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -17005,49 +17216,64 @@ export type MutationResolvers<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamStateArgs, "id" | "state">
+    RequireFields<MutationSetTractorBeamStateArgs, "id" | "beam" | "state">
   >;
   setTractorBeamTarget?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamTargetArgs, "id" | "target">
+    RequireFields<MutationSetTractorBeamTargetArgs, "id" | "beam" | "target">
   >;
   setTractorBeamStrength?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamStrengthArgs, "id" | "strength">
+    RequireFields<
+      MutationSetTractorBeamStrengthArgs,
+      "id" | "beam" | "strength"
+    >
   >;
   setTractorBeamStress?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamStressArgs, "id" | "stress">
+    RequireFields<MutationSetTractorBeamStressArgs, "id" | "beam" | "stress">
   >;
   setTractorBeamScanning?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamScanningArgs, "id" | "scanning">
+    RequireFields<
+      MutationSetTractorBeamScanningArgs,
+      "id" | "beam" | "scanning"
+    >
   >;
   setTractorBeamTargetLabel?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationSetTractorBeamTargetLabelArgs, "id" | "label">
+    RequireFields<
+      MutationSetTractorBeamTargetLabelArgs,
+      "id" | "beam" | "label"
+    >
+  >;
+  setTractorBeamCount?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationSetTractorBeamCountArgs, "id" | "beams">
   >;
   addTractorTarget?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationAddTractorTargetArgs, "id">
+    RequireFields<MutationAddTractorTargetArgs, "id" | "beamId">
   >;
   removeTractorTarget?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
     ContextType,
-    RequireFields<MutationRemoveTractorTargetArgs, "id">
+    RequireFields<MutationRemoveTractorTargetArgs, "id" | "beamId">
   >;
   setTransportDestination?: Resolver<
     Maybe<ResolversTypes["String"]>,
@@ -17504,6 +17730,93 @@ export type MutationResolvers<
       MutationDmxConfigSetActionStrengthArgs,
       "id" | "actionStrength"
     >
+  >;
+  taskFlowAdd?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowAddArgs, "name">
+  >;
+  taskFlowRemove?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowRemoveArgs, "id">
+  >;
+  taskFlowRename?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowRenameArgs, "id" | "name">
+  >;
+  taskFlowSetCategory?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowSetCategoryArgs, "id" | "category">
+  >;
+  taskFlowAddStep?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowAddStepArgs, "id" | "name">
+  >;
+  taskFlowRemoveStep?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowRemoveStepArgs, "id" | "stepId">
+  >;
+  taskFlowRenameStep?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowRenameStepArgs, "id" | "stepId" | "name">
+  >;
+  taskFlowReorderStep?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowReorderStepArgs, "id" | "stepId" | "order">
+  >;
+  taskFlowStepAddTask?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowStepAddTaskArgs, "id" | "stepId" | "task">
+  >;
+  taskFlowStepRemoveTask?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationTaskFlowStepRemoveTaskArgs,
+      "id" | "stepId" | "taskId"
+    >
+  >;
+  taskFlowStepEditTask?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationTaskFlowStepEditTaskArgs,
+      "id" | "stepId" | "taskId" | "task"
+    >
+  >;
+  taskFlowStepSetCompleteAll?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationTaskFlowStepSetCompleteAllArgs,
+      "id" | "stepId" | "completeAll"
+    >
+  >;
+  taskFlowActivate?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowActivateArgs, "id" | "simulatorId">
   >;
 }>;
 
@@ -18527,12 +18840,12 @@ export type QueryResolvers<
     RequireFields<QueryTasksArgs, "simulatorId">
   >;
   taskTemplates?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TaskTemplate"]>>>,
+    Array<ResolversTypes["TaskTemplate"]>,
     ParentType,
     ContextType
   >;
   taskDefinitions?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TaskDefinition"]>>>,
+    Array<ResolversTypes["TaskDefinition"]>,
     ParentType,
     ContextType,
     RequireFields<QueryTaskDefinitionsArgs, never>
@@ -18672,6 +18985,12 @@ export type QueryResolvers<
     ParentType,
     ContextType
   >;
+  taskFlows?: Resolver<
+    Array<ResolversTypes["TaskFlow"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryTaskFlowsArgs, never>
+  >;
 }>;
 
 export type RailgunResolvers<
@@ -18787,6 +19106,41 @@ export type ReactorResolvers<
     ContextType
   >;
   depletion?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
+  hasWings?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  leftWingPower?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType
+  >;
+  leftWingRequest?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType
+  >;
+  leftWingRequested?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
+  rightWingPower?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType
+  >;
+  rightWingRequest?: Resolver<
+    Maybe<ResolversTypes["Int"]>,
+    ParentType,
+    ContextType
+  >;
+  rightWingRequested?: Resolver<
+    Maybe<ResolversTypes["Boolean"]>,
+    ParentType,
+    ContextType
+  >;
   alphaLevel?: Resolver<
     Maybe<ResolversTypes["Float"]>,
     ParentType,
@@ -18827,7 +19181,11 @@ export type ReactorEfficiencyResolvers<
 > = ResolversObject<{
   label?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   color?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  efficiency?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  efficiency?: Resolver<
+    Maybe<ResolversTypes["Float"]>,
+    ParentType,
+    ContextType
+  >;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -20729,7 +21087,7 @@ export type SubscriptionResolvers<
     RequireFields<SubscriptionTasksUpdateArgs, "simulatorId">
   >;
   taskTemplatesUpdate?: SubscriptionResolver<
-    Maybe<Array<Maybe<ResolversTypes["TaskTemplate"]>>>,
+    Array<ResolversTypes["TaskTemplate"]>,
     "taskTemplatesUpdate",
     ParentType,
     ContextType
@@ -20870,6 +21228,13 @@ export type SubscriptionResolvers<
     ParentType,
     ContextType
   >;
+  taskFlows?: SubscriptionResolver<
+    Array<ResolversTypes["TaskFlow"]>,
+    "taskFlows",
+    ParentType,
+    ContextType,
+    RequireFields<SubscriptionTaskFlowsArgs, never>
+  >;
 }>;
 
 export type SubspaceFieldResolvers<
@@ -21004,6 +21369,7 @@ export type SystemResolvers<
     ParentType,
     ContextType
   >;
+  wing?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   upgraded?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
@@ -21424,17 +21790,13 @@ export type TaskResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Task"] = ResolversParentTypes["Task"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   simulatorId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   station?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   systemId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   deck?: Resolver<Maybe<ResolversTypes["Deck"]>, ParentType, ContextType>;
   room?: Resolver<Maybe<ResolversTypes["Room"]>, ParentType, ContextType>;
-  definition?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  definition?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   verified?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
     ParentType,
@@ -21468,7 +21830,12 @@ export type TaskResolvers<
     ContextType
   >;
   macros?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TimelineItem"]>>>,
+    Maybe<Array<ResolversTypes["MacroAction"]>>,
+    ParentType,
+    ContextType
+  >;
+  preMacros?: Resolver<
+    Array<ResolversTypes["MacroAction"]>,
     ParentType,
     ContextType
   >;
@@ -21484,25 +21851,51 @@ export type TaskDefinitionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TaskDefinition"] = ResolversParentTypes["TaskDefinition"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  class?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  class?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   stations?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["Station"]>>>,
     ParentType,
     ContextType
   >;
-  active?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
-  valuesInput?: Resolver<
-    Maybe<ResolversTypes["JSON"]>,
+  active?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  valuesInput?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
+  valuesValue?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type TaskFlowResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["TaskFlow"] = ResolversParentTypes["TaskFlow"]
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  category?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  currentStep?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
+  steps?: Resolver<
+    Array<ResolversTypes["TaskFlowStep"]>,
     ParentType,
     ContextType
   >;
-  valuesValue?: Resolver<
-    Maybe<ResolversTypes["JSON"]>,
+  completed?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type TaskFlowStepResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["TaskFlowStep"] = ResolversParentTypes["TaskFlowStep"]
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  tasks?: Resolver<Array<ResolversTypes["Task"]>, ParentType, ContextType>;
+  activeTasks?: Resolver<
+    Array<ResolversTypes["Task"]>,
     ParentType,
     ContextType
   >;
+  completeAll?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  completed?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -21528,26 +21921,22 @@ export type TaskTemplateResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TaskTemplate"] = ResolversParentTypes["TaskTemplate"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  values?: Resolver<Maybe<ResolversTypes["JSON"]>, ParentType, ContextType>;
-  definition?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  values?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
+  definition?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   reportTypes?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["String"]>>>,
+    Array<ResolversTypes["String"]>,
     ParentType,
     ContextType
   >;
   macros?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TimelineItem"]>>>,
+    Array<ResolversTypes["MacroAction"]>,
     ParentType,
     ContextType
   >;
   preMacros?: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["TimelineItem"]>>>,
+    Array<ResolversTypes["MacroAction"]>,
     ParentType,
     ContextType
   >;
@@ -21966,17 +22355,13 @@ export type TractorBeamResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TractorBeam"] = ResolversParentTypes["TractorBeam"]
 > = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   simulatorId?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  power?: Resolver<Maybe<ResolversTypes["Power"]>, ParentType, ContextType>;
-  damage?: Resolver<Maybe<ResolversTypes["Damage"]>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  displayName?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType
-  >;
+  power?: Resolver<ResolversTypes["Power"], ParentType, ContextType>;
+  damage?: Resolver<ResolversTypes["Damage"], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  displayName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   upgradeName?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -21997,20 +22382,25 @@ export type TractorBeamResolvers<
     ParentType,
     ContextType
   >;
-  state?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
-  target?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
-  targetLabel?: Resolver<
-    Maybe<ResolversTypes["String"]>,
+  beams?: Resolver<
+    Array<ResolversTypes["TractorBeamBeam"]>,
     ParentType,
     ContextType
   >;
-  strength?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
-  stress?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
-  scanning?: Resolver<
-    Maybe<ResolversTypes["Boolean"]>,
-    ParentType,
-    ContextType
-  >;
+  __isTypeOf?: isTypeOfResolverFn<ParentType>;
+}>;
+
+export type TractorBeamBeamResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["TractorBeamBeam"] = ResolversParentTypes["TractorBeamBeam"]
+> = ResolversObject<{
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  state?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  target?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  targetLabel?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  strength?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  stress?: Resolver<ResolversTypes["Float"], ParentType, ContextType>;
+  scanning?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
   __isTypeOf?: isTypeOfResolverFn<ParentType>;
 }>;
 
@@ -22444,6 +22834,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   TargetingContact?: TargetingContactResolvers<ContextType>;
   Task?: TaskResolvers<ContextType>;
   TaskDefinition?: TaskDefinitionResolvers<ContextType>;
+  TaskFlow?: TaskFlowResolvers<ContextType>;
+  TaskFlowStep?: TaskFlowStepResolvers<ContextType>;
   TaskReport?: TaskReportResolvers<ContextType>;
   TaskTemplate?: TaskTemplateResolvers<ContextType>;
   Team?: TeamResolvers<ContextType>;
@@ -22463,6 +22855,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Timer?: TimerResolvers<ContextType>;
   Torpedo?: TorpedoResolvers<ContextType>;
   TractorBeam?: TractorBeamResolvers<ContextType>;
+  TractorBeamBeam?: TractorBeamBeamResolvers<ContextType>;
   Transporter?: TransporterResolvers<ContextType>;
   TransporterTarget?: TransporterTargetResolvers<ContextType>;
   Transwarp?: TranswarpResolvers<ContextType>;

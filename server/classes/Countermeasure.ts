@@ -191,6 +191,8 @@ export class Countermeasures extends System {
     super({displayName: "Countermeasures", name: "Countermeasures", ...params});
     this.class = "Countermeasures";
     this.type = "Countermeasures";
+    this.wing = params.wing || "left";
+
     this.storedMaterials = new CountermeasureResources(
       params.storedMaterials || {
         copper: 99,

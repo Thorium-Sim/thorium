@@ -156,6 +156,7 @@ export default class Crm extends System {
     super({name: "Crm", displayName: "CRM-114", ...params});
     this.class = "Crm";
     this.type = "Crm";
+    this.wing = params.wing || "left";
 
     this.password = params.password || "";
     this.activated = params.activated || false;
@@ -231,7 +232,8 @@ export default class Crm extends System {
   setEnemyIcon(image) {
     this.enemyIcon = image;
   }
-  setEnemyCount(count) {
+  setEnemyCount(inputCount) {
+    const count = parseInt(inputCount, 10);
     if (count < 0) return;
     if (this.enemyCount > count) {
       // Remove enemies, starting with destroyed enemies

@@ -1,5 +1,4 @@
 import App from "../app";
-import {randomFromList} from "../classes/generic/damageReports/constants";
 import reportReplace from "../helpers/reportReplacer";
 
 export default [

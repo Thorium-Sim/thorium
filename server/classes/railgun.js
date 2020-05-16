@@ -6,6 +6,7 @@ export default class Railgun extends HeatMixin(System) {
     super({name: "Railgun", ...params});
     this.class = "Railgun";
     this.type = "Railgun";
+    this.wing = params.wing || "left";
 
     this.maxAmmo = params.maxAmmo || 25;
     this.ammo = params.ammo || 0;

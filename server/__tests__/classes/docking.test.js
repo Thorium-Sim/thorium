@@ -4,7 +4,7 @@ import DockingPort from "../../classes/docking";
 describe("DockingPort", () => {
   test("should throw if called without the 'new' operator", () => {
     expect(() => {
-      const d = DockingPort();
+      DockingPort();
     }).toThrow(/Class constructor DockingPort cannot be invoked without 'new'/);
   });
 

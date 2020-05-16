@@ -67,6 +67,8 @@ export default class Targeting extends System {
     super(params);
     this.class = "Targeting";
     this.type = "Targeting";
+    this.wing = params.wing || "left";
+
     this.name = params.name || "Targeting";
     this.contacts = [];
     this.classes = [];

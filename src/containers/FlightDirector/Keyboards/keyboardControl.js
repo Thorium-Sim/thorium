@@ -159,7 +159,7 @@ class KeyboardControl extends Component {
     });
   };
   render() {
-    const {selectedKey, selectedKeyCode, meta, selectedAction} = this.state;
+    const {selectedKeyCode, meta, selectedAction} = this.state;
     const selectedKeyObj = this.getKey();
     return (
       <Fragment>
