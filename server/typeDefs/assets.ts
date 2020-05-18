@@ -106,7 +106,7 @@ const resolver = {
           return new Promise(resolve =>
             download(file.url, dest, err => {
               if (err) {
-                console.log("There was an error", err);
+                console.error("There was an error", err);
               }
               ncp(dest, filePath, err => {
                 if (err) {

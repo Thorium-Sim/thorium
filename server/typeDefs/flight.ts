@@ -33,7 +33,7 @@ export const aspectList = [
   "taskFlows",
 ];
 
-export function addAspects(template, sim, data = App) {
+export function addAspects(template, sim: Classes.Simulator, data = App) {
   // Duplicate all of the other stuff attached to the simulator too.
   aspectList.forEach(aspect => {
     if (
@@ -153,13 +153,19 @@ export function addAspects(template, sim, data = App) {
       if (!panelData) return null;
       const panel = {...panelData};
       const id = uuid.v4();
-      sim.stations = sim.stations.map(s => ({
-        ...s,
-        cards: s.cards.map(c => ({
-          ...c,
-          component: c.component === p ? id : c.component,
-        })),
-      }));
+      sim.stations = sim.stations.map(
+        s =>
+          new Classes.Station({
+            ...s,
+            cards: s.cards.map(
+              c =>
+                new Classes.Card({
+                  ...c,
+                  component: c.component === p ? id : c.component,
+                }),
+            ),
+          }),
+      );
       data.softwarePanels.push(
         new Classes.SoftwarePanel({
           id,

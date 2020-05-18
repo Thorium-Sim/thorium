@@ -16,9 +16,7 @@ const SortableItem = SortableElement(
     remove?: (id: string) => void;
   }) => (
     <ListGroupItem
-      onClick={() =>
-        Boolean(console.log("Clicked", item.id)) || setSelectedItem(item.id)
-      }
+      onClick={() => setSelectedItem(item.id)}
       active={item.id === selectedItem}
     >
       {item.name}

@@ -174,7 +174,7 @@ const webgl = {
         try {
           var location = program.attribs[name].location;
         } catch (e) {
-          console.log("Could not find location for", name);
+          console.error("Could not find location for", name);
           throw e;
         }
         buffer.bind();
@@ -210,7 +210,7 @@ const webgl = {
         try {
           var location = program.attribs[name].location;
         } catch (e) {
-          console.log("Could not find location for", name);
+          console.error("Could not find location for", name);
           throw e;
         }
         buffer.bind();
@@ -256,7 +256,7 @@ const webgl = {
       gl.attachShader(program, fragmentShader);
       gl.linkProgram(program);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.log(gl.getProgramInfoLog(program));
+        console.error(gl.getProgramInfoLog(program));
         throw new Error("Failed to compile program.");
       }
       return program;
@@ -272,7 +272,8 @@ const webgl = {
         var split = source.split("\n");
         for (var i in split) {
           var q = parseInt(i, 10);
-          console.log(q + "  " + split[i]);
+          console.info(q + "  " + split[i]);
+
           if (i === lineno - 1) {
             console.warn(err);
           }
@@ -289,7 +290,7 @@ const webgl = {
       try {
         var location = self.uniforms[name].location;
       } catch (e) {
-        console.log(name);
+        console.error(name);
         throw e;
       }
       gl["uniform" + type].apply(gl, [location].concat(args));

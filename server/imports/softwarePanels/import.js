@@ -13,7 +13,7 @@ function streamToString(stream, cb) {
 }
 
 export default function ImportPanel(filepath, cb) {
-  console.log("Importing panel");
+  console.info("Importing panel");
   yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
     if (err) throw err;
     importZip.on("close", function() {

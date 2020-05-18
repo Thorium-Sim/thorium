@@ -3,7 +3,7 @@ import {Container, Row, Col} from "helpers/reactstrap";
 
 const Environment = props => {
   const {decks} = props;
-  console.log(decks);
+  // console.info(decks);
   return (
     <Container fluid>
       <Row>

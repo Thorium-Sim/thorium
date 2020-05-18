@@ -16,7 +16,7 @@ function streamToString(stream, cb) {
 }
 
 export default function ImportFlight(filepath, cb) {
-  console.log("Importing flight");
+  console.info("Importing flight");
   yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
     if (err) throw err;
     importZip.on("close", function() {

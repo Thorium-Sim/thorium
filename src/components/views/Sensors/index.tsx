@@ -92,7 +92,6 @@ export function usePing(sensorsId?: string) {
   }, [sensorsId, client]);
   React.useEffect(() => {
     if (mountedRef.current) {
-      console.log("setting pinged");
       setPinged(true);
       const timeout = setTimeout(() => {
         setPinged(false);
@@ -207,7 +206,6 @@ const Sensors: React.FC<SensorsProps> = ({
   station,
   viewscreen,
 }) => {
-  console.log("rendering");
   const [hoverContact, setHoverContact] = React.useState<HoverContact>({
     name: "",
     picture: "",

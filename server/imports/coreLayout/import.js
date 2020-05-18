@@ -3,7 +3,7 @@ import App from "../../app";
 import * as Classes from "../../classes";
 
 export default function ImportCoreLayout(filepath, cb) {
-  console.log("Importing Core Layout");
+  console.info("Importing Core Layout");
   const file = fs.readFileSync(filepath, "utf8");
   try {
     const data = JSON.parse(file);

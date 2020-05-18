@@ -2019,10 +2019,8 @@ var merge = createAssigner(function(object, source, srcIndex) {
  *
  * var objects = _.times(2, _.constant({ 'a': 1 }));
  *
- * console.log(objects);
  * // => [{ 'a': 1 }, { 'a': 1 }]
  *
- * console.log(objects[0] === objects[1]);
  * // => true
  */
 function constant(value) {
@@ -2044,7 +2042,6 @@ function constant(value) {
  *
  * var object = { 'a': 1 };
  *
- * console.log(_.identity(object) === object);
  * // => true
  */
 function identity(value) {

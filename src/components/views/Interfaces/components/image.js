@@ -13,7 +13,7 @@ export const CompImage = ({id, interfaceId, config}) => {
       variables={{id: interfaceId, objectId: id}}
     >
       {action => (
-        <div onClick={() => action().catch(err => console.log(err))}>
+        <div onClick={() => action().catch(err => console.error(err))}>
           <img
             style={{
               width: parseFloat(config.width) || 50,

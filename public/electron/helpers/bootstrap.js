@@ -73,7 +73,7 @@ module.exports = function bootstrap(serverWindow) {
         "info",
         `Error in server process: ${err.message}`,
       );
-      console.log(err);
+      console.error(err);
     });
 
     app.on("before-quit", () => {

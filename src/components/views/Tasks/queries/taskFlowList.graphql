@@ -1,0 +1,7 @@
+subscription TaskFlowList {
+  taskFlows {
+    id
+    name
+    category
+  }
+}

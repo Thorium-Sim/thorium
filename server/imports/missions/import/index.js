@@ -24,7 +24,7 @@ function streamToString(stream, cb) {
 const regexPath = /[^\\]*\.(\w+)$/;
 
 export default function ImportMission(filepath, cb) {
-  console.log("Importing mission");
+  console.info("Importing mission");
   yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
     if (err) {
       //Eat the error
@@ -37,7 +37,7 @@ export default function ImportMission(filepath, cb) {
 
     importZip.on("entry", function(entry) {
       if (/^mission\/assets/.test(entry.fileName)) {
-        console.log("Copying file", entry.fileName);
+        console.info("Copying file", entry.fileName);
         // It's an asset. Load it
         importZip.openReadStream(entry, function(error, readStream) {
           if (error) throw error;

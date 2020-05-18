@@ -9,6 +9,7 @@ subscription StationSetConfig {
     stations {
       name
       description
+      tags
       training
       ambiance
       login
