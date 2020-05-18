@@ -2453,6 +2453,7 @@ export type Mutation = {
   taskFlowStepEditTask?: Maybe<Scalars['String']>,
   taskFlowStepSetCompleteAll?: Maybe<Scalars['String']>,
   taskFlowActivate?: Maybe<Scalars['String']>,
+  taskFlowAdvance?: Maybe<Scalars['String']>,
 };
 
 
@@ -7090,6 +7091,11 @@ export type MutationTaskFlowActivateArgs = {
   simulatorId: Scalars['ID']
 };
 
+
+export type MutationTaskFlowAdvanceArgs = {
+  simulatorId: Scalars['ID']
+};
+
 export type NamedObject = {
    __typename?: 'NamedObject',
   id?: Maybe<Scalars['ID']>,
@@ -11677,7 +11683,7 @@ export type TaskFlowSubSubscription = (
     & Pick<TaskFlow, 'id' | 'name' | 'category' | 'currentStep' | 'completed'>
     & { steps: Array<(
       { __typename?: 'TaskFlowStep' }
-      & Pick<TaskFlowStep, 'id' | 'name' | 'completed'>
+      & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll' | 'completed'>
       & { activeTasks: Array<(
         { __typename?: 'Task' }
         & Pick<Task, 'id' | 'station' | 'definition' | 'verified'>
@@ -17147,6 +17153,7 @@ export const TaskFlowSubDocument = gql`
     steps {
       id
       name
+      completeAll
       activeTasks {
         id
         station

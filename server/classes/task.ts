@@ -115,14 +115,15 @@ export default class Task {
       this.station === "None" ||
       !this.station
     ) {
-      if (stations?.length > 0) {
+      if (stations?.length > 0 || stationTagMatch) {
         if (stationTagMatch) {
           this.station = stationTagMatch.name;
         } else {
           this.station = randomFromList(stations).name;
         }
+      } else {
+        this.station = "None";
       }
-      this.station = "None";
     }
 
     this.taskTemplate = params.taskTemplate || "";

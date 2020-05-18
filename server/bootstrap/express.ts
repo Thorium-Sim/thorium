@@ -187,7 +187,7 @@ export default () => {
           }
           let exportName;
           objects.forEach(obj => {
-            exportName = obj.serialize({addData, addAsset});
+            exportName = obj.serialize({addData, addAsset}) || exportName;
           });
           const buff = Buffer.from(JSON.stringify(allData));
           zipfile.addBuffer(buff, `${exportObj.exportable}/data.json`, {
@@ -207,6 +207,7 @@ export default () => {
         `/import${pascalCase(exportObj.exportable)}`,
         upload.any(),
         async (req: express.Request & {files: MulterFile[]}, res) => {
+          console.log(`Importing ${pascalCase(exportObj.exportable)}`);
           if (req.files[0]) {
             const importZip = await new Promise<yauzl.ZipFile>(
               (resolve, reject) =>

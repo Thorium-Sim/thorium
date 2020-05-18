@@ -98,7 +98,7 @@ const TaskFlows: React.FC<{}> = () => {
                 Array.from(evt.target.files).forEach((f, index) =>
                   data.append(`files[${index}]`, f),
                 );
-                fetch(`/taskFlows`, {
+                fetch(`/importTaskFlows`, {
                   method: "POST",
                   body: data,
                 }).then(() => {

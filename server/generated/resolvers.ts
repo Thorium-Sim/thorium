@@ -2456,6 +2456,7 @@ export type Mutation = {
   taskFlowStepEditTask?: Maybe<Scalars["String"]>;
   taskFlowStepSetCompleteAll?: Maybe<Scalars["String"]>;
   taskFlowActivate?: Maybe<Scalars["String"]>;
+  taskFlowAdvance?: Maybe<Scalars["String"]>;
 };
 
 export type MutationEntitySetAppearanceArgs = {
@@ -6350,6 +6351,10 @@ export type MutationTaskFlowStepSetCompleteAllArgs = {
 
 export type MutationTaskFlowActivateArgs = {
   id: Scalars["ID"];
+  simulatorId: Scalars["ID"];
+};
+
+export type MutationTaskFlowAdvanceArgs = {
   simulatorId: Scalars["ID"];
 };
 
@@ -17836,6 +17841,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationTaskFlowActivateArgs, "id" | "simulatorId">
+  >;
+  taskFlowAdvance?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationTaskFlowAdvanceArgs, "simulatorId">
   >;
 }>;
 

@@ -52,6 +52,7 @@ const schema = gql`
     Macro: Tasks: Activate Task Flow
     """
     taskFlowActivate(id: ID!, simulatorId: ID!): String
+    taskFlowAdvance(simulatorId: ID!): String
   }
   extend type Subscription {
     taskFlows(simulatorId: ID): [TaskFlow!]!
@@ -166,16 +167,30 @@ const resolver = {
     },
     taskFlowActivate(_, {id, simulatorId}) {
       const flow = App.taskFlows.find(d => d.id === id);
-
       const newFlow = new TaskFlow({
-        ...flow,
         currentStep: -1,
         id: null,
         simulatorId,
+        name: flow.name,
+        category: flow.category,
+        steps: flow.steps.map(f => ({
+          ...f,
+          id: null,
+          tasks: f.tasks.map(t => ({...t, id: null})),
+        })),
       });
       // Trigger the flows to be created.
       newFlow.advance();
       App.taskFlows.push(newFlow);
+      pubsub.publish("taskFlows", {
+        simulatorId: simulatorId,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === simulatorId),
+      });
+    },
+    taskFlowAdvance(_, {simulatorId}) {
+      App.taskFlows
+        .filter(t => t.simulatorId === simulatorId)
+        .forEach(t => t.advance());
       pubsub.publish("taskFlows", {
         simulatorId: simulatorId,
         taskFlows: App.taskFlows.filter(s => s.simulatorId === simulatorId),

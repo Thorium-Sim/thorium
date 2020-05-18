@@ -5,7 +5,7 @@ import App from "../app";
 class TaskFlowStep {
   id: string;
   name: string;
-  tasks: Task[];
+  tasks: Partial<Task>[];
   activeTaskIds: string[];
   completeAll: boolean;
   constructor(params: Partial<TaskFlowStep> = {}) {
@@ -16,16 +16,19 @@ class TaskFlowStep {
     this.completeAll = params.completeAll ?? true;
   }
   get activeTasks() {
-    return this.activeTaskIds.map(t => App.tasks.find(tt => tt.id === t));
+    return this.activeTaskIds
+      .map(t => App.tasks.find(tt => tt.id === t))
+      .filter(Boolean);
   }
   get completed() {
     let completed = false;
+    if (this.activeTasks.length === 0) return true;
     if (this.completeAll) {
       // If we can't find any non-verified tasks, the step is completed
-      completed = !this.tasks.find(t => t.verified === false);
+      completed = !this.activeTasks.find(t => t.verified === false);
     } else {
       // If any task is verified, the step is completed
-      completed = !!this.tasks.find(t => t.verified);
+      completed = !!this.activeTasks.find(t => t.verified);
     }
     return completed;
   }
@@ -48,6 +51,9 @@ class TaskFlowStep {
   setCompleteAll(completeAll: boolean) {
     this.completeAll = completeAll;
   }
+  addActiveTask(task: string) {
+    this.activeTaskIds = this.activeTaskIds.concat(task);
+  }
 }
 function move<T>(array: T[], old_index: number, new_index: number) {
   if (new_index >= array.length) {
@@ -66,14 +72,30 @@ export class TaskFlow {
   name: string;
   category: string;
   currentStep: number;
-  steps: TaskFlowStep[];
+  steps: Partial<TaskFlowStep>[];
   constructor(params: Partial<TaskFlow> = {}) {
     this.id = params.id || uuid.v4();
     this.simulatorId = params.simulatorId || null;
     this.name = params.name || "Task Flow";
     this.category = params.category || "";
     this.currentStep = params.currentStep || 0;
-    this.steps = params.steps ? params.steps.map(s => new TaskFlowStep(s)) : [];
+    this.steps = params.steps
+      ? params.steps.map(s => new TaskFlowStep({...s}))
+      : [];
+  }
+  static exportable = "taskFlows";
+  serialize({addData}) {
+    // TODO: Properly serialize tasks to get their data.
+    const {simulatorId, ...data} = this;
+    // Don't serialize activate task flows.
+    if (simulatorId) return;
+    const filename = `${this.name}.taskFlow`;
+    addData("taskFlows", data);
+    return filename;
+  }
+  static import(data: any) {
+    const taskFlow = new TaskFlow({...data, id: null});
+    App.taskFlows.push(taskFlow);
   }
 
   get completed() {
@@ -95,7 +117,7 @@ export class TaskFlow {
         {
           simulatorId: this.simulatorId,
           taskInput: t,
-          cb: (task: string) => step.activeTaskIds.push(task),
+          cb: (task: string) => step.addActiveTask(task),
         },
         "addTask",
       );

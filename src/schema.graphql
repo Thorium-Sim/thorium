@@ -2780,6 +2780,7 @@ type Mutation {
 
   """Macro: Tasks: Activate Task Flow"""
   taskFlowActivate(id: ID!, simulatorId: ID!): String
+  taskFlowAdvance(simulatorId: ID!): String
 }
 
 type NamedObject {
