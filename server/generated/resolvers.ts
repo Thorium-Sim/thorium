@@ -16,7 +16,12 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: {[key: string]: any};
+  /**
+   * The `BigInt` scalar type represents non-fractional signed whole numeric values.
+   * BigInt can represent values between -(2^53) + 1 and 2^53 - 1.
+   */
   BigInt: any;
 };
 
@@ -1709,29 +1714,7 @@ export enum MotuType {
 export type Mutation = {
   __typename?: "Mutation";
   _empty?: Maybe<Scalars["String"]>;
-  entitySetAppearance?: Maybe<Scalars["String"]>;
-  entityRemoveAppearance?: Maybe<Scalars["String"]>;
-  entitySetBehavior?: Maybe<Scalars["String"]>;
-  entityRemoveBehavior?: Maybe<Scalars["String"]>;
-  entitySetIdentity?: Maybe<Scalars["String"]>;
-  entityRemoveIdentity?: Maybe<Scalars["String"]>;
-  entitySetLocation?: Maybe<Scalars["String"]>;
-  entitiesSetPosition?: Maybe<Scalars["String"]>;
-  entitySetRotationVelocityMagnitude?: Maybe<Scalars["String"]>;
-  entityRemoveLocation?: Maybe<Scalars["String"]>;
-  entitySetStage?: Maybe<Scalars["String"]>;
-  entityRemoveStage?: Maybe<Scalars["String"]>;
-  entitySetStageChild?: Maybe<Scalars["String"]>;
-  entityRemoveStageChild?: Maybe<Scalars["String"]>;
-  entitySetLight?: Maybe<Scalars["String"]>;
-  entityRemoveLight?: Maybe<Scalars["String"]>;
-  entitySetGlow?: Maybe<Scalars["String"]>;
-  entityRemoveGlow?: Maybe<Scalars["String"]>;
-  entitySetTemplate?: Maybe<Scalars["String"]>;
-  entitySetEngine?: Maybe<Scalars["String"]>;
-  entityRemoveEngine?: Maybe<Scalars["String"]>;
-  entitySetThrusters?: Maybe<Scalars["String"]>;
-  entityRemoveThrusters?: Maybe<Scalars["String"]>;
+  /** Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.) */
   triggerAction?: Maybe<Scalars["String"]>;
   addSimulatorAmbiance?: Maybe<Scalars["String"]>;
   updateSimulatorAmbiance?: Maybe<Scalars["String"]>;
@@ -1762,8 +1745,11 @@ export type Mutation = {
   clientAddCache?: Maybe<Scalars["String"]>;
   clientRemoveCache?: Maybe<Scalars["String"]>;
   setClientHypercard?: Maybe<Scalars["String"]>;
+  /** Macro: Sounds: Play a sound */
   playSound?: Maybe<Scalars["String"]>;
+  /** Macro: Sounds: Cancel All Sounds */
   stopAllSounds?: Maybe<Scalars["String"]>;
+  /** Macro: Sounds: Stop Looping All Sounds */
   cancelLoopingSounds?: Maybe<Scalars["String"]>;
   applyClientSet?: Maybe<Scalars["String"]>;
   setClientOverlay?: Maybe<Scalars["String"]>;
@@ -1784,11 +1770,27 @@ export type Mutation = {
   removeCommandLine?: Maybe<Scalars["String"]>;
   updateCommandLine?: Maybe<Scalars["String"]>;
   executeCommandLine?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Command Line: Add command line
+   * Requires:
+   *   - Cards:Command Line
+   */
   addCommandLineToSimulator?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Command Line: Remove command line
+   * Requires:
+   *   - Cards:Command Line
+   */
   removeCommandLineFromSimulator?: Maybe<Scalars["String"]>;
   addCommandLineOutput?: Maybe<Scalars["String"]>;
   handleCommandLineFeedback?: Maybe<Scalars["String"]>;
   addComputerCoreUser?: Maybe<ComputerCoreUser>;
+  /**
+   * Macro: Computer Core: Add Hacker
+   * Requires:
+   *   - Cards:ComputerCore
+   *   - Systems:ComputerCore
+   */
   computerCoreAddHacker?: Maybe<Scalars["String"]>;
   updateComputerCoreUser?: Maybe<Scalars["String"]>;
   removeComputerCoreUser?: Maybe<Scalars["String"]>;
@@ -1799,6 +1801,7 @@ export type Mutation = {
   setCoolantTank?: Maybe<Scalars["String"]>;
   transferCoolant?: Maybe<Scalars["String"]>;
   ignoreCoreFeed?: Maybe<Scalars["String"]>;
+  /** Macro: Core: Set a timer on core (requires sync time enabled) */
   syncTimer?: Maybe<Scalars["String"]>;
   updateCoreLayout?: Maybe<Scalars["String"]>;
   addCoreLayout?: Maybe<Scalars["String"]>;
@@ -1846,7 +1849,9 @@ export type Mutation = {
   addSystemDamageTask?: Maybe<Scalars["String"]>;
   removeSystemDamageTask?: Maybe<Scalars["String"]>;
   updateSystemDamageTask?: Maybe<Scalars["String"]>;
+  /** Macro: Damage Control: Break system */
   breakSystem?: Maybe<Scalars["String"]>;
+  /** Macro: Damage Control: Fix system */
   fixSystem?: Maybe<Scalars["String"]>;
   setDamageStepValidation?: Maybe<Scalars["String"]>;
   validateDamageStep?: Maybe<Scalars["String"]>;
@@ -1864,6 +1869,7 @@ export type Mutation = {
   deckEvac?: Maybe<Scalars["String"]>;
   updateHallwaySvg?: Maybe<Scalars["String"]>;
   createDockingPort?: Maybe<Scalars["String"]>;
+  /** Macro: Docking: Update Docking Port/Shuttlebay */
   updateDockingPort?: Maybe<Scalars["String"]>;
   removeDockingPort?: Maybe<Scalars["String"]>;
   addSpeed?: Maybe<Scalars["String"]>;
@@ -1885,10 +1891,18 @@ export type Mutation = {
   importSimulatorFromUrl?: Maybe<Scalars["String"]>;
   importMissionFromUrl?: Maybe<Scalars["String"]>;
   startFlight?: Maybe<Scalars["String"]>;
+  /** Macro: Flight: Reset Flight */
   resetFlight?: Maybe<Scalars["String"]>;
   deleteFlight?: Maybe<Scalars["String"]>;
+  /** Macro: Flight: Pause Flight */
   pauseFlight?: Maybe<Scalars["String"]>;
+  /** Macro: Flight: Resume Flight */
   resumeFlight?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Space EdVentures: Add Extra Crew Member
+   * Requires:
+   *   - Space EdVentures
+   */
   clientAddExtra?: Maybe<Scalars["String"]>;
   googleSheetsAuthorize?: Maybe<Scalars["String"]>;
   googleSheetsCompleteAuthorize?: Maybe<Scalars["String"]>;
@@ -1906,7 +1920,17 @@ export type Mutation = {
   removeInterfaceDevice?: Maybe<Scalars["String"]>;
   updateInterfaceDevice?: Maybe<Scalars["String"]>;
   triggerInterfaceObject?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Interfaces: Set Object Hidden
+   * Requires:
+   *   - Cards:Interface
+   */
   toggleInterfaceObjectHidden?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Interfaces: Toggle Video playing
+   * Requires:
+   *   - Cards:Interface
+   */
   toggleInterfaceObjectPlaying?: Maybe<Scalars["String"]>;
   internalCommConnectOutgoing?: Maybe<Scalars["String"]>;
   internalCommConnectIncoming?: Maybe<Scalars["String"]>;
@@ -1938,16 +1962,37 @@ export type Mutation = {
   renameKeyboard?: Maybe<Scalars["String"]>;
   updateKeyboardKey?: Maybe<Scalars["String"]>;
   triggerKeyboardAction?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Library: Add Entry
+   * Requires:
+   *   - Cards:Library
+   */
   addLibraryEntry?: Maybe<Scalars["String"]>;
   updateLibraryEntry?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Library: Remove Entry
+   * Requires:
+   *   - Cards:Library
+   */
   removeLibraryEntry?: Maybe<Scalars["String"]>;
   importLibraryEntry?: Maybe<Scalars["String"]>;
   updateSimulatorLighting?: Maybe<Scalars["String"]>;
+  /** Macro: DMX: Set Simulator DMX Config */
   dmxSetSimulatorConfig?: Maybe<Scalars["String"]>;
+  /** Macro: Lighting: Set Intensity */
   lightingSetIntensity?: Maybe<Scalars["String"]>;
+  /** Macro: Lighting: Shake Lights */
   lightingShakeLights?: Maybe<Scalars["String"]>;
+  /** Macro: Lighting: Fade Lights */
   lightingFadeLights?: Maybe<Scalars["String"]>;
+  /** Macro: Lighting: Set Effect */
   lightingSetEffect?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Long Range: Send Long Range Message
+   * Requires:
+   *   - Cards:CommDecoding
+   *   - Systems:LongRangeComm
+   */
   sendLongRangeMessage?: Maybe<Scalars["String"]>;
   longRangeMessageSend?: Maybe<Scalars["String"]>;
   deleteLongRangeMessage?: Maybe<Scalars["String"]>;
@@ -1956,9 +2001,27 @@ export type Mutation = {
   approveLongRangeMessage?: Maybe<Scalars["String"]>;
   encryptLongRangeMessage?: Maybe<Scalars["String"]>;
   setLongRangeSatellites?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Interception: Add Interception Signal
+   * Requires:
+   *   - Cards:Interception
+   *   - Systems:LongRangeComm
+   */
   addInterceptionSignal?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Interception: Remove Interception Signal
+   * Requires:
+   *   - Cards:Interception
+   *   - Systems:LongRangeComm
+   */
   removeInterceptionSignal?: Maybe<Scalars["String"]>;
   setInterceptionDifficulty?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Long Range: Set preset messages
+   * Requires:
+   *   - Cards:CommDecoding
+   *   - Systems:LongRangeComm
+   */
   setLongRangePresetMessages?: Maybe<Scalars["String"]>;
   addMacro?: Maybe<Scalars["ID"]>;
   removeMacro?: Maybe<Scalars["String"]>;
@@ -1966,6 +2029,7 @@ export type Mutation = {
   duplicateMacro?: Maybe<Scalars["String"]>;
   duplicateMacroAction?: Maybe<Scalars["String"]>;
   updateMacroActions?: Maybe<Scalars["String"]>;
+  /** Macro: Macros: Trigger Macro */
   triggerMacroAction?: Maybe<Scalars["String"]>;
   addMacroButtonConfig?: Maybe<Scalars["ID"]>;
   removeMacroButtonConfig?: Maybe<Scalars["String"]>;
@@ -1978,12 +2042,19 @@ export type Mutation = {
   updateMacroButtonActions?: Maybe<Scalars["String"]>;
   triggerMacroButton?: Maybe<Scalars["String"]>;
   toggleStationMessageGroup?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Messaging: Send an inter-ship message
+   * Requires:
+   *  - Cards:Messages
+   */
   sendMessage?: Maybe<Scalars["String"]>;
   midiSetCreate?: Maybe<MidiSet>;
   midiSetRename?: Maybe<MidiSet>;
   midiSetRemove?: Maybe<Scalars["Boolean"]>;
   midiSetControl?: Maybe<MidiSet>;
+  /** Macro: MIDI: Activate a MIDI Set */
   simulatorAddMidiSet?: Maybe<Simulator>;
+  /** Macro: MIDI: Deactivate a MIDI Set */
   simulatorRemoveMidiSet?: Maybe<Simulator>;
   createMission?: Maybe<Scalars["String"]>;
   removeMission?: Maybe<Scalars["String"]>;
@@ -1998,15 +2069,24 @@ export type Mutation = {
   updateTimelineStepItem?: Maybe<Scalars["String"]>;
   duplicateTimelineStep?: Maybe<Scalars["String"]>;
   timelineDuplicateItem?: Maybe<Scalars["String"]>;
+  /** Macro: Timelines: Start Aux Timeline */
   startAuxTimeline?: Maybe<Scalars["ID"]>;
   setAuxTimelineStep?: Maybe<Scalars["String"]>;
   missionSetExtraRequirements?: Maybe<Scalars["String"]>;
   motuAdd?: Maybe<Scalars["String"]>;
   motuRemove?: Maybe<Scalars["String"]>;
+  /** Macro: MOTU: Update Channel */
   motuUpdateChannel?: Maybe<Scalars["String"]>;
+  /** Macro: MOTU: (Un)Mute connection from Input to Output */
   motuSetSendMute?: Maybe<Scalars["String"]>;
   navCalculateCourse?: Maybe<Scalars["String"]>;
   navCancelCalculation?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Navigation: Send Course
+   * Requires:
+   *  - Cards:Navigation
+   *  - Systems:Navigation
+   */
   navCourseResponse?: Maybe<Scalars["String"]>;
   navCourseEntry?: Maybe<Scalars["String"]>;
   navToggleCalculate?: Maybe<Scalars["String"]>;
@@ -2014,8 +2094,16 @@ export type Mutation = {
   navSetDestination?: Maybe<Scalars["String"]>;
   navSetScanning?: Maybe<Scalars["String"]>;
   navSetThrusters?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Navigation: Course Preset
+   * Requires:
+   *  - Cards:Navigation
+   *  - Systems:Navigation
+   */
   navSetPresets?: Maybe<Scalars["String"]>;
+  /** Macro: Objective: Add Objective */
   addObjective?: Maybe<Scalars["String"]>;
+  /** Macro: Objective: Complete Objective */
   completeObjective?: Maybe<Scalars["String"]>;
   objectiveSetCrewComplete?: Maybe<Scalars["String"]>;
   addLog?: Maybe<Scalars["String"]>;
@@ -2034,6 +2122,7 @@ export type Mutation = {
   changePower?: Maybe<Scalars["String"]>;
   changeSystemPowerLevels?: Maybe<Scalars["String"]>;
   changeSystemDefaultPowerLevel?: Maybe<Scalars["String"]>;
+  /** Macro: Systems: Flux Power */
   fluxSystemPower?: Maybe<Scalars["String"]>;
   destroyProbe?: Maybe<Scalars["String"]>;
   destroyAllProbes?: Maybe<Scalars["String"]>;
@@ -2043,6 +2132,12 @@ export type Mutation = {
   updateProbeEquipment?: Maybe<Scalars["String"]>;
   probeQuery?: Maybe<Scalars["String"]>;
   probeQueryResponse?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Probes: Probe Processed Data
+   * Requires:
+   *  - Cards:ProbeNetwork
+   *  - Systems:Probes
+   */
   probeProcessedData?: Maybe<Scalars["String"]>;
   setProbeTorpedo?: Maybe<Scalars["String"]>;
   setProbeCharge?: Maybe<Scalars["String"]>;
@@ -2055,6 +2150,12 @@ export type Mutation = {
   reactorEject?: Maybe<Scalars["String"]>;
   reactorChangeModel?: Maybe<Scalars["String"]>;
   reactorChangeOutput?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Reactor: Change Reactor Efficiency
+   * Requires:
+   *  - Cards:ReactorControl
+   *  - Systems:Reactor
+   */
   reactorChangeEfficiency?: Maybe<Scalars["String"]>;
   reactorBatteryChargeLevel?: Maybe<Scalars["String"]>;
   reactorBatteryChargeRate?: Maybe<Scalars["String"]>;
@@ -2067,12 +2168,15 @@ export type Mutation = {
   reactorSetWingPower?: Maybe<Scalars["String"]>;
   reactorRequestWingPower?: Maybe<Scalars["String"]>;
   reactorAckWingRequest?: Maybe<Scalars["String"]>;
+  /** Macro: Records: Create Ship Record */
   recordsCreate?: Maybe<Scalars["String"]>;
   recordsCreateSnippet?: Maybe<Scalars["String"]>;
   recordsAddToSnippet?: Maybe<Scalars["String"]>;
   recordsRemoveFromSnippet?: Maybe<Scalars["String"]>;
   recordsDeleteRecord?: Maybe<Scalars["String"]>;
+  /** Macro: Records: Generate Records Snippet */
   recordsGenerateRecords?: Maybe<RecordSnippet>;
+  /** Macro: Records: Add Record to Snippet */
   recordsCreateOnSnippet?: Maybe<RecordSnippet>;
   recordsShowSnippet?: Maybe<RecordSnippet>;
   recordsHideSnippet?: Maybe<RecordSnippet>;
@@ -2094,10 +2198,28 @@ export type Mutation = {
   snapshot?: Maybe<Scalars["String"]>;
   test?: Maybe<Scalars["String"]>;
   sensorScanRequest?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Sensors: Send Scan Result
+   * Requires:
+   *  - Cards:SecurityScans, SensorScans, Sensors, JrSensors
+   *  - Systems:Sensors
+   */
   sensorScanResult?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Sensors: Processed Data
+   * Requires:
+   *  - Cards:Sensors, JrSensors
+   *  - Systems:Sensors
+   */
   processedData?: Maybe<Scalars["String"]>;
   removeProcessedData?: Maybe<Scalars["String"]>;
   sensorScanCancel?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Sensors: Scan Answers
+   * Requires:
+   *  - Cards:SecurityScans, SensorScans, Sensors, JrSensors
+   *  - Systems:Sensors
+   */
   setPresetAnswers?: Maybe<Scalars["String"]>;
   createSensorContact?: Maybe<Scalars["String"]>;
   createSensorContacts?: Maybe<Scalars["String"]>;
@@ -2106,6 +2228,12 @@ export type Mutation = {
   removeAllSensorContacts?: Maybe<Scalars["String"]>;
   stopAllSensorContacts?: Maybe<Scalars["String"]>;
   updateSensorContact?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Sensors: Set Army Sensor Contacts
+   * Requires:
+   *  - Cards:Sensors, JrSensors
+   *  - Systems:Sensors
+   */
   setArmyContacts?: Maybe<Scalars["String"]>;
   createSensorArmyContact?: Maybe<Scalars["String"]>;
   removeSensorArmyContact?: Maybe<Scalars["String"]>;
@@ -2125,6 +2253,12 @@ export type Mutation = {
   setSensorsSegment?: Maybe<Scalars["String"]>;
   setAutoMovement?: Maybe<Scalars["String"]>;
   updateSensorContacts?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Sensors: Update Sensor Grid
+   * Requires:
+   *  - Cards:Sensors, JrSensors
+   *  - Systems:Sensors
+   */
   updateSensorGrid?: Maybe<Scalars["String"]>;
   destroySensorContact?: Maybe<Scalars["String"]>;
   sensorsFireProjectile?: Maybe<Scalars["String"]>;
@@ -2141,20 +2275,46 @@ export type Mutation = {
   shieldLowered?: Maybe<Scalars["String"]>;
   shieldIntegritySet?: Maybe<Scalars["String"]>;
   shieldFrequencySet?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Shields: Set all shield frequencies
+   * Requires:
+   *  - Cards:ShieldControl
+   *  - Systems:Shield
+   */
   shieldFrequencySetAll?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Shields: Hit all shields
+   * Requires:
+   *  - Cards:ShieldControl
+   *  - Systems:Shield
+   */
   hitShields?: Maybe<Scalars["String"]>;
   restoreShields?: Maybe<Scalars["String"]>;
   shipDockingChange?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Docking: Set docking state
+   * Requires:
+   *  - Cards:DockingPorts, SpecializedDocking, Shuttles
+   *  - Docking
+   */
   shipSetDocking?: Maybe<Scalars["String"]>;
   remoteAccessSendCode?: Maybe<Scalars["String"]>;
   remoteAccessUpdateCode?: Maybe<Scalars["String"]>;
   setSelfDestructTime?: Maybe<Scalars["String"]>;
   setSelfDestructCode?: Maybe<Scalars["String"]>;
   setSelfDestructAuto?: Maybe<Scalars["String"]>;
+  /** Macro: Actions: Send Notification */
   notify?: Maybe<Scalars["String"]>;
+  /** Macro: Actions: Print PDF Asset */
   printPdf?: Maybe<Scalars["String"]>;
   commAddSignal?: Maybe<Scalars["String"]>;
   commUpdateSignal?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Short Range: Set Signals
+   * Requires:
+   *  - Cards:CommShortRange
+   *  - Systems:ShortRangeComm
+   */
   commUpdateSignals?: Maybe<Scalars["String"]>;
   commRemoveSignal?: Maybe<Scalars["String"]>;
   commAddArrow?: Maybe<Scalars["String"]>;
@@ -2165,7 +2325,19 @@ export type Mutation = {
   commHail?: Maybe<Scalars["String"]>;
   cancelHail?: Maybe<Scalars["String"]>;
   connectHail?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Short Range: Add Signal
+   * Requires:
+   *  - Cards:CommShortRange
+   *  - Systems:ShortRangeComm
+   */
   addShortRangeComm?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Short Range: Remove Signal
+   * Requires:
+   *  - Cards:CommShortRange
+   *  - Systems:ShortRangeComm
+   */
   removeShortRangeComm?: Maybe<Scalars["String"]>;
   muteShortRangeComm?: Maybe<Scalars["String"]>;
   setSickbayBunks?: Maybe<Scalars["String"]>;
@@ -2184,23 +2356,38 @@ export type Mutation = {
   setDeconAutoFinish?: Maybe<Scalars["String"]>;
   updatePatientChart?: Maybe<Scalars["String"]>;
   updateSignalJammer?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Signal Jammer: Set Signal
+   * Requires:
+   *  - Cards:SignalJammer
+   *  - Systems:SignalJammer
+   */
   signalJammerSignals?: Maybe<Scalars["String"]>;
   fluxSignalJammer?: Maybe<Scalars["String"]>;
   setSignalJammerSensorsInterference?: Maybe<Scalars["String"]>;
   createSimulator?: Maybe<Scalars["String"]>;
   removeSimulator?: Maybe<Scalars["String"]>;
   triggerMacros?: Maybe<Scalars["String"]>;
+  /** Macro: Timeline: Auto-Advance Timeline Step (Use with Delay) */
   autoAdvance?: Maybe<Scalars["String"]>;
+  /** Macro: Flight: Start Training Mode */
   trainingMode?: Maybe<Scalars["String"]>;
+  /** Macro: Simulator: Set Alert Condition Lock */
   setAlertConditionLock?: Maybe<Scalars["String"]>;
+  /** Macro: Simulator: Rename Simulator */
   renameSimulator?: Maybe<Scalars["String"]>;
+  /** Macro: Simulator: Change Simulator Layout */
   changeSimulatorLayout?: Maybe<Scalars["String"]>;
   changeSimulatorCaps?: Maybe<Scalars["String"]>;
+  /** Macro: Simulator: Change Alert Level */
   changeSimulatorAlertLevel?: Maybe<Scalars["String"]>;
+  /** Macro: Station: Hide Card */
   hideSimulatorCard?: Maybe<Scalars["String"]>;
+  /** Macro: Station: Unhide Card */
   unhideSimulatorCard?: Maybe<Scalars["String"]>;
   stationAssignCard?: Maybe<Scalars["String"]>;
   stationUnassignCard?: Maybe<Scalars["String"]>;
+  /** Macro: Simulator: Flip Simulator */
   flipSimulator?: Maybe<Scalars["String"]>;
   toggleSimulatorCardHidden?: Maybe<Scalars["String"]>;
   changeSimulatorExocomps?: Maybe<Scalars["String"]>;
@@ -2208,6 +2395,7 @@ export type Mutation = {
   changeSimulatorExtraPeople?: Maybe<Scalars["String"]>;
   changeSimulatorRadiation?: Maybe<Scalars["String"]>;
   setSimulatorTimelineStep?: Maybe<Scalars["String"]>;
+  /** Macro: Timeline: Change Timeline Mission or Step */
   setSimulatorMission?: Maybe<Scalars["String"]>;
   setSimulatorMissionConfig?: Maybe<Scalars["String"]>;
   updateSimulatorPanels?: Maybe<Scalars["String"]>;
@@ -2267,6 +2455,7 @@ export type Mutation = {
   removeSurveyForm?: Maybe<Scalars["String"]>;
   setSurveyFormGoogleSheet?: Maybe<Scalars["String"]>;
   updateSurveyForm?: Maybe<Scalars["String"]>;
+  /** Macro: Surveys: Trigger Survey */
   triggerSurvey?: Maybe<Scalars["String"]>;
   surveyFormResponse?: Maybe<Scalars["String"]>;
   endSurvey?: Maybe<Scalars["String"]>;
@@ -2294,7 +2483,9 @@ export type Mutation = {
   addTacticalMapPath?: Maybe<Scalars["String"]>;
   updateTacticalMapPath?: Maybe<Scalars["String"]>;
   removeTacticalMapPath?: Maybe<Scalars["String"]>;
+  /** Macro: Viewscreen: Show Tactical Map */
   showViewscreenTactical?: Maybe<Scalars["String"]>;
+  /** Macro: Tactical Map: Add Tactical Maps to Flight */
   addTacticalMapsToFlight?: Maybe<Scalars["String"]>;
   createTargetingContact?: Maybe<Scalars["String"]>;
   targetTargetingContact?: Maybe<Scalars["String"]>;
@@ -2308,8 +2499,20 @@ export type Mutation = {
   setCoordinateTargeting?: Maybe<Scalars["String"]>;
   setTargetingCalculatedTarget?: Maybe<Scalars["String"]>;
   setTargetingEnteredTarget?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Targeting: Clear Targeting Classes
+   * Requires:
+   *  - Cards:Targeting, TargetingStandalone
+   *  - Systems:Targeting
+   */
   clearAllTargetingContacts?: Maybe<Scalars["String"]>;
   setTargetingRange?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Targeting: Set Targeting Classes
+   * Requires:
+   *  - Cards:Targeting, TargetingStandalone
+   *  - Systems:Targeting
+   */
   setTargetingClasses?: Maybe<Scalars["String"]>;
   generateTaskReport?: Maybe<Scalars["String"]>;
   clearTaskReport?: Maybe<Scalars["String"]>;
@@ -2317,6 +2520,11 @@ export type Mutation = {
   verifyTaskReportStep?: Maybe<Scalars["String"]>;
   assignTaskReportStep?: Maybe<Scalars["String"]>;
   requestVerifyTaskReportStep?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Tasks: Add Task
+   * Requires:
+   *  - Cards:Tasks, EngineeringReports, RnDReports, DamageControl, DamageStepControl
+   */
   addTask?: Maybe<Scalars["String"]>;
   verifyTask?: Maybe<Scalars["String"]>;
   requestTaskVerify?: Maybe<Scalars["String"]>;
@@ -2338,12 +2546,33 @@ export type Mutation = {
   setTrackingPreference?: Maybe<Scalars["String"]>;
   importTaskTemplates?: Maybe<Scalars["String"]>;
   setSpaceEdventuresToken?: Maybe<SpaceEdventuresCenter>;
+  /**
+   * Macro: Space EdVentures: Assign Space EdVentures Badge
+   * Requires:
+   *   - Space EdVentures
+   */
   assignSpaceEdventuresBadge?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Space EdVentures: Assign Space EdVentures Mission
+   * Requires:
+   *   - Space EdVentures
+   */
   assignSpaceEdventuresMission?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Space EdVentures: Change Flight Type
+   * Requires:
+   *   - Space EdVentures
+   */
   assignSpaceEdventuresFlightType?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Space EdVentures: Transmit to Space EdVentures
+   * Requires:
+   *   - Space EdVentures
+   */
   assignSpaceEdventuresFlightRecord?: Maybe<Scalars["String"]>;
   getSpaceEdventuresLogin?: Maybe<Scalars["String"]>;
   removeSpaceEdventuresClient?: Maybe<Scalars["String"]>;
+  /** Macro: Generic: Do a generic thing. Use for triggers. */
   generic?: Maybe<Scalars["String"]>;
   clockSync?: Maybe<Scalars["String"]>;
   addIssue?: Maybe<Scalars["String"]>;
@@ -2373,7 +2602,19 @@ export type Mutation = {
   setTractorBeamScanning?: Maybe<Scalars["String"]>;
   setTractorBeamTargetLabel?: Maybe<Scalars["String"]>;
   setTractorBeamCount?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Tractor Beam: Add Target
+   * Requires:
+   *  - Cards:TractorBeam
+   *  - Systems:TractorBeam
+   */
   addTractorTarget?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Tractor Beam: Remove Target
+   * Requires:
+   *  - Cards:TractorBeam
+   *  - Systems:TractorBeam
+   */
   removeTractorTarget?: Maybe<Scalars["String"]>;
   setTransportDestination?: Maybe<Scalars["String"]>;
   setTransportTarget?: Maybe<Scalars["String"]>;
@@ -2382,6 +2623,12 @@ export type Mutation = {
   clearTransportTargets?: Maybe<Scalars["String"]>;
   setTransportCharge?: Maybe<Scalars["String"]>;
   completeTransport?: Maybe<Scalars["String"]>;
+  /**
+   * Macro: Transporters: Set Target Count
+   * Requires:
+   *  - Cards:Transporters
+   *  - Systems:Transporters
+   */
   setTransporterTargets?: Maybe<Scalars["String"]>;
   setTransporterChargeSpeed?: Maybe<Scalars["String"]>;
   setTranswarpActive?: Maybe<Scalars["String"]>;
@@ -2392,14 +2639,20 @@ export type Mutation = {
   renameTrigger?: Maybe<Scalars["String"]>;
   removeTrigger?: Maybe<Scalars["String"]>;
   updateTrigger?: Maybe<Scalars["String"]>;
+  /** Macro: Triggers: Add trigger to simulator */
   addTriggerToSimulator?: Maybe<Scalars["String"]>;
+  /** Macro: Triggers: Remove trigger from simulator */
   removeTriggerFromSimulator?: Maybe<Scalars["String"]>;
   updateViewscreenName?: Maybe<Scalars["String"]>;
   updateViewscreenSecondary?: Maybe<Scalars["String"]>;
+  /** Macro: Viewscreen: Change Viewscreen Card */
   updateViewscreenComponent?: Maybe<Scalars["String"]>;
   updateViewscreenData?: Maybe<Scalars["String"]>;
+  /** Macro: Viewscreen: Set Viewscreen to Auto */
   setViewscreenToAuto?: Maybe<Scalars["String"]>;
+  /** Macro: Viewscreen: Set Viewscreen Picture-in-Picture */
   setViewscreenPictureInPicture?: Maybe<Scalars["String"]>;
+  /** Macro: Viewscreen: Remove Viewscreen Picture-in-Picture */
   removeViewscreenPictureInPicture?: Maybe<Scalars["String"]>;
   updateViewscreenAuto?: Maybe<Scalars["String"]>;
   toggleViewscreenVideo?: Maybe<Scalars["String"]>;
@@ -2417,6 +2670,7 @@ export type Mutation = {
   countermeasuresSetFDNote?: Maybe<Scalars["String"]>;
   entityCreate: Entity;
   entityRemove?: Maybe<Scalars["String"]>;
+  /** Macro: Sandbox: Set Base Universe for Flight */
   flightSetBaseUniverse?: Maybe<Scalars["String"]>;
   dmxDeviceCreate?: Maybe<Scalars["String"]>;
   dmxDeviceRemove?: Maybe<Scalars["String"]>;
@@ -2432,10 +2686,15 @@ export type Mutation = {
   dmxFixtureSetDMXDevice?: Maybe<Scalars["String"]>;
   dmxFixtureSetChannel?: Maybe<Scalars["String"]>;
   dmxFixtureSetMode?: Maybe<Scalars["String"]>;
+  /** Macro: DMX: Set Fixture To Active Mode */
   dmxFixtureSetActive?: Maybe<Scalars["String"]>;
+  /** Macro: DMX: Set Fixture Tags */
   dmxFixtureSetTags?: Maybe<Scalars["String"]>;
+  /** Macro: DMX: Add Fixture Tag */
   dmxFixtureAddTag?: Maybe<Scalars["String"]>;
+  /** Macro: DMX: Remove Fixture Tag */
   dmxFixtureRemoveTag?: Maybe<Scalars["String"]>;
+  /** Macro: DMX: Set Fixture Passive Channels */
   dmxFixtureSetPassiveChannels?: Maybe<Scalars["String"]>;
   dmxConfigCreate?: Maybe<Scalars["String"]>;
   dmxConfigRemove?: Maybe<Scalars["String"]>;
@@ -2455,143 +2714,32 @@ export type Mutation = {
   taskFlowStepRemoveTask?: Maybe<Scalars["String"]>;
   taskFlowStepEditTask?: Maybe<Scalars["String"]>;
   taskFlowStepSetCompleteAll?: Maybe<Scalars["String"]>;
+  /** Macro: Tasks: Activate Task Flow */
   taskFlowActivate?: Maybe<Scalars["String"]>;
   taskFlowAdvance?: Maybe<Scalars["String"]>;
-};
-
-export type MutationEntitySetAppearanceArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  color?: Maybe<Scalars["String"]>;
-  meshType?: Maybe<MeshTypeEnum>;
-  modelAsset?: Maybe<Scalars["String"]>;
-  materialMapAsset?: Maybe<Scalars["String"]>;
-  ringMapAsset?: Maybe<Scalars["String"]>;
-  cloudMapAsset?: Maybe<Scalars["String"]>;
-  emissiveColor?: Maybe<Scalars["String"]>;
-  emissiveIntensity?: Maybe<Scalars["Float"]>;
-  scale?: Maybe<Scalars["Float"]>;
-};
-
-export type MutationEntityRemoveAppearanceArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationEntitySetBehaviorArgs = {
-  id: Scalars["ID"];
-  behavior: Behaviors;
-  targetId?: Maybe<Scalars["ID"]>;
-  destination?: Maybe<EntityCoordinatesInput>;
-};
-
-export type MutationEntityRemoveBehaviorArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationEntitySetIdentityArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  name?: Maybe<Scalars["String"]>;
-  type?: Maybe<Scalars["String"]>;
-};
-
-export type MutationEntityRemoveIdentityArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationEntitySetLocationArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  position?: Maybe<EntityCoordinatesInput>;
-  velocity?: Maybe<EntityCoordinatesInput>;
-  acceleration?: Maybe<EntityCoordinatesInput>;
-  rotation?: Maybe<QuaternionInput>;
-  rotationVelocity?: Maybe<EntityCoordinatesInput>;
-  rotationAcceleration?: Maybe<EntityCoordinatesInput>;
-};
-
-export type MutationEntitiesSetPositionArgs = {
-  entities: Array<EntitiesLocationInput>;
-};
-
-export type MutationEntitySetRotationVelocityMagnitudeArgs = {
-  id: Scalars["ID"];
-  rotationVelocity: CoordinatesInput;
-};
-
-export type MutationEntityRemoveLocationArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationEntitySetStageArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  scaleLabel?: Maybe<Scalars["String"]>;
-  scaleLabelShort?: Maybe<Scalars["String"]>;
-  skyboxKey?: Maybe<Scalars["String"]>;
-};
-
-export type MutationEntityRemoveStageArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationEntitySetStageChildArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  parentId: Scalars["ID"];
-};
-
-export type MutationEntityRemoveStageChildArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationEntitySetLightArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  intensity?: Maybe<Scalars["Float"]>;
-  decay?: Maybe<Scalars["Float"]>;
-  color?: Maybe<Scalars["String"]>;
-};
-
-export type MutationEntityRemoveLightArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationEntitySetGlowArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  glowMode?: Maybe<GlowModeEnum>;
-  color?: Maybe<Scalars["String"]>;
-};
-
-export type MutationEntityRemoveGlowArgs = {
-  id: Scalars["ID"];
-};
-
-export type MutationEntitySetTemplateArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  category: Scalars["String"];
-};
-
-export type MutationEntitySetEngineArgs = {
-  id?: Maybe<Scalars["ID"]>;
-  type: EntityEngineEnum;
-  maxSpeed?: Maybe<Scalars["Float"]>;
-  currentSpeed?: Maybe<Scalars["Float"]>;
-  heat?: Maybe<Scalars["Float"]>;
-  heatRate?: Maybe<Scalars["Float"]>;
-  coolant?: Maybe<Scalars["Float"]>;
-  cooling?: Maybe<Scalars["Boolean"]>;
-};
-
-export type MutationEntityRemoveEngineArgs = {
-  id: Scalars["ID"];
-  type: EntityEngineEnum;
-};
-
-export type MutationEntitySetThrustersArgs = {
-  id: Scalars["ID"];
-  direction?: Maybe<CoordinatesInput>;
-  rotationDelta?: Maybe<CoordinatesInput>;
-  rotationSpeed?: Maybe<Scalars["Float"]>;
-  movementSpeed?: Maybe<Scalars["Float"]>;
-};
-
-export type MutationEntityRemoveThrustersArgs = {
-  id: Scalars["ID"];
+  entitySetAppearance?: Maybe<Scalars["String"]>;
+  entityRemoveAppearance?: Maybe<Scalars["String"]>;
+  entitySetBehavior?: Maybe<Scalars["String"]>;
+  entityRemoveBehavior?: Maybe<Scalars["String"]>;
+  entitySetIdentity?: Maybe<Scalars["String"]>;
+  entityRemoveIdentity?: Maybe<Scalars["String"]>;
+  entitySetLocation?: Maybe<Scalars["String"]>;
+  entitiesSetPosition?: Maybe<Scalars["String"]>;
+  entitySetRotationVelocityMagnitude?: Maybe<Scalars["String"]>;
+  entityRemoveLocation?: Maybe<Scalars["String"]>;
+  entitySetStage?: Maybe<Scalars["String"]>;
+  entityRemoveStage?: Maybe<Scalars["String"]>;
+  entitySetStageChild?: Maybe<Scalars["String"]>;
+  entityRemoveStageChild?: Maybe<Scalars["String"]>;
+  entitySetLight?: Maybe<Scalars["String"]>;
+  entityRemoveLight?: Maybe<Scalars["String"]>;
+  entitySetGlow?: Maybe<Scalars["String"]>;
+  entityRemoveGlow?: Maybe<Scalars["String"]>;
+  entitySetTemplate?: Maybe<Scalars["String"]>;
+  entitySetEngine?: Maybe<Scalars["String"]>;
+  entityRemoveEngine?: Maybe<Scalars["String"]>;
+  entitySetThrusters?: Maybe<Scalars["String"]>;
+  entityRemoveThrusters?: Maybe<Scalars["String"]>;
 };
 
 export type MutationTriggerActionArgs = {
@@ -6358,6 +6506,141 @@ export type MutationTaskFlowAdvanceArgs = {
   simulatorId: Scalars["ID"];
 };
 
+export type MutationEntitySetAppearanceArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  color?: Maybe<Scalars["String"]>;
+  meshType?: Maybe<MeshTypeEnum>;
+  modelAsset?: Maybe<Scalars["String"]>;
+  materialMapAsset?: Maybe<Scalars["String"]>;
+  ringMapAsset?: Maybe<Scalars["String"]>;
+  cloudMapAsset?: Maybe<Scalars["String"]>;
+  emissiveColor?: Maybe<Scalars["String"]>;
+  emissiveIntensity?: Maybe<Scalars["Float"]>;
+  scale?: Maybe<Scalars["Float"]>;
+};
+
+export type MutationEntityRemoveAppearanceArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetBehaviorArgs = {
+  id: Scalars["ID"];
+  behavior: Behaviors;
+  targetId?: Maybe<Scalars["ID"]>;
+  destination?: Maybe<EntityCoordinatesInput>;
+};
+
+export type MutationEntityRemoveBehaviorArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetIdentityArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  name?: Maybe<Scalars["String"]>;
+  type?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveIdentityArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetLocationArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  position?: Maybe<EntityCoordinatesInput>;
+  velocity?: Maybe<EntityCoordinatesInput>;
+  acceleration?: Maybe<EntityCoordinatesInput>;
+  rotation?: Maybe<QuaternionInput>;
+  rotationVelocity?: Maybe<EntityCoordinatesInput>;
+  rotationAcceleration?: Maybe<EntityCoordinatesInput>;
+};
+
+export type MutationEntitiesSetPositionArgs = {
+  entities: Array<EntitiesLocationInput>;
+};
+
+export type MutationEntitySetRotationVelocityMagnitudeArgs = {
+  id: Scalars["ID"];
+  rotationVelocity: CoordinatesInput;
+};
+
+export type MutationEntityRemoveLocationArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetStageArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  scaleLabel?: Maybe<Scalars["String"]>;
+  scaleLabelShort?: Maybe<Scalars["String"]>;
+  skyboxKey?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveStageArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetStageChildArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  parentId: Scalars["ID"];
+};
+
+export type MutationEntityRemoveStageChildArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetLightArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  intensity?: Maybe<Scalars["Float"]>;
+  decay?: Maybe<Scalars["Float"]>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveLightArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetGlowArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  glowMode?: Maybe<GlowModeEnum>;
+  color?: Maybe<Scalars["String"]>;
+};
+
+export type MutationEntityRemoveGlowArgs = {
+  id: Scalars["ID"];
+};
+
+export type MutationEntitySetTemplateArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  category: Scalars["String"];
+};
+
+export type MutationEntitySetEngineArgs = {
+  id?: Maybe<Scalars["ID"]>;
+  type: EntityEngineEnum;
+  maxSpeed?: Maybe<Scalars["Float"]>;
+  currentSpeed?: Maybe<Scalars["Float"]>;
+  heat?: Maybe<Scalars["Float"]>;
+  heatRate?: Maybe<Scalars["Float"]>;
+  coolant?: Maybe<Scalars["Float"]>;
+  cooling?: Maybe<Scalars["Boolean"]>;
+};
+
+export type MutationEntityRemoveEngineArgs = {
+  id: Scalars["ID"];
+  type: EntityEngineEnum;
+};
+
+export type MutationEntitySetThrustersArgs = {
+  id: Scalars["ID"];
+  direction?: Maybe<CoordinatesInput>;
+  rotationDelta?: Maybe<CoordinatesInput>;
+  rotationSpeed?: Maybe<Scalars["Float"]>;
+  movementSpeed?: Maybe<Scalars["Float"]>;
+};
+
+export type MutationEntityRemoveThrustersArgs = {
+  id: Scalars["ID"];
+};
+
 export type NamedObject = {
   __typename?: "NamedObject";
   id?: Maybe<Scalars["ID"]>;
@@ -7964,7 +8247,7 @@ export type StageComponent = {
 export type Station = {
   __typename?: "Station";
   name: Scalars["String"];
-  tags: Array<Scalars["String"]>;
+  tags?: Maybe<Array<Scalars["String"]>>;
   description?: Maybe<Scalars["String"]>;
   training?: Maybe<Scalars["String"]>;
   login?: Maybe<Scalars["Boolean"]>;
@@ -7972,7 +8255,7 @@ export type Station = {
   messageGroups?: Maybe<Array<Maybe<Scalars["String"]>>>;
   layout?: Maybe<Scalars["String"]>;
   widgets?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  cards: Array<Card>;
+  cards?: Maybe<Array<Card>>;
   ambiance?: Maybe<Scalars["String"]>;
 };
 
@@ -8944,11 +9227,11 @@ export type TaskTemplate = {
   __typename?: "TaskTemplate";
   id: Scalars["ID"];
   name: Scalars["String"];
-  values: Scalars["JSON"];
+  values?: Maybe<Scalars["JSON"]>;
   definition: Scalars["String"];
-  reportTypes: Array<Scalars["String"]>;
-  macros: Array<MacroAction>;
-  preMacros: Array<MacroAction>;
+  reportTypes?: Maybe<Array<Scalars["String"]>>;
+  macros?: Maybe<Array<MacroAction>>;
+  preMacros?: Maybe<Array<MacroAction>>;
 };
 
 export type Team = {
@@ -9880,17 +10163,13 @@ export type ResolversTypes = ResolversObject<{
   TaskFlow: ResolverTypeWrapper<TaskFlow>;
   TaskFlowStep: ResolverTypeWrapper<TaskFlowStep>;
   Mutation: ResolverTypeWrapper<{}>;
-  EntityCoordinatesInput: EntityCoordinatesInput;
-  QuaternionInput: QuaternionInput;
-  EntitiesLocationInput: EntitiesLocationInput;
-  CoordinatesInput: CoordinatesInput;
-  EntityEngineEnum: EntityEngineEnum;
   AmbianceInput: AmbianceInput;
   RemoteAsset: RemoteAsset;
   SoundInput: SoundInput;
   ComputerCoreUserInput: ComputerCoreUserInput;
   CoreLayoutInput: CoreLayoutInput;
   CrewInput: CrewInput;
+  CoordinatesInput: CoordinatesInput;
   DamageStepInput: DamageStepInput;
   DamageStepArgsInput: DamageStepArgsInput;
   DAMAGE_STEP_TYPES: Damage_Step_Types;
@@ -9959,6 +10238,10 @@ export type ResolversTypes = ResolversObject<{
   WarheadInput: WarheadInput;
   CountermeasureSlotEnum: CountermeasureSlotEnum;
   DMXPassiveChannelsInput: DmxPassiveChannelsInput;
+  EntityCoordinatesInput: EntityCoordinatesInput;
+  QuaternionInput: QuaternionInput;
+  EntitiesLocationInput: EntitiesLocationInput;
+  EntityEngineEnum: EntityEngineEnum;
   Subscription: ResolverTypeWrapper<{}>;
   Sound: ResolverTypeWrapper<Sound>;
   Timer: ResolverTypeWrapper<Timer>;
@@ -10252,17 +10535,13 @@ export type ResolversParentTypes = ResolversObject<{
   TaskFlow: TaskFlow;
   TaskFlowStep: TaskFlowStep;
   Mutation: {};
-  EntityCoordinatesInput: EntityCoordinatesInput;
-  QuaternionInput: QuaternionInput;
-  EntitiesLocationInput: EntitiesLocationInput;
-  CoordinatesInput: CoordinatesInput;
-  EntityEngineEnum: EntityEngineEnum;
   AmbianceInput: AmbianceInput;
   RemoteAsset: RemoteAsset;
   SoundInput: SoundInput;
   ComputerCoreUserInput: ComputerCoreUserInput;
   CoreLayoutInput: CoreLayoutInput;
   CrewInput: CrewInput;
+  CoordinatesInput: CoordinatesInput;
   DamageStepInput: DamageStepInput;
   DamageStepArgsInput: DamageStepArgsInput;
   DAMAGE_STEP_TYPES: Damage_Step_Types;
@@ -10331,6 +10610,10 @@ export type ResolversParentTypes = ResolversObject<{
   WarheadInput: WarheadInput;
   CountermeasureSlotEnum: CountermeasureSlotEnum;
   DMXPassiveChannelsInput: DmxPassiveChannelsInput;
+  EntityCoordinatesInput: EntityCoordinatesInput;
+  QuaternionInput: QuaternionInput;
+  EntitiesLocationInput: EntitiesLocationInput;
+  EntityEngineEnum: EntityEngineEnum;
   Subscription: {};
   Sound: Sound;
   Timer: Timer;
@@ -13005,147 +13288,6 @@ export type MutationResolvers<
   ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"]
 > = ResolversObject<{
   _empty?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  entitySetAppearance?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetAppearanceArgs, never>
-  >;
-  entityRemoveAppearance?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveAppearanceArgs, "id">
-  >;
-  entitySetBehavior?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetBehaviorArgs, "id" | "behavior">
-  >;
-  entityRemoveBehavior?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveBehaviorArgs, "id">
-  >;
-  entitySetIdentity?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetIdentityArgs, never>
-  >;
-  entityRemoveIdentity?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveIdentityArgs, "id">
-  >;
-  entitySetLocation?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetLocationArgs, never>
-  >;
-  entitiesSetPosition?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitiesSetPositionArgs, "entities">
-  >;
-  entitySetRotationVelocityMagnitude?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<
-      MutationEntitySetRotationVelocityMagnitudeArgs,
-      "id" | "rotationVelocity"
-    >
-  >;
-  entityRemoveLocation?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveLocationArgs, "id">
-  >;
-  entitySetStage?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetStageArgs, never>
-  >;
-  entityRemoveStage?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveStageArgs, "id">
-  >;
-  entitySetStageChild?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetStageChildArgs, "parentId">
-  >;
-  entityRemoveStageChild?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveStageChildArgs, "id">
-  >;
-  entitySetLight?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetLightArgs, never>
-  >;
-  entityRemoveLight?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveLightArgs, "id">
-  >;
-  entitySetGlow?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetGlowArgs, never>
-  >;
-  entityRemoveGlow?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveGlowArgs, "id">
-  >;
-  entitySetTemplate?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetTemplateArgs, "category">
-  >;
-  entitySetEngine?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetEngineArgs, "type">
-  >;
-  entityRemoveEngine?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveEngineArgs, "id" | "type">
-  >;
-  entitySetThrusters?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntitySetThrustersArgs, "id">
-  >;
-  entityRemoveThrusters?: Resolver<
-    Maybe<ResolversTypes["String"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationEntityRemoveThrustersArgs, "id">
-  >;
   triggerAction?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -17848,6 +17990,147 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationTaskFlowAdvanceArgs, "simulatorId">
   >;
+  entitySetAppearance?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetAppearanceArgs, never>
+  >;
+  entityRemoveAppearance?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveAppearanceArgs, "id">
+  >;
+  entitySetBehavior?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetBehaviorArgs, "id" | "behavior">
+  >;
+  entityRemoveBehavior?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveBehaviorArgs, "id">
+  >;
+  entitySetIdentity?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetIdentityArgs, never>
+  >;
+  entityRemoveIdentity?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveIdentityArgs, "id">
+  >;
+  entitySetLocation?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetLocationArgs, never>
+  >;
+  entitiesSetPosition?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitiesSetPositionArgs, "entities">
+  >;
+  entitySetRotationVelocityMagnitude?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<
+      MutationEntitySetRotationVelocityMagnitudeArgs,
+      "id" | "rotationVelocity"
+    >
+  >;
+  entityRemoveLocation?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveLocationArgs, "id">
+  >;
+  entitySetStage?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetStageArgs, never>
+  >;
+  entityRemoveStage?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveStageArgs, "id">
+  >;
+  entitySetStageChild?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetStageChildArgs, "parentId">
+  >;
+  entityRemoveStageChild?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveStageChildArgs, "id">
+  >;
+  entitySetLight?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetLightArgs, never>
+  >;
+  entityRemoveLight?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveLightArgs, "id">
+  >;
+  entitySetGlow?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetGlowArgs, never>
+  >;
+  entityRemoveGlow?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveGlowArgs, "id">
+  >;
+  entitySetTemplate?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetTemplateArgs, "category">
+  >;
+  entitySetEngine?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetEngineArgs, "type">
+  >;
+  entityRemoveEngine?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveEngineArgs, "id" | "type">
+  >;
+  entitySetThrusters?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntitySetThrustersArgs, "id">
+  >;
+  entityRemoveThrusters?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEntityRemoveThrustersArgs, "id">
+  >;
 }>;
 
 export type NamedObjectResolvers<
@@ -20370,7 +20653,11 @@ export type StationResolvers<
   ParentType extends ResolversParentTypes["Station"] = ResolversParentTypes["Station"]
 > = ResolversObject<{
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  tags?: Resolver<Array<ResolversTypes["String"]>, ParentType, ContextType>;
+  tags?: Resolver<
+    Maybe<Array<ResolversTypes["String"]>>,
+    ParentType,
+    ContextType
+  >;
   description?: Resolver<
     Maybe<ResolversTypes["String"]>,
     ParentType,
@@ -20395,7 +20682,7 @@ export type StationResolvers<
     ContextType
   >;
   cards?: Resolver<
-    Array<ResolversTypes["Card"]>,
+    Maybe<Array<ResolversTypes["Card"]>>,
     ParentType,
     ContextType,
     RequireFields<StationCardsArgs, never>
@@ -21959,20 +22246,20 @@ export type TaskTemplateResolvers<
 > = ResolversObject<{
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   name?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  values?: Resolver<ResolversTypes["JSON"], ParentType, ContextType>;
+  values?: Resolver<Maybe<ResolversTypes["JSON"]>, ParentType, ContextType>;
   definition?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   reportTypes?: Resolver<
-    Array<ResolversTypes["String"]>,
+    Maybe<Array<ResolversTypes["String"]>>,
     ParentType,
     ContextType
   >;
   macros?: Resolver<
-    Array<ResolversTypes["MacroAction"]>,
+    Maybe<Array<ResolversTypes["MacroAction"]>>,
     ParentType,
     ContextType
   >;
   preMacros?: Resolver<
-    Array<ResolversTypes["MacroAction"]>,
+    Maybe<Array<ResolversTypes["MacroAction"]>>,
     ParentType,
     ContextType
   >;

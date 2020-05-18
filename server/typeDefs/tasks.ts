@@ -44,11 +44,11 @@ const schema = gql`
   type TaskTemplate {
     id: ID!
     name: String!
-    values: JSON!
+    values: JSON
     definition: String!
-    reportTypes: [String!]!
-    macros: [MacroAction!]!
-    preMacros: [MacroAction!]!
+    reportTypes: [String!]
+    macros: [MacroAction!]
+    preMacros: [MacroAction!]
   }
 
   type TaskDefinition {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {CSSProperties} from "react";
 
 export const InputField: React.FC<{
   promptValue?: string | number;
@@ -51,9 +51,7 @@ export const InputField: React.FC<{
 };
 
 export const OutputField: React.FC<{
-  style?: {
-    [key: string]: any;
-  };
+  style?: CSSProperties;
   alert?: boolean;
   onClick?: () => void;
   onDoubleClick?: () => void;
@@ -99,7 +97,7 @@ export const OutputField: React.FC<{
 };
 
 export const TypingField: React.FC<{
-  style?: {[key: string]: any};
+  style?: CSSProperties;
   onChange?: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;

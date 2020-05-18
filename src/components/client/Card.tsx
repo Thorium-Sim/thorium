@@ -157,7 +157,7 @@ const CardFrame: React.FC<CardFrameProps> = props => {
         // names may have been changed to protect the innocent) then change to that card's name.
         let found = false;
         for (let i = 0; i < payload.changeToCard.length; i++) {
-          let matchingCard = cards.find(
+          let matchingCard = cards?.find(
             c => c.component === payload.changeToCard[i],
           );
           if (matchingCard) {

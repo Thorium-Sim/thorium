@@ -21,7 +21,7 @@ const ResetCache: React.FC<{
   const {playSound, removeAllSounds} = useSounds();
   const excludeStation =
     (station?.name && excludedStations.includes(station?.name)) ||
-    station?.cards.find(c => excludedStations.indexOf(c.component) > -1);
+    station?.cards?.find(c => excludedStations.indexOf(c.component) > -1);
 
   React.useEffect(() => {
     const cacheSub = client

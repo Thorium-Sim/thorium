@@ -247,13 +247,13 @@ const CardsTable: React.FC<CardsTableProps> = ({simulator, station}) => {
               <Label>
                 Tags
                 <TagInput
-                  tags={station.tags}
+                  tags={station.tags || []}
                   onAdd={t =>
                     setTags({
                       variables: {
                         stationSetId: selectedStationSet,
                         stationName: station.name,
-                        tags: station.tags.concat(t),
+                        tags: (station.tags || []).concat(t),
                       },
                     })
                   }
@@ -262,7 +262,7 @@ const CardsTable: React.FC<CardsTableProps> = ({simulator, station}) => {
                       variables: {
                         stationSetId: selectedStationSet,
                         stationName: station.name,
-                        tags: station.tags.filter(tt => tt !== t),
+                        tags: (station.tags || []).filter(tt => tt !== t),
                       },
                     })
                   }

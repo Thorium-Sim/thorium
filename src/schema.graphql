@@ -1580,29 +1580,6 @@ enum MotuType {
 
 type Mutation {
   _empty: String
-  entitySetAppearance(id: ID, color: String, meshType: MeshTypeEnum, modelAsset: String, materialMapAsset: String, ringMapAsset: String, cloudMapAsset: String, emissiveColor: String, emissiveIntensity: Float, scale: Float): String
-  entityRemoveAppearance(id: ID!): String
-  entitySetBehavior(id: ID!, behavior: Behaviors!, targetId: ID, destination: EntityCoordinatesInput): String
-  entityRemoveBehavior(id: ID!): String
-  entitySetIdentity(id: ID, name: String, type: String): String
-  entityRemoveIdentity(id: ID!): String
-  entitySetLocation(id: ID, position: EntityCoordinatesInput, velocity: EntityCoordinatesInput, acceleration: EntityCoordinatesInput, rotation: QuaternionInput, rotationVelocity: EntityCoordinatesInput, rotationAcceleration: EntityCoordinatesInput): String
-  entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
-  entitySetRotationVelocityMagnitude(id: ID!, rotationVelocity: CoordinatesInput!): String
-  entityRemoveLocation(id: ID!): String
-  entitySetStage(id: ID, scaleLabel: String, scaleLabelShort: String, skyboxKey: String): String
-  entityRemoveStage(id: ID!): String
-  entitySetStageChild(id: ID, parentId: ID!): String
-  entityRemoveStageChild(id: ID!): String
-  entitySetLight(id: ID, intensity: Float, decay: Float, color: String): String
-  entityRemoveLight(id: ID!): String
-  entitySetGlow(id: ID, glowMode: GlowModeEnum, color: String): String
-  entityRemoveGlow(id: ID!): String
-  entitySetTemplate(id: ID, category: String!): String
-  entitySetEngine(id: ID, type: EntityEngineEnum!, maxSpeed: Float, currentSpeed: Float, heat: Float, heatRate: Float, coolant: Float, cooling: Boolean): String
-  entityRemoveEngine(id: ID!, type: EntityEngineEnum!): String
-  entitySetThrusters(id: ID!, direction: CoordinatesInput, rotationDelta: CoordinatesInput, rotationSpeed: Float, movementSpeed: Float): String
-  entityRemoveThrusters(id: ID!): String
 
   """Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.)"""
   triggerAction(
@@ -2781,6 +2758,29 @@ type Mutation {
   """Macro: Tasks: Activate Task Flow"""
   taskFlowActivate(id: ID!, simulatorId: ID!): String
   taskFlowAdvance(simulatorId: ID!): String
+  entitySetAppearance(id: ID, color: String, meshType: MeshTypeEnum, modelAsset: String, materialMapAsset: String, ringMapAsset: String, cloudMapAsset: String, emissiveColor: String, emissiveIntensity: Float, scale: Float): String
+  entityRemoveAppearance(id: ID!): String
+  entitySetBehavior(id: ID!, behavior: Behaviors!, targetId: ID, destination: EntityCoordinatesInput): String
+  entityRemoveBehavior(id: ID!): String
+  entitySetIdentity(id: ID, name: String, type: String): String
+  entityRemoveIdentity(id: ID!): String
+  entitySetLocation(id: ID, position: EntityCoordinatesInput, velocity: EntityCoordinatesInput, acceleration: EntityCoordinatesInput, rotation: QuaternionInput, rotationVelocity: EntityCoordinatesInput, rotationAcceleration: EntityCoordinatesInput): String
+  entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
+  entitySetRotationVelocityMagnitude(id: ID!, rotationVelocity: CoordinatesInput!): String
+  entityRemoveLocation(id: ID!): String
+  entitySetStage(id: ID, scaleLabel: String, scaleLabelShort: String, skyboxKey: String): String
+  entityRemoveStage(id: ID!): String
+  entitySetStageChild(id: ID, parentId: ID!): String
+  entityRemoveStageChild(id: ID!): String
+  entitySetLight(id: ID, intensity: Float, decay: Float, color: String): String
+  entityRemoveLight(id: ID!): String
+  entitySetGlow(id: ID, glowMode: GlowModeEnum, color: String): String
+  entityRemoveGlow(id: ID!): String
+  entitySetTemplate(id: ID, category: String!): String
+  entitySetEngine(id: ID, type: EntityEngineEnum!, maxSpeed: Float, currentSpeed: Float, heat: Float, heatRate: Float, coolant: Float, cooling: Boolean): String
+  entityRemoveEngine(id: ID!, type: EntityEngineEnum!): String
+  entitySetThrusters(id: ID!, direction: CoordinatesInput, rotationDelta: CoordinatesInput, rotationSpeed: Float, movementSpeed: Float): String
+  entityRemoveThrusters(id: ID!): String
 }
 
 type NamedObject {
@@ -3877,7 +3877,7 @@ type StageComponent {
 
 type Station {
   name: String!
-  tags: [String!]!
+  tags: [String!]
   description: String
   training: String
   login: Boolean
@@ -3885,7 +3885,7 @@ type Station {
   messageGroups: [String]
   layout: String
   widgets: [String]
-  cards(showHidden: Boolean): [Card!]!
+  cards(showHidden: Boolean): [Card!]
   ambiance: String
 }
 
@@ -4394,11 +4394,11 @@ type TaskReport {
 type TaskTemplate {
   id: ID!
   name: String!
-  values: JSON!
+  values: JSON
   definition: String!
-  reportTypes: [String!]!
-  macros: [MacroAction!]!
-  preMacros: [MacroAction!]!
+  reportTypes: [String!]
+  macros: [MacroAction!]
+  preMacros: [MacroAction!]
 }
 
 type Team {

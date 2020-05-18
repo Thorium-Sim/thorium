@@ -17,7 +17,7 @@ const schema = gql`
 
   type Station {
     name: String!
-    tags: [String!]!
+    tags: [String!]
     description: String
     training: String
     login: Boolean
@@ -25,7 +25,7 @@ const schema = gql`
     messageGroups: [String]
     layout: String
     widgets: [String]
-    cards(showHidden: Boolean): [Card!]!
+    cards(showHidden: Boolean): [Card!]
   }
 
   type Card {
