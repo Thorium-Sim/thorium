@@ -27,7 +27,7 @@ const Stats = ({
         >
           {action => (
             <InputField
-              onClick={e => action({variables: {id, count: e}})}
+              onClick={e => action({variables: {id, count: parseInt(e, 10)}})}
               style={{display: "inline-block", width: "30px"}}
               prompt={
                 "What would you like to change the enemy count to? (This will adjust the destroyed count.)"

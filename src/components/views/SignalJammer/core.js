@@ -95,7 +95,7 @@ class SignalJammerCore extends Component {
           Comm{" "}
           <InputField
             prompt="What would you like to set this signal to?"
-            onClick={value => this.setSignal("comm", value)}
+            onClick={value => this.setSignal("comm", parseInt(value, 10))}
             style={{width: "40px"}}
           >
             {signalJammer.signals.filter(s => s.type === "comm").length}
@@ -124,7 +124,7 @@ class SignalJammerCore extends Component {
           Tact{" "}
           <InputField
             prompt="What would you like to set this signal to?"
-            onClick={value => this.setSignal("tactical", value)}
+            onClick={value => this.setSignal("tactical", parseInt(value, 10))}
             style={{width: "40px"}}
           >
             {signalJammer.signals.filter(s => s.type === "tactical").length}
@@ -154,7 +154,7 @@ class SignalJammerCore extends Component {
           Sens{" "}
           <InputField
             prompt="What would you like to set this signal to?"
-            onClick={value => this.setSignal("sensors", value)}
+            onClick={value => this.setSignal("sensors", parseInt(value, 10))}
             style={{width: "40px"}}
           >
             {signalJammer.signals.filter(s => s.type === "sensors").length}

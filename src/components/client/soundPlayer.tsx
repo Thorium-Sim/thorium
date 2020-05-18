@@ -34,25 +34,11 @@ const SoundPlayer: React.FC<{
     };
   }, [client, playSound, removeAllSounds, simulator.id]);
 
-  if (invisible)
-    return (
-      <Reset
-        clientId={clientId}
-        station={{name: "Sound", cards: []}}
-        reset={() => {
-          removeAllSounds();
-        }}
-      />
-    );
+  const station = React.useMemo(() => ({name: "Sound", cards: []}), []);
+  if (invisible) return <Reset clientId={clientId} station={station} />;
   return (
     <div className="keyboard-holder">
-      <Reset
-        clientId={clientId}
-        station={{name: "Sound", cards: []}}
-        reset={() => {
-          removeAllSounds();
-        }}
-      />
+      <Reset clientId={clientId} station={station} />
       <FormattedMessage id="sound-player" defaultMessage="Sound Player" />
       <ClientLighting simulator={simulator} clientId={clientId} />
     </div>
