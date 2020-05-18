@@ -61,7 +61,7 @@ module.exports = () => {
         settings.set("autostart", loadUrl);
       }
       require("./loadPage")(loadUrl, kiosk).catch(err => {
-        console.log(err);
+        console.error(err);
         settings.set("autostart", null);
         bonjour.start();
       });

@@ -56,7 +56,7 @@ files
               bar.tick(1);
               if (err) reject(err);
               if (!result) {
-                console.log("Failed to process file:", file);
+                console.error("Failed to process file:", file);
                 return resolve();
               }
               const {metadata} = result;

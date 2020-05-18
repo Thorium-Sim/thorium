@@ -116,7 +116,7 @@ export const MidiProvider = ({
           pressure,
           pitchBend,
         } = message;
-        console.log({
+        console.info({
           targetName,
           channel,
           messageType,
@@ -147,7 +147,7 @@ export const MidiProvider = ({
       const devices = [];
       io.forEach(i => {
         if (!deviceNames.includes(i.name)) {
-          console.log("Found device", i.name, which);
+          console.info("Found device", i.name, which);
           deviceNames.push(i.name);
         }
         i.onmidimessage = throttle(handleMidiMessage, 1000 / 10);

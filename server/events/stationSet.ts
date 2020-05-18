@@ -63,15 +63,15 @@ App.on(
     stationSet.renameStation(stationName, newStationName);
     // Update any sets as well.
     App.sets = App.sets.map(s => {
-      return {
+      return new Classes.Set({
         ...s,
         clients: s.clients.map(c => {
           if (c.stationSet === stationSet.id && c.station === stationName) {
-            return {...c, station: newStationName};
+            return new Classes.SetClient({...c, station: newStationName});
           }
           return c;
         }),
-      };
+      });
     });
     pubsub.publish("stationSetUpdate", App.stationSets);
   },
@@ -80,11 +80,14 @@ App.on(
   "addCardToStation",
   ({stationSetID, stationName, cardName, cardComponent, cardIcon}) => {
     const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
-    stationSet.addStationCard(stationName, {
-      name: cardName,
-      icon: cardIcon,
-      component: cardComponent,
-    });
+    stationSet.addStationCard(
+      stationName,
+      new Classes.Card({
+        name: cardName,
+        icon: cardIcon,
+        component: cardComponent,
+      }),
+    );
     pubsub.publish("stationSetUpdate", App.stationSets);
   },
 );
@@ -104,11 +107,15 @@ App.on(
     cardIcon,
   }) => {
     const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
-    stationSet.editStationCard(stationName, cardName, {
-      name: newCardName,
-      component: cardComponent,
-      icon: cardIcon,
-    });
+    stationSet.editStationCard(
+      stationName,
+      cardName,
+      new Classes.Card({
+        name: newCardName,
+        component: cardComponent,
+        icon: cardIcon,
+      }),
+    );
     pubsub.publish("stationSetUpdate", App.stationSets);
   },
 );
@@ -146,6 +153,10 @@ App.on("setStationTraining", ({stationSetID, stationName, training}) => {
   App.stationSets
     .find(s => s.id === stationSetID)
     .setTraining(stationName, training);
+  pubsub.publish("stationSetUpdate", App.stationSets);
+});
+App.on("setStationTags", ({stationSetID, stationName, tags}) => {
+  App.stationSets.find(s => s.id === stationSetID).setTags(stationName, tags);
   pubsub.publish("stationSetUpdate", App.stationSets);
 });
 

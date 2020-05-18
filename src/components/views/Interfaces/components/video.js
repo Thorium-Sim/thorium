@@ -23,7 +23,7 @@ export const CompVideo = ({id, interfaceId, config = {}, value = {}}) => {
       variables={{id: interfaceId, objectId: id}}
     >
       {action => (
-        <div onClick={() => action().catch(err => console.log(err))}>
+        <div onClick={() => action().catch(err => console.error(err))}>
           <video
             ref={videoRef}
             src={`/assets${config.src}`}

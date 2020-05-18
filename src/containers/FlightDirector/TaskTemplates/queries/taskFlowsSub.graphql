@@ -9,6 +9,7 @@ subscription TaskFlowsConfig {
       tasks {
         id
         station
+        stationTags
         definition
         values
         macros {

@@ -124,4 +124,4 @@ const report = Object.entries(damageTexts).map(([key, value]) => ({
   reportTypes: ["default"],
 }));
 
-console.log(JSON.stringify(report));
+console.info(JSON.stringify(report));

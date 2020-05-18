@@ -27,7 +27,7 @@ export default function useFlightLocalStorage(flightId, key, initialValue) {
       window.localStorage.setItem(flightId, JSON.stringify(flightItem));
     } catch (error) {
       // A more advanced implementation would handle the error case
-      console.log(error);
+      console.error(error);
     }
   };
 

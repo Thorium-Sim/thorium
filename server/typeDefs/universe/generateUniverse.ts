@@ -52,7 +52,6 @@ export default function generateUniverse(flightId, procGenKey) {
 
     // Generate all of the planets
   });
-  console.log(rootStage.id);
   return entities;
 }
 

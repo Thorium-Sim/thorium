@@ -1,6 +1,6 @@
 import chalk from "chalk";
 export default () => {
-  console.log(chalk`{hex('#000000') 
+  console.info(chalk`{hex('#000000') 
                                         
                   {hex('#5542B5') N7$}                   
                 {hex('#5542B5') D$$$$$$}                 

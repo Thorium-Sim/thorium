@@ -5,9 +5,9 @@ const compareInputs = (oldInputs, newInputs, prefix) => {
   oldInputs.forEach((oldInput, index) => {
     const newInput = newInputs[index];
     if (oldInput !== newInput) {
-      console.log(`${prefix} - The input changed in position ${index}`);
-      // console.log("Old value:", oldInput);
-      // console.log("New value:", newInput);
+      console.info(`${prefix} - The input changed in position ${index}`);
+      // console.info("Old value:", oldInput);
+      // console.info("New value:", newInput);
     }
   });
 };

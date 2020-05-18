@@ -2440,6 +2440,7 @@ type Mutation {
   toggleStationWidgets(stationSetID: ID!, stationName: String!, widget: String!, state: Boolean!): String
   setStationDescription(stationSetID: ID!, stationName: String!, description: String!): String
   setStationTraining(stationSetID: ID!, stationName: String!, training: String): String
+  setStationTags(stationSetID: ID!, stationName: String!, tags: [String!]!): String
   reorderStationWidgets(stationSetId: ID!, stationName: String!, widget: String!, order: Int!): String
   setStealthActivated(id: ID, state: Boolean): String
   setStealthCharge(id: ID, state: Boolean): String
@@ -2779,6 +2780,7 @@ type Mutation {
 
   """Macro: Tasks: Activate Task Flow"""
   taskFlowActivate(id: ID!, simulatorId: ID!): String
+  taskFlowAdvance(simulatorId: ID!): String
 }
 
 type NamedObject {
@@ -3875,6 +3877,7 @@ type StageComponent {
 
 type Station {
   name: String!
+  tags: [String!]!
   description: String
   training: String
   login: Boolean
@@ -4321,6 +4324,7 @@ type TargetingContact {
 type Task {
   id: ID!
   simulatorId: ID
+  stationTags: [String!]
   station: String
   systemId: ID
   deck: Deck
@@ -4371,6 +4375,7 @@ input TaskInput {
   simulatorId: ID
   definition: String
   values: JSON
+  stationTags: [String!]
   station: String
   macros: [ActionInput]
   preMacros: [ActionInput]
