@@ -1,7 +1,6 @@
-/** @jsx jsx */
 import React from "react";
 import {Button} from "helpers/reactstrap";
-import {css, jsx} from "@emotion/core";
+import {css} from "@emotion/core";
 import Beam from "./beam";
 import Target from "./target";
 import "./style.scss";

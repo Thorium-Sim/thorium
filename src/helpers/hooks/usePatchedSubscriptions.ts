@@ -17,10 +17,9 @@ const wsProtocol = protocol === "https:" ? "wss:" : "ws:";
 const websocketUrl =
   process.env.NODE_ENV === "production"
     ? `${wsProtocol}//${window.location.host}/graphql`
-    : `${wsProtocol}//${hostname}:${parseInt(
-        window.location.port || "3000",
-        10,
-      ) + 1}/graphql`;
+    : `${wsProtocol}//${hostname}:${
+        parseInt(window.location.port || "3000", 10) + 1
+      }/graphql`;
 
 const client = new SubscriptionClient(websocketUrl, {
   reconnect: true,

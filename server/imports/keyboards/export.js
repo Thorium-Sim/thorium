@@ -38,7 +38,7 @@ export default function exportKeyboard(id, res) {
     });
   }
 
-  zipfile.end({}, function() {
+  zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=${keyboard.name}.keyboard`,
       "Content-Type": "application/octet-stream",

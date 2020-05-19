@@ -65,8 +65,9 @@ const IconMarkup = ({
         className={"tactical-icon"}
         key={`icon-destination-${id}`}
         style={{
-          transform: `translate(${(destination.x + movement.x) *
-            100}%, ${(destination.y + movement.y) * 100}%)`,
+          transform: `translate(${(destination.x + movement.x) * 100}%, ${
+            (destination.y + movement.y) * 100
+          }%)`,
         }}
       >
         <div

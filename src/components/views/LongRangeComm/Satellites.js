@@ -29,8 +29,9 @@ export default class Satellites extends Component {
           style={{
             left: `calc(${width - 36} * ${messageLoc.x}px)`,
             top: `calc(${height - 36} * ${messageLoc.y}px)`,
-            transitionDuration: `${4 -
-              (selectedSat ? selectedSat.strength : 0) * 2}s`,
+            transitionDuration: `${
+              4 - (selectedSat ? selectedSat.strength : 0) * 2
+            }s`,
             opacity:
               messageLoc.x === 0 ||
               messageLoc.y === 0 ||

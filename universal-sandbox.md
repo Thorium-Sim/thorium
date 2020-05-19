@@ -712,7 +712,6 @@ Inspiration for many of these features comes from
 ## Notes
 
 [^1]:
-
   In JavaScript, we can store numbers up to ±9x10^15 without experiencing
   rounding errors. That means our solar systems can have a radius of that many
   centimeters, with the star at the center. For comparison, the distance from
@@ -731,30 +730,25 @@ Inspiration for many of these features comes from
      planet, in a solar system....etc.
 
 [^3]:
-
   We could also implement a manual navigation system, as described here
   [https://github.com/Thorium-Sim/thorium/issues/1783](https://github.com/Thorium-Sim/thorium/issues/1783)
 
 [^4]:
-
   Even though I personally really don’t like using detailed raster graphics for
   sensor contacts, but I know I won’t win this battle.
 
 [^5]:
-
   This is part of why I prefer low-detail vectors for sensor contacts. Way
   easier to do IFF than with raster graphics.
 
 [^6]: This doesn’t include celestial objects, like planets and stars.
 [^7]:
-
   GLTF is a good option.
   [https://github.com/react-spring/gltfjsx](https://github.com/react-spring/gltfjsx).
   Also Empty Epsilon uses a simple system. Compatibility with EE would be a good
   feature.
 
 [^8]:
-
   - Torpedos will be a sphere mesh with a billboard particle emitter attached
   - Phasers will be several very long planes rotated to different angles at the
     enter with a bloom filter applied.

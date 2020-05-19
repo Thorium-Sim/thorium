@@ -129,8 +129,9 @@ export default class RailgunLoader extends Component {
                         draggable="false"
                         src={require("./bolt.svg")}
                         style={{
-                          transform: `translateY(-${(arr.length - i - 1) *
-                            20}px)`,
+                          transform: `translateY(-${
+                            (arr.length - i - 1) * 20
+                          }px)`,
                         }}
                       />
                     </div>

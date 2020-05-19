@@ -11,7 +11,7 @@ const LayoutPicker = ({pickLayout, layout}) => {
       <option disabled>Pick a layout</option>
       <option disabled />
       {Object.keys(Layouts)
-        .filter(function(item, index, a) {
+        .filter(function (item, index, a) {
           return a.indexOf(item) === index;
         })
         .map(l => {

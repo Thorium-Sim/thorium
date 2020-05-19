@@ -51,7 +51,7 @@ class FlyControls {
     this.moveVector = new Vector3(0, 0, 0);
     this.rotationVector = new Vector3(0, 0, 0);
 
-    this.keydown = function(event) {
+    this.keydown = function (event) {
       if (event.altKey) {
         return;
       }
@@ -112,7 +112,7 @@ class FlyControls {
       this.updateRotationVector();
     };
 
-    this.keyup = function(event) {
+    this.keyup = function (event) {
       switch (event.keyCode) {
         case 16:
           /* shift */ this.movementSpeedMultiplier = 1;
@@ -167,7 +167,7 @@ class FlyControls {
       this.updateRotationVector();
     };
 
-    this.mousedown = function(event) {
+    this.mousedown = function (event) {
       if (this.domElement !== document) {
         this.domElement.focus();
       }
@@ -193,7 +193,7 @@ class FlyControls {
       }
     };
 
-    this.mousemove = function(event) {
+    this.mousemove = function (event) {
       if (!this.dragToLook || this.mouseStatus > 0) {
         var container = this.getContainerDimensions();
         var halfWidth = container.size[0] / 2;
@@ -208,7 +208,7 @@ class FlyControls {
       }
     };
 
-    this.mouseup = function(event) {
+    this.mouseup = function (event) {
       event.preventDefault();
       event.stopPropagation();
 
@@ -234,7 +234,7 @@ class FlyControls {
       this.updateRotationVector();
     };
 
-    this.update = function(delta) {
+    this.update = function (delta) {
       var moveMult = delta * this.movementSpeed;
       var rotMult = delta * this.rollSpeed;
 
@@ -259,7 +259,7 @@ class FlyControls {
       );
     };
 
-    this.updateMovementVector = function() {
+    this.updateMovementVector = function () {
       var forward =
         this.moveState.forward || (this.autoForward && !this.moveState.back)
           ? 1
@@ -270,7 +270,7 @@ class FlyControls {
       this.moveVector.z = -forward + this.moveState.back;
     };
 
-    this.updateRotationVector = function() {
+    this.updateRotationVector = function () {
       this.rotationVector.x =
         -this.moveState.pitchDown + this.moveState.pitchUp;
       this.rotationVector.y = -this.moveState.yawRight + this.moveState.yawLeft;
@@ -278,7 +278,7 @@ class FlyControls {
         -this.moveState.rollRight + this.moveState.rollLeft;
     };
 
-    this.getContainerDimensions = function() {
+    this.getContainerDimensions = function () {
       if (this.domElement !== document) {
         return {
           size: [this.domElement.offsetWidth, this.domElement.offsetHeight],
@@ -293,7 +293,7 @@ class FlyControls {
     };
 
     function bind(scope, fn) {
-      return function() {
+      return function () {
         fn.apply(scope, arguments);
       };
     }
@@ -302,7 +302,7 @@ class FlyControls {
       event.preventDefault();
     }
 
-    this.dispose = function() {
+    this.dispose = function () {
       this.domElement.removeEventListener("contextmenu", contextmenu, false);
       this.domElement.removeEventListener("mousedown", _mousedown, false);
       this.domElement.removeEventListener("mousemove", _mousemove, false);

@@ -20,13 +20,7 @@ const TooltipButton: React.FC<TooltipButtonProps> = ({
   tooltipContent,
   ...props
 }) => {
-  const tooltipId = React.useRef(
-    "A" +
-      uuid
-        .v4()
-        .split("-")
-        .join(""),
-  );
+  const tooltipId = React.useRef("A" + uuid.v4().split("-").join(""));
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const toggle = () => setTooltipOpen(!tooltipOpen);
 

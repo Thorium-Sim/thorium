@@ -205,9 +205,9 @@ class InnerGrid extends Component {
               key={`line-${i}`}
               className="line"
               style={{
-                transform: `rotate(${((i + (aligned ? 0 : 0.5)) /
-                  array.length) *
-                  360}deg)`,
+                transform: `rotate(${
+                  ((i + (aligned ? 0 : 0.5)) / array.length) * 360
+                }deg)`,
               }}
             />
           ))}

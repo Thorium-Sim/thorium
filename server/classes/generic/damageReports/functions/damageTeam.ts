@@ -48,11 +48,9 @@ Orders: Clean up the mess left from repairing the ${displayName} system.
       );
   if (!teamType) return "";
   const damageText = randomFromList(damageTexts[teamType]);
-  return `${preamble ||
-    damageText.preamble.replace(
-      "%SYSTEM%",
-      displayName,
-    )} Create the following work order:
+  return `${
+    preamble || damageText.preamble.replace("%SYSTEM%", displayName)
+  } Create the following work order:
       
 Damage Team Name: ${teamName || displayName + " Repair"}
 Location: ${room || location}

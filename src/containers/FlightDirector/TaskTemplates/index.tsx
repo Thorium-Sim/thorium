@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import {jsx, css} from "@emotion/core";
+import React from "react";
+import {css} from "@emotion/core";
 import {Container, Row, Col, ListGroup, ListGroupItem} from "reactstrap";
 import {useNavigate, Routes, Route, useLocation} from "react-router-dom";
 import TaskTemplates from "./taskTemplates";

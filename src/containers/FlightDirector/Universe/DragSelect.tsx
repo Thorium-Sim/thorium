@@ -56,7 +56,7 @@ const DragSelect: React.FC<DragSelectProps> = ({entities, selecting}) => {
 
   useEventListener(
     "mousedown",
-    function(event: MouseEvent) {
+    function (event: MouseEvent) {
       const target = event.target as HTMLElement;
       if (target?.parentElement?.id !== "level-editor") return;
       if (dragging || !selecting) return;
@@ -82,7 +82,7 @@ const DragSelect: React.FC<DragSelectProps> = ({entities, selecting}) => {
 
   useEventListener(
     "mousemove",
-    function(event: MouseEvent) {
+    function (event: MouseEvent) {
       if (box) {
         const position = get3DMousePosition(
           event.clientX - left,
@@ -128,7 +128,7 @@ const DragSelect: React.FC<DragSelectProps> = ({entities, selecting}) => {
 
   useEventListener(
     "mouseup",
-    function(event: MouseEvent) {
+    function (event: MouseEvent) {
       if (box) {
         const position = get3DMousePosition(
           event.clientX - left,

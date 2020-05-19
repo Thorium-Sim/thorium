@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import {jsx, css} from "@emotion/core";
+import {css} from "@emotion/core";
 import React from "react";
 import {Col, Input, Label, ListGroup, ListGroupItem, Button} from "reactstrap";
 import {useParams, useNavigate, useMatch, Outlet} from "react-router";
@@ -52,6 +51,7 @@ const StepConfig = () => {
         css={css`
           display: flex;
           flex-direction: column;
+          height: 100%;
         `}
       >
         <h2>Step Config</h2>
@@ -98,7 +98,7 @@ const StepConfig = () => {
               onClick={() => navigate(t.id)}
             >
               <div>{t.definition}</div>
-              <small>Station: {t.station}</small>
+              <small>Station: {t.stationTags?.join(", ") || "None"}</small>
             </ListGroupItem>
           ))}
         </ListGroup>

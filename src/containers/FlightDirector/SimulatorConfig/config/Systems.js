@@ -1,6 +1,5 @@
-/** @jsx jsx */
-import {Component} from "react";
-import {jsx, css} from "@emotion/core";
+import React, {Component} from "react";
+import {css} from "@emotion/core";
 import {
   Container,
   Row,

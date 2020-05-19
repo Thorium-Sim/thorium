@@ -82,12 +82,8 @@ class ChargeBar extends Component {
               background: `linear-gradient(
       to bottom,
       ${color} 0%,
-      ${col(color)
-        .darken(0.6)
-        .toString()} 50%,
-      ${col(color)
-        .darken(0.8)
-        .toString()} 100%
+      ${col(color).darken(0.6).toString()} 50%,
+      ${col(color).darken(0.8).toString()} 100%
     )`,
             }}
           >

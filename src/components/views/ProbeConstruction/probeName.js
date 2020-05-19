@@ -49,9 +49,9 @@ class ProbeName extends Component {
                               key={`line-${i}`}
                               className="line"
                               style={{
-                                transform: `rotate(${((i + 0.5) /
-                                  array.length) *
-                                  360}deg)`,
+                                transform: `rotate(${
+                                  ((i + 0.5) / array.length) * 360
+                                }deg)`,
                               }}
                             />
                           ))}
@@ -81,15 +81,19 @@ class ProbeName extends Component {
                                     launchProbe(i + 1);
                                   }}
                                   style={{
-                                    transform: `translate(${(Math.cos(
-                                      d2r(((i - 2) / array.length) * 360),
-                                    ) *
-                                      this.state.dimensions.height) /
-                                      2.5}px, ${(Math.sin(
-                                      d2r(((i - 2) / array.length) * 360),
-                                    ) *
-                                      this.state.dimensions.height) /
-                                      2.5}px)`,
+                                    transform: `translate(${
+                                      (Math.cos(
+                                        d2r(((i - 2) / array.length) * 360),
+                                      ) *
+                                        this.state.dimensions.height) /
+                                      2.5
+                                    }px, ${
+                                      (Math.sin(
+                                        d2r(((i - 2) / array.length) * 360),
+                                      ) *
+                                        this.state.dimensions.height) /
+                                      2.5
+                                    }px)`,
                                   }}
                                 >
                                   {i + 1}

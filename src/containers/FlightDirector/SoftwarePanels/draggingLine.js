@@ -26,8 +26,9 @@ const DraggingLine = ({
       onClick={() => {
         onClick(id);
       }}
-      d={`M${comp.x * width + offset} ${comp.y * height + offset} L ${x +
-        offset} ${y + offset}`}
+      d={`M${comp.x * width + offset} ${comp.y * height + offset} L ${
+        x + offset
+      } ${y + offset}`}
       fill="transparent"
       stroke={color || "white"}
       strokeWidth={selected ? 7 : stroke || 3}

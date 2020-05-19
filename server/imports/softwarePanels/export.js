@@ -12,7 +12,7 @@ export default function exportSoftwarePanel(id, res) {
     mode: parseInt("0100664", 8), // -rw-rw-r--
   });
 
-  zipfile.end({}, function() {
+  zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=${panel.name}.panel`,
       "Content-Type": "application/octet-stream",

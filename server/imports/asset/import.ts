@@ -11,14 +11,14 @@ if (process.env.NODE_ENV === "production") {
 type callback = (arg0: any) => void;
 
 export default function ImportAssets(filepath: string, cb: callback) {
-  yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
+  yauzl.open(filepath, {lazyEntries: true}, function (err, importZip) {
     if (err) throw err;
-    importZip.on("close", function() {
+    importZip.on("close", function () {
       cb(null);
     });
     importZip.readEntry();
 
-    importZip.on("entry", function(entry) {
+    importZip.on("entry", function (entry) {
       if (/^assets\/.*/.test(entry.fileName)) {
         // It's an asset. Load it
         const regexRes = /(\/.*)\/.*\..{3,}/gi.exec(entry.fileName);
@@ -26,9 +26,9 @@ export default function ImportAssets(filepath: string, cb: callback) {
           importZip.readEntry();
           return;
         }
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
-          readStream.on("end", function() {
+          readStream.on("end", function () {
             importZip.readEntry();
           });
           const filename = entry.fileName;

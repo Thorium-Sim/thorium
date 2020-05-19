@@ -9,8 +9,9 @@ export default (
     s.cards.find(c => c.component === "Exocomps"),
   );
   const stationName = station ? station.name : "Exocomp";
-  return `${preamble ||
-    "An exocomp should be deployed to the system."} Ask the ${stationName} officer to deploy with the following settings:
+  return `${
+    preamble || "An exocomp should be deployed to the system."
+  } Ask the ${stationName} officer to deploy with the following settings:
   
   Destination: ${displayName}
   Parts: ${Array(Math.ceil(Math.random() * 3))

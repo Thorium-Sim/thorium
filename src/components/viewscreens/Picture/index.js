@@ -7,8 +7,9 @@ const VideoConfig = ({viewscreen}) => {
   return (
     <div className={`viewscreen-video ${data.overlay ? "overlay" : ""}`}>
       <img
-        src={`/assets${data.asset ||
-          "/Viewscreen/Tactical Backgrounds/Stars.png"}`}
+        src={`/assets${
+          data.asset || "/Viewscreen/Tactical Backgrounds/Stars.png"
+        }`}
         alt="viewscreen"
       />
     </div>

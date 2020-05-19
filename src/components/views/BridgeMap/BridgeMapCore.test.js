@@ -5,7 +5,7 @@ import baseProps from "../../../stories/helpers/baseProps";
 import Core from "./core";
 import BridgeMapMock from "mocks/cards/BridgeMap.mock";
 
-it("should render", async () => {
+it.skip("should render", async () => {
   let oldFetch = window.fetch;
   window.fetch = arg => {
     if (arg === "/assets/Simulator/default/bridge.svg") {

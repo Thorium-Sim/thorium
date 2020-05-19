@@ -105,7 +105,7 @@ const GridCore = ({
   };
 
   const addContact = React.useCallback(
-    function(c) {
+    function (c) {
       return updateContacts(contacts.concat({...c, id: uuid.v4()}));
     },
     [contacts, updateContacts],

@@ -81,10 +81,10 @@ export default (
       );
     })
     .join("\n");
-  return `${preamble ||
-    `Panel maintenance must be performed on the ${displayName} system.`} Go to the ${
-    panel.name
-  } panel and perform the following operations:
+  return `${
+    preamble ||
+    `Panel maintenance must be performed on the ${displayName} system.`
+  } Go to the ${panel.name} panel and perform the following operations:
   
 ${messages}
 `;

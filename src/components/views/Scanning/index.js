@@ -115,8 +115,9 @@ class Scanning extends Component {
 
     const request =
       this.props.domain === "internal"
-        ? `${this.state.selectedScanType} - ${deckName}${roomName &&
-            ", "}${roomName}\n${this.state.scanRequest}`
+        ? `${this.state.selectedScanType} - ${deckName}${
+            roomName && ", "
+          }${roomName}\n${this.state.scanRequest}`
         : `${this.state.selectedScanType} - \n${this.state.scanRequest}`;
     const obj = {
       id: this.props.data.sensors[0].id,

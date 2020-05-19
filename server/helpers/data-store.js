@@ -262,14 +262,14 @@ class Store {
         keys = [];
 
       if (cycleReplacer == null)
-        cycleReplacer = function(key, value) {
+        cycleReplacer = function (key, value) {
           if (stack[0] === value) return "[Circular ~]";
           return (
             "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
           );
         };
 
-      return function(key, value) {
+      return function (key, value) {
         if (stack.length > 0) {
           var thisPos = stack.indexOf(this);
           ~thisPos ? stack.splice(thisPos + 1) : stack.push(this);

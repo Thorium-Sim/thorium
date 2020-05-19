@@ -9,16 +9,16 @@ function Vector(x, y) {
   this.y = y || 0;
 }
 
-Vector.add = function(a, b) {
+Vector.add = function (a, b) {
   return new Vector(a.x + b.x, a.y + b.y);
 };
 
-Vector.sub = function(a, b) {
+Vector.sub = function (a, b) {
   return new Vector(a.x - b.x, a.y - b.y);
 };
 
 Vector.prototype = {
-  set: function(x, y) {
+  set: function (x, y) {
     if (typeof x === "object") {
       y = x.y;
       x = x.x;
@@ -28,29 +28,29 @@ Vector.prototype = {
     return this;
   },
 
-  add: function(v) {
+  add: function (v) {
     this.x += v.x;
     this.y += v.y;
     return this;
   },
 
-  sub: function(v) {
+  sub: function (v) {
     this.x -= v.x;
     this.y -= v.y;
     return this;
   },
 
-  scale: function(s) {
+  scale: function (s) {
     this.x *= s;
     this.y *= s;
     return this;
   },
 
-  length: function() {
+  length: function () {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   },
 
-  normalize: function() {
+  normalize: function () {
     var len = Math.sqrt(this.x * this.x + this.y * this.y);
     if (len) {
       this.x /= len;
@@ -59,23 +59,23 @@ Vector.prototype = {
     return this;
   },
 
-  angle: function() {
+  angle: function () {
     return Math.atan2(this.y, this.x);
   },
 
-  distanceTo: function(v) {
+  distanceTo: function (v) {
     var dx = v.x - this.x,
       dy = v.y - this.y;
     return Math.sqrt(dx * dx + dy * dy);
   },
 
-  distanceToSq: function(v) {
+  distanceToSq: function (v) {
     var dx = v.x - this.x,
       dy = v.y - this.y;
     return dx * dx + dy * dy;
   },
 
-  clone: function() {
+  clone: function () {
     return new Vector(this.x, this.y);
   },
 };
@@ -93,7 +93,7 @@ function Point(x, y, radius) {
   this._currentRadius = this.radius;
 }
 
-Point.prototype = (function(o) {
+Point.prototype = (function (o) {
   var s = new Vector(0, 0),
     p;
   for (p in o) {
@@ -132,11 +132,11 @@ Lightning.prototype = {
   startStep: 0,
   endStep: 0,
 
-  length: function() {
+  length: function () {
     return this.startPoint.distanceTo(this.endPoint);
   },
 
-  setChildNum: function(num) {
+  setChildNum: function (num) {
     var children = this.children,
       child,
       i,
@@ -158,7 +158,7 @@ Lightning.prototype = {
     }
   },
 
-  update: function() {
+  update: function () {
     var startPoint = this.startPoint,
       endPoint = this.endPoint,
       length,
@@ -238,7 +238,7 @@ Lightning.prototype = {
     }
   },
 
-  draw: function(ctx) {
+  draw: function (ctx) {
     var points = this.points,
       children = this.children,
       i,
@@ -281,14 +281,14 @@ Lightning.prototype = {
     }
   },
 
-  dispose: function() {
+  dispose: function () {
     if (this._timeoutId) {
       clearTimeout(this._timeoutId);
     }
     this._simplexNoise = null;
   },
 
-  _noise: function(v) {
+  _noise: function (v) {
     var octaves = 6,
       fallout = 0.5,
       amp = 1,
@@ -305,12 +305,12 @@ Lightning.prototype = {
     return sum;
   },
 
-  _setAsChild: function(lightning) {
+  _setAsChild: function (lightning) {
     if (!(lightning instanceof Lightning)) return;
     this.parent = lightning;
 
     var self = this,
-      setTimer = function() {
+      setTimer = function () {
         self._updateStepsByParent();
         self._timeoutId = setTimeout(setTimer, randint(1500));
       };
@@ -318,7 +318,7 @@ Lightning.prototype = {
     self._timeoutId = setTimeout(setTimer, randint(1500));
   },
 
-  _updateStepsByParent: function() {
+  _updateStepsByParent: function () {
     if (!this.parent) return;
     var parentStep = this.parent.step;
     this.startStep = randint(parentStep - 2);

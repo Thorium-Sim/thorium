@@ -40,16 +40,18 @@ export default [
       ) || {name: "#SYSTEMNAME"};
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Activate the ${jumpDrive.displayName ||
-            jumpDrive.name}.`,
+          `${preamble} Activate the ${
+            jumpDrive.displayName || jumpDrive.name
+          }.`,
           {simulator, system},
         );
       return reportReplace(
         `${preamble} Ask the ${
           station
             ? `${station.name} Officer`
-            : `person in charge of the ${jumpDrive.displayName ||
-                jumpDrive.name}`
+            : `person in charge of the ${
+                jumpDrive.displayName || jumpDrive.name
+              }`
         } to activate the ${jumpDrive.displayName || jumpDrive.name}.`,
         {simulator, system: system || jumpDrive},
       );
@@ -103,8 +105,9 @@ export default [
       ) || {name: "#SYSTEMNAME"};
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Stabilize the ${jumpDrive.displayName ||
-            jumpDrive.name}.`,
+          `${preamble} Stabilize the ${
+            jumpDrive.displayName || jumpDrive.name
+          }.`,
           {
             system,
             simulator,
@@ -114,8 +117,9 @@ export default [
         `${preamble} Ask the ${
           station
             ? `${station.name} Officer`
-            : `person in charge of the ${jumpDrive.displayName ||
-                jumpDrive.name}`
+            : `person in charge of the ${
+                jumpDrive.displayName || jumpDrive.name
+              }`
         } to stabilize the ${jumpDrive.displayName || jumpDrive.name}.`,
         {system: system || jumpDrive, simulator},
       );

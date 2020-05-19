@@ -85,7 +85,7 @@ class SurveyCore extends Component {
         results.push(a);
       });
     let csvContent = "data:text/csv;charset=utf-8,";
-    results.forEach(function(rowArray) {
+    results.forEach(function (rowArray) {
       let row = rowArray.join(",");
       csvContent += row + "\r\n";
     });

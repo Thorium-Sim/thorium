@@ -225,7 +225,7 @@ class Events extends EventEmitter {
 const App = new Events();
 
 // Handle events for App
-App.on("error", function(err) {
+App.on("error", function (err) {
   console.error("here's an error!");
   console.error(err);
 });

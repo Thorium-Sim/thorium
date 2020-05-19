@@ -37,7 +37,7 @@ const schema = gql`
   }
 `;
 
-const download = function(url, dest, callback) {
+const download = function (url, dest, callback) {
   fetch(url)
     .then(
       res =>

@@ -10,7 +10,7 @@ if (window.BroadcastChannel) {
 // This client ID implementation works as follows:
 export function initializeClient() {
   if (window.BroadcastChannel) {
-    broadcastChannel.onmessage = function(ev) {
+    broadcastChannel.onmessage = function (ev) {
       if (ev.data === "clientPing") {
         if (clientId) {
           broadcastChannel.postMessage(clientId);
