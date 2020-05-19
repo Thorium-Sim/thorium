@@ -13,10 +13,7 @@ const addAsset = (loc, zip, prefix = "mission") => {
   let key = loc;
   if (!key.split(".")[1]) {
     // No extension - find the most likely candidate
-    const path = key
-      .split("/")
-      .slice(0, -1)
-      .join("/");
+    const path = key.split("/").slice(0, -1).join("/");
     const filename = key.split("/")[key.split("/").length - 1];
     const folderPath = assetDir + "/assets" + path;
     if (!fs.existsSync(folderPath)) return;
@@ -25,7 +22,7 @@ const addAsset = (loc, zip, prefix = "mission") => {
       .filter(f => !fs.statSync(folderPath + "/" + f).isDirectory())
       .find(f => f.indexOf(filename) > -1);
     if (!file) {
-      console.log("Couldn't find file:", key);
+      console.error("Couldn't find file:", key);
       return;
     }
     key = path + "/" + file;

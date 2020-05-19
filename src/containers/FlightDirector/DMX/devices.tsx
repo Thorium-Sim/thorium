@@ -1,5 +1,3 @@
-/** @jsx jsx */
-import {jsx} from "@emotion/core";
 import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import React from "react";

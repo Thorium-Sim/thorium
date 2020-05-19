@@ -18,16 +18,21 @@ const trainingSteps = (
 ) => [
   {
     selector: ".activate",
-    content: `The ${tractorBeam.displayName ||
-      tractorBeam.name} pulls objects to you with zero-point energy. Once a target it in sight, it will appear below the ship. Press this button to activate the ${tractorBeam.displayName ||
-      tractorBeam.name}.`,
+    content: `The ${
+      tractorBeam.displayName || tractorBeam.name
+    } pulls objects to you with zero-point energy. Once a target it in sight, it will appear below the ship. Press this button to activate the ${
+      tractorBeam.displayName || tractorBeam.name
+    }.`,
   },
   {
     selector: ".strengthBar",
-    content: `The size and speed of the object will impact the stress on the ${tractorBeam.displayName ||
-      tractorBeam.name}. If the object is large, fast, or dense, it will put more stress on our ship, and we will need to strengthen the ${tractorBeam.displayName ||
-      tractorBeam.name} in order to pull in the object. If we pull it in too fast, the object may collide with our ship and cause damage. Use this tool to match the strength of the ${tractorBeam.displayName ||
-      tractorBeam.name} to the stress being put on it.`,
+    content: `The size and speed of the object will impact the stress on the ${
+      tractorBeam.displayName || tractorBeam.name
+    }. If the object is large, fast, or dense, it will put more stress on our ship, and we will need to strengthen the ${
+      tractorBeam.displayName || tractorBeam.name
+    } in order to pull in the object. If we pull it in too fast, the object may collide with our ship and cause damage. Use this tool to match the strength of the ${
+      tractorBeam.displayName || tractorBeam.name
+    } to the stress being put on it.`,
   },
 ];
 

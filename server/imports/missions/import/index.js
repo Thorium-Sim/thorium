@@ -24,24 +24,24 @@ function streamToString(stream, cb) {
 const regexPath = /[^\\]*\.(\w+)$/;
 
 export default function ImportMission(filepath, cb) {
-  console.log("Importing mission");
-  yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
+  console.info("Importing mission");
+  yauzl.open(filepath, {lazyEntries: true}, function (err, importZip) {
     if (err) {
       //Eat the error
       return;
     }
-    importZip.on("close", function() {
+    importZip.on("close", function () {
       cb(null);
     });
     importZip.readEntry();
 
-    importZip.on("entry", function(entry) {
+    importZip.on("entry", function (entry) {
       if (/^mission\/assets/.test(entry.fileName)) {
-        console.log("Copying file", entry.fileName);
+        console.info("Copying file", entry.fileName);
         // It's an asset. Load it
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
-          readStream.on("end", function() {
+          readStream.on("end", function () {
             importZip.readEntry();
           });
           let filename = entry.fileName.replace("mission/", "");
@@ -66,7 +66,7 @@ export default function ImportMission(filepath, cb) {
       }
       if (/^mission\/tacticals\.json/.test(entry.fileName)) {
         // Tactical
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
           streamToString(readStream, str => {
             const maps = JSON.parse(str);
@@ -84,7 +84,7 @@ export default function ImportMission(filepath, cb) {
       }
       if (/mission\/mission.json/.test(entry.fileName)) {
         // Mission
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
           streamToString(readStream, str => {
             const mission = JSON.parse(str);

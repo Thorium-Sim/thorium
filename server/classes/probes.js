@@ -297,7 +297,7 @@ const probesTypes = [
     count: 20,
   },
 ];
-const probesEquipment = [
+export const probesEquipment = [
   {
     id: "probe-network-package",
     name: "Probe Network Package",

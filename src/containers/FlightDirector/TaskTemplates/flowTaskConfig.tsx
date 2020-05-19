@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import {jsx, css} from "@emotion/core";
+import React from "react";
+import {css} from "@emotion/core";
 import {Col, Input} from "reactstrap";
 import {useParams} from "react-router";
 import {
@@ -9,6 +9,7 @@ import {
 } from "generated/graphql";
 import {ConfigureMacro} from "./taskConfig";
 import ValueInput from "components/views/Tasks/core/ValueInput";
+import {TagInput} from "../DMX/fixtures";
 
 const FlowTaskConfig = () => {
   const {flowId, stepId, taskId} = useParams();
@@ -38,10 +39,38 @@ const FlowTaskConfig = () => {
       <label>Definition</label>
       <Input type="text" readOnly value={definition.name} />
       <label>Station</label>
+      <TagInput
+        tags={task.stationTags || []}
+        onAdd={t =>
+          edit({
+            variables: {
+              id: flowId,
+              stepId,
+              taskId,
+              task: {
+                ...task,
+                stationTags: task.stationTags?.concat(t) || [],
+              },
+            },
+          })
+        }
+        onRemove={t =>
+          edit({
+            variables: {
+              id: flowId,
+              stepId,
+              taskId,
+              task: {
+                ...task,
+                stationTags: task.stationTags?.filter(tt => tt !== t) || [],
+              },
+            },
+          })
+        }
+      />
       <small>
-        Task will be automatically assigned to the appropriate station. To
-        assign to a specific station, use the Task Flow config within the
-        simulator config.
+        If Blank, task will be automatically assigned to the appropriate
+        station.
       </small>
       <label>
         <strong>Values</strong>

@@ -196,9 +196,7 @@ const ExtraControls = ({
               })
             }
             style={{
-              borderColor: tinycolor(planetColor)
-                .darken(10)
-                .toString(),
+              borderColor: tinycolor(planetColor).darken(10).toString(),
               backgroundColor: tinycolor(planetColor).toString(),
             }}
           />
@@ -241,9 +239,7 @@ const ExtraControls = ({
               })
             }
             style={{
-              borderColor: tinycolor(borderColor)
-                .darken(10)
-                .toString(),
+              borderColor: tinycolor(borderColor).darken(10).toString(),
               backgroundColor: tinycolor(borderColor).toString(),
             }}
           />

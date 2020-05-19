@@ -19,6 +19,9 @@ const ResetCache: React.FC<{
 }> = ({clientId, reset, station}) => {
   const client = useApolloClient();
   const {playSound, removeAllSounds} = useSounds();
+  const excludeStation =
+    (station?.name && excludedStations.includes(station?.name)) ||
+    station?.cards?.find(c => excludedStations.indexOf(c.component) > -1);
 
   React.useEffect(() => {
     const cacheSub = client
@@ -32,11 +35,7 @@ const ResetCache: React.FC<{
         next: () => {
           // Reset all of the sounds that are currently playing
           removeAllSounds();
-          if (
-            (station?.name && excludedStations.includes(station?.name)) ||
-            station?.cards.find(c => excludedStations.indexOf(c.component) > -1)
-          )
-            return;
+          if (excludeStation) return;
           playSound({url: "/sciences.ogg"});
           reset?.();
           publish("widgetClose");
@@ -48,7 +47,7 @@ const ResetCache: React.FC<{
     return () => {
       cacheSub.unsubscribe();
     };
-  }, [client, clientId, playSound, removeAllSounds, reset, station]);
+  }, [client, clientId, excludeStation, playSound, removeAllSounds, reset]);
 
   return null;
 };

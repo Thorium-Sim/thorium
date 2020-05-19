@@ -16,10 +16,7 @@ App.on("sendMessage", args => {
   App.messages.push(messageClass);
   pubsub.publish("sendMessage", messageClass);
   const content = messageClass.content || "";
-  const wordSplit = content
-    .split(" ")
-    .slice(0, 30)
-    .join(" ");
+  const wordSplit = content.split(" ").slice(0, 30).join(" ");
   const letterSplit = wordSplit.slice(0, 255);
   const truncatedContent = `${letterSplit}${
     letterSplit.length < messageClass.content.length ? "..." : ""

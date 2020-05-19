@@ -6,7 +6,7 @@ import {
   ListGroup,
   ListGroupItem,
   Card,
-  CardBlock,
+  CardBody,
   Button,
 } from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
@@ -204,9 +204,9 @@ const Tasks = ({tasks, station: {name: stationName, executive}}) => {
             />
           </h3>
           <Card>
-            <CardBlock style={{whiteSpace: "pre-line"}}>
+            <CardBody style={{whiteSpace: "pre-line"}}>
               {task && task.instructions}
-            </CardBlock>
+            </CardBody>
           </Card>
           <div style={{display: "flex", justifyContent: "space-between"}}>
             <Mutation

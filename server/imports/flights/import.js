@@ -16,20 +16,20 @@ function streamToString(stream, cb) {
 }
 
 export default function ImportFlight(filepath, cb) {
-  console.log("Importing flight");
-  yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
+  console.info("Importing flight");
+  yauzl.open(filepath, {lazyEntries: true}, function (err, importZip) {
     if (err) throw err;
-    importZip.on("close", function() {
+    importZip.on("close", function () {
       pubsub.publish("flightsUpdate", App.flights);
       pubsub.publish("simulatorsUpdate", App.simulators);
       cb(null);
     });
     importZip.readEntry();
 
-    importZip.on("entry", function(entry) {
+    importZip.on("entry", function (entry) {
       if (/flight\/flight.json/.test(entry.fileName)) {
         // Flight
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
           streamToString(readStream, str => {
             const data = JSON.parse(str);

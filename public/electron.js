@@ -5,6 +5,6 @@ startApp();
 
 process.stdin.resume(); //so the program will not close instantly
 process.on("unhandledRejection", err => {
-  console.log("Unhandled Rejection:", err);
+  console.error("Unhandled Rejection:", err);
   //process.exit(1);
 });

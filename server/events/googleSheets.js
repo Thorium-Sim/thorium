@@ -51,7 +51,7 @@ App.on("googleSheetsCompleteAuthorize", ({token}) => {
   const oAuth2Client = getOAuthClient();
   oAuth2Client.getToken(token, (err, authToken) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       throw new Error("Error while trying to retrieve access token");
     }
     // Store the token to disk for later program executions
@@ -74,7 +74,7 @@ App.on("googleSheetsFileSearch", async ({searchText, cb}) => {
         corpora: "user",
         q: `mimeType = 'application/vnd.google-apps.spreadsheet' and name contains '${searchText}'`,
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
     return response.data.files;
   }
   cb && cb(doIt());

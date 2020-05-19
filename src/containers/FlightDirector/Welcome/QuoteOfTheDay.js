@@ -79,6 +79,7 @@ const quotes = [
   "Little victories, my friends. Little victories.",
   "It is what we can’t see that fuels our imagination.",
   "This is Art holding a Mirror up to Life. That’s why everything is exactly the wrong way around.",
+  "I'm just a singing satellite in an orbit that is strange.",
 ];
 
 const QuoteOfTheDay = () => {

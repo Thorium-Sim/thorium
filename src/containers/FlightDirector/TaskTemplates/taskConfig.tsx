@@ -39,9 +39,10 @@ const TaskConfig: React.FC = () => {
   const [setMacros] = useSetTaskMacroMutation();
   const [setPreMacros] = useSetTaskPreMacroMutation();
   const updateReportTypes = (which: string, checked: boolean) => {
-    const newReportTypes = checked
-      ? reportTypes.concat(which)
-      : reportTypes.filter(c => c !== which);
+    const newReportTypes =
+      (checked
+        ? reportTypes?.concat(which)
+        : reportTypes?.filter(c => c !== which)) || [];
     setReportType({
       variables: {
         id,
@@ -72,7 +73,7 @@ const TaskConfig: React.FC = () => {
                 Damage{" "}
                 <input
                   type="checkbox"
-                  checked={reportTypes.indexOf("default") > -1}
+                  checked={reportTypes?.includes("default")}
                   onChange={e => updateReportTypes("default", e.target.checked)}
                 />
               </label>
@@ -80,7 +81,7 @@ const TaskConfig: React.FC = () => {
                 R&D{" "}
                 <input
                   type="checkbox"
-                  checked={reportTypes.indexOf("rnd") > -1}
+                  checked={reportTypes?.includes("rnd")}
                   onChange={e => updateReportTypes("rnd", e.target.checked)}
                 />
               </label>
@@ -88,7 +89,7 @@ const TaskConfig: React.FC = () => {
                 Engineering{" "}
                 <input
                   type="checkbox"
-                  checked={reportTypes.indexOf("engineering") > -1}
+                  checked={reportTypes?.includes("engineering")}
                   onChange={e =>
                     updateReportTypes("engineering", e.target.checked)
                   }
@@ -102,7 +103,7 @@ const TaskConfig: React.FC = () => {
                 key={v}
                 label={v}
                 type={definition.valuesInput[v]}
-                value={values[v]}
+                value={values?.[v]}
                 definitionValue={definition.valuesValue[v]}
                 onBlur={(value: unknown) =>
                   setValues({
@@ -119,13 +120,17 @@ const TaskConfig: React.FC = () => {
             ))}
             <details>
               <summary>Macros</summary>
-              <ConfigureMacro action={setMacros} id={id} macros={macros} />
-              )}
+              <ConfigureMacro
+                action={setMacros}
+                id={id}
+                macros={macros || []}
+              />
+
               <ConfigureMacro
                 pre
                 action={setPreMacros}
                 id={id}
-                macros={preMacros}
+                macros={preMacros || []}
               />
             </details>
           </div>

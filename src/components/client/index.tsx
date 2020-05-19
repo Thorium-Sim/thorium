@@ -29,7 +29,7 @@ const ClientData = () => {
 
   React.useEffect(() => {
     if (process.env.NODE_ENV === "production") {
-      window.oncontextmenu = function(event: MouseEvent) {
+      window.oncontextmenu = function (event: MouseEvent) {
         event.preventDefault();
         event.stopPropagation();
         return false;

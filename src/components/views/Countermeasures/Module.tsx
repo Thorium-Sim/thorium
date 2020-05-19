@@ -31,9 +31,11 @@ const Module: React.FC<ModuleProps> = ({
       <div
         className="module-card card"
         style={{
-          background: `linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.1) ${(moduleObject?.buildProgress ||
-            0) * 100}%, rgba(255,255,255,0) ${(moduleObject?.buildProgress ||
-            0) * 100}%, transparent 100%)`,
+          background: `linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.1) ${
+            (moduleObject?.buildProgress || 0) * 100
+          }%, rgba(255,255,255,0) ${
+            (moduleObject?.buildProgress || 0) * 100
+          }%, transparent 100%)`,
         }}
       >
         {moduleObject ? moduleObject.name : "Empty"}

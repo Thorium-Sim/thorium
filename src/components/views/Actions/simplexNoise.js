@@ -29,7 +29,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-(function() {
+(function () {
   var F2 = 0.5 * (Math.sqrt(3.0) - 1.0),
     G2 = (3.0 - Math.sqrt(3.0)) / 6.0,
     F3 = 1.0 / 3.0,
@@ -222,7 +222,7 @@
       -1,
       0,
     ]),
-    noise2D: function(xin, yin) {
+    noise2D: function (xin, yin) {
       var permMod12 = this.permMod12,
         perm = this.perm,
         grad3 = this.grad3;
@@ -283,7 +283,7 @@
       return 70.0 * (n0 + n1 + n2);
     },
     // 3D simplex noise
-    noise3D: function(xin, yin, zin) {
+    noise3D: function (xin, yin, zin) {
       var permMod12 = this.permMod12,
         perm = this.perm,
         grad3 = this.grad3;
@@ -419,7 +419,7 @@
       return 32.0 * (n0 + n1 + n2 + n3);
     },
     // 4D simplex noise, better simplex rank ordering method 2012-03-09
-    noise4D: function(x, y, z, w) {
+    noise4D: function (x, y, z, w) {
       var perm = this.perm,
         grad4 = this.grad4;
 

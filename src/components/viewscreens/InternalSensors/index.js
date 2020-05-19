@@ -45,10 +45,11 @@ class InternalSensorsViewscreen extends Component {
       scanRequest = this.props.data.sensors[0].scanRequest;
       scanResults = this.props.data.sensors[0].scanResults;
     }
-    const background = `linear-gradient(to right, rgba(252,227,0,0) 0%,rgba(247,223,24,0) ${scan *
-      100 -
-      5}%,rgba(246,223,27,1) ${scan * 100}%,rgba(246,223,30,0) ${scan * 100 +
-      5}%,rgba(241,218,54,0) 100%)`;
+    const background = `linear-gradient(to right, rgba(252,227,0,0) 0%,rgba(247,223,24,0) ${
+      scan * 100 - 5
+    }%,rgba(246,223,27,1) ${scan * 100}%,rgba(246,223,30,0) ${
+      scan * 100 + 5
+    }%,rgba(241,218,54,0) 100%)`;
     const {assets} = this.props.simulator;
     return (
       <div className="viewscreen-internalSensors">

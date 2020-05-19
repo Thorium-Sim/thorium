@@ -10,7 +10,7 @@ module.exports = function triggerWindow(mainWindow, kiosk) {
   initRemote();
   mainWindow.focus();
   mainWindow.webContents.focus();
-  mainWindow.on("closed", function() {
+  mainWindow.on("closed", function () {
     app.quit();
   });
 };

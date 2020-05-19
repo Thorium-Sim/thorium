@@ -1,6 +1,7 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
+import {probesEquipment} from "../classes/probes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -115,6 +116,7 @@ const schema = gql`
   extend type Query {
     probes(simulatorId: ID!): [Probes!]!
     probe(id: ID!): Probes
+    probeEquipment: [ProbeEquipment!]!
   }
   extend type Mutation {
     destroyProbe(id: ID!, probeId: ID!): String
@@ -189,6 +191,9 @@ const resolver = {
     },
     probe(root, {id}) {
       return App.systems.find(s => s.id === id);
+    },
+    probeEquipment() {
+      return probesEquipment;
     },
   },
   Mutation: mutationHelper(schema),

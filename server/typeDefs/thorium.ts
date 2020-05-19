@@ -325,7 +325,7 @@ const resolver = {
       };
       request.post(
         {url: issuesUrl, body: postOptions, json: true},
-        function() {},
+        function () {},
       );
     },
     async addIssueUpload(rootValue, {data, filename, ext}) {

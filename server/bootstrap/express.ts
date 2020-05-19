@@ -146,10 +146,7 @@ export default () => {
             let key = fileName;
             if (!key.split(".")[1]) {
               // No extension - find the most likely candidate
-              const path = key
-                .split("/")
-                .slice(0, -1)
-                .join("/");
+              const path = key.split("/").slice(0, -1).join("/");
               const filename = key.split("/")[key.split("/").length - 1];
               const folderPath = assetDir + "/assets" + path;
               if (!fs.existsSync(folderPath)) return;
@@ -187,14 +184,14 @@ export default () => {
           }
           let exportName;
           objects.forEach(obj => {
-            exportName = obj.serialize({addData, addAsset});
+            exportName = obj.serialize({addData, addAsset}) || exportName;
           });
           const buff = Buffer.from(JSON.stringify(allData));
           zipfile.addBuffer(buff, `${exportObj.exportable}/data.json`, {
             mtime: new Date(),
             mode: parseInt("0100664", 8), // -rw-rw-r--
           });
-          zipfile.end({forceZip64Format: false}, function() {
+          zipfile.end({forceZip64Format: false}, function () {
             res.set({
               "Content-Disposition": `attachment; filename=${exportName}`,
               "Content-Type": "application/octet-stream",
@@ -207,10 +204,11 @@ export default () => {
         `/import${pascalCase(exportObj.exportable)}`,
         upload.any(),
         async (req: express.Request & {files: MulterFile[]}, res) => {
+          console.log(`Importing ${pascalCase(exportObj.exportable)}`);
           if (req.files[0]) {
             const importZip = await new Promise<yauzl.ZipFile>(
               (resolve, reject) =>
-                yauzl.open(req.files[0].path, {lazyEntries: true}, function(
+                yauzl.open(req.files[0].path, {lazyEntries: true}, function (
                   err,
                   importZip,
                 ) {
@@ -218,10 +216,10 @@ export default () => {
                   resolve(importZip);
                 }),
             );
-            importZip.on("entry", function(entry) {
+            importZip.on("entry", function (entry) {
               if (entry.fileName.includes("data.json")) {
                 // It's the data file. Read it, parse it, and load the data.
-                importZip.openReadStream(entry, function(error, readStream) {
+                importZip.openReadStream(entry, function (error, readStream) {
                   if (error) throw error;
                   streamToString(readStream, str => {
                     const data = JSON.parse(str);
@@ -248,9 +246,9 @@ export default () => {
                 });
               } else {
                 // It's an asset. Load it into the file system.
-                importZip.openReadStream(entry, function(error, readStream) {
+                importZip.openReadStream(entry, function (error, readStream) {
                   if (error) throw error;
-                  readStream.on("end", function() {
+                  readStream.on("end", function () {
                     importZip.readEntry();
                   });
 
@@ -330,15 +328,15 @@ export default () => {
   if (process.env.NODE_ENV === "production") {
     // If we're in production, the last thing we want is for the server to crash
     // Print all server errors, but don't terminate the process
-    setInterval(function() {}, Math.pow(2, 31) - 1);
+    setInterval(function () {}, Math.pow(2, 31) - 1);
     process.on("uncaughtException", err => {
-      console.log(chalk.red(`Caught exception: ${err}\n`));
-      console.log(err);
+      console.error(chalk.red(`Caught exception: ${err}\n`));
+      console.error(err);
     });
   } else {
     server.use("/assets/", express.static(path.resolve("./assets")));
   }
-  // console.log(server._router.stack.map(r => r.route?.path).filter(Boolean));
+  // console.info(server._router.stack.map(r => r.route?.path).filter(Boolean));
 
   return server;
 };

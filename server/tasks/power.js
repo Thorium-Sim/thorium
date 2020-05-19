@@ -56,8 +56,9 @@ export default [
       const system = getDamageSystem(sys);
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Remove all power from the ${system.displayName ||
-            system.name} system.`,
+          `${preamble} Remove all power from the ${
+            system.displayName || system.name
+          } system.`,
           {simulator, system},
         );
       return reportReplace(
@@ -65,8 +66,9 @@ export default [
           station
             ? `${station.name} Officer`
             : `person in charge of power distribution`
-        } to remove all power from the ${system.displayName ||
-          system.name} system.`,
+        } to remove all power from the ${
+          system.displayName || system.name
+        } system.`,
         {simulator, system},
       );
     },
@@ -131,8 +133,9 @@ export default [
       const system = getDamageSystem(sys);
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Restore power in the ${system.displayName ||
-            system.name} system to operational levels.`,
+          `${preamble} Restore power in the ${
+            system.displayName || system.name
+          } system to operational levels.`,
           {simulator, system},
         );
       return reportReplace(
@@ -140,8 +143,9 @@ export default [
           station
             ? `${station.name} Officer`
             : `person in charge of power distribution`
-        } to restore power in the ${system.displayName ||
-          system.name} system to operational levels.`,
+        } to restore power in the ${
+          system.displayName || system.name
+        } system to operational levels.`,
         {simulator, system},
       );
     },
@@ -212,8 +216,9 @@ export default [
       const system = getDamageSystem(sys);
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Set the power level of the ${system.displayName ||
-            system.name} system to ${power}.`,
+          `${preamble} Set the power level of the ${
+            system.displayName || system.name
+          } system to ${power}.`,
           {simulator, system},
         );
       return reportReplace(
@@ -221,8 +226,9 @@ export default [
           station
             ? `${station.name} Officer`
             : `person in charge of power distribution`
-        } to set the power level of the ${system.displayName ||
-          system.name} system to ${power}.`,
+        } to set the power level of the ${
+          system.displayName || system.name
+        } system to ${power}.`,
         {simulator, system},
       );
     },

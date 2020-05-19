@@ -227,12 +227,11 @@ class Grid extends Component {
               key={`box-${i}`}
               className="box"
               style={{
-                transform: `translate(${(Math.cos(
-                  d2r((i / array.length) * 360),
-                ) *
-                  radius) /
-                  2}px, ${(Math.sin(d2r((i / array.length) * 360)) * radius) /
-                  2}px)`,
+                transform: `translate(${
+                  (Math.cos(d2r((i / array.length) * 360)) * radius) / 2
+                }px, ${
+                  (Math.sin(d2r((i / array.length) * 360)) * radius) / 2
+                }px)`,
               }}
             />
           ))}
@@ -245,13 +244,11 @@ class Grid extends Component {
                   key={`probe-${i}`}
                   className="probe"
                   style={{
-                    transform: `translate(${(Math.cos(
-                      d2r(((i - 3) / lines) * 360),
-                    ) *
-                      radius) /
-                      2}px, ${(Math.sin(d2r(((i - 3) / lines) * 360)) *
-                      radius) /
-                      2}px)`,
+                    transform: `translate(${
+                      (Math.cos(d2r(((i - 3) / lines) * 360)) * radius) / 2
+                    }px, ${
+                      (Math.sin(d2r(((i - 3) / lines) * 360)) * radius) / 2
+                    }px)`,
                   }}
                 />
               );

@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import {jsx, css} from "@emotion/core";
+import {css} from "@emotion/core";
 import React from "react";
 import {
   useTaskFlowsConfigSubscription,
@@ -98,7 +97,7 @@ const TaskFlows: React.FC<{}> = () => {
                 Array.from(evt.target.files).forEach((f, index) =>
                   data.append(`files[${index}]`, f),
                 );
-                fetch(`/taskFlows`, {
+                fetch(`/importTaskFlows`, {
                   method: "POST",
                   body: data,
                 }).then(() => {

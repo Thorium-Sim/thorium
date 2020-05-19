@@ -317,8 +317,9 @@ const DockingConfig = ({data, selectedSimulator, client}) => {
             <div
               className="port-positioner"
               style={{
-                transform: `translate(${(settingPort.position.x || 0) *
-                  100}%, ${(settingPort.position.y || 0) * 100}%)`,
+                transform: `translate(${
+                  (settingPort.position.x || 0) * 100
+                }%, ${(settingPort.position.y || 0) * 100}%)`,
               }}
             >
               <div className="port-position" />

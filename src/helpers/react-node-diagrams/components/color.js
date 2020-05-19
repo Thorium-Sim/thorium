@@ -40,8 +40,9 @@ export default {
   component: Color,
   process: (comp, {red, green, blue}) => {
     if (red || green || blue || red === 0 || green === 0 || blue === 0) {
-      return `rgb(${Math.round(red * 255) || 0}, ${Math.round(green * 255) ||
-        0}, ${Math.round(blue * 255) || 0})`;
+      return `rgb(${Math.round(red * 255) || 0}, ${
+        Math.round(green * 255) || 0
+      }, ${Math.round(blue * 255) || 0})`;
     }
     return comp.value;
   },

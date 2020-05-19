@@ -120,7 +120,7 @@ p.offline-message {
 }
 
 .card-transition {
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: transform 500ms ease, opacity 500ms ease;
 }
 .card-transition-entering {
   opacity: 0;

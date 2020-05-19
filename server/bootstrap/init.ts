@@ -21,22 +21,22 @@ console.warn = (message: string) => {
   warn(message);
 };
 
-export const download = function(
+export const download = function (
   url: string,
   dest: string,
   callback: (err: string) => void,
 ) {
   const file = fs.createWriteStream(dest);
-  https.get(url, function(res) {
+  https.get(url, function (res) {
     res
-      .on("data", function(chunk) {
+      .on("data", function (chunk) {
         file.write(chunk);
       })
-      .on("end", function() {
+      .on("end", function () {
         file.end();
         callback(null);
       })
-      .on("error", function(err) {
+      .on("error", function (err) {
         callback(err.message);
       });
   });
@@ -49,11 +49,7 @@ if (process.env.NODE_ENV === "production") {
 
 export default () => {
   return new Promise(resolve => {
-    console.log(
-      `Starting Thorium...${Array(20)
-        .fill("\n")
-        .join("")}`,
-    );
+    console.info(`Starting Thorium...${Array(20).fill("\n").join("")}`);
 
     fs.exists(snapshotDir, exists =>
       exists ? resolve() : fs.mkdir(snapshotDir, () => resolve()),
@@ -85,22 +81,22 @@ export default () => {
         }.json`;
 
         if (!fs.existsSync(snapshotFile)) {
-          console.log("No snapshot.json found. Creating.");
+          console.info("No snapshot.json found. Creating.");
           fs.writeFileSync(snapshotFile, JSON.stringify(defaultSnapshot));
           // This was an initial load. We should download and install assets
-          console.log("First-time load. Downloading assets...");
+          console.info("First-time load. Downloading assets...");
           const dest = path.resolve(`${os.tmpdir()}/assets.aset`);
           download(
             "https://s3.amazonaws.com/thoriumsim/assets.zip",
             dest,
             err => {
               if (err) {
-                console.log("There was an error", err);
+                console.error("There was an error", err);
               }
               importAssets(dest, () => {
                 fs.unlink(dest, error => {
-                  if (err) console.log(error);
-                  console.log("Asset Download Complete");
+                  if (err) console.error(error);
+                  console.info("Asset Download Complete");
                   resolve();
                 });
               });

@@ -1,5 +1,6 @@
 import uuid from "uuid";
 import App from "../app";
+import {pascalCase} from "change-case";
 
 export class StationSet {
   id: string;
@@ -39,7 +40,7 @@ export class StationSet {
   rename(name: string) {
     this.name = name;
   }
-  addStation(station: Station) {
+  addStation(station: Partial<Station>) {
     this.stations.push(new Station(station));
   }
   removeStation(stationName: string) {
@@ -86,6 +87,9 @@ export class StationSet {
   setTraining(station: string, training: string) {
     this.stations.find(s => s.name === station).setTraining(training);
   }
+  setTags(station: string, tags: string[]) {
+    this.stations.find(s => s.name === station).setTags(tags);
+  }
   setAmbiance(station: string, ambiance: string) {
     this.stations.find(s => s.name === station).setAmbiance(ambiance);
   }
@@ -103,6 +107,7 @@ export class Station {
   messageGroups: string[];
   widgets: string[];
   description: string;
+  tags: string[];
   training: string;
   ambiance: string;
   layout: string;
@@ -114,6 +119,7 @@ export class Station {
     messageGroups = [],
     widgets = [],
     description,
+    tags,
     training,
     ambiance,
     layout,
@@ -121,6 +127,7 @@ export class Station {
     this.class = "Station";
     this.name = name || "Station";
     this.description = description || "";
+    this.tags = tags || [];
     this.training = training || "";
     this.ambiance = ambiance || "";
     this.login = login;
@@ -133,7 +140,15 @@ export class Station {
       this.addCard(card);
     });
   }
-
+  matchTags(tags: string[]) {
+    for (let t of tags) {
+      if (this.tags.includes(t)) return true;
+      if (this.name === t || pascalCase(this.name) === pascalCase(t))
+        return true;
+      if (this.cards.map(t => t.component).includes(pascalCase(t))) return true;
+    }
+    return false;
+  }
   rename(name: string) {
     this.name = name;
   }
@@ -142,6 +157,9 @@ export class Station {
   }
   setTraining(training: string) {
     this.training = training;
+  }
+  setTags(tags: string[]) {
+    this.tags = tags;
   }
   setAmbiance(ambiance: string) {
     this.ambiance = ambiance;

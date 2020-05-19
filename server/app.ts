@@ -159,8 +159,8 @@ class Events extends EventEmitter {
             try {
               this[key].push(new Classes[obj.class](obj));
             } catch (err) {
-              console.log(err);
-              console.log({
+              console.error(err);
+              console.error({
                 message: "Undefined key in class",
                 key,
                 class: obj.class,
@@ -215,9 +215,9 @@ class Events extends EventEmitter {
   }
   test(param: any) {
     if (param.key) {
-      console.log(util.inspect(this[param.key], false, null));
+      console.info(util.inspect(this[param.key], false, null));
     } else {
-      console.log(util.inspect(this, false, null));
+      console.info(util.inspect(this, false, null));
     }
   }
 }
@@ -225,8 +225,8 @@ class Events extends EventEmitter {
 const App = new Events();
 
 // Handle events for App
-App.on("error", function(err) {
-  console.log("here's an error!");
+App.on("error", function (err) {
+  console.error("here's an error!");
   console.error(err);
 });
 

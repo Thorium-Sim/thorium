@@ -76,3 +76,4 @@ export * from "./sensors";
 export * from "./timeline";
 export * from "./dmx";
 export * from "./lighting";
+export {default as taskFlowActivate} from "./taskFlowActivate";

@@ -9,7 +9,7 @@ function walkSync(dir, filelist) {
   if (dir[dir.length - 1] !== "/") dir = dir.concat("/");
   const files = fs.readdirSync(dir);
   filelist = filelist || [];
-  files.forEach(function(file) {
+  files.forEach(function (file) {
     if (fs.existsSync(dir + file)) {
       if (fs.statSync(dir + file).isDirectory()) {
         filelist = walkSync(dir + file + "/", filelist);
@@ -52,11 +52,11 @@ files
               presets: ["env", "react", "stage-0"],
               plugins: ["react-intl"],
             },
-            function(err, result) {
+            function (err, result) {
               bar.tick(1);
               if (err) reject(err);
               if (!result) {
-                console.log("Failed to process file:", file);
+                console.error("Failed to process file:", file);
                 return resolve();
               }
               const {metadata} = result;

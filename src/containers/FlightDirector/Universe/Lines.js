@@ -244,7 +244,7 @@ ShaderLib["line"] = {
 		`,
 };
 
-var LineMaterial = function(parameters) {
+var LineMaterial = function (parameters) {
   ShaderMaterial.call(this, {
     type: "LineMaterial",
 
@@ -262,11 +262,11 @@ var LineMaterial = function(parameters) {
     color: {
       enumerable: true,
 
-      get: function() {
+      get: function () {
         return this.uniforms.diffuse.value;
       },
 
-      set: function(value) {
+      set: function (value) {
         this.uniforms.diffuse.value = value;
       },
     },
@@ -274,11 +274,11 @@ var LineMaterial = function(parameters) {
     linewidth: {
       enumerable: true,
 
-      get: function() {
+      get: function () {
         return this.uniforms.linewidth.value;
       },
 
-      set: function(value) {
+      set: function (value) {
         this.uniforms.linewidth.value = value;
       },
     },
@@ -286,11 +286,11 @@ var LineMaterial = function(parameters) {
     dashScale: {
       enumerable: true,
 
-      get: function() {
+      get: function () {
         return this.uniforms.dashScale.value;
       },
 
-      set: function(value) {
+      set: function (value) {
         this.uniforms.dashScale.value = value;
       },
     },
@@ -298,11 +298,11 @@ var LineMaterial = function(parameters) {
     dashSize: {
       enumerable: true,
 
-      get: function() {
+      get: function () {
         return this.uniforms.dashSize.value;
       },
 
-      set: function(value) {
+      set: function (value) {
         this.uniforms.dashSize.value = value;
       },
     },
@@ -310,11 +310,11 @@ var LineMaterial = function(parameters) {
     gapSize: {
       enumerable: true,
 
-      get: function() {
+      get: function () {
         return this.uniforms.gapSize.value;
       },
 
-      set: function(value) {
+      set: function (value) {
         this.uniforms.gapSize.value = value;
       },
     },
@@ -322,11 +322,11 @@ var LineMaterial = function(parameters) {
     resolution: {
       enumerable: true,
 
-      get: function() {
+      get: function () {
         return this.uniforms.resolution.value;
       },
 
-      set: function(value) {
+      set: function (value) {
         this.uniforms.resolution.value.copy(value);
       },
     },
@@ -342,7 +342,7 @@ LineMaterial.prototype.isLineMaterial = true;
 
 export {LineMaterial};
 
-var LineSegmentsGeometry = function() {
+var LineSegmentsGeometry = function () {
   InstancedBufferGeometry.call(this);
 
   this.type = "LineSegmentsGeometry";
@@ -388,7 +388,7 @@ LineSegmentsGeometry.prototype = Object.assign(
 
     isLineSegmentsGeometry: true,
 
-    applyMatrix4: function(matrix) {
+    applyMatrix4: function (matrix) {
       var start = this.attributes.instanceStart;
       var end = this.attributes.instanceEnd;
 
@@ -411,7 +411,7 @@ LineSegmentsGeometry.prototype = Object.assign(
       return this;
     },
 
-    setPositions: function(array) {
+    setPositions: function (array) {
       var lineSegments;
 
       if (array instanceof Float32Array) {
@@ -439,7 +439,7 @@ LineSegmentsGeometry.prototype = Object.assign(
       return this;
     },
 
-    setColors: function(array) {
+    setColors: function (array) {
       var colors;
 
       if (array instanceof Float32Array) {
@@ -462,19 +462,19 @@ LineSegmentsGeometry.prototype = Object.assign(
       return this;
     },
 
-    fromWireframeGeometry: function(geometry) {
+    fromWireframeGeometry: function (geometry) {
       this.setPositions(geometry.attributes.position.array);
 
       return this;
     },
 
-    fromEdgesGeometry: function(geometry) {
+    fromEdgesGeometry: function (geometry) {
       this.setPositions(geometry.attributes.position.array);
 
       return this;
     },
 
-    fromMesh: function(mesh) {
+    fromMesh: function (mesh) {
       this.fromWireframeGeometry(new WireframeGeometry(mesh.geometry));
 
       // set colors, maybe
@@ -482,7 +482,7 @@ LineSegmentsGeometry.prototype = Object.assign(
       return this;
     },
 
-    fromLineSegements: function(lineSegments) {
+    fromLineSegements: function (lineSegments) {
       var geometry = lineSegments.geometry;
 
       if (geometry.isGeometry) {
@@ -496,7 +496,7 @@ LineSegmentsGeometry.prototype = Object.assign(
       return this;
     },
 
-    computeBoundingBox: (function() {
+    computeBoundingBox: (function () {
       var box = new Box3();
 
       return function computeBoundingBox() {
@@ -517,7 +517,7 @@ LineSegmentsGeometry.prototype = Object.assign(
       };
     })(),
 
-    computeBoundingSphere: (function() {
+    computeBoundingSphere: (function () {
       var vector = new Vector3();
 
       return function computeBoundingSphere() {
@@ -565,11 +565,11 @@ LineSegmentsGeometry.prototype = Object.assign(
       };
     })(),
 
-    toJSON: function() {
+    toJSON: function () {
       // todo
     },
 
-    applyMatrix: function(matrix) {
+    applyMatrix: function (matrix) {
       console.warn(
         "THREE.LineSegmentsGeometry: applyMatrix() has been renamed to applyMatrix4().",
       );
@@ -581,7 +581,7 @@ LineSegmentsGeometry.prototype = Object.assign(
 
 export {LineSegmentsGeometry};
 
-var LineGeometry = function() {
+var LineGeometry = function () {
   LineSegmentsGeometry.call(this);
 
   this.type = "LineGeometry";
@@ -594,7 +594,7 @@ LineGeometry.prototype = Object.assign(
 
     isLineGeometry: true,
 
-    setPositions: function(array) {
+    setPositions: function (array) {
       // converts [ x1, y1, z1,  x2, y2, z2, ... ] to pairs format
 
       var length = array.length - 3;
@@ -615,7 +615,7 @@ LineGeometry.prototype = Object.assign(
       return this;
     },
 
-    setColors: function(array) {
+    setColors: function (array) {
       // converts [ r1, g1, b1,  r2, g2, b2, ... ] to pairs format
 
       var length = array.length - 3;
@@ -636,7 +636,7 @@ LineGeometry.prototype = Object.assign(
       return this;
     },
 
-    fromLine: function(line) {
+    fromLine: function (line) {
       var geometry = line.geometry;
 
       if (geometry.isGeometry) {
@@ -650,7 +650,7 @@ LineGeometry.prototype = Object.assign(
       return this;
     },
 
-    copy: function(/* source */) {
+    copy: function (/* source */) {
       // todo
 
       return this;
@@ -660,7 +660,7 @@ LineGeometry.prototype = Object.assign(
 
 export {LineGeometry};
 
-var LineSegments2 = function(geometry, material) {
+var LineSegments2 = function (geometry, material) {
   Mesh.call(this);
 
   this.type = "LineSegments2";
@@ -678,7 +678,7 @@ LineSegments2.prototype = Object.assign(Object.create(Mesh.prototype), {
 
   isLineSegments2: true,
 
-  computeLineDistances: (function() {
+  computeLineDistances: (function () {
     // for backwards-compatability, but could be a method of LineSegmentsGeometry...
 
     var start = new Vector3();
@@ -718,7 +718,7 @@ LineSegments2.prototype = Object.assign(Object.create(Mesh.prototype), {
     };
   })(),
 
-  raycast: (function() {
+  raycast: (function () {
     var start = new Vector4();
     var end = new Vector4();
 
@@ -849,7 +849,7 @@ LineSegments2.prototype = Object.assign(Object.create(Mesh.prototype), {
 
 export {LineSegments2};
 
-var Line2 = function(geometry, material) {
+var Line2 = function (geometry, material) {
   LineSegments2.call(this);
 
   this.type = "Line2";

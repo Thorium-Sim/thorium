@@ -62,14 +62,19 @@ function addWindow({main, x, y, loadedUrl, server}) {
 
     // Capture console messages
     const old_console_log = global.console.log;
+    const old_console_info = global.console.info;
     global.console.log = function log() {
       old_console_log(...arguments);
+      serverWindow.webContents.send("info", arguments[0]);
+    };
+    global.console.info = function info() {
+      old_console_info(...arguments);
       serverWindow.webContents.send("info", arguments[0]);
     };
 
     // Start the Thorium server
     bootstrap(serverWindow).then(() =>
-      setTimeout(() => console.log("Thorium Started"), 1000),
+      setTimeout(() => console.info("Thorium Started"), 1000),
     );
     return;
   } else {
@@ -83,7 +88,7 @@ function addWindow({main, x, y, loadedUrl, server}) {
     const window = new BrowserWindow(config);
     window.uniqueId = uuid.v4();
     window.browserCount = browserCount;
-    window.on("closed", function() {
+    window.on("closed", function () {
       // Dereference the window object, usually you would store windows
       // in an array if your app supports multi windows, this is the time
       // when you should delete the corresponding element.

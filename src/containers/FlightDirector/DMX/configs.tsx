@@ -1,5 +1,3 @@
-/** @jsx jsx */
-import {jsx} from "@emotion/core";
 import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import React from "react";
@@ -164,8 +162,9 @@ const DMXConfigs: React.FC = () => {
                   duplicate({variables: {id: selectedConfig.id, name}}).then(
                     res => {
                       navigate(
-                        `/config/dmx/configs/${res.data?.dmxConfigDuplicate ||
-                          ""}`,
+                        `/config/dmx/configs/${
+                          res.data?.dmxConfigDuplicate || ""
+                        }`,
                       );
                     },
                   );

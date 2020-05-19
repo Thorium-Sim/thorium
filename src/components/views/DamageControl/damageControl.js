@@ -23,7 +23,7 @@ function systemClasses(s, selected) {
   const task = s.tasks ? s.tasks.find(t => !t.verified) || {} : {};
   return `${selected ? "selected" : ""} ${
     s.damage && s.damage.requested ? "requested" : ""
-  } ${s.damage ? (s.damage.report ? "report" : "") : "report"} ${
+  } ${s.damage ? (s.damage?.report ? "report" : "") : "report"} ${
     (s.damage ? s.damage.validate : task.verifyRequested) ? "validate" : ""
   } ${s.damage && s.damage.destroyed ? "destroyed" : ""}`;
 }
@@ -352,7 +352,7 @@ class DamageControl extends Component {
                   defaultMessage="Reactivate"
                 />
               </Button>
-            ) : system?.damage.report ? null : (
+            ) : system?.damage?.report ? null : (
               <Mutation
                 mutation={gql`
                   mutation RequestReport($systemId: ID!) {

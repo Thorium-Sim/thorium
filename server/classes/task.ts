@@ -67,6 +67,7 @@ export default class Task {
   definition: string;
   simulatorId: string;
   station: string;
+  stationTags: string[];
   taskTemplate: string;
   systemId: string;
   deck: string;
@@ -98,17 +99,32 @@ export default class Task {
       t => t.name === this.definition,
     ) as TaskDefinition;
 
+    this.stationTags = params.stationTags || [];
     this.simulatorId = params.simulatorId || "";
     const simulator = App.simulators.find(s => s.id === this.simulatorId);
     const stations = definitionObject.stations
       ? definitionObject.stations({simulator})
-      : simulator && simulator.stations;
-    this.station =
-      params.station === "nothing" || !params.station
-        ? stations?.length > 0
-          ? randomFromList(stations).name
-          : "None"
-        : params.station;
+      : simulator?.stations;
+
+    const stationTagMatch = simulator?.stations?.find(s =>
+      s.matchTags(this.stationTags),
+    );
+    this.station = params.station;
+    if (
+      this.station === "nothing" ||
+      this.station === "None" ||
+      !this.station
+    ) {
+      if (stations?.length > 0 || stationTagMatch) {
+        if (stationTagMatch) {
+          this.station = stationTagMatch.name;
+        } else {
+          this.station = randomFromList(stations).name;
+        }
+      } else {
+        this.station = "None";
+      }
+    }
 
     this.taskTemplate = params.taskTemplate || "";
 

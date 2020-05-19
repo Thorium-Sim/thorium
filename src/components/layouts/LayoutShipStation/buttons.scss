@@ -55,7 +55,7 @@ $alertp: #7a24cf;
       top: 0;
       border: solid;
       border-width: 18px;
-      border-image: url("./images/"+$name+"Border.svg") 12 19;
+      border-image: url("./images/" + $name + "Border.svg") 12 19;
     }
     &:before {
       content: "";

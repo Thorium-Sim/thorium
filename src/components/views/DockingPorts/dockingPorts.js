@@ -173,8 +173,9 @@ const DockingPorts = ({dockingPorts, simulator, clientObj}) => {
                 className="port-positioner"
                 style={{
                   width: dimensions ? `${dimensions.width}px` : null,
-                  transform: `translate(${(dockingPort.position.x || 0) *
-                    100}%, ${(dockingPort.position.y || 0) * 100}%)`,
+                  transform: `translate(${
+                    (dockingPort.position.x || 0) * 100
+                  }%, ${(dockingPort.position.y || 0) * 100}%)`,
                 }}
               >
                 <div className="port-position" />

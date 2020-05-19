@@ -1,0 +1,6 @@
+query ProbeEquipment {
+  probeEquipment {
+    id
+    name
+  }
+}

@@ -30,7 +30,7 @@ const webgl = {
   Framebuffer: function Framebuffer(gl, color, depth, ext) {
     var self = this;
 
-    self.initialize = function() {
+    self.initialize = function () {
       self.fb = gl.createFramebuffer();
       self.bind();
       if (color.length > 1) {
@@ -68,7 +68,7 @@ const webgl = {
       }
     };
 
-    self.bind = function() {
+    self.bind = function () {
       gl.bindFramebuffer(gl.FRAMEBUFFER, self.fb);
     };
 
@@ -89,7 +89,7 @@ const webgl = {
 
     var self = this;
 
-    self.initialize = function() {
+    self.initialize = function () {
       self.index = index;
       self.activate();
       self.texture = gl.createTexture();
@@ -111,15 +111,15 @@ const webgl = {
       }
     };
 
-    self.bind = function() {
+    self.bind = function () {
       gl.bindTexture(options.target, self.texture);
     };
 
-    self.activate = function() {
+    self.activate = function () {
       gl.activeTexture(gl.TEXTURE0 + self.index);
     };
 
-    self.reset = function() {
+    self.reset = function () {
       self.activate();
       self.bind();
       gl.texImage2D(
@@ -142,15 +142,15 @@ const webgl = {
   GLBuffer: function GLBuffer(gl) {
     var self = this;
 
-    self.initialize = function() {
+    self.initialize = function () {
       self.buffer = gl.createBuffer();
     };
 
-    self.bind = function() {
+    self.bind = function () {
       gl.bindBuffer(gl.ARRAY_BUFFER, self.buffer);
     };
 
-    self.set = function(data) {
+    self.set = function (data) {
       self.bind();
       gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
     };
@@ -164,9 +164,9 @@ const webgl = {
 
     self.primitiveCount = primitiveCount;
 
-    self.initialize = function() {};
+    self.initialize = function () {};
 
-    self.render = function() {
+    self.render = function () {
       program.use();
       for (let name in buffers) {
         var buffer = buffers[name].buffer;
@@ -174,7 +174,7 @@ const webgl = {
         try {
           var location = program.attribs[name].location;
         } catch (e) {
-          console.log("Could not find location for", name);
+          console.error("Could not find location for", name);
           throw e;
         }
         buffer.bind();
@@ -200,9 +200,9 @@ const webgl = {
   ) {
     var self = this;
 
-    self.initialize = function() {};
+    self.initialize = function () {};
 
-    self.render = function() {
+    self.render = function () {
       program.use();
       for (let name in buffers) {
         var buffer = buffers[name].buffer;
@@ -210,7 +210,7 @@ const webgl = {
         try {
           var location = program.attribs[name].location;
         } catch (e) {
-          console.log("Could not find location for", name);
+          console.error("Could not find location for", name);
           throw e;
         }
         buffer.bind();
@@ -235,17 +235,17 @@ const webgl = {
   Program: function Program(gl, vertexSource, fragmentSource) {
     var self = this;
 
-    self.initialize = function() {
+    self.initialize = function () {
       self.program = self.compileProgram(vertexSource, fragmentSource);
       self.attribs = self.gatherAttribs();
       self.uniforms = self.gatherUniforms();
     };
 
-    self.use = function() {
+    self.use = function () {
       gl.useProgram(self.program);
     };
 
-    self.compileProgram = function(vertexSource, fragmentSource) {
+    self.compileProgram = function (vertexSource, fragmentSource) {
       var vertexShader = self.compileShader(vertexSource, gl.VERTEX_SHADER);
       var fragmentShader = self.compileShader(
         fragmentSource,
@@ -256,13 +256,13 @@ const webgl = {
       gl.attachShader(program, fragmentShader);
       gl.linkProgram(program);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.log(gl.getProgramInfoLog(program));
+        console.error(gl.getProgramInfoLog(program));
         throw new Error("Failed to compile program.");
       }
       return program;
     };
 
-    self.compileShader = function(source, type) {
+    self.compileShader = function (source, type) {
       var shader = gl.createShader(type);
       gl.shaderSource(shader, source);
       gl.compileShader(shader);
@@ -272,7 +272,8 @@ const webgl = {
         var split = source.split("\n");
         for (var i in split) {
           var q = parseInt(i, 10);
-          console.log(q + "  " + split[i]);
+          console.info(q + "  " + split[i]);
+
           if (i === lineno - 1) {
             console.warn(err);
           }
@@ -283,19 +284,19 @@ const webgl = {
       return shader;
     };
 
-    self.setUniform = function(name, type, value) {
+    self.setUniform = function (name, type, value) {
       var args = Array.prototype.slice.call(arguments, 2);
       self.use(); // Make this idempotent. At the context level, perhaps?
       try {
         var location = self.uniforms[name].location;
       } catch (e) {
-        console.log(name);
+        console.error(name);
         throw e;
       }
       gl["uniform" + type].apply(gl, [location].concat(args));
     };
 
-    self.gatherUniforms = function() {
+    self.gatherUniforms = function () {
       var uniforms = {};
       var nUniforms = gl.getProgramParameter(self.program, gl.ACTIVE_UNIFORMS);
       for (var i = 0; i < nUniforms; i++) {
@@ -310,7 +311,7 @@ const webgl = {
       return uniforms;
     };
 
-    self.gatherAttribs = function() {
+    self.gatherAttribs = function () {
       var attribs = {};
       var nAttribs = gl.getProgramParameter(self.program, gl.ACTIVE_ATTRIBUTES);
       for (var i = 0; i < nAttribs; i++) {
@@ -334,7 +335,7 @@ const webgl = {
 
 export default function generateTexture(seed) {
   var self = {};
-  self.initialize = function() {
+  self.initialize = function () {
     // Initialize the offscreen rendering canvas.
     self.canvas = document.createElement("canvas");
 
@@ -416,7 +417,7 @@ export default function generateTexture(seed) {
     self.rNebula = buildBox(self.gl, self.pNebula);
   };
 
-  self.render = function(params) {
+  self.render = function (params) {
     // We'll be returning a map of direction to texture.
     var textures = {};
 

@@ -58,13 +58,13 @@ const redirectOutputFor = child => {
   });
 };
 
-const waitFor = async function(child) {
+const waitFor = async function (child) {
   return new Promise(resolve => {
     child.once("close", () => resolve());
   });
 };
 
-module.exports = async function(context) {
+module.exports = async function (context) {
   console.warn("after build; disable sandbox");
   const isLinux = context.targets.find(
     target => target.name === "appImage" || target.name === "snap",

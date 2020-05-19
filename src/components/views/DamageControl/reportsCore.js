@@ -94,7 +94,7 @@ class DamageReportCore extends Component {
   loadReport(e) {
     const self = this;
     var reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function () {
       const result = this.result.replace(/\r/gi, "\n");
       self.setState({
         sent: false,

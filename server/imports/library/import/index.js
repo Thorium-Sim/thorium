@@ -31,19 +31,19 @@ export default function ImportLibrary(filepath, simulatorId, cb) {
     entry.id = uuid.v4();
     App.libraryDatabase.push(new Classes.Library(entry));
   }
-  yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
+  yauzl.open(filepath, {lazyEntries: true}, function (err, importZip) {
     if (err) throw err;
-    importZip.on("close", function() {
+    importZip.on("close", function () {
       cb(null);
     });
     importZip.readEntry();
 
-    importZip.on("entry", function(entry) {
+    importZip.on("entry", function (entry) {
       if (/^library\/assets/.test(entry.fileName)) {
         // It's an asset. Load it
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
-          readStream.on("end", function() {
+          readStream.on("end", function () {
             importZip.readEntry();
           });
           const filename = entry.fileName.replace("library/", "");
@@ -56,7 +56,7 @@ export default function ImportLibrary(filepath, simulatorId, cb) {
         });
       } else {
         if (/^library\/.*\.json/.test(entry.fileName)) {
-          importZip.openReadStream(entry, function(error, readStream) {
+          importZip.openReadStream(entry, function (error, readStream) {
             if (error) throw error;
             streamToString(readStream, str => {
               const library = JSON.parse(str);

@@ -224,8 +224,9 @@ class Transporters extends Component {
                   onMouseDown={this.mouseDown}
                   onTouchStart={this.mouseDown}
                   style={{
-                    transform: `translate(${target.x * 400}%, ${target.y *
-                      400}%)`,
+                    transform: `translate(${target.x * 400}%, ${
+                      target.y * 400
+                    }%)`,
                   }}
                 />
                 {transporter.targets.map(t => (
@@ -236,8 +237,9 @@ class Transporters extends Component {
                     className="target"
                     draggable="false"
                     style={{
-                      transform: `translate(${t.position.x * 400}%, ${t.position
-                        .y * 400}%)`,
+                      transform: `translate(${t.position.x * 400}%, ${
+                        t.position.y * 400
+                      }%)`,
                       pointerEvents: "none",
                     }}
                   />

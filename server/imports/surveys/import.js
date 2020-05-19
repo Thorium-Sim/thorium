@@ -3,7 +3,7 @@ import App from "../../app";
 import * as Classes from "../../classes";
 
 export default function ImportSurvey(filepath, cb) {
-  console.log("Importing Survey");
+  console.info("Importing Survey");
   const file = fs.readFileSync(filepath, "utf8");
   try {
     const data = JSON.parse(file);

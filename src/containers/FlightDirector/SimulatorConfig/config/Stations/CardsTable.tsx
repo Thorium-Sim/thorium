@@ -17,9 +17,11 @@ import {
   Card,
   Station,
   useReactorsSubscription,
+  useStationSetTagsMutation,
 } from "generated/graphql";
 import {useParams} from "react-router";
 import Maybe from "graphql/tsutils/Maybe";
+import {TagInput} from "containers/FlightDirector/DMX/fixtures";
 
 interface CardSelectProps {
   action: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -106,7 +108,7 @@ const CardsTable: React.FC<CardsTableProps> = ({simulator, station}) => {
   const [toggleLogin] = useToggleStationLoginMutation();
   const [toggleExec] = useToggleStationExecMutation();
   const [setDescription] = useSetStationDescriptionMutation();
-
+  const [setTags] = useStationSetTagsMutation();
   const {data} = usePanelsAndInterfacesQuery();
 
   const updateStationCard = (
@@ -233,6 +235,34 @@ const CardsTable: React.FC<CardsTableProps> = ({simulator, station}) => {
                         stationSetID: selectedStationSet,
                         stationName: station.name,
                         description: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </Label>
+            </th>
+          </tr>
+          <tr>
+            <th colSpan={3}>
+              <Label>
+                Tags
+                <TagInput
+                  tags={station.tags || []}
+                  onAdd={t =>
+                    setTags({
+                      variables: {
+                        stationSetId: selectedStationSet,
+                        stationName: station.name,
+                        tags: (station.tags || []).concat(t),
+                      },
+                    })
+                  }
+                  onRemove={t =>
+                    setTags({
+                      variables: {
+                        stationSetId: selectedStationSet,
+                        stationName: station.name,
+                        tags: (station.tags || []).filter(tt => tt !== t),
                       },
                     })
                   }

@@ -96,7 +96,7 @@ class Store {
    * store.union('a', 'c');
    * store.union('a', 'd');
    * store.union('a', 'c');
-   * console.log(store.get('a'));
+
    * //=> ['b', 'c', 'd']
    * ```
    * @name .union
@@ -192,11 +192,8 @@ class Store {
    *
    * ```js
    * store.set('foo.bar', 'baz');
-   * console.log(store.data); //=> { foo: { bar: 'baz' } }
    * store.del('foo.bar');
-   * console.log(store.data); //=> { foo: {} }
    * store.del('foo');
-   * console.log(store.data); //=> {}
    * ```
    * @name .del
    * @param {string|Array} `keys` One or more properties to delete.
@@ -219,7 +216,6 @@ class Store {
    * Return a clone of the `store.data` object.
    *
    * ```js
-   * console.log(store.clone());
    * ```
    * @name .clone
    * @return {object}
@@ -250,7 +246,6 @@ class Store {
    * Stringify the store. Takes the same arguments as `JSON.stringify`.
    *
    * ```js
-   * console.log(store.json(null, 2));
    * ```
    * @name .json
    * @return {string}
@@ -267,14 +262,14 @@ class Store {
         keys = [];
 
       if (cycleReplacer == null)
-        cycleReplacer = function(key, value) {
+        cycleReplacer = function (key, value) {
           if (stack[0] === value) return "[Circular ~]";
           return (
             "[Circular ~." + keys.slice(0, stack.indexOf(value)).join(".") + "]"
           );
         };
 
-      return function(key, value) {
+      return function (key, value) {
         if (stack.length > 0) {
           var thisPos = stack.indexOf(this);
           ~thisPos ? stack.splice(thisPos + 1) : stack.push(this);
@@ -390,9 +385,7 @@ class Store {
    * that are persisted to the file system.
    *
    * ```js
-   * console.log(store.data); //=> {}
    * store.data.foo = 'bar';
-   * console.log(store.get('foo')); //=> 'bar'
    * ```
    * @name .data
    * @return {object}

@@ -18,7 +18,7 @@ const EntityModel: React.FC<EntityModelProps> = React.memo(({modelAsset}) => {
   const scene = React.useMemo(() => {
     const scene: Scene = model.scene.clone(true);
     if (scene.traverse) {
-      scene.traverse(function(object) {
+      scene.traverse(function (object) {
         if (object instanceof Mesh) {
           const material = object.material as any;
           material.emissiveMap = material.map;

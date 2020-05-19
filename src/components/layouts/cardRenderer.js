@@ -152,7 +152,7 @@ export default function CardHolder(props) {
   const comps = renderCards(props);
   return comps.map(card => {
     return (
-      <Transition key={card.name} in={card.in} timeout={500} appear>
+      <Transition key={card.name} in={card.in} timeout={250} appear>
         {state => {
           if (state === "exited") return null;
           return (

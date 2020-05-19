@@ -24,10 +24,10 @@ function streamToString(stream, cb) {
 
 export default function ImportSimulator(filepath, cb) {
   const aspects = {};
-  yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
+  yauzl.open(filepath, {lazyEntries: true}, function (err, importZip) {
     if (err) throw err;
     const simId = uuid.v4();
-    importZip.on("close", function() {
+    importZip.on("close", function () {
       // Process all of the aspects.
       // Connect rooms to decks
       if (aspects.decks) {
@@ -77,12 +77,12 @@ export default function ImportSimulator(filepath, cb) {
       cb(null);
     });
     importZip.readEntry();
-    importZip.on("entry", function(entry) {
+    importZip.on("entry", function (entry) {
       if (/^simulator\/assets/.test(entry.fileName)) {
         // It's an asset. Load it into the correct location in the file system.
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
-          readStream.on("end", function() {
+          readStream.on("end", function () {
             importZip.readEntry();
           });
 
@@ -96,7 +96,7 @@ export default function ImportSimulator(filepath, cb) {
         });
       } else if (/simulator\/simulator\.json/.test(entry.fileName)) {
         // Simulator
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
           streamToString(readStream, str => {
             const simulator = JSON.parse(str);
@@ -111,7 +111,7 @@ export default function ImportSimulator(filepath, cb) {
           .replace("simulator/", "")
           .replace(".json", "");
 
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
           streamToString(readStream, str => {
             const aspect = JSON.parse(str);

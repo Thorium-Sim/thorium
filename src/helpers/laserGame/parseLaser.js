@@ -20,10 +20,7 @@ export default function parseLaser(objects, width) {
   let y = objects[x].findIndex(cell => cell.includes("Emitter"));
   let color = parseColor(
     null,
-    objects[x][y]
-      .replace("Emitter", "")
-      .replace("-Locked", "")
-      .toLowerCase(),
+    objects[x][y].replace("Emitter", "").replace("-Locked", "").toLowerCase(),
   );
   let direction = getDirection(x, y, width);
   const checkPoints = {};
@@ -49,10 +46,7 @@ export default function parseLaser(objects, width) {
     if (nextObject.includes("Filter")) {
       color = parseColor(
         color,
-        nextObject
-          .replace("Filter", "")
-          .replace("-Locked", "")
-          .toLowerCase(),
+        nextObject.replace("Filter", "").replace("-Locked", "").toLowerCase(),
       );
     }
     if (nextObject.includes(`CheckPoint`)) {

@@ -16,7 +16,7 @@ const Buffer = ({
         <div className="input" data-component={id} />
       )}
       <div className="and" onMouseDown={onMouseDown}>
-        ->
+        -&gt;
       </div>
       {page && !connecting && (
         <div className="output" onMouseDown={evt => startConnecting(evt, id)} />

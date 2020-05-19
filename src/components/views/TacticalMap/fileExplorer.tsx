@@ -61,10 +61,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
 }) => {
   let currentDirInit = directory;
   if (selectedFiles && selectedFiles[0]) {
-    currentDirInit = selectedFiles[0]
-      .split("/")
-      .slice(0, -1)
-      .join("/");
+    currentDirInit = selectedFiles[0].split("/").slice(0, -1).join("/");
   }
   const [currentDirectory, setCurrentDirectory] = React.useState(
     currentDirInit,

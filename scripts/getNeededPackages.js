@@ -24,7 +24,7 @@ function getNeededPackages(pkg) {
     return key.split("@")[key[0] === "@" ? 1 : 0] === pkg.replace("@", "");
   });
   if (!packageName) {
-    console.log("Couldn't find object for ", pkg);
+    console.error("Couldn't find object for ", pkg);
     return [];
   }
   const packageObj = packages.object[packageName];
@@ -32,7 +32,7 @@ function getNeededPackages(pkg) {
   return [pkg, ...Object.keys(packageObj.dependencies).map(getNeededPackages)];
 }
 
-console.log(
+console.info(
   `{${needed
     .reduce((acc, next) => acc.concat(getNeededPackages(next)), [])
     .flat(Infinity)

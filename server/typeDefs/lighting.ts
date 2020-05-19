@@ -125,7 +125,6 @@ const resolver = {
       pubsub.publish("simulatorsUpdate", App.simulators);
     },
     lightingShakeLights(rootValue, {simulatorId, strength, duration}, context) {
-      console.log(simulatorId, strength, duration);
       const sim = App.simulators.find(s => s.id === simulatorId);
       sim.updateLighting({
         action: "shake",

@@ -37,7 +37,7 @@ const schema = gql`
   }
 `;
 
-const download = function(url, dest, callback) {
+const download = function (url, dest, callback) {
   fetch(url)
     .then(
       res =>
@@ -47,24 +47,23 @@ const download = function(url, dest, callback) {
           res.body.pipe(file);
           const max = parseInt(res.headers.get("content-length"), 10);
           let total = 0;
-          console.log("Download Beginning...");
+          console.info("Download Beginning...");
           res.body.on("data", chunk => {
             total += chunk.length;
             if (total % 20 === 0) {
-              console.log(
+              console.info(
                 `Download Progress: ${Math.round((total / max) * 100)}%`,
               );
             }
           });
           file.on("close", () => {
-            console.log("Download Complete");
+            console.info("Download Complete");
             resolve();
           });
           file.on("error", reject);
         }),
     )
     .then(() => {
-      console.log("callbacl");
       callback(null);
     })
     .catch(err => callback(err));
@@ -96,13 +95,13 @@ const resolver = {
       const dest = path.resolve(`${os.tmpdir()}/${uuid.v4()}.zip`);
       download(url, dest, err => {
         if (err) {
-          console.log("There was an error importing a simulator:", err);
+          console.error("There was an error importing a simulator:", err);
           throw new Error(`Error importing simulator: ${err.message}`);
         }
         importSimulator(dest, () => {
           fs.unlink(dest, error => {
-            if (err) console.log(error);
-            console.log("Simulator Import Complete");
+            if (err) console.error(error);
+            console.info("Simulator Import Complete");
           });
         });
       });
@@ -111,13 +110,13 @@ const resolver = {
       const dest = path.resolve(`${os.tmpdir()}/${uuid.v4()}.zip`);
       download(url, dest, err => {
         if (err) {
-          console.log("There was an error importing a mission:", err);
+          console.error("There was an error importing a mission:", err);
           // throw new Error("Error importing mission:", err.message);
         }
         importMission(dest, () => {
           fs.unlink(dest, error => {
-            if (err) console.log(error);
-            console.log("Mission Import Complete");
+            if (err) console.error(error);
+            console.info("Mission Import Complete");
           });
         });
       });

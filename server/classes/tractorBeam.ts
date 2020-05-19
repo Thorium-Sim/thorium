@@ -94,7 +94,6 @@ export default class TractorBeam extends System {
     this.beams.find(b => b.id === beam).setState(tf);
   }
   setTarget(beam: string, tf: boolean) {
-    console.log(beam, this.beams);
     this.beams.find(b => b.id === beam).setTarget(tf);
   }
   setTargetLabel(beam: string, label: string) {

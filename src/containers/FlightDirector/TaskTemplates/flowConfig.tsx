@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import {jsx, css} from "@emotion/core";
+import {css} from "@emotion/core";
 import React from "react";
 import {useParams, useMatch, useNavigate, Outlet} from "react-router";
 import {
@@ -34,6 +33,7 @@ const FlowConfig = () => {
         css={css`
           display: flex;
           flex-direction: column;
+          height: 100%;
         `}
       >
         <h2>Flow Config</h2>
@@ -77,7 +77,7 @@ const FlowConfig = () => {
             })
           }
           selectedItem={stepId}
-          setSelectedItem={id => Boolean(console.log(id)) || navigate(id)}
+          setSelectedItem={id => navigate(id)}
         ></SortableList>
         <Button
           block

@@ -158,7 +158,7 @@ export default class Client {
   setStation(station) {
     this.station = station;
   }
-  login(name, isSpaceEdventures) {
+  login(name, isSpaceEdventures = false) {
     this.loginName = name;
     this.loginState = "login";
     this.isSpaceEdventures = isSpaceEdventures;

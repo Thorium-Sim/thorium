@@ -68,8 +68,9 @@ class SignalLines extends Component {
     this.frame = requestAnimationFrame(this.loop);
   };
   calcLines = (prev, next, i) => {
-    return `${prev}L ${(i + 1) * this.segments} ${next * this.props.height +
-      this.props.height / 2} `;
+    return `${prev}L ${(i + 1) * this.segments} ${
+      next * this.props.height + this.props.height / 2
+    } `;
   };
   strokeWidth = 2;
   componentDidMount() {

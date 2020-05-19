@@ -297,8 +297,9 @@ class TaskReportCore extends Component {
                               {t.name}{" "}
                               {t.tasks.filter(v => v.verified).length <
                               t.tasks.length
-                                ? `(${t.tasks.filter(v => v.verified).length +
-                                    1}/
+                                ? `(${
+                                    t.tasks.filter(v => v.verified).length + 1
+                                  }/
                             ${t.tasks.length})`
                                 : null}
                             </p>

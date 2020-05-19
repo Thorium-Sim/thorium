@@ -12,6 +12,7 @@ const schema = gql`
   type Task {
     id: ID!
     simulatorId: ID
+    stationTags: [String!]
     station: String
     systemId: ID
     deck: Deck
@@ -34,6 +35,7 @@ const schema = gql`
     simulatorId: ID
     definition: String
     values: JSON
+    stationTags: [String!]
     station: String
     macros: [ActionInput]
     preMacros: [ActionInput]
@@ -42,11 +44,11 @@ const schema = gql`
   type TaskTemplate {
     id: ID!
     name: String!
-    values: JSON!
+    values: JSON
     definition: String!
-    reportTypes: [String!]!
-    macros: [MacroAction!]!
-    preMacros: [MacroAction!]!
+    reportTypes: [String!]
+    macros: [MacroAction!]
+    preMacros: [MacroAction!]
   }
 
   type TaskDefinition {

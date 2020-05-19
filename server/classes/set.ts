@@ -26,7 +26,7 @@ export default class Set {
 }
 
 // The default configuration for a set
-class SetClient {
+export class SetClient {
   id: string;
   class: "SetClient" = "SetClient";
   clientId: string | null;

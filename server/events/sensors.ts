@@ -101,7 +101,7 @@ App.on(
       );
     }
     if (!system) {
-      console.log("Please specify the domain when sending this data: ", data);
+      console.info("Please specify the domain when sending this data: ", data);
       return;
     }
     const simulator = App.simulators.find(s => s.id === system.simulatorId);

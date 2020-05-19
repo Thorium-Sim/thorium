@@ -116,7 +116,7 @@ var moduleExports = freeModule && freeModule.exports === freeExports;
 var freeProcess = moduleExports && freeGlobal.process;
 
 /** Used to access faster Node.js helpers. */
-var nodeUtil = (function() {
+var nodeUtil = (function () {
   try {
     // Use `util.types` for Node.js 10+.
     var types =
@@ -185,7 +185,7 @@ function baseTimes(n, iteratee) {
  * @returns {Function} Returns the new capped function.
  */
 function baseUnary(func) {
-  return function(value) {
+  return function (value) {
     return func(value);
   };
 }
@@ -211,7 +211,7 @@ function getValue(object, key) {
  * @returns {Function} Returns the new function.
  */
 function overArg(func, transform) {
-  return function(arg) {
+  return function (arg) {
     return func(transform(arg));
   };
 }
@@ -231,7 +231,7 @@ var funcToString = funcProto.toString;
 var hasOwnProperty = objectProto.hasOwnProperty;
 
 /** Used to detect methods masquerading as native. */
-var maskSrcKey = (function() {
+var maskSrcKey = (function () {
   var uid = /[^.]+$/.exec(
     (coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO) || "",
   );
@@ -272,7 +272,7 @@ var Buffer = moduleExports ? root.Buffer : undefined,
   splice = arrayProto.splice,
   symToStringTag = Symbol ? Symbol.toStringTag : undefined;
 
-var defineProperty = (function() {
+var defineProperty = (function () {
   try {
     var func = getNative(Object, "defineProperty");
     func({}, "", {});
@@ -297,9 +297,9 @@ var Map = getNative(root, "Map"),
  * @param {Object} proto The object to inherit from.
  * @returns {Object} Returns the new object.
  */
-var baseCreate = (function() {
+var baseCreate = (function () {
   function object() {}
-  return function(proto) {
+  return function (proto) {
     if (!isObject(proto)) {
       return {};
     }
@@ -962,7 +962,7 @@ function baseMerge(object, source, srcIndex, customizer, stack) {
   }
   baseFor(
     source,
-    function(srcValue, key) {
+    function (srcValue, key) {
       stack || (stack = new Stack());
       if (isObject(srcValue)) {
         baseMergeDeep(
@@ -1096,7 +1096,7 @@ function baseRest(func, start) {
  */
 var baseSetToString = !defineProperty
   ? identity
-  : function(func, string) {
+  : function (func, string) {
       return defineProperty(func, "toString", {
         configurable: true,
         enumerable: false,
@@ -1217,7 +1217,7 @@ function copyObject(source, props, object, customizer) {
  * @returns {Function} Returns the new assigner function.
  */
 function createAssigner(assigner) {
-  return baseRest(function(object, sources) {
+  return baseRest(function (object, sources) {
     var index = -1,
       length = sources.length,
       customizer = length > 1 ? sources[length - 1] : undefined,
@@ -1251,7 +1251,7 @@ function createAssigner(assigner) {
  * @returns {Function} Returns the new base function.
  */
 function createBaseFor(fromRight) {
-  return function(object, iteratee, keysFunc) {
+  return function (object, iteratee, keysFunc) {
     var index = -1,
       iterable = Object(object),
       props = keysFunc(object),
@@ -1464,7 +1464,7 @@ function objectToString(value) {
  */
 function overRest(func, start, transform) {
   start = nativeMax(start === undefined ? func.length - 1 : start, 0);
-  return function() {
+  return function () {
     var args = arguments,
       index = -1,
       length = nativeMax(args.length - start, 0),
@@ -1526,7 +1526,7 @@ function shortOut(func) {
   var count = 0,
     lastCalled = 0;
 
-  return function() {
+  return function () {
     var stamp = nativeNow(),
       remaining = HOT_SPAN - (stamp - lastCalled);
 
@@ -1616,12 +1616,12 @@ function eq(value, other) {
  * // => false
  */
 var isArguments = baseIsArguments(
-  (function() {
+  (function () {
     return arguments;
   })(),
 )
   ? baseIsArguments
-  : function(value) {
+  : function (value) {
       return (
         isObjectLike(value) &&
         hasOwnProperty.call(value, "callee") &&
@@ -2002,7 +2002,7 @@ function keysIn(object) {
  * _.merge(object, other);
  * // => { 'a': [{ 'b': 2, 'c': 3 }, { 'd': 4, 'e': 5 }] }
  */
-var merge = createAssigner(function(object, source, srcIndex) {
+var merge = createAssigner(function (object, source, srcIndex) {
   baseMerge(object, source, srcIndex);
 });
 
@@ -2019,14 +2019,12 @@ var merge = createAssigner(function(object, source, srcIndex) {
  *
  * var objects = _.times(2, _.constant({ 'a': 1 }));
  *
- * console.log(objects);
  * // => [{ 'a': 1 }, { 'a': 1 }]
  *
- * console.log(objects[0] === objects[1]);
  * // => true
  */
 function constant(value) {
-  return function() {
+  return function () {
     return value;
   };
 }
@@ -2044,7 +2042,6 @@ function constant(value) {
  *
  * var object = { 'a': 1 };
  *
- * console.log(_.identity(object) === object);
  * // => true
  */
 function identity(value) {

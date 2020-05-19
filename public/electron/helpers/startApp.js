@@ -28,7 +28,7 @@ module.exports = () => {
     addWindow({server: true});
   }
   app.enableSandbox();
-  app.on("ready", function() {
+  app.on("ready", function () {
     let port = process.env.PORT || settings.get("port") || 4444;
     let httpOnly =
       process.env.HTTP_ONLY === "true" ||
@@ -55,13 +55,13 @@ module.exports = () => {
         return b.isVisible();
       }).length;
     });
-    ipcMain.on("loadPage", function(evt, data) {
+    ipcMain.on("loadPage", function (evt, data) {
       const {url: loadUrl, auto, kiosk} = data;
       if (auto) {
         settings.set("autostart", loadUrl);
       }
       require("./loadPage")(loadUrl, kiosk).catch(err => {
-        console.log(err);
+        console.error(err);
         settings.set("autostart", null);
         bonjour.start();
       });
@@ -78,7 +78,7 @@ module.exports = () => {
       app.exit(0);
       return;
     });
-    ipcMain.on("startServer", function(evt, auto) {
+    ipcMain.on("startServer", function (evt, auto) {
       startServer();
     });
 
@@ -127,7 +127,7 @@ module.exports = () => {
       bonjour.start();
     }
     require("./setMenubar").setMenubar();
-    app.on("window-all-closed", function() {
+    app.on("window-all-closed", function () {
       // On OS X it is common for applications and their menu bar
       // to stay active until the user quits explicitly with Cmd + Q
       app.quit();

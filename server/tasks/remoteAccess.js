@@ -42,10 +42,12 @@ export default [
         simulator.stations.find(s => s.widgets.indexOf("remote") > -1);
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Use the remote access widget to send the following remote access code: ${code}${backup &&
+          `${preamble} Use the remote access widget to send the following remote access code: ${code}${
+            backup &&
             `
 
-If the code is rejected, send a backup remote access code: ${backup}`}`,
+If the code is rejected, send a backup remote access code: ${backup}`
+          }`,
           {simulator, system},
         );
       return reportReplace(
@@ -53,10 +55,12 @@ If the code is rejected, send a backup remote access code: ${backup}`}`,
           station
             ? `${station.name} Officer`
             : "person in charge of remote access codes"
-        } to use the remote access widget to send the following remote access code: ${code}${backup &&
+        } to use the remote access widget to send the following remote access code: ${code}${
+          backup &&
           `
 
-If the code is rejected, have them send a backup remote access code: ${backup}`}`,
+If the code is rejected, have them send a backup remote access code: ${backup}`
+        }`,
         {simulator, system},
       );
     },

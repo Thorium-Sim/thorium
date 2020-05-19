@@ -341,15 +341,17 @@ export default [
         );
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Set the frequency of the ${shield.displayName ||
-            shield.name} to ${frequency} MHz.`,
+          `${preamble} Set the frequency of the ${
+            shield.displayName || shield.name
+          } to ${frequency} MHz.`,
           {system, simulator},
         );
       return reportReplace(
         `${preamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of shields"
-        } to set the frequency of the ${shield.displayName ||
-          shield.name} to ${frequency} MHz.`,
+        } to set the frequency of the ${
+          shield.displayName || shield.name
+        } to ${frequency} MHz.`,
         {system, simulator},
       );
     },

@@ -155,8 +155,9 @@ export class RecordSnippet {
     if (type === "shortRangeHail") {
       return new Record({
         timestamp,
-        contents: `New Hail: ${Math.round(Math.random() * 37700 + 37700) /
-          100}MHz`,
+        contents: `New Hail: ${
+          Math.round(Math.random() * 37700 + 37700) / 100
+        }MHz`,
         category: "Communication",
         snippetId,
       });
@@ -164,8 +165,9 @@ export class RecordSnippet {
     if (type === "shortRangeConnected") {
       return new Record({
         timestamp,
-        contents: `Call Connected: ${Math.round(Math.random() * 37700 + 37700) /
-          100}MHz`,
+        contents: `Call Connected: ${
+          Math.round(Math.random() * 37700 + 37700) / 100
+        }MHz`,
         category: "Communication",
         snippetId,
       });

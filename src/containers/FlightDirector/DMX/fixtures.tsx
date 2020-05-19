@@ -1,5 +1,3 @@
-/** @jsx jsx */
-import {jsx} from "@emotion/core";
 import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import React from "react";
@@ -65,7 +63,7 @@ export const TagInput: React.FC<{
       `}
     >
       {tags.map(t => (
-        <Tag tag={t} onClick={() => onRemove(t)} />
+        <Tag key={t} tag={t} onClick={() => onRemove(t)} />
       ))}
 
       <input

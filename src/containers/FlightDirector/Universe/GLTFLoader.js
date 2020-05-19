@@ -71,7 +71,7 @@ import {
   sRGBEncoding,
 } from "three";
 
-var GLTFLoader = (function() {
+var GLTFLoader = (function () {
   function GLTFLoader(manager) {
     Loader.call(this, manager);
 
@@ -82,7 +82,7 @@ var GLTFLoader = (function() {
   GLTFLoader.prototype = Object.assign(Object.create(Loader.prototype), {
     constructor: GLTFLoader,
 
-    load: function(url, onLoad, onProgress, onError) {
+    load: function (url, onLoad, onProgress, onError) {
       var scope = this;
 
       var resourcePath;
@@ -100,7 +100,7 @@ var GLTFLoader = (function() {
       // be incorrect, but ensures manager.onLoad() does not fire early.
       scope.manager.itemStart(url);
 
-      var _onError = function(e) {
+      var _onError = function (e) {
         if (onError) {
           onError(e);
         } else {
@@ -122,12 +122,12 @@ var GLTFLoader = (function() {
 
       loader.load(
         url,
-        function(data) {
+        function (data) {
           try {
             scope.parse(
               data,
               resourcePath,
-              function(gltf) {
+              function (gltf) {
                 onLoad(gltf);
 
                 scope.manager.itemEnd(url);
@@ -143,17 +143,17 @@ var GLTFLoader = (function() {
       );
     },
 
-    setDRACOLoader: function(dracoLoader) {
+    setDRACOLoader: function (dracoLoader) {
       this.dracoLoader = dracoLoader;
       return this;
     },
 
-    setDDSLoader: function(ddsLoader) {
+    setDDSLoader: function (ddsLoader) {
       this.ddsLoader = ddsLoader;
       return this;
     },
 
-    parse: function(data, path, onLoad, onError) {
+    parse: function (data, path, onLoad, onError) {
       var content;
       var extensions = {};
 
@@ -259,19 +259,19 @@ var GLTFLoader = (function() {
     var objects = {};
 
     return {
-      get: function(key) {
+      get: function (key) {
         return objects[key];
       },
 
-      add: function(key, object) {
+      add: function (key, object) {
         objects[key] = object;
       },
 
-      remove: function(key) {
+      remove: function (key) {
         delete objects[key];
       },
 
-      removeAll: function() {
+      removeAll: function () {
         objects = {};
       },
     };
@@ -324,7 +324,7 @@ var GLTFLoader = (function() {
     this.lightDefs = extension.lights || [];
   }
 
-  GLTFLightsExtension.prototype.loadLight = function(lightIndex) {
+  GLTFLightsExtension.prototype.loadLight = function (lightIndex) {
     var lightDef = this.lightDefs[lightIndex];
     var lightNode;
 
@@ -394,11 +394,11 @@ var GLTFLoader = (function() {
     this.name = EXTENSIONS.KHR_MATERIALS_UNLIT;
   }
 
-  GLTFMaterialsUnlitExtension.prototype.getMaterialType = function() {
+  GLTFMaterialsUnlitExtension.prototype.getMaterialType = function () {
     return MeshBasicMaterial;
   };
 
-  GLTFMaterialsUnlitExtension.prototype.extendParams = function(
+  GLTFMaterialsUnlitExtension.prototype.extendParams = function (
     materialParams,
     materialDef,
     parser,
@@ -504,7 +504,7 @@ var GLTFLoader = (function() {
     this.dracoLoader.preload();
   }
 
-  GLTFDracoMeshCompressionExtension.prototype.decodePrimitive = function(
+  GLTFDracoMeshCompressionExtension.prototype.decodePrimitive = function (
     primitive,
     parser,
   ) {
@@ -539,11 +539,11 @@ var GLTFLoader = (function() {
 
     return parser
       .getDependency("bufferView", bufferViewIndex)
-      .then(function(bufferView) {
-        return new Promise(function(resolve) {
+      .then(function (bufferView) {
+        return new Promise(function (resolve) {
           dracoLoader.decodeDracoFile(
             bufferView,
-            function(geometry) {
+            function (geometry) {
               for (var attributeName in geometry.attributes) {
                 var attribute = geometry.attributes[attributeName];
                 var normalized = attributeNormalizedMap[attributeName];
@@ -569,7 +569,7 @@ var GLTFLoader = (function() {
     this.name = EXTENSIONS.KHR_TEXTURE_TRANSFORM;
   }
 
-  GLTFTextureTransformExtension.prototype.extendTexture = function(
+  GLTFTextureTransformExtension.prototype.extendTexture = function (
     texture,
     transform,
   ) {
@@ -670,7 +670,7 @@ var GLTFLoader = (function() {
     this._extraUniforms = uniforms;
 
     // please see #14031 or #13198 for an alternate approach
-    this.onBeforeCompile = function(shader) {
+    this.onBeforeCompile = function (shader) {
       for (var uniformName in uniforms) {
         shader.uniforms[uniformName] = uniforms[uniformName];
       }
@@ -708,34 +708,34 @@ var GLTFLoader = (function() {
     /*eslint-disable*/
     Object.defineProperties(this, {
       specular: {
-        get: function() {
+        get: function () {
           return uniforms.specular.value;
         },
-        set: function(v) {
+        set: function (v) {
           uniforms.specular.value = v;
         },
       },
       specularMap: {
-        get: function() {
+        get: function () {
           return uniforms.specularMap.value;
         },
-        set: function(v) {
+        set: function (v) {
           uniforms.specularMap.value = v;
         },
       },
       glossiness: {
-        get: function() {
+        get: function () {
           return uniforms.glossiness.value;
         },
-        set: function(v) {
+        set: function (v) {
           uniforms.glossiness.value = v;
         },
       },
       glossinessMap: {
-        get: function() {
+        get: function () {
           return uniforms.glossinessMap.value;
         },
-        set: function(v) {
+        set: function (v) {
           uniforms.glossinessMap.value = v;
           //how about something like this - @pailhead
           if (v) {
@@ -764,7 +764,7 @@ var GLTFLoader = (function() {
   );
   GLTFMeshStandardSGMaterial.prototype.constructor = GLTFMeshStandardSGMaterial;
 
-  GLTFMeshStandardSGMaterial.prototype.copy = function(source) {
+  GLTFMeshStandardSGMaterial.prototype.copy = function (source) {
     MeshStandardMaterial.prototype.copy.call(this, source);
     this.specularMap = source.specularMap;
     this.specular.copy(source.specular);
@@ -808,11 +808,11 @@ var GLTFLoader = (function() {
         "refractionRatio",
       ],
 
-      getMaterialType: function() {
+      getMaterialType: function () {
         return GLTFMeshStandardSGMaterial;
       },
 
-      extendParams: function(materialParams, materialDef, parser) {
+      extendParams: function (materialParams, materialDef, parser) {
         var pbrSpecularGlossiness = materialDef.extensions[this.name];
 
         materialParams.color = new Color(1.0, 1.0, 1.0);
@@ -871,7 +871,7 @@ var GLTFLoader = (function() {
         return Promise.all(pending);
       },
 
-      createMaterial: function(materialParams) {
+      createMaterial: function (materialParams) {
         var material = new GLTFMeshStandardSGMaterial(materialParams);
         material.fog = true;
 
@@ -969,7 +969,7 @@ var GLTFLoader = (function() {
   GLTFCubicSplineInterpolant.prototype = Object.create(Interpolant.prototype);
   GLTFCubicSplineInterpolant.prototype.constructor = GLTFCubicSplineInterpolant;
 
-  GLTFCubicSplineInterpolant.prototype.copySampleValue_ = function(index) {
+  GLTFCubicSplineInterpolant.prototype.copySampleValue_ = function (index) {
     // Copies a sample value to the result buffer. See description of glTF
     // CUBICSPLINE values layout in interpolate_() function below.
 
@@ -991,7 +991,7 @@ var GLTFLoader = (function() {
   GLTFCubicSplineInterpolant.prototype.afterEnd_ =
     GLTFCubicSplineInterpolant.prototype.copySampleValue_;
 
-  GLTFCubicSplineInterpolant.prototype.interpolate_ = function(i1, t0, t, t1) {
+  GLTFCubicSplineInterpolant.prototype.interpolate_ = function (i1, t0, t, t1) {
     var result = this.resultBuffer;
     var values = this.sampleValues;
     var stride = this.valueSize;
@@ -1247,7 +1247,7 @@ var GLTFLoader = (function() {
     return Promise.all([
       Promise.all(pendingPositionAccessors),
       Promise.all(pendingNormalAccessors),
-    ]).then(function(accessors) {
+    ]).then(function (accessors) {
       var morphPositions = accessors[0];
       var morphNormals = accessors[1];
 
@@ -1352,7 +1352,7 @@ var GLTFLoader = (function() {
     }
   }
 
-  GLTFParser.prototype.parse = function(onLoad, onError) {
+  GLTFParser.prototype.parse = function (onLoad, onError) {
     var parser = this;
     var json = this.json;
     var extensions = this.extensions;
@@ -1368,7 +1368,7 @@ var GLTFLoader = (function() {
       this.getDependencies("animation"),
       this.getDependencies("camera"),
     ])
-      .then(function(dependencies) {
+      .then(function (dependencies) {
         var result = {
           scene: dependencies[0][json.scene || 0],
           scenes: dependencies[0],
@@ -1391,7 +1391,7 @@ var GLTFLoader = (function() {
   /**
    * Marks the special nodes/meshes in json for efficient parse.
    */
-  GLTFParser.prototype.markDefs = function() {
+  GLTFParser.prototype.markDefs = function () {
     var nodeDefs = this.json.nodes || [];
     var skinDefs = this.json.skins || [];
     var meshDefs = this.json.meshes || [];
@@ -1451,7 +1451,7 @@ var GLTFLoader = (function() {
    * @param {number} index
    * @return {Promise<Object3D|Material|THREE.Texture|AnimationClip|ArrayBuffer|Object>}
    */
-  GLTFParser.prototype.getDependency = function(type, index) {
+  GLTFParser.prototype.getDependency = function (type, index) {
     var cacheKey = type + ":" + index;
     var dependency = this.cache.get(cacheKey);
 
@@ -1522,7 +1522,7 @@ var GLTFLoader = (function() {
    * @param {string} type
    * @return {Promise<Array<Object>>}
    */
-  GLTFParser.prototype.getDependencies = function(type) {
+  GLTFParser.prototype.getDependencies = function (type) {
     var dependencies = this.cache.get(type);
 
     if (!dependencies) {
@@ -1530,7 +1530,7 @@ var GLTFLoader = (function() {
       var defs = this.json[type + (type === "mesh" ? "es" : "s")] || [];
 
       dependencies = Promise.all(
-        defs.map(function(def, index) {
+        defs.map(function (def, index) {
           return parser.getDependency(type, index);
         }),
       );
@@ -1546,7 +1546,7 @@ var GLTFLoader = (function() {
    * @param {number} bufferIndex
    * @return {Promise<ArrayBuffer>}
    */
-  GLTFParser.prototype.loadBuffer = function(bufferIndex) {
+  GLTFParser.prototype.loadBuffer = function (bufferIndex) {
     var bufferDef = this.json.buffers[bufferIndex];
     var loader = this.fileLoader;
 
@@ -1565,12 +1565,12 @@ var GLTFLoader = (function() {
 
     var options = this.options;
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       loader.load(
         resolveURL(bufferDef.uri, options.path),
         resolve,
         undefined,
-        function() {
+        function () {
           reject(
             new Error(
               'THREE.GLTFLoader: Failed to load buffer "' +
@@ -1588,10 +1588,10 @@ var GLTFLoader = (function() {
    * @param {number} bufferViewIndex
    * @return {Promise<ArrayBuffer>}
    */
-  GLTFParser.prototype.loadBufferView = function(bufferViewIndex) {
+  GLTFParser.prototype.loadBufferView = function (bufferViewIndex) {
     var bufferViewDef = this.json.bufferViews[bufferViewIndex];
 
-    return this.getDependency("buffer", bufferViewDef.buffer).then(function(
+    return this.getDependency("buffer", bufferViewDef.buffer).then(function (
       buffer,
     ) {
       var byteLength = bufferViewDef.byteLength || 0;
@@ -1605,7 +1605,7 @@ var GLTFLoader = (function() {
    * @param {number} accessorIndex
    * @return {Promise<BufferAttribute|InterleavedBufferAttribute>}
    */
-  GLTFParser.prototype.loadAccessor = function(accessorIndex) {
+  GLTFParser.prototype.loadAccessor = function (accessorIndex) {
     var parser = this;
     var json = this.json;
 
@@ -1640,7 +1640,7 @@ var GLTFLoader = (function() {
       );
     }
 
-    return Promise.all(pendingBufferViews).then(function(bufferViews) {
+    return Promise.all(pendingBufferViews).then(function (bufferViews) {
       var bufferView = bufferViews[0];
 
       var itemSize = WEBGL_TYPE_SIZES[accessorDef.type];
@@ -1761,7 +1761,7 @@ var GLTFLoader = (function() {
    * @param {number} textureIndex
    * @return {Promise<THREE.Texture>}
    */
-  GLTFParser.prototype.loadTexture = function(textureIndex) {
+  GLTFParser.prototype.loadTexture = function (textureIndex) {
     var parser = this;
     var json = this.json;
     var options = this.options;
@@ -1790,7 +1790,7 @@ var GLTFLoader = (function() {
 
       sourceURI = parser
         .getDependency("bufferView", source.bufferView)
-        .then(function(bufferView) {
+        .then(function (bufferView) {
           isObjectURL = true;
           var blob = new Blob([bufferView], {type: source.mimeType});
           sourceURI = URL.createObjectURL(blob);
@@ -1799,7 +1799,7 @@ var GLTFLoader = (function() {
     }
 
     return Promise.resolve(sourceURI)
-      .then(function(sourceURI) {
+      .then(function (sourceURI) {
         // Load Texture resource.
 
         var loader = options.manager.getHandler(sourceURI);
@@ -1810,7 +1810,7 @@ var GLTFLoader = (function() {
             : textureLoader;
         }
 
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           loader.load(
             resolveURL(sourceURI, options.path),
             resolve,
@@ -1819,7 +1819,7 @@ var GLTFLoader = (function() {
           );
         });
       })
-      .then(function(texture) {
+      .then(function (texture) {
         // Clean up resources and configure Texture.
 
         if (isObjectURL === true) {
@@ -1855,14 +1855,14 @@ var GLTFLoader = (function() {
    * @param {Object} mapDef
    * @return {Promise}
    */
-  GLTFParser.prototype.assignTexture = function(
+  GLTFParser.prototype.assignTexture = function (
     materialParams,
     mapName,
     mapDef,
   ) {
     var parser = this;
 
-    return this.getDependency("texture", mapDef.index).then(function(texture) {
+    return this.getDependency("texture", mapDef.index).then(function (texture) {
       if (!texture.isCompressedTexture) {
         switch (mapName) {
           case "aoMap":
@@ -1918,7 +1918,7 @@ var GLTFLoader = (function() {
    * be created if necessary, and reused from a cache.
    * @param  {Object3D} mesh Mesh, Line, or Points instance.
    */
-  GLTFParser.prototype.assignFinalMaterial = function(mesh) {
+  GLTFParser.prototype.assignFinalMaterial = function (mesh) {
     var geometry = mesh.geometry;
     var material = mesh.material;
 
@@ -2025,7 +2025,7 @@ var GLTFLoader = (function() {
    * @param {number} materialIndex
    * @return {Promise<Material>}
    */
-  GLTFParser.prototype.loadMaterial = function(materialIndex) {
+  GLTFParser.prototype.loadMaterial = function (materialIndex) {
     var parser = this;
     var json = this.json;
     var extensions = this.extensions;
@@ -2183,7 +2183,7 @@ var GLTFLoader = (function() {
       );
     }
 
-    return Promise.all(pending).then(function() {
+    return Promise.all(pending).then(function () {
       var material;
 
       if (materialType === GLTFMeshStandardSGMaterial) {
@@ -2298,7 +2298,7 @@ var GLTFLoader = (function() {
     function assignAttributeAccessor(accessorIndex, attributeName) {
       return parser
         .getDependency("accessor", accessorIndex)
-        .then(function(accessor) {
+        .then(function (accessor) {
           geometry.setAttribute(attributeName, accessor);
         });
     }
@@ -2321,7 +2321,7 @@ var GLTFLoader = (function() {
     if (primitiveDef.indices !== undefined && !geometry.index) {
       var accessor = parser
         .getDependency("accessor", primitiveDef.indices)
-        .then(function(accessor) {
+        .then(function (accessor) {
           geometry.setIndex(accessor);
         });
 
@@ -2332,7 +2332,7 @@ var GLTFLoader = (function() {
 
     computeBounds(geometry, primitiveDef, parser);
 
-    return Promise.all(pending).then(function() {
+    return Promise.all(pending).then(function () {
       return primitiveDef.targets !== undefined
         ? addMorphTargets(geometry, primitiveDef.targets, parser)
         : geometry;
@@ -2420,7 +2420,7 @@ var GLTFLoader = (function() {
    * @param {Array<GLTF.Primitive>} primitives
    * @return {Promise<Array<BufferGeometry>>}
    */
-  GLTFParser.prototype.loadGeometries = function(primitives) {
+  GLTFParser.prototype.loadGeometries = function (primitives) {
     var parser = this;
     var extensions = this.extensions;
     var cache = this.primitiveCache;
@@ -2428,7 +2428,7 @@ var GLTFLoader = (function() {
     function createDracoPrimitive(primitive) {
       return extensions[EXTENSIONS.KHR_DRACO_MESH_COMPRESSION]
         .decodePrimitive(primitive, parser)
-        .then(function(geometry) {
+        .then(function (geometry) {
           return addPrimitiveAttributes(geometry, primitive, parser);
         });
     }
@@ -2478,7 +2478,7 @@ var GLTFLoader = (function() {
    * @param {number} meshIndex
    * @return {Promise<Group|Mesh|SkinnedMesh>}
    */
-  GLTFParser.prototype.loadMesh = function(meshIndex) {
+  GLTFParser.prototype.loadMesh = function (meshIndex) {
     var parser = this;
     var json = this.json;
 
@@ -2498,7 +2498,7 @@ var GLTFLoader = (function() {
 
     pending.push(parser.loadGeometries(primitives));
 
-    return Promise.all(pending).then(function(results) {
+    return Promise.all(pending).then(function (results) {
       var materials = results.slice(0, results.length - 1);
       var geometries = results[results.length - 1];
 
@@ -2594,7 +2594,7 @@ var GLTFLoader = (function() {
    * @param {number} cameraIndex
    * @return {Promise<THREE.Camera>}
    */
-  GLTFParser.prototype.loadCamera = function(cameraIndex) {
+  GLTFParser.prototype.loadCamera = function (cameraIndex) {
     var camera;
     var cameraDef = this.json.cameras[cameraIndex];
     var params = cameraDef[cameraDef.type];
@@ -2634,7 +2634,7 @@ var GLTFLoader = (function() {
    * @param {number} skinIndex
    * @return {Promise<Object>}
    */
-  GLTFParser.prototype.loadSkin = function(skinIndex) {
+  GLTFParser.prototype.loadSkin = function (skinIndex) {
     var skinDef = this.json.skins[skinIndex];
 
     var skinEntry = {joints: skinDef.joints};
@@ -2644,7 +2644,7 @@ var GLTFLoader = (function() {
     }
 
     return this.getDependency("accessor", skinDef.inverseBindMatrices).then(
-      function(accessor) {
+      function (accessor) {
         skinEntry.inverseBindMatrices = accessor;
 
         return skinEntry;
@@ -2657,7 +2657,7 @@ var GLTFLoader = (function() {
    * @param {number} animationIndex
    * @return {Promise<AnimationClip>}
    */
-  GLTFParser.prototype.loadAnimation = function(animationIndex) {
+  GLTFParser.prototype.loadAnimation = function (animationIndex) {
     var json = this.json;
 
     var animationDef = json.animations[animationIndex];
@@ -2695,7 +2695,7 @@ var GLTFLoader = (function() {
       Promise.all(pendingOutputAccessors),
       Promise.all(pendingSamplers),
       Promise.all(pendingTargets),
-    ]).then(function(dependencies) {
+    ]).then(function (dependencies) {
       var nodes = dependencies[0];
       var inputAccessors = dependencies[1];
       var outputAccessors = dependencies[2];
@@ -2830,7 +2830,7 @@ var GLTFLoader = (function() {
    * @param {number} nodeIndex
    * @return {Promise<Object3D>}
    */
-  GLTFParser.prototype.loadNode = function(nodeIndex) {
+  GLTFParser.prototype.loadNode = function (nodeIndex) {
     var json = this.json;
     var extensions = this.extensions;
     var parser = this;
@@ -2840,12 +2840,12 @@ var GLTFLoader = (function() {
 
     var nodeDef = json.nodes[nodeIndex];
 
-    return (function() {
+    return (function () {
       var pending = [];
 
       if (nodeDef.mesh !== undefined) {
         pending.push(
-          parser.getDependency("mesh", nodeDef.mesh).then(function(mesh) {
+          parser.getDependency("mesh", nodeDef.mesh).then(function (mesh) {
             var node;
 
             if (meshReferences[nodeDef.mesh] > 1) {
@@ -2859,7 +2859,7 @@ var GLTFLoader = (function() {
 
             // if weights are provided on the node, override weights on the mesh.
             if (nodeDef.weights !== undefined) {
-              node.traverse(function(o) {
+              node.traverse(function (o) {
                 if (!o.isMesh) return;
 
                 for (var i = 0, il = nodeDef.weights.length; i < il; i++) {
@@ -2891,7 +2891,7 @@ var GLTFLoader = (function() {
       }
 
       return Promise.all(pending);
-    })().then(function(objects) {
+    })().then(function (objects) {
       var node;
 
       // .isBone isn't in glTF spec. See .markDefs
@@ -2948,7 +2948,7 @@ var GLTFLoader = (function() {
    * @param {number} sceneIndex
    * @return {Promise<Scene>}
    */
-  GLTFParser.prototype.loadScene = (function() {
+  GLTFParser.prototype.loadScene = (function () {
     // scene node hierachy builder
 
     function buildNodeHierachy(nodeId, parentObject, json, parser) {
@@ -2956,7 +2956,7 @@ var GLTFLoader = (function() {
 
       return parser
         .getDependency("node", nodeId)
-        .then(function(node) {
+        .then(function (node) {
           if (nodeDef.skin === undefined) return node;
 
           // build skeleton here as well
@@ -2965,7 +2965,7 @@ var GLTFLoader = (function() {
 
           return parser
             .getDependency("skin", nodeDef.skin)
-            .then(function(skin) {
+            .then(function (skin) {
               skinEntry = skin;
 
               var pendingJoints = [];
@@ -2978,8 +2978,8 @@ var GLTFLoader = (function() {
 
               return Promise.all(pendingJoints);
             })
-            .then(function(jointNodes) {
-              node.traverse(function(mesh) {
+            .then(function (jointNodes) {
+              node.traverse(function (mesh) {
                 if (!mesh.isMesh) return;
 
                 var bones = [];
@@ -3015,7 +3015,7 @@ var GLTFLoader = (function() {
               return node;
             });
         })
-        .then(function(node) {
+        .then(function (node) {
           // build node hierachy
 
           parentObject.add(node);
@@ -3057,7 +3057,7 @@ var GLTFLoader = (function() {
         pending.push(buildNodeHierachy(nodeIds[i], scene, json, parser));
       }
 
-      return Promise.all(pending).then(function() {
+      return Promise.all(pending).then(function () {
         return scene;
       });
     };

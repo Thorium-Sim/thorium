@@ -1,6 +1,5 @@
-/** @jsx jsx */
 import React from "react";
-import {css, jsx} from "@emotion/core";
+import {css} from "@emotion/core";
 import gql from "graphql-tag.macro";
 import {Container, Card} from "helpers/reactstrap";
 import {withApollo} from "react-apollo";

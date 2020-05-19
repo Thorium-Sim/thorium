@@ -34,14 +34,16 @@ const Blackout = styled.div`
 
 interface CardFrameProps {
   simulator: Simulator;
-  station: Station;
+  station: Omit<Station, "tags">;
   flight: Flight;
   client: Client;
 }
-const CardRenderer: React.FC<CardFrameProps & {
-  changeCard: (name: any) => void;
-  card: string;
-}> = props => {
+const CardRenderer: React.FC<
+  CardFrameProps & {
+    changeCard: (name: any) => void;
+    card: string;
+  }
+> = props => {
   const {simulator, station, flight, client, card, changeCard} = props;
   const layoutName = station.layout || simulator.layout || "LayoutCorners";
 
@@ -157,7 +159,7 @@ const CardFrame: React.FC<CardFrameProps> = props => {
         // names may have been changed to protect the innocent) then change to that card's name.
         let found = false;
         for (let i = 0; i < payload.changeToCard.length; i++) {
-          let matchingCard = cards.find(
+          let matchingCard = cards?.find(
             c => c.component === payload.changeToCard[i],
           );
           if (matchingCard) {

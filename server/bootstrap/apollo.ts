@@ -207,25 +207,25 @@ Access the Flight Director on ${printUrl()}
 GraphQL Server running on ${printUrl()}/graphql
 🚀 Subscriptions ready at ${printUrl({isWs: true})}${apollo.subscriptionsPath}`;
 
-  process.on("uncaughtException", function(err) {
+  process.on("uncaughtException", function (err) {
     // String key because typescript is funky
     if (err["code"] === "EADDRINUSE") {
-      console.log(
+      console.error(
         chalk.redBright(
           "There is already a version of Thorium running on this computer. Changing port to 4444",
         ),
       );
       // Fallover to 4444 if someone is already using the specified ports on this computer
       httpServer.listen(4444, () => {
-        console.log(serverMessage);
+        console.info(serverMessage);
       });
     }
   });
   try {
     httpServer.listen(SERVER_PORT, () => {
-      console.log(serverMessage);
+      console.info(serverMessage);
     });
   } catch (err) {
-    console.log("That didnt work...", err);
+    console.error("That didnt work...", err);
   }
 };

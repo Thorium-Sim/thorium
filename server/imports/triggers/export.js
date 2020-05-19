@@ -48,7 +48,7 @@ export default function exportTrigger(id, res) {
     });
   }
 
-  zipfile.end({}, function() {
+  zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=${trigger.name}.trigger`,
       "Content-Type": "application/octet-stream",

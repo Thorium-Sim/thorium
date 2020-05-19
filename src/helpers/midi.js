@@ -14,7 +14,7 @@ const throttle = (func, limit) => {
   let inThrottle;
   let lastFunc;
   let lastRan;
-  return function() {
+  return function () {
     const context = this;
     const args = arguments;
     if (!inThrottle) {
@@ -23,7 +23,7 @@ const throttle = (func, limit) => {
       inThrottle = true;
     } else {
       clearTimeout(lastFunc);
-      lastFunc = setTimeout(function() {
+      lastFunc = setTimeout(function () {
         if (Date.now() - lastRan >= limit) {
           func.apply(context, args);
           lastRan = Date.now();
@@ -116,7 +116,7 @@ export const MidiProvider = ({
           pressure,
           pitchBend,
         } = message;
-        console.log({
+        console.info({
           targetName,
           channel,
           messageType,
@@ -147,7 +147,7 @@ export const MidiProvider = ({
       const devices = [];
       io.forEach(i => {
         if (!deviceNames.includes(i.name)) {
-          console.log("Found device", i.name, which);
+          console.info("Found device", i.name, which);
           deviceNames.push(i.name);
         }
         i.onmidimessage = throttle(handleMidiMessage, 1000 / 10);
