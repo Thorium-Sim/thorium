@@ -33,6 +33,7 @@ const FlowConfig = () => {
         css={css`
           display: flex;
           flex-direction: column;
+          height: 100%;
         `}
       >
         <h2>Flow Config</h2>
