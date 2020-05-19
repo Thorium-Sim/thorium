@@ -40,7 +40,7 @@ export default function exportSimulator(simId, res) {
     .forEach(a => {
       addAsset(a.image, zipfile, "simulator");
     });
-  zipfile.end({}, function() {
+  zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=${sim.name}.sim`,
       "Content-Type": "application/octet-stream",

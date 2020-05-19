@@ -39,9 +39,9 @@ const GameBoard = ({Colors, Items, RobotCol, RobotRow, RobotDir}) => (
     <div
       className="game-ship-holder"
       style={{
-        transform: `translate(${(100 / 16) * parseInt(RobotCol, 10)}%, ${(100 /
-          12) *
-          parseInt(RobotRow, 10)}%)`,
+        transform: `translate(${(100 / 16) * parseInt(RobotCol, 10)}%, ${
+          (100 / 12) * parseInt(RobotRow, 10)
+        }%)`,
       }}
     >
       <img

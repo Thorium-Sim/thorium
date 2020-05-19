@@ -207,7 +207,7 @@ Access the Flight Director on ${printUrl()}
 GraphQL Server running on ${printUrl()}/graphql
 🚀 Subscriptions ready at ${printUrl({isWs: true})}${apollo.subscriptionsPath}`;
 
-  process.on("uncaughtException", function(err) {
+  process.on("uncaughtException", function (err) {
     // String key because typescript is funky
     if (err["code"] === "EADDRINUSE") {
       console.error(

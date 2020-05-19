@@ -16,7 +16,7 @@ export default function exportTacticalMap(id, res) {
 
   exportTactical(zipfile, map, "tacticalMap");
 
-  zipfile.end({}, function() {
+  zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=${map.name}.tactical`,
       "Content-Type": "application/octet-stream",

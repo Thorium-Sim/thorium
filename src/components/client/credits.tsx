@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import {jsx, keyframes} from "@emotion/core";
+import {keyframes} from "@emotion/core";
 import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import React, {useState} from "react";

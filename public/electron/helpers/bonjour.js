@@ -31,7 +31,7 @@ class Bonjour {
         });
       }
     }
-    ipcMain.on("getServers", function(event) {
+    ipcMain.on("getServers", function (event) {
       event.sender.send("updateServers", servers);
     });
   }

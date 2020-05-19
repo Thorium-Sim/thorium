@@ -432,9 +432,9 @@ gamepadLoop(){
                   ref="directionDragger"
                   className="dragger direction alertBack"
                   style={{
-                    transform: `translate3d(${(this.state.direction.left *
-                      width) /
-                      2}px,${(this.state.direction.top * height) / 2}px,0px)`,
+                    transform: `translate3d(${
+                      (this.state.direction.left * width) / 2
+                    }px,${(this.state.direction.top * height) / 2}px,0px)`,
                   }}
                 />
               </DraggableCore>
@@ -454,9 +454,9 @@ gamepadLoop(){
                   ref="foreDragger"
                   className="dragger fore alertBack"
                   style={{
-                    transform: `translate3d(${(this.state.directionUp.left *
-                      (width - 40)) /
-                      2}px,0px,0px)`,
+                    transform: `translate3d(${
+                      (this.state.directionUp.left * (width - 40)) / 2
+                    }px,0px,0px)`,
                   }}
                 />
               </DraggableCore>
@@ -507,9 +507,9 @@ gamepadLoop(){
                   ref="rotationDragger"
                   className="dragger rotation alertBack"
                   style={{
-                    transform: `translate3d(${(this.state.rotation.left *
-                      width) /
-                      2}px,${(this.state.rotation.top * height) / 2}px,0px)`,
+                    transform: `translate3d(${
+                      (this.state.rotation.left * width) / 2
+                    }px,${(this.state.rotation.top * height) / 2}px,0px)`,
                   }}
                 />
               </DraggableCore>
@@ -529,9 +529,9 @@ gamepadLoop(){
                   ref="yaw"
                   className="dragger yaw alertBack"
                   style={{
-                    transform: `translate3d(${(this.state.yaw.left *
-                      (width - 40)) /
-                      2}px,0px,0px)`,
+                    transform: `translate3d(${
+                      (this.state.yaw.left * (width - 40)) / 2
+                    }px,0px,0px)`,
                   }}
                 />
               </DraggableCore>

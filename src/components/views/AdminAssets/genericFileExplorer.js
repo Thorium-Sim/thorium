@@ -21,10 +21,7 @@ class FileExplorer extends Component {
     const {selectedFiles} = props;
     let currentDirectory = props.directory || "/";
     if (selectedFiles && selectedFiles[0]) {
-      currentDirectory = selectedFiles[0]
-        .split("/")
-        .slice(0, -1)
-        .join("/");
+      currentDirectory = selectedFiles[0].split("/").slice(0, -1).join("/");
     }
     this.state = {
       currentDirectory,

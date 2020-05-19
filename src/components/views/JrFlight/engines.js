@@ -202,8 +202,9 @@ class EngineControl extends Component {
           onMouseDown={this.mouseDown}
           onTouchStart={this.mouseDown}
           style={{
-            transform: `translateY(${Math.min(1, Math.abs(arrowPos - 1)) *
-              100}%)`,
+            transform: `translateY(${
+              Math.min(1, Math.abs(arrowPos - 1)) * 100
+            }%)`,
           }}
         >
           <div className="engine-arrow" />

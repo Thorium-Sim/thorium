@@ -114,9 +114,9 @@ export default class MovementCore extends PureComponent {
                 ref="directionDragger"
                 className="dragger direction alertBack"
                 style={{
-                  transform: `translate3d(${(left * width) / 2}px,${(top *
-                    height) /
-                    2}px,0px)`,
+                  transform: `translate3d(${(left * width) / 2}px,${
+                    (top * height) / 2
+                  }px,0px)`,
                 }}
               />
             </DraggableCore>

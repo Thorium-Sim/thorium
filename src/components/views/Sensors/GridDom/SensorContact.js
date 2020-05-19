@@ -71,9 +71,9 @@ const ContactSelection = ({width, x, y, size, contactDims}) => {
       className="contact-selection"
       style={{
         position: "absolute",
-        transform: `translate(${(width / 2) * x +
-          contactDims.width / Math.E / size}px, ${(width / 2) * y +
-          contactDims.height / Math.E / size}px)`,
+        transform: `translate(${
+          (width / 2) * x + contactDims.width / Math.E / size
+        }px, ${(width / 2) * y + contactDims.height / Math.E / size}px)`,
       }}
     >
       <div
@@ -176,12 +176,11 @@ export default class SensorContact extends Component {
               opacity: core ? 0.5 : opacity * 0.7,
               width: core ? "150%" : "500%",
               height: `${size}%`,
-              borderColor: tinycolor(color)
-                .darken(10)
-                .toString(),
+              borderColor: tinycolor(color).darken(10).toString(),
               backgroundColor: tinycolor(color).toString(),
-              transform: `translate(${(width / 2) * x}px, ${(width / 2) *
-                y}px) rotate(${rotation}deg)`,
+              transform: `translate(${(width / 2) * x}px, ${
+                (width / 2) * y
+              }px) rotate(${rotation}deg)`,
             }}
           />
           {core && (
@@ -193,13 +192,12 @@ export default class SensorContact extends Component {
                 width: core ? "150%" : "500%",
                 height: `${size}%`,
 
-                borderColor: tinycolor(color)
-                  .darken(10)
-                  .toString(),
+                borderColor: tinycolor(color).darken(10).toString(),
 
                 backgroundColor: tinycolor(color).toString(),
-                transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
-                  dy}px) rotate(${rotation}deg)`,
+                transform: `translate(${(width / 2) * dx}px, ${
+                  (width / 2) * dy
+                }px) rotate(${rotation}deg)`,
               }}
             >
               {showLabels ? name : ""}
@@ -218,12 +216,11 @@ export default class SensorContact extends Component {
             onMouseDown={e => mousedown(e, this.props)}
             style={{
               opacity: core ? 0.5 : opacity * 0.7,
-              borderColor: tinycolor(color)
-                .darken(10)
-                .toString(),
+              borderColor: tinycolor(color).darken(10).toString(),
               backgroundColor: tinycolor(color).toString(),
-              transform: `translate(${(width / 2) * x}px, ${(width / 2) *
-                y}px) scale(${size})`,
+              transform: `translate(${(width / 2) * x}px, ${
+                (width / 2) * y
+              }px) scale(${size})`,
             }}
           />
           {core && (
@@ -232,12 +229,11 @@ export default class SensorContact extends Component {
               className="sensors-planet"
               onMouseDown={e => mousedown(e, this.props)}
               style={{
-                borderColor: tinycolor(color)
-                  .darken(10)
-                  .toString(),
+                borderColor: tinycolor(color).darken(10).toString(),
                 backgroundColor: tinycolor(color).toString(),
-                transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
-                  dy}px) scale(${size})`,
+                transform: `translate(${(width / 2) * dx}px, ${
+                  (width / 2) * dy
+                }px) scale(${size})`,
               }}
             >
               {showLabels ? name : ""}
@@ -252,8 +248,9 @@ export default class SensorContact extends Component {
           style={{
             width: "10%",
             height: "10%",
-            transform: `translate(${(width / 2) * x + 5}px, ${(width / 2) * y +
-              5}px) scale(${size})`,
+            transform: `translate(${(width / 2) * x + 5}px, ${
+              (width / 2) * y + 5
+            }px) scale(${size})`,
           }}
           onComplete={() => removeContact(id)}
         />
@@ -269,8 +266,9 @@ export default class SensorContact extends Component {
               borderRadius: "50%",
               width: "1%",
               height: "1%",
-              transform: `translate(${(width / 2) * x}px, ${(width / 2) *
-                y}px)`,
+              transform: `translate(${(width / 2) * x}px, ${
+                (width / 2) * y
+              }px)`,
             }}
           />
         </div>
@@ -306,8 +304,9 @@ export default class SensorContact extends Component {
                     maskImage: `url('${particleIcon}')`,
                     WebkitMaskImage: `url('${particleIcon}')`,
                     opacity: core ? 0.5 : opacity,
-                    transform: `translate(${(width / 2) * x}px, ${(width / 2) *
-                      y}px) scale(${size})`,
+                    transform: `translate(${(width / 2) * x}px, ${
+                      (width / 2) * y
+                    }px) scale(${size})`,
                   }}
                 />
               )}
@@ -339,8 +338,9 @@ export default class SensorContact extends Component {
                   backgroundColor: particleTypes[particle],
                   maskImage: `url('${particleIcon}')`,
                   WebkitMaskImage: `url('${particleIcon}')`,
-                  transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
-                    dy}px) scale(${size})`,
+                  transform: `translate(${(width / 2) * dx}px, ${
+                    (width / 2) * dy
+                  }px) scale(${size})`,
                 }}
               />
             </Fragment>
@@ -369,8 +369,9 @@ export default class SensorContact extends Component {
                 className={disabled ? "contact-disabled" : ""}
                 style={{
                   opacity: core ? 0.5 : opacity,
-                  transform: `translate(${(width / 2) * x}px, ${(width / 2) *
-                    y}px) scale(${size})`,
+                  transform: `translate(${(width / 2) * x}px, ${
+                    (width / 2) * y
+                  }px) scale(${size})`,
                 }}
               />
             )}
@@ -392,8 +393,9 @@ export default class SensorContact extends Component {
               style={{
                 opacity: core ? 0.5 : opacity,
                 position: "absolute",
-                transform: `translate(${(width / 2) * x}px, ${(width / 2) *
-                  (y + 0.1)}px) scale(${size})`,
+                transform: `translate(${(width / 2) * x}px, ${
+                  (width / 2) * (y + 0.1)
+                }px) scale(${size})`,
               }}
             >
               {particle}
@@ -409,16 +411,18 @@ export default class SensorContact extends Component {
               style={{
                 boxShadow: hostile ? "2px 2px 2px rgba(255,0,0,0.5)" : null,
                 backgroundColor: this.bgColor(selected, hilite),
-                transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
-                  dy}px) scale(${size})`,
+                transform: `translate(${(width / 2) * dx}px, ${
+                  (width / 2) * dy
+                }px) scale(${size})`,
               }}
             />
             {targeted && (
               <div
                 className="crosshairs"
                 style={{
-                  transform: `translate(${(width / 2) * dx}px, ${(width / 2) *
-                    dy}px) scale(${size})`,
+                  transform: `translate(${(width / 2) * dx}px, ${
+                    (width / 2) * dy
+                  }px) scale(${size})`,
                 }}
               >
                 <div className="tl" />

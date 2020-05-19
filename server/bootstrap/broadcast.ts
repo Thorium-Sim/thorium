@@ -1,6 +1,6 @@
 const bonjour = require("bonjour")();
 
-export default function(port = 4444, httpOnly) {
+export default function (port = 4444, httpOnly) {
   bonjour.publish({
     name: `Thorium-${require("os").hostname()}`,
     type: "thorium-http",

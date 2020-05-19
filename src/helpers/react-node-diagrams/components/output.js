@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 function stringify(data) {
   let cache = [];
-  const output = JSON.stringify(data, function(key, value) {
+  const output = JSON.stringify(data, function (key, value) {
     if (typeof value === "object" && value !== null) {
       if (cache.indexOf(value) !== -1) {
         // Circular reference found, discard key

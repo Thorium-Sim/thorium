@@ -1,7 +1,7 @@
 const electron = require("electron");
 const app = electron.app;
 
-module.exports = function(mainWindow) {
+module.exports = function (mainWindow) {
   var template = [
     {
       label: "Application",
@@ -13,14 +13,14 @@ module.exports = function(mainWindow) {
         {
           label: "Quit",
           accelerator: "CmdOrCtrl+Alt+Q",
-          click: function() {
+          click: function () {
             app.quit();
           },
         },
         {
           label: "Reload",
           accelerator: "CmdOrCtrl+Alt+R",
-          click: function() {
+          click: function () {
             mainWindow && mainWindow.reload();
           },
         },
@@ -28,7 +28,7 @@ module.exports = function(mainWindow) {
         {
           label: "Kiosk",
           accelerator: "CmdOrCtrl+Alt+K",
-          click: function() {
+          click: function () {
             if (mainWindow && mainWindow.isKiosk()) {
               mainWindow.setKiosk(false);
             } else {
@@ -39,7 +39,7 @@ module.exports = function(mainWindow) {
         {
           label: "Dev Tools",
           accelerator: "CmdOrCtrl+Alt+I",
-          click: function() {
+          click: function () {
             mainWindow && mainWindow.webContents.openDevTools();
           },
         },

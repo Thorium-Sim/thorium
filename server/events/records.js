@@ -193,9 +193,9 @@ App.on("commConnectArrow", ({id, arrowId}) => {
   App.handleEvent(
     {
       simulatorId: system.simulatorId,
-      contents: `Call Connected: ${signal.name} (${Math.round(
-        system.frequency * 37700 + 37700,
-      ) / 100}MHz)`,
+      contents: `Call Connected: ${signal.name} (${
+        Math.round(system.frequency * 37700 + 37700) / 100
+      }MHz)`,
       category: "Communication",
     },
     "recordsCreate",
@@ -209,9 +209,9 @@ App.on("commDisconnectArrow", ({id, arrowId}) => {
   App.handleEvent(
     {
       simulatorId: system.simulatorId,
-      contents: `Call Connected: ${signal.name} (${Math.round(
-        system.frequency * 37700 + 37700,
-      ) / 100}MHz)`,
+      contents: `Call Connected: ${signal.name} (${
+        Math.round(system.frequency * 37700 + 37700) / 100
+      }MHz)`,
       category: "Communication",
     },
     "recordsCreate",
@@ -230,9 +230,9 @@ App.on("commHail", ({id}) => {
   App.handleEvent(
     {
       simulatorId: system.simulatorId,
-      contents: `New Hail: ${signal.name} (${Math.round(
-        system.frequency * 37700 + 37700,
-      ) / 100}MHz)`,
+      contents: `New Hail: ${signal.name} (${
+        Math.round(system.frequency * 37700 + 37700) / 100
+      }MHz)`,
       category: "Communication",
     },
     "recordsCreate",
@@ -251,9 +251,9 @@ App.on("cancelHail", ({id}) => {
   App.handleEvent(
     {
       simulatorId: system.simulatorId,
-      contents: `Hail Cancelled: ${signal.name} (${Math.round(
-        system.frequency * 37700 + 37700,
-      ) / 100}MHz)`,
+      contents: `Hail Cancelled: ${signal.name} (${
+        Math.round(system.frequency * 37700 + 37700) / 100
+      }MHz)`,
       category: "Communication",
     },
     "recordsCreate",
@@ -272,9 +272,9 @@ App.on("connectHail", ({id}) => {
   App.handleEvent(
     {
       simulatorId: system.simulatorId,
-      contents: `Hail Connected: ${signal.name} (${Math.round(
-        system.frequency * 37700 + 37700,
-      ) / 100}MHz)`,
+      contents: `Hail Connected: ${signal.name} (${
+        Math.round(system.frequency * 37700 + 37700) / 100
+      }MHz)`,
       category: "Communication",
     },
     "recordsCreate",

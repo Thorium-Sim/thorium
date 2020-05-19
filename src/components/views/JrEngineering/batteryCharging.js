@@ -324,8 +324,9 @@ const points = [
 
 function calcD(p, dir) {
   const size = 2;
-  return `M ${size} ${0} L ${-1 * size} ${-1 * size} L ${-1} ${0} L ${-1 *
-    size} ${size} Z`;
+  return `M ${size} ${0} L ${-1 * size} ${-1 * size} L ${-1} ${0} L ${
+    -1 * size
+  } ${size} Z`;
 }
 function distance(x1, y1, x2, y2) {
   const a = x1 - x2;
@@ -434,8 +435,9 @@ export default class BatteryCharging extends Component {
             )}
             {p.links.map(l => (
               <path
-                d={`M ${p.x * 100} ${p.y * 100} L ${arr.find(a => a.id === l)
-                  .x * 100} ${arr.find(a => a.id === l).y * 100}`}
+                d={`M ${p.x * 100} ${p.y * 100} L ${
+                  arr.find(a => a.id === l).x * 100
+                } ${arr.find(a => a.id === l).y * 100}`}
                 stroke="white"
               />
             ))}
@@ -468,8 +470,9 @@ export default class BatteryCharging extends Component {
         />
         <path
           className="spark"
-          transform={`translate(${this.state.spark.x * 100} ${this.state.spark
-            .y * 100})`}
+          transform={`translate(${this.state.spark.x * 100} ${
+            this.state.spark.y * 100
+          })`}
           d="M0,-1.357l0.244,0.75l0.469,-0.232l-0.075,0.519l0.789,0l-0.638,0.463l0.365,0.375l-0.516,0.089l0.244,0.75l-0.638,-0.464l-0.244,0.464l-0.244,-0.464l-0.638,0.464l0.244,-0.75l-0.516,-0.089l0.365,-0.375l-0.638,-0.463l0.789,0l-0.075,-0.519l0.469,0.232l0.244,-0.75Z"
           fill="#ffe000"
         />

@@ -51,7 +51,7 @@ function getClientList(hostname) {
   return clientList;
 }
 
-document.addEventListener("DOMContentLoaded", async function() {
+document.addEventListener("DOMContentLoaded", async function () {
   if (localStorage.getItem("thorium_startKiosked") !== "false") {
     if (document.getElementById("start-kiosked")) {
       document.getElementById("start-kiosked").checked = true;
@@ -100,7 +100,7 @@ function openBrowser() {
   ipcRenderer.send("open-external", printUrl());
   return;
 }
-window.getServers = function() {
+window.getServers = function () {
   ipcRenderer.send("getServers");
 };
 window.serverAddress = function serverAddress() {
@@ -112,36 +112,36 @@ window.serverAddress = function serverAddress() {
   if (document.getElementById("remember-client").checked) auto = true;
   ipcRenderer.send("loadPage", {url, auto});
 };
-ipcRenderer.on("info", function(event, data) {
+ipcRenderer.on("info", function (event, data) {
   const output = document.getElementById("console");
   if (output) {
     output.innerText = `${data}\n${output.innerText}`;
   }
 });
 
-window.getIpAddress = async function(cb) {
+window.getIpAddress = async function (cb) {
   const ipAddress = await ipcRenderer.invoke("get-ipAddress");
   cb(ipAddress, port, httpOnly);
 };
 
 const thorium = {
-  sendMessage: function(arg) {
+  sendMessage: function (arg) {
     return ipcRenderer.send("remoteMessage", arg);
   },
-  getDMXDeviceList: function() {
+  getDMXDeviceList: function () {
     return ipcRenderer.invoke("get-usbDevices");
   },
-  activateDMX: function(config) {
+  activateDMX: function (config) {
     return ipcRenderer.send("activate-dmx", config);
   },
-  sendDMXValue: function(universe) {
+  sendDMXValue: function (universe) {
     return ipcRenderer.send("send-dmx-value", universe);
   },
 };
 
 document.addEventListener(
   "DOMContentLoaded",
-  function() {
+  function () {
     // Network Settings
     const httpOnlyEl = document.getElementById("http-only");
     const portEl = document.getElementById("port");
@@ -198,17 +198,17 @@ document.addEventListener(
     if (autoUpdateEl) {
       ipcRenderer.send("check-for-updates");
 
-      ipcRenderer.on("has-updates", function(e, {oldVersion, newVersion}) {
+      ipcRenderer.on("has-updates", function (e, {oldVersion, newVersion}) {
         autoUpdateLabel.innerText = `Your version of Thorium is outdated. Current version is ${newVersion}. Your version is ${oldVersion}`;
         autoUpdateEl.classList.add("shown");
       });
 
       autoUpdateButton.addEventListener("click", () => {
         ipcRenderer.send("downloadAutoUpdate");
-        ipcRenderer.on("download-progress", function(e, progress) {
+        ipcRenderer.on("download-progress", function (e, progress) {
           autoUpdateProgress.value = progress;
         });
-        ipcRenderer.on("download-complete", function() {
+        ipcRenderer.on("download-complete", function () {
           autoUpdateLabel.innerText = `Update Complete! Restart the app to apply the update.`;
           autoUpdateProgress.hidden = true;
         });
@@ -221,7 +221,7 @@ document.addEventListener(
   false,
 );
 
-ipcRenderer.on("clearUrl", function() {
+ipcRenderer.on("clearUrl", function () {
   localStorage.setItem("thorium_url", "");
 });
 

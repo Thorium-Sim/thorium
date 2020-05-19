@@ -27,7 +27,7 @@ export default function exportFlight(id, res) {
     mtime: new Date(),
     mode: parseInt("0100664", 8), // -rw-rw-r--
   });
-  zipfile.end({}, function() {
+  zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=${flight.name}.flight`,
       "Content-Type": "application/octet-stream",

@@ -12,10 +12,7 @@ const moveContact = (dest, loc, speed, frozen, i) => {
   // }
   const locVec = new THREE.Vector3(loc.x, loc.y, loc.z);
   const destVec = new THREE.Vector3(dest.x, dest.y, dest.z);
-  const v = destVec
-    .sub(locVec)
-    .normalize()
-    .multiplyScalar(speed);
+  const v = destVec.sub(locVec).normalize().multiplyScalar(speed);
   const newLoc = {
     x: loc.x + v.x / (10000 / i),
     y: loc.y + v.y / (10000 / i),

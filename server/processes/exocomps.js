@@ -20,8 +20,9 @@ function exocompLoop() {
                 e.destination = null;
                 e.logs.push({
                   timestamp: Date.now(),
-                  message: `Completed repairs on ${sys.displayName ||
-                    sys.name}.`,
+                  message: `Completed repairs on ${
+                    sys.displayName || sys.name
+                  }.`,
                 });
                 e.parts = [];
                 e.updateState("returning");
@@ -57,8 +58,9 @@ function exocompLoop() {
                   } else {
                     e.logs.push({
                       timestamp: Date.now(),
-                      message: `No repairs necessary for ${sys.displayName ||
-                        sys.name}.`,
+                      message: `No repairs necessary for ${
+                        sys.displayName || sys.name
+                      }.`,
                     });
                     e.parts = [];
                     e.updateState("returning");

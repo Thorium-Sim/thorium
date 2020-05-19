@@ -258,9 +258,9 @@ const SensorsCore: React.FC<SensorsCoreProps> = ({simulator}) => {
                   if (scan) {
                     const date = new Date(scan?.timestamp || "");
                     return (
-                      `${date.toLocaleTimeString()} - ${
-                        scan.mode
-                      }${scan.location && " - " + scan.location}` +
+                      `${date.toLocaleTimeString()} - ${scan.mode}${
+                        scan.location && " - " + scan.location
+                      }` +
                       "\n" +
                       scan.request
                     );

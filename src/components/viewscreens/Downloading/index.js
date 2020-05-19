@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
 export default class Downloading extends Component {
-  getSpacedRandomArray = function(layers, space, minPX, maxPX) {
+  getSpacedRandomArray = function (layers, space, minPX, maxPX) {
     var arr = [0];
     var output = [];
     var minSize = 5,
@@ -26,7 +26,7 @@ export default class Downloading extends Component {
     return output;
   };
 
-  setup = function() {
+  setup = function () {
     let canvas = this.refs.starCanvas;
     let height = window.innerHeight;
     let width = window.innerWidth;
@@ -46,7 +46,7 @@ export default class Downloading extends Component {
     this.croissants = [];
     this.croissantsBirth();
   };
-  update = function() {
+  update = function () {
     this.stepCount++;
     if (this.stepCount % 50 === 0 && this.particles.length < this.maxPop)
       this.birth();
@@ -56,7 +56,7 @@ export default class Downloading extends Component {
 
     this.draw();
   };
-  birth = function() {
+  birth = function () {
     var ang = 2 * Math.PI * Math.random();
     var rad = 30 + 200 * Math.random();
 
@@ -76,14 +76,14 @@ export default class Downloading extends Component {
     };
     this.particles.push(particle);
   };
-  starBirth = function() {
+  starBirth = function () {
     var star = {
       r: Math.max(this.height, this.width) * 2,
       angle: 2 * Math.PI * Math.random(),
     };
     this.stars.push(star);
   };
-  croissantsBirth = function() {
+  croissantsBirth = function () {
     let croissantsBase = this.getSpacedRandomArray(5, 10, 150, 250);
     for (let c = 0; c < croissantsBase.length / 2; c++) {
       let croissant = {
@@ -97,7 +97,7 @@ export default class Downloading extends Component {
       this.croissants.push(croissant);
     }
   };
-  move = function() {
+  move = function () {
     // Particles
     for (let i = 0; i < this.particles.length; i++) {
       let particle = this.particles[i];
@@ -118,7 +118,7 @@ export default class Downloading extends Component {
       star.r -= (star.r - 30) / 40;
     }
   };
-  draw = function() {
+  draw = function () {
     this.ctx.beginPath();
     this.ctx.rect(0, 0, this.width, this.height);
     this.ctx.fillStyle = "rgba(0, 0, 0, 0.5)";

@@ -23,14 +23,16 @@ const wsProtocol = protocol === "https:" ? "wss:" : "ws:";
 export const graphqlUrl =
   process.env.NODE_ENV === "production"
     ? "/graphql"
-    : `${protocol}//${hostname}:${parseInt(window.location.port || 3000, 10) +
-        1}/graphql`;
+    : `${protocol}//${hostname}:${
+        parseInt(window.location.port || 3000, 10) + 1
+      }/graphql`;
 
 const websocketUrl =
   process.env.NODE_ENV === "production"
     ? `${wsProtocol}//${window.location.host}/graphql`
-    : `${wsProtocol}//${hostname}:${parseInt(window.location.port || 3000, 10) +
-        1}/graphql`;
+    : `${wsProtocol}//${hostname}:${
+        parseInt(window.location.port || 3000, 10) + 1
+      }/graphql`;
 
 const webSocketLink = new WebSocketLink({
   uri: websocketUrl,

@@ -47,7 +47,7 @@ export default function exportLibrary(simId, libId, res) {
         processExport(e, zipfile);
       });
   }
-  zipfile.end({}, function() {
+  zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=Library Export.libexp`,
       "Content-Type": "application/octet-stream",

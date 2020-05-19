@@ -107,7 +107,7 @@ class CommShortRange extends Component {
           strokeStyle: "rgba(255, 255, 255, 0.3)",
         },
       ],
-      resizeEvent: function() {
+      resizeEvent: function () {
         // Here is an example on how to create a gradient stroke
         var gradient = this.ctx.createLinearGradient(0, 0, this.width, 0);
         gradient.addColorStop(0, "rgba(0, 0, 0, 0)");

@@ -23,8 +23,9 @@ const StealthBars = ({systems}) => {
                 className="stealth-bar"
                 style={{
                   width: `${s.stealthFactor * 100}%`,
-                  backgroundSize: `5px 3px, ${100 / s.stealthFactor}%, ${100 /
-                    s.stealthFactor}%`,
+                  backgroundSize: `5px 3px, ${100 / s.stealthFactor}%, ${
+                    100 / s.stealthFactor
+                  }%`,
                 }}
               />
             </div>

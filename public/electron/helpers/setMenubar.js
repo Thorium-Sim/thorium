@@ -14,7 +14,7 @@ function templateFunc() {
         {
           label: "Quit",
           accelerator: "CmdOrCtrl+Alt+Q",
-          click: function() {
+          click: function () {
             app.quit();
           },
         },
@@ -26,14 +26,14 @@ function templateFunc() {
         {
           label: "New Window",
           accelerator: "CmdOrCtrl+N",
-          click: function() {
+          click: function () {
             addWindow({loadedUrl: getLoadedUrl()});
           },
         },
         {
           label: "Reload",
           accelerator: "CmdOrCtrl+Alt+R",
-          click: function() {
+          click: function () {
             windows.forEach(mainWindow => {
               if (!mainWindow.isDestroyed()) {
                 mainWindow.reload();
@@ -45,7 +45,7 @@ function templateFunc() {
         {
           label: "Kiosk",
           accelerator: "CmdOrCtrl+Alt+K",
-          click: function() {
+          click: function () {
             if (
               windows[0] &&
               !windows[0].isDestroyed() &&
@@ -71,7 +71,7 @@ function templateFunc() {
         {
           label: "Dev Tools",
           accelerator: "CmdOrCtrl+Alt+I",
-          click: function() {
+          click: function () {
             const focused = BrowserWindow.getFocusedWindow();
             focused && focused.webContents.openDevTools();
           },

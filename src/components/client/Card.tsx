@@ -38,10 +38,12 @@ interface CardFrameProps {
   flight: Flight;
   client: Client;
 }
-const CardRenderer: React.FC<CardFrameProps & {
-  changeCard: (name: any) => void;
-  card: string;
-}> = props => {
+const CardRenderer: React.FC<
+  CardFrameProps & {
+    changeCard: (name: any) => void;
+    card: string;
+  }
+> = props => {
   const {simulator, station, flight, client, card, changeCard} = props;
   const layoutName = station.layout || simulator.layout || "LayoutCorners";
 

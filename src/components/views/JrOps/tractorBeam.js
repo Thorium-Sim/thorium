@@ -228,8 +228,9 @@ class TractorBeam extends Component {
                   onMouseDown={this.mouseDown}
                   onTouchStart={this.mouseDown}
                   style={{
-                    transform: `translate(${target.x * 400}%, ${target.y *
-                      400}%)`,
+                    transform: `translate(${target.x * 400}%, ${
+                      target.y * 400
+                    }%)`,
                   }}
                 />
                 <img

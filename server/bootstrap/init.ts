@@ -21,22 +21,22 @@ console.warn = (message: string) => {
   warn(message);
 };
 
-export const download = function(
+export const download = function (
   url: string,
   dest: string,
   callback: (err: string) => void,
 ) {
   const file = fs.createWriteStream(dest);
-  https.get(url, function(res) {
+  https.get(url, function (res) {
     res
-      .on("data", function(chunk) {
+      .on("data", function (chunk) {
         file.write(chunk);
       })
-      .on("end", function() {
+      .on("end", function () {
         file.end();
         callback(null);
       })
-      .on("error", function(err) {
+      .on("error", function (err) {
         callback(err.message);
       });
   });
@@ -49,11 +49,7 @@ if (process.env.NODE_ENV === "production") {
 
 export default () => {
   return new Promise(resolve => {
-    console.info(
-      `Starting Thorium...${Array(20)
-        .fill("\n")
-        .join("")}`,
-    );
+    console.info(`Starting Thorium...${Array(20).fill("\n").join("")}`);
 
     fs.exists(snapshotDir, exists =>
       exists ? resolve() : fs.mkdir(snapshotDir, () => resolve()),

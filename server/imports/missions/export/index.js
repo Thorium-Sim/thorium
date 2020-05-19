@@ -38,7 +38,7 @@ export default function exportMissions(missionId, res) {
     mode: parseInt("0100664", 8), // -rw-rw-r--
   });
 
-  zipfile.end({}, function() {
+  zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=${mission.name}.misn`,
       "Content-Type": "application/octet-stream",

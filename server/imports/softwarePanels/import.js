@@ -14,17 +14,17 @@ function streamToString(stream, cb) {
 
 export default function ImportPanel(filepath, cb) {
   console.info("Importing panel");
-  yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
+  yauzl.open(filepath, {lazyEntries: true}, function (err, importZip) {
     if (err) throw err;
-    importZip.on("close", function() {
+    importZip.on("close", function () {
       cb(null);
     });
     importZip.readEntry();
 
-    importZip.on("entry", function(entry) {
+    importZip.on("entry", function (entry) {
       if (/softwarePanel\/softwarePanel.json/.test(entry.fileName)) {
         // Mission
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
           streamToString(readStream, str => {
             const panel = JSON.parse(str);

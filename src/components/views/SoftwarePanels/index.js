@@ -96,7 +96,7 @@ class SoftwarePanels extends Component {
           .concat(
             topCompNames.indexOf(comp.component) > -1 ? [0] : [comp.level],
           )
-          .sort(function(a, b) {
+          .sort(function (a, b) {
             return b - a;
           });
         if (levels.length !== 1) {

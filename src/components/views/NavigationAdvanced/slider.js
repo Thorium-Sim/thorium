@@ -68,8 +68,9 @@ export default class Slider extends Component {
           className="slider-wrapper"
           style={{
             transition: `transform ${this.state.dragging ? 0 : 0.2}s ease`,
-            transform: `translateY(calc(${Math.abs(this.state.level - 1) *
-              100}% - 15px))`,
+            transform: `translateY(calc(${
+              Math.abs(this.state.level - 1) * 100
+            }% - 15px))`,
           }}
         >
           <div

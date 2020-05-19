@@ -100,9 +100,9 @@ class InnerCanvas extends Component {
         <svg
           className={compStyles.connections}
           style={{
-            transform: `translate(${-1 *
-              (dimensions.left / scale - x)}px, ${-1 *
-              (dimensions.top / scale - y)}px)`,
+            transform: `translate(${-1 * (dimensions.left / scale - x)}px, ${
+              -1 * (dimensions.top / scale - y)
+            }px)`,
           }}
         >
           {draggingConnection && (

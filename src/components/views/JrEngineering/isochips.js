@@ -99,9 +99,9 @@ export default class Isochips extends Component {
               <path
                 d={`M 170 100 L 0 100 L 0 0 ${chip.edges.reduce(
                   (prev, next, index, arr) => {
-                    return `${prev} L ${next * 30 + 170} ${(index /
-                      arr.length) *
-                      100}`;
+                    return `${prev} L ${next * 30 + 170} ${
+                      (index / arr.length) * 100
+                    }`;
                   },
                   "",
                 )} Z`}

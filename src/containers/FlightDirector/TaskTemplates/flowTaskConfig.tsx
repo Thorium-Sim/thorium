@@ -1,5 +1,5 @@
-/** @jsx jsx */
-import {jsx, css} from "@emotion/core";
+import React from "react";
+import {css} from "@emotion/core";
 import {Col, Input} from "reactstrap";
 import {useParams} from "react-router";
 import {

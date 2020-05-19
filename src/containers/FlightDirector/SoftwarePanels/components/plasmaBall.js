@@ -46,7 +46,7 @@ class PlasmaBall extends Component {
       this.color = colorSet[Math.floor(Math.random() * colorSet.length)];
     }
 
-    Particle.prototype.draw = function() {
+    Particle.prototype.draw = function () {
       this.r =
         this.r > miParticleSize
           ? flashfactor * (Math.log(this.r) / Math.LN10)
@@ -104,8 +104,8 @@ class PlasmaBall extends Component {
         this.particles.push(new Particle(i));
       }
     }
-    ParticleSystem.prototype.draw = function() {
-      this.particles.forEach(function(particle) {
+    ParticleSystem.prototype.draw = function () {
+      this.particles.forEach(function (particle) {
         particle.draw();
       });
     };

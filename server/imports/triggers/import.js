@@ -26,22 +26,22 @@ const regexPath = /[^\\]*\.(\w+)$/;
 
 export default function ImportTrigger(filepath, cb) {
   console.info("Importing Trigger");
-  yauzl.open(filepath, {lazyEntries: true}, function(err, importZip) {
+  yauzl.open(filepath, {lazyEntries: true}, function (err, importZip) {
     if (err) throw err;
-    importZip.on("close", function() {
+    importZip.on("close", function () {
       pubsub.publish("triggersUpdate", App.triggerGroups);
 
       cb(null);
     });
     importZip.readEntry();
 
-    importZip.on("entry", function(entry) {
+    importZip.on("entry", function (entry) {
       if (/^trigger\/assets/.test(entry.fileName)) {
         console.info("Copying file", entry.fileName);
         // It's an asset. Load it
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
-          readStream.on("end", function() {
+          readStream.on("end", function () {
             importZip.readEntry();
           });
           let filename = entry.fileName.replace("trigger/", "");
@@ -66,7 +66,7 @@ export default function ImportTrigger(filepath, cb) {
       }
       if (/^trigger\/tacticals\.json/.test(entry.fileName)) {
         // Tactical
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
           streamToString(readStream, str => {
             const maps = JSON.parse(str);
@@ -84,7 +84,7 @@ export default function ImportTrigger(filepath, cb) {
       }
       if (/trigger\/trigger.json/.test(entry.fileName)) {
         // Trigger
-        importZip.openReadStream(entry, function(error, readStream) {
+        importZip.openReadStream(entry, function (error, readStream) {
           if (error) throw error;
           streamToString(readStream, str => {
             const trigger = JSON.parse(str);

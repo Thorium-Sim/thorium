@@ -3,7 +3,7 @@ var isLinux = require("is-linux"),
   isWindows = require("is-windows"),
   cp = require("child_process");
 
-module.exports = function(cb) {
+module.exports = function (cb) {
   var cmd = "";
 
   if (isLinux() || isOsx()) {
@@ -14,7 +14,7 @@ module.exports = function(cb) {
     throw new Error("Unknown OS!");
   }
 
-  cp.exec(cmd, function(err, stdout, stderr) {
+  cp.exec(cmd, function (err, stdout, stderr) {
     cb(err, stdout, stderr);
   });
 };
