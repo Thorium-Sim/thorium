@@ -51,6 +51,7 @@ const StepConfig = () => {
         css={css`
           display: flex;
           flex-direction: column;
+          height: 100%;
         `}
       >
         <h2>Step Config</h2>
@@ -97,7 +98,7 @@ const StepConfig = () => {
               onClick={() => navigate(t.id)}
             >
               <div>{t.definition}</div>
-              <small>Station: {t.station}</small>
+              <small>Station: {t.stationTags?.join(", ") || "None"}</small>
             </ListGroupItem>
           ))}
         </ListGroup>

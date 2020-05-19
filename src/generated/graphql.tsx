@@ -77,6 +77,7 @@ export type Query = {
   phaser?: Maybe<Phaser>;
   probes: Array<Probes>;
   probe?: Maybe<Probes>;
+  probeEquipment: Array<ProbeEquipment>;
   railgun?: Maybe<Array<Maybe<Railgun>>>;
   reactors?: Maybe<Array<Maybe<Reactor>>>;
   reactor?: Maybe<Reactor>;
@@ -11895,6 +11896,17 @@ export type UpdateTacticalPathMutation = (
   & Pick<Mutation, 'updateTacticalMapPath'>
 );
 
+export type ProbeEquipmentQueryVariables = {};
+
+
+export type ProbeEquipmentQuery = (
+  { __typename?: 'Query' }
+  & { probeEquipment: Array<(
+    { __typename?: 'ProbeEquipment' }
+    & Pick<ProbeEquipment, 'id' | 'name'>
+  )> }
+);
+
 export type ActivateTaskFlowMutationVariables = {
   id: Scalars['ID'];
   simulatorId: Scalars['ID'];
@@ -15565,6 +15577,22 @@ export function useUpdateTacticalPathMutation(baseOptions?: ApolloReactHooks.Mut
         return ApolloReactHooks.useMutation<UpdateTacticalPathMutation, UpdateTacticalPathMutationVariables>(UpdateTacticalPathDocument, baseOptions);
       }
 export type UpdateTacticalPathMutationHookResult = ReturnType<typeof useUpdateTacticalPathMutation>;
+export const ProbeEquipmentDocument = gql`
+    query ProbeEquipment {
+  probeEquipment {
+    id
+    name
+  }
+}
+    `;
+export function useProbeEquipmentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ProbeEquipmentQuery, ProbeEquipmentQueryVariables>) {
+        return ApolloReactHooks.useQuery<ProbeEquipmentQuery, ProbeEquipmentQueryVariables>(ProbeEquipmentDocument, baseOptions);
+      }
+export function useProbeEquipmentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ProbeEquipmentQuery, ProbeEquipmentQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ProbeEquipmentQuery, ProbeEquipmentQueryVariables>(ProbeEquipmentDocument, baseOptions);
+        }
+export type ProbeEquipmentQueryHookResult = ReturnType<typeof useProbeEquipmentQuery>;
+export type ProbeEquipmentLazyQueryHookResult = ReturnType<typeof useProbeEquipmentLazyQuery>;
 export const ActivateTaskFlowDocument = gql`
     mutation ActivateTaskFlow($id: ID!, $simulatorId: ID!) {
   taskFlowActivate(id: $id, simulatorId: $simulatorId)

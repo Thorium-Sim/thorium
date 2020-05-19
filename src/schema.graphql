@@ -59,6 +59,7 @@ type Query {
   phaser(id: ID!): Phaser
   probes(simulatorId: ID!): [Probes!]!
   probe(id: ID!): Probes
+  probeEquipment: [ProbeEquipment!]!
   railgun(simulatorId: ID): [Railgun]
   reactors(simulatorId: ID, model: String): [Reactor]
   reactor(id: ID!): Reactor
