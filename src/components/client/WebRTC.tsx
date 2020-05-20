@@ -143,7 +143,6 @@ export const useWebRTCMCU = ({
 
         peers.current[peerId].on("error", err => {
           peers.current[peerId].destroy();
-          mcu?.removeRemoteAudio(streams.current[peerId]);
           mcu?.removeRemoteAudioMinusOne(peerId);
 
           delete streams.current[peerId];
@@ -208,9 +207,7 @@ export const useWebRTCMCU = ({
           if (data?.webRTCSignal?.destinationClientId === clientId) {
             let peer = peers.current[data.webRTCSignal.senderClientId];
             if (!peer || peer.destroyed) {
-              mcu?.removeRemoteAudio(
-                streams.current[data.webRTCSignal.senderClientId],
-              );
+              mcu?.removeRemoteAudioMinusOne(data.webRTCSignal.senderClientId);
 
               delete streams.current[data.webRTCSignal.senderClientId];
               delete peers.current[data.webRTCSignal.senderClientId];
