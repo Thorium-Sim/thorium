@@ -15,6 +15,10 @@ import planetNames from "../../classes/universe/planetNames";
 
 export default function generateUniverse(flightId, procGenKey) {
   const rng = new Prando(procGenKey);
+  // We need a truly random ID random number generator
+  // so we don't get collisions
+  const idRng = new Prando(String(Math.random()));
+
   const entities: Entity[] = [];
   // We'll only generate three levels
   // - The root stage
@@ -44,6 +48,7 @@ export default function generateUniverse(flightId, procGenKey) {
   Array.from({length: 512}).forEach(() => {
     const systemEntity = generateStarSystem(
       rng,
+      idRng,
       flightId,
       rootStage.id,
       systemsList,
@@ -160,6 +165,7 @@ function shuffle<T>(a: T[]): T[] {
 
 function generateStarSystem(
   rng: Prando,
+  idRng: Prando,
   flightId: string,
   stageId: string,
   systemNames: string[],
@@ -181,6 +187,7 @@ function generateStarSystem(
     sunRadius;
 
   return new Entity({
+    id: idRng.nextString(),
     flightId,
     stage: new Stage({
       scaleLabelShort: "M",
@@ -205,7 +212,7 @@ function generateStarSystem(
     appearance: new Appearance({
       meshType: MeshTypeEnum.sphere,
       materialMapAsset: "/3D/Texture/Planets/2k_sun_white.jpg",
-      color: `hsl(${hue}, 50%, ${starType.white ? 100 : 50}%)`,
+      color: `hsl(${hue}, 80%, ${starType.white ? 80 : 50}%)`,
       scale,
       emissiveColor: `hsl(${hue}, 70%, ${starType.white ? 100 : 50}%)`,
       emissiveIntensity: 1,

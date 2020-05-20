@@ -59,8 +59,6 @@ const Entity: React.FC<EntityProps> = ({
   const {id, location, appearance, light} =
     entity || storeApi.getState().data[entityIndex];
 
-  const stage = storeApi.getState().data.find(s => s.id === stageId);
-
   React.useEffect(() => {
     // Poor man's React.memo
     const unsub1 = storeApi.subscribe(
@@ -156,7 +154,7 @@ const Entity: React.FC<EntityProps> = ({
         (position?.z || 0) + positionOffset.z,
       ] as [number, number, number]);
 
-  if (stage?.stage?.childrenAsSprites) {
+  if (entity?.stageChild?.parent?.stage?.childrenAsSprites) {
     return (
       <group position={meshPosition} ref={mesh} {...dragFunctions}>
         <EntitySprite appearance={appearance || undefined} />

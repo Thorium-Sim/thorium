@@ -13890,7 +13890,10 @@ export type EntityDataFragment = (
     & { parent?: Maybe<(
       { __typename?: 'Entity' }
       & Pick<Entity, 'id'>
-      & { identity?: Maybe<(
+      & { stage?: Maybe<(
+        { __typename?: 'StageComponent' }
+        & Pick<StageComponent, 'childrenAsSprites'>
+      )>, identity?: Maybe<(
         { __typename?: 'IdentityComponent' }
         & Pick<IdentityComponent, 'name'>
       )> }
@@ -14340,6 +14343,9 @@ export const EntityDataFragmentDoc = gql`
     parentId
     parent {
       id
+      stage {
+        childrenAsSprites
+      }
       identity {
         name
       }

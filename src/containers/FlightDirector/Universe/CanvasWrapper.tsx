@@ -40,6 +40,7 @@ const CanvasWrapper: React.FC<CanvasWrapperProps> = ({
         }}
         sRGB={true}
         gl={{antialias: true, logarithmicDepthBuffer: true}}
+        concurrent
       >
         <CanvasContext.Provider value={value}>
           <ApolloProvider client={client}>
