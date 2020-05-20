@@ -140,13 +140,23 @@ export const Widget = ({
     }
     setTooltipOpen(!tooltipOpen);
   };
-  const toggleModal = () => {
+  const old = React.useRef({modal, playEffect, setNotify, wkey});
+  const toggleModal = React.useCallback(() => {
+    console.log({
+      modal: modal === old.current.modal,
+      playEffect: playEffect === old.current.playEffect,
+      setNotify: setNotify === old.current.setNotify,
+      wkey: wkey === old.current.wkey,
+    });
+    old.current = {modal, playEffect, setNotify, wkey};
+
     setNotify(wkey, false);
     if (!modal) {
       playEffect("buttonClick");
     }
     setModal(!modal);
-  };
+  }, [modal, playEffect, setNotify, wkey]);
+
   const Comp = widget.widget;
   const Icon = widget.icon;
   return (

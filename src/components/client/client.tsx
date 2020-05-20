@@ -9,6 +9,7 @@ import {
   Client as ClientInterface,
 } from "generated/graphql";
 import {useSounds} from "components/generic/SoundPlayer";
+import {WebRTCContextProvider} from "./WebRTC";
 
 const excludedStations = [
   "Sound",
@@ -83,12 +84,14 @@ const Client: React.FC<{
     <ClientContext.Provider value={props}>
       <SoundController clientId={client.id} />
       <Caching client={client} />
-      <CardContainer
-        flight={flight}
-        simulator={simulator}
-        station={station}
-        client={client}
-      />
+      <WebRTCContextProvider clientId={client.id}>
+        <CardContainer
+          flight={flight}
+          simulator={simulator}
+          station={station}
+          client={client}
+        />
+      </WebRTCContextProvider>
     </ClientContext.Provider>
   );
 };

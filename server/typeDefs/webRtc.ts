@@ -24,12 +24,12 @@ const schema = gql`
 
 /**
  * Signaling Server
- * One Sound player client acts as the initiator. When first connected, all
- * sound player clients query to see if there is already an initiator available.
+ * One Sound player client acts as the MCU. When first connected, all
+ * sound player clients query to see if there is already an MCU available.
  * If there isn't one yet, it waits a random delay and then requests to be the
- * initiator.
+ * MCU.
  *
- * When a new client connect, the initiator creates a new peer and sends the
+ * When a new client connect, the MCU creates a new peer and sends the
  * signalling data to the server, which forwards it to the new client.
  * Answers are returned the same way.
  * There needs to be a clear communication line open between the two so every
@@ -42,10 +42,10 @@ const resolver = {
       if (!client) return;
       const simulator = App.simulators.find(s => s.id === client.simulatorId);
       if (!simulator) return;
-      const initiator = App.clients.find(
+      const mcu = App.clients.find(
         c => c.simulatorId === simulator.id && c.webRTCInitiator,
       );
-      if (!initiator) {
+      if (!mcu) {
         client.setIsWebRTCInitiator();
         pubsub.publish("clientChanged", App.clients);
       }
@@ -55,20 +55,20 @@ const resolver = {
       const client = App.clients.find(c => c.id === clientId);
       if (!client || !contextClient) return;
       if (contextClient.webRTCInitiator) {
-        // The client that sent the request is the initiator; send the request to clientId
+        // The client that sent the request is the mcu; send the request to clientId
         pubsub.publish("webRTCSignal", {
           destinationClientId: clientId,
           senderClientId: contextClient.id,
           signal,
         });
       } else if (clientId === contextClientId) {
-        // The client that sent the request is a peer; send the request to the initiator
-        const initiator = App.clients.find(
+        // The client that sent the request is a peer; send the request to the mcu
+        const mcu = App.clients.find(
           c => c.simulatorId === client.simulatorId && c.webRTCInitiator,
         );
-        if (!initiator) return;
+        if (!mcu) return;
         pubsub.publish("webRTCSignal", {
-          destinationClientId: initiator.id,
+          destinationClientId: mcu.id,
           senderClientId: clientId,
           signal,
         });
@@ -89,7 +89,6 @@ const resolver = {
     },
     webRTCSignal: {
       resolve(rootValue) {
-        console.log("Resolve", rootValue);
         return rootValue;
       },
       subscribe: withFilter(

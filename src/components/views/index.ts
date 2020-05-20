@@ -16,7 +16,9 @@ import {
   FaTasks,
   FaCircleNotch,
   FaTerminal,
+  FaVolumeUp,
 } from "react-icons/fa";
+import WebRTC from "./Widgets/webRTC";
 
 const LongRangeComm = React.lazy(() => import("./LongRangeComm"));
 const EngineControl = React.lazy(() => import("./EngineControl"));
@@ -425,6 +427,12 @@ export const Widgets = {
     name: "Command Line",
     size: "lg",
     color: "#5FFF5F",
+  },
+  remoteAudio: {
+    widget: WebRTC,
+    icon: FaVolumeUp,
+    name: "Remote Audio",
+    color: "rgb(100,180,10)",
   },
 };
 

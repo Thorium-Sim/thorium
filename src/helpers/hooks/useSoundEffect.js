@@ -6,12 +6,15 @@ import {randomFromList} from "helpers/randomFromList";
 
 export default function useSoundEffect() {
   const simulator = React.useContext(SimulatorContext);
-  return function (sound) {
-    if (simulator.soundEffects && simulator.soundEffects[sound]) {
-      playSound({
-        url: `/assets${randomFromList(simulator.soundEffects[sound])}`,
-        volume: parseInt(simulator.soundEffects[`${sound}Volume`], 10),
-      });
-    }
-  };
+  return React.useCallback(
+    function (sound) {
+      if (simulator.soundEffects && simulator.soundEffects[sound]) {
+        playSound({
+          url: `/assets${randomFromList(simulator.soundEffects[sound])}`,
+          volume: parseInt(simulator.soundEffects[`${sound}Volume`], 10),
+        });
+      }
+    },
+    [simulator.soundEffects],
+  );
 }

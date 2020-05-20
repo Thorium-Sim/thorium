@@ -186,6 +186,17 @@ const CardFrame: React.FC<CardFrameProps> = props => {
       training: false,
     },
   });
+
+  const hasTraining =
+    simTraining && stationTraining && isMedia(stationTraining);
+  const clientObj = React.useMemo(
+    () => ({
+      ...client,
+      training: hasTraining ? false : client.training,
+    }),
+    [client, hasTraining],
+  );
+
   return (
     <div
       className={`client-container ${caps ? "all-caps" : ""} ${
@@ -198,13 +209,7 @@ const CardFrame: React.FC<CardFrameProps> = props => {
         {...props}
         card={client?.currentCard?.name || ""}
         changeCard={changeCard}
-        client={{
-          ...client,
-          training:
-            simTraining && stationTraining && isMedia(stationTraining)
-              ? false
-              : client.training,
-        }}
+        client={clientObj}
       />
       {client && <Reset station={station} clientId={client.id} />}
       {simTraining &&
