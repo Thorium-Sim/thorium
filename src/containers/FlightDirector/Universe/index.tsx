@@ -7,13 +7,15 @@ import usePatchedSubscriptions from "../../../helpers/hooks/usePatchedSubscripti
 import {
   Entity,
   EntityDataFragmentDoc,
-  useEntitiesQuery,
+  // useEntitiesQuery,
 } from "../../../generated/graphql";
 import gql from "graphql-tag.macro";
 import PropertyPalette from "./PropertyPalette";
 import {useParams} from "react-router";
 import {useNavigate} from "react-router-dom";
-import CanvasWrapper from "./CanvasWrapper";
+// import CanvasWrapper from "./CanvasWrapper";
+import {useApolloClient} from "@apollo/client";
+import renderRawThreeJS from "./rawThreeJS";
 
 const sub = gql`
   subscription Entities($flightId: ID!, $stageId: ID!) {
@@ -24,9 +26,9 @@ const sub = gql`
   ${EntityDataFragmentDoc}
 `;
 
-function isEntity(e: any): e is Entity {
-  return e && e.id && e?.location?.inert;
-}
+// function isEntity(e: any): e is Entity {
+//   return e && e.id && e?.location?.inert;
+// }
 
 export default function UniversalSandboxEditor() {
   const [dragging, setDragging] = React.useState<Entity | undefined>();
@@ -43,9 +45,16 @@ export default function UniversalSandboxEditor() {
     Entity[],
     {flightId: string; stageId: string}
   >(sub, {flightId, stageId: currentStage});
-  const {data} = useEntitiesQuery({variables: {flightId}});
+  // const {data} = useEntitiesQuery({variables: {flightId}});
+  const client = useApolloClient();
+  // const staticEntities = data?.entities.filter(isEntity) || [];
 
-  const staticEntities = data?.entities.filter(isEntity) || [];
+  const threeRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    renderRawThreeJS(threeRef, client, storeApi);
+  }, [client, storeApi]);
+
   return (
     <CanvasContextProvider>
       <div className="universal-sandbox-editor">
@@ -55,13 +64,14 @@ export default function UniversalSandboxEditor() {
           setCurrentStage={setCurrentStage}
         />
         <div className="level-editor-container">
-          <CanvasWrapper
+          <div ref={threeRef} />
+          {/* <CanvasWrapper
             useEntityState={useEntityState}
-            staticEntities={staticEntities}
+            staticEntities={[]}
             storeApi={storeApi}
             dragging={dragging}
             setDragging={setDragging}
-          />
+          /> */}
           <Controls />
         </div>
 
