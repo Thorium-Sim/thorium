@@ -1,7 +1,7 @@
 import {OrthographicCamera} from "three";
 
-const NEAR = 0;
-const FAR = 1e27;
+const NEAR = 1;
+const FAR = 100000000000;
 const frustumSize = 10;
 
 let camera: OrthographicCamera;
@@ -20,8 +20,9 @@ function getOrthoCamera(dimensions?: DOMRect) {
     NEAR,
     FAR,
   );
-  camera.position.set(0, 0, 1 / 0.0000000001);
+  camera.position.set(0, 0, 1 / 0.00000001);
   camera.zoom = 0.00000001;
+  camera.updateProjectionMatrix();
   return camera;
 }
 export default getOrthoCamera;

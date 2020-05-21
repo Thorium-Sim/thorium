@@ -1,38 +1,36 @@
 import React from "react";
-import {ApolloClient} from "@apollo/client";
+import {ApolloClient, useApolloClient} from "@apollo/client";
 import {StoreApi} from "zustand";
-import {PatchData} from "helpers/hooks/usePatchedSubscriptions";
+import usePatchedSubscriptions, {
+  PatchData,
+} from "helpers/hooks/usePatchedSubscriptions";
 import {
   Entity as EntityInterface,
-  LocationComponent,
-  AppearanceComponent,
   EntitiesDocument,
   EntitiesQuery,
-  StageChildComponent,
+  EntityDataFragmentDoc,
 } from "generated/graphql";
 import {
   Scene,
-  BoxGeometry,
-  MeshBasicMaterial,
-  Mesh,
   MOUSE,
-  Group,
-  Vector3,
-  TextureLoader,
-  Sprite,
-  SpriteMaterial,
-  Color,
-  Camera,
   OrthographicCamera,
   PerspectiveCamera,
+  WebGLRenderer,
+  Raycaster,
 } from "three";
 import renderer from "./renderer";
-import getPerspectiveCamera from "./perspectiveCamera";
 import getOrthoCamera from "./orthoCamera";
-import PanControls from "../PanControls";
 import globals from "./globals";
 import Grid from "./grid";
-import loadImage from "./loadImage";
+import {css} from "@emotion/core";
+import {useParams} from "react-router";
+import gql from "graphql-tag.macro";
+import {CanvasContext, CanvasContextOutput} from "../CanvasContext";
+import {distance3d} from "components/views/Sensors/gridCore/constants";
+import Entity from "./entity";
+import GameObjectManager from "./gameObjectManager";
+import getPanControls from "./panControls";
+import {clearEvents, initEvents, mouse} from "./mouseEvents";
 
 // import generateNebula from "./nebula";
 
@@ -50,154 +48,59 @@ import loadImage from "./loadImage";
 //   }
 // }
 
-class SafeArray<T> {
-  array: T[];
-  addQueue: T[];
-  removeQueue: Set<T>;
-  constructor() {
-    this.array = [];
-    this.addQueue = [];
-    this.removeQueue = new Set();
+function resizeRendererToDisplaySize(renderer: WebGLRenderer) {
+  const canvas = renderer.domElement;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  const needResize = canvas.width !== width || canvas.height !== height;
+  if (needResize) {
+    renderer.setSize(width, height, false);
   }
-  get isEmpty() {
-    return this.addQueue.length + this.array.length > 0;
-  }
-  add(element: T) {
-    this.addQueue.push(element);
-  }
-  remove(element: T) {
-    this.removeQueue.add(element);
-  }
-  forEach(fn: (item: T) => void) {
-    this._addQueued();
-    this._removeQueued();
-    for (const element of this.array) {
-      if (this.removeQueue.has(element)) {
-        continue;
-      }
-      fn(element);
-    }
-    this._removeQueued();
-  }
-  _addQueued() {
-    if (this.addQueue.length) {
-      this.array.splice(this.array.length, 0, ...this.addQueue);
-      this.addQueue = [];
-    }
-  }
-  _removeQueued() {
-    if (this.removeQueue.size) {
-      this.array = this.array.filter(element => !this.removeQueue.has(element));
-      this.removeQueue.clear();
-    }
-  }
+  return needResize;
 }
 
-type RenderState = {camera: PerspectiveCamera | OrthographicCamera};
+type OutsideState = CanvasContextOutput;
 
-class GameObjectManager {
-  gameObjects: SafeArray<{update: (state: RenderState) => void}>;
-  constructor() {
-    this.gameObjects = new SafeArray();
-  }
-  addGameObject(object: {
-    update: (state: RenderState) => void;
-    [key: string]: any;
-  }) {
-    this.gameObjects.add(object);
-  }
-  removeGameObject(gameObject: {
-    update: (state: RenderState) => void;
-    [key: string]: any;
-  }) {
-    this.gameObjects.remove(gameObject);
-  }
-  update(state: RenderState) {
-    this.gameObjects.forEach(gameObject => gameObject.update(state));
-  }
-}
-
-class Entity extends Group {
-  zoomScale: boolean = true;
-  meshType: "sprite" = "sprite";
-  appearance?: AppearanceComponent;
-  constructor(entity: {
-    location?: Partial<LocationComponent> | null;
-    appearance?: Partial<AppearanceComponent> | null;
-    stageChild?: Partial<StageChildComponent> | null;
-  }) {
-    super();
-    if (!entity.location?.position || !entity.appearance) return;
-
-    const {x, y, z} = entity.location?.position;
-    this.position.set(x, y, z);
-
-    this.appearance = entity.appearance;
-
-    if (entity.stageChild?.parent?.stage?.childrenAsSprites) {
-      this.loadSprite(entity.appearance);
-    }
-  }
-  async loadSprite(appearance: Partial<AppearanceComponent>) {
-    const texture = new TextureLoader().load(require("../star-sprite.svg"));
-    const spriteMaterial = new SpriteMaterial();
-    spriteMaterial.sizeAttenuation = false;
-    spriteMaterial.color = new Color(appearance.color || undefined);
-    spriteMaterial.map = texture;
-    const sprite = new Sprite(spriteMaterial);
-    this.add(sprite);
-    console.log("added sprite");
-  }
-  update(state: RenderState) {
-    const {zoom} = state.camera;
-    let zoomedScale = 1 / zoom / 2;
-    if (this.zoomScale || this.meshType === "sprite") {
-      // zoomedScale *= 2;
-      this.scale.set(zoomedScale, zoomedScale, zoomedScale);
-    } else {
-      this.appearance?.scale &&
-        this.scale.set(
-          this.appearance.scale,
-          this.appearance.scale,
-          this.appearance.scale,
-        );
-    }
-  }
-}
-class Cube extends Mesh {
-  constructor() {
-    var geometry = new BoxGeometry(1, 1, 1);
-    var material = new MeshBasicMaterial({color: 0x00ff00});
-    super(geometry, material);
-  }
-  update() {
-    this.rotation.x += 0.01;
-    this.rotation.y += 0.01;
-  }
-}
 async function renderRawThreeJS(
   ref: React.RefObject<HTMLDivElement>,
   client: ApolloClient<object>,
   storeApi: StoreApi<PatchData<EntityInterface[]>>,
 ) {
+  let outsideState: OutsideState = [
+    {
+      dragging: false,
+      camera: false,
+      zoomScale: false,
+      recenter: {},
+      selected: [],
+      selecting: false,
+      lighting: true,
+      measuring: false,
+      measured: false,
+      speed: 28,
+      timeInSeconds: 60,
+      position: [0, 0, 0],
+      controllingEntityId: localStorage.getItem("sandbox-controlling-id") || "",
+    },
+    () => {},
+  ];
+
+  const raycaster = new Raycaster();
+
   const gameObjectManager = new GameObjectManager();
   const scene = new Scene();
   const dimensions = ref.current?.getBoundingClientRect();
-  if (!dimensions) return;
+
+  if (!dimensions) return {updateState, cleanUp};
+
   renderer.setSize(dimensions.width, dimensions.height);
   // document.body.appendChild( renderer.domElement );
   // use ref as a mount point of the Three.js scene instead of the document.body
   ref.current?.appendChild(renderer.domElement);
 
-  const cube = new Cube();
-  gameObjectManager.addGameObject(cube);
-
-  scene.add(cube);
-
   const grid = new Grid(dimensions);
   gameObjectManager.addGameObject(grid);
   scene.add(grid);
-
   client
     .query({query: EntitiesDocument, variables: {flightId: "cool flight"}})
     .then(res => {
@@ -211,19 +114,26 @@ async function renderRawThreeJS(
     });
   // generateNebula("alex").then(nebula => scene.add(nebula));
 
-  const camera = getOrthoCamera(dimensions);
-  const panControls = new PanControls(camera, ref.current);
-  panControls.enableRotate = false;
-  panControls.screenSpacePanning = true;
-  panControls.maxZoom = 5;
-  panControls.minZoom = 0.00000001;
-  panControls.zoomSpeed = 1;
-  panControls.zoom0 = 0.00000001;
-  panControls.mouseButtons = {
-    MIDDLE: MOUSE.DOLLY,
-    LEFT: MOUSE.PAN,
-    RIGHT: MOUSE.PAN,
-  };
+  const camera: PerspectiveCamera | OrthographicCamera = getOrthoCamera(
+    dimensions,
+  );
+  const panControls = getPanControls(camera, ref.current);
+  initEvents(ref.current);
+
+  ref.current?.addEventListener("mousedown", e => {
+    // update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // calculate objects intersecting the picking ray
+    const intersects = raycaster.intersectObjects(scene.children, true);
+    if (intersects[0]?.object) {
+      outsideState[1]({
+        type: "selected",
+        selected: [intersects[0].object.uuid],
+      });
+    }
+  });
+
   let then = 0;
   let frame: number;
   const render = function (now: number) {
@@ -231,8 +141,15 @@ async function renderRawThreeJS(
     globals.delta = Math.min(globals.time - then, 1 / 20);
     then = globals.time;
 
-    console.log(camera.position, camera.zoom);
     frame = requestAnimationFrame(render);
+    if (resizeRendererToDisplaySize(renderer)) {
+      // const canvas = renderer.domElement;
+      // if (camera instanceof PerspectiveCamera) {
+      //   camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      // }
+      camera.updateProjectionMatrix();
+    }
+
     try {
       gameObjectManager.update({camera});
     } catch (err) {
@@ -243,6 +160,136 @@ async function renderRawThreeJS(
     renderer.render(scene, camera);
   };
   frame = requestAnimationFrame(render);
+
+  const maxSize = Math.max(
+    renderer.domElement.width,
+    renderer.domElement.height,
+  );
+  function updateState(state: CanvasContextOutput) {
+    const contextState = state[0];
+    // Imperative functions to make the THREEJS objects reflect the state
+    if (contextState.selecting) {
+      panControls.mouseButtons = {
+        MIDDLE: MOUSE.DOLLY,
+        LEFT: MOUSE.ROTATE,
+        RIGHT: MOUSE.PAN,
+      };
+    } else {
+      panControls.mouseButtons = {
+        MIDDLE: MOUSE.DOLLY,
+        LEFT: MOUSE.PAN,
+        RIGHT: MOUSE.PAN,
+      };
+    }
+    if (outsideState[0].recenter !== contextState.recenter) {
+      camera.position.set(0, 0, 1 / 0.0000000001);
+      const radius = gameObjectManager.gameObjects.reduce((prev, next) => {
+        if (!next.visible) return prev;
+        const distance = distance3d({x: 0, y: 0, z: 0}, next.position);
+        if (distance > prev) return distance;
+        return prev;
+      }, 0);
+      if (radius !== 0) {
+        panControls.reset();
+        const newZoom = 1 / ((radius * 2) / maxSize) / 100;
+        panControls.zoom0 = newZoom;
+        camera.position.set(0, 0, 1 / 0.0000000001);
+        camera.updateProjectionMatrix();
+      }
+    }
+    gameObjectManager.gameObjects.forEach(obj => {
+      if (contextState.selected.includes(obj.uuid)) {
+        if (obj.selected === false) {
+          obj.selected = true;
+        }
+      } else if (obj.selected === true) {
+        obj.selected = false;
+      }
+    });
+    outsideState = state;
+  }
+  function cleanUp() {
+    cancelAnimationFrame(frame);
+    doDispose(scene);
+    panControls.dispose();
+    clearEvents(ref.current);
+  }
+  return {updateState, cleanUp};
 }
 
-export default renderRawThreeJS;
+function doDispose(obj: any) {
+  if (obj !== null) {
+    for (var i = 0; i < obj.children.length; i++) {
+      doDispose(obj.children[i]);
+    }
+    if (obj.geometry) {
+      obj.geometry.dispose();
+      obj.geometry = undefined;
+    }
+    if (obj.material) {
+      if (obj.material.map) {
+        obj.material.map.dispose();
+        obj.material.map = undefined;
+      }
+      obj.material.dispose();
+      obj.material = undefined;
+    }
+  }
+  obj = undefined;
+}
+
+const sub = gql`
+  subscription Entities($flightId: ID!, $stageId: ID!) {
+    entities(flightId: $flightId, stageId: $stageId, template: false) {
+      ...EntityData
+    }
+  }
+  ${EntityDataFragmentDoc}
+`;
+
+const RawTHREEJS: React.FC = () => {
+  const {stageId: currentStage = "root-stage"} = useParams();
+  const flightId = "cool flight";
+
+  const [, storeApi] = usePatchedSubscriptions<
+    EntityInterface[],
+    {flightId: string; stageId: string}
+  >(sub, {flightId, stageId: currentStage});
+  const client = useApolloClient();
+
+  const threeRef = React.useRef<HTMLDivElement>(null);
+
+  const updateStateCallback = React.useRef((state: CanvasContextOutput) => {});
+  const outsideState = React.useContext(CanvasContext);
+  React.useLayoutEffect(() => {
+    let cleanup = () => {};
+    renderRawThreeJS(threeRef, client, storeApi).then(
+      ({updateState, cleanUp}) => {
+        cleanup = cleanUp;
+        updateStateCallback.current = updateState;
+        updateState(outsideState);
+      },
+    );
+    return () => {
+      cleanup();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  React.useLayoutEffect(() => {
+    updateStateCallback.current(outsideState);
+  });
+  return (
+    <div
+      ref={threeRef}
+      css={css`
+        canvas {
+          width: 100%;
+          height: 100%;
+        }
+      `}
+    />
+  );
+};
+
+export default RawTHREEJS;

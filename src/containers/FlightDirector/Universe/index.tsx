@@ -16,6 +16,8 @@ import {useNavigate} from "react-router-dom";
 // import CanvasWrapper from "./CanvasWrapper";
 import {useApolloClient} from "@apollo/client";
 import renderRawThreeJS from "./rawThreeJS";
+import {css} from "@emotion/core";
+import RawTHREEJS from "./rawThreeJS";
 
 const sub = gql`
   subscription Entities($flightId: ID!, $stageId: ID!) {
@@ -46,25 +48,19 @@ export default function UniversalSandboxEditor() {
     {flightId: string; stageId: string}
   >(sub, {flightId, stageId: currentStage});
   // const {data} = useEntitiesQuery({variables: {flightId}});
-  const client = useApolloClient();
   // const staticEntities = data?.entities.filter(isEntity) || [];
-
-  const threeRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    renderRawThreeJS(threeRef, client, storeApi);
-  }, [client, storeApi]);
 
   return (
     <CanvasContextProvider>
       <div className="universal-sandbox-editor">
         <PropertyPalette
+          flightId={flightId}
           useEntityState={useEntityState}
           currentStage={currentStage}
           setCurrentStage={setCurrentStage}
         />
         <div className="level-editor-container">
-          <div ref={threeRef} />
+          <RawTHREEJS />
           {/* <CanvasWrapper
             useEntityState={useEntityState}
             staticEntities={[]}

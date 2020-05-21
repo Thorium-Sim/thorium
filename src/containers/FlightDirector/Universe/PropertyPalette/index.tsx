@@ -1,5 +1,5 @@
 import React from "react";
-import {Entity} from "generated/graphql";
+import {Entity, useEntitiesQuery} from "generated/graphql";
 import Identity from "./Identity";
 import Appearance from "./Appearance";
 import Location from "./Location";
@@ -20,23 +20,36 @@ interface PropertyPaletteProps {
   useEntityState: UseStore<PatchData<Entity[]>>;
   currentStage?: string;
   setCurrentStage?: React.Dispatch<React.SetStateAction<string>>;
+  flightId?: string;
 }
 const PropertyPalette: React.FC<PropertyPaletteProps> = ({
   selectedEntity: realSelectedEntity,
   useEntityState,
   currentStage,
   setCurrentStage,
+  flightId,
 }) => {
   const [{selected, controllingEntityId}, dispatch] = React.useContext(
     CanvasContext,
   );
 
-  const selectedEntity =
+  const staticEntities = useEntitiesQuery({
+    variables: {flightId: flightId || ""},
+    skip: !flightId,
+  });
+
+  const selectedEntity: Entity | undefined =
     useEntityState(
       ({data: entities}) =>
         entities.find(e => selected && e.id === selected[0]) ||
         entities.find(e => e.id === currentStage),
-    ) || realSelectedEntity;
+    ) ||
+    (staticEntities?.data?.entities.find(
+      e =>
+        (selected.length > 0 && e?.id === selected[0]) ||
+        (selected.length === 0 && e?.id === currentStage),
+    ) as Entity) ||
+    realSelectedEntity;
 
   const [getAsset, setGetAsset] = React.useState<{
     label: string;

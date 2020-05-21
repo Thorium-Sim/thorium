@@ -121,9 +121,15 @@ const canvasContextReducer = (
   }
 };
 
-export const CanvasContext = React.createContext<
-  [CanvasContextState, React.Dispatch<CanvasContextAction>]
->([canvasContextDefault, () => {}]);
+export type CanvasContextOutput = [
+  CanvasContextState,
+  React.Dispatch<CanvasContextAction>,
+];
+
+export const CanvasContext = React.createContext<CanvasContextOutput>([
+  canvasContextDefault,
+  () => {},
+]);
 
 type ReducerSignature = (
   state: CanvasContextState,
