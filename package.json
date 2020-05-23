@@ -67,7 +67,9 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -88,8 +90,12 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint"],
-    "*.{css,scss}": ["stylelint"],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -106,7 +112,9 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": { "provider": "github" },
+    "publish": {
+      "provider": "github"
+    },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -135,10 +143,15 @@
       ]
     },
     "win": {
-      "target": ["zip", "portable"],
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     },
-    "linux": { "category": "Utility" }
+    "linux": {
+      "category": "Utility"
+    }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -313,9 +326,6 @@
     "babel-jest": "^24.9.0",
     "babel-plugin-import-glob": "^2.0.0",
     "babel-plugin-transform-node-env-inline": "^0.4.3",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-react-app": "^9.0.2",
     "bodymovin": "^4.13.0",
     "bootstrap": "^4.3.1",
     "canvas": "^2.6.0",
@@ -393,6 +403,6 @@
   "resolutions": {
     "change-case": "^4.1.1",
     "param-case": "3.0.3",
-    "@babel/preset-env": "^7.8.7"
+    "@babel/preset-env": "^7.9.6"
   }
 }

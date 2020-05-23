@@ -20,6 +20,7 @@ import {
 } from "three";
 import renderer from "./renderer";
 import getOrthoCamera from "./orthoCamera";
+import getPerspectiveCamera from "./perspectiveCamera";
 import globals from "./globals";
 import Grid from "./grid";
 import {css} from "@emotion/core";
@@ -30,9 +31,10 @@ import {distance3d} from "components/views/Sensors/gridCore/constants";
 import Entity from "./entity";
 import GameObjectManager from "./gameObjectManager";
 import getPanControls from "./panControls";
+import getFlyControls from "./flyControls";
 import {clearEvents, initEvents, mouse} from "./mouseEvents";
-
-// import generateNebula from "./nebula";
+import {get3DMousePosition} from "../use3DMousePosition";
+import Nebula from "./nebula";
 
 // function* waitFrames(numFrames) {
 //   while (numFrames > 0) {
@@ -48,16 +50,16 @@ import {clearEvents, initEvents, mouse} from "./mouseEvents";
 //   }
 // }
 
-function resizeRendererToDisplaySize(renderer: WebGLRenderer) {
-  const canvas = renderer.domElement;
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  const needResize = canvas.width !== width || canvas.height !== height;
-  if (needResize) {
-    renderer.setSize(width, height, false);
-  }
-  return needResize;
-}
+// function resizeRendererToDisplaySize(renderer: WebGLRenderer) {
+//   const canvas = renderer.domElement;
+//   const width = canvas.clientWidth;
+//   const height = canvas.clientHeight;
+//   const needResize = canvas.width !== width || canvas.height !== height;
+//   if (needResize) {
+//     renderer.setSize(width, height, false);
+//   }
+//   return needResize;
+// }
 
 type OutsideState = CanvasContextOutput;
 
@@ -98,6 +100,9 @@ async function renderRawThreeJS(
   // use ref as a mount point of the Three.js scene instead of the document.body
   ref.current?.appendChild(renderer.domElement);
 
+  const nebula = new Nebula("Pretty");
+  scene.add(nebula);
+
   const grid = new Grid(dimensions);
   gameObjectManager.addGameObject(grid);
   scene.add(grid);
@@ -112,26 +117,55 @@ async function renderRawThreeJS(
         scene.add(entity);
       });
     });
-  // generateNebula("alex").then(nebula => scene.add(nebula));
 
-  const camera: PerspectiveCamera | OrthographicCamera = getOrthoCamera(
-    dimensions,
-  );
-  const panControls = getPanControls(camera, ref.current);
+  const orthoCamera = getOrthoCamera(dimensions);
+  const perspectiveCamera = getPerspectiveCamera(dimensions);
+  let activeCamera: PerspectiveCamera | OrthographicCamera = orthoCamera;
+
+  const panControls = getPanControls(orthoCamera, ref.current);
+  const flyControls = getFlyControls(perspectiveCamera, ref.current);
+  flyControls.enabled = false;
   initEvents(ref.current);
 
-  ref.current?.addEventListener("mousedown", e => {
+  let isMouseDown = false;
+  document.addEventListener("mousedown", e => {
+    if (e.target !== renderer.domElement) return;
+    isMouseDown = true;
+    if (activeCamera !== orthoCamera) return;
     // update the picking ray with the camera and mouse position
-    raycaster.setFromCamera(mouse, camera);
+    raycaster.setFromCamera(mouse, orthoCamera);
 
     // calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects(scene.children, true);
     if (intersects[0]?.object) {
       outsideState[1]({
         type: "selected",
-        selected: [intersects[0].object.uuid],
+        selected: e.shiftKey
+          ? outsideState[0].selected.concat(intersects[0].object.uuid)
+          : [intersects[0].object.uuid],
       });
+      panControls.enabled = false;
     }
+  });
+  document.addEventListener("mousemove", e => {
+    if (!isMouseDown || activeCamera !== orthoCamera) return;
+    const position = get3DMousePosition(
+      e.clientX - dimensions.left,
+      e.clientY - dimensions.top,
+      dimensions.width,
+      dimensions.height,
+      orthoCamera,
+    );
+    gameObjectManager.gameObjects.forEach(object => {
+      if (outsideState[0].selected.includes(object.uuid)) {
+        object.position.set(position.x, position.y, position.z);
+      }
+    });
+  });
+  document.addEventListener("mouseup", e => {
+    isMouseDown = false;
+    if (activeCamera !== orthoCamera) return;
+    panControls.enabled = true;
   });
 
   let then = 0;
@@ -142,22 +176,19 @@ async function renderRawThreeJS(
     then = globals.time;
 
     frame = requestAnimationFrame(render);
-    if (resizeRendererToDisplaySize(renderer)) {
-      // const canvas = renderer.domElement;
-      // if (camera instanceof PerspectiveCamera) {
-      //   camera.aspect = canvas.clientWidth / canvas.clientHeight;
-      // }
-      camera.updateProjectionMatrix();
-    }
 
     try {
-      gameObjectManager.update({camera});
+      // Update the fly controls if necessary
+      if (activeCamera === perspectiveCamera) {
+        flyControls.update(globals.delta);
+      }
+      gameObjectManager.update({camera: activeCamera});
     } catch (err) {
       console.error("There has been an error", err);
       cancelAnimationFrame(frame);
       throw err;
     }
-    renderer.render(scene, camera);
+    renderer.render(scene, activeCamera);
   };
   frame = requestAnimationFrame(render);
 
@@ -182,7 +213,8 @@ async function renderRawThreeJS(
       };
     }
     if (outsideState[0].recenter !== contextState.recenter) {
-      camera.position.set(0, 0, 1 / 0.0000000001);
+      if (activeCamera !== orthoCamera) return;
+      activeCamera.position.set(0, 0, 1 / 0.0000000001);
       const radius = gameObjectManager.gameObjects.reduce((prev, next) => {
         if (!next.visible) return prev;
         const distance = distance3d({x: 0, y: 0, z: 0}, next.position);
@@ -193,8 +225,23 @@ async function renderRawThreeJS(
         panControls.reset();
         const newZoom = 1 / ((radius * 2) / maxSize) / 100;
         panControls.zoom0 = newZoom;
-        camera.position.set(0, 0, 1 / 0.0000000001);
-        camera.updateProjectionMatrix();
+        activeCamera.position.set(0, 0, 1 / 0.0000000001);
+        activeCamera.updateProjectionMatrix();
+      }
+    }
+    if (outsideState[0].camera !== contextState.camera) {
+      if (contextState.camera) {
+        activeCamera = perspectiveCamera;
+        grid.visible = false;
+        nebula.visible = true;
+        panControls.enabled = false;
+        flyControls.enabled = true;
+      } else {
+        activeCamera = orthoCamera;
+        grid.visible = true;
+        nebula.visible = false;
+        panControls.enabled = true;
+        flyControls.enabled = false;
       }
     }
     gameObjectManager.gameObjects.forEach(obj => {

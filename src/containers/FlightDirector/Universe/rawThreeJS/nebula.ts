@@ -14,20 +14,26 @@ interface Textures {
 
 const nebulaGeometry = new BoxBufferGeometry(1, 1, 1);
 let mats: MeshBasicMaterial[];
-async function generateNebula(skyboxKey: string) {
-  const bg = await loadImage(require("../stars.jpg"));
 
-  // Let's clean up any existing objects;
-  mats?.forEach(m => {
-    m.map?.dispose();
-    m.dispose();
-  });
-  mats = generateMaterials(skyboxKey, bg);
-  const mesh = new Mesh(nebulaGeometry);
-  mesh.material = mats;
-  mesh.scale.set(radius, radius, radius);
+class Nebula extends Mesh {
+  constructor(skyboxKey: string) {
+    super(nebulaGeometry);
 
-  return mesh;
+    this.scale.set(radius, radius, radius);
+    this.generate(skyboxKey);
+  }
+
+  async generate(skyboxKey: string) {
+    const bg = await loadImage(require("../stars.jpg"));
+
+    // Let's clean up any existing objects;
+    mats?.forEach(m => {
+      m.map?.dispose();
+      m.dispose();
+    });
+    mats = generateMaterials(skyboxKey, bg);
+    this.material = mats;
+  }
 }
 
-export default generateNebula;
+export default Nebula;

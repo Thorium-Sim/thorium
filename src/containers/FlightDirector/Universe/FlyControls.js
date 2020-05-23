@@ -13,6 +13,7 @@ class FlyControls {
       domElement = document;
     }
 
+    this._enabled = true;
     this.object = object;
     this.domElement = domElement;
 
@@ -52,6 +53,7 @@ class FlyControls {
     this.rotationVector = new Vector3(0, 0, 0);
 
     this.keydown = function (event) {
+      if (!this._enabled) return;
       if (event.altKey) {
         return;
       }
@@ -113,6 +115,7 @@ class FlyControls {
     };
 
     this.keyup = function (event) {
+      if (!this._enabled) return;
       switch (event.keyCode) {
         case 16:
           /* shift */ this.movementSpeedMultiplier = 1;
@@ -168,6 +171,8 @@ class FlyControls {
     };
 
     this.mousedown = function (event) {
+      if (!this._enabled) return;
+
       if (this.domElement !== document) {
         this.domElement.focus();
       }
@@ -194,6 +199,8 @@ class FlyControls {
     };
 
     this.mousemove = function (event) {
+      if (!this._enabled) return;
+
       if (!this.dragToLook || this.mouseStatus > 0) {
         var container = this.getContainerDimensions();
         var halfWidth = container.size[0] / 2;
@@ -209,6 +216,8 @@ class FlyControls {
     };
 
     this.mouseup = function (event) {
+      if (!this._enabled) return;
+
       event.preventDefault();
       event.stopPropagation();
 
@@ -235,6 +244,8 @@ class FlyControls {
     };
 
     this.update = function (delta) {
+      if (!this._enabled) return;
+
       var moveMult = delta * this.movementSpeed;
       var rotMult = delta * this.rollSpeed;
 
@@ -299,6 +310,8 @@ class FlyControls {
     }
 
     function contextmenu(event) {
+      if (!this._enabled) return;
+
       event.preventDefault();
     }
 
@@ -329,6 +342,12 @@ class FlyControls {
 
     this.updateMovementVector();
     this.updateRotationVector();
+  }
+  set enabled(value) {
+    this._enabled = value;
+  }
+  get enabled() {
+    return this._enabled;
   }
 }
 
