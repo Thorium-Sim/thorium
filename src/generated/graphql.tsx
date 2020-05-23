@@ -1,7 +1,7 @@
 import gql from 'graphql-tag.macro';
-import * as ApolloReactCommon from '@apollo/client';
 import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
+
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -14420,11 +14420,7 @@ export const AmbianceDocument = gql`
 export function useAmbianceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AmbianceQuery, AmbianceQueryVariables>) {
         return ApolloReactHooks.useQuery<AmbianceQuery, AmbianceQueryVariables>(AmbianceDocument, baseOptions);
       }
-export function useAmbianceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AmbianceQuery, AmbianceQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<AmbianceQuery, AmbianceQueryVariables>(AmbianceDocument, baseOptions);
-        }
 export type AmbianceQueryHookResult = ReturnType<typeof useAmbianceQuery>;
-export type AmbianceLazyQueryHookResult = ReturnType<typeof useAmbianceLazyQuery>;
 export const ClientDocument = gql`
     query Client($clientId: ID!) {
   clients(clientId: $clientId) {
@@ -14435,11 +14431,7 @@ export const ClientDocument = gql`
 export function useClientQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ClientQuery, ClientQueryVariables>) {
         return ApolloReactHooks.useQuery<ClientQuery, ClientQueryVariables>(ClientDocument, baseOptions);
       }
-export function useClientLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ClientQuery, ClientQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ClientQuery, ClientQueryVariables>(ClientDocument, baseOptions);
-        }
 export type ClientQueryHookResult = ReturnType<typeof useClientQuery>;
-export type ClientLazyQueryHookResult = ReturnType<typeof useClientLazyQuery>;
 export const ClientUpdateDocument = gql`
     subscription ClientUpdate($clientId: ID!) {
   clientChanged(clientId: $clientId) {
@@ -14511,11 +14503,7 @@ export const SimulatorDocument = gql`
 export function useSimulatorQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SimulatorQuery, SimulatorQueryVariables>) {
         return ApolloReactHooks.useQuery<SimulatorQuery, SimulatorQueryVariables>(SimulatorDocument, baseOptions);
       }
-export function useSimulatorLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SimulatorQuery, SimulatorQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SimulatorQuery, SimulatorQueryVariables>(SimulatorDocument, baseOptions);
-        }
 export type SimulatorQueryHookResult = ReturnType<typeof useSimulatorQuery>;
-export type SimulatorLazyQueryHookResult = ReturnType<typeof useSimulatorLazyQuery>;
 export const SimulatorUpdateDocument = gql`
     subscription SimulatorUpdate($simulatorId: ID!) {
   simulatorsUpdate(simulatorId: $simulatorId) {
@@ -14538,11 +14526,7 @@ export const MacroDmxConfigsDocument = gql`
 export function useMacroDmxConfigsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>) {
         return ApolloReactHooks.useQuery<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>(MacroDmxConfigsDocument, baseOptions);
       }
-export function useMacroDmxConfigsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<MacroDmxConfigsQuery, MacroDmxConfigsQueryVariables>(MacroDmxConfigsDocument, baseOptions);
-        }
 export type MacroDmxConfigsQueryHookResult = ReturnType<typeof useMacroDmxConfigsQuery>;
-export type MacroDmxConfigsLazyQueryHookResult = ReturnType<typeof useMacroDmxConfigsLazyQuery>;
 export const DockingShuttleConfigDocument = gql`
     query DockingShuttleConfig($simulatorId: ID!) {
   docking(simulatorId: $simulatorId) {
@@ -14571,11 +14555,7 @@ export const DockingShuttleConfigDocument = gql`
 export function useDockingShuttleConfigQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DockingShuttleConfigQuery, DockingShuttleConfigQueryVariables>) {
         return ApolloReactHooks.useQuery<DockingShuttleConfigQuery, DockingShuttleConfigQueryVariables>(DockingShuttleConfigDocument, baseOptions);
       }
-export function useDockingShuttleConfigLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DockingShuttleConfigQuery, DockingShuttleConfigQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<DockingShuttleConfigQuery, DockingShuttleConfigQueryVariables>(DockingShuttleConfigDocument, baseOptions);
-        }
 export type DockingShuttleConfigQueryHookResult = ReturnType<typeof useDockingShuttleConfigQuery>;
-export type DockingShuttleConfigLazyQueryHookResult = ReturnType<typeof useDockingShuttleConfigLazyQuery>;
 export const MissionMacrosDocument = gql`
     query MissionMacros {
   missions {
@@ -14592,11 +14572,7 @@ export const MissionMacrosDocument = gql`
 export function useMissionMacrosQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<MissionMacrosQuery, MissionMacrosQueryVariables>) {
         return ApolloReactHooks.useQuery<MissionMacrosQuery, MissionMacrosQueryVariables>(MissionMacrosDocument, baseOptions);
       }
-export function useMissionMacrosLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<MissionMacrosQuery, MissionMacrosQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<MissionMacrosQuery, MissionMacrosQueryVariables>(MissionMacrosDocument, baseOptions);
-        }
 export type MissionMacrosQueryHookResult = ReturnType<typeof useMissionMacrosQuery>;
-export type MissionMacrosLazyQueryHookResult = ReturnType<typeof useMissionMacrosLazyQuery>;
 export const RemoteAssetLoadDocument = gql`
     mutation RemoteAssetLoad($folderPath: String!, $files: [RemoteAsset!]!) {
   downloadRemoteAssets(folderPath: $folderPath, files: $files)
@@ -14722,11 +14698,7 @@ export const CountermeasureModulesDocument = gql`
 export function useCountermeasureModulesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CountermeasureModulesQuery, CountermeasureModulesQueryVariables>) {
         return ApolloReactHooks.useQuery<CountermeasureModulesQuery, CountermeasureModulesQueryVariables>(CountermeasureModulesDocument, baseOptions);
       }
-export function useCountermeasureModulesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CountermeasureModulesQuery, CountermeasureModulesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<CountermeasureModulesQuery, CountermeasureModulesQueryVariables>(CountermeasureModulesDocument, baseOptions);
-        }
 export type CountermeasureModulesQueryHookResult = ReturnType<typeof useCountermeasureModulesQuery>;
-export type CountermeasureModulesLazyQueryHookResult = ReturnType<typeof useCountermeasureModulesLazyQuery>;
 export const CountermeasureRemoveModuleDocument = gql`
     mutation CountermeasureRemoveModule($id: ID!, $slot: CountermeasureSlotEnum!, $moduleId: ID!) {
   countermeasuresRemoveModule(id: $id, slot: $slot, moduleId: $moduleId)
@@ -14881,11 +14853,7 @@ export const SystemsCoreEnginesDocument = gql`
 export function useSystemsCoreEnginesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>) {
         return ApolloReactHooks.useQuery<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>(SystemsCoreEnginesDocument, baseOptions);
       }
-export function useSystemsCoreEnginesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SystemsCoreEnginesQuery, SystemsCoreEnginesQueryVariables>(SystemsCoreEnginesDocument, baseOptions);
-        }
 export type SystemsCoreEnginesQueryHookResult = ReturnType<typeof useSystemsCoreEnginesQuery>;
-export type SystemsCoreEnginesLazyQueryHookResult = ReturnType<typeof useSystemsCoreEnginesLazyQuery>;
 export const SystemChangePowerDocument = gql`
     mutation SystemChangePower($systemId: ID!, $power: Int!) {
   changePower(systemId: $systemId, power: $power)
@@ -15198,11 +15166,7 @@ export const SensorsProbesDocument = gql`
 export function useSensorsProbesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SensorsProbesQuery, SensorsProbesQueryVariables>) {
         return ApolloReactHooks.useQuery<SensorsProbesQuery, SensorsProbesQueryVariables>(SensorsProbesDocument, baseOptions);
       }
-export function useSensorsProbesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SensorsProbesQuery, SensorsProbesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SensorsProbesQuery, SensorsProbesQueryVariables>(SensorsProbesDocument, baseOptions);
-        }
 export type SensorsProbesQueryHookResult = ReturnType<typeof useSensorsProbesQuery>;
-export type SensorsProbesLazyQueryHookResult = ReturnType<typeof useSensorsProbesLazyQuery>;
 export const SensorsDocument = gql`
     subscription Sensors($simulatorId: ID!, $domain: String) {
   sensorsUpdate(simulatorId: $simulatorId, domain: $domain) {
@@ -15296,11 +15260,7 @@ export const TargetingRangeDocument = gql`
 export function useTargetingRangeQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TargetingRangeQuery, TargetingRangeQueryVariables>) {
         return ApolloReactHooks.useQuery<TargetingRangeQuery, TargetingRangeQueryVariables>(TargetingRangeDocument, baseOptions);
       }
-export function useTargetingRangeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TargetingRangeQuery, TargetingRangeQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<TargetingRangeQuery, TargetingRangeQueryVariables>(TargetingRangeDocument, baseOptions);
-        }
 export type TargetingRangeQueryHookResult = ReturnType<typeof useTargetingRangeQuery>;
-export type TargetingRangeLazyQueryHookResult = ReturnType<typeof useTargetingRangeLazyQuery>;
 export const NewLayerDocument = gql`
     mutation NewLayer($mapId: ID!, $name: String!) {
   addTacticalMapLayer(mapId: $mapId, name: $name)
@@ -15588,11 +15548,7 @@ export const ProbeEquipmentDocument = gql`
 export function useProbeEquipmentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ProbeEquipmentQuery, ProbeEquipmentQueryVariables>) {
         return ApolloReactHooks.useQuery<ProbeEquipmentQuery, ProbeEquipmentQueryVariables>(ProbeEquipmentDocument, baseOptions);
       }
-export function useProbeEquipmentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ProbeEquipmentQuery, ProbeEquipmentQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ProbeEquipmentQuery, ProbeEquipmentQueryVariables>(ProbeEquipmentDocument, baseOptions);
-        }
 export type ProbeEquipmentQueryHookResult = ReturnType<typeof useProbeEquipmentQuery>;
-export type ProbeEquipmentLazyQueryHookResult = ReturnType<typeof useProbeEquipmentLazyQuery>;
 export const ActivateTaskFlowDocument = gql`
     mutation ActivateTaskFlow($id: ID!, $simulatorId: ID!) {
   taskFlowActivate(id: $id, simulatorId: $simulatorId)
@@ -15652,11 +15608,7 @@ export const TemplateDocument = gql`
 export function useTemplateQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TemplateQuery, TemplateQueryVariables>) {
         return ApolloReactHooks.useQuery<TemplateQuery, TemplateQueryVariables>(TemplateDocument, baseOptions);
       }
-export function useTemplateLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TemplateQuery, TemplateQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<TemplateQuery, TemplateQueryVariables>(TemplateDocument, baseOptions);
-        }
 export type TemplateQueryHookResult = ReturnType<typeof useTemplateQuery>;
-export type TemplateLazyQueryHookResult = ReturnType<typeof useTemplateLazyQuery>;
 export const TemplateUpdateDocument = gql`
     subscription TemplateUpdate($simulatorId: ID!) {
   _templateUpdate(simulatorId: $simulatorId) {
@@ -15917,11 +15869,7 @@ export const ClientsInterfacesAndKeyboardsDocument = gql`
 export function useClientsInterfacesAndKeyboardsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ClientsInterfacesAndKeyboardsQuery, ClientsInterfacesAndKeyboardsQueryVariables>) {
         return ApolloReactHooks.useQuery<ClientsInterfacesAndKeyboardsQuery, ClientsInterfacesAndKeyboardsQueryVariables>(ClientsInterfacesAndKeyboardsDocument, baseOptions);
       }
-export function useClientsInterfacesAndKeyboardsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ClientsInterfacesAndKeyboardsQuery, ClientsInterfacesAndKeyboardsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ClientsInterfacesAndKeyboardsQuery, ClientsInterfacesAndKeyboardsQueryVariables>(ClientsInterfacesAndKeyboardsDocument, baseOptions);
-        }
 export type ClientsInterfacesAndKeyboardsQueryHookResult = ReturnType<typeof useClientsInterfacesAndKeyboardsQuery>;
-export type ClientsInterfacesAndKeyboardsLazyQueryHookResult = ReturnType<typeof useClientsInterfacesAndKeyboardsLazyQuery>;
 export const SetClientFlightDocument = gql`
     mutation SetClientFlight($client: ID!, $id: ID!) {
   clientSetFlight(client: $client, flightId: $id)
@@ -15990,11 +15938,7 @@ export const FlightDocument = gql`
 export function useFlightQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FlightQuery, FlightQueryVariables>) {
         return ApolloReactHooks.useQuery<FlightQuery, FlightQueryVariables>(FlightDocument, baseOptions);
       }
-export function useFlightLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FlightQuery, FlightQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<FlightQuery, FlightQueryVariables>(FlightDocument, baseOptions);
-        }
 export type FlightQueryHookResult = ReturnType<typeof useFlightQuery>;
-export type FlightLazyQueryHookResult = ReturnType<typeof useFlightLazyQuery>;
 export const PauseFlightDocument = gql`
     mutation PauseFlight($flightId: ID!) {
   pauseFlight(flightId: $flightId)
@@ -16061,11 +16005,7 @@ export const SetsPickerDocument = gql`
 export function useSetsPickerQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SetsPickerQuery, SetsPickerQueryVariables>) {
         return ApolloReactHooks.useQuery<SetsPickerQuery, SetsPickerQueryVariables>(SetsPickerDocument, baseOptions);
       }
-export function useSetsPickerLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SetsPickerQuery, SetsPickerQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SetsPickerQuery, SetsPickerQueryVariables>(SetsPickerDocument, baseOptions);
-        }
 export type SetsPickerQueryHookResult = ReturnType<typeof useSetsPickerQuery>;
-export type SetsPickerLazyQueryHookResult = ReturnType<typeof useSetsPickerLazyQuery>;
 export const TransmitFlightDocument = gql`
     mutation TransmitFlight($flightId: ID!) {
   assignSpaceEdventuresFlightRecord(flightId: $flightId)
@@ -16305,11 +16245,7 @@ export const DmxFixtureTagsDocument = gql`
 export function useDmxFixtureTagsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>) {
         return ApolloReactHooks.useQuery<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>(DmxFixtureTagsDocument, baseOptions);
       }
-export function useDmxFixtureTagsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<DmxFixtureTagsQuery, DmxFixtureTagsQueryVariables>(DmxFixtureTagsDocument, baseOptions);
-        }
 export type DmxFixtureTagsQueryHookResult = ReturnType<typeof useDmxFixtureTagsQuery>;
-export type DmxFixtureTagsLazyQueryHookResult = ReturnType<typeof useDmxFixtureTagsLazyQuery>;
 export const DmxSetCreateDocument = gql`
     mutation DMXSetCreate($name: String!) {
   dmxSetCreate(name: $name)
@@ -16425,11 +16361,7 @@ export const FlightSetupDocument = gql`
 export function useFlightSetupQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FlightSetupQuery, FlightSetupQueryVariables>) {
         return ApolloReactHooks.useQuery<FlightSetupQuery, FlightSetupQueryVariables>(FlightSetupDocument, baseOptions);
       }
-export function useFlightSetupLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FlightSetupQuery, FlightSetupQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<FlightSetupQuery, FlightSetupQueryVariables>(FlightSetupDocument, baseOptions);
-        }
 export type FlightSetupQueryHookResult = ReturnType<typeof useFlightSetupQuery>;
-export type FlightSetupLazyQueryHookResult = ReturnType<typeof useFlightSetupLazyQuery>;
 export const FlightTypesDocument = gql`
     query FlightTypes {
   thorium {
@@ -16449,11 +16381,7 @@ export const FlightTypesDocument = gql`
 export function useFlightTypesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<FlightTypesQuery, FlightTypesQueryVariables>) {
         return ApolloReactHooks.useQuery<FlightTypesQuery, FlightTypesQueryVariables>(FlightTypesDocument, baseOptions);
       }
-export function useFlightTypesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<FlightTypesQuery, FlightTypesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<FlightTypesQuery, FlightTypesQueryVariables>(FlightTypesDocument, baseOptions);
-        }
 export type FlightTypesQueryHookResult = ReturnType<typeof useFlightTypesQuery>;
-export type FlightTypesLazyQueryHookResult = ReturnType<typeof useFlightTypesLazyQuery>;
 export const StartFlightDocument = gql`
     mutation StartFlight($name: String!, $simulators: [SimulatorInput!]!, $flightType: String) {
   startFlight(name: $name, simulators: $simulators, flightType: $flightType)
@@ -16543,11 +16471,7 @@ export const IntrospectionQueryDocument = gql`
 export function useIntrospectionQueryQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IntrospectionQueryQuery, IntrospectionQueryQueryVariables>) {
         return ApolloReactHooks.useQuery<IntrospectionQueryQuery, IntrospectionQueryQueryVariables>(IntrospectionQueryDocument, baseOptions);
       }
-export function useIntrospectionQueryLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IntrospectionQueryQuery, IntrospectionQueryQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<IntrospectionQueryQuery, IntrospectionQueryQueryVariables>(IntrospectionQueryDocument, baseOptions);
-        }
 export type IntrospectionQueryQueryHookResult = ReturnType<typeof useIntrospectionQueryQuery>;
-export type IntrospectionQueryLazyQueryHookResult = ReturnType<typeof useIntrospectionQueryLazyQuery>;
 export const MissionSubscriptionDocument = gql`
     subscription MissionSubscription($missionId: ID!) {
   missionsUpdate(missionId: $missionId) {
@@ -16719,11 +16643,7 @@ export const SetKeyboardAndInterfaceDocument = gql`
 export function useSetKeyboardAndInterfaceQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>) {
         return ApolloReactHooks.useQuery<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>(SetKeyboardAndInterfaceDocument, baseOptions);
       }
-export function useSetKeyboardAndInterfaceLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SetKeyboardAndInterfaceQuery, SetKeyboardAndInterfaceQueryVariables>(SetKeyboardAndInterfaceDocument, baseOptions);
-        }
 export type SetKeyboardAndInterfaceQueryHookResult = ReturnType<typeof useSetKeyboardAndInterfaceQuery>;
-export type SetKeyboardAndInterfaceLazyQueryHookResult = ReturnType<typeof useSetKeyboardAndInterfaceLazyQuery>;
 export const SetsDocument = gql`
     query Sets {
   simulators(template: true) {
@@ -16773,11 +16693,7 @@ export const SetsDocument = gql`
 export function useSetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SetsQuery, SetsQueryVariables>) {
         return ApolloReactHooks.useQuery<SetsQuery, SetsQueryVariables>(SetsDocument, baseOptions);
       }
-export function useSetsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SetsQuery, SetsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SetsQuery, SetsQueryVariables>(SetsDocument, baseOptions);
-        }
 export type SetsQueryHookResult = ReturnType<typeof useSetsQuery>;
-export type SetsLazyQueryHookResult = ReturnType<typeof useSetsLazyQuery>;
 export const UpdateSetClientDocument = gql`
     mutation UpdateSetClient($id: ID!, $clientId: ID!, $secondary: Boolean, $soundPlayer: Boolean) {
   updateSetClient(id: $id, client: {id: $clientId, secondary: $secondary, soundPlayer: $soundPlayer})
@@ -16829,11 +16745,7 @@ export const PanelsAndInterfacesDocument = gql`
 export function usePanelsAndInterfacesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PanelsAndInterfacesQuery, PanelsAndInterfacesQueryVariables>) {
         return ApolloReactHooks.useQuery<PanelsAndInterfacesQuery, PanelsAndInterfacesQueryVariables>(PanelsAndInterfacesDocument, baseOptions);
       }
-export function usePanelsAndInterfacesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PanelsAndInterfacesQuery, PanelsAndInterfacesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<PanelsAndInterfacesQuery, PanelsAndInterfacesQueryVariables>(PanelsAndInterfacesDocument, baseOptions);
-        }
 export type PanelsAndInterfacesQueryHookResult = ReturnType<typeof usePanelsAndInterfacesQuery>;
-export type PanelsAndInterfacesLazyQueryHookResult = ReturnType<typeof usePanelsAndInterfacesLazyQuery>;
 export const RemoveCardDocument = gql`
     mutation RemoveCard($id: ID!, $stationName: String!, $cardName: String!) {
   removeCardFromStation(stationSetID: $id, stationName: $stationName, cardName: $cardName)
@@ -17324,11 +17236,7 @@ export const TaskDefinitionsDocument = gql`
 export function useTaskDefinitionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>) {
         return ApolloReactHooks.useQuery<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>(TaskDefinitionsDocument, baseOptions);
       }
-export function useTaskDefinitionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<TaskDefinitionsQuery, TaskDefinitionsQueryVariables>(TaskDefinitionsDocument, baseOptions);
-        }
 export type TaskDefinitionsQueryHookResult = ReturnType<typeof useTaskDefinitionsQuery>;
-export type TaskDefinitionsLazyQueryHookResult = ReturnType<typeof useTaskDefinitionsLazyQuery>;
 export const TaskFlowAddDocument = gql`
     mutation TaskFlowAdd($name: String!) {
   taskFlowAdd(name: $name)
@@ -17573,11 +17481,7 @@ export const EntitiesDocument = gql`
 export function useEntitiesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<EntitiesQuery, EntitiesQueryVariables>) {
         return ApolloReactHooks.useQuery<EntitiesQuery, EntitiesQueryVariables>(EntitiesDocument, baseOptions);
       }
-export function useEntitiesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<EntitiesQuery, EntitiesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<EntitiesQuery, EntitiesQueryVariables>(EntitiesDocument, baseOptions);
-        }
 export type EntitiesQueryHookResult = ReturnType<typeof useEntitiesQuery>;
-export type EntitiesLazyQueryHookResult = ReturnType<typeof useEntitiesLazyQuery>;
 export const EntityRemoveDocument = gql`
     mutation EntityRemove($id: [ID!]!) {
   entityRemove(id: $id)

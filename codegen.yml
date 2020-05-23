@@ -7,7 +7,7 @@ generates:
       - "typescript"
       - "typescript-operations"
       - "fragment-matcher"
-      - "typescript-react-apollo"
+      - "./scripts/apollo-codegen.js"
     config:
       scalars:
         DateTime: Date
