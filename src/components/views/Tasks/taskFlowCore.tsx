@@ -118,6 +118,12 @@ const TaskFlowCore: React.FC<{simulator: Simulator}> = ({simulator}) => {
                 <p>
                   <strong>Step:</strong> {step.name}
                 </p>
+                {step.delay && (
+                  <p>
+                    <strong>Delay: </strong>
+                    {step.delay} ms
+                  </p>
+                )}
                 <p>
                   <strong>Complete All: </strong>
                   {step.completeAll ? "Yes" : "No"}

@@ -1691,6 +1691,7 @@ export type Mutation = {
   taskFlowStepRemoveTask?: Maybe<Scalars['String']>;
   taskFlowStepEditTask?: Maybe<Scalars['String']>;
   taskFlowStepSetCompleteAll?: Maybe<Scalars['String']>;
+  taskFlowStepSetDelay?: Maybe<Scalars['String']>;
   /** Macro: Tasks: Activate Task Flow */
   taskFlowActivate?: Maybe<Scalars['String']>;
   taskFlowAdvance?: Maybe<Scalars['String']>;
@@ -6191,6 +6192,13 @@ export type MutationTaskFlowStepSetCompleteAllArgs = {
 };
 
 
+export type MutationTaskFlowStepSetDelayArgs = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  delay: Scalars['Int'];
+};
+
+
 export type MutationTaskFlowActivateArgs = {
   id: Scalars['ID'];
   simulatorId: Scalars['ID'];
@@ -10360,6 +10368,7 @@ export type TaskFlowStep = {
   tasks: Array<Task>;
   activeTasks: Array<Task>;
   completeAll: Scalars['Boolean'];
+  delay: Scalars['Int'];
   completed: Scalars['Boolean'];
 };
 
@@ -11941,7 +11950,7 @@ export type TaskFlowSubSubscription = (
     & Pick<TaskFlow, 'id' | 'name' | 'category' | 'currentStep' | 'completed'>
     & { steps: Array<(
       { __typename?: 'TaskFlowStep' }
-      & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll' | 'completed'>
+      & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll' | 'delay' | 'completed'>
       & { activeTasks: Array<(
         { __typename?: 'Task' }
         & Pick<Task, 'id' | 'station' | 'definition' | 'verified'>
@@ -13743,6 +13752,18 @@ export type TaskFlowStepCompleteAllMutation = (
   & Pick<Mutation, 'taskFlowStepSetCompleteAll'>
 );
 
+export type TaskFlowStepDelayMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  delay: Scalars['Int'];
+};
+
+
+export type TaskFlowStepDelayMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowStepSetDelay'>
+);
+
 export type TaskFlowsConfigSubscriptionVariables = {};
 
 
@@ -13753,7 +13774,7 @@ export type TaskFlowsConfigSubscription = (
     & Pick<TaskFlow, 'id' | 'name' | 'category'>
     & { steps: Array<(
       { __typename?: 'TaskFlowStep' }
-      & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll'>
+      & Pick<TaskFlowStep, 'id' | 'name' | 'delay' | 'completeAll'>
       & { tasks: Array<(
         { __typename?: 'Task' }
         & Pick<Task, 'id' | 'station' | 'stationTags' | 'definition' | 'values'>
@@ -15582,6 +15603,7 @@ export const TaskFlowSubDocument = gql`
       id
       name
       completeAll
+      delay
       activeTasks {
         id
         station
@@ -17345,6 +17367,15 @@ export function useTaskFlowStepCompleteAllMutation(baseOptions?: ApolloReactHook
         return ApolloReactHooks.useMutation<TaskFlowStepCompleteAllMutation, TaskFlowStepCompleteAllMutationVariables>(TaskFlowStepCompleteAllDocument, baseOptions);
       }
 export type TaskFlowStepCompleteAllMutationHookResult = ReturnType<typeof useTaskFlowStepCompleteAllMutation>;
+export const TaskFlowStepDelayDocument = gql`
+    mutation TaskFlowStepDelay($id: ID!, $stepId: ID!, $delay: Int!) {
+  taskFlowStepSetDelay(id: $id, stepId: $stepId, delay: $delay)
+}
+    `;
+export function useTaskFlowStepDelayMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowStepDelayMutation, TaskFlowStepDelayMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowStepDelayMutation, TaskFlowStepDelayMutationVariables>(TaskFlowStepDelayDocument, baseOptions);
+      }
+export type TaskFlowStepDelayMutationHookResult = ReturnType<typeof useTaskFlowStepDelayMutation>;
 export const TaskFlowsConfigDocument = gql`
     subscription TaskFlowsConfig {
   taskFlows {
@@ -17373,6 +17404,7 @@ export const TaskFlowsConfigDocument = gql`
           delay
         }
       }
+      delay
       completeAll
     }
   }

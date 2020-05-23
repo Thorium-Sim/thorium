@@ -8,12 +8,14 @@ class TaskFlowStep {
   tasks: Partial<Task>[];
   activeTaskIds: string[];
   completeAll: boolean;
+  delay: number;
   constructor(params: Partial<TaskFlowStep> = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || "Flow Step";
     this.tasks = params.tasks ? params.tasks.map(t => new Task(t)) : [];
     this.activeTaskIds = params.activeTaskIds || [];
     this.completeAll = params.completeAll ?? true;
+    this.delay = params.delay || 0;
   }
   get activeTasks() {
     return this.activeTaskIds
@@ -50,6 +52,9 @@ class TaskFlowStep {
   }
   setCompleteAll(completeAll: boolean) {
     this.completeAll = completeAll;
+  }
+  setDelay(delay: number) {
+    this.delay = delay;
   }
   addActiveTask(task: string) {
     this.activeTaskIds = this.activeTaskIds.concat(task);
@@ -112,16 +117,20 @@ export class TaskFlow {
     // and then publish the results.
     this.currentStep++;
     const step = this.steps[this.currentStep];
-    step?.tasks.forEach(t => {
-      App.handleEvent(
-        {
-          simulatorId: this.simulatorId,
-          taskInput: t,
-          cb: (task: string) => step.addActiveTask(task),
-        },
-        "addTask",
-      );
-    });
+    if (step) {
+      setTimeout(() => {
+        step?.tasks.forEach(t => {
+          App.handleEvent(
+            {
+              simulatorId: this.simulatorId,
+              taskInput: t,
+              cb: (task: string) => step.addActiveTask(task),
+            },
+            "addTask",
+          );
+        });
+      }, Number(step.delay) || 0);
+    }
   }
   setName(name: string) {
     this.name = name;
@@ -158,5 +167,8 @@ export class TaskFlow {
   }
   setCompleteAll(id: string, completeAll: boolean) {
     this.steps.find(s => s.id === id)?.setCompleteAll(completeAll);
+  }
+  setDelay(id: string, delay: number) {
+    this.steps.find(s => s.id === id)?.setDelay(delay);
   }
 }

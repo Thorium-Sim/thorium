@@ -1298,6 +1298,7 @@ type Mutation {
   taskFlowStepRemoveTask(id: ID!, stepId: ID!, taskId: ID!): String
   taskFlowStepEditTask(id: ID!, stepId: ID!, taskId: ID!, task: TaskInput!): String
   taskFlowStepSetCompleteAll(id: ID!, stepId: ID!, completeAll: Boolean!): String
+  taskFlowStepSetDelay(id: ID!, stepId: ID!, delay: Int!): String
 
   """Macro: Tasks: Activate Task Flow"""
   taskFlowActivate(id: ID!, simulatorId: ID!): String
@@ -4583,6 +4584,7 @@ type TaskFlowStep {
   tasks: [Task!]!
   activeTasks: [Task!]!
   completeAll: Boolean!
+  delay: Int!
   completed: Boolean!
 }
 
