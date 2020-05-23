@@ -159,7 +159,7 @@ export class Station {
     this.training = training;
   }
   setTags(tags: string[]) {
-    this.tags = tags;
+    this.tags = tags.map(t => t.trim());
   }
   setAmbiance(ambiance: string) {
     this.ambiance = ambiance;

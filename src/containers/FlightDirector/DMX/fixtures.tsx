@@ -86,12 +86,7 @@ export const TagInput: React.FC<{
           }
         }}
         onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-          if (
-            e.key === "," ||
-            e.key === "." ||
-            e.key === " " ||
-            e.key === "Enter"
-          ) {
+          if (e.key === "," || e.key === "." || e.key === "Enter") {
             e.preventDefault();
             if (tagInput) {
               onAdd(tagInput);
