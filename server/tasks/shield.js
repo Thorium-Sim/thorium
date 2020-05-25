@@ -344,6 +344,9 @@ export default [
             s => s.simulatorId === simulator.id && s.class === "Shield",
           ),
         );
+      if (task && (!task?.values.shield || task?.values.shield !== shield.id)) {
+        task.values.shield = shield.id;
+      }
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Set the frequency of the ${
@@ -369,11 +372,11 @@ export default [
       const system = App.systems.find(s => s.id === id);
       if (requiredValues.frequencyUpper) {
         return (
-          system.frequency > requiredValues.frequency &&
-          system.frequency < requiredValues.frequencyUpper
+          system?.frequency > requiredValues.frequency &&
+          system?.frequency < requiredValues.frequencyUpper
         );
       }
-      return system.frequency === requiredValues.frequency;
+      return system?.frequency === requiredValues.frequency;
     },
   },
 ];

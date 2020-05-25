@@ -141,11 +141,12 @@ export class Station {
     });
   }
   matchTags(tags: string[]) {
+    const components = this.cards.map(t => t.component);
     for (let t of tags) {
       if (this.tags.includes(t)) return true;
       if (this.name === t || pascalCase(this.name) === pascalCase(t))
         return true;
-      if (this.cards.map(t => t.component).includes(pascalCase(t))) return true;
+      if (components.includes(pascalCase(t))) return true;
     }
     return false;
   }
