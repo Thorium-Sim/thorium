@@ -1,6 +1,7 @@
 import reportReplace from "../helpers/reportReplacer";
 import App from "../app";
 import {randomFromList} from "../classes/generic/damageReports/constants";
+import {getLocation} from "./helpers";
 
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -89,13 +90,7 @@ export default [
           s.cards.find(c => c.component === "CargoControl"),
         );
 
-      const room = App.rooms.find(r => r.id === roomId);
-      const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
-      const location = room
-        ? `${room.name}, Deck ${deck.number}`
-        : deck
-        ? `Deck ${deck.number}`
-        : "Unknown";
+      const location = getLocation(simulator.id, roomId);
 
       const cargoList = Object.entries(inventory)
         .map(([id, count]) => {
