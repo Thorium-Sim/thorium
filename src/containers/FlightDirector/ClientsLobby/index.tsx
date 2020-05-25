@@ -75,11 +75,11 @@ const ClientLobby: React.FC = () => {
 
   const [pauseFlight] = usePauseFlightMutation({
     variables: {flightId},
-    refetchQueries: [FlightDocument],
+    refetchQueries: [{query: FlightDocument}],
   });
   const [resumeFlight] = useLobbyResumeFlightMutation({
     variables: {flightId},
-    refetchQueries: [FlightDocument],
+    refetchQueries: [{query: FlightDocument}],
   });
   const [resetFlightMutation] = useResetFlightMutation({variables: {flightId}});
   const [deleteFlightMutation] = useDeleteFlightMutation({
@@ -90,7 +90,7 @@ const ClientLobby: React.FC = () => {
     {loading: transmitLoading},
   ] = useTransmitFlightMutation({
     variables: {flightId},
-    refetchQueries: [FlightDocument],
+    refetchQueries: [{query: FlightDocument}],
   });
 
   const {data, loading} = useFlightQuery();
