@@ -310,7 +310,11 @@ export default [
       },
       frequency: {
         input: () => ({type: "number", min: 100, max: 350}),
-        value: () => Math.round(Math.random() * 250 * 10) / 10 + 100,
+        value: () => Math.round(Math.random() * 125 * 10) / 10 + 100,
+      },
+      frequencyUpper: {
+        input: () => ({type: "number", min: 100, max: 350}),
+        value: () => null,
       },
     },
     instructions({
@@ -319,6 +323,7 @@ export default [
         preamble,
         shield: shieldId,
         frequency,
+        frequencyUpper,
         system = shieldId,
       },
       task = {},
@@ -339,26 +344,39 @@ export default [
             s => s.simulatorId === simulator.id && s.class === "Shield",
           ),
         );
+      if (task && (!task?.values.shield || task?.values.shield !== shield.id)) {
+        task.values.shield = shield.id;
+      }
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Set the frequency of the ${
             shield.displayName || shield.name
-          } to ${frequency} MHz.`,
+          } to ${frequencyUpper ? "between " : ""}${frequency} MHz${
+            frequencyUpper ? ` and ${frequencyUpper} MHz` : ""
+          }.`,
           {system, simulator},
         );
       return reportReplace(
         `${preamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of shields"
-        } to set the frequency of the ${
-          shield.displayName || shield.name
-        } to ${frequency} MHz.`,
+        } to set the frequency of the ${shield.displayName || shield.name} to ${
+          frequencyUpper ? "between " : ""
+        }${frequency} MHz${
+          frequencyUpper ? ` and ${frequencyUpper} MHz` : ""
+        }.`,
         {system, simulator},
       );
     },
     verify({requiredValues}) {
       const id = requiredValues.shield;
       const system = App.systems.find(s => s.id === id);
-      return system.frequency === requiredValues.frequency;
+      if (requiredValues.frequencyUpper) {
+        return (
+          system?.frequency > requiredValues.frequency &&
+          system?.frequency < requiredValues.frequencyUpper
+        );
+      }
+      return system?.frequency === requiredValues.frequency;
     },
   },
 ];

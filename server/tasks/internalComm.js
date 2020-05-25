@@ -4,6 +4,7 @@ import {
   randomFromList,
   greekLetters,
 } from "../classes/generic/damageReports/constants";
+import {getLocation} from "./helpers";
 
 export default [
   {
@@ -65,20 +66,7 @@ export default [
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "CommInternal"),
       );
-      const idRegex = /.{8}-.{4}-.{4}-.{4}-.{12}/gi;
-
-      const room = App.rooms.find(r => r.id === roomId);
-      const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
-      const decks = App.decks.find(d => d.simulatorId === simulator.id);
-      const randomDeck = randomFromList(decks);
-      const location =
-        roomId && !roomId.match(idRegex)
-          ? roomId
-          : !room && !deck
-          ? `Deck ${randomDeck ? randomDeck.number : 1}`
-          : room
-          ? `${room.name}, Deck ${deck.number}`
-          : `Deck ${deck.number}`;
+      const location = getLocation(simulator.id, roomId);
       if (station && task.station === station.name)
         return reportReplace(
           `${preamble} Make the following internal call:

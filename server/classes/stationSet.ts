@@ -141,11 +141,12 @@ export class Station {
     });
   }
   matchTags(tags: string[]) {
+    const components = this.cards.map(t => t.component);
     for (let t of tags) {
       if (this.tags.includes(t)) return true;
       if (this.name === t || pascalCase(this.name) === pascalCase(t))
         return true;
-      if (this.cards.map(t => t.component).includes(pascalCase(t))) return true;
+      if (components.includes(pascalCase(t))) return true;
     }
     return false;
   }
@@ -159,7 +160,7 @@ export class Station {
     this.training = training;
   }
   setTags(tags: string[]) {
-    this.tags = tags;
+    this.tags = tags.map(t => t.trim());
   }
   setAmbiance(ambiance: string) {
     this.ambiance = ambiance;
