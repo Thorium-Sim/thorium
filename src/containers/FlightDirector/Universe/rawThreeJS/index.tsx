@@ -15,8 +15,8 @@ import {
   MOUSE,
   OrthographicCamera,
   PerspectiveCamera,
-  WebGLRenderer,
   Raycaster,
+  Object3D,
 } from "three";
 import renderer from "./renderer";
 import getOrthoCamera from "./orthoCamera";
@@ -31,35 +31,13 @@ import {distance3d} from "components/views/Sensors/gridCore/constants";
 import Entity from "./entity";
 import GameObjectManager from "./gameObjectManager";
 import getPanControls from "./panControls";
-import getFlyControls from "./flyControls";
 import {clearEvents, initEvents, mouse} from "./mouseEvents";
 import {get3DMousePosition} from "../use3DMousePosition";
 import Nebula from "./nebula";
-
-// function* waitFrames(numFrames) {
-//   while (numFrames > 0) {
-//     --numFrames;
-//     yield;
-//   }
-// }
-
-// function* waitSeconds(duration) {
-//   while (duration > 0) {
-//     duration -= globals.deltaTime;
-//     yield;
-//   }
-// }
-
-// function resizeRendererToDisplaySize(renderer: WebGLRenderer) {
-//   const canvas = renderer.domElement;
-//   const width = canvas.clientWidth;
-//   const height = canvas.clientHeight;
-//   const needResize = canvas.width !== width || canvas.height !== height;
-//   if (needResize) {
-//     renderer.setSize(width, height, false);
-//   }
-//   return needResize;
-// }
+import {LensFlare} from "./lensFlare";
+import {getOrbitControls} from "./orbitControls";
+import {Wormhole} from "./wormhole";
+import {Hyperspace} from "./hyperspace";
 
 type OutsideState = CanvasContextOutput;
 
@@ -103,6 +81,15 @@ async function renderRawThreeJS(
   const nebula = new Nebula("Pretty");
   scene.add(nebula);
 
+  // const wormhole = new Wormhole();
+  // wormhole.position.set(0, 0, 5);
+  // scene.add(wormhole);
+  // gameObjectManager.addGameObject(wormhole);
+
+  const hyperspace = new Hyperspace();
+  hyperspace.position.set(0, 0, 5);
+  scene.add(hyperspace);
+  gameObjectManager.addGameObject(hyperspace);
   const grid = new Grid(dimensions);
   gameObjectManager.addGameObject(grid);
   scene.add(grid);
@@ -123,8 +110,8 @@ async function renderRawThreeJS(
   let activeCamera: PerspectiveCamera | OrthographicCamera = orthoCamera;
 
   const panControls = getPanControls(orthoCamera, ref.current);
-  const flyControls = getFlyControls(perspectiveCamera, ref.current);
-  flyControls.enabled = false;
+  const orbitControls = getOrbitControls(perspectiveCamera, ref.current);
+  orbitControls.enabled = false;
   initEvents(ref.current);
 
   let isMouseDown = false;
@@ -178,11 +165,11 @@ async function renderRawThreeJS(
     frame = requestAnimationFrame(render);
 
     try {
-      // Update the fly controls if necessary
+      // Update the orbit controls if necessary
       if (activeCamera === perspectiveCamera) {
-        flyControls.update(globals.delta);
+        orbitControls.update();
       }
-      gameObjectManager.update({camera: activeCamera});
+      gameObjectManager.update({camera: activeCamera, delta: globals.delta});
     } catch (err) {
       console.error("There has been an error", err);
       cancelAnimationFrame(frame);
@@ -196,6 +183,18 @@ async function renderRawThreeJS(
     renderer.domElement.width,
     renderer.domElement.height,
   );
+
+  // Start with perspective
+  activeCamera = perspectiveCamera;
+  grid.visible = false;
+  nebula.visible = true;
+  panControls.enabled = false;
+  orbitControls.enabled = true;
+
+  // const light = new LensFlare(0xffffff, 1.5, 2000);
+  // light.position.set(0, 0, -500);
+  // scene.add(light);
+
   function updateState(state: CanvasContextOutput) {
     const contextState = state[0];
     // Imperative functions to make the THREEJS objects reflect the state
@@ -235,13 +234,13 @@ async function renderRawThreeJS(
         grid.visible = false;
         nebula.visible = true;
         panControls.enabled = false;
-        flyControls.enabled = true;
+        orbitControls.enabled = true;
       } else {
         activeCamera = orthoCamera;
         grid.visible = true;
         nebula.visible = false;
         panControls.enabled = true;
-        flyControls.enabled = false;
+        orbitControls.enabled = false;
       }
     }
     gameObjectManager.gameObjects.forEach(obj => {

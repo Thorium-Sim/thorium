@@ -15,6 +15,7 @@ function getPerspectiveCamera(dimensions?: DOMRect) {
     NEAR,
     FAR,
   );
+  camera.position.set(0, 0, 5);
   return camera;
 }
 export default getPerspectiveCamera;

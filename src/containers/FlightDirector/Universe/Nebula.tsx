@@ -6,6 +6,7 @@ import {
   BackSide,
   sRGBEncoding,
   Color,
+  CubeTexture,
 } from "three";
 const radius = 1490000000000;
 
@@ -84,9 +85,26 @@ export function generateMaterials(skyboxKey: string, bg: HTMLImageElement) {
       map: m,
       side: BackSide,
       color: new Color("#fff"),
+      depthTest: false,
     });
   });
   return mats;
+}
+
+export function generateMaterial(skyboxKey: string, bg: HTMLImageElement) {
+  const textures = nebulaGenerator(skyboxKey || "c") as Textures;
+  const maps: HTMLCanvasElement[] = [];
+
+  maps.push(drawIndividual(textures.front, "texture-front", bg));
+  maps.push(drawIndividual(textures.back, "texture-back", bg));
+  maps.push(drawIndividual(textures.top, "texture-top", bg));
+  maps.push(drawIndividual(textures.bottom, "texture-bottom", bg));
+  maps.push(drawIndividual(textures.left, "texture-left", bg));
+  maps.push(drawIndividual(textures.right, "texture-right", bg));
+
+  const cubeMat = new CubeTexture(maps);
+  cubeMat.needsUpdate = true;
+  return cubeMat;
 }
 
 const Nebula = React.memo<{skyboxKey: string}>(function Nebula({skyboxKey}) {
