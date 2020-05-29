@@ -68,7 +68,9 @@ function drawIndividual(source: any, targetid: string, bg: HTMLImageElement) {
 }
 
 export function generateMaterials(skyboxKey: string, bg: HTMLImageElement) {
-  const textures = nebulaGenerator(skyboxKey || "c") as Textures;
+  const textures = skyboxKey
+    ? (nebulaGenerator(skyboxKey || "c") as Textures)
+    : generateBlank();
   const maps: HTMLCanvasElement[] = [];
 
   maps.push(drawIndividual(textures.front, "texture-front", bg));
@@ -90,9 +92,21 @@ export function generateMaterials(skyboxKey: string, bg: HTMLImageElement) {
   });
   return mats;
 }
+function generateBlank() {
+  return {
+    front: document.createElement("canvas"),
+    back: document.createElement("canvas"),
+    top: document.createElement("canvas"),
+    bottom: document.createElement("canvas"),
+    left: document.createElement("canvas"),
+    right: document.createElement("canvas"),
+  };
+}
 
 export function generateMaterial(skyboxKey: string, bg: HTMLImageElement) {
-  const textures = nebulaGenerator(skyboxKey || "c") as Textures;
+  const textures = skyboxKey
+    ? (nebulaGenerator(skyboxKey || "c") as Textures)
+    : generateBlank();
   const maps: HTMLCanvasElement[] = [];
 
   maps.push(drawIndividual(textures.front, "texture-front", bg));

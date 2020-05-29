@@ -14,7 +14,8 @@ export type ActionType =
   | "speed"
   | "position"
   | "time"
-  | "controllingEntity";
+  | "controllingEntity"
+  | "skyboxShuffle";
 
 interface CanvasContextState {
   dragging: boolean;
@@ -31,6 +32,7 @@ interface CanvasContextState {
   timeInSeconds: number;
   position: [number, number, number];
   controllingEntityId: string;
+  skyboxKey: string;
 }
 interface CanvasContextAction {
   type: ActionType;
@@ -56,6 +58,7 @@ const canvasContextDefault: CanvasContextState = {
   timeInSeconds: 60,
   position: [0, 0, 0],
   controllingEntityId: localStorage.getItem("sandbox-controlling-id") || "",
+  skyboxKey: "Pretty",
 };
 
 const canvasContextReducer = (
@@ -116,6 +119,8 @@ const canvasContextReducer = (
       if (!action.id) return state;
       localStorage.setItem("sandbox-controlling-id", action.id);
       return {...state, controllingEntityId: action.id};
+    case "skyboxShuffle":
+      return {...state, skyboxKey: Math.random().toString()};
     default:
       return state;
   }

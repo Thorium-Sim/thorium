@@ -8,7 +8,7 @@ import {
 } from "react-icons/md";
 import {Tooltip} from "reactstrap";
 import uuid from "uuid";
-import {FaRuler} from "react-icons/fa";
+import {FaRuler, FaRandom} from "react-icons/fa";
 import {CanvasContext} from "./CanvasContext";
 
 interface TooltipButtonProps {
@@ -93,6 +93,12 @@ const Controls = () => {
             tooltipContent="Use Simulation Camera"
           >
             <MdCamera />
+          </TooltipButton>
+          <TooltipButton
+            onClick={() => dispatch({type: "skyboxShuffle"})}
+            tooltipContent="Change Skybox"
+          >
+            <FaRandom />
           </TooltipButton>
           <TooltipButton
             className={`${measuring ? "active" : ""} ${

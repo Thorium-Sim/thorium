@@ -38,6 +38,7 @@ import {LensFlare} from "./lensFlare";
 import {getOrbitControls} from "./orbitControls";
 import {Wormhole} from "./wormhole";
 import {Hyperspace} from "./hyperspace";
+import {WarpStars} from "./warpStars";
 
 type OutsideState = CanvasContextOutput;
 
@@ -61,6 +62,7 @@ async function renderRawThreeJS(
       timeInSeconds: 60,
       position: [0, 0, 0],
       controllingEntityId: localStorage.getItem("sandbox-controlling-id") || "",
+      skyboxKey: "Pretty",
     },
     () => {},
   ];
@@ -79,6 +81,7 @@ async function renderRawThreeJS(
   ref.current?.appendChild(renderer.domElement);
 
   const nebula = new Nebula("Pretty");
+  gameObjectManager.addGameObject(nebula);
   scene.add(nebula);
 
   // const wormhole = new Wormhole();
@@ -86,10 +89,15 @@ async function renderRawThreeJS(
   // scene.add(wormhole);
   // gameObjectManager.addGameObject(wormhole);
 
-  const hyperspace = new Hyperspace();
-  hyperspace.position.set(0, 0, 5);
-  scene.add(hyperspace);
-  gameObjectManager.addGameObject(hyperspace);
+  // const hyperspace = new Hyperspace();
+  // hyperspace.position.set(0, 0, 5);
+  // scene.add(hyperspace);
+  // gameObjectManager.addGameObject(hyperspace);
+
+  const warp = new WarpStars();
+  gameObjectManager.addGameObject(warp);
+  scene.add(warp);
+
   const grid = new Grid(dimensions);
   gameObjectManager.addGameObject(grid);
   scene.add(grid);
@@ -212,20 +220,21 @@ async function renderRawThreeJS(
       };
     }
     if (outsideState[0].recenter !== contextState.recenter) {
-      if (activeCamera !== orthoCamera) return;
-      activeCamera.position.set(0, 0, 1 / 0.0000000001);
-      const radius = gameObjectManager.gameObjects.reduce((prev, next) => {
-        if (!next.visible) return prev;
-        const distance = distance3d({x: 0, y: 0, z: 0}, next.position);
-        if (distance > prev) return distance;
-        return prev;
-      }, 0);
-      if (radius !== 0) {
-        panControls.reset();
-        const newZoom = 1 / ((radius * 2) / maxSize) / 100;
-        panControls.zoom0 = newZoom;
+      if (activeCamera === orthoCamera) {
         activeCamera.position.set(0, 0, 1 / 0.0000000001);
-        activeCamera.updateProjectionMatrix();
+        const radius = gameObjectManager.gameObjects.reduce((prev, next) => {
+          if (!next.visible) return prev;
+          const distance = distance3d({x: 0, y: 0, z: 0}, next.position);
+          if (distance > prev) return distance;
+          return prev;
+        }, 0);
+        if (radius !== 0) {
+          panControls.reset();
+          const newZoom = 1 / ((radius * 2) / maxSize) / 100;
+          panControls.zoom0 = newZoom;
+          activeCamera.position.set(0, 0, 1 / 0.0000000001);
+          activeCamera.updateProjectionMatrix();
+        }
       }
     }
     if (outsideState[0].camera !== contextState.camera) {
@@ -243,6 +252,10 @@ async function renderRawThreeJS(
         orbitControls.enabled = false;
       }
     }
+    if (outsideState[0].skyboxKey !== contextState.skyboxKey) {
+      nebula.generate(outsideState[0].skyboxKey);
+    }
+
     gameObjectManager.gameObjects.forEach(obj => {
       if (contextState.selected.includes(obj.uuid)) {
         if (obj.selected === false) {

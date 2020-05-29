@@ -74,7 +74,9 @@ function useClockSync() {
   const [clientId, setClientId] = React.useState("");
   const sentTime = React.useRef(0);
 
-  const [clockSync] = useMutation(CLOCK_SYNC_MUTATION, {variables: {clientId}});
+  const [doClockSync] = useMutation(CLOCK_SYNC_MUTATION, {
+    variables: {clientId},
+  });
 
   React.useEffect(() => {
     getClientId().then(res => setClientId(res));
@@ -83,9 +85,9 @@ function useClockSync() {
   useInterval(() => {
     if (clientId) {
       sentTime.current = Date.now();
-      clockSync().catch(() => {});
+      doClockSync().catch(() => {});
     }
-  }, 5000);
+  }, 10000);
   React.useEffect(() => {
     if (!clientId) return;
     const unsubscribe = client
