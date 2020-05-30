@@ -104,7 +104,9 @@ export class TaskFlow {
   }
 
   get completed() {
-    return this.currentStep >= this.steps.length - 1;
+    const lastStep = this.steps[this.steps.length - 1];
+    if (lastStep.activeTaskIds.length > 0 && lastStep.completed) return true;
+    return false;
   }
   advance() {
     // Don't advance flows that don't have a simulator id
