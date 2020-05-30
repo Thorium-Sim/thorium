@@ -2,6 +2,7 @@ import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
 import {Query, Mutation} from "react-apollo";
+import {useStealthSetSensorSonarMutation} from "generated/graphql";
 
 const STEALTH_QUERY = gql`
   query Stealth($id: ID!) {
@@ -10,11 +11,13 @@ const STEALTH_QUERY = gql`
       charge
       activated
       changeAlert
+      sensorsSonar
     }
   }
 `;
 const StealthField = props => {
   const {id} = props;
+  const [setSonar] = useStealthSetSensorSonarMutation();
   return (
     <GenericSystemConfig {...props}>
       <Query query={STEALTH_QUERY} variables={{id}}>
@@ -91,6 +94,19 @@ const StealthField = props => {
                   )}
                 </Mutation>
                 Change simulator alert color when stealthed
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={stealth.sensorsSonar}
+                  onChange={() =>
+                    setSonar({
+                      variables: {id, sonar: !stealth.sensorsSonar},
+                      refetchQueries: [{query: STEALTH_QUERY, variables: {id}}],
+                    })
+                  }
+                />
+                Use Sensor grid sonar when stealth is activated
               </label>
             </div>
           );

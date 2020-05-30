@@ -8,14 +8,18 @@ import {
   Simulator,
   TaskFlow,
 } from "generated/graphql";
-import {ListGroup, ListGroupItem} from "reactstrap";
+import {ListGroup, ListGroupItem, Input} from "reactstrap";
+import useLocalStorage from "helpers/hooks/useLocalStorage";
 
 type CategorizedTaskFlows = {
   [category: string]: Pick<TaskFlow, "id" | "name" | "category">[];
 };
 const TaskFlowCore: React.FC<{simulator: Simulator}> = ({simulator}) => {
   const [selectedFlow, setSelectedFlow] = React.useState("");
-
+  const [showCompleted, setShowCompleted] = useLocalStorage(
+    "task_flow_show_completed",
+    true,
+  );
   const {data} = useTaskFlowSubSubscription({
     variables: {simulatorId: simulator.id},
   });
@@ -46,6 +50,15 @@ const TaskFlowCore: React.FC<{simulator: Simulator}> = ({simulator}) => {
           flex-direction: column;
         `}
       >
+        <label>
+          <Input
+            type="checkbox"
+            checked={showCompleted}
+            onChange={e => setShowCompleted(e.target.checked)}
+          ></Input>{" "}
+          Show Completed
+        </label>
+
         <ListGroup
           css={css`
             flex: 1;
@@ -53,6 +66,7 @@ const TaskFlowCore: React.FC<{simulator: Simulator}> = ({simulator}) => {
         >
           {data?.taskFlows
             .concat()
+            .filter(f => (showCompleted ? true : !f.completed))
             .sort((a, b) => {
               if (a.completed && !b.completed) return 1;
               if (b.completed && !a.completed) return -1;
