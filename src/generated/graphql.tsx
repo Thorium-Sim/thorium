@@ -1425,6 +1425,7 @@ export type Mutation = {
   setStealthQuadrant?: Maybe<Scalars['String']>;
   fluxStealthQuadrants?: Maybe<Scalars['String']>;
   stealthChangeAlert?: Maybe<Scalars['String']>;
+  stealthSensorsSonar?: Maybe<Scalars['String']>;
   fluxSubspaceField?: Maybe<Scalars['String']>;
   normalSubspaceField?: Maybe<Scalars['String']>;
   setSubspaceFieldSectorValue?: Maybe<Scalars['String']>;
@@ -5001,6 +5002,12 @@ export type MutationFluxStealthQuadrantsArgs = {
 export type MutationStealthChangeAlertArgs = {
   id: Scalars['ID'];
   change: Scalars['Boolean'];
+};
+
+
+export type MutationStealthSensorsSonarArgs = {
+  id: Scalars['ID'];
+  sonar: Scalars['Boolean'];
 };
 
 
@@ -9412,6 +9419,7 @@ export type StealthField = SystemInterface & {
   activated?: Maybe<Scalars['Boolean']>;
   charge?: Maybe<Scalars['Boolean']>;
   changeAlert?: Maybe<Scalars['Boolean']>;
+  sensorsSonar?: Maybe<Scalars['Boolean']>;
   state?: Maybe<Scalars['Boolean']>;
   quadrants?: Maybe<StealthQuad>;
   locations?: Maybe<Array<Maybe<Room>>>;
@@ -13385,6 +13393,17 @@ export type TractorBeamSetCountMutation = (
   & Pick<Mutation, 'setTractorBeamCount'>
 );
 
+export type StealthSetSensorSonarMutationVariables = {
+  id: Scalars['ID'];
+  sonar: Scalars['Boolean'];
+};
+
+
+export type StealthSetSensorSonarMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'stealthSensorsSonar'>
+);
+
 export type RemoveSimulatorMutationVariables = {
   id: Scalars['ID'];
 };
@@ -16930,6 +16949,15 @@ export function useTractorBeamSetCountMutation(baseOptions?: ApolloReactHooks.Mu
         return ApolloReactHooks.useMutation<TractorBeamSetCountMutation, TractorBeamSetCountMutationVariables>(TractorBeamSetCountDocument, baseOptions);
       }
 export type TractorBeamSetCountMutationHookResult = ReturnType<typeof useTractorBeamSetCountMutation>;
+export const StealthSetSensorSonarDocument = gql`
+    mutation StealthSetSensorSonar($id: ID!, $sonar: Boolean!) {
+  stealthSensorsSonar(id: $id, sonar: $sonar)
+}
+    `;
+export function useStealthSetSensorSonarMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StealthSetSensorSonarMutation, StealthSetSensorSonarMutationVariables>) {
+        return ApolloReactHooks.useMutation<StealthSetSensorSonarMutation, StealthSetSensorSonarMutationVariables>(StealthSetSensorSonarDocument, baseOptions);
+      }
+export type StealthSetSensorSonarMutationHookResult = ReturnType<typeof useStealthSetSensorSonarMutation>;
 export const RemoveSimulatorDocument = gql`
     mutation RemoveSimulator($id: ID!) {
   removeSimulator(simulatorId: $id)

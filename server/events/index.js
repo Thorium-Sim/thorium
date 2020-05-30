@@ -21,7 +21,6 @@ import "./targeting";
 import "./torpedo";
 import "./phasers";
 import "./probes";
-import "./stealthField";
 import "./thrusters";
 import "./coolant";
 import "./crew";

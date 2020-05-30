@@ -970,6 +970,7 @@ type Mutation {
   setStealthQuadrant(id: ID, which: String, value: Float): String
   fluxStealthQuadrants(id: ID): String
   stealthChangeAlert(id: ID!, change: Boolean!): String
+  stealthSensorsSonar(id: ID!, sonar: Boolean!): String
   fluxSubspaceField(id: ID!, which: String): String
   normalSubspaceField(id: ID!, which: String): String
   setSubspaceFieldSectorValue(id: ID, which: String!, value: Int!): String
@@ -3679,6 +3680,7 @@ type StealthField implements SystemInterface {
   activated: Boolean
   charge: Boolean
   changeAlert: Boolean
+  sensorsSonar: Boolean
   state: Boolean
   quadrants: StealthQuad
   locations: [Room]

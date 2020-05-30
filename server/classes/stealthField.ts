@@ -3,18 +3,35 @@ import {System} from "./generic";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 
+interface StealthQuadrants {
+  fore: number;
+  aft: number;
+  port: number;
+  starboard: number;
+}
+
 export default class StealthField extends System {
-  constructor(params) {
+  class: "StealthField" = "StealthField";
+  type: "StealthField" = "StealthField";
+  name: string;
+  wing: "left" | "right";
+  charge: boolean;
+  activated: boolean;
+  state: boolean;
+  changeAlert: boolean;
+  sensorsSonar: boolean;
+  quadrants: StealthQuadrants;
+  constructor(params: Partial<StealthField>) {
     super(params);
-    this.class = "StealthField";
-    this.type = "StealthField";
+
     this.name = params.name || "Stealth Field";
     this.wing = params.wing || "left";
 
     this.charge = params.charge || false;
-    this.activated = params.activated;
+    this.activated = params.activated || false;
     this.state = params.state || !this.activated;
     this.changeAlert = params.changeAlert || false;
+    this.sensorsSonar = params.sensorsSonar || false;
     this.quadrants = params.quadrants || {
       fore: 0,
       aft: 0,
@@ -22,15 +39,18 @@ export default class StealthField extends System {
       starboard: 0,
     };
   }
-  setActivated(tf) {
+  setActivated(tf: boolean) {
     this.activated = tf;
     this.state = !tf;
   }
-  setCharge(tf) {
+  setCharge(tf: boolean) {
     this.charge = tf;
   }
-  setChangeAlert(tf) {
+  setChangeAlert(tf: boolean) {
     this.changeAlert = tf;
+  }
+  setSensorsSonar(tf: boolean) {
+    this.sensorsSonar = tf;
   }
   activate() {
     if (this.charge) {
@@ -48,7 +68,7 @@ export default class StealthField extends System {
   deactivate() {
     this.state = false;
   }
-  setQuadrant(which, value) {
+  setQuadrant(which: "fore" | "aft" | "port" | "starboard", value: number) {
     this.quadrants[which] = value;
   }
   fluxQuadrants() {
@@ -57,7 +77,7 @@ export default class StealthField extends System {
     this.quadrants.starboard = Math.round(Math.random() * 20) / 20;
     this.quadrants.port = Math.round(Math.random() * 20) / 20;
   }
-  break(report, destroyed, which) {
+  break(report: string, destroyed: boolean, which: string) {
     this.deactivate();
     if (this.state) {
       pubsub.publish("notify", {
@@ -82,7 +102,7 @@ export default class StealthField extends System {
     }
     super.break(report, destroyed, which);
   }
-  setPower(powerLevel) {
+  setPower(powerLevel: number) {
     if (
       this.power.powerLevels.length &&
       powerLevel < this.power.powerLevels[0]
