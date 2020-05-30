@@ -291,11 +291,13 @@ export default [
       shield: {
         input: ({simulator}) =>
           simulator
-            ? App.systems
-                .filter(
-                  s => s.simulatorId === simulator.id && s.type === "Shield",
-                )
-                .map(s => ({value: s.id, label: s.displayName || s.name}))
+            ? [{label: "All Shields", value: "all"}].concat(
+                App.systems
+                  .filter(
+                    s => s.simulatorId === simulator.id && s.type === "Shield",
+                  )
+                  .map(s => ({value: s.id, label: s.displayName || s.name})),
+              )
             : "text",
         value: ({simulator}) =>
           simulator
@@ -306,7 +308,7 @@ export default [
                   )
                   .map(s => s.id),
               )
-            : "",
+            : "all",
       },
       frequency: {
         input: () => ({type: "number", min: 100, max: 350}),
@@ -338,37 +340,62 @@ export default [
             (s.id === shieldId ||
               (s.name === shieldId && s.simulatorId === simulator.id) ||
               (s.displayName === shieldId && s.simulatorId === simulator.id)),
-        ) ||
-        randomFromList(
-          App.systems.filter(
-            s => s.simulatorId === simulator.id && s.class === "Shield",
-          ),
-        );
-      if (task && (!task?.values.shield || task?.values.shield !== shield.id)) {
+        ) || shieldId === "all"
+          ? {id: "all", displayName: "All Shields", name: "All Shields"}
+          : randomFromList(
+              App.systems.filter(
+                s => s.simulatorId === simulator.id && s.class === "Shield",
+              ),
+            );
+      if (
+        task &&
+        task.values &&
+        (!task?.values?.shield || task?.values?.shield !== shield.id)
+      ) {
         task.values.shield = shield.id;
       }
+      let processedPreamble =
+        shieldId === "all"
+          ? preamble.replace("the #SYSTEMNAME", "All Shields")
+          : preamble;
       if (station && task.station === station.name)
         return reportReplace(
-          `${preamble} Set the frequency of the ${
-            shield.displayName || shield.name
-          } to ${frequencyUpper ? "between " : ""}${frequency} MHz${
+          `${processedPreamble} Set the frequency of ${
+            shield.id === "all" ? "" : "the"
+          } ${shield.displayName || shield.name} to ${
+            frequencyUpper ? "between " : ""
+          }${frequency} MHz${
             frequencyUpper ? ` and ${frequencyUpper} MHz` : ""
           }.`,
           {system, simulator},
         );
       return reportReplace(
-        `${preamble} Ask the ${
+        `${processedPreamble} Ask the ${
           station ? `${station.name} Officer` : "person in charge of shields"
-        } to set the frequency of the ${shield.displayName || shield.name} to ${
-          frequencyUpper ? "between " : ""
-        }${frequency} MHz${
+        } to set the frequency of ${shield.id === "all" ? "" : "the"} ${
+          shield.displayName || shield.name
+        } to ${frequencyUpper ? "between " : ""}${frequency} MHz${
           frequencyUpper ? ` and ${frequencyUpper} MHz` : ""
         }.`,
         {system, simulator},
       );
     },
-    verify({requiredValues}) {
+    verify({requiredValues, simulator}) {
       const id = requiredValues.shield;
+      if (id === "all") {
+        // If we can't find a shield that is not set correctly, we're golden
+        return !App.systems.find(s => {
+          if (s.simulatorId !== simulator.id || s.class !== "Shield")
+            return false;
+          if (requiredValues.frequencyUpper) {
+            return (
+              s.frequency < requiredValues.frequency ||
+              s.frequency > requiredValues.frequencyUpper
+            );
+          }
+          return s.frequency !== requiredValues.frequency;
+        });
+      }
       const system = App.systems.find(s => s.id === id);
       if (requiredValues.frequencyUpper) {
         return (
