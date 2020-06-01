@@ -1,3 +1,20 @@
+# [2.12.0](https://github.com/Thorium-Sim/thorium/compare/2.11.1...2.12.0) (2020-06-01)
+
+
+### Bug Fixes
+
+* **Sensors:** Makes sensor pings always visible, even when using the sensor sonar. Closes [#2938](https://github.com/Thorium-Sim/thorium/issues/2938) ([a0bafca](https://github.com/Thorium-Sim/thorium/commit/a0bafcaa6bbf9a4e68486e954dc67cc57c821e6e))
+* **Task Flows:** Fixes an issue where task flows appear to be completed when the last step hasn't been completed. Closes [#2960](https://github.com/Thorium-Sim/thorium/issues/2960) ([3298942](https://github.com/Thorium-Sim/thorium/commit/329894210ec27b4e839a44692dac6e35ec8d7991))
+* **Viewscreen:** Fixes an issue where the ship model on the viewscreen can't change color. Closes  [#2963](https://github.com/Thorium-Sim/thorium/issues/2963) ([e7a9424](https://github.com/Thorium-Sim/thorium/commit/e7a942470142ab7faeea6ece2d66b42cb57b0820))
+
+
+### Features
+
+* **Stealth:** Adds a toggle to the stealth field configuration to make it so the sensors sonar is automatically activated and deactivated with the stealth field. Closes  [#2937](https://github.com/Thorium-Sim/thorium/issues/2937) ([1b36015](https://github.com/Thorium-Sim/thorium/commit/1b3601544d12dd86bd202b86c650c662237748cb))
+* **Task Flows:** Adds ability to hide and show completed task flows on the core. Closes [#2961](https://github.com/Thorium-Sim/thorium/issues/2961) ([15a7b96](https://github.com/Thorium-Sim/thorium/commit/15a7b968a054face32d5c20a870a6b00ab32529b))
+* **Tasks:** Adds support to the Computer Core Terminal Reset task for having the crew reset every terminal in the computer core. Closes [#2962](https://github.com/Thorium-Sim/thorium/issues/2962) ([2879388](https://github.com/Thorium-Sim/thorium/commit/2879388a6ebd94129a0c0607f7dffa991af01704))
+* **Tasks:** Adds support to the shield frequency task for setting the frequency of all shields. Closes [#2959](https://github.com/Thorium-Sim/thorium/issues/2959) ([ca4ec7e](https://github.com/Thorium-Sim/thorium/commit/ca4ec7e7fed2474e51548f36e7d5ddea4cb86185))
+
 ## [2.11.1](https://github.com/Thorium-Sim/thorium/compare/2.11.0...2.11.1) (2020-05-25)
 
 
