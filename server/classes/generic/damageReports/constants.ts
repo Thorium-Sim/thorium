@@ -207,7 +207,7 @@ export const longRangeDestinations = [
   "Starbase 101",
 ];
 
-export function randomFromList(list: any[]) {
+export function randomFromList<T>(list: T[]): T {
   if (!list) return;
   const length = list.length;
   const index = Math.floor(Math.random() * length);

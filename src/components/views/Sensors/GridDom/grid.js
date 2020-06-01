@@ -241,43 +241,90 @@ class InnerGrid extends Component {
       .filter(c =>
         includeTypes.length > 0 ? includeTypes.indexOf(c.type) > -1 : true,
       );
-    return contactOutput
-      .filter(
-        (c, i, arr) => arr.findIndex(contact => contact.id === c.id) === i,
-      )
-      .map(contact => {
-        const extraContact = extraContacts.find(e => e.id === contact.id);
-        const {position, location, destination} =
-          sContacts[contact.id] || contact;
-        return (
-          <SensorContact
-            key={contact.id}
-            width={width}
-            core={core}
-            sensorsId={sensor}
-            {...contact}
-            showLabels={showLabels}
-            location={position || location}
-            destination={extraContact ? extraContact.destination : destination}
-            selected={
-              selectedContacts
-                ? selectedContacts.indexOf(contact.id) > -1
-                : contact.id === selectedContact
-            }
-            crewSelected={core && contact.selected}
-            mousedown={(e, contact) =>
-              mouseDown &&
-              mouseDown(e, contact, contact =>
-                this.setState({
-                  selectedContact: contact.id ? contact.id : contact,
-                }),
-              )
-            }
-            mouseover={hoverContact}
-            particles={particles}
-          />
-        );
-      });
+
+    const nonDuplicateContacts = contactOutput.filter(
+      (c, i, arr) => arr.findIndex(contact => contact.id === c.id) === i,
+    );
+    const pingContacts = nonDuplicateContacts.filter(c => c.type === "ping");
+    const nonPingContacts = nonDuplicateContacts.filter(c => c.type !== "ping");
+    return (
+      <>
+        <div className="sensor-ping-holder">
+          {pingContacts.map(contact => {
+            const extraContact = extraContacts.find(e => e.id === contact.id);
+            const {position, location, destination} =
+              sContacts[contact.id] || contact;
+            return (
+              <SensorContact
+                key={contact.id}
+                width={width}
+                core={core}
+                sensorsId={sensor}
+                {...contact}
+                showLabels={showLabels}
+                location={position || location}
+                destination={
+                  extraContact ? extraContact.destination : destination
+                }
+                selected={
+                  selectedContacts
+                    ? selectedContacts.indexOf(contact.id) > -1
+                    : contact.id === selectedContact
+                }
+                crewSelected={core && contact.selected}
+                mousedown={(e, contact) =>
+                  mouseDown &&
+                  mouseDown(e, contact, contact =>
+                    this.setState({
+                      selectedContact: contact.id ? contact.id : contact,
+                    }),
+                  )
+                }
+                mouseover={hoverContact}
+                particles={particles}
+              />
+            );
+          })}
+        </div>
+        <div className="sensor-contacts-holder">
+          {nonPingContacts.map(contact => {
+            const extraContact = extraContacts.find(e => e.id === contact.id);
+            const {position, location, destination} =
+              sContacts[contact.id] || contact;
+            return (
+              <SensorContact
+                key={contact.id}
+                width={width}
+                core={core}
+                sensorsId={sensor}
+                {...contact}
+                showLabels={showLabels}
+                location={position || location}
+                destination={
+                  extraContact ? extraContact.destination : destination
+                }
+                selected={
+                  selectedContacts
+                    ? selectedContacts.indexOf(contact.id) > -1
+                    : contact.id === selectedContact
+                }
+                crewSelected={core && contact.selected}
+                mousedown={(e, contact) =>
+                  mouseDown &&
+                  mouseDown(e, contact, contact =>
+                    this.setState({
+                      selectedContact: contact.id ? contact.id : contact,
+                    }),
+                  )
+                }
+                mouseover={hoverContact}
+                particles={particles}
+              />
+            );
+          })}
+        </div>
+      </>
+    );
   };
   render() {
     const {
@@ -330,7 +377,7 @@ class InnerGrid extends Component {
           )}{" "}
           {this.renderLines()}
           <div className="ping-ring" />
-          <div className="sensor-contacts-holder">{this.renderContacts()}</div>
+          {this.renderContacts()}
           {range && (
             <div
               className="sensor-range"

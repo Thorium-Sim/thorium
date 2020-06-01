@@ -13,6 +13,7 @@ const schema = gql`
     tasks: [Task!]!
     activeTasks: [Task!]!
     completeAll: Boolean!
+    delay: Int!
     completed: Boolean!
   }
   type TaskFlow {
@@ -48,6 +49,7 @@ const schema = gql`
       stepId: ID!
       completeAll: Boolean!
     ): String
+    taskFlowStepSetDelay(id: ID!, stepId: ID!, delay: Int!): String
     """
     Macro: Tasks: Activate Task Flow
     """
@@ -160,6 +162,14 @@ const resolver = {
     taskFlowStepSetCompleteAll(_, {id, stepId, completeAll}) {
       const flow = App.taskFlows.find(d => d.id === id);
       flow.setCompleteAll(stepId, completeAll);
+      pubsub.publish("taskFlows", {
+        simulatorId: null,
+        taskFlows: App.taskFlows.filter(s => s.simulatorId === null),
+      });
+    },
+    taskFlowStepSetDelay(_, {id, stepId, delay}) {
+      const flow = App.taskFlows.find(d => d.id === id);
+      flow.setDelay(stepId, delay);
       pubsub.publish("taskFlows", {
         simulatorId: null,
         taskFlows: App.taskFlows.filter(s => s.simulatorId === null),

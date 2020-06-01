@@ -1,0 +1,3 @@
+mutation TaskFlowStepDelay($id: ID!, $stepId: ID!, $delay: Int!) {
+  taskFlowStepSetDelay(id: $id, stepId: $stepId, delay: $delay)
+}

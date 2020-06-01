@@ -9,6 +9,7 @@ import {
   useTaskFlowStepAddTaskMutation,
   useTaskFlowStepCompleteAllMutation,
   useTaskDefinitionsQuery,
+  useTaskFlowStepDelayMutation,
   TaskDefinition,
 } from "generated/graphql";
 
@@ -25,6 +26,7 @@ const StepConfig = () => {
   const [add] = useTaskFlowStepAddTaskMutation();
   const [remove] = useTaskFlowStepRemoveTaskMutation();
   const [setCompleteAll] = useTaskFlowStepCompleteAllMutation();
+  const [setDelay] = useTaskFlowStepDelayMutation();
 
   const taskFlow = data?.taskFlows.find(f => f.id === flowId);
   const step = taskFlow?.steps.find(s => s.id === stepId);
@@ -66,6 +68,28 @@ const StepConfig = () => {
               })
             }
           />
+        </Label>
+        <Label>
+          Delay (ms)
+          <Input
+            type="number"
+            min={0}
+            onChange={e =>
+              setDelay({
+                variables: {
+                  id: flowId,
+                  stepId,
+                  delay: parseInt(e.target.value, 10),
+                },
+              })
+            }
+          />
+          <div>
+            <small>
+              The delay in milliseconds before the tasks in this step will be
+              assigned.
+            </small>
+          </div>
         </Label>
         <Label>
           <Input

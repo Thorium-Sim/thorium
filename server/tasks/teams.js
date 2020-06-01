@@ -4,7 +4,7 @@ import {
   damagePositions,
 } from "../classes/generic/damageReports/constants";
 import reportReplace from "../helpers/reportReplacer";
-
+import {getLocation} from "./helpers";
 function randomOfficers(officerList = damagePositions) {
   const typeCount = Math.min(
     Math.floor(Math.random() * 2 + 1),
@@ -105,16 +105,7 @@ export default [
       const officerText = Object.entries(officers)
         .map(([name, count]) => `${name}${count > 1 ? "s" : ""}: ${count}`)
         .join("\n");
-      const room = App.rooms.find(r => r.id === roomId);
-      const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
-      const decks = App.decks.find(d => d.simulatorId === simulator.id);
-      const randomDeck = randomFromList(decks);
-      const location =
-        !room && !deck
-          ? `Deck ${randomDeck ? randomDeck.number : 1}`
-          : room
-          ? `${room.name}, Deck ${deck.number}`
-          : `Deck ${deck.number}`;
+      const location = getLocation(simulator.id, roomId);
       const text = `Team Name: ${teamName}
 Location: ${location}
 Officers:
@@ -271,16 +262,8 @@ ${text}`,
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "SecurityTeams"),
       );
-      const room = App.rooms.find(r => r.id === roomId);
-      const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
-      const decks = App.decks.find(d => d.simulatorId === simulator.id);
-      const randomDeck = randomFromList(decks);
-      const location =
-        !room && !deck
-          ? `Deck ${randomDeck ? randomDeck.number : 1}`
-          : room
-          ? `${room.name}, Deck ${deck.number}`
-          : `Deck ${deck.number}`;
+      const location = getLocation(simulator.id, roomId);
+
       const text = `Team Name: ${teamName}
 Location: ${location}
 Orders: ${orders}`;
@@ -369,16 +352,8 @@ ${text}`,
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "MedicalTeams"),
       );
-      const room = App.rooms.find(r => r.id === roomId);
-      const deck = App.decks.find(d => d.id === (room ? room.deckId : roomId));
-      const decks = App.decks.find(d => d.simulatorId === simulator.id);
-      const randomDeck = randomFromList(decks);
-      const location =
-        !room && !deck
-          ? `Deck ${randomDeck ? randomDeck.number : 1}`
-          : room
-          ? `${room.name}, Deck ${deck.number}`
-          : `Deck ${deck.number}`;
+      const location = getLocation(simulator.id, roomId);
+
       const text = `Team Name: ${teamName}
 Location: ${location}
 Orders: ${orders}`;

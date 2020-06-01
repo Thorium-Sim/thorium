@@ -409,7 +409,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
           );
           if (!step) return null;
           return (
-            <Col sm="6">
+            <Col sm="6" key={step.id}>
               <FormGroup>
                 <Label>Step Name</Label>
                 <Input
@@ -434,7 +434,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
           );
         } else if (selectedTimelineItem) {
           return (
-            <Col sm="6">
+            <Col sm="6" key={`${selectedTimelineItem}-${selectedTimelineStep}`}>
               <TimelineMacroConfig
                 missionId={mission.id}
                 timeline={mission.timeline}

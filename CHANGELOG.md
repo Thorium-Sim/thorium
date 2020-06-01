@@ -1,3 +1,33 @@
+# [2.12.0](https://github.com/Thorium-Sim/thorium/compare/2.11.1...2.12.0) (2020-06-01)
+
+
+### Bug Fixes
+
+* **Sensors:** Makes sensor pings always visible, even when using the sensor sonar. Closes [#2938](https://github.com/Thorium-Sim/thorium/issues/2938) ([a0bafca](https://github.com/Thorium-Sim/thorium/commit/a0bafcaa6bbf9a4e68486e954dc67cc57c821e6e))
+* **Task Flows:** Fixes an issue where task flows appear to be completed when the last step hasn't been completed. Closes [#2960](https://github.com/Thorium-Sim/thorium/issues/2960) ([3298942](https://github.com/Thorium-Sim/thorium/commit/329894210ec27b4e839a44692dac6e35ec8d7991))
+* **Viewscreen:** Fixes an issue where the ship model on the viewscreen can't change color. Closes  [#2963](https://github.com/Thorium-Sim/thorium/issues/2963) ([e7a9424](https://github.com/Thorium-Sim/thorium/commit/e7a942470142ab7faeea6ece2d66b42cb57b0820))
+
+
+### Features
+
+* **Stealth:** Adds a toggle to the stealth field configuration to make it so the sensors sonar is automatically activated and deactivated with the stealth field. Closes  [#2937](https://github.com/Thorium-Sim/thorium/issues/2937) ([1b36015](https://github.com/Thorium-Sim/thorium/commit/1b3601544d12dd86bd202b86c650c662237748cb))
+* **Task Flows:** Adds ability to hide and show completed task flows on the core. Closes [#2961](https://github.com/Thorium-Sim/thorium/issues/2961) ([15a7b96](https://github.com/Thorium-Sim/thorium/commit/15a7b968a054face32d5c20a870a6b00ab32529b))
+* **Tasks:** Adds support to the Computer Core Terminal Reset task for having the crew reset every terminal in the computer core. Closes [#2962](https://github.com/Thorium-Sim/thorium/issues/2962) ([2879388](https://github.com/Thorium-Sim/thorium/commit/2879388a6ebd94129a0c0607f7dffa991af01704))
+* **Tasks:** Adds support to the shield frequency task for setting the frequency of all shields. Closes [#2959](https://github.com/Thorium-Sim/thorium/issues/2959) ([ca4ec7e](https://github.com/Thorium-Sim/thorium/commit/ca4ec7e7fed2474e51548f36e7d5ddea4cb86185))
+
+## [2.11.1](https://github.com/Thorium-Sim/thorium/compare/2.11.0...2.11.1) (2020-05-25)
+
+
+### Bug Fixes
+
+* **Flight:** Fixes an issue where the 'Pause Flight' button doesn't update properly. Closes [#2956](https://github.com/Thorium-Sim/thorium/issues/2956) ([2d1f444](https://github.com/Thorium-Sim/thorium/commit/2d1f44457945f3ec9cfcd89bdf6fe951a84ce951))
+* **Missions:** Fixes an issue where the delay field in the mission config shows the value from a previously selected timeline action. Closes [#2950](https://github.com/Thorium-Sim/thorium/issues/2950) ([a6bf456](https://github.com/Thorium-Sim/thorium/commit/a6bf456c122eb5e62dc8201f78253d802638679f))
+* **Tags:** Allow for tags to have spaces in them; useful for using station names as tags. Closes [#2951](https://github.com/Thorium-Sim/thorium/issues/2951) ([0ea98cf](https://github.com/Thorium-Sim/thorium/commit/0ea98cf9c275336bb43df2d65e295cb9f8a8c0e7))
+* **Task Flow:** Adds the option to have a delay between task flow steps. Closes [#2949](https://github.com/Thorium-Sim/thorium/issues/2949) ([ad8c01c](https://github.com/Thorium-Sim/thorium/commit/ad8c01cdd77011b9c36960abd95e864e2421dac0))
+* **Tasks:** Fixes an issue with the shield frequency task. Closes [#2954](https://github.com/Thorium-Sim/thorium/issues/2954) ([23625a7](https://github.com/Thorium-Sim/thorium/commit/23625a7889ed3ca0943aae20c01109c48715fcd9))
+* **Tasks:** Referencing decks and rooms in team tasks should properly assign the correct room or deck to the task when it is created. Closes [#2953](https://github.com/Thorium-Sim/thorium/issues/2953) ([353f85c](https://github.com/Thorium-Sim/thorium/commit/353f85c0cf4c4c026b8b91c735dce5827bd7be88))
+* **Tasks:** Updates the shield frequency task to support ranges of shield frequencies instead of a specific value. Closes [#2952](https://github.com/Thorium-Sim/thorium/issues/2952) ([aebf82c](https://github.com/Thorium-Sim/thorium/commit/aebf82cc970898e89759cad54f2ab3a144c3fd45))
+
 # [2.11.0](https://github.com/Thorium-Sim/thorium/compare/2.10.3...2.11.0) (2020-05-19)
 
 
