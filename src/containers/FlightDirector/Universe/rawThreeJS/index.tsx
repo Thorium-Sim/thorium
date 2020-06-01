@@ -9,6 +9,7 @@ import {
   EntitiesDocument,
   EntitiesQuery,
   EntityDataFragmentDoc,
+  EntitiesSetPositionDocument,
 } from "generated/graphql";
 import {
   Scene,
@@ -16,7 +17,6 @@ import {
   OrthographicCamera,
   PerspectiveCamera,
   Raycaster,
-  Object3D,
 } from "three";
 import renderer from "./renderer";
 import getOrthoCamera from "./orthoCamera";
@@ -34,11 +34,7 @@ import getPanControls from "./panControls";
 import {clearEvents, initEvents, mouse} from "./mouseEvents";
 import {get3DMousePosition} from "../use3DMousePosition";
 import Nebula from "./nebula";
-import {LensFlare} from "./lensFlare";
 import {getOrbitControls} from "./orbitControls";
-import {Wormhole} from "./wormhole";
-import {Hyperspace} from "./hyperspace";
-import {WarpStars} from "./warpStars";
 
 type OutsideState = CanvasContextOutput;
 
@@ -66,6 +62,10 @@ async function renderRawThreeJS(
     },
     () => {},
   ];
+  let extraOutsideState: ExtraState = {
+    flightId: "",
+    currentStage: "",
+  };
 
   const raycaster = new Raycaster();
 
@@ -94,24 +94,13 @@ async function renderRawThreeJS(
   // scene.add(hyperspace);
   // gameObjectManager.addGameObject(hyperspace);
 
-  const warp = new WarpStars();
-  gameObjectManager.addGameObject(warp);
-  scene.add(warp);
+  // const warp = new WarpStars();
+  // gameObjectManager.addGameObject(warp);
+  // scene.add(warp);
 
   const grid = new Grid(dimensions);
   gameObjectManager.addGameObject(grid);
   scene.add(grid);
-  client
-    .query({query: EntitiesDocument, variables: {flightId: "cool flight"}})
-    .then(res => {
-      const entities: EntitiesQuery = res.data;
-      entities.entities.forEach(e => {
-        if (!e) return;
-        const entity = new Entity(e);
-        gameObjectManager.addGameObject(entity);
-        scene.add(entity);
-      });
-    });
 
   const orthoCamera = getOrthoCamera(dimensions);
   const perspectiveCamera = getPerspectiveCamera(dimensions);
@@ -161,6 +150,20 @@ async function renderRawThreeJS(
     isMouseDown = false;
     if (activeCamera !== orthoCamera) return;
     panControls.enabled = true;
+
+    // Send an update with the new positions
+    const entities = gameObjectManager.gameObjects
+      .filter(object => {
+        if (outsideState[0].selected.includes(object.uuid)) {
+          return true;
+        }
+        return false;
+      })
+      .map(e => ({id: e.uuid, position: e.position}));
+    client.mutate({
+      mutation: EntitiesSetPositionDocument,
+      variables: {entities},
+    });
   });
 
   let then = 0;
@@ -192,19 +195,44 @@ async function renderRawThreeJS(
     renderer.domElement.height,
   );
 
-  // Start with perspective
-  activeCamera = perspectiveCamera;
-  grid.visible = false;
-  nebula.visible = true;
-  panControls.enabled = false;
-  orbitControls.enabled = true;
-
   // const light = new LensFlare(0xffffff, 1.5, 2000);
   // light.position.set(0, 0, -500);
   // scene.add(light);
 
-  function updateState(state: CanvasContextOutput) {
+  function updateState(state: CanvasContextOutput, extraState: ExtraState) {
     const contextState = state[0];
+
+    // Handle the extra state first
+    if (extraState.flightId !== extraOutsideState.flightId) {
+      // Remove the old ones
+      gameObjectManager.gameObjects.forEach(g => {
+        if (g instanceof Entity) {
+          if (g.flightId === extraOutsideState.flightId) {
+            gameObjectManager.removeGameObject(g);
+          }
+        }
+      });
+
+      // Add any new ones
+      client
+        .query({
+          query: EntitiesDocument,
+          variables: {flightId: extraState.flightId},
+        })
+        .then(res => {
+          const entities: EntitiesQuery = res.data;
+          entities.entities.forEach(e => {
+            if (!e) return;
+            const entity = new Entity(e);
+            gameObjectManager.addGameObject(entity);
+            scene.add(entity);
+          });
+        });
+    }
+    // Hide any objects that aren't on this stage.
+
+    extraOutsideState = extraState;
+
     // Imperative functions to make the THREEJS objects reflect the state
     if (contextState.selecting) {
       panControls.mouseButtons = {
@@ -306,6 +334,11 @@ const sub = gql`
   ${EntityDataFragmentDoc}
 `;
 
+interface ExtraState {
+  flightId: string;
+  currentStage: string;
+}
+
 const RawTHREEJS: React.FC = () => {
   const {stageId: currentStage = "root-stage"} = useParams();
   const flightId = "cool flight";
@@ -318,7 +351,9 @@ const RawTHREEJS: React.FC = () => {
 
   const threeRef = React.useRef<HTMLDivElement>(null);
 
-  const updateStateCallback = React.useRef((state: CanvasContextOutput) => {});
+  const updateStateCallback = React.useRef(
+    (state: CanvasContextOutput, extraState: ExtraState) => {},
+  );
   const outsideState = React.useContext(CanvasContext);
   React.useLayoutEffect(() => {
     let cleanup = () => {};
@@ -326,7 +361,7 @@ const RawTHREEJS: React.FC = () => {
       ({updateState, cleanUp}) => {
         cleanup = cleanUp;
         updateStateCallback.current = updateState;
-        updateState(outsideState);
+        updateState(outsideState, {flightId, currentStage});
       },
     );
     return () => {
@@ -336,7 +371,7 @@ const RawTHREEJS: React.FC = () => {
   }, []);
 
   React.useLayoutEffect(() => {
-    updateStateCallback.current(outsideState);
+    updateStateCallback.current(outsideState, {flightId, currentStage});
   });
   return (
     <div

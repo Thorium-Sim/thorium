@@ -10,20 +10,26 @@ import {
   AppearanceComponent,
   LocationComponent,
   StageChildComponent,
+  StageComponent,
 } from "generated/graphql";
 import {RenderState} from "./types";
 
 export default class Entity extends Group {
   zoomScale: boolean = true;
   meshType: "sprite" = "sprite";
+  flightId?: string | null;
   appearance?: AppearanceComponent;
+  stage?: StageComponent;
+  stageChild?: Partial<StageChildComponent>;
   childrenAsSprites: boolean = false;
   _isSelected: boolean = false;
   selection?: Object3D;
   constructor(entity: {
     id: string;
+    flightId?: string | null;
     location?: Partial<LocationComponent> | null;
     appearance?: Partial<AppearanceComponent> | null;
+    stage?: Partial<StageComponent> | null;
     stageChild?: Partial<StageChildComponent> | null;
   }) {
     super();
@@ -33,8 +39,12 @@ export default class Entity extends Group {
     this.position.set(x, y, z);
 
     this.uuid = entity.id;
+    this.flightId = entity.flightId;
 
     this.appearance = entity.appearance;
+    this.stage = entity.stage || undefined;
+    this.stageChild = entity.stageChild || undefined;
+
     this.childrenAsSprites =
       entity.stageChild?.parent?.stage?.childrenAsSprites || false;
     if (this.childrenAsSprites) {

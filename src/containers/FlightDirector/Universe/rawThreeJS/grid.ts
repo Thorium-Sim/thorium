@@ -1,4 +1,4 @@
-import {Mesh, GridHelper} from "three";
+import {GridHelper} from "three";
 import {calculateGrid} from "../Grid";
 import getOrthoCamera from "./orthoCamera";
 
@@ -20,7 +20,7 @@ class Grid extends GridHelper {
     if (`${zoom},${x},${y}` === this.frameRef) return;
 
     this.frameRef = `${zoom},${x},${y}`;
-    const geo = calculateGrid({width, height, zoom, x, y});
+    const geo = calculateGrid({width, height, zoom: zoom * 20, x, y});
     this.geometry = geo;
   }
 }

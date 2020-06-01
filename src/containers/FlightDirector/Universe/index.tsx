@@ -14,9 +14,6 @@ import PropertyPalette from "./PropertyPalette";
 import {useParams} from "react-router";
 import {useNavigate} from "react-router-dom";
 // import CanvasWrapper from "./CanvasWrapper";
-import {useApolloClient} from "@apollo/client";
-import renderRawThreeJS from "./rawThreeJS";
-import {css} from "@emotion/core";
 import RawTHREEJS from "./rawThreeJS";
 
 const sub = gql`

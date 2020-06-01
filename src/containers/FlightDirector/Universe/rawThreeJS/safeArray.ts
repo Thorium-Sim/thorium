@@ -27,7 +27,37 @@ export default class SafeArray<T> {
     }
     this._removeQueued();
   }
+  map(fn: (item: T) => any) {
+    this._addQueued();
+    this._removeQueued();
+    let newArray = [];
+    for (const element of this.array) {
+      if (this.removeQueue.has(element)) {
+        continue;
+      }
+      newArray.push(fn(element));
+    }
+    this._removeQueued();
+    return newArray;
+  }
+  filter(fn: (item: T) => boolean) {
+    this._addQueued();
+    this._removeQueued();
+    let newArray = [];
+    for (const element of this.array) {
+      if (this.removeQueue.has(element)) {
+        continue;
+      }
+      if (fn(element)) {
+        newArray.push(element);
+      }
+    }
+    this._removeQueued();
+    return newArray;
+  }
   reduce<I>(fn: (prev: I, next: T, index?: number, array?: T[]) => I, acc: I) {
+    this._addQueued();
+    this._removeQueued();
     for (let i = 0; i < this.array.length; i++) {
       acc = fn(acc, this.array[i], i, this.array);
     }

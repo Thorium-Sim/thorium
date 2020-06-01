@@ -12,6 +12,7 @@ import generateUniverse from "./generateUniverse";
 const schema = gql`
   type Entity {
     id: ID!
+    flightId: ID
     interval: Int
     # This property exists for client side type definitions
     reset: Boolean

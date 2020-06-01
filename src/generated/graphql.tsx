@@ -10273,6 +10273,7 @@ export type CountermeasureSlot = {
 export type Entity = {
    __typename?: 'Entity';
   id: Scalars['ID'];
+  flightId?: Maybe<Scalars['ID']>;
   interval?: Maybe<Scalars['Int']>;
   reset?: Maybe<Scalars['Boolean']>;
   appearance?: Maybe<AppearanceComponent>;
@@ -13917,7 +13918,7 @@ export type EntityCreateMutation = (
 
 export type EntityDataFragment = (
   { __typename?: 'Entity' }
-  & Pick<Entity, 'id' | 'interval'>
+  & Pick<Entity, 'id' | 'flightId' | 'interval'>
   & { identity?: Maybe<(
     { __typename?: 'IdentityComponent' }
     & Pick<IdentityComponent, 'name'>
@@ -14369,6 +14370,7 @@ export const TemplateFragmentFragmentDoc = gql`
 export const EntityDataFragmentDoc = gql`
     fragment EntityData on Entity {
   id
+  flightId
   interval
   identity {
     name

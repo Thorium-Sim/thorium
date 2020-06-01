@@ -1,5 +1,6 @@
 fragment EntityData on Entity {
   id
+  flightId
   interval
   identity {
     name

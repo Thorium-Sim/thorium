@@ -3,7 +3,7 @@ import {useFrame} from "react-three-fiber";
 import {GridHelper, Color, BufferGeometry, Float32BufferAttribute} from "three";
 
 const color1 = new Color(0xff0000).convertSRGBToLinear();
-const color2 = new Color(0x00ff00).convertSRGBToLinear();
+const color2 = new Color(0x888888).convertSRGBToLinear();
 
 var geometry = new BufferGeometry();
 
