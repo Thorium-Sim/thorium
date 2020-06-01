@@ -129,7 +129,13 @@ ${this.state.reproduce}`
                 onChange={this._handleEvent.bind(this, "body")}
                 value={this.state.body}
                 rows="5"
-                placeholder="Please be specific. Include as much detail as possible. If you are filing a bug report, explain detailed steps to reproduce the bug. Include how you would want the bug to be fixed or the feature to be implemented. The more specific you are, the more likely the bug will be fixed or feature will be implemented. This field supports Markdown"
+                placeholder={`Please be specific. Include as much detail as possible. ${
+                  this.state.type === "type/feature" ||
+                  this.state.type === "type/card" ||
+                  this.state.type === "type/enhancement"
+                    ? "Can you tell me a story about a time that you wanted to do what your feature request outlines, and what you had to do instead?"
+                    : ""
+                } If you are filing a bug report, explain detailed steps to reproduce the bug. Include how you would want the bug to be fixed or the feature to be implemented. The more specific you are, the more likely the bug will be fixed or feature will be implemented. This field supports Markdown`}
                 required
                 className="form-control form-control-sm"
               />

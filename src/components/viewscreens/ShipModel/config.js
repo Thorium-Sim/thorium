@@ -74,12 +74,13 @@ export default ({data, updateData, simple}) => (
     <label>Color</label>
     <ColorPicker
       color={JSON.parse(data).color}
+      format="raw"
       onChangeComplete={color => {
         updateData(
           JSON.stringify({
             ...JSON.parse(data),
-            color: color.hex,
-            opacity: color.rgb.a,
+            color: color.toHexString(),
+            opacity: color.toRgb().a,
           }),
         );
       }}

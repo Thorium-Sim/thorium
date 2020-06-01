@@ -970,6 +970,7 @@ type Mutation {
   setStealthQuadrant(id: ID, which: String, value: Float): String
   fluxStealthQuadrants(id: ID): String
   stealthChangeAlert(id: ID!, change: Boolean!): String
+  stealthSensorsSonar(id: ID!, sonar: Boolean!): String
   fluxSubspaceField(id: ID!, which: String): String
   normalSubspaceField(id: ID!, which: String): String
   setSubspaceFieldSectorValue(id: ID, which: String!, value: Int!): String
@@ -1298,6 +1299,7 @@ type Mutation {
   taskFlowStepRemoveTask(id: ID!, stepId: ID!, taskId: ID!): String
   taskFlowStepEditTask(id: ID!, stepId: ID!, taskId: ID!, task: TaskInput!): String
   taskFlowStepSetCompleteAll(id: ID!, stepId: ID!, completeAll: Boolean!): String
+  taskFlowStepSetDelay(id: ID!, stepId: ID!, delay: Int!): String
 
   """Macro: Tasks: Activate Task Flow"""
   taskFlowActivate(id: ID!, simulatorId: ID!): String
@@ -3678,6 +3680,7 @@ type StealthField implements SystemInterface {
   activated: Boolean
   charge: Boolean
   changeAlert: Boolean
+  sensorsSonar: Boolean
   state: Boolean
   quadrants: StealthQuad
   locations: [Room]
@@ -4583,6 +4586,7 @@ type TaskFlowStep {
   tasks: [Task!]!
   activeTasks: [Task!]!
   completeAll: Boolean!
+  delay: Int!
   completed: Boolean!
 }
 

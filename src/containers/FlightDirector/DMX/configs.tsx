@@ -68,7 +68,9 @@ export const DMXPropertiesEditor: React.FC<{
               <ColorPicker
                 color={channels[prop]}
                 onChangeComplete={color => {
-                  updateValue(prop, color);
+                  if (typeof color === "string") {
+                    updateValue(prop, color);
+                  }
                 }}
               />
             </div>

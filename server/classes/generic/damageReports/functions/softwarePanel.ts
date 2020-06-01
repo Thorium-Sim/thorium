@@ -66,7 +66,7 @@ export default (
           )
         )*/
           .replace("#CHECKED", randomFromList(["Checked", "Unchecked"]))
-          .replace("#INT", Math.round(Math.random() * 7 + 2))
+          .replace("#INT", String(Math.round(Math.random() * 7 + 2)))
           .replace(
             "#CABLE2",
             randomFromList(

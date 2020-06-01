@@ -270,14 +270,12 @@ const Sensors: React.FC<SensorsProps> = ({
   if (!sensors) return <p>No sensors system.</p>;
 
   const showWeaponsRange = async () => {
-    const {
-      data: {targeting},
-    } = await client.query({
+    const {data} = await client.query({
       query: TargetingRangeDocument,
       variables: {id: simulator.id},
     });
 
-    const target = targeting[0];
+    const target = data?.targeting[0];
     if (!target) return;
     setWeaponsRange(target.range);
     setTimeout(() => {

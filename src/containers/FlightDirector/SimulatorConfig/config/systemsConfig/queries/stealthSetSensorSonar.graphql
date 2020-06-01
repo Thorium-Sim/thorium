@@ -1,0 +1,3 @@
+mutation StealthSetSensorSonar($id: ID!, $sonar: Boolean!) {
+  stealthSensorsSonar(id: $id, sonar: $sonar)
+}

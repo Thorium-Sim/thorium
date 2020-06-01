@@ -249,18 +249,19 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
             s => s.simulatorId === simulator.id && s.type === "ComputerCore",
           );
           if (!system) return "text";
-          return system.terminals.map(t => ({
-            label: `${t.name}${t.status === "O" ? " - Offline" : ""}`,
-            value: t.id,
-          }));
+          return [{label: "All Terminals", value: "all"}].concat(
+            system.terminals.map(t => ({
+              label: `${t.name}${t.status === "O" ? " - Offline" : ""}`,
+              value: t.id,
+            })),
+          );
         },
         value: ({simulator}) => {
-          if (!simulator)
-            return `Terminal ${Math.floor(Math.random() * 199 + 1)}`;
+          if (!simulator) return `all`;
           const system = App.systems.find(
             s => s.simulatorId === simulator.id && s.type === "ComputerCore",
           );
-          if (!system) return `Terminal ${Math.floor(Math.random() * 199 + 1)}`;
+          if (!system) return `all`;
           return Math.random(system.terminals.map(t => t.id));
         },
       },
@@ -270,19 +271,39 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
       requiredValues: {preamble, system: sys, terminal},
       task = {},
     }) {
-      const system = getDamageSystem(sys) || {name: sys, terminals: []};
+      const system = getDamageSystem(sys) ||
+        App.systems.find(
+          s => s.simulatorId === simulator.id && s.class === "ComputerCore",
+        ) || {name: sys, terminals: []};
       const t = system.terminals.find(
         t => t.id === terminal || t.name === terminal,
       );
-      if (!t) return "Error generating task description";
       const station = simulator.stations.find(s =>
         s.cards.find(c => c.component === "ComputerCore"),
       );
       if (station && task.station === station.name) {
+        if (!t)
+          return reportReplace(
+            `${preamble} Make sure all terminals are functioning correctly and reset any offline terminals.`,
+            {
+              system,
+              simulator,
+            },
+          );
         return reportReplace(`${preamble} Reset terminal ${t.name}.`, {
           system,
           simulator,
         });
+      }
+      if (!t) {
+        return reportReplace(
+          `${preamble} Ask the ${
+            station
+              ? `${station.name} Officer`
+              : "person in charge of the computer core"
+          } to make sure all terminals are functioning correctly and reset any offline terminals.`,
+          {system, simulator},
+        );
       }
       return reportReplace(
         `${preamble} Ask the ${
@@ -298,10 +319,13 @@ ${level ? `Level: ${level}\n` : ""}Username: ${name}`,
         s => s.simulatorId === simulator.id && s.type === "ComputerCore",
       );
       const terminal = system.terminals.find(
-        t => t.id === requiredValues.terminal || t.name === terminal,
+        t =>
+          t.id === requiredValues.terminal ||
+          t.name === requiredValues.terminal,
       );
-      if (!terminal) return false;
-      if (terminal.status === "R") return true;
+      if (!terminal) {
+        return !system.terminals.find(t => t.status === "O");
+      } else if (terminal.status === "R") return true;
       return false;
     },
   },

@@ -46,7 +46,7 @@ export default class DMXFixture {
     this.mode = mode;
   }
   setTags(tags: string[]) {
-    this.tags = tags;
+    this.tags = tags.map(t => t.trim());
   }
   setPassiveChannels(channels: ChannelConfig) {
     this.passiveChannels = channels;

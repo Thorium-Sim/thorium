@@ -1425,6 +1425,7 @@ export type Mutation = {
   setStealthQuadrant?: Maybe<Scalars['String']>;
   fluxStealthQuadrants?: Maybe<Scalars['String']>;
   stealthChangeAlert?: Maybe<Scalars['String']>;
+  stealthSensorsSonar?: Maybe<Scalars['String']>;
   fluxSubspaceField?: Maybe<Scalars['String']>;
   normalSubspaceField?: Maybe<Scalars['String']>;
   setSubspaceFieldSectorValue?: Maybe<Scalars['String']>;
@@ -1691,6 +1692,7 @@ export type Mutation = {
   taskFlowStepRemoveTask?: Maybe<Scalars['String']>;
   taskFlowStepEditTask?: Maybe<Scalars['String']>;
   taskFlowStepSetCompleteAll?: Maybe<Scalars['String']>;
+  taskFlowStepSetDelay?: Maybe<Scalars['String']>;
   /** Macro: Tasks: Activate Task Flow */
   taskFlowActivate?: Maybe<Scalars['String']>;
   taskFlowAdvance?: Maybe<Scalars['String']>;
@@ -5003,6 +5005,12 @@ export type MutationStealthChangeAlertArgs = {
 };
 
 
+export type MutationStealthSensorsSonarArgs = {
+  id: Scalars['ID'];
+  sonar: Scalars['Boolean'];
+};
+
+
 export type MutationFluxSubspaceFieldArgs = {
   id: Scalars['ID'];
   which?: Maybe<Scalars['String']>;
@@ -6188,6 +6196,13 @@ export type MutationTaskFlowStepSetCompleteAllArgs = {
   id: Scalars['ID'];
   stepId: Scalars['ID'];
   completeAll: Scalars['Boolean'];
+};
+
+
+export type MutationTaskFlowStepSetDelayArgs = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  delay: Scalars['Int'];
 };
 
 
@@ -9404,6 +9419,7 @@ export type StealthField = SystemInterface & {
   activated?: Maybe<Scalars['Boolean']>;
   charge?: Maybe<Scalars['Boolean']>;
   changeAlert?: Maybe<Scalars['Boolean']>;
+  sensorsSonar?: Maybe<Scalars['Boolean']>;
   state?: Maybe<Scalars['Boolean']>;
   quadrants?: Maybe<StealthQuad>;
   locations?: Maybe<Array<Maybe<Room>>>;
@@ -10360,6 +10376,7 @@ export type TaskFlowStep = {
   tasks: Array<Task>;
   activeTasks: Array<Task>;
   completeAll: Scalars['Boolean'];
+  delay: Scalars['Int'];
   completed: Scalars['Boolean'];
 };
 
@@ -11941,7 +11958,7 @@ export type TaskFlowSubSubscription = (
     & Pick<TaskFlow, 'id' | 'name' | 'category' | 'currentStep' | 'completed'>
     & { steps: Array<(
       { __typename?: 'TaskFlowStep' }
-      & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll' | 'completed'>
+      & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll' | 'delay' | 'completed'>
       & { activeTasks: Array<(
         { __typename?: 'Task' }
         & Pick<Task, 'id' | 'station' | 'definition' | 'verified'>
@@ -13376,6 +13393,17 @@ export type TractorBeamSetCountMutation = (
   & Pick<Mutation, 'setTractorBeamCount'>
 );
 
+export type StealthSetSensorSonarMutationVariables = {
+  id: Scalars['ID'];
+  sonar: Scalars['Boolean'];
+};
+
+
+export type StealthSetSensorSonarMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'stealthSensorsSonar'>
+);
+
 export type RemoveSimulatorMutationVariables = {
   id: Scalars['ID'];
 };
@@ -13743,6 +13771,18 @@ export type TaskFlowStepCompleteAllMutation = (
   & Pick<Mutation, 'taskFlowStepSetCompleteAll'>
 );
 
+export type TaskFlowStepDelayMutationVariables = {
+  id: Scalars['ID'];
+  stepId: Scalars['ID'];
+  delay: Scalars['Int'];
+};
+
+
+export type TaskFlowStepDelayMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'taskFlowStepSetDelay'>
+);
+
 export type TaskFlowsConfigSubscriptionVariables = {};
 
 
@@ -13753,7 +13793,7 @@ export type TaskFlowsConfigSubscription = (
     & Pick<TaskFlow, 'id' | 'name' | 'category'>
     & { steps: Array<(
       { __typename?: 'TaskFlowStep' }
-      & Pick<TaskFlowStep, 'id' | 'name' | 'completeAll'>
+      & Pick<TaskFlowStep, 'id' | 'name' | 'delay' | 'completeAll'>
       & { tasks: Array<(
         { __typename?: 'Task' }
         & Pick<Task, 'id' | 'station' | 'stationTags' | 'definition' | 'values'>
@@ -15588,6 +15628,7 @@ export const TaskFlowSubDocument = gql`
       id
       name
       completeAll
+      delay
       activeTasks {
         id
         station
@@ -16914,6 +16955,15 @@ export function useTractorBeamSetCountMutation(baseOptions?: ApolloReactHooks.Mu
         return ApolloReactHooks.useMutation<TractorBeamSetCountMutation, TractorBeamSetCountMutationVariables>(TractorBeamSetCountDocument, baseOptions);
       }
 export type TractorBeamSetCountMutationHookResult = ReturnType<typeof useTractorBeamSetCountMutation>;
+export const StealthSetSensorSonarDocument = gql`
+    mutation StealthSetSensorSonar($id: ID!, $sonar: Boolean!) {
+  stealthSensorsSonar(id: $id, sonar: $sonar)
+}
+    `;
+export function useStealthSetSensorSonarMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StealthSetSensorSonarMutation, StealthSetSensorSonarMutationVariables>) {
+        return ApolloReactHooks.useMutation<StealthSetSensorSonarMutation, StealthSetSensorSonarMutationVariables>(StealthSetSensorSonarDocument, baseOptions);
+      }
+export type StealthSetSensorSonarMutationHookResult = ReturnType<typeof useStealthSetSensorSonarMutation>;
 export const RemoveSimulatorDocument = gql`
     mutation RemoveSimulator($id: ID!) {
   removeSimulator(simulatorId: $id)
@@ -17351,6 +17401,15 @@ export function useTaskFlowStepCompleteAllMutation(baseOptions?: ApolloReactHook
         return ApolloReactHooks.useMutation<TaskFlowStepCompleteAllMutation, TaskFlowStepCompleteAllMutationVariables>(TaskFlowStepCompleteAllDocument, baseOptions);
       }
 export type TaskFlowStepCompleteAllMutationHookResult = ReturnType<typeof useTaskFlowStepCompleteAllMutation>;
+export const TaskFlowStepDelayDocument = gql`
+    mutation TaskFlowStepDelay($id: ID!, $stepId: ID!, $delay: Int!) {
+  taskFlowStepSetDelay(id: $id, stepId: $stepId, delay: $delay)
+}
+    `;
+export function useTaskFlowStepDelayMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TaskFlowStepDelayMutation, TaskFlowStepDelayMutationVariables>) {
+        return ApolloReactHooks.useMutation<TaskFlowStepDelayMutation, TaskFlowStepDelayMutationVariables>(TaskFlowStepDelayDocument, baseOptions);
+      }
+export type TaskFlowStepDelayMutationHookResult = ReturnType<typeof useTaskFlowStepDelayMutation>;
 export const TaskFlowsConfigDocument = gql`
     subscription TaskFlowsConfig {
   taskFlows {
@@ -17379,6 +17438,7 @@ export const TaskFlowsConfigDocument = gql`
           delay
         }
       }
+      delay
       completeAll
     }
   }

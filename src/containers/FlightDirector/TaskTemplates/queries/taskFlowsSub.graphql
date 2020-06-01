@@ -25,6 +25,7 @@ subscription TaskFlowsConfig {
           delay
         }
       }
+      delay
       completeAll
     }
   }

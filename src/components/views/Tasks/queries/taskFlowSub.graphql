@@ -8,6 +8,7 @@ subscription TaskFlowSub($simulatorId: ID) {
       id
       name
       completeAll
+      delay
       activeTasks {
         id
         station

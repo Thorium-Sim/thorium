@@ -6,8 +6,8 @@ import tc from "tinycolor2";
 
 const ColorPicker: React.FC<{
   color: any;
-  onChangeComplete: (value: string) => void;
-  format?: "rgb" | "hex";
+  onChangeComplete: (value: string | tc.Instance) => void;
+  format?: "rgb" | "raw" | "hex";
 }> = ({color, onChangeComplete, format = "rgb"}) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
@@ -61,6 +61,13 @@ const ColorPicker: React.FC<{
                         b: color.rgb.b,
                         a: color.rgb.a,
                       }).toRgbString()
+                    : format === "raw"
+                    ? tc({
+                        r: color.rgb.r,
+                        g: color.rgb.g,
+                        b: color.rgb.b,
+                        a: color.rgb.a,
+                      })
                     : tc(color.hex).toHexString(),
                 )
               }
@@ -73,6 +80,13 @@ const ColorPicker: React.FC<{
                         b: color.rgb.b,
                         a: color.rgb.a,
                       }).toRgbString()
+                    : format === "raw"
+                    ? tc({
+                        r: color.rgb.r,
+                        g: color.rgb.g,
+                        b: color.rgb.b,
+                        a: color.rgb.a,
+                      })
                     : tc(color.hex).toHexString(),
                 )
               }
