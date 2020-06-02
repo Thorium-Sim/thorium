@@ -235,7 +235,10 @@ const useGainNode = (
   return [gainNode, gain, setGain];
 };
 
-const useWebRTCPlayer = (clientId: string) => {
+const useWebRTCPlayer = (
+  clientId: string,
+  canvas: React.RefObject<HTMLCanvasElement>,
+) => {
   const [activated, setActivated] = React.useState(false);
 
   const [gainNode, gain, setGain] = useGainNode(audioContext);
@@ -244,6 +247,8 @@ const useWebRTCPlayer = (clientId: string) => {
   const [signal] = useWebRtcSignalMutation();
 
   const localPeer = React.useRef<Peer.Instance>();
+
+  const {analyser, draw} = useAnalyser(canvas);
 
   React.useEffect(() => {
     if (!activated) return;
@@ -257,8 +262,12 @@ const useWebRTCPlayer = (clientId: string) => {
       console.log("Peer error", err);
       localPeer.current?.destroy();
       localPeer.current = undefined;
-      mySource.disconnect(gainNode);
-      gainNode.disconnect(audioContext.destination);
+      try {
+        mySource?.disconnect(gainNode);
+        gainNode?.disconnect(audioContext.destination);
+      } catch {
+        // Do nothing
+      }
       setActivated(false);
     });
 
@@ -283,6 +292,8 @@ const useWebRTCPlayer = (clientId: string) => {
 
       mySource.connect(gainNode);
       gainNode.connect(audioContext.destination);
+      gainNode.connect(analyser);
+      draw();
     });
 
     addStream();
@@ -351,9 +362,13 @@ export const WebRTCContextProvider: React.FC<{clientId: string}> = ({
   children,
   clientId,
 }) => {
-  const value = useWebRTCPlayer(clientId);
+  const canvas = React.useRef(null);
+  const value = useWebRTCPlayer(clientId, canvas);
   return (
-    <WebRTCContext.Provider value={value}>{children}</WebRTCContext.Provider>
+    <WebRTCContext.Provider value={value}>
+      <canvas ref={canvas}></canvas>
+      {children}
+    </WebRTCContext.Provider>
   );
 };
 

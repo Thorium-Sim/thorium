@@ -156,6 +156,12 @@ export default class Client {
     this.logout();
   }
   setStation(station) {
+    if (station !== "Sound") {
+      if (this.webRTCInitiator) {
+        pubsub.publish("webRTCreinitiate", {simulatorId: this.simulatorId});
+      }
+      this.webRTCInitiator = false;
+    }
     this.station = station;
   }
   login(name, isSpaceEdventures = false) {
