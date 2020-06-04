@@ -27,6 +27,18 @@ export default class SafeArray<T> {
     }
     this._removeQueued();
   }
+  find(fn: (item: T) => boolean) {
+    this._addQueued();
+    this._removeQueued();
+    for (const element of this.array) {
+      if (this.removeQueue.has(element)) {
+        continue;
+      }
+      if (fn(element)) {
+        return element;
+      }
+    }
+  }
   map(fn: (item: T) => any) {
     this._addQueued();
     this._removeQueued();

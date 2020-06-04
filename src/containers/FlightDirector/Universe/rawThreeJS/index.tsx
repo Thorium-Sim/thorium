@@ -24,7 +24,7 @@ import getPerspectiveCamera from "./perspectiveCamera";
 import globals from "./globals";
 import Grid from "./grid";
 import {css} from "@emotion/core";
-import {useParams} from "react-router";
+import {useParams, useNavigate, NavigateFunction} from "react-router";
 import gql from "graphql-tag.macro";
 import {CanvasContext, CanvasContextOutput} from "../CanvasContext";
 import {distance3d} from "components/views/Sensors/gridCore/constants";
@@ -65,6 +65,7 @@ async function renderRawThreeJS(
   let extraOutsideState: ExtraState = {
     flightId: "",
     currentStage: "",
+    navigate: () => {},
   };
 
   const raycaster = new Raycaster();
@@ -122,13 +123,20 @@ async function renderRawThreeJS(
     // calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects(scene.children, true);
     if (intersects[0]?.object) {
-      outsideState[1]({
-        type: "selected",
-        selected: e.shiftKey
-          ? outsideState[0].selected.concat(intersects[0].object.uuid)
-          : [intersects[0].object.uuid],
-      });
-      panControls.enabled = false;
+      const id = intersects[0].object.uuid;
+      if (gameObjectManager.gameObjects.find(g => g.uuid === id)) {
+        outsideState[1]({
+          type: "selected",
+          selected: e.shiftKey ? outsideState[0].selected.concat(id) : [id],
+        });
+        panControls.enabled = false;
+      } else {
+        outsideState[1]({
+          type: "selected",
+          selected: [],
+        });
+        panControls.enabled = true;
+      }
     }
   });
   document.addEventListener("mousemove", e => {
@@ -168,6 +176,7 @@ async function renderRawThreeJS(
 
   let then = 0;
   let frame: number;
+
   const render = function (now: number) {
     globals.time = now;
     globals.delta = Math.min(globals.time - then, 1 / 20);
@@ -180,7 +189,11 @@ async function renderRawThreeJS(
       if (activeCamera === perspectiveCamera) {
         orbitControls.update();
       }
-      gameObjectManager.update({camera: activeCamera, delta: globals.delta});
+      gameObjectManager.update({
+        camera: activeCamera,
+        delta: globals.delta,
+        currentStage: extraOutsideState.currentStage,
+      });
     } catch (err) {
       console.error("There has been an error", err);
       cancelAnimationFrame(frame);
@@ -221,6 +234,14 @@ async function renderRawThreeJS(
         })
         .then(res => {
           const entities: EntitiesQuery = res.data;
+
+          // Get the root stage ID. We can assume that we can change the root stage ID because this will
+          // only run if the flight ID is changed, so we should revert back to the root stage
+          const rootStageId = entities.entities.find(e => e?.stage?.rootStage)
+            ?.id;
+          if (rootStageId && extraOutsideState.currentStage !== rootStageId) {
+            extraOutsideState.navigate(`/config/sandbox/${rootStageId}`);
+          }
           entities.entities.forEach(e => {
             if (!e) return;
             const entity = new Entity(e);
@@ -337,10 +358,12 @@ const sub = gql`
 interface ExtraState {
   flightId: string;
   currentStage: string;
+  navigate: NavigateFunction;
 }
 
 const RawTHREEJS: React.FC = () => {
   const {stageId: currentStage = "root-stage"} = useParams();
+  const navigate = useNavigate();
   const flightId = "cool flight";
 
   const [, storeApi] = usePatchedSubscriptions<
@@ -361,7 +384,7 @@ const RawTHREEJS: React.FC = () => {
       ({updateState, cleanUp}) => {
         cleanup = cleanUp;
         updateStateCallback.current = updateState;
-        updateState(outsideState, {flightId, currentStage});
+        updateState(outsideState, {flightId, currentStage, navigate});
       },
     );
     return () => {
@@ -371,7 +394,11 @@ const RawTHREEJS: React.FC = () => {
   }, []);
 
   React.useLayoutEffect(() => {
-    updateStateCallback.current(outsideState, {flightId, currentStage});
+    updateStateCallback.current(outsideState, {
+      flightId,
+      currentStage,
+      navigate,
+    });
   });
   return (
     <div

@@ -21,6 +21,7 @@ export default class Entity extends Group {
   appearance?: AppearanceComponent;
   stage?: StageComponent;
   stageChild?: Partial<StageChildComponent>;
+  location?: {x: number; y: number; z: number};
   childrenAsSprites: boolean = false;
   _isSelected: boolean = false;
   selection?: Object3D;
@@ -34,6 +35,8 @@ export default class Entity extends Group {
   }) {
     super();
     if (!entity.location?.position || !entity.appearance) return;
+
+    this.location = entity.location.position;
 
     const {x, y, z} = entity.location?.position;
     this.position.set(x, y, z);
@@ -100,6 +103,26 @@ export default class Entity extends Group {
           this.appearance.scale,
           this.appearance.scale,
         );
+    }
+
+    if (this.stageChild?.parentId === state.currentStage) {
+      this.visible = true;
+    } else {
+      this.visible = false;
+    }
+    if (this.uuid === state.currentStage) {
+      this.visible = true;
+      this.position.set(0, 0, 0);
+    } else {
+      if (
+        this.location &&
+        this.position.x === 0 &&
+        this.position.y === 0 &&
+        this.position.z === 0
+      ) {
+        const {x, y, z} = this.location;
+        this.position.set(x, y, z);
+      }
     }
   }
 }

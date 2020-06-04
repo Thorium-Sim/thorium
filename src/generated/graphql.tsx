@@ -10484,6 +10484,7 @@ export type StageComponent = {
   scaleLabelShort?: Maybe<Scalars['String']>;
   skyboxKey?: Maybe<Scalars['String']>;
   childrenAsSprites?: Maybe<Scalars['Boolean']>;
+  rootStage?: Maybe<Scalars['Boolean']>;
 };
 
 export type StageChildComponent = {
@@ -13924,7 +13925,7 @@ export type EntityDataFragment = (
     & Pick<IdentityComponent, 'name'>
   )>, stage?: Maybe<(
     { __typename?: 'StageComponent' }
-    & Pick<StageComponent, 'scaleLabel' | 'scaleLabelShort' | 'skyboxKey' | 'childrenAsSprites'>
+    & Pick<StageComponent, 'scaleLabel' | 'scaleLabelShort' | 'skyboxKey' | 'childrenAsSprites' | 'rootStage'>
   )>, stageChild?: Maybe<(
     { __typename?: 'StageChildComponent' }
     & Pick<StageChildComponent, 'parentId'>
@@ -14380,6 +14381,7 @@ export const EntityDataFragmentDoc = gql`
     scaleLabelShort
     skyboxKey
     childrenAsSprites
+    rootStage
   }
   stageChild {
     parentId

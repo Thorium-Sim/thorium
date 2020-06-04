@@ -42,12 +42,14 @@ const PropertyPalette: React.FC<PropertyPaletteProps> = ({
     useEntityState(
       ({data: entities}) =>
         entities.find(e => selected && e.id === selected[0]) ||
-        entities.find(e => e.id === currentStage),
+        entities.find(e => e.id === currentStage && selected.length === 0),
     ) ||
     (staticEntities?.data?.entities.find(
       e =>
         (selected.length > 0 && e?.id === selected[0]) ||
-        (selected.length === 0 && e?.id === currentStage),
+        (selected.length === 0 &&
+          e?.id === currentStage &&
+          selected.length === 0),
     ) as Entity) ||
     realSelectedEntity;
 

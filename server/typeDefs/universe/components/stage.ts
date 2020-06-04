@@ -8,6 +8,7 @@ const schema = gql`
     scaleLabelShort: String
     skyboxKey: String
     childrenAsSprites: Boolean
+    rootStage: Boolean
   }
 
   extend type Entity {

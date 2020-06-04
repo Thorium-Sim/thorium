@@ -41,7 +41,11 @@ const resolver = {
     entities(rootQuery, {flightId, inert}, context) {
       let entities = App.entities.filter(e => {
         if (flightId && e.flightId !== flightId) return false;
-        if ((inert || inert === false) && e?.location?.inert !== inert)
+        if (
+          (inert || inert === false) &&
+          e?.location?.inert !== inert &&
+          !e.stage.rootStage
+        )
           return false;
         return true;
       });

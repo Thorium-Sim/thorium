@@ -10,6 +10,7 @@ fragment EntityData on Entity {
     scaleLabelShort
     skyboxKey
     childrenAsSprites
+    rootStage
   }
   stageChild {
     parentId

@@ -4686,6 +4686,7 @@ type StageComponent {
   scaleLabelShort: String
   skyboxKey: String
   childrenAsSprites: Boolean
+  rootStage: Boolean
 }
 
 type StageChildComponent {
