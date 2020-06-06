@@ -200,7 +200,7 @@
     "@types/reactstrap": "^8.4.1",
     "@types/styled-components": "^5.1.0",
     "@types/three": "^0.103.2",
-    "apollo-server-express": "^2.9.6",
+    "apollo-server-express": "^2.14.2",
     "apollo-server-plugin-base": "^0.8.0",
     "bonjour": "^3.5.0",
     "chalk": "^4.0.0",
