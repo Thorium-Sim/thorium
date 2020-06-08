@@ -30,7 +30,6 @@ const sub = gql`
 // }
 
 export default function UniversalSandboxEditor() {
-  const [dragging, setDragging] = React.useState<Entity | undefined>();
   const {stageId: currentStage = "root-stage"} = useParams();
   const navigate = useNavigate();
   const flightId = "cool flight";
@@ -40,7 +39,7 @@ export default function UniversalSandboxEditor() {
     },
     [navigate],
   );
-  const [useEntityState, storeApi] = usePatchedSubscriptions<
+  const [useEntityState] = usePatchedSubscriptions<
     Entity[],
     {flightId: string; stageId: string}
   >(sub, {flightId, stageId: currentStage});
@@ -68,7 +67,7 @@ export default function UniversalSandboxEditor() {
           <Controls />
         </div>
 
-        <Library setDragging={setDragging} dragging={Boolean(dragging)} />
+        <Library />
       </div>
     </CanvasContextProvider>
   );

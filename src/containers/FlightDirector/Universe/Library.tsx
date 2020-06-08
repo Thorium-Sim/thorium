@@ -7,6 +7,7 @@ import {Entity as EntityT} from "generated/graphql";
 import usePatchedSubscriptions from "helpers/hooks/usePatchedSubscriptions";
 import gql from "graphql-tag.macro";
 import {PositionTuple} from "./CanvasApp";
+import {CanvasContext} from "./CanvasContext";
 type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 const sub = gql`
@@ -43,13 +44,8 @@ const sub = gql`
   }
 `;
 
-export default function Library({
-  dragging = false,
-  setDragging,
-}: {
-  dragging: boolean;
-  setDragging: React.Dispatch<any>;
-}) {
+export default function Library() {
+  const [{addingEntity}, dispatch] = React.useContext(CanvasContext);
   const [useEntityState, storeApi] = usePatchedSubscriptions<
     EntityT[],
     {flightId: string}
@@ -62,13 +58,15 @@ export default function Library({
       <div className="library-opener">
         <FaPlusCircle />
       </div>
-      <div className={`library ${dragging ? "dragging" : ""}`}>
+      <div className={`library ${addingEntity ? "dragging" : ""}`}>
         <div className="library-inner">
           {libraryItems.map((l, i) => (
             <div
               key={l.identity?.name || l.appearance?.meshType || `library-${i}`}
               className="library-item"
-              onMouseDown={() => setDragging(l)}
+              onMouseDown={() =>
+                dispatch({type: "addingEntity", addingEntity: l})
+              }
             >
               <Canvas className="library-mesh" camera={{position: [0, 0, 3]}}>
                 <ApolloProvider client={client}>

@@ -1,8 +1,10 @@
 import * as React from "react";
+import {Entity} from "generated/graphql";
 
 export type ActionType =
   | "dragging"
   | "dropped"
+  | "addingEntity"
   | "recenter"
   | "zoomScale"
   | "camera"
@@ -33,6 +35,7 @@ interface CanvasContextState {
   position: [number, number, number];
   controllingEntityId: string;
   skyboxKey: string;
+  addingEntity: Entity | null;
 }
 interface CanvasContextAction {
   type: ActionType;
@@ -43,8 +46,9 @@ interface CanvasContextAction {
   timeInSeconds?: number;
   shiftKey?: boolean;
   id?: string;
+  addingEntity?: Entity | null;
 }
-const canvasContextDefault: CanvasContextState = {
+export const canvasContextDefault: CanvasContextState = {
   dragging: false,
   camera: false,
   zoomScale: false,
@@ -59,6 +63,7 @@ const canvasContextDefault: CanvasContextState = {
   position: [0, 0, 0],
   controllingEntityId: localStorage.getItem("sandbox-controlling-id") || "",
   skyboxKey: "Pretty",
+  addingEntity: null,
 };
 
 const canvasContextReducer = (
@@ -70,6 +75,12 @@ const canvasContextReducer = (
       return {...state, dragging: true};
     case "dropped":
       return {...state, dragging: false};
+    case "addingEntity":
+      return {
+        ...state,
+        selected: [],
+        addingEntity: action.addingEntity ?? null,
+      };
     case "recenter":
       return {...state, recenter: {}};
     case "zoomScale":

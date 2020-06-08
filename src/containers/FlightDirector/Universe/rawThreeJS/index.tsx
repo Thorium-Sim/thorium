@@ -26,7 +26,11 @@ import Grid from "./grid";
 import {css} from "@emotion/core";
 import {useParams, useNavigate, NavigateFunction} from "react-router";
 import gql from "graphql-tag.macro";
-import {CanvasContext, CanvasContextOutput} from "../CanvasContext";
+import {
+  CanvasContext,
+  CanvasContextOutput,
+  canvasContextDefault,
+} from "../CanvasContext";
 import {distance3d} from "components/views/Sensors/gridCore/constants";
 import Entity from "./entity";
 import GameObjectManager from "./gameObjectManager";
@@ -43,25 +47,7 @@ async function renderRawThreeJS(
   client: ApolloClient<object>,
   storeApi: StoreApi<PatchData<EntityInterface[]>>,
 ) {
-  let outsideState: OutsideState = [
-    {
-      dragging: false,
-      camera: false,
-      zoomScale: false,
-      recenter: {},
-      selected: [],
-      selecting: false,
-      lighting: true,
-      measuring: false,
-      measured: false,
-      speed: 28,
-      timeInSeconds: 60,
-      position: [0, 0, 0],
-      controllingEntityId: localStorage.getItem("sandbox-controlling-id") || "",
-      skyboxKey: "Pretty",
-    },
-    () => {},
-  ];
+  let outsideState: OutsideState = [canvasContextDefault, () => {}];
   let extraOutsideState: ExtraState = {
     flightId: "",
     currentStage: "",
@@ -131,8 +117,16 @@ async function renderRawThreeJS(
 
     // calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects(scene.children, true);
-    if (intersects[0]?.object) {
-      const id = intersects[0].object.uuid;
+    const intersectedObject = intersects.find(o => {
+      if (!o.object) return false;
+      if (o.object.parent instanceof Entity) {
+        return o.object.parent.visible;
+      } else {
+        return o.object.visible;
+      }
+    });
+    if (intersectedObject?.object) {
+      const id = intersectedObject.object.uuid;
       if (gameObjectManager.gameObjects.find(g => g.uuid === id)) {
         outsideState[1]({
           type: "selected",
@@ -149,7 +143,8 @@ async function renderRawThreeJS(
     }
   });
   document.addEventListener("mousemove", e => {
-    if (!isMouseDown || activeCamera !== orthoCamera) return;
+    const addingEntity = outsideState[0].addingEntity;
+    if ((!isMouseDown && !addingEntity) || activeCamera !== orthoCamera) return;
     const position = get3DMousePosition(
       e.clientX - dimensions.left,
       e.clientY - dimensions.top,
@@ -157,11 +152,21 @@ async function renderRawThreeJS(
       dimensions.height,
       orthoCamera,
     );
-    gameObjectManager.gameObjects.forEach(object => {
-      if (outsideState[0].selected.includes(object.uuid)) {
-        object.position.set(position.x, position.y, position.z);
+    if (outsideState[0].selected.length > 0) {
+      gameObjectManager.gameObjects.forEach(object => {
+        if (outsideState[0].selected.includes(object.uuid)) {
+          object.position.set(position.x, position.y, position.z);
+        }
+      });
+    }
+    if (addingEntity) {
+      const entity = gameObjectManager.gameObjects.find(
+        g => g.uuid === addingEntity.id,
+      );
+      if (entity) {
+        entity.position.set(position.x, position.y, position.z);
       }
-    });
+    }
   });
   document.addEventListener("mouseup", e => {
     isMouseDown = false;
@@ -179,19 +184,25 @@ async function renderRawThreeJS(
       );
       return;
     }
-    // Send an update with the new positions
-    const entities = gameObjectManager.gameObjects
-      .filter(object => {
-        if (outsideState[0].selected.includes(object.uuid)) {
-          return true;
-        }
-        return false;
-      })
-      .map(e => ({id: e.uuid, position: e.position}));
-    client.mutate({
-      mutation: EntitiesSetPositionDocument,
-      variables: {entities},
-    });
+
+    if (outsideState[0].selected.length > 1) {
+      // Send an update with the new positions
+      const entities = gameObjectManager.gameObjects
+        .filter(object => {
+          if (outsideState[0].selected.includes(object.uuid)) {
+            return true;
+          }
+          return false;
+        })
+        .map(e => ({id: e.uuid, position: e.position}));
+      client.mutate({
+        mutation: EntitiesSetPositionDocument,
+        variables: {entities},
+      });
+    }
+
+    // Clear out any adding entities
+    outsideState[1]({type: "addingEntity", addingEntity: null});
   });
 
   let then = 0;
@@ -325,6 +336,7 @@ async function renderRawThreeJS(
       nebula.generate(outsideState[0].skyboxKey);
     }
 
+    // Show selection
     gameObjectManager.gameObjects.forEach(obj => {
       if (contextState.selected.includes(obj.uuid)) {
         if (obj.selected === false) {
@@ -334,6 +346,25 @@ async function renderRawThreeJS(
         obj.selected = false;
       }
     });
+
+    // Add any entities which are currently being dragged onto the canvas
+    if (!outsideState[0].addingEntity && state[0].addingEntity) {
+      const e = state[0].addingEntity;
+      const entity = new Entity(e);
+      gameObjectManager.addGameObject(entity);
+      scene.add(entity);
+    }
+    // Remove any entities which were being dragged onto the canvas
+    if (outsideState[0].addingEntity && !state[0].addingEntity) {
+      const gameObject = gameObjectManager.gameObjects.find(
+        g => g.uuid === outsideState[0].addingEntity?.id,
+      );
+      if (gameObject) {
+        gameObjectManager.removeGameObject(gameObject);
+        scene.remove(gameObject);
+      }
+    }
+
     outsideState = state;
   }
   function cleanUp() {
