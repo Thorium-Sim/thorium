@@ -113,9 +113,18 @@ async function renderRawThreeJS(
   initEvents(ref.current);
 
   let isMouseDown = false;
+  let mouseDownTime = 0;
+  let clickCount = 0;
   document.addEventListener("mousedown", e => {
     if (e.target !== renderer.domElement) return;
     isMouseDown = true;
+    if (Date.now() - mouseDownTime > 500) {
+      clickCount = 0;
+    }
+
+    clickCount = clickCount + 1;
+    mouseDownTime = Date.now();
+
     if (activeCamera !== orthoCamera) return;
     // update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, orthoCamera);
@@ -159,6 +168,17 @@ async function renderRawThreeJS(
     if (activeCamera !== orthoCamera) return;
     panControls.enabled = true;
 
+    if (
+      clickCount >= 2 &&
+      Date.now() - mouseDownTime <= 500 &&
+      outsideState[0].selected[0]
+    ) {
+      // Double click handler
+      extraOutsideState.navigate(
+        `/config/sandbox/${outsideState[0].selected[0]}`,
+      );
+      return;
+    }
     // Send an update with the new positions
     const entities = gameObjectManager.gameObjects
       .filter(object => {
