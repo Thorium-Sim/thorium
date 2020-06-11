@@ -10,6 +10,7 @@ import {
   EntitiesQuery,
   EntityDataFragmentDoc,
   EntitiesSetPositionDocument,
+  EntityCreateDocument,
 } from "generated/graphql";
 import {
   Scene,
@@ -17,6 +18,9 @@ import {
   OrthographicCamera,
   PerspectiveCamera,
   Raycaster,
+  AmbientLight,
+  Vector3,
+  Object3D,
 } from "three";
 import renderer from "./renderer";
 import getOrthoCamera from "./orthoCamera";
@@ -71,6 +75,11 @@ async function renderRawThreeJS(
   gameObjectManager.addGameObject(nebula);
   scene.add(nebula);
 
+  const ambientLight = new AmbientLight();
+  // TODO: Properly update this when outsideState changes
+  ambientLight.intensity = outsideState[0].lighting ? 0.1 : 1;
+  scene.add(ambientLight);
+
   // const wormhole = new Wormhole();
   // wormhole.position.set(0, 0, 5);
   // scene.add(wormhole);
@@ -98,6 +107,7 @@ async function renderRawThreeJS(
   orbitControls.enabled = false;
   initEvents(ref.current);
 
+  let mousePosition = new Vector3();
   let isMouseDown = false;
   let mouseDownTime = 0;
   let clickCount = 0;
@@ -144,7 +154,7 @@ async function renderRawThreeJS(
   });
   document.addEventListener("mousemove", e => {
     const addingEntity = outsideState[0].addingEntity;
-    if ((!isMouseDown && !addingEntity) || activeCamera !== orthoCamera) return;
+    if (activeCamera !== orthoCamera) return;
     const position = get3DMousePosition(
       e.clientX - dimensions.left,
       e.clientY - dimensions.top,
@@ -152,6 +162,8 @@ async function renderRawThreeJS(
       dimensions.height,
       orthoCamera,
     );
+    mousePosition = position;
+    if (!isMouseDown && !addingEntity) return;
     if (outsideState[0].selected.length > 0) {
       gameObjectManager.gameObjects.forEach(object => {
         if (outsideState[0].selected.includes(object.uuid)) {
@@ -201,12 +213,81 @@ async function renderRawThreeJS(
       });
     }
 
+    // Create a new entity when dropped on the canvas
+    const addingEntity = outsideState[0].addingEntity;
+    if (addingEntity) {
+      const entity = gameObjectManager.gameObjects.find(
+        g => g.uuid === addingEntity.id,
+      ) as EntityInterface | undefined;
+      if (entity) {
+        const variables = {
+          flightId: extraOutsideState.flightId,
+          stageParentId: extraOutsideState.currentStage,
+          position: mousePosition,
+          name: entity.identity?.name,
+          meshType: entity.appearance?.meshType,
+          color: entity.appearance?.color,
+          emissiveColor: entity.appearance?.emissiveColor,
+          emissiveIntensity: entity.appearance?.emissiveIntensity,
+          modelAsset: entity.appearance?.modelAsset,
+          materialMapAsset: entity.appearance?.materialMapAsset,
+          ringMapAsset: entity.appearance?.ringMapAsset,
+          cloudMapAsset: entity.appearance?.cloudMapAsset,
+          glowColor: entity.glow?.color,
+          glowMode: entity.glow?.glowMode,
+          lightColor: entity.light?.color,
+          lightDecay: entity.light?.decay,
+          lightIntensity: entity.light?.intensity,
+        };
+
+        client
+          .mutate({
+            mutation: EntityCreateDocument,
+            variables,
+          })
+          .then(res => {
+            if (res.data?.entityCreate.id) {
+              outsideState[1]({
+                type: "selected",
+                selected: [res.data.entityCreate.id],
+              });
+            }
+          });
+      }
+    }
+
     // Clear out any adding entities
     outsideState[1]({type: "addingEntity", addingEntity: null});
   });
 
   let then = 0;
   let frame: number;
+
+  // TODO: Properly add and update objects
+  function handleEntities(storeApi: StoreApi<PatchData<EntityInterface[]>>) {
+    const addList: {[key: string]: EntityInterface} = {};
+    const updateList: {[key: string]: EntityInterface} = {};
+    let entities = storeApi.getState().data;
+    for (let i = entities.length - 1; i >= 0; i--) {
+      if (entities[i]) {
+        const getEntity = (e: Object3D) => e.uuid === entities[i].id;
+
+        if (gameObjectManager.gameObjects.find(getEntity)) {
+          updateList[entities[i].id] = entities[i];
+        } else {
+          addList[entities[i].id] = entities[i];
+        }
+      }
+    }
+    gameObjectManager.gameObjects.forEach(e => {
+      if (
+        !Object.keys(addList).includes(e.uuid) ||
+        !Object.keys(updateList).includes(e.uuid)
+      ) {
+        gameObjectManager.removeGameObject(e);
+      }
+    });
+  }
 
   const render = function (now: number) {
     globals.time = now;
@@ -225,11 +306,13 @@ async function renderRawThreeJS(
         delta: globals.delta,
         currentStage: extraOutsideState.currentStage,
       });
+      handleEntities(storeApi);
     } catch (err) {
       console.error("There has been an error", err);
       cancelAnimationFrame(frame);
       throw err;
     }
+
     renderer.render(scene, activeCamera);
   };
   frame = requestAnimationFrame(render);
@@ -267,15 +350,23 @@ async function renderRawThreeJS(
           const entities: EntitiesQuery = res.data;
 
           // Get the root stage ID. We can assume that we can change the root stage ID because this will
-          // only run if the flight ID is changed, so we should revert back to the root stage
+          // only run if the flight ID is changed, so we should revert back to the root stage if the
+          // current stage ID doesn't exist.
           const rootStageId = entities.entities.find(e => e?.stage?.rootStage)
             ?.id;
-          if (rootStageId && extraOutsideState.currentStage !== rootStageId) {
+          const currentStage = entities.entities.find(
+            e => e?.id === extraState.currentStage,
+          );
+          if (
+            !currentStage &&
+            rootStageId &&
+            extraOutsideState.currentStage !== rootStageId
+          ) {
             extraOutsideState.navigate(`/config/sandbox/${rootStageId}`);
           }
           entities.entities.forEach(e => {
             if (!e) return;
-            const entity = new Entity(e);
+            const entity = new Entity(e as EntityInterface);
             gameObjectManager.addGameObject(entity);
             scene.add(entity);
           });
@@ -350,7 +441,22 @@ async function renderRawThreeJS(
     // Add any entities which are currently being dragged onto the canvas
     if (!outsideState[0].addingEntity && state[0].addingEntity) {
       const e = state[0].addingEntity;
-      const entity = new Entity(e);
+      console.log("Adding Entity!");
+      const entity = new Entity({
+        ...e,
+        stageChild: {
+          parentId: extraState.currentStage,
+        },
+        location: {
+          position: mousePosition,
+          velocity: {x: 0, y: 0, z: 0},
+          acceleration: {x: 0, y: 0, z: 0},
+          rotation: {x: 0, y: 0, z: 0, w: 1},
+          rotationAcceleration: {x: 0, y: 0, z: 0},
+          rotationVelocity: {x: 0, y: 0, z: 0},
+          inert: false,
+        },
+      });
       gameObjectManager.addGameObject(entity);
       scene.add(entity);
     }

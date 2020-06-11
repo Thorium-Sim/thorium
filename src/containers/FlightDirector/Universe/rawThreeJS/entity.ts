@@ -5,34 +5,37 @@ import {
   Color,
   Sprite,
   Object3D,
+  SphereGeometry,
+  BoxBufferGeometry,
+  MeshStandardMaterial,
+  FrontSide,
+  Mesh,
 } from "three";
 import {
   AppearanceComponent,
-  LocationComponent,
   StageChildComponent,
   StageComponent,
+  MeshTypeEnum,
+  Entity as EntityI,
+  IdentityComponent,
 } from "generated/graphql";
 import {RenderState} from "./types";
 
+const textureLoader = new TextureLoader();
 export default class Entity extends Group {
   zoomScale: boolean = true;
-  meshType: "sprite" = "sprite";
+  meshType: MeshTypeEnum = MeshTypeEnum.Sprite;
   flightId?: string | null;
   appearance?: AppearanceComponent;
+  identity?: IdentityComponent | null;
   stage?: StageComponent;
   stageChild?: Partial<StageChildComponent>;
   location?: {x: number; y: number; z: number};
   childrenAsSprites: boolean = false;
   _isSelected: boolean = false;
   selection?: Object3D;
-  constructor(entity: {
-    id: string;
-    flightId?: string | null;
-    location?: Partial<LocationComponent> | null;
-    appearance?: Partial<AppearanceComponent> | null;
-    stage?: Partial<StageComponent> | null;
-    stageChild?: Partial<StageChildComponent> | null;
-  }) {
+  forceZoomScale: boolean = false;
+  constructor(entity: EntityI, config?: {forceZoomScale?: boolean}) {
     super();
     if (!entity.location?.position || !entity.appearance) return;
 
@@ -44,15 +47,23 @@ export default class Entity extends Group {
     this.uuid = entity.id;
     this.flightId = entity.flightId;
 
+    this.identity = entity.identity;
     this.appearance = entity.appearance;
+    this.meshType = this.appearance.meshType || this.meshType;
     this.stage = entity.stage || undefined;
     this.stageChild = entity.stageChild || undefined;
-
+    this.forceZoomScale = Boolean(config?.forceZoomScale);
     this.childrenAsSprites =
       entity.stageChild?.parent?.stage?.childrenAsSprites || false;
     if (this.childrenAsSprites) {
       this.loadSprite(entity.id, entity.appearance);
+      return;
     }
+    if (this.meshType === MeshTypeEnum.Model) {
+      this.loadModel(entity);
+      return;
+    }
+    this.loadShape(entity);
   }
   get selected() {
     return this._isSelected;
@@ -61,7 +72,7 @@ export default class Entity extends Group {
     this._isSelected = s;
     if (!this.selection) {
       if (this.childrenAsSprites) {
-        const texture = new TextureLoader().load(require("../circle.svg"));
+        const texture = textureLoader.load(require("../circle.svg"));
         const spriteMaterial = new SpriteMaterial();
         spriteMaterial.sizeAttenuation = false;
         spriteMaterial.color = new Color("orange");
@@ -81,7 +92,7 @@ export default class Entity extends Group {
   }
 
   loadSprite(id: string, appearance: Partial<AppearanceComponent>) {
-    const texture = new TextureLoader().load(require("../star-sprite.svg"));
+    const texture = textureLoader.load(require("../star-sprite.svg"));
     const spriteMaterial = new SpriteMaterial();
     spriteMaterial.sizeAttenuation = false;
     spriteMaterial.color = new Color(appearance.color || undefined);
@@ -90,10 +101,44 @@ export default class Entity extends Group {
     sprite.uuid = id;
     this.add(sprite);
   }
+  loadModel(entity: EntityI) {}
+  getGeometry(meshType: MeshTypeEnum, size: number = 1) {
+    switch (meshType) {
+      case "sphere":
+        return new SphereGeometry(size, 32, 32);
+      case "cube":
+        return new BoxBufferGeometry(size, size, size);
+      default:
+        break;
+    }
+  }
+  loadShape(entity: EntityI) {
+    const {appearance} = entity;
+    const geometry = this.getGeometry(this.meshType);
+    const texture = appearance?.materialMapAsset
+      ? textureLoader.load(`/assets${appearance.materialMapAsset}`)
+      : null;
+    const material = new MeshStandardMaterial({
+      map: texture,
+      color: appearance?.color ? new Color(appearance.color) : undefined,
+      emissive: appearance?.emissiveColor
+        ? new Color(appearance?.emissiveColor)
+        : undefined,
+      emissiveIntensity: appearance?.emissiveIntensity ?? 0,
+      side: FrontSide,
+    });
+    const mesh = new Mesh(geometry, material);
+    mesh.uuid = entity.id;
+    this.add(mesh);
+  }
   update(state: RenderState) {
     const {zoom} = state.camera;
     let zoomedScale = 1 / zoom / 2;
-    if (this.zoomScale || this.meshType === "sprite") {
+    if (
+      this.zoomScale ||
+      this.forceZoomScale ||
+      this.meshType === MeshTypeEnum.Sprite
+    ) {
       // zoomedScale *= 2;
       this.scale.set(zoomedScale, zoomedScale, zoomedScale);
     } else {
