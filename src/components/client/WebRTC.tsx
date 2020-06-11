@@ -19,8 +19,7 @@ const useBrowserMCU = () => {
   // Set up the MCU
   React.useEffect(() => {
     if (!mcu) {
-      mcu = new BrowserMCU(BrowserMCU.AUDIO_MODE_MINUS_ONE, audioContext);
-      mcu.startMix();
+      mcu = new BrowserMCU(audioContext);
     }
   }, []);
 
@@ -33,6 +32,14 @@ var HEIGHT = 360;
 // Interesting parameters to tweak!
 var SMOOTHING = 0.8;
 var FFT_SIZE = 1024;
+
+const peerConfig = {
+  iceServers: [
+    {urls: `stun:${window.location.hostname}:3478`},
+    {urls: "stun:stun.l.google.com:19302"},
+    {urls: "stun:global.stun.twilio.com:3478?transport=udp"},
+  ],
+};
 
 function useAnalyser(canvas: React.RefObject<HTMLCanvasElement>) {
   const [analyser, freqs, times] = React.useMemo(() => {
@@ -111,6 +118,18 @@ export const useWebRTCMCU = ({
     data?.clientChanged?.find(c => c?.id === clientId)?.webRTCInitiator,
   );
 
+  // Tone generator
+  React.useEffect(() => {
+    var oscillator = audioContext.createOscillator();
+    var gain = audioContext.createGain();
+    oscillator.frequency.setValueAtTime(500, audioContext.currentTime); // value in hertz
+    gain.gain.setValueAtTime(0.005, audioContext.currentTime);
+    oscillator.connect(gain);
+    const stream = audioContext.createMediaStreamDestination();
+    gain.connect(stream);
+    oscillator.start();
+    mcu?.addRemoteAudio("tone", stream.stream);
+  }, [mcu]);
   // Claim Candidacy
   React.useEffect(() => {
     rtcCandidate();
@@ -136,48 +155,64 @@ export const useWebRTCMCU = ({
   const {analyser, draw} = useAnalyser(canvas);
 
   React.useEffect(() => {
+    const node = mcu?.audioMixAllStream;
+    if (node) {
+      audioContext.createMediaStreamSource(node).connect(analyser);
+      draw();
+    }
+  }, [analyser, draw, mcu]);
+  React.useEffect(() => {
     if (!isInitiator) return;
     function createPeer(peerId: string) {
       if (!peers.current[peerId] && peerId !== clientId) {
-        peers.current[peerId] = new Peer({});
+        var oscillator = audioContext.createOscillator();
+        var gain = audioContext.createGain();
+        oscillator.frequency.setValueAtTime(500, audioContext.currentTime); // value in hertz
+        gain.gain.setValueAtTime(0.005, audioContext.currentTime);
+        oscillator.connect(gain);
+        const str = audioContext.createMediaStreamDestination();
+        gain.connect(str);
+        oscillator.start();
 
-        peers.current[peerId].on("error", err => {
-          peers.current[peerId].destroy();
-          mcu?.removeRemoteAudioMinusOne(peerId);
+        console.log("Creating a new peer", peerId);
+        peers.current[peerId] = new Peer({
+          stream: str.stream,
+          config: peerConfig,
+        });
 
+        const deletePeer = () => {
+          peers.current[peerId]?.destroy();
+          mcu?.removeRemoteAudio(peerId);
           delete streams.current[peerId];
           delete peers.current[peerId];
-        });
+        };
+
+        peers.current[peerId].on("error", deletePeer);
+
+        peers.current[peerId].on("end", deletePeer);
+        peers.current[peerId].on("close", deletePeer);
 
         peers.current[peerId].on("signal", data => {
           signal({variables: {clientId: peerId, signal: JSON.stringify(data)}});
         });
 
-        peers.current[peerId].on("connect", () => {
-          console.log("CONNECT");
-          peers.current[peerId]?.send("whatever" + Math.random());
-        });
-        peers.current[peerId].on("data", data => {
-          console.log(`data from ${peerId}: ${data}`);
-        });
+        peers.current[peerId].on("connect", () => {});
 
         peers.current[peerId].on("stream", (stream: MediaStream) => {
           new Audio().srcObject = stream;
 
-          // Clean up
+          // // Clean up
           delete streams.current[peerId];
-          mcu?.removeRemoteAudioMinusOne(peerId);
+          mcu?.removeRemoteAudio(peerId);
 
           streams.current[peerId] = stream;
-          mcu?.addRemoteAudioMinusOne(peerId, stream);
-          const outputStream = mcu?.prepareMinusOneStream(peerId);
-          outputStream && peers.current[peerId].addStream(outputStream);
+          mcu?.addRemoteAudio(peerId, stream);
 
-          if (mcu && Object.keys(mcu.minusOneOutputNodes)[0] === peerId) {
-            const node = mcu.minusOneStreams[peerId];
-            audioContext.createMediaStreamSource(node).connect(analyser);
-            draw();
-          }
+          // const outputStream = mcu?.getMinusOneStream(peerId);
+          // if (outputStream) {
+          //   peers.current[peerId].addStream(outputStream);
+          // }
+
           // Here is where you can do any processing to stream before sending it out
         });
         return peers.current[peerId];
@@ -193,11 +228,12 @@ export const useWebRTCMCU = ({
       });
     }
 
-    if (Object.keys(peers).length === 0) {
+    if (Object.keys(peers.current).length === 0) {
       setTimeout(loadPeers, 2000);
     } else {
       loadPeers();
     }
+    console.log(Object.keys(peers), "executing effect");
 
     // Handle appending the signal when it comes through GraphQL Subscriptions
     const sub = client
@@ -207,7 +243,7 @@ export const useWebRTCMCU = ({
           if (data?.webRTCSignal?.destinationClientId === clientId) {
             let peer = peers.current[data.webRTCSignal.senderClientId];
             if (!peer || peer.destroyed) {
-              mcu?.removeRemoteAudioMinusOne(data.webRTCSignal.senderClientId);
+              mcu?.removeRemoteAudio(data.webRTCSignal.senderClientId);
 
               delete streams.current[data.webRTCSignal.senderClientId];
               delete peers.current[data.webRTCSignal.senderClientId];
@@ -252,14 +288,13 @@ const useWebRTCPlayer = (
 
   React.useEffect(() => {
     if (!activated) return;
-    console.log("Activating");
     let mySource: MediaStreamAudioSourceNode;
     localPeer.current = new Peer({
       initiator: true,
+      config: peerConfig,
     });
 
     localPeer.current.on("error", err => {
-      console.log("Peer error", err);
       localPeer.current?.destroy();
       localPeer.current = undefined;
       try {
@@ -272,21 +307,13 @@ const useWebRTCPlayer = (
     });
 
     localPeer.current.on("signal", data => {
-      console.log("SENDING SIGNAL");
       signal({variables: {clientId: clientId, signal: JSON.stringify(data)}});
     });
 
-    localPeer.current.on("connect", () => {
-      console.log("CONNECT");
-      localPeer.current?.send("whatever" + Math.random());
-    });
-    localPeer.current.on("data", data => {
-      console.log(`data from initiator: ${data}`);
-    });
+    localPeer.current.on("connect", () => {});
+    localPeer.current.on("data", data => {});
     localPeer.current.on("stream", (stream: MediaStream) => {
       new Audio().srcObject = stream;
-
-      console.log("got stream");
 
       mySource = audioContext.createMediaStreamSource(stream);
 

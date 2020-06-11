@@ -6,6 +6,7 @@ import broadcast from "./bootstrap/broadcast";
 import clientServer from "./bootstrap/client-server";
 import postMigration from "./bootstrap/postmigration";
 import cleanUp from "./bootstrap/cleanup";
+import {startStun} from "./bootstrap/webrtcStun";
 import App from "./app";
 
 Promise.resolve()
@@ -17,6 +18,7 @@ Promise.resolve()
   .then(server => apollo(server, App.port, App.httpOnly, App.setMutations))
   .then(() => postMigration())
   .then(() => cleanUp())
+  .then(() => startStun())
   .catch(err => console.error("Error:", err));
 
 // If --expose-gc flag is set, handle garbage collection
