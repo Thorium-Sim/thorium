@@ -16,6 +16,9 @@ export default class SafeArray<T> {
   remove(element: T) {
     this.removeQueue.add(element);
   }
+  get length() {
+    return this.array.length;
+  }
   forEach(fn: (item: T) => void) {
     this._addQueued();
     this._removeQueued();
@@ -77,7 +80,7 @@ export default class SafeArray<T> {
   }
   _addQueued() {
     if (this.addQueue.length) {
-      this.array.splice(this.array.length, 0, ...this.addQueue);
+      this.array = this.array.concat(this.addQueue);
       this.addQueue = [];
     }
   }

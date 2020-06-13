@@ -44,7 +44,7 @@ const resolver = {
         if (
           (inert || inert === false) &&
           e?.location?.inert !== inert &&
-          !e.stage.rootStage
+          !e.stage?.rootStage
         )
           return false;
         return true;

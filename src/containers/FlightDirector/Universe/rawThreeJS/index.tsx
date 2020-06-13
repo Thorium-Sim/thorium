@@ -263,28 +263,45 @@ async function renderRawThreeJS(
   let then = 0;
   let frame: number;
 
-  // TODO: Properly add and update objects
+  // TODO: Properly update objects
   function handleEntities(storeApi: StoreApi<PatchData<EntityInterface[]>>) {
     const addList: {[key: string]: EntityInterface} = {};
     const updateList: {[key: string]: EntityInterface} = {};
     let entities = storeApi.getState().data;
-    for (let i = entities.length - 1; i >= 0; i--) {
+    for (let i = 0; i < entities.length; i++) {
       if (entities[i]) {
-        const getEntity = (e: Object3D) => e.uuid === entities[i].id;
-
-        if (gameObjectManager.gameObjects.find(getEntity)) {
+        if (
+          gameObjectManager.gameObjects.find((e: Object3D) => {
+            return e.uuid === entities[i].id;
+          })
+        ) {
           updateList[entities[i].id] = entities[i];
         } else {
           addList[entities[i].id] = entities[i];
         }
       }
     }
+    Object.values(addList).forEach(e => {
+      const entity = new Entity(e as EntityInterface);
+      gameObjectManager.addGameObject(entity);
+      scene.add(entity);
+    });
+    Object.values(updateList).forEach(e => {
+      const entity = gameObjectManager.gameObjects.find(g => g.uuid === e.id);
+      if (entity instanceof Entity) {
+        entity.updateObject(e);
+      }
+    });
     gameObjectManager.gameObjects.forEach(e => {
       if (
-        !Object.keys(addList).includes(e.uuid) ||
+        e instanceof Entity &&
+        !e.location?.inert &&
+        e.uuid !== outsideState[0].addingEntity?.id &&
+        !Object.keys(addList).includes(e.uuid) &&
         !Object.keys(updateList).includes(e.uuid)
       ) {
         gameObjectManager.removeGameObject(e);
+        scene.remove(e);
       }
     });
   }
@@ -352,9 +369,9 @@ async function renderRawThreeJS(
           // Get the root stage ID. We can assume that we can change the root stage ID because this will
           // only run if the flight ID is changed, so we should revert back to the root stage if the
           // current stage ID doesn't exist.
-          const rootStageId = entities.entities.find(e => e?.stage?.rootStage)
+          const rootStageId = entities?.entities?.find(e => e?.stage?.rootStage)
             ?.id;
-          const currentStage = entities.entities.find(
+          const currentStage = entities?.entities?.find(
             e => e?.id === extraState.currentStage,
           );
           if (
@@ -364,7 +381,7 @@ async function renderRawThreeJS(
           ) {
             extraOutsideState.navigate(`/config/sandbox/${rootStageId}`);
           }
-          entities.entities.forEach(e => {
+          entities?.entities?.forEach(e => {
             if (!e) return;
             const entity = new Entity(e as EntityInterface);
             gameObjectManager.addGameObject(entity);
@@ -441,7 +458,6 @@ async function renderRawThreeJS(
     // Add any entities which are currently being dragged onto the canvas
     if (!outsideState[0].addingEntity && state[0].addingEntity) {
       const e = state[0].addingEntity;
-      console.log("Adding Entity!");
       const entity = new Entity({
         ...e,
         stageChild: {

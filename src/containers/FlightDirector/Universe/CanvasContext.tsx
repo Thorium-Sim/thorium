@@ -78,7 +78,7 @@ const canvasContextReducer = (
     case "addingEntity":
       return {
         ...state,
-        selected: [],
+        selected: !action.addingEntity ? state.selected : [],
         addingEntity: action.addingEntity ?? null,
       };
     case "recenter":
