@@ -40,7 +40,7 @@ const TimelineControl: React.FC<TimelineControl> = ({
   const [setTimelineStep] = useSetSimulatorTimelineStepMutation();
   const [triggerMacros] = useExecuteMacrosMutation();
 
-  const runMacro = () => {
+  const runMacro = ({stay = false}: {stay: boolean}) => {
     const currentStep = timeline[currentTimelineStep];
     if (!currentStep) return;
 
@@ -67,6 +67,7 @@ const TimelineControl: React.FC<TimelineControl> = ({
     };
     triggerLocalMacros(macros);
     triggerMacros({variables});
+    if (stay === true) return;
     setTimelineStep({
       variables: {
         simulatorId,
@@ -96,7 +97,11 @@ const TimelineControl: React.FC<TimelineControl> = ({
           <FaArrowLeft name="arrow-left" />
         </Button>
         <Fragment>
-          <Button color="warning" title="Run Step & Stay" onClick={runMacro}>
+          <Button
+            color="warning"
+            title="Run Step & Stay"
+            onClick={() => runMacro({stay: true})}
+          >
             <FaStepForward name="step-forward" />
           </Button>
           <Button color="info" onClick={() => setModal(true)}>
