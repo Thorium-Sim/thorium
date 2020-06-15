@@ -105,17 +105,14 @@ App.on(
     newCardName,
     cardComponent,
     cardIcon,
+    ...rest
   }) => {
     const stationSet = App.stationSets.find(ss => ss.id === stationSetID);
-    stationSet.editStationCard(
-      stationName,
-      cardName,
-      new Classes.Card({
-        name: newCardName,
-        component: cardComponent,
-        icon: cardIcon,
-      }),
-    );
+    stationSet.editStationCard(stationName, cardName, {
+      name: newCardName,
+      component: cardComponent,
+      icon: cardIcon,
+    });
     pubsub.publish("stationSetUpdate", App.stationSets);
   },
 );
