@@ -6,6 +6,7 @@ import Misc from "./misc";
 import Basic from "./basic";
 import Damage from "./damage";
 import {useNavigate, useParams} from "react-router-dom";
+import {useApolloClient} from "@apollo/client";
 
 const ops = {
   name: gql`
@@ -67,6 +68,7 @@ const ops = {
 const SimulatorConfigView = ({selectedSimulator}) => {
   const {subPath1: selected = ""} = useParams();
   const navigate = useNavigate();
+  const client = useApolloClient();
   function select(prop) {
     if (!prop) {
       navigate("../");
@@ -75,11 +77,11 @@ const SimulatorConfigView = ({selectedSimulator}) => {
   }
   const handleChange = e => {
     const variables = {
-      id: this.props.selectedSimulator.id,
+      id: selectedSimulator.id,
       value: e.target.value === "on" ? e.target.checked : e.target.value,
     };
     const mutation = ops[e.target.name];
-    this.props.client.mutate({
+    client.mutate({
       mutation,
       variables,
     });
