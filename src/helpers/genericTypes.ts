@@ -7,3 +7,5 @@ export interface MacroConfigProps {
   args: any;
   client?: any;
 }
+
+export type Maybe<T> = null | undefined | T;

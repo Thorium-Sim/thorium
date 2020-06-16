@@ -3,7 +3,7 @@ import {Label, Input, Button} from "helpers/reactstrap";
 import {FaBan} from "react-icons/fa";
 import {useParams} from "react-router";
 import {useToggleStationMessageGroupMutation} from "generated/graphql";
-import Maybe from "graphql/tsutils/Maybe";
+import {Maybe} from "helpers/genericTypes";
 const defaultGroups = ["SecurityTeams", "DamageTeams", "MedicalTeams"];
 
 interface ExtraMessageGroupsProps {

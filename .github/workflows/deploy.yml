@@ -37,7 +37,7 @@ jobs:
         run: |
           npm run semantic-release
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: build
           path: build
@@ -62,7 +62,7 @@ jobs:
         with:
           node-version: 12
       - name: Download production artifacts
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: build
       - name: Install Snapcraft
