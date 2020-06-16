@@ -1,3 +1,19 @@
+## [2.12.1](https://github.com/Thorium-Sim/thorium/compare/2.12.0...2.12.1) (2020-06-16)
+
+
+### Bug Fixes
+
+* **Keyboard:** Fixes an issue where random sounds don't properly export. Closes [#2965](https://github.com/Thorium-Sim/thorium/issues/2965) ([6fa74e0](https://github.com/Thorium-Sim/thorium/commit/6fa74e0d187fee666f173f7cb26178adb7281283))
+* **Keyboard:** Fixes issues when choosing sound effects from the sound picker. Closes [#2965](https://github.com/Thorium-Sim/thorium/issues/2965) ([0f506f4](https://github.com/Thorium-Sim/thorium/commit/0f506f46cf2f48ba94a0ac521e6947db90b3ce6a))
+* **Long Range:** Fixes an issue where typing in the Send LRM Macro sender field is unresponsive and janky. Closes [#2966](https://github.com/Thorium-Sim/thorium/issues/2966) ([562041e](https://github.com/Thorium-Sim/thorium/commit/562041e25263306c714659a41031f64992c7debc))
+* **Remote Access:** Fixes illegible text. Closes [#2972](https://github.com/Thorium-Sim/thorium/issues/2972) ([d9046b8](https://github.com/Thorium-Sim/thorium/commit/d9046b8fc429082cda175cbf2f15268232648b45))
+* **Sensors:** Makes it so the border around Sensors on core shows contacts properly. Closes [#2971](https://github.com/Thorium-Sim/thorium/issues/2971) ([5e3d8d7](https://github.com/Thorium-Sim/thorium/commit/5e3d8d73ff003ab3c8989dd732f81a31dfb4288b))
+* **Simulator Config:** Fixes an issue where adjusting simulator config values, such as the layout, crashes the client. Closes [#2977](https://github.com/Thorium-Sim/thorium/issues/2977) ([8aa991e](https://github.com/Thorium-Sim/thorium/commit/8aa991e16ab9ab18217f87ffbd0af7de380102e1))
+* **Sound Player:** Fixes an issue where looping sound effects abruptly end. Closes [#2970](https://github.com/Thorium-Sim/thorium/issues/2970) ([ce4ce4f](https://github.com/Thorium-Sim/thorium/commit/ce4ce4f2ee4093ea8e69eee4b8102cc3fd614cc8))
+* **Station Config:** Fixes an issue where card names and components can't easily be changed. Fixes [#2976](https://github.com/Thorium-Sim/thorium/issues/2976) ([880e51f](https://github.com/Thorium-Sim/thorium/commit/880e51f159ef8ed8856e60062a2151e56c686f28))
+* **Tactical Maps:** Fixes an issue where tactical maps don't appear correctly on the configuration screen. Closes [#2978](https://github.com/Thorium-Sim/thorium/issues/2978) ([5cafc0e](https://github.com/Thorium-Sim/thorium/commit/5cafc0eee4d414f4de8d5b1b1c647c4baa183adc))
+* **Timeline:** Makes the Play & Stay timeline button not advance the timeline. Closes [#2969](https://github.com/Thorium-Sim/thorium/issues/2969) ([40ca10f](https://github.com/Thorium-Sim/thorium/commit/40ca10fc13e3e7ab2e824d032690215b7f274098))
+
 # [2.12.0](https://github.com/Thorium-Sim/thorium/compare/2.11.1...2.12.0) (2020-06-01)
 
 
