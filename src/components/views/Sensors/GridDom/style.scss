@@ -45,6 +45,9 @@
 }
 .core #sensorGrid .grid {
   overflow: visible;
+  .sensor-contacts-holder {
+    overflow: visible;
+  }
   &.can-ping .sensor-contacts-holder {
     mask-image: none;
     pointer-events: all;

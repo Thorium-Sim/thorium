@@ -28,12 +28,14 @@ export default ({updateArgs = () => {}, args, client}) => {
       <div>
         <ButtonGroup>
           <Button
+            size="sm"
             onClick={() => updateArgs("crew", true)}
             active={args ? args.crew : true}
           >
             Inbound
           </Button>
           <Button
+            size="sm"
             onClick={() => updateArgs("crew", false)}
             active={args ? !args.crew : false}
           >
@@ -44,7 +46,7 @@ export default ({updateArgs = () => {}, args, client}) => {
       <Label>Sender</Label>
       <Input
         type="text"
-        value={args ? args.sender : ""}
+        defaultValue={args ? args.sender : ""}
         onChange={updateSender}
       />
       <Label>

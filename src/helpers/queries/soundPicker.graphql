@@ -1,0 +1,13 @@
+query SoundPicker {
+  assetFolders {
+    id
+    name
+    fullPath
+    folderPath
+    objects {
+      id
+      name
+      fullPath
+    }
+  }
+}
