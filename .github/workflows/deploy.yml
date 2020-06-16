@@ -3,7 +3,7 @@ name: Build/release
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -56,7 +56,7 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
         with:
-          ref: "master"
+          ref: "main"
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
