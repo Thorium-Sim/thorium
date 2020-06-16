@@ -14125,6 +14125,21 @@ export type EntitySetTemplateMutation = (
   & Pick<Mutation, 'entitySetTemplate'>
 );
 
+export type SoundPickerQueryVariables = {};
+
+
+export type SoundPickerQuery = (
+  { __typename?: 'Query' }
+  & { assetFolders?: Maybe<Array<Maybe<(
+    { __typename?: 'AssetFolder' }
+    & Pick<AssetFolder, 'id' | 'name' | 'fullPath' | 'folderPath'>
+    & { objects: Array<(
+      { __typename?: 'AssetObject' }
+      & Pick<AssetObject, 'id' | 'name' | 'fullPath'>
+    )> }
+  )>>> }
+);
+
 
       export interface IntrospectionResultData {
         __schema: {
@@ -17650,3 +17665,22 @@ export function useEntitySetTemplateMutation(baseOptions?: ApolloReactHooks.Muta
         return ApolloReactHooks.useMutation<EntitySetTemplateMutation, EntitySetTemplateMutationVariables>(EntitySetTemplateDocument, baseOptions);
       }
 export type EntitySetTemplateMutationHookResult = ReturnType<typeof useEntitySetTemplateMutation>;
+export const SoundPickerDocument = gql`
+    query SoundPicker {
+  assetFolders {
+    id
+    name
+    fullPath
+    folderPath
+    objects {
+      id
+      name
+      fullPath
+    }
+  }
+}
+    `;
+export function useSoundPickerQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SoundPickerQuery, SoundPickerQueryVariables>) {
+        return ApolloReactHooks.useQuery<SoundPickerQuery, SoundPickerQueryVariables>(SoundPickerDocument, baseOptions);
+      }
+export type SoundPickerQueryHookResult = ReturnType<typeof useSoundPickerQuery>;
