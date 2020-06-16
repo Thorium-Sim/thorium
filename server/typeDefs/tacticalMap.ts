@@ -286,21 +286,21 @@ const resolver = {
         return returnRes;
       },
       subscribe: withFilter(
-        (rootValue, {flightId}) => {
+        (rootValue, {flightId, template}) => {
           const subId = uuid.v4();
           process.nextTick(() => {
-            let returnVal = App.tacticalMaps.filter(
-              t => t.flightId === flightId,
-            );
+            let returnVal = App.tacticalMaps;
+            if (flightId)
+              returnVal = returnVal.filter(m => m.flightId === flightId);
+            if (template || template === false) {
+              returnVal = returnVal.filter(m => m.template === template);
+            }
             pubsub.publish(subId, returnVal);
           });
           return pubsub.asyncIterator([subId, "tacticalMapsUpdate"]);
         },
         (rootValue, {flightId}) => {
-          if (flightId) {
-            return rootValue.filter(s => s.flightId === flightId).length > 0;
-          }
-          return !!(rootValue && rootValue.length);
+          return true;
         },
       ),
     },
