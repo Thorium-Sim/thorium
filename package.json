@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.12.1",
+  "version": "2.12.0",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -67,7 +67,9 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -88,8 +90,12 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint"],
-    "*.{css,scss}": ["stylelint"],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -106,27 +112,11 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": { "provider": "github" },
+    "publish": {
+      "provider": "github"
+    },
     "files": [
-      "electron.js",
       "electron/**/*",
-      "cardIcons/**/*",
-      "server/**/*",
-      "static/**/*",
-      "systems/**/*",
-      "viewscreen/**/*",
-      "workers/**/*",
-      ".env",
-      "entitlements.mac.plist",
-      "favicon.ico",
-      "icon.icns",
-      "icon.ico",
-      "index.html",
-      "manifest.json",
-      "package.json",
-      "sciences.ogg",
-      "server.cert",
-      "server.key",
       "!**/node_modules/**/*",
       "**/node_modules/{uuid,electron,@electron/get,debug,ms,env-paths,fs-extra,at-least-node,graceful-fs,jsonfile,universalify,got,create-error-class,capture-stack-trace,duplexer3,get-stream,is-redirect,is-retry-allowed,is-stream,lowercase-keys,safe-buffer,timed-out,unzip-response,url-parse-lax,prepend-http,progress,sanitize-filename,truncate-utf8-bytes,utf8-byte-length,sumchecker,@types/node,extract-zip,concat-stream,buffer-from,inherits,readable-stream,core-util-is,isarray,process-nextick-args,string_decoder,util-deprecate,typedarray,mkdirp,minimist,yauzl,buffer-crc32,fd-slicer,pend,bonjour,array-flatten,deep-equal,is-arguments,is-date-object,is-regex,has-symbols,object-is,define-properties,object-keys,es-abstract,es-to-primitive,is-callable,is-symbol,function-bind,has,object-inspect,object.assign,string.prototype.trimend,string.prototype.trimstart,regexp.prototype.flags,dns-equal,dns-txt,buffer-indexof,multicast-dns,dns-packet,ip,thunky,multicast-dns-service-types,electron-is-dev,electron-settings,clone,is-windows,semver,electron-updater,@types/semver,builder-util-runtime,sax,js-yaml,argparse,sprintf-js,esprima,lazy-val,lodash.isequal,usb-detection,bindings,file-uri-to-path,eventemitter2,nan,prebuild-install,detect-libc,expand-template,github-from-package,napi-build-utils,node-abi,noop-logger,npmlog,are-we-there-yet,delegates,console-control-strings,gauge,aproba,has-unicode,object-assign,signal-exit,string-width,code-point-at,is-fullwidth-code-point,number-is-nan,strip-ansi,ansi-regex,wide-align,set-blocking,pump,end-of-stream,once,wrappy,rc,deep-extend,ini,strip-json-comments,simple-get,decompress-response,mimic-response,simple-concat,tar-fs,chownr,mkdirp-classic,tar-stream,bl,buffer,base64-js,ieee754,fs-constants,tunnel-agent,which-pm-runs,dmx,serialport,@serialport/binding-mock,@serialport/binding-abstract,@serialport/bindings,@serialport/parser-readline,@serialport/parser-delimiter,@serialport/parser-byte-length,@serialport/parser-cctalk,@serialport/parser-ready,@serialport/parser-regex,@serialport/stream,socket.io,engine.io,accepts,mime-types,mime-db,negotiator,base64id,cookie,engine.io-parser,after,arraybuffer.slice,base64-arraybuffer,blob,has-binary2,ws,async-limiter,socket.io-adapter,socket.io-client,backo2,component-bind,component-emitter,engine.io-client,component-inherit,has-cors,indexof,parseqs,better-assert,callsite,parseuri,xmlhttprequest-ssl,yeast,object-component,socket.io-parser,to-array,e131}/**/*",
       "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
@@ -153,10 +143,15 @@
       ]
     },
     "win": {
-      "target": ["zip", "portable"],
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     },
-    "linux": { "category": "Utility" }
+    "linux": {
+      "category": "Utility"
+    }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -176,7 +171,9 @@
     ]
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",

@@ -62,6 +62,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
+          path: build
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v1
         # Only install Snapcraft on Ubuntu
