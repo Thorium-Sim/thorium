@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "2.12.0",
+  "version": "2.12.1",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -67,9 +67,7 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": [
-      "server/"
-    ],
+    "watch": ["server/"],
     "ignore": [
       ".git",
       "./src/*",
@@ -90,12 +88,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint"
-    ],
-    "*.{css,scss}": [
-      "stylelint"
-    ],
+    "*.{js,jsx,ts,tsx}": ["eslint"],
+    "*.{css,scss}": ["stylelint"],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -112,9 +106,7 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": {
-      "provider": "github"
-    },
+    "publish": { "provider": "github" },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -143,15 +135,10 @@
       ]
     },
     "win": {
-      "target": [
-        "zip",
-        "portable"
-      ],
+      "target": ["zip", "portable"],
       "icon": "./public/icon.ico"
     },
-    "linux": {
-      "category": "Utility"
-    }
+    "linux": { "category": "Utility" }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -171,9 +158,7 @@
     ]
   },
   "release": {
-    "branches": [
-      "main"
-    ],
+    "branches": ["main"],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
