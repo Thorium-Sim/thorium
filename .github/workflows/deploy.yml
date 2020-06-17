@@ -85,7 +85,8 @@ jobs:
           github_token: ${{ secrets.github_token }}
           mac_certs: ${{ secrets.mac_cert }}
           mac_certs_password: ${{ secrets.mac_cert_password }}
-          build_script_name: nothing
+          # Don't worry about
+          skip_build: true
           # If the commit is tagged with a version (e.g. "1.0.0"),
           # release the app after building
           release: true
@@ -103,3 +104,6 @@ jobs:
           GOOGLE_SHEETS_SECRET: ${{ secrets.GOOGLE_SHEETS_SECRET }}
           GOOGLE_SHEETS_CLIENT_ID: ${{ secrets.GOOGLE_SHEETS_CLIENT_ID }}
           GH_ISSUE_TOKEN: ${{ secrets.GH_ISSUE_TOKEN }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v2
+        if: failure()
