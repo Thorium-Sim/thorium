@@ -16,17 +16,22 @@ interface SimulatorDataProps {
   flight: Flight;
 }
 const SimulatorData = (props: SimulatorDataProps) => {
+  const defaultStation = React.useMemo(
+    () => ({name: props.station.name, cards: []}),
+    [props.station.name],
+  );
   const {station: stationObj, simulator} = props;
-  const {loading, data} = useSimulatorUpdateSubscription({
+  const {data} = useSimulatorUpdateSubscription({
     variables: {simulatorId: simulator?.id},
   });
-  if (loading || !data) return null;
-  const {simulatorsUpdate: simulators} = data;
-  if (!simulators?.[0]) return <div>No Simulator</div>;
-  const station = simulators?.[0]?.stations?.find(
-    s => s?.name === stationObj?.name,
+  const simulators = data?.simulatorsUpdate;
+
+  const station = React.useMemo(
+    () => simulators?.[0]?.stations?.find(s => s?.name === stationObj?.name),
+    [simulators, stationObj],
   );
-  const defaultStation = {name: props.station.name, cards: []};
+
+  if (!simulators?.[0]) return <div>No Simulator</div>;
   return (
     <SimulatorContext.Provider value={simulators[0]}>
       <Client

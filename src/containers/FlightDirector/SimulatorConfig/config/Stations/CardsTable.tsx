@@ -20,7 +20,7 @@ import {
   useStationSetTagsMutation,
 } from "generated/graphql";
 import {useParams} from "react-router";
-import Maybe from "graphql/tsutils/Maybe";
+import {Maybe} from "helpers/genericTypes";
 import {TagInput} from "containers/FlightDirector/DMX/fixtures";
 
 interface CardSelectProps {

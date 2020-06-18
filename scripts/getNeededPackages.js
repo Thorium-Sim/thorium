@@ -19,7 +19,10 @@ const needed = [
   "e131",
 ];
 
+const memo = {};
+
 function getNeededPackages(pkg) {
+  if (memo[pkg]) return memo[pkg];
   const packageName = Object.keys(packages.object).find(key => {
     return key.split("@")[key[0] === "@" ? 1 : 0] === pkg.replace("@", "");
   });
@@ -28,8 +31,17 @@ function getNeededPackages(pkg) {
     return [];
   }
   const packageObj = packages.object[packageName];
-  if (!packageObj.dependencies) return [pkg];
-  return [pkg, ...Object.keys(packageObj.dependencies).map(getNeededPackages)];
+  if (!packageObj.dependencies) {
+    memo[pkg] = [pkg];
+    return [pkg];
+  }
+  memo[pkg] = [pkg];
+
+  memo[pkg] = [
+    pkg,
+    ...Object.keys(packageObj.dependencies).map(getNeededPackages),
+  ];
+  return memo[pkg];
 }
 
 console.info(

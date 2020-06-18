@@ -83,10 +83,11 @@ const RemoteAccessCore = ({simulator}) => {
   return (
     <Container className="remote-access-core">
       <div
-        style={{
+        css={{
           overflowY: "auto",
           height: "calc(100% - 16px)",
           maxHeight: "300px",
+          color: "black",
         }}
       >
         {ship.remoteAccessCodes
@@ -102,6 +103,7 @@ const RemoteAccessCore = ({simulator}) => {
                   backgroundColor: "lightgray",
                   margin: "1px",
                   flex: "6 0 0",
+                  padding: "2px",
                 }}
                 title={`${c.station} - ${c.timestamp}`}
               >
@@ -126,7 +128,7 @@ const RemoteAccessCore = ({simulator}) => {
                 </div>
               ) : (
                 <p
-                  style={{flex: "1 0 0"}}
+                  css={{flex: "1 0 0"}}
                   className={
                     c.state === "Accepted" ? "text-success" : "text-danger"
                   }

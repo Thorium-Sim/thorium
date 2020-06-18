@@ -62,7 +62,11 @@ export class StationSet {
     const cardStation = this.stations.find(s => s.name === station);
     cardStation.removeCard(cardName);
   }
-  editStationCard(station: string, cardName: string, cardUpdate: Card) {
+  editStationCard(
+    station: string,
+    cardName: string,
+    cardUpdate: Partial<Card>,
+  ) {
     const cardStation = this.stations.find(s => s.name === station);
     cardStation.updateCard(cardName, cardUpdate);
   }

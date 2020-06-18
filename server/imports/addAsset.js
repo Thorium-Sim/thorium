@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 import paths from "../helpers/paths";
 
-let assetDir = path.resolve("./");
+export let assetDir = path.resolve("./");
 
 if (process.env.NODE_ENV === "production") {
   assetDir = paths.userData;

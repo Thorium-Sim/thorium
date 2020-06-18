@@ -77,7 +77,7 @@ requests and will give you the 'Thorium-Sim' badge on your Github Profile.
 All pull requests and issues are welcome, with the following requirements:
 
 - Pull requests should branch from `develop` and target the `develop` branch,
-  following the git-flow pattern. Releases will be merged into `master` and
+  following the git-flow pattern. Releases will be merged into `main` and
   released at least weekly from the changes in the `develop` branch.
 - Unless the pull request is a small one-off feature or bug fix, the pull
   request should reference an issue. If you are intending to start working on a

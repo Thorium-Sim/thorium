@@ -2,7 +2,7 @@ import {addMockFunctionsToSchema, makeExecutableSchema} from "graphql-tools";
 import {addTypenameToDocument} from "apollo-utilities";
 import {graphql} from "graphql";
 import gql from "graphql-tag";
-import {mergeWith} from "lodash";
+import mergeWith from "lodash.mergewith";
 import {print} from "graphql/language/printer";
 import schemaString from "../../schema.graphql";
 
