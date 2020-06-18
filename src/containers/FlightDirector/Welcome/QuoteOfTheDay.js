@@ -80,6 +80,7 @@ const quotes = [
   "It is what we can’t see that fuels our imagination.",
   "This is Art holding a Mirror up to Life. That’s why everything is exactly the wrong way around.",
   "Listen to the quiet.",
+  "Don't try to be a great man, just be a man. And let history make its own judgments.",
 ];
 
 const QuoteOfTheDay = () => {
