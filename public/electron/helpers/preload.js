@@ -15,7 +15,6 @@ getPortAndHttpOnly();
 const key = "thorium_clientPersistentId";
 let clientId = sessionStorage.getItem(key);
 webFrame.setVisualZoomLevelLimits(1, 1);
-webFrame.setLayoutZoomLevelLimits(0, 0);
 
 setClientId();
 
