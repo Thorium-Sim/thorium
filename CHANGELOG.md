@@ -1,3 +1,10 @@
+## [2.12.2](https://github.com/Thorium-Sim/thorium/compare/2.12.1...2.12.2) (2020-06-19)
+
+
+### Bug Fixes
+
+* **Server:** Fixes an issue where the server couldn't start. Closes [#2983](https://github.com/Thorium-Sim/thorium/issues/2983) ([cf367d5](https://github.com/Thorium-Sim/thorium/commit/cf367d572796c61b02599978a4671e658ac8f2ae))
+
 ## [2.12.1](https://github.com/Thorium-Sim/thorium/compare/2.12.0...2.12.1) (2020-06-17)
 
 
