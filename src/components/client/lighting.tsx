@@ -1,10 +1,10 @@
-import tw from "twin.macro";
 import React from "react";
 import {
   Simulator,
   useDmxSetsSubscription,
   useActivateLightingMutation,
 } from "generated/graphql";
+import css from "@emotion/css";
 import LightingCore from "components/views/Lighting";
 
 import {Button, Input} from "reactstrap";
@@ -119,10 +119,24 @@ const Lighting: React.FC<{
       css={
         outsideRendered
           ? undefined
-          : tw`text-white flex justify-center items-center h-screen`
+          : css`
+              color: white;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+            `
       }
     >
-      <div css={tw`max-w-full text-xl flex flex-col justify-center`}>
+      <div
+        css={css`
+          max-width: 100%;
+          font-size: 1.25rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        `}
+      >
         {activated ? (
           <React.Fragment>
             <LightingCore simulator={simulator} />
@@ -146,7 +160,12 @@ const Lighting: React.FC<{
         ) : (
           <React.Fragment>
             {window.thorium.getDMXDeviceList && (
-              <div css={tw`flex justify-between`}>
+              <div
+                css={css`
+                  display: flex;
+                  justify-content: space-between;
+                `}
+              >
                 <label>
                   DMX Driver
                   <Input

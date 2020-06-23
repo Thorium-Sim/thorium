@@ -1,5 +1,4 @@
 import {keyframes} from "@emotion/core";
-import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import React, {useState} from "react";
 import {
@@ -256,16 +255,22 @@ const Credits: React.FC<{
   return (
     <div
       className="credit-bg"
-      css={tw`h-full overflow-y-hidden text-center text-white grid grid-cols-2 items-center`}
+      css={css`
+        height: 100vh;
+        overflow-y: hidden;
+        text-align: center;
+        color: white;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+      `}
     >
       <div>
         <img
-          css={[
-            tw`w-1/4`,
-            css`
-              filter: drop-shadow(16px 16px 20px black);
-            `,
-          ]}
+          css={css`
+            width: 25%;
+            filter: drop-shadow(16px 16px 20px black);
+          `}
           alt="Logo"
           src={require("./logo.png")}
           draggable="false"
@@ -283,23 +288,30 @@ const Credits: React.FC<{
           <h5>Station: {stationName ?? "Not Assigned"}</h5>
         </div>
       </div>
-      <div css={tw`relative`}>
+      <div
+        css={css`
+          position: relative;
+        `}
+      >
         <div
           ref={scroll}
-          css={[
-            tw`absolute`,
-            css`
-              top: 100%;
-              animation: ${scrollKeyframes} 80s linear infinite;
-              li {
-                list-style: none;
-                padding: 0;
-              }
-            `,
-          ]}
+          css={css`
+            position: absolute;
+            top: 100%;
+            animation: ${scrollKeyframes} 80s linear infinite;
+            li {
+              list-style: none;
+              padding: 0;
+            }
+          `}
         >
           {creditList.map(c => (
-            <div key={c.header} css={tw`mt-24`}>
+            <div
+              key={c.header}
+              css={css`
+                margin-top: 6rem;
+              `}
+            >
               <h3>{c.header}</h3>
               <h4>{c.content}</h4>
             </div>

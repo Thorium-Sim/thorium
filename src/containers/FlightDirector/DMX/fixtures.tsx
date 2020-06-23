@@ -1,4 +1,3 @@
-import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import React from "react";
 import {
@@ -23,7 +22,16 @@ const Tag: React.FC<{tag: string; onClick: () => void}> = ({tag, onClick}) => {
     <Badge>
       {tag}{" "}
       <FaTimes
-        css={tw`cursor-pointer rounded-full hover:bg-gray-700 active:bg-gray-800`}
+        css={css`
+          cursor: pointer;
+          border-radius: 9999px;
+          &:hover {
+            background-color: #4a5568;
+          }
+          &:active {
+            background-color: #2d3748;
+          }
+        `}
         onClick={onClick}
       />
     </Badge>
@@ -137,7 +145,12 @@ const DMXFixtures: React.FC<{
 
   return (
     <React.Fragment>
-      <div css={tw`flex flex-col`}>
+      <div
+        css={css`
+          display: flex;
+          flex-direction: column;
+        `}
+      >
         <h3>Fixtures</h3>
         <SearchableList
           items={dmxFixtures?.map(d => ({id: d.id, label: d.name})) || []}
@@ -187,7 +200,12 @@ const DMXFixtures: React.FC<{
           </Button>
         )}
       </div>
-      <div css={tw`flex flex-col col-span-2`}>
+      <div
+        css={css`
+          display: flex;
+          flex-direction: column;
+        `}
+      >
         {selectedFixture && (
           <React.Fragment>
             <h3>{selectedFixture?.name}</h3>
