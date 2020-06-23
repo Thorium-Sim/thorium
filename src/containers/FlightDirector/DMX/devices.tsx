@@ -1,4 +1,3 @@
-import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import React from "react";
 import {
@@ -25,17 +24,27 @@ const DMXDevices: React.FC = () => {
 
   const selectedDevice = data?.dmxDevices.find(d => d.id === deviceId);
   return (
-    <div css={tw`h-full`}>
+    <div
+      css={css`
+        height: 100%;
+      `}
+    >
       <h3>Devices</h3>
       <div
-        css={[
-          tw`flex justify-between`,
-          css`
-            height: calc(100% - 196px);
-          `,
-        ]}
+        css={css`
+          display: flex;
+          justify-content: space-between;
+          height: calc(100% - 196px);
+        `}
       >
-        <div css={tw`mr-4 flex-grow flex flex-col`}>
+        <div
+          css={css`
+            margin-right: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+          `}
+        >
           <SearchableList
             items={
               data?.dmxDevices?.map(d => ({id: d.id, label: d.name})) || []
@@ -73,7 +82,15 @@ const DMXDevices: React.FC = () => {
             </Button>
           )}
         </div>
-        <div css={tw`flex flex-col mx-64 flex-grow`}>
+        <div
+          css={css`
+            display: flex;
+            flex-direction: column;
+            margin-right: 16rem;
+            margin-left: 16rem;
+            flex: 1;
+          `}
+        >
           {selectedDevice && (
             <React.Fragment>
               <h3>{selectedDevice?.name}</h3>
@@ -92,9 +109,21 @@ const DMXDevices: React.FC = () => {
               </label>
               <label>Channels</label>
 
-              <div css={tw`flex flex-col flex-grow overflow-y-auto`}>
+              <div
+                css={css`
+                  display: flex;
+                  flex-direction: column;
+                  flex: 1;
+                  overflow-y: auto;
+                `}
+              >
                 {selectedDevice?.channels.map((c, i) => (
-                  <div css={tw`flex items-center`}>
+                  <div
+                    css={css`
+                      display: flex;
+                      align-items: center;
+                    `}
+                  >
                     {i + 1}:
                     <Input
                       type="select"
@@ -125,7 +154,11 @@ const DMXDevices: React.FC = () => {
                       )}
                     </Input>
                     <FaBan
-                      css={tw`text-red-900 mx-2`}
+                      css={css`
+                        margin-left: 0.5rem;
+                        margin-right: 0.5rem;
+                        color: #742a2a;
+                      `}
                       onClick={() =>
                         selectedDevice &&
                         setChannels({

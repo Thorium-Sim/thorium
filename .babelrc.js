@@ -12,6 +12,7 @@ module.exports = {
         allExtensions: false,
       },
     ],
+    "@emotion/babel-preset-css-prop",
   ].filter(Boolean),
   plugins: [
     "transform-node-env-inline",

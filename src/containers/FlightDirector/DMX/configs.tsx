@@ -1,4 +1,3 @@
-import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import React from "react";
 import {
@@ -61,7 +60,13 @@ export const DMXPropertiesEditor: React.FC<{
       `}
     >
       {DMXProperties.map((prop: DMXChannelProperty) => (
-        <label key={`config-${prop}`} css={tw`block ml-4`}>
+        <label
+          key={`config-${prop}`}
+          css={css`
+            display: block;
+            margin-left: 1rem;
+          `}
+        >
           {prop}
           {prop === "color" ? (
             <div>
@@ -116,17 +121,26 @@ const DMXConfigs: React.FC = () => {
       .sort() || [];
 
   return (
-    <div css={tw`h-full`}>
+    <div
+      css={css`
+        height: 100%;
+      `}
+    >
       <h3>Configs</h3>
       <div
-        css={[
-          tw`grid grid-cols-3 gap-4`,
-          css`
-            height: calc(100% - 196px);
-          `,
-        ]}
+        css={css`
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 1rem;
+          height: calc(100% - 196px);
+        `}
       >
-        <div css={tw`flex flex-col`}>
+        <div
+          css={css`
+            display: flex;
+            flex-direction: column;
+          `}
+        >
           <SearchableList
             items={
               data?.dmxConfigs?.map(d => ({id: d.id, label: d.name})) || []
@@ -197,7 +211,11 @@ const DMXConfigs: React.FC = () => {
             </React.Fragment>
           )}
 
-          <label css={tw`mt-2`}>
+          <label
+            css={css`
+              margin-top: 0.5rem;
+            `}
+          >
             <div className="btn btn-sm btn-info btn-block">
               Import DMX Config
             </div>
@@ -221,7 +239,13 @@ const DMXConfigs: React.FC = () => {
             />
           </label>
         </div>
-        <div css={tw`flex flex-col col-span-2 overflow-y-hidden`}>
+        <div
+          css={css`
+            display: flex;
+            flex-direction: column;
+            overflow-y: hidden;
+          `}
+        >
           {selectedConfig && selectedConfigSettings && (
             <React.Fragment>
               <h3>{selectedConfig?.name}</h3>
@@ -263,10 +287,20 @@ const DMXConfigs: React.FC = () => {
                 </small>
               </label>
               <label>Alert Conditions</label>
-              <div css={tw`overflow-y-auto flex-grow`}>
+              <div
+                css={css`
+                  overflow-y: auto;
+                  flex: 1;
+                `}
+              >
                 {DMXConfigKeys.map(key => {
                   return (
-                    <details key={key} css={tw`ml-4`}>
+                    <details
+                      key={key}
+                      css={css`
+                        margin-left: 1rem;
+                      `}
+                    >
                       <summary>
                         Alert Condition {key}
                         {key === "p" && " (Stealth/Cloaking)"}
@@ -274,7 +308,10 @@ const DMXConfigs: React.FC = () => {
                       {allTags.map(t => (
                         <details
                           key={`config-${key}-${t}`}
-                          css={tw`ml-4 block`}
+                          css={css`
+                            margin-left: 1rem;
+                            display: block;
+                          `}
                         >
                           <summary>
                             <Badge>{t}</Badge>

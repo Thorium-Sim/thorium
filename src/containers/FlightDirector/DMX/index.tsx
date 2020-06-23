@@ -1,7 +1,6 @@
 import React from "react";
 import {Routes, Route, useNavigate, useLocation} from "react-router-dom";
 import {ListGroup, ListGroupItem} from "reactstrap";
-import tw from "twin.macro";
 import css from "@emotion/css/macro";
 import DMXDevices from "./devices";
 import DMXSets from "./sets";
@@ -14,14 +13,20 @@ const DMX: React.FC = () => {
   const setsActive = location.pathname.includes("sets");
   const configsActive = location.pathname.includes("configs");
   return (
-    <div css={tw`h-full flex justify-between`}>
+    <div
+      css={css`
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+      `}
+    >
       <div
-        css={[
-          tw`h-full mx-4`,
-          css`
-            flex: 3;
-          `,
-        ]}
+        css={css`
+          height: 100%;
+          margin-left: 1rem;
+          margin-right: 1rem;
+          flex: 3;
+        `}
       >
         <h3>DMX</h3>
         <ListGroup>
@@ -43,12 +48,10 @@ const DMX: React.FC = () => {
         </ListGroup>
       </div>
       <div
-        css={[
-          tw`h-full`,
-          css`
-            flex: 9;
-          `,
-        ]}
+        css={css`
+          flex: 9;
+          height: 100%;
+        `}
       >
         <Routes>
           <Route path="devices" element={<DMXDevices />}></Route>

@@ -147,8 +147,9 @@ export const Widget = ({
     }
     setModal(!modal);
   };
-  const Comp = widget.widget;
-  const Icon = widget.icon;
+  const Comp = widget?.widget;
+  const Icon = widget?.icon;
+  if (!Comp || !Icon) return null;
   return (
     <div className="widget-item">
       <Icon
