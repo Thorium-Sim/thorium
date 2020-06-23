@@ -113,7 +113,6 @@ const MissionLibrary = ({missions, triggerAlert}) => {
           </Card>
         )}
       </div>
-      )
     </>
   );
 };
