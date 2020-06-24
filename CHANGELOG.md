@@ -1,3 +1,10 @@
+## [2.12.4](https://github.com/Thorium-Sim/thorium/compare/2.12.3...2.12.4) (2020-06-24)
+
+
+### Bug Fixes
+
+* **Timeline:** Fixes an issue where missions don't appear in the timeline selector. ([b429fe6](https://github.com/Thorium-Sim/thorium/commit/b429fe69748752a7f08d563268d56db1d7b1bd23))
+
 ## [2.12.3](https://github.com/Thorium-Sim/thorium/compare/2.12.2...2.12.3) (2020-06-23)
 
 
