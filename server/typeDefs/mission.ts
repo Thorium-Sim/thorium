@@ -225,6 +225,9 @@ const resolver = {
         field?.args?.find(a => a.description.indexOf("Dynamic") > -1),
       );
     },
+    event({event}) {
+      return event ?? "";
+    },
   },
   MacroAction: {
     needsConfig({event}) {
