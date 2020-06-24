@@ -1,3 +1,10 @@
+## [2.12.3](https://github.com/Thorium-Sim/thorium/compare/2.12.2...2.12.3) (2020-06-23)
+
+
+### Bug Fixes
+
+* **Kiosk:** Fixes an issue that causes the kiosk to not load. Closes [#2985](https://github.com/Thorium-Sim/thorium/issues/2985) ([13274d0](https://github.com/Thorium-Sim/thorium/commit/13274d04a8930d5438a3b8a9e4c0317fe64bb32d))
+
 ## [2.12.2](https://github.com/Thorium-Sim/thorium/compare/2.12.1...2.12.2) (2020-06-19)
 
 
