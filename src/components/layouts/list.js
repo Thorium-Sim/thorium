@@ -12,4 +12,5 @@ export default [
   "LayoutEpsilon",
   "LayoutBlack",
   "LayoutClear",
+  "LayoutRough",
 ];

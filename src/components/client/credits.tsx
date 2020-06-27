@@ -83,6 +83,10 @@ const creditList = [
     content: "Emily Paxman 🕶",
   },
   {
+    header: "Rough Frame Design",
+    content: "Jon Parker and Mason Perry",
+  },
+  {
     header: "Rollins Center for Entrepreneurship and Technlology",
     content: "2019 App Competition Winner",
   },
