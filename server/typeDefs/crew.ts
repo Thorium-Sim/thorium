@@ -66,8 +66,10 @@ function getCrew(
   crew?: Crew[],
 ) {
   let returnVal = crew || App.crew.concat();
+  console.log(crew?.length, returnVal.length);
   if (simulatorId) {
     returnVal = returnVal.filter(c => c.simulatorId === simulatorId);
+    console.log(returnVal.length);
   }
   if (killed === false) {
     returnVal = returnVal.filter(c => !c.killed);
@@ -78,8 +80,11 @@ function getCrew(
   if (position) {
     // Special considerations for the security and damage
     if (position === "security") {
-      const regex = /security/gi;
-      returnVal = returnVal.filter(c => regex.test(c.position));
+      returnVal = returnVal.filter(c => {
+        const regex = /security/gi;
+        return regex.test(c.position);
+      });
+      console.log(returnVal.length);
     } else if (position === "damage") {
       const damagePositions = [
         "Computer Specialist",
@@ -106,6 +111,7 @@ function getCrew(
       );
     }
   }
+
   return returnVal;
 }
 const resolver = {
