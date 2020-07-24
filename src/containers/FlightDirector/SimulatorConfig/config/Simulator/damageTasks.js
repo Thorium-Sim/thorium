@@ -5,7 +5,6 @@ import {
   Col,
   ListGroup,
   ListGroupItem,
-  //Input
 } from "helpers/reactstrap";
 import {
   Link,
@@ -218,7 +217,7 @@ class DamageTasks extends Component {
       <Query query={QUERY}>
         {({loading, data, subscribeToMore}) => {
           if (loading || !data) return null;
-          const {taskDefinitions, taskTemplates} = data;
+          const {taskTemplates} = data;
           return (
             <Container>
               <small>

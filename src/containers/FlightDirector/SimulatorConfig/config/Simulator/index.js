@@ -5,13 +5,7 @@ import {withApollo} from "react-apollo";
 import Misc from "./misc";
 import Basic from "./basic";
 import Damage from "./damage";
-import {
-  useNavigate,
-  useParams,
-  Routes,
-  Route,
-  useMatch,
-} from "react-router-dom";
+import {useNavigate, Routes, Route, useMatch} from "react-router-dom";
 import {useApolloClient} from "@apollo/client";
 
 const ops = {
