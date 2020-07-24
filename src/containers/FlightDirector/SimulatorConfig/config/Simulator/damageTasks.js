@@ -111,8 +111,8 @@ class DamageTasks extends Component {
             <Container>
               <small>
                 Define damage report steps in{" "}
-                <Link to="/config/taskTemplates">Task Templates</Link> before
-                assigning.
+                <Link to="/config/tasks/taskTemplates">Task Templates</Link>{" "}
+                before assigning.
               </small>
               <Row>
                 <SubscriptionHelper
