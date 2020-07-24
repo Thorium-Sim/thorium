@@ -6,7 +6,6 @@ import {FaBan} from "react-icons/fa";
 
 const ProbeEquipment = ({simulatorId, onChange, value}) => {
   const {data} = useProbeEquipmentQuery();
-  console.log(data?.probeEquipment);
   return (
     <div>
       {Object.entries(value || {}).map(([id, count]) => (

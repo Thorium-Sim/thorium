@@ -5,7 +5,13 @@ import {withApollo} from "react-apollo";
 import Misc from "./misc";
 import Basic from "./basic";
 import Damage from "./damage";
-import {useNavigate, useParams} from "react-router-dom";
+import {
+  useNavigate,
+  useParams,
+  Routes,
+  Route,
+  useMatch,
+} from "react-router-dom";
 import {useApolloClient} from "@apollo/client";
 
 const ops = {
@@ -66,14 +72,16 @@ const ops = {
   `,
 };
 const SimulatorConfigView = ({selectedSimulator}) => {
-  const {subPath1: selected = ""} = useParams();
+  const {
+    params: {selected},
+  } = useMatch("/config/simulator/:simulatorId/Simulator/:selected/*") || {
+    params: {},
+  };
+
   const navigate = useNavigate();
   const client = useApolloClient();
   function select(prop) {
-    if (!prop) {
-      navigate("../");
-    }
-    navigate(`${selected ? "../" : ""}${prop}`);
+    navigate(prop);
   }
   const handleChange = e => {
     const variables = {
@@ -111,24 +119,44 @@ const SimulatorConfigView = ({selectedSimulator}) => {
           Damage Reports
         </Button>
       </ButtonGroup>
-      {(selected === "default" || selected === "") && (
-        <Basic
-          selectedSimulator={selectedSimulator}
-          handleChange={handleChange}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Basic
+              selectedSimulator={selectedSimulator}
+              handleChange={handleChange}
+            />
+          }
+        ></Route>
+        <Route
+          path="default"
+          element={
+            <Basic
+              selectedSimulator={selectedSimulator}
+              handleChange={handleChange}
+            />
+          }
+        ></Route>
+        <Route
+          path="damage/*"
+          element={
+            <Damage
+              selectedSimulator={selectedSimulator}
+              handleChange={handleChange}
+            />
+          }
         />
-      )}
-      {selected === "damage" && (
-        <Damage
-          selectedSimulator={selectedSimulator}
-          handleChange={handleChange}
+        <Route
+          path="misc"
+          element={
+            <Misc
+              selectedSimulator={selectedSimulator}
+              handleChange={handleChange}
+            />
+          }
         />
-      )}
-      {selected === "misc" && (
-        <Misc
-          selectedSimulator={selectedSimulator}
-          handleChange={handleChange}
-        />
-      )}
+      </Routes>
     </div>
   );
 };
