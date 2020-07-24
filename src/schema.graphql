@@ -589,6 +589,7 @@ type Mutation {
   """Macro: Objective: Complete Objective"""
   completeObjective(id: ID!, title: String, state: Boolean, cancel: Boolean): String
   objectiveSetCrewComplete(id: ID!, crewComplete: Boolean!): String
+  objectiveSetOrder(id: ID!, order: Int!): String
   addLog(log: LogInput): String
   chargePhaserBeam(id: ID!, beamId: ID!): String
   dischargePhaserBeam(id: ID!, beamId: ID!): String
@@ -2743,6 +2744,7 @@ type Objective {
   completed: Boolean
   cancelled: Boolean
   crewComplete: Boolean
+  order: Int
 }
 
 input ObjectiveInput {
@@ -2754,6 +2756,7 @@ input ObjectiveInput {
   completed: Boolean
   cancelled: Boolean
   crewComplete: Boolean
+  order: Int
 }
 
 type Log {

@@ -81,6 +81,20 @@ const quotes = [
   "This is Art holding a Mirror up to Life. That’s why everything is exactly the wrong way around.",
   "Listen to the quiet.",
   "Don't try to be a great man, just be a man. And let history make its own judgments.",
+  // Horrible Goose
+  "Your garden? I make it terrible! I make a puzzle of your garden!",
+  "Here I come again!",
+  "You cannot anticipate me because your brain is so big and weighty and far from the ground, but my brain is aerodynamic and small and ground-sure and I have all I need in my wicked goose-body, and also I have your radio.",
+  "I put my honk in a jar so there is more honk!",
+  // AI Generated Spaceship Names
+  "Still Wrong, After All These Years",
+  "I'll just be over here",
+  "I do the best I can",
+  "Would you like to know more?",
+  "I did it for Science!",
+  "Can't Win 'Em All",
+  "Extreme Problems call for Extreme Solutions",
+  "An attempt at perspective",
 ];
 
 const QuoteOfTheDay = () => {

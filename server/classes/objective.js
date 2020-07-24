@@ -12,6 +12,7 @@ export default class Objective {
     this.completed = params.completed || false;
     this.cancelled = params.cancelled || false;
     this.crewComplete = params.crewComplete || false;
+    this.order = params.order || 999;
   }
   complete() {
     this.completed = true;
@@ -26,5 +27,8 @@ export default class Objective {
   }
   setCrewComplete(cc) {
     this.crewComplete = cc;
+  }
+  setOrder(order) {
+    this.order = order;
   }
 }

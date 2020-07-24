@@ -19,6 +19,7 @@ export const OBJECTIVE_SUB = gql`
       completed
       cancelled
       crewComplete
+      order
     }
   }
 `;
@@ -120,6 +121,13 @@ class Objectives extends Component {
               <CardBody>
                 {objective
                   .concat()
+                  .sort((a, b) => {
+                    if (a.completed && !b.completed) return -1;
+                    if (!a.completed && b.completed) return 1;
+                    if (a.order > b.order) return -1;
+                    if (a.order < b.order) return 1;
+                    return 0;
+                  })
                   .reverse()
                   .map(o => (
                     <Objective key={o.id} {...o} />
@@ -144,6 +152,7 @@ export const OBJECTIVE_QUERY = gql`
       completed
       cancelled
       crewComplete
+      order
     }
   }
 `;

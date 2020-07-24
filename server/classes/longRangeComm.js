@@ -114,6 +114,7 @@ export default class LongRangeComm extends System {
         `Review Training`,
       );
     }
+    this.update({interception: true});
   }
   update({interception, locked, decoded, difficulty}) {
     if (interception || interception === false) {

@@ -13,7 +13,7 @@ import "./SimulatorConfig.scss";
 import {useParams, useNavigate, Route, Routes} from "react-router-dom";
 
 const SimulatorConfig = () => {
-  const {selectedProperty, simulatorId} = useParams();
+  const {selectedProperty = "Simulator", simulatorId} = useParams();
   const navigate = useNavigate();
 
   function setSelectedProperty(prop: string) {
@@ -87,14 +87,11 @@ const SimulatorConfigRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<SimulatorConfig />} />
+      <Route path="Simulator/*" element={<SimulatorConfig />} />
       <Route path=":selectedProperty" element={<SimulatorConfig />} />
       <Route path=":selectedProperty/:subPath1" element={<SimulatorConfig />} />
       <Route
         path=":selectedProperty/:subPath1/:subPath2"
-        element={<SimulatorConfig />}
-      />
-      <Route
-        path=":selectedProperty/:subPath1/:subPath2/:subPath3"
         element={<SimulatorConfig />}
       />
     </Routes>

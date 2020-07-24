@@ -4,13 +4,6 @@ import {FormGroup, Label, Input, Button, ButtonGroup} from "helpers/reactstrap";
 export default ({updateArgs = () => {}, args, client}) => {
   const lrmText = e => {
     let value = e.target.value;
-    const regex = /.*(?= out| out\.)/gi;
-    const match = value.match(regex);
-    if (match) {
-      setTimeout(() => {
-        updateArgs("sender", match[match.length - 2]);
-      }, 100);
-    }
     updateArgs("message", value);
   };
   const updateSender = e => {
@@ -19,9 +12,6 @@ export default ({updateArgs = () => {}, args, client}) => {
   const updateDecoded = e => {
     updateArgs("decoded", e.target.checked);
   };
-  // if (!args || !args.crew) {
-  //   updateArgs("crew", true);
-  // }
   return (
     <FormGroup className="macro-sendLongRangeMessage">
       <Label>Inbound/Outbound</Label>
