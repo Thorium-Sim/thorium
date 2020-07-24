@@ -315,7 +315,7 @@ const resolver = {
       ) {
         return rootValue.interference;
       }
-      return Math.max(signalJammer.strength / 2 + 0.15, rootValue.interference);
+      return Math.max(signalJammer.strength / 3 + 0.05, rootValue.interference);
     },
     movement(rootValue) {
       return {

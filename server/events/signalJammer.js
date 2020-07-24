@@ -24,11 +24,11 @@ App.on("updateSignalJammer", ({jammer}) => {
       },
       "addCoreFeed",
     );
-    pubsub.publish(
-      "sensorsUpdate",
-      App.systems.filter(s => s.type === "Sensors"),
-    );
   }
+  pubsub.publish(
+    "sensorsUpdate",
+    App.systems.filter(s => s.type === "Sensors"),
+  );
   pubsub.publish(
     "signalJammersUpdate",
     App.systems.filter(s => s.type === "SignalJammer"),
