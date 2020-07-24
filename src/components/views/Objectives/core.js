@@ -5,6 +5,8 @@ import {Container, Row, Col, Button} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
+import {useMutation} from "@apollo/client";
+import {InputField} from "components/generic/core";
 
 export const OBJECTIVE_CORE_SUB = gql`
   subscription ObjectivesUpdate($simulatorId: ID!) {
@@ -16,10 +18,15 @@ export const OBJECTIVE_CORE_SUB = gql`
       completed
       cancelled
       crewComplete
+      order
     }
   }
 `;
-
+const SET_ORDER = gql`
+  mutation SetObjectiveOrder($id: ID!, $order: Int!) {
+    objectiveSetOrder(id: $id, order: $order)
+  }
+`;
 const Objective = ({
   id,
   title,
@@ -28,6 +35,7 @@ const Objective = ({
   cancelled,
   client,
   crewComplete,
+  order,
 }) => {
   const complete = (e, cancel) => {
     const completed = e.target ? e.target.checked : e;
@@ -46,9 +54,18 @@ const Objective = ({
       variables,
     });
   };
+
+  const [setOrder] = useMutation(SET_ORDER);
+
   return (
     <div className="objective">
-      <div>
+      <div style={{flex: 1, marginLeft: "20px"}}>
+        <strong style={{textDecoration: cancelled ? "line-through" : ""}}>
+          {title}
+        </strong>
+        <p>{description}</p>
+      </div>
+      <div className="objective-controls">
         <div>
           <label>
             <input type="checkbox" checked={completed} onClick={complete} />{" "}
@@ -90,12 +107,18 @@ const Objective = ({
             Allow Crew Check Off
           </label>
         </div>
-      </div>
-      <div style={{flex: 1, marginLeft: "20px"}}>
-        <strong style={{textDecoration: cancelled ? "line-through" : ""}}>
-          {title}
-        </strong>
-        <p>{description}</p>
+        <label style={{display: "flex"}}>
+          Order:
+          <InputField
+            title="Objective Order"
+            prompt="What should the new order be? Smaller numbers are at the top of the list."
+            onClick={value =>
+              setOrder({variables: {order: parseInt(value, 10), id}})
+            }
+          >
+            {order}
+          </InputField>
+        </label>
       </div>
     </div>
   );
@@ -163,6 +186,13 @@ class Objectives extends Component {
             </Button>
             {objective
               .concat()
+              .sort((a, b) => {
+                if (a.completed && !b.completed) return -1;
+                if (!a.completed && b.completed) return 1;
+                if (a.order > b.order) return -1;
+                if (a.order < b.order) return 1;
+                return 0;
+              })
               .reverse()
               .map(o => (
                 <Objective key={o.id} {...o} client={client} />
@@ -184,6 +214,7 @@ export const OBJECTIVE_CORE_QUERY = gql`
       completed
       cancelled
       crewComplete
+      order
     }
   }
 `;

@@ -29,3 +29,8 @@ App.on("objectiveSetCrewComplete", ({id, crewComplete}) => {
   obj.setCrewComplete(crewComplete);
   pubsub.publish("objectiveUpdate", App.objectives);
 });
+App.on("objectiveSetOrder", ({id, order}) => {
+  const obj = App.objectives.find(o => o.id === id);
+  obj.setOrder(order);
+  pubsub.publish("objectiveUpdate", App.objectives);
+});
