@@ -52,6 +52,7 @@ export const STATION_QUERY = gql`
         name
         component
       }
+      layout
       widgets
       executive
       messageGroups
@@ -518,6 +519,16 @@ const Station = ({stations, simulatorId, station: stationName}) => {
                     )
                   }
                 `}
+                refetchQueries={[
+                  {
+                    query: STATION_QUERY,
+                    variables: {
+                      simulatorId,
+                      simId: simulatorId,
+                      station: stationName,
+                    },
+                  },
+                ]}
               >
                 {action => (
                   <select
