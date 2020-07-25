@@ -1,3 +1,22 @@
+# [2.13.0](https://github.com/Thorium-Sim/thorium/compare/2.12.4...2.13.0) (2020-07-25)
+
+
+### Bug Fixes
+
+* **Damage Tasks:** Fixes an issue where simulator damage tasks cannot be configured. Closes [#3000](https://github.com/Thorium-Sim/thorium/issues/3000) ([eb7b36a](https://github.com/Thorium-Sim/thorium/commit/eb7b36a70f5fcc03728c992f29439bc281166bbc))
+* **Long Range Message:** Fixes an issue where edits aren't saved on the long range message macro. Closes [#3007](https://github.com/Thorium-Sim/thorium/issues/3007). Closes [#3005](https://github.com/Thorium-Sim/thorium/issues/3005) ([3395155](https://github.com/Thorium-Sim/thorium/commit/33951556eca51e42ccab646f118e3ec3c7ec759f))
+* **Security:** Security teams can now use the entire complement of security officers. Closes [#3002](https://github.com/Thorium-Sim/thorium/issues/3002) ([44f4559](https://github.com/Thorium-Sim/thorium/commit/44f455920bb4fd59fc5b506533bdef8046a68ba8))
+* **Signal Jammer:** Signal jammer power now properly affects sensors interference when that option is enabled. Closes [#3003](https://github.com/Thorium-Sim/thorium/issues/3003) ([e451f91](https://github.com/Thorium-Sim/thorium/commit/e451f91a480aaf8023e59f3583631db8561f8ab8))
+* **Station Layout:** Fixes an issue where changing the layout of a station on the core doesn't properly update the UI. Closes  [#2982](https://github.com/Thorium-Sim/thorium/issues/2982) ([8539224](https://github.com/Thorium-Sim/thorium/commit/853922492ff9fc65ee684e875034651ec35131fd))
+* **Tasks:** Fixes a broken link. Closes [#2993](https://github.com/Thorium-Sim/thorium/issues/2993) ([eac13a5](https://github.com/Thorium-Sim/thorium/commit/eac13a5713db04fad6722f93413bfde4048a871d))
+
+
+### Features
+
+* **Interception:** An interception signal is now added with training mode. Closes [#2992](https://github.com/Thorium-Sim/thorium/issues/2992) ([d045d3b](https://github.com/Thorium-Sim/thorium/commit/d045d3be51501b75223bd940c52a70e48b10fcb1))
+* **Layout:** Add a new layout, Layout Rough. Credit to Jon Parker and Mason Perry. ([ce6b1a8](https://github.com/Thorium-Sim/thorium/commit/ce6b1a87097bcffbdfb441bb2005b9f75b22508d))
+* **Objectives:** Add ability to reorder objectives, as well as moving completed objectives to the bottom of the list. Closes [#2998](https://github.com/Thorium-Sim/thorium/issues/2998) ([9b094b1](https://github.com/Thorium-Sim/thorium/commit/9b094b18d7f5344093ec28105c1a75dd8b69b2f3))
+
 # [2.12.4](https://github.com/Thorium-Sim/thorium/compare/2.12.3...2.12.4) (2020-06-24)
 
 
