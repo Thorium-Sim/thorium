@@ -156,7 +156,7 @@ export default (
   const apollo = new ApolloServer(graphqlOptions);
   apollo.applyMiddleware({app});
 
-  let httpServer = http.createServer(app);
+  let httpServer: http.Server | https.Server = http.createServer(app);
   let isHttps = false;
   if (process.env.NODE_ENV === "production" && !httpOnly) {
     isHttps = true;
