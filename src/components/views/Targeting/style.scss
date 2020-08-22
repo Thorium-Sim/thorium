@@ -78,7 +78,7 @@
       grid-template-rows: 1fr 1fr;
       grid-gap: 10px;
       overflow-y: auto;
-      overflow-x: hidden;
+      overflow-x: visible;
       .torpedo-loader {
         width: auto;
         height: auto;
