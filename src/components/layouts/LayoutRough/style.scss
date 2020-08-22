@@ -12,6 +12,68 @@ $alertp: #7a24cf;
   background-position: center;
   color: white;
 
+  $viewscreenList: t b tr tl br bl;
+
+  @mixin viewscreenSwatchColors($alertLevel) {
+    .slices {
+      @each $dim in $viewscreenList {
+        .slice-#{$dim} {
+          z-index: 11;
+          background-image: url("./images/viewscreenSlices/#{$alertLevel}/#{$dim}.png");
+        }
+      }
+    }
+  }
+  &.viewscreen {
+    .slices.slices {
+      .slice-l,
+      .slice-r {
+        background-image: none;
+      }
+    }
+    .card-area {
+      z-index: 1;
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      left: 0;
+      top: 0;
+    }
+    &.alertColor1 {
+      background-image: url("./images/viewscreen-bg-1.jpg");
+      @include viewscreenSwatchColors("1");
+    }
+    &.alertColor2 {
+      background-image: url("./images/viewscreen-bg-2.jpg");
+      @include viewscreenSwatchColors("2");
+    }
+    &.alertColor3 {
+      background-image: url("./images/viewscreen-bg-3.jpg");
+      @include viewscreenSwatchColors("3");
+    }
+    &.alertColor4 {
+      background-image: url("./images/viewscreen-bg-4.jpg");
+      @include viewscreenSwatchColors("4");
+    }
+    &.alertColor5 {
+      background-image: url("./images/viewscreen-bg-5.jpg");
+      @include viewscreenSwatchColors("5");
+    }
+    &.alertColorp {
+      background-image: url("./images/viewscreen-bg-p.jpg");
+      @include viewscreenSwatchColors("p");
+    }
+    .simulator-name {
+      left: 100px;
+      right: unset;
+      bottom: 30px;
+    }
+    .station-name {
+      top: 30px;
+      left: unset;
+      right: 100px;
+    }
+  }
   .card-switcher-holder {
     z-index: 100;
     position: absolute;
@@ -64,6 +126,7 @@ $alertp: #7a24cf;
       }
     }
   }
+
   $list: t l r b tr tl br bl;
 
   .slices {
@@ -216,16 +279,6 @@ $alertp: #7a24cf;
     width: calc(100% - 240px);
     height: calc(100% - 280px);
     position: relative;
-  }
-  &.viewscreen {
-    .card-area {
-      z-index: 1;
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-      left: 0;
-      top: 0;
-    }
   }
   .widgets {
     display: flex;

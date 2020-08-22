@@ -4,14 +4,14 @@ import CardFrame from "./cardFrame";
 import "./style.scss";
 import {Simulator, Client} from "generated/graphql";
 
-const LayoutRough: React.FC<{
+const LayoutRoughViewscreen: React.FC<{
   simulator: Simulator;
   clientObj: Client;
 }> = props => {
   const {simulator, clientObj} = props;
   let alertClass = `alertColor${simulator.alertlevel || 5}`;
   return (
-    <div className={`layout-black viewscreen ${alertClass}`}>
+    <div className={`layout-rough viewscreen ${alertClass}`}>
       <CardFrame
         simulator={simulator}
         stationName="Viewscreen"
@@ -25,4 +25,4 @@ const LayoutRough: React.FC<{
   );
 };
 
-export default LayoutRough;
+export default LayoutRoughViewscreen;
