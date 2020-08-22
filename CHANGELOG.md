@@ -1,3 +1,12 @@
+## [2.13.1](https://github.com/Thorium-Sim/thorium/compare/2.13.0...2.13.1) (2020-08-22)
+
+
+### Bug Fixes
+
+* **Layout Rough:** Adds a viewscreen theme for Layout Rough ([4989a63](https://github.com/Thorium-Sim/thorium/commit/4989a634c80ea751a7596fc7c446bdf12c332430))
+* **Layout Rough:** Fixes some visual issues with Layout Rough ([bb75d62](https://github.com/Thorium-Sim/thorium/commit/bb75d6239a49730312909c7501bf8f2e589329f4))
+* **Viewscreen:** Adjust the planetary scan viewscreen so the scanner is more interesting and properly frames the planet. ([4642853](https://github.com/Thorium-Sim/thorium/commit/4642853216a706fef4407e5785daf21ad3a8a987))
+
 # [2.13.0](https://github.com/Thorium-Sim/thorium/compare/2.12.4...2.13.0) (2020-07-25)
 
 
