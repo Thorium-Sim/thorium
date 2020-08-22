@@ -317,6 +317,9 @@ $alertp: #7a24cf;
       background-image: url("./images/focus-c.png");
     }
   }
+  .dropdown .btn {
+    overflow: visible;
+  }
   .form-control,
   .form-control:active,
   .form-control:focus,
