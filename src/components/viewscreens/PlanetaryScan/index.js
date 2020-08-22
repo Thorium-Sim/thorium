@@ -16,7 +16,6 @@ const RenderSphere = props => {
   return (
     <div className="planetary-scan">
       <div className="scannerBox" ref={measureRef}>
-        <div className="scannerBar" />
         {dimensions.width && (
           <ThreeView
             {...props}

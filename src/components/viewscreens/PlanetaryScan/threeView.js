@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import * as THREE from "three";
+import {CircleGeometry, LineLoop, LineBasicMaterial} from "three";
 
 window.THREE = THREE;
 
@@ -30,7 +31,7 @@ class ThreeView extends Component {
     this.scene.add(dirLight);
 
     this.camera.position.y = 1;
-    this.camera.position.z = 3;
+    this.camera.position.z = 3.5;
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     this.objectGroup = new THREE.Group();
 
@@ -67,6 +68,23 @@ class ThreeView extends Component {
     if (clouds && !wireframe) {
       this.clouds.visible = true;
     }
+
+    const geometry = new CircleGeometry(1.1, 32);
+    geometry.vertices.shift();
+    const mat1 = new LineBasicMaterial({
+      color: 0xfac79e,
+    });
+    const mat2 = new LineBasicMaterial({
+      color: 0xfafa9a,
+    });
+
+    this.scannerLine1 = new LineLoop(geometry, mat1);
+    this.scannerLine1.scale.set(1.1, 1.1, 1.1);
+    this.objectGroup.add(this.scannerLine1);
+
+    this.scannerLine2 = new LineLoop(geometry, mat2);
+    this.scannerLine2.scale.set(1.15, 1.15, 1.15);
+    this.objectGroup.add(this.scannerLine2);
 
     this.threeMount.current.appendChild(this.renderer.domElement);
     this.animating = true;
@@ -108,6 +126,16 @@ class ThreeView extends Component {
       this.clouds.visible = true;
     }
   }
+  shouldComponentUpdate(nextProps) {
+    if (
+      nextProps.wireframe !== this.props.wireframe ||
+      nextProps.color !== this.props.color ||
+      nextProps.planet !== this.props.planet ||
+      nextProps.clouds !== this.props.clouds
+    )
+      return true;
+    return false;
+  }
   componentWillUnmount() {
     this.animating = false;
     cancelAnimationFrame(this.frame);
@@ -130,6 +158,13 @@ class ThreeView extends Component {
     this.cloudRotation += 0.03;
     this.objectGroup.rotation.setFromVector3(rot);
     this.clouds.rotation.setFromVector3(cloudRot);
+
+    this.scannerLine1.rotation.x += 0.01;
+    this.scannerLine1.rotateY(0.02);
+
+    this.scannerLine2.rotation.x += 0.005;
+    this.scannerLine2.rotateY(0.03);
+
     this.renderer.render(this.scene, this.camera);
     this.frame = requestAnimationFrame(this.animate);
   };
