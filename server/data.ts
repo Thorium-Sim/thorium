@@ -19,6 +19,7 @@ const MainSchema = gql`
 `;
 
 // This resolver object can be extended if properties are added
+
 // to the Query and Mutation types above.
 const MainResolver = {};
 export const typeDefs = Object.values(schema).reduce(
