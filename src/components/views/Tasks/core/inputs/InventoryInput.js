@@ -19,6 +19,7 @@ const InventoryInput = ({simulatorId, onChange, value}) => {
       {({loading, data}) =>
         loading ? null : (
           <div>
+            {console.log(loading, data)}
             <small>
               Change the inventory item's name before adding another.
             </small>
@@ -27,7 +28,7 @@ const InventoryInput = ({simulatorId, onChange, value}) => {
                 key={id}
                 style={{display: "flex", justifyContent: "space-between"}}
               >
-                {data ? (
+                {data?.inventory?.length ? (
                   <select
                     value={id}
                     onChange={e => {
@@ -43,7 +44,7 @@ const InventoryInput = ({simulatorId, onChange, value}) => {
                   </select>
                 ) : (
                   <input
-                    defaultValue={id}
+                    defaultValue={id === "undefined" ? "" : id}
                     onBlur={e => {
                       const {[id]: _, ...rest} = value;
                       onChange({...rest, [e.target.value]: count});

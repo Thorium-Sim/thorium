@@ -1,10 +1,6 @@
 const {app, BrowserWindow, ipcMain, shell} = require("electron");
-const ipAddress = require("./ipaddress");
 const fs = require("fs");
 const path = require("path");
-const autoUpdateInit = require("./autoUpdate");
-const usbDetect = require("usb-detection");
-const dmx = require("./dmx");
 
 // Make the kiosk work better on slightly older computers
 app.commandLine.appendSwitch("ignore-gpu-blacklist", "true");
@@ -17,14 +13,14 @@ const cert = fs.existsSync(
     )
   : fs.readFileSync(path.resolve(`${__dirname}/../../server.cert`), "utf8");
 
-const {bonjour} = require("./bonjour");
 const settings = require("electron-settings");
-const {checkWindow, addWindow} = require("./multiWindow");
 
 module.exports = () => {
   function startServer() {
     // Stop the bonjour  browser
+    const {bonjour} = require("./bonjour");
     bonjour.stop();
+    const {addWindow} = require("./multiWindow");
     addWindow({server: true});
   }
   app.enableSandbox();
@@ -36,6 +32,7 @@ module.exports = () => {
       settings.get("httpOnly") === true ||
       false;
 
+    const autoUpdateInit = require("./autoUpdate");
     autoUpdateInit();
 
     app.on(
@@ -47,8 +44,9 @@ module.exports = () => {
         callback(certificate.data === cert);
       },
     );
-
+    const {checkWindow} = require("./multiWindow");
     checkWindow();
+    const {addWindow} = require("./multiWindow");
     addWindow({main: true});
     ipcMain.on("getWindowCount", event => {
       event.returnValue = BrowserWindow.getAllWindows().filter(b => {
@@ -63,6 +61,7 @@ module.exports = () => {
       require("./loadPage")(loadUrl, kiosk).catch(err => {
         console.error(err);
         settings.set("autostart", null);
+        const {bonjour} = require("./bonjour");
         bonjour.start();
       });
     });
@@ -86,15 +85,19 @@ module.exports = () => {
       shell.openExternal(url);
     });
     ipcMain.handle("get-ipAddress", async () => {
+      const ipAddress = require("./ipaddress");
       return ipAddress;
     });
     ipcMain.handle("get-usbDevices", async () => {
+      const usbDetect = require("usb-detection");
       return usbDetect.find(0x403, 0x6001);
     });
     ipcMain.on("activate-dmx", (event, config) => {
+      const dmx = require("./dmx");
       dmx.activate(config);
     });
     ipcMain.on("send-dmx-value", (event, universe) => {
+      const dmx = require("./dmx");
       dmx.sendData(universe);
     });
     ipcMain.handle("get-hostname", async () => {
@@ -120,10 +123,12 @@ module.exports = () => {
         // Do a fetch
         require("./loadPage")(loadUrl, true).catch(() => {
           settings.set("autostart", null);
+          const {bonjour} = require("./bonjour");
           bonjour.start();
         });
       }
     } else {
+      const {bonjour} = require("./bonjour");
       bonjour.start();
     }
     require("./setMenubar").setMenubar();
