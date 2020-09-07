@@ -4,7 +4,7 @@ import os from "os";
 import path from "path";
 import https from "https";
 import importAssets from "../imports/asset/import";
-import "../helpers/sentry";
+// import "../helpers/sentry";
 
 require("dotenv").config({
   debug: process.env.NODE_ENV === "development",

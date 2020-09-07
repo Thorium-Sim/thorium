@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Container, Button} from "helpers/reactstrap";
-import * as Sentry from "@sentry/browser";
+// import * as Sentry from "@sentry/browser";
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -15,12 +15,12 @@ export default class ErrorBoundary extends Component {
       errorInfo: errorInfo,
     });
     // You can also log error messages to an error reporting service here
-    Sentry.withScope(scope => {
-      Object.keys(errorInfo).forEach(key => {
-        scope.setExtra(key, errorInfo[key]);
-      });
-      Sentry.captureException(error);
-    });
+    // Sentry.withScope(scope => {
+    //   Object.keys(errorInfo).forEach(key => {
+    //     scope.setExtra(key, errorInfo[key]);
+    //   });
+    //   Sentry.captureException(error);
+    // });
   }
   refresh() {
     localStorage.clear();
@@ -35,10 +35,11 @@ export default class ErrorBoundary extends Component {
           <Container>
             <h2>
               Error in Thorium client.{" "}
-              <Button onClick={() => Sentry.showReportDialog()}>
+              {/* <Button onClick={() => Sentry.showReportDialog()}>
                 Report feedback
               </Button>{" "}
-              or <Button onClick={this.refresh}>Refresh</Button>
+              or  */}
+              <Button onClick={this.refresh}>Refresh</Button>
             </h2>
             <h3>
               If you know what you are looking for, you can check out what went
