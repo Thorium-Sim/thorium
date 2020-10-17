@@ -1,0 +1,3 @@
+mutation HackingAllowHacking($id: ID!, $state: String!) {
+  computerCoreSetHackingState(id: $id, state: $state)
+}

@@ -13,6 +13,7 @@ type Query {
   commandLineCommands(simulatorId: ID!): [CommandLineCommand]
   computerCore(simulatorId: ID): [ComputerCore]
   oneComputerCore(id: ID!): ComputerCore
+  hackingPresets: [HackingPreset!]!
   coolant(simulatorId: ID!): [CoolantTank]
   systemCoolant(simulatorId: ID!, systemId: ID): [SystemCoolant]
   coreFeed(simulatorId: ID): [CoreFeed]
@@ -246,6 +247,36 @@ type Mutation {
   deleteComputerCoreVirus(id: ID!, virusId: ID!): String
   restartComputerCoreTerminal(id: ID!, terminalId: ID!): String
   addViriiToComputerCore(id: ID!): String
+
+  """
+  Macro: Computer Core: Activate External Hacking
+  Requires:
+    - Cards:ComputerCore
+    - Systems:ComputerCore
+  """
+  computerCoreActivateHacking(id: ID!): String
+
+  """
+  Macro: Computer Core: Deactivate External Hacking
+  Requires:
+    - Cards:ComputerCore
+    - Systems:ComputerCore
+  """
+  computerCoreDeactivateHacking(id: ID!): String
+
+  """
+  Macro: Computer Core: Set External Hacking Preset
+  Requires:
+    - Cards:ComputerCore
+    - Systems:ComputerCore
+  """
+  computerCoreHackingPreset(id: ID!, presetId: ID!): String
+  computerCoreSetHackingState(id: ID!, state: String!): String
+  computerCoreAppendLog(id: ID!, log: String!): String
+  computerCoreSetHackingFrequency(id: ID!, frequency: Float!): String
+  createHackingPreset(name: String!): String
+  deleteHackingPreset(id: ID!): String
+  updateHackingPreset(id: ID!, preset: JSON!): String
   setCoolantTank(id: ID!, coolant: Float!): String
   transferCoolant(coolantId: ID!, systemId: ID, which: String): String
   ignoreCoreFeed(id: ID): String
@@ -1615,6 +1646,11 @@ type ComputerCore {
   virii: [ComputerCoreVirus]
   terminals: [ComputerCoreTerminals]
   history: [String]
+  hackingActive: Boolean
+  activeHackingPreset: HackingPreset
+  hackingState: String
+  hackingPortScanFrequency: Float
+  hackingLog: [String!]!
 }
 
 type ComputerCoreUser {
@@ -1656,6 +1692,24 @@ input ComputerCoreUserInput {
   password: String
   hacker: Boolean
   level: Int
+}
+
+type HackingLRM {
+  id: String!
+  title: String!
+  message: String!
+}
+
+type HackingPreset {
+  id: String!
+  name: String!
+  logs: Boolean!
+  longRange: Boolean!
+  longRangeMessages: [HackingLRM!]!
+  remoteControl: Boolean!
+  commandLines: [String!]!
+  fileViewer: Boolean!
+  files: [ComputerCoreFile!]!
 }
 
 type Coolant {

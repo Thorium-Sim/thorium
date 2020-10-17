@@ -1,13 +1,13 @@
 import React from "react";
 
 const Arrow = ({
-  alertLevel,
+  alertLevel = 5,
   level = 1,
   mouseDown = () => {},
   dimensions,
-  flop,
-  connected,
-  muted,
+  flop = false,
+  connected = false,
+  muted = false,
 }) => {
   return (
     <div

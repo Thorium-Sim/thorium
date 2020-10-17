@@ -18,7 +18,7 @@ class User {
   }
 }
 
-class File {
+export class File {
   constructor(params = {}) {
     this.id = params.id || uuid.v4();
     this.name = params.name || `File ${Math.round(Math.random() * 998 + 1)}`;
@@ -99,6 +99,14 @@ export default class ComputerCore extends System {
         .fill({})
         .map((_, i) => ({name: `Terminal ${i + 1}`}))
     ).forEach(t => this.terminals.push(new Terminal(t)));
+
+    // Hacking stuff
+    this.hackingActive = params.hackingActive || false;
+    this.activeHackingPreset = params.activeHackingPreset || null;
+    // "idle", "scanning", "hacking"
+    this.hackingState = params.hackingState || "idle";
+    this.hackingPortScanFrequency = params.hackingPortScanFrequency || 0.5;
+    this.hackingLog = params.hackingLog || [];
   }
   addUser(params) {
     const user = new User(params);
