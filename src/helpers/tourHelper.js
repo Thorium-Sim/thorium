@@ -19,6 +19,7 @@ const SET_CLIENT_TRAINING = gql`
 
 const TourHelper = ({
   steps,
+  innerKey = undefined,
   training: propsTraining = undefined,
   onRequestClose = null,
 }) => {
@@ -53,6 +54,7 @@ const TourHelper = ({
   if (!steps) return null;
   return (
     <Tour
+      key={innerKey}
       steps={steps}
       isOpen={training || false}
       onAfterOpen={target => {

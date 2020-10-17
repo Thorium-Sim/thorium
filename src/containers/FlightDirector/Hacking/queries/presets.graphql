@@ -1,0 +1,23 @@
+query HackingPresets {
+  hackingPresets {
+    id
+    name
+    logs
+    longRange
+    remoteControl
+    fileViewer
+    longRangeMessages {
+      id
+      title
+      message
+    }
+    commandLines
+    files {
+      id
+      name
+      level
+      corrupted
+      restoring
+    }
+  }
+}

@@ -1,3 +1,11 @@
+## [2.13.2](https://github.com/Thorium-Sim/thorium/compare/2.13.1...2.13.2) (2020-09-04)
+
+
+### Bug Fixes
+
+* **App:** Improves the launch time for the Thorium App on Windows. Closes [#3015](https://github.com/Thorium-Sim/thorium/issues/3015) ([d121141](https://github.com/Thorium-Sim/thorium/commit/d121141212d96fe7022b2a818cc816351020e58f))
+* **Tasks:** Fixes an issue where you can't properly enter inventory for the cargo task. Closes [#3016](https://github.com/Thorium-Sim/thorium/issues/3016) ([4d326d9](https://github.com/Thorium-Sim/thorium/commit/4d326d949136a2d3e6530b12b370488347ed8739))
+
 ## [2.13.1](https://github.com/Thorium-Sim/thorium/compare/2.13.0...2.13.1) (2020-08-22)
 
 

@@ -37,6 +37,7 @@ import {
   FaLightbulb,
   // FaRegStar,
 } from "react-icons/fa";
+import {AiOutlineFieldBinary} from "react-icons/ai";
 
 import IssueTracker from "../../components/admin/IssueTracker";
 
@@ -142,6 +143,11 @@ const links: (NavLinkI | null)[] = [
     name: "Interfaces Config",
     icon: FaClone,
     link: "/config/interfaces",
+  },
+  {
+    name: "Hacker Preset Config",
+    icon: AiOutlineFieldBinary,
+    link: "/config/hacker",
   },
   // {
   //   name: "Records Config",

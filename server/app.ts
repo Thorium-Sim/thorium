@@ -77,6 +77,7 @@ class Events extends EventEmitter {
   dmxFixtures: ClassesImport.DMXFixture[] = [];
   dmxConfigs: ClassesImport.DMXConfig[] = [];
   dmxSets: ClassesImport.DMXSet[] = [];
+  hackingPresets: ClassesImport.HackingPreset[] = [];
   autoUpdate = true;
   migrations: any = {assets: true};
   thoriumId: string = randomWords(5).join("-");
@@ -151,6 +152,12 @@ class Events extends EventEmitter {
           });
           return motu;
         });
+        return;
+      }
+      if (key === "hackingPresets" && snapshot.hackingPresets) {
+        this.hackingPresets = snapshot.hackingPresets.map(
+          m => new ClassesImport.HackingPreset(m),
+        );
         return;
       }
       if (snapshot[key] instanceof Array) {

@@ -1,0 +1,3 @@
+mutation HackingRemoveLog($id: ID!, $index: Int!) {
+  computerCoreDeleteLog(id: $id, index: $index)
+}

@@ -121,6 +121,7 @@ const CrmFighter = React.lazy(() => import("./CrmFighter"));
 const Records = React.lazy(() => import("./Records"));
 const StationControl = React.lazy(() => import("./StationControl"));
 const Countermeasures = React.lazy(() => import("./Countermeasures"));
+const Hacking = React.lazy(() => import("./Hacking"));
 
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
@@ -217,6 +218,7 @@ const RecordsCore = React.lazy(() => import("./Records/core"));
 const MIDICore = React.lazy(() => import("./Midi"));
 const CountermeasuresCore = React.lazy(() => import("./Countermeasures/core"));
 const TaskFlowCore = React.lazy(() => import("./Tasks/taskFlowCore"));
+const HackingCore = React.lazy(() => import("./Hacking/core"));
 
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
@@ -323,6 +325,7 @@ const Views = {
   Countermeasures,
   PowerDistributionLeftWing,
   PowerDistributionRightWing,
+  Hacking,
 };
 
 export const Widgets = {
@@ -512,6 +515,7 @@ export const Cores = {
   MIDICore,
   CountermeasuresCore,
   TaskFlowCore,
+  HackingCore,
 };
 
 export default Views;

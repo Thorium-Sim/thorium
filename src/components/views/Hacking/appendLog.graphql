@@ -1,0 +1,3 @@
+mutation HackingAppendLog($id: ID!, $log: String!) {
+  computerCoreAppendLog(id: $id, log: $log)
+}
