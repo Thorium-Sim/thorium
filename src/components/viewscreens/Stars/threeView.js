@@ -1,6 +1,15 @@
 import React, {Component} from "react";
 import * as THREE from "three";
+import {EffectComposer} from "three/examples/jsm/postprocessing/EffectComposer.js";
+import {RenderPass} from "three/examples/jsm/postprocessing/RenderPass.js";
+import {UnrealBloomPass} from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import TWEEN from "@tweenjs/tween.js";
+var params = {
+  exposure: 1,
+  bloomStrength: 1.5,
+  bloomThreshold: 0,
+  bloomRadius: 0,
+};
 
 class ThreeView extends Component {
   constructor(props) {
@@ -9,12 +18,31 @@ class ThreeView extends Component {
     this.state = {velocity};
     this.scene = new THREE.Scene();
     this.renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.toneMapping = THREE.ReinhardToneMapping;
+
     this.renderer.setSize(width, height);
+
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100000);
 
     this.camera.position.y = 0;
     this.camera.position.z = 0;
     this.camera.lookAt(new THREE.Vector3(0, 0, -1));
+
+    this.renderScene = new RenderPass(this.scene, this.camera);
+    this.bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.5,
+      0.4,
+      0.85,
+    );
+    this.bloomPass.threshold = params.bloomThreshold;
+    this.bloomPass.strength = params.bloomStrength;
+    this.bloomPass.radius = params.bloomRadius;
+
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.addPass(this.renderScene);
+    this.composer.addPass(this.bloomPass);
 
     const light = new THREE.PointLight(0xaaaaaa);
     light.position.set(250, 0, 0);
@@ -129,7 +157,7 @@ class ThreeView extends Component {
       mesh.material.emissive.set(`hsl(${hue}, 40%, 70%)`);
     }
 
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render();
     this.frame = requestAnimationFrame(this.animate);
   };
   render() {
