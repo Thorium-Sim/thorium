@@ -19,7 +19,6 @@ const InventoryInput = ({simulatorId, onChange, value}) => {
       {({loading, data}) =>
         loading ? null : (
           <div>
-            {console.log(loading, data)}
             <small>
               Change the inventory item's name before adding another.
             </small>

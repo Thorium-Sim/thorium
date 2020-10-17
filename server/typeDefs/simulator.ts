@@ -50,8 +50,14 @@ const schema = gql`
     spaceEdventuresId: String
     flipped: Boolean
     capabilities: SimulatorCapabilities
+    documents: [Document!]
   }
 
+  type Document {
+    id: ID!
+    name: String!
+    asset: String!
+  }
   type SimulatorCapabilities {
     systems: [String!]!
     cards: [String!]!
@@ -209,6 +215,12 @@ const schema = gql`
       widget: String!
       state: Boolean!
     ): String
+
+    """
+    Macro: Document: Add Document
+    """
+    documentAdd(simulatorId: ID!, name: String!, asset: String!): String
+    documentRemove(simulatorId: ID!, id: ID!): String
   }
   extend type Subscription {
     simulatorsUpdate(simulatorId: ID, template: Boolean): [Simulator]
@@ -321,7 +333,20 @@ const resolver = {
       return returnVal;
     },
   },
-  Mutation: mutationHelper(schema),
+  Mutation: {
+    documentAdd(root, {simulatorId, name, asset}) {
+      const simulator = App.simulators.find(s => s.id === simulatorId);
+      if (!simulator) return;
+      simulator.documents.push({id: uuid.v4(), name, asset});
+      pubsub.publish("simulatorsUpdate", App.simulators);
+    },
+    documentRemove(root, {simulatorId, id}) {
+      const simulator = App.simulators.find(s => s.id === simulatorId);
+      if (!simulator) return;
+      simulator.documents = simulator.documents.filter(s => s.id !== id);
+      pubsub.publish("simulatorsUpdate", App.simulators);
+    },
+  },
   Subscription: {
     simulatorsUpdate: {
       resolve(rootValue = [], {simulatorId, template}) {

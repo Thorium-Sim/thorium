@@ -1,0 +1,3 @@
+mutation AddDocument($simulatorId: ID!, $name: String!, $asset: String!) {
+  documentAdd(simulatorId: $simulatorId, name: $name, asset: $asset)
+}

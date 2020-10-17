@@ -122,6 +122,8 @@ const Records = React.lazy(() => import("./Records"));
 const StationControl = React.lazy(() => import("./StationControl"));
 const Countermeasures = React.lazy(() => import("./Countermeasures"));
 
+const Documents = React.lazy(() => import("./Documents"));
+
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
 const TransporterCore = React.lazy(() => import("./Transporters/core"));
@@ -217,6 +219,7 @@ const RecordsCore = React.lazy(() => import("./Records/core"));
 const MIDICore = React.lazy(() => import("./Midi"));
 const CountermeasuresCore = React.lazy(() => import("./Countermeasures/core"));
 const TaskFlowCore = React.lazy(() => import("./Tasks/taskFlowCore"));
+const DocumentsCore = React.lazy(() => import("./Documents/core"));
 
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
@@ -323,6 +326,7 @@ const Views = {
   Countermeasures,
   PowerDistributionLeftWing,
   PowerDistributionRightWing,
+  Documents,
 };
 
 export const Widgets = {
@@ -512,6 +516,7 @@ export const Cores = {
   MIDICore,
   CountermeasuresCore,
   TaskFlowCore,
+  DocumentsCore,
 };
 
 export default Views;
