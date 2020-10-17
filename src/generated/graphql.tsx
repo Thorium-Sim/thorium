@@ -32,6 +32,7 @@ export type Query = {
   commandLineCommands?: Maybe<Array<Maybe<CommandLineCommand>>>;
   computerCore?: Maybe<Array<Maybe<ComputerCore>>>;
   oneComputerCore?: Maybe<ComputerCore>;
+  hackingPresets: Array<HackingPreset>;
   coolant?: Maybe<Array<Maybe<CoolantTank>>>;
   systemCoolant?: Maybe<Array<Maybe<SystemCoolant>>>;
   coreFeed?: Maybe<Array<Maybe<CoreFeed>>>;
@@ -776,6 +777,36 @@ export type Mutation = {
   deleteComputerCoreVirus?: Maybe<Scalars['String']>;
   restartComputerCoreTerminal?: Maybe<Scalars['String']>;
   addViriiToComputerCore?: Maybe<Scalars['String']>;
+  computerCoreAddFile?: Maybe<Scalars['String']>;
+  /**
+   * Macro: Computer Core: Activate External Hacking
+   * Requires:
+   *   - Cards:ComputerCore
+   *   - Systems:ComputerCore
+   */
+  computerCoreActivateHacking?: Maybe<Scalars['String']>;
+  /**
+   * Macro: Computer Core: Deactivate External Hacking
+   * Requires:
+   *   - Cards:ComputerCore
+   *   - Systems:ComputerCore
+   */
+  computerCoreDeactivateHacking?: Maybe<Scalars['String']>;
+  /**
+   * Macro: Computer Core: Set External Hacking Preset
+   * Requires:
+   *   - Cards:ComputerCore
+   *   - Systems:ComputerCore
+   */
+  computerCoreHackingPreset?: Maybe<Scalars['String']>;
+  computerCoreSetHackingState?: Maybe<Scalars['String']>;
+  computerCoreAppendLog?: Maybe<Scalars['String']>;
+  computerCoreDeleteLog?: Maybe<Scalars['String']>;
+  computerCoreSetHackingFrequency?: Maybe<Scalars['String']>;
+  computerCoreUpdateHackingFiles?: Maybe<Scalars['String']>;
+  createHackingPreset?: Maybe<Scalars['String']>;
+  deleteHackingPreset?: Maybe<Scalars['String']>;
+  updateHackingPreset?: Maybe<Scalars['String']>;
   setCoolantTank?: Maybe<Scalars['String']>;
   transferCoolant?: Maybe<Scalars['String']>;
   ignoreCoreFeed?: Maybe<Scalars['String']>;
@@ -2126,6 +2157,74 @@ export type MutationRestartComputerCoreTerminalArgs = {
 
 export type MutationAddViriiToComputerCoreArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationComputerCoreAddFileArgs = {
+  id: Scalars['ID'];
+  file: ComputerCoreFileInput;
+};
+
+
+export type MutationComputerCoreActivateHackingArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationComputerCoreDeactivateHackingArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationComputerCoreHackingPresetArgs = {
+  id: Scalars['ID'];
+  presetId?: Maybe<Scalars['ID']>;
+};
+
+
+export type MutationComputerCoreSetHackingStateArgs = {
+  id: Scalars['ID'];
+  state: Scalars['String'];
+};
+
+
+export type MutationComputerCoreAppendLogArgs = {
+  id: Scalars['ID'];
+  log: Scalars['String'];
+};
+
+
+export type MutationComputerCoreDeleteLogArgs = {
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+};
+
+
+export type MutationComputerCoreSetHackingFrequencyArgs = {
+  id: Scalars['ID'];
+  frequency: Scalars['Float'];
+};
+
+
+export type MutationComputerCoreUpdateHackingFilesArgs = {
+  id: Scalars['ID'];
+  files: Scalars['JSON'];
+};
+
+
+export type MutationCreateHackingPresetArgs = {
+  name: Scalars['String'];
+};
+
+
+export type MutationDeleteHackingPresetArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateHackingPresetArgs = {
+  id: Scalars['ID'];
+  preset: Scalars['JSON'];
 };
 
 
@@ -7230,6 +7329,12 @@ export type ComputerCore = {
   virii?: Maybe<Array<Maybe<ComputerCoreVirus>>>;
   terminals?: Maybe<Array<Maybe<ComputerCoreTerminals>>>;
   history?: Maybe<Array<Maybe<Scalars['String']>>>;
+  hackingActive?: Maybe<Scalars['Boolean']>;
+  activeHackingPreset?: Maybe<HackingPreset>;
+  hackingState?: Maybe<Scalars['String']>;
+  hackingPortScanFrequency?: Maybe<Scalars['Float']>;
+  hackingLog: Array<Scalars['String']>;
+  hackingPorts: HackingPorts;
 };
 
 export type ComputerCoreUser = {
@@ -7243,6 +7348,14 @@ export type ComputerCoreUser = {
 
 export type ComputerCoreFile = {
   __typename?: 'ComputerCoreFile';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['Int']>;
+  corrupted?: Maybe<Scalars['Boolean']>;
+  restoring?: Maybe<Scalars['Boolean']>;
+};
+
+export type ComputerCoreFileInput = {
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   level?: Maybe<Scalars['Int']>;
@@ -7275,6 +7388,34 @@ export type ComputerCoreUserInput = {
   password?: Maybe<Scalars['String']>;
   hacker?: Maybe<Scalars['Boolean']>;
   level?: Maybe<Scalars['Int']>;
+};
+
+export type HackingLrm = {
+  __typename?: 'HackingLRM';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type HackingPorts = {
+  __typename?: 'HackingPorts';
+  logs?: Maybe<Scalars['Int']>;
+  longRange?: Maybe<Scalars['Int']>;
+  remoteControl?: Maybe<Scalars['Int']>;
+  fileViewer?: Maybe<Scalars['Int']>;
+};
+
+export type HackingPreset = {
+  __typename?: 'HackingPreset';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  logs: Scalars['Boolean'];
+  longRange: Scalars['Boolean'];
+  longRangeMessages: Array<HackingLrm>;
+  remoteControl: Scalars['Boolean'];
+  commandLines: Array<Scalars['String']>;
+  fileViewer: Scalars['Boolean'];
+  files: Array<ComputerCoreFile>;
 };
 
 export type Coolant = {
@@ -11320,6 +11461,131 @@ export type RemoveDocumentMutation = (
   & Pick<Mutation, 'documentRemove'>
 );
 
+export type HackingAllowHackingMutationVariables = Exact<{
+  id: Scalars['ID'];
+  state: Scalars['String'];
+}>;
+
+
+export type HackingAllowHackingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreSetHackingState'>
+);
+
+export type HackingAppendLogMutationVariables = Exact<{
+  id: Scalars['ID'];
+  log: Scalars['String'];
+}>;
+
+
+export type HackingAppendLogMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreAppendLog'>
+);
+
+export type HackingCopyFileMutationVariables = Exact<{
+  id: Scalars['ID'];
+  file: ComputerCoreFileInput;
+}>;
+
+
+export type HackingCopyFileMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreAddFile'>
+);
+
+export type HackingActivateMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HackingActivateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreActivateHacking'>
+);
+
+export type HackingDeactivateMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HackingDeactivateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreDeactivateHacking'>
+);
+
+export type ComputerCoreHackingSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type ComputerCoreHackingSubscription = (
+  { __typename?: 'Subscription' }
+  & { computerCoreUpdate?: Maybe<Array<Maybe<(
+    { __typename?: 'ComputerCore' }
+    & Pick<ComputerCore, 'id' | 'hackingActive' | 'hackingState' | 'hackingLog' | 'hackingPortScanFrequency'>
+    & { activeHackingPreset?: Maybe<(
+      { __typename?: 'HackingPreset' }
+      & Pick<HackingPreset, 'id' | 'longRange' | 'remoteControl' | 'logs' | 'commandLines' | 'fileViewer'>
+      & { longRangeMessages: Array<(
+        { __typename?: 'HackingLRM' }
+        & Pick<HackingLrm, 'id' | 'title' | 'message'>
+      )>, files: Array<(
+        { __typename?: 'ComputerCoreFile' }
+        & Pick<ComputerCoreFile, 'id' | 'name' | 'level' | 'corrupted'>
+      )> }
+    )>, hackingPorts: (
+      { __typename?: 'HackingPorts' }
+      & Pick<HackingPorts, 'logs' | 'longRange' | 'remoteControl' | 'fileViewer'>
+    ) }
+  )>>> }
+);
+
+export type HackingRemoveLogMutationVariables = Exact<{
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+}>;
+
+
+export type HackingRemoveLogMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreDeleteLog'>
+);
+
+export type HackingTransferToLongRangeMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  message: Scalars['String'];
+  sender?: Maybe<Scalars['String']>;
+}>;
+
+
+export type HackingTransferToLongRangeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'sendLongRangeMessage'>
+);
+
+export type HackingSetPresetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  presetId: Scalars['ID'];
+}>;
+
+
+export type HackingSetPresetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreHackingPreset'>
+);
+
+export type HackingUpdateFilesMutationVariables = Exact<{
+  id: Scalars['ID'];
+  files: Scalars['JSON'];
+}>;
+
+
+export type HackingUpdateFilesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreUpdateHackingFiles'>
+);
+
 export type LightingSetEffectMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   effect: Lighting_Action;
@@ -12857,6 +13123,55 @@ export type StartFlightMutationVariables = Exact<{
 export type StartFlightMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'startFlight'>
+);
+
+export type HackingPresetCreateMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type HackingPresetCreateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createHackingPreset'>
+);
+
+export type HackingPresetDeleteMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HackingPresetDeleteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteHackingPreset'>
+);
+
+export type HackingPresetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HackingPresetsQuery = (
+  { __typename?: 'Query' }
+  & { hackingPresets: Array<(
+    { __typename?: 'HackingPreset' }
+    & Pick<HackingPreset, 'id' | 'name' | 'logs' | 'longRange' | 'remoteControl' | 'fileViewer' | 'commandLines'>
+    & { longRangeMessages: Array<(
+      { __typename?: 'HackingLRM' }
+      & Pick<HackingLrm, 'id' | 'title' | 'message'>
+    )>, files: Array<(
+      { __typename?: 'ComputerCoreFile' }
+      & Pick<ComputerCoreFile, 'id' | 'name' | 'level' | 'corrupted' | 'restoring'>
+    )> }
+  )> }
+);
+
+export type HackingPresetUpdateMutationVariables = Exact<{
+  id: Scalars['ID'];
+  preset: Scalars['JSON'];
+}>;
+
+
+export type HackingPresetUpdateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateHackingPreset'>
 );
 
 export type MacroDuplicateMutationVariables = Exact<{
@@ -15036,6 +15351,127 @@ export function useRemoveDocumentMutation(baseOptions?: ApolloReactHooks.Mutatio
         return ApolloReactHooks.useMutation<RemoveDocumentMutation, RemoveDocumentMutationVariables>(RemoveDocumentDocument, baseOptions);
       }
 export type RemoveDocumentMutationHookResult = ReturnType<typeof useRemoveDocumentMutation>;
+export const HackingAllowHackingDocument = gql`
+    mutation HackingAllowHacking($id: ID!, $state: String!) {
+  computerCoreSetHackingState(id: $id, state: $state)
+}
+    `;
+export function useHackingAllowHackingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingAllowHackingMutation, HackingAllowHackingMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingAllowHackingMutation, HackingAllowHackingMutationVariables>(HackingAllowHackingDocument, baseOptions);
+      }
+export type HackingAllowHackingMutationHookResult = ReturnType<typeof useHackingAllowHackingMutation>;
+export const HackingAppendLogDocument = gql`
+    mutation HackingAppendLog($id: ID!, $log: String!) {
+  computerCoreAppendLog(id: $id, log: $log)
+}
+    `;
+export function useHackingAppendLogMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingAppendLogMutation, HackingAppendLogMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingAppendLogMutation, HackingAppendLogMutationVariables>(HackingAppendLogDocument, baseOptions);
+      }
+export type HackingAppendLogMutationHookResult = ReturnType<typeof useHackingAppendLogMutation>;
+export const HackingCopyFileDocument = gql`
+    mutation HackingCopyFile($id: ID!, $file: ComputerCoreFileInput!) {
+  computerCoreAddFile(id: $id, file: $file)
+}
+    `;
+export function useHackingCopyFileMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingCopyFileMutation, HackingCopyFileMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingCopyFileMutation, HackingCopyFileMutationVariables>(HackingCopyFileDocument, baseOptions);
+      }
+export type HackingCopyFileMutationHookResult = ReturnType<typeof useHackingCopyFileMutation>;
+export const HackingActivateDocument = gql`
+    mutation HackingActivate($id: ID!) {
+  computerCoreActivateHacking(id: $id)
+}
+    `;
+export function useHackingActivateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingActivateMutation, HackingActivateMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingActivateMutation, HackingActivateMutationVariables>(HackingActivateDocument, baseOptions);
+      }
+export type HackingActivateMutationHookResult = ReturnType<typeof useHackingActivateMutation>;
+export const HackingDeactivateDocument = gql`
+    mutation HackingDeactivate($id: ID!) {
+  computerCoreDeactivateHacking(id: $id)
+}
+    `;
+export function useHackingDeactivateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingDeactivateMutation, HackingDeactivateMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingDeactivateMutation, HackingDeactivateMutationVariables>(HackingDeactivateDocument, baseOptions);
+      }
+export type HackingDeactivateMutationHookResult = ReturnType<typeof useHackingDeactivateMutation>;
+export const ComputerCoreHackingDocument = gql`
+    subscription ComputerCoreHacking($simulatorId: ID!) {
+  computerCoreUpdate(simulatorId: $simulatorId) {
+    id
+    hackingActive
+    activeHackingPreset {
+      id
+      longRange
+      longRangeMessages {
+        id
+        title
+        message
+      }
+      remoteControl
+      logs
+      commandLines
+      fileViewer
+      files {
+        id
+        name
+        level
+        corrupted
+      }
+    }
+    hackingState
+    hackingLog
+    hackingPortScanFrequency
+    hackingPorts {
+      logs
+      longRange
+      remoteControl
+      fileViewer
+    }
+  }
+}
+    `;
+export function useComputerCoreHackingSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<ComputerCoreHackingSubscription, ComputerCoreHackingSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<ComputerCoreHackingSubscription, ComputerCoreHackingSubscriptionVariables>(ComputerCoreHackingDocument, baseOptions);
+      }
+export type ComputerCoreHackingSubscriptionHookResult = ReturnType<typeof useComputerCoreHackingSubscription>;
+export const HackingRemoveLogDocument = gql`
+    mutation HackingRemoveLog($id: ID!, $index: Int!) {
+  computerCoreDeleteLog(id: $id, index: $index)
+}
+    `;
+export function useHackingRemoveLogMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingRemoveLogMutation, HackingRemoveLogMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingRemoveLogMutation, HackingRemoveLogMutationVariables>(HackingRemoveLogDocument, baseOptions);
+      }
+export type HackingRemoveLogMutationHookResult = ReturnType<typeof useHackingRemoveLogMutation>;
+export const HackingTransferToLongRangeDocument = gql`
+    mutation HackingTransferToLongRange($simulatorId: ID!, $message: String!, $sender: String) {
+  sendLongRangeMessage(simulatorId: $simulatorId, message: $message, crew: true, decoded: true, sender: $sender)
+}
+    `;
+export function useHackingTransferToLongRangeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingTransferToLongRangeMutation, HackingTransferToLongRangeMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingTransferToLongRangeMutation, HackingTransferToLongRangeMutationVariables>(HackingTransferToLongRangeDocument, baseOptions);
+      }
+export type HackingTransferToLongRangeMutationHookResult = ReturnType<typeof useHackingTransferToLongRangeMutation>;
+export const HackingSetPresetDocument = gql`
+    mutation HackingSetPreset($id: ID!, $presetId: ID!) {
+  computerCoreHackingPreset(id: $id, presetId: $presetId)
+}
+    `;
+export function useHackingSetPresetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingSetPresetMutation, HackingSetPresetMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingSetPresetMutation, HackingSetPresetMutationVariables>(HackingSetPresetDocument, baseOptions);
+      }
+export type HackingSetPresetMutationHookResult = ReturnType<typeof useHackingSetPresetMutation>;
+export const HackingUpdateFilesDocument = gql`
+    mutation HackingUpdateFiles($id: ID!, $files: JSON!) {
+  computerCoreUpdateHackingFiles(id: $id, files: $files)
+}
+    `;
+export function useHackingUpdateFilesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingUpdateFilesMutation, HackingUpdateFilesMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingUpdateFilesMutation, HackingUpdateFilesMutationVariables>(HackingUpdateFilesDocument, baseOptions);
+      }
+export type HackingUpdateFilesMutationHookResult = ReturnType<typeof useHackingUpdateFilesMutation>;
 export const LightingSetEffectDocument = gql`
     mutation LightingSetEffect($simulatorId: ID!, $effect: LIGHTING_ACTION!, $duration: Float!) {
   lightingSetEffect(simulatorId: $simulatorId, effect: $effect, duration: $duration)
@@ -16556,6 +16992,62 @@ export function useStartFlightMutation(baseOptions?: ApolloReactHooks.MutationHo
         return ApolloReactHooks.useMutation<StartFlightMutation, StartFlightMutationVariables>(StartFlightDocument, baseOptions);
       }
 export type StartFlightMutationHookResult = ReturnType<typeof useStartFlightMutation>;
+export const HackingPresetCreateDocument = gql`
+    mutation HackingPresetCreate($name: String!) {
+  createHackingPreset(name: $name)
+}
+    `;
+export function useHackingPresetCreateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingPresetCreateMutation, HackingPresetCreateMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingPresetCreateMutation, HackingPresetCreateMutationVariables>(HackingPresetCreateDocument, baseOptions);
+      }
+export type HackingPresetCreateMutationHookResult = ReturnType<typeof useHackingPresetCreateMutation>;
+export const HackingPresetDeleteDocument = gql`
+    mutation HackingPresetDelete($id: ID!) {
+  deleteHackingPreset(id: $id)
+}
+    `;
+export function useHackingPresetDeleteMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingPresetDeleteMutation, HackingPresetDeleteMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingPresetDeleteMutation, HackingPresetDeleteMutationVariables>(HackingPresetDeleteDocument, baseOptions);
+      }
+export type HackingPresetDeleteMutationHookResult = ReturnType<typeof useHackingPresetDeleteMutation>;
+export const HackingPresetsDocument = gql`
+    query HackingPresets {
+  hackingPresets {
+    id
+    name
+    logs
+    longRange
+    remoteControl
+    fileViewer
+    longRangeMessages {
+      id
+      title
+      message
+    }
+    commandLines
+    files {
+      id
+      name
+      level
+      corrupted
+      restoring
+    }
+  }
+}
+    `;
+export function useHackingPresetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HackingPresetsQuery, HackingPresetsQueryVariables>) {
+        return ApolloReactHooks.useQuery<HackingPresetsQuery, HackingPresetsQueryVariables>(HackingPresetsDocument, baseOptions);
+      }
+export type HackingPresetsQueryHookResult = ReturnType<typeof useHackingPresetsQuery>;
+export const HackingPresetUpdateDocument = gql`
+    mutation HackingPresetUpdate($id: ID!, $preset: JSON!) {
+  updateHackingPreset(id: $id, preset: $preset)
+}
+    `;
+export function useHackingPresetUpdateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingPresetUpdateMutation, HackingPresetUpdateMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingPresetUpdateMutation, HackingPresetUpdateMutationVariables>(HackingPresetUpdateDocument, baseOptions);
+      }
+export type HackingPresetUpdateMutationHookResult = ReturnType<typeof useHackingPresetUpdateMutation>;
 export const MacroDuplicateDocument = gql`
     mutation MacroDuplicate($id: ID!) {
   duplicateMacro(id: $id)

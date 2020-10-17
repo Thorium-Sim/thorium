@@ -1,0 +1,3 @@
+mutation HackingPresetUpdate($id: ID!, $preset: JSON!) {
+  updateHackingPreset(id: $id, preset: $preset)
+}

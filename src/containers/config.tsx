@@ -27,6 +27,7 @@ import SimulatorPicker from "./simulatorPicker";
 import {AlertsHolder} from "../components/generic/Alerts";
 import UniversalSandboxEditor from "./FlightDirector/Universe";
 import EntityTemplate from "./FlightDirector/EntityTemplate";
+import HackingPresets from "./FlightDirector/Hacking";
 
 interface Alert {
   id: string;
@@ -112,6 +113,7 @@ const Config = () => {
           <Route path="commandLine" element={<CommandLineConfig />} />
           <Route path="triggers" element={<Triggers />} />
           <Route path="interfaces" element={<Interfaces />} />
+          <Route path="hacker" element={<HackingPresets />} />
           <Route path="records" element={<Records />} />
           <Route path="midi" element={<Midi />} />
           <Route path="dmx/*" element={<DMX />} />
