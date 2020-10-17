@@ -43,6 +43,7 @@ const HackingCore: React.FC<HackingProps> = props => {
             }}
             type="checkbox"
             checked={hacking.hackingActive || false}
+            disabled={!hacking.activeHackingPreset}
             onChange={e =>
               hacking.id &&
               (e.target.checked
@@ -106,7 +107,7 @@ const HackingCore: React.FC<HackingProps> = props => {
         <strong>Hacking Log</strong>
       </p>
       <div style={{flex: 1, minHeight: "100px", overflowY: "auto"}}>
-        {hacking.hackingLog.reverse().map((l, i) => (
+        {hacking.hackingLog.map((l, i) => (
           <p key={`log-${i}`}>{l}</p>
         ))}
       </div>

@@ -1,0 +1,13 @@
+mutation HackingTransferToLongRange(
+  $simulatorId: ID!
+  $message: String!
+  $sender: String
+) {
+  sendLongRangeMessage(
+    simulatorId: $simulatorId
+    message: $message
+    crew: true
+    decoded: true
+    sender: $sender
+  )
+}

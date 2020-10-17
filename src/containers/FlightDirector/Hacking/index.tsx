@@ -120,7 +120,7 @@ const HackingPresets: React.FC = () => {
                 />{" "}
                 Logs
               </ListGroupItem>
-              <ListGroupItem
+              {/* <ListGroupItem
                 active={selectedView === "remoteControl"}
                 onClick={() => setSelectedView("remoteControl")}
               >
@@ -138,7 +138,7 @@ const HackingPresets: React.FC = () => {
                   }
                 />{" "}
                 Remote Control
-              </ListGroupItem>
+              </ListGroupItem> */}
               <ListGroupItem
                 active={selectedView === "longRange"}
                 onClick={() => setSelectedView("longRange")}
@@ -200,6 +200,7 @@ type Preset = NonNullable<
   ReturnType<typeof useHackingPresetsQuery>["data"]
 >["hackingPresets"][0];
 type Update = ReturnType<typeof useHackingPresetUpdateMutation>[0];
+
 const RemoteControl: React.FC<{
   preset: Preset;
   update: Update;
@@ -293,7 +294,8 @@ const LongRange: React.FC<{
             type="textarea"
             defaultValue={message?.message}
             rows={10}
-            onChange={e =>
+            disabled={!message}
+            onKeyDown={(e: any) =>
               update({
                 refetchQueries: [{query: HackingPresetsDocument}],
                 variables: {

@@ -20,6 +20,7 @@ const schema = gql`
     hackingState: String
     hackingPortScanFrequency: Float
     hackingLog: [String!]!
+    hackingPorts: HackingPorts!
   }
 
   type ComputerCoreUser {
@@ -31,6 +32,14 @@ const schema = gql`
   }
 
   type ComputerCoreFile {
+    id: ID
+    name: String
+    level: Int
+    corrupted: Boolean
+    restoring: Boolean
+  }
+
+  input ComputerCoreFileInput {
     id: ID
     name: String
     level: Int
@@ -67,6 +76,12 @@ const schema = gql`
     id: String!
     title: String!
     message: String!
+  }
+  type HackingPorts {
+    logs: Int
+    longRange: Int
+    remoteControl: Int
+    fileViewer: Int
   }
   type HackingPreset {
     id: String!
@@ -112,6 +127,7 @@ const schema = gql`
     deleteComputerCoreVirus(id: ID!, virusId: ID!): String
     restartComputerCoreTerminal(id: ID!, terminalId: ID!): String
     addViriiToComputerCore(id: ID!): String
+    computerCoreAddFile(id: ID!, file: ComputerCoreFileInput!): String
 
     """
     Macro: Computer Core: Activate External Hacking
@@ -133,10 +149,12 @@ const schema = gql`
       - Cards:ComputerCore
       - Systems:ComputerCore
     """
-    computerCoreHackingPreset(id: ID!, presetId: ID!): String
+    computerCoreHackingPreset(id: ID!, presetId: ID): String
     computerCoreSetHackingState(id: ID!, state: String!): String
     computerCoreAppendLog(id: ID!, log: String!): String
+    computerCoreDeleteLog(id: ID!, index: Int!): String
     computerCoreSetHackingFrequency(id: ID!, frequency: Float!): String
+    computerCoreUpdateHackingFiles(id: ID!, files: JSON!): String
     # Hacking Presets
     createHackingPreset(name: String!): String
     deleteHackingPreset(id: ID!): String
@@ -189,6 +207,12 @@ const resolver = {
     computerCoreDeactivateHacking(root, {id}) {
       performAction(id, sys => {
         sys.hackingActive = false;
+        if (sys.hackingState === "hacking") {
+          sys.hackingLog.unshift(
+            "Remote client fe80::4c3:2e73:2557:c71a was disconnected.",
+          );
+        }
+        sys.hackingState = "idle";
       });
     },
     computerCoreHackingPreset(root, {id, presetId}) {
@@ -196,22 +220,82 @@ const resolver = {
         const preset = App.hackingPresets.find(i => i.id === presetId);
         if (preset) {
           sys.activeHackingPreset = preset;
+          sys.hackingPorts = {
+            logs: preset.logs ? Math.round(Math.random() * 16385 + 1000) : null,
+            longRange: preset.longRange
+              ? Math.round(Math.random() * 16385 + 17385)
+              : null,
+            // remoteControl: preset.remoteControl
+            //   ? Math.round(Math.random() * 16385 + 33770)
+            //   : null,
+            fileViewer: preset.fileViewer
+              ? Math.round(Math.random() * 16385 + 50155)
+              : null,
+          };
+        } else {
+          sys.activeHackingPreset = null;
+          sys.hackingPorts = {};
+          sys.hackingActive = false;
+          sys.hackingLog = [];
+          sys.hackingState = "idle";
         }
       });
     },
     computerCoreSetHackingState(root, {id, state}) {
-      performAction(id, sys => {
+      performAction(id, (sys: ComputerCore) => {
+        if (state === "scanning") {
+          sys.hackingLog.unshift("Ports scanned by fe80::4c3:2e73:2557:c71a");
+          if (sys.training) {
+            setTimeout(() => {
+              sys.hackingState = "hacking";
+              console.log(sys);
+              pubsub.publish(
+                "computerCoreUpdate",
+                App.systems.filter(s => s.class === "ComputerCore"),
+              );
+            }, 5000);
+          }
+        }
+        if (state === "idle") {
+          sys.hackingLog.unshift(
+            "Connection with fe80::4c3:2e73:2557:c71a terminated",
+          );
+        }
+        if (state === "hacking") {
+          sys.hackingLog.unshift(
+            "Unauthorized connection established with fe80::4c3:2e73:2557:c71a",
+          );
+        }
         sys.hackingState = state;
       });
     },
     computerCoreAppendLog(root, {id, log}) {
       performAction(id, sys => {
-        sys.hackingLog.push(log);
+        sys.hackingLog.unshift(log);
+      });
+    },
+    computerCoreDeleteLog(root, {id, index}) {
+      performAction(id, (sys: ComputerCore) => {
+        sys.hackingLog.splice(index, 1);
       });
     },
     computerCoreSetHackingFrequency(root, {id, frequency}) {
       performAction(id, sys => {
         sys.hackingPortScanFrequency = frequency;
+      });
+    },
+    computerCoreUpdateHackingFiles(root, {id, files}) {
+      performAction(id, sys => {
+        if (sys.activeHackingPreset) {
+          sys.activeHackingPreset.files = files;
+        }
+      });
+    },
+    computerCoreAddFile(root, {id, file}) {
+      performAction(id, sys => {
+        if (sys.activeHackingPreset) {
+          sys.addFile(file);
+        }
       });
     },
     createHackingPreset(_, {name}) {

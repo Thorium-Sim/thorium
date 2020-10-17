@@ -247,6 +247,7 @@ type Mutation {
   deleteComputerCoreVirus(id: ID!, virusId: ID!): String
   restartComputerCoreTerminal(id: ID!, terminalId: ID!): String
   addViriiToComputerCore(id: ID!): String
+  computerCoreAddFile(id: ID!, file: ComputerCoreFileInput!): String
 
   """
   Macro: Computer Core: Activate External Hacking
@@ -270,10 +271,12 @@ type Mutation {
     - Cards:ComputerCore
     - Systems:ComputerCore
   """
-  computerCoreHackingPreset(id: ID!, presetId: ID!): String
+  computerCoreHackingPreset(id: ID!, presetId: ID): String
   computerCoreSetHackingState(id: ID!, state: String!): String
   computerCoreAppendLog(id: ID!, log: String!): String
+  computerCoreDeleteLog(id: ID!, index: Int!): String
   computerCoreSetHackingFrequency(id: ID!, frequency: Float!): String
+  computerCoreUpdateHackingFiles(id: ID!, files: JSON!): String
   createHackingPreset(name: String!): String
   deleteHackingPreset(id: ID!): String
   updateHackingPreset(id: ID!, preset: JSON!): String
@@ -1651,6 +1654,7 @@ type ComputerCore {
   hackingState: String
   hackingPortScanFrequency: Float
   hackingLog: [String!]!
+  hackingPorts: HackingPorts!
 }
 
 type ComputerCoreUser {
@@ -1662,6 +1666,14 @@ type ComputerCoreUser {
 }
 
 type ComputerCoreFile {
+  id: ID
+  name: String
+  level: Int
+  corrupted: Boolean
+  restoring: Boolean
+}
+
+input ComputerCoreFileInput {
   id: ID
   name: String
   level: Int
@@ -1698,6 +1710,13 @@ type HackingLRM {
   id: String!
   title: String!
   message: String!
+}
+
+type HackingPorts {
+  logs: Int
+  longRange: Int
+  remoteControl: Int
+  fileViewer: Int
 }
 
 type HackingPreset {

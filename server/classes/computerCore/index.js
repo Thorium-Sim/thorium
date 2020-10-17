@@ -89,6 +89,7 @@ export default class ComputerCore extends System {
     this.files = []; // Corrupted files shutdown terminals
     this.terminals = []; // Who knows what terminals do?
     this.history = [];
+    this.training = params.training || false;
     // Start with defaults for all of the above
     (params.users || defaults.users).forEach(u => this.users.push(new User(u)));
     (params.files || defaults.files).forEach(f => this.files.push(new File(f)));
@@ -107,6 +108,44 @@ export default class ComputerCore extends System {
     this.hackingState = params.hackingState || "idle";
     this.hackingPortScanFrequency = params.hackingPortScanFrequency || 0.5;
     this.hackingLog = params.hackingLog || [];
+    this.hackingPorts = params.hackingPorts || {};
+  }
+  trainingMode() {
+    this.training = true;
+    this.addUser({name: "I am a hacker", level: 5, hacker: true});
+    this.hackingActive = true;
+    this.hackingPorts = {
+      logs: Math.round(Math.random() * 16385 + 1000),
+      longRange: Math.round(Math.random() * 16385 + 17385),
+      // remoteControl:  Math.round(Math.random() * 16385 + 33770),
+      fileViewer: Math.round(Math.random() * 16385 + 50155),
+    };
+    this.activeHackingPreset = {
+      id: "Training Mode",
+      name: "Training Mode",
+      logs: true,
+      longRange: true,
+      longRangeMessages: [
+        {
+          id: "Training Message",
+          title: "Training Message",
+          message:
+            "Congratulations! You have successfully found this training message.",
+        },
+      ],
+      remoteControl: false,
+      commandLines: [],
+      fileViewer: true,
+      files: [
+        {
+          id: "Training File",
+          name: "Training File",
+          level: 1,
+          corrupted: false,
+          restoring: false,
+        },
+      ],
+    };
   }
   addUser(params) {
     const user = new User(params);

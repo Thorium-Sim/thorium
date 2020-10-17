@@ -24,5 +24,11 @@ subscription ComputerCoreHacking($simulatorId: ID!) {
     hackingState
     hackingLog
     hackingPortScanFrequency
+    hackingPorts {
+      logs
+      longRange
+      remoteControl
+      fileViewer
+    }
   }
 }
