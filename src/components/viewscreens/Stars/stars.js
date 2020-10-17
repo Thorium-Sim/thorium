@@ -4,6 +4,12 @@ import useMeasure from "helpers/hooks/useMeasure";
 import {ViewscreenScaleContext} from "../../views/Viewscreen";
 
 const Stars = props => {
+  let angle = 0;
+  try {
+    angle = parseInt(JSON.parse(props.viewscreen.data).angle) || 0;
+  } catch {
+    // Do nothing
+  }
   const [velocity, setVelocity] = React.useState(
     props.activating ? 0 : props.velocity,
   );
@@ -35,6 +41,7 @@ const Stars = props => {
               width: dimensions.width / scale,
               height: dimensions.height / scale,
             }}
+            angle={angle}
             velocity={velocity}
           />
         )}
