@@ -12,14 +12,10 @@ class Bonjour {
     this.browser = null;
   }
   start() {
-    this.browser = bonjour.find({type: "thorium-http"}, newService);
+    this.browser = bonjour.find({type: "http"}, newService);
     const servers = [];
     function newService(service) {
-      if (
-        service.name.indexOf("Thorium") > -1 ||
-        service.type === "thorium-http" ||
-        service.type === "local"
-      ) {
+      if (service.name.indexOf("Thorium") > -1 || service.type === "local") {
         const isHttps = service.txt.https === "true";
         const ipregex = /[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}\.[0-2]?[0-9]{1,2}/gi;
         const address = service.addresses.find(a => ipregex.test(a));

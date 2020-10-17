@@ -142,28 +142,29 @@ document.addEventListener(
   "DOMContentLoaded",
   function () {
     // Network Settings
-    const httpOnlyEl = document.getElementById("http-only");
+    // const httpOnlyEl = document.getElementById("http-only");
     const portEl = document.getElementById("port");
-    if (httpOnlyEl) {
-      httpOnlyEl.checked = httpOnly;
+    // if (httpOnlyEl) {
+    //   httpOnlyEl.checked = httpOnly;
 
-      httpOnlyEl.addEventListener("change", e => {
-        ipcRenderer.send("set-httpOnly", e.target.checked);
-        httpOnly = e.target.checked;
-        thorium.httpOnly = e.target.checked;
-        if (portEl.value === "443" && httpOnly) {
-          portEl.value = "80";
-          ipcRenderer.send("set-port", 80);
-          port = 80;
-          thorium.port = 80;
-        } else if (portEl.value === "80" && !httpOnly) {
-          portEl.value = "443";
-          ipcRenderer.send("set-port", 443);
-          port = 443;
-          thorium.port = 443;
-        }
-      });
-    }
+    //   httpOnlyEl.addEventListener("change", e => {
+    //     ipcRenderer.send("set-httpOnly", e.target.checked);
+    //     httpOnly = e.target.checked;
+    //     thorium.httpOnly = e.target.checked;
+    //     if (portEl.value === "443" && httpOnly) {
+    //       portEl.value = "80";
+    //       ipcRenderer.send("set-port", 80);
+    //       port = 80;
+    //       thorium.port = 80;
+    //     } else if (portEl.value === "80" && !httpOnly) {
+    //       portEl.value = "443";
+    //       ipcRenderer.send("set-port", 443);
+    //       port = 443;
+    //       thorium.port = 443;
+    //     }
+    //   });
+    // }
+    httpOnly = true;
     if (portEl) {
       portEl.value = port;
 
