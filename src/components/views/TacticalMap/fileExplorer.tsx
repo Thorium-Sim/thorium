@@ -12,6 +12,7 @@ import {
   FaBan,
   FaFileVideo,
   FaFileAudio,
+  FaFilePdf,
 } from "react-icons/fa";
 import {
   useAssetsAddFolderMutation,
@@ -435,6 +436,22 @@ const AssetObject: React.FC<{
           )}
         </p>
         <audio className="audio-preview" controls src={object.url} />
+      </div>
+    );
+  }
+  if (["pdf"].indexOf(ext) > -1) {
+    return (
+      <div ref={ref}>
+        <FaFilePdf size="3em" />
+        <p>
+          {object.name}{" "}
+          {removeObject && (
+            <FaBan
+              className="text-danger"
+              onClick={e => removeObject(object.fullPath, e)}
+            />
+          )}
+        </p>
       </div>
     );
   }

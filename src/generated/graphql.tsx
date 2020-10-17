@@ -1,6 +1,7 @@
 import gql from 'graphql-tag.macro';
 import * as ApolloReactHooks from '@apollo/client';
 export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -16,7 +17,7 @@ export type Scalars = {
 };
 
 export type Query = {
-   __typename?: 'Query';
+  __typename?: 'Query';
   _empty?: Maybe<Scalars['String']>;
   actions?: Maybe<Action>;
   asset?: Maybe<Asset>;
@@ -31,6 +32,7 @@ export type Query = {
   commandLineCommands?: Maybe<Array<Maybe<CommandLineCommand>>>;
   computerCore?: Maybe<Array<Maybe<ComputerCore>>>;
   oneComputerCore?: Maybe<ComputerCore>;
+  hackingPresets: Array<HackingPreset>;
   coolant?: Maybe<Array<Maybe<CoolantTank>>>;
   systemCoolant?: Maybe<Array<Maybe<SystemCoolant>>>;
   coreFeed?: Maybe<Array<Maybe<CoreFeed>>>;
@@ -689,7 +691,7 @@ export type QueryTaskFlowsArgs = {
 };
 
 export type Mutation = {
-   __typename?: 'Mutation';
+  __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']>;
   /** Macro: Actions: Trigger Action (eg. Flash, Blackout, etc.) */
   triggerAction?: Maybe<Scalars['String']>;
@@ -775,6 +777,36 @@ export type Mutation = {
   deleteComputerCoreVirus?: Maybe<Scalars['String']>;
   restartComputerCoreTerminal?: Maybe<Scalars['String']>;
   addViriiToComputerCore?: Maybe<Scalars['String']>;
+  computerCoreAddFile?: Maybe<Scalars['String']>;
+  /**
+   * Macro: Computer Core: Activate External Hacking
+   * Requires:
+   *   - Cards:ComputerCore
+   *   - Systems:ComputerCore
+   */
+  computerCoreActivateHacking?: Maybe<Scalars['String']>;
+  /**
+   * Macro: Computer Core: Deactivate External Hacking
+   * Requires:
+   *   - Cards:ComputerCore
+   *   - Systems:ComputerCore
+   */
+  computerCoreDeactivateHacking?: Maybe<Scalars['String']>;
+  /**
+   * Macro: Computer Core: Set External Hacking Preset
+   * Requires:
+   *   - Cards:ComputerCore
+   *   - Systems:ComputerCore
+   */
+  computerCoreHackingPreset?: Maybe<Scalars['String']>;
+  computerCoreSetHackingState?: Maybe<Scalars['String']>;
+  computerCoreAppendLog?: Maybe<Scalars['String']>;
+  computerCoreDeleteLog?: Maybe<Scalars['String']>;
+  computerCoreSetHackingFrequency?: Maybe<Scalars['String']>;
+  computerCoreUpdateHackingFiles?: Maybe<Scalars['String']>;
+  createHackingPreset?: Maybe<Scalars['String']>;
+  deleteHackingPreset?: Maybe<Scalars['String']>;
+  updateHackingPreset?: Maybe<Scalars['String']>;
   setCoolantTank?: Maybe<Scalars['String']>;
   transferCoolant?: Maybe<Scalars['String']>;
   ignoreCoreFeed?: Maybe<Scalars['String']>;
@@ -1083,6 +1115,7 @@ export type Mutation = {
   /** Macro: Objective: Complete Objective */
   completeObjective?: Maybe<Scalars['String']>;
   objectiveSetCrewComplete?: Maybe<Scalars['String']>;
+  objectiveSetOrder?: Maybe<Scalars['String']>;
   addLog?: Maybe<Scalars['String']>;
   chargePhaserBeam?: Maybe<Scalars['String']>;
   dischargePhaserBeam?: Maybe<Scalars['String']>;
@@ -1396,6 +1429,9 @@ export type Mutation = {
   setSimulatorStationLayout?: Maybe<Scalars['String']>;
   setSimulatorStationExecutive?: Maybe<Scalars['String']>;
   setSimulatorStationWidget?: Maybe<Scalars['String']>;
+  /** Macro: Document: Add Document */
+  documentAdd?: Maybe<Scalars['String']>;
+  documentRemove?: Maybe<Scalars['String']>;
   createSoftwarePanel?: Maybe<Scalars['String']>;
   updateSoftwarePanel?: Maybe<Scalars['String']>;
   removeSoftwarePanel?: Maybe<Scalars['String']>;
@@ -2121,6 +2157,74 @@ export type MutationRestartComputerCoreTerminalArgs = {
 
 export type MutationAddViriiToComputerCoreArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationComputerCoreAddFileArgs = {
+  id: Scalars['ID'];
+  file: ComputerCoreFileInput;
+};
+
+
+export type MutationComputerCoreActivateHackingArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationComputerCoreDeactivateHackingArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationComputerCoreHackingPresetArgs = {
+  id: Scalars['ID'];
+  presetId?: Maybe<Scalars['ID']>;
+};
+
+
+export type MutationComputerCoreSetHackingStateArgs = {
+  id: Scalars['ID'];
+  state: Scalars['String'];
+};
+
+
+export type MutationComputerCoreAppendLogArgs = {
+  id: Scalars['ID'];
+  log: Scalars['String'];
+};
+
+
+export type MutationComputerCoreDeleteLogArgs = {
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+};
+
+
+export type MutationComputerCoreSetHackingFrequencyArgs = {
+  id: Scalars['ID'];
+  frequency: Scalars['Float'];
+};
+
+
+export type MutationComputerCoreUpdateHackingFilesArgs = {
+  id: Scalars['ID'];
+  files: Scalars['JSON'];
+};
+
+
+export type MutationCreateHackingPresetArgs = {
+  name: Scalars['String'];
+};
+
+
+export type MutationDeleteHackingPresetArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateHackingPresetArgs = {
+  id: Scalars['ID'];
+  preset: Scalars['JSON'];
 };
 
 
@@ -3480,6 +3584,12 @@ export type MutationObjectiveSetCrewCompleteArgs = {
 };
 
 
+export type MutationObjectiveSetOrderArgs = {
+  id: Scalars['ID'];
+  order: Scalars['Int'];
+};
+
+
 export type MutationAddLogArgs = {
   log?: Maybe<LogInput>;
 };
@@ -4815,6 +4925,19 @@ export type MutationSetSimulatorStationWidgetArgs = {
   station: Scalars['String'];
   widget: Scalars['String'];
   state: Scalars['Boolean'];
+};
+
+
+export type MutationDocumentAddArgs = {
+  simulatorId: Scalars['ID'];
+  name: Scalars['String'];
+  asset: Scalars['String'];
+};
+
+
+export type MutationDocumentRemoveArgs = {
+  simulatorId: Scalars['ID'];
+  id: Scalars['ID'];
 };
 
 
@@ -6375,7 +6498,7 @@ export type MutationEntityRemoveThrustersArgs = {
 };
 
 export type Subscription = {
-   __typename?: 'Subscription';
+  __typename?: 'Subscription';
   _empty?: Maybe<Scalars['String']>;
   actionsUpdate?: Maybe<Action>;
   assetFolderChange: Array<AssetFolder>;
@@ -7022,7 +7145,7 @@ export type SubscriptionTaskFlowsArgs = {
 };
 
 export type Action = {
-   __typename?: 'Action';
+  __typename?: 'Action';
   action?: Maybe<Scalars['String']>;
   message?: Maybe<Scalars['String']>;
   voice?: Maybe<Scalars['String']>;
@@ -7030,7 +7153,7 @@ export type Action = {
 };
 
 export type Ambiance = {
-   __typename?: 'Ambiance';
+  __typename?: 'Ambiance';
   id: Scalars['ID'];
   name: Scalars['String'];
   asset: Scalars['String'];
@@ -7049,13 +7172,13 @@ export type AmbianceInput = {
 };
 
 export type Asset = {
-   __typename?: 'Asset';
+  __typename?: 'Asset';
   assetKey: Scalars['String'];
   url: Scalars['String'];
 };
 
 export type AssetObject = {
-   __typename?: 'AssetObject';
+  __typename?: 'AssetObject';
   id: Scalars['ID'];
   name: Scalars['String'];
   folderPath: Scalars['String'];
@@ -7064,7 +7187,7 @@ export type AssetObject = {
 };
 
 export type AssetFolder = {
-   __typename?: 'AssetFolder';
+  __typename?: 'AssetFolder';
   id: Scalars['ID'];
   name: Scalars['String'];
   folderPath: Scalars['String'];
@@ -7078,7 +7201,7 @@ export type RemoteAsset = {
 };
 
 export type SimulatorAssets = {
-   __typename?: 'SimulatorAssets';
+  __typename?: 'SimulatorAssets';
   mesh?: Maybe<Scalars['String']>;
   texture?: Maybe<Scalars['String']>;
   side?: Maybe<Scalars['String']>;
@@ -7097,7 +7220,7 @@ export type SimulatorAssetsInput = {
 };
 
 export type Client = {
-   __typename?: 'Client';
+  __typename?: 'Client';
   id: Scalars['ID'];
   label?: Maybe<Scalars['String']>;
   connected?: Maybe<Scalars['Boolean']>;
@@ -7126,7 +7249,7 @@ export type Client = {
 };
 
 export type CommandLineFeedback = {
-   __typename?: 'CommandLineFeedback';
+  __typename?: 'CommandLineFeedback';
   id?: Maybe<Scalars['ID']>;
   clientId?: Maybe<Scalars['ID']>;
   command?: Maybe<Scalars['String']>;
@@ -7136,7 +7259,7 @@ export type CommandLineFeedback = {
 };
 
 export type Keypad = {
-   __typename?: 'Keypad';
+  __typename?: 'Keypad';
   id?: Maybe<Scalars['ID']>;
   label?: Maybe<Scalars['String']>;
   code?: Maybe<Array<Maybe<Scalars['Int']>>>;
@@ -7149,7 +7272,7 @@ export type Keypad = {
 };
 
 export type Scanner = {
-   __typename?: 'Scanner';
+  __typename?: 'Scanner';
   id?: Maybe<Scalars['ID']>;
   label?: Maybe<Scalars['String']>;
   scanRequest?: Maybe<Scalars['String']>;
@@ -7158,7 +7281,7 @@ export type Scanner = {
 };
 
 export type Sound = {
-   __typename?: 'Sound';
+  __typename?: 'Sound';
   id?: Maybe<Scalars['ID']>;
   clients?: Maybe<Array<Maybe<Scalars['String']>>>;
   asset?: Maybe<Scalars['String']>;
@@ -7180,7 +7303,7 @@ export type SoundInput = {
 };
 
 export type CommandLine = {
-   __typename?: 'CommandLine';
+  __typename?: 'CommandLine';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   commands?: Maybe<Array<Maybe<CommandLineCommand>>>;
@@ -7191,14 +7314,14 @@ export type CommandLine = {
 };
 
 export type CommandLineCommand = {
-   __typename?: 'CommandLineCommand';
+  __typename?: 'CommandLineCommand';
   name?: Maybe<Scalars['String']>;
   help?: Maybe<Scalars['String']>;
   hidden?: Maybe<Scalars['Boolean']>;
 };
 
 export type ComputerCore = {
-   __typename?: 'ComputerCore';
+  __typename?: 'ComputerCore';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   users?: Maybe<Array<Maybe<ComputerCoreUser>>>;
@@ -7206,10 +7329,16 @@ export type ComputerCore = {
   virii?: Maybe<Array<Maybe<ComputerCoreVirus>>>;
   terminals?: Maybe<Array<Maybe<ComputerCoreTerminals>>>;
   history?: Maybe<Array<Maybe<Scalars['String']>>>;
+  hackingActive?: Maybe<Scalars['Boolean']>;
+  activeHackingPreset?: Maybe<HackingPreset>;
+  hackingState?: Maybe<Scalars['String']>;
+  hackingPortScanFrequency?: Maybe<Scalars['Float']>;
+  hackingLog: Array<Scalars['String']>;
+  hackingPorts: HackingPorts;
 };
 
 export type ComputerCoreUser = {
-   __typename?: 'ComputerCoreUser';
+  __typename?: 'ComputerCoreUser';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
@@ -7218,7 +7347,15 @@ export type ComputerCoreUser = {
 };
 
 export type ComputerCoreFile = {
-   __typename?: 'ComputerCoreFile';
+  __typename?: 'ComputerCoreFile';
+  id?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+  level?: Maybe<Scalars['Int']>;
+  corrupted?: Maybe<Scalars['Boolean']>;
+  restoring?: Maybe<Scalars['Boolean']>;
+};
+
+export type ComputerCoreFileInput = {
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   level?: Maybe<Scalars['Int']>;
@@ -7227,13 +7364,13 @@ export type ComputerCoreFile = {
 };
 
 export type ComputerCoreVirus = {
-   __typename?: 'ComputerCoreVirus';
+  __typename?: 'ComputerCoreVirus';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
 };
 
 export type ComputerCoreTerminals = {
-   __typename?: 'ComputerCoreTerminals';
+  __typename?: 'ComputerCoreTerminals';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   status?: Maybe<Terminal_Status>;
@@ -7253,15 +7390,43 @@ export type ComputerCoreUserInput = {
   level?: Maybe<Scalars['Int']>;
 };
 
+export type HackingLrm = {
+  __typename?: 'HackingLRM';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type HackingPorts = {
+  __typename?: 'HackingPorts';
+  logs?: Maybe<Scalars['Int']>;
+  longRange?: Maybe<Scalars['Int']>;
+  remoteControl?: Maybe<Scalars['Int']>;
+  fileViewer?: Maybe<Scalars['Int']>;
+};
+
+export type HackingPreset = {
+  __typename?: 'HackingPreset';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  logs: Scalars['Boolean'];
+  longRange: Scalars['Boolean'];
+  longRangeMessages: Array<HackingLrm>;
+  remoteControl: Scalars['Boolean'];
+  commandLines: Array<Scalars['String']>;
+  fileViewer: Scalars['Boolean'];
+  files: Array<ComputerCoreFile>;
+};
+
 export type Coolant = {
-   __typename?: 'Coolant';
+  __typename?: 'Coolant';
   temperature?: Maybe<Scalars['Float']>;
   quantity?: Maybe<Scalars['Float']>;
   rate?: Maybe<Scalars['Float']>;
 };
 
 export type CoolantTank = SystemInterface & {
-   __typename?: 'CoolantTank';
+  __typename?: 'CoolantTank';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -7278,7 +7443,7 @@ export type CoolantTank = SystemInterface & {
 };
 
 export type CoolantRegulator = {
-   __typename?: 'CoolantRegulator';
+  __typename?: 'CoolantRegulator';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -7288,7 +7453,7 @@ export type CoolantRegulator = {
 };
 
 export type SystemCoolant = {
-   __typename?: 'SystemCoolant';
+  __typename?: 'SystemCoolant';
   systemId?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
@@ -7299,7 +7464,7 @@ export type SystemCoolant = {
 };
 
 export type CoreFeed = {
-   __typename?: 'CoreFeed';
+  __typename?: 'CoreFeed';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   component?: Maybe<Scalars['String']>;
@@ -7311,13 +7476,13 @@ export type CoreFeed = {
 };
 
 export type Timer = {
-   __typename?: 'Timer';
+  __typename?: 'Timer';
   time?: Maybe<Scalars['String']>;
   active?: Maybe<Scalars['Boolean']>;
 };
 
 export type CoreLayout = {
-   __typename?: 'CoreLayout';
+  __typename?: 'CoreLayout';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   config?: Maybe<Scalars['String']>;
@@ -7330,7 +7495,7 @@ export type CoreLayoutInput = {
 };
 
 export type Crew = {
-   __typename?: 'Crew';
+  __typename?: 'Crew';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   firstName?: Maybe<Scalars['String']>;
@@ -7363,7 +7528,7 @@ export type CrewInput = {
 };
 
 export type Crm = SystemInterface & {
-   __typename?: 'Crm';
+  __typename?: 'Crm';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -7395,20 +7560,20 @@ export type Crm = SystemInterface & {
 };
 
 export type CrmPhaserShot = {
-   __typename?: 'CrmPhaserShot';
+  __typename?: 'CrmPhaserShot';
   target?: Maybe<Coordinates>;
   destination?: Maybe<Coordinates>;
 };
 
 export type CrmTorpedo = {
-   __typename?: 'CrmTorpedo';
+  __typename?: 'CrmTorpedo';
   id?: Maybe<Scalars['ID']>;
   position?: Maybe<Coordinates>;
   destroyed?: Maybe<Scalars['Boolean']>;
 };
 
 export type CrmFighter = {
-   __typename?: 'CrmFighter';
+  __typename?: 'CrmFighter';
   id?: Maybe<Scalars['ID']>;
   clientId?: Maybe<Scalars['ID']>;
   client?: Maybe<Client>;
@@ -7431,7 +7596,7 @@ export type CrmFighter = {
 };
 
 export type Damage = {
-   __typename?: 'Damage';
+  __typename?: 'Damage';
   damaged?: Maybe<Scalars['Boolean']>;
   destroyed?: Maybe<Scalars['Boolean']>;
   report?: Maybe<Scalars['String']>;
@@ -7452,14 +7617,14 @@ export enum Damage_Types {
 }
 
 export type DamageStep = {
-   __typename?: 'DamageStep';
+  __typename?: 'DamageStep';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   args?: Maybe<DamageStepArgs>;
 };
 
 export type DamageStepArgs = {
-   __typename?: 'DamageStepArgs';
+  __typename?: 'DamageStepArgs';
   end?: Maybe<Scalars['Boolean']>;
   cleanup?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
@@ -7478,7 +7643,7 @@ export type DamageStepArgs = {
 };
 
 export type DamageTask = {
-   __typename?: 'DamageTask';
+  __typename?: 'DamageTask';
   id?: Maybe<Scalars['ID']>;
   taskTemplate?: Maybe<TaskTemplate>;
   required?: Maybe<Scalars['Boolean']>;
@@ -7522,7 +7687,7 @@ export type DamageStepArgsInput = {
 };
 
 export type DamageReportStep = {
-   __typename?: 'DamageReportStep';
+  __typename?: 'DamageReportStep';
   id?: Maybe<Scalars['ID']>;
   text?: Maybe<Scalars['String']>;
   validate?: Maybe<Scalars['Boolean']>;
@@ -7530,7 +7695,7 @@ export type DamageReportStep = {
 };
 
 export type Deck = {
-   __typename?: 'Deck';
+  __typename?: 'Deck';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   number?: Maybe<Scalars['Int']>;
@@ -7546,7 +7711,7 @@ export type Deck = {
 export type Location = Deck | Room;
 
 export type DockingPort = {
-   __typename?: 'DockingPort';
+  __typename?: 'DockingPort';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
@@ -7592,7 +7757,7 @@ export enum Docking_Direction {
 }
 
 export type Engine = SystemInterface & {
-   __typename?: 'Engine';
+  __typename?: 'Engine';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -7617,7 +7782,7 @@ export type Engine = SystemInterface & {
 };
 
 export type Speed = {
-   __typename?: 'Speed';
+  __typename?: 'Speed';
   text?: Maybe<Scalars['String']>;
   number?: Maybe<Scalars['Float']>;
   velocity?: Maybe<Scalars['Float']>;
@@ -7632,7 +7797,7 @@ export type SpeedInput = {
 };
 
 export type Environment = {
-   __typename?: 'Environment';
+  __typename?: 'Environment';
   id?: Maybe<Scalars['ID']>;
   oxygen?: Maybe<Scalars['Float']>;
   nitrogen?: Maybe<Scalars['Float']>;
@@ -7655,7 +7820,7 @@ export type EnvironmentInput = {
 };
 
 export type Exocomp = {
-   __typename?: 'Exocomp';
+  __typename?: 'Exocomp';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   class?: Maybe<Scalars['String']>;
@@ -7669,7 +7834,7 @@ export type Exocomp = {
 };
 
 export type ExocompLog = {
-   __typename?: 'ExocompLog';
+  __typename?: 'ExocompLog';
   timestamp?: Maybe<Scalars['Float']>;
   message?: Maybe<Scalars['String']>;
 };
@@ -7683,13 +7848,13 @@ export type ExocompInput = {
 };
 
 export type Externals = {
-   __typename?: 'Externals';
+  __typename?: 'Externals';
   simulators?: Maybe<Array<Maybe<ExternalSimulator>>>;
   missions?: Maybe<Array<Maybe<ExternalMission>>>;
 };
 
 export type ExternalSimulator = {
-   __typename?: 'ExternalSimulator';
+  __typename?: 'ExternalSimulator';
   title?: Maybe<Scalars['String']>;
   author?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -7698,7 +7863,7 @@ export type ExternalSimulator = {
 };
 
 export type ExternalMission = {
-   __typename?: 'ExternalMission';
+  __typename?: 'ExternalMission';
   title?: Maybe<Scalars['String']>;
   author?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -7707,7 +7872,7 @@ export type ExternalMission = {
 };
 
 export type Flight = {
-   __typename?: 'Flight';
+  __typename?: 'Flight';
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['String']>;
@@ -7720,7 +7885,7 @@ export type Flight = {
 };
 
 export type SpaceEdventuresClient = {
-   __typename?: 'SpaceEdventuresClient';
+  __typename?: 'SpaceEdventuresClient';
   id?: Maybe<Scalars['ID']>;
   token?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -7728,32 +7893,32 @@ export type SpaceEdventuresClient = {
 };
 
 export type GoogleSheets = {
-   __typename?: 'GoogleSheets';
+  __typename?: 'GoogleSheets';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
 };
 
 export type GoogleSheetFile = {
-   __typename?: 'GoogleSheetFile';
+  __typename?: 'GoogleSheetFile';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
 };
 
 export type GoogleSpreadsheet = {
-   __typename?: 'GoogleSpreadsheet';
+  __typename?: 'GoogleSpreadsheet';
   id?: Maybe<Scalars['ID']>;
   title?: Maybe<Scalars['String']>;
   sheets?: Maybe<Array<Maybe<GoogleSheet>>>;
 };
 
 export type GoogleSheet = {
-   __typename?: 'GoogleSheet';
+  __typename?: 'GoogleSheet';
   id?: Maybe<Scalars['ID']>;
   title?: Maybe<Scalars['String']>;
 };
 
 export type Interface = {
-   __typename?: 'Interface';
+  __typename?: 'Interface';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   templateId?: Maybe<Scalars['ID']>;
@@ -7766,7 +7931,7 @@ export type Interface = {
 };
 
 export type InterfaceDevice = {
-   __typename?: 'InterfaceDevice';
+  __typename?: 'InterfaceDevice';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   width?: Maybe<Scalars['Int']>;
@@ -7775,7 +7940,7 @@ export type InterfaceDevice = {
 };
 
 export type InternalComm = SystemInterface & {
-   __typename?: 'InternalComm';
+  __typename?: 'InternalComm';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -7793,7 +7958,7 @@ export type InternalComm = SystemInterface & {
 };
 
 export type InventoryItem = {
-   __typename?: 'InventoryItem';
+  __typename?: 'InventoryItem';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
@@ -7812,7 +7977,7 @@ export type InventoryItemInput = {
 };
 
 export type InventoryMetadata = {
-   __typename?: 'InventoryMetadata';
+  __typename?: 'InventoryMetadata';
   type?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -7841,13 +8006,13 @@ export type InventoryMetadataInput = {
 };
 
 export type RoomCount = {
-   __typename?: 'RoomCount';
+  __typename?: 'RoomCount';
   room?: Maybe<Room>;
   count?: Maybe<Scalars['Int']>;
 };
 
 export type TeamCount = {
-   __typename?: 'TeamCount';
+  __typename?: 'TeamCount';
   team?: Maybe<Team>;
   count?: Maybe<Scalars['Int']>;
 };
@@ -7863,13 +8028,13 @@ export type CrewCountInput = {
 };
 
 export type TeamCountInput = {
-   __typename?: 'TeamCountInput';
+  __typename?: 'TeamCountInput';
   team?: Maybe<Scalars['ID']>;
   count?: Maybe<Scalars['Int']>;
 };
 
 export type Isochip = {
-   __typename?: 'Isochip';
+  __typename?: 'Isochip';
   id?: Maybe<Scalars['ID']>;
   system?: Maybe<System>;
   simulator?: Maybe<Simulator>;
@@ -7897,7 +8062,7 @@ export type IsochipInput = {
 };
 
 export type JumpDrive = SystemInterface & {
-   __typename?: 'JumpDrive';
+  __typename?: 'JumpDrive';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -7918,7 +8083,7 @@ export type JumpDrive = SystemInterface & {
 };
 
 export type JumpDriveSectors = {
-   __typename?: 'JumpDriveSectors';
+  __typename?: 'JumpDriveSectors';
   fore?: Maybe<JumpDriveSector>;
   aft?: Maybe<JumpDriveSector>;
   starboard?: Maybe<JumpDriveSector>;
@@ -7926,20 +8091,20 @@ export type JumpDriveSectors = {
 };
 
 export type JumpDriveSector = {
-   __typename?: 'JumpDriveSector';
+  __typename?: 'JumpDriveSector';
   level?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Float']>;
 };
 
 export type Keyboard = {
-   __typename?: 'Keyboard';
+  __typename?: 'Keyboard';
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   keys?: Maybe<Array<Maybe<KeyboardKey>>>;
 };
 
 export type KeyboardKey = {
-   __typename?: 'KeyboardKey';
+  __typename?: 'KeyboardKey';
   id: Scalars['ID'];
   key?: Maybe<Scalars['String']>;
   keyCode?: Maybe<Scalars['String']>;
@@ -7956,7 +8121,7 @@ export type KeyboardKeyInput = {
 };
 
 export type MacroAction = {
-   __typename?: 'MacroAction';
+  __typename?: 'MacroAction';
   id: Scalars['ID'];
   event: Scalars['String'];
   args: Scalars['String'];
@@ -7975,7 +8140,7 @@ export type ActionInput = {
 };
 
 export type LibraryEntry = {
-   __typename?: 'LibraryEntry';
+  __typename?: 'LibraryEntry';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   title?: Maybe<Scalars['String']>;
@@ -7988,7 +8153,7 @@ export type LibraryEntry = {
 };
 
 export type LibraryCategory = {
-   __typename?: 'LibraryCategory';
+  __typename?: 'LibraryCategory';
   name?: Maybe<Scalars['String']>;
   entries?: Maybe<Array<Maybe<LibraryEntry>>>;
 };
@@ -8006,7 +8171,7 @@ export type LibraryInput = {
 };
 
 export type Lighting = {
-   __typename?: 'Lighting';
+  __typename?: 'Lighting';
   intensity: Scalars['Float'];
   action: Lighting_Action;
   actionStrength: Scalars['Float'];
@@ -8038,7 +8203,7 @@ export enum Lighting_Action {
 }
 
 export type LrCommunications = SystemInterface & {
-   __typename?: 'LRCommunications';
+  __typename?: 'LRCommunications';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -8067,7 +8232,7 @@ export type LrCommunicationsMessagesArgs = {
 };
 
 export type LrMessage = {
-   __typename?: 'LRMessage';
+  __typename?: 'LRMessage';
   id?: Maybe<Scalars['ID']>;
   message?: Maybe<Scalars['String']>;
   decodedMessage?: Maybe<Scalars['String']>;
@@ -8093,21 +8258,21 @@ export type LongRangeCommInput = {
 };
 
 export type Macro = {
-   __typename?: 'Macro';
+  __typename?: 'Macro';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   actions?: Maybe<Array<Maybe<MacroAction>>>;
 };
 
 export type MacroButtonConfig = {
-   __typename?: 'MacroButtonConfig';
+  __typename?: 'MacroButtonConfig';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   buttons?: Maybe<Array<Maybe<MacroButton>>>;
 };
 
 export type MacroButton = {
-   __typename?: 'MacroButton';
+  __typename?: 'MacroButton';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   actions?: Maybe<Array<Maybe<MacroAction>>>;
@@ -8116,7 +8281,7 @@ export type MacroButton = {
 };
 
 export type Message = {
-   __typename?: 'Message';
+  __typename?: 'Message';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   destination?: Maybe<Scalars['String']>;
@@ -8134,7 +8299,7 @@ export type MessageInput = {
 };
 
 export type MidiSet = {
-   __typename?: 'MidiSet';
+  __typename?: 'MidiSet';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   deviceName?: Maybe<Scalars['String']>;
@@ -8142,7 +8307,7 @@ export type MidiSet = {
 };
 
 export type MidiControl = {
-   __typename?: 'MidiControl';
+  __typename?: 'MidiControl';
   id?: Maybe<Scalars['ID']>;
   channel?: Maybe<Scalars['Int']>;
   messageType?: Maybe<MidiMessageType>;
@@ -8193,7 +8358,7 @@ export enum ChannelModeMessageType {
 }
 
 export type Mission = {
-   __typename?: 'Mission';
+  __typename?: 'Mission';
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -8224,7 +8389,7 @@ export type RequirementInput = {
 };
 
 export type TimelineStep = {
-   __typename?: 'TimelineStep';
+  __typename?: 'TimelineStep';
   id: Scalars['ID'];
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
@@ -8233,7 +8398,7 @@ export type TimelineStep = {
 };
 
 export type TimelineItem = {
-   __typename?: 'TimelineItem';
+  __typename?: 'TimelineItem';
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
@@ -8260,7 +8425,7 @@ export type TimelineItemInput = {
 };
 
 export type TimelineInstance = {
-   __typename?: 'TimelineInstance';
+  __typename?: 'TimelineInstance';
   id?: Maybe<Scalars['ID']>;
   mission?: Maybe<Mission>;
   currentTimelineStep?: Maybe<Scalars['Int']>;
@@ -8268,7 +8433,7 @@ export type TimelineInstance = {
 };
 
 export type Motu = {
-   __typename?: 'Motu';
+  __typename?: 'Motu';
   id?: Maybe<Scalars['ID']>;
   offline?: Maybe<Scalars['Boolean']>;
   address?: Maybe<Scalars['String']>;
@@ -8278,7 +8443,7 @@ export type Motu = {
 };
 
 export type MotuChannel = {
-   __typename?: 'MotuChannel';
+  __typename?: 'MotuChannel';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   chan?: Maybe<Scalars['Int']>;
@@ -8288,7 +8453,7 @@ export type MotuChannel = {
 };
 
 export type MotuInput = {
-   __typename?: 'MotuInput';
+  __typename?: 'MotuInput';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   chan?: Maybe<Scalars['Int']>;
@@ -8305,7 +8470,7 @@ export type MotuInput = {
 };
 
 export type MotuGate = {
-   __typename?: 'MotuGate';
+  __typename?: 'MotuGate';
   release?: Maybe<Scalars['Float']>;
   enable?: Maybe<Scalars['Int']>;
   attack?: Maybe<Scalars['Float']>;
@@ -8313,7 +8478,7 @@ export type MotuGate = {
 };
 
 export type MotuComp = {
-   __typename?: 'MotuComp';
+  __typename?: 'MotuComp';
   enable?: Maybe<Scalars['Float']>;
   release?: Maybe<Scalars['Float']>;
   makeup?: Maybe<Scalars['Float']>;
@@ -8325,7 +8490,7 @@ export type MotuComp = {
 };
 
 export type MotuOutput = {
-   __typename?: 'MotuOutput';
+  __typename?: 'MotuOutput';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   chan?: Maybe<Scalars['Int']>;
@@ -8341,7 +8506,7 @@ export type MotuOutput = {
 };
 
 export type MotuEq = {
-   __typename?: 'MotuEQ';
+  __typename?: 'MotuEQ';
   enable?: Maybe<Scalars['Int']>;
   freq?: Maybe<Scalars['Float']>;
   gain?: Maybe<Scalars['Float']>;
@@ -8350,7 +8515,7 @@ export type MotuEq = {
 };
 
 export type MotuPatch = {
-   __typename?: 'MotuPatch';
+  __typename?: 'MotuPatch';
   input?: Maybe<MotuInput>;
   output?: Maybe<MotuOutput>;
   send?: Maybe<Scalars['Float']>;
@@ -8369,7 +8534,7 @@ export enum MotuType {
 }
 
 export type Navigation = SystemInterface & {
-   __typename?: 'Navigation';
+  __typename?: 'Navigation';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -8392,7 +8557,7 @@ export type Navigation = SystemInterface & {
 };
 
 export type NavLoc = {
-   __typename?: 'NavLoc';
+  __typename?: 'NavLoc';
   x?: Maybe<Scalars['String']>;
   y?: Maybe<Scalars['String']>;
   z?: Maybe<Scalars['String']>;
@@ -8405,7 +8570,7 @@ export type NavLocInput = {
 };
 
 export type NavPreset = {
-   __typename?: 'NavPreset';
+  __typename?: 'NavPreset';
   name?: Maybe<Scalars['String']>;
   course?: Maybe<NavLoc>;
 };
@@ -8416,7 +8581,7 @@ export type NavPresetInput = {
 };
 
 export type Objective = {
-   __typename?: 'Objective';
+  __typename?: 'Objective';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   timestamp?: Maybe<Scalars['String']>;
@@ -8426,6 +8591,7 @@ export type Objective = {
   completed?: Maybe<Scalars['Boolean']>;
   cancelled?: Maybe<Scalars['Boolean']>;
   crewComplete?: Maybe<Scalars['Boolean']>;
+  order?: Maybe<Scalars['Int']>;
 };
 
 export type ObjectiveInput = {
@@ -8437,10 +8603,11 @@ export type ObjectiveInput = {
   completed?: Maybe<Scalars['Boolean']>;
   cancelled?: Maybe<Scalars['Boolean']>;
   crewComplete?: Maybe<Scalars['Boolean']>;
+  order?: Maybe<Scalars['Int']>;
 };
 
 export type Log = {
-   __typename?: 'Log';
+  __typename?: 'Log';
   id?: Maybe<Scalars['ID']>;
   clientId?: Maybe<Scalars['ID']>;
   flightId?: Maybe<Scalars['ID']>;
@@ -8458,7 +8625,7 @@ export type LogInput = {
 };
 
 export type Phaser = SystemInterface & {
-   __typename?: 'Phaser';
+  __typename?: 'Phaser';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -8478,7 +8645,7 @@ export type Phaser = SystemInterface & {
 };
 
 export type PhaserBeam = {
-   __typename?: 'PhaserBeam';
+  __typename?: 'PhaserBeam';
   id?: Maybe<Scalars['ID']>;
   power?: Maybe<Power>;
   damage?: Maybe<Damage>;
@@ -8488,14 +8655,14 @@ export type PhaserBeam = {
 };
 
 export type Power = {
-   __typename?: 'Power';
+  __typename?: 'Power';
   power?: Maybe<Scalars['Int']>;
   powerLevels?: Maybe<Array<Maybe<Scalars['Int']>>>;
   defaultLevel?: Maybe<Scalars['Int']>;
 };
 
 export type Probes = SystemInterface & {
-   __typename?: 'Probes';
+  __typename?: 'Probes';
   id: Scalars['ID'];
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -8521,7 +8688,7 @@ export type ProbesProbesArgs = {
 };
 
 export type Probe = {
-   __typename?: 'Probe';
+  __typename?: 'Probe';
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['ID']>;
@@ -8538,13 +8705,13 @@ export type Probe = {
 };
 
 export type History = {
-   __typename?: 'History';
+  __typename?: 'History';
   date?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
 };
 
 export type ScienceProbeEvent = {
-   __typename?: 'ScienceProbeEvent';
+  __typename?: 'ScienceProbeEvent';
   simulatorId: Scalars['ID'];
   name: Scalars['String'];
   type: Scalars['String'];
@@ -8563,7 +8730,7 @@ export type EquipmentInput = {
 };
 
 export type ProbeEquipment = {
-   __typename?: 'ProbeEquipment';
+  __typename?: 'ProbeEquipment';
   id?: Maybe<Scalars['ID']>;
   description?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -8581,7 +8748,7 @@ export type ProbeEquipmentInput = {
 };
 
 export type ProbeType = {
-   __typename?: 'ProbeType';
+  __typename?: 'ProbeType';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -8598,7 +8765,7 @@ export type ProbeTypeInput = {
 };
 
 export type ScienceType = {
-   __typename?: 'ScienceType';
+  __typename?: 'ScienceType';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Science_Burst_Detector>;
@@ -8612,7 +8779,7 @@ export enum Science_Burst_Detector {
 }
 
 export type Railgun = SystemInterface & {
-   __typename?: 'Railgun';
+  __typename?: 'Railgun';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -8632,7 +8799,7 @@ export type Railgun = SystemInterface & {
 };
 
 export type Reactor = SystemInterface & {
-   __typename?: 'Reactor';
+  __typename?: 'Reactor';
   id: Scalars['ID'];
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -8677,7 +8844,7 @@ export enum Reactor_Models {
 }
 
 export type ReactorEfficiency = {
-   __typename?: 'ReactorEfficiency';
+  __typename?: 'ReactorEfficiency';
   label: Scalars['String'];
   color: Scalars['String'];
   efficiency?: Maybe<Scalars['Float']>;
@@ -8690,7 +8857,7 @@ export type ReactorEfficiencyInput = {
 };
 
 export type RecordEntry = {
-   __typename?: 'RecordEntry';
+  __typename?: 'RecordEntry';
   id?: Maybe<Scalars['ID']>;
   contents?: Maybe<Scalars['String']>;
   original?: Maybe<Scalars['String']>;
@@ -8700,7 +8867,7 @@ export type RecordEntry = {
 };
 
 export type RecordSnippet = {
-   __typename?: 'RecordSnippet';
+  __typename?: 'RecordSnippet';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   sensorContactId?: Maybe<Scalars['ID']>;
@@ -8719,7 +8886,7 @@ export enum RecordSnippetType {
 }
 
 export type Room = {
-   __typename?: 'Room';
+  __typename?: 'Room';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   deck?: Maybe<Deck>;
@@ -8748,13 +8915,13 @@ export enum RoomRoles {
 
 
 export type ProcessedData = {
-   __typename?: 'ProcessedData';
+  __typename?: 'ProcessedData';
   value: Scalars['String'];
   time: Scalars['String'];
 };
 
 export type Sensors = SystemInterface & {
-   __typename?: 'Sensors';
+  __typename?: 'Sensors';
   id: Scalars['ID'];
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -8791,7 +8958,7 @@ export type Sensors = SystemInterface & {
 };
 
 export type SensorScan = {
-   __typename?: 'SensorScan';
+  __typename?: 'SensorScan';
   id: Scalars['ID'];
   timestamp?: Maybe<Scalars['String']>;
   mode?: Maybe<Scalars['String']>;
@@ -8814,7 +8981,7 @@ export type SensorScanInput = {
 };
 
 export type SensorContact = {
-   __typename?: 'SensorContact';
+  __typename?: 'SensorContact';
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
@@ -8862,14 +9029,14 @@ export enum ParticleTypes {
 }
 
 export type SensorsSegment = {
-   __typename?: 'SensorsSegment';
+  __typename?: 'SensorsSegment';
   ring?: Maybe<Scalars['Int']>;
   line?: Maybe<Scalars['Int']>;
   state?: Maybe<Scalars['Boolean']>;
 };
 
 export type PresetAnswer = {
-   __typename?: 'PresetAnswer';
+  __typename?: 'PresetAnswer';
   label: Scalars['String'];
   value: Scalars['String'];
 };
@@ -8910,14 +9077,14 @@ export enum Ping_Modes {
 }
 
 export type Set = {
-   __typename?: 'Set';
+  __typename?: 'Set';
   id: Scalars['ID'];
   name: Scalars['String'];
   clients: Array<SetClient>;
 };
 
 export type SetClient = {
-   __typename?: 'SetClient';
+  __typename?: 'SetClient';
   id?: Maybe<Scalars['ID']>;
   client?: Maybe<Client>;
   simulator?: Maybe<Simulator>;
@@ -8938,7 +9105,7 @@ export type SetClientInput = {
 };
 
 export type Shield = SystemInterface & {
-   __typename?: 'Shield';
+  __typename?: 'Shield';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -8959,7 +9126,7 @@ export type Shield = SystemInterface & {
 };
 
 export type Ship = {
-   __typename?: 'Ship';
+  __typename?: 'Ship';
   clamps?: Maybe<Scalars['Boolean']>;
   ramps?: Maybe<Scalars['Boolean']>;
   airlock?: Maybe<Scalars['Boolean']>;
@@ -8976,13 +9143,13 @@ export type Ship = {
 };
 
 export type InventoryLog = {
-   __typename?: 'InventoryLog';
+  __typename?: 'InventoryLog';
   timestamp?: Maybe<Scalars['String']>;
   log?: Maybe<Scalars['String']>;
 };
 
 export type RemoteAccessCode = {
-   __typename?: 'RemoteAccessCode';
+  __typename?: 'RemoteAccessCode';
   id?: Maybe<Scalars['ID']>;
   code?: Maybe<Scalars['String']>;
   state?: Maybe<Scalars['String']>;
@@ -8991,7 +9158,7 @@ export type RemoteAccessCode = {
 };
 
 export type Notification = {
-   __typename?: 'Notification';
+  __typename?: 'Notification';
   id?: Maybe<Scalars['ID']>;
   title?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['String']>;
@@ -9014,7 +9181,7 @@ export enum NotifyColors {
 }
 
 export type ShortRangeComm = SystemInterface & {
-   __typename?: 'ShortRangeComm';
+  __typename?: 'ShortRangeComm';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -9036,7 +9203,7 @@ export type ShortRangeComm = SystemInterface & {
 };
 
 export type ShortRangeCommExtended = {
-   __typename?: 'ShortRangeCommExtended';
+  __typename?: 'ShortRangeCommExtended';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -9051,7 +9218,7 @@ export type ShortRangeCommExtended = {
 };
 
 export type CommArrow = {
-   __typename?: 'CommArrow';
+  __typename?: 'CommArrow';
   id?: Maybe<Scalars['ID']>;
   signal?: Maybe<Scalars['ID']>;
   frequency?: Maybe<Scalars['Float']>;
@@ -9060,7 +9227,7 @@ export type CommArrow = {
 };
 
 export type CommSignal = {
-   __typename?: 'CommSignal';
+  __typename?: 'CommSignal';
   id?: Maybe<Scalars['ID']>;
   image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -9069,7 +9236,7 @@ export type CommSignal = {
 };
 
 export type CommArrowExtended = {
-   __typename?: 'CommArrowExtended';
+  __typename?: 'CommArrowExtended';
   id?: Maybe<Scalars['ID']>;
   signal?: Maybe<Scalars['ID']>;
   range?: Maybe<Scalars['String']>;
@@ -9078,7 +9245,7 @@ export type CommArrowExtended = {
 };
 
 export type CommSignalExtended = {
-   __typename?: 'CommSignalExtended';
+  __typename?: 'CommSignalExtended';
   id?: Maybe<Scalars['ID']>;
   color?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
@@ -9087,7 +9254,7 @@ export type CommSignalExtended = {
 };
 
 export type CommRanges = {
-   __typename?: 'CommRanges';
+  __typename?: 'CommRanges';
   military?: Maybe<CommRange>;
   commercial?: Maybe<CommRange>;
   priority?: Maybe<CommRange>;
@@ -9095,7 +9262,7 @@ export type CommRanges = {
 };
 
 export type CommRange = {
-   __typename?: 'CommRange';
+  __typename?: 'CommRange';
   lower?: Maybe<Scalars['Float']>;
   upper?: Maybe<Scalars['Float']>;
 };
@@ -9127,7 +9294,7 @@ export type CommUpdateInput = {
 };
 
 export type Sickbay = SystemInterface & {
-   __typename?: 'Sickbay';
+  __typename?: 'Sickbay';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
@@ -9149,7 +9316,7 @@ export type Sickbay = SystemInterface & {
 };
 
 export type SickbayBunk = {
-   __typename?: 'SickbayBunk';
+  __typename?: 'SickbayBunk';
   id?: Maybe<Scalars['ID']>;
   sickbayId?: Maybe<Scalars['ID']>;
   scanRequest?: Maybe<Scalars['String']>;
@@ -9159,7 +9326,7 @@ export type SickbayBunk = {
 };
 
 export type Chart = {
-   __typename?: 'Chart';
+  __typename?: 'Chart';
   id?: Maybe<Scalars['ID']>;
   admitTime?: Maybe<Scalars['String']>;
   dischargeTime?: Maybe<Scalars['String']>;
@@ -9175,7 +9342,7 @@ export type Chart = {
 };
 
 export type PainPoint = {
-   __typename?: 'PainPoint';
+  __typename?: 'PainPoint';
   x?: Maybe<Scalars['Float']>;
   y?: Maybe<Scalars['Float']>;
 };
@@ -9200,7 +9367,7 @@ export type ChartInput = {
 };
 
 export type SignalJammer = SystemInterface & {
-   __typename?: 'SignalJammer';
+  __typename?: 'SignalJammer';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -9220,7 +9387,7 @@ export type SignalJammer = SystemInterface & {
 };
 
 export type Signal = {
-   __typename?: 'Signal';
+  __typename?: 'Signal';
   id?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
   level?: Maybe<Scalars['Float']>;
@@ -9241,7 +9408,7 @@ export type SimulatorInput = {
 };
 
 export type Simulator = {
-   __typename?: 'Simulator';
+  __typename?: 'Simulator';
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   alertlevel?: Maybe<Scalars['String']>;
@@ -9278,6 +9445,7 @@ export type Simulator = {
   spaceEdventuresId?: Maybe<Scalars['String']>;
   flipped?: Maybe<Scalars['Boolean']>;
   capabilities?: Maybe<SimulatorCapabilities>;
+  documents?: Maybe<Array<Document>>;
   ambiance?: Maybe<Array<Ambiance>>;
   assets?: Maybe<SimulatorAssets>;
   soundEffects?: Maybe<Scalars['JSON']>;
@@ -9287,8 +9455,15 @@ export type Simulator = {
   stationSet?: Maybe<StationSet>;
 };
 
+export type Document = {
+  __typename?: 'Document';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  asset: Scalars['String'];
+};
+
 export type SimulatorCapabilities = {
-   __typename?: 'SimulatorCapabilities';
+  __typename?: 'SimulatorCapabilities';
   systems: Array<Scalars['String']>;
   cards: Array<Scalars['String']>;
   spaceEdventures?: Maybe<Scalars['Boolean']>;
@@ -9296,7 +9471,7 @@ export type SimulatorCapabilities = {
 };
 
 export type SoftwarePanel = {
-   __typename?: 'SoftwarePanel';
+  __typename?: 'SoftwarePanel';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   cables?: Maybe<Array<Maybe<PanelCable>>>;
@@ -9305,14 +9480,14 @@ export type SoftwarePanel = {
 };
 
 export type PanelCable = {
-   __typename?: 'PanelCable';
+  __typename?: 'PanelCable';
   id?: Maybe<Scalars['ID']>;
   color?: Maybe<Scalars['String']>;
   components?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type PanelComponent = {
-   __typename?: 'PanelComponent';
+  __typename?: 'PanelComponent';
   id?: Maybe<Scalars['ID']>;
   component?: Maybe<Scalars['String']>;
   level?: Maybe<Scalars['Float']>;
@@ -9324,7 +9499,7 @@ export type PanelComponent = {
 };
 
 export type PanelConnection = {
-   __typename?: 'PanelConnection';
+  __typename?: 'PanelConnection';
   id?: Maybe<Scalars['ID']>;
   to?: Maybe<Scalars['ID']>;
   from?: Maybe<Scalars['ID']>;
@@ -9362,7 +9537,7 @@ export type PanelConnectionInput = {
 };
 
 export type StationSet = {
-   __typename?: 'StationSet';
+  __typename?: 'StationSet';
   id: Scalars['ID'];
   name: Scalars['String'];
   simulator?: Maybe<Simulator>;
@@ -9371,7 +9546,7 @@ export type StationSet = {
 };
 
 export type Station = {
-   __typename?: 'Station';
+  __typename?: 'Station';
   name: Scalars['String'];
   tags?: Maybe<Array<Scalars['String']>>;
   description?: Maybe<Scalars['String']>;
@@ -9391,7 +9566,7 @@ export type StationCardsArgs = {
 };
 
 export type Card = {
-   __typename?: 'Card';
+  __typename?: 'Card';
   name: Scalars['String'];
   component: Scalars['String'];
   hidden?: Maybe<Scalars['Boolean']>;
@@ -9405,7 +9580,7 @@ export type CardInput = {
 };
 
 export type StealthField = SystemInterface & {
-   __typename?: 'StealthField';
+  __typename?: 'StealthField';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -9426,7 +9601,7 @@ export type StealthField = SystemInterface & {
 };
 
 export type StealthQuad = {
-   __typename?: 'StealthQuad';
+  __typename?: 'StealthQuad';
   fore?: Maybe<Scalars['Float']>;
   aft?: Maybe<Scalars['Float']>;
   port?: Maybe<Scalars['Float']>;
@@ -9434,7 +9609,7 @@ export type StealthQuad = {
 };
 
 export type SubspaceField = SystemInterface & {
-   __typename?: 'SubspaceField';
+  __typename?: 'SubspaceField';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -9456,13 +9631,13 @@ export type SubspaceField = SystemInterface & {
 };
 
 export type SubspaceFieldSector = {
-   __typename?: 'SubspaceFieldSector';
+  __typename?: 'SubspaceFieldSector';
   required?: Maybe<Scalars['Int']>;
   value?: Maybe<Scalars['Int']>;
 };
 
 export type SurveyForm = {
-   __typename?: 'SurveyForm';
+  __typename?: 'SurveyForm';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   title?: Maybe<Scalars['String']>;
@@ -9475,7 +9650,7 @@ export type SurveyForm = {
 };
 
 export type FormResults = {
-   __typename?: 'FormResults';
+  __typename?: 'FormResults';
   client?: Maybe<Scalars['String']>;
   station?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -9483,7 +9658,7 @@ export type FormResults = {
 };
 
 export type FormFields = {
-   __typename?: 'FormFields';
+  __typename?: 'FormFields';
   id?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
@@ -9495,7 +9670,7 @@ export type FormFields = {
 };
 
 export type FormOptions = {
-   __typename?: 'FormOptions';
+  __typename?: 'FormOptions';
   id?: Maybe<Scalars['ID']>;
   label?: Maybe<Scalars['String']>;
 };
@@ -9536,7 +9711,7 @@ export type SystemInterface = {
 };
 
 export type System = SystemInterface & {
-   __typename?: 'System';
+  __typename?: 'System';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -9562,7 +9737,7 @@ export type System = SystemInterface & {
 };
 
 export type TacticalMap = {
-   __typename?: 'TacticalMap';
+  __typename?: 'TacticalMap';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   template?: Maybe<Scalars['Boolean']>;
@@ -9573,7 +9748,7 @@ export type TacticalMap = {
 };
 
 export type TacticalLayer = {
-   __typename?: 'TacticalLayer';
+  __typename?: 'TacticalLayer';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Tactical_Types>;
@@ -9609,7 +9784,7 @@ export type TacticalLayerInput = {
 };
 
 export type ThrusterControls = {
-   __typename?: 'ThrusterControls';
+  __typename?: 'ThrusterControls';
   rotation?: Maybe<Scalars['String']>;
   reversed?: Maybe<Scalars['Boolean']>;
   matchRotation?: Maybe<Scalars['Boolean']>;
@@ -9630,7 +9805,7 @@ export type ThrusterControlsInput = {
 };
 
 export type TacticalItem = {
-   __typename?: 'TacticalItem';
+  __typename?: 'TacticalItem';
   id?: Maybe<Scalars['ID']>;
   layerId?: Maybe<Scalars['ID']>;
   label?: Maybe<Scalars['String']>;
@@ -9677,7 +9852,7 @@ export type TacticalItemInput = {
 };
 
 export type TacticalPath = {
-   __typename?: 'TacticalPath';
+  __typename?: 'TacticalPath';
   id?: Maybe<Scalars['ID']>;
   layerId?: Maybe<Scalars['ID']>;
   start?: Maybe<Coordinates>;
@@ -9709,7 +9884,7 @@ export enum Tactical_Types {
 }
 
 export type Targeting = SystemInterface & {
-   __typename?: 'Targeting';
+  __typename?: 'Targeting';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -9733,7 +9908,7 @@ export type Targeting = SystemInterface & {
 };
 
 export type StringCoordinates = {
-   __typename?: 'StringCoordinates';
+  __typename?: 'StringCoordinates';
   x?: Maybe<Scalars['String']>;
   y?: Maybe<Scalars['String']>;
   z?: Maybe<Scalars['String']>;
@@ -9746,7 +9921,7 @@ export type StringCoordinatesInput = {
 };
 
 export type TargetingClass = {
-   __typename?: 'TargetingClass';
+  __typename?: 'TargetingClass';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['Float']>;
@@ -9771,7 +9946,7 @@ export type TargetClassInput = {
 };
 
 export type TargetingContact = {
-   __typename?: 'TargetingContact';
+  __typename?: 'TargetingContact';
   id?: Maybe<Scalars['ID']>;
   class?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
@@ -9788,7 +9963,7 @@ export type TargetingContact = {
 };
 
 export type TaskReport = {
-   __typename?: 'TaskReport';
+  __typename?: 'TaskReport';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   system?: Maybe<System>;
@@ -9799,7 +9974,7 @@ export type TaskReport = {
 };
 
 export type Task = {
-   __typename?: 'Task';
+  __typename?: 'Task';
   id: Scalars['ID'];
   simulatorId?: Maybe<Scalars['ID']>;
   stationTags?: Maybe<Array<Scalars['String']>>;
@@ -9832,7 +10007,7 @@ export type TaskInput = {
 };
 
 export type TaskTemplate = {
-   __typename?: 'TaskTemplate';
+  __typename?: 'TaskTemplate';
   id: Scalars['ID'];
   name: Scalars['String'];
   values?: Maybe<Scalars['JSON']>;
@@ -9843,7 +10018,7 @@ export type TaskTemplate = {
 };
 
 export type TaskDefinition = {
-   __typename?: 'TaskDefinition';
+  __typename?: 'TaskDefinition';
   id: Scalars['ID'];
   name: Scalars['String'];
   class: Scalars['String'];
@@ -9854,7 +10029,7 @@ export type TaskDefinition = {
 };
 
 export type Team = {
-   __typename?: 'Team';
+  __typename?: 'Team';
   id?: Maybe<Scalars['ID']>;
   type?: Maybe<Team_Types>;
   simulatorId?: Maybe<Scalars['ID']>;
@@ -9891,12 +10066,12 @@ export enum Priorities {
 }
 
 export type Template = {
-   __typename?: 'Template';
+  __typename?: 'Template';
   id?: Maybe<Scalars['ID']>;
 };
 
 export type Thorium = {
-   __typename?: 'Thorium';
+  __typename?: 'Thorium';
   thoriumId?: Maybe<Scalars['String']>;
   doTrack?: Maybe<Scalars['Boolean']>;
   askedToTrack?: Maybe<Scalars['Boolean']>;
@@ -9908,7 +10083,7 @@ export type Thorium = {
 };
 
 export type SpaceEdventuresCenter = {
-   __typename?: 'SpaceEdventuresCenter';
+  __typename?: 'SpaceEdventuresCenter';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   token?: Maybe<Scalars['String']>;
@@ -9919,14 +10094,14 @@ export type SpaceEdventuresCenter = {
 };
 
 export type NamedObject = {
-   __typename?: 'NamedObject';
+  __typename?: 'NamedObject';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
 };
 
 export type FlightType = {
-   __typename?: 'FlightType';
+  __typename?: 'FlightType';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   flightHours?: Maybe<Scalars['Float']>;
@@ -9934,7 +10109,7 @@ export type FlightType = {
 };
 
 export type Thruster = SystemInterface & {
-   __typename?: 'Thruster';
+  __typename?: 'Thruster';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   displayName?: Maybe<Scalars['String']>;
@@ -9956,7 +10131,7 @@ export type Thruster = SystemInterface & {
 };
 
 export type Coordinates = {
-   __typename?: 'Coordinates';
+  __typename?: 'Coordinates';
   x?: Maybe<Scalars['Float']>;
   y?: Maybe<Scalars['Float']>;
   z?: Maybe<Scalars['Float']>;
@@ -9969,7 +10144,7 @@ export type CoordinatesInput = {
 };
 
 export type Rotation = {
-   __typename?: 'Rotation';
+  __typename?: 'Rotation';
   yaw?: Maybe<Scalars['Float']>;
   pitch?: Maybe<Scalars['Float']>;
   roll?: Maybe<Scalars['Float']>;
@@ -9988,7 +10163,7 @@ export type DirectionInput = {
 };
 
 export type ThxClient = {
-   __typename?: 'ThxClient';
+  __typename?: 'ThxClient';
   id?: Maybe<Scalars['ID']>;
   charge?: Maybe<Scalars['Float']>;
   lock?: Maybe<Scalars['Boolean']>;
@@ -9998,7 +10173,7 @@ export type ThxClient = {
 };
 
 export type Thx = SystemInterface & {
-   __typename?: 'Thx';
+  __typename?: 'Thx';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -10015,7 +10190,7 @@ export type Thx = SystemInterface & {
 };
 
 export type Torpedo = SystemInterface & {
-   __typename?: 'Torpedo';
+  __typename?: 'Torpedo';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -10033,7 +10208,7 @@ export type Torpedo = SystemInterface & {
 };
 
 export type Warhead = {
-   __typename?: 'Warhead';
+  __typename?: 'Warhead';
   id?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
   probe?: Maybe<Probe>;
@@ -10045,7 +10220,7 @@ export type WarheadInput = {
 };
 
 export type TractorBeamBeam = {
-   __typename?: 'TractorBeamBeam';
+  __typename?: 'TractorBeamBeam';
   id: Scalars['ID'];
   state: Scalars['Boolean'];
   target: Scalars['Boolean'];
@@ -10056,7 +10231,7 @@ export type TractorBeamBeam = {
 };
 
 export type TractorBeam = SystemInterface & {
-   __typename?: 'TractorBeam';
+  __typename?: 'TractorBeam';
   id: Scalars['ID'];
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -10072,7 +10247,7 @@ export type TractorBeam = SystemInterface & {
 };
 
 export type Transporter = SystemInterface & {
-   __typename?: 'Transporter';
+  __typename?: 'Transporter';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   upgradeName?: Maybe<Scalars['String']>;
@@ -10093,7 +10268,7 @@ export type Transporter = SystemInterface & {
 };
 
 export type TransporterTarget = {
-   __typename?: 'TransporterTarget';
+  __typename?: 'TransporterTarget';
   id?: Maybe<Scalars['ID']>;
   icon?: Maybe<Scalars['String']>;
   moving?: Maybe<Scalars['Boolean']>;
@@ -10110,7 +10285,7 @@ export type TransporterInput = {
 };
 
 export type Transwarp = SystemInterface & {
-   __typename?: 'Transwarp';
+  __typename?: 'Transwarp';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   type?: Maybe<Scalars['String']>;
@@ -10133,14 +10308,14 @@ export type Transwarp = SystemInterface & {
 };
 
 export type TranswarpQuad = {
-   __typename?: 'TranswarpQuad';
+  __typename?: 'TranswarpQuad';
   field?: Maybe<SubspaceFieldSector>;
   core?: Maybe<SubspaceFieldSector>;
   warp?: Maybe<SubspaceFieldSector>;
 };
 
 export type Trigger = {
-   __typename?: 'Trigger';
+  __typename?: 'Trigger';
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   components?: Maybe<Scalars['JSON']>;
@@ -10150,7 +10325,7 @@ export type Trigger = {
 };
 
 export type Viewscreen = {
-   __typename?: 'Viewscreen';
+  __typename?: 'Viewscreen';
   id?: Maybe<Scalars['ID']>;
   simulatorId?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
@@ -10163,7 +10338,7 @@ export type Viewscreen = {
 };
 
 export type ViewscreenPictureInPicture = {
-   __typename?: 'ViewscreenPictureInPicture';
+  __typename?: 'ViewscreenPictureInPicture';
   component?: Maybe<Scalars['String']>;
   data?: Maybe<Scalars['JSON']>;
   position?: Maybe<Pip_Position>;
@@ -10185,7 +10360,7 @@ export enum Pip_Size {
 }
 
 export type Countermeasures = SystemInterface & {
-   __typename?: 'Countermeasures';
+  __typename?: 'Countermeasures';
   id: Scalars['ID'];
   simulatorId?: Maybe<Scalars['ID']>;
   class?: Maybe<Scalars['String']>;
@@ -10204,7 +10379,7 @@ export type Countermeasures = SystemInterface & {
 };
 
 export type Countermeasure = {
-   __typename?: 'Countermeasure';
+  __typename?: 'Countermeasure';
   id: Scalars['ID'];
   name: Scalars['String'];
   modules: Array<CountermeasureModule>;
@@ -10220,7 +10395,7 @@ export type Countermeasure = {
 };
 
 export type CountermeasureResources = {
-   __typename?: 'CountermeasureResources';
+  __typename?: 'CountermeasureResources';
   copper: Scalars['Float'];
   titanium: Scalars['Float'];
   carbon: Scalars['Float'];
@@ -10229,13 +10404,13 @@ export type CountermeasureResources = {
 };
 
 export type CountermeasureConfigOptions = {
-   __typename?: 'CountermeasureConfigOptions';
+  __typename?: 'CountermeasureConfigOptions';
   type: Scalars['String'];
   label: Scalars['String'];
 };
 
 export type CountermeasureModule = {
-   __typename?: 'CountermeasureModule';
+  __typename?: 'CountermeasureModule';
   id: Scalars['ID'];
   name: Scalars['String'];
   description: Scalars['String'];
@@ -10259,7 +10434,7 @@ export enum CountermeasureSlotEnum {
 }
 
 export type CountermeasureSlot = {
-   __typename?: 'CountermeasureSlot';
+  __typename?: 'CountermeasureSlot';
   slot1?: Maybe<Countermeasure>;
   slot2?: Maybe<Countermeasure>;
   slot3?: Maybe<Countermeasure>;
@@ -10271,7 +10446,7 @@ export type CountermeasureSlot = {
 };
 
 export type Entity = {
-   __typename?: 'Entity';
+  __typename?: 'Entity';
   id: Scalars['ID'];
   interval?: Maybe<Scalars['Int']>;
   reset?: Maybe<Scalars['Boolean']>;
@@ -10303,7 +10478,7 @@ export enum DmxChannelProperty {
 }
 
 export type DmxDevice = {
-   __typename?: 'DMXDevice';
+  __typename?: 'DMXDevice';
   id: Scalars['ID'];
   class: Scalars['String'];
   name: Scalars['String'];
@@ -10316,7 +10491,7 @@ export enum DmxFixtureMode {
 }
 
 export type DmxPassiveChannels = {
-   __typename?: 'DMXPassiveChannels';
+  __typename?: 'DMXPassiveChannels';
   amber?: Maybe<Scalars['Float']>;
   white?: Maybe<Scalars['Float']>;
   uv?: Maybe<Scalars['Float']>;
@@ -10339,7 +10514,7 @@ export type DmxPassiveChannelsInput = {
 };
 
 export type DmxFixture = {
-   __typename?: 'DMXFixture';
+  __typename?: 'DMXFixture';
   id: Scalars['ID'];
   class: Scalars['String'];
   name: Scalars['String'];
@@ -10354,7 +10529,7 @@ export type DmxFixture = {
 };
 
 export type DmxSet = {
-   __typename?: 'DMXSet';
+  __typename?: 'DMXSet';
   id: Scalars['ID'];
   name: Scalars['String'];
   fixtureIds: Array<Scalars['String']>;
@@ -10362,7 +10537,7 @@ export type DmxSet = {
 };
 
 export type DmxConfig = {
-   __typename?: 'DMXConfig';
+  __typename?: 'DMXConfig';
   id: Scalars['ID'];
   name: Scalars['String'];
   config: Scalars['JSON'];
@@ -10370,7 +10545,7 @@ export type DmxConfig = {
 };
 
 export type TaskFlowStep = {
-   __typename?: 'TaskFlowStep';
+  __typename?: 'TaskFlowStep';
   id: Scalars['ID'];
   name: Scalars['String'];
   tasks: Array<Task>;
@@ -10381,7 +10556,7 @@ export type TaskFlowStep = {
 };
 
 export type TaskFlow = {
-   __typename?: 'TaskFlow';
+  __typename?: 'TaskFlow';
   id: Scalars['ID'];
   name: Scalars['String'];
   category: Scalars['String'];
@@ -10400,7 +10575,7 @@ export enum MeshTypeEnum {
 }
 
 export type AppearanceComponent = {
-   __typename?: 'AppearanceComponent';
+  __typename?: 'AppearanceComponent';
   meshType?: Maybe<MeshTypeEnum>;
   modelAsset?: Maybe<Scalars['String']>;
   materialMapAsset?: Maybe<Scalars['String']>;
@@ -10421,20 +10596,20 @@ export enum Behaviors {
 }
 
 export type BehaviorComponent = {
-   __typename?: 'BehaviorComponent';
+  __typename?: 'BehaviorComponent';
   behavior: Behaviors;
   targetId?: Maybe<Scalars['ID']>;
   destination?: Maybe<EntityCoordinates>;
 };
 
 export type IdentityComponent = {
-   __typename?: 'IdentityComponent';
+  __typename?: 'IdentityComponent';
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
 
 export type Quaternion = {
-   __typename?: 'Quaternion';
+  __typename?: 'Quaternion';
   x: Scalars['Float'];
   y: Scalars['Float'];
   z: Scalars['Float'];
@@ -10449,7 +10624,7 @@ export type QuaternionInput = {
 };
 
 export type EntityCoordinates = {
-   __typename?: 'EntityCoordinates';
+  __typename?: 'EntityCoordinates';
   x: Scalars['Float'];
   y: Scalars['Float'];
   z: Scalars['Float'];
@@ -10462,7 +10637,7 @@ export type EntityCoordinatesInput = {
 };
 
 export type LocationComponent = {
-   __typename?: 'LocationComponent';
+  __typename?: 'LocationComponent';
   inert: Scalars['Boolean'];
   position: EntityCoordinates;
   velocity: EntityCoordinates;
@@ -10478,7 +10653,7 @@ export type EntitiesLocationInput = {
 };
 
 export type StageComponent = {
-   __typename?: 'StageComponent';
+  __typename?: 'StageComponent';
   scaleLabel?: Maybe<Scalars['String']>;
   scaleLabelShort?: Maybe<Scalars['String']>;
   skyboxKey?: Maybe<Scalars['String']>;
@@ -10486,13 +10661,13 @@ export type StageComponent = {
 };
 
 export type StageChildComponent = {
-   __typename?: 'StageChildComponent';
+  __typename?: 'StageChildComponent';
   parentId: Scalars['ID'];
   parent?: Maybe<Entity>;
 };
 
 export type LightComponent = {
-   __typename?: 'LightComponent';
+  __typename?: 'LightComponent';
   intensity?: Maybe<Scalars['Float']>;
   decay?: Maybe<Scalars['Float']>;
   color?: Maybe<Scalars['String']>;
@@ -10505,18 +10680,18 @@ export enum GlowModeEnum {
 }
 
 export type GlowComponent = {
-   __typename?: 'GlowComponent';
+  __typename?: 'GlowComponent';
   glowMode?: Maybe<GlowModeEnum>;
   color?: Maybe<Scalars['String']>;
 };
 
 export type TemplateComponent = {
-   __typename?: 'TemplateComponent';
+  __typename?: 'TemplateComponent';
   category?: Maybe<Scalars['String']>;
 };
 
 export type EngineComponent = {
-   __typename?: 'EngineComponent';
+  __typename?: 'EngineComponent';
   maxSpeed?: Maybe<Scalars['Float']>;
   currentSpeed?: Maybe<Scalars['Float']>;
   heat?: Maybe<Scalars['Float']>;
@@ -10531,7 +10706,7 @@ export enum EntityEngineEnum {
 }
 
 export type ThrustersComponent = {
-   __typename?: 'ThrustersComponent';
+  __typename?: 'ThrustersComponent';
   direction?: Maybe<Coordinates>;
   rotationDelta?: Maybe<Coordinates>;
   rotationSpeed?: Maybe<Scalars['Float']>;
@@ -10540,7 +10715,7 @@ export type ThrustersComponent = {
 
 /** A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations. */
 export type __Schema = {
-   __typename?: '__Schema';
+  __typename?: '__Schema';
   description?: Maybe<Scalars['String']>;
   /** A list of all types supported by this server. */
   types: Array<__Type>;
@@ -10557,13 +10732,14 @@ export type __Schema = {
 /**
  * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
  * 
- * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+ * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
  */
 export type __Type = {
-   __typename?: '__Type';
+  __typename?: '__Type';
   kind: __TypeKind;
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
+  specifiedByUrl?: Maybe<Scalars['String']>;
   fields?: Maybe<Array<__Field>>;
   interfaces?: Maybe<Array<__Type>>;
   possibleTypes?: Maybe<Array<__Type>>;
@@ -10576,7 +10752,7 @@ export type __Type = {
 /**
  * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
  * 
- * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+ * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
  */
 export type __TypeFieldsArgs = {
   includeDeprecated?: Maybe<Scalars['Boolean']>;
@@ -10586,7 +10762,7 @@ export type __TypeFieldsArgs = {
 /**
  * The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
  * 
- * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+ * Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
  */
 export type __TypeEnumValuesArgs = {
   includeDeprecated?: Maybe<Scalars['Boolean']>;
@@ -10614,7 +10790,7 @@ export enum __TypeKind {
 
 /** Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type. */
 export type __Field = {
-   __typename?: '__Field';
+  __typename?: '__Field';
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   args: Array<__InputValue>;
@@ -10625,7 +10801,7 @@ export type __Field = {
 
 /** Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value. */
 export type __InputValue = {
-   __typename?: '__InputValue';
+  __typename?: '__InputValue';
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   type: __Type;
@@ -10635,7 +10811,7 @@ export type __InputValue = {
 
 /** One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string. */
 export type __EnumValue = {
-   __typename?: '__EnumValue';
+  __typename?: '__EnumValue';
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   isDeprecated: Scalars['Boolean'];
@@ -10648,7 +10824,7 @@ export type __EnumValue = {
  * In some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.
  */
 export type __Directive = {
-   __typename?: '__Directive';
+  __typename?: '__Directive';
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   isRepeatable: Scalars['Boolean'];
@@ -10698,10 +10874,10 @@ export enum __DirectiveLocation {
   InputFieldDefinition = 'INPUT_FIELD_DEFINITION'
 }
 
-export type ActivateLightingMutationVariables = {
+export type ActivateLightingMutationVariables = Exact<{
   clientId: Scalars['ID'];
   dmxSetId: Scalars['ID'];
-};
+}>;
 
 
 export type ActivateLightingMutation = (
@@ -10709,9 +10885,9 @@ export type ActivateLightingMutation = (
   & Pick<Mutation, 'clientActivateLights'>
 );
 
-export type AmbianceQueryVariables = {
+export type AmbianceQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type AmbianceQuery = (
@@ -10744,9 +10920,9 @@ export type ClientDataFragment = (
   )> }
 );
 
-export type ClientQueryVariables = {
+export type ClientQueryVariables = Exact<{
   clientId: Scalars['ID'];
-};
+}>;
 
 
 export type ClientQuery = (
@@ -10757,9 +10933,9 @@ export type ClientQuery = (
   )>>> }
 );
 
-export type ClientUpdateSubscriptionVariables = {
+export type ClientUpdateSubscriptionVariables = Exact<{
   clientId: Scalars['ID'];
-};
+}>;
 
 
 export type ClientUpdateSubscription = (
@@ -10770,9 +10946,9 @@ export type ClientUpdateSubscription = (
   )>>> }
 );
 
-export type ClientPingMutationVariables = {
+export type ClientPingMutationVariables = Exact<{
   clientId: Scalars['ID'];
-};
+}>;
 
 
 export type ClientPingMutation = (
@@ -10780,9 +10956,9 @@ export type ClientPingMutation = (
   & Pick<Mutation, 'clientPing'>
 );
 
-export type LightingControlSubscriptionVariables = {
+export type LightingControlSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type LightingControlSubscription = (
@@ -10801,9 +10977,9 @@ export type LightingControlSubscription = (
   )>>> }
 );
 
-export type RegisterClientMutationVariables = {
+export type RegisterClientMutationVariables = Exact<{
   client: Scalars['ID'];
-};
+}>;
 
 
 export type RegisterClientMutation = (
@@ -10811,9 +10987,9 @@ export type RegisterClientMutation = (
   & Pick<Mutation, 'clientConnect'>
 );
 
-export type RemoveClientMutationVariables = {
+export type RemoveClientMutationVariables = Exact<{
   client: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveClientMutation = (
@@ -10837,9 +11013,9 @@ export type SimulatorDataFragment = (
   )>> }
 );
 
-export type SimulatorQueryVariables = {
+export type SimulatorQueryVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type SimulatorQuery = (
@@ -10850,9 +11026,9 @@ export type SimulatorQuery = (
   )> }
 );
 
-export type SimulatorUpdateSubscriptionVariables = {
+export type SimulatorUpdateSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type SimulatorUpdateSubscription = (
@@ -10863,7 +11039,7 @@ export type SimulatorUpdateSubscription = (
   )>>> }
 );
 
-export type MacroDmxConfigsQueryVariables = {};
+export type MacroDmxConfigsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MacroDmxConfigsQuery = (
@@ -10874,9 +11050,9 @@ export type MacroDmxConfigsQuery = (
   )> }
 );
 
-export type DockingShuttleConfigQueryVariables = {
+export type DockingShuttleConfigQueryVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type DockingShuttleConfigQuery = (
@@ -10894,7 +11070,7 @@ export type DockingShuttleConfigQuery = (
   )>>> }
 );
 
-export type MissionMacrosQueryVariables = {};
+export type MissionMacrosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MissionMacrosQuery = (
@@ -10909,10 +11085,10 @@ export type MissionMacrosQuery = (
   )> }
 );
 
-export type RemoteAssetLoadMutationVariables = {
+export type RemoteAssetLoadMutationVariables = Exact<{
   folderPath: Scalars['String'];
   files: Array<RemoteAsset>;
-};
+}>;
 
 
 export type RemoteAssetLoadMutation = (
@@ -10941,9 +11117,9 @@ export type CountermeasureFragment = (
   )> }
 );
 
-export type CountermeasuresSubscriptionVariables = {
+export type CountermeasuresSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type CountermeasuresSubscription = (
@@ -10994,9 +11170,9 @@ export type CountermeasuresSubscription = (
   )> }
 );
 
-export type CountermeasuresCoreSubscriptionVariables = {
+export type CountermeasuresCoreSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type CountermeasuresCoreSubscription = (
@@ -11022,7 +11198,7 @@ export type CountermeasuresCoreSubscription = (
   )> }
 );
 
-export type CountermeasureModulesQueryVariables = {};
+export type CountermeasureModulesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CountermeasureModulesQuery = (
@@ -11040,11 +11216,11 @@ export type CountermeasureModulesQuery = (
   )> }
 );
 
-export type CountermeasureRemoveModuleMutationVariables = {
+export type CountermeasureRemoveModuleMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
   moduleId: Scalars['ID'];
-};
+}>;
 
 
 export type CountermeasureRemoveModuleMutation = (
@@ -11052,11 +11228,11 @@ export type CountermeasureRemoveModuleMutation = (
   & Pick<Mutation, 'countermeasuresRemoveModule'>
 );
 
-export type CountermeasureSetResourceMutationVariables = {
+export type CountermeasureSetResourceMutationVariables = Exact<{
   id: Scalars['ID'];
   resource: Scalars['String'];
   value: Scalars['Float'];
-};
+}>;
 
 
 export type CountermeasureSetResourceMutation = (
@@ -11064,10 +11240,10 @@ export type CountermeasureSetResourceMutation = (
   & Pick<Mutation, 'countermeasuresSetResource'>
 );
 
-export type CountermeasuresActivateCountermeasureMutationVariables = {
+export type CountermeasuresActivateCountermeasureMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
-};
+}>;
 
 
 export type CountermeasuresActivateCountermeasureMutation = (
@@ -11075,11 +11251,11 @@ export type CountermeasuresActivateCountermeasureMutation = (
   & Pick<Mutation, 'countermeasuresActivateCountermeasure'>
 );
 
-export type CountermeasuresAddModuleMutationVariables = {
+export type CountermeasuresAddModuleMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
   moduleType: Scalars['String'];
-};
+}>;
 
 
 export type CountermeasuresAddModuleMutation = (
@@ -11101,10 +11277,10 @@ export type CountermeasuresAddModuleMutation = (
   )> }
 );
 
-export type CountermeasuresBuildCountermeasureMutationVariables = {
+export type CountermeasuresBuildCountermeasureMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
-};
+}>;
 
 
 export type CountermeasuresBuildCountermeasureMutation = (
@@ -11112,12 +11288,12 @@ export type CountermeasuresBuildCountermeasureMutation = (
   & Pick<Mutation, 'countermeasuresBuildCountermeasure'>
 );
 
-export type CountermeasuresConfigureModuleMutationVariables = {
+export type CountermeasuresConfigureModuleMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
   moduleId: Scalars['ID'];
   config: Scalars['JSON'];
-};
+}>;
 
 
 export type CountermeasuresConfigureModuleMutation = (
@@ -11125,11 +11301,11 @@ export type CountermeasuresConfigureModuleMutation = (
   & Pick<Mutation, 'countermeasuresConfigureModule'>
 );
 
-export type CountermeasureCreateCountermeasureMutationVariables = {
+export type CountermeasureCreateCountermeasureMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
   name: Scalars['String'];
-};
+}>;
 
 
 export type CountermeasureCreateCountermeasureMutation = (
@@ -11140,10 +11316,10 @@ export type CountermeasureCreateCountermeasureMutation = (
   )> }
 );
 
-export type CountermeasuresDeactivateCountermeasureMutationVariables = {
+export type CountermeasuresDeactivateCountermeasureMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
-};
+}>;
 
 
 export type CountermeasuresDeactivateCountermeasureMutation = (
@@ -11151,10 +11327,10 @@ export type CountermeasuresDeactivateCountermeasureMutation = (
   & Pick<Mutation, 'countermeasuresDeactivateCountermeasure'>
 );
 
-export type CountermeasuresLaunchCountermeasureMutationVariables = {
+export type CountermeasuresLaunchCountermeasureMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
-};
+}>;
 
 
 export type CountermeasuresLaunchCountermeasureMutation = (
@@ -11162,9 +11338,9 @@ export type CountermeasuresLaunchCountermeasureMutation = (
   & Pick<Mutation, 'countermeasuresLaunchCountermeasure'>
 );
 
-export type CountermeasuresLaunchUnlockedCountermeasuresMutationVariables = {
+export type CountermeasuresLaunchUnlockedCountermeasuresMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type CountermeasuresLaunchUnlockedCountermeasuresMutation = (
@@ -11172,10 +11348,10 @@ export type CountermeasuresLaunchUnlockedCountermeasuresMutation = (
   & Pick<Mutation, 'countermeasuresLaunchUnlockedCountermeasures'>
 );
 
-export type CountermeasureRemoveCountermeasureMutationVariables = {
+export type CountermeasureRemoveCountermeasureMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
-};
+}>;
 
 
 export type CountermeasureRemoveCountermeasureMutation = (
@@ -11183,11 +11359,11 @@ export type CountermeasureRemoveCountermeasureMutation = (
   & Pick<Mutation, 'countermeasuresRemoveCountermeasure'>
 );
 
-export type CountermeasuresRemoveModuleMutationVariables = {
+export type CountermeasuresRemoveModuleMutationVariables = Exact<{
   id: Scalars['ID'];
   slot: CountermeasureSlotEnum;
   moduleId: Scalars['ID'];
-};
+}>;
 
 
 export type CountermeasuresRemoveModuleMutation = (
@@ -11195,11 +11371,11 @@ export type CountermeasuresRemoveModuleMutation = (
   & Pick<Mutation, 'countermeasuresRemoveModule'>
 );
 
-export type CountermeasuresSetFdNoteMutationVariables = {
+export type CountermeasuresSetFdNoteMutationVariables = Exact<{
   id: Scalars['ID'];
   countermeasureId: Scalars['ID'];
   note: Scalars['String'];
-};
+}>;
 
 
 export type CountermeasuresSetFdNoteMutation = (
@@ -11207,9 +11383,9 @@ export type CountermeasuresSetFdNoteMutation = (
   & Pick<Mutation, 'countermeasuresSetFDNote'>
 );
 
-export type SystemsCoreEnginesQueryVariables = {
+export type SystemsCoreEnginesQueryVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type SystemsCoreEnginesQuery = (
@@ -11224,10 +11400,10 @@ export type SystemsCoreEnginesQuery = (
   )>>> }
 );
 
-export type SystemChangePowerMutationVariables = {
+export type SystemChangePowerMutationVariables = Exact<{
   systemId: Scalars['ID'];
   power: Scalars['Int'];
-};
+}>;
 
 
 export type SystemChangePowerMutation = (
@@ -11235,9 +11411,9 @@ export type SystemChangePowerMutation = (
   & Pick<Mutation, 'changePower'>
 );
 
-export type SystemUpgradeMutationVariables = {
+export type SystemUpgradeMutationVariables = Exact<{
   systemId: Scalars['ID'];
-};
+}>;
 
 
 export type SystemUpgradeMutation = (
@@ -11245,11 +11421,176 @@ export type SystemUpgradeMutation = (
   & Pick<Mutation, 'upgradeSystem'>
 );
 
-export type LightingSetEffectMutationVariables = {
+export type AddDocumentMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  name: Scalars['String'];
+  asset: Scalars['String'];
+}>;
+
+
+export type AddDocumentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'documentAdd'>
+);
+
+export type DocumentsSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type DocumentsSubscription = (
+  { __typename?: 'Subscription' }
+  & { simulatorsUpdate?: Maybe<Array<Maybe<(
+    { __typename?: 'Simulator' }
+    & Pick<Simulator, 'id'>
+    & { documents?: Maybe<Array<(
+      { __typename?: 'Document' }
+      & Pick<Document, 'id' | 'name' | 'asset'>
+    )>> }
+  )>>> }
+);
+
+export type RemoveDocumentMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  id: Scalars['ID'];
+}>;
+
+
+export type RemoveDocumentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'documentRemove'>
+);
+
+export type HackingAllowHackingMutationVariables = Exact<{
+  id: Scalars['ID'];
+  state: Scalars['String'];
+}>;
+
+
+export type HackingAllowHackingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreSetHackingState'>
+);
+
+export type HackingAppendLogMutationVariables = Exact<{
+  id: Scalars['ID'];
+  log: Scalars['String'];
+}>;
+
+
+export type HackingAppendLogMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreAppendLog'>
+);
+
+export type HackingCopyFileMutationVariables = Exact<{
+  id: Scalars['ID'];
+  file: ComputerCoreFileInput;
+}>;
+
+
+export type HackingCopyFileMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreAddFile'>
+);
+
+export type HackingActivateMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HackingActivateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreActivateHacking'>
+);
+
+export type HackingDeactivateMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HackingDeactivateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreDeactivateHacking'>
+);
+
+export type ComputerCoreHackingSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type ComputerCoreHackingSubscription = (
+  { __typename?: 'Subscription' }
+  & { computerCoreUpdate?: Maybe<Array<Maybe<(
+    { __typename?: 'ComputerCore' }
+    & Pick<ComputerCore, 'id' | 'hackingActive' | 'hackingState' | 'hackingLog' | 'hackingPortScanFrequency'>
+    & { activeHackingPreset?: Maybe<(
+      { __typename?: 'HackingPreset' }
+      & Pick<HackingPreset, 'id' | 'longRange' | 'remoteControl' | 'logs' | 'commandLines' | 'fileViewer'>
+      & { longRangeMessages: Array<(
+        { __typename?: 'HackingLRM' }
+        & Pick<HackingLrm, 'id' | 'title' | 'message'>
+      )>, files: Array<(
+        { __typename?: 'ComputerCoreFile' }
+        & Pick<ComputerCoreFile, 'id' | 'name' | 'level' | 'corrupted'>
+      )> }
+    )>, hackingPorts: (
+      { __typename?: 'HackingPorts' }
+      & Pick<HackingPorts, 'logs' | 'longRange' | 'remoteControl' | 'fileViewer'>
+    ) }
+  )>>> }
+);
+
+export type HackingRemoveLogMutationVariables = Exact<{
+  id: Scalars['ID'];
+  index: Scalars['Int'];
+}>;
+
+
+export type HackingRemoveLogMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreDeleteLog'>
+);
+
+export type HackingTransferToLongRangeMutationVariables = Exact<{
+  simulatorId: Scalars['ID'];
+  message: Scalars['String'];
+  sender?: Maybe<Scalars['String']>;
+}>;
+
+
+export type HackingTransferToLongRangeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'sendLongRangeMessage'>
+);
+
+export type HackingSetPresetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  presetId: Scalars['ID'];
+}>;
+
+
+export type HackingSetPresetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreHackingPreset'>
+);
+
+export type HackingUpdateFilesMutationVariables = Exact<{
+  id: Scalars['ID'];
+  files: Scalars['JSON'];
+}>;
+
+
+export type HackingUpdateFilesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'computerCoreUpdateHackingFiles'>
+);
+
+export type LightingSetEffectMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   effect: Lighting_Action;
   duration: Scalars['Float'];
-};
+}>;
 
 
 export type LightingSetEffectMutation = (
@@ -11257,10 +11598,10 @@ export type LightingSetEffectMutation = (
   & Pick<Mutation, 'lightingSetEffect'>
 );
 
-export type LightingSetIntensityMutationVariables = {
+export type LightingSetIntensityMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   intensity: Scalars['Float'];
-};
+}>;
 
 
 export type LightingSetIntensityMutation = (
@@ -11268,10 +11609,10 @@ export type LightingSetIntensityMutation = (
   & Pick<Mutation, 'lightingSetIntensity'>
 );
 
-export type ShakeLightsMutationVariables = {
+export type ShakeLightsMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   duration: Scalars['Float'];
-};
+}>;
 
 
 export type ShakeLightsMutation = (
@@ -11279,10 +11620,10 @@ export type ShakeLightsMutation = (
   & Pick<Mutation, 'lightingShakeLights'>
 );
 
-export type UpdateLightingMutationVariables = {
+export type UpdateLightingMutationVariables = Exact<{
   id: Scalars['ID'];
   lighting: LightingInput;
-};
+}>;
 
 
 export type UpdateLightingMutation = (
@@ -11290,11 +11631,11 @@ export type UpdateLightingMutation = (
   & Pick<Mutation, 'updateSimulatorLighting'>
 );
 
-export type ReactorAckWingPowerMutationVariables = {
+export type ReactorAckWingPowerMutationVariables = Exact<{
   id: Scalars['ID'];
   wing: Scalars['String'];
   ack: Scalars['Boolean'];
-};
+}>;
 
 
 export type ReactorAckWingPowerMutation = (
@@ -11302,10 +11643,10 @@ export type ReactorAckWingPowerMutation = (
   & Pick<Mutation, 'reactorAckWingRequest'>
 );
 
-export type BatteryChargeLevelMutationVariables = {
+export type BatteryChargeLevelMutationVariables = Exact<{
   id: Scalars['ID'];
   e: Scalars['Float'];
-};
+}>;
 
 
 export type BatteryChargeLevelMutation = (
@@ -11313,10 +11654,10 @@ export type BatteryChargeLevelMutation = (
   & Pick<Mutation, 'reactorBatteryChargeLevel'>
 );
 
-export type BatteryChargeRateMutationVariables = {
+export type BatteryChargeRateMutationVariables = Exact<{
   id: Scalars['ID'];
   e: Scalars['Float'];
-};
+}>;
 
 
 export type BatteryChargeRateMutation = (
@@ -11324,10 +11665,10 @@ export type BatteryChargeRateMutation = (
   & Pick<Mutation, 'reactorBatteryChargeRate'>
 );
 
-export type SetDilithiumRateMutationVariables = {
+export type SetDilithiumRateMutationVariables = Exact<{
   id: Scalars['ID'];
   rate: Scalars['Float'];
-};
+}>;
 
 
 export type SetDilithiumRateMutation = (
@@ -11335,9 +11676,9 @@ export type SetDilithiumRateMutation = (
   & Pick<Mutation, 'setDilithiumStressRate'>
 );
 
-export type ReactorDockingSubscriptionVariables = {
+export type ReactorDockingSubscriptionVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
-};
+}>;
 
 
 export type ReactorDockingSubscription = (
@@ -11352,9 +11693,9 @@ export type ReactorDockingSubscription = (
   )>>> }
 );
 
-export type FluxDilithiumMutationVariables = {
+export type FluxDilithiumMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type FluxDilithiumMutation = (
@@ -11362,9 +11703,9 @@ export type FluxDilithiumMutation = (
   & Pick<Mutation, 'fluxDilithiumStress'>
 );
 
-export type ReactorPowerSubscriptionVariables = {
+export type ReactorPowerSubscriptionVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
-};
+}>;
 
 
 export type ReactorPowerSubscription = (
@@ -11379,10 +11720,10 @@ export type ReactorPowerSubscription = (
   )> }
 );
 
-export type ReactorCoolMutationVariables = {
+export type ReactorCoolMutationVariables = Exact<{
   id: Scalars['ID'];
   state?: Maybe<Scalars['Boolean']>;
-};
+}>;
 
 
 export type ReactorCoolMutation = (
@@ -11390,10 +11731,10 @@ export type ReactorCoolMutation = (
   & Pick<Mutation, 'engineCool'>
 );
 
-export type ReactorHeatMutationVariables = {
+export type ReactorHeatMutationVariables = Exact<{
   id: Scalars['ID'];
   heat?: Maybe<Scalars['Float']>;
-};
+}>;
 
 
 export type ReactorHeatMutation = (
@@ -11401,10 +11742,10 @@ export type ReactorHeatMutation = (
   & Pick<Mutation, 'addHeat'>
 );
 
-export type ReactorSetHeatRateMutationVariables = {
+export type ReactorSetHeatRateMutationVariables = Exact<{
   id: Scalars['ID'];
   rate: Scalars['Float'];
-};
+}>;
 
 
 export type ReactorSetHeatRateMutation = (
@@ -11412,10 +11753,10 @@ export type ReactorSetHeatRateMutation = (
   & Pick<Mutation, 'setHeatRate'>
 );
 
-export type ReactorPowerLevelMutationVariables = {
+export type ReactorPowerLevelMutationVariables = Exact<{
   id: Scalars['ID'];
   e: Scalars['Int'];
-};
+}>;
 
 
 export type ReactorPowerLevelMutation = (
@@ -11423,9 +11764,9 @@ export type ReactorPowerLevelMutation = (
   & Pick<Mutation, 'reactorChangeOutput'>
 );
 
-export type ReactorsSubscriptionVariables = {
+export type ReactorsSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type ReactorsSubscription = (
@@ -11443,11 +11784,11 @@ export type ReactorsSubscription = (
   )> }
 );
 
-export type ReactorRequestWingPowerMutationVariables = {
+export type ReactorRequestWingPowerMutationVariables = Exact<{
   id: Scalars['ID'];
   wing: Scalars['String'];
   power: Scalars['Int'];
-};
+}>;
 
 
 export type ReactorRequestWingPowerMutation = (
@@ -11455,10 +11796,10 @@ export type ReactorRequestWingPowerMutation = (
   & Pick<Mutation, 'reactorRequestWingPower'>
 );
 
-export type ReactorSetEfficiencyMutationVariables = {
+export type ReactorSetEfficiencyMutationVariables = Exact<{
   id: Scalars['ID'];
   e?: Maybe<Scalars['Float']>;
-};
+}>;
 
 
 export type ReactorSetEfficiencyMutation = (
@@ -11466,11 +11807,11 @@ export type ReactorSetEfficiencyMutation = (
   & Pick<Mutation, 'reactorChangeEfficiency'>
 );
 
-export type ReactorSetWingPowerMutationVariables = {
+export type ReactorSetWingPowerMutationVariables = Exact<{
   id: Scalars['ID'];
   wing: Scalars['String'];
   power: Scalars['Int'];
-};
+}>;
 
 
 export type ReactorSetWingPowerMutation = (
@@ -11478,9 +11819,9 @@ export type ReactorSetWingPowerMutation = (
   & Pick<Mutation, 'reactorSetWingPower'>
 );
 
-export type SensorsPingSubSubscriptionVariables = {
+export type SensorsPingSubSubscriptionVariables = Exact<{
   sensorsId: Scalars['ID'];
-};
+}>;
 
 
 export type SensorsPingSubSubscription = (
@@ -11488,11 +11829,11 @@ export type SensorsPingSubSubscription = (
   & Pick<Subscription, 'sensorsPing'>
 );
 
-export type SensorsProbeDataMutationVariables = {
+export type SensorsProbeDataMutationVariables = Exact<{
   id: Scalars['ID'];
   data: Scalars['String'];
   flash?: Maybe<Scalars['Boolean']>;
-};
+}>;
 
 
 export type SensorsProbeDataMutation = (
@@ -11500,11 +11841,11 @@ export type SensorsProbeDataMutation = (
   & Pick<Mutation, 'probeProcessedData'>
 );
 
-export type SensorsProcessedDataMutationVariables = {
+export type SensorsProcessedDataMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
   data: Scalars['String'];
   flash?: Maybe<Scalars['Boolean']>;
-};
+}>;
 
 
 export type SensorsProcessedDataMutation = (
@@ -11512,10 +11853,10 @@ export type SensorsProcessedDataMutation = (
   & Pick<Mutation, 'processedData'>
 );
 
-export type SensorsRemoveProcessedDataMutationVariables = {
+export type SensorsRemoveProcessedDataMutationVariables = Exact<{
   id: Scalars['ID'];
   time: Scalars['String'];
-};
+}>;
 
 
 export type SensorsRemoveProcessedDataMutation = (
@@ -11523,9 +11864,9 @@ export type SensorsRemoveProcessedDataMutation = (
   & Pick<Mutation, 'removeProcessedData'>
 );
 
-export type SensorsSendPingMutationVariables = {
+export type SensorsSendPingMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type SensorsSendPingMutation = (
@@ -11533,10 +11874,10 @@ export type SensorsSendPingMutation = (
   & Pick<Mutation, 'pingSensors'>
 );
 
-export type SensorScanResponseMutationVariables = {
+export type SensorScanResponseMutationVariables = Exact<{
   id: Scalars['ID'];
   scan: SensorScanInput;
-};
+}>;
 
 
 export type SensorScanResponseMutation = (
@@ -11544,10 +11885,10 @@ export type SensorScanResponseMutation = (
   & Pick<Mutation, 'updateSensorScan'>
 );
 
-export type SensorScanResultMutationVariables = {
+export type SensorScanResultMutationVariables = Exact<{
   id: Scalars['ID'];
   result: Scalars['String'];
-};
+}>;
 
 
 export type SensorScanResultMutation = (
@@ -11555,9 +11896,9 @@ export type SensorScanResultMutation = (
   & Pick<Mutation, 'sensorScanResult'>
 );
 
-export type SensorsProbesQueryVariables = {
+export type SensorsProbesQueryVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type SensorsProbesQuery = (
@@ -11568,10 +11909,10 @@ export type SensorsProbesQuery = (
   )> }
 );
 
-export type SensorsSubscriptionVariables = {
+export type SensorsSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
   domain?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type SensorsSubscription = (
@@ -11604,11 +11945,11 @@ export type SensorsSubscription = (
   )> }
 );
 
-export type SetCalculatedTargetMutationVariables = {
+export type SetCalculatedTargetMutationVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
   coordinates: CoordinatesInput;
   contactId?: Maybe<Scalars['ID']>;
-};
+}>;
 
 
 export type SetCalculatedTargetMutation = (
@@ -11616,10 +11957,10 @@ export type SetCalculatedTargetMutation = (
   & Pick<Mutation, 'setTargetingCalculatedTarget'>
 );
 
-export type SensorsSetHistoryMutationVariables = {
+export type SensorsSetHistoryMutationVariables = Exact<{
   id: Scalars['ID'];
   history: Scalars['Boolean'];
-};
+}>;
 
 
 export type SensorsSetHistoryMutation = (
@@ -11627,10 +11968,10 @@ export type SensorsSetHistoryMutation = (
   & Pick<Mutation, 'setSensorsHistory'>
 );
 
-export type SensorsSetPingModeMutationVariables = {
+export type SensorsSetPingModeMutationVariables = Exact<{
   id: Scalars['ID'];
   mode?: Maybe<Ping_Modes>;
-};
+}>;
 
 
 export type SensorsSetPingModeMutation = (
@@ -11638,9 +11979,9 @@ export type SensorsSetPingModeMutation = (
   & Pick<Mutation, 'setSensorPingMode'>
 );
 
-export type TargetingRangeQueryVariables = {
+export type TargetingRangeQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type TargetingRangeQuery = (
@@ -11651,10 +11992,10 @@ export type TargetingRangeQuery = (
   )>>> }
 );
 
-export type NewLayerMutationVariables = {
+export type NewLayerMutationVariables = Exact<{
   mapId: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type NewLayerMutation = (
@@ -11662,11 +12003,11 @@ export type NewLayerMutation = (
   & Pick<Mutation, 'addTacticalMapLayer'>
 );
 
-export type AddTacticalItemMutationVariables = {
+export type AddTacticalItemMutationVariables = Exact<{
   mapId: Scalars['ID'];
   layerId: Scalars['ID'];
   item: TacticalItemInput;
-};
+}>;
 
 
 export type AddTacticalItemMutation = (
@@ -11674,7 +12015,7 @@ export type AddTacticalItemMutation = (
   & Pick<Mutation, 'addTacticalMapItem'>
 );
 
-export type AssetFoldersSubscriptionVariables = {};
+export type AssetFoldersSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AssetFoldersSubscription = (
@@ -11689,11 +12030,11 @@ export type AssetFoldersSubscription = (
   )> }
 );
 
-export type AssetsAddFolderMutationVariables = {
+export type AssetsAddFolderMutationVariables = Exact<{
   name: Scalars['String'];
   fullPath: Scalars['String'];
   folderPath: Scalars['String'];
-};
+}>;
 
 
 export type AssetsAddFolderMutation = (
@@ -11701,10 +12042,10 @@ export type AssetsAddFolderMutation = (
   & Pick<Mutation, 'addAssetFolder'>
 );
 
-export type DuplicateTacticalMutationVariables = {
+export type DuplicateTacticalMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type DuplicateTacticalMutation = (
@@ -11712,10 +12053,10 @@ export type DuplicateTacticalMutation = (
   & Pick<Mutation, 'duplicateTacticalMap'>
 );
 
-export type FreezeTacticalMapMutationVariables = {
+export type FreezeTacticalMapMutationVariables = Exact<{
   id: Scalars['ID'];
   freeze: Scalars['Boolean'];
-};
+}>;
 
 
 export type FreezeTacticalMapMutation = (
@@ -11723,9 +12064,9 @@ export type FreezeTacticalMapMutation = (
   & Pick<Mutation, 'freezeTacticalMap'>
 );
 
-export type NewTacticalMutationVariables = {
+export type NewTacticalMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type NewTacticalMutation = (
@@ -11733,9 +12074,9 @@ export type NewTacticalMutation = (
   & Pick<Mutation, 'newTacticalMap'>
 );
 
-export type AssetsRemoveObjectMutationVariables = {
+export type AssetsRemoveObjectMutationVariables = Exact<{
   fullPath: Scalars['String'];
-};
+}>;
 
 
 export type AssetsRemoveObjectMutation = (
@@ -11743,9 +12084,9 @@ export type AssetsRemoveObjectMutation = (
   & Pick<Mutation, 'removeAssetObject'>
 );
 
-export type AssetsRemoveFolderMutationVariables = {
+export type AssetsRemoveFolderMutationVariables = Exact<{
   fullPath: Scalars['String'];
-};
+}>;
 
 
 export type AssetsRemoveFolderMutation = (
@@ -11753,10 +12094,10 @@ export type AssetsRemoveFolderMutation = (
   & Pick<Mutation, 'removeAssetFolder'>
 );
 
-export type RemoveLayerMutationVariables = {
+export type RemoveLayerMutationVariables = Exact<{
   mapId: Scalars['ID'];
   layerId: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveLayerMutation = (
@@ -11764,9 +12105,9 @@ export type RemoveLayerMutation = (
   & Pick<Mutation, 'removeTacticalMapLayer'>
 );
 
-export type RemoveMapMutationVariables = {
+export type RemoveMapMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveMapMutation = (
@@ -11774,11 +12115,11 @@ export type RemoveMapMutation = (
   & Pick<Mutation, 'removeTacticalMap'>
 );
 
-export type RemoveTacticalItemMutationVariables = {
+export type RemoveTacticalItemMutationVariables = Exact<{
   mapId: Scalars['ID'];
   layerId: Scalars['ID'];
   itemId: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveTacticalItemMutation = (
@@ -11786,11 +12127,11 @@ export type RemoveTacticalItemMutation = (
   & Pick<Mutation, 'removeTacticalMapItem'>
 );
 
-export type RemoveTacticalPathMutationVariables = {
+export type RemoveTacticalPathMutationVariables = Exact<{
   mapId: Scalars['ID'];
   layerId: Scalars['ID'];
   pathId: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveTacticalPathMutation = (
@@ -11798,11 +12139,11 @@ export type RemoveTacticalPathMutation = (
   & Pick<Mutation, 'removeTacticalMapPath'>
 );
 
-export type ReorderTacticalLayerMutationVariables = {
+export type ReorderTacticalLayerMutationVariables = Exact<{
   mapId: Scalars['ID'];
   layer: Scalars['ID'];
   order: Scalars['Int'];
-};
+}>;
 
 
 export type ReorderTacticalLayerMutation = (
@@ -11810,9 +12151,9 @@ export type ReorderTacticalLayerMutation = (
   & Pick<Mutation, 'reorderTacticalMapLayer'>
 );
 
-export type TacticalMapUpdateSubscriptionVariables = {
+export type TacticalMapUpdateSubscriptionVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type TacticalMapUpdateSubscription = (
@@ -11863,7 +12204,7 @@ export type TacticalMapUpdateSubscription = (
   )> }
 );
 
-export type TacticalMapListSubscriptionVariables = {};
+export type TacticalMapListSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TacticalMapListSubscription = (
@@ -11878,10 +12219,10 @@ export type TacticalMapListSubscription = (
   )>>> }
 );
 
-export type UpdateLayerMutationVariables = {
+export type UpdateLayerMutationVariables = Exact<{
   mapId: Scalars['ID'];
   layer: TacticalLayerInput;
-};
+}>;
 
 
 export type UpdateLayerMutation = (
@@ -11889,11 +12230,11 @@ export type UpdateLayerMutation = (
   & Pick<Mutation, 'updateTacticalMapLayer'>
 );
 
-export type UpdateTacticalItemMutationVariables = {
+export type UpdateTacticalItemMutationVariables = Exact<{
   mapId: Scalars['ID'];
   layerId: Scalars['ID'];
   item: TacticalItemInput;
-};
+}>;
 
 
 export type UpdateTacticalItemMutation = (
@@ -11901,11 +12242,11 @@ export type UpdateTacticalItemMutation = (
   & Pick<Mutation, 'updateTacticalMapItem'>
 );
 
-export type UpdateTacticalPathMutationVariables = {
+export type UpdateTacticalPathMutationVariables = Exact<{
   mapId: Scalars['ID'];
   layerId: Scalars['ID'];
   path: TacticalPathInput;
-};
+}>;
 
 
 export type UpdateTacticalPathMutation = (
@@ -11913,7 +12254,7 @@ export type UpdateTacticalPathMutation = (
   & Pick<Mutation, 'updateTacticalMapPath'>
 );
 
-export type ProbeEquipmentQueryVariables = {};
+export type ProbeEquipmentQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ProbeEquipmentQuery = (
@@ -11924,10 +12265,10 @@ export type ProbeEquipmentQuery = (
   )> }
 );
 
-export type ActivateTaskFlowMutationVariables = {
+export type ActivateTaskFlowMutationVariables = Exact<{
   id: Scalars['ID'];
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type ActivateTaskFlowMutation = (
@@ -11935,7 +12276,7 @@ export type ActivateTaskFlowMutation = (
   & Pick<Mutation, 'taskFlowActivate'>
 );
 
-export type TaskFlowListSubscriptionVariables = {};
+export type TaskFlowListSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TaskFlowListSubscription = (
@@ -11946,9 +12287,9 @@ export type TaskFlowListSubscription = (
   )> }
 );
 
-export type TaskFlowSubSubscriptionVariables = {
+export type TaskFlowSubSubscriptionVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
-};
+}>;
 
 
 export type TaskFlowSubSubscription = (
@@ -11972,9 +12313,9 @@ export type TemplateFragmentFragment = (
   & Pick<Template, 'id'>
 );
 
-export type TemplateQueryVariables = {
+export type TemplateQueryVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type TemplateQuery = (
@@ -11985,9 +12326,9 @@ export type TemplateQuery = (
   )> }
 );
 
-export type TemplateUpdateSubscriptionVariables = {
+export type TemplateUpdateSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type TemplateUpdateSubscription = (
@@ -11998,9 +12339,9 @@ export type TemplateUpdateSubscription = (
   )> }
 );
 
-export type AddMissionMutationVariables = {
+export type AddMissionMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type AddMissionMutation = (
@@ -12008,10 +12349,10 @@ export type AddMissionMutation = (
   & Pick<Mutation, 'createMission'>
 );
 
-export type ExecuteMacrosMutationVariables = {
+export type ExecuteMacrosMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   macros: Array<Maybe<MacroInput>>;
-};
+}>;
 
 
 export type ExecuteMacrosMutation = (
@@ -12019,11 +12360,11 @@ export type ExecuteMacrosMutation = (
   & Pick<Mutation, 'triggerMacros'>
 );
 
-export type SetSimulatorMissionMutationVariables = {
+export type SetSimulatorMissionMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   missionId: Scalars['ID'];
   stepId?: Maybe<Scalars['ID']>;
-};
+}>;
 
 
 export type SetSimulatorMissionMutation = (
@@ -12031,11 +12372,11 @@ export type SetSimulatorMissionMutation = (
   & Pick<Mutation, 'setSimulatorMission'>
 );
 
-export type SetSimulatorTimelineStepMutationVariables = {
+export type SetSimulatorTimelineStepMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   auxTimelineId?: Maybe<Scalars['ID']>;
   step: Scalars['Int'];
-};
+}>;
 
 
 export type SetSimulatorTimelineStepMutation = (
@@ -12043,9 +12384,9 @@ export type SetSimulatorTimelineStepMutation = (
   & Pick<Mutation, 'setSimulatorTimelineStep'>
 );
 
-export type TimelineSimulatorSubscriptionVariables = {
+export type TimelineSimulatorSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type TimelineSimulatorSubscription = (
@@ -12063,7 +12404,7 @@ export type TimelineSimulatorSubscription = (
   )>>> }
 );
 
-export type TimelineMissionSubscriptionVariables = {};
+export type TimelineMissionSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TimelineMissionSubscription = (
@@ -12082,11 +12423,11 @@ export type TimelineMissionSubscription = (
   )> }
 );
 
-export type TractorBeamTargetLabelMutationVariables = {
+export type TractorBeamTargetLabelMutationVariables = Exact<{
   id: Scalars['ID'];
   beam: Scalars['ID'];
   label: Scalars['String'];
-};
+}>;
 
 
 export type TractorBeamTargetLabelMutation = (
@@ -12094,11 +12435,11 @@ export type TractorBeamTargetLabelMutation = (
   & Pick<Mutation, 'setTractorBeamTargetLabel'>
 );
 
-export type TractorBeamStateMutationVariables = {
+export type TractorBeamStateMutationVariables = Exact<{
   id: Scalars['ID'];
   beam: Scalars['ID'];
   state: Scalars['Boolean'];
-};
+}>;
 
 
 export type TractorBeamStateMutation = (
@@ -12106,11 +12447,11 @@ export type TractorBeamStateMutation = (
   & Pick<Mutation, 'setTractorBeamState'>
 );
 
-export type TractorBeamStrengthMutationVariables = {
+export type TractorBeamStrengthMutationVariables = Exact<{
   id: Scalars['ID'];
   beam: Scalars['ID'];
   strength: Scalars['Float'];
-};
+}>;
 
 
 export type TractorBeamStrengthMutation = (
@@ -12118,11 +12459,11 @@ export type TractorBeamStrengthMutation = (
   & Pick<Mutation, 'setTractorBeamStrength'>
 );
 
-export type TractorBeamStressMutationVariables = {
+export type TractorBeamStressMutationVariables = Exact<{
   id: Scalars['ID'];
   beam: Scalars['ID'];
   stress: Scalars['Float'];
-};
+}>;
 
 
 export type TractorBeamStressMutation = (
@@ -12130,9 +12471,9 @@ export type TractorBeamStressMutation = (
   & Pick<Mutation, 'setTractorBeamStress'>
 );
 
-export type TractorBeamUpdateSubscriptionVariables = {
+export type TractorBeamUpdateSubscriptionVariables = Exact<{
   simulatorId: Scalars['ID'];
-};
+}>;
 
 
 export type TractorBeamUpdateSubscription = (
@@ -12153,11 +12494,11 @@ export type TractorBeamUpdateSubscription = (
   )>>> }
 );
 
-export type TractorBeamTargetMutationVariables = {
+export type TractorBeamTargetMutationVariables = Exact<{
   id: Scalars['ID'];
   beam: Scalars['ID'];
   state: Scalars['Boolean'];
-};
+}>;
 
 
 export type TractorBeamTargetMutation = (
@@ -12165,7 +12506,7 @@ export type TractorBeamTargetMutation = (
   & Pick<Mutation, 'setTractorBeamTarget'>
 );
 
-export type ClientChangedSubscriptionVariables = {};
+export type ClientChangedSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ClientChangedSubscription = (
@@ -12194,9 +12535,9 @@ export type ClientChangedSubscription = (
   )>>> }
 );
 
-export type DisconnectClientMutationVariables = {
+export type DisconnectClientMutationVariables = Exact<{
   client: Scalars['ID'];
-};
+}>;
 
 
 export type DisconnectClientMutation = (
@@ -12204,7 +12545,7 @@ export type DisconnectClientMutation = (
   & Pick<Mutation, 'clientDisconnect'>
 );
 
-export type FlightsSubSubscriptionVariables = {};
+export type FlightsSubSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FlightsSubSubscription = (
@@ -12223,7 +12564,7 @@ export type FlightsSubSubscription = (
   )>>> }
 );
 
-export type ClientsInterfacesAndKeyboardsQueryVariables = {};
+export type ClientsInterfacesAndKeyboardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ClientsInterfacesAndKeyboardsQuery = (
@@ -12240,10 +12581,10 @@ export type ClientsInterfacesAndKeyboardsQuery = (
   )> }
 );
 
-export type SetClientFlightMutationVariables = {
+export type SetClientFlightMutationVariables = Exact<{
   client: Scalars['ID'];
   id: Scalars['ID'];
-};
+}>;
 
 
 export type SetClientFlightMutation = (
@@ -12251,10 +12592,10 @@ export type SetClientFlightMutation = (
   & Pick<Mutation, 'clientSetFlight'>
 );
 
-export type SetClientSimulatorMutationVariables = {
+export type SetClientSimulatorMutationVariables = Exact<{
   client: Scalars['ID'];
   id: Scalars['ID'];
-};
+}>;
 
 
 export type SetClientSimulatorMutation = (
@@ -12262,10 +12603,10 @@ export type SetClientSimulatorMutation = (
   & Pick<Mutation, 'clientSetSimulator'>
 );
 
-export type SetClientStationMutationVariables = {
+export type SetClientStationMutationVariables = Exact<{
   client: Scalars['ID'];
   id: Scalars['ID'];
-};
+}>;
 
 
 export type SetClientStationMutation = (
@@ -12273,10 +12614,10 @@ export type SetClientStationMutation = (
   & Pick<Mutation, 'clientSetStation'>
 );
 
-export type SetSoundPlayerMutationVariables = {
+export type SetSoundPlayerMutationVariables = Exact<{
   id: Scalars['ID'];
   soundPlayer: Scalars['Boolean'];
-};
+}>;
 
 
 export type SetSoundPlayerMutation = (
@@ -12284,13 +12625,13 @@ export type SetSoundPlayerMutation = (
   & Pick<Mutation, 'clientSetSoundPlayer'>
 );
 
-export type ApplyClientSetMutationVariables = {
+export type ApplyClientSetMutationVariables = Exact<{
   id: Scalars['ID'];
   flightId: Scalars['ID'];
   simulatorId: Scalars['ID'];
   templateId: Scalars['ID'];
   stationSetId: Scalars['ID'];
-};
+}>;
 
 
 export type ApplyClientSetMutation = (
@@ -12298,9 +12639,9 @@ export type ApplyClientSetMutation = (
   & Pick<Mutation, 'applyClientSet'>
 );
 
-export type DeleteFlightMutationVariables = {
+export type DeleteFlightMutationVariables = Exact<{
   flightId: Scalars['ID'];
-};
+}>;
 
 
 export type DeleteFlightMutation = (
@@ -12308,7 +12649,7 @@ export type DeleteFlightMutation = (
   & Pick<Mutation, 'deleteFlight'>
 );
 
-export type FlightQueryVariables = {};
+export type FlightQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FlightQuery = (
@@ -12319,9 +12660,9 @@ export type FlightQuery = (
   )> }
 );
 
-export type PauseFlightMutationVariables = {
+export type PauseFlightMutationVariables = Exact<{
   flightId: Scalars['ID'];
-};
+}>;
 
 
 export type PauseFlightMutation = (
@@ -12329,9 +12670,9 @@ export type PauseFlightMutation = (
   & Pick<Mutation, 'pauseFlight'>
 );
 
-export type ResetFlightMutationVariables = {
+export type ResetFlightMutationVariables = Exact<{
   flightId: Scalars['ID'];
-};
+}>;
 
 
 export type ResetFlightMutation = (
@@ -12339,9 +12680,9 @@ export type ResetFlightMutation = (
   & Pick<Mutation, 'resetFlight'>
 );
 
-export type LobbyResumeFlightMutationVariables = {
+export type LobbyResumeFlightMutationVariables = Exact<{
   flightId: Scalars['ID'];
-};
+}>;
 
 
 export type LobbyResumeFlightMutation = (
@@ -12349,9 +12690,9 @@ export type LobbyResumeFlightMutation = (
   & Pick<Mutation, 'resumeFlight'>
 );
 
-export type SetsPickerQueryVariables = {
+export type SetsPickerQueryVariables = Exact<{
   flightId?: Maybe<Scalars['ID']>;
-};
+}>;
 
 
 export type SetsPickerQuery = (
@@ -12387,9 +12728,9 @@ export type SetsPickerQuery = (
   )>>> }
 );
 
-export type TransmitFlightMutationVariables = {
+export type TransmitFlightMutationVariables = Exact<{
   flightId: Scalars['ID'];
-};
+}>;
 
 
 export type TransmitFlightMutation = (
@@ -12397,9 +12738,9 @@ export type TransmitFlightMutation = (
   & Pick<Mutation, 'assignSpaceEdventuresFlightRecord'>
 );
 
-export type DmxConfigCreateMutationVariables = {
+export type DmxConfigCreateMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxConfigCreateMutation = (
@@ -12407,10 +12748,10 @@ export type DmxConfigCreateMutation = (
   & Pick<Mutation, 'dmxConfigCreate'>
 );
 
-export type DmxConfigDuplicateMutationVariables = {
+export type DmxConfigDuplicateMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxConfigDuplicateMutation = (
@@ -12418,9 +12759,9 @@ export type DmxConfigDuplicateMutation = (
   & Pick<Mutation, 'dmxConfigDuplicate'>
 );
 
-export type DmxConfigRemoveMutationVariables = {
+export type DmxConfigRemoveMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type DmxConfigRemoveMutation = (
@@ -12428,10 +12769,10 @@ export type DmxConfigRemoveMutation = (
   & Pick<Mutation, 'dmxConfigRemove'>
 );
 
-export type DmxConfigSetActionStrengthMutationVariables = {
+export type DmxConfigSetActionStrengthMutationVariables = Exact<{
   id: Scalars['ID'];
   actionStrength: Scalars['Float'];
-};
+}>;
 
 
 export type DmxConfigSetActionStrengthMutation = (
@@ -12439,10 +12780,10 @@ export type DmxConfigSetActionStrengthMutation = (
   & Pick<Mutation, 'dmxConfigSetActionStrength'>
 );
 
-export type DmxConfigSetConfigMutationVariables = {
+export type DmxConfigSetConfigMutationVariables = Exact<{
   id: Scalars['ID'];
   config: Scalars['JSON'];
-};
+}>;
 
 
 export type DmxConfigSetConfigMutation = (
@@ -12450,10 +12791,10 @@ export type DmxConfigSetConfigMutation = (
   & Pick<Mutation, 'dmxConfigSetConfig'>
 );
 
-export type DmxConfigSetNameMutationVariables = {
+export type DmxConfigSetNameMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxConfigSetNameMutation = (
@@ -12461,7 +12802,7 @@ export type DmxConfigSetNameMutation = (
   & Pick<Mutation, 'dmxConfigSetName'>
 );
 
-export type DmxConfigsSubscriptionVariables = {};
+export type DmxConfigsSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type DmxConfigsSubscription = (
@@ -12472,9 +12813,9 @@ export type DmxConfigsSubscription = (
   )> }
 );
 
-export type DmxDeviceCreateMutationVariables = {
+export type DmxDeviceCreateMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxDeviceCreateMutation = (
@@ -12482,9 +12823,9 @@ export type DmxDeviceCreateMutation = (
   & Pick<Mutation, 'dmxDeviceCreate'>
 );
 
-export type DmxDeviceRemoveMutationVariables = {
+export type DmxDeviceRemoveMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type DmxDeviceRemoveMutation = (
@@ -12492,10 +12833,10 @@ export type DmxDeviceRemoveMutation = (
   & Pick<Mutation, 'dmxDeviceRemove'>
 );
 
-export type DmxDeviceSetChannelsMutationVariables = {
+export type DmxDeviceSetChannelsMutationVariables = Exact<{
   id: Scalars['ID'];
   channels: Array<DmxChannelProperty>;
-};
+}>;
 
 
 export type DmxDeviceSetChannelsMutation = (
@@ -12503,10 +12844,10 @@ export type DmxDeviceSetChannelsMutation = (
   & Pick<Mutation, 'dmxDeviceSetChannels'>
 );
 
-export type DmxDeviceSetNameMutationVariables = {
+export type DmxDeviceSetNameMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxDeviceSetNameMutation = (
@@ -12514,7 +12855,7 @@ export type DmxDeviceSetNameMutation = (
   & Pick<Mutation, 'dmxDeviceSetName'>
 );
 
-export type DmxDevicesSubscriptionVariables = {};
+export type DmxDevicesSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type DmxDevicesSubscription = (
@@ -12525,11 +12866,11 @@ export type DmxDevicesSubscription = (
   )> }
 );
 
-export type DmxFixtureCreateMutationVariables = {
+export type DmxFixtureCreateMutationVariables = Exact<{
   name: Scalars['String'];
   dmxSetId: Scalars['ID'];
   dmxDeviceId: Scalars['ID'];
-};
+}>;
 
 
 export type DmxFixtureCreateMutation = (
@@ -12537,10 +12878,10 @@ export type DmxFixtureCreateMutation = (
   & Pick<Mutation, 'dmxFixtureCreate'>
 );
 
-export type DmxFixtureRemoveMutationVariables = {
+export type DmxFixtureRemoveMutationVariables = Exact<{
   id: Scalars['ID'];
   dmxSetId: Scalars['ID'];
-};
+}>;
 
 
 export type DmxFixtureRemoveMutation = (
@@ -12548,10 +12889,10 @@ export type DmxFixtureRemoveMutation = (
   & Pick<Mutation, 'dmxFixtureRemove'>
 );
 
-export type DmxFixtureSetChannelMutationVariables = {
+export type DmxFixtureSetChannelMutationVariables = Exact<{
   id: Scalars['ID'];
   channel: Scalars['Int'];
-};
+}>;
 
 
 export type DmxFixtureSetChannelMutation = (
@@ -12559,10 +12900,10 @@ export type DmxFixtureSetChannelMutation = (
   & Pick<Mutation, 'dmxFixtureSetChannel'>
 );
 
-export type DmxFixtureSetDmxDeviceMutationVariables = {
+export type DmxFixtureSetDmxDeviceMutationVariables = Exact<{
   id: Scalars['ID'];
   deviceId: Scalars['ID'];
-};
+}>;
 
 
 export type DmxFixtureSetDmxDeviceMutation = (
@@ -12570,10 +12911,10 @@ export type DmxFixtureSetDmxDeviceMutation = (
   & Pick<Mutation, 'dmxFixtureSetDMXDevice'>
 );
 
-export type DmxFixtureSetModeMutationVariables = {
+export type DmxFixtureSetModeMutationVariables = Exact<{
   id: Scalars['ID'];
   mode: DmxFixtureMode;
-};
+}>;
 
 
 export type DmxFixtureSetModeMutation = (
@@ -12581,10 +12922,10 @@ export type DmxFixtureSetModeMutation = (
   & Pick<Mutation, 'dmxFixtureSetMode'>
 );
 
-export type DmxFixtureSetNameMutationVariables = {
+export type DmxFixtureSetNameMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxFixtureSetNameMutation = (
@@ -12592,10 +12933,10 @@ export type DmxFixtureSetNameMutation = (
   & Pick<Mutation, 'dmxFixtureSetName'>
 );
 
-export type DmxFixtureSetPassiveChannelsMutationVariables = {
+export type DmxFixtureSetPassiveChannelsMutationVariables = Exact<{
   id: Scalars['ID'];
   passiveChannels: DmxPassiveChannelsInput;
-};
+}>;
 
 
 export type DmxFixtureSetPassiveChannelsMutation = (
@@ -12603,10 +12944,10 @@ export type DmxFixtureSetPassiveChannelsMutation = (
   & Pick<Mutation, 'dmxFixtureSetPassiveChannels'>
 );
 
-export type DmxFixtureSetTagsMutationVariables = {
+export type DmxFixtureSetTagsMutationVariables = Exact<{
   id: Scalars['ID'];
   newTags: Array<Scalars['String']>;
-};
+}>;
 
 
 export type DmxFixtureSetTagsMutation = (
@@ -12614,10 +12955,10 @@ export type DmxFixtureSetTagsMutation = (
   & Pick<Mutation, 'dmxFixtureSetTags'>
 );
 
-export type DmxFixturesSubscriptionVariables = {
+export type DmxFixturesSubscriptionVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
   clientId?: Maybe<Scalars['ID']>;
-};
+}>;
 
 
 export type DmxFixturesSubscription = (
@@ -12635,7 +12976,7 @@ export type DmxFixturesSubscription = (
   )> }
 );
 
-export type DmxFixtureTagsQueryVariables = {};
+export type DmxFixtureTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type DmxFixtureTagsQuery = (
@@ -12646,9 +12987,9 @@ export type DmxFixtureTagsQuery = (
   )> }
 );
 
-export type DmxSetCreateMutationVariables = {
+export type DmxSetCreateMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxSetCreateMutation = (
@@ -12656,10 +12997,10 @@ export type DmxSetCreateMutation = (
   & Pick<Mutation, 'dmxSetCreate'>
 );
 
-export type DmxSetDuplicateMutationVariables = {
+export type DmxSetDuplicateMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxSetDuplicateMutation = (
@@ -12667,9 +13008,9 @@ export type DmxSetDuplicateMutation = (
   & Pick<Mutation, 'dmxSetDuplicate'>
 );
 
-export type DmxSetRemoveMutationVariables = {
+export type DmxSetRemoveMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type DmxSetRemoveMutation = (
@@ -12677,10 +13018,10 @@ export type DmxSetRemoveMutation = (
   & Pick<Mutation, 'dmxSetRemove'>
 );
 
-export type DmxSetSetNameMutationVariables = {
+export type DmxSetSetNameMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type DmxSetSetNameMutation = (
@@ -12688,7 +13029,7 @@ export type DmxSetSetNameMutation = (
   & Pick<Mutation, 'dmxSetSetName'>
 );
 
-export type DmxSetsSubscriptionVariables = {};
+export type DmxSetsSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type DmxSetsSubscription = (
@@ -12707,9 +13048,9 @@ export type DmxSetsSubscription = (
   )> }
 );
 
-export type EntityCreateTemplateMutationVariables = {
+export type EntityCreateTemplateMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type EntityCreateTemplateMutation = (
@@ -12721,7 +13062,7 @@ export type EntityCreateTemplateMutation = (
   ) }
 );
 
-export type FlightSetupQueryVariables = {};
+export type FlightSetupQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FlightSetupQuery = (
@@ -12754,7 +13095,7 @@ export type FlightSetupQuery = (
   )> }
 );
 
-export type FlightTypesQueryVariables = {};
+export type FlightTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FlightTypesQuery = (
@@ -12772,11 +13113,11 @@ export type FlightTypesQuery = (
   )> }
 );
 
-export type StartFlightMutationVariables = {
+export type StartFlightMutationVariables = Exact<{
   name: Scalars['String'];
   simulators: Array<SimulatorInput>;
   flightType?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type StartFlightMutation = (
@@ -12784,9 +13125,58 @@ export type StartFlightMutation = (
   & Pick<Mutation, 'startFlight'>
 );
 
-export type MacroDuplicateMutationVariables = {
+export type HackingPresetCreateMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type HackingPresetCreateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createHackingPreset'>
+);
+
+export type HackingPresetDeleteMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
+
+
+export type HackingPresetDeleteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteHackingPreset'>
+);
+
+export type HackingPresetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HackingPresetsQuery = (
+  { __typename?: 'Query' }
+  & { hackingPresets: Array<(
+    { __typename?: 'HackingPreset' }
+    & Pick<HackingPreset, 'id' | 'name' | 'logs' | 'longRange' | 'remoteControl' | 'fileViewer' | 'commandLines'>
+    & { longRangeMessages: Array<(
+      { __typename?: 'HackingLRM' }
+      & Pick<HackingLrm, 'id' | 'title' | 'message'>
+    )>, files: Array<(
+      { __typename?: 'ComputerCoreFile' }
+      & Pick<ComputerCoreFile, 'id' | 'name' | 'level' | 'corrupted' | 'restoring'>
+    )> }
+  )> }
+);
+
+export type HackingPresetUpdateMutationVariables = Exact<{
+  id: Scalars['ID'];
+  preset: Scalars['JSON'];
+}>;
+
+
+export type HackingPresetUpdateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateHackingPreset'>
+);
+
+export type MacroDuplicateMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
 
 
 export type MacroDuplicateMutation = (
@@ -12794,10 +13184,10 @@ export type MacroDuplicateMutation = (
   & Pick<Mutation, 'duplicateMacro'>
 );
 
-export type MacroDuplicateActionMutationVariables = {
+export type MacroDuplicateActionMutationVariables = Exact<{
   id: Scalars['ID'];
   actionId: Scalars['ID'];
-};
+}>;
 
 
 export type MacroDuplicateActionMutation = (
@@ -12805,12 +13195,12 @@ export type MacroDuplicateActionMutation = (
   & Pick<Mutation, 'duplicateMacroAction'>
 );
 
-export type TimelineAddItemMutationVariables = {
+export type TimelineAddItemMutationVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
   missionId?: Maybe<Scalars['ID']>;
   timelineStepId: Scalars['ID'];
   timelineItem: TimelineItemInput;
-};
+}>;
 
 
 export type TimelineAddItemMutation = (
@@ -12818,12 +13208,12 @@ export type TimelineAddItemMutation = (
   & Pick<Mutation, 'addTimelineItemToTimelineStep'>
 );
 
-export type TimelineAddStepMutationVariables = {
+export type TimelineAddStepMutationVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
   missionId?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type TimelineAddStepMutation = (
@@ -12831,11 +13221,11 @@ export type TimelineAddStepMutation = (
   & Pick<Mutation, 'addTimelineStep'>
 );
 
-export type TimelineDuplicateItemMutationVariables = {
+export type TimelineDuplicateItemMutationVariables = Exact<{
   missionId: Scalars['ID'];
   timelineStepId: Scalars['ID'];
   timelineItemId: Scalars['ID'];
-};
+}>;
 
 
 export type TimelineDuplicateItemMutation = (
@@ -12843,10 +13233,10 @@ export type TimelineDuplicateItemMutation = (
   & Pick<Mutation, 'timelineDuplicateItem'>
 );
 
-export type TimelineDuplicateStepMutationVariables = {
+export type TimelineDuplicateStepMutationVariables = Exact<{
   missionId: Scalars['ID'];
   timelineStepId: Scalars['ID'];
-};
+}>;
 
 
 export type TimelineDuplicateStepMutation = (
@@ -12854,13 +13244,13 @@ export type TimelineDuplicateStepMutation = (
   & Pick<Mutation, 'duplicateTimelineStep'>
 );
 
-export type EditMissionMutationVariables = {
+export type EditMissionMutationVariables = Exact<{
   missionId: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   category?: Maybe<Scalars['String']>;
   aux?: Maybe<Scalars['Boolean']>;
-};
+}>;
 
 
 export type EditMissionMutation = (
@@ -12868,7 +13258,7 @@ export type EditMissionMutation = (
   & Pick<Mutation, 'editMission'>
 );
 
-export type IntrospectionQueryQueryVariables = {};
+export type IntrospectionQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type IntrospectionQueryQuery = (
@@ -12886,9 +13276,9 @@ export type IntrospectionQueryQuery = (
   ) }
 );
 
-export type MissionSubscriptionSubscriptionVariables = {
+export type MissionSubscriptionSubscriptionVariables = Exact<{
   missionId: Scalars['ID'];
-};
+}>;
 
 
 export type MissionSubscriptionSubscription = (
@@ -12913,9 +13303,9 @@ export type MissionSubscriptionSubscription = (
   )> }
 );
 
-export type RemoveMissionMutationVariables = {
+export type RemoveMissionMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveMissionMutation = (
@@ -12923,11 +13313,11 @@ export type RemoveMissionMutation = (
   & Pick<Mutation, 'removeMission'>
 );
 
-export type TimelineRemoveItemMutationVariables = {
+export type TimelineRemoveItemMutationVariables = Exact<{
   missionId: Scalars['ID'];
   timelineStepId: Scalars['ID'];
   timelineItemId: Scalars['ID'];
-};
+}>;
 
 
 export type TimelineRemoveItemMutation = (
@@ -12935,10 +13325,10 @@ export type TimelineRemoveItemMutation = (
   & Pick<Mutation, 'removeTimelineStepItem'>
 );
 
-export type TimelineRemoveStepMutationVariables = {
+export type TimelineRemoveStepMutationVariables = Exact<{
   missionId: Scalars['ID'];
   timelineStepId: Scalars['ID'];
-};
+}>;
 
 
 export type TimelineRemoveStepMutation = (
@@ -12946,11 +13336,11 @@ export type TimelineRemoveStepMutation = (
   & Pick<Mutation, 'removeTimelineStep'>
 );
 
-export type TimelineReorderStepMutationVariables = {
+export type TimelineReorderStepMutationVariables = Exact<{
   missionId?: Maybe<Scalars['ID']>;
   timelineStepId: Scalars['ID'];
   order: Scalars['Int'];
-};
+}>;
 
 
 export type TimelineReorderStepMutation = (
@@ -12958,10 +13348,10 @@ export type TimelineReorderStepMutation = (
   & Pick<Mutation, 'reorderTimelineStep'>
 );
 
-export type MissionSetRequirementsMutationVariables = {
+export type MissionSetRequirementsMutationVariables = Exact<{
   missionId: Scalars['ID'];
   requirements: RequirementInput;
-};
+}>;
 
 
 export type MissionSetRequirementsMutation = (
@@ -12969,13 +13359,13 @@ export type MissionSetRequirementsMutation = (
   & Pick<Mutation, 'missionSetExtraRequirements'>
 );
 
-export type TimelineUpdateItemMutationVariables = {
+export type TimelineUpdateItemMutationVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
   missionId?: Maybe<Scalars['ID']>;
   timelineStepId: Scalars['ID'];
   timelineItemId: Scalars['ID'];
   timelineItem: TimelineItemInput;
-};
+}>;
 
 
 export type TimelineUpdateItemMutation = (
@@ -12983,13 +13373,13 @@ export type TimelineUpdateItemMutation = (
   & Pick<Mutation, 'updateTimelineStepItem'>
 );
 
-export type TimelineUpdateStepMutationVariables = {
+export type TimelineUpdateStepMutationVariables = Exact<{
   simulatorId?: Maybe<Scalars['ID']>;
   missionId?: Maybe<Scalars['ID']>;
   timelineStepId: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type TimelineUpdateStepMutation = (
@@ -12997,10 +13387,10 @@ export type TimelineUpdateStepMutation = (
   & Pick<Mutation, 'updateTimelineStep'>
 );
 
-export type AddClientMutationVariables = {
+export type AddClientMutationVariables = Exact<{
   id: Scalars['ID'];
   client: SetClientInput;
-};
+}>;
 
 
 export type AddClientMutation = (
@@ -13008,9 +13398,9 @@ export type AddClientMutation = (
   & Pick<Mutation, 'addClientToSet'>
 );
 
-export type AddSetMutationVariables = {
+export type AddSetMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type AddSetMutation = (
@@ -13018,10 +13408,10 @@ export type AddSetMutation = (
   & Pick<Mutation, 'createSet'>
 );
 
-export type RemoveClientFromSetMutationVariables = {
+export type RemoveClientFromSetMutationVariables = Exact<{
   id: Scalars['ID'];
   client: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveClientFromSetMutation = (
@@ -13029,9 +13419,9 @@ export type RemoveClientFromSetMutation = (
   & Pick<Mutation, 'removeClientFromSet'>
 );
 
-export type RemoveSetMutationVariables = {
+export type RemoveSetMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveSetMutation = (
@@ -13039,10 +13429,10 @@ export type RemoveSetMutation = (
   & Pick<Mutation, 'removeSet'>
 );
 
-export type RenameSetMutationVariables = {
+export type RenameSetMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type RenameSetMutation = (
@@ -13050,9 +13440,9 @@ export type RenameSetMutation = (
   & Pick<Mutation, 'renameSet'>
 );
 
-export type SetKeyboardAndInterfaceQueryVariables = {
+export type SetKeyboardAndInterfaceQueryVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
-};
+}>;
 
 
 export type SetKeyboardAndInterfaceQuery = (
@@ -13072,7 +13462,7 @@ export type SetKeyboardAndInterfaceQuery = (
   )> }
 );
 
-export type SetsQueryVariables = {};
+export type SetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SetsQuery = (
@@ -13114,12 +13504,12 @@ export type SetsQuery = (
   )>>> }
 );
 
-export type UpdateSetClientMutationVariables = {
+export type UpdateSetClientMutationVariables = Exact<{
   id: Scalars['ID'];
   clientId: Scalars['ID'];
   secondary?: Maybe<Scalars['Boolean']>;
   soundPlayer?: Maybe<Scalars['Boolean']>;
-};
+}>;
 
 
 export type UpdateSetClientMutation = (
@@ -13127,13 +13517,13 @@ export type UpdateSetClientMutation = (
   & Pick<Mutation, 'updateSetClient'>
 );
 
-export type AddCardMutationVariables = {
+export type AddCardMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
   cardName: Scalars['String'];
   cardComponent: Scalars['String'];
   cardIcon?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type AddCardMutation = (
@@ -13141,10 +13531,10 @@ export type AddCardMutation = (
   & Pick<Mutation, 'addCardToStation'>
 );
 
-export type AddStationMutationVariables = {
+export type AddStationMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type AddStationMutation = (
@@ -13152,10 +13542,10 @@ export type AddStationMutation = (
   & Pick<Mutation, 'addStationToStationSet'>
 );
 
-export type StationSetDuplicateMutationVariables = {
+export type StationSetDuplicateMutationVariables = Exact<{
   stationSetID: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type StationSetDuplicateMutation = (
@@ -13163,7 +13553,7 @@ export type StationSetDuplicateMutation = (
   & Pick<Mutation, 'duplicateStationSet'>
 );
 
-export type PanelsAndInterfacesQueryVariables = {};
+export type PanelsAndInterfacesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type PanelsAndInterfacesQuery = (
@@ -13177,11 +13567,11 @@ export type PanelsAndInterfacesQuery = (
   )>>> }
 );
 
-export type RemoveCardMutationVariables = {
+export type RemoveCardMutationVariables = Exact<{
   id: Scalars['ID'];
   stationName: Scalars['String'];
   cardName: Scalars['String'];
-};
+}>;
 
 
 export type RemoveCardMutation = (
@@ -13189,10 +13579,10 @@ export type RemoveCardMutation = (
   & Pick<Mutation, 'removeCardFromStation'>
 );
 
-export type RemoveStationMutationVariables = {
+export type RemoveStationMutationVariables = Exact<{
   id: Scalars['ID'];
   stationName: Scalars['String'];
-};
+}>;
 
 
 export type RemoveStationMutation = (
@@ -13200,11 +13590,11 @@ export type RemoveStationMutation = (
   & Pick<Mutation, 'removeStationFromStationSet'>
 );
 
-export type RenameStationMutationVariables = {
+export type RenameStationMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
   newName: Scalars['String'];
-};
+}>;
 
 
 export type RenameStationMutation = (
@@ -13212,12 +13602,12 @@ export type RenameStationMutation = (
   & Pick<Mutation, 'editStationInStationSet'>
 );
 
-export type ReorderStationWidgetsMutationVariables = {
+export type ReorderStationWidgetsMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
   widget: Scalars['String'];
   order: Scalars['Int'];
-};
+}>;
 
 
 export type ReorderStationWidgetsMutation = (
@@ -13225,11 +13615,11 @@ export type ReorderStationWidgetsMutation = (
   & Pick<Mutation, 'reorderStationWidgets'>
 );
 
-export type SetAmbianceMutationVariables = {
+export type SetAmbianceMutationVariables = Exact<{
   stationSetID: Scalars['ID'];
   stationName: Scalars['String'];
   ambiance?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type SetAmbianceMutation = (
@@ -13237,10 +13627,10 @@ export type SetAmbianceMutation = (
   & Pick<Mutation, 'setStationAmbiance'>
 );
 
-export type SetStationCrewCountMutationVariables = {
+export type SetStationCrewCountMutationVariables = Exact<{
   stationSetId: Scalars['ID'];
   crewCount: Scalars['Int'];
-};
+}>;
 
 
 export type SetStationCrewCountMutation = (
@@ -13248,11 +13638,11 @@ export type SetStationCrewCountMutation = (
   & Pick<Mutation, 'setStationSetCrewCount'>
 );
 
-export type SetStationDescriptionMutationVariables = {
+export type SetStationDescriptionMutationVariables = Exact<{
   stationSetID: Scalars['ID'];
   stationName: Scalars['String'];
   description: Scalars['String'];
-};
+}>;
 
 
 export type SetStationDescriptionMutation = (
@@ -13260,11 +13650,11 @@ export type SetStationDescriptionMutation = (
   & Pick<Mutation, 'setStationDescription'>
 );
 
-export type SetStationLayoutMutationVariables = {
+export type SetStationLayoutMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
   layout: Scalars['String'];
-};
+}>;
 
 
 export type SetStationLayoutMutation = (
@@ -13272,11 +13662,11 @@ export type SetStationLayoutMutation = (
   & Pick<Mutation, 'setStationLayout'>
 );
 
-export type StationSetTrainingMutationVariables = {
+export type StationSetTrainingMutationVariables = Exact<{
   stationSetID: Scalars['ID'];
   stationName: Scalars['String'];
   training: Scalars['String'];
-};
+}>;
 
 
 export type StationSetTrainingMutation = (
@@ -13284,12 +13674,12 @@ export type StationSetTrainingMutation = (
   & Pick<Mutation, 'setStationTraining'>
 );
 
-export type ToggleStationMessageGroupMutationVariables = {
+export type ToggleStationMessageGroupMutationVariables = Exact<{
   stationSetId: Scalars['ID'];
   station: Scalars['String'];
   group: Scalars['String'];
   state: Scalars['Boolean'];
-};
+}>;
 
 
 export type ToggleStationMessageGroupMutation = (
@@ -13297,11 +13687,11 @@ export type ToggleStationMessageGroupMutation = (
   & Pick<Mutation, 'toggleStationMessageGroup'>
 );
 
-export type ToggleStationExecMutationVariables = {
+export type ToggleStationExecMutationVariables = Exact<{
   stationSetID: Scalars['ID'];
   stationName: Scalars['String'];
   exec: Scalars['Boolean'];
-};
+}>;
 
 
 export type ToggleStationExecMutation = (
@@ -13309,11 +13699,11 @@ export type ToggleStationExecMutation = (
   & Pick<Mutation, 'setStationExecutive'>
 );
 
-export type ToggleStationLoginMutationVariables = {
+export type ToggleStationLoginMutationVariables = Exact<{
   stationSetID: Scalars['ID'];
   stationName: Scalars['String'];
   login: Scalars['Boolean'];
-};
+}>;
 
 
 export type ToggleStationLoginMutation = (
@@ -13321,12 +13711,12 @@ export type ToggleStationLoginMutation = (
   & Pick<Mutation, 'setStationLogin'>
 );
 
-export type ToggleStationWidgetMutationVariables = {
+export type ToggleStationWidgetMutationVariables = Exact<{
   stationSetID: Scalars['ID'];
   stationName: Scalars['String'];
   widget: Scalars['String'];
   state: Scalars['Boolean'];
-};
+}>;
 
 
 export type ToggleStationWidgetMutation = (
@@ -13334,14 +13724,14 @@ export type ToggleStationWidgetMutation = (
   & Pick<Mutation, 'toggleStationWidgets'>
 );
 
-export type UpdateStationCardMutationVariables = {
+export type UpdateStationCardMutationVariables = Exact<{
   stationSetId: Scalars['ID'];
   stationName: Scalars['String'];
   cardName: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   component?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type UpdateStationCardMutation = (
@@ -13349,10 +13739,10 @@ export type UpdateStationCardMutation = (
   & Pick<Mutation, 'editCardInStationSet'>
 );
 
-export type SystemSetWingMutationVariables = {
+export type SystemSetWingMutationVariables = Exact<{
   systemId: Scalars['ID'];
   wing: Scalars['String'];
-};
+}>;
 
 
 export type SystemSetWingMutation = (
@@ -13360,10 +13750,10 @@ export type SystemSetWingMutation = (
   & Pick<Mutation, 'systemSetWing'>
 );
 
-export type SensorsSetPingsMutationVariables = {
+export type SensorsSetPingsMutationVariables = Exact<{
   id: Scalars['ID'];
   ping: Scalars['Boolean'];
-};
+}>;
 
 
 export type SensorsSetPingsMutation = (
@@ -13371,10 +13761,10 @@ export type SensorsSetPingsMutation = (
   & Pick<Mutation, 'sensorsSetHasPing'>
 );
 
-export type ReactorSetWingsMutationVariables = {
+export type ReactorSetWingsMutationVariables = Exact<{
   id: Scalars['ID'];
   hasWings: Scalars['Boolean'];
-};
+}>;
 
 
 export type ReactorSetWingsMutation = (
@@ -13382,10 +13772,10 @@ export type ReactorSetWingsMutation = (
   & Pick<Mutation, 'reactorSetHasWings'>
 );
 
-export type TractorBeamSetCountMutationVariables = {
+export type TractorBeamSetCountMutationVariables = Exact<{
   id: Scalars['ID'];
   beams: Scalars['Int'];
-};
+}>;
 
 
 export type TractorBeamSetCountMutation = (
@@ -13393,10 +13783,10 @@ export type TractorBeamSetCountMutation = (
   & Pick<Mutation, 'setTractorBeamCount'>
 );
 
-export type StealthSetSensorSonarMutationVariables = {
+export type StealthSetSensorSonarMutationVariables = Exact<{
   id: Scalars['ID'];
   sonar: Scalars['Boolean'];
-};
+}>;
 
 
 export type StealthSetSensorSonarMutation = (
@@ -13404,9 +13794,9 @@ export type StealthSetSensorSonarMutation = (
   & Pick<Mutation, 'stealthSensorsSonar'>
 );
 
-export type RemoveSimulatorMutationVariables = {
+export type RemoveSimulatorMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveSimulatorMutation = (
@@ -13414,7 +13804,7 @@ export type RemoveSimulatorMutation = (
   & Pick<Mutation, 'removeSimulator'>
 );
 
-export type SimulatorsConfigSubscriptionVariables = {};
+export type SimulatorsConfigSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SimulatorsConfigSubscription = (
@@ -13495,7 +13885,7 @@ export type SimulatorsConfigSubscription = (
   )>>> }
 );
 
-export type StationSetConfigSubscriptionVariables = {};
+export type StationSetConfigSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type StationSetConfigSubscription = (
@@ -13517,11 +13907,11 @@ export type StationSetConfigSubscription = (
   )>>> }
 );
 
-export type StationSetTagsMutationVariables = {
+export type StationSetTagsMutationVariables = Exact<{
   stationSetId: Scalars['ID'];
   stationName: Scalars['String'];
   tags: Array<Scalars['String']>;
-};
+}>;
 
 
 export type StationSetTagsMutation = (
@@ -13529,9 +13919,9 @@ export type StationSetTagsMutation = (
   & Pick<Mutation, 'setStationTags'>
 );
 
-export type AddTaskTemplateMutationVariables = {
+export type AddTaskTemplateMutationVariables = Exact<{
   definition: Scalars['String'];
-};
+}>;
 
 
 export type AddTaskTemplateMutation = (
@@ -13539,7 +13929,7 @@ export type AddTaskTemplateMutation = (
   & Pick<Mutation, 'addTaskTemplate'>
 );
 
-export type ImportTemplatesMutationVariables = {};
+export type ImportTemplatesMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ImportTemplatesMutation = (
@@ -13547,9 +13937,9 @@ export type ImportTemplatesMutation = (
   & Pick<Mutation, 'importTaskTemplates'>
 );
 
-export type RemoveTaskTemplateMutationVariables = {
+export type RemoveTaskTemplateMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type RemoveTaskTemplateMutation = (
@@ -13557,10 +13947,10 @@ export type RemoveTaskTemplateMutation = (
   & Pick<Mutation, 'removeTaskTemplate'>
 );
 
-export type RenameTaskTemplateMutationVariables = {
+export type RenameTaskTemplateMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type RenameTaskTemplateMutation = (
@@ -13568,10 +13958,10 @@ export type RenameTaskTemplateMutation = (
   & Pick<Mutation, 'renameTaskTemplate'>
 );
 
-export type SetTaskMacroMutationVariables = {
+export type SetTaskMacroMutationVariables = Exact<{
   id: Scalars['ID'];
   macros: Array<ActionInput>;
-};
+}>;
 
 
 export type SetTaskMacroMutation = (
@@ -13579,10 +13969,10 @@ export type SetTaskMacroMutation = (
   & Pick<Mutation, 'setTaskTemplateMacros'>
 );
 
-export type SetTaskPreMacroMutationVariables = {
+export type SetTaskPreMacroMutationVariables = Exact<{
   id: Scalars['ID'];
   macros: Array<ActionInput>;
-};
+}>;
 
 
 export type SetTaskPreMacroMutation = (
@@ -13590,10 +13980,10 @@ export type SetTaskPreMacroMutation = (
   & Pick<Mutation, 'setTaskTemplatePreMacros'>
 );
 
-export type SetTaskTemplateReportTypesMutationVariables = {
+export type SetTaskTemplateReportTypesMutationVariables = Exact<{
   id: Scalars['ID'];
   reportTypes: Array<Maybe<Scalars['String']>>;
-};
+}>;
 
 
 export type SetTaskTemplateReportTypesMutation = (
@@ -13601,10 +13991,10 @@ export type SetTaskTemplateReportTypesMutation = (
   & Pick<Mutation, 'setTaskTemplateReportTypes'>
 );
 
-export type SetTaskTemplateValuesMutationVariables = {
+export type SetTaskTemplateValuesMutationVariables = Exact<{
   id: Scalars['ID'];
   values: Scalars['JSON'];
-};
+}>;
 
 
 export type SetTaskTemplateValuesMutation = (
@@ -13612,7 +14002,7 @@ export type SetTaskTemplateValuesMutation = (
   & Pick<Mutation, 'setTaskTemplateValues'>
 );
 
-export type TaskDefinitionsQueryVariables = {};
+export type TaskDefinitionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TaskDefinitionsQuery = (
@@ -13634,9 +14024,9 @@ export type TaskDefinitionsQuery = (
   )> }
 );
 
-export type TaskFlowAddMutationVariables = {
+export type TaskFlowAddMutationVariables = Exact<{
   name: Scalars['String'];
-};
+}>;
 
 
 export type TaskFlowAddMutation = (
@@ -13644,10 +14034,10 @@ export type TaskFlowAddMutation = (
   & Pick<Mutation, 'taskFlowAdd'>
 );
 
-export type TaskFlowAddStepMutationVariables = {
+export type TaskFlowAddStepMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type TaskFlowAddStepMutation = (
@@ -13655,9 +14045,9 @@ export type TaskFlowAddStepMutation = (
   & Pick<Mutation, 'taskFlowAddStep'>
 );
 
-export type TaskFlowRemoveMutationVariables = {
+export type TaskFlowRemoveMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type TaskFlowRemoveMutation = (
@@ -13665,10 +14055,10 @@ export type TaskFlowRemoveMutation = (
   & Pick<Mutation, 'taskFlowRemove'>
 );
 
-export type TaskFlowRemoveStepMutationVariables = {
+export type TaskFlowRemoveStepMutationVariables = Exact<{
   id: Scalars['ID'];
   stepId: Scalars['ID'];
-};
+}>;
 
 
 export type TaskFlowRemoveStepMutation = (
@@ -13676,10 +14066,10 @@ export type TaskFlowRemoveStepMutation = (
   & Pick<Mutation, 'taskFlowRemoveStep'>
 );
 
-export type TaskFlowRenameMutationVariables = {
+export type TaskFlowRenameMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type TaskFlowRenameMutation = (
@@ -13687,11 +14077,11 @@ export type TaskFlowRenameMutation = (
   & Pick<Mutation, 'taskFlowRename'>
 );
 
-export type TaskFlowRenameStepMutationVariables = {
+export type TaskFlowRenameStepMutationVariables = Exact<{
   id: Scalars['ID'];
   stepId: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type TaskFlowRenameStepMutation = (
@@ -13699,11 +14089,11 @@ export type TaskFlowRenameStepMutation = (
   & Pick<Mutation, 'taskFlowRenameStep'>
 );
 
-export type TaskFlowReorderStepMutationVariables = {
+export type TaskFlowReorderStepMutationVariables = Exact<{
   id: Scalars['ID'];
   stepId: Scalars['ID'];
   order: Scalars['Int'];
-};
+}>;
 
 
 export type TaskFlowReorderStepMutation = (
@@ -13711,10 +14101,10 @@ export type TaskFlowReorderStepMutation = (
   & Pick<Mutation, 'taskFlowReorderStep'>
 );
 
-export type TaskFlowSetCategoryMutationVariables = {
+export type TaskFlowSetCategoryMutationVariables = Exact<{
   id: Scalars['ID'];
   category: Scalars['String'];
-};
+}>;
 
 
 export type TaskFlowSetCategoryMutation = (
@@ -13722,11 +14112,11 @@ export type TaskFlowSetCategoryMutation = (
   & Pick<Mutation, 'taskFlowSetCategory'>
 );
 
-export type TaskFlowStepAddTaskMutationVariables = {
+export type TaskFlowStepAddTaskMutationVariables = Exact<{
   id: Scalars['ID'];
   stepId: Scalars['ID'];
   task: TaskInput;
-};
+}>;
 
 
 export type TaskFlowStepAddTaskMutation = (
@@ -13734,12 +14124,12 @@ export type TaskFlowStepAddTaskMutation = (
   & Pick<Mutation, 'taskFlowStepAddTask'>
 );
 
-export type TaskFlowStepEditTaskMutationVariables = {
+export type TaskFlowStepEditTaskMutationVariables = Exact<{
   id: Scalars['ID'];
   stepId: Scalars['ID'];
   taskId: Scalars['ID'];
   task: TaskInput;
-};
+}>;
 
 
 export type TaskFlowStepEditTaskMutation = (
@@ -13747,11 +14137,11 @@ export type TaskFlowStepEditTaskMutation = (
   & Pick<Mutation, 'taskFlowStepEditTask'>
 );
 
-export type TaskFlowStepRemoveTaskMutationVariables = {
+export type TaskFlowStepRemoveTaskMutationVariables = Exact<{
   id: Scalars['ID'];
   stepId: Scalars['ID'];
   taskId: Scalars['ID'];
-};
+}>;
 
 
 export type TaskFlowStepRemoveTaskMutation = (
@@ -13759,11 +14149,11 @@ export type TaskFlowStepRemoveTaskMutation = (
   & Pick<Mutation, 'taskFlowStepRemoveTask'>
 );
 
-export type TaskFlowStepCompleteAllMutationVariables = {
+export type TaskFlowStepCompleteAllMutationVariables = Exact<{
   id: Scalars['ID'];
   stepId: Scalars['ID'];
   completeAll: Scalars['Boolean'];
-};
+}>;
 
 
 export type TaskFlowStepCompleteAllMutation = (
@@ -13771,11 +14161,11 @@ export type TaskFlowStepCompleteAllMutation = (
   & Pick<Mutation, 'taskFlowStepSetCompleteAll'>
 );
 
-export type TaskFlowStepDelayMutationVariables = {
+export type TaskFlowStepDelayMutationVariables = Exact<{
   id: Scalars['ID'];
   stepId: Scalars['ID'];
   delay: Scalars['Int'];
-};
+}>;
 
 
 export type TaskFlowStepDelayMutation = (
@@ -13783,7 +14173,7 @@ export type TaskFlowStepDelayMutation = (
   & Pick<Mutation, 'taskFlowStepSetDelay'>
 );
 
-export type TaskFlowsConfigSubscriptionVariables = {};
+export type TaskFlowsConfigSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TaskFlowsConfigSubscription = (
@@ -13809,7 +14199,7 @@ export type TaskFlowsConfigSubscription = (
   )> }
 );
 
-export type TaskTemplatesSubscriptionVariables = {};
+export type TaskTemplatesSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TaskTemplatesSubscription = (
@@ -13827,10 +14217,10 @@ export type TaskTemplatesSubscription = (
   )> }
 );
 
-export type EntityRemoveEngineMutationVariables = {
+export type EntityRemoveEngineMutationVariables = Exact<{
   id: Scalars['ID'];
   type: EntityEngineEnum;
-};
+}>;
 
 
 export type EntityRemoveEngineMutation = (
@@ -13838,9 +14228,9 @@ export type EntityRemoveEngineMutation = (
   & Pick<Mutation, 'entityRemoveEngine'>
 );
 
-export type EntityRemoveThrustersMutationVariables = {
+export type EntityRemoveThrustersMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type EntityRemoveThrustersMutation = (
@@ -13848,12 +14238,12 @@ export type EntityRemoveThrustersMutation = (
   & Pick<Mutation, 'entityRemoveThrusters'>
 );
 
-export type EntitySetEngineMutationVariables = {
+export type EntitySetEngineMutationVariables = Exact<{
   id: Scalars['ID'];
   type: EntityEngineEnum;
   maxSpeed?: Maybe<Scalars['Float']>;
   currentSpeed?: Maybe<Scalars['Float']>;
-};
+}>;
 
 
 export type EntitySetEngineMutation = (
@@ -13861,13 +14251,13 @@ export type EntitySetEngineMutation = (
   & Pick<Mutation, 'entitySetEngine'>
 );
 
-export type EntitySetThrustersMutationVariables = {
+export type EntitySetThrustersMutationVariables = Exact<{
   id: Scalars['ID'];
   rotationSpeed?: Maybe<Scalars['Float']>;
   movementSpeed?: Maybe<Scalars['Float']>;
   direction?: Maybe<CoordinatesInput>;
   rotationDelta?: Maybe<CoordinatesInput>;
-};
+}>;
 
 
 export type EntitySetThrustersMutation = (
@@ -13875,9 +14265,9 @@ export type EntitySetThrustersMutation = (
   & Pick<Mutation, 'entitySetThrusters'>
 );
 
-export type EntitiesSetPositionMutationVariables = {
+export type EntitiesSetPositionMutationVariables = Exact<{
   entities: Array<EntitiesLocationInput>;
-};
+}>;
 
 
 export type EntitiesSetPositionMutation = (
@@ -13885,7 +14275,7 @@ export type EntitiesSetPositionMutation = (
   & Pick<Mutation, 'entitiesSetPosition'>
 );
 
-export type EntityCreateMutationVariables = {
+export type EntityCreateMutationVariables = Exact<{
   flightId: Scalars['ID'];
   position: EntityCoordinatesInput;
   name: Scalars['String'];
@@ -13903,7 +14293,7 @@ export type EntityCreateMutationVariables = {
   lightIntensity?: Maybe<Scalars['Float']>;
   lightDecay?: Maybe<Scalars['Float']>;
   lightColor?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type EntityCreateMutation = (
@@ -13966,9 +14356,9 @@ export type EntityDataFragment = (
   )> }
 );
 
-export type EntitiesQueryVariables = {
+export type EntitiesQueryVariables = Exact<{
   flightId: Scalars['ID'];
-};
+}>;
 
 
 export type EntitiesQuery = (
@@ -13979,9 +14369,9 @@ export type EntitiesQuery = (
   )>> }
 );
 
-export type EntityRemoveMutationVariables = {
+export type EntityRemoveMutationVariables = Exact<{
   id: Array<Scalars['ID']>;
-};
+}>;
 
 
 export type EntityRemoveMutation = (
@@ -13989,9 +14379,9 @@ export type EntityRemoveMutation = (
   & Pick<Mutation, 'entityRemove'>
 );
 
-export type EntityRemoveGlowMutationVariables = {
+export type EntityRemoveGlowMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type EntityRemoveGlowMutation = (
@@ -13999,9 +14389,9 @@ export type EntityRemoveGlowMutation = (
   & Pick<Mutation, 'entityRemoveGlow'>
 );
 
-export type EntityRemoveLightMutationVariables = {
+export type EntityRemoveLightMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type EntityRemoveLightMutation = (
@@ -14009,9 +14399,9 @@ export type EntityRemoveLightMutation = (
   & Pick<Mutation, 'entityRemoveLight'>
 );
 
-export type EntityRemoveStageMutationVariables = {
+export type EntityRemoveStageMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type EntityRemoveStageMutation = (
@@ -14019,7 +14409,7 @@ export type EntityRemoveStageMutation = (
   & Pick<Mutation, 'entityRemoveStage'>
 );
 
-export type EntitySetAppearanceMutationVariables = {
+export type EntitySetAppearanceMutationVariables = Exact<{
   id: Scalars['ID'];
   color?: Maybe<Scalars['String']>;
   meshType?: Maybe<MeshTypeEnum>;
@@ -14030,7 +14420,7 @@ export type EntitySetAppearanceMutationVariables = {
   emissiveColor?: Maybe<Scalars['String']>;
   emissiveIntensity?: Maybe<Scalars['Float']>;
   scale?: Maybe<Scalars['Float']>;
-};
+}>;
 
 
 export type EntitySetAppearanceMutation = (
@@ -14038,11 +14428,11 @@ export type EntitySetAppearanceMutation = (
   & Pick<Mutation, 'entitySetAppearance'>
 );
 
-export type EntitySetGlowMutationVariables = {
+export type EntitySetGlowMutationVariables = Exact<{
   id: Scalars['ID'];
   glowMode?: Maybe<GlowModeEnum>;
   color?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type EntitySetGlowMutation = (
@@ -14050,10 +14440,10 @@ export type EntitySetGlowMutation = (
   & Pick<Mutation, 'entitySetGlow'>
 );
 
-export type EntitySetIdentityMutationVariables = {
+export type EntitySetIdentityMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
-};
+}>;
 
 
 export type EntitySetIdentityMutation = (
@@ -14061,12 +14451,12 @@ export type EntitySetIdentityMutation = (
   & Pick<Mutation, 'entitySetIdentity'>
 );
 
-export type EntitySetLightMutationVariables = {
+export type EntitySetLightMutationVariables = Exact<{
   id: Scalars['ID'];
   color?: Maybe<Scalars['String']>;
   intensity?: Maybe<Scalars['Float']>;
   decay?: Maybe<Scalars['Float']>;
-};
+}>;
 
 
 export type EntitySetLightMutation = (
@@ -14074,7 +14464,7 @@ export type EntitySetLightMutation = (
   & Pick<Mutation, 'entitySetLight'>
 );
 
-export type EntitySetLocationMutationVariables = {
+export type EntitySetLocationMutationVariables = Exact<{
   id: Scalars['ID'];
   position?: Maybe<EntityCoordinatesInput>;
   velocity?: Maybe<EntityCoordinatesInput>;
@@ -14082,7 +14472,7 @@ export type EntitySetLocationMutationVariables = {
   rotation?: Maybe<QuaternionInput>;
   rotationVelocity?: Maybe<EntityCoordinatesInput>;
   rotationAcceleration?: Maybe<EntityCoordinatesInput>;
-};
+}>;
 
 
 export type EntitySetLocationMutation = (
@@ -14090,10 +14480,10 @@ export type EntitySetLocationMutation = (
   & Pick<Mutation, 'entitySetLocation'>
 );
 
-export type EntitySetRotationVelocityMagnitudeMutationVariables = {
+export type EntitySetRotationVelocityMagnitudeMutationVariables = Exact<{
   id: Scalars['ID'];
   rotationVelocity: CoordinatesInput;
-};
+}>;
 
 
 export type EntitySetRotationVelocityMagnitudeMutation = (
@@ -14101,12 +14491,12 @@ export type EntitySetRotationVelocityMagnitudeMutation = (
   & Pick<Mutation, 'entitySetRotationVelocityMagnitude'>
 );
 
-export type EntitySetStageMutationVariables = {
+export type EntitySetStageMutationVariables = Exact<{
   id: Scalars['ID'];
   scaleLabel?: Maybe<Scalars['String']>;
   scaleLabelShort?: Maybe<Scalars['String']>;
   skyboxKey?: Maybe<Scalars['String']>;
-};
+}>;
 
 
 export type EntitySetStageMutation = (
@@ -14114,10 +14504,10 @@ export type EntitySetStageMutation = (
   & Pick<Mutation, 'entitySetStage'>
 );
 
-export type EntitySetTemplateMutationVariables = {
+export type EntitySetTemplateMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
   category: Scalars['String'];
-};
+}>;
 
 
 export type EntitySetTemplateMutation = (
@@ -14125,7 +14515,7 @@ export type EntitySetTemplateMutation = (
   & Pick<Mutation, 'entitySetTemplate'>
 );
 
-export type SoundPickerQueryVariables = {};
+export type SoundPickerQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type SoundPickerQuery = (
@@ -14927,6 +15317,161 @@ export function useSystemUpgradeMutation(baseOptions?: ApolloReactHooks.Mutation
         return ApolloReactHooks.useMutation<SystemUpgradeMutation, SystemUpgradeMutationVariables>(SystemUpgradeDocument, baseOptions);
       }
 export type SystemUpgradeMutationHookResult = ReturnType<typeof useSystemUpgradeMutation>;
+export const AddDocumentDocument = gql`
+    mutation AddDocument($simulatorId: ID!, $name: String!, $asset: String!) {
+  documentAdd(simulatorId: $simulatorId, name: $name, asset: $asset)
+}
+    `;
+export function useAddDocumentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddDocumentMutation, AddDocumentMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddDocumentMutation, AddDocumentMutationVariables>(AddDocumentDocument, baseOptions);
+      }
+export type AddDocumentMutationHookResult = ReturnType<typeof useAddDocumentMutation>;
+export const DocumentsDocument = gql`
+    subscription Documents($simulatorId: ID!) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    id
+    documents {
+      id
+      name
+      asset
+    }
+  }
+}
+    `;
+export function useDocumentsSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<DocumentsSubscription, DocumentsSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<DocumentsSubscription, DocumentsSubscriptionVariables>(DocumentsDocument, baseOptions);
+      }
+export type DocumentsSubscriptionHookResult = ReturnType<typeof useDocumentsSubscription>;
+export const RemoveDocumentDocument = gql`
+    mutation RemoveDocument($simulatorId: ID!, $id: ID!) {
+  documentRemove(simulatorId: $simulatorId, id: $id)
+}
+    `;
+export function useRemoveDocumentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveDocumentMutation, RemoveDocumentMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveDocumentMutation, RemoveDocumentMutationVariables>(RemoveDocumentDocument, baseOptions);
+      }
+export type RemoveDocumentMutationHookResult = ReturnType<typeof useRemoveDocumentMutation>;
+export const HackingAllowHackingDocument = gql`
+    mutation HackingAllowHacking($id: ID!, $state: String!) {
+  computerCoreSetHackingState(id: $id, state: $state)
+}
+    `;
+export function useHackingAllowHackingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingAllowHackingMutation, HackingAllowHackingMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingAllowHackingMutation, HackingAllowHackingMutationVariables>(HackingAllowHackingDocument, baseOptions);
+      }
+export type HackingAllowHackingMutationHookResult = ReturnType<typeof useHackingAllowHackingMutation>;
+export const HackingAppendLogDocument = gql`
+    mutation HackingAppendLog($id: ID!, $log: String!) {
+  computerCoreAppendLog(id: $id, log: $log)
+}
+    `;
+export function useHackingAppendLogMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingAppendLogMutation, HackingAppendLogMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingAppendLogMutation, HackingAppendLogMutationVariables>(HackingAppendLogDocument, baseOptions);
+      }
+export type HackingAppendLogMutationHookResult = ReturnType<typeof useHackingAppendLogMutation>;
+export const HackingCopyFileDocument = gql`
+    mutation HackingCopyFile($id: ID!, $file: ComputerCoreFileInput!) {
+  computerCoreAddFile(id: $id, file: $file)
+}
+    `;
+export function useHackingCopyFileMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingCopyFileMutation, HackingCopyFileMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingCopyFileMutation, HackingCopyFileMutationVariables>(HackingCopyFileDocument, baseOptions);
+      }
+export type HackingCopyFileMutationHookResult = ReturnType<typeof useHackingCopyFileMutation>;
+export const HackingActivateDocument = gql`
+    mutation HackingActivate($id: ID!) {
+  computerCoreActivateHacking(id: $id)
+}
+    `;
+export function useHackingActivateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingActivateMutation, HackingActivateMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingActivateMutation, HackingActivateMutationVariables>(HackingActivateDocument, baseOptions);
+      }
+export type HackingActivateMutationHookResult = ReturnType<typeof useHackingActivateMutation>;
+export const HackingDeactivateDocument = gql`
+    mutation HackingDeactivate($id: ID!) {
+  computerCoreDeactivateHacking(id: $id)
+}
+    `;
+export function useHackingDeactivateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingDeactivateMutation, HackingDeactivateMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingDeactivateMutation, HackingDeactivateMutationVariables>(HackingDeactivateDocument, baseOptions);
+      }
+export type HackingDeactivateMutationHookResult = ReturnType<typeof useHackingDeactivateMutation>;
+export const ComputerCoreHackingDocument = gql`
+    subscription ComputerCoreHacking($simulatorId: ID!) {
+  computerCoreUpdate(simulatorId: $simulatorId) {
+    id
+    hackingActive
+    activeHackingPreset {
+      id
+      longRange
+      longRangeMessages {
+        id
+        title
+        message
+      }
+      remoteControl
+      logs
+      commandLines
+      fileViewer
+      files {
+        id
+        name
+        level
+        corrupted
+      }
+    }
+    hackingState
+    hackingLog
+    hackingPortScanFrequency
+    hackingPorts {
+      logs
+      longRange
+      remoteControl
+      fileViewer
+    }
+  }
+}
+    `;
+export function useComputerCoreHackingSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<ComputerCoreHackingSubscription, ComputerCoreHackingSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<ComputerCoreHackingSubscription, ComputerCoreHackingSubscriptionVariables>(ComputerCoreHackingDocument, baseOptions);
+      }
+export type ComputerCoreHackingSubscriptionHookResult = ReturnType<typeof useComputerCoreHackingSubscription>;
+export const HackingRemoveLogDocument = gql`
+    mutation HackingRemoveLog($id: ID!, $index: Int!) {
+  computerCoreDeleteLog(id: $id, index: $index)
+}
+    `;
+export function useHackingRemoveLogMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingRemoveLogMutation, HackingRemoveLogMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingRemoveLogMutation, HackingRemoveLogMutationVariables>(HackingRemoveLogDocument, baseOptions);
+      }
+export type HackingRemoveLogMutationHookResult = ReturnType<typeof useHackingRemoveLogMutation>;
+export const HackingTransferToLongRangeDocument = gql`
+    mutation HackingTransferToLongRange($simulatorId: ID!, $message: String!, $sender: String) {
+  sendLongRangeMessage(simulatorId: $simulatorId, message: $message, crew: true, decoded: true, sender: $sender)
+}
+    `;
+export function useHackingTransferToLongRangeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingTransferToLongRangeMutation, HackingTransferToLongRangeMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingTransferToLongRangeMutation, HackingTransferToLongRangeMutationVariables>(HackingTransferToLongRangeDocument, baseOptions);
+      }
+export type HackingTransferToLongRangeMutationHookResult = ReturnType<typeof useHackingTransferToLongRangeMutation>;
+export const HackingSetPresetDocument = gql`
+    mutation HackingSetPreset($id: ID!, $presetId: ID!) {
+  computerCoreHackingPreset(id: $id, presetId: $presetId)
+}
+    `;
+export function useHackingSetPresetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingSetPresetMutation, HackingSetPresetMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingSetPresetMutation, HackingSetPresetMutationVariables>(HackingSetPresetDocument, baseOptions);
+      }
+export type HackingSetPresetMutationHookResult = ReturnType<typeof useHackingSetPresetMutation>;
+export const HackingUpdateFilesDocument = gql`
+    mutation HackingUpdateFiles($id: ID!, $files: JSON!) {
+  computerCoreUpdateHackingFiles(id: $id, files: $files)
+}
+    `;
+export function useHackingUpdateFilesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingUpdateFilesMutation, HackingUpdateFilesMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingUpdateFilesMutation, HackingUpdateFilesMutationVariables>(HackingUpdateFilesDocument, baseOptions);
+      }
+export type HackingUpdateFilesMutationHookResult = ReturnType<typeof useHackingUpdateFilesMutation>;
 export const LightingSetEffectDocument = gql`
     mutation LightingSetEffect($simulatorId: ID!, $effect: LIGHTING_ACTION!, $duration: Float!) {
   lightingSetEffect(simulatorId: $simulatorId, effect: $effect, duration: $duration)
@@ -16447,6 +16992,62 @@ export function useStartFlightMutation(baseOptions?: ApolloReactHooks.MutationHo
         return ApolloReactHooks.useMutation<StartFlightMutation, StartFlightMutationVariables>(StartFlightDocument, baseOptions);
       }
 export type StartFlightMutationHookResult = ReturnType<typeof useStartFlightMutation>;
+export const HackingPresetCreateDocument = gql`
+    mutation HackingPresetCreate($name: String!) {
+  createHackingPreset(name: $name)
+}
+    `;
+export function useHackingPresetCreateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingPresetCreateMutation, HackingPresetCreateMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingPresetCreateMutation, HackingPresetCreateMutationVariables>(HackingPresetCreateDocument, baseOptions);
+      }
+export type HackingPresetCreateMutationHookResult = ReturnType<typeof useHackingPresetCreateMutation>;
+export const HackingPresetDeleteDocument = gql`
+    mutation HackingPresetDelete($id: ID!) {
+  deleteHackingPreset(id: $id)
+}
+    `;
+export function useHackingPresetDeleteMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingPresetDeleteMutation, HackingPresetDeleteMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingPresetDeleteMutation, HackingPresetDeleteMutationVariables>(HackingPresetDeleteDocument, baseOptions);
+      }
+export type HackingPresetDeleteMutationHookResult = ReturnType<typeof useHackingPresetDeleteMutation>;
+export const HackingPresetsDocument = gql`
+    query HackingPresets {
+  hackingPresets {
+    id
+    name
+    logs
+    longRange
+    remoteControl
+    fileViewer
+    longRangeMessages {
+      id
+      title
+      message
+    }
+    commandLines
+    files {
+      id
+      name
+      level
+      corrupted
+      restoring
+    }
+  }
+}
+    `;
+export function useHackingPresetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HackingPresetsQuery, HackingPresetsQueryVariables>) {
+        return ApolloReactHooks.useQuery<HackingPresetsQuery, HackingPresetsQueryVariables>(HackingPresetsDocument, baseOptions);
+      }
+export type HackingPresetsQueryHookResult = ReturnType<typeof useHackingPresetsQuery>;
+export const HackingPresetUpdateDocument = gql`
+    mutation HackingPresetUpdate($id: ID!, $preset: JSON!) {
+  updateHackingPreset(id: $id, preset: $preset)
+}
+    `;
+export function useHackingPresetUpdateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HackingPresetUpdateMutation, HackingPresetUpdateMutationVariables>) {
+        return ApolloReactHooks.useMutation<HackingPresetUpdateMutation, HackingPresetUpdateMutationVariables>(HackingPresetUpdateDocument, baseOptions);
+      }
+export type HackingPresetUpdateMutationHookResult = ReturnType<typeof useHackingPresetUpdateMutation>;
 export const MacroDuplicateDocument = gql`
     mutation MacroDuplicate($id: ID!) {
   duplicateMacro(id: $id)

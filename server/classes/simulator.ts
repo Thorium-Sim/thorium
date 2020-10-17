@@ -13,6 +13,7 @@ import Ship from "./ship";
 import Ambiance from "./ambiance";
 import Lighting from "./lighting";
 import RemoteAccess from "./remoteAccess";
+import Document from "./document";
 
 export default class Simulator {
   id: string;
@@ -61,6 +62,7 @@ export default class Simulator {
   commandLineFeedback: any;
   records: Record[];
   recordSnippets: RecordSnippet[];
+  documents: Document[];
   spaceEdventuresId: string | null;
 
   constructor(params: Partial<Simulator> = {}, newlyCreated: boolean = false) {
@@ -160,6 +162,8 @@ export default class Simulator {
           new RecordSnippet({...r, simulatorId: this.id}),
         ),
       );
+
+    this.documents = params.documents || [];
     // For Space EdVentures
     this.spaceEdventuresId = params.spaceEdventuresId || null;
   }

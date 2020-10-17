@@ -1,0 +1,3 @@
+mutation HackingCopyFile($id: ID!, $file: ComputerCoreFileInput!) {
+  computerCoreAddFile(id: $id, file: $file)
+}

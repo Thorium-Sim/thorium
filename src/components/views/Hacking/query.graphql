@@ -1,0 +1,34 @@
+subscription ComputerCoreHacking($simulatorId: ID!) {
+  computerCoreUpdate(simulatorId: $simulatorId) {
+    id
+    hackingActive
+    activeHackingPreset {
+      id
+      longRange
+      longRangeMessages {
+        id
+        title
+        message
+      }
+      remoteControl
+      logs
+      commandLines
+      fileViewer
+      files {
+        id
+        name
+        level
+        corrupted
+      }
+    }
+    hackingState
+    hackingLog
+    hackingPortScanFrequency
+    hackingPorts {
+      logs
+      longRange
+      remoteControl
+      fileViewer
+    }
+  }
+}

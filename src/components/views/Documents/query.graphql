@@ -1,0 +1,10 @@
+subscription Documents($simulatorId: ID!) {
+  simulatorsUpdate(simulatorId: $simulatorId) {
+    id
+    documents {
+      id
+      name
+      asset
+    }
+  }
+}

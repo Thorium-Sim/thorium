@@ -1,0 +1,3 @@
+mutation RemoveDocument($simulatorId: ID!, $id: ID!) {
+  documentRemove(simulatorId: $simulatorId, id: $id)
+}

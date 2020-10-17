@@ -52,3 +52,4 @@ export {default as FacesConfig} from "./Faces/config";
 export {default as ShipModelConfig} from "./ShipModel/config";
 export {default as TimerConfig} from "./Timer/config";
 export {default as PictureConfig} from "./Picture/config";
+export {default as StarsConfig} from "./Stars/config";

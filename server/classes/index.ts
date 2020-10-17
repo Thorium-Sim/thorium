@@ -68,3 +68,4 @@ export {default as DMXDevice} from "./DMX/DMXDevice";
 export {default as DMXFixture} from "./DMX/DMXFixture";
 export {default as DMXSet} from "./DMX/DMXSet";
 export {TaskFlow} from "./taskFlow";
+export {HackingPreset} from "./computerCore/hackingPreset";

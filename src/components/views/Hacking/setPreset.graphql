@@ -1,0 +1,3 @@
+mutation HackingSetPreset($id: ID!, $presetId: ID!) {
+  computerCoreHackingPreset(id: $id, presetId: $presetId)
+}

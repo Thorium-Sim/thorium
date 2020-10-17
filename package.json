@@ -28,7 +28,7 @@
     "start:server": "ts-node-dev --project server/tsconfig.json server/index.ts",
     "watch:electron": "wait-on http://localhost:3000 && electron .",
     "start:electron": "BROWSER=none npm-run-all --parallel -l start:client watch:server watch:electron",
-    "build": "cross-env NODE_ENV=production npm-run-all build:* sentry:upload",
+    "build": "cross-env NODE_ENV=production npm-run-all build:*",
     "build:client": "react-app-rewired --max_old_space_size=4096 build",
     "build:server": "tsc -p server",
     "build:ncc": "ncc build -o build/server -s tempServer/server/index.js",
@@ -43,7 +43,6 @@
     "test": "is-ci test:plain test:watch",
     "test:watch": "jest --watch",
     "test:plain": "jest",
-    "sentry:upload": "node ./scripts/sentryFiles.js",
     "translate": "babel-node scripts/manageTranslations.js",
     "plop": "plop",
     "semantic-release": "semantic-release",
@@ -65,7 +64,9 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -86,8 +87,12 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint"],
-    "*.{css,scss}": ["stylelint"],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -104,7 +109,9 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": { "provider": "github" },
+    "publish": {
+      "provider": "github"
+    },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -133,10 +140,15 @@
       ]
     },
     "win": {
-      "target": ["zip", "portable"],
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     },
-    "linux": { "category": "Utility" }
+    "linux": {
+      "category": "Utility"
+    }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -156,7 +168,9 @@
     ]
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -240,6 +254,7 @@
     "random-ship-names": "^1.0.0",
     "random-words": "^1.1.0",
     "react-app-rewired": "^2.1.6",
+    "react-pdf": "^5.0.0",
     "react-router": "^6.0.0-alpha.4",
     "react-scripts": "^3.4.1",
     "react-three-fiber": "^4.0.17",
@@ -294,6 +309,7 @@
     "@types/react-color": "^3.0.1",
     "@types/react-dom": "^16.9.8",
     "@types/react-measure": "^2.0.6",
+    "@types/react-pdf": "^4.0.6",
     "@types/reactstrap": "^8.4.1",
     "@types/styled-components": "^5.1.0",
     "@types/three": "^0.103.2",

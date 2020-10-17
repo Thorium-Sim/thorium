@@ -1,0 +1,3 @@
+mutation HackingDeactivate($id: ID!) {
+  computerCoreDeactivateHacking(id: $id)
+}

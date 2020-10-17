@@ -1,0 +1,3 @@
+mutation HackingUpdateFiles($id: ID!, $files: JSON!) {
+  computerCoreUpdateHackingFiles(id: $id, files: $files)
+}
