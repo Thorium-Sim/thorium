@@ -1,3 +1,12 @@
+## [3.0.1](https://github.com/Thorium-Sim/thorium/compare/3.0.0...3.0.1) (2020-10-19)
+
+
+### Bug Fixes
+
+* **Documents:** Deleting documents won't cause the preview to appear anymore. Closes [#3023](https://github.com/Thorium-Sim/thorium/issues/3023) ([47861f1](https://github.com/Thorium-Sim/thorium/commit/47861f1f21d11d51c8469457eff02ba9d61ea031))
+* **Documents:** Include a config for the Add Document macro. Closes [#3024](https://github.com/Thorium-Sim/thorium/issues/3024) ([56bb05f](https://github.com/Thorium-Sim/thorium/commit/56bb05fe74a68b01ca05dacdb25dced7b4999c7b))
+* **Hacking:** Corrects the header for the file viewer in hacking. Closes [#3025](https://github.com/Thorium-Sim/thorium/issues/3025) ([774d0a4](https://github.com/Thorium-Sim/thorium/commit/774d0a4d64b65a2f4d71bbef4cb206200d98d5bd))
+
 # [3.0.0](https://github.com/Thorium-Sim/thorium/compare/2.13.2...3.0.0) (2020-10-17)
 
 
