@@ -383,7 +383,7 @@ const FileViewer: React.FC<{
         width: 70vw;
       `}
     >
-      <h1>Logs</h1>
+      <h1>File Viewer</h1>
       <div
         css={css`
           display: flex;
