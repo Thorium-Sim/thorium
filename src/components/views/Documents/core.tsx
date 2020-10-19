@@ -29,7 +29,6 @@ export default function DocumentsCore({simulator}: {simulator: Simulator}) {
   const [creating, setCreating] = React.useState(false);
   const [previewAsset, setPreviewAsset] = React.useState("");
   const [remove] = useRemoveDocumentMutation();
-  console.log(previewAsset);
   return (
     <div
       className="documents-core"
@@ -70,6 +69,7 @@ export default function DocumentsCore({simulator}: {simulator: Simulator}) {
                 `}
                 onClick={e => {
                   e.preventDefault();
+                  e.stopPropagation();
                   remove({variables: {simulatorId: simulator.id, id: d.id}});
                 }}
               />
