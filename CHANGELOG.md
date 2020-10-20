@@ -1,3 +1,32 @@
+## [3.0.1](https://github.com/Thorium-Sim/thorium/compare/3.0.0...3.0.1) (2020-10-19)
+
+
+### Bug Fixes
+
+* **Documents:** Deleting documents won't cause the preview to appear anymore. Closes [#3023](https://github.com/Thorium-Sim/thorium/issues/3023) ([47861f1](https://github.com/Thorium-Sim/thorium/commit/47861f1f21d11d51c8469457eff02ba9d61ea031))
+* **Documents:** Include a config for the Add Document macro. Closes [#3024](https://github.com/Thorium-Sim/thorium/issues/3024) ([56bb05f](https://github.com/Thorium-Sim/thorium/commit/56bb05fe74a68b01ca05dacdb25dced7b4999c7b))
+* **Hacking:** Corrects the header for the file viewer in hacking. Closes [#3025](https://github.com/Thorium-Sim/thorium/issues/3025) ([774d0a4](https://github.com/Thorium-Sim/thorium/commit/774d0a4d64b65a2f4d71bbef4cb206200d98d5bd))
+
+# [3.0.0](https://github.com/Thorium-Sim/thorium/compare/2.13.2...3.0.0) (2020-10-17)
+
+
+### Bug Fixes
+
+* **Auto-Connect:** Fixes issues with the server/client autoconnect. ([e1d958b](https://github.com/Thorium-Sim/thorium/commit/e1d958b841ec122953318a51622116c2b68ce3e0))
+* **Server:** Removed the HTTP/HTTPS option from the server. It caused a lot of confusion, and made it difficult to just start the server and have clients easily connect. None of the features which need HTTPS will be implemented any time soon, so Thorium servers are going back to being HTTP only. ([3134d56](https://github.com/Thorium-Sim/thorium/commit/3134d567d36ba7d6a01e6df83f7abd3addf8f64b))
+
+
+### Features
+
+* **Documents:** Add a documents viewer card and core for showing PDF documents within the controls. ([eede2ac](https://github.com/Thorium-Sim/thorium/commit/eede2ac6b00b988dd30f68d99bec4ac85a99019d))
+* **Hacking:** Adds a hacking card and core, along with a config screen for configuring hacking presets. This is based on hacking the 2008 CMSC Galileo controls. ([deffdf8](https://github.com/Thorium-Sim/thorium/commit/deffdf8309d8c40210817796b3a4096a94933178))
+* **Stars:** Improvements to the stars viewscreen. Includes an extra config that allows the viewport of the stars to be changed. ([8317b95](https://github.com/Thorium-Sim/thorium/commit/8317b95015987ab46d5e208f272c3de16c0cc13d))
+
+
+### BREAKING CHANGES
+
+* **Auto-Connect:** Because this affects both the client and the server, you will need to update all of your client computers as well. Otherwise, they won't properly automatically detect a running Thorium server.
+
 ## [2.13.2](https://github.com/Thorium-Sim/thorium/compare/2.13.1...2.13.2) (2020-09-04)
 
 
