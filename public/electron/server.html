@@ -105,14 +105,18 @@
         <button id="open-client-window">
           Open Kiosk Window
         </button>
-        <button id="stop-auto-start" hidden onclick="cancelAutostart()">
+        <button
+          id="stop-auto-start"
+          hidden
+          onclick="splashFunctions.cancelAutostart()"
+        >
           Stop Automatically Starting Server
         </button>
         <div id="ipAddress"></div>
       </div>
     </div>
     <script>
-      getIpAddress((ipAddress, port, httpOnly) => {
+      window.splashFunctions.getIpAddress((ipAddress, port, httpOnly) => {
         function printUrl() {
           return `http${httpOnly ? "" : "s"}://${ipAddress}${
             (port === 443 && !httpOnly) || (port === 80 && httpOnly)

@@ -6,7 +6,6 @@ import "bootstrap/scss/bootstrap.scss";
 import {initializeClient} from "helpers/getClientId";
 
 initializeClient();
-
 window.thorium = window.thorium || {
   sendMessage: args => {},
   clockSync: 0,
