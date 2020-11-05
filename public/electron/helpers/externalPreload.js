@@ -1,4 +1,6 @@
+const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
+const contextBridge = require("electron").contextBridge;
 
 let browserCount = require("electron").remote.getCurrentWindow().browserCount;
 const key = "thorium_clientPersistentId";
@@ -38,3 +40,21 @@ function getClientList() {
   }
   return clientList;
 }
+
+const thorium = {
+  sendMessage: function (arg) {
+    return ipcRenderer.send("remoteMessage", arg);
+  },
+  getDMXDeviceList: function () {
+    return ipcRenderer.invoke("get-usbDevices");
+  },
+  activateDMX: function (config) {
+    return ipcRenderer.send("activate-dmx", config);
+  },
+  sendDMXValue: function (universe) {
+    return ipcRenderer.send("send-dmx-value", universe);
+  },
+};
+window.thorium = thorium;
+window.thoriumFunctions = thorium;
+contextBridge.exposeInMainWorld("thorium", thorium);

@@ -248,7 +248,6 @@ const resolver = {
           if (sys.training) {
             setTimeout(() => {
               sys.hackingState = "hacking";
-              console.log(sys);
               pubsub.publish(
                 "computerCoreUpdate",
                 App.systems.filter(s => s.class === "ComputerCore"),

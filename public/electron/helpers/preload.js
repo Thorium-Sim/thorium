@@ -1,5 +1,6 @@
 const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
+const contextBridge = require("electron").contextBridge;
 let port;
 let httpOnly;
 
@@ -70,25 +71,43 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 });
 
-window.cancelAutostart = function cancelAutostart() {
-  ipcRenderer.send("cancelServerAutostart");
-};
+const splashFunctions = {
+  cancelAutostart: function cancelAutostart() {
+    ipcRenderer.send("cancelServerAutostart");
+  },
 
-window.loadPage = function loadPage(url) {
-  let auto = false;
-  if (document.getElementById("remember-client").checked) auto = true;
-  let kiosk = document.getElementById("start-kiosked").checked;
-  localStorage.setItem("thorium_startKiosked", kiosk);
-  ipcRenderer.send("loadPage", {url, auto, kiosk});
-  return;
-};
-window.startServer = function startServer() {
-  let auto = false;
-  if (document.getElementById("remember-server").checked) {
-    auto = true;
-  }
-  ipcRenderer.send("startServer", auto);
-  return;
+  loadPage: function loadPage(url) {
+    let auto = false;
+    if (document.getElementById("remember-client").checked) auto = true;
+    let kiosk = document.getElementById("start-kiosked").checked;
+    localStorage.setItem("thorium_startKiosked", kiosk);
+    ipcRenderer.send("loadPage", {url, auto, kiosk});
+    return;
+  },
+  startServer: function startServer() {
+    let auto = false;
+    if (document.getElementById("remember-server").checked) {
+      auto = true;
+    }
+    ipcRenderer.send("startServer", auto);
+    return;
+  },
+  getServers: function () {
+    ipcRenderer.send("getServers");
+  },
+  serverAddress: function serverAddress() {
+    let url = document
+      .getElementById("server-address")
+      .value.replace("/client", "");
+    if (url.indexOf(":") === -1) url = `${url}:${port}`;
+    let auto = false;
+    if (document.getElementById("remember-client").checked) auto = true;
+    ipcRenderer.send("loadPage", {url, auto});
+  },
+  getIpAddress: async function (cb) {
+    const ipAddress = await ipcRenderer.invoke("get-ipAddress");
+    cb(ipAddress, port, httpOnly);
+  },
 };
 function printUrl() {
   return `http${httpOnly ? "" : "s"}://localhost${
@@ -99,29 +118,15 @@ function openBrowser() {
   ipcRenderer.send("open-external", printUrl());
   return;
 }
-window.getServers = function () {
-  ipcRenderer.send("getServers");
-};
-window.serverAddress = function serverAddress() {
-  let url = document
-    .getElementById("server-address")
-    .value.replace("/client", "");
-  if (url.indexOf(":") === -1) url = `${url}:${port}`;
-  let auto = false;
-  if (document.getElementById("remember-client").checked) auto = true;
-  ipcRenderer.send("loadPage", {url, auto});
-};
+
+contextBridge.exposeInMainWorld("splashFunctions", splashFunctions);
+
 ipcRenderer.on("info", function (event, data) {
   const output = document.getElementById("console");
   if (output) {
     output.innerText = `${data}\n${output.innerText}`;
   }
 });
-
-window.getIpAddress = async function (cb) {
-  const ipAddress = await ipcRenderer.invoke("get-ipAddress");
-  cb(ipAddress, port, httpOnly);
-};
 
 const thorium = {
   sendMessage: function (arg) {
@@ -137,34 +142,37 @@ const thorium = {
     return ipcRenderer.send("send-dmx-value", universe);
   },
 };
+window.thorium = thorium;
+window.thoriumFunctions = thorium;
+
+contextBridge.exposeInMainWorld("thorium", thorium);
 
 document.addEventListener(
   "DOMContentLoaded",
   function () {
     // Network Settings
-    // const httpOnlyEl = document.getElementById("http-only");
+    const httpOnlyEl = document.getElementById("http-only");
     const portEl = document.getElementById("port");
-    // if (httpOnlyEl) {
-    //   httpOnlyEl.checked = httpOnly;
+    if (httpOnlyEl) {
+      httpOnlyEl.checked = httpOnly;
 
-    //   httpOnlyEl.addEventListener("change", e => {
-    //     ipcRenderer.send("set-httpOnly", e.target.checked);
-    //     httpOnly = e.target.checked;
-    //     thorium.httpOnly = e.target.checked;
-    //     if (portEl.value === "443" && httpOnly) {
-    //       portEl.value = "80";
-    //       ipcRenderer.send("set-port", 80);
-    //       port = 80;
-    //       thorium.port = 80;
-    //     } else if (portEl.value === "80" && !httpOnly) {
-    //       portEl.value = "443";
-    //       ipcRenderer.send("set-port", 443);
-    //       port = 443;
-    //       thorium.port = 443;
-    //     }
-    //   });
-    // }
-    httpOnly = true;
+      httpOnlyEl.addEventListener("change", e => {
+        ipcRenderer.send("set-httpOnly", e.target.checked);
+        httpOnly = e.target.checked;
+        thorium.httpOnly = e.target.checked;
+        if (portEl.value === "443" && httpOnly) {
+          portEl.value = "80";
+          ipcRenderer.send("set-port", 80);
+          port = 80;
+          thorium.port = 80;
+        } else if (portEl.value === "80" && !httpOnly) {
+          portEl.value = "443";
+          ipcRenderer.send("set-port", 443);
+          port = 443;
+          thorium.port = 443;
+        }
+      });
+    }
     if (portEl) {
       portEl.value = port;
 
@@ -235,10 +243,9 @@ ipcRenderer.on("updateServers", function updateServers(e, servers) {
       document.getElementById("servers").classList.remove("hidden");
     }
     const markup = servers.map(
-      s => `<button onclick="loadPage('${s.url}')">${s.name}</button>`,
+      s =>
+        `<button onclick="splashFunctions.loadPage('${s.url}')">${s.name}</button>`,
     );
     document.getElementById("serverList").innerHTML = markup;
   }
 });
-
-window.thorium = thorium;
