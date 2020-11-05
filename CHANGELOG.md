@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/Thorium-Sim/thorium/compare/3.0.1...3.0.2) (2020-11-05)
+
+
+### Bug Fixes
+
+* **Lighting:** Fixes an issue where the lighting system doesn't properly initialize. Also re-enables HTTPS for lighting purposes. ([8138f2b](https://github.com/Thorium-Sim/thorium/commit/8138f2b143c2933353957a16b00dd1bb98eeb292))
+
 ## [3.0.1](https://github.com/Thorium-Sim/thorium/compare/3.0.0...3.0.1) (2020-10-19)
 
 
