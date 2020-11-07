@@ -6,8 +6,12 @@ import "bootstrap/scss/bootstrap.scss";
 import {initializeClient} from "helpers/getClientId";
 
 initializeClient();
-window.thorium = window.thorium || {
-  sendMessage: args => {},
-  clockSync: 0,
-};
+try {
+  window.thorium = window.thorium || {
+    sendMessage: args => {},
+    clockSync: 0,
+  };
+} catch (err) {
+  // Do nothing
+}
 render(<App />, document.getElementById("root"));
