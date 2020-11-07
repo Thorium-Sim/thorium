@@ -1,3 +1,10 @@
+## [3.0.3](https://github.com/Thorium-Sim/thorium/compare/3.0.2...3.0.3) (2020-11-07)
+
+
+### Bug Fixes
+
+* **Kiosk:** Fixes an issue where the kiosk appears as a blank, black screen. ([96f523f](https://github.com/Thorium-Sim/thorium/commit/96f523fed1fd55ce6ae93f47f42f617f233cd94f))
+
 ## [3.0.2](https://github.com/Thorium-Sim/thorium/compare/3.0.1...3.0.2) (2020-11-05)
 
 
