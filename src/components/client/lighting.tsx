@@ -93,7 +93,7 @@ const Lighting: React.FC<{
     window.thorium.getDMXDeviceList?.().then((res: DMXDevice[]) => {
       setDMXDeviceList(res);
       setDmxDevice((dmxDevice: string) => {
-        if (!dmxDevice) return res[0].serialNumber;
+        if (!dmxDevice && res[0]?.serialNumber) return res[0].serialNumber;
         return dmxDevice;
       });
     });

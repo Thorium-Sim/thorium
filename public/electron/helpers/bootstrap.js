@@ -8,9 +8,8 @@ module.exports = function bootstrap(serverWindow) {
   function startServer() {
     let port = settings.get("port") || 4444;
     let httpOnly =
-      (!settings.get("httpOnly") === "true" &&
-        !settings.get("httpOnly") === true) ||
-      false;
+      settings.get("httpOnly") === true ||
+      settings.get("httpOnly") === undefined;
 
     const childPath = isProd
       ? "build/server/index.js"

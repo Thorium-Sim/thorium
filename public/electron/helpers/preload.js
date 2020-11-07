@@ -108,15 +108,17 @@ const splashFunctions = {
     const ipAddress = await ipcRenderer.invoke("get-ipAddress");
     cb(ipAddress, port, httpOnly);
   },
+  openBrowser: async function openBrowser() {
+    await getPortAndHttpOnly();
+
+    ipcRenderer.send("open-external", printUrl());
+    return;
+  },
 };
 function printUrl() {
   return `http${httpOnly ? "" : "s"}://localhost${
     (port === 443 && !httpOnly) || (port === 80 && httpOnly) ? "" : `:${port}`
   }`;
-}
-function openBrowser() {
-  ipcRenderer.send("open-external", printUrl());
-  return;
 }
 
 contextBridge.exposeInMainWorld("splashFunctions", splashFunctions);
@@ -185,7 +187,7 @@ document.addEventListener(
     // Server Browser Open
     const openEl = document.getElementById("open-in-browser");
     if (openEl) {
-      openEl.addEventListener("click", openBrowser);
+      openEl.addEventListener("click", splashFunctions.openBrowser);
     }
     const kioskEl = document.getElementById("open-client-window");
     if (kioskEl) {

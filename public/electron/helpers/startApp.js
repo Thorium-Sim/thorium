@@ -28,9 +28,8 @@ module.exports = () => {
     let port = process.env.PORT || settings.get("port") || 4444;
     let httpOnly =
       process.env.HTTP_ONLY === "true" ||
-      settings.get("httpOnly") === "true" ||
       settings.get("httpOnly") === true ||
-      false;
+      settings.get("httpOnly") === undefined;
 
     const autoUpdateInit = require("./autoUpdate");
     autoUpdateInit();
