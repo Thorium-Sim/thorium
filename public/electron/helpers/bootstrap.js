@@ -7,11 +7,9 @@ let restartCount = 0;
 module.exports = function bootstrap(serverWindow) {
   function startServer() {
     let port = settings.get("port") || 4444;
-    console.log(settings.get("httpOnly"), typeof settings.get("httpOnly"));
     let httpOnly =
-      settings.get("httpOnly") === "true" ||
       settings.get("httpOnly") === true ||
-      false;
+      settings.get("httpOnly") === undefined;
 
     const childPath = isProd
       ? "build/server/index.js"
