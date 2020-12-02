@@ -1,3 +1,10 @@
+## [3.0.4](https://github.com/Thorium-Sim/thorium/compare/3.0.3...3.0.4) (2020-12-02)
+
+
+### Bug Fixes
+
+* **DMX:** Fixes an issue where DMX config columns don't have scrollbars. Closes [#3040](https://github.com/Thorium-Sim/thorium/issues/3040) ([54a3bda](https://github.com/Thorium-Sim/thorium/commit/54a3bda17c6854c6c981e21d1e7b47d8ee1c001c))
+
 ## [3.0.3](https://github.com/Thorium-Sim/thorium/compare/3.0.2...3.0.3) (2020-11-07)
 
 
