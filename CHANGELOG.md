@@ -1,3 +1,10 @@
+## [3.0.5](https://github.com/Thorium-Sim/thorium/compare/3.0.4...3.0.5) (2020-12-02)
+
+
+### Bug Fixes
+
+* **DMX:** Fixes a memory leak that causes the DMX system to slow down and crash after several minutes of use. Closes [#3042](https://github.com/Thorium-Sim/thorium/issues/3042) ([67a249f](https://github.com/Thorium-Sim/thorium/commit/67a249f508bbd7731e639f469f2bdd12f7e9fb55))
+
 ## [3.0.4](https://github.com/Thorium-Sim/thorium/compare/3.0.3...3.0.4) (2020-12-02)
 
 
