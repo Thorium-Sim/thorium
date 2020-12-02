@@ -40,6 +40,7 @@ const DMXSets: React.FC = () => {
           css={css`
             display: flex;
             flex-direction: column;
+            overflow-y: hidden;
           `}
         >
           <h3>Sets</h3>

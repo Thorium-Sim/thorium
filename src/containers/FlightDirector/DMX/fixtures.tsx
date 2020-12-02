@@ -149,6 +149,7 @@ const DMXFixtures: React.FC<{
         css={css`
           display: flex;
           flex-direction: column;
+          overflow-y: hidden;
         `}
       >
         <h3>Fixtures</h3>
