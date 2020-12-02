@@ -15,6 +15,6 @@ const clientPing = () => {
       pubsub.publish("clientPing", c);
     }
   });
-  setTimeout(clientPing, 5000);
+  setTimeout(clientPing, 1000 * 60);
 };
 clientPing();
