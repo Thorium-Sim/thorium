@@ -1,3 +1,10 @@
+## [3.0.6](https://github.com/Thorium-Sim/thorium/compare/3.0.5...3.0.6) (2020-12-03)
+
+
+### Bug Fixes
+
+* **Deploy:** Fix an issue with the auto-release script. ([3cc9216](https://github.com/Thorium-Sim/thorium/commit/3cc9216be47fa57002320fde4dc8de28458bc95a))
+
 ## [3.0.5](https://github.com/Thorium-Sim/thorium/compare/3.0.4...3.0.5) (2020-12-02)
 
 
