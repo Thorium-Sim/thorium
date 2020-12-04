@@ -1,3 +1,10 @@
+## [3.0.7](https://github.com/Thorium-Sim/thorium/compare/3.0.6...3.0.7) (2020-12-04)
+
+
+### Bug Fixes
+
+* **Deploy:** Fix the deploy script. ([491522c](https://github.com/Thorium-Sim/thorium/commit/491522c755451140f508aec5a1efe6e071368c7c))
+
 ## [3.0.6](https://github.com/Thorium-Sim/thorium/compare/3.0.5...3.0.6) (2020-12-03)
 
 
