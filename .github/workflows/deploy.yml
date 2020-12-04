@@ -44,7 +44,7 @@ jobs:
 
   release:
     runs-on: ${{ matrix.os }}
-    needs: Build
+    needs: build
     strategy:
       matrix:
         os: [macos-10.15, ubuntu-18.04, windows-2019]
