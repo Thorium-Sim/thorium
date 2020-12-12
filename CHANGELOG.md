@@ -1,3 +1,13 @@
+## [3.0.8](https://github.com/Thorium-Sim/thorium/compare/3.0.7...3.0.8) (2020-12-12)
+
+
+### Bug Fixes
+
+* **DMX:** Makes DMX continue working when the client is set to blackout. Closes [#3048](https://github.com/Thorium-Sim/thorium/issues/3048) ([b8eb4c2](https://github.com/Thorium-Sim/thorium/commit/b8eb4c286e570914269c19f51248a3b352941b24))
+* **Hacking:** Fixes an issue when creating hacking presets. Closes [#3049](https://github.com/Thorium-Sim/thorium/issues/3049) ([fe2015e](https://github.com/Thorium-Sim/thorium/commit/fe2015ee82e19595a9970540f657e043f792af7b))
+* **Software Panels:** Improves the layout of software panels. Closes [#3051](https://github.com/Thorium-Sim/thorium/issues/3051) ([893c910](https://github.com/Thorium-Sim/thorium/commit/893c910c83a893caf6eed957b156fc191e8f819d))
+* **Triggers:** Fixes an issue where event actions don't appear when configuring triggers. Closes [#3045](https://github.com/Thorium-Sim/thorium/issues/3045) ([1486e86](https://github.com/Thorium-Sim/thorium/commit/1486e863f8ae475eda418fd27822b11a774a5ecd))
+
 ## [3.0.7](https://github.com/Thorium-Sim/thorium/compare/3.0.6...3.0.7) (2020-12-04)
 
 
