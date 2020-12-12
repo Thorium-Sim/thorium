@@ -137,11 +137,9 @@ class DiagramProvider extends Component {
           () => this.props.onUpdate && this.props.onUpdate(this.state),
         );
       },
-      registeredComponents: props.registeredComponents
-        ? props.registeredComponents.length
-          ? props.registeredComponents
-          : Object.values(props.registeredComponents)
-        : [],
+      registeredComponents: Array.isArray(props?.registeredComponents)
+        ? props.registeredComponents
+        : Object.values(props?.registeredComponents || {}),
     };
   }
   dragComponent = e => {
