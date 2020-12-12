@@ -100,7 +100,7 @@ const HackingPresets: React.FC = () => {
             </small>
           </p>
         </Col>
-        <Col sm={3}>
+        <Col sm={3} key={preset?.id}>
           <h4>Options</h4>
           {preset && (
             <ListGroup>

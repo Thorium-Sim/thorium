@@ -8,6 +8,7 @@ import {getComponentLevel} from "../../../containers/FlightDirector/SoftwarePane
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
+import {css} from "@emotion/core";
 
 const SUB = gql`
   subscription SoftwarePanelsUpdate($simulatorId: ID) {
@@ -200,7 +201,13 @@ class SoftwarePanels extends Component {
     const shownPanel = panel || selectedPanel;
     if (loading) return null;
     return (
-      <Container className="softwarePanels-card software-panels">
+      <Container
+        fluid
+        className="softwarePanels-card software-panels"
+        css={css`
+          height: 100%;
+        `}
+      >
         <SubscriptionHelper
           subscribe={() =>
             this.props.data.subscribeToMore({
@@ -219,7 +226,11 @@ class SoftwarePanels extends Component {
             })
           }
         />
-        <Row>
+        <Row
+          css={css`
+            height: 100%;
+          `}
+        >
           {!panel && (
             <Col sm={3}>
               <Card>
@@ -235,7 +246,12 @@ class SoftwarePanels extends Component {
               </Card>
             </Col>
           )}
-          <Col sm={panel ? 12 : 9}>
+          <Col
+            sm={panel ? 12 : 9}
+            css={css`
+              height: 100%;
+            `}
+          >
             {shownPanel && (
               <Card>
                 <Measure
