@@ -52,9 +52,6 @@ const CardRenderer: React.FC<
   if (station.name === "Viewscreen") {
     LayoutComponent = Layouts[layoutName + "Viewscreen"] || LayoutComponent;
   }
-  if (client.offlineState === "blackout" || station.name === "Blackout") {
-    return <Blackout />;
-  }
   if (station?.name?.match(/keyboard:.{8}-.{4}-.{4}-.{4}-.{12}/gi)) {
     return (
       <Keyboard
@@ -77,6 +74,9 @@ const CardRenderer: React.FC<
   }
   if (station.name === "Sound") {
     return <SoundPlayer clientId={client.id} simulator={simulator} />;
+  }
+  if (client.offlineState === "blackout" || station.name === "Blackout") {
+    return <Blackout />;
   }
   return (
     <LayoutComponent
