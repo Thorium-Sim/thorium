@@ -1,3 +1,10 @@
+## [3.0.9](https://github.com/Thorium-Sim/thorium/compare/3.0.8...3.0.9) (2020-12-17)
+
+
+### Bug Fixes
+
+* **Autoconnect:** Fixes an issue where clients cannot find multiple servers connected on the same network. ([ad9c50e](https://github.com/Thorium-Sim/thorium/commit/ad9c50ead398871953a144a5869612e55a27a910))
+
 ## [3.0.8](https://github.com/Thorium-Sim/thorium/compare/3.0.7...3.0.8) (2020-12-12)
 
 
