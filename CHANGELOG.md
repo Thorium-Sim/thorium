@@ -1,3 +1,10 @@
+## [3.0.10](https://github.com/Thorium-Sim/thorium/compare/3.0.9...3.0.10) (2020-12-17)
+
+
+### Bug Fixes
+
+* **Triggers:** Fixes an issue that sometimes causes events that have attached triggers to not fire. ([977e225](https://github.com/Thorium-Sim/thorium/commit/977e22537de41e8e864161ee0b57939c7a048864))
+
 ## [3.0.9](https://github.com/Thorium-Sim/thorium/compare/3.0.8...3.0.9) (2020-12-17)
 
 
