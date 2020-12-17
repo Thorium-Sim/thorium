@@ -1,3 +1,48 @@
+## [3.0.8](https://github.com/Thorium-Sim/thorium/compare/3.0.7...3.0.8) (2020-12-12)
+
+
+### Bug Fixes
+
+* **DMX:** Makes DMX continue working when the client is set to blackout. Closes [#3048](https://github.com/Thorium-Sim/thorium/issues/3048) ([b8eb4c2](https://github.com/Thorium-Sim/thorium/commit/b8eb4c286e570914269c19f51248a3b352941b24))
+* **Hacking:** Fixes an issue when creating hacking presets. Closes [#3049](https://github.com/Thorium-Sim/thorium/issues/3049) ([fe2015e](https://github.com/Thorium-Sim/thorium/commit/fe2015ee82e19595a9970540f657e043f792af7b))
+* **Software Panels:** Improves the layout of software panels. Closes [#3051](https://github.com/Thorium-Sim/thorium/issues/3051) ([893c910](https://github.com/Thorium-Sim/thorium/commit/893c910c83a893caf6eed957b156fc191e8f819d))
+* **Triggers:** Fixes an issue where event actions don't appear when configuring triggers. Closes [#3045](https://github.com/Thorium-Sim/thorium/issues/3045) ([1486e86](https://github.com/Thorium-Sim/thorium/commit/1486e863f8ae475eda418fd27822b11a774a5ecd))
+
+## [3.0.7](https://github.com/Thorium-Sim/thorium/compare/3.0.6...3.0.7) (2020-12-04)
+
+
+### Bug Fixes
+
+* **Deploy:** Fix the deploy script. ([491522c](https://github.com/Thorium-Sim/thorium/commit/491522c755451140f508aec5a1efe6e071368c7c))
+
+## [3.0.6](https://github.com/Thorium-Sim/thorium/compare/3.0.5...3.0.6) (2020-12-03)
+
+
+### Bug Fixes
+
+* **Deploy:** Fix an issue with the auto-release script. ([3cc9216](https://github.com/Thorium-Sim/thorium/commit/3cc9216be47fa57002320fde4dc8de28458bc95a))
+
+## [3.0.5](https://github.com/Thorium-Sim/thorium/compare/3.0.4...3.0.5) (2020-12-02)
+
+
+### Bug Fixes
+
+* **DMX:** Fixes a memory leak that causes the DMX system to slow down and crash after several minutes of use. Closes [#3042](https://github.com/Thorium-Sim/thorium/issues/3042) ([67a249f](https://github.com/Thorium-Sim/thorium/commit/67a249f508bbd7731e639f469f2bdd12f7e9fb55))
+
+## [3.0.4](https://github.com/Thorium-Sim/thorium/compare/3.0.3...3.0.4) (2020-12-02)
+
+
+### Bug Fixes
+
+* **DMX:** Fixes an issue where DMX config columns don't have scrollbars. Closes [#3040](https://github.com/Thorium-Sim/thorium/issues/3040) ([54a3bda](https://github.com/Thorium-Sim/thorium/commit/54a3bda17c6854c6c981e21d1e7b47d8ee1c001c))
+
+## [3.0.3](https://github.com/Thorium-Sim/thorium/compare/3.0.2...3.0.3) (2020-11-07)
+
+
+### Bug Fixes
+
+* **Kiosk:** Fixes an issue where the kiosk appears as a blank, black screen. ([96f523f](https://github.com/Thorium-Sim/thorium/commit/96f523fed1fd55ce6ae93f47f42f617f233cd94f))
+
 ## [3.0.2](https://github.com/Thorium-Sim/thorium/compare/3.0.1...3.0.2) (2020-11-05)
 
 
