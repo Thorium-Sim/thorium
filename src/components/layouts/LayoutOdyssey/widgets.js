@@ -81,7 +81,14 @@ class WidgetsContainer extends Component {
     });
   };
   render() {
-    const {simulator, clientObj, station, flight, touch} = this.props;
+    const {
+      simulator,
+      clientObj,
+      station,
+      flight,
+      touch,
+      placement = "bottom",
+    } = this.props;
     const {widgetNotify} = this.state;
     //if (clientObj.loginState === "logout" && station.login === false)
     // return null;
@@ -103,6 +110,7 @@ class WidgetsContainer extends Component {
             notify={widgetNotify.keyboard}
             setNotify={this.setNotify}
             touch={touch}
+            placement={placement}
           />
         )}
         {station.widgets &&
@@ -123,6 +131,7 @@ class WidgetsContainer extends Component {
                   setNotify={this.setNotify}
                   key={key}
                   touch={touch}
+                  placement={placement}
                 />
               );
             })}
@@ -133,6 +142,7 @@ class WidgetsContainer extends Component {
           color="#3363AA"
           onClick={this.startTraining}
           touch={touch}
+          placement={placement}
         />
         <StaticWidget
           icon={FaSignOutAlt}
@@ -140,6 +150,7 @@ class WidgetsContainer extends Component {
           color="#999"
           onClick={this.logout}
           touch={touch}
+          placement={placement}
         />
       </div>
     );
@@ -153,6 +164,7 @@ const StaticWidget = ({
   name,
   className = "",
   touch,
+  placement = "bottom",
 }) => {
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const playEffect = useSoundEffect();
@@ -178,7 +190,7 @@ const StaticWidget = ({
       />
       {!touch && (
         <Tooltip
-          placement="bottom"
+          placement={placement}
           isOpen={tooltipOpen}
           target={`widget-${paramCase(name)}`}
           toggle={toggle}

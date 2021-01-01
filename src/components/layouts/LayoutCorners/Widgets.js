@@ -112,6 +112,7 @@ export const Widget = ({
   station,
   clientObj,
   flight,
+  placement = "bottom",
 }) => {
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const [modal, setModal] = React.useState(false);
@@ -161,7 +162,7 @@ export const Widget = ({
       />
       {!touch && (
         <Tooltip
-          placement="bottom"
+          placement={placement}
           isOpen={tooltipOpen}
           target={`widget-${wkey}`}
           toggle={toggle}
