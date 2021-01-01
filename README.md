@@ -1,5 +1,7 @@
 ![Thorium](github-banner.png)
 
+[Be sure to check out Thorium Nova, the next generation of Spaceship Simulator controls](https://nova.thoriumsim.com)
+
 ![Test](https://github.com/Thorium-Sim/thorium/workflows/Test/badge.svg?branch=main)
 [![Discord](https://img.shields.io/discord/390968011605147648.svg)](https://discord.gg/UvxTQZz)
 [![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors)
