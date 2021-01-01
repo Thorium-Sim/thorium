@@ -73,13 +73,21 @@ const HackingCore: React.FC<HackingProps> = props => {
       </Input>
       <div>
         <p>Port Scan</p>
-        <OutputField alert={hacking.hackingState === "scanning"}>
-          Freq:{" "}
-          {Math.round(
-            (hacking.hackingPortScanFrequency || 0.5) * 37700 + 37700,
-          ) / 100}{" "}
-          MHz
-        </OutputField>
+        {hacking.hackingState === "scanning" ? (
+          <OutputField alert={hacking.hackingState === "scanning"}>
+            Freq:{" "}
+            {Math.round(
+              (hacking.hackingPortScanFrequency || 0.5) * 37700 + 37700,
+            ) / 100}{" "}
+            MHz
+          </OutputField>
+        ) : (
+          <OutputField>
+            {hacking.hackingState === "hacking"
+              ? "Hacking in Progress"
+              : "Idle"}
+          </OutputField>
+        )}
         <Button
           size="sm"
           color="danger"

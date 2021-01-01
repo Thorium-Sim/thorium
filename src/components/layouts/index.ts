@@ -10,6 +10,7 @@ import LayoutEpsilon from "./LayoutEpsilon";
 import LayoutBlack from "./LayoutBlack";
 import LayoutClear from "./LayoutClear";
 import LayoutRough from "./LayoutRough";
+import LayoutCautionTape from "./LayoutCautionTape";
 
 import LayoutCornersViewscreen from "./LayoutCorners/Viewscreen";
 import LayoutOdysseyViewscreen from "./LayoutOdyssey/viewscreen";
@@ -23,6 +24,7 @@ import LayoutEpsilonViewscreen from "./LayoutEpsilon/viewscreen";
 import LayoutBlackViewscreen from "./LayoutBlack/viewscreen";
 import LayoutClearViewscreen from "./LayoutClear/viewscreen";
 import LayoutRoughViewscreen from "./LayoutRough/viewscreen";
+import LayoutCautionTapeViewscreen from "./LayoutCautionTape/viewscreen";
 
 const Layouts: {[name: string]: React.ElementType} = {
   LayoutCorners,
@@ -37,6 +39,7 @@ const Layouts: {[name: string]: React.ElementType} = {
   LayoutBlack,
   LayoutClear,
   LayoutRough,
+  LayoutCautionTape,
   LayoutCornersViewscreen,
   LayoutOdysseyViewscreen,
   LayoutGlassViewscreen,
@@ -49,5 +52,6 @@ const Layouts: {[name: string]: React.ElementType} = {
   LayoutBlackViewscreen,
   LayoutClearViewscreen,
   LayoutRoughViewscreen,
+  LayoutCautionTapeViewscreen,
 };
 export default Layouts;
