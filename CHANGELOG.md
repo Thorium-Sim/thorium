@@ -1,3 +1,15 @@
+# [3.1.0](https://github.com/Thorium-Sim/thorium/compare/3.0.10...3.1.0) (2021-01-01)
+
+
+### Bug Fixes
+
+* **Hacking:** Only show port scan frequency when a scan is in progress. Closes [#3059](https://github.com/Thorium-Sim/thorium/issues/3059) ([b16ce5d](https://github.com/Thorium-Sim/thorium/commit/b16ce5dbc6d68cc28f2c703c14bb02d465eb7694))
+
+
+### Features
+
+* **Layout:** Add a new layout called Caution Tape. ([5f4f42a](https://github.com/Thorium-Sim/thorium/commit/5f4f42ae139f37315fcc5bd5781ab483204011ce))
+
 ## [3.0.10](https://github.com/Thorium-Sim/thorium/compare/3.0.9...3.0.10) (2020-12-17)
 
 
