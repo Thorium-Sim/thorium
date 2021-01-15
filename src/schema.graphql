@@ -826,7 +826,7 @@ type Mutation {
   """
   Macro: Docking: Set docking state
   Requires:
-   - Cards:DockingPorts, SpecializedDocking, Shuttles
+   - Cards:Docking
    - Docking
   """
   shipSetDocking(simulatorId: ID!, clamps: Boolean, ramps: Boolean, airlock: Boolean, legs: Boolean): String

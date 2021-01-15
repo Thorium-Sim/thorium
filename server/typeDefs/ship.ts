@@ -58,7 +58,7 @@ const schema = gql`
     """
     Macro: Docking: Set docking state
     Requires:
-     - Cards:DockingPorts, SpecializedDocking, Shuttles
+     - Cards:Docking
      - Docking
     """
     shipSetDocking(
