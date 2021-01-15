@@ -1,3 +1,11 @@
+## [3.1.2](https://github.com/Thorium-Sim/thorium/compare/3.1.1...3.1.2) (2021-01-15)
+
+
+### Bug Fixes
+
+* **Missions:** Fixes an issue where docking implies the presence of docking ports or a shuttlebay, listing some missions as impossible for a simulator to run. Closes [#3064](https://github.com/Thorium-Sim/thorium/issues/3064) ([388306f](https://github.com/Thorium-Sim/thorium/commit/388306ff550c628a1f65553ff4b487cb283669da))
+* **Stars:** Fixes an issue where stars point the wrong direction. Closes [#3061](https://github.com/Thorium-Sim/thorium/issues/3061) ([6b60674](https://github.com/Thorium-Sim/thorium/commit/6b60674eacf806b4e67e8ff6f451a6907ffe7498))
+
 ## [3.1.1](https://github.com/Thorium-Sim/thorium/compare/3.1.0...3.1.1) (2021-01-01)
 
 
