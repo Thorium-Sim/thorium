@@ -6,10 +6,21 @@ import {ViewscreenScaleContext} from "../../views/Viewscreen";
 const Stars = props => {
   let angle = 0;
   try {
-    angle = parseInt(JSON.parse(props.viewscreen.data).angle) || 0;
+    angle =
+      ((parseInt(JSON.parse(props.viewscreen.data).angle) || null) ??
+        localStorage.getItem("thorium_stars_angle")) ||
+      0;
+    console.log({
+      data: parseInt(JSON.parse(props.viewscreen.data).angle),
+      ls: localStorage.getItem("thorium_stars_angle"),
+      angle,
+    });
   } catch {
     // Do nothing
   }
+  React.useEffect(() => {
+    localStorage.setItem("thorium_stars_angle", angle);
+  }, [angle]);
   const [velocity, setVelocity] = React.useState(
     props.activating ? 0 : props.velocity,
   );

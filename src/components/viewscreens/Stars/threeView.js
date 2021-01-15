@@ -39,7 +39,7 @@ class ThreeView extends Component {
     this.camera.position.y = 0;
     this.camera.position.z = 0;
     this.camera.lookAt(new THREE.Vector3(0, 0, -1));
-    this.camera.rotation.y = (props.angle / 180) * Math.PI + Math.PI;
+    this.camera.rotation.y = (props.angle / 180) * Math.PI;
 
     this.renderScene = new RenderPass(this.scene, this.camera);
     this.bloomPass = new UnrealBloomPass(

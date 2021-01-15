@@ -12,7 +12,9 @@ const StarsConfig = ({data, updateData, simple}) => (
     />
     <p>
       <small>
-        This is the yaw angle which the viewscreen is looking out in degrees.
+        This is the yaw angle which the viewscreen is looking out in degrees. If
+        this is left blank, or if the viewscreen automatically changes to stars,
+        the last used number will be used.
       </small>
     </p>
   </div>
