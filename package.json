@@ -216,7 +216,7 @@
     "graphql-bigint": "^1.0.0",
     "graphql-type-json": "^0.3.0",
     "graphql.macro": "^1.4.2",
-    "immer": "^6.0.5",
+    "immer": "^8.0.1",
     "is-linux": "^1.0.1",
     "is-osx": "^1.0.2",
     "is-windows": "^1.0.2",
