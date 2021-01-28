@@ -10,11 +10,6 @@ const Stars = props => {
       ((parseInt(JSON.parse(props.viewscreen.data).angle) || null) ??
         localStorage.getItem("thorium_stars_angle")) ||
       0;
-    console.log({
-      data: parseInt(JSON.parse(props.viewscreen.data).angle),
-      ls: localStorage.getItem("thorium_stars_angle"),
-      angle,
-    });
   } catch {
     // Do nothing
   }

@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 export default () => {
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     console.info(`Starting Thorium...${Array(20).fill("\n").join("")}`);
 
     fs.exists(snapshotDir, exists =>
@@ -56,7 +56,7 @@ export default () => {
     );
   })
     .then(() => {
-      return new Promise(resolve => {
+      return new Promise<void>(resolve => {
         let assetDir = path.resolve("./assets/");
 
         if (process.env.NODE_ENV === "production") {
@@ -69,7 +69,7 @@ export default () => {
       });
     })
     .then(() => {
-      return new Promise(resolve => {
+      return new Promise<void>(resolve => {
         const defaultSnapshot = require("../helpers/defaultSnapshot.js")
           .default;
         let snapshotDir = "./snapshots/";

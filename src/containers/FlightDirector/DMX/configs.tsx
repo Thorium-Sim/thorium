@@ -24,6 +24,7 @@ export type DMXChannelProperty =
   | "intensity"
   | "strobe"
   | "generic"
+  | "focus"
   | "nothing";
 
 type ChannelConfig = Partial<
@@ -45,6 +46,7 @@ const DMXProperties: DMXChannelProperty[] = [
   "uv",
   "intensity",
   "strobe",
+  "focus",
   "generic",
 ];
 
@@ -83,8 +85,8 @@ export const DMXPropertiesEditor: React.FC<{
             <Input
               type="number"
               min={0}
-              max={1}
-              step={0.01}
+              max={255}
+              step={1}
               defaultValue={channels[prop] || ""}
               onChange={e => {
                 updateValue(prop, e.target.value);

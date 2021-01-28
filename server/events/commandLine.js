@@ -24,6 +24,16 @@ App.on("addCommandLine", ({name}) => {
   App.commandLine.push(new Classes.CommandLine({name}));
   pubsub.publish("commandLineUpdate", App.commandLine);
 });
+App.on("duplicateCommandLine", ({id}) => {
+  const commandLine = App.commandLine.find(s => s.id === id);
+  if (commandLine) {
+    const {components, connections, values, config, name} = commandLine;
+    App.commandLine.push(
+      new Classes.CommandLine({components, connections, values, config, name}),
+    );
+    pubsub.publish("commandLineUpdate", App.commandLine);
+  }
+});
 
 App.on("renameCommandLine", ({id, name}) => {
   performAction(id, c => c.rename(name));

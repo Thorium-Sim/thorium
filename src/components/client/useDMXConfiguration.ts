@@ -22,7 +22,9 @@ export default function useDMXConfiguration(
     variables: {simulatorId: simulator.id, clientId},
   });
 
-  const alertLevel = data?.simulatorsUpdate?.[0]?.alertlevel;
+  const alertLevel = data?.simulatorsUpdate?.[0]?.training
+    ? "5"
+    : data?.simulatorsUpdate?.[0]?.alertlevel || "5";
   const lightingData = data?.simulatorsUpdate?.[0]?.lighting;
   const lighting = React.useMemo(
     () =>

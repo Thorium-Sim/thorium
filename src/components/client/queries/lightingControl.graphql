@@ -13,5 +13,6 @@ subscription LightingControl($simulatorId: ID!) {
       }
     }
     alertlevel
+    training
   }
 }

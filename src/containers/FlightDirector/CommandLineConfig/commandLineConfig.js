@@ -102,6 +102,27 @@ export default class CommandLineConfig extends Component {
                 </Mutation>
                 <Mutation
                   mutation={gql`
+                    mutation DuplicateCommandLine($id: ID!) {
+                      duplicateCommandLine(id: $id)
+                    }
+                  `}
+                >
+                  {action => (
+                    <Button
+                      color="info"
+                      size="sm"
+                      block
+                      onClick={() => {
+                        action({variables: {id: selectedCommandLine}});
+                        this.setState({selectedCommandLine: null});
+                      }}
+                    >
+                      Duplicate Command Line
+                    </Button>
+                  )}
+                </Mutation>
+                <Mutation
+                  mutation={gql`
                     mutation RenameCommandLine($id: ID!, $name: String!) {
                       renameCommandLine(id: $id, name: $name)
                     }

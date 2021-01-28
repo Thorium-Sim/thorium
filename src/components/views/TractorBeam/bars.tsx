@@ -38,11 +38,13 @@ const Bars: React.FC<{
 
   const bind = useGesture({
     onDrag: ({xy: [, y]}) => {
-      const val = Math.abs(
-        1 -
-          Math.min(max, Math.max(0, (y - dimensions.top) / dimensions.height)),
+      const val = Math.min(
+        max,
+        Math.max(
+          0,
+          Math.abs(1 - Math.min(1, (y - dimensions.top) / dimensions.height)),
+        ),
       );
-
       setLevel(val);
       mouseMoveProp(val);
     },

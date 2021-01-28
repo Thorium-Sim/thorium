@@ -746,6 +746,7 @@ export type Mutation = {
   handheldScannerResponse?: Maybe<Scalars['String']>;
   addCommandLine?: Maybe<Scalars['String']>;
   renameCommandLine?: Maybe<Scalars['String']>;
+  duplicateCommandLine?: Maybe<Scalars['String']>;
   removeCommandLine?: Maybe<Scalars['String']>;
   updateCommandLine?: Maybe<Scalars['String']>;
   executeCommandLine?: Maybe<Scalars['String']>;
@@ -1304,7 +1305,7 @@ export type Mutation = {
   /**
    * Macro: Docking: Set docking state
    * Requires:
-   *  - Cards:DockingPorts, SpecializedDocking, Shuttles
+   *  - Cards:Docking
    *  - Docking
    */
   shipSetDocking?: Maybe<Scalars['String']>;
@@ -2054,6 +2055,11 @@ export type MutationAddCommandLineArgs = {
 export type MutationRenameCommandLineArgs = {
   id: Scalars['ID'];
   name: Scalars['String'];
+};
+
+
+export type MutationDuplicateCommandLineArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -10474,6 +10480,7 @@ export enum DmxChannelProperty {
   Intensity = 'intensity',
   Strobe = 'strobe',
   Generic = 'generic',
+  Focus = 'focus',
   Nothing = 'nothing'
 }
 
@@ -10492,24 +10499,24 @@ export enum DmxFixtureMode {
 
 export type DmxPassiveChannels = {
   __typename?: 'DMXPassiveChannels';
-  amber?: Maybe<Scalars['Float']>;
-  white?: Maybe<Scalars['Float']>;
-  uv?: Maybe<Scalars['Float']>;
-  intensity?: Maybe<Scalars['Float']>;
-  strobe?: Maybe<Scalars['Float']>;
-  generic?: Maybe<Scalars['Float']>;
-  nothing?: Maybe<Scalars['Float']>;
+  amber?: Maybe<Scalars['Int']>;
+  white?: Maybe<Scalars['Int']>;
+  uv?: Maybe<Scalars['Int']>;
+  intensity?: Maybe<Scalars['Int']>;
+  strobe?: Maybe<Scalars['Int']>;
+  generic?: Maybe<Scalars['Int']>;
+  nothing?: Maybe<Scalars['Int']>;
   color?: Maybe<Scalars['String']>;
 };
 
 export type DmxPassiveChannelsInput = {
-  amber?: Maybe<Scalars['Float']>;
-  white?: Maybe<Scalars['Float']>;
-  uv?: Maybe<Scalars['Float']>;
-  intensity?: Maybe<Scalars['Float']>;
-  strobe?: Maybe<Scalars['Float']>;
-  generic?: Maybe<Scalars['Float']>;
-  nothing?: Maybe<Scalars['Float']>;
+  amber?: Maybe<Scalars['Int']>;
+  white?: Maybe<Scalars['Int']>;
+  uv?: Maybe<Scalars['Int']>;
+  intensity?: Maybe<Scalars['Int']>;
+  strobe?: Maybe<Scalars['Int']>;
+  generic?: Maybe<Scalars['Int']>;
+  nothing?: Maybe<Scalars['Int']>;
   color?: Maybe<Scalars['String']>;
 };
 
@@ -10965,7 +10972,7 @@ export type LightingControlSubscription = (
   { __typename?: 'Subscription' }
   & { simulatorsUpdate?: Maybe<Array<Maybe<(
     { __typename?: 'Simulator' }
-    & Pick<Simulator, 'id' | 'alertlevel'>
+    & Pick<Simulator, 'id' | 'alertlevel' | 'training'>
     & { lighting?: Maybe<(
       { __typename?: 'Lighting' }
       & Pick<Lighting, 'intensity' | 'action' | 'actionStrength' | 'transitionDuration'>
@@ -14913,6 +14920,7 @@ export const LightingControlDocument = gql`
       }
     }
     alertlevel
+    training
   }
 }
     `;

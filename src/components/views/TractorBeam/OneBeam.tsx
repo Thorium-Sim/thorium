@@ -100,15 +100,15 @@ const OneBeam: React.FC<{
         simulator={simulator}
         max={maxPower}
         level={Math.min(1, Math.max(0, Math.min(beam.strength, maxPower)))}
-        mouseUp={level =>
+        mouseUp={level => {
           setStrength({
             variables: {
               id: tractorBeam.id,
               beam: beam.id,
               strength: Math.min(1, Math.max(0, level)),
             },
-          })
-        }
+          });
+        }}
       />
       <Button
         css={css`

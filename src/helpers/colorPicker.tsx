@@ -50,6 +50,27 @@ const ColorPicker: React.FC<{
               zIndex: 1,
             }}
           >
+            {/* <HslSlider
+              color={currentColor}
+              onChange={({
+                hue,
+                saturation,
+                lightness,
+              }: {
+                hue: number;
+                saturation: number;
+                lightness: number;
+              }) => {
+                const color = tc({h: hue, s: saturation, l: lightness});
+                setCurrentColor(
+                  format === "rgb"
+                    ? color.toRgbString()
+                    : format === "raw"
+                    ? color
+                    : color.toHexString(),
+                );
+              }}
+            /> */}
             <ChromePicker
               color={currentColor}
               onChange={color =>

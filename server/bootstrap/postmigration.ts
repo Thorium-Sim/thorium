@@ -3,9 +3,10 @@ import App from "../app";
 import {InterfaceDevice} from "../classes/interface";
 import {Entity, DMXDevice} from "../classes";
 import * as components from "../classes/universe/components";
+import type {DMXAlertConfig} from "../classes/DMX/DMXConfig";
 
 export default () => {
-  return new Promise(done => {
+  return new Promise<void>(done => {
     if (App.interfaceDevices.length === 0) {
       App.interfaceDevices = [
         new InterfaceDevice({
@@ -95,6 +96,27 @@ export default () => {
           ],
         },
       ].map((d: DMXDevice) => new DMXDevice(d));
+    }
+    if (!App.migrations.dmx) {
+      App.migrations.dmx = true;
+      App.dmxConfigs.forEach(config => {
+        for (let key in config.config) {
+          const item = config.config[key] as DMXAlertConfig;
+          for (let tagName in item) {
+            const channelConfig = item[tagName];
+            for (let channelName in channelConfig) {
+              if (
+                (typeof channelConfig[channelName] === "number" ||
+                  !isNaN(parseFloat(channelConfig[channelName]))) &&
+                parseFloat(channelConfig[channelName]) <= 1
+              ) {
+                const value = parseFloat(channelConfig[channelName]);
+                channelConfig[channelName] = Math.round(value * 255);
+              }
+            }
+          }
+        }
+      });
     }
     done();
   });

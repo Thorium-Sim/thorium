@@ -198,6 +198,8 @@ const resolver = {
         "stealthFieldUpdate",
         App.systems.filter(s => s.type === "StealthField"),
       );
+      console.log("changed alert", id, change);
+      pubsub.publish("simulatorsUpdate", App.simulators);
     },
     stealthSensorsSonar(rootValue, {id, sonar}) {
       App.systems.find(s => s.id === id)?.setSensorsSonar(sonar);

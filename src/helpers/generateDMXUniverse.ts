@@ -11,6 +11,7 @@ export type DMXChannelProperty =
   | "intensity"
   | "strobe"
   | "generic"
+  | "focus"
   | "actionStrength"
   | "nothing";
 
@@ -72,11 +73,11 @@ function setUniverse(
     if (deviceChannel !== "nothing") {
       let value: number = 0;
       if (deviceChannel === "red") {
-        value = colorValue.r / 255;
+        value = colorValue.r;
       } else if (deviceChannel === "green") {
-        value = colorValue.g / 255;
+        value = colorValue.g;
       } else if (deviceChannel === "blue") {
-        value = colorValue.b / 255;
+        value = colorValue.b;
       } else {
         const channelValue = channels[deviceChannel] || "0";
         value = Number(channelValue);
@@ -197,5 +198,5 @@ export default function generateUniverse(
       setUniverse(fixture, lighting, channels, universe);
     }
   });
-  return universe.map(v => Math.round(v * 255));
+  return universe;
 }
