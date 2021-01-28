@@ -27,6 +27,7 @@ const schema = gql`
   extend type Mutation {
     addCommandLine(name: String!): String
     renameCommandLine(id: ID!, name: String!): String
+    duplicateCommandLine(id: ID!): String
     removeCommandLine(id: ID!): String
     updateCommandLine(
       id: ID!
