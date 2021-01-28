@@ -1,3 +1,16 @@
+# [3.2.0](https://github.com/Thorium-Sim/thorium/compare/3.1.2...3.2.0) (2021-01-28)
+
+
+### Bug Fixes
+
+* **DMX:** Improvements to DMX lighting. Lights no longer respond to alert level changes during training mode. Adds a "focus" channel. Changes the DMX values to be 0-255 instead of 0-1. ([1483469](https://github.com/Thorium-Sim/thorium/commit/1483469ba3819de38afec0c1b0cdbd117856c6f1))
+* **Tractor Beam:** Fixes an issue where the tractor beam strength bar doesn't properly adjust when there is a maximum level limit. Closes [#3072](https://github.com/Thorium-Sim/thorium/issues/3072) ([4ed2f67](https://github.com/Thorium-Sim/thorium/commit/4ed2f67e19656ac994f2f4e546c44d9ed2b0038c))
+
+
+### Features
+
+* **Stealth:** Adds a checkbox in the stealth core to control whether stealth changes the alert condition. ([539712e](https://github.com/Thorium-Sim/thorium/commit/539712e981a7166961ddf869b7c04922e5596644))
+
 ## [3.1.2](https://github.com/Thorium-Sim/thorium/compare/3.1.1...3.1.2) (2021-01-15)
 
 
