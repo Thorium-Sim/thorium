@@ -15,6 +15,7 @@ const schema = gql`
     intensity
     strobe
     generic
+    focus
     nothing
   }
   type DMXDevice {
@@ -28,23 +29,23 @@ const schema = gql`
     passive
   }
   type DMXPassiveChannels {
-    amber: Float
-    white: Float
-    uv: Float
-    intensity: Float
-    strobe: Float
-    generic: Float
-    nothing: Float
+    amber: Int
+    white: Int
+    uv: Int
+    intensity: Int
+    strobe: Int
+    generic: Int
+    nothing: Int
     color: String
   }
   input DMXPassiveChannelsInput {
-    amber: Float
-    white: Float
-    uv: Float
-    intensity: Float
-    strobe: Float
-    generic: Float
-    nothing: Float
+    amber: Int
+    white: Int
+    uv: Int
+    intensity: Int
+    strobe: Int
+    generic: Int
+    nothing: Int
     color: String
   }
   type DMXFixture {

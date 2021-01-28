@@ -10,6 +10,7 @@ export type DMXChannelProperty =
   | "intensity"
   | "strobe"
   | "generic"
+  | "focus"
   | "nothing";
 
 class DMXDevice {

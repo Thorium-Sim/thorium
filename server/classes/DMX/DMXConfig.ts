@@ -2,7 +2,7 @@ import uuid from "uuid";
 import {ChannelConfig} from "./DMXFixture";
 import App from "../../app";
 
-type DMXAlertConfig = {[tag: string]: ChannelConfig};
+export type DMXAlertConfig = {[tag: string]: ChannelConfig};
 type DMXConfigStuff = {
   "1"?: DMXAlertConfig;
   "2"?: DMXAlertConfig;

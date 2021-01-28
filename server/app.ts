@@ -79,7 +79,7 @@ class Events extends EventEmitter {
   dmxSets: ClassesImport.DMXSet[] = [];
   hackingPresets: ClassesImport.HackingPreset[] = [];
   autoUpdate = true;
-  migrations: any = {assets: true};
+  migrations: any = {assets: true, dmx: false};
   thoriumId: string = randomWords(5).join("-");
   doTrack: boolean = false;
   askedToTrack: boolean = false;
