@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
-import {Query, withApollo} from "react-apollo";
+import {Mutation, Query, withApollo} from "react-apollo";
 import {OutputField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
@@ -15,6 +15,7 @@ export const STEALTH_CORE_SUB = gql`
       state
       charge
       activated
+      changeAlert
       quadrants {
         fore
         aft
@@ -114,6 +115,31 @@ class StealthFieldCore extends Component {
         <Button color="warning" size="sm" onClick={this.fluxCharge}>
           Flux
         </Button>
+        <label>
+          <Mutation
+            mutation={gql`
+              mutation ToggleChangeAlert($id: ID!, $change: Boolean!) {
+                stealthChangeAlert(id: $id, change: $change)
+              }
+            `}
+          >
+            {action => (
+              <input
+                type="checkbox"
+                checked={stealthField.changeAlert}
+                onChange={e =>
+                  action({
+                    variables: {
+                      id: stealthField.id,
+                      change: e.target.checked,
+                    },
+                  })
+                }
+              />
+            )}
+          </Mutation>
+          Change simulator alert color when stealthed
+        </label>
         <Row>
           <Col sm="12">
             <OutputField
