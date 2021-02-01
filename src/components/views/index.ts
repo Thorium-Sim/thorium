@@ -16,6 +16,7 @@ import {
   FaTasks,
   FaCircleNotch,
   FaTerminal,
+  FaEnvelopeOpenText,
 } from "react-icons/fa";
 
 const LongRangeComm = React.lazy(() => import("./LongRangeComm"));
@@ -431,6 +432,13 @@ export const Widgets = {
     name: "Command Line",
     size: "lg",
     color: "#5FFF5F",
+  },
+  commCyphers: {
+    widget: CodeCyphers,
+    icon: FaEnvelopeOpenText,
+    name: "Code Cyphers",
+    size: "lg",
+    color: "white",
   },
 };
 
