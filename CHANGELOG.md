@@ -1,3 +1,15 @@
+# [3.3.0](https://github.com/Thorium-Sim/thorium/compare/3.2.0...3.3.0) (2021-02-01)
+
+
+### Bug Fixes
+
+* **DMX:** Improves the way DMX effects are handled. Closes [#3079](https://github.com/Thorium-Sim/thorium/issues/3079) ([803755d](https://github.com/Thorium-Sim/thorium/commit/803755dc1019d820695c6a6b77f5e0a9247ba8f5))
+
+
+### Features
+
+* **Code Cyphers:** Creates a code cyphers widget ([ba74a03](https://github.com/Thorium-Sim/thorium/commit/ba74a031493102e11beb6e9ef01069a2ad7afb9f))
+
 # [3.2.0](https://github.com/Thorium-Sim/thorium/compare/3.1.2...3.2.0) (2021-01-28)
 
 
