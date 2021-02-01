@@ -90,10 +90,10 @@ function setUniverse(
           deviceChannel,
         )
       ) {
-        value = 1;
+        value = 255;
       }
 
-      universe[i + fixture.channel] = value;
+      universe[i + fixture.channel] = Math.round(value);
     }
   }
 }
@@ -193,7 +193,6 @@ export default function generateUniverse(
           });
           return prev;
         }, {});
-
       // Loop over the channels and apply the correct multiply to the appropriate channel
       setUniverse(fixture, lighting, channels, universe);
     }
