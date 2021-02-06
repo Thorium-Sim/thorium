@@ -13,12 +13,12 @@ class Rotor extends Component {
     };
   }
   mouseDown = () => {
-    document.addEventListener("mouseup", this.mouseUp);
-    document.addEventListener("mousemove", this.mouseMove);
+    document.addEventListener("pointerup", this.mouseUp);
+    document.addEventListener("pointermove", this.mouseMove);
   };
   mouseUp = () => {
-    document.removeEventListener("mouseup", this.mouseUp);
-    document.removeEventListener("mousemove", this.mouseMove);
+    document.removeEventListener("pointerup", this.mouseUp);
+    document.removeEventListener("pointermove", this.mouseMove);
     this.props.update && this.props.update(this.state.level);
   };
   mouseMove = evt => {
@@ -61,18 +61,18 @@ class Rotor extends Component {
           className="rotor"
           ref="innerCircle"
           id="innerCircle"
-          onMouseDown={this.move}
+          onPointerDown={this.move}
           style={{transform: `rotate(${level * 270}deg)`}}
         >
-          <div onMouseDown={this.mouseDown} className="center" />
+          <div onPointerDown={this.mouseDown} className="center" />
         </div>
         {page && edit && !connecting && (
           <div
             className="output"
-            onMouseDown={evt => startConnecting(evt, id)}
+            onPointerDown={evt => startConnecting(evt, id)}
           />
         )}
-        {page && edit && <div className="scale" onMouseDown={scaleComp} />}
+        {page && edit && <div className="scale" onPointerDown={scaleComp} />}
       </div>
     );
   }

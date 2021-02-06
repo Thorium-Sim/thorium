@@ -3,8 +3,8 @@ import * as Components from "./components";
 
 class PageComponent extends Component {
   mouseDown = evt => {
-    document.addEventListener("mousemove", this.mouseMove);
-    document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("pointermove", this.mouseMove);
+    document.addEventListener("pointerup", this.mouseUp);
     const dims = evt.target.getBoundingClientRect();
 
     this.setState({
@@ -35,15 +35,15 @@ class PageComponent extends Component {
     );
   };
   mouseUp = () => {
-    document.removeEventListener("mousemove", this.mouseMove);
-    document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("pointermove", this.mouseMove);
+    document.removeEventListener("pointerup", this.mouseUp);
     const {id, x, y, remove, update} = this.props;
     update({id, x, y});
     if (x < 0 || x > 1 || y < 0 || y > 1) remove();
   };
   scaleComp = evt => {
-    document.addEventListener("mousemove", this.moveScale);
-    document.addEventListener("mouseup", this.endScale);
+    document.addEventListener("pointermove", this.moveScale);
+    document.addEventListener("pointerup", this.endScale);
   };
   moveScale = evt => {
     function distance3d(coord2, coord1) {
@@ -68,8 +68,8 @@ class PageComponent extends Component {
     );
   };
   endScale = () => {
-    document.removeEventListener("mousemove", this.moveScale);
-    document.removeEventListener("mouseup", this.endScale);
+    document.removeEventListener("pointermove", this.moveScale);
+    document.removeEventListener("pointerup", this.endScale);
     const {id, scale, update} = this.props;
     update({id, scale});
   };
