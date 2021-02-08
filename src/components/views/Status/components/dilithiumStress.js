@@ -42,7 +42,9 @@ class DilithiumStress extends Component {
       this.props.simulator.stations,
     );
     if (!dilithiumStressCard) return null;
-    const reactor = this.props.data.reactors && this.props.data.reactors[0];
+    const reactor =
+      this.props.data.reactors &&
+      this.props.data.reactors.find(r => r.model === "reactor");
     if (!reactor) return null;
     const stressLevel = this.calcStressLevel(reactor) / 100;
     return (
