@@ -1,3 +1,12 @@
+## [3.3.1](https://github.com/Thorium-Sim/thorium/compare/3.3.0...3.3.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* **Dilithium Stress:** Fixes an issue where dilithium stress doesn't appear on the status card. Closes [#3089](https://github.com/Thorium-Sim/thorium/issues/3089) ([c28a5a1](https://github.com/Thorium-Sim/thorium/commit/c28a5a125d40a72cdf839eae077b78196bbc6abd))
+* **Lighting:** Adds a lower bound to the shake and oscillate effect to help improve the lifespan of certain lighting fixtures. Closes [#3082](https://github.com/Thorium-Sim/thorium/issues/3082) ([11f78d4](https://github.com/Thorium-Sim/thorium/commit/11f78d493b26f17414cead7641a03920d8ff7ffd))
+* **Software Panels:** Improves the behavior of software panels on touchscreens. Closes [#3076](https://github.com/Thorium-Sim/thorium/issues/3076). Closes [#3077](https://github.com/Thorium-Sim/thorium/issues/3077). ([d248c58](https://github.com/Thorium-Sim/thorium/commit/d248c58b23c5c37aba66e9d5f26d4f8da2bc9166))
+
 # [3.3.0](https://github.com/Thorium-Sim/thorium/compare/3.2.0...3.3.0) (2021-02-01)
 
 
