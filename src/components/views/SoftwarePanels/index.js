@@ -250,10 +250,13 @@ class SoftwarePanels extends Component {
             sm={panel ? 12 : 9}
             css={css`
               height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
             `}
           >
             {shownPanel && (
-              <Card>
+              <Card style={{width: "80%"}}>
                 <Measure
                   bounds
                   onResize={contentRect => {

@@ -105,8 +105,8 @@ export default class PanelCanvas extends Component {
   };
   startConnecting = (evt, id) => {
     evt.preventDefault();
-    document.addEventListener("mousemove", this.moveConnection);
-    document.addEventListener("mouseup", this.endConnection);
+    document.addEventListener("pointermove", this.moveConnection);
+    document.addEventListener("pointerup", this.endConnection);
     this.setState({
       connectingFrom: id,
       connectingLocation: {
@@ -124,8 +124,8 @@ export default class PanelCanvas extends Component {
     });
   };
   endConnection = evt => {
-    document.removeEventListener("mousemove", this.moveConnection);
-    document.removeEventListener("mouseup", this.endConnection);
+    document.removeEventListener("pointermove", this.moveConnection);
+    document.removeEventListener("pointerup", this.endConnection);
     const connections = evt.target.dataset.component
       ? this.props.connections.concat({
           id: uuid.v4(),

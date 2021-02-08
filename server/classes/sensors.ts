@@ -92,7 +92,7 @@ export default class Sensors extends System {
       this.name = params.name;
     }
     this.pings = params.pings ?? true;
-    this.pingMode = params.pingMode || "manual";
+    this.pingMode = params.pingMode || "active";
     this.timeSincePing = params.timeSincePing || 0;
     this.scanResults = params.scanResults || "";
     this.scanRequest = params.scanRequest || "";

@@ -250,8 +250,8 @@ class App extends Component {
         y: evt.clientY - this.state.dimensions.top - 30,
       },
     });
-    document.addEventListener("mousemove", this.mouseMove);
-    document.addEventListener("mouseup", this.mouseUp);
+    document.addEventListener("pointermove", this.mouseMove);
+    document.addEventListener("pointerup", this.mouseUp);
   };
   mouseMove = evt => {
     this.setState({
@@ -262,8 +262,8 @@ class App extends Component {
     });
   };
   mouseUp = () => {
-    document.removeEventListener("mousemove", this.mouseMove);
-    document.removeEventListener("mouseup", this.mouseUp);
+    document.removeEventListener("pointermove", this.mouseMove);
+    document.removeEventListener("pointerup", this.mouseUp);
     const {components, componentLocation: loc, draggingComponent} = this.state;
     this.setState({
       draggingComponent: null,

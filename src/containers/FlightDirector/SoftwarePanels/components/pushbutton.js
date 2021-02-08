@@ -18,17 +18,17 @@ const PushButton = ({
         <div
           style={{display: "flex"}}
           className="pushbutton"
-          onMouseDown={() => update(1)}
-          onMouseUp={() => update(0)}
+          onPointerDown={() => update(1)}
+          onPointerUp={() => update(0)}
         />
         {page && edit && !connecting && (
           <div
             className="output"
-            onMouseDown={evt => startConnecting(evt, id)}
+            onPointerDown={evt => startConnecting(evt, id)}
           />
         )}
       </div>
-      {page && edit && <div className="scale" onMouseDown={scaleComp} />}
+      {page && edit && <div className="scale" onPointerDown={scaleComp} />}
     </div>
   );
 };

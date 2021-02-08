@@ -23,7 +23,7 @@ const DraggingLine = ({
   return (
     <path
       className="drag-line"
-      onClick={() => {
+      onPointerDown={() => {
         onClick(id);
       }}
       d={`M${comp.x * width + offset} ${comp.y * height + offset} L ${
