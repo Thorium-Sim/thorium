@@ -146,7 +146,7 @@ export default function generateUniverse(
             break;
           case "shake":
             multiplyValue = 1 - Math.random() * lighting.actionStrength;
-            multiplyValue *= 1.03;
+            multiplyValue += 0.03;
             break;
           case "strobe":
             multiplyValue =
@@ -157,7 +157,7 @@ export default function generateUniverse(
           case "oscillate":
             multiplyValue =
               1 - Math.sin(cycleT * Math.PI) * lighting.actionStrength;
-            multiplyValue *= 1.03;
+            multiplyValue += 0.3;
             break;
         }
       }
