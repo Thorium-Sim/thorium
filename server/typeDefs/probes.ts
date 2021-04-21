@@ -59,6 +59,7 @@ const schema = gql`
     name: String
     type: ID
     equipment: [EquipmentInput]
+    launched: Boolean
   }
 
   input EquipmentInput {

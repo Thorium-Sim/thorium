@@ -2940,6 +2940,7 @@ input ProbeInput {
   name: String
   type: ID
   equipment: [EquipmentInput]
+  launched: Boolean
 }
 
 input EquipmentInput {
