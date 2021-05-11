@@ -1,3 +1,12 @@
+## [3.3.2](https://github.com/Thorium-Sim/thorium/compare/3.3.1...3.3.2) (2021-05-11)
+
+
+### Bug Fixes
+
+* **DMX:** Fix the lower threshold for some effects. ([f6bf4c4](https://github.com/Thorium-Sim/thorium/commit/f6bf4c46d358039ea415d3c8e6ff18a623d5c8a5))
+* **Probes:** Fix an issue where launching probes doesn't work correctly. Closes [#3134](https://github.com/Thorium-Sim/thorium/issues/3134) ([ecce25e](https://github.com/Thorium-Sim/thorium/commit/ecce25e076819eba2d1b8a947a368853768fdb47))
+* **Sensors:** Fixes an issue where sensor contacts don't properly move. Also fixes an issue with probe science not emitting. Closes [#3130](https://github.com/Thorium-Sim/thorium/issues/3130). Closes [#3101](https://github.com/Thorium-Sim/thorium/issues/3101). Closes [#3088](https://github.com/Thorium-Sim/thorium/issues/3088). Closes [#2841](https://github.com/Thorium-Sim/thorium/issues/2841). Closes [#3134](https://github.com/Thorium-Sim/thorium/issues/3134) ([7ba2644](https://github.com/Thorium-Sim/thorium/commit/7ba2644c6ae9afc2d99670fb165474811be7e497))
+
 ## [3.3.1](https://github.com/Thorium-Sim/thorium/compare/3.3.0...3.3.1) (2021-02-08)
 
 
