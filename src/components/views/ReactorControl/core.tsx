@@ -206,7 +206,7 @@ const ReactorCore: React.FC<{simulator: Simulator}> = ({simulator}) => {
               </Input>
               <p>Effective Output:</p>
               <p>
-                {Math.round(
+                {Math.trunc(
                   (reactor.powerOutput || 0) * (reactor.efficiency || 0),
                 )}
               </p>
