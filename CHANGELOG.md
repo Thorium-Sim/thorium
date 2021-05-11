@@ -1,3 +1,10 @@
+## [3.3.3](https://github.com/Thorium-Sim/thorium/compare/3.3.2...3.3.3) (2021-05-11)
+
+
+### Bug Fixes
+
+* **Reactor:** Fixes a rounding error when using Left/Right wing power. Closes [#3140](https://github.com/Thorium-Sim/thorium/issues/3140) ([79ad778](https://github.com/Thorium-Sim/thorium/commit/79ad778de1a6eb1d7a3859c24f09577b5401cee6))
+
 ## [3.3.2](https://github.com/Thorium-Sim/thorium/compare/3.3.1...3.3.2) (2021-05-11)
 
 
