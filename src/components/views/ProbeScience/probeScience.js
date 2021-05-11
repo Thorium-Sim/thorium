@@ -190,7 +190,7 @@ class ProbeScience extends Component {
               destination: randomOnPlane(1.1),
               location: {x: -0.01, y: -0.01, z: -0.01},
               position: {x: -0.01, y: -0.01, z: -0.01},
-              startTime: Date.now() + window.thorium.clockSync,
+              startTime: Date.now() + window.thoriumLocal.clockSync,
               speed: 1,
             },
           ],

@@ -56,6 +56,7 @@ const schema = gql`
   }
 
   input ProbeInput {
+    id: ID
     name: String
     type: ID
     equipment: [EquipmentInput]

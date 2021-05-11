@@ -13,6 +13,10 @@ function distance3d(coord2, coord1) {
 function compareLocs(loc1, loc2) {
   return loc1.x === loc2.x && loc1.y === loc2.y && loc1.z === loc2.z;
 }
+window.thoriumLocal = {
+  clockSync: 0,
+  roundTrip: 0,
+};
 class InnerGrid extends Component {
   state = {sContacts: {}};
   interval = 1000 / 30;
@@ -93,7 +97,7 @@ class InnerGrid extends Component {
     if (c.speed === 0) {
       return {...c, destination, position, location};
     }
-    const time = Date.now() + window.thorium.clockSync;
+    const time = Date.now() + window.thoriumLocal.clockSync;
     if (c.speed > 100) {
       return {
         ...c,
@@ -108,7 +112,7 @@ class InnerGrid extends Component {
     const currentTime = time - c.startTime;
     // Location is a function of the current time and the end time.
     const endTime = c.endTime
-      ? c.endTime + window.thorium.clockSync
+      ? c.endTime + window.thoriumLocal.clockSync
       : c.startTime + 1000;
     const newLoc = {
       ...location,

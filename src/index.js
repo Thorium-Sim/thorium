@@ -9,7 +9,10 @@ initializeClient();
 try {
   window.thorium = window.thorium || {
     sendMessage: args => {},
+  };
+  window.thoriumLocal = {
     clockSync: 0,
+    roundTrip: 0,
   };
 } catch (err) {
   // Do nothing

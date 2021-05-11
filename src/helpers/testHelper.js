@@ -6,7 +6,9 @@ window.thorium = window.thorium || {
   sendMessage: args => {},
   clockSync: 0,
 };
-
+window.thoriumLocal = {
+  clockSync: 0,
+};
 class ErrorBoundary extends React.Component {
   state = {};
   componentDidCatch(error) {
