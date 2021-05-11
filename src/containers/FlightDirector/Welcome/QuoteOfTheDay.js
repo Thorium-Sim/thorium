@@ -95,6 +95,38 @@ const quotes = [
   "Can't Win 'Em All",
   "Extreme Problems call for Extreme Solutions",
   "An attempt at perspective",
+  "This is my time, and I control it.",
+  "All theory, dear friend, is grey, but the golden tree of life springs ever green.",
+  // Ubuntu
+  "I am what I am because of who we all are",
+  "What shall I build or write against the fall of night?",
+  // Catch-22
+  "There was no telling what people might find out if they felt free to ask whatever questions they wanted to.",
+  "Just because you're paranoid doesn't mean they aren't after you.",
+  "He knew everything there was to know about literature, except how to enjoy it.",
+  "Insanity is contagious.",
+  "Brains are weird, man. Weird, and grey, and squishy.",
+  "You are entitled to your own opinion, but you are not entitled to your own facts.",
+  "It is not incumbent on you to complete the task, but neither are you free to desist from it.",
+  "May you live in interesting times.",
+  // Will Durant
+  "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
+  // Ms Frizzle
+  "Take chances, make mistakes, and get messy.",
+  "The best way to know is to do.",
+  "Looks can be deceiving. Oftentimes what is isn’t, and what isn’t is.",
+  "If you keep asking questions, you’ll keep getting answers.",
+  "If you don’t look, you’ll never see. And what you don’t see can be very hard to find.",
+  "Where the road ends, adventure begins!",
+  // Soren Kierkegaard
+  "Life can only be understood backwards; but it must be lived forwards.",
+  // Swyx
+  "Small minds discuss tactics, average minds discuss strategy, great minds discuss destiny",
+  // Something about yeast not feeling pain?
+  "Ow! My very being!",
+  // Soren, ST:Generations
+  "They say time is the fire in which we burn.",
+  "Fragile. Not like flowers. Like bombs.",
 ];
 
 const QuoteOfTheDay = () => {

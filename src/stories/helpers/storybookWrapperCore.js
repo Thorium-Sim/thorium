@@ -9,7 +9,9 @@ window.thorium = window.thorium || {
   sendMessage: args => {},
   clockSync: 0,
 };
-
+window.thoriumLocal = {
+  clockSync: 0,
+};
 export default ({mocks, queries, children}) => {
   return (
     <React.Suspense fallback={"Loading..."}>

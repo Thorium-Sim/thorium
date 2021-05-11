@@ -15,6 +15,11 @@ import {FlightDirector, ClientsLobby, FlightConfig} from "./FlightDirector";
 import {getClientId} from "helpers/getClientId";
 import useInterval from "helpers/hooks/useInterval";
 
+window.thoriumLocal = {
+  clockSync: 0,
+  roundTrip: 0,
+};
+
 const Client = React.lazy(() => import("../components/client"));
 const Config = React.lazy(() => import("./config"));
 const Releases = React.lazy(() => import("./FlightDirector/releases"));
@@ -33,6 +38,10 @@ class NoMatch extends Component {
 declare global {
   interface Window {
     thorium: any;
+    thoriumLocal: {
+      clockSync: number;
+      roundTrip: number;
+    };
   }
 }
 
@@ -96,8 +105,9 @@ function useClockSync() {
       .subscribe({
         next: ({data: {clockSync}}) => {
           // This magic number is the round-trip offset. Could be better, but this works for now.
-          window.thorium.clockSync = parseInt(clockSync, 10) - sentTime.current;
-          window.thorium.roundTrip = Date.now() - sentTime.current;
+          window.thoriumLocal.clockSync =
+            parseInt(clockSync, 10) - sentTime.current;
+          window.thoriumLocal.roundTrip = Date.now() - sentTime.current;
         },
         error(err) {
           console.error("Error resetting cache", err);
