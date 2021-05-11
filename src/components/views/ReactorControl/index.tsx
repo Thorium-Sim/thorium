@@ -342,7 +342,9 @@ const ReactorControl: React.FC<{simulator: Simulator}> = ({simulator}) => {
           >
             <h2>
               Total Output:{" "}
-              {(reactor?.efficiency || 0) * (reactor?.powerOutput || 0)}
+              {Math.trunc(
+                (reactor?.efficiency || 0) * (reactor?.powerOutput || 0),
+              )}
             </h2>
             <h2
               className={
@@ -353,7 +355,9 @@ const ReactorControl: React.FC<{simulator: Simulator}> = ({simulator}) => {
               }
             >
               Total Distributed:{" "}
-              {(reactor.leftWingPower || 0) + (reactor.rightWingPower || 0)}
+              {Math.trunc(
+                (reactor.leftWingPower || 0) + (reactor.rightWingPower || 0),
+              )}
             </h2>
           </div>
           <Wing
