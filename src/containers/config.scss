@@ -19,7 +19,7 @@
     .list-group {
       background: transparent;
     }
-    .list-group-item {
+    .list-group-item:not(.alerted) {
       background-color: rgba(0, 0, 0, 0.8);
     }
     .list-group-item.selected,
