@@ -244,7 +244,7 @@
     "motu-control": "1.0.4",
     "multer": "^1.4.2",
     "ncp": "^2.0.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "papaparse": "^5.1.0",
     "patch-package": "^6.2.0",
     "prando": "^5.1.1",
