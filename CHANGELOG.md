@@ -1,3 +1,11 @@
+## [3.3.4](https://github.com/Thorium-Sim/thorium/compare/3.3.3...3.3.4) (2021-06-24)
+
+
+### Bug Fixes
+
+* **Messaging:** Stop overriding style of alerted chat messages. Fixes [#3137](https://github.com/Thorium-Sim/thorium/issues/3137) ([80595a6](https://github.com/Thorium-Sim/thorium/commit/80595a6769edce0f431a03564f3758f287796e6e))
+* **Sounds:** Add missing functionality for StopAllSounds and StopLoopingSounds macros. Fixes [#3165](https://github.com/Thorium-Sim/thorium/issues/3165) ([40ef572](https://github.com/Thorium-Sim/thorium/commit/40ef572883089916fece2fc1de30eccdc66b670a))
+
 ## [3.3.3](https://github.com/Thorium-Sim/thorium/compare/3.3.2...3.3.3) (2021-05-11)
 
 
