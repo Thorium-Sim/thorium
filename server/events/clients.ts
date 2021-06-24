@@ -319,12 +319,20 @@ App.on(
   },
 );
 App.on("stopAllSounds", ({simulatorId, station}) => {
+  // If Random Station is selected, pick a random station from the list of available stations
+  if (station === "random") {
+    station = App.clients[Math.floor(Math.random() * App.clients.length)].station;
+  }
   const clients = App.clients.filter(s => {
     if (s.simulatorId !== simulatorId) return false;
     if (station) {
+      // If the currently iterated station matches the requested station, return true to stop the sound on that station.
+      // If All Sound Players is selected, and the selected station has a sound player, return true.
+      // If All Stations is selected, return true.
       if (
         s.station === station ||
         s.id === station ||
+        station === "all" ||
         (station === "Sound" && s.soundPlayer)
       )
         return true;
@@ -341,10 +349,23 @@ App.on("stopAllSounds", ({simulatorId, station}) => {
   pubsub.publish("cancelAllSounds", clients);
 });
 App.on("cancelLoopingSounds", ({simulatorId, station}) => {
+  // If Random Station is selected, pick a random station from the list of available stations
+  if (station === "random") {
+    station = App.clients[Math.floor(Math.random() * App.clients.length)].station;
+  }
   const clients = App.clients.filter(s => {
     if (s.simulatorId !== simulatorId) return false;
     if (station) {
-      if (s.station === station || s.id === station) return true;
+      // If the currently iterated station matches the requested station, return true to stop the sound on that station.
+      // If All Sound Players is selected, and the selected station has a sound player, return true.
+      // If All Stations is selected, return true.
+      if (
+        s.station === station ||
+        s.id === station ||
+        station === "all" ||
+        (station === "Sound" && s.soundPlayer)
+      )
+        return true;
       return false;
     }
     return true;
