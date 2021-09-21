@@ -1,3 +1,10 @@
+## [3.3.5](https://github.com/Thorium-Sim/thorium/compare/3.3.4...3.3.5) (2021-09-21)
+
+
+### Bug Fixes
+
+* **Panels:** Stop software panels from disappearing on flight reset ([aaf2477](https://github.com/Thorium-Sim/thorium/commit/aaf2477173a9e224e8103f1c64d4d3cd80d7a49f))
+
 ## [3.3.4](https://github.com/Thorium-Sim/thorium/compare/3.3.3...3.3.4) (2021-06-24)
 
 
