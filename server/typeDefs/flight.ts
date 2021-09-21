@@ -35,6 +35,7 @@ export const aspectList = [
 
 export function addAspects(template, sim: Classes.Simulator, data = App) {
   // Duplicate all of the other stuff attached to the simulator too.
+
   aspectList.forEach(aspect => {
     if (
       aspect === "softwarePanels" ||
@@ -461,11 +462,25 @@ const resolver = {
         newSim.template = false;
         newSim.templateId = tempId;
         newSim.mission = sim.mission;
-        newSim.stations = sim.stations;
+        newSim.stations = sim.stations.map(
+          s =>
+            new Classes.Station({
+              ...s,
+              cards: s.cards.map(c => {
+                const panelIndex = sim.panels.indexOf(c.component);
+                if (panelIndex > -1) {
+                  return new Classes.Card({
+                    ...c,
+                    component: newSim.panels[panelIndex],
+                  });
+                }
+                return new Classes.Card({...c});
+              }),
+            }),
+        );
         newSim.executedTimelineSteps = [];
         newSim.clientCards = {};
         newSim.stationAssignedCards = {};
-
         newSim.stationSet = sim.stationSet;
         const stationSet = App.stationSets.find(
           s => s.id === newSim.stationSet,
@@ -489,7 +504,7 @@ const resolver = {
           ),
         );
         App.simulators.push(newSim);
-        addAspects({simulatorId: tempId}, newSim);
+        addAspects({simulatorId: tempId}, newSim, App);
         // Create exocomps for the simulator
         App.handleEvent(
           {simulatorId: newSim.id, count: newSim.exocomps},

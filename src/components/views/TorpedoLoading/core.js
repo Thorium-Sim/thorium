@@ -32,7 +32,7 @@ const TorpedoView = ({torpedo}) => {
           if (torpedo.state === "idle") return "No Torpedos Loaded";
 
           return `${capitalCase(
-            loaded ? loaded.type : lastLoaded && lastLoaded.type,
+            loaded ? loaded.type : (lastLoaded ? lastLoaded.type : ""),
           )} Torpedo ${torpedo.state === "loaded" ? "Loaded" : "Fired"}`;
         })()}
       </OutputField>
