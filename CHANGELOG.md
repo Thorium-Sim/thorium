@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/Thorium-Sim/thorium/compare/3.3.5...3.4.0) (2021-09-30)
+
+
+### Features
+
+* **Probes:** Adds a macro to destroy probe network and destroy launched probes. Changes the behavior of the "Destroy All Probes" button to first destroy all launched probes, then destroy all probes. Closes [#3199](https://github.com/Thorium-Sim/thorium/issues/3199) ([9a03835](https://github.com/Thorium-Sim/thorium/commit/9a03835ab4ce5c19543056ca88d029971c0d5daf))
+
 ## [3.3.5](https://github.com/Thorium-Sim/thorium/compare/3.3.4...3.3.5) (2021-09-21)
 
 
