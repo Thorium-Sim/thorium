@@ -105,7 +105,23 @@ export default class Probes extends System {
     this.probes = this.probes.filter(p => p.id !== probeId);
   }
   destroyAllProbes() {
-    this.probes = [];
+    let probeCount = this.probes.length;
+    this.probes = this.probes.filter(p => !p.launched);
+    if (this.probes.length === probeCount) {
+      this.probes = [];
+    }
+  }
+  destroyAllProbeNetwork() {
+    Array(8)
+      .fill(1)
+      .forEach((_, probeNum) => {
+        const probeObj = this.probes.find(
+          p => p.name === (probeNum + 1).toString() && p.launched,
+        );
+        if (probeObj) {
+          this.destroyProbe(probeObj.id);
+        }
+      });
   }
   launchProbe(probe) {
     // Decriment the equipment and probe types apropriately.

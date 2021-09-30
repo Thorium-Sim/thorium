@@ -33,7 +33,7 @@ const DocumentAdd: React.FC<PrintPDFProps> = props => {
       <Label>Name</Label>
       <Input
         type="text"
-        defaultValue={args.data}
+        defaultValue={args.name}
         onBlur={evt => updateArgs("name", evt.target.value)}
       />
       <p>Print PDF</p>

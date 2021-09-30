@@ -11,9 +11,21 @@ App.on("destroyProbe", ({id, probeId}) => {
     App.systems.filter(s => s.type === "Probes"),
   );
 });
-App.on("destroyAllProbes", ({id}) => {
-  const sys = App.systems.find(s => s.id === id);
+App.on("destroyAllProbes", ({id, simulatorId}) => {
+  const sys = App.systems.find(
+    s => s.id === id || (s.simulatorId === simulatorId && s.type === "Probes"),
+  );
   sys.destroyAllProbes();
+  pubsub.publish(
+    "probesUpdate",
+    App.systems.filter(s => s.type === "Probes"),
+  );
+});
+App.on("destroyAllProbeNetwork", ({id, simulatorId}) => {
+  const sys = App.systems.find(
+    s => s.id === id || (s.simulatorId === simulatorId && s.type === "Probes"),
+  );
+  sys.destroyAllProbeNetwork();
   pubsub.publish(
     "probesUpdate",
     App.systems.filter(s => s.type === "Probes"),

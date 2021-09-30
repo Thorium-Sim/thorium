@@ -88,7 +88,16 @@ class ProbeControl extends Component {
     }
   };
   destroyAllProbes = () => {
-    if (window.confirm(`Are you sure you want to destroy ALL probes?`)) {
+    if (this.props.data.loading || !this.props.data.probes) return null;
+    const probes = this.props.data.probes[0];
+    const isAllProbes = probes.probes.filter(p => p.launched).length === 0;
+    if (
+      window.confirm(
+        `Are you sure you want to destroy ${
+          isAllProbes ? "ALL" : "all launched"
+        } probes?`,
+      )
+    ) {
       this.setState({selectedProbe: null});
       const mutation = gql`
         mutation DestroyAllProbe($id: ID!) {
@@ -216,8 +225,18 @@ class ProbeControl extends Component {
                 </p>
               ))}
             </div>
-            <Button size="sm" color="danger" onClick={this.destroyAllProbes}>
-              Destroy All Probes
+            <Button
+              size="sm"
+              color={
+                probes.probes.filter(p => p.launched).length > 0
+                  ? "warning"
+                  : "danger"
+              }
+              onClick={this.destroyAllProbes}
+            >
+              {probes.probes.filter(p => p.launched).length > 0
+                ? "Destroy Launched Probes"
+                : "Destroy All Probes"}
             </Button>
           </div>
           <>

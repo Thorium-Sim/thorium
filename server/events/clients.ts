@@ -321,7 +321,8 @@ App.on(
 App.on("stopAllSounds", ({simulatorId, station}) => {
   // If Random Station is selected, pick a random station from the list of available stations
   if (station === "random") {
-    station = App.clients[Math.floor(Math.random() * App.clients.length)].station;
+    station =
+      App.clients[Math.floor(Math.random() * App.clients.length)].station;
   }
   const clients = App.clients.filter(s => {
     if (s.simulatorId !== simulatorId) return false;
@@ -351,7 +352,8 @@ App.on("stopAllSounds", ({simulatorId, station}) => {
 App.on("cancelLoopingSounds", ({simulatorId, station}) => {
   // If Random Station is selected, pick a random station from the list of available stations
   if (station === "random") {
-    station = App.clients[Math.floor(Math.random() * App.clients.length)].station;
+    station =
+      App.clients[Math.floor(Math.random() * App.clients.length)].station;
   }
   const clients = App.clients.filter(s => {
     if (s.simulatorId !== simulatorId) return false;
