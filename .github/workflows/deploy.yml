@@ -105,6 +105,6 @@ jobs:
           GOOGLE_SHEETS_SECRET: ${{ secrets.GOOGLE_SHEETS_SECRET }}
           GOOGLE_SHEETS_CLIENT_ID: ${{ secrets.GOOGLE_SHEETS_CLIENT_ID }}
           GH_ISSUE_TOKEN: ${{ secrets.GH_ISSUE_TOKEN }}
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v2
-        if: failure()
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v2
+      #   if: failure()
