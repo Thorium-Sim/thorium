@@ -80,6 +80,7 @@ const FlowTaskConfig = () => {
         <ValueInput
           key={v}
           label={v}
+          taskId={id}
           type={definition.valuesInput[v]}
           value={task.values?.[v]}
           definitionValue={definition.valuesValue[v]}
