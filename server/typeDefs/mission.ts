@@ -102,6 +102,13 @@ const schema = gql`
       timelineStepId: ID!
       order: Int!
     ): String
+    reorderTimelineItem(
+      simulatorId: ID
+      missionId: ID
+      timelineStepId: ID!
+      timelineItemId: ID!
+      order: Int!
+    ): String
     updateTimelineStep(
       simulatorId: ID
       missionId: ID

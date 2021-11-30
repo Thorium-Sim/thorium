@@ -52,6 +52,16 @@ App.on(
   },
 );
 App.on(
+  "reorderTimelineItem",
+  ({simulatorId, missionId, timelineStepId, timelineItemId, order}) => {
+    const object = getTimelineObject(simulatorId, missionId);
+    object.reorderTimelineItem(timelineStepId, timelineItemId, order);
+
+    pubsub.publish("missionsUpdate", App.missions);
+    pubsub.publish("simulatorsUpdate", App.simulators);
+  },
+);
+App.on(
   "updateTimelineStep",
   ({simulatorId, missionId, timelineStepId, name, description}) => {
     const object = getTimelineObject(simulatorId, missionId);

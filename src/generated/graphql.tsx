@@ -1073,6 +1073,7 @@ export type Mutation = {
   addTimelineStep?: Maybe<Scalars['ID']>;
   removeTimelineStep?: Maybe<Scalars['String']>;
   reorderTimelineStep?: Maybe<Scalars['String']>;
+  reorderTimelineItem?: Maybe<Scalars['String']>;
   updateTimelineStep?: Maybe<Scalars['String']>;
   addTimelineItemToTimelineStep?: Maybe<Scalars['String']>;
   removeTimelineStepItem?: Maybe<Scalars['String']>;
@@ -1136,7 +1137,20 @@ export type Mutation = {
   /** Macro: Systems: Flux Power */
   fluxSystemPower?: Maybe<Scalars['String']>;
   destroyProbe?: Maybe<Scalars['String']>;
+  /**
+   * Macro: Probes: Destroy All Probes
+   * Requires:
+   *  - Cards:ProbeNetwork
+   *  - Systems:Probes
+   */
   destroyAllProbes?: Maybe<Scalars['String']>;
+  /**
+   * Macro: Probes: Destroy Probe Network
+   * Requires:
+   *  - Cards:ProbeNetwork
+   *  - Systems:Probes
+   */
+  destroyAllProbeNetwork?: Maybe<Scalars['String']>;
   launchProbe?: Maybe<Scalars['String']>;
   fireProbe?: Maybe<Scalars['String']>;
   updateProbeType?: Maybe<Scalars['String']>;
@@ -3417,6 +3431,15 @@ export type MutationReorderTimelineStepArgs = {
 };
 
 
+export type MutationReorderTimelineItemArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+  missionId?: Maybe<Scalars['ID']>;
+  timelineStepId: Scalars['ID'];
+  timelineItemId: Scalars['ID'];
+  order: Scalars['Int'];
+};
+
+
 export type MutationUpdateTimelineStepArgs = {
   simulatorId?: Maybe<Scalars['ID']>;
   missionId?: Maybe<Scalars['ID']>;
@@ -3707,6 +3730,11 @@ export type MutationDestroyProbeArgs = {
 
 
 export type MutationDestroyAllProbesArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDestroyAllProbeNetworkArgs = {
   id: Scalars['ID'];
 };
 
@@ -8725,9 +8753,11 @@ export type ScienceProbeEvent = {
 };
 
 export type ProbeInput = {
+  id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['ID']>;
   equipment?: Maybe<Array<Maybe<EquipmentInput>>>;
+  launched?: Maybe<Scalars['Boolean']>;
 };
 
 export type EquipmentInput = {
@@ -13343,6 +13373,19 @@ export type TimelineRemoveStepMutation = (
   & Pick<Mutation, 'removeTimelineStep'>
 );
 
+export type TimelineReorderItemMutationVariables = Exact<{
+  missionId?: Maybe<Scalars['ID']>;
+  timelineStepId: Scalars['ID'];
+  timelineItemId: Scalars['ID'];
+  order: Scalars['Int'];
+}>;
+
+
+export type TimelineReorderItemMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'reorderTimelineItem'>
+);
+
 export type TimelineReorderStepMutationVariables = Exact<{
   missionId?: Maybe<Scalars['ID']>;
   timelineStepId: Scalars['ID'];
@@ -17205,6 +17248,15 @@ export function useTimelineRemoveStepMutation(baseOptions?: ApolloReactHooks.Mut
         return ApolloReactHooks.useMutation<TimelineRemoveStepMutation, TimelineRemoveStepMutationVariables>(TimelineRemoveStepDocument, baseOptions);
       }
 export type TimelineRemoveStepMutationHookResult = ReturnType<typeof useTimelineRemoveStepMutation>;
+export const TimelineReorderItemDocument = gql`
+    mutation TimelineReorderItem($missionId: ID, $timelineStepId: ID!, $timelineItemId: ID!, $order: Int!) {
+  reorderTimelineItem(missionId: $missionId, timelineStepId: $timelineStepId, timelineItemId: $timelineItemId, order: $order)
+}
+    `;
+export function useTimelineReorderItemMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TimelineReorderItemMutation, TimelineReorderItemMutationVariables>) {
+        return ApolloReactHooks.useMutation<TimelineReorderItemMutation, TimelineReorderItemMutationVariables>(TimelineReorderItemDocument, baseOptions);
+      }
+export type TimelineReorderItemMutationHookResult = ReturnType<typeof useTimelineReorderItemMutation>;
 export const TimelineReorderStepDocument = gql`
     mutation TimelineReorderStep($missionId: ID, $timelineStepId: ID!, $order: Int!) {
   reorderTimelineStep(missionId: $missionId, timelineStepId: $timelineStepId, order: $order)

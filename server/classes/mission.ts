@@ -89,6 +89,29 @@ export default class Mission {
       newOrder,
     );
   }
+  reorderTimelineItem(timelineStepId, timelineItemId, newOrder: number) {
+    function move<T>(array: T[], old_index: number, new_index: number) {
+      if (new_index >= array.length) {
+        var k = new_index - array.length;
+        while (k-- + 1) {
+          array.push(undefined);
+        }
+      }
+      array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+      return array; // for testing purposes
+    }
+
+    this.timeline.map(t => {
+      if (t.id === timelineStepId) {
+        t.timelineItems = move(
+          t.timelineItems,
+          t.timelineItems.findIndex(i => i.id === timelineItemId),
+          newOrder,
+        );
+      }
+      return t;
+    });
+  }
   updateTimelineStep(timelineStepId, timelineStep) {
     const timeline = this.timeline.find(t => t.id === timelineStepId);
     timeline.update(timelineStep);

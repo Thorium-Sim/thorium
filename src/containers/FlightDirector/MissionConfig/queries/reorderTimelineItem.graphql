@@ -1,0 +1,13 @@
+mutation TimelineReorderItem(
+  $missionId: ID
+  $timelineStepId: ID!
+  $timelineItemId: ID!
+  $order: Int!
+) {
+  reorderTimelineItem(
+    missionId: $missionId
+    timelineStepId: $timelineStepId
+    timelineItemId: $timelineItemId
+    order: $order
+  )
+}
