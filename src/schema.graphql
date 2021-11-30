@@ -574,6 +574,7 @@ type Mutation {
   addTimelineStep(simulatorId: ID, missionId: ID, name: String!, description: String): ID
   removeTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!): String
   reorderTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, order: Int!): String
+  reorderTimelineItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!, order: Int!): String
   updateTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, name: String, description: String): String
   addTimelineItemToTimelineStep(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItem: TimelineItemInput!): String
   removeTimelineStepItem(simulatorId: ID, missionId: ID, timelineStepId: ID!, timelineItemId: ID!): String

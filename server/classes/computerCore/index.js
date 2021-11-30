@@ -189,11 +189,13 @@ export default class ComputerCore extends System {
     const virus = new Virus();
     this.history.unshift(`Virus Created: ${virus.name}`);
     this.virii.push(virus);
+    return virus.name;
   }
   removeVirus(id) {
     const virus = this.virii.find(v => v.id === id);
     this.history.unshift(`Virus Removed: ${virus.name}`);
     this.virii = this.virii.filter(v => v.id !== id);
+    return virus.name;
   }
   updateTerminalStatus(id, status) {
     const term = this.terminals.find(t => t.id === id);

@@ -1,7 +1,7 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import {randomFromList} from "../classes/generic/damageReports/constants";
-
+import uuid from "uuid";
 function performAction(id, action) {
   const sys = App.systems.find(s => s.id === id);
   if (sys) {
@@ -13,9 +13,30 @@ function performAction(id, action) {
   );
 }
 
-App.on("addComputerCoreUser", ({id, user, cb}) => {
+App.on("addComputerCoreUser", ({id, user, cb, context}) => {
   performAction(id, sys => {
     const newUser = sys.addUser(user);
+    if (context.core !== "true") {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: sys.simulatorId,
+        station: "Core",
+        type: "Computer Core",
+        title: `New Computer Core User: ${newUser.name}`,
+        body: `Level ${newUser.level}`,
+        color: "info",
+      });
+      App.handleEvent(
+        {
+          simulatorId: sys.simulatorId,
+          title: `New Computer Core User: ${newUser.name}`,
+          component: "CompterCoreCore",
+          body: `Level ${newUser.level}`,
+          color: "info",
+        },
+        "addCoreFeed",
+      );
+    }
     cb(newUser);
   });
 });
@@ -80,7 +101,7 @@ App.on("removeComputerCoreUser", ({id, userId, cb}) => {
   });
 });
 
-App.on("restoreComputerCoreFile", ({id, fileId, level, all}) => {
+App.on("restoreComputerCoreFile", ({id, fileId, level, all, context}) => {
   const sys = App.systems.find(s => s.id === id);
   if (sys) {
     if (fileId) {
@@ -99,9 +120,51 @@ App.on("restoreComputerCoreFile", ({id, fileId, level, all}) => {
       }, 4000);
     }
     if (all) {
+      if (context.core !== "true") {
+        pubsub.publish("notify", {
+          id: uuid.v4(),
+          simulatorId: sys.simulatorId,
+          station: "Core",
+          type: "Computer Core",
+          title: `Computer Core Files Restored`,
+          body: `All Files`,
+          color: "info",
+        });
+        App.handleEvent(
+          {
+            simulatorId: sys.simulatorId,
+            title: `Computer Core Files Restored`,
+            component: "CompterCoreCore",
+            body: `All Files`,
+            color: "info",
+          },
+          "addCoreFeed",
+        );
+      }
       sys.files.forEach(f => sys.restoreFile(f.id));
     }
     if (level) {
+      if (context.core !== "true") {
+        pubsub.publish("notify", {
+          id: uuid.v4(),
+          simulatorId: sys.simulatorId,
+          station: "Core",
+          type: "Computer Core",
+          title: `Computer Core Files Restored`,
+          body: `Level ${level}`,
+          color: "info",
+        });
+        App.handleEvent(
+          {
+            simulatorId: sys.simulatorId,
+            title: `Computer Core Files Restored`,
+            component: "CompterCoreCore",
+            body: `Level ${level}`,
+            color: "info",
+          },
+          "addCoreFeed",
+        );
+      }
       sys.files
         .filter(f => f.level === level)
         .forEach((f, i) =>
@@ -138,9 +201,31 @@ App.on("restoreComputerCoreFile", ({id, fileId, level, all}) => {
   );
 });
 
-App.on("deleteComputerCoreVirus", ({id, virusId}) => {
+App.on("deleteComputerCoreVirus", ({id, virusId, context}) => {
   performAction(id, sys => {
-    sys.removeVirus(virusId);
+    const virusName = sys.removeVirus(virusId);
+
+    if (context.core !== "true") {
+      pubsub.publish("notify", {
+        id: uuid.v4(),
+        simulatorId: sys.simulatorId,
+        station: "Core",
+        type: "Computer Core",
+        title: `Computer Core Virus Deleted`,
+        body: virusName,
+        color: "info",
+      });
+      App.handleEvent(
+        {
+          simulatorId: sys.simulatorId,
+          title: `Computer Core Virus Deleted`,
+          component: "CompterCoreCore",
+          body: virusName,
+          color: "info",
+        },
+        "addCoreFeed",
+      );
+    }
 
     // Verify any tasks this might apply to
     App.tasks

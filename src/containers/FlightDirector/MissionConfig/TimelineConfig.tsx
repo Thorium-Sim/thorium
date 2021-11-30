@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {
   Col,
   Row,
@@ -22,8 +22,10 @@ import {
   useTimelineAddItemMutation,
   useTimelineRemoveItemMutation,
   useTimelineDuplicateItemMutation,
+  useTimelineReorderItemMutation,
   Mission,
   TimelineStep,
+  TimelineItem,
   Station,
   Client,
 } from "generated/graphql";
@@ -36,34 +38,20 @@ const sortableContainer = SortableContainer;
 const SortableItem = sortableElement(
   ({
     item,
-    selectedTimelineStep,
-    setSelectedTimelineStep,
+    renderItem,
   }: {
-    item: TimelineStep;
-    selectedTimelineStep: string | null;
-    setSelectedTimelineStep: (id: string) => void;
-  }) => (
-    <li
-      key={`${item.id}-timelineStep`}
-      onClick={() => setSelectedTimelineStep(item.id)}
-      className={`${
-        item.id === selectedTimelineStep ? "selected" : ""
-      } list-group-item`}
-    >
-      {item.name}
-    </li>
-  ),
+    item: TimelineStep | TimelineItem;
+    renderItem: (item: TimelineStep | TimelineItem) => any;
+  }) => renderItem(item),
 );
 
 const SortableList = sortableContainer(
   ({
     items,
-    setSelectedTimelineStep,
-    selectedTimelineStep,
+    renderItem,
   }: {
-    items: TimelineStep[];
-    setSelectedTimelineStep: (id: string) => void;
-    selectedTimelineStep: string | null;
+    items: (TimelineStep | TimelineItem)[];
+    renderItem: (item: TimelineStep | TimelineItem) => ReactNode;
   }) => {
     return (
       <ul style={{padding: 0}}>
@@ -73,8 +61,7 @@ const SortableList = sortableContainer(
               key={`${item.id}-timelineStep`}
               index={index}
               item={item}
-              selectedTimelineStep={selectedTimelineStep}
-              setSelectedTimelineStep={setSelectedTimelineStep}
+              renderItem={renderItem}
             />
           );
         })}
@@ -269,6 +256,7 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
 
   const [updateStepMutation] = useTimelineUpdateStepMutation();
   const [reorderStepMutation] = useTimelineReorderStepMutation();
+  const [reorderItemMutation] = useTimelineReorderItemMutation();
   const [removeItemMutation] = useTimelineRemoveItemMutation();
 
   const setSelectedTimelineStep = (stepId: string | null) => {
@@ -326,6 +314,28 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
   const selectedStep = mission.timeline.find(
     e => e.id === selectedTimelineStep,
   );
+
+  const onItemSortEnd = ({
+    oldIndex,
+    newIndex,
+  }: {
+    oldIndex: number;
+    newIndex: number;
+  }) => {
+    if (oldIndex === newIndex) {
+      setSelectedTimelineItemAction(
+        selectedStep?.timelineItems[oldIndex]?.id || null,
+      );
+    } else {
+      const variables = {
+        timelineStepId: selectedStep?.id || "",
+        timelineItemId: selectedStep?.timelineItems[oldIndex]?.id || "",
+        order: newIndex,
+        missionId: mission.id,
+      };
+      reorderItemMutation({variables});
+    }
+  };
   return (
     <Row>
       <Col sm="3">
@@ -340,8 +350,17 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
           <SortableList
             items={mission.timeline}
             onSortEnd={onSortEnd}
-            selectedTimelineStep={selectedTimelineStep}
-            setSelectedTimelineStep={setSelectedTimelineStep}
+            renderItem={item => (
+              <li
+                key={`${item.id}-timelineStep`}
+                onClick={() => setSelectedTimelineStep(item.id)}
+                className={`${
+                  item.id === selectedTimelineStep ? "selected" : ""
+                } list-group-item`}
+              >
+                {item.name}
+              </li>
+            )}
           />
         </Card>
         <TimelineStepButtons
@@ -374,25 +393,29 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
               >
                 Edit Step
               </li>
-              {selectedStep.timelineItems.map(e => {
-                return (
-                  <li
-                    key={`${selectedStep.id}-${e.id}`}
-                    onClick={() => setSelectedTimelineItemAction(e.id)}
-                    className={`${
-                      e.id === selectedTimelineItem ? "selected" : ""
-                    } list-group-item ${
-                      e.needsConfig ? "list-group-item-warning" : ""
-                    }`}
-                  >
-                    <EventName id={e.event} />{" "}
-                    <FaBan
-                      className="text-danger pull-right"
-                      onClick={evt => removeTimelineItem(e.id, evt)}
-                    />
-                  </li>
-                );
-              })}
+              <SortableList
+                items={selectedStep.timelineItems}
+                renderItem={e =>
+                  "needsConfig" in e ? (
+                    <li
+                      key={`${selectedStep.id}-${e.id}`}
+                      onClick={() => setSelectedTimelineItemAction(e.id)}
+                      className={`${
+                        e.id === selectedTimelineItem ? "selected" : ""
+                      } list-group-item ${
+                        e.needsConfig ? "list-group-item-warning" : ""
+                      }`}
+                    >
+                      <EventName id={e.event} />{" "}
+                      <FaBan
+                        className="text-danger pull-right"
+                        onClick={evt => removeTimelineItem(e.id, evt)}
+                      />
+                    </li>
+                  ) : null
+                }
+                onSortEnd={onItemSortEnd}
+              />
             </Card>
             <TimelineActionAdd
               mission={mission}
