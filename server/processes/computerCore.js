@@ -1,6 +1,6 @@
 import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
-
+import uuid from "uuid";
 function randomFromList(list) {
   if (!list) return;
   const length = list.length;
@@ -20,7 +20,26 @@ const computerCoreCycle = () => {
             const hackers = c.users.filter(u => u.hacker === true).length;
             // Each hacker gives a 10% chance of creating a virus
             if (Math.random() * hackers > 0.9) {
-              c.createVirus();
+              const virusName = c.createVirus();
+              pubsub.publish("notify", {
+                id: uuid.v4(),
+                simulatorId: c.simulatorId,
+                station: "Core",
+                type: "Computer Core",
+                title: `Computer Core Virus Created`,
+                body: virusName,
+                color: "info",
+              });
+              App.handleEvent(
+                {
+                  simulatorId: c.simulatorId,
+                  title: `Computer Core Virus Created`,
+                  component: "CompterCoreCore",
+                  body: virusName,
+                  color: "info",
+                },
+                "addCoreFeed",
+              );
             }
             // Each virii gives a 10% chance of corrupting a file
             if (Math.random() * c.virii.length > 0.9) {
