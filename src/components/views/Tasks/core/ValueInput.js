@@ -9,6 +9,7 @@ import InventoryInput from "./inputs/InventoryInput";
 
 const ValueInput = ({
   label,
+  taskId = "",
   type,
   placeholder = "",
   value,
@@ -26,6 +27,7 @@ const ValueInput = ({
               <Input
                 type="text"
                 placeholder={placeholder || definitionValue}
+                key={taskId}
                 defaultValue={value}
                 onBlur={e => onBlur(e.target.value)}
               />
@@ -39,6 +41,7 @@ const ValueInput = ({
                 type="textarea"
                 rows={3}
                 placeholder={placeholder || definitionValue}
+                key={taskId}
                 defaultValue={value}
                 onBlur={e => onBlur(e.target.value)}
               />
