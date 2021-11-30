@@ -1,3 +1,16 @@
+# [3.5.0](https://github.com/Thorium-Sim/thorium/compare/3.4.2...3.5.0) (2021-11-30)
+
+
+### Bug Fixes
+
+* **Tasks:** Fixes an issue where task data was being transferred between tasks inadvertently. Closes [#3197](https://github.com/Thorium-Sim/thorium/issues/3197) ([3cefd97](https://github.com/Thorium-Sim/thorium/commit/3cefd97b8c053f86fca38609c884310ca1d4872a))
+
+
+### Features
+
+* **Computer Core:** Add notifications to the computer core. Closes [#1998](https://github.com/Thorium-Sim/thorium/issues/1998) ([1b0b877](https://github.com/Thorium-Sim/thorium/commit/1b0b8771a9318c42eb46b30464d6a9489484c12e))
+* **Missions:** Makes it possible to reorder timeline items within a timeline step. Closes [#1977](https://github.com/Thorium-Sim/thorium/issues/1977). ([0216ed4](https://github.com/Thorium-Sim/thorium/commit/0216ed48504802f4fda2336e04a7dd8d67b9c078))
+
 ## [3.4.2](https://github.com/Thorium-Sim/thorium/compare/3.4.1...3.4.2) (2021-10-01)
 
 
