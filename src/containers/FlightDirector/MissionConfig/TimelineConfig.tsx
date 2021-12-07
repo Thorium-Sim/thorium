@@ -407,10 +407,20 @@ const TimelineConfig: React.FC<TimelineConfigProps> = ({
                       }`}
                     >
                       <EventName id={e.event} />{" "}
-                      <FaBan
-                        className="text-danger pull-right"
-                        onClick={evt => removeTimelineItem(e.id, evt)}
-                      />
+                      <button
+                        className=" pull-right clickable"
+                        style={{border: "none", background: "none"}}
+                        onClick={evt => {
+                          evt.stopPropagation();
+                          evt.preventDefault();
+                          removeTimelineItem(e.id, evt);
+                        }}
+                      >
+                        <FaBan
+                          className="text-danger"
+                          style={{pointerEvents: "none"}}
+                        />
+                      </button>
                     </li>
                   ) : null
                 }
