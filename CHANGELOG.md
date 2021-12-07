@@ -1,3 +1,10 @@
+## [3.5.1](https://github.com/Thorium-Sim/thorium/compare/3.5.0...3.5.1) (2021-12-07)
+
+
+### Bug Fixes
+
+* **MIssions:** Fixes an issue where you can't delete timeline actions. Closes [#3211](https://github.com/Thorium-Sim/thorium/issues/3211) ([4215eb3](https://github.com/Thorium-Sim/thorium/commit/4215eb36b949980a6e82081d6599af9d03b778a4))
+
 # [3.5.0](https://github.com/Thorium-Sim/thorium/compare/3.4.2...3.5.0) (2021-12-01)
 
 
