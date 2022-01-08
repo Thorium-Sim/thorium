@@ -1,3 +1,4 @@
+import {css} from "@emotion/core";
 import React, {Fragment} from "react";
 import {
   Container,
@@ -17,6 +18,9 @@ import uuid from "uuid";
 import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";
 import {ActionConfig} from "../Macros/macroConfig";
+import SortableActionList from "./sortableActionList";
+
+//import { useTaskFlowReorderStepMutation } from "generated/graphql";
 
 const colors = [
   "primary",
@@ -40,6 +44,8 @@ const ActionList = ({
   addAction,
   removeAction,
 }) => {
+  //const [reorder] = useTaskFlowReorderStepMutation();
+
   return (
     <Fragment>
       <h3>Actions</h3>
@@ -123,6 +129,35 @@ const ActionList = ({
         className={"btn btn-sm btn-success"}
         handleChange={e => addAction(e.target.value)}
       />
+      {console.log(actions)}
+
+      {/* TESTING SORTABLE ACTION LIST */}
+      <br />
+      <SortableActionList
+        css={css`
+          flex: 1;
+          overflow-y: auto;
+        `}
+        distance={20}
+        actions={actions}
+        id={id}
+        selectedAction={selectedAction}
+        setSelectedAction={setSelectedAction}
+        removeAction={removeAction}
+      />
+      {/**/}
+
+      {/*
+      onSortEnd={({oldIndex, newIndex}) =>
+            reorder({
+              variables: {
+                id: id,
+                stepId: selectedAction,
+                order: newIndex,
+              },
+            })
+          }
+      */}
     </Fragment>
   );
 };
