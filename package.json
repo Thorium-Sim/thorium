@@ -248,7 +248,7 @@
     "rng": "^0.2.2",
     "simplex-noise": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.16",
-    "three": "^0.116.1",
+    "three": "^0.137.0",
     "usb-detection": "^4.9.0",
     "uuid": "^3.3.3",
     "yauzl": "^2.10.0",
