@@ -1050,6 +1050,8 @@ export type Mutation = {
   setMacroButtonCategory?: Maybe<Scalars['String']>;
   setMacroButtonColor?: Maybe<Scalars['String']>;
   updateMacroButtonActions?: Maybe<Scalars['String']>;
+  /** Reorder Macros (by Sam Hill) */
+  reorderMacroAction?: Maybe<Scalars['String']>;
   triggerMacroButton?: Maybe<Scalars['String']>;
   toggleStationMessageGroup?: Maybe<Scalars['String']>;
   /**
@@ -3311,6 +3313,14 @@ export type MutationUpdateMacroButtonActionsArgs = {
   configId: Scalars['ID'];
   id: Scalars['ID'];
   actions?: Maybe<Array<Maybe<ActionInput>>>;
+};
+
+
+export type MutationReorderMacroActionArgs = {
+  configId: Scalars['ID'];
+  id: Scalars['ID'];
+  oldIndex: Scalars['Int'];
+  newIndex: Scalars['Int'];
 };
 
 
@@ -8725,9 +8735,11 @@ export type ScienceProbeEvent = {
 };
 
 export type ProbeInput = {
+  id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['ID']>;
   equipment?: Maybe<Array<Maybe<EquipmentInput>>>;
+  launched?: Maybe<Scalars['Boolean']>;
 };
 
 export type EquipmentInput = {
