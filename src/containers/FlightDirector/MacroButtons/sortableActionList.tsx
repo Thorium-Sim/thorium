@@ -19,15 +19,15 @@ const SortableAction = SortableElement(
     removeAction: (id: string) => void;
   }) => (
     <ListGroupItem
-        key={`${id}-${event.id}`}
-        onClick={() => setSelectedAction(event.id)}
-        active={event.id === selectedAction}
+      key={`${id}-${event.id}`}
+      onClick={() => setSelectedAction(event.id)}
+      active={event.id === selectedAction}
     >
-        <EventName id={event.event} />{" "}
-        <FaBan
-            className="text-danger pull-right"
-            onClick={() => removeAction(event.id)}
-        />
+      <EventName id={event.event} />{" "}
+      <FaBan
+        className="text-danger pull-right"
+        onClick={() => removeAction(event.id)}
+      />
     </ListGroupItem>
   ),
 );
@@ -39,6 +39,7 @@ const SortableActionList = SortableContainer(
     setSelectedAction,
     removeAction,
     actions,
+    onSortEnd,
     ...props
   }: {
     id: string;
@@ -46,21 +47,22 @@ const SortableActionList = SortableContainer(
     setSelectedAction: (id: string) => void;
     removeAction: (id: string) => void;
     actions: {id: string; event: string}[];
+    onSortEnd: (newIndex: number) => void;
   }) => {
     return (
-        <ListGroup style={{maxHeight: "60vh", overflowY: "auto"}} {...props}>
-            {actions.map((e, index) => (
-                <SortableAction
-                    key={e.id}
-                    index={index}
-                    id={id}
-                    event={e}
-                    selectedAction={selectedAction}
-                    setSelectedAction={() => setSelectedAction(e.id)}
-                    removeAction={() => removeAction(e.id)}
-                />
-            ))}
-        </ListGroup>
+      <ListGroup style={{maxHeight: "60vh", overflowY: "auto"}} {...props}>
+        {actions.map((e, index) => (
+          <SortableAction
+            key={e.id}
+            index={index}
+            id={id}
+            event={e}
+            selectedAction={selectedAction}
+            setSelectedAction={() => setSelectedAction(e.id)}
+            removeAction={() => removeAction(e.id)}
+          />
+        ))}
+      </ListGroup>
     );
   },
 );
