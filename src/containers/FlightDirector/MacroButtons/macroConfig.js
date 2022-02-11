@@ -20,8 +20,6 @@ import {FaBan} from "react-icons/fa";
 import {ActionConfig} from "../Macros/macroConfig";
 import SortableActionList from "./sortableActionList";
 
-//import { useTaskFlowReorderStepMutation } from "generated/graphql";
-
 const colors = [
   "primary",
   "secondary",
@@ -44,8 +42,6 @@ const ActionList = ({
   addAction,
   removeAction,
 }) => {
-  //const [reorder] = useTaskFlowReorderStepMutation();
-
   return (
     <Fragment>
       <h3>Actions</h3>
@@ -110,6 +106,46 @@ const ActionList = ({
           )}
         </Mutation>
       </Label>
+      {/* SORTABLE ACTION LIST by Sam Hill */}
+      <Mutation
+        mutation={gql`
+          mutation ReorderActions(
+            $configId: ID!
+            $id: ID!
+            $oldIndex: Int!
+            $newIndex: Int!
+          ) {
+            reorderMacroAction(
+              configId: $configId
+              id: $id
+              oldIndex: $oldIndex
+              newIndex: $newIndex
+            )
+          }
+        `}
+      >
+        {action => (
+          <SortableActionList
+            css={css`
+              flex: 1;
+              overflow-y: auto;
+            `}
+            distance={20}
+            actions={actions}
+            id={id}
+            selectedAction={selectedAction}
+            setSelectedAction={setSelectedAction}
+            removeAction={removeAction}
+            onSortEnd={({oldIndex, newIndex}) =>
+              action({
+                variables: {configId, id, oldIndex, newIndex},
+              })
+            }
+          />
+        )}
+      </Mutation>
+
+      {/* Old macro action list
       <ListGroup style={{maxHeight: "60vh", overflowY: "auto"}}>
         {actions.map(e => (
           <ListGroupItem
@@ -124,40 +160,11 @@ const ActionList = ({
             />
           </ListGroupItem>
         ))}
-      </ListGroup>
+        </ListGroup> */}
       <EventPicker
         className={"btn btn-sm btn-success"}
         handleChange={e => addAction(e.target.value)}
       />
-      {console.log(actions)}
-
-      {/* TESTING SORTABLE ACTION LIST */}
-      <br />
-      <SortableActionList
-        css={css`
-          flex: 1;
-          overflow-y: auto;
-        `}
-        distance={20}
-        actions={actions}
-        id={id}
-        selectedAction={selectedAction}
-        setSelectedAction={setSelectedAction}
-        removeAction={removeAction}
-      />
-      {/**/}
-
-      {/*
-      onSortEnd={({oldIndex, newIndex}) =>
-            reorder({
-              variables: {
-                id: id,
-                stepId: selectedAction,
-                order: newIndex,
-              },
-            })
-          }
-      */}
     </Fragment>
   );
 };
