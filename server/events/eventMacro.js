@@ -114,7 +114,7 @@ App.on("triggerMacroButton", ({simulatorId, configId, buttonId}) => {
     App.handleEvent({simulatorId, macros}, "triggerMacros");
 });
 
-// Reorder Macro Action by Sam Hill
+// Reorder Macro Action
 App.on("reorderMacroAction", ({configId, id, oldIndex, newIndex}) => {
   performButtonAction(configId, macro =>
     macro.getButton(id).reorderAction(oldIndex, newIndex),

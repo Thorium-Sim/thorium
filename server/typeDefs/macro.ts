@@ -52,7 +52,7 @@ const schema = gql`
       actions: [ActionInput]
     ): String
     """
-    Reorder Macros (by Sam Hill)
+    Reorder Macros
     """
     reorderMacroAction(
       configId: ID!

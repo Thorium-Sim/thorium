@@ -106,7 +106,7 @@ const ActionList = ({
           )}
         </Mutation>
       </Label>
-      {/* SORTABLE ACTION LIST by Sam Hill */}
+      {/* SORTABLE ACTION LIST */}
       <Mutation
         mutation={gql`
           mutation ReorderActions(

@@ -1050,7 +1050,7 @@ export type Mutation = {
   setMacroButtonCategory?: Maybe<Scalars['String']>;
   setMacroButtonColor?: Maybe<Scalars['String']>;
   updateMacroButtonActions?: Maybe<Scalars['String']>;
-  /** Reorder Macros (by Sam Hill) */
+  /** Reorder Macros */
   reorderMacroAction?: Maybe<Scalars['String']>;
   triggerMacroButton?: Maybe<Scalars['String']>;
   toggleStationMessageGroup?: Maybe<Scalars['String']>;

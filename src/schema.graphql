@@ -549,7 +549,7 @@ type Mutation {
   setMacroButtonColor(configId: ID!, id: ID!, color: NotifyColors!): String
   updateMacroButtonActions(configId: ID!, id: ID!, actions: [ActionInput]): String
 
-  """Reorder Macros (by Sam Hill)"""
+  """Reorder Macros"""
   reorderMacroAction(configId: ID!, id: ID!, oldIndex: Int!, newIndex: Int!): String
   triggerMacroButton(simulatorId: ID!, configId: ID!, buttonId: ID!): String
   toggleStationMessageGroup(stationSetId: ID!, station: String!, group: String!, state: Boolean!): String
