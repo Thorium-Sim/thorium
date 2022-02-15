@@ -54,6 +54,7 @@ const schema = gql`
     """
     Reorder Macros
     """
+    reorderMacroButton(configId: ID!, oldIndex: Int!, newIndex: Int!): String
     reorderMacroAction(
       configId: ID!
       id: ID!
