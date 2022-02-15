@@ -114,6 +114,13 @@ App.on("triggerMacroButton", ({simulatorId, configId, buttonId}) => {
     App.handleEvent({simulatorId, macros}, "triggerMacros");
 });
 
+// Reorder Macro Button
+App.on("reorderMacroButton", ({configId, oldIndex, newIndex}) => {
+  performButtonAction(configId, macro =>
+    macro.reorderButton(oldIndex, newIndex),
+  );
+});
+
 // Reorder Macro Action
 App.on("reorderMacroAction", ({configId, id, oldIndex, newIndex}) => {
   performButtonAction(configId, macro =>

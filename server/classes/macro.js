@@ -10,7 +10,7 @@ function move(array, old_index, new_index) {
       array.push(undefined); // put a null value at that point in the array
     }
   }
-  array.splice(new_index, 0, array.splice(old_index, 1)[0]); // remove the item at the old index and put it in the new index
+  array.splice(new_index, 0, array.splice(old_index, 1)[0]); // remove the item at the old index and replace it at the new index
   return array; // for testing purposes
 }
 
@@ -90,5 +90,9 @@ export class MacroButtonConfig {
   }
   getButton(id) {
     return this.buttons.find(b => b.id === id);
+  }
+  // For reordering macro buttons
+  reorderButton(oldIndex, newIndex) {
+    this.buttons = move(this.buttons, oldIndex, newIndex);
   }
 }
