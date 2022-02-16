@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/Thorium-Sim/thorium/compare/3.5.1...3.6.0) (2022-02-16)
+
+
+### Features
+
+* **Macro Buttons:** Adds the ability to reorganize the macro buttons. ([c463898](https://github.com/Thorium-Sim/thorium/commit/c463898117c64533d515c6f64f4d60f691f2114d))
+
 ## [3.5.1](https://github.com/Thorium-Sim/thorium/compare/3.5.0...3.5.1) (2021-12-07)
 
 
