@@ -51,6 +51,16 @@ const schema = gql`
       id: ID!
       actions: [ActionInput]
     ): String
+    """
+    Reorder Macros
+    """
+    reorderMacroButton(configId: ID!, oldIndex: Int!, newIndex: Int!): String
+    reorderMacroAction(
+      configId: ID!
+      id: ID!
+      oldIndex: Int!
+      newIndex: Int!
+    ): String
 
     triggerMacroButton(simulatorId: ID!, configId: ID!, buttonId: ID!): String
   }
