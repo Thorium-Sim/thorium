@@ -1050,9 +1050,6 @@ export type Mutation = {
   setMacroButtonCategory?: Maybe<Scalars['String']>;
   setMacroButtonColor?: Maybe<Scalars['String']>;
   updateMacroButtonActions?: Maybe<Scalars['String']>;
-  /** Reorder Macros */
-  reorderMacroButton?: Maybe<Scalars['String']>;
-  reorderMacroAction?: Maybe<Scalars['String']>;
   triggerMacroButton?: Maybe<Scalars['String']>;
   toggleStationMessageGroup?: Maybe<Scalars['String']>;
   /**
@@ -3328,21 +3325,6 @@ export type MutationUpdateMacroButtonActionsArgs = {
   configId: Scalars['ID'];
   id: Scalars['ID'];
   actions?: Maybe<Array<Maybe<ActionInput>>>;
-};
-
-
-export type MutationReorderMacroButtonArgs = {
-  configId: Scalars['ID'];
-  oldIndex: Scalars['Int'];
-  newIndex: Scalars['Int'];
-};
-
-
-export type MutationReorderMacroActionArgs = {
-  configId: Scalars['ID'];
-  id: Scalars['ID'];
-  oldIndex: Scalars['Int'];
-  newIndex: Scalars['Int'];
 };
 
 

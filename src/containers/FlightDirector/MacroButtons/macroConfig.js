@@ -1,4 +1,3 @@
-import {css} from "@emotion/core";
 import React, {Fragment} from "react";
 import {
   Container,
@@ -18,8 +17,6 @@ import uuid from "uuid";
 import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";
 import {ActionConfig} from "../Macros/macroConfig";
-import SortableActionList from "./sortableActionList";
-import SortableButtonList from "./sortableMacroButtonList";
 
 const colors = [
   "primary",
@@ -107,46 +104,6 @@ const ActionList = ({
           )}
         </Mutation>
       </Label>
-      {/* SORTABLE ACTION LIST */}
-      <Mutation
-        mutation={gql`
-          mutation ReorderActions(
-            $configId: ID!
-            $id: ID!
-            $oldIndex: Int!
-            $newIndex: Int!
-          ) {
-            reorderMacroAction(
-              configId: $configId
-              id: $id
-              oldIndex: $oldIndex
-              newIndex: $newIndex
-            )
-          }
-        `}
-      >
-        {action => (
-          <SortableActionList
-            css={css`
-              flex: 1;
-              overflow-y: auto;
-            `}
-            distance={20}
-            actions={actions}
-            id={id}
-            selectedAction={selectedAction}
-            setSelectedAction={setSelectedAction}
-            removeAction={removeAction}
-            onSortEnd={({oldIndex, newIndex}) =>
-              action({
-                variables: {configId, id, oldIndex, newIndex},
-              })
-            }
-          />
-        )}
-      </Mutation>
-
-      {/* Old macro action list
       <ListGroup style={{maxHeight: "60vh", overflowY: "auto"}}>
         {actions.map(e => (
           <ListGroupItem
@@ -161,7 +118,7 @@ const ActionList = ({
             />
           </ListGroupItem>
         ))}
-        </ListGroup> */}
+      </ListGroup>
       <EventPicker
         className={"btn btn-sm btn-success"}
         handleChange={e => addAction(e.target.value)}
@@ -202,7 +159,6 @@ const MacroConfig = ({macros}) => {
               </ListGroupItem>
             ))}
           </ListGroup>
-
           <Mutation
             mutation={gql`
               mutation AddMacro($name: String!) {
@@ -296,48 +252,6 @@ const MacroConfig = ({macros}) => {
           {macro && (
             <>
               <h3>Buttons</h3>
-              {/* SORTABLE BUTTON LIST */}
-              <Mutation
-                mutation={gql`
-                  mutation ReorderButtons(
-                    $configId: ID!
-                    $oldIndex: Int!
-                    $newIndex: Int!
-                  ) {
-                    reorderMacroButton(
-                      configId: $configId
-                      oldIndex: $oldIndex
-                      newIndex: $newIndex
-                    )
-                  }
-                `}
-              >
-                {action => (
-                  <SortableButtonList
-                    css={css`
-                      flex: 1;
-                      overflow-y: auto;
-                    `}
-                    distance={20}
-                    buttons={macro.buttons}
-                    selectedButton={selectedButton}
-                    setSelectedButton={setSelectedButton}
-                    onSortEnd={({oldIndex, newIndex}) => {
-                      let configId = macro.id;
-                      action({
-                        variables: {
-                          configId,
-                          selectedButton,
-                          oldIndex,
-                          newIndex,
-                        },
-                      });
-                    }}
-                  />
-                )}
-              </Mutation>
-
-              {/* OLD MACRO BUTTON LIST
               <ListGroup style={{maxHeight: "60vh", overflowY: "auto"}}>
                 {macro.buttons.map(m => (
                   <ListGroupItem
@@ -353,7 +267,7 @@ const MacroConfig = ({macros}) => {
                     <small>{m.category}</small>
                   </ListGroupItem>
                 ))}
-                  </ListGroup> */}
+              </ListGroup>
               <Mutation
                 mutation={gql`
                   mutation AddButton($configId: ID!, $name: String!) {

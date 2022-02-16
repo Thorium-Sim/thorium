@@ -115,9 +115,6 @@ const creditList = [
         <li>
           <code>ericman314</code>
         </li>
-        <li>
-          <code>SoshJam</code>
-        </li>
       </ul>
     ),
   },
