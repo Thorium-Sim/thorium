@@ -1,3 +1,10 @@
+## [3.6.2](https://github.com/Thorium-Sim/thorium/compare/3.6.1...3.6.2) (2022-07-13)
+
+
+### Bug Fixes
+
+* Fix an issue preventing the app from building. ([f2557f2](https://github.com/Thorium-Sim/thorium/commit/f2557f2ab4881a6f043d62b2d1ba846b7c74e5c3))
+
 ## [3.6.1](https://github.com/Thorium-Sim/thorium/compare/3.6.0...3.6.1) (2022-07-13)
 
 
