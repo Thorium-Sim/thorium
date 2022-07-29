@@ -52,27 +52,40 @@ class SensorsSegments extends Component {
   state = {pointerEvents: "none"};
   keydown = e => {
     if (e.key === "Alt") {
-      this.setState({pointerEvents: "all"});
+      this.setState({
+        pointerEvents: "all",
+        zIndex: 1001,
+      });
     }
   };
   keyup = e => {
     if (e.key === "Alt") {
-      this.setState({pointerEvents: "none"});
+      this.setState({
+        pointerEvents: "none",
+        zIndex: "auto",
+      });
     }
   };
   componentDidMount() {
-    document.addEventListener("keydown", this.keydown);
-    document.addEventListener("keyup", this.keyup);
+    if (this.props.core) {
+      document.addEventListener("keydown", this.keydown);
+      document.addEventListener("keyup", this.keyup);
+    }
   }
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.keydown);
-    document.removeEventListener("keyup", this.keyup);
+    if (this.props.core) {
+      document.removeEventListener("keydown", this.keydown);
+      document.removeEventListener("keyup", this.keyup);
+    }
   }
   render() {
     const {rings = 3, lines = 12, aligned = false, dimensions} = this.props;
 
-    const {segments, client, sensors} = this.props;
+    const {segments, client, sensors, core} = this.props;
     const setSegment = (ring, line) => {
+      if (!core) {
+        return;
+      }
       const mutation = gql`
         mutation SensorsSegment(
           $id: ID!
@@ -108,7 +121,10 @@ class SensorsSegments extends Component {
         strokeLinejoin="round"
         strokeMiterlimit="1.414"
         className="grid-segments"
-        style={{pointerEvents: this.state.pointerEvents}}
+        style={{
+          pointerEvents: this.state.pointerEvents,
+          zIndex: this.state.zIndex,
+        }}
       >
         {dimensions && (
           <Fragment>
