@@ -147,8 +147,10 @@ const Messaging = ({simulator, station, flight: {id: flightId}}) => {
     },
   });
   const sendMessage = () => {
-    sendMessageMutation();
-    setMessageInput("");
+    if (messageInput !== "") {
+      sendMessageMutation();
+      setMessageInput("");
+    }
   };
   const scrollElement = () => {
     const el = messageHolder.current;
