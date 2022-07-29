@@ -12,11 +12,9 @@ import {
 } from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import EventName from "../MissionConfig/EventName";
 import EventPicker from "../MissionConfig/EventPicker";
 import uuid from "uuid";
 import {capitalCase} from "change-case";
-import {FaBan} from "react-icons/fa";
 import {ActionConfig} from "../Macros/macroConfig";
 import SortableActionList from "./sortableActionList";
 import SortableButtonList from "./sortableMacroButtonList";
@@ -146,22 +144,6 @@ const ActionList = ({
         )}
       </Mutation>
 
-      {/* Old macro action list
-      <ListGroup style={{maxHeight: "60vh", overflowY: "auto"}}>
-        {actions.map(e => (
-          <ListGroupItem
-            key={`${id}-${e.id}`}
-            onClick={() => setSelectedAction(e.id)}
-            active={e.id === selectedAction}
-          >
-            <EventName id={e.event} />{" "}
-            <FaBan
-              className="text-danger pull-right"
-              onClick={() => removeAction(e.id)}
-            />
-          </ListGroupItem>
-        ))}
-        </ListGroup> */}
       <EventPicker
         className={"btn btn-sm btn-success"}
         handleChange={e => addAction(e.target.value)}
