@@ -377,7 +377,12 @@ class InnerGrid extends Component {
             />
           )}
           {segments && (
-            <Segments segments={segments} {...this.props} sensors={sensor} />
+            <Segments
+              segments={segments}
+              {...this.props}
+              sensors={sensor}
+              core={core}
+            />
           )}{" "}
           {this.renderLines()}
           <div className="ping-ring" />
