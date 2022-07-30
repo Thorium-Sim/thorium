@@ -1,3 +1,16 @@
+# [3.7.0](https://github.com/Thorium-Sim/thorium/compare/3.6.2...3.7.0) (2022-07-30)
+
+
+### Bug Fixes
+
+* **Messaging:** It is no longer possible to send messages that have no content. ([7307c5b](https://github.com/Thorium-Sim/thorium/commit/7307c5b41efe35077756ac19cf579e1ad49fe3e2))
+* **Sensors:** The Sensors card can no longer toggle sensor grid blackouts ([40a15dd](https://github.com/Thorium-Sim/thorium/commit/40a15ddebf299cca60c8c4daa18c4ae7334fb4a2))
+
+
+### Features
+
+* **Triggers:** Adds Remote Access Code triggers. Closes [#3241](https://github.com/Thorium-Sim/thorium/issues/3241) ([a6c1def](https://github.com/Thorium-Sim/thorium/commit/a6c1def2639604880e4a68c454c7366db8d1a69f))
+
 ## [3.6.2](https://github.com/Thorium-Sim/thorium/compare/3.6.1...3.6.2) (2022-07-13)
 
 
