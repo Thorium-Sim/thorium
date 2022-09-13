@@ -5,6 +5,17 @@ import App from "../../app";
 import yazl from "yazl";
 import {aspectList} from "../../typeDefs/flight";
 
+let cache = [];
+const safeStringify = (key, value) => {
+  if (typeof value === "object" && value !== null) {
+    // Duplicate reference found, discard key
+    if (cache.includes(value)) return;
+
+    // Store value in our collection
+    cache.push(value);
+  }
+  return value;
+};
 export default function exportFlight(id, res) {
   const flight = App.flights.find(s => s.id === id);
   if (!flight) {
@@ -23,10 +34,15 @@ export default function exportFlight(id, res) {
 
     return sim;
   });
-  zipfile.addBuffer(Buffer.from(JSON.stringify(data)), "flight/flight.json", {
-    mtime: new Date(),
-    mode: parseInt("0100664", 8), // -rw-rw-r--
-  });
+  zipfile.addBuffer(
+    Buffer.from(JSON.stringify(data, safeStringify)),
+    "flight/flight.json",
+    {
+      mtime: new Date(),
+      mode: parseInt("0100664", 8), // -rw-rw-r--
+    },
+  );
+  cache = [];
   zipfile.end({}, function () {
     res.set({
       "Content-Disposition": `attachment; filename=${flight.name}.flight`,
