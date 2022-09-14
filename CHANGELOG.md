@@ -1,3 +1,10 @@
+## [3.7.1](https://github.com/Thorium-Sim/thorium/compare/3.7.0...3.7.1) (2022-09-14)
+
+
+### Bug Fixes
+
+* **Flight:** Fixex a bug with exporting flights. ([552b034](https://github.com/Thorium-Sim/thorium/commit/552b03438ec30b6a6251c6b30a19c2914ae094d7))
+
 # [3.7.0](https://github.com/Thorium-Sim/thorium/compare/3.6.2...3.7.0) (2022-07-30)
 
 
