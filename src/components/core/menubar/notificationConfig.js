@@ -27,6 +27,7 @@ export const notifyComponents = [
   "Docking",
   "Engines",
   "External Sensors",
+  "Hacking",
   "Handheld Scanner",
   "Interception",
   "Internal Comm",
