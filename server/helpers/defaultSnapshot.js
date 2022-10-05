@@ -13637,6 +13637,7 @@ export default {
   dmxConfigs: [],
   dmxDevices: [],
   hackingPresets: [],
+  printQueue: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),
   doTrack: false,
