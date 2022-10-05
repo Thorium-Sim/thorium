@@ -188,3 +188,42 @@ App.on(
     });
   },
 );
+App.on("printPdf", ({asset, simulatorId}) => {
+  App.printQueue.push({
+    id: uuid.v4(),
+    asset,
+    simulatorId,
+    timestamp: Date.now(),
+  });
+  pubsub.publish(
+    "printQueue",
+    App.printQueue.filter(queue => queue.simulatorId === simulatorId),
+  );
+  App.handleEvent(
+    {
+      simulatorId: simulatorId,
+      component: "PrintQueueCore",
+      title: `New Print Queue`,
+      body: asset,
+      color: "info",
+    },
+    "addCoreFeed",
+  );
+  pubsub.publish("notify", {
+    id: uuid.v4(),
+    simulatorId: simulatorId,
+    type: "Print Queue",
+    station: "Core",
+    title: `New Print Queue`,
+    body: asset,
+    color: "info",
+  });
+});
+App.on("clearPdf", ({id}) => {
+  const pdf = App.printQueue.find(item => item.id === id);
+  App.printQueue = App.printQueue.filter(item => item.id !== id);
+  pubsub.publish(
+    "printQueue",
+    App.printQueue.filter(queue => queue.simulatorId === pdf.simulatorId),
+  );
+});

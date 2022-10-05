@@ -21,7 +21,9 @@ export const ClientLighting: React.FC<{
   const {data} = useDmxSetsSubscription();
 
   React.useEffect(() => {
-    activate({variables: {clientId, dmxSetId}});
+    if (dmxSetId) {
+      activate({variables: {clientId, dmxSetId}});
+    }
   }, [activate, clientId, dmxSetId]);
 
   if (!data?.dmxSets || data?.dmxSets.length === 0) {

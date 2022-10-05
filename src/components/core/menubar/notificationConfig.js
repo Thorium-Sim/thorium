@@ -38,6 +38,7 @@ export const notifyComponents = [
   "Medical Teams",
   "Navigation",
   "Phasers",
+  "Print Queue",
   "Probes",
   "Railgun",
   "Reactivation Code",

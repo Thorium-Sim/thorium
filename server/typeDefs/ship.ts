@@ -1,5 +1,8 @@
 import {gql, withFilter} from "apollo-server-express";
+import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
+import uuid from "uuid";
+
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -100,11 +103,20 @@ const schema = gql`
     Macro: Actions: Print PDF Asset
     """
     printPdf(asset: String!): String
+    clearPdf(id: ID!): String
+  }
+
+  type PrintQueue {
+    id: ID!
+    simulatorId: String!
+    asset: String!
+    timestamp: Float!
   }
 
   extend type Subscription {
     notify(simulatorId: ID!, station: String, trigger: String): Notification
     widgetNotify(simulatorId: ID!, station: String): String
+    printQueue(simulatorId: ID!): [PrintQueue]
   }
 `;
 
@@ -146,6 +158,26 @@ const resolver = {
       subscribe: withFilter(
         () => pubsub.asyncIterator("widgetNotify"),
         rootValue => !!rootValue,
+      ),
+    },
+    printQueue: {
+      resolve(rootValue) {
+        return rootValue;
+      },
+      subscribe: withFilter(
+        (rootValue, {simulatorId}) => {
+          const id = uuid.v4();
+          process.nextTick(() => {
+            let returnVal = App.printQueue.filter(
+              queue => queue.simulatorId === simulatorId,
+            );
+            pubsub.publish(id, returnVal);
+          });
+          return pubsub.asyncIterator([id, "printQueue"]);
+        },
+        (rootValue, {simulatorId}) => {
+          return true;
+        },
       ),
     },
   },

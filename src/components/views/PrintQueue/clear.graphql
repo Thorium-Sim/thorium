@@ -1,0 +1,3 @@
+mutation ClearPdf($id: ID!) {
+  clearPdf(id: $id)
+}
