@@ -125,7 +125,7 @@ function calculateTime(milliseconds: number) {
   );
 }
 
-const TimeCounter: React.FC<{time: Date}> = ({time}) => {
+export const TimeCounter: React.FC<{time: Date}> = ({time}) => {
   const milliseconds = Date.now() - Number(time);
   return <>{calculateTime(milliseconds)}</>;
 };

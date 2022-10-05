@@ -871,6 +871,7 @@ type Mutation {
 
   """Macro: Actions: Print PDF Asset"""
   printPdf(asset: String!): String
+  clearPdf(id: ID!): String
   commAddSignal(id: ID!, commSignalInput: CommSignalInput!): String
   commUpdateSignal(id: ID!, commSignalInput: CommSignalInput!): String
 
@@ -1464,6 +1465,7 @@ type Subscription {
   shieldsUpdate(simulatorId: ID): [Shield]
   notify(simulatorId: ID!, station: String, trigger: String): Notification
   widgetNotify(simulatorId: ID!, station: String): String
+  printQueue(simulatorId: ID!): [PrintQueue]
   shortRangeCommUpdate(simulatorId: ID!): [ShortRangeComm]
   sickbayUpdate(simulatorId: ID): [Sickbay]
   signalJammersUpdate(simulatorId: ID!): [SignalJammer]
@@ -3404,6 +3406,13 @@ enum NotifyColors {
   info
   light
   dark
+}
+
+type PrintQueue {
+  id: ID!
+  simulatorId: String!
+  asset: String!
+  timestamp: Float!
 }
 
 type ShortRangeComm implements SystemInterface {

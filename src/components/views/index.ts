@@ -222,6 +222,7 @@ const CountermeasuresCore = React.lazy(() => import("./Countermeasures/core"));
 const TaskFlowCore = React.lazy(() => import("./Tasks/taskFlowCore"));
 const DocumentsCore = React.lazy(() => import("./Documents/core"));
 const HackingCore = React.lazy(() => import("./Hacking/core"));
+const PrintQueueCore = React.lazy(() => import("./PrintQueue/core"));
 
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
@@ -528,6 +529,7 @@ export const Cores = {
   TaskFlowCore,
   DocumentsCore,
   HackingCore,
+  PrintQueueCore,
 };
 
 export default Views;
