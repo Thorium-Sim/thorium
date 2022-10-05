@@ -245,6 +245,15 @@ const resolver = {
       performAction(id, (sys: ComputerCore) => {
         if (state === "scanning") {
           sys.hackingLog.unshift("Ports scanned by fe80::4c3:2e73:2557:c71a");
+          pubsub.publish("notify", {
+            id: uuid.v4(),
+            simulatorId: sys.simulatorId,
+            station: "Core",
+            type: "Hacking",
+            title: `Hacking Port Scan`,
+            body: "",
+            color: "info",
+          });
           if (sys.training) {
             setTimeout(() => {
               sys.hackingState = "hacking";
@@ -264,6 +273,15 @@ const resolver = {
           sys.hackingLog.unshift(
             "Unauthorized connection established with fe80::4c3:2e73:2557:c71a",
           );
+          pubsub.publish("notify", {
+            id: uuid.v4(),
+            simulatorId: sys.simulatorId,
+            station: "Core",
+            type: "Hacking",
+            title: `Hacking Connected`,
+            body: "",
+            color: "info",
+          });
         }
         sys.hackingState = state;
       });
