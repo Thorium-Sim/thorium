@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import {Button, ButtonGroup} from "helpers/reactstrap";
 import StepModal from "./stepModal";
 import {FaArrowLeft, FaStepForward, FaPlay, FaArrowRight} from "react-icons/fa";
-import triggerLocalMacros from "helpers/triggerLocalMacros";
+import triggerLocalMacros, {localMacrosList} from "helpers/triggerLocalMacros";
 import {
   TimelineStep,
   useSetSimulatorTimelineStepMutation,
@@ -25,7 +25,9 @@ interface TimelineControl {
   auxTimelineId?: string;
 }
 
-export const excludedTimelineActions = ["setSimulatorMission"];
+export const excludedTimelineActions = ["setSimulatorMission"].concat(
+  localMacrosList,
+);
 
 const TimelineControl: React.FC<TimelineControl> = ({
   actions,

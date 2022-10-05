@@ -7,7 +7,7 @@ import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import uuid from "uuid";
 import MacroConfig from "./macroConfig";
 import {FaBan} from "react-icons/fa";
-import triggerLocalMacros from "helpers/triggerLocalMacros";
+import triggerLocalMacros, {localMacrosList} from "helpers/triggerLocalMacros";
 class MacrosCore extends Component {
   state = {actions: []};
   render() {
@@ -134,7 +134,9 @@ class MacrosCore extends Component {
             `}
             variables={{
               simulatorId: simulator.id,
-              macros: actions.map(({id, ...rest}) => rest),
+              macros: actions
+                .filter(({event}) => localMacrosList.includes(event))
+                .map(({id, ...rest}) => rest),
             }}
           >
             {triggerMacros => (

@@ -188,3 +188,4 @@ App.on(
     });
   },
 );
+App.on("printPdf", (a, b, c, d) => console.log(a, b, c, d));

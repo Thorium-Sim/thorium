@@ -51,8 +51,11 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
     if (!t) return;
     const stepIndex = timeline.findIndex(i => i.id === t.id);
     const macros = t.timelineItems
-      .filter(a =>
-        onlyExecuteViewscreen ? allowedMacros.indexOf(a.event) > -1 : true,
+      .filter(
+        a =>
+          (onlyExecuteViewscreen
+            ? allowedMacros.indexOf(a.event) > -1
+            : true) && !excludedTimelineActions.includes(a.event),
       )
       .map(tt => {
         const args = !tt.args
