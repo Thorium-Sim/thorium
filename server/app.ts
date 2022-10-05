@@ -78,6 +78,12 @@ class Events extends EventEmitter {
   dmxConfigs: ClassesImport.DMXConfig[] = [];
   dmxSets: ClassesImport.DMXSet[] = [];
   hackingPresets: ClassesImport.HackingPreset[] = [];
+  printQueue: {
+    id: string;
+    asset: string;
+    simulatorId: string;
+    timestamp: number;
+  }[] = [];
   autoUpdate = true;
   migrations: any = {assets: true, dmx: false};
   thoriumId: string = randomWords(5).join("-");

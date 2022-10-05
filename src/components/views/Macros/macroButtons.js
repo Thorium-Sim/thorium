@@ -5,6 +5,7 @@ import {useQuery, useMutation} from "@apollo/client";
 import {Input, Button} from "helpers/reactstrap";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
 import {capitalCase} from "change-case";
+import triggerLocalMacros from "helpers/triggerLocalMacros";
 
 const fragment = gql`
   fragment MacrosButtonsData on MacroButtonConfig {
@@ -15,6 +16,12 @@ const fragment = gql`
       name
       color
       category
+      actions {
+        id
+        event
+        args
+        delay
+      }
     }
   }
 `;
@@ -108,15 +115,16 @@ const MacroButtons = ({simulator: {id: simulatorId}}) => {
                     key={b.id}
                     color={b.color}
                     size="sm"
-                    onClick={() =>
+                    onClick={() => {
+                      triggerLocalMacros(b.actions);
                       trigger({
                         variables: {
                           configId: selectedConfig,
                           buttonId: b.id,
                           simulatorId,
                         },
-                      })
-                    }
+                      });
+                    }}
                   >
                     {b.name}
                   </Button>

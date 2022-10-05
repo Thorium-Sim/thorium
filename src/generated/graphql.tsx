@@ -1335,6 +1335,7 @@ export type Mutation = {
   notify?: Maybe<Scalars['String']>;
   /** Macro: Actions: Print PDF Asset */
   printPdf?: Maybe<Scalars['String']>;
+  clearPdf?: Maybe<Scalars['String']>;
   commAddSignal?: Maybe<Scalars['String']>;
   commUpdateSignal?: Maybe<Scalars['String']>;
   /**
@@ -4488,6 +4489,11 @@ export type MutationPrintPdfArgs = {
 };
 
 
+export type MutationClearPdfArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationCommAddSignalArgs = {
   id: Scalars['ID'];
   commSignalInput: CommSignalInput;
@@ -6625,6 +6631,7 @@ export type Subscription = {
   shieldsUpdate?: Maybe<Array<Maybe<Shield>>>;
   notify?: Maybe<Notification>;
   widgetNotify?: Maybe<Scalars['String']>;
+  printQueue?: Maybe<Array<Maybe<PrintQueue>>>;
   shortRangeCommUpdate?: Maybe<Array<Maybe<ShortRangeComm>>>;
   sickbayUpdate?: Maybe<Array<Maybe<Sickbay>>>;
   signalJammersUpdate?: Maybe<Array<Maybe<SignalJammer>>>;
@@ -7021,6 +7028,11 @@ export type SubscriptionNotifyArgs = {
 export type SubscriptionWidgetNotifyArgs = {
   simulatorId: Scalars['ID'];
   station?: Maybe<Scalars['String']>;
+};
+
+
+export type SubscriptionPrintQueueArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -9233,6 +9245,14 @@ export enum NotifyColors {
   Light = 'light',
   Dark = 'dark'
 }
+
+export type PrintQueue = {
+  __typename?: 'PrintQueue';
+  id: Scalars['ID'];
+  simulatorId: Scalars['String'];
+  asset: Scalars['String'];
+  timestamp: Scalars['Float'];
+};
 
 export type ShortRangeComm = SystemInterface & {
   __typename?: 'ShortRangeComm';
@@ -11684,6 +11704,29 @@ export type UpdateLightingMutationVariables = Exact<{
 export type UpdateLightingMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'updateSimulatorLighting'>
+);
+
+export type ClearPdfMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ClearPdfMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'clearPdf'>
+);
+
+export type PrintQueueSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type PrintQueueSubscription = (
+  { __typename?: 'Subscription' }
+  & { printQueue?: Maybe<Array<Maybe<(
+    { __typename?: 'PrintQueue' }
+    & Pick<PrintQueue, 'id' | 'asset' | 'timestamp'>
+  )>>> }
 );
 
 export type ReactorAckWingPowerMutationVariables = Exact<{
@@ -15577,6 +15620,28 @@ export function useUpdateLightingMutation(baseOptions?: ApolloReactHooks.Mutatio
         return ApolloReactHooks.useMutation<UpdateLightingMutation, UpdateLightingMutationVariables>(UpdateLightingDocument, baseOptions);
       }
 export type UpdateLightingMutationHookResult = ReturnType<typeof useUpdateLightingMutation>;
+export const ClearPdfDocument = gql`
+    mutation ClearPdf($id: ID!) {
+  clearPdf(id: $id)
+}
+    `;
+export function useClearPdfMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ClearPdfMutation, ClearPdfMutationVariables>) {
+        return ApolloReactHooks.useMutation<ClearPdfMutation, ClearPdfMutationVariables>(ClearPdfDocument, baseOptions);
+      }
+export type ClearPdfMutationHookResult = ReturnType<typeof useClearPdfMutation>;
+export const PrintQueueDocument = gql`
+    subscription PrintQueue($simulatorId: ID!) {
+  printQueue(simulatorId: $simulatorId) {
+    id
+    asset
+    timestamp
+  }
+}
+    `;
+export function usePrintQueueSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<PrintQueueSubscription, PrintQueueSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<PrintQueueSubscription, PrintQueueSubscriptionVariables>(PrintQueueDocument, baseOptions);
+      }
+export type PrintQueueSubscriptionHookResult = ReturnType<typeof usePrintQueueSubscription>;
 export const ReactorAckWingPowerDocument = gql`
     mutation ReactorAckWingPower($id: ID!, $wing: String!, $ack: Boolean!) {
   reactorAckWingRequest(id: $id, wing: $wing, ack: $ack)

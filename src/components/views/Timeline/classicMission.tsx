@@ -50,26 +50,27 @@ const TimelineStep: React.FC<TimelineStepProps> = ({
   const runMacro = (t: TimelineStepI) => {
     if (!t) return;
     const stepIndex = timeline.findIndex(i => i.id === t.id);
-    const macros = t.timelineItems
-      .filter(a =>
-        onlyExecuteViewscreen ? allowedMacros.indexOf(a.event) > -1 : true,
-      )
-      .map(tt => {
-        const args = !tt.args
-          ? "{}"
-          : typeof tt.args === "string"
-          ? JSON.stringify({...JSON.parse(tt.args)})
-          : JSON.stringify({...(tt.args as Object)});
-        return {
-          stepId: tt.id,
-          event: tt.event,
-          args,
-          delay: tt.delay || 0,
-        };
-      });
+    const macros = t.timelineItems.map(tt => {
+      const args = !tt.args
+        ? "{}"
+        : typeof tt.args === "string"
+        ? JSON.stringify({...JSON.parse(tt.args)})
+        : JSON.stringify({...(tt.args as Object)});
+      return {
+        stepId: tt.id,
+        event: tt.event,
+        args,
+        delay: tt.delay || 0,
+      };
+    });
+    const filteredMacros = macros.filter(
+      a =>
+        (onlyExecuteViewscreen ? allowedMacros.indexOf(a.event) > -1 : true) &&
+        !excludedTimelineActions.includes(a.event),
+    );
     const variables = {
       simulatorId,
-      macros,
+      macros: filteredMacros,
     };
     triggerLocalMacros(macros);
     triggerMacros({variables});

@@ -12,6 +12,9 @@ const localMacros: {[key: string]: Function | null} = {
     printJS({printable: `/assets${asset}`, type: "pdf"});
   },
 };
+
+export const localMacrosList = Object.keys(localMacros);
+
 export default function triggerLocalMacros(actions: Macro[]) {
   actions.forEach(action => {
     if (localMacros[action.event]) {

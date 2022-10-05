@@ -1,0 +1,7 @@
+subscription PrintQueue($simulatorId: ID!) {
+  printQueue(simulatorId: $simulatorId) {
+    id
+    asset
+    timestamp
+  }
+}

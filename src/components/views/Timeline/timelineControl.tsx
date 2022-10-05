@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import {Button, ButtonGroup} from "helpers/reactstrap";
 import StepModal from "./stepModal";
 import {FaArrowLeft, FaStepForward, FaPlay, FaArrowRight} from "react-icons/fa";
-import triggerLocalMacros from "helpers/triggerLocalMacros";
+import triggerLocalMacros, {localMacrosList} from "helpers/triggerLocalMacros";
 import {
   TimelineStep,
   useSetSimulatorTimelineStepMutation,
@@ -25,7 +25,9 @@ interface TimelineControl {
   auxTimelineId?: string;
 }
 
-export const excludedTimelineActions = ["setSimulatorMission"];
+export const excludedTimelineActions = ["setSimulatorMission"].concat(
+  localMacrosList,
+);
 
 const TimelineControl: React.FC<TimelineControl> = ({
   actions,
@@ -44,26 +46,29 @@ const TimelineControl: React.FC<TimelineControl> = ({
     const currentStep = timeline[currentTimelineStep];
     if (!currentStep) return;
 
-    const macros = currentStep.timelineItems
-      .filter(t => actions[t.id] && !excludedTimelineActions.includes(t.event))
-      .map(t => {
-        const args = !t.args
-          ? "{}"
-          : typeof t.args === "string"
-          ? JSON.stringify({...JSON.parse(t.args)})
-          : JSON.stringify({...(t.args as Object)});
-        const stepDelay = delay[t.id];
+    const macros = currentStep.timelineItems.map(t => {
+      const args = !t.args
+        ? "{}"
+        : typeof t.args === "string"
+        ? JSON.stringify({...JSON.parse(t.args)})
+        : JSON.stringify({...(t.args as Object)});
+      const stepDelay = delay[t.id];
 
-        return {
-          stepId: t.id,
-          event: t.event,
-          args,
-          delay: stepDelay || stepDelay === 0 ? stepDelay : t.delay || 0,
-        };
-      });
+      return {
+        stepId: t.id,
+        event: t.event,
+        args,
+        delay: stepDelay || stepDelay === 0 ? stepDelay : t.delay || 0,
+      };
+    });
+
+    const filteredMacros = macros.filter(
+      t => actions[t.stepId] && !excludedTimelineActions.includes(t.event),
+    );
+
     const variables = {
       simulatorId,
-      macros,
+      macros: filteredMacros,
     };
     triggerLocalMacros(macros);
     triggerMacros({variables});
