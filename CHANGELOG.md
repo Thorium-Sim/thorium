@@ -1,3 +1,11 @@
+# [3.8.0](https://github.com/Thorium-Sim/thorium/compare/3.7.1...3.8.0) (2022-10-06)
+
+
+### Features
+
+* Add notifications for hacking controls. Closes [#3251](https://github.com/Thorium-Sim/thorium/issues/3251) ([378bf98](https://github.com/Thorium-Sim/thorium/commit/378bf9842b0a5502100173a603616832d6f56431))
+* PrintQueue core makes it possible to queue items to be printed through keyboards and triggers. Also enables printing documents from macro buttons. Closes [#3250](https://github.com/Thorium-Sim/thorium/issues/3250) ([4e92ef4](https://github.com/Thorium-Sim/thorium/commit/4e92ef4715399057b63e93bf9cbe713a15f76d3a))
+
 # [3.8.0](https://github.com/Thorium-Sim/thorium/compare/3.7.1...3.8.0) (2022-10-05)
 
 
