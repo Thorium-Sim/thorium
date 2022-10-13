@@ -58,7 +58,6 @@
     "format": "prettier --write \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "format:different": "prettier --list-different \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "validate": "CI=true npm-run-all --parallel test:plain typecheck format:different",
-    "lint-staged-validate": "lint-staged",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "proxy": "http://localhost:3001",
@@ -80,22 +79,6 @@
     "last 1 firefox version",
     "last 1 safari version"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm-run-all --parallel lint-staged-validate typecheck"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint"
-    ],
-    "*.{css,scss}": [
-      "stylelint"
-    ],
-    "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
-      "prettier --write"
-    ]
-  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
@@ -338,12 +321,10 @@
     "get-graphql-schema": "^2.1.2",
     "graphql-tag.macro": "^2.0.1",
     "history": "^5.0.0-beta.5",
-    "husky": "^4.2.5",
     "is-ci": "^2.0.0",
     "jest-transform-graphql": "^2.1.0",
     "jest-watch-select-projects": "^2.0.0",
     "keycode": "^2.2.0",
-    "lint-staged": "^10.2.4",
     "match-sorter": "^4.0.2",
     "midimessage": "^1.0.5",
     "node-sass": "^4.12.0",
