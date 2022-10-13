@@ -45,7 +45,3 @@ tempServer
 
 snapshot-*
 *.provisionprofile
-
-# Cypress
-cypress/videos
-cypress/screenshots

@@ -59,12 +59,13 @@
     "format:different": "prettier --list-different \"**/*.+(js|jsx|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\"",
     "validate": "CI=true npm-run-all --parallel test:plain typecheck format:different",
     "lint-staged-validate": "lint-staged",
-    "storybook": "start-storybook -p 9009 -s public,./",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -85,8 +86,12 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint"],
-    "*.{css,scss}": ["stylelint"],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -103,7 +108,9 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": { "provider": "github" },
+    "publish": {
+      "provider": "github"
+    },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -132,10 +139,15 @@
       ]
     },
     "win": {
-      "target": ["zip", "portable"],
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     },
-    "linux": { "category": "Utility" }
+    "linux": {
+      "category": "Utility"
+    }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -155,7 +167,9 @@
     ]
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -280,10 +294,6 @@
     "@semantic-release/git": "^9.0.0",
     "@semantic-release/github": "^7.0.6",
     "@sentry/browser": "^5.7.1",
-    "@storybook/addon-actions": "^5.2.4",
-    "@storybook/addon-links": "^5.2.4",
-    "@storybook/addons": "^5.2.4",
-    "@storybook/react": "^5.2.4",
     "@testing-library/jest-dom": "^5.7.0",
     "@testing-library/react": "^10.0.4",
     "@tweenjs/tween.js": "^18.3.1",
@@ -389,5 +399,7 @@
     "param-case": "3.0.3",
     "@babel/preset-env": "^7.8.7"
   },
-  "volta": { "node": "12.22.1" }
+  "volta": {
+    "node": "12.22.1"
+  }
 }
