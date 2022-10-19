@@ -1,0 +1,8 @@
+{
+  "watch": [
+    "src"
+  ],
+  "ignore": ["src/**/*.test.ts","src/**/*.test.js"],
+  "ext": "ts,tsx,mjs,js,json",
+  "exec": "node -r ts-eager/register src/index.ts"
+}

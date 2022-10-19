@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ES2020",
     "esModuleInterop": true,
     "allowJs": true,
+    "strict": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es6",
+    "target": "es2020",
+    "lib": ["DOM","ES2020"],
     "skipLibCheck": true,
 
     // TODO: Turn this on when we get enough coverage
@@ -16,7 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "*": ["../node_modules/*", "../types/*"],
-      "~*": ["./*"]
+      "@server/*": ["./src/*"]
     }
   },
   "include": ["./**/*"]

@@ -1,0 +1,84 @@
+import {System} from "./generic";
+
+interface Coordinate {
+  x: number | null;
+  y: number | null;
+  z: number | null;
+}
+export default class Navigation extends System {
+  calculate: boolean;
+  currentCourse: Coordinate;
+  calculatedCourse: Coordinate;
+  destination: string | null;
+  destinations: string[];
+  scanning: boolean;
+  presets;
+  thrusters;
+  constructor(params: Partial<Navigation> = {}) {
+    super(params);
+    this.class = "Navigation";
+    this.type = "Navigation";
+    this.name = params.name || "Navigation";
+    this.wing = params.wing || "right";
+
+    this.calculate = params.calculate || true; //Whether the course is calculated or give from Sensors
+    this.currentCourse = params.currentCourse || {
+      x: null,
+      y: null,
+      z: null,
+    };
+    this.calculatedCourse = params.calculatedCourse || {
+      x: null,
+      y: null,
+      z: null,
+    };
+    this.destination = params.destination || null;
+    this.destinations = params.destinations || [];
+    this.scanning = params.scanning || false;
+    this.presets = params.presets || [];
+    this.thrusters = params.thrusters || false;
+
+    this.training = params.training || false;
+  }
+  trainingMode() {
+    this.training = true;
+  }
+  toggleCalculate(which) {
+    this.calculate = which;
+  }
+  calculateCourse(destination) {
+    this.destination = destination;
+    this.scanning = true;
+  }
+  setDestinations(destinations) {
+    this.destinations = destinations || [];
+    this.scanning = false;
+  }
+  setDestination(destination) {
+    this.destination = destination;
+  }
+  setScanning(scanning) {
+    this.scanning = scanning;
+  }
+  cancelCalculation() {
+    this.scanning = false;
+  }
+  courseResponse(x, y, z) {
+    this.scanning = false;
+    this.calculatedCourse = {
+      x,
+      y,
+      z,
+    };
+  }
+  courseEntry(x, y, z) {
+    this.currentCourse = {
+      x,
+      y,
+      z,
+    };
+  }
+  setPresets(presets) {
+    this.presets = presets || [];
+  }
+}

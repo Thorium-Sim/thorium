@@ -60,6 +60,12 @@
     "validate": "CI=true npm-run-all --parallel test:plain typecheck format:different",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
+  "workspaces": [
+    "shared",
+    "client",
+    "server",
+    "desktop"
+  ],
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
     "watch": [
@@ -180,7 +186,7 @@
   "babelMacros": {
     "styledComponents": {}
   },
-  "dependencies": {
+  "old-dependencies": {
     "@apollo/client": "^3.0.0-beta.33",
     "@apollo/link-context": "^2.0.0-beta.3",
     "@apollo/link-error": "^2.0.0-beta.3",
@@ -253,7 +259,7 @@
     "yazl": "^2.5.1",
     "zustand": "^2.2.3"
   },
-  "devDependencies": {
+  "old-devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
@@ -381,6 +387,9 @@
     "@babel/preset-env": "^7.8.7"
   },
   "volta": {
-    "node": "12.22.1"
+    "node": "18.11.0"
+  },
+  "dependencies": {
+    "prettier": "^2.7.1"
   }
 }
