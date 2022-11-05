@@ -1,3 +1,0 @@
-mutation EntitiesSetPosition($entities: [EntitiesLocationInput!]!) {
-  entitiesSetPosition(entities: $entities)
-}

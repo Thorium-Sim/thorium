@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === "development" && !process.env.CI) {
   // but only in development.
   const schemaOutput = printSchema(schema);
 
-  fs.writeFileSync("./src/schema.graphql", schemaOutput);
+  fs.writeFileSync("../client/src/schema.graphql", schemaOutput);
 }
 
 // TODO: Change app to the express type

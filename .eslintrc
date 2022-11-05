@@ -5,11 +5,11 @@
   },
   "ignorePatterns": [
     "/node_modules/",
-    "/coverage/",
+    "/client/coverage/",
     "/build/",
     "/server/build/",
     "/.cache/",
-    "/locales/",
-    "/src/models/"
+    "/client/locales/",
+    "/client/src/models/"
   ]
 }

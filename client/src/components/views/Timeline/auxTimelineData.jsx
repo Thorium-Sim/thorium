@@ -1,0 +1,86 @@
+import React, {Component} from "react";
+import {Query} from "@apollo/client/react/components";
+import gql from "graphql-tag";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+import AuxTimeline from "./auxTimeline";
+import "./style.scss";
+
+const fragment = gql`
+  fragment AuxTimelineData on TimelineInstance {
+    id
+    currentTimelineStep
+    executedTimelineSteps
+    mission {
+      id
+      name
+      timeline {
+        id
+        name
+        description
+        timelineItems {
+          id
+          args
+          event
+          delay
+        }
+      }
+    }
+  }
+`;
+const QUERY = gql`
+  query AuxTimelines($simulatorId: ID!) {
+    missions(aux: true) {
+      id
+      name
+    }
+    auxTimelines(simulatorId: $simulatorId) {
+      ...AuxTimelineData
+    }
+  }
+  ${fragment}
+`;
+
+const SUBSCRIPTION = gql`
+  subscription TimelineUpdate($simulatorId: ID!) {
+    auxTimelinesUpdate(simulatorId: $simulatorId) {
+      ...AuxTimelineData
+    }
+  }
+  ${fragment}
+`;
+
+class TimelineData extends Component {
+  state = {};
+  render() {
+    return (
+      <Query query={QUERY} variables={{simulatorId: this.props.simulator.id}}>
+        {({loading, data, subscribeToMore}) => {
+          if (loading) return null;
+          const {auxTimelines, missions} = data;
+          return (
+            <SubscriptionHelper
+              subscribe={() =>
+                subscribeToMore({
+                  document: SUBSCRIPTION,
+                  variables: {simulatorId: this.props.simulator.id},
+                  updateQuery: (previousResult, {subscriptionData}) => {
+                    return Object.assign({}, previousResult, {
+                      auxTimelines: subscriptionData.data.auxTimelinesUpdate,
+                    });
+                  },
+                })
+              }
+            >
+              <AuxTimeline
+                {...this.props}
+                auxTimelines={auxTimelines}
+                missions={missions}
+              />
+            </SubscriptionHelper>
+          );
+        }}
+      </Query>
+    );
+  }
+}
+export default TimelineData;

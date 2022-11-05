@@ -1,3 +1,0 @@
-mutation EntitySetIdentity($id: ID!, $name: String!) {
-  entitySetIdentity(id: $id, name: $name)
-}

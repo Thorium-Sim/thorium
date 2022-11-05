@@ -1,0 +1,24 @@
+overwrite: true
+schema: "http://localhost:3001/graphql"
+documents: "src/**/*.graphql"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "fragment-matcher"
+      - "./scripts/apollo-codegen.js"
+    config:
+      scalars:
+        DateTime: Date
+        JSON: "{[key: string]: any}"
+      gqlImport: graphql-tag
+      withHOC: false
+      withComponent: false
+      withHooks: true
+      reactApolloVersion: 3
+      skipTypename: false
+      withMutationFn: false
+      withResultType: false
+      withMutationOptionsType: false
+      addDocBlocks: false

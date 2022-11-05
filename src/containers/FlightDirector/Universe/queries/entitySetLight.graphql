@@ -1,8 +1,0 @@
-mutation EntitySetLight(
-  $id: ID!
-  $color: String
-  $intensity: Float
-  $decay: Float
-) {
-  entitySetLight(id: $id, color: $color, intensity: $intensity, decay: $decay)
-}

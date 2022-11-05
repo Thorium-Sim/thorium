@@ -1,0 +1,123 @@
+import React from "react";
+import {withApollo} from "@apollo/client/react/hoc";
+import {Query} from "@apollo/client/react/components";
+import gql from "graphql-tag";
+import SubscriptionHelper from "helpers/subscriptionHelper";
+import Buttons from "./buttons";
+import Images from "./images";
+import Fighters from "./fighters";
+import Stats from "./stats";
+
+import "../style.scss";
+
+const fragment = gql`
+  fragment CrmCoreData on Crm {
+    id
+    fighterImage
+    fighterCount
+    fighterDestroyedCount
+    enemyCount
+    enemyDestroyedCount
+    fighterIcon
+    enemyIcon
+    fighterStrength
+    enemyStrength
+    attacking
+    fighters {
+      id
+      client {
+        id
+        station {
+          name
+        }
+      }
+      frags
+      docked
+      destroyed
+    }
+  }
+`;
+
+export const CRM_CORE_QUERY = gql`
+  query Crm($simulatorId: ID!) {
+    crm(simulatorId: $simulatorId) {
+      ...CrmCoreData
+    }
+  }
+  ${fragment}
+`;
+export const CRM_CORE_SUB = gql`
+  subscription CrmUpdate($simulatorId: ID!) {
+    crmUpdate(simulatorId: $simulatorId) {
+      ...CrmCoreData
+    }
+  }
+  ${fragment}
+`;
+const CrmCore = ({fighterImage, fighterIcon, enemyIcon, ...props}) => {
+  const [imagePick, setImagePick] = React.useState(null);
+
+  if (imagePick) {
+    return (
+      <Images
+        fighterImage={fighterImage}
+        fighterIcon={fighterIcon}
+        enemyIcon={enemyIcon}
+        imagePick={imagePick}
+        setImagePick={setImagePick}
+        {...props}
+      />
+    );
+  }
+  return (
+    <div className="crm-core">
+      <Buttons {...props} />
+
+      <div className="crm-images">
+        <div className="crm-image" onClick={() => setImagePick("fighterImage")}>
+          <p>Fighter Image</p>
+          <img src={`/assets${fighterImage}`} draggable={false} alt="" />
+        </div>
+        <div className="crm-image" onClick={() => setImagePick("fighterIcon")}>
+          <p>Fighter Icon</p>
+          <img src={`/assets${fighterIcon}`} draggable={false} alt="" />
+        </div>
+        <div className="crm-image" onClick={() => setImagePick("enemyIcon")}>
+          <p>Enemy Icon</p>
+          <img src={`/assets${enemyIcon}`} draggable={false} alt="" />
+        </div>
+      </div>
+
+      <Fighters {...props} />
+      <Stats {...props} />
+    </div>
+  );
+};
+
+const CrmData = props => (
+  <Query query={CRM_CORE_QUERY} variables={{simulatorId: props.simulator.id}}>
+    {({loading, data, subscribeToMore}) => {
+      if (loading || !data) return null;
+      const {crm} = data;
+      if (!crm) return <div>No CRM System</div>;
+      return (
+        <SubscriptionHelper
+          subscribe={() =>
+            subscribeToMore({
+              document: CRM_CORE_SUB,
+              variables: {simulatorId: props.simulator.id},
+              updateQuery: (previousResult, {subscriptionData}) => {
+                return Object.assign({}, previousResult, {
+                  crm: subscriptionData.data.crmUpdate,
+                });
+              },
+            })
+          }
+        >
+          <CrmCore {...props} {...crm} />
+        </SubscriptionHelper>
+      );
+    }}
+  </Query>
+);
+export default withApollo(CrmData);

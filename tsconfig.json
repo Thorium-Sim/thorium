@@ -17,7 +17,8 @@
     "baseUrl": "./src/"
   },
   "include": [
-    "src",
+    "client",
+    "server",
     "types/*",
     "i18next-parser.config.js",
     "test/setupTests.js"

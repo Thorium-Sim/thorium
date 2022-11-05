@@ -1,3 +1,0 @@
-mutation EntityRemoveGlow($id: ID!) {
-  entityRemoveGlow(id: $id)
-}
