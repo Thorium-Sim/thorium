@@ -45,7 +45,7 @@ import "./sideNav.scss";
 import {IconType} from "react-icons/lib/cjs";
 import {useApolloClient} from "@apollo/client";
 import {TrainingContext} from "containers/TrainingContextProvider";
-
+import Logo from "../../components/client/logo.png";
 interface NavLinkI {
   link?: string;
   name: string;
@@ -202,12 +202,7 @@ const SideNav = () => {
           >
             <FaBars />
           </Button>
-          <img
-            alt="Logo"
-            src={require("../../components/client/logo.png")}
-            draggable="false"
-            height="30px"
-          />
+          <img alt="Logo" src={Logo} draggable="false" height="30px" />
           <h3>Thorium</h3>
         </div>
         <ButtonGroup className="pull-right">

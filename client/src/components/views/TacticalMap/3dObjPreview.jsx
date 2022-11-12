@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import * as THREE from "three";
-import OBJLoader from "three-obj-loader";
-
-OBJLoader(THREE);
-window.THREE = THREE;
+import {OBJLoader as ObjectLoader} from "three/examples/jsm/loaders/OBJLoader";
 
 function degtorad(deg) {
   return deg * (Math.PI / 180);
@@ -43,7 +40,7 @@ class ObjPreview extends Component {
   componentDidMount() {
     const {src} = this.props;
     const meshSrc = (src || "").replace(/http(s|):\/\/.*:[0-9]{4}/gi, "");
-    const objLoader = new window.THREE.OBJLoader();
+    const objLoader = new ObjectLoader();
     this.material = new THREE.MeshLambertMaterial({
       // wireframe: true,
       color: parseInt("0088ff", 16),

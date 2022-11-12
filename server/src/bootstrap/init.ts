@@ -1,5 +1,6 @@
 import paths from "../helpers/paths";
-import fs from "fs";
+import fs from "fs/promises";
+import {createWriteStream} from "fs";
 import os from "os";
 import path from "path";
 import https from "https";
@@ -21,88 +22,75 @@ console.warn = (message: string) => {
   warn(message);
 };
 
-export const download = function (
-  url: string,
-  dest: string,
-  callback: (err: string) => void,
-) {
-  const file = fs.createWriteStream(dest);
-  https.get(url, function (res) {
-    res
-      .on("data", function (chunk) {
-        file.write(chunk);
-      })
-      .on("end", function () {
-        file.end();
-        callback("");
-      })
-      .on("error", function (err) {
-        callback(err.message);
-      });
+export async function download(url: string, dest: string) {
+  const file = createWriteStream(dest);
+  return new Promise<void>((ok, ohno) => {
+    https.get(url, function (res) {
+      res
+        .on("data", function (chunk) {
+          file.write(chunk);
+        })
+        .on("end", function () {
+          file.end();
+          ok();
+        })
+        .on("error", function (err) {
+          ohno(err.message);
+        });
+    });
   });
-};
+}
 
 let snapshotDir = "./snapshots/";
 if (process.env.NODE_ENV === "production") {
   snapshotDir = paths.userData + "/";
 }
 
-export default () => {
-  return new Promise<void>(resolve => {
-    console.info(`Starting Thorium...${Array(20).fill("\n").join("")}`);
+export default async function init() {
+  console.info(`Starting Thorium...}`);
 
-    fs.exists(snapshotDir, exists =>
-      exists ? resolve() : fs.mkdir(snapshotDir, () => resolve()),
-    );
-  })
-    .then(() => {
-      return new Promise<void>(resolve => {
-        let assetDir = path.resolve("../assets/");
+  try {
+    await fs.access(snapshotDir);
+  } catch {
+    await fs.mkdir(snapshotDir);
+  }
 
-        if (process.env.NODE_ENV === "production") {
-          assetDir = paths.userData + "/assets";
-        }
-        // Ensure the asset folder exists
-        fs.exists(assetDir, exists =>
-          exists ? resolve() : fs.mkdir(assetDir, () => resolve()),
-        );
-      });
-    })
-    .then(() => {
-      return new Promise<void>(resolve => {
-        let snapshotDir = "../snapshots/";
-        if (process.env.NODE_ENV === "production") {
-          snapshotDir = paths.userData + "/";
-        }
-        const snapshotFile = `${snapshotDir}snapshot${
-          process.env.NODE_ENV === "production" ? "" : "-dev"
-        }.json`;
+  let assetDir = path.resolve("../assets/");
 
-        if (!fs.existsSync(snapshotFile)) {
-          console.info("No snapshot.json found. Creating.");
-          fs.writeFileSync(snapshotFile, JSON.stringify(defaultSnapshot));
-          // This was an initial load. We should download and install assets
-          console.info("First-time load. Downloading assets...");
-          const dest = path.resolve(`${os.tmpdir()}/assets.aset`);
-          download(
-            "https://s3.amazonaws.com/thoriumsim/assets.zip",
-            dest,
-            err => {
-              if (err) {
-                console.error("There was an error", err);
-              }
-              importAssets(dest, () => {
-                fs.unlink(dest, error => {
-                  if (err) console.error(error);
-                  console.info("Asset Download Complete");
-                  resolve();
-                });
-              });
-            },
-          );
-        } else {
-          resolve();
-        }
-      });
+  if (process.env.NODE_ENV === "production") {
+    assetDir = paths.userData + "/assets";
+  }
+  // Ensure the asset folder exists
+  try {
+    await fs.access(assetDir);
+  } catch {
+    await fs.mkdir(assetDir);
+  }
+
+  const snapshotFile = `${snapshotDir}snapshot${
+    process.env.NODE_ENV === "production" ? "" : "-dev"
+  }.json`;
+
+  try {
+    await fs.access(snapshotFile);
+  } catch {
+    console.info("No snapshot.json found. Creating.");
+    await fs.writeFile(snapshotFile, JSON.stringify(defaultSnapshot));
+    // This was an initial load. We should download and install assets
+    console.info("First-time load. Downloading assets...");
+    const dest = path.resolve(`${os.tmpdir()}/assets.aset`);
+    try {
+      await download("https://s3.amazonaws.com/thoriumsim/assets.zip", dest);
+    } catch (err) {
+      console.error("There was an error", err);
+    }
+    importAssets(dest, async () => {
+      try {
+        await fs.unlink(dest);
+        console.info("Asset Download Complete");
+      } catch (error) {
+        console.error(error);
+      }
     });
+  }
 };

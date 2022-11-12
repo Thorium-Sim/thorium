@@ -18,11 +18,18 @@ type Query {
   systemCoolant(simulatorId: ID!, systemId: ID): [SystemCoolant]
   coreFeed(simulatorId: ID): [CoreFeed]
   coreLayouts(name: String): [CoreLayout]
+  countermeasures(simulatorId: ID!): Countermeasures
+  countermeasureModuleType: [CountermeasureModule!]!
   crew(simulatorId: ID, position: String, killed: Boolean): [Crew]
   crewCount(simulatorId: ID!, position: String, killed: Boolean): Int
   crm(id: ID, simulatorId: ID): Crm
   crmFighter(simulatorId: ID!, clientId: ID!): CrmFighter
   decks(simulatorId: ID!, number: Int): [Deck]
+  dmxDevices: [DMXDevice!]!
+  dmxSets: [DMXSet!]!
+  dmxFixtures(simulatorId: ID): [DMXFixture!]!
+  dmxConfig(id: ID!): DMXConfig
+  dmxConfigs: [DMXConfig!]!
   docking(id: ID, simulatorId: ID, type: DOCKING_TYPES): [DockingPort]
   engines(simulatorId: ID): [Engine]
   engine(id: ID!): Engine
@@ -91,6 +98,7 @@ type Query {
   tacticalMaps(flightId: ID): [TacticalMap]
   tacticalMap(id: ID!): TacticalMap
   targeting(id: ID, simulatorId: ID): [Targeting]
+  taskFlows(simulatorId: ID): [TaskFlow!]!
   taskReport(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
   tasks(simulatorId: ID!, station: String, definitions: [String!]): [Task]
   taskTemplates: [TaskTemplate!]!
@@ -111,16 +119,6 @@ type Query {
   transwarp(simulatorId: ID): [Transwarp]
   triggers(simulatorId: ID): [Trigger]
   viewscreens(simulatorId: ID): [Viewscreen]
-  countermeasures(simulatorId: ID!): Countermeasures
-  countermeasureModuleType: [CountermeasureModule!]!
-  entity(id: ID!): Entity
-  entities(flightId: ID!, inert: Boolean): [Entity]!
-  dmxDevices: [DMXDevice!]!
-  dmxSets: [DMXSet!]!
-  dmxFixtures(simulatorId: ID): [DMXFixture!]!
-  dmxConfig(id: ID!): DMXConfig
-  dmxConfigs: [DMXConfig!]!
-  taskFlows(simulatorId: ID): [TaskFlow!]!
 }
 
 type Mutation {
@@ -291,6 +289,18 @@ type Mutation {
   addCoreLayout(layout: CoreLayoutInput): String
   removeCoreLayout(id: ID): String
   reorderCoreLayouts(layouts: [ID!]!): String
+  countermeasuresCreateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!, name: String!): Countermeasure
+  countermeasuresRemoveCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresLaunchCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresActivateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresDeactivateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresLaunchUnlockedCountermeasures(id: ID!): String
+  countermeasuresBuildCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
+  countermeasuresAddModule(id: ID!, slot: CountermeasureSlotEnum!, moduleType: String!): Countermeasure
+  countermeasuresRemoveModule(id: ID!, slot: CountermeasureSlotEnum!, moduleId: ID!): String
+  countermeasuresConfigureModule(id: ID!, slot: CountermeasureSlotEnum!, moduleId: ID!, config: JSON!): String
+  countermeasuresSetResource(id: ID!, resource: String!, value: Float!): String
+  countermeasuresSetFDNote(id: ID!, countermeasureId: ID!, note: String!): String
   addCrewmember(crew: CrewInput): String
   removeCrewmember(id: ID): String
   updateCrewmember(crew: CrewInput): String
@@ -354,6 +364,41 @@ type Mutation {
   deckDoors(deckId: ID!, doors: Boolean): String
   deckEvac(deckId: ID!, evac: Boolean): String
   updateHallwaySvg(deckId: ID!, svg: String): String
+  dmxDeviceCreate(name: String!): String
+  dmxDeviceRemove(id: ID!): String
+  dmxDeviceSetName(id: ID!, name: String!): String
+  dmxDeviceSetChannels(id: ID!, channels: [DMXChannelProperty!]!): String
+  dmxSetCreate(name: String!): String
+  dmxSetRemove(id: ID!): String
+  dmxSetDuplicate(id: ID!, name: String!): String
+  dmxSetSetName(id: ID!, name: String!): String
+  dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
+  dmxFixtureRemove(DMXSetId: ID!, id: ID!): String
+  dmxFixtureSetName(id: ID!, name: String!): String
+  dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: ID!): String
+  dmxFixtureSetChannel(id: ID!, channel: Int!): String
+  dmxFixtureSetMode(id: ID, simulatorId: ID, tag: [String], mode: DMXFixtureMode!): String
+
+  """Macro: DMX: Set Fixture To Active Mode"""
+  dmxFixtureSetActive(id: ID, simulatorId: ID, tags: [String]): String
+
+  """Macro: DMX: Set Fixture Tags"""
+  dmxFixtureSetTags(id: ID, simulatorId: ID, tags: [String], newTags: [String!]!): String
+
+  """Macro: DMX: Add Fixture Tag"""
+  dmxFixtureAddTag(id: ID, simulatorId: ID, tags: [String], newTag: String!): String
+
+  """Macro: DMX: Remove Fixture Tag"""
+  dmxFixtureRemoveTag(id: ID, simulatorId: ID, tags: [String], removeTag: String!): String
+
+  """Macro: DMX: Set Fixture Passive Channels"""
+  dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tags: [String], passiveChannels: DMXPassiveChannelsInput!): String
+  dmxConfigCreate(name: String!): String
+  dmxConfigRemove(id: ID!): String
+  dmxConfigDuplicate(id: ID!, name: String!): String
+  dmxConfigSetName(id: ID!, name: String!): String
+  dmxConfigSetConfig(id: ID!, config: JSON!): String
+  dmxConfigSetActionStrength(id: ID!, actionStrength: Float!): String
   createDockingPort(port: DockingPortInput!): String
 
   """Macro: Docking: Update Docking Port/Shuttlebay"""
@@ -1109,6 +1154,23 @@ type Mutation {
    - Systems:Targeting
   """
   setTargetingClasses(id: ID!, classInput: [TargetClassInput]!): String
+  taskFlowAdd(name: String!): String
+  taskFlowRemove(id: ID!): String
+  taskFlowRename(id: ID!, name: String!): String
+  taskFlowSetCategory(id: ID!, category: String!): String
+  taskFlowAddStep(id: ID!, name: String!): String
+  taskFlowRemoveStep(id: ID!, stepId: ID!): String
+  taskFlowRenameStep(id: ID!, stepId: ID!, name: String!): String
+  taskFlowReorderStep(id: ID!, stepId: ID!, order: Int!): String
+  taskFlowStepAddTask(id: ID!, stepId: ID!, task: TaskInput!): String
+  taskFlowStepRemoveTask(id: ID!, stepId: ID!, taskId: ID!): String
+  taskFlowStepEditTask(id: ID!, stepId: ID!, taskId: ID!, task: TaskInput!): String
+  taskFlowStepSetCompleteAll(id: ID!, stepId: ID!, completeAll: Boolean!): String
+  taskFlowStepSetDelay(id: ID!, stepId: ID!, delay: Int!): String
+
+  """Macro: Tasks: Activate Task Flow"""
+  taskFlowActivate(id: ID!, simulatorId: ID!): String
+  taskFlowAdvance(simulatorId: ID!): String
   generateTaskReport(simulatorId: ID!, systemId: ID, name: String, type: String!, stepCount: Int): String
   clearTaskReport(id: ID!): String
   completeTaskReport(id: ID!): String
@@ -1296,98 +1358,6 @@ type Mutation {
   ): String
   updateViewscreenAuto(id: ID!, auto: Boolean!): String
   toggleViewscreenVideo(simulatorId: ID, viewscreenId: ID): String
-  countermeasuresCreateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!, name: String!): Countermeasure
-  countermeasuresRemoveCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
-  countermeasuresLaunchCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
-  countermeasuresActivateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
-  countermeasuresDeactivateCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
-  countermeasuresLaunchUnlockedCountermeasures(id: ID!): String
-  countermeasuresBuildCountermeasure(id: ID!, slot: CountermeasureSlotEnum!): String
-  countermeasuresAddModule(id: ID!, slot: CountermeasureSlotEnum!, moduleType: String!): Countermeasure
-  countermeasuresRemoveModule(id: ID!, slot: CountermeasureSlotEnum!, moduleId: ID!): String
-  countermeasuresConfigureModule(id: ID!, slot: CountermeasureSlotEnum!, moduleId: ID!, config: JSON!): String
-  countermeasuresSetResource(id: ID!, resource: String!, value: Float!): String
-  countermeasuresSetFDNote(id: ID!, countermeasureId: ID!, note: String!): String
-  entityCreate(flightId: ID!, template: Boolean): Entity!
-  entityRemove(id: [ID!]!): String
-
-  """Macro: Sandbox: Set Base Universe for Flight"""
-  flightSetBaseUniverse(flightId: ID, procGenKey: String): String
-  dmxDeviceCreate(name: String!): String
-  dmxDeviceRemove(id: ID!): String
-  dmxDeviceSetName(id: ID!, name: String!): String
-  dmxDeviceSetChannels(id: ID!, channels: [DMXChannelProperty!]!): String
-  dmxSetCreate(name: String!): String
-  dmxSetRemove(id: ID!): String
-  dmxSetDuplicate(id: ID!, name: String!): String
-  dmxSetSetName(id: ID!, name: String!): String
-  dmxFixtureCreate(DMXSetId: ID!, name: String!, DMXDeviceId: ID!): String
-  dmxFixtureRemove(DMXSetId: ID!, id: ID!): String
-  dmxFixtureSetName(id: ID!, name: String!): String
-  dmxFixtureSetDMXDevice(id: ID!, DMXDeviceID: ID!): String
-  dmxFixtureSetChannel(id: ID!, channel: Int!): String
-  dmxFixtureSetMode(id: ID, simulatorId: ID, tag: [String], mode: DMXFixtureMode!): String
-
-  """Macro: DMX: Set Fixture To Active Mode"""
-  dmxFixtureSetActive(id: ID, simulatorId: ID, tags: [String]): String
-
-  """Macro: DMX: Set Fixture Tags"""
-  dmxFixtureSetTags(id: ID, simulatorId: ID, tags: [String], newTags: [String!]!): String
-
-  """Macro: DMX: Add Fixture Tag"""
-  dmxFixtureAddTag(id: ID, simulatorId: ID, tags: [String], newTag: String!): String
-
-  """Macro: DMX: Remove Fixture Tag"""
-  dmxFixtureRemoveTag(id: ID, simulatorId: ID, tags: [String], removeTag: String!): String
-
-  """Macro: DMX: Set Fixture Passive Channels"""
-  dmxFixtureSetPassiveChannels(id: ID, simulatorId: ID, tags: [String], passiveChannels: DMXPassiveChannelsInput!): String
-  dmxConfigCreate(name: String!): String
-  dmxConfigRemove(id: ID!): String
-  dmxConfigDuplicate(id: ID!, name: String!): String
-  dmxConfigSetName(id: ID!, name: String!): String
-  dmxConfigSetConfig(id: ID!, config: JSON!): String
-  dmxConfigSetActionStrength(id: ID!, actionStrength: Float!): String
-  taskFlowAdd(name: String!): String
-  taskFlowRemove(id: ID!): String
-  taskFlowRename(id: ID!, name: String!): String
-  taskFlowSetCategory(id: ID!, category: String!): String
-  taskFlowAddStep(id: ID!, name: String!): String
-  taskFlowRemoveStep(id: ID!, stepId: ID!): String
-  taskFlowRenameStep(id: ID!, stepId: ID!, name: String!): String
-  taskFlowReorderStep(id: ID!, stepId: ID!, order: Int!): String
-  taskFlowStepAddTask(id: ID!, stepId: ID!, task: TaskInput!): String
-  taskFlowStepRemoveTask(id: ID!, stepId: ID!, taskId: ID!): String
-  taskFlowStepEditTask(id: ID!, stepId: ID!, taskId: ID!, task: TaskInput!): String
-  taskFlowStepSetCompleteAll(id: ID!, stepId: ID!, completeAll: Boolean!): String
-  taskFlowStepSetDelay(id: ID!, stepId: ID!, delay: Int!): String
-
-  """Macro: Tasks: Activate Task Flow"""
-  taskFlowActivate(id: ID!, simulatorId: ID!): String
-  taskFlowAdvance(simulatorId: ID!): String
-  entitySetAppearance(id: ID, color: String, meshType: MeshTypeEnum, modelAsset: String, materialMapAsset: String, ringMapAsset: String, cloudMapAsset: String, emissiveColor: String, emissiveIntensity: Float, scale: Float): String
-  entityRemoveAppearance(id: ID!): String
-  entitySetBehavior(id: ID!, behavior: Behaviors!, targetId: ID, destination: EntityCoordinatesInput): String
-  entityRemoveBehavior(id: ID!): String
-  entitySetIdentity(id: ID, name: String, type: String): String
-  entityRemoveIdentity(id: ID!): String
-  entitySetLocation(id: ID, position: EntityCoordinatesInput, velocity: EntityCoordinatesInput, acceleration: EntityCoordinatesInput, rotation: QuaternionInput, rotationVelocity: EntityCoordinatesInput, rotationAcceleration: EntityCoordinatesInput): String
-  entitiesSetPosition(entities: [EntitiesLocationInput!]!): String
-  entitySetRotationVelocityMagnitude(id: ID!, rotationVelocity: CoordinatesInput!): String
-  entityRemoveLocation(id: ID!): String
-  entitySetStage(id: ID, scaleLabel: String, scaleLabelShort: String, skyboxKey: String): String
-  entityRemoveStage(id: ID!): String
-  entitySetStageChild(id: ID, parentId: ID!): String
-  entityRemoveStageChild(id: ID!): String
-  entitySetLight(id: ID, intensity: Float, decay: Float, color: String): String
-  entityRemoveLight(id: ID!): String
-  entitySetGlow(id: ID, glowMode: GlowModeEnum, color: String): String
-  entityRemoveGlow(id: ID!): String
-  entitySetTemplate(id: ID, category: String!): String
-  entitySetEngine(id: ID, type: EntityEngineEnum!, maxSpeed: Float, currentSpeed: Float, heat: Float, heatRate: Float, coolant: Float, cooling: Boolean): String
-  entityRemoveEngine(id: ID!, type: EntityEngineEnum!): String
-  entitySetThrusters(id: ID!, direction: CoordinatesInput, rotationDelta: CoordinatesInput, rotationSpeed: Float, movementSpeed: Float): String
-  entityRemoveThrusters(id: ID!): String
 }
 
 type Subscription {
@@ -1414,12 +1384,17 @@ type Subscription {
   coreFeedUpdate(simulatorId: ID): [CoreFeed]
   syncTime(simulatorId: ID!): Timer
   coreLayoutChange: [CoreLayout]
+  countermeasuresUpdate(simulatorId: ID!): Countermeasures
   crewUpdate(simulatorId: ID, position: String, killed: Boolean): [Crew]
   crewCountUpdate(simulatorId: ID, position: String, killed: Boolean): Int
   crmUpdate(simulatorId: ID): Crm
   crmMovementUpdate(simulatorId: ID!): Crm
   crmFighterUpdate(simulatorId: ID!, clientId: ID!): CrmFighter
   decksUpdate(simulatorId: ID!): [Deck]
+  dmxSets: [DMXSet!]!
+  dmxDevices: [DMXDevice!]!
+  dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
+  dmxConfigs: [DMXConfig!]!
   dockingUpdate(id: ID, simulatorId: ID, type: DOCKING_TYPES): [DockingPort]
   speedChange(simulatorId: ID): Engine
   heatChange(simulatorId: ID): Engine
@@ -1479,6 +1454,7 @@ type Subscription {
   tacticalMapsUpdate(flightId: ID): [TacticalMap]
   tacticalMapUpdate(id: ID!, lowInterval: Boolean): TacticalMap
   targetingUpdate(simulatorId: ID): [Targeting]
+  taskFlows(simulatorId: ID): [TaskFlow!]!
   taskReportUpdate(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
   tasksUpdate(simulatorId: ID!, station: String, definitions: [String!]): [Task]
   taskTemplatesUpdate: [TaskTemplate!]!
@@ -1495,14 +1471,6 @@ type Subscription {
   triggersUpdate(simulatorId: ID): [Trigger]
   viewscreensUpdate(simulatorId: ID): [Viewscreen]
   viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
-  countermeasuresUpdate(simulatorId: ID!): Countermeasures
-  entity(id: ID): Entity
-  entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
-  dmxSets: [DMXSet!]!
-  dmxDevices: [DMXDevice!]!
-  dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
-  dmxConfigs: [DMXConfig!]!
-  taskFlows(simulatorId: ID): [TaskFlow!]!
 }
 
 type Action {
@@ -1827,6 +1795,86 @@ input CoreLayoutInput {
   config: String
 }
 
+type Countermeasures implements SystemInterface {
+  id: ID!
+  simulatorId: ID
+  class: String
+  type: String
+  name: String!
+  displayName: String!
+  upgradeName: String
+  upgraded: Boolean
+  damage: Damage!
+  power: Power!
+  stealthFactor: Float
+  locations: [Room]
+  materials: CountermeasureResources!
+  slots: CountermeasureSlot!
+  launched: [Countermeasure!]!
+}
+
+type Countermeasure {
+  id: ID!
+  name: String!
+  modules: [CountermeasureModule!]!
+  locked: Boolean!
+  active: Boolean!
+  building: Boolean!
+  totalPowerUsed: Float!
+  readyToLaunch: Boolean!
+  powerUsage: Float!
+  availablePower: Float!
+  buildPercentage: Float!
+  note: String!
+}
+
+type CountermeasureResources {
+  copper: Float!
+  titanium: Float!
+  carbon: Float!
+  plastic: Float!
+  plasma: Float!
+}
+
+type CountermeasureConfigOptions {
+  type: String!
+  label: String!
+}
+
+type CountermeasureModule {
+  id: ID!
+  name: String!
+  description: String!
+  powerRequirement: Float!
+  resourceRequirements: CountermeasureResources!
+  configurationOptions: [CountermeasureConfigOptions!]!
+  config: JSON!
+  buildProgress: Float!
+  activated: Boolean!
+}
+
+enum CountermeasureSlotEnum {
+  slot1
+  slot2
+  slot3
+  slot4
+  slot5
+  slot6
+  slot7
+  slot8
+}
+
+type CountermeasureSlot {
+  slot1: Countermeasure
+  slot2: Countermeasure
+  slot3: Countermeasure
+  slot4: Countermeasure
+  slot5: Countermeasure
+  slot6: Countermeasure
+  slot7: Countermeasure
+  slot8: Countermeasure
+}
+
 type Crew {
   id: ID
   simulatorId: ID
@@ -2031,6 +2079,82 @@ type Deck {
 }
 
 union Location = Deck | Room
+
+enum DMXChannelProperty {
+  red
+  green
+  blue
+  amber
+  white
+  uv
+  intensity
+  strobe
+  generic
+  focus
+  nothing
+}
+
+type DMXDevice {
+  id: ID!
+  class: String!
+  name: String!
+  channels: [DMXChannelProperty!]!
+}
+
+enum DMXFixtureMode {
+  active
+  passive
+}
+
+type DMXPassiveChannels {
+  amber: Int
+  white: Int
+  uv: Int
+  intensity: Int
+  strobe: Int
+  generic: Int
+  nothing: Int
+  color: String
+}
+
+input DMXPassiveChannelsInput {
+  amber: Int
+  white: Int
+  uv: Int
+  intensity: Int
+  strobe: Int
+  generic: Int
+  nothing: Int
+  color: String
+}
+
+type DMXFixture {
+  id: ID!
+  class: String!
+  name: String!
+  clientId: String
+  DMXDeviceId: String!
+  DMXDevice: DMXDevice!
+  simulatorId: String!
+  channel: Int!
+  mode: DMXFixtureMode!
+  tags: [String!]!
+  passiveChannels: DMXPassiveChannels!
+}
+
+type DMXSet {
+  id: ID!
+  name: String!
+  fixtureIds: [String!]!
+  fixtures: [DMXFixture!]!
+}
+
+type DMXConfig {
+  id: ID!
+  name: String!
+  config: JSON!
+  actionStrength: Float!
+}
 
 type DockingPort {
   id: ID
@@ -4155,6 +4279,25 @@ type TargetingContact {
   clickToTarget: Boolean
 }
 
+type TaskFlowStep {
+  id: ID!
+  name: String!
+  tasks: [Task!]!
+  activeTasks: [Task!]!
+  completeAll: Boolean!
+  delay: Int!
+  completed: Boolean!
+}
+
+type TaskFlow {
+  id: ID!
+  name: String!
+  category: String!
+  currentStep: Int!
+  steps: [TaskFlowStep!]!
+  completed: Boolean!
+}
+
 type TaskReport {
   id: ID
   simulatorId: ID
@@ -4524,332 +4667,4 @@ enum PIP_SIZE {
   small
   medium
   large
-}
-
-type Countermeasures implements SystemInterface {
-  id: ID!
-  simulatorId: ID
-  class: String
-  type: String
-  name: String!
-  displayName: String!
-  upgradeName: String
-  upgraded: Boolean
-  damage: Damage!
-  power: Power!
-  stealthFactor: Float
-  locations: [Room]
-  materials: CountermeasureResources!
-  slots: CountermeasureSlot!
-  launched: [Countermeasure!]!
-}
-
-type Countermeasure {
-  id: ID!
-  name: String!
-  modules: [CountermeasureModule!]!
-  locked: Boolean!
-  active: Boolean!
-  building: Boolean!
-  totalPowerUsed: Float!
-  readyToLaunch: Boolean!
-  powerUsage: Float!
-  availablePower: Float!
-  buildPercentage: Float!
-  note: String!
-}
-
-type CountermeasureResources {
-  copper: Float!
-  titanium: Float!
-  carbon: Float!
-  plastic: Float!
-  plasma: Float!
-}
-
-type CountermeasureConfigOptions {
-  type: String!
-  label: String!
-}
-
-type CountermeasureModule {
-  id: ID!
-  name: String!
-  description: String!
-  powerRequirement: Float!
-  resourceRequirements: CountermeasureResources!
-  configurationOptions: [CountermeasureConfigOptions!]!
-  config: JSON!
-  buildProgress: Float!
-  activated: Boolean!
-}
-
-enum CountermeasureSlotEnum {
-  slot1
-  slot2
-  slot3
-  slot4
-  slot5
-  slot6
-  slot7
-  slot8
-}
-
-type CountermeasureSlot {
-  slot1: Countermeasure
-  slot2: Countermeasure
-  slot3: Countermeasure
-  slot4: Countermeasure
-  slot5: Countermeasure
-  slot6: Countermeasure
-  slot7: Countermeasure
-  slot8: Countermeasure
-}
-
-type Entity {
-  id: ID!
-  interval: Int
-  reset: Boolean
-  appearance: AppearanceComponent
-  behavior: BehaviorComponent
-  identity: IdentityComponent
-  location: LocationComponent
-  stage: StageComponent
-  stageChild: StageChildComponent
-  light: LightComponent
-  glow: GlowComponent
-  template: TemplateComponent
-  enginesWarp: EngineComponent
-  enginesImpulse: EngineComponent
-  thrusters: ThrustersComponent
-}
-
-enum DMXChannelProperty {
-  red
-  green
-  blue
-  amber
-  white
-  uv
-  intensity
-  strobe
-  generic
-  focus
-  nothing
-}
-
-type DMXDevice {
-  id: ID!
-  class: String!
-  name: String!
-  channels: [DMXChannelProperty!]!
-}
-
-enum DMXFixtureMode {
-  active
-  passive
-}
-
-type DMXPassiveChannels {
-  amber: Int
-  white: Int
-  uv: Int
-  intensity: Int
-  strobe: Int
-  generic: Int
-  nothing: Int
-  color: String
-}
-
-input DMXPassiveChannelsInput {
-  amber: Int
-  white: Int
-  uv: Int
-  intensity: Int
-  strobe: Int
-  generic: Int
-  nothing: Int
-  color: String
-}
-
-type DMXFixture {
-  id: ID!
-  class: String!
-  name: String!
-  clientId: String
-  DMXDeviceId: String!
-  DMXDevice: DMXDevice!
-  simulatorId: String!
-  channel: Int!
-  mode: DMXFixtureMode!
-  tags: [String!]!
-  passiveChannels: DMXPassiveChannels!
-}
-
-type DMXSet {
-  id: ID!
-  name: String!
-  fixtureIds: [String!]!
-  fixtures: [DMXFixture!]!
-}
-
-type DMXConfig {
-  id: ID!
-  name: String!
-  config: JSON!
-  actionStrength: Float!
-}
-
-type TaskFlowStep {
-  id: ID!
-  name: String!
-  tasks: [Task!]!
-  activeTasks: [Task!]!
-  completeAll: Boolean!
-  delay: Int!
-  completed: Boolean!
-}
-
-type TaskFlow {
-  id: ID!
-  name: String!
-  category: String!
-  currentStep: Int!
-  steps: [TaskFlowStep!]!
-  completed: Boolean!
-}
-
-enum MeshTypeEnum {
-  sphere
-  cube
-  model
-  sprite
-  planet
-  star
-}
-
-type AppearanceComponent {
-  meshType: MeshTypeEnum
-  modelAsset: String
-  materialMapAsset: String
-  ringMapAsset: String
-  cloudMapAsset: String
-  emissiveColor: String
-  emissiveIntensity: Float
-  color: String
-  scale: Float
-}
-
-enum Behaviors {
-  holdPosition
-  wander
-  follow
-  avoid
-  attack
-}
-
-type BehaviorComponent {
-  behavior: Behaviors!
-  targetId: ID
-  destination: EntityCoordinates
-}
-
-type IdentityComponent {
-  name: String
-  type: String
-}
-
-type Quaternion {
-  x: Float!
-  y: Float!
-  z: Float!
-  w: Float!
-}
-
-input QuaternionInput {
-  x: Float!
-  y: Float!
-  z: Float!
-  w: Float!
-}
-
-type EntityCoordinates {
-  x: Float!
-  y: Float!
-  z: Float!
-}
-
-input EntityCoordinatesInput {
-  x: Float!
-  y: Float!
-  z: Float!
-}
-
-type LocationComponent {
-  inert: Boolean!
-  position: EntityCoordinates!
-  velocity: EntityCoordinates!
-  acceleration: EntityCoordinates!
-  rotation: Quaternion!
-  rotationVelocity: EntityCoordinates!
-  rotationAcceleration: EntityCoordinates!
-}
-
-input EntitiesLocationInput {
-  id: ID!
-  position: EntityCoordinatesInput!
-}
-
-type StageComponent {
-  scaleLabel: String
-  scaleLabelShort: String
-  skyboxKey: String
-  childrenAsSprites: Boolean
-}
-
-type StageChildComponent {
-  parentId: ID!
-  parent: Entity
-}
-
-type LightComponent {
-  intensity: Float
-  decay: Float
-  color: String
-}
-
-enum GlowModeEnum {
-  glow
-  halo
-  shell
-}
-
-type GlowComponent {
-  glowMode: GlowModeEnum
-  color: String
-}
-
-type TemplateComponent {
-  category: String
-}
-
-type EngineComponent {
-  maxSpeed: Float
-  currentSpeed: Float
-  heat: Float
-  heatRate: Float
-  coolant: Float
-  cooling: Boolean
-}
-
-enum EntityEngineEnum {
-  warp
-  impulse
-}
-
-type ThrustersComponent {
-  direction: Coordinates
-  rotationDelta: Coordinates
-  rotationSpeed: Float
-  movementSpeed: Float
 }

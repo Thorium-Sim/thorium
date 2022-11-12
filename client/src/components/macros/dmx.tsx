@@ -1,6 +1,6 @@
 import React from "react";
 import {MacroConfigProps} from "helpers/genericTypes";
-import styled from "@emotion/styled/macro";
+import styled from "@emotion/styled";
 import {TagInput} from "containers/FlightDirector/DMX/fixtures";
 import {Input} from "reactstrap";
 import {ChannelConfig} from "helpers/generateDMXUniverse";

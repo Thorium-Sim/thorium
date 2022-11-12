@@ -123,7 +123,7 @@ const ClockSync = React.memo(() => {
   return null;
 });
 
-const App: React.FC = () => {
+const RoutesContainer: React.FC = () => {
   return (
     <>
       <ClockSync />
@@ -138,4 +138,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default RoutesContainer;

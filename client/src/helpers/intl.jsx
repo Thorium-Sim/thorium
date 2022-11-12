@@ -30,7 +30,11 @@ class Provider extends Component {
         </IntlProvider>
       );
     }
-    return null;
+    return (
+      <IntlProvider locale={language} messages={{}}>
+        {this.props.children}
+      </IntlProvider>
+    );
   }
 }
 

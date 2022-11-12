@@ -15,7 +15,7 @@
   "devDependencies": {
     "@types/jest": "^29.1.2",
     "@types/ncp": "^2.0.5",
-    "esbuild": "^0.15.10",
+    "esbuild-wasm": "^0.15.13",
     "nodemon": "^2.0.20",
     "typescript": "^4.8.4"
   },
@@ -45,7 +45,7 @@
     "random-ship-names": "^1.0.0",
     "random-words": "^1.2.0",
     "request": "^2.88.2",
-    "simplex-noise": "^4.0.0",
+    "simplex-noise": "^4.0.1",
     "three": "^0.145.0",
     "ts-eager": "^2.0.2",
     "yauzl": "^2.10.0",

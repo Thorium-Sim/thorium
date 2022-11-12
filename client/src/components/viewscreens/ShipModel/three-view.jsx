@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import * as THREE from "three";
-import OBJLoader from "three-obj-loader";
-
-OBJLoader(THREE);
-window.THREE = THREE;
+import {OBJLoader as ObjectLoader} from "three/examples/jsm/loaders/OBJLoader";
 
 function degtorad(deg) {
   return deg * (Math.PI / 180);
@@ -36,7 +33,7 @@ class ThreeView extends Component {
     this.objectGroup = new THREE.Group();
 
     this.scene.add(this.objectGroup);
-    this.objLoader = new window.THREE.OBJLoader();
+    this.objLoader = new ObjectLoader();
   }
   componentDidMount() {
     const {wireframe, color = "#ffffff", src, texSrc} = this.props;

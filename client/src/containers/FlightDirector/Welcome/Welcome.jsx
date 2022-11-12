@@ -11,6 +11,7 @@ import TrackerPopup from "./TrackerPopup";
 import NewFlight from "./NewFlight";
 import {useQuery} from "@apollo/client";
 import {TrainingContext} from "containers/TrainingContextProvider";
+import pkg from "../../../../package.json";
 
 export const FLIGHTS_QUERY = gql`
   query Flights {
@@ -101,7 +102,7 @@ const Welcome = () => {
                 id="version-number"
                 defaultMessage="Version {version}"
                 values={{
-                  version: require("../../../../package.json").version,
+                  version: pkg.version,
                 }}
               />
             </Link>

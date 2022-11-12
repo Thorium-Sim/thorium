@@ -13,7 +13,7 @@ const ApolloApp = () => (
     <ApolloProvider client={client}>
       <IntlProvider>
         <ErrorBoundary>
-          {/* <Routes /> */}
+          <Routes />
           <EasterEgg />
         </ErrorBoundary>
       </IntlProvider>

@@ -48,12 +48,12 @@ async function bundleDefaultPlugin() {
       "Thorium Default",
       err => {
         if (err) {
-          console.err(err);
+          console.error(err);
           process.exit(1);
         }
         resolve();
-      }
-    )
+      },
+    ),
   );
   zip.end();
   zip.outputStream.pipe(fs.createWriteStream("../dist/defaultPlugin.zip"));
@@ -73,16 +73,16 @@ async function buildServer() {
       console.error(err);
       process.exit(1);
     });
-  await bundleDefaultPlugin();
-  fs.mkdirSync("../dist/resources", {recursive: true});
-  fs.copyFileSync(
-    "../desktop/resources/server.cert",
-    "../dist/resources/server.cert"
-  );
-  fs.copyFileSync(
-    "../desktop/resources/server.key",
-    "../dist/resources/server.key"
-  );
+  // await bundleDefaultPlugin();
+  // fs.mkdirSync("../dist/resources", {recursive: true});
+  // fs.copyFileSync(
+  //   "../desktop/resources/server.cert",
+  //   "../dist/resources/server.cert"
+  // );
+  // fs.copyFileSync(
+  //   "../desktop/resources/server.key",
+  //   "../dist/resources/server.key"
+  // );
 }
 
 buildServer();

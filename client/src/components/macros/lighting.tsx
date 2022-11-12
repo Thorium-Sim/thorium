@@ -1,6 +1,6 @@
 import React from "react";
 import {MacroConfigProps} from "helpers/genericTypes";
-import styled from "@emotion/styled/macro";
+import styled from "@emotion/styled";
 import {useMacroDmxConfigsQuery} from "generated/graphql";
 import {Input, Button, ButtonGroup} from "reactstrap";
 import {LightingOptions} from "components/views/Lighting";
