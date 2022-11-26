@@ -15,6 +15,8 @@ const columns = [
   {
     Header: "Name",
     accessor: "name", // String-based value accessors!
+    filterMethod: (filter, row) =>
+      String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase()),
   },
   {
     Header: "Age",
@@ -23,14 +25,20 @@ const columns = [
   {
     Header: "Gender",
     accessor: "gender",
+    filterMethod: (filter, row) =>
+      String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase()),
   },
   {
     Header: "Position",
     accessor: "position",
+    filterMethod: (filter, row) =>
+      String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase()),
   },
   {
     Header: "Rank",
     accessor: "rank",
+    filterMethod: (filter, row) =>
+      String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase()),
   },
 ];
 
@@ -108,6 +116,7 @@ class Roster extends Component {
               filterable={true}
               showPageSizeOptions={false}
               resizable={false}
+              noDataText={"No Matching Crew Found"}
             />
           </Col>
         </Row>
