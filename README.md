@@ -17,8 +17,7 @@ _New here? Check out the [contributing document](CONTRIBUTING.md)._
 Want something to work on? Here's where
 [we need help](https://github.com/Thorium-Sim/thorium/labels/help%20wanted). Not
 sure what it is or how to work with Thorium? Guides are in the
-[docs website](https://thoriumsim.com/docs/overview.html). Thorium accepts
-[donations](https://thoriumsim.com/en/donate.html).
+[docs website](https://classic.thoriumsim.com/docs/overview.html).
 
 ## What is Thorium?
 
@@ -40,35 +39,33 @@ Thorium is flexible enough to provide a system for creating an integrated,
 distributed, fault-tolerant show-control system that can power lights, sound,
 video, and take input and provide output to a wide variety of devices.
 
-Created with ❤ by [Alex Anderson](http://ralexanderson.com) and
-[Fyreworks](https://fyreworks.us).
+Created with ❤ by [Alex Anderson]() and [Fyreworks](https://fyreworks.us).
 
 ## A note about support
 
-Thorium is a self-organized "community support" project. I encourage everyone to
-use it and continue to submit issues and bug reports. As maintainer, here's what
-I will continue to do:
+Thorium is a self-organized "community support" project. We encourage everyone
+to use it and continue to submit issues and bug reports. Alex is the maintainer,
+and will continue to:
 
 - Review issues
 - Review pull requests and provide feedback
 - Merge pull requests
 - Create new builds/releases
 - Encourage and assist other developers
-- Focus my efforts on long-term projects and keeping the codebase modern.
+- Focus his efforts on long-term projects and keeping the codebase modern.
 
 Fortunately, you can get help from the excellent people on
 [Thorium's Discord Server](https://discord.gg/UvxTQZz).
 
-If you need better support for your Thorium simulator, I more than happy to
-contract with you to do so. Fill out the
-[Thorium Service Request Form](https://thoriumsim.com/service/) to start that
-process.
+If you need better support for your Thorium simulator,
+[Alex](https://github.com/alexanderson1993)is happy to contract with you to do
+so. Reach out via Discord to start the process.
 
 If you want to learn to contribute to Thorium, check out the
 [development video series](https://www.youtube.com/watch?v=iEU6NcOKhyE&list=PLvw0SNT6wHt9au1-6yCOh7QHj-p5ir0l6)
 for some ideas for how to get started.
 
-Hope this helps! ~[Alex](https://github.com/alexanderson1993)
+Hope this helps!
 
 ## Guiding Principles
 
