@@ -95,7 +95,7 @@ const creditList = [
     content: (
       <ul>
         <li>
-          <code>G33kX</code>
+          <code>Lilith-NightRose</code>
         </li>
         <li>
           <code>emrix</code>
