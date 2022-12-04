@@ -49,3 +49,4 @@ snapshot-*
 # Cypress
 cypress/videos
 cypress/screenshots
+yarn.lock
