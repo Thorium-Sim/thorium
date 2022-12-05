@@ -5,6 +5,11 @@ const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
+  """
+  The Short Range Comm Card interface Schema
+
+  Extends SystemInterface
+  """
   type ShortRangeComm implements SystemInterface {
     id: ID
     simulatorId: ID
@@ -18,15 +23,20 @@ const schema = gql`
     stealthFactor: Float
     heat: Float
     coolant: Float
+    "The frequency specified by a client-side frequency selector"
     frequency: Float
+    "Amplitude is usually unused"
     amplitude: Float
-    #One of 'idle', 'hailing', 'connected'
+    "Client hailing state. One of 'idle', 'hailing', 'connected'"
     state: String
     arrows: [CommArrow]
     signals: [CommSignal]
     locations: [Room]
   }
 
+  """
+  TOSPEC: An extended version of Short Range Comms?
+  """
   type ShortRangeCommExtended {
     id: ID
     simulatorId: ID
@@ -42,6 +52,17 @@ const schema = gql`
     signals: [CommSignal]
   }
 
+  """
+  Describes a single short-range comms connection
+
+  Each CommArrow is a single "open comms line" from 
+  the FD/CORE system, to which the Short Range Comms client
+  may connect or disconnect.
+
+  Note this scheme does NOT describe the location of
+  the client-side frequency selector arrow. That's handled
+  in the ShortRangeComm scheme.
+  """
   type CommArrow {
     id: ID
     signal: ID
@@ -50,6 +71,13 @@ const schema = gql`
     muted: Boolean
   }
 
+  """
+  Specifies a frequency band & associated user
+    (e.g. "Ferengi" @ 377MHz - 450MHz)
+
+  Frequency bands are permitted to overlap.
+  There may also be gaps in frequency bands.
+  """
   type CommSignal {
     id: ID
     image: String
@@ -58,6 +86,9 @@ const schema = gql`
     color: String
   }
 
+  """
+  TOSPEC: A Version of CommArrow with extensions?
+  """
   type CommArrowExtended {
     id: ID
     signal: ID
@@ -66,6 +97,9 @@ const schema = gql`
     connected: Boolean
   }
 
+  """
+  TOSPEC: A Version of CommmSignal with extensions?
+  """
   type CommSignalExtended {
     id: ID
     color: String
@@ -74,6 +108,12 @@ const schema = gql`
     ranges: CommRanges
   }
 
+  """
+  TOSPEC: A secondary set of ranges
+
+  Subsidiary to CommSignal
+  Determines the type of communication
+  """
   type CommRanges {
     military: CommRange
     commercial: CommRange
@@ -81,6 +121,13 @@ const schema = gql`
     emergency: CommRange
   }
 
+  """
+  Specifies the bottom and top of a frequency band
+
+  Note that frequencies are provided in floats
+  0 - 1, and user-readable frequencies
+  (e.g. in MHz) must be derived client-side
+  """
   type CommRange {
     lower: Float
     upper: Float
