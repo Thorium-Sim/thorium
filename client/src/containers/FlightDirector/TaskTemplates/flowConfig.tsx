@@ -63,10 +63,6 @@ const FlowConfig = () => {
         </Label>
         <Label>Steps:</Label>
         <SortableList
-          css={css`
-            flex: 1;
-            overflow-y: auto;
-          `}
           distance={20}
           // @ts-expect-error
           items={taskFlow.steps}

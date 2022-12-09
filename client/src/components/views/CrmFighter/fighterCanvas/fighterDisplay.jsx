@@ -1,5 +1,6 @@
 import React from "react";
 import Explosion from "helpers/explosions";
+import reticle from "./reticle.svg";
 
 const FighterDisplay = ({
   fighterId,
@@ -40,7 +41,7 @@ const FighterDisplay = ({
         <img
           draggable="false"
           className="reticule"
-          src={require("./reticle.svg")}
+          src={reticle}
           alt="reticule"
         />
       )}

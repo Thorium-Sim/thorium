@@ -35,7 +35,6 @@ const trainingSteps = [
     ),
   },
 ];
-//var greekUtils = require("greek-utils");
 const greekUtils = {
   toGreek: a => a,
 };

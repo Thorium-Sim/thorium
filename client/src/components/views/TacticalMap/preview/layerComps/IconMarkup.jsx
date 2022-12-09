@@ -1,4 +1,5 @@
 import React from "react";
+import cornerLoc from "./cornerLoc.svg";
 
 const IconMarkup = ({
   mouseDown,
@@ -81,26 +82,10 @@ const IconMarkup = ({
         >
           {(objectId === id || isSelected) && (
             <div className="select-loc">
-              <img
-                alt="loc"
-                draggable={false}
-                src={require("./cornerLoc.svg")}
-              />
-              <img
-                alt="loc"
-                draggable={false}
-                src={require("./cornerLoc.svg")}
-              />
-              <img
-                alt="loc"
-                draggable={false}
-                src={require("./cornerLoc.svg")}
-              />
-              <img
-                alt="loc"
-                draggable={false}
-                src={require("./cornerLoc.svg")}
-              />
+              <img alt="loc" draggable={false} src={cornerLoc} />
+              <img alt="loc" draggable={false} src={cornerLoc} />
+              <img alt="loc" draggable={false} src={cornerLoc} />
+              <img alt="loc" draggable={false} src={cornerLoc} />
             </div>
           )}
           {src && (

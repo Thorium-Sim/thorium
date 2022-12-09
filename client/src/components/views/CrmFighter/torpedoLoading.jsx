@@ -4,6 +4,7 @@ import uuid from "uuid";
 import {Mutation} from "@apollo/client/react/components";
 import gql from "graphql-tag";
 import {ReactComponent as TorpedoSVG} from "../TorpedoLoading/torpedos/torpedo.svg";
+import Launcher from "./launcher.svg";
 
 function reducer(state, action) {
   const {count} = action;
@@ -51,7 +52,7 @@ const TorpedoLoading = ({id, clientId, torpedoCount, torpedoLoaded}) => {
       <div className="launcher-holder">
         <img
           alt="torpedo launcher"
-          src={require("./launcher.svg")}
+          src={Launcher}
           className="torpedo-launcher"
         />
         {torpedos.map((t, i) => (

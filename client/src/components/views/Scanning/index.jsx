@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import Tour from "helpers/tourHelper";
 import {Typing} from "react-typing";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-
+import scansVid from "../Sensors/scansvid.mov?url";
 import {DeckDropdown, RoomDropdown} from "helpers/shipStructure";
 import DamageOverlay from "../helpers/DamageOverlay";
 import "./style.scss";
@@ -417,10 +417,7 @@ class Scanning extends Component {
                       muted
                       style={{height: "100%", width: "100%"}}
                     >
-                      <source
-                        src={require("../Sensors/scansvid.mov")}
-                        type="video/mp4"
-                      />
+                      <source src={scansVid} type="video/mp4" />
                     </video>
                   </Card>
                 )}

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
-import SineWaves from "sine-waves";
+import "sine-waves";
 import gql from "graphql-tag";
 import {graphql, withApollo} from "@apollo/client/react/hoc";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
@@ -57,7 +57,7 @@ class CommShortRange extends Component {
   }
   initWaves = () => {
     const self = this;
-    this.waves = new SineWaves({
+    this.waves = new window.SineWaves({
       // Canvas Element
       el: ReactDOM.findDOMNode(self).querySelector("#comm-waves"),
 

@@ -1,6 +1,6 @@
 import React from "react";
 import {SortableContainer, SortableElement} from "react-sortable-hoc";
-import {ListGroup, ListGroupItem} from "reactstrap";
+import {ListGroup, ListGroupItem, ListGroupProps} from "reactstrap";
 import {FaBan} from "react-icons/fa";
 
 const SortableItem = SortableElement(
@@ -39,7 +39,7 @@ const SortableList = SortableContainer(
     setSelectedItem: (id: string) => void;
     selectedItem?: string | null;
     removeItem?: (id: string) => void;
-  }) => {
+  } & ListGroupProps) => {
     return (
       <ListGroup {...props}>
         {items.map((item, index) => {

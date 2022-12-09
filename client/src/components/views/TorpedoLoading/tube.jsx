@@ -1,7 +1,7 @@
 import React from "react";
 import {Button} from "helpers/reactstrap";
 import Torpedo from "./torpedo";
-
+import torpedo from "./torpedo.svg";
 const TorpedoTube = ({
   torpedoState,
   torpedoType,
@@ -52,7 +52,7 @@ const TorpedoTube = ({
         role="presentation"
         className="torpedoImage"
         draggable="false"
-        src={require("./torpedo.svg")}
+        src={torpedo}
       />
     </div>
   );

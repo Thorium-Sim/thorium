@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import {Row, Col, Button} from "helpers/reactstrap";
-
+import body from "./body.png";
 import BodySvg from "./BodySvg";
 
 class Body extends Component {
@@ -52,7 +52,7 @@ class BodyContainer extends Component {
     return (
       <Fragment>
         <div className="body-container" ref={this.bodyContainer}>
-          <img alt="body" src={require("./body.png")} draggable="false" />
+          <img alt="body" src={body} draggable="false" />
           <Body
             scanning={scanning}
             onClick={this.clickMan(update, painPoints)}

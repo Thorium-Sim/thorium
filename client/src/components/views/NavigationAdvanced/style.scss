@@ -189,7 +189,7 @@ $circleRadius: 100px;
     .angle-box {
       font-family: "LiquidCrystal", monospace;
       color: white;
-      font-size: $circleRadius / 3;
+      font-size: calc($circleRadius / 3);
       width: 60%;
       background-color: #333;
       text-align: center;

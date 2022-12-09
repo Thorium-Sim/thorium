@@ -1,14 +1,12 @@
 import React, {Component} from "react";
 import * as THREE from "three";
 import {OBJLoader as ObjectLoader} from "three/examples/jsm/loaders/OBJLoader";
-
+import txURL from "./generatortexture.jpg";
+import objURL from "./shieldgenerator.obj?url";
 class ThreeView extends Component {
   constructor(props) {
     super(props);
     this.state = {rotation: 0};
-
-    const txURL = require("./generatortexture.jpg");
-    const objURL = require("./shieldgenerator.obj");
 
     const {width, height} = props.dimensions;
     this.scene = new THREE.Scene();

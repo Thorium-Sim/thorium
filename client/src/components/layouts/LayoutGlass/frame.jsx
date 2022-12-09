@@ -1,5 +1,30 @@
 import React, {Fragment} from "react";
+import blue from "./blue.mp4";
+import green from "./green.mp4";
+import yellow from "./yellow.mp4";
+import orange from "./orange.mp4";
+import red from "./red.mp4";
+import blueJpg from "./blue.jpg";
+import greenJpg from "./green.jpg";
+import yellowJpg from "./yellow.jpg";
+import orangeJpg from "./orange.jpg";
+import redJpg from "./red.jpg";
 
+const videos = {
+  blue,
+  green,
+  yellow,
+  orange,
+  red,
+};
+
+const images = {
+  blue: blueJpg,
+  green: greenJpg,
+  yellow: yellowJpg,
+  orange: orangeJpg,
+  red: redJpg,
+};
 function videoColor(al) {
   if (al === "5") {
     return "blue";
@@ -23,11 +48,11 @@ export default ({simulator, lite, viewscreen}) => {
     <div>
       {!lite && (
         <Fragment>
-          <link rel="preload" href={require("./blue.mp4")} as="video" />
-          <link rel="preload" href={require("./green.mp4")} as="video" />
-          <link rel="preload" href={require("./yellow.mp4")} as="video" />
-          <link rel="preload" href={require("./orange.mp4")} as="video" />
-          <link rel="preload" href={require("./red.mp4")} as="video" />
+          <link rel="preload" href={blue} as="video" />
+          <link rel="preload" href={green} as="video" />
+          <link rel="preload" href={yellow} as="video" />
+          <link rel="preload" href={orange} as="video" />
+          <link rel="preload" href={red} as="video" />
         </Fragment>
       )}
 
@@ -38,17 +63,9 @@ export default ({simulator, lite, viewscreen}) => {
       {!viewscreen && <div className="username-graphic" />}
       <div
         className="color-image"
-        style={{backgroundImage: `url(${require(`./${video}.jpg`)})`}}
+        style={{backgroundImage: `url(${images[video]})`}}
       />
-      {!lite && (
-        <video
-          id="frame-bg"
-          muted
-          autoPlay
-          loop
-          src={require(`./${video}.mp4`)}
-        />
-      )}
+      {!lite && <video id="frame-bg" muted autoPlay loop src={videos[video]} />}
     </div>
   );
 };

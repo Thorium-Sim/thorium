@@ -1,5 +1,17 @@
 import React, {Component} from "react";
+import bottomLeft from "./images/bottomLeft.png";
+import bottomRight from "./images/bottomRight.png";
+import topLeft from "./images/topLeft.png";
+import topRight from "./images/topRight.png";
+import nameBox from "./images/nameBox.svg";
 
+const images = {
+  bottomLeft,
+  bottomRight,
+  topLeft,
+  topRight,
+  nameBox,
+};
 class CardFrame extends Component {
   state = {};
   render() {
@@ -18,26 +30,26 @@ class CardFrame extends Component {
       <div className="card-frame">
         <div className="chrome">
           <img
-            src={require("./images/bottomLeft.png")}
+            src={images["bottomLeft"]}
             draggable={false}
             className="bottom-left"
             alt=""
           />
           <img
-            src={require("./images/bottomRight.png")}
+            src={images["bottomRight"]}
             draggable={false}
             className="bottom-right"
             alt=""
           />
           <img
-            src={require("./images/topLeft.png")}
+            src={images["topLeft"]}
             draggable={false}
             className="top-left"
             alt=""
           />
 
           <img
-            src={require("./images/topRight.png")}
+            src={images["topRight"]}
             draggable={false}
             className="top-right"
             alt=""
@@ -48,7 +60,7 @@ class CardFrame extends Component {
           {!viewscreen && (
             <>
               <img
-                src={require("./images/nameBox.svg")}
+                src={images["nameBox"]}
                 draggable={false}
                 className="name-box"
                 alt=""

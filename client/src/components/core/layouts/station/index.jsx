@@ -71,7 +71,7 @@ export const STATION_QUERY = gql`
 const Station = ({stations, simulatorId, station: stationName}) => {
   const inSim = comp => {
     const cards = stations.reduce(
-      (prev, next) => prev.concat(next.cards.map(c => c.component)),
+      (prev, next) => prev.concat(next.cards?.map(c => c.component)),
       [],
     );
     return cards.indexOf(comp) > -1;
@@ -206,7 +206,7 @@ const Station = ({stations, simulatorId, station: stationName}) => {
                 </tr>
               </thead>
               <tbody>
-                {station.cards.map((card, index) => {
+                {station.cards?.map((card, index) => {
                   return (
                     <tr key={`${station.name}-${index}`}>
                       <td>

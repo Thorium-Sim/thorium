@@ -10,7 +10,8 @@ import Grid from "../Sensors/GridDom/grid";
 import "./style.scss";
 import {SENSORS_OFFSET} from "../Sensors/gridCore/constants";
 
-const iconSrc = require("./burst.svg");
+import iconSrc from "./burst.svg";
+
 function randomFromList(list) {
   if (!list) return;
   const length = list.length;

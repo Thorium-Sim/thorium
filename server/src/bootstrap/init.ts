@@ -47,7 +47,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 export default async function init() {
-  console.info(`Starting Thorium...}`);
+  console.info(`Starting Thorium Classic...`);
 
   try {
     await fs.access(snapshotDir);

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import "./style.scss";
 import Explosion from "helpers/explosions";
 import Interference from "../Sensors/GridDom/interference";
+import crosshair from "./crosshair.svg";
 
 const speedLimit = 20;
 const speedConstant1 = 2.5 / 100;
@@ -291,7 +292,7 @@ const Target = ({
             transform: `translate(${x}px, ${y}px) scale(${scale * 1.1})`,
           }}
           draggable={false}
-          src={require("./crosshair.svg")}
+          src={crosshair}
         />
       )}
       <div

@@ -1,5 +1,5 @@
 import React from "react";
-
+import Ship from "./img/ship.svg";
 const cellColor = (row, col, Colors) => {
   const color = Colors[row][col];
   if (color === "R") return "red";
@@ -47,7 +47,7 @@ const GameBoard = ({Colors, Items, RobotCol, RobotRow, RobotDir}) => (
       <img
         className="game-ship"
         alt="ship"
-        src={require("./img/ship.svg")}
+        src={Ship}
         draggable="false"
         style={{
           transform: `rotate(${parseInt(RobotDir, 10) * 90 + 90}deg)`,

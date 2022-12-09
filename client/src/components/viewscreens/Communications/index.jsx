@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import SineWaves from "sine-waves";
+import "sine-waves";
 import {Container, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag";
 import {graphql, withApollo} from "@apollo/client/react/hoc";
@@ -42,7 +42,7 @@ class Communications extends Component {
   commSignalRef = React.createRef();
   componentDidMount() {
     const self = this;
-    this.waves = new SineWaves({
+    this.waves = new window.SineWaves({
       // Canvas Element
       el: self.commSignalRef.current,
 

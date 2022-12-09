@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import tinycolor from "tinycolor2";
+import crystal from "./crystal.png";
 
 export default () => (
   <div style={{width: "100%"}}>
@@ -115,7 +116,7 @@ class Crystal extends Component {
           />
         </div>
         <div className="crystal">
-          <img alt="crystal" src={require("./crystal.png")} draggable="false" />
+          <img alt="crystal" src={crystal} draggable="false" />
           <div className="crystal-overlay" style={{backgroundColor: color}} />
         </div>
         <div className="bars">

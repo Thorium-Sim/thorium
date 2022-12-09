@@ -3,7 +3,8 @@ import Draggable from "react-draggable";
 import {Button, Row, Col} from "helpers/reactstrap";
 import Measure from "react-measure";
 import {throttle} from "helpers/debounce";
-
+import crosstarget from "./crosstarget.svg";
+import crosshairs from "./crosshairs.svg";
 const ChargeBar = props => {
   return (
     <div className="chargeBar" style={{height: `${props.charge * 100}%`}} />
@@ -158,7 +159,7 @@ export default class Target extends Component {
                             key={target.id}
                             draggable="false"
                             role="presentation"
-                            src={require("./crosstarget.svg")}
+                            src={crosstarget}
                             style={{
                               position: "absolute",
                               left: `${target.position.x * 90}%`,
@@ -179,7 +180,7 @@ export default class Target extends Component {
                           alt="crosshairs"
                           draggable="false"
                           role="presentation"
-                          src={require("./crosshairs.svg")}
+                          src={crosshairs}
                         />
                       </Draggable>
                     </div>

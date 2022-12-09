@@ -4,6 +4,10 @@ import {Button, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag";
 import {graphql, withApollo} from "@apollo/client/react/hoc";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+
+import target1 from "./target1.svg";
+import target2 from "./target2.svg";
+
 export const JR_TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {
     transporterUpdate(simulatorId: $simulatorId) {
@@ -217,7 +221,7 @@ class Transporters extends Component {
               <div className="target-holder">
                 <img
                   alt="target"
-                  src={require("./target1.svg")}
+                  src={target1}
                   className="target"
                   draggable="false"
                   onMouseDown={this.mouseDown}
@@ -232,7 +236,7 @@ class Transporters extends Component {
                   <img
                     alt="target"
                     key={t.id}
-                    src={require("./target2.svg")}
+                    src={target2}
                     className="target"
                     draggable="false"
                     style={{

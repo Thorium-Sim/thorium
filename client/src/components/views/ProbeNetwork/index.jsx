@@ -6,7 +6,7 @@ import {Query} from "@apollo/client/react/components";
 import Measure from "react-measure";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-
+import star from "./star.svg";
 import "./style.scss";
 
 function d2r(deg) {
@@ -273,7 +273,7 @@ class Grid extends Component {
           ))}
         <img
           alt="star"
-          src={require("./star.svg")}
+          src={star}
           style={{position: "absolute", width: "40px"}}
         />
       </div>

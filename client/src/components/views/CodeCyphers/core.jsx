@@ -4,7 +4,6 @@ import {TypingField, InputField} from "../../generic/core";
 import {cypherMap} from "./index";
 import Printable from "helpers/printable";
 
-//var greekUtils = require("greek-utils");
 const greekUtils = {
   toGreek: a => a,
 };

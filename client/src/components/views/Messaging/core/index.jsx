@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Conversations from "./conversations";
 import playSound from "../../../generic/SoundPlayer";
+import mouseOgg from "./Mouse.ogg";
 const fragment = gql`
   fragment MessageData on Message {
     id
@@ -81,7 +82,7 @@ const MessagingData = props => (
                     subscriptionData.data.sendMessage.sender,
                   ) > -1
                 ) {
-                  props.playSound({url: require("./Mouse.ogg")});
+                  props.playSound({url: mouseOgg});
                 }
                 return data;
               },

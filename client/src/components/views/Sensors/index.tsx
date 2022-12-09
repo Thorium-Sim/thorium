@@ -1,6 +1,7 @@
 import React, {MouseEvent} from "react";
 import {Button, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
+// @ts-expect-error missing types
 import {Typing} from "react-typing";
 import "./style.scss";
 import Grid from "./GridDom";

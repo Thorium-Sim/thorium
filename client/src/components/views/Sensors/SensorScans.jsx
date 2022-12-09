@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Button, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import gql from "graphql-tag";
 import {Typing} from "react-typing";
-
+import scansVid from "../Sensors/scansvid.mov?url";
 export default class SensorScans extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +51,7 @@ export default class SensorScans extends Component {
               {scanning ? (
                 <div>
                   <video ref={"ReactVideo"} muted autoPlay loop>
-                    <source src={require("./scansvid.mov")} type="video/mp4" />
+                    <source src={scansVid} type="video/mp4" />
                   </video>
                   <Button color="danger" block onClick={this.stopScan}>
                     Cancel Scan

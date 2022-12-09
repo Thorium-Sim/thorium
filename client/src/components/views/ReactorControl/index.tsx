@@ -9,6 +9,7 @@ import {
   UncontrolledDropdown,
 } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
+// @ts-expect-error Missing types
 import AnimatedNumber from "react-animated-number";
 import useMeasure from "helpers/hooks/useMeasure";
 
@@ -247,7 +248,7 @@ const ReactorControl: React.FC<{simulator: Simulator}> = ({simulator}) => {
               stepPrecision={3}
               value={reactor?.efficiency || 0}
               duration={800}
-              formatValue={n => `${Math.round(n * 100)}%`}
+              formatValue={(n: number) => `${Math.round(n * 100)}%`}
             />
           </h3>
           <h4>
@@ -256,7 +257,7 @@ const ReactorControl: React.FC<{simulator: Simulator}> = ({simulator}) => {
               stepPrecision={3}
               value={(reactor?.efficiency || 0) * (reactor?.powerOutput || 0)}
               duration={800}
-              formatValue={n => `${Math.round(n)}`}
+              formatValue={(n: number) => `${Math.round(n)}`}
             />
           </h4>
           <h4
@@ -399,7 +400,7 @@ const Battery = ({level = 1}) => {
         <AnimatedNumber
           value={level}
           duration={1000}
-          formatValue={n => `${Math.round(n * 100)}`}
+          formatValue={(n: number) => `${Math.round(n * 100)}`}
         />
       </div>
     </div>

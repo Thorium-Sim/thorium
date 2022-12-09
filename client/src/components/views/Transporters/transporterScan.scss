@@ -14,12 +14,12 @@ $rainbow: #00ccff #0044cc #00aaff blue indigo rebeccapurple;
     .ring_#{$i} {
       animation: transporter_spin infinite $vortex-speed linear,
         rainbow infinite $hue-speed linear;
-      $size: ($spinner-size/$resolution) * $i;
+      $size: calc($spinner-size/$resolution) * $i;
       animation-delay: $vortex-delay * $i;
       position: absolute;
       left: 50%;
       top: 50%;
-      margin: -($size/2);
+      margin: -1 * calc($size/2);
       border-top: 1px solid transparent;
       border-width: 4px;
       border-radius: 100%;
@@ -32,7 +32,7 @@ $rainbow: #00ccff #0044cc #00aaff blue indigo rebeccapurple;
 @keyframes rainbow {
   @each $current-color in $rainbow {
     $i: index($rainbow, $current-color);
-    #{(100/length($rainbow))*$i}% {
+    #{calc(100/length($rainbow))*$i}% {
       border-color: $current-color;
     }
   }
@@ -44,7 +44,7 @@ $rainbow: #00ccff #0044cc #00aaff blue indigo rebeccapurple;
 @-webkit-keyframes rainbow {
   @each $current-color in $rainbow {
     $i: index($rainbow, $current-color);
-    #{(100/length($rainbow))*$i}% {
+    #{calc(100/length($rainbow))*$i}% {
       border-color: $current-color;
     }
   }

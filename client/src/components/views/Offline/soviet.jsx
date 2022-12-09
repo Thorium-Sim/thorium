@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import letters from "./letters";
-
+import soviet from "./soviet.svg";
 function randomFromList(list) {
   if (!list) return;
   const length = list.length;
@@ -61,11 +61,7 @@ class Soviet extends Component {
             {lettersLeft}
           </div>
           <div className="image-block">
-            <img
-              src={require("./soviet.svg")}
-              alt="System Compromised"
-              draggable="false"
-            />
+            <img src={soviet} alt="System Compromised" draggable="false" />
           </div>
           <div className="text-block">{lettersRight}</div>
         </div>

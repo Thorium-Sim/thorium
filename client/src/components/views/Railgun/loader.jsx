@@ -6,7 +6,7 @@ import {FormattedMessage} from "react-intl";
 import {TransitionGroup, CSSTransition} from "react-transition-group";
 import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
-
+import bolt from "./bolt.svg";
 const initialSteps = [
   {
     selector: ".nothing",
@@ -127,7 +127,7 @@ export default class RailgunLoader extends Component {
                       <img
                         alt="bolt"
                         draggable="false"
-                        src={require("./bolt.svg")}
+                        src={bolt}
                         style={{
                           transform: `translateY(-${
                             (arr.length - i - 1) * 20

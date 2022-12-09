@@ -1,11 +1,15 @@
 import React from "react";
 import {Button} from "helpers/reactstrap";
+import photon from "./torpedos/photon.svg";
+import quantum from "./torpedos/quantum.svg";
+import probe from "./torpedos/probe.svg";
+import other from "./torpedos/other.svg";
 
 const images = {
-  photon: require(`./torpedos/photon.svg`),
-  quantum: require(`./torpedos/quantum.svg`),
-  probe: require(`./torpedos/probe.svg`),
-  other: require("./torpedos/other.svg"),
+  photon,
+  quantum,
+  probe,
+  other,
 };
 
 const TorpedoPick = ({updateScreen, loadTorpedo, inventory}) => {

@@ -5,6 +5,7 @@ import gql from "graphql-tag";
 import Bars from "../TractorBeam/bars";
 import Platform from "./platform";
 import Tour from "helpers/tourHelper";
+import dilithium from "./dilithiumCrystal.svg";
 
 const Animation = ({style = {}, children}) => {
   return (
@@ -158,7 +159,7 @@ class DilithiumStress extends Component {
             </div>
           )}
         </Mutation>
-        <img alt="Dilithium" src={require("./dilithiumCrystal.svg")} />
+        <img alt="Dilithium" src={dilithium} />
         <div className="dilithium-effects">
           <Animation>
             <Platform className="antimatter" />
