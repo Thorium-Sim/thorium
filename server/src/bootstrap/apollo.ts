@@ -122,12 +122,12 @@ function responseForOperation(requestContext) {
   });
 }
 
-export default (
+export default async function apolloApp(
   app: express.Application,
   SERVER_PORT: number,
   httpOnly: boolean,
   setMutations: (r: {[key: string]: Function}) => void,
-) => {
+) {
   // Apply the mutations to App.js so we don't get circular dependency issues
   setMutations(resolvers.Mutation);
   const graphqlOptions: ApolloServerExpressConfig = {
@@ -216,6 +216,8 @@ GraphQL Server running on ${printUrl()}/graphql
       httpServer.listen(4444, () => {
         console.info(serverMessage);
       });
+    } else {
+      console.error(err);
     }
   });
   try {

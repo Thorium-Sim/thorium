@@ -3,9 +3,10 @@ import {render} from "react-dom";
 
 import App from "./App";
 import "bootstrap/scss/bootstrap.scss";
-import {initializeClient} from "helpers/getClientId";
+import {initializeTabId} from "@thorium/tab-id";
 
-initializeClient();
+initializeTabId();
+
 try {
   window.thorium = window.thorium || {
     sendMessage: (args: any) => {},

@@ -1,5 +1,4 @@
 import React from "react";
-import {getClientId, setClientId as setId} from "helpers/getClientId";
 import SimulatorData from "./simulatorData";
 import Credits from "./credits";
 import "./client.scss";
@@ -12,6 +11,7 @@ import {
 } from "generated/graphql";
 import gql from "graphql-tag";
 import {useApolloClient} from "@apollo/client";
+import {getTabId, setTabId} from "@thorium/tab-id";
 
 const ClientPingSub = gql`
   subscription ClientPingSub($clientId: ID!) {
@@ -36,7 +36,7 @@ const ClientData = () => {
       };
     }
 
-    getClientId().then(res => setClientId(res));
+    getTabId().then(res => setClientId(res));
   }, []);
 
   React.useEffect(() => {
@@ -60,9 +60,9 @@ const ClientData = () => {
   }, [client, clientId, connect, disconnect, ping]);
 
   const updateClientId = async (clientId: string) => {
-    const oldClientId = await getClientId();
+    const oldClientId = await getTabId();
     setClientId(clientId);
-    setId(clientId);
+    setTabId(clientId);
     await disconnect({variables: {client: oldClientId}});
     await connect({variables: {client: clientId}});
     if (typeof window !== "undefined") {

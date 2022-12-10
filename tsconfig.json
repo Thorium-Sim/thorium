@@ -1,27 +1,11 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["dom", "dom.iterable", "ES2020"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react",
-    "baseUrl": "./src/"
-  },
-  "include": [
-    "client",
-    "server",
-    "types/*",
-    "i18next-parser.config.js",
-    "test/setupTests.js"
-  ],
-  "exclude": ["hooksGenerate.js"]
+  "files": [],
+  "references": [
+    {
+      "path": "./server/tsconfig.json"
+    },
+    {
+      "path": "./client/tsconfig.json"
+    }
+  ]
 }

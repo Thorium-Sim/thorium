@@ -4,7 +4,7 @@ import paths from "../helpers/paths";
 
 const assetPath = path.resolve(path.dirname(process.argv[1]), "..");
 
-export default function (server: express.Application) {
+export default async function clientServer(server: express.Application) {
   if (process.env.NODE_ENV === "production") {
     server.use(express.static(assetPath));
     let assetDir = path.resolve(paths.userData + "/assets");

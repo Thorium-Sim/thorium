@@ -12,8 +12,8 @@ import "./config.scss";
 import TrainingContextProvider from "./TrainingContextProvider";
 import SideNav from "./FlightDirector/sideNav";
 import {FlightDirector, ClientsLobby, FlightConfig} from "./FlightDirector";
-import {getClientId} from "helpers/getClientId";
 import useInterval from "helpers/hooks/useInterval";
+import {getTabId} from "@thorium/tab-id";
 
 window.thoriumLocal = {
   clockSync: 0,
@@ -86,7 +86,7 @@ function useClockSync() {
   const [clockSync] = useMutation(CLOCK_SYNC_MUTATION, {variables: {clientId}});
 
   React.useEffect(() => {
-    getClientId().then(res => setClientId(res));
+    getTabId().then(res => setClientId(res));
   }, []);
 
   useInterval(() => {

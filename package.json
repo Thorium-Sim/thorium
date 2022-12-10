@@ -190,8 +190,8 @@
     "@babel/preset-env": "^7.8.7"
   },
   "volta": {
-    "node": "14.21.0",
-    "npm": "7.24.2"
+    "node": "18.12.1",
+    "npm": "8.19.3"
   },
   "dependencies": {
     "@emotion/core": "^11.0.0",

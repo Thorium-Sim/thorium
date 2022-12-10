@@ -78,7 +78,7 @@ const importsHandlers = {
 
 const tmpDir = os.tmpdir();
 const folder = `${tmpDir}${path.sep}`;
-export default async () => {
+export default async function expressApp() {
   const upload = multer({
     dest: folder,
   });
@@ -96,7 +96,6 @@ export default async () => {
   // });
 
   server.post("/upload", upload.any(), async (req, res) => {
-    // @ts-expect-error files missing from req type
     uploadAsset({}, Object.assign({}, req.body, {files: req.files}), {});
     res.end(JSON.stringify("success!"));
   });

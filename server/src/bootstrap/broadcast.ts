@@ -1,6 +1,8 @@
-const bonjour = require("bonjour")({reuseAddr: true});
+import Bonjour from "bonjour";
 
-function publishBonjour(port = 4444, httpOnly: boolean, tryCount = 0) {
+const bonjour = Bonjour({reuseAddr: true});
+
+async function publishBonjour(port = 4444, httpOnly: boolean, tryCount = 0) {
   try {
     const service = bonjour.publish({
       name: `Thorium${tryCount ? ` (${tryCount})` : ""}`,

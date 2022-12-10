@@ -7,26 +7,35 @@ import clientServer from "./bootstrap/client-server";
 import postMigration from "./bootstrap/postmigration";
 import cleanUp from "./bootstrap/cleanup";
 import App from "./app";
+import buildHTTPServer from "./init/buildHttpServer";
+import path from "path";
+import {rootPath} from "./newHelpers/appPaths";
+import {applyDataChannel} from "./init/applyDataChannel";
+import {buildDatabase} from "./init/buildDatabase";
+import {setUpAPI} from "./init/setUpAPI";
+import {startServer} from "./init/startServer";
 
-Promise.resolve()
-  .then(() => init())
-  .then(() => App.init())
-  .then(() => broadcast(App.port, App.httpOnly))
-  .then(() => express())
-  .then(server => clientServer(server))
-  .then(server => apollo(server, App.port, App.httpOnly, App.setMutations))
-  .then(() => postMigration())
-  .then(() => cleanUp())
-  .catch(err => console.error("Error:", err));
+async function main() {
+  try {
+    await init();
+    App.init();
+    await broadcast(App.port, App.httpOnly);
+    const server = await express();
+    await clientServer(server);
+    await apollo(server, App.port, App.httpOnly, App.setMutations);
+    // New Init
+    const database = await buildDatabase();
+    const app = await buildHTTPServer({
+      staticRoot: path.join(rootPath, "public/"),
+    });
+    await applyDataChannel(app, database);
+    await setUpAPI(app, database);
+    await startServer(app);
 
-// If --expose-gc flag is set, handle garbage collection
-// const interval = setInterval(() => {
-//   try {
-//     if (global.gc) {
-//       global.gc();
-//     }
-//   } catch (e) {
-//     // Do nothing, no need to worry about manual garbage collection
-//     clearInterval(interval);
-//   }
-// }, 30 * 1000);
+    await postMigration();
+    await cleanUp();
+  } catch (err) {
+    console.error("Error in startup:", err);
+  }
+}
+main();

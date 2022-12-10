@@ -1,7 +1,9 @@
 {
   "extends": ["eslint:recommended", "react-app", "eslint-config-prettier"],
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "no-inner-declarations": 0,
+    "no-throw-literal": 0
   },
   "ignorePatterns": [
     "/node_modules/",

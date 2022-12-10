@@ -13,9 +13,17 @@
   "author": "Alex Anderson",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@fastify/cookie": "^8.3.0",
+    "@fastify/cors": "^8.2.0",
+    "@fastify/http-proxy": "^8.4.0",
+    "@fastify/multipart": "^7.3.0",
+    "@fastify/static": "^6.6.0",
+    "@fastify/websocket": "^7.1.1",
+    "@msgpack/msgpack": "^2.8.0",
     "@types/jest": "^29.1.2",
     "@types/ncp": "^2.0.5",
     "esbuild-wasm": "^0.15.13",
+    "fastify": "^4.10.2",
     "nodemon": "^2.0.20",
     "typescript": "^4.8.4"
   },

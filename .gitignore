@@ -43,5 +43,5 @@ Thorium.zip
 kiosks
 tempServer
 
-snapshot-*
+snapshot-*.json
 *.provisionprofile

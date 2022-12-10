@@ -6,7 +6,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2020",
-    "lib": ["DOM","ES2020"],
+    "lib": ["DOM", "ES2021"],
     "skipLibCheck": true,
 
     // TODO: Turn this on when we get enough coverage
@@ -14,12 +14,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": false,
-    "outDir": "../tempServer",
-    "baseUrl": ".",
+    "noEmit": true,
+    "rootDir": "..",
+    "baseUrl": "..",
     "paths": {
-      "*": ["../node_modules/*", "../types/*"],
-      "@server/*": ["./src/*"]
+      "*": ["./node_modules/*", "./types/*"],
+      "@server/*": ["./server/src/*"],
+      "@thorium/*": ["./shared/*"]
     }
   },
-  "include": ["./**/*"]
+  "include": ["src/**/*", "../shared"]
 }

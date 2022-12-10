@@ -1,7 +1,7 @@
 import App from "../app";
 import {aspectList} from "../typeDefs/flight";
 
-export default () => {
+export default async function cleanUp() {
   // Get all of the flights.
   const flightIds = App.flights.map(f => f.id);
   const flightSimulators = App.flights.reduce(
