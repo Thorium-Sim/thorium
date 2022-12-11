@@ -1,5 +1,5 @@
 import React from "react";
-import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import FileExplorer from "components/cards/TacticalMap/fileExplorer";
 
 const VideoConfig = ({data, updateData, simple}) => {
   data = JSON.parse(data);

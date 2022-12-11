@@ -1,13 +1,13 @@
 import {
   INTERNAL_COMM_QUERY,
   INTERNAL_COMM_SUB,
-} from "components/views/CommInternal";
+} from "components/cards/CommInternal";
 import systems from "../data/systems";
 import decks from "../data/decks";
 import {
   INTERNAL_COMM_CORE_QUERY,
   INTERNAL_COMM_CORE_SUB,
-} from "components/views/CommInternal/core";
+} from "components/cards/CommInternal/core";
 export default [
   {
     request: {

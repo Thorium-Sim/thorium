@@ -5,7 +5,7 @@ import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import {
   STATUS_RADIATION_QUERY,
   STATUS_RADIATION_SUB,
-} from "components/views/Status/components/radiation";
+} from "components/cards/Status/components/radiation";
 
 const UPDATE_RADIATION = gql`
   mutation SetRadiation($simulatorId: ID!, $radiation: Float!) {

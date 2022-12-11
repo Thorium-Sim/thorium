@@ -2,7 +2,7 @@ import simulators from "../data/simulators";
 import {
   CARDS_CORE_QUERY,
   CARDS_CORE_SUB,
-} from "components/views/StationControl/core";
+} from "components/cards/StationControl/core";
 
 export default [
   {

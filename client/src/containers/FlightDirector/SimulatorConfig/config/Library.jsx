@@ -14,8 +14,8 @@ import {
   Label,
 } from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import FileExplorer from "components/views/TacticalMap/fileExplorer";
-import {cypherMap} from "components/views/CodeCyphers";
+import FileExplorer from "components/cards/TacticalMap/fileExplorer";
+import {cypherMap} from "components/cards/CodeCyphers";
 import {FaBan} from "react-icons/fa";
 const SUB = gql`
   subscription Library {

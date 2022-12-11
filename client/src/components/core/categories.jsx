@@ -1,4 +1,4 @@
-import {Cores} from "components/views";
+import {Cores} from "components/EngineControlCore";
 
 const categories = [
   {

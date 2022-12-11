@@ -1,5 +1,5 @@
 import React from "react";
-import SensorsGrid from "components/views/Sensors";
+import SensorsGrid from "components/cards/Sensors";
 import {Container} from "helpers/reactstrap";
 const Sensors = props => {
   return (

@@ -101,7 +101,7 @@ const trainingSteps = [
   },
 ];
 
-interface CountermeasuresProps {
+export interface CountermeasuresProps {
   children: React.ReactNode;
   simulator: Simulator;
 }

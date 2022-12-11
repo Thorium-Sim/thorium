@@ -1,4 +1,4 @@
-import {CREW_QUERY, CREW_SUB} from "components/views/Crew/core";
+import {CREW_QUERY, CREW_SUB} from "components/cards/Crew/core";
 import crew from "../data/crew";
 
 export default [

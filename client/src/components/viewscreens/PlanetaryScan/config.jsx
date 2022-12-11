@@ -1,7 +1,7 @@
 import React, {Fragment, Component} from "react";
 import {Input, Button} from "helpers/reactstrap";
 import {capitalCase} from "change-case";
-import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import FileExplorer from "components/cards/TacticalMap/fileExplorer";
 import ColorPicker from "helpers/colorPicker";
 
 class PlanetaryScanConfig extends Component {

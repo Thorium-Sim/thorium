@@ -1,7 +1,7 @@
 import React from "react";
 import gql from "graphql-tag";
 import {withApollo} from "@apollo/client/react/hoc";
-import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import FileExplorer from "components/cards/TacticalMap/fileExplorer";
 
 const Images = ({
   fighterImage,

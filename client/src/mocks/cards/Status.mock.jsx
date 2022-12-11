@@ -1,48 +1,48 @@
 import {
   STATUS_DEST_QUERY,
   STATUS_DEST_SUB,
-} from "components/views/Status/components/destination";
+} from "components/cards/Status/components/destination";
 import {
   STATUS_ENGINE_QUERY,
   STATUS_ENGINE_SUB,
-} from "components/views/Status/components/speed";
+} from "components/cards/Status/components/speed";
 import {
   STATUS_POP_QUERY,
   STATUS_SIM_SUB,
   STATUS_POP_SUB,
-} from "components/views/Status/components/population";
+} from "components/cards/Status/components/population";
 import systems from "../data/systems";
 import simulators from "../data/simulators";
 import {
   STATUS_COOLANT_QUERY,
   STATUS_COOLANT_SUB,
-} from "components/views/Status/components/coolant";
-import {STATUS_DILITHIUM_QUERY} from "components/views/Status/components/dilithiumStress";
+} from "components/cards/Status/components/coolant";
+import {STATUS_DILITHIUM_QUERY} from "components/cards/Status/components/dilithiumStress";
 import {
   STATUS_TARGETING_SUB,
   STATUS_TARGETING_QUERY,
-} from "components/views/Status/components/targeted";
+} from "components/cards/Status/components/targeted";
 import {
   STATUS_BATTERY_QUERY,
   STATUS_BATTERY_SUB,
-} from "components/views/Status/components/battery";
+} from "components/cards/Status/components/battery";
 import {
   STATUS_DAMAGE_QUERY,
   STATUS_DAMAGE_SUB,
-} from "components/views/Status/components/damaged";
+} from "components/cards/Status/components/damaged";
 import {
   STATUS_ALERT_QUERY,
   STATUS_ALERT_SUB,
-} from "components/views/Status/components/alertCondition";
+} from "components/cards/Status/components/alertCondition";
 import {
   STATUS_STEALTH_QUERY,
   STATUS_STEALTH_SHIELD_SUB,
   STATUS_STEALTH_SUB,
-} from "components/views/Status/components/stealth";
+} from "components/cards/Status/components/stealth";
 import {
   STATUS_RADIATION_QUERY,
   STATUS_RADIATION_SUB,
-} from "components/views/Status/components/radiation";
+} from "components/cards/Status/components/radiation";
 
 export default [
   {

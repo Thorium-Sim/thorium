@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {Input, Button, Col, Card, CardBody} from "helpers/reactstrap";
-import ValueInput from "../../../components/views/Tasks/core/ValueInput";
+import ValueInput from "../../../components/cards/Tasks/core/ValueInput";
 import EventPicker from "containers/FlightDirector/MissionConfig/EventPicker";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import uuid from "uuid";
-import MacroConfig from "../../../components/views/Macros/macroConfig";
+import MacroConfig from "../../../components/cards/Macros/macroConfig";
 import {FaBan} from "react-icons/fa";
 import {
   MacroAction,

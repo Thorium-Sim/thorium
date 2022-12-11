@@ -1,7 +1,7 @@
 import {
   TACTICALMAP_QUERY,
   TACTICALMAP_SUB,
-} from "../../components/views/TacticalMap";
+} from "../../components/cards/TacticalMap";
 import tacticalMap from "../data/tacticalMap";
 export default [
   {

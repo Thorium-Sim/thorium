@@ -8,12 +8,12 @@ import "./style.scss";
 import {TimeCounter} from "../Sensors";
 import printJS from "print-js";
 
-interface TemplateProps {
+export interface PrintQueueProps {
   children: React.ReactNode;
   simulator: Simulator;
 }
 
-const PrintQueue: React.FC<TemplateProps> = props => {
+const PrintQueue: React.FC<PrintQueueProps> = props => {
   const {simulator} = props;
   const {loading, data} = usePrintQueueSubscription({
     variables: {simulatorId: simulator.id},

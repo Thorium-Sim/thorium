@@ -1,7 +1,7 @@
 import {
   PROBES_QUERY,
   PROBES_SUB,
-} from "../../components/views/ProbeConstruction";
+} from "../../components/cards/ProbeConstruction";
 import systems from "../data/systems";
 export default [
   {

@@ -1,6 +1,6 @@
 import React from "react";
 import {Button} from "helpers/reactstrap";
-import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import FileExplorer from "components/cards/TacticalMap/fileExplorer";
 import {
   Station,
   useStationSetTrainingMutation,

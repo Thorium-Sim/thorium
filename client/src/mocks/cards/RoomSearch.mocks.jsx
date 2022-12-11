@@ -1,4 +1,4 @@
-import {ROOM_SEARCH_QUERY} from "components/views/RoomSearch";
+import {ROOM_SEARCH_QUERY} from "components/cards/RoomSearch";
 import decks from "../data/decks";
 export default [
   {

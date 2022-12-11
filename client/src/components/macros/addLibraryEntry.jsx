@@ -1,8 +1,8 @@
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
 import {} from "change-case";
-import FileExplorer from "components/views/TacticalMap/fileExplorer";
-import {cypherMap} from "components/views/CodeCyphers";
+import FileExplorer from "components/cards/TacticalMap/fileExplorer";
+import {cypherMap} from "components/cards/CodeCyphers";
 import {FaBan} from "react-icons/fa";
 
 export default ({updateArgs, args: {entry = {}}}) => {

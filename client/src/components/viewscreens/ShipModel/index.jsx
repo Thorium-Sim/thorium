@@ -2,7 +2,7 @@ import React from "react";
 import ThreeView from "./three-view";
 import "./style.scss";
 import useMeasure from "helpers/hooks/useMeasure";
-import {ViewscreenScaleContext} from "../../views/Viewscreen";
+import {ViewscreenScaleContext} from "../../cards/Viewscreen";
 
 const ShipModel = props => {
   const {

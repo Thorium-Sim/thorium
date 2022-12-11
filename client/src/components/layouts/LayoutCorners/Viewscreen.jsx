@@ -1,5 +1,5 @@
 import React from "react";
-import Views from "components/views";
+import Views from "components/cards";
 import {withApollo} from "@apollo/client/react/hoc";
 import "./layout.scss";
 import "./theme.scss";

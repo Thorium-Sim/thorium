@@ -2,7 +2,7 @@ import {
   SHIP_CORE_QUERY,
   SHIP_CORE_SUB,
   POP_SUB,
-} from "components/views/Ship/core";
+} from "components/cards/Ship/core";
 import simulators from "../data/simulators";
 export default [
   {

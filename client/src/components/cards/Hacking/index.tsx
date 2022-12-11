@@ -21,7 +21,7 @@ import {capitalCase} from "change-case";
 import useInterval from "helpers/hooks/useInterval";
 import uuid from "uuid";
 import TourHelper from "helpers/tourHelper";
-interface TemplateProps {
+export interface TemplateProps {
   children: React.ReactNode;
   simulator: Simulator;
 }

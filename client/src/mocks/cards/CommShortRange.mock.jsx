@@ -1,12 +1,12 @@
 import {
   COMM_SHORT_RANGE_QUERY,
   COMM_SHORT_RANGE_SUB,
-} from "components/views/CommShortRange";
+} from "components/cards/CommShortRange";
 import systems from "mocks/data/systems";
 import {
   COMM_SHORT_RANGE_CORE_QUERY,
   COMM_SHORT_RANGE_CORE_SUB,
-} from "components/views/CommShortRange/core";
+} from "components/cards/CommShortRange/core";
 
 export default [
   {

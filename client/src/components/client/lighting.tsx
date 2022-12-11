@@ -5,10 +5,10 @@ import {
   useActivateLightingMutation,
 } from "generated/graphql";
 import {css} from "@emotion/css";
-import LightingCore from "components/views/Lighting";
+import LightingCore from "components/cards/Lighting";
 
 import {Button, Input} from "reactstrap";
-import AlertConditionCore from "components/views/AlertCondition/core";
+import AlertConditionCore from "components/cards/AlertCondition/core";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
 import useDMXConfiguration from "./useDMXConfiguration";
 

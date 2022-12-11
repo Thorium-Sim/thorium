@@ -2,7 +2,7 @@ import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag";
 import {Query} from "@apollo/client/react/components";
-import TorpedoInventory from "components/views/TorpedoLoading/inventory";
+import TorpedoInventory from "components/cards/TorpedoLoading/inventory";
 
 const TORPEDO_QUERY = gql`
   query Torpedo($id: ID!) {

@@ -1,5 +1,5 @@
 import React from "react";
-import {Cores} from "components/views";
+import {Cores} from "components/EngineControlCore";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import {
   Mosaic,

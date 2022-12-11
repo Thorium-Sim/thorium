@@ -2,9 +2,9 @@ import React from "react";
 import {capitalCase} from "change-case";
 import gql from "graphql-tag";
 import {useMutation} from "@apollo/client";
-import MacroConfig from "components/views/Macros/macroConfig";
+import MacroConfig from "components/cards/Macros/macroConfig";
 import MacroList from "./MacroList";
-import LiveDataComponents from "components/views/Midi/LiveData";
+import LiveDataComponents from "components/cards/Midi/LiveData";
 
 const midiFragment = gql`
   fragment MidiSetData on MidiSet {

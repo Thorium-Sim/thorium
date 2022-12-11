@@ -1,5 +1,5 @@
 import React from "react";
-import Assets from "../../components/views/AdminAssets";
+import Assets from "../../components/cards/AdminAssets";
 import {Container} from "helpers/reactstrap";
 
 export default () => {

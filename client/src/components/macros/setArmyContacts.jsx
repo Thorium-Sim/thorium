@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from "react";
 import ReactDOM from "react-dom";
 import {FormGroup, Col, Button} from "helpers/reactstrap";
-import ContactContextMenu from "components/views/Sensors/gridCore/contactContextMenu";
+import ContactContextMenu from "components/cards/Sensors/gridCore/contactContextMenu";
 import uuid from "uuid";
 import {FaBan} from "react-icons/fa";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import Views from "components/views";
+import Views from "components/cards";
 import {Transition} from "react-transition-group";
 import {Button} from "helpers/reactstrap";
 import ErrorBoundary from "helpers/errorBoundary";

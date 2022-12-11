@@ -2,7 +2,7 @@ import {
   BATTLE_QUERY,
   BATTLE_CONTACT_SUB,
   BATTLE_SENSORS_SUB,
-} from "components/views/Battle";
+} from "components/cards/Battle";
 import sensorContacts from "mocks/data/sensorContacts";
 import sensors from "mocks/data/sensors";
 

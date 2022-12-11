@@ -1,6 +1,6 @@
 import React from "react";
 import {Input, Label} from "helpers/reactstrap";
-import Views from "components/views/index";
+import Views from "components/cards/index";
 import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";
 import {

@@ -1,11 +1,11 @@
 import {
   INTERCEPTION_QUERY,
   INTERCEPTION_SUB,
-} from "../../components/views/CommInterception/index.js";
+} from "../../components/cards/CommInterception/index.jsx";
 import {
   INTERCEPTION_CORE_QUERY,
   INTERCEPTION_CORE_SUB,
-} from "../../components/views/CommInterception/core.js";
+} from "../../components/cards/CommInterception/core.jsx";
 import systems from "../data/systems";
 
 export default [

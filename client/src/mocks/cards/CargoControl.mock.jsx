@@ -1,4 +1,4 @@
-import {INVENTORY_QUERY, INVENTORY_SUB} from "components/views/CargoControl";
+import {INVENTORY_QUERY, INVENTORY_SUB} from "components/cards/CargoControl";
 import decks from "../data/decks";
 import inventory from "../data/inventory";
 import simulators from "../data/simulators";
@@ -7,7 +7,7 @@ import {
   CORE_INVENTORY_LOG_SUB,
   CORE_INVENTORY_SUB,
   INVENTORY_CORE_SEARCH,
-} from "components/views/CargoControl/core";
+} from "components/cards/CargoControl/core";
 
 export default [
   {

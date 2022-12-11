@@ -194,7 +194,7 @@ interface HoverContact {
   name: string;
   picture: string;
 }
-interface SensorsProps {
+export interface SensorsProps {
   simulator: Simulator;
   station: Station;
   widget: boolean;

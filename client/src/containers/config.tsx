@@ -1,7 +1,7 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
 import uuid from "uuid";
-import TacticalMapCore from "../components/views/TacticalMap";
+import TacticalMapCore from "../components/cards/TacticalMap";
 import DebugList from "./DebugList";
 import {
   SetConfig,

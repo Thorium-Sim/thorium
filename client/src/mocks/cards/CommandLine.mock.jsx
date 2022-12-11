@@ -1,7 +1,7 @@
 import {
   COMMAND_LINE_QUERY,
   COMMAND_LINE_SUB,
-} from "components/views/CommandLine";
+} from "components/cards/CommandLine";
 import clients from "../data/clients";
 export default [
   {

@@ -7,7 +7,7 @@ import {
   ListGroupItem,
 } from "helpers/reactstrap";
 import {Mutation} from "@apollo/client/react/components";
-import FileExplorer from "components/views/TacticalMap/fileExplorer";
+import FileExplorer from "components/cards/TacticalMap/fileExplorer";
 import gql from "graphql-tag";
 
 const assetList = [

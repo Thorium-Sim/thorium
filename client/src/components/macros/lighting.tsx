@@ -3,7 +3,7 @@ import {MacroConfigProps} from "helpers/genericTypes";
 import styled from "@emotion/styled";
 import {useMacroDmxConfigsQuery} from "generated/graphql";
 import {Input, Button, ButtonGroup} from "reactstrap";
-import {LightingOptions} from "components/views/Lighting";
+import {LightingOptions} from "components/cards/Lighting";
 
 const FormWrapper = styled.div`
   label {

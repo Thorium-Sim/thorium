@@ -33,7 +33,7 @@ export {default as RadiationMonitoring} from "./RadiationMonitoring";
 export {default as ShipStatus} from "./ShipStatus";
 export {default as ShipModel} from "./ShipModel";
 export {default as Timer} from "./Timer";
-export {default as Thrusters} from "../views/Thrusters/viewscreen";
+export {default as Thrusters} from "../cards/Thrusters/viewscreen";
 export {default as LowPower} from "./LowPower";
 export {default as Picture} from "./Picture";
 export {default as Objectives} from "./Objectives";

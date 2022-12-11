@@ -1,13 +1,13 @@
-import {DECODING_QUERY, DECODING_SUB} from "components/views/CommDecoding";
+import {DECODING_QUERY, DECODING_SUB} from "components/cards/CommDecoding";
 import systems from "../data/systems";
 import {
   DECODING_CORE_QUERY,
   DECODING_CORE_SUBSCRIPTION,
-} from "components/views/CommDecoding/core";
+} from "components/cards/CommDecoding/core";
 import {
   LONG_RANGE_COMM_QUERY,
   LONG_RANGE_COMM_SUB,
-} from "components/views/LongRangeComm";
+} from "components/cards/LongRangeComm";
 
 export default [
   {

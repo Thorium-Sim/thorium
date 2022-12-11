@@ -1,10 +1,10 @@
-import {TASK_QUERY, TASK_SUB} from "components/views/Tasks";
+import {TASK_QUERY, TASK_SUB} from "components/cards/Tasks";
 import {
   TASK_CORE_QUERY,
   TASK_TEMPLATE_SUB,
   TASK_CORE_SUB,
-} from "components/views/Tasks/core";
-import {TASK_DEFINITION_QUERY} from "components/views/Tasks/core/TaskCreator";
+} from "components/cards/Tasks/core";
+import {TASK_DEFINITION_QUERY} from "components/cards/Tasks/core/TaskCreator";
 
 import tasks from "../data/tasks";
 import taskDefinitions from "../data/taskDefinitions";

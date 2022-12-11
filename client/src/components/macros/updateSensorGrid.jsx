@@ -1,5 +1,5 @@
 import React from "react";
-import GridCore from "../views/Sensors/gridCore";
+import GridCore from "../cards/Sensors/gridCore";
 import {css} from "@emotion/css";
 
 const parseActions = ({timelineItems}) => {

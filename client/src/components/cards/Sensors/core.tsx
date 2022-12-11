@@ -17,8 +17,8 @@ import {
   useSensorsSetHistoryMutation,
   useSensorScanResponseMutation,
 } from "generated/graphql";
-import {ProcessedData} from "./";
-interface SensorsCoreProps {
+import {ProcessedData} from ".";
+export interface SensorsCoreProps {
   simulator: Simulator;
 }
 const SensorsCore: React.FC<SensorsCoreProps> = ({simulator}) => {

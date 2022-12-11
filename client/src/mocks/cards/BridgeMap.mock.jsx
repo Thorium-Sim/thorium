@@ -1,7 +1,7 @@
 import {
   BRIDGE_MAP_QUERY,
   BRIDGE_MAP_SUBSCRIPTION,
-} from "components/views/BridgeMap";
+} from "components/cards/BridgeMap";
 import clients from "../data/clients";
 export default [
   {

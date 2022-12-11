@@ -8,7 +8,7 @@ import {
   useTaskFlowStepEditTaskMutation,
 } from "generated/graphql";
 import {ConfigureMacro} from "./taskConfig";
-import ValueInput from "components/views/Tasks/core/ValueInput";
+import ValueInput from "components/cards/Tasks/core/ValueInput";
 import {TagInput} from "../DMX/fixtures";
 
 const FlowTaskConfig = () => {

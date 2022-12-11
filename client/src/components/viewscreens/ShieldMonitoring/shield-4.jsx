@@ -1,5 +1,5 @@
 import React from "react";
-import shieldStyle from "components/views/ShieldControl/shieldStyle";
+import shieldStyle from "components/cards/ShieldControl/shieldStyle";
 
 export default ({simulator, shields}) => {
   const {assets} = simulator;

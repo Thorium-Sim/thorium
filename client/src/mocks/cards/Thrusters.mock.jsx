@@ -2,12 +2,12 @@ import {
   THRUSTER_QUERY,
   THRUSTER_SUB,
   ROTATION_CHANGE_SUB,
-} from "components/views/Thrusters";
+} from "components/cards/Thrusters";
 import systems from "../data/systems";
 import {
   THRUSTER_CORE_QUERY,
   ROTATION_CHANGE_CORE_SUB,
-} from "components/views/Thrusters/core";
+} from "components/cards/Thrusters/core";
 export default [
   {
     request: {

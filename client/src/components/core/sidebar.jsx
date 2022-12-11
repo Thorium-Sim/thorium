@@ -1,6 +1,6 @@
 import React from "react";
 import "./sidebar.scss";
-import {Cores} from "components/views";
+import {Cores} from "components/EngineControlCore";
 import {subscribe} from "helpers/pubsub";
 import CoreError from "./layouts/coreError";
 import useLocalStorage from "helpers/hooks/useLocalStorage";

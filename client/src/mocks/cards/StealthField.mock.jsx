@@ -2,13 +2,13 @@ import {
   STEALTH_QUERY,
   STEALTH_SUB,
   STEALTH_SYSTEMS_QUERY,
-} from "../../components/views/StealthField";
+} from "../../components/cards/StealthField";
 import systems from "../data/systems";
 import {
   STEALTH_CORE_SUB,
   STEALTH_CORE_QUERY,
   STEALTH_SYSTEMS_CORE_QUERY,
-} from "components/views/StealthField/core";
+} from "components/cards/StealthField/core";
 export default [
   {
     request: {

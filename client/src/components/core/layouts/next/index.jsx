@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Dynamic from "../dynamic";
-import {Cores} from "components/views";
-import Lighting from "components/views/Lighting";
+import {Cores} from "components/EngineControlCore";
+import Lighting from "components/cards/Lighting";
 import CoreError from "../coreError";
 import "./next.scss";
 

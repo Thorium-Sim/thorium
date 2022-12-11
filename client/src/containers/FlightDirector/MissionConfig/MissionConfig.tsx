@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
 import {Mission, useMissionSetRequirementsMutation} from "generated/graphql";
-import Cards from "../../../components/views/index";
+import Cards from "../../../components/cards/index";
 import {FaBan} from "react-icons/fa";
 interface MissionConfigProps {
   mission: Mission;

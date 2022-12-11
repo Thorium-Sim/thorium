@@ -1,5 +1,5 @@
 import React from "react";
-import Views from "components/views";
+import Views from "components/cards";
 import CardFrame from "./cardFrame";
 import "./style.scss";
 import {Simulator, Client} from "generated/graphql";

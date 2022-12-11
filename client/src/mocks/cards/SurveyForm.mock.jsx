@@ -1,9 +1,9 @@
-import {SURVEY_FORM_QUERY, SURVEY_FORM_SUB} from "components/views/SurveyForm";
+import {SURVEY_FORM_QUERY, SURVEY_FORM_SUB} from "components/cards/SurveyForm";
 import surveyForms from "../data/surveyForms";
 import {
   SURVEY_FORM_CORE_QUERY,
   SURVEY_FORM_CORE_SUB,
-} from "components/views/SurveyForm/core";
+} from "components/cards/SurveyForm/core";
 export default [
   {
     request: {

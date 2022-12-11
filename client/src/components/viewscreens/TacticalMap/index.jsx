@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import gql from "graphql-tag";
 import {withApollo} from "@apollo/client/react/hoc";
-import Preview from "components/views/TacticalMap/preview";
+import Preview from "components/cards/TacticalMap/preview";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 import {useQuery} from "@apollo/client";
 //import "./style.scss";

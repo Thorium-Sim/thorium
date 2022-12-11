@@ -1,7 +1,7 @@
 import React from "react";
 import ThreeView from "./threeView";
 import useMeasure from "helpers/hooks/useMeasure";
-import {ViewscreenScaleContext} from "../../views/Viewscreen";
+import {ViewscreenScaleContext} from "../../cards/Viewscreen";
 
 const Stars = props => {
   let angle = 0;

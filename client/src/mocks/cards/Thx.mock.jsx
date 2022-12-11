@@ -1,6 +1,6 @@
-import {THX_QUERY, THX_SUB} from "components/views/Thx";
+import {THX_QUERY, THX_SUB} from "components/cards/Thx";
 import systems from "../data/systems";
-import {THX_CORE_SUB, THX_CORE_QUERY} from "components/views/Thx/core";
+import {THX_CORE_SUB, THX_CORE_QUERY} from "components/cards/Thx/core";
 export default [
   {
     request: {

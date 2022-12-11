@@ -11,7 +11,7 @@ import {capitalCase} from "change-case";
 import {InputField} from "components/generic/core";
 import {ListGroup, ListGroupItem} from "reactstrap";
 import {Input} from "reactstrap";
-interface CountermeasuresCoreProps {
+export interface CountermeasuresCoreProps {
   children: React.ReactNode;
   simulator: Simulator;
 }

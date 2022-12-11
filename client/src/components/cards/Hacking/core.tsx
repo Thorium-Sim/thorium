@@ -12,7 +12,7 @@ import "./style.scss";
 import {Button, Input} from "reactstrap";
 import {OutputField} from "components/generic/core";
 
-interface HackingProps {
+export interface HackingProps {
   simulator: Simulator;
 }
 

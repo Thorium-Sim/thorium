@@ -2,7 +2,7 @@ import React from "react";
 import {Simulator, useTemplateUpdateSubscription} from "generated/graphql";
 import "./style.scss";
 
-interface TemplateProps {
+export interface TemplateProps {
   children: React.ReactNode;
   simulator: Simulator;
 }
@@ -16,6 +16,6 @@ const Template: React.FC<TemplateProps> = props => {
   if (loading || !data) return null;
   const {_templateUpdate: template} = data;
   if (!template) return <div>No Template</div>;
-  return <div className="card-template">Template Card</div>;
+  return <div className="core-template">Template Core</div>;
 };
 export default Template;

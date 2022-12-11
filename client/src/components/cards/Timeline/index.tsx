@@ -14,7 +14,7 @@ import {
 } from "generated/graphql";
 import Build from "./Build";
 
-interface TimelineProps {
+export interface TimelineProps {
   simulator: Simulator;
   clients: Client[];
 }

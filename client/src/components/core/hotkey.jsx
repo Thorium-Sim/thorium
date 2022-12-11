@@ -1,7 +1,7 @@
 import React, {Component, Suspense} from "react";
 import {withApollo} from "@apollo/client/react/hoc";
 import gql from "graphql-tag";
-import {Cores} from "components/views";
+import {Cores} from "components/EngineControlCore";
 import categories from "./categories";
 import {capitalCase} from "change-case";
 const fkeys = categories.reduce((prev, next, i) => {
