@@ -7,6 +7,21 @@ import {initializeTabId} from "@thorium/tab-id";
 
 initializeTabId();
 
+window.addEventListener(
+  "dragover",
+  function (e) {
+    e.preventDefault();
+  },
+  false,
+);
+window.addEventListener(
+  "drop",
+  function (e) {
+    e.preventDefault();
+  },
+  false,
+);
+
 try {
   window.thorium = window.thorium || {
     sendMessage: (args: any) => {},

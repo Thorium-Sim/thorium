@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "useDefineForClassFields": true,
+    // "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
     "checkJs": false,
@@ -9,22 +9,29 @@
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "composite": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "@emotion/react",
+    "rootDir": "..",
+    "baseUrl": "..",
     "paths": {
-      "helpers/*": ["./src/helpers/*"],
-      "components/*": ["./src/components/*"],
-      "containers/*": ["./src/containers/*"],
-      "generated/*": ["./src/generated/*"],
-      "@thorium/*": ["../shared/*"]
+      "helpers/*": ["./client/src/helpers/*"],
+      "components/*": ["./client/src/components/*"],
+      "containers/*": ["./client/src/containers/*"],
+      "generated/*": ["./client/src/generated/*"],
+      "@client/*": ["./client/src/*"],
+      "@thorium/*": ["./shared/*"],
+      "@thorium/ui/*": ["./client/src/components/ui/*"],
+      "@thorium/inputs": ["./server/src/inputs"],
+      "@thorium/requests": ["./server/src/requests"]
     }
   },
-  "include": ["src", "../shared"],
+  "include": ["src/**/*", "../shared", "../server"],
   "references": [{"path": "./tsconfig.node.json"}]
 }

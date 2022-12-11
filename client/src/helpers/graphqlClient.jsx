@@ -12,7 +12,7 @@ import {WebSocketLink} from "@apollo/client/link/ws";
 import {MockLink} from "@apollo/client/testing";
 import {setContext} from "@apollo/client/link/context";
 import {FLIGHTS_QUERY} from "../containers/FlightDirector/Welcome/Welcome";
-import {getClientId} from "helpers/getClientId";
+import {getTabId} from "@thorium/tab-id";
 
 const hostname = window.location.hostname;
 const protocol = window.location.protocol;
@@ -35,7 +35,7 @@ const webSocketLink = new WebSocketLink({
   uri: websocketUrl,
   options: {
     reconnect: true,
-    connectionParams: () => getClientId().then(clientId => ({clientId})),
+    connectionParams: () => getTabId().then(clientId => ({clientId})),
   },
 });
 
@@ -61,7 +61,7 @@ const wsLink = ApolloLink.from([
 
 const headersMiddleware = setContext((operation, {headers}) => {
   const core = window.location.pathname.includes("/core");
-  return getClientId().then(clientId => ({
+  return getTabId().then(clientId => ({
     headers: {...headers, clientId, core},
   }));
 });

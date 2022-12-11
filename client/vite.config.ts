@@ -19,6 +19,11 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
+    proxy: {
+      "/netSend": "http://localhost:3002",
+      "/netRequest": "http://localhost:3002",
+      "/ws": "http://localhost:3002",
+    },
   },
   esbuild: {
     loader: "tsx",

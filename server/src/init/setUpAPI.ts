@@ -1,7 +1,7 @@
 import {FlightDataModel} from "@server/newClasses/FlightDataModel";
 import {ServerDataModel} from "@server/newClasses/ServerDataModel";
-import requests, {AllRequestNames} from "@server/newHelpers/netRequests";
-import inputs, {AllInputNames} from "@server/newHelpers/inputs";
+import requests, {AllRequestNames} from "@server/requests";
+import inputs, {AllInputNames} from "@server/inputs";
 import type buildHTTPServer from "./buildHttpServer";
 import {DataContext} from "@server/newClasses/DataContext";
 

@@ -12,6 +12,8 @@ import NewFlight from "./NewFlight";
 import {useQuery} from "@apollo/client";
 import {TrainingContext} from "containers/TrainingContextProvider";
 import pkg from "../../../../package.json";
+import {useChainNetRequest, useNetRequest} from "@client/context/useNetRequest";
+import {netSend} from "@client/context/netSend";
 
 export const FLIGHTS_QUERY = gql`
   query Flights {
@@ -74,6 +76,7 @@ const Welcome = () => {
       //  window.location.reload();
     });
   };
+
   const {loading, data, error, subscribeToMore} = useQuery(FLIGHTS_QUERY);
   if (loading || !data) return null;
   if (error) return <h1>Error accessing Thorium server.</h1>;

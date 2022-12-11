@@ -1,11 +1,5 @@
 import {DataContext} from "@server/newClasses/DataContext";
 import {FlightClient} from "@server/newClasses/FlightClient";
-import {
-  InputParams,
-  InputReturns,
-  RequestPublishParams,
-  UnionToIntersection,
-} from "./types";
 
 export const mainRequests = {
   timers: async (
@@ -19,8 +13,9 @@ export const mainRequests = {
   thorium: (context: DataContext) => {
     return {};
   },
-  dbDump: (context: DataContext) => {
-    return context.database;
+
+  clients: (context: DataContext) => {
+    return context.server.clients;
   },
   client: (
     context: DataContext,
@@ -38,13 +33,70 @@ export const mainRequests = {
     } = (context.flightClient as FlightClient) || {};
     return {id, name, connected, ...flightClient};
   },
+  random: () => {
+    return Math.random();
+  },
+};
+const dbDumpRequests = {
+  dbDump: (context: DataContext) => {
+    return context.database;
+  },
 };
 
-const allRequests = {timerRequests: mainRequests};
+const allRequests = {mainRequests, dbDumpRequests};
 export const cardSubscriptions = {};
 
-type RequestsUnion = typeof allRequests[keyof typeof allRequests];
-export type AllRequests = UnionToIntersection<RequestsUnion>;
+// For some reason TypeScript is complaining when
+// these types aren't included in the folder where the
+// inference is happening.
+type AllPaths<T, P extends string = ""> = {
+  [K in keyof T]: T[K] extends object
+    ? T[K] extends any[]
+      ? `${P}${K & string}`
+      : AllPaths<T[K], `${P}${K & string}.`> extends infer O
+      ? `${O & string}` | `${P}${K & string}`
+      : never
+    : `${P}${K & string}`;
+}[keyof T];
+type PathToType<T, P extends string> = P extends keyof T
+  ? T[P]
+  : P extends `${infer L}.${infer R}`
+  ? L extends keyof T
+    ? PathToType<T[L], R>
+    : never
+  : never;
+type Matcher<T> = {
+  [K in AllPaths<T> as K extends `${string}.${infer R}`
+    ? R
+    : never]: PathToType<T, K & string>;
+};
+type SecondParam<Func extends (...args: any) => any> = Func extends (
+  first: any,
+  second: infer R,
+  ...args: any
+) => any
+  ? R
+  : never;
+type ThirdParam<Func extends (...args: any) => any> = Func extends (
+  first: any,
+  second: any,
+  third: infer R,
+  ...args: any
+) => any
+  ? R
+  : never;
+type AnyFunc = (...args: any) => any;
+export type InputParams<Inputs extends Record<string, AnyFunc>> = {
+  [Property in keyof Inputs]: SecondParam<Inputs[Property]>;
+};
+export type RequestPublishParams<Requests extends Record<string, AnyFunc>> = {
+  [Property in keyof Requests]: ThirdParam<Requests[Property]>;
+};
+export type InputReturns<Inputs extends Record<string, AnyFunc>> = {
+  [Property in keyof Inputs]: Awaited<ReturnType<Inputs[Property]>>;
+};
+
+export type AllRequests = Matcher<typeof allRequests>;
 export type AllRequestNames = keyof AllRequests;
 export type AllRequestParams = InputParams<AllRequests>;
 export type AllRequestPublishParams = RequestPublishParams<AllRequests>;

@@ -3,10 +3,7 @@ import {DataContext} from "./DataContext";
 
 import {encode} from "@msgpack/msgpack";
 import {SocketStream} from "@fastify/websocket";
-import requests, {
-  AllRequestNames,
-  cardSubscriptions,
-} from "@server/newHelpers/netRequests";
+import requests, {AllRequestNames, cardSubscriptions} from "@server/requests";
 import {randomNameGenerator} from "@server/newHelpers/randomNameGenerator";
 import {SnapshotInterpolation} from "@thorium/snapshot-interpolation/src";
 import {pubsub} from "@server/newHelpers/pubsub";

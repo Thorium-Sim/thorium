@@ -130,7 +130,6 @@ const RoutesContainer: React.FC = () => {
       <Router>
         <Routes>
           <Route path="client" element={<Client />} />
-
           <Route path="/*" element={<FlightDirectorContainer />} />
         </Routes>
       </Router>

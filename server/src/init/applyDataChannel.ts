@@ -3,6 +3,7 @@ import websocketPlugin from "@fastify/websocket";
 import {DataContext} from "@server/newHelpers/types";
 import {ServerClient} from "@server/newClasses/ServerClient";
 import {AuthData} from "@thorium/types";
+import {pubsub} from "@server/newHelpers/pubsub";
 
 type Awaited<T> = T extends Promise<infer U> ? U : T;
 

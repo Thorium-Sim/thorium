@@ -13,12 +13,6 @@ export async function startServer(
 
   try {
     await app.listen({port: PORT});
-    // @ts-expect-error can't index with any
-    app[symbols.kServerBindings].forEach((server: RawServerBase) => {
-      server.on("upgrade", (...args: any[]) => {
-        app.server.emit("upgrade", ...args);
-      });
-    });
     if (process.env.NODE_ENV === "production") {
       const proxy = buildHttpsProxy(PORT);
       await proxy.listen({port: HTTPSPort});
