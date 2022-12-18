@@ -1,7 +1,6 @@
 const fs = require("fs");
 
 const envVars = [
-  "ENGINE_API_KEY",
   "GOOGLE_SHEETS_CLIENT_ID",
   "GOOGLE_SHEETS_PROJECT_ID",
   "GOOGLE_SHEETS_SECRET",

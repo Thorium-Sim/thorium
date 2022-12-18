@@ -20,8 +20,10 @@
     "paths": {
       "*": ["./node_modules/*", "./types/*"],
       "@server/*": ["./server/src/*"],
-      "@thorium/*": ["./shared/*"]
+      "@client/*": ["./client/src/*"],
+      "@thorium/*": ["./shared/*"],
+      "@thorium/cardData": ["./client/src/cards/dataExport.ts"]
     }
   },
-  "include": ["src/**/*", "../shared"]
+  "include": ["src/**/*", "../shared", "../client/src", "../package.json"]
 }

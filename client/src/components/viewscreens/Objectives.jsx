@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import Objectives from "../cards/Objectives";
+import Objectives from "../../cards/Objectives";
 const Wrap = styled.div`
   display: flex;
   justify-content: center;

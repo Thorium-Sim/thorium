@@ -1,12 +1,12 @@
 import {
   SPECIALIZED_DOCKING_QUERY,
   SPECIALIZED_DOCKING_SUB,
-} from "components/cards/SpecializedDocking";
+} from "@client/cards/SpecializedDocking";
 import docking from "../data/docking";
 import {
   SPECIALIZED_DOCKING_CORE_QUERY,
   SPECIALIZED_DOCKING_CORE_SUB,
-} from "components/cards/SpecializedDocking/core";
+} from "@client/cards/SpecializedDocking/core";
 export default [
   {
     request: {

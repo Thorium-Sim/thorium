@@ -26,12 +26,12 @@
       "containers/*": ["./client/src/containers/*"],
       "generated/*": ["./client/src/generated/*"],
       "@client/*": ["./client/src/*"],
+      "@server/*": ["./server/src/*"],
       "@thorium/*": ["./shared/*"],
       "@thorium/ui/*": ["./client/src/components/ui/*"],
-      "@thorium/inputs": ["./server/src/inputs"],
-      "@thorium/requests": ["./server/src/requests"]
+      "@thorium/router": ["./server/src/newHelpers/router"]
     }
   },
-  "include": ["src/**/*", "../shared", "../server"],
+  "include": ["src/**/*", "../shared", "../server/src", "../package.json"],
   "references": [{"path": "./tsconfig.node.json"}]
 }

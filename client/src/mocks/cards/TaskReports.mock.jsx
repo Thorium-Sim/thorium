@@ -1,7 +1,7 @@
 import {
   TASK_REPORTS_CORE_QUERY,
   TASK_REPORTS_CORE_SUB,
-} from "components/cards/TaskReports/core";
+} from "@client/cards/TaskReports/core";
 import taskReport from "../data/taskReports";
 import systems from "../data/systems";
 export default [

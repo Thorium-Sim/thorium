@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import gql from "graphql-tag";
 import {withApollo} from "@apollo/client/react/hoc";
-import FileExplorer from "components/cards/TacticalMap/fileExplorer";
+import FileExplorer from "@client/cards/TacticalMap/fileExplorer";
 import {Button} from "helpers/reactstrap";
 const ADD_CACHE_MUTATION = gql`
   mutation AddCache($clientId: ID!, $cacheItem: String!) {

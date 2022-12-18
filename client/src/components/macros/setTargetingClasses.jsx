@@ -1,7 +1,7 @@
 import React from "react";
 import uuid from "uuid";
-import CoreTargets from "../cards/Targeting/coreTargets";
-import "../views/Targeting/style.scss";
+import CoreTargets from "../../cards/Targeting/coreTargets";
+import "../../cards/Targeting/style.scss";
 const SetTargetingClasses = ({updateArgs = () => {}, args = {}}) => {
   const targeting = {
     classes: args.classInput || [],

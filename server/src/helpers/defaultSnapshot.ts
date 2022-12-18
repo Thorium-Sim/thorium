@@ -13640,8 +13640,6 @@ export default {
   printQueue: [],
   autoUpdate: true,
   thoriumId: randomWords(5).join("-"),
-  doTrack: false,
-  askedToTrack: false,
   addedTaskTemplates: false,
   spaceEdventuresToken: "",
   googleSheetsTokens: {},

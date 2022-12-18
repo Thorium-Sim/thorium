@@ -2,7 +2,7 @@ import React from "react";
 import ThreeView from "./threeView";
 import "./style.scss";
 import useMeasure from "helpers/hooks/useMeasure";
-import {ViewscreenScaleContext} from "../../cards/Viewscreen";
+import {ViewscreenScaleContext} from "../../../cards/Viewscreen";
 
 export default props => {
   const data = JSON.parse(props.viewscreen.data);

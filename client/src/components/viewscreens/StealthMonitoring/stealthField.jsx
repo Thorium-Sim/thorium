@@ -2,9 +2,9 @@ import React, {Component} from "react";
 import {Container, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag";
 
-import StealthBoard from "../../cards/StealthField/stealthBoard";
+import StealthBoard from "../../../cards/StealthField/stealthBoard";
 
-import StealthAnimation from "../../cards/StealthField/stealthAnimation";
+import StealthAnimation from "../../../cards/StealthField/stealthAnimation";
 
 export default class StealthField extends Component {
   scene = null;

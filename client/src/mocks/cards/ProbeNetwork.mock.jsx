@@ -1,11 +1,8 @@
-import {
-  PROBE_NETWORK_QUERY,
-  PROBE_NETWORK_SUB,
-} from "../../components/cards/ProbeNetwork";
+import {PROBE_NETWORK_QUERY, PROBE_NETWORK_SUB} from "../../cards/ProbeNetwork";
 import {
   PROBE_NETWORK_CORE_QUERY,
   PROBE_NETWORK_CORE_SUB,
-} from "../../components/cards/ProbeNetwork/core";
+} from "../../cards/ProbeNetwork/core";
 import systems from "../data/systems";
 
 export default [

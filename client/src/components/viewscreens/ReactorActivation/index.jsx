@@ -2,9 +2,9 @@ import React from "react";
 import {Container, Row, Col} from "helpers/reactstrap";
 import AnimatedNumber from "react-animated-number";
 import useMeasure from "helpers/hooks/useMeasure";
-import {ViewscreenScaleContext} from "../../cards/Viewscreen";
+import {ViewscreenScaleContext} from "../../../cards/Viewscreen";
 
-import ReactorModel from "components/cards/ReactorControl/model";
+import ReactorModel from "@client/cards/ReactorControl/model";
 
 const ReactorActivation = props => {
   const data = JSON.parse(props.viewscreen.data);

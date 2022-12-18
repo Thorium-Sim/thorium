@@ -1,11 +1,11 @@
 import {
   SUBSPACE_FIELD_QUERY,
   SUBSPACE_FIELD_SUB,
-} from "components/cards/SubspaceField";
+} from "@client/cards/SubspaceField";
 import {
   SUBSPACE_CORE_QUERY,
   SUBSPACE_CORE_SUB,
-} from "components/cards/SubspaceField/core";
+} from "@client/cards/SubspaceField/core";
 import systems from "../data/systems";
 export default [
   {

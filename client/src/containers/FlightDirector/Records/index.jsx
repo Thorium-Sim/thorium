@@ -4,7 +4,7 @@ import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import {Container, ListGroup, ListGroupItem, Button} from "reactstrap";
 import "./style.scss";
 import {useMutation} from "@apollo/client";
-import {stardate} from "components/cards/OfficerLog";
+import {stardate} from "@client/cards/OfficerLog";
 
 const fragment = gql`
   fragment RecordTemplate on RecordSnippet {

@@ -1,6 +1,6 @@
 import React from "react";
 import "./sidebar.scss";
-import {Cores} from "components/EngineControlCore";
+import {Cores} from "@client/cards/cores";
 import {subscribe} from "helpers/pubsub";
 import CoreError from "./layouts/coreError";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
@@ -66,9 +66,8 @@ const Sidebar = props => {
             key={`${s.label}-${s.component}`}
             onClick={() => {
               setOpen({
-                [`${s.label}-${s.component}`]: !open[
-                  `${s.label}-${s.component}`
-                ],
+                [`${s.label}-${s.component}`]:
+                  !open[`${s.label}-${s.component}`],
               });
               setShowing(showing => ({
                 ...showing,

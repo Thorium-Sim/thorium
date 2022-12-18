@@ -1,5 +1,5 @@
 import React from "react";
-import Decks from "components/cards/ShipStructure/core";
+import Decks from "@client/cards/ShipStructure/core";
 
 const DecksWrapped = ({selectedSimulator: sim}) => {
   return (

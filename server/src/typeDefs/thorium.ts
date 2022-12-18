@@ -2,27 +2,16 @@ import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import GraphQLClient from "../helpers/graphqlClient";
-// TODO - get rid of this
-import request from "request";
-import fetch from "node-fetch";
-import uuid from "uuid";
-import {capitalCase} from "change-case";
 
 import tokenGenerator from "../helpers/tokenGenerator";
 
-const issuesUrl =
-  "https://12usj3vwf1.execute-api.us-east-1.amazonaws.com/prod/issueTracker";
-
 let spaceEdventuresData = null;
 let spaceEdventuresTimeout = 0;
-const version = require("../../package.json").version;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
   type Thorium {
     thoriumId: String
-    doTrack: Boolean
-    askedToTrack: Boolean
     addedTaskTemplates: Boolean
     spaceEdventuresToken: String
     spaceEdventuresCenter: SpaceEdventuresCenter
@@ -55,7 +44,6 @@ const schema = gql`
     thorium: Thorium
   }
   extend type Mutation {
-    setTrackingPreference(pref: Boolean!): String
     importTaskTemplates: String
     setSpaceEdventuresToken(token: String!): SpaceEdventuresCenter
 
@@ -101,15 +89,6 @@ const schema = gql`
     generic(simulatorId: ID!, key: String!): String
 
     clockSync(clientId: ID!): String
-
-    addIssue(
-      title: String!
-      body: String!
-      person: String!
-      priority: String!
-      type: String!
-    ): String
-    addIssueUpload(data: String!, filename: String!, ext: String!): String
   }
   extend type Subscription {
     thoriumUpdate: Thorium
@@ -188,11 +167,6 @@ const resolver = {
     },
   },
   Mutation: {
-    setTrackingPreference: (rootValue, {pref}) => {
-      App.doTrack = pref;
-      App.askedToTrack = true;
-    },
-
     importTaskTemplates: () => {
       if (App.addedTaskTemplates) return;
       App.addedTaskTemplates = true;
@@ -301,60 +275,6 @@ const resolver = {
         pubsub.publish("clientChanged", App.clients);
       }
       return doLogin();
-    },
-
-    addIssue(rootValue, {title, body, person, priority, type}) {
-      // Create our body
-      var postBody =
-        `
-          ### Requested By: ${person}
-    
-          ### Priority: ${capitalCase(priority)}
-    
-          ### Version: ${version}
-        `
-          .replace(/^\s+/gm, "")
-          .replace(/\s+$/m, "\n\n") + body;
-
-      var postOptions = {
-        title,
-        body: postBody,
-        labels: [
-          version.includes("beta") && "beta",
-          `priority/${priority}`,
-          type,
-        ].filter(Boolean),
-      };
-      request.post(
-        {url: issuesUrl, body: postOptions, json: true},
-        function () {},
-      );
-    },
-    async addIssueUpload(rootValue, {data, filename, ext}) {
-      const uploadPath = `uploads/${filename}-${uuid.v4()}.${ext}`;
-      const url =
-        "https://api.github.com/repos/thorium-sim/issue-uploads/contents/" +
-        uploadPath;
-      const payload = {
-        message: "issue tracker snapshot",
-        branch: "master",
-        content: data,
-      };
-
-      return fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "token " + process.env.GH_ISSUE_TOKEN,
-        },
-        body: JSON.stringify(payload),
-      })
-        .then(res => res.json())
-        .then(res => {
-          if (!res.content || !res.content.html_url) return null;
-          return res.content.html_url + "?raw=true";
-        })
-        .catch(err => console.error(err));
     },
     clockSync(rootValue, {clientId}) {
       pubsub.publish("clockSync", {clientId});

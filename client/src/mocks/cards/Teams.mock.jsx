@@ -1,4 +1,4 @@
-import {TEAMS_QUERY, TEAM_SUB, CREW_SUB} from "components/cards/Teams";
+import {TEAMS_QUERY, TEAM_SUB, CREW_SUB} from "@client/cards/Teams";
 import teams from "../data/teams";
 import decks from "../data/decks";
 import crew from "../data/crew";
@@ -6,7 +6,7 @@ import {
   TEAMS_CORE_QUERY,
   TEAMS_CORE_SUB,
   TEAMS_CREW_CORE_SUB,
-} from "components/cards/Teams/core";
+} from "@client/cards/Teams/core";
 export default [
   {
     request: {

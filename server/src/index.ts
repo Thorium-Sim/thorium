@@ -10,10 +10,12 @@ import App from "./app";
 import buildHTTPServer from "./init/buildHttpServer";
 import path from "path";
 import {rootPath} from "./newHelpers/appPaths";
-import {applyDataChannel} from "./init/applyDataChannel";
 import {buildDatabase} from "./init/buildDatabase";
-import {setUpAPI} from "./init/setUpAPI";
 import {startServer} from "./init/startServer";
+import {liveQueryPlugin} from "@thorium/live-query/adapters/fastify-adapter";
+import {router} from "./newHelpers/router";
+import {createContext, createWSContext} from "./newHelpers/liveQuery";
+import {pubsub} from "./newHelpers/pubsub";
 
 async function main() {
   try {
@@ -28,8 +30,13 @@ async function main() {
     const app = await buildHTTPServer({
       staticRoot: path.join(rootPath, "public/"),
     });
-    await applyDataChannel(app, database);
-    await setUpAPI(app, database);
+    await app.register(liveQueryPlugin, {
+      createContext: createContext as any,
+      createWSContext: createWSContext as any,
+      router,
+      pubsub,
+      extraContext: database,
+    });
     await startServer(app);
 
     await postMigration();

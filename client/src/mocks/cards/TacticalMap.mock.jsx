@@ -1,7 +1,4 @@
-import {
-  TACTICALMAP_QUERY,
-  TACTICALMAP_SUB,
-} from "../../components/cards/TacticalMap";
+import {TACTICALMAP_QUERY, TACTICALMAP_SUB} from "../../cards/TacticalMap";
 import tacticalMap from "../data/tacticalMap";
 export default [
   {

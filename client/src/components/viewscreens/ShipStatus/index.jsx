@@ -1,5 +1,5 @@
 import React from "react";
-import Status from "components/cards/Status";
+import Status from "@client/cards/Status";
 import {Container} from "helpers/reactstrap";
 const ShipStatus = props => {
   return (

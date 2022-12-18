@@ -1,6 +1,6 @@
 import React from "react";
 import {FormGroup} from "helpers/reactstrap";
-import {SignalPicker} from "../cards/CommShortRange/signalsCore";
+import {SignalPicker} from "../../cards/CommShortRange/signalsCore";
 export default ({updateArgs, args}) => {
   const shortRangeComm = {signals: args.signals || []};
   return (

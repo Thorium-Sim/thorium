@@ -1,5 +1,5 @@
 import React from "react";
-import Views from "../components/cards";
+import Views from "../cards";
 import {Link} from "react-router-dom";
 
 const viewList = Object.keys(Views)

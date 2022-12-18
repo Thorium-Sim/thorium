@@ -11,6 +11,7 @@ require("dotenv").config({
   debug: process.env.NODE_ENV === "development",
   path: `${__dirname}/../../.env`,
 });
+
 const warn = console.warn;
 console.warn = (message: string) => {
   if (
@@ -93,4 +94,4 @@ export default async function init() {
       }
     });
   }
-};
+}

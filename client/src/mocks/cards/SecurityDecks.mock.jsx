@@ -1,12 +1,5 @@
-import {
-  DECK_QUERY,
-  DECK_SUB,
-  DECK_TASK_SUB,
-} from "../../components/cards/SecurityDecks";
-import {
-  DECK_CORE_QUERY,
-  DECK_CORE_SUB,
-} from "../../components/cards/SecurityDecks/core";
+import {DECK_QUERY, DECK_SUB, DECK_TASK_SUB} from "../../cards/SecurityDecks";
+import {DECK_CORE_QUERY, DECK_CORE_SUB} from "../../cards/SecurityDecks/core";
 import decks from "../data/decks";
 import tasks from "../data/tasks";
 export default [

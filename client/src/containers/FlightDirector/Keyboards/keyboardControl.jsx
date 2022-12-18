@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Row, Col, Card} from "helpers/reactstrap";
 import {Mutation} from "@apollo/client/react/components";
 import gql from "graphql-tag";
-import {keys} from "../../../components/cards/Widgets/keyboard";
+import {keys} from "../../../cards/Widgets/keyboard";
 import EventPicker from "../MissionConfig/EventPicker";
 import MacroConfig from "./macroConfig";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";

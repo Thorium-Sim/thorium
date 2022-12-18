@@ -37,8 +37,6 @@ type Query {
   externals: Externals
   flights(running: Boolean, id: ID): [Flight!]!
   events: [String]
-  googleSheets: String
-  googleSheetsGetSpreadsheet(spreadsheetId: ID!): GoogleSpreadsheet
   interfaces(simulatorId: ID): [Interface]
   interfaceDevices: [InterfaceDevice]
   internalComm(simulatorId: ID!): [InternalComm]
@@ -443,11 +441,6 @@ type Mutation {
     - Space EdVentures
   """
   clientAddExtra(flightId: ID!, simulatorId: ID!, name: String!): String
-  googleSheetsAuthorize: String
-  googleSheetsCompleteAuthorize(token: String!): String
-  googleSheetsRevoke: String
-  googleSheetsFileSearch(searchText: String!): [GoogleSheetFile]
-  googleSheetsAppendData(spreadsheetId: ID, sheetId: String, data: JSON): String
   addInterface(name: String!): String
   renameInterface(id: ID!, name: String!): String
   removeInterface(id: ID!): String
@@ -1201,7 +1194,6 @@ type Mutation {
   removeCrewFromTeam(teamId: ID!, crewId: ID!): String
   removeTeam(teamId: ID!): String
   _template: String
-  setTrackingPreference(pref: Boolean!): String
   importTaskTemplates: String
   setSpaceEdventuresToken(token: String!): SpaceEdventuresCenter
 
@@ -1242,8 +1234,6 @@ type Mutation {
   """Macro: Generic: Do a generic thing. Use for triggers."""
   generic(simulatorId: ID!, key: String!): String
   clockSync(clientId: ID!): String
-  addIssue(title: String!, body: String!, person: String!, priority: String!, type: String!): String
-  addIssueUpload(data: String!, filename: String!, ext: String!): String
   rotationUpdate(id: ID!, rotation: RotationInput, on: Boolean): String
   rotationSet(id: ID!, rotation: RotationInput): String
   requiredRotationSet(id: ID!, rotation: RotationInput): String
@@ -1401,7 +1391,6 @@ type Subscription {
   engineUpdate(simulatorId: ID): Engine
   exocompsUpdate(simulatorId: ID!): [Exocomp]
   flightsUpdate(running: Boolean, id: ID): [Flight]
-  googleSheetsUpdate(simulatorId: ID): [GoogleSheets]
   interfaceUpdate(simulatorId: ID): [Interface]
   internalCommUpdate(simulatorId: ID): [InternalComm]
   inventoryUpdate(simulatorId: ID!): [InventoryItem]
@@ -2325,27 +2314,6 @@ type SpaceEdventuresClient {
   token: String
   name: String
   email: String
-}
-
-type GoogleSheets {
-  id: ID
-  simulatorId: ID
-}
-
-type GoogleSheetFile {
-  id: ID
-  name: String
-}
-
-type GoogleSpreadsheet {
-  id: ID
-  title: String
-  sheets: [GoogleSheet]
-}
-
-type GoogleSheet {
-  id: ID
-  title: String
 }
 
 type Interface {
@@ -4402,8 +4370,6 @@ type Template {
 
 type Thorium {
   thoriumId: String
-  doTrack: Boolean
-  askedToTrack: Boolean
   addedTaskTemplates: Boolean
   spaceEdventuresToken: String
   spaceEdventuresCenter: SpaceEdventuresCenter

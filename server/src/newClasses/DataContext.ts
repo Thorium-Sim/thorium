@@ -1,4 +1,3 @@
-import {ServerClient} from "./ServerClient";
 import {FlightClient} from "./FlightClient";
 import type {ServerDataModel} from "./ServerDataModel";
 import type {FlightDataModel} from "./FlightDataModel";
@@ -10,15 +9,9 @@ import type {FlightDataModel} from "./FlightDataModel";
 
 export class DataContext {
   constructor(
-    public clientId: string,
+    public id: string,
     public database: {server: ServerDataModel; flight: FlightDataModel | null},
-  ) {
-    // Let's generate a client if it doesn't already exist in the database
-    const client = database.server.clients[clientId];
-    if (!client) {
-      database.server.clients[clientId] = new ServerClient({id: clientId});
-    }
-  }
+  ) {}
   get server() {
     return this.database.server;
   }
@@ -29,10 +22,10 @@ export class DataContext {
     this.database.flight = flight;
   }
   get client() {
-    return this.database.server.clients[this.clientId];
+    return this.database.server.clients[this.id];
   }
   get flightClient() {
-    return this.findFlightClient(this.clientId);
+    return this.findFlightClient(this.id);
   }
   findFlightClient(clientId: string) {
     if (!this.flight) return null;

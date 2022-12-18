@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Tooltip, Button} from "helpers/reactstrap";
-import {Widgets} from "components/Widgets";
+import {Widgets} from "@client/cards/widgets";
 import gql from "graphql-tag";
 import {withApollo} from "@apollo/client/react/hoc";
 import {subscribe} from "helpers/pubsub";

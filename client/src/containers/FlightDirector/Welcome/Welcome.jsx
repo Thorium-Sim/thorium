@@ -7,19 +7,13 @@ import {FormattedMessage} from "react-intl";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./welcome.scss";
 import QuoteOfTheDay from "./QuoteOfTheDay";
-import TrackerPopup from "./TrackerPopup";
 import NewFlight from "./NewFlight";
 import {useQuery} from "@apollo/client";
 import {TrainingContext} from "containers/TrainingContextProvider";
-import pkg from "../../../../package.json";
-import {useChainNetRequest, useNetRequest} from "@client/context/useNetRequest";
-import {netSend} from "@client/context/netSend";
+import pkg from "../../../../../package.json";
 
 export const FLIGHTS_QUERY = gql`
   query Flights {
-    thorium {
-      askedToTrack
-    }
     flights {
       id
       name
@@ -80,8 +74,7 @@ const Welcome = () => {
   const {loading, data, error, subscribeToMore} = useQuery(FLIGHTS_QUERY);
   if (loading || !data) return null;
   if (error) return <h1>Error accessing Thorium server.</h1>;
-  const {flights, thorium} = data;
-  const {askedToTrack} = thorium;
+  const {flights} = data;
   return (
     <Container className="WelcomeView">
       <SubscriptionHelper
@@ -111,7 +104,6 @@ const Welcome = () => {
             </Link>
           </h6>
           <QuoteOfTheDay />
-          <TrackerPopup askedToTrack={askedToTrack} />
         </Col>
       </Row>
       <Row className="content-row">

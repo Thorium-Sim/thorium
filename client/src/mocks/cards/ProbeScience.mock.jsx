@@ -2,7 +2,7 @@ import {
   PROBES_SCIENCE_QUERY,
   PROBES_SCIENCE_SUB,
   PROBES_SCIENCE_CONTACT_SUB,
-} from "components/cards/ProbeScience";
+} from "@client/cards/ProbeScience";
 import systems from "../data/systems";
 import sensors from "../data/sensors";
 import sensorContacts from "../data/sensorContacts";
@@ -10,8 +10,8 @@ import {
   PROBE_SCIENCE_CORE_QUERY,
   PROBES_SCIENCE_CORE_SUB,
   PROBE_SCIENCE_CONTACTS_CORE_SUB,
-} from "components/cards/ProbeScience/core";
-import {PROBE_SCIENCE_EMITTER_SUB} from "components/cards/ProbeScience/probeScience";
+} from "@client/cards/ProbeScience/core";
+import {PROBE_SCIENCE_EMITTER_SUB} from "@client/cards/ProbeScience/probeScience";
 export default [
   {
     request: {

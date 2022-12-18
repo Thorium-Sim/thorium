@@ -3,7 +3,7 @@ import {
   ARMORY_CREW_SUB,
   ARMORY_ROOMS_SUB,
   ARMORY_TEAMS_SUB,
-} from "components/cards/Armory";
+} from "@client/cards/Armory";
 import teams from "mocks/data/teams";
 import rooms from "mocks/data/rooms";
 import crew from "mocks/data/crew";
@@ -11,7 +11,7 @@ import {
   ARMORY_CORE_QUERY,
   ARMORY_CORE_CREW_SUB,
   ARMORY_CORE_TEAM_SUB,
-} from "components/cards/Armory/core";
+} from "@client/cards/Armory/core";
 
 export const armoryMocks = [
   {

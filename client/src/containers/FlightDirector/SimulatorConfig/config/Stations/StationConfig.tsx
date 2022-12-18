@@ -1,6 +1,6 @@
 import React from "react";
 import {Container, Row, Col} from "helpers/reactstrap";
-import {Widgets} from "components/cards/widgets";
+import {Widgets} from "@client/cards/widgets";
 import ExtraMessageGroups from "./messageGroups";
 import {capitalCase} from "change-case";
 import TrainingConfig from "./trainingConfig";

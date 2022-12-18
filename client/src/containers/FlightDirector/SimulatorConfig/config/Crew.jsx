@@ -1,5 +1,5 @@
 import React from "react";
-import Crew from "components/cards/Crew/core";
+import Crew from "@client/cards/Crew/core";
 
 const CrewWrapped = ({selectedSimulator: sim}) => {
   return (

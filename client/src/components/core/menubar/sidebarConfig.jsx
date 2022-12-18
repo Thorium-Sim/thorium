@@ -7,7 +7,7 @@ import {
   Button,
   Input,
 } from "helpers/reactstrap";
-import {Cores} from "../../EngineControlCore";
+import {Cores} from "@client/cards/cores";
 import {publish} from "helpers/pubsub";
 import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";

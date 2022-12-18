@@ -1,7 +1,4 @@
-import {
-  PROBES_QUERY,
-  PROBES_SUB,
-} from "../../components/cards/ProbeConstruction";
+import {PROBES_QUERY, PROBES_SUB} from "../../cards/ProbeConstruction";
 import systems from "../data/systems";
 export default [
   {

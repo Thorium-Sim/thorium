@@ -1,5 +1,5 @@
 import React from "react";
-import FileExplorer from "components/cards/TacticalMap/fileExplorer";
+import FileExplorer from "@client/cards/TacticalMap/fileExplorer";
 
 export default {
   name: "Image",

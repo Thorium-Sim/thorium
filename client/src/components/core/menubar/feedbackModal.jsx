@@ -6,7 +6,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "helpers/reactstrap";
-import IssueTracker from "../../../components/admin/IssueTracker";
+import IssueTracker from "../../issueTracker";
 
 class FeedbackModal extends Component {
   state = {};

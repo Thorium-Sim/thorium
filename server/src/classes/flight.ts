@@ -1,7 +1,7 @@
 import uuid from "uuid";
 import randomWords from "random-words";
 import App from "../app";
-import graphqlClient from "../helpers/graphqlClient";
+// import graphqlClient from "../helpers/graphqlClient";
 import Simulator from "./simulator";
 
 type SpaceEdventuresClient = {
@@ -179,14 +179,14 @@ export default class Flight {
       }
     }
     `;
-    graphqlClient
-      .query({
-        query: mutation,
-        variables,
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    // graphqlClient
+    //   .query({
+    //     query: mutation,
+    //     variables,
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //   });
     // Remove the flight type so it is not transmitted again.
     this.transmitted = true;
   }

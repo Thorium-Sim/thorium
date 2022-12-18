@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {withApollo} from "@apollo/client/react/hoc";
 import gql from "graphql-tag";
-import {Widgets} from "components/Widgets";
+import {Widgets} from "@client/cards/widgets";
 import {Tooltip} from "helpers/reactstrap";
 
 import {Widget} from "../LayoutCorners/Widgets";

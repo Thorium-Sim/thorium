@@ -3,8 +3,8 @@ import {Query} from "@apollo/client/react/components";
 import {useQuery} from "@apollo/client";
 import {Badge, ListGroup, ListGroupItem, Input} from "helpers/reactstrap";
 import gql from "graphql-tag";
-import ValueInput from "../cards/Tasks/core/ValueInput";
-import ConfigureMacro from "../cards/Tasks/core/ConfigureMacro";
+import ValueInput from "../../cards/Tasks/core/ValueInput";
+import ConfigureMacro from "../../cards/Tasks/core/ConfigureMacro";
 import {ConfigureMacro as ConfigMacro} from "containers/FlightDirector/TaskTemplates/taskConfig";
 /*
 input TaskInput {

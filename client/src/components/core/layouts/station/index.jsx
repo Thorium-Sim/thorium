@@ -12,8 +12,8 @@ import {
   Input,
 } from "helpers/reactstrap";
 import {FaBan} from "react-icons/fa";
-import Views from "components/cards/index";
-import {Widgets} from "components/cards/widgets";
+import Views from "@client/cards/index";
+import {Widgets} from "@client/cards/widgets";
 import {capitalCase} from "change-case";
 import ExtraMessageGroups from "./messageGroups";
 import LayoutList from "components/layouts";

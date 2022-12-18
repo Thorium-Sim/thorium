@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import Views from "components/cards";
+import Views from "@client/cards";
 import ErrorBoundary from "helpers/errorBoundary";
 import CardFrame from "./frame";
 import {withApollo} from "@apollo/client/react/hoc";

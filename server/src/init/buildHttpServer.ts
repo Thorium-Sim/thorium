@@ -3,12 +3,10 @@ import cookies from "@fastify/cookie";
 import staticServe from "@fastify/static";
 import cors from "@fastify/cors";
 import path from "path";
-import paths, {rootPath} from "../helpers/paths";
-import {promises as fs, createWriteStream} from "fs";
-import {pipeline} from "stream/promises";
-import uuid from "uuid";
-import os from "os";
-import multipart, {MultipartFile} from "@fastify/multipart";
+
+import {promises as fs} from "fs";
+import {rootPath} from "@server/newHelpers/appPaths";
+import paths from "@server/helpers/paths";
 
 let assetDir = path.resolve(paths.userData + "/assets");
 
@@ -20,31 +18,6 @@ export default async function buildHTTPServer({
   port?: number;
 } = {}) {
   const app = fastify();
-
-  async function onFile(part: MultipartFile) {
-    const tmpdir = os.tmpdir();
-    const filepath = path.join(tmpdir, uuid.v4() + path.extname(part.filename));
-    // We need to differentiate between single and multiple file uploads
-    if (part.fieldname.endsWith("[]")) {
-      part.fields["filepath"] =
-        part.fields["filepath"] ||
-        ({
-          ...part,
-          fieldname: part.fieldname.replace("[]", ""),
-          value: [],
-        } as any);
-      // @ts-expect-error We need to put this value on.
-      part.fields[`filepath-${part.fieldname}`].value.push(filepath);
-    } else {
-      part.fields[`filepath-${part.fieldname}`] = {
-        ...part,
-        value: filepath,
-      } as any;
-    }
-    await pipeline(part.file, createWriteStream(filepath));
-  }
-
-  await app.register(multipart, {attachFieldsToBody: true, onFile});
 
   let cookieSecret = process.env.COOKIE_SECRET || "";
   try {
@@ -77,7 +50,6 @@ export default async function buildHTTPServer({
     // index.html in headless mode assigns `window.isHeadless`, and the
     // SPA uses that to know to render a screen to start a new flight or
     // load an existing flight.
-    console.log(staticRoot);
     let indexFile = await fs.readFile(
       path.join(staticRoot, "index.html"),
       "utf-8",

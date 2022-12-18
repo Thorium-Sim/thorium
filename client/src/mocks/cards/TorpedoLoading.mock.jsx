@@ -1,11 +1,8 @@
-import {
-  TORPEDO_QUERY,
-  TORPEDO_SUB,
-} from "../../components/cards/TorpedoLoading";
+import {TORPEDO_QUERY, TORPEDO_SUB} from "../../cards/TorpedoLoading";
 import {
   TORPEDO_CORE_QUERY,
   TORPEDO_CORE_SUB,
-} from "../../components/cards/TorpedoLoading/core";
+} from "../../cards/TorpedoLoading/core";
 import systems from "../data/systems";
 
 export default [

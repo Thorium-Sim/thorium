@@ -1,11 +1,8 @@
-import {
-  SENSOR_GRID_QUERY,
-  SENSOR_GRID_SUB,
-} from "../../components/cards/Sensors/GridDom";
+import {SENSOR_GRID_QUERY, SENSOR_GRID_SUB} from "../../cards/Sensors/GridDom";
 import sensors from "../data/sensors";
 import sensorContacts from "../data/sensorContacts";
 import {SensorsDocument, SensorsPingSubDocument} from "generated/graphql";
-import {JR_SENSOR_QUERY, JR_SENSOR_SUB} from "components/cards/JrSensors/index";
+import {JR_SENSOR_QUERY, JR_SENSOR_SUB} from "@client/cards/JrSensors/index";
 
 export default [
   {

@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import gql from "graphql-tag";
 import {graphql} from "@apollo/client/react/hoc";
-import NavigationScanner from "components/cards/Navigation/NavigationScanner";
+import NavigationScanner from "@client/cards/Navigation/NavigationScanner";
 import {Container, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
-import "../../views/Navigation/style.scss";
+import "../../../cards/Navigation/style.scss";
 
 const NAV_SUB = gql`
   subscription NavigationUpdate($simulatorId: ID) {

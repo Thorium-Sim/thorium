@@ -85,8 +85,6 @@ class Events extends EventEmitter {
   autoUpdate = true;
   migrations: any = {assets: true, dmx: false};
   thoriumId: string = randomWords(5).join("-");
-  doTrack: boolean = false;
-  askedToTrack: boolean = false;
   addedTaskTemplates: boolean = false;
   spaceEdventuresToken?: string | null = null;
   googleSheetsTokens: any = {};
@@ -124,8 +122,6 @@ class Events extends EventEmitter {
       if (key === "sounds") return;
       if (
         key === "autoUpdate" ||
-        key === "doTrack" ||
-        key === "askedToTrack" ||
         key === "addedTaskTemplates" ||
         key === "httpOnly"
       ) {

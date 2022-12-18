@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from "react";
 import uuid from "uuid";
 import gql from "graphql-tag";
-import Spark from "components/cards/Actions/spark";
+import Spark from "@client/cards/Actions/spark";
 import {useApolloClient} from "@apollo/client";
 const synth = window.speechSynthesis;
 

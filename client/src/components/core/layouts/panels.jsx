@@ -1,5 +1,5 @@
 import React from "react";
-import SoftwarePanels from "components/cards/SoftwarePanels";
+import SoftwarePanels from "@client/cards/SoftwarePanels";
 
 export default props => {
   return (

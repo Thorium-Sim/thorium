@@ -39,7 +39,7 @@ import {
 } from "react-icons/fa";
 import {AiOutlineFieldBinary} from "react-icons/ai";
 
-import IssueTracker from "../../components/admin/IssueTracker";
+import IssueTracker from "@client/components/issueTracker";
 
 import "./sideNav.scss";
 import {IconType} from "react-icons/lib/cjs";

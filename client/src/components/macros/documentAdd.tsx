@@ -1,6 +1,6 @@
 import React from "react";
 import {FormGroup, Label, Button, Input} from "helpers/reactstrap";
-import FileExplorer from "components/cards/TacticalMap/fileExplorer";
+import FileExplorer from "@client/cards/TacticalMap/fileExplorer";
 
 interface PrintPDFProps {
   updateArgs: Function;

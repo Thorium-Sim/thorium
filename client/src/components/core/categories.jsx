@@ -1,4 +1,4 @@
-import {Cores} from "components/EngineControlCore";
+import {Cores} from "@client/cards/cores";
 
 const categories = [
   {

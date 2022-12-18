@@ -1,7 +1,7 @@
 import {
   CLIENTS_CORE_QUERY,
   CLIENTS_CORE_SUBSCRIPTION,
-} from "../../components/cards/Clients/core";
+} from "../../cards/Clients/core";
 import clients from "../data/clients";
 
 export default [

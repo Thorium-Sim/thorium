@@ -2,7 +2,7 @@ import React from "react";
 import GenericSystemConfig from "./Generic";
 import {Query} from "@apollo/client/react/components";
 import gql from "graphql-tag";
-import Images from "components/cards/Crm/core/images";
+import Images from "@client/cards/Crm/core/images";
 
 const CRM_QUERY = gql`
   query CRM($id: ID!) {

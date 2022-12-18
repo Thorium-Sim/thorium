@@ -1,9 +1,9 @@
 import simulators from "../data/simulators";
-import {ALERT_QUERY, ALERT_SUB} from "components/cards/AlertCondition";
+import {ALERT_QUERY, ALERT_SUB} from "@client/cards/AlertCondition";
 import {
   ALERT_CORE_QUERY,
   ALERT_CORE_SUB,
-} from "components/cards/AlertCondition/core";
+} from "@client/cards/AlertCondition/core";
 
 export const alertConditionMocks = [
   {

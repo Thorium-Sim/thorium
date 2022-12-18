@@ -1,5 +1,5 @@
 import React from "react";
-import {shieldColor} from "components/cards/ShieldControl/shieldStyle";
+import {shieldColor} from "@client/cards/ShieldControl/shieldStyle";
 
 export default ({simulator, shields}) => {
   const s = shields[0];

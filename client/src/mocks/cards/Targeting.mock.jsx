@@ -2,12 +2,12 @@ import {
   TARGETING_QUERY,
   TARGETING_SUB,
   TARGETING_PHASERS_SUB,
-} from "components/cards/Targeting";
+} from "@client/cards/Targeting";
 import systems from "../data/systems";
 import {
   TARGETING_CORE_QUERY,
   TARGETING_CORE_SUB,
-} from "components/cards/Targeting/core";
+} from "@client/cards/Targeting/core";
 export default [
   {
     request: {

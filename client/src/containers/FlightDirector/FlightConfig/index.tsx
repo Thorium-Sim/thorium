@@ -1,5 +1,5 @@
 import React, {Fragment} from "react";
-import {Link, useNavigate, useLocation} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import {
   Col,
   Row,
@@ -16,27 +16,20 @@ import {FormattedMessage} from "react-intl";
 import {
   useStartFlightMutation,
   useFlightSetupQuery,
-  useFlightTypesQuery,
   SimulatorCapabilities,
   Mission,
 } from "generated/graphql";
 import "./flightConfig.scss";
 import {TrainingContext} from "containers/TrainingContextProvider";
 import SearchableList from "helpers/SearchableList";
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+import {q} from "@client/context/AppContext";
 
 const FlightType = () => {
-  const query = useQuery();
+  const [query] = useSearchParams();
   const flightTypeId = query.get("flightType");
 
-  const {data} = useFlightTypesQuery();
-
-  const flightType = data?.thorium?.spaceEdventuresCenter?.flightTypes?.find(
-    t => t?.id === flightTypeId,
-  );
+  const [data, qq] = q.spaceEdventures.spaceEdventuresCenter.useNetRequest();
+  const flightType = data?.flightTypes.find(t => t.id === flightTypeId);
 
   if (!flightType) return null;
   return (
@@ -184,10 +177,10 @@ const FlightConfig: React.FC = () => {
   const [flightConfig, setFlightConfig] = React.useState<FlightConfigItem[]>(
     [],
   );
-  const query = useQuery();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
 
-  const flightType = query.get("flightType");
+  const flightType = params.get("flightType");
   const {data, loading} = useFlightSetupQuery();
   const [startFlightMutation] = useStartFlightMutation({
     variables: {name, simulators: flightConfig, flightType},

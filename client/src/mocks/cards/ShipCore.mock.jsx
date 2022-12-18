@@ -1,8 +1,4 @@
-import {
-  SHIP_CORE_QUERY,
-  SHIP_CORE_SUB,
-  POP_SUB,
-} from "components/cards/Ship/core";
+import {SHIP_CORE_QUERY, SHIP_CORE_SUB, POP_SUB} from "@client/cards/Ship/core";
 import simulators from "../data/simulators";
 export default [
   {
