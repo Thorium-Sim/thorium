@@ -59,7 +59,7 @@ Fortunately, you can get help from the excellent people on
 [Thorium's Discord Server](https://discord.gg/UvxTQZz).
 
 If you need better support for your Thorium simulator, 
-[Alex](https://github.com/alexanderson1993)is happy to
+[Alex](https://github.com/alexanderson1993) is happy to
 contract with you to do so. Reach out via Discord to start the process.
 
 If you want to learn to contribute to Thorium, check out the
