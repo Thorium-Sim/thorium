@@ -3632,6 +3632,7 @@ type Simulator {
   id: ID!
   name: String
   alertlevel: String
+  alertLevelColors: [AlertLevelColor]
   alertLevelLock: Boolean
   layout: String
   caps: Boolean
@@ -3673,6 +3674,11 @@ type Simulator {
   lighting: Lighting
   stationSets: [StationSet]
   stationSet: StationSet
+}
+
+type AlertLevelColor {
+  alertLevel: String!
+  color: String!
 }
 
 type Document {

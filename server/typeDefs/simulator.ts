@@ -17,6 +17,7 @@ const schema = gql`
     id: ID!
     name: String
     alertlevel: String
+    alertLevelColors: [AlertLevelColor]
     alertLevelLock: Boolean
     layout: String
     caps: Boolean
@@ -51,6 +52,11 @@ const schema = gql`
     flipped: Boolean
     capabilities: SimulatorCapabilities
     documents: [Document!]
+  }
+
+  type AlertLevelColor {
+    alertLevel: String!
+    color: String!
   }
 
   type Document {

@@ -9486,6 +9486,7 @@ export type Simulator = {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   alertlevel?: Maybe<Scalars['String']>;
+  alertLevelColors?: Maybe<Array<Maybe<AlertLevelColor>>>;
   alertLevelLock?: Maybe<Scalars['Boolean']>;
   layout?: Maybe<Scalars['String']>;
   caps?: Maybe<Scalars['Boolean']>;
@@ -9527,6 +9528,12 @@ export type Simulator = {
   lighting?: Maybe<Lighting>;
   stationSets?: Maybe<Array<Maybe<StationSet>>>;
   stationSet?: Maybe<StationSet>;
+};
+
+export type AlertLevelColor = {
+  __typename?: 'AlertLevelColor';
+  alertLevel: Scalars['String'];
+  color: Scalars['String'];
 };
 
 export type Document = {
