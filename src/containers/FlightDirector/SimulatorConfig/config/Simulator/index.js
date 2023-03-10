@@ -5,6 +5,7 @@ import {withApollo} from "react-apollo";
 import Misc from "./misc";
 import Basic from "./basic";
 import Damage from "./damage";
+import AlertLevelColorsForm from "./alertLevelColorsForm";
 import {useNavigate, Routes, Route, useMatch} from "react-router-dom";
 import {useApolloClient} from "@apollo/client";
 
@@ -100,6 +101,13 @@ const SimulatorConfigView = ({selectedSimulator}) => {
         </Button>
         <Button
           size="sm"
+          active={selected === "alert"}
+          onClick={() => select("alert")}
+        >
+          Alert Level Colors
+        </Button>
+        <Button
+          size="sm"
           active={selected === "misc"}
           onClick={() => select("misc")}
         >
@@ -147,6 +155,15 @@ const SimulatorConfigView = ({selectedSimulator}) => {
             <Misc
               selectedSimulator={selectedSimulator}
               handleChange={handleChange}
+            />
+          }
+        />
+        <Route
+          path="alert"
+          element={
+            <AlertLevelColorsForm
+              targetSimulatorID={selectedSimulator.id}
+              currentAlertLevelColors={selectedSimulator.alertLevelColors}
             />
           }
         />
