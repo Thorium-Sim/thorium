@@ -64,29 +64,34 @@
         linear-gradient(165deg, #000000 0%, transparent 50%, #000000 100%);
       outline: none;
       &.alert-1 {
-        background-color: darken(red, 20%);
-        box-shadow: 0px 0px 8px darken(red, 20%),
-          inset 0px 0px 8px darken(red, 20%);
-      }
-      &.alert-3 {
-        background-color: darken(yellow, 20%);
-        box-shadow: 0px 0px 8px darken(yellow, 20%),
-          inset 0px 0px 8px darken(yellow, 20%);
+        filter: brightness(80%);
+        background-color: var(--alert1, red);
+        box-shadow: 0px 0px 8px var(--alert1, red),
+          inset 0px 0px 8px var(--alert1, red);
       }
       &.alert-2 {
-        background-color: darken(orange, 20%);
-        box-shadow: 0px 0px 8px darken(orange, 20%),
-          inset 0px 0px 8px darken(orange, 20%);
+        filter: brightness(80%);
+        background-color: var(--alert2, orange);
+        box-shadow: 0px 0px 8px var(--alert2, orange),
+          inset 0px 0px 8px var(--alert2, orange);
+      }
+      &.alert-3 {
+        filter: brightness(80%);
+        background-color: var(--alert3, yellow);
+        box-shadow: 0px 0px 8px var(--alert3, yellow),
+          inset 0px 0px 8px var(--alert3, yellow);
       }
       &.alert-4 {
-        background-color: darken(green, 10%);
-        box-shadow: 0px 0px 8px darken(green, 10%),
-          inset 0px 0px 8px darken(green, 10%);
+        filter: brightness(80%);
+        background-color: var(--alert4, green);
+        box-shadow: 0px 0px 8px var(--alert4, green),
+          inset 0px 0px 8px var(--alert4, green);
       }
       &.alert-5 {
-        background-color: darken(rgb(0, 128, 255), 20%);
-        box-shadow: 0px 0px 8px darken(rgb(0, 128, 255), 20%),
-          inset 0px 0px 8px darken(rgb(0, 128, 255), 20%);
+        filter: brightness(80%);
+        background-color: var(--alert5, rgb(0, 128, 255));
+        box-shadow: 0px 0px 8px var(--alert5, rgb(0, 128, 255)),
+          inset 0px 0px 8px var(--alert5, rgb(0, 128, 255));
       }
     }
   }

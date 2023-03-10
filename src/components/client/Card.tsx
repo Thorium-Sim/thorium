@@ -125,7 +125,13 @@ const CardFrame: React.FC<CardFrameProps> = props => {
     station: {cards, widgets, training: stationTraining},
     station,
     simulator,
-    simulator: {soundEffects, caps, flipped, training: simTraining},
+    simulator: {
+      soundEffects,
+      caps,
+      flipped,
+      alertLevelColors,
+      training: simTraining,
+    },
     client,
   } = props;
   const cardChanged = React.useRef(false);
@@ -150,6 +156,17 @@ const CardFrame: React.FC<CardFrameProps> = props => {
     },
     [cards, changeCardMutation, cardName, client.id, soundEffects],
   );
+
+  // Set alert level colors on the root element
+  let root = document.getElementById("root");
+  alertLevelColors?.forEach(alertLevelColor => {
+    if (alertLevelColor !== null && alertLevelColor !== undefined) {
+      root?.style.setProperty(
+        `--alert${alertLevelColor.alertLevel}`,
+        alertLevelColor.color,
+      );
+    }
+  });
 
   React.useEffect(() => {
     return subscribe(

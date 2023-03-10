@@ -1,14 +1,16 @@
 $alertColor: #0f0;
-
 $buttonBG: #0f1216;
 $boxBG: #151820;
 
-$alert5: #1f252d;
-$alert4: #3a6dda;
-$alert3: #acac34;
-$alert2: #cc7926;
-$alert1: #ca2a2a;
-$alertp: #4d1980;
+#root {
+  // override alert condition 5 to match background
+  --alert5: #1f252d !important;
+  --alert4: #3a6dda;
+  --alert3: #acac34;
+  --alert2: #cc7926;
+  --alert1: #ca2a2a;
+  --alertp: #4d1980;
+}
 
 .epsilon-frame {
   font-family: Bebas Neue;
@@ -250,33 +252,37 @@ $alertp: #4d1980;
   }
 
   // *** Flip the button colors of Alert 4 and 5, to match the bars and also Empty Epsilon (green: safest condition) ***
-  #alert5 {
-    background-color: #004d00;
-    box-shadow: 0px 0px 8px #004d00, inset 0px 0px 8px #004d00;
-  }
-  #alert4 {
-    background-color: #004d99;
-    box-shadow: 0px 0px 8px #004d99, inset 0px 0px 8px #004d99;
-  }
+  // #alert5 {
+  //   background-color: #004d00;
+  //   box-shadow: 0px 0px 8px #004d00, inset 0px 0px 8px #004d00;
+  // }
+  // #alert4 {
+  //   background-color: #004d99;
+  //   box-shadow: 0px 0px 8px #004d99, inset 0px 0px 8px #004d99;
+  // }
+  // .alert-button {
+  //   box-shadow: 0px 0px 8px var(--alert5),
+  //         inset 0px 0px 8px var(--alert5) !important;
+  // }
   // *** ***
 
   &.alertColor5 {
-    @include colors($alert5, #0f0);
+    @include colors(var(--alert5), #0f0);
   }
   &.alertColor4 {
-    @include colors($alert4, #480);
+    @include colors(var(--alert4), #480);
   }
   &.alertColor3 {
-    @include colors($alert3, #ff0);
+    @include colors(var(--alert3), #ff0);
   }
   &.alertColor2 {
-    @include colors($alert2, #f80);
+    @include colors(var(--alert2), #f80);
   }
   &.alertColor1 {
-    @include colors($alert1, #f00);
+    @include colors(var(--alert1), #f00);
   }
   &.alertColorp {
-    @include colors($alertp, rebeccapurple);
+    @include colors(var(--alertp), rebeccapurple);
   }
 
   .dropdown-menu {
