@@ -18,6 +18,7 @@ import exocompTypeDefs from "./exocomp";
 import externalsTypeDefs from "./externals";
 import flightTypeDefs from "./flight";
 import googleSheetsTypeDefs from "./googleSheets";
+import hullPlatingTypeDefs from './hullPlating'
 import interfacesTypeDefs from "./interfaces";
 import internalCommTypeDefs from "./internalComm";
 import inventoryTypeDefs from "./inventory";
@@ -98,6 +99,7 @@ export const exocomp = exocompTypeDefs;
 export const externals = externalsTypeDefs;
 export const flight = flightTypeDefs;
 export const googleSheets = googleSheetsTypeDefs;
+export const hullPlating = hullPlatingTypeDefs;
 export const interfaces = interfacesTypeDefs;
 export const internalComm = internalCommTypeDefs;
 export const inventory = inventoryTypeDefs;
