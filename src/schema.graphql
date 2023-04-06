@@ -32,6 +32,8 @@ type Query {
   events: [String]
   googleSheets: String
   googleSheetsGetSpreadsheet(spreadsheetId: ID!): GoogleSpreadsheet
+  hullPlating(id: ID!): HullPlating
+  hullPlatings(simulatorId: ID!): [HullPlating]
   interfaces(simulatorId: ID): [Interface]
   interfaceDevices: [InterfaceDevice]
   internalComm(simulatorId: ID!): [InternalComm]
@@ -403,6 +405,9 @@ type Mutation {
   googleSheetsRevoke: String
   googleSheetsFileSearch(searchText: String!): [GoogleSheetFile]
   googleSheetsAppendData(spreadsheetId: ID, sheetId: String, data: JSON): String
+  setHullPlatingMode(id: ID!, mode: HULL_PLATING_MODE): String
+  setHullPlatingEngaged(id: ID!, engaged: Boolean): String
+  setHullPlatingPulse(id: ID!, pulse: Boolean): String
   addInterface(name: String!): String
   renameInterface(id: ID!, name: String!): String
   removeInterface(id: ID!): String
@@ -1427,6 +1432,7 @@ type Subscription {
   exocompsUpdate(simulatorId: ID!): [Exocomp]
   flightsUpdate(running: Boolean, id: ID): [Flight]
   googleSheetsUpdate(simulatorId: ID): [GoogleSheets]
+  hullPlatingUpdate(simulatorId: ID): [HullPlating!]!
   interfaceUpdate(simulatorId: ID): [Interface]
   internalCommUpdate(simulatorId: ID): [InternalComm]
   inventoryUpdate(simulatorId: ID!): [InventoryItem]
@@ -2222,6 +2228,30 @@ type GoogleSpreadsheet {
 type GoogleSheet {
   id: ID
   title: String
+}
+
+enum HULL_PLATING_MODE {
+  kinetic
+  energy
+  radiation
+}
+
+type HullPlating implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  name: String
+  displayName: String
+  upgradeName: String
+  upgraded: Boolean
+  extra: Boolean
+  damage: Damage
+  locations: [Room]
+  stealthFactor: Float
+  power: Power
+  engaged: Boolean
+  mode: HULL_PLATING_MODE
+  pulse: Boolean
 }
 
 type Interface {
