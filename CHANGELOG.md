@@ -6,6 +6,14 @@
 * Added Hull Plating System ([7a53fb0](https://github.com/Thorium-Sim/thorium/commit/7a53fb0fab4b6f85599c8300459ac71d9e7064ee))
 * Adds hull plating card and core. Thanks Mitchell! ([b9f4bea](https://github.com/Thorium-Sim/thorium/commit/b9f4beae8f8e35476a218fd13d2098f0aecb7b4c))
 
+# [3.9.0](https://github.com/Thorium-Sim/thorium/compare/3.8.0...3.9.0) (2023-04-06)
+
+
+### Features
+
+* Added Hull Plating System ([7a53fb0](https://github.com/Thorium-Sim/thorium/commit/7a53fb0fab4b6f85599c8300459ac71d9e7064ee))
+* Adds hull plating card and core. Thanks Mitchell! ([b9f4bea](https://github.com/Thorium-Sim/thorium/commit/b9f4beae8f8e35476a218fd13d2098f0aecb7b4c))
+
 # [3.8.0](https://github.com/Thorium-Sim/thorium/compare/3.7.1...3.8.0) (2022-10-06)
 
 
