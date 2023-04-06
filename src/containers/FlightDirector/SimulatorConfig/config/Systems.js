@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {css} from "@emotion/core";
+import React, { Component } from "react";
+import { css } from "@emotion/core";
 import {
   Container,
   Row,
@@ -9,8 +9,8 @@ import {
   Button,
   Input,
 } from "helpers/reactstrap";
-import {capitalCase, camelCase} from "change-case";
-import {Query, Mutation} from "react-apollo";
+import { capitalCase, camelCase } from "change-case";
+import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag.macro";
 import * as Configs from "./systemsConfig";
 
@@ -20,6 +20,7 @@ const systems = [
   "Countermeasures",
   "Crm",
   "Engine",
+  "HullPlating",
   "InternalComm",
   "JumpDrive",
   "LongRangeComm",
@@ -58,7 +59,7 @@ const SYSTEM_QUERY = gql`
   }
 `;
 
-const System = ({id, selected, type, displayName, name, click, added}) => {
+const System = ({ id, selected, type, displayName, name, click, added }) => {
   return (
     <Col
       key={id}
@@ -80,13 +81,13 @@ const System = ({id, selected, type, displayName, name, click, added}) => {
           backgroundPosition: "center",
         }}
       >
-        <div style={{paddingTop: "100%"}} />
+        <div style={{ paddingTop: "100%" }} />
       </div>
-      <p style={{textAlign: "center", marginBottom: 0}}>
+      <p style={{ textAlign: "center", marginBottom: 0 }}>
         {displayName || name}
       </p>
       {type !== name && (
-        <p style={{textAlign: "center"}}>
+        <p style={{ textAlign: "center" }}>
           <small>{capitalCase(type)}</small>
         </p>
       )}
@@ -120,26 +121,26 @@ const reconfigureShields = (num, id) => {
 class SystemsConfig extends Component {
   state = {};
   addSystem = (action, addSystem) => {
-    const {id} = this.props.selectedSimulator;
-    this.setState({addSystem: null});
+    const { id } = this.props.selectedSimulator;
+    this.setState({ addSystem: null });
     if (addSystem.indexOf("Shield") > -1) {
       // Create based on the shield count
       const num = parseInt(addSystem[addSystem.length - 1], 10);
-      return reconfigureShields(num, id).forEach(s => action({variables: s}));
+      return reconfigureShields(num, id).forEach(s => action({ variables: s }));
     } else if (addSystem.indexOf("Sensors") > -1) {
       // Create both internal and external sensors
       action({
         variables: {
           id,
           type: "Sensors",
-          params: JSON.stringify({domain: "internal"}),
+          params: JSON.stringify({ domain: "internal" }),
         },
       });
       action({
         variables: {
           id,
           type: "Sensors",
-          params: JSON.stringify({domain: "external"}),
+          params: JSON.stringify({ domain: "external" }),
         },
       });
       return;
@@ -148,29 +149,29 @@ class SystemsConfig extends Component {
         variables: {
           id,
           type: "System",
-          params: JSON.stringify({name: "Generic"}),
+          params: JSON.stringify({ name: "Generic" }),
         },
       });
     } else {
-      return action({variables: {id, type: addSystem}});
+      return action({ variables: { id, type: addSystem } });
     }
   };
   removeSystem = (action, systems) => () => {
-    const {selectedSystem} = this.state;
+    const { selectedSystem } = this.state;
     const sys = systems.find(s => s.id === selectedSystem);
     if (!sys) return;
-    this.setState({selectedSystem: null});
+    this.setState({ selectedSystem: null });
     if (sys.type === "Sensors") {
       return systems
         .filter(s => s.type === "Sensors")
-        .forEach(s => action({variables: {id: s.id}}));
+        .forEach(s => action({ variables: { id: s.id } }));
     }
     if (sys.type === "Shield") {
       return systems
         .filter(s => s.type === "Shield")
-        .forEach(s => action({variables: {id: s.id}}));
+        .forEach(s => action({ variables: { id: s.id } }));
     }
-    return action({variables: {id: selectedSystem}});
+    return action({ variables: { id: selectedSystem } });
   };
   getAdded(sys, systems) {
     if (sys === "Reactor" || sys === "Torpedo" || sys === "Engine")
@@ -183,18 +184,18 @@ class SystemsConfig extends Component {
     });
   }
   render() {
-    const {id} = this.props.selectedSimulator;
-    const {selectedSystem, selectedType} = this.state;
+    const { id } = this.props.selectedSimulator;
+    const { selectedSystem, selectedType } = this.state;
     const SystemConfig = selectedType
       ? Configs[selectedType] || Configs.Generic
       : () => null;
     return (
-      <Container fluid css={{height: "100%"}}>
-        <Query query={SYSTEM_QUERY} variables={{simulatorId: id}}>
-          {({data, loading}) => {
+      <Container fluid css={{ height: "100%" }}>
+        <Query query={SYSTEM_QUERY} variables={{ simulatorId: id }}>
+          {({ data, loading }) => {
             if (loading) return null;
             return (
-              <Row css={{height: "100%"}}>
+              <Row css={{ height: "100%" }}>
                 <Col
                   sm={5}
                   css={{
@@ -229,7 +230,7 @@ class SystemsConfig extends Component {
                         }
                       `}
                       refetchQueries={[
-                        {query: SYSTEM_QUERY, variables: {simulatorId: id}},
+                        { query: SYSTEM_QUERY, variables: { simulatorId: id } },
                       ]}
                     >
                       {action => (
@@ -262,7 +263,7 @@ class SystemsConfig extends Component {
                         }
                       `}
                       refetchQueries={[
-                        {query: SYSTEM_QUERY, variables: {simulatorId: id}},
+                        { query: SYSTEM_QUERY, variables: { simulatorId: id } },
                       ]}
                     >
                       {action => (
@@ -280,7 +281,7 @@ class SystemsConfig extends Component {
                   <h6>Installed Systems</h6>
                   <Card
                     className="systems-container"
-                    style={{flex: 1, overflowY: "auto"}}
+                    style={{ flex: 1, overflowY: "auto" }}
                   >
                     <CardBody>
                       <Row>
