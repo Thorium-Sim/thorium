@@ -51,6 +51,8 @@ export type Query = {
   events?: Maybe<Array<Maybe<Scalars['String']>>>;
   googleSheets?: Maybe<Scalars['String']>;
   googleSheetsGetSpreadsheet?: Maybe<GoogleSpreadsheet>;
+  hullPlating?: Maybe<HullPlating>;
+  hullPlatings?: Maybe<Array<Maybe<HullPlating>>>;
   interfaces?: Maybe<Array<Maybe<Interface>>>;
   interfaceDevices?: Maybe<Array<Maybe<InterfaceDevice>>>;
   internalComm?: Maybe<Array<Maybe<InternalComm>>>;
@@ -297,6 +299,16 @@ export type QueryFlightsArgs = {
 
 export type QueryGoogleSheetsGetSpreadsheetArgs = {
   spreadsheetId: Scalars['ID'];
+};
+
+
+export type QueryHullPlatingArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryHullPlatingsArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -919,6 +931,9 @@ export type Mutation = {
   googleSheetsRevoke?: Maybe<Scalars['String']>;
   googleSheetsFileSearch?: Maybe<Array<Maybe<GoogleSheetFile>>>;
   googleSheetsAppendData?: Maybe<Scalars['String']>;
+  setHullPlatingMode?: Maybe<Scalars['String']>;
+  setHullPlatingEngaged?: Maybe<Scalars['String']>;
+  setHullPlatingPulse?: Maybe<Scalars['String']>;
   addInterface?: Maybe<Scalars['String']>;
   renameInterface?: Maybe<Scalars['String']>;
   removeInterface?: Maybe<Scalars['String']>;
@@ -2824,6 +2839,24 @@ export type MutationGoogleSheetsAppendDataArgs = {
   spreadsheetId?: Maybe<Scalars['ID']>;
   sheetId?: Maybe<Scalars['String']>;
   data?: Maybe<Scalars['JSON']>;
+};
+
+
+export type MutationSetHullPlatingModeArgs = {
+  id: Scalars['ID'];
+  mode?: Maybe<Hull_Plating_Mode>;
+};
+
+
+export type MutationSetHullPlatingEngagedArgs = {
+  id: Scalars['ID'];
+  engaged?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationSetHullPlatingPulseArgs = {
+  id: Scalars['ID'];
+  pulse?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -6593,6 +6626,7 @@ export type Subscription = {
   exocompsUpdate?: Maybe<Array<Maybe<Exocomp>>>;
   flightsUpdate?: Maybe<Array<Maybe<Flight>>>;
   googleSheetsUpdate?: Maybe<Array<Maybe<GoogleSheets>>>;
+  hullPlatingUpdate: Array<HullPlating>;
   interfaceUpdate?: Maybe<Array<Maybe<Interface>>>;
   internalCommUpdate?: Maybe<Array<Maybe<InternalComm>>>;
   inventoryUpdate?: Maybe<Array<Maybe<InventoryItem>>>;
@@ -6849,6 +6883,11 @@ export type SubscriptionFlightsUpdateArgs = {
 
 
 export type SubscriptionGoogleSheetsUpdateArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionHullPlatingUpdateArgs = {
   simulatorId?: Maybe<Scalars['ID']>;
 };
 
@@ -7979,6 +8018,31 @@ export type GoogleSheet = {
   __typename?: 'GoogleSheet';
   id?: Maybe<Scalars['ID']>;
   title?: Maybe<Scalars['String']>;
+};
+
+export enum Hull_Plating_Mode {
+  Kinetic = 'kinetic',
+  Energy = 'energy',
+  Radiation = 'radiation'
+}
+
+export type HullPlating = SystemInterface & {
+  __typename?: 'HullPlating';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  extra?: Maybe<Scalars['Boolean']>;
+  damage?: Maybe<Damage>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  power?: Maybe<Power>;
+  engaged?: Maybe<Scalars['Boolean']>;
+  mode?: Maybe<Hull_Plating_Mode>;
+  pulse?: Maybe<Scalars['Boolean']>;
 };
 
 export type Interface = {
@@ -11661,6 +11725,44 @@ export type HackingUpdateFilesMutation = (
   & Pick<Mutation, 'computerCoreUpdateHackingFiles'>
 );
 
+export type HullPlatingFragmentFragment = (
+  { __typename: 'HullPlating' }
+  & Pick<HullPlating, 'id' | 'displayName' | 'engaged' | 'mode'>
+  & { power?: Maybe<(
+    { __typename?: 'Power' }
+    & Pick<Power, 'powerLevels' | 'power'>
+  )>, damage?: Maybe<(
+    { __typename?: 'Damage' }
+    & Pick<Damage, 'damaged'>
+  )> }
+);
+
+export type HullPlatingQueryVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type HullPlatingQuery = (
+  { __typename?: 'Query' }
+  & { hullPlatings?: Maybe<Array<Maybe<(
+    { __typename?: 'HullPlating' }
+    & HullPlatingFragmentFragment
+  )>>> }
+);
+
+export type HullPlatingUpdateSubscriptionVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type HullPlatingUpdateSubscription = (
+  { __typename?: 'Subscription' }
+  & { hullPlatingUpdate: Array<(
+    { __typename?: 'HullPlating' }
+    & HullPlatingFragmentFragment
+  )> }
+);
+
 export type LightingSetEffectMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   effect: Lighting_Action;
@@ -14682,6 +14784,9 @@ export type SoundPickerQuery = (
             "name": "Engine"
           },
           {
+            "name": "HullPlating"
+          },
+          {
             "name": "InternalComm"
           },
           {
@@ -14873,6 +14978,22 @@ export const CountermeasureFragmentDoc = gql`
   note
 }
     ${CountermeasureModuleFragmentDoc}`;
+export const HullPlatingFragmentFragmentDoc = gql`
+    fragment HullPlatingFragment on HullPlating {
+  id
+  __typename
+  power {
+    powerLevels
+    power
+  }
+  damage {
+    damaged
+  }
+  displayName
+  engaged
+  mode
+}
+    `;
 export const TemplateFragmentFragmentDoc = gql`
     fragment TemplateFragment on Template {
   id
@@ -15584,6 +15705,28 @@ export function useHackingUpdateFilesMutation(baseOptions?: ApolloReactHooks.Mut
         return ApolloReactHooks.useMutation<HackingUpdateFilesMutation, HackingUpdateFilesMutationVariables>(HackingUpdateFilesDocument, baseOptions);
       }
 export type HackingUpdateFilesMutationHookResult = ReturnType<typeof useHackingUpdateFilesMutation>;
+export const HullPlatingDocument = gql`
+    query HullPlating($simulatorId: ID!) {
+  hullPlatings(simulatorId: $simulatorId) {
+    ...HullPlatingFragment
+  }
+}
+    ${HullPlatingFragmentFragmentDoc}`;
+export function useHullPlatingQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HullPlatingQuery, HullPlatingQueryVariables>) {
+        return ApolloReactHooks.useQuery<HullPlatingQuery, HullPlatingQueryVariables>(HullPlatingDocument, baseOptions);
+      }
+export type HullPlatingQueryHookResult = ReturnType<typeof useHullPlatingQuery>;
+export const HullPlatingUpdateDocument = gql`
+    subscription HullPlatingUpdate($simulatorId: ID!) {
+  hullPlatingUpdate(simulatorId: $simulatorId) {
+    ...HullPlatingFragment
+  }
+}
+    ${HullPlatingFragmentFragmentDoc}`;
+export function useHullPlatingUpdateSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<HullPlatingUpdateSubscription, HullPlatingUpdateSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<HullPlatingUpdateSubscription, HullPlatingUpdateSubscriptionVariables>(HullPlatingUpdateDocument, baseOptions);
+      }
+export type HullPlatingUpdateSubscriptionHookResult = ReturnType<typeof useHullPlatingUpdateSubscription>;
 export const LightingSetEffectDocument = gql`
     mutation LightingSetEffect($simulatorId: ID!, $effect: LIGHTING_ACTION!, $duration: Float!) {
   lightingSetEffect(simulatorId: $simulatorId, effect: $effect, duration: $duration)
