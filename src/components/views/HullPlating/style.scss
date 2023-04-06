@@ -1,0 +1,41 @@
+.card-hullPlating {
+  display: block;
+
+  .effective-chart {
+    border: white solid 0.25rem
+  }
+
+  .hull-plating-img-parent {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .hull-plating-activate-btn-parent {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10rem;
+  }
+
+  .activate-btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hull-plating-buttons-parent {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 10rem;
+  }
+
+  .mode-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
