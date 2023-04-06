@@ -14,3 +14,4 @@ src/models
 packages
 tempServer
 temp
+client/dist

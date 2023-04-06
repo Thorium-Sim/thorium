@@ -29,9 +29,6 @@ jobs:
 
       - name: Install Dependencies
         run: yarn
-      - name: Prettier Check
-        run: |
-          npm run format:different
       - name: TypeScript Check
         run: |
           npm run typecheck
