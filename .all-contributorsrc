@@ -230,6 +230,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mitchell-foote",
+      "name": "Mitchell Foote",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21268331?v=4",
+      "profile": "https://github.com/mitchell-foote",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "repoType": "github",
