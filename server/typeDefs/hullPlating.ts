@@ -27,6 +27,7 @@ const schema = gql`
     power: Power
     engaged: Boolean
     mode: HULL_PLATING_MODE
+    pulse: Boolean
   }
 
   extend type Query {
@@ -36,6 +37,7 @@ const schema = gql`
   extend type Mutation {
     setHullPlatingMode(id: ID!, mode: HULL_PLATING_MODE): String
     setHullPlatingEngaged(id:ID!, engaged: Boolean): String
+    setHullPlatingPulse(id: ID!, pulse: Boolean): String
   }
   extend type Subscription {
     hullPlatingUpdate(
@@ -45,46 +47,44 @@ const schema = gql`
 `;
 
 const resolver = {
-    HullPlating: {
-        locations(rootValue) {
-            return rootValue.locations.map(r =>
-                App.rooms.find(room => room.id === r),
-            );
-        },
+  HullPlating: {
+    locations(rootValue) {
+      return rootValue.locations.map(r =>
+        App.rooms.find(room => room.id === r),
+      );
     },
-    Query: {
-        hullPlating(rootValue, { id }) {
-            const sys = App.systems.find(s => s.id === id);
-            if (!sys) return App.dockingPorts.find(s => s.id === id);
-            return sys;
-        },
-        hullPlatings(root, { simulatorId }) {
-            let returnVal = App.systems.filter(s => s.type === "HullPlating");
-            if (simulatorId) {
-                returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
-            }
-            return returnVal;
+  },
+  Query: {
+    hullPlating(rootValue, { id }) {
+      const sys = App.systems.find(s => s.id === id);
+      if (!sys) return App.dockingPorts.find(s => s.id === id);
+      return sys;
+    },
+    hullPlatings(root, { simulatorId }) {
+      let returnVal = App.systems.filter(s => s.type === "HullPlating");
+      if (simulatorId) {
+        returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
+      }
+      return returnVal;
+    }
+  },
+  Mutation: mutationHelper(schema),
+  Subscription: {
+    hullPlatingUpdate: {
+      resolve(rootValue, { simulatorId }) {
+        let returnSystems = rootValue;
+        if (simulatorId) {
+          returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
         }
+        console.log(returnSystems);
+        return returnSystems;
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator("hullPlatingUpdate"),
+        rootValue => !!(rootValue && rootValue.length),
+      ),
     },
-    Mutation: mutationHelper(schema),
-    Subscription: {
-        hullPlatingUpdate: {
-            resolve(
-                rootValue,
-                { simulatorId },
-            ) {
-                let returnSystems = rootValue;
-                if (simulatorId) {
-                    returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
-                }
-                return returnSystems;
-            },
-            subscribe: withFilter(
-                () => pubsub.asyncIterator("hullPlatingUpdate"),
-                rootValue => !!(rootValue && rootValue.length),
-            ),
-        },
-    },
+  },
 };
 
 export default { schema, resolver };
