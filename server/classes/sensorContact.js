@@ -79,11 +79,9 @@ export default class SensorContact {
     this.speed = speed;
     const maxDistance = this.type === "planet" ? 1 + this.size / 2 : 1.1;
     if (yaw) {
-      // Rotate the contact about the center
-      // invert yaw to reflect the ship turning as displayed in thrusters
-      const destinationPoints = calculateRotatedPoint(this.destination, -yaw);
-      const locationPoints = calculateRotatedPoint(this.location, -yaw);
-      const positionPoints = calculateRotatedPoint(this.position, -yaw);
+      const destinationPoints = calculateRotatedPoint(this.destination, yaw);
+      const locationPoints = calculateRotatedPoint(this.location, yaw);
+      const positionPoints = calculateRotatedPoint(this.position, yaw);
 
       this.destination.x = destinationPoints.x;
       this.destination.y = destinationPoints.y;
