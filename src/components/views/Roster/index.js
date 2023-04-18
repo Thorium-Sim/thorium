@@ -105,9 +105,15 @@ class Roster extends Component {
               style={{height: "100%"}}
               data={crew}
               columns={columns}
+              defaultFilterMethod={(filter, row) =>
+                String(row[filter.id])
+                  .toLowerCase()
+                  .includes(filter.value.toLowerCase())
+              }
               filterable={true}
               showPageSizeOptions={false}
               resizable={false}
+              noDataText={"No Matching Crew Found"}
             />
           </Col>
         </Row>

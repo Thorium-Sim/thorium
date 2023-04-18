@@ -58,7 +58,8 @@ const updateThrusters = () => {
           sensors.nudgeContacts(
             {},
             0.6,
-            sys.rotationDelta.yaw * sys.rotationSpeed,
+            // Invert yaw nudge to accurately reflect ship rotation
+            -1 * sys.rotationDelta.yaw * sys.rotationSpeed,
           );
           pubsub.publish(
             "sensorContactUpdate",

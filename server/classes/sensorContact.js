@@ -79,7 +79,6 @@ export default class SensorContact {
     this.speed = speed;
     const maxDistance = this.type === "planet" ? 1 + this.size / 2 : 1.1;
     if (yaw) {
-      // Rotate the contact about the center
       const destinationPoints = calculateRotatedPoint(this.destination, yaw);
       const locationPoints = calculateRotatedPoint(this.location, yaw);
       const positionPoints = calculateRotatedPoint(this.position, yaw);
@@ -90,7 +89,7 @@ export default class SensorContact {
       this.location.y = locationPoints.y;
       this.position.x = positionPoints.x;
       this.position.y = positionPoints.y;
-      this.rotation += yaw;
+      this.rotation -= yaw;
     } else {
       this.destination = {
         x: Math.max(
