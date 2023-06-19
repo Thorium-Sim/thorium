@@ -18,7 +18,7 @@ import exocompTypeDefs from "./exocomp";
 import externalsTypeDefs from "./externals";
 import flightTypeDefs from "./flight";
 import googleSheetsTypeDefs from "./googleSheets";
-import hullPlatingTypeDefs from './hullPlating'
+import hullPlatingTypeDefs from "./hullPlating";
 import interfacesTypeDefs from "./interfaces";
 import internalCommTypeDefs from "./internalComm";
 import inventoryTypeDefs from "./inventory";
