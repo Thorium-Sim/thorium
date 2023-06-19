@@ -1,3 +1,10 @@
+## [3.9.1](https://github.com/Thorium-Sim/thorium/compare/3.9.0...3.9.1) (2023-06-19)
+
+
+### Bug Fixes
+
+* Auto-thrusters now rotates the ship the correct direction. ([da6ee78](https://github.com/Thorium-Sim/thorium/commit/da6ee7843ac5353aac536a707cf85b2247051b63))
+
 # [3.9.0](https://github.com/Thorium-Sim/thorium/compare/3.8.0...3.9.0) (2023-04-06)
 
 
