@@ -51,9 +51,12 @@ export default class Trigger extends Component {
         }}
       >
         <Row style={{height: "100%"}}>
-          <Col sm={3} style={{height: "100%"}}>
+          <Col
+            sm={3}
+            style={{height: "100%", display: "flex", flexDirection: "column"}}
+          >
             <h3>Trigger Groups</h3>
-            <ListGroup>
+            <ListGroup style={{flex: "1", overflowY: "auto"}}>
               {triggers.map(c => (
                 <ListGroupItem
                   key={c.id}
