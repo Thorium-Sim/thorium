@@ -21,6 +21,7 @@ import MaterialRadial from "./MaterialRadial";
 import Center from "./Center";
 import ModuleConfig from "./ModuleConfig";
 import TourHelper from "helpers/tourHelper";
+import DamageOverlay from "../helpers/DamageOverlay";
 
 const trainingSteps = [
   {
@@ -139,6 +140,12 @@ const Countermeasures: React.FC<CountermeasuresProps> = props => {
   const slot = slotId ? {...selectedSlot, slotId} : null;
   return (
     <div className="card-countermeasures">
+      <DamageOverlay
+        system={countermeasures}
+        message={`${
+          countermeasures.displayName || countermeasures.name
+        } Offline`}
+      />
       {addingModule ? (
         <ModuleConstruction
           id={countermeasures.id}
