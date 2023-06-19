@@ -1,7 +1,6 @@
 import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
-import escapeRegex from "escape-string-regexp";
 import {Room} from "../classes";
 const mutationHelper = require("../helpers/mutationHelper").default;
 
@@ -153,7 +152,7 @@ const resolver = {
     },
   },
   Query: {
-    inventory(root, {simulatorId, id, name, deck, room}) {
+    async inventory(root, {simulatorId, id, name, deck, room}) {
       let inventory = App.inventory.concat();
       if (simulatorId) {
         inventory = inventory.filter(i => i.simulatorId === simulatorId);
@@ -187,6 +186,7 @@ const resolver = {
         });
       }
       if (name) {
+        const escapeRegex = (await import("escape-string-regexp")).default;
         const regex = new RegExp(escapeRegex(name || ""), "gui");
         inventory = inventory.filter(i => i.name.match(regex));
       }
