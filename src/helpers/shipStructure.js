@@ -93,7 +93,13 @@ export const RoomDropdown = ({
           {decks.find(d => d.id === selectedDeck) &&
             decks
               .find(d => d.id === selectedDeck)
-              .rooms.map(r => (
+              .rooms?.concat()
+              .sort((a, b) => {
+                if (a.name < b.name) return -1;
+                if (b.name < a.name) return 1;
+                return 0;
+              })
+              .map(r => (
                 <DropdownItem
                   key={r.id}
                   disabled={r.id === otherSelected}

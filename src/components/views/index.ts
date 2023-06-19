@@ -1,5 +1,5 @@
 import React from "react";
-import { trainingSteps as MessagesTraining } from "./Messaging";
+import {trainingSteps as MessagesTraining} from "./Messaging";
 
 // Widget Icons
 import {
@@ -124,7 +124,7 @@ const StationControl = React.lazy(() => import("./StationControl"));
 const Countermeasures = React.lazy(() => import("./Countermeasures"));
 const Hacking = React.lazy(() => import("./Hacking"));
 const Documents = React.lazy(() => import("./Documents"));
-const HullPlating = React.lazy(() => import("./HullPlating"))
+const HullPlating = React.lazy(() => import("./HullPlating"));
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
 const TransporterCore = React.lazy(() => import("./Transporters/core"));
@@ -223,7 +223,7 @@ const TaskFlowCore = React.lazy(() => import("./Tasks/taskFlowCore"));
 const DocumentsCore = React.lazy(() => import("./Documents/core"));
 const HackingCore = React.lazy(() => import("./Hacking/core"));
 const PrintQueueCore = React.lazy(() => import("./PrintQueue/core"));
-const HullPlatingCore = React.lazy(() => import("./HullPlating/core"))
+const HullPlatingCore = React.lazy(() => import("./HullPlating/core"));
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
 const CalculatorWidget = React.lazy(() => import("./Widgets/calculator"));
@@ -331,7 +331,7 @@ const Views = {
   PowerDistributionRightWing,
   Documents,
   Hacking,
-  HullPlating
+  HullPlating,
 };
 
 export const Widgets = {
@@ -531,7 +531,7 @@ export const Cores = {
   DocumentsCore,
   HackingCore,
   PrintQueueCore,
-  HullPlatingCore
+  HullPlatingCore,
 };
 
 export default Views;
