@@ -33,7 +33,7 @@ const Location = ({decks, deck, room, team = {}, update}) => {
               update(
                 Object.assign({}, team, {
                   location: {
-                    deck: {id: team.location.id},
+                    deck: {id: team.location.deck?.id ?? team.location.id},
                     id: a.room,
                   },
                 }),

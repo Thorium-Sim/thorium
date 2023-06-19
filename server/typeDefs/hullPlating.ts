@@ -1,16 +1,15 @@
 import App from "../app";
-import { gql, withFilter } from "apollo-server-express";
-import { pubsub } from "../helpers/subscriptionManager";
+import {gql, withFilter} from "apollo-server-express";
+import {pubsub} from "../helpers/subscriptionManager";
 const mutationHelper = require("../helpers/mutationHelper").default;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
   enum HULL_PLATING_MODE {
-    kinetic,
-    energy,
+    kinetic
+    energy
     radiation
   }
-
 
   type HullPlating implements SystemInterface {
     id: ID
@@ -36,13 +35,11 @@ const schema = gql`
   }
   extend type Mutation {
     setHullPlatingMode(id: ID!, mode: HULL_PLATING_MODE): String
-    setHullPlatingEngaged(id:ID!, engaged: Boolean): String
+    setHullPlatingEngaged(id: ID!, engaged: Boolean): String
     setHullPlatingPulse(id: ID!, pulse: Boolean): String
   }
   extend type Subscription {
-    hullPlatingUpdate(
-      simulatorId: ID
-    ): [HullPlating!]!
+    hullPlatingUpdate(simulatorId: ID): [HullPlating!]!
   }
 `;
 
@@ -55,26 +52,28 @@ const resolver = {
     },
   },
   Query: {
-    hullPlating(rootValue, { id }) {
+    hullPlating(rootValue, {id}) {
       const sys = App.systems.find(s => s.id === id);
       if (!sys) return App.dockingPorts.find(s => s.id === id);
       return sys;
     },
-    hullPlatings(root, { simulatorId }) {
+    hullPlatings(root, {simulatorId}) {
       let returnVal = App.systems.filter(s => s.type === "HullPlating");
       if (simulatorId) {
         returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
       }
       return returnVal;
-    }
+    },
   },
   Mutation: mutationHelper(schema),
   Subscription: {
     hullPlatingUpdate: {
-      resolve(rootValue, { simulatorId }) {
+      resolve(rootValue, {simulatorId}) {
         let returnSystems = rootValue;
         if (simulatorId) {
-          returnSystems = returnSystems.filter(s => s.simulatorId === simulatorId);
+          returnSystems = returnSystems.filter(
+            s => s.simulatorId === simulatorId,
+          );
         }
         console.log(returnSystems);
         return returnSystems;
@@ -87,4 +86,4 @@ const resolver = {
   },
 };
 
-export default { schema, resolver };
+export default {schema, resolver};

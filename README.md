@@ -39,14 +39,13 @@ Thorium is flexible enough to provide a system for creating an integrated,
 distributed, fault-tolerant show-control system that can power lights, sound,
 video, and take input and provide output to a wide variety of devices.
 
-Created with ❤ by [Alex Anderson]( ) and
-[Fyreworks](https://fyreworks.us).
+Created with ❤ by [Alex Anderson]() and [Fyreworks](https://fyreworks.us).
 
 ## A note about support
 
-Thorium is a self-organized "community support" project. We encourage everyone to
-use it and continue to submit issues and bug reports. Alex is the maintainer, and will
-continue to:
+Thorium is a self-organized "community support" project. We encourage everyone
+to use it and continue to submit issues and bug reports. Alex is the maintainer,
+and will continue to:
 
 - Review issues
 - Review pull requests and provide feedback
@@ -58,9 +57,9 @@ continue to:
 Fortunately, you can get help from the excellent people on
 [Thorium's Discord Server](https://discord.gg/UvxTQZz).
 
-If you need better support for your Thorium simulator, 
-[Alex](https://github.com/alexanderson1993) is happy to
-contract with you to do so. Reach out via Discord to start the process.
+If you need better support for your Thorium simulator,
+[Alex](https://github.com/alexanderson1993) is happy to contract with you to do
+so. Reach out via Discord to start the process.
 
 If you want to learn to contribute to Thorium, check out the
 [development video series](https://www.youtube.com/watch?v=iEU6NcOKhyE&list=PLvw0SNT6wHt9au1-6yCOh7QHj-p5ir0l6)
