@@ -1,3 +1,16 @@
+# [3.9.0](https://github.com/Thorium-Sim/thorium/compare/3.8.0...3.9.0) (2023-06-20)
+
+
+### Bug Fixes
+
+* Auto-thrusters now rotates the ship the correct direction. ([da6ee78](https://github.com/Thorium-Sim/thorium/commit/da6ee7843ac5353aac536a707cf85b2247051b63))
+
+
+### Features
+
+* Added Hull Plating System ([7a53fb0](https://github.com/Thorium-Sim/thorium/commit/7a53fb0fab4b6f85599c8300459ac71d9e7064ee))
+* Adds hull plating card and core. Thanks Mitchell! ([b9f4bea](https://github.com/Thorium-Sim/thorium/commit/b9f4beae8f8e35476a218fd13d2098f0aecb7b4c))
+
 ## [3.9.1](https://github.com/Thorium-Sim/thorium/compare/3.9.0...3.9.1) (2023-06-19)
 
 
