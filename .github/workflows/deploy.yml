@@ -15,7 +15,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Cache node modules
         uses: actions/cache@v1
         env:
@@ -57,7 +57,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - uses: actions/setup-python@v4
         with:
           python-version: "2.7"
@@ -101,9 +101,9 @@ jobs:
           GOOGLE_SHEETS_SECRET: ${{ secrets.GOOGLE_SHEETS_SECRET }}
           GOOGLE_SHEETS_CLIENT_ID: ${{ secrets.GOOGLE_SHEETS_CLIENT_ID }}
           GH_ISSUE_TOKEN: ${{ secrets.GH_ISSUE_TOKEN }}
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v2
-        if: failure()
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v2
+      #   if: failure()
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v2
       #   if: failure()

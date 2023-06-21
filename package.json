@@ -64,7 +64,9 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -80,8 +82,12 @@
     "last 1 safari version"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint"],
-    "*.{css,scss}": ["stylelint"],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -98,7 +104,9 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": { "provider": "github" },
+    "publish": {
+      "provider": "github"
+    },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -127,10 +135,15 @@
       ]
     },
     "win": {
-      "target": ["zip", "portable"],
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     },
-    "linux": { "category": "Utility" }
+    "linux": {
+      "category": "Utility"
+    }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -150,7 +163,9 @@
     ]
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -316,7 +331,7 @@
     "centered-pan-zoom": "^2.0.0",
     "cross-env": "^7.0.0",
     "electron": "^9.0.4",
-    "electron-builder": "^22.1.0",
+    "electron-builder": "23.0.2",
     "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^1.0.0",
     "eslint-config-prettier": "^6.4.0",
@@ -384,5 +399,7 @@
     "param-case": "3.0.3",
     "@babel/preset-env": "^7.8.7"
   },
-  "volta": { "node": "12.22.1" }
+  "volta": {
+    "node": "14.21.3"
+  }
 }
