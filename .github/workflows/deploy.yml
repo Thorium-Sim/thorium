@@ -15,7 +15,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 18
       - name: Cache node modules
         uses: actions/cache@v1
         env:
@@ -57,7 +57,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 18
       - name: Download production artifacts
         uses: actions/download-artifact@v2
         with:

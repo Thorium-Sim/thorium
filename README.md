@@ -112,6 +112,9 @@ yarn start
 Then open [the app](http://localhost:3000) or
 [GraphiQL](http://localhost:3001/graphiql)
 
+Note: If you have errors during `yarn install` that involve `node-gyp`, deleting
+the `%LocalAppData%/node-gyp/Cache` folder should resolve the issues.
+
 ## Building the App
 
 ```sh
