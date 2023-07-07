@@ -384,7 +384,7 @@
     "sine-waves": "^0.3.0",
     "source-map-explorer": "^2.1.1",
     "styled-components": "^5.1.0",
-    "stylelint": "^13.4.1",
+    "stylelint": "^15.10.1",
     "stylelint-config-recommended": "^3.0.0",
     "stylelint-config-recommended-scss": "^4.0.0",
     "stylelint-scss": "^3.12.0",
