@@ -121,6 +121,7 @@ function renderCards(props) {
         return {
           ...card,
           in: card.name === cardName,
+          component: Views.Interface,
           props: {
             ...props,
             interfaceId: card.component.replace("interface-id:", ""),
