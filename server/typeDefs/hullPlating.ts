@@ -75,7 +75,6 @@ const resolver = {
             s => s.simulatorId === simulatorId,
           );
         }
-        console.log(returnSystems);
         return returnSystems;
       },
       subscribe: withFilter(

@@ -33,7 +33,12 @@ export const aspectList = [
   "taskFlows",
 ];
 
-export function addAspects(template, sim: Classes.Simulator, data = App) {
+export function addAspects(
+  template,
+  sim: Classes.Simulator,
+  data = App,
+  isImport = false,
+) {
   // Duplicate all of the other stuff attached to the simulator too.
 
   aspectList.forEach(aspect => {
@@ -142,7 +147,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
       }
       const classItem = new Classes[newAspect.class](
         cloneDeep(newAspect),
-        true,
+        isImport ? false : true,
       );
       App[aspect].push(classItem);
     });
@@ -167,7 +172,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
             ),
           }),
       );
-      data.softwarePanels.push(
+      App.softwarePanels.push(
         new Classes.SoftwarePanel({
           id,
           templateId: panel.id,
@@ -194,7 +199,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
         id,
         simulatorId: sim.id,
       };
-      data.commandLine.push(new Classes.CommandLine(commandLine));
+      App.commandLine.push(new Classes.CommandLine(commandLine));
       return id;
     })
     .filter(Boolean);
@@ -211,7 +216,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
         id,
         simulatorId: sim.id,
       };
-      data.triggerGroups.push(new Classes.Trigger(trigger));
+      App.triggerGroups.push(new Classes.Trigger(trigger));
       return id;
     })
     .filter(Boolean);
@@ -228,7 +233,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
         id,
         simulatorId: sim.id,
       };
-      data.interfaces.push(new Classes.Interface(interfaceObj));
+      App.interfaces.push(new Classes.Interface(interfaceObj));
 
       // Update any clients assigned to this interface as a station
       App.clients
