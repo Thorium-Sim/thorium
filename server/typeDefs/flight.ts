@@ -129,17 +129,19 @@ export function addAspects(
           isochip.simulatorId = sim.id;
           data.isochips.push(new Classes.Isochip(isochip));
         }
-        if (newAspect.power && newAspect.power.powerLevels.length) {
-          newAspect.power.power =
-            newAspect.power.defaultLevel || newAspect.power.defaultLevel === 0
-              ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
+        if (!isImport) {
+          if (newAspect.power && newAspect.power.powerLevels.length) {
+            newAspect.power.power =
+              newAspect.power.defaultLevel || newAspect.power.defaultLevel === 0
                 ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
-                : newAspect.power.powerLevels[0]
-              : newAspect.power.powerLevels[0];
-          if (newAspect.power.defaultLevel === -1) newAspect.power.power = 0;
-        }
-        if (newAspect.power && !newAspect.power.powerLevels.length) {
-          newAspect.power.power = 0;
+                  ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
+                  : newAspect.power.powerLevels[0]
+                : newAspect.power.powerLevels[0];
+            if (newAspect.power.defaultLevel === -1) newAspect.power.power = 0;
+          }
+          if (newAspect.power && !newAspect.power.powerLevels.length) {
+            newAspect.power.power = 0;
+          }
         }
         if (newAspect.heat && newAspect.class === "Reactor") {
           newAspect.heat = 0;
