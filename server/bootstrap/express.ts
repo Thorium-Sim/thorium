@@ -204,7 +204,7 @@ export default () => {
         `/import${pascalCase(exportObj.exportable)}`,
         upload.any(),
         async (req: express.Request & {files: MulterFile[]}, res) => {
-          console.log(`Importing ${pascalCase(exportObj.exportable)}`);
+          console.info(`Importing ${pascalCase(exportObj.exportable)}`);
           if (req.files[0]) {
             const importZip = await new Promise<yauzl.ZipFile>(
               (resolve, reject) =>

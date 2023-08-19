@@ -34,10 +34,14 @@ export default function ImportFlight(filepath, cb) {
           streamToString(readStream, str => {
             const data = JSON.parse(str);
             // Create a duplicate flight with a different ID
+            let name = data.flight.name;
+            if (App.flights.some(f => f.name === data.flight.name)) {
+              name = `${data.flight.name} - Imported`;
+            }
             const flight = new Classes.Flight({
               ...data.flight,
               id: uuid.v4(),
-              name: `${data.flight.name} - Imported`,
+              name,
             });
             flight.simulators = flight.simulators.map(s => {
               const newId = uuid.v4();
@@ -48,10 +52,8 @@ export default function ImportFlight(filepath, cb) {
                 id: newId,
               });
 
-              sim.stations = sim.stations.map(s => new Classes.Station(s));
-
               App.simulators.push(sim);
-              addAspects(oldSim, sim, data);
+              addAspects(oldSim, sim, data, true);
 
               App.handleEvent(
                 {simulatorId: sim.id, count: sim.exocomps},

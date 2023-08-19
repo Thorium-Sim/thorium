@@ -28,6 +28,7 @@ const SpeedAsker = ({
           {s.label}
         </p>
       ))}
+      <p onClick={() => triggerUpdate("timed")}>Timed</p>
       <p onClick={cancelMove}>Cancel</p>
       <Mutation
         mutation={gql`

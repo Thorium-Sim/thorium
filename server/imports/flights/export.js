@@ -22,7 +22,8 @@ export default function exportFlight(id, res) {
     return res.end("No flight");
   }
   const zipfile = new yazl.ZipFile();
-  const data = {flight: flight, simulators: []};
+  const {timeouts, ...flightData} = flight;
+  const data = {flight: flightData, simulators: []};
   data.simulators = flight.simulators.map(simId => {
     const sim = App.simulators.find(s => s.id === simId);
     aspectList.forEach(aspect => {

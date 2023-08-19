@@ -33,9 +33,14 @@ export const aspectList = [
   "taskFlows",
 ];
 
-export function addAspects(template, sim: Classes.Simulator, data = App) {
+export function addAspects(
+  template,
+  sim: Classes.Simulator,
+  data = App,
+  isImport = false,
+) {
   // Duplicate all of the other stuff attached to the simulator too.
-
+  const aspectMap: Record<string, string> = {};
   aspectList.forEach(aspect => {
     if (
       aspect === "softwarePanels" ||
@@ -43,14 +48,14 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
       aspect === "triggers" ||
       aspect === "midiSets" ||
       aspect === "interfaces" ||
-      aspect === "dmxFixtures" ||
-      aspect === "taskFlows"
+      aspect === "dmxFixtures"
     ) {
       return;
     }
     const filterAspect = data[aspect].filter(
       a => a.simulatorId === template.simulatorId,
     );
+
     filterAspect.forEach(a => {
       const newAspect = cloneDeep(a);
       newAspect.templateId = newAspect.id;
@@ -124,26 +129,66 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
           isochip.simulatorId = sim.id;
           data.isochips.push(new Classes.Isochip(isochip));
         }
-        if (newAspect.power && newAspect.power.powerLevels.length) {
-          newAspect.power.power =
-            newAspect.power.defaultLevel || newAspect.power.defaultLevel === 0
-              ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
+        if (!isImport) {
+          if (newAspect.power && newAspect.power.powerLevels.length) {
+            newAspect.power.power =
+              newAspect.power.defaultLevel || newAspect.power.defaultLevel === 0
                 ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
-                : newAspect.power.powerLevels[0]
-              : newAspect.power.powerLevels[0];
-          if (newAspect.power.defaultLevel === -1) newAspect.power.power = 0;
-        }
-        if (newAspect.power && !newAspect.power.powerLevels.length) {
-          newAspect.power.power = 0;
+                  ? newAspect.power.powerLevels[newAspect.power.defaultLevel]
+                  : newAspect.power.powerLevels[0]
+                : newAspect.power.powerLevels[0];
+            if (newAspect.power.defaultLevel === -1) newAspect.power.power = 0;
+          }
+          if (newAspect.power && !newAspect.power.powerLevels.length) {
+            newAspect.power.power = 0;
+          }
         }
         if (newAspect.heat && newAspect.class === "Reactor") {
           newAspect.heat = 0;
         }
       }
+      // Teams need to reference crew
+      if (aspect === "teams") {
+        newAspect.officers = newAspect.officers.map(o => aspectMap[o]);
+        newAspect.location =
+          aspectMap[newAspect.location] ||
+          aspectMap[newAspect.location] ||
+          newAspect.location;
+      }
+      if (aspect === "taskReports") {
+        newAspect.systemId =
+          aspectMap[newAspect.systemId] || newAspect.systemId;
+        newAspect.tasks.forEach(t => {
+          t.id = aspectMap[t.id] || t.id;
+          t.systemId = aspectMap[t.systemId] || t.systemId;
+          t.simulatorId = sim.id;
+        });
+      }
+      if (aspect === "taskFlows") {
+        newAspect.steps.forEach(s => {
+          s.activeTaskIds = s.activeTaskIds.map(t => aspectMap[t] || t);
+          s.tasks.forEach(t => {
+            t.id = aspectMap[t.id] || t.id;
+            t.simulatorId = sim.id;
+          });
+        });
+      }
+      if (aspect === "tasks") {
+        newAspect.simulatorId = sim.id;
+        newAspect.systemId =
+          aspectMap[newAspect.systemId] || newAspect.systemId;
+        newAspect.deck = aspectMap[newAspect.deck] || newAspect.deck;
+        newAspect.room = aspectMap[newAspect.room] || newAspect.room;
+      }
+
       const classItem = new Classes[newAspect.class](
         cloneDeep(newAspect),
-        true,
+        isImport ? false : true,
       );
+
+      // Set up references
+      aspectMap[newAspect.templateId] = classItem.id;
+
       App[aspect].push(classItem);
     });
   });
@@ -167,7 +212,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
             ),
           }),
       );
-      data.softwarePanels.push(
+      App.softwarePanels.push(
         new Classes.SoftwarePanel({
           id,
           templateId: panel.id,
@@ -194,7 +239,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
         id,
         simulatorId: sim.id,
       };
-      data.commandLine.push(new Classes.CommandLine(commandLine));
+      App.commandLine.push(new Classes.CommandLine(commandLine));
       return id;
     })
     .filter(Boolean);
@@ -211,7 +256,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
         id,
         simulatorId: sim.id,
       };
-      data.triggerGroups.push(new Classes.Trigger(trigger));
+      App.triggerGroups.push(new Classes.Trigger(trigger));
       return id;
     })
     .filter(Boolean);
@@ -228,7 +273,7 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
         id,
         simulatorId: sim.id,
       };
-      data.interfaces.push(new Classes.Interface(interfaceObj));
+      App.interfaces.push(new Classes.Interface(interfaceObj));
 
       // Update any clients assigned to this interface as a station
       App.clients
@@ -240,6 +285,18 @@ export function addAspects(template, sim: Classes.Simulator, data = App) {
         .forEach(client => {
           client.setStation(`interface-id:${id}`);
         });
+
+      // Update any stations that have this interface as a card.
+      sim.stations.forEach(station => {
+        station.cards.forEach(card => {
+          if (
+            card.component.match(/interface-id:.{8}-.{4}-.{4}-.{4}-.{12}/gi)
+          ) {
+            card.component = `interface-id:${interfaceObj.templateId}`;
+          }
+        });
+      });
+
       return id;
     })
     .filter(Boolean);

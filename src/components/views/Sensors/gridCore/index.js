@@ -9,7 +9,7 @@ import SpeedAsker from "./speedAsker";
 import {useDragStart} from "./hooks/useDragStart";
 import {useSensorsData} from "./hooks/useSensorData";
 import {useTargeting} from "./hooks/useTargeting";
-import {speeds, SENSORS_OFFSET} from "./constants";
+import {speeds, SENSORS_OFFSET, distance3d} from "./constants";
 import {CoreSidebar} from "./CoreSidebar";
 
 import "./gridCore.scss";
@@ -61,7 +61,14 @@ const GridCore = ({
   const [draggingContacts, setDraggingContacts] = React.useState([]);
 
   const triggerUpdate = speed => {
-    speed = Number(speed);
+    let timed = false;
+    if (speed === "timed") {
+      timed = true;
+      speed = Number(window.prompt("How many seconds?", "10"));
+      if (isNaN(speed)) return;
+    } else {
+      speed = Number(speed);
+    }
     // Delete any dragging contacts that are out of bounds
     const newContacts = draggingContacts
       .map(c => checkContactPosition(c, node, dimensions))
@@ -86,9 +93,16 @@ const GridCore = ({
     const moveContacts = newContacts
       .map(c => {
         const {x = 0, y = 0, z = 0} = c.destination;
+        let contactSpeed = speed;
+
+        if (timed) {
+          const distance = distance3d({x, y, z}, c.location);
+          contactSpeed = (distance / speed) * 10;
+        }
+
         return {
           id: c.id,
-          speed,
+          speed: contactSpeed,
           destination: {x, y, z},
         };
       })

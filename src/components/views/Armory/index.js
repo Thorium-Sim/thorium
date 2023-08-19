@@ -462,8 +462,9 @@ class Armory extends Component {
 const TeamList = ({team, teams, crew, selectedCrew, selectCrew}) => {
   if (team) {
     return teams
-      .find(t => t.id === team)
-      .officers.map(o => crew.find(c => c.id === o.id))
+      .find(t => t?.id === team)
+      .officers.map(o => crew.find(c => c?.id === o?.id))
+      .filter(Boolean)
       .map(o => (
         <p
           key={`crew-${o.id}`}

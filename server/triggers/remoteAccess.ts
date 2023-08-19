@@ -1,7 +1,6 @@
 import App from "../app";
 
 export function remoteAccessSendCode({simulatorId, code}) {
-  console.log(simulatorId, code);
   return {simulatorId, code};
 }
 
@@ -16,7 +15,6 @@ export function remoteAccessUpdateCode({
 }) {
   const simulator = App.simulators.find(s => s.id === simulatorId);
   const code = simulator.ship.remoteAccessCodes.find(c => c.id === codeId);
-  console.log(simulatorId, state, code.code);
   return {
     simulatorId,
     state: state === "Accepted" ? "true" : "false",
