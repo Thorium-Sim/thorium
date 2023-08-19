@@ -59,7 +59,7 @@ export const CoreSidebar = ({
           </option>
         ))}
         <option disabled>─────────</option>
-        <option disabled>Timed</option>
+        <option value="timed">Timed</option>
       </Input>
       <Button size="sm" color="danger" block onClick={clearContacts}>
         Clear
