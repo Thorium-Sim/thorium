@@ -52,8 +52,6 @@ export default function ImportFlight(filepath, cb) {
                 id: newId,
               });
 
-              sim.stations = sim.stations.map(s => new Classes.Station(s));
-
               App.simulators.push(sim);
               addAspects(oldSim, sim, data, true);
 
