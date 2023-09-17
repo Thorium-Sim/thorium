@@ -13,6 +13,7 @@ const SOUND_SUB = gql`
       playbackRate
       channel
       looping
+      preserveChannels
     }
   }
 `;

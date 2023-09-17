@@ -97,6 +97,14 @@ function PlaySound({updateArgs, args, stations, clients, playSound}) {
           value={sound.channel}
           onChange={e => updateSound("channel", e.target.value.split(","))}
         />
+        <div style={{ display: "flex", gap: '1rem', padding: '20px' }}>
+          <Label>Preserve Audio Channels <small>Advanced</small> </Label>
+          <Input
+            type="checkbox"
+            checked={sound.preserveChannels}
+            onChange={e => updateSound("preserveChannels", e.target.checked)}
+          />
+        </div>
         <Label>Looping</Label>
         <Input
           type="checkbox"
