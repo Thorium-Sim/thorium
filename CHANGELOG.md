@@ -1,3 +1,11 @@
+## [3.10.1](https://github.com/Thorium-Sim/thorium/compare/3.10.0...3.10.1) (2023-10-02)
+
+
+### Bug Fixes
+
+* **Import:** Fix interface actions on flight import. ([c8d1324](https://github.com/Thorium-Sim/thorium/commit/c8d1324a85bb68431f2e5ae9e4e68312af38bbd1))
+* **Imports:** Sensor contacts in imported flights. ([4c54f11](https://github.com/Thorium-Sim/thorium/commit/4c54f11edbacde486e669835c0005be2890f6f73))
+
 # [3.10.0](https://github.com/Thorium-Sim/thorium/compare/3.9.0...3.10.0) (2023-08-19)
 
 
