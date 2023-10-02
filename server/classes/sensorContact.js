@@ -39,11 +39,12 @@ export default class SensorContact {
       y: 0,
       z: 0,
     };
-    this.destination = params.destination || {
-      x: 0,
-      y: 0,
-      z: 0,
-    };
+    this.destination = params.destination ||
+      params.location || {
+        x: 0,
+        y: 0,
+        z: 0,
+      };
     this.position = params.position || this.location;
     this.infrared = params.infrared || false;
     this.cloaked = params.cloaked || false;

@@ -92,7 +92,7 @@ App.on("triggerInterfaceObject", ({id, objectId}) => {
 App.on("toggleInterfaceObjectHidden", ({simulatorId, id, objectId, hidden}) => {
   const interfaceObj = App.interfaces.find(i =>
     simulatorId
-      ? i.simulatorId === simulatorId && i.templateId === id
+      ? (i.simulatorId === simulatorId && i.templateId === id) || i.id === id
       : i.id === id,
   );
   interfaceObj.update({
