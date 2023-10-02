@@ -261,6 +261,8 @@ export function addAspects(
     })
     .filter(Boolean);
 
+  let interfaceMap: Record<string, string> = {};
+  const interfaceList: Classes.Interface[] = [];
   // And the interfaces
   sim.interfaces = sim.interfaces
     .map(c => {
@@ -273,7 +275,11 @@ export function addAspects(
         id,
         simulatorId: sim.id,
       };
-      App.interfaces.push(new Classes.Interface(interfaceObj));
+      interfaceMap[interfaceData.id] = id;
+      interfaceMap[interfaceData.templateId] = id;
+      const i = new Classes.Interface(interfaceObj);
+      App.interfaces.push(i);
+      interfaceList.push(i);
 
       // Update any clients assigned to this interface as a station
       App.clients
@@ -300,6 +306,21 @@ export function addAspects(
       return id;
     })
     .filter(Boolean);
+
+  // Update the interface actions to refer to the correct interface
+
+  interfaceList.forEach(i => {
+    i.components.forEach(c => {
+      if (
+        [
+          "macro-toggleInterfaceObjectHidden",
+          "macro-toggleInterfaceObjectPlaying",
+        ].includes(c.component.name)
+      ) {
+        i.values[c.id].id = interfaceMap[i.values[c.id].id];
+      }
+    });
+  });
 }
 
 // We define a schema that encompasses all of the types
