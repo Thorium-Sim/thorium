@@ -1646,6 +1646,7 @@ type Sound {
   playbackRate: Float
   channel: [Int]
   looping: Boolean
+  preserveChannels: Boolean
 }
 
 input SoundInput {
@@ -1656,6 +1657,7 @@ input SoundInput {
   playbackRate: Float
   channel: [Int]
   looping: Boolean
+  preserveChannels: Boolean
 }
 
 type CommandLine {

@@ -7393,6 +7393,7 @@ export type Sound = {
   playbackRate?: Maybe<Scalars['Float']>;
   channel?: Maybe<Array<Maybe<Scalars['Int']>>>;
   looping?: Maybe<Scalars['Boolean']>;
+  preserveChannels?: Maybe<Scalars['Boolean']>;
 };
 
 export type SoundInput = {
@@ -7403,6 +7404,7 @@ export type SoundInput = {
   playbackRate?: Maybe<Scalars['Float']>;
   channel?: Maybe<Array<Maybe<Scalars['Int']>>>;
   looping?: Maybe<Scalars['Boolean']>;
+  preserveChannels?: Maybe<Scalars['Boolean']>;
 };
 
 export type CommandLine = {
