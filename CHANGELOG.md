@@ -1,3 +1,17 @@
+# [3.11.0](https://github.com/Thorium-Sim/thorium/compare/3.10.0...3.11.0) (2023-10-04)
+
+
+### Bug Fixes
+
+* **Import:** Fix interface actions on flight import. ([c8d1324](https://github.com/Thorium-Sim/thorium/commit/c8d1324a85bb68431f2e5ae9e4e68312af38bbd1))
+* **Imports:** Sensor contacts in imported flights. ([4c54f11](https://github.com/Thorium-Sim/thorium/commit/4c54f11edbacde486e669835c0005be2890f6f73))
+* **Movie:** Removed overriding transform css ([582f84d](https://github.com/Thorium-Sim/thorium/commit/582f84d2b6c45a86b23f5763b2df4e99efb4a25d))
+
+
+### Features
+
+* **Sounds:** Added Preserve Audio Channels Capability. ([252b9c0](https://github.com/Thorium-Sim/thorium/commit/252b9c0c04d574b2fdb02e30cb0894e558eb02d8))
+
 ## [3.10.1](https://github.com/Thorium-Sim/thorium/compare/3.10.0...3.10.1) (2023-10-02)
 
 
