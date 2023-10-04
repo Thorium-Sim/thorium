@@ -77,6 +77,7 @@ const schema = gql`
     playbackRate: Float
     channel: [Int]
     looping: Boolean
+    preserveChannels: Boolean
   }
 
   input SoundInput {
@@ -87,6 +88,7 @@ const schema = gql`
     playbackRate: Float
     channel: [Int]
     looping: Boolean
+    preserveChannels: Boolean
   }
 
   extend type Query {

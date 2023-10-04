@@ -94,6 +94,7 @@ interface Sound {
   channel?: number | number[];
   source?: AudioBufferSourceNode;
   gain?: GainNode;
+  preserveChannels?: boolean;
   onFinishedPlaying?: () => void;
 }
 export function playSound(opts: Sound) {
@@ -132,7 +133,7 @@ export function playSound(opts: Sound) {
             const sound = {...opts} || {};
             //Create a new buffer and set it to the specified channel.
             sound.source = audioContext.createBufferSource();
-            sound.source.buffer = downMixBuffer(buffer, channel);
+            sound.preserveChannels ? (sound.source.buffer = buffer) : (sound.source.buffer = downMixBuffer(buffer, channel))
             sound.source.loop = opts.looping || false;
             sound.source.playbackRate.setValueAtTime(playbackRate, 0);
             sound.gain = audioContext.createGain();

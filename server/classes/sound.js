@@ -10,5 +10,6 @@ export default class Sound {
     this.playbackRate = params.playbackRate || 1;
     this.channel = params.channel || [0, 1];
     this.looping = params.looping || false;
+    this.preserveChannels = params.preserveChannels === false ? false : true;
   }
 }
