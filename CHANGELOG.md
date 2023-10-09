@@ -1,3 +1,10 @@
+## [3.11.1](https://github.com/Thorium-Sim/thorium/compare/3.11.0...3.11.1) (2023-10-09)
+
+
+### Bug Fixes
+
+* **Interfaces:** Creating new flights no longer breaks interfaces. ([0a348da](https://github.com/Thorium-Sim/thorium/commit/0a348da03c37fcc544296e1b1278a80e697da85c))
+
 # [3.11.0](https://github.com/Thorium-Sim/thorium/compare/3.10.0...3.11.0) (2023-10-04)
 
 
