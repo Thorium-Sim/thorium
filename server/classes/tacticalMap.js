@@ -114,6 +114,7 @@ class TacticalLayer {
     this.asset = params.asset || "";
     this.autoplay = params.autoplay || true;
     this.loop = params.loop || false;
+    this.mute = params.mute ?? true;
     this.playbackSpeed = params.playbackSpeed || 1;
     this.opacity = params.opacity === 0 ? 0 : params.opacity || 1;
     this.items = [];
@@ -140,6 +141,7 @@ class TacticalLayer {
     asset,
     autoplay,
     loop,
+    mute,
     playbackSpeed,
     opacity,
   }) {
@@ -156,6 +158,7 @@ class TacticalLayer {
     if (playbackSpeed || playbackSpeed === 0)
       this.playbackSpeed = playbackSpeed;
     if (opacity || opacity === 0) this.opacity = opacity;
+    if (mute || mute === false) this.mute = mute;
   }
   addItem(item) {
     this.items.push(new TacticalItem(item));

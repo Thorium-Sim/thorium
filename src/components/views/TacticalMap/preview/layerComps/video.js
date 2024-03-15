@@ -54,6 +54,7 @@ class Video extends Component {
       asset = "/Viewscreen/Videos/Ship Scans",
       autoplay,
       opacity,
+      mute,
       simulatorId,
     } = this.props;
     const videoEnd = () => {
@@ -77,7 +78,7 @@ class Video extends Component {
           ref={this.player}
           src={`/assets${asset}`}
           autoPlay={autoplay !== false || true}
-          muted
+          muted={mute}
           loop={loop}
           onEnded={videoEnd}
         />
