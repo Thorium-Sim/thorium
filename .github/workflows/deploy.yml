@@ -47,7 +47,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        os: [macos-latest, windows-2019]
+        os: [macos-12, windows-2019]
 
     steps:
       - name: Check out Git repository
