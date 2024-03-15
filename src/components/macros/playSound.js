@@ -94,7 +94,7 @@ function PlaySound({ updateArgs, args, stations, clients, playSound }) {
           onChange={e => updateSound("playbackRate", e.target.value)}
         />
         <div style={{ display: "flex", gap: '1rem', padding: '20px', alignItems: 'center' }}>
-          <Label style={{ marginBottom: '0px' }}>
+          <Label htmlFor="preserve"  style={{ marginBottom: '0px' }}>
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
               Preserve Surround Channels <small>Advanced</small>
               <div>
@@ -118,13 +118,14 @@ function PlaySound({ updateArgs, args, stations, clients, playSound }) {
             </div>
           </Label>
           <Input
+            id="preserve"
             style={{ marginBottom: '4px' }}
             type="checkbox"
             checked={sound.preserveChannels}
             onChange={e => updateSound("preserveChannels", e.target.checked)}
           />
         </div>
-        <Label>
+        <Label htmlFor="mapping">
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             Channel Mapping Overrides <small>Advanced</small>
             <div>
@@ -144,19 +145,22 @@ function PlaySound({ updateArgs, args, stations, clients, playSound }) {
 
         </Label>
         <Input
+          id="mapping"
           type="text"
           disabled={sound.preserveChannels}
           placeholder="0,1"
           value={sound.channel}
           onChange={e => updateSound("channel", e.target.value.split(","))}
         />
-
-        <Label>Looping</Label>
-        <Input
+        <div>
+          <Label htmlFor="looping">Looping</Label>
+          <Input
+          id="looping"
           type="checkbox"
           checked={sound.looping}
           onChange={e => updateSound("looping", e.target.checked)}
-        />
+          />
+        </div>
         <div>
           <Button
             color="info"
