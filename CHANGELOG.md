@@ -1,3 +1,15 @@
+# [3.12.0](https://github.com/Thorium-Sim/thorium/compare/3.11.1...3.12.0) (2024-03-15)
+
+
+### Bug Fixes
+
+* Improve how multi-channel sounds are handled in the sound player. ([c98c8af](https://github.com/Thorium-Sim/thorium/commit/c98c8af2533eb8322926913ea58b68d4cab62926))
+
+
+### Features
+
+* Allow tactical map videos to play sound. Defaults to muted. ([0639be5](https://github.com/Thorium-Sim/thorium/commit/0639be5a4be7e817d2a81b6e1b4bc24846759933))
+
 ## [3.11.1](https://github.com/Thorium-Sim/thorium/compare/3.11.0...3.11.1) (2023-10-09)
 
 
