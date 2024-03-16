@@ -1,3 +1,10 @@
+## [3.12.1](https://github.com/Thorium-Sim/thorium/compare/3.12.0...3.12.1) (2024-03-16)
+
+
+### Bug Fixes
+
+* No longer default to Preserve Surround Channels when playing sounds. ([0232323](https://github.com/Thorium-Sim/thorium/commit/023232339f04964a51d26c6a78e52054ade9b260))
+
 # [3.12.0](https://github.com/Thorium-Sim/thorium/compare/3.11.1...3.12.0) (2024-03-15)
 
 
