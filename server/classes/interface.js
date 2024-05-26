@@ -1,4 +1,5 @@
 import uuid from "uuid";
+import cloneDeep from "clone-deep";
 
 export default class Interface {
   constructor(params) {
@@ -13,10 +14,10 @@ export default class Interface {
     this.deviceType = params.deviceType || null;
 
     // Have a place to store all of the diagram stuff.
-    this.components = params.components || [];
-    this.connections = params.connections || [];
-    this.values = params.values || [];
-    this.config = params.config || [];
+    this.components = cloneDeep(params.components || []);
+    this.connections = cloneDeep(params.connections || []);
+    this.values = cloneDeep(params.values || []);
+    this.config = cloneDeep(params.config || []);
   }
 
   rename(name) {

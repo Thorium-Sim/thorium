@@ -29,7 +29,7 @@ function copyToChannel(
   try {
     const nowBuffering = destination.getChannelData(channelNumber);
     for (let i = 0; i < source.length; i++) {
-      nowBuffering[i] = source[i];
+      nowBuffering[i] += source[i];
     }
   } catch (error) {
     console.error(error);
@@ -70,11 +70,14 @@ function downMixBuffer(buffer: AudioBuffer, channel: number[] | number[][]) {
       if (Array.isArray(channelObj)) {
         //If there is an array within the channel array, then it is
         //assumed that the values of the array correspond to LR channels
+        // We're not going to do anything fancy with multi-channels
         buff = copyToChannel(buff, buffer.getChannelData(0), channelObj[0]);
         buff = copyToChannel(buff, buffer.getChannelData(1), channelObj[1]);
       } else {
         //Combine the two buffer channels into one.
-        buff = copyToChannel(buff, buffer.getChannelData(0), channelObj);
+        for (let i = 0; i < buffer.numberOfChannels; i++) {
+          buff = copyToChannel(buff, buffer.getChannelData(i), channelObj);
+        }
       }
     }
   }
@@ -133,7 +136,12 @@ export function playSound(opts: Sound) {
             const sound = {...opts} || {};
             //Create a new buffer and set it to the specified channel.
             sound.source = audioContext.createBufferSource();
-            sound.preserveChannels ? (sound.source.buffer = buffer) : (sound.source.buffer = downMixBuffer(buffer, channel))
+            if (sound.preserveChannels) {
+              sound.source.buffer = buffer;
+            } else {
+              sound.source.buffer = downMixBuffer(buffer, channel);
+            }
+            console.log(channel, sound.source.buffer, buffer);
             sound.source.loop = opts.looping || false;
             sound.source.playbackRate.setValueAtTime(playbackRate, 0);
             sound.gain = audioContext.createGain();
@@ -207,7 +215,7 @@ export const useSounds = () => {
   );
 };
 const withSound = (Comp: React.ElementType) => {
-  return (props: unknown) => (
+  return (props: any) => (
     <Comp
       {...props}
       playSound={playSound}

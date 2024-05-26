@@ -45,6 +45,7 @@ const schema = gql`
     autoplay: Boolean
     loop: Boolean
     playbackSpeed: Float
+    mute: Boolean
   }
 
   input TacticalLayerInput {
@@ -62,6 +63,7 @@ const schema = gql`
     asset: String
     autoplay: Boolean
     loop: Boolean
+    mute: Boolean
     playbackSpeed: Float
   }
 

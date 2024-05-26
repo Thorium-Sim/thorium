@@ -47,7 +47,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        os: [macos-latest, windows-2019]
+        os: [macos-12, windows-2019]
 
     steps:
       - name: Check out Git repository
@@ -60,6 +60,8 @@ jobs:
           node-version: 14
       - uses: actions/setup-python@v4
         if: startsWith(matrix.os, 'macos')
+        with:
+          python-version: "3.9" # Needed for the older version of Node Gyp
       - name: Download production artifacts
         uses: actions/download-artifact@v2
         with:

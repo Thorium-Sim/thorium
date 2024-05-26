@@ -9905,6 +9905,7 @@ export type TacticalLayer = {
   autoplay?: Maybe<Scalars['Boolean']>;
   loop?: Maybe<Scalars['Boolean']>;
   playbackSpeed?: Maybe<Scalars['Float']>;
+  mute?: Maybe<Scalars['Boolean']>;
 };
 
 export type TacticalLayerInput = {
@@ -9920,6 +9921,7 @@ export type TacticalLayerInput = {
   asset?: Maybe<Scalars['String']>;
   autoplay?: Maybe<Scalars['Boolean']>;
   loop?: Maybe<Scalars['Boolean']>;
+  mute?: Maybe<Scalars['Boolean']>;
   playbackSpeed?: Maybe<Scalars['Float']>;
 };
 
@@ -11727,44 +11729,6 @@ export type HackingUpdateFilesMutation = (
   & Pick<Mutation, 'computerCoreUpdateHackingFiles'>
 );
 
-export type HullPlatingFragmentFragment = (
-  { __typename: 'HullPlating' }
-  & Pick<HullPlating, 'id' | 'displayName' | 'engaged' | 'mode'>
-  & { power?: Maybe<(
-    { __typename?: 'Power' }
-    & Pick<Power, 'powerLevels' | 'power'>
-  )>, damage?: Maybe<(
-    { __typename?: 'Damage' }
-    & Pick<Damage, 'damaged'>
-  )> }
-);
-
-export type HullPlatingQueryVariables = Exact<{
-  simulatorId: Scalars['ID'];
-}>;
-
-
-export type HullPlatingQuery = (
-  { __typename?: 'Query' }
-  & { hullPlatings?: Maybe<Array<Maybe<(
-    { __typename?: 'HullPlating' }
-    & HullPlatingFragmentFragment
-  )>>> }
-);
-
-export type HullPlatingUpdateSubscriptionVariables = Exact<{
-  simulatorId: Scalars['ID'];
-}>;
-
-
-export type HullPlatingUpdateSubscription = (
-  { __typename?: 'Subscription' }
-  & { hullPlatingUpdate: Array<(
-    { __typename?: 'HullPlating' }
-    & HullPlatingFragmentFragment
-  )> }
-);
-
 export type LightingSetEffectMutationVariables = Exact<{
   simulatorId: Scalars['ID'];
   effect: Lighting_Action;
@@ -12368,7 +12332,7 @@ export type TacticalMapUpdateSubscription = (
       & Pick<Flight, 'id'>
     )>, layers?: Maybe<Array<Maybe<(
       { __typename?: 'TacticalLayer' }
-      & Pick<TacticalLayer, 'id' | 'name' | 'type' | 'image' | 'color' | 'labels' | 'gridCols' | 'gridRows' | 'advance' | 'asset' | 'autoplay' | 'loop' | 'playbackSpeed' | 'opacity'>
+      & Pick<TacticalLayer, 'id' | 'name' | 'type' | 'image' | 'color' | 'labels' | 'gridCols' | 'gridRows' | 'advance' | 'asset' | 'autoplay' | 'loop' | 'playbackSpeed' | 'opacity' | 'mute'>
       & { items?: Maybe<Array<Maybe<(
         { __typename?: 'TacticalItem' }
         & Pick<TacticalItem, 'id' | 'layerId' | 'font' | 'label' | 'fontSize' | 'fontColor' | 'icon' | 'size' | 'speed' | 'rotation' | 'opacity' | 'flash' | 'ijkl' | 'wasd' | 'thrusters' | 'rotationMatch'>
@@ -14980,22 +14944,6 @@ export const CountermeasureFragmentDoc = gql`
   note
 }
     ${CountermeasureModuleFragmentDoc}`;
-export const HullPlatingFragmentFragmentDoc = gql`
-    fragment HullPlatingFragment on HullPlating {
-  id
-  __typename
-  power {
-    powerLevels
-    power
-  }
-  damage {
-    damaged
-  }
-  displayName
-  engaged
-  mode
-}
-    `;
 export const TemplateFragmentFragmentDoc = gql`
     fragment TemplateFragment on Template {
   id
@@ -15707,28 +15655,6 @@ export function useHackingUpdateFilesMutation(baseOptions?: ApolloReactHooks.Mut
         return ApolloReactHooks.useMutation<HackingUpdateFilesMutation, HackingUpdateFilesMutationVariables>(HackingUpdateFilesDocument, baseOptions);
       }
 export type HackingUpdateFilesMutationHookResult = ReturnType<typeof useHackingUpdateFilesMutation>;
-export const HullPlatingDocument = gql`
-    query HullPlating($simulatorId: ID!) {
-  hullPlatings(simulatorId: $simulatorId) {
-    ...HullPlatingFragment
-  }
-}
-    ${HullPlatingFragmentFragmentDoc}`;
-export function useHullPlatingQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HullPlatingQuery, HullPlatingQueryVariables>) {
-        return ApolloReactHooks.useQuery<HullPlatingQuery, HullPlatingQueryVariables>(HullPlatingDocument, baseOptions);
-      }
-export type HullPlatingQueryHookResult = ReturnType<typeof useHullPlatingQuery>;
-export const HullPlatingUpdateDocument = gql`
-    subscription HullPlatingUpdate($simulatorId: ID!) {
-  hullPlatingUpdate(simulatorId: $simulatorId) {
-    ...HullPlatingFragment
-  }
-}
-    ${HullPlatingFragmentFragmentDoc}`;
-export function useHullPlatingUpdateSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<HullPlatingUpdateSubscription, HullPlatingUpdateSubscriptionVariables>) {
-        return ApolloReactHooks.useSubscription<HullPlatingUpdateSubscription, HullPlatingUpdateSubscriptionVariables>(HullPlatingUpdateDocument, baseOptions);
-      }
-export type HullPlatingUpdateSubscriptionHookResult = ReturnType<typeof useHullPlatingUpdateSubscription>;
 export const LightingSetEffectDocument = gql`
     mutation LightingSetEffect($simulatorId: ID!, $effect: LIGHTING_ACTION!, $duration: Float!) {
   lightingSetEffect(simulatorId: $simulatorId, effect: $effect, duration: $duration)
@@ -16363,6 +16289,7 @@ export const TacticalMapUpdateDocument = gql`
       loop
       playbackSpeed
       opacity
+      mute
     }
     frozen
     template

@@ -1,3 +1,51 @@
+## [3.12.1](https://github.com/Thorium-Sim/thorium/compare/3.12.0...3.12.1) (2024-03-16)
+
+
+### Bug Fixes
+
+* No longer default to Preserve Surround Channels when playing sounds. ([0232323](https://github.com/Thorium-Sim/thorium/commit/023232339f04964a51d26c6a78e52054ade9b260))
+
+# [3.12.0](https://github.com/Thorium-Sim/thorium/compare/3.11.1...3.12.0) (2024-03-15)
+
+
+### Bug Fixes
+
+* Improve how multi-channel sounds are handled in the sound player. ([c98c8af](https://github.com/Thorium-Sim/thorium/commit/c98c8af2533eb8322926913ea58b68d4cab62926))
+
+
+### Features
+
+* Allow tactical map videos to play sound. Defaults to muted. ([0639be5](https://github.com/Thorium-Sim/thorium/commit/0639be5a4be7e817d2a81b6e1b4bc24846759933))
+
+## [3.11.1](https://github.com/Thorium-Sim/thorium/compare/3.11.0...3.11.1) (2023-10-09)
+
+
+### Bug Fixes
+
+* **Interfaces:** Creating new flights no longer breaks interfaces. ([0a348da](https://github.com/Thorium-Sim/thorium/commit/0a348da03c37fcc544296e1b1278a80e697da85c))
+
+# [3.11.0](https://github.com/Thorium-Sim/thorium/compare/3.10.0...3.11.0) (2023-10-04)
+
+
+### Bug Fixes
+
+* **Import:** Fix interface actions on flight import. ([c8d1324](https://github.com/Thorium-Sim/thorium/commit/c8d1324a85bb68431f2e5ae9e4e68312af38bbd1))
+* **Imports:** Sensor contacts in imported flights. ([4c54f11](https://github.com/Thorium-Sim/thorium/commit/4c54f11edbacde486e669835c0005be2890f6f73))
+* **Movie:** Removed overriding transform css ([582f84d](https://github.com/Thorium-Sim/thorium/commit/582f84d2b6c45a86b23f5763b2df4e99efb4a25d))
+
+
+### Features
+
+* **Sounds:** Added Preserve Audio Channels Capability. ([252b9c0](https://github.com/Thorium-Sim/thorium/commit/252b9c0c04d574b2fdb02e30cb0894e558eb02d8))
+
+## [3.10.1](https://github.com/Thorium-Sim/thorium/compare/3.10.0...3.10.1) (2023-10-02)
+
+
+### Bug Fixes
+
+* **Import:** Fix interface actions on flight import. ([c8d1324](https://github.com/Thorium-Sim/thorium/commit/c8d1324a85bb68431f2e5ae9e4e68312af38bbd1))
+* **Imports:** Sensor contacts in imported flights. ([4c54f11](https://github.com/Thorium-Sim/thorium/commit/4c54f11edbacde486e669835c0005be2890f6f73))
+
 # [3.10.0](https://github.com/Thorium-Sim/thorium/compare/3.9.0...3.10.0) (2023-08-19)
 
 

@@ -44,6 +44,16 @@ export default ({selectedLayer, updateLayer}) => (
       </div>
       <div>
         <label>
+          <input
+            checked={selectedLayer.mute}
+            type="checkbox"
+            onChange={evt => updateLayer("mute", evt.target.checked)}
+          />{" "}
+          Mute
+        </label>
+      </div>
+      <div>
+        <label>
           Playback Speed
           <select
             value={selectedLayer.playbackSpeed || "1"}
