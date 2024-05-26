@@ -8,6 +8,7 @@ import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
 import Motu from "motu-control";
 import {setAutoFreeze} from "immer";
+import fs from 'fs';
 
 setAutoFreeze(false);
 
@@ -101,6 +102,7 @@ class Events extends EventEmitter {
   snapshotVersion = 0;
   version = 0;
   timestamp: Date = new Date();
+  firebaseManager?: ClassesImport.FirebaseManager;
   [index: string]: any;
 
   init() {
@@ -110,6 +112,14 @@ class Events extends EventEmitter {
     if (process.env.PORT && !isNaN(parseInt(process.env.PORT, 10)))
       this.port = parseInt(process.env.PORT, 10);
     this.httpOnly = process.env.HTTP_ONLY === "true";
+    fs.readFile(paths.userData + "/firebase.json", (err, data) => {
+      if (err) {
+        return;
+      }
+      else {
+        this.firebaseManager = new ClassesImport.FirebaseManager({ firebaseServiceConfig: JSON.parse(data.toString()) });
+      }
+    })
   }
   merge(snapshot: any) {
     // Initialize the snapshot with the object constructors

@@ -61,3 +61,4 @@ import "./midi.js";
 import "./motu.js";
 import "./Countermeasures";
 import "./hullPlating";
+import "./edVenturesApp";
