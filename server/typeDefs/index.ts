@@ -77,6 +77,7 @@ import countermeasuresTypeDefs from "./countermeasures";
 import universeTypeDefs from "./universe";
 import dmxTypeDefs from "./dmx";
 import taskFlowTypeDefs from "./taskFlow";
+import firebaseConnectionTypeDefs from './firebase'
 export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
@@ -97,6 +98,7 @@ export const engines = enginesTypeDefs;
 export const environment = environmentTypeDefs;
 export const exocomp = exocompTypeDefs;
 export const externals = externalsTypeDefs;
+export const firebase = firebaseConnectionTypeDefs;
 export const flight = flightTypeDefs;
 export const googleSheets = googleSheetsTypeDefs;
 export const hullPlating = hullPlatingTypeDefs;
