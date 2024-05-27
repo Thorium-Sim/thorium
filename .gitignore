@@ -30,6 +30,7 @@ yarn-error.log*
 translations
 coverage
 .npm
+.yarn
 
 secrets.js
 logs
