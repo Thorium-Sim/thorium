@@ -34,6 +34,7 @@ const WingPower: React.FC<{
   wingedSystems,
 }) => {
   const [setWingPower] = useReactorSetWingPowerMutation();
+  const reactorPower = reactor[`${wing}WingPower`];
   return (
     <React.Fragment>
       <tr>
@@ -53,7 +54,10 @@ const WingPower: React.FC<{
         <td>{capitalCase(wing)} Wing Power</td>
         <td>
           <OutputField
-            alert={wingedSystems[`${wing}Power`] > reactor[`${wing}WingPower`]}
+            alert={
+              typeof reactorPower === "number" &&
+              wingedSystems[`${wing}Power`] > reactorPower
+            }
           >
             {wingedSystems[`${wing}Power`]}
           </OutputField>

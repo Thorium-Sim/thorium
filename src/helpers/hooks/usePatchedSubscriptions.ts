@@ -65,7 +65,7 @@ function usePatchedSubscriptions<SubData, VariableDefinition>(
       .request({
         query,
         operationName,
-        variables,
+        variables: variables as any,
       })
       .subscribe({
         next: ({data}) => {
