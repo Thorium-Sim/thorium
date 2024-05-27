@@ -20,6 +20,7 @@ module.exports = {
   moduleNameMapper: {
     "^react-native$": "react-native-web",
     "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+    "firebase-admin/*": ["node_modules/firebase-admin/lib/*"],
   },
   moduleFileExtensions: [
     "web.js",
