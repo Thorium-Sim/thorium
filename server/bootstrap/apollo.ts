@@ -104,7 +104,7 @@ function responseForOperation(requestContext) {
     // the built-in mutation resolver
     return null;
   }
-  return new Promise(resolve => {
+  return new Promise<any>(resolve => {
     // Execute the old legacy event handler system.
     let timeout = null;
     App.handleEvent(
@@ -118,7 +118,7 @@ function responseForOperation(requestContext) {
       opName,
       requestContext.context,
     );
-    timeout = setTimeout(() => resolve(), 500);
+    timeout = setTimeout(() => resolve({error: "fail"}), 500);
   });
 }
 

@@ -125,6 +125,7 @@ const Countermeasures = React.lazy(() => import("./Countermeasures"));
 const Hacking = React.lazy(() => import("./Hacking"));
 const Documents = React.lazy(() => import("./Documents"));
 const HullPlating = React.lazy(() => import("./HullPlating"));
+const EdVenturesApp = React.lazy(() => import("./EdVenturesApp"));
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
 const TransporterCore = React.lazy(() => import("./Transporters/core"));
@@ -224,6 +225,7 @@ const DocumentsCore = React.lazy(() => import("./Documents/core"));
 const HackingCore = React.lazy(() => import("./Hacking/core"));
 const PrintQueueCore = React.lazy(() => import("./PrintQueue/core"));
 const HullPlatingCore = React.lazy(() => import("./HullPlating/core"));
+const EdVenturesAppCore = React.lazy(() => import("./EdVenturesApp/core"));
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
 const CalculatorWidget = React.lazy(() => import("./Widgets/calculator"));
@@ -332,6 +334,7 @@ const Views = {
   Documents,
   Hacking,
   HullPlating,
+  EdVenturesApp
 };
 
 export const Widgets = {
@@ -532,6 +535,7 @@ export const Cores = {
   HackingCore,
   PrintQueueCore,
   HullPlatingCore,
+  EdVenturesAppCore
 };
 
 export default Views;

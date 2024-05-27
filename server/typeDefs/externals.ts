@@ -41,7 +41,7 @@ const download = function (url, dest, callback) {
   fetch(url)
     .then(
       res =>
-        new Promise((resolve, reject) => {
+        new Promise<void>((resolve, reject) => {
           if (res.status !== 200) return reject("Error downloading file.");
           const file = fs.createWriteStream(dest);
           res.body.pipe(file);

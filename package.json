@@ -64,7 +64,9 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -80,8 +82,12 @@
     "last 1 safari version"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint"],
-    "*.{css,scss}": ["stylelint"],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -98,7 +104,9 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": { "provider": "github" },
+    "publish": {
+      "provider": "github"
+    },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -127,10 +135,15 @@
       ]
     },
     "win": {
-      "target": ["zip", "portable"],
+      "target": [
+        "zip",
+        "portable"
+      ],
       "icon": "./public/icon.ico"
     },
-    "linux": { "category": "Utility" }
+    "linux": {
+      "category": "Utility"
+    }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -150,7 +163,9 @@
     ]
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -204,6 +219,7 @@
     "errorhandler": "^1.5.1",
     "escape-string-regexp": "^4.0.0",
     "express": "^4.17.1",
+    "firebase-admin": "^12.1.0",
     "fuse.js": "^6.0.0",
     "gl-matrix": "^3.2.1",
     "googleapis": "^51.0.0",
@@ -373,7 +389,7 @@
     "ts-jest": "^26.0.0",
     "ts-node-dev": "^1.0.0-pre.44",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
-    "typescript": "^3.6.4",
+    "typescript": "^5.4.0",
     "typescript-plugin-tw-template": "^2.0.1",
     "wait-on": "^5.0.0",
     "webgl-mock-threejs": "^0.0.1",
@@ -384,5 +400,8 @@
     "param-case": "3.0.3",
     "@babel/preset-env": "^7.8.7"
   },
-  "volta": { "node": "14.21.3" }
+  "volta": {
+    "node": "14.21.3"
+  },
+  "packageManager": "yarn@1.22.1"
 }

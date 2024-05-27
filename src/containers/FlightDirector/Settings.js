@@ -25,6 +25,11 @@ const GoogleSheetsQuery = gql`
   }
 `;
 
+const FirebaseManagerQuery = gql`
+  query HasFirebase {
+    hasFirebaseConnection
+  }
+`
 const Settings = () => {
   const {loading, data} = useQuery(QUERY);
 
@@ -186,6 +191,25 @@ const Settings = () => {
             }}
           </Query>
         </div>
+      </section>
+      <section>
+        <h3>EVA (EdVentures App) Integration</h3>
+        <div>Connecting to EVA requires adding a firebase.json file to your Documents/thorium folder.</div>
+        <Query query={FirebaseManagerQuery}>
+          {({ loading, data }) => {
+            if (loading || !data) return null;
+            const { hasFirebaseConnection } = data;
+            return (
+              <div style={{ marginTop: '1rem' }}>
+                {hasFirebaseConnection ? (
+                  <p><span aria-label="Rocket ship" role="img">🚀</span> Connected to EVA <span aria-label="Rocket ship" role="img">🚀</span></p>
+                ) : (
+                  <p>Not connected to EVA. If you would like to use the EVA integration, please check your firebase.json file and restart the server.</p>
+                )}
+              </div>
+            );
+          }}
+        </Query>
       </section>
     </Container>
   );

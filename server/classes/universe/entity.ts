@@ -60,6 +60,7 @@ export class Entity {
     // Apply the components
     Object.entries(components).forEach(([key, component]) => {
       if (["class", "id", "flightId", "interval"].includes(key)) return;
+      // @ts-expect-error
       const Comp = componentRegistry[camelCase(component.class)];
       this[key] = new Comp(component);
     });

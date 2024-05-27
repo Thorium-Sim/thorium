@@ -8,6 +8,7 @@ describe("defaultSnapshot", () => {
     "_maxListeners",
     "mutations",
     "setMutations",
+    "firebaseManager",
   ];
   const appKeys = Object.keys(App).filter(a => keyWhitelist.indexOf(a) === -1);
   const defaultSnapshotKeys = Object.keys(defaultSnapshot);

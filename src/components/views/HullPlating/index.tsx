@@ -150,6 +150,7 @@ const HullPlatingComp: React.FC<HullPlatingProps> = props => {
     return (
       <img
         style={{height: "90vh", marginTop: "-3vh"}}
+        draggable={false}
         alt="hull plating background"
         src={src}
       />

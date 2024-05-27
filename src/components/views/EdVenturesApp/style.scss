@@ -1,0 +1,106 @@
+.card-edVentureApp {
+    padding: 2rem;
+    display: flex;
+    gap: 1rem;
+    height: 100%;
+    .data-left-parent {
+        display: flex;
+        width: 50%;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        padding-bottom: 2rem;
+        height: 100%;
+        flex-direction: column;
+    }
+    .logos-area {
+        display: flex;
+        justify-content: space-evenly;
+        height: 100px;
+    }
+    .left-text-area {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 100%;
+    }
+    .heading-text-area {
+        text-align: center;
+    }
+    .event-id-text {
+        text-align: center;
+        color: #1071B9;
+    }
+    .right-text-area {
+        display: flex;
+        justify-content: space-evenly;
+        width: 50%;
+        padding-left: 4rem;
+        padding-bottom: 4rem;
+        padding-right: 4rem;
+        height: 100%;
+        flex-direction: column;
+    }
+    .awards-parent {
+        display: flex;
+        flex-direction: column;
+    }
+    .awards-group-parent {
+        display: flex;
+        justify-content: space-around;
+        gap: 1rem;
+    }
+    .awards-group {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        align-items: center;
+    }
+    .awards-image {
+        height: 100px;
+        object-fit: scale-down;
+    }
+    .popover-body-parent {
+        display: flex;
+        flex-direction: column;
+    }
+    .email-heading-parent {
+        margin-bottom: 4rem;
+    }
+    .email-heading-text {
+        font-size: 20;
+        margin-bottom: 1rem;
+    }
+    .input-parent {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+    }
+    .text-input {
+        flex-grow: 1;
+    }
+    .locked-email {
+        font-size: 20;
+    }
+    .reactstrap-input {
+        margin-bottom: 0px
+    }
+    .invalid-email {
+        color: red
+    }
+    .email-btn {
+        margin-top: 0px
+    }
+}
+
+.core-edVentureApp {
+    display: flex;
+    flex-direction: column;
+    .awards-parent {
+        display: flex;
+        flex-direction: column;
+    }
+    .awards-list-parent {
+        display: flex;
+        gap: 0.5rem;
+    }
+}

@@ -17,6 +17,16 @@ const SET_CLIENT_TRAINING = gql`
   }
 `;
 
+/**
+ * Helper component for displaying a tour with steps.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.steps - An array of steps for the tour.
+ * @param {string} [props.innerKey] - The inner key for the tour component.
+ * @param {boolean} [props.training] - Flag indicating if the tour is in training mode.
+ * @param {function} [props.onRequestClose] - Callback function to be called when the tour is closed.
+ * @returns {JSX.Element|null} The rendered Tour component or null if there are no steps.
+ */
 const TourHelper = ({
   steps,
   innerKey = undefined,

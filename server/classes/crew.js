@@ -36,7 +36,7 @@ class Chart {
     if (heartRate || heartRate === 0) this.heartRate = heartRate;
     if (temperature || temperature === 0) this.temperature = temperature;
     if (o2levels || o2levels === 0) this.o2levels = o2levels;
-    if (symptoms || symptoms === []) {
+    if (symptoms || symptoms.length === 0) {
       this.symptoms = symptoms;
       // Add diagnoses symptoms
       if (symptoms.length === 0) {

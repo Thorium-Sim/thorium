@@ -6,6 +6,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "es6",
     "skipLibCheck": true,
+    "lib":["ES2019"],
 
     // TODO: Turn this on when we get enough coverage
     "noImplicitAny": false,

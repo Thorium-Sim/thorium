@@ -1,128 +1,1717 @@
-type Query {
-  _empty: String
-  actions(stationId: ID, clientId: ID): Action
-  asset(assetKey: String!): Asset
-  assets(assetKeys: [String!]!): [Asset]
-  assetFolders(name: String, names: [String]): [AssetFolder]
-  clients(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
-  keypad(client: ID!): Keypad
-  keypads(simulatorId: ID!): [Keypad]
-  scanner(client: ID!): Scanner
-  scanners(simulatorId: ID!): [Scanner]
-  commandLine(simulatorId: ID): [CommandLine]
-  commandLineCommands(simulatorId: ID!): [CommandLineCommand]
-  computerCore(simulatorId: ID): [ComputerCore]
-  oneComputerCore(id: ID!): ComputerCore
-  hackingPresets: [HackingPreset!]!
-  coolant(simulatorId: ID!): [CoolantTank]
-  systemCoolant(simulatorId: ID!, systemId: ID): [SystemCoolant]
-  coreFeed(simulatorId: ID): [CoreFeed]
-  coreLayouts(name: String): [CoreLayout]
-  crew(simulatorId: ID, position: String, killed: Boolean): [Crew]
-  crewCount(simulatorId: ID!, position: String, killed: Boolean): Int
-  crm(id: ID, simulatorId: ID): Crm
-  crmFighter(simulatorId: ID!, clientId: ID!): CrmFighter
-  decks(simulatorId: ID!, number: Int): [Deck]
-  docking(id: ID, simulatorId: ID, type: DOCKING_TYPES): [DockingPort]
-  engines(simulatorId: ID): [Engine]
-  engine(id: ID!): Engine
-  exocomps(simulatorId: ID): [Exocomp]
-  externals: Externals
-  flights(running: Boolean, id: ID): [Flight!]!
-  events: [String]
-  googleSheets: String
-  googleSheetsGetSpreadsheet(spreadsheetId: ID!): GoogleSpreadsheet
-  hullPlating(id: ID!): HullPlating
-  hullPlatings(simulatorId: ID!): [HullPlating]
-  interfaces(simulatorId: ID): [Interface]
-  interfaceDevices: [InterfaceDevice]
-  internalComm(simulatorId: ID!): [InternalComm]
-  inventory(simulatorId: ID, id: ID, name: String, deck: ID, room: ID): [InventoryItem]
-  isochips(simulatorId: ID): [Isochip]
-  jumpDrive(simulatorId: ID): [JumpDrive]
-  keyboard: [Keyboard]
-  libraryEntries(simulatorId: ID, type: String, all: Boolean): [LibraryEntry]
-  longRangeCommunications(simulatorId: ID): [LRCommunications]
-  macros: [Macro]
-  macroButtons: [MacroButtonConfig]
-  messages(simulatorId: ID!, station: String, group: ID): [Message]
-  midiSets(simulatorId: ID): [MidiSet]
-  missions(id: ID, aux: Boolean): [Mission!]!
-  auxTimelines(simulatorId: ID!): [TimelineInstance]
-  motus: [Motu]
-  motu(id: ID!): Motu
-  motuChannel(id: ID!, channelId: ID!): MotuChannel
-  motuSend(id: ID!, inputId: ID!, outputId: ID!): MotuPatch
-  navigation(simulatorId: ID): [Navigation]
-  navigate(id: ID!): Navigation
-  objective(simulatorId: ID): [Objective]
-  officerLogs(clientId: ID, flightId: ID!): [Log]
-  shipLogs(simulatorId: ID!): [Log]
-  phasers(simulatorId: ID): [Phaser]
-  phaser(id: ID!): Phaser
-  probes(simulatorId: ID!): [Probes!]!
-  probe(id: ID!): Probes
-  probeEquipment: [ProbeEquipment!]!
-  railgun(simulatorId: ID): [Railgun]
-  reactors(simulatorId: ID, model: String): [Reactor]
-  reactor(id: ID!): Reactor
-  recordSnippets(simulatorId: ID!, visible: Boolean): [RecordSnippet]
-  recordTemplates: [RecordSnippet]
-  rooms(simulatorId: ID, deck: ID, name: String, role: RoomRoles): [Room]
-  sensors(simulatorId: ID, domain: String): [Sensors!]!
-  sensor(id: ID!): Sensors
-  sensorContacts(simulatorId: ID, sensorsId: ID, hostile: Boolean, type: String): [SensorContact]
-  sets: [Set]
-  shields(simulatorId: ID): [Shield]
-  shortRangeComm(simulatorId: ID!): [ShortRangeComm]
-  sickbay(simulatorId: ID): [Sickbay]
-  sickbaySingle(id: ID): Sickbay
+"""Exposes a URL that specifies the behaviour of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behaviour of this scalar."""
+  url: String!
+) on SCALAR
+
+type Action {
+  action: String
+  message: String
+  voice: String
+  duration: Float
+}
+
+input ActionInput {
+  id: ID
+  event: String
+  args: String
+  delay: Int
+  noCancelOnReset: Boolean
+  needsConfig: Boolean
+}
+
+type Ambiance {
+  id: ID!
+  name: String!
+  asset: String!
+  volume: Float!
+  channel: [Int!]!
+  playbackRate: Float!
+}
+
+input AmbianceInput {
+  id: ID
+  name: String
+  asset: String
+  volume: Float
+  channel: [Int]
+  playbackRate: Float
+}
+
+type AppearanceComponent {
+  meshType: MeshTypeEnum
+  modelAsset: String
+  materialMapAsset: String
+  ringMapAsset: String
+  cloudMapAsset: String
+  emissiveColor: String
+  emissiveIntensity: Float
+  color: String
+  scale: Float
+}
+
+type Asset {
+  assetKey: String!
+  url: String!
+}
+
+type AssetFolder {
+  id: ID!
+  name: String!
+  folderPath: String!
+  fullPath: String!
+  objects: [AssetObject!]!
+}
+
+type AssetObject {
+  id: ID!
+  name: String!
+  folderPath: String!
+  fullPath: String!
+  url: String!
+}
+
+type BehaviorComponent {
+  behavior: Behaviors!
+  targetId: ID
+  destination: EntityCoordinates
+}
+
+enum Behaviors {
+  holdPosition
+  wander
+  follow
+  avoid
+  attack
+}
+
+"""
+The `BigInt` scalar type represents non-fractional signed whole numeric values.
+BigInt can represent values between -(2^53) + 1 and 2^53 - 1. 
+"""
+scalar BigInt
+
+type Card {
+  name: String!
+  component: String!
+  hidden: Boolean
+  assigned: Boolean
+  newStation: Boolean
+}
+
+input CardInput {
+  name: String
+  component: String
+}
+
+enum ChannelModeMessageType {
+  allsoundoff
+  resetallcontrollers
+  localcontroloff
+  localcontrolon
+  allnotesoff
+  omnimodeoff
+  omnimodeon
+  monomodeon
+  polymodeon
+}
+
+type Chart {
+  id: ID
+  admitTime: String
+  dischargeTime: String
+  bloodPressure: String
+  heartRate: Float
+  temperature: Float
+  o2levels: Float
   symptoms: [String]
-  signalJammers(simulatorId: ID!): [SignalJammer]
-  simulators(template: Boolean, id: ID): [Simulator!]!
-  softwarePanels(simulatorId: ID): [SoftwarePanel]
-  stations: [StationSet]
-  station(simulatorId: ID!, station: String!): Station
-  stealthField(simulatorId: ID): [StealthField]
-  stealth(id: ID!): StealthField
-  subspaceField(simulatorId: ID): [SubspaceField]
-  surveyform(simulatorId: ID, active: Boolean): [SurveyForm]
-  systems(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean, damageWhich: String): [System]
-  system(id: ID!): System
-  allSystems: [String!]!
-  tacticalMaps(flightId: ID): [TacticalMap]
-  tacticalMap(id: ID!): TacticalMap
-  targeting(id: ID, simulatorId: ID): [Targeting]
-  taskReport(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
-  tasks(simulatorId: ID!, station: String, definitions: [String!]): [Task]
-  taskTemplates: [TaskTemplate!]!
-  taskDefinitions(simulatorId: ID): [TaskDefinition!]!
-  taskInstructions(simulatorId: ID, definition: String!, requiredValues: JSON!, task: TaskInput): String
-  teams(simulatorId: ID, type: String, cleared: Boolean): [Team]
-  damagePositions: [String]
-  exocompParts: [String]
-  _template(simulatorId: ID!): Template
-  thorium: Thorium
-  thrusters(simulatorId: ID): [Thruster]
-  thruster(id: ID!): Thruster
-  thx(simulatorId: ID): [Thx]
-  torpedos(simulatorId: ID): [Torpedo]
-  torpedo(id: ID!): Torpedo
-  tractorBeam(simulatorId: ID): [TractorBeam]
-  transporters(simulatorId: ID): [Transporter]
-  transwarp(simulatorId: ID): [Transwarp]
-  triggers(simulatorId: ID): [Trigger]
-  viewscreens(simulatorId: ID): [Viewscreen]
-  countermeasures(simulatorId: ID!): Countermeasures
-  countermeasureModuleType: [CountermeasureModule!]!
-  entity(id: ID!): Entity
-  entities(flightId: ID!, inert: Boolean): [Entity]!
-  dmxDevices: [DMXDevice!]!
-  dmxSets: [DMXSet!]!
-  dmxFixtures(simulatorId: ID): [DMXFixture!]!
-  dmxConfig(id: ID!): DMXConfig
-  dmxConfigs: [DMXConfig!]!
-  taskFlows(simulatorId: ID): [TaskFlow!]!
+  diagnosis: [String]
+  treatment: String
+  treatmentRequest: Boolean
+  painPoints: [PainPoint]
+}
+
+input ChartInput {
+  id: ID
+  admitTime: String
+  dischargeTime: String
+  bloodPressure: String
+  heartRate: Float
+  temperature: Float
+  o2levels: Float
+  symptoms: [String]
+  treatment: String
+  treatmentRequest: Boolean
+  painPoints: [PainPointInput]
+}
+
+type Client {
+  id: ID!
+  label: String
+  connected: Boolean
+  flight: Flight
+  simulator: Simulator
+  station: Station
+  loginName: String
+  loginState: String
+  ping: String
+  offlineState: String
+  movie: String
+  training: Boolean
+  soundPlayer: Boolean
+  caches: [String]
+  hypercard: String
+  overlay: Boolean
+  cracked: Boolean
+  commandLineOutput: [String]
+  commandLineFeedback: [CommandLineFeedback]
+  currentCard: Card
+  token: String
+  email: String
+  mobile: Boolean
+  cards: [String]
+  keypad: Keypad
+}
+
+type CommandLine {
+  id: ID
+  name: String
+  commands: [CommandLineCommand]
+  components: JSON
+  connections: JSON
+  values: JSON
+  config: JSON
+}
+
+type CommandLineCommand {
+  name: String
+  help: String
+  hidden: Boolean
+}
+
+type CommandLineFeedback {
+  id: ID
+  clientId: ID
+  command: String
+  approve: String
+  deny: String
+  triggers: [TimelineItem]
+}
+
+type CommArrow {
+  id: ID
+  signal: ID
+  frequency: Float
+  connected: Boolean
+  muted: Boolean
+}
+
+type CommArrowExtended {
+  id: ID
+  signal: ID
+  range: String
+  frequency: Float
+  connected: Boolean
+}
+
+input CommArrowInput {
+  id: ID
+  signal: ID
+  frequency: Float
+  connected: Boolean
+}
+
+type CommRange {
+  lower: Float
+  upper: Float
+}
+
+type CommRanges {
+  military: CommRange
+  commercial: CommRange
+  priority: CommRange
+  emergency: CommRange
+}
+
+type CommSignal {
+  id: ID
+  image: String
+  name: String
+  range: CommRange
+  color: String
+}
+
+type CommSignalExtended {
+  id: ID
+  color: String
+  image: String
+  name: String
+  ranges: CommRanges
+}
+
+input CommSignalInput {
+  id: ID
+  image: String
+  name: String
+  range: RangeInput
+  color: String
+}
+
+input CommUpdateInput {
+  state: String
+  frequency: Float
+  amplitude: Float
+}
+
+type ComputerCore {
+  id: ID
+  simulatorId: ID
+  users: [ComputerCoreUser]
+  files: [ComputerCoreFile]
+  virii: [ComputerCoreVirus]
+  terminals: [ComputerCoreTerminals]
+  history: [String]
+  hackingActive: Boolean
+  activeHackingPreset: HackingPreset
+  hackingState: String
+  hackingPortScanFrequency: Float
+  hackingLog: [String!]!
+  hackingPorts: HackingPorts!
+}
+
+type ComputerCoreFile {
+  id: ID
+  name: String
+  level: Int
+  corrupted: Boolean
+  restoring: Boolean
+}
+
+input ComputerCoreFileInput {
+  id: ID
+  name: String
+  level: Int
+  corrupted: Boolean
+  restoring: Boolean
+}
+
+type ComputerCoreTerminals {
+  id: ID
+  name: String
+  status: TERMINAL_STATUS
+}
+
+type ComputerCoreUser {
+  id: ID
+  name: String
+  password: String
+  hacker: Boolean
+  level: Int
+}
+
+input ComputerCoreUserInput {
+  name: String
+  password: String
+  hacker: Boolean
+  level: Int
+}
+
+type ComputerCoreVirus {
+  id: ID
+  name: String
+}
+
+type Coolant {
+  temperature: Float
+  quantity: Float
+  rate: Float
+}
+
+type CoolantRegulator {
+  id: ID
+  simulatorId: ID
+  type: String
+  name: String
+  coolant: Coolant
+  damage: Float
+}
+
+type CoolantTank implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  name: String
+  displayName: String
+  upgradeName: String
+  upgraded: Boolean
+  coolant: Float
+  coolantRate: Float
+  damage: Damage
+  power: Power
+  stealthFactor: Float
+  locations: [Room]
+}
+
+type Coordinates {
+  x: Float
+  y: Float
+  z: Float
+}
+
+input CoordinatesInput {
+  x: Float
+  y: Float
+  z: Float
+}
+
+type CoreFeed {
+  id: ID
+  simulatorId: ID
+  component: String
+  ignored: Boolean
+  timestamp: String
+  title: String
+  body: String
+  color: String
+}
+
+type CoreLayout {
+  id: ID
+  name: String
+  config: String
+}
+
+input CoreLayoutInput {
+  id: ID
+  name: String
+  config: String
+}
+
+type Countermeasure {
+  id: ID!
+  name: String!
+  modules: [CountermeasureModule!]!
+  locked: Boolean!
+  active: Boolean!
+  building: Boolean!
+  totalPowerUsed: Float!
+  readyToLaunch: Boolean!
+  powerUsage: Float!
+  availablePower: Float!
+  buildPercentage: Float!
+  note: String!
+}
+
+type CountermeasureConfigOptions {
+  type: String!
+  label: String!
+}
+
+type CountermeasureModule {
+  id: ID!
+  name: String!
+  description: String!
+  powerRequirement: Float!
+  resourceRequirements: CountermeasureResources!
+  configurationOptions: [CountermeasureConfigOptions!]!
+  config: JSON!
+  buildProgress: Float!
+  activated: Boolean!
+}
+
+type CountermeasureResources {
+  copper: Float!
+  titanium: Float!
+  carbon: Float!
+  plastic: Float!
+  plasma: Float!
+}
+
+type Countermeasures implements SystemInterface {
+  id: ID!
+  simulatorId: ID
+  class: String
+  type: String
+  name: String!
+  displayName: String!
+  upgradeName: String
+  upgraded: Boolean
+  damage: Damage!
+  power: Power!
+  stealthFactor: Float
+  locations: [Room]
+  materials: CountermeasureResources!
+  slots: CountermeasureSlot!
+  launched: [Countermeasure!]!
+}
+
+type CountermeasureSlot {
+  slot1: Countermeasure
+  slot2: Countermeasure
+  slot3: Countermeasure
+  slot4: Countermeasure
+  slot5: Countermeasure
+  slot6: Countermeasure
+  slot7: Countermeasure
+  slot8: Countermeasure
+}
+
+enum CountermeasureSlotEnum {
+  slot1
+  slot2
+  slot3
+  slot4
+  slot5
+  slot6
+  slot7
+  slot8
+}
+
+type Crew {
+  id: ID
+  simulatorId: ID
+  firstName: String
+  lastName: String
+  name: String
+  gender: String
+  age: Int
+  rank: String
+  position: String
+  killed: Boolean
+  location: Deck
+  workRoom: Room
+  restRoom: Room
+  inventory: [InventoryItem]
+  charts: [Chart]
+}
+
+input CrewCountInput {
+  crew: ID
+  count: Int
+}
+
+input CrewInput {
+  id: ID
+  simulatorId: ID
+  firstName: String
+  lastName: String
+  gender: String
+  age: String
+  rank: String
+  position: String
+  killed: Boolean
+  workRoom: Int
+  restRoom: Int
+}
+
+type Crm implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  name: String
+  displayName: String
+  upgradeName: String
+  upgraded: Boolean
+  damage: Damage
+  power: Power
+  stealthFactor: Float
+  locations: [Room]
+  password: String
+  activated: Boolean
+  fighterImage: String
+  fighters: [CrmFighter]
+  enemies: [CrmFighter]
+  fighterStrength: Float
+  enemyStrength: Float
+  fighterCount: Int
+  enemyCount: Int
+  fighterDestroyedCount: Int
+  enemyDestroyedCount: Int
+  fighterIcon: String
+  enemyIcon: String
+  attacking: Boolean
+  interval: Float
+  phasers: [CrmPhaserShot]
+  torpedos: [CrmTorpedo]
+}
+
+type CrmFighter {
+  id: ID
+  clientId: ID
+  client: Client
+  icon: String
+  size: Float
+  speed: Float
+  strength: Float
+  attacking: Boolean
+  hull: Float
+  shield: Float
+  shieldRaised: Boolean
+  phaserLevel: Float
+  torpedoCount: Int
+  torpedoLoaded: Boolean
+  destroyed: Boolean
+  docked: Boolean
+  position: Coordinates
+  velocity: Coordinates
+  frags: Int
+}
+
+type CrmPhaserShot {
+  target: Coordinates
+  destination: Coordinates
+}
+
+type CrmTorpedo {
+  id: ID
+  position: Coordinates
+  destroyed: Boolean
+}
+
+type Damage {
+  damaged: Boolean
+  destroyed: Boolean
+  report: String
+  reportSteps: [DamageReportStep]
+  requested: Boolean
+  reactivationCode: String
+  neededReactivationCode: String
+  currentStep: Int
+  validate: Boolean
+  which: DAMAGE_TYPES
+  taskReportDamage: Boolean
+}
+
+enum DAMAGE_STEP_TYPES {
+  required
+  optional
+}
+
+enum DAMAGE_TYPES {
+  default
+  rnd
+  engineering
+}
+
+type DamageReportStep {
+  id: ID
+  text: String
+  validate: Boolean
+  validated: Boolean
+}
+
+type DamageStep {
+  id: ID
+  name: String
+  args: DamageStepArgs
+}
+
+type DamageStepArgs {
+  end: Boolean
+  cleanup: Boolean
+  name: String
+  orders: String
+  room: String
+  preamble: String
+  type: String
+  message: String
+  code: String
+  backup: String
+  inventory: String
+  destination: String
+  equipment: String
+  query: String
+  reactivate: Boolean
+}
+
+input DamageStepArgsInput {
+  end: Boolean
+  cleanup: Boolean
+  name: String
+  orders: String
+  room: String
+  preamble: String
+  type: String
+  message: String
+  code: String
+  backup: String
+  inventory: String
+  destination: String
+  equipment: String
+  query: String
+  reactivate: Boolean
+}
+
+input DamageStepInput {
+  id: ID
+  name: String
+  args: DamageStepArgsInput
+  type: DAMAGE_STEP_TYPES
+}
+
+type DamageTask {
+  id: ID
+  taskTemplate: TaskTemplate
+  required: Boolean
+  nextSteps: [TaskTemplate]
+}
+
+input DamageTaskInput {
+  id: ID
+  required: Boolean
+  nextSteps: [ID]
+}
+
+type Deck {
+  id: ID
+  simulatorId: ID
+  number: Int
+  svgPath: String
+  doors: Boolean
+  evac: Boolean
+  rooms: [Room]
+  hallway: String
+  crewCount: Int
+  environment: Environment
+}
+
+input DirectionInput {
+  x: Float
+  y: Float
+  z: Float
+}
+
+enum DMXChannelProperty {
+  red
+  green
+  blue
+  amber
+  white
+  uv
+  intensity
+  strobe
+  generic
+  focus
+  nothing
+}
+
+type DMXConfig {
+  id: ID!
+  name: String!
+  config: JSON!
+  actionStrength: Float!
+}
+
+type DMXDevice {
+  id: ID!
+  class: String!
+  name: String!
+  channels: [DMXChannelProperty!]!
+}
+
+type DMXFixture {
+  id: ID!
+  class: String!
+  name: String!
+  clientId: String
+  DMXDeviceId: String!
+  DMXDevice: DMXDevice!
+  simulatorId: String!
+  channel: Int!
+  mode: DMXFixtureMode!
+  tags: [String!]!
+  passiveChannels: DMXPassiveChannels!
+}
+
+enum DMXFixtureMode {
+  active
+  passive
+}
+
+type DMXPassiveChannels {
+  amber: Int
+  white: Int
+  uv: Int
+  intensity: Int
+  strobe: Int
+  generic: Int
+  nothing: Int
+  color: String
+}
+
+input DMXPassiveChannelsInput {
+  amber: Int
+  white: Int
+  uv: Int
+  intensity: Int
+  strobe: Int
+  generic: Int
+  nothing: Int
+  color: String
+}
+
+type DMXSet {
+  id: ID!
+  name: String!
+  fixtureIds: [String!]!
+  fixtures: [DMXFixture!]!
+}
+
+enum DOCKING_DIRECTION {
+  unspecified
+  arriving
+  departing
+}
+
+enum DOCKING_TYPES {
+  shuttlebay
+  dockingport
+  specialized
+}
+
+type DockingPort {
+  id: ID
+  simulatorId: ID
+  name: String
+  shipName: String
+  type: DOCKING_TYPES
+  clamps: Boolean
+  compress: Boolean
+  doors: Boolean
+  image: String
+  docked: Boolean
+  damage: Damage
+  direction: DOCKING_DIRECTION
+  position: Coordinates
+  deck: Deck
+  inventory: [InventoryItem]
+}
+
+input DockingPortInput {
+  id: ID
+  name: String
+  shipName: String
+  type: String
+  clamps: Boolean
+  compress: Boolean
+  doors: Boolean
+  image: String
+  docked: Boolean
+  direction: DOCKING_DIRECTION
+  position: CoordinatesInput
+  deckId: ID
+}
+
+type Document {
+  id: ID!
+  name: String!
+  asset: String!
+}
+
+type Engine implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  power: Power
+  name: String
+  displayName: String
+  upgradeName: String
+  upgraded: Boolean
+  stealthFactor: Float
+  speeds: [Speed]
+  speed: Int
+  previousSpeed: Int
+  velocity: Float
+  speedFactor: Float
+  acceleration: Float
+  useAcceleration: Boolean
+  heat: Float
+  damage: Damage
+  on: Boolean
+  coolant: Float
+  locations: [Room]
+}
+
+type EngineComponent {
+  maxSpeed: Float
+  currentSpeed: Float
+  heat: Float
+  heatRate: Float
+  coolant: Float
+  cooling: Boolean
+}
+
+input EntitiesLocationInput {
+  id: ID!
+  position: EntityCoordinatesInput!
+}
+
+type Entity {
+  id: ID!
+  interval: Int
+  reset: Boolean
+  appearance: AppearanceComponent
+  behavior: BehaviorComponent
+  identity: IdentityComponent
+  location: LocationComponent
+  stage: StageComponent
+  stageChild: StageChildComponent
+  light: LightComponent
+  glow: GlowComponent
+  template: TemplateComponent
+  enginesWarp: EngineComponent
+  enginesImpulse: EngineComponent
+  thrusters: ThrustersComponent
+}
+
+type EntityCoordinates {
+  x: Float!
+  y: Float!
+  z: Float!
+}
+
+input EntityCoordinatesInput {
+  x: Float!
+  y: Float!
+  z: Float!
+}
+
+enum EntityEngineEnum {
+  warp
+  impulse
+}
+
+type Environment {
+  id: ID
+  oxygen: Float
+  nitrogen: Float
+  trace: Float
+  pressure: Float
+  temperature: Float
+  humidity: Float
+  gravity: Float
+}
+
+input EnvironmentInput {
+  id: ID
+  oxygen: Float
+  nitrogen: Float
+  trace: Float
+  pressure: Float
+  temperature: Float
+  humidity: Float
+  gravity: Float
+}
+
+input EquipmentInput {
+  id: ID
+  count: Int
+}
+
+type Exocomp {
+  id: ID
+  simulatorId: ID
+  class: String
+  state: String
+  completion: Float
+  parts: [String]
+  destination: System
+  logs: [ExocompLog]
+  difficulty: Float
+  damage: Damage
+}
+
+input ExocompInput {
+  id: ID
+  simulatorId: ID
+  parts: [String]
+  destination: ID
+  upgrade: Boolean
+}
+
+type ExocompLog {
+  timestamp: Float
+  message: String
+}
+
+type ExternalMission {
+  title: String
+  author: String
+  description: String
+  url: String
+  date: String
+}
+
+type Externals {
+  simulators: [ExternalSimulator]
+  missions: [ExternalMission]
+}
+
+type ExternalSimulator {
+  title: String
+  author: String
+  description: String
+  url: String
+  date: String
+}
+
+input FBAwardInput {
+  id: ID!
+  Name: String!
+  ClassHours: Float!
+  FlightHours: Float!
+  Description: String!
+  ImageURL: String
+}
+
+type FBAwards {
+  id: ID!
+  Name: String!
+  ClassHours: Float!
+  FlightHours: Float!
+  Description: String!
+  ImageURL: String
+}
+
+type FBCurrentSelections {
+  Mission: ID
+  Simulator: ID
+  StationEmailLinks: [FBStationEmailLinks!]
+  Awards: [FBAwards!]
+  EventId: ID
+  flightSubmissions: [String!]
+}
+
+type FBFullSimulator {
+  id: ID!
+  Name: String!
+  Roles: String!
+  Missions: [FBMission!]!
+}
+
+type FBMission {
+  id: ID!
+  Name: String!
+  FlightHours: Float!
+  ClassHours: Float!
+  Synopsis: String!
+  Retired: Boolean
+}
+
+type FBPageText {
+  Awards: String
+  Heading: String
+  Subheading: String
+  EmailHeading: String
+  EmailNotFound: String
+}
+
+type FBStationEmailLinks {
+  station: String
+  email: String
+}
+
+type FBUser {
+  id: ID!
+}
+
+type Flight {
+  id: ID!
+  name: String
+  date: String
+  running: Boolean
+  timelineStep: Int
+  simulators: [Simulator]
+  flightType: String
+  transmitted: Boolean
+  clients: [SpaceEdventuresClient]
+}
+
+type FlightType {
+  id: ID
+  name: String
+  flightHours: Float
+  classHours: Float
+}
+
+type FormFields {
+  id: ID
+  type: String
+  title: String
+  description: String
+  options: [FormOptions]
+  value: String
+  max: Int
+  min: Int
+}
+
+input FormFieldsInput {
+  id: ID
+  type: String
+  title: String
+  description: String
+  options: [FormOptionsInput]
+  value: String
+  max: Int
+  min: Int
+}
+
+type FormOptions {
+  id: ID
+  label: String
+}
+
+input FormOptionsInput {
+  id: ID
+  label: String
+}
+
+type FormResults {
+  client: String
+  station: String
+  name: String
+  form: [FormFields]
+}
+
+input FormResultsInput {
+  client: String
+  form: [FormFieldsInput]
+}
+
+type GlowComponent {
+  glowMode: GlowModeEnum
+  color: String
+}
+
+enum GlowModeEnum {
+  glow
+  halo
+  shell
+}
+
+type GoogleSheet {
+  id: ID
+  title: String
+}
+
+type GoogleSheetFile {
+  id: ID
+  name: String
+}
+
+type GoogleSheets {
+  id: ID
+  simulatorId: ID
+}
+
+type GoogleSpreadsheet {
+  id: ID
+  title: String
+  sheets: [GoogleSheet]
+}
+
+type HackingLRM {
+  id: String!
+  title: String!
+  message: String!
+}
+
+type HackingPorts {
+  logs: Int
+  longRange: Int
+  remoteControl: Int
+  fileViewer: Int
+}
+
+type HackingPreset {
+  id: String!
+  name: String!
+  logs: Boolean!
+  longRange: Boolean!
+  longRangeMessages: [HackingLRM!]!
+  remoteControl: Boolean!
+  commandLines: [String!]!
+  fileViewer: Boolean!
+  files: [ComputerCoreFile!]!
+}
+
+interface HeatInterface {
+  heat: Float
+  coolant: Float
+}
+
+type History {
+  date: String
+  text: String
+}
+
+enum HULL_PLATING_MODE {
+  kinetic
+  energy
+  radiation
+}
+
+type HullPlating implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  name: String
+  displayName: String
+  upgradeName: String
+  upgraded: Boolean
+  extra: Boolean
+  damage: Damage
+  locations: [Room]
+  stealthFactor: Float
+  power: Power
+  engaged: Boolean
+  mode: HULL_PLATING_MODE
+  pulse: Boolean
+}
+
+type IdentityComponent {
+  name: String
+  type: String
+}
+
+type Interface {
+  id: ID
+  simulatorId: ID
+  templateId: ID
+  deviceType: InterfaceDevice
+  name: String
+  components: JSON
+  connections: JSON
+  values: JSON
+  config: JSON
+}
+
+type InterfaceDevice {
+  id: ID
+  name: String
+  width: Int
+  height: Int
+  isLandscape: Boolean
+}
+
+type InternalComm implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  power: Power
+  name: String
+  displayName: String
+  upgradeName: String
+  upgraded: Boolean
+  state: String
+  outgoing: String
+  incoming: String
+  damage: Damage
+  stealthFactor: Float
+  locations: [Room]
+}
+
+input InventoryCount {
+  inventory: ID
+  count: Int
+}
+
+input InventoryCountInput {
+  id: ID
+  count: Int
+}
+
+type InventoryItem {
+  id: ID
+  simulatorId: ID
+  name: String
+  count: Int
+  metadata: InventoryMetadata
+  roomCount: [RoomCount]
+  teamCount: [TeamCount]
+}
+
+input InventoryItemInput {
+  simulatorId: ID
+  name: String
+  metadata: InventoryMetadataInput
+  roomCount: [RoomCountInput]
+  crewCount: [CrewCountInput]
+}
+
+type InventoryLog {
+  timestamp: String
+  log: String
+}
+
+type InventoryMetadata {
+  type: String
+  size: Int
+  description: String
+  image: String
+  science: Boolean
+  defense: Boolean
+}
+
+input InventoryMetadataInput {
+  type: String
+  size: Int
+  description: String
+  image: String
+  science: Boolean
+  defense: Boolean
+}
+
+type Isochip {
+  id: ID
+  system: System
+  simulator: Simulator
+  slot: Int
+  requiredChip: Int
+  chip: Int
+  label: String
+  state: ISOCHIP_STATES
+}
+
+enum ISOCHIP_STATES {
+  empty
+  diagnostic
+  nominal
+  invalid
+}
+
+input IsochipInput {
+  system: ID
+  simulator: ID
+  slot: Int
+  requiredChip: Int
+  chip: Int
+  label: String
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type JumpDrive implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  power: Power
+  name: String
+  displayName: String
+  stealthFactor: Float
+  damage: Damage
+  upgradeName: String
+  upgraded: Boolean
+  locations: [Room]
+  sectors: JumpDriveSectors
+  env: Float
+  activated: Boolean
+  stress: Float
+  enabled: Boolean
+  ringsExtended: Boolean
+}
+
+type JumpDriveSector {
+  level: Int
+  offset: Float
+}
+
+type JumpDriveSectors {
+  fore: JumpDriveSector
+  aft: JumpDriveSector
+  starboard: JumpDriveSector
+  port: JumpDriveSector
+}
+
+type Keyboard {
+  id: ID!
+  name: String
+  keys: [KeyboardKey]
+}
+
+type KeyboardKey {
+  id: ID!
+  key: String
+  keyCode: String
+  meta: [String]
+  actions: [MacroAction]
+}
+
+input KeyboardKeyInput {
+  id: ID
+  key: String
+  keyCode: String
+  meta: [String]
+  actions: [ActionInput]
+}
+
+type Keypad {
+  id: ID
+  label: String
+  code: [Int]
+  enteredCode: [Int]
+  codeLength: Int
+  giveHints: Boolean
+  allowedAttempts: Int
+  attempts: Int
+  locked: Boolean
+}
+
+type LibraryCategory {
+  name: String
+  entries: [LibraryEntry]
+}
+
+type LibraryEntry {
+  id: ID
+  simulatorId: ID
+  title: String
+  body: String
+  image: String
+  type: String
+  categories: [String]
+  seeAlso: [LibraryEntry]
+  font: String
+}
+
+input LibraryInput {
+  id: ID
+  simulatorId: ID
+  title: String
+  body: String
+  image: String
+  type: String
+  categories: [String]
+  seeAlso: [ID]
+  font: String
+}
+
+type LightComponent {
+  intensity: Float
+  decay: Float
+  color: String
+}
+
+type Lighting {
+  intensity: Float!
+  action: LIGHTING_ACTION!
+  actionStrength: Float!
+  transitionDuration: Int!
+  useAlertColor: Boolean
+  color: String
+  dmxConfig: DMXConfig
+}
+
+enum LIGHTING_ACTION {
+  normal
+  darken
+  blackout
+  work
+  fade
+  shake
+  strobe
+  oscillate
+}
+
+input LightingInput {
+  intensity: Float
+  action: LIGHTING_ACTION
+  actionStrength: Float
+  transitionDuration: Int
+  useAlertColor: Boolean
+  color: String
+  dmxConfig: String
+}
+
+union Location = Deck | Room
+
+type LocationComponent {
+  inert: Boolean!
+  position: EntityCoordinates!
+  velocity: EntityCoordinates!
+  acceleration: EntityCoordinates!
+  rotation: Quaternion!
+  rotationVelocity: EntityCoordinates!
+  rotationAcceleration: EntityCoordinates!
+}
+
+type Log {
+  id: ID
+  clientId: ID
+  flightId: ID
+  simulatorId: ID
+  timestamp: String
+  log: String
+}
+
+input LogInput {
+  clientId: ID
+  flightId: ID
+  simulatorId: ID
+  timestamp: String
+  log: String
+}
+
+input LongRangeCommInput {
+  id: ID
+  interception: Boolean
+  locked: Boolean
+  decoded: Boolean
+}
+
+type LRCommunications implements SystemInterface {
+  id: ID
+  simulatorId: ID
+  type: String
+  power: Power
+  name: String
+  displayName: String
+  damage: Damage
+  upgradeName: String
+  upgraded: Boolean
+  stealthFactor: Float
+  locations: [Room]
+  messages(crew: Boolean, sent: Boolean, approved: Boolean): [LRMessage]
+  satellites: Int
+  interception: Boolean
+  locked: Boolean
+  decoded: Boolean
+  difficulty: Int
+  presetMessages: [PresetAnswer]
+}
+
+type LRMessage {
+  id: ID
+  message: String
+  decodedMessage: String
+  crew: Boolean
+  sent: Boolean
+  deleted: Boolean
+  encrypted: Boolean
+  approved: Boolean
+  sender: String
+  datestamp: String
+  timestamp: String
+  a: Int
+  f: Int
+  ra: Int
+  rf: Int
+}
+
+type Macro {
+  id: ID
+  name: String
+  actions: [MacroAction]
+}
+
+type MacroAction {
+  id: ID!
+  event: String!
+  args: String!
+  delay: Int
+  needsConfig: Boolean
+  noCancelOnReset: Boolean
+}
+
+type MacroButton {
+  id: ID
+  name: String
+  actions: [MacroAction]
+  color: NotifyColors
+  category: String
+}
+
+type MacroButtonConfig {
+  id: ID
+  name: String
+  buttons: [MacroButton]
+}
+
+input MacroInput {
+  stepId: ID
+  event: String
+  args: String
+  delay: Int
+  noCancelOnReset: Boolean
+}
+
+enum MeshTypeEnum {
+  sphere
+  cube
+  model
+  sprite
+  planet
+  star
+}
+
+type Message {
+  id: ID
+  simulatorId: ID
+  destination: String
+  sender: String
+  timestamp: String
+  content: String
+}
+
+input MessageInput {
+  simulatorId: ID
+  destination: String
+  sender: String
+  timestamp: String
+  content: String
+}
+
+enum MidiActionMode {
+  macro
+  momentaryMacro
+  toggle
+  valueAssignment
+}
+
+type MidiControl {
+  id: ID
+  channel: Int
+  messageType: MidiMessageType
+  key: Int
+  controllerNumber: Int
+  channelModeMessage: ChannelModeMessageType
+  actionMode: MidiActionMode
+  config: JSON
+}
+
+input MidiControlInput {
+  channel: Int
+  messageType: MidiMessageType
+  key: Int
+  controllerNumber: Int
+  channelModeMessage: ChannelModeMessageType
+  actionMode: MidiActionMode
+  config: JSON
+}
+
+enum MidiMessageType {
+  noteoff
+  noteon
+  keypressure
+  controlchange
+  programchange
+  channelpressure
+  pitchbendchange
+}
+
+type MidiSet {
+  id: ID
+  name: String
+  deviceName: String
+  controls: [MidiControl]
+}
+
+type Mission {
+  id: ID!
+  name: String
+  description: String
+  category: String
+  timeline: [TimelineStep!]!
+  simulators: [Simulator]
+  aux: Boolean
+  extraRequirements: SimulatorCapabilities
+  requirements(all: Boolean): SimulatorCapabilities
+}
+
+type Motu {
+  id: ID
+  offline: Boolean
+  address: String
+  inputs: [MotuInput]
+  outputs: [MotuOutput]
+  sends: [MotuPatch]
+}
+
+type MotuChannel {
+  id: ID
+  name: String
+  chan: Int
+  type: MotuType
+  fader: Float
+  mute: Int
+}
+
+input MotuChannelInput {
+  fader: Float
+  mute: Int
+}
+
+type MotuComp {
+  enable: Float
+  release: Float
+  makeup: Float
+  trim: Float
+  peak: Float
+  attack: Float
+  ratio: Float
+  threshold: Float
+}
+
+type MotuEQ {
+  enable: Int
+  freq: Float
+  gain: Float
+  bw: Float
+  mode: Int
+}
+
+type MotuGate {
+  release: Float
+  enable: Int
+  attack: Float
+  threshold: Float
+}
+
+type MotuInput {
+  id: ID
+  name: String
+  chan: Int
+  type: MotuType
+  gate: MotuGate
+  comp: MotuComp
+  fader: Float
+  mute: Int
+  pan: Float
+  highshelf: MotuEQ
+  mid1: MotuEQ
+  mid2: MotuEQ
+  lowshelf: MotuEQ
+}
+
+type MotuOutput {
+  id: ID
+  name: String
+  chan: Int
+  type: MotuType
+  prefader: Float
+  fader: Float
+  mute: Int
+  panner: Float
+  highshelf: MotuEQ
+  mid1: MotuEQ
+  mid2: MotuEQ
+  lowshelf: MotuEQ
+}
+
+type MotuPatch {
+  input: MotuInput
+  output: MotuOutput
+  send: Float
+  mute: Boolean
+}
+
+enum MotuType {
+  chan
+  aux
+  group
 }
 
 type Mutation {
@@ -382,6 +1971,12 @@ type Mutation {
   updateExocompDifficulty(exocomp: ID!, difficulty: Float!): String
   importSimulatorFromUrl(url: String!): String
   importMissionFromUrl(url: String!): String
+  updateFirebaseUserStation(email: String!, station: String!): Boolean!
+  setFirebaseAwards(awards: [FBAwardInput!]!): Boolean
+  setFirebaseSimulator(id: ID!): Boolean
+  setFirebaseMission(id: ID!): Boolean
+  createFirebaseUser(id: ID!): Boolean
+  executeFirebasePush(eventId: ID!, flightId: ID!): Boolean
   startFlight(name: String, simulators: [SimulatorInput!]!, flightType: String): String
 
   """Macro: Flight: Reset Flight"""
@@ -1395,1431 +2990,10 @@ type Mutation {
   entityRemoveThrusters(id: ID!): String
 }
 
-type Subscription {
-  _empty: String
-  actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
-  assetFolderChange: [AssetFolder!]!
-  clientChanged(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
-  clientPing(clientId: ID!): Boolean
-  keypadsUpdate(simulatorId: ID!): [Keypad]
-  keypadUpdate(client: ID!): Keypad
-  scannersUpdate(simulatorId: ID!): [Scanner]
-  scannerUpdate(client: ID!): Scanner
-  commandLineOutputUpdate(clientId: ID!): String
-  commandLinesOutputUpdate(simulatorId: ID!): [Client]
-  clearCache(client: ID, flight: ID): Boolean
-  soundSub(clientId: ID): Sound
-  cancelSound(clientId: ID): ID
-  cancelAllSounds(clientId: ID): Boolean
-  cancelLoopingSounds(clientId: ID): Boolean
-  commandLineUpdate(simulatorId: ID): [CommandLine]
-  computerCoreUpdate(simulatorId: ID): [ComputerCore]
-  coolantUpdate(simulatorId: ID!): [CoolantTank]
-  coolantSystemUpdate(simulatorId: ID!, systemId: ID): [SystemCoolant]
-  coreFeedUpdate(simulatorId: ID): [CoreFeed]
-  syncTime(simulatorId: ID!): Timer
-  coreLayoutChange: [CoreLayout]
-  crewUpdate(simulatorId: ID, position: String, killed: Boolean): [Crew]
-  crewCountUpdate(simulatorId: ID, position: String, killed: Boolean): Int
-  crmUpdate(simulatorId: ID): Crm
-  crmMovementUpdate(simulatorId: ID!): Crm
-  crmFighterUpdate(simulatorId: ID!, clientId: ID!): CrmFighter
-  decksUpdate(simulatorId: ID!): [Deck]
-  dockingUpdate(id: ID, simulatorId: ID, type: DOCKING_TYPES): [DockingPort]
-  speedChange(simulatorId: ID): Engine
-  heatChange(simulatorId: ID): Engine
-  engineUpdate(simulatorId: ID): Engine
-  exocompsUpdate(simulatorId: ID!): [Exocomp]
-  flightsUpdate(running: Boolean, id: ID): [Flight]
-  googleSheetsUpdate(simulatorId: ID): [GoogleSheets]
-  hullPlatingUpdate(simulatorId: ID): [HullPlating!]!
-  interfaceUpdate(simulatorId: ID): [Interface]
-  internalCommUpdate(simulatorId: ID): [InternalComm]
-  inventoryUpdate(simulatorId: ID!): [InventoryItem]
-  isochipsUpdate(simulatorId: ID): [Isochip]
-  jumpDriveUpdate(simulatorId: ID): [JumpDrive]
-  keyboardUpdate: [Keyboard]
-  libraryEntriesUpdate(simulatorId: ID, type: String, all: Boolean): [LibraryEntry]
-  longRangeCommunicationsUpdate(simulatorId: ID): [LRCommunications]
-  macrosUpdate: [Macro]
-  macroButtonsUpdate: [MacroButtonConfig]
-  messageUpdates(simulatorId: ID!, station: String): [Message]
-  sendMessage(simulatorId: ID!, station: String): Message
-  midiSets(simulatorId: ID): [MidiSet]
-  missionsUpdate(missionId: ID, aux: Boolean): [Mission!]!
-  auxTimelinesUpdate(simulatorId: ID!): [TimelineInstance]
-  motus: [Motu]
-  motu(id: ID!): Motu
-  motuChannel(id: ID!, channelId: ID!): MotuChannel
-  motuSend(id: ID!, inputId: ID!, outputId: ID!): MotuPatch
-  navigationUpdate(simulatorId: ID): [Navigation]
-  objectiveUpdate(simulatorId: ID): [Objective]
-  officerLogsUpdate(clientId: ID, flightId: ID!): [Log]
-  shipLogsUpdate(simulatorId: ID!): [Log]
-  phasersUpdate(simulatorId: ID): [Phaser]
-  probesUpdate(simulatorId: ID!): [Probes!]!
-  scienceProbeEmitter(simulatorId: ID!): ScienceProbeEvent
-  railgunUpdate(simulatorId: ID): [Railgun]
-  reactorUpdate(simulatorId: ID): [Reactor!]!
-  recordSnippetsUpdate(simulatorId: ID, visible: Boolean): [RecordSnippet]
-  recordTemplatesUpdate: [RecordSnippet]
-  roomsUpdate(simulatorId: ID!, role: RoomRoles): [Room]
-  sensorsUpdate(simulatorId: ID, domain: String): [Sensors!]!
-  sensorContactUpdate(simulatorId: ID, sensorId: ID, hostile: Boolean, type: String): [SensorContact!]!
-  sensorsPing(sensorId: ID): String
-  setsUpdate: [Set]
-  shieldsUpdate(simulatorId: ID): [Shield]
-  notify(simulatorId: ID!, station: String, trigger: String): Notification
-  widgetNotify(simulatorId: ID!, station: String): String
-  printQueue(simulatorId: ID!): [PrintQueue]
-  shortRangeCommUpdate(simulatorId: ID!): [ShortRangeComm]
-  sickbayUpdate(simulatorId: ID): [Sickbay]
-  signalJammersUpdate(simulatorId: ID!): [SignalJammer]
-  simulatorsUpdate(simulatorId: ID, template: Boolean): [Simulator]
-  softwarePanelsUpdate(simulatorId: ID): [SoftwarePanel]
-  stationSetUpdate: [StationSet]
-  stealthFieldUpdate(simulatorId: ID): [StealthField]
-  subspaceFieldUpdate(simulatorId: ID): [SubspaceField]
-  surveyformUpdate(simulatorId: ID, active: Boolean): [SurveyForm]
-  systemsUpdate(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean, damageWhich: String): [System!]!
-  tacticalMapsUpdate(flightId: ID): [TacticalMap]
-  tacticalMapUpdate(id: ID!, lowInterval: Boolean): TacticalMap
-  targetingUpdate(simulatorId: ID): [Targeting]
-  taskReportUpdate(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
-  tasksUpdate(simulatorId: ID!, station: String, definitions: [String!]): [Task]
-  taskTemplatesUpdate: [TaskTemplate!]!
-  teamsUpdate(simulatorId: ID, type: String, cleared: Boolean): [Team]
-  _templateUpdate(simulatorId: ID): Template
-  thoriumUpdate: Thorium
-  clockSync(clientId: ID!): String
-  rotationChange(simulatorId: ID): Thruster
-  thxUpdate(simulatorId: ID): [Thx]
-  torpedosUpdate(simulatorId: ID): [Torpedo]
-  tractorBeamUpdate(simulatorId: ID): [TractorBeam]
-  transporterUpdate(simulatorId: ID): Transporter
-  transwarpUpdate(simulatorId: ID): [Transwarp]
-  triggersUpdate(simulatorId: ID): [Trigger]
-  viewscreensUpdate(simulatorId: ID): [Viewscreen]
-  viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
-  countermeasuresUpdate(simulatorId: ID!): Countermeasures
-  entity(id: ID): Entity
-  entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
-  dmxSets: [DMXSet!]!
-  dmxDevices: [DMXDevice!]!
-  dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
-  dmxConfigs: [DMXConfig!]!
-  taskFlows(simulatorId: ID): [TaskFlow!]!
-}
-
-type Action {
-  action: String
-  message: String
-  voice: String
-  duration: Float
-}
-
-type Ambiance {
-  id: ID!
-  name: String!
-  asset: String!
-  volume: Float!
-  channel: [Int!]!
-  playbackRate: Float!
-}
-
-input AmbianceInput {
+type NamedObject {
   id: ID
-  name: String
-  asset: String
-  volume: Float
-  channel: [Int]
-  playbackRate: Float
-}
-
-type Asset {
-  assetKey: String!
-  url: String!
-}
-
-type AssetObject {
-  id: ID!
-  name: String!
-  folderPath: String!
-  fullPath: String!
-  url: String!
-}
-
-type AssetFolder {
-  id: ID!
-  name: String!
-  folderPath: String!
-  fullPath: String!
-  objects: [AssetObject!]!
-}
-
-input RemoteAsset {
-  url: String
-  name: String
-}
-
-type SimulatorAssets {
-  mesh: String
-  texture: String
-  side: String
-  top: String
-  logo: String
-  bridge: String
-}
-
-input SimulatorAssetsInput {
-  mesh: String
-  texture: String
-  side: String
-  top: String
-  logo: String
-  bridge: String
-}
-
-type Client {
-  id: ID!
-  label: String
-  connected: Boolean
-  flight: Flight
-  simulator: Simulator
-  station: Station
-  loginName: String
-  loginState: String
-  ping: String
-  offlineState: String
-  movie: String
-  training: Boolean
-  soundPlayer: Boolean
-  caches: [String]
-  hypercard: String
-  overlay: Boolean
-  cracked: Boolean
-  commandLineOutput: [String]
-  commandLineFeedback: [CommandLineFeedback]
-  currentCard: Card
-  token: String
-  email: String
-  mobile: Boolean
-  cards: [String]
-  keypad: Keypad
-}
-
-type CommandLineFeedback {
-  id: ID
-  clientId: ID
-  command: String
-  approve: String
-  deny: String
-  triggers: [TimelineItem]
-}
-
-type Keypad {
-  id: ID
-  label: String
-  code: [Int]
-  enteredCode: [Int]
-  codeLength: Int
-  giveHints: Boolean
-  allowedAttempts: Int
-  attempts: Int
-  locked: Boolean
-}
-
-type Scanner {
-  id: ID
-  label: String
-  scanRequest: String
-  scanResults: String
-  scanning: Boolean
-}
-
-type Sound {
-  id: ID
-  clients: [String]
-  asset: String
-  url: String
-  volume: Float
-  playbackRate: Float
-  channel: [Int]
-  looping: Boolean
-  preserveChannels: Boolean
-}
-
-input SoundInput {
-  id: ID
-  clients: [String]
-  asset: String
-  volume: Float
-  playbackRate: Float
-  channel: [Int]
-  looping: Boolean
-  preserveChannels: Boolean
-}
-
-type CommandLine {
-  id: ID
-  name: String
-  commands: [CommandLineCommand]
-  components: JSON
-  connections: JSON
-  values: JSON
-  config: JSON
-}
-
-type CommandLineCommand {
-  name: String
-  help: String
-  hidden: Boolean
-}
-
-type ComputerCore {
-  id: ID
-  simulatorId: ID
-  users: [ComputerCoreUser]
-  files: [ComputerCoreFile]
-  virii: [ComputerCoreVirus]
-  terminals: [ComputerCoreTerminals]
-  history: [String]
-  hackingActive: Boolean
-  activeHackingPreset: HackingPreset
-  hackingState: String
-  hackingPortScanFrequency: Float
-  hackingLog: [String!]!
-  hackingPorts: HackingPorts!
-}
-
-type ComputerCoreUser {
-  id: ID
-  name: String
-  password: String
-  hacker: Boolean
-  level: Int
-}
-
-type ComputerCoreFile {
-  id: ID
-  name: String
-  level: Int
-  corrupted: Boolean
-  restoring: Boolean
-}
-
-input ComputerCoreFileInput {
-  id: ID
-  name: String
-  level: Int
-  corrupted: Boolean
-  restoring: Boolean
-}
-
-type ComputerCoreVirus {
-  id: ID
-  name: String
-}
-
-type ComputerCoreTerminals {
-  id: ID
-  name: String
-  status: TERMINAL_STATUS
-}
-
-enum TERMINAL_STATUS {
-  F
-  O
-  S
-  R
-}
-
-input ComputerCoreUserInput {
-  name: String
-  password: String
-  hacker: Boolean
-  level: Int
-}
-
-type HackingLRM {
-  id: String!
-  title: String!
-  message: String!
-}
-
-type HackingPorts {
-  logs: Int
-  longRange: Int
-  remoteControl: Int
-  fileViewer: Int
-}
-
-type HackingPreset {
-  id: String!
-  name: String!
-  logs: Boolean!
-  longRange: Boolean!
-  longRangeMessages: [HackingLRM!]!
-  remoteControl: Boolean!
-  commandLines: [String!]!
-  fileViewer: Boolean!
-  files: [ComputerCoreFile!]!
-}
-
-type Coolant {
-  temperature: Float
-  quantity: Float
-  rate: Float
-}
-
-type CoolantTank implements SystemInterface {
-  id: ID
-  simulatorId: ID
-  type: String
-  name: String
-  displayName: String
-  upgradeName: String
-  upgraded: Boolean
-  coolant: Float
-  coolantRate: Float
-  damage: Damage
-  power: Power
-  stealthFactor: Float
-  locations: [Room]
-}
-
-type CoolantRegulator {
-  id: ID
-  simulatorId: ID
-  type: String
-  name: String
-  coolant: Coolant
-  damage: Float
-}
-
-type SystemCoolant {
-  systemId: ID
-  simulatorId: ID
-  name: String
-  displayName: String
-  type: String
-  coolant: Float
-  coolantRate: Float
-}
-
-type CoreFeed {
-  id: ID
-  simulatorId: ID
-  component: String
-  ignored: Boolean
-  timestamp: String
-  title: String
-  body: String
-  color: String
-}
-
-type Timer {
-  time: String
-  active: Boolean
-}
-
-type CoreLayout {
-  id: ID
-  name: String
-  config: String
-}
-
-input CoreLayoutInput {
-  id: ID
-  name: String
-  config: String
-}
-
-type Crew {
-  id: ID
-  simulatorId: ID
-  firstName: String
-  lastName: String
-  name: String
-  gender: String
-  age: Int
-  rank: String
-  position: String
-  killed: Boolean
-  location: Deck
-  workRoom: Room
-  restRoom: Room
-  inventory: [InventoryItem]
-  charts: [Chart]
-}
-
-input CrewInput {
-  id: ID
-  simulatorId: ID
-  firstName: String
-  lastName: String
-  gender: String
-  age: String
-  rank: String
-  position: String
-  killed: Boolean
-  workRoom: Int
-  restRoom: Int
-}
-
-type Crm implements SystemInterface {
-  id: ID
-  simulatorId: ID
-  type: String
-  name: String
-  displayName: String
-  upgradeName: String
-  upgraded: Boolean
-  damage: Damage
-  power: Power
-  stealthFactor: Float
-  locations: [Room]
-  password: String
-  activated: Boolean
-  fighterImage: String
-  fighters: [CrmFighter]
-  enemies: [CrmFighter]
-  fighterStrength: Float
-  enemyStrength: Float
-  fighterCount: Int
-  enemyCount: Int
-  fighterDestroyedCount: Int
-  enemyDestroyedCount: Int
-  fighterIcon: String
-  enemyIcon: String
-  attacking: Boolean
-  interval: Float
-  phasers: [CrmPhaserShot]
-  torpedos: [CrmTorpedo]
-}
-
-type CrmPhaserShot {
-  target: Coordinates
-  destination: Coordinates
-}
-
-type CrmTorpedo {
-  id: ID
-  position: Coordinates
-  destroyed: Boolean
-}
-
-type CrmFighter {
-  id: ID
-  clientId: ID
-  client: Client
-  icon: String
-  size: Float
-  speed: Float
-  strength: Float
-  attacking: Boolean
-  hull: Float
-  shield: Float
-  shieldRaised: Boolean
-  phaserLevel: Float
-  torpedoCount: Int
-  torpedoLoaded: Boolean
-  destroyed: Boolean
-  docked: Boolean
-  position: Coordinates
-  velocity: Coordinates
-  frags: Int
-}
-
-type Damage {
-  damaged: Boolean
-  destroyed: Boolean
-  report: String
-  reportSteps: [DamageReportStep]
-  requested: Boolean
-  reactivationCode: String
-  neededReactivationCode: String
-  currentStep: Int
-  validate: Boolean
-  which: DAMAGE_TYPES
-  taskReportDamage: Boolean
-}
-
-enum DAMAGE_TYPES {
-  default
-  rnd
-  engineering
-}
-
-type DamageStep {
-  id: ID
-  name: String
-  args: DamageStepArgs
-}
-
-type DamageStepArgs {
-  end: Boolean
-  cleanup: Boolean
-  name: String
-  orders: String
-  room: String
-  preamble: String
-  type: String
-  message: String
-  code: String
-  backup: String
-  inventory: String
-  destination: String
-  equipment: String
-  query: String
-  reactivate: Boolean
-}
-
-type DamageTask {
-  id: ID
-  taskTemplate: TaskTemplate
-  required: Boolean
-  nextSteps: [TaskTemplate]
-}
-
-input DamageTaskInput {
-  id: ID
-  required: Boolean
-  nextSteps: [ID]
-}
-
-input DamageStepInput {
-  id: ID
-  name: String
-  args: DamageStepArgsInput
-  type: DAMAGE_STEP_TYPES
-}
-
-enum DAMAGE_STEP_TYPES {
-  required
-  optional
-}
-
-input DamageStepArgsInput {
-  end: Boolean
-  cleanup: Boolean
-  name: String
-  orders: String
-  room: String
-  preamble: String
-  type: String
-  message: String
-  code: String
-  backup: String
-  inventory: String
-  destination: String
-  equipment: String
-  query: String
-  reactivate: Boolean
-}
-
-type DamageReportStep {
-  id: ID
-  text: String
-  validate: Boolean
-  validated: Boolean
-}
-
-type Deck {
-  id: ID
-  simulatorId: ID
-  number: Int
-  svgPath: String
-  doors: Boolean
-  evac: Boolean
-  rooms: [Room]
-  hallway: String
-  crewCount: Int
-  environment: Environment
-}
-
-union Location = Deck | Room
-
-type DockingPort {
-  id: ID
-  simulatorId: ID
-  name: String
-  shipName: String
-  type: DOCKING_TYPES
-  clamps: Boolean
-  compress: Boolean
-  doors: Boolean
-  image: String
-  docked: Boolean
-  damage: Damage
-  direction: DOCKING_DIRECTION
-  position: Coordinates
-  deck: Deck
-  inventory: [InventoryItem]
-}
-
-input DockingPortInput {
-  id: ID
-  name: String
-  shipName: String
-  type: String
-  clamps: Boolean
-  compress: Boolean
-  doors: Boolean
-  image: String
-  docked: Boolean
-  direction: DOCKING_DIRECTION
-  position: CoordinatesInput
-  deckId: ID
-}
-
-enum DOCKING_TYPES {
-  shuttlebay
-  dockingport
-  specialized
-}
-
-enum DOCKING_DIRECTION {
-  unspecified
-  arriving
-  departing
-}
-
-type Engine implements SystemInterface {
-  id: ID
-  simulatorId: ID
-  type: String
-  power: Power
-  name: String
-  displayName: String
-  upgradeName: String
-  upgraded: Boolean
-  stealthFactor: Float
-  speeds: [Speed]
-  speed: Int
-  previousSpeed: Int
-  velocity: Float
-  speedFactor: Float
-  acceleration: Float
-  useAcceleration: Boolean
-  heat: Float
-  damage: Damage
-  on: Boolean
-  coolant: Float
-  locations: [Room]
-}
-
-type Speed {
-  text: String
-  number: Float
-  velocity: Float
-  optimal: Boolean
-}
-
-input SpeedInput {
-  text: String
-  number: Float
-  velocity: Float
-  optimal: Boolean
-}
-
-type Environment {
-  id: ID
-  oxygen: Float
-  nitrogen: Float
-  trace: Float
-  pressure: Float
-  temperature: Float
-  humidity: Float
-  gravity: Float
-}
-
-input EnvironmentInput {
-  id: ID
-  oxygen: Float
-  nitrogen: Float
-  trace: Float
-  pressure: Float
-  temperature: Float
-  humidity: Float
-  gravity: Float
-}
-
-type Exocomp {
-  id: ID
-  simulatorId: ID
-  class: String
-  state: String
-  completion: Float
-  parts: [String]
-  destination: System
-  logs: [ExocompLog]
-  difficulty: Float
-  damage: Damage
-}
-
-type ExocompLog {
-  timestamp: Float
-  message: String
-}
-
-input ExocompInput {
-  id: ID
-  simulatorId: ID
-  parts: [String]
-  destination: ID
-  upgrade: Boolean
-}
-
-type Externals {
-  simulators: [ExternalSimulator]
-  missions: [ExternalMission]
-}
-
-type ExternalSimulator {
-  title: String
-  author: String
-  description: String
-  url: String
-  date: String
-}
-
-type ExternalMission {
-  title: String
-  author: String
-  description: String
-  url: String
-  date: String
-}
-
-type Flight {
-  id: ID!
-  name: String
-  date: String
-  running: Boolean
-  timelineStep: Int
-  simulators: [Simulator]
-  flightType: String
-  transmitted: Boolean
-  clients: [SpaceEdventuresClient]
-}
-
-type SpaceEdventuresClient {
-  id: ID
-  token: String
-  name: String
-  email: String
-}
-
-type GoogleSheets {
-  id: ID
-  simulatorId: ID
-}
-
-type GoogleSheetFile {
-  id: ID
-  name: String
-}
-
-type GoogleSpreadsheet {
-  id: ID
-  title: String
-  sheets: [GoogleSheet]
-}
-
-type GoogleSheet {
-  id: ID
-  title: String
-}
-
-enum HULL_PLATING_MODE {
-  kinetic
-  energy
-  radiation
-}
-
-type HullPlating implements SystemInterface {
-  id: ID
-  simulatorId: ID
-  type: String
-  name: String
-  displayName: String
-  upgradeName: String
-  upgraded: Boolean
-  extra: Boolean
-  damage: Damage
-  locations: [Room]
-  stealthFactor: Float
-  power: Power
-  engaged: Boolean
-  mode: HULL_PLATING_MODE
-  pulse: Boolean
-}
-
-type Interface {
-  id: ID
-  simulatorId: ID
-  templateId: ID
-  deviceType: InterfaceDevice
-  name: String
-  components: JSON
-  connections: JSON
-  values: JSON
-  config: JSON
-}
-
-type InterfaceDevice {
-  id: ID
-  name: String
-  width: Int
-  height: Int
-  isLandscape: Boolean
-}
-
-type InternalComm implements SystemInterface {
-  id: ID
-  simulatorId: ID
-  type: String
-  power: Power
-  name: String
-  displayName: String
-  upgradeName: String
-  upgraded: Boolean
-  state: String
-  outgoing: String
-  incoming: String
-  damage: Damage
-  stealthFactor: Float
-  locations: [Room]
-}
-
-type InventoryItem {
-  id: ID
-  simulatorId: ID
-  name: String
-  count: Int
-  metadata: InventoryMetadata
-  roomCount: [RoomCount]
-  teamCount: [TeamCount]
-}
-
-input InventoryItemInput {
-  simulatorId: ID
-  name: String
-  metadata: InventoryMetadataInput
-  roomCount: [RoomCountInput]
-  crewCount: [CrewCountInput]
-}
-
-type InventoryMetadata {
-  type: String
-  size: Int
-  description: String
-  image: String
-  science: Boolean
-  defense: Boolean
-}
-
-input InventoryCount {
-  inventory: ID
-  count: Int
-}
-
-input InventoryCountInput {
-  id: ID
-  count: Int
-}
-
-input InventoryMetadataInput {
-  type: String
-  size: Int
-  description: String
-  image: String
-  science: Boolean
-  defense: Boolean
-}
-
-type RoomCount {
-  room: Room
-  count: Int
-}
-
-type TeamCount {
-  team: Team
-  count: Int
-}
-
-input RoomCountInput {
-  room: ID
-  count: Int
-}
-
-input CrewCountInput {
-  crew: ID
-  count: Int
-}
-
-type TeamCountInput {
-  team: ID
-  count: Int
-}
-
-type Isochip {
-  id: ID
-  system: System
-  simulator: Simulator
-  slot: Int
-  requiredChip: Int
-  chip: Int
-  label: String
-  state: ISOCHIP_STATES
-}
-
-enum ISOCHIP_STATES {
-  empty
-  diagnostic
-  nominal
-  invalid
-}
-
-input IsochipInput {
-  system: ID
-  simulator: ID
-  slot: Int
-  requiredChip: Int
-  chip: Int
-  label: String
-}
-
-type JumpDrive implements SystemInterface {
-  id: ID
-  simulatorId: ID
-  type: String
-  power: Power
-  name: String
-  displayName: String
-  stealthFactor: Float
-  damage: Damage
-  upgradeName: String
-  upgraded: Boolean
-  locations: [Room]
-  sectors: JumpDriveSectors
-  env: Float
-  activated: Boolean
-  stress: Float
-  enabled: Boolean
-  ringsExtended: Boolean
-}
-
-type JumpDriveSectors {
-  fore: JumpDriveSector
-  aft: JumpDriveSector
-  starboard: JumpDriveSector
-  port: JumpDriveSector
-}
-
-type JumpDriveSector {
-  level: Int
-  offset: Float
-}
-
-type Keyboard {
-  id: ID!
-  name: String
-  keys: [KeyboardKey]
-}
-
-type KeyboardKey {
-  id: ID!
-  key: String
-  keyCode: String
-  meta: [String]
-  actions: [MacroAction]
-}
-
-input KeyboardKeyInput {
-  id: ID
-  key: String
-  keyCode: String
-  meta: [String]
-  actions: [ActionInput]
-}
-
-type MacroAction {
-  id: ID!
-  event: String!
-  args: String!
-  delay: Int
-  needsConfig: Boolean
-  noCancelOnReset: Boolean
-}
-
-input ActionInput {
-  id: ID
-  event: String
-  args: String
-  delay: Int
-  noCancelOnReset: Boolean
-  needsConfig: Boolean
-}
-
-type LibraryEntry {
-  id: ID
-  simulatorId: ID
-  title: String
-  body: String
-  image: String
-  type: String
-  categories: [String]
-  seeAlso: [LibraryEntry]
-  font: String
-}
-
-type LibraryCategory {
-  name: String
-  entries: [LibraryEntry]
-}
-
-input LibraryInput {
-  id: ID
-  simulatorId: ID
-  title: String
-  body: String
-  image: String
-  type: String
-  categories: [String]
-  seeAlso: [ID]
-  font: String
-}
-
-type Lighting {
-  intensity: Float!
-  action: LIGHTING_ACTION!
-  actionStrength: Float!
-  transitionDuration: Int!
-  useAlertColor: Boolean
-  color: String
-  dmxConfig: DMXConfig
-}
-
-input LightingInput {
-  intensity: Float
-  action: LIGHTING_ACTION
-  actionStrength: Float
-  transitionDuration: Int
-  useAlertColor: Boolean
-  color: String
-  dmxConfig: String
-}
-
-enum LIGHTING_ACTION {
-  normal
-  darken
-  blackout
-  work
-  fade
-  shake
-  strobe
-  oscillate
-}
-
-type LRCommunications implements SystemInterface {
-  id: ID
-  simulatorId: ID
-  type: String
-  power: Power
-  name: String
-  displayName: String
-  damage: Damage
-  upgradeName: String
-  upgraded: Boolean
-  stealthFactor: Float
-  locations: [Room]
-  messages(crew: Boolean, sent: Boolean, approved: Boolean): [LRMessage]
-  satellites: Int
-  interception: Boolean
-  locked: Boolean
-  decoded: Boolean
-  difficulty: Int
-  presetMessages: [PresetAnswer]
-}
-
-type LRMessage {
-  id: ID
-  message: String
-  decodedMessage: String
-  crew: Boolean
-  sent: Boolean
-  deleted: Boolean
-  encrypted: Boolean
-  approved: Boolean
-  sender: String
-  datestamp: String
-  timestamp: String
-  a: Int
-  f: Int
-  ra: Int
-  rf: Int
-}
-
-input LongRangeCommInput {
-  id: ID
-  interception: Boolean
-  locked: Boolean
-  decoded: Boolean
-}
-
-type Macro {
-  id: ID
-  name: String
-  actions: [MacroAction]
-}
-
-type MacroButtonConfig {
-  id: ID
-  name: String
-  buttons: [MacroButton]
-}
-
-type MacroButton {
-  id: ID
-  name: String
-  actions: [MacroAction]
-  color: NotifyColors
-  category: String
-}
-
-type Message {
-  id: ID
-  simulatorId: ID
-  destination: String
-  sender: String
-  timestamp: String
-  content: String
-}
-
-input MessageInput {
-  simulatorId: ID
-  destination: String
-  sender: String
-  timestamp: String
-  content: String
-}
-
-type MidiSet {
-  id: ID
-  name: String
-  deviceName: String
-  controls: [MidiControl]
-}
-
-type MidiControl {
-  id: ID
-  channel: Int
-  messageType: MidiMessageType
-  key: Int
-  controllerNumber: Int
-  channelModeMessage: ChannelModeMessageType
-  actionMode: MidiActionMode
-  config: JSON
-}
-
-input MidiControlInput {
-  channel: Int
-  messageType: MidiMessageType
-  key: Int
-  controllerNumber: Int
-  channelModeMessage: ChannelModeMessageType
-  actionMode: MidiActionMode
-  config: JSON
-}
-
-enum MidiActionMode {
-  macro
-  momentaryMacro
-  toggle
-  valueAssignment
-}
-
-enum MidiMessageType {
-  noteoff
-  noteon
-  keypressure
-  controlchange
-  programchange
-  channelpressure
-  pitchbendchange
-}
-
-enum ChannelModeMessageType {
-  allsoundoff
-  resetallcontrollers
-  localcontroloff
-  localcontrolon
-  allnotesoff
-  omnimodeoff
-  omnimodeon
-  monomodeon
-  polymodeon
-}
-
-type Mission {
-  id: ID!
   name: String
   description: String
-  category: String
-  timeline: [TimelineStep!]!
-  simulators: [Simulator]
-  aux: Boolean
-  extraRequirements: SimulatorCapabilities
-  requirements(all: Boolean): SimulatorCapabilities
-}
-
-input MacroInput {
-  stepId: ID
-  event: String
-  args: String
-  delay: Int
-  noCancelOnReset: Boolean
-}
-
-input RequirementInput {
-  cards: [String]
-  systems: [String]
-}
-
-type TimelineStep {
-  id: ID!
-  name: String!
-  description: String
-  order: Int
-  timelineItems: [TimelineItem!]!
-}
-
-type TimelineItem {
-  id: ID!
-  name: String
-  type: String
-  event: String!
-  needsConfig: Boolean
-  args: String
-  delay: Int
-  noCancelOnReset: Boolean
-}
-
-enum TIMELINE_ITEM_CONFIG_TYPE {
-  client
-  station
-}
-
-input TimelineItemInput {
-  id: ID
-  name: String
-  type: String
-  event: String
-  args: String
-  delay: Int
-  noCancelOnReset: Boolean
-}
-
-type TimelineInstance {
-  id: ID
-  mission: Mission
-  currentTimelineStep: Int
-  executedTimelineSteps: [ID]
-}
-
-type Motu {
-  id: ID
-  offline: Boolean
-  address: String
-  inputs: [MotuInput]
-  outputs: [MotuOutput]
-  sends: [MotuPatch]
-}
-
-type MotuChannel {
-  id: ID
-  name: String
-  chan: Int
-  type: MotuType
-  fader: Float
-  mute: Int
-}
-
-type MotuInput {
-  id: ID
-  name: String
-  chan: Int
-  type: MotuType
-  gate: MotuGate
-  comp: MotuComp
-  fader: Float
-  mute: Int
-  pan: Float
-  highshelf: MotuEQ
-  mid1: MotuEQ
-  mid2: MotuEQ
-  lowshelf: MotuEQ
-}
-
-type MotuGate {
-  release: Float
-  enable: Int
-  attack: Float
-  threshold: Float
-}
-
-type MotuComp {
-  enable: Float
-  release: Float
-  makeup: Float
-  trim: Float
-  peak: Float
-  attack: Float
-  ratio: Float
-  threshold: Float
-}
-
-type MotuOutput {
-  id: ID
-  name: String
-  chan: Int
-  type: MotuType
-  prefader: Float
-  fader: Float
-  mute: Int
-  panner: Float
-  highshelf: MotuEQ
-  mid1: MotuEQ
-  mid2: MotuEQ
-  lowshelf: MotuEQ
-}
-
-type MotuEQ {
-  enable: Int
-  freq: Float
-  gain: Float
-  bw: Float
-  mode: Int
-}
-
-type MotuPatch {
-  input: MotuInput
-  output: MotuOutput
-  send: Float
-  mute: Boolean
-}
-
-input MotuChannelInput {
-  fader: Float
-  mute: Int
-}
-
-enum MotuType {
-  chan
-  aux
-  group
 }
 
 type Navigation implements SystemInterface {
@@ -2866,6 +3040,28 @@ input NavPresetInput {
   course: NavLocInput
 }
 
+type Notification {
+  id: ID
+  title: String
+  body: String
+  color: String
+  type: String
+  trigger: String
+  duration: Int
+  relevantCards: [String]
+}
+
+enum NotifyColors {
+  primary
+  secondary
+  success
+  danger
+  warning
+  info
+  light
+  dark
+}
+
 type Objective {
   id: ID
   simulatorId: ID
@@ -2891,21 +3087,77 @@ input ObjectiveInput {
   order: Int
 }
 
-type Log {
-  id: ID
-  clientId: ID
-  flightId: ID
-  simulatorId: ID
-  timestamp: String
-  log: String
+type PainPoint {
+  x: Float
+  y: Float
 }
 
-input LogInput {
-  clientId: ID
-  flightId: ID
-  simulatorId: ID
-  timestamp: String
-  log: String
+input PainPointInput {
+  x: Float
+  y: Float
+}
+
+type PanelCable {
+  id: ID
+  color: String
+  components: [ID]
+}
+
+input PanelCableInput {
+  id: ID
+  color: String
+  components: [ID]
+}
+
+type PanelComponent {
+  id: ID
+  component: String
+  level: Float
+  label: String
+  color: String
+  x: Float
+  y: Float
+  scale: Float
+}
+
+input PanelComponentInput {
+  id: ID
+  component: String
+  level: Float
+  label: String
+  color: String
+  x: Float
+  y: Float
+  scale: Float
+}
+
+type PanelConnection {
+  id: ID
+  to: ID
+  from: ID
+}
+
+input PanelConnectionInput {
+  id: ID
+  to: ID
+  from: ID
+}
+
+enum ParticleTypes {
+  Dilithium
+  Tachyon
+  Neutrino
+  AntiMatter
+  Anomaly
+  Resonance
+  Graviton
+  Lithium
+  Magnetic
+  Helium
+  Hydrogen
+  Oxygen
+  Carbon
+  Radiation
 }
 
 type Phaser implements SystemInterface {
@@ -2936,10 +3188,95 @@ type PhaserBeam {
   heat: Float
 }
 
+enum PING_MODES {
+  active
+  passive
+  manual
+}
+
+enum PIP_POSITION {
+  bottomLeft
+  bottomRight
+  topLeft
+  topRight
+  center
+}
+
+enum PIP_SIZE {
+  small
+  medium
+  large
+}
+
 type Power {
   power: Int
   powerLevels: [Int]
   defaultLevel: Int
+}
+
+type PresetAnswer {
+  label: String!
+  value: String!
+}
+
+input PresetAnswerInput {
+  label: String
+  value: String
+}
+
+type PrintQueue {
+  id: ID!
+  simulatorId: String!
+  asset: String!
+  timestamp: Float!
+}
+
+enum PRIORITIES {
+  low
+  normal
+  critical
+  emergency
+}
+
+type Probe {
+  id: ID!
+  name: String
+  type: ID
+  launched: Boolean
+  equipment: [ProbeEquipment]
+  engine: Engine
+  phaser: Phaser
+  navigation: Navigation
+  query: String
+  querying: Boolean
+  response: String
+  charge: Float
+  history: [History]
+}
+
+type ProbeEquipment {
+  id: ID
+  description: String
+  name: String
+  size: Float
+  count: Int
+  damage: Damage
+  availableProbes: [String]
+}
+
+input ProbeEquipmentInput {
+  description: String
+  name: String
+  size: Float
+  count: Int
+}
+
+input ProbeInput {
+  id: ID
+  name: String
+  type: ID
+  equipment: [EquipmentInput]
+  launched: Boolean
 }
 
 type Probes implements SystemInterface {
@@ -2962,64 +3299,6 @@ type Probes implements SystemInterface {
   scienceTypes: [ScienceType]
 }
 
-type Probe {
-  id: ID!
-  name: String
-  type: ID
-  launched: Boolean
-  equipment: [ProbeEquipment]
-  engine: Engine
-  phaser: Phaser
-  navigation: Navigation
-  query: String
-  querying: Boolean
-  response: String
-  charge: Float
-  history: [History]
-}
-
-type History {
-  date: String
-  text: String
-}
-
-type ScienceProbeEvent {
-  simulatorId: ID!
-  name: String!
-  type: String!
-  charge: Float!
-}
-
-input ProbeInput {
-  id: ID
-  name: String
-  type: ID
-  equipment: [EquipmentInput]
-  launched: Boolean
-}
-
-input EquipmentInput {
-  id: ID
-  count: Int
-}
-
-type ProbeEquipment {
-  id: ID
-  description: String
-  name: String
-  size: Float
-  count: Int
-  damage: Damage
-  availableProbes: [String]
-}
-
-input ProbeEquipmentInput {
-  description: String
-  name: String
-  size: Float
-  count: Int
-}
-
 type ProbeType {
   id: ID
   name: String
@@ -3036,17 +3315,158 @@ input ProbeTypeInput {
   count: Int
 }
 
-type ScienceType {
-  id: ID
-  name: String
-  type: SCIENCE_BURST_DETECTOR
-  description: String
-  equipment: [String]
+type ProcessedData {
+  value: String!
+  time: String!
 }
 
-enum SCIENCE_BURST_DETECTOR {
-  burst
-  detector
+type Quaternion {
+  x: Float!
+  y: Float!
+  z: Float!
+  w: Float!
+}
+
+input QuaternionInput {
+  x: Float!
+  y: Float!
+  z: Float!
+  w: Float!
+}
+
+type Query {
+  _empty: String
+  actions(stationId: ID, clientId: ID): Action
+  asset(assetKey: String!): Asset
+  assets(assetKeys: [String!]!): [Asset]
+  assetFolders(name: String, names: [String]): [AssetFolder]
+  clients(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
+  keypad(client: ID!): Keypad
+  keypads(simulatorId: ID!): [Keypad]
+  scanner(client: ID!): Scanner
+  scanners(simulatorId: ID!): [Scanner]
+  commandLine(simulatorId: ID): [CommandLine]
+  commandLineCommands(simulatorId: ID!): [CommandLineCommand]
+  computerCore(simulatorId: ID): [ComputerCore]
+  oneComputerCore(id: ID!): ComputerCore
+  hackingPresets: [HackingPreset!]!
+  coolant(simulatorId: ID!): [CoolantTank]
+  systemCoolant(simulatorId: ID!, systemId: ID): [SystemCoolant]
+  coreFeed(simulatorId: ID): [CoreFeed]
+  coreLayouts(name: String): [CoreLayout]
+  crew(simulatorId: ID, position: String, killed: Boolean): [Crew]
+  crewCount(simulatorId: ID!, position: String, killed: Boolean): Int
+  crm(id: ID, simulatorId: ID): Crm
+  crmFighter(simulatorId: ID!, clientId: ID!): CrmFighter
+  decks(simulatorId: ID!, number: Int): [Deck]
+  docking(id: ID, simulatorId: ID, type: DOCKING_TYPES): [DockingPort]
+  engines(simulatorId: ID): [Engine]
+  engine(id: ID!): Engine
+  exocomps(simulatorId: ID): [Exocomp]
+  externals: Externals
+  hasFirebaseConnection: Boolean!
+  getFirebaseSimulators: [FBFullSimulator!]
+  getFirebaseUser(id: ID!): Boolean
+  getFirebaseAwards: [FBAwards!]
+  getFirebaseLogoSrc: String
+  getFirebaseEventId: ID
+  getFirebasePageText: FBPageText
+  getCurrentFirebaseSelections: FBCurrentSelections
+  flights(running: Boolean, id: ID): [Flight!]!
+  events: [String]
+  googleSheets: String
+  googleSheetsGetSpreadsheet(spreadsheetId: ID!): GoogleSpreadsheet
+  hullPlating(id: ID!): HullPlating
+  hullPlatings(simulatorId: ID!): [HullPlating]
+  interfaces(simulatorId: ID): [Interface]
+  interfaceDevices: [InterfaceDevice]
+  internalComm(simulatorId: ID!): [InternalComm]
+  inventory(simulatorId: ID, id: ID, name: String, deck: ID, room: ID): [InventoryItem]
+  isochips(simulatorId: ID): [Isochip]
+  jumpDrive(simulatorId: ID): [JumpDrive]
+  keyboard: [Keyboard]
+  libraryEntries(simulatorId: ID, type: String, all: Boolean): [LibraryEntry]
+  longRangeCommunications(simulatorId: ID): [LRCommunications]
+  macros: [Macro]
+  macroButtons: [MacroButtonConfig]
+  messages(simulatorId: ID!, station: String, group: ID): [Message]
+  midiSets(simulatorId: ID): [MidiSet]
+  missions(id: ID, aux: Boolean): [Mission!]!
+  auxTimelines(simulatorId: ID!): [TimelineInstance]
+  motus: [Motu]
+  motu(id: ID!): Motu
+  motuChannel(id: ID!, channelId: ID!): MotuChannel
+  motuSend(id: ID!, inputId: ID!, outputId: ID!): MotuPatch
+  navigation(simulatorId: ID): [Navigation]
+  navigate(id: ID!): Navigation
+  objective(simulatorId: ID): [Objective]
+  officerLogs(clientId: ID, flightId: ID!): [Log]
+  shipLogs(simulatorId: ID!): [Log]
+  phasers(simulatorId: ID): [Phaser]
+  phaser(id: ID!): Phaser
+  probes(simulatorId: ID!): [Probes!]!
+  probe(id: ID!): Probes
+  probeEquipment: [ProbeEquipment!]!
+  railgun(simulatorId: ID): [Railgun]
+  reactors(simulatorId: ID, model: String): [Reactor]
+  reactor(id: ID!): Reactor
+  recordSnippets(simulatorId: ID!, visible: Boolean): [RecordSnippet]
+  recordTemplates: [RecordSnippet]
+  rooms(simulatorId: ID, deck: ID, name: String, role: RoomRoles): [Room]
+  sensors(simulatorId: ID, domain: String): [Sensors!]!
+  sensor(id: ID!): Sensors
+  sensorContacts(simulatorId: ID, sensorsId: ID, hostile: Boolean, type: String): [SensorContact]
+  sets: [Set]
+  shields(simulatorId: ID): [Shield]
+  shortRangeComm(simulatorId: ID!): [ShortRangeComm]
+  sickbay(simulatorId: ID): [Sickbay]
+  sickbaySingle(id: ID): Sickbay
+  symptoms: [String]
+  signalJammers(simulatorId: ID!): [SignalJammer]
+  simulators(template: Boolean, id: ID): [Simulator!]!
+  softwarePanels(simulatorId: ID): [SoftwarePanel]
+  stations: [StationSet]
+  station(simulatorId: ID!, station: String!): Station
+  stealthField(simulatorId: ID): [StealthField]
+  stealth(id: ID!): StealthField
+  subspaceField(simulatorId: ID): [SubspaceField]
+  surveyform(simulatorId: ID, active: Boolean): [SurveyForm]
+  systems(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean, damageWhich: String): [System]
+  system(id: ID!): System
+  allSystems: [String!]!
+  tacticalMaps(flightId: ID): [TacticalMap]
+  tacticalMap(id: ID!): TacticalMap
+  targeting(id: ID, simulatorId: ID): [Targeting]
+  taskReport(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
+  tasks(simulatorId: ID!, station: String, definitions: [String!]): [Task]
+  taskTemplates: [TaskTemplate!]!
+  taskDefinitions(simulatorId: ID): [TaskDefinition!]!
+  taskInstructions(simulatorId: ID, definition: String!, requiredValues: JSON!, task: TaskInput): String
+  teams(simulatorId: ID, type: String, cleared: Boolean): [Team]
+  damagePositions: [String]
+  exocompParts: [String]
+  _template(simulatorId: ID!): Template
+  thorium: Thorium
+  thrusters(simulatorId: ID): [Thruster]
+  thruster(id: ID!): Thruster
+  thx(simulatorId: ID): [Thx]
+  torpedos(simulatorId: ID): [Torpedo]
+  torpedo(id: ID!): Torpedo
+  tractorBeam(simulatorId: ID): [TractorBeam]
+  transporters(simulatorId: ID): [Transporter]
+  transwarp(simulatorId: ID): [Transwarp]
+  triggers(simulatorId: ID): [Trigger]
+  viewscreens(simulatorId: ID): [Viewscreen]
+  countermeasures(simulatorId: ID!): Countermeasures
+  countermeasureModuleType: [CountermeasureModule!]!
+  entity(id: ID!): Entity
+  entities(flightId: ID!, inert: Boolean): [Entity]!
+  dmxDevices: [DMXDevice!]!
+  dmxSets: [DMXSet!]!
+  dmxFixtures(simulatorId: ID): [DMXFixture!]!
+  dmxConfig(id: ID!): DMXConfig
+  dmxConfigs: [DMXConfig!]!
+  taskFlows(simulatorId: ID): [TaskFlow!]!
 }
 
 type Railgun implements SystemInterface {
@@ -3066,6 +3486,11 @@ type Railgun implements SystemInterface {
   availableAmmo: Int
   maxAmmo: Int
   ammo: Int
+}
+
+input RangeInput {
+  upper: Float
+  lower: Float
 }
 
 type Reactor implements SystemInterface {
@@ -3151,6 +3576,24 @@ enum RecordSnippetType {
   external
 }
 
+type RemoteAccessCode {
+  id: ID
+  code: String
+  state: String
+  station: String
+  timestamp: String
+}
+
+input RemoteAsset {
+  url: String
+  name: String
+}
+
+input RequirementInput {
+  cards: [String]
+  systems: [String]
+}
+
 type Room {
   id: ID
   simulatorId: ID
@@ -3161,6 +3604,16 @@ type Room {
   svgPath: String
   inventory: [InventoryItem]
   systems: [System]
+}
+
+type RoomCount {
+  room: Room
+  count: Int
+}
+
+input RoomCountInput {
+  room: ID
+  count: Int
 }
 
 input RoomInput {
@@ -3177,19 +3630,98 @@ enum RoomRoles {
   medicalTeam
 }
 
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+type Rotation {
+  yaw: Float
+  pitch: Float
+  roll: Float
+}
 
-"""
-The `BigInt` scalar type represents non-fractional signed whole numeric values. BigInt can represent values between -(2^53) + 1 and 2^53 - 1. 
-"""
-scalar BigInt
+input RotationInput {
+  yaw: Float
+  pitch: Float
+  roll: Float
+}
 
-type ProcessedData {
-  value: String!
-  time: String!
+type Scanner {
+  id: ID
+  label: String
+  scanRequest: String
+  scanResults: String
+  scanning: Boolean
+}
+
+enum SCIENCE_BURST_DETECTOR {
+  burst
+  detector
+}
+
+type ScienceProbeEvent {
+  simulatorId: ID!
+  name: String!
+  type: String!
+  charge: Float!
+}
+
+type ScienceType {
+  id: ID
+  name: String
+  type: SCIENCE_BURST_DETECTOR
+  description: String
+  equipment: [String]
+}
+
+type SensorContact {
+  id: ID!
+  name: String
+  type: String
+  size: Float
+  icon: String
+  picture: String
+  color: String
+  rotation: Float
+  speed: Float
+  location: Coordinates
+  destination: Coordinates
+  position: Coordinates
+  startTime: Float
+  endTime: Float
+  movementTime: Int
+  infrared: Boolean
+  cloaked: Boolean
+  destroyed: Boolean
+  forceUpdate: Boolean
+  targeted: Boolean
+  selected: Boolean
+  locked: Boolean
+  disabled: Boolean
+  hostile: Boolean
+  hitpoints: Int
+  autoFire: Boolean
+  particle: ParticleTypes
+}
+
+input SensorContactInput {
+  sensorId: ID
+  id: ID
+  name: String
+  type: String
+  size: Float
+  icon: String
+  picture: String
+  color: String
+  speed: Float
+  rotation: Float
+  location: CoordinatesInput
+  destination: CoordinatesInput
+  infrared: Boolean
+  cloaked: Boolean
+  destroyed: Boolean
+  locked: Boolean
+  disabled: Boolean
+  hostile: Boolean
+  hitpoints: Int
+  autoFire: Boolean
+  particle: ParticleTypes
 }
 
 type Sensors implements SystemInterface {
@@ -3250,97 +3782,10 @@ input SensorScanInput {
   cancelled: Boolean
 }
 
-type SensorContact {
-  id: ID!
-  name: String
-  type: String
-  size: Float
-  icon: String
-  picture: String
-  color: String
-  rotation: Float
-  speed: Float
-  location: Coordinates
-  destination: Coordinates
-  position: Coordinates
-  startTime: Float
-  endTime: Float
-  movementTime: Int
-  infrared: Boolean
-  cloaked: Boolean
-  destroyed: Boolean
-  forceUpdate: Boolean
-  targeted: Boolean
-  selected: Boolean
-  locked: Boolean
-  disabled: Boolean
-  hostile: Boolean
-  hitpoints: Int
-  autoFire: Boolean
-  particle: ParticleTypes
-}
-
-enum ParticleTypes {
-  Dilithium
-  Tachyon
-  Neutrino
-  AntiMatter
-  Anomaly
-  Resonance
-  Graviton
-  Lithium
-  Magnetic
-  Helium
-  Hydrogen
-  Oxygen
-  Carbon
-  Radiation
-}
-
 type SensorsSegment {
   ring: Int
   line: Int
   state: Boolean
-}
-
-type PresetAnswer {
-  label: String!
-  value: String!
-}
-
-input PresetAnswerInput {
-  label: String
-  value: String
-}
-
-input SensorContactInput {
-  sensorId: ID
-  id: ID
-  name: String
-  type: String
-  size: Float
-  icon: String
-  picture: String
-  color: String
-  speed: Float
-  rotation: Float
-  location: CoordinatesInput
-  destination: CoordinatesInput
-  infrared: Boolean
-  cloaked: Boolean
-  destroyed: Boolean
-  locked: Boolean
-  disabled: Boolean
-  hostile: Boolean
-  hitpoints: Int
-  autoFire: Boolean
-  particle: ParticleTypes
-}
-
-enum PING_MODES {
-  active
-  passive
-  manual
 }
 
 type Set {
@@ -3405,48 +3850,6 @@ type Ship {
   inventoryLogs: [InventoryLog]
 }
 
-type InventoryLog {
-  timestamp: String
-  log: String
-}
-
-type RemoteAccessCode {
-  id: ID
-  code: String
-  state: String
-  station: String
-  timestamp: String
-}
-
-type Notification {
-  id: ID
-  title: String
-  body: String
-  color: String
-  type: String
-  trigger: String
-  duration: Int
-  relevantCards: [String]
-}
-
-enum NotifyColors {
-  primary
-  secondary
-  success
-  danger
-  warning
-  info
-  light
-  dark
-}
-
-type PrintQueue {
-  id: ID!
-  simulatorId: String!
-  asset: String!
-  timestamp: Float!
-}
-
 type ShortRangeComm implements SystemInterface {
   id: ID
   simulatorId: ID
@@ -3482,76 +3885,6 @@ type ShortRangeCommExtended {
   signals: [CommSignal]
 }
 
-type CommArrow {
-  id: ID
-  signal: ID
-  frequency: Float
-  connected: Boolean
-  muted: Boolean
-}
-
-type CommSignal {
-  id: ID
-  image: String
-  name: String
-  range: CommRange
-  color: String
-}
-
-type CommArrowExtended {
-  id: ID
-  signal: ID
-  range: String
-  frequency: Float
-  connected: Boolean
-}
-
-type CommSignalExtended {
-  id: ID
-  color: String
-  image: String
-  name: String
-  ranges: CommRanges
-}
-
-type CommRanges {
-  military: CommRange
-  commercial: CommRange
-  priority: CommRange
-  emergency: CommRange
-}
-
-type CommRange {
-  lower: Float
-  upper: Float
-}
-
-input RangeInput {
-  upper: Float
-  lower: Float
-}
-
-input CommSignalInput {
-  id: ID
-  image: String
-  name: String
-  range: RangeInput
-  color: String
-}
-
-input CommArrowInput {
-  id: ID
-  signal: ID
-  frequency: Float
-  connected: Boolean
-}
-
-input CommUpdateInput {
-  state: String
-  frequency: Float
-  amplitude: Float
-}
-
 type Sickbay implements SystemInterface {
   id: ID
   simulatorId: ID
@@ -3582,43 +3915,11 @@ type SickbayBunk {
   patient: Crew
 }
 
-type Chart {
+type Signal {
   id: ID
-  admitTime: String
-  dischargeTime: String
-  bloodPressure: String
-  heartRate: Float
-  temperature: Float
-  o2levels: Float
-  symptoms: [String]
-  diagnosis: [String]
-  treatment: String
-  treatmentRequest: Boolean
-  painPoints: [PainPoint]
-}
-
-type PainPoint {
-  x: Float
-  y: Float
-}
-
-input PainPointInput {
-  x: Float
-  y: Float
-}
-
-input ChartInput {
-  id: ID
-  admitTime: String
-  dischargeTime: String
-  bloodPressure: String
-  heartRate: Float
-  temperature: Float
-  o2levels: Float
-  symptoms: [String]
-  treatment: String
-  treatmentRequest: Boolean
-  painPoints: [PainPointInput]
+  type: String
+  level: Float
+  power: Float
 }
 
 type SignalJammer implements SystemInterface {
@@ -3640,24 +3941,11 @@ type SignalJammer implements SystemInterface {
   locations: [Room]
 }
 
-type Signal {
-  id: ID
-  type: String
-  level: Float
-  power: Float
-}
-
 input SignalJammerInput {
   id: ID
   active: Boolean
   level: Float
   strength: Float
-}
-
-input SimulatorInput {
-  simulatorId: ID!
-  stationSet: ID!
-  missionId: ID
 }
 
 type Simulator {
@@ -3707,10 +3995,22 @@ type Simulator {
   stationSet: StationSet
 }
 
-type Document {
-  id: ID!
-  name: String!
-  asset: String!
+type SimulatorAssets {
+  mesh: String
+  texture: String
+  side: String
+  top: String
+  logo: String
+  bridge: String
+}
+
+input SimulatorAssetsInput {
+  mesh: String
+  texture: String
+  side: String
+  top: String
+  logo: String
+  bridge: String
 }
 
 type SimulatorCapabilities {
@@ -3718,6 +4018,12 @@ type SimulatorCapabilities {
   cards: [String!]!
   spaceEdventures: Boolean
   docking: Boolean
+}
+
+input SimulatorInput {
+  simulatorId: ID!
+  stationSet: ID!
+  missionId: ID
 }
 
 type SoftwarePanel {
@@ -3728,29 +4034,6 @@ type SoftwarePanel {
   connections: [PanelConnection]
 }
 
-type PanelCable {
-  id: ID
-  color: String
-  components: [ID]
-}
-
-type PanelComponent {
-  id: ID
-  component: String
-  level: Float
-  label: String
-  color: String
-  x: Float
-  y: Float
-  scale: Float
-}
-
-type PanelConnection {
-  id: ID
-  to: ID
-  from: ID
-}
-
 input SoftwarePanelInput {
   id: ID
   name: String
@@ -3759,35 +4042,70 @@ input SoftwarePanelInput {
   connections: [PanelConnectionInput]
 }
 
-input PanelCableInput {
+type Sound {
   id: ID
-  color: String
-  components: [ID]
+  clients: [String]
+  asset: String
+  url: String
+  volume: Float
+  playbackRate: Float
+  channel: [Int]
+  looping: Boolean
+  preserveChannels: Boolean
 }
 
-input PanelComponentInput {
+input SoundInput {
   id: ID
-  component: String
-  level: Float
-  label: String
-  color: String
-  x: Float
-  y: Float
-  scale: Float
+  clients: [String]
+  asset: String
+  volume: Float
+  playbackRate: Float
+  channel: [Int]
+  looping: Boolean
+  preserveChannels: Boolean
 }
 
-input PanelConnectionInput {
+type SpaceEdventuresCenter {
   id: ID
-  to: ID
-  from: ID
+  name: String
+  token: String
+  simulators: [NamedObject]
+  missions: [NamedObject]
+  badges: [NamedObject]
+  flightTypes: [FlightType]
 }
 
-type StationSet {
-  id: ID!
-  name: String!
-  simulator: Simulator
-  crewCount: Int
-  stations: [Station!]!
+type SpaceEdventuresClient {
+  id: ID
+  token: String
+  name: String
+  email: String
+}
+
+type Speed {
+  text: String
+  number: Float
+  velocity: Float
+  optimal: Boolean
+}
+
+input SpeedInput {
+  text: String
+  number: Float
+  velocity: Float
+  optimal: Boolean
+}
+
+type StageChildComponent {
+  parentId: ID!
+  parent: Entity
+}
+
+type StageComponent {
+  scaleLabel: String
+  scaleLabelShort: String
+  skyboxKey: String
+  childrenAsSprites: Boolean
 }
 
 type Station {
@@ -3804,17 +4122,12 @@ type Station {
   ambiance: String
 }
 
-type Card {
+type StationSet {
+  id: ID!
   name: String!
-  component: String!
-  hidden: Boolean
-  assigned: Boolean
-  newStation: Boolean
-}
-
-input CardInput {
-  name: String
-  component: String
+  simulator: Simulator
+  crewCount: Int
+  stations: [Station!]!
 }
 
 type StealthField implements SystemInterface {
@@ -3842,6 +4155,135 @@ type StealthQuad {
   aft: Float
   port: Float
   starboard: Float
+}
+
+type StringCoordinates {
+  x: String
+  y: String
+  z: String
+}
+
+input StringCoordinatesInput {
+  x: String
+  y: String
+  z: String
+}
+
+type Subscription {
+  _empty: String
+  actionsUpdate(simulatorId: ID!, stationId: ID, clientId: ID): Action
+  assetFolderChange: [AssetFolder!]!
+  clientChanged(all: Boolean, clientId: ID, simulatorId: ID, stationName: String, flightId: ID): [Client]
+  clientPing(clientId: ID!): Boolean
+  keypadsUpdate(simulatorId: ID!): [Keypad]
+  keypadUpdate(client: ID!): Keypad
+  scannersUpdate(simulatorId: ID!): [Scanner]
+  scannerUpdate(client: ID!): Scanner
+  commandLineOutputUpdate(clientId: ID!): String
+  commandLinesOutputUpdate(simulatorId: ID!): [Client]
+  clearCache(client: ID, flight: ID): Boolean
+  soundSub(clientId: ID): Sound
+  cancelSound(clientId: ID): ID
+  cancelAllSounds(clientId: ID): Boolean
+  cancelLoopingSounds(clientId: ID): Boolean
+  commandLineUpdate(simulatorId: ID): [CommandLine]
+  computerCoreUpdate(simulatorId: ID): [ComputerCore]
+  coolantUpdate(simulatorId: ID!): [CoolantTank]
+  coolantSystemUpdate(simulatorId: ID!, systemId: ID): [SystemCoolant]
+  coreFeedUpdate(simulatorId: ID): [CoreFeed]
+  syncTime(simulatorId: ID!): Timer
+  coreLayoutChange: [CoreLayout]
+  crewUpdate(simulatorId: ID, position: String, killed: Boolean): [Crew]
+  crewCountUpdate(simulatorId: ID, position: String, killed: Boolean): Int
+  crmUpdate(simulatorId: ID): Crm
+  crmMovementUpdate(simulatorId: ID!): Crm
+  crmFighterUpdate(simulatorId: ID!, clientId: ID!): CrmFighter
+  decksUpdate(simulatorId: ID!): [Deck]
+  dockingUpdate(id: ID, simulatorId: ID, type: DOCKING_TYPES): [DockingPort]
+  speedChange(simulatorId: ID): Engine
+  heatChange(simulatorId: ID): Engine
+  engineUpdate(simulatorId: ID): Engine
+  exocompsUpdate(simulatorId: ID!): [Exocomp]
+  firebaseCurrentSelectionsUpdate: FBCurrentSelections
+  flightsUpdate(running: Boolean, id: ID): [Flight]
+  googleSheetsUpdate(simulatorId: ID): [GoogleSheets]
+  hullPlatingUpdate(simulatorId: ID): [HullPlating!]!
+  interfaceUpdate(simulatorId: ID): [Interface]
+  internalCommUpdate(simulatorId: ID): [InternalComm]
+  inventoryUpdate(simulatorId: ID!): [InventoryItem]
+  isochipsUpdate(simulatorId: ID): [Isochip]
+  jumpDriveUpdate(simulatorId: ID): [JumpDrive]
+  keyboardUpdate: [Keyboard]
+  libraryEntriesUpdate(simulatorId: ID, type: String, all: Boolean): [LibraryEntry]
+  longRangeCommunicationsUpdate(simulatorId: ID): [LRCommunications]
+  macrosUpdate: [Macro]
+  macroButtonsUpdate: [MacroButtonConfig]
+  messageUpdates(simulatorId: ID!, station: String): [Message]
+  sendMessage(simulatorId: ID!, station: String): Message
+  midiSets(simulatorId: ID): [MidiSet]
+  missionsUpdate(missionId: ID, aux: Boolean): [Mission!]!
+  auxTimelinesUpdate(simulatorId: ID!): [TimelineInstance]
+  motus: [Motu]
+  motu(id: ID!): Motu
+  motuChannel(id: ID!, channelId: ID!): MotuChannel
+  motuSend(id: ID!, inputId: ID!, outputId: ID!): MotuPatch
+  navigationUpdate(simulatorId: ID): [Navigation]
+  objectiveUpdate(simulatorId: ID): [Objective]
+  officerLogsUpdate(clientId: ID, flightId: ID!): [Log]
+  shipLogsUpdate(simulatorId: ID!): [Log]
+  phasersUpdate(simulatorId: ID): [Phaser]
+  probesUpdate(simulatorId: ID!): [Probes!]!
+  scienceProbeEmitter(simulatorId: ID!): ScienceProbeEvent
+  railgunUpdate(simulatorId: ID): [Railgun]
+  reactorUpdate(simulatorId: ID): [Reactor!]!
+  recordSnippetsUpdate(simulatorId: ID, visible: Boolean): [RecordSnippet]
+  recordTemplatesUpdate: [RecordSnippet]
+  roomsUpdate(simulatorId: ID!, role: RoomRoles): [Room]
+  sensorsUpdate(simulatorId: ID, domain: String): [Sensors!]!
+  sensorContactUpdate(simulatorId: ID, sensorId: ID, hostile: Boolean, type: String): [SensorContact!]!
+  sensorsPing(sensorId: ID): String
+  setsUpdate: [Set]
+  shieldsUpdate(simulatorId: ID): [Shield]
+  notify(simulatorId: ID!, station: String, trigger: String): Notification
+  widgetNotify(simulatorId: ID!, station: String): String
+  printQueue(simulatorId: ID!): [PrintQueue]
+  shortRangeCommUpdate(simulatorId: ID!): [ShortRangeComm]
+  sickbayUpdate(simulatorId: ID): [Sickbay]
+  signalJammersUpdate(simulatorId: ID!): [SignalJammer]
+  simulatorsUpdate(simulatorId: ID, template: Boolean): [Simulator]
+  softwarePanelsUpdate(simulatorId: ID): [SoftwarePanel]
+  stationSetUpdate: [StationSet]
+  stealthFieldUpdate(simulatorId: ID): [StealthField]
+  subspaceFieldUpdate(simulatorId: ID): [SubspaceField]
+  surveyformUpdate(simulatorId: ID, active: Boolean): [SurveyForm]
+  systemsUpdate(simulatorId: ID, type: String, power: Boolean, heat: Boolean, extra: Boolean, damageWhich: String): [System!]!
+  tacticalMapsUpdate(flightId: ID): [TacticalMap]
+  tacticalMapUpdate(id: ID!, lowInterval: Boolean): TacticalMap
+  targetingUpdate(simulatorId: ID): [Targeting]
+  taskReportUpdate(simulatorId: ID, type: String, cleared: Boolean): [TaskReport]
+  tasksUpdate(simulatorId: ID!, station: String, definitions: [String!]): [Task]
+  taskTemplatesUpdate: [TaskTemplate!]!
+  teamsUpdate(simulatorId: ID, type: String, cleared: Boolean): [Team]
+  _templateUpdate(simulatorId: ID): Template
+  thoriumUpdate: Thorium
+  clockSync(clientId: ID!): String
+  rotationChange(simulatorId: ID): Thruster
+  thxUpdate(simulatorId: ID): [Thx]
+  torpedosUpdate(simulatorId: ID): [Torpedo]
+  tractorBeamUpdate(simulatorId: ID): [TractorBeam]
+  transporterUpdate(simulatorId: ID): Transporter
+  transwarpUpdate(simulatorId: ID): [Transwarp]
+  triggersUpdate(simulatorId: ID): [Trigger]
+  viewscreensUpdate(simulatorId: ID): [Viewscreen]
+  viewscreenVideoToggle(simulatorId: ID, viewscreenId: ID): Boolean
+  countermeasuresUpdate(simulatorId: ID!): Countermeasures
+  entity(id: ID): Entity
+  entities(flightId: ID!, stageId: ID, template: Boolean): [Entity]
+  dmxSets: [DMXSet!]!
+  dmxDevices: [DMXDevice!]!
+  dmxFixtures(simulatorId: ID, clientId: ID): [DMXFixture!]!
+  dmxConfigs: [DMXConfig!]!
+  taskFlows(simulatorId: ID): [TaskFlow!]!
 }
 
 type SubspaceField implements SystemInterface {
@@ -3882,69 +4324,6 @@ type SurveyForm {
   results: [FormResults]
 }
 
-type FormResults {
-  client: String
-  station: String
-  name: String
-  form: [FormFields]
-}
-
-type FormFields {
-  id: ID
-  type: String
-  title: String
-  description: String
-  options: [FormOptions]
-  value: String
-  max: Int
-  min: Int
-}
-
-type FormOptions {
-  id: ID
-  label: String
-}
-
-input FormResultsInput {
-  client: String
-  form: [FormFieldsInput]
-}
-
-input FormFieldsInput {
-  id: ID
-  type: String
-  title: String
-  description: String
-  options: [FormOptionsInput]
-  value: String
-  max: Int
-  min: Int
-}
-
-input FormOptionsInput {
-  id: ID
-  label: String
-}
-
-interface SystemInterface {
-  id: ID
-  simulatorId: ID
-  type: String
-  name: String
-  displayName: String
-  upgradeName: String
-  upgraded: Boolean
-  damage: Damage
-  power: Power
-  stealthFactor: Float
-  locations: [Room]
-}
-
-interface HeatInterface {
-  heat: Float
-  coolant: Float
-}
-
 type System implements SystemInterface {
   id: ID
   simulatorId: ID
@@ -3970,71 +4349,36 @@ type System implements SystemInterface {
   damageTasks: [DamageTask]
 }
 
-type TacticalMap {
-  id: ID
+type SystemCoolant {
+  systemId: ID
+  simulatorId: ID
   name: String
-  template: Boolean
-  flight: Flight
-  layers: [TacticalLayer]
-  frozen: Boolean
-  interval: Float
+  displayName: String
+  type: String
+  coolant: Float
+  coolantRate: Float
 }
 
-type TacticalLayer {
+interface SystemInterface {
   id: ID
+  simulatorId: ID
+  type: String
   name: String
-  type: TACTICAL_TYPES
-  opacity: Float
-  items: [TacticalItem]
-  image: String
-  color: String
-  labels: Boolean
-  gridCols: Int
-  gridRows: Int
-  paths: [TacticalPath]
-  advance: Boolean
-  asset: String
-  autoplay: Boolean
-  loop: Boolean
-  playbackSpeed: Float
-  mute: Boolean
+  displayName: String
+  upgradeName: String
+  upgraded: Boolean
+  damage: Damage
+  power: Power
+  stealthFactor: Float
+  locations: [Room]
 }
 
-input TacticalLayerInput {
-  id: ID
-  type: TACTICAL_TYPES
-  opacity: Float
-  image: String
-  color: String
-  labels: Boolean
-  gridCols: Int
-  gridRows: Int
-  advance: Boolean
-  asset: String
-  autoplay: Boolean
-  loop: Boolean
-  mute: Boolean
-  playbackSpeed: Float
-}
-
-type ThrusterControls {
-  rotation: String
-  reversed: Boolean
-  matchRotation: Boolean
-  up: String
-  down: String
-  left: String
-  right: String
-}
-
-input ThrusterControlsInput {
-  rotation: String
-  reversed: Boolean
-  matchRotation: Boolean
-  up: String
-  down: String
-  left: String
-  right: String
+enum TACTICAL_TYPES {
+  grid
+  image
+  objects
+  path
+  video
 }
 
 type TacticalItem {
@@ -4083,6 +4427,53 @@ input TacticalItemInput {
   thrusterControls: ThrusterControlsInput
 }
 
+type TacticalLayer {
+  id: ID
+  name: String
+  type: TACTICAL_TYPES
+  opacity: Float
+  items: [TacticalItem]
+  image: String
+  color: String
+  labels: Boolean
+  gridCols: Int
+  gridRows: Int
+  paths: [TacticalPath]
+  advance: Boolean
+  asset: String
+  autoplay: Boolean
+  loop: Boolean
+  playbackSpeed: Float
+  mute: Boolean
+}
+
+input TacticalLayerInput {
+  id: ID
+  type: TACTICAL_TYPES
+  opacity: Float
+  image: String
+  color: String
+  labels: Boolean
+  gridCols: Int
+  gridRows: Int
+  advance: Boolean
+  asset: String
+  autoplay: Boolean
+  loop: Boolean
+  mute: Boolean
+  playbackSpeed: Float
+}
+
+type TacticalMap {
+  id: ID
+  name: String
+  template: Boolean
+  flight: Flight
+  layers: [TacticalLayer]
+  frozen: Boolean
+  interval: Float
+}
+
 type TacticalPath {
   id: ID
   layerId: ID
@@ -4106,12 +4497,16 @@ input TacticalPathInput {
   arrow: Boolean
 }
 
-enum TACTICAL_TYPES {
-  grid
-  image
-  objects
-  path
-  video
+input TargetClassInput {
+  id: ID
+  name: String
+  size: Float
+  icon: String
+  picture: String
+  speed: Float
+  quadrant: Int
+  moving: Boolean
+  clickToTarget: Boolean
 }
 
 type Targeting implements SystemInterface {
@@ -4137,31 +4532,7 @@ type Targeting implements SystemInterface {
   enteredTarget: StringCoordinates
 }
 
-type StringCoordinates {
-  x: String
-  y: String
-  z: String
-}
-
-input StringCoordinatesInput {
-  x: String
-  y: String
-  z: String
-}
-
 type TargetingClass {
-  id: ID
-  name: String
-  size: Float
-  icon: String
-  picture: String
-  speed: Float
-  quadrant: Int
-  moving: Boolean
-  clickToTarget: Boolean
-}
-
-input TargetClassInput {
   id: ID
   name: String
   size: Float
@@ -4189,16 +4560,6 @@ type TargetingContact {
   clickToTarget: Boolean
 }
 
-type TaskReport {
-  id: ID
-  simulatorId: ID
-  system: System
-  type: String
-  stepCount: Int
-  name: String
-  tasks: [Task]
-}
-
 type Task {
   id: ID!
   simulatorId: ID
@@ -4221,6 +4582,35 @@ type Task {
   assigned: Boolean
 }
 
+type TaskDefinition {
+  id: ID!
+  name: String!
+  class: String!
+  stations: [Station]
+  active: Boolean!
+  valuesInput: JSON!
+  valuesValue: JSON!
+}
+
+type TaskFlow {
+  id: ID!
+  name: String!
+  category: String!
+  currentStep: Int!
+  steps: [TaskFlowStep!]!
+  completed: Boolean!
+}
+
+type TaskFlowStep {
+  id: ID!
+  name: String!
+  tasks: [Task!]!
+  activeTasks: [Task!]!
+  completeAll: Boolean!
+  delay: Int!
+  completed: Boolean!
+}
+
 input TaskInput {
   simulatorId: ID
   definition: String
@@ -4231,6 +4621,16 @@ input TaskInput {
   preMacros: [ActionInput]
 }
 
+type TaskReport {
+  id: ID
+  simulatorId: ID
+  system: System
+  type: String
+  stepCount: Int
+  name: String
+  tasks: [Task]
+}
+
 type TaskTemplate {
   id: ID!
   name: String!
@@ -4239,16 +4639,6 @@ type TaskTemplate {
   reportTypes: [String!]
   macros: [MacroAction!]
   preMacros: [MacroAction!]
-}
-
-type TaskDefinition {
-  id: ID!
-  name: String!
-  class: String!
-  stations: [Station]
-  active: Boolean!
-  valuesInput: JSON!
-  valuesValue: JSON!
 }
 
 type Team {
@@ -4263,6 +4653,22 @@ type Team {
   cleared: Boolean
 }
 
+enum TEAM_TYPES {
+  security
+  damage
+  medical
+}
+
+type TeamCount {
+  team: Team
+  count: Int
+}
+
+type TeamCountInput {
+  team: ID
+  count: Int
+}
+
 input TeamInput {
   id: ID
   type: TEAM_TYPES
@@ -4274,21 +4680,19 @@ input TeamInput {
   officers: [ID]
 }
 
-enum TEAM_TYPES {
-  security
-  damage
-  medical
-}
-
-enum PRIORITIES {
-  low
-  normal
-  critical
-  emergency
-}
-
 type Template {
   id: ID
+}
+
+type TemplateComponent {
+  category: String
+}
+
+enum TERMINAL_STATUS {
+  F
+  O
+  S
+  R
 }
 
 type Thorium {
@@ -4300,29 +4704,6 @@ type Thorium {
   spaceEdventuresCenter: SpaceEdventuresCenter
   port: Int
   httpOnly: Boolean
-}
-
-type SpaceEdventuresCenter {
-  id: ID
-  name: String
-  token: String
-  simulators: [NamedObject]
-  missions: [NamedObject]
-  badges: [NamedObject]
-  flightTypes: [FlightType]
-}
-
-type NamedObject {
-  id: ID
-  name: String
-  description: String
-}
-
-type FlightType {
-  id: ID
-  name: String
-  flightHours: Float
-  classHours: Float
 }
 
 type Thruster implements SystemInterface {
@@ -4346,43 +4727,31 @@ type Thruster implements SystemInterface {
   movementSpeed: Float
 }
 
-type Coordinates {
-  x: Float
-  y: Float
-  z: Float
+type ThrusterControls {
+  rotation: String
+  reversed: Boolean
+  matchRotation: Boolean
+  up: String
+  down: String
+  left: String
+  right: String
 }
 
-input CoordinatesInput {
-  x: Float
-  y: Float
-  z: Float
+input ThrusterControlsInput {
+  rotation: String
+  reversed: Boolean
+  matchRotation: Boolean
+  up: String
+  down: String
+  left: String
+  right: String
 }
 
-type Rotation {
-  yaw: Float
-  pitch: Float
-  roll: Float
-}
-
-input RotationInput {
-  yaw: Float
-  pitch: Float
-  roll: Float
-}
-
-input DirectionInput {
-  x: Float
-  y: Float
-  z: Float
-}
-
-type ThxClient {
-  id: ID
-  charge: Float
-  lock: Boolean
-  station: Station
-  executive: Boolean
-  connected: Boolean
+type ThrustersComponent {
+  direction: Coordinates
+  rotationDelta: Coordinates
+  rotationSpeed: Float
+  movementSpeed: Float
 }
 
 type Thx implements SystemInterface {
@@ -4399,6 +4768,61 @@ type Thx implements SystemInterface {
   locations: [Room]
   activated: Boolean
   clients: [ThxClient]
+}
+
+type ThxClient {
+  id: ID
+  charge: Float
+  lock: Boolean
+  station: Station
+  executive: Boolean
+  connected: Boolean
+}
+
+enum TIMELINE_ITEM_CONFIG_TYPE {
+  client
+  station
+}
+
+type TimelineInstance {
+  id: ID
+  mission: Mission
+  currentTimelineStep: Int
+  executedTimelineSteps: [ID]
+}
+
+type TimelineItem {
+  id: ID!
+  name: String
+  type: String
+  event: String!
+  needsConfig: Boolean
+  args: String
+  delay: Int
+  noCancelOnReset: Boolean
+}
+
+input TimelineItemInput {
+  id: ID
+  name: String
+  type: String
+  event: String
+  args: String
+  delay: Int
+  noCancelOnReset: Boolean
+}
+
+type TimelineStep {
+  id: ID!
+  name: String!
+  description: String
+  order: Int
+  timelineItems: [TimelineItem!]!
+}
+
+type Timer {
+  time: String
+  active: Boolean
 }
 
 type Torpedo implements SystemInterface {
@@ -4418,27 +4842,6 @@ type Torpedo implements SystemInterface {
   locations: [Room]
 }
 
-type Warhead {
-  id: ID
-  type: String
-  probe: Probe
-}
-
-input WarheadInput {
-  type: String
-  probe: ID
-}
-
-type TractorBeamBeam {
-  id: ID!
-  state: Boolean!
-  target: Boolean!
-  targetLabel: String!
-  strength: Float!
-  stress: Float!
-  scanning: Boolean!
-}
-
 type TractorBeam implements SystemInterface {
   id: ID!
   simulatorId: ID
@@ -4452,6 +4855,16 @@ type TractorBeam implements SystemInterface {
   stealthFactor: Float
   locations: [Room]
   beams: [TractorBeamBeam!]!
+}
+
+type TractorBeamBeam {
+  id: ID!
+  state: Boolean!
+  target: Boolean!
+  targetLabel: String!
+  strength: Float!
+  stress: Float!
+  scanning: Boolean!
 }
 
 type Transporter implements SystemInterface {
@@ -4474,13 +4887,6 @@ type Transporter implements SystemInterface {
   locations: [Room]
 }
 
-type TransporterTarget {
-  id: ID
-  icon: String
-  moving: Boolean
-  position: Coordinates
-}
-
 input TransporterInput {
   id: ID
   simulatorId: ID
@@ -4488,6 +4894,13 @@ input TransporterInput {
   destination: String
   charge: Float
   state: String
+}
+
+type TransporterTarget {
+  id: ID
+  icon: String
+  moving: Boolean
+  position: Coordinates
 }
 
 type Transwarp implements SystemInterface {
@@ -4546,344 +4959,14 @@ type ViewscreenPictureInPicture {
   size: PIP_SIZE
 }
 
-enum PIP_POSITION {
-  bottomLeft
-  bottomRight
-  topLeft
-  topRight
-  center
-}
-
-enum PIP_SIZE {
-  small
-  medium
-  large
-}
-
-type Countermeasures implements SystemInterface {
-  id: ID!
-  simulatorId: ID
-  class: String
+type Warhead {
+  id: ID
   type: String
-  name: String!
-  displayName: String!
-  upgradeName: String
-  upgraded: Boolean
-  damage: Damage!
-  power: Power!
-  stealthFactor: Float
-  locations: [Room]
-  materials: CountermeasureResources!
-  slots: CountermeasureSlot!
-  launched: [Countermeasure!]!
+  probe: Probe
 }
 
-type Countermeasure {
-  id: ID!
-  name: String!
-  modules: [CountermeasureModule!]!
-  locked: Boolean!
-  active: Boolean!
-  building: Boolean!
-  totalPowerUsed: Float!
-  readyToLaunch: Boolean!
-  powerUsage: Float!
-  availablePower: Float!
-  buildPercentage: Float!
-  note: String!
-}
-
-type CountermeasureResources {
-  copper: Float!
-  titanium: Float!
-  carbon: Float!
-  plastic: Float!
-  plasma: Float!
-}
-
-type CountermeasureConfigOptions {
-  type: String!
-  label: String!
-}
-
-type CountermeasureModule {
-  id: ID!
-  name: String!
-  description: String!
-  powerRequirement: Float!
-  resourceRequirements: CountermeasureResources!
-  configurationOptions: [CountermeasureConfigOptions!]!
-  config: JSON!
-  buildProgress: Float!
-  activated: Boolean!
-}
-
-enum CountermeasureSlotEnum {
-  slot1
-  slot2
-  slot3
-  slot4
-  slot5
-  slot6
-  slot7
-  slot8
-}
-
-type CountermeasureSlot {
-  slot1: Countermeasure
-  slot2: Countermeasure
-  slot3: Countermeasure
-  slot4: Countermeasure
-  slot5: Countermeasure
-  slot6: Countermeasure
-  slot7: Countermeasure
-  slot8: Countermeasure
-}
-
-type Entity {
-  id: ID!
-  interval: Int
-  reset: Boolean
-  appearance: AppearanceComponent
-  behavior: BehaviorComponent
-  identity: IdentityComponent
-  location: LocationComponent
-  stage: StageComponent
-  stageChild: StageChildComponent
-  light: LightComponent
-  glow: GlowComponent
-  template: TemplateComponent
-  enginesWarp: EngineComponent
-  enginesImpulse: EngineComponent
-  thrusters: ThrustersComponent
-}
-
-enum DMXChannelProperty {
-  red
-  green
-  blue
-  amber
-  white
-  uv
-  intensity
-  strobe
-  generic
-  focus
-  nothing
-}
-
-type DMXDevice {
-  id: ID!
-  class: String!
-  name: String!
-  channels: [DMXChannelProperty!]!
-}
-
-enum DMXFixtureMode {
-  active
-  passive
-}
-
-type DMXPassiveChannels {
-  amber: Int
-  white: Int
-  uv: Int
-  intensity: Int
-  strobe: Int
-  generic: Int
-  nothing: Int
-  color: String
-}
-
-input DMXPassiveChannelsInput {
-  amber: Int
-  white: Int
-  uv: Int
-  intensity: Int
-  strobe: Int
-  generic: Int
-  nothing: Int
-  color: String
-}
-
-type DMXFixture {
-  id: ID!
-  class: String!
-  name: String!
-  clientId: String
-  DMXDeviceId: String!
-  DMXDevice: DMXDevice!
-  simulatorId: String!
-  channel: Int!
-  mode: DMXFixtureMode!
-  tags: [String!]!
-  passiveChannels: DMXPassiveChannels!
-}
-
-type DMXSet {
-  id: ID!
-  name: String!
-  fixtureIds: [String!]!
-  fixtures: [DMXFixture!]!
-}
-
-type DMXConfig {
-  id: ID!
-  name: String!
-  config: JSON!
-  actionStrength: Float!
-}
-
-type TaskFlowStep {
-  id: ID!
-  name: String!
-  tasks: [Task!]!
-  activeTasks: [Task!]!
-  completeAll: Boolean!
-  delay: Int!
-  completed: Boolean!
-}
-
-type TaskFlow {
-  id: ID!
-  name: String!
-  category: String!
-  currentStep: Int!
-  steps: [TaskFlowStep!]!
-  completed: Boolean!
-}
-
-enum MeshTypeEnum {
-  sphere
-  cube
-  model
-  sprite
-  planet
-  star
-}
-
-type AppearanceComponent {
-  meshType: MeshTypeEnum
-  modelAsset: String
-  materialMapAsset: String
-  ringMapAsset: String
-  cloudMapAsset: String
-  emissiveColor: String
-  emissiveIntensity: Float
-  color: String
-  scale: Float
-}
-
-enum Behaviors {
-  holdPosition
-  wander
-  follow
-  avoid
-  attack
-}
-
-type BehaviorComponent {
-  behavior: Behaviors!
-  targetId: ID
-  destination: EntityCoordinates
-}
-
-type IdentityComponent {
-  name: String
+input WarheadInput {
   type: String
+  probe: ID
 }
 
-type Quaternion {
-  x: Float!
-  y: Float!
-  z: Float!
-  w: Float!
-}
-
-input QuaternionInput {
-  x: Float!
-  y: Float!
-  z: Float!
-  w: Float!
-}
-
-type EntityCoordinates {
-  x: Float!
-  y: Float!
-  z: Float!
-}
-
-input EntityCoordinatesInput {
-  x: Float!
-  y: Float!
-  z: Float!
-}
-
-type LocationComponent {
-  inert: Boolean!
-  position: EntityCoordinates!
-  velocity: EntityCoordinates!
-  acceleration: EntityCoordinates!
-  rotation: Quaternion!
-  rotationVelocity: EntityCoordinates!
-  rotationAcceleration: EntityCoordinates!
-}
-
-input EntitiesLocationInput {
-  id: ID!
-  position: EntityCoordinatesInput!
-}
-
-type StageComponent {
-  scaleLabel: String
-  scaleLabelShort: String
-  skyboxKey: String
-  childrenAsSprites: Boolean
-}
-
-type StageChildComponent {
-  parentId: ID!
-  parent: Entity
-}
-
-type LightComponent {
-  intensity: Float
-  decay: Float
-  color: String
-}
-
-enum GlowModeEnum {
-  glow
-  halo
-  shell
-}
-
-type GlowComponent {
-  glowMode: GlowModeEnum
-  color: String
-}
-
-type TemplateComponent {
-  category: String
-}
-
-type EngineComponent {
-  maxSpeed: Float
-  currentSpeed: Float
-  heat: Float
-  heatRate: Float
-  coolant: Float
-  cooling: Boolean
-}
-
-enum EntityEngineEnum {
-  warp
-  impulse
-}
-
-type ThrustersComponent {
-  direction: Coordinates
-  rotationDelta: Coordinates
-  rotationSpeed: Float
-  movementSpeed: Float
-}

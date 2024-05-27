@@ -70,3 +70,4 @@ export {default as DMXSet} from "./DMX/DMXSet";
 export {TaskFlow} from "./taskFlow";
 export {HackingPreset} from "./computerCore/hackingPreset";
 export {default as HullPlating} from "./hullPlating";
+export { FirebaseConnector, FirebaseManager } from './FirebaseManager'
