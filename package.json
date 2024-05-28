@@ -235,7 +235,7 @@
     "random-ship-names": "^1.0.0",
     "random-words": "^1.1.0",
     "react-app-rewired": "^2.1.6",
-    "react-pdf": "^5.0.0",
+    "react-pdf": "^7.7.3",
     "react-router": "^6.0.0-alpha.4",
     "react-scripts": "^3.4.1",
     "react-three-fiber": "^4.0.17",
