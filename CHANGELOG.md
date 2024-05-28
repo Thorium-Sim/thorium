@@ -1,3 +1,10 @@
+# [3.13.0](https://github.com/Thorium-Sim/thorium/compare/3.12.1...3.13.0) (2024-05-27)
+
+
+### Features
+
+* Add manual Firebase integration for Space EdVentures data collection. ([34892e3](https://github.com/Thorium-Sim/thorium/commit/34892e3d167143254222a4ace51a6e922f2c767a))
+
 ## [3.12.1](https://github.com/Thorium-Sim/thorium/compare/3.12.0...3.12.1) (2024-03-16)
 
 

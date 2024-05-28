@@ -118,7 +118,7 @@ function responseForOperation(requestContext) {
       opName,
       requestContext.context,
     );
-    timeout = setTimeout(() => resolve({error: "fail"}), 500);
+    timeout = setTimeout(() => { resolve({ error: "fail", data: {} }) }, 500);
   });
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "3.12.1",
+  "version": "3.13.0",
   "description": "Starship Simulator Controls",
   "private": true,
   "repository": {
@@ -27,7 +27,7 @@
     "start:client": "react-app-rewired start",
     "start:server": "ts-node-dev --project server/tsconfig.json server/index.ts",
     "watch:electron": "wait-on http://localhost:3000 && electron .",
-    "start:electron": "BROWSER=none npm-run-all --parallel -l start:client watch:server watch:electron",
+    "start:electron": "BROWSER=none npm-run-all --parallel -l start:client start:server watch:electron",
     "build": "cross-env NODE_ENV=production npm-run-all build:*",
     "build:client": "react-app-rewired --max_old_space_size=4096 build",
     "build:server": "tsc -p server",
@@ -64,9 +64,7 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": [
-      "server/"
-    ],
+    "watch": ["server/"],
     "ignore": [
       ".git",
       "./src/*",
@@ -82,12 +80,8 @@
     "last 1 safari version"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint"
-    ],
-    "*.{css,scss}": [
-      "stylelint"
-    ],
+    "*.{js,jsx,ts,tsx}": ["eslint"],
+    "*.{css,scss}": ["stylelint"],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -104,9 +98,7 @@
     "directories": {
       "output": "./packages"
     },
-    "publish": {
-      "provider": "github"
-    },
+    "publish": { "provider": "github" },
     "files": [
       "electron/**/*",
       "!**/node_modules/**/*",
@@ -135,15 +127,10 @@
       ]
     },
     "win": {
-      "target": [
-        "zip",
-        "portable"
-      ],
+      "target": ["zip", "portable"],
       "icon": "./public/icon.ico"
     },
-    "linux": {
-      "category": "Utility"
-    }
+    "linux": { "category": "Utility" }
   },
   "bin": "./server/index.js",
   "pkg": {
@@ -163,9 +150,7 @@
     ]
   },
   "release": {
-    "branches": [
-      "main"
-    ],
+    "branches": ["main"],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -257,6 +242,7 @@
     "react-use-gesture": "^7.0.4",
     "request": "^2.88.0",
     "rng": "^0.2.2",
+    "sass": "^1.77.2",
     "simplex-noise": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.16",
     "three": "^0.116.1",
@@ -327,11 +313,11 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-app": "^9.0.2",
     "bodymovin": "^4.13.0",
-    "bootstrap": "^4.3.1",
-    "canvas": "^2.6.0",
+    "bootstrap": "^4.6.0",
+    "canvas": "^2.11.2",
     "centered-pan-zoom": "^2.0.0",
     "cross-env": "^7.0.0",
-    "electron": "^9.0.4",
+    "electron": "^11.0.0",
     "electron-builder": "23.0.2",
     "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^1.0.0",
@@ -347,7 +333,6 @@
     "lint-staged": "^10.2.4",
     "match-sorter": "^4.0.2",
     "midimessage": "^1.0.5",
-    "node-sass": "^4.12.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
     "rc-menu": "^8.0.0-alpha.1",
@@ -401,7 +386,7 @@
     "@babel/preset-env": "^7.8.7"
   },
   "volta": {
-    "node": "14.21.3"
+    "node": "16.20.2"
   },
   "packageManager": "yarn@1.22.1"
 }
