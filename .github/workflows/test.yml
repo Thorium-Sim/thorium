@@ -26,7 +26,8 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-
+      - name: Install libs
+        run: sudo apt-get install libudev-dev
       - name: Install Dependencies
         run: yarn
       - name: TypeScript Check
