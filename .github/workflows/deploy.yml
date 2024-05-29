@@ -15,7 +15,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 16
       - name: Cache node modules
         uses: actions/cache@v1
         env:
@@ -29,7 +29,8 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-
+      - name: Install libs
+        run: sudo apt-get install libudev-dev
       - name: Install Dependencies
         run: yarn
 
@@ -57,7 +58,7 @@ jobs:
       - name: Install Node.js, NPM and Yarn
         uses: actions/setup-node@v1
         with:
-          node-version: 14
+          node-version: 16
       - uses: actions/setup-python@v4
         if: startsWith(matrix.os, 'macos')
         with:
