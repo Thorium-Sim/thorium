@@ -1,5 +1,5 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
-import {useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button, Row, Col, Container, Input} from "helpers/reactstrap";
 import useFlightSessionStorage from "helpers/hooks/useFlightSessionStorage";

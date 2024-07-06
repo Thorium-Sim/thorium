@@ -1,4 +1,4 @@
-import {gql} from "apollo-server-express";
+import {gql} from "graphql-tag";
 import {pubsub} from "../helpers/subscriptionManager";
 import App from "../app";
 const mutationHelper = require("../helpers/mutationHelper").default;

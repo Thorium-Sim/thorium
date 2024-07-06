@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {Input, Button} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 class Scanning extends Component {
   constructor(props) {

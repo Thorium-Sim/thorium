@@ -1,5 +1,5 @@
+import { useQuery, useSubscription } from "@apollo/client";
 import React from "react";
-import {useQuery, useSubscription} from "react-apollo";
 import gql from "graphql-tag.macro";
 import FighterData from "./fighterData";
 import "./style.scss";

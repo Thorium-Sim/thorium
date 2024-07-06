@@ -1,7 +1,7 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import * as THREE from "three";
 import OBJLoader from "three-obj-loader";
-import {withApollo} from "react-apollo";
 import Arrow from "./arrow";
 import Circle from "./circle";
 

@@ -1,4 +1,4 @@
-import {gql} from "apollo-server-express";
+import {gql} from "graphql-tag";
 import App from "../../../app";
 import produce from "immer";
 import {Location} from "../../../classes/universe/components";

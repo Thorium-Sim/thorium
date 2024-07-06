@@ -1,3 +1,4 @@
+import { Mutation, withApollo } from "@apollo/client";
 import React, {Fragment, Component} from "react";
 import {
   Container,
@@ -10,7 +11,6 @@ import {
   ListGroupItem,
 } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import {Mutation, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {FormattedMessage} from "react-intl";
 import ReportView from "./reportView";

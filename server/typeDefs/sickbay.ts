@@ -1,5 +1,6 @@
 import App from "../app";
-import {gql, withFilter} from "apollo-server-express";
+import {gql} from "graphql-tag"
+import { withFilter } from "graphql-subscriptions";
 import {pubsub} from "../helpers/subscriptionManager";
 import {symptoms} from "../classes/medical/symptoms";
 const mutationHelper = require("../helpers/mutationHelper").default;

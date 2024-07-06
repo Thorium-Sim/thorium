@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import React, {Component, Fragment} from "react";
 import {
   Library,
@@ -14,7 +15,6 @@ import {
   ListGroupItem,
   Button,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import * as components from "./components";
 import MacroListMaker from "../macroListMaker";

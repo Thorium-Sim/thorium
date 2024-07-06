@@ -1,6 +1,6 @@
+import { Query, Mutation, useQuery } from "@apollo/client";
 import React from "react";
 import {Container, Button, Input} from "helpers/reactstrap";
-import {Query, Mutation, useQuery} from "react-apollo";
 import gql from "graphql-tag.macro";
 import "./settings.scss";
 const QUERY = gql`

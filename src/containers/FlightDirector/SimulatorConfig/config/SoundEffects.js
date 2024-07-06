@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {
   Col,
@@ -6,7 +7,6 @@ import {
   ListGroup,
   ListGroupItem,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import gql from "graphql-tag.macro";
 import {capitalCase} from "change-case";

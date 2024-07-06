@@ -7,10 +7,9 @@ import {
   ListGroup,
   ListGroupItem,
 } from "helpers/reactstrap";
-import {Query, Mutation} from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
-import {useQuery} from "@apollo/client";
+import { useQuery, Query, Mutation } from "@apollo/client";
 import {FaBan} from "react-icons/fa";
 
 function reducer(state, action) {

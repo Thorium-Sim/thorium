@@ -1,3 +1,4 @@
+import { Mutation, Query } from "@apollo/client";
 import React, {useState} from "react";
 import {
   FormGroup,
@@ -11,7 +12,6 @@ import {
 } from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {Mutation, Query} from "react-apollo";
 
 const COMPUTER_CORE = gql`
   query ComputerCore($id: ID!) {

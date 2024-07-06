@@ -1,5 +1,5 @@
+import { Query } from "@apollo/client";
 import React, {Component} from "react";
-import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import SubspaceField from "./subspaceField";

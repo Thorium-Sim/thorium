@@ -1,6 +1,6 @@
+import { graphql } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql} from "react-apollo";
 import {DraggableCore} from "react-draggable";
 import {Row, Col} from "helpers/reactstrap";
 import distance from "helpers/distance";

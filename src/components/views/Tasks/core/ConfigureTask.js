@@ -1,5 +1,5 @@
+import { Query } from "@apollo/client";
 import React, {Fragment} from "react";
-import {Query} from "react-apollo";
 import {Badge, Input, Button} from "helpers/reactstrap";
 import uuid from "uuid";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";

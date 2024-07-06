@@ -1,3 +1,4 @@
+import { Query, Mutation } from "@apollo/client";
 import React from "react";
 import {
   Container,
@@ -7,7 +8,6 @@ import {
   ListGroupItem,
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Query, Mutation} from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import * as Macros from "components/macros";
 

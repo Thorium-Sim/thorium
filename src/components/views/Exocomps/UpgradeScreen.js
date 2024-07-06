@@ -1,8 +1,7 @@
+import { Mutation, gql } from "@apollo/client";
 import React from "react";
 import LaserGame from "helpers/laserGame";
 import RobozzleGame from "helpers/robozzleGame";
-import gql from "graphql-tag";
-import {Mutation} from "react-apollo";
 
 const COMPLETE_UPGRADE = gql`
   mutation CompleteUpgrade($exocompId: ID!) {

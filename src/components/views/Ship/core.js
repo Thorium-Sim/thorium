@@ -1,11 +1,10 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import {InputField, OutputField} from "../../generic/core";
 import {Input, Button} from "helpers/reactstrap";
 import LayoutList from "../../layouts/list";
 import debounce from "helpers/debounce";
-import {useQuery, useMutation} from "@apollo/client";
+import { useQuery, useMutation, withApollo } from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 const layouts = LayoutList;

@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {
   Container,
@@ -11,7 +12,6 @@ import {
   Card,
   CardBody,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 

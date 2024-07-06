@@ -1,7 +1,7 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Container, Row, Button} from "helpers/reactstrap";
-import {graphql, withApollo} from "react-apollo";
 import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
 import SubscriptionHelper from "helpers/subscriptionHelper";

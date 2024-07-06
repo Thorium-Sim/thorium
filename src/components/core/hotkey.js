@@ -1,5 +1,5 @@
+import { withApollo } from "@apollo/client";
 import React, {Component, Suspense} from "react";
-import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Cores} from "components/views";
 import categories from "./categories";

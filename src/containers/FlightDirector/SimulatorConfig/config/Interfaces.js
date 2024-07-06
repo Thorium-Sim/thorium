@@ -1,6 +1,6 @@
+import { graphql, Query, Mutation } from "@apollo/client";
 import React from "react";
 import gql from "graphql-tag.macro";
-import {graphql, Query, Mutation} from "react-apollo";
 import {
   Container,
   Row,

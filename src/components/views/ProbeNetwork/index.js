@@ -1,7 +1,7 @@
+import { Query, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {Container, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Query, withApollo} from "react-apollo";
 import Measure from "react-measure";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";

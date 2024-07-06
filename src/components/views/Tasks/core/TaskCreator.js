@@ -1,5 +1,5 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Component} from "react";
-import {Query, Mutation} from "react-apollo";
 import {Button} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import ConfigureTask from "./ConfigureTask";

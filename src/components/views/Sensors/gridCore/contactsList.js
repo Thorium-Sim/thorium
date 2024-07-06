@@ -1,8 +1,8 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {Col, Button} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import ContactContextMenu from "./contactContextMenu";
-import {withApollo} from "react-apollo";
 import {FaBan} from "react-icons/fa";
 
 const ADD_ARMY_CONTACT = gql`

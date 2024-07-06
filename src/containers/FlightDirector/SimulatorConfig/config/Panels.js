@@ -1,7 +1,6 @@
 import React from "react";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
-import {useQuery} from "@apollo/client";
+import { useQuery, withApollo } from "@apollo/client";
 import {FaBan} from "react-icons/fa";
 const QUERY = gql`
   query SoftwarePanels {

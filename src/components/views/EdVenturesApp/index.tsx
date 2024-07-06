@@ -1,6 +1,6 @@
+import { Query, graphql, withApollo } from "@apollo/client";
 import gql from 'graphql-tag.macro'
 import React, { useMemo } from 'react'
-import { Query, graphql, withApollo } from 'react-apollo'
 import { Container, PopoverBody, PopoverHeader, Spinner, UncontrolledPopover } from "reactstrap"
 import { Input, Button } from "helpers/reactstrap"
 import SubscriptionHelper from 'helpers/subscriptionHelper'
@@ -71,7 +71,7 @@ const EdVenturesAppSubscriptions = gql`
 `
 
 const querySelectorProofString = (str: string) => {
-    return str.replaceAll(/([!"#$%&'()* +,./:;<=>?@[\\\]^`{|}~])/g, '')
+    return str.replaceAll(/([!"#$%&'()* +,./:;<=>?@[\\\]^`{|}~])/g, '');
 }
 
 function isValidEmail(email: string) {

@@ -1,6 +1,6 @@
+import { withApollo, Query, Mutation } from "@apollo/client";
 import React from "react";
 import {Button, Row, Col, Input} from "helpers/reactstrap";
-import {withApollo, Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import {publish} from "helpers/pubsub";

@@ -1,3 +1,4 @@
+import { Query } from "@apollo/client";
 import React, {Component} from "react";
 import {
   ButtonDropdown,
@@ -6,7 +7,6 @@ import {
   DropdownItem,
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Query} from "react-apollo";
 class DestinationSelect extends Component {
   state = {dropdownOpen: false};
   toggle = () => {

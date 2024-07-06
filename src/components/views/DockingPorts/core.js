@@ -1,5 +1,5 @@
+import { Query, Mutation } from "@apollo/client";
 import React from "react";
-import {Query, Mutation} from "react-apollo";
 import {TypingField} from "../../generic/core";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";

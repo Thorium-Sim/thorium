@@ -1,7 +1,7 @@
+import { graphql, withApollo } from "@apollo/client";
 import React from "react";
 import {HullPlating, Simulator} from "generated/graphql";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import {Container} from "helpers/reactstrap";
 
 import SubscriptionHelper from "helpers/subscriptionHelper";

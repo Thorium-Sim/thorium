@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import keycode from "keycode";
-import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SoundPlayer from "../../client/soundPlayer";
 

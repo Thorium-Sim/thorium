@@ -1,11 +1,10 @@
 import React, {useRef, useEffect} from "react";
-import {Query, Mutation} from "react-apollo";
 import {Table, Button} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import "./style.scss";
 import Printable from "helpers/printable";
 import useQrCode from "react-qrcode-hook";
-import {useQuery, useMutation} from "@apollo/client";
+import { useQuery, useMutation, Query, Mutation } from "@apollo/client";
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();

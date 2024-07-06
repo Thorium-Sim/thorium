@@ -1,7 +1,7 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import uuid from "uuid";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 
 import withSound from "../../generic/SoundPlayer";
 class SoundsTester extends Component {

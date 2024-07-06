@@ -1,3 +1,4 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Fragment, Component, PureComponent} from "react";
 import {
   Container,
@@ -12,7 +13,6 @@ import {
   Label,
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Query, Mutation} from "react-apollo";
 import playSound from "components/generic/SoundPlayer";
 import SoundPicker from "helpers/soundPicker";
 import {FaVolumeUp} from "react-icons/fa";

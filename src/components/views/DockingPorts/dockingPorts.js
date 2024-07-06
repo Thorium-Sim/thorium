@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React, {useState, useEffect, useRef, Fragment} from "react";
 import {Container, Row, Col, Button, Card, CardBody} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import {FormattedMessage} from "react-intl";

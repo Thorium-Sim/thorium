@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React, {Component, Fragment} from "react";
 import {Row, Col, Table, Button} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 
 function randomString(length, chars) {

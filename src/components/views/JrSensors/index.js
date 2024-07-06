@@ -1,8 +1,8 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {Container, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import Measure from "react-measure";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import Grid from "../Sensors/GridDom";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {Typing} from "react-typing";

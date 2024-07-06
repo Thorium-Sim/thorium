@@ -1,11 +1,10 @@
 import React from "react";
 import gql from "graphql-tag.macro";
 import {Container} from "helpers/reactstrap";
-import {withApollo} from "react-apollo";
 import {InputField} from "../../generic/core";
 import {Duration} from "luxon";
 import "./style.scss";
-import {useQuery} from "@apollo/client";
+import { useQuery, withApollo } from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 function padDigits(number, digits) {

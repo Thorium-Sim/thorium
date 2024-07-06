@@ -1,8 +1,8 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import {Button, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 export const JR_TRANSPORTER_SUB = gql`
   subscription TransportersSub($simulatorId: ID) {

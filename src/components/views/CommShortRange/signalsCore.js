@@ -1,10 +1,10 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import tinycolor from "tinycolor2";
 import {CompactPicker} from "react-color";
 import {Button} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import uuid from "uuid";

@@ -1,6 +1,5 @@
+import { Mutation, gql } from "@apollo/client";
 import React, {useRef, useEffect} from "react";
-import {Mutation} from "react-apollo";
-import gql from "graphql-tag";
 
 export const CompVideo = ({id, interfaceId, config = {}, value = {}}) => {
   const {autoPlay = true, loop = true} = config;

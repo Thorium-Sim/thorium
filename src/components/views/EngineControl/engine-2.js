@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React, {Fragment} from "react";
 import {Row, Button, Col} from "helpers/reactstrap";
-import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import HeatBar from "./heatbar";
 import DamageOverlay from "../helpers/DamageOverlay";

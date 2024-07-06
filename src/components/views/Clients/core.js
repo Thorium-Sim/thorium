@@ -1,6 +1,6 @@
+import { Query, Mutation } from "@apollo/client";
 import React from "react";
 import {Table} from "helpers/reactstrap";
-import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Input} from "helpers/reactstrap";
 import {capitalCase} from "change-case";

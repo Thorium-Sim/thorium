@@ -1,3 +1,4 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Fragment, Component} from "react";
 import {
   Container,
@@ -8,7 +9,6 @@ import {
   Label,
   Input,
 } from "helpers/reactstrap";
-import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import KeyboardList from "./keyboardList";
 import KeyboardControl from "./keyboardControl";

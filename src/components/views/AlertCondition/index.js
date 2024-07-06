@@ -1,5 +1,5 @@
+import { Query, useMutation } from "@apollo/client";
 import React, {Component, useState} from "react";
-import {Query, useMutation} from "react-apollo";
 import {Container, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";

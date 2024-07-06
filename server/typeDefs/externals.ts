@@ -5,7 +5,7 @@ import os from "os";
 import uuid from "uuid";
 import importMission from "../imports/missions/import";
 import importSimulator from "../imports/simulators/import";
-import {gql} from "apollo-server-express";
+import {gql} from "graphql-tag";
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.

@@ -1,8 +1,8 @@
+import { Mutation } from "@apollo/client";
 import React, {Fragment, Component} from "react";
 import {Row, Col, Button} from "helpers/reactstrap";
 import {InputField} from "../../generic/core";
 import gql from "graphql-tag.macro";
-import {Mutation} from "react-apollo";
 import FileExplorer from "../TacticalMap/fileExplorer";
 import {FaBan} from "react-icons/fa";
 

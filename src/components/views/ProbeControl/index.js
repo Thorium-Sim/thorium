@@ -1,3 +1,4 @@
+import { withApollo, Query, useMutation } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {
@@ -17,7 +18,6 @@ import {
   NavLink*/,
 } from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import {withApollo, Query, useMutation} from "react-apollo";
 import Tour from "helpers/tourHelper";
 
 import "./style.scss";

@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import layerComps from "./layerComps";
-import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 class TacticalMapPreview extends Component {
   keypress = evt => {

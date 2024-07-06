@@ -1,8 +1,8 @@
+import { Query } from "@apollo/client";
 import React, {useState, useEffect, useRef} from "react";
 import {Container, Button, ButtonGroup} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {OutputField} from "../../generic/core";
-import {Query} from "react-apollo";
 import {capitalCase} from "change-case";
 import TorpedoInventory from "./inventory";
 import SubscriptionHelper from "helpers/subscriptionHelper";

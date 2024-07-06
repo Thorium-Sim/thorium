@@ -1,5 +1,5 @@
+import { Mutation, withApollo } from "@apollo/client";
 import React, {useState} from "react";
-import {Mutation, withApollo} from "react-apollo";
 import {Col, Input} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {

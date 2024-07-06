@@ -1,8 +1,8 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {Tooltip, Button} from "helpers/reactstrap";
 import {Widgets} from "components/views";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import {subscribe} from "helpers/pubsub";
 
 import Tour from "helpers/tourHelper";

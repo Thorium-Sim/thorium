@@ -8,9 +8,8 @@ import {
   Button,
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {useQuery} from "@apollo/client";
+import { useQuery, Query, withApollo } from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {Query, withApollo} from "react-apollo";
 import Form from "./form";
 import "./style.scss";
 import Search, {SheetPicker} from "./sheets";

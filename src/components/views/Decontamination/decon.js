@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import DeconProgram from "./program";
 import {
@@ -12,7 +13,6 @@ import {
   DropdownItem,
   Button,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import {DeckDropdown, RoomDropdown} from "helpers/shipStructure";

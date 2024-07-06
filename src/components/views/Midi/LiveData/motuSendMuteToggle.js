@@ -1,7 +1,7 @@
+import { useQuery, useMutation } from "@apollo/client";
 import React from "react";
 import {FormGroup, Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {useQuery, useMutation} from "react-apollo";
 import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 
 const MOTU_CHANNELS = gql`

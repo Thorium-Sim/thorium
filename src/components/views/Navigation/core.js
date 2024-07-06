@@ -1,7 +1,7 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Container, Row, Col, Button, Input} from "helpers/reactstrap";
-import {graphql, withApollo} from "react-apollo";
 import {OutputField, TypingField} from "../../generic/core";
 import "./style.scss";
 import SubscriptionHelper from "helpers/subscriptionHelper";

@@ -1,7 +1,7 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Button, Row, Col, Input} from "helpers/reactstrap";
-import {graphql, withApollo} from "react-apollo";
 import Target from "./targeting";
 import Scan from "./transporterScan";
 import DamageOverlay from "../helpers/DamageOverlay";

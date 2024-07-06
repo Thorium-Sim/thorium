@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React from "react";
 import {FormGroup, Input, Label, Button} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import {GENERIC_QUERY} from "./index";
 import gql from "graphql-tag.macro";
 import {FaPlusCircle, FaMinusCircle} from "react-icons/fa";

@@ -1,7 +1,7 @@
+import { Query, Mutation } from "@apollo/client";
 import React from "react";
 import {Input, Row, Col} from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
-import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 
 const PROBE_QUERY = gql`

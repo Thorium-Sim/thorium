@@ -1,6 +1,6 @@
-import React, {Component} from "react";
+import { withApollo } from "@apollo/client";
 
-import {withApollo} from "react-apollo";
+import React, {Component} from "react";
 import CardFrame from "./cardFrame";
 import Widgets from "../LayoutOdyssey/widgets";
 import CardSwitcher from "../LayoutLine/cardSwitcher";

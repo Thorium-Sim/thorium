@@ -1,7 +1,7 @@
+import { graphql, withApollo } from "@apollo/client";
 import React from "react";
 import {HullPlating, Simulator} from "generated/graphql";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import {Row, Col, Container, Button} from "helpers/reactstrap";
 import {FormattedMessage} from "react-intl";
 import DamageOverlay from "../helpers/DamageOverlay";

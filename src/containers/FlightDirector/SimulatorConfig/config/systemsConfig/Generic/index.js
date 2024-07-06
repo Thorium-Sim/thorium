@@ -1,6 +1,6 @@
+import { Query } from "@apollo/client";
 import React, {Fragment, Component} from "react";
 import {Button, ButtonGroup} from "helpers/reactstrap";
-import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {capitalCase} from "change-case";
 import Basic from "./basic";

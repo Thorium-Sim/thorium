@@ -1,6 +1,6 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import {Container, Row, Col, Card} from "helpers/reactstrap";
 import {throttle} from "helpers/debounce";
 import AnimatedNumber from "react-animated-number";

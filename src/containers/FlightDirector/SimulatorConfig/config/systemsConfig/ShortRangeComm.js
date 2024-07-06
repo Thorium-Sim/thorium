@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React from "react";
 import GenericSystemConfig from "./Generic";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button} from "helpers/reactstrap";
 import SignalsCore from "components/views/CommShortRange/signalsCore";

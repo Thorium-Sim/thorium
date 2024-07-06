@@ -1,5 +1,5 @@
+import { Query } from "@apollo/client";
 import React, {Component} from "react";
-import {Query} from "react-apollo";
 import {Container, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";

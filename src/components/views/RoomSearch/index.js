@@ -1,6 +1,6 @@
+import { Query } from "@apollo/client";
 import React from "react";
 import RoomSearch from "../CommInternal/roomSearch";
-import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 
 export const ROOM_SEARCH_QUERY = gql`

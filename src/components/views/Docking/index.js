@@ -1,10 +1,9 @@
 import React from "react";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import {Clamps, Ramps, Doors, Legs} from "./graphics";
 import Tour from "helpers/tourHelper";
-import {useQuery} from "@apollo/client";
+import { useQuery, withApollo } from "@apollo/client";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 
 import "./style.scss";

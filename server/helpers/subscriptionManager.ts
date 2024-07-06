@@ -1,4 +1,4 @@
-import {PubSub} from "apollo-server-express";
+import {PubSub} from "graphql-subscriptions"
 import EventEmitter from "events";
 
 const ee = new EventEmitter.EventEmitter();

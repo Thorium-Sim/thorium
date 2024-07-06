@@ -1,9 +1,8 @@
 import React, {Fragment, Component} from "react";
-import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {Button, Input, ListGroup, ListGroupItem} from "helpers/reactstrap";
-import {useMutation} from "@apollo/client";
+import { useMutation, Query, Mutation } from "@apollo/client";
 
 import "./style.scss";
 

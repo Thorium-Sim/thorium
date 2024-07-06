@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React, {Component, Fragment} from "react";
 import {Label, Input, Button} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {FaBan} from "react-icons/fa";
 import {STATION_QUERY} from "./";

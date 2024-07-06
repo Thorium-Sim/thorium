@@ -1,7 +1,7 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Fragment} from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {Query, Mutation} from "react-apollo";
 import {useSensorsSetPingsMutation} from "generated/graphql";
 const SENSORS_QUERY = gql`
   query Sensors($id: ID!) {

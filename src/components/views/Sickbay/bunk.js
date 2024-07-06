@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React from "react";
 import {Row, Col, Card, Button, CardBody} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import TimeCared from "./timeCared";
 

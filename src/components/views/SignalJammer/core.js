@@ -1,7 +1,7 @@
+import { Mutation, graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Button} from "helpers/reactstrap";
-import {Mutation, graphql, withApollo} from "react-apollo";
 import {InputField, OutputField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 

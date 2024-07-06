@@ -1,5 +1,5 @@
+import { Query, withApollo, useMutation } from "@apollo/client";
 import React from "react";
-import {Query, withApollo, useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {
   Modal,

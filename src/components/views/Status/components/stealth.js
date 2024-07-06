@@ -1,6 +1,6 @@
+import { graphql } from "@apollo/client";
 import React, {Component, Fragment} from "react";
 import gql from "graphql-tag.macro";
-import {graphql} from "react-apollo";
 import shieldStyle, {shieldColor} from "../../ShieldControl/shieldStyle";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import StealthAnimation from "../../StealthField/stealthAnimation";

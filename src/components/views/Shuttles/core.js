@@ -1,6 +1,6 @@
+import { graphql, withApollo, Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo, Mutation} from "react-apollo";
 import {TypingField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";

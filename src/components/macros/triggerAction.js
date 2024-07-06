@@ -1,5 +1,5 @@
+import { Query } from "@apollo/client";
 import React, {Fragment} from "react";
-import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
 import SoundPicker from "helpers/soundPicker";

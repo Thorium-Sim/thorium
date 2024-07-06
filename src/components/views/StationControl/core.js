@@ -1,7 +1,7 @@
+import { Query, useMutation } from "@apollo/client";
 import React from "react";
 import {Table} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Query, useMutation} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const fragment = gql`

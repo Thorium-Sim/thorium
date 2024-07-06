@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React, {useState} from "react";
 import {Label, Input, Button} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 const SpaceEdventuresToken = ({clientObj}) => {
   const [email, setEmail] = useState("");

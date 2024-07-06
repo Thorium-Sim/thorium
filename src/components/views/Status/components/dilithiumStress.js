@@ -1,7 +1,7 @@
+import { graphql } from "@apollo/client";
 import React, {Component} from "react";
 import {Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {graphql} from "react-apollo";
 import Dots from "./dots";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 export const STATUS_DILITHIUM_SUB = gql`

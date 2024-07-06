@@ -2,7 +2,6 @@ import React from "react";
 import gql from "graphql-tag.macro";
 import {Container} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import {graphql, withApollo} from "react-apollo";
 import ProbeEquipment from "./probeEquipment";
 import DamageOverlay from "../helpers/DamageOverlay";
 import ProbeDescription from "./probeDescription";
@@ -10,7 +9,7 @@ import ProbeAction from "./probeAction";
 import ProbeSelector from "./probeSelector";
 import useFlightLocalStorage from "../../../helpers/hooks/useFlightLocalStorage";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {useQuery} from "@apollo/client";
+import { useQuery, graphql, withApollo } from "@apollo/client";
 import "./style.scss";
 
 const fragment = gql`

@@ -1,5 +1,5 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Fragment, Component} from "react";
-import {graphql, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Row, Col, ListGroup, ListGroupItem, Button} from "helpers/reactstrap";
 import Measure from "react-measure";

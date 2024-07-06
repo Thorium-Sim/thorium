@@ -1,7 +1,7 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Table} from "helpers/reactstrap";
-import {graphql, withApollo} from "react-apollo";
 import {InputField} from "../../generic/core";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 export const HEAT_SUB = gql`

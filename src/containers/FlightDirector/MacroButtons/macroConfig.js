@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import {css} from "@emotion/core";
 import React, {Fragment} from "react";
 import {
@@ -10,7 +11,6 @@ import {
   Label,
   Input,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import EventPicker from "../MissionConfig/EventPicker";
 import uuid from "uuid";

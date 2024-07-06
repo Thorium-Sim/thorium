@@ -1,8 +1,8 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Fragment} from "react";
 import {Button} from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {Query, Mutation} from "react-apollo";
 import {Input, FormGroup, Label} from "helpers/reactstrap";
 
 const ENGINE_QUERY = gql`

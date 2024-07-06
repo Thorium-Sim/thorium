@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React from "react";
 import Views from "components/views";
-import {withApollo} from "react-apollo";
 import "./layout.scss";
 import "./theme.scss";
 

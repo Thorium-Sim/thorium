@@ -1,9 +1,9 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import gql from "graphql-tag.macro";
 import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import {Container, ListGroup, ListGroupItem, Button} from "reactstrap";
 import "./style.scss";
-import {useMutation} from "react-apollo";
 import styled from "styled-components";
 
 import BCF from "./boardLayouts/bcf2000";

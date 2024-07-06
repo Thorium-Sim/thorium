@@ -1,6 +1,6 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import DamageOverlay from "../helpers/DamageOverlay";
 import {DeckDropdown, RoomDropdown} from "helpers/shipStructure";

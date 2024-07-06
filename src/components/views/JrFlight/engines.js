@@ -1,7 +1,7 @@
+import { graphql } from "@apollo/client";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import gql from "graphql-tag.macro";
-import {graphql} from "react-apollo";
 import compose from "lodash.flowright";
 
 import "./style.scss";

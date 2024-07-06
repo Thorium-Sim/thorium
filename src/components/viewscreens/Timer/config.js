@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {Button} from "helpers/reactstrap";
-import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 
 const TIMESYNC_SUB = gql`

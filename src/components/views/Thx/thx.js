@@ -1,6 +1,6 @@
+import { withApollo, Mutation } from "@apollo/client";
 import React, {Component, Fragment} from "react";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
-import {withApollo, Mutation} from "react-apollo";
 import Tour from "helpers/tourHelper";
 import {FormattedMessage} from "react-intl";
 import gql from "graphql-tag.macro";

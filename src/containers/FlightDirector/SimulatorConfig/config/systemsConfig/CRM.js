@@ -1,6 +1,6 @@
+import { Query } from "@apollo/client";
 import React from "react";
 import GenericSystemConfig from "./Generic";
-import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Images from "components/views/Crm/core/images";
 

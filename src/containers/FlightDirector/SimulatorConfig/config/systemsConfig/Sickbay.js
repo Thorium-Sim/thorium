@@ -1,8 +1,8 @@
+import { Query, Mutation } from "@apollo/client";
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {Query, Mutation} from "react-apollo";
 
 const SICKBAY_QUERY = gql`
   query Sickbay($id: ID!) {

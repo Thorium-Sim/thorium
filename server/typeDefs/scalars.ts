@@ -1,5 +1,5 @@
 import App from "../app";
-import {gql} from "apollo-server-express";
+import {gql} from "graphql-tag";
 import GraphQLJSON from "graphql-type-json";
 import BigInt from "graphql-bigint";
 // We define a schema that encompasses all of the types

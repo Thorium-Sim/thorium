@@ -1,8 +1,8 @@
+import { withApollo } from "@apollo/client";
 import React, {useState, useRef, useEffect} from "react";
 import distance from "helpers/distance";
 import {throttle} from "helpers/debounce";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 
 function useDraggable(callback, upCallback = () => {}) {
   function mouseup() {

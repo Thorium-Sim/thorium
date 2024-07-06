@@ -1,6 +1,6 @@
+import { Query, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {Query, withApollo} from "react-apollo";
 
 import ReactDOM from "react-dom";
 import {Input} from "helpers/reactstrap";

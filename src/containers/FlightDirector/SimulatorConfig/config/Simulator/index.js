@@ -1,12 +1,11 @@
 import React from "react";
 import {Button, ButtonGroup} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import Misc from "./misc";
 import Basic from "./basic";
 import Damage from "./damage";
 import {useNavigate, Routes, Route, useMatch} from "react-router-dom";
-import {useApolloClient} from "@apollo/client";
+import { useApolloClient, withApollo } from "@apollo/client";
 
 const ops = {
   name: gql`

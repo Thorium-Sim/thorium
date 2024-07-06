@@ -1,5 +1,5 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
-import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button, Row, Col, Container, Input} from "helpers/reactstrap";
 

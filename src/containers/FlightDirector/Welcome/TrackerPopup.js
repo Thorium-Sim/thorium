@@ -1,7 +1,7 @@
+import { Mutation } from "@apollo/client";
 import React, {Fragment, useState} from "react";
 import {Button, Alert} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Mutation} from "react-apollo";
 import {FormattedMessage} from "react-intl";
 
 const TrackerPopup = ({askedToTrack}) => {

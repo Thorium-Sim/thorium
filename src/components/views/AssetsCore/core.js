@@ -1,7 +1,7 @@
+import { withApollo } from "@apollo/client";
 import React from "react";
 import Assets from "../../../containers/FlightDirector/SimulatorConfig/config/Assets";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 
 const query = gql`
   query Flights($id: ID!) {

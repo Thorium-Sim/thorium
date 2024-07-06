@@ -1,8 +1,8 @@
+import { Mutation, Query } from "@apollo/client";
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {Mutation, Query} from "react-apollo";
 
 const PHASER_QUERY = gql`
   query Phaser($id: ID!) {

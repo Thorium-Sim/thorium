@@ -1,7 +1,7 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {createPortal} from "react-dom";
 import svgToJSX from "svg-to-jsx";
-import {withApollo} from "react-apollo";
 import Actions, {triggerAction} from "../Actions/core";
 
 import "./style.scss";

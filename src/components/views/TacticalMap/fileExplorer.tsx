@@ -162,7 +162,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
   }
   const widthFactor = 0.25;
   return (
-    <div className="file-explorer">
+    (<div className="file-explorer">
       <div>
         {simple ? <strong>{navDirectory}</strong> : <h4>{navDirectory}</h4>}
         {!simple && (
@@ -198,7 +198,6 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
           }
         }}
       />
-
       <div ref={measureRef}>
         {dimensions && (
           <div className="directory-container">
@@ -339,7 +338,7 @@ const FileExplorer: React.FC<FileExplorerProps> = ({
           </div>
         )}
       </div>
-    </div>
+    </div>)
   );
 };
 

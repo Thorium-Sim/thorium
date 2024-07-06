@@ -1,3 +1,4 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Fragment, Component} from "react";
 import {
   Container,
@@ -10,7 +11,6 @@ import {
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {TypingField} from "../../generic/core";
-import {graphql, withApollo} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {parse} from "papaparse";
 import escapeRegex from "escape-string-regexp";

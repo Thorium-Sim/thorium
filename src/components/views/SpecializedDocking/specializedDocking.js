@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import React, {useState, useEffect, useRef} from "react";
 import {
   Button,
@@ -7,7 +8,6 @@ import {
   ListGroupItem,
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Mutation} from "react-apollo";
 import {Clamps, Ramps, Doors} from "../Docking/graphics";
 import Tour from "helpers/tourHelper";
 

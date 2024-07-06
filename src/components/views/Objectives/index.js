@@ -1,6 +1,6 @@
+import { graphql, withApollo, Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo, Mutation} from "react-apollo";
 import {Container, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import {FormattedMessage} from "react-intl";
 

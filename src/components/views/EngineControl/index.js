@@ -1,7 +1,7 @@
+import { graphql } from "@apollo/client";
 import React, {Component} from "react";
 import {Button, Row, Col, Container} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {graphql} from "react-apollo";
 import compose from "lodash.flowright";
 import Engine1 from "./engine-1";
 import Engine2 from "./engine-2";

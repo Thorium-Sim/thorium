@@ -1,6 +1,5 @@
+import { Mutation, gql } from "@apollo/client";
 import React from "react";
-import {Mutation} from "react-apollo";
-import gql from "graphql-tag";
 
 export const CompImage = ({id, interfaceId, config}) => {
   return (

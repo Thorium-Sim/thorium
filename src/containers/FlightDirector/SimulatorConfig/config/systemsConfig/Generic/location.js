@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {FormGroup, Label, Row, Col, Button} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {GENERIC_QUERY} from "./index";
 import {DeckDropdown, RoomDropdown} from "helpers/shipStructure";

@@ -1,6 +1,6 @@
+import { Query } from "@apollo/client";
 import React, {Component} from "react";
 import {Button} from "helpers/reactstrap";
-import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {randomFromList} from "helpers/randomFromList";
 import {FaBan} from "react-icons/fa";

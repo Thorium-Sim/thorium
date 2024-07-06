@@ -1,7 +1,7 @@
+import { useQuery } from "@apollo/client";
 import React from "react";
 import {FormGroup, Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {useQuery} from "react-apollo";
 
 const MIDI_SETS = gql`
   query MidiSets {

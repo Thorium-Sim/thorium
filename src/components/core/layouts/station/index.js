@@ -1,5 +1,5 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Fragment, Component} from "react";
-import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {
   Container,

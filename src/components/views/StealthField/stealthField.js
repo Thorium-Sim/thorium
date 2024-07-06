@@ -1,7 +1,7 @@
+import { Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Mutation} from "react-apollo";
 
 import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";

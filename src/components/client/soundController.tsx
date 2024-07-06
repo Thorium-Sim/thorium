@@ -1,6 +1,6 @@
+import { Subscription } from "@apollo/client";
 import React, {Fragment} from "react";
 import gql from "graphql-tag.macro";
-import {Subscription} from "react-apollo";
 import {useSounds} from "../generic/SoundPlayer";
 
 const SOUND_SUB = gql`

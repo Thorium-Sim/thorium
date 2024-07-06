@@ -1,6 +1,6 @@
+import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import React from "react";
 import gql from "graphql-tag.macro";
-import {useMutation, useQuery, useSubscription} from "react-apollo";
 import {
   Container,
   Row,

@@ -1,3 +1,4 @@
+import { Query, Mutation } from "@apollo/client";
 import React from "react";
 import {
   Container,
@@ -12,7 +13,6 @@ import {
   Button,
 } from "helpers/reactstrap";
 import {Link} from "react-router-dom";
-import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Rings} from "../helpers/loaders";
 import {DateTime} from "luxon";

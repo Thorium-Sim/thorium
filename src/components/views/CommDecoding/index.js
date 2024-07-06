@@ -1,3 +1,4 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {
   Container,
@@ -10,7 +11,6 @@ import {
   ListGroupItem,
 } from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import Tour from "helpers/tourHelper";

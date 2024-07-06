@@ -1,6 +1,6 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import ReactDOM from "react-dom";
-import {useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "reactour";
 import IntlProvider from "./intl";

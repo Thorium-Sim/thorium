@@ -1,7 +1,7 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import gql from "graphql-tag.macro";
 import {useMidi} from "helpers/midi";
-import {useMutation} from "react-apollo";
 import LiveDataComponents from "../LiveData";
 
 const EXECUTE_MACRO = gql`

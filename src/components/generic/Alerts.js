@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import {subscribe, publish} from "helpers/pubsub";
 import uuid from "uuid";
 import {playSound} from "./SoundPlayer";

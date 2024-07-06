@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import gql from "graphql-tag.macro";
 import {
@@ -10,7 +11,6 @@ import {
 } from "reactstrap";
 import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import "./style.scss";
-import {useMutation} from "react-apollo";
 
 const fragment = gql`
   fragment StationClientData on Client {

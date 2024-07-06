@@ -1,7 +1,7 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Button} from "helpers/reactstrap";
-import {graphql, withApollo} from "react-apollo";
 import NavigationScanner from "../Navigation/NavigationScanner";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";

@@ -1,6 +1,6 @@
+import { withApollo, useQuery } from "@apollo/client";
 import React from "react";
 import {Col, Row} from "helpers/reactstrap";
-import {withApollo, useQuery} from "react-apollo";
 import * as Macros from "../../../components/macros";
 import gql from "graphql-tag.macro";
 import ErrorBoundary from "helpers/errorBoundary";

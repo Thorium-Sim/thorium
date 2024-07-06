@@ -1,5 +1,6 @@
-import React, {Component, Fragment} from "react";
+import { Mutation } from "@apollo/client";
 
+import React, {Component, Fragment} from "react";
 import {
   Col,
   Row,
@@ -8,7 +9,6 @@ import {
   ListGroupItem,
   Button,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Canvas from "./canvas";
 import "./style.scss";

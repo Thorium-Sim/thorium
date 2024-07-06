@@ -1,5 +1,5 @@
+import { Mutation } from "@apollo/client";
 import React, {Component, Fragment} from "react";
-import {Mutation} from "react-apollo";
 import Measure from "react-measure";
 import tinycolor from "tinycolor2";
 import Explosion from "helpers/explosions";

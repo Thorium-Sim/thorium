@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import Layouts from "../layouts";
 import Keyboard from "components/views/Keyboard";
@@ -9,7 +10,6 @@ import Lighting from "./lighting";
 import Reset from "./reset";
 import TrainingPlayer from "helpers/trainingPlayer";
 import {subscribe, publish} from "../../helpers/pubsub";
-import {useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {playSound} from "../generic/SoundPlayer";
 import {randomFromList} from "helpers/randomFromList";

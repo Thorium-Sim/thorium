@@ -1,9 +1,8 @@
 import React from "react";
 import {Button, Input, Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {Mutation} from "react-apollo";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
-import {useQuery} from "@apollo/client";
+import { useQuery, Mutation } from "@apollo/client";
 
 const levels = [
   {id: 5, color: "info"},

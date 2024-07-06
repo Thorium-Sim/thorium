@@ -1,7 +1,7 @@
+import { Query, Mutation } from "@apollo/client";
 import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {Query, Mutation} from "react-apollo";
 
 const TARGETING_QUERY = gql`
   query Targeting($id: ID!) {

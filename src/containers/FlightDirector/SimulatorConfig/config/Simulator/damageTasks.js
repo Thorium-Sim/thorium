@@ -1,3 +1,4 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {
   Container,
@@ -17,7 +18,6 @@ import {
 import DefinitionList from "../../../TaskTemplates/definitionList";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import {Query, Mutation} from "react-apollo";
 
 const fragment = gql`
   fragment TaskTemplateConfigData on TaskTemplate {

@@ -1,5 +1,5 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Fragment, Component} from "react";
-import {graphql, withApollo} from "react-apollo";
 import {
   Row,
   Col,

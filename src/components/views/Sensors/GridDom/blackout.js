@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React, {Fragment, Component} from "react";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
   var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;

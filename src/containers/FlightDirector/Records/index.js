@@ -1,9 +1,9 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import gql from "graphql-tag.macro";
 import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import {Container, ListGroup, ListGroupItem, Button} from "reactstrap";
 import "./style.scss";
-import {useMutation} from "react-apollo";
 import {stardate} from "components/views/OfficerLog";
 
 const fragment = gql`

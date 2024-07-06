@@ -1,7 +1,7 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {Container, Row, Col, ButtonGroup, Button} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 
 class CommShortRange extends Component {
   constructor(props) {

@@ -1,3 +1,4 @@
+import { Mutation, useSubscription } from "@apollo/client";
 import React, {Component, Fragment} from "react";
 import ReactDOM from "react-dom";
 import {
@@ -12,7 +13,6 @@ import Grid from "../Sensors/GridDom/grid";
 import {FormattedMessage} from "react-intl";
 import Tour from "helpers/tourHelper";
 import {capitalCase} from "change-case";
-import {Mutation, useSubscription} from "react-apollo";
 import gql from "graphql-tag.macro";
 import uuid from "uuid";
 

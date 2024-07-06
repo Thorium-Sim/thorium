@@ -1,8 +1,8 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {Row, Col, Container} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {InputGroup, InputGroupAddon, Button, Input} from "helpers/reactstrap";
-import {graphql, withApollo} from "react-apollo";
 import DamageOverlay from "../helpers/DamageOverlay";
 import Keypad from "./keypad";
 import Tour from "helpers/tourHelper";

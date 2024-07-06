@@ -1,7 +1,7 @@
+import { Mutation } from "@apollo/client";
 import React, {Component, Fragment} from "react";
 import {Row, Col, Table, Button} from "helpers/reactstrap";
 import UserModal from "./addUserModal";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 class Users extends Component {
   state = {};

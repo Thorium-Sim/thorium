@@ -1,7 +1,7 @@
+import { Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {ListGroup, ListGroupItem, Button} from "helpers/reactstrap";
 import PowerLine from "../JumpDrive/powerLine";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
 import HeatBar from "../EngineControl/heatbar";

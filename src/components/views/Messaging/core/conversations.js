@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import React, {Fragment} from "react";
 import {
   Container,
@@ -9,7 +10,6 @@ import {
   Input,
   Button,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import GroupManager from "./groupManager";
 import {FaArrowRight} from "react-icons/fa";

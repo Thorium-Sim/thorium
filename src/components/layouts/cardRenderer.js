@@ -1,10 +1,10 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import Views from "components/views";
 import {Transition} from "react-transition-group";
 import {Button} from "helpers/reactstrap";
 import ErrorBoundary from "helpers/errorBoundary";
 import gql from "graphql-tag.macro";
-import {useMutation} from "react-apollo";
 
 const UNASSIGN_CARD = gql`
   mutation UnassignCard($simulatorId: ID!, $cardName: String!) {

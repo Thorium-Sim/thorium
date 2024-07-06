@@ -1,7 +1,7 @@
+import { Query, Mutation } from "@apollo/client";
 import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {Query, Mutation} from "react-apollo";
 import {useStealthSetSensorSonarMutation} from "generated/graphql";
 
 const STEALTH_QUERY = gql`

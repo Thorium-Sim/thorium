@@ -1,11 +1,10 @@
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo, Mutation} from "react-apollo";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";
-import {useMutation} from "@apollo/client";
+import { useMutation, graphql, withApollo, Mutation } from "@apollo/client";
 import {InputField} from "components/generic/core";
 
 export const OBJECTIVE_CORE_SUB = gql`

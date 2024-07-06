@@ -1,4 +1,4 @@
-import { graphql, withApollo } from "react-apollo";
+import { graphql, withApollo } from "@apollo/client";
 import React, { useCallback, useMemo, } from 'react'
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";

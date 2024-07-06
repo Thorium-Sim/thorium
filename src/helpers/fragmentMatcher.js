@@ -1,4 +1,4 @@
-import {IntrospectionFragmentMatcher} from "react-apollo";
+import { IntrospectionFragmentMatcher } from "@apollo/client";
 
 const FragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: {

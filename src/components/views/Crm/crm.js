@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React from "react";
 import {Button, ListGroup, ListGroupItem /*Input*/} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {FormattedMessage} from "react-intl";
 import Tour from "helpers/tourHelper";

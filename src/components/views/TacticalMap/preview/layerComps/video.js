@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 
 class Video extends Component {
   player = React.createRef();

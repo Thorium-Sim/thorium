@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {Container} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Bars from "../TractorBeam/bars";
 import Platform from "./platform";

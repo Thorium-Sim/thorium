@@ -1,6 +1,6 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import FileExplorer from "components/views/TacticalMap/fileExplorer";
 import {Button} from "helpers/reactstrap";
 const ADD_CACHE_MUTATION = gql`

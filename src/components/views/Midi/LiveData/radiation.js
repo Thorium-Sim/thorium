@@ -1,6 +1,6 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import gql from "graphql-tag.macro";
-import {useMutation} from "react-apollo";
 import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import {
   STATUS_RADIATION_QUERY,

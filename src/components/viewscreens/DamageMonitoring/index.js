@@ -1,6 +1,6 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 import "./style.scss";

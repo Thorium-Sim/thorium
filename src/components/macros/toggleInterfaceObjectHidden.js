@@ -1,6 +1,6 @@
+import { Query } from "@apollo/client";
 import React from "react";
 import {FormGroup, Label, Input} from "helpers/reactstrap";
-import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 
 const QUERY = gql`

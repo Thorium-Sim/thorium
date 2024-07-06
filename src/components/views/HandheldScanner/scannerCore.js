@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import React from "react";
 import {
   Container,
@@ -7,7 +8,6 @@ import {
   ListGroup,
   ListGroupItem,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {OutputField, TypingField} from "../../generic/core";
 import ScanPresets from "../Sensors/ScanPresets";

@@ -1,7 +1,7 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import {Row, Col, Card, Input} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {withApollo} from "react-apollo";
 import * as stepConfigs from "./steps";
 import {FaBan} from "react-icons/fa";
 

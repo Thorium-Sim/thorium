@@ -1,7 +1,7 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import CardFrame from "./frame";
 import Widgets from "./widgets";
-import {withApollo} from "react-apollo";
 import CardHolder from "../cardRenderer";
 import "./layout.scss";
 

@@ -1,7 +1,6 @@
+import { Query, gql } from "@apollo/client";
 import React, {Component} from "react";
 
-import {Query} from "react-apollo";
-import gql from "graphql-tag";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Interfaces from "./interfaces";
 const fragment = gql`

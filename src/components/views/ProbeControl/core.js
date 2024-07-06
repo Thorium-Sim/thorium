@@ -1,8 +1,8 @@
+import { graphql, withApollo, Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {Container, Button} from "helpers/reactstrap";
 import {OutputField, InputField, TypingField} from "../../generic/core";
-import {graphql, withApollo, Mutation} from "react-apollo";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {capitalCase} from "change-case";
 import {getProbeConfig} from "../ProbeScience/probeScience";

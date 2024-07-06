@@ -1,12 +1,15 @@
 import {
   ApolloServer,
-  makeExecutableSchema,
-  ApolloServerExpressConfig,
-} from "apollo-server-express";
+  ApolloServerOptions,
+  BaseContext
+} from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
+import {makeExecutableSchema} from "@graphql-tools/schema"
 import express from "express";
 import vanity from "./vanity";
 import https from "https";
 import http from "http";
+import cors from "cors";
 import path from "path";
 import fs from "fs";
 import ipAddress from "../helpers/ipaddress";
@@ -26,7 +29,6 @@ export const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
   resolverValidationOptions: {
-    requireResolversForResolveType: false,
   },
 });
 if (process.env.NODE_ENV === "development" && !process.env.CI) {
@@ -55,7 +57,7 @@ function responseForOperation(requestContext) {
   const selection = operation.selectionSet.selections[0] as FieldNode;
   const opName = selection.name.value;
   const parentType = getOperationRootType(schema, operation);
-  const fieldDef = getFieldDef(schema, parentType, opName);
+  const fieldDef = getFieldDef(schema, parentType, selection);
   const args = getArgumentValues(
     fieldDef,
     operation.selectionSet.selections[0] as FieldNode,
@@ -128,9 +130,11 @@ export default (
   httpOnly: boolean,
   setMutations: (r: {[key: string]: Function}) => void,
 ) => {
+
+
   // Apply the mutations to App.js so we don't get circular dependency issues
   setMutations(resolvers.Mutation);
-  const graphqlOptions: ApolloServerExpressConfig = {
+  const graphqlOptions: ApolloServerOptions<BaseContext> = {
     schema,
     engine: {
       apiKey: "service:Thorium:yZHa-qq7-_kVSpmsc9Ka1A",
@@ -154,7 +158,17 @@ export default (
     }),
   };
   const apollo = new ApolloServer(graphqlOptions);
-  apollo.applyMiddleware({app});
+  app.use(
+    '/graphql',
+    cors<cors.CorsRequest>(),
+    express.json(),
+    expressMiddleware(apollo, {
+      context: async ({req, res}) => ({
+        clientId: req?.headers.clientid,
+        core: req?.headers.core,
+      }),
+    })
+  )
 
   let httpServer: http.Server | https.Server = http.createServer(app);
   let isHttps = false;

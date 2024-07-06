@@ -1,3 +1,4 @@
+import { Mutation } from "@apollo/client";
 import React, {Fragment} from "react";
 import {
   Container,
@@ -12,7 +13,6 @@ import {
   Label,
   Input,
 } from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import EventName from "../MissionConfig/EventName";
 import MacroWrapper from "../MissionConfig/MacroConfig";

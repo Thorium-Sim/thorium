@@ -1,5 +1,5 @@
+import { Query, withApollo } from "@apollo/client";
 import React, {Component} from "react";
-import {Query, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import StealthField from "./stealthField";

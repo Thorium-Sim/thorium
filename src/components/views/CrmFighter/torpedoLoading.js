@@ -1,7 +1,7 @@
+import { Mutation } from "@apollo/client";
 import React, {useReducer, useState, useEffect} from "react";
 import {Button} from "helpers/reactstrap";
 import uuid from "uuid";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {ReactComponent as TorpedoSVG} from "../TorpedoLoading/torpedos/torpedo.svg";
 

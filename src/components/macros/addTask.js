@@ -1,5 +1,5 @@
+import { Query, useQuery } from "@apollo/client";
 import React, {Fragment, Component} from "react";
-import {Query, useQuery} from "react-apollo";
 import {Badge, ListGroup, ListGroupItem, Input} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import ValueInput from "../views/Tasks/core/ValueInput";

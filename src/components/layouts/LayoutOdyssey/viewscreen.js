@@ -1,8 +1,8 @@
+import { withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import Views from "components/views";
 import ErrorBoundary from "helpers/errorBoundary";
 import CardFrame from "./frame";
-import {withApollo} from "react-apollo";
 import {Button} from "helpers/reactstrap";
 import "./layout.scss";
 

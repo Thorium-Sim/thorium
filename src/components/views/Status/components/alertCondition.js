@@ -1,7 +1,7 @@
+import { withApollo, Query } from "@apollo/client";
 import React from "react";
 import {Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
-import {withApollo, Query} from "react-apollo";
 // import { Tooltip } from "helpers/reactstrap";
 import {FormattedMessage} from "react-intl";
 import SubscriptionHelper from "helpers/subscriptionHelper";

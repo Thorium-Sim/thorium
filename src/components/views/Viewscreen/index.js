@@ -1,6 +1,6 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Fragment, Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import * as ViewscreenCards from "components/viewscreens";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import SoundPlayer from "../../client/soundPlayer";

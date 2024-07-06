@@ -1,3 +1,4 @@
+import { Mutation, gql } from "@apollo/client";
 import React from "react";
 import {
   Input,
@@ -6,8 +7,6 @@ import {
   Button,
   ButtonGroup,
 } from "helpers/reactstrap";
-import gql from "graphql-tag";
-import {Mutation} from "react-apollo";
 import EventName from "containers/FlightDirector/MissionConfig/EventName";
 import "./style.scss";
 const ClientInfo = ({

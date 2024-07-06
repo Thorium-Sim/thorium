@@ -1,6 +1,6 @@
+import { graphql, withApollo } from "@apollo/client";
 import React from "react";
 import {Row, Col} from "helpers/reactstrap";
-import {graphql, withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {
   FaArrowUp,

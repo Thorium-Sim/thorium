@@ -1,6 +1,6 @@
+import { Mutation } from "@apollo/client";
 import React from "react";
 import {Button} from "helpers/reactstrap";
-import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 
 function distance3d(coord2, coord1) {

@@ -1,5 +1,5 @@
 import App from "../app";
-import {gql} from "apollo-server-express";
+import {gql} from "graphql-tag";
 import {pubsub} from "../helpers/subscriptionManager";
 import mutationHelper from "../helpers/mutationHelper";
 // We define a schema that encompasses all of the types

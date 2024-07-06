@@ -1,8 +1,8 @@
+import { graphql, withApollo } from "@apollo/client";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import SineWaves from "sine-waves";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo} from "react-apollo";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import tinycolor from "tinycolor2";
 import SubscriptionHelper from "helpers/subscriptionHelper";

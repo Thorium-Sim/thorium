@@ -1,7 +1,7 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Fragment} from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {Query, Mutation} from "react-apollo";
 
 const NAV_QUERY = gql`
   query Navigation($id: ID!) {

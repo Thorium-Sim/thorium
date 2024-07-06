@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from "react";
+import { withApollo } from "@apollo/client";
 
-import {withApollo} from "react-apollo";
+import React, {Component, Fragment} from "react";
 import CardSwitcher from "./CardSwitcher";
 import Widgets from "./Widgets";
 import CardHolder from "../cardRenderer";

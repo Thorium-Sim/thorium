@@ -1,6 +1,6 @@
+import { graphql, withApollo, Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import gql from "graphql-tag.macro";
-import {graphql, withApollo, Mutation} from "react-apollo";
 import {Label, Row, Col, Input, Button, ButtonGroup} from "helpers/reactstrap";
 import Preview, {Viewscreen} from "./index";
 import ViewscreenCardList from "./viewscreenCardList";

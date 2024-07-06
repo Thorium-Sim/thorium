@@ -1,3 +1,4 @@
+import { Query } from "@apollo/client";
 import React from "react";
 import {
   UncontrolledDropdown,
@@ -9,7 +10,6 @@ import {
   Input,
   Button,
 } from "helpers/reactstrap";
-import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {capitalCase} from "change-case";
 import {FaBan} from "react-icons/fa";

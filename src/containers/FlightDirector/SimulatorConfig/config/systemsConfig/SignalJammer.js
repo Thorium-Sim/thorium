@@ -1,7 +1,7 @@
+import { useQuery, useMutation } from "@apollo/client";
 import React from "react";
 import GenericSystemConfig from "./Generic";
 import gql from "graphql-tag.macro";
-import {useQuery, useMutation} from "react-apollo";
 
 const SIGNAL_JAMMER_QUERY = gql`
   query SignalJammer($simulatorId: ID!) {

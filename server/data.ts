@@ -1,4 +1,4 @@
-import {gql} from "apollo-server-express";
+import {gql} from "graphql-tag";
 import merge from "./helpers/merge.js";
 import * as schema from "./typeDefs/index";
 

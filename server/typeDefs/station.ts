@@ -1,5 +1,5 @@
 import App from "../app";
-import {gql} from "apollo-server-express";
+import {gql} from "graphql-tag";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 import {Simulator} from "../classes";

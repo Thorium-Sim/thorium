@@ -1,3 +1,4 @@
+import { Query, Mutation } from "@apollo/client";
 import React, {Component} from "react";
 import {css} from "@emotion/core";
 import {
@@ -10,7 +11,6 @@ import {
   Input,
 } from "helpers/reactstrap";
 import {capitalCase, camelCase} from "change-case";
-import {Query, Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import * as Configs from "./systemsConfig";
 

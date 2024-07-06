@@ -1,9 +1,9 @@
+import { useMutation } from "@apollo/client";
 import React from "react";
 import useQueryAndSubscription from "helpers/hooks/useQueryAndSubscribe";
 import gql from "graphql-tag.macro";
 import Slider from "./slider";
 import Button from "./button";
-import {useMutation} from "react-apollo";
 
 const ALERT_CORE_SUB = gql`
   subscription SimulatorsSub($id: ID) {
