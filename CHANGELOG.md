@@ -1,3 +1,11 @@
+## [3.13.1](https://github.com/Thorium-Sim/thorium/compare/3.13.0...3.13.1) (2024-05-29)
+
+
+### Bug Fixes
+
+* Fix issues in the build and release process. ([df7e5c5](https://github.com/Thorium-Sim/thorium/commit/df7e5c5ae6709de0f4bb925ef2cb3c8b8f02d010))
+* Moved to Node 16, and removed node-sass to make the build work ([d3c5534](https://github.com/Thorium-Sim/thorium/commit/d3c5534fab568da9934e9ad61f0630e2ed998a58))
+
 # [3.13.0](https://github.com/Thorium-Sim/thorium/compare/3.12.1...3.13.0) (2024-05-27)
 
 
