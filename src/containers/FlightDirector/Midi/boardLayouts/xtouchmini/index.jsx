@@ -1,6 +1,6 @@
 import React from "react";
 
-import {ReactComponent as Xtouchmini} from "./xtouchmini.svg";
+import  Xtouchmini from "./xtouchmini.svg?react";
 import {useMidi} from "helpers/midi";
 
 const controls = {

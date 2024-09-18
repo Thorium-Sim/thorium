@@ -1,5 +1,5 @@
 import React from "react";
-import {ReactComponent as Bcf} from "./bcf2000.svg";
+import Bcf from "./bcf2000.svg?react";
 import {useMidi} from "helpers/midi";
 import styled from "styled-components";
 

@@ -132,9 +132,6 @@ export default (
   setMutations(resolvers.Mutation);
   const graphqlOptions: ApolloServerExpressConfig = {
     schema,
-    engine: {
-      apiKey: "service:Thorium:yZHa-qq7-_kVSpmsc9Ka1A",
-    },
     tracing: process.env.NODE_ENV !== "production",
     introspection: true,
     playground: true,

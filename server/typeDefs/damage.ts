@@ -1,6 +1,6 @@
 import App from "../app";
 import {gql} from "apollo-server-express";
-const mutationHelper = require("../helpers/mutationHelper").default;
+import mutationHelper from "../helpers/mutationHelper";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`

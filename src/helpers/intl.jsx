@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import {IntlProvider} from "react-intl";
 
-const languages = require("../../package.json").languages;
+import pkg from '../../package.json'
+
+const languages = pkg.languages;
 
 // Define user's language. Different browsers have the user locale defined
 // on different fields on the `navigator` object, so we make sure to account

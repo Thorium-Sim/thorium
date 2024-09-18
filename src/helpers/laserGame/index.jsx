@@ -1,6 +1,6 @@
 import React from "react";
 import data from "./data.json";
-import LaserGame from "./LaserGame.js";
+import LaserGame from "./LaserGame";
 import "./styles.scss";
 
 function App({id, onWin = () => {}}) {

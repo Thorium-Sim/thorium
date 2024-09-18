@@ -2,7 +2,7 @@ import React from "react";
 import {Query} from "react-apollo";
 import gql from "graphql-tag.macro";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import MacroConfig from "./macroConfig.js";
+import MacroConfig from "./macroConfig";
 
 const fragment = gql`
   fragment MacrosData on Macro {

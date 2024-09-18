@@ -4,12 +4,15 @@ import os from "os";
 import path from "path";
 import https from "https";
 import importAssets from "../imports/asset/import";
-// import "../helpers/sentry";
 
-require("dotenv").config({
+import {config} from 'dotenv';
+import {getDefaultSnapshot} from "../helpers/defaultSnapshot"
+
+config({
   debug: process.env.NODE_ENV === "development",
   path: `${__dirname}/../../.env`,
 });
+
 const warn = console.warn;
 console.warn = (message: string) => {
   if (
@@ -70,8 +73,6 @@ export default () => {
     })
     .then(() => {
       return new Promise<void>(resolve => {
-        const defaultSnapshot = require("../helpers/defaultSnapshot.js")
-          .default;
         let snapshotDir = "./snapshots/";
         if (process.env.NODE_ENV === "production") {
           snapshotDir = paths.userData + "/";
@@ -82,7 +83,7 @@ export default () => {
 
         if (!fs.existsSync(snapshotFile)) {
           console.info("No snapshot.json found. Creating.");
-          fs.writeFileSync(snapshotFile, JSON.stringify(defaultSnapshot));
+          fs.writeFileSync(snapshotFile, JSON.stringify(getDefaultSnapshot()));
           // This was an initial load. We should download and install assets
           console.info("First-time load. Downloading assets...");
           const dest = path.resolve(`${os.tmpdir()}/assets.aset`);

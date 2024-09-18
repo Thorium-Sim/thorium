@@ -76,7 +76,7 @@ $keycap-height: 100%;
     opacity: 0;
   }
   .short {
-    height: $keycap-height / 2;
+    height: calc($keycap-height / 2);
   }
   /* Keycap sizes */
   .size-quarterU {

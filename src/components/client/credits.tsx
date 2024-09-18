@@ -10,6 +10,7 @@ import {
   Input,
   Label,
 } from "helpers/reactstrap";
+import logoUrl from './logo.png?url';
 
 const ClientNameModal: React.FC<{
   clientId: string;
@@ -279,7 +280,7 @@ const Credits: React.FC<{
             filter: drop-shadow(16px 16px 20px black);
           `}
           alt="Logo"
-          src={require("./logo.png")}
+          src={logoUrl}
           draggable="false"
         />
         <h1>Thorium</h1>

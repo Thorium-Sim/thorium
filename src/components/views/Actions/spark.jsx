@@ -1,4 +1,4 @@
-import SimplexNoise from "./simplexNoise";
+import SimplexNoise from "./simplexNoise.js";
 import React, {Component} from "react";
 
 /**
