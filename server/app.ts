@@ -9,6 +9,7 @@ import handleTrigger from "./helpers/handleTrigger";
 import Motu from "motu-control";
 import {setAutoFreeze} from "immer";
 import fs from 'fs';
+import { FlightSet } from "~classes/flightSets";
 
 setAutoFreeze(false);
 
@@ -103,6 +104,8 @@ class Events extends EventEmitter {
   version = 0;
   timestamp: Date = new Date();
   firebaseManager?: ClassesImport.FirebaseManager;
+  advancedNavAndAstrometrics: ClassesImport.AdvancedNavAndAstrometrics[] = [];
+  flightSets: (FlightSet & { addOnTraining: boolean, tag: string })[] = [];
   [index: string]: any;
 
   init() {

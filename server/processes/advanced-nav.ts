@@ -1,6 +1,14 @@
 import AdvancedNavigationAndAstrometrics from "~classes/advancedNavigationAndAstrometrics";
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager";
+import throttle from "~helpers/throttle";
+
+const sendUpdate = throttle(() => {
+    pubsub.publish(
+        'advancedNavAndAstrometricsUpdate',
+        App.systems.filter(s => s.type === 'AdvancedNavigationAndAstrometrics'),
+    )
+})
 
 const updateValues = () => {
     App.flights.filter(f => f.running === true)
@@ -10,9 +18,12 @@ const updateValues = () => {
                     nav.executeHeatInterval();
                     nav.executeLoopInterval();
                     nav.executeProbeInterval();
+
                 })
             });
         });
+
+    sendUpdate();
     setTimeout(updateValues, 1000);
 };
 updateValues();

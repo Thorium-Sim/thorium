@@ -1,5 +1,5 @@
 import { BasicCoordinate, EngineStatus, FlightSet, FullCoordinate, MapBorder, NamedNavigationRoute, NavigationRoute, PointOfInterest, Probe, ProbeAssignment } from "./flightSets";
-import { calculateTotalTime, countProbeFuelCells, generateCurrentUnixTimestamp, generateFlightPathCoordinates, getPositionAtTime, getProbeCurrentLocation } from "./flightSets/helpers";
+import { calculateTotalTime, countProbeFuelCells, generateCurrentUnixTimestamp, generateFlightPathCoordinates, getLastVisitedCoordinate, getPositionAtTime, getProbeCurrentLocation } from "./flightSets/helpers";
 import { System } from "./generic";
 
 export default class AdvancedNavigationAndAstrometrics extends System {
@@ -198,6 +198,61 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     handleResumePath() {
         this.engineStatus = EngineStatus.ENGAGED;
     }
+    handleShowFlightSet(show: boolean) {
+        this.showFlightSet = show;
+    }
+    handleShowEta(show: boolean) {
+        this.showEta = show;
+    }
+    handleUpdateEta(eta: number) {
+        const lastVisitedCoord = getLastVisitedCoordinate(this.totalEta - this.remainingEta, this.flightPathCoords, this.totalEta);
+        const lastCoordIndex = this.flightPathCoords.findIndex(coord => coord.x === lastVisitedCoord.x && coord.y === lastVisitedCoord.y);
+        if (lastCoordIndex === 0 && this.currentFlightPath) {
+            const flightPath = { ...this.currentFlightPath };
+            this.currentFlightPath = flightPath;
+            this.flightPathCoords = generateFlightPathCoordinates(this.currentLocation, flightPath, this.getLocationIdMap(), this.getBorderIdMap(), this.currentFlightSet.imageMaxX, this.currentFlightSet.imageMaxY);
+            this.remainingEta = eta;
+            this.totalEta = eta;
+        }
+        else if (this.currentFlightPath) {
+            // Change the current flight path to remove any secondary route options before the index of the lastCoordIndex
+            const newFlightPath = { ...this.currentFlightPath };
+            newFlightPath.secondaryRouteOptions = newFlightPath.secondaryRouteOptions?.filter((_, index) => index > lastCoordIndex);
+            this.currentFlightPath = newFlightPath;
+            this.flightPathCoords = generateFlightPathCoordinates(this.currentLocation, newFlightPath, this.getLocationIdMap(), this.getBorderIdMap(), this.currentFlightSet.imageMaxX, this.currentFlightSet.imageMaxY);
+            this.remainingEta = eta;
+            this.totalEta = eta;
+        }
+    }
+    handleEngineFlux() {
+        if (this.engineStatus === EngineStatus.FLUX) {
+            if (this.currentFlightPath && this.currentFlightPath.speedOption.requiresMaxEngines) {
+                this.engineStatus = EngineStatus.FULL_POWER;
+            }
+            else {
+                this.engineStatus = EngineStatus.ENGAGED;
+            }
+        } else {
+            this.engineStatus = EngineStatus.FLUX;
+        }
+    }
+    handleSetCoolantLevel(level: number) {
+        this.coolantLevel = level;
+    }
+    handleSetHeatLevel(level: number) {
+        this.heatLevel = level;
+    }
+    handleUpdateCurrentFlightPath(flightPath: NavigationRoute) {
+        this.currentFlightPath = flightPath;
+    }
+    handleOverrideLocation(location: BasicCoordinate, currentLocationUrl?: string, currentLocationName?: string) {
+        this.currentLocation = location;
+        this.currentFlightPath = undefined;
+        this.currentLocationUrl = currentLocationUrl;
+        this.currentLocationName = currentLocationName;
+        this.engineStatus = EngineStatus.STOPPED;
+    }
+
     handleAddAssignment(probeId: string, poiId: string) {
         if (this.currentFlightSet) {
             const newProbeAssignments = { ...this.probeAssignments };
@@ -251,6 +306,18 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         return this.probes.filter(probe => !usedProbes[probe.id])
             .filter(probe => !probe.equipment.some(equipment => equipment.id === 'probe-network-package'))
             .filter((probe) => !(Number(probe.name) < 9));
+    }
+
+    handleEngageFlightPath(flightPath: NavigationRoute) {
+        this.currentFlightPath = flightPath;
+        this.engineStatus = EngineStatus.STARTUP;
+        this.startingStartupTime = generateCurrentUnixTimestamp();
+        this.showEta = false;
+    }
+    handleSaveFlightPath(flightPath: NamedNavigationRoute) {
+        const newFlightPaths = [...this.flightPaths];
+        newFlightPaths.push(flightPath);
+        this.flightPaths = newFlightPaths;
     }
 }
 
