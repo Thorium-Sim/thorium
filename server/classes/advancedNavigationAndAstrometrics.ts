@@ -163,6 +163,10 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         super.break(report, destroyed, which);
     }
 
+    addFlightSet(flightSet: FlightSet) {
+        this.flightSets.push(flightSet);
+    }
+
     updateFlightSet(flightSet: FlightSet) {
         const oldFlightPaths = [...this.flightPaths];
         const setMap = { ...this.flightSetPathMap };
@@ -180,6 +184,10 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.currentLocationUrl = undefined;
         this.currentFlightSet = flightSet;
         this.flightSetPathMap = setMap;
+    }
+    updateCurrentlySelectedFlightSet(flightSetId: string) {
+        const flightSet = this.flightSets.find(f => f.id === flightSetId);
+        this.currentFlightSet = flightSet;
     }
     handleCoolantFlush() {
         if (this.heatLevel > this.coolantLevel) {

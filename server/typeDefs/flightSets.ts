@@ -1,17 +1,23 @@
 import App from '../app';
 import { gql, withFilter } from 'apollo-server-express';
 import { pubsub } from '../helpers/subscriptionManager';
+import { AdvancedNavigationAndAstrometrics } from '~classes';
 const mutationHelper = require('../helpers/mutationHelper').default;
 
 const schema = gql`
 
 extend type Query {
-    advancedNavAndAstrometric(id: ID!): FlightSet
-    advancedNavAndAstrometrics(simulatorId: ID!): [FlightSet]
+    advancedNavAndAstrometric(id: ID!): AdvancedNavigationAndAstrometrics
+    advancedNavAndAstrometrics(simulatorId: ID!): [AdvancedNavigationAndAstrometrics]
+    getFlightSet(id: ID!): FlightSet
+    getAllFlightSets: [FlightSet]!
 }
 
 extend type Mutation {
+    createFlightSet(flightSet: FlightSetInput!): String
     updateFlightSet(id: ID!, flightSet: FlightSetInput!): String
+    deleteFlightSet(id: ID!): String
+    updateAdvNavFlightSet(id: ID!, flightSet: FlightSetInput!): String
     handleCoolantFlush(id: ID!): String
     handleEmergencyStop(id: ID!): String
     handleResumePath(id: ID!): String
@@ -22,12 +28,14 @@ extend type Mutation {
     handleSetCoolantLevel(id: ID!, level: Float!): String
     handleSetHeatLevel(id: ID!, level: Float!): String
     handleUpdateCurrentFlightPath(id: ID!, route: NavigationRouteInput!): String
+    handleUpdateCurrentFlightSet(id: ID!, flightSetId: ID!): String
     handleOverrideLocation(id: ID!, location: BasicCoordinateInput!, currentLocationUrl: String, currentLocationName: String): String
     
     handleAddProbeAssignment(id: ID!, probeId: ID!, poiId: ID!): String
 
     handleEngageFlightPath(id: ID!, path: NavigationRouteInput!): String
     handleSaveFlightPath(id: ID!, path: NamedNavigationRouteInput!): String
+    handleAddFlightSetToNavigation(id: ID!, flightSetId: ID!): String
 
 }
 
@@ -53,7 +61,7 @@ type AdvancedNavigationAndAstrometrics implements SystemInterface {
     coolantLevel: Float!
     heatLevel: Float!
     flightPaths: [NamedNavigationRoute!]!
-    engineStatus: EngineStatus!
+    engineStatus: String!
     hasEmergencyPower: Boolean!
     startingStartupTime: Float!
     remainingEta: Float!
@@ -66,7 +74,7 @@ type AdvancedNavigationAndAstrometrics implements SystemInterface {
     currentFlightPath: NavigationRoute
     currentLocationName: String
     currentLocationUrl: String    
-    probes: [Probe!]!
+    probes: [FSProbe!]!
     #The following values are stringified JSON maps
     flightSetPathMap: String!
     probeAssignments: String!
@@ -75,17 +83,16 @@ type AdvancedNavigationAndAstrometrics implements SystemInterface {
 type PointOfInterest {
     id: ID!
     name: String!
-    location: Location!
+    location: XYLocation!
     isVisible: Boolean!
     isFogOfWar: Boolean!
     speedIndex: Float!
     riskIndex: Float!
     type: PointOfInterestType!
     information: PointOfInterestInformation!
-    hazards: [NavigationHazard!]!
     iconUrl: String!
     fullImageUrl: String!
-    transitOptions: [SecondaryStopTransitOption]
+    transitOptions: [SecondaryStopTransitOption!]
     showName: Boolean
 }
 
@@ -113,19 +120,13 @@ type MapBorder {
   riskIndex: Float!
 }
 
-enum MapBorderSide {
-  TOP
-  RIGHT
-  BOTTOM
-  LEFT
-  TOP_RIGHT
-  TOP_LEFT
-  BOTTOM_RIGHT
-  BOTTOM_LEFT
+type XYLocation {
+  x: Float!
+  y: Float!
 }
 
 type MapBorderLocation {
-  side: MapBorderSide!
+  side: String!
 }
 
 type PointOfInterestObject {
@@ -183,7 +184,6 @@ type SecondaryNavigationRouteOption {
 
 type NavigationRoute {
   targetLocationId: ID!
-  hazardChoiceMap: [HazardChoiceMapEntry!]!
   secondaryRouteOptions: [SecondaryNavigationRouteOption!]!
   isBorder: Boolean!
   startOption: NavigationStartOptions!
@@ -200,7 +200,6 @@ type NamedNavigationRoute {
   name: String!
   id: ID!
   targetLocationId: ID!
-  hazardChoiceMap: [HazardChoiceMapEntry!]!
   secondaryRouteOptions: [SecondaryNavigationRouteOption!]!
   isBorder: Boolean!
   startOption: NavigationStartOptions!
@@ -223,6 +222,7 @@ type FlightSet {
   pixelsPerSecond: Float!
   label: String
   probeLaunchRangeRadius: Float!
+  addOnTraining: Boolean
 }
 
 type BasicCoordinate {
@@ -275,32 +275,16 @@ type ProbeAssignment {
   completed: Boolean!
 }
 
-enum ProbeType {
-  CLASS_I
-  CLASS_II
-  CLASS_III
-  DEFENSE
-  SCIENCE
-}
-
-type Probe {
+type FSProbe {
   id: ID!
   name: String!
-  type: ProbeType!
+  type: String!
   equipment: [Equipment!]!
 }
 
 type Equipment {
   id: ID!
   count: Float!
-}
-
-enum EngineStatus {
-  FULL_POWER
-  STARTUP
-  ENGAGED
-  FLUX
-  STOPPED
 }
 
 input PointOfInterestInput {
@@ -313,7 +297,6 @@ input PointOfInterestInput {
   riskIndex: Float!
   type: PointOfInterestTypeInput!
   information: PointOfInterestInformationInput!
-  hazards: [NavigationHazardInput!]!
   iconUrl: String!
   fullImageUrl: String!
   transitOptions: [SecondaryStopTransitOptionInput]
@@ -350,7 +333,7 @@ input MapBorderInput {
 }
 
 input MapBorderLocationInput {
-  side: MapBorderSide!
+  side: String!
 }
 
 input PointOfInterestTypeInput {
@@ -403,7 +386,6 @@ input SecondaryNavigationRouteOptionInput {
 
 input NavigationRouteInput {
   targetLocationId: ID!
-  hazardChoiceMap: [HazardChoiceMapEntryInput!]!
   secondaryRouteOptions: [SecondaryNavigationRouteOptionInput!]!
   isBorder: Boolean!
   startOption: NavigationStartOptionsInput!
@@ -420,7 +402,6 @@ input NamedNavigationRouteInput {
   name: String!
   id: ID!
   targetLocationId: ID!
-  hazardChoiceMap: [HazardChoiceMapEntryInput!]!
   secondaryRouteOptions: [SecondaryNavigationRouteOptionInput!]!
   isBorder: Boolean!
   startOption: NavigationStartOptionsInput!
@@ -495,19 +476,25 @@ input ProbeAssignmentInput {
   completed: Boolean!
 }
 
-input ProbeInput {
+input FSProbeInput {
   id: ID!
   name: String!
-  type: ProbeType!
-  equipment: [EquipmentInput!]!
+  type: String!
+  equipment: [FSEquipmentInput!]!
 }
 
-input EquipmentInput {
+input FSEquipmentInput {
   id: ID!
   count: Float!
 }
 `
-
+const prepAdvancedNavAndAstro = sys => {
+  return {
+    ...sys,
+    flightSetPathMap: JSON.stringify(sys.flightSetPathMap),
+    probeAssignments: JSON.stringify(sys.probeAssignments),
+  };
+}
 
 const resolver = {
   AdvancedNavigationAndAstrometrics: {
@@ -520,14 +507,30 @@ const resolver = {
   Query: {
     advancedNavAndAstrometric(rootValue, { id }) {
       const sys = App.systems.find(s => s.id === id);
-      return sys;
+      const newSys = prepAdvancedNavAndAstro(sys);
+      return newSys;
     },
     advancedNavAndAstrometrics(root, { simulatorId }) {
       let returnVal = App.systems.filter(s => s.type === "AdvancedNavigationAndAstrometrics");
       if (simulatorId) {
         returnVal = returnVal.filter(s => s.simulatorId === simulatorId);
       }
-      return returnVal;
+      const newReturnVals = returnVal.map(sys => {
+        const newSys = prepAdvancedNavAndAstro(sys);
+        return newSys;
+      })
+      return newReturnVals
+    },
+    getFlightSet(root, { id }) {
+      const flight = App.flightSets.find(f => f.id === id);
+      if (!flight) return null;
+      else {
+        return flight
+      }
+    },
+    getAllFlightSets(root) {
+      return App.flightSets
+
     }
   },
   Mutation: mutationHelper(schema),
@@ -540,7 +543,11 @@ const resolver = {
             sys => sys.simulatorId === simulatorId,
           );
         }
-        return returnSystems;
+        const returnedValues: AdvancedNavigationAndAstrometrics[] = returnSystems.map(sys => {
+          const newSys = prepAdvancedNavAndAstro(sys);
+          return newSys;
+        })
+        return returnedValues;
       },
       subscribe: withFilter(
         () => pubsub.asyncIterator('advancedNavAndAstrometricsUpdate'),

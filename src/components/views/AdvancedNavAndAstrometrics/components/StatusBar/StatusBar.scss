@@ -1,0 +1,36 @@
+  .stressHolder {
+    border: solid 2px white;
+    padding: 10px;
+    position: relative;
+  }
+  .stressBar {
+    background-size: 5px 3px, 100%;
+    background-color: red;
+    transition-property: height, width;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+  }
+  .stressBarVertical {
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.5) 100%
+      ),
+      linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+      background-size: 5px 3px, 100%;
+  }
+  .stressBarHorizontal {
+    background: linear-gradient(
+        to left,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.5) 100%
+      ),
+      linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 100%);
+      background-size: 5px 3px, 100%;
+  }

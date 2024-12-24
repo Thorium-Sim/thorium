@@ -1,0 +1,3 @@
+mutation HandleEmergencyStop($id: ID!) {
+  handleEmergencyStop(id: $id)
+}

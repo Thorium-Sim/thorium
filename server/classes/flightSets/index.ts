@@ -1,3 +1,41 @@
+export class FlightSet {
+    backgroundImg: string;
+    startOptions: NavigationStartOptions[];
+    speedOptions: NavigationSpeedOptions[];
+    exitOptions: NavigationExitOptions[];
+    pointsOfInterest: PointOfInterest[];
+    defaultStartingLocation: BasicCoordinate;
+    id: string;
+    name: string;
+    borders: MapBorder[];
+    imageMaxX: number;
+    imageMaxY: number;
+    pixelsPerSecond: number;
+    label?: string;
+    probeLaunchRangeRadius: number;
+    addOnTraining?: boolean;
+    class: string
+    constructor(flightSet: FlightSet) {
+        this.class = "FlightSet";
+        this.backgroundImg = flightSet?.backgroundImg || '';
+        this.startOptions = flightSet?.startOptions || [];
+        this.exitOptions = flightSet?.exitOptions || [];
+        this.speedOptions = flightSet?.speedOptions || [];
+        this.defaultStartingLocation = flightSet?.defaultStartingLocation || { x: 0, y: 0 };
+        this.imageMaxX = flightSet?.imageMaxX || 0;
+        this.imageMaxY = flightSet?.imageMaxY || 0;
+        this.pixelsPerSecond = flightSet?.pixelsPerSecond || 4;
+        this.probeLaunchRangeRadius = flightSet?.probeLaunchRangeRadius || 100;
+        this.id = flightSet?.id || '';
+        this.name = flightSet?.name || '';
+        this.backgroundImg = flightSet?.backgroundImg || '';
+        this.label = flightSet?.label || '';
+        this.borders = flightSet?.borders || [];
+        this.pointsOfInterest = flightSet?.pointsOfInterest || [];
+        this.addOnTraining = flightSet?.addOnTraining || false;
+    }
+}
+
 export type PointOfInterest = {
     id: string;
     name: string;
@@ -11,7 +49,6 @@ export type PointOfInterest = {
     riskIndex: number;
     type: PointOfInterestType;
     information: PointOfInterestInformation;
-    hazards: NavigationHazard[];
     iconUrl: string
     fullImageUrl: string;
     transitOptions?: SecondaryStopTransitOption[];
@@ -120,22 +157,23 @@ export type NamedNavigationRoute = {
 } & NavigationRoute;
 
 
-export type FlightSet = {
-    backgroundImg: string;
-    startOptions: NavigationStartOptions[];
-    speedOptions: NavigationSpeedOptions[];
-    exitOptions: NavigationExitOptions[];
-    pointsOfInterest: PointOfInterest[];
-    defaultStartingLocation: BasicCoordinate;
-    id: string;
-    name: string;
-    borders: MapBorder[];
-    imageMaxX: number;
-    imageMaxY: number;
-    pixelsPerSecond: number;
-    label?: string
-    probeLaunchRangeRadius: number;
-}
+// export type FlightSet = {
+//     backgroundImg: string;
+//     startOptions: NavigationStartOptions[];
+//     speedOptions: NavigationSpeedOptions[];
+//     exitOptions: NavigationExitOptions[];
+//     pointsOfInterest: PointOfInterest[];
+//     defaultStartingLocation: BasicCoordinate;
+//     id: string;
+//     name: string;
+//     borders: MapBorder[];
+//     imageMaxX: number;
+//     imageMaxY: number;
+//     pixelsPerSecond: number;
+//     label?: string
+//     probeLaunchRangeRadius: number;
+//     addOnTraining?: boolean;
+// }
 
 export type BasicCoordinate = {
     x: number,

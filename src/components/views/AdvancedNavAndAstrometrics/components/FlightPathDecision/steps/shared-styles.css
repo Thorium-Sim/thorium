@@ -1,0 +1,19 @@
+.button-parent {
+    display: flex;
+    gap: 1rem;
+    height: min-content;
+}
+
+.step-parent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.step-sub-parent {
+    display: flex;
+    margin-bottom: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+}

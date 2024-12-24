@@ -1,0 +1,3 @@
+mutation HandleSetHeatLevel($id: ID!, $level: Float!) {
+  handleSetHeatLevel(id: $id, level: $level)
+}

@@ -1,0 +1,3 @@
+mutation HandleSetCoolantLevel($id: ID!, $level: Float!) {
+  handleSetCoolantLevel(id: $id, level: $level)
+}

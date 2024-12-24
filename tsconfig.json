@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -14,7 +18,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": "./src/"
+    "baseUrl": "./src/",
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src",
@@ -22,5 +27,7 @@
     "i18next-parser.config.js",
     "test/setupTests.js"
   ],
-  "exclude": ["hooksGenerate.js"]
+  "exclude": [
+    "hooksGenerate.js"
+  ]
 }

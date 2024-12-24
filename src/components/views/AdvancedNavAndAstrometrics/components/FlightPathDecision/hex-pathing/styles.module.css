@@ -1,0 +1,36 @@
+.popover-background {
+    background-color: rgba(0, 0, 0, 0.77);
+}
+
+.speed-chev {
+    animation: moveForward 1.75s infinite;
+    animation-timing-function: ease;
+    left: 0px;
+    z-index: 0;
+    opacity: 0;
+}
+
+@keyframes moveForward {
+    0% {
+        left: 0px;
+    }
+
+    10% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+
+
+    75% {
+        opacity: 0;
+    }
+
+    100% {
+        left: calc(100% - 200px);
+        opacity: 0;
+    }
+}

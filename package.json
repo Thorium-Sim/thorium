@@ -237,7 +237,7 @@
     "react-app-rewired": "^2.1.6",
     "react-pdf": "^5.0.0",
     "react-router": "^6.0.0-alpha.4",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^4.0.3",
     "react-three-fiber": "^4.0.17",
     "react-use-gesture": "^7.0.4",
     "request": "^2.88.0",
@@ -260,6 +260,7 @@
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.7.4",
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@babel/preset-typescript": "^7.8.3",
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "@emotion/core": "^10.0.28",
@@ -306,7 +307,6 @@
     "all-contributors-cli": "^6.20.0",
     "apollo": "^2.22.0",
     "apollo-cache-hermes": "^0.8.9",
-    "babel-jest": "^24.9.0",
     "babel-plugin-import-glob": "^2.0.0",
     "babel-plugin-transform-node-env-inline": "^0.4.3",
     "babel-preset-env": "^1.7.0",
@@ -321,7 +321,7 @@
     "electron-builder": "23.0.2",
     "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^1.0.0",
-    "eslint-config-prettier": "^6.4.0",
+    "eslint-config-prettier": "^9.1.0",
     "get-graphql-schema": "^2.1.2",
     "graphql-tag.macro": "^2.0.1",
     "history": "^5.0.0-beta.5",
@@ -374,7 +374,7 @@
     "ts-jest": "^26.0.0",
     "ts-node-dev": "^1.0.0-pre.44",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
-    "typescript": "^5.4.0",
+    "typescript": "5.1.6",
     "typescript-plugin-tw-template": "^2.0.1",
     "wait-on": "^5.0.0",
     "webgl-mock-threejs": "^0.0.1",
@@ -383,7 +383,8 @@
   "resolutions": {
     "change-case": "^4.1.1",
     "param-case": "3.0.3",
-    "@babel/preset-env": "^7.8.7"
+    "@babel/preset-env": "^7.8.7",
+    "react-error-overlay": "6.0.9"
   },
   "volta": { "node": "16.20.2" },
   "packageManager": "yarn@1.22.1"

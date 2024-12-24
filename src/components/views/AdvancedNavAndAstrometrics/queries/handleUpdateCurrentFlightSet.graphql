@@ -1,0 +1,3 @@
+mutation HandleUpdateCurrentFlightSet($id: ID!, $flightSetId: ID!) {
+  handleUpdateCurrentFlightSet(id: $id, flightSetId: $flightSetId)
+}

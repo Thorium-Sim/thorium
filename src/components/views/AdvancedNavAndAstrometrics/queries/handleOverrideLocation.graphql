@@ -1,0 +1,3 @@
+mutation HandleOverrideLocation($id: ID!, $location: BasicCoordinateInput!, $currentLocationUrl: String, $currentLocationName: String) {
+    handleOverrideLocation(id: $id, location: $location, currentLocationUrl: $currentLocationUrl, currentLocationName: $currentLocationName)
+}

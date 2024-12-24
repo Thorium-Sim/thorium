@@ -1,6 +1,6 @@
 import App from "../app";
 import uuid from "uuid";
-import {pubsub} from "../helpers/subscriptionManager";
+import { pubsub } from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
 
 const sendUpdate = sys => {
@@ -103,7 +103,7 @@ const sendUpdate = sys => {
   }
   pubsub.publish("systemsUpdate", App.systems);
 };
-App.on("addSystemToSimulator", ({simulatorId, className, params, cb}) => {
+App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {
   const init = JSON.parse(params);
   init.simulatorId = simulatorId;
   const ClassObj = Classes[className];
@@ -112,7 +112,7 @@ App.on("addSystemToSimulator", ({simulatorId, className, params, cb}) => {
   pubsub.publish("systemsUpdate", App.systems);
   cb && cb(obj.id);
 });
-App.on("removeSystemFromSimulator", ({systemId, simulatorId, type, cb}) => {
+App.on("removeSystemFromSimulator", ({ systemId, simulatorId, type, cb }) => {
   if (systemId) {
     App.systems = App.systems.filter(s => s.id !== systemId);
   } else if (simulatorId && type) {
@@ -124,29 +124,29 @@ App.on("removeSystemFromSimulator", ({systemId, simulatorId, type, cb}) => {
   pubsub.publish("systemsUpdate", App.systems);
   cb && cb();
 });
-App.on("updateSystemName", ({systemId, name, displayName, upgradeName}) => {
+App.on("updateSystemName", ({ systemId, name, displayName, upgradeName }) => {
   const sys = App.systems.find(s => s.id === systemId);
-  sys.updateName({name, displayName, upgradeName});
+  sys.updateName({ name, displayName, upgradeName });
   sendUpdate(sys);
 });
-App.on("updateSystemUpgradeMacros", ({systemId, upgradeMacros}) => {
+App.on("updateSystemUpgradeMacros", ({ systemId, upgradeMacros }) => {
   const sys = App.systems.find(t => t.id === systemId);
   sys && sys.setUpgradeMacros(upgradeMacros);
   sendUpdate(sys);
 });
-App.on("updateSystemUpgradeBoard", ({systemId, upgradeBoard}) => {
+App.on("updateSystemUpgradeBoard", ({ systemId, upgradeBoard }) => {
   const sys = App.systems.find(t => t.id === systemId);
   sys && sys.setUpgradeBoard(upgradeBoard);
   sendUpdate(sys);
 });
-App.on("upgradeSystem", ({systemId}) => {
+App.on("upgradeSystem", ({ systemId }) => {
   const sys = App.systems.find(t => t.id === systemId);
   if (sys) {
     sys.upgrade();
     // Execute the macros
     if (sys.upgradeMacros && sys.upgradeMacros.length > 0)
       App.handleEvent(
-        {simulatorId: sys.simulatorId, macros: sys.upgradeMacros},
+        { simulatorId: sys.simulatorId, macros: sys.upgradeMacros },
         "triggerMacros",
       );
     pubsub.publish("notify", {
@@ -170,13 +170,13 @@ App.on("upgradeSystem", ({systemId}) => {
     sendUpdate(sys);
   }
 });
-App.on("systemSetWing", ({systemId, wing}) => {
+App.on("systemSetWing", ({ systemId, wing }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) return;
   sys.setWing(wing);
   sendUpdate(sys);
 });
-App.on("damageSystem", ({systemId, report, destroyed, which = "default"}) => {
+App.on("damageSystem", ({ systemId, report, destroyed, which = "default" }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys =
@@ -187,7 +187,7 @@ App.on("damageSystem", ({systemId, report, destroyed, which = "default"}) => {
   sys.break(report, destroyed, which);
   sendUpdate(sys);
 });
-App.on("damageReport", ({systemId, report}) => {
+App.on("damageReport", ({ systemId, report }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys =
@@ -197,7 +197,7 @@ App.on("damageReport", ({systemId, report}) => {
   sys.damageReport(report);
   sendUpdate(sys);
 });
-App.on("repairSystem", ({systemId}) => {
+App.on("repairSystem", ({ systemId }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys =
@@ -207,13 +207,12 @@ App.on("repairSystem", ({systemId}) => {
   App.handleEvent(
     {
       simulatorId: sys.simulatorId,
-      contents: `${sys.displayName} ${
-        sys.damage.which === "default"
-          ? "Repaired"
-          : sys.damage.which === "rnd"
+      contents: `${sys.displayName} ${sys.damage.which === "default"
+        ? "Repaired"
+        : sys.damage.which === "rnd"
           ? "R&D Report Complete"
           : "Engineering Report Complete"
-      }`,
+        }`,
       category: "Systems",
     },
     "recordsCreate",
@@ -222,10 +221,10 @@ App.on("repairSystem", ({systemId}) => {
   const taskReports = App.taskReports.filter(
     t => t.systemId === systemId && t.type === "default" && t.cleared === false,
   );
-  taskReports.forEach(t => App.handleEvent({id: t.id}, "clearTaskReport"));
+  taskReports.forEach(t => App.handleEvent({ id: t.id }, "clearTaskReport"));
   sendUpdate(sys);
 });
-App.on("updateCurrentDamageStep", ({systemId, step}) => {
+App.on("updateCurrentDamageStep", ({ systemId, step }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys =
@@ -235,7 +234,7 @@ App.on("updateCurrentDamageStep", ({systemId, step}) => {
   sys.updateCurrentStep(step);
   sendUpdate(sys);
 });
-App.on("systemReactivationCode", ({systemId, station, code}) => {
+App.on("systemReactivationCode", ({ systemId, station, code }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys =
@@ -264,17 +263,17 @@ App.on("systemReactivationCode", ({systemId, station, code}) => {
   sys.reactivationCode(code, station);
   sendUpdate(sys);
 });
-App.on("changePower", ({systemId, power}) => {
+App.on("changePower", ({ systemId, power }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.setPower(power);
   sendUpdate(sys);
 });
-App.on("changeSystemPowerLevels", ({systemId, powerLevels}) => {
+App.on("changeSystemPowerLevels", ({ systemId, powerLevels }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.setPowerLevels(powerLevels);
   sendUpdate(sys);
 });
-App.on("requestDamageReport", ({systemId}) => {
+App.on("requestDamageReport", ({ systemId }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys =
@@ -303,7 +302,7 @@ App.on("requestDamageReport", ({systemId}) => {
   sys.requestReport();
   sendUpdate(sys);
 });
-App.on("systemReactivationCodeResponse", ({systemId, response}) => {
+App.on("systemReactivationCodeResponse", ({ systemId, response }) => {
   let sys = App.systems.find(s => s.id === systemId);
   if (!sys) {
     sys =
@@ -315,63 +314,62 @@ App.on("systemReactivationCodeResponse", ({systemId, response}) => {
     simulatorId: sys.simulatorId,
     station: sys.damage.reactivationRequester,
     title: "Reactivation Code",
-    body: `Reactivation Code for ${sys.displayName || sys.name} was ${
-      response ? "Accepted" : "Denied"
-    }`,
+    body: `Reactivation Code for ${sys.displayName || sys.name} was ${response ? "Accepted" : "Denied"
+      }`,
     color: response ? "success" : "danger",
   });
   sys.reactivationCodeResponse(response);
 
   // If the responses is true, repair the system with an event
   if (response) {
-    App.handleEvent({systemId}, "repairSystem");
+    App.handleEvent({ systemId }, "repairSystem");
   }
   sendUpdate(sys);
 });
-App.on("setCoolant", ({systemId, coolant}) => {
+App.on("setCoolant", ({ systemId, coolant }) => {
   const sys = App.systems.find(s => s.id === systemId);
   if (sys.setCoolant) sys.setCoolant(coolant);
   sendUpdate(sys);
 });
-App.on("updateSystemRooms", ({systemId, locations}) => {
+App.on("updateSystemRooms", ({ systemId, locations }) => {
   const sys = App.systems.find(s => s.id === systemId);
   if (sys.updateLocations) sys.updateLocations(locations);
   sendUpdate(sys);
 });
-App.on("addSystemDamageStep", ({systemId, step, cb}) => {
+App.on("addSystemDamageStep", ({ systemId, step, cb }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.addDamageStep(step);
   sendUpdate(sys);
   cb && cb();
 });
-App.on("updateSystemDamageStep", ({systemId, step, cb, context}) => {
+App.on("updateSystemDamageStep", ({ systemId, step, cb, context }) => {
   let sys = App.systems.find(s => s.id === systemId);
   sys && sys.updateDamageStep(step);
   sendUpdate(sys);
   cb && cb();
 });
-App.on("removeSystemDamageStep", ({systemId, step, cb}) => {
+App.on("removeSystemDamageStep", ({ systemId, step, cb }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.removeDamageStep(step);
   sendUpdate(sys);
   cb && cb();
 });
-App.on("addSystemDamageTask", ({systemId, task}) => {
+App.on("addSystemDamageTask", ({ systemId, task }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.addDamageTask(task);
   sendUpdate(sys);
 });
-App.on("updateSystemDamageTask", ({systemId, task}) => {
+App.on("updateSystemDamageTask", ({ systemId, task }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.updateDamageTask(task);
   sendUpdate(sys);
 });
-App.on("removeSystemDamageTask", ({systemId, taskId}) => {
+App.on("removeSystemDamageTask", ({ systemId, taskId }) => {
   const sys = App.systems.find(s => s.id === systemId);
   sys.removeDamageTask(taskId);
   sendUpdate(sys);
 });
-App.on("breakSystem", ({simulatorId, type, name}) => {
+App.on("breakSystem", ({ simulatorId, type, name }) => {
   const systems = App.systems.filter(
     s =>
       s.simulatorId === simulatorId &&
@@ -387,7 +385,7 @@ App.on("breakSystem", ({simulatorId, type, name}) => {
       simulatorId,
       name,
       extra: true,
-      damage: {damaged: true},
+      damage: { damaged: true },
     };
     const ClassObj = Classes.System;
     const obj = new ClassObj(args);
@@ -395,7 +393,7 @@ App.on("breakSystem", ({simulatorId, type, name}) => {
   }
   sendUpdate(sys);
 });
-App.on("fixSystem", ({simulatorId, type, name}) => {
+App.on("fixSystem", ({ simulatorId, type, name }) => {
   const systems = App.systems.filter(
     s =>
       s.simulatorId === simulatorId &&
@@ -406,11 +404,11 @@ App.on("fixSystem", ({simulatorId, type, name}) => {
   sys && sys.repair();
   sendUpdate(sys);
 });
-App.on("generateDamageReport", ({systemId, steps, cb}) => {
+App.on("generateDamageReport", ({ systemId, steps, cb }) => {
   let sys = App.systems.find(s => s.id === systemId);
   cb(sys.generateDamageReport(steps));
 });
-App.on("trainingMode", ({simulatorId}) => {
+App.on("trainingMode", ({ simulatorId }) => {
   const sim = App.simulators.find(s => s.id === simulatorId);
   sim.trainingMode(true);
   const hasCommReview = !!sim.stations.find(s =>
@@ -420,7 +418,7 @@ App.on("trainingMode", ({simulatorId}) => {
   systems.forEach(s => {
     // The arguments are named and provide extra data to some of the training
     // mode methods.
-    s.trainingMode({hasCommReview});
+    s.trainingMode({ hasCommReview });
     sendUpdate(s);
   });
   // Create a training system to damage
@@ -429,7 +427,7 @@ App.on("trainingMode", ({simulatorId}) => {
     name: "Training",
     extra: true,
     simulatorId,
-    damage: {damaged: true},
+    damage: { damaged: true },
   });
   obj.damageReport(`Step 1:
 This is a training damage report. There will be several steps which you must follow to repair systems on your ship.
@@ -451,7 +449,7 @@ If you followed the steps properly, the system has been repaired. Enter the foll
   pubsub.publish("systemsUpdate", App.systems);
   pubsub.publish("simulatorsUpdate", App.simulators);
 });
-App.on("setDamageStepValidation", ({id, validation}) => {
+App.on("setDamageStepValidation", ({ id, validation }) => {
   let sys = App.systems.find(s => s.id === id);
   const sim = App.simulators.find(s => s.id === sys.simulatorId);
   sys.damage.validate = validation;
@@ -505,7 +503,7 @@ App.on("setDamageStepValidation", ({id, validation}) => {
   }
   sendUpdate(sys);
 });
-App.on("validateDamageStep", ({id}) => {
+App.on("validateDamageStep", ({ id }) => {
   // The step is good. Increase the current step.
   let sys = App.systems.find(s => s.id === id);
   const sim = App.simulators.find(s => s.id === sys.simulatorId);
@@ -537,12 +535,12 @@ App.on("validateDamageStep", ({id}) => {
   );
   sendUpdate(sys);
 });
-App.on("changeSystemDefaultPowerLevel", ({id, level}) => {
+App.on("changeSystemDefaultPowerLevel", ({ id, level }) => {
   let sys = App.systems.find(s => s.id === id);
   sys.setDefaultPowerLevel(level);
   sendUpdate(sys);
 });
-App.on("fluxSystemPower", ({id, simulatorId, all, type, name}) => {
+App.on("fluxSystemPower", ({ id, simulatorId, all, type, name }) => {
   function randomFromList(list) {
     if (!list) return;
     const length = list.length;

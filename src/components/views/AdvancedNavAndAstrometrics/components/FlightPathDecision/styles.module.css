@@ -1,0 +1,154 @@
+.summary-base {
+    display: grid;
+    grid: [row1-start] "current path target" 1fr [row1-end] [row2-start] "current options target" 1fr / 200 auto 200;
+}
+
+.current-object {
+    grid-area: current;
+}
+
+.path-object {
+    grid-area: path;
+}
+
+.target-object {
+    grid-area: target;
+}
+
+.current-options {
+    grid-area: options;
+}
+
+
+.summary2-base {
+    display: grid;
+    grid: [row1-start] "execute title" 100px [row1-end] [row2-start] "execute path" 1fr [row2-end] [row3-start] "execute choices" 1fr [row3-end] [row4-start] "actions stats" 1fr [row4-end] / 500px auto;
+}
+
+.summary2-base-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+
+.summary2-title-area {
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary2-content {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+}
+
+.summary2-content-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary2-execute-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 4rem;
+}
+
+.summary2-actions-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    gap: 0.5rem;
+    padding: 2rem;
+}
+
+.summary2-content-right {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+}
+
+.summary2-path-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.summary2-options-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary2-stats-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem 0px;
+    gap: 1.5rem
+}
+
+
+.execute-area {
+    grid-area: execute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-area {
+    background-color: blue;
+    grid-area: title;
+}
+
+.path-area {
+    background-color: orange;
+    grid-area: path;
+}
+
+.choices-area {
+    background-color: blueviolet;
+    grid-area: choices;
+}
+
+.actions-area {
+    background-color: green;
+    grid-area: actions;
+}
+
+.stats-area {
+    background-color: yellow;
+    grid-area: stats;
+}
+
+.modal-overrides {
+    background: #00000055;
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+    border: 1px solid gray;
+    max-width: 75%;
+    height: 75%;
+    
+    color: unset;
+}
+
+.modal-overrides>div {
+    height: 100%;
+    max-height: 100%;
+    background-color: unset;
+}
+
+.modal-overrides>div>div {
+    height: 100%;
+    
+}

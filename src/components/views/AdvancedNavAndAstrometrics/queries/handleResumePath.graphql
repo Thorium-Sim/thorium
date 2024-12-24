@@ -1,0 +1,3 @@
+mutation HandleResumePath($id: ID!) {
+  handleResumePath(id: $id)
+}

@@ -4,6 +4,7 @@ import { pubsub } from '../helpers/subscriptionManager'
 import throttle from "../helpers/throttle";
 
 import uuid from "uuid";
+import { FlightSet, MapBorderSide } from '../classes/flightSets/index';
 
 
 
@@ -36,7 +37,57 @@ const notifyEvent = (simulatorId, type, component, title, body, color) => {
     );
 }
 
+const mapBorderSideToString = (side: string): MapBorderSide => {
+    const mapping: Record<string, MapBorderSide> = {
+        ["TOP"]: 'top',
+        ['RIGHT']: 'right',
+        ["BOTTOM"]: 'bottom',
+        ["LEFT"]: 'left',
+        ["TOP_RIGHT"]: 'top-right',
+        ["TOP_LEFT"]: 'top-left',
+        ["BOTTOM_RIGHT"]: 'bottom-right',
+        ["BOTTOM_LEFT"]: 'bottom-left',
+    };
+    return mapping[side] || side as MapBorderSide;
+}
+
 App.on('updateFlightSet', ({ id, flightSet }) => {
+    const newFlightSet = { ...flightSet }
+    newFlightSet.borders = newFlightSet.borders.map(border => {
+        return {
+            ...border,
+            location: {
+                side: mapBorderSideToString(border.location.side)
+            }
+        }
+    })
+    const classedFlightSet = new FlightSet(newFlightSet);
+    const flightSetIndex = App.flightSets.findIndex(f => f.id === id)
+    App.flightSets[flightSetIndex] = classedFlightSet
+    sendUpdate()
+});
+
+App.on('removeFlightSet', ({ id }) => {
+    App.flightSets = App.flightSets.filter(f => f.id !== id)
+    sendUpdate();
+});
+
+App.on('createFlightSet', ({ flightSet }) => {
+    const newFlightSet = { ...flightSet, id: uuid.v4() }
+    newFlightSet.borders = newFlightSet.borders.map(border => {
+        return {
+            ...border,
+            location: {
+                side: mapBorderSideToString(border.location.side)
+            }
+        }
+    })
+    const classedFlightSet = new FlightSet(newFlightSet);
+    App.flightSets.push(classedFlightSet)
+    sendUpdate()
+});
+
+App.on('updateAdvNavFlightSet', ({ id, flightSet }) => {
     const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
     system && system.updateFlightSet(flightSet)
     sendUpdate()
@@ -131,5 +182,19 @@ App.on('handleSaveFlightPath', ({ id, path }) => {
     const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
     system && system.handleSaveFlightPath(path)
     system && notifyEvent(system.simulatorId, 'Advanced Navigation', 'AdvancedNavigationCore', 'Flight Path Saved', 'Flight Path has been saved', 'info');
+    sendUpdate()
+})
+
+App.on("handleUpdateCurrentFlightSet", ({ id, flightSetId }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
+    system && system.updateCurrentlySelectedFlightSet(flightSetId)
+    sendUpdate()
+})
+
+App.on("handleAddFlightSetToNavigation", ({ id, flightSetId }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
+    const flightSet = App.flightSets.find(f => f.id === flightSetId)
+    system && flightSet && system.addFlightSet(flightSet)
+    console.log("handleAddFlightSetToNavigation", system, flightSet)
     sendUpdate()
 })
