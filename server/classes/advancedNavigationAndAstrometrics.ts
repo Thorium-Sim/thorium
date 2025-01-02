@@ -1,6 +1,9 @@
+import { pubsub } from "../helpers/subscriptionManager";
+import uuid from "uuid";
 import { BasicCoordinate, EngineStatus, FlightSet, FullCoordinate, MapBorder, NamedNavigationRoute, NavigationRoute, PointOfInterest, Probe, ProbeAssignment } from "./flightSets";
 import { calculateTotalTime, countProbeFuelCells, generateCurrentUnixTimestamp, generateFlightPathCoordinates, getLastVisitedCoordinate, getPositionAtTime, getProbeCurrentLocation } from "./flightSets/helpers";
 import { System } from "./generic";
+import App from "../app";
 
 export default class AdvancedNavigationAndAstrometrics extends System {
     class: string;
@@ -172,6 +175,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                     this.currentLocationUrl = this.currentFlightPath.isBorder ? this.getBorderIdMap()[this.currentFlightPath.targetLocationId].iconUrl : this.getLocationIdMap()[this.currentFlightPath.targetLocationId].iconUrl;
                     this.currentLocationName = this.currentFlightPath.isBorder ? this.getBorderIdMap()[this.currentFlightPath.targetLocationId].name : this.getLocationIdMap()[this.currentFlightPath.targetLocationId].name;
                     this.currentFlightPath = undefined;
+                    notifyEvent(this.simulatorId, 'info', 'Advanced Navigation', 'Arrival at ' + this.currentLocationName, 'Crew has arrived at ' + this.currentLocationName, 'info');
                 }
             }
         }
@@ -385,4 +389,26 @@ const generateLocationIdMap = (pointsOfInterest: PointOfInterest[]) => {
         locationMap[each.id] = each
     });
     return locationMap;
+}
+
+const notifyEvent = (simulatorId, type, component, title, body, color) => {
+    pubsub.publish('notify', {
+        id: uuid.v4(),
+        simulatorId,
+        type: type,
+        station: 'Core',
+        title,
+        body,
+        color,
+    });
+    App.handleEvent(
+        {
+            simulatorId,
+            title,
+            body,
+            component,
+            color,
+        },
+        'addCoreFeed',
+    );
 }

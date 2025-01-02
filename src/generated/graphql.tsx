@@ -985,6 +985,8 @@ export type Mutation = {
   handleEngageFlightPath?: Maybe<Scalars['String']>;
   handleSaveFlightPath?: Maybe<Scalars['String']>;
   handleAddFlightSetToNavigation?: Maybe<Scalars['String']>;
+  /** Macro: Advanced Navigation: Add Flight Set to Navigation */
+  addFlightSetToNavigation?: Maybe<Scalars['String']>;
   googleSheetsAuthorize?: Maybe<Scalars['String']>;
   googleSheetsCompleteAuthorize?: Maybe<Scalars['String']>;
   googleSheetsRevoke?: Maybe<Scalars['String']>;
@@ -3035,6 +3037,12 @@ export type MutationHandleSaveFlightPathArgs = {
 
 export type MutationHandleAddFlightSetToNavigationArgs = {
   id: Scalars['ID'];
+  flightSetId: Scalars['ID'];
+};
+
+
+export type MutationAddFlightSetToNavigationArgs = {
+  simulatorId: Scalars['ID'];
   flightSetId: Scalars['ID'];
 };
 

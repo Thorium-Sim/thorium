@@ -37,6 +37,11 @@ extend type Mutation {
     handleEngageFlightPath(id: ID!, path: NavigationRouteInput!): String
     handleSaveFlightPath(id: ID!, path: NamedNavigationRouteInput!): String
     handleAddFlightSetToNavigation(id: ID!, flightSetId: ID!): String
+    """
+      Macro: Advanced Navigation: Add Flight Set to Navigation
+    """
+    addFlightSetToNavigation(simulatorId: ID!, flightSetId: ID!): String
+
 
 }
 

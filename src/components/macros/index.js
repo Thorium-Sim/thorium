@@ -78,3 +78,4 @@ export * from "./dmx";
 export * from "./lighting";
 export {default as taskFlowActivate} from "./taskFlowActivate";
 export {default as documentAdd} from "./documentAdd";
+export * from './advancedNavigation';

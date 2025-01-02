@@ -51,6 +51,14 @@ const mapBorderSideToString = (side: string): MapBorderSide => {
     return mapping[side] || side as MapBorderSide;
 }
 
+App.on('addFlightSetToNavigation', ({ simulatorId, flightSetId }) => {
+    const simulator = App.simulators.find(s => s.id === simulatorId);
+    const system: AdvancedNavigationAndAstrometrics = simulator && App.systems.find(s => s.simulatorId === simulator.id && s.class === 'AdvancedNavigationAndAstrometrics');
+    const flightSet = App.flightSets.find(f => f.id === flightSetId);
+    system && flightSet && system.addFlightSet(flightSet);
+    sendUpdate();
+})
+
 App.on('updateFlightSet', ({ id, flightSet }) => {
     const newFlightSet = { ...flightSet }
     newFlightSet.borders = newFlightSet.borders.map(border => {
