@@ -968,6 +968,7 @@ export type Mutation = {
   updateFlightSet?: Maybe<Scalars['String']>;
   deleteFlightSet?: Maybe<Scalars['String']>;
   updateAdvNavFlightSet?: Maybe<Scalars['String']>;
+  updateAdvNavFlightSetData?: Maybe<Scalars['String']>;
   handleCoolantFlush?: Maybe<Scalars['String']>;
   handleEmergencyStop?: Maybe<Scalars['String']>;
   handleResumePath?: Maybe<Scalars['String']>;
@@ -2932,6 +2933,12 @@ export type MutationDeleteFlightSetArgs = {
 
 
 export type MutationUpdateAdvNavFlightSetArgs = {
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+};
+
+
+export type MutationUpdateAdvNavFlightSetDataArgs = {
   id: Scalars['ID'];
   flightSet: FlightSetInput;
 };
@@ -12163,6 +12170,17 @@ export type HandleAddProbeAssignmentMutation = (
   & Pick<Mutation, 'handleAddProbeAssignment'>
 );
 
+export type HandleUpdateAdvNavFlightSetDataMutationVariables = Exact<{
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+}>;
+
+
+export type HandleUpdateAdvNavFlightSetDataMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateAdvNavFlightSetData'>
+);
+
 export type HandleAdvancedNavCoolantFlushMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -12280,6 +12298,17 @@ export type HandleShowFlightSetMutationVariables = Exact<{
 export type HandleShowFlightSetMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'handleShowFlightSet'>
+);
+
+export type HandleUpdateAdvNavFlightSetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+}>;
+
+
+export type HandleUpdateAdvNavFlightSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateAdvNavFlightSet'>
 );
 
 export type HandleUpdateCurrentFlightPathMutationVariables = Exact<{
@@ -16661,6 +16690,15 @@ export function useHandleAddProbeAssignmentMutation(baseOptions?: ApolloReactHoo
         return ApolloReactHooks.useMutation<HandleAddProbeAssignmentMutation, HandleAddProbeAssignmentMutationVariables>(HandleAddProbeAssignmentDocument, baseOptions);
       }
 export type HandleAddProbeAssignmentMutationHookResult = ReturnType<typeof useHandleAddProbeAssignmentMutation>;
+export const HandleUpdateAdvNavFlightSetDataDocument = gql`
+    mutation HandleUpdateAdvNavFlightSetData($id: ID!, $flightSet: FlightSetInput!) {
+  updateAdvNavFlightSetData(id: $id, flightSet: $flightSet)
+}
+    `;
+export function useHandleUpdateAdvNavFlightSetDataMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateAdvNavFlightSetDataMutation, HandleUpdateAdvNavFlightSetDataMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateAdvNavFlightSetDataMutation, HandleUpdateAdvNavFlightSetDataMutationVariables>(HandleUpdateAdvNavFlightSetDataDocument, baseOptions);
+      }
+export type HandleUpdateAdvNavFlightSetDataMutationHookResult = ReturnType<typeof useHandleUpdateAdvNavFlightSetDataMutation>;
 export const HandleAdvancedNavCoolantFlushDocument = gql`
     mutation HandleAdvancedNavCoolantFlush($id: ID!) {
   handleCoolantFlush(id: $id)
@@ -16760,6 +16798,15 @@ export function useHandleShowFlightSetMutation(baseOptions?: ApolloReactHooks.Mu
         return ApolloReactHooks.useMutation<HandleShowFlightSetMutation, HandleShowFlightSetMutationVariables>(HandleShowFlightSetDocument, baseOptions);
       }
 export type HandleShowFlightSetMutationHookResult = ReturnType<typeof useHandleShowFlightSetMutation>;
+export const HandleUpdateAdvNavFlightSetDocument = gql`
+    mutation HandleUpdateAdvNavFlightSet($id: ID!, $flightSet: FlightSetInput!) {
+  updateAdvNavFlightSet(id: $id, flightSet: $flightSet)
+}
+    `;
+export function useHandleUpdateAdvNavFlightSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateAdvNavFlightSetMutation, HandleUpdateAdvNavFlightSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateAdvNavFlightSetMutation, HandleUpdateAdvNavFlightSetMutationVariables>(HandleUpdateAdvNavFlightSetDocument, baseOptions);
+      }
+export type HandleUpdateAdvNavFlightSetMutationHookResult = ReturnType<typeof useHandleUpdateAdvNavFlightSetMutation>;
 export const HandleUpdateCurrentFlightPathDocument = gql`
     mutation HandleUpdateCurrentFlightPath($id: ID!, $route: NavigationRouteInput!) {
   handleUpdateCurrentFlightPath(id: $id, route: $route)

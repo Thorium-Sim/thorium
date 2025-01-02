@@ -1,7 +1,7 @@
 import AdvancedNavigationAndAstrometrics from "~classes/advancedNavigationAndAstrometrics";
 import App from "../app";
 import { pubsub } from "../helpers/subscriptionManager";
-import throttle from "~helpers/throttle";
+import throttle from "../helpers/throttle";
 
 const sendUpdate = throttle(() => {
     pubsub.publish(
@@ -14,7 +14,7 @@ const updateValues = () => {
     App.flights.filter(f => f.running === true)
         .forEach(f => {
             f.simulators.forEach(s => {
-                App.systems.filter(sys => sys.simulatorId === s.id && sys.type === "AdvancedNavigationAndAstrometrics").forEach((nav: AdvancedNavigationAndAstrometrics) => {
+                App.systems.filter(sys => sys.simulatorId === s && sys.type === "AdvancedNavigationAndAstrometrics").forEach((nav: AdvancedNavigationAndAstrometrics) => {
                     nav.executeHeatInterval();
                     nav.executeLoopInterval();
                     nav.executeProbeInterval();

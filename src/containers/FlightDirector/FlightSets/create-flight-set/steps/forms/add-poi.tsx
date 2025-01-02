@@ -38,7 +38,7 @@ export const CoreAdvancedNavigationAddPoi: React.FC<CoreAdvancedNavigationAddPoi
                     setName(event.target.value);
                 }} />
             </FormGroup>
-            <FormGroup>
+            <FormGroup style={{ height: '20rem' }}>
                 <Label>Location * {'(Click the map to pick the location)'}</Label>
                 <PositionMap
                     imageUrl={props.flightSet.backgroundImg}

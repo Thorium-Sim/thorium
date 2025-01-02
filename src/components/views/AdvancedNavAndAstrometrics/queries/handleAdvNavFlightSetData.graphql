@@ -1,0 +1,3 @@
+mutation HandleUpdateAdvNavFlightSetData($id: ID!, $flightSet: FlightSetInput!) {
+  updateAdvNavFlightSetData(id: $id, flightSet: $flightSet)
+}

@@ -74,7 +74,7 @@ export const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = (pr
 
     const currentlySelectedFlightSet = React.useMemo(() => {
         return props.flightSets.find(flightSet => flightSet.id === shownFlightSet);
-    }, [shownFlightSet, props.flightSets]);
+    }, [shownFlightSet, props.flightSets, props.currentFlightSet]);
 
 
     return <div className={`no-bottom-label-margin ${props.colorScheme && 'color-scheme-white'}`} style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
@@ -132,32 +132,38 @@ export const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = (pr
                                 <td>{poi.name}</td>
                                 <td><input type="checkbox" disabled={poi.isVisible} checked={poi.isVisible} onChange={(event) => {
                                     const indexOfPointOfInterest = currentlySelectedFlightSet.pointsOfInterest.findIndex(each => each.id === poi.id);
-                                    let newPoint = { ...currentlySelectedFlightSet }
-                                    newPoint.pointsOfInterest[indexOfPointOfInterest].isVisible = event.target.checked;
-                                    props.onUpdateFlightSet(newPoint);
+                                    let newFlightSet = JSON.parse(JSON.stringify({ ...currentlySelectedFlightSet })) as FlightSet;
+                                    newFlightSet.pointsOfInterest[indexOfPointOfInterest].isVisible = event.target.checked;
+                                    props.onUpdateFlightSet(newFlightSet);
                                 }} /></td>
                                 <td>
                                     <div style={{ display: 'flex', gap: '4px' }}>
                                         <label title={poi.information.basicInformation} htmlFor="show-basic">B</label>
                                         <input title={poi.information.basicInformation} type="checkbox" id="show-basic" checked={poi.information.hasBasicInformation} onChange={(event) => {
                                             const indexOfPointOfInterest = currentlySelectedFlightSet.pointsOfInterest.findIndex(each => each.id === poi.id);
-                                            let newPoint = { ...currentlySelectedFlightSet };
-                                            newPoint.pointsOfInterest[indexOfPointOfInterest].information.hasBasicInformation = event.target.checked;
-                                            props.onUpdateFlightSet(newPoint);
+                                            let newFlightSet = JSON.parse(JSON.stringify({ ...currentlySelectedFlightSet })) as FlightSet;
+                                            let newLocation = { ...newFlightSet.pointsOfInterest[indexOfPointOfInterest].information };
+                                            newLocation.hasBasicInformation = event.target.checked;
+                                            newFlightSet.pointsOfInterest[indexOfPointOfInterest].information = newLocation;
+                                            props.onUpdateFlightSet(newFlightSet);
                                         }} />
                                         <label title={poi.information.detailedInformation} htmlFor="show-detailed">D</label>
                                         <input title={poi.information.detailedInformation} type="checkbox" id="show-detailed" checked={poi.information.hasDetailedInformation} onChange={(event) => {
                                             const indexOfPointOfInterest = currentlySelectedFlightSet.pointsOfInterest.findIndex(each => each.id === poi.id);
-                                            let newPoint = { ...currentlySelectedFlightSet };
-                                            newPoint.pointsOfInterest[indexOfPointOfInterest].information.hasDetailedInformation = event.target.checked;
-                                            props.onUpdateFlightSet(newPoint);
+                                            let newFlightSet = JSON.parse(JSON.stringify({ ...currentlySelectedFlightSet })) as FlightSet;
+                                            let newLocation = { ...newFlightSet.pointsOfInterest[indexOfPointOfInterest].information };
+                                            newLocation.hasDetailedInformation = event.target.checked
+                                            newFlightSet.pointsOfInterest[indexOfPointOfInterest].information = newLocation;
+                                            props.onUpdateFlightSet(newFlightSet);
                                         }} />
                                         <label title={poi.information.secretInformation} htmlFor="show-secret">S</label>
                                         <input title={poi.information.secretInformation} type="checkbox" id="show-secret" checked={poi.information.hasSecretInformation} onChange={(event) => {
                                             const indexOfPointOfInterest = currentlySelectedFlightSet.pointsOfInterest.findIndex(each => each.id === poi.id);
-                                            let newPoint = { ...currentlySelectedFlightSet };
-                                            newPoint.pointsOfInterest[indexOfPointOfInterest].information.hasSecretInformation = event.target.checked;
-                                            props.onUpdateFlightSet(newPoint);
+                                            let newFlightSet = JSON.parse(JSON.stringify({ ...currentlySelectedFlightSet })) as FlightSet;
+                                            let newLocation = { ...newFlightSet.pointsOfInterest[indexOfPointOfInterest].information };
+                                            newLocation.hasSecretInformation = event.target.checked
+                                            newFlightSet.pointsOfInterest[indexOfPointOfInterest].information = newLocation;
+                                            props.onUpdateFlightSet(newFlightSet);
                                         }} />
                                     </div>
                                 </td>

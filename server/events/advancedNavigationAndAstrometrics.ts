@@ -87,6 +87,12 @@ App.on('createFlightSet', ({ flightSet }) => {
     sendUpdate()
 });
 
+App.on('updateAdvNavFlightSetData', ({ id, flightSet }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
+    system && system.updateFlightSetData(flightSet)
+    sendUpdate()
+})
+
 App.on('updateAdvNavFlightSet', ({ id, flightSet }) => {
     const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
     system && system.updateFlightSet(flightSet)
@@ -195,6 +201,5 @@ App.on("handleAddFlightSetToNavigation", ({ id, flightSetId }) => {
     const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
     const flightSet = App.flightSets.find(f => f.id === flightSetId)
     system && flightSet && system.addFlightSet(flightSet)
-    console.log("handleAddFlightSetToNavigation", system, flightSet)
     sendUpdate()
 })

@@ -121,7 +121,7 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
 
 
                         </div>
-                        <div style={{ flexBasis: "300px", height: '100%', zIndex: 1, padding: "1.5rem", paddingLeft: '0px' }}>
+                        <div style={{ flexBasis: "300px", height: '100%', zIndex: 1, margin: "1.5rem", marginLeft: '0px' }}>
                             {this.state.selectedPOI ?
                                 <LocationSidebar
                                     location={this.state.selectedPOI} />
@@ -152,8 +152,8 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
                 :
                 <React.Fragment />
             }
-            <img className='flux-image' style={{ width: "100%", height: '100%', zIndex: 0, position: 'absolute', top: 0, left: 0 }} src={CircuitBackground} />
-            <img className='flux-image' style={{ width: "100%", height: '100%', zIndex: 0, position: 'absolute', top: 0, left: 0 }} src={CircuitBackground} />
+            <img alt='' className='flux-image' style={{ width: "100%", height: '100%', zIndex: 0, position: 'absolute', top: 0, left: 0 }} src={CircuitBackground} />
+            <img className='flux-image' style={{ width: "100%", height: '100%', zIndex: 0, position: 'absolute', top: 0, left: 0 }} src={CircuitBackground} alt='' />
 
 
 

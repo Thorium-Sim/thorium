@@ -26,6 +26,8 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     flightSetPathMap: { [key: string]: NamedNavigationRoute[] };
     probes: Probe[];
     probeAssignments: Record<string, ProbeAssignment[]>;
+    name: string;
+    heat: number;
 
     constructor(params: Partial<AdvancedNavigationAndAstrometrics>) {
         super(params);
@@ -53,6 +55,10 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.flightSetPathMap = params.flightSetPathMap || {};
         this.probes = params.probes || [];
         this.probeAssignments = params.probeAssignments || {};
+        this.heat = params.heat || this.heat || 0;
+        this.heatRate = params.heatRate || this.heatRate || 1;
+        this.coolant = params.coolant || this.coolant || 1;
+        this.cooling = params.cooling || false;
     }
 
 
@@ -67,6 +73,19 @@ export default class AdvancedNavigationAndAstrometrics extends System {
             default:
                 return 0;
         }
+    }
+
+    setHeat(heat) {
+        this.heat = Math.min(1, Math.max(0, heat));
+        this.heatLevel = heat * 100;
+    }
+    // We don't really do heat rate... but we could
+    setRate(rate) {
+        this.heatRate = rate;
+    }
+    applyCoolant() {
+        this.coolant = this.coolant - 0.037;
+        this.heat = this.heat - 0.89;
     }
 
     executeHeatInterval() {
@@ -86,6 +105,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 heatRate = 0;
         };
         this.heatLevel = Math.min(100, this.heatLevel + heatRate);
+        this.heat = this.heatLevel / 100;
     }
 
     executeProbeInterval() {
@@ -157,6 +177,14 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         }
 
     }
+    setCoolant(coolant: any): void {
+        this.coolant = coolant;
+        this.coolantLevel = coolant * 100;
+    }
+
+    cool(state?: boolean): void {
+        console.log('cooling', state);
+    }
 
     break(report: string, destroyed: boolean, which: string) {
         this.engineStatus = EngineStatus.STOPPED;
@@ -189,15 +217,27 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         const flightSet = this.flightSets.find(f => f.id === flightSetId);
         this.currentFlightSet = flightSet;
     }
+    updateFlightSetData(flightSet: FlightSet) {
+        const index = this.flightSets.findIndex(f => f.id === flightSet.id);
+        if (index > -1) {
+            this.flightSets[index] = flightSet;
+        }
+        if (this.currentFlightSet?.id === flightSet.id) {
+            this.currentFlightSet = flightSet;
+        }
+    }
     handleCoolantFlush() {
         if (this.heatLevel > this.coolantLevel) {
             const remainingHeat = this.heatLevel - this.coolantLevel;
             this.heatLevel = remainingHeat;
             this.coolantLevel = 0;
+            this.coolant = 0;
         }
         else {
             this.coolantLevel -= this.heatLevel;
+            this.coolant = this.coolantLevel / 100;
             this.heatLevel = 0;
+            this.heat = 0;
         }
     }
     handleEmergencyStop() {
@@ -246,9 +286,11 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     }
     handleSetCoolantLevel(level: number) {
         this.coolantLevel = level;
+        this.coolant = level / 100;
     }
     handleSetHeatLevel(level: number) {
         this.heatLevel = level;
+        this.heat = level;
     }
     handleUpdateCurrentFlightPath(flightPath: NavigationRoute) {
         this.currentFlightPath = flightPath;

@@ -105,12 +105,12 @@ export const OverviewSidebar: React.FC<OverviewSidebarProps> = (props) => {
 
     return <div className='sidebar-parent'>
         <div className='group-parent'>
-            <label className='label'>Available actions</label>
-            <div className='grouping' style={{ padding: '10px' }}>
-                <Button onClick={props.onEngageFlightPath}>{props.currentFlightPath ? "Change flight path" : 'Engage flight path'}</Button>
-                <Button onClick={props.onAddFlightPath}>{"Add flight path"}</Button>
-                {props.engineStatus !== EngineStatus.STOPPED && props.currentFlightPath && <Button onClick={props.onEmergencyStop}>Emergency Stop</Button>}
-                {props.engineStatus === EngineStatus.STOPPED && props.currentFlightPath !== undefined && <Button onClick={props.onResumeFlightPath}>Resume flight path</Button>}
+            {/* <label className='label'>Available actions</label> */}
+            <div style={{ padding: '10px', width: '100%' }}>
+                <Button style={{ width: '100%' }} onClick={props.onEngageFlightPath}>{props.currentFlightPath ? "Change flight path" : 'Engage flight path'}</Button>
+                <Button style={{ width: '100%' }} onClick={props.onAddFlightPath}>{"Add flight path"}</Button>
+                {props.engineStatus !== EngineStatus.STOPPED && props.currentFlightPath && <Button style={{ width: '100%' }} onClick={props.onEmergencyStop}>Emergency Stop</Button>}
+                {props.engineStatus === EngineStatus.STOPPED && props.currentFlightPath !== undefined && <Button style={{ width: '100%' }} onClick={props.onResumeFlightPath}>Resume flight path</Button>}
 
             </div>
 

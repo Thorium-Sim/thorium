@@ -1,5 +1,5 @@
 import React from "react";
-import { AdvancedNavigationAndAstrometrics, Simulator, useGetBasicFlightSetsQuery, useHandleAddFlightSetToNavigationMutation, useHandleEmergencyStopMutation, useHandleEngineFluxMutation, useHandleOverrideLocationMutation, useHandleSetCoolantLevelMutation, useHandleSetHeatLevelMutation, useHandleShowEtaMutation, useHandleShowFlightSetMutation, useHandleUpdateCurrentFlightPathMutation, useHandleUpdateCurrentFlightSetMutation, useHandleUpdateEtaMutation, useUpdateFlightSetMutation } from "generated/graphql";
+import { AdvancedNavigationAndAstrometrics, Simulator, useGetBasicFlightSetsQuery, useHandleAddFlightSetToNavigationMutation, useHandleEmergencyStopMutation, useHandleEngineFluxMutation, useHandleOverrideLocationMutation, useHandleSetCoolantLevelMutation, useHandleSetHeatLevelMutation, useHandleShowEtaMutation, useHandleShowFlightSetMutation, useHandleUpdateAdvNavFlightSetDataMutation, useHandleUpdateAdvNavFlightSetMutation, useHandleUpdateCurrentFlightPathMutation, useHandleUpdateCurrentFlightSetMutation, useHandleUpdateEtaMutation, useUpdateFlightSetMutation } from "generated/graphql";
 import { Button, Container, Modal } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import { FormattedMessage } from "react-intl";
@@ -22,7 +22,6 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
     const [showDetailsModal, setShowDetailsModal] = React.useState(false);
     const [showAddFlightSetModal, setShowAddFlightSetModal] = React.useState(false);
     const [ShowEta] = useHandleShowEtaMutation();
-    const [UpdateFlightSet] = useUpdateFlightSetMutation();
     const [ShowFlightSet] = useHandleShowFlightSetMutation();
     const [UpdateEta] = useHandleUpdateEtaMutation();
     const [EmergencyStop] = useHandleEmergencyStopMutation();
@@ -33,6 +32,7 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
     const [OverrideLocation] = useHandleOverrideLocationMutation();
     const [SetCurrentFlightSet] = useHandleUpdateCurrentFlightSetMutation();
     const [AddFlightSet] = useHandleAddFlightSetToNavigationMutation();
+    const [UpdateFlightSetData] = useHandleUpdateAdvNavFlightSetDataMutation();
 
     const flightSetQuery = useGetBasicFlightSetsQuery();
     let parsedData = undefined;
@@ -181,7 +181,7 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
                             engineStatus={advancedNav.engineStatus as EngineStatus}
                             currentLocation={advancedNav.currentLocation}
                             flightSets={advancedNav.flightSets as FlightSet[]}
-                            possibleFlightPaths={advancedNav.currentFlightSet ? advancedNav.flightSetPathMap[advancedNav.currentFlightSet.id] : []}
+                            possibleFlightPaths={advancedNav.currentFlightSet ? advancedNav.flightPaths : []}
                             currentFlightPath={advancedNav.currentFlightPath || undefined}
                             showEta={advancedNav.showEta}
                             coolantLevel={advancedNav.coolantLevel}
@@ -191,7 +191,7 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
                             showFlightSet={advancedNav.showFlightSet}
                             colorScheme="light"
                             onUpdateFlightSet={(flightSet) => {
-                                UpdateFlightSet({
+                                UpdateFlightSetData({
                                     variables: {
                                         id: advancedNav.id || '',
                                         flightSet: flightSet

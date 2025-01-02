@@ -18,6 +18,7 @@ extend type Mutation {
     updateFlightSet(id: ID!, flightSet: FlightSetInput!): String
     deleteFlightSet(id: ID!): String
     updateAdvNavFlightSet(id: ID!, flightSet: FlightSetInput!): String
+    updateAdvNavFlightSetData(id: ID!, flightSet: FlightSetInput!): String
     handleCoolantFlush(id: ID!): String
     handleEmergencyStop(id: ID!): String
     handleResumePath(id: ID!): String

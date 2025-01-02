@@ -1,5 +1,5 @@
-import React from "react";
-import { AdvancedNavigationAndAstrometrics, Simulator, useHandleResumePathMutation, useHandleSaveFlightPathMutation, useHandleEngageFlightPathMutation, useHandleAdvancedNavCoolantFlushMutation, useHandleEmergencyStopMutation, } from "generated/graphql";
+import React, { useEffect } from "react";
+import { AdvancedNavigationAndAstrometrics, Simulator, useHandleResumePathMutation, useHandleSaveFlightPathMutation, useHandleEngageFlightPathMutation, useHandleAdvancedNavCoolantFlushMutation, useHandleEmergencyStopMutation } from "generated/graphql";
 import { ADVANCED_NAV_AND_ASTROMETRICS_QUERY, ADVANCED_NAV_AND_ASTROMETRICS_SUB } from "./core-queries";
 import { Container, } from "reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
@@ -72,7 +72,7 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({ data, s
                 currentLocationName={advancedNav.currentLocationName || undefined}
                 currentLocationUrl={advancedNav.currentLocationUrl || undefined}
                 remainingStartupTime={advancedNav.remainingStartupTime || undefined}
-                possibleFlightPaths={advancedNav.flightSetPathMap[advancedNav.currentFlightSet?.id || ""] || []}
+                possibleFlightPaths={advancedNav.flightPaths || []}
                 selfIcon={`/assets/${assets.logo}`}
                 coolantLevel={advancedNav.coolantLevel}
                 heatLevel={advancedNav.heatLevel}
