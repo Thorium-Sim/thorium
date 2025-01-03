@@ -8,6 +8,8 @@ import { AdvancedNavigation } from "./AdvancedNavigation";
 import DamageOverlay from "../helpers/DamageOverlay";
 import { EngineStatus } from "./types";
 import { FlightSet } from "containers/FlightDirector/FlightSets/types";
+import { FormattedMessage } from "react-intl";
+import Tour from 'helpers/tourHelper';
 
 
 interface AdvancedNavigationCardProps {
@@ -16,6 +18,36 @@ interface AdvancedNavigationCardProps {
     data?: { loading?: any; advancedNavAndAstrometrics?: AdvancedNavigationAndAstrometrics[] };
     client?: any;
 }
+
+const TrainingSteps = [
+    {
+        selector: ".advnav-training-1",
+        content: (
+            <FormattedMessage
+                id={"advnav-training-1"}
+                defaultMessage="This system allows you to navigate the ship through space and create flight plans. You can also manage the ship's coolant and heat levels."
+            />
+        ),
+    },
+    {
+        selector: ".advnav-training-2",
+        content: (
+            <FormattedMessage
+                id={"advnav-training-2"}
+                defaultMessage="After you execute a new flight path, you'll be able to see information like ETA, the targeted location, or any additional helpful information."
+            />
+        ),
+    },
+    {
+        selector: ".advnav-training-3",
+        content: (
+            <FormattedMessage
+                id={"advnav-training-3"}
+                defaultMessage="Make sure to keep an eye out on the coolant and heat levels. If the heat level gets too high, you'll need to flush the coolant."
+            />
+        ),
+    },
+];
 
 const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({ data, simulator }) => {
     const [EmergencyStop] = useHandleEmergencyStopMutation();
@@ -43,7 +75,7 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({ data, s
 
 
     return (
-        <Container fluid className="card-advNavigation" style={{ height: '100%' }}>
+        <Container fluid className="card-advNavigation advnav-training-1 advnav-training-2 advnav-training-3" style={{ height: '100%' }}>
             <DamageOverlay
                 system={advancedNav}
                 message={`${advancedNav.displayName || advancedNav.name} Offline`}
@@ -117,7 +149,7 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({ data, s
                 }} />
 
 
-
+            <Tour steps={TrainingSteps} />
         </Container>
     )
 }
