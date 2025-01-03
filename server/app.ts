@@ -104,7 +104,6 @@ class Events extends EventEmitter {
   version = 0;
   timestamp: Date = new Date();
   firebaseManager?: ClassesImport.FirebaseManager;
-  advancedNavAndAstrometrics: ClassesImport.AdvancedNavigationAndAstrometrics[] = [];
   flightSets: (FlightSet & { addOnTraining?: boolean })[] = [];
   [index: string]: any;
 
