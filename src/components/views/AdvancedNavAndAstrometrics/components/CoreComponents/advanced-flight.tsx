@@ -196,7 +196,7 @@ export const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = (pr
             <button disabled={props.engineStatus === EngineStatus.STOPPED || props.engineStatus === EngineStatus.STARTUP} onClick={props.onEmergencyStop}>Stop</button>
             <button onClick={handleChangeLocationClick}>Change Location</button>
             <Modal size="lg" isOpen={changeLocationDialogOpen} toggle={() => setChangeLocationDialogOpen(!changeLocationDialogOpen)}>
-                <ModalBody>
+                <ModalBody style={{ backgroundColor: 'lightgray', color: 'black' }}>
                     <CoreAdvancedNavigationMovePosition
                         currentLocation={props.currentLocation}
                         flightSet={props.currentFlightSet}

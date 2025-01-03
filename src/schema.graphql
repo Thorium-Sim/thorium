@@ -42,6 +42,7 @@ type Query {
   advancedNavAndAstrometrics(simulatorId: ID!): [AdvancedNavigationAndAstrometrics]
   getFlightSet(id: ID!): FlightSet
   getAllFlightSets: [FlightSet]!
+  advancedNavStars(simulatorId: ID!): AdvancedNavStarsData
   googleSheets: String
   googleSheetsGetSpreadsheet(spreadsheetId: ID!): GoogleSpreadsheet
   hullPlating(id: ID!): HullPlating
@@ -1480,6 +1481,7 @@ type Subscription {
   firebaseCurrentSelectionsUpdate: FBCurrentSelections
   flightsUpdate(running: Boolean, id: ID): [Flight]
   advancedNavAndAstrometricsUpdate(simulatorId: ID): [AdvancedNavigationAndAstrometrics!]!
+  advancedNavStarsUpdate(simulatorId: ID!): AdvancedNavStarsData!
   googleSheetsUpdate(simulatorId: ID): [GoogleSheets]
   hullPlatingUpdate(simulatorId: ID): [HullPlating!]!
   interfaceUpdate(simulatorId: ID): [Interface]
@@ -2499,6 +2501,7 @@ type FlightSet {
   label: String
   probeLaunchRangeRadius: Float!
   addOnTraining: Boolean
+  pixelDistanceModifier: Float
 }
 
 type BasicCoordinate {
@@ -2561,6 +2564,11 @@ type FSProbe {
 type Equipment {
   id: ID!
   count: Float!
+}
+
+type AdvancedNavStarsData {
+  velocity: Float!
+  activating: Boolean!
 }
 
 input PointOfInterestInput {
@@ -2700,6 +2708,8 @@ input FlightSetInput {
   pixelsPerSecond: Float!
   label: String
   probeLaunchRangeRadius: Float!
+  addOnTraining: Boolean
+  pixelDistanceModifier: Float
 }
 
 input BasicCoordinateInput {

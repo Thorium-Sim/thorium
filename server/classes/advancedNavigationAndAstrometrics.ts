@@ -80,6 +80,11 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 return 0;
         }
     }
+    trainingMode(): void {
+        const addOnTrainingSets = App.flightSets.filter(f => f.addOnTraining);
+        addOnTrainingSets.forEach(f => this.addFlightSet(f));
+        this.updateCurrentlySelectedFlightSet(addOnTrainingSets[0].id);
+    }
 
     setHeat(heat) {
         this.heat = Math.min(1, Math.max(0, heat));
@@ -147,8 +152,14 @@ export default class AdvancedNavigationAndAstrometrics extends System {
 
     executeLoopInterval() {
         if (this.currentFlightPath && this.currentFlightSet) {
+
             const currentTimestamp = generateCurrentUnixTimestamp();
             if (this.engineStatus === EngineStatus.STARTUP && this.currentFlightPath) {
+                if (this.power.power < this.power.powerLevels[0] || this.damage.damaged) {
+                    // shutdown the engine
+                    this.engineStatus = EngineStatus.STOPPED;
+                    return;
+                }
                 const timeElapsed = currentTimestamp - this.startingStartupTime;
                 if (timeElapsed >= this.currentFlightPath.startOption.secondsForStartup) {
                     const flightPathCoords = generateFlightPathCoordinates(this.currentLocation, this.currentFlightPath, this.getLocationIdMap(), this.getBorderIdMap(), this.currentFlightSet.imageMaxX, this.currentFlightSet.imageMaxY);
@@ -169,6 +180,11 @@ export default class AdvancedNavigationAndAstrometrics extends System {
                 }
             }
             else if (this.engineStatus === EngineStatus.ENGAGED || this.engineStatus === EngineStatus.FULL_POWER || this.engineStatus === EngineStatus.FLUX) {
+                if (this.power.power < this.power.powerLevels[0] || this.damage.damaged) {
+                    // shutdown the engine
+                    this.engineStatus = EngineStatus.STOPPED;
+                    return;
+                }
                 this.remainingEta = this.remainingEta - 1;
                 const currentLocation = getPositionAtTime(this.totalEta - this.remainingEta, this.flightPathCoords, this.totalEta);
                 this.currentLocation = currentLocation;
@@ -184,6 +200,27 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         }
 
     }
+
+    getCurrentSpeed() {
+        if (this.currentFlightPath && this.currentFlightSet) {
+            if (this.engineStatus === EngineStatus.STARTUP && this.currentFlightPath) {
+                return { velocity: 0, activating: true };
+            }
+            else if (this.engineStatus === EngineStatus.ENGAGED || this.engineStatus === EngineStatus.FULL_POWER || this.engineStatus === EngineStatus.FLUX) {
+                //this.remainingEta = this.remainingEta - 1;
+                const currentLocation = getPositionAtTime(this.totalEta - this.remainingEta, this.flightPathCoords, this.totalEta);
+                const nextLocation = getPositionAtTime(this.totalEta - this.remainingEta + 1, this.flightPathCoords, this.totalEta);
+                const distance = Math.sqrt(Math.pow(nextLocation.x - currentLocation.x, 2) + Math.pow(nextLocation.y - currentLocation.y, 2));
+                const velocity = (distance * (this.currentFlightSet.pixelDistanceModifier || 1));
+                return { velocity: Number(velocity.toFixed(3)), activating: false };
+            }
+            else {
+                return { velocity: 0, activating: false };
+            }
+        }
+        return { velocity: 0, activating: false };
+    }
+
     setCoolant(coolant: any): void {
         this.coolant = coolant;
         this.coolantLevel = coolant * 100;

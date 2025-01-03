@@ -3,10 +3,11 @@ import { CreateFlightSet } from "./create-flight-set"
 import { FlightSet } from "./types";
 import { Alert, Button, ButtonGroup, Modal, Spinner } from "reactstrap";
 import "./styles.css"
-import { useCreateNewFlightSetMutation, useDeleteFlightMutation, useDeleteFlightSetMutation, useGetAllFlightSetsQuery, useUpdateFlightSetMutation } from "generated/graphql";
+import { useCreateNewFlightSetMutation, useDeleteFlightSetMutation, useGetAllFlightSetsQuery, useUpdateFlightSetMutation } from "generated/graphql";
 import { formatGraphqlQueryToTypescript } from "./formatters";
 import { FlightSetCreationSummary } from "./create-flight-set/steps/summary";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
 
     const [flightSets, setFlightSets] = React.useState<FlightSet[]>([]);

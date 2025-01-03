@@ -26,7 +26,6 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({ data, s
     let parsedData = undefined;
     const { assets } = simulator;
 
-
     if (data && data.advancedNavAndAstrometrics) {
         parsedData = data.advancedNavAndAstrometrics.map((d) => {
             return {
@@ -41,6 +40,7 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({ data, s
     if (!data || data.loading || !advancedNav || !assets) {
         return <React.Fragment />
     }
+
 
     return (
         <Container fluid className="card-advNavigation" style={{ height: '100%' }}>
@@ -68,7 +68,6 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({ data, s
                 currentFlightPath={advancedNav.currentFlightPath || undefined}
                 currentETA={advancedNav.remainingEta || undefined}
                 currentLocation={advancedNav.currentLocation}
-
                 currentLocationName={advancedNav.currentLocationName || undefined}
                 currentLocationUrl={advancedNav.currentLocationUrl || undefined}
                 remainingStartupTime={advancedNav.remainingStartupTime || undefined}

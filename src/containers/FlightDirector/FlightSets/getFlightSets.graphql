@@ -77,5 +77,6 @@ query GetAllFlightSets {
     label
     probeLaunchRangeRadius
     addOnTraining
+    pixelDistanceModifier
     }
 }

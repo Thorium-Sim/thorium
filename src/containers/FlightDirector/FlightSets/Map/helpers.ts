@@ -119,3 +119,12 @@ export function calculatePixelsPerSecond(p1: BasicCoordinate, p2: BasicCoordinat
     const distance = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
     return distance / t;
 }
+
+export function calculatePixelDistanceModifier(p1: BasicCoordinate, p2: BasicCoordinate, distance: number): number {
+    const totalDistance = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+    return distance / totalDistance;
+}
+
+export function getDistanceBetweenCoordinates(p1: BasicCoordinate, p2: BasicCoordinate): number {
+    return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+}

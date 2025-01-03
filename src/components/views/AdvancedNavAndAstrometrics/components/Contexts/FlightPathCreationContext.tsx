@@ -1,7 +1,7 @@
 import React from "react";
 import { NavigationRoute } from "containers/FlightDirector/FlightSets/types";
 import { FC, createContext, useContext } from "react";
-import { DEFAULT_FLIGHT_PATH } from "../FlightPathDecision/defaults";
+import { generate_DEFAULT_FLIGHT_PATH } from "../FlightPathDecision/defaults";
 
 
 interface FlightPathCreationContextProps {
@@ -11,7 +11,7 @@ interface FlightPathCreationContextProps {
 
 // Create the user role context
 const FlightPathCreationContext = createContext<FlightPathCreationContextProps>({
-    flightRoute: DEFAULT_FLIGHT_PATH
+    flightRoute: generate_DEFAULT_FLIGHT_PATH()
 });
 
 const FlightPathCreationContextProvider: FC<{ children: React.ReactNode } & FlightPathCreationContextProps> = ({ children, flightRoute }) => {

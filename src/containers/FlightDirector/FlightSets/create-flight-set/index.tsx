@@ -92,7 +92,9 @@ export const CreateFlightSet: React.FC<CreateFlightSetProps> = (props) => {
         imageMaxX: props.editingFlightSet ? props.editingFlightSet.imageMaxX : 0,
         imageMaxY: props.editingFlightSet ? props.editingFlightSet.imageMaxY : 0,
         pixelsPerSecond: props.editingFlightSet ? props.editingFlightSet.pixelsPerSecond : 4,
-        probeLaunchRangeRadius: props.editingFlightSet?.probeLaunchRangeRadius || 100
+        probeLaunchRangeRadius: props.editingFlightSet?.probeLaunchRangeRadius || 100,
+        pixelDistanceModifier: props.editingFlightSet?.pixelDistanceModifier || 1,
+        addOnTraining: props.editingFlightSet?.addOnTraining || false
     });
     const colorRef = useAdjustTextColorBasedOnBackground();
     useEffect(() => {

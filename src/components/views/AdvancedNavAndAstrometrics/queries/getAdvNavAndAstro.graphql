@@ -4,12 +4,21 @@ query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
     simulatorId
     type
     name
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
     displayName
     stealthFactor
     flightSets {
       id
       name
       backgroundImg
+      pixelDistanceModifier
       startOptions {
         id
         name

@@ -108,9 +108,6 @@ export const FlexFlightPathSummary: React.FC<FlexFlightPathSummaryProps> = (prop
     }, [props.currentLocation, props.flightPath.targetLocationId, props.flightPath])
 
     return <div className={`${styles['summary2-base-flex']}`}>
-        <div className={`${styles['summary2-title-area']}`}>
-            <h1>Flight path summary</h1>
-        </div>
         <div className={`${styles['summary2-content']}`}>
             <div className={`${styles['summary2-content-left']}`}>
                 <div className={`${styles['summary2-execute-area']}`}>

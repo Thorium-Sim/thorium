@@ -11,6 +11,7 @@ extend type Query {
     advancedNavAndAstrometrics(simulatorId: ID!): [AdvancedNavigationAndAstrometrics]
     getFlightSet(id: ID!): FlightSet
     getAllFlightSets: [FlightSet]!
+    advancedNavStars(simulatorId: ID!): AdvancedNavStarsData
 }
 
 extend type Mutation {
@@ -51,6 +52,7 @@ extend type Mutation {
 
 extend type Subscription {
     advancedNavAndAstrometricsUpdate(simulatorId: ID): [AdvancedNavigationAndAstrometrics!]!
+    advancedNavStarsUpdate(simulatorId: ID!): AdvancedNavStarsData!
 }
 
 type AdvancedNavigationAndAstrometrics implements SystemInterface {
@@ -233,6 +235,7 @@ type FlightSet {
   label: String
   probeLaunchRangeRadius: Float!
   addOnTraining: Boolean
+  pixelDistanceModifier: Float
 }
 
 type BasicCoordinate {
@@ -295,6 +298,11 @@ type FSProbe {
 type Equipment {
   id: ID!
   count: Float!
+}
+
+type AdvancedNavStarsData {
+  velocity: Float!
+  activating: Boolean!
 }
 
 input PointOfInterestInput {
@@ -434,6 +442,8 @@ input FlightSetInput {
   pixelsPerSecond: Float!
   label: String
   probeLaunchRangeRadius: Float!
+  addOnTraining: Boolean
+  pixelDistanceModifier: Float
 }
 
 input BasicCoordinateInput {
@@ -531,6 +541,11 @@ const resolver = {
       })
       return newReturnVals
     },
+    advancedNavStars(root, { simulatorId }) {
+      const sys = App.systems.find(s => s.simulatorId === simulatorId && s.type === "AdvancedNavigationAndAstrometrics");
+      if (!sys) return null;
+      return sys.getCurrentSpeed();
+    },
     getFlightSet(root, { id }) {
       const flight = App.flightSets.find(f => f.id === id);
       if (!flight) return null;
@@ -540,11 +555,28 @@ const resolver = {
     },
     getAllFlightSets(root) {
       return App.flightSets
-
     }
   },
   Mutation: mutationHelper(schema),
   Subscription: {
+    advancedNavStarsUpdate: {
+      resolve(rootValue, { simulatorId }) {
+        let returnSystems = rootValue;
+        if (simulatorId) {
+          returnSystems = returnSystems.filter(
+            sys => sys.simulatorId === simulatorId,
+          );
+        }
+        if (returnSystems.length > 0) {
+          return returnSystems[0].getCurrentSpeed();
+        }
+        return { velocity: 0, activating: false };
+      },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator('advancedNavStarsUpdate'),
+        rootValue => !!(rootValue && rootValue.length),
+      ),
+    },
     advancedNavAndAstrometricsUpdate: {
       resolve(rootValue, { simulatorId }) {
         let returnSystems = rootValue;

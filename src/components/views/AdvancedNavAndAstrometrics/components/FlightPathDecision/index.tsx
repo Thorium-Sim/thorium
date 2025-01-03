@@ -5,7 +5,7 @@ import { SelectSpeedType } from "./steps/select-speed-type";
 import { SelectStartType } from "./steps/select-start-type";
 import { SelectEndType } from "./steps/select-end-type";
 import { AddStop } from "./steps/add-stop";
-import { DEFAULT_FLIGHT_PATH } from "./defaults";
+import { generate_DEFAULT_FLIGHT_PATH } from "./defaults";
 import { LocationSidebar } from "./summary/location-sidebar";
 import { PathSummarySidebar } from "./summary/path-sidebar";
 import { useFlightContext } from "../Contexts/OverallFlightContexts";
@@ -56,10 +56,11 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
     const [secondaryRouteEditIndex, setSecondaryRouteEditIndex] = useState<number>(0);
     const [secondaryRouteSelected, setSecondaryRouteSelected] = useState<PointOfInterest | null>(null);
     const [flightPathName, setFlightPathName] = useState<string>("");
-    const [flightRoute, setFlightRoute] = useState<NavigationRoute>(DEFAULT_FLIGHT_PATH);
+    const [flightRoute, setFlightRoute] = useState<NavigationRoute>(generate_DEFAULT_FLIGHT_PATH());
     const [state, setState] = useState<FlightPathDecisionState>(props.saving ? FlightPathDecisionState.SELECT_DESTINATION : FlightPathDecisionState.SELECT_FLIGHT_PATTERN);
     const [canJumpToSummary, setCanJumpToSummary] = useState<boolean>(false);
     const [currentLocation, setCurrentLocation] = useState<{ x: number, y: number }>(props.currentLocation);
+
     const pointsOfInterestMap = useMemo(() => {
         const map = {} as Record<string, PointOfInterest>;
         pointsOfInterest.forEach((poi) => {
@@ -173,11 +174,12 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
         resetStart();
         setCanJumpToSummary(false);
         setFlightPathName("");
-        setFlightRoute(DEFAULT_FLIGHT_PATH);
+        setFlightRoute(generate_DEFAULT_FLIGHT_PATH());
+        let flightPath = { ...generate_DEFAULT_FLIGHT_PATH() };
+        setFlightRoute(flightPath);
         setSelectedFlightPath(null);
         setState(FlightPathDecisionState.SELECT_FLIGHT_PATTERN);
     }
-
 
     return (
         <FlightPathCreationContextProvider flightRoute={flightRoute}>
@@ -202,7 +204,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                         continueToNextStep={() => {
                             if (selectedFlightPath === 'new') {
                                 setFlightPathName("");
-                                setFlightRoute(DEFAULT_FLIGHT_PATH);
+                                setFlightRoute(generate_DEFAULT_FLIGHT_PATH());
                                 setSelectedFlightPath(null);
                                 prepDestination();
                                 setState(FlightPathDecisionState.SELECT_DESTINATION);
@@ -258,7 +260,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                         canJumpToSummary={canJumpToSummary}
                         continueToNextStep={() => {
                             const flightPath = { ...flightRoute };
-                            flightPath.startOption = selectedStartOption || DEFAULT_FLIGHT_PATH.startOption;
+                            flightPath.startOption = selectedStartOption || generate_DEFAULT_FLIGHT_PATH().startOption;
                             setFlightRoute(flightPath);
                             resetStart();
                             prepSpeed();
@@ -286,7 +288,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                         selectedOption={selectedSpeedOption?.name}
                         continueToNextStep={() => {
                             const flightPath = { ...flightRoute };
-                            flightPath.speedOption = selectedSpeedOption || DEFAULT_FLIGHT_PATH.speedOption;
+                            flightPath.speedOption = selectedSpeedOption || generate_DEFAULT_FLIGHT_PATH().speedOption;
                             setFlightRoute(flightPath);
                             resetSpeed();
                             prepExit();
@@ -313,7 +315,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                         selectedOption={selectedExitOption?.name}
                         continueToNextStep={() => {
                             const flightPath = { ...flightRoute };
-                            flightPath.exitOption = selectedExitOption || DEFAULT_FLIGHT_PATH.exitOption;
+                            flightPath.exitOption = selectedExitOption || generate_DEFAULT_FLIGHT_PATH().exitOption;
                             setFlightRoute(flightPath);
                             resetExit();
                             setCanJumpToSummary(true);
@@ -347,7 +349,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                                 }}
                                 continueToNextStep={() => {
                                     const flightPath = { ...flightRoute };
-                                    flightPath.targetLocationId = targetLocation?.id || DEFAULT_FLIGHT_PATH.targetLocationId;
+                                    flightPath.targetLocationId = targetLocation?.id || generate_DEFAULT_FLIGHT_PATH().targetLocationId;
                                     if (pointsOfInterestMap[flightPath.targetLocationId]) {
                                         flightPath.isBorder = false;
                                     }
@@ -373,6 +375,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                             <LocationSidebar
                                 location={targetLocation ? targetLocation : undefined}
                                 currentLocation={currentLocation}
+                                pixelDistanceModifier={flightSet.pixelDistanceModifier}
                             />
                         </div>
                     </div>
@@ -390,7 +393,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                             </Button>
                             <Button
                                 color="primary"
-                                onClick={() => { props.onSaveRoute({ ...flightRoute, name: flightPathName, id: Math.floor(Math.random() * 1000000) + "flightpath" }) }}
+                                onClick={() => { props.onSaveRoute({ ...flightRoute, name: flightPathName, id: Math.floor(Math.random() * 1000000) + "flightpath" }); resetValues() }}
                                 disabled={!flightPathName.length || props.possibleFlightPatterns.find((each) => each.name === flightPathName) !== undefined}>
                                 Save
                             </Button>
@@ -405,7 +408,15 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                         maxImageY={flightSet.imageMaxY}
                         borders={flightSet.borders}
                         nextBtnText={props.saving ? "Save" : "Engage"}
-                        nextBtnAction={() => props.saving ? setState(FlightPathDecisionState.NAME_SAVED_ROUTE) : props.onExecuteRoute(flightRoute)}
+                        nextBtnAction={() => {
+                            if (props.saving) {
+                                setState(FlightPathDecisionState.NAME_SAVED_ROUTE)
+                            }
+                            else {
+                                props.onExecuteRoute(flightRoute);
+                                resetValues();
+                            }
+                        }}
                         allowNext={true}
                         flightPath={flightRoute}
                         possibleLocations={pointsOfInterest}
@@ -453,6 +464,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                         addVersion
                         location={secondaryRouteSelected ? pointsOfInterestMap[secondaryRouteSelected?.id] : undefined}
                         currentLocation={currentLocation}
+                        pixelDistanceModifier={flightSet.pixelDistanceModifier}
                     />
                 </div>}
                 {state === FlightPathDecisionState.SELECT_FLIGHT_PATTERN && <div style={{ flexGrow: 0 }}>

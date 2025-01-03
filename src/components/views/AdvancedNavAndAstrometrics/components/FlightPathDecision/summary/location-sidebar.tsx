@@ -10,6 +10,7 @@ export type LocationSidebarProps = {
     location?: PointOfInterest | MapBorder;
     currentLocation: { x: number, y: number }
     addVersion?: boolean
+    pixelDistanceModifier?: number
 }
 
 export function generateInformationParagraph(information: PointOfInterestInformation) {
@@ -94,11 +95,11 @@ export const LocationSidebar: React.FC<LocationSidebarProps> = (props) => {
             </div>
             {props.location && <React.Fragment>
                 <div className="location-sidebar-data">
-                    Distance: {(distanceToTarget / 3).toFixed(2)} light years
+                    Distance: {(distanceToTarget * (props.pixelDistanceModifier || 1)).toFixed(2)} light years
                 </div>
                 <div className="location-sidebar-divider"></div>
                 <div style={{ display: 'flex', flexDirection: "column", flexGrow: 1, overflow: "auto" }}>
-                    <img style={{ width: "100%" }} src={locationImageUrl} />
+                    <img alt='background-img' style={{ width: "100%" }} src={locationImageUrl} />
                     {props.location && !isMapBorder(props.location) && <div className="location-sidebar-information">
                         <p style={{ marginLeft: "0px" }} className='location-sidebar-data'>Location information:</p>
                         {generateInformationParagraph((props.location as PointOfInterest).information)}

@@ -101,6 +101,9 @@ const sendUpdate = sys => {
   if (sys.class === "HullPlating") {
     pubsub.publish("hullPlatingUpdate", sys);
   }
+  if (sys.class === "AdvancedNavigationAndAstrometrics") {
+    pubsub.publish("advancedNavAndAstrometricsUpdate", sys);
+  }
   pubsub.publish("systemsUpdate", App.systems);
 };
 App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {

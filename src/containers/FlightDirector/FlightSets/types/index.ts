@@ -135,6 +135,7 @@ export type FlightSet = {
     label?: string
     probeLaunchRangeRadius: number;
     addOnTraining?: boolean;
+    pixelDistanceModifier?: number;
 }
 
 export type BasicCoordinate = {

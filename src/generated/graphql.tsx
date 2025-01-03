@@ -61,6 +61,7 @@ export type Query = {
   advancedNavAndAstrometrics?: Maybe<Array<Maybe<AdvancedNavigationAndAstrometrics>>>;
   getFlightSet?: Maybe<FlightSet>;
   getAllFlightSets: Array<Maybe<FlightSet>>;
+  advancedNavStars?: Maybe<AdvancedNavStarsData>;
   googleSheets?: Maybe<Scalars['String']>;
   googleSheetsGetSpreadsheet?: Maybe<GoogleSpreadsheet>;
   hullPlating?: Maybe<HullPlating>;
@@ -326,6 +327,11 @@ export type QueryAdvancedNavAndAstrometricsArgs = {
 
 export type QueryGetFlightSetArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryAdvancedNavStarsArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -6872,6 +6878,7 @@ export type Subscription = {
   firebaseCurrentSelectionsUpdate?: Maybe<FbCurrentSelections>;
   flightsUpdate?: Maybe<Array<Maybe<Flight>>>;
   advancedNavAndAstrometricsUpdate: Array<AdvancedNavigationAndAstrometrics>;
+  advancedNavStarsUpdate: AdvancedNavStarsData;
   googleSheetsUpdate?: Maybe<Array<Maybe<GoogleSheets>>>;
   hullPlatingUpdate: Array<HullPlating>;
   interfaceUpdate?: Maybe<Array<Maybe<Interface>>>;
@@ -7131,6 +7138,11 @@ export type SubscriptionFlightsUpdateArgs = {
 
 export type SubscriptionAdvancedNavAndAstrometricsUpdateArgs = {
   simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionAdvancedNavStarsUpdateArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -8514,6 +8526,7 @@ export type FlightSet = {
   label?: Maybe<Scalars['String']>;
   probeLaunchRangeRadius: Scalars['Float'];
   addOnTraining?: Maybe<Scalars['Boolean']>;
+  pixelDistanceModifier?: Maybe<Scalars['Float']>;
 };
 
 export type BasicCoordinate = {
@@ -8585,6 +8598,12 @@ export type Equipment = {
   __typename?: 'Equipment';
   id: Scalars['ID'];
   count: Scalars['Float'];
+};
+
+export type AdvancedNavStarsData = {
+  __typename?: 'AdvancedNavStarsData';
+  velocity: Scalars['Float'];
+  activating: Scalars['Boolean'];
 };
 
 export type PointOfInterestInput = {
@@ -8724,6 +8743,8 @@ export type FlightSetInput = {
   pixelsPerSecond: Scalars['Float'];
   label?: Maybe<Scalars['String']>;
   probeLaunchRangeRadius: Scalars['Float'];
+  addOnTraining?: Maybe<Scalars['Boolean']>;
+  pixelDistanceModifier?: Maybe<Scalars['Float']>;
 };
 
 export type BasicCoordinateInput = {
@@ -12051,9 +12072,15 @@ export type GetAdvancedNavAndAstrometricsQuery = (
   & { advancedNavAndAstrometrics?: Maybe<Array<Maybe<(
     { __typename?: 'AdvancedNavigationAndAstrometrics' }
     & Pick<AdvancedNavigationAndAstrometrics, 'id' | 'simulatorId' | 'type' | 'name' | 'displayName' | 'stealthFactor' | 'coolantLevel' | 'heatLevel' | 'engineStatus' | 'hasEmergencyPower' | 'startingStartupTime' | 'remainingEta' | 'totalEta' | 'remainingStartupTime' | 'showEta' | 'showFlightSet' | 'currentLocationName' | 'currentLocationUrl' | 'flightSetPathMap' | 'probeAssignments'>
-    & { flightSets: Array<(
+    & { power?: Maybe<(
+      { __typename?: 'Power' }
+      & Pick<Power, 'power' | 'powerLevels'>
+    )>, damage?: Maybe<(
+      { __typename?: 'Damage' }
+      & Pick<Damage, 'damaged' | 'report'>
+    )>, flightSets: Array<(
       { __typename?: 'FlightSet' }
-      & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining'>
+      & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'pixelDistanceModifier' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining'>
       & { startOptions: Array<(
         { __typename?: 'NavigationStartOptions' }
         & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
@@ -14477,7 +14504,7 @@ export type GetAllFlightSetsQuery = (
   { __typename?: 'Query' }
   & { getAllFlightSets: Array<Maybe<(
     { __typename?: 'FlightSet' }
-    & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining'>
+    & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining' | 'pixelDistanceModifier'>
     & { startOptions: Array<(
       { __typename?: 'NavigationStartOptions' }
       & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
@@ -16466,12 +16493,21 @@ export const GetAdvancedNavAndAstrometricsDocument = gql`
     simulatorId
     type
     name
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
     displayName
     stealthFactor
     flightSets {
       id
       name
       backgroundImg
+      pixelDistanceModifier
       startOptions {
         id
         name
@@ -18991,6 +19027,7 @@ export const GetAllFlightSetsDocument = gql`
     label
     probeLaunchRangeRadius
     addOnTraining
+    pixelDistanceModifier
   }
 }
     `;

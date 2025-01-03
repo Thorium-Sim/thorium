@@ -39,6 +39,8 @@ export {default as Picture} from "./Picture";
 export {default as Objectives} from "./Objectives";
 export {default as Tasks} from "./Tasks";
 export {default as Sensors} from "./Sensors";
+export {default as AdvancedNavStars} from "./Stars/advancedNav";
+
 
 export {default as InformationConfig} from "./Information/config";
 export {default as InternalSensorsConfig} from "./InternalSensors/config";
@@ -53,3 +55,5 @@ export {default as ShipModelConfig} from "./ShipModel/config";
 export {default as TimerConfig} from "./Timer/config";
 export {default as PictureConfig} from "./Picture/config";
 export {default as StarsConfig} from "./Stars/config";
+export {default as AdvancedNavStarsConfig} from "./Stars/config"
+

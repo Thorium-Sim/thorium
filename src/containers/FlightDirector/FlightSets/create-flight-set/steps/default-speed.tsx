@@ -3,7 +3,7 @@ import { CreateFlightSetStepProps } from "./types";
 import './shared-styles.css'
 import { Button } from "reactstrap";
 import { PositionMap } from "../../Map";
-import { calculatePixelsPerSecond, calculateTotalTime } from "../../Map/helpers";
+import { calculatePixelDistanceModifier, calculatePixelsPerSecond, calculateTotalTime, getDistanceBetweenCoordinates } from "../../Map/helpers";
 import { formatSecondsToTime } from "../../Time";
 import { FlightSet, BasicCoordinate } from "../../types";
 
@@ -34,6 +34,49 @@ export const FlightSetCreationDefaultSpeed: React.FC<CreateFlightSetStepProps<Fl
             setState({ ...state, pixelsPerSecond: newPixelsPerSecond });
         }
 
+    }
+
+
+    const handleDistanceChange = () => {
+        if (primaryLocation && secondaryLocation) {
+            let newDistance = prompt("Please enter the distance in light years");
+            if (newDistance === null || newDistance === undefined || newDistance === "") {
+                return;
+            }
+            if (isNaN(Number(newDistance)) || Number(newDistance) <= 0) {
+                alert("Please enter a valid number");
+                return;
+            }
+            let distanceModifier = calculatePixelDistanceModifier(primaryLocation, secondaryLocation, Number(newDistance));
+            setState({ ...state, pixelDistanceModifier: distanceModifier });
+        }
+    }
+
+    const calculateStarSpeeds = () => {
+        if (primaryLocation && secondaryLocation) {
+            const path = [{ ...primaryLocation, speed: 1, color: 'white' }, { ...secondaryLocation, speed: 1, color: 'white' }];
+            let totalTime = calculateTotalTime(path, state.pixelsPerSecond);
+            let distance = getDistanceBetweenCoordinates(primaryLocation, secondaryLocation) * (state.pixelDistanceModifier || 1);
+            let speed = distance / totalTime;
+            if (speed < 0.02) {
+                return "very slow stars"
+            }
+            else if (speed > 0.02 && speed < 0.08) {
+                return "slow stars"
+            }
+            else if (speed > 0.08 && speed < 0.15) {
+                return "average stars"
+            }
+            else if (speed > 0.15 && speed < 0.4) {
+                return "above average stars"
+            }
+            else if (speed > 0.5 && speed < 0.8) {
+                return "fast stars"
+            }
+            else {
+                return "too fast stars. We recommend that you decrease the distance to make the stars more manageable"
+            }
+        }
     }
 
 
@@ -80,6 +123,15 @@ export const FlightSetCreationDefaultSpeed: React.FC<CreateFlightSetStepProps<Fl
                                 <span>{(primaryLocation && secondaryLocation) ? formatSecondsToTime(calculateTotalTime([{ ...primaryLocation, speed: 1, color: 'white' }, { ...secondaryLocation, speed: 1, color: 'white' },], state.pixelsPerSecond)) : "Please select a primary and secondary location"}</span>
                                 {(primaryLocation && secondaryLocation) && <Button onClick={handleChangeClick}>Change</Button>}
                             </div>
+                            <div className="step-content-row" style={{ gap: '10px', alignItems: 'center' }}>
+                                <span>Distance: </span>
+                                <span>{(primaryLocation && secondaryLocation) ? (getDistanceBetweenCoordinates(primaryLocation, secondaryLocation) * (state.pixelDistanceModifier || 1)).toFixed(2) + ' yl' : "Please select a primary and secondary location"}</span>
+                                {(primaryLocation && secondaryLocation) && <Button onClick={handleDistanceChange}>Change</Button>}
+                            </div>
+                            {(primaryLocation && secondaryLocation) && <div className="step-content-row" style={{ gap: '10px', alignItems: 'center' }}>
+                                <span>Star speed: </span>
+                                <span>Based on the values you've entered, the base speed without speedups would create: {calculateStarSpeeds()}</span>
+                            </div>}
                         </div>
 
                     </div>

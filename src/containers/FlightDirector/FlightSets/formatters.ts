@@ -1,4 +1,4 @@
-import { CreateNewFlightSetMutationVariables, GetAllFlightSetsQuery } from "generated/graphql";
+import { GetAllFlightSetsQuery } from "generated/graphql";
 import { MapBorderSide as MapBorderSideType, SecondaryStopTransitOption, FlightSet } from "./types";
 
 export function formatGraphqlQueryToTypescript(query: GetAllFlightSetsQuery): FlightSet[] {
@@ -47,6 +47,7 @@ export function formatGraphqlQueryToTypescript(query: GetAllFlightSetsQuery): Fl
             borders: borderArray || [],
             pointsOfInterest: pointsOfInterest || [],
             addOnTraining: flightSet?.addOnTraining || false,
+            pixelDistanceModifier: flightSet?.pixelDistanceModifier || 1,
         }
     })
     return newFlightSets;

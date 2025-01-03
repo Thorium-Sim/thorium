@@ -10,10 +10,18 @@ export const ADVANCED_NAV_AND_ASTROMETRICS_SUB = gql`
     name
     displayName
     stealthFactor
+    damage {
+      damaged
+    }
+    power {
+      power
+      powerLevels
+    }
     flightSets {
       id
       name
       backgroundImg
+      pixelDistanceModifier
       startOptions {
         id
         name
@@ -98,7 +106,6 @@ export const ADVANCED_NAV_AND_ASTROMETRICS_SUB = gql`
       name
       id
       targetLocationId
-
       secondaryRouteOptions {
         targetLocationId
       }
@@ -142,6 +149,7 @@ export const ADVANCED_NAV_AND_ASTROMETRICS_SUB = gql`
     currentFlightSet {
       id
       name
+      pixelDistanceModifier
       backgroundImg
       startOptions {
         id
@@ -272,10 +280,19 @@ query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
     name
     displayName
     stealthFactor
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
     flightSets {
       id
       name
       backgroundImg
+      pixelDistanceModifier
       startOptions {
         id
         name
@@ -361,7 +378,6 @@ query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
       name
       id
       targetLocationId
-
       secondaryRouteOptions {
         targetLocationId
       }
@@ -406,6 +422,7 @@ query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
       id
       name
       backgroundImg
+      pixelDistanceModifier
       startOptions {
         id
         name

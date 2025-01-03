@@ -165,19 +165,20 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
                     <br />
                     Target Location: {advancedNav.currentFlightPath?.targetLocationId ? locationIdMap[advancedNav.currentFlightPath?.targetLocationId] : "None"}
                     <br />
-                    <Button
-                        onClick={() => {
-                            setShowAddFlightSetModal(true);
-                        }}
-                    >
-                        Show available flight sets
-                    </Button>
+
                     <Button
                         onClick={() => {
                             setShowDetailsModal(true);
                         }}
                     >
                         Open Panel
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setShowAddFlightSetModal(true);
+                        }}
+                    >
+                        Show available flight sets
                     </Button>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>

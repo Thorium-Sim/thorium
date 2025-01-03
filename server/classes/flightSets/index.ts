@@ -14,6 +14,7 @@ export class FlightSet {
     label?: string;
     probeLaunchRangeRadius: number;
     addOnTraining?: boolean;
+    pixelDistanceModifier?: number;
     class: string
     constructor(flightSet: FlightSet) {
         this.class = "FlightSet";
@@ -33,6 +34,7 @@ export class FlightSet {
         this.borders = flightSet?.borders || [];
         this.pointsOfInterest = flightSet?.pointsOfInterest || [];
         this.addOnTraining = flightSet?.addOnTraining || false;
+        this.pixelDistanceModifier = flightSet?.pixelDistanceModifier || 1;
     }
 }
 
