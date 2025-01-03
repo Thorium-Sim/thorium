@@ -43,7 +43,6 @@ export const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = (pr
 
     const handleFullReset = (flightSet: FlightSet) => {
         props.onUpdateCurrentFlightSet(flightSet);
-        props.onOverrideLocation(flightSet.defaultStartingLocation);
         props.onShowFlightSet(false);
         props.onShowEta(false);
     }
@@ -172,12 +171,12 @@ export const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = (pr
                                 <td colSpan={4}>
                                     <button onClick={() => setAddPOIDialogOpen(true)}>Add Point of Interest</button>
                                     <Modal isOpen={addPOIDialogOpen} toggle={() => setAddPOIDialogOpen(!addPOIDialogOpen)}>
-                                        <ModalBody>
+                                        <ModalBody style={{ backgroundColor: 'lightgray' }}>
                                             {currentlySelectedFlightSet &&
                                                 <CoreAdvancedNavigationAddPoi
                                                     flightSet={currentlySelectedFlightSet}
                                                     onAddPOI={(poi) => {
-                                                        const flightSet = { ...currentlySelectedFlightSet };
+                                                        const flightSet = JSON.parse(JSON.stringify({ ...currentlySelectedFlightSet }));
                                                         flightSet.pointsOfInterest.push(poi);
                                                         props.onUpdateFlightSet(flightSet);
                                                         setAddPOIDialogOpen(false);

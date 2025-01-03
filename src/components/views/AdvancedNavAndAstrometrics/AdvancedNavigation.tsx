@@ -51,7 +51,7 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
 
     render() {
         return <div className={this.props.engineStatus !== EngineStatus.STOPPED && 'ripple-pulse' || ''} style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-            {!this.props.currentFlightSet && <h1 style={{ position: 'absolute', top: '50%', textAlign: 'center' }}>Now loading flight data</h1>}
+            {(!this.props.currentFlightSet || !this.props.showFlightSet) && <h1 style={{ position: 'absolute', top: '45%', textAlign: 'center' }}>Now loading flight data</h1>}
             {this.props.currentFlightSet && this.props.showFlightSet ? <FlightContextProvider
                 backgroundImage={this.props.currentFlightSet.backgroundImg}
                 currentLocation={this.props.currentLocation}
@@ -76,10 +76,7 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
                 }
 
                 {this.state.pageState === PageState.OVERVIEW &&
-
                     <React.Fragment>
-
-
                         <div style={{ flexGrow: 1, height: '100%', zIndex: 1, margin: "2rem" }}>
                             <SelectablePositionMap
                                 onClick={(id) => {
@@ -91,9 +88,7 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
                                         if (pointOfInterest) {
                                             this.setState({ selectedPOI: pointOfInterest })
                                         }
-
                                     }
-
                                 }}
                                 imageUrl={this.props.currentFlightSet.backgroundImg}
                                 selectedPOI={this.state.selectedPOI || undefined}
@@ -146,7 +141,6 @@ export class AdvancedNavigation extends React.Component<AdvancedNavigationProps,
 
                         </div>
                     </React.Fragment>
-
                 }
             </FlightContextProvider>
                 :

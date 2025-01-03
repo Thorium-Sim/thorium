@@ -987,6 +987,10 @@ export type Mutation = {
   handleAddFlightSetToNavigation?: Maybe<Scalars['String']>;
   /** Macro: Advanced Navigation: Add Flight Set to Navigation */
   addFlightSetToNavigation?: Maybe<Scalars['String']>;
+  handleOnAssignProbe?: Maybe<Scalars['String']>;
+  handleUpdateProbeAssignments: Scalars['String'];
+  /** Macro: Advanced Navigation: Select current flight set */
+  selectCurrentFlightSet?: Maybe<Scalars['String']>;
   googleSheetsAuthorize?: Maybe<Scalars['String']>;
   googleSheetsCompleteAuthorize?: Maybe<Scalars['String']>;
   googleSheetsRevoke?: Maybe<Scalars['String']>;
@@ -3044,6 +3048,25 @@ export type MutationHandleAddFlightSetToNavigationArgs = {
 export type MutationAddFlightSetToNavigationArgs = {
   simulatorId: Scalars['ID'];
   flightSetId: Scalars['ID'];
+};
+
+
+export type MutationHandleOnAssignProbeArgs = {
+  id: Scalars['ID'];
+  probeId: Scalars['ID'];
+  poiId: Scalars['ID'];
+};
+
+
+export type MutationHandleUpdateProbeAssignmentsArgs = {
+  id: Scalars['ID'];
+  probeAssignments: Scalars['String'];
+};
+
+
+export type MutationSelectCurrentFlightSetArgs = {
+  simulatorId: Scalars['ID'];
+  flightSetId: Scalars['String'];
 };
 
 
@@ -12230,6 +12253,18 @@ export type HandleEngineFluxMutation = (
   & Pick<Mutation, 'handleEngineFlux'>
 );
 
+export type HandleOnAssignProbeMutationVariables = Exact<{
+  id: Scalars['ID'];
+  probeId: Scalars['ID'];
+  poiId: Scalars['ID'];
+}>;
+
+
+export type HandleOnAssignProbeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleOnAssignProbe'>
+);
+
 export type HandleOverrideLocationMutationVariables = Exact<{
   id: Scalars['ID'];
   location: BasicCoordinateInput;
@@ -12350,6 +12385,17 @@ export type HandleUpdateEtaMutationVariables = Exact<{
 export type HandleUpdateEtaMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'handleUpdateEta'>
+);
+
+export type HandleUpdateProbeAssignmentsMutationVariables = Exact<{
+  id: Scalars['ID'];
+  probeAssignments: Scalars['String'];
+}>;
+
+
+export type HandleUpdateProbeAssignmentsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleUpdateProbeAssignments'>
 );
 
 export type CountermeasureModuleFragment = (
@@ -16743,6 +16789,15 @@ export function useHandleEngineFluxMutation(baseOptions?: ApolloReactHooks.Mutat
         return ApolloReactHooks.useMutation<HandleEngineFluxMutation, HandleEngineFluxMutationVariables>(HandleEngineFluxDocument, baseOptions);
       }
 export type HandleEngineFluxMutationHookResult = ReturnType<typeof useHandleEngineFluxMutation>;
+export const HandleOnAssignProbeDocument = gql`
+    mutation HandleOnAssignProbe($id: ID!, $probeId: ID!, $poiId: ID!) {
+  handleOnAssignProbe(id: $id, probeId: $probeId, poiId: $poiId)
+}
+    `;
+export function useHandleOnAssignProbeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleOnAssignProbeMutation, HandleOnAssignProbeMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleOnAssignProbeMutation, HandleOnAssignProbeMutationVariables>(HandleOnAssignProbeDocument, baseOptions);
+      }
+export type HandleOnAssignProbeMutationHookResult = ReturnType<typeof useHandleOnAssignProbeMutation>;
 export const HandleOverrideLocationDocument = gql`
     mutation HandleOverrideLocation($id: ID!, $location: BasicCoordinateInput!, $currentLocationUrl: String, $currentLocationName: String) {
   handleOverrideLocation(id: $id, location: $location, currentLocationUrl: $currentLocationUrl, currentLocationName: $currentLocationName)
@@ -16842,6 +16897,15 @@ export function useHandleUpdateEtaMutation(baseOptions?: ApolloReactHooks.Mutati
         return ApolloReactHooks.useMutation<HandleUpdateEtaMutation, HandleUpdateEtaMutationVariables>(HandleUpdateEtaDocument, baseOptions);
       }
 export type HandleUpdateEtaMutationHookResult = ReturnType<typeof useHandleUpdateEtaMutation>;
+export const HandleUpdateProbeAssignmentsDocument = gql`
+    mutation HandleUpdateProbeAssignments($id: ID!, $probeAssignments: String!) {
+  handleUpdateProbeAssignments(id: $id, probeAssignments: $probeAssignments)
+}
+    `;
+export function useHandleUpdateProbeAssignmentsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateProbeAssignmentsMutation, HandleUpdateProbeAssignmentsMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateProbeAssignmentsMutation, HandleUpdateProbeAssignmentsMutationVariables>(HandleUpdateProbeAssignmentsDocument, baseOptions);
+      }
+export type HandleUpdateProbeAssignmentsMutationHookResult = ReturnType<typeof useHandleUpdateProbeAssignmentsMutation>;
 export const CountermeasuresDocument = gql`
     subscription Countermeasures($simulatorId: ID!) {
   countermeasuresUpdate(simulatorId: $simulatorId) {

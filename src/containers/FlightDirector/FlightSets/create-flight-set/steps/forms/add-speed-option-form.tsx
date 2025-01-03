@@ -68,7 +68,6 @@ export const CreateSpeedOptionForm = (props: CreateSpeedOptionFormProps) => {
                 Requires Max Engines
             </Label>
             <Button disabled={!canCreateOption} onClick={() => {
-                console.log('Creating speed option');
                 props.onCreateOption({
                     id: props.defaultSpeedOption?.id || Math.random().toString(),
                     name,

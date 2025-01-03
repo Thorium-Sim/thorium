@@ -29,6 +29,7 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     flightSetPathMap: { [key: string]: NamedNavigationRoute[] };
     probes: Probe[];
     probeAssignments: Record<string, ProbeAssignment[]>;
+    locationMap: Record<string, BasicCoordinate>
     name: string;
     heat: number;
 
@@ -56,12 +57,14 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.currentLocationName = params.currentLocationName;
         this.currentLocationUrl = params.currentLocationUrl;
         this.flightSetPathMap = params.flightSetPathMap || {};
-        this.probes = params.probes || [];
+        this.probes = params.probes || App.systems.find(sys => sys.simulatorId === this.simulatorId && sys.class === 'Probes')?.probes || [];
         this.probeAssignments = params.probeAssignments || {};
         this.heat = params.heat || this.heat || 0;
         this.heatRate = params.heatRate || this.heatRate || 1;
         this.coolant = params.coolant || this.coolant || 1;
         this.cooling = params.cooling || false;
+        this.locationMap = {}
+        this.resyncProbes();
     }
 
 
@@ -187,7 +190,6 @@ export default class AdvancedNavigationAndAstrometrics extends System {
     }
 
     cool(state?: boolean): void {
-        console.log('cooling', state);
     }
 
     break(report: string, destroyed: boolean, which: string) {
@@ -201,11 +203,19 @@ export default class AdvancedNavigationAndAstrometrics extends System {
 
     updateFlightSet(flightSet: FlightSet) {
         const oldFlightPaths = [...this.flightPaths];
+        const locationMap = { ...this.locationMap };
         const setMap = { ...this.flightSetPathMap };
         this.currentFlightSet && (setMap[this.currentFlightSet.id] = oldFlightPaths);
         const newFlightPaths = setMap[flightSet.id] || [];
         this.showEta = false;
-        this.currentLocation = flightSet.defaultStartingLocation;
+        locationMap[this.currentFlightSet?.id || ''] = { ...this.currentLocation };
+        if (locationMap[flightSet.id]) {
+            this.currentLocation = locationMap[flightSet.id]
+        }
+        else {
+            this.currentLocation = flightSet.defaultStartingLocation;
+        }
+        this.currentLocation = locationMap[flightSet.id] || flightSet.defaultStartingLocation;
         this.flightPaths = newFlightPaths;
         this.remainingEta = 0;
         this.totalEta = 0;
@@ -216,10 +226,11 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         this.currentLocationUrl = undefined;
         this.currentFlightSet = flightSet;
         this.flightSetPathMap = setMap;
+        this.locationMap = locationMap;
     }
     updateCurrentlySelectedFlightSet(flightSetId: string) {
         const flightSet = this.flightSets.find(f => f.id === flightSetId);
-        this.currentFlightSet = flightSet;
+        this.updateFlightSet(flightSet);
     }
     updateFlightSetData(flightSet: FlightSet) {
         const index = this.flightSets.findIndex(f => f.id === flightSet.id);
@@ -372,6 +383,21 @@ export default class AdvancedNavigationAndAstrometrics extends System {
         const newFlightPaths = [...this.flightPaths];
         newFlightPaths.push(flightPath);
         this.flightPaths = newFlightPaths;
+    }
+    resyncProbes() {
+        const probes = App.systems.find(sys => sys.simulatorId === this.simulatorId && sys.class === 'Probes')?.probes || [];
+        this.probes = probes;
+        // Now make sure all probes still exist in the probe assignments
+        const newProbeAssignments = { ...this.probeAssignments };
+        const flightSetIds = Object.keys(newProbeAssignments);
+        for (let i = 0; i < flightSetIds.length; i++) {
+            const flightSetProbeAssignments = newProbeAssignments[flightSetIds[i]];
+            newProbeAssignments[flightSetIds[i]] = flightSetProbeAssignments.filter((each) => probes.find(probe => probe.id === each.probeId));
+        }
+        this.probeAssignments = newProbeAssignments;
+    }
+    overrideProbeAssignments(probeAssignments: Record<string, ProbeAssignment[]>) {
+        this.probeAssignments = probeAssignments;
     }
 }
 

@@ -203,7 +203,6 @@ export function formatSecondsToTime(seconds: number): string {
 
 
 export const generateFlightPathCoordinates = (currentLocation: { x: number, y: number }, flightPath: NavigationRoute, locationIdMap: Record<string, PointOfInterest>, borderIdMap: Record<string, MapBorder>, maxX: number, maxY: number) => {
-    console.log(currentLocation, flightPath, locationIdMap, borderIdMap, maxX, maxY)
     const pointArray = [{ ...currentLocation, color: generateSpeedColor(flightPath.speedOption.speedModifier), speed: 1 }];
     if (flightPath.secondaryRouteOptions.length) {
         for (let i = 0; i < flightPath.secondaryRouteOptions.length; i++) {
@@ -313,7 +312,6 @@ export function getLastVisitedCoordinate(t: number, path: FullCoordinate[], T: n
 
     // Determine which segment the position is in at time t
     let accumulatedTime = 0;
-    console.log(scaledSegmentTimes, t);
     for (let i = 0; i < path.length - 1; i++) {
         const segmentTime = scaledSegmentTimes[i];
 

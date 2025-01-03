@@ -31,7 +31,7 @@ export const FlightSetCreationPointsOfInterestNBorders: React.FC<CreateFlightSet
                     <div className="step-content-column" style={{ height: '100%' }}>
                         <SelectablePositionMap
                             imageUrl={state.backgroundImg}
-                            onClick={(coord) => { console.log(coord) }}
+                            onClick={(coord) => { }}
                             locations={state.pointsOfInterest.map(poi => {
                                 return {
                                     id: poi.id,

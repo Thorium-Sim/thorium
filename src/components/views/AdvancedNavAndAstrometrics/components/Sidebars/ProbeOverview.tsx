@@ -62,8 +62,7 @@ export const ProbeOverviewSidebar: React.FC<ProbeOverviewSidebarProps> = (props)
     }, [currentProbeAssignment, props])
 
     return <div className='sidebar-parent'>
-        <div className='group-parent height-animation' style={{ height: selectedProbe ? '50%' : 'auto' }}>
-            <label className='label'>Available Probes</label>
+        <div className='group-parent height-animation' style={{ height: selectedProbe ? '45%' : 'auto' }}>
             <div className='grouping' style={{ flexGrow: 1, overflow: 'auto' }}>
                 {props.availableProbes.length === 0 && <span>No available probes, please launch more probes</span>}
                 {props.availableProbes.length > 0 && props.availableProbes.map(probe => {
@@ -78,8 +77,7 @@ export const ProbeOverviewSidebar: React.FC<ProbeOverviewSidebarProps> = (props)
                 })}
             </div>
         </div>
-        {<div className='group-parent height-animation' style={{ height: selectedProbe ? '50%' : 'auto' }}>
-            <label className='label'>Probe Information</label>
+        {<div className='group-parent height-animation' style={{ height: selectedProbe ? '45%' : 'auto' }}>
             <div className='grouping' style={{ flexGrow: 1 }}>
                 {selectedProbe ? <React.Fragment>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>

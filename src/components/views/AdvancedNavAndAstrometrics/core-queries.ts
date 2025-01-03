@@ -3,7 +3,7 @@ import gql from "graphql-tag.macro";
 
 export const ADVANCED_NAV_AND_ASTROMETRICS_SUB = gql`
     subscription AdvancedNavAndAstrometricsUpdate($simulatorId: ID!) {
-        advancedNavAndAstrometricsUpdate(simulatorId: $simulatorId) {
+      advancedNavAndAstrometricsUpdate(simulatorId: $simulatorId) {
     id
     simulatorId
     type

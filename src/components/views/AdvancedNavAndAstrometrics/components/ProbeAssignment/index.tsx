@@ -26,7 +26,7 @@ export const ProbeAssignmentForm: React.FC<ProbeAssignmentFormProps> = (props: P
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+        <div style={{ display: 'flex', zIndex: 2, flexDirection: 'column', width: '100%', height: '100%' }}>
             <div style={{ display: 'flex', marginBottom: "0.5rem", justifyContent: 'space-between', alignItems: 'center' }}>
                 <h1>Assign {props.probe.name}</h1>
                 <div className="button-parent">

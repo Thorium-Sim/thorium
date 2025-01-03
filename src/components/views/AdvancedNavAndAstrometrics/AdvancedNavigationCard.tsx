@@ -32,7 +32,7 @@ const AdvancedNavigationCard: React.FC<AdvancedNavigationCardProps> = ({ data, s
             return {
                 ...d,
                 flightSetPathMap: JSON.parse(d.flightSetPathMap),
-                probeAssignments: JSON.parse(d.probeAssignments),
+                probeAssignments: Object.keys(JSON.parse(d.probeAssignments)).map(k => JSON.parse(d.probeAssignments)[k]),
             }
         })
     }

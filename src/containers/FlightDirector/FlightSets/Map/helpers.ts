@@ -79,7 +79,6 @@ export function getLastVisitedCoordinate(t: number, path: FullCoordinate[], T: n
 
     // Determine which segment the position is in at time t
     let accumulatedTime = 0;
-    console.log(scaledSegmentTimes, t);
     for (let i = 0; i < path.length - 1; i++) {
         const segmentTime = scaledSegmentTimes[i];
 

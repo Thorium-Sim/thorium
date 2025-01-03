@@ -1,0 +1,3 @@
+mutation HandleUpdateProbeAssignments($id: ID!, $probeAssignments: String!) {
+    handleUpdateProbeAssignments(id: $id, probeAssignments: $probeAssignments)
+}

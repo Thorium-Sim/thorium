@@ -23,6 +23,13 @@
     filter: brightness(2.5);
 }
 
+.button-parent {
+    display: flex;
+    height: min-content;
+    margin-right: 1rem;
+    gap: 2rem;
+}
+
 @keyframes ripple {
     0% {
         --x: 0%;

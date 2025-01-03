@@ -166,7 +166,6 @@ export const FlightSetCreationFlightOptions: React.FC<FlightSetCreationFlightOpt
                                                 <CreateSpeedOptionForm
                                                     defaultSpeedOption={selectedSpeedOption}
                                                     onCreateOption={(option) => {
-                                                        console.log('Creating speed option');
                                                         const indexOfOption = speedOptionsArray.findIndex(each => each.id === option.id);
                                                         const newOptionArray = [...speedOptionsArray];
                                                         newOptionArray[indexOfOption] = option;

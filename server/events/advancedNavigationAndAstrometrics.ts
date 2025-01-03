@@ -59,6 +59,12 @@ App.on('addFlightSetToNavigation', ({ simulatorId, flightSetId }) => {
     sendUpdate();
 })
 
+App.on('selectCurrentFlightSet', ({ simulatorId, flightSetId }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.simulatorId === simulatorId && s.class === 'AdvancedNavigationAndAstrometrics');
+    system && system.updateCurrentlySelectedFlightSet(flightSetId);
+    sendUpdate();
+});
+
 App.on('updateFlightSet', ({ id, flightSet }) => {
     const newFlightSet = { ...flightSet }
     newFlightSet.borders = newFlightSet.borders.map(border => {
@@ -210,4 +216,16 @@ App.on("handleAddFlightSetToNavigation", ({ id, flightSetId }) => {
     const flightSet = App.flightSets.find(f => f.id === flightSetId)
     system && flightSet && system.addFlightSet(flightSet)
     sendUpdate()
+})
+
+App.on("handleOnAssignProbe", ({ id, probeId, poiId }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id)
+    system && system.handleAddAssignment(probeId, poiId)
+    sendUpdate()
+})
+
+App.on("handleUpdateProbeAssignments", ({ id, probeAssignments }) => {
+    const system: AdvancedNavigationAndAstrometrics = App.systems.find(s => s.id === id);
+    system && system.overrideProbeAssignments(JSON.parse(probeAssignments));
+    sendUpdate();
 })

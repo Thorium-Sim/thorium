@@ -422,7 +422,7 @@ export const FlightPathDecision: React.FC<FlightPathDecisionProps> = (props) => 
                             setSecondaryRouteEditIndex(index);
                             setState(FlightPathDecisionState.SELECT_SECONDARY_ROUTE)
                         }}
-                        handleEditSecondaryTarget={() => console.log("Not supported")}
+                        handleEditSecondaryTarget={() => { }}
                         handleSpeedOptionChange={() => {
                             prepSpeed();
                             setState(FlightPathDecisionState.SELECT_SPEED);

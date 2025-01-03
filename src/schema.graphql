@@ -442,6 +442,11 @@ type Mutation {
 
   """Macro: Advanced Navigation: Add Flight Set to Navigation"""
   addFlightSetToNavigation(simulatorId: ID!, flightSetId: ID!): String
+  handleOnAssignProbe(id: ID!, probeId: ID!, poiId: ID!): String
+  handleUpdateProbeAssignments(id: ID!, probeAssignments: String!): String!
+
+  """Macro: Advanced Navigation: Select current flight set"""
+  selectCurrentFlightSet(simulatorId: ID!, flightSetId: String!): String
   googleSheetsAuthorize: String
   googleSheetsCompleteAuthorize(token: String!): String
   googleSheetsRevoke: String

@@ -9,6 +9,8 @@ import { CoreAdvancedNavigation as CoreAdvancedNavigationModal } from './compone
 import { EngineStatus } from "./types";
 import { FlightSet } from "containers/FlightDirector/FlightSets/types";
 import "./styles.css"
+import { PositionMap } from "containers/FlightDirector/FlightSets/Map";
+import { formatSecondsToTime } from "containers/FlightDirector/FlightSets/Time";
 
 
 interface CoreAdvancedNavigationProps {
@@ -53,9 +55,6 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
         return flightSetQuery.data?.getAllFlightSets?.filter(f => !advancedNav?.flightSets.find(af => af.id === f?.id)) || [];
     }, [flightSetQuery.data, advancedNav]);
 
-    console.log("data", data);
-    console.log("advancedNav", advancedNav);
-    console.log("notIncludedFlightSets", notIncludedFlightSets);
 
     if (!data || data.loading || !parsedData) {
         return (
@@ -78,6 +77,31 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
                 />
             </div>
         );
+    }
+    const handleEtaClick = () => {
+        let hours = prompt("Please enter the hours");
+        if (hours === null || hours === undefined || hours === "") {
+            return;
+        }
+        let minutes = prompt("Please enter the minutes");
+        if (minutes === null || minutes === undefined || minutes === "") {
+            return;
+        }
+        let seconds = prompt("Please enter the seconds");
+        if (seconds === null || seconds === undefined || seconds === "") {
+            return;
+        }
+        if (isNaN(Number(hours)) || isNaN(Number(minutes)) || isNaN(Number(seconds))) {
+            alert("Please enter a valid number");
+            return;
+        }
+        const eta = Number(hours) * 3600 + Number(minutes) * 60 + Number(seconds);
+        UpdateEta({
+            variables: {
+                id: advancedNav.id || '',
+                eta
+            }
+        })
     }
 
     const locationIdMap = advancedNav.flightSets.reduce((prev, next) => {
@@ -104,21 +128,42 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
                     })
                 }
             />
-            <div style={{ display: 'flex' }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <Button
-                        onClick={() => {
-                            setShowDetailsModal(true);
-                        }}
-                    >
-                        Open Panel
-                    </Button>
+            <div style={{ display: 'flex', width: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+
+                    {advancedNav.currentFlightSet && <div style={{ width: '100%', minHeight: '10rem' }}><PositionMap
+                        imageUrl={advancedNav.currentFlightSet?.backgroundImg || ""}
+                        primaryLocation={advancedNav.currentLocation}
+                    /></div>}
+                    {advancedNav.currentFlightSet && <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <button disabled={advancedNav.engineStatus === EngineStatus.STOPPED || advancedNav.engineStatus === EngineStatus.STARTUP} onClick={() => {
+                            EngineFlux({
+                                variables: {
+                                    id: advancedNav.id || ''
+                                }
+                            })
+                        }}>{advancedNav.engineStatus === EngineStatus.FLUX ? "Cancel Flux" : "Flux"}</button>
+                        <button disabled={advancedNav.engineStatus === EngineStatus.STOPPED || advancedNav.engineStatus === EngineStatus.STARTUP} onClick={() => {
+                            EmergencyStop({
+                                variables: {
+                                    id: advancedNav.id || ''
+                                }
+                            })
+                        }}>Stop</button>
+                        <label htmlFor="eta">ETA</label>
+                        <div onClick={handleEtaClick} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', minWidth: '5rem', backgroundColor: 'yellow', textAlign: 'center', color: 'black' }}>{advancedNav.remainingEta ? formatSecondsToTime(advancedNav.remainingEta) : 'None'}</div>
+                        <label htmlFor="show-eta">Show ETA</label>
+                        <input disabled={advancedNav.engineStatus === EngineStatus.STOPPED} type="checkbox" id="show-eta" checked={advancedNav.showEta} onChange={(event) => {
+                            ShowEta({
+                                variables: {
+                                    id: advancedNav.id || '',
+                                    show: event.target.checked
+                                }
+                            })
+                        }} />
+                    </div>}
                     <br />
                     Target Location: {advancedNav.currentFlightPath?.targetLocationId ? locationIdMap[advancedNav.currentFlightPath?.targetLocationId] : "None"}
-                    <br />
-                    Current ETA: {advancedNav.remainingEta}
-                    <br />
-                    Show ETA: {advancedNav.showEta ? "Yes" : "No"}
                     <br />
                     <Button
                         onClick={() => {
@@ -126,6 +171,13 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
                         }}
                     >
                         Show available flight sets
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setShowDetailsModal(true);
+                        }}
+                    >
+                        Open Panel
                     </Button>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -145,7 +197,6 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
                                         <Button
                                             color="primary"
                                             onClick={() => {
-                                                console.log("Adding flight set", each?.id, advancedNav.id);
                                                 AddFlightSet({
                                                     variables: {
                                                         id: advancedNav.id || '',
@@ -174,8 +225,8 @@ const CoreAdvancedNavigation: React.FC<CoreAdvancedNavigationProps> = ({ childre
                     </div>
                 </div>
             </Modal>
-            <Modal className="fullscreen-modal" isOpen={showDetailsModal} toggle={() => setShowDetailsModal(false)}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <Modal className="fullscreen-modal" isOpen={showDetailsModal} toggle={() => setShowDetailsModal(false)} >
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'lightgray' }}>
                     <div style={{ flexGrow: 1, margin: '1rem' }}>
                         <CoreAdvancedNavigationModal
                             engineStatus={advancedNav.engineStatus as EngineStatus}

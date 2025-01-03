@@ -51,7 +51,6 @@ export const LocationSidebar: React.FC<LocationSidebarProps> = (props) => {
         else if (props.location && isMapBorder(props.location)) {
             // it's a border
             const border: MapBorder = props.location as MapBorder;
-            console.log(generateBorderCoords(props.currentLocation, border, flightSet.imageMaxX, flightSet.imageMaxY))
             return distanceFormula(props.currentLocation, generateBorderCoords(props.currentLocation, border, flightSet.imageMaxX, flightSet.imageMaxY))
         }
         else {

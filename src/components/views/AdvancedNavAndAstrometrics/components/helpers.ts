@@ -24,7 +24,6 @@ export const generateBorderIdMap = (borders: MapBorder[]) => {
 }
 
 export const generateFlightPathCoordinates = (currentLocation: { x: number, y: number }, flightPath: NavigationRoute, locationIdMap: Record<string, PointOfInterest>, borderIdMap: Record<string, MapBorder>, maxX: number, maxY: number) => {
-    console.log(currentLocation, flightPath, locationIdMap, borderIdMap, maxX, maxY)
     const pointArray = [{ ...currentLocation, color: generateSpeedColor(flightPath.speedOption.speedModifier), speed: 1 }];
     if (flightPath.secondaryRouteOptions.length) {
         for (let i = 0; i < flightPath.secondaryRouteOptions.length; i++) {
