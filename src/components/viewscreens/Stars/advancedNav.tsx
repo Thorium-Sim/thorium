@@ -53,7 +53,6 @@ class TemplateData extends Component<any, any> {
                     const { advancedNavStars } = data;
                     if (!advancedNavStars) return null;
                     const { velocity, activating } = advancedNavStars;
-                    console.log(velocity);
                     return (
                         <SubscriptionHelper
                             subscribe={() =>
