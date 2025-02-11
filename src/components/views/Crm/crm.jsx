@@ -2,7 +2,7 @@ import React from "react";
 import {Button, ListGroup, ListGroupItem /*Input*/} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import {FormattedMessage} from "react-intl";
+
 import Tour from "helpers/tourHelper";
 
 function reducer(state, action = {}) {
@@ -18,42 +18,19 @@ function reducer(state, action = {}) {
 const trainingSteps = name => [
   {
     selector: ".blank",
-    content: (
-      <FormattedMessage
-        id="crm-training-1"
-        defaultMessage="The {name} is an automated fighter system that can be controlled by any of the stations on the bridge. This screen allows you to activate the {name} system on those stations."
-        values={{name}}
-      />
-    ),
+    content: `The ${name} is an automated fighter system that can be controlled by any of the stations on the bridge. This screen allows you to activate the ${name} system on those stations.`
   },
   {
     selector: ".station-list",
-    content: (
-      <FormattedMessage
-        id="crm-training-2"
-        defaultMessage="To choose the stations you want to activate the {name} on, click on the name of the station in this list to toggle it on or off."
-        values={{name}}
-      />
-    ),
+    content: `To choose the stations you want to activate the ${name} on, click on the name of the station in this list to toggle it on or off.`
   },
   {
     selector: ".select-all-stations",
-    content: (
-      <FormattedMessage
-        id="crm-training-3"
-        defaultMessage="Click this button to select all of the stations."
-      />
-    ),
+    content: "Click this button to select all of the stations.",
   },
   {
     selector: ".activate-crm",
-    content: (
-      <FormattedMessage
-        id="crm-training-4"
-        defaultMessage="Click this button to activate the {name} on the selected stations. This button is disabled during training mode to keep the {name} from disturbing other station training."
-        values={{name}}
-      />
-    ),
+    content: `Click this button to activate the ${name} on the selected stations. This button is disabled during training mode to keep the {name} from disturbing other station training.`
   },
 ];
 const Crm = props => {
@@ -142,20 +119,13 @@ const Crm = props => {
                     action();
                   }}
                 >
-                  <FormattedMessage
-                    id="crm-confirm-reset-password"
-                    defaultMessage="Confirm Password"
-                  />
+                  $
                 </Button>
               )}
             </Mutation>
           </>
         ) : (
-          <Button color="info" block onClick={() => setUpdatePassword(true)}>
-            <FormattedMessage
-              id="crm-reset-password"
-              defaultMessage="Reset Password"
-            />
+          <Button color="info" block onClick={() => setUpdatePassword(true)}>Reset Password
           </Button>
         )}
       </div> */}
@@ -178,13 +148,8 @@ const Crm = props => {
                 !Object.values(state).find(s => s === true)
               }
             >
-              {activated ? (
-                <FormattedMessage
-                  id="crm-deactivate"
-                  defaultMessage="Deactivate"
-                />
-              ) : (
-                <FormattedMessage id="crm-activate" defaultMessage="Activate" />
+              {activated ? "Deactivate" : (
+                Activate
               )}
             </Button>
           )}
@@ -192,7 +157,7 @@ const Crm = props => {
       </div>
       <div className="select-all-stations">
         <Button color="info" block onClick={selectAll}>
-          <FormattedMessage id="crm-select-all" defaultMessage="Select All" />
+          Select All
         </Button>
       </div>
       <div className="power-control" />

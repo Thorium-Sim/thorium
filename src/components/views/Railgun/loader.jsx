@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import {Button} from "helpers/reactstrap";
-import {FormattedMessage} from "react-intl";
+
 import {TransitionGroup, CSSTransition} from "react-transition-group";
 import Tour from "helpers/tourHelper";
 import DamageOverlay from "../helpers/DamageOverlay";
@@ -10,33 +10,18 @@ import DamageOverlay from "../helpers/DamageOverlay";
 const initialSteps = [
   {
     selector: ".nothing",
-    content: (
-      <FormattedMessage
-        id="railgun-loader-training-1"
-        defaultMessage="The railgun is a point-defense weapon designed to destroy incoming projectiles. This screen is where you load bolts into the railgun."
-      />
-    ),
+    content: "The railgun is a point-defense weapon designed to destroy incoming projectiles. This screen is where you load bolts into the railgun.",
   },
   {
     selector: ".railgun-controls",
-    content: (
-      <FormattedMessage
-        id="railgun-loader-training-2"
-        defaultMessage="Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!"
-      />
-    ),
+    content: "Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!",
   },
 ];
 export default class RailgunLoader extends Component {
   static trainingSteps = [
     {
       selector: ".load-button",
-      content: (
-        <FormattedMessage
-          id="railgun-loader-training-3"
-          defaultMessage="Click this button to load a bolt into the railgun."
-        />
-      ),
+content: "Click this button to load a bolt into the railgun.",
     },
   ];
   state = {};
@@ -78,35 +63,17 @@ export default class RailgunLoader extends Component {
                   color="warning"
                   size="lg"
                 >
-                  <FormattedMessage
-                    id="railgun-load"
-                    description="A button which adds one bolt of ammunition to the railgun."
-                    defaultMessage="Load Railgun"
-                  />
+                  $
                 </Button>
               )}
             </Mutation>
           )}
           <h4>
-            <FormattedMessage
-              id="railgun-loaded-ammo"
-              description="How much ammunition has been loaded into the railgun."
-              defaultMessage="Loaded Ammunition: {ammo}"
-              values={{
-                ammo,
-              }}
-            />
+            Loaded Ammunition: {ammo}
           </h4>
           {!hasLoader && (
             <h4>
-              <FormattedMessage
-                id="railgun-available-ammo"
-                description="How much ammunition is available to be loaded into the railgun."
-                defaultMessage="Available Ammunition: {availableAmmo}"
-                values={{
-                  availableAmmo,
-                }}
-              />
+Available Ammunition: {availableAmmo}
             </h4>
           )}
         </div>

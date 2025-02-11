@@ -33,7 +33,7 @@ export default ({shields, state, _toggleShields, simulator}) => {
             block
             className="shield-activate"
             disabled={state.disabledButton[s.id]}
-            onClick={_toggleShields.bind(this, s)}
+            onClick={()=>_toggleShields(s)}
           >{`${s.state ? "Lower" : "Raise"} Shields`}</Button>
         </Col>
       </Row>

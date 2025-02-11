@@ -44,8 +44,8 @@ const PhaserBeam = ({
       <Button
         size="sm"
         color="info"
-        onMouseDown={coolPhasers.bind(this, id)}
-        onTouchStart={coolPhasers.bind(this, id)}
+        onMouseDown={()=>coolPhasers(id)}
+        onTouchStart={()=>coolPhasers(id)}
       >
         Cool
       </Button>

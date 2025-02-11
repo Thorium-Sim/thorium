@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import {withApollo, Mutation} from "react-apollo";
 import Tour from "helpers/tourHelper";
-import {FormattedMessage} from "react-intl";
+
 import gql from "graphql-tag.macro";
 
 const ShipImage = ({simulatorId, view, clients, charge, index, executive}) => {
@@ -126,42 +126,23 @@ class ThxRender extends Component {
     const normalTraining = [
       {
         selector: ".charge-button",
-        content: (
-          <FormattedMessage
-            id="thx-training-2"
-            defaultMessage="Click and hold this button to charge your sector of the {name}."
-            values={{name}}
-          />
-        ),
+        content: 
+          `Click and hold this button to charge your sector of the ${name}.`
       },
       {
         selector: ".thx-bar-container",
-        content: (
-          <FormattedMessage
-            id="thx-training-3"
-            defaultMessage="You can see how much your sector is charged with this bar."
-          />
-        ),
+        content: "You can see how much your sector is charged with this bar.",
       },
       {
         selector: ".lock-sector",
-        content: (
-          <FormattedMessage
-            id="thx-training-4"
-            defaultMessage="Once you are finished charging your sector, click the 'Lock Sector' button."
-          />
-        ),
+        content: "Once you are finished charging your sector, click the 'Lock Sector' button.",
       },
     ];
     const execTraining = [
       {
         selector: ".thx-activate-button",
         content: (
-          <FormattedMessage
-            id="thx-training-5"
-            defaultMessage="Once you see that all of the sectors have been charged, press this button to activate the {name}."
-            values={{name}}
-          />
+`Once you see that all of the sectors have been charged, press this button to activate the ${name}.`
         ),
       },
     ];
@@ -169,11 +150,7 @@ class ThxRender extends Component {
       {
         selector: ".nothing",
         content: (
-          <FormattedMessage
-            id="thx-training-1"
-            defaultMessage="The {name} is a very powerful device which must be charged in every sector of the ship to be used. Once all sectors have been charged, it can be activated."
-            values={{name}}
-          />
+`The ${name} is a very powerful device which must be charged in every sector of the ship to be used. Once all sectors have been charged, it can be activated.`
         ),
       },
     ].concat(executive ? execTraining : normalTraining);

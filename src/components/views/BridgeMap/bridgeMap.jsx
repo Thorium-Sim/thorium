@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Container, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import {FormattedMessage} from "react-intl";
+
 
 import svgToJSX from "svg-to-jsx";
 import "./style.scss";
@@ -36,12 +36,7 @@ class BridgeMap extends Component {
     return [
       {
         selector: ".bridgeMap",
-        content: (
-          <FormattedMessage
-            id="bridge-map-training-1"
-            defaultMessage="This screen shows a map of the bridge. You can use it to see what each station on the bridge does. Hover your mouse over or tap on a station to see a description on the right side of the screen."
-          />
-        ),
+        content: "This screen shows a map of the bridge. You can use it to see what each station on the bridge does. Hover your mouse over or tap on a station to see a description on the right side of the screen.",
       },
     ];
   };

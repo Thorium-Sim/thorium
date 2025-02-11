@@ -3,7 +3,7 @@ import {Label} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {withApollo, Query} from "react-apollo";
 // import { Tooltip } from "helpers/reactstrap";
-import {FormattedMessage} from "react-intl";
+
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import {publish} from "helpers/pubsub";
 import useSoundEffect from "helpers/hooks/useSoundEffect";
@@ -125,11 +125,7 @@ const AlertCondition = ({simulator, client}) => {
               })
             }
           />
-          <Label>
-            <FormattedMessage
-              id="alert-condition"
-              defaultMessage="Alert Condition"
-            />
+          <Label>Alert Condition
           </Label>
           <div className="button-container">
             {["5", "4", "3", "2", "1"].map(a => (

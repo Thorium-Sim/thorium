@@ -190,15 +190,15 @@ const CoolantBar = ({
       <div className="coolant-control-button">
         <Button
           color="info"
-          onMouseDown={transferCoolant.bind(this, systemId, "tank")}
-          onTouchStart={transferCoolant.bind(this, systemId, "tank")}
+          onMouseDown={()=> transferCoolant( systemId, "tank")}
+          onTouchStart={()=> transferCoolant(systemId, "tank")}
         >
           <FaArrowLeft /> Fill Reservoir
         </Button>
         <Button
           color="primary"
-          onMouseDown={transferCoolant.bind(this, systemId, "system")}
-          onTouchStart={transferCoolant.bind(this, systemId, "system")}
+          onMouseDown={()=> transferCoolant( systemId, "system")}
+          onTouchStart={()=> transferCoolant(systemId, "system")}
         >
           Fill Coolant <FaArrowRight name="arrow-right" />
         </Button>

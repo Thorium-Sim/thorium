@@ -1,6 +1,6 @@
 import React, {Fragment, Component} from "react";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
-import {FormattedMessage} from "react-intl";
+
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
@@ -21,50 +21,23 @@ class JumpDrive extends Component {
     return [
       {
         selector: ".nothing",
-        content: (
-          <FormattedMessage
-            id="jump-drive-training-1"
-            defaultMessage="The {systemName} is a system which creates an envelope of spacetime around your ship. This envelope serves two purposes: 1) increasing momentum by moving the space around you; 2) decreasing time dilation effects of high velocities. In short, it helps your ship to move faster than the speed of light, getting you to your destination in shorter periods of time. Note that you must use your conventional engines in conjunction with the {systemName}. The {systemName} does not provide propulsion to your ship."
-            values={{systemName: displayName}}
-          />
-        ),
+        content: `The ${systemName} is a system which creates an envelope of spacetime around your ship. This envelope serves two purposes: 1) increasing momentum by moving the space around you; 2) decreasing time dilation effects of high velocities. In short, it helps your ship to move faster than the speed of light, getting you to your destination in shorter periods of time. Note that you must use your conventional engines in conjunction with the {systemName}. The {systemName} does not provide propulsion to your ship.`
       },
       {
         selector: ".slider-bar",
-        content: (
-          <FormattedMessage
-            id="jump-drive-training-2"
-            defaultMessage="This is where you can change the envelope size surrounding your ship. A larger envelope requires more power to maintain, but gives you room for other ships to follow you in your envelope. Make sure you have sufficient power in your system before using a higher envelope size. Click the button below to activate the {systemName}."
-            values={{systemName: displayName}}
-          />
-        ),
+        content: `This is where you can change the envelope size surrounding your ship. A larger envelope requires more power to maintain, but gives you room for other ships to follow you in your envelope. Make sure you have sufficient power in your system before using a higher envelope size. Click the button below to activate the ${systemName}.`
       },
       {
         selector: ".power-adjustments",
-        content: (
-          <FormattedMessage
-            id="jump-drive-training-3"
-            defaultMessage="There are four emitters that create your envelope, one for each side of your ship. You must ensure that each has sufficient power to operate as you travel at high speeds. As you travel at high speeds, the emitters will become stressed with the continual warping of spacetime around your ship. If they have enough power supplied, the emitters will be able to compensate for the additional stress."
-          />
-        ),
+        content: "There are four emitters that create your envelope, one for each side of your ship. You must ensure that each has sufficient power to operate as you travel at high speeds. As you travel at high speeds, the emitters will become stressed with the continual warping of spacetime around your ship. If they have enough power supplied, the emitters will be able to compensate for the additional stress.",
       },
       {
         selector: ".ship-holder",
-        content: (
-          <FormattedMessage
-            id="jump-drive-training-4"
-            defaultMessage="Here you can see the current size of your envelope, along with the current stress levels, represented with color. The circle background color shows the overall stress level, with blue meaning everything is fine and red meaning you are in danger of envelope collapse. Once activated, graphical representations of the individual emitter stress levels will appear, allowing you to keep track of which emitters are doing well and which need more power."
-          />
-        ),
+        content: "Here you can see the current size of your envelope, along with the current stress levels, represented with color. The circle background color shows the overall stress level, with blue meaning everything is fine and red meaning you are in danger of envelope collapse. Once activated, graphical representations of the individual emitter stress levels will appear, allowing you to keep track of which emitters are doing well and which need more power.",
       },
       {
         selector: ".stress-container",
-        content: (
-          <FormattedMessage
-            id="jump-drive-training-5"
-            defaultMessage="You can also see the overall stress of the emitters here. Make sure this stays low. If the envelope collapses without being deactivated first, it could be very dangerous for you and your crew."
-          />
-        ),
+        content: "You can also see the overall stress of the emitters here. Make sure this stays low. If the envelope collapses without being deactivated first, it could be very dangerous for you and your crew.",
       },
     ];
   };
@@ -170,11 +143,7 @@ class JumpDrive extends Component {
                       onClick={() =>
                         action({variables: {id, activated: false}})
                       }
-                    >
-                      <FormattedMessage
-                        defaultMessage="Deactivate"
-                        id="jump-drive-sector-deactivate"
-                      />
+                    >Deactivate
                     </Button>
                   ) : (
                     <Button
@@ -184,11 +153,7 @@ class JumpDrive extends Component {
                       disabled={!this.canActivate()}
                       color="warning"
                       onClick={() => action({variables: {id, activated: true}})}
-                    >
-                      <FormattedMessage
-                        defaultMessage="Activate"
-                        id="jump-drive-sector-activate"
-                      />
+                    >Activate
                     </Button>
                   )}
                 </Fragment>
@@ -215,18 +180,10 @@ class JumpDrive extends Component {
                 />
               </div>
               <div style={{display: "flex", justifyContent: "space-between"}}>
-                <h4>
-                  <FormattedMessage
-                    defaultMessage="Sector Power Adjustment"
-                    id="jump-drive-sector-power"
-                  />
+                <h4>Sector Power Adjustment
                 </h4>
                 <h3>
-                  <FormattedMessage
-                    defaultMessage="Power Available: {power}"
-                    values={{power}}
-                    id="jump-drive-power-available"
-                  />
+                  Power Available: {power}
                 </h3>
               </div>
               <Mutation
@@ -254,11 +211,7 @@ class JumpDrive extends Component {
                           this.updatePowerLevel(action, "aft", value)
                         }
                         topPower={this.calculateTopPower("aft")}
-                        label={
-                          <FormattedMessage
-                            defaultMessage="Aft"
-                            id="jump-drive-sector-aft"
-                          />
+                        label={Aft
                         }
                         power={sectors.aft.level}
                       />
@@ -269,11 +222,7 @@ class JumpDrive extends Component {
                           this.updatePowerLevel(action, "port", value)
                         }
                         topPower={this.calculateTopPower("port")}
-                        label={
-                          <FormattedMessage
-                            defaultMessage="Port"
-                            id="jump-drive-sector-port"
-                          />
+                        label={Port
                         }
                         power={sectors.port.level}
                       />
@@ -286,11 +235,7 @@ class JumpDrive extends Component {
                           this.updatePowerLevel(action, "fore", value)
                         }
                         topPower={this.calculateTopPower("fore")}
-                        label={
-                          <FormattedMessage
-                            defaultMessage="Fore"
-                            id="jump-drive-sector-fore"
-                          />
+                        label={Fore
                         }
                         power={sectors.fore.level}
                       />
@@ -301,11 +246,7 @@ class JumpDrive extends Component {
                           this.updatePowerLevel(action, "starboard", value)
                         }
                         topPower={this.calculateTopPower("starboard")}
-                        label={
-                          <FormattedMessage
-                            defaultMessage="Starboard"
-                            id="jump-drive-sector-starboard"
-                          />
+                        label={Starboard
                         }
                         power={sectors.starboard.level}
                       />
@@ -317,11 +258,7 @@ class JumpDrive extends Component {
           </Col>
           <Col sm={3} className="flex-column">
             <h3 className="text-center">
-              <FormattedMessage
-                defaultMessage="Envelope Stress"
-                id="jump-drive-sector-envelope-stress"
-                description="The jump drive warp envelope surrounds the ship to keep it safe from subspace. This is an energy wrapper, not a stationery sender."
-              />
+Envelope Stress
             </h3>
             <div className="stress-container">
               <div
@@ -352,16 +289,8 @@ class JumpDrive extends Component {
                   color="warning"
                   onClick={action}
                 >
-                  {ringsExtended ? (
-                    <FormattedMessage
-                      defaultMessage="Retract Rings"
-                      id="jump-drive-retract-jump-rings"
-                    />
-                  ) : (
-                    <FormattedMessage
-                      defaultMessage="Extend Rings"
-                      id="jump-drive-extend-jump-rings"
-                    />
+                  {ringsExtended ? ("Retract Rings"
+                  ) : ("Extend Rings"
                   )}
                 </Button>
               )}

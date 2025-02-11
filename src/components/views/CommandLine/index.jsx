@@ -4,35 +4,20 @@ import gql from "graphql-tag.macro";
 import {withApollo, Mutation, Query} from "react-apollo";
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
-import {FormattedMessage} from "react-intl";
+
 import "./style.scss";
 const trainingSteps = [
   {
     selector: ".nothing",
-    content: (
-      <FormattedMessage
-        id="command-line-training-1"
-        defaultMessage="The command line allows you to run low-level commands on your simulator. These commands could allow you to bypass or override certain parts of the controls."
-      />
-    ),
+    content: "The command line allows you to run low-level commands on your simulator. These commands could allow you to bypass or override certain parts of the controls.",
   },
   {
     selector: ".terminal-main-input",
-    content: (
-      <FormattedMessage
-        id="command-line-training-2"
-        defaultMessage="This is where you type in your commands. To see what commands are available, type 'help'. Hit 'return' on your keyboard when you are done typing a command."
-      />
-    ),
+    content: "This is where you type in your commands. To see what commands are available, type 'help'. Hit 'return' on your keyboard when you are done typing a command.",
   },
   {
     selector: ".terminal-output",
-    content: (
-      <FormattedMessage
-        id="command-line-training-3"
-        defaultMessage="The output of your command will appear here. This is where you will see what your command did and if it was successful or not."
-      />
-    ),
+    content: "The output of your command will appear here. This is where you will see what your command did and if it was successful or not.",
   },
 ];
 

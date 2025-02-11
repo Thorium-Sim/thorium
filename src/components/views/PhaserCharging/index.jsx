@@ -64,11 +64,11 @@ class PhaserCharging extends Component {
       variables,
     });
     if (phasers.holdToCharge) {
-      document.addEventListener("mouseup", this.stopCharging);
+      document.addEventListener("mouseup", this.stopCharging, {once:true});
     }
   }
   stopCharging = () => {
-    document.removeEventListener("mouseup", this.stopCharging);
+    document.removeEventListener("mouseup", this.stopCharging, {once:true});
     const phasers = this.props.data.phasers[0];
     const mutation = gql`
       mutation ChargePhaserBeam($id: ID!) {
@@ -299,7 +299,7 @@ export const PhaserBeam = ({
             <Button
               block
               color="primary"
-              onMouseDown={chargePhasers.bind(this, id)}
+              onMouseDown={()=>chargePhasers(id)}
             >
               Charge
             </Button>
@@ -308,13 +308,13 @@ export const PhaserBeam = ({
             <Button
               block
               color="warning"
-              onClick={dischargePhasers.bind(this, id)}
+              onClick={()=>dischargePhasers(id)}
             >
               Discharge
             </Button>
           </Col>
           <Col lg="4" xl="3">
-            <Button block color="info" onMouseDown={coolPhasers.bind(this, id)}>
+            <Button block color="info" onMouseDown={()=>coolPhasers(id)}>
               Coolant
             </Button>
           </Col>
@@ -385,8 +385,8 @@ export class PhaserArc extends Component {
     }
   };
   updateArc(direction) {
-    document.addEventListener("mouseup", this.mouseUp);
-    document.addEventListener("touchend", this.mouseUp);
+    document.addEventListener("mouseup", this.mouseUp, {once:true});
+    document.addEventListener("touchend", this.mouseUp, {once:true});
     this.arcTimeout = setTimeout(() => this.changeArc(direction), 100);
   }
   componentDidUpdate(oldProps) {

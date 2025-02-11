@@ -3,44 +3,24 @@ import {Container, Row, Col, Button, Card, CardBody} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
-import {FormattedMessage} from "react-intl";
+
 
 const trainingSteps = [
   {
     selector: ".nothing",
-    content: (
-      <FormattedMessage
-        id="docking-ports-training-1"
-        defaultMessage="Docking ports are specialized reinforced airlocks positioned on the outside of the ship. They allow other ships to dock with your ship to transfer supplies, personnel, and power between the ships."
-      />
-    ),
+    content: "Docking ports are specialized reinforced airlocks positioned on the outside of the ship. They allow other ships to dock with your ship to transfer supplies, personnel, and power between the ships.",
   },
   {
     selector: ".docking-port-buttons",
-    content: (
-      <FormattedMessage
-        id="docking-ports-training-2"
-        defaultMessage="These buttons each represent a docking port on your ship. They change colors based on the status of the docking port. Blue means there is no ship waiting to dock. Yellow means a ship is either waiting to dock or has docked. Red means the docking port is damaged. Click on one of the buttons to control the docking port.."
-      />
-    ),
+    content: "These buttons each represent a docking port on your ship. They change colors based on the status of the docking port. Blue means there is no ship waiting to dock. Yellow means a ship is either waiting to dock or has docked. Red means the docking port is damaged. Click on one of the buttons to control the docking port..",
   },
   {
     selector: ".ship-info",
-    content: (
-      <FormattedMessage
-        id="docking-ports-training-3"
-        defaultMessage="You can see the identification of the ship in the docking port here."
-      />
-    ),
+    content: "You can see the identification of the ship in the docking port here.",
   },
   {
     selector: ".control-button",
-    content: (
-      <FormattedMessage
-        id="docking-ports-training-4"
-        defaultMessage="Once you have selected a docking port, you can control it. Press these buttons to attach or detach the docking clamps and to retract or extend the boarding ramps. For the ship to be fully docked, the docking clamps must be attached and the boarding ramps must be extended."
-      />
-    ),
+    content: "Once you have selected a docking port, you can control it. Press these buttons to attach or detach the docking clamps and to retract or extend the boarding ramps. For the ship to be fully docked, the docking clamps must be attached and the boarding ramps must be extended.",
   },
 ];
 const DockingPorts = ({dockingPorts, simulator, clientObj}) => {

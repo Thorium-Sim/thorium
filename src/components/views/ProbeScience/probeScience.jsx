@@ -9,7 +9,7 @@ import {
   ListGroupItem,
 } from "helpers/reactstrap";
 import Grid from "../Sensors/GridDom/grid";
-import {FormattedMessage} from "react-intl";
+
 import Tour from "helpers/tourHelper";
 import {capitalCase} from "change-case";
 import {Mutation, useSubscription} from "react-apollo";
@@ -91,57 +91,27 @@ class ProbeScience extends Component {
   static trainingSteps = [
     {
       selector: ".nothing",
-      content: (
-        <FormattedMessage
-          id="probe-science-training-1"
-          defaultMessage="This screen is used to control your science probes. Science probes can be used to detect or emit certain kinds of particles, each with their own strategic and informational advantage. Before continuing with training, make sure you have a properly configured science probe launched."
-        />
-      ),
+content: "This screen is used to control your science probes. Science probes can be used to detect or emit certain kinds of particles, each with their own strategic and informational advantage. Before continuing with training, make sure you have a properly configured science probe launched.",
     },
     {
       selector: ".probes-launched",
-      content: (
-        <FormattedMessage
-          id="probe-science-training-2"
-          defaultMessage="You can see the science probes that have been launched here, along with their configured type. These configurations are based on the equipment that has been loaded into the probe. Click on one now."
-        />
-      ),
+content: "You can see the science probes that have been launched here, along with their configured type. These configurations are based on the equipment that has been loaded into the probe. Click on one now.",
     },
     {
       selector: ".probe-config",
-      content: (
-        <FormattedMessage
-          id="probe-sciencer-training-3"
-          defaultMessage="This is where you can control your science probe. You can see the current charge of the science probe as a yellow bar in the black box. To use the science probe, we have to charge it up."
-        />
-      ),
+content: "This is where you can control your science probe. You can see the current charge of the science probe as a yellow bar in the black box. To use the science probe, we have to charge it up.",
     },
     {
       selector: ".charge-button",
-      content: (
-        <FormattedMessage
-          id="probe-sciencer-training-4"
-          defaultMessage="To charge the science probe, click and hold this button. Depending on whether you configured your probe to burst or detect particles, a higher charge will either emit more particles or detect a larger radius on your probes grid."
-        />
-      ),
+content: "To charge the science probe, click and hold this button. Depending on whether you configured your probe to burst or detect particles, a higher charge will either emit more particles or detect a larger radius on your probes grid.",
     },
     {
       selector: ".activate-button",
-      content: (
-        <FormattedMessage
-          id="probe-sciencer-training-5"
-          defaultMessage="Click this button to activate the probe emitter."
-        />
-      ),
+content: "Click this button to activate the probe emitter.",
     },
     {
       selector: ".science-grid",
-      content: (
-        <FormattedMessage
-          id="probe-sciencer-training-6"
-          defaultMessage="After activating your probe, you'll begin to see either the particles being emitted or nearby particles being detected. Make sure you look quickly though. The detector doesn't last for very long."
-        />
-      ),
+content: "After activating your probe, you'll begin to see either the particles being emitted or nearby particles being detected. Make sure you look quickly though. The detector doesn't last for very long.",
     },
   ];
   componentDidMount() {
@@ -332,11 +302,7 @@ class ProbeScience extends Component {
             />
           </Col>
           <Col sm={4}>
-            <h3>
-              <FormattedMessage
-                id="science-probes"
-                defaultMessage="Science Probes"
-              />
+            <h3>Science Probes
             </h3>
             <ListGroup
               className="probes-launched"
@@ -356,22 +322,14 @@ class ProbeScience extends Component {
                           capitalCase(
                             `${s.scienceType.name} ${s.scienceType.type}`,
                           )
-                        ) : (
-                          <FormattedMessage
-                            id="science-probe-invalid-configuration"
-                            defaultMessage="Invalid Configuration"
-                          />
-                        )}
+                        ) : "Invalid Configuration"}
                       </small>
                     </div>
                   </ListGroupItem>
                 ))
               ) : (
                 <ListGroupItem>
-                  <FormattedMessage
-                    id="no-science-probes"
-                    defaultMessage="No Science Probes"
-                  />
+                  $
                 </ListGroupItem>
               )}
             </ListGroup>
@@ -384,20 +342,11 @@ class ProbeScience extends Component {
                       capitalCase(
                         `${probe.scienceType.name} ${probe.scienceType.type}`,
                       )
-                    ) : (
-                      <FormattedMessage
-                        id="science-probe-invalid-configuration"
-                        defaultMessage="Invalid Configuration"
-                      />
-                    )}
+                    ) : "Invalid Configuration"}
                   </strong>
                 </p>
                 <p>
-                  <strong>
-                    <FormattedMessage
-                      id="science-probe-charge"
-                      defaultMessage="Charge"
-                    />
+                  <strong>Charge
                     :
                   </strong>
                 </p>
@@ -415,10 +364,7 @@ class ProbeScience extends Component {
                   color="warning"
                   onMouseDown={this.mouseDown}
                 >
-                  <FormattedMessage
-                    id="science-probe-charge-emitter"
-                    defaultMessage="Charge Emitter"
-                  />
+                  $
                 </Button>
                 <Mutation
                   mutation={gql`
@@ -436,15 +382,8 @@ class ProbeScience extends Component {
                       color="success"
                       onClick={action}
                     >
-                      <FormattedMessage
-                        id="science-probe-invalid-configuration"
-                        defaultMessage="Activate {probe}"
-                        values={{
-                          probe:
-                            probe.scienceType &&
-                            capitalCase(probe.scienceType.type),
-                        }}
-                      />
+Activate {probe.scienceType &&
+                            capitalCase(probe.scienceType.type)}
                     </Button>
                   )}
                 </Mutation>

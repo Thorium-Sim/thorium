@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {withApollo} from "react-apollo";
 import gql from "graphql-tag.macro";
-import {FormattedMessage} from "react-intl";
+
 import {Container, Row, Col} from "helpers/reactstrap";
 import SensorGrid from "../Sensors/GridDom/grid";
 import {throttle} from "helpers/debounce";
@@ -23,48 +23,23 @@ class Railgun extends Component {
   static trainingSteps = [
     {
       selector: ".nothing",
-      content: (
-        <FormattedMessage
-          id="railgun-training-1"
-          defaultMessage="The railgun is a point-defense weapon designed to destroy incoming projectiles. You can use it to defend your ship from attackers."
-        />
-      ),
+content: "The railgun is a point-defense weapon designed to destroy incoming projectiles. You can use it to defend your ship from attackers.",
     },
     {
       selector: ".sensors-holder",
-      content: (
-        <FormattedMessage
-          id="railgun-training-2"
-          defaultMessage="This basic sensors grid shows the location of any incoming projectiles relative to this ship, shown at the center of the grid."
-        />
-      ),
+content: "This basic sensors grid shows the location of any incoming projectiles relative to this ship, shown at the center of the grid.",
     },
     {
       selector: ".sensors-holder",
-      content: (
-        <FormattedMessage
-          id="railgun-training-3"
-          defaultMessage="To fire the railgun, click with your mouse on the sensor grid. A red dot will indicate where the railgun bolt will hit. You must fire very close to an incoming projectile for the bolt to hit its target."
-        />
-      ),
+content: "To fire the railgun, click with your mouse on the sensor grid. A red dot will indicate where the railgun bolt will hit. You must fire very close to an incoming projectile for the bolt to hit its target.",
     },
     {
       selector: ".sensors-holder",
-      content: (
-        <FormattedMessage
-          id="railgun-training-4"
-          defaultMessage="Once an incoming projectile has been destroyed, you will see it explode and disappear."
-        />
-      ),
+content: "Once an incoming projectile has been destroyed, you will see it explode and disappear.",
     },
     {
       selector: ".railgun-controls",
-      content: (
-        <FormattedMessage
-          id="railgun-loader-training-2"
-          defaultMessage="Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!"
-        />
-      ),
+content: "Here you can see the number of bolts loaded. Make sure you don't run out of railgun bolts!",
     },
   ];
   state = {ammo: 25};

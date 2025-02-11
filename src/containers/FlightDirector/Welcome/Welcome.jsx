@@ -3,7 +3,7 @@ import {Col, Row, Container, Card, CardBody} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {Link} from "react-router-dom";
 import Tour from "helpers/tourHelper";
-import {FormattedMessage} from "react-intl";
+
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./welcome.scss";
 import QuoteOfTheDay from "./QuoteOfTheDay";
@@ -97,13 +97,7 @@ const Welcome = () => {
           <h1 className="text-center">Thorium</h1>
           <h6 className="text-center">
             <Link to="/releases">
-              <FormattedMessage
-                id="version-number"
-                defaultMessage="Version {version}"
-                values={{
-                  version: require("../../../../package.json").version,
-                }}
-              />
+Version {require("../../../../package.json").version}
             </Link>
           </h6>
           <QuoteOfTheDay />

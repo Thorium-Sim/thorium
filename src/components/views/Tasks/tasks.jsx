@@ -11,7 +11,7 @@ import {
 } from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import {FormattedMessage} from "react-intl";
+
 import {Duration} from "luxon";
 import {FaSyncAlt} from "react-icons/fa";
 
@@ -122,7 +122,7 @@ const Tasks = ({tasks, station: {name: stationName, executive}}) => {
       <Row>
         <Col sm={4}>
           <h3>
-            <FormattedMessage id="tasks-list" defaultMessage="Tasks List" />
+            Tasks List
           </h3>
           <ListGroup>
             {executive && (
@@ -197,11 +197,7 @@ const Tasks = ({tasks, station: {name: stationName, executive}}) => {
           )}
         </Col>
         <Col sm={8} style={{display: "flex", flexDirection: "column"}}>
-          <h3>
-            <FormattedMessage
-              id="tasks-instructions"
-              defaultMessage="Task Instructions"
-            />
+          <h3>Task Instructions
           </h3>
           <Card>
             <CardBody style={{whiteSpace: "pre-line"}}>
@@ -227,28 +223,8 @@ const Tasks = ({tasks, station: {name: stationName, executive}}) => {
                   onClick={action}
                 >
                   {task ? (
-                    task.verifyRequested ? (
-                      <FormattedMessage
-                        id="tasks-verify-in-progress"
-                        defaultMessage="Verification In Progress..."
-                      />
-                    ) : task.verified ? (
-                      <FormattedMessage
-                        id="tasks-completed"
-                        defaultMessage="Task Completed"
-                      />
-                    ) : (
-                      <FormattedMessage
-                        id="tasks-verify-button"
-                        defaultMessage="Verify Task Completion"
-                      />
-                    )
-                  ) : (
-                    <FormattedMessage
-                      id="tasks-verify-button"
-                      defaultMessage="Verify Task Completion"
-                    />
-                  )}
+                    task.verifyRequested ? "Verification In Progress..." : task.verified ? "Task Completed" : "Verify Task Completion"
+                  ) : "Verify Task Completion"}
                 </Button>
               )}
             </Mutation>

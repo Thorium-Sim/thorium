@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {FormattedMessage} from "react-intl";
+
 import Tour from "helpers/tourHelper";
 import FighterCanvas from "./fighterCanvas";
 import PhaserCharging from "./phaserCharging";
@@ -15,163 +15,76 @@ const dockedTrainingSteps = (name, docked, hypercard) =>
   [
     {
       selector: ".blank",
-      content: (
-        <FormattedMessage
-          id="crm-docked-1"
-          defaultMessage="This is the control screen for your {name} fighter. It is currently docked, which means it is safe inside of your ship. However, it won't do much good until you undock it."
-          values={{name}}
-        />
-      ),
+      content: `This is the control screen for your ${name} fighter. It is currently docked, which means it is safe inside of your ship. However, it won't do much good until you undock it.`
     },
     {
       selector: ".fighter-strength",
-      content: (
-        <FormattedMessage
-          id="crm-docked-2"
-          defaultMessage="When docked, your fighter will automatically repair and recharge the shields. This is necessary to make sure it doesn't get destroyed. You can also see your torpedo count here."
-        />
-      ),
+content: "When docked, your fighter will automatically repair and recharge the shields. This is necessary to make sure it doesn't get destroyed. You can also see your torpedo count here.",
     },
     {
       selector: ".restock-button",
-      content: (
-        <FormattedMessage
-          id="crm-docked-3"
-          defaultMessage="Click this button to restock your fighter's torpedos."
-        />
-      ),
+content: "Click this button to restock your fighter's torpedos.",
     },
     hypercard && {
       selector: ".station-control",
-      content: (
-        <FormattedMessage
-          id="crm-docked-4"
-          defaultMessage="If your station's {name} control was activated by another station, you can return to normal station control by clicking this button. However, doing this is one-way. You cannot return to this screen without having it manually reactivated."
-          values={{name}}
-        />
-      ),
+      content: `If your station's ${name} control was activated by another station, you can return to normal station control by clicking this button. However, doing this is one-way. You cannot return to this screen without having it manually reactivated.`
     },
     {
       selector: ".launch-button",
-      content: (
-        <FormattedMessage
-          id="crm-docked-5"
-          defaultMessage="It takes a few moments to prepare your fighter to launch. Once this button activates, you can click it to launch your fighter into space. Click this button to continue your training."
-        />
-      ),
+content: "It takes a few moments to prepare your fighter to launch. Once this button activates, you can click it to launch your fighter into space. Click this button to continue your training.",
     },
   ].filter(Boolean);
 const fighterTrainingSteps = () =>
   [
     {
       selector: ".fighter-canvas",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-1"
-          defaultMessage="This screen shows you the view outside of your ship, looking from the top down. The icon in the center of the screen is your fighter."
-        />
-      ),
+content: "This screen shows you the view outside of your ship, looking from the top down. The icon in the center of the screen is your fighter.",
     },
 
     {
       selector: ".fighter-canvas",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-1.5"
-          defaultMessage="Some of the contacts moving around on this screen are your fellow crewmembers fighters. Others are enemies. To target and fire at enemies, you must first click on the enemy contact you wish to fire at."
-        />
-      ),
+content: "Some of the contacts moving around on this screen are your fellow crewmembers fighters. Others are enemies. To target and fire at enemies, you must first click on the enemy contact you wish to fire at.",
     },
     {
       selector: ".shield-raise-button",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-1.7"
-          defaultMessage="Before doing anything else, click this button to raise your shields. This will protect your fighter from enemy fire."
-        />
-      ),
+content: "Before doing anything else, click this button to raise your shields. This will protect your fighter from enemy fire.",
     },
     {
       selector: ".simulator-image",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-2"
-          defaultMessage="This is your ship. To dock your fighter, you must move it to be within docking range of your ship."
-        />
-      ),
+content: "This is your ship. To dock your fighter, you must move it to be within docking range of your ship.",
     },
     {
       selector: ".inner-canvas",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-2.5"
-          defaultMessage="This smaller map shows you the entire combat area. This can help you identify the location of enemy ships and where to go to dock with the main starship."
-        />
-      ),
+content: "This smaller map shows you the entire combat area. This can help you identify the location of enemy ships and where to go to dock with the main starship.",
     },
     {
       selector: ".joystick",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-3"
-          defaultMessage="Click and drag the circle in the center of this joystick to move your fighter."
-        />
-      ),
+content: "Click and drag the circle in the center of this joystick to move your fighter.",
     },
     {
       selector: ".phaser-charging",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-4"
-          defaultMessage="This shows the phaser charge of your fighter. You must click and hold the 'Charge' button to be able to fire phasers at enemies."
-        />
-      ),
+content: "This shows the phaser charge of your fighter. You must click and hold the 'Charge' button to be able to fire phasers at enemies.",
     },
     {
       selector: ".torpedo-loading",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-5"
-          defaultMessage="This shows the torpedo launcher of your fighter. Click the button to load a torpedo. Only one torpedo can be loaded at any time. If you run out of torpedos, you can dock with your ship and restock."
-        />
-      ),
+content: "This shows the torpedo launcher of your fighter. Click the button to load a torpedo. Only one torpedo can be loaded at any time. If you run out of torpedos, you can dock with your ship and restock.",
     },
     {
       selector: ".phaser-fire-button",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-5"
-          defaultMessage="After targeting an enemy contact, click and hold this button to fire phasers at it."
-        />
-      ),
+content: "After targeting an enemy contact, click and hold this button to fire phasers at it.",
     },
     {
       selector: ".torpedo-fire-button",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-6"
-          defaultMessage="After targeting an enemy contact, click this button to fire a torpedo at it. Make sure you are in range so the torpedo does not miss or hit a friendly fighter."
-        />
-      ),
+content: "After targeting an enemy contact, click this button to fire a torpedo at it. Make sure you are in range so the torpedo does not miss or hit a friendly fighter.",
     },
 
     {
       selector: ".fighter-dock-button",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-7"
-          defaultMessage="When in range of your ship, click this button to dock your fighter. This will return you to the docked screen."
-        />
-      ),
+content: "When in range of your ship, click this button to dock your fighter. This will return you to the docked screen.",
     },
     {
       selector: ".fighter-shield",
-      content: (
-        <FormattedMessage
-          id="crm-fighter-8"
-          defaultMessage="This shows the shield and hull status of your fighter. Make sure your shield is raised. If you lose your shield or don't have it raised, it will be very easy for enemies to permanently destroy your fighter."
-        />
-      ),
+content: "This shows the shield and hull status of your fighter. Make sure your shield is raised. If you lose your shield or don't have it raised, it will be very easy for enemies to permanently destroy your fighter.",
     },
   ].filter(Boolean);
 

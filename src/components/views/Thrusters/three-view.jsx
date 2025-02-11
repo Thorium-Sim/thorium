@@ -5,7 +5,7 @@ import {withApollo} from "react-apollo";
 import Arrow from "./arrow";
 import Circle from "./circle";
 
-OBJLoader(THREE);
+// OBJLoader(THREE);
 window.THREE = THREE;
 
 function degtorad(deg) {

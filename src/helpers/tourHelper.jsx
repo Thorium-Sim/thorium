@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import {useMutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "reactour";
-import IntlProvider from "./intl";
 import "./tourHelper.scss";
 import {FaVolumeUp} from "react-icons/fa";
 import {ClientContext} from "components/client/client";
@@ -45,7 +44,7 @@ const TourHelper = ({
     }
     const div = document.createElement("div");
     // Process the training, in case it's a react element.
-    ReactDOM.render(<IntlProvider>{step.content}</IntlProvider>, div);
+    ReactDOM.render(step.content, div);
     setTimeout(
       () => synth.speak(new SpeechSynthesisUtterance(div.innerText)),
       100,

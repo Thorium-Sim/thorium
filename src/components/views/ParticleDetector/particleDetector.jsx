@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {Container, Row, Col, Button} from "helpers/reactstrap";
 import Grid from "../Sensors/GridDom/grid";
 import {particleTypes, particleBootstrapClasses} from "./particleConstants";
-import {FormattedMessage} from "react-intl";
+
 import Tour from "helpers/tourHelper";
 
 import uuid from "uuid";
@@ -19,30 +19,15 @@ class ParticleDetector extends Component {
   static trainingSteps = [
     {
       selector: ".nothing",
-      content: (
-        <FormattedMessage
-          id="particle-detector-training-1"
-          defaultMessage="The particle detector is an extension to your external sensors. It allows you to focus your sensors at a specific place around your ship to detect different types of particles."
-        />
-      ),
+content: "The particle detector is an extension to your external sensors. It allows you to focus your sensors at a specific place around your ship to detect different types of particles.",
     },
     {
       selector: ".particle-types",
-      content: (
-        <FormattedMessage
-          id="particle-detector-training-2"
-          defaultMessage="This is the list of all the types of particles you can detect. Click on one to begin detecting particles."
-        />
-      ),
+content: "This is the list of all the types of particles you can detect. Click on one to begin detecting particles.",
     },
     {
       selector: ".particle-grid",
-      content: (
-        <FormattedMessage
-          id="particle-detector-training-3"
-          defaultMessage="Click anywhere on the grid to detect particles. You can only detect a specific type of particle within a small area at any time, so you might have to click in several areas to see where all the particles are. Be sure to switch between the different types to detect any other particles."
-        />
-      ),
+content: "Click anywhere on the grid to detect particles. You can only detect a specific type of particle within a small area at any time, so you might have to click in several areas to see where all the particles are. Be sure to switch between the different types to detect any other particles.",
     },
   ];
   componentDidMount() {
@@ -155,11 +140,7 @@ class ParticleDetector extends Component {
           </Col>
           <Col sm={4} className="particle-types">
             <h2>
-              <FormattedMessage
-                id="particle-types"
-                defaultMessage="Particle Types"
-                description="The particle detector detects different particles outside in space. This is a header for a list of the possible particles that can be detected"
-              />
+Particle Types
             </h2>
             {Object.entries(particleTypes).map(([name, color]) => (
               <Button

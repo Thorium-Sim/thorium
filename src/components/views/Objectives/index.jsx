@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo, Mutation} from "react-apollo";
 import {Container, Row, Col, Card, CardBody} from "helpers/reactstrap";
-import {FormattedMessage} from "react-intl";
+
 
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Tour from "helpers/tourHelper";
@@ -68,21 +68,11 @@ const Objective = ({
 const trainingSteps = [
   {
     selector: ".objective-card",
-    content: (
-      <FormattedMessage
-        id="objectives-training-1"
-        defaultMessage="During your mission you will have different objectives or goals you need to complete.  Objectives will appear with a title, and a description."
-      />
-    ),
+    content: "During your mission you will have different objectives or goals you need to complete.  Objectives will appear with a title, and a description.",
   },
   {
     selector: ".objective-card",
-    content: (
-      <FormattedMessage
-        id="objectives-training-2"
-        defaultMessage="When an objective is completed, the circle next to it will be filled. When an objective is changed, a line will strike through the title of the objective. Check back often to remember your objectives so you can work toward their completion."
-      />
-    ),
+    content: "When an objective is completed, the circle next to it will be filled. When an objective is changed, a line will strike through the title of the objective. Check back often to remember your objectives so you can work toward their completion.",
   },
 ];
 
@@ -111,11 +101,7 @@ class Objectives extends Component {
         />
         <Row>
           <Col sm={12}>
-            <h1>
-              <FormattedMessage
-                id="mission-objectives"
-                defaultMessage="Mission Objectives"
-              />
+            <h1>Mission Objectives
             </h1>
             <Card>
               <CardBody>

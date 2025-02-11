@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Container, Button, Row, Col, Card, CardBody} from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
-import {FormattedMessage} from "react-intl";
+
 import Printable from "helpers/printable";
 
 import "./style.scss";
@@ -9,30 +9,15 @@ import "./style.scss";
 const trainingSteps = [
   {
     selector: ".nothing",
-    content: (
-      <FormattedMessage
-        id="cypher-training-1"
-        defaultMessage="Cyphers are used to decode messages on paper. You can see the cypher characters on your screen and match them with the characters on your printed encoded message."
-      />
-    ),
+    content: "Cyphers are used to decode messages on paper. You can see the cypher characters on your screen and match them with the characters on your printed encoded message.",
   },
   {
     selector: ".cypher-list",
-    content: (
-      <FormattedMessage
-        id="cypher-training-2"
-        defaultMessage="This is a list of the available cyphers. Click to choose a cypher."
-      />
-    ),
+    content: "This is a list of the available cyphers. Click to choose a cypher.",
   },
   {
     selector: ".cypher-area",
-    content: (
-      <FormattedMessage
-        id="cypher-training-3"
-        defaultMessage="Here you can see the cypher characters, and the Roman character which it represents."
-      />
-    ),
+    content: "Here you can see the cypher characters, and the Roman character which it represents.",
   },
 ];
 //var greekUtils = require("greek-utils");

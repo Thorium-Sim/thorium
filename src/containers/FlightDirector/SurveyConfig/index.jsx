@@ -139,31 +139,7 @@ const Surveys = ({client}) => {
     });
   };
 
-  const handleSpreadsheetPick = ({id, name, sheet}) => {
-    this.props.client.mutate({
-      mutation: gql`
-        mutation SetSpreadsheet(
-          $id: ID!
-          $spreadsheetId: ID
-          $spreadsheetName: String
-          $sheetId: ID
-        ) {
-          setSurveyFormGoogleSheet(
-            id: $id
-            spreadsheetId: $spreadsheetId
-            spreadsheetName: $spreadsheetName
-            sheetId: $sheetId
-          )
-        }
-      `,
-      variables: {
-        id: this.state.selectedForm,
-        spreadsheetId: id,
-        spreadsheetName: name,
-        sheetId: sheet,
-      },
-    });
-  };
+
   const handleImport = evt => {
     const data = new FormData();
     Array.from(evt.target.files).forEach((f, index) =>
@@ -193,6 +169,33 @@ const Surveys = ({client}) => {
   const {surveyform} = data;
   const form = surveyform.find(f => f.id === selectedForm);
 
+
+  const handleSpreadsheetPick = ({id, name, sheet}) => {
+    client.mutate({
+      mutation: gql`
+        mutation SetSpreadsheet(
+          $id: ID!
+          $spreadsheetId: ID
+          $spreadsheetName: String
+          $sheetId: ID
+        ) {
+          setSurveyFormGoogleSheet(
+            id: $id
+            spreadsheetId: $spreadsheetId
+            spreadsheetName: $spreadsheetName
+            sheetId: $sheetId
+          )
+        }
+      `,
+      variables: {
+        id: selectedForm,
+        spreadsheetId: id,
+        spreadsheetName: name,
+        sheetId: sheet,
+      },
+    });
+  };
+  
   return (
     <Container fluid className="survey-forms">
       <h4>Survey Config </h4>

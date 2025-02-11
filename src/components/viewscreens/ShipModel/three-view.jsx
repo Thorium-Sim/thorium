@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import * as THREE from "three";
 import OBJLoader from "three-obj-loader";
 
-OBJLoader(THREE);
+// OBJLoader(THREE);
 window.THREE = THREE;
 
 function degtorad(deg) {

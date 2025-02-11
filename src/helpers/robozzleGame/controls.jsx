@@ -1,5 +1,13 @@
 import React from "react";
 
+import f1 from "./img/f1.svg?url"
+import f2 from "./img/f2.svg?url"
+import f3 from "./img/f3.svg?url"
+import f4 from "./img/f4.svg?url"
+import f5 from "./img/f5.svg?url"
+import f6 from "./img/f6.svg?url"
+
+const fimg = [f1,f2,f3,f4,f5,f6];
 const functionClasses = (func, pos, functions) => {
   const funcObj = functions[func];
   if (!funcObj) return "";
@@ -20,7 +28,7 @@ const Commands = ({SubLengths, dragging, functions, onMouseDown}) => {
             <div key={`f${i + 1}`} className="function-holder">
               <img
                 draggable="false"
-                src={require(`./img/f${i + 1}.svg`)}
+                src={fimg[i]}
                 alt={`F${i + 1}`}
               />
               <div className="function-area">

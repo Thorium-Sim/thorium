@@ -14,73 +14,38 @@ import {
   Button,
 } from "helpers/reactstrap";
 import "./style.scss";
-import {FormattedMessage} from "react-intl";
+
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 
 const trainingSteps = [
   {
     selector: ".nothing",
-    content: (
-      <FormattedMessage
-        id="armory-training-1"
-        defaultMessage="Officers will sometimes need equipment to complete whatever tasks they have been assigned. You can use this screen to see the available equipment and assign it to members of your crew."
-      />
-    ),
+    content: "Officers will sometimes need equipment to complete whatever tasks they have been assigned. You can use this screen to see the available equipment and assign it to members of your crew.",
   },
   {
     selector: ".officer-selector",
-    content: (
-      <FormattedMessage
-        id="armory-training-2"
-        defaultMessage="This button will allow you to change between the officers you have assigned to specific teams, and unassigned crew members without current orders."
-      />
-    ),
+    content: "This button will allow you to change between the officers you have assigned to specific teams, and unassigned crew members without current orders.",
   },
   {
     selector: ".officer-list",
-    content: (
-      <FormattedMessage
-        id="armory-training-3"
-        defaultMessage="This list shows you the officers on the team you selected above, or any unassigned officers. Officers whose names are white have not been assigned any equipment.  Those highlighted in red are carrying items."
-      />
-    ),
+    content: "This list shows you the officers on the team you selected above, or any unassigned officers. Officers whose names are white have not been assigned any equipment.  Those highlighted in red are carrying items.",
   },
   {
     selector: ".deck-selector",
-    content: (
-      <FormattedMessage
-        id="armory-training-4"
-        defaultMessage="You are authorized to access equipment from the rooms listed in this area.  Click to select different rooms from a drop down list."
-      />
-    ),
+    content: "You are authorized to access equipment from the rooms listed in this area.  Click to select different rooms from a drop down list.",
   },
   {
     selector: ".room-inventory",
-    content: (
-      <FormattedMessage
-        id="armory-training-5"
-        defaultMessage="When you select a room the equipment within will be displayed in this area.  The number in parentheses represents how many there are of that item. By clicking on an item you will transfer it to the ready area."
-      />
-    ),
+    content: "When you select a room the equipment within will be displayed in this area.  The number in parentheses represents how many there are of that item. By clicking on an item you will transfer it to the ready area.",
   },
   {
     selector: ".ready-inventory",
-    content: (
-      <FormattedMessage
-        id="armory-training-6"
-        defaultMessage="This is the ready area.  Once you have selected all of the equipment you need to assign you can select the name of the officer from the area on the right and click “Transfer to Officer.”  If you need to return an item to a room click on the item and it will return to the room it came from."
-      />
-    ),
+    content: "This is the ready area.  Once you have selected all of the equipment you need to assign you can select the name of the officer from the area on the right and click “Transfer to Officer.”  If you need to return an item to a room click on the item and it will return to the room it came from.",
   },
   {
     selector: ".officer-inventory",
-    content: (
-      <FormattedMessage
-        id="armory-training-7"
-        defaultMessage="Officer items will be displayed in the Equipment field. Pressing the “Remove Inventory” button will transfer all items to the ready area."
-      />
-    ),
+    content: "Officer items will be displayed in the Equipment field. Pressing the “Remove Inventory” button will transfer all items to the ready area.",
   },
 ];
 export const ARMORY_CREW_SUB = gql`

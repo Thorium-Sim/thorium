@@ -88,7 +88,7 @@ const Sat = ({
 }) => {
   return (
     <div
-      onClick={selectSat.bind(this, {id, x, y})}
+      onClick={()=>selectSat({id, x, y})}
       style={{
         border:
           selectedSat && selectedSat.id === id

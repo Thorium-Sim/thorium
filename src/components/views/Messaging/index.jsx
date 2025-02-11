@@ -12,7 +12,7 @@ import {
   InputGroupAddon,
 } from "helpers/reactstrap";
 import "./style.scss";
-import {FormattedMessage} from "react-intl";
+
 import Tour from "helpers/tourHelper";
 import {useSubscribeToMore} from "helpers/hooks/useQueryAndSubscribe";
 import ConvoPicker from "./convoPicker";
@@ -68,48 +68,23 @@ export const MESSAGING_QUERY = gql`
 export const trainingSteps = [
   {
     selector: "#nothing",
-    content: (
-      <FormattedMessage
-        id="messages-training-1"
-        defaultMessage="Messaging allows you to send text messages between people within your ship."
-      />
-    ),
+    content: "Messaging allows you to send text messages between people within your ship.",
   },
   {
     selector: ".message-dropdown",
-    content: (
-      <FormattedMessage
-        id="messages-training-2"
-        defaultMessage="To send a message, click this button. A dropdown will appear showing you all of the options for places you can send your message."
-      />
-    ),
+    content: "To send a message, click this button. A dropdown will appear showing you all of the options for places you can send your message.",
   },
   {
     selector: ".convoList",
-    content: (
-      <FormattedMessage
-        id="messages-training-3"
-        defaultMessage="This is your list of current conversations. Click on a conversation to see that conversation on the right side."
-      />
-    ),
+    content: "This is your list of current conversations. Click on a conversation to see that conversation on the right side.",
   },
   {
     selector: ".messages-list",
-    content: (
-      <FormattedMessage
-        id="messages-training-4"
-        defaultMessage="The messages in the selected conversation appear here."
-      />
-    ),
+    content: "The messages in the selected conversation appear here.",
   },
   {
     selector: ".text-input",
-    content: (
-      <FormattedMessage
-        id="messages-training-5"
-        defaultMessage="Type any message you want to send in this box. Press the enter key or the 'Send Message' button to send the message."
-      />
-    ),
+    content: "Type any message you want to send in this box. Press the enter key or the 'Send Message' button to send the message.",
   },
 ];
 

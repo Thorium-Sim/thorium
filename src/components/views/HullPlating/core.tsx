@@ -7,7 +7,6 @@ import {Container} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import "./style.scss";
 import {HullPlatingModeConstants} from "./constants";
-import {FormattedMessage} from "react-intl";
 
 interface HullPlatingProps {
   children: React.ReactNode;
@@ -60,26 +59,12 @@ export const HULL_PLATING_QUERY = gql`
 
 const HullPlatingComp: React.FC<HullPlatingProps> = props => {
   if (!props.data || props.data.loading) {
-    return (
-      <div>
-        <FormattedMessage
-          id="hull-plating-no-values"
-          defaultMessage="No Values"
-        />{" "}
-      </div>
-    );
+    return <div>No Values </div>;
   }
   const hullPlating = props.data.hullPlatings && props.data.hullPlatings[0];
 
   if (!hullPlating) {
-    return (
-      <div>
-        <FormattedMessage
-          id="hull-plating-no-template"
-          defaultMessage="No Template"
-        />
-      </div>
-    );
+    return <div>No Template</div>;
   }
 
   const handleTypeSwitch = (mode: string) => {

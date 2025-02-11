@@ -46,8 +46,8 @@ const ProbeSelector = ({
             >
               <div className={`probe-type ${selected}`}>
                 <div
-                  onMouseOut={setDescription.bind(this, null)}
-                  onMouseOver={setDescription.bind(this, t.description)}
+                  onMouseOut={()=>setDescription(null)}
+                  onMouseOver={()=>setDescription(t.description)}
                   onClick={() => {
                     playEffect("buttonClick");
                     selectProbe(t.id);

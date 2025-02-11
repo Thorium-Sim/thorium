@@ -2,18 +2,14 @@ import React, {Fragment, useState} from "react";
 import {Button, Alert} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {Mutation} from "react-apollo";
-import {FormattedMessage} from "react-intl";
+
 
 const TrackerPopup = ({askedToTrack}) => {
   const [clickedTrack, setClickedTrack] = useState(false);
   return (
     !askedToTrack &&
     !clickedTrack && (
-      <Alert color={"info"}>
-        <FormattedMessage
-          id="ask-to-track"
-          defaultMessage="Would you like opt-in to share some analytics data about Thorium with the developer? You can opt-out at any time from the Settings sidebar menu."
-        />
+      <Alert color={"info"}>Would you like opt-in to share some analytics data about Thorium with the developer? You can opt-out at any time from the Settings sidebar menu.
         <div style={{display: "flex", justifyContent: "flex-end"}}>
           <Mutation
             mutation={gql`
@@ -33,7 +29,7 @@ const TrackerPopup = ({askedToTrack}) => {
                   }}
                   style={{marginRight: "20px"}}
                 >
-                  <FormattedMessage id="no-track" defaultMessage="No Thanks" />
+                  No Thanks
                 </Button>
                 <Button
                   outline
@@ -43,7 +39,7 @@ const TrackerPopup = ({askedToTrack}) => {
                     setClickedTrack(true);
                   }}
                 >
-                  <FormattedMessage id="track-me" defaultMessage="Track Me" />
+                  Track Me
                 </Button>
               </Fragment>
             )}

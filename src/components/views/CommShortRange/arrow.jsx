@@ -11,8 +11,8 @@ const Arrow = ({
 }) => {
   return (
     <div
-      onMouseDown={mouseDown.bind(this, dimensions)}
-      onTouchStart={mouseDown.bind(this, dimensions)}
+      onMouseDown={()=>mouseDown(dimensions)}
+      onTouchStart={()=>mouseDown(dimensions)}
       style={{
         height: "100%",
         transform: `translateY(${level * 97}%) ${flop ? "scaleX(-1)" : ""}`,

@@ -4,15 +4,15 @@ import OBJLoader from "three-obj-loader";
 
 window.THREE = THREE;
 
-OBJLoader(THREE);
+// OBJLoader(THREE);
 
 class ThreeView extends Component {
   constructor(props) {
     super(props);
     this.state = {rotation: 0};
 
-    const txURL = require("./generatortexture.jpg");
-    const objURL = require("./shieldgenerator.obj");
+    const txURL = require("./generatortexture.jpg?url");
+    const objURL = require("./shieldgenerator.obj?url");
 
     const {width, height} = props.dimensions;
     this.scene = new THREE.Scene();

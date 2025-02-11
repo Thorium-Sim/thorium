@@ -2,7 +2,7 @@ import React from "react";
 import {Row, Col, Button} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import {FormattedMessage} from "react-intl";
+
 
 const ReportButtonsLegacy = ({verifyStep, system}) => {
   const report = system ? system.damage.report : "";
@@ -35,11 +35,7 @@ const ReportButtonsLegacy = ({verifyStep, system}) => {
                   })
                 }
               >
-                <FormattedMessage
-                  id="damage-report-previous"
-                  description="A button to go to the previous step"
-                  defaultMessage="Previous Step"
-                />
+                Previous Step
               </Button>
             )}
           </Col>
@@ -74,19 +70,7 @@ const ReportButtonsLegacy = ({verifyStep, system}) => {
                     color="secondary"
                     onClick={verifyStep}
                   >
-                    {system && system.damage.validate ? (
-                      <FormattedMessage
-                        id="damage-report-verifying"
-                        description="A message indicating that the damage report step is currently being verified"
-                        defaultMessage="Verifying Step"
-                      />
-                    ) : (
-                      <FormattedMessage
-                        id="damage-report-verify"
-                        description="A button to initiate verification of the damage report step to ensure it was completed correctly"
-                        defaultMessage="Verify Step"
-                      />
-                    )}
+                    {system && system.damage.validate ?"Verifying Step" :"Verify Step"}
                   </Button>
                 )}
               </Mutation>
@@ -108,11 +92,7 @@ const ReportButtonsLegacy = ({verifyStep, system}) => {
                   })
                 }
               >
-                <FormattedMessage
-                  id="damage-report-next"
-                  description="A button to go to the next step"
-                  defaultMessage="Next Step"
-                />
+                Next Step
               </Button>
             )}
           </Col>

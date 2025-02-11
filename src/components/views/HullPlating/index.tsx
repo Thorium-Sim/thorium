@@ -3,7 +3,7 @@ import {HullPlating, Simulator} from "generated/graphql";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import {Row, Col, Container, Button} from "helpers/reactstrap";
-import {FormattedMessage} from "react-intl";
+
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "helpers/tourHelper";
 import {HullPlatingModeConstants} from "./constants";
@@ -66,30 +66,18 @@ export const HULL_PLATING_QUERY = gql`
 const TrainingSteps = [
   {
     selector: ".activate-btn",
-    content: (
-      <FormattedMessage
-        id={"hull-plating-training-1"}
-        defaultMessage="This system allows you to strengthen your ship's outer hull, reducing damage from difference types of projectiles or energy sources. To activate your armor, press the button here"
-      />
-    ),
+    content:
+      "This system allows you to strengthen your ship's outer hull, reducing damage from difference types of projectiles or energy sources. To activate your armor, press the button here",
   },
   {
     selector: ".mode-btns",
-    content: (
-      <FormattedMessage
-        id={"hull-plating-training-2"}
-        defaultMessage="When the system is engaged, you can select the mode you would like to use. Each mode has different advantages. Try different modes to gain difference advantages"
-      />
-    ),
+    content:
+      "When the system is engaged, you can select the mode you would like to use. Each mode has different advantages. Try different modes to gain difference advantages",
   },
   {
     selector: ".effective-chart",
-    content: (
-      <FormattedMessage
-        id={"hull-plating-training-3"}
-        defaultMessage="This graph shows how well the armor is working. If the line is flat, it's not very effective. If the line moves more rapidly, the armor is more effective. If you change armor types, it will take some time for the armor to become effective again."
-      />
-    ),
+    content:
+      "This graph shows how well the armor is working. If the line is flat, it's not very effective. If the line moves more rapidly, the armor is more effective. If you change armor types, it will take some time for the armor to become effective again.",
   },
 ];
 
@@ -207,10 +195,7 @@ const HullPlatingComp: React.FC<HullPlatingProps> = props => {
                     block={true}
                     size={"lg"}
                   >
-                    <FormattedMessage
-                      id={"hull-plating-engage"}
-                      defaultMessage="Engage"
-                    />{" "}
+                    Engage{" "}
                   </Button>
                 )}
                 {hullPlating.engaged && (
@@ -220,10 +205,7 @@ const HullPlatingComp: React.FC<HullPlatingProps> = props => {
                     block={true}
                     size={"lg"}
                   >
-                    <FormattedMessage
-                      id={"hull-plating-disengage"}
-                      defaultMessage="Disengage"
-                    />
+                    Disengage
                   </Button>
                 )}
               </div>
