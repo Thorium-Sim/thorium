@@ -1,4 +1,4 @@
-const paths = require("./paths").default;
+import paths from './paths';
 
 test("paths", () => {
   expect(paths.userData).toContain("Documents/thorium");

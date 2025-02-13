@@ -7,13 +7,27 @@ import commonjs from "vite-plugin-commonjs";
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/",
+  esbuild: {
+    jsxFactory: "jsx",
+    jsxInject: `import { jsx } from '@emotion/react'`,
+  },
   plugins: [
     macrosPlugin(),
-    react({jsxRuntime: "classic"}),
+    react({
+      jsxRuntime: "classic",
+      jsxImportSource: "@emotion/react",
+      babel: {
+        plugins: ["@emotion/babel-plugin"],
+      },
+    }),
     tsconfigPaths(),
     svgrPlugin(),
     commonjs(),
   ],
+  test: {
+    globals: true,
+    environment: "happy-dom",
+  },
   build: {
     assetsDir: "build",
   },

@@ -13,8 +13,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "baseUrl": "./src/"
+    "jsx": "preserve",
+    "baseUrl": "./src/",
+    "types": ["vitest/globals"],
+    "jsxImportSource": "@emotion/react"
   },
   "include": [
     "src",

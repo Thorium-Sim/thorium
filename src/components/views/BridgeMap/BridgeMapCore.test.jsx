@@ -3,7 +3,7 @@ import {waitForElementToBeRemoved, wait} from "@testing-library/react";
 import render from "../../../helpers/testHelper";
 import baseProps from "../../../stories/helpers/baseProps";
 import Core from "./core";
-import BridgeMapMock from "mocks/cards/BridgeMap.mock";
+import BridgeMapMock from "../../../mocks/cards/BridgeMap.mock";
 
 it.skip("should render", async () => {
   let oldFetch = window.fetch;

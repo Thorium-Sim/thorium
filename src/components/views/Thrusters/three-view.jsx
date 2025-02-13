@@ -1,11 +1,10 @@
 import React, {Component} from "react";
 import * as THREE from "three";
-import OBJLoader from "three-obj-loader";
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
 import {withApollo} from "react-apollo";
 import Arrow from "./arrow";
 import Circle from "./circle";
 
-// OBJLoader(THREE);
 window.THREE = THREE;
 
 function degtorad(deg) {
@@ -104,7 +103,7 @@ class ThreeView extends Component {
     const {assets} = this.props.simulator;
     const meshSrc = `/assets${assets.mesh}`;
     // const texSrc = `/assets${assets.texture}`
-    const objLoader = new window.THREE.OBJLoader();
+    const objLoader = new OBJLoader();
     //const texture = new THREE.TextureLoader().load(texSrc);
     // const material = new THREE.MeshBasicMaterial({ map: texture });
     const color = 0x71bbe9;

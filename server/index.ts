@@ -7,10 +7,15 @@ import clientServer from "./bootstrap/client-server";
 import postMigration from "./bootstrap/postmigration";
 import cleanUp from "./bootstrap/cleanup";
 import App from "./app";
+import * as ClassesImport from "./classes";
+
+const Classes: {[index: string]: any} = {
+  ...ClassesImport,
+};
 
 Promise.resolve()
   .then(() => init())
-  .then(() => App.init())
+  .then(() => App.init(Classes))
   .then(() => broadcast(App.port, App.httpOnly))
   .then(() => express())
   .then(server => clientServer(server))

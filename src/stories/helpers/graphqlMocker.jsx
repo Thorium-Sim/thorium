@@ -4,7 +4,7 @@ import {graphql} from "graphql";
 import gql from "graphql-tag";
 import mergeWith from "lodash.mergewith";
 import {print} from "graphql/language/printer";
-import schemaString from "../../schema.graphql";
+import schemaString from "../../schema.graphql?raw";
 
 // Mock our custom scalar values in the canvas graphql schema
 const DEFAULT_MOCKS = [

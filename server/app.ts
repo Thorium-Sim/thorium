@@ -1,20 +1,17 @@
 import {EventEmitter} from "events";
 import util from "util";
 import randomWords from "random-words";
-import * as ClassesImport from "./classes";
+import type * as ClassesImport from "./classes";
 import paths from "./helpers/paths";
 import Store from "./helpers/data-store";
 import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
 import Motu from "motu-control";
 import {setAutoFreeze} from "immer";
-import fs from 'fs';
+import fs from "fs";
 
 setAutoFreeze(false);
 
-const Classes: {[index: string]: any} = {
-  ...ClassesImport,
-};
 let snapshotDir = "./snapshots/";
 
 if (process.env.NODE_ENV === "production") {
@@ -105,8 +102,8 @@ class Events extends EventEmitter {
   firebaseManager?: ClassesImport.FirebaseManager;
   [index: string]: any;
 
-  init() {
-    this.merge(store.data);
+  init(classes: {[index: string]: any}) {
+    this.merge(store.data, classes);
     if (!this.doTrack) heap.stubbed = true;
     heap.track("thorium-started", this.thoriumId);
     if (process.env.PORT && !isNaN(parseInt(process.env.PORT, 10)))
@@ -115,13 +112,14 @@ class Events extends EventEmitter {
     fs.readFile(paths.userData + "/firebase.json", (err, data) => {
       if (err) {
         return;
+      } else {
+        this.firebaseManager = new classes.FirebaseManager({
+          firebaseServiceConfig: JSON.parse(data.toString()),
+        });
       }
-      else {
-        this.firebaseManager = new ClassesImport.FirebaseManager({ firebaseServiceConfig: JSON.parse(data.toString()) });
-      }
-    })
+    });
   }
-  merge(snapshot: any) {
+  merge(snapshot: any, Classes: {[index: string]: any}) {
     // Initialize the snapshot with the object constructors
     Object.entries(snapshot).forEach(([key, value]) => {
       if (
@@ -172,7 +170,7 @@ class Events extends EventEmitter {
       }
       if (key === "hackingPresets" && snapshot.hackingPresets) {
         this.hackingPresets = snapshot.hackingPresets.map(
-          m => new ClassesImport.HackingPreset(m),
+          m => new Classes.HackingPreset(m),
         );
         return;
       }

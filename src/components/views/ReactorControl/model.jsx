@@ -1,10 +1,8 @@
 import React, {Component} from "react";
 import * as THREE from "three";
-import OBJLoader from "three-obj-loader";
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
 
 window.THREE = THREE;
-
-// OBJLoader(THREE);
 
 class ThreeView extends Component {
   constructor(props) {
@@ -35,7 +33,7 @@ class ThreeView extends Component {
     light2.lookAt(new THREE.Vector3(0, 0, 0));
     this.scene.add(light2);
 
-    const objLoader = new window.THREE.OBJLoader();
+    const objLoader = new OBJLoader();
     const texture = new THREE.TextureLoader().load(txURL);
     const material = new THREE.MeshPhongMaterial({map: texture});
     objLoader.load(objURL, obj => {
