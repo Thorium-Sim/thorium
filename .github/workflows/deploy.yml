@@ -11,17 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/checkout@v4
+      - name: Install Node.js, NPM
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
       - name: Cache node modules
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
-          path: ~/.config/yarn/global # npm cache files are stored in `~/.npm` on Linux/macOS
           key:
             ${{ runner.os }}-build-${{ env.cache-name }}-${{
             hashFiles('**/yarn.lock') }}
@@ -52,13 +51,13 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: "main"
       - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
       - uses: actions/setup-python@v4
         if: startsWith(matrix.os, 'macos')
         with:
