@@ -78,6 +78,7 @@ import universeTypeDefs from "./universe";
 import dmxTypeDefs from "./dmx";
 import taskFlowTypeDefs from "./taskFlow";
 import firebaseConnectionTypeDefs from './firebase'
+import flightSetsTypeDefs from "./flightSets";
 export * from "./universe/components";
 
 export const actions = actionsTypeDefs;
@@ -100,6 +101,7 @@ export const exocomp = exocompTypeDefs;
 export const externals = externalsTypeDefs;
 export const firebase = firebaseConnectionTypeDefs;
 export const flight = flightTypeDefs;
+export const flightSets = flightSetsTypeDefs;
 export const googleSheets = googleSheetsTypeDefs;
 export const hullPlating = hullPlatingTypeDefs;
 export const interfaces = interfacesTypeDefs;

@@ -1,0 +1,3 @@
+mutation HandleEngageFlightPath($id: ID!, $path: NavigationRouteInput!) {
+  handleEngageFlightPath(id: $id, path: $path)
+}

@@ -15,6 +15,7 @@ import gql from "graphql-tag.macro";
 import * as Configs from "./systemsConfig";
 
 const systems = [
+  "AdvancedNavigationAndAstrometrics",
   "ComputerCore",
   "Coolant",
   "Countermeasures",

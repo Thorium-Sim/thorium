@@ -1,0 +1,3 @@
+mutation HandleShowEta($id: ID!, $show: Boolean!) {
+  handleShowEta(id: $id, show: $show)
+}

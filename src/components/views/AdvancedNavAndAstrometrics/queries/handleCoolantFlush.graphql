@@ -1,0 +1,3 @@
+mutation HandleAdvancedNavCoolantFlush($id: ID!) {
+  handleCoolantFlush(id: $id)
+}

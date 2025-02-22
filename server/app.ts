@@ -1,4 +1,4 @@
-import {EventEmitter} from "events";
+import { EventEmitter } from "events";
 import util from "util";
 import randomWords from "random-words";
 import type * as ClassesImport from "./classes";
@@ -7,8 +7,9 @@ import Store from "./helpers/data-store";
 import heap from "./helpers/heap";
 import handleTrigger from "./helpers/handleTrigger";
 import Motu from "motu-control";
-import {setAutoFreeze} from "immer";
-import fs from "fs";
+import { setAutoFreeze } from "immer";
+import fs from 'fs';
+import { FlightSet } from "~classes/flightSets";
 
 setAutoFreeze(false);
 
@@ -21,8 +22,8 @@ const snapshotName =
   process.env.NODE_ENV === "production"
     ? "snapshot.json"
     : process.env.NODE_ENV === "test"
-    ? "snapshot-test.json"
-    : "snapshot-dev.json";
+      ? "snapshot-test.json"
+      : "snapshot-dev.json";
 
 const store = new Store({
   name: "Thorium",
@@ -83,7 +84,7 @@ class Events extends EventEmitter {
     timestamp: number;
   }[] = [];
   autoUpdate = true;
-  migrations: any = {assets: true, dmx: false};
+  migrations: any = { assets: true, dmx: false };
   thoriumId: string = randomWords(5).join("-");
   doTrack: boolean = false;
   askedToTrack: boolean = false;
@@ -94,12 +95,13 @@ class Events extends EventEmitter {
   port: number = process.env.NODE_ENV === "production" ? 4444 : 3001;
 
   events: any[] = [];
-  mutations: {[key: string]: Function} = {};
+  mutations: { [key: string]: Function } = {};
   replaying = false;
   snapshotVersion = 0;
   version = 0;
   timestamp: Date = new Date();
   firebaseManager?: ClassesImport.FirebaseManager;
+  flightSets: (FlightSet & { addOnTraining?: boolean })[] = [];
   [index: string]: any;
 
   init(classes: {[index: string]: any}) {
@@ -194,7 +196,7 @@ class Events extends EventEmitter {
   }
   snapshot() {
     this.snapshotVersion = this.version;
-    const snap = this.trimSnapshot({...this});
+    const snap = this.trimSnapshot({ ...this });
     store.set(snap, null);
   }
   trimSnapshot({
@@ -209,11 +211,11 @@ class Events extends EventEmitter {
     motus = [],
     ...snapshot
   }: Events) {
-    const newFlights = flights.map(({timeouts, ...f}) => f);
+    const newFlights = flights.map(({ timeouts, ...f }) => f);
     const newMotus = motus.map(m => m.address);
-    return {...snapshot, flights: newFlights, motus: newMotus};
+    return { ...snapshot, flights: newFlights, motus: newMotus };
   }
-  setMutations = (resolvers: {[key: string]: Function}) => {
+  setMutations = (resolvers: { [key: string]: Function }) => {
     this.mutations = resolvers;
   };
   // TODO: Add a proper context type
@@ -231,7 +233,7 @@ class Events extends EventEmitter {
     if (!context.isMutation && !Object.keys(this._events).includes(eventName)) {
       this.mutations[eventName]?.({}, param, context);
     } else {
-      this.emit(eventName, {cb: () => {}, ...param, context});
+      this.emit(eventName, { cb: () => { }, ...param, context });
     }
   }
   test(param: any) {

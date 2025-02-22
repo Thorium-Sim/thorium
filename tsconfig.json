@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -24,5 +28,7 @@
     "i18next-parser.config.js",
     "test/setupTests.js"
   ],
-  "exclude": ["hooksGenerate.js"]
+  "exclude": [
+    "hooksGenerate.js"
+  ]
 }

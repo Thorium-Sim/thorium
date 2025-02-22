@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import uuid from "uuid";
 import TacticalMapCore from "../components/views/TacticalMap";
 import DebugList from "./DebugList";
@@ -24,10 +24,11 @@ import {
 } from "./FlightDirector";
 import MissionPicker from "./missionPicker";
 import SimulatorPicker from "./simulatorPicker";
-import {AlertsHolder} from "../components/generic/Alerts";
+import { AlertsHolder } from "../components/generic/Alerts";
 import UniversalSandboxEditor from "./FlightDirector/Universe";
 import EntityTemplate from "./FlightDirector/EntityTemplate";
 import HackingPresets from "./FlightDirector/Hacking";
+import FlightSets from "./FlightDirector/FlightSets";
 
 interface Alert {
   id: string;
@@ -43,7 +44,7 @@ const Config = () => {
   const onDismiss = (id: string) => {
     setAlerts(alerts =>
       alerts.map(a => {
-        if (a.id === id) return {...a, visible: false};
+        if (a.id === id) return { ...a, visible: false };
         return a;
       }),
     );
@@ -52,9 +53,9 @@ const Config = () => {
       setAlerts(alerts => alerts.filter(a => a.id !== id));
     }, 2000);
   };
-  const trigger = ({title, body, color, duration, id = uuid.v4()}: Alert) => {
+  const trigger = ({ title, body, color, duration, id = uuid.v4() }: Alert) => {
     setAlerts(alerts =>
-      alerts.concat({title, body, duration, id, visible: true}),
+      alerts.concat({ title, body, duration, id, visible: true }),
     );
 
     const timeoutDuration = duration ?? 5000;
@@ -65,7 +66,7 @@ const Config = () => {
 
   return (
     <>
-      <div style={{height: "100%"}}>
+      <div style={{ height: "100%" }}>
         <Routes>
           <Route path="assetConfig" element={<AssetConfig />} />
           <Route
@@ -87,7 +88,7 @@ const Config = () => {
           <Route
             path="tacticals"
             element={
-              <div style={{height: "100%"}}>
+              <div style={{ height: "100%" }}>
                 <TacticalMapCore dedicated={true} />
               </div>
             }
@@ -107,6 +108,7 @@ const Config = () => {
           <Route path="survey" element={<SurveyForms />} />
           <Route path="keyboard" element={<Keyboards />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="flightSets/*" element={<FlightSets />} />
           <Route path="tasks/*" element={<Tasks />}></Route>
           <Route path="macros" element={<Macros />} />
           <Route path="macroButtons" element={<MacroButtons />} />

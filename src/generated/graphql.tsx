@@ -47,8 +47,21 @@ export type Query = {
   engine?: Maybe<Engine>;
   exocomps?: Maybe<Array<Maybe<Exocomp>>>;
   externals?: Maybe<Externals>;
+  hasFirebaseConnection: Scalars['Boolean'];
+  getFirebaseSimulators?: Maybe<Array<FbFullSimulator>>;
+  getFirebaseUser?: Maybe<Scalars['Boolean']>;
+  getFirebaseAwards?: Maybe<Array<FbAwards>>;
+  getFirebaseLogoSrc?: Maybe<Scalars['String']>;
+  getFirebaseEventId?: Maybe<Scalars['ID']>;
+  getFirebasePageText?: Maybe<FbPageText>;
+  getCurrentFirebaseSelections?: Maybe<FbCurrentSelections>;
   flights: Array<Flight>;
   events?: Maybe<Array<Maybe<Scalars['String']>>>;
+  advancedNavAndAstrometric?: Maybe<AdvancedNavigationAndAstrometrics>;
+  advancedNavAndAstrometrics?: Maybe<Array<Maybe<AdvancedNavigationAndAstrometrics>>>;
+  getFlightSet?: Maybe<FlightSet>;
+  getAllFlightSets: Array<Maybe<FlightSet>>;
+  advancedNavStars?: Maybe<AdvancedNavStarsData>;
   googleSheets?: Maybe<Scalars['String']>;
   googleSheetsGetSpreadsheet?: Maybe<GoogleSpreadsheet>;
   hullPlating?: Maybe<HullPlating>;
@@ -291,9 +304,34 @@ export type QueryExocompsArgs = {
 };
 
 
+export type QueryGetFirebaseUserArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type QueryFlightsArgs = {
   running?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryAdvancedNavAndAstrometricArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdvancedNavAndAstrometricsArgs = {
+  simulatorId: Scalars['ID'];
+};
+
+
+export type QueryGetFlightSetArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdvancedNavStarsArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -912,6 +950,12 @@ export type Mutation = {
   updateExocompDifficulty?: Maybe<Scalars['String']>;
   importSimulatorFromUrl?: Maybe<Scalars['String']>;
   importMissionFromUrl?: Maybe<Scalars['String']>;
+  updateFirebaseUserStation: Scalars['Boolean'];
+  setFirebaseAwards?: Maybe<Scalars['Boolean']>;
+  setFirebaseSimulator?: Maybe<Scalars['Boolean']>;
+  setFirebaseMission?: Maybe<Scalars['Boolean']>;
+  createFirebaseUser?: Maybe<Scalars['Boolean']>;
+  executeFirebasePush?: Maybe<Scalars['Boolean']>;
   startFlight?: Maybe<Scalars['String']>;
   /** Macro: Flight: Reset Flight */
   resetFlight?: Maybe<Scalars['String']>;
@@ -926,6 +970,33 @@ export type Mutation = {
    *   - Space EdVentures
    */
   clientAddExtra?: Maybe<Scalars['String']>;
+  createFlightSet?: Maybe<Scalars['String']>;
+  updateFlightSet?: Maybe<Scalars['String']>;
+  deleteFlightSet?: Maybe<Scalars['String']>;
+  updateAdvNavFlightSet?: Maybe<Scalars['String']>;
+  updateAdvNavFlightSetData?: Maybe<Scalars['String']>;
+  handleCoolantFlush?: Maybe<Scalars['String']>;
+  handleEmergencyStop?: Maybe<Scalars['String']>;
+  handleResumePath?: Maybe<Scalars['String']>;
+  handleShowFlightSet?: Maybe<Scalars['String']>;
+  handleShowEta?: Maybe<Scalars['String']>;
+  handleUpdateEta?: Maybe<Scalars['String']>;
+  handleEngineFlux?: Maybe<Scalars['String']>;
+  handleSetCoolantLevel?: Maybe<Scalars['String']>;
+  handleSetHeatLevel?: Maybe<Scalars['String']>;
+  handleUpdateCurrentFlightPath?: Maybe<Scalars['String']>;
+  handleUpdateCurrentFlightSet?: Maybe<Scalars['String']>;
+  handleOverrideLocation?: Maybe<Scalars['String']>;
+  handleAddProbeAssignment?: Maybe<Scalars['String']>;
+  handleEngageFlightPath?: Maybe<Scalars['String']>;
+  handleSaveFlightPath?: Maybe<Scalars['String']>;
+  handleAddFlightSetToNavigation?: Maybe<Scalars['String']>;
+  /** Macro: Advanced Navigation: Add Flight Set to Navigation */
+  addFlightSetToNavigation?: Maybe<Scalars['String']>;
+  handleOnAssignProbe?: Maybe<Scalars['String']>;
+  handleUpdateProbeAssignments: Scalars['String'];
+  /** Macro: Advanced Navigation: Select current flight set */
+  selectCurrentFlightSet?: Maybe<Scalars['String']>;
   googleSheetsAuthorize?: Maybe<Scalars['String']>;
   googleSheetsCompleteAuthorize?: Maybe<Scalars['String']>;
   googleSheetsRevoke?: Maybe<Scalars['String']>;
@@ -2790,6 +2861,38 @@ export type MutationImportMissionFromUrlArgs = {
 };
 
 
+export type MutationUpdateFirebaseUserStationArgs = {
+  email: Scalars['String'];
+  station: Scalars['String'];
+};
+
+
+export type MutationSetFirebaseAwardsArgs = {
+  awards: Array<FbAwardInput>;
+};
+
+
+export type MutationSetFirebaseSimulatorArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationSetFirebaseMissionArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationCreateFirebaseUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationExecuteFirebasePushArgs = {
+  eventId: Scalars['ID'];
+  flightId: Scalars['ID'];
+};
+
+
 export type MutationStartFlightArgs = {
   name?: Maybe<Scalars['String']>;
   simulators: Array<SimulatorInput>;
@@ -2822,6 +2925,154 @@ export type MutationClientAddExtraArgs = {
   flightId: Scalars['ID'];
   simulatorId: Scalars['ID'];
   name: Scalars['String'];
+};
+
+
+export type MutationCreateFlightSetArgs = {
+  flightSet: FlightSetInput;
+};
+
+
+export type MutationUpdateFlightSetArgs = {
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+};
+
+
+export type MutationDeleteFlightSetArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationUpdateAdvNavFlightSetArgs = {
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+};
+
+
+export type MutationUpdateAdvNavFlightSetDataArgs = {
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+};
+
+
+export type MutationHandleCoolantFlushArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationHandleEmergencyStopArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationHandleResumePathArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationHandleShowFlightSetArgs = {
+  id: Scalars['ID'];
+  show: Scalars['Boolean'];
+};
+
+
+export type MutationHandleShowEtaArgs = {
+  id: Scalars['ID'];
+  show: Scalars['Boolean'];
+};
+
+
+export type MutationHandleUpdateEtaArgs = {
+  id: Scalars['ID'];
+  eta: Scalars['Float'];
+};
+
+
+export type MutationHandleEngineFluxArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationHandleSetCoolantLevelArgs = {
+  id: Scalars['ID'];
+  level: Scalars['Float'];
+};
+
+
+export type MutationHandleSetHeatLevelArgs = {
+  id: Scalars['ID'];
+  level: Scalars['Float'];
+};
+
+
+export type MutationHandleUpdateCurrentFlightPathArgs = {
+  id: Scalars['ID'];
+  route: NavigationRouteInput;
+};
+
+
+export type MutationHandleUpdateCurrentFlightSetArgs = {
+  id: Scalars['ID'];
+  flightSetId: Scalars['ID'];
+};
+
+
+export type MutationHandleOverrideLocationArgs = {
+  id: Scalars['ID'];
+  location: BasicCoordinateInput;
+  currentLocationUrl?: Maybe<Scalars['String']>;
+  currentLocationName?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationHandleAddProbeAssignmentArgs = {
+  id: Scalars['ID'];
+  probeId: Scalars['ID'];
+  poiId: Scalars['ID'];
+};
+
+
+export type MutationHandleEngageFlightPathArgs = {
+  id: Scalars['ID'];
+  path: NavigationRouteInput;
+};
+
+
+export type MutationHandleSaveFlightPathArgs = {
+  id: Scalars['ID'];
+  path: NamedNavigationRouteInput;
+};
+
+
+export type MutationHandleAddFlightSetToNavigationArgs = {
+  id: Scalars['ID'];
+  flightSetId: Scalars['ID'];
+};
+
+
+export type MutationAddFlightSetToNavigationArgs = {
+  simulatorId: Scalars['ID'];
+  flightSetId: Scalars['ID'];
+};
+
+
+export type MutationHandleOnAssignProbeArgs = {
+  id: Scalars['ID'];
+  probeId: Scalars['ID'];
+  poiId: Scalars['ID'];
+};
+
+
+export type MutationHandleUpdateProbeAssignmentsArgs = {
+  id: Scalars['ID'];
+  probeAssignments: Scalars['String'];
+};
+
+
+export type MutationSelectCurrentFlightSetArgs = {
+  simulatorId: Scalars['ID'];
+  flightSetId: Scalars['String'];
 };
 
 
@@ -6624,7 +6875,10 @@ export type Subscription = {
   heatChange?: Maybe<Engine>;
   engineUpdate?: Maybe<Engine>;
   exocompsUpdate?: Maybe<Array<Maybe<Exocomp>>>;
+  firebaseCurrentSelectionsUpdate?: Maybe<FbCurrentSelections>;
   flightsUpdate?: Maybe<Array<Maybe<Flight>>>;
+  advancedNavAndAstrometricsUpdate: Array<AdvancedNavigationAndAstrometrics>;
+  advancedNavStarsUpdate: AdvancedNavStarsData;
   googleSheetsUpdate?: Maybe<Array<Maybe<GoogleSheets>>>;
   hullPlatingUpdate: Array<HullPlating>;
   interfaceUpdate?: Maybe<Array<Maybe<Interface>>>;
@@ -6879,6 +7133,16 @@ export type SubscriptionExocompsUpdateArgs = {
 export type SubscriptionFlightsUpdateArgs = {
   running?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionAdvancedNavAndAstrometricsUpdateArgs = {
+  simulatorId?: Maybe<Scalars['ID']>;
+};
+
+
+export type SubscriptionAdvancedNavStarsUpdateArgs = {
+  simulatorId: Scalars['ID'];
 };
 
 
@@ -7976,6 +8240,73 @@ export type ExternalMission = {
   date?: Maybe<Scalars['String']>;
 };
 
+export type FbFullSimulator = {
+  __typename?: 'FBFullSimulator';
+  id: Scalars['ID'];
+  Name: Scalars['String'];
+  Roles: Scalars['String'];
+  Missions: Array<FbMission>;
+};
+
+export type FbMission = {
+  __typename?: 'FBMission';
+  id: Scalars['ID'];
+  Name: Scalars['String'];
+  FlightHours: Scalars['Float'];
+  ClassHours: Scalars['Float'];
+  Synopsis: Scalars['String'];
+  Retired?: Maybe<Scalars['Boolean']>;
+};
+
+export type FbUser = {
+  __typename?: 'FBUser';
+  id: Scalars['ID'];
+};
+
+export type FbAwards = {
+  __typename?: 'FBAwards';
+  id: Scalars['ID'];
+  Name: Scalars['String'];
+  ClassHours: Scalars['Float'];
+  FlightHours: Scalars['Float'];
+  Description: Scalars['String'];
+  ImageURL?: Maybe<Scalars['String']>;
+};
+
+export type FbPageText = {
+  __typename?: 'FBPageText';
+  Awards?: Maybe<Scalars['String']>;
+  Heading?: Maybe<Scalars['String']>;
+  Subheading?: Maybe<Scalars['String']>;
+  EmailHeading?: Maybe<Scalars['String']>;
+  EmailNotFound?: Maybe<Scalars['String']>;
+};
+
+export type FbStationEmailLinks = {
+  __typename?: 'FBStationEmailLinks';
+  station?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+};
+
+export type FbCurrentSelections = {
+  __typename?: 'FBCurrentSelections';
+  Mission?: Maybe<Scalars['ID']>;
+  Simulator?: Maybe<Scalars['ID']>;
+  StationEmailLinks?: Maybe<Array<FbStationEmailLinks>>;
+  Awards?: Maybe<Array<FbAwards>>;
+  EventId?: Maybe<Scalars['ID']>;
+  flightSubmissions?: Maybe<Array<Scalars['String']>>;
+};
+
+export type FbAwardInput = {
+  id: Scalars['ID'];
+  Name: Scalars['String'];
+  ClassHours: Scalars['Float'];
+  FlightHours: Scalars['Float'];
+  Description: Scalars['String'];
+  ImageURL?: Maybe<Scalars['String']>;
+};
+
 export type Flight = {
   __typename?: 'Flight';
   id: Scalars['ID'];
@@ -7995,6 +8326,487 @@ export type SpaceEdventuresClient = {
   token?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+};
+
+export type AdvancedNavigationAndAstrometrics = SystemInterface & {
+  __typename?: 'AdvancedNavigationAndAstrometrics';
+  id?: Maybe<Scalars['ID']>;
+  simulatorId?: Maybe<Scalars['ID']>;
+  type?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  displayName?: Maybe<Scalars['String']>;
+  upgradeName?: Maybe<Scalars['String']>;
+  upgraded?: Maybe<Scalars['Boolean']>;
+  extra?: Maybe<Scalars['Boolean']>;
+  damage?: Maybe<Damage>;
+  locations?: Maybe<Array<Maybe<Room>>>;
+  stealthFactor?: Maybe<Scalars['Float']>;
+  power?: Maybe<Power>;
+  flightSets: Array<FlightSet>;
+  currentLocation: BasicCoordinate;
+  coolantLevel: Scalars['Float'];
+  heatLevel: Scalars['Float'];
+  flightPaths: Array<NamedNavigationRoute>;
+  engineStatus: Scalars['String'];
+  hasEmergencyPower: Scalars['Boolean'];
+  startingStartupTime: Scalars['Float'];
+  remainingEta: Scalars['Float'];
+  totalEta: Scalars['Float'];
+  flightPathCoords: Array<FullCoordinate>;
+  remainingStartupTime?: Maybe<Scalars['Float']>;
+  showEta: Scalars['Boolean'];
+  showFlightSet: Scalars['Boolean'];
+  currentFlightSet?: Maybe<FlightSet>;
+  currentFlightPath?: Maybe<NavigationRoute>;
+  currentLocationName?: Maybe<Scalars['String']>;
+  currentLocationUrl?: Maybe<Scalars['String']>;
+  probes: Array<FsProbe>;
+  flightSetPathMap: Scalars['String'];
+  probeAssignments: Scalars['String'];
+};
+
+export type PointOfInterest = {
+  __typename?: 'PointOfInterest';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  location: XyLocation;
+  isVisible: Scalars['Boolean'];
+  isFogOfWar: Scalars['Boolean'];
+  speedIndex: Scalars['Float'];
+  riskIndex: Scalars['Float'];
+  type: PointOfInterestType;
+  information: PointOfInterestInformation;
+  iconUrl: Scalars['String'];
+  fullImageUrl: Scalars['String'];
+  transitOptions?: Maybe<Array<SecondaryStopTransitOption>>;
+  showName?: Maybe<Scalars['Boolean']>;
+};
+
+export type SecondaryStopTransitOption = {
+  __typename?: 'SecondaryStopTransitOption';
+  name: Scalars['String'];
+  timeModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  iconUrl: Scalars['String'];
+};
+
+export type PointOfInterestInformation = {
+  __typename?: 'PointOfInterestInformation';
+  basicInformation: Scalars['String'];
+  hasBasicInformation: Scalars['Boolean'];
+  detailedInformation: Scalars['String'];
+  hasDetailedInformation: Scalars['Boolean'];
+  secretInformation: Scalars['String'];
+  hasSecretInformation: Scalars['Boolean'];
+};
+
+export type MapBorder = {
+  __typename?: 'MapBorder';
+  name: Scalars['String'];
+  id: Scalars['ID'];
+  location: MapBorderLocation;
+  iconUrl: Scalars['String'];
+  riskIndex: Scalars['Float'];
+};
+
+export type XyLocation = {
+  __typename?: 'XYLocation';
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type MapBorderLocation = {
+  __typename?: 'MapBorderLocation';
+  side: Scalars['String'];
+};
+
+export type PointOfInterestObject = {
+  __typename?: 'PointOfInterestObject';
+  category: Scalars['String'];
+  imageUri: Scalars['String'];
+};
+
+export type PointOfInterestType = {
+  __typename?: 'PointOfInterestType';
+  category: Scalars['String'];
+  imageUri: Scalars['String'];
+};
+
+export type NavigationHazardNavOptions = {
+  __typename?: 'NavigationHazardNavOptions';
+  action: Scalars['String'];
+  speedModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+  isArrivalOnly: Scalars['Boolean'];
+};
+
+export type NavigationHazard = {
+  __typename?: 'NavigationHazard';
+  name: Scalars['String'];
+  description: Scalars['String'];
+  navOptions: Array<NavigationHazardNavOptions>;
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationExitOptions = {
+  __typename?: 'NavigationExitOptions';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationStartOptions = {
+  __typename?: 'NavigationStartOptions';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+  secondsForStartup: Scalars['Float'];
+};
+
+export type NavigationSpeedOptions = {
+  __typename?: 'NavigationSpeedOptions';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  speedModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  requiresMaxEngines: Scalars['Boolean'];
+  imgUrl: Scalars['String'];
+};
+
+export type SecondaryNavigationRouteOption = {
+  __typename?: 'SecondaryNavigationRouteOption';
+  targetLocationId: Scalars['ID'];
+};
+
+export type NavigationRoute = {
+  __typename?: 'NavigationRoute';
+  targetLocationId: Scalars['ID'];
+  secondaryRouteOptions: Array<SecondaryNavigationRouteOption>;
+  isBorder: Scalars['Boolean'];
+  startOption: NavigationStartOptions;
+  speedOption: NavigationSpeedOptions;
+  exitOption: NavigationExitOptions;
+};
+
+export type HazardChoiceMapEntry = {
+  __typename?: 'HazardChoiceMapEntry';
+  poiId: Scalars['ID'];
+  hazardChoice: Scalars['String'];
+};
+
+export type NamedNavigationRoute = {
+  __typename?: 'NamedNavigationRoute';
+  name: Scalars['String'];
+  id: Scalars['ID'];
+  targetLocationId: Scalars['ID'];
+  secondaryRouteOptions: Array<SecondaryNavigationRouteOption>;
+  isBorder: Scalars['Boolean'];
+  startOption: NavigationStartOptions;
+  speedOption: NavigationSpeedOptions;
+  exitOption: NavigationExitOptions;
+};
+
+export type FlightSet = {
+  __typename?: 'FlightSet';
+  backgroundImg: Scalars['String'];
+  startOptions: Array<NavigationStartOptions>;
+  speedOptions: Array<NavigationSpeedOptions>;
+  exitOptions: Array<NavigationExitOptions>;
+  pointsOfInterest: Array<PointOfInterest>;
+  defaultStartingLocation: BasicCoordinate;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  borders: Array<MapBorder>;
+  imageMaxX: Scalars['Float'];
+  imageMaxY: Scalars['Float'];
+  pixelsPerSecond: Scalars['Float'];
+  label?: Maybe<Scalars['String']>;
+  probeLaunchRangeRadius: Scalars['Float'];
+  addOnTraining?: Maybe<Scalars['Boolean']>;
+  pixelDistanceModifier?: Maybe<Scalars['Float']>;
+};
+
+export type BasicCoordinate = {
+  __typename?: 'BasicCoordinate';
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type ColoredCoordinate = {
+  __typename?: 'ColoredCoordinate';
+  color: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type IdCoordinate = {
+  __typename?: 'IdCoordinate';
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type NamedCoordinate = {
+  __typename?: 'NamedCoordinate';
+  name: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type ShownCoordinate = {
+  __typename?: 'ShownCoordinate';
+  showName?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type FullCoordinate = {
+  __typename?: 'FullCoordinate';
+  speed: Scalars['Float'];
+  color: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type ProbeAssignment = {
+  __typename?: 'ProbeAssignment';
+  probeId: Scalars['ID'];
+  flightPathCoords: Array<BasicCoordinate>;
+  data: Array<Scalars['String']>;
+  remainingFuelCellCount: Scalars['Float'];
+  hasBeenViewed: Scalars['Boolean'];
+  currentLocation: BasicCoordinate;
+  targetLocationName: Scalars['String'];
+  currentEta: Scalars['Float'];
+  totalEta: Scalars['Float'];
+  completed: Scalars['Boolean'];
+};
+
+export type FsProbe = {
+  __typename?: 'FSProbe';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  type: Scalars['String'];
+  equipment: Array<Equipment>;
+};
+
+export type Equipment = {
+  __typename?: 'Equipment';
+  id: Scalars['ID'];
+  count: Scalars['Float'];
+};
+
+export type AdvancedNavStarsData = {
+  __typename?: 'AdvancedNavStarsData';
+  velocity: Scalars['Float'];
+  activating: Scalars['Boolean'];
+};
+
+export type PointOfInterestInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  location: LocationInput;
+  isVisible: Scalars['Boolean'];
+  isFogOfWar: Scalars['Boolean'];
+  speedIndex: Scalars['Float'];
+  riskIndex: Scalars['Float'];
+  type: PointOfInterestTypeInput;
+  information: PointOfInterestInformationInput;
+  iconUrl: Scalars['String'];
+  fullImageUrl: Scalars['String'];
+  transitOptions?: Maybe<Array<Maybe<SecondaryStopTransitOptionInput>>>;
+  showName?: Maybe<Scalars['Boolean']>;
+};
+
+export type LocationInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type SecondaryStopTransitOptionInput = {
+  name: Scalars['String'];
+  timeModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  iconUrl: Scalars['String'];
+};
+
+export type PointOfInterestInformationInput = {
+  basicInformation: Scalars['String'];
+  hasBasicInformation: Scalars['Boolean'];
+  detailedInformation: Scalars['String'];
+  hasDetailedInformation: Scalars['Boolean'];
+  secretInformation: Scalars['String'];
+  hasSecretInformation: Scalars['Boolean'];
+};
+
+export type MapBorderInput = {
+  name: Scalars['String'];
+  id: Scalars['ID'];
+  location: MapBorderLocationInput;
+  iconUrl: Scalars['String'];
+  riskIndex: Scalars['Float'];
+};
+
+export type MapBorderLocationInput = {
+  side: Scalars['String'];
+};
+
+export type PointOfInterestTypeInput = {
+  category: Scalars['String'];
+  imageUri: Scalars['String'];
+};
+
+export type NavigationHazardNavOptionsInput = {
+  action: Scalars['String'];
+  speedModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+  isArrivalOnly: Scalars['Boolean'];
+};
+
+export type NavigationHazardInput = {
+  name: Scalars['String'];
+  description: Scalars['String'];
+  navOptions: Array<NavigationHazardNavOptionsInput>;
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationExitOptionsInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+};
+
+export type NavigationStartOptionsInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  riskModifier: Scalars['Float'];
+  imgUrl: Scalars['String'];
+  secondsForStartup: Scalars['Float'];
+};
+
+export type NavigationSpeedOptionsInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  speedModifier: Scalars['Float'];
+  riskModifier: Scalars['Float'];
+  requiresMaxEngines: Scalars['Boolean'];
+  imgUrl: Scalars['String'];
+};
+
+export type SecondaryNavigationRouteOptionInput = {
+  targetLocationId: Scalars['ID'];
+};
+
+export type NavigationRouteInput = {
+  targetLocationId: Scalars['ID'];
+  secondaryRouteOptions: Array<SecondaryNavigationRouteOptionInput>;
+  isBorder: Scalars['Boolean'];
+  startOption: NavigationStartOptionsInput;
+  speedOption: NavigationSpeedOptionsInput;
+  exitOption: NavigationExitOptionsInput;
+};
+
+export type HazardChoiceMapEntryInput = {
+  poiId: Scalars['ID'];
+  hazardChoice: Scalars['String'];
+};
+
+export type NamedNavigationRouteInput = {
+  name: Scalars['String'];
+  id: Scalars['ID'];
+  targetLocationId: Scalars['ID'];
+  secondaryRouteOptions: Array<SecondaryNavigationRouteOptionInput>;
+  isBorder: Scalars['Boolean'];
+  startOption: NavigationStartOptionsInput;
+  speedOption: NavigationSpeedOptionsInput;
+  exitOption: NavigationExitOptionsInput;
+};
+
+export type FlightSetInput = {
+  backgroundImg: Scalars['String'];
+  startOptions: Array<NavigationStartOptionsInput>;
+  speedOptions: Array<NavigationSpeedOptionsInput>;
+  exitOptions: Array<NavigationExitOptionsInput>;
+  pointsOfInterest: Array<PointOfInterestInput>;
+  defaultStartingLocation: BasicCoordinateInput;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  borders: Array<MapBorderInput>;
+  imageMaxX: Scalars['Float'];
+  imageMaxY: Scalars['Float'];
+  pixelsPerSecond: Scalars['Float'];
+  label?: Maybe<Scalars['String']>;
+  probeLaunchRangeRadius: Scalars['Float'];
+  addOnTraining?: Maybe<Scalars['Boolean']>;
+  pixelDistanceModifier?: Maybe<Scalars['Float']>;
+};
+
+export type BasicCoordinateInput = {
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type ColoredCoordinateInput = {
+  color: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type IdCoordinateInput = {
+  id: Scalars['ID'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type NamedCoordinateInput = {
+  name: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type ShownCoordinateInput = {
+  showName?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type FullCoordinateInput = {
+  speed: Scalars['Float'];
+  color: Scalars['String'];
+  x: Scalars['Float'];
+  y: Scalars['Float'];
+};
+
+export type ProbeAssignmentInput = {
+  probeId: Scalars['ID'];
+  flightPathCoords: Array<BasicCoordinateInput>;
+  data: Array<Scalars['String']>;
+  remainingFuelCellCount: Scalars['Float'];
+  hasBeenViewed: Scalars['Boolean'];
+  currentLocation: BasicCoordinateInput;
+  targetLocationName: Scalars['String'];
+  currentEta: Scalars['Float'];
+  totalEta: Scalars['Float'];
+  completed: Scalars['Boolean'];
+};
+
+export type FsProbeInput = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  type: Scalars['String'];
+  equipment: Array<FsEquipmentInput>;
+};
+
+export type FsEquipmentInput = {
+  id: Scalars['ID'];
+  count: Scalars['Float'];
 };
 
 export type GoogleSheets = {
@@ -11239,6 +12051,380 @@ export type RemoteAssetLoadMutation = (
   & Pick<Mutation, 'downloadRemoteAssets'>
 );
 
+export type HandleAddFlightSetToNavigationMutationVariables = Exact<{
+  id: Scalars['ID'];
+  flightSetId: Scalars['ID'];
+}>;
+
+
+export type HandleAddFlightSetToNavigationMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleAddFlightSetToNavigation'>
+);
+
+export type GetAdvancedNavAndAstrometricsQueryVariables = Exact<{
+  simulatorId: Scalars['ID'];
+}>;
+
+
+export type GetAdvancedNavAndAstrometricsQuery = (
+  { __typename?: 'Query' }
+  & { advancedNavAndAstrometrics?: Maybe<Array<Maybe<(
+    { __typename?: 'AdvancedNavigationAndAstrometrics' }
+    & Pick<AdvancedNavigationAndAstrometrics, 'id' | 'simulatorId' | 'type' | 'name' | 'displayName' | 'stealthFactor' | 'coolantLevel' | 'heatLevel' | 'engineStatus' | 'hasEmergencyPower' | 'startingStartupTime' | 'remainingEta' | 'totalEta' | 'remainingStartupTime' | 'showEta' | 'showFlightSet' | 'currentLocationName' | 'currentLocationUrl' | 'flightSetPathMap' | 'probeAssignments'>
+    & { power?: Maybe<(
+      { __typename?: 'Power' }
+      & Pick<Power, 'power' | 'powerLevels'>
+    )>, damage?: Maybe<(
+      { __typename?: 'Damage' }
+      & Pick<Damage, 'damaged' | 'report'>
+    )>, flightSets: Array<(
+      { __typename?: 'FlightSet' }
+      & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'pixelDistanceModifier' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining'>
+      & { startOptions: Array<(
+        { __typename?: 'NavigationStartOptions' }
+        & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
+      )>, speedOptions: Array<(
+        { __typename?: 'NavigationSpeedOptions' }
+        & Pick<NavigationSpeedOptions, 'id' | 'name' | 'speedModifier' | 'riskModifier' | 'requiresMaxEngines' | 'imgUrl'>
+      )>, exitOptions: Array<(
+        { __typename?: 'NavigationExitOptions' }
+        & Pick<NavigationExitOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl'>
+      )>, pointsOfInterest: Array<(
+        { __typename?: 'PointOfInterest' }
+        & Pick<PointOfInterest, 'id' | 'name' | 'isVisible' | 'isFogOfWar' | 'speedIndex' | 'riskIndex' | 'iconUrl' | 'fullImageUrl' | 'showName'>
+        & { location: (
+          { __typename?: 'XYLocation' }
+          & Pick<XyLocation, 'x' | 'y'>
+        ), type: (
+          { __typename?: 'PointOfInterestType' }
+          & Pick<PointOfInterestType, 'category' | 'imageUri'>
+        ), information: (
+          { __typename?: 'PointOfInterestInformation' }
+          & Pick<PointOfInterestInformation, 'basicInformation' | 'hasBasicInformation' | 'detailedInformation' | 'hasDetailedInformation' | 'secretInformation' | 'hasSecretInformation'>
+        ), transitOptions?: Maybe<Array<(
+          { __typename?: 'SecondaryStopTransitOption' }
+          & Pick<SecondaryStopTransitOption, 'name' | 'timeModifier' | 'riskModifier' | 'iconUrl'>
+        )>> }
+      )>, defaultStartingLocation: (
+        { __typename?: 'BasicCoordinate' }
+        & Pick<BasicCoordinate, 'x' | 'y'>
+      ), borders: Array<(
+        { __typename?: 'MapBorder' }
+        & Pick<MapBorder, 'name' | 'id' | 'iconUrl' | 'riskIndex'>
+        & { location: (
+          { __typename?: 'MapBorderLocation' }
+          & Pick<MapBorderLocation, 'side'>
+        ) }
+      )> }
+    )>, currentLocation: (
+      { __typename?: 'BasicCoordinate' }
+      & Pick<BasicCoordinate, 'x' | 'y'>
+    ), flightPaths: Array<(
+      { __typename?: 'NamedNavigationRoute' }
+      & Pick<NamedNavigationRoute, 'name' | 'id' | 'targetLocationId' | 'isBorder'>
+      & { secondaryRouteOptions: Array<(
+        { __typename?: 'SecondaryNavigationRouteOption' }
+        & Pick<SecondaryNavigationRouteOption, 'targetLocationId'>
+      )>, startOption: (
+        { __typename?: 'NavigationStartOptions' }
+        & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
+      ), speedOption: (
+        { __typename?: 'NavigationSpeedOptions' }
+        & Pick<NavigationSpeedOptions, 'id' | 'name' | 'speedModifier' | 'riskModifier' | 'requiresMaxEngines' | 'imgUrl'>
+      ), exitOption: (
+        { __typename?: 'NavigationExitOptions' }
+        & Pick<NavigationExitOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl'>
+      ) }
+    )>, flightPathCoords: Array<(
+      { __typename?: 'FullCoordinate' }
+      & Pick<FullCoordinate, 'speed' | 'color' | 'x' | 'y'>
+    )>, currentFlightSet?: Maybe<(
+      { __typename?: 'FlightSet' }
+      & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining'>
+      & { startOptions: Array<(
+        { __typename?: 'NavigationStartOptions' }
+        & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
+      )>, speedOptions: Array<(
+        { __typename?: 'NavigationSpeedOptions' }
+        & Pick<NavigationSpeedOptions, 'id' | 'name' | 'speedModifier' | 'riskModifier' | 'requiresMaxEngines' | 'imgUrl'>
+      )>, exitOptions: Array<(
+        { __typename?: 'NavigationExitOptions' }
+        & Pick<NavigationExitOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl'>
+      )>, pointsOfInterest: Array<(
+        { __typename?: 'PointOfInterest' }
+        & Pick<PointOfInterest, 'id' | 'name' | 'isVisible' | 'isFogOfWar' | 'speedIndex' | 'riskIndex' | 'iconUrl' | 'fullImageUrl' | 'showName'>
+        & { location: (
+          { __typename?: 'XYLocation' }
+          & Pick<XyLocation, 'x' | 'y'>
+        ), type: (
+          { __typename?: 'PointOfInterestType' }
+          & Pick<PointOfInterestType, 'category' | 'imageUri'>
+        ), information: (
+          { __typename?: 'PointOfInterestInformation' }
+          & Pick<PointOfInterestInformation, 'basicInformation' | 'hasBasicInformation' | 'detailedInformation' | 'hasDetailedInformation' | 'secretInformation' | 'hasSecretInformation'>
+        ), transitOptions?: Maybe<Array<(
+          { __typename?: 'SecondaryStopTransitOption' }
+          & Pick<SecondaryStopTransitOption, 'name' | 'timeModifier' | 'riskModifier' | 'iconUrl'>
+        )>> }
+      )>, defaultStartingLocation: (
+        { __typename?: 'BasicCoordinate' }
+        & Pick<BasicCoordinate, 'x' | 'y'>
+      ), borders: Array<(
+        { __typename?: 'MapBorder' }
+        & Pick<MapBorder, 'name' | 'id' | 'iconUrl' | 'riskIndex'>
+        & { location: (
+          { __typename?: 'MapBorderLocation' }
+          & Pick<MapBorderLocation, 'side'>
+        ) }
+      )> }
+    )>, currentFlightPath?: Maybe<(
+      { __typename?: 'NavigationRoute' }
+      & Pick<NavigationRoute, 'targetLocationId' | 'isBorder'>
+      & { secondaryRouteOptions: Array<(
+        { __typename?: 'SecondaryNavigationRouteOption' }
+        & Pick<SecondaryNavigationRouteOption, 'targetLocationId'>
+      )>, startOption: (
+        { __typename?: 'NavigationStartOptions' }
+        & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
+      ), speedOption: (
+        { __typename?: 'NavigationSpeedOptions' }
+        & Pick<NavigationSpeedOptions, 'id' | 'name' | 'speedModifier' | 'riskModifier' | 'requiresMaxEngines' | 'imgUrl'>
+      ), exitOption: (
+        { __typename?: 'NavigationExitOptions' }
+        & Pick<NavigationExitOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl'>
+      ) }
+    )>, probes: Array<(
+      { __typename?: 'FSProbe' }
+      & Pick<FsProbe, 'id' | 'name' | 'type'>
+      & { equipment: Array<(
+        { __typename?: 'Equipment' }
+        & Pick<Equipment, 'id' | 'count'>
+      )> }
+    )> }
+  )>>> }
+);
+
+export type GetBasicFlightSetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBasicFlightSetsQuery = (
+  { __typename?: 'Query' }
+  & { getAllFlightSets: Array<Maybe<(
+    { __typename?: 'FlightSet' }
+    & Pick<FlightSet, 'id' | 'name' | 'label'>
+  )>> }
+);
+
+export type HandleAddProbeAssignmentMutationVariables = Exact<{
+  id: Scalars['ID'];
+  probeId: Scalars['ID'];
+  poiId: Scalars['ID'];
+}>;
+
+
+export type HandleAddProbeAssignmentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleAddProbeAssignment'>
+);
+
+export type HandleUpdateAdvNavFlightSetDataMutationVariables = Exact<{
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+}>;
+
+
+export type HandleUpdateAdvNavFlightSetDataMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateAdvNavFlightSetData'>
+);
+
+export type HandleAdvancedNavCoolantFlushMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HandleAdvancedNavCoolantFlushMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleCoolantFlush'>
+);
+
+export type HandleEmergencyStopMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HandleEmergencyStopMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleEmergencyStop'>
+);
+
+export type HandleEngageFlightPathMutationVariables = Exact<{
+  id: Scalars['ID'];
+  path: NavigationRouteInput;
+}>;
+
+
+export type HandleEngageFlightPathMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleEngageFlightPath'>
+);
+
+export type HandleEngineFluxMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HandleEngineFluxMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleEngineFlux'>
+);
+
+export type HandleOnAssignProbeMutationVariables = Exact<{
+  id: Scalars['ID'];
+  probeId: Scalars['ID'];
+  poiId: Scalars['ID'];
+}>;
+
+
+export type HandleOnAssignProbeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleOnAssignProbe'>
+);
+
+export type HandleOverrideLocationMutationVariables = Exact<{
+  id: Scalars['ID'];
+  location: BasicCoordinateInput;
+  currentLocationUrl?: Maybe<Scalars['String']>;
+  currentLocationName?: Maybe<Scalars['String']>;
+}>;
+
+
+export type HandleOverrideLocationMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleOverrideLocation'>
+);
+
+export type HandleResumePathMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type HandleResumePathMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleResumePath'>
+);
+
+export type HandleSaveFlightPathMutationVariables = Exact<{
+  id: Scalars['ID'];
+  path: NamedNavigationRouteInput;
+}>;
+
+
+export type HandleSaveFlightPathMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleSaveFlightPath'>
+);
+
+export type HandleSetCoolantLevelMutationVariables = Exact<{
+  id: Scalars['ID'];
+  level: Scalars['Float'];
+}>;
+
+
+export type HandleSetCoolantLevelMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleSetCoolantLevel'>
+);
+
+export type HandleSetHeatLevelMutationVariables = Exact<{
+  id: Scalars['ID'];
+  level: Scalars['Float'];
+}>;
+
+
+export type HandleSetHeatLevelMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleSetHeatLevel'>
+);
+
+export type HandleShowEtaMutationVariables = Exact<{
+  id: Scalars['ID'];
+  show: Scalars['Boolean'];
+}>;
+
+
+export type HandleShowEtaMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleShowEta'>
+);
+
+export type HandleShowFlightSetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  show: Scalars['Boolean'];
+}>;
+
+
+export type HandleShowFlightSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleShowFlightSet'>
+);
+
+export type HandleUpdateAdvNavFlightSetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+}>;
+
+
+export type HandleUpdateAdvNavFlightSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateAdvNavFlightSet'>
+);
+
+export type HandleUpdateCurrentFlightPathMutationVariables = Exact<{
+  id: Scalars['ID'];
+  route: NavigationRouteInput;
+}>;
+
+
+export type HandleUpdateCurrentFlightPathMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleUpdateCurrentFlightPath'>
+);
+
+export type HandleUpdateCurrentFlightSetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  flightSetId: Scalars['ID'];
+}>;
+
+
+export type HandleUpdateCurrentFlightSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleUpdateCurrentFlightSet'>
+);
+
+export type HandleUpdateEtaMutationVariables = Exact<{
+  id: Scalars['ID'];
+  eta: Scalars['Float'];
+}>;
+
+
+export type HandleUpdateEtaMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleUpdateEta'>
+);
+
+export type HandleUpdateProbeAssignmentsMutationVariables = Exact<{
+  id: Scalars['ID'];
+  probeAssignments: Scalars['String'];
+}>;
+
+
+export type HandleUpdateProbeAssignmentsMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'handleUpdateProbeAssignments'>
+);
+
 export type CountermeasureModuleFragment = (
   { __typename?: 'CountermeasureModule' }
   & Pick<CountermeasureModule, 'id' | 'name' | 'config' | 'buildProgress' | 'activated' | 'powerRequirement'>
@@ -13291,6 +14477,84 @@ export type StartFlightMutation = (
   & Pick<Mutation, 'startFlight'>
 );
 
+export type CreateNewFlightSetMutationVariables = Exact<{
+  flightSet: FlightSetInput;
+}>;
+
+
+export type CreateNewFlightSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createFlightSet'>
+);
+
+export type DeleteFlightSetMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteFlightSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteFlightSet'>
+);
+
+export type GetAllFlightSetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllFlightSetsQuery = (
+  { __typename?: 'Query' }
+  & { getAllFlightSets: Array<Maybe<(
+    { __typename?: 'FlightSet' }
+    & Pick<FlightSet, 'id' | 'name' | 'backgroundImg' | 'imageMaxX' | 'imageMaxY' | 'pixelsPerSecond' | 'label' | 'probeLaunchRangeRadius' | 'addOnTraining' | 'pixelDistanceModifier'>
+    & { startOptions: Array<(
+      { __typename?: 'NavigationStartOptions' }
+      & Pick<NavigationStartOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl' | 'secondsForStartup'>
+    )>, speedOptions: Array<(
+      { __typename?: 'NavigationSpeedOptions' }
+      & Pick<NavigationSpeedOptions, 'id' | 'name' | 'speedModifier' | 'riskModifier' | 'requiresMaxEngines' | 'imgUrl'>
+    )>, exitOptions: Array<(
+      { __typename?: 'NavigationExitOptions' }
+      & Pick<NavigationExitOptions, 'id' | 'name' | 'riskModifier' | 'imgUrl'>
+    )>, pointsOfInterest: Array<(
+      { __typename?: 'PointOfInterest' }
+      & Pick<PointOfInterest, 'id' | 'name' | 'isVisible' | 'isFogOfWar' | 'speedIndex' | 'riskIndex' | 'iconUrl' | 'fullImageUrl' | 'showName'>
+      & { location: (
+        { __typename?: 'XYLocation' }
+        & Pick<XyLocation, 'x' | 'y'>
+      ), type: (
+        { __typename?: 'PointOfInterestType' }
+        & Pick<PointOfInterestType, 'category' | 'imageUri'>
+      ), information: (
+        { __typename?: 'PointOfInterestInformation' }
+        & Pick<PointOfInterestInformation, 'basicInformation' | 'hasBasicInformation' | 'detailedInformation' | 'hasDetailedInformation' | 'secretInformation' | 'hasSecretInformation'>
+      ), transitOptions?: Maybe<Array<(
+        { __typename?: 'SecondaryStopTransitOption' }
+        & Pick<SecondaryStopTransitOption, 'name' | 'timeModifier' | 'riskModifier' | 'iconUrl'>
+      )>> }
+    )>, defaultStartingLocation: (
+      { __typename?: 'BasicCoordinate' }
+      & Pick<BasicCoordinate, 'x' | 'y'>
+    ), borders: Array<(
+      { __typename?: 'MapBorder' }
+      & Pick<MapBorder, 'name' | 'id' | 'iconUrl' | 'riskIndex'>
+      & { location: (
+        { __typename?: 'MapBorderLocation' }
+        & Pick<MapBorderLocation, 'side'>
+      ) }
+    )> }
+  )>> }
+);
+
+export type UpdateFlightSetMutationVariables = Exact<{
+  id: Scalars['ID'];
+  flightSet: FlightSetInput;
+}>;
+
+
+export type UpdateFlightSetMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateFlightSet'>
+);
+
 export type HackingPresetCreateMutationVariables = Exact<{
   name: Scalars['String'];
 }>;
@@ -14750,6 +16014,9 @@ export type SoundPickerQuery = (
             "name": "Engine"
           },
           {
+            "name": "AdvancedNavigationAndAstrometrics"
+          },
+          {
             "name": "HullPlating"
           },
           {
@@ -15210,6 +16477,471 @@ export function useRemoteAssetLoadMutation(baseOptions?: ApolloReactHooks.Mutati
         return ApolloReactHooks.useMutation<RemoteAssetLoadMutation, RemoteAssetLoadMutationVariables>(RemoteAssetLoadDocument, baseOptions);
       }
 export type RemoteAssetLoadMutationHookResult = ReturnType<typeof useRemoteAssetLoadMutation>;
+export const HandleAddFlightSetToNavigationDocument = gql`
+    mutation HandleAddFlightSetToNavigation($id: ID!, $flightSetId: ID!) {
+  handleAddFlightSetToNavigation(id: $id, flightSetId: $flightSetId)
+}
+    `;
+export function useHandleAddFlightSetToNavigationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleAddFlightSetToNavigationMutation, HandleAddFlightSetToNavigationMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleAddFlightSetToNavigationMutation, HandleAddFlightSetToNavigationMutationVariables>(HandleAddFlightSetToNavigationDocument, baseOptions);
+      }
+export type HandleAddFlightSetToNavigationMutationHookResult = ReturnType<typeof useHandleAddFlightSetToNavigationMutation>;
+export const GetAdvancedNavAndAstrometricsDocument = gql`
+    query GetAdvancedNavAndAstrometrics($simulatorId: ID!) {
+  advancedNavAndAstrometrics(simulatorId: $simulatorId) {
+    id
+    simulatorId
+    type
+    name
+    power {
+      power
+      powerLevels
+    }
+    damage {
+      damaged
+      report
+    }
+    displayName
+    stealthFactor
+    flightSets {
+      id
+      name
+      backgroundImg
+      pixelDistanceModifier
+      startOptions {
+        id
+        name
+        riskModifier
+        imgUrl
+        secondsForStartup
+      }
+      speedOptions {
+        id
+        name
+        speedModifier
+        riskModifier
+        requiresMaxEngines
+        imgUrl
+      }
+      exitOptions {
+        id
+        name
+        riskModifier
+        imgUrl
+      }
+      pointsOfInterest {
+        id
+        name
+        location {
+          x
+          y
+        }
+        isVisible
+        isFogOfWar
+        speedIndex
+        riskIndex
+        type {
+          category
+          imageUri
+        }
+        information {
+          basicInformation
+          hasBasicInformation
+          detailedInformation
+          hasDetailedInformation
+          secretInformation
+          hasSecretInformation
+        }
+        iconUrl
+        fullImageUrl
+        transitOptions {
+          name
+          timeModifier
+          riskModifier
+          iconUrl
+        }
+        showName
+      }
+      defaultStartingLocation {
+        x
+        y
+      }
+      borders {
+        name
+        id
+        location {
+          side
+        }
+        iconUrl
+        riskIndex
+      }
+      imageMaxX
+      imageMaxY
+      pixelsPerSecond
+      label
+      probeLaunchRangeRadius
+      addOnTraining
+    }
+    currentLocation {
+      x
+      y
+    }
+    coolantLevel
+    heatLevel
+    flightPaths {
+      name
+      id
+      targetLocationId
+      secondaryRouteOptions {
+        targetLocationId
+      }
+      isBorder
+      startOption {
+        id
+        name
+        riskModifier
+        imgUrl
+        secondsForStartup
+      }
+      speedOption {
+        id
+        name
+        speedModifier
+        riskModifier
+        requiresMaxEngines
+        imgUrl
+      }
+      exitOption {
+        id
+        name
+        riskModifier
+        imgUrl
+      }
+    }
+    engineStatus
+    hasEmergencyPower
+    startingStartupTime
+    remainingEta
+    totalEta
+    flightPathCoords {
+      speed
+      color
+      x
+      y
+    }
+    remainingStartupTime
+    showEta
+    showFlightSet
+    currentFlightSet {
+      id
+      name
+      backgroundImg
+      startOptions {
+        id
+        name
+        riskModifier
+        imgUrl
+        secondsForStartup
+      }
+      speedOptions {
+        id
+        name
+        speedModifier
+        riskModifier
+        requiresMaxEngines
+        imgUrl
+      }
+      exitOptions {
+        id
+        name
+        riskModifier
+        imgUrl
+      }
+      pointsOfInterest {
+        id
+        name
+        location {
+          x
+          y
+        }
+        isVisible
+        isFogOfWar
+        speedIndex
+        riskIndex
+        type {
+          category
+          imageUri
+        }
+        information {
+          basicInformation
+          hasBasicInformation
+          detailedInformation
+          hasDetailedInformation
+          secretInformation
+          hasSecretInformation
+        }
+        iconUrl
+        fullImageUrl
+        transitOptions {
+          name
+          timeModifier
+          riskModifier
+          iconUrl
+        }
+        showName
+      }
+      defaultStartingLocation {
+        x
+        y
+      }
+      borders {
+        name
+        id
+        location {
+          side
+        }
+        iconUrl
+        riskIndex
+      }
+      imageMaxX
+      imageMaxY
+      pixelsPerSecond
+      label
+      probeLaunchRangeRadius
+      addOnTraining
+    }
+    currentFlightPath {
+      targetLocationId
+      secondaryRouteOptions {
+        targetLocationId
+      }
+      isBorder
+      startOption {
+        id
+        name
+        riskModifier
+        imgUrl
+        secondsForStartup
+      }
+      speedOption {
+        id
+        name
+        speedModifier
+        riskModifier
+        requiresMaxEngines
+        imgUrl
+      }
+      exitOption {
+        id
+        name
+        riskModifier
+        imgUrl
+      }
+    }
+    currentLocationName
+    currentLocationUrl
+    probes {
+      id
+      name
+      type
+      equipment {
+        id
+        count
+      }
+    }
+    flightSetPathMap
+    probeAssignments
+  }
+}
+    `;
+export function useGetAdvancedNavAndAstrometricsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAdvancedNavAndAstrometricsQuery, GetAdvancedNavAndAstrometricsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAdvancedNavAndAstrometricsQuery, GetAdvancedNavAndAstrometricsQueryVariables>(GetAdvancedNavAndAstrometricsDocument, baseOptions);
+      }
+export type GetAdvancedNavAndAstrometricsQueryHookResult = ReturnType<typeof useGetAdvancedNavAndAstrometricsQuery>;
+export const GetBasicFlightSetsDocument = gql`
+    query GetBasicFlightSets {
+  getAllFlightSets {
+    id
+    name
+    label
+  }
+}
+    `;
+export function useGetBasicFlightSetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetBasicFlightSetsQuery, GetBasicFlightSetsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetBasicFlightSetsQuery, GetBasicFlightSetsQueryVariables>(GetBasicFlightSetsDocument, baseOptions);
+      }
+export type GetBasicFlightSetsQueryHookResult = ReturnType<typeof useGetBasicFlightSetsQuery>;
+export const HandleAddProbeAssignmentDocument = gql`
+    mutation HandleAddProbeAssignment($id: ID!, $probeId: ID!, $poiId: ID!) {
+  handleAddProbeAssignment(id: $id, probeId: $probeId, poiId: $poiId)
+}
+    `;
+export function useHandleAddProbeAssignmentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleAddProbeAssignmentMutation, HandleAddProbeAssignmentMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleAddProbeAssignmentMutation, HandleAddProbeAssignmentMutationVariables>(HandleAddProbeAssignmentDocument, baseOptions);
+      }
+export type HandleAddProbeAssignmentMutationHookResult = ReturnType<typeof useHandleAddProbeAssignmentMutation>;
+export const HandleUpdateAdvNavFlightSetDataDocument = gql`
+    mutation HandleUpdateAdvNavFlightSetData($id: ID!, $flightSet: FlightSetInput!) {
+  updateAdvNavFlightSetData(id: $id, flightSet: $flightSet)
+}
+    `;
+export function useHandleUpdateAdvNavFlightSetDataMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateAdvNavFlightSetDataMutation, HandleUpdateAdvNavFlightSetDataMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateAdvNavFlightSetDataMutation, HandleUpdateAdvNavFlightSetDataMutationVariables>(HandleUpdateAdvNavFlightSetDataDocument, baseOptions);
+      }
+export type HandleUpdateAdvNavFlightSetDataMutationHookResult = ReturnType<typeof useHandleUpdateAdvNavFlightSetDataMutation>;
+export const HandleAdvancedNavCoolantFlushDocument = gql`
+    mutation HandleAdvancedNavCoolantFlush($id: ID!) {
+  handleCoolantFlush(id: $id)
+}
+    `;
+export function useHandleAdvancedNavCoolantFlushMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleAdvancedNavCoolantFlushMutation, HandleAdvancedNavCoolantFlushMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleAdvancedNavCoolantFlushMutation, HandleAdvancedNavCoolantFlushMutationVariables>(HandleAdvancedNavCoolantFlushDocument, baseOptions);
+      }
+export type HandleAdvancedNavCoolantFlushMutationHookResult = ReturnType<typeof useHandleAdvancedNavCoolantFlushMutation>;
+export const HandleEmergencyStopDocument = gql`
+    mutation HandleEmergencyStop($id: ID!) {
+  handleEmergencyStop(id: $id)
+}
+    `;
+export function useHandleEmergencyStopMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleEmergencyStopMutation, HandleEmergencyStopMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleEmergencyStopMutation, HandleEmergencyStopMutationVariables>(HandleEmergencyStopDocument, baseOptions);
+      }
+export type HandleEmergencyStopMutationHookResult = ReturnType<typeof useHandleEmergencyStopMutation>;
+export const HandleEngageFlightPathDocument = gql`
+    mutation HandleEngageFlightPath($id: ID!, $path: NavigationRouteInput!) {
+  handleEngageFlightPath(id: $id, path: $path)
+}
+    `;
+export function useHandleEngageFlightPathMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleEngageFlightPathMutation, HandleEngageFlightPathMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleEngageFlightPathMutation, HandleEngageFlightPathMutationVariables>(HandleEngageFlightPathDocument, baseOptions);
+      }
+export type HandleEngageFlightPathMutationHookResult = ReturnType<typeof useHandleEngageFlightPathMutation>;
+export const HandleEngineFluxDocument = gql`
+    mutation HandleEngineFlux($id: ID!) {
+  handleEngineFlux(id: $id)
+}
+    `;
+export function useHandleEngineFluxMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleEngineFluxMutation, HandleEngineFluxMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleEngineFluxMutation, HandleEngineFluxMutationVariables>(HandleEngineFluxDocument, baseOptions);
+      }
+export type HandleEngineFluxMutationHookResult = ReturnType<typeof useHandleEngineFluxMutation>;
+export const HandleOnAssignProbeDocument = gql`
+    mutation HandleOnAssignProbe($id: ID!, $probeId: ID!, $poiId: ID!) {
+  handleOnAssignProbe(id: $id, probeId: $probeId, poiId: $poiId)
+}
+    `;
+export function useHandleOnAssignProbeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleOnAssignProbeMutation, HandleOnAssignProbeMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleOnAssignProbeMutation, HandleOnAssignProbeMutationVariables>(HandleOnAssignProbeDocument, baseOptions);
+      }
+export type HandleOnAssignProbeMutationHookResult = ReturnType<typeof useHandleOnAssignProbeMutation>;
+export const HandleOverrideLocationDocument = gql`
+    mutation HandleOverrideLocation($id: ID!, $location: BasicCoordinateInput!, $currentLocationUrl: String, $currentLocationName: String) {
+  handleOverrideLocation(id: $id, location: $location, currentLocationUrl: $currentLocationUrl, currentLocationName: $currentLocationName)
+}
+    `;
+export function useHandleOverrideLocationMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleOverrideLocationMutation, HandleOverrideLocationMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleOverrideLocationMutation, HandleOverrideLocationMutationVariables>(HandleOverrideLocationDocument, baseOptions);
+      }
+export type HandleOverrideLocationMutationHookResult = ReturnType<typeof useHandleOverrideLocationMutation>;
+export const HandleResumePathDocument = gql`
+    mutation HandleResumePath($id: ID!) {
+  handleResumePath(id: $id)
+}
+    `;
+export function useHandleResumePathMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleResumePathMutation, HandleResumePathMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleResumePathMutation, HandleResumePathMutationVariables>(HandleResumePathDocument, baseOptions);
+      }
+export type HandleResumePathMutationHookResult = ReturnType<typeof useHandleResumePathMutation>;
+export const HandleSaveFlightPathDocument = gql`
+    mutation HandleSaveFlightPath($id: ID!, $path: NamedNavigationRouteInput!) {
+  handleSaveFlightPath(id: $id, path: $path)
+}
+    `;
+export function useHandleSaveFlightPathMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleSaveFlightPathMutation, HandleSaveFlightPathMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleSaveFlightPathMutation, HandleSaveFlightPathMutationVariables>(HandleSaveFlightPathDocument, baseOptions);
+      }
+export type HandleSaveFlightPathMutationHookResult = ReturnType<typeof useHandleSaveFlightPathMutation>;
+export const HandleSetCoolantLevelDocument = gql`
+    mutation HandleSetCoolantLevel($id: ID!, $level: Float!) {
+  handleSetCoolantLevel(id: $id, level: $level)
+}
+    `;
+export function useHandleSetCoolantLevelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleSetCoolantLevelMutation, HandleSetCoolantLevelMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleSetCoolantLevelMutation, HandleSetCoolantLevelMutationVariables>(HandleSetCoolantLevelDocument, baseOptions);
+      }
+export type HandleSetCoolantLevelMutationHookResult = ReturnType<typeof useHandleSetCoolantLevelMutation>;
+export const HandleSetHeatLevelDocument = gql`
+    mutation HandleSetHeatLevel($id: ID!, $level: Float!) {
+  handleSetHeatLevel(id: $id, level: $level)
+}
+    `;
+export function useHandleSetHeatLevelMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleSetHeatLevelMutation, HandleSetHeatLevelMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleSetHeatLevelMutation, HandleSetHeatLevelMutationVariables>(HandleSetHeatLevelDocument, baseOptions);
+      }
+export type HandleSetHeatLevelMutationHookResult = ReturnType<typeof useHandleSetHeatLevelMutation>;
+export const HandleShowEtaDocument = gql`
+    mutation HandleShowEta($id: ID!, $show: Boolean!) {
+  handleShowEta(id: $id, show: $show)
+}
+    `;
+export function useHandleShowEtaMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleShowEtaMutation, HandleShowEtaMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleShowEtaMutation, HandleShowEtaMutationVariables>(HandleShowEtaDocument, baseOptions);
+      }
+export type HandleShowEtaMutationHookResult = ReturnType<typeof useHandleShowEtaMutation>;
+export const HandleShowFlightSetDocument = gql`
+    mutation HandleShowFlightSet($id: ID!, $show: Boolean!) {
+  handleShowFlightSet(id: $id, show: $show)
+}
+    `;
+export function useHandleShowFlightSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleShowFlightSetMutation, HandleShowFlightSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleShowFlightSetMutation, HandleShowFlightSetMutationVariables>(HandleShowFlightSetDocument, baseOptions);
+      }
+export type HandleShowFlightSetMutationHookResult = ReturnType<typeof useHandleShowFlightSetMutation>;
+export const HandleUpdateAdvNavFlightSetDocument = gql`
+    mutation HandleUpdateAdvNavFlightSet($id: ID!, $flightSet: FlightSetInput!) {
+  updateAdvNavFlightSet(id: $id, flightSet: $flightSet)
+}
+    `;
+export function useHandleUpdateAdvNavFlightSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateAdvNavFlightSetMutation, HandleUpdateAdvNavFlightSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateAdvNavFlightSetMutation, HandleUpdateAdvNavFlightSetMutationVariables>(HandleUpdateAdvNavFlightSetDocument, baseOptions);
+      }
+export type HandleUpdateAdvNavFlightSetMutationHookResult = ReturnType<typeof useHandleUpdateAdvNavFlightSetMutation>;
+export const HandleUpdateCurrentFlightPathDocument = gql`
+    mutation HandleUpdateCurrentFlightPath($id: ID!, $route: NavigationRouteInput!) {
+  handleUpdateCurrentFlightPath(id: $id, route: $route)
+}
+    `;
+export function useHandleUpdateCurrentFlightPathMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateCurrentFlightPathMutation, HandleUpdateCurrentFlightPathMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateCurrentFlightPathMutation, HandleUpdateCurrentFlightPathMutationVariables>(HandleUpdateCurrentFlightPathDocument, baseOptions);
+      }
+export type HandleUpdateCurrentFlightPathMutationHookResult = ReturnType<typeof useHandleUpdateCurrentFlightPathMutation>;
+export const HandleUpdateCurrentFlightSetDocument = gql`
+    mutation HandleUpdateCurrentFlightSet($id: ID!, $flightSetId: ID!) {
+  handleUpdateCurrentFlightSet(id: $id, flightSetId: $flightSetId)
+}
+    `;
+export function useHandleUpdateCurrentFlightSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateCurrentFlightSetMutation, HandleUpdateCurrentFlightSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateCurrentFlightSetMutation, HandleUpdateCurrentFlightSetMutationVariables>(HandleUpdateCurrentFlightSetDocument, baseOptions);
+      }
+export type HandleUpdateCurrentFlightSetMutationHookResult = ReturnType<typeof useHandleUpdateCurrentFlightSetMutation>;
+export const HandleUpdateEtaDocument = gql`
+    mutation HandleUpdateEta($id: ID!, $eta: Float!) {
+  handleUpdateEta(id: $id, eta: $eta)
+}
+    `;
+export function useHandleUpdateEtaMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateEtaMutation, HandleUpdateEtaMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateEtaMutation, HandleUpdateEtaMutationVariables>(HandleUpdateEtaDocument, baseOptions);
+      }
+export type HandleUpdateEtaMutationHookResult = ReturnType<typeof useHandleUpdateEtaMutation>;
+export const HandleUpdateProbeAssignmentsDocument = gql`
+    mutation HandleUpdateProbeAssignments($id: ID!, $probeAssignments: String!) {
+  handleUpdateProbeAssignments(id: $id, probeAssignments: $probeAssignments)
+}
+    `;
+export function useHandleUpdateProbeAssignmentsMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<HandleUpdateProbeAssignmentsMutation, HandleUpdateProbeAssignmentsMutationVariables>) {
+        return ApolloReactHooks.useMutation<HandleUpdateProbeAssignmentsMutation, HandleUpdateProbeAssignmentsMutationVariables>(HandleUpdateProbeAssignmentsDocument, baseOptions);
+      }
+export type HandleUpdateProbeAssignmentsMutationHookResult = ReturnType<typeof useHandleUpdateProbeAssignmentsMutation>;
 export const CountermeasuresDocument = gql`
     subscription Countermeasures($simulatorId: ID!) {
   countermeasuresUpdate(simulatorId: $simulatorId) {
@@ -17198,6 +18930,120 @@ export function useStartFlightMutation(baseOptions?: ApolloReactHooks.MutationHo
         return ApolloReactHooks.useMutation<StartFlightMutation, StartFlightMutationVariables>(StartFlightDocument, baseOptions);
       }
 export type StartFlightMutationHookResult = ReturnType<typeof useStartFlightMutation>;
+export const CreateNewFlightSetDocument = gql`
+    mutation CreateNewFlightSet($flightSet: FlightSetInput!) {
+  createFlightSet(flightSet: $flightSet)
+}
+    `;
+export function useCreateNewFlightSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateNewFlightSetMutation, CreateNewFlightSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateNewFlightSetMutation, CreateNewFlightSetMutationVariables>(CreateNewFlightSetDocument, baseOptions);
+      }
+export type CreateNewFlightSetMutationHookResult = ReturnType<typeof useCreateNewFlightSetMutation>;
+export const DeleteFlightSetDocument = gql`
+    mutation DeleteFlightSet($id: ID!) {
+  deleteFlightSet(id: $id)
+}
+    `;
+export function useDeleteFlightSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteFlightSetMutation, DeleteFlightSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteFlightSetMutation, DeleteFlightSetMutationVariables>(DeleteFlightSetDocument, baseOptions);
+      }
+export type DeleteFlightSetMutationHookResult = ReturnType<typeof useDeleteFlightSetMutation>;
+export const GetAllFlightSetsDocument = gql`
+    query GetAllFlightSets {
+  getAllFlightSets {
+    id
+    name
+    backgroundImg
+    startOptions {
+      id
+      name
+      riskModifier
+      imgUrl
+      secondsForStartup
+    }
+    speedOptions {
+      id
+      name
+      speedModifier
+      riskModifier
+      requiresMaxEngines
+      imgUrl
+    }
+    exitOptions {
+      id
+      name
+      riskModifier
+      imgUrl
+    }
+    pointsOfInterest {
+      id
+      name
+      location {
+        x
+        y
+      }
+      isVisible
+      isFogOfWar
+      speedIndex
+      riskIndex
+      type {
+        category
+        imageUri
+      }
+      information {
+        basicInformation
+        hasBasicInformation
+        detailedInformation
+        hasDetailedInformation
+        secretInformation
+        hasSecretInformation
+      }
+      iconUrl
+      fullImageUrl
+      transitOptions {
+        name
+        timeModifier
+        riskModifier
+        iconUrl
+      }
+      showName
+    }
+    defaultStartingLocation {
+      x
+      y
+    }
+    borders {
+      name
+      id
+      location {
+        side
+      }
+      iconUrl
+      riskIndex
+    }
+    imageMaxX
+    imageMaxY
+    pixelsPerSecond
+    label
+    probeLaunchRangeRadius
+    addOnTraining
+    pixelDistanceModifier
+  }
+}
+    `;
+export function useGetAllFlightSetsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllFlightSetsQuery, GetAllFlightSetsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllFlightSetsQuery, GetAllFlightSetsQueryVariables>(GetAllFlightSetsDocument, baseOptions);
+      }
+export type GetAllFlightSetsQueryHookResult = ReturnType<typeof useGetAllFlightSetsQuery>;
+export const UpdateFlightSetDocument = gql`
+    mutation UpdateFlightSet($id: ID!, $flightSet: FlightSetInput!) {
+  updateFlightSet(id: $id, flightSet: $flightSet)
+}
+    `;
+export function useUpdateFlightSetMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateFlightSetMutation, UpdateFlightSetMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateFlightSetMutation, UpdateFlightSetMutationVariables>(UpdateFlightSetDocument, baseOptions);
+      }
+export type UpdateFlightSetMutationHookResult = ReturnType<typeof useUpdateFlightSetMutation>;
 export const HackingPresetCreateDocument = gql`
     mutation HackingPresetCreate($name: String!) {
   createHackingPreset(name: $name)

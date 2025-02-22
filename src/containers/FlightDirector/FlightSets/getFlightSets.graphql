@@ -1,0 +1,82 @@
+query GetAllFlightSets {
+    getAllFlightSets {
+        id
+        name
+        backgroundImg
+        startOptions {
+            id
+            name
+      riskModifier
+      imgUrl
+      secondsForStartup
+    }
+    speedOptions {
+      id
+      name
+      speedModifier
+      riskModifier
+      requiresMaxEngines
+      imgUrl
+    }
+    exitOptions {
+      id
+      name
+      riskModifier
+      imgUrl
+    }
+    pointsOfInterest {
+      id
+      name
+      location {
+        x
+        y
+      }
+      isVisible
+      isFogOfWar
+      speedIndex
+      riskIndex
+      type {
+        category
+        imageUri
+      }
+      information {
+        basicInformation
+        hasBasicInformation
+        detailedInformation
+        hasDetailedInformation
+        secretInformation
+        hasSecretInformation
+      }
+
+      iconUrl
+      fullImageUrl
+      transitOptions {
+        name
+        timeModifier
+        riskModifier
+        iconUrl
+      }
+      showName
+    }
+    defaultStartingLocation {
+      x
+      y
+    }
+    borders {
+      name
+      id
+      location {
+        side
+      }
+      iconUrl
+      riskIndex
+    }
+    imageMaxX
+    imageMaxY
+    pixelsPerSecond
+    label
+    probeLaunchRangeRadius
+    addOnTraining
+    pixelDistanceModifier
+    }
+}

@@ -1,0 +1,3 @@
+mutation CreateNewFlightSet($flightSet: FlightSetInput!) {
+    createFlightSet(flightSet: $flightSet) 
+}

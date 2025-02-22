@@ -1,0 +1,3 @@
+mutation HandleShowFlightSet($id: ID!, $show: Boolean!) {
+  handleShowFlightSet(id: $id, show: $show)
+}
