@@ -14,7 +14,7 @@ const needed = [
   "semver",
   "electron-updater",
   "universalify",
-  "usb-detection",
+  "usb",
   "dmx",
   "e131",
 ];

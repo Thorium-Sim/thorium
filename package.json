@@ -99,6 +99,9 @@
   "build": {
     "appId": "us.fyreworks.thorium",
     "productName": "Thorium",
+    "buildDependenciesFromSource": true,
+    "nodeGypRebuild": false,
+    "npmRebuild": false,
     "asar": false,
     "directories": {
       "output": "./packages"
@@ -107,31 +110,38 @@
       "provider": "github"
     },
     "files": [
+      "public/**/*",
       "electron/**/*",
-      "!**/node_modules/**/*",
-      "**/node_modules/{uuid,electron,@electron/get,debug,ms,env-paths,fs-extra,at-least-node,graceful-fs,jsonfile,universalify,got,create-error-class,capture-stack-trace,duplexer3,get-stream,is-redirect,is-retry-allowed,is-stream,lowercase-keys,safe-buffer,timed-out,unzip-response,url-parse-lax,prepend-http,progress,sanitize-filename,truncate-utf8-bytes,utf8-byte-length,sumchecker,@types/node,extract-zip,concat-stream,buffer-from,inherits,readable-stream,core-util-is,isarray,process-nextick-args,string_decoder,util-deprecate,typedarray,mkdirp,minimist,yauzl,buffer-crc32,fd-slicer,pend,bonjour,array-flatten,deep-equal,is-arguments,is-date-object,is-regex,has-symbols,object-is,define-properties,object-keys,es-abstract,es-to-primitive,is-callable,is-symbol,function-bind,has,object-inspect,object.assign,string.prototype.trimend,string.prototype.trimstart,regexp.prototype.flags,dns-equal,dns-txt,buffer-indexof,multicast-dns,dns-packet,ip,thunky,multicast-dns-service-types,electron-is-dev,electron-settings,clone,is-linux,is-osx,is-windows,semver,electron-updater,@types/semver,builder-util-runtime,sax,js-yaml,argparse,sprintf-js,esprima,lazy-val,lodash.isequal,usb-detection,bindings,file-uri-to-path,eventemitter2,nan,prebuild-install,detect-libc,expand-template,github-from-package,napi-build-utils,node-abi,noop-logger,npmlog,are-we-there-yet,delegates,console-control-strings,gauge,aproba,has-unicode,object-assign,signal-exit,string-width,code-point-at,is-fullwidth-code-point,number-is-nan,strip-ansi,ansi-regex,wide-align,set-blocking,pump,end-of-stream,once,wrappy,rc,deep-extend,ini,strip-json-comments,simple-get,decompress-response,mimic-response,simple-concat,tar-fs,chownr,mkdirp-classic,tar-stream,bl,buffer,base64-js,ieee754,fs-constants,tunnel-agent,which-pm-runs,dmx,serialport,@serialport/binding-mock,@serialport/binding-abstract,@serialport/bindings,@serialport/parser-readline,@serialport/parser-delimiter,@serialport/parser-byte-length,@serialport/parser-cctalk,@serialport/parser-ready,@serialport/parser-regex,@serialport/stream,socket.io,engine.io,accepts,mime-types,mime-db,negotiator,base64id,cookie,engine.io-parser,after,arraybuffer.slice,base64-arraybuffer,blob,has-binary2,ws,async-limiter,socket.io-adapter,socket.io-client,backo2,component-bind,component-emitter,engine.io-client,component-inherit,has-cors,indexof,parseqs,better-assert,callsite,parseuri,xmlhttprequest-ssl,yeast,object-component,socket.io-parser,to-array,e131}/**/*",
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
-      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
-      "!**/node_modules/*.d.ts",
-      "!**/node_modules/.bin",
-      "!**/node_modules/{typescript,@babel,eslint}/**",
-      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
-      "!.editorconfig",
-      "!**/._*",
-      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
-      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
-      "!**/{appveyor.yml,.travis.yml,circle.yml}",
-      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+      "node_modules/**/*",
+      "!node_modules/.bin",
+      "!node_modules/.cache",
+      "!node_modules/.git",
+      "!node_modules/.github",
+      "!node_modules/.husky",
+      "!node_modules/.idea",
+      "!node_modules/.vscode",
+      "!node_modules/.yarn-integrity",
+      "!node_modules/.yarn-unplugged",
+      "!node_modules/.yarnrc",
+      "!node_modules/.yarnrc.yml",
+      "!node_modules/.yarnignore",
+      "!node_modules/.npmignore",
+      "!node_modules/.npmrc",
+      "!node_modules/.nvmrc",
+      "!node_modules/.eslintrc",
+      "!**/.vscode/*",
+      "!src/*",
+      "!server/*",
+      "!electron.vite.config.{js,ts,mjs,cjs}",
+      "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
+      "'!{.env,.env.*,.npmrc,pnpm-lock.yaml}",
+      "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}"
     ],
-    "afterSign": "electron-builder-notarize",
     "mac": {
       "category": "public.app-category.entertainment",
       "icon": "./public/icon.icns",
       "hardenedRuntime": true,
-      "gatekeeperAssess": true,
-      "binaries": [
-        "packages/mac/Thorium.app/Contents/Resources/app/node_modules/usb-detection/build/Release/detection.node"
-      ]
+      "gatekeeperAssess": true
     },
     "win": {
       "target": [
@@ -257,6 +267,7 @@
     "simplex-noise": "^2.4.0",
     "subscriptions-transport-ws": "^0.9.16",
     "three": "^0.116.1",
+    "usb": "^2.15.0",
     "uuid": "^3.3.3",
     "winston": "^3.8.1",
     "yauzl": "^2.10.0",
@@ -312,9 +323,9 @@
     "@types/w3c-web-usb": "^1.0.4",
     "@types/yauzl": "^2.9.1",
     "@types/yazl": "^2.4.2",
+    "@vercel/ncc": "0.38.3",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitejs/plugin-react-swc": "^3.7.0",
-    "@zeit/ncc": "^0.22.2",
     "all-contributors-cli": "^6.20.0",
     "apollo": "^2.22.0",
     "apollo-cache-hermes": "^0.8.9",
@@ -328,7 +339,7 @@
     "centered-pan-zoom": "^2.0.0",
     "cross-env": "^7.0.0",
     "electron": "^11.0.0",
-    "electron-builder": "23.0.2",
+    "electron-builder": "22.10.5",
     "electron-builder-notarize": "^1.1.2",
     "electron-notarize": "^1.0.0",
     "eslint-config-prettier": "^9.1.0",
@@ -355,6 +366,7 @@
     "react-dom": "^16.13.0",
     "react-draggable": "^4.0.3",
     "react-icons": "^3.7.0",
+    "react-intl": "7.1.6",
     "react-intl-translations-manager": "^5.0.3",
     "react-konami": "^0.6.2",
     "react-measure": "^2.3.0",

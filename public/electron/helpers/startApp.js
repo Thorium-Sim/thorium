@@ -88,8 +88,8 @@ module.exports = () => {
       return ipAddress;
     });
     ipcMain.handle("get-usbDevices", async () => {
-      const usbDetect = require("usb-detection");
-      return usbDetect.find(0x403, 0x6001);
+      const { findByIds } = require('usb');
+      return findByIds(0x403, 0x6001);
     });
     ipcMain.on("activate-dmx", (event, config) => {
       const dmx = require("./dmx");

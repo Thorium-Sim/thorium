@@ -4,7 +4,7 @@ import {Container, Row, Col, Button} from "helpers/reactstrap";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
 import Tour from "helpers/tourHelper";
-import Slider from "../NavigationAdvanced/slider.js";
+import Slider from "../NavigationAdvanced/slider";
 import PowerLine from "./powerLine";
 import DamageOverlay from "../helpers/DamageOverlay";
 import {throttle} from "helpers/debounce";
