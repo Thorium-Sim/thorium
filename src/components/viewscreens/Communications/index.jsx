@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import "sine-waves";
+import SineWaves from "../../generic/SineWaves";
 import {Container, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";

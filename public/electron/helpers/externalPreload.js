@@ -2,7 +2,7 @@ const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
 const contextBridge = require("electron").contextBridge;
 
-let browserCount = require("electron").remote.getCurrentWindow().browserCount;
+let browserCount = require("electron").BrowserWindow?.getAllWindows().length || 0;
 const key = "thorium_clientPersistentId";
 let clientId = sessionStorage.getItem(key);
 

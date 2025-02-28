@@ -198,7 +198,7 @@ class CargoControl extends Component {
             <Row>
               <Col sm={6}>
                 <h3>
-                  $
+                  From Deck
                 </h3>
                 <Row>
                   {decks.length > 1 && (
@@ -223,7 +223,7 @@ class CargoControl extends Component {
               </Col>
               <Col sm={6}>
                 <h3>
-                  $
+                  To Deck
                 </h3>
                 <Row>
                   {decks.length > 1 && (

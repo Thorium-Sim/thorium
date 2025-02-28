@@ -6,7 +6,9 @@ import Explosion from "helpers/explosions";
 import gql from "graphql-tag.macro";
 import {subscribe} from "helpers/pubsub";
 import {particleTypes} from "../../ParticleDetector/particleConstants";
-const burstIcon = require(`../../ProbeScience/burst.svg`);
+import BurstIcon from "../../ProbeScience/burst.svg"
+import {iconMap} from "../../../views/ParticleDetector/particleDetectorCore";
+const burstIcon = BurstIcon;
 function distance3d(coord2, coord1) {
   const {x: x1, y: y1, z: z1} = coord1;
   let {x: x2, y: y2, z: z2} = coord2;
@@ -275,7 +277,7 @@ export default class SensorContact extends Component {
       );
     }
     if (type === "particle") {
-      const particleIcon = require(`../../ParticleDetector/icons/${icon}.svg`);
+      const particleIcon = iconMap[icon];
       return (
         <div>
           <Fragment>

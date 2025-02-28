@@ -29,7 +29,9 @@ export default defineConfig({
     environment: "happy-dom",
   },
   build: {
-    assetsDir: "build",
+    outDir: "build",
+    emptyOutDir: true,
+    assetsDir: "build-1",
   },
   server: {
     port: 3000,

@@ -9,6 +9,27 @@ import Grid from "../Sensors/GridDom/grid";
 import {particleIcons, particleTypes} from "./particleConstants";
 import "./style.scss";
 import {SENSORS_OFFSET} from "../Sensors/gridCore/constants";
+import Anomaly from './icons/Anomaly.svg';
+import Asteroid from './icons/Asteroid.svg';
+import Asteroids2 from './icons/Asteroids 2.svg';
+import BlackHole from './icons/Black Hole.svg';
+import Cross from './icons/Cross.svg';
+import Debris from './icons/Debris.svg';
+import Particles from './icons/Particles.svg';
+import Singularity from './icons/Singularity.svg';
+import Wreckage from './icons/Wreckage.svg';
+
+export const iconMap = {
+  "Anomaly": Anomaly,
+  "Asteroid": Asteroid,
+  "Asteroids 2": Asteroids2,
+  "Black Hole": BlackHole,
+  "Cross": Cross,
+  "Debris": Debris,
+  "Particles": Particles,
+  "Singularity": Singularity,
+  "Wreckage": Wreckage,
+}
 
 function randomFromList(list) {
   if (!list) return;
@@ -123,7 +144,7 @@ class ParticleIcon extends Component {
     const {
       loc: {x, y},
     } = this.state;
-    const iconSrc = require(`./icons/${icon}.svg`);
+    const iconSrc = iconMap[icon];
     return (
       <div
         onMouseDown={this.onMouseDown}

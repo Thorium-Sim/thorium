@@ -2,8 +2,10 @@ const {app} = require("electron");
 const path = require("path");
 const isProd = !require("electron-is-dev");
 const settings = require("electron-settings");
+const fs = require("fs");
 
 let restartCount = 0;
+let error;
 module.exports = function bootstrap(serverWindow) {
   function startServer() {
     let port = settings.get("port") || 4444;
@@ -63,6 +65,12 @@ module.exports = function bootstrap(serverWindow) {
             `Server process closed. Too many restarts. Closing Thorium Server.`,
           );
         }
+        fs.writeFileSync(
+          // Write the file to the user's desktop
+          path.join(app.getPath("desktop"), "thorium_server_error.txt"),
+          error.message,
+          "utf8",
+        )
         app.quit();
       }
       restartCount++;
@@ -72,6 +80,7 @@ module.exports = function bootstrap(serverWindow) {
         "info",
         `Error in server process: ${err.message}`,
       );
+      error = err;
       console.error(err);
     });
 

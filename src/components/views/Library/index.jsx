@@ -13,7 +13,7 @@ import {
 import Tour from "helpers/tourHelper";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import escapeRegex from "escape-string-regexp";
-
+import noImage from "./noImage.png"
 import "./style.scss";
 
 export const LIBRARY_SUB = gql`
@@ -197,7 +197,7 @@ class Library extends Component {
                       backgroundImage: `url('${
                         sEntry && sEntry.image
                           ? `/assets${sEntry.image}`
-                          : require("./noImage.png")
+                          : noImage
                       }')`,
                     }}
                   />

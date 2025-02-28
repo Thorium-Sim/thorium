@@ -6,10 +6,11 @@ import {Container, Row, Col, Button} from "helpers/reactstrap";
 import SubscriptionHelper from "helpers/subscriptionHelper";
 import Grid from "../Sensors/GridDom/grid";
 // import SpeedAsker from "../Sensors/gridCore/speedAsker";
+import Burst from "./burst.svg";
 import "./style.scss";
 import {SENSORS_OFFSET} from "../Sensors/gridCore/constants";
 
-const iconSrc = require("./burst.svg");
+const iconSrc = Burst;
 function randomFromList(list) {
   if (!list) return;
   const length = list.length;
