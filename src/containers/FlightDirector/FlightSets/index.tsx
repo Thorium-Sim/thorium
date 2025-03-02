@@ -7,9 +7,7 @@ import { useCreateNewFlightSetMutation, useDeleteFlightSetMutation, useGetAllFli
 import { formatGraphqlQueryToTypescript } from "./formatters";
 import { FlightSetCreationSummary } from "./create-flight-set/steps/summary";
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
-
     const [flightSets, setFlightSets] = React.useState<FlightSet[]>([]);
     const [selectedFlightSet, setSelectedFlightSet] = React.useState<FlightSet | undefined>();
     const [dialogOpen, setDialogOpen] = React.useState(false);
