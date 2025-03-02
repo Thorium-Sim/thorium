@@ -64,7 +64,7 @@ const StepConfig = () => {
             defaultValue={step.name}
             onChange={e =>
               rename({
-                variables: {id: flowId, stepId, name: e.target.value || ""},
+                variables: {id: flowId || "", stepId: stepId || "", name: e.target.value || ""},
               })
             }
           />
@@ -77,8 +77,8 @@ const StepConfig = () => {
             onChange={e =>
               setDelay({
                 variables: {
-                  id: flowId,
-                  stepId,
+                  id: flowId || "",
+                  stepId: stepId || "",
                   delay: parseInt(e.target.value, 10),
                 },
               })
@@ -97,7 +97,7 @@ const StepConfig = () => {
             defaultChecked={step.completeAll}
             onChange={e =>
               setCompleteAll({
-                variables: {id: flowId, stepId, completeAll: e.target.checked},
+                variables: {id: flowId || "", stepId: stepId || "", completeAll: e.target.checked},
               })
             }
           />
@@ -132,8 +132,8 @@ const StepConfig = () => {
           onChange={e => {
             add({
               variables: {
-                id: flowId,
-                stepId,
+                id: flowId || "",
+                stepId: stepId || "",
                 task: {definition: e.target.value},
               },
             }).then(
@@ -167,7 +167,7 @@ const StepConfig = () => {
                   "Are you sure you want to remove this task flow step task?",
                 )
               ) {
-                remove({variables: {id: flowId, stepId, taskId}});
+                remove({variables: {id: flowId || "", stepId: stepId || "", taskId: taskId || ""}});
                 navigate(".");
               }
             }}

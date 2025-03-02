@@ -3,7 +3,7 @@ import React from "react";
 declare global {
   interface Navigator {
     // This USB type comes from @types/w3c-web-usb
-    readonly usb: USB;
+    readonly usb: any;
   }
 }
 async function noop() {}
@@ -11,7 +11,7 @@ async function noop() {}
 interface DMXDevice {
   ready: boolean;
   close: () => Promise<void>;
-  update: (channels: number[]) => Promise<USBOutTransferResult | void>;
+  update: (channels: number[]) => Promise<any | void>;
   activate: () => Promise<void>;
 }
 async function setUpLightingDevice(): Promise<DMXDevice> {

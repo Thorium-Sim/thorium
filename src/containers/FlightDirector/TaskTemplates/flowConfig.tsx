@@ -43,7 +43,7 @@ const FlowConfig = () => {
             type="text"
             defaultValue={taskFlow?.name}
             onChange={e =>
-              rename({variables: {id: flowId, name: e.target.value || ""}})
+              rename({variables: {id: flowId || "", name: e.target.value || ""}})
             }
           />
         </Label>
@@ -54,7 +54,7 @@ const FlowConfig = () => {
             defaultValue={taskFlow?.category}
             onChange={e =>
               setCategory({
-                variables: {id: flowId, category: e.target.value || ""},
+                variables: {id: flowId || "", category: e.target.value || ""},
               })
             }
           />
@@ -70,7 +70,7 @@ const FlowConfig = () => {
           onSortEnd={({oldIndex, newIndex}) =>
             reorder({
               variables: {
-                id: flowId,
+                id: flowId || "",
                 stepId: taskFlow.steps[oldIndex].id,
                 order: newIndex,
               },
@@ -86,7 +86,7 @@ const FlowConfig = () => {
           onClick={() => {
             const name = prompt("What is the name of the new task flow step?");
             if (!name) return;
-            addStep({variables: {id: flowId, name}}).then(
+            addStep({variables: {id: flowId || "", name}}).then(
               res =>
                 res.data?.taskFlowAddStep &&
                 navigate(res.data?.taskFlowAddStep),
@@ -106,7 +106,7 @@ const FlowConfig = () => {
                   "Are you sure you want to remove this task flow step?",
                 )
               ) {
-                removeStep({variables: {id: flowId, stepId}});
+                removeStep({variables: {id: flowId || "", stepId}});
                 navigate(".");
               }
             }}

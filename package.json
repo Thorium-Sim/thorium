@@ -319,7 +319,7 @@
     "@types/three": "^0.103.2",
     "@types/tinycolor2": "^1.4.2",
     "@types/uuid": "^7.0.3",
-    "@types/w3c-web-usb": "^1.0.4",
+    "@types/w3c-web-usb": "^1.0.10",
     "@types/yauzl": "^2.9.1",
     "@types/yazl": "^2.4.2",
     "@vercel/ncc": "0.38.3",
