@@ -26,7 +26,8 @@
     "src",
     "types/*",
     "i18next-parser.config.js",
-    "test/setupTests.js"
+    "test/setupTests.js",
+    "vite-env.d.ts"
   ],
   "exclude": [
     "hooksGenerate.js"
