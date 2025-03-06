@@ -11,8 +11,6 @@ import {Button, Input} from "reactstrap";
 import AlertConditionCore from "components/views/AlertCondition/core";
 import useLocalStorage from "helpers/hooks/useLocalStorage";
 import useDMXConfiguration from "./useDMXConfiguration";
-import { WebUSBDevice } from "usb";
-
 
 export const ClientLighting: React.FC<{
   simulator: Simulator;
@@ -92,10 +90,10 @@ const Lighting: React.FC<{
     "dmx_autoActivate",
     false,
   );
-  const [dmxWebDevice, setDMXWebDevice] = React.useState<WebUSBDevice>();
+  const [dmxWebDevice, setDMXWebDevice] = React.useState<{serialNumber: string, productName: string}>();
   React.useEffect(() => {
-    window.thorium.getDMXDeviceList?.().then((res: WebUSBDevice) => {
-      setDMXWebDevice(res);
+    window.thorium.getDMXDeviceList?.().then((res: { serialNumber: string, productName: string }) => {
+      setDMXWebDevice({serialNumber: res?.serialNumber || "", productName: res?.productName || ""});
       setDmxDevice((dmxDevice: string) => {
         if (!dmxDevice && res?.serialNumber) return res?.serialNumber;
         return dmxDevice;

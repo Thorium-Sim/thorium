@@ -98,7 +98,10 @@ module.exports = () => {
       const device = await customWebUSB.requestDevice({
         filters: [{}]
       })
-      return device;
+      return {
+        serialNumber: device?.serialNumber,
+        productName: device?.productName
+      };
     });
     ipcMain.on("activate-dmx", (event, config) => {
       const dmx = require("./dmx");
