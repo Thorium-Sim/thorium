@@ -24,12 +24,19 @@ export default defineConfig({
     svgrPlugin(),
     commonjs(),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler", // or "modern"
+      },
+    },
+  },
   test: {
     globals: true,
     environment: "happy-dom",
   },
   build: {
-    assetsDir: "build",
+    outDir: "build",
   },
   server: {
     port: 3000,

@@ -1,7 +1,7 @@
 import React from "react";
 
 import {playSound} from "components/generic/SoundPlayer";
-import {SimulatorContext} from "components/client/simulatorData";
+import { SimulatorContext } from "components/client/SimulatorContext";
 import {randomFromList} from "helpers/randomFromList";
 
 export default function useSoundEffect() {

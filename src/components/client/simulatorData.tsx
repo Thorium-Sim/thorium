@@ -7,8 +7,7 @@ import {
   Flight,
   Client as ClientInterface,
 } from "generated/graphql";
-export const SimulatorContext = React.createContext({});
-
+import {SimulatorContext} from "components/client/SimulatorContext";
 interface SimulatorDataProps {
   station: Pick<Station, "name">;
   simulator: Pick<Simulator, "id" | "name">;

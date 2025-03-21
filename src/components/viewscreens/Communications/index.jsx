@@ -1,10 +1,10 @@
 import React, {Component} from "react";
-import SineWaves from "sine-waves";
 import {Container, Row, Col} from "helpers/reactstrap";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import tinycolor from "tinycolor2";
 import SubscriptionHelper from "helpers/subscriptionHelper";
+import { SineWaves } from "components/generic/sineWaves";
 
 import "./style.scss";
 
