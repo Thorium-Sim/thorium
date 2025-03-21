@@ -24,6 +24,13 @@ export default defineConfig({
     svgrPlugin(),
     commonjs(),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler", // or "modern"
+      },
+    },
+  },
   test: {
     globals: true,
     environment: "happy-dom",
@@ -31,7 +38,6 @@ export default defineConfig({
   build: {
     outDir: "build",
     emptyOutDir: true,
-    assetsDir: "build-1",
     assetsInlineLimit: 0,
   },
   server: {

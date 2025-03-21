@@ -7,18 +7,18 @@ import {
 import {Button} from "reactstrap";
 import MaterialRadial from "./MaterialRadial";
 
-import battery_cell from "./modules/battery_cell.svg";
-import explosive_payload from "./modules/explosive_payload.svg";
-import proximity_trigger from "./modules/proximity_trigger.svg";
-import beacon from "./modules/beacon.svg";
-import heat_coil from "./modules/heat_coil.svg";
-import scan_trigger from "./modules/scan_trigger.svg";
-import chaff_deploy from "./modules/chaff_deploy.svg";
-import ionizer from "./modules/ionizer.svg";
-import sensor_scrambler from "./modules/sensor_scrambler.svg";
-import communications_array from "./modules/communications_array.svg";
-import notifier from "./modules/notifier.svg";
-import transport_inhibitor from "./modules/transport_inhibitor.svg";
+import battery_cell from "./modules/battery_cell.svg?url";
+import explosive_payload from "./modules/explosive_payload.svg?url";
+import proximity_trigger from "./modules/proximity_trigger.svg?url";
+import beacon from "./modules/beacon.svg?url";
+import heat_coil from "./modules/heat_coil.svg?url";
+import scan_trigger from "./modules/scan_trigger.svg?url";
+import chaff_deploy from "./modules/chaff_deploy.svg?url";
+import ionizer from "./modules/ionizer.svg?url";
+import sensor_scrambler from "./modules/sensor_scrambler.svg?url";
+import communications_array from "./modules/communications_array.svg?url";
+import notifier from "./modules/notifier.svg?url";
+import transport_inhibitor from "./modules/transport_inhibitor.svg?url";
 
 const moduleImages: {[key: string]: any} = {
   battery_cell,

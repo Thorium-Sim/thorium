@@ -3,7 +3,7 @@ import {Button} from "helpers/reactstrap";
 import uuid from "uuid";
 import {Mutation} from "react-apollo";
 import gql from "graphql-tag.macro";
-import TorpedoSVG from "../TorpedoLoading/torpedos/torpedo.png";
+import TorpedoSVG from "../TorpedoLoading/torpedos/torpedo.png?url";
 
 function reducer(state, action) {
   const {count} = action;

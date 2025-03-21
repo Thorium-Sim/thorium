@@ -1,6 +1,6 @@
 import React from "react";
 import {CountermeasureSlot, Countermeasure} from "generated/graphql";
-import CenterSVG from "./countermeasure-center.svg";
+import CenterSVG from "./countermeasure-center.svg?url";
 
 interface CenterProps {
   setSlot: (nextState: string) => void;
