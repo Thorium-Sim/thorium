@@ -224,7 +224,7 @@ class BattleCore extends Component {
               </Label>
             </div>
           ))}
-          <small>Hover icon to hilite sensor contact</small>
+          <small>Hover icon to highlight sensor contact</small>
         </div>
       </div>
     );

@@ -9,6 +9,7 @@ import Grid from "../Sensors/GridDom/grid";
 import {particleIcons, particleTypes} from "./particleConstants";
 import "./style.scss";
 import {SENSORS_OFFSET} from "../Sensors/gridCore/constants";
+
 import Anomaly from './icons/Anomaly.svg';
 import Asteroid from './icons/Asteroid.svg';
 import Asteroids2 from './icons/Asteroids 2.svg';
@@ -18,11 +19,13 @@ import Debris from './icons/Debris.svg';
 import Particles from './icons/Particles.svg';
 import Singularity from './icons/Singularity.svg';
 import Wreckage from './icons/Wreckage.svg';
+import Asteroids from './icons/Asteroids.svg';
 
 export const iconMap = {
   "Anomaly": Anomaly,
   "Asteroid": Asteroid,
   "Asteroids 2": Asteroids2,
+  "Asteroids": Asteroids,
   "Black Hole": BlackHole,
   "Cross": Cross,
   "Debris": Debris,

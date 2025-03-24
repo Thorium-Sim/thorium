@@ -149,7 +149,7 @@ const Crm = props => {
               }
             >
               {activated ? "Deactivate" : (
-                Activate
+                "Activate"
               )}
             </Button>
           )}

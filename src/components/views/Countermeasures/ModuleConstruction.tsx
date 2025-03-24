@@ -79,7 +79,7 @@ const ModuleConstruction: React.FC<ModuleConstructionProps> = ({
                   <h3>{m.name}</h3>
                   <div className="module-type-info">
                     <div className="module-type-image">
-                      <ImageComponent />
+                      <img src={ImageComponent} />
                     </div>
                     <div>{m.description}</div>
                   </div>

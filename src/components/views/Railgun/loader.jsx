@@ -63,7 +63,7 @@ content: "Click this button to load a bolt into the railgun.",
                   color="warning"
                   size="lg"
                 >
-                  $
+                  Load Bolt
                 </Button>
               )}
             </Mutation>

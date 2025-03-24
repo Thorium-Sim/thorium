@@ -8,6 +8,7 @@ import {subscribe} from "helpers/pubsub";
 import {particleTypes} from "../../ParticleDetector/particleConstants";
 import BurstIcon from "../../ProbeScience/burst.svg"
 import {iconMap} from "../../../views/ParticleDetector/particleDetectorCore";
+
 const burstIcon = BurstIcon;
 function distance3d(coord2, coord1) {
   const {x: x1, y: y1, z: z1} = coord1;

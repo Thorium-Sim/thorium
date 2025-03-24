@@ -31,7 +31,7 @@ const Center: React.FC<CenterProps> = ({slots, slot, setSlot}) => {
             ></div>
           );
         })}
-      <CenterSVG />
+      <img src={CenterSVG} alt="center" />
     </div>
   );
 };

@@ -1,5 +1,13 @@
 import React, {Component} from "react";
 
+import Die1 from "./dice/die1.svg";
+import Die2 from "./dice/die2.svg";
+import Die3 from "./dice/die3.svg";
+import Die4 from "./dice/die4.svg";
+import Die5 from "./dice/die5.svg";
+import Die6 from "./dice/die6.svg";
+
+const dice = [Die1, Die2, Die3, Die4, Die5, Die6];
 class Dice extends Component {
   state = {
     dice: [Math.ceil(Math.random() * 6), Math.ceil(Math.random() * 6)],
@@ -42,7 +50,7 @@ const Die = ({rollDice, num = Math.ceil(Math.random() * 6)}) => {
       onClick={rollDice}
       className="dice-of-doom"
       alt="dice"
-      src={require(`./dice/die${num}.svg`)}
+      src={dice[num - 1]}
     />
   );
 };

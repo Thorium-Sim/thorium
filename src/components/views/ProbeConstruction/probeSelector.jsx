@@ -3,11 +3,19 @@ import {Row, Col} from "helpers/reactstrap";
 import "./style.scss";
 import useSoundEffect from "../../../helpers/hooks/useSoundEffect";
 
-const probeTypes = ["class-i", "class-ii", "class-iii", "defense", "science"];
-const probeImages = probeTypes.reduce((prev, next) => {
-  prev[next] = require(`./probes/${next}.svg`);
-  return prev;
-}, {});
+import Probe1 from "./probes/class-i.svg";
+import Probe2 from "./probes/class-ii.svg";
+import Probe3 from "./probes/class-iii.svg";
+import Probe4 from "./probes/defense.svg";
+import Probe5 from "./probes/science.svg";
+
+const probeImages = {
+  "class-i": Probe1,
+  "class-ii": Probe2,
+  "class-iii": Probe3,
+  defense: Probe4,
+  science: Probe5,
+};
 
 const ProbeSelector = ({
   types,

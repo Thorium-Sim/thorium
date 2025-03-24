@@ -12,6 +12,12 @@ import RadiationBackground from "./videos/Radiation-Background.gif";
 import DisabledBackground from "./videos/Disabled-Background.gif";
 import KineticBackground from "./videos/Kinetic-Background.gif";
 import EnergyBackground from "./videos/Energy-Background.gif";
+import EnergyHigh from "./videos/Energy-High.mp4";
+import EnergyLow from "./videos/Energy-Low.mp4";
+import KineticHigh from "./videos/Kinetic-High.mp4";
+import KineticLow from "./videos/Kinetic-Low.mp4";
+import RadHigh from "./videos/Rad-High.mp4";
+import RadLow from "./videos/Rad-Low.mp4";
 import "./style.scss";
 
 interface HullPlatingProps {
@@ -149,15 +155,23 @@ const HullPlatingComp: React.FC<HullPlatingProps> = props => {
     let src = require("./videos/Offline.mp4");
     if (hullPlating.engaged) {
       if (hullPlating.mode === "kinetic") {
-        src = require(`./videos/Kinetic-${
-          hullPlating.pulse ? "High" : "Low"
-        }.mp4`);
+        if (hullPlating.pulse) {
+          src = KineticHigh;
+        } else {
+          src = KineticLow;
+        }
       } else if (hullPlating.mode === "energy") {
-        src = require(`./videos/Energy-${
-          hullPlating.pulse ? "High" : "Low"
-        }.mp4`);
+        if (hullPlating.pulse) {
+          src = EnergyHigh;
+        } else {
+          src = EnergyLow;
+        }
       } else {
-        src = require(`./videos/Rad-${hullPlating.pulse ? "High" : "Low"}.mp4`);
+        if (hullPlating.pulse) {
+          src = RadHigh;
+        } else {
+          src = RadLow;
+        }
       }
     }
     return <video width={"100%"} src={src} autoPlay muted loop />;
