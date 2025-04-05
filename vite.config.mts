@@ -32,6 +32,7 @@ export default defineConfig({
     outDir: "build",
     emptyOutDir: true,
     assetsDir: "build-1",
+    assetsInlineLimit: 0,
   },
   server: {
     port: 3000,

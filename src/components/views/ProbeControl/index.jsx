@@ -252,7 +252,7 @@ const ProbeControlWrapper = ({
 
   let probeImage = null;
   try {
-    probeImage = require(`../ProbeConstruction/probes/${type}.svg`);
+    probeImage = require(`../ProbeConstruction/probes/${type}.svg`).default;
   } catch {
     //Nothing
   }
