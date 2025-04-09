@@ -236,6 +236,7 @@ export class FirebaseManager {
         }
         await this.connector.createEvent(event);
         this.flightSubmissions.push(flightId);
+        this.reset();
     }
 }
 

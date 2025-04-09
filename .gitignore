@@ -12,6 +12,7 @@ zips
 dist
 packages
 .cache
+build
 
 # misc
 .DS_Store

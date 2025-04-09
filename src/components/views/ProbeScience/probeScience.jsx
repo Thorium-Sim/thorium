@@ -364,7 +364,7 @@ content: "After activating your probe, you'll begin to see either the particles 
                   color="warning"
                   onMouseDown={this.mouseDown}
                 >
-                  $
+                  Charge Probe
                 </Button>
                 <Mutation
                   mutation={gql`
