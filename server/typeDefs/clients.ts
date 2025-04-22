@@ -135,6 +135,9 @@ const schema = gql`
       cacheItem: String!
     ): String
     clientRemoveCache(client: ID!, cacheItem: String!): String
+    """
+    Macro: Clients: Set Hypercard
+    """
     setClientHypercard(clientId: ID, simulatorId: ID, component: String): String
 
     """
