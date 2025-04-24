@@ -98,7 +98,7 @@ const renderButtons = ({
   return null;
 };
 
-export default ({updateArgs, args, noStations, stations, clients}) => {
+const TriggerAction = ({updateArgs, args, noStations, stations, clients}) => {
   return (
     <div>
       <p>Performs the action on all stations in the simulator.</p>
@@ -176,3 +176,5 @@ export default ({updateArgs, args, noStations, stations, clients}) => {
     </div>
   );
 };
+
+export default TriggerAction;

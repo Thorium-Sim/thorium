@@ -59,6 +59,7 @@ export type FirebaseRank = {
 
 export type FirebaseUserEvent = {
     id: string;
+    EventId: string;
     Date: Date;
     ClassHours: number;
     FlightHours: number;
@@ -82,6 +83,7 @@ export type FirebaseUser = {
 
 export type FirebaseEvent = {
     id: string;
+    EventId: string;
     Name: string
     Date: Date;
     FlightHours: number;
@@ -202,6 +204,7 @@ export class FirebaseManager {
         }
         const event: FirebaseEvent = {
             id: id,
+            EventId: id,
             Name: `${this.selectedMission.Name} on the ${this.selectedSimulator.Name}`,
             Date: new Date(),
             FlightHours: this.selectedMission.FlightHours,
@@ -219,6 +222,7 @@ export class FirebaseManager {
                 userEventArray.push({
                     id: id,
                     Date: new Date(),
+                    EventId: id,
                     ClassHours: this.selectedMission.ClassHours,
                     FlightHours: this.selectedMission.FlightHours,
                     Name: `${this.selectedMission.Name} on the ${this.selectedSimulator.Name}`,
