@@ -36,19 +36,8 @@ export default tseslint.config(
       'react/jsx-uses-vars': 'warn',
       'react-hooks/rules-of-hooks': 'warn',
       'react-hooks/exhaustive-deps': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-empty-object-type': 'warn',
-      '@typescript-eslint/no-empty-interface': 'warn',
-      '@typescript-eslint/no-empty-object-type': 'warn',
-      '@typescript-eslint/no-empty-interface': 'warn',
-      '@typescript-eslint/no-empty-object-type': 'warn',
-      '@typescript-eslint/no-empty-interface': 'warn',
-      '@typescript-eslint/no-empty-object-type': 'warn',
-      '@typescript-eslint/no-unsafe-function-type': 'warn',
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true }
       ]
     },
     settings: {
