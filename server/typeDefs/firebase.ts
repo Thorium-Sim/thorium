@@ -71,6 +71,7 @@ const schema = gql`
         getFirebaseUser(id: ID!): Boolean
         getFirebaseAwards: [FBAwards!]
         getFirebaseLogoSrc: String
+        getFirebaseWebsiteQRCode: String
         getFirebaseEventId: ID
         getFirebasePageText: FBPageText
         getCurrentFirebaseSelections: FBCurrentSelections
@@ -141,6 +142,14 @@ const resolver = {
         async getFirebaseLogoSrc() {
             if (App.firebaseManager) {
                 return await App.firebaseManager.getLogoSrc();
+            }
+            else {
+                return null
+            }
+        },
+        async getFirebaseWebsiteQRCode() {
+            if (App.firebaseManager) {
+                return await App.firebaseManager.getWebsiteQRCode();
             }
             else {
                 return null

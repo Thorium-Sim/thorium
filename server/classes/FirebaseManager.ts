@@ -163,6 +163,10 @@ export class FirebaseManager {
         return await this.connector.getLogoUrl();
     }
 
+    async getWebsiteQRCode() {
+        return await this.connector.getWebsiteQRCode();
+    }
+
     async getPageText(): Promise<FirebasePageText> {
         return await this.connector.getPageText();
     }
@@ -417,6 +421,11 @@ export class FirebaseConnector {
     async getPageText() {
         const txt = (await this.db.collection('Page').doc('Text').get()).data() as FirebasePageText;
         return txt;
+    }
+
+    async getWebsiteQRCode() {
+        const query = await this.db.collection('Page').doc('WebsiteQRCode').get();
+        return query.data().src;
     }
 
     /**

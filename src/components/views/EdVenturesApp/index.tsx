@@ -11,6 +11,12 @@ const EdVenturesAppLogoQuery = gql`
     }
 `
 
+const EdVenturesAppWebsiteQRCodeQuery = gql`
+    query EdVenturesAppWebsiteQRCode {
+        getFirebaseWebsiteQRCode
+    }
+`
+
 const EdVenturesAppTextQuery = gql`
     query EdVenturesAppText {
         getFirebasePageText {
@@ -168,6 +174,14 @@ const EdVenturesAppComp: React.FC<any> = (props) => {
                                     return <div></div>
                                 }
                                 return <img draggable={false} src={data.getFirebaseLogoSrc} height={'100%'} alt='eva logo' />
+                            }}
+                        </Query>
+                        <Query query={EdVenturesAppWebsiteQRCodeQuery}>
+                            {({ loading, data }: any) => {
+                                if (loading) {
+                                    return <div></div>
+                                }
+                                return <img draggable={false} src={data.getFirebaseWebsiteQRCode} height={'100%'} alt='eva logo' />
                             }}
                         </Query>
                         <div className="ShipLogo">

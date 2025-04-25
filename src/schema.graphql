@@ -3811,6 +3811,7 @@ type Query {
   getFirebaseUser(id: ID!): Boolean
   getFirebaseAwards: [FBAwards!]
   getFirebaseLogoSrc: String
+  getFirebaseWebsiteQRCode: String
   getFirebaseEventId: ID
   getFirebasePageText: FBPageText
   getCurrentFirebaseSelections: FBCurrentSelections
