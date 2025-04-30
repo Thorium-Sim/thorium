@@ -118,7 +118,9 @@ function responseForOperation(requestContext) {
       opName,
       requestContext.context,
     );
-    timeout = setTimeout(() => { resolve({ error: "fail", data: {} }) }, 500);
+    timeout = setTimeout(() => {
+      resolve({error: "fail", data: {}});
+    }, 500);
   });
 }
 
@@ -165,11 +167,8 @@ export default (
       key = fs.readFileSync(`${paths.userData}/server.key`, "utf8");
       cert = fs.readFileSync(`${paths.userData}/server.cert`, "utf8");
     } else {
-      key = fs.readFileSync(path.resolve(`${__dirname}/../server.key`), "utf8");
-      cert = fs.readFileSync(
-        path.resolve(`${__dirname}/../server.cert`),
-        "utf8",
-      );
+      key = fs.readFileSync(path.resolve(`${__dirname}/server.key`), "utf8");
+      cert = fs.readFileSync(path.resolve(`${__dirname}/server.cert`), "utf8");
     }
     httpServer = https.createServer({key, cert}, app);
 
