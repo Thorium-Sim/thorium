@@ -4,7 +4,8 @@ const contextBridge = require("electron").contextBridge;
 let port;
 let httpOnly;
 
-let browserCount = require("electron").BrowserWindow?.getAllWindows().length || 0;
+let browserCount =
+  require("electron").BrowserWindow?.getAllWindows().length || 0;
 
 async function getPortAndHttpOnly() {
   const results = await ipcRenderer.invoke("get-port");
@@ -121,6 +122,7 @@ function printUrl() {
   }`;
 }
 
+console.log("Running Preload");
 contextBridge.exposeInMainWorld("splashFunctions", splashFunctions);
 
 ipcRenderer.on("info", function (event, data) {

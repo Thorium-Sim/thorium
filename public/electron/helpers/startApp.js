@@ -88,20 +88,24 @@ module.exports = () => {
       return ipAddress;
     });
     ipcMain.handle("get-usbDevices", async () => {
-      const { WebUSB } = require('usb');
-      const customWebUSB = new WebUSB({
-        // This function can return a promise which allows a UI to be displayed if required
-        devicesFound: devices => devices.find(device => device.productId === 0x6001 && device.vendorId === 0x403)
-      });
+      const usbDetect = require("usb");
+      const device = usbDetect.findByIds(0x403, 0x6001);
+      const webUSBDevice = await usbDetect.WebUSBDevice.createInstance(device);
 
-      // Returns device based on injected 'devicesFound' function
-      const device = await customWebUSB.requestDevice({
-        filters: [{}]
-      })
-      return {
-        serialNumber: device?.serialNumber,
-        productName: device?.productName
-      };
+      return [
+        {
+          locationId: -1,
+          vendorId: webUSBDevice.vendorId,
+          productId: webUSBDevice.productId,
+          deviceName:
+            webUSBDevice.productName ||
+            webUSBDevice.serialNumber ||
+            `Unknown ${webUSBDevice.manufacturerName} Device`,
+          manufacturer: webUSBDevice.manufacturerName,
+          serialNumber: webUSBDevice.serialNumber,
+          deviceAddress: device.deviceAddress,
+        },
+      ];
     });
     ipcMain.on("activate-dmx", (event, config) => {
       const dmx = require("./dmx");

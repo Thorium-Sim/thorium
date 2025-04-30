@@ -125,7 +125,7 @@ export default function useDMXConfiguration(
       if (!window.thorium.getDMXDeviceList) {
         return dmx.activate().then(() => setActivated(true));
       } else {
-        const device = `/dev/cu.usbserial-${dmxDevice}`;
+        const device = dmxDevice;
         const config = {
           device,
           ipAddress,

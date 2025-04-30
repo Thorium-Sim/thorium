@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import paths from "../helpers/paths";
 
-const assetPath = path.resolve(path.dirname(process.argv[1]), "..");
+const assetPath = __dirname;
 
 export default function (server: express.Application) {
   if (process.env.NODE_ENV === "production") {
