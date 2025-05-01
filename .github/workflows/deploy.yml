@@ -15,7 +15,7 @@ jobs:
       - name: Install Node.js, NPM
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
       - name: Install libs
         run: sudo apt-get install libudev-dev
@@ -36,7 +36,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        - os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest]
         include:
           - os: macos-latest
             arch: universal
