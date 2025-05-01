@@ -13,6 +13,7 @@ dist
 packages
 .cache
 build
+out
 
 # misc
 .DS_Store

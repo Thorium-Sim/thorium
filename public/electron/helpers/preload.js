@@ -122,7 +122,6 @@ function printUrl() {
   }`;
 }
 
-console.log("Running Preload");
 contextBridge.exposeInMainWorld("splashFunctions", splashFunctions);
 
 ipcRenderer.on("info", function (event, data) {

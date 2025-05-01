@@ -1,4 +1,3 @@
-console.log("External Preload");
 const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
 const contextBridge = require("electron").contextBridge;
