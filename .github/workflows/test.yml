@@ -16,7 +16,9 @@ jobs:
       - name: Install libs
         run: sudo apt-get install libudev-dev
       - name: Install Dependencies
-        run: npm i --force
+        run: |
+             npm i --force
+             npm i --force @rollup/rollup-linux-x64-gnu
       - name: TypeScript Check
         run: |
           npm run typecheck
