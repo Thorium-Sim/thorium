@@ -138,6 +138,21 @@ module.exports = {
       return true;
     },
     appCategoryType: "public.app-category.entertainment",
+    osxSign: {
+      optionsForFile: filePath => {
+        // Here, we keep it simple and return a single entitlements.plist file.
+        // You can use this callback to map different sets of entitlements
+        // to specific files in your packaged app.
+        return {
+          entitlements: "./public/entitlements.mac.plist",
+        };
+      },
+    },
+    osxNotarize: {
+      appleApiKey: process.env.APPLE_API_KEY,
+      appleApiKeyId: process.env.APPLE_API_KEY_ID,
+      appleApiIssuer: process.env.APPLE_API_ISSUER,
+    },
   },
   rebuildConfig: {},
   makers: [
