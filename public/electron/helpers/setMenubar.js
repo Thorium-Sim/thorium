@@ -1,6 +1,6 @@
-const {Menu, BrowserWindow, app} = require("electron");
-const {windows, addWindow} = require("./multiWindow");
-const {getLoadedUrl} = require("./loadedUrl");
+const { Menu, BrowserWindow, app } = require("electron");
+const { addWindow } = require("./multiWindow");
+const { getLoadedUrl } = require("./loadedUrl");
 
 function templateFunc() {
   var template = [
@@ -27,13 +27,15 @@ function templateFunc() {
           label: "New Window",
           accelerator: "CmdOrCtrl+N",
           click: function () {
-            addWindow({loadedUrl: getLoadedUrl()});
+            addWindow({ loadedUrl: getLoadedUrl() });
           },
         },
         {
           label: "Reload",
           accelerator: "CmdOrCtrl+Alt+R",
           click: function () {
+            // This grabs all non-server windows, as the server window doesn't have a uniqueId.
+            const windows = BrowserWindow.getAllWindows().filter((each) => each.uniqueId);
             windows.forEach(mainWindow => {
               if (!mainWindow.isDestroyed()) {
                 mainWindow.reload();
@@ -46,6 +48,8 @@ function templateFunc() {
           label: "Kiosk",
           accelerator: "CmdOrCtrl+Alt+K",
           click: function () {
+            // This grabs all non-server windows, as the server window doesn't have a uniqueId.
+            const windows = BrowserWindow.getAllWindows().filter((each) => each.uniqueId);
             if (
               windows[0] &&
               !windows[0].isDestroyed() &&
@@ -81,9 +85,9 @@ function templateFunc() {
     {
       label: "Edit",
       submenu: [
-        {label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:"},
-        {label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:"},
-        {label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:"},
+        { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+        { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+        { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
         {
           label: "Select All",
           accelerator: "CmdOrCtrl+A",
@@ -98,6 +102,8 @@ function templateFunc() {
 function setMenubar() {
   const template = templateFunc();
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  // This grabs all non-server windows, as the server window doesn't have a uniqueId.
+  const windows = BrowserWindow.getAllWindows().filter((each) => each.uniqueId);
   windows.forEach(w => {
     if (!w.isDestroyed()) {
       w.setMenuBarVisibility(true);

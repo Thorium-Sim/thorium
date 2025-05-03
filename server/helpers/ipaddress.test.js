@@ -1,9 +1,9 @@
-const ipaddress = require("./ipaddress").default;
+import ipAddress  from "~helpers/ipaddress";
 
 function validateIPaddress(ipaddress) {
   if (
     /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
-      ipaddress,
+      ipAddress,
     )
   ) {
     return true;
@@ -12,5 +12,5 @@ function validateIPaddress(ipaddress) {
 }
 
 test("ipaddress", () => {
-  expect(validateIPaddress(ipaddress)).toBeTruthy();
+  expect(validateIPaddress(ipAddress)).toBeTruthy();
 });

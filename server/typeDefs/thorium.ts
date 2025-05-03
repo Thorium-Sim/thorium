@@ -9,13 +9,16 @@ import {capitalCase} from "change-case";
 
 import heap from "../helpers/heap";
 import tokenGenerator from "../helpers/tokenGenerator";
+import {getTemplates} from "../helpers/baseTaskTemplates.js";
+
+import pkg from '../../package.json'
+const version = pkg.version;
 
 const issuesUrl =
   "https://12usj3vwf1.execute-api.us-east-1.amazonaws.com/prod/issueTracker";
 
 let spaceEdventuresData = null;
 let spaceEdventuresTimeout = 0;
-const version = require("../../package.json").version;
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`
@@ -197,8 +200,8 @@ const resolver = {
     importTaskTemplates: () => {
       if (App.addedTaskTemplates) return;
       App.addedTaskTemplates = true;
-      const templates = require("../helpers/baseTaskTemplates.js")();
-      App.taskTemplates = App.taskTemplates.concat(templates);
+      const templates = getTemplates()
+      App.taskTemplates = App.taskTemplates.concat(templates as any);
       pubsub.publish("taskTemplatesUpdate", App.taskTemplates);
     },
 

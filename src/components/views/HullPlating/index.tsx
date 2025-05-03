@@ -3,7 +3,7 @@ import {HullPlating, Simulator} from "generated/graphql";
 import gql from "graphql-tag.macro";
 import {graphql, withApollo} from "react-apollo";
 import {Row, Col, Container, Button} from "helpers/reactstrap";
-import {FormattedMessage} from "react-intl";
+
 import DamageOverlay from "../helpers/DamageOverlay";
 import Tour from "helpers/tourHelper";
 import {HullPlatingModeConstants} from "./constants";
@@ -12,6 +12,12 @@ import RadiationBackground from "./videos/Radiation-Background.gif";
 import DisabledBackground from "./videos/Disabled-Background.gif";
 import KineticBackground from "./videos/Kinetic-Background.gif";
 import EnergyBackground from "./videos/Energy-Background.gif";
+import EnergyHigh from "./videos/Energy-High.mp4";
+import EnergyLow from "./videos/Energy-Low.mp4";
+import KineticHigh from "./videos/Kinetic-High.mp4";
+import KineticLow from "./videos/Kinetic-Low.mp4";
+import RadHigh from "./videos/Rad-High.mp4";
+import RadLow from "./videos/Rad-Low.mp4";
 import "./style.scss";
 
 interface HullPlatingProps {
@@ -66,30 +72,18 @@ export const HULL_PLATING_QUERY = gql`
 const TrainingSteps = [
   {
     selector: ".activate-btn",
-    content: (
-      <FormattedMessage
-        id={"hull-plating-training-1"}
-        defaultMessage="This system allows you to strengthen your ship's outer hull, reducing damage from difference types of projectiles or energy sources. To activate your armor, press the button here"
-      />
-    ),
+    content:
+      "This system allows you to strengthen your ship's outer hull, reducing damage from difference types of projectiles or energy sources. To activate your armor, press the button here",
   },
   {
     selector: ".mode-btns",
-    content: (
-      <FormattedMessage
-        id={"hull-plating-training-2"}
-        defaultMessage="When the system is engaged, you can select the mode you would like to use. Each mode has different advantages. Try different modes to gain difference advantages"
-      />
-    ),
+    content:
+      "When the system is engaged, you can select the mode you would like to use. Each mode has different advantages. Try different modes to gain difference advantages",
   },
   {
     selector: ".effective-chart",
-    content: (
-      <FormattedMessage
-        id={"hull-plating-training-3"}
-        defaultMessage="This graph shows how well the armor is working. If the line is flat, it's not very effective. If the line moves more rapidly, the armor is more effective. If you change armor types, it will take some time for the armor to become effective again."
-      />
-    ),
+    content:
+      "This graph shows how well the armor is working. If the line is flat, it's not very effective. If the line moves more rapidly, the armor is more effective. If you change armor types, it will take some time for the armor to become effective again.",
   },
 ];
 
@@ -161,15 +155,23 @@ const HullPlatingComp: React.FC<HullPlatingProps> = props => {
     let src = require("./videos/Offline.mp4");
     if (hullPlating.engaged) {
       if (hullPlating.mode === "kinetic") {
-        src = require(`./videos/Kinetic-${
-          hullPlating.pulse ? "High" : "Low"
-        }.mp4`);
+        if (hullPlating.pulse) {
+          src = KineticHigh;
+        } else {
+          src = KineticLow;
+        }
       } else if (hullPlating.mode === "energy") {
-        src = require(`./videos/Energy-${
-          hullPlating.pulse ? "High" : "Low"
-        }.mp4`);
+        if (hullPlating.pulse) {
+          src = EnergyHigh;
+        } else {
+          src = EnergyLow;
+        }
       } else {
-        src = require(`./videos/Rad-${hullPlating.pulse ? "High" : "Low"}.mp4`);
+        if (hullPlating.pulse) {
+          src = RadHigh;
+        } else {
+          src = RadLow;
+        }
       }
     }
     return <video width={"100%"} src={src} autoPlay muted loop />;
@@ -207,10 +209,7 @@ const HullPlatingComp: React.FC<HullPlatingProps> = props => {
                     block={true}
                     size={"lg"}
                   >
-                    <FormattedMessage
-                      id={"hull-plating-engage"}
-                      defaultMessage="Engage"
-                    />{" "}
+                    Engage{" "}
                   </Button>
                 )}
                 {hullPlating.engaged && (
@@ -220,10 +219,7 @@ const HullPlatingComp: React.FC<HullPlatingProps> = props => {
                     block={true}
                     size={"lg"}
                   >
-                    <FormattedMessage
-                      id={"hull-plating-disengage"}
-                      defaultMessage="Disengage"
-                    />
+                    Disengage
                   </Button>
                 )}
               </div>

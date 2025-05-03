@@ -1,6 +1,6 @@
 import randomWords from "random-words";
 
-export default {
+export function getDefaultSnapshot(){return {
   _eventsCount: 403,
   simulators: [
     {
@@ -13655,4 +13655,6 @@ export default {
   snapshotVersion: 2,
   version: 2,
   timestamp: "2018-08-15T14:11:54.203Z",
+  flightSets: []
 };
+}

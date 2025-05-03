@@ -7,11 +7,13 @@ node_modules
 coverage
 
 # production
-build
+
 zips
 dist
 packages
 .cache
+build
+out
 
 # misc
 .DS_Store

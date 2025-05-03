@@ -1,7 +1,8 @@
-const App = require("../app").default;
-const defaultSnapshot = require("./defaultSnapshot").default;
+import App from '../app'
+import {getDefaultSnapshot} from './defaultSnapshot'
 
 describe("defaultSnapshot", () => {
+  const defaultSnapshot = getDefaultSnapshot()
   const keyWhitelist = [
     "domain",
     "_events",

@@ -1,0 +1,64 @@
+.grouping {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    border: 0 solid hsla(0,0%,100%,.5);
+    padding: 10px 10px 10px 15px;
+    border-radius: 10px;
+    background: hsla(0,0%,100%,.1);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 5px hsla(0,0%,100%,.75),5px 5px 10px rgba(0,0,0,.3);
+    margin: 0 0 10px;
+    text-align: left;
+    background-color: #00000088;
+    gap: 0.5rem
+}
+
+.sidebar-parent {
+    width: 100%;
+    height: 100%;
+    display: flex; 
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.group-parent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem
+}
+
+.label {
+    text-align: left;
+    margin-bottom: 2px;
+}
+
+.item {
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 0.5rem;
+    margin: 0.5rem;
+}
+
+.item.selected {
+    outline: double 10px white;
+}
+
+.item-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.item-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.height-animation {
+    transition: height 0.5s ease-in-out;
+}

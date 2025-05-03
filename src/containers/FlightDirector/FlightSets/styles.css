@@ -1,0 +1,14 @@
+.fullscreen-modal {
+  max-width: 95%;
+  width: 95%;
+  max-height: 90vh;
+  height: 90vh;
+  /* margin: 0 auto; */
+}
+.dark-text {
+  color: #333333; /* Dark gray instead of pure black */
+}
+
+.light-text {
+  color: #f0f0f0; /* Soft off-white instead of pure white */
+}

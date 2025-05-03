@@ -9,7 +9,7 @@
 .tacticalmap-core {
   display: grid;
   grid-template-columns: 70vw auto;
-  grid-template-rows: (70vw * 9/16) calc(100vh - 41vw);
+  grid-template-rows: calc(70vw * 9 / 16) calc(100vh - 41vw);
   grid-template-areas: "preview sidebar" "bottom sidebar";
   background-color: #111;
   color: white;
@@ -41,7 +41,7 @@
   .preview {
     grid-area: preview;
     width: 100vw;
-    height: 9 / 16 * 100vw;
+    height: calc(9 / 16 * 100vw);
     transform-origin: 0 0;
     transform: scale(0.7);
   }

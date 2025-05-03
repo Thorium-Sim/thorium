@@ -12,7 +12,7 @@ import {
 } from "helpers/reactstrap";
 import Tour from "helpers/tourHelper";
 import randomWords from "random-words";
-import {FormattedMessage} from "react-intl";
+
 import {
   useStartFlightMutation,
   useFlightSetupQuery,
@@ -249,14 +249,9 @@ const FlightConfig: React.FC = () => {
   return (
     <Container className="flight-config">
       <h4>
-        <FormattedMessage id="flight-config" defaultMessage="Flight Config" />{" "}
+        Flight Config{" "}
         <small>
-          <Link to="/">
-            <FormattedMessage
-              id="return-to-main"
-              defaultMessage="Return to Main"
-            />
-          </Link>
+          <Link to="/">Return to Main</Link>
         </small>
       </h4>
       <div style={{display: "flex"}}>

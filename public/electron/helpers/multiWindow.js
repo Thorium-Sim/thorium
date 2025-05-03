@@ -39,7 +39,7 @@ function addWindow({main, x, y, loadedUrl, server}) {
       contextIsolation: true,
       nodeIntegration: true,
       sandbox: true,
-      enableRemoteModule: true
+      enableRemoteModule: true,
     },
   };
   if (server) {
@@ -81,11 +81,12 @@ function addWindow({main, x, y, loadedUrl, server}) {
     return;
   } else {
     if (main) {
-      config.webPreferences.preload = path.resolve(__dirname + "/preload.js");
+      config.webPreferences.preload = path.join(__dirname, "preload.js");
     } else {
-      config.webPreferences.preload = `file:/${path.resolve(
-        `${__dirname}/externalPreload.js`,
-      )}`;
+      config.webPreferences.preload = path.join(
+        __dirname,
+        "externalPreload.js",
+      );
     }
     const window = new BrowserWindow(config);
     window.uniqueId = uuid.v4();

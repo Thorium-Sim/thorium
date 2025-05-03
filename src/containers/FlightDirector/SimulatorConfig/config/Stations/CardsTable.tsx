@@ -251,7 +251,7 @@ const CardsTable: React.FC<CardsTableProps> = ({simulator, station}) => {
                   onAdd={t =>
                     setTags({
                       variables: {
-                        stationSetId: selectedStationSet,
+                        stationSetId: selectedStationSet || "",
                         stationName: station.name,
                         tags: (station.tags || []).concat(t),
                       },
@@ -260,7 +260,7 @@ const CardsTable: React.FC<CardsTableProps> = ({simulator, station}) => {
                   onRemove={t =>
                     setTags({
                       variables: {
-                        stationSetId: selectedStationSet,
+                        stationSetId: selectedStationSet || "",
                         stationName: station.name,
                         tags: (station.tags || []).filter(tt => tt !== t),
                       },

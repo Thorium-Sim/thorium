@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import paths from "../helpers/paths";
 
-const assetPath = path.resolve(path.dirname(process.argv[1]), "..");
+const assetPath = __dirname;
 
 export default function (server: express.Application) {
   if (process.env.NODE_ENV === "production") {
@@ -13,9 +13,10 @@ export default function (server: express.Application) {
     server.get("*", function (req, response) {
       response.sendFile(`${assetPath}/index.html`, function (err) {
         if (err) {
+
           response
             .status(500)
-            .end("Error loading client. Please refresh your browser.");
+            .end("Error loading client. Please refresh your browser." + err);
           return;
         }
         response.end();

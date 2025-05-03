@@ -1,12 +1,12 @@
 // From jonschlinkert/data-store
 // Extracted to replace debounce with throttle
 
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
-const assert = require("assert");
+import { writeFile as _writeFile, readFileSync, existsSync, mkdirSync, unlinkSync } from "fs";
+import { homedir } from "os";
+import { join, dirname as _dirname, relative, sep } from "path";
+import { strictEqual } from "assert";
 const XDG_CONFIG_HOME = process.env.XDG_CONFIG_HOME;
-const throttle = require("./throttle").default;
+import throttle from "./throttle";
 const flatten = (...args) => [].concat.apply([], args);
 const unique = arr => arr.filter((v, i) => arr.indexOf(v) === i);
 
@@ -36,7 +36,7 @@ class Store {
     }
 
     if (!options.path) {
-      assert.equal(typeof name, "string", "expected store name to be a string");
+      strictEqual(typeof name, "string", "expected store name to be a string");
     }
 
     let {debounce = 5, indent = 2, home, base} = options;
@@ -46,10 +46,10 @@ class Store {
     this.debounce = debounce;
     this.indent = indent;
 
-    if (!home) home = XDG_CONFIG_HOME || path.join(os.homedir(), ".config");
-    if (!base) base = options.cwd || path.join(home, "data-store");
-    this.path = this.options.path || path.join(base, `${this.name}.json`);
-    this.base = path.dirname(this.path);
+    if (!home) home = XDG_CONFIG_HOME || join(homedir(), ".config");
+    if (!base) base = options.cwd || join(home, "data-store");
+    this.path = this.options.path || join(base, `${this.name}.json`);
+    this.base = _dirname(this.path);
     this.timeouts = {};
     this.writeThrottle = throttle(() => {
       this.writeFile();
@@ -80,7 +80,7 @@ class Store {
     if (isObject(key)) {
       Object.assign(this.data, key);
     } else {
-      assert.equal(typeof key, "string", "expected key to be a string");
+      strictEqual(typeof key, "string", "expected key to be a string");
       set(this.data, key, val);
     }
     this.save();
@@ -107,7 +107,7 @@ class Store {
    */
 
   union(key, ...rest) {
-    assert.equal(typeof key, "string", "expected key to be a string");
+    strictEqual(typeof key, "string", "expected key to be a string");
     let arr = this.get(key);
     if (arr == null) arr = [];
     if (!Array.isArray(arr)) arr = [arr];
@@ -133,7 +133,7 @@ class Store {
    */
 
   get(key) {
-    assert.equal(typeof key, "string", "expected key to be a string");
+    strictEqual(typeof key, "string", "expected key to be a string");
     return get(this.data, key);
   }
 
@@ -155,7 +155,7 @@ class Store {
    */
 
   has(key) {
-    assert.equal(typeof key, "string", "expected key to be a string");
+    strictEqual(typeof key, "string", "expected key to be a string");
     return typeof get(this.data, key) !== "undefined";
   }
 
@@ -183,7 +183,7 @@ class Store {
    */
 
   hasOwn(key) {
-    assert.equal(typeof key, "string", "expected key to be a string");
+    strictEqual(typeof key, "string", "expected key to be a string");
     return hasOwn(this.data, key);
   }
 
@@ -205,7 +205,7 @@ class Store {
       for (const k of key) this.del(k);
       return this;
     }
-    assert.equal(typeof key, "string", "expected key to be a string");
+    strictEqual(typeof key, "string", "expected key to be a string");
     if (del(this.data, key)) {
       this.save();
     }
@@ -316,9 +316,9 @@ class Store {
    */
 
   writeFile() {
-    mkdir(path.dirname(this.path), this.options.mkdir);
+    mkdir(_dirname(this.path), this.options.mkdir);
     const jsonData = this.json();
-    fs.writeFile(
+    _writeFile(
       this.path.replace(".json", "-restore.json"),
       jsonData,
       {mode: 0o0600},
@@ -327,7 +327,7 @@ class Store {
           console.error(err);
         }
 
-        fs.writeFile(this.path, jsonData, {mode: 0o0600}, err => {
+        _writeFile(this.path, jsonData, {mode: 0o0600}, err => {
           if (err) {
             console.error(err);
           }
@@ -367,7 +367,7 @@ class Store {
       ? this.path.replace(".json", "-restore.json")
       : this.path;
     try {
-      return (this._data = JSON.parse(fs.readFileSync(path)));
+      return (this._data = JSON.parse(readFileSync(path)));
     } catch (err) {
       if (err.code === "EACCES") {
         err.message +=
@@ -409,15 +409,15 @@ class Store {
  */
 
 function mkdir(dirname, options = {}) {
-  if (fs.existsSync(dirname)) return;
-  assert.equal(typeof dirname, "string", "expected dirname to be a string");
+  if (existsSync(dirname)) return;
+  strictEqual(typeof dirname, "string", "expected dirname to be a string");
   const opts = Object.assign({cwd: process.cwd(), fs}, options);
   const mode = opts.mode || 0o777 & ~process.umask();
-  const segs = path.relative(opts.cwd, dirname).split(path.sep);
-  const make = dir => !exists(dir, opts) && fs.mkdirSync(dir, mode);
+  const segs = relative(opts.cwd, dirname).split(sep);
+  const make = dir => !exists(dir, opts) && mkdirSync(dir, mode);
   for (let i = 0; i <= segs.length; i++) {
     try {
-      make((dirname = path.join(opts.cwd, ...segs.slice(0, i))));
+      make((dirname = join(opts.cwd, ...segs.slice(0, i))));
     } catch (err) {
       handleError(dirname, opts)(err);
     }
@@ -426,7 +426,7 @@ function mkdir(dirname, options = {}) {
 }
 
 function exists(dir, opts = {}) {
-  if (fs.existsSync(dir)) {
+  if (existsSync(dir)) {
     if (!opts.fs.statSync(dir).isDirectory()) {
       throw new Error(`Path exists and is not a directory: "${dir}"`);
     }
@@ -442,7 +442,7 @@ function handleError(dir, opts = {}) {
     const isIgnored =
       ["EEXIST", "EISDIR", "EPERM"].includes(err.code) &&
       opts.fs.statSync(dir).isDirectory() &&
-      path.dirname(dir) !== dir;
+      _dirname(dir) !== dir;
 
     if (!isIgnored) {
       throw err;
@@ -452,7 +452,7 @@ function handleError(dir, opts = {}) {
 
 function tryUnlink(filepath) {
   try {
-    fs.unlinkSync(filepath);
+    unlinkSync(filepath);
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err;
@@ -551,4 +551,4 @@ function isObject(val) {
  * Expose `Store`
  */
 
-module.exports = Store;
+export default Store;

@@ -1,5 +1,5 @@
 import React from "react";
-import {trainingSteps as MessagesTraining} from "./Messaging";
+import { trainingSteps as MessagesTraining } from "./Messaging";
 
 // Widget Icons
 import {
@@ -126,6 +126,8 @@ const Hacking = React.lazy(() => import("./Hacking"));
 const Documents = React.lazy(() => import("./Documents"));
 const HullPlating = React.lazy(() => import("./HullPlating"));
 const EdVenturesApp = React.lazy(() => import("./EdVenturesApp"));
+const AdvancedNavigation = React.lazy(() => import("./AdvancedNavAndAstrometrics/AdvancedNavigationCard"));
+const Astrometrics = React.lazy(() => import("./AdvancedNavAndAstrometrics/AstrometricsCard"));
 // Cores
 const EngineControlCore = React.lazy(() => import("./EngineControl/core"));
 const TransporterCore = React.lazy(() => import("./Transporters/core"));
@@ -226,6 +228,8 @@ const HackingCore = React.lazy(() => import("./Hacking/core"));
 const PrintQueueCore = React.lazy(() => import("./PrintQueue/core"));
 const HullPlatingCore = React.lazy(() => import("./HullPlating/core"));
 const EdVenturesAppCore = React.lazy(() => import("./EdVenturesApp/core"));
+const AdvancedNavigationCore = React.lazy(() => import("./AdvancedNavAndAstrometrics/CoreAdvancedNavigation"));
+const AstrometricsCore = React.lazy(() => import("./AdvancedNavAndAstrometrics/CoreAstrometrics"));
 // Widgets
 const ComposerWidget = React.lazy(() => import("./LongRangeComm/Composer"));
 const CalculatorWidget = React.lazy(() => import("./Widgets/calculator"));
@@ -334,7 +338,9 @@ const Views = {
   Documents,
   Hacking,
   HullPlating,
-  EdVenturesApp
+  EdVenturesApp,
+  AdvancedNavigation,
+  Astrometrics
 };
 
 export const Widgets = {
@@ -535,7 +541,9 @@ export const Cores = {
   HackingCore,
   PrintQueueCore,
   HullPlatingCore,
-  EdVenturesAppCore
+  EdVenturesAppCore,
+  AdvancedNavigationCore,
+  AstrometricsCore
 };
 
 export default Views;

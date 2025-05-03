@@ -1,0 +1,3 @@
+mutation HandleOnAssignProbe($id:ID!, $probeId:ID!, $poiId:ID!) {
+  handleOnAssignProbe(id:$id, probeId:$probeId, poiId: $poiId)
+}

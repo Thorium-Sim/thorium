@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -13,14 +17,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "baseUrl": "./src/"
+    "jsx": "preserve",
+    "baseUrl": "./src/",
+    "types": ["vitest/globals"],
+    "jsxImportSource": "@emotion/react"
   },
   "include": [
     "src",
     "types/*",
     "i18next-parser.config.js",
-    "test/setupTests.js"
+    "test/setupTests.js",
+    "vite-env.d.ts"
   ],
-  "exclude": ["hooksGenerate.js"]
+  "exclude": [
+    "hooksGenerate.js"
+  ]
 }

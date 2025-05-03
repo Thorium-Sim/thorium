@@ -1,0 +1,46 @@
+.fullscreen-modal {
+  max-width: 95%;
+  width: 95%;
+  max-height: 90vh;
+  height: 90vh;
+  /* margin: 0 auto; */
+}
+
+.ripple-pulse {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.ripple-pulse .flux-image {
+    display: block;
+    position: relative;
+    mask-image: radial-gradient(circle at center,#ffffff33 0%,  white 0%, #ffffff33 var(--y),  white var(--x), #ffffff33  100%);
+    mask-position: center;
+    mask-repeat: no-repeat;
+    animation: ripple 2s  infinite;
+    pointer-events: none;
+    filter: brightness(2.5);
+}
+
+.button-parent {
+    display: flex;
+    height: min-content;
+    margin-right: 1rem;
+    gap: 2rem;
+}
+
+@keyframes ripple {
+    0% {
+        --x: 0%;
+        --y: 0%;
+    }
+    50% {
+        
+        
+    }
+    100% {
+        --x: 150%;
+        --y: 100%;
+    }
+}

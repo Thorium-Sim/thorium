@@ -1,0 +1,55 @@
+.step-parent {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.step-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: '4px'
+}
+
+.step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.step-content-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.step-content-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.step-input-label {
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+}
+
+.step-subtitle {
+    font-size: larger;
+    font-weight: 600;
+    align-self: flex-start;
+
+}
+
+

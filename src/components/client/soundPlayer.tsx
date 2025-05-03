@@ -1,5 +1,4 @@
 import React from "react";
-import {FormattedMessage} from "react-intl";
 import {useSounds} from "../generic/SoundPlayer";
 import Reset from "./reset";
 import {useApolloClient} from "@apollo/client";
@@ -39,7 +38,7 @@ const SoundPlayer: React.FC<{
   return (
     <div className="keyboard-holder">
       <Reset clientId={clientId} station={station} />
-      <FormattedMessage id="sound-player" defaultMessage="Sound Player" />
+      Sound Player
       <ClientLighting simulator={simulator} clientId={clientId} />
     </div>
   );

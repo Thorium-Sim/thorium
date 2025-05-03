@@ -1,7 +1,7 @@
 const fs = require("fs");
-const packages = require("@yarnpkg/lockfile").parse(
-  fs.readFileSync("./yarn.lock", "utf8"),
-);
+const packages = JSON.parse(
+  fs.readFileSync("./package-lock.json", "utf8"),
+).dependencies;
 const needed = [
   "uuid",
   "electron",
@@ -14,8 +14,7 @@ const needed = [
   "semver",
   "electron-updater",
   "universalify",
-  "usb-detection",
-  "dmx",
+  "usb",
   "e131",
 ];
 
@@ -23,24 +22,21 @@ const memo = {};
 
 function getNeededPackages(pkg) {
   if (memo[pkg]) return memo[pkg];
-  const packageName = Object.keys(packages.object).find(key => {
+  const packageName = Object.keys(packages).find(key => {
     return key.split("@")[key[0] === "@" ? 1 : 0] === pkg.replace("@", "");
   });
   if (!packageName) {
     console.error("Couldn't find object for ", pkg);
     return [];
   }
-  const packageObj = packages.object[packageName];
-  if (!packageObj.dependencies) {
+  const packageObj = packages[packageName];
+  if (!packageObj.requires) {
     memo[pkg] = [pkg];
     return [pkg];
   }
   memo[pkg] = [pkg];
 
-  memo[pkg] = [
-    pkg,
-    ...Object.keys(packageObj.dependencies).map(getNeededPackages),
-  ];
+  memo[pkg] = [pkg, ...Object.keys(packageObj.requires).map(getNeededPackages)];
   return memo[pkg];
 }
 
@@ -49,5 +45,6 @@ console.info(
     .reduce((acc, next) => acc.concat(getNeededPackages(next)), [])
     .flat(Infinity)
     .filter((a, i, arr) => arr.indexOf(a) === i)
+    .map(i => `"${i}"`)
     .join(",")}}`,
 );

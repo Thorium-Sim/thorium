@@ -1,0 +1,12 @@
+.no-bottom-label-margin label {
+    margin-bottom: 0;
+
+}
+
+.color-scheme-white button{
+    color: black;
+}
+
+.color-scheme-white button:disabled {
+    cursor: not-allowed;
+}

@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import {
   Nav,
   NavItem,
@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "helpers/reactstrap";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import gql from "graphql-tag.macro";
 import {
   FaSpaceShuttle,
@@ -35,16 +35,16 @@ import {
   FaBars,
   FaSlidersH,
   FaLightbulb,
-  // FaRegStar,
+  FaRegStar,
 } from "react-icons/fa";
-import {AiOutlineFieldBinary} from "react-icons/ai";
+import { AiOutlineFieldBinary } from "react-icons/ai";
 
 import IssueTracker from "../../components/admin/IssueTracker";
 
 import "./sideNav.scss";
-import {IconType} from "react-icons/lib/cjs";
-import {useApolloClient} from "@apollo/client";
-import {TrainingContext} from "containers/TrainingContextProvider";
+import { IconType } from "react-icons/lib/cjs";
+import { useApolloClient } from "@apollo/client";
+import { TrainingContext } from "containers/TrainingContextProvider";
 
 interface NavLinkI {
   link?: string;
@@ -79,11 +79,11 @@ const links: (NavLinkI | null)[] = [
     icon: FaUserSecret,
     link: "/config/mission",
   },
-  // {
-  //   name: "Universal Sandbox",
-  //   icon: FaRegStar,
-  //   link: "/config/sandbox",
-  // },
+  {
+    name: "Flight Sets",
+    icon: FaRegStar,
+    link: "/config/flightSets",
+  },
   {
     name: "Macros Config",
     icon: FaWindowRestore,
@@ -166,19 +166,19 @@ const links: (NavLinkI | null)[] = [
   },
   process.env.NODE_ENV !== "production"
     ? {
-        name: "Snapshot",
-        icon: FaCamera,
-        onClick: (e: React.MouseEvent, client: any) => {
-          e.preventDefault();
-          client.mutate({
-            mutation: gql`
+      name: "Snapshot",
+      icon: FaCamera,
+      onClick: (e: React.MouseEvent, client: any) => {
+        e.preventDefault();
+        client.mutate({
+          mutation: gql`
               mutation M {
                 snapshot
               }
             `,
-          });
-        },
-      }
+        });
+      },
+    }
     : null,
 ].filter(Boolean);
 
@@ -188,7 +188,7 @@ const SideNav = () => {
   const toggleIssueTracker = () => {
     setIssuesOpen(s => !s);
   };
-  const {startTraining} = React.useContext(TrainingContext);
+  const { startTraining } = React.useContext(TrainingContext);
 
   return (
     <Fragment>

@@ -118,7 +118,9 @@ function responseForOperation(requestContext) {
       opName,
       requestContext.context,
     );
-    timeout = setTimeout(() => { resolve({ error: "fail", data: {} }) }, 500);
+    timeout = setTimeout(() => {
+      resolve({error: "fail", data: {}});
+    }, 500);
   });
 }
 
@@ -132,9 +134,6 @@ export default (
   setMutations(resolvers.Mutation);
   const graphqlOptions: ApolloServerExpressConfig = {
     schema,
-    engine: {
-      apiKey: "service:Thorium:yZHa-qq7-_kVSpmsc9Ka1A",
-    },
     tracing: process.env.NODE_ENV !== "production",
     introspection: true,
     playground: true,
@@ -168,11 +167,8 @@ export default (
       key = fs.readFileSync(`${paths.userData}/server.key`, "utf8");
       cert = fs.readFileSync(`${paths.userData}/server.cert`, "utf8");
     } else {
-      key = fs.readFileSync(path.resolve(`${__dirname}/../server.key`), "utf8");
-      cert = fs.readFileSync(
-        path.resolve(`${__dirname}/../server.cert`),
-        "utf8",
-      );
+      key = fs.readFileSync(path.resolve(`${__dirname}/server.key`), "utf8");
+      cert = fs.readFileSync(path.resolve(`${__dirname}/server.cert`), "utf8");
     }
     httpServer = https.createServer({key, cert}, app);
 

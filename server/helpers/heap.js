@@ -1,6 +1,7 @@
 import throttle from "./throttle";
 import fetch from "node-fetch";
-
+import pkg from "../../package.json"
+const version = pkg.version;
 // Analytics Package
 
 const ignoredEvents = [
@@ -91,7 +92,7 @@ class Heap {
       flightName,
       clientName,
       stationName,
-      thoriumVersion: require("../../package.json").version,
+      thoriumVersion: version,
     };
     Object.keys(output).forEach(
       key => output[key] == null && delete output[key],

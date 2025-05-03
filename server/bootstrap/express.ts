@@ -29,7 +29,6 @@ import importTrigger from "../imports/triggers/import";
 // import importSurvey from "../imports/surveys/import";
 import exportCoreLayout from "../imports/coreLayout/export";
 import importCoreLayout from "../imports/coreLayout/import";
-import errorhandler from "errorhandler";
 
 import App from "../app";
 import yazl from "yazl";
@@ -86,7 +85,6 @@ export default () => {
   });
 
   const server = express();
-  server.use(errorhandler({log: true}));
   server.use(bodyParser.json({limit: "20mb"}));
 
   // server.use(require("express-status-monitor")({}));
@@ -124,7 +122,7 @@ export default () => {
     });
   }
   Object.entries(classes).forEach(([classKey, classObj]) => {
-    const exportObj = (classObj as unknown) as Exportable;
+    const exportObj = classObj as unknown as Exportable;
     if (exportObj.exportable) {
       server.get(
         `/export${pascalCase(exportObj.exportable)}/:id`,
@@ -208,13 +206,14 @@ export default () => {
           if (req.files[0]) {
             const importZip = await new Promise<yauzl.ZipFile>(
               (resolve, reject) =>
-                yauzl.open(req.files[0].path, {lazyEntries: true}, function (
-                  err,
-                  importZip,
-                ) {
-                  if (err) reject(err);
-                  resolve(importZip);
-                }),
+                yauzl.open(
+                  req.files[0].path,
+                  {lazyEntries: true},
+                  function (err, importZip) {
+                    if (err) reject(err);
+                    resolve(importZip);
+                  },
+                ),
             );
             importZip.on("entry", function (entry) {
               if (entry.fileName.includes("data.json")) {
