@@ -1,6 +1,6 @@
-import {keyframes} from "@emotion/core";
+import { keyframes } from "@emotion/core";
 import css from "@emotion/css/macro";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Button,
   Modal,
@@ -10,13 +10,14 @@ import {
   Input,
   Label,
 } from "helpers/reactstrap";
+import logoUrl from './logo.png?url';
 
 const ClientNameModal: React.FC<{
   clientId: string;
   modal: boolean;
   toggle: () => void;
   changeClientId: (id: string) => void;
-}> = ({clientId, modal, toggle, changeClientId}) => {
+}> = ({ clientId, modal, toggle, changeClientId }) => {
   const [name, setName] = useState(clientId);
   return (
     <Modal isOpen={modal} toggle={toggle} size="large">
@@ -118,6 +119,9 @@ const creditList = [
         <li>
           <code>SoshJam</code>
         </li>
+        <li>
+          <code>mitchellfoote93</code>
+        </li>
       </ul>
     ),
   },
@@ -142,6 +146,7 @@ const creditList = [
         <li>Justin Hammond</li>
         <li>Jordan Smith</li>
         <li>Brylee Perry</li>
+        <li>Mitchell Foote</li>
       </ul>
     ),
   },
@@ -255,7 +260,7 @@ const Credits: React.FC<{
   simulatorName?: string;
   stationName?: string;
   updateClientId: (id: string) => void;
-}> = ({updateClientId, clientId, flightName, simulatorName, stationName}) => {
+}> = ({ updateClientId, clientId, flightName, simulatorName, stationName }) => {
   const scroll = React.useRef<HTMLDivElement>(null);
   const [showModal, setShowModal] = React.useState(false);
 
@@ -279,7 +284,7 @@ const Credits: React.FC<{
             filter: drop-shadow(16px 16px 20px black);
           `}
           alt="Logo"
-          src={require("./logo.png")}
+          src={logoUrl}
           draggable="false"
         />
         <h1>Thorium</h1>

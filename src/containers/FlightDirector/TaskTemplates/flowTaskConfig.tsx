@@ -44,9 +44,9 @@ const FlowTaskConfig = () => {
         onAdd={t =>
           edit({
             variables: {
-              id: flowId,
-              stepId,
-              taskId,
+              id: flowId || "",
+              stepId: stepId || "",
+              taskId: taskId || "",
               task: {
                 ...task,
                 stationTags: task.stationTags?.concat(t) || [],
@@ -57,9 +57,9 @@ const FlowTaskConfig = () => {
         onRemove={t =>
           edit({
             variables: {
-              id: flowId,
-              stepId,
-              taskId,
+              id: flowId || "",
+              stepId: stepId || "",
+              taskId: taskId || "",
               task: {
                 ...task,
                 stationTags: task.stationTags?.filter(tt => tt !== t) || [],
@@ -87,9 +87,9 @@ const FlowTaskConfig = () => {
           onBlur={(value: unknown) => {
             edit({
               variables: {
-                id: flowId,
-                stepId,
-                taskId,
+                id: flowId || "",
+                stepId: stepId || "",
+                taskId: taskId || "",
                 task: {...task, values: {...task.values, [v]: value}},
               },
             });
@@ -104,14 +104,14 @@ const FlowTaskConfig = () => {
             if (!newMacros) return Promise.resolve();
             return edit({
               variables: {
-                id: flowId,
-                stepId,
-                taskId,
+                id: flowId || "",
+                stepId: stepId || "",
+                taskId: taskId || "",
                 task: {...task, macros: newMacros},
               },
             });
           }}
-          id={taskId}
+          id={taskId || ""}
           macros={task.macros || []}
         />
 
@@ -121,15 +121,15 @@ const FlowTaskConfig = () => {
             if (!newMacros) return Promise.resolve();
             return edit({
               variables: {
-                id: flowId,
-                stepId,
-                taskId,
+                id: flowId || "",
+                stepId: stepId || "",
+                taskId: taskId || "",
                 task: {...task, preMacros: newMacros},
               },
             });
           }}
           pre
-          id={taskId}
+          id={taskId || ""}
           macros={task.preMacros}
         />
       </details>

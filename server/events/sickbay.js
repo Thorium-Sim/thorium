@@ -220,7 +220,7 @@ App.on("completeDeconProgram", ({id}) => {
       .filter(s => s.cards.find(c => c.component === "Decontamination"))
       .map(s => s.name)
       .forEach(s => {
-        pubsub.publish("notify", {
+        sys.deconProgram && pubsub.publish("notify", {
           id: uuid.v4(),
           simulatorId: sys.simulatorId,
           type: "Decontamination",

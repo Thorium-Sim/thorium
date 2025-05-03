@@ -3,7 +3,7 @@ import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import * as Classes from "../classes";
 import uuid from "uuid";
-const mutationHelper = require("../helpers/mutationHelper").default;
+import mutationHelper from "../helpers/mutationHelper";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`

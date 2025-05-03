@@ -8,7 +8,7 @@ import {download} from "../bootstrap/init";
 import uuid from "uuid";
 import fs from "fs";
 import assetDir from "../helpers/assetDir";
-const mutationHelper = require("../helpers/mutationHelper").default;
+import mutationHelper from "../helpers/mutationHelper";
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.

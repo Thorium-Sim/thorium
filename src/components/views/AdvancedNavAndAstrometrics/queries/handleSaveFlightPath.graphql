@@ -1,0 +1,3 @@
+mutation HandleSaveFlightPath($id: ID!, $path: NamedNavigationRouteInput!) {
+    handleSaveFlightPath(id: $id, path: $path)
+}

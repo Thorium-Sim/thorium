@@ -1,9 +1,8 @@
-const DMX = require("dmx");
+const {findBySerialNumber, WebUSBDevice} = require("usb");
 const e131 = require("e131");
-const dmx = new DMX();
 
 class DMXController {
-  activate({dmxDriver, ipAddress, device, universe}) {
+  async activate({dmxDriver, ipAddress, device, universe}) {
     const universeValue = isNaN(parseInt(universe, 10))
       ? 1
       : parseInt(universe, 10);
@@ -24,28 +23,78 @@ class DMXController {
       this.slots = this.packet.getSlotsData();
       this.packet.setUniverse(universeValue);
     } else {
-      this.universe = dmx.addUniverse(
-        "universe-1",
-        dmxDriver,
-        dmxDriver === "artnet" ? ipAddress : device,
-        {universe: universeValue},
+      const serialDevice = await findBySerialNumber(device);
+      const lightingDevice = await WebUSBDevice.createInstance(serialDevice);
+
+      await lightingDevice.open();
+      await lightingDevice.claimInterface(0);
+
+      await lightingDevice.controlTransferOut({
+        // It's a USB class request
+        requestType: "class",
+        // The destination of this request is the interface
+        recipient: "interface",
+        // CDC: Communication Device Class
+        // 0x22: SET_CONTROL_LINE_STATE
+        // RS-232 signal used to tell the USB device that the computer is now present.
+        request: 0x22,
+        // Yes
+        value: 0x01,
+        // Interface #0
+        index: 0x00,
+      });
+      const universe = new Array(512).fill(0);
+
+      // This only supports ENTTEC Pro devices
+      const ENTTEC_PRO_DMX_STARTCODE = 0x00;
+      const ENTTEC_PRO_START_OF_MSG = 0x7e;
+      const ENTTEC_PRO_END_OF_MSG = 0xe7;
+      const ENTTEC_PRO_SEND_DMX_RQ = 0x06;
+
+      const header = [
+        ENTTEC_PRO_START_OF_MSG,
+        ENTTEC_PRO_SEND_DMX_RQ,
+        universe.length & 0xff,
+        (universe.length >> 8) & 0xff,
+        ENTTEC_PRO_DMX_STARTCODE,
+      ];
+
+      // Initialize a blank universe
+      await lightingDevice.transferOut(
+        2,
+        Uint8Array.from([...header, ...universe, ENTTEC_PRO_END_OF_MSG]),
       );
+
+      this.universe = {
+        close: async () => {
+          await lightingDevice.close();
+        },
+        send: async channels => {
+          // Make sure we're sending 512 channels
+          for (let i = 0; i < 512; i++) {
+            universe[i] = Math.round(channels[i]) || 0;
+          }
+          // Send the message
+          if (lightingDevice.opened) {
+            return await lightingDevice.transferOut(
+              2,
+              Uint8Array.from([...header, ...universe, ENTTEC_PRO_END_OF_MSG]),
+            );
+          }
+          return Promise.resolve();
+        },
+      };
     }
   }
-  sendData(universe) {
+  async sendData(universe) {
     if (!this.universe) return;
     if (this.driver === "sacn") {
       for (let i = 0; i < this.slots.length; i++) {
         this.slots[i] = Math.round(Math.min(255, Math.max(0, universe[i])));
       }
-      this.universe.send(this.packet);
+      await this.universe.send(this.packet);
     } else {
-      const channels = [];
-      for (let i = 0; i < 512; i++) {
-        channels[i + 1] =
-          Math.round(Math.min(255, Math.max(0, universe[i]))) || 0;
-      }
-      dmx.update("universe-1", channels);
+      await this.universe.send(universe);
     }
   }
 }

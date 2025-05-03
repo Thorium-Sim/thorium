@@ -1,4 +1,4 @@
-export default () => [
+export function getTemplates ()  {return [
   {
     class: "TaskTemplate",
     name: "Repair: Computer Specialist Team",
@@ -346,3 +346,4 @@ export default () => [
     macros: [],
   },
 ];
+}

@@ -88,8 +88,24 @@ module.exports = () => {
       return ipAddress;
     });
     ipcMain.handle("get-usbDevices", async () => {
-      const usbDetect = require("usb-detection");
-      return usbDetect.find(0x403, 0x6001);
+      const usbDetect = require("usb");
+      const device = usbDetect.findByIds(0x403, 0x6001);
+      const webUSBDevice = await usbDetect.WebUSBDevice.createInstance(device);
+
+      return [
+        {
+          locationId: -1,
+          vendorId: webUSBDevice.vendorId,
+          productId: webUSBDevice.productId,
+          deviceName:
+            webUSBDevice.productName ||
+            webUSBDevice.serialNumber ||
+            `Unknown ${webUSBDevice.manufacturerName} Device`,
+          manufacturer: webUSBDevice.manufacturerName,
+          serialNumber: webUSBDevice.serialNumber,
+          deviceAddress: device.deviceAddress,
+        },
+      ];
     });
     ipcMain.on("activate-dmx", (event, config) => {
       const dmx = require("./dmx");

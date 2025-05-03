@@ -29,7 +29,6 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  */
-(function () {
   var F2 = 0.5 * (Math.sqrt(3.0) - 1.0),
     G2 = (3.0 - Math.sqrt(3.0)) / 6.0,
     F3 = 1.0 / 3.0,
@@ -37,7 +36,7 @@
     F4 = (Math.sqrt(5.0) - 1.0) / 4.0,
     G4 = (5.0 - Math.sqrt(5.0)) / 20.0;
 
-  function SimplexNoise(random) {
+  export default function SimplexNoise(random) {
     if (!random) random = Math.random;
     this.p = new Uint8Array(256);
     this.perm = new Uint8Array(512);
@@ -582,5 +581,3 @@
     },
   };
 
-  module.exports = SimplexNoise;
-})();

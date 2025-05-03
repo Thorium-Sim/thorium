@@ -3,7 +3,7 @@ import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 
-const mutationHelper = require("../helpers/mutationHelper").default;
+import mutationHelper from "../helpers/mutationHelper";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
 const schema = gql`

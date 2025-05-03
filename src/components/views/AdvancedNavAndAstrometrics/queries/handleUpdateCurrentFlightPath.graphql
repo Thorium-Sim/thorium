@@ -1,0 +1,3 @@
+mutation HandleUpdateCurrentFlightPath($id: ID!, $route: NavigationRouteInput!) {
+  handleUpdateCurrentFlightPath(id: $id, route: $route)
+}

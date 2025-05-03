@@ -1,4 +1,6 @@
-const bonjour = require("bonjour")({reuseAddr: true});
+import Bonjour from 'bonjour';
+
+const bonjour = Bonjour({reuseAddr:true})
 
 function publishBonjour(port = 4444, httpOnly: boolean, tryCount = 0) {
   try {

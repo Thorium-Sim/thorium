@@ -133,7 +133,7 @@ export function playSound(opts: Sound) {
           buffer => {
             if (!audioContext) return;
 
-            const sound = {...opts} || {};
+            const sound = {...opts};
             //Create a new buffer and set it to the specified channel.
             sound.source = audioContext.createBufferSource();
             if (sound.preserveChannels) {

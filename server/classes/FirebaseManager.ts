@@ -59,6 +59,7 @@ export type FirebaseRank = {
 
 export type FirebaseUserEvent = {
     id: string;
+    EventId: string;
     Date: Date;
     ClassHours: number;
     FlightHours: number;
@@ -82,6 +83,7 @@ export type FirebaseUser = {
 
 export type FirebaseEvent = {
     id: string;
+    EventId: string;
     Name: string
     Date: Date;
     FlightHours: number;
@@ -161,6 +163,10 @@ export class FirebaseManager {
         return await this.connector.getLogoUrl();
     }
 
+    async getWebsiteQRCode() {
+        return await this.connector.getWebsiteQRCode();
+    }
+
     async getPageText(): Promise<FirebasePageText> {
         return await this.connector.getPageText();
     }
@@ -202,6 +208,7 @@ export class FirebaseManager {
         }
         const event: FirebaseEvent = {
             id: id,
+            EventId: id,
             Name: `${this.selectedMission.Name} on the ${this.selectedSimulator.Name}`,
             Date: new Date(),
             FlightHours: this.selectedMission.FlightHours,
@@ -219,6 +226,7 @@ export class FirebaseManager {
                 userEventArray.push({
                     id: id,
                     Date: new Date(),
+                    EventId: id,
                     ClassHours: this.selectedMission.ClassHours,
                     FlightHours: this.selectedMission.FlightHours,
                     Name: `${this.selectedMission.Name} on the ${this.selectedSimulator.Name}`,
@@ -236,6 +244,7 @@ export class FirebaseManager {
         }
         await this.connector.createEvent(event);
         this.flightSubmissions.push(flightId);
+        this.reset();
     }
 }
 
@@ -412,6 +421,11 @@ export class FirebaseConnector {
     async getPageText() {
         const txt = (await this.db.collection('Page').doc('Text').get()).data() as FirebasePageText;
         return txt;
+    }
+
+    async getWebsiteQRCode() {
+        const query = await this.db.collection('Page').doc('WebsiteQRCode').get();
+        return query.data().src;
     }
 
     /**

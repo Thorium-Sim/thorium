@@ -1,0 +1,21 @@
+.selectable-list-item {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    padding: 20px;
+    background: #00000055;
+    gap: 20px;
+    border-radius: 5px;
+    border: solid 1px whitesmoke;
+    transition: all 0.15s linear;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    outline: double 1px white;
+    margin: 10px;
+}
+
+.selectable-list-item.selected {
+    outline: double 10px white;
+}

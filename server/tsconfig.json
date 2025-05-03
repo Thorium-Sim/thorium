@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "NodeNext",
     "esModuleInterop": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
@@ -10,7 +10,7 @@
 
     // TODO: Turn this on when we get enough coverage
     "noImplicitAny": false,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "sourceMap": false,
     "outDir": "../tempServer",
@@ -20,5 +20,5 @@
       "~*": ["./*"]
     }
   },
-  "include": ["./**/*"]
+  "include": ["./**/*"],
 }

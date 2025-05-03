@@ -39,7 +39,7 @@ const Client: React.FC<{
     )
       return;
 
-    let timeout: number;
+    let timeout: NodeJS.Timeout;
     if (!mounted.current) {
       mounted.current = true;
       timeout = setTimeout(() => {

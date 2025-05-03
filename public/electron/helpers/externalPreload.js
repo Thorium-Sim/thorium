@@ -2,15 +2,14 @@ const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
 const contextBridge = require("electron").contextBridge;
 
-let browserCount = require("electron").remote.getCurrentWindow().browserCount;
+let browserCount =
+  require("electron").BrowserWindow?.getAllWindows().length || 0;
 const key = "thorium_clientPersistentId";
 let clientId = sessionStorage.getItem(key);
 
 webFrame.setVisualZoomLevelLimits(1, 1);
 
-setClientId(
-  `${require("os").hostname()}${browserCount > 1 ? ` (${browserCount})` : ""}`,
-);
+setClientId();
 
 function setClient(id) {
   sessionStorage.setItem(key, id);
@@ -18,15 +17,17 @@ function setClient(id) {
   localStorage.setItem("thorium_clientId", id);
 }
 
-function setClientId(id) {
-  const clientList = getClientList();
+async function setClientId() {
+  const hostname = await ipcRenderer.invoke("get-hostname");
+  const id = `${hostname}${browserCount > 1 ? ` (${browserCount})` : ""}`;
+  const clientList = getClientList(hostname);
   const clientIndex = clientList.indexOf(clientId);
   setClient(id);
   clientList[clientIndex] = id;
   localStorage.setItem(key, JSON.stringify(clientList));
 }
 
-function getClientList() {
+function getClientList(hostname) {
   let clientList = null;
   try {
     clientList = JSON.parse(localStorage.getItem(key));
@@ -35,7 +36,7 @@ function getClientList() {
     // If it's blank, create a new one
   }
   if (!clientList) {
-    clientList = [localStorage.getItem(key) || require("os").hostname()];
+    clientList = [localStorage.getItem(key) || hostname];
     localStorage.setItem(key, JSON.stringify(clientList));
   }
   return clientList;

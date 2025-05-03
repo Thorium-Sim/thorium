@@ -1,0 +1,227 @@
+// Hexagon
+$sqrt3: 1.7320508075688772;
+$edgeSize: 100px;
+$hexWidth: $edgeSize * 2;
+$hexHeight: $sqrt3 * $edgeSize;
+
+$edgeSizeS: 50px;
+$hexWidthS: $edgeSizeS * 2;
+$hexHeightS: $sqrt3 * $edgeSizeS;
+
+$edgeSizeL: 175px;
+$hexWidthL: $edgeSizeL * 2;
+$hexHeightL: $sqrt3 * $edgeSizeL;
+
+$edgeSizeXL: 200px;
+$hexWidthXL: $edgeSizeXL * 2;
+$hexHeightXL: $sqrt3 * $edgeSizeXL;
+
+// Display
+$borderHover: 15px;
+$soft-white: rgba(255, 255, 255, 1);
+
+// Easing
+$ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+$ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+
+
+// body {
+//     background: #151515;
+//     margin-top: 100px;
+// }
+
+
+/* End of container */
+
+// Contains 2 hexagons (.hex)
+.button {
+    position: relative;
+    text-align: left;
+    cursor: pointer;
+    width: $hexWidth;
+    height: $hexHeight;
+    float: left;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    .hex:last-child {
+        background-color: black;
+    }
+
+    // Hover state
+
+}
+
+.button.small {
+    width: $hexWidthS;
+    height: $hexHeightS;
+}
+
+.button.large {
+    width: $hexWidthL;
+    height: $hexHeightL;
+}
+
+.button.selected {
+    .hex:last-child {
+        opacity: 1;
+        transform: scale(1.3);
+    }
+
+    .hex:first-child {
+        opacity: 1;
+
+        div:before,
+        div:after {
+            height: $borderHover;
+        }
+
+        transform: scale(1.2);
+    }
+}
+
+.hover-button {
+    position: relative;
+    text-align: left;
+    cursor: pointer;
+    width: $hexWidth;
+    height: $hexHeight;
+    float: left;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+
+    &:hover {
+        .hex:last-child {
+            opacity: 1;
+            transform: scale(1.3);
+
+        }
+
+        .hex:first-child {
+            opacity: 1;
+
+            div:before,
+            div:after {
+                height: $borderHover;
+            }
+
+            transform: scale(1.2);
+        }
+    }
+}
+
+.hover-button.small {
+    width: $hexWidthS;
+    height: $hexHeightS;
+}
+
+.hover-button.large {
+    width: $hexWidthL;
+    height: $hexHeightL;
+}
+
+// Contains 3 div that makes the hexagon
+.hex {
+    position: absolute;
+    top: 0;
+    left: $edgeSize/2;
+    width: $edgeSize;
+    height: $hexHeight;
+    opacity: 0.5;
+
+    // Inset
+    &:first-child {
+        transform: scale(0.9);
+        transition: all 0.3s $ease-out-quart;
+        z-index: 0;
+
+    }
+
+    // Outset
+    &:last-child {
+        transition: all 0.3s $ease-out-expo;
+        z-index: 1;
+
+    }
+
+    .edge {
+
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        width: $edgeSize;
+        height: $hexHeight;
+
+        &:before,
+        &:after {
+            content: ' ';
+            position: absolute;
+            background: $soft-white;
+            width: 100%;
+            height: 3px;
+            transition: height 0.3s $ease-out-quart;
+        }
+
+        &:before {
+            top: 0;
+        }
+
+        &:after {
+            bottom: 0;
+        }
+
+        &:nth-child(1) {
+            transform: rotate(0deg);
+        }
+
+        &:nth-child(2) {
+            transform: rotate(60deg);
+        }
+
+        &:nth-child(3) {
+            transform: rotate(120deg);
+        }
+
+
+        transform-origin: center center;
+    }
+}
+
+.hex.small {
+    left: $edgeSizeS/2;
+    width: $edgeSizeS;
+    height: $hexHeightS;
+
+    .edge {
+        width: $edgeSizeS;
+        height: $hexHeightS;
+    }
+}
+
+.hex.large {
+    left: $edgeSizeL/2;
+    width: $edgeSizeL;
+    height: $hexHeightL;
+
+    .edge {
+        width: $edgeSizeL;
+        height: $hexHeightL;
+    }
+}
+
+.hex.xlarge {
+    left: $edgeSizeXL/2;
+    width: $edgeSizeXL;
+    height: $hexHeightXL;
+
+    .edge {
+        width: $edgeSizeXL;
+        height: $hexHeightXL;
+    }
+}

@@ -1,15 +1,16 @@
 import fs from "fs";
 import mkdirp from "mkdirp";
-if (!fs.existsSync(`${require("os").homedir()}/Documents`)) {
-  fs.mkdirSync(`${require("os").homedir()}/Documents`);
+import os from 'os'
+if (!fs.existsSync(`${os.homedir()}/Documents`)) {
+  fs.mkdirSync(`${os.homedir()}/Documents`);
 }
 
-let thoriumPath = `${require("os").homedir()}/Documents/thorium`;
+let thoriumPath = `${os.homedir()}/Documents/thorium`;
 
 if (process.env.THORIUM_PATH) {
   const testPath = String(process.env.THORIUM_PATH).replace(
     "~",
-    require("os").homedir(),
+    os.homedir(),
   );
   try {
     mkdirp.sync(testPath);

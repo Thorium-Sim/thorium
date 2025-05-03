@@ -1,0 +1,3 @@
+mutation UpdateFlightSet($id: ID! $flightSet: FlightSetInput!) {
+    updateFlightSet(id: $id, flightSet: $flightSet) 
+}

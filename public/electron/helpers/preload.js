@@ -4,7 +4,8 @@ const contextBridge = require("electron").contextBridge;
 let port;
 let httpOnly;
 
-let browserCount = require("electron").remote.getCurrentWindow().browserCount;
+let browserCount =
+  require("electron").BrowserWindow?.getAllWindows().length || 0;
 
 async function getPortAndHttpOnly() {
   const results = await ipcRenderer.invoke("get-port");

@@ -2,20 +2,41 @@ import App from "../app";
 import {pubsub} from "../helpers/subscriptionManager";
 import uuid from "uuid";
 import {capitalCase} from "change-case";
+import throttle from "../helpers/throttle";
+
+
+
+const sendAdvancedNavUpdate = throttle(() => {
+    pubsub.publish(
+        'advancedNavAndAstrometricsUpdate',
+        App.systems.filter(s => s.type === 'AdvancedNavigationAndAstrometrics'),
+    )
+})
 
 App.on("destroyProbe", ({id, probeId}) => {
   const sys = App.systems.find(s => s.id === id);
   sys.destroyProbe(probeId);
+  const advNavSys = App.systems.find(s => s.simulatorId === sys.simulatorId && s.type === "AdvancedNavigationAndAstrometrics");
+  if (advNavSys) {
+    advNavSys.resyncProbes();
+  }
+  sendAdvancedNavUpdate();
   pubsub.publish(
     "probesUpdate",
     App.systems.filter(s => s.type === "Probes"),
   );
+  
 });
 App.on("destroyAllProbes", ({id, simulatorId}) => {
   const sys = App.systems.find(
     s => s.id === id || (s.simulatorId === simulatorId && s.type === "Probes"),
   );
   sys.destroyAllProbes();
+  const advNavSys = App.systems.find(s => s.simulatorId === sys.simulatorId && s.type === "AdvancedNavigationAndAstrometrics");
+  if (advNavSys) {
+    advNavSys.resyncProbes();
+  }
+  sendAdvancedNavUpdate();
   pubsub.publish(
     "probesUpdate",
     App.systems.filter(s => s.type === "Probes"),
@@ -26,6 +47,11 @@ App.on("destroyAllProbeNetwork", ({id, simulatorId}) => {
     s => s.id === id || (s.simulatorId === simulatorId && s.type === "Probes"),
   );
   sys.destroyAllProbeNetwork();
+  const advNavSys = App.systems.find(s => s.simulatorId === sys.simulatorId && s.type === "AdvancedNavigationAndAstrometrics");
+  if (advNavSys) {
+    advNavSys.resyncProbes();
+  }
+  sendAdvancedNavUpdate();
   pubsub.publish(
     "probesUpdate",
     App.systems.filter(s => s.type === "Probes"),
@@ -55,6 +81,11 @@ App.on("launchProbe", ({id, probe}) => {
     );
   }
   sys.launchProbe(probe);
+  const advNavSys = App.systems.find(s => s.simulatorId === sys.simulatorId && s.type === "AdvancedNavigationAndAstrometrics");
+  if (advNavSys) {
+    advNavSys.resyncProbes();
+  }
+  sendAdvancedNavUpdate();
   pubsub.publish(
     "probesUpdate",
     App.systems.filter(s => s.type === "Probes"),
@@ -94,6 +125,11 @@ App.on("fireProbe", ({id, probeId}) => {
       );
     }
     sys.fireProbe(probeId);
+    const advNavSys = App.systems.find(s => s.simulatorId === sys.simulatorId && s.type === "AdvancedNavigationAndAstrometrics");
+  if (advNavSys) {
+    advNavSys.resyncProbes();
+  }
+  sendAdvancedNavUpdate();
     pubsub.publish(
       "probesUpdate",
       App.systems.filter(s => s.type === "Probes"),

@@ -90,12 +90,12 @@ const Lighting: React.FC<{
     "dmx_autoActivate",
     false,
   );
-  const [dmxDeviceList, setDMXDeviceList] = React.useState<DMXDevice[]>([]);
+  const [dmxWebDevice, setDMXWebDevice] = React.useState<{serialNumber: string, productName: string}>();
   React.useEffect(() => {
-    window.thorium.getDMXDeviceList?.().then((res: DMXDevice[]) => {
-      setDMXDeviceList(res);
+    window.thorium.getDMXDeviceList?.().then((res: { serialNumber: string, productName: string }) => {
+      setDMXWebDevice({serialNumber: res?.serialNumber || "", productName: res?.productName || ""});
       setDmxDevice((dmxDevice: string) => {
-        if (!dmxDevice && res[0]?.serialNumber) return res[0].serialNumber;
+        if (!dmxDevice && res?.serialNumber) return res?.serialNumber;
         return dmxDevice;
       });
     });
@@ -221,11 +221,9 @@ const Lighting: React.FC<{
                         setDmxDevice(e.target.value);
                       }}
                     >
-                      {dmxDeviceList.map(d => (
-                        <option key={d.serialNumber} value={d.serialNumber}>
-                          {d.deviceName}
-                        </option>
-                      ))}
+                      <option key={dmxWebDevice?.serialNumber} value={dmxWebDevice?.serialNumber}>
+                        {dmxWebDevice?.productName}
+                      </option>
                     </Input>
                   </label>
                 )}

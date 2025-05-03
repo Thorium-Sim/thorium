@@ -452,6 +452,7 @@ const resolver = {
       pubsub.publish("interfaceUpdate", App.interfaces);
 
       pubsub.publish("flightsUpdate", App.flights);
+      
       return id;
     },
     deleteFlight(rootQuery, {flightId}) {
@@ -477,6 +478,7 @@ const resolver = {
       });
       App.entities = App.entities.filter(e => e.flightId !== flightId);
       App.flights = App.flights.filter(f => f.id !== flightId);
+      App.firebaseManager.reset();
       pubsub.publish("flightsUpdate", App.flights);
       pubsub.publish("clientChanged", App.clients);
     },

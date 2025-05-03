@@ -1,9 +1,11 @@
-const {app} = require("electron");
+const {app, utilityProcess} = require("electron");
 const path = require("path");
 const isProd = !require("electron-is-dev");
 const settings = require("electron-settings");
+const fs = require("fs");
 
 let restartCount = 0;
+let error;
 module.exports = function bootstrap(serverWindow) {
   function startServer() {
     let port = settings.get("port") || 4444;
@@ -12,26 +14,28 @@ module.exports = function bootstrap(serverWindow) {
       settings.get("httpOnly") === undefined;
 
     const childPath = isProd
-      ? "build/server/index.js"
+      ? "build/server.js"
       : "server/build/server/index.js";
-    const child = require("child_process").fork(
+    Object.assign(process.env, {
+      FORK: 1,
+      PORT: parseInt(port, 10),
+      HTTP_ONLY: httpOnly,
+      NODE_ENV: "production",
+      ...process.env,
+    });
+    const child = utilityProcess.fork(
       path.join(app.getAppPath(), childPath),
       [],
       {
-        env: {
-          FORK: 1,
-          PORT: parseInt(port, 10),
-          HTTP_ONLY: httpOnly,
-          NODE_ENV: "production",
-          ...process.env,
-        },
+        stdio: "pipe",
+        serviceName: "Thorium Server",
         // execArgv: [
         //   "--nouse-idle-notification",
         //   "--expose-gc",
         //   "--max-new-space-size=2048",
         //   "--max-old-space-size=8192",
         // ],
-        silent: true,
+        silent: false,
         maxBuffer: 1024 * 1024 * 1024,
       },
     );
@@ -63,6 +67,12 @@ module.exports = function bootstrap(serverWindow) {
             `Server process closed. Too many restarts. Closing Thorium Server.`,
           );
         }
+        fs.writeFileSync(
+          // Write the file to the user's desktop
+          path.join(app.getPath("desktop"), "thorium_server_error.txt"),
+          error.message,
+          "utf8",
+        )
         app.quit();
       }
       restartCount++;
@@ -72,6 +82,7 @@ module.exports = function bootstrap(serverWindow) {
         "info",
         `Error in server process: ${err.message}`,
       );
+      error = err;
       console.error(err);
     });
 

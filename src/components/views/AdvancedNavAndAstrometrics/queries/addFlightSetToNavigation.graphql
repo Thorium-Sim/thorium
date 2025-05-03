@@ -1,0 +1,3 @@
+mutation HandleAddFlightSetToNavigation($id: ID!, $flightSetId: ID!) {
+  handleAddFlightSetToNavigation(id: $id, flightSetId: $flightSetId)
+}

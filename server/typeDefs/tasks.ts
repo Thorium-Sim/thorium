@@ -4,7 +4,7 @@ import {pubsub} from "../helpers/subscriptionManager";
 import taskDefinitions from "../tasks";
 import {ValueDef} from "../classes/task";
 import uuid from "uuid";
-const mutationHelper = require("../helpers/mutationHelper").default;
+import mutationHelper from "../helpers/mutationHelper";
 
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.

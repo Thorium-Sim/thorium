@@ -11,28 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+        uses: actions/checkout@v4
+      - name: Install Node.js, NPM
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
-      - name: Cache node modules
-        uses: actions/cache@v1
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.config/yarn/global # npm cache files are stored in `~/.npm` on Linux/macOS
-          key:
-            ${{ runner.os }}-build-${{ env.cache-name }}-${{
-            hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          node-version: 22
+          cache: 'npm'
       - name: Install libs
         run: sudo apt-get install libudev-dev
       - name: Install Dependencies
-        run: yarn
+        run: npm install --force
 
       - name: Semantic Release
         run: |
@@ -48,17 +36,22 @@ jobs:
     needs: build
     strategy:
       matrix:
-        os: [macos-12, windows-2019]
+        os: [macos-latest, windows-latest]
+        include:
+          - os: macos-latest
+            arch: universal
+          - os: windows-latest
+            arch: x64
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: "main"
-      - name: Install Node.js, NPM and Yarn
-        uses: actions/setup-node@v1
+      - name: Install Node.js, NPM
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 22
       - uses: actions/setup-python@v4
         if: startsWith(matrix.os, 'macos')
         with:
@@ -76,23 +69,20 @@ jobs:
           echo '${{ secrets.api_key }}' > ~/private_keys/AuthKey_${{ secrets.api_key_id }}.p8
 
       - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1
+        run: npx electron-forge publish --arch=${{ matrix.arch }}
         if: always()
         with:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.github_token }}
-          mac_certs: ${{ secrets.mac_cert }}
           mac_certs_password: ${{ secrets.mac_cert_password }}
-          # Don't worry about
-          skip_build: true
-          # If the commit is tagged with a version (e.g. "1.0.0"),
-          # release the app after building
-          release: true
         env:
           # macOS notarization API key
-          API_KEY_ID: ${{ secrets.api_key_id }}
-          API_KEY_ISSUER_ID: ${{ secrets.api_key_issuer_id }}
+          CSC_LINK: ${{ secrets.mac_cert }}
+          CSC_KEY_PASSWORD: ${{ secrets.mac_cert_password }}
+          APPLE_API_KEY: ~/private_keys/AuthKey_${{ secrets.api_key_id }}.p8
+          APPLE_API_KEY_ID: ${{ secrets.api_key_id }}
+          APPLE_API_ISSUER: ${{ secrets.api_key_issuer_id }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENGINE_API_KEY: ${{ secrets.ENGINE_API_KEY }}
           ERROR_REPORTING_ORGANIZATION:
@@ -103,9 +93,6 @@ jobs:
           GOOGLE_SHEETS_SECRET: ${{ secrets.GOOGLE_SHEETS_SECRET }}
           GOOGLE_SHEETS_CLIENT_ID: ${{ secrets.GOOGLE_SHEETS_CLIENT_ID }}
           GH_ISSUE_TOKEN: ${{ secrets.GH_ISSUE_TOKEN }}
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v2
-      #   if: failure()
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v2
-      #   if: failure()
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v2
+        if: failure()
