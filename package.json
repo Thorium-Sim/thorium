@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "3.13.1",
+  "version": "4.0.0",
   "description": "Starship Simulator Controls",
   "private": true,
   "type": "commonjs",
@@ -65,9 +65,7 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": [
-      "server/"
-    ],
+    "watch": ["server/"],
     "ignore": [
       ".git",
       "./src/*",
@@ -83,12 +81,8 @@
     "last 1 safari version"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint"
-    ],
-    "*.{css,scss}": [
-      "stylelint"
-    ],
+    "*.{js,jsx,ts,tsx}": ["eslint"],
+    "*.{css,scss}": ["stylelint"],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -99,9 +93,7 @@
     }
   },
   "release": {
-    "branches": [
-      "main"
-    ],
+    "branches": ["main"],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -136,6 +128,7 @@
     "@apollo/link-ws": "^2.0.0-beta.3",
     "@blueprintjs/core": "^3.28.2",
     "@blueprintjs/icons": "^3.18.1",
+    "@rollup/rollup-linux-x64-gnu": "^4.40.2",
     "@sentry/node": "^5.7.1",
     "apollo-server-express": "^2.9.6",
     "babel-jest": "^26.6.0",
