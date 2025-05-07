@@ -1,3 +1,16 @@
+# [4.0.0](https://github.com/Thorium-Sim/thorium/compare/3.13.1...4.0.0) (2025-05-07)
+
+
+### Bug Fixes
+
+* Upgrade major dependencies. ([4832504](https://github.com/Thorium-Sim/thorium/commit/4832504a669e3009449674f91b9e3bb506070ba4))
+* **3357:** switched to using the BrowserWindow API to get window objects ([285d0c6](https://github.com/Thorium-Sim/thorium/commit/285d0c6915e43b41fd4ae9f74201a8652d68c8b8))
+
+
+### BREAKING CHANGES
+
+* This provides longevity for Thorium into the future, but might have changed the way some systems work. Test thoroughly before running crewed flights.
+
 ## [3.13.1](https://github.com/Thorium-Sim/thorium/compare/3.13.0...3.13.1) (2024-05-29)
 
 
