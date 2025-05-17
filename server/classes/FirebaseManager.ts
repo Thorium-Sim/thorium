@@ -234,7 +234,7 @@ export class FirebaseManager {
                     Mission: this.selectedMission.id,
                     Awards: this.awards,
                     Position: station,
-                    OfficerLogs: officerLogMap[station]
+                    OfficerLogs: officerLogMap[station] || []
                 });
             }
 
