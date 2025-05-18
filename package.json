@@ -345,7 +345,7 @@
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^3.0.5",
-    "wait-on": "^5.0.0",
+    "wait-on": "^8.0.3",
     "webgl-mock-threejs": "^0.0.1",
     "worker-loader": "^2.0.0"
   },
