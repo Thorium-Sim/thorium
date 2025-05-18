@@ -272,7 +272,7 @@
     "babel-plugin-transform-node-env-inline": "^0.4.3",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-react-app": "^9.0.2",
+    "babel-preset-react-app": "^10.1.0",
     "bodymovin": "^4.13.0",
     "bootstrap": "^4.6.0",
     "centered-pan-zoom": "^2.0.0",
