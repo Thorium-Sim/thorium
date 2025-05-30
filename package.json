@@ -64,7 +64,9 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": ["server/"],
+    "watch": [
+      "server/"
+    ],
     "ignore": [
       ".git",
       "./src/*",
@@ -80,8 +82,12 @@
     "last 1 safari version"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint"],
-    "*.{css,scss}": ["stylelint"],
+    "*.{js,jsx,ts,tsx}": [
+      "eslint"
+    ],
+    "*.{css,scss}": [
+      "stylelint"
+    ],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -165,7 +171,9 @@
     ]
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
@@ -251,6 +259,7 @@
     "progress": "^2.0.3",
     "random-ship-names": "^1.0.0",
     "random-words": "^1.1.0",
+    "react-lottie-player": "^2.1.0",
     "react-pdf": "^5.0.0",
     "react-router": "^6.0.0-alpha.4",
     "react-three-fiber": "^4.0.17",
@@ -338,7 +347,6 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-app": "^9.0.2",
-    "bodymovin": "^4.13.0",
     "bootstrap": "^4.6.0",
     "centered-pan-zoom": "^2.0.0",
     "cross-env": "^7.0.0",
