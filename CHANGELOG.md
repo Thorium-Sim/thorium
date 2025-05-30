@@ -1,3 +1,11 @@
+## [4.0.1](https://github.com/Thorium-Sim/thorium/compare/4.0.0...4.0.1) (2025-05-30)
+
+
+### Bug Fixes
+
+* Addresses issues with certain viewscreens ([3ccfce2](https://github.com/Thorium-Sim/thorium/commit/3ccfce2ef845fb31774fc12ef52710fa4794048f))
+* null check officer logs ([686ca1f](https://github.com/Thorium-Sim/thorium/commit/686ca1f585fc5c5b55efb03d6a3b120b7a912644))
+
 # [4.0.0](https://github.com/Thorium-Sim/thorium/compare/3.13.1...4.0.0) (2025-05-07)
 
 
