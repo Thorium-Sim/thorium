@@ -176,7 +176,7 @@
     "luxon": "^1.19.3",
     "mkdirp": "^1.0.4",
     "motu-control": "1.0.4",
-    "multer": "^1.4.2",
+    "multer": "^2.0.0",
     "ncp": "^2.0.0",
     "node-fetch": "^2.6.0",
     "papaparse": "^5.1.0",
