@@ -4,6 +4,8 @@ import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
 
 window.THREE = THREE;
 
+
+
 class ThreeView extends Component {
   constructor(props) {
     super(props);

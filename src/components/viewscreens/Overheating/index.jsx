@@ -1,19 +1,14 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
-import bodymovin from "bodymovin";
+import Lottie from 'react-lottie-player'
+
 import animationData from "./data.json";
 
-export default class AsteroidField extends Component {
-  componentDidMount() {
-    bodymovin.loadAnimation({
-      container: ReactDOM.findDOMNode(this),
-      renderer: "svg",
-      loop: true,
-      autoplay: true,
-      animationData,
-    });
-  }
-  render() {
-    return <div id="asteroidfield-bodymovin" />;
-  }
+export default function Overheating() {
+   return <Lottie
+      loop
+      animationData={animationData}
+      play
+    />
 }
+

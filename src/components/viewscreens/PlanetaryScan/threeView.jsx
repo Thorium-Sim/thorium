@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import * as THREE from "three";
 import {CircleGeometry, LineLoop, LineBasicMaterial} from "three";
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
 
 window.THREE = THREE;
 
@@ -36,7 +37,7 @@ class ThreeView extends Component {
     this.objectGroup = new THREE.Group();
 
     this.scene.add(this.objectGroup);
-    this.objLoader = new window.THREE.OBJLoader();
+    this.objLoader = new OBJLoader();
   }
   componentDidMount() {
     const {wireframe, color = "#ffffff", planet, clouds} = this.props;
