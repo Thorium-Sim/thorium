@@ -272,7 +272,7 @@ export const SideNavLink: React.FC<NavLinkI> = ({
   return (
     <NavItem>
       <NavLink
-        tag={link ? Link : "span"}
+        tag={link ? Link : "a"}
         to={link ? link : "#"}
         onClick={onClick ? e => onClick(e, client) : undefined}
       >
