@@ -196,7 +196,7 @@ const RecordsCore = ({recordSnippets, simulator, flight: {id: flightId}}) => {
               className={selectedRecord === r.id ? "selected" : ""}
               onClick={() => setSelectedRecord(r.id)}
             >
-              {new DateTime.fromISO(r.timestamp).toLocaleString(
+              {DateTime.fromISO(r.timestamp).toLocaleString(
                 DateTime.TIME_SIMPLE,
               )}{" "}
               - {capitalCase(r.category)}: {r.contents}
@@ -262,7 +262,11 @@ const RecordsCore = ({recordSnippets, simulator, flight: {id: flightId}}) => {
 };
 const RecordsCoreData = props => {
   const {simulator} = props;
-  const {loading, data = {}, subscribeToMore} = useQuery(RECORDS_CORE_QUERY, {
+  const {
+    loading,
+    data = {},
+    subscribeToMore,
+  } = useQuery(RECORDS_CORE_QUERY, {
     variables: {simulatorId: simulator.id},
   });
   const subConfig = React.useMemo(
