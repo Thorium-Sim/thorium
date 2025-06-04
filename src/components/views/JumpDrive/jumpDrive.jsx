@@ -21,23 +21,26 @@ class JumpDrive extends Component {
     return [
       {
         selector: ".nothing",
-        content: `The ${systemName} is a system which creates an envelope of spacetime around your ship. This envelope serves two purposes: 1) increasing momentum by moving the space around you; 2) decreasing time dilation effects of high velocities. In short, it helps your ship to move faster than the speed of light, getting you to your destination in shorter periods of time. Note that you must use your conventional engines in conjunction with the {systemName}. The {systemName} does not provide propulsion to your ship.`
+        content: `The ${displayName} is a system which creates an envelope of spacetime around your ship. This envelope serves two purposes: 1) increasing momentum by moving the space around you; 2) decreasing time dilation effects of high velocities. In short, it helps your ship to move faster than the speed of light, getting you to your destination in shorter periods of time. Note that you must use your conventional engines in conjunction with the {systemName}. The {systemName} does not provide propulsion to your ship.`,
       },
       {
         selector: ".slider-bar",
-        content: `This is where you can change the envelope size surrounding your ship. A larger envelope requires more power to maintain, but gives you room for other ships to follow you in your envelope. Make sure you have sufficient power in your system before using a higher envelope size. Click the button below to activate the ${systemName}.`
+        content: `This is where you can change the envelope size surrounding your ship. A larger envelope requires more power to maintain, but gives you room for other ships to follow you in your envelope. Make sure you have sufficient power in your system before using a higher envelope size. Click the button below to activate the ${displayName}.`,
       },
       {
         selector: ".power-adjustments",
-        content: "There are four emitters that create your envelope, one for each side of your ship. You must ensure that each has sufficient power to operate as you travel at high speeds. As you travel at high speeds, the emitters will become stressed with the continual warping of spacetime around your ship. If they have enough power supplied, the emitters will be able to compensate for the additional stress.",
+        content:
+          "There are four emitters that create your envelope, one for each side of your ship. You must ensure that each has sufficient power to operate as you travel at high speeds. As you travel at high speeds, the emitters will become stressed with the continual warping of spacetime around your ship. If they have enough power supplied, the emitters will be able to compensate for the additional stress.",
       },
       {
         selector: ".ship-holder",
-        content: "Here you can see the current size of your envelope, along with the current stress levels, represented with color. The circle background color shows the overall stress level, with blue meaning everything is fine and red meaning you are in danger of envelope collapse. Once activated, graphical representations of the individual emitter stress levels will appear, allowing you to keep track of which emitters are doing well and which need more power.",
+        content:
+          "Here you can see the current size of your envelope, along with the current stress levels, represented with color. The circle background color shows the overall stress level, with blue meaning everything is fine and red meaning you are in danger of envelope collapse. Once activated, graphical representations of the individual emitter stress levels will appear, allowing you to keep track of which emitters are doing well and which need more power.",
       },
       {
         selector: ".stress-container",
-        content: "You can also see the overall stress of the emitters here. Make sure this stays low. If the envelope collapses without being deactivated first, it could be very dangerous for you and your crew.",
+        content:
+          "You can also see the overall stress of the emitters here. Make sure this stays low. If the envelope collapses without being deactivated first, it could be very dangerous for you and your crew.",
       },
     ];
   };
@@ -143,7 +146,8 @@ class JumpDrive extends Component {
                       onClick={() =>
                         action({variables: {id, activated: false}})
                       }
-                    >Deactivate
+                    >
+                      Deactivate
                     </Button>
                   ) : (
                     <Button
@@ -153,7 +157,8 @@ class JumpDrive extends Component {
                       disabled={!this.canActivate()}
                       color="warning"
                       onClick={() => action({variables: {id, activated: true}})}
-                    >Activate
+                    >
+                      Activate
                     </Button>
                   )}
                 </Fragment>
@@ -180,11 +185,8 @@ class JumpDrive extends Component {
                 />
               </div>
               <div style={{display: "flex", justifyContent: "space-between"}}>
-                <h4>Sector Power Adjustment
-                </h4>
-                <h3>
-                  Power Available: {power}
-                </h3>
+                <h4>Sector Power Adjustment</h4>
+                <h3>Power Available: {power}</h3>
               </div>
               <Mutation
                 mutation={gql`
@@ -211,8 +213,7 @@ class JumpDrive extends Component {
                           this.updatePowerLevel(action, "aft", value)
                         }
                         topPower={this.calculateTopPower("aft")}
-                        label={Aft
-                        }
+                        label={"Aft"}
                         power={sectors.aft.level}
                       />
                       <PowerLine
@@ -222,8 +223,7 @@ class JumpDrive extends Component {
                           this.updatePowerLevel(action, "port", value)
                         }
                         topPower={this.calculateTopPower("port")}
-                        label={Port
-                        }
+                        label={"Port"}
                         power={sectors.port.level}
                       />
                     </Col>
@@ -235,8 +235,7 @@ class JumpDrive extends Component {
                           this.updatePowerLevel(action, "fore", value)
                         }
                         topPower={this.calculateTopPower("fore")}
-                        label={Fore
-                        }
+                        label={"Fore"}
                         power={sectors.fore.level}
                       />
                       <PowerLine
@@ -246,8 +245,7 @@ class JumpDrive extends Component {
                           this.updatePowerLevel(action, "starboard", value)
                         }
                         topPower={this.calculateTopPower("starboard")}
-                        label={Starboard
-                        }
+                        label={"Starboard"}
                         power={sectors.starboard.level}
                       />
                     </Col>
@@ -257,9 +255,7 @@ class JumpDrive extends Component {
             </div>
           </Col>
           <Col sm={3} className="flex-column">
-            <h3 className="text-center">
-Envelope Stress
-            </h3>
+            <h3 className="text-center">Envelope Stress</h3>
             <div className="stress-container">
               <div
                 className="stress-cover"
@@ -289,9 +285,7 @@ Envelope Stress
                   color="warning"
                   onClick={action}
                 >
-                  {ringsExtended ? ("Retract Rings"
-                  ) : ("Extend Rings"
-                  )}
+                  {ringsExtended ? "Retract Rings" : "Extend Rings"}
                 </Button>
               )}
             </Mutation>
