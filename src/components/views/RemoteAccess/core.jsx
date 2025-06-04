@@ -90,54 +90,58 @@ const RemoteAccessCore = ({simulator}) => {
           color: "black",
         }}
       >
-        {ship.remoteAccessCodes
-          .slice()
-          .reverse()
-          .map(c => (
-            <div
-              key={c.id}
-              style={{display: "flex", justifyContent: "space-between"}}
-            >
-              <p
-                style={{
-                  backgroundColor: "lightgray",
-                  margin: "1px",
-                  flex: "6 0 0",
-                  padding: "2px",
-                }}
-                title={`${c.station} - ${c.timestamp}`}
+        {ship.remoteAccessCodes.length === 0 ? (
+          <p style={{color: "white"}}>No remote access codes</p>
+        ) : (
+          ship.remoteAccessCodes
+            .slice()
+            .reverse()
+            .map(c => (
+              <div
+                key={c.id}
+                style={{display: "flex", justifyContent: "space-between"}}
               >
-                {c.code}
-              </p>
-              {c.state === "sent" ? (
-                <div>
-                  <Button
-                    size="sm"
-                    color="danger"
-                    onClick={() => respond(c.id, "Denied")}
-                  >
-                    Deny
-                  </Button>
-                  <Button
-                    size="sm"
-                    color="success"
-                    onClick={() => respond(c.id, "Accepted")}
-                  >
-                    Accept
-                  </Button>
-                </div>
-              ) : (
                 <p
-                  css={{flex: "1 0 0"}}
-                  className={
-                    c.state === "Accepted" ? "text-success" : "text-danger"
-                  }
+                  style={{
+                    backgroundColor: "lightgray",
+                    margin: "1px",
+                    flex: "6 0 0",
+                    padding: "2px",
+                  }}
+                  title={`${c.station} - ${c.timestamp}`}
                 >
-                  {c.state}
+                  {c.code}
                 </p>
-              )}
-            </div>
-          ))}
+                {c.state === "sent" ? (
+                  <div>
+                    <Button
+                      size="sm"
+                      color="danger"
+                      onClick={() => respond(c.id, "Denied")}
+                    >
+                      Deny
+                    </Button>
+                    <Button
+                      size="sm"
+                      color="success"
+                      onClick={() => respond(c.id, "Accepted")}
+                    >
+                      Accept
+                    </Button>
+                  </div>
+                ) : (
+                  <p
+                    css={{flex: "1 0 0"}}
+                    className={
+                      c.state === "Accepted" ? "text-success" : "text-danger"
+                    }
+                  >
+                    {c.state}
+                  </p>
+                )}
+              </div>
+            ))
+        )}
       </div>
     </Container>
   );
