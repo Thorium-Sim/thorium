@@ -30,9 +30,23 @@
     &.open {
       transform: translate(0%);
     }
-    a {
-      display: inline-block;
+    a,
+    span {
+      display: flex;
+      align-items: center;
       color: #ddd;
+      padding: 8px 15px;
+      text-decoration: none;
+      svg {
+        margin-right: 10px;
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+      }
+    }
+    a:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.1);
     }
   }
   .menu-button {
