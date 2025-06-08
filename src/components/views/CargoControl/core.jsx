@@ -305,6 +305,7 @@ const CargoControlCore = ({simulator, client}) => {
           {room &&
             inventory
               .map(i => {
+                console.log("i", i, room);
                 const roomCount = i.roomCount.find(r => r.room.id === room);
                 if (!roomCount) return null;
                 if (roomCount.count === 0) return null;
@@ -338,7 +339,7 @@ const CargoControlCore = ({simulator, client}) => {
           <div>
             <strong>Logs</strong>
             <div style={{whiteSpace: "pre-wrap"}}>
-              {ship.inventoryLogs
+              {ship?.inventoryLogs
                 .concat()
                 .sort((a, b) => {
                   if (a.timestamp > b.timestamp) return -1;
