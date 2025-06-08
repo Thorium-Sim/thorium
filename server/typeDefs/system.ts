@@ -65,6 +65,13 @@ const schema = gql`
     allSystems: [String!]!
   }
   extend type Mutation {
+    """
+    Macro: Systems: Add RnD to Simulator
+    """
+    addRnDToSimulator(
+      simulatorId: ID!
+      name: String!
+    ): String
     addSystemToSimulator(
       simulatorId: ID!
       className: String!
