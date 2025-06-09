@@ -1,8 +1,8 @@
-import { ApolloClient, gql } from '@apollo/client';
+import { ApolloClient, gql, useLazyQuery, useQuery } from '@apollo/client';
 import { InventoryMetadata } from 'generated/graphql';
 import { MacroConfigProps } from "helpers/genericTypes";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FormGroup } from 'reactstrap';
+import { FormGroup, Button } from 'reactstrap';
 
 
 type InventorySelection = {
@@ -28,11 +28,43 @@ type InventoryInput = {
 
 const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, client, simulatorId }) => {
     const typedArgs = args as { inventory: Array<InventoryInput> | undefined };
-    const apolloClient = client as ApolloClient<any>;
     const [decks, setDecks] = useState<Array<Deck>>([]);
     const [selectedSimulatorId, setSelectedSimulatorId] = useState<string | undefined>(simulatorId);
     const [availableSimulators, setAvailableSimulators] = useState<Array<{ id: string, name: string }>>([]);
     const [localInventorySelections, setLocalInventorySelections] = useState<InventorySelection[]>([]);
+    const { data: simulatorsData } = useQuery(gql`
+        query Simulators {
+            simulators {
+                id
+                name
+            }
+        }
+    `);
+
+    useEffect(() => {
+        if (simulatorsData && simulatorsData.simulators && simulatorsData.simulators.length > 0) {
+            setAvailableSimulators(simulatorsData.simulators);
+        }
+    }, [simulatorsData]);
+
+    const [getDecks, { data: decksData }] = useLazyQuery(gql`
+        query Decks($simulatorId: ID!) {
+            decks(simulatorId: $simulatorId) {
+                id
+                number
+                rooms {
+                    id
+                    name
+                }
+            }
+        }
+    `);
+
+    useEffect(() => {
+        if (decksData && decksData.decks && decksData.decks.length > 0) {
+            setDecks(decksData.decks);
+        }
+    }, [decksData]);
 
     const roomMap = useMemo(() => {
         return decks.reduce((acc, deck) => {
@@ -45,9 +77,7 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
 
     // Initialize local state from args
     useEffect(() => {
-        console.log("typedArgs", typedArgs);
         if (!typedArgs || !typedArgs.inventory || typedArgs.inventory.length === 0 || !typedArgs.inventory.filter) {
-            console.log("setting localInventorySelections to empty array");
             setLocalInventorySelections([]);
             return;
         }
@@ -73,9 +103,7 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                 })
             }
         });
-        console.log("baseInventorySelectionArray", baseInventorySelectionArray);
         const filteredBaseInventorySelectionArray = baseInventorySelectionArray.filter((s) => (s?.inventoryAdded?.length || 0) > 0);
-        console.log("filteredBaseInventorySelectionArray", filteredBaseInventorySelectionArray);
         setLocalInventorySelections(filteredBaseInventorySelectionArray);
     }, [typedArgs, roomMap]);
 
@@ -98,45 +126,10 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
     }
 
     useEffect(() => {
-        console.log("selectedSimulatorId", selectedSimulatorId);
         if (selectedSimulatorId) {
-            console.log("executing query with simulatorId", selectedSimulatorId);
-            apolloClient && apolloClient.query({
-                query: gql`
-                query Decks($simulatorId: ID!) {
-                decks(simulatorId: $simulatorId) {
-                    id
-                    number
-                    rooms {
-                        id
-                        name
-                    }
-                }
-            }`,
-                variables: {
-                    simulatorId: selectedSimulatorId
-                }
-            }).then((res) => {
-                const decks = res.data.decks;
-                setDecks(decks);
-            })
+            getDecks({ variables: { simulatorId: selectedSimulatorId } });
         }
-    }, [apolloClient, selectedSimulatorId]);
-
-    useEffect(() => {
-        apolloClient && apolloClient.query({
-            query: gql`
-            {
-                simulators {
-                    id
-                    name
-                }
-            }
-            `
-        }).then((res) => {
-            setAvailableSimulators(res.data.simulators);
-        })
-    }, [apolloClient]);
+    }, [selectedSimulatorId, getDecks]);
 
     const isSaved = useMemo(() => {
         return JSON.stringify(typedArgs.inventory) === JSON.stringify(updateArgsTranslation(localInventorySelections));
@@ -156,7 +149,7 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                 Note: Because of how inventory is added, you will need to hit the save button before leaving this action.
             </div>
             <div>
-                Currently, this is 
+                Currently, this is
                 <span style={{ color: isSaved ? "green" : "red" }}>{isSaved ? " saved" : " not saved"}</span>
             </div>
         </div>
@@ -224,10 +217,13 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                                     {decks.find((d) => d.id === deckRoomSelections.deckId)?.rooms.map((r) => <option key={r.id} value={r.name}>{r.name}</option>)}
                                 </select>
                             </div>
-                            <button onClick={() => {
-                                const newInventorySelections = localInventorySelections.filter((s) => s.roomName !== deckRoomSelections.roomName);
-                                setLocalInventorySelections(newInventorySelections);
-                            }}>Remove</button>
+                            <Button
+                                size="sm"
+                                color="danger"
+                                onClick={() => {
+                                    const newInventorySelections = localInventorySelections.filter((s) => s.roomName !== deckRoomSelections.roomName);
+                                    setLocalInventorySelections(newInventorySelections);
+                                }}>Remove</Button>
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: "2px", marginLeft: "2rem" }}>
                             {deckRoomSelections.inventoryAdded?.map((i, index) => (
@@ -281,8 +277,10 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                                             }}
                                         />
                                     </div>
-                                    <div style={{ display: "flex", flexDirection: "column", gap: "2px", width: '40px', height: "100%", alignSelf: "center" }}>
-                                        <button style={{ width: '40px', height: '40px' }} onClick={() => {
+                                    <Button
+                                        size="sm"
+                                        color="danger"
+                                        onClick={() => {
                                             const newInventorySelections = localInventorySelections.map((s) => {
                                                 if (s.roomName === deckRoomSelections.roomName) {
                                                     return { ...s, inventoryAdded: s.inventoryAdded?.filter((ii) => ii.name !== i.name) };
@@ -290,40 +288,46 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                                                 return s;
                                             })
                                             setLocalInventorySelections(newInventorySelections);
-                                        }}>X</button>
-                                    </div>
+                                        }}>X</Button>
                                 </div>
                             ))}
-                            <button onClick={() => {
-                                const newInventorySelections = [...localInventorySelections];
-                                const currentRoom = newInventorySelections.find((s) => s.roomName === deckRoomSelections.roomName);
-                                if (currentRoom) {
-                                    currentRoom.inventoryAdded = [...(currentRoom.inventoryAdded || []), { name: "", count: 0 }];
-                                }
-                                setLocalInventorySelections(newInventorySelections);
-                            }}>Add Inventory</button>
+                            <Button
+                                size="sm"
+                                color="secondary"
+                                onClick={() => {
+                                    const newInventorySelections = [...localInventorySelections];
+                                    const currentRoom = newInventorySelections.find((s) => s.roomName === deckRoomSelections.roomName);
+                                    if (currentRoom) {
+                                        currentRoom.inventoryAdded = [...(currentRoom.inventoryAdded || []), { name: "", count: 0 }];
+                                    }
+                                    setLocalInventorySelections(newInventorySelections);
+                                }}>Add Inventory</Button>
                         </div>
                     </div>
                 ))}
 
-                <button onClick={() => {
-                    if (decks.length === 0) return;
-                    const firstDeck = decks[0];
-                    const firstRoom = firstDeck.rooms[0];
-                    const newSelection = {
-                        deckId: firstDeck.id,
-                        deckNumber: firstDeck.number,
-                        roomName: firstRoom.name,
-                        inventoryAdded: []
-                    };
-                    setLocalInventorySelections([...localInventorySelections, newSelection]);
-                }}>Add Room</button>
-                <button
+                <Button
+                    size="sm"
+                    color="secondary"
+                    onClick={() => {
+                        if (decks.length === 0) return;
+                        const firstDeck = decks[0];
+                        const firstRoom = firstDeck.rooms[0];
+                        const newSelection = {
+                            deckId: firstDeck.id,
+                            deckNumber: firstDeck.number,
+                            roomName: firstRoom.name,
+                            inventoryAdded: []
+                        };
+                        setLocalInventorySelections([...localInventorySelections, newSelection]);
+                    }}>Add Room</Button>
+                <Button
+                    size="lg"
                     onClick={handleSaveChanges}
-                    style={{ marginTop: '20px', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px' }}
+                    color="primary"
                 >
                     Save Changes
-                </button>
+                </Button>
             </div>
         )}
     </FormGroup>

@@ -2869,8 +2869,8 @@ type Mutation {
   surveyFormResponse(id: ID!, response: FormResultsInput): String
   endSurvey(id: ID!): String
 
-  """Macro: Systems: Add RnD to Simulator"""
-  addRnDToSimulator(simulatorId: ID!, name: String!): String
+  """Macro: Systems: Add Extra Report to Simulator"""
+  addExtraReportToSimulator(simulatorId: ID!, name: String!, which: String): String
   addSystemToSimulator(simulatorId: ID!, className: String!, params: String!): String
   removeSystemFromSimulator(systemId: ID, simulatorId: ID, type: String): String
   updateSystemName(systemId: ID!, name: String, displayName: String, upgradeName: String): String
