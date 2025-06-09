@@ -66,11 +66,12 @@ const schema = gql`
   }
   extend type Mutation {
     """
-    Macro: Systems: Add RnD to Simulator
+    Macro: Systems: Add Extra Report to Simulator
     """
-    addRnDToSimulator(
+    addExtraReportToSimulator(
       simulatorId: ID!
       name: String!
+      which: String
     ): String
     addSystemToSimulator(
       simulatorId: ID!
