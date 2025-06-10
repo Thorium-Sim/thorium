@@ -1,7 +1,7 @@
-import { ApolloClient, gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { InventoryMetadata } from 'generated/graphql';
 import { MacroConfigProps } from "helpers/genericTypes";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FormGroup, Button } from 'reactstrap';
 
 
@@ -28,9 +28,7 @@ type InventoryInput = {
 
 const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, client, simulatorId }) => {
     const typedArgs = args as { inventory: Array<InventoryInput> | undefined };
-    const [decks, setDecks] = useState<Array<Deck>>([]);
     const [selectedSimulatorId, setSelectedSimulatorId] = useState<string | undefined>(simulatorId);
-    const [availableSimulators, setAvailableSimulators] = useState<Array<{ id: string, name: string }>>([]);
     const [localInventorySelections, setLocalInventorySelections] = useState<InventorySelection[]>([]);
     const { data: simulatorsData } = useQuery(gql`
         query Simulators {
@@ -40,12 +38,6 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
             }
         }
     `);
-
-    useEffect(() => {
-        if (simulatorsData && simulatorsData.simulators && simulatorsData.simulators.length > 0) {
-            setAvailableSimulators(simulatorsData.simulators);
-        }
-    }, [simulatorsData]);
 
     const [getDecks, { data: decksData }] = useLazyQuery(gql`
         query Decks($simulatorId: ID!) {
@@ -60,20 +52,15 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
         }
     `);
 
-    useEffect(() => {
-        if (decksData && decksData.decks && decksData.decks.length > 0) {
-            setDecks(decksData.decks);
-        }
-    }, [decksData]);
-
-    const roomMap = useMemo(() => {
-        return decks.reduce((acc, deck) => {
+    const roomMap = useMemo<Record<string, { id: string, name: string, deckId: string, deckNumber: number }>>(() => {
+        return decksData?.decks.reduce((acc: Record<string, { id: string, name: string, deckId: string, deckNumber: number }>, deck: Deck) => {
             deck.rooms.forEach(room => {
                 acc[room.name] = { ...room, deckId: deck.id, deckNumber: deck.number };
             })
             return acc;
         }, {} as Record<string, { id: string, name: string, deckId: string, deckNumber: number }>);
-    }, [decks]);
+    }, [decksData]);
+
 
     // Initialize local state from args
     useEffect(() => {
@@ -136,8 +123,8 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
     }, [typedArgs, localInventorySelections]);
 
     const sortedDecks = useMemo(() => {
-        return [...decks].sort((a, b) => a.number - b.number);
-    }, [decks]);
+        return [...(decksData?.decks || [])].sort((a, b) => a.number - b.number);
+    }, [decksData]);
 
     const handleSaveChanges = () => {
         updateArgs('inventory', updateArgsTranslation(localInventorySelections));
@@ -160,7 +147,7 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                 onChange={(e) => setSelectedSimulatorId(e.target.value)}
             >
                 <option value="">Select a Simulator</option>
-                {availableSimulators.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+                {simulatorsData?.simulators.map((s: { id: string, name: string }) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
         </div>
 
@@ -178,7 +165,7 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                                         const newDeckId = e.target.value;
                                         const newInventorySelections = localInventorySelections.map((s) => {
                                             if (s.roomName === deckRoomSelections.roomName) {
-                                                const newDeck = decks.find(d => d.id === newDeckId);
+                                                const newDeck = sortedDecks.find(d => d.id === newDeckId);
                                                 return {
                                                     deckId: newDeckId,
                                                     deckNumber: newDeck?.number || 0,
@@ -214,7 +201,7 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                                     }}
                                 >
                                     <option value="">Select a Room</option>
-                                    {decks.find((d) => d.id === deckRoomSelections.deckId)?.rooms.map((r) => <option key={r.id} value={r.name}>{r.name}</option>)}
+                                    {sortedDecks.find((d) => d.id === deckRoomSelections.deckId)?.rooms.map((r: { id: string, name: string }) => <option key={r.id} value={r.name}>{r.name}</option>)}
                                 </select>
                             </div>
                             <Button
@@ -310,8 +297,8 @@ const AddMultipleInventory: React.FC<MacroConfigProps> = ({ args, updateArgs, cl
                     size="sm"
                     color="secondary"
                     onClick={() => {
-                        if (decks.length === 0) return;
-                        const firstDeck = decks[0];
+                        if (sortedDecks.length === 0) return;
+                        const firstDeck = sortedDecks.find((d) => d.rooms.length > 0) || sortedDecks[0];
                         const firstRoom = firstDeck.rooms[0];
                         const newSelection = {
                             deckId: firstDeck.id,
