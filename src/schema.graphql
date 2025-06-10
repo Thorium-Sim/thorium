@@ -2256,6 +2256,9 @@ type Mutation {
   internalCommCallIncoming(id: ID!, incoming: String): String
   internalCommCallOutgoing(id: ID!, outgoing: String): String
   addInventory(inventory: InventoryItemInput): String
+
+  """Macro: Inventory: Add Multiple Inventory"""
+  addMultipleInventory(inventory: [InventoryItemInput]): String
   removeInventory(id: ID): String
   moveInventory(id: ID!, fromRoom: ID!, toRoom: ID!, count: Int!, toSimulator: ID): String
   updateInventoryCount(id: ID!, room: ID!, count: Int!): String
@@ -2865,6 +2868,9 @@ type Mutation {
   triggerSurvey(simulatorId: ID!, id: ID!): String
   surveyFormResponse(id: ID!, response: FormResultsInput): String
   endSurvey(id: ID!): String
+
+  """Macro: Systems: Add Extra Report to Simulator"""
+  addExtraReportToSimulator(simulatorId: ID!, name: String!, which: String): String
   addSystemToSimulator(simulatorId: ID!, className: String!, params: String!): String
   removeSystemFromSimulator(systemId: ID, simulatorId: ID, type: String): String
   updateSystemName(systemId: ID!, name: String, displayName: String, upgradeName: String): String

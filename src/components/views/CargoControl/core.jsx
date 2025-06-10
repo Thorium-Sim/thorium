@@ -338,7 +338,7 @@ const CargoControlCore = ({simulator, client}) => {
           <div>
             <strong>Logs</strong>
             <div style={{whiteSpace: "pre-wrap"}}>
-              {ship.inventoryLogs
+              {ship?.inventoryLogs
                 .concat()
                 .sort((a, b) => {
                   if (a.timestamp > b.timestamp) return -1;

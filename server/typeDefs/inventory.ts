@@ -91,6 +91,10 @@ const schema = gql`
   }
   extend type Mutation {
     addInventory(inventory: InventoryItemInput): String
+    """
+    Macro: Inventory: Add Multiple Inventory
+    """
+    addMultipleInventory(inventory: [InventoryItemInput]): String
     removeInventory(id: ID): String
     moveInventory(
       id: ID!

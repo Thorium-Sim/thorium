@@ -80,3 +80,5 @@ export {default as taskFlowActivate} from "./taskFlowActivate";
 export {default as documentAdd} from "./documentAdd";
 export * from './advancedNavigation';
 export * from './setClientHypercard';
+export * from './inventory';
+export * from './systems';
