@@ -1,23 +1,35 @@
 ![Thorium](github-banner.png)
 
-[Be sure to check out Thorium Nova, the next generation of Spaceship Simulator controls](https://nova.thoriumsim.com)
-
-![Test](https://github.com/Thorium-Sim/thorium/workflows/Test/badge.svg?branch=main)
+[![Test](https://github.com/Thorium-Sim/thorium/actions/workflows/test.yml/badge.svg)](https://github.com/Thorium-Sim/thorium/actions/workflows/test.yml)
 [![Discord](https://img.shields.io/discord/390968011605147648.svg)](https://discord.gg/UvxTQZz)
-[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg)](#contributors)
 ![Version](https://img.shields.io/github/package-json/v/thorium-sim/thorium)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/thorium-sim/thorium/develop)
 
+> [!NOTE]
+> Be sure to check out [Thorium Nova](https://nova.thoriumsim.com), the next generation of Spaceship Simulator controls
+
 # Thorium
 
-## A simulator controls platform
+A simulator controls platform
 
-_New here? Check out the [contributing document](CONTRIBUTING.md)._
+New here? Check out the [contributing document](CONTRIBUTING.md).
 
 Want something to work on? Here's where
 [we need help](https://github.com/Thorium-Sim/thorium/labels/help%20wanted). Not
 sure what it is or how to work with Thorium? Guides are in the
-[docs website](https://classic.thoriumsim.com/docs/overview.html).
+[docs website](https://classic.thoriumsim.com/docs/overview/).
+
+## Table of Contents
+
+* [What is Thorium?](#what-is-thorium)
+* [Guiding Principles](#guiding-principles)
+* [Getting Started](#getting-started)
+* [Building the App](#building-the-app)
+* [Deploying](#deploying)
+* [Migrating](#migrating)
+* [Translations](#translations)
+* [Contributors](#contributors)
 
 ## What is Thorium?
 
@@ -44,7 +56,7 @@ Created with ❤ by [Alex Anderson]() and [Fyreworks](https://fyreworks.us).
 ## A note about support
 
 Thorium is a self-organized "community support" project. We encourage everyone
-to use it and continue to submit issues and bug reports. Alex is the maintainer,
+to use it and continue to submit issues and bug reports. Alex is the primary maintainer,
 and will continue to:
 
 - Review issues
@@ -69,7 +81,7 @@ Hope this helps!
 
 ## Guiding Principles
 
-Thorium is based on years of experience building starship simulator controls for
+Thorium is based on years of experience building spaceship simulator controls for
 Space Edventures centers in Utah. This experience drives a number of guiding
 principles which should underscore all feature development in the project:
 
@@ -86,7 +98,7 @@ principles which should underscore all feature development in the project:
   foster good environments for education, but not understanding how a card works
   or a task being too difficult or too boring can quickly take away from
   students learning.
-- While Thorium works hard to be the end-all-be-all of starship simulator
+- While Thorium works hard to be the end-all-be-all of spaceship simulator
   controls, there is no reason every single feature has to be bundled with
   Thorium itself. The core of Thorium is a way to distribute and configure data
   between multiple clients. Using the same mechanisms which crew clients
@@ -98,27 +110,39 @@ principles which should underscore all feature development in the project:
   biggest downsides to Thorium. Something that could improve Thorium's
   experience for beginning developers would be ideal.
 
+
 ## Getting Started
 
-Install Yarn from https://yarnpkg.com
+Make sure you have **[Node.js v22](https://nodejs.org/)** installed.
 
-then
+> **Note:** You must have [`node-gyp`](https://github.com/nodejs/node-gyp) installed and properly configured.  
+> This requires Python, `make`, and a C++ compiler.
+
+Install dependencies with:
 
 ```sh
-yarn install
-yarn start
+npm install --force
 ```
 
-Then open [the app](http://localhost:3000) or
-[GraphiQL](http://localhost:3001/graphiql)
+Start the development server:
+
+```sh
+npm start
+```
+
+Then open the app in your browser:
+
+* [http://localhost:3000](http://localhost:3000)
+* [GraphiQL](http://localhost:3001/graphiql)
+
 
 ## Building the App
 
-```sh
-yarn build
-```
+To build the app for production and bundle it into a packaged terminal app:
 
-Builds the app for production and bundles it into a packaged terminal app.
+```sh
+npm run build
+```
 
 ## Deploying
 
@@ -140,7 +164,7 @@ the `package.json` file. Also be sure to add the locale data to the
 `/src/helpers/intl.js`.
 
 Translations are done with `react-intl`. A good example of how this can be used
-is the `/src/containers/FilghtDirector/Welcome.js` file.
+is the `/src/containers/FlightDirector/Welcome.js` file.
 
 ## Contributors
 
