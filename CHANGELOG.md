@@ -1,3 +1,24 @@
+# [4.1.0](https://github.com/Thorium-Sim/thorium/compare/4.0.2...4.1.0) (2025-06-17)
+
+
+### Bug Fixes
+
+* Address problems where lighting clients don't properly show the available DMX devices ([c7d7992](https://github.com/Thorium-Sim/thorium/commit/c7d7992fd1bc61932b7e6760f800395ce3718f0b))
+* Addresses errors loading astrometrics and advanced navigation cards. ([1086cb9](https://github.com/Thorium-Sim/thorium/commit/1086cb991264ac17d70c164b6aaedfefd5b84cab))
+* Addresses issues with certain viewscreens ([ab671ca](https://github.com/Thorium-Sim/thorium/commit/ab671ca9537fcbf6197616c9e12409c44b3b0034))
+* Compress movies to decrease overall app size ([6724925](https://github.com/Thorium-Sim/thorium/commit/6724925cc1aa29f860b151f319cc5611c59e410e))
+* Fixes Jump Drive card error. ([1a2ab6b](https://github.com/Thorium-Sim/thorium/commit/1a2ab6b0d1220b077a9b61dfcad64a181551c811))
+* null check officer logs ([9f98e86](https://github.com/Thorium-Sim/thorium/commit/9f98e862b440fcd762c9283bee7bedd94abd5048))
+* Records core loads without error ([4f23a84](https://github.com/Thorium-Sim/thorium/commit/4f23a84b5aaed13c81e1fbb3ba9b4b194d4f6402))
+* Remote access core no longer loads blank ([ef15198](https://github.com/Thorium-Sim/thorium/commit/ef151988220a90aec98f89a4e403fc8455fcefba))
+* System icons for advanced navigation and hull plating ([b725c63](https://github.com/Thorium-Sim/thorium/commit/b725c6341f2b8c1fe4685e81ca7f335cfeca5502))
+
+
+### Features
+
+* add "add report" macro ([d0b7306](https://github.com/Thorium-Sim/thorium/commit/d0b7306dfbf7156a7c439fbc61a6a813b537bb41))
+* add an "addInventory" macro ([4643d38](https://github.com/Thorium-Sim/thorium/commit/4643d38d02a319457e196e0a61992c6bde34f445))
+
 ## [4.0.2](https://github.com/Thorium-Sim/thorium/compare/4.0.1...4.0.2) (2025-06-05)
 
 
