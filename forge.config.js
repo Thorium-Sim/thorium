@@ -107,7 +107,7 @@ const neededPackages = [
   "lazy-val",
   "lodash.escaperegexp",
   "lodash.isequal",
-  // "usb",
+  "usb",
   "@types/w3c-web-usb",
   "node-addon-api",
   "node-gyp-build",
@@ -152,6 +152,7 @@ module.exports = {
           entitlements: "./public/entitlements.mac.plist",
         };
       },
+      hardenedRuntime: true,
     },
     osxNotarize: {
       appleApiKey: process.env.APPLE_API_KEY,

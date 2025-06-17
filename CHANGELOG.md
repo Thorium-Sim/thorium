@@ -1,3 +1,16 @@
+## [4.0.2](https://github.com/Thorium-Sim/thorium/compare/4.0.1...4.0.2) (2025-06-05)
+
+
+### Bug Fixes
+
+*  Improve sidebar layout and link styling ([eaec757](https://github.com/Thorium-Sim/thorium/commit/eaec757269ba0a583442ca5653edc29229570daf))
+* Addresses errors loading astrometrics and advanced navigation cards. ([ce05aa0](https://github.com/Thorium-Sim/thorium/commit/ce05aa0236f92a0e51d97e9c09b3c02549908482))
+* Compress movies to decrease overall app size ([d0f9b16](https://github.com/Thorium-Sim/thorium/commit/d0f9b1626f69d39b503972547a070a055ab12bbf))
+* Fixes Jump Drive card error. ([5780a1f](https://github.com/Thorium-Sim/thorium/commit/5780a1f78cd72c78074c8f9df56c70cd53f2add1))
+* Records core loads without error ([962957d](https://github.com/Thorium-Sim/thorium/commit/962957d3d9985ce9d106d8d75fa3812f90a647c6))
+* Remote access core no longer loads blank ([3b9b132](https://github.com/Thorium-Sim/thorium/commit/3b9b132bcb484a2c989b926eebb8fe79d626f8ea))
+* System icons for advanced navigation and hull plating ([ab90c03](https://github.com/Thorium-Sim/thorium/commit/ab90c032226f191f56338a337dabe14764c495a5))
+
 ## [4.0.1](https://github.com/Thorium-Sim/thorium/compare/4.0.0...4.0.1) (2025-05-30)
 
 

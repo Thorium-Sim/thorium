@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Starship Simulator Controls",
   "private": true,
   "type": "commonjs",
@@ -60,7 +60,8 @@
     "lint-staged-validate": "lint-staged",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
@@ -90,79 +91,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "build": {
-    "appId": "us.fyreworks.thorium",
-    "productName": "Thorium",
-    "buildDependenciesFromSource": true,
-    "nodeGypRebuild": false,
-    "npmRebuild": true,
-    "asar": false,
-    "directories": {
-      "output": "./packages"
-    },
-    "publish": {
-      "provider": "github"
-    },
-    "files": [
-      "build/**/*",
-      "node_modules/**/*",
-      "!node_modules/.bin",
-      "!node_modules/.cache",
-      "!node_modules/.git",
-      "!node_modules/.github",
-      "!node_modules/.husky",
-      "!node_modules/.idea",
-      "!node_modules/.vscode",
-      "!node_modules/.yarn-integrity",
-      "!node_modules/.yarn-unplugged",
-      "!node_modules/.yarnrc",
-      "!node_modules/.yarnrc.yml",
-      "!node_modules/.yarnignore",
-      "!node_modules/.npmignore",
-      "!node_modules/.npmrc",
-      "!node_modules/.nvmrc",
-      "!node_modules/.eslintrc",
-      "!**/.vscode/*",
-      "!src/*",
-      "!server/*",
-      "!electron.vite.config.{js,ts,mjs,cjs}",
-      "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
-      "'!{.env,.env.*,.npmrc,pnpm-lock.yaml}",
-      "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}"
-    ],
-    "mac": {
-      "category": "public.app-category.entertainment",
-      "icon": "./public/icon.icns",
-      "hardenedRuntime": true
-    },
-    "win": {
-      "target": [
-        "zip",
-        "portable"
-      ],
-      "icon": "./public/icon.ico"
-    },
-    "linux": {
-      "category": "Utility"
-    }
-  },
-  "bin": "./server/index.js",
-  "pkg": {
-    "assets": [
-      "index.html",
-      "css/**/*",
-      "fonts/**/*",
-      "js/**/*",
-      "static/**/*",
-      "cardIcons/**/*",
-      "workers/**/*",
-      "systems/**/*",
-      "viewscreen/**/*",
-      "sciences.ogg",
-      "favicon.ico",
-      ".env"
-    ]
   },
   "release": {
     "branches": ["main"],

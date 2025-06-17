@@ -20,13 +20,15 @@ jobs:
       - name: Install libs
         run: sudo apt-get install libudev-dev
       - name: Install Dependencies
-        run: npm install --force
+        run: |
+          npm install --force
+          npm install --force @rollup/rollup-linux-x64-gnu
 
       - name: Semantic Release
         run: |
           npm run semantic-release
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: build
@@ -36,10 +38,11 @@ jobs:
     needs: build
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
         include:
           - os: macos-latest
-            arch: universal
+            arch: x64
+          - os: macos-latest
+            arch: arm64
           - os: windows-latest
             arch: x64
 
@@ -52,15 +55,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Install Dependencies
+        run: |
+          npm install --force
       - uses: actions/setup-python@v4
         if: startsWith(matrix.os, 'macos')
         with:
           python-version: "3.9" # Needed for the older version of Node Gyp
       - name: Download production artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: build
           path: build
+      - name: Prepare for app signing
+        if: startsWith(matrix.os, 'macos')
+        run: ./scripts/add-osx-cert.sh
+        env: 
+          CERTIFICATE_OSX_P12: ${{ secrets.mac_cert }}
+          CERTIFICATE_PASSWORD: ${{ secrets.mac_cert_password }}
       - name: Prepare for app notarization
         if: startsWith(matrix.os, 'macos')
         # Import Apple API key for app notarization on macOS
@@ -69,13 +81,8 @@ jobs:
           echo '${{ secrets.api_key }}' > ~/private_keys/AuthKey_${{ secrets.api_key_id }}.p8
 
       - name: Build/release Electron app
-        run: npx electron-forge publish --arch=${{ matrix.arch }}
+        run: npm run publish -- --arch=${{ matrix.arch }}
         if: always()
-        with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.github_token }}
-          mac_certs_password: ${{ secrets.mac_cert_password }}
         env:
           # macOS notarization API key
           CSC_LINK: ${{ secrets.mac_cert }}
@@ -84,6 +91,7 @@ jobs:
           APPLE_API_KEY_ID: ${{ secrets.api_key_id }}
           APPLE_API_ISSUER: ${{ secrets.api_key_issuer_id }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENGINE_API_KEY: ${{ secrets.ENGINE_API_KEY }}
           ERROR_REPORTING_ORGANIZATION:
             ${{ secrets.ERROR_REPORTING_ORGANIZATION }}
