@@ -65,6 +65,14 @@ const schema = gql`
     allSystems: [String!]!
   }
   extend type Mutation {
+    """
+    Macro: Systems: Add Extra Report to Simulator
+    """
+    addExtraReportToSimulator(
+      simulatorId: ID!
+      name: String!
+      which: String
+    ): String
     addSystemToSimulator(
       simulatorId: ID!
       className: String!

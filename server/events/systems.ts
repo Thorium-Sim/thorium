@@ -106,6 +106,18 @@ const sendUpdate = sys => {
   }
   pubsub.publish("systemsUpdate", App.systems);
 };
+App.on("addExtraReportToSimulator", ({ simulatorId, name, which, cb }) => {
+  const buildObject = {
+    name: name,
+    extra: true,
+    damage: { damaged: true, which: which || "rnd" },
+  };
+  if(buildObject.damage.which === "damage") {
+    delete buildObject.damage.which;
+  }
+  const stringParams = JSON.stringify(buildObject);
+  App.emit("addSystemToSimulator", { simulatorId, className: "System", params: stringParams, cb });
+});
 App.on("addSystemToSimulator", ({ simulatorId, className, params, cb }) => {
   const init = JSON.parse(params);
   init.simulatorId = simulatorId;

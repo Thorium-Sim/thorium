@@ -221,6 +221,22 @@ App.on("changeRoomDeck", ({deckId, roomId}) => {
   pubsub.publish("roomsUpdate", App.rooms);
 });
 
+App.on("addMultipleInventory", ({inventory, simulatorId}) => {
+  const rooms = App.rooms.filter(r => r.simulatorId === simulatorId);
+  inventory.forEach(i => {
+    if(i.roomCount && i.roomCount.length > 0 && i.name && i.name.length > 0) {
+      // translate room name to room id
+      for(const roomCount of i.roomCount) {
+        const roomId = rooms.find(r => r.name === roomCount.room)?.id;
+        if(roomId) {
+          roomCount.room = roomId;
+        }
+      }
+      App.emit("addInventory", { inventory: {...i, simulatorId } });
+    }
+  });
+});
+
 // Inventory
 App.on("addInventory", ({inventory}) => {
   const {

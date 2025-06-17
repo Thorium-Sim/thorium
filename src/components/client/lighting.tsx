@@ -90,15 +90,35 @@ const Lighting: React.FC<{
     "dmx_autoActivate",
     false,
   );
-  const [dmxWebDevice, setDMXWebDevice] = React.useState<{serialNumber: string, productName: string}>();
+  const [dmxWebDevices, setDMXWebDevices] = React.useState<
+    {
+      serialNumber: string;
+      productName: string;
+    }[]
+  >();
   React.useEffect(() => {
-    window.thorium.getDMXDeviceList?.().then((res: { serialNumber: string, productName: string }) => {
-      setDMXWebDevice({serialNumber: res?.serialNumber || "", productName: res?.productName || ""});
-      setDmxDevice((dmxDevice: string) => {
-        if (!dmxDevice && res?.serialNumber) return res?.serialNumber;
-        return dmxDevice;
-      });
-    });
+    window.thorium.getDMXDeviceList?.().then(
+      (
+        res: {
+          serialNumber: string;
+          productName: string;
+          deviceName: string;
+        }[],
+      ) => {
+        console.log(res);
+        setDMXWebDevices(
+          res.map(res => ({
+            serialNumber: res?.serialNumber || "",
+            productName: res?.productName || res?.deviceName || "",
+          })),
+        );
+        setDmxDevice((dmxDevice: string) => {
+          if (!dmxDevice && res?.[0]?.serialNumber)
+            return res?.[0]?.serialNumber;
+          return dmxDevice;
+        });
+      },
+    );
   }, [setDmxDevice]);
 
   React.useEffect(() => {
@@ -221,9 +241,11 @@ const Lighting: React.FC<{
                         setDmxDevice(e.target.value);
                       }}
                     >
-                      <option key={dmxWebDevice?.serialNumber} value={dmxWebDevice?.serialNumber}>
-                        {dmxWebDevice?.productName}
-                      </option>
+                      {dmxWebDevices?.map(d => (
+                        <option key={d?.serialNumber} value={d?.serialNumber}>
+                          {d?.productName}
+                        </option>
+                      ))}
                     </Input>
                   </label>
                 )}
