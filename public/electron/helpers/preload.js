@@ -139,7 +139,10 @@ const thorium = {
     return ipcRenderer.invoke("get-usbDevices");
   },
   activateDMX: function (config) {
-    return ipcRenderer.send("activate-dmx", config);
+    return ipcRenderer.invoke("activate-dmx", config);
+  },
+  closeDMX: function (config) {
+    return ipcRenderer.send("close-dmx", config);
   },
   sendDMXValue: function (universe) {
     return ipcRenderer.send("send-dmx-value", universe);
