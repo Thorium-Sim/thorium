@@ -1,4 +1,6 @@
-const {findBySerialNumber, WebUSBDevice} = require("usb");
+const {findBySerialNumber} = require("usb");
+const {bmRequestType, DIRECTION, RECIPIENT, TYPE} = require("bmrequesttype");
+
 const e131 = require("e131");
 
 class DMXController {
@@ -24,34 +26,6 @@ class DMXController {
       this.packet.setUniverse(universeValue);
     } else {
       try {
-        async function openDevice() {
-          const serialDevice = await findBySerialNumber(
-            device.replace("/dev/cu.usbserial-", ""),
-          );
-          const lightingDevice = await WebUSBDevice.createInstance(
-            serialDevice,
-          );
-          await lightingDevice.open();
-          await lightingDevice.claimInterface(0);
-
-          await lightingDevice.controlTransferOut({
-            // It's a USB class request
-            requestType: "class",
-            // The destination of this request is the interface
-            recipient: "interface",
-            // CDC: Communication Device Class
-            // 0x22: SET_CONTROL_LINE_STATE
-            // RS-232 signal used to tell the USB device that the computer is now present.
-            request: 0x22,
-            // Yes
-            value: 0x01,
-            // Interface #0
-            index: 0x00,
-          });
-
-          return lightingDevice;
-        }
-
         const universe = new Array(512).fill(0);
 
         // This only supports ENTTEC Pro devices
@@ -68,7 +42,41 @@ class DMXController {
           ENTTEC_PRO_DMX_STARTCODE,
         ];
 
-        let lightingDevice = await openDevice();
+        async function openDevice(serial) {
+          async function getDevice() {
+            const device = await findBySerialNumber(serial);
+
+            device.open();
+            device.interface(0).claim();
+            device.controlTransfer(
+              bmRequestType(DIRECTION.Out, TYPE.Class, RECIPIENT.Interface),
+              0x22,
+              0x01,
+              0x00,
+              Buffer.from([...header, ...universe, ENTTEC_PRO_END_OF_MSG]),
+            );
+            const endpoint = device.interface(0).endpoint(2);
+            return {device, endpoint};
+          }
+          let device = await getDevice();
+          return {
+            send: async message => {
+              try {
+                await device.endpoint.transferAsync(message);
+              } catch {
+                device.device.close();
+                device = await getDevice();
+              }
+            },
+            close: async () => {
+              device.device.close();
+            },
+          };
+        }
+
+        let lightingDevice = await openDevice(
+          device.replace("/dev/cu.usbserial-", ""),
+        );
         let closing = false;
         this.universe = {
           close: async (attempt = 0) => {
@@ -93,22 +101,9 @@ class DMXController {
               universe[i] = Math.round(channels[i]) || 0;
             }
             // Send the message
-            if (lightingDevice.opened) {
-              return await lightingDevice.transferOut(
-                2,
-                Uint8Array.from([
-                  ...header,
-                  ...universe,
-                  ENTTEC_PRO_END_OF_MSG,
-                ]),
-              );
-            } else {
-              console.error(
-                "Failed to send DMX message: Lighting device not opened. Attempting to open again",
-              );
-              lightingDevice = await openDevice();
-            }
-            return Promise.resolve();
+            return await lightingDevice.send(
+              Buffer.from([...header, ...universe, ENTTEC_PRO_END_OF_MSG]),
+            );
           },
         };
       } catch (error) {
