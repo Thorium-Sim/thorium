@@ -108,6 +108,7 @@ const neededPackages = [
   "lodash.escaperegexp",
   "lodash.isequal",
   "usb",
+  "bmrequesttype",
   "@types/w3c-web-usb",
   "node-addon-api",
   "node-gyp-build",
