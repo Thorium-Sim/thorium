@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/Thorium-Sim/thorium/compare/4.1.1...4.1.2) (2025-06-23)
+
+
+### Bug Fixes
+
+* More direct DMX message sending. ([0e041fb](https://github.com/Thorium-Sim/thorium/commit/0e041fb55b2b05031d5144b3ec1810a665fa7e1c))
+
 ## [4.1.1](https://github.com/Thorium-Sim/thorium/compare/4.1.0...4.1.1) (2025-06-23)
 
 
