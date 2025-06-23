@@ -15,6 +15,8 @@ export default function useDMXConfiguration(
   clientId: string,
 ) {
   const dmx = useUSBDMX();
+  const [activated, setActivated] = React.useState(false);
+
   const {data} = useLightingControlSubscription({
     variables: {simulatorId: simulator.id},
   });
@@ -82,6 +84,7 @@ export default function useDMXConfiguration(
   }, [actionChangeTime, alertLevel, fixtures, intensityHistory, lighting]);
 
   React.useEffect(() => {
+    if (!activated) return;
     worker.current = new Worker("/workers/updateLighting.js");
     worker.current.onmessage = () => {
       const universe = genUniverseRef.current?.();
@@ -97,7 +100,7 @@ export default function useDMXConfiguration(
       worker.current?.terminate();
       worker.current = undefined;
     };
-  }, [dmx]);
+  }, [dmx, activated]);
 
   const ready = dmx.ready || electronDmx.current;
   React.useEffect(() => {
@@ -118,8 +121,6 @@ export default function useDMXConfiguration(
     intensityHistory,
   ]);
 
-  const [activated, setActivated] = React.useState(false);
-
   const activate = React.useCallback(
     ({dmxDevice, ipAddress, dmxDriver, dmxUniverse}) => {
       if (!window.thorium.getDMXDeviceList) {
@@ -132,9 +133,10 @@ export default function useDMXConfiguration(
           dmxDriver,
           dmxUniverse,
         };
-        window.thorium.activateDMX?.(config);
-        electronDmx.current = true;
-        setActivated(true);
+        window.thorium.activateDMX?.(config).then(() => {
+          electronDmx.current = true;
+          setActivated(true);
+        });
       }
     },
     [dmx],
@@ -142,6 +144,7 @@ export default function useDMXConfiguration(
 
   const reset = React.useCallback(() => {
     dmx.close();
+    window.thorium?.closeDMX?.();
     setActivated(false);
   }, [dmx]);
 

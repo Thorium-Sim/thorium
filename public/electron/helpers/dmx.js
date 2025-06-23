@@ -2,7 +2,7 @@ const {findBySerialNumber, WebUSBDevice} = require("usb");
 const e131 = require("e131");
 
 class DMXController {
-  async activate({dmxDriver, ipAddress, device, universe}) {
+  async activate({dmxDriver, ipAddress, device, universe}, attempt = 0) {
     const universeValue = isNaN(parseInt(universe, 10))
       ? 1
       : parseInt(universe, 10);
@@ -23,67 +23,101 @@ class DMXController {
       this.slots = this.packet.getSlotsData();
       this.packet.setUniverse(universeValue);
     } else {
-      const serialDevice = await findBySerialNumber(device);
-      const lightingDevice = await WebUSBDevice.createInstance(serialDevice);
+      try {
+        async function openDevice() {
+          const serialDevice = await findBySerialNumber(
+            device.replace("/dev/cu.usbserial-", ""),
+          );
+          const lightingDevice = await WebUSBDevice.createInstance(
+            serialDevice,
+          );
+          await lightingDevice.open();
+          await lightingDevice.claimInterface(0);
 
-      await lightingDevice.open();
-      await lightingDevice.claimInterface(0);
+          await lightingDevice.controlTransferOut({
+            // It's a USB class request
+            requestType: "class",
+            // The destination of this request is the interface
+            recipient: "interface",
+            // CDC: Communication Device Class
+            // 0x22: SET_CONTROL_LINE_STATE
+            // RS-232 signal used to tell the USB device that the computer is now present.
+            request: 0x22,
+            // Yes
+            value: 0x01,
+            // Interface #0
+            index: 0x00,
+          });
 
-      await lightingDevice.controlTransferOut({
-        // It's a USB class request
-        requestType: "class",
-        // The destination of this request is the interface
-        recipient: "interface",
-        // CDC: Communication Device Class
-        // 0x22: SET_CONTROL_LINE_STATE
-        // RS-232 signal used to tell the USB device that the computer is now present.
-        request: 0x22,
-        // Yes
-        value: 0x01,
-        // Interface #0
-        index: 0x00,
-      });
-      const universe = new Array(512).fill(0);
+          return lightingDevice;
+        }
 
-      // This only supports ENTTEC Pro devices
-      const ENTTEC_PRO_DMX_STARTCODE = 0x00;
-      const ENTTEC_PRO_START_OF_MSG = 0x7e;
-      const ENTTEC_PRO_END_OF_MSG = 0xe7;
-      const ENTTEC_PRO_SEND_DMX_RQ = 0x06;
+        const universe = new Array(512).fill(0);
 
-      const header = [
-        ENTTEC_PRO_START_OF_MSG,
-        ENTTEC_PRO_SEND_DMX_RQ,
-        universe.length & 0xff,
-        (universe.length >> 8) & 0xff,
-        ENTTEC_PRO_DMX_STARTCODE,
-      ];
+        // This only supports ENTTEC Pro devices
+        const ENTTEC_PRO_DMX_STARTCODE = 0x00;
+        const ENTTEC_PRO_START_OF_MSG = 0x7e;
+        const ENTTEC_PRO_END_OF_MSG = 0xe7;
+        const ENTTEC_PRO_SEND_DMX_RQ = 0x06;
 
-      // Initialize a blank universe
-      await lightingDevice.transferOut(
-        2,
-        Uint8Array.from([...header, ...universe, ENTTEC_PRO_END_OF_MSG]),
-      );
+        const header = [
+          ENTTEC_PRO_START_OF_MSG,
+          ENTTEC_PRO_SEND_DMX_RQ,
+          universe.length & 0xff,
+          (universe.length >> 8) & 0xff,
+          ENTTEC_PRO_DMX_STARTCODE,
+        ];
 
-      this.universe = {
-        close: async () => {
-          await lightingDevice.close();
-        },
-        send: async channels => {
-          // Make sure we're sending 512 channels
-          for (let i = 0; i < 512; i++) {
-            universe[i] = Math.round(channels[i]) || 0;
-          }
-          // Send the message
-          if (lightingDevice.opened) {
-            return await lightingDevice.transferOut(
-              2,
-              Uint8Array.from([...header, ...universe, ENTTEC_PRO_END_OF_MSG]),
-            );
-          }
-          return Promise.resolve();
-        },
-      };
+        let lightingDevice = await openDevice();
+        let closing = false;
+        this.universe = {
+          close: async (attempt = 0) => {
+            try {
+              closing = true;
+              await lightingDevice.close();
+            } catch (error) {
+              if (attempt > 3) throw error;
+              await new Promise(res => setTimeout(res, 1000));
+              try {
+                await lightingDevice.close();
+              } catch {
+                await new Promise(res => setTimeout(res, 1000));
+                await lightingDevice.close();
+              }
+            }
+          },
+          send: async channels => {
+            if (closing === true) return;
+            // Make sure we're sending 512 channels
+            for (let i = 0; i < 512; i++) {
+              universe[i] = Math.round(channels[i]) || 0;
+            }
+            // Send the message
+            if (lightingDevice.opened) {
+              return await lightingDevice.transferOut(
+                2,
+                Uint8Array.from([
+                  ...header,
+                  ...universe,
+                  ENTTEC_PRO_END_OF_MSG,
+                ]),
+              );
+            } else {
+              console.error(
+                "Failed to send DMX message: Lighting device not opened. Attempting to open again",
+              );
+              lightingDevice = await openDevice();
+            }
+            return Promise.resolve();
+          },
+        };
+      } catch (error) {
+        console.error("DMX Activation error", error);
+        // We'll try activating again after a delay
+        if (attempt > 3) throw error;
+        await new Promise(res => setTimeout(res, 1000));
+        this.activate({dmxDriver, ipAddress, device, universe}, attempt + 1);
+      }
     }
   }
   async sendData(universe) {
@@ -96,6 +130,10 @@ class DMXController {
     } else {
       await this.universe.send(universe);
     }
+  }
+  close() {
+    if (!this.universe) return;
+    this.universe?.close();
   }
 }
 

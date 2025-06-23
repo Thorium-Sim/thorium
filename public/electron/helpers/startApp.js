@@ -107,9 +107,13 @@ module.exports = () => {
         },
       ];
     });
-    ipcMain.on("activate-dmx", (event, config) => {
+    ipcMain.handle("activate-dmx", (event, config) => {
       const dmx = require("./dmx");
       dmx.activate(config);
+    });
+    ipcMain.handle("close-dmx", (event, config) => {
+      const dmx = require("./dmx");
+      dmx.close();
     });
     ipcMain.on("send-dmx-value", (event, universe) => {
       const dmx = require("./dmx");
