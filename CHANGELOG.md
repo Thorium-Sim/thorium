@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/Thorium-Sim/thorium/compare/4.1.0...4.1.1) (2025-06-23)
+
+
+### Bug Fixes
+
+* More DMX lighting improvements ([6c2fe24](https://github.com/Thorium-Sim/thorium/commit/6c2fe24b10dd60b0b8ddefb66cd2a647c206688b))
+
 # [4.1.0](https://github.com/Thorium-Sim/thorium/compare/4.0.2...4.1.0) (2025-06-17)
 
 
