@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/Thorium-Sim/thorium/compare/4.1.3...4.1.4) (2025-06-24)
+
+
+### Bug Fixes
+
+* DMX ([f57a544](https://github.com/Thorium-Sim/thorium/commit/f57a544687ff82e5cd58163e1fbf5e01ad7d2d8a))
+
 ## [4.1.3](https://github.com/Thorium-Sim/thorium/compare/4.1.2...4.1.3) (2025-06-23)
 
 
