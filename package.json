@@ -1,6 +1,6 @@
 {
   "name": "thorium",
-  "version": "4.1.3",
+  "version": "4.1.4",
   "description": "Starship Simulator Controls",
   "private": true,
   "type": "commonjs",
@@ -65,9 +65,7 @@
   },
   "proxy": "http://localhost:3001",
   "nodemonConfig": {
-    "watch": [
-      "server/"
-    ],
+    "watch": ["server/"],
     "ignore": [
       ".git",
       "./src/*",
@@ -83,12 +81,8 @@
     "last 1 safari version"
   ],
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint"
-    ],
-    "*.{css,scss}": [
-      "stylelint"
-    ],
+    "*.{js,jsx,ts,tsx}": ["eslint"],
+    "*.{css,scss}": ["stylelint"],
     "**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)": [
       "prettier --write"
     ]
@@ -99,9 +93,7 @@
     }
   },
   "release": {
-    "branches": [
-      "main"
-    ],
+    "branches": ["main"],
     "tagFormat": "${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
