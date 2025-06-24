@@ -107,8 +107,8 @@ const neededPackages = [
   "lazy-val",
   "lodash.escaperegexp",
   "lodash.isequal",
-  "usb",
-  "bmrequesttype",
+  "serialport",
+  "@serialport/bindings-cpp",
   "@types/w3c-web-usb",
   "node-addon-api",
   "node-gyp-build",
@@ -161,7 +161,11 @@ module.exports = {
       appleApiIssuer: process.env.APPLE_API_ISSUER,
     },
   },
-  rebuildConfig: {},
+  rebuildConfig: {
+    force: true,
+    onlyModules: ["@serialport/bindings-cpp", "serialport"],
+    args: ["--runtime=electron", "--cache=/tmp/.electron-gyp"],
+  },
   makers: [
     {
       name: "@electron-forge/maker-squirrel",

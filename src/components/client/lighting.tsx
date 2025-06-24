@@ -92,7 +92,7 @@ const Lighting: React.FC<{
   );
   const [dmxWebDevices, setDMXWebDevices] = React.useState<
     {
-      serialNumber: string;
+      deviceAddress: string;
       productName: string;
     }[]
   >();
@@ -103,18 +103,18 @@ const Lighting: React.FC<{
           serialNumber: string;
           productName: string;
           deviceName: string;
+          deviceAddress: string;
         }[],
       ) => {
-        console.log(res);
         setDMXWebDevices(
           res.map(res => ({
-            serialNumber: res?.serialNumber || "",
+            deviceAddress: res?.deviceAddress || "",
             productName: res?.productName || res?.deviceName || "",
           })),
         );
         setDmxDevice((dmxDevice: string) => {
-          if (!dmxDevice && res?.[0]?.serialNumber)
-            return res?.[0]?.serialNumber;
+          if (!dmxDevice && res?.[0]?.deviceAddress)
+            return res?.[0]?.deviceAddress;
           return dmxDevice;
         });
       },
@@ -242,7 +242,7 @@ const Lighting: React.FC<{
                       }}
                     >
                       {dmxWebDevices?.map(d => (
-                        <option key={d?.serialNumber} value={d?.serialNumber}>
+                        <option key={d?.deviceAddress} value={d?.deviceAddress}>
                           {d?.productName}
                         </option>
                       ))}
