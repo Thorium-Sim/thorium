@@ -120,6 +120,7 @@ const neededPackages = [
   "@serialport/parser-regex",
   "@serialport/parser-slip-encoder",
   "@serialport/parser-spacepacket",
+  "@serialport/parser-byte-length",
   "@serialport/stream",
   "@types/w3c-web-usb",
   "node-addon-api",
@@ -140,6 +141,9 @@ module.exports = {
     name: "Thorium",
     icon: "./public/icon",
     ignore: path => {
+      if (path.includes("@serialport")) {
+        return false;
+      }
       if (path.startsWith("/build")) return false;
       if (!path) return false;
       if (path.includes("package.json")) return false;
