@@ -35,12 +35,6 @@ EnttecUSBDMXPRO.prototype.sendUniverse = function () {
   if (!this.dev.writable) {
     return;
   }
-  console.log(
-    this.dev.closed,
-    this.dev.closing,
-    this.dev.errored,
-    this.dev.isOpen,
-  );
   if (this.readyToWrite) {
     const hdr = Buffer.from([
       ENTTEC_PRO_START_OF_MSG,
@@ -55,8 +49,6 @@ EnttecUSBDMXPRO.prototype.sendUniverse = function () {
       this.universe.slice(1),
       Buffer.from([ENTTEC_PRO_END_OF_MSG]),
     ]);
-
-    console.log("Sending", this.universe.slice(1));
 
     this.readyToWrite = false;
     this.dev.write(msg);
