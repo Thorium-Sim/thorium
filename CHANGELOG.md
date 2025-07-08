@@ -1,3 +1,15 @@
+## [4.1.1](https://github.com/Thorium-Sim/thorium/compare/4.1.0...4.1.1) (2025-07-08)
+
+
+### Bug Fixes
+
+* Another DMX fix ([4be1af3](https://github.com/Thorium-Sim/thorium/commit/4be1af35b20c73b1058a04345ae8644a6267f21c))
+* DMX ([ebd5959](https://github.com/Thorium-Sim/thorium/commit/ebd59595dde68abcb4bdd271f331454a61b9ef4d))
+* DMX ([f57a544](https://github.com/Thorium-Sim/thorium/commit/f57a544687ff82e5cd58163e1fbf5e01ad7d2d8a))
+* More direct DMX message sending. ([0e041fb](https://github.com/Thorium-Sim/thorium/commit/0e041fb55b2b05031d5144b3ec1810a665fa7e1c))
+* More DMX lighting improvements ([6c2fe24](https://github.com/Thorium-Sim/thorium/commit/6c2fe24b10dd60b0b8ddefb66cd2a647c206688b))
+* Switch DMX to the old Serialport package ([81ad164](https://github.com/Thorium-Sim/thorium/commit/81ad1647593d1c87c6590e3ea4346faa2a7a1d61))
+
 ## [4.1.5](https://github.com/Thorium-Sim/thorium/compare/4.1.4...4.1.5) (2025-06-24)
 
 
