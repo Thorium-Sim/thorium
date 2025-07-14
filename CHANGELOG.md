@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/Thorium-Sim/thorium/compare/4.1.1...4.1.2) (2025-07-14)
+
+
+### Bug Fixes
+
+* Support multiple browser kiosk clients. ([f345183](https://github.com/Thorium-Sim/thorium/commit/f34518393dda8655f43deca9d9433ba0ded35683))
+
 ## [4.1.1](https://github.com/Thorium-Sim/thorium/compare/4.1.0...4.1.1) (2025-07-08)
 
 
