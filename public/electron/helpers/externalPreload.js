@@ -2,8 +2,6 @@ const ipcRenderer = require("electron").ipcRenderer;
 const webFrame = require("electron").webFrame;
 const contextBridge = require("electron").contextBridge;
 
-let browserCount =
-  require("electron").BrowserWindow?.getAllWindows().length || 0;
 const key = "thorium_clientPersistentId";
 let clientId = sessionStorage.getItem(key);
 
@@ -19,6 +17,8 @@ function setClient(id) {
 
 async function setClientId() {
   const hostname = await ipcRenderer.invoke("get-hostname");
+  const browserCount = await ipcRenderer.invoke("get-window-count");
+
   const id = `${hostname}${browserCount > 1 ? ` (${browserCount})` : ""}`;
   const clientList = getClientList(hostname);
   const clientIndex = clientList.indexOf(clientId);

@@ -47,11 +47,6 @@ module.exports = () => {
     checkWindow();
     const {addWindow} = require("./multiWindow");
     addWindow({main: true});
-    ipcMain.on("getWindowCount", event => {
-      event.returnValue = BrowserWindow.getAllWindows().filter(b => {
-        return b.isVisible();
-      }).length;
-    });
     ipcMain.on("loadPage", function (evt, data) {
       const {url: loadUrl, auto, kiosk} = data;
       if (auto) {
@@ -124,6 +119,15 @@ module.exports = () => {
     ipcMain.on("set-port", (event, value) => {
       settings.set("port", value);
       port = value;
+    });
+    ipcMain.handle("get-window-count", async () => {
+      return (
+        require("electron")
+          .BrowserWindow?.getAllWindows()
+          .filter(b => {
+            return b.isVisible();
+          }).length || 0
+      );
     });
     ipcMain.on("set-httpOnly", (event, value) => {
       settings.set("httpOnly", value);

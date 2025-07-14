@@ -4,9 +4,6 @@ const contextBridge = require("electron").contextBridge;
 let port;
 let httpOnly;
 
-let browserCount =
-  require("electron").BrowserWindow?.getAllWindows().length || 0;
-
 async function getPortAndHttpOnly() {
   const results = await ipcRenderer.invoke("get-port");
   port = results.port;
@@ -28,6 +25,7 @@ function setClient(id) {
 
 async function setClientId() {
   const hostname = await ipcRenderer.invoke("get-hostname");
+  const browserCount = await ipcRenderer.invoke("get-window-count");
 
   const id = `${hostname}${browserCount > 1 ? ` (${browserCount})` : ""}`;
   const clientList = getClientList(hostname);
