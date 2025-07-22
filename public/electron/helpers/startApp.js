@@ -120,15 +120,6 @@ module.exports = () => {
       settings.set("port", value);
       port = value;
     });
-    ipcMain.handle("get-window-count", async () => {
-      return (
-        require("electron")
-          .BrowserWindow?.getAllWindows()
-          .filter(b => {
-            return b.isVisible();
-          }).length || 0
-      );
-    });
     ipcMain.on("set-httpOnly", (event, value) => {
       settings.set("httpOnly", value);
       httpOnly = value;

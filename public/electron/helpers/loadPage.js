@@ -7,7 +7,7 @@ const {setLoadedUrl} = require("./loadedUrl");
 const initHotkeys = require("./hotkeys");
 const initRemote = require("./remote");
 
-function openPage(url, kiosk) {
+async function openPage(url, kiosk) {
   setLoadedUrl(`${url}/client`);
   for (let i = windows.length - 1; i >= 0; i--) {
     if (windows[i] && windows[i].isDestroyed()) {
@@ -19,17 +19,19 @@ function openPage(url, kiosk) {
       main: false,
       x: 500,
       y: 500,
-      loadedUrl: `${url}/client`,
+      loadedUrl: `${url}/client?window_number=1`,
       server: false,
     });
     initHotkeys();
     initRemote();
     return;
   }
-  windows.forEach(mainWindow => {
-    mainWindow && mainWindow.loadURL(`${url}/client`);
-    triggerWindow(mainWindow, kiosk);
-  });
+  await Promise.all(
+    windows.map(async (mainWindow, i) => {
+      await mainWindow?.loadURL(`${url}/client?window_number=${i + 1}`);
+      triggerWindow(mainWindow, kiosk);
+    }),
+  );
   if (kiosk) {
     clearMenubar();
   }
@@ -47,8 +49,8 @@ module.exports = function loadPage(uri, kiosk) {
       agent = new https.Agent({rejectUnauthorized: false});
     }
     httpHandler
-      .get(`${url}/client`, {agent}, () => {
-        openPage(url, kiosk);
+      .get(`${url}/client`, {agent}, async () => {
+        await openPage(url, kiosk);
         return resolve();
       })
       .on("error", e => {

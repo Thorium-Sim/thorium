@@ -25,8 +25,9 @@ function setClient(id) {
 
 async function setClientId() {
   const hostname = await ipcRenderer.invoke("get-hostname");
-  const browserCount = await ipcRenderer.invoke("get-window-count");
-
+  const browserCount =
+    Number(new URL(window.location.href).searchParams.get("window_number")) ||
+    1;
   const id = `${hostname}${browserCount > 1 ? ` (${browserCount})` : ""}`;
   const clientList = getClientList(hostname);
   const clientIndex = clientList.indexOf(clientId);
