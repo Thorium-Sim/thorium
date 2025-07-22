@@ -43,6 +43,7 @@ class Communications extends Component {
   componentDidMount() {
     const self = this;
     this.waves = new SineWaves({
+      running: true,
       // Canvas Element
       el: self.commSignalRef.current,
 
@@ -57,7 +58,7 @@ class Communications extends Component {
 
       // Specific how much the width of the canvas the waves should be
       // This can either be a number or a percent
-      waveWidth: "90%",
+      wavesWidth: "90%",
 
       // An array of wave options
       waves: [
