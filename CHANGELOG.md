@@ -1,3 +1,13 @@
+## [4.1.3](https://github.com/Thorium-Sim/thorium/compare/4.1.2...4.1.3) (2025-07-22)
+
+
+### Bug Fixes
+
+* Address memory leaks by automatically reloading clients at most once per day during the middle of the night if there has been no mouse or keyboard actions within 5 minutes ([c01ef99](https://github.com/Thorium-Sim/thorium/commit/c01ef9946c715fb5070af2616aebb41a4e6193cc))
+* Comm viewscreen waves appear correctly. ([a24abe8](https://github.com/Thorium-Sim/thorium/commit/a24abe8dfa81139271248b64575014f25515c7cf))
+* Made the curve frame viewscreen frame have a more correct layout. ([de2bef8](https://github.com/Thorium-Sim/thorium/commit/de2bef8ae189f1266b62decb295315464e997620))
+* Properly account for each window client name when opening multiple kiosk windows. ([03e7670](https://github.com/Thorium-Sim/thorium/commit/03e76704f313c7cfd52790aaab7aa68de12c45cd))
+
 ## [4.1.2](https://github.com/Thorium-Sim/thorium/compare/4.1.1...4.1.2) (2025-07-14)
 
 
