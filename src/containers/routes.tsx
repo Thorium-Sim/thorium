@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, useEffect, useRef} from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -118,8 +118,55 @@ function useClockSync() {
   }, [client, clientId]);
 }
 
+function useAutoReload() {
+  const didAction = useRef(false);
+
+  useEffect(() => {
+    const abort = new AbortController();
+    window.addEventListener(
+      "pointermove",
+      () => {
+        didAction.current = true;
+      },
+      {signal: abort.signal},
+    );
+    window.addEventListener(
+      "keydown",
+      () => {
+        didAction.current = true;
+      },
+      {signal: abort.signal},
+    );
+
+    return () => {
+      abort.abort();
+    };
+  }, []);
+
+  useInterval(() => {
+    // Don't reload if there has been active actions
+    if (didAction.current === true) {
+      didAction.current = false;
+      return;
+    }
+    const now = new Date();
+    const hours = now.getHours();
+    // Only reload between the hours of midnight and 5am
+    if (hours > 5) return;
+
+    const lastReloaded =
+      Number(localStorage.getItem("last_reload_timestamp")) || Date.now();
+    // Reload at most once per day
+    if (Date.now() - lastReloaded < 1000 * 60 * 60 * 24) return;
+
+    localStorage.setItem("last_reload_timestamp", Date.now().toString());
+    window.location.reload();
+  }, 5000);
+}
+
 const ClockSync = React.memo(() => {
   useClockSync();
+  useAutoReload();
   return null;
 });
 

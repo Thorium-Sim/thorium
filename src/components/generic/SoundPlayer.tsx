@@ -141,7 +141,6 @@ export function playSound(opts: Sound) {
             } else {
               sound.source.buffer = downMixBuffer(buffer, channel);
             }
-            console.log(channel, sound.source.buffer, buffer);
             sound.source.loop = opts.looping || false;
             sound.source.playbackRate.setValueAtTime(playbackRate, 0);
             sound.gain = audioContext.createGain();
