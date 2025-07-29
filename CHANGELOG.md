@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/Thorium-Sim/thorium/compare/4.1.3...4.1.4) (2025-07-29)
+
+
+### Bug Fixes
+
+* Fixes multiple kiosk windows on the server. ([1d42562](https://github.com/Thorium-Sim/thorium/commit/1d4256267ee73da18fcba80621ddf063b81880b7))
+
 ## [4.1.3](https://github.com/Thorium-Sim/thorium/compare/4.1.2...4.1.3) (2025-07-22)
 
 
