@@ -1,19 +1,19 @@
+const {BrowserWindow} = require("electron");
+
 const triggerWindow = require("./triggerWindow");
 const http = require("http");
 const https = require("https");
 const {clearMenubar, setMenubar} = require("./setMenubar");
-const {windows, addWindow} = require("./multiWindow");
+const {addWindow} = require("./multiWindow");
 const {setLoadedUrl} = require("./loadedUrl");
 const initHotkeys = require("./hotkeys");
 const initRemote = require("./remote");
 
 async function openPage(url, kiosk) {
   setLoadedUrl(`${url}/client`);
-  for (let i = windows.length - 1; i >= 0; i--) {
-    if (windows[i] && windows[i].isDestroyed()) {
-      windows.splice(i, 1);
-    }
-  }
+  const windows = BrowserWindow.getAllWindows().filter(
+    b => !b.isDestroyed() && !b.server,
+  );
   if (windows.length === 0) {
     addWindow({
       main: false,
@@ -83,5 +83,18 @@ module.exports = function loadPage(uri, kiosk) {
     // Tried too many times. Give up.
     setMenubar();
     return Promise.reject(err);
+  });
+};
+
+module.exports.openWindow = async function openWindow(url) {
+  const windows = BrowserWindow.getAllWindows().filter(
+    b => !b.isDestroyed() && !b.server,
+  );
+  addWindow({
+    main: false,
+    x: 500,
+    y: 500,
+    loadedUrl: `${url}?window_number=${windows.length + 1}`,
+    server: false,
   });
 };

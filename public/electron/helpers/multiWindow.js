@@ -4,7 +4,6 @@ const {bonjour} = require("./bonjour");
 const uuid = require("uuid");
 const url = require("url");
 const bootstrap = require("./bootstrap");
-let windows = [];
 
 function checkWindow() {
   let displays = screen.getAllDisplays();
@@ -20,14 +19,11 @@ function checkWindow() {
 }
 
 module.exports.checkWindow = checkWindow;
-module.exports.windows = windows;
 
 let serverOpen = false;
-let browserCount = 0;
 let serverWindow = null;
 
 function addWindow({main, x, y, loadedUrl, server}) {
-  browserCount++;
   const config = {
     backgroundColor: "#2e2c29",
     width: 800,
@@ -47,11 +43,15 @@ function addWindow({main, x, y, loadedUrl, server}) {
     serverOpen = true;
     config.webPreferences.preload = path.resolve(__dirname + "/preload.js");
     serverWindow = new BrowserWindow(config);
-
+    serverWindow.server = true;
     // Close all the other windows.
     bonjour.stop();
-    windows.forEach(w => w.close());
-    windows = [];
+    BrowserWindow.getAllWindows().forEach(w => {
+      if (w !== serverWindow) {
+        w.close();
+        w.destroy();
+      }
+    });
 
     // Change to the server page
     serverWindow.loadURL(
@@ -90,17 +90,15 @@ function addWindow({main, x, y, loadedUrl, server}) {
     }
     const window = new BrowserWindow(config);
     window.uniqueId = uuid.v4();
-    window.browserCount = browserCount;
+    window.browserCount = BrowserWindow.getAllWindows().filter(
+      b => !b.isDestroyed() && !b.server,
+    ).length;
     window.on("closed", function () {
       // Dereference the window object, usually you would store windows
       // in an array if your app supports multi windows, this is the time
       // when you should delete the corresponding element.
 
-      windows.splice(
-        windows.findIndex(w => w.uniqueId === window.uniqueId),
-        1,
-      );
-      if (windows.length === 0) {
+      if (BrowserWindow.getAllWindows().length === 0) {
         bonjour.stop();
       }
     });
@@ -118,8 +116,6 @@ function addWindow({main, x, y, loadedUrl, server}) {
     );
     window.focus();
     window.webContents.focus();
-
-    windows.push(window);
   }
 }
 

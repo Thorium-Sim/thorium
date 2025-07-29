@@ -59,6 +59,14 @@ module.exports = () => {
         bonjour.start();
       });
     });
+    ipcMain.on("openWindow", function (evt, data) {
+      const {url: loadUrl, kiosk} = data;
+      require("./loadPage")
+        .openWindow(loadUrl, kiosk)
+        .catch(err => {
+          console.error(err);
+        });
+    });
     ipcMain.handle("getServerAutostart", async () => {
       return settings.get("autostart") === "server";
     });

@@ -195,7 +195,7 @@ document.addEventListener(
     const kioskEl = document.getElementById("open-client-window");
     if (kioskEl) {
       kioskEl.addEventListener("click", function openClient() {
-        ipcRenderer.send("loadPage", {
+        ipcRenderer.send("openWindow", {
           url: `${printUrl()}/client`,
           kiosk: false,
           auto: false,
