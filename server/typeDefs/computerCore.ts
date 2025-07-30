@@ -2,6 +2,7 @@ import App from "../app";
 import {gql, withFilter} from "apollo-server-express";
 import {pubsub} from "../helpers/subscriptionManager";
 import {ComputerCore, HackingPreset} from "../classes";
+import {cloneDeep} from "lodash";
 import uuid from "uuid";
 // We define a schema that encompasses all of the types
 // necessary for the functionality in this file.
@@ -219,7 +220,8 @@ const resolver = {
       performAction(id, sys => {
         const preset = App.hackingPresets.find(i => i.id === presetId);
         if (preset) {
-          sys.activeHackingPreset = preset;
+          // Create a deep copy for this computer core instance to prevent global modifications
+          sys.activeHackingPreset = cloneDeep(preset);
           sys.hackingPorts = {
             logs: preset.logs ? Math.round(Math.random() * 16385 + 1000) : null,
             longRange: preset.longRange
