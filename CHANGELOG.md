@@ -1,3 +1,10 @@
+## [4.1.5](https://github.com/Thorium-Sim/thorium/compare/4.1.4...4.1.5) (2025-07-30)
+
+
+### Bug Fixes
+
+* update hacking preset to use a deep copy instead of the actual values ([602a631](https://github.com/Thorium-Sim/thorium/commit/602a63130409d62438af99c22bbb11105ca34605))
+
 ## [4.1.4](https://github.com/Thorium-Sim/thorium/compare/4.1.3...4.1.4) (2025-07-29)
 
 
