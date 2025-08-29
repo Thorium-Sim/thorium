@@ -91,6 +91,7 @@ const TARGETING_QUERY = gql`
         power
         powerLevels
       }
+      displayName
       damage {
         damaged
         report
@@ -172,6 +173,7 @@ const PHASERS_SUB = gql`
         report
       }
       name
+      displayName
       beams {
         id
         state
@@ -425,7 +427,10 @@ class Targeting extends Component {
             )}
           </Col>
           <Col sm="7">
-            <DamageOverlay system={phasers} message="Phasers Offline" />
+            <DamageOverlay
+              system={phasers}
+              message={`${phasers.displayName} Offline`}
+            />
             <div className="phaser-holder">
               {phasers.beams.map((p, i) => (
                 <PhaserFire

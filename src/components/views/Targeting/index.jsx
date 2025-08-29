@@ -86,6 +86,7 @@ export const TARGETING_QUERY = gql`
     phasers(simulatorId: $simulatorId) {
       id
       simulatorId
+      displayName
       power {
         power
         powerLevels
@@ -172,6 +173,7 @@ export const TARGETING_PHASERS_SUB = gql`
         report
       }
       name
+      displayName
       beams {
         id
         state
@@ -401,6 +403,7 @@ class Targeting extends Component {
         targeting.power.powerLevels &&
         targeting.power.power < targeting.power.powerLevels[0]) ||
       (targeting.damage && targeting.damage.damaged);
+    console.log(phasers);
     return (
       <Container fluid className="targeting-control flex-column">
         <SubscriptionHelper
@@ -462,7 +465,10 @@ class Targeting extends Component {
             )}
           </Col>
           <Col sm="7">
-            <DamageOverlay system={phasers} message="Phasers Offline" />
+            <DamageOverlay
+              system={phasers}
+              message={`${phasers.displayName} Offline`}
+            />
             <div className="phaser-holder">
               {phasers &&
                 phasers.beams.map((p, i, arr) =>
