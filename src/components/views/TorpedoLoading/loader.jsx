@@ -160,6 +160,7 @@ export default class TorpedoLoader extends Component {
                   unloadTorpedo={this.unloadTorpedo.bind(this)}
                   updateScreen={this.updateScreen.bind(this)}
                   fireTorpedo={this.fireTorpedo.bind(this)}
+                  torpedoName={torpedo.displayName}
                 />
               );
             }

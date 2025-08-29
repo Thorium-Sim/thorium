@@ -32,6 +32,7 @@ export const TORPEDO_SUB = gql`
       id
       loaded
       name
+      displayName
       power {
         power
         powerLevels
@@ -109,6 +110,7 @@ export const TORPEDO_QUERY = gql`
       id
       loaded
       name
+      displayName
       power {
         power
         powerLevels
